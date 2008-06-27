@@ -187,6 +187,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
           if(!uiQuery.isQuickSearch_) ((UIECMSearch)uiSearch).setRenderedChild(UISavedQuery.class) ;
           return ;
         }        
+        uiSearchResult.clearAll() ;
         uiSearchResult.setQueryResults(queryResult) ;
         uiSearchResult.updateGrid() ;
       }

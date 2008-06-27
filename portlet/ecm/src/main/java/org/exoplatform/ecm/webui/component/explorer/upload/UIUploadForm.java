@@ -153,13 +153,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       //String mimeType = input.getUploadResource().getMimeType() ;
       Node selectedNode = uiExplorer.getCurrentNode();      
       boolean isExist = selectedNode.hasNode(name) ;
+      String newNodeUUID = null;
       try {
         String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
         selectedNode.getSession().checkPermission(selectedNode.getPath(), pers);        
         if(uiForm.isMultiLanguage()) {
           ValueFactoryImpl valueFactory = (ValueFactoryImpl) uiExplorer.getSession().getValueFactory() ;
           Value contentValue = valueFactory.createValue(new ByteArrayInputStream(content)) ;
-          multiLangService.addFileLanguage(selectedNode, contentValue, mimeType, uiForm.getLanguageSelected(), uiForm.isDefault_) ;
+          multiLangService.addFileLanguage(selectedNode, name, contentValue, mimeType, uiForm.getLanguageSelected(), uiExplorer.getRepositoryName(), uiForm.isDefault_) ;
           uiExplorer.setIsHidePopup(true) ;
           UIMultiLanguageManager uiManager = uiForm.getAncestorOfType(UIMultiLanguageManager.class) ;
           UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
@@ -204,7 +205,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             inputProperties.put("/node/jcr:content/jcr:encoding",jcrEncoding) ;          
             CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
             String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-            cmsService.storeNode(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
+            newNodeUUID = cmsService.storeNodeByUUID(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
             selectedNode.save() ;
             selectedNode.getSession().save() ;                        
           } else {
@@ -237,8 +238,17 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         uiExplorer.getSession().save() ;
         UIUploadManager uiManager = uiForm.getParent() ;
         UIUploadContainer uiUploadContainer = uiManager.getChild(UIUploadContainer.class) ;
-        if(uiForm.isMultiLanguage_) uiUploadContainer.setUploadedNode(selectedNode) ; 
-        else uiUploadContainer.setUploadedNode(selectedNode.getNode(name)) ;
+        if(uiForm.isMultiLanguage_) {
+          uiUploadContainer.setUploadedNode(selectedNode) ; 
+        } else {
+          Node newNode = null ;
+          if(!isExist) {
+            newNode = uiExplorer.getSession().getNodeByUUID(newNodeUUID) ;
+          } else {
+            newNode = selectedNode.getNode(name) ;
+          }
+          uiUploadContainer.setUploadedNode(newNode) ;
+        }
         UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
         String fileSize = String.valueOf((((float)(content.length/100))/10));     
         String[] arrValues = {fileName, name, fileSize +" Kb", mimeType} ;
@@ -252,6 +262,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       } catch(ConstraintViolationException con) {
         Object[] args = {name, } ;
+        con.printStackTrace() ;
         throw new MessageException(new ApplicationMessage("UIUploadForm.msg.contraint-violation", 
                                                            args, ApplicationMessage.WARNING)) ;
       } catch(LockException lock) {

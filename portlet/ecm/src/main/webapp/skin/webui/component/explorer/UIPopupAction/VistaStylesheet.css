@@ -235,9 +235,6 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UINodeTypeInfo .UITabContentContainer .UITabContent {
-}
-
 .UIJCRExplorerPortlet .UINodeTypeInfo .UIGrid td {
 	padding-left: 2px;
 }
@@ -350,11 +347,6 @@
 .UIJCRExplorerPortlet .UISearchContainer .UICompareExactlyForm select {
   width: 430px;
   vertical-align: baseline;
-}
-
-.UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
-	width: 50px;
-	margin: auto ;
 }
 
 .UIJCRExplorerPortlet .UISelectPropertyForm .UIFormWithTitle .HorizontalLayout {

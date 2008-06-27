@@ -71,6 +71,7 @@ public class UIViewRelationList extends UIContainer{
           continue ;
         }
       }
+      session.logout() ;
     }
     return relations ;
   }

@@ -18,6 +18,7 @@
         <value>locale.portal.custom</value>
         <value>locale.ecm.dialogs</value>
         <value>locale.ecm.views</value>
+        <value>locale.ecm.homepage</value>
         <value>locale.portal.custom</value>
         <value>locale.navigation.portal.classic</value>
         <value>locale.navigation.portal.webos</value>
@@ -35,7 +36,8 @@
         <value>locale.portal.webui</value>
         <value>locale.portal.custom</value>
         <value>locale.ecm.dialogs</value>
-        <value>locale.ecm.views</value>        
+        <value>locale.ecm.views</value>
+        <value>locale.ecm.homepage</value>      
       </values-param>      
     </init-params>
   </component>

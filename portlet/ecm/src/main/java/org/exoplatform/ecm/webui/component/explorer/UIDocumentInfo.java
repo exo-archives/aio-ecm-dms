@@ -139,7 +139,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     String[] workspaces = manageRepo.getWorkspaceNames() ;
     for(String ws : workspaces) {
       try{
-        return manageRepo.getSystemSession(ws).getNodeByUUID(uuid) ;
+        return SessionsUtils.getSystemProvider().getSession(ws, manageRepo).getNodeByUUID(uuid) ;
       }catch(Exception e) {
 
       }      
@@ -223,7 +223,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
 
   public Node getNodeByPath(String nodePath, String workspace) throws Exception {
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
-    Session session = manageRepo.getSystemSession(workspace) ;
+    Session session = SessionsUtils.getSystemProvider().getSession(workspace, manageRepo) ;
     return getAncestorOfType(UIJCRExplorer.class).getNodeByPath(nodePath, session) ;
   }
 

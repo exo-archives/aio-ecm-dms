@@ -54,9 +54,9 @@
 	          
 	      <%}%>
 	      <%if(beanActions != null && beanActions.length > 0) { %>
-	        <td>         
-	          <div class="ActionContainer" style="margin: 0px auto;">
-	            <div class="OverflowContainer" style="margin: auto;">          
+	        <td align="center">         
+	          <div class="ActionContainer">
+	            <div class="OverflowContainer">          
 	            <%def beanIdField = uicomponent.getBeanIdField() ; %>          
 	            <%for(action in beanActions) { %>
 	            <%  def beanId = uicomponent.getFieldValue(bean,beanIdField)  ; %>               
@@ -64,9 +64,9 @@
 	                if(action != null) { 
 	                  if(uicomponent.isUseAjax()){
 	              %>             
-	                    <a class="${action}Icon" href="<%=uicomponent.event(action, beanId)%>" title = "$action"><span></span></a>             
+	                    <a href="<%=uicomponent.event(action, beanId)%>" title = "<%=_ctx.appRes(uiParent.getId()+".title."+ action)%>"><img src="/eXoResources/skin/sharedImages/Blank.gif" class="${action}Icon" ></a>             
 	              <%  }else{ %>
-	                    <a class="${action}Icon" href="<%=uicomponent.url(action, beanId)%>" title = "$action"><span></span></a>             
+	                    <a href="<%=uicomponent.url(action, beanId)%>" title = "<%=_ctx.appRes(uiParent.getId()+".title."+ action)%>"><img src="/eXoResources/skin/sharedImages/Blank.gif" class="${action}Icon" ></a>             
 	              <%  } %> 
 	              <%} %> 
 	            <%}%>                 

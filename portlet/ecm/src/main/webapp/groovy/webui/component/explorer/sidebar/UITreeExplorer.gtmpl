@@ -69,10 +69,12 @@
 	    def ctMenu = "" ;
 	    if(!uicomponent.isSystemWorkspace()) ctMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) ;
 	    println "<div class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
-	    println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\"><span></span></div>" ;
-	    println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + ctMenu + ">" + strActs + "<span></span></div>" ;
-	    println "  <div class=\"NodeLabel\" " + ctMenu + ">" ;
-	    println strActs + "<a href=\"" + expandLink + "\" title=\"$treeNodeName\">$treeNodeName</a>" ;
+	    println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
+	    println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + ctMenu + ">" + strActs ;
+	    println "  <div class=\"NodeLabel\" " + ctMenu + ">" + strActs;
+	    println "<a href=\"" + expandLink + "\" title=\"$treeNodeName\">$treeNodeName</a>" ;
+	    println "  </div>" ; 
+	    println "  </div>" ; 
 	    println "  </div>" ; 
 	    if(treeNode.getChildrenSize() > 0) {
 	      println "<div class=\"NodeGroup\">" ;
@@ -94,7 +96,7 @@
 <div class="UITreeExplorer" id="UITreeExplorer">
   <div style="white-space:nowrap;">
     <div class="HomeNode">
-      <div class="Icon16x16 HardDisk24x24Icon" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><span></span></div>
+      <div class="HardDisk24x24Icon" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><span></span></div>
       <div class="NodeLabel"><a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><%=_ctx.appRes("UITreeExplorer.label.Root")%></a></div>
     </div>
     <div class="NodeGroup">

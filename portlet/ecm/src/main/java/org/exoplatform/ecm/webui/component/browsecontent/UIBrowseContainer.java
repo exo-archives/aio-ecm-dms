@@ -35,6 +35,7 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 import javax.portlet.ActionResponse;
+import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.WindowState;
@@ -53,6 +54,7 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.DataTransfer;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -160,6 +162,9 @@ public class UIBrowseContainer extends UIContainer {
   private String templatePath_ ;  
   private BCTreeNode treeRoot_ ; 
   private UIPageIterator uiPageIterator_ ;
+  
+  private HashMap<String, WindowState> windowState_ = new HashMap<String, WindowState>() ;
+  private String windowId_ ;
   
   @SuppressWarnings("unused")
   public UIBrowseContainer() throws Exception {
@@ -292,33 +297,77 @@ public class UIBrowseContainer extends UIContainer {
     return strCapacity ;
   }
   
-  public List<Node> getNodeByQuery(int recoderNumber) throws Exception{
-    List<Node> queryDocuments = new ArrayList<Node>() ;
-    QueryManager queryManager = null ;
-    try{
-      queryManager = getSession().getWorkspace().getQueryManager();
-    }catch (Exception e) {
-      e.printStackTrace();
-      return queryDocuments ;
-    }           
-    String queryStatiement = getQueryStatement() ;
-    if(!Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_QUERY_ISNEW,""))) {
-      String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"") ;
-      Node queryNode = getNodeByPath(queryPath) ;
-      queryStatiement = queryNode.getProperty("jcr:statement").getString() ;
-    }
-    Query query = queryManager.createQuery(queryStatiement, getQueryLanguage());
+  /**
+   * Return a list of Node in the Query use case
+   * 
+   * @param  recordNumber Number of expected records
+   * @return list of Nodes corresponding to the query
+   * @throws Exception if there was a problem while issuing the query
+   */
+  public List<Node> getNodeByQuery(int recordNumber) throws Exception {
+    
+    // Returned list of documents
+    List<Node> queryDocuments = new ArrayList<Node>();
+    
     try {
-      QueryResult queryResult = query.execute();
+      QueryResult queryResult = null;
+      
+      if(Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_QUERY_ISNEW,""))) {
+        // New query
+        queryResult = getQueryResultNew();
+      } else {
+        // Stored query
+        queryResult = getQueryResultStored();
+      }
+      
+      // Add the required number of items to the returned list
       NodeIterator iter = queryResult.getNodes();
       int count = 0 ; 
-      while (iter.hasNext() && (count++ != recoderNumber)) {
+      while (iter.hasNext() && (count++ != recordNumber)) {
         queryDocuments.add(iter.nextNode()) ;
       }
-      return queryDocuments ;
     } catch(Exception e) {
-      return queryDocuments ;
+      // Display the stack trace
+      e.printStackTrace();
     }
+    
+    return queryDocuments;
+  }
+  
+  /**
+   * Returns the results of a new query
+   * 
+   * @param  recordNumber Number of expected records
+   * @return query results
+   */
+  public QueryResult getQueryResultNew() throws Exception {
+    
+    // Retrieve the query statement
+    String queryStatement = getQueryStatement();
+    
+    // Prepare the query
+    QueryManager queryManager = getSession().getWorkspace().getQueryManager();
+    Query query = queryManager.createQuery(queryStatement, getQueryLanguage());
+    
+    // Execute the query and return results
+    return query.execute();
+  }
+
+  /**
+   * Returns the results of a saved query
+   * 
+   * @param  recordNumber Number of expected records
+   * @return query results
+   */
+  public QueryResult getQueryResultStored() throws Exception {
+    QueryService queryService = getApplicationComponent(QueryService.class);
+    
+    String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"") ;
+    String workspace = getWorkSpace() ;
+    String repository = getRepository();
+    SessionProvider sessionProvider = getSessionProvider();
+    
+    return queryService.execute(queryPath, workspace, repository, sessionProvider);
   }
   
   public boolean nodeIsLocked(Node node) throws Exception {
@@ -618,10 +667,22 @@ public class UIBrowseContainer extends UIContainer {
   }
 
   public String getTemplate() {
+    PortletRequestContext context = PortletRequestContext.getCurrentInstance() ;
+    PortletRequest portletRequest = context.getRequest() ;
+    WindowState currentWindowState = portletRequest.getWindowState() ;
+    if(windowState_.containsKey(windowId_)) {
+      WindowState keptWindowState = windowState_.get(windowId_) ;
+      if(isShowDetailDocument_ && currentWindowState.equals(WindowState.NORMAL) && 
+          keptWindowState.equals(WindowState.MAXIMIZED)) {
+        setShowDocumentDetail(false) ;
+        windowState_.clear() ;
+        return templatePath_ ;
+      }
+    }
     if(isShowDetailDocument_) return detailTemplate_ ;
     return templatePath_ ; 
   }
-
+  
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
@@ -830,7 +891,6 @@ public class UIBrowseContainer extends UIContainer {
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "") ;
     if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
       setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, repoName,SessionsUtils.getSystemProvider()).getNode(tempName).getPath()) ;
-//      Node node = (Node)getSession().getItem(categoryPath) ;
       setRootPath(categoryPath) ;
       setCategoryPath(categoryPath) ;
       setSelectedTabPath(categoryPath) ;
@@ -875,7 +935,7 @@ public class UIBrowseContainer extends UIContainer {
       getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
       super.processRender(context) ;
     } catch (Exception e) {
-      getAncestorOfType(UIBrowseContentPortlet.class).setPorletMode(PortletRequestContext.HELP_MODE) ;
+      getAncestorOfType(UIBrowseContentPortlet.class).setPorletMode(PortletMode.HELP) ;
       return ;
     }
   }
@@ -890,7 +950,7 @@ public class UIBrowseContainer extends UIContainer {
         if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
           if(getNodeByPath(getCategoryPath()) == null || getNodeByPath(getRootNode().getPath()) == null) {
             UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
-            uiPorlet.setPorletMode(PortletRequestContext.HELP_MODE) ;
+            uiPorlet.setPorletMode(PortletMode.HELP) ;
             uiPorlet.reload() ;
           } else if(getNodeByPath(getSelectedTab().getPath()) == null || 
               getNodeByPath(getCurrentNode().getPath()) == null) {
@@ -1230,11 +1290,16 @@ public class UIBrowseContainer extends UIContainer {
   static public class ChangeNodeActionListener extends EventListener<UIBrowseContainer> {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       String useMaxState = event.getRequestContext().getRequestParameter("useMaxState") ;
+      UIBrowseContainer uiContainer = event.getSource() ;
+      PortletRequest portletRequest = event.getRequestContext().getRequest() ;
+      uiContainer.windowId_ = portletRequest.getWindowID() + portletRequest.getPortletSession().getId();
       if(useMaxState != null) {
         ActionResponse response = event.getRequestContext().getResponse() ;
         response.setWindowState(WindowState.MAXIMIZED);
+        if(!uiContainer.windowState_.containsKey(uiContainer.windowId_)) {
+          uiContainer.windowState_.put(uiContainer.windowId_, WindowState.MAXIMIZED) ;
+        }
       }
-      UIBrowseContainer uiContainer = event.getSource() ;
       uiContainer.setShowDocumentDetail(false) ;
       uiContainer.setShowAllChildren(false) ;
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;

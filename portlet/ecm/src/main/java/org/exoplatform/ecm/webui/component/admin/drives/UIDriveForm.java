@@ -151,7 +151,6 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       try {        
         session = rservice.getRepository(repository).getSystemSession(workspace);
         session.getItem(path) ;
-        session.logout() ;
       } catch(Exception e) {
         if(session!=null) {
           session.logout();
@@ -160,7 +159,9 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }      
+      } finally {
+        if(session != null) session.logout() ;
+      }
       boolean viewReferences = 
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWPREFERENCESDOC).isChecked() ;
       boolean viewSideBar = 
@@ -298,7 +299,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       } else {
         folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_FOLDER_ONLY, Utils.NT_FOLDER)) ;
         folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_UNSTRUCTURED_ONLY, Utils.NT_UNSTRUCTURED)) ;
-        folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_BOTH_FOLDER_UNSTRUCTURED, "both")) ;
+        folderOptions.add(new SelectItemOption<String>(driveInputSet.bothLabel_, driveInputSet.bothLabel_)) ;
       }
       uiInput.setOptions(folderOptions) ;
       if(!uiDriveForm.isAddNew_) {

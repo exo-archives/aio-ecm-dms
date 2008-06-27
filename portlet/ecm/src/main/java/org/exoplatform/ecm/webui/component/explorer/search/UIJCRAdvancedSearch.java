@@ -148,10 +148,18 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       long startTime = System.currentTimeMillis();
       try {
+        if(queryS.indexOf("order by") < 0) {
+          if(searchType.equals("sql")) {
+            queryS = queryS + " order by exo:dateCreated DESC" ;
+          } else if(searchType.equals("xpath")) {
+            queryS = queryS + " order by @exo:dateCreated descending" ;
+          }
+        }
         Query query = queryManager.createQuery(queryS, searchType);
         QueryResult queryResult = null ;
         queryResult = query.execute();
         UISearchResult uiSearchResult = uiSearch.getChild(UISearchResult.class) ;      
+        uiSearchResult.clearAll() ;
         uiSearchResult.setQueryResults(queryResult) ;
         uiSearchResult.updateGrid() ;
         long time = System.currentTimeMillis() - startTime;
@@ -256,6 +264,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         queryNode.setProperty("jcr:language", queryLang) ;
         queryNode.setProperty("jcr:statement", statement) ;
         queryNode.save() ;
+        session.logout() ;
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         UISavedQuery uiSavedQuery = uiForm.getAncestorOfType(UISavedQuery.class) ; 
         uiSavedQuery.updateGrid() ;

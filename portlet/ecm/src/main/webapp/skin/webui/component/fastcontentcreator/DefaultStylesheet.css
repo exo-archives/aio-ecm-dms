@@ -14,15 +14,19 @@
 
 .UIWindow .UIFastContentCreatorPortlet {
 	border: none;
-	margin: 0px;
+	margin: auto;
 	border: none;
 }
 
 .UIFastContentCreatorPortlet {
 	background: white;
 	border: 1px solid #b7b7b7;
-	margin: 10px;
+	margin: 5px;
 	padding: 15px 0px ;
+}
+
+.UIFastContentCreatorPortlet .UIFormGrid {
+	width: 100%;
 }
 
 .UIFastContentCreatorPortlet .MsgLable {
@@ -40,17 +44,8 @@
   margin: auto;
 }
 
-.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer  {
-  border: none;
-  background: #efefef;
-}
-
 .UIFastContentCreatorPortlet .UITabPane {
   padding: 10px 0px 20px 0px;
-}
-
-.UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
-  border: none;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle {
@@ -104,13 +99,13 @@
   border-top: none;
 }
 
-.UIFastContentCreatorPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContent {
-	border: none;
-	background: none;
-}
-
 .UIFastContentCreatorPortlet .TabPaneContent {
   margin: 5px;
+}
+
+.UIFastContentCreatorPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
+	border: 1px solid #b7b7b7;
+	border-top: none;
 }
 
 /*############################## -- UITreeJCRExplorer   -- ##############################*/

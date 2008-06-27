@@ -7,27 +7,25 @@
 @import url("UICBSearchForm/MacStylesheet.css");
 @import url("UIEventViewer/MacStylesheet.css");
 
-.UIWindow .UIBrowseContentPortlet .ContentHolder {
-  padding: 5px 0px;
-  width: 98.5%;
-  /*
-  minh.js.exo
-  */
-  min-width: 400px;
-}
-
 .UIWindow .UIBrowseContentPortlet {
 	border: none;
 	margin: 0px auto;
-	width: auto;
+  min-width: 400px;
 }
 
 .UIBrowseContentPortlet {
 	background: white;
 	border: 1px solid #b7b7b7;
-	margin: 10px auto;
+	margin: 5px;
   overflow: auto;
-  width: 98%;
+}
+
+.UIBrowseContentPortlet .UIFormGrid {
+	width: 100%;
+}
+
+.UIBrowseContentPortlet .ContentHolder {
+  padding: 5px;
 }
 
 .UIBrowseContentPortlet .UIFormWithTitle {
@@ -73,7 +71,7 @@
    line-height: 22px;
 }
 
-.UIBrowseContentPortlet .TagmapHolder .TagmapContent a{
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent a {
    color: red;
    padding: 3px 7px 3px 0px;
 }
@@ -119,9 +117,10 @@
 	width: 500px;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16{
+.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16 {
 	float: none;
 	margin-left: 5px;
+	*height: 20px;
 }
 
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {
@@ -294,34 +293,26 @@
 }
 
 /*############################## -- FIX BUG POPUP  -- ##############################*/
-.UIBrowseContentPortlet .UIPopupWindow .NodeIcon{
+.UIBrowseContentPortlet .UIPopupWindow .NodeIcon {
 	padding-left: 25px;
 }
 
 .UIBrowseContentPortlet .UIJCRBrowser {
-  padding: 10px 0px 0px 10px;
-}
-
-.UIBrowseContentPortlet .Explorer {
-  margin-right: 10px;
-  float: left ;
-  width: 220px ;
-}
-
-UIBrowseContentPortlet .Explorer {
-  margin-right: 10px;
-  float: left ;
-  width: 230px ;
-  overflow: hidden;
-}
-
-.UIBrowseContentPortlet .Explorer .InnerExplorerTree {
-  border: solid 1px #b1b0b0;
   padding: 10px;
 }
 
-.UIBrowseContentPortlet .UITreeList .UIGrid {
-  width: 310px;
+.UIBrowseContentPortlet .Explorer {
+  float: left;
+  width: 200px;
+  overflow: hidden;
+}
+
+.UIBrowseContentPortlet .UIJCRBrowser .UITreeList {
+	margin-left: 210px;
+}
+
+.UIBrowseContentPortlet .UIJCRBrowser table {
+	*width: 94%;
 }
 
 /*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
@@ -333,6 +324,14 @@ UIBrowseContentPortlet .Explorer {
 .UIBrowseContentPortlet .UISearchController .SearchResult{
 	border: solid 1px #b7b7b7;
 	padding: 5px;
+}
+
+.UIBrowseContentPortlet .UISearchController .HorizontalLayout .UIForm input {
+  width: auto;
+}
+
+.UIBrowseContentPortlet .UISearchController .HorizontalLayout .UIForm select {
+  width: auto;
 }
 
 .UIBrowseContentPortlet .UISearchController .UIPageIterator{
@@ -756,9 +755,8 @@ UIBrowseContentPortlet .Explorer {
 
 .UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer {
 	height: 100%;
-	border: none;
 }
-	
+
 .UIBrowseContentPortlet .FileContent .NavigationContainer {	
 	padding-bottom: 0px;
 	border: 1px solid #cbcbcb;
@@ -784,8 +782,6 @@ UIBrowseContentPortlet .Explorer {
 	
 .UIBrowseContentPortlet .FileContent .Content {	
 	white-space: normal;
-	padding: 0px 10px;
-	height: 300px;
  }
 	
 .UIBrowseContentPortlet .FileContent .Content .TextContent {	
@@ -908,4 +904,3 @@ UIBrowseContentPortlet .Explorer {
 	line-height: 25px;
 	border-bottom: solid 1px #BDBDBD;
 }
-

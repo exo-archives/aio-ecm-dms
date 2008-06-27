@@ -9,8 +9,6 @@
 /*############################## -- Begin UIJCRExplorer -- ##############################*/
 .UIJCRExplorerPortlet .UIJCRExplorer {
   background: white;
-  *width: 99.7%;
-  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
@@ -19,31 +17,19 @@
   width: 95%;
 }
 
-.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UITabPane {
+	height: auto;
+}
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle {
   width: 99.7%;
   margin: 0px auto;
   background: #efefef;
 }
 
-.UIJCRExplorerPortlet .UIFormGrid input {
-  padding-left: 3px;
-}
-
-.UIJCRExplorerPortlet .UIFormGrid textarea {
-  padding: 3px;
-}
-
-.UIJCRExplorerPortlet .UIFormGrid select {
-  padding-left: 3px;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
   width: 2px;
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
-}
-
-.UIJCRExplorerPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
- 	padding: 4px 8px 4px 0px;
 }
 
 .UIJCRExplorerPortlet .UIForm .HorizontalLayout .UIFormInputSet {
@@ -58,6 +44,26 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .HorizontalLayout {
 	padding-top: 10px;
 	background: url('MacSkin/background/Background1x4.png') repeat;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea {
+	width: 100%;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIResizableBlock {
+	width: 99.3%;
+}
+
+.UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator {
+	width: 90%;
+}
+
+.UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator .PageIteratorContainer {
+	float: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIContextMenuContainer {
+	width: 130px;
 }
 
 /*======================== -- End UIJCRExplorer -- ==========================================*/
@@ -236,10 +242,6 @@
 
 /*############################## -- End UIThumbnailsView -- ##############################*/
 
-.UIJCRExplorer .UISearchResult .UIGrid .ActionContainer {
-  width: 60px ;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
 	margin: 10px auto;
 	width: 96.5%;
@@ -273,47 +275,28 @@
 
 /*===========================DocumentFormController=====================*/
 
-.UIJCRExplorerPortlet .UIFormWithTitle .UIDocumentForm .HorizontalLayout {
-	padding-top: 10px;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController {
 	padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent {
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane {
   width: 97%;
   margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UITabContentContainer {
-  border: none;
+  background: url('MacSkin/background/Background1x4.png');
+  border: 1px solid #e1e1e1;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
   border: 1px solid #e1e1e1;
-  background: #efefef;
-  margin-top: 5px;
+  width: auto;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .HorizontalLayout td.FieldLabel {
-  width: 160px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
-  padding-bottom: 3px; 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIFormGrid .FieldLabel {
+	width: auto;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm .HorizontalLayout {
   padding: 10px 0px; 
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController {
- 	padding: 13px 0px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent .UIFormWithTitle {
-  width: auto;
 }
 
 .UIJCRExplorerPortlet .ProgressBarFrame { 
@@ -337,37 +320,6 @@
 	margin-left: 0px;
 }
 
-.UIJCRExplorerPortlet .UIDocumentForm .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: none;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: none;
-}
-
-.UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: solid 1px #b7b7b7;
-  border-top: none;
-  background: url('MacSkin/background/Background1x4.png') repeat;
-}
-
-.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle .HorizontalLayout .UITabContentContainer {
-  border: none;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .WorkingAreaWithHelp .UITabContentContainer td.FieldLabel {
-  width: 160px;
-}
-
-.UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer .UITabContent {
-	border: none;
-	background: url('MacSkin/background/Background1x4.png') repeat;
-}
-
-.UIJCRExplorerPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UIFormWithTitle{
-	background: url('MacSkin/background/Background1x4.png') repeat;
-}
-
 /*===========================TabContainer====================*/
 
 .UIJCRExplorerPortlet .UIPopupMessages .TabsContainer {
@@ -381,12 +333,6 @@
   margin: 10px auto;
 }
 
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadContainer .UITabPane {
-	width: 95%;
-	margin: 10px auto;
-	padding: 0px;
-}
-
 .UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame { 
 	width: 330px;
 	overflow: hidden;
@@ -397,7 +343,7 @@
   border: none;
 }
 
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame .ProgressBar{ 
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame .ProgressBar { 
 	margin-left: 0px;
 }
 
@@ -415,17 +361,6 @@
 .UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
   padding: 10px;
 }
-
-.UIJCRExplorerPortlet .UIUploadManager .WorkingAreaWithHelp {
-  width: 100%;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UIUploadManager .UITabPane {
-  width: 100%;
-  padding: 0px;
-}
-
-/*=============================UIWatchDocumentForm=======================*/
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm {
   padding: 10px;
@@ -532,7 +467,7 @@
 .UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle  {
 	margin-top: 10px;
 	border: solid 1px #b7b7b7;
-	width: 98%;
+	width: auto;
 	padding-left: 5px;
 }
 
@@ -658,23 +593,23 @@
 	background: white;
 }
 
-.UIJCRExplorer .UIPopupWindow .UIActionContainer .UIJCRBrowser .UIWorkspaceList .FieldLabel{
+.UIJCRExplorer .UIPopupWindow .UIActionContainer .UIJCRBrowser .UIWorkspaceList .FieldLabel {
 	width: 100px;
 }
 
-.UIJCRExplorer .UIWorkspaceList .UIFormGrid select{
+.UIJCRExplorer .UIWorkspaceList .UIFormGrid select {
 	width: 100px;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer  {
+.UIJCRExplorerPortlet .UIActionContainer {
 	border: none;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle  {
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle {
 	border: none;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle a .ActionIcon{
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle a .ActionIcon {
   cursor: pointer;
   float: none;
   margin-left: 5px;
@@ -798,10 +733,6 @@
   padding-bottom: 8px;
 }
 
-.UIJCRExplorerPortlet .UIPermissionInfo .ActionContainer {
-  width: 50px;
-}
-
 .UIJCRExplorerPortlet .UIPermissionManager .UIGroupMembershipSelector {
 	padding: 10px;
 }
@@ -822,11 +753,6 @@
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
 	border: none;
-}
-
-.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
-	float: left;
-	margin: 4px 3px 0px 3px;
 }
 
 /*=================================UICategoryManager==============================*/
@@ -875,7 +801,7 @@
 
 /*================================DecoratorBoxNested=================================*/
 
-.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16{
+.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16 {
   margin-right: 3px;
 }
 

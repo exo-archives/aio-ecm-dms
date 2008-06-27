@@ -50,11 +50,11 @@
 		    <tr class="$rowClass">
 		      <td class="text" title="<%=fullPath%>"><%=path%></td>
 		    	<td class="text"><%=item.getType()%></td>
-			      <td>         
-			        <div class="ActionContainer" style="margin: 0px auto;">
-			          <div class="OverflowContainer" style="margin: auto;">          
+			      <td align="center">         
+			        <div class="ActionContainer">
+			          <div class="OverflowContainer">          
 			          <%for(action in beanActions) { %>
-	                <a class="${action}Icon" href="<%=uicomponent.event(action, index.toString())%>" title = "$action"><span></span></a>	           
+	                <a href="<%=uicomponent.event(action, index.toString())%>" title = "$action"><img src="/eXoResources/skin/sharedImages/Blank.gif" class="${action}Icon" ></a>	           
 			          <%}%>        
 			          </div>
 			        </div>

@@ -10,24 +10,24 @@
 <div class="$uicomponent.id">
   <div class="UIFormWithTitle">
     <% uiform.begin() %>
-      <div class="ConstraintOption">Operator : <%uiform.renderField(uicomponent.getChildById("operator"))%></div>
+      <div class="ConstraintOption"><%=_ctx.appRes("UIConstraintForm.label.operator")%><%uiform.renderField(uicomponent.getChildById("operator"))%></div>
       <div class="ConstraintOption">
-        <%uiform.renderField(uicomponent.getChildById("exactlyPro"))%><label class="Label">Property</label> : <%uiform.renderField(uicomponent.getChildById("property1"))%> <a href="<%=uicomponent.event("AddMetadataType", "0")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a> Contain Exactly : <%uiform.renderField(uicomponent.getChildById("containExactly"))%>  <a href="<%=uicomponent.event("CompareExactly")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.FindExactly")%>"></a>
+        <%uiform.renderField(uicomponent.getChildById("exactlyPro"))%><label class="Label"><%=_ctx.appRes("UIConstraintForm.label.exactlyPro-properties")%></label> <%=_ctx.appRes("UIConstraintForm.label.colon")%> <%uiform.renderField(uicomponent.getChildById("property1"))%> <a href="<%=uicomponent.event("AddMetadataType", "0")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a> <%=_ctx.appRes("UIConstraintForm.label.exactlyPro-ContainExactly")%> <%uiform.renderField(uicomponent.getChildById("containExactly"))%>  <a href="<%=uicomponent.event("CompareExactly")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.FindExactly")%>"></a>
       </div>
       <div class="ConstraintOption">
-        <%uiform.renderField(uicomponent.getChildById("containPro"))%><label class="Label">Property</label> : <%uiform.renderField(uicomponent.getChildById("property2"))%> <a href="<%=uicomponent.event("AddMetadataType", "1")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a> Contain : <%uiform.renderField(uicomponent.getChildById("contain"))%>
+        <%uiform.renderField(uicomponent.getChildById("containPro"))%><label class="Label"><%=_ctx.appRes("UIConstraintForm.label.containPro-properties")%></label> <%=_ctx.appRes("UIConstraintForm.label.colon")%> <%uiform.renderField(uicomponent.getChildById("property2"))%> <a href="<%=uicomponent.event("AddMetadataType", "1")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a> <%=_ctx.appRes("UIConstraintForm.label.containPro-Contain")%> <%uiform.renderField(uicomponent.getChildById("contain"))%>
       </div>
       <div class="ConstraintOption">
-        <%uiform.renderField(uicomponent.getChildById("notContainPro"))%><label class="Label">Property</label> : <%uiform.renderField(uicomponent.getChildById("property3"))%> <a href="<%=uicomponent.event("AddMetadataType", "2")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a>  Not Contain : <%uiform.renderField(uicomponent.getChildById("notContain"))%>
+        <%uiform.renderField(uicomponent.getChildById("notContainPro"))%><label class="Label"><%=_ctx.appRes("UIConstraintForm.label.notContainPro-properties")%></label> <%=_ctx.appRes("UIConstraintForm.label.colon")%> <%uiform.renderField(uicomponent.getChildById("property3"))%> <a href="<%=uicomponent.event("AddMetadataType", "2")%>"><img class="AddMetadataTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>"></a>  <%=_ctx.appRes("UIConstraintForm.label.notContainPro-notContain")%> <%uiform.renderField(uicomponent.getChildById("notContain"))%>
       </div>
       <div class="ConstraintOption">
         <div style="float: left;"><%uiform.renderField(uicomponent.getChildById("datePro"))%><%uiform.renderField(uicomponent.getChildById("timeOpt"))%></div>
         <div style="margin-left: 130px;">
-          <div class="ConstraintOption">From <%uiform.renderField(uicomponent.getChildById("startTime"))%>   To <%uiform.renderField(uicomponent.getChildById("endTime"))%></div>
+          <div class="ConstraintOption"><%=_ctx.appRes("UIConstraintForm.label.ConstraintOption-From")%> <%uiform.renderField(uicomponent.getChildById("startTime"))%>   <%=_ctx.appRes("UIConstraintForm.label.ConstraintOption-To")%> <%uiform.renderField(uicomponent.getChildById("endTime"))%></div>
         </div>
       </div>
       <div class="ConstraintOption">
-        <%uiform.renderField(uicomponent.getChildById("nodetypePro"))%><label class="Label">Document Type</label> : <%uiform.renderField(uicomponent.getChildById("docType"))%> <a href="<%=uicomponent.event("AddNodeType")%>"><img class="AddNodeTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddNodeType")%>"></a>
+        <%uiform.renderField(uicomponent.getChildById("nodetypePro"))%><label class="Label"><%=_ctx.appRes("UIConstraintForm.label.DocumentType-label")%></label> <%=_ctx.appRes("UIConstraintForm.label.colon")%> <%uiform.renderField(uicomponent.getChildById("docType"))%> <a href="<%=uicomponent.event("AddNodeType")%>"><img class="AddNodeTypeIcon" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddNodeType")%>"></a>
       </div>
       <div class="UIAction"> 
         <table class="ActionContainer">
@@ -41,7 +41,7 @@
 	                <div class="ButtonLeft">
 	                  <div class="ButtonRight">
 	                    <div class="ButtonMiddle">
-	                      $actionLabel
+	                      <%=_ctx.appRes(uicomponent.getName() + ".button.label-" + actionLabel)%>
 	                    </div>
 	                  </div>
 	                </div>

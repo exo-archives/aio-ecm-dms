@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer;
 
+import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.utils.Utils;
@@ -41,8 +42,8 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIJCRExplorerPortlet') ;");
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
-    if (portletReqContext.getApplicationMode() == PortletRequestContext.VIEW_MODE) {
-    } else if(portletReqContext.getApplicationMode() == PortletRequestContext.HELP_MODE) {
+    if (portletReqContext.getApplicationMode() == PortletMode.VIEW) {
+    } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
     }
     super.processRender(app, context) ;
@@ -55,4 +56,3 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     return repository ;
   }
 }
-

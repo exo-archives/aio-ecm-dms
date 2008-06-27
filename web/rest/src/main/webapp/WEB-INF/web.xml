@@ -32,6 +32,7 @@
     <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  
   <filter-mapping>
     <filter-name>RestEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>

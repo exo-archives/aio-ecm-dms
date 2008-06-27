@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Locale;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.workflow.Form;
 import org.exoplatform.services.workflow.Process;
 import org.exoplatform.services.workflow.WorkflowFormsService;
@@ -29,7 +31,6 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.event.Event;
@@ -68,12 +69,13 @@ public class UIControllerManager extends UIContainer {
   }
 
   public void processRender(WebuiRequestContext context) throws Exception {
-    Locale locale = getAncestorOfType(UIApplication.class).getLocale() ;
+    Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;
     WorkflowFormsService workflowFormsService = getApplicationComponent(WorkflowFormsService.class) ;
     List<Process> processes = service_.getProcesses() ;
     
     List<Process> visibleDefinitions = new ArrayList<Process>() ;
     for(Process process : processes) {
+      workflowFormsService.removeForms(process.getId()) ;
       Form form = workflowFormsService.getForm(process.getId(), process.getStartStateName(), locale) ;
       if (form != null && !form.isDelegatedView()) visibleDefinitions.add(process) ;
     }

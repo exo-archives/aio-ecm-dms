@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.browsecontent;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -50,6 +51,7 @@ import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
+import org.exoplatform.webui.form.validator.NumberFormatValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -92,24 +94,13 @@ public class UIQueryConfig extends UIForm {
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE, null, Options).setRendered(false)) ;
     addChild(new UIFormTextAreaInput(UINewConfigForm.FIELD_QUERY, null, null)) ;    
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE, null, Options)) ;
-    addChild(new UIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE, null, itemPerPages())) ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, 
+        UINewConfigForm.FIELD_ITEMPERPAGE, null).addValidator(NumberFormatValidator.class)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP, null, Options)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLETAGMAP, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECOMMENT, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEVOTE, null, null)) ;
     setActions(UINewConfigForm.DEFAULT_ACTION) ;
-  }
-  
-  private List<SelectItemOption<String>> itemPerPages() {
-    List<SelectItemOption<String>> itemPerPages = new ArrayList<SelectItemOption<String>>() ;
-    itemPerPages.add(new SelectItemOption<String>("5", "5")) ;
-    itemPerPages.add(new SelectItemOption<String>("10", "10")) ;
-    itemPerPages.add(new SelectItemOption<String>("15", "15")) ;
-    itemPerPages.add(new SelectItemOption<String>("20", "20")) ;
-    itemPerPages.add(new SelectItemOption<String>("30", "30")) ;
-    itemPerPages.add(new SelectItemOption<String>("40", "40")) ;
-    itemPerPages.add(new SelectItemOption<String>("50", "50")) ;    
-    return itemPerPages ;
   }
 
   public PortletPreferences getPortletPreferences() {    
@@ -126,8 +117,9 @@ public class UIQueryConfig extends UIForm {
     String hasComment = "false" ;
     String hasVote = "false" ;
     String hasTagMap = "false" ;
-    String itemPerPage = "20" ;
+    String itemPerPage = null ;
     String detailTemp = "" ;
+    String template = "" ;
     UIFormStringInput workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE) ;
     workSpaceField.setValue(workSpace) ;
     workSpaceField.setEditable(false) ;
@@ -140,7 +132,7 @@ public class UIQueryConfig extends UIForm {
     UIFormSelectBox queryStoreField = getChildById(UINewConfigForm.FIELD_QUERYSTORE) ;
     UIFormTextAreaInput queryField = getChildById(UINewConfigForm.FIELD_QUERY) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
-    UIFormSelectBox numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
+    UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
     UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP) ;
     UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT) ;
@@ -180,7 +172,10 @@ public class UIQueryConfig extends UIForm {
       hasComment = preference.getValue(Utils.CB_VIEW_COMMENT, "") ;
       detailTemp = preference.getValue(Utils.CB_BOX_TEMPLATE, "") ;
       hasVote = preference.getValue(Utils.CB_VIEW_VOTE, "") ;
+      template = preference.getValue(Utils.CB_TEMPLATE, "") ;
+      
       templateField.setOptions(getQueryTemplate(repository)) ;
+      templateField.setValue(template) ;
       numbPerPageField.setValue(itemPerPage) ;
       UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
       detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository)) ;
@@ -194,6 +189,8 @@ public class UIQueryConfig extends UIForm {
       queryLangField.setOptions(getQueryLang()) ;
       queryLangField.setValue(queryLang) ;
       queryTypeField.setOptions(getQueryType()) ;
+      queryTypeField.setValue(queryType) ;
+      queryStoreField.setValue(queryStoreName) ;
       onchangeAction(queryStatusField.getValue(), queryTypeField.getValue(), queryLangField.getValue(),
           queryStoreName, queryStatement) ;
     }
@@ -237,6 +234,7 @@ public class UIQueryConfig extends UIForm {
     queryField.setRendered(isNewquery) ;
   }
 
+  @SuppressWarnings("unchecked")
   private List<SelectItemOption<String>> getQueryTemplate(String repository) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> querylTemplates = getApplicationComponent(ManageViewService.class)
@@ -244,6 +242,7 @@ public class UIQueryConfig extends UIForm {
     for(Node node: querylTemplates){
       options.add(new SelectItemOption<String>(node.getName(),node.getName())) ;
     }
+    Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
     return options ;
   }
 
@@ -273,6 +272,7 @@ public class UIQueryConfig extends UIForm {
     return options ;
   }
 
+  @SuppressWarnings("unchecked")
   private List<SelectItemOption<String>> getQueryStore(String queryType, String queryLanguage) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     String repository = getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ; 
@@ -296,6 +296,7 @@ public class UIQueryConfig extends UIForm {
     if(options.isEmpty()) {
       options.add(new SelectItemOption<String>(EMPTYQUERY, EMPTYQUERY)) ;
     }
+    Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
     return options ;
   }
 
@@ -320,8 +321,7 @@ public class UIQueryConfig extends UIForm {
       String queryLang = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYLANG).getValue() ;
       String query = uiForm.getUIFormTextAreaInput(UINewConfigForm.FIELD_QUERY).getValue() ;
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
-//      String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
-      String itemPerPage = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
+      String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
       String boxTemplate = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue();
       UIFormSelectBox queryValueField = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_QUERYSTORE) ;      
       String  queryPath = "" ;
@@ -370,6 +370,12 @@ public class UIQueryConfig extends UIForm {
       try{
         Integer.parseInt(itemPerPage) ;
       } catch(Exception e){
+        app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-value", null,
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+        return ;
+      }
+      if(Integer.parseInt(itemPerPage) == 0) {
         app.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-value", null,
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;

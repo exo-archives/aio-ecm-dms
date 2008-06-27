@@ -22,30 +22,32 @@ import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 /**
- * Created by The eXo Platform SAS
- * Author : Hoa Pham	
- *          hoa.pham@exoplatform.com
- * Jul 26, 2007  
+ * Created by The eXo Platform SAS Author : Hoa Pham hoa.pham@exoplatform.com
+ * Jul 26, 2007
  */
 public class SessionsUtils {
 
   public static boolean isAnonim() {
-    String userId = Util.getPortalRequestContext().getRemoteUser() ;
-    if(userId == null) return true ;   
-    return false ;
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    if (userId == null)
+      return true;
+    return false;
   }
-  
-  public static SessionProvider getSystemProvider() {  
-	return SessionProvider.createSystemProvider();  
-  }    
 
-  public static SessionProvider getSessionProvider() {    
-    SessionProviderService service = (SessionProviderService)PortalContainer.getComponent(SessionProviderService.class) ;
-    return service.getSessionProvider(null) ; 
+  public static SessionProvider getSystemProvider() {
+    SessionProviderService service = (SessionProviderService) PortalContainer
+    .getComponent(SessionProviderService.class);
+    return service.getSystemSessionProvider(null) ;   
   }
-	            
+
+  public static SessionProvider getSessionProvider() {
+    SessionProviderService service = (SessionProviderService) PortalContainer
+        .getComponent(SessionProviderService.class);
+    return service.getSessionProvider(null);
+  }
+
   public static SessionProvider getAnonimProvider() {
     return SessionProvider.createAnonimProvider();
-  } 
+  }
 
 }

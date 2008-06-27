@@ -103,9 +103,10 @@ public class UIDriveList extends UIComponentDecorator {
             InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
             dresource.setDownloadName(node.getName()) ;
             drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
-            session.logout() ;
           } catch(PathNotFoundException pnf) {
             drive.setIcon("") ;
+          } finally {
+            if(session != null) session.logout() ;
           }
         }
         if(isExistWorspace(repository, drive)) driveList.add(drive) ;

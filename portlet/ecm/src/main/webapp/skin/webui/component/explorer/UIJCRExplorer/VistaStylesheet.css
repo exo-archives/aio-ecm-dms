@@ -9,8 +9,14 @@
 /*############################## -- Begin UIJCRExplorer -- ##############################*/
 .UIJCRExplorerPortlet .UIJCRExplorer {
   background: white;
-  *width: 99.7%;
-  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UITabPane {
+	padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UITabPane {
+	height: auto;
 }
 
 .UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle {
@@ -48,6 +54,26 @@
 
 .UIJCRExplorerPortlet .Execute16x16Icon {
 	margin-top: 3px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea {
+	width: 100%;
+} 
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIResizableBlock {
+	width: 97%;
+}
+
+.UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator {
+	width: 90%;
+}
+
+.UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator .PageIteratorContainer {
+	float: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIContextMenuContainer {
+	width: 140px;
 }
 
 /*############################## -- End UIJCRExplorer -- ##############################*/
@@ -332,11 +358,6 @@
 /*############################## -- END UIDocumentInfo -- ##############################*/
 
 /*############################## -- BEGIN UIFolderForm -- ##############################*/
-.UIJCRExplorerPortlet .ActionContainer {
-	 width: auto;
-	 margin: auto;
-}
-
 .UIJCRExplorerPortlet .UIGrid .ActionContainer a {
 	 width: 24px; height: 24px;
 }
@@ -358,31 +379,19 @@
  	padding: 13px 0px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm .UIFormWithTitle {
+	padding: 10px;
+	margin: 10px auto;
+}
+
 .UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
+	margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane .UIFormWithTitle {
-	width: auto;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
-  padding-bottom: 3px; 
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle .UIFormGrid {
-	margin: 10px auto;	
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .TabPaneContent {
-  margin: 5px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormGrid td.FieldComponent{
-	padding: 4px 0px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .HorizontalLayout .FieldContainer .MultiValueContainer {
-  margin-left: 198px;
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane {
+	width: 95%;
+	margin: auto;
+	border: 1px solid #8D919D;
 }
 
 /*===========================UIUploadForm====================*/
@@ -497,11 +506,6 @@
 
 /*================================UIActionContainer=================================*/
 
-.UIJCRExplorerPortlet .UIActionContainer .UIActionTypeForm {
-  padding-bottom: 8px;
-  border: solid 1px #bec1c7;
-}
-
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
 	float: none;
 	margin-left: 5px;
@@ -609,15 +613,6 @@
 	border: none;
 }
 
-.UIJCRExplorer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer .Icon16x16{
-	float: left;
-	margin: 4px 3px 0px 3px;
-}
-
-.UIJCRExplorerPortlet .UIPermissionInfo .ActionContainer {
-	width: 60px;
-}
-
 /*================================UINodeTypeInfo=================================*/
 
 .UIJCRExplorerPortlet .UINodeTypeInfo {
@@ -675,7 +670,7 @@
 	width: 70px;
 }
 
-.UIJCRExplorer .UIJCRBrowser .UIFormWithTitle{
+.UIJCRExplorer .UIJCRBrowser .UIFormWithTitle {
 	padding: 3px;
 }
 
@@ -702,12 +697,6 @@
 .UIJCRExplorer .UIRelationManager {
 	width: 95%;
 	margin: auto;
-}
-
-/*=================================UILabelForm==============================*/
-
-.UIJCRExplorerPortlet .WorkingAreaWithHelp {
-  margin: 8px;
 }
 
 /*====================================UISavedQuery==================================*/

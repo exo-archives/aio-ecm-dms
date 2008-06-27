@@ -579,6 +579,8 @@ public class UIWorkingArea extends UIContainer {
       Node node = null;
       try {
         node = (Node)session.getItem(nodePath);
+        String lockToken = Utils.getLockToken(node);
+        if(lockToken != null) session.addLockToken(lockToken);
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
             null,ApplicationMessage.WARNING)) ;
@@ -604,6 +606,10 @@ public class UIWorkingArea extends UIContainer {
         return ;
       }      
       Node parentNode = node.getParent() ;
+      if(parentNode.isLocked()) {
+        String lockToken1 = Utils.getLockToken(parentNode);
+        session.addLockToken(lockToken1) ;
+      }
       try {
         if(node.isNodeType(Utils.RMA_RECORD)) uicomp.removeMixins(node) ;
         node.remove() ;
@@ -647,6 +653,13 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
         return ;        
+      } catch(LockException le) {
+        Object[] arg = { nodePath } ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        uiExplorer.updateAjax(event) ;
+        return ;
       } catch(Exception e) {  
         e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e) ;

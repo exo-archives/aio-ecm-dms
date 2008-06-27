@@ -192,14 +192,6 @@
 	padding-left: 25px;
 }
 
-.UIJCRExplorerPortlet .UICategoriesAddedList .OverflowContainer {
-  width: 30px;
-}
-
-.UIJCRExplorerPortlet .UIRelationsAddedList .OverflowContainer {
-  width: 30px;
-}
-
 /*############################## -- UIActionManager   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
@@ -212,7 +204,7 @@
   width: 160px;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .FileNameLabel{
+.UIJCRExplorerPortlet .UIPopupWindow .FieldContainer .SelectFileFrame .FileNameLabel {
   padding: 0px;
   float: left;
 }
@@ -288,11 +280,11 @@
   padding: 10px 0px;
 }
 	
-.UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
+.UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer {  
   padding-bottom: 5px;
 }
 	
-.UIJCRExplorerPortlet .UIDiff .FileContent .TopTitle{  
+.UIJCRExplorerPortlet .UIDiff .FileContent .TopTitle {  
   height: 21px; line-height: 21px;
   font-family: Verdana;
   color: #1e1e1e; font-weight: bold; 
@@ -318,24 +310,24 @@
   margin:0px 10px;
 }
 	
-.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft label{		
+.UIJCRExplorerPortlet .UIDiff .FileContent .ContentDetailLeft label {		
 	font-family: Verdana;
   color: #058ee6; font-weight: bold; 
   font-size: 11px;	
 } 
 
-.UIJCRExplorerPortlet .UIDiff .FileContent .VersionInfo{
+.UIJCRExplorerPortlet .UIDiff .FileContent .VersionInfo {
 	border: 1px dotted #e1e1e1; 	  
   margin: 2px;
   padding: 3px 2px;
 }	
 
-.UIJCRExplorerPortlet .UIDiff .NavigationContainer .WorkContainerDiff{
+.UIJCRExplorerPortlet .UIDiff .NavigationContainer .WorkContainerDiff {
 	border: solid 2px white;
 	padding: 4px 0px 10px 7px;
 }	
 
-.UIJCRExplorerPortlet .UIDiff .NavigationContainer .ContentEmpty{
+.UIJCRExplorerPortlet .UIDiff .NavigationContainer .ContentEmpty {
 	border: solid 1px #cdcdcd;
 	color: #ef5604;
 	text-align: center;
@@ -380,11 +372,6 @@
 .UIJCRExplorerPortlet .UISearchContainer .UITabPane .WorkingAreaWithHelp {
 	width: 99%;
 	margin: auto;
-}
-
-.UIJCRExplorerPortlet .UISearchContainer .UIGrid .ActionContainer .OverflowContainer {
-	width:50px;
-	margin: auto ;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UIFormWithTitle .HorizontalLayout {
@@ -439,7 +426,7 @@
 	float: left;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .InforField .DeleteIconInfo{
+.UIJCRExplorerPortlet .UISimpleSearch .InforField .DeleteIconInfo {
 	float: left;
 }
 

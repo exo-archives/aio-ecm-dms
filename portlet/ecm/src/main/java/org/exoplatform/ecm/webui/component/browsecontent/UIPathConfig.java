@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
@@ -96,8 +97,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLETOOLBAR, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECOMMENT, null, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEVOTE, null, null)) ;
-//    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null).
-    addChild(new UIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE, null, itemPerPages())) ;
+    addChild(new UIFormStringInput(UINewConfigForm.FIELD_ITEMPERPAGE, null, null)) ;
     addChild(new UIFormSelectBox(UINewConfigForm.FIELD_DETAILBOXTEMP, null, Options)) ;
     setActions(UINewConfigForm.DEFAULT_ACTION) ;
   }
@@ -105,18 +105,6 @@ public class UIPathConfig extends UIForm implements UISelector{
   public List<SelectItemOption<String>> getWorkSpaceOption() throws Exception {
     UIConfigTabPane uiTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     return uiTabPane.getWorkSpaceOption() ;
-  }
-  
-  private List<SelectItemOption<String>> itemPerPages() {
-    List<SelectItemOption<String>> itemPerPages = new ArrayList<SelectItemOption<String>>() ;
-    itemPerPages.add(new SelectItemOption<String>("5", "5")) ;
-    itemPerPages.add(new SelectItemOption<String>("10", "10")) ;
-    itemPerPages.add(new SelectItemOption<String>("15", "15")) ;
-    itemPerPages.add(new SelectItemOption<String>("20", "20")) ;
-    itemPerPages.add(new SelectItemOption<String>("30", "30")) ;
-    itemPerPages.add(new SelectItemOption<String>("40", "40")) ;
-    itemPerPages.add(new SelectItemOption<String>("50", "50")) ;
-    return itemPerPages ;
   }
   
   public PortletPreferences getPortletPreferences() {    
@@ -186,8 +174,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
     categoryPathField.setEditable(false) ;
     UIFormSelectBox templateField = getChildById(UINewConfigForm.FIELD_TEMPLATE) ;
-//    UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
-    UIFormSelectBox numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
+    UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE) ;
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP) ;
     UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     UIFormCheckBoxInput enableToolBarField = getChildById(UINewConfigForm.FIELD_ENABLETOOLBAR)  ;
@@ -256,18 +243,20 @@ public class UIPathConfig extends UIForm implements UISelector{
     workSpaceField.setEnable(isEdit_) ;
   }
 
+  @SuppressWarnings("unchecked")
   public List<SelectItemOption<String>> getTemplateOption(String repository) throws Exception {
-    List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     ManageViewService viewService = 
       (ManageViewService)PortalContainer.getComponent(ManageViewService.class) ;
     List<Node> scriptTemplates = 
       viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repository, SessionsUtils.getSystemProvider()) ;
     for(Node template:scriptTemplates) {
-      Options.add(new SelectItemOption<String>(template.getName(),template.getName())) ;
+      options.add(new SelectItemOption<String>(template.getName(),template.getName())) ;
     }
-    return Options ;
+    Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
+    return options ;
   }
-
+  
   @SuppressWarnings("unused")
   public void updateSelect(String selectField, String value) {
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
@@ -317,8 +306,13 @@ public class UIPathConfig extends UIForm implements UISelector{
         return ;
       }
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
-//      String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
-      String itemPerPage = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
+      String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
+      if(Integer.parseInt(itemPerPage) == 0) {
+        uiApp.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-value", null,
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }      
       if(Integer.parseInt(itemPerPage) <= 0) {
         UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-value", null)) ;
@@ -423,7 +417,6 @@ public class UIPathConfig extends UIForm implements UISelector{
       detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repoName)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
     }
-
   }
   
   public static class ChangeWorkspaceActionListener extends EventListener<UIPathConfig>{

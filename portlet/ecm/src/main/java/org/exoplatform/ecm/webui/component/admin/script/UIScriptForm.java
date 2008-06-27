@@ -70,6 +70,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
   final static public String FIELD_SCRIPT_CONTENT = "scriptContent" ;
   final static public String FIELD_SCRIPT_NAME = "scriptName" ;
   final static public String FIELD_ENABLE_VERSION = "enableVersion" ;
+  final static public String SCRIPT_FILE_TYPE = ".groovy" ;
 
   private List<String> listVersion = new ArrayList<String>() ;
   private boolean isAddNew_ = true ; 
@@ -192,6 +193,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
           return ;
         }
       }
+      if(!name.contains(SCRIPT_FILE_TYPE)) name = name + SCRIPT_FILE_TYPE ;
       UIScriptList curentList = null ;
       UIScriptManager uiManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
       List<String> listScript = new ArrayList<String>() ;

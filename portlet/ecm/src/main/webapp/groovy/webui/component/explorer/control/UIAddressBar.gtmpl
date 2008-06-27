@@ -17,15 +17,15 @@
 <div class="UIAddressBar" id="UIAddressBarControl">
   <div class="BlockRight">
     <a href ="<%=uicomponent.event("ChangeNode")%>" id="UIAddressBarAction">
-  	  <div class="GoButton Style1NextArrow16x16Icon" title="Go"><span></span></div>
+  	  <div class="GoButton Style1NextArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.exeButton")%>"><span></span></div>
     </a>	  
-	  <div class="GoText">Go</div>
+	  <div class="GoText"><%=_ctx.appRes("UIAddressBar.label.exeButton")%></div>
 	  <div class="Separator AddressBarSeparator"><span></span></div>
   </div>
   <div class="BlockLeft">
 	  <div class="Separator AddressBarSeparator"><span></span></div>    
-	  <div class="BackButton Style1BackArrow24x24Icon" onclick="<%=uicomponent.event("Back")%>"  title="Back to previous node"><span></span></div>
-	  <div class="AddressLabel">Address :</div>
+	  <div class="BackButton Style1BackArrow24x24Icon" onclick="<%=uicomponent.event("Back")%>"  title="<%=_ctx.appRes("UIAddressBar.title.backButton")%>"><span></span></div>
+	  <div class="AddressLabel"><%=_ctx.appRes("UIAddressBar.label.address")%></div>
 	</div>
 	<% uiform.begin() %>
 	<div class="BlockMiddle UIPopupSelector">
@@ -40,7 +40,7 @@
 	  </div>
 	  <div class="HardDisk"><span></span></div>
 	  <div class="DropDownButtonBox" onmousedown="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2,1)">
-	    <div class="DropDownButton Style1DownArrow16x16Icon" title="Show history address"><span></span></div>
+	    <div class="DropDownButton Style1DownArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.showHistory")%>"><span></span></div>
 	  </div>
 	  <div class="InputContainer">
       <% uicomponent.renderChildren(); %>

@@ -73,6 +73,8 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   private boolean isEditInList_ = false ;
   private String rootPath_ = null;
   
+  private static final String EXO_ACTIONS = "exo:actions".intern();
+  
   public UIActionForm() throws Exception {setActions(new String[]{"Save","Back"}) ;}
   
   public void createNewAction(Node parentNode, String actionType, boolean isAddNew) throws Exception {
@@ -98,6 +100,10 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       UIActionContainer uiActionContainer = getParent() ;
       uiActionContainer.removeChildById("PopupComponent") ;
     }
+  }
+  
+  public String getCurrentPath() throws Exception { 
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentPath();
   }
   
   @SuppressWarnings("unused")
@@ -127,7 +133,6 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   private void setPath(String scriptPath) {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     if(scriptPath.indexOf(":") < 0) {
-//      scriptPath = uiExplorer.getSession().getWorkspace().getName() + ":" + scriptPath ;
       scriptPath = uiExplorer.getCurrentWorkspace() + ":" + scriptPath ;
     }
     scriptPath_ = scriptPath ; 
@@ -197,25 +202,29 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         rootProp.setValue(((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue());
       }
       String actionName = (String)((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue() ;
-      if(getParentNode().hasNode(actionName)) { 
-        Object[] args = {actionName} ;
-        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return null;
+      Node parentNode = getParentNode() ;
+      if(parentNode.hasNode(EXO_ACTIONS)) {
+        if(parentNode.getNode(EXO_ACTIONS).hasNode(actionName)) { 
+          Object[] args = {actionName} ;
+          uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return null;
+        }
       }
-      if(getParentNode().isNew()) {
-        String[] args = {getParentNode().getPath()} ;
+      if(parentNode.isNew()) {
+        String[] args = {parentNode.getPath()} ;
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add-action",args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return null;
       }
-      actionServiceContainer.addAction(getParentNode(), repository, nodeTypeName_, sortedInputs);
+      actionServiceContainer.addAction(parentNode, repository, nodeTypeName_, sortedInputs);
       setIsOnchange(false) ;
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
       UIActionManager uiActionManager = getAncestorOfType(UIActionManager.class) ;
       createNewAction(uiExplorer.getCurrentNode(), nodeTypeName_, true) ;
       UIActionList uiActionList = uiActionManager.findFirstComponentOfType(UIActionList.class) ;  
-      uiActionList.updateGrid(getParentNode()) ;
+      uiActionList.updateGrid(parentNode) ;
       uiActionManager.setRenderedChild(UIActionListContainer.class) ;
       reset() ;
       isEditInList_ = false ;
@@ -262,9 +271,10 @@ public class UIActionForm extends DialogFormFields implements UISelector {
         ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
         String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
         if(wsFieldName != null && wsFieldName.length() > 0) {
-          String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
-          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;      
+          String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;          
+          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;           
         }
+        ((UIJCRBrowser)uiComp).setShowRootPathSelect(true);
         if(rootPath != null) ((UIJCRBrowser)uiComp).setRootPath(rootPath) ;
       }
       if(uiForm.isEditInList_) ((UIActionListContainer) uiContainer).initPopup(uiComp) ;

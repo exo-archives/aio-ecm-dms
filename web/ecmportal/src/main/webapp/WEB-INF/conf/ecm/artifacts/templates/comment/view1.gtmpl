@@ -70,18 +70,18 @@
     }
     
     .Comments .CommentBox {
-      width: 99%;
       margin-right: auto;
+			height: 100%;
     }
     
     .Comments .CommentBox .CommentBoxTopLeft {
-    	padding-left:27px;
-    	height:12px ;    	
-      background: url('/ecm/skin/images/article/CommentBoxTL27x12.gif') no-repeat left top;
+			height: 12px;
+    	padding-left:27px;  	
+      background: url('/ecm/skin/images/article/CommentBoxTL27x12.gif') no-repeat left bottom;
     }
     
     .Comments .CommentBox .CommentBoxTopRight {
-      height: 12px;
+			height: 12px;
       padding-right: 3px;
       background: url('/ecm/skin/images/article/CommentBoxTR3x3.gif') no-repeat right bottom;
     }
@@ -104,18 +104,18 @@
     .Comments .CommentBox .CommentBoxCenterBG {
     	padding: 8px; 
     	background: white;
-    	height: auto ;     	         	    	
+    	height: 100% ;     	         	    	
     }
     
     .Comments .CommentBox .CommentBoxBottomLeft {
-      height: 3px;
-      padding-left: 3px;
+			height: 3px;
+			padding-left: 3px;
       background: url('/ecm/skin/images/article/CommentBoxBL3x3.gif') no-repeat left top ;
     }
     
     .Comments .CommentBox .CommentBoxBottomRight {
-    	padding-right: 3px;
-    	height: 3px;    	
+			height: 3px;
+    	padding-right: 3px;	
       background: url('/ecm/skin/images/article/CommentBoxBR3x3.gif') no-repeat right top;
     }
     
@@ -176,7 +176,7 @@
 		  	<div class="CommentBox">  		
 		  		<div class="CommentBoxTopLeft">
 		  			<div class="CommentBoxTopRight">
-		  				<div class="CommentBoxTopCenter"><span></span></div>
+		  				<div class="CommentBoxTopCenter"><span style="display:none"></span></div>
 		  			</div>
 		  		</div>
 		  		<div class="CommentBoxMiddleLeft">
@@ -190,7 +190,7 @@
 		  		</div>
 		  		<div class="CommentBoxBottomLeft">
 		  			<div class="CommentBoxBottomRight">
-		  				<div class="CommentBoxBottomCenter"><span></span></div>
+		  				<div class="CommentBoxBottomCenter"><span style="display:none"></span></div>
 		  			</div>
 		  		</div>
 		  	</div>

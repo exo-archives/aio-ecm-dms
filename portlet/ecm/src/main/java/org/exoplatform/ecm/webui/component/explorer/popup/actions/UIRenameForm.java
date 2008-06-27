@@ -31,6 +31,7 @@ import javax.jcr.version.VersionException;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -136,7 +137,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         }
         Session nodeSession = uiRenameForm.renameNode_.getSession() ;
         nodeSession.refresh(true) ;
-        nodeSession.move(srcPath,destPath) ;
+        nodeSession.getWorkspace().move(srcPath,destPath) ;
         String currentPath = uiJCRExplorer.getCurrentPath() ;
         if(srcPath.equals(uiJCRExplorer.getCurrentPath())) {
           uiJCRExplorer.setCurrentPath(destPath) ;
@@ -150,6 +151,9 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
           relationsService.addRelation(addRef, destPath, nodeSession.getWorkspace().getName(),uiJCRExplorer.getRepositoryName()) ;
           addRef.save() ;
         }
+        Node destNode = (Node) nodeSession.getItem(destPath) ;
+        if(destNode.isLocked()) Utils.changeLockToken(uiRenameForm.renameNode_, destNode) ;
+        nodeSession.logout() ;
         if(!uiJCRExplorer.getPreference().isJcrEnable()) uiJCRExplorer.getSession().save() ;
         uiJCRExplorer.updateAjax(event) ;
       } catch(AccessDeniedException ace) {

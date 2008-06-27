@@ -19,14 +19,16 @@
 
 .UIWindow .UIJCRExplorerPortlet {
 	border: none;
-	margin: 0px auto;
-	width: auto;
+	margin: auto;
 }
 
 .UIJCRExplorerPortlet {
 	border: 1px solid #b7b7b7;
-	width: 98%;
-	margin: 10px auto;
+	margin: 5px;
+}
+
+.UIJCRExplorerPortlet .UIFormGrid {
+	width: 100%;
 }
 
 .UIJCRExplorerPortlet .UIPreferencesForm {
@@ -35,3 +37,12 @@
   border: none;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIPageIterator {
+	width: auto;
+	padding-right: 10px;
+}
+
+.UIJCRExplorerPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
+	border: 1px solid #b7b7b7;
+	border-top: none;
+}

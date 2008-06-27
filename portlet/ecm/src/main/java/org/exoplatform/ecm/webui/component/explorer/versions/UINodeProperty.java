@@ -31,6 +31,7 @@ import javax.jcr.nodetype.PropertyDefinition;
 import javax.jcr.version.Version;
 
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -151,7 +152,7 @@ public class UINodeProperty extends UIForm{
     ManageableRepository manageableRepository = 
       getApplicationComponent(RepositoryService.class).getRepository(repository) ;
     String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
-    Session session = manageableRepository.getSystemSession(systemWorksapce) ;
+    Session session = SessionsUtils.getSystemProvider().getSession(systemWorksapce, manageableRepository) ;
     return session ;
   }
 }

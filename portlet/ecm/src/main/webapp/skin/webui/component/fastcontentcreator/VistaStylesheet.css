@@ -14,14 +14,18 @@
 
 .UIWindow .UIFastContentCreatorPortlet {
 	border: none;
-	margin: 0px;
+	margin: auto;
 	border: none;
 }
 
 .UIFastContentCreatorPortlet {
 	background: white;
 	border: 1px solid #b7b7b7;
-	margin: 10px;
+	margin: 5px;
+}
+
+.UIFastContentCreatorPortlet .UIFormGrid {
+	width: 100%;
 }
 
 .UIFastContentCreatorPortlet .MsgLable {
@@ -37,14 +41,6 @@
 
 .UIFastContentCreatorPortlet .UITabPane {
   padding: 10px 0px 20px 0px;
-}
-
-.UIFastContentCreatorPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer  {
-  border: none;
-}
-
-.UIFastContentCreatorPortlet .TabPaneContent .UITabContentContainer {
-  border: none;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle {

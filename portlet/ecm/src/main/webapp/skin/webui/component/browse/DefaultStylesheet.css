@@ -8,26 +8,24 @@
 @import url("UIEventViewer/DefaultStylesheet.css");
 
 
-.UIWindow .UIBrowseContentPortlet .ContentHolder {
-	padding: 5px 0px;
-	width: 98.5%;
-	/*
-	minh.js.exo
-	*/
-	min-width: 400px;
-}
-
 .UIWindow .UIBrowseContentPortlet {
 	border: 1px solid white;
-	margin: 0px auto;
-	padding: 0px;
+	margin: 0px;
+	min-width: 400px;
 }
 
 .UIBrowseContentPortlet {
 	background: white;
 	border: 1px solid #b7b7b7;
-	margin: 10px auto;
 	overflow: auto;
+	margin: 5px;
+}
+
+.UIBrowseContentPortlet .UIFormGrid {
+	width: 100%;
+}
+
+.UIBrowseContentPortlet .ContentHolder {
 	padding: 5px;
 }
 
@@ -51,7 +49,7 @@
 	padding: 1px;
 }
 
-.UIBrowseContentPortlet .TagmapHolder .TagmapTitle{
+.UIBrowseContentPortlet .TagmapHolder .TagmapTitle {
 	height: 19px; line-height: 19px;
 	margin: 0px;
 	background: url('DefaultSkin/background/TagmapTitleBG1x19.gif') repeat-x;
@@ -74,7 +72,7 @@
 	line-height: 22px;
 }
 
-.UIBrowseContentPortlet .TagmapHolder .TagmapContent a{
+.UIBrowseContentPortlet .TagmapHolder .TagmapContent a {
 	color: red;
 	padding: 3px 7px 3px 0px;
 }
@@ -84,7 +82,7 @@
 	padding: 3px 7px 3px 0px;
 }
 
-.UIBrowseContentPortlet .TagmapHolder .Icon{
+.UIBrowseContentPortlet .TagmapHolder .Icon {
 	float: left;
 	width: 19px; height: 16px; 
 	margin: 2px 5px 0px 5px;
@@ -111,7 +109,7 @@
 	padding: 0px;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16{
+.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16 {
 	float:none;
 	margin-left: 5px;
 }
@@ -136,7 +134,6 @@
 .UIBrowseContentPortlet .UIBrowseContainer {
 	padding: 0px;
 	background: white;
-	_width: 99%;
   margin: auto;
 }
 
@@ -245,12 +242,12 @@
 	margin: 5px;
 }
 
-.UIBrowseContainer .DocNodeIcon{
+.UIBrowseContainer .DocNodeIcon {
 	float: left;
 	margin: 2px 3px 0px 10px;
 }
 
-.UIBrowseContainer .UIDocumentList .DocumentLabel{
+.UIBrowseContainer .UIDocumentList .DocumentLabel {
 	vertical-align: middle;
 	line-height: 16px;
 }
@@ -283,20 +280,16 @@
 }
 /*############################## -- FIX BUG POPUP	-- ##############################*/
 .UIBrowseContentPortlet .UIJCRBrowser {
-	padding: 10px 0px 0px 10px;
+	padding: 10px;
 }
 
 .UIBrowseContentPortlet .Explorer {
-	margin-right: 10px;
 	float: left ;
 	width: 220px ;
 }
 
-UIBrowseContentPortlet .Explorer {
-	margin-right: 10px;
-	float: left ;
-	width: 230px ;
-	overflow: hidden;
+.UIBrowseContentPortlet .UIJCRBrowser table {
+	*width: 94%;
 }
 
 .UIBrowseContentPortlet .Explorer .InnerExplorerTree {
@@ -304,8 +297,8 @@ UIBrowseContentPortlet .Explorer {
 	padding: 10px;
 }
 
-.UIBrowseContentPortlet .UITreeList .UIGrid {
-	width: 310px;
+.UIBrowseContentPortlet .UITreeList {
+	margin-left: 230px;
 }
 
 /*############################## -- FIX BUG POPUP -- ##############################*/
@@ -314,25 +307,29 @@ UIBrowseContentPortlet .Explorer {
 	padding: 5px;
 }
 
-.UIBrowseContentPortlet .UISearchController .SearchResult{
+.UIBrowseContentPortlet .UISearchController .SearchResult {
 	border: solid 1px #b7b7b7;
 	padding: 5px;
 }
 
-.UIBrowseContentPortlet .UISearchController .UIPageIterator{
+.UIBrowseContentPortlet .UISearchController .HorizontalLayout .UIForm input {
+  width: auto;
+}
+
+.UIBrowseContentPortlet .UISearchController .HorizontalLayout .UIForm select {
+  width: auto;
+}
+
+.UIBrowseContentPortlet .UISearchController .UIPageIterator {
 	margin-right: 0px;
 }
 
-.UIBrowseContentPortlet .UISearchController .ResultInfo{
+.UIBrowseContentPortlet .UISearchController .ResultInfo {
 	line-height: 26px; vertical-align: middle;
 	font-size: 11px;	
 }
 
-.UIBrowseContentPortlet .UISearchController .UIGrid .ActionContainer{
-	width: 50px;
-}
-
-.UIBrowseContentPortlet .UISearchController .GotoIcon{
+.UIBrowseContentPortlet .UISearchController .GotoIcon {
 	width: 16px ;	height: 16px ;
 	background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
 }
@@ -402,7 +399,7 @@ UIBrowseContentPortlet .Explorer {
 	border-top: none;
 }
 
-.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid td{
+.UIBrowseContentPortlet .UITabPane .WorkKofax .UIGrid td {
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
 }
@@ -413,7 +410,7 @@ UIBrowseContentPortlet .Explorer {
 }
 
 .UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	width: 540px;
+	width: auto;
 	margin: 0px;
 	border: 1px solid #E1E1E1;
 }
@@ -429,11 +426,11 @@ UIBrowseContentPortlet .Explorer {
 	margin: 0px;
 }
 
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel{
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel {
 	width: 100px;
 }
 
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList select{
+.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList select {
 	width: 100px;
 }
 
@@ -744,13 +741,8 @@ UIBrowseContentPortlet .Explorer {
 
 .UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer {
 	height: 100%;
-	border: none;
 }
 
-.UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer .UITabContent {
-  border-top: none;
-}
-	
 .UIBrowseContentPortlet .FileContent .NavigationContainer {	
 	padding-bottom: 0px;
 	border: 1px solid #cbcbcb;
@@ -776,8 +768,6 @@ UIBrowseContentPortlet .Explorer {
 	
 .UIBrowseContentPortlet .FileContent .Content {	
 	white-space: normal;
-	padding: 0px 10px;
-	height: 300px;
  }
 	
 .UIBrowseContentPortlet .FileContent .Content .TextContent {	
@@ -903,4 +893,9 @@ UIBrowseContentPortlet .Explorer {
 
 .UIBrowseContentPortlet .UICBCommentForm .UIFormGrid .FieldLabel {
 	width:140px;
+}
+
+.UIBrowseContentPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
+	border: 1px solid #b7b7b7;
+	border-top: none;
 }

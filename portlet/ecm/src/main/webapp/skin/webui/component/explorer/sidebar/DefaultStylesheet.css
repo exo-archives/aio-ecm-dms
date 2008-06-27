@@ -134,14 +134,16 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .Icon16x16 {
-  float: left;
+  float: none;
+  width: auto;
   cursor: pointer;
-  margin: 0px 5px 0px 1px;
+	padding-left: 22px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
   background: url('DefaultSkin/background/HardDisk.gif') no-repeat center bottom;
   height: 15px;
+  float: left;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode {
@@ -177,19 +179,16 @@
   height: 16px;
 }
 
-.UIJCRExplorerPortlet .UITreeExplorer .Node .NodeLabel {
-	margin-left: 38px;
-}
-
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
-  float: left;
   cursor: pointer;
+  width: auto;
+  padding-left: 19px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .CollapseIcon {
-  float: left;
-  width: 16px; height: 16px;
+  width: auto;
   cursor: pointer;
+  padding-left: 19px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {

@@ -31,7 +31,6 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
@@ -164,7 +163,7 @@ public class UIActionBar extends UIForm {
     UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions) ;
     selectTab.setOnChange("ChangeTab") ;
     addUIFormInput(selectTab) ;
-    addChild(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null).addValidator(ECMNameValidator.class)) ;
+    addChild(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null)) ;
 
     List<SelectItemOption<String>> typeOptions = new ArrayList<SelectItemOption<String>>() ;
     typeOptions.add(new SelectItemOption<String>(FIELD_SQL, Query.SQL)) ;
@@ -918,7 +917,6 @@ public class UIActionBar extends UIForm {
       UIActionBar uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue() ;
-//      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
       //TODO need search on node name
       String queryStatement = null ;
@@ -927,7 +925,7 @@ public class UIActionBar extends UIForm {
       }else {
         queryStatement = StringUtils.replace(SQL_QUERY,"$0",currentNode.getPath()) ;
       }
-      queryStatement = StringUtils.replace(queryStatement,"$1",text);            
+      queryStatement = StringUtils.replace(queryStatement,"$1",text);           
       uiExplorer.removeChildById("ViewSearch") ;
       UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
       getChild(UIDocumentWorkspace.class) ;
@@ -935,14 +933,9 @@ public class UIActionBar extends UIForm {
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       long startTime = System.currentTimeMillis();
       Query query = queryManager.createQuery(queryStatement, Query.SQL);        
-      QueryResult queryResult = query.execute();                  
-//      if(queryResult.getNodes().getSize() ) {
-//        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-found", null)) ;
-//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-//        return ;
-//      }        
-      
+      QueryResult queryResult = query.execute();       
       uiSearchResult.setIsQuickSearch(true) ;
+      uiSearchResult.clearAll() ;
       uiSearchResult.setQueryResults(queryResult) ;            
       uiSearchResult.updateGrid() ;
       long time = System.currentTimeMillis() - startTime;

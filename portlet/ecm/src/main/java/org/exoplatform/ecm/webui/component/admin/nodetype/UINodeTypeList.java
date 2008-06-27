@@ -183,6 +183,7 @@ public class UINodeTypeList extends UIComponentDecorator {
           tab.setActions(null, null) ;
         }
       }
+      session.logout() ;
       uiForm.removeChildTabs(TAB_REMOVE) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }

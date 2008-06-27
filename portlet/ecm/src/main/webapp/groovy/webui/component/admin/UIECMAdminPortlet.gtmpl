@@ -18,7 +18,7 @@
 	      style += 250;
 	  %>
 	      <div style="height: 100%; width: 250px; overflow: auto; float: left;">
-	        <div class="ECMAdminTitleBar">Admin the ECM main functions</div>
+	        <div class="ECMAdminTitleBar"><%=_ctx.appRes("UIRepositoryList.titlebar.label")%></div>
 	        <% 
 	          if(uicomponent.getChild(UIECMAdminControlPanel.class) != null) {
 	            uicomponent.renderChild(UIECMAdminControlPanel.class);

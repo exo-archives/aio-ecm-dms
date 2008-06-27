@@ -10,7 +10,7 @@
 		</div>
 		<div class="ResultInfo">
 			<%=_ctx.appRes(uicomponent.name + ".label.searchTime")%>
-			<%=uicomponent.getResultRecord()%> node ; 
+			<%=uicomponent.getResultRecord()%> <%=_ctx.appRes(uicomponent.name + ".label.nodeName")%> ; 
 			<%=_ctx.appRes(uicomponent.name + ".label.duration")%>
 			 <%=uicomponent.getSearchTime()%> ms
 		</div>

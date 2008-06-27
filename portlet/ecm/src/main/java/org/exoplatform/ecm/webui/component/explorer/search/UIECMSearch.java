@@ -20,7 +20,6 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.UIPageIterator;
 
 /**
  * Created by The eXo Platform SARL
@@ -42,7 +41,7 @@ public class UIECMSearch extends UIContainer implements UIPopupComponent {
     addChild(UIJCRAdvancedSearch.class, null, null).setRendered(false);
     addChild(UISavedQuery.class, null, null).setRendered(false) ;
     UISearchResult uiSearchResult = addChild(UISearchResult.class, null, ADVANCED_RESULT).setRendered(false) ;
-    UIPageIterator uiPageIterator = uiSearchResult.getChild(UIPageIterator.class) ;
+    UIQueryResultPageIterator uiPageIterator = uiSearchResult.getChild(UIQueryResultPageIterator.class) ;
     uiPageIterator.setId("AdvanceSearchIterator") ;
   }
 

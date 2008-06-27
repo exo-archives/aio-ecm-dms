@@ -18,8 +18,12 @@
 .UIECMAdminPortlet {
 	background: white;
 	border: 1px solid #b7b7b7;
-	margin: 10px;
+	margin: 5px;
 	overflow: hidden;
+}
+
+.UIECMAdminPortlet .UIFormGrid {
+	width: 100%;
 }
 
 .UIECMAdminPortlet .UITaxonomyWorkingArea {
@@ -31,7 +35,21 @@
 }
 
 .UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid .Icon16x16 {
-  margin: 0px 9px;
+  margin: 0px 0px 0px 12px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm  {
+	padding: 10px;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .HorizontalLayout  {
+	padding-top: 10px;
+	background: #F7F7F7;
+}
+
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .FormContainer  {
+	width: 500px;
+	margin: auto;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl {
@@ -62,6 +80,10 @@
 	 width: 190px;
 	 float: left;	
 	 height: 34px; 
+}
+
+.UIECMAdminPortlet .UISelect .UIForm .HorizontalLayout {
+	padding: 0px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect .selectbox {
@@ -109,10 +131,6 @@
   _width: 118px;
 }
 
-.UIECMAdminPortlet .UITabPane .WorkingAreaWithHelp .UITabContentContainer .UITabContent  {
-	border: none;
-}
-
 .UIECMAdminPortlet .UIFormInputSet .AddIcon16x16 {
 	margin-left: 5px;
 	float: none;
@@ -122,12 +140,12 @@
 	width: 128px;
 }
 
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid{
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid {
 	width: 95%;
 	margin: 10px auto;
 }
 
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .SelectIcon{
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .SelectIcon {
 	background: url('DefaultSkin/background/SelectPage.gif') no-repeat;
 	width: 16px; 
 	height: 16px;
@@ -175,7 +193,6 @@
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIWizardAction {
 	background: #f9f9f9;
-	border-top: 1px solid #b7b7b7 ;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
@@ -219,40 +236,16 @@
 }
 
 .UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane {
-	background: #f4f4f4;
 	padding: 0px;
-	margin: 0px;
-}
-
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .HorizontalLayout {
-	background: #f4f4f4;
-	padding: 0px;
-	margin: 0px;
-	border: none;
 }
 
 .UIWorkspaceWizardContainer .UIWorkspaceWizard .UITabPane .TabPaneContent {
 	padding: 0px;
 }
 
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .TabPaneContent .UITabContentContainer {
-	background: #f4f4f4;
-	padding: 0px;
-	margin: 0px;
-	border: none;
-}
-
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .UITabContentContainer .UITabContent {
-	background: #f4f4f4;
-	padding: 0px;
-	margin: 0px;
-	border: none;
-}
-
-.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet {
-	padding: 10px 0px;
-	margin: 0px;
-	background: #f4f4f4;
+.UIRepositoryFormContainer .UIWorkspaceWizard .UITabPane .UITabContentContainer {
+	border-left: none;
+	border-right: none;
 }
 
 .UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet .FormContainer {
@@ -365,11 +358,6 @@
   margin: 1px 5px 0px 5px;
 }
 
-.UIECMAdminPortlet .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: solid 1px #939393;
-  border-top: none;
-}
-
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVTabContent {
   margin: 1px 2px;
   border: solid 1px #b2b1b1;
@@ -415,6 +403,12 @@
 }
 
 /*############################## --UIFormWithTitle -- ########################*/
+
+.UIECMAdminPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {
+	border: 1px solid #b7b7b7;
+	border-top: none;
+}
+
 /*############################## -- UIFormInputSet -- ########################*/
 .UIECMAdminPortlet .UIForm .HorizontalLayout .UIFormInputSet {
 	width: 100%;
@@ -491,22 +485,13 @@
 	padding: 0px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer {
-  width: 45px ;
-  margin: auto ;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIGrid .ActionContainer .OverflowContainer{
-	width: 53px;
-}
- 
 .UIECMAdminPortlet .UIDriveManager .UIFormTabPane {
   width: 95% ;
   margin: auto;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
-  padding: 10px 0px 10px 7px;
+  padding: 10px 7px;
 }
 
 .UIECMAdminPortlet .UIDriveList {
@@ -523,7 +508,7 @@
   margin: auto;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIcon16x16{
+.UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIcon16x16 {
   float: none;
   margin-left: 5px;
 }
@@ -535,14 +520,6 @@
 
 .UIECMAdminPortlet .UIViewManager .UIPopupWindow .WorkingArea {
 	padding: 0px 10px;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIGrid .ActionContainer .OverflowContainer {
-  width: 75px;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIGrid .ActionContainer {
-  width: 70px;
 }
 
 .UIECMAdminPortlet .UIViewContainer .UIViewList {
@@ -571,10 +548,6 @@
   margin: auto;
 }
 
-.UIECMAdminPortlet .ECMTemplate .UIGrid .ActionContainer {
-	width: 60px;
-}
-
 .UIECMAdminPortlet .ECMTemplate .ECMTempForm {
   width: 95%;
   margin: 10px auto;
@@ -583,6 +556,7 @@
 .UIECMAdminPortlet .ECMTemplate .ECMTempForm .HorizontalLayout {
   background: #f7f7f7;
   padding-top: 10px;
+  border: 1px solid #b7b7b7;
 }
 
 .ECMTempForm .HorizontalLayout .textarea {
@@ -591,10 +565,6 @@
 }
 
 /*############################## -- CBTemplate -- ########################*/
-
-.UIECMAdminPortlet .CBTemplate .UIGrid .ActionContainer {
-  width: 50px;
-}
 
 .UIECMAdminPortlet .CBTemplate .UICBTemplateList {
   width: 85px;
@@ -609,6 +579,7 @@
 .UIECMAdminPortlet .CBTemplate .CBTempForm .HorizontalLayout {
   background: #f7f7f7;
   padding-top: 10px;
+  border: 1px solid #b7b7b7;
 }
 
 .CBTempForm .HorizontalLayout .textarea {
@@ -662,6 +633,7 @@
 .UIECMScripts .ECMScriptForm .HorizontalLayout {
   padding-top: 10px;
   background: #f7f7f7;
+  border: 1px solid #b7b7b7;
 }
 
 .UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm  {
@@ -677,10 +649,6 @@
 	height: 20px;
 }
 
-.UIECMAdminPortlet .UIECMScripts .UIGrid .ActionContainer .OverflowContainer {
-  width: 75px;
-}
-
 .UIECMScripts .HorizontalLayout .FormContainer .FieldComponent textarea {
   height: 350px;
   width: 90%;
@@ -693,10 +661,6 @@
   padding: 2px 0px 0px 0px;
 }
 
-.UIECMAdminPortlet .UICBScripts .UIGrid .ActionContainer .OverflowContainer {
-  width: 75px;
-}
-
 .UIECMAdminPortlet .UICBScripts .CBScriptForm {
   width: 95%;
   margin: 10px auto;
@@ -705,6 +669,7 @@
 .UICBScripts .CBScriptForm .HorizontalLayout {
   padding-top: 10px;
   background: #f7f7f7;
+  border: 1px solid #b7b7b7;
 }
 
 .UICBScripts .HorizontalLayout .FormContainer .FieldComponent .textarea {
@@ -758,17 +723,13 @@
 /*############################## -- MultiField  -- ########################*/
 
 .UIECMAdminPortlet .Explorer {
-  margin-bottom: 10px;
-  margin-right: 10px;
   float: left ;
   width: 230px ;
+  background: #f3f3f3;
 }
 
-.UIECMAdminPortlet .Explorer .ExplorerTree {
-  margin-top: 1px;
-  border: solid 1px #c6c6c9;
-  background: #f3f3f3;
-  padding: 1px;
+.UIECMAdminPortlet .UIJCRBrowser .UITreeList {
+  margin-left: 240px;
 }
 
 .UIECMAdminPortlet .Explorer .InnerExplorerTree {
@@ -776,41 +737,24 @@
   padding: 10px;
 }
 
-.UIECMAdminPortlet .UITreeList .UIGrid {
-  width: 300px;
-}
-
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList {
-	padding-bottom: 8px ;
+	border: solid 1px #b7b7b7;
+	background: #EFEFEF;
+	padding: 5px 0px;
+	margin: 10px 0px;
 }
 
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	border: solid 1px #e1e1e1;
-	margin: 0px;
-	width: 540px;
+	margin: 0px auto;
+	width: auto;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
-	padding: 1px;
-	border: solid 1px #B1B0B0;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
-	background: white;
-	padding: 5px 0px;
-	margin: 0px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
-	background: #efefef;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormGrid select{
+.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel {
 	width: 100px;
 }
 
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel{
-	width: 100px;
+.UIECMAdminPortlet .UIJCRBrowser table {
+	*width: 94%;
 }
 
 /*############################## --Begin UITemplatesManager --##############################*/
@@ -818,10 +762,6 @@
 .UIECMAdminPortlet .UITemplatesManager   {
  	padding: 2px 0px 0px 0px;
  	width: 97%;
-}
-
-.UIECMAdminPortlet .UITemplatesManager .UIGrid .ActionContainer {
-  width: 50px ;
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UITemplateEditForm .FormContainer {
