@@ -252,7 +252,7 @@ public class CmsServiceImpl implements CmsService {
       } else {
         nodeDef = (NodeDefinition) obj;
       } 
-      if(nodeDef.isAutoCreated() || nodeDef.isProtected() || !(obj instanceof NodeDefinition)) {
+      if(nodeDef.isAutoCreated() || nodeDef.isProtected()) {
         continue ;
       }            
       if(((ExtendedItemDefinition)nodeDef).isResidualSet()) {
