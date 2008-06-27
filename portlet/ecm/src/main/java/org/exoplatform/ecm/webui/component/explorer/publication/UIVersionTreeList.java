@@ -59,7 +59,8 @@ public class UIVersionTreeList extends UIContainer {
   public void initVersion(Node currentNode) throws Exception {
     node_ = currentNode;   
     rootVersion_ = new VersionNode(node_.getVersionHistory().getRootVersion());
-    curentVersion_ = rootVersion_;
+    curentVersion_ = new VersionNode(node_.getBaseVersion());
+    
     
   }
   
@@ -81,7 +82,7 @@ public class UIVersionTreeList extends UIContainer {
       for(int i=0; i < arrPublicationState.length; i++) {
         if(arrPublicationState[0].equals(versionNode.getVersion().getUUID())) {
           if(arrPublicationState[1].equals(StaticAndDirectPublicationPlugin.PUBLISHED)) return true ;
-          return true ;
+          
         }
       }
     }
@@ -96,7 +97,9 @@ public class UIVersionTreeList extends UIContainer {
       uiVersionTreeList.isSelectedBaseVersion_ = false ;
       UIPublicationContainer uiPublicationContainer = uiVersionTreeList.getParent() ;
       UIPublicationForm uiForm = uiPublicationContainer.getChild(UIPublicationForm.class) ;
+      uiForm.setVersionNode(uiVersionTreeList.curentVersion_);
       uiForm.updateForm(uiVersionTreeList.curentVersion_) ;
+      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPublicationContainer.getParent()) ;
     }
   }

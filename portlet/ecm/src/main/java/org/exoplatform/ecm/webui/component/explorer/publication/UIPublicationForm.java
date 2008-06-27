@@ -103,15 +103,16 @@ public class UIPublicationForm extends UIForm {
         }
       }
     }
-    return "";
+    return StaticAndDirectPublicationPlugin.DEFAULT_STATE;
   }
   
   public void initForm(Node currentNode) throws Exception {
     currentNode_ = currentNode;   
     rootVersion_ = new VersionNode(currentNode_.getVersionHistory().getRootVersion());
-    curentVersion_ = rootVersion_;
+    curentVersion_ = new VersionNode(currentNode_.getBaseVersion());
     visibility_ = currentNode_.getProperty(StaticAndDirectPublicationPlugin.VISIBILITY).getString() ;
-    state_ = currentNode_.getProperty(StaticAndDirectPublicationPlugin.CURRENT_STATE).getString() ;
+    
+    state_ = getStateByVersion(curentVersion_) ;
     resetCurrentState(state_, visibility_) ;
   }
   

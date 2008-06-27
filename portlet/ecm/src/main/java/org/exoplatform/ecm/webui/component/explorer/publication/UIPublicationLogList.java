@@ -23,6 +23,8 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.ecm.publication.NotInPublicationLifecycleException;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -60,12 +62,16 @@ public class UIPublicationLogList extends UIComponentDecorator {
     List<HistoryBean> list = new ArrayList<HistoryBean>();    
     for (int i = 0; i < array.length; i++) {
       HistoryBean bean = new HistoryBean();
-      bean.setDate(array[i][0]);
-      bean.setNewState(array[i][1]);
-      bean.setUser(array[i][2]);
-      bean.setDescription(array[i][3]);
-      bean.setVersion(array[i][4]);
-      bean.setVisibility(array[i][5]);
+      String[] currentLog=array[i];
+      bean.setDate(currentLog[0]);
+      bean.setNewState(currentLog[1]);
+      bean.setUser(currentLog[2]);
+      String[] values=new String[currentLog.length-4];
+      for (int j=4;j<currentLog.length;j++) {
+        values[j-4]=currentLog[j];
+      }
+      String description=publicationService.getLocalizedAndSubstituteLog(Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale(), currentLog[3], values);
+      bean.setDescription(description);
       list.add(bean); 
     }
     return list;
@@ -95,8 +101,6 @@ public class UIPublicationLogList extends UIComponentDecorator {
     private String newState;
     private String user;
     private String description;
-    private String version;
-    private String visibility;
     
     public String getDate() { return date; }
     public void setDate(String date) { this.date = date; }
@@ -106,9 +110,5 @@ public class UIPublicationLogList extends UIComponentDecorator {
     public void setNewState(String newState) { this.newState = newState; }
     public String getUser() { return user; }
     public void setUser(String user) { this.user = user; }
-    public String getVersion() { return version; }
-    public void setVersion(String version) { this.version = version; }
-    public String getVisibility() { return visibility; }
-    public void setVisibility(String visibility) { this.visibility = visibility; }
   }
 }

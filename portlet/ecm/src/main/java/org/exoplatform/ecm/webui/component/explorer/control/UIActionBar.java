@@ -771,15 +771,6 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
         return;	    	  
       }
-      Version version = currentNode.checkin();
-      currentNode.checkout();
-
-      HashMap<String,String> context = new HashMap<String,String>();
-      context.put("nodeVersionUUID", version.getUUID());
-      context.put("visibility", StaticAndDirectPublicationPlugin.PUBLIC);
-
-      publicationService.changeState(currentNode, "published", context);
-
       UIContainer cont = uiActionBar.createUIComponent(UIContainer.class, null, null);
       UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
       UIPublicationManager uiPublicationManager = 

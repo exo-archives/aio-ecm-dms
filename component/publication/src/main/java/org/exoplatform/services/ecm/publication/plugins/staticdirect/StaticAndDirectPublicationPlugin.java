@@ -34,6 +34,7 @@ import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.version.Version;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
@@ -61,6 +62,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   public static final String ENROLLED = "enrolled".intern();
   public static final String NON_PUBLISHED = "non published".intern();
   public static final String PUBLISHED = "published".intern();
+  public static final String DEFAULT_STATE = NON_PUBLISHED;
 
   public static final String PUBLICATION = "publication:publication".intern();
   public static final String LIFECYCLE_NAME = "publication:lifecycleName".intern();
@@ -79,7 +81,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
 
   protected static Log log; 
 
-  private final String localeFile = "resources.locale.publication.PublicationService";
+  private final String localeFile = "locale.portlet.publication.PublicationService";
 
   public StaticAndDirectPublicationPlugin() {
     log = ExoLogger.getLogger("portal:StaticAndDirectPublicationPlugin");
@@ -98,6 +100,35 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       log.info("Set node to "+NON_PUBLISHED);
       // add mixin versionable
       if (node.canAddMixin("mix:versionable")) node.addMixin("mix:versionable");
+      node.save();
+     //Creation of the first version of the node
+      Version version = node.checkin();
+      node.checkout();
+      
+      String newStringValue= version.getUUID()+","+NON_PUBLISHED;
+      Value value2add=systemSession.getValueFactory().createValue(newStringValue);
+      Value[] values = {value2add};
+      node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
+
+      //set currentState to non published
+      node.setProperty(CURRENT_STATE,NON_PUBLISHED);
+      String visibility=PRIVATE;
+      Value newValueVisibility=systemSession.getValueFactory().createValue(visibility);
+      node.setProperty(VISIBILITY,newValueVisibility) ;
+      //set permissions
+      setVisibility(node, visibility);
+
+      //add log
+      log.info("Add log");
+      ExoContainer container = ExoContainerContext.getCurrentContainer();   
+      PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
+      String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+      @SuppressWarnings("hiding")
+      String versionName = session.getNodeByUUID(version.getUUID()).getName();
+      String[] log = {date,NON_PUBLISHED,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodeCreated",versionName,visibility};
+      publicationService.addLog(node, log);
+      
+      
       node.setProperty(CURRENT_STATE, NON_PUBLISHED);
     } else if (newState.equals(PUBLISHED)) {
       String currentState = node.getProperty(CURRENT_STATE).getString();
@@ -160,6 +191,10 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       } else {
         //currentState = PUBLISHED
         // means that one version is published
+        
+        //TODO check if new published version is not the current published version
+        //in this case, do nothing
+        
         log.info("Node is already published, user want to published another version.");
         String nodeVersionUUID = context.get("nodeVersionUUID");
         String visibility = context.get("visibility");
@@ -242,6 +277,32 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       String currentState = node.getProperty(CURRENT_STATE).getString();
       if (currentState.equals(NON_PUBLISHED)) {
         log.info("node already unpublished");
+      
+        //state do not changed
+        //NON_PUBLISHED -> NON_PUBLISHED
+        //but visibility can change
+        String oldVisibility=node.getProperty(VISIBILITY).getString();
+        String newVisibility=context.get("visibility");
+        String nodeVersionUUID = context.get("nodeVersionUUID");
+        
+        if (!oldVisibility.equals(newVisibility)) {
+          //cahnge visibility
+          
+          Value newValueVisibility=systemSession.getValueFactory().createValue(newVisibility);
+          node.setProperty(VISIBILITY,newValueVisibility) ;
+
+          //set permissions
+          setVisibility(node, newVisibility);
+          
+          //Add log
+          ExoContainer container = ExoContainerContext.getCurrentContainer();   
+          PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
+          String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+          String version = session.getNodeByUUID(nodeVersionUUID).getName();
+          @SuppressWarnings("hiding")
+          String[] log = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.changeVisibility",newVisibility};
+          publicationService.addLog(node, log);
+        }
       } else if (currentState.equals(PUBLISHED)) {
         log.info("Node published, unpublish it");
         Value[] values = node.getProperty(VERSIONS_PUBLICATION_STATES).getValues();
@@ -263,6 +324,12 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           //set currentState to non published
           node.setProperty(CURRENT_STATE,NON_PUBLISHED);
 
+          String newVisibility=context.get("visibility");
+          Value newValueVisibility=systemSession.getValueFactory().createValue(newVisibility);
+          node.setProperty(VISIBILITY,newValueVisibility) ;
+
+          //set permissions
+          setVisibility(node, newVisibility);
 
           //add log
           log.info("Add log");
@@ -270,7 +337,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
           String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
           @SuppressWarnings("hiding")
-          String[] log = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodeUnpublished"};
+          String[] log = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodeUnpublished",newVisibility};
           publicationService.addLog(node, log);
         } else {
           //error : currentSate = PUBLISHED but no version PUBLISHED
@@ -456,5 +523,6 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     newarray[array.length] = value2add;
     return newarray; 
   }
+  
 
 }

@@ -151,5 +151,8 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
    * @param node
    */
   public abstract void addMixin (Node node) throws Exception;
-
+  
+  
+  
+  
 }

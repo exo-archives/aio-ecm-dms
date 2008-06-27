@@ -71,15 +71,9 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
       PublicationService publicationService = uiActivatePublication.getApplicationComponent(PublicationService.class);
       PublicationPresentationService publicationPresentationService = uiActivatePublication.getApplicationComponent(PublicationPresentationService.class);
       publicationService.enrollNodeInLifecycle(currentNode, "StaticAndDirect");
-            
-      Version version = currentNode.checkin();
-      currentNode.checkout();
+          
+     
       
-      HashMap<String,String> context = new HashMap<String,String>();
-      context.put("nodeVersionUUID", version.getUUID());
-      context.put("visibility", StaticAndDirectPublicationPlugin.PUBLIC);
-      
-      publicationService.changeState(currentNode, StaticAndDirectPublicationPlugin.PUBLISHED, context);      
       UIContainer cont = uiActivatePublication.createUIComponent(UIContainer.class, null, null);
       UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
       UIPublicationManager uiPublicationManager = 

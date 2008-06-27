@@ -29,7 +29,7 @@
 					</tr>
  				</table>
  				<div style="margin: auto;"><img src="<%=uicomponent.getLinkStateImage(Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale())%>" height="46" width="472" border="0" alt=""/><br /></div>
-  		</div>
-  	</div>
+			</div>
+		</div>
 	</div>
 </div>
