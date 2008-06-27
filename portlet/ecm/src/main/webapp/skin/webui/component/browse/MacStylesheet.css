@@ -756,7 +756,7 @@
 .UIBrowseContentPortlet .FileContent .UITabPane .UITabContentContainer {
 	height: 100%;
 }
-	
+
 .UIBrowseContentPortlet .FileContent .NavigationContainer {	
 	padding-bottom: 0px;
 	border: 1px solid #cbcbcb;
@@ -782,8 +782,6 @@
 	
 .UIBrowseContentPortlet .FileContent .Content {	
 	white-space: normal;
-	padding: 0px 10px;
-	height: 300px;
  }
 	
 .UIBrowseContentPortlet .FileContent .Content .TextContent {	
@@ -906,4 +904,3 @@
 	line-height: 25px;
 	border-bottom: solid 1px #BDBDBD;
 }
-
