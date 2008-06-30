@@ -434,47 +434,16 @@
   width: 500px;
   margin: auto;
 }
+/*=============================UILanguageTypeForm============================*/
 
-/*===============================UILanguageTypeForm===================================*/
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: none;
-  background: #efefef;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .WorkingAreaWithHelp .UIFormWithTitle {
-  width: auto;
-  border: solid 1px #939393;
-  border-top: none;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: solid 1px #939393;
-  border-top: none;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .FormContainer .UIFormGrid{
-  width: 500px;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UIFormWithTitle {
-	border: none;
-}
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle {
-	border: solid 1px #939393;
+  border: none;
+  margin: 0px auto;
 }
 
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UILanguageTypeForm .UIFormWithTitle {
-	border: solid 1px #939393;
-	padding-bottom: 10px;
-	margin-bottom: 15px;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UILanguageTypeForm .UIFormWithTitle .UIFormGrid {
-	width: 500px;
-	margin: auto;
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager {
+	padding: 0px 10px;
 }
 
 /*=============================UICommentForm=======================*/
@@ -488,7 +457,7 @@
 	background: #f3f3f3;
 }
 
-/*================================UISimpleSearch=================================*/
+/*================================UISimpleSearch==============================*/
 
 .UIJCRExplorerPortlet .UISimpleSearch .FormContainer .InforField {	
 	margin: 5px 0px;
@@ -705,7 +674,7 @@
 
 .UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .HorizontalLayout {
 	padding: 10px;
-	background: #efefef;
+	background: #F7F7F7;
 }
 
 /*================================UINodeTypeInfo=================================*/
