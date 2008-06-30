@@ -414,12 +414,12 @@ public class CmsServiceImpl implements CmsService {
             node.setProperty(propertyName, session2.getValueFactory().createValue((String)value));
           }
         } else {
-          if(session.getRootNode().hasNode((String) value)) {
-            Node referenceNode = session.getRootNode().getNode(referenceNodeName);
+          if(value.toString().length() > 0 && session.getRootNode().hasNode((String) value)) {
+            Node referenceNode = session.getRootNode().getNode(value.toString());
             Value value2add = session.getValueFactory().createValue(referenceNode);
-            node.setProperty(propertyName, new Value[] {value2add});
+            node.setProperty(propertyName, value2add);
           } else {
-            node.setProperty(propertyName, session.getValueFactory().createValue((String)value));
+            node.setProperty(propertyName, session.getValueFactory().createValue(value.toString()));
           }
         }
       } else if(value instanceof String[]) {
