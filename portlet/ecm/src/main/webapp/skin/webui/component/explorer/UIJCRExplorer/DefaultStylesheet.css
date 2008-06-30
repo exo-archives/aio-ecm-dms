@@ -439,6 +439,11 @@
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle {
   border: none;
+  margin: 0px auto;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager {
+	padding: 0px 10px;
 }
 
 /*=============================UICommentForm=======================*/
@@ -669,7 +674,7 @@
 
 .UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .HorizontalLayout {
 	padding: 10px;
-	background: #efefef;
+	background: #F7F7F7;
 }
 
 /*================================UINodeTypeInfo=================================*/
