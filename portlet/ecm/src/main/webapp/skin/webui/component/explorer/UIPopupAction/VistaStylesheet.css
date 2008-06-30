@@ -275,6 +275,14 @@
 	margin-left: 160px;
 }
 
+.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle .HorizontalLayout {
+	border: 1px solid #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .HorizontalLayout {
+	border: 1px solid #b7b7b7;
+}
+
 .UIJCRExplorerPortlet .UIFormWithTitle .ExportImportNode input {
 	float:left;
   width: 20px ;
