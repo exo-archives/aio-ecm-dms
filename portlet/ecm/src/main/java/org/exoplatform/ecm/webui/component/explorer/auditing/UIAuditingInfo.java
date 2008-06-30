@@ -54,6 +54,7 @@ public class UIAuditingInfo extends UIContainer implements UIPopupComponent {
       PortalContainer cont = PortalContainer.getInstance();
       AuditService auServ= (AuditService)cont.getComponentInstanceOfType(AuditService.class);
       if(auServ.hasHistory(node_)){
+        if ("nt:file".equals(node_.getProperty("jcr:primaryType").getString())){ node_=node_.getNode("jcr:content");} 
         AuditHistory auHistory = auServ.getHistory(node_);
         listRec=auHistory.getAuditRecords();     
         return listRec;
