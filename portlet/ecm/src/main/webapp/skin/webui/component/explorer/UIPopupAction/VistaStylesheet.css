@@ -96,12 +96,6 @@
 	margin: 0px auto;
 }
 
-/*############################## -- Begin UIAuditingInfo -- added CPop Bull CS ##############################*/
-
-.UIJCRExplorerPortlet .UIAuditingInfo  {  
-  padding: 10px;
-}
-
 /*############################## -- Begin UIDiff -- ##############################*/
 	
 .UIJCRExplorerPortlet .UIDiff {
@@ -333,6 +327,10 @@
 
 /*############################## -- UISearch   -- ##############################*/
 
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid {
+	width: 90%;
+}
+
 .UIJCRExplorerPortlet .UISearchContainer .UITabPane .WorkingAreaWithHelp {
 	width: 99%;
 	margin: auto;
@@ -391,10 +389,6 @@
   height: 350px ;
 }
 
-.UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle td.FieldLabel {
-  width: 160px;
-}
-
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- Others   -- ##############################*/
@@ -416,6 +410,10 @@
 .UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
 	border: 1px solid #b7b7b7;
 	margin: 10px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadContainer .UIFormGrid {
+	width: 95%;
 }
 
 /*############################## -- End Others   -- ##############################*/
@@ -447,3 +445,7 @@
 }
 
 /*############################## -- End UIActionManager   -- ##############################*/
+
+/*############################## --  Properties Management   -- ##############################*/
+
+.

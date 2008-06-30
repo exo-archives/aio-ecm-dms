@@ -7,6 +7,7 @@
       border: solid 1px #a3abb6;
       font-size: 12px; font-weight: bold;
     }
+    
     .tabSelected {
       float: left;
       background: url('/ecm/skin/images/metadata/tab-selected.gif') repeat-x top;
@@ -14,10 +15,11 @@
       border: solid 1px #a3abb6;
       font-size: 12px; font-weight: bold;
     }
+    
     .ContentBlock{
-      width: 99.5%;     
       margin: 20px 20px 20px 20px;
     }
+    
     .Label {
       height:14px;
       font-weight: bold;
@@ -26,12 +28,14 @@
       text-align: left ;
       color: #f68822;
     }
+    
     .Header {
       font-weight: bold;
       font-size: 14px;
       font-style: Verdana;
       text-align: left ;      
     }
+    
     .Line {
       background: url('/ecm/skin/images/metadata/dot.gif') repeat-x center;
       height: 10px;
@@ -61,7 +65,7 @@
 
 <div class="Header">RMA:TRANSFERABLE</div>
 <div id="rma_transferable">     
-  <div class="ContentBlock" style="width:43%">
+  <div class="ContentBlock" style="width:44%">
     <div class="Title">
       <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-executed")%></div>
       <div class="Line"><span></span></div>
@@ -69,8 +73,8 @@
     <div><% renderDCValues("rma:transferExecuted") %></div>
   </div>
 
-  <div id="ContainerNote" style="overflow:hidden; width:99.5%;">
-    <div id="ContentLeftNote"  style="float: left; width:43%">
+  <div id="ContainerNote">
+    <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-date")%></div>
@@ -79,7 +83,7 @@
         </div>                        
       </div>
     </div>
-    <div id="ContentRightNote" style="float:right; width:43%">
+    <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
           <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-location")%></div>
@@ -87,7 +91,8 @@
         </div>
         <div><% renderDCValues("rma:transferLocation") %></div>
       </div>
-    </div>              
+    </div> 
+    <div style="clear: both"><span></span></div>             
   </div>
 </div>
 <%/* start render action*/%>

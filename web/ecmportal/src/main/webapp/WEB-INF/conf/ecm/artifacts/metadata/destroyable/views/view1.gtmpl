@@ -7,6 +7,7 @@
       border: solid 1px #a3abb6;
       font-size: 12px;font-weight: bold;
     }
+    
     .tabSelected {
       float: left;
       background: url('/ecm/skin/images/metadata/tab-selected.gif') repeat-x top;
@@ -14,10 +15,11 @@
       border: solid 1px #a3abb6;
       font-size: 12px;  font-weight: bold;
     }
+    
     .ContentBlock{
-      width: 99.5%;     
       margin:20px 20px 20px 20px;
     }
+    
     .Label {
       height:14px;
       font-weight: bold;
@@ -26,12 +28,14 @@
       text-align: left ;
       color: #f68822;
     }
+    
     .Header {
       font-weight: bold;
       font-size: 14px;
       font-style: Verdana;
       text-align: left ;      
     }
+    
     .Line {
       background: url('/ecm/skin/images/metadata/dot.gif') repeat-x center;
       height: 10px;

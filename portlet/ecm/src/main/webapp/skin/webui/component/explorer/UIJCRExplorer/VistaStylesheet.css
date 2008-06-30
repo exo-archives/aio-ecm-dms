@@ -340,8 +340,9 @@
 	margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UILanguageTypeForm .UIFormGrid {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddLanguageContainer .UIFormGrid {
 	margin: auto;
+	width: 97%;
 }
 
 /*############################## -- BEGIN UISimpleSearch -- ##############################*/
