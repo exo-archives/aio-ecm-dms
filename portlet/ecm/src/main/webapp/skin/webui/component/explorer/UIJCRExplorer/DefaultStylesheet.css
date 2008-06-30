@@ -434,47 +434,11 @@
   width: 500px;
   margin: auto;
 }
+/*=============================UILanguageTypeForm============================*/
 
-/*===============================UILanguageTypeForm===================================*/
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: none;
-  background: #efefef;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .WorkingAreaWithHelp .UIFormWithTitle {
-  width: auto;
-  border: solid 1px #939393;
-  border-top: none;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UITabPane .TabPaneContent .WorkingAreaWithHelp .UITabContentContainer {
-  border: solid 1px #939393;
-  border-top: none;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .FormContainer .UIFormGrid{
-  width: 500px;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UIFormWithTitle {
-	border: none;
-}
 
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle {
-	border: solid 1px #939393;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UILanguageTypeForm .UIFormWithTitle {
-	border: solid 1px #939393;
-	padding-bottom: 10px;
-	margin-bottom: 15px;
-}
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UILanguageTypeForm .UIFormWithTitle .UIFormGrid {
-	width: 500px;
-	margin: auto;
+  border: none;
 }
 
 /*=============================UICommentForm=======================*/
@@ -488,7 +452,11 @@
 	background: #f3f3f3;
 }
 
-/*================================UISimpleSearch=================================*/
+div {
+	border: 1px solid red;
+}
+
+/*================================UISimpleSearch==============================*/
 
 .UIJCRExplorerPortlet .UISimpleSearch .FormContainer .InforField {	
 	margin: 5px 0px;
@@ -775,6 +743,22 @@
 /*====================================UIActivateVersion==================================*/
 
 .UIJCRExplorer .UIActivateVersion {
+	border: solid 1px #b7b7b7;
+	margin: 10px;
+	background: #efefef;
+}
+
+/*====================================UIActivePublication==================================*/
+
+.UIJCRExplorer .UIActivePublication {
+	border: solid 1px #b7b7b7;
+	margin: 10px;
+	background: #efefef;
+}
+
+/*====================================UIActivateAuditing==================================*/
+
+.UIJCRExplorer .UIActivateAuditing {
 	border: solid 1px #b7b7b7;
 	margin: 10px;
 	background: #efefef;
