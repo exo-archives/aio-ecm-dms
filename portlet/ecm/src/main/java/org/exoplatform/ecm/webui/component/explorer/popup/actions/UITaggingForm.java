@@ -16,6 +16,9 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
@@ -99,7 +102,26 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
         return ;
       }
       String[] tagNames = null ;
-      if(tagName.indexOf(",") > -1) tagNames = tagName.split(",") ;
+      if (tagName.indexOf(",") > -1) {
+        tagNames = tagName.split(",");
+        List<String> listTagNames = new ArrayList<String>(tagNames.length);
+        List<String> listTagNamesClone = new ArrayList<String>(tagNames.length);
+        for (String tName : tagNames) {
+          listTagNames.add(tName.trim());          
+          listTagNamesClone.add(tName.trim());
+        }        
+        for (int i = 0; i < listTagNames.size(); i++) {          
+          String tag = listTagNames.get(i);
+          listTagNamesClone.remove(tag);
+          if (listTagNamesClone.contains(tag)) {
+            uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tag-name-duplicate", null, 
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
+          listTagNamesClone.add(tag);          
+        }
+      }
       else tagNames = new String[] {tagName} ;
       for(String t : tagNames) {
         if(t.trim().length() == 0) {
