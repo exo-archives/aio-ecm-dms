@@ -274,6 +274,20 @@ public class UIActionForm extends DialogFormFields implements UISelector {
           String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;          
           ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;           
         }
+        String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
+        if(selectorParams != null) {
+          String[] arrParams = selectorParams.split(",") ;
+          if(arrParams.length == 4) {
+            ((UIJCRBrowser)uiComp).setFilterType(new String[] {Utils.NT_FILE}) ;
+            ((UIJCRBrowser)uiComp).setIsDisable(arrParams[1], true) ;
+            ((UIJCRBrowser)uiComp).setRootPath(arrParams[2]) ;
+            if(arrParams[3].indexOf(";") > -1) {
+              ((UIJCRBrowser)uiComp).setMimeTypes(arrParams[3].split(";")) ;
+            } else {
+              ((UIJCRBrowser)uiComp).setMimeTypes(new String[] {arrParams[3]}) ;
+            }
+          }
+        }
         ((UIJCRBrowser)uiComp).setShowRootPathSelect(true);
         if(rootPath != null) ((UIJCRBrowser)uiComp).setRootPath(rootPath) ;
       }

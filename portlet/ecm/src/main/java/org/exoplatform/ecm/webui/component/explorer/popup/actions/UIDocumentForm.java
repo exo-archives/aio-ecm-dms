@@ -228,7 +228,11 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
             ((UIJCRBrowser)uiComp).setFilterType(new String[] {Utils.NT_FILE}) ;
             ((UIJCRBrowser)uiComp).setIsDisable(arrParams[1], true) ;
             ((UIJCRBrowser)uiComp).setRootPath(arrParams[2]) ;
-            ((UIJCRBrowser)uiComp).setMimeTypes(new String[] {arrParams[3]}) ;
+            if(arrParams[3].indexOf(";") > -1) {
+              ((UIJCRBrowser)uiComp).setMimeTypes(arrParams[3].split(";")) ;
+            } else {
+              ((UIJCRBrowser)uiComp).setMimeTypes(new String[] {arrParams[3]}) ;
+            }
           }
         }
       }
