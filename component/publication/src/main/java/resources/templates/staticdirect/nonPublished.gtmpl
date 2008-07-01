@@ -1,0 +1,6 @@
+<%
+import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIPublicationComponent;
+%>
+﻿<div>
+	<% uiform.renderChild(UIPublicationComponent.class) %>
+</div>

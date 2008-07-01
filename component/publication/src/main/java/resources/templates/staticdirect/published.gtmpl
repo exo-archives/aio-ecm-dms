@@ -1,0 +1,4 @@
+
+<div>
+	<% uiform.renderChildren() %>
+</div>

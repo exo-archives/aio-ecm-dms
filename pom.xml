@@ -13,7 +13,7 @@
     <module>component/workflow/impl/jbpm/facade</module>
 
     <module>component/cms</module>
-   
+   <module>component/publication</module>
     <module>bp</module>
 
     <module>portlet/ecm</module>
@@ -31,6 +31,8 @@
         <includes>
           <include>**/*.properties</include>
           <include>**/*.xml</include>
+		  <include>**/*.gtmpl</include>
+		  <include>**/*.gif</include>
         </includes>
       </resource>
     </resources>

@@ -1074,3 +1074,19 @@
 }
 
 /*############################## -- End BC Portlet Icon -- ########################*/
+
+.UIVersionTreeList .TrueIcon {
+  background: url('DefaultSkin/DisabelCheck.gif') no-repeat left center;
+}
+
+.UIVersionTreeList .TrueSelectIcon {
+  background: url('DefaultSkin/SelectCheck.gif') no-repeat left center;
+}
+
+.UIVersionTreeList .Publishedicon {
+  background: url('DefaultSkin/PublishedIcon.gif') no-repeat left center;
+}
+
+.UIVersionTreeList .UnPublishedicon {
+  background: url('DefaultSkin/UnPublished.gif') no-repeat left center;
+}

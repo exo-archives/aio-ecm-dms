@@ -52,6 +52,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContaine
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
+import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActivePublication;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UICategoriesAddedList;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UICategoryManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIExportNode;
@@ -66,6 +67,11 @@ import org.exoplatform.ecm.webui.component.explorer.popup.info.UIReferencesList;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataTemplate;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationContainer;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationForm;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationLogList;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationManager;
+import org.exoplatform.ecm.webui.component.explorer.publication.UIVersionTreeList;
 import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
@@ -85,6 +91,9 @@ import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.ecm.publication.PublicationPresentationService;
+import org.exoplatform.services.ecm.publication.PublicationService;
+import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -92,6 +101,7 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -126,6 +136,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.ViewRelationsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ShowJCRStructureActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageVersionsActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ManagePublicationsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageCategoriesActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageRelationsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageActionsActionListener.class, phase = Phase.DECODE),
@@ -694,30 +705,89 @@ public class UIActionBar extends UIForm {
       if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      if(uiExplorer.nodeIsLocked(currentNode)) {
-        Object[] arg = { currentNode.getPath() } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+      if (uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }      
-      if(currentNode.canAddMixin(Utils.MIX_VERSIONABLE)) {
-        uiPopupAction.activate(UIActivateVersion.class, 400) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-        return ;
+      if (currentNode.canAddMixin(Utils.MIX_VERSIONABLE)) {
+        uiPopupAction.activate(UIActivateVersion.class, 400);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        return;
       }
       if (currentNode.isNodeType(Utils.MIX_VERSIONABLE)) {
-        uiPopupAction.activate(UIVersionInfo.class, null, 700, 500) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-        return ;
+        uiPopupAction.activate(UIVersionInfo.class, null, 700, 500);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        return;
       }
-      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-version", null)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-version", null));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
     }
   }
+  
+  static public class ManagePublicationsActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {
+      UIActionBar uiActionBar = event.getSource();
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
+      Node currentNode = uiExplorer.getCurrentNode();
+      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
+      uiExplorer.setIsHidePopup(false);
 
+      if (currentNode.equals(uiExplorer.getRootNode())) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-publication-rootnode",
+            null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if (!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      }
+      if (uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() } ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }  
+
+      PublicationService publicationService = uiActionBar.getApplicationComponent(PublicationService.class);
+      PublicationPresentationService publicationPresentationService = uiActionBar.getApplicationComponent(PublicationPresentationService.class);	      
+
+      if (!publicationService.isNodeEnrolledInLifecycle(currentNode)) {          
+        uiPopupAction.activate(UIActivePublication.class, 400);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        return;	    	  
+      }
+      UIContainer cont = uiActionBar.createUIComponent(UIContainer.class, null, null);
+      UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
+      UIPublicationManager uiPublicationManager = 
+        uiExplorer.createUIComponent(UIPublicationManager.class, null, null) ;
+      UIPublicationContainer uiPublicationContainer = 
+        uiPublicationManager.getChild(UIPublicationContainer.class) ;
+      uiPublicationContainer.addChild(uiForm) ;
+      uiPublicationContainer.initChild();
+      UIPublicationLogList uiPublicationLogList = 
+        uiPublicationManager.getChild(UIPublicationLogList.class);
+      UIVersionTreeList uiVersionTreeList = 
+        uiPublicationContainer.getChild(UIVersionTreeList.class);
+      UIPublicationForm uiPublicationForm = 
+        uiPublicationContainer.getChild(UIPublicationForm.class);
+      uiPopupAction.activate(uiPublicationManager, 700, 500);
+      uiPublicationLogList.updateGrid() ;
+      uiVersionTreeList.initVersion(currentNode);
+      uiPublicationForm.initForm(currentNode) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+    }
+  }
+  
   static public class ManageCategoriesActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource() ;

@@ -458,3 +458,7 @@
   background: url('DefaultSkin/exo-versionStorage.gif') no-repeat left center;
 }
 
+.UIRightClickPopupMenu .exo_publishingRequest16x16Icon {
+  background: url('DefaultSkin/exo-publishingRequest.gif') no-repeat left center;
+}
+

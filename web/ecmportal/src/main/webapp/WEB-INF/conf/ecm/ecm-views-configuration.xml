@@ -59,7 +59,7 @@
                       <field  name="tabName"><string>Admin</string></field>
                       <field  name="buttons">
                       	<string>
-                      		manageVersions; manageCategories; manageRelations; manageActions; viewProperties; exportNode; importNode
+                      		manageVersions; managePublications; manageCategories; manageRelations; manageActions; viewProperties; exportNode; importNode
                       	</string>
                       </field>
                     </object>

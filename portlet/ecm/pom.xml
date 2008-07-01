@@ -75,6 +75,13 @@
       <version>${org.exoplatform.ecm.version}</version>
       <scope>provided</scope>
     </dependency>
+	
+	<dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.publication</artifactId>
+      <version>${org.exoplatform.ecm.version}</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies> 
 
   <build>
