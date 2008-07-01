@@ -208,7 +208,7 @@ public class CmsServiceImpl implements CmsService {
       }
     }
   }
-
+  
   private void processNodeRecursively(final boolean create, final String itemPath, 
       final Node currentNode, final NodeType currentNodeType, final Map jcrVariables)
   throws Exception {
@@ -227,7 +227,7 @@ public class CmsServiceImpl implements CmsService {
           value = inputVariable.getValue();
         }
         if(value != null &&  !propertyDef.isProtected()) {
-          processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple());
+          processProperty(property, currentNode, requiredtype, value, propertyDef.isMultiple());
         }
       }
       processAddEditProperty(false, currentNode, itemPath, currentNodeType, jcrVariables) ;
@@ -303,8 +303,8 @@ public class CmsServiceImpl implements CmsService {
     }    
   }
 
-  private void processProperty(final String propertyName, final Node node, final int requiredtype,
-      final Object value, final boolean isMultiple) throws Exception {
+  private void processProperty(String propertyName, Node node, int requiredtype, Object value, 
+      boolean isMultiple) throws Exception {
 
     switch (requiredtype) {
     case PropertyType.STRING:
@@ -461,6 +461,203 @@ public class CmsServiceImpl implements CmsService {
       throw new RepositoryException("unknown type " + requiredtype);
     }
   }
+  
+  private void processProperty(Property property, Node node, int requiredtype,
+      Object value, boolean isMultiple) throws Exception {
+    String propertyName = property.getName() ;
+    switch (requiredtype) {
+    case PropertyType.STRING:
+      if (value == null) {
+        node.setProperty(propertyName, "");
+      } else {
+        if(isMultiple) {
+          if (value instanceof String) {
+            if(!property.getValues().equals(value)) {
+              node.setProperty(propertyName, new String[] { (String)value});
+            }
+          } else if (value instanceof String[]) {
+            if(!property.getValues().equals(value)) node.setProperty(propertyName, (String[]) value);
+          }          
+        } else {
+          if(!property.getValue().getString().equals(value)) {
+            node.setProperty(propertyName, (String) value);
+          }
+        }
+      }
+      break;
+    case PropertyType.BINARY:
+      if (value == null) {
+        node.setProperty(propertyName, "");
+      } else if (value instanceof byte[]) {
+        if(!property.getValue().getStream().equals(new ByteArrayInputStream((byte[]) value))) {
+          node.setProperty(propertyName, new ByteArrayInputStream((byte[]) value));
+        }
+      } else if (value instanceof String) {
+        if(!property.getValue().getStream().equals(new ByteArrayInputStream(((String)value).getBytes()))) {
+          node.setProperty(propertyName, new ByteArrayInputStream(((String)value).getBytes()));
+        }
+      } else if (value instanceof String[]) {
+        if(!property.getValue().getStream().equals(new ByteArrayInputStream((((String[]) value)).toString().getBytes()))) {
+          node.setProperty(propertyName, 
+              new ByteArrayInputStream((((String[]) value)).toString().getBytes()));
+        }
+      }      
+      break;
+    case PropertyType.BOOLEAN:
+      if (value == null) {
+        node.setProperty(propertyName, false);
+      } else if (value instanceof String) {
+        if(property.getValue().getBoolean() != new Boolean((String) value).booleanValue()) {
+          node.setProperty(propertyName, new Boolean((String) value).booleanValue());
+        }
+      } else if (value instanceof String[]) {
+        if(!property.getValue().getString().equals(value)) {
+          node.setProperty(propertyName, (String[]) value);
+        }
+      }         
+      break;
+    case PropertyType.LONG:
+      if (value == null || "".equals(value)) {
+        node.setProperty(propertyName, 0);
+      } else if (value instanceof String) {
+        if(property.getValue().getLong() != new Long((String) value).longValue()) {
+          node.setProperty(propertyName, new Long((String) value).longValue());
+        }
+      } else if (value instanceof String[]) {
+        if(!property.getValue().getString().equals(value)) {
+          node.setProperty(propertyName, (String[]) value);
+        }
+      }  
+      break;
+    case PropertyType.DOUBLE:
+      if (value == null || "".equals(value)) {
+        node.setProperty(propertyName, 0);
+      } else if (value instanceof String) {
+        if(property.getValue().getDouble() != new Double((String) value).doubleValue()) {
+          node.setProperty(propertyName, new Double((String) value).doubleValue());
+        }
+      } else if (value instanceof String[]) {
+        if(!property.getValue().getString().equals(value)) {
+          node.setProperty(propertyName, (String[]) value);
+        }
+      }        
+      break;
+    case PropertyType.DATE:      
+      if (value == null){        
+        node.setProperty(propertyName, new GregorianCalendar());
+      } else {
+        if(isMultiple) {
+          Session session = node.getSession();
+          if (value instanceof String) {
+            Value value2add = session.getValueFactory().createValue(ISO8601.parse((String) value));
+            if(!property.getValues().equals(new Value[] {value2add})) {
+              node.setProperty(propertyName, new Value[] {value2add});
+            }
+          } else if (value instanceof String[]) {
+            String[] values = (String[]) value;
+            Value[] convertedCalendarValues = new Value[values.length];
+            int i = 0;
+            for (String stringValue : values) {
+              Value value2add = session.getValueFactory().createValue(ISO8601.parse(stringValue));
+              convertedCalendarValues[i] = value2add;
+              i++;
+            }
+            if(!property.getValues().equals(convertedCalendarValues)) {
+              node.setProperty(propertyName, convertedCalendarValues);
+            }
+          }
+        } else {
+          if (value instanceof String) {
+            if(!property.getValue().getString().equals(ISO8601.parse((String)value))) {
+              node.setProperty(propertyName, ISO8601.parse((String)value));
+            }
+          } else if (value instanceof GregorianCalendar) {
+            if(!property.getValue().getDate().equals(value)) {
+              node.setProperty(propertyName, (GregorianCalendar) value);
+            }
+          }
+        }
+      }      
+      break;
+    case PropertyType.REFERENCE:      
+      if (value == null) {
+        throw new RepositoryException("null value for a reference " + requiredtype);
+      }
+      if (value instanceof Value[]) {
+        if(!property.getValues().equals(value)) {
+          node.setProperty(propertyName, (Value[]) value);
+        }
+      } else if (value instanceof String) {
+        String referenceWorksapce = null;
+        String referenceNodeName = null ;
+        Session session = node.getSession();
+        String repositoty = ((ManageableRepository)session.getRepository()).getConfiguration().getName();
+        if(((String)value).indexOf(":/") > -1) {
+          referenceWorksapce = ((String)value).split(":/")[0];
+          referenceNodeName = ((String)value).split(":/")[1] ;
+          Session session2 = jcrService.getRepository(repositoty).getSystemSession(referenceWorksapce) ;
+          if(session2.getRootNode().hasNode(referenceNodeName)) {
+            Node referenceNode = session2.getRootNode().getNode(referenceNodeName);
+            Value value2add = session2.getValueFactory().createValue(referenceNode);
+            if(!property.getValue().getString().equals(value2add)) {
+              node.setProperty(propertyName, value2add);          
+            }
+          }else {
+            if(!property.getValue().getString().equals(session2.getValueFactory().createValue((String)value))) {
+              node.setProperty(propertyName, session2.getValueFactory().createValue((String)value));
+            }
+          }
+        } else {
+          if(value.toString().length() > 0 && session.getRootNode().hasNode((String) value)) {
+            Node referenceNode = session.getRootNode().getNode(value.toString());
+            Value value2add = session.getValueFactory().createValue(referenceNode);
+            if(!property.getValue().getString().equals(value2add)) {
+              node.setProperty(propertyName, value2add);
+            }
+          } else {
+            if(!property.getValue().getString().equals(session.getValueFactory().createValue(value.toString()))) {
+              node.setProperty(propertyName, session.getValueFactory().createValue(value.toString()));
+            }
+          }
+        }
+      } else if(value instanceof String[]) {
+        String[] values = (String[]) value;        
+        String referenceWorksapce = null;
+        String referenceNodeName = null ;
+        Session session = node.getSession();
+        String repositoty = ((ManageableRepository)session.getRepository()).getConfiguration().getName();
+        List<Value> list = new ArrayList<Value>() ;        
+        for(String v: values) {          
+          Value valueObj = null ;
+          if(v.indexOf(":/")>0) {
+            referenceWorksapce = v.split(":/")[0];
+            referenceNodeName = v.split(":/")[1] ;
+            Session session2 = jcrService.getRepository(repositoty).getSystemSession(referenceWorksapce) ;            
+            if(session2.getRootNode().hasNode(referenceNodeName)) {
+              Node referenceNode = session2.getRootNode().getNode(referenceNodeName) ;
+              valueObj = session2.getValueFactory().createValue(referenceNode) ;              
+            }else {             
+              valueObj = session2.getValueFactory().createValue(v) ;
+            }            
+          }else {            
+            if(session.getRootNode().hasNode(v)) {
+              Node referenceNode = session.getRootNode().getNode(v) ;
+              valueObj = session.getValueFactory().createValue(referenceNode);
+            }else {
+              valueObj = session.getValueFactory().createValue(v);
+            }
+          }
+          list.add(valueObj) ;          
+        }
+        if(!property.getValues().equals(list.toArray(new Value[list.size()]))) {
+          node.setProperty(propertyName,list.toArray(new Value[list.size()])) ;
+        }
+      }       
+      break ;
+    default:
+      throw new RepositoryException("unknown type " + requiredtype);
+    }
+  }  
 
   private String extractNodeName(final Set keys) {
     for (Iterator iter = keys.iterator(); iter.hasNext();) {
