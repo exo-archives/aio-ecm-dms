@@ -859,6 +859,17 @@ public class DialogFormFields extends UIForm {
       e.printStackTrace();
     }
   }
+  
+  //update by quangld
+  public void removeComponent(String name) {
+	  if (!properties.isEmpty() && properties.containsKey(name)) {
+		  properties.remove(name);
+		  String jcrPath = propertiesName_.get(name);
+		  propertiesName_.remove(name);
+		  fieldNames_.remove(jcrPath);
+		  removeChildById(name); 
+	  }
+  }	
 
   public void renderField(String name) throws Exception {
     UIComponent uiInput = findComponentById(name);;

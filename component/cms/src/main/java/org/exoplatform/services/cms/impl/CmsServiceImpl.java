@@ -572,7 +572,7 @@ public class CmsServiceImpl implements CmsService {
     }
     if (mixinTypes != null && mixinTypes.length > 0) {
       for (String mixinName : mixinTypes) {
-        if (childNode.isNodeType(mixinName)) {
+        if(!childNode.isNodeType(mixinName)) {
           childNode.addMixin(mixinName);
         }
       }

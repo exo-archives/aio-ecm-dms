@@ -16,7 +16,7 @@
 				  <td class="FieldLabel"><%=_ctx.appRes("File.dialog.label.name")%></td>
 				  <td class="FieldComponent">
 			      <%
-			        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=empty,name"] ;
+			        String[] fieldName = ["jcrPath=/node", "mixintype=mix:votable,mix:commentable,mix:i18n", "editable=if-null", "validate=name"] ;
 			        uicomponent.addTextField("name", fieldName) ; 
 			      %>
 				  </td>
@@ -45,10 +45,11 @@
 									if(mimeType.startsWith("text")){
 										if(mimeType.equals("text/html")) {
 											String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
-				              uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;						
+				             				uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;			
+											//uicomponent.removeComponent("content");
 										} else {
 											String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
-			          			uicomponent.addTextAreaField("content", fieldSummary) ;
+			          						uicomponent.addTextAreaField("content", fieldSummary) ;
 										}
 									} else {
 									%>
@@ -58,20 +59,23 @@
 									<%
 									}
 								} else {
-									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
-			            uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;						
+									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
+			                        uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;						
 								}
 							} else {	
 								String selectValue = uicomponent.getSelectBoxFieldValue("mimetype") ;		
 								if(selectValue != null && selectValue.equals("text/html")) {	
-									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
-			          	uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;
+									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
+			          	            uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;
+									uicomponent.removeComponent("contentPlain");
 								} else if(selectValue != null && selectValue.equals("text/plain")){
-									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
-			          	uicomponent.addTextAreaField("contentPlain", fieldSummary) ;
+									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
+			          	            uicomponent.addTextAreaField("contentPlain", fieldSummary) ;
+									uicomponent.removeComponent("contentHtml");
 								} else {
-									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data"] ;
-			          	uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;								  
+									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
+			          	            uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;	
+									uicomponent.removeComponent("contentPlain");							  
 								}
 							}
 						%>			
