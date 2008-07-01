@@ -46,7 +46,7 @@
 										if(mimeType.equals("text/html")) {
 											String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
 				              uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;			
-											uicomponent.removeComponent("content");
+											//uicomponent.removeComponent("content");
 										} else {
 											String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
 			          			uicomponent.addTextAreaField("content", fieldSummary) ;

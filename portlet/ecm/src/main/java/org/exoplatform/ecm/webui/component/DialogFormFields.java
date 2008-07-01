@@ -1109,6 +1109,7 @@ public class DialogFormFields extends UIForm {
 		  String jcrPath = propertiesName_.get(name);
 		  propertiesName_.remove(name);
 		  fieldNames_.remove(jcrPath);
+		  removeChildById(name);
 	  }
   }		
   
