@@ -407,8 +407,9 @@ public class CmsServiceImpl implements CmsService {
           referenceNodeName = ((String)value).split(":/")[1] ;
           Session session2 = jcrService.getRepository(repositoty).getSystemSession(referenceWorksapce) ;
           if(session2.getRootNode().hasNode(referenceNodeName)) {
-            Value value2add = session2.getValueFactory().createValue(referenceNodeName);
-            node.setProperty(propertyName, value2add);          
+            Node referenceNode = session2.getRootNode().getNode(referenceNodeName);
+            Value value2add = session2.getValueFactory().createValue(referenceNode);
+            node.setProperty(propertyName, value2add);                    
           }else {
             node.setProperty(propertyName, session2.getValueFactory().createValue((String)value));
           }
