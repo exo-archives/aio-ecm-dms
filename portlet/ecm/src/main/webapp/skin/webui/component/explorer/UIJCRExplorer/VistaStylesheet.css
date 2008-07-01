@@ -76,6 +76,18 @@
 	width: 140px;
 }
 
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle .HorizontalLayout .rootNodeInfo .FormContainer {
+	padding: 0px;
+}
+
 /*############################## -- End UIJCRExplorer -- ##############################*/
 
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
@@ -465,10 +477,6 @@
 }
 
 /*================================UISimpleSearch=================================*/
-
-.UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
-  padding-bottom: 0px;
-}
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
 	width: 97%;

@@ -430,18 +430,6 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid .ActionField {
-	width: 300px;
-	float: left;
-}
-
-.UIJCRExplorerPortlet .UISimpleSearch .InforField .DeleteIconInfo {
-}
-
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .InforArea {
-  padding-left: 185px ;
-}
-
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearch {
   height: 350px ;
 }

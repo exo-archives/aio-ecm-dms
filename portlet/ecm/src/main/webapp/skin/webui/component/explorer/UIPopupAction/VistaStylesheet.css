@@ -335,10 +335,6 @@
 
 /*############################## -- UISearch   -- ##############################*/
 
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid {
-	width: 90%;
-}
-
 .UIJCRExplorerPortlet .UISearchContainer .UITabPane .WorkingAreaWithHelp {
 	width: 99%;
 	margin: auto;
@@ -377,25 +373,19 @@
   margin: auto;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid .ActionField {
-  float: left ;
+.UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
+  padding: 0px;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .ActionField {
-  float: left ;
+.UIJCRExplorerPortlet .moreConstraints .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldComponent {
+	padding: 0px 4px;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .DeleteIconInfo {
-  padding-top: 5px;
+.UIJCRExplorerPortlet .UISimpleSearch .moreConstraints .InforField {
+	line-height: 24px;
+	_padding-top: 4px;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormWithTitle .InforArea {
-  padding-left: 185px ;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearch {
-  height: 350px ;
-}
 
 /*############################## -- End UISearch   -- ##############################*/
 
@@ -448,12 +438,5 @@
   background: #ffffff;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .InforField .DeleteIconInfo{
-  float: none;
-}
-
 /*############################## -- End UIActionManager   -- ##############################*/
 
-/*############################## --  Properties Management   -- ##############################*/
-
-.

@@ -71,7 +71,6 @@
   float: left;
   margin: auto ;
   height: 34px;
-	line-height: 34px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .RepoNameLabel {
@@ -139,21 +138,40 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryForm  {
-	width: 95%;
 	margin: 10px auto;
+}
+
+.UIECMAdminPortlet .UIRepositoryForm .FormContainer {
+	margin: auto;
+	width: 510px;
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .HorizontalLayout {
 	padding-top: 10px;
 }
 
-.UIECMAdminPortlet .UIRepositoryForm .FormContainer {
-	width: 510px;
-	margin: auto;
+.UIECMAdminPortlet .UIRepositoryFormContainer .wsInputSet .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .wsInputSet .FormContainer {
+	width: auto;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .wsInputSet .UIFormGrid td {
+	padding: 4px 4px 4px 0px;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .FormContainer {
+	width: 528px;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .UIFormGrid td.FieldLabel {
-  _width: 118px;
+  padding: 4px 0px 4px 4px;
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .authInputSet .UIFormInputSetWithAction .AddIcon16x16 {
@@ -585,7 +603,7 @@
 }
 
 .UIECMScripts .UIForm textarea {
-  width: 90%;
+  width: 350px;
   height: 300px;
   padding: 3px;
 }
@@ -597,7 +615,7 @@
 }
 
 .UICBScripts .UIForm textarea {
-  width: 90%; 
+  width: 350px; 
   height: 300px;
   padding: 3px;
 }
@@ -695,16 +713,6 @@
 
 /*############################## -- UIQueriesManager  -- ########################*/
 
-.UIQueriesManager .UIQueriesForm .FormContainer {
-	width: 95%;
-	margin: auto;
-}
-
-.UIQueriesManager .UIQueriesForm .UIFormInputSet .UIFormInputSetWithAction .FormContainer {
-	width: 100%;
-	margin: auto;
-}
-
 .UIQueriesManager .UIQueriesForm .UIForm .textarea {
 	width: 350px; 
 	height: 320px ;
@@ -713,6 +721,10 @@
 
 .UIQueriesManager .UIQueriesForm .UIForm .HorizontalLayout {
 	padding-top: 15px;
+}
+
+.UIQueriesManager .UIQueriesForm .UIForm .HorizontalLayout .UIFormInputSet {
+	padding: 10px 0px 0px 0px;
 }
 
 .UIQueriesManager .UIQueriesForm .UIForm .HorizontalLayout .UIFormGrid td {
