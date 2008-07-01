@@ -389,6 +389,19 @@ public class UIBrowseContainer extends UIContainer {
   public void setKeyValue(String keyValue) { keyValue_ = keyValue ; } ;
   public String getKeyValue() { return keyValue_ ; }
 
+  public Node getNodeByUUID(String uuid) throws Exception{
+    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
+    String[] workspaces = manageRepo.getWorkspaceNames() ;
+    for(String ws : workspaces) {
+      try{
+        return SessionsUtils.getSystemProvider().getSession(ws, manageRepo).getNodeByUUID(uuid) ;
+      }catch(Exception e) {
+
+      }      
+    }
+    return null;
+  }
+  
   public  List<Node> getNodeByQuery(int recoderNumber,Session session) throws Exception{
     List<Node> queryDocuments = new ArrayList<Node>() ;
     QueryManager queryManager = null ;
