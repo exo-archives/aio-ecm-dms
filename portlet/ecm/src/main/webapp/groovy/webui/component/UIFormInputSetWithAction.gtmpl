@@ -50,11 +50,10 @@
 						        <%for(j in 0..listInfor.size()-1) {
 					  	          if(uicomponent.isDeleteOnly()) { %>
 						  	          <div class="InforField">
-						  	            <div class="ActionField"><%=listInfor[j]%></div>      	          
+						  	            <span class="ActionField"><%=listInfor[j]%></span>  
                             <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=j%>');" onclick="return confirm('<%=confirm%>');">
 						                  <img class="DeleteIconInfo" src="/eXoResources/skin/DefaultSkin/background/Blank.gif">
 						                </a>
-						                <div style="clear: left"><span></span></div>
 						              </div>	
 						        <%
 					              }

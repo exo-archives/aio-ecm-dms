@@ -459,15 +459,13 @@
 
 /*================================UISimpleSearch==============================*/
 
-.UIJCRExplorerPortlet .UISimpleSearch .FormContainer .InforField {	
-	margin: 5px 0px;
+.UIJCRExplorerPortlet .UISimpleSearch .moreConstraints .InforField {
+	line-height: 18px;
+	_padding-top: 4px;
 }
 
-.UIJCRExplorerPortlet .UISimpleSearch .FieldComponent .UIFormGrid {
-	width: 510px;
-}
-
-.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid .FieldComponent .FieldLabel {
+.UIJCRExplorerPortlet .moreConstraints .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldComponent {
+	padding: 0px 4px;
 }
 
 .UIJCRExplorerPortlet .EditQueryForm {

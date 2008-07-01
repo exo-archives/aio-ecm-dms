@@ -66,6 +66,20 @@
 	width: 130px;
 }
 
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle .HorizontalLayout .rootNodeInfo .FormContainer {
+	padding: 0px;
+	background: none;
+}
+
+
 /*======================== -- End UIJCRExplorer -- ==========================================*/
 
 /*======================== -- Begin UIDocumentWorkspace -- #========================*/
