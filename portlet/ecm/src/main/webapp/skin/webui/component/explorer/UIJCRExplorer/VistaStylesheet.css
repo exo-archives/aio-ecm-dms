@@ -61,7 +61,7 @@
 } 
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIResizableBlock {
-	width: 97%;
+	width: 99.5%;
 }
 
 .UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator {
@@ -390,6 +390,10 @@
 
 .UIJCRExplorerPortlet .UIDocumentFormController {
  	padding: 13px 0px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
+	padding: 0px 10px;
 }
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm .UIFormWithTitle {
