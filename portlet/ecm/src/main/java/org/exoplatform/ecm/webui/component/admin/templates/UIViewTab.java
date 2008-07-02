@@ -139,6 +139,9 @@ public class UIViewTab extends UIContainer {
           return ;
         }
       }
+      while (viewTab.getListView().contains(templateName)) {
+        viewTab.getListView().remove(templateName);
+      }
       templateService.removeTemplate(false, nodeTypeName, templateName, viewTab.getRepository()) ;
       UITemplateContent uiForm = viewTab.findFirstComponentOfType(UITemplateContent.class) ;
       uiForm.update(null) ;

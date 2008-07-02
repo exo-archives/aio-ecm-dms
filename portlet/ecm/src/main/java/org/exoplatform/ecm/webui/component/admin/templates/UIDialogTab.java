@@ -118,8 +118,8 @@ public class UIDialogTab extends UIContainer {
   }
 
   static public class DeleteActionListener extends EventListener<UIDialogTab> {
-    public void execute(Event<UIDialogTab> event) throws Exception {
-      UIDialogTab dialogTab = event.getSource() ;
+    public void execute(Event<UIDialogTab> event) throws Exception {      
+      UIDialogTab dialogTab = event.getSource() ;            
       UIViewTemplate uiViewTemplate = event.getSource().getAncestorOfType(UIViewTemplate.class) ;
       String nodeTypeName = uiViewTemplate.getNodeTypeName() ;
       String templateName = event.getRequestContext().getRequestParameter(OBJECTID) ;
@@ -133,7 +133,10 @@ public class UIDialogTab extends UIContainer {
           dialogTab.setTabRendered() ;
           return ;
         }
-      }
+      }      
+      while (dialogTab.getListDialog().contains(templateName)) {
+        dialogTab.getListDialog().remove(templateName);
+      }      
       PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
       PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
       String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
