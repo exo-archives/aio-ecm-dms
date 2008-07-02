@@ -181,6 +181,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;      
     } catch(RepositoryException repo) {
+      repo.printStackTrace() ;
       String key = "UIDocumentForm.msg.repository-exception" ;
       if(ItemExistsException.class.isInstance(repo)) key = "UIDocumentForm.msg.not-allowed-same-name-sibling" ;
       uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
@@ -229,7 +230,6 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
           String[] arrParams = selectorParams.split(",") ;
           if(arrParams.length == 4) {
             ((UIJCRBrowser)uiComp).setFilterType(new String[] {Utils.NT_FILE}) ;
-            ((UIJCRBrowser)uiComp).setIsDisable(arrParams[1], true) ;
             ((UIJCRBrowser)uiComp).setRootPath(arrParams[2]) ;
             if(arrParams[3].indexOf(";") > -1) {
               ((UIJCRBrowser)uiComp).setMimeTypes(arrParams[3].split(";")) ;

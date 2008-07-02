@@ -56,6 +56,7 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 import org.exoplatform.webui.form.UIFormUploadInput;
 
@@ -247,12 +248,16 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
         SessionProvider provider = SessionsUtils.getSystemProvider() ;                
         ((UIJCRBrowser)uiComp).setRepository(repositoryName) ;
         ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
+        String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
+        if(wsFieldName != null && wsFieldName.length() > 0) {
+          String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
+          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;      
+        }
         String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
         if(selectorParams != null) {
           String[] arrParams = selectorParams.split(",") ;
           if(arrParams.length == 4) {
             ((UIJCRBrowser)uiComp).setFilterType(new String[] {Utils.NT_FILE}) ;
-            ((UIJCRBrowser)uiComp).setIsDisable(arrParams[1], true) ;
             ((UIJCRBrowser)uiComp).setRootPath(arrParams[2]) ;
             if(arrParams[3].indexOf(";") > -1) {
               ((UIJCRBrowser)uiComp).setMimeTypes(arrParams[3].split(";")) ;

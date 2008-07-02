@@ -414,9 +414,9 @@ public class CmsServiceImpl implements CmsService {
             node.setProperty(propertyName, session2.getValueFactory().createValue((String)value));
           }
         } else {
-          if(value.toString().length() > 0 && session.getRootNode().hasNode((String) value)) {
+          try {
             node.setProperty(propertyName, value.toString());
-          } else {
+          } catch(Exception e) {
             node.setProperty(propertyName, session.getValueFactory().createValue(value.toString()));
           }
         }
