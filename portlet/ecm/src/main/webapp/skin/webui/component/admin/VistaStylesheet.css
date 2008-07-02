@@ -541,7 +541,7 @@
 }
 
 .ECMTempForm .UIForm .textarea {
-  width: 95%;
+  width: 380px;
   height: 300px;
   padding: 3px;
 }
@@ -552,7 +552,7 @@
 }
 
 .CBTempForm .UIForm textarea {
-  width: 95%;
+  width: 380px;
   height: 300px;
   padding: 3px;
 }
