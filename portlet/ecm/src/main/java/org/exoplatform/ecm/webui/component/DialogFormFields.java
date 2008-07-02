@@ -253,6 +253,20 @@ public class DialogFormFields extends UIForm {
     }
     return convertedValues;
   }    
+  
+  private String getNodePathByUUID(String uuid) throws Exception{
+    String[] workspaces = getRepository().getWorkspaceNames() ;
+    Node node = null ;
+    for(String ws : workspaces) {
+      try{
+        node = SessionsUtils.getSystemProvider().getSession(ws, getRepository()).getNodeByUUID(uuid) ;
+        return ws + ":" + node.getPath() ;
+      } catch(Exception e) {
+        continue ;
+      }      
+    }
+    return null;
+  }
 
   public void addActionField(String name, String[] arguments) throws Exception { 
     addActionField(name,null,arguments);
@@ -354,7 +368,14 @@ public class DialogFormFields extends UIForm {
         uiInput.setValue(getNode().getName()) ;
         uiInput.setEditable(false) ;
       } else if(getNode().hasProperty(getPropertyName(jcrPath)) && !isUpdateSelect_) {
-        uiInput.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
+        if(getNode().getProperty(getPropertyName(jcrPath)).getDefinition().getRequiredType() == 
+          PropertyType.REFERENCE) {
+          String path = 
+            getNodePathByUUID(getNode().getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
+          uiInput.setValue(path) ;
+        } else {
+          uiInput.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
+        }
       } 
     }
     if(isNotEditNode_) {
