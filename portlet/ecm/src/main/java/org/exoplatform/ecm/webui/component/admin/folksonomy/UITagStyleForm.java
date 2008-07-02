@@ -101,30 +101,34 @@ public class UITagStyleForm extends UIForm {
   
   static public class UpdateStyleActionListener extends EventListener<UITagStyleForm> {
     public void execute(Event<UITagStyleForm> event) throws Exception {
-      UITagStyleForm uiForm = event.getSource() ;
-      UIFolksonomyManager uiManager = uiForm.getAncestorOfType(UIFolksonomyManager.class) ;
-      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      String documentRange = uiForm.getUIStringInput(DOCUMENT_RANGE).getValue() ;
-      String styleHTML = uiForm.getUIFormTextAreaInput(STYLE_HTML).getValue() ;
+      UITagStyleForm uiForm = event.getSource();
+      UIFolksonomyManager uiManager = uiForm.getAncestorOfType(UIFolksonomyManager.class);
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+      String documentRange = uiForm.getUIStringInput(DOCUMENT_RANGE).getValue();
+      String styleHTML = uiForm.getUIFormTextAreaInput(STYLE_HTML).getValue();            
       if(!uiForm.validateRange(documentRange)) {
-        uiApp.addMessage(new ApplicationMessage("UITagStyleForm.msg.range-validator", null)) ;
-        return ;
+        uiApp.addMessage(new ApplicationMessage("UITagStyleForm.msg.range-validator", null));
+        return;
+      }
+      if (styleHTML == null) {
+        uiApp.addMessage(new ApplicationMessage("UITagStyleForm.msg.empty", null));
+        return;
       }
       try {
-        uiForm.getTagStyle().setProperty(UITagStyleList.RANGE_PROP, documentRange) ;
-        uiForm.getTagStyle().setProperty(UITagStyleList.HTML_STYLE_PROP, styleHTML) ;
-        uiForm.getTagStyle().save() ;
-        uiForm.getTagStyle().getSession().save() ;
-        UITagStyleList uiTagList = uiManager.getChild(UITagStyleList.class) ;
-        uiTagList.updateGrid() ;
+        uiForm.getTagStyle().setProperty(UITagStyleList.RANGE_PROP, documentRange);
+        uiForm.getTagStyle().setProperty(UITagStyleList.HTML_STYLE_PROP, styleHTML);
+        uiForm.getTagStyle().save();
+        uiForm.getTagStyle().getSession().save();
+        UITagStyleList uiTagList = uiManager.getChild(UITagStyleList.class);
+        uiTagList.updateGrid();
       } catch(Exception e) {
-        String key = "UITagStyleForm.msg.error-update" ;
-        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-        return ;
+        String key = "UITagStyleForm.msg.error-update";
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
+        return;
       }
-      UIPopupWindow uiPopup = uiManager.getChild(UIPopupWindow.class) ;
-      uiPopup.setShow(false) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+      UIPopupWindow uiPopup = uiManager.getChild(UIPopupWindow.class);
+      uiPopup.setShow(false);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
     }
   }
   
