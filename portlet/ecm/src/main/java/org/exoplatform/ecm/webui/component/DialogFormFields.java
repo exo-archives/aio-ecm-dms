@@ -48,11 +48,12 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
-import org.exoplatform.webui.form.UIFormWYSIWYGInput;
 import org.exoplatform.webui.form.validator.DateTimeValidator;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.validator.NumberFormatValidator;
+import org.exoplatform.webui.form.wysiwyg.FCKEditorConfig;
+import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 
 /**
@@ -465,6 +466,7 @@ public class DialogFormFields extends UIForm {
     inputProperty.setJcrPath(jcrPath);       
     setInputProperty(name, inputProperty) ;
     if("true".equalsIgnoreCase(multiValues)) {
+      //TODO need add FCKEditorConfig for the service
       renderMultiValuesInput(UIFormWYSIWYGInput.class,name,label);      
       return ;
     }
@@ -476,6 +478,17 @@ public class DialogFormFields extends UIForm {
     UIFormWYSIWYGInput wysiwyg = findComponentById(name) ;
     if(wysiwyg == null) {
       wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, isBasic) ;
+      /**
+       * Broadcast some info about current node by FCKEditorConfig Object
+       * FCKConfigService used to allow add custom config for fckeditor from service
+       * */
+      FCKEditorConfig config = new FCKEditorConfig();
+      if(repositoryName_ != null && workspaceName_ != null && nodePath_ != null) {        
+        config.put("repositoryName",repositoryName_);
+        config.put("workspaceName",workspaceName_);
+        config.put("jcrPath",nodePath_);        
+      }      
+      wysiwyg.setFCKConfig(config);
       if(validateType != null) {
     	  addValidators(wysiwyg, validateType);
 //        wysiwyg.addValidator(getValidator(validateType)) ;
