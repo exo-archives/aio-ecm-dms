@@ -205,7 +205,7 @@ public class UIDrivesBrowser extends UIContainer {
           viewName = viewName.trim() ;
           Node viewNode = 
             uiDrive.getApplicationComponent(ManageViewService.class).getViewByName(viewName, uiDrive.repoName_,SessionsUtils.getSystemProvider()) ;
-          String permiss = viewNode.getProperty("exo:permissions").getString();
+          String permiss = viewNode.getProperty("exo:accessPermissions").getString();
           if(permiss.contains("${userId}")) permiss = permiss.replace("${userId}", userId) ;
           String[] viewPermissions = permiss.split(",") ;
           if(permiss.equals("*")) viewMap.put(viewName, viewName) ;

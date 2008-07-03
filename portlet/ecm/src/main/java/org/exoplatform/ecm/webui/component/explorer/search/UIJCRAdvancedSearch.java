@@ -148,7 +148,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
       long startTime = System.currentTimeMillis();
       try {
-        if(queryS.indexOf("order by") < 0) {
+        if(queryS.toLowerCase().indexOf("order by") < 0) {
           if(searchType.equals("sql")) {
             queryS = queryS + " order by exo:dateCreated DESC" ;
           } else if(searchType.equals("xpath")) {

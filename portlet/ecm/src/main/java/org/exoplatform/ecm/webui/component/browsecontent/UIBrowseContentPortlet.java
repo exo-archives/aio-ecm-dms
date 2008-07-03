@@ -21,6 +21,7 @@ import javax.portlet.PortletModeException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -79,11 +80,13 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
       if(!isViewModing_) uiContainer.refreshContent() ; 
       isViewModing_ = true ;
     } else if(portletReqContext.getApplicationMode() == PortletMode.EDIT) {      
-      if(!uiTabPane.isNewConfig()) uiTabPane.getCurrentConfig() ;
-      uiTabPane.setRendered(true) ;
-      uiBCHelp.setRendered(false) ;
-      uiContainer.setRendered(false) ;
-      isViewModing_ = false ;
+      if(!SessionsUtils.isAnonim()) {
+        if(!uiTabPane.isNewConfig()) uiTabPane.getCurrentConfig() ;
+        uiTabPane.setRendered(true) ;
+        uiBCHelp.setRendered(false) ;
+        uiContainer.setRendered(false) ;
+        isViewModing_ = false ;
+      }
     } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {      
       uiTabPane.setRendered(false) ;
       uiBCHelp.setRendered(true) ;

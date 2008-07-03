@@ -194,7 +194,7 @@
       <supertype>nt:base</supertype>
     </supertypes>
     <propertyDefinitions>
-      <propertyDefinition name="exo:permissions" requiredType="String" autoCreated="false" mandatory="true" 
+      <propertyDefinition name="exo:accessPermissions" requiredType="String" autoCreated="false" mandatory="true" 
         onParentVersion="COPY" protected="false" multiple="false">
         <valueConstraints/>        
       </propertyDefinition>      
@@ -273,7 +273,7 @@
     	<supertype>nt:base</supertype>
     </supertypes> 
     <propertyDefinitions>
-      <propertyDefinition name="exo:permissions" requiredType="String" autoCreated="false" mandatory="true" 
+      <propertyDefinition name="exo:accessPermissions" requiredType="String" autoCreated="false" mandatory="true" 
         onParentVersion="IGNORE" protected="false" multiple="false">
         <valueConstraints/>        
       </propertyDefinition>      
@@ -709,7 +709,7 @@
   </nodeType>
   <nodeType name="mix:sharedQuery" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
 	  <propertyDefinitions>	
-	  	<propertyDefinition name="exo:permissions" requiredType="String" autoCreated="false" mandatory="false"
+		  <propertyDefinition name="exo:accessPermissions" requiredType="String" autoCreated="false" mandatory="false"
 		   onParentVersion="COPY" protected="false" multiple="true">
 		    <valueConstraints/>        
 		  </propertyDefinition>

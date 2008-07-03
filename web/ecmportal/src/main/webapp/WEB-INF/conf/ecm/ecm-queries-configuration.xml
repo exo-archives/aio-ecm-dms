@@ -42,7 +42,11 @@
            <field  name="name"><string>Created Documents</string></field>
            <field  name="language"><string>xpath</string></field>
            <field  name="statement"><string>//*[(@jcr:primaryType = 'exo:article' or @jcr:primaryType = 'nt:file') and @exo:owner='${UserId}$'] order by @exo:dateCreated descending</string></field>
-           <field  name="permissions"><string>*:/platform/users</string></field>
+           <field  name="permissions">
+             <collection type="java.util.ArrayList">
+               <value><string>*:/platform/users</string></value>
+             </collection>
+           </field>
 		   <!-- Don't cache this query as it is sensitive to user -->
            <field  name="cachedResult"><boolean>false</boolean></field>             
          </object>
@@ -54,7 +58,11 @@
            <field  name="name"><string>CreatedDocumentDayBefore</string></field>
            <field  name="language"><string>xpath</string></field>
            <field  name="statement"><string>//element(*,exo:article)[@exo:dateCreated &lt; xs:dateTime('${Date}$')] order by @exo:dateCreated descending</string></field>
-           <field  name="permissions"><string>*:/platform/users</string></field>
+           <field  name="permissions">
+             <collection type="java.util.ArrayList">
+               <value><string>*:/platform/users</string></value>
+             </collection>
+           </field>
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
@@ -65,7 +73,11 @@
            <field  name="name"><string>Validating Documents</string></field>
            <field  name="language"><string>xpath</string></field>
            <field  name="statement"><string>//element(*,exo:publishingState)[@exo:currentState='Request For Validation'] order by @exo:dateCreated descending</string></field>           
-           <field  name="permissions"><string>*:/platform/users</string></field>
+           <field  name="permissions">
+             <collection type="java.util.ArrayList">
+               <value><string>*:/platform/users</string></value>
+             </collection>
+           </field>
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
@@ -76,7 +88,11 @@
            <field  name="name"><string>Pending Documents</string></field>
            <field  name="language"><string>xpath</string></field>           
            <field  name="statement"><string>//element(*,exo:publishingState)[@exo:currentState='Pending'] order by @exo:dateCreated descending</string></field>
-           <field  name="permissions"><string>*:/platform/users</string></field>
+           <field  name="permissions">
+             <collection type="java.util.ArrayList">                
+               <value><string>*:/platform/users</string></value>
+             </collection> 
+           </field>
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
@@ -87,7 +103,11 @@
            <field  name="name"><string>Publishing Documents</string></field>
            <field  name="language"><string>xpath</string></field>
            <field  name="statement"><string>//element(*,exo:publishingState)[@exo:currentState='Publishing'] order by @exo:dateCreated descending</string></field>
-           <field  name="permissions"><string>*:/platform/users</string></field>
+           <field  name="permissions">
+             <collection type="java.util.ArrayList">
+               <value><string>*:/platform/users</string></value>
+             </collection>
+           </field>
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
@@ -98,7 +118,11 @@
            <field  name="name"><string>Backup Documents</string></field>
            <field  name="language"><string>xpath</string></field>
            <field  name="statement"><string>//element(*,exo:publishingState)[@exo:currentState='Backup'] order by @exo:dateCreated descending</string></field>
-           <field  name="permissions"><string>*:/platform/users</string></field>
+           <field  name="permissions">
+             <collection type="java.util.ArrayList">  
+               <value><string>*:/platform/users</string></value>
+             </collection>
+           </field>
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
@@ -109,7 +133,11 @@
            <field  name="name"><string>All Articles</string></field>
            <field  name="language"><string>xpath</string></field>
            <field  name="statement"><string>//element(*,exo:article) order by @exo:dateCreated descending</string></field>
-           <field  name="permissions"><string>*:/platform/users</string></field>
+           <field  name="permissions">
+             <collection type="java.util.ArrayList">
+               <value><string>*:/platform/users</string></value>
+             </collection>
+           </field>
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
@@ -120,7 +148,11 @@
            <field  name="name"><string>All Events</string></field>
            <field  name="language"><string>xpath</string></field>
            <field  name="statement"><string>//element(*,exo:events) order by @exo:dateCreated descending</string></field>
-           <field  name="permissions"><string>*:/platform/users</string></field>
+           <field  name="permissions">
+             <collection type="java.util.ArrayList">
+               <value><string>*:/platform/users</string></value>
+             </collection>
+           </field>
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>       

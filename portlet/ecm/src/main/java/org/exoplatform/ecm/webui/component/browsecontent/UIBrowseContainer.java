@@ -365,7 +365,10 @@ public class UIBrowseContainer extends UIContainer {
     String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"") ;
     String workspace = getWorkSpace() ;
     String repository = getRepository();
-    SessionProvider sessionProvider = getSessionProvider();
+    SessionProvider sessionProvider = null ;
+    //TODO: should use AnonimProvider when jcr team fix for tag version
+    if(SessionsUtils.isAnonim()) sessionProvider = getSystemProvider() ;
+    else sessionProvider = getSessionProvider();
     
     return queryService.execute(queryPath, workspace, repository, sessionProvider);
   }

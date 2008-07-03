@@ -122,7 +122,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
   @SuppressWarnings("hiding")
   private Node addView(Node viewManager, String name, String permissions, String template) throws Exception {
     Node contentNode = viewManager.addNode(name, "exo:view");
-    contentNode.setProperty("exo:permissions", permissions);
+    contentNode.setProperty("exo:accessPermissions", permissions);
     contentNode.setProperty("exo:template", template);  
     viewManager.save() ;
     return contentNode ;
