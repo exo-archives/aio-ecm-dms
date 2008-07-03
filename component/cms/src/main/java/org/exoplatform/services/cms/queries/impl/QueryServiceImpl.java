@@ -17,8 +17,6 @@
 package org.exoplatform.services.cms.queries.impl;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -81,7 +79,7 @@ public class QueryServiceImpl implements QueryService, Startable{
         queryPlugin.init(baseQueriesPath_) ;
       }catch (Exception e) {
         System.out.println("[WARNING] ==> Can not init query plugin '" + queryPlugin.getName() + "'");
-        //e.printStackTrace() ;
+        e.printStackTrace() ;
       }
     }
   }
@@ -224,7 +222,7 @@ public class QueryServiceImpl implements QueryService, Startable{
       Node query = queryHome.getNode(queryName) ;
       query.setProperty("jcr:language", language) ;
       query.setProperty("jcr:statement", statement) ;
-      query.setProperty("exo:permissions", vls) ;
+      query.setProperty("exo:accessPermissions", vls) ;
       query.setProperty("exo:cachedResult", cachedResult) ;
       query.save() ;
       session.save() ;
@@ -234,7 +232,7 @@ public class QueryServiceImpl implements QueryService, Startable{
       Query query = manager.createQuery(statement, language);      
       Node newQuery = query.storeAsNode(baseQueriesPath_ + "/" + queryName);
       newQuery.addMixin("mix:sharedQuery") ;
-      newQuery.setProperty("exo:permissions", vls) ;
+      newQuery.setProperty("exo:accessPermissions", vls) ;
       newQuery.setProperty("exo:cachedResult", cachedResult) ;
       session.getItem(queriesPath).save();
       queryPath = queriesPath ;
@@ -381,7 +379,7 @@ public class QueryServiceImpl implements QueryService, Startable{
   }
   
   private boolean canUseQuery(String userId,Node queryNode) throws Exception{    
-    Value[] values = queryNode.getProperty("exo:permissions").getValues() ;
+    Value[] values = queryNode.getProperty("exo:accessPermissions").getValues() ;
     for(Value value : values) {
       String accessPermission = value.getString() ;
       if(hasMembership(userId,accessPermission)) {

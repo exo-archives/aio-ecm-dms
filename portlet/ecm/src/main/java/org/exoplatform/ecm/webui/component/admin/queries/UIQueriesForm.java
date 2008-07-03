@@ -81,7 +81,7 @@ public class UIQueriesForm extends UIForm implements UISelector {
   
   public UIQueriesForm() throws Exception {
     addUIFormInput(new UIFormStringInput(QUERY_NAME, QUERY_NAME, null).
-    	addValidator(MandatoryValidator.class).
+      addValidator(MandatoryValidator.class).
         addValidator(ECMNameValidator.class)) ;
     List<SelectItemOption<String>> ls = new ArrayList<SelectItemOption<String>>() ;
     ls.add(new SelectItemOption<String>("xPath", "xpath")) ;
@@ -135,8 +135,8 @@ public class UIQueriesForm extends UIForm implements UISelector {
     if(query.hasProperty("jcr:language")) {
       getUIFormSelectBox(QUERY_TYPE).setValue(query.getProperty("jcr:language").getString()) ;
     }
-    if(query.hasProperty("exo:permissions")) {
-      Value[] values = query.getProperty("exo:permissions").getValues() ;
+    if(query.hasProperty("exo:accessPermissions")) {
+      Value[] values = query.getProperty("exo:accessPermissions").getValues() ;
       StringBuilder strValues = new StringBuilder() ;
       for(int i = 0; i < values.length; i ++) {
         if(strValues.length() > 0) strValues = strValues.append(",") ;

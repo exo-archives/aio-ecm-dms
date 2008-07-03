@@ -48,7 +48,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   protected final static String TEMPLATE_PROP = "exo:templateFile".intern() ;
   protected final static String ADMIN_VIEW = "admin".intern() ;
   protected final static String DEFAULT_VIEW = "default".intern() ;
-  protected final static String EXO_PERMISSIONS = "exo:permissions".intern()  ;
+  protected final static String EXO_PERMISSIONS = "exo:accessPermissions".intern()  ;
   protected final static String BUTTON_PROP = "exo:buttons".intern() ;
 
   private List<ManageViewPlugin> plugins_ = new ArrayList<ManageViewPlugin> ();
@@ -278,7 +278,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
 
   private Node addView(Node viewManager, String name, String permissions, String template) throws Exception {
     Node contentNode = viewManager.addNode(name, "exo:view");
-    contentNode.setProperty("exo:permissions", permissions);
+    contentNode.setProperty("exo:accessPermissions", permissions);
     contentNode.setProperty("exo:template", template);  
     viewManager.save() ;
 

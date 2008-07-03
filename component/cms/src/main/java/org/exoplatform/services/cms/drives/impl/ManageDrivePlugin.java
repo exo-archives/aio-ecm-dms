@@ -33,7 +33,7 @@ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 public class ManageDrivePlugin extends BaseComponentPlugin {
 
   private static String WORKSPACE = "exo:workspace".intern() ;
-  private static String PERMISSIONS = "exo:permissions".intern() ;
+  private static String PERMISSIONS = "exo:accessPermissions".intern() ;
   private static String VIEWS = "exo:views".intern() ;
   private static String ICON = "exo:icon".intern() ;
   private static String PATH = "exo:path".intern() ;

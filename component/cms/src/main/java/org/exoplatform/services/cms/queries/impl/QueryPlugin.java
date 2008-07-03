@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.queries.impl;
 
 import java.util.Iterator;
+import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
@@ -35,7 +36,7 @@ public class QueryPlugin extends BaseComponentPlugin {
 
   private static String STATEMENT = "jcr:statement".intern() ;
   private static String LANGUAGE = "jcr:language".intern() ;
-  private static String PERMISSIONS = "exo:permissions".intern() ;
+  private static String PERMISSIONS = "exo:accessPermissions".intern() ;
   private static String CACHED_RESULT = "exo:cachedResult".intern() ;
 
   private InitParams params_ ;
@@ -91,8 +92,8 @@ public class QueryPlugin extends BaseComponentPlugin {
     Node queryHomeNode = (Node)session.getItem(baseQueriesPath) ;
     while(it.hasNext()){
       QueryData data = (QueryData)it.next().getObject() ;      
-        addQuery(queryHomeNode, data) ;
-      }
+      addQuery(queryHomeNode, data) ;
+    }
     queryHomeNode.save();
     session.save();
     session.logout();    
@@ -111,8 +112,14 @@ public class QueryPlugin extends BaseComponentPlugin {
     queryNode.addMixin("mix:sharedQuery") ;
     queryNode.setProperty(STATEMENT, data.getStatement()) ;
     queryNode.setProperty(LANGUAGE, data.getLanguage()) ;
-    Value vl = vt.createValue(data.getPermissions()) ;
-    Value[] vls = {vl} ;
+    List<String> queryPermissions = data.getPermissions() ;
+    Value[] vls = new Value[queryPermissions.size()];
+    int i = 0;
+    for(String per : queryPermissions) {
+      Value vl = vt.createValue(per) ;
+      vls[i] = vl ;
+      i++ ;
+    }
     queryNode.setProperty(PERMISSIONS, vls) ;
     queryNode.setProperty(CACHED_RESULT, data.getCacheResult()) ;        
   }

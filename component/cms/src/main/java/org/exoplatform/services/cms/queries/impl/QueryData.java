@@ -16,6 +16,8 @@
  */
 package org.exoplatform.services.cms.queries.impl;
 
+import java.util.List;
+
 /**
  * Created by The eXo Platform SARL
  * Author : Nguyen Quang Hung
@@ -27,7 +29,7 @@ public class QueryData{
   private String name ;    
   private String language ;
   private String statement ;
-  private String permissions ;
+  private List<String> permissions ;
   private boolean cachedResult ;
   
   public  QueryData(){}
@@ -38,8 +40,8 @@ public class QueryData{
   public String getLanguage() { return this.language ; }
   public void setLanguage(String l) { this.language = l ; }
   
-  public String getPermissions() { return this.permissions ; }
-  public void setPermissions(String permission) { this.permissions = permission ; }
+  public List<String> getPermissions() { return this.permissions ; }
+  public void setPermissions(List<String> permission) { this.permissions = permission ; }
 
   public String getStatement() { return this.statement ; }
   public void setStatement(String s) { this.statement = s ; }

@@ -251,7 +251,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     }
     if(views_ != null) {
       getUIStringInput(FIELD_NAME).setEditable(false).setValue(views_.getName()) ;
-      getUIStringInput(FIELD_PERMISSION).setValue(views_.getProperty("exo:permissions").getString()) ;
+      getUIStringInput(FIELD_PERMISSION).setValue(views_.getProperty("exo:accessPermissions").getString()) ;
       getUIFormSelectBox(FIELD_TEMPLATE).setValue(views_.getProperty("exo:template").getString()) ;
     }
     setInfoField(FIELD_TABS, getTabList()) ;
