@@ -16,7 +16,7 @@
  */
 package org.exoplatform.ecm.component;
 
-import org.exoplatform.ecm.model.ComponentSelector;
+import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

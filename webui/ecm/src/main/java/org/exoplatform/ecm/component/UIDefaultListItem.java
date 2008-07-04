@@ -16,7 +16,7 @@
  */
 package org.exoplatform.ecm.component;
 
-import org.exoplatform.ecm.model.UISelector;
+import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.event.Event;
@@ -45,7 +45,7 @@ public class UIDefaultListItem extends UITreeList {
       UIJCRBrowser uiJCRBrowser = uiDefault.getParent() ;
       String returnField = uiJCRBrowser.getReturnField() ;
       if(!uiJCRBrowser.isDisable()) value = uiJCRBrowser.getWorkspace() + ":" + value ;
-      ((UISelector)uiJCRBrowser.getReturnComponent()).updateSelect(returnField, value) ;
+      ((UISelectable)uiJCRBrowser.getReturnComponent()).doSelect(returnField, value) ;
     }
   }
 }

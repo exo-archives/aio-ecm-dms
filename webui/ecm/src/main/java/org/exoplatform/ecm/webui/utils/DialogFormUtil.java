@@ -43,8 +43,19 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
  *          hoa.pham@exoplatform.com
  * Jun 23, 2008  
  */
+/**
+ * The Class DialogFormUtil.
+ */
 public class DialogFormUtil {
 
+  /**
+   * Prepare map.
+   * 
+   * @param inputs the inputs
+   * @param properties the properties
+   * @return the map< string, jcr input property>
+   * @throws Exception the exception
+   */
   public static Map<String, JcrInputProperty> prepareMap(List inputs, Map properties) throws Exception {
     Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
     HashMap<String, JcrInputProperty> hasMap = new HashMap<String, JcrInputProperty>() ;
@@ -84,6 +95,17 @@ public class DialogFormUtil {
     return rawinputs;
   }
 
+  /**
+   * Creates the form input.
+   * 
+   * @param type the type
+   * @param name the name
+   * @param label the label
+   * @param validateType the validate type
+   * @param valueType the value type
+   * @return the t
+   * @throws Exception the exception
+   */
   public static <T extends UIFormInputBase> T createFormInput(Class<T> type,String name, String label, 
       String validateType, Class valueType) throws Exception {
     Object[] args= {name, null, valueType };
@@ -99,25 +121,16 @@ public class DialogFormUtil {
       formInput.setLabel(label);
     }
     return type.cast(formInput);
-  }  
+  }    
 
-  private static Class getValidator(String validatorType) throws ClassNotFoundException {
-    if(validatorType.equals("name")) {
-      return ECMNameValidator.class ;
-    } else if (validatorType.equals("email")){
-      return EmailAddressValidator.class ;
-    } else if (validatorType.equals("number")) {
-      return NumberFormatValidator.class;
-    } else if (validatorType.equals("empty")){
-      return MandatoryValidator.class ;
-    }else if(validatorType.equals("datetime")) {
-      return DateTimeValidator.class;
-    }else {
-      ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
-      return cl.loadClass(validatorType);
-    }
-  }
-
+  /**
+   * Gets the property value as string.
+   * 
+   * @param node the node
+   * @param propertyName the property name
+   * @return the property value as string
+   * @throws Exception the exception
+   */
   public static String getPropertyValueAsString(Node node, String propertyName) throws Exception {
     Property property = null;
     try{
@@ -146,4 +159,20 @@ public class DialogFormUtil {
     return "" ;    
   }
 
+  private static Class getValidator(String validatorType) throws ClassNotFoundException {
+    if(validatorType.equals("name")) {
+      return ECMNameValidator.class ;
+    } else if (validatorType.equals("email")){
+      return EmailAddressValidator.class ;
+    } else if (validatorType.equals("number")) {
+      return NumberFormatValidator.class;
+    } else if (validatorType.equals("empty")){
+      return MandatoryValidator.class ;
+    }else if(validatorType.equals("datetime")) {
+      return DateTimeValidator.class;
+    }else {
+      ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
+      return cl.loadClass(validatorType);
+    }
+  }
 }
