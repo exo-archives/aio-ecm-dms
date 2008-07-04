@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.ecm.webui.component.explorer.publication;
+package org.exoplatform.services.ecm.publication.plugins.staticdirect;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,13 +24,13 @@ import java.util.ResourceBundle;
 import javax.jcr.Node;
 import javax.jcr.Value;
 
-import org.exoplatform.ecm.jcr.model.VersionNode;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
+import org.exoplatform.services.ecm.publication.plugins.webui.VersionNode;
 import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -46,7 +46,7 @@ import org.exoplatform.webui.form.UIFormRadioBoxInput;
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template = "app:/groovy/webui/component/explorer/publication/UIPublicationForm.gtmpl",
+    template = "classpath:resources/templates/staticdirect/UIPublicationForm.gtmpl",
     events = {
       @EventConfig(listeners = UIPublicationForm.SaveActionListener.class),
       @EventConfig(listeners = UIPublicationForm.CancelActionListener.class)
@@ -130,14 +130,18 @@ public class UIPublicationForm extends UIForm {
       context.put("nodeVersionUUID", uiForm.curentVersion_.getVersion().getUUID());
       context.put("visibility", visibility);
       publicationService.changeState(uiForm.currentNode_, state, context) ;
-      uiForm.getAncestorOfType(UIJCRExplorer.class).cancelAction() ;
+      UIPopupWindow uiPopup = uiForm.getAncestorOfType(UIPopupWindow.class) ;
+      uiPopup.setRendered(false) ;
+      uiPopup.setShow(false) ;
     }
   }
   
   static public class CancelActionListener extends EventListener<UIPublicationForm> {
     public void execute(Event<UIPublicationForm> event) throws Exception {
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.cancelAction();
+      UIPublicationForm uiForm = event.getSource();
+      UIPopupWindow uiPopup = uiForm.getAncestorOfType(UIPopupWindow.class) ;
+      uiPopup.setRendered(false) ;
+      uiPopup.setShow(false) ;
     }
   }
   

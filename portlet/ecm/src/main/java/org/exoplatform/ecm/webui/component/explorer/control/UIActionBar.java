@@ -17,7 +17,6 @@
 package org.exoplatform.ecm.webui.component.explorer.control;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.jcr.Item;
@@ -30,7 +29,6 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
-import javax.jcr.version.Version;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.model.Preference;
@@ -63,6 +61,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIExportNode;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIImportNode;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertiesManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertyForm;
+import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPublicationManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIRelationManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIRelationsAddedList;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UINodeTypeInfo;
@@ -71,11 +70,6 @@ import org.exoplatform.ecm.webui.component.explorer.popup.info.UIReferencesList;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIViewMetadataTemplate;
-import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationContainer;
-import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationForm;
-import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationLogList;
-import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationManager;
-import org.exoplatform.ecm.webui.component.explorer.publication.UIVersionTreeList;
 import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
@@ -97,7 +91,11 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
-import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
+import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIPublicationContainer;
+import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIPublicationForm;
+import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIStaticDirectVersionList;
+import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
+import org.exoplatform.services.ecm.publication.plugins.webui.UIVersionTreeList;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -775,17 +773,16 @@ public class UIActionBar extends UIForm {
       UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
       UIPublicationManager uiPublicationManager = 
         uiExplorer.createUIComponent(UIPublicationManager.class, null, null) ;
-      UIPublicationContainer uiPublicationContainer = 
-        uiPublicationManager.getChild(UIPublicationContainer.class) ;
-      uiPublicationContainer.addChild(uiForm) ;
-      uiPublicationContainer.initChild();
+      uiPublicationManager.addChild(uiForm) ;
+      uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false) ;
       UIPublicationLogList uiPublicationLogList = 
         uiPublicationManager.getChild(UIPublicationLogList.class);
-      UIVersionTreeList uiVersionTreeList = 
-        uiPublicationContainer.getChild(UIVersionTreeList.class);
+      UIStaticDirectVersionList uiVersionTreeList = 
+        uiForm.findFirstComponentOfType(UIStaticDirectVersionList.class);
       UIPublicationForm uiPublicationForm = 
-        uiPublicationContainer.getChild(UIPublicationForm.class);
+        uiForm.findFirstComponentOfType(UIPublicationForm.class);
       uiPopupAction.activate(uiPublicationManager, 700, 500);
+      uiPublicationLogList.setNode(uiExplorer.getCurrentNode()) ;
       uiPublicationLogList.updateGrid() ;
       uiVersionTreeList.initVersion(currentNode);
       uiPublicationForm.initForm(currentNode) ;

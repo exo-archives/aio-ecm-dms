@@ -14,12 +14,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.ecm.webui.component.explorer.publication;
+package org.exoplatform.services.ecm.publication.plugins.webui;
 
 import javax.jcr.Node;
 import javax.jcr.Value;
 
-import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -34,20 +33,19 @@ import org.exoplatform.webui.event.EventListener;
  * Jun 26, 2008 9:22:51 AM
  */
 @ComponentConfig(
-    template = "app:/groovy/webui/component/explorer/publication/UIVersionTreeList.gtmpl",
+    template = "classpath:resources/templates/webui/UIVersionTreeList.gtmpl",
     events = {
         @EventConfig(listeners = UIVersionTreeList.SelectActionListener.class)
     }
 )
-public class UIVersionTreeList extends UIContainer {
+public abstract class UIVersionTreeList extends UIContainer {
   
   protected VersionNode rootVersion_ ;
   protected VersionNode curentVersion_;
   protected Node node_ ;
-  private boolean isSelectedBaseVersion_ = true ;
+  protected boolean isSelectedBaseVersion_ = true ;
   
   public UIVersionTreeList() throws Exception {
-    
   }
   
   public VersionNode getRootVersionNode() throws Exception {  return rootVersion_ ; }
@@ -60,8 +58,6 @@ public class UIVersionTreeList extends UIContainer {
     node_ = currentNode;   
     rootVersion_ = new VersionNode(node_.getVersionHistory().getRootVersion());
     curentVersion_ = new VersionNode(node_.getBaseVersion());
-    
-    
   }
   
   public boolean isBaseVersion(VersionNode versionNode) throws Exception {
@@ -89,18 +85,13 @@ public class UIVersionTreeList extends UIContainer {
     return false ;
   }
   
+  public abstract void selectVersion(String versionPath) throws Exception ;
+  
   static public class SelectActionListener extends EventListener<UIVersionTreeList> {
     public void execute(Event<UIVersionTreeList> event) throws Exception {
       UIVersionTreeList uiVersionTreeList = event.getSource() ;
       String versionPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiVersionTreeList.curentVersion_  = uiVersionTreeList.rootVersion_.findVersionNode(versionPath) ;
-      uiVersionTreeList.isSelectedBaseVersion_ = false ;
-      UIPublicationContainer uiPublicationContainer = uiVersionTreeList.getParent() ;
-      UIPublicationForm uiForm = uiPublicationContainer.getChild(UIPublicationForm.class) ;
-      uiForm.setVersionNode(uiVersionTreeList.curentVersion_);
-      uiForm.updateForm(uiVersionTreeList.curentVersion_) ;
-      
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPublicationContainer.getParent()) ;
+      uiVersionTreeList.selectVersion(versionPath) ;
     }
   }
 }

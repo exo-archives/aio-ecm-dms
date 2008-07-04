@@ -17,22 +17,16 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
 
-import java.util.HashMap;
-
 import javax.jcr.Node;
-import javax.jcr.version.Version;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationContainer;
-import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationForm;
-import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationLogList;
-import org.exoplatform.ecm.webui.component.explorer.publication.UIPublicationManager;
-import org.exoplatform.ecm.webui.component.explorer.publication.UIVersionTreeList;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
-import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
+import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIPublicationForm;
+import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIStaticDirectVersionList;
+import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -50,7 +44,7 @@ import org.exoplatform.webui.form.UIForm;
 
 @ComponentConfig(
     type = UIActivePublication.class,
-    template = "app:/groovy/webui/component/explorer/publication/UIActivePublication.gtmpl",
+    template = "app:/groovy/webui/component/explorer/popup/admin/UIActivePublication.gtmpl",
     events = {                
         @EventConfig(listeners = UIActivePublication.EnablePublicationActionListener.class),
         @EventConfig(listeners = UIActivePublication.CancelActionListener.class)
@@ -78,17 +72,17 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
       UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
       UIPublicationManager uiPublicationManager = 
         uiExplorer.createUIComponent(UIPublicationManager.class, null, null);
-      UIPublicationContainer uiPublicationContainer = 
-        uiPublicationManager.getChild(UIPublicationContainer.class);
-      uiPublicationContainer.addChild(uiForm);
-      uiPublicationContainer.initChild();
+      uiPublicationManager.addChild(uiForm) ;
+      uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false) ;
       UIPublicationLogList uiPublicationLogList = 
         uiPublicationManager.getChild(UIPublicationLogList.class);
       uiPopupAction.activate(uiPublicationManager, 700, 500) ;      
+      uiPublicationLogList.setNode(uiExplorer.getCurrentNode()) ;
       uiPublicationLogList.updateGrid();
       UIPublicationForm uiPublicationForm = 
-        uiPublicationContainer.getChild(UIPublicationForm.class);
-      UIVersionTreeList uiVersionTreeList = uiPublicationContainer.getChild(UIVersionTreeList.class);
+        uiForm.findFirstComponentOfType(UIPublicationForm.class);
+      UIStaticDirectVersionList uiVersionTreeList = 
+        uiForm.findFirstComponentOfType(UIStaticDirectVersionList.class);
       uiVersionTreeList.initVersion(currentNode);
       uiPublicationForm.initForm(currentNode) ;
     }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.ecm.webui.component.explorer.publication;
+package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -30,8 +30,6 @@ import org.exoplatform.webui.core.UIContainer;
 public class UIPublicationManager extends UIContainer implements UIPopupComponent{
   
   public UIPublicationManager() throws Exception {
-    addChild(UIPublicationContainer.class, null, null) ;
-    addChild(UIPublicationLogList.class, null, null).setRendered(false) ;
   }
 
   public void activate() throws Exception {
