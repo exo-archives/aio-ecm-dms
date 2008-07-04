@@ -68,6 +68,10 @@ import org.exoplatform.webui.form.UIFormInputBase;
  */
 
 @SuppressWarnings("unused")
+@Deprecated
+/**
+ * Use UIBaseDialogForm in ecm.webui
+ * */
 public class DialogFormFields extends UIForm {
 
   public Map<String, Map> components = new HashMap<String, Map>();

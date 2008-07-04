@@ -38,6 +38,11 @@ import javax.jcr.version.VersionException;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.core.UIApplication;
 
+@Deprecated
+/**
+ * use the class in ecm.webui
+ * */
+
 public class JCRExceptionManager {
 
   public static void process(UIApplication uiApp,Exception e,String messageKey) throws Exception{

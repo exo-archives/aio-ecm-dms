@@ -29,6 +29,11 @@ import org.exoplatform.webui.core.UIContainer;
  * Oct 17, 2006
  * 9:32:56 AM 
  */
+
+@Deprecated
+/**
+ * use the ui form ecm.webui
+ * */
 public abstract class UITreeList extends UIContainer {
   
   private List<Node> nodes_ ;

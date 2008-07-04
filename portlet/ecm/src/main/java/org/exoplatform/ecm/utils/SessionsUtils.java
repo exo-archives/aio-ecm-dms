@@ -25,6 +25,10 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  * Created by The eXo Platform SAS Author : Hoa Pham hoa.pham@exoplatform.com
  * Jul 26, 2007
  */
+@Deprecated 
+/**
+ * Need use SessionProviderFactory in portal
+ * */
 public class SessionsUtils {
 
 	public static boolean isAnonim() {

@@ -46,7 +46,11 @@ import org.exoplatform.webui.event.EventListener;
     template =  "app:/groovy/webui/component/UITreeJCRExplorer.gtmpl",
     events = @EventConfig(listeners = UITreeJCRExplorer.ChangeNodeActionListener.class)
 )
-    
+
+@Deprecated
+/**
+ * use the ui form ecm.webui
+ * */
 public class UITreeJCRExplorer extends UIContainer {
 
   private Node currentNode_ ;

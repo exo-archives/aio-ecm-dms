@@ -33,6 +33,10 @@ import org.exoplatform.webui.form.UIFormInputSet;
 @ComponentConfig(
    template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl"
 )
+@Deprecated 
+/**
+ * Use the input in portal trunk
+ * */
 public class UIFormInputSetWithAction extends UIFormInputSet implements UIFormInput {
 
   private String[] actions_ ;

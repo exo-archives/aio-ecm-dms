@@ -27,6 +27,10 @@ import javax.jcr.Node;
  * Jan 16, 2007  
  * 10:36:21 AM
  */
+@Deprecated
+/**
+ * use NodePresentation, UIBaseNodePresentation in ecm.webui
+ * */
 public interface ECMViewComponent {
   public void setNode(Node node);
 

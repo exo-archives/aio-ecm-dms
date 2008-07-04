@@ -33,6 +33,12 @@ import org.exoplatform.resolver.ResourceResolver;
  *          tuan08@users.sourceforge.net
  * Mar 15, 2006
  */
+
+@Deprecated
+/**
+ * use the class in ecm.webui
+ * */
+
 public class JCRResourceResolver extends ResourceResolver {
   private Session session_ ;
   private String propertyName_ ;

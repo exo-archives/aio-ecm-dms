@@ -29,6 +29,11 @@ import org.exoplatform.webui.core.lifecycle.Lifecycle;
  * 03, 2006 9:43:23 AM
  */
 @ComponentConfig( lifecycle = Lifecycle.class )
+
+@Deprecated
+/**
+ * use the UIPopupContainer in ecm.webui
+ * */
 public class UIPopupAction extends UIContainer {
   public UIPopupAction() throws Exception {
     addChild(createUIComponent(UIPopupWindow.class, null, null).setRendered(false));

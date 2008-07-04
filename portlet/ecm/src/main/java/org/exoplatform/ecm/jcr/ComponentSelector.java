@@ -24,6 +24,12 @@ import org.exoplatform.webui.core.UIComponent;
  *          minh.dang@exoplatform.com
  * Nov 16, 2006  
  */
+
+@Deprecated
+/**
+ * use the class in ecm.webui
+ * */
+
 public interface ComponentSelector {
   
   public void setComponent(UIComponent uicomponent, String[] initParams) ;
