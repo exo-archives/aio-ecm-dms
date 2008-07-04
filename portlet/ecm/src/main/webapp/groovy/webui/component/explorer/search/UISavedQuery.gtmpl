@@ -87,7 +87,7 @@
 		            <td>
 		            <%
 		            	String sharedPermissions = null ;
-		            	for(per in object.getProperty("exo:permissions").getValues()) {
+		            	for(per in object.getProperty("exo:accessPermissions").getValues()) {
 		            		if(sharedPermissions == null) sharedPermissions = per.getString() ;
 		            		else sharedPermissions = sharedPermissions + "," + per.getString() ;
 		            	}

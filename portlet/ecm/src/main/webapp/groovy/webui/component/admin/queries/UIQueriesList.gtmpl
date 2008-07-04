@@ -39,7 +39,7 @@
             <td>
             <%
             	String permissions = null ;
-            	for(per in node.getProperty("exo:permissions").getValues()) {
+            	for(per in node.getProperty("exo:accessPermissions").getValues()) {
             		if(permissions == null) permissions = per.getString() ;
             		else permissions = permissions + "," + per.getString() ;
             	}
