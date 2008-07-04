@@ -39,13 +39,19 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.core.UIApplication;
 
 /**
- * Created by The eXo Platform SARL
- * Author : Dang Van Minh
- *          minh.dang@exoplatform.com
- * May 8, 2008 3:18:06 PM
+ * Created by The eXo Platform SARL Author : Dang Van Minh
+ * minh.dang@exoplatform.com May 8, 2008 3:18:06 PM
  */
 public class JCRExceptionManager {
 
+  /**
+   * Process.
+   * 
+   * @param uiApp the ui app
+   * @param e the e
+   * @param messageKey the message key
+   * @throws Exception the exception
+   */
   public static void process(UIApplication uiApp,Exception e,String messageKey) throws Exception{
     if(e instanceof LoginException) {
       if(messageKey == null) messageKey = "LoginException.msg";      
@@ -87,6 +93,13 @@ public class JCRExceptionManager {
     uiApp.addMessage(new ApplicationMessage(messageKey,null,ApplicationMessage.WARNING)) ;
   }
 
+  /**
+   * Process.
+   * 
+   * @param uiApp the ui app
+   * @param e the e
+   * @throws Exception the exception
+   */
   public static void process(UIApplication uiApp, Exception e) throws Exception {
     process(uiApp,e,null) ;
   }
