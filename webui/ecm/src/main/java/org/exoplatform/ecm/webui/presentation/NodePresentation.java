@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.ecm.webui;
+package org.exoplatform.ecm.webui.presentation;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ import javax.jcr.Node;
  * minh.dang@exoplatform.com May 8, 2008 3:22:08 PM
  */
 
-public interface UINodePresentation {
+public interface NodePresentation {
   
   /**
    * Sets the node.

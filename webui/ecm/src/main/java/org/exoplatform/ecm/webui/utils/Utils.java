@@ -18,12 +18,10 @@ package org.exoplatform.ecm.webui.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
@@ -32,27 +30,15 @@ import java.util.zip.ZipInputStream;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
-import javax.portlet.PortletPreferences;
 
 import org.exoplatform.portal.webui.util.Util;
-import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.templates.TemplateService;
-import org.exoplatform.services.jcr.access.PermissionType;
-import org.exoplatform.services.jcr.access.SystemIdentity;
-import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
-import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
-import org.exoplatform.webui.form.UIFormDateTimeInput;
-import org.exoplatform.webui.form.UIFormInputBase;
-import org.exoplatform.webui.form.UIFormMultiValueInputSet;
-import org.exoplatform.webui.form.UIFormUploadInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -161,69 +147,8 @@ public class Utils {
 
   public static boolean isVersionable(Node node) throws RepositoryException {
     return node.isNodeType(MIX_VERSIONABLE);
-  }
-
-  public static boolean isReadAuthorized(Node node) throws RepositoryException {
-    try {
-      ((ExtendedNode)node).checkPermission(PermissionType.READ);
-      return true;
-    } catch(AccessControlException e) {
-      return false;
-    }    
-  }
-
-  public static boolean isAddNodeAuthorized(Node node) throws RepositoryException {
-    try {
-      ((ExtendedNode)node).checkPermission(PermissionType.ADD_NODE);
-      return true;
-    } catch(AccessControlException e) {
-      return false;
-    }    
-  }
-
-  public static boolean isChangePermissionAuthorized(Node node) throws RepositoryException {
-    try {
-      ((ExtendedNode)node).checkPermission(PermissionType.CHANGE_PERMISSION);
-      return true;
-    } catch(AccessControlException e) {
-      return false;
-    }    
-  }
-
-  public static boolean hasChangePermissionRight(Node node) throws RepositoryException {
-    return isAddNodeAuthorized(node) && isSetPropertyNodeAuthorized(node) && isRemoveNodeAuthorized(node) ;
-  }
-  public static boolean isAnyPermissionAuthorized(Node node)throws RepositoryException {
-    try {
-      ((ExtendedNode)node).checkPermission(SystemIdentity.ANY);
-      return true;
-    } catch(AccessControlException e) {
-      return false;
-    }    
-  }
-
-  public static boolean isSetPropertyNodeAuthorized(Node node) throws RepositoryException {
-    try {
-      ((ExtendedNode)node).checkPermission(PermissionType.SET_PROPERTY);
-    } catch(AccessControlException e) {
-      return false;
-    }
-    return true ;
-  }
-
-  public static boolean isRemoveNodeAuthorized(Node node) throws RepositoryException {
-    try {
-      ((ExtendedNode)node).checkPermission(PermissionType.REMOVE);
-      return true;
-    } catch(AccessControlException e) {
-      return false;
-    }    
-  }
-
-  public static boolean isNodeAuthorized(Node node, String owner) throws Exception {
-    return ((ExtendedNode)node).getACL().getOwner().equals(owner) ;
-  }
-
+  }  
+  
   static public class NodeTypeNameComparator implements Comparator {
     public int compare(Object o1, Object o2) throws ClassCastException {
       String name1 = ((NodeType) o1).getName() ;
@@ -312,16 +237,12 @@ public class Utils {
 
   public static String getNodeTypeIcon(Node node, String appended) throws RepositoryException {
     return getNodeTypeIcon(node, appended, null) ;
-  }
-
-  public String getPropertyName(String jcrPath) { 
-    return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
-  }
-
+  }  
+  
   public static NodeIterator getAuthorizedChildNodes(Node node) throws Exception {
     NodeIterator iter = node.getNodes() ;
     while(iter.hasNext()) {
-      if(!isReadAuthorized(iter.nextNode())) iter.remove() ; 
+      if(!PermissionUtil.canRead(iter.nextNode())) iter.remove() ; 
     }  
     return iter ;
   }
@@ -331,7 +252,7 @@ public class Utils {
     NodeIterator iter = node.getNodes() ;
     while(iter.hasNext()) {
       Node child = iter.nextNode() ;
-      if(isReadAuthorized(child)) children.add(child) ;
+      if(PermissionUtil.canRead(child)) children.add(child) ;
     }  
     return children ;
   }
@@ -341,94 +262,8 @@ public class Utils {
       return true ; 
     } 
     return false ;    
-  }
-
-  public static String getRepository() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;   
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    return portletPref.getValue(Utils.REPOSITORY, "") ;
-  }
-
-  @SuppressWarnings({"unchecked", "unused"})
-  public static Map prepareMap(List inputs, Map properties) throws Exception {
-    Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
-    HashMap<String, JcrInputProperty> hasMap = new HashMap<String, JcrInputProperty>() ;
-    for (int i = 0; i < inputs.size(); i++) {
-      JcrInputProperty property = null;
-      if(inputs.get(i) instanceof UIFormMultiValueInputSet) {        
-        String inputName = ((UIFormMultiValueInputSet)inputs.get(i)).getName() ;        
-        if(!hasMap.containsKey(inputName)) {
-          List<String> values = (List<String>) ((UIFormMultiValueInputSet)inputs.get(i)).getValue() ;
-          property = (JcrInputProperty) properties.get(inputName);        
-          if(property != null){          
-            property.setValue(values.toArray(new String[values.size()])) ;
-          }
-        }
-        hasMap.put(inputName, property) ;
-      } else {
-        UIFormInputBase input = (UIFormInputBase) inputs.get(i);
-        property = (JcrInputProperty) properties.get(input.getName());
-        if(property != null) {
-          if (input instanceof UIFormUploadInput) {
-            byte[] content = ((UIFormUploadInput) input).getUploadData() ; 
-            property.setValue(content);
-          } else if(input instanceof UIFormDateTimeInput) {
-            property.setValue(((UIFormDateTimeInput)input).getCalendar()) ;
-          } else {
-            property.setValue(input.getValue()) ;
-          }
-        }
-      }
-    }
-    Iterator iter = properties.values().iterator() ;
-    JcrInputProperty property ;
-    while (iter.hasNext()) {
-      property = (JcrInputProperty) iter.next() ;
-      rawinputs.put(property.getJcrPath(), property) ;
-    }
-    return rawinputs;
-  }
+  }     
   
-  @SuppressWarnings({"unchecked", "unused"})
-  public static Map prepareMap(List inputs, Map properties, Session session) throws Exception {
-    Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
-    HashMap<String, JcrInputProperty> hasMap = new HashMap<String, JcrInputProperty>() ;
-    for (int i = 0; i < inputs.size(); i++) {
-      JcrInputProperty property = null;
-      if(inputs.get(i) instanceof UIFormMultiValueInputSet) {
-        String inputName = ((UIFormMultiValueInputSet)inputs.get(i)).getName() ;
-        if(!hasMap.containsKey(inputName)) {
-          List<String> values = (List<String>) ((UIFormMultiValueInputSet)inputs.get(i)).getValue() ;
-          property = (JcrInputProperty) properties.get(inputName);        
-          if(property != null){          
-            property.setValue(values.toArray(new String[values.size()])) ;
-          }
-        }
-        hasMap.put(inputName, property) ;
-      } else {
-        UIFormInputBase input = (UIFormInputBase) inputs.get(i);
-        property = (JcrInputProperty) properties.get(input.getName());
-        if(property != null) {
-          if (input instanceof UIFormUploadInput) {
-            byte[] content = ((UIFormUploadInput) input).getUploadData() ; 
-            property.setValue(content);
-          } else if(input instanceof UIFormDateTimeInput) {
-            property.setValue(((UIFormDateTimeInput)input).getCalendar()) ;
-          } else {
-            property.setValue(input.getValue()) ;
-          }
-        }
-      }
-    }
-    Iterator iter = properties.values().iterator() ;
-    JcrInputProperty property ;
-    while (iter.hasNext()) {
-      property = (JcrInputProperty) iter.next() ;
-      rawinputs.put(property.getJcrPath(), property) ;
-    }
-    return rawinputs;
-  }
-
   public static List<String> getMemberships() throws Exception {
     String userId = Util.getPortalRequestContext().getRemoteUser() ;
     OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class) ;
