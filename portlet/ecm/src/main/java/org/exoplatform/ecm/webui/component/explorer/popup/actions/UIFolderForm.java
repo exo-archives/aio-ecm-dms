@@ -61,7 +61,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
 
   public void activate() throws Exception { 
     allowCreateFolder_ = getAncestorOfType(UIJCRExplorer.class).getDriveData().getAllowCreateFolder() ;
-    if(allowCreateFolder_.equals("both")) {
+    if(allowCreateFolder_.equals("Both")) {
       List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
       options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED)) ;
       options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
@@ -98,7 +98,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         return ;
       }
       String type = null ;
-      if(uiFolderForm.allowCreateFolder_.equals("both")) {
+      if(uiFolderForm.allowCreateFolder_.equals("Both")) {
         type = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
       } else {
         type = uiFolderForm.allowCreateFolder_ ;
