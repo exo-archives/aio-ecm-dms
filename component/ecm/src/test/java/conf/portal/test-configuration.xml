@@ -267,7 +267,7 @@
             <field  name="showNonDocument"><boolean>true</boolean></field>
             <field  name="showSideBar"><boolean>true</boolean></field>
             <field  name="showHiddenNode"><boolean>true</boolean></field>
-            <field  name="allowCreateFolder"><string>both</string></field>
+            <field  name="allowCreateFolder"><string>Both</string></field>
 	        </object>
 	      </object-param>
 	      <object-param>        
@@ -295,7 +295,7 @@
             <field  name="showNonDocument"><boolean>true</boolean></field>
             <field  name="showSideBar"><boolean>true</boolean></field>
             <field  name="showHiddenNode"><boolean>true</boolean></field>
-            <field  name="allowCreateFolder"><string>both</string></field>
+            <field  name="allowCreateFolder"><string>Both</string></field>
 	        </object>
 	      </object-param>    
       </init-params>
