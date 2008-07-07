@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -25,6 +26,7 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -142,6 +144,7 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
           }
         }            
       }
+      Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
       uiSelectBox.setOptions(options) ;
       if(hasDefaultDoc) {
         uiSelectBox.setValue(defaultDocument_);
