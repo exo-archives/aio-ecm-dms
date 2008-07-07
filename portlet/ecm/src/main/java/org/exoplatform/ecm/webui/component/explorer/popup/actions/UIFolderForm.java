@@ -61,7 +61,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
 
   public void activate() throws Exception { 
     allowCreateFolder_ = getAncestorOfType(UIJCRExplorer.class).getDriveData().getAllowCreateFolder() ;
-    if(allowCreateFolder_.equals("Both")) {
+    if(allowCreateFolder_.equalsIgnoreCase("Both")) {
       List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
       options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED)) ;
       options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;

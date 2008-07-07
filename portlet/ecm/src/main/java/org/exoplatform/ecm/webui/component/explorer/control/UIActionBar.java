@@ -86,6 +86,8 @@ import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.categories.CategoriesService;
+import org.exoplatform.services.cms.drives.DriveData;
+import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.relations.RelationsService;
@@ -267,9 +269,26 @@ public class UIActionBar extends UIForm {
 
   static public class AddFolderActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
-      Node currentNode = uiExplorer.getCurrentNode() ;      
+      UIActionBar uiActionBar = event.getSource();
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
+      Node currentNode = uiExplorer.getCurrentNode();
+      
+      //update by quangld
+      //set DriveData to uiExplorer
+      String currentDriveName = uiExplorer.getDriveData().getName();
+      ManageDriveService dservice = uiActionBar.getApplicationComponent(ManageDriveService.class);
+      DriveData driveUpdate = dservice.getDriveByName(currentDriveName, uiExplorer.getRepositoryName());
+      Preference pref = new Preference();
+      pref.setShowSideBar(driveUpdate.getViewSideBar()) ;
+      pref.setShowNonDocumentType(driveUpdate.getViewNonDocument()) ;
+      pref.setShowPreferenceDocuments(driveUpdate.getViewPreferences()) ;      
+      pref.setAllowCreateFoder(driveUpdate.getAllowCreateFolder()); 
+      pref.setShowHiddenNode(driveUpdate.getShowHiddenNode()) ;
+      uiExplorer.setPreferences(pref);
+      uiExplorer.setDriveData(driveUpdate) ;
+      uiExplorer.setIsReferenceNode(false) ;
+            
       if(!Utils.isAddNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING)) ;
