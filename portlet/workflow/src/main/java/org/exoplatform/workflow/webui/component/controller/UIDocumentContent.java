@@ -148,27 +148,25 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
 
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>();
-    String repository = 
-      ((ManageableRepository)node_.getSession().getRepository()).getConfiguration().getName() ;
     try {
       Value[] vals = node_.getProperty(Utils.EXO_RELATION).getValues();
       for (Value val : vals) {
         String uuid = val.getString();
-        Node relationNode = getNodeByUUID(uuid, repository);
+        Node relationNode = getNodeByUUID(uuid);
         relations.add(relationNode);
       }
     } catch (Exception e) {}
     return relations;
   }
   
-  private Node getNodeByUUID(String uuid, String repository) throws Exception{ 
-    ManageableRepository manageRepo = 
-      getApplicationComponent(RepositoryService.class).getRepository(repository) ;    
+  public Node getNodeByUUID(String uuid) throws Exception{ 
+    ManageableRepository manageRepo = (ManageableRepository)node_.getSession().getRepository() ;
     SessionProvider sessionProvider = Utils.getSessionProvider();
     for(String ws : manageRepo.getWorkspaceNames()) {
       try{
         return sessionProvider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;
-      }catch(Exception e) {        
+      }catch(Exception e) {
+        continue ;
       }      
     }
     return null;
