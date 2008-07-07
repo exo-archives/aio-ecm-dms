@@ -10,7 +10,7 @@
 			<div class="FormContainer">
 				<table class="UIFormGrid">
 					<tr>
-						<td class="FieldLabel"><%_ctx.app%>Node name:</td>
+						<td class="FieldLabel">Node name:</td>
 						<td class="FieldComponent">
 							<%=uicomponent.getNodeName()%>
 						</td>
@@ -28,7 +28,7 @@
 						</td>
 					</tr>
  				</table>
- 				<div style="margin: auto;"><img src="<%=uicomponent.getLinkStateImage(Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale())%>" height="46" width="472" border="0" alt=""/><br /></div>
+ 				<div style="margin: auto;width:427px;"><img src="<%=uicomponent.getLinkStateImage(Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale())%>" height="46" width="472" border="0" alt=""/><br /></div>
 			</div>
 		</div>
 	</div>

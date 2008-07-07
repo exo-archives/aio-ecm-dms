@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.ecm.webui.component.explorer.publication;
+package org.exoplatform.services.ecm.publication.plugins.staticdirect;
 
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -30,11 +30,7 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 public class UIPublicationContainer extends UIContainer {
   
   public UIPublicationContainer() throws Exception {
-  }
-  
-  public void initChild() throws Exception {
-    addChild(UIVersionTreeList.class, null, null) ;
+    addChild(UIStaticDirectVersionList.class, null, null) ;
     addChild(UIPublicationForm.class, null, null) ;
   }
-
 }

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.services.ecm.publication.plugins.staticdirect;
+package org.exoplatform.services.ecm.publication.plugins.webui;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

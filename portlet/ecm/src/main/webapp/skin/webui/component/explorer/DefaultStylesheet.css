@@ -94,14 +94,8 @@
   line-height: 24px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIPublicationContainer .UIFormGrid .FieldLabel {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIPuplication .UIFormGrid .FieldLabel {
   width: 100px;
-  padding: 6px 6px 6px 16px;
-  text-align: left;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIPublicationContainer .UIFormGrid .FieldLabel {
-  width: 500px;
   padding: 6px 6px 6px 16px;
   text-align: left;
 }

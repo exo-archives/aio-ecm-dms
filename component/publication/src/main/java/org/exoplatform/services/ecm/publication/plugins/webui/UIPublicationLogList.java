@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.ecm.webui.component.explorer.publication;
+package org.exoplatform.services.ecm.publication.plugins.webui;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +22,6 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.ecm.publication.NotInPublicationLifecycleException;
@@ -31,6 +30,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponentDecorator;
 import org.exoplatform.webui.core.UIPageIterator;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -41,7 +41,7 @@ import org.exoplatform.webui.event.EventListener;
  * Jun 26, 2008 1:16:08 AM
  */
 @ComponentConfig(
-    template = "app:/groovy/webui/component/explorer/publication/UIPublicationLogList.gtmpl",
+    template = "classpath:resources/templates/webui/UIPublicationLogList.gtmpl",
     events = {
         @EventConfig(listeners = UIPublicationLogList.CloseActionListener.class)
     }
@@ -49,16 +49,18 @@ import org.exoplatform.webui.event.EventListener;
 public class UIPublicationLogList extends UIComponentDecorator {
   
   private UIPageIterator uiPageIterator_ ;
+  private Node currentNode_ ;
   
   public UIPublicationLogList() throws Exception {
     uiPageIterator_ = createUIComponent(UIPageIterator.class, null, "PublicationLogListIterator");
     setUIComponent(uiPageIterator_) ;
   }
   
+  public void setNode(Node node) throws Exception { currentNode_ = node ; }
+  
   public List<HistoryBean> getLog() throws NotInPublicationLifecycleException, Exception {
-    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
     PublicationService publicationService = getApplicationComponent(PublicationService.class);
-    String[][] array = publicationService.getLog(currentNode);
+    String[][] array = publicationService.getLog(currentNode_);
     List<HistoryBean> list = new ArrayList<HistoryBean>();    
     for (int i = 0; i < array.length; i++) {
       HistoryBean bean = new HistoryBean();
@@ -91,8 +93,10 @@ public class UIPublicationLogList extends UIComponentDecorator {
   
   static public class CloseActionListener extends EventListener<UIPublicationLogList> {
     public void execute(Event<UIPublicationLogList> event) throws Exception {      
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.cancelAction();
+      UIPublicationLogList uiPublicationLogList = event.getSource() ;
+      UIPopupWindow uiPopup = uiPublicationLogList.getAncestorOfType(UIPopupWindow.class) ;
+      uiPopup.setRendered(false) ;
+      uiPopup.setShow(false) ;
     }
   }
   

@@ -2,6 +2,7 @@ package org.exoplatform.services.ecm.publication.plugins.staticdirect;
 
 import javax.jcr.Node;
 
+import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 import org.exoplatform.webui.form.UIForm;
@@ -13,15 +14,12 @@ import org.exoplatform.webui.form.UIForm;
 )
 public class UIPublishedForm extends UIForm {
 
-  private Node node_;
-
   public UIPublishedForm() throws Exception {
     addChild(UIPublicationComponent.class, null, null);
+    addChild(UIPublicationContainer.class, null, null) ;
   }
 
   public void setNode(Node node) {
-    this.node_=node;
     getChild(UIPublicationComponent.class).setNode(node);
   }
-
 }
