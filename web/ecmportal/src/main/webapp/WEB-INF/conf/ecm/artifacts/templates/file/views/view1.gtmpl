@@ -188,8 +188,8 @@
 		        	//prevent ajax cache image
 		        	String rndString = String.valueOf(new Date().getTime());
 		        %> 	
-			    		<div class="ContentDetail">
-                <image src="/${uicomponent.getPortalName()}/jcr?workspace=${uicomponent.getWorkspaceName()}&hash=${rndString}&path=${contentNode.getPath()}"/>
+			    		<div class="ContentDetail">			    		                
+                <image src="/${uicomponent.getPortalName()}/rest/jcr/${uicomponent.getRepository()}/${uicomponent.getWorkspaceName()}/${fileLangNode.getPath()}"/>
 		          </div>
 		        <%}else {%> 
 							<div style="text-align:center; font-style:italic">
