@@ -65,8 +65,6 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
       PublicationService publicationService = uiActivatePublication.getApplicationComponent(PublicationService.class);
       PublicationPresentationService publicationPresentationService = uiActivatePublication.getApplicationComponent(PublicationPresentationService.class);
       publicationService.enrollNodeInLifecycle(currentNode, "StaticAndDirect");
-          
-     
       
       UIContainer cont = uiActivatePublication.createUIComponent(UIContainer.class, null, null);
       UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
