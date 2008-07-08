@@ -200,7 +200,7 @@ public class DialogFormFields extends UIForm {
     }
     return "" ;
   }
-  
+
   private String getNodePathByUUID(String uuid) throws Exception{
     String[] workspaces = getRepository().getWorkspaceNames() ;
     Node node = null ;
@@ -255,8 +255,8 @@ public class DialogFormFields extends UIForm {
     if(uiInput == null) {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
       if(validateType != null) {
-    	  addValidators(uiInput, validateType);
-       //uiInput.addValidator(getValidator(validateType)) ;
+        addValidators(uiInput, validateType);
+        //uiInput.addValidator(getValidator(validateType)) ;
       }
       if(label != null ) {
         uiInput.setLabel(label);
@@ -367,8 +367,8 @@ public class DialogFormFields extends UIForm {
       uiInput = new UIFormStringInput(name, name, defaultValue) ;
       //TODO need use full class name for validate type. 
       if(validateType != null) {
-    	  addValidators(uiInput, validateType);
-       // uiInput.addValidator(getValidator(validateType)) ;
+        addValidators(uiInput, validateType);
+        // uiInput.addValidator(getValidator(validateType)) ;
       }     
       if(label != null && label.length()!=0) {
         uiInput.setLabel(label);
@@ -435,8 +435,8 @@ public class DialogFormFields extends UIForm {
     if(uiTextArea == null) {
       uiTextArea = new UIFormTextAreaInput(name, name, defaultValue) ;
       if(validateType != null) {
-    	  addValidators(uiTextArea, validateType);
-//        uiTextArea.addValidator(getValidator(validateType)) ;
+        addValidators(uiTextArea, validateType);
+//      uiTextArea.addValidator(getValidator(validateType)) ;
       }
       if(label != null) uiTextArea.setLabel(label) ;
       addUIFormInput(uiTextArea) ;
@@ -511,15 +511,19 @@ public class DialogFormFields extends UIForm {
        * FCKConfigService used to allow add custom config for fckeditor from service
        * */
       FCKEditorConfig config = new FCKEditorConfig();
-      if(repositoryName_ != null && workspaceName_ != null && nodePath_ != null) {        
+      if(repositoryName_ != null) {        
         config.put("repositoryName",repositoryName_);
+      }
+      if(workspaceName_ != null) {
         config.put("workspaceName",workspaceName_);
-        config.put("jcrPath",nodePath_);        
-      }      
+      }
+      if(nodePath_ != null) {
+        config.put("jcrPath",nodePath_);
+      }            
       wysiwyg.setFCKConfig(config);
       if(validateType != null) {
-    	  addValidators(wysiwyg, validateType);
-//        wysiwyg.addValidator(getValidator(validateType)) ;
+        addValidators(wysiwyg, validateType);
+//      wysiwyg.addValidator(getValidator(validateType)) ;
       }     
       addUIFormInput(wysiwyg) ;
     }
@@ -736,8 +740,8 @@ public class DialogFormFields extends UIForm {
     if(options != null && options.equals("displaytime")) uiDateTime.setDisplayTime(true) ;
     else uiDateTime.setDisplayTime(false) ;
     if(validateType != null) {
-    	addValidators(uiDateTime, validateType);
-//        uiDateTime.addValidator(getValidator(validateType)) ;      
+      addValidators(uiDateTime, validateType);
+//    uiDateTime.addValidator(getValidator(validateType)) ;      
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
@@ -841,7 +845,7 @@ public class DialogFormFields extends UIForm {
       } else if(argument.startsWith(ONCHANGE)){
         map.put(ONCHANGE,value); continue;
       } else if (argument.startsWith(MIXINTYPE)) {
-    	  map.put(MIXINTYPE, value); continue;
+        map.put(MIXINTYPE, value); continue;
       }else if(argument.startsWith(NODETYPE)) {
         map.put(NODETYPE, value) ;
         continue ;
@@ -851,13 +855,13 @@ public class DialogFormFields extends UIForm {
     }
     return map;
   }
-  
+
   private void addValidators(UIFormInputBase uiInput, String validators) throws Exception {
-	  String[] validatorList = null;
-	  if (validators.indexOf(',') > -1) validatorList = validators.split(",");
-      else validatorList = new String[] {validators};
-      for (String validator : validatorList)
-        uiInput.addValidator(getValidator(validator.trim())) ;
+    String[] validatorList = null;
+    if (validators.indexOf(',') > -1) validatorList = validators.split(",");
+    else validatorList = new String[] {validators};
+    for (String validator : validatorList)
+      uiInput.addValidator(getValidator(validator.trim())) ;
   }
 
   private Class getValidator(String validatorType) throws ClassNotFoundException {
@@ -900,16 +904,16 @@ public class DialogFormFields extends UIForm {
       e.printStackTrace();
     }
   }
-  
+
   //update by quangld
   public void removeComponent(String name) {
-	  if (!properties.isEmpty() && properties.containsKey(name)) {
-		  properties.remove(name);
-		  String jcrPath = propertiesName_.get(name);
-		  propertiesName_.remove(name);
-		  fieldNames_.remove(jcrPath);
-		  removeChildById(name); 
-	  }
+    if (!properties.isEmpty() && properties.containsKey(name)) {
+      properties.remove(name);
+      String jcrPath = propertiesName_.get(name);
+      propertiesName_.remove(name);
+      fieldNames_.remove(jcrPath);
+      removeChildById(name); 
+    }
   }	
 
   public void renderField(String name) throws Exception {
@@ -942,7 +946,7 @@ public class DialogFormFields extends UIForm {
       //TODO : workspace name is null
       String path = dialogForm.storedPath_ + "&workspaceName=" + dialogForm.workspaceName_ + 
       "&repository=" + dialogForm.repositoryName_;
-      
+
       for(String interceptor : dialogForm.prevScriptInterceptor_) {
         String scriptPath = interceptor.split(";")[0] ;
         String type = interceptor.split(";")[1] ;
