@@ -61,7 +61,8 @@ import org.exoplatform.webui.form.UIFormInputBase;
       @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
       @EventConfig(listeners = DialogFormFields.OnchangeActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIActionForm.BackActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIActionForm.ShowComponentActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIActionForm.ShowComponentActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
 public class UIActionForm extends DialogFormFields implements UISelector {
@@ -303,6 +304,16 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     }
   }
 
+  static public class RemoveReferenceActionListener extends EventListener<UIActionForm> {
+    public void execute(Event<UIActionForm> event) throws Exception {
+      UIActionForm uiForm = event.getSource() ;
+      uiForm.isRemovePreference_ = true;
+      String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiForm.getUIStringInput(fieldName).setValue(null) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
+    }
+  }
+  
   static public class BackActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UIActionForm uiForm = event.getSource() ;

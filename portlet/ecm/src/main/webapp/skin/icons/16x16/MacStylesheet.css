@@ -58,9 +58,16 @@
   cursor: pointer;
 }
  
- .Remove16x16Icon {
+.Remove16x16Icon {
 	width: 16px; height: 16px;
   background: url('MacSkin/DustBin.gif') no-repeat; 
+  cursor: pointer;
+}
+
+.RemoveReference16x16Icon {
+	float: left;
+	width: 16px;	height: 16px;
+  background: url('MacSkin/DustBin.gif') no-repeat ;
   cursor: pointer;
 }
 

@@ -71,7 +71,8 @@ import org.exoplatform.webui.form.UIFormUploadInput;
       @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
       @EventConfig(listeners = UIFastContentCreatortForm.AddActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIFastContentCreatortForm.RemoveActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIFastContentCreatortForm.ShowComponentActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIFastContentCreatortForm.ShowComponentActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIFastContentCreatortForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
 public class UIFastContentCreatortForm extends DialogFormFields implements UISelector {
@@ -266,7 +267,17 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
       ((ComponentSelector)uiComp).setComponent(uiForm, new String[]{param}) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
-  }  
+  }
+  
+  static public class RemoveReferenceActionListener extends EventListener<UIFastContentCreatortForm> {
+    public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
+      UIFastContentCreatortForm uiForm = event.getSource() ;
+      uiForm.isRemovePreference_ = true;
+      String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiForm.getUIStringInput(fieldName).setValue(null) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
+    }
+  }    
 
   static public class AddActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {

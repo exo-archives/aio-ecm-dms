@@ -87,6 +87,7 @@ public class DialogFormFields extends UIForm {
   private String workspaceName_ = null ;
   private String storedPath_ = null ;
   protected String repositoryName_ = null ;
+  protected boolean isRemovePreference_ = false ;
   private String nodePath_ ;
   private String childPath_ ;
 
@@ -267,7 +268,7 @@ public class DialogFormFields extends UIForm {
     else uiInput.setEditable(true) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
-    if(getNode() != null) {
+    if(getNode() != null && !isRemovePreference_) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
         uiInput.setValue(getNode().getName()) ;
         uiInput.setEditable(false) ;
@@ -282,7 +283,7 @@ public class DialogFormFields extends UIForm {
         }
       } 
     }
-    if(isNotEditNode_) {
+    if(isNotEditNode_ && !isRemovePreference_) {
       if(getChildNode() != null) {
         uiInput.setValue(getPropertyValue(jcrPath)) ;
       } else if(getChildNode() == null && jcrPath.equals("/node") && getNode() != null) {
@@ -933,6 +934,9 @@ public class DialogFormFields extends UIForm {
         w.write("<a style=\"cursor:pointer;\" "
             + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
             + "" + getId() +"','ShowComponent','&objectId="+ fieldName +"' )\"><img class='ActionIcon "+ iconClass +"' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" /></a>") ;
+        w.write("<a style=\"cursor:pointer;\" "
+            + "onclick=\"javascript:eXo.webui.UIForm.submitEvent('" 
+            + "" + getId() +"','RemoveReference','&objectId="+ fieldName +"' )\"><img class='ActionIcon Remove16x16Icon' src=\"/eXoResources/skin/DefaultSkin/background/Blank.gif\" /></a>") ;
       } 
     }
   }
