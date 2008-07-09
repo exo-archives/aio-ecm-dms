@@ -159,7 +159,7 @@ public class DialogFormUtil {
     return "" ;    
   }
 
-  private static Class getValidator(String validatorType) throws ClassNotFoundException {
+  public static Class getValidator(String validatorType) throws ClassNotFoundException {
     if(validatorType.equals("name")) {
       return ECMNameValidator.class ;
     } else if (validatorType.equals("email")){
@@ -174,5 +174,12 @@ public class DialogFormUtil {
       ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
       return cl.loadClass(validatorType);
     }
+  }
+  public static void addValidators(UIFormInputBase uiInput, String validators) throws Exception {
+    String[] validatorList = null;
+    if (validators.indexOf(',') > -1) validatorList = validators.split(",");
+    else validatorList = new String[] {validators};
+    for (String validator : validatorList)
+      uiInput.addValidator(getValidator(validator.trim())) ;
   }
 }

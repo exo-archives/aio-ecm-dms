@@ -143,7 +143,18 @@ public class UIBaseDialogForm extends UIForm {
     }
     UIFormStringInput uiInput = findComponentById(name) ;
     if(uiInput == null) {
-      uiInput = DialogFormUtil.createFormInput(UIFormStringInput.class,name, label, validateType, String.class);
+      uiInput = new UIFormStringInput(name, name, defaultValue) ;
+      //TODO need use full class name for validate type.
+      if(validateType != null) {
+        String[] validatorList = null;
+        if (validateType.indexOf(',') > -1) validatorList = validateType.split(",");
+        else validatorList = new String[] {validateType};
+        for (String validator : validatorList)
+          uiInput.addValidator(DialogFormUtil.getValidator(validator.trim())) ;
+      }     
+      if(label != null && label.length()!=0) {
+        uiInput.setLabel(label);
+      }
       addUIFormInput(uiInput) ;
     }
     if("false".equals(editable)) uiInput.setEditable(false) ;
@@ -212,10 +223,16 @@ public class UIBaseDialogForm extends UIForm {
     } 
     UIFormDateTimeInput uiDateTime = findComponentById(name) ;
     if(uiDateTime == null) {
-      uiDateTime = DialogFormUtil.createFormInput(UIFormDateTimeInput.class,name,label,validateType,Date.class);
+      if(options != null && options.equals("displaytime")) {
+        uiDateTime = new UIFormDateTimeInput(name, name, date) ;
+      } else {
+        uiDateTime = new UIFormDateTimeInput(name, name, date, false) ;
+      }
       Calendar calendar = new GregorianCalendar();
       calendar.setTime(date);
       uiDateTime.setCalendar(calendar);
+      if(label != null) uiDateTime.setLabel(label);
+
       addUIFormInput(uiDateTime) ;
     }
 
@@ -306,8 +323,9 @@ public class UIBaseDialogForm extends UIForm {
     setInputProperty(name, inputProperty) ;
     if(getNode() != null && "if-not-null".equals(visible)) {
       UIFormStringInput uiMixin = findComponentById(name) ;
-      if(uiMixin == null) {        
-        uiMixin = DialogFormUtil.createFormInput(UIFormStringInput.class,name,label,null,String.class);        
+      if(uiMixin == null) {
+        uiMixin = new UIFormStringInput(name, name, defaultValue) ;
+        if(label != null) uiMixin.setLabel(label) ;
         addUIFormInput(uiMixin) ;
       }
       uiMixin.setValue(getNode().getName()) ;
@@ -416,7 +434,11 @@ public class UIBaseDialogForm extends UIForm {
     }
     UIFormTextAreaInput uiTextArea = findComponentById(name) ;    
     if(uiTextArea == null) {
-      uiTextArea = DialogFormUtil.createFormInput(UIFormTextAreaInput.class,name,label, validateType,String.class);      
+      uiTextArea = new UIFormTextAreaInput(name, name, defaultValue) ;
+      if(validateType != null) {
+        DialogFormUtil.addValidators(uiTextArea, validateType);
+      }
+      if(label != null) uiTextArea.setLabel(label) ;
       addUIFormInput(uiTextArea) ;
     }
     if(uiTextArea.getValue() == null) uiTextArea.setValue(defaultValue) ;
@@ -526,7 +548,19 @@ public class UIBaseDialogForm extends UIForm {
     } 
     UIFormStringInput uiInput = findComponentById(name) ;
     if(uiInput == null) {
-      uiInput = DialogFormUtil.createFormInput(UIFormStringInput.class,name,label,validateType,String.class);
+      uiInput = new UIFormStringInput(name, name, defaultValue) ;
+      //TODO need use full class name for validate type.
+      if(validateType != null) {
+        String[] validatorList = null;
+        if (validateType.indexOf(',') > -1) validatorList = validateType.split(",");
+        else validatorList = new String[] {validateType};
+        for (String validator : validatorList)
+          uiInput.addValidator(DialogFormUtil.getValidator(validator.trim())) ;
+      }     
+      if(label != null && label.length()!=0) {
+        uiInput.setLabel(label);
+      }
+
       addUIFormInput(uiInput) ;      
     }
     if(uiInput.getValue() == null) uiInput.setValue(defaultValue) ;
@@ -614,19 +648,25 @@ public class UIBaseDialogForm extends UIForm {
 
     UIFormWYSIWYGInput wysiwyg = findComponentById(name) ;
     if(wysiwyg == null) {
-      wysiwyg = DialogFormUtil.createFormInput(UIFormWYSIWYGInput.class,name,label,validateType,String.class);
-      //wysiwyg.useBasicToolBar(isBasic);
+      wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, isBasic) ;
       /**
        * Broadcast some info about current node by FCKEditorConfig Object
        * FCKConfigService used to allow add custom config for fckeditor from service
        * */
       FCKEditorConfig config = new FCKEditorConfig();
-      if(repositoryName != null && workspaceName != null && nodePath != null) {        
+      if(repositoryName != null) {        
         config.put("repositoryName",repositoryName);
+      }
+      if(workspaceName != null) {
         config.put("workspaceName",workspaceName);
-        config.put("jcrPath",nodePath);        
-      }      
-      wysiwyg.setFCKConfig(config);            
+      }
+      if(nodePath != null) {
+        config.put("jcrPath",nodePath);
+      }            
+      wysiwyg.setFCKConfig(config);
+      if(validateType != null) {
+        DialogFormUtil.addValidators(wysiwyg, validateType);
+      }     
       addUIFormInput(wysiwyg) ;
     }
     if(wysiwyg.getValue() == null) wysiwyg.setValue(defaultValue) ;
