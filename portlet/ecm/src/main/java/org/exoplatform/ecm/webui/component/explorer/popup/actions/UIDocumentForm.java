@@ -71,7 +71,8 @@ import org.exoplatform.webui.form.UIFormMultiValueInputSet;
       @EventConfig(listeners = UIDocumentForm.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.AddActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIDocumentForm.ShowComponentActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIDocumentForm.ShowComponentActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIDocumentForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
 
@@ -245,6 +246,16 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }  
+  
+  static public class RemoveReferenceActionListener extends EventListener<UIDocumentForm> {
+    public void execute(Event<UIDocumentForm> event) throws Exception {
+      UIDocumentForm uiForm = event.getSource() ;
+      uiForm.isRemovePreference_ = true;
+      String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiForm.getUIStringInput(fieldName).setValue(null) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
+    }
+  }
 
   static  public class CancelActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
