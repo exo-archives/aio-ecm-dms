@@ -22,7 +22,6 @@ import javax.jcr.nodetype.NodeType;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.resources.ResourceBundleService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -33,13 +32,9 @@ import org.w3c.dom.Element;
  * Jun 23, 2008  
  */
 public class FCKFolderHandler {  
-  private TemplateService templateService;
-  private FCKMessage fckMessage;
+  private TemplateService templateService;  
   public FCKFolderHandler(ExoContainer container) {
-    templateService = (TemplateService)container.getComponentInstanceOfType(TemplateService.class);
-    ResourceBundleService bundleService = 
-      (ResourceBundleService)container.getComponentInstanceOfType(ResourceBundleService.class);
-    fckMessage = new FCKMessage(bundleService);
+    templateService = (TemplateService)container.getComponentInstanceOfType(TemplateService.class);       
   }
 
   public String getFolderType(final Node node) throws Exception {
@@ -87,24 +82,8 @@ public class FCKFolderHandler {
    * @return the document
    * @throws Exception the exception
    */
-  public Document createNewFolder(Node currentNode, String newFolderName, String language) throws Exception {
-    String folderType = getFolderType(currentNode);        
-    Element root = FCKUtils.createRootElement(FCKUtils.CREATE_FOLDER, currentNode,folderType);    
-    Document document = root.getOwnerDocument();
-    if(!FCKUtils.hasAddNodePermission(currentNode)) {
-      String message = fckMessage.getMessage(FCKMessage.FOLDER_PERMISSION_CREATING,null,language);
-      Element element = fckMessage.createMessageElement(document,FCKMessage.FOLDER_PERMISSION_CREATING,message,FCKMessage.ERROR);
-      document.appendChild(element);
-      return document;
-    }
-    if(currentNode.hasNode(newFolderName)) {
-      String message = fckMessage.getMessage(FCKMessage.FOLDER_EXISTED, null, language);
-      Element element = fckMessage.createMessageElement(document,FCKMessage.FOLDER_EXISTED,message,FCKMessage.ERROR);
-      document.appendChild(element);
-      return document;
-    }    
+  public void createNewFolder(Node currentNode, String newFolderName, String language) throws Exception {            
     currentNode.addNode(newFolderName,FCKUtils.NT_FOLDER);
-    currentNode.getSession().save();    
-    return null;
+    currentNode.getSession().save();
   }
 }

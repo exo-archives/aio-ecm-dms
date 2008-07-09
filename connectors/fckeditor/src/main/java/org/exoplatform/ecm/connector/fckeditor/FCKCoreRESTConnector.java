@@ -16,6 +16,8 @@
  */
 package org.exoplatform.ecm.connector.fckeditor;
 
+import java.io.InputStream;
+
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
@@ -28,6 +30,7 @@ import org.exoplatform.services.jcr.ext.app.ThreadLocalSessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.rest.CacheControl;
 import org.exoplatform.services.rest.HTTPMethod;
+import org.exoplatform.services.rest.HeaderParam;
 import org.exoplatform.services.rest.InputTransformer;
 import org.exoplatform.services.rest.OutputTransformer;
 import org.exoplatform.services.rest.QueryParam;
@@ -51,6 +54,8 @@ public class FCKCoreRESTConnector implements ResourceContainer {
 
   private FCKFileHandler fileHandler;
   private FCKFolderHandler folderHandler;  
+  private FileUploadHandler fileUploadHandler;
+  private FCKMessage fckMessage;
   private ThreadLocalSessionProviderService sessionProviderService;
   private RepositoryService repositoryService;    
 
@@ -64,7 +69,9 @@ public class FCKCoreRESTConnector implements ResourceContainer {
     this.repositoryService = repositoryService;
     this.sessionProviderService = providerService;
     this.fileHandler = new FCKFileHandler(ExoContainerContext.getCurrentContainer());
-    this.folderHandler = new FCKFolderHandler(ExoContainerContext.getCurrentContainer());    
+    this.folderHandler = new FCKFolderHandler(ExoContainerContext.getCurrentContainer());
+    this.fckMessage = new FCKMessage(ExoContainerContext.getCurrentContainer());
+    this.fileUploadHandler = new FileUploadHandler(ExoContainerContext.getCurrentContainer()); 
   }  
 
   /**
@@ -130,7 +137,7 @@ public class FCKCoreRESTConnector implements ResourceContainer {
    * @throws Exception the exception
    */
   @HTTPMethod(HTTPMethods.POST)
-  @URITemplate("/crreateFolder/")  
+  @URITemplate("/createFolder/")  
   @OutputTransformer(XMLOutputTransformer.class)
   public Response createFolder(
       @QueryParam("repositoryName") String repositoryName, 
@@ -140,13 +147,22 @@ public class FCKCoreRESTConnector implements ResourceContainer {
       @QueryParam("language") String language) throws Exception {
     Session session = getSession(repositoryName,workspaceName);
     Node currentNode = (Node)session.getItem(currentFolder);
-    Document document = folderHandler.createNewFolder(currentNode,newFolderName,language);
-    if(document == null) {
-      return Response.Builder.ok().build();
-    }
     CacheControl cacheControl = new CacheControl();
-    cacheControl.setNoCache(true);       
-    return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+    cacheControl.setNoCache(true);
+    if(!FCKUtils.hasAddNodePermission(currentNode)) {
+      Object[] args = { currentNode.getPath() };
+      Document document = 
+        fckMessage.createMessage(FCKMessage.FOLDER_PERMISSION_CREATING,FCKMessage.ERROR,language,args);
+      return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+    }
+    if(currentNode.hasNode(newFolderName)) {
+      Object[] args = { currentNode.getPath(),newFolderName };
+      Document document = 
+        fckMessage.createMessage(FCKMessage.FOLDER_EXISTED,FCKMessage.ERROR,language,args);
+      return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+    }
+    folderHandler.createNewFolder(currentNode,newFolderName,language);               
+    return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();
   }
 
   /**
@@ -158,10 +174,29 @@ public class FCKCoreRESTConnector implements ResourceContainer {
   @URITemplate("/uploadFile/upload/")  
   @InputTransformer(PassthroughInputTransformer.class)
   @OutputTransformer(XMLOutputTransformer.class)
-  public Response uploadFile() {
-    return null ;
+  public Response uploadFile(
+      InputStream inputStream,
+      @QueryParam("repositoryName") String repositoryName, 
+      @QueryParam("workspaceName") String workspaceName,
+      @QueryParam("currentFolder") String currentFolder,
+      @QueryParam("uploadId") String uploadId,
+      @QueryParam("language") String language,
+      @HeaderParam("content-type") String contentType,      
+      @HeaderParam("content-length") String contentLength) throws Exception {
+    Session session = getSession(repositoryName,workspaceName);    
+    Node currentNode = (Node)session.getItem(currentFolder);
+    CacheControl cacheControl = new CacheControl();
+    cacheControl.setNoCache(true);
+    if(!FCKUtils.hasAddNodePermission(currentNode)) {
+      Object[] args = { currentNode.getPath() };
+      Document message = 
+        fckMessage.createMessage(FCKMessage.FILE_UPLOAD_RESTRICTION,FCKMessage.ERROR,language,args);
+      return Response.Builder.ok(message).mediaType("text/xml").cacheControl(cacheControl).build();
+    }
+    fileUploadHandler.upload(uploadId, null, contentType, Long.parseLong(contentLength), inputStream);    
+    return Response.Builder.ok().cacheControl(cacheControl).build();
   }
-  
+
   /**
    * Control upload file 
    * 
@@ -173,14 +208,43 @@ public class FCKCoreRESTConnector implements ResourceContainer {
   @HTTPMethod(HTTPMethods.GET)
   @URITemplate("/uploadFile/control/")  
   @OutputTransformer(XMLOutputTransformer.class)
-  public Response controlUploader( 
+  public Response processUpload(
+      @QueryParam("repositoryName") String repositoryName, 
+      @QueryParam("workspaceName") String workspaceName,
+      @QueryParam("currentFolder") String currentFolder,
       @QueryParam("action") String action,
-      @QueryParam("uploadId") String uploadId,
-      @QueryParam("language") String language
-      ) {
-    return null ;
+      @QueryParam("language") String language,
+      @QueryParam("fileName") String fileName,
+      @QueryParam("uploadId") String uploadId) throws Exception {
+    CacheControl cacheControl = new CacheControl();
+    cacheControl.setNoCache(true);
+    if(FileUploadHandler.PROGRESS_ACTION.equals(action)) {
+      Document currentProgress = fileUploadHandler.getProgress(uploadId);      
+      return Response.Builder.ok(currentProgress).cacheControl(cacheControl).build();
+    }else if(FileUploadHandler.ABORT_ACTION.equals(action)) {
+      fileUploadHandler.abort(uploadId);
+      return Response.Builder.ok().cacheControl(cacheControl).build();
+    }else if(FileUploadHandler.DELETE_ACTION.equals(action)) {
+      fileUploadHandler.delete(uploadId);
+      return Response.Builder.ok().cacheControl(cacheControl).build();
+    }else if(FileUploadHandler.SAVE_ACTION.equals(action)) {
+      Session session = getSession(repositoryName,workspaceName);
+      Node currentNode = (Node)session.getItem(currentFolder);
+      if(fileName != null) {
+        fileName = fileUploadHandler.getUploadedFileName(uploadId);
+      }
+      if(currentNode.hasNode(fileName)) {
+        Object args[] = { fileName, currentNode.getPath() };
+        Document fileExisted = 
+          fckMessage.createMessage(FCKMessage.FILE_EXISTED,FCKMessage.ERROR,language,args);
+        return Response.Builder.ok(fileExisted).mediaType("text/xml").cacheControl(cacheControl).build();
+      }
+      fileUploadHandler.saveAsNTFile(currentNode, uploadId, fileName);
+      return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();
+    }
+    return Response.Builder.badRequest().cacheControl(cacheControl).build();
   }
-  
+
   private Session getSession(String repository,String workspaceName) throws Exception {
     ManageableRepository manageableRepository = null;    
     if(repository == null) {

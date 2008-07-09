@@ -20,6 +20,10 @@ import java.text.MessageFormat;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.exoplatform.container.ExoContainer;
 import org.exoplatform.services.resources.ResourceBundleService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -37,31 +41,32 @@ public class FCKMessage {
 
   /** The Constant ERROR. */
   public static final String ERROR = "Error".intern();
-  
+
   /** The Constant INFO. */
   public static final String INFO = "Info".intern();
 
   /** The Constant FOLDER_CREATED. */
-  public static final int FOLDER_CREATED = 0;
-  
+  public static final int FOLDER_CREATED = 100;
+
   /** The Constant FOLDER_EXISTED. */
   public static final int FOLDER_EXISTED = 101;  
-  
+
   /** The Constant FOLDER_INVALID_NAME. */
   public static final int FOLDER_INVALID_NAME = 102;
-  
+
   /** The Constant FOLDER_PERMISSION_CREATING. */
   public static final int FOLDER_PERMISSION_CREATING = 103;
-  
+
   /** The Constant UNKNOWN_ERROR. */
   public static final int UNKNOWN_ERROR = 110;
 
   /** The Constant FILE_EXISTED. */
-  public static final int FILE_EXISTED = 201;
-  
+  public static final int FILE_EXISTED = 201;    
   /** The Constant FILE_NOT_FOUND. */
   public static final int FILE_NOT_FOUND = 202;
   
+  public static final int FILE_UPLOAD_RESTRICTION = 203;
+
   /** The Constant FCK_RESOURCE_BUNDLE. */
   public static final String FCK_RESOURCE_BUNDLE="locale.fckeditor".intern();
   private ResourceBundleService bundleService;
@@ -71,27 +76,25 @@ public class FCKMessage {
    * 
    * @param bundleService the bundle service
    */
-  public FCKMessage(ResourceBundleService bundleService) {
-    this.bundleService = bundleService;
+  public FCKMessage(ExoContainer container) {
+    this.bundleService = 
+      (ResourceBundleService) container.getComponentInstanceOfType(ResourceBundleService.class);
+  }  
+  
+  public Document createMessage(int messageCode, String messageType,String language, Object[] args) throws Exception {      
+    String message = getMessage(messageCode, args, language);
+    return createMessage(messageCode,message,messageType);
   }
-
-  /**
-   * Creates the error element for connector response, it looks like that
-   * <Message number="" text="" type=""/> Message type can be: Error or info.
-   * 
-   * @param document the document
-   * @param message the message
-   * @param messageCode the message code
-   * @param messageType the message type
-   * @return the org.w3c.dom.Element element
-   * @throws Exception the exception
-   */
-  public Element createMessageElement(Document document, int messageCode, String message, String messageType) throws Exception {    
+  
+  public Document createMessage(int messageCode, String message, String messageType) throws Exception {
+    DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
+    Document document = documentBuilder.newDocument();       
     Element element = document.createElement("Message");
     element.setAttribute("number", Integer.toString(messageCode));
     element.setAttribute("text", message);
     element.setAttribute("type",messageType);
-    return element;
+    document.appendChild(element);
+    return document;
   }
 
   /**
