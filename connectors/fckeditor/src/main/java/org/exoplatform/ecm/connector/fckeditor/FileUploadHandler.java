@@ -99,16 +99,16 @@ public class FileUploadHandler {
     if(resource == null) {
       return doc;
     }
-    double percent = 0;
+    Double percent = 0.0;
     if (resource.getStatus() == UploadResource.UPLOADING_STATUS) {
       percent = (resource.getUploadedSize() * 100) / resource.getEstimatedSize();      
     } else {
-      percent = 100;
+      percent = 100.0;
     } 
     Element rootElement = doc.createElement("UploadProgress");
     rootElement.setAttribute("uploadId", uploadId);
     rootElement.setAttribute("fileName", resource.getFileName());
-    rootElement.setAttribute("percent", Double.toString(percent));
+    rootElement.setAttribute("percent", percent.intValue() + "");
     doc.appendChild(rootElement);
     return doc;
   }
