@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
+import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.ecm.jcr.ECMNameValidator;
@@ -88,7 +89,9 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
       String name = uiFolderForm.getUIStringInput(FIELD_NAME).getValue() ;
       Node node = uiExplorer.getCurrentNode() ;                  
       if(uiExplorer.nodeIsLocked(node)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null)) ;
+        Object[] arg = { node.getPath() } ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+            ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
@@ -113,7 +116,14 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         Object[] arg = { type } ;
         throw new MessageException(new ApplicationMessage("UIFolderForm.msg.constraint-violation",
             arg, ApplicationMessage.WARNING)) ;
+      } catch(LockException lock) {
+        Object[] arg = { node.getPath() } ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch(RepositoryException re) {
+        re.printStackTrace() ;
         String key = "UIFolderForm.msg.repository-exception" ;
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

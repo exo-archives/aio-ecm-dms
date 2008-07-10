@@ -25,6 +25,7 @@ import javax.jcr.ItemExistsException;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
+import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.jcr.ComponentSelector;
@@ -181,6 +182,12 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
           ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;      
+    } catch(LockException lock) {
+      Object[] arg = { currentNode.getPath() } ;
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+          ApplicationMessage.WARNING)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      return null;
     } catch(RepositoryException repo) {
       repo.printStackTrace() ;
       String key = "UIDocumentForm.msg.repository-exception" ;
