@@ -730,9 +730,9 @@ public class UIBaseDialogForm extends UIForm {
   public boolean isResetForm() { return isResetForm ; }
 
   @Override
-  public void processAction(WebuiRequestContext context) throws Exception {    
-    String action =  context.getRequestParameter(context.getActionParameterName()) ;
-    if(SAVE_ACTION.equals(action)) {
+  public void processAction(WebuiRequestContext context) throws Exception {       
+    String action =  context.getRequestParameter(UIForm.ACTION) ;    
+    if(SAVE_ACTION.equalsIgnoreCase(action)) {
       executePreSaveEventInterceptor();
       super.processAction(context);
       String nodePath = (String)context.getAttribute("nodePath");
