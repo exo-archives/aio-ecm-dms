@@ -27,6 +27,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.exoplatform.commons.utils.IOUtil;
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.container.ExoContainer;
+import org.exoplatform.services.rest.CacheControl;
+import org.exoplatform.services.rest.Response;
 import org.exoplatform.upload.UploadResource;
 import org.exoplatform.upload.UploadService;
 import org.w3c.dom.Document;
@@ -59,7 +61,7 @@ public class FileUploadHandler {
   public final static String SAVE_ACTION = "save".intern();
 
   private UploadService uploadService;
-
+  private FCKMessage fckMessage;
   /**
    * Instantiates a new file upload handler.
    * 
@@ -67,31 +69,66 @@ public class FileUploadHandler {
    */
   public FileUploadHandler(ExoContainer container) {
     uploadService = (UploadService)container.getComponentInstanceOfType(UploadService.class);
+    fckMessage = new FCKMessage(container);
+  }
+  
+  public Response upload(String uploadId, String contentType, double contentLength, InputStream inputStream, Node currentNode, String language) throws Exception {
+    CacheControl cacheControl = new CacheControl();
+    cacheControl.setNoCache(true);
+    if(!FCKUtils.hasAddNodePermission(currentNode)) {
+      Object[] args = { currentNode.getPath() };
+      Document message = 
+        fckMessage.createMessage(FCKMessage.FILE_UPLOAD_RESTRICTION,FCKMessage.ERROR,language,args);
+      return Response.Builder.ok(message).mediaType("text/xml").cacheControl(cacheControl).build();
+    }
+    uploadService.createUploadResource(uploadId,null,contentType,contentLength,inputStream);
+    return Response.Builder.ok().cacheControl(cacheControl).build();            
   }
 
-  /**
-   * Upload.
-   * 
-   * @param uploadId the upload id
-   * @param data the data
-   * @param contentType the content type
-   * @param contentLength the content length
-   * @return the document
-   * @throws Exception the exception
-   */
-
-  public void upload(String uploadId, String encoding, String contentType, double contentLength, InputStream inputStream) throws Exception {
-    uploadService.createUploadResource(uploadId,encoding,contentType,contentLength,inputStream);        
+  public Response control(String uploadId, String action) throws Exception {
+    CacheControl cacheControl = new CacheControl();
+    cacheControl.setNoCache(true);
+    if(FileUploadHandler.PROGRESS_ACTION.equals(action)) {
+      Document currentProgress = getProgress(uploadId);      
+      return Response.Builder.ok(currentProgress).cacheControl(cacheControl).build();
+    }else if(FileUploadHandler.ABORT_ACTION.equals(action)) {
+      uploadService.removeUpload(uploadId);
+      return Response.Builder.ok().cacheControl(cacheControl).build();    
+    }else if(FileUploadHandler.DELETE_ACTION.equals(action)) {
+      uploadService.removeUpload(uploadId);
+      return Response.Builder.ok().cacheControl(cacheControl).build();    
+    }
+    return Response.Builder.badRequest().cacheControl(cacheControl).build();
   }
-
-  /**
-   * Get upload progress for a uploadId
-   * 
-   * @param uploadId the upload id
-   * @return the document
-   * @throws Exception the exception
-   */
-  public Document getProgress(String uploadId) throws Exception {    
+  
+  public Response saveAsNTFile(Node parent, String uploadId, String fileName, String language) throws Exception {
+    CacheControl cacheControl = new CacheControl();
+    cacheControl.setNoCache(true);
+    UploadResource resource = uploadService.getUploadResource(uploadId) ;
+    if(fileName != null) {
+      fileName = resource.getFileName();
+    }
+    if(parent.hasNode(fileName)) {
+      Object args[] = { fileName, parent.getPath() };
+      Document fileExisted = 
+        fckMessage.createMessage(FCKMessage.FILE_EXISTED,FCKMessage.ERROR,language,args);
+      return Response.Builder.ok(fileExisted).mediaType("text/xml").cacheControl(cacheControl).build();
+    }                
+    String location = resource.getStoreLocation();
+    byte[] uploadData = IOUtil.getFileContentAsBytes(location);
+    Node file = parent.addNode(fileName,FCKUtils.NT_FILE);
+    Node jcrContent = file.addNode("jcr:content","nt:resource");
+    MimeTypeResolver mimeTypeResolver = new MimeTypeResolver();
+    String mimetype = mimeTypeResolver.getMimeType(fileName);
+    jcrContent.setProperty("jcr:data",new ByteArrayInputStream(uploadData));
+    jcrContent.setProperty("jcr:lastModified",new GregorianCalendar());    
+    jcrContent.setProperty("jcr:mimeType",mimetype);
+    parent.getSession().save();
+    uploadService.removeUpload(uploadId);
+    return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();
+  }
+  
+  private Document getProgress(String uploadId) throws Exception {    
     UploadResource resource = uploadService.getUploadResource(uploadId);
     DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
     DocumentBuilder builder = factory.newDocumentBuilder();
@@ -111,54 +148,5 @@ public class FileUploadHandler {
     rootElement.setAttribute("percent", percent.intValue() + "");
     doc.appendChild(rootElement);
     return doc;
-  }
-
-  /**
-   * Abort.
-   * 
-   * @param uploadId the upload id
-   * @return the document
-   * @throws Exception the exception
-   */
-  public void abort(String uploadId) throws Exception { 
-    uploadService.removeUpload(uploadId);
-  }
-
-  /**
-   * Delete.
-   * 
-   * @param uploadId the upload id
-   * @return the document
-   * @throws Exception the exception
-   */
-  public void delete(String uploadId) throws Exception { 
-    uploadService.removeUpload(uploadId);
-  }
-
-  public String getUploadedFileName(String uploadId) throws Exception {
-    UploadResource resource = uploadService.getUploadResource(uploadId);
-    return resource.getFileName();
-  }
-
-  /**
-   * Save as nt file.
-   * 
-   * @param uploadId the upload id
-   * @param parent the parent
-   * @throws Exception the exception
-   */
-  public void saveAsNTFile(Node parent, String uploadId, String fileName) throws Exception { 
-    UploadResource resource = uploadService.getUploadResource(uploadId) ;
-    String location = resource.getStoreLocation();
-    byte[] uploadData = IOUtil.getFileContentAsBytes(location);
-    Node file = parent.addNode(fileName,FCKUtils.NT_FILE);
-    Node jcrContent = file.addNode("jcr:content","nt:resource");
-    MimeTypeResolver mimeTypeResolver = new MimeTypeResolver();
-    String mimetype = mimeTypeResolver.getMimeType(fileName);
-    jcrContent.setProperty("jcr:data",new ByteArrayInputStream(uploadData));
-    jcrContent.setProperty("jcr:lastModified",new GregorianCalendar());    
-    jcrContent.setProperty("jcr:mimeType",mimetype);
-    parent.getSession().save();
-    uploadService.removeUpload(uploadId);
   }
 }

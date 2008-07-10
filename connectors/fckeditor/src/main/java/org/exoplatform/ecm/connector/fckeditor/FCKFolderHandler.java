@@ -22,6 +22,8 @@ import javax.jcr.nodetype.NodeType;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.rest.CacheControl;
+import org.exoplatform.services.rest.Response;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -33,8 +35,10 @@ import org.w3c.dom.Element;
  */
 public class FCKFolderHandler {  
   private TemplateService templateService;  
+  private FCKMessage fckMessage;
   public FCKFolderHandler(ExoContainer container) {
-    templateService = (TemplateService)container.getComponentInstanceOfType(TemplateService.class);       
+    templateService = (TemplateService)container.getComponentInstanceOfType(TemplateService.class);
+    fckMessage = new FCKMessage(container);
   }
 
   public String getFolderType(final Node node) throws Exception {
@@ -73,17 +77,23 @@ public class FCKFolderHandler {
     return folder;
   }
 
-  /**
-   * Creates the new folder.
-   * 
-   * @param currentNode the current node
-   * @param newFolderName the new folder name
-   * @param language the language
-   * @return the document
-   * @throws Exception the exception
-   */
-  public void createNewFolder(Node currentNode, String newFolderName, String language) throws Exception {            
+  public Response createNewFolder(Node currentNode, String newFolderName, String language) throws Exception {
+    CacheControl cacheControl = new CacheControl();
+    cacheControl.setNoCache(true);
+    if(!FCKUtils.hasAddNodePermission(currentNode)) {
+      Object[] args = { currentNode.getPath() };
+      Document document = 
+        fckMessage.createMessage(FCKMessage.FOLDER_PERMISSION_CREATING,FCKMessage.ERROR,language,args);
+      return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+    }
+    if(currentNode.hasNode(newFolderName)) {
+      Object[] args = { currentNode.getPath(),newFolderName };
+      Document document = 
+        fckMessage.createMessage(FCKMessage.FOLDER_EXISTED,FCKMessage.ERROR,language,args);
+      return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+    }
     currentNode.addNode(newFolderName,FCKUtils.NT_FOLDER);
     currentNode.getSession().save();
+    return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();    
   }
 }
