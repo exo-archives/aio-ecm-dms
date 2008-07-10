@@ -232,11 +232,8 @@ public class UIWorkingArea extends UIContainer {
       }
     } else {
       if(isEditable) actionsList.append(",EditDocument") ;
-      if(holdsLock) {
-        actionsList.append(",Unlock") ;
-      } else if(!isLocked) {
-        actionsList.append(",Lock") ;
-      }
+      if(holdsLock) actionsList.append(",Unlock") ;
+      else if(!isLocked) actionsList.append(",Lock") ;
       if(!isSameNameSibling) {
         actionsList.append(",Copy") ;
         actionsList.append(",Cut") ;
@@ -713,7 +710,7 @@ public class UIWorkingArea extends UIContainer {
         node.save();
       }
       try {
-        Lock lock = node.lock(false, false);                  
+        Lock lock = node.lock(false, false);    
         Utils.keepLock(lock);
       } catch(LockException le) {        
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null, 
@@ -721,7 +718,8 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;
         return ;
-      } catch (Exception e) {        
+      } catch (Exception e) {
+        e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         uiExplorer.updateAjax(event) ;        
@@ -796,6 +794,11 @@ public class UIWorkingArea extends UIContainer {
               ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;     
           return ;
+        }
+        Node parentNode = node.getParent() ;
+        if(parentNode.isLocked()) {
+          String lockToken1 = Utils.getLockToken(parentNode);
+          session.addLockToken(lockToken1) ;
         }
         node.checkin();
       } catch(PathNotFoundException path) {

@@ -136,6 +136,11 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
           else destPath = uiJCRExplorer.getCurrentPath()+ "/" + newName ;
         }
         Session nodeSession = uiRenameForm.renameNode_.getSession() ;
+        Node parentNode = uiRenameForm.renameNode_.getParent() ;
+        if(parentNode.isLocked()) {
+          String lockToken1 = Utils.getLockToken(parentNode);
+          nodeSession.addLockToken(lockToken1) ;
+        }
         nodeSession.refresh(true) ;
         nodeSession.move(srcPath,destPath) ;
         String currentPath = uiJCRExplorer.getCurrentPath() ;
@@ -184,6 +189,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
        
         return ;     
       } catch(LockException lockex){
+        lockex.printStackTrace() ;
         Object[] agrs = {uiRenameForm.renameNode_.getPrimaryNodeType().getName()};
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.lock-exception", agrs, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
