@@ -352,6 +352,18 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           for(NodeType mixin:mixins) {
             if(!mixin.getName().equals("exo:actionable")) {
               if(newLanguageNode.canAddMixin(mixin.getName())) newLanguageNode.addMixin(mixin.getName()) ;            
+              for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
+                if(!def.isProtected()) {
+                  String propName = def.getName() ;
+                  if(def.isMandatory() && !def.isAutoCreated()) {
+                    if(def.isMultiple()) {
+                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
+                    } else {
+                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
+                    }
+                  }        
+                }
+              }
             }
           }
         }
