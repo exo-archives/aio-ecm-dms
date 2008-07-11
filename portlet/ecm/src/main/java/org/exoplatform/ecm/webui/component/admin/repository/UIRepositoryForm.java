@@ -543,7 +543,15 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
       String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;   
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       if(!uiForm.isAddnew_) {
+        if(uiForm.isDefaultWorkspace(workspaceName)) {
+          Object[] args = {workspaceName}  ;    
+          uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.cannot-delete-default-workspace", 
+              args, ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
         RepositoryService rService = uiForm.getApplicationComponent(RepositoryService.class) ;
         ManageableRepository manaRepo = rService.getRepository(uiForm.repoName_) ;
         if(manaRepo.canRemoveWorkspace(workspaceName)) {
@@ -561,8 +569,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
           uiForm.refreshWorkspaceList() ;
         }else {
           Object[] args = {workspaceName}  ;    
-          UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-          uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.cannot-delete-workspace", args)) ;
+          uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.cannot-delete-workspace", 
+              args, ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         }
       } else {
