@@ -746,7 +746,11 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       setVoteProperty(newLang, node, selectedLangNode) ;
       node.setProperty(EXO_LANGUAGE, language) ;
       setCommentNode(node, newLang, selectedLangNode) ;
-      selectedLangNode.remove() ;
+      if(node.getPrimaryNodeType().getName().equals(NTFILE)) {
+        languagesNode.getNode(language).remove() ;
+      } else {
+        selectedLangNode.remove() ;
+      }
       node.save() ;
       node.getSession().save() ;
     }
