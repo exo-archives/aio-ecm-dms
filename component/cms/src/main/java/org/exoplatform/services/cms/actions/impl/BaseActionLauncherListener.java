@@ -32,17 +32,19 @@ import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
-import org.exoplatform.services.security.SecurityService;
+import org.exoplatform.services.security.ConversationRegistry;
+import org.exoplatform.services.security.Identity;
+import org.exoplatform.services.security.MembershipEntry;
 
 public abstract class BaseActionLauncherListener implements ECMEventListener {
-  
+
   protected String actionName_;
   protected String repository_ ;
   protected String srcWorkspace_;
   protected String srcPath_;
   protected String executable_;
   protected Map actionVariables_;
-  
+
   public BaseActionLauncherListener(String actionName, String executable,
       String repository, String srcWorkspace, String srcPath, Map actionVariables)
   throws Exception {
@@ -53,10 +55,10 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     srcPath_ = srcPath;
     actionVariables_ = actionVariables;
   }
-  
+
   public String getSrcWorkspace() { return srcWorkspace_; }  
   public String getRepository() { return repository_; }
-  
+
   @SuppressWarnings("unchecked")
   public void onEvent(EventIterator events) {
     ExoContainer exoContainer = ExoContainerContext.getCurrentContainer() ;
@@ -64,8 +66,8 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
       (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
     ActionServiceContainer actionServiceContainer = 
       (ActionServiceContainer) exoContainer.getComponentInstanceOfType(ActionServiceContainer.class);
-    SecurityService securityService = 
-      (SecurityService) exoContainer.getComponentInstanceOfType(SecurityService.class);        
+    ConversationRegistry conversationRegistry =
+      (ConversationRegistry) exoContainer.getComponentInstanceOfType(ConversationRegistry.class);
     TemplateService templateService = 
       (TemplateService) exoContainer.getComponentInstanceOfType(TemplateService.class);       
     if (events.hasNext()) {
@@ -77,17 +79,9 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
         node = (Node) jcrSession.getItem(srcPath_);
         String userId = event.getUserID();
         Node actionNode = actionServiceContainer.getAction(node, actionName_);
-        Property rolesProp = actionNode.getProperty("exo:roles");
-        boolean hasPermission = false;
-        Value[] roles = rolesProp.getValues();
-        for (int i = 0; i < roles.length; i++) {
-          String role = roles[i].getString();
-          if (securityService.hasMembershipInGroup(userId, role)
-              || SystemIdentity.SYSTEM.equals(userId)) {
-            hasPermission = true;
-            break;
-          }
-        }
+        Property rolesProp = actionNode.getProperty("exo:roles");        
+        Value[] roles = rolesProp.getValues();        
+        boolean hasPermission = checkExcetuteable(userId, roles, conversationRegistry) ;
         if (!hasPermission) {
           jcrSession.logout();
           return;
@@ -118,7 +112,27 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
       }
     }
   }
-  
+
   public abstract void triggerAction(String userId, Map variables, String repository)
-  throws Exception;
-}
+  throws Exception; {
+
+  }
+
+  private boolean checkExcetuteable(String userId,Value[] roles, ConversationRegistry conversationRegistry) throws Exception {        
+    if(SystemIdentity.SYSTEM.equalsIgnoreCase(userId)) {
+      return true ;
+    }
+    Identity identity = conversationRegistry.getState(userId).getIdentity() ;
+    if(identity == null) {
+      return false ; 
+    }        
+    for (int i = 0; i < roles.length; i++) {
+      String role = roles[i].getString();
+      MembershipEntry membershipEntry = MembershipEntry.parse(role) ;
+      if(identity.isMemberOf(membershipEntry)) {
+        return true ;
+      }
+    }
+    return false ;
+  }
+}      

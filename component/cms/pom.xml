@@ -20,10 +20,10 @@
       <version>${org.exoplatform.kernel.version}</version>
       <scope>compile</scope>
     </dependency>
-
+    
     <dependency>
       <groupId>org.exoplatform.core</groupId>
-      <artifactId>exo.core.component.security</artifactId>
+      <artifactId>exo.core.component.security.core</artifactId>
       <version>${org.exoplatform.core.version}</version>
       <scope>compile</scope>
     </dependency>    
