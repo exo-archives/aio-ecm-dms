@@ -133,7 +133,6 @@ public class UIWorkingArea extends UIContainer {
     return session.getNodeByUUID(uuid);
   }
 
-  //TODO: Review this method
   protected Node getCurrentNode() throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
   }
@@ -247,21 +246,21 @@ public class UIWorkingArea extends UIContainer {
   }
 
   public List<Node> getCustomActions(Node node) throws Exception {
-	List<Node> safeActions = new ArrayList<Node>();
-	WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-	String userName = context.getRemoteUser() ;
-	ActionServiceContainer actionContainer = getApplicationComponent(ActionServiceContainer.class) ;
-	List<Node> unsafeActions = actionContainer.getCustomActionsNode(node, ActionServiceContainer.READ_PHASE);
-	if(unsafeActions == null) return new ArrayList<Node>() ;
-	ConversationRegistry conversationRegistry = getApplicationComponent(ConversationRegistry.class);
-	for(Node actionNode : unsafeActions) {
-	  Value[] roles = actionNode.getProperty(Utils.EXO_ROLES).getValues();
-	  for (int i = 0; i < roles.length; i++) {
-		String role = roles[i].getString();
-		if (conversationRegistry.getState(userName).getIdentity().isMemberOf(userName, role)) safeActions.add(actionNode);
-	  }
-	}
-	return safeActions;
+    List<Node> safeActions = new ArrayList<Node>();
+    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
+    String userName = context.getRemoteUser() ;
+    ActionServiceContainer actionContainer = getApplicationComponent(ActionServiceContainer.class) ;
+    List<Node> unsafeActions = actionContainer.getCustomActionsNode(node, ActionServiceContainer.READ_PHASE);
+    if(unsafeActions == null) return new ArrayList<Node>() ;
+    ConversationRegistry conversationRegistry = getApplicationComponent(ConversationRegistry.class);
+    for(Node actionNode : unsafeActions) {
+      Value[] roles = actionNode.getProperty(Utils.EXO_ROLES).getValues();
+      for (int i = 0; i < roles.length; i++) {
+        String role = roles[i].getString();
+        if (conversationRegistry.getState(userName).getIdentity().isMemberOf(userName, role)) safeActions.add(actionNode);
+      }
+    }
+    return safeActions;
   }
 
   @SuppressWarnings("unused")

@@ -37,7 +37,6 @@ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.security.ConversationRegistry;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.MembershipEntry;
-//import org.exoplatform.services.security.SecurityService;
 import org.picocontainer.Startable;
 
 /**
