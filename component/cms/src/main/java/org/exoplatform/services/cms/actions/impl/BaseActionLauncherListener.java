@@ -128,6 +128,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     }        
     for (int i = 0; i < roles.length; i++) {
       String role = roles[i].getString();
+      if("*".equalsIgnoreCase(role)) return true ;
       MembershipEntry membershipEntry = MembershipEntry.parse(role) ;
       if(identity.isMemberOf(membershipEntry)) {
         return true ;

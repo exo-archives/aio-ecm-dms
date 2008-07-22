@@ -173,11 +173,10 @@ public class UIJCRExplorer extends UIContainer {
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
   public void newJCRTemplateResourceResolver() {    
     try{                        
-//      String workspace =  getPortletPreferences().getValue(Utils.WORKSPACE_NAME,"") ; // repository.getConfiguration().get .getDefaultWorkspaceName() ;
       String workspace =  driveData_.getWorkspace() ;
       Session session = getSystemProvider().getSession(workspace,getRepository());        
       jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
-    }catch(Exception e) {
+    } catch(Exception e) {
       e.printStackTrace() ;
     }         
   }
