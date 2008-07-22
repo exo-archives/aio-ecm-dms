@@ -58,10 +58,12 @@ import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.security.ConversationRegistry;
-//import org.exoplatform.services.security.SecurityService;
+import org.exoplatform.services.security.Identity;
+import org.exoplatform.services.security.MembershipEntry;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -250,6 +252,26 @@ public class UIWorkingArea extends UIContainer {
     if(uiExplorer.getAllClipBoard().size() > 0) actionsList.append(",Paste") ;
     return actionsList.toString() ;
   }
+  
+  private boolean hasPermission(String userName, Value[] roles) throws Exception {
+    ConversationRegistry conversationRegistry = getApplicationComponent(ConversationRegistry.class);
+    if(SystemIdentity.SYSTEM.equalsIgnoreCase(userName)) {
+      return true ;
+    }
+    Identity identity = conversationRegistry.getState(userName).getIdentity() ;
+    if(identity == null) {
+      return false ; 
+    }        
+    for (int i = 0; i < roles.length; i++) {
+      String role = roles[i].getString();
+      if("*".equalsIgnoreCase(role)) return true ;
+      MembershipEntry membershipEntry = MembershipEntry.parse(role) ;
+      if(identity.isMemberOf(membershipEntry)) {
+        return true ;
+      }
+    }
+    return false ;
+  }
 
   public List<Node> getCustomActions(Node node) throws Exception {
     List<Node> safeActions = new ArrayList<Node>();
@@ -258,15 +280,9 @@ public class UIWorkingArea extends UIContainer {
     ActionServiceContainer actionContainer = getApplicationComponent(ActionServiceContainer.class) ;
     List<Node> unsafeActions = actionContainer.getCustomActionsNode(node, ActionServiceContainer.READ_PHASE);
     if(unsafeActions == null) return new ArrayList<Node>() ;
-    //SecurityService securityService = getApplicationComponent(SecurityService.class) ;
-    ConversationRegistry conversationRegistry = getApplicationComponent(ConversationRegistry.class);
     for(Node actionNode : unsafeActions) {
       Value[] roles = actionNode.getProperty(Utils.EXO_ROLES).getValues();
-      for (int i = 0; i < roles.length; i++) {
-        String role = roles[i].getString();
-        //if(securityService.hasMembershipInGroup(userName, role)) safeActions.add(actionNode);
-        if (conversationRegistry.getState(userName).getIdentity().isMemberOf(userName, role)) safeActions.add(actionNode);
-      }
+      if (hasPermission(userName, roles)) safeActions.add(actionNode);
     }
     return safeActions;
   }

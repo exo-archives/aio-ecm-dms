@@ -53,8 +53,6 @@ public class BPActionActivationJob implements Job {
       (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
     ActionServiceContainer actionServiceContainer = 
       (ActionServiceContainer) exoContainer.getComponentInstanceOfType(ActionServiceContainer.class);
-    //SecurityService securityService = 
-      //(SecurityService) exoContainer.getComponentInstanceOfType(SecurityService.class);
     ConversationRegistry conversationRegistry = 
       (ConversationRegistry)exoContainer.getComponentInstanceOfType(ConversationRegistry.class); 
     ActionPlugin bpActionService = actionServiceContainer.getActionPlugin(BPActionPlugin.ACTION_TYPE) ;
@@ -102,6 +100,7 @@ public class BPActionActivationJob implements Job {
     }        
     for (int i = 0; i < roles.length; i++) {
       String role = roles[i].getString();
+      if("*".equalsIgnoreCase(role)) return true ;
       MembershipEntry membershipEntry = MembershipEntry.parse(role) ;
       if(identity.isMemberOf(membershipEntry)) {
         return true ;

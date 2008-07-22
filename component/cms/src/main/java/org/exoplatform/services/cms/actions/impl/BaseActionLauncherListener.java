@@ -32,11 +32,9 @@ import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
-//import org.exoplatform.services.security.SecurityService;
 import org.exoplatform.services.security.ConversationRegistry;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.MembershipEntry;
-import org.exoplatform.services.security.RolesExtractor;
 
 public abstract class BaseActionLauncherListener implements ECMEventListener {
 
@@ -68,8 +66,6 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
       (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
     ActionServiceContainer actionServiceContainer = 
       (ActionServiceContainer) exoContainer.getComponentInstanceOfType(ActionServiceContainer.class);
-    //SecurityService securityService = 
-    //(SecurityService) exoContainer.getComponentInstanceOfType(SecurityService.class);
     ConversationRegistry conversationRegistry =
       (ConversationRegistry) exoContainer.getComponentInstanceOfType(ConversationRegistry.class);
     TemplateService templateService = 
@@ -132,6 +128,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     }        
     for (int i = 0; i < roles.length; i++) {
       String role = roles[i].getString();
+      if("*".equalsIgnoreCase(role)) return true ;
       MembershipEntry membershipEntry = MembershipEntry.parse(role) ;
       if(identity.isMemberOf(membershipEntry)) {
         return true ;

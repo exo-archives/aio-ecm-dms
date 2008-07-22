@@ -55,8 +55,6 @@ public class ScriptActionActivationJob implements Job {
       (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
     ActionServiceContainer actionServiceContainer = 
       (ActionServiceContainer) exoContainer.getComponentInstanceOfType(ActionServiceContainer.class);
-    //SecurityService securityService = 
-    //(SecurityService) exoContainer.getComponentInstanceOfType(SecurityService.class);
     ConversationRegistry conversationRegistry =
       (ConversationRegistry) exoContainer.getComponentInstanceOfType(ConversationRegistry.class); 
     ActionPlugin scriptActionService = actionServiceContainer.getActionPlugin(ScriptActionPlugin.ACTION_TYPE) ;
@@ -103,6 +101,7 @@ public class ScriptActionActivationJob implements Job {
     }        
     for (int i = 0; i < roles.length; i++) {
       String role = roles[i].getString();
+      if("*".equalsIgnoreCase(role)) return true ;
       MembershipEntry membershipEntry = MembershipEntry.parse(role) ;
       if(identity.isMemberOf(membershipEntry)) {
         return true ;

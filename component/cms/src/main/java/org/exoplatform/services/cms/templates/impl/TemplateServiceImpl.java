@@ -47,8 +47,6 @@ public class TemplateServiceImpl implements TemplateService, Startable {
 
   private RepositoryService    repositoryService_;
 
-  //private SecurityService      securityService_;
-
   private ConversationRegistry conversationRegistry_;
 
   private String               cmsTemplatesBasePath_;
@@ -56,9 +54,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
 
   public TemplateServiceImpl(RepositoryService jcrService,
-      //NodeHierarchyCreator nodeHierarchyCreator, SecurityService securityService) throws Exception {
       NodeHierarchyCreator nodeHierarchyCreator, ConversationRegistry conversationRegistry) throws Exception {
-    //securityService_ = securityService;
     conversationRegistry_ = conversationRegistry;
     repositoryService_ = jcrService;
     cmsTemplatesBasePath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_TEMPLATES_PATH);
