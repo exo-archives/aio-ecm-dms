@@ -195,6 +195,17 @@ public class UISearchResult extends UIContainer {
       UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class) ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String folderPath = path.substring(0, path.lastIndexOf("/")) ;
+      try {
+        uiExplorer.getSession().getItem(folderPath);
+      } catch(AccessDeniedException ace) {
+        UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class) ;
+        uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.access-denied", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(Exception e) {
+        e.printStackTrace() ;
+      }
       uiExplorer.setSelectNode(folderPath, uiExplorer.getSession()) ;
       uiExplorer.updateAjax(event) ;
     }
