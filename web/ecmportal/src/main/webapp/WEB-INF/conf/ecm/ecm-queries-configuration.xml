@@ -66,6 +66,7 @@
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
+       <!--
        <object-param>        
          <name>ValidatingDocuments</name>
          <description>documents are in validation request state</description>
@@ -81,6 +82,8 @@
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
+       -->
+       <!-- 
        <object-param>        
          <name>PendingDocuments</name>
          <description>documents are in waiting for publishing state</description>
@@ -96,6 +99,8 @@
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
+       -->
+       <!-- 
        <object-param>        
          <name>PublishingDocuments</name>
          <description>documents are in publishing state</description>
@@ -111,6 +116,8 @@
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
+       -->
+       <!-- 
        <object-param>        
          <name>BackupDocuments</name>
          <description>documents are in backup state</description>
@@ -126,6 +133,7 @@
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
+       -->
        <object-param>        
          <name>AllArticles</name>
          <description>All articles</description>
@@ -141,13 +149,14 @@
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
        </object-param>
+       <!--  
        <object-param>        
          <name>AllEvents</name>
          <description>All events</description>
          <object type="org.exoplatform.services.cms.queries.impl.QueryData">              
            <field  name="name"><string>All Events</string></field>
            <field  name="language"><string>xpath</string></field>
-           <field  name="statement"><string>//element(*,exo:events) order by @exo:dateCreated descending</string></field>
+           <field  name="statement"><string>//element(*,exo:events) order by @exo:dateCreated descending </string></field>
            <field  name="permissions">
              <collection type="java.util.ArrayList">
                <value><string>*:/platform/users</string></value>
@@ -155,7 +164,8 @@
            </field>
            <field  name="cachedResult"><boolean>true</boolean></field>             
          </object>
-       </object-param>       
+       </object-param>   
+       -->    
    		</init-params>  
 		</component-plugin>  		
  </external-component-plugins>	      
