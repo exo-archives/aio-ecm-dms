@@ -196,7 +196,7 @@ public class CmsServiceImpl implements CmsService {
           JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath) ;
           Object value = null;
           if(inputVariable != null) value = inputVariable.getValue();
-          if(value != null || propertyDef.isMandatory()) {
+          if(propertyDef.isMandatory()) {
             processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple()) ;
           }
         }
@@ -219,7 +219,7 @@ public class CmsServiceImpl implements CmsService {
         JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath) ;
         Object value = null;
         if(inputVariable != null) value = inputVariable.getValue();
-        if(value != null &&  !propertyDef.isProtected()) {
+        if(!propertyDef.isProtected()) {
           processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple());
         }
       }
@@ -394,7 +394,8 @@ public class CmsServiceImpl implements CmsService {
       }      
       break;
     case PropertyType.REFERENCE:      
-      if (value == null) throw new RepositoryException("null value for a reference " + requiredtype);
+//      if (value == null) throw new RepositoryException("null value for a reference " + requiredtype);
+      if (value == null) node.setProperty(propertyName, "") ;
       if (value instanceof Value[]) {
         node.setProperty(propertyName, (Value[]) value);
       } else if (value instanceof String) {
