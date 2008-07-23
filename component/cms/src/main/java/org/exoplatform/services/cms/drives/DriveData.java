@@ -41,47 +41,151 @@ public class DriveData implements Comparable<DriveData> {
   
   public  DriveData(){}
 
+  /**
+   * 
+   * @return the name of drive
+   */
   public String getName() { return name ; }
+  /**
+   * Register drive name
+   * @param name  the name of DriveData 
+   */
   public void setName(String name) { this.name = name ; }  
 
-  
+  /**
+   * @return the name of repository 
+   */
   public String getRepository() { return repository ; }
+  /**
+   * Register repository to drive
+   * @param rp repository name
+   */
   public void setRepository(String rp) { repository = rp ; }
   
+  /**
+   * 
+   * @return the name of workspace
+   */
   public String getWorkspace() { return workspace ; }
+  /**
+   * Register workspace to drive
+   * @param ws the workspace name
+   */
   public void setWorkspace(String ws) { workspace = ws ; }
   
+  /**
+   * 
+   * @return the permissions of drive
+   */
   public String getPermissions() { return this.permissions ; }
+  /**
+   * Register permission to drive
+   * @param permissions
+   */
   public void setPermissions(String permissions) { this.permissions = permissions ; }
 
+  /**
+   * 
+   * @return the home path of drive
+   */
   public String getHomePath() { return homePath ; }
+  /**
+   * Register home path to drive
+   * @param path the home path of drive
+   */
   public void setHomePath(String path) { homePath = path ; }
   
+  /**
+   * 
+   * @return icon path 
+   */
   public String getIcon() { return icon ; }
+  /**
+   * Register icon to drive
+   * @param ico icon path
+   */
   public void setIcon(String ico) { icon = ico ; }
   
+  /**
+   * 
+   * @return the folder type of drive
+   */
   public String getAllowCreateFolder() { return allowCreateFolder ; }
+  /**
+   * Register folder type to drive
+   * @param allowCreateFolder folder type
+   */
   public void setAllowCreateFolder(String allowCreateFolder) { this.allowCreateFolder = allowCreateFolder ; }
 
+  /**
+   * 
+   * @return  the views of drive
+   */
   public String getViews() { return views ; }
+  /**
+   * Register views to drive
+   * @param v view name
+   */
   public void setViews(String v) { views = v ; }
   
+  /**
+   * 
+   * @return the state of view preference drive
+   */
   public boolean getViewPreferences() { return viewPreferences ; }
+  
+  /**
+   * Register the state of view preference to drive
+   * @param b  the state of view preference
+   */
   public void setViewPreferences(boolean b) { viewPreferences = b ; }
   
+  /**
+   * 
+   * @return the state of view non document node type of drive
+   */
   public boolean getViewNonDocument() { return viewNonDocument ; }
+  /**
+   * Register state of view non document to drive
+   * @param b the state of view non document node type
+   */
   public void setViewNonDocument(boolean b) { viewNonDocument = b ; }
-  
+  /**
+   * 
+   * @return the state of view side bar of drive
+   */
   public boolean getViewSideBar() { return viewSideBar ; }
+  /**
+   * Register state of view side bar to drive
+   * @param b state of view side bar
+   */
   public void setViewSideBar(boolean b) { viewSideBar = b ; }
   
+  /**
+   * 
+   * @return the state of show hidden node of drive
+   */
   public boolean getShowHiddenNode() { return showHiddenNode ; }
+  /**
+   * Register state of show hidden node to drive
+   * @param b state of show hidden node
+   */
   public void setShowHiddenNode(boolean b) { showHiddenNode = b ; }
   
+  /**
+   * 
+   * @return  the array of permission
+   */
   public String[] getAllPermissions() {    
     return permissions.split(",") ;
   }
 
+  /**
+   * Check the state of permission is existing or not
+   * @param allPermissions  the string array permission of drive
+   * @param permission  permission name 
+   * @return the state of permission is existing or not.
+   */
   public boolean hasPermission(String[] allPermissions, String permission) {
     List<String> permissionList = new ArrayList<String>() ;
     for(String per : allPermissions){

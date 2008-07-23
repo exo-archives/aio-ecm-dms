@@ -79,6 +79,10 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     }
   }
 
+  /**
+   * 
+   * @param drivePlugin
+   */
   public void setManageDrivePlugin(ManageDrivePlugin drivePlugin) {
     drivePlugins_.add(drivePlugin) ;
   }    

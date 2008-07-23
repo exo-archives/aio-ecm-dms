@@ -54,6 +54,10 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
     params_ = params ;  
   }
 
+  /**
+   * Init all drive data
+   * @throws Exception
+   */
   @SuppressWarnings("unchecked")
   public void init() throws Exception {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
@@ -72,6 +76,11 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
     }
   }
 
+  /**
+   * Init data with specified repository
+   * @param repository
+   * @throws Exception
+   */
   @SuppressWarnings("unchecked")
   public void init(String repository) throws Exception {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
@@ -91,6 +100,12 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
     }     
   }
 
+  /**
+   * Register new drive node with specified DriveData
+   * @param data Drive data
+   * @param session 
+   * @throws Exception
+   */
   private void addDrive(DriveData data, Session session) throws Exception {
     String drivesPath = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_DRIVES_PATH);
     Node driveHome = (Node)session.getItem(drivesPath) ;
@@ -112,6 +127,12 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
     }
   }
 
+  /**
+   * Return Session object with specified repository name
+   * @param repository
+   * @return Session object
+   * @throws Exception
+   */
   private Session getSession(String repository)throws Exception {
     ManageableRepository manaRepository = repositoryService_.getRepository(repository) ;
     return manaRepository.getSystemSession(manaRepository.getConfiguration().getSystemWorkspaceName()) ;

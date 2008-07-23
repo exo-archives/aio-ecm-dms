@@ -16,6 +16,9 @@
 	<module>component/publication</module>
 	<module>connectors/fckeditor</module>
 	<module>webui/ecm</module>
+	<module>web/eXoECMResources</module>
+	<module>web/eXoECMSkinVista</module>
+	<module>web/eXoECMSkinMac</module>
 
     <module>bp</module>
 

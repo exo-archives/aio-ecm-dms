@@ -42,7 +42,14 @@ public class NewUserListener extends UserEventListener {
   final static String PRIVATE_ALIAS = "userPrivate" ;
   final static String PUBLIC_ALIAS = "userPublic" ;
   
-
+  /**
+   * 
+   * @param jcrService
+   * @param driveService
+   * @param nodeHierarchyCreatorService
+   * @param params
+   * @throws Exception
+   */
   public NewUserListener(RepositoryService jcrService,
       ManageDriveService driveService, 
       NodeHierarchyCreator nodeHierarchyCreatorService, 
@@ -54,6 +61,9 @@ public class NewUserListener extends UserEventListener {
     userPath_ = nodeHierarchyCreatorService.getJcrPath(BasePath.CMS_USERS_PATH) ; 
   }
   
+  /**
+   * 
+   */
   @SuppressWarnings({"unused", "hiding"})
   public void preSave(User user, boolean isNew) throws Exception { 
     String repository = initParams_.getValueParam("repository").getValue();
@@ -78,6 +88,9 @@ public class NewUserListener extends UserEventListener {
         viewPreferences, viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder) ;
   }
   
+  /**
+   * 
+   */
   public void preDelete(User user) throws Exception {
     ManageableRepository repository = jcrService_.getCurrentRepository() ;
     driveService_.removeDrive(user.getUserName() + "|" + nodeHierarchyCreator_.getJcrPath(PRIVATE_ALIAS), repository.getConfiguration().getName()) ;

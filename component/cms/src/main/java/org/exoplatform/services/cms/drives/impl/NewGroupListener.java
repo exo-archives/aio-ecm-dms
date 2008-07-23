@@ -39,6 +39,14 @@ public class NewGroupListener extends GroupEventListener {
 
   final static private String GROUPS_PATH = "groupsPath";
 
+  /**
+   * 
+   * @param jcrService
+   * @param driveService
+   * @param nodeHierarchyCreatorService
+   * @param params
+   * @throws Exception
+   */
   public NewGroupListener(RepositoryService jcrService,
       ManageDriveService driveService, 
       NodeHierarchyCreator nodeHierarchyCreatorService, 
