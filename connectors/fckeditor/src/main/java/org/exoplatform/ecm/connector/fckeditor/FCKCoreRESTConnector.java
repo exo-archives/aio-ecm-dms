@@ -134,7 +134,7 @@ public class FCKCoreRESTConnector implements ResourceContainer {
    * @return the response
    * @throws Exception the exception
    */
-  @HTTPMethod(HTTPMethods.POST)
+  @HTTPMethod(HTTPMethods.GET)
   @URITemplate("/createFolder/")  
   @OutputTransformer(XMLOutputTransformer.class)
   public Response createFolder(

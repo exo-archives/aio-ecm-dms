@@ -95,8 +95,8 @@ public class FCKFileHandler {
     file.setAttribute("name", child.getName());     
     SimpleDateFormat dateFormat = new SimpleDateFormat();
     dateFormat.applyPattern(ISO8601.SIMPLE_DATETIME_FORMAT);    
-    file.setAttribute("dateCreated", dateFormat.format(child.getProperty("exo:dateCreated").getDate()));    
-    file.setAttribute("dateModified", dateFormat.format(child.getProperty("exo:dateModified").getDate()));      
+    file.setAttribute("dateCreated", dateFormat.format(child.getProperty("exo:dateCreated").getDate().getTime()));    
+    file.setAttribute("dateModified", dateFormat.format(child.getProperty("exo:dateModified").getDate().getTime()));      
     file.setAttribute("creator", child.getProperty("exo:owner").getString());
     file.setAttribute("fileType", fileType);              
     file.setAttribute("url",getFileURL(child));        
