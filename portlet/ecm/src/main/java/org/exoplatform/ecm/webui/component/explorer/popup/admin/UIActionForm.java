@@ -140,7 +140,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
   }
   public String getPath() { return scriptPath_ ; }  
   public void setRootPath(String rootPath){
-	 rootPath_ = rootPath;
+   rootPath_ = rootPath;
   }
   public String getRootPath(){return rootPath_;}
   public void setIsEditInList(boolean isEditInList) { isEditInList_ = isEditInList; }
@@ -252,6 +252,7 @@ public class UIActionForm extends DialogFormFields implements UISelector {
     public void execute(Event<UIActionForm> event) throws Exception {
       UIActionForm uiForm = event.getSource() ;
       UIContainer uiContainer = null;
+      uiForm.isShowingComponent_ = true;
       if(uiForm.isEditInList_) {
         uiContainer = uiForm.getAncestorOfType(UIActionListContainer.class) ;
       } else {

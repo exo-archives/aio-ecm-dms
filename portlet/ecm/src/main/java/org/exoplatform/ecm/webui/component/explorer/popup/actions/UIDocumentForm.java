@@ -214,6 +214,7 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIDocumentForm uiForm = event.getSource() ;
       UIDocumentFormController uiContainer = uiForm.getParent() ;
+      uiForm.isShowingComponent_ = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
