@@ -237,6 +237,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       UIFastContentCreatortForm uiForm = event.getSource() ;
       UIFastContentCreatorPortlet uiContainer = uiForm.getParent() ;
+      uiForm.isShowingComponent_ = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
