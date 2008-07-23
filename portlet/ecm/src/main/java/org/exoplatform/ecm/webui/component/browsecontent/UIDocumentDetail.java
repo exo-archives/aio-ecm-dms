@@ -254,7 +254,9 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     for(String ws : workspaces) {
       try{
         return provider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;
-      }catch(Exception e) { }      
+      } catch(Exception e) {
+        continue ;
+      }      
     }
     return null;
   }

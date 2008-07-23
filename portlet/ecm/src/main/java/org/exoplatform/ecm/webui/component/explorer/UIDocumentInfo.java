@@ -140,8 +140,8 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     for(String ws : workspaces) {
       try{
         return SessionsUtils.getSystemProvider().getSession(ws, manageRepo).getNodeByUUID(uuid) ;
-      }catch(Exception e) {
-
+      } catch(Exception e) {
+        continue;
       }      
     }
     return null;
