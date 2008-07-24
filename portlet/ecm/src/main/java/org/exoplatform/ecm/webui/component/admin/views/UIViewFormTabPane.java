@@ -46,7 +46,8 @@ import org.exoplatform.webui.form.UIFormTabPane;
       @EventConfig(listeners = UIViewFormTabPane.RestoreActionListener.class),
       @EventConfig(listeners = UIViewFormTabPane.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIViewFormTabPane.CloseActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIViewForm.AddPermissionActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIViewForm.AddPermissionActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIViewForm.ChangeVersionActionListener.class, phase = Phase.DECODE)
     }
 )
 public class UIViewFormTabPane extends UIFormTabPane {  
