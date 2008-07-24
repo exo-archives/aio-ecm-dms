@@ -60,328 +60,341 @@ import org.exoplatform.webui.form.UIFormStringInput;
  */
 @ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
 public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
-  
-  final static public String FIELD_VERSION = "version" ;
-  final static public String FIELD_NAME = "viewName" ;
-  final static public String FIELD_PERMISSION = "permission" ;
-  final static public String FIELD_TABS = "tabs" ;
-  final static public String FIELD_TEMPLATE = "template" ;
-  final static public String FIELD_ENABLEVERSION = "enableVersion" ;
 
-  private boolean isView_ = true ;
-  private Node views_;
-  private HashMap<String, Tab> tabMap_ = new HashMap<String, Tab>() ;  
-  private ManageViewService vservice_ = null ;
-  private List<String> listVersion = new ArrayList<String>() ;
-  private Version baseVersion_;
-  private VersionNode selectedVersion_;
-  
-  public String getRepository() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    return portletPref.getValue(Utils.REPOSITORY, "") ;
-  }
-  
-  public UIViewForm(String name) throws Exception {
-    super(name) ;
-    setComponentConfig(getClass(), null) ;
-    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    UIFormSelectBox versions = new UIFormSelectBox(FIELD_VERSION , FIELD_VERSION, options) ;
-    versions.setRendered(false) ;
-    addUIFormInput(versions) ;
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
-    addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).setEditable(false)) ;
-    addUIFormInput(new UIFormInputInfo(FIELD_TABS, FIELD_TABS, null)) ;
-    setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
-    vservice_ = getApplicationComponent(ManageViewService.class) ;
-    String repository = getRepository() ;
-    Node ecmTemplateHome = vservice_.getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, repository,SessionsUtils.getSessionProvider()) ;
-    List<SelectItemOption<String>> temp = new ArrayList<SelectItemOption<String>>() ; 
-    if(ecmTemplateHome != null) {
-      NodeIterator iter = ecmTemplateHome.getNodes() ;
-      while(iter.hasNext()) {
-        Node tempNode = iter.nextNode() ;
-        temp.add(new SelectItemOption<String>(tempNode.getName(),tempNode.getPath())) ;
-      }
-    }
-    addUIFormInput(new UIFormSelectBox(FIELD_TEMPLATE,FIELD_TEMPLATE, temp)) ;
-    UIFormCheckBoxInput enableVersion = 
-      new UIFormCheckBoxInput<Boolean>(FIELD_ENABLEVERSION, FIELD_ENABLEVERSION, null) ;
-    enableVersion.setRendered(false) ;
-    addUIFormInput(enableVersion) ;
-    setActions(new String[]{"Save", "Reset", "Cancel"}, null) ;
-  }
-  
-  public void processRender(WebuiRequestContext context) throws Exception {
-    super.processRender(context) ;
-  }
-  
-  @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) {
-    getUIStringInput(UIViewForm.FIELD_PERMISSION).setValue(value) ;
-    UIViewContainer uiContainer = getAncestorOfType(UIViewContainer.class) ;
-    uiContainer.removeChildById(UIViewFormTabPane.POPUP_PERMISSION) ;
-  }
-  
-  public boolean isView() { return isView_ ; }
-  
-  public Node getViews() { return views_; }
-  
-  public boolean canEnableVersionning(Node node) throws Exception {
-    return node.canAddMixin(Utils.MIX_VERSIONABLE);
-  }
+	final static public String FIELD_VERSION = "version" ;
+	final static public String FIELD_NAME = "viewName" ;
+	final static public String FIELD_PERMISSION = "permission" ;
+	final static public String FIELD_TABS = "tabs" ;
+	final static public String FIELD_TEMPLATE = "template" ;
+	final static public String FIELD_ENABLEVERSION = "enableVersion" ;
 
-  private boolean isVersioned(Node node) throws RepositoryException {          
-    return node.isNodeType(Utils.MIX_VERSIONABLE);    
-  }
+	private boolean isView_ = true ;
+	private Node views_;
+	private HashMap<String, Tab> tabMap_ = new HashMap<String, Tab>() ;  
+	private ManageViewService vservice_ = null ;
+	private List<String> listVersion = new ArrayList<String>() ;
+	private Version baseVersion_;
+	private VersionNode selectedVersion_;
 
-  private VersionNode getRootVersion(Node node) throws Exception{       
-    VersionHistory vH = node.getVersionHistory() ;
-    if(vH != null) return new VersionNode(vH.getRootVersion()) ;
-    return null ;
-  }
+	public String getRepository() {
+		PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+		PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+		return portletPref.getValue(Utils.REPOSITORY, "") ;
+	}
 
-  private List<String> getNodeVersions(List<VersionNode> children) throws Exception {         
-    List<VersionNode> child = new ArrayList<VersionNode>() ;
-    for(VersionNode vNode : children){
-      listVersion.add(vNode.getName());
-      child = vNode.getChildren() ;
-      if (!child.isEmpty()) getNodeVersions(child) ; 
-    }           
-    return listVersion ;
-  }
+	public UIViewForm(String name) throws Exception {
+		super(name) ;
+		setComponentConfig(getClass(), null) ;
+		List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+		UIFormSelectBox versions = new UIFormSelectBox(FIELD_VERSION , FIELD_VERSION, options) ;
+		versions.setOnChange("ChangeVersion");
+		versions.setRendered(false) ;
+		addUIFormInput(versions) ;
+		addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
+		addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).setEditable(false)) ;
+		addUIFormInput(new UIFormInputInfo(FIELD_TABS, FIELD_TABS, null)) ;
+		setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
+		vservice_ = getApplicationComponent(ManageViewService.class) ;
+		String repository = getRepository() ;
+		Node ecmTemplateHome = vservice_.getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, repository,SessionsUtils.getSessionProvider()) ;
+		List<SelectItemOption<String>> temp = new ArrayList<SelectItemOption<String>>() ; 
+		if(ecmTemplateHome != null) {
+			NodeIterator iter = ecmTemplateHome.getNodes() ;
+			while(iter.hasNext()) {
+				Node tempNode = iter.nextNode() ;
+				temp.add(new SelectItemOption<String>(tempNode.getName(),tempNode.getPath())) ;
+			}
+		}
+		addUIFormInput(new UIFormSelectBox(FIELD_TEMPLATE,FIELD_TEMPLATE, temp)) ;
+		UIFormCheckBoxInput enableVersion = 
+			new UIFormCheckBoxInput<Boolean>(FIELD_ENABLEVERSION, FIELD_ENABLEVERSION, null) ;
+		enableVersion.setRendered(false) ;
+		addUIFormInput(enableVersion) ;
+		setActions(new String[]{"Save", "Reset", "Cancel"}, null) ;
+	}
 
-  private List<SelectItemOption<String>> getVersionValues(Node node) throws Exception { 
-    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    List<VersionNode> children = getRootVersion(node).getChildren() ;
-    listVersion.clear() ;
-    List<String> versionList = getNodeVersions(children) ;
-    for(int i = 0; i < versionList.size(); i++) {
-      for(int j = i + 1; j < versionList.size(); j ++) {
-        if( Integer.parseInt(versionList.get(j)) < Integer.parseInt(versionList.get(i))) {
-          String temp = versionList.get(i) ;
-          versionList.set(i, versionList.get(j))  ;
-          versionList.set(j, temp) ;
-        }
-      }
-      options.add(new SelectItemOption<String>(versionList.get(i), versionList.get(i))) ;
-    }
-    return options ;
-  }
-  
-  public void addTab(String tabName, String buttons){
-    Tab tab = new Tab() ;
-    tab.setTabName(tabName) ;
-    tab.setButtons(buttons) ;
-    tabMap_.put(tabName, tab) ;
-  }
+	public void processRender(WebuiRequestContext context) throws Exception {
+		super.processRender(context) ;
+	}
 
-  private String getTabList() throws Exception {
-    StringBuilder result = new StringBuilder() ;
-    List<Tab> tabList = new ArrayList<Tab>(tabMap_.values());
-    if(result != null) {
-      for(Tab tab : tabList) {
-        if(result.length() > 0) result.append(",") ;
-        result.append(tab.getTabName()) ;
-      }
-    }
-    return result.toString() ;
-  }
-  
-  public void refresh(boolean isAddNew) throws Exception {
-    getUIFormSelectBox(FIELD_VERSION).setRendered(!isAddNew) ;
-    getUIFormSelectBox(FIELD_VERSION).setDisabled(!isAddNew) ;
-    getUIStringInput(FIELD_NAME).setEditable(isAddNew).setValue(null) ;
-    getUIStringInput(FIELD_PERMISSION).setValue(null) ;
-    getUIFormInputInfo(FIELD_TABS).setEditable(isAddNew).setValue(null) ;
-    getUIFormSelectBox(FIELD_TEMPLATE).setValue(null) ;
-    getUIFormSelectBox(FIELD_TEMPLATE).setDisabled(!isAddNew) ;
-    getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setRendered(!isAddNew) ;
-    if(isAddNew) {
-      setActions(new String[]{"Save", "Reset", "Cancel"}, null) ;
-      setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
-      tabMap_.clear() ;
-      views_ = null ;
-      setActionInfo(FIELD_TABS, null) ;
-    }
-    selectedVersion_ = null ;
-    baseVersion_ = null ;
-  }
-  
-  public void update(Node viewNode, boolean isView, VersionNode selectedVersion) throws Exception {
-    isView_ = isView ;
-    if(viewNode != null) {
-      views_ = viewNode ;
-      if(isVersioned(views_)) baseVersion_ = views_.getBaseVersion();
-      tabMap_.clear() ;
-      for(NodeIterator iter = views_.getNodes(); iter.hasNext(); ) {
-        Node tab = iter.nextNode() ;
-        String buttons = tab.getProperty("exo:buttons").getString() ;
-        Tab tabObj = new Tab() ;
-        tabObj.setTabName(tab.getName()) ;
-        tabObj.setButtons(buttons) ;
-        tabMap_.put(tab.getName(), tabObj) ;
-      }
+	@SuppressWarnings("unused")
+	public void updateSelect(String selectField, String value) {
+		getUIStringInput(UIViewForm.FIELD_PERMISSION).setValue(value) ;
+		UIViewContainer uiContainer = getAncestorOfType(UIViewContainer.class) ;
+		uiContainer.removeChildById(UIViewFormTabPane.POPUP_PERMISSION) ;
+	}
 
-      getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setRendered(true) ;
-      if (isVersioned(views_)) {              
-        getUIFormSelectBox(FIELD_VERSION).setOptions(getVersionValues(views_)).setRendered(true) ;
-        getUIFormSelectBox(FIELD_VERSION).setValue(baseVersion_.getName()) ;
-        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(true) ;
-        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEnable(true) ;
-      } else if (!isVersioned(views_)) {
-        getUIFormSelectBox(FIELD_VERSION).setRendered(false) ;
-        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(false) ;
-        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEnable(true) ;   
-      } 
-    }
-    if (selectedVersion != null) {      
-      views_.restore(selectedVersion.getVersion(), false) ;
-      views_.checkout() ;
-      tabMap_.clear() ;
-      for(NodeIterator iter = views_.getNodes(); iter.hasNext(); ) {
-        Node tab = iter.nextNode() ;
-        String buttons = tab.getProperty("exo:buttons").getString() ;
-        Tab tabObj = new Tab() ;
-        tabObj.setTabName(tab.getName()) ;
-        tabObj.setButtons(buttons) ;
-        tabMap_.put(tab.getName(), tabObj) ;
-      }
-      selectedVersion_ = selectedVersion;         
-    }
-    if(views_ != null) {
-      getUIStringInput(FIELD_NAME).setEditable(false).setValue(views_.getName()) ;
-      getUIStringInput(FIELD_PERMISSION).setValue(views_.getProperty("exo:accessPermissions").getString()) ;
-      getUIFormSelectBox(FIELD_TEMPLATE).setValue(views_.getProperty("exo:template").getString()) ;
-    }
-    setInfoField(FIELD_TABS, getTabList()) ;
-    String[] actionInfor ;
-    if(isView_) {
-      actionInfor = new String[] {"EditTab"} ;
-      setIsView(true) ;
-    } else {
-      actionInfor = new String[] {"EditTab", "DeleteTab"} ;
-      setIsView(false) ;
-    }
-    setActionInfo(FIELD_TABS, actionInfor) ;
-  }
+	public boolean isView() { return isView_ ; }
 
-  @SuppressWarnings("unchecked")
-  public void save() throws Exception {
-    String viewName = getUIStringInput(FIELD_NAME).getValue() ;
-    ApplicationMessage message ;
-    if(viewName == null || viewName.trim().length() == 0){
-      throw new MessageException(new ApplicationMessage("UIViewForm.msg.view-name-invalid", null, 
-                                                        ApplicationMessage.WARNING)) ;
-    }
-    String[] arrFilterChar = {"&", "$", "@", ",", ":","]", "[", "*", "%", "!", "#", "/", "\\"} ;
-    for(String filterChar : arrFilterChar) {
-      if(viewName.indexOf(filterChar) > -1) {
-        throw new MessageException(new ApplicationMessage("UIViewForm.msg.fileName-invalid", null, 
-                                                          ApplicationMessage.WARNING)) ;
-      }
-    }
-    boolean isEnableVersioning = getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
-    String repository = getRepository() ;
-    List<ViewConfig> viewList = vservice_.getAllViews(getRepository()) ;
-    UIPopupWindow uiPopup = getAncestorOfType(UIPopupWindow.class) ;
-    if(uiPopup.getId().equals(UIViewList.ST_ADD)) {
-      for(ViewConfig view : viewList) {
-        if(view.getName().equals(viewName) && !isEnableVersioning) {
-          message = new ApplicationMessage("UIViewForm.msg.view-exist", null, 
-                                           ApplicationMessage.WARNING) ;
-          throw new MessageException(message) ;
-        }
-      }
-    }
-    String permissions = getUIStringInput(FIELD_PERMISSION).getValue() ;
-    if(permissions == null || permissions.length() < 1){
-      message = new ApplicationMessage("UIViewForm.msg.permission-not-empty", null, 
-                                       ApplicationMessage.WARNING) ;
-      throw new MessageException(message) ;
-    }
-    if(tabMap_.size() < 1 ){
-      message = new ApplicationMessage("UIViewForm.msg.mustbe-add-tab", null, 
-                                       ApplicationMessage.WARNING) ;
-      throw new MessageException(message) ;
-    }
-    String template = getUIFormSelectBox(FIELD_TEMPLATE).getValue() ;
+	public Node getViews() { return views_; }
 
-    List<Tab> tabList = new ArrayList<Tab>(tabMap_.values());
-    if(views_ == null || !isEnableVersioning) {
-      vservice_.addView(viewName, permissions, template, tabList, repository) ;
-      if(views_ != null) {
-        for(NodeIterator iter = views_.getNodes(); iter.hasNext(); ) {
-          Node tab = iter.nextNode() ;
-          if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
-        }
-        views_.save() ;
-      }
-    } else {
-      if (!isVersioned(views_)) {
-        views_.addMixin(Utils.MIX_VERSIONABLE);
-        views_.save();
-      } else {
-        views_.checkout() ;
-      }
-      for(NodeIterator iter = views_.getNodes(); iter.hasNext(); ) {
-        Node tab = iter.nextNode() ;
-        if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
-      }
-      vservice_.addView(viewName, permissions, template, tabList, repository) ;
-      try {
-        views_.save() ;
-        views_.checkin();
-      } catch (Exception e) {
-        UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
-        JCRExceptionManager.process(uiApp, e);
-        WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-        context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-    }
-    getAncestorOfType(UIViewContainer.class).getChild(UIViewList.class).updateViewListGrid() ;
-    refresh(true) ;
-  }
+	public boolean canEnableVersionning(Node node) throws Exception {
+		return node.canAddMixin(Utils.MIX_VERSIONABLE);
+	}
 
-  public void editTab(String tabName) throws Exception {
-    UIViewFormTabPane viewTabPane = getParent() ;
-    UITabForm tabForm = viewTabPane.getChild(UITabForm.class) ;
-    tabForm.update(tabMap_.get(tabName), isView_) ;
-    viewTabPane.setSelectedTab(tabForm.getId()) ;
-  }
+	private boolean isVersioned(Node node) throws RepositoryException {          
+		return node.isNodeType(Utils.MIX_VERSIONABLE);    
+	}
 
-  public void deleteTab(String tabName) throws Exception {
-    tabMap_.remove(tabName) ;
-    update(null, false, null) ;
-    UIViewFormTabPane viewTabPane = getParent() ;
-    UIViewContainer uiViewContainer = getAncestorOfType(UIViewContainer.class) ;
-    UIViewList uiViewList = uiViewContainer.getChild(UIViewList.class) ;
-    uiViewList.updateViewListGrid() ;
-    UIViewForm uiViewForm = viewTabPane.getChild(UIViewForm.class) ;
-    viewTabPane.setSelectedTab(uiViewForm.getId()) ;
-  }
+	private VersionNode getRootVersion(Node node) throws Exception{       
+		VersionHistory vH = node.getVersionHistory() ;
+		if(vH != null) return new VersionNode(vH.getRootVersion()) ;
+		return null ;
+	}
 
-  public void changeVersion() throws Exception {
-    String path = 
-      views_.getVersionHistory().getVersion(getUIFormSelectBox(FIELD_VERSION).getValue()).getPath() ;
-    VersionNode selectedVesion = getRootVersion(views_).findVersionNode(path);
-    update(null, false, selectedVesion) ;
-  }
-  
-  public void revertVersion() throws Exception {
-    if (selectedVersion_ != null && !selectedVersion_.equals(baseVersion_)) { 
-      views_.restore(baseVersion_, true);
-    }
-  }
-  
-  static public class AddPermissionActionListener extends EventListener<UIViewFormTabPane> {
-    public void execute(Event<UIViewFormTabPane> event) throws Exception {
-      UIViewFormTabPane uiViewTabPane = event.getSource() ;
-      UIViewContainer uiContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class) ;
-      String memberShip = uiViewTabPane.getUIStringInput(UIViewForm.FIELD_PERMISSION).getValue() ;
-      uiContainer.initPopupPermission(memberShip) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
-    }
-  }
+	private List<String> getNodeVersions(List<VersionNode> children) throws Exception {         
+		List<VersionNode> child = new ArrayList<VersionNode>() ;
+		for(VersionNode vNode : children){
+			listVersion.add(vNode.getName());
+			child = vNode.getChildren() ;
+			if (!child.isEmpty()) getNodeVersions(child) ; 
+		}           
+		return listVersion ;
+	}
+
+	private List<SelectItemOption<String>> getVersionValues(Node node) throws Exception { 
+		List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+		List<VersionNode> children = getRootVersion(node).getChildren() ;
+		listVersion.clear() ;
+		List<String> versionList = getNodeVersions(children) ;
+		for(int i = 0; i < versionList.size(); i++) {
+			for(int j = i + 1; j < versionList.size(); j ++) {
+				if( Integer.parseInt(versionList.get(j)) < Integer.parseInt(versionList.get(i))) {
+					String temp = versionList.get(i) ;
+					versionList.set(i, versionList.get(j))  ;
+					versionList.set(j, temp) ;
+				}
+			}
+			options.add(new SelectItemOption<String>(versionList.get(i), versionList.get(i))) ;
+		}
+		return options ;
+	}
+
+	public void addTab(String tabName, String buttons){
+		Tab tab = new Tab() ;
+		tab.setTabName(tabName) ;
+		tab.setButtons(buttons) ;
+		tabMap_.put(tabName, tab) ;
+	}
+
+	private String getTabList() throws Exception {
+		StringBuilder result = new StringBuilder() ;
+		List<Tab> tabList = new ArrayList<Tab>(tabMap_.values());
+		if(result != null) {
+			for(Tab tab : tabList) {
+				if(result.length() > 0) result.append(",") ;
+				result.append(tab.getTabName()) ;
+			}
+		}
+		return result.toString() ;
+	}
+	
+	public void refresh(boolean isAddNew) throws Exception {
+		getUIFormSelectBox(FIELD_VERSION).setRendered(!isAddNew) ;
+		getUIFormSelectBox(FIELD_VERSION).setDisabled(!isAddNew) ;
+		getUIStringInput(FIELD_NAME).setEditable(isAddNew).setValue(null) ;
+		getUIStringInput(FIELD_PERMISSION).setValue(null) ;
+		getUIFormInputInfo(FIELD_TABS).setEditable(isAddNew).setValue(null) ;
+		getUIFormSelectBox(FIELD_TEMPLATE).setValue(null) ;
+		getUIFormSelectBox(FIELD_TEMPLATE).setDisabled(!isAddNew) ;
+		getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setRendered(!isAddNew) ;
+		if(isAddNew) {
+			setActions(new String[]{"Save", "Reset", "Cancel"}, null) ;
+			setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
+			tabMap_.clear() ;
+			views_ = null ;
+			setActionInfo(FIELD_TABS, null) ;
+		}
+		selectedVersion_ = null ;
+		baseVersion_ = null ;
+	}
+
+	public void update(Node viewNode, boolean isView, VersionNode selectedVersion) throws Exception {
+		isView_ = isView ;
+		if(viewNode != null) {
+			views_ = viewNode ;
+			if(isVersioned(views_)) baseVersion_ = views_.getBaseVersion();
+			tabMap_.clear() ;
+			for(NodeIterator iter = views_.getNodes(); iter.hasNext(); ) {
+				Node tab = iter.nextNode() ;
+				String buttons = tab.getProperty("exo:buttons").getString() ;
+				Tab tabObj = new Tab() ;
+				tabObj.setTabName(tab.getName()) ;
+				tabObj.setButtons(buttons) ;
+				tabMap_.put(tab.getName(), tabObj) ;
+			}
+
+			getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setRendered(true) ;
+			if (isVersioned(views_)) {              
+				getUIFormSelectBox(FIELD_VERSION).setOptions(getVersionValues(views_)).setRendered(true) ;
+				getUIFormSelectBox(FIELD_VERSION).setValue(baseVersion_.getName()) ;
+				getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(true) ;
+				getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEnable(true) ;
+			} else if (!isVersioned(views_)) {
+				getUIFormSelectBox(FIELD_VERSION).setRendered(false) ;
+				getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(false) ;
+				getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setEnable(true) ;   
+			} 
+		}
+		if (selectedVersion != null) {      
+			views_.restore(selectedVersion.getVersion(), false) ;
+			views_.checkout() ;
+			tabMap_.clear() ;
+			for(NodeIterator iter = views_.getNodes(); iter.hasNext(); ) {
+				Node tab = iter.nextNode() ;
+				String buttons = tab.getProperty("exo:buttons").getString() ;
+				Tab tabObj = new Tab() ;
+				tabObj.setTabName(tab.getName()) ;
+				tabObj.setButtons(buttons) ;
+				tabMap_.put(tab.getName(), tabObj) ;
+			}
+			selectedVersion_ = selectedVersion;         
+		}
+		if(views_ != null) {
+			getUIStringInput(FIELD_NAME).setEditable(false).setValue(views_.getName()) ;
+			getUIStringInput(FIELD_PERMISSION).setValue(views_.getProperty("exo:accessPermissions").getString()) ;
+			getUIFormSelectBox(FIELD_TEMPLATE).setValue(views_.getProperty("exo:template").getString()) ;
+		}
+		setInfoField(FIELD_TABS, getTabList()) ;
+		String[] actionInfor ;
+		if(isView_) {
+			actionInfor = new String[] {"EditTab"} ;
+			setIsView(true) ;
+		} else {
+			actionInfor = new String[] {"EditTab", "DeleteTab"} ;
+			setIsView(false) ;
+		}
+		setActionInfo(FIELD_TABS, actionInfor) ;
+	}
+
+	@SuppressWarnings("unchecked")
+	public void save() throws Exception {
+		String viewName = getUIStringInput(FIELD_NAME).getValue() ;
+		ApplicationMessage message ;
+		if(viewName == null || viewName.trim().length() == 0){
+			throw new MessageException(new ApplicationMessage("UIViewForm.msg.view-name-invalid", null, 
+					ApplicationMessage.WARNING)) ;
+		}
+		String[] arrFilterChar = {"&", "$", "@", ",", ":","]", "[", "*", "%", "!", "#", "/", "\\"} ;
+		for(String filterChar : arrFilterChar) {
+			if(viewName.indexOf(filterChar) > -1) {
+				throw new MessageException(new ApplicationMessage("UIViewForm.msg.fileName-invalid", null, 
+						ApplicationMessage.WARNING)) ;
+			}
+		}
+		boolean isEnableVersioning = getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked() ;
+		String repository = getRepository() ;
+		List<ViewConfig> viewList = vservice_.getAllViews(getRepository()) ;
+		UIPopupWindow uiPopup = getAncestorOfType(UIPopupWindow.class) ;
+		if(uiPopup.getId().equals(UIViewList.ST_ADD)) {
+			for(ViewConfig view : viewList) {
+				if(view.getName().equals(viewName) && !isEnableVersioning) {
+					message = new ApplicationMessage("UIViewForm.msg.view-exist", null, 
+							ApplicationMessage.WARNING) ;
+					throw new MessageException(message) ;
+				}
+			}
+		}
+		String permissions = getUIStringInput(FIELD_PERMISSION).getValue() ;
+		if(permissions == null || permissions.length() < 1){
+			message = new ApplicationMessage("UIViewForm.msg.permission-not-empty", null, 
+					ApplicationMessage.WARNING) ;
+			throw new MessageException(message) ;
+		}
+		if(tabMap_.size() < 1 ){
+			message = new ApplicationMessage("UIViewForm.msg.mustbe-add-tab", null, 
+					ApplicationMessage.WARNING) ;
+			throw new MessageException(message) ;
+		}
+		String template = getUIFormSelectBox(FIELD_TEMPLATE).getValue() ;
+
+		List<Tab> tabList = new ArrayList<Tab>(tabMap_.values());
+		if(views_ == null || !isEnableVersioning) {
+			vservice_.addView(viewName, permissions, template, tabList, repository) ;
+			if(views_ != null) {
+				for(NodeIterator iter = views_.getNodes(); iter.hasNext(); ) {
+					Node tab = iter.nextNode() ;
+					if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
+				}
+				views_.save() ;
+			}
+		} else {
+			if (!isVersioned(views_)) {
+				views_.addMixin(Utils.MIX_VERSIONABLE);
+				views_.save();
+			} else {
+				views_.checkout() ;
+			}
+			for(NodeIterator iter = views_.getNodes(); iter.hasNext(); ) {
+				Node tab = iter.nextNode() ;
+				if(!tabMap_.containsKey(tab.getName())) tab.remove() ;
+			}
+			vservice_.addView(viewName, permissions, template, tabList, repository) ;
+			try {
+				views_.save() ;
+				views_.checkin();
+			} catch (Exception e) {
+				UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
+				JCRExceptionManager.process(uiApp, e);
+				WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
+				context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+				return ;
+			}
+		}
+		getAncestorOfType(UIViewContainer.class).getChild(UIViewList.class).updateViewListGrid() ;
+		refresh(true) ;
+	}
+
+	public void editTab(String tabName) throws Exception {
+		UIViewFormTabPane viewTabPane = getParent() ;
+		UITabForm tabForm = viewTabPane.getChild(UITabForm.class) ;
+		tabForm.update(tabMap_.get(tabName), isView_) ;
+		viewTabPane.setSelectedTab(tabForm.getId()) ;
+	}
+
+	public void deleteTab(String tabName) throws Exception {
+		UIViewFormTabPane viewTabPane = getParent() ;
+		String permLastest = viewTabPane.getUIStringInput(UIViewForm.FIELD_PERMISSION).getValue();
+		tabMap_.remove(tabName) ;
+		update(null, false, null) ;
+		getUIStringInput(FIELD_PERMISSION).setValue(permLastest);
+		UIViewContainer uiViewContainer = getAncestorOfType(UIViewContainer.class) ;
+		UIViewList uiViewList = uiViewContainer.getChild(UIViewList.class) ;
+		uiViewList.updateViewListGrid() ;
+		UIViewForm uiViewForm = viewTabPane.getChild(UIViewForm.class) ;
+		viewTabPane.setSelectedTab(uiViewForm.getId()) ;
+	}
+
+	public void changeVersion() throws Exception {
+		String path = 
+			views_.getVersionHistory().getVersion(getUIFormSelectBox(FIELD_VERSION).getValue()).getPath() ;
+		VersionNode selectedVesion = getRootVersion(views_).findVersionNode(path);
+		update(null, false, selectedVesion) ;
+	}
+
+	public void revertVersion() throws Exception {
+		if (selectedVersion_ != null && !selectedVersion_.equals(baseVersion_)) { 
+			views_.restore(baseVersion_, true);
+		}
+	}
+
+	static public class AddPermissionActionListener extends EventListener<UIViewFormTabPane> {
+		public void execute(Event<UIViewFormTabPane> event) throws Exception {
+			UIViewFormTabPane uiViewTabPane = event.getSource() ;
+			UIViewContainer uiContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class) ;
+			String memberShip = uiViewTabPane.getUIStringInput(UIViewForm.FIELD_PERMISSION).getValue() ;
+			uiContainer.initPopupPermission(memberShip) ;
+			event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
+		}
+	}
+
+	static public class ChangeVersionActionListener extends EventListener<UIViewFormTabPane> {
+		public void execute(Event<UIViewFormTabPane> event) throws Exception {
+			UIViewFormTabPane uiFormTab = event.getSource();
+			UIViewForm uiForm = uiFormTab.getChild(UIViewForm.class);
+			uiForm.changeVersion();
+			UIViewContainer uiViewContainer = uiFormTab.getAncestorOfType(UIViewContainer.class) ;
+			event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;
+		}
+	}
 }
