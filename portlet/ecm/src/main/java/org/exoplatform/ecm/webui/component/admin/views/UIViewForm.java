@@ -87,6 +87,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
     setComponentConfig(getClass(), null) ;
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     UIFormSelectBox versions = new UIFormSelectBox(FIELD_VERSION , FIELD_VERSION, options) ;
+    versions.setOnChange("ChangeVersion");
     versions.setRendered(false) ;
     addUIFormInput(versions) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
@@ -352,9 +353,11 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
   }
 
   public void deleteTab(String tabName) throws Exception {
+	UIViewFormTabPane viewTabPane = getParent() ;
+	String permLastest = viewTabPane.getUIStringInput(UIViewForm.FIELD_PERMISSION).getValue();
     tabMap_.remove(tabName) ;
     update(null, false, null) ;
-    UIViewFormTabPane viewTabPane = getParent() ;
+    getUIStringInput(FIELD_PERMISSION).setValue(permLastest);
     UIViewContainer uiViewContainer = getAncestorOfType(UIViewContainer.class) ;
     UIViewList uiViewList = uiViewContainer.getChild(UIViewList.class) ;
     uiViewList.updateViewListGrid() ;
@@ -383,5 +386,15 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelector {
       uiContainer.initPopupPermission(memberShip) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
+  }
+  
+  static public class ChangeVersionActionListener extends EventListener<UIViewFormTabPane> {
+		public void execute(Event<UIViewFormTabPane> event) throws Exception {
+			UIViewFormTabPane uiFormTab = event.getSource();
+			UIViewForm uiForm = uiFormTab.getChild(UIViewForm.class);
+			uiForm.changeVersion();
+			UIViewContainer uiViewContainer = uiFormTab.getAncestorOfType(UIViewContainer.class) ;
+			event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;
+		}
   }
 }
