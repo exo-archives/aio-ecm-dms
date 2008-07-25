@@ -226,7 +226,8 @@ public class CmsServiceImpl implements CmsService {
         if(inputVariable != null) {
           value = inputVariable.getValue();
         }
-        if(value != null &&  !propertyDef.isProtected()) {
+        if((value != null || (value == null && requiredtype == PropertyType.REFERENCE)) && 
+            !propertyDef.isProtected()) {
           processProperty(property, currentNode, requiredtype, value, propertyDef.isMultiple());
         }
       }
@@ -580,9 +581,10 @@ public class CmsServiceImpl implements CmsService {
       }      
       break;
     case PropertyType.REFERENCE:      
-      if (value == null) {
-        throw new RepositoryException("null value for a reference " + requiredtype);
-      }
+//      if (value == null) {
+//        throw new RepositoryException("null value for a reference " + requiredtype);
+//      }
+      if(value == null) node.setProperty(propertyName, "");
       if (value instanceof Value[]) {
         if(!property.getValues().equals(value)) {
           node.setProperty(propertyName, (Value[]) value);
