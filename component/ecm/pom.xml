@@ -20,7 +20,21 @@
       <version>${org.exoplatform.kernel.version}</version>
       <scope>provided</scope>
     </dependency>                      
+
+    <dependency>
+      <groupId>org.exoplatform.core</groupId>
+      <artifactId>exo.core.component.security.core</artifactId>
+      <version>${org.exoplatform.core.version}</version>
+      <scope>compile</scope>
+    </dependency>    
     
+    <dependency>
+      <groupId>org.exoplatform.core</groupId>
+      <artifactId>exo.core.component.resources.api</artifactId>
+      <version>${org.exoplatform.core.version}</version>
+      <scope>compile</scope>
+    </dependency>    
+
     <dependency>
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.component.core</artifactId>
@@ -101,7 +115,7 @@
           <testFailureIgnore>${exo.test.failure.ignore}</testFailureIgnore>
           <forkMode>${exo.test.forkmode}</forkMode>
           <includes>
-            <include>org/exoplatform/services/ecm/metadata/TestMetadataService.java</include>    						
+            <include>org/exoplatform/services/ecm/core/TestNodeService.java</include>    						
           </includes>
           <excludes>
             <exclude>**/*$*</exclude><!--nested classes prb, http://jira.codehaus.org/browse/SUREFIRE-288-->

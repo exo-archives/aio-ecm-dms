@@ -16,15 +16,9 @@
  */
 package org.exoplatform.services.ecm.access;
 
-import java.security.Identity;
-import java.util.Collection;
 import java.util.List;
 
-import org.exoplatform.services.organization.Group;
-import org.exoplatform.services.organization.Membership;
-import org.exoplatform.services.organization.MembershipHandler;
-import org.exoplatform.services.organization.auth.AuthenticationService;
-import org.exoplatform.services.security.ConversationRegistry;
+import org.exoplatform.services.security.IdentityRegistry;
 
 /**
  * Created by The eXo Platform SAS
@@ -47,9 +41,9 @@ public class PermissionManagerService {
   final public static String WILD_CARD = "*".intern() ;
   final public static String EVERYONE = "Everyone".intern();     
 
-  private final ConversationRegistry conversationRegistry_ ;
-  public PermissionManagerService(ConversationRegistry conversationRegistry) {    
-    this.conversationRegistry_ = conversationRegistry ;    
+  private IdentityRegistry identityRegistry_;
+  public PermissionManagerService(IdentityRegistry identityRegistry) {    
+    identityRegistry_ = identityRegistry ;    
   }
 
   public final boolean hasPermission(String userId, List<String> permissions) throws Exception {

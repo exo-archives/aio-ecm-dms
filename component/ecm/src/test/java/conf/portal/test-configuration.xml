@@ -36,11 +36,6 @@
     </init-params>
   </component>
   
-  <component>
-    <key>org.exoplatform.services.organization.auth.AuthenticationService</key>
-    <type>org.exoplatform.services.organization.auth.impl.AuthenticationServiceImpl</type>
-  </component>
-  
   <!-- REST -->
   <component>
     <type>org.exoplatform.services.jcr.ext.registry.RESTRegistryService</type>
