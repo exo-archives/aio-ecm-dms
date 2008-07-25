@@ -1,0 +1,58 @@
+==============================================
+	eXo ECM 2.0.1 release notes
+==============================================
+
+- Introduction
+	eXo ECM (Enterprise Content Management) is a solution that values your operational productivity and helps your organization make
+  better decisions faster at the right moment by managing all forms of content and optimizing your business processes.
+  It allows you to transform unstructured content to structured content through all the document processes that are capturing, managing, 
+	storing, preserving and delivering documents while securely distributing it.
+  Furthermore, thanks to an innovative page layout, only content that need to be updated is reloaded, increasing eXo ECM performance.
+
+- System Requirements
+   +) Web Browser: IE6, IE7, FF2, FF3, Safari. Best for Frirefox 2 and upgrading to Firefox 3
+   +) JVM: version 1.5.0_xx only
+   +) Application Server : Tomcat, JBoss, Jonas, Websphere
+   +) Building Tools: Maven 2.0.6 and up
+
+- Complete list of issues fixed in eXo ECM 2.0.1
+	+) Bug
+		 * Critical
+			 - ECM-2302	Shared queries permission
+
+		 * Major
+			 - ECM-2265	Only create nt:folder in cases
+			 - ECM-2262 	Show message "The field 'Content' is required. Please enter your value."when fill all fields of File document with Mime Type is text/plain 
+			 - ECM-2271 	Update single property reference selector 
+			 - ECM-2310 	[Unknown error] when set default language for Sample Node document after add tag 
+			 - ECM-2314 	Can delete default workspace 
+			 - ECM-2278 	[Unknown error] when restore version while node is being locked 
+			 - ECM-2340 	Unknown error when go to parent of node in search result while user	does not have right on parent node 
+			* Minor
+			 - ECM-2277 	IE6: Little error in some forms in Vista skin 
+			 - ECM-2286 	Lost border in [Multi language] popup when add new language for	uploaded file 
+			 - ECM-2281 	Can add the same name tag for document in special case 
+			 - ECM-2256 	Can not add new dialog/view has the same name with deleted dialog/view 
+			 - ECM-2280 	Set align for label 
+			 - ECM-2274 	Lost border in [Export Node] and [Import Node] popup in Vista skin 
+			 - ECM-2263 	[Unknown error] when click on [edit] icon to edit a folksonomy after leave the 'htlm style' is blank 
+			 - ECM-2264 	Error when view content of File document in Content Browser in Vista and Mac skin 
+			 - ECM-2273 	IE6: Error in File Explorer portlet in Vista and Mac skin 
+			 - ECM-2257 	Can not rename node in special case 
+			 - ECM-2285 	Error in display default language with image file 
+			 - ECM-2268 	'msg' message when check in node while parent node is being locked 
+			 - ECM-2272 	Show message "Can not save this folder. The name provided must not have an index on its final element or this node is not allowed same name	sibling." when add new node in locked node by user is not locker in	special case 
+			 - ECM-2269 	Can not rename child node when parent node is locked 
+	+) Improvement
+			 - ECM-2266 	Should show the type of current folder when edit drive 
+	+) Task
+			 - ECM-2282 	IE+Vista skin: Show change to see [Edit BC Template] better 
+	+) New feature
+		   - ECM-2229 	Create the service Publcation 
+
+- Other resources and links
+     Company site        http://www.exoplatform.com
+     Community JIRA      http://jira.exoplatform.org
+     Comminity site      http://www.exoplatform.org
+     Developers wiki     http://wiki.exoplatform.org
+     Documentation       http://docs.exoplatform.org 
