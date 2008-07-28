@@ -39,15 +39,6 @@
          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
           <properties>
             <property name="indexDir" value="../temp/jcrlucenedb/system"/>
-<!--
-						<property name="synonymprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.PropertiesSynonymProvider" />
-            <property name="synonymprovider-config-path" value="synonyms.properties" />
-            <property name="support-highlighting" value="true" />
-            <property name="indexing-configuration-path" value="indexing-configuration.xml" />
-            <property name="query-class" value="org.exoplatform.services.jcr.impl.core.query.QueryImpl" />
-            <property name="spellchecker-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.spell.LuceneSpellChecker$FiveSecondsRefreshInterval"/>
-						<property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultXML" />
--->
           </properties>
          </query-handler>
          <lock-manager>
@@ -92,15 +83,6 @@
          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
           <properties>
             <property name="indexDir" value="../temp/jcrlucenedb/collaboration"/>
-<!--
-						<property name="synonymprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.PropertiesSynonymProvider" />
-            <property name="synonymprovider-config-path" value="synonyms.properties" />
-            <property name="support-highlighting" value="true" />
-            <property name="indexing-configuration-path" value="indexing-configuration.xml" />
-            <property name="query-class" value="org.exoplatform.services.jcr.impl.core.query.QueryImpl" />
-            <property name="spellchecker-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.spell.LuceneSpellChecker$FiveSecondsRefreshInterval"/>
-						<property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultXML" />
--->
           </properties>
          </query-handler>
          <lock-manager>
@@ -145,15 +127,6 @@
          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
           <properties>
             <property name="indexDir" value="../temp/jcrlucenedb/backup"/>
-<!--
-						<property name="synonymprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.PropertiesSynonymProvider" />
-            <property name="synonymprovider-config-path" value="synonyms.properties" />
-            <property name="support-highlighting" value="true" />
-            <property name="indexing-configuration-path" value="indexing-configuration.xml" />
-            <property name="query-class" value="org.exoplatform.services.jcr.impl.core.query.QueryImpl" />
-            <property name="spellchecker-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.spell.LuceneSpellChecker$FiveSecondsRefreshInterval"/>
-						<property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultXML" />
--->
           </properties>
          </query-handler>
          <lock-manager>
