@@ -31,6 +31,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
@@ -159,28 +160,28 @@ public class UIActionBar extends UIForm {
   private List<SelectItemOption<String>> tabOptions = new ArrayList<SelectItemOption<String>>() ;
   private List<String[]> tabs_ = new ArrayList<String[]>();
 
-  final static private String FIELD_SELECT_TAB = "tabs" ;
-  final static private String FIELD_SIMPLE_SEARCH = "simpleSearch" ;
-  final static private String FIELD_ADVANCE_SEARCH = "advanceSearch" ;
-  final static private String FIELD_SEARCH_TYPE = "searchType" ;
-  final static private String OPT_SEARCH = "Search" ;
-  final static private String FIELD_SQL = "SQL" ;
-  final static private String FIELD_XPATH = "xPath" ;
+  final static private String FIELD_SELECT_TAB = "tabs";
+  final static private String FIELD_SIMPLE_SEARCH = "simpleSearch";
+  final static private String FIELD_ADVANCE_SEARCH = "advanceSearch";
+  final static private String FIELD_SEARCH_TYPE = "searchType";
+  final static private String OPT_SEARCH = "Search";
+  final static private String FIELD_SQL = "SQL";
+  final static private String FIELD_XPATH = "xPath";
 
-  final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1') order by exo:dateCreated DESC, jcr:primaryType DESC" ;
-  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1') order by jcr:path DESC, jcr:primaryType DESC" ;  
+  final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1') order by exo:dateCreated DESC, jcr:primaryType DESC";
+  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1') order by jcr:path DESC, jcr:primaryType DESC";  
 
-  public UIActionBar() throws Exception{
-    UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions) ;
-    selectTab.setOnChange("ChangeTab") ;
-    addUIFormInput(selectTab) ;
-    addChild(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null)) ;
+  public UIActionBar() throws Exception {
+    UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions);
+    selectTab.setOnChange("ChangeTab");
+    addUIFormInput(selectTab);
+    addChild(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null).addValidator(SearchValidator.class));
 
-    List<SelectItemOption<String>> typeOptions = new ArrayList<SelectItemOption<String>>() ;
-    typeOptions.add(new SelectItemOption<String>(FIELD_SQL, Query.SQL)) ;
-    typeOptions.add(new SelectItemOption<String>(FIELD_XPATH, Query.XPATH)) ;
-    addChild(new UIFormSelectBox(FIELD_SEARCH_TYPE, FIELD_SEARCH_TYPE, typeOptions)) ;
-    addChild(new UIFormStringInput(FIELD_ADVANCE_SEARCH, FIELD_ADVANCE_SEARCH, null)) ;
+    List<SelectItemOption<String>> typeOptions = new ArrayList<SelectItemOption<String>>();
+    typeOptions.add(new SelectItemOption<String>(FIELD_SQL, Query.SQL));
+    typeOptions.add(new SelectItemOption<String>(FIELD_XPATH, Query.XPATH));
+    addChild(new UIFormSelectBox(FIELD_SEARCH_TYPE, FIELD_SEARCH_TYPE, typeOptions));
+    addChild(new UIFormStringInput(FIELD_ADVANCE_SEARCH, FIELD_ADVANCE_SEARCH, null));
   }
 
   public void setTabOptions(String viewName) throws Exception {
