@@ -107,6 +107,7 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
@@ -142,7 +143,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.ManageActionsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ExportNodeActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ImportNodeActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIActionBar.SimpleSearchActionListener.class),
+      @EventConfig(listeners = UIActionBar.SimpleSearchActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.AdvanceSearchActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.SavedQueriesActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ViewMetadatasActionListener.class, phase = Phase.DECODE),
@@ -457,7 +458,7 @@ public class UIActionBar extends UIForm {
   }
 
   static public class SearchActionListener extends EventListener<UIActionBar> {
-    public void execute(Event<UIActionBar> event) throws Exception {
+    public void execute(Event<UIActionBar> event) throws Exception {      
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class) ;
       uiPopupAction.activate(UIECMSearch .class, 700) ;
@@ -1000,9 +1001,29 @@ public class UIActionBar extends UIForm {
 
   static public class SimpleSearchActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
-      UIActionBar uiForm = event.getSource() ;
-      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      System.out.println("KO chui vo day ah\n\n");
+      UIActionBar uiForm = event.getSource();
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);   
       String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue() ;
+      
+      //update to validate field search
+      if (text == null || text.trim().length() == 0) {        
+        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.empty-input", null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }      
+      String[] arrFilterChars = {"+", "-", "&", "|", "!", "(", ")", "{", "}", "[", "]", "^", "\"", 
+          "~", "*", "?", ":", "\\"};   
+      for (String arrFilterChar : arrFilterChars) {
+        if (text.startsWith(arrFilterChar)) {
+          uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.Invalid-char", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
+      //finish
+      
       Node currentNode = uiExplorer.getCurrentNode() ;
       //TODO need search on node name
       String queryStatement = null ;
