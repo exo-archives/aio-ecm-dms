@@ -219,14 +219,9 @@
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
-  float: left;
-  width: auto; height:16px;
-  margin: 0px 5px;
-}
-
-.UIJCRExplorerPortlet .UINodeTypeInfo .default16x16Icon {
-  float: left;
-  background: url('VistaSkin/background/default.gif') no-repeat;
+  float: none;
+	padding-left: 20px;
+	height: 20px; width: auto;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
@@ -235,12 +230,9 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UINodeTypeInfo .UIGrid td {
-	padding-left: 2px;
-}
-
-.UIJCRExplorerPortlet .UIGrid td {
-  border: solid 1px #a4a4a4;
+.UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout .UITabContentContainer {
+  margin: auto;
+  width: 97%;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar {

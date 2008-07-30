@@ -1,0 +1,19 @@
+.UIExplorerTree {
+  float: left ;
+  width: 230px ;
+  background: #f3f3f3;
+}
+
+.UIExplorerTree .InnerExplorerTree {
+  border: solid 1px #b1b0b0;
+  padding: 10px;
+}
+
+.UIExplorerTree .UITreeList {
+  margin-left: 240px;
+}
+
+.UIExplorerTree .UITreeList .UIGrid {
+  width: 97%;
+  margin: 0px;
+}

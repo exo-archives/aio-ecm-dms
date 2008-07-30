@@ -113,30 +113,31 @@
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo {
-  width: 95%;
-  margin: 10px auto;
+  padding: 5px;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
-  width: auto;
-  height: 16px;
-  float: left;
-  margin: 0px 3px 0px 0px; 
+	float: none;
+  margin: 0px 3px; 
+  padding-left: 20px;
+  height: 20px; width: auto;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
   border: solid 1px #b7b7b7;
-  padding: 10px 0px 10px 4px;
+  border-top: none;
+  padding: 10px 5px;
   background: url('MacSkin/background/Background1x4.png') repeat;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout .UITabContentContainer {
-  width: 97%;
   margin: auto;
+  width: 97%;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout .UIGrid {
   background: #efefef;
+  margin: auto;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar {
