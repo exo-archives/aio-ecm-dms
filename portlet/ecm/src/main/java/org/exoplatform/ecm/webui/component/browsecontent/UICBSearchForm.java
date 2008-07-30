@@ -213,7 +213,7 @@ public class UICBSearchForm extends UIForm {
   }
 
   static  public class SearchActionListener extends EventListener<UICBSearchForm> {
-    public void execute(Event<UICBSearchForm> event) throws Exception {
+    public void execute(Event<UICBSearchForm> event) throws Exception {      
       UICBSearchForm uiForm = event.getSource() ;
       UIBrowseContainer container = uiForm.getAncestorOfType(UIBrowseContainer.class) ;
       Node currentNode = container.getCurrentNode() ;
@@ -223,10 +223,24 @@ public class UICBSearchForm extends UIForm {
       UICBSearchResults searchResults = container.findFirstComponentOfType(UICBSearchResults.class) ;
       UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
       if(Utils.isNameEmpty(keyword)) {          
-        app.addMessage(new ApplicationMessage("UICBSearchForm.msg.not-empty", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
-        return ;
+        app.addMessage(new ApplicationMessage("UICBSearchForm.msg.not-empty", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
+        return;
       }
+      
+      String[] arrFilterChars = {"+", "-", "&", "|", "!", "(", ")", "{", "}", "[", "]", "^", "\"", 
+          "~", "*", "?", ":", "\\"};   
+      for (String arrFilterChar : arrFilterChars) {
+        for (int i = 0; i < keyword.length(); i++) {
+          String c = String.valueOf(keyword.charAt(i));
+          if (c.equals(arrFilterChar)) {
+            app.addMessage(new ApplicationMessage("UICBSearchForm.msg.Invalid-char", null));
+            event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
+            return ;            
+          }
+        }        
+      }
+            
       if(type.equals(CATEGORY_SEARCH)) {
         queryResult = uiForm.searchByCategory(keyword, currentNode) ;
       } else {

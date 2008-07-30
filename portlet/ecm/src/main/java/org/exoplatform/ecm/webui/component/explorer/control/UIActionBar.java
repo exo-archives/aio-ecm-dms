@@ -1000,8 +1000,7 @@ public class UIActionBar extends UIForm {
   }
 
   static public class SimpleSearchActionListener extends EventListener<UIActionBar> {
-    public void execute(Event<UIActionBar> event) throws Exception {
-      System.out.println("KO chui vo day ah\n\n");
+    public void execute(Event<UIActionBar> event) throws Exception {      
       UIActionBar uiForm = event.getSource();
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);   
@@ -1009,17 +1008,26 @@ public class UIActionBar extends UIForm {
       
       //update to validate field search
       if (text == null || text.trim().length() == 0) {        
-        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.empty-input", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.empty-input", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }      
       String[] arrFilterChars = {"+", "-", "&", "|", "!", "(", ")", "{", "}", "[", "]", "^", "\"", 
           "~", "*", "?", ":", "\\"};   
       for (String arrFilterChar : arrFilterChars) {
         if (text.startsWith(arrFilterChar)) {
-          uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.Invalid-char", null)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.Invalid-char", null));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return ;
+        }
+      }
+      String[] arrFilterChars1 = {"!", "(", ")", "{", "}", "[", "]", "^", "\"", 
+          ":", "\\"};
+      for (String arrFilterChar : arrFilterChars1) {
+        if (text.endsWith(arrFilterChar)) {
+          uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.Invalid-char", null));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
         }
       }
       //finish
