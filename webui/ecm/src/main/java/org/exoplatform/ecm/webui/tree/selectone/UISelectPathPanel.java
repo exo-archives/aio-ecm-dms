@@ -37,7 +37,7 @@ import org.exoplatform.webui.event.EventListener;
  */
 
 @ComponentConfig(
-    template =  "classpath:groovy/ecm/webui/tree/UITreeList.gtmpl",
+    template =  "classpath:groovy/ecm/webui/tree/selectone/UISelectPathPanel.gtmpl",
     events = {
         @EventConfig(listeners = UISelectPathPanel.SelectActionListener.class)
     }
@@ -59,6 +59,7 @@ public class UISelectPathPanel extends UIContainer {
   
   public List<Node> getNodeList() throws Exception {
     List<Node> list = new ArrayList<Node>();
+    if(parentNode == null) return list;
     for(NodeIterator iterator = parentNode.getNodes();iterator.hasNext();) {
       Node sibbling = iterator.nextNode();
       if(sibbling.isNodeType("exo:hiddenable")) continue;
@@ -80,7 +81,7 @@ public class UISelectPathPanel extends UIContainer {
       String returnField = uiJCRBrowser.getReturnFieldName() ;
 //    if(!uiJCRBrowser.isDisable()) 
 //    value = uiJCRBrowser.getWorkspace() + ":" + value ;
-      ((UISelectable)uiJCRBrowser.getReturnComponent()).doSelect(returnField, value) ;
+      ((UISelectable)uiJCRBrowser.getSourceComponent()).doSelect(returnField, value) ;
     }
   }  
 }

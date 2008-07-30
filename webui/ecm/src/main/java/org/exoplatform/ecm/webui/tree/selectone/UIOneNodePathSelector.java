@@ -28,7 +28,6 @@ import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
@@ -113,8 +112,8 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   public void setRootTreePath(String rootTreePath) { this.rootTreePath = rootTreePath; 
   }      
   
-  public UIComponent getReturnComponent() { return uiComponent ; }  
-  public void setComponent(UIComponent uicomponent, String[] initParams) {
+  public UIComponent getSourceComponent() { return uiComponent; }
+  public void setSourceComponent(UIComponent uicomponent, String[] initParams) {
     uiComponent = uicomponent ;
     if(initParams == null || initParams.length < 0) return ;
     for(int i = 0; i < initParams.length; i ++) {
@@ -127,9 +126,9 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     }
   }  
 
-  public void onChange(final Node currentNode, final WebuiRequestContext requestContext) throws Exception {
+  public void onChange(final Node currentNode, Object context) throws Exception {
     UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
     selectPathPanel.setParentNode(currentNode);
-  } 
+  }
   
 }

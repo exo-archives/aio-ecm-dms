@@ -20,14 +20,20 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.portal.webui.container.UIContainer;
-import org.exoplatform.webui.application.WebuiRequestContext;
 
 /**
- * Created by The eXo Platform SAS
- * @author : Hoa.Pham
- *          hoa.pham@exoplatform.com
- * Jun 23, 2008  
+ * Created by The eXo Platform SAS.
+ * 
+ * @author : Hoa.Pham hoa.pham@exoplatform.com Jun 23, 2008
  */
 public abstract class UIBaseNodeTreeSelector extends UIContainer implements ComponentSelector {  
-  public abstract void onChange(final Node currentNode, WebuiRequestContext requestContext) throws Exception;
+  
+  /**
+   * On change.
+   * 
+   * @param currentNode the current node
+   * @param requestContext the request context
+   * @throws Exception the exception
+   */
+  public abstract void onChange(final Node currentNode, Object context) throws Exception;
 }

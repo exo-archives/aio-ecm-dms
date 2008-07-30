@@ -35,8 +35,17 @@ import org.exoplatform.webui.core.UITree;
     template = "system:/groovy/webui/core/UITree.gtmpl" , 
     events = @EventConfig(listeners = UITree.ChangeNodeActionListener.class)
   )  
+  /**
+   * This class extend <code>org.exoplatform.webui.core.UITree</code> 
+   * to render node tree for <code>javax.jcr.Node</code> 
+   * 
+   * */
 public class UINodeTree extends org.exoplatform.webui.core.UITree{
 
+  /* 
+   * render nodetype icon for node in tree
+   * @see org.exoplatform.webui.core.UITree#renderNode(java.lang.Object)
+   */
   public String renderNode(Object obj) throws Exception {
     Node node = (Node) obj;
     String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");

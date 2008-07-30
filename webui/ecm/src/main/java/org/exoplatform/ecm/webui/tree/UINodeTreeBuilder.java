@@ -32,10 +32,9 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
 /**
- * Created by The eXo Platform SAS
- * @author : Hoa.Pham
- *          hoa.pham@exoplatform.com
- * Jun 23, 2008  
+ * Created by The eXo Platform SAS.
+ * 
+ * @author : Hoa.Pham hoa.pham@exoplatform.com Jun 23, 2008
  */
 
 @ComponentConfig(
@@ -44,32 +43,79 @@ import org.exoplatform.webui.event.EventListener;
 public class UINodeTreeBuilder extends UIContainer {
 
   private List<String> acceptedNodeTypes = new ArrayList<String>();
+  
+  /** The root tree node. */
   protected Node rootTreeNode;
+  
+  /** The current node. */
   protected Node currentNode;
 
 
+  /**
+   * Instantiates a new uI node tree builder.
+   * 
+   * @throws Exception the exception
+   */
   public UINodeTreeBuilder() throws Exception {
     UITree tree = addChild(UINodeTree.class, null, UINodeTree.class.getSimpleName()+hashCode()) ;
     tree.setBeanLabelField("name") ;
     tree.setBeanIdField("path") ;    
   }  
 
+  /**
+   * Gets the root tree node.
+   * 
+   * @return the root tree node
+   */
   public Node getRootTreeNode() { return rootTreeNode; }
+  
+  /**
+   * Sets the root tree node.
+   * 
+   * @param node the new root tree node
+   * @throws Exception the exception
+   */
   public final void setRootTreeNode(Node node) throws Exception {
     this.rootTreeNode = node;
-    this.currentNode = node;
-    WebuiRequestContext requestContext = WebuiRequestContext.getCurrentInstance();
-    broadcastOnChange(node,requestContext);
+    this.currentNode = node;    
+    broadcastOnChange(node,null);
   }
 
+  /**
+   * Gets the current node.
+   * 
+   * @return the current node
+   */
   public Node getCurrentNode() { return currentNode; }
+  
+  /**
+   * Sets the current node.
+   * 
+   * @param currentNode the new current node
+   */
   public void setCurrentNode(Node currentNode) { this.currentNode = currentNode; }  
 
+  /**
+   * Gets the accepted node types.
+   * 
+   * @return the accepted node types
+   */
   public List<String> getAcceptedNodeTypes() { return acceptedNodeTypes; }
+  
+  /**
+   * Sets the accepted node types.
+   * 
+   * @param acceptedNodeTypes the new accepted node types
+   */
   public void setAcceptedNodeTypes(List<String> acceptedNodeTypes) {
     this.acceptedNodeTypes = acceptedNodeTypes;
   }
 
+  /**
+   * Builds the tree.
+   * 
+   * @throws Exception the exception
+   */
   public void buildTree() throws Exception {    
     NodeIterator sibbling = null ;
     NodeIterator children = null ;    
@@ -114,34 +160,68 @@ public class UINodeTreeBuilder extends UIContainer {
     }            
     return list;
   }
+  
+  /* (non-Javadoc)
+   * @see org.exoplatform.webui.core.UIComponent#processRender(org.exoplatform.webui.application.WebuiRequestContext)
+   */
   public void processRender(WebuiRequestContext context) throws Exception {
     Writer writer = context.getWriter() ;
     writer.write("<div class=\"Explorer\">") ;
     writer.write("<div class=\"ExplorerTree\">") ;
     writer.write("<div class=\"InnerExplorerTree\">") ;
-    buildTree() ;
-    super.renderChildren() ;
+      buildTree() ;
+      super.renderChildren() ;
     writer.write("</div>") ;
     writer.write("</div>") ;
     writer.write("</div>") ;
   }
 
-  public final void changeNode(String path, WebuiRequestContext requestContext) throws Exception {
+  /**
+   * When a node is change in tree. This method will be rerender the children & sibbling nodes of 
+   * current node and broadcast change node event to other uicomponent
+   * 
+   * @param path the path
+   * @param requestContext the request context
+   * @throws Exception the exception
+   */
+  public void changeNode(String path, Object context) throws Exception {
     String rootPath = rootTreeNode.getPath();
     if(rootPath.equals(path) || !path.startsWith(rootPath)) {
       currentNode = rootTreeNode;
     }else {
       currentNode = (Node)rootTreeNode.getSession().getItem(path);
     }    
-    broadcastOnChange(currentNode,requestContext);
+    broadcastOnChange(currentNode,context);
   }
 
-  public final void broadcastOnChange(Node node, WebuiRequestContext requestContext) throws Exception {
+  /**
+   * Broadcast on change.
+   * 
+   * @param node the node
+   * @param requestContext the request context
+   * @throws Exception the exception
+   */
+  public void broadcastOnChange(Node node, Object context) throws Exception {
     UIBaseNodeTreeSelector nodeTreeSelector = getAncestorOfType(UIBaseNodeTreeSelector.class);
-    nodeTreeSelector.onChange(node, requestContext);
+    nodeTreeSelector.onChange(node, context);
   }
 
+  /**
+   * The listener interface for receiving changeNodeAction events. The class
+   * that is interested in processing a changeNodeAction event implements this
+   * interface, and the object created with that class is registered with a
+   * component using the component's
+   * <code>addChangeNodeActionListener<code> method. When
+   * the changeNodeAction event occurs, that object's appropriate
+   * method is invoked.
+   * 
+   * @see ChangeNodeActionEvent
+   */
   static public class ChangeNodeActionListener extends EventListener<UITree> {
+    
+    /* (non-Javadoc)
+     * @see org.exoplatform.webui.event.EventListener#execute(org.exoplatform.webui.event.Event)
+     */
     public void execute(Event<UITree> event) throws Exception {
       UINodeTreeBuilder builder = event.getSource().getParent();
       String uri = event.getRequestContext().getRequestParameter(OBJECTID)  ;

@@ -52,13 +52,13 @@ import org.exoplatform.webui.organization.UIGroupMembershipSelector;
   )
 })
 public class UIPermissionSelector extends UIGroupMembershipSelector implements ComponentSelector {
-  
+
   final static public String defaultValue = "/admin" ;
   private UIComponent uiComponent ;
   private String returnFieldName = null ;
-  
+
   public boolean isUsePopup = true ;
-  
+
   /**
    * Instantiates a new uI permission selector.
    * 
@@ -81,8 +81,9 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
    * 
    * @return the return component
    */
-  public UIComponent getReturnComponent() { return uiComponent ; }
-  
+
+  public UIComponent getSourceComponent() { return uiComponent; }
+
   /**
    * Gets the return field.
    * 
@@ -93,7 +94,7 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
   /* (non-Javadoc)
    * @see org.exoplatform.ecm.webui.selector.ComponentSelector#setComponent(org.exoplatform.webui.core.UIComponent, java.lang.String[])
    */
-  public void setComponent(UIComponent uicomponent, String[] initParams) {
+  public void setSourceComponent(UIComponent uicomponent, String[] initParams) {
     uiComponent = uicomponent ;
     if(initParams == null || initParams.length == 0) return ;
     for(int i = 0; i < initParams.length; i ++) {
@@ -118,7 +119,7 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
    * @see SelectMembershipActionEvent
    */
   static  public class SelectMembershipActionListener extends EventListener<UIPermissionSelector> {   
-    
+
     /* (non-Javadoc)
      * @see org.exoplatform.webui.event.EventListener#execute(org.exoplatform.webui.event.Event)
      */
@@ -129,15 +130,15 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
       String permission = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String value = permission + ":" + groupId ;
       String returnField = uiPermissionSelector.getReturnField() ;
-      ((UISelectable)uiPermissionSelector.getReturnComponent()).doSelect(returnField, value) ;
+      ((UISelectable)uiPermissionSelector.getSourceComponent()).doSelect(returnField, value) ;
       if(uiPermissionSelector.isUsePopup) {
         UIPopupWindow uiPopup = uiPermissionSelector.getParent() ;
         uiPopup.setShow(false) ;
-        UIComponent uicomp = uiPermissionSelector.getReturnComponent().getParent() ;
+        UIComponent uicomp = uiPermissionSelector.getSourceComponent().getParent() ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uicomp) ;
         if(!uiPopup.getId().equals("PopupComponent"))event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
       } else {
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPermissionSelector.getReturnComponent()) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPermissionSelector.getSourceComponent()) ;
       }
     }
   }
@@ -154,7 +155,7 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
    * @see ChangeNodeActionEvent
    */
   static  public class ChangeNodeActionListener extends EventListener<UITree> {   
-    
+
     /* (non-Javadoc)
      * @see org.exoplatform.webui.event.EventListener#execute(org.exoplatform.webui.event.Event)
      */
@@ -178,7 +179,7 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
    * @see SelectPathActionEvent
    */
   static  public class SelectPathActionListener extends EventListener<UIBreadcumbs> {
-    
+
     /* (non-Javadoc)
      * @see org.exoplatform.webui.event.EventListener#execute(org.exoplatform.webui.event.Event)
      */
@@ -195,5 +196,5 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPermissionSelector) ;
     }
-  }
+  }  
 }

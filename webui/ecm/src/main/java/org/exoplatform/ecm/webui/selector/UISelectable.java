@@ -31,5 +31,5 @@ public interface UISelectable {
    * @param value the value
    * @throws Exception the exception
    */
-  public void doSelect(String selectField, String value) throws Exception;
+  public void doSelect(String selectField, Object value) throws Exception;
 }
