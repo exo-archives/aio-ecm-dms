@@ -52,6 +52,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
   final static public String FIELD_VIEWNONDOC = "viewNonDocument" ;
   final static public String FIELD_VIEWSIDEBAR = "viewSideBar" ;
   final static public String FIELD_FOLDER_ONLY = "Folder" ;
+  final static public String FIELD_BOTH = "Both" ;
   final static public String FIELD_UNSTRUCTURED_ONLY = "Unstructured folder" ;
   final static public String ALLOW_CREATE_FOLDER = "allowCreateFolder" ;
   final static public String SHOW_HIDDEN_NODE = "showHiddenNode" ;
@@ -84,7 +85,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     ResourceBundle res = context.getApplicationResourceBundle() ;
     bothLabel_ = res.getString(getId() + ".label.both") ;
     folderOptions.add(new SelectItemOption<String>(FIELD_UNSTRUCTURED_ONLY, Utils.NT_UNSTRUCTURED)) ;
-    folderOptions.add(new SelectItemOption<String>(bothLabel_, bothLabel_)) ;
+    folderOptions.add(new SelectItemOption<String>(bothLabel_, FIELD_BOTH)) ;
     addUIFormInput(new UIFormRadioBoxInput(ALLOW_CREATE_FOLDER, ALLOW_CREATE_FOLDER, folderOptions).
                    setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
