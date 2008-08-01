@@ -6,9 +6,9 @@
   uicomponent.addHiddenField("hiddenInput2", hiddenField2) ;
   uicomponent.addHiddenField("hiddenInput3", hiddenField3) ;
 %>
-<div class="UIFormWithTitle">
+<div class="UIForm">
 	<% uiform.begin() %>
-  <div class="HorizontalLayout" style="border:0px;">
+  <div class="HorizontalLayout">
   	<table class="UIFormGrid">	  
 	    <tr>		          					
 	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.name")%></td>
@@ -76,19 +76,23 @@
 	    <tr>		          					
 	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.summary")%></td>
 	      <td class="FieldComponent">
-		      <%
-		        String[] fieldSummary = ["jcrPath=/node/exo:summary", "options=basic", ""] ;
-		        uicomponent.addWYSIWYGField("summary", fieldSummary) ;        
-		      %>
+			    <div class="UIFCKEditor">
+			      <%
+			        String[] fieldSummary = ["jcrPath=/node/exo:summary", "options=basic", ""] ;
+			        uicomponent.addWYSIWYGField("summary", fieldSummary) ;        
+			      %>
+			    </div>
 		    </td>
 	    </tr>
 	    <tr>		          					
 	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.content")%></td>
 	      <td class="FieldComponent">
-		      <%
-		        String[] fieldContent = ["jcrPath=/node/exo:content", "options=default", ""] ;
-		        uicomponent.addWYSIWYGField("content", fieldContent) ;
-		      %>
+			    <div class="UIFCKEditor">
+			      <%
+			        String[] fieldContent = ["jcrPath=/node/exo:content", "options=default", ""] ;
+			        uicomponent.addWYSIWYGField("content", fieldContent) ;
+			      %>
+			    </div>
 		    </td>
 	    </tr>
 	  </table>

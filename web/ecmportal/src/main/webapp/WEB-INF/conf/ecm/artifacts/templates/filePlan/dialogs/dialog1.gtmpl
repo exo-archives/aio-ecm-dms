@@ -56,7 +56,7 @@
       <%/*Start UITabContentContainer*/%>
       
 			<%uiform.begin()%>
-				<div class="HorizontalLayout" style="border: none; margin:0px; background: none; padding: 0px">	  
+				<div class="HorizontalLayout">	  
       
 		      <div class="UITabContentContainer">
 		      	<div class="UITabContent" style="display: block;">

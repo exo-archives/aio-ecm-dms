@@ -107,11 +107,6 @@
 .ManageAuditingIcon {
 	width: 32px; height: 30px;
   background: url('VistaSkin/ManageAuditingIcon.png') no-repeat ;
-}}
-
-.ManagePublicationsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManagerPuplication.gif') no-repeat ;
 }
 
 .ManageActionsIcon {
@@ -137,11 +132,6 @@
 .ExportNodeIcon {
 	width: 32px; height: 30px;
   background: url('VistaSkin/ExportNodeIcon.png') no-repeat ;
-}
-
-.AddNodeTypeIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
 }
 
 .SearchIcon {
@@ -227,12 +217,6 @@
   background: url('VistaSkin/PermissionSetting.png') no-repeat ;
 }
 
-.SelectPath24x24Icon {
-  float: left;
-	width: 16px;	height: 16px;
-  background: url('DefaultSkin/MagnifierIconNews.png') no-repeat ;
-}
-
 .OntologiesIcon {
   float: left ;
 	width: 24px;	height: 24px;
@@ -296,11 +280,6 @@
   float: left ;
 	width: 32px;	height: 28px;
   background: url('VistaSkin/ManageMetadataIcon.png') no-repeat ;
-}
-
-.AddMetadataTypeIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat ;
 }
 
 .UINamespaceManagerIcon {
@@ -368,11 +347,6 @@
   background: url('VistaSkin/GreenLeftArrowFolder.gif') no-repeat ;
 }
 
-.GreenUpArrowFolder24x24Icon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/GreenUpArrowFolder.gif') no-repeat ;
-}
-
 .GreenLeftArrow24x24Icon {
 	width: 24px;	height: 24px;
   background: url('VistaSkin/GreenLeftArrow.gif') no-repeat ;
@@ -411,4 +385,30 @@
 .TagExplorer24x24Icon {
 	width: 26px; height: 26px;
   background: url('VistaSkin/TaggingDocumentIcon.png') no-repeat bottom;
+}
+
+.ManagePublicationsIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/ManagerPuplication.gif') no-repeat ;
+}
+
+.AddNodeTypeIcon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
+}
+
+.SelectPath24x24Icon {
+  float: left;
+	width: 16px;	height: 16px;
+  background: url('DefaultSkin/MagnifierIconNews.png') no-repeat ;
+}
+
+.AddMetadataTypeIcon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat ;
+}
+
+.GreenUpArrowFolder24x24Icon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/GreenUpArrowFolder.gif') no-repeat ;
 }

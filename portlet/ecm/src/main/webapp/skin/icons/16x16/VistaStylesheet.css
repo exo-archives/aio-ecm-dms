@@ -172,6 +172,51 @@
   background: url('VistaSkin/BlueUpArrow.png') no-repeat;
 }
 
+.Close16x16Icon {
+  width: 16px; height: 16px;
+  background: url('VistaSkin/BlueCrossRect.gif') no-repeat;  
+}
+
+.View16x16Icon {
+  width: 19px; height: 18px;
+  background: url('VistaSkin/YellowLight.png') no-repeat center;  
+}
+
+.MetaView16x16Icon {
+  width: 24px; height: 24px;
+  background: url('VistaSkin/YellowLight.png') no-repeat;  
+  cursor: pointer;
+}
+
+.DeleteIconInfo {
+  width: 24px; height: 24px;
+  background: url('VistaSkin/Delete.png') no-repeat ; 
+  cursor: pointer;
+  margin-left: 3px;
+}
+
+.EditStyleIcon {
+  width: 24px ;  height: 24px ;
+  background: url('VistaSkin/Edit.png') no-repeat ;
+  cursor: pointer;
+}
+
+.EditIcon {
+  width: 24px ;  height: 24px ;
+  background: url('VistaSkin/Edit.png') no-repeat ;
+  cursor: pointer;
+}
+
+.False16x16Icon {
+  width: 16px ;  height: 16px ;
+  background: url('VistaSkin/False.png') no-repeat;  
+}
+
+.True16x16Icon {
+  width: 16px ;  height: 16px ;
+  background: url('VistaSkin/True.png') no-repeat;  
+}
+
 .AddType16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/Save.gif') no-repeat;  
@@ -266,11 +311,6 @@
   background: url('DefaultSkin/RedCrossCircle.gif') no-repeat;  
 }
 
-.Close16x16Icon {
-  width: 16px; height: 16px;
-  background: url('VistaSkin/BlueCrossRect.gif') no-repeat;  
-}
-
 .CancelProperty16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/RedCrossCircle.gif') no-repeat;  
@@ -286,49 +326,9 @@
   background: url('DefaultSkin/Save.gif') no-repeat;  
 }
 
-.View16x16Icon {
-  width: 19px; height: 18px;
-  background: url('VistaSkin/YellowLight.png') no-repeat center;  
-}
-
 .OpenFolder16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/OpenFolder.gif') no-repeat;  
-}
-
-.MetaView16x16Icon {
-  width: 24px; height: 24px;
-  background: url('VistaSkin/YellowLight.png') no-repeat;  
-  cursor: pointer;
-}
-
-.DeleteIconInfo {
-  width: 24px; height: 24px;
-  background: url('VistaSkin/Delete.png') no-repeat ; 
-  cursor: pointer;
-  margin-left: 3px;
-}
-
-.EditStyleIcon {
-  width: 24px ;  height: 24px ;
-  background: url('VistaSkin/Edit.png') no-repeat ;
-  cursor: pointer;
-}
-
-.EditIcon {
-  width: 24px ;  height: 24px ;
-  background: url('VistaSkin/Edit.png') no-repeat ;
-  cursor: pointer;
-}
-
-.False16x16Icon {
-  width: 16px ;  height: 16px ;
-  background: url('VistaSkin/False.png') no-repeat;  
-}
-
-.True16x16Icon {
-  width: 16px ;  height: 16px ;
-  background: url('VistaSkin/True.png') no-repeat;  
 }
 
 .SelectPath16x16Icon {

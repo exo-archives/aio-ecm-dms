@@ -5,13 +5,13 @@
 		}
 			
 		.UIArticle .ArticleTLDecorator {
-		  background: url('/ecm/skin/images/article/TopLeftArticle51x100.gif') no-repeat left;
+		  background: url('/ecm/skin/images/article/TopLRArticle51x100.gif') no-repeat left;
 		  padding-left: 51px;
 		  height: 100px;
 		}
 		
 		.UIArticle .ArticleTRDecorator {
-		  background: url('/ecm/skin/images/article/TopRightArticle154x100.gif') no-repeat right ;
+		  background: url('/ecm/skin/images/article/TopLRArticle51x100.gif') no-repeat right ;
 		  padding-right:154px;
 		  height: 100px;
 		}
@@ -42,20 +42,20 @@
 		}
 		
 		.UIArticle .ArticleBLDecorator {
-		  background: url('/ecm/skin/images/article/BottomLeftArticle3x8.gif') no-repeat left ;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -253px ;
 		  padding-left: 3px;
 		  height: 8px;
 		  line-height: 8px;
 		}
 		
 		.UIArticle .ArticleBCDecorator {
-		  background: url('/ecm/skin/images/article/BottomCentertArticle1x8.gif') repeat-x ;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') repeat-x left -261px ;
 		  height: 8px;
 		  line-height: 8px;
 		}
 		
 		.UIArticle .ArticleBRDecorator {
-		  background: url('/ecm/skin/images/article/BottomRightArticle10x8.gif') no-repeat right ;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat right -253px ;
 		  padding-right: 10px ;  
 		  height: 8px;
 		  line-height: 8px;
@@ -67,19 +67,19 @@
 		}
 			
 		.UIArticle .ArticleFrame .TopLeftArticleFrame {
-		  background: url('/ecm/skin/images/article/TopLeftArticleFrame9x16.gif') no-repeat left;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -220px;
 		  padding-left: 9px;
 		  height: 16px;
 		}
 		
 		.UIArticle .ArticleFrame .TopRightArtictleFrame {
-		  background: url('/ecm/skin/images/article/TopRightArticleFrame2x16.gif') no-repeat right;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat right -220px;
 		  padding-right: 2px;
 		  height: 16px;
 		}
 		
 		.UIArticle .ArticleFrame .TopCenterArticleFrame {
-		  background: url('/ecm/skin/images/article/TopCenterArticleFrame1x16.gif') repeat-x ;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') repeat-x left -236px ;
 		  height: 16px;
 		}
 		
@@ -110,19 +110,19 @@
 		}
 		
 		.UIArticle .SummaryIcon {
-		  background: url('/ecm/skin/images/article/SummaryIcon.gif') no-repeat;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left top;
 		}
 		
 		.UIArticle .AttachmentsIcon {
-		  background: url('/ecm/skin/images/article/AttachmentsIcon.gif') no-repeat;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -48px;
 		}
 		
 		.UIArticle .RatingIcon {
-		  background: url('/ecm/skin/images/article/RatingInfo.gif') no-repeat;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -64px;
 		}
 		
 		.UIArticle .AttachmentsContaienr .AttachmentsContentIcon {
-		  background: url('/ecm/skin/images/article/AttachmentsIcon.gif') no-repeat;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -48px;
 		  width: 16px;
 		  height: 16px;
 		  margin: 0px 5px 0px 3px;
@@ -130,11 +130,11 @@
 		}
 		
 		.UIArticle .ContentIcon {
-		  background: url('/ecm/skin/images/article/ContentIcon.gif') no-repeat;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -16px;
 		}
 		
 		.UIArticle .LinksIcon {
-		  background: url('/ecm/skin/images/article/Links.gif') no-repeat;
+		  background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -32px;
 		}
 		
 		.UIArticle .FieldContent {

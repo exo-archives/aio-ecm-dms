@@ -13,18 +13,18 @@
      .Comments .CommentBar .LeftCommentBar {
       height: 54px;
       padding-left: 5px;
-      background: url('/ecm/skin/images/article/LeftCommentBar5x54.gif') no-repeat left ;
+      background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -80px ;
     }
     
     .Comments .CommentBar .RightCommentBar {
     	padding-right: 5px;
     	height: 54px;    	
-      background: url('/ecm/skin/images/article/RightCommentBar5x54.gif') no-repeat right top;
+      background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat right -80px;
     }
     
     .Comments .CommentBar .MiddleCommentBar {    	
     	height: 54px;
-      background: url('/ecm/skin/images/article/MiddleCommentBar1x54.gif') repeat-x ;
+      background: url('/ecm/skin/images/article/Artitcle.gif') repeat-x left -134px;
       padding: 0px 3px;
     }
     
@@ -83,12 +83,12 @@
     .Comments .CommentBox .CommentBoxTopRight {
 			height: 12px;
       padding-right: 3px;
-      background: url('/ecm/skin/images/article/CommentBoxTR3x3.gif') no-repeat right bottom;
+      background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat right -189px;
     }
     
     .Comments .CommentBox .CommentBoxTopCenter {
       height: 12px;
-      background: url('/ecm/skin/images/article/CommentBoxTC1x3.gif') repeat-x bottom;
+      background: url('/ecm/skin/images/article/Artitcle.gif') repeat-x left -201px;
     }
    
     .Comments .CommentBox .CommentBoxMiddleLeft {
@@ -110,18 +110,18 @@
     .Comments .CommentBox .CommentBoxBottomLeft {
 			height: 3px;
 			padding-left: 3px;
-      background: url('/ecm/skin/images/article/CommentBoxBL3x3.gif') no-repeat left top ;
+      background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -213px ;
     }
     
     .Comments .CommentBox .CommentBoxBottomRight {
 			height: 3px;
     	padding-right: 3px;	
-      background: url('/ecm/skin/images/article/CommentBoxBR3x3.gif') no-repeat right top;
+      background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat right -213px;
     }
     
     .Comments .CommentBox .CommentBoxBottomCenter {    	
     	height: 3px;
-      background: url('/ecm/skin/images/article/CommentBoxBC1x3.gif') repeat-x top;
+      background: url('/ecm/skin/images/article/Artitcle.gif') repeat-x left -216px ;
     }
 	</style>
   <div class="Comments ShowHideContainer">

@@ -583,6 +583,11 @@
 
 /*############################## -- Begin BC Portlet Icon -- ########################*/
 
+.CBHome16x16Icon {
+	width: 16px; height:16px;
+  background: url('VistaSkin/CBHomeIcon.png') no-repeat;
+}
+
 .ScrollBackArrow16x16Icon {
   width: 16px; height:16px;
   background: url('DefaultSkin/SrollBackArrow.gif') no-repeat;  
@@ -623,11 +628,6 @@
 .CBDropDownArrow16x16Icon {
 	width: 16px; height:16px;
   background: url('VistaSkin/BlueDownArrow.png') no-repeat;
-}
-
-.CBHome16x16Icon {
-	width: 16px; height:16px;
-  background: url('VistaSkin/CBHomeIcon.png') no-repeat;
 }
 
 .LastPage {

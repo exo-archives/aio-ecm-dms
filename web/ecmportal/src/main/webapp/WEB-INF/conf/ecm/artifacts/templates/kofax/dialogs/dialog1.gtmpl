@@ -2,9 +2,9 @@
   def node = uicomponent.getCurrentNode() ;
   String namespace = "kfx:" ;
 %>
-<div class="UIFormWithTitle">  
+<div class="UIForm">  
 	<% uiform.begin() %>
-  <div class="HorizontalLayout" style="border:0px;">
+  <div class="HorizontalLayout">
 		<table class="UIFormGrid">			
 			<tr>
 			  <td class="FieldLabel"><%=_ctx.appRes("Kofax.dialog.label.name")%></td>

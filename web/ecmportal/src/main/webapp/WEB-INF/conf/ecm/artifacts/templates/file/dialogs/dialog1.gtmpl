@@ -8,9 +8,9 @@
   uicomponent.addCalendarField("hiddenInput4", hiddenField4) ;
   uicomponent.addCalendarField("hiddenInput5", hiddenField5) ;
 %>
-<div class="UIFormWithTitle">  
+<div class="UIForm">  
 	<% uiform.begin() %>
-  <div class="HorizontalLayout" style="border:0px;">
+  <div class="HorizontalLayout">
 	  <table class="UIFormGrid">
 				<tr>
 				  <td class="FieldLabel"><%=_ctx.appRes("File.dialog.label.name")%></td>
@@ -36,49 +36,51 @@
 				<tr>
 				  <td class="FieldLabel"><%=_ctx.appRes("File.dialog.label.content")%></td>
 				  <td class="FieldComponent">
-						<%
-							if(uicomponent.isEditing()) { 
-								def curNode = uicomponent.getNode() ;
-								if(curNode.hasNode("jcr:content")) {
-									def content = curNode.getNode("jcr:content") ;
-									String mimeType = content.getProperty("jcr:mimeType").getString() ;
-									if(mimeType.startsWith("text")){
-										if(mimeType.equals("text/html")) {
-											String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
-				             				uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;			
-											//uicomponent.removeComponent("content");
+				  	<div class="UIFCKEditor">	
+							<%
+								if(uicomponent.isEditing()) { 
+									def curNode = uicomponent.getNode() ;
+									if(curNode.hasNode("jcr:content")) {
+										def content = curNode.getNode("jcr:content") ;
+										String mimeType = content.getProperty("jcr:mimeType").getString() ;
+										if(mimeType.startsWith("text")){
+											if(mimeType.equals("text/html")) {
+												String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
+					             				uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;			
+												//uicomponent.removeComponent("content");
+											} else {
+												String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
+				          						uicomponent.addTextAreaField("content", fieldSummary) ;
+											}
 										} else {
-											String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
-			          						uicomponent.addTextAreaField("content", fieldSummary) ;
+										%>
+											<span style="font-size:12px; font-weight: bold; padding-top:5px;">
+									    	<%=_ctx.appRes("File.dialog.label.re-upload")%>
+									    </span>
+										<%
 										}
 									} else {
-									%>
-										<span style="font-size:12px; font-weight: bold; padding-top:5px;">
-								    	<%=_ctx.appRes("File.dialog.label.re-upload")%>
-								    </span>
-									<%
+										String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
+				                        uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;						
 									}
-								} else {
-									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
-			                        uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;						
+								} else {	
+									String selectValue = uicomponent.getSelectBoxFieldValue("mimetype") ;		
+									if(selectValue != null && selectValue.equals("text/html")) {	
+										String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
+				          	            uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;
+										uicomponent.removeComponent("contentPlain");
+									} else if(selectValue != null && selectValue.equals("text/plain")){
+										String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
+				          	            uicomponent.addTextAreaField("contentPlain", fieldSummary) ;
+										uicomponent.removeComponent("contentHtml");
+									} else {
+										String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
+				          	            uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;	
+										uicomponent.removeComponent("contentPlain");							  
+									}
 								}
-							} else {	
-								String selectValue = uicomponent.getSelectBoxFieldValue("mimetype") ;		
-								if(selectValue != null && selectValue.equals("text/html")) {	
-									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
-			          	            uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;
-									uicomponent.removeComponent("contentPlain");
-								} else if(selectValue != null && selectValue.equals("text/plain")){
-									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
-			          	            uicomponent.addTextAreaField("contentPlain", fieldSummary) ;
-									uicomponent.removeComponent("contentHtml");
-								} else {
-									String[] fieldSummary = ["jcrPath=/node/jcr:content/jcr:data", "validate=empty"] ;
-			          	            uicomponent.addWYSIWYGField("contentHtml", fieldSummary) ;	
-									uicomponent.removeComponent("contentPlain");							  
-								}
-							}
-						%>			
+							%>
+						</div>			
 				  </td>
 				</tr>				
 		</table>	     
