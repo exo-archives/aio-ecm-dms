@@ -68,7 +68,7 @@ public class FCKMessage {
   public static final int FILE_UPLOAD_RESTRICTION = 203;
 
   /** The Constant FCK_RESOURCE_BUNDLE. */
-  public static final String FCK_RESOURCE_BUNDLE="locale.fckeditor".intern();
+  public static final String FCK_RESOURCE_BUNDLE_FILE="locale.services.fckeditor.FCKConnector".intern();
   private ResourceBundleService bundleService;
 
   /**
@@ -122,12 +122,13 @@ public class FCKMessage {
    */
   public String getMessage(String messageKey,Object[] args, String language) throws Exception {
     Locale locale = null;
-    if(language == null) {
+    if (language == null) {
       locale = Locale.ENGLISH;
-    }else {
+    } else {
       locale = new Locale(language); 
-    }    
-    ResourceBundle resourceBundle = bundleService.getResourceBundle(FCK_RESOURCE_BUNDLE,locale);
+    }        
+    ClassLoader cl = this.getClass().getClassLoader();    
+    ResourceBundle resourceBundle = bundleService.getResourceBundle(FCK_RESOURCE_BUNDLE_FILE,locale, cl);
     String message = resourceBundle.getString(messageKey);    
     if(args == null) {
       return message;
@@ -138,7 +139,13 @@ public class FCKMessage {
   private String getMessageKey(int number) {
     String messageKey = null;
     switch (number) {
-    case FOLDER_CREATED: messageKey = "fckeditor.folder-existed";      
+    case FOLDER_CREATED: messageKey = "fckeditor.folder-created";      
+    break;
+    case FOLDER_INVALID_NAME: messageKey = "fckeditor.folder-invalid-name";
+    break;
+    case FOLDER_EXISTED: messageKey = "fckeditor.folder-existed";
+    break;
+    case FOLDER_PERMISSION_CREATING: messageKey = "fckeditor.folder-permission-denied";
     break;
     default:messageKey = "connector.fckeditor.unknowm-message"; 
     break;
