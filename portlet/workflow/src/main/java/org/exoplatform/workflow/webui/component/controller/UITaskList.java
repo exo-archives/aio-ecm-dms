@@ -30,10 +30,12 @@ import org.exoplatform.services.workflow.Form;
 import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowFormsService;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -105,19 +107,48 @@ public class UITaskList extends UIContainer {
     }
     return filtered;
   }
+  
+  /**
+   * Indicates whether a Task has been processed or not.
+   * This method was introduced to avoid bug described in ECM-2374, when two
+   * users try to manage the same Task.
+   * 
+   * @param taskId identifies the Task
+   * @return true if the Task has been processed
+   */
+  public boolean isTaskActivated(String taskId) {
+    try {
+      Task task = this.workflowServiceContainer_.getTask(taskId);
+      return task.getEnd() != null;
+    } catch(Exception e) {
+      return true ;
+    }
+  }
 
-  static  public class ManageStateActionListener extends EventListener<UITaskList> {
+  static public class ManageStateActionListener extends EventListener<UITaskList> {
     public void execute(Event<UITaskList> event) throws Exception {
+
       UITaskList uiTaskList = event.getSource() ;
       String tokenId = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiTaskList.setRenderSibbling(UITaskList.class) ;
-      UIWorkflowControllerPortlet uiControllerPortlet = uiTaskList.getAncestorOfType(UIWorkflowControllerPortlet.class) ;
-      UIWorkflowPopup uiPopupAction = uiControllerPortlet.getChild(UIWorkflowPopup.class) ;
-      UITaskManager uiTaskManager = uiControllerPortlet.createUIComponent(UITaskManager.class, null, null) ;
-      uiTaskManager.setTokenId(tokenId) ;
-      uiTaskManager.setIsStart(false) ;
-      uiPopupAction.activate(uiTaskManager, 600, 550) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+      
+      if(uiTaskList.isTaskActivated(tokenId)) {
+        // The task has been maanged by a user in the meanwhile
+        WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
+        UIApplication uiApp = context.getUIApplication() ;
+        uiApp.addMessage(new ApplicationMessage("UITaskList.msg.task-not-found", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      }
+      else {
+        // Display the task management pop up
+        uiTaskList.setRenderSibbling(UITaskList.class) ;
+        UIWorkflowControllerPortlet uiControllerPortlet = uiTaskList.getAncestorOfType(UIWorkflowControllerPortlet.class) ;
+        UIWorkflowPopup uiPopupAction = uiControllerPortlet.getChild(UIWorkflowPopup.class) ;
+        UITaskManager uiTaskManager = uiControllerPortlet.createUIComponent(UITaskManager.class, null, null) ;
+        uiTaskManager.setTokenId(tokenId) ;
+        uiTaskManager.setIsStart(false) ;
+        uiPopupAction.activate(uiTaskManager, 600, 550) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+      }
     }
   }
 }
