@@ -108,38 +108,6 @@
 	border-top: none;
 }
 
-/*############################## -- UITreeJCRExplorer   -- ##############################*/
-
-.UIFastContentCreatorPortlet .Explorer {
-  float: left ;
-  width: 230px ;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList {
-  margin-left: 240px;
-}
-
-.UIFastContentCreatorPortlet .UIJCRBrowser .UITreeList .UIGrid {
-  width: 97%;
-  margin: 0px;
-}
-
-.UIFastContentCreatorPortlet .Explorer .ExplorerTree {
-  margin-top: 1px;
-  border: solid 1px #c6c6c9;
-  background: #f3f3f3;
-  padding: 1px;
-}
-
-.UIFastContentCreatorPortlet .Explorer .InnerExplorerTree {
-  border: solid 1px #b1b0b0;
-  padding: 10px;
-}
-
-  padding: 0px 4px;
-  vertical-align: middle;
-}
-
 .UIFastContentCreatorPortlet .UIFormUploadInput .ProgressBarFrame { 
 	width: 330px;
 	overflow: hidden;

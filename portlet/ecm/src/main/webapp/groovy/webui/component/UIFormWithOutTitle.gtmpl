@@ -7,8 +7,7 @@
  * Oct 6, 2006  
  */
 %>
-<div class="$uicomponent.id">
-  <div class="UIFormWithTitle" style="margin-top:15px; margin-bottom:15px;">
+  <div class="UIForm $uicomponent.id" style="border: 1px solid blue">
     <% uiform.begin() %>
     <div class="HorizontalLayout">
       <% 
@@ -52,4 +51,3 @@
     </div>
     <%uiform.end()%>
   </div>
-</div>

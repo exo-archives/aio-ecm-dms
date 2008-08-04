@@ -289,28 +289,6 @@
   padding: 0px 10px;
 }
 
-/*############################## -- UITreeJCRExplorer   -- ##############################*/
-.UIJCRExplorerPortlet .Explorer {
-  float: left ;
-  width: 230px ;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList {
-  margin-left: 240px;
-}
-
-.UIJCRExplorerPortlet .Explorer .ExplorerTree {
-  margin-top: 1px;
-  border: solid 1px #c6c6c9;
-  background: #f3f3f3;
-  padding: 1px;
-}
-
-.UIJCRExplorerPortlet .Explorer .InnerExplorerTree {
-  border: solid 1px #b1b0b0;
-  padding: 10px;
-}
-
 /*############################## -- UIActionManager   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {

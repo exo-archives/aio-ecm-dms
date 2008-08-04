@@ -705,11 +705,6 @@
 	width: 100px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList .UIGrid  {
-	width: 97%;
-	margin: 0px;
-}
-
 .UIJCRExplorerPortlet .UIRelationManager .UITabPane {
 	width: 95%;
 	margin: 10px auto;

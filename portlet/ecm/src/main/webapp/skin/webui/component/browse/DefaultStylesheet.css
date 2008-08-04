@@ -34,10 +34,6 @@
 	width: 650px;
 }
 
-.UIBrowseContentPortlet .UIConfigTabPane {
-	padding: 5px;
-}
-
 .UIBrowseContentPortlet .ViewActicle {
 	margin: 9px 10px 0px 0px;
 }
@@ -97,21 +93,37 @@
 	text-transform: capitalize;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .UIFormGrid {
-	margin: auto;
+.UIBrowseContentPortlet .UIConfigTabPane {
+	padding: 5px;
 }
 
-.UIBrowseContentPortlet .UIForm .HorizontalLayout td.FieldComponent {
-	padding: 4px 0px;
+.UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .UIFormGrid {
+	margin: auto;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .FieldComponent .path {
 	padding: 0px;
 }
 
+.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet {
+	width: auto;
+	padding: 0px;
+}
+
+.UIBrowseContentPortlet .UIConfigContainer .UIFormGrid td.FieldLabel {
+	width: auto;
+}
+
+.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .UIFormGrid td.FieldLabel {
+	width: 190px;
+}
+
+.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet a {
+	padding-left: 5px;
+}
+
 .UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16 {
 	float:none;
-	margin-left: 5px;
 }
 
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {
@@ -122,12 +134,6 @@
 .UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer {
 	padding: 3px 0px;
 	border: none;
-}
-
-.UIBrowseContentPortlet .UIForm .HorizontalLayout .UIFormInputSet {
-	width: 100%;
-	padding: 0px;
-	margin: auto;
 }
 
 /*############################## -- Begin UIBrowseContainer -- ##############################*/
@@ -278,28 +284,6 @@
 	width: 97%;
 	padding: 0px;
 }
-/*############################## -- FIX BUG POPUP	-- ##############################*/
-.UIBrowseContentPortlet .UIJCRBrowser {
-	padding: 10px;
-}
-
-.UIBrowseContentPortlet .Explorer {
-	float: left ;
-	width: 220px ;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser table {
-	*width: 94%;
-}
-
-.UIBrowseContentPortlet .Explorer .InnerExplorerTree {
-	border: solid 1px #b1b0b0;
-	padding: 10px;
-}
-
-.UIBrowseContentPortlet .UITreeList {
-	margin-left: 230px;
-}
 
 /*############################## -- FIX BUG POPUP -- ##############################*/
 
@@ -403,46 +387,6 @@
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
 }
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList {
-	padding-bottom: 8px ;
-	margin: 10px 0px 0px 0px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	width: auto;
-	margin: 0px;
-	border: 1px solid #E1E1E1;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
-	padding: 1px;
-	border: solid 1px #B1B0B0;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
-	background: white;
-	padding: 5px 0px;
-	margin: 0px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel {
-	width: 100px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList select {
-	width: 100px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .rootNodeInfo .FormContainer {
-	padding: 0px;
-}
-
-.UIBrowseContentPortlet .UIForm .HorizontalLayout .rootNodeInfo td.FieldComponent {
-	padding: 0px;
-}
-
-
 
 /*********************************Template Style - Fix for IE*************************************/
 

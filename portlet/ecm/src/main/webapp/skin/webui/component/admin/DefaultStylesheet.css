@@ -721,22 +721,6 @@
 }
 
 /*############################## -- MultiField  -- ########################*/
-
-.UIECMAdminPortlet .Explorer {
-  float: left ;
-  width: 230px ;
-  background: #f3f3f3;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UITreeList {
-  margin-left: 240px;
-}
-
-.UIECMAdminPortlet .Explorer .InnerExplorerTree {
-  border: solid 1px #b1b0b0;
-  padding: 10px;
-}
-
 .UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList {
 	border: solid 1px #b7b7b7;
 	background: #EFEFEF;

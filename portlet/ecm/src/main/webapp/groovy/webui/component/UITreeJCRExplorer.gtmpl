@@ -7,10 +7,8 @@
  * 10:45:01 AM 
  */
 %>
-<div class="Explorer">
-  <div class="ExplorerTree">
-    <div class="InnerExplorerTree">
-      <% uicomponent.renderChildren();%>
-    </div>
-  </div>
+<div class="ExplorerTree">
+	<div class="InnerExplorerTree">
+		<% uicomponent.renderChildren();%>
+	</div>
 </div>

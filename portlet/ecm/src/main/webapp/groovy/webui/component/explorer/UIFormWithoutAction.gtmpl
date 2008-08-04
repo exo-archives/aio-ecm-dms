@@ -7,7 +7,7 @@
  * 
  */
 %>
-<div class="UIForm $uicomponent.id">
+<div class="UIFormWithoutAction $uicomponent.id" style="border: 1px solid green">
   <% uiform.begin() %>
   <div class="HorizontalLayout">
     <table class="UIFormGrid">
