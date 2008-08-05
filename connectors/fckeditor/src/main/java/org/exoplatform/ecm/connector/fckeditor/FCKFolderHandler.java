@@ -38,7 +38,7 @@ public class FCKFolderHandler {
   private FCKMessage fckMessage;
   public FCKFolderHandler(ExoContainer container) {
     templateService = (TemplateService)container.getComponentInstanceOfType(TemplateService.class);
-    fckMessage = new FCKMessage(container);
+    fckMessage = new FCKMessage();
   }
 
   public String getFolderType(final Node node) throws Exception {

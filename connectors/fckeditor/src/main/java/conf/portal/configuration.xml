@@ -2,6 +2,7 @@
 
 <configuration>
   <component>    
+  	<key>org.exoplatform.ecm.connector.fckeditor.FCKCoreRESTConnector</key>
     <type>org.exoplatform.ecm.connector.fckeditor.FCKCoreRESTConnector</type>    
   </component>       
   <component>    

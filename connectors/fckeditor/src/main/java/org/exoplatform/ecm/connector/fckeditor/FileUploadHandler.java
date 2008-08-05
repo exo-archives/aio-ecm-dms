@@ -69,7 +69,7 @@ public class FileUploadHandler {
    */
   public FileUploadHandler(ExoContainer container) {
     uploadService = (UploadService)container.getComponentInstanceOfType(UploadService.class);
-    fckMessage = new FCKMessage(container);
+    fckMessage = new FCKMessage();
   }
   
   public Response upload(String uploadId, String contentType, double contentLength, InputStream inputStream, Node currentNode, String language) throws Exception {

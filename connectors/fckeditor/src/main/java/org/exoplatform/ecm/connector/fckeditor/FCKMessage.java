@@ -68,18 +68,13 @@ public class FCKMessage {
   public static final int FILE_UPLOAD_RESTRICTION = 203;
 
   /** The Constant FCK_RESOURCE_BUNDLE. */
-  public static final String FCK_RESOURCE_BUNDLE_FILE="locale.services.fckeditor.FCKConnector".intern();
-  private ResourceBundleService bundleService;
-
+  public static final String FCK_RESOURCE_BUNDLE_FILE="locale.services.fckeditor.FCKConnector".intern();  
   /**
    * Instantiates a new fCK message.
    * 
    * @param bundleService the bundle service
    */
-  public FCKMessage(ExoContainer container) {
-    this.bundleService = 
-      (ResourceBundleService) container.getComponentInstanceOfType(ResourceBundleService.class);
-  }  
+  public FCKMessage() { }  
   
   public Document createMessage(int messageCode, String messageType,String language, Object[] args) throws Exception {      
     String message = getMessage(messageCode, args, language);
@@ -126,9 +121,8 @@ public class FCKMessage {
       locale = Locale.ENGLISH;
     } else {
       locale = new Locale(language); 
-    }        
-    ClassLoader cl = this.getClass().getClassLoader();    
-    ResourceBundle resourceBundle = bundleService.getResourceBundle(FCK_RESOURCE_BUNDLE_FILE,locale, cl);
+    }                    
+    ResourceBundle resourceBundle = ResourceBundle.getBundle(FCK_RESOURCE_BUNDLE_FILE,locale);
     String message = resourceBundle.getString(messageKey);    
     if(args == null) {
       return message;
