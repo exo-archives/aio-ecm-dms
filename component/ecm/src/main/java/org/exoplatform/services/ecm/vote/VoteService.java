@@ -35,11 +35,20 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
  * May 7, 2008  
  */
 public class VoteService {  
-  final static String VOTABLE = "mix:votable".intern() ;  
-  final static String VOTER_PROP = "exo:voter".intern() ;  
-  final static String VOTING_RATE_PROP = "exo:votingRate".intern() ;
-  final static String VOTE_TOTAL_PROP = "exo:voteTotal".intern() ;    
+  final static String VOTABLE = "mix:votable".intern();  
+  final static String VOTER_PROP = "exo:voter".intern();  
+  final static String VOTING_RATE_PROP = "exo:votingRate".intern();
+  final static String VOTE_TOTAL_PROP = "exo:voteTotal".intern();    
       
+  /**
+   * Voting the document that is specified by the node by giving the rate and userName
+   * @param node          The node document for votting
+   * @param rate          The number rate for votting
+   * @param userName      The username of current user is votting. 
+   *                      May be <code>null</code> or <code>blank</code>
+   * @see                 Node
+   * @throws Exception
+   */
   public void vote(Node node, double rate, String userName) throws Exception {   
     Session session = node.getSession();    
     Session systemSession = null;
@@ -64,18 +73,18 @@ public class VoteService {
       voteRate = document.getProperty(VOTING_RATE_PROP).getDouble();
     }
     double newRate = (voteTotal * voteRate + rate) / (voteTotal + 1);    
-    DecimalFormat format = new DecimalFormat("###.##") ;
-    double formatedRate= format.parse(format.format(newRate)).doubleValue() ;    
+    DecimalFormat format = new DecimalFormat("###.##");
+    double formatedRate= format.parse(format.format(newRate)).doubleValue();    
     if (userName != null) {
-      Value[] voters = {} ;
-      if(document.hasProperty(VOTER_PROP)) {
-        voters = document.getProperty(VOTER_PROP).getValues() ;        
+      Value[] voters = {};
+      if (document.hasProperty(VOTER_PROP)) {
+        voters = document.getProperty(VOTER_PROP).getValues();        
       }
       Value newVoter = null;
-      List<Value> newVoterList = new ArrayList<Value>() ;
+      List<Value> newVoterList = new ArrayList<Value>();
       newVoter = document.getSession().getValueFactory().createValue(userName);
-      newVoterList.addAll(Arrays.<Value>asList(voters)) ;    
-      newVoterList.add(newVoter) ;
+      newVoterList.addAll(Arrays.<Value>asList(voters));    
+      newVoterList.add(newVoter);
       document.setProperty(VOTER_PROP, newVoterList.toArray(new Value[newVoterList.size()]));
     }    
     document.setProperty(VOTE_TOTAL_PROP, voteTotal + 1);     
@@ -83,7 +92,7 @@ public class VoteService {
     document.getSession().save();    
     //logout system session if vote for anonymous
     if (systemSession != null) {      
-      systemSession.logout() ;
+      systemSession.logout();
     }
   }
 }
