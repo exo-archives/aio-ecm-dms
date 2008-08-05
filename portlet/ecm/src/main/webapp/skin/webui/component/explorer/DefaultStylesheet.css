@@ -118,19 +118,10 @@
 
 
 
-.UIDocumentFormController .UIForm .HorizontalLayout {
-  background: #EFEFEF;
-  border: 1px #B7B7B7 solid;
-  padding: 10px;
-}
 
 .UIDocumentFormController .UISelectDocumentForm {
   padding-bottom: 10px;
 }
-.UIDocumentFormController .UISelectDocumentForm .HorizontalLayout {
-	padding: 10px;
-}
-
 
 .UIJCRExplorerPortlet .UIDocumentFormController .UITabPane {
 	background: #EFEFEF;
@@ -139,12 +130,8 @@
 	margin:auto;
 }
 
-.UIDocumentFormController .UIFCKEditor {
-	width: 550px;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .EditFormController {
-	padding: 10px;
+	padding: 13px;
 }
 
 .EditFormController .UIForm .HorizontalLayout {
@@ -169,7 +156,7 @@
 }
 
 .EditFormController .UIFCKEditor {
-	width: 550px;
+	width: auto;
 }
 
 .UIHorizontalTabs .CenterHorizontalTabs {

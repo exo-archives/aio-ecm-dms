@@ -109,54 +109,18 @@
 	padding: 13px;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .HorizontalLayout {
+	background: #fff;
+	padding: 10px;
+	border: 1px solid #B7B7B7;
+}
+
 .UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
   padding: 0px 0px 10px 0px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .HorizontalLayout {
-	background: #fff;
-	padding: 10px;
-	border: 1px solid #B7B7B7;
-}
-
-.UIJCRExplorerPortlet .UIFormGrid {
-	width: auto;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane {
-	background: #fff;
-	border: 1px solid #B7B7B7;
-	width: auto;
-	margin:auto;
-}
-
-.UIDocumentFormController .UIFCKEditor {
-	width: 550px;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .EditFormController {
-	padding: 10px;
-}
-
-.EditFormController .UIForm .HorizontalLayout {
-	background: #fff;
-	padding: 10px;
-	border: 1px solid #B7B7B7;
-}
-
-.EditFormController .UISelectDocumentForm {
-  padding-bottom: 10px;
-}
-
-.UIJCRExplorerPortlet .EditFormController .UITabPane {
-	background: #fff;
-	border: 1px solid #B7B7B7;
-	width: auto;
-	margin:auto;
-}
-
-.EditFormController .UIFCKEditor {
-	width: 550px;
+	padding: 13px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {
