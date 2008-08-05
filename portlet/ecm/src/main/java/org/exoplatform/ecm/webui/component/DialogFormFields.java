@@ -57,7 +57,6 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.validator.NumberFormatValidator;
 import org.exoplatform.webui.form.wysiwyg.FCKEditorConfig;
 import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
-import org.exoplatform.webui.form.UIFormInputBase;
 
 /**
  * Created by The eXo Platform SARL
@@ -520,6 +519,8 @@ public class DialogFormFields extends UIForm {
       }
       if(nodePath_ != null) {
         config.put("jcrPath",nodePath_);
+      }else {
+        config.put("jcrPath",storedPath_);
       }            
       wysiwyg.setFCKConfig(config);
       if(validateType != null) {
