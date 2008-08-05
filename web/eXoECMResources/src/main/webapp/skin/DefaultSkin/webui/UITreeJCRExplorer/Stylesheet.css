@@ -2,18 +2,18 @@
 	padding: 10px;
 }
 
-.UIJCRBrowser .ExplorerTree {
+.ExplorerTree {
   float: left ;
   width: 230px ;
   background: #f3f3f3;
 }
 
-.UIJCRBrowser .ExplorerTree .InnerExplorerTree {
+.ExplorerTree .InnerExplorerTree {
   border: solid 1px #b1b0b0;
   padding: 10px;
 }
 
-.UIJCRBrowser .UITreeList {
+.UITreeList {
   margin-left: 240px;
 }
 
@@ -21,6 +21,11 @@
 	border: 1px solid red;
 }
 
-.UIJCRBrowser table {
+.UITreeList table {
 	*width: 94%;
+}
+
+.UITreeList table .Icon16x16{
+	float: none;
+	margin: 5px;
 }

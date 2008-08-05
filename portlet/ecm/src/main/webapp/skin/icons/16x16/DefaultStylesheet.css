@@ -56,10 +56,6 @@
   cursor: pointer;
 }
 
-.Icon16x16 {
-	float: left;
-}
-
 .UIGrid .ViewIcon {
 	width: 16px; height: 16px;
 	background: url('DefaultSkin/YellowLight.gif') no-repeat;

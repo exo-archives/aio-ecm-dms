@@ -9,40 +9,11 @@
 /*############################## -- UIMetadataManager-- ########################*/
 
 .UIECMAdminPortlet .UIMetadataManager  {
-  padding: 2px 10px 0px 10px;
+  border: 1px solid red;
 }
 
-.UIECMAdminPortlet .UIMetadataManager .UITabPane {
-  width: 95%;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .UIForm .FieldLabel {
-  width: 128px;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
-  width: 90%;
-  height: 350px;
-  padding: 3px;
-}
-
-.UIECMAdminPortlet .metadataTypeTab .FormContainer {
-  width: 500px;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIMetadataList .UIPageIterator {
-  float: right;
-  width: 95%;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .metadataTypeTab .UIFormInputSet .FormContainer {
-	width: 500px;
-	margin: auto;
-}
-
-.UIECMAdminPortlet .MetadataInfoDetails {
+.UIECMAdminPortlet .UIMetadataList .UIGrid td {
+	padding: 4px;
 }
 
 .UIECMAdminPortlet .MetadataInfo .GridTitleBar {

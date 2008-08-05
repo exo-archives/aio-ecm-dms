@@ -8,6 +8,7 @@
 
 .UIFormWithoutAction .UIForm .HorizontalLayout {
 	padding: 0px;
+	border: none;
 }
 
 .UIECMAdminPortlet .UIFormWithoutAction .UIFormGrid {

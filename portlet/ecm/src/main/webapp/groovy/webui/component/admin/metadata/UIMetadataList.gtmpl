@@ -41,42 +41,40 @@
               String nodeType = meta.getName() ;
               nodeType = nodeType.replace(":", "_") ;
             %>
-            <td style="width:30px; margin-left:5px;">
+            <td align="center">
               <div class="default16x16Icon  ${nodeType}16x16Icon"><span></span></div>
             </td>
-            <td><div class="Text">$meta.name</div></td>
-            <td>
+            <td>$meta.name</td>
+            <td align="center">
               <%
                 String internalText = _ctx.appRes("UIMetadataList.label." + meta.getInternalUse()) ;
                 String internalIconType = meta.getInternalUse() ;                
               %>
-              <div style="width: 65px; margin: auto;">
-	              <div class="Icon16x16 ${internalIconType}16x16Icon"><span></span></div>
-	              <div class="Text">$internalText</div>
-	            </div>
+			          <img class="Icon16x16 ${internalIconType}16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif"/>
+	              <span>$internalText</span>
             </td>
-            <td>
-              <div style="width: 65px; margin: auto;">
-	              <div class="Icon16x16 True16x16Icon"><span></span></div>
-	              <div class="Text">true</div>
-	            </div>
+            <td align="center">
+			          <img class="Icon16x16 True16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif"/>
+	              <span>true</span>
             </td>
-            <td style="width:130px;padding-left:20px;">
-              <a href="<%=uicomponent.event("View", meta.getName())%>">
-                <div class="Icon16x16 MetaView16x16Icon" style="margin-left:7px;" title="<%=_ctx.appRes("UIMetadataList.title.view")%>"><span></span></div>
-              </a>
-              <a href="<%=uicomponent.event("Edit", meta.getName())%>">
-                <div class="Icon16x16 Edit16x16Icon" style="margin-left:7px;" title="<%=_ctx.appRes("UIMetadataList.title.edit")%>"><span></span></div>
-              </a>
-              <%
-              	if(meta.hasTemplate()) {
-              	%>
-              		<a href="<%=uicomponent.event("Delete", meta.getName())%>">
-		                <div class="Icon16x16 Delete16x16Icon" style="margin-left:7px;" title="<%=_ctx.appRes("UIMetadataList.title.delete")%>"><span></span></div>
-		              </a>	
-              	<%
-              	}
-              %>
+            <td align="center">
+            	<div class="ActionContainer">
+	              <a href="<%=uicomponent.event("View", meta.getName())%>">
+	                <img src="/eXoResources/skin/sharedImages/Blank.gif" class="MetaView16x16Icon" title="<%=_ctx.appRes("UIMetadataList.title.view")%>"/>
+	              </a>
+	              <a href="<%=uicomponent.event("Edit", meta.getName())%>">
+	                <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Edit16x16Icon" title="<%=_ctx.appRes("UIMetadataList.title.edit")%>"/>
+	              </a>
+	              <%
+	              	if(meta.hasTemplate()) {
+	              	%>
+	              		<a href="<%=uicomponent.event("Delete", meta.getName())%>">
+			                <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Delete16x16Icon" title="<%=_ctx.appRes("UIMetadataList.title.delete")%>"/>
+			              </a>	
+	              	<%
+	              	}
+	              %>
+	            </div>
             </td>
           </tr>
       <%}%>  

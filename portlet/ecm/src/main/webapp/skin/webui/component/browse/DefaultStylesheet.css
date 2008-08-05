@@ -34,6 +34,10 @@
 	width: 650px;
 }
 
+.UIBrowseContentPortlet .UIConfigTabPane {
+	padding: 5px;
+}
+
 .UIBrowseContentPortlet .ViewActicle {
 	margin: 9px 10px 0px 0px;
 }
@@ -93,37 +97,21 @@
 	text-transform: capitalize;
 }
 
-.UIBrowseContentPortlet .UIConfigTabPane {
-	padding: 5px;
-}
-
 .UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .UIFormGrid {
 	margin: auto;
+}
+
+.UIBrowseContentPortlet .UIForm .HorizontalLayout td.FieldComponent {
+	padding: 4px 0px;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .FieldComponent .path {
 	padding: 0px;
 }
 
-.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet {
-	width: auto;
-	padding: 0px;
-}
-
-.UIBrowseContentPortlet .UIConfigContainer .UIFormGrid td.FieldLabel {
-	width: auto;
-}
-
-.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .UIFormGrid td.FieldLabel {
-	width: 190px;
-}
-
-.UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet a {
-	padding-left: 5px;
-}
-
 .UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16 {
 	float:none;
+	margin-left: 5px;
 }
 
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {
@@ -134,6 +122,12 @@
 .UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer {
 	padding: 3px 0px;
 	border: none;
+}
+
+.UIBrowseContentPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+	width: 100%;
+	padding: 0px;
+	margin: auto;
 }
 
 /*############################## -- Begin UIBrowseContainer -- ##############################*/
@@ -387,6 +381,16 @@
 	border-top: solid 1px #cccccc;
 	line-height: 26px;
 }
+
+.UIBrowseContentPortlet .UIJCRBrowser .rootNodeInfo .FormContainer {
+	padding: 0px;
+}
+
+.UIBrowseContentPortlet .UIForm .HorizontalLayout .rootNodeInfo td.FieldComponent {
+	padding: 0px;
+}
+
+
 
 /*********************************Template Style - Fix for IE*************************************/
 

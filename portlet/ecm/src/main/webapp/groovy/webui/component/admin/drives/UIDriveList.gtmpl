@@ -45,7 +45,7 @@
             <td><div class="Text"><%=drive.getHomePath().replace("/", " /")%></div></td>
             <td><div class="Text">$drive.permissions</div></td>
             <td><div class="Text">$drive.views</div></td>
-	          <td align="center" style="width: 80px">
+	          <td align="center" style="padding: 5px 0px;">
 	          	<div class="ActionContainer">
 			          <div class="OverflowContainer">  
 			            <a href="<%=uicomponent.event("EditInfo", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.EditInfo")%>">
