@@ -662,6 +662,8 @@ public class UIBaseDialogForm extends UIForm {
       }
       if(nodePath != null) {
         config.put("jcrPath",nodePath);
+      }else {
+        config.put("jcrPath",storedPath);
       }            
       wysiwyg.setFCKConfig(config);
       if(validateType != null) {
