@@ -53,6 +53,25 @@ public interface TemplateService {
   
   public String getTemplatePath(Node node, boolean isDialog) throws Exception ;
   
+  /**
+   * Return the public template
+   * @param isDialog  the boolean value which specify the type of template
+   * @param nodeTypeName  specify the name of node type
+   * @param repository  repository value
+   * @return  the template path
+   * @throws Exception
+   */
+  public String getTemplatePathByAnonymous(boolean isDialog, String nodeTypeName, String repository) throws Exception;
+  
+  /**
+   * Return the template by user
+   * @param isDialog  the boolean value which specify the type of template
+   * @param nodeTypeName  specify the name of node type
+   * @param userName  the user name
+   * @param repository  repository value
+   * @return  the template path
+   * @throws Exception
+   */  
   public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName, String repository) throws Exception ;
   public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
     

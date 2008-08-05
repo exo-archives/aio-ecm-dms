@@ -99,6 +99,9 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     try{
+      if(SessionsUtils.isAnonim()) {
+        return templateService.getTemplatePathByAnonymous(false, getNodeType(), repository);
+      }
       return templateService.getTemplatePathByUser(false, getNodeType(), userName, repository) ;
     }catch(Exception e) {
       e.printStackTrace() ;
