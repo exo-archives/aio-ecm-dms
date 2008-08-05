@@ -77,10 +77,10 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
    
   }
 
-  public int getNotificationType(Node documentNode, String userName, SessionProvider sessionProvider) throws Exception {
+  public int getNotificationType(Node documentNode, String userName) throws Exception {
     if (!documentNode.isNodeType(EXO_WATCHABLE_MIXIN)) { return -1; }        
     boolean notifyByEmail = checkNotifyTypeOfWatcher(documentNode, userName, EMAIL_WATCHERS_PROP);        
-    boolean notifyByRss = checkNotifyTypeOfWatcher(documentNode,userName,RSS_WATCHERS_PROP) ;    
+    boolean notifyByRss = checkNotifyTypeOfWatcher(documentNode,userName, RSS_WATCHERS_PROP) ;    
     if (notifyByEmail && notifyByRss) return FULL_NOTIFICATION ;
     if (notifyByEmail) return NOTIFICATION_BY_EMAIL ;
     if (notifyByRss) return NOTIFICATION_BY_RSS ;
@@ -144,6 +144,18 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     }
   }
   
+  /**
+   * This method will observes the specify node by giving the following param : listener
+   * node, sessionProvider
+   * Its add an eventlistener to this node to observes anything that changes to this node
+   * @param node              Specify the node to observe
+   * @param listener          The object of EventListener
+   * @param sessionProvider   The sessionProvider object is userd to managed Sessions
+   * @see                     EventListener
+   * @see                     Node
+   * @see                     SessionProvider
+   * @throws Exception
+   */
   private void observeNode(Node node, EventListener listener, SessionProvider sessionProvider) throws Exception {
     ManageableRepository manageRepo = (ManageableRepository)node.getSession().getRepository();    
     String workspace = manageRepo.getConfiguration().getDefaultWorkspaceName();    

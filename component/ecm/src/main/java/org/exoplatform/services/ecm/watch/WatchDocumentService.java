@@ -28,13 +28,51 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  * Jun 2, 2008  
  */
 public interface WatchDocumentService {
-  final public int NOTIFICATION_BY_EMAIL = 1 ;
-  final public int NOTIFICATION_BY_RSS = 2 ;
-  final public int FULL_NOTIFICATION = 0 ;
+  final public int NOTIFICATION_BY_EMAIL = 1;
+  final public int NOTIFICATION_BY_RSS = 2;
+  final public int FULL_NOTIFICATION = 0;
   
-  public void watchDocument(Node documentNode, String userName, int notifyType, SessionProvider sessionProvider) throws Exception ;
+  /**
+   * Watching the document that is specified by the node by giving a userName, notifyType and
+   * sessionProvider object
+   * <p>If the document is watching, all thing that changes to it's property will be notified 
+   * to user specified by the userName
+   * @param documentNode      Specify the document for watching
+   * @param userName          The username of current user is votting. It can't be <code>null<code>
+   * @param notifyType        Type of notification. Its can be 0, 1 or 2
+   * @param sessionProvider   The sessionProvider object is userd to managed Sessions
+   * @see                     SessionProvider
+   * @see                     Node
+   * @throws Exception
+   */
+  public void watchDocument(Node documentNode, String userName, int notifyType, SessionProvider sessionProvider) throws Exception;
   
-  public int getNotificationType(Node documentNode, String userName, SessionProvider sessionProvider) throws Exception ;
+  /**
+   * This method will gets the type of notification for the specify document
+   * <p>If that document is not a exo:watchable document, the value return is -1
+   * If notification is notified by email, the value return is 1 
+   * If notification is notified by rss, the value return is 2
+   * If notification is notified by rss and email, the value return is 0
+   * @param documentNode      Specify the document for watching
+   * @param userName          The username of current user is votting. It can't be <code>null<code>
+   * @see                     Node      
+   * @return                  0, 1, 2 or -1
+   * @throws Exception
+   */
+  public int getNotificationType(Node documentNode, String userName) throws Exception;
   
-  public void unwatchDocument(Node documentNode, String userName, int notificationType, SessionProvider sessionProvider) throws Exception ;   
+  /**
+   * UnWatching the document that is specified by the node by giving a userName, notifyType and
+   * sessionProvider object
+   * <p>If the document is unwatching, all thing that changes to it's property will not be notified 
+   * to user specified by the userName
+   * @param documentNode      Specify the document for watching
+   * @param userName          The username of current user is votting. It can't be <code>null<code>
+   * @param notifyType        Type of notification. Its can be 0, 1 or 2
+   * @param sessionProvider   The sessionProvider object is userd to managed Sessions
+   * @see                     SessionProvider
+   * @see                     Node
+   * @throws Exception
+   */
+  public void unwatchDocument(Node documentNode, String userName, int notificationType, SessionProvider sessionProvider) throws Exception;   
 }
