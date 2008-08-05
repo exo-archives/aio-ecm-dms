@@ -22,8 +22,10 @@ import java.util.List;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
@@ -307,6 +309,27 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     session.logout();
     return templates;
   }
+  
+  public String getTemplatePathByAnonymous(boolean isDialog, String nodeTypeName, String repository) throws Exception {
+    Session session = getSession(repository);
+    String type = DIALOGS;
+    if (!isDialog)
+      type = VIEWS;
+    Node homeNode = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node nodeTypeNode = homeNode.getNode(nodeTypeName);
+    NodeIterator templateIter = nodeTypeNode.getNode(type).getNodes();
+    while (templateIter.hasNext()) {
+      Node node = templateIter.nextNode();
+      Value[] roles = node.getProperty(EXO_ROLES_PROP).getValues();
+      if(hasPublicTemplate(roles)) {
+        String templatePath = node.getPath() ;
+        session.logout();
+        return templatePath ;
+      }
+    }
+    session.logout();
+    return null;
+  }
 
   private Session getSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
@@ -335,6 +358,14 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       if(identity.isMemberOf(membershipEntry)) {
         return true ;
       }
+    }
+    return false ;
+  }
+  
+  private boolean hasPublicTemplate(Value[] roles) throws Exception {
+    for (int i = 0; i < roles.length; i++) {
+      String role = roles[i].getString();
+      if("*".equalsIgnoreCase(role)) return true ;
     }
     return false ;
   }

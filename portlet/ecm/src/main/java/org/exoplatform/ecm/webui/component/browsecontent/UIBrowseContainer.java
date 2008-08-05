@@ -187,7 +187,6 @@ public class UIBrowseContainer extends UIContainer {
       setSelectedTabPath(null) ;
     } else {
       setSelectedTabPath(selectNode.getPath()) ;
-//      setCurrentNodePath(selectNode.getParent().getPath()) ;
       setCurrentNodePath(selectNode.getPath()) ;     
       setPageIterator(getSubDocumentList(getSelectedTab())) ;
     }
@@ -365,12 +364,7 @@ public class UIBrowseContainer extends UIContainer {
     String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"") ;
     String workspace = getWorkSpace() ;
     String repository = getRepository();
-    SessionProvider sessionProvider = null ;
-    //TODO: should use AnonimProvider when jcr team fix for tag version
-    if(SessionsUtils.isAnonim()) sessionProvider = getSystemProvider() ;
-    else sessionProvider = getSessionProvider();
-    
-    return queryService.execute(queryPath, workspace, repository, sessionProvider);
+    return queryService.execute(queryPath, workspace, repository, getSystemProvider());
   }
   
   public boolean nodeIsLocked(Node node) throws Exception {
@@ -607,12 +601,10 @@ public class UIBrowseContainer extends UIContainer {
     ManageableRepository manageableRepository = getRepositoryService().getRepository(getRepository()) ;
     if(categoryPath.startsWith("/jcr:system")) {         
       session = getSystemProvider().getSession(workspace,manageableRepository) ;
-    }else {
+    } else {
       if(SessionsUtils.isAnonim()) {
-        //TODO Anonim Session
-        //session = getAnonimProvider().getSession(workspace,manageableRepository) ;
-        session = getSystemProvider().getSession(workspace,manageableRepository) ;
-      }else {
+        session = getAnonimProvider().getSession(workspace,manageableRepository) ;
+      } else {
         session = getSessionProvider().getSession(workspace,manageableRepository) ; 
       }
     }
@@ -627,18 +619,16 @@ public class UIBrowseContainer extends UIContainer {
       session = getSystemProvider().getSession(workspace,manageableRepository) ;
     } else {
       if(SessionsUtils.isAnonim()) {
-        //TODO Anonim Session - Failed if we use AnonimProvider
-//        session = getAnonimProvider().getSession(workspace,manageableRepository) ;
-        session = getSystemProvider().getSession(workspace,manageableRepository) ;
+        session = getAnonimProvider().getSession(workspace,manageableRepository) ;
       } else {
-        //TODO Check with login session
-        session = getSystemProvider().getSession(workspace,manageableRepository) ; 
+        session = getSessionProvider().getSession(workspace,manageableRepository) ; 
       }
     }
     return session ;
   }
   
   public SessionProvider getSessionProvider() { return SessionsUtils.getSessionProvider() ; }
+  
   @SuppressWarnings("unchecked")
   public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
     List<Node> subDocumentList = new ArrayList<Node>() ;
@@ -1118,7 +1108,6 @@ public class UIBrowseContainer extends UIContainer {
     }
     return false ;
   }  
-//  protected void setRootNode(Node node) { this.rootNode_ = node ; }
   
   protected void setRootPath(String rootPath) { rootPath_ = rootPath ; }
   
