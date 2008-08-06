@@ -116,9 +116,6 @@
 
 /***********************************************************************/
 
-
-
-
 .UIDocumentFormController .UISelectDocumentForm {
   padding-bottom: 10px;
 }
@@ -157,25 +154,6 @@
 
 .EditFormController .UIFCKEditor {
 	width: auto;
-}
-
-.UIHorizontalTabs .CenterHorizontalTabs {
-	background: none;
-	height: 24px;
-	overflow-y:hidden;
-	padding: 0 6px;
-}
-
-.UITabPane .UITabContentContainer {
-	background:white none repeat scroll 0 0;
-	border:#AEAEAE solid 1px;
-	padding-top:1px;
-}
-
-.UITabPane .UITabContentContainer .UITabContent {
-	background:#F7F7F7 none repeat scroll 0 0;
-	border-color:white solid 1px;
-	padding:15px 7px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {

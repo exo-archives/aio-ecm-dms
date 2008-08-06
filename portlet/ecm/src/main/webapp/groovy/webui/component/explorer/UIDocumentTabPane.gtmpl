@@ -5,6 +5,7 @@
 <%
   if(uicomponent.isShowViewFile() && !uicomponent.isJcrEnable()) {
 %>
+<div class="UIResizableBlock">
 	<div class="UITabPane" id="$uicomponent.id">
 	  <div class="TabPaneContent">
 	    <div class="WorkingAreaWithHelp">
@@ -49,6 +50,7 @@
 	    </div>  
 	  </div>  
 	</div>  
+</div>
 <%} else { %>
   <div id="$uicomponent.id">
 <%

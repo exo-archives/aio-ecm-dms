@@ -20,6 +20,11 @@
 	width: 100%;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UIResizableBlock {
+	height: 320px;
+	overflow: auto;
+}
+
 .UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator .PageIteratorContainer {
 	float: none;
 }
@@ -82,6 +87,7 @@
 .UIJCRExplorerPortlet .UIListView  {
 	border: solid 1px white;
 	border-top: none;
+	width: 99%;
 }
 
 .UIJCRExplorerPortlet #UIDocumentWithTree .UIListView  {

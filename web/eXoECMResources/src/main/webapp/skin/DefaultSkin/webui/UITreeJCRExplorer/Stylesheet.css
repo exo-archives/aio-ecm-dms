@@ -17,15 +17,11 @@
   margin-left: 240px;
 }
 
-.UIJCRBrowser {
-	border: 1px solid red;
-}
-
 .UITreeList table {
 	*width: 94%;
 }
 
-.UITreeList table .Icon16x16{
+.UITreeList table .Icon16x16 {
 	float: none;
 	margin: 5px;
 }
