@@ -1,0 +1,35 @@
+==============================================
+	eXo ECM 2.0.2 release notes
+==============================================
+
+- Introduction
+	eXo ECM (Enterprise Content Management) is a solution that values your operational productivity and helps your organization make
+  better decisions faster at the right moment by managing all forms of content and optimizing your business processes.
+  It allows you to transform unstructured content to structured content through all the document processes that are capturing, managing, 
+	storing, preserving and delivering documents while securely distributing it.
+  Furthermore, thanks to an innovative page layout, only content that need to be updated is reloaded, increasing eXo ECM performance.
+
+- System Requirements
+   +) Web Browser: IE6, IE7, FF2, FF3, Safari. Best for Frirefox 2 and upgrading to Firefox 3
+   +) JVM: version 1.5.0_xx only
+   +) Application Server : Tomcat, JBoss, Jonas, Websphere
+   +) Building Tools: Maven 2.0.6 and up
+
+- Complete list of issues fixed in eXo ECM 2.0.2
+	+) Bug
+		 * Blocker
+			 - ECM-2374	  Exception when managing the same workflow task in two Portal sessions
+
+		 * Major
+			 - ECM-2304		modifications not kept when edit a reference field in edit document window
+			 - ECM-2313 	Nothing happen when delete workspace has the same name with deleted workspaces
+			 - ECM-2346 	[Unknown error] when do simple search with some special characters
+			 
+			* Minor
+			 - ECM-2253 	Error in [Select user] form when add permission for user to node
+- Other resources and links
+     Company site        http://www.exoplatform.com
+     Community JIRA      http://jira.exoplatform.org
+     Comminity site      http://www.exoplatform.org
+     Developers wiki     http://wiki.exoplatform.org
+     Documentation       http://docs.exoplatform.org 
