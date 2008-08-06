@@ -41,8 +41,8 @@
 		}
 	</style>
 </head>
-<div style="text-align: left; margin: 5px 8px;" id="$uicomponent.id">
-	<div>
+<div class="UIResizableBlock" id="$uicomponent.id">
+	<div style="padding: 8px">
 		<div class="ContentPodcast">
 			<% def originalNode = uicomponent.getOriginalNode(); %>
 			<span class="text"><%=_ctx.appRes("Podcast.view.label.podcast")%>: <span>

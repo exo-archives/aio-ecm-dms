@@ -93,7 +93,7 @@
   }
   
 %>
-<div class="FileContent">
+<div class="FileContent UIResizableBlock">
 	<%if(mimeType.equals("text/html")) { 
 	  def rcontext = _ctx.getRequestContext() ;
 		rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');

@@ -7,7 +7,7 @@
 %>
 	<style>
 		.WorkSample {
-			margin: 8xp 0px;
+			padding: 8px;
 		}
 		
 		label.text { 
@@ -59,7 +59,7 @@
 	  }
 		
 	</style>
-<div style="text-align: left; margin: 5px;" id="$uicomponent.id">
+<div class="UIResizableBlock" id="$uicomponent.id">
 	<div class="WorkSample">
 		<div class="SampleBG">
 				<label class="text"><%=_ctx.appRes("Sample.view.label.node-name")%>: </label>
