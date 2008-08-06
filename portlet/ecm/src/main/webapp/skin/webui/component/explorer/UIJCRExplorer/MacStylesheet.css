@@ -50,6 +50,11 @@
 	width: 100%;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UIResizableBlock {
+	height: 320px;
+	overflow: auto;
+}
+
 .UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator {
 	width: 90%;
 }

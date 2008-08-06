@@ -93,140 +93,142 @@
   }
   
 %>
-<div class="FileContent">
-	<%if(mimeType.equals("text/html")) { 
-	  def rcontext = _ctx.getRequestContext() ;
-		rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');
-	%>
-	
-	<div class="UITabPane">
-	  <div class="TabPaneContent">
-	    <div class="WorkingAreaWithHelp">
-	      <div class="UIHorizontalTabs">
-	        <div class="LeftHorizontalTabs">
-		     	  <div class="RightHorizontalTabs">
-		     	    <div class="CenterHorizontalTabs">
-				        <div class="TabsContainer">
-				         
-				            <div class="UITab NormalTabStyle">
-				              <div class="SelectedTab">
-				                <div class="LeftTab">
-				                  <div class="RightTab">                
-				                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)"><%=_ctx.appRes("File.view.label.htmlview")%></div>
-				                  </div>
-				                </div>
-				              </div>
-				            </div> 
-				            
-				            <div class="UITab NormalTabStyle">
-				              <div class="NormalTab">
-				                <div class="LeftTab">
-				                  <div class="RightTab">                
-				                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)"><%=_ctx.appRes("File.view.label.plaintextview")%></div>
-				                  </div>
-				                </div>
-				              </div>
-				            </div>   
-				                         
-				        </div>
-				      </div>
-				    </div>
-				  </div>
-	      </div>
-	      <div style="clear:left;"><span></span></div>
-	      <div class="UITabContentContainer">
-	        <div class="UITabContent" style="display: block;"> 
-		        <div class="NavigationContainer">       
-	    				<div class="TopTitle">$originalNode.name</div>
-			        <%
-			        	if(contentNode.hasProperty("jcr:data")){
-			        	  String iframeId = uicomponent.getId() + "ifame" ;
-			        	  rcontext.getJavascriptManager().addCustomizedOnLoadScript("eXo.ecm.ECMUtils.replaceToIframe('$iframeId');");
-			        %>
-			        	<div style="text-align: center">
-			        	  <textarea id="<%=iframeId%>"><%=contentNode.getProperty("jcr:data").getString()%></textarea> 
-			        	</div>
+<div class="UIResizableBlock">
+	<div class="FileContent">
+		<%if(mimeType.equals("text/html")) { 
+		  def rcontext = _ctx.getRequestContext() ;
+			rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');
+		%>
+		
+		<div class="UITabPane">
+		  <div class="TabPaneContent">
+		    <div class="WorkingAreaWithHelp">
+		      <div class="UIHorizontalTabs">
+		        <div class="LeftHorizontalTabs">
+			     	  <div class="RightHorizontalTabs">
+			     	    <div class="CenterHorizontalTabs">
+					        <div class="TabsContainer">
+					         
+					            <div class="UITab NormalTabStyle">
+					              <div class="SelectedTab">
+					                <div class="LeftTab">
+					                  <div class="RightTab">                
+					                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)"><%=_ctx.appRes("File.view.label.htmlview")%></div>
+					                  </div>
+					                </div>
+					              </div>
+					            </div> 
+					            
+					            <div class="UITab NormalTabStyle">
+					              <div class="NormalTab">
+					                <div class="LeftTab">
+					                  <div class="RightTab">                
+					                    <div class="MiddleTab" onClick="eXo.webui.UIHorizontalTabs.displayTabContent(this)"><%=_ctx.appRes("File.view.label.plaintextview")%></div>
+					                  </div>
+					                </div>
+					              </div>
+					            </div>   
+					                         
+					        </div>
+					      </div>
+					    </div>
+					  </div>
+		      </div>
+		      <div style="clear:left;"><span></span></div>
+		      <div class="UITabContentContainer">
+		        <div class="UITabContent" style="display: block;"> 
+			        <div class="NavigationContainer">       
+		    				<div class="TopTitle">$originalNode.name</div>
+				        <%
+				        	if(contentNode.hasProperty("jcr:data")){
+				        	  String iframeId = uicomponent.getId() + "ifame" ;
+				        	  rcontext.getJavascriptManager().addCustomizedOnLoadScript("eXo.ecm.ECMUtils.replaceToIframe('$iframeId');");
+				        %>
+				        	<div style="text-align: center">
+				        	  <textarea id="<%=iframeId%>"><%=contentNode.getProperty("jcr:data").getString()%></textarea> 
+				        	</div>
+				        <%}%>
+					    </div>   
+		        </div>
+		        <div class="UITabContent" style="display: none;"> 
+		        	<div class="NavigationContainer">       
+	    					<div class="TopTitle">$originalNode.name</div>
+			        	<div class="Content">
+			        		<div class="TextContent">
+						        <%
+						        	if(contentNode.hasProperty("jcr:data")) {
+						        		println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
+						        	}
+						        %>
+				        	</div>
+			        	</div>				     
+					  	</div>   
+		        </div>
+		      </div>  
+		    </div>  
+		  </div>  
+		</div>  
+		<%} else {%>
+		  <div class="NavigationContainer">       
+		    <div class="TopTitle">$originalNode.name</div>
+		    <div class="Content">
+		    	<div class="TextContent">
+			      <%        
+			        if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
+			          if(getFileSize(contentNode) < 1024) {
+			            println uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()); 
+			          } else {
+			       %>
+			            <div style="text-align:center; font-style:italic">
+								    <%=_ctx.appRes("File.view.label.file-size-too-big")%>
+								  </div>
+			       <%
+			          }
+			        } else {
+			        	if(mimeType.startsWith("image")) {
+			        	//prevent ajax cache image
+			        	String rndString = String.valueOf(new Date().getTime());
+			        %> 	
+				    		<div class="ContentDetail">
+				    			<image src="/${uicomponent.getPortalName()}/rest/jcr/${uicomponent.getRepository()}/${uicomponent.getWorkspaceName()}/${fileLangNode.getPath()}"/>              
+			          </div>
+			        <%}else {%> 
+								<div style="text-align:center; font-style:italic">
+								  <%=_ctx.appRes("File.view.label.not-viewable")%>
+								</div>        
 			        <%}%>
-				    </div>   
-	        </div>
-	        <div class="UITabContent" style="display: none;"> 
-	        	<div class="NavigationContainer">       
-    					<div class="TopTitle">$originalNode.name</div>
-		        	<div class="Content">
-		        		<div class="TextContent">
-					        <%
-					        	if(contentNode.hasProperty("jcr:data")) {
-					        		println "<pre>" + uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()) + "</pre>"; 
-					        	}
-					        %>
-			        	</div>
-		        	</div>				     
-				  	</div>   
-	        </div>
-	      </div>  
-	    </div>  
-	  </div>  
-	</div>  
-	<%} else {%>
-	  <div class="NavigationContainer">       
-	    <div class="TopTitle">$originalNode.name</div>
-	    <div class="Content">
-	    	<div class="TextContent">
-		      <%        
-		        if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
-		          if(getFileSize(contentNode) < 1024) {
-		            println uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()); 
-		          } else {
-		       %>
-		            <div style="text-align:center; font-style:italic">
-							    <%=_ctx.appRes("File.view.label.file-size-too-big")%>
-							  </div>
-		       <%
-		          }
-		        } else {
-		        	if(mimeType.startsWith("image")) {
-		        	//prevent ajax cache image
-		        	String rndString = String.valueOf(new Date().getTime());
-		        %> 	
-			    		<div class="ContentDetail">			    		                
-                <image src="/${uicomponent.getPortalName()}/rest/jcr/${uicomponent.getRepository()}/${uicomponent.getWorkspaceName()}/${fileLangNode.getPath()}"/>
-		          </div>
-		        <%}else {%> 
-							<div style="text-align:center; font-style:italic">
-							  <%=_ctx.appRes("File.view.label.not-viewable")%>
-							</div>        
-		        <%}%>
-		      <%}%>     
-		     </div>
-	    </div>  
-	  </div> 
-  <%}%>
-  <div class="UIAction">                                          
-	  <table align="center" class="ActionContainer">  
-	  	<tr>
-	  		<td align="center">
-		      <a href="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('<%=uicomponent.getWebDAVServerPrefix()%>','<%=uicomponent.getPortalName()%>','<%=uicomponent.getRepository()%>','<%=uicomponent.getWorkspaceName()%>','<%=formatNodeName(fileLangNode.getPath())%>','<%=mimeType%>')" class="ActionButton LightBlueStyle">
-		        <div class="ButtonLeft">
-		          <div class="ButtonRight">
-		            <div class="ButtonMiddle">
-		              <%=_ctx.appRes("File.view.label.webDAV")%>
-		            </div>
-		          </div>
-		        </div>
-		      </a>
-		      <a href="<%=uicomponent.getDownloadLink(fileLangNode)%>" class="ActionButton LightBlueStyle">
-		        <div class="ButtonLeft">
-		          <div class="ButtonRight">
-		            <div class="ButtonMiddle" title="<%=_ctx.appRes("File.view.label.download")%>">
-		              <%=_ctx.appRes("File.view.label.download")%>
-		            </div>
-		          </div>
-		        </div>
-		      </a>
-	  		</td>
-	  	</tr>          
-	  </table>
-	</div>                  
-  <div><% _ctx.include(uicomponent.getViewTemplate("exo:vote", "view1")); %></div>
-  <div><% _ctx.include(uicomponent.getViewTemplate("exo:comment", "view1")); %></div>
+			      <%}%>     
+			     </div>
+		    </div>  
+		  </div> 
+	  <%}%>
+	  <div class="UIAction">                                          
+		  <table align="center" class="ActionContainer">  
+		  	<tr>
+		  		<td align="center">
+			      <a href="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('<%=uicomponent.getWebDAVServerPrefix()%>','<%=uicomponent.getPortalName()%>','<%=uicomponent.getRepository()%>','<%=uicomponent.getWorkspaceName()%>','<%=formatNodeName(fileLangNode.getPath())%>','<%=mimeType%>')" class="ActionButton LightBlueStyle">
+			        <div class="ButtonLeft">
+			          <div class="ButtonRight">
+			            <div class="ButtonMiddle">
+			              <%=_ctx.appRes("File.view.label.webDAV")%>
+			            </div>
+			          </div>
+			        </div>
+			      </a>
+			      <a href="<%=uicomponent.getDownloadLink(fileLangNode)%>" class="ActionButton LightBlueStyle">
+			        <div class="ButtonLeft">
+			          <div class="ButtonRight">
+			            <div class="ButtonMiddle" title="<%=_ctx.appRes("File.view.label.download")%>">
+			              <%=_ctx.appRes("File.view.label.download")%>
+			            </div>
+			          </div>
+			        </div>
+			      </a>
+		  		</td>
+		  	</tr>          
+		  </table>
+		</div>                  
+	  <div><% _ctx.include(uicomponent.getViewTemplate("exo:vote", "view1")); %></div>
+	  <div><% _ctx.include(uicomponent.getViewTemplate("exo:comment", "view1")); %></div>
+	</div>
 </div>
