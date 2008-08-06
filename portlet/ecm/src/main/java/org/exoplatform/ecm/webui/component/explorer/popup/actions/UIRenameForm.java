@@ -189,7 +189,6 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
        
         return ;     
       } catch(LockException lockex){
-        lockex.printStackTrace() ;
         Object[] agrs = {uiRenameForm.renameNode_.getPrimaryNodeType().getName()};
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.lock-exception", agrs, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());

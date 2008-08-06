@@ -178,6 +178,11 @@ public class WorkflowServiceContainerImpl implements
     }
   }
 
+  public void closeSession() {
+    JbpmSession s = (JbpmSession) threadLocal_.get();
+    this.closeSession(s);
+  }
+  
   public void closeSession(JbpmSession session) {
     if (session == null)
       return;
@@ -188,18 +193,9 @@ public class WorkflowServiceContainerImpl implements
     threadLocal_.set(null);
   }
 
-  public void closeSession() {
-    JbpmSession s = (JbpmSession) threadLocal_.get();
-    if (s != null)
-      s.commitTransactionAndClose();
-    threadLocal_.set(null);
-  }
-
   public void rollback() {
     JbpmSession s = (JbpmSession) threadLocal_.get();
-    if (s != null)
-      s.rollbackTransactionAndClose();
-    threadLocal_.set(null);
+    this.rollback(s);
   }
 
   public void rollback(JbpmSession session) {
