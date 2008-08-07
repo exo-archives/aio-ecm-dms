@@ -43,7 +43,7 @@
 		}
 		
 		.HeaderSampleBG {
-			background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x; 
+			background: url('/eXoECMResources/skin/images/event/EventFrameBG.gif') repeat-x; 
 		  margin-bottom: 2px;
 		  padding: 0px 5px 0px 5px; 
 		  height: 18px;

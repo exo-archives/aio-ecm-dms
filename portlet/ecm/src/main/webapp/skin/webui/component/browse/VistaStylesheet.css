@@ -390,21 +390,21 @@
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
-  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
+  background: url('/eXoECMResources/skin/images/vote/SmallGreyStar.gif');
 }
 
 .UIBrowseContentPortlet .UIVoteForm .OptionsContainer .RatedVote {
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
-  background: url('/ecm/skin/images/vote/SmallGreyStar.gif');
+  background: url('/eXoECMResources/skin/images/vote/SmallGreyStar.gif');
 }
 
 .UIBrowseContentPortlet .UIVoteForm .OptionsContainer .OverVote {
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
-  background: url('/ecm/skin/images/vote/SmallYellowStar.gif');
+  background: url('/eXoECMResources/skin/images/vote/SmallYellowStar.gif');
 }
 
 /*############################## -- End UIVoteForm   -- ##############################*/
@@ -498,19 +498,19 @@
 }
 			
 .UIBrowseContentPortlet .UIArticle .ArticleTLDecorator {
-	background: url('/ecm/skin/images/article/TopLeftArticle51x100.gif') no-repeat left;
+	background: url('/eXoECMResources/skin/images/article/TopLeftArticle51x100.gif') no-repeat left;
 	padding-left: 51px;
 	height: 100px;
 }
 		
 .UIBrowseContentPortlet .UIArticle .ArticleTRDecorator {
-	background: url('/ecm/skin/images/article/TopRightArticle154x100.gif') no-repeat right ;
+	background: url('/eXoECMResources/skin/images/article/TopRightArticle154x100.gif') no-repeat right ;
 	padding-right:154px;
 	height: 100px;
 }
 		
 .UIBrowseContentPortlet .UIArticle .ArticleTCDecorator {
-	background: url('/ecm/skin/images/article/TopCentertArticle1x100.gif') repeat-x ;
+	background: url('/eXoECMResources/skin/images/article/TopCentertArticle1x100.gif') repeat-x ;
 	height: 100px;
 }
 		
@@ -521,7 +521,7 @@
 }
 	
 .UIBrowseContentPortlet .UIArticle .ArticleMLDecorator {
-	background: url('/ecm/skin/images/article/MiddleLeftArticle3x1.gif') repeat-y left;
+	background: url('/eXoECMResources/skin/images/article/MiddleLeftArticle3x1.gif') repeat-y left;
 	padding-left: 3px ;	
 }
 		
@@ -530,25 +530,25 @@
 }
 		
 .UIBrowseContentPortlet .UIArticle .ArticleMRDecorator {
-	background: url('/ecm/skin/images/article/MiddleRightArticle10x1.gif') repeat-y right;
+	background: url('/eXoECMResources/skin/images/article/MiddleRightArticle10x1.gif') repeat-y right;
 	padding-right: 10px ;	
 }
 		
 .UIBrowseContentPortlet .UIArticle .ArticleBLDecorator {
-	background: url('/ecm/skin/images/article/BottomLeftArticle3x8.gif') no-repeat left ;
+	background: url('/eXoECMResources/skin/images/article/BottomLeftArticle3x8.gif') no-repeat left ;
 	padding-left: 3px;
 	height: 8px;
 	line-height: 8px;
 }
 		
 .UIBrowseContentPortlet .UIArticle .ArticleBCDecorator {
-	background: url('/ecm/skin/images/article/BottomCentertArticle1x8.gif') repeat-x ;
+	background: url('/eXoECMResources/skin/images/article/BottomCentertArticle1x8.gif') repeat-x ;
 	height: 8px;
 	line-height: 8px;
 }
 		
 .UIBrowseContentPortlet .UIArticle .ArticleBRDecorator {
-	background: url('/ecm/skin/images/article/BottomRightArticle10x8.gif') no-repeat right ;
+	background: url('/eXoECMResources/skin/images/article/BottomRightArticle10x8.gif') no-repeat right ;
 	padding-right: 10px ;	
 	height: 8px;
 	line-height: 8px;
@@ -560,19 +560,19 @@
 }
 			
 .UIBrowseContentPortlet .UIArticle .ArticleFrame .TopLeftArticleFrame {
-	background: url('/ecm/skin/images/article/TopLeftArticleFrame9x16.gif') no-repeat left;
+	background: url('/eXoECMResources/skin/images/article/TopLeftArticleFrame9x16.gif') no-repeat left;
 	padding-left: 9px;
 	height: 16px;
 }
 		
 .UIBrowseContentPortlet .UIArticle .ArticleFrame .TopRightArtictleFrame {
-	background: url('/ecm/skin/images/article/TopRightArticleFrame2x16.gif') no-repeat right;
+	background: url('/eXoECMResources/skin/images/article/TopRightArticleFrame2x16.gif') no-repeat right;
 	padding-right: 2px;
 	height: 16px;
 }
 		
 .UIBrowseContentPortlet .UIArticle .ArticleFrame .TopCenterArticleFrame {
-	background: url('/ecm/skin/images/article/TopCenterArticleFrame1x16.gif') repeat-x ;
+	background: url('/eXoECMResources/skin/images/article/TopCenterArticleFrame1x16.gif') repeat-x ;
 	height: 16px;
 }
 		
@@ -603,19 +603,19 @@
 }
 		
 .UIBrowseContentPortlet .UIArticle .SummaryIcon {
-	background: url('/ecm/skin/images/article/SummaryIcon.gif') no-repeat;
+	background: url('/eXoECMResources/skin/images/article/SummaryIcon.gif') no-repeat;
 }
 		
 .UIBrowseContentPortlet .UIArticle .AttachmentsIcon {
-	background: url('/ecm/skin/images/article/AttachmentsIcon.gif') no-repeat;
+	background: url('/eXoECMResources/skin/images/article/AttachmentsIcon.gif') no-repeat;
 }
 		
 .UIBrowseContentPortlet .UIArticle .RatingIcon {
-	background: url('/ecm/skin/images/article/RatingInfo.gif') no-repeat;
+	background: url('/eXoECMResources/skin/images/article/RatingInfo.gif') no-repeat;
 }
 		
 .UIBrowseContentPortlet .UIArticle .AttachmentsContaienr .AttachmentsContentIcon {
-	background: url('/ecm/skin/images/article/AttachmentsIcon.gif') no-repeat;
+	background: url('/eXoECMResources/skin/images/article/AttachmentsIcon.gif') no-repeat;
 	width: 16px;
 	height: 16px;
 	margin: 0px 5px 0px 3px;
@@ -623,11 +623,11 @@
 }
 		
 .UIBrowseContentPortlet .UIArticle .ContentIcon {
-	background: url('/ecm/skin/images/article/ContentIcon.gif') no-repeat;
+	background: url('/eXoECMResources/skin/images/article/ContentIcon.gif') no-repeat;
 }
 		
 .UIBrowseContentPortlet .UIArticle .LinksIcon {
-	background: url('/ecm/skin/images/article/Links.gif') no-repeat;
+	background: url('/eXoECMResources/skin/images/article/Links.gif') no-repeat;
 }
 		
 .UIBrowseContentPortlet .UIArticle .FieldContent {
@@ -740,12 +740,12 @@
 .UIBrowseContentPortlet .FileContent .NavigationContainer {	
 	padding-bottom: 0px;
 	border: 1px solid #cbcbcb;
-	background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x top;
+	background: url('/eXoECMResources/skin/images/file/TitleBG1x21.gif') repeat-x top;
 	height: 100%;
 }
 	
 .UIBrowseContentPortlet .FileContent .TopTitle {	
-	background:transparent url(/ecm/skin/images/file/TitleBG1x21.gif) repeat-x ;
+	background:transparent url(/eXoECMResources/skin/images/file/TitleBG1x21.gif) repeat-x ;
 	padding-left: 10px;
 	height: 22px; line-height: 22px;
 	color: #058ee6; font-weight: bold; 
@@ -863,14 +863,14 @@
 }
 
 .UIBrowseContentPortlet .WorkSample .TitleBG {
-	background: transparent url(/ecm/skin/images/event/EventFrameBG.gif) repeat-x;
+	background: transparent url(/eXoECMResources/skin/images/event/EventFrameBG.gif) repeat-x;
 	height: 18px;
 	line-height: 18px;
 }
 
 		
 .UIBrowseContentPortlet .HeaderSampleBG {
-	background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x; 
+	background: url('/eXoECMResources/skin/images/event/EventFrameBG.gif') repeat-x; 
 	margin-bottom: 2px;
 	padding: 0px 5px 0px 5px; 
 	height: 18px;

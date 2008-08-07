@@ -319,11 +319,12 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
 	height: 18px;
-  background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x;
+  background: url('/eXoECMResources/skin/images/event/EventFrameBG.gif') repeat-x;
+  border: 1px solid red;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .HeaderBG {
-  background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x; 
+  background: url('/eXoECMResources/skin/images/event/EventFrameBG.gif') repeat-x; 
   margin-bottom: 1px;
   padding: 0px 5px 0px 5px; 
   height: 18px;

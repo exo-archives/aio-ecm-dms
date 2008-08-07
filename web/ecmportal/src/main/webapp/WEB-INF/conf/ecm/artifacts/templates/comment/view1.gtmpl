@@ -13,18 +13,18 @@
      .Comments .CommentBar .LeftCommentBar {
       height: 54px;
       padding-left: 5px;
-      background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -80px ;
+      background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat left -80px ;
     }
     
     .Comments .CommentBar .RightCommentBar {
     	padding-right: 5px;
     	height: 54px;    	
-      background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat right -80px;
+      background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat right -80px;
     }
     
     .Comments .CommentBar .MiddleCommentBar {    	
     	height: 54px;
-      background: url('/ecm/skin/images/article/Artitcle.gif') repeat-x left -134px;
+      background: url('/eXoECMResources/skin/images/article/Artitcle.gif') repeat-x left -134px;
       padding: 0px 3px;
     }
     
@@ -77,28 +77,28 @@
     .Comments .CommentBox .CommentBoxTopLeft {
 			height: 12px;
     	padding-left:27px;  	
-      background: url('/ecm/skin/images/article/CommentBoxTL27x12.gif') no-repeat left bottom;
+      background: url('/eXoECMResources/skin/images/article/CommentBoxTL27x12.gif') no-repeat left bottom;
     }
     
     .Comments .CommentBox .CommentBoxTopRight {
 			height: 12px;
       padding-right: 3px;
-      background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat right -189px;
+      background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat right -189px;
     }
     
     .Comments .CommentBox .CommentBoxTopCenter {
       height: 12px;
-      background: url('/ecm/skin/images/article/Artitcle.gif') repeat-x left -201px;
+      background: url('/eXoECMResources/skin/images/article/Artitcle.gif') repeat-x left -201px;
     }
    
     .Comments .CommentBox .CommentBoxMiddleLeft {
     	padding-left: 3px;
-      background: url('/ecm/skin/images/article/CommentBoxML3x1.gif') repeat-y left;
+      background: url('/eXoECMResources/skin/images/article/CommentBoxML3x1.gif') repeat-y left;
     }
     
     .Comments .CommentBox .CommentBoxMiddleRight {
     	padding-right:3px;
-      background: url('/ecm/skin/images/article/CommentBoxMR3x1.gif') repeat-y right;
+      background: url('/eXoECMResources/skin/images/article/CommentBoxMR3x1.gif') repeat-y right;
     }
     
     .Comments .CommentBox .CommentBoxCenterBG {
@@ -110,18 +110,18 @@
     .Comments .CommentBox .CommentBoxBottomLeft {
 			height: 3px;
 			padding-left: 3px;
-      background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -213px ;
+      background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat left -213px ;
     }
     
     .Comments .CommentBox .CommentBoxBottomRight {
 			height: 3px;
     	padding-right: 3px;	
-      background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat right -213px;
+      background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat right -213px;
     }
     
     .Comments .CommentBox .CommentBoxBottomCenter {    	
     	height: 3px;
-      background: url('/ecm/skin/images/article/Artitcle.gif') repeat-x left -216px ;
+      background: url('/eXoECMResources/skin/images/article/Artitcle.gif') repeat-x left -216px ;
     }
 	</style>
   <div class="Comments ShowHideContainer">
