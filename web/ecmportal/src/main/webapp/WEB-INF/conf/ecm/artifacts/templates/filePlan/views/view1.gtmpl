@@ -49,8 +49,6 @@
 	}
 	
   .UIDivInfo .UIHorizontalTabs .TabsContainer {
-		padding: 0px;
-		height: 23px;
 		overflow-y: hidden;
   }
   
@@ -169,11 +167,6 @@
 	        <div class="LeftHorizontalTabs">
 		     	  <div class="RightHorizontalTabs">
 		     	    <div class="CenterHorizontalTabs">
-					    <div class="NavigationButtonContainer">
-		                  <div title="Previous Tabs" class="NavigationIcon ScrollBackArrow16x16Icon">
-		                    <div title="More Tabs" class="NavigationIcon ScrollNextArrow16x16Icon"><span/></div>
-		                  </div>
-		                </div>
 				        <div class="TabsContainer">
 
 				          <div class="UITab NormalTabStyle">
@@ -265,9 +258,13 @@
 			                </div>
 			              </div>
 			            </div> 
-
-				    </div>
-					<div style="clear: right"><span style="display: none"></span></div>
+			            
+									<div class="NavigationButtonContainer">
+	                  <div title="Previous Tabs" class="NavigationIcon ScrollBackArrow16x16Icon">
+	                    <div title="More Tabs" class="NavigationIcon ScrollNextArrow16x16Icon"><span/></div>
+	                  </div>
+	                </div>
+				    		</div>
 
 				      </div>
 				    </div>
