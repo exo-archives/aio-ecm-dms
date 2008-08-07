@@ -106,7 +106,6 @@ public class RelationsServiceImpl implements RelationsService, Startable {
         }
         if (uuid2Remove == null) return;
       }
-      provider.close();
     }
     node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
     node.save() ;
@@ -147,8 +146,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
       vals.add(value2add);
       node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
       node.save() ;
-      session.save() ;
-      provider.close();
+      session.save() ;   
     }
   }
 
