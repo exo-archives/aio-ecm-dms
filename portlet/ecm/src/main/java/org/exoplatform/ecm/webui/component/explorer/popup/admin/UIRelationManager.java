@@ -38,21 +38,21 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UIRelationManager extends UIContainer implements UIPopupComponent {
 
-  final static public String[] ACTIONS = {"Close"} ;
+  final static public String[] ACTIONS = {"Close"};
   
   public UIRelationManager() throws Exception {
-    addChild(UIRelationsAddedList.class, null, null) ;
-    addChild(UIJCRBrowser.class, null, null).setRendered(false) ;
+    addChild(UIRelationsAddedList.class, null, null);
+    addChild(UIJCRBrowser.class, null, null).setRendered(false);
   }
   
-  public String[] getActions() { return ACTIONS ; }
+  public String[] getActions() { return ACTIONS; }
 
   static public class CloseActionListener extends EventListener<UIRelationManager> {
     public void execute(Event<UIRelationManager> event) throws Exception {
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.getCurrentNode().save() ;
-      uiExplorer.setIsHidePopup(false) ;
-      uiExplorer.cancelAction() ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+      uiExplorer.getCurrentNode().save();
+      uiExplorer.setIsHidePopup(false);
+      uiExplorer.cancelAction();
     }
   }
 

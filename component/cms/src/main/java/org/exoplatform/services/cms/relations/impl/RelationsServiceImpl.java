@@ -106,49 +106,48 @@ public class RelationsServiceImpl implements RelationsService, Startable {
         }
         if (uuid2Remove == null) return;
       }
-      provider.close();
     }
     node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
     node.save() ;
   }
 
-  public void addRelation(Node node, String relationPath,String workpace,String repository) throws Exception {
-    SessionProvider provider = SessionProvider.createSystemProvider() ;
-    Session session = getSession(repository,workpace,provider) ;
+  public void addRelation(Node node, String relationPath, String workpace, String repository) throws Exception {
+    SessionProvider provider = SessionProvider.createSystemProvider();
+    Session session = getSession(repository, workpace, provider);
     Node catNode = (Node) session.getItem(relationPath); 
-    if(!catNode.isNodeType("mix:referenceable")) {
+    if (!catNode.isNodeType("mix:referenceable")) {
       catNode.addMixin("mix:referenceable") ;
       catNode.save() ;
       session.save() ;
     }      
     Value value2add = session.getValueFactory().createValue(catNode);
-    if (!node.isNodeType(RELATION_MIXIN)) {
+    if (!node.isNodeType(RELATION_MIXIN)) {      
       node.addMixin(RELATION_MIXIN);    
       node.setProperty(RELATION_PROP, new Value[] {value2add});
       node.save() ;
       session.save() ;
-    } else {
+    } else {      
       List<Value> vals = new ArrayList<Value>();
       Value[] values = node.getProperty(RELATION_PROP).getValues();
       for (int i = 0; i < values.length; i++) {
         Value value = values[i];
         String uuid = value.getString();
         Node refNode = null ;
-        try {
-//          refNode = session.getNodeByUUID(uuid);
+        try {          
           refNode = getNodeByUUID(uuid, repository, provider) ;
         } catch(ItemNotFoundException ie) {
           removeRelation(node, relationPath, repository) ;
           continue ;
         }
-        if(refNode.getPath().equals(relationPath)) return;
+        if (refNode.getPath().equals(relationPath)) return;
         vals.add(value);
       }
       vals.add(value2add);
+      
       node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
+      
       node.save() ;
-      session.save() ;
-      provider.close();
+      session.save() ;     
     }
   }
 

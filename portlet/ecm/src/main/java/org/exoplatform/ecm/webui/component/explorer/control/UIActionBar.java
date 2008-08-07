@@ -869,52 +869,52 @@ public class UIActionBar extends UIForm {
   @SuppressWarnings("unchecked")
   static public class ManageRelationsActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
-      UIActionBar uiActionBar = event.getSource() ;
-      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class) ;
-      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class) ;
+      UIActionBar uiActionBar = event.getSource();
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(uiActionBar.isRootNode(currentNode)) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+      if (uiActionBar.isRootNode(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }      
-      if(!currentNode.isCheckedOut()) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+      if (!currentNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if (!Utils.isSetPropertyNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }               
-      if(uiExplorer.nodeIsLocked(currentNode)) {
-        Object[] arg = { currentNode.getPath() } ;
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+      if (uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }            
-      uiExplorer.setIsHidePopup(true) ;
-      RepositoryService repoService = uiActionBar.getApplicationComponent(RepositoryService.class) ;
+      uiExplorer.setIsHidePopup(true);
+      RepositoryService repoService = uiActionBar.getApplicationComponent(RepositoryService.class);
       UIRelationManager uiRelationManager = 
-        uiExplorer.createUIComponent(UIRelationManager.class, null, null) ;
+        uiExplorer.createUIComponent(UIRelationManager.class, null, null);
       RelationsService relateService = 
-        uiActionBar.getApplicationComponent(RelationsService.class) ;
+        uiActionBar.getApplicationComponent(RelationsService.class);
       UIRelationsAddedList uiRelateAddedList = 
-        uiRelationManager.getChild(UIRelationsAddedList.class) ;
+        uiRelationManager.getChild(UIRelationsAddedList.class);
       //TODO need renew here
       List<Node> relations = 
-        relateService.getRelations(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName(),SessionsUtils.getSessionProvider()) ;
-      uiRelateAddedList.updateGrid(relations) ;
-      String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-      UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class) ;
-      uiJCRBrowser.setSessionProvider(uiExplorer.getSessionProvider()) ;
+        relateService.getRelations(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName(), SessionsUtils.getSessionProvider());
+      uiRelateAddedList.updateGrid(relations);
+      String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+      UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class);
+      uiJCRBrowser.setSessionProvider(uiExplorer.getSessionProvider());
       TemplateService tservice = uiActionBar.getApplicationComponent(TemplateService.class) ;
       List<String> documentNodeType = tservice.getDocumentTemplates(repository) ;
       StringBuilder filters = new StringBuilder() ;
-      for(String document : documentNodeType) {
-        if(filters.length() > 0) filters.append(",") ;
+      for (String document : documentNodeType) {
+        if (filters.length() > 0) filters.append(",");
         filters.append(document) ;
       }
       String defaultWsName = 
