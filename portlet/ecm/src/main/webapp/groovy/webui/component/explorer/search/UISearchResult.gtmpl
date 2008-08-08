@@ -7,23 +7,94 @@
  */
 %>
 <% 
-  import org.exoplatform.ecm.utils.Utils ;
+  import org.exoplatform.ecm.utils.Utils;
+  import java.text.SimpleDateFormat;
 %>
 <% 
-  def resultList = uicomponent.getCurrentList() ; 
-  if(resultList == null) return ;
+  def resultList = uicomponent.getCurrentList(); 
+  if(resultList == null) return;
   long searchTime = uicomponent.getSearchTime()/1000;
   int resultSize = uicomponent.getUIPageIterator().getAvailable();  
-  def rcontext = _ctx.getRequestContext() ;
+  def rcontext = _ctx.getRequestContext();
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
+  SimpleDateFormat dateFormat = new SimpleDateFormat();
+	dateFormat.applyPattern("MM/dd/yyyy HH:mm:ss");
 %>
 <div class="UISearchResult" id="$uicomponent.id">
   <table class="UIGrid">
     <thead>
       <tr>
-        <th></th>
-  	    <th><%=_ctx.appRes("UISearchResult.header.name")%></th>
+        <th>
+  	    	<%
+  	    		if (uicomponent.iconType.equals("BlueUpArrow")) {
+  	    	%>
+	        	<a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("type"))%>" title="<%=_ctx.appRes("UISearchResult.title.typeASC")%>">
+		  	    	<%=_ctx.appRes("UISearchResult.header.type")%>
+	  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueUpArrow16x16Icon">
+	  	    	</a>
+  	    	<%
+  	    		} else if (uicomponent.iconType.equals("BlueDownArrow")) {
+  	    	%>
+  	    	<a href="<%=uicomponent.event("SortDESC", Utils.formatNodeName("type"))%>" title="<%=_ctx.appRes("UISearchResult.title.typeDESC")%>">
+	  	    	<%=_ctx.appRes("UISearchResult.header.type")%>
+  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueDownArrow16x16Icon">
+  	    	</a>
+  	    	<%
+  	    		} else {
+  	    	%>
+  	    		<a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("type"))%>" title="<%=_ctx.appRes("UISearchResult.title.typeASC")%>">
+		  	    	<%=_ctx.appRes("UISearchResult.header.type")%>	  		    		
+	  	    	</a>
+	  	    <% } %>
+        </th>
+  	    <th>
+  	    	<%
+  	    		if (uicomponent.iconName.equals("BlueUpArrow")) {
+  	    	%>
+	        	<a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("name"))%>" title="<%=_ctx.appRes("UISearchResult.title.nameASC")%>">
+		  	    	<%=_ctx.appRes("UISearchResult.header.name")%>
+	  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueUpArrow16x16Icon">
+	  	    	</a>
+  	    	<%
+  	    		} else if (uicomponent.iconName.equals("BlueDownArrow")) {
+  	    	%>
+  	    	<a href="<%=uicomponent.event("SortDESC", Utils.formatNodeName("name"))%>" title="<%=_ctx.appRes("UISearchResult.title.nameDESC")%>">
+	  	    	<%=_ctx.appRes("UISearchResult.header.name")%>
+  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueDownArrow16x16Icon">
+  	    	</a>
+  	    	<%
+  	    		} else {
+  	    	%>
+  	    		<a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("name"))%>" title="<%=_ctx.appRes("UISearchResult.title.nameASC")%>">
+		  	    	<%=_ctx.appRes("UISearchResult.header.name")%>	  		    		
+	  	    	</a>
+	  	    <% } %>  	      	    	
+  	    </th>
   	    <th><%=_ctx.appRes("UISearchResult.header.path")%></th>
+  	    <th>
+  	    	<%
+  	    		if (uicomponent.iconDate.equals("BlueUpArrow")) {
+  	    	%>
+	        	<a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("date"))%>" title="<%=_ctx.appRes("UISearchResult.title.datecreatedASC")%>">
+		  	    	<%=_ctx.appRes("UISearchResult.header.dateCreated")%>
+	  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueUpArrow16x16Icon">
+	  	    	</a>
+  	    	<%
+  	    		} else if (uicomponent.iconDate.equals("BlueDownArrow")) {
+  	    	%>
+  	    	<a href="<%=uicomponent.event("SortDESC", Utils.formatNodeName("date"))%>" title="<%=_ctx.appRes("UISearchResult.title.datecreatedDESC")%>">
+	  	    	<%=_ctx.appRes("UISearchResult.header.dateCreated")%>
+  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueDownArrow16x16Icon">
+  	    	</a>
+  	    	<%
+  	    		} else {
+  	    	%>
+  	    		<a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("date"))%>" title="<%=_ctx.appRes("UISearchResult.title.datecreatedASC")%>">
+		  	    	<%=_ctx.appRes("UISearchResult.header.dateCreated")%>	  		    		
+	  	    	</a>
+	  	    <% } %>   	    	  	    
+  	    </th>  	    
+  	    <th><%=_ctx.appRes("UISearchResult.header.score")%></th>  
   	    <th><%=_ctx.appRes("UISearchResult.header.action")%></th>
       </tr>
     </thead>
@@ -55,6 +126,12 @@
 	            //if (nodeType.contains("fileplan")) onClickCall = "eXo.ecm.UIJCRExplorer.loadViewNodeScroll();";
 	          %>
 	          <td><div class="Text" title="<%=node.getPath()%>"><%=nodePath%></div></td>
+	          <td>
+	          	<div class="Text">	          	
+	          		<%=dateFormat.format(node.getProperty("exo:dateCreated").getDate().getTime())%>
+	          	</div>
+	          </td>
+	          <td></td>    
 	          <td style="width:80px;">
 	            <a href="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>">
 	              <div class="View16x16Icon" style="margin-left:10px;float:left;"><span></span></div>
@@ -62,14 +139,14 @@
 	            <a href="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>">
 	              <div class="OpenFolder16x16Icon" style="margin-left:10px ;float:left; "><span></span></div>
 	            </a>
-	          </td>	                    
+	          </td>	          
           </tr>
     <%
         }
       } else {
     %>
       <tr class="EvenRow">
-        <td colspan="4" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UISearchResult.msg.empty")%></td>
+        <td colspan="6" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UISearchResult.msg.empty")%></td>
       </tr>
     <%}%>
     </tbody>

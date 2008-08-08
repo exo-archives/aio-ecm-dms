@@ -17,6 +17,9 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
@@ -51,163 +54,250 @@ import org.exoplatform.webui.event.EventListener;
     template = "app:/groovy/webui/component/explorer/search/UISearchResult.gtmpl",
     events = { 
         @EventConfig(listeners = UISearchResult.ViewActionListener.class),
-        @EventConfig(listeners = UISearchResult.OpenFolderActionListener.class)
+        @EventConfig(listeners = UISearchResult.OpenFolderActionListener.class),
+        @EventConfig(listeners = UISearchResult.SortASCActionListener.class),        
+        @EventConfig(listeners = UISearchResult.SortDESCActionListener.class)
     }
 )
 public class UISearchResult extends UIContainer {
 
   private QueryResult queryResult_;
   private long searchTime_ = 0; 
-  private boolean flag_ = false ;
-  private boolean isQuickSearch_ = false ;
-  private UIQueryResultPageIterator uiPageIterator_ ;
-  private List<Node> currentListNodes_ = new ArrayList<Node>() ;
-  private int currentAvailablePage_ = 0 ;
-  private boolean isEndOfIterator_ = false ;
-  
-  static private int PAGE_SIZE = 10 ;
+  private boolean flag_ = false;
+  private boolean isQuickSearch_ = false;
+  private UIQueryResultPageIterator uiPageIterator_;
+  private List<Node> currentListNodes_ = new ArrayList<Node>();
+  private int currentAvailablePage_ = 0;
+  private boolean isEndOfIterator_ = false;
+  private static String iconDate = "BlueUpArrow";
+  private static String iconName = "";
+  private static String iconType = "";
+  static private int PAGE_SIZE = 10;
 
   public UISearchResult() throws Exception {
-    uiPageIterator_ = addChild(UIQueryResultPageIterator.class, null, null) ;
+    uiPageIterator_ = addChild(UIQueryResultPageIterator.class, null, null);
   }
 
-  public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch ; }
+  public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch; }
 
   public void setQueryResults(QueryResult queryResult) throws Exception {
-    queryResult_ = queryResult ;         
+    queryResult_ = queryResult;         
   }  
   
-  public long getSearchTime() { return searchTime_ ; }
+  public long getSearchTime() { return searchTime_; }
   public void setSearchTime(long time) { this.searchTime_ = time; }  
   
   public List getCurrentList() throws Exception { 
-    return uiPageIterator_.getCurrentPageData() ;    
+    return uiPageIterator_.getCurrentPageData();    
   }
 
   private void addNode(List<Node> listNodes, Node node) throws Exception {
-    List<Node> checkList = new ArrayList<Node>() ;
-    if(flag_) checkList = currentListNodes_ ; 
-    else checkList = listNodes ;
-    if(node.getName().equals(Utils.JCR_CONTENT)) {
-      if(!checkList.contains(node.getParent())) {
-        listNodes.add(node.getParent()) ;
+    List<Node> checkList = new ArrayList<Node>();
+    if (flag_) checkList = currentListNodes_; 
+    else checkList = listNodes;
+    if (node.getName().equals(Utils.JCR_CONTENT)) {
+      if (!checkList.contains(node.getParent())) {
+        listNodes.add(node.getParent());
       }
-    } else if(!checkList.contains(node)){
-      listNodes.add(node) ;
+    } else if (!checkList.contains(node)) {
+      listNodes.add(node);
     }
   }
   
   @SuppressWarnings("unchecked")
-  public List<Node> getResultList() throws Exception {
-    List<Node> listNodes = new ArrayList<Node>() ;    
-    long resultListSize = queryResult_.getNodes().getSize() ;
-    if(!queryResult_.getNodes().hasNext()) return currentListNodes_ ;
-    if(resultListSize > 100) {
-      for(NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
-        Node node = iter.nextNode() ;
-        addNode(listNodes, node) ;
-        if(!iter.hasNext()) isEndOfIterator_ = true ;
-        if(listNodes.size() == 100) {
-          currentListNodes_.addAll(listNodes) ;
-          break ;
+  public List<Node> getResultList() throws Exception {    
+    List<Node> listNodes = new ArrayList<Node>();    
+    long resultListSize = queryResult_.getNodes().getSize();
+    if (!queryResult_.getNodes().hasNext()) return currentListNodes_;    
+    if (resultListSize > 100) {
+      for (NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
+        Node node = iter.nextNode();
+        addNode(listNodes, node);
+        if (!iter.hasNext()) isEndOfIterator_ = true;
+        if (listNodes.size() == 100) {
+          currentListNodes_.addAll(listNodes);
+          break;
         }
-        if(listNodes.size() < 100 && !iter.hasNext()) currentListNodes_.addAll(listNodes) ;
-        flag_ = true ;
+        if (listNodes.size() < 100 && !iter.hasNext()) currentListNodes_.addAll(listNodes);
+        flag_ = true;
       }
     } else {
-      for(NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
-        Node node = iter.nextNode() ;
-        if(!iter.hasNext()) isEndOfIterator_ = true ;
-        addNode(listNodes, node) ;
+      for (NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
+        Node node = iter.nextNode();        
+        if (!iter.hasNext()) isEndOfIterator_ = true;
+        addNode(listNodes, node);
       }
-      currentListNodes_= listNodes ;
+      currentListNodes_= listNodes;
     }
-    return currentListNodes_ ;
+    return currentListNodes_;
   }
-
+    
   public void clearAll() {
-    flag_ = false ;
-    isEndOfIterator_ = false ;
-    currentListNodes_.clear() ;
+    flag_ = false;
+    isEndOfIterator_ = false;
+    currentListNodes_.clear();
   }
   
-  public UIQueryResultPageIterator getUIPageIterator() { return uiPageIterator_ ; }
+  public UIQueryResultPageIterator getUIPageIterator() { return uiPageIterator_; }
 
   public void updateGrid() throws Exception {
-    SearchResultPageList pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE, isEndOfIterator_) ;
-    currentAvailablePage_ = currentListNodes_.size()/PAGE_SIZE ;
-    uiPageIterator_.setSearchResultPageList(pageList) ;
-    uiPageIterator_.setPageList(pageList) ;
+    SearchResultPageList pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE, isEndOfIterator_);
+    currentAvailablePage_ = currentListNodes_.size()/PAGE_SIZE;
+    uiPageIterator_.setSearchResultPageList(pageList);
+    uiPageIterator_.setPageList(pageList);
   }
   
-  public int getCurrentAvaiablePage() { return currentAvailablePage_ ; }
+  public int getCurrentAvaiablePage() { return currentAvailablePage_; }
    
   static  public class ViewActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
-      UISearchResult uiSearchResult = event.getSource() ;            
-      UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class) ;
-      String repository = uiExplorer.getRepositoryName() ;
-      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class) ;
-      Node node = null ;
+      UISearchResult uiSearchResult = event.getSource();            
+      UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class);
+      String repository = uiExplorer.getRepositoryName();
+      String path = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class);
+      Node node = null;
       try {
-        node = (Node)uiExplorer.getSession().getItem(path) ;
+        node = (Node)uiExplorer.getSession().getItem(path);
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.access-denied", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      TemplateService templateService = uiSearchResult.getApplicationComponent(TemplateService.class) ;
-      if(!templateService.isManagedNodeType(node.getPrimaryNodeType().getName(), repository)) {
+      TemplateService templateService = uiSearchResult.getApplicationComponent(TemplateService.class);
+      if (!templateService.isManagedNodeType(node.getPrimaryNodeType().getName(), repository)) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.not-support", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      if(uiSearchResult.isQuickSearch_) {
-        UIPopupWindow uiPopup = uiExplorer.getChildById("ViewSearch") ;
-        if(uiPopup == null) {
-          uiPopup = uiExplorer.addChild(UIPopupWindow.class, null, "ViewSearch") ;
+      if (uiSearchResult.isQuickSearch_) {
+        UIPopupWindow uiPopup = uiExplorer.getChildById("ViewSearch");
+        if (uiPopup == null) {
+          uiPopup = uiExplorer.addChild(UIPopupWindow.class, null, "ViewSearch");
         }
-        uiPopup.setResizable(true) ;
-        UIViewSearchResult uiViewSearch = uiPopup.createUIComponent(UIViewSearchResult.class, null, null) ;
-        uiViewSearch.setNode(node) ;
+        uiPopup.setResizable(true);
+        UIViewSearchResult uiViewSearch = uiPopup.createUIComponent(UIViewSearchResult.class, null, null);
+        uiViewSearch.setNode(node);
 
-        uiPopup.setWindowSize(560,450) ;
-        uiPopup.setUIComponent(uiViewSearch) ;
-        uiPopup.setRendered(true) ;
-        uiPopup.setShow(true) ;
-        return ;
+        uiPopup.setWindowSize(560,450);
+        uiPopup.setUIComponent(uiViewSearch);
+        uiPopup.setRendered(true);
+        uiPopup.setShow(true);
+        return;
       }      
-      UIECMSearch uiECMSearch = uiSearchResult.getParent() ;
-      UIViewSearchResult uiView = uiECMSearch.getChild(UIViewSearchResult.class) ;
-      if(uiView == null) uiView = uiECMSearch.addChild(UIViewSearchResult.class, null, null) ;
-      uiView.setNode(node) ;
-      uiECMSearch.setRenderedChild(UIViewSearchResult.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiECMSearch.getParent()) ;
+      UIECMSearch uiECMSearch = uiSearchResult.getParent();
+      UIViewSearchResult uiView = uiECMSearch.getChild(UIViewSearchResult.class);
+      if (uiView == null) uiView = uiECMSearch.addChild(UIViewSearchResult.class, null, null);
+      uiView.setNode(node);
+      uiECMSearch.setRenderedChild(UIViewSearchResult.class);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiECMSearch.getParent());
     }
   }
 
   static  public class OpenFolderActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
-      UISearchResult uiSearchResult = event.getSource() ;
-      UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class) ;
-      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String folderPath = path.substring(0, path.lastIndexOf("/")) ;
+      UISearchResult uiSearchResult = event.getSource();
+      UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class);
+      String path = event.getRequestContext().getRequestParameter(OBJECTID);
+      String folderPath = path.substring(0, path.lastIndexOf("/"));
       try {
         uiExplorer.getSession().getItem(folderPath);
       } catch(AccessDeniedException ace) {
-        UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class) ;
+        UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.access-denied", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       } catch(Exception e) {
-        e.printStackTrace() ;
+        e.printStackTrace();
       }      
-      uiExplorer.setSelectNode(folderPath, uiExplorer.getSession()) ;
-      uiExplorer.updateAjax(event) ;
+      uiExplorer.setSelectNode(folderPath, uiExplorer.getSession());
+      uiExplorer.updateAjax(event);
     }
+  }
+  
+  static  public class SortASCActionListener extends EventListener<UISearchResult> {
+    public void execute(Event<UISearchResult> event) throws Exception {
+      UISearchResult uiSearchResult = event.getSource();     
+      String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
+      if (objectId.equals("date")) {        
+        iconDate = "BlueDownArrow";
+        iconName = "";
+        iconType = "";
+        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());        
+      } else if (objectId.equals("name")) {        
+        iconName = "BlueDownArrow";
+        iconDate = "";
+        iconType = "";
+        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());        
+      } else if (objectId.equals("type")) {
+        iconType = "BlueDownArrow";
+        iconDate = "";
+        iconName = "";
+        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());
+      }
+      SearchResultPageList pageList = new SearchResultPageList(uiSearchResult.queryResult_, 
+          uiSearchResult.currentListNodes_, PAGE_SIZE, uiSearchResult.isEndOfIterator_);
+      uiSearchResult.currentAvailablePage_ = uiSearchResult.currentListNodes_.size()/PAGE_SIZE;
+      uiSearchResult.uiPageIterator_.setSearchResultPageList(pageList);
+      uiSearchResult.uiPageIterator_.setPageList(pageList);      
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchResult.getParent());      
+    }
+  } 
+  
+  static  public class SortDESCActionListener extends EventListener<UISearchResult> {
+    public void execute(Event<UISearchResult> event) throws Exception {
+      UISearchResult uiSearchResult = event.getSource() ;     
+      String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
+      if (objectId.equals("date")) {        
+        iconDate = "BlueUpArrow";
+        iconName = "";
+        iconType = "";
+        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());        
+      } else if (objectId.equals("name")) {        
+        iconName = "BlueUpArrow";
+        iconDate = "";
+        iconType = "";
+        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());        
+      } else if (objectId.equals("type")) {
+        iconType = "BlueUpArrow";
+        iconDate = "";
+        iconName = "";
+        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());
+      }
+      SearchResultPageList pageList = new SearchResultPageList(uiSearchResult.queryResult_, 
+          uiSearchResult.currentListNodes_, PAGE_SIZE, uiSearchResult.isEndOfIterator_);
+      uiSearchResult.currentAvailablePage_ = uiSearchResult.currentListNodes_.size()/PAGE_SIZE;
+      uiSearchResult.uiPageIterator_.setSearchResultPageList(pageList);
+      uiSearchResult.uiPageIterator_.setPageList(pageList);      
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchResult.getParent());      
+    }
+  } 
+  
+  private static class SearchComparator implements Comparator<Node> {
+    public int compare(Node node1, Node node2) {
+      try {
+        if (iconDate.equals("BlueUpArrow") || iconDate.equals("BlueDownArrow")) {
+          Date date1 = node1.getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
+          Date date2 = node2.getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
+          if (iconDate.equals("BlueUpArrow")) { return date2.compareTo(date1); }        
+          return date1.compareTo(date2);
+        } else if (iconName.equals("BlueUpArrow") || iconName.equals("BlueDownArrow")) {
+          String s1 = node1.getName();
+          String s2 = node2.getName();
+          if (iconName.trim().equals("BlueUpArrow")) return s2.compareTo(s1);        
+          return s1.compareTo(s2);
+        } else if (iconType.equals("BlueUpArrow") || iconType.equals("BlueDownArrow")) {
+          String s1 = node1.getProperty("jcr:primaryType").getString();
+          String s2 = node2.getProperty("jcr:primaryType").getString();
+          if (iconType.trim().equals("BlueUpArrow")) { return s2.compareTo(s1); }        
+          return s1.compareTo(s2);
+        }
+      } catch (Exception e) {        
+      }            
+      return 0;
+    }        
   }
 }
