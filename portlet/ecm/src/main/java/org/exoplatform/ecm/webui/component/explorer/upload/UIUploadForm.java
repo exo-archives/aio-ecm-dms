@@ -111,7 +111,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String fileName = input.getUploadResource().getFileName() ;
+      String fileName = input.getUploadResource().getFileName().trim() ;
       MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
       if(fileName == null || fileName.equals("")) {
           uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
@@ -129,7 +129,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       }
 
       byte[] content = input.getUploadData() ;
-      String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
+      String name = uiForm.getUIStringInput(FIELD_NAME).getValue().trim() ;
       if (name == null) name = fileName;      
       
       for(String filterChar : arrFilterChar) {
