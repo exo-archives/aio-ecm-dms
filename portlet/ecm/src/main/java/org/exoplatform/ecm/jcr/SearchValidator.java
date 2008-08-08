@@ -25,8 +25,8 @@ import org.exoplatform.webui.form.validator.Validator;
  * Created by The eXo Platform SAS
  * Author : Ly Dinh Quang
  *          quang.ly@exoplatform.com
- *			    xxx5669@yahoo.com
- * Jul 28, 2008  
+ *          xxx5669@yahoo.com
+ * Jul 9, 2008  
  */
 public class SearchValidator implements Validator {
   public void validate(UIFormInput uiInput) throws Exception {
@@ -138,8 +138,7 @@ public class SearchValidator implements Validator {
             }
           }
         } else {
-          if (filter.equals("*") && index == 0) { return; }
-          if (filter.equals("?") && index == 0) { return; }
+          if (filter.equals("*") || filter.equals("?")) { return; }          
           throwException("SearchValidator.msg.Invalid-char", uiInput);
 //        } else if (filter.equals("[") || filter.equals("]")) {
 //          String regex = "\\w*\\[\\w+ [Tt][Oo] \\w+\\]\\w*";
