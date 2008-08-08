@@ -20,12 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.jar.JarInputStream;
 import java.util.zip.ZipInputStream;
 
@@ -39,6 +37,7 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.database.HibernateService;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
+import org.exoplatform.services.organization.MembershipType;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.workflow.PredefinedProcessesPlugin;
 import org.exoplatform.services.workflow.Process;
@@ -235,6 +234,7 @@ public class WorkflowServiceContainerImpl implements
     HashSet<TaskInstance> hashSet = new HashSet<TaskInstance>();
     String key = null;
     Collection groups = orgService_.getGroupHandler().findGroupsOfUser(user);
+    Collection<?> membershipCollection = orgService_.getMembershipTypeHandler().findMembershipTypes();
     JbpmSession session = openSession();
     for (Iterator iter = groups.iterator(); iter.hasNext();) {
       Group group = (Group) iter.next();
@@ -242,20 +242,22 @@ public class WorkflowServiceContainerImpl implements
         orgService_.getMembershipHandler().findMembershipsByUserAndGroup(user, group.getId());
       for (Iterator iterator = memberships.iterator(); iterator.hasNext();) {
         Membership membership = (Membership) iterator.next();
-        key = membership.getMembershipType() + ACTOR_ID_KEY_SEPARATOR + group.getId();
-        
-        List tasks = session.getTaskMgmtSession().findTaskInstances(key);
-        if (tasks.size() > 0) {
-          hashSet.addAll(tasks);
-//          groupTasks.addAll(wrapTasks(tasks));
+        if(membership.getMembershipType().equals("*")) {
+          for(Object obj : membershipCollection){
+            key = ((MembershipType)obj).getName() + ACTOR_ID_KEY_SEPARATOR + group.getId();
+            List tasks = session.getTaskMgmtSession().findTaskInstances(key);
+            if (tasks.size() > 0) {
+              hashSet.addAll(tasks);
+            }
+          }
+        } else {
+          key = membership.getMembershipType() + ACTOR_ID_KEY_SEPARATOR + group.getId();
+          List tasks = session.getTaskMgmtSession().findTaskInstances(key);
+          if (tasks.size() > 0) {
+            hashSet.addAll(tasks);
+          }
         }
-      }
-      // manage the wildcard memberships
-      key = "*" + ACTOR_ID_KEY_SEPARATOR + group.getId();
-      List tasks = session.getTaskMgmtSession().findTaskInstances(key);
-      if (tasks.size() > 0) {
-        hashSet.addAll(tasks);
-//        groupTasks.addAll(wrapTasks(tasks));
+    
       }
     }
     for(Iterator iterator = hashSet.iterator();iterator.hasNext();) {
