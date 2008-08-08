@@ -20,6 +20,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.portal.webui.container.UIContainer;
+import org.exoplatform.webui.core.UIComponent;
 
 /**
  * Created by The eXo Platform SAS.
@@ -27,7 +28,9 @@ import org.exoplatform.portal.webui.container.UIContainer;
  * @author : Hoa.Pham hoa.pham@exoplatform.com Jun 23, 2008
  */
 public abstract class UIBaseNodeTreeSelector extends UIContainer implements ComponentSelector {  
-  
+
+  protected UIComponent sourceUIComponent ;
+  protected String returnFieldName = null ;
   /**
    * On change.
    * 
@@ -36,4 +39,22 @@ public abstract class UIBaseNodeTreeSelector extends UIContainer implements Comp
    * @throws Exception the exception
    */
   public abstract void onChange(final Node currentNode, Object context) throws Exception;
+  public String getReturnFieldName() { return returnFieldName; }
+
+  public void setReturnFieldName(String name) { this.returnFieldName = name; }
+
+  public UIComponent getSourceComponent() { return sourceUIComponent; }
+  public void setSourceComponent(UIComponent uicomponent, String[] initParams) {
+    sourceUIComponent = uicomponent ;
+    if(initParams == null || initParams.length < 0) return ;
+    for(int i = 0; i < initParams.length; i ++) {
+      if(initParams[i].indexOf("returnField") > -1) {
+        String[] array = initParams[i].split("=") ;
+        returnFieldName = array[1] ;
+        break ;
+      }
+      returnFieldName = initParams[0] ;
+    }
+  }
+
 }

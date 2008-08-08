@@ -224,7 +224,7 @@ public class UINodeTreeBuilder extends UIContainer {
      */
     public void execute(Event<UITree> event) throws Exception {
       UINodeTreeBuilder builder = event.getSource().getParent();
-      String uri = event.getRequestContext().getRequestParameter(OBJECTID)  ;
+      String uri = event.getRequestContext().getRequestParameter(OBJECTID);
       builder.changeNode(uri,event.getRequestContext());
       UIBaseNodeTreeSelector nodeTreeSelector = builder.getAncestorOfType(UIBaseNodeTreeSelector.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(nodeTreeSelector);

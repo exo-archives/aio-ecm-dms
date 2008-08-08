@@ -23,6 +23,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
 import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -44,44 +45,65 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UISelectPathPanel extends UIContainer {
 
+
+  public List<String> acceptedMimeTypes = null ;
   private Node parentNode;
-  private List<String> acceptedNodeTypes = new ArrayList<String>();
+  private List<String> acceptedNodeTypes = null;
+
 
   public UISelectPathPanel() { }
-  
+
   public void setParentNode(Node node) { this.parentNode = node; }
-  
+
   public List<String> getAcceptedNodeTypes() { return acceptedNodeTypes; }
 
   public void setAcceptedNodeTypes(List<String> acceptedNodeTypes) { 
     this.acceptedNodeTypes = acceptedNodeTypes;
   }
-  
-  public List<Node> getNodeList() throws Exception {
+
+  public List<String> getAcceptedMimeTypes() { return acceptedMimeTypes; }
+  public void setAcceptedMimeTypes(List<String> acceptedMimeTypes) { this.acceptedMimeTypes = acceptedMimeTypes; }  
+
+  public List<Node> getSelectableNodes() throws Exception {
     List<Node> list = new ArrayList<Node>();
     if(parentNode == null) return list;
     for(NodeIterator iterator = parentNode.getNodes();iterator.hasNext();) {
-      Node sibbling = iterator.nextNode();
-      if(sibbling.isNodeType("exo:hiddenable")) continue;
-      for(String nodetype: acceptedNodeTypes) {
-        if(sibbling.isNodeType(nodetype)) {
-          list.add(sibbling);
-          break;
-        }
-      }      
+      Node child = iterator.nextNode();
+      if(child.isNodeType("exo:hiddenable")) continue;
+      if(matchMimeType(child) && matchNodeType(child)) {
+        list.add(child);
+      }
     }
     return list;
   }      
+
+  private boolean matchNodeType(Node node) throws Exception {
+    if(acceptedNodeTypes == null || acceptedNodeTypes.isEmpty()) return true;
+    for(String nodeType: acceptedNodeTypes) {
+      if(node.isNodeType(nodeType)) 
+        return true;
+    }
+    return false;
+  }
+
+  private boolean matchMimeType(Node node) throws Exception {
+    if(acceptedMimeTypes == null || acceptedMimeTypes.isEmpty()) return true;
+    if(!node.isNodeType("nt:file")) return true;
+    String mimeType = node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
+    for(String type: acceptedMimeTypes) {
+      if(type.equalsIgnoreCase(mimeType))
+        return true;
+    }
+    return false;
+  }
 
   static public class SelectActionListener extends EventListener<UISelectPathPanel> {
     public void execute(Event<UISelectPathPanel> event) throws Exception {
       UISelectPathPanel uiDefault = event.getSource() ;
       String value = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIOneNodePathSelector uiJCRBrowser = uiDefault.getParent() ;
-      String returnField = uiJCRBrowser.getReturnFieldName() ;
-//    if(!uiJCRBrowser.isDisable()) 
-//    value = uiJCRBrowser.getWorkspace() + ":" + value ;
-      ((UISelectable)uiJCRBrowser.getSourceComponent()).doSelect(returnField, value) ;
+      UIBaseNodeTreeSelector uiTreeSelector = uiDefault.getParent() ;
+      String returnField = uiTreeSelector.getReturnFieldName();
+      ((UISelectable)uiTreeSelector.getSourceComponent()).doSelect(returnField, value) ;
     }
-  }  
+  }
 }

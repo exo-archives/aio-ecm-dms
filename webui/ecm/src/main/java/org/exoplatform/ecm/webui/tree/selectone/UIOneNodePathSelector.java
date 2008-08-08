@@ -29,7 +29,6 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
 /**
@@ -45,8 +44,6 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   private List<String> acceptedNodeTypesInTree = new ArrayList<String>();  
   private List<String> acceptedNodeTypesInPathPanel = new ArrayList<String>();
   
-  private UIComponent uiComponent ;
-  private String returnFieldName = null ;
   private String repositoryName = null;
   private String workspaceName = null ;
   private String rootTreePath = null;
@@ -92,12 +89,6 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     this.acceptedNodeTypesInPathPanel = acceptedNodeTypesInPathPanel;
   }  
 
-  public String getReturnFieldName() { return returnFieldName; }
-
-  public void setReturnFieldName(String returnFieldName) {
-    this.returnFieldName = returnFieldName;
-  }
-
   public String getRepositoryName() { return repositoryName; }
   public void setRepositoryName(String repositoryName) {
     this.repositoryName = repositoryName;
@@ -112,20 +103,6 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   public void setRootTreePath(String rootTreePath) { this.rootTreePath = rootTreePath; 
   }      
   
-  public UIComponent getSourceComponent() { return uiComponent; }
-  public void setSourceComponent(UIComponent uicomponent, String[] initParams) {
-    uiComponent = uicomponent ;
-    if(initParams == null || initParams.length < 0) return ;
-    for(int i = 0; i < initParams.length; i ++) {
-      if(initParams[i].indexOf("returnField") > -1) {
-        String[] array = initParams[i].split("=") ;
-        returnFieldName = array[1] ;
-        break ;
-      }
-      returnFieldName = initParams[0] ;
-    }
-  }  
-
   public void onChange(final Node currentNode, Object context) throws Exception {
     UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
     selectPathPanel.setParentNode(currentNode);
