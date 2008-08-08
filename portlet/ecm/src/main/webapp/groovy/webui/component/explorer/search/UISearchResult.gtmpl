@@ -94,7 +94,6 @@
 	  	    	</a>
 	  	    <% } %>   	    	  	    
   	    </th>  	    
-  	    <th><%=_ctx.appRes("UISearchResult.header.score")%></th>  
   	    <th><%=_ctx.appRes("UISearchResult.header.action")%></th>
       </tr>
     </thead>
@@ -130,8 +129,7 @@
 	          	<div class="Text">	          	
 	          		<%=dateFormat.format(node.getProperty("exo:dateCreated").getDate().getTime())%>
 	          	</div>
-	          </td>
-	          <td></td>    
+	          </td>	         
 	          <td style="width:80px;">
 	            <a href="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>">
 	              <div class="View16x16Icon" style="margin-left:10px;float:left;"><span></span></div>
@@ -146,7 +144,7 @@
       } else {
     %>
       <tr class="EvenRow">
-        <td colspan="6" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UISearchResult.msg.empty")%></td>
+        <td colspan="5" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UISearchResult.msg.empty")%></td>
       </tr>
     <%}%>
     </tbody>
