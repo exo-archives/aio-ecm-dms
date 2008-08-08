@@ -470,6 +470,7 @@ public class UIBrowseContainer extends UIContainer {
     int itemCounter = getRowPerBlock() ;
     if(isShowAllDocument()) itemCounter = getItemPerPage();
     if(selectedTabPath_.equals(currentPath_)) {
+    	System.out.println("\n\n-------:" + currentPath_ +"\n\n");
       NodeIterator tabIter = getCurrentNode().getNodes() ;
       while(tabIter.hasNext()) {
         Node childNode = tabIter.nextNode() ;
