@@ -19,15 +19,16 @@
 	  </thead>
 	  <tbody>
       <%
-        def nodes = uicomponent.getNodeList() ;
+        def nodes = uicomponent.getSelectableNodes() ;
         def rowClass = "OddRow" ;
 		    boolean even = true ;
 		    if(nodes.size() > 0) {
 			    for(node in nodes) {
-			      try {
-			      
-				      if(even) rowClass = "EvenRow" ;  
-				      else rowClass =  "OddRow" ; 
+				      if(even) {
+				      	rowClass = "EvenRow" ;  
+				      } else {
+				      	rowClass =  "OddRow" ; 
+				      }
 				      even = !even ;
 	      %>
 				      <tr class="$rowClass">
@@ -39,49 +40,13 @@
 				          <div class="Text">$nodeName</div>
 				        </td>
 				        <td>
-				          <%
-				            String[] arrType = uicomponent.getFilterType() ;
-				            String[] arrMimeType = uicomponent.getMimeTypes() ;
-				            if(arrType == null) {
-				          %>
-					              <a href="<%=uicomponent.event("Select", node.getPath())%>">
-					                <div class="Select16x16Icon" style="margin-left:15px;"></div>
-					              </a>
-				          <%  
-				            } else {
-				              for(i in 0..arrType.length-1) {
-				                String type = arrType[i] ;
-				                String name = node.getPrimaryNodeType().getName() ;
-				                if(node.getPrimaryNodeType().getName().equals(arrType[i])) {
-				                  if(arrType[i].equals("nt:file") && arrMimeType != null && arrMimeType.length > 0) {
-										        def contentNode = node.getNode("jcr:content") ;
-										        def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
-										        for(mType in arrMimeType) {
-											        if(mimeType.equals(mType)) { %>
-											          <a href="<%=uicomponent.event("Select", node.getPath())%>">
-			    			                  <div class="Select16x16Icon" style="margin-left:15px;"></div>
-				      		              </a>
-									<%            
-						                    break ;
-						                  }
-										        }
-				                  } else { %>
-					             		  <a href="<%=uicomponent.event("Select", node.getPath())%>">
-						                  <div class="Select16x16Icon" style="margin-left:15px;"></div>
-				  		              </a>
-		              <%      		                    
-				                  } 
-				                } 
-				              }
-				            } 
-				          %>
+			              <a href="<%=uicomponent.event("Select", node.getPath())%>">
+			                <div class="Select16x16Icon" style="margin-left:15px;"></div>
+			              </a>
 				        </td>
 				      </tr>
 			<%
-			      } catch(Exception e) {
-			        continue ;
-			      }
-		    	}
+					}
 		    } else {
 		  %>
 		  		<tr class="EvenRow">
