@@ -42,6 +42,10 @@
         <name>repository</name>
         <value>repository</value>
       </value-param>
+      <value-param>
+        <name>adminIdentity</name>
+        <value>*:/platform/administrators;exo</value>
+      </value-param>
 	  </init-params>
   </component>
   
