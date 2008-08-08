@@ -61,7 +61,7 @@
           actionLabel = _ctx.appRes(uicomponent.getName() + ".tooltip.Vote") 
           link = uicomponent.event("Vote") ;
       %>
-          <a class="Icon VoteDocumentButton" href="$link" title="$actionLabel"><span></span>777777777777</a>      
+          <a class="Icon VoteDocumentButton" href="$link" title="$actionLabel"><span></span></a>      
      
       <%}
         if(isEnableComment) {
