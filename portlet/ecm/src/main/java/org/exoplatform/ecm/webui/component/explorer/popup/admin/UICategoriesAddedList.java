@@ -55,9 +55,12 @@ public class UICategoriesAddedList extends UIContainer implements UISelector{
 
   private static String[] CATE_BEAN_FIELD = {"path"} ;
   private static String[] ACTION = {"Delete"} ;
+  final public static int DISPLAY_CHARS = 100;
+  final public static int ITEMS_PER_PAGES = 10;
 
   public UICategoriesAddedList() throws Exception {
     UIGrid uiGrid = addChild(UIGrid.class, null, "CateAddedList") ;
+    uiGrid.setDisplayedChars(DISPLAY_CHARS);
     uiGrid.getUIPageIterator().setId("CategoriesListIterator");
     uiGrid.configure("path", CATE_BEAN_FIELD, ACTION) ;
   }
@@ -65,7 +68,7 @@ public class UICategoriesAddedList extends UIContainer implements UISelector{
   public void updateGrid(List<Node> nodes) throws Exception {
     UIGrid uiGrid = getChild(UIGrid.class) ;   
     if(nodes == null) nodes = new ArrayList<Node>() ;
-    ObjectPageList objPageList = new ObjectPageList(nodes, 10) ;
+    ObjectPageList objPageList = new ObjectPageList(nodes, ITEMS_PER_PAGES) ;
     uiGrid.getUIPageIterator().setPageList(objPageList) ;
   }
   
