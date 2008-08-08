@@ -138,8 +138,7 @@ public class SearchValidator implements Validator {
             }
           }
         } else {
-          if (filter.equals("*") && index == 0) { return; }
-          if (filter.equals("?") && index == 0) { return; }
+          if (filter.equals("*") || filter.equals("?")) { return; }          
           throwException("SearchValidator.msg.Invalid-char", uiInput);
 //        } else if (filter.equals("[") || filter.equals("]")) {
 //          String regex = "\\w*\\[\\w+ [Tt][Oo] \\w+\\]\\w*";
