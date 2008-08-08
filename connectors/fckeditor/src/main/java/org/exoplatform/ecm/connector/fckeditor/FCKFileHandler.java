@@ -164,8 +164,7 @@ public class FCKFileHandler {
    * @throws Exception the exception
    */
   protected String getLinkType(final Node node) throws Exception {
-
-    return null;
+    return "exo:link";
   }    
 
 }
