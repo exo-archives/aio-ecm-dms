@@ -53,7 +53,7 @@ import org.exoplatform.webui.form.UIForm;
     events = {
       @EventConfig(listeners = UIPermissionForm.SaveActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.ResetActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.CancelActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.CloseActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.SelectUserActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.SelectMemberActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPermissionForm.AddAnyActionListener.class)
@@ -65,7 +65,7 @@ public class UIPermissionForm extends UIForm implements UISelector {
   final static public String POPUP_SELECT = "SelectUserOrGroup";
   public UIPermissionForm() throws Exception {
     addChild(new UIPermissionInputSet(PERMISSION));
-    setActions(new String[] { "Save", "Reset", "Cancel" });
+    setActions(new String[] { "Save", "Reset", "Close" });
   }
 
   private void refresh() {
@@ -111,10 +111,10 @@ public class UIPermissionForm extends UIForm implements UISelector {
   protected void lockForm(boolean isLock) {
     UIPermissionInputSet uiInputSet = getChildById(PERMISSION) ;
     if(isLock) {
-      setActions(new String[] {"Reset", "Cancel" });
+      setActions(new String[] {"Reset", "Close" });
       uiInputSet.setActionInfo(UIPermissionInputSet.FIELD_USERORGROUP, null) ;
     } else {
-      setActions(new String[] { "Save", "Reset", "Cancel" });
+      setActions(new String[] { "Save", "Reset", "Close" });
       uiInputSet.setActionInfo(UIPermissionInputSet.FIELD_USERORGROUP, new String[] {"SelectUser", "SelectMember", "AddAny"}) ;
     }
     for (String perm : PermissionType.ALL) { 
@@ -190,7 +190,6 @@ public class UIPermissionForm extends UIForm implements UISelector {
                                                     ApplicationMessage.WARNING));
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
             return;
-//            continue ;
           }
         } 
         if(Utils.hasChangePermissionRight(node)) node.setPermission(userOrGroup, permsArray);
@@ -198,12 +197,6 @@ public class UIPermissionForm extends UIForm implements UISelector {
         node.save();
         if(uiJCRExplorer.getRootNode().equals(node)) {
           if(!Utils.isReadAuthorized(uiJCRExplorer.getCurrentNode())) {
-//            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
-//            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
-//            prefs_.setValue(Utils.VIEWS,"") ;
-//            prefs_.setValue(Utils.JCR_PATH,"") ;
-//            prefs_.setValue(Utils.DRIVE,"") ;
-//            prefs_.store() ;
             uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
             return ;
           }
@@ -256,7 +249,7 @@ public class UIPermissionForm extends UIForm implements UISelector {
     }
   }
 
-  static public class CancelActionListener extends EventListener<UIPermissionForm> {
+  static public class CloseActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       uiExplorer.cancelAction();
