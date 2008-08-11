@@ -20,7 +20,15 @@
 }
 
 .UIWorkflowPortlet .UIFormGrid {
-	width: 100%;
+	table-layout: fixed;
+}
+
+.UIWorkflowPortlet .UIFormGrid td.FieldLabel {
+	width: 25%;
+}
+
+.UIWorkflowPortlet .UIFormGrid td.FieldComponent {
+	width: 75%;
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent {

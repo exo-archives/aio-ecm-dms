@@ -6,7 +6,7 @@
   uicomponent.addHiddenField("hiddenInput2", hiddenField2) ;
   uicomponent.addHiddenField("hiddenInput3", hiddenField3) ;
 %>
-<div class="UIForm">
+<div class="UIForm FormLayout">
 	<% uiform.begin() %>
   <div class="HorizontalLayout">	
   	<table class="UIFormGrid">      

@@ -1,38 +1,8 @@
 /******************************* UIFormWithoutAction **************************/
 .UIFormWithoutAction {
-	background: #EFEFEF;
-  border: 1px solid #b7b7b7;
-  padding: 10px;
+	background: #F7F7F7;
+  border: 1px solid #AEAEAE;
   margin: 0px 0px 10px 0px;
-}
-
-.UIFormWithoutAction .UIForm .HorizontalLayout {
-	padding: 0px;
-	border: none;
-}
-
-.UIECMAdminPortlet .UIFormWithoutAction .UIFormGrid {
-	width: auto;
-}
-
-.UIJCRExplorerPortlet .UIFormWithoutAction .UIFormGrid {
-	width: auto;
-}
-
-.UIBrowseContentPortlet .UIFormWithoutAction .UIFormGrid {
-	width: 90%;
-}
-
-.UIFastContentCreatorPortlet .UIFormWithoutAction .UIFormGrid {
-	width: auto;
-}
-
-.UIFormWithoutAction .UIFormGrid {
-	width: auto;
-}
-
-.UIFormWithoutAction .UIFormGrid td.FieldLabel {
-	width: auto;
 }
 
 .UIFormWithoutAction .rootNodeInfo .UIFormInputSet {

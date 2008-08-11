@@ -337,84 +337,25 @@
 /*===========================Folder Form=====================*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm {
-	margin: 10px auto;
-	width: 560px;
-	background: #efefef;
-}
-
-/*===========================DocumentFormController=====================*/
-.UIJCRExplorerPortlet .EditFormController .UIFormWithTitle {
-	border: 1px solid #b7b7b7;
-}
-
-.UIJCRExplorerPortlet .EditFormController .UIFormWithTitle .HorizontalLayout {
 	padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController {
-	padding: 10px;
-}
+/*================================UIUploadForm===================================*/
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
-  width: 95%;
-  margin: 10px auto;
-  border: 1px solid #b7b7b7;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm .HorizontalLayout {
-	padding: 10px 0px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane {
-	background: #efefef;
-	border: 1px solid #b7b7b7;
-	width: 95%;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIFormGrid .FieldLabel {
-	width: auto;
-}
-
-.UIJCRExplorerPortlet .ProgressBarFrame { 
-	width: 310px;
-	overflow: hidden;
-	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .SelectFileFrame { 
-	width: auto;
-	overflow: hidden;
-	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .FileNameLabel {
-	width: auto;	
+.UIJCRExplorerPortlet .UIUploadManager {
+  padding: 10px;
 }
 
 /*=============================UIWatchDocumentForm=======================*/
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm {
-  padding: 10px 0px;
-  width: 550px;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIWatchDocumentForm .FormContainer {
-  width: 450px;
-  margin: auto;
+  padding: 10px;
 }
 
 /*=============================UITaggingForm=======================*/
 
 .UIJCRExplorerPortlet .UITaggingForm {
-  padding: 10px 0px;
-  width: 550px;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UITaggingForm .UIFormGrid td.FieldLabel {
-  width: 90px;
+  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UITaggingForm .UIFormGrid .Introduction {
@@ -422,31 +363,10 @@
   color: #ef5604;
 }
 
-.UIJCRExplorerPortlet .UITaggingForm .ActionField {
-	float: left ;
-	margin-bottom: 3px;
-}
-
-/*==================================UIMultiLanguageForm==============================*/
-
-.UIJCRExplorerPortlet .UIMultiLanguageForm .UIFormWithTitle .HorizontalLayout  {
-  border: none;
-}
-
-.UIJCRExplorerPortlet .UIMultiLanguageForm .FormContainer {
-  width: 500px;
-  margin: auto;
-}
 /*=============================UILanguageTypeForm============================*/
 
-
-.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle {
-  border: none;
-  margin: 0px auto;
-}
-
 .UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager {
-	padding: 0px 10px;
+	padding: 0px;
 }
 
 /*=============================UICommentForm=======================*/
@@ -666,16 +586,6 @@
 .UIJCRExplorerPortlet .UIPropertyTab .MultiValue {
   width: 70px;
   margin: auto;
-}
-/*================================UIUploadForm===================================*/
-
-.UIJCRExplorerPortlet .UIUploadManager {
-  padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .HorizontalLayout {
-	padding: 10px;
-	background: #F7F7F7;
 }
 
 /*================================UINodeTypeInfo=================================*/

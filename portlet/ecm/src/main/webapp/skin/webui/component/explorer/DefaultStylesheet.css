@@ -114,61 +114,12 @@
   padding: 6px;
 }
 
-/***********************************************************************/
+/*******************************UIDocumentFormController****************************************/
 
-.UIDocumentFormController .UISelectDocumentForm {
-  padding-bottom: 10px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane {
-	background: #EFEFEF;
-	border: 1px solid #B7B7B7;
-	width: auto;
-	margin:auto;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .EditFormController {
-	padding: 13px;
-}
-
-.EditFormController .UIForm .HorizontalLayout {
-  background: #EFEFEF;
-  border: 1px #B7B7B7 solid;
-  padding: 10px;
-}
-
-.EditFormController .UISelectDocumentForm .HorizontalLayout {
+.UIDocumentFormController {
 	padding: 10px;
 }
 
-.EditFormController .UISelectDocumentForm {
-  padding-bottom: 10px;
+.EditFormController {
+	padding: 10px;
 }
-
-.UIJCRExplorerPortlet .EditFormController .UITabPane {
-	background: #EFEFEF;
-	border: 1px solid #B7B7B7;
-	width: auto;
-	margin:auto;
-}
-
-.EditFormController .UIFCKEditor {
-	width: auto;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {
-	width: auto;
-}
-
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .HorizontalLayout {
-  background: #EFEFEF;
-  border: 1px #B7B7B7 solid;
-  padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIFolderForm .HorizontalLayout {
-  background: #EFEFEF;
-  border: 1px #B7B7B7 solid;
-  padding: 10px;
-}
-

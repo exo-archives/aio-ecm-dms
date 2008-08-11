@@ -8,9 +8,9 @@
   uicomponent.addCalendarField("hiddenInput4", hiddenField4) ;
   uicomponent.addCalendarField("hiddenInput5", hiddenField5) ;
 %>
-<div class="UIFormWithTitle">  
+<div class="UIForm FormLayout">  
 	<% uiform.begin() %>
-  <div class="HorizontalLayout" style="border:0px;">
+  <div class="HorizontalLayout">
 	  <table class="UIFormGrid">
 				<tr>
 				  <td class="FieldLabel"><%=_ctx.appRes("File.dialog.label.name")%></td>

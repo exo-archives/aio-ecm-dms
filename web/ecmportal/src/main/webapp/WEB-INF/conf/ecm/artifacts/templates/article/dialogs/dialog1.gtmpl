@@ -1,5 +1,5 @@
 <% uicomponent.addInterceptor("ecm-explorer/interceptor/PreNodeSaveInterceptor.groovy", "post") ; %>
-<div class="UIForm"> 
+<div class="UIForm FormLayout"> 
 	<% uiform.begin() %>
   <div class="HorizontalLayout">	  
    <table class="UIFormGrid">
