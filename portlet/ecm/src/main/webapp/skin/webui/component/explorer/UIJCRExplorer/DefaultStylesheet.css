@@ -293,17 +293,8 @@
 	padding: 4px 3px 0px 5px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UISearchContainer .UITabContent .UISearchResult {
-	width: 97%;
-	margin: auto;
-}
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
-	width: 97%;
-	margin: 10px auto;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult .UIPageIterator{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult .UIPageIterator {
 	width: 100%;
 	margin: 5px 0px 0px 0px;
 	overflow:hidden;
