@@ -35,11 +35,11 @@ public interface TaxonomyManagerService {
    * Adding a new taxonomy to the specific node
    * <p>If the taxonomy has already existed in this specific node then the method will thrown
    * <code>ItemExistsException</code>
-   * @param parentPath            Specify the parent path which the taxonomy will be added into
-   * @param childName             The name of the taxonomy
-   * @param repository            The name of the repository
-   * @param sessionProvider       The sessionProvider object is used to managed Sessions 
-   * @see                         SessionProvider   
+   * @param parentPath          Specify the parent path which the taxonomy will be added into
+   * @param childName           The name of the taxonomy
+   * @param repository          The name of the repository
+   * @param sessionProvider     The sessionProvider object is used to managed Sessions 
+   * @see                       SessionProvider   
    * @throws ItemExistsException
    * @throws Exception
    */
@@ -47,21 +47,21 @@ public interface TaxonomyManagerService {
   
   /**
    * Remove the taxonomy that is specified by real path
-   * @param realPath              Specify the real path of the taxonomy which is removed 
-   * @param repository            The name of the repository
-   * @param sessionProvider       The sessionProvider object is used to managed Sessions
-   * @see                         SessionProvider
+   * @param realPath            Specify the real path of the taxonomy which is removed 
+   * @param repository          The name of the repository
+   * @param sessionProvider     The sessionProvider object is used to managed Sessions
+   * @see                       SessionProvider
    * @throws Exception
    */
   public void removeTaxonomy(String realPath, String repository, SessionProvider sessionProvider) throws Exception;
   
   /**
    * Copy taxonomy from the location is specified by source patch to the destination path
-   * @param srcPath               The source path of the taxonomy which wanted to copy
-   * @param destPath              The destination path of the taxonomy 
-   * @param repository            The name of the repository
-   * @param sessionProvider       The sessionProvider object is used to managed Sessions
-   * @see                         SessionProvider
+   * @param srcPath             The source path of the taxonomy which wanted to copy
+   * @param destPath            The destination path of the taxonomy 
+   * @param repository          The name of the repository
+   * @param sessionProvider     The sessionProvider object is used to managed Sessions
+   * @see                       SessionProvider
    * @throws Exception
    */
   public void copyTaxonomy(String srcPath, String destPath, String repository, SessionProvider sessionProvider) throws Exception;
@@ -79,45 +79,47 @@ public interface TaxonomyManagerService {
   
   /**
    * Returns list of node that are categoried in the specific node
-   * @param node                  The node category to get all nodes from it
-   * @param sessionProvider       The sessionProvider object is used to managed Sessions
-   * @return                      list of node
-   * @see                         Node
-   * @see                         SessionProvider
+   * @param node                The node category to get all nodes from it
+   * @param sessionProvider     The sessionProvider object is used to managed Sessions
+   * @return                    list of node
+   * @see                       Node
+   * @see                       SessionProvider
    * @throws Exception
    */
   public List<Node> getCategories(Node node, SessionProvider sessionProvider) throws Exception;
   
   /**
    * Remove the category that is specified by the real path from the node
-   * @param node
-   * @param categoryPath
-   * @param sessionProvider
+   * @param node                Specify the node wants to remove catrgory
+   * @param categoryPath        The name of category path
+   * @param sessionProvider     The sessionProvider object is userd to managed Sessions
+   * @see                       SessionProvider
+   * @see                       Node
    * @throws Exception
    */
   public void removeCategory(Node node, String categoryPath, SessionProvider sessionProvider) throws Exception;
   
   /**
    * Adding a new category to the specific node
-   * @param node              Specify the node wants to add category into
-   * @param categoryPath      The name of category path
-   * @param sessionProvider   The sessionProvider object is userd to managed Sessions
-   * @see                     Node
-   * @see                     SessionProvider
+   * @param node                Specify the node wants to add category into
+   * @param categoryPath        The name of category path
+   * @param sessionProvider     The sessionProvider object is userd to managed Sessions
+   * @see                       Node
+   * @see                       SessionProvider
    * @throws Exception
    */
   public void addCategory(Node node, String categoryPath, SessionProvider sessionProvider) throws Exception;
   
   /**
    * Adding a new category to the specific node. 
-   * @param node              Specify the node wants to add category into
-   * @param categoryPath      The name of category path
-   * @param replaceAll        The parameter is specify in order to affect this method
-   *                          if this parameter is <code>true</code>, this method will remove all
-   *                          category in this node and then add a new category to this node
-   * @param sessionProvider   The sessionProvider object is userd to managed Sessions
-   * @see                     Node
-   * @see                     SessionProvider
+   * @param node                Specify the node wants to add category into
+   * @param categoryPath        The name of category path
+   * @param replaceAll          The parameter is specify in order to affect this method
+   *                            if this parameter is <code>true</code>, this method will remove all
+   *                            category in this node and then add a new category to this node
+   * @param sessionProvider     The sessionProvider object is userd to managed Sessions
+   * @see                       Node
+   * @see                       SessionProvider
    * @throws Exception
    */
   public void addCategory(Node node, String categoryPath, boolean replaceAll, SessionProvider sessionProvider) throws Exception;
