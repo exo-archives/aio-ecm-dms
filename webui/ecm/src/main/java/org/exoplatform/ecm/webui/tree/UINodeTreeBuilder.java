@@ -123,7 +123,7 @@ public class UINodeTreeBuilder extends UIContainer {
     tree.setSelected(currentNode);    
     if(currentNode.getDepth() > 0) {
       tree.setParentSelected(currentNode.getParent()) ;
-      sibbling = currentNode.getParent().getNodes() ;
+      sibbling = currentNode.getNodes() ;
       children = currentNode.getNodes() ;
     } else {
       tree.setParentSelected(currentNode) ;
