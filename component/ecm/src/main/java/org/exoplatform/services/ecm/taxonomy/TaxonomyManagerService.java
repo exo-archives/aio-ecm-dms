@@ -32,8 +32,8 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 public interface TaxonomyManagerService {
   
   /**
-   * Adding a new taxonomy to the specify node
-   * <p>If the taxonomy has already existed in this specify node then the method will thrown
+   * Adding a new taxonomy to the specific node
+   * <p>If the taxonomy has already existed in this specific node then the method will thrown
    * <code>ItemExistsException</code>
    * @param parentPath            Specify the parent path which the taxonomy will be added into
    * @param childName             The name of the taxonomy
@@ -78,7 +78,7 @@ public interface TaxonomyManagerService {
   public void cutTaxonomy(String srcPath, String destPath, String repository, SessionProvider sessionProvider) throws Exception;    
   
   /**
-   * Returns list of node that are categoried in the specify node
+   * Returns list of node that are categoried in the specific node
    * @param node                  The node category to get all nodes from it
    * @param sessionProvider       The sessionProvider object is used to managed Sessions
    * @return                      list of node
@@ -98,7 +98,7 @@ public interface TaxonomyManagerService {
   public void removeCategory(Node node, String categoryPath, SessionProvider sessionProvider) throws Exception;
   
   /**
-   * Adding a new category to the specify node
+   * Adding a new category to the specific node
    * @param node              Specify the node wants to add category into
    * @param categoryPath      The name of category path
    * @param sessionProvider   The sessionProvider object is userd to managed Sessions
@@ -109,7 +109,7 @@ public interface TaxonomyManagerService {
   public void addCategory(Node node, String categoryPath, SessionProvider sessionProvider) throws Exception;
   
   /**
-   * Adding a new category to the specify node. 
+   * Adding a new category to the specific node. 
    * @param node              Specify the node wants to add category into
    * @param categoryPath      The name of category path
    * @param replaceAll        The parameter is specify in order to affect this method
