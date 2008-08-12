@@ -40,10 +40,6 @@
   margin: 15px auto;
 }
 
-.UIJCRExplorerPortlet .UITabPane .UIFormWithTitle {
-	background: none;
-}
-
 .UIJCRExplorerPortlet .UICompareExactlyForm .UIFormWithTitle {
   margin: 0px auto;
   background: #efefef;
@@ -290,6 +286,9 @@
 
 /*############################## -- End UIThumbnailsView -- ##############################*/
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UISearchResult {
+	padding: 10px;
+}
 .UIJCRExplorerPortlet .UIJCRExplorer .UISearchContainer .UITabPane .UIGrid td {
 	padding: 4px 3px 0px 5px;
 }
@@ -299,10 +298,6 @@
 	margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
-	width: 97%;
-	margin: 10px auto;
-}
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult .UIPageIterator{
 	width: 100%;
@@ -375,11 +370,6 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UICommentForm .HorizontalLayout {
-	padding: 10px;
-	background: #f3f3f3;
-}
-
 /*================================UISimpleSearch==============================*/
 
 .UIJCRExplorerPortlet .UISimpleSearch .moreConstraints .InforField {
@@ -437,60 +427,6 @@
 .UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm td.FieldLabel {
   text-transform: capitalize;
 }
-
-/*================================UIActivateVersion=================================*/
-
-/*================================UIActionContainer=================================*/
-
-.UIJCRExplorerPortlet .UIActionContainer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer{
-  border: solid 1px #b7b7b7;
-  border-top: none;
-}
-
-.UIJCRExplorer .UIJCRBrowser {
-	width: 95%;
-	margin: auto;
-	padding: 10px 0px;
-}
-
-.UIJCRExplorer .UIJCRBrowser .UIWorkspaceList {
-	padding-bottom: 8px ;
-	width: 98.5%;
-}
-
-.UIJCRExplorer  .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	border: solid 1px white;
-	width: 100%;
-}
-
-.UIJCRExplorer  .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
-	padding: 1px;
-	border: solid 1px #B1B0B0;
-}
-
-.UIJCRExplorer .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
-	background: white;
-	padding: 5px 0px;
-}
-
-.UIJCRExplorer .UIPopupWindow .UITabPane .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .FieldLabel{
-	width: 100px;
-}
-
-.UIJCRExplorerPortlet .UIActionContainer  {
-	border: none;
-}
-
-.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle .HorizontalLayout {
-	background: none;
-}
-
-.UIJCRExplorerPortlet .UIActionContainer .UIFormGrid .FieldComponent .ActionIcon {
-  margin-left: 5px;
-  float: none;
-}
-
-/*================================UIActionList=================================*/
 
 /*================================UIPropertyForm=================================*/
 
@@ -550,26 +486,8 @@
   padding-top: 10px;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle {
-	border: none;
-  border-bottom: solid 1px #b7b7b7;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle {
-  padding-bottom: 10px;
-  border: none;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
-  padding-bottom: 8px;
-}
-
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
   padding: 0px;
-  border: none;
-  background: #efefef;
-  width: 500px;
-  margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddIcon16x16 {
@@ -579,13 +497,10 @@
 
 /*================================DecoratorBoxNested=================================*/
 
-.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16 {
-  margin-right: 3px;
-}
-
-.UIJCRExplorerPortlet .UIPropertyTab .MultiValue {
-  width: 70px;
-  margin: auto;
+.UIJCRExplorerPortlet .UIPropertyTab .MultiValue .Icon16x16 {
+	width: auto;
+	padding-left: 20px;
+	float: none;
 }
 
 /*================================UINodeTypeInfo=================================*/
@@ -637,16 +552,6 @@
 	width: 500px;
 	margin: auto;
 }
-
-.UIJCRExplorer  .WorkKofax .UIGrid {
-	border-top: none;
-}
-
-.UIJCRExplorer .WorkKofax .UIGrid td {
-	border-top: solid 1px #cccccc;
-	line-height: 26px;
-}
-
 /*====================================UIActivateVersion==================================*/
 
 .UIJCRExplorer .UIActivateVersion {
@@ -686,20 +591,9 @@
 /*=============================== UIConstraintsForm =======================================*/
 
 .UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle {
-  background:#EFEFEF none repeat scroll 0%;
-  border: 1px solid #b7b7b7;
-  margin-top: 5px;
-  padding-left: 5px;
-  width: 98.8%;
+  width: auto;
 }
 
-.UIJCRExplorerPortlet .UISearchContainer .UISimpleSearch {
-  _width: 98.8%;
-}
-
-.UIJCRExplorerPortlet .UISearchContainer .UIConstraintsForm {
-  _width: 98.8%;
-}
 /*====================================UISavedQuery==================================*/
 
 .UIJCRExplorer .UISavedQuery {

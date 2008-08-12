@@ -5,6 +5,10 @@
   margin: 0px 0px 10px 0px;
 }
 
+.UIFormWithoutAction .UIForm .HorizontalLayout {
+	padding: 10px;
+}
+
 .UIFormWithoutAction .rootNodeInfo .UIFormInputSet {
 	width: auto;
 	padding: 0px;

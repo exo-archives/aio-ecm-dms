@@ -47,7 +47,7 @@
 		            String multiType = "False" ;
 		            if(multiValue) multiType = "True" ;
 		          %>
-					    <div class="Icon16x16 ${multiType}16x16Icon"><span></span></div>$multiValue					  	
+					    <div class="Icon16x16 ${multiType}16x16Icon">$multiValue</div>					  	
 			      </div>
 			    </td>
 			    <td>

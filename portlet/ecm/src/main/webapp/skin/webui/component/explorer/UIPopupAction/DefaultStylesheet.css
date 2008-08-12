@@ -105,20 +105,6 @@
   float: right;
 }
 
-.UIJCRExplorerPortlet .UIVersionInfo .UIFormWithTitle {
-	border: none;
-	padding: 10px 0px;
-	margin: 0px auto;
-}
-
-.UIJCRExplorerPortlet .UIVersionInfo .UITabPane {
-	padding: 10px 0px;
-}
-
-.UIJCRExplorerPortlet .UIVersionInfo .UITabPane {
-	padding: 10px 0px;
-}
-
 .UIJCRExplorerPortlet .UIVersionInfo .UITabPane .UIGrid tr td .UIGrid {
 	border: none;
 	border-top: solid 1px #cccccc;
@@ -289,20 +275,6 @@
   padding: 0px 10px;
 }
 
-/*############################## -- UIActionManager   -- ##############################*/
-
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
-  width: 95%;
-  margin: auto;
-  padding: 10px 0px;
-}
-
-.UIJCRExplorerPortlet .UIPopupWindow .UITabPane .UIFormWithTitle td.FieldLabel {
-  white-space: nowrap;
-}
-
-/*############################## -- End UIActionManager   -- ##############################*/
-
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
 .UIJCRExplorerPortlet .UILanguageTypeForm .UIBarStyle {
 	height: 70px ;
@@ -339,31 +311,27 @@
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .NormalVote {
-  background: url(/ecm/skin/images/vote/VoteBar.gif) no-repeat left -122px;
+  background: url(/eXoECMResources/skin/images/vote/VoteBar.gif) no-repeat left -122px;
   float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
 } 
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .RatedVote {
-  background: url(/ecm/skin/images/vote/VoteBar.gif) no-repeat left -122px;
+  background: url(/eXoECMResources/skin/images/vote/VoteBar.gif) no-repeat left -122px;
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .OverVote {
-  background: url(/ecm/skin/images/vote/VoteBar.gif) no-repeat left -106px;
+  background: url(/eXoECMResources/skin/images/vote/VoteBar.gif) no-repeat left -106px;
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
 }
 
 /*############################## -- End UIVoteForm   -- ##############################*/
-
-.UIJCRExplorerPortlet .UIPopupAction .FieldContainer .MultiRadioInput{
-	float: left;
-}
 
 /*############################## -- UISearch   -- ##############################*/
 

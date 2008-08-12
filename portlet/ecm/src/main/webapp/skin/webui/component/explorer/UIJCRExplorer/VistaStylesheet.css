@@ -483,10 +483,6 @@
 
 /*================================UISimpleSearch=================================*/
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult {
-	width: 97%;
-	margin: 10px auto;
-}
 
 .UIJCRExplorerPortlet .UINodeTypeSelectForm .HorizontalLayout {
   border: 1px solid #b7b7b7;
