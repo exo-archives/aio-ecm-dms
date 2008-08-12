@@ -26,7 +26,28 @@ import javax.jcr.Node;
  */
 public interface VotingService {
   
-  public void vote(Node document, double rate, String userName, String language) throws Exception ;
+  /**
+   * Voting the document is specified by the node by giving the rate, username, and language params
+   * Any language belongs to this document can be voted.
+   * This method uses variables to store values which are voted from user for all kind languages 
+   * of this document
+   * @param document        The node document for voting
+   * @param rate            The number rate for voting
+   * @param userName        The username of current user is voting. 
+   *                        Can not be <code>null</code>
+   * @param language        The language of this document for voting
+   *                        Can not be <code>null</code>
+   * @see                   Node
+   * @throws Exception
+   */
+  public void vote(Node document, double rate, String userName, String language) throws Exception;
   
-  public long getVoteTotal(Node node) throws Exception ;
+  /**
+   * Gets total voting for all kind languages of this document is specified by node
+   * @param node            The node document is specified to get total voting
+   * @see                   Node 
+   * @return
+   * @throws Exception
+   */
+  public long getVoteTotal(Node node) throws Exception;
 }

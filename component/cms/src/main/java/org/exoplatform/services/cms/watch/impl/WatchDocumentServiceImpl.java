@@ -37,6 +37,7 @@ import org.exoplatform.services.cms.watch.WatchDocumentService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.picocontainer.Startable;
 
 
@@ -134,7 +135,16 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     session.save() ;
     session.logout() ;
   }  
-
+  
+  /**
+   * This method will observes the specification node by giving the following param : listener, node
+   * Its add an eventlistener to this node to observes anything that changes to this
+   * @param node              Specify the node to observe
+   * @param listener          The object of EventListener
+   * @see                     EventListener
+   * @see                     Node
+   * @throws Exception
+   */
   private void observeNode(Node node, EventListener listener) throws Exception {
     String workspace = node.getSession().getWorkspace().getName() ;
     ManageableRepository manageRepo = (ManageableRepository)node.getSession().getRepository() ;
