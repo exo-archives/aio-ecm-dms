@@ -7,7 +7,7 @@
 %>
   <style>
 		.Comments {
-			padding: 10px 0px;
+			padding: 10px;
 		}
     
      .Comments .CommentBar .LeftCommentBar {
