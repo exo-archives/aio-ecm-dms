@@ -93,10 +93,9 @@ public class FCKFileHandler {
   public Element createFileElement(Document document, Node child, String fileType) throws Exception {   
     Element file = document.createElement("File");
     file.setAttribute("name", child.getName());     
-    SimpleDateFormat dateFormat = new SimpleDateFormat();
-    dateFormat.applyPattern(ISO8601.SIMPLE_DATETIME_FORMAT);    
-    file.setAttribute("dateCreated", dateFormat.format(child.getProperty("exo:dateCreated").getDate().getTime()));    
-    file.setAttribute("dateModified", dateFormat.format(child.getProperty("exo:dateModified").getDate().getTime()));      
+    SimpleDateFormat formatter = new SimpleDateFormat(ISO8601.SIMPLE_DATETIME_FORMAT);    
+    file.setAttribute("dateCreated", formatter.format(child.getProperty("exo:dateCreated").getDate().getTime()));    
+    file.setAttribute("dateModified", formatter.format(child.getProperty("exo:dateModified").getDate().getTime()));      
     file.setAttribute("creator", child.getProperty("exo:owner").getString());
     file.setAttribute("fileType", fileType);              
     file.setAttribute("url",getFileURL(child));        
