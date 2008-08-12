@@ -145,9 +145,9 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
   }
   
   /**
-   * This method will observes the specify node by giving the following param : listener
+   * This method will observes the specification node by giving the following param : listener
    * node, sessionProvider
-   * Its add an eventlistener to this node to observes anything that changes to this node
+   * Its add an eventlistener to this node to observes anything that changes to this
    * @param node              Specify the node to observe
    * @param listener          The object of EventListener
    * @param sessionProvider   The sessionProvider object is userd to managed Sessions

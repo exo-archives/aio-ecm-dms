@@ -41,10 +41,10 @@ public class VoteService {
   final static String VOTE_TOTAL_PROP = "exo:voteTotal".intern();    
       
   /**
-   * Voting the document that is specified by the node by giving the rate and userName
-   * @param node          The node document for votting
-   * @param rate          The number rate for votting
-   * @param userName      The username of current user is votting. 
+   * Voting the document that is specified by the node by giving the rate and userName params
+   * @param node          The node document for voting
+   * @param rate          The number rate for voting
+   * @param userName      The username of current user is voting. 
    *                      May be <code>null</code> or <code>blank</code>
    * @see                 Node
    * @throws Exception
