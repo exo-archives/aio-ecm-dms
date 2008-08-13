@@ -105,7 +105,7 @@ public class FileUploadHandler {
     CacheControl cacheControl = new CacheControl();
     cacheControl.setNoCache(true);
     UploadResource resource = uploadService.getUploadResource(uploadId) ;
-    if(fileName != null) {
+    if((fileName == null) || (fileName.length() == 0)) {
       fileName = resource.getFileName();
     }
     if(parent.hasNode(fileName)) {
