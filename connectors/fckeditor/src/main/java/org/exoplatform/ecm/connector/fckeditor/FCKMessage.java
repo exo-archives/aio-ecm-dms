@@ -23,16 +23,12 @@ import java.util.ResourceBundle;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.exoplatform.container.ExoContainer;
-import org.exoplatform.services.resources.ResourceBundleService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /*
- * Created by The eXo Platform SAS
- * @author : Hoa.Pham
- *          hoa.pham@exoplatform.com
- * Jun 23, 2008  
+ * Created by The eXo Platform SAS @author : Hoa.Pham hoa.pham@exoplatform.com
+ * Jun 23, 2008
  */
 /**
  * The Class FCKMessage.
@@ -40,54 +36,60 @@ import org.w3c.dom.Element;
 public class FCKMessage {
 
   /** The Constant ERROR. */
-  public static final String ERROR = "Error".intern();
+  public static final String ERROR                      = "Error".intern();
 
   /** The Constant INFO. */
-  public static final String INFO = "Info".intern();
+  public static final String INFO                       = "Info".intern();
 
   /** The Constant FOLDER_CREATED. */
-  public static final int FOLDER_CREATED = 100;
+  public static final int    FOLDER_CREATED             = 100;
 
   /** The Constant FOLDER_EXISTED. */
-  public static final int FOLDER_EXISTED = 101;  
+  public static final int    FOLDER_EXISTED             = 101;
 
   /** The Constant FOLDER_INVALID_NAME. */
-  public static final int FOLDER_INVALID_NAME = 102;
+  public static final int    FOLDER_INVALID_NAME        = 102;
 
   /** The Constant FOLDER_PERMISSION_CREATING. */
-  public static final int FOLDER_PERMISSION_CREATING = 103;
+  public static final int    FOLDER_PERMISSION_CREATING = 103;
 
   /** The Constant UNKNOWN_ERROR. */
-  public static final int UNKNOWN_ERROR = 110;
+  public static final int    UNKNOWN_ERROR              = 110;
 
   /** The Constant FILE_EXISTED. */
-  public static final int FILE_EXISTED = 201;    
+  public static final int    FILE_EXISTED               = 201;
+
   /** The Constant FILE_NOT_FOUND. */
-  public static final int FILE_NOT_FOUND = 202;
-  
-  public static final int FILE_UPLOAD_RESTRICTION = 203;
+  public static final int    FILE_NOT_FOUND             = 202;
+
+  public static final int    FILE_UPLOAD_RESTRICTION    = 203;
 
   /** The Constant FCK_RESOURCE_BUNDLE. */
-  public static final String FCK_RESOURCE_BUNDLE_FILE="locale.services.fckeditor.FCKConnector".intern();  
+  public static final String FCK_RESOURCE_BUNDLE_FILE   = "locale.services.fckeditor.FCKConnector"
+    .intern();
+
   /**
    * Instantiates a new fCK message.
    * 
    * @param bundleService the bundle service
    */
-  public FCKMessage() { }  
-  
-  public Document createMessage(int messageCode, String messageType,String language, Object[] args) throws Exception {      
-    String message = getMessage(messageCode, args, language);
-    return createMessage(messageCode,message,messageType);
+  public FCKMessage() {
   }
-  
-  public Document createMessage(int messageCode, String message, String messageType) throws Exception {
+
+  public Document createMessage(int messageCode, String messageType, String language, Object[] args)
+  throws Exception {
+    String message = getMessage(messageCode, args, language);
+    return createMessage(messageCode, message, messageType);
+  }
+
+  public Document createMessage(int messageCode, String message, String messageType)
+  throws Exception {
     DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-    Document document = documentBuilder.newDocument();       
+    Document document = documentBuilder.newDocument();
     Element element = document.createElement("Message");
     element.setAttribute("number", Integer.toString(messageCode));
     element.setAttribute("text", message);
-    element.setAttribute("type",messageType);
+    element.setAttribute("type", messageType);
     document.appendChild(element);
     return document;
   }
@@ -103,7 +105,7 @@ public class FCKMessage {
    */
   public String getMessage(int messageNum, Object[] args, String language) throws Exception {
     String messageKey = getMessageKey(messageNum);
-    return getMessage(messageKey,args,language);    
+    return getMessage(messageKey, args, language);
   }
 
   /**
@@ -115,36 +117,40 @@ public class FCKMessage {
    * @return the message
    * @throws Exception the exception
    */
-  public String getMessage(String messageKey,Object[] args, String language) throws Exception {
+  public String getMessage(String messageKey, Object[] args, String language) throws Exception {
     Locale locale = null;
     if (language == null) {
       locale = Locale.ENGLISH;
     } else {
-      locale = new Locale(language); 
-    }                    
-    ResourceBundle resourceBundle = ResourceBundle.getBundle(FCK_RESOURCE_BUNDLE_FILE,locale);
-    String message = resourceBundle.getString(messageKey);    
-    if(args == null) {
+      locale = new Locale(language);
+    }
+    ResourceBundle resourceBundle = ResourceBundle.getBundle(FCK_RESOURCE_BUNDLE_FILE, locale);
+    String message = resourceBundle.getString(messageKey);
+    if (args == null) {
       return message;
     }
-    return MessageFormat.format(message,args);
+    return MessageFormat.format(message, args);
   }
 
-  private String getMessageKey(int number) {
+  protected String getMessageKey(int number) {
     String messageKey = null;
     switch (number) {
-    case FOLDER_CREATED: messageKey = "fckeditor.folder-created";      
-    break;
-    case FOLDER_INVALID_NAME: messageKey = "fckeditor.folder-invalid-name";
-    break;
-    case FOLDER_EXISTED: messageKey = "fckeditor.folder-existed";
-    break;
-    case FOLDER_PERMISSION_CREATING: messageKey = "fckeditor.folder-permission-denied";
-    break;
-    default:messageKey = "connector.fckeditor.unknowm-message"; 
+    case FOLDER_CREATED:
+      messageKey = "fckeditor.folder-created";
+      break;
+    case FOLDER_INVALID_NAME:
+      messageKey = "fckeditor.folder-invalid-name";
+      break;
+    case FOLDER_EXISTED:
+      messageKey = "fckeditor.folder-existed";
+      break;
+    case FOLDER_PERMISSION_CREATING:
+      messageKey = "fckeditor.folder-permission-denied";
+      break;
+    default:
+      messageKey = "connector.fckeditor.unknowm-message";
     break;
     }
     return messageKey;
   }
 }
-

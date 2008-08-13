@@ -18,7 +18,10 @@ package org.exoplatform.ecm.connector.fckeditor;
 
 import javax.jcr.Node;
 import javax.jcr.nodetype.NodeType;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.apache.commons.httpclient.methods.GetMethod;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -80,20 +83,29 @@ public class FCKFolderHandler {
   public Response createNewFolder(Node currentNode, String newFolderName, String language) throws Exception {
     CacheControl cacheControl = new CacheControl();
     cacheControl.setNoCache(true);
+    Document document = null;
     if(!FCKUtils.hasAddNodePermission(currentNode)) {
       Object[] args = { currentNode.getPath() };
-      Document document = 
+      document = 
         fckMessage.createMessage(FCKMessage.FOLDER_PERMISSION_CREATING,FCKMessage.ERROR,language,args);
       return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
     }
     if(currentNode.hasNode(newFolderName)) {
       Object[] args = { currentNode.getPath(),newFolderName };
-      Document document = 
+      document = 
         fckMessage.createMessage(FCKMessage.FOLDER_EXISTED,FCKMessage.ERROR,language,args);
       return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
-    }
+    }    
     currentNode.addNode(newFolderName,FCKUtils.NT_FOLDER);
     currentNode.getSession().save();
-    return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();    
+        
+    Element rootElement = FCKUtils.createRootElement("createFolder", currentNode, getFolderType(currentNode));
+    document = rootElement.getOwnerDocument();
+    Element errorElement = document.createElement("Message");
+    errorElement.setAttribute("number", Integer.toString(FCKMessage.FOLDER_CREATED));
+    errorElement.setAttribute("text", fckMessage.getMessageKey(FCKMessage.FOLDER_CREATED));
+    errorElement.setAttribute("type", FCKMessage.ERROR);    
+    rootElement.appendChild(errorElement);
+    return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();    
   }
 }
