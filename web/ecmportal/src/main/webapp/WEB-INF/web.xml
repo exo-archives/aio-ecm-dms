@@ -6,6 +6,12 @@
 <web-app>
   <display-name>portal</display-name>
 
+	<context-param>
+    <param-name>org.exoplatform.frameworks.web.repositoryJNDIName</param-name>
+    <param-value>repository</param-value>
+    <description>Repository name</description>
+  </context-param>
+
   <context-param>
     <param-name>org.exoplatform.frameworks.web.repositoryMapping</param-name>
     <param-value>/jcr</param-value>
@@ -26,7 +32,7 @@
 
   <context-param>
     <param-name>CurrentFolder</param-name>
-    <param-value>/exo:applications</param-value>
+    <param-value>/</param-value>
     <description>Binary assets workspace name</description>
   </context-param>
 
@@ -48,11 +54,6 @@
     <filter-class>org.exoplatform.frameworks.jcr.web.ThreadLocalSessionProviderInitializedFilter</filter-class>
   </filter>
   
-  <filter>
-    <filter-name>FactoryInitializedFilter</filter-name>
-    <filter-class>org.exoplatform.frameworks.jcr.web.SimpleSessionFactoryInitializedFilter</filter-class>
-  </filter>    
-    
   <filter>
     <filter-name>AnonymousUserContextRedirectionFilter</filter-name>
     <filter-class>org.exoplatform.ws.frameworks.servlet.AnonymousUserContextRedirectionFilter</filter-class>
@@ -109,12 +110,7 @@
 
   <filter-mapping>
     <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
-    <url-pattern>/private/*</url-pattern>
-  </filter-mapping>
-
-  <filter-mapping>
-    <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
-    <url-pattern>/public/*</url-pattern>
+    <url-pattern>/*</url-pattern>
   </filter-mapping>
 
   <filter-mapping>
@@ -133,15 +129,6 @@
     <url-pattern>/rest/*</url-pattern>
   </filter-mapping>   
 
-  <filter-mapping>
-    <filter-name>FactoryInitializedFilter</filter-name>
-    <url-pattern>/connector</url-pattern>
-  </filter-mapping>
-
-  <filter-mapping>
-    <filter-name>FactoryInitializedFilter</filter-name>
-    <url-pattern>/jcr/*</url-pattern>
-  </filter-mapping>
   <!-- ================================================================== -->
   <!--           LISTENER                                                 -->
   <!-- ================================================================== -->
@@ -177,13 +164,6 @@
     <load-on-startup>1</load-on-startup>
   </servlet>  
   
-  <servlet>
-    <servlet-name>DisplayJCRContent</servlet-name>
-    <description>eXo - Platform DisplayJCRContent Servlet.</description>
-    <servlet-class>org.exoplatform.frameworks.jcr.web.DisplayJCRContentServlet</servlet-class>
-    <load-on-startup>4</load-on-startup>
-  </servlet>
-    
   <servlet>
     <servlet-name>RestServer</servlet-name>
     <description>eXo - Platform REST Server</description>
@@ -226,11 +206,6 @@
     <servlet-name>Controller</servlet-name>
     <url-pattern>/connector</url-pattern>
   </servlet-mapping> 
-
-  <servlet-mapping>
-    <servlet-name>DisplayJCRContent</servlet-name>
-    <url-pattern>/jcr/*</url-pattern>
-  </servlet-mapping>
 
   <servlet-mapping>
     <servlet-name>RestServer</servlet-name>
