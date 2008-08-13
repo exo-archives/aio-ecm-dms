@@ -68,8 +68,9 @@ public class UICategoriesSelectPanel extends UIContainer{
       UISelectedCategoriesGrid uiSelectedCategoriesGrid = uiCategoriesContainer.getChild(UISelectedCategoriesGrid.class);
 
       String value = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      System.out.println("========> value: "+ value);
-      uiSelectedCategoriesGrid.addCategory(value);
+      if(!uiSelectedCategoriesGrid.getSelectedCategories().contains(value)) {
+        uiSelectedCategoriesGrid.addCategory(value);
+      }
       uiSelectedCategoriesGrid.updateGrid();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSelectedCategoriesGrid) ;
     }
