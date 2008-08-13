@@ -9,11 +9,6 @@
 /*############################## -- UIMetadataManager-- ########################*/
 
 .UIECMAdminPortlet .UIMetadataManager  {
-  border: 1px solid red;
-}
-
-.UIECMAdminPortlet .UIMetadataList .UIGrid td {
-	padding: 4px;
 }
 
 .UIECMAdminPortlet .MetadataInfo .GridTitleBar {

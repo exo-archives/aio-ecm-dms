@@ -1,5 +1,5 @@
 <% uiform.begin() %>
-	<div class="HorizontalLayout" style="border: none;">
+	<div class="HorizontalLayout">
 	  <table class="UIFormGrid">
 	  <% 
 	    for(field in uiform.getChildren()) { 

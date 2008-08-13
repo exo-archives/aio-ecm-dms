@@ -9,7 +9,6 @@
 @import url("../../../icons/DefaultStylesheet.css");
 @import url("UIMetadataManager/DefaultStylesheet.css");
 @import url("UINodeTypeManager/DefaultStylesheet.css");
-@import url("UIDriveManager/DefaultStylesheet.css");
 
 .UIWindow .UIECMAdminPortlet {
 	border: none;
@@ -34,20 +33,6 @@
 .UIECMAdminPortlet .UIForm td.FieldComponent .textarea {
 	height: 350px ;
 	width: 450px;
-}
-
-.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm  {
-	padding: 10px;
-}
-
-.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .HorizontalLayout  {
-	padding-top: 10px;
-	background: #F7F7F7;
-}
-
-.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm .FormContainer  {
-	width: 500px;
-	margin: auto;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl {
@@ -82,6 +67,8 @@
 
 .UIECMAdminPortlet .UISelect .UIForm .HorizontalLayout {
 	padding: 0px;
+	background: none;
+	border: none;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect .selectbox {
@@ -153,14 +140,6 @@
 
 .UIRepositoryFormContainer .UIWorkspaceWizardContainer { 
 	padding: 10px 5px;
-}
-
-.UIECMAdminPortlet .UIGroupMembershipSelector .GroupSelector {
-	width: 250px;
-}
-
-.UIECMAdminPortlet .UIGroupMembershipSelector .MembershipSelector {
-	margin-left: 255px;
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard {
@@ -459,73 +438,21 @@
   padding: 2px 0px 0px 0px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .DriveInputSet .UIFormInputSetWithAction .FieldLabel {
-  width: 140px;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .UIFormInputSet {
-	width: 450px;
-	margin: auto;
-}
-
 .UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
 	width: auto;
 }
 
-.UIECMAdminPortlet .UIDriveManager .rootNodeInfo .FormContainer {
-	padding: 0px;
+.UIECMAdminPortlet .UIDriveManager .rootNodeInfo .UIFormGrid {
+	width: 100%;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIFormTabPane {
-  width: 95% ;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIDriveList {
-  margin-top: 5px ;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIDriveForm  .FormContainer {
-  width: 500px ;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIDriveForm .FormContainer {
-  width: 500px ;
-  margin: auto;
+.UIECMAdminPortlet .UIDriveManager .UIFormGrid {
+	width: 95%;
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIcon16x16 {
   float: none;
   margin-left: 5px;
-}
-
-/*############################## -- UIViewManager -- ########################*/
-.UIECMAdminPortlet .UIViewManager {
-  height: 300px;
-}
-
-.UIECMAdminPortlet .UIViewManager .UIPopupWindow .WorkingArea {
-	padding: 0px 10px;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIViewList {
-  margin-top: 5px;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
-  width: 95%;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIViewForm .FormContainer {
-  width: 500px ;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UITabForm .FormContainer {
-  width: 500px ;
-  margin: auto;
 }
 
 /*############################## -- ECMTemplate -- ########################*/
@@ -686,25 +613,20 @@
 	width: 95%;
 }
 
+/*############################## -- UITaxonomyManager  -- ########################*/
+
+.UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm  {
+	padding: 10px;
+}
+
 /*############################## -- UIFolksonomyManager  -- ########################*/
 
 .UIECMAdminPortlet .UIFolksonomyManager {
   padding: 2px 0px 0px 0px;
 }
 
-.UIFolksonomyManager .UITagStyleForm {
-	width: 96%;
-	margin: 10px auto;
-}
-
-.UIFolksonomyManager .UITagStyleForm .HorizontalLayout {
-	padding-top: 10px;
-	background: #f7f7f7;
-}
-
-.UIFolksonomyManager .UITagStyleForm .UIForm .textarea {
-	height: 350px ;
-	width: 95%;
+.UIECMAdminPortlet .UIFolksonomyManager .UITagStyleForm {
+	padding: 10px;
 }
 
 /*----------------------------UIDialogTab-------------------------------*/
