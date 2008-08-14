@@ -172,9 +172,8 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       }
       QueryResult queryResult = null ;
       try {
-        queryResult = queryService.execute(queryPath, wsName, uiQuery.repositoryName_,SessionsUtils.getSessionProvider()) ;
-      } catch(AccessDeniedException ace) {
-        queryResult = queryService.execute(queryPath, wsName, uiQuery.repositoryName_,SessionsUtils.getSystemProvider()) ;
+        queryResult = queryService.execute(queryPath, wsName, uiQuery.repositoryName_,
+            SessionsUtils.getSystemProvider(), uiQuery.getCurrentUserId()) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.query-invalid", null, 
                                                 ApplicationMessage.WARNING)) ;

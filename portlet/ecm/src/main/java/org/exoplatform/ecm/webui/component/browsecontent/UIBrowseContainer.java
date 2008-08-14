@@ -364,7 +364,7 @@ public class UIBrowseContainer extends UIContainer {
     String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"") ;
     String workspace = getWorkSpace() ;
     String repository = getRepository();
-    return queryService.execute(queryPath, workspace, repository, getSystemProvider());
+    return queryService.execute(queryPath, workspace, repository, getSystemProvider(), getSession().getUserID());
   }
   
   public boolean nodeIsLocked(Node node) throws Exception {
