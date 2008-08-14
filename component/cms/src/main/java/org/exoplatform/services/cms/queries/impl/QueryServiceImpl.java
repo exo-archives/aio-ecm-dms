@@ -297,7 +297,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     session.logout();
   }
   
-  public QueryResult execute(String queryPath, String workspace, String repository,SessionProvider provider) throws Exception {
+  public QueryResult execute(String queryPath, String workspace, String repository,SessionProvider provider, String userId) throws Exception {
     Session session = getSession(repository,provider);    
     Node queryNode = (Node)session.getItem(queryPath) ;    
     if(queryNode.hasProperty("exo:cachedResult")){
@@ -308,17 +308,17 @@ public class QueryServiceImpl implements QueryService, Startable{
         QueryResult result = (QueryResult)queryCache.get(key) ;
         if (result != null) return result ;
         Session querySession = getSession(repository,workspace,provider) ;        
-        result = execute(querySession,queryNode) ;
+        result = execute(querySession,queryNode, userId) ;
         queryCache.put(key, result) ;
         return result ;      
       }
     }
     Session querySession = getSession(repository,workspace,provider) ;        
-    return execute(querySession,queryNode);
+    return execute(querySession,queryNode, userId);
   }
   
-  private QueryResult execute(Session session,Node queryNode) throws Exception {
-    String statement = this.computeStatement(session, queryNode.getProperty("jcr:statement").getString());
+  private QueryResult execute(Session session,Node queryNode, String userId) throws Exception {
+    String statement = this.computeStatement(queryNode.getProperty("jcr:statement").getString(), userId);
     String language = queryNode.getProperty("jcr:language").getString();
     Query query = session.getWorkspace().getQueryManager().createQuery(statement,language);
     return query.execute();
@@ -336,13 +336,12 @@ public class QueryServiceImpl implements QueryService, Startable{
    * @param session reference to the JCR Session
    * @return the processed String, with replaced tokens
    */
-  private String computeStatement(Session session, String statement) {
+  private String computeStatement(String statement, String userId) {
 
     // The returned computed statement
     String ret = statement;
       
     // Replace ${UserId}$
-    String userId = session.getUserID();
     ret = ret.replace("${UserId}$",userId);
     
     // Replace ${Date}$

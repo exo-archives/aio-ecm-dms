@@ -364,7 +364,7 @@ public class UIBrowseContainer extends UIContainer {
     String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"") ;
     String workspace = getWorkSpace() ;
     String repository = getRepository();
-    return queryService.execute(queryPath, workspace, repository, getSystemProvider());
+    return queryService.execute(queryPath, workspace, repository, getSystemProvider(), getSession().getUserID());
   }
   
   public boolean nodeIsLocked(Node node) throws Exception {
@@ -619,7 +619,9 @@ public class UIBrowseContainer extends UIContainer {
       session = getSystemProvider().getSession(workspace,manageableRepository) ;
     } else {
       if(SessionsUtils.isAnonim()) {
+        //TODO Anonim Session - Failed if we use AnonimProvider
         session = getAnonimProvider().getSession(workspace,manageableRepository) ;
+//        session = getSystemProvider().getSession(workspace,manageableRepository) ;
       } else {
         session = getSessionProvider().getSession(workspace,manageableRepository) ; 
       }
@@ -1108,6 +1110,7 @@ public class UIBrowseContainer extends UIContainer {
     }
     return false ;
   }  
+//  protected void setRootNode(Node node) { this.rootNode_ = node ; }
   
   protected void setRootPath(String rootPath) { rootPath_ = rootPath ; }
   

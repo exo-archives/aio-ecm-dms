@@ -28,8 +28,7 @@ public interface QueryService {
   
   public String getRelativePath();  
   public List<Query> getQueries(String userName, String repository,SessionProvider provider) throws Exception;  
-  public QueryResult execute (String queryPath, String workspace, String repository,SessionProvider provider) throws Exception;
-  
+  public QueryResult execute (String queryPath, String workspace, String repository,SessionProvider provider, String userId) throws Exception;
   public void addQuery(String queryName, String statement, String language, String userName, String repository) throws Exception;  
   public void removeQuery(String queryPath, String userName, String repository) throws Exception;  
   public void addSharedQuery(String queryName, String statement, String language, String[] permissions, boolean cachedResult, String repository) throws Exception;
