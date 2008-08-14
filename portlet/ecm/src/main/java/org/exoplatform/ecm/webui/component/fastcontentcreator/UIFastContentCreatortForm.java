@@ -91,6 +91,9 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
     String repository = getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
     try {
       resetScriptInterceptor() ;
+      if(SessionsUtils.isAnonim()) {
+        return templateService.getTemplatePathByAnonymous(true, documentType_, repository);
+      }
       return templateService.getTemplatePathByUser(true, documentType_, userName, repository) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
