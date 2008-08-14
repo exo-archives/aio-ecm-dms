@@ -89,6 +89,7 @@ public class DialogFormFields extends UIForm {
   protected boolean isRemovePreference_ = false ;
   private String nodePath_ ;
   private String childPath_ ;
+  protected boolean isShowingComponent_ = false;
 
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
   private List<String> postScriptInterceptor_ = new ArrayList<String>() ;
@@ -267,7 +268,7 @@ public class DialogFormFields extends UIForm {
     else uiInput.setEditable(true) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
-    if(getNode() != null && !isRemovePreference_) {
+    if(getNode() != null && !isShowingComponent_ && !isRemovePreference_) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
         uiInput.setValue(getNode().getName()) ;
         uiInput.setEditable(false) ;
@@ -282,7 +283,7 @@ public class DialogFormFields extends UIForm {
         }
       } 
     }
-    if(isNotEditNode_ && !isRemovePreference_) {
+    if(isNotEditNode_ && !isShowingComponent_ && !isRemovePreference_) {
       if(getChildNode() != null) {
         uiInput.setValue(getPropertyValue(jcrPath)) ;
       } else if(getChildNode() == null && jcrPath.equals("/node") && getNode() != null) {
@@ -346,7 +347,7 @@ public class DialogFormFields extends UIForm {
           uiMulti.setValue(valueList) ;
         }
       }
-      if(getNode() != null) {
+      if(getNode() != null && !isShowingComponent_ && !isRemovePreference_) {
         String propertyPath = jcrPath.substring("/node/".length()) ;
         if(getNode().hasProperty(propertyPath)) {
           Value[] values = getNode().getProperty(propertyPath).getValues() ;
@@ -379,7 +380,7 @@ public class DialogFormFields extends UIForm {
     if("password".equals(type)) uiInput.setType(UIFormStringInput.PASSWORD_TYPE) ;
     if("false".equals(editable)) uiInput.setEditable(false) ;
     else uiInput.setEditable(true) ;
-    if(getNode() != null) {
+    if(getNode() != null && !isShowingComponent_ && !isRemovePreference_) {
       if(jcrPath.equals("/node") && (editable.equals("false") || editable.equals("if-null"))) {
         Node parentNode = getNode().getParent() ;
         if(parentNode != null && parentNode.getName().equals("languages")) {
@@ -393,7 +394,7 @@ public class DialogFormFields extends UIForm {
         uiInput.setValue(getNode().getProperty(propertyName).getValue().getString()) ;
       } 
     }
-    if(isNotEditNode_) {
+    if(isNotEditNode_ && !isShowingComponent_ && !isRemovePreference_) {
       if(getChildNode() != null) {
         uiInput.setValue(getPropertyValue(jcrPath)) ;
       } else if(getChildNode() == null && jcrPath.equals("/node") && getNode() != null) {
@@ -447,7 +448,7 @@ public class DialogFormFields extends UIForm {
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
 
-    if(getNode() != null) {
+    if(getNode() != null && !isShowingComponent_ && !isRemovePreference_) {
       String value = "";
       if(getNode().hasProperty(getPropertyName(jcrPath))) {
         value = getNode().getProperty(getPropertyName(jcrPath)).getValue().getString() ;
@@ -466,7 +467,7 @@ public class DialogFormFields extends UIForm {
       }
       uiTextArea.setValue(value) ;
     } 
-    if(isNotEditNode_) {
+    if(isNotEditNode_ && !isShowingComponent_ && !isRemovePreference_) {
       if(getChildNode() != null) {
         uiTextArea.setValue(getPropertyValue(jcrPath)) ;
       } else if(getChildNode() == null && jcrPath.equals("/node") && getNode() != null) {
@@ -532,15 +533,17 @@ public class DialogFormFields extends UIForm {
     if(wysiwyg.getValue() == null) wysiwyg.setValue(defaultValue) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
-    if(getNode() != null && (getNode().isNodeType("nt:file") || isNTFile_)) {
-      Node jcrContentNode = getNode().getNode("jcr:content") ;
-      wysiwyg.setValue(jcrContentNode.getProperty("jcr:data").getValue().getString()) ;
-    } else {
-      if(getNode() != null && getNode().hasProperty(getPropertyName(jcrPath))) {
-        wysiwyg.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
+    if(!isShowingComponent_ && !isRemovePreference_) {
+      if(getNode() != null && (getNode().isNodeType("nt:file") || isNTFile_)) {
+        Node jcrContentNode = getNode().getNode("jcr:content") ;
+        wysiwyg.setValue(jcrContentNode.getProperty("jcr:data").getValue().getString()) ;
+      } else {
+        if(getNode() != null && getNode().hasProperty(getPropertyName(jcrPath))) {
+          wysiwyg.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
+        }
       }
     }
-    if(isNotEditNode_) {
+    if(isNotEditNode_ && !isShowingComponent_ && !isRemovePreference_) {
       if(getNode() != null && getNode().hasNode("jcr:content") && getChildNode() != null) {
         Node jcrContentNode = getNode().getNode("jcr:content") ;
         wysiwyg.setValue(jcrContentNode.getProperty("jcr:data").getValue().getString()) ;
@@ -747,11 +750,12 @@ public class DialogFormFields extends UIForm {
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
-    if(getNode() != null && getNode().hasProperty(getPropertyName(jcrPath))) {
+    if(getNode() != null && getNode().hasProperty(getPropertyName(jcrPath)) &&
+        !isShowingComponent_ && !isRemovePreference_) {
       uiDateTime.setCalendar(getNode().getProperty(getPropertyName(jcrPath)).getDate()) ;
     } 
 
-    if(isNotEditNode_) {
+    if(isNotEditNode_ && !isShowingComponent_ && !isRemovePreference_) {
       if(getChildNode() != null) {
         String propertyName = jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ;
         if(getChildNode().hasProperty(propertyName)) {

@@ -222,7 +222,7 @@
       </preference>      
       <preference>
         <name>queryStatement</name>
-        <value>/jcr:root/cms/publications//element(*, exo:article)</value>
+        <value>/jcr:root/Groups/platform/guests/Documents//element(*, exo:article)</value>
         <read-only>false</read-only>
       </preference>      
       <preference>
@@ -333,7 +333,7 @@
       </preference>      
       <preference>
         <name>queryStatement</name>
-        <value>/jcr:root/cms/publications//element(*, exo:article)</value>
+        <value>/jcr:root/Documents/Live//element(*, exo:article)</value>
         <read-only>false</read-only>
       </preference>      
       <preference>
@@ -444,7 +444,7 @@
       </preference>      
       <preference>
         <name>queryStatement</name>
-        <value>/jcr:root/cms/publications//element(*, exo:article)</value>
+        <value>/jcr:root/Groups/platform/users/Documents//element(*, exo:article)</value>
         <read-only>false</read-only>
       </preference>      
       <preference>

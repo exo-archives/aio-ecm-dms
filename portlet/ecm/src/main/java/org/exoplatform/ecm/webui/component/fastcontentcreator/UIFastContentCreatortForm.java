@@ -56,6 +56,7 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 import org.exoplatform.webui.form.UIFormUploadInput;
 
@@ -90,6 +91,9 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
     String repository = getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
     try {
       resetScriptInterceptor() ;
+      if(SessionsUtils.isAnonim()) {
+        return templateService.getTemplatePathByAnonymous(true, documentType_, repository);
+      }
       return templateService.getTemplatePathByUser(true, documentType_, userName, repository) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
@@ -158,7 +162,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
     } catch(Exception e) {
       session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
     }
-    Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties(), session) ;
+    Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties()) ;
     Node homeNode = null;
     Node newNode = null ;
     try {
@@ -236,6 +240,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       UIFastContentCreatortForm uiForm = event.getSource() ;
       UIFastContentCreatorPortlet uiContainer = uiForm.getParent() ;
+      uiForm.isShowingComponent_ = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
@@ -248,6 +253,11 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
         SessionProvider provider = SessionsUtils.getSystemProvider() ;                
         ((UIJCRBrowser)uiComp).setRepository(repositoryName) ;
         ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
+        String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
+        if(wsFieldName != null && wsFieldName.length() > 0) {
+          String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
+          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;      
+        }
         String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
         if(selectorParams != null) {
           String[] arrParams = selectorParams.split(",") ;
@@ -267,7 +277,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
       ((ComponentSelector)uiComp).setComponent(uiForm, new String[]{param}) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
-  }
+  }  
   
   static public class RemoveReferenceActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
@@ -277,7 +287,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
       uiForm.getUIStringInput(fieldName).setValue(null) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
-  }    
+  }  
 
   static public class AddActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
