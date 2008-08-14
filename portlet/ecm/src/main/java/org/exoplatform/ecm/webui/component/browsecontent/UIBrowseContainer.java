@@ -364,7 +364,7 @@ public class UIBrowseContainer extends UIContainer {
     String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"") ;
     String workspace = getWorkSpace() ;
     String repository = getRepository();
-    return queryService.execute(queryPath, workspace, repository, getSystemProvider());
+    return queryService.execute(queryPath, workspace, repository, getSystemProvider(), getSession().getUserID());
   }
   
   public boolean nodeIsLocked(Node node) throws Exception {
@@ -392,8 +392,8 @@ public class UIBrowseContainer extends UIContainer {
     for(String ws : workspaces) {
       try{
         return SessionsUtils.getSystemProvider().getSession(ws, manageRepo).getNodeByUUID(uuid) ;
-      }catch(Exception e) {
-
+      } catch(Exception e) {
+        continue ;
       }      
     }
     return null;
@@ -601,10 +601,10 @@ public class UIBrowseContainer extends UIContainer {
     ManageableRepository manageableRepository = getRepositoryService().getRepository(getRepository()) ;
     if(categoryPath.startsWith("/jcr:system")) {         
       session = getSystemProvider().getSession(workspace,manageableRepository) ;
-    }else {
+    } else {
       if(SessionsUtils.isAnonim()) {
         session = getAnonimProvider().getSession(workspace,manageableRepository) ;
-      }else {
+      } else {
         session = getSessionProvider().getSession(workspace,manageableRepository) ; 
       }
     }
@@ -619,7 +619,9 @@ public class UIBrowseContainer extends UIContainer {
       session = getSystemProvider().getSession(workspace,manageableRepository) ;
     } else {
       if(SessionsUtils.isAnonim()) {
+        //TODO Anonim Session - Failed if we use AnonimProvider
         session = getAnonimProvider().getSession(workspace,manageableRepository) ;
+//        session = getSystemProvider().getSession(workspace,manageableRepository) ;
       } else {
         session = getSessionProvider().getSession(workspace,manageableRepository) ; 
       }
@@ -628,6 +630,7 @@ public class UIBrowseContainer extends UIContainer {
   }
   
   public SessionProvider getSessionProvider() { return SessionsUtils.getSessionProvider() ; }
+  
   @SuppressWarnings("unchecked")
   public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
     List<Node> subDocumentList = new ArrayList<Node>() ;
@@ -1107,6 +1110,7 @@ public class UIBrowseContainer extends UIContainer {
     }
     return false ;
   }  
+//  protected void setRootNode(Node node) { this.rootNode_ = node ; }
   
   protected void setRootPath(String rootPath) { rootPath_ = rootPath ; }
   
