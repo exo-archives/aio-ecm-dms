@@ -38,7 +38,7 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template =  "classpath:groovy/ecm/webui/tree/selectmany/UISelectPathPanel.gtmpl",
     events = {
-        @EventConfig(listeners = UICategoriesSelectPanel.AddCategoryActionListener.class)
+        @EventConfig(listeners = UICategoriesSelectPanel.AddActionListener.class)
     }
 )
 
@@ -61,7 +61,7 @@ public class UICategoriesSelectPanel extends UIContainer{
     return list;
   }
 
-  static public class AddCategoryActionListener extends EventListener<UICategoriesSelectPanel> {
+  static public class AddActionListener extends EventListener<UICategoriesSelectPanel> {
     public void execute(Event<UICategoriesSelectPanel> event) throws Exception {
       UICategoriesSelectPanel uiDefault = event.getSource() ;
       UICategoriesContainer uiCategoriesContainer = uiDefault.getParent();
