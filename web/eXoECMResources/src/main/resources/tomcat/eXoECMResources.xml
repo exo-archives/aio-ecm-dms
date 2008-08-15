@@ -1,2 +1,2 @@
-<Context path="/eXoResources" docBase="../../../eXoProjects/ecm/trunk/web/eXoECMResources/src/main/webapp" 
+<Context path="/eXoECMResources" docBase="../../../eXoProjects/ecm/trunk/web/eXoECMResources/src/main/webapp" 
          debug="0" reloadable="true" />
