@@ -1,0 +1,82 @@
+==============================================
+	eXo ECM 2.1 release notes
+==============================================
+
+- Introduction
+	eXo ECM (Enterprise Content Management) is a solution that values your operational productivity and helps your organization make
+  better decisions faster at the right moment by managing all forms of content and optimizing your business processes.
+  It allows you to transform unstructured content to structured content through all the document processes that are capturing, managing, 
+	storing, preserving and delivering documents while securely distributing it.
+  Furthermore, thanks to an innovative page layout, only content that need to be updated is reloaded, increasing eXo ECM performance.
+
+- System Requirements
+   +) Web Browser: IE6, IE7, FF2, FF3, Safari. Best for Frirefox 2 and Firefox 3
+   +) JVM: version 1.5.0_xx only
+   +) Application Server : Tomcat, JBoss, Jonas, Websphere
+   +) Building Tools: Maven 2.0.6 and up
+
+- Complete list of issues fixed in eXo ECM 2.1
+
+** Bug
+    * [ECM-1102] - hitting enter in the search does something strange
+    * [ECM-1630] - Category and directory: add Ok in file explorer but browse impossible
+    * [ECM-1924] - [Unknown error] when delete new repository
+    * [ECM-1925] - I ever have a problem when I try to create audit nodes 
+    * [ECM-1938] - Portlet preferences don't save template choice
+    * [ECM-1960] - Do not refresh to display version's information of View
+    * [ECM-1970] - In IE6+7: error in background when move mini calendar
+    * [ECM-2025] - Exception when do actions in 2 same name File Plan
+    * [ECM-2040] - Can not add an action that same name with existing node
+    * [ECM-2056] - Unknown error when select Tag cloud in special case
+    * [ECM-2069] - demo user cannot upload a picture in fckeditor
+    * [ECM-2062] - Error with relation document when there's another one same name
+    * [ECM-2074] - Exception when select node that was uploaded an image in fckeditor while image was deleted
+    * [ECM-2096] - [Unknown error] when create Repository in special case
+    * [ECM-2115] - Allow text properties of children nodes to be set in an ECM edit template
+    * [ECM-2116] - Cannot display an nt:file document from a search result panel
+    * [ECM-2117] - ECM Document templates changed by the user are overwritten when eXo is restarted
+    * [ECM-2118] - Issue while XML importing a node type that has a reference property
+    * [ECM-2126] - 'msg' message when delete node while its parent is locked
+    * [ECM-2128] - Use uuid instead of paths in the JCR File Explorer upload dialog
+    * [ECM-2179] - "+" replace spaces in the file name when downloading a binary file
+    * [ECM-2180] - UI issue when adding ECM Admin in a tab
+    * [ECM-2181] - Exception when using AutoVersioning action
+    * [ECM-2202] - Performance issue while displaying search results
+    * [ECM-2208] - JCR File Explorer contextual menus do not display when browsing a new repository
+    * [ECM-2298] - sql clause "order by" fails when written in upper case
+    * [ECM-2304] - modifications not kept when edit a reference field in edit document window
+    * [ECM-2305] - set BC configuration in portlet-preferences.xml throws PortletModeException when process this portlet
+    * [ECM-2307] - Can not enrol node
+    * [ECM-2313] - Nothing happen when delete workspace has the same name with deleted workspaces
+    * [ECM-2320] - Error in showing content of document after viewing related document
+    * [ECM-2328] - IE6: Error when view content of document
+    * [ECM-2343] - Can not see action which created by Manager Action when right click on child node
+    * [ECM-2344] - Throw exception when add document for node after add 1 workflowAction for this node
+    * [ECM-2346] - [Unknown error] when do simple search with  some special characters
+    * [ECM-2353] - Error in [Select user] form when add permission for user to node
+    * [ECM-2364] - Cannot choose folder type in "Add folder" action when language is French
+    * [ECM-2371] - Cannot access WebDAV in 2.1
+    * [ECM-2373] - Can not edit document in Categorized Documents Center drive
+    * [ECM-2379] - User can see nodes in private drive of other users in Content Browser in special case
+    * [ECM-2388] - Backport the bug fix with workflow to 2.1 and trunk
+    * [ECM-2397] - IE6: Error in displaying [System files] drive of File Explorer
+    * [ECM-2398] - Lost border of TabsContainer in Content Browser
+    * [ECM-2400] - Error in displaying File Explorer after do search
+    * [ECM-2406] - Error in [Ideas] when user doesn't login
+    * [ECM-2341] - Error when add relation for node
+    * [ECM-2333] - Can not unlock sub node after rename parent node
+
+** Improvement
+    * [ECM-188] - view template for Content Browser usecase
+    * [ECM-1138] - grey the button save if there is no uploaded document yet
+    * [ECM-1837] - back button does not return to the drive list
+    * [ECM-1857] - chnage some text in the commenting UI
+    * [ECM-2174] - Support widcard search - fuzzy search - synonym search
+		* [ECM-2399] - List documents when config for CB using Created Documents query
+
+- Other resources and links
+     Company site        http://www.exoplatform.com
+     Community JIRA      http://jira.exoplatform.org
+     Comminity site      http://www.exoplatform.org
+     Developers wiki     http://wiki.exoplatform.org
+     Documentation       http://docs.exoplatform.org 
