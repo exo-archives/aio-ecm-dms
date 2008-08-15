@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
@@ -26,6 +27,11 @@ import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.services.cms.comments.CommentsService;
+import org.exoplatform.services.cms.queries.impl.NewUserConfig.User;
+import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.organization.UserHandler;
+import org.exoplatform.services.organization.UserProfile;
+import org.exoplatform.services.organization.UserProfileHandler;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -39,6 +45,7 @@ import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormWYSIWYGInput;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.validator.NullFieldValidator;
 
 /**
@@ -65,13 +72,23 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
   private Node document_ ;
   
   public UICommentForm() throws Exception {
-    addUIFormInput(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(NullFieldValidator.class).addValidator(EmailAddressValidator.class)) ;
-    addUIFormInput(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
-    addUIFormInput(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null, true)) ;
+  
   }
 
+  private void prepareFields() throws Exception{
+	  Node node = getDocument();
+	  Session session = node.getSession();
+	  String userID = session.getUserID();
+	  if(userID == null || userID.length() == 0){
+		addUIFormInput(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
+		addUIFormInput(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
+	  } 
+	  addUIFormInput(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null, true).addValidator(MandatoryValidator.class)) ;
+  }
+  
   public void activate() throws Exception {
     document_ = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
+    prepareFields();
   }
   
   public void deActivate() throws Exception {
@@ -90,10 +107,23 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
   public static class SaveActionListener extends EventListener<UICommentForm>{
     public void execute(Event<UICommentForm> event) throws Exception {
       UICommentForm uiForm = event.getSource() ;
-      String name = event.getRequestContext().getRemoteUser() ;
-      if(name == null || name.trim().length() == 0) name = "anonymous" ;
-      String email = uiForm.getUIStringInput(FIELD_EMAIL).getValue() ;
-      String website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue() ;
+      String userName = event.getRequestContext().getRemoteUser() ;
+      String website = null;
+      String email = null;
+      if(userName == null || userName.trim().length() == 0){
+    	  userName = "anonymous" ;
+    	  website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue() ;
+    	  email = uiForm.getUIStringInput(FIELD_EMAIL).getValue();
+      }else{
+    	  OrganizationService organizationService = uiForm.getApplicationComponent(OrganizationService.class);
+          UserProfileHandler profileHandler = organizationService.getUserProfileHandler();
+          UserHandler userHandler = organizationService.getUserHandler();
+          org.exoplatform.services.organization.User user = userHandler.findUserByName(userName);
+          UserProfile userProfile = profileHandler.findUserProfileByName(userName);
+          website = userProfile.getAttribute("user.business-info.online.uri");
+          email = user.getEmail();
+      }
+    
       String comment = (String)uiForm.<UIFormInputBase>getUIInput(FIELD_COMMENT).getValue() ;
       if(comment == null || comment.trim().length() == 0) {
         throw new MessageException(new ApplicationMessage("UICommentForm.msg.content-null", null, 
@@ -104,7 +134,7 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
         String language = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
         getChild(UIDocumentContainer.class).getChild(UIDocumentInfo.class).getLanguage() ;
         CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ; 
-        commentsService.addComment(uiForm.document_, name, email, website, comment, language) ;
+        commentsService.addComment(uiForm.document_, userName, email, website, comment, language) ;
       } catch (Exception e) {        
         e.printStackTrace() ;
       }
