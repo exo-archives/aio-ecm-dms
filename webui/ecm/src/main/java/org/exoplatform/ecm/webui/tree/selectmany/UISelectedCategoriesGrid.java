@@ -129,7 +129,6 @@ public class UISelectedCategoriesGrid extends UIGrid {
       String returnField = uiCategoriesSelector.getReturnFieldName();
       List<String> selectedCategories = uiSelectedCategoriesGrid.getSelectedCategories();
       ((UISelectable)uiCategoriesSelector.getSourceComponent()).doSelect(returnField, selectedCategories);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSelectedCategoriesGrid);
     }
   }
 }
