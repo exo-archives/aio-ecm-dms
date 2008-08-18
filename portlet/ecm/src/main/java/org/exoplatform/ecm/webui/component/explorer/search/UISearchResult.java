@@ -24,12 +24,17 @@ import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
-import javax.jcr.NodeIterator;
+import javax.jcr.Session;
+import javax.jcr.Value;
 import javax.jcr.query.QueryResult;
+import javax.jcr.query.Row;
+import javax.jcr.query.RowIterator;
 
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.impl.core.JCRPath;
+import org.exoplatform.services.jcr.impl.core.SessionImpl;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -67,13 +72,15 @@ public class UISearchResult extends UIContainer {
   private boolean isQuickSearch_ = false;
   private UIQueryResultPageIterator uiPageIterator_;
   private List<Node> currentListNodes_ = new ArrayList<Node>();
+  private List<Row> currentListRows_ = new ArrayList<Row>();
   private int currentAvailablePage_ = 0;
   private boolean isEndOfIterator_ = false;
   private static String iconDate = "BlueUpArrow";
   private static String iconName = "";
   private static String iconType = "";
+  private static String iconScore = "";
   static private int PAGE_SIZE = 10;
-
+  
   public UISearchResult() throws Exception {
     uiPageIterator_ = addChild(UIQueryResultPageIterator.class, null, null);
   }
@@ -91,47 +98,97 @@ public class UISearchResult extends UIContainer {
     return uiPageIterator_.getCurrentPageData();    
   }
 
-  private void addNode(List<Node> listNodes, Node node) throws Exception {
+  private void addNode(List<Node> listNodes, Node node, List<Row> listRows, Row r) throws Exception {
     List<Node> checkList = new ArrayList<Node>();
     if (flag_) checkList = currentListNodes_; 
     else checkList = listNodes;
     if (node.getName().equals(Utils.JCR_CONTENT)) {
       if (!checkList.contains(node.getParent())) {
         listNodes.add(node.getParent());
+        listRows.add(r);
       }
     } else if (!checkList.contains(node)) {
       listNodes.add(node);
+      listRows.add(r);
     }
   }
   
+  public Session getSession() throws Exception {
+    return getAncestorOfType(UIJCRExplorer.class).getSession();
+  }
+  
   @SuppressWarnings("unchecked")
-  public List<Node> getResultList() throws Exception {    
-    List<Node> listNodes = new ArrayList<Node>();    
+//  public List<Node> getResultList() throws Exception {    
+//    List<Node> listNodes = new ArrayList<Node>();    
+//    long resultListSize = queryResult_.getNodes().getSize();
+//    if (!queryResult_.getNodes().hasNext()) return currentListNodes_;    
+//    if (resultListSize > 100) {
+//      for (NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
+//        Node node = iter.nextNode();
+//        addNode(listNodes, node);
+//        if (!iter.hasNext()) isEndOfIterator_ = true;
+//        if (listNodes.size() == 100) {
+//          currentListNodes_.addAll(listNodes);
+//          break;
+//        }
+//        if (listNodes.size() < 100 && !iter.hasNext()) currentListNodes_.addAll(listNodes);
+//        flag_ = true;
+//      }
+//    } else {
+//      for (NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
+//        Node node = iter.nextNode();        
+//        if (!iter.hasNext()) isEndOfIterator_ = true;
+//        addNode(listNodes, node);
+//      }
+//      currentListNodes_= listNodes;
+//    }
+//    return currentListNodes_;
+//  }
+    
+    
+  public List<Row> getResultList() throws Exception {    
+    List<Node> listNodes = new ArrayList<Node>();
+    List<Row> listRows = new ArrayList<Row>();    
     long resultListSize = queryResult_.getNodes().getSize();
-    if (!queryResult_.getNodes().hasNext()) return currentListNodes_;    
+    if (!queryResult_.getRows().hasNext()) return currentListRows_;    
     if (resultListSize > 100) {
-      for (NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
-        Node node = iter.nextNode();
-        addNode(listNodes, node);
+      for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
+        Row r = iter.nextRow();
+        System.out.println("\n\nsize=========>" +r.getValues().length+ "\n\n");
+        for(Value v : r.getValues()) {
+          System.out.println("\n\nvalue==========>>" +v.getString()+ "\n\n");
+        }
+        String path = r.getValue("jcr:path").getString();
+        JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
+        Node resultNode = (Node)getSession().getItem(nodePath.getAsString(false));
+        addNode(listNodes, resultNode, listRows, r);
         if (!iter.hasNext()) isEndOfIterator_ = true;
         if (listNodes.size() == 100) {
           currentListNodes_.addAll(listNodes);
+          currentListRows_.addAll(listRows); 
           break;
         }
-        if (listNodes.size() < 100 && !iter.hasNext()) currentListNodes_.addAll(listNodes);
-        flag_ = true;
+        if (listNodes.size() < 100 && iter.hasNext()) {
+          currentListNodes_.addAll(listNodes);
+          currentListRows_.addAll(listRows);
+          flag_ = true;
+        }
       }
     } else {
-      for (NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
-        Node node = iter.nextNode();        
+      for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
+        Row r = iter.nextRow();        
         if (!iter.hasNext()) isEndOfIterator_ = true;
-        addNode(listNodes, node);
+        String path = r.getValue("jcr:path").getString();
+        JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
+        Node resultNode = (Node)getSession().getItem(nodePath.getAsString(false));        
+        addNode(listNodes, resultNode, listRows, r);        
       }
       currentListNodes_= listNodes;
+      currentListRows_ = listRows;
     }
-    return currentListNodes_;
+    return currentListRows_;
   }
-    
+  
   public void clearAll() {
     flag_ = false;
     isEndOfIterator_ = false;
@@ -226,20 +283,29 @@ public class UISearchResult extends UIContainer {
         iconDate = "BlueDownArrow";
         iconName = "";
         iconType = "";
-        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());        
+        iconScore = "";
+        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());        
       } else if (objectId.equals("name")) {        
         iconName = "BlueDownArrow";
         iconDate = "";
         iconType = "";
-        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());        
+        iconScore = "";
+        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());        
       } else if (objectId.equals("type")) {
         iconType = "BlueDownArrow";
         iconDate = "";
         iconName = "";
-        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());
+        iconScore = "";
+        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
+      } else if (objectId.equals("score")) {
+//        iconScore = "BlueDownArrow";
+//        iconDate = "";
+//        iconName = "";
+//        iconType = "";
+//        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
       }
       SearchResultPageList pageList = new SearchResultPageList(uiSearchResult.queryResult_, 
-          uiSearchResult.currentListNodes_, PAGE_SIZE, uiSearchResult.isEndOfIterator_);
+          uiSearchResult.currentListRows_, PAGE_SIZE, uiSearchResult.isEndOfIterator_);
       uiSearchResult.currentAvailablePage_ = uiSearchResult.currentListNodes_.size()/PAGE_SIZE;
       uiSearchResult.uiPageIterator_.setSearchResultPageList(pageList);
       uiSearchResult.uiPageIterator_.setPageList(pageList);      
@@ -255,20 +321,29 @@ public class UISearchResult extends UIContainer {
         iconDate = "BlueUpArrow";
         iconName = "";
         iconType = "";
-        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());        
+        iconScore = "";
+        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());        
       } else if (objectId.equals("name")) {        
         iconName = "BlueUpArrow";
         iconDate = "";
         iconType = "";
-        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());        
+        iconScore = "";
+        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());        
       } else if (objectId.equals("type")) {
         iconType = "BlueUpArrow";
         iconDate = "";
         iconName = "";
-        Collections.sort(uiSearchResult.currentListNodes_, new SearchComparator());
+        iconScore = "";
+        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
+      } else if (objectId.equals("score")) {
+//        iconScore = "BlueUpArrow";
+//        iconDate = "";
+//        iconName = "";
+//        iconType = "";
+//        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
       }
       SearchResultPageList pageList = new SearchResultPageList(uiSearchResult.queryResult_, 
-          uiSearchResult.currentListNodes_, PAGE_SIZE, uiSearchResult.isEndOfIterator_);
+          uiSearchResult.currentListRows_, PAGE_SIZE, uiSearchResult.isEndOfIterator_);
       uiSearchResult.currentAvailablePage_ = uiSearchResult.currentListNodes_.size()/PAGE_SIZE;
       uiSearchResult.uiPageIterator_.setSearchResultPageList(pageList);
       uiSearchResult.uiPageIterator_.setPageList(pageList);      
@@ -276,24 +351,35 @@ public class UISearchResult extends UIContainer {
     }
   } 
   
-  private static class SearchComparator implements Comparator<Node> {
-    public int compare(Node node1, Node node2) {
+  private static class SearchComparator implements Comparator<Row> {
+    public int compare(Row row1, Row row2) {
       try {
+//        String path1 = row1.getValue("jcr:path").getString();
+//        JCRPath nodePath1 = ((SessionImpl)session1).getLocationFactory().parseJCRPath(path1);
+//        Node node1 = (Node)session1.getItem(nodePath1.getAsString(false));                        
+//        String path2 = row1.getValue("jcr:path").getString();
+//        JCRPath nodePath2 = ((SessionImpl)session1).getLocationFactory().parseJCRPath(path2);
+//        Node node2 = (Node)session1.getItem(nodePath2.getAsString(false));        
         if (iconDate.equals("BlueUpArrow") || iconDate.equals("BlueDownArrow")) {
-          Date date1 = node1.getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
-          Date date2 = node2.getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
+          Date date1 = row1.getValue(Utils.EXO_CREATED_DATE).getDate().getTime();
+          Date date2 = row2.getValue(Utils.EXO_CREATED_DATE).getDate().getTime();
           if (iconDate.equals("BlueUpArrow")) { return date2.compareTo(date1); }        
           return date1.compareTo(date2);
         } else if (iconName.equals("BlueUpArrow") || iconName.equals("BlueDownArrow")) {
-          String s1 = node1.getName();
-          String s2 = node2.getName();
-          if (iconName.trim().equals("BlueUpArrow")) return s2.compareTo(s1);        
-          return s1.compareTo(s2);
+//          String s1 = node1.getName();
+//          String s2 = node2.getName();
+//          if (iconName.trim().equals("BlueUpArrow")) return s2.compareTo(s1);        
+//          return s1.compareTo(s2);
         } else if (iconType.equals("BlueUpArrow") || iconType.equals("BlueDownArrow")) {
-          String s1 = node1.getProperty("jcr:primaryType").getString();
-          String s2 = node2.getProperty("jcr:primaryType").getString();
+          String s1 = row1.getValue("jcr:primaryType").getString();
+          String s2 = row2.getValue("jcr:primaryType").getString();
           if (iconType.trim().equals("BlueUpArrow")) { return s2.compareTo(s1); }        
           return s1.compareTo(s2);
+        } else if (iconScore.equals("BlueUpArrow") || iconScore.equals("BlueDownArrow")) {
+          Long l1 = row1.getValue("jcr:score").getLong();
+          Long l2 = row2.getValue("jcr:score").getLong();
+          if (iconScore.trim().equals("BlueUpArrow")) { return l2.compareTo(l1); }        
+          return l1.compareTo(l2);
         }
       } catch (Exception e) {        
       }            
