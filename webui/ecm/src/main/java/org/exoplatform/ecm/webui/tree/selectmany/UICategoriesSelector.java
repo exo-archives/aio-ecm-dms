@@ -40,19 +40,11 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
 public class UICategoriesSelector extends UIBaseNodeTreeSelector {
 
-  private String rootCategoryPath;
-  private List<String> existedCategories = new ArrayList<String>();
+  private List<String> existedCategoryList = new ArrayList<String>();
+
   public UICategoriesSelector() throws Exception {
     addChild(UINodeTreeBuilder.class,null,null);
     addChild(UICategoriesContainer.class,null,null);
-  }
-
-  public void setRootCategoryPath(String path) {
-    rootCategoryPath = path;
-  }
-
-  public void setExistedCategories(List<String> list) {
-    this.existedCategories = list;
   }
 
   public void init() throws Exception{
@@ -64,16 +56,23 @@ public class UICategoriesSelector extends UIBaseNodeTreeSelector {
     UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);
     builder.setRootTreeNode(rootCategoryTree);
 
-    UISelectedCategoriesGrid categoriesGrid = getChild(UISelectedCategoriesGrid.class);
-//  categoriesGrid.setSelectedCategories(existedCategories);
+    UICategoriesContainer uiCategoriesContainer = getChild(UICategoriesContainer.class);
+    UISelectedCategoriesGrid categoriesGrid = uiCategoriesContainer.getChild(UISelectedCategoriesGrid.class);
+    categoriesGrid.setSelectedCategories(existedCategoryList);
   }
-
-
 
   public void onChange(Node currentNode, Object context) throws Exception {
     UICategoriesContainer uiCategoriesContainer = getChild(UICategoriesContainer.class);
     UICategoriesSelectPanel uiCategoriesSelectPanel = uiCategoriesContainer.getChild(UICategoriesSelectPanel.class);
     uiCategoriesSelectPanel.setParentNode(currentNode);
+  }
+
+  public List<String> getExistedCategoryList() {
+    return existedCategoryList;
+  }
+
+  public void setExistedCategoryList(List<String> existedCategoryList) {
+    this.existedCategoryList = existedCategoryList; 
   }
 
 }

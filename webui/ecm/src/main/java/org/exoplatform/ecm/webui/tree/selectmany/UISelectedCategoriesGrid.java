@@ -22,6 +22,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIGrid;
@@ -45,30 +46,31 @@ import org.exoplatform.webui.event.EventListener;
 public class UISelectedCategoriesGrid extends UIGrid {
 
   public final static String[] BEAN_FIELD = {"categoryName"} ;
-  public final static String[] ACTIONS = {"Delete"} ;
+  public final static String[] BEAN_ACTIONS = {"Delete"} ;
+  public final static String[] ACTIONS = {"SaveCategories"} ;
 
   private List<String> selectedCategories = new ArrayList<String>();
 
-  public UISelectedCategoriesGrid() throws Exception {
-    configure("categoryPath", BEAN_FIELD, ACTIONS);
-    getUIPageIterator().setId("UISelectedCategoriesGrid");
 
+  public UISelectedCategoriesGrid() throws Exception {
+    getUIPageIterator().setId("UICategoriesGrid");
+    configure("categoryPath", BEAN_FIELD, BEAN_ACTIONS);
   }
 
   public void updateGrid () throws Exception {
-    List<CategoryData> actions = new ArrayList<CategoryData>();
+    List<CategoryData> categoryDataList = new ArrayList<CategoryData>();
     for(String categoryPath: getSelectedCategories()) {
       CategoryData bean = new CategoryData();
       bean.setCategoryName(categoryPath.substring(categoryPath.lastIndexOf("/")+1));
       bean.setCategoryPath(categoryPath);
-      actions.add(bean);
+      categoryDataList.add(bean);
     }
-    Collections.sort(actions,new CategoryComparator());
-    ObjectPageList objPageList = new ObjectPageList(actions,10) ;
+    Collections.sort(categoryDataList,new CategoryComparator());
+    ObjectPageList objPageList = new ObjectPageList(categoryDataList,10) ;
     getUIPageIterator().setPageList(objPageList) ;
   }
 
-  public String[] getActions() {return new String[] {"Add"} ;}
+  public String[] getActions() {return ACTIONS ;}
 
   public void addCategory(String categoryPath) {
     selectedCategories.add(categoryPath);
@@ -83,25 +85,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
   }
 
   public void setSelectedCategories(List<String> list) {
-    this.selectedCategories = list;
-  }
-
-  static public class DeleteActionListener extends EventListener<UISelectedCategoriesGrid> {
-    public void execute(Event<UISelectedCategoriesGrid> event) throws Exception {
-//    UISelectedCategoriesGrid uiDefault = event.getSource() ;
-//    String value = event.getRequestContext().getRequestParameter(OBJECTID) ;
-//    uiDefault.removeCategory(value);
-//    re render selected categories list
-    }
-  }
-
-  static public class SaveCategoriesActionListener extends EventListener<UISelectedCategoriesGrid> {
-    public void execute(Event<UISelectedCategoriesGrid> event) throws Exception {
-//    UISelectedCategoriesGrid uiDefault = event.getSource() ;
-//    UIBaseNodeTreeSelector uiTreeSelector = uiDefault.getAncestorOfType(UIBaseNodeTreeSelector.class);
-//    String returnField = uiTreeSelector.getReturnFieldName();
-//    ((UISelectable)uiTreeSelector.getSourceComponent()).doSelect(returnField,uiDefault.getSelectedCategories());
-    }
+    this.selectedCategories = new ArrayList<String>(list);
   }
 
   public class CategoryData {
@@ -125,6 +109,27 @@ public class UISelectedCategoriesGrid extends UIGrid {
   static public class CategoryComparator implements Comparator<CategoryData> {
     public int compare(CategoryData cData1, CategoryData cData2) {
       return cData1.getCategoryName().compareTo(cData2.getCategoryName());
+    }
+  }
+
+  public static class DeleteActionListener extends EventListener<UISelectedCategoriesGrid> {
+    public void execute(Event<UISelectedCategoriesGrid> event) throws Exception {
+      UISelectedCategoriesGrid uiSelectedCategoriesGrid = event.getSource();
+      String value = event.getRequestContext().getRequestParameter(OBJECTID);
+      uiSelectedCategoriesGrid.removeCategory(value);
+      uiSelectedCategoriesGrid.updateGrid();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSelectedCategoriesGrid);
+    }
+  }
+
+  public static class SaveCategoriesActionListener extends EventListener<UISelectedCategoriesGrid> {
+    public void execute(Event<UISelectedCategoriesGrid> event) throws Exception {
+      UISelectedCategoriesGrid uiSelectedCategoriesGrid = event.getSource();
+      UICategoriesSelector uiCategoriesSelector = uiSelectedCategoriesGrid.getAncestorOfType(UICategoriesSelector.class);
+      String returnField = uiCategoriesSelector.getReturnFieldName();
+      List<String> selectedCategories = uiSelectedCategoriesGrid.getSelectedCategories();
+      ((UISelectable)uiCategoriesSelector.getSourceComponent()).doSelect(returnField, selectedCategories);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSelectedCategoriesGrid);
     }
   }
 }
