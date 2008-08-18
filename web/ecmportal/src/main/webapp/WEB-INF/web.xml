@@ -15,7 +15,7 @@
 
   <context-param>
     <param-name>org.exoplatform.frameworks.web.repositoryMapping</param-name>
-    <param-value>/jcr</param-value>
+    <param-value>/rest/jcr</param-value>
     <description>Repository mapping path. If there are servlet/filter for desplaying internal imeges/links inside html documents it should have the same mapping</description>
   </context-param>
 
