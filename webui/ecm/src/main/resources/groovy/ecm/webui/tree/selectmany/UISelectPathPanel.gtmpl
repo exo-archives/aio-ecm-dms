@@ -40,8 +40,8 @@
 				          <div class="Text">$nodeName</div>
 				        </td>
 				        <td>
-			              <a href="<%=uicomponent.event("AddCategory", node.getPath())%>">
-			                <div class="Select16x16Icon" style="margin-left:15px;"></div>
+			              <a href="<%=uicomponent.event("Select", node.getPath())%>">
+			                <div class="Select16x16Icon" style="margin-left:15px;"><%=_ctx.appRes("UITreeList.action")%></div>
 			              </a>
 				        </td>
 				      </tr>
