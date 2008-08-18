@@ -25,3 +25,9 @@
 	float: none;
 	margin: 5px;
 }
+
+.Select16x16Icon {
+ width: 16px; height: 16px;
+ background-image: url('images/SelectPage.gif');
+ cursor: pointer;
+}
