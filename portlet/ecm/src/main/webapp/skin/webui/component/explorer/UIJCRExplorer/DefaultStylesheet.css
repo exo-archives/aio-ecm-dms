@@ -315,7 +315,6 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
 	height: 18px;
   background: url('/eXoECMResources/skin/images/event/EventFrameBG.gif') repeat-x;
-  border: 1px solid red;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .HeaderBG {
@@ -441,31 +440,31 @@
 
 /*================================.UIExportNode=================================*/
 
+.UIJCRExplorerPortlet .UIExportNode {
+	padding: 10px;
+}
+
 .UIJCRExplorerPortlet .UIExportNode .UIFormGrid {
-  width: 400px;
-  margin: auto;
+	width: auto;
+	margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIExportNode .UIForm .HorizontalLayout {
-  border: none;
+.UIJCRExplorerPortlet .UIExportNode .UIFormGrid .FieldLabel {
+	width: auto;
 }
-
-.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle {
-  border: solid 1px #b7b7b7;
-}
-
 /*================================.UIImportNode=================================*/
 
-.UIJCRExplorerPortlet .UIImportNode .UIForm .HorizontalLayout {
-  border: none;
+.UIJCRExplorerPortlet .UIImportNode {
+	padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle {
-  border: solid 1px #b7b7b7;
+.UIJCRExplorerPortlet .UIImportNode .UIFormGrid {
+	width: auto;
+	margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .FileNameLabel {
-  width: auto;
+.UIJCRExplorerPortlet .UIImportNode .UIFormGrid .FieldLabel {
+	width: auto;
 }
 
 /*================================UIReferencesList=================================*/
@@ -528,24 +527,8 @@
 }
 
 /*=================================UICategoryManager==============================*/
-
-.UIJCRExplorer .UIWorkspaceList .UIFormGrid select {
-	width: 100px;
-}
-
-.UIJCRExplorerPortlet .UIRelationManager .UITabPane {
-	width: 95%;
-	margin: 10px auto;
-	padding: 0px;
-}
-
 .UIJCRExplorer .UIRenameForm {
 	padding: 10px;
-}
-
-.UIJCRExplorer .UIRenameForm .HorizontalLayout {
-	background: #efefef;
-	padding-top: 10px;
 }
 
 .UIJCRExplorer .UIRenameForm .FormContainer {
@@ -605,18 +588,6 @@
   padding: 5px 0px 10px 0px;
   font-style: italic;
   margin: auto;
-}
-
-/*====================================UIPropertyTab==================================*/
-
-.UIJCRExplorer .UIPropertyTab {
-	width: 95%;
-	margin: auto;
-	padding: 10px 0px;
-}
-
-.UIJCRExplorer .UIJCRExplorer .UIPropertyForm .HorizontalLayout {
-  border: none;
 }
 
 /*====================================MultiValueContainer==================================*/

@@ -102,11 +102,6 @@
 	padding: 10px;
 }
 
-.UIECMAdminPortlet .UIRepositoryForm .HorizontalLayout {
-	background: #efefef;
-	padding-top: 10px;
-}
-
 .UIECMAdminPortlet .UIRepositoryForm .FormContainer {
 	width: 510px;
 	margin: auto;
@@ -138,14 +133,8 @@
 
 /*=====================================UIWorkspaceWizardContainer==========================*/
 
-.UIRepositoryFormContainer .UIWorkspaceWizardContainer { 
-	padding: 10px 5px;
-}
-
 .UIRepositoryFormContainer .UIWorkspaceWizard {
 	border: 1px solid #b7b7b7;
-	width: 98%;
-	margin: auto;
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIForm .HorizontalLayout .UIFormInputSet {
@@ -457,14 +446,8 @@
 
 /*############################## -- ECMTemplate -- ########################*/
 
-.UIECMAdminPortlet .ECMTemplate .UIECMTemplateList {
-  width: 85px;
-  margin: auto;
-}
-
 .UIECMAdminPortlet .ECMTemplate .ECMTempForm {
-  width: 95%;
-  margin: 10px auto;
+	padding: 10px;
 }
 
 .UIECMAdminPortlet .ECMTemplate .ECMTempForm .HorizontalLayout {
@@ -480,14 +463,8 @@
 
 /*############################## -- CBTemplate -- ########################*/
 
-.UIECMAdminPortlet .CBTemplate .UICBTemplateList {
-  width: 85px;
-  margin: auto;
-}
-
 .UIECMAdminPortlet .CBTemplate .CBTempForm  {
-	width: 95%;
-  margin: 10px auto;
+	padding: 10px;
 }
 
 .UIECMAdminPortlet .CBTemplate .CBTempForm .HorizontalLayout {
@@ -526,17 +503,11 @@
 /*------------------------------UICBScripts------------------------*/
 
 .UIECMAdminPortlet .UIECMScripts  {
-  width: 97%;
-  margin: auto;
+	padding: 10px;
 }
 
 .UIECMScripts .ECMScriptForm {
-  width: 95%;
-  margin: 10px auto;
-}
-
-.UIECMScripts .UIBarStyle .BarStyle2 .MiddleBar {
-
+	padding: 10px;
 }
 
 .UIECMAdminPortlet .UIScriptFilterForm .UIForm .UIFormGrid td.FieldComponent {

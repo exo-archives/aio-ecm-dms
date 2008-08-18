@@ -61,7 +61,7 @@
 }
 
 .UIVersionTreeList .UIGrid td {
-  padding: 0px 0px 0px 7px
+  padding: 0px 0px 0px 7px;
 }
 
 .UIVersionTreeList .UITrees .Node {
@@ -103,48 +103,3 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPublicationContainer .UIFormGrid .FieldComponent {
   padding: 6px;
 }
-
-/***********************************************************************/
-
-.UIDocumentFormController .UISelectDocumentForm {
-  padding-bottom: 10px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .EditFormController {
-	padding: 10px;
-}
-
-.EditFormController .UISelectDocumentForm {
-  padding-bottom: 10px;
-}
-
-
-.UITabPane .UITabContentContainer {
-	background: white none repeat scroll 0 0;
-	border: #AEAEAE solid 1px;
-	padding-top: 1px;
-}
-
-.UITabPane .UITabContentContainer .UITabContent {
-	background: url(UIJCRExplorer/MacSkin/background/Background1x4.png) repeat 0% 0%;
-	border-color: white solid 1px;
-	padding: 15px 7px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {
-	width: auto;
-}
-
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .HorizontalLayout {
-	background: url(UIJCRExplorer/MacSkin/background/Background1x4.png) repeat 0% 0%;
-  border: 1px #B7B7B7 solid;
-  padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIFolderForm .HorizontalLayout {
-	background: url(UIJCRExplorer/MacSkin/background/Background1x4.png) repeat 0% 0%;
-  border: 1px #B7B7B7 solid;
-  padding: 10px;
-}
-
-

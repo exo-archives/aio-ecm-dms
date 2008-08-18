@@ -1,6 +1,6 @@
-<div class="UIFormWithTitle">  
+<div class="UIForm FormLayout">  
 	<% uiform.begin() %>
-  <div class="HorizontalLayout" style="border:0px;">
+  <div class="HorizontalLayout">
   	<table class="UIFormGrid">
   		<tr>
       	<td class="FieldLabel"><%=_ctx.appRes("Cutoffable.dialog.label.cutoff-executed")%></td>

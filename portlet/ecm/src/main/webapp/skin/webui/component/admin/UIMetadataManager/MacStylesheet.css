@@ -9,12 +9,7 @@
 /*############################## -- UIMetadataManager-- ########################*/
 
 .UIECMAdminPortlet .UIMetadataManager  {
-  padding: 2px 0px 0px 8px;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .UITabPane {
-  width: 95%;
-  margin: auto;
+  padding: 5px;
 }
 
 .UIECMAdminPortlet .metadataTypeTab .FormContainer {
@@ -29,7 +24,6 @@
 .UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
   width: 94%;
   height: 350px;
-  padding: 3px;
 }
 
 .UIECMAdminPortlet .UIMetadataManager .MetadataInfo {

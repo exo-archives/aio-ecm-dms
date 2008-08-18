@@ -2,9 +2,9 @@
    String[] hiddenField1 = ["jcrPath=/node/metadata:dc_elementSet", "nodetype=metadata:dc_elementSet", "visible=false"] ; 
    uicomponent.addHiddenField("hiddenInput1", hiddenField1) ;
 %>
-<div class="UIFormWithTitle">  
+<div class="UIForm FormLayout">  
 	<% uiform.begin() %>
-  <div class="HorizontalLayout" style="border:0px;">
+  <div class="HorizontalLayout">
   	<table class="UIFormGrid">
   		<tr>
 	      <td class="FieldLabel">Title</td>

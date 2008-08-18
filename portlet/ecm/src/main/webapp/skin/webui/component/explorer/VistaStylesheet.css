@@ -103,39 +103,16 @@
   padding: 6px;
 }
 
-/***********************************************************************/
+/*******************************************************************************/
+/*===========================DocumentFormController=====================*/
 
-.UIJCRExplorerPortlet .UIDocumentFormController {
-	padding: 13px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .HorizontalLayout {
-	background: #fff;
+.UIDocumentFormController {
 	padding: 10px;
-	border: 1px solid #B7B7B7;
 }
 
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
-  padding: 0px 0px 10px 0px;
+.EditFormController {
+	padding: 10px;
 }
-
-.UIJCRExplorerPortlet .UIJCRExplorer .EditFormController {
-	padding: 13px;
+.UIFolderForm {
+	padding: 10px;
 }
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {
-	width: auto;
-}
-
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .HorizontalLayout {
-  background: #fff;
-  border: 1px #B7B7B7 solid;
-  padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIFolderForm .HorizontalLayout {
-  background: #fff;
-  border: 1px #B7B7B7 solid;
-  padding: 10px;
-}
-

@@ -8,55 +8,14 @@
  
 /*############################## -- UIMetadataManager-- ########################*/
 
-.UIECMAdminPortlet .UIMetadataForm .UIGrid {
-  width: 100% ;
-  border-left: 0px ; border-right: 0px ;
-}
-
-.UIECMAdminPortlet .UIMetadataForm .UIGrid .text {
-  width: 100% ;
-}
-
-.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .UIForm textarea {
-  width: 446px;
-  height: 300px;
-  margin: 0px 0px 0px 25px;
+.UIECMAdminPortlet .UIMetadataManager .Icon16x16 {
+	float: none;
 }
 
 .UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
   width: 92%;
   height: 320px;
   padding: 3px;
-}
-
-.UIECMAdminPortlet .UIMetadataForm .UIFormWithTitle .HorizontalLayout label {
-  width: 100px;
-  margin: 0px 0px 0px 25px;
-  text-align: left;
-}
-
-.UIECMAdminPortlet .UIMetadataManager {
-  width: 97%;
-}
-
-.UIECMAdminPortlet .UIPopupWindow .UIMetadataManager {
-  width: 95%;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .Content .UIMetadataManager{
-  width: 95%;
-  margin: 0px auto 10px auto;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .metadataTypeTab .UIFormInputSet .FormContainer {
-	width: 500px;
-	margin: auto;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .UITabPane{
-  width: 97%;
-  margin: auto;
 }
 
 .UIECMAdminPortlet .MetadataInfo .GridTitleBar {

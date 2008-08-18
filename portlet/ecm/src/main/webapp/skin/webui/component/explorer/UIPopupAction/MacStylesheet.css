@@ -24,11 +24,11 @@
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .HorizontalLayout {
-  padding: 1px;
+  padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UIRemoveLabelForm .HorizontalLayout {
-  padding: 1px;
+  padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .Icon16x16 {
@@ -166,39 +166,6 @@
   padding: 0px 10px;
 }
 
-/*############################## -- UITreeJCRExplorer   -- ##############################*/
-
-.UIJCRExplorerPortlet .Explorer {
-  margin-right: 10px;
-  float: left ;
-  width: 220px ;
-  background: white;
-}
-
-.UIJCRExplorerPortlet .Explorer .ExplorerTree {
-  border: solid 1px #c6c6c9;
-  background: #f3f3f3;
-  padding: 1px;
-}
-
-.UIJCRExplorerPortlet .Explorer .InnerExplorerTree {
-  border: solid 1px #b1b0b0;
-  padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList {
-  margin-left: 240px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList .UIGrid {
-  width: 97%;
-  margin: 0px;
-}
-
-.UIJCRExplorerPortlet .Explorer .ExplorerTree .NodeIcon {
-	padding-left: 25px;
-}
-
 /*############################## -- UIActionManager   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
@@ -218,10 +185,6 @@
 
 /*############################## -- End UIActionManager   -- ##############################*/
 
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UISearchContainer label {
-	line-height: 16px ;
-}
-
 /*############################## -- UIMultiLanguageForm   -- ##############################*/
 .UIJCRExplorerPortlet .UILanguageTypeForm .UIBarStyle {
 	height: 70px ;
@@ -230,7 +193,6 @@
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 
 .UIJCRExplorerPortlet .UIVoteForm {
-  border: solid 1px #b7b7b7;
   padding: 10px;
 }
 
@@ -258,21 +220,21 @@
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .NormalVote {
-  background: url(/ecm/skin/images/vote/VoteBar.gif) no-repeat left -122px;
+  background: url(/eXoECMResources/skin/images/vote/VoteBar.gif) no-repeat left -122px;
   float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
 } 
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .RatedVote {
-  background: url(/ecm/skin/images/vote/VoteBar.gif) no-repeat left -122px;
+  background: url(/eXoECMResources/skin/images/vote/VoteBar.gif) no-repeat left -122px;
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .OverVote {
-  background: url(/ecm/skin/images/vote/VoteBar.gif) no-repeat left -106px;
+  background: url(/eXoECMResources/skin/images/vote/VoteBar.gif) no-repeat left -106px;
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;

@@ -22,12 +22,12 @@
 	overflow: hidden;
 }
 
-.UIECMAdminPortlet .UIFormGrid {
-	width: 100%;
+.UIECMAdminPortlet .Icon16x16 {
+	float: none;
 }
 
-.UIECMAdminPortlet .UITaxonomyWorkingArea {
-  margin-left: 235px;
+.UIECMAdminPortlet .UIFormGrid {
+	width: 100%;
 }
 
 .UIECMAdminPortlet .UITrees .Node .NodeIcon   {
@@ -36,10 +36,6 @@
 
 .UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid {
   width: 93%;
-}
-
-.UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid .Icon16x16 {
-  margin: 0px 0px 0px 15px;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm {
@@ -64,6 +60,12 @@
 	font-size: 11px ;
   background: url('DefaultSkin/background/RepositoryBarBG.gif') repeat-x left top ; 
   height: 34px;
+}
+
+.UIECMAdminPortlet .UISelect .UIForm .HorizontalLayout {
+	background: none;
+	border: none;
+	padding: 0px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea {
@@ -262,13 +264,7 @@
 /*----------------------------UIRepositoryForm -------------------------*/
 
 .UIECMAdminPortlet .UIRepositoryForm  {
-	width: 95%;
-	margin: 10px auto;
-}
-
-.UIECMAdminPortlet .UIRepositoryForm .HorizontalLayout {
-	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
-	padding-top: 10px;
+	padding: 10px;
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .FormContainer {
@@ -312,10 +308,6 @@
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIAction .ActionContainer {
 	margin: 0px;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIWorkspaceWizardContainer {
-	padding: 10px;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
@@ -409,47 +401,6 @@
   margin: auto;
 }
 
-/*############################## -- MultiField  -- ########################*/
-
-.UIECMAdminPortlet .UIDriveManager .UIJCRBrowser {
-	padding: 10px;
-}
-
-.UIECMAdminPortlet .Explorer {
-  float: left ;
-  width: 230px ;
-  background: #f3f3f3;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UITreeList {
-  margin-left: 240px;
-}
-
-.UIECMAdminPortlet .Explorer .InnerExplorerTree {
-  border: solid 1px #b1b0b0;
-  padding: 10px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList {
-	border: solid 1px #b7b7b7;
-	background: #EFEFEF;
-	padding: 5px 0px;
-	margin: 10px 0px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	margin: 0px auto;
-	width: auto;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser .UIWorkspaceList .FieldLabel {
-	width: 100px;
-}
-
-.UIECMAdminPortlet .UIJCRBrowser table {
-	*width: 93.5%;
-}
-
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UIECMAdminPortlet .UINamespaceList {
@@ -484,26 +435,6 @@
   width: 140px;
 }
 
-.UIECMAdminPortlet .UIDriveManager .UIFormTabPane {
-  width: 95%;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .UIFormInputSet {
-  width: 450px;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
-	width: auto;
-}
-
-.UIECMAdminPortlet .UIDriveManager .rootNodeInfo .FormContainer {
-	padding: 0px;
-	background: none;
-	border: none;
-}
-
 .UIECMAdminPortlet .UIDriveManager .UIFormInputSet .UIFormInputSetWithAction .radio {
   width: 20px;
   margin: 0px;
@@ -526,18 +457,9 @@
   margin-top: 5px;
 }
 
-.UIECMAdminPortlet .UIViewContainer .UIFormTabPane {
-  width: 95%;
-  margin: auto;
-}
-
 .UIECMAdminPortlet .UIViewContainer .UIViewForm .FormContainer {
   width: 500px ;
   margin: auto;
-}
-
-.UIECMAdminPortlet .UIViewManager .UIPopupWindow .WorkingArea {
-	padding: 0px 10px;
 }
 
 .UIECMAdminPortlet .UIViewManager .UIFormTabPane {
@@ -569,13 +491,13 @@
 
 .UIECMAdminPortlet .ECMTemplate .ECMTempForm .HorizontalLayout {
   background:  url(MacSkin/background/Background1x4.png) repeat 0%;
-  padding-top: 10px;
+	border: 1px solid #b7b7b7;
+	padding: 10px;
 }
 
 .ECMTempForm .HorizontalLayout .textarea {
   width: 95%;
   height: 300px;
-  padding: 3px;
 }
 
 /*############################## -- CBTemplate -- ########################*/
@@ -599,7 +521,8 @@
 
 .UIECMAdminPortlet .CBTemplate .CBTempForm .HorizontalLayout {
   background:  url(MacSkin/background/Background1x4.png) repeat 0%;
-  padding-top: 10px;
+  padding: 10px;
+  border: 1px solid #b7b7b7;
 }
 /*############################## -- UIScriptManager  -- ########################*/
 
@@ -818,17 +741,8 @@
 }
 /*############################## -- UIFolksonomyManager  -- ########################*/
 
-.UIECMAdminPortlet .UIFolksonomyManager {
-  padding: 2px 0px 0px 0px;
-}
-
 .UIFolksonomyManager .UITagStyleForm {
 	padding: 10px;
-}
-
-.UIFolksonomyManager .UITagStyleForm .HorizontalLayout {
-	background:  url(MacSkin/background/Background1x4.png) repeat 0%;
-	padding-top: 10px;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .textarea {

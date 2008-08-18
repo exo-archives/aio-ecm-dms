@@ -46,13 +46,16 @@
             %>
             	<div class="Text"><%=permissions%></div>
             </td>
-	          <td style="width:80px;">
-	            <a href="<%=uicomponent.event("Edit", node.getPath())%>" title="<%=_ctx.appRes("UIQueriesList.tooltip.Edit")%>">
-	              <div class="Edit16x16Icon" style="margin-left:10px; float: left;"><span></span></div>
-	            </a>
-	            <a href="<%=uicomponent.event("Delete", node.getPath())%>" title="<%=_ctx.appRes("UIQueriesList.tooltip.Delete")%>">
-	              <div class="Delete16x16Icon" style="margin-left:5px;float: left;"><span></span></div>
-	            </a>
+	          <td>
+	          	<div class="ActionContainer" style="margin: 0px auto;">
+	          		<div class="OverflowContainer" style="margin: auto;">
+			            <a href="<%=uicomponent.event("Edit", node.getPath())%>" title="<%=_ctx.appRes("UIQueriesList.tooltip.Edit")%>">
+			              <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Edit16x16Icon">
+			            </a>
+			            <a href="<%=uicomponent.event("Delete", node.getPath())%>" title="<%=_ctx.appRes("UIQueriesList.tooltip.Delete")%>">
+			              <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Delete16x16Icon">
+			            </a>
+		          </div>
 	          </td>	                    
           </tr>
       <%}%>  

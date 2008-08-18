@@ -11,28 +11,9 @@
   background: white;
 }
 
-.UIJCRExplorerPortlet .UITabPane {
-	padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UITabPane {
-	height: auto;
-}
-
-.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle {
-	width: auto;
-	padding: 10px;
-}
-
 .UIJCRExplorerPortlet .UIFormWithTitle {
   margin: 10px auto;
-  border: 1px solid #8D919D;
   width: 95%;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIActionContainer .UIFormWithTitle {
-	border: none;	
-	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
@@ -71,22 +52,6 @@
 
 .UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator .PageIteratorContainer {
 	float: none;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIContextMenuContainer {
-	width: 140px;
-}
-
-.UIJCRExplorerPortlet .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
-	padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
-	padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIFormWithTitle .HorizontalLayout .rootNodeInfo .FormContainer {
-	padding: 0px;
 }
 
 /*############################## -- End UIJCRExplorer -- ##############################*/
@@ -193,9 +158,6 @@
   float: left;
   width: 16px; height: 16px;
   margin: 6px 3px 3px 3px;
-}
-
-.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .ItemLabel {
 }
 
 .UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .SeparatorLine {
@@ -372,9 +334,6 @@
 /*############################## -- END UIDocumentInfo -- ##############################*/
 
 /*############################## -- BEGIN UIFolderForm -- ##############################*/
-.UIJCRExplorerPortlet .UIGrid .ActionContainer a {
-	 width: 24px; height: 24px;
-}
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm .FieldContainer {
 	width: 500px;
@@ -386,32 +345,6 @@
 }
 
 /*############################## -- END UIFolderForm -- ##############################*/
-
-/*===========================DocumentFormController=====================*/
-
-.UIJCRExplorerPortlet .UIDocumentFormController {
- 	padding: 13px 0px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm {
-	padding: 0px 10px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm .UIFormWithTitle {
-	padding: 10px;
-	margin: 10px auto;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
-	margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane {
-	width: 95%;
-	margin: auto;
-	border: 1px solid #8D919D;
-}
-
 /*===========================UIUploadForm====================*/
 
 .UIJCRExplorerPortlet .UIUploadForm .FileNameLabel {
@@ -473,8 +406,6 @@
   border: none;
 }
 
-/*===============================UILanguageTypeForm===================================*/
-
 /*=============================UICommentForm=======================*/
 
 .UIJCRExplorerPortlet .UICommentForm .FieldContainer input {
@@ -510,61 +441,16 @@
   margin: 10px;
 }
 
-/*================================UIConstraintsForm=================================*/
-
-/*================================UIActivateVersion=================================*/
-
-/*================================UIActionContainer=================================*/
-
-.UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
-	float: none;
-	margin-left: 5px;
-}
-
-/*================================UIActionList=================================*/
-
-/*================================UIPropertyForm=================================*/
-
-.UIJCRExplorerPortlet .UIPropertyForm .UIFormWithTitle {
-  width: 500px;
-  margin: auto;
-}
-
 /*================================.UIExportNode=================================*/
 
 .UIJCRExplorerPortlet .UIExportNode {
-  padding: 15px 0px;
-}
-
-.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle {
-	border: none;
-}
-
-.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle .UIFormGrid  {
-	width: 400px;
-	margin: auto;
+  padding: 10px;
 }
 
 /*================================.UIImportNode=================================*/
 
 .UIJCRExplorerPortlet .UIImportNode {
-  padding: 15px 0px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle {
-	border: none;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .FileNameLabel {
-  width: auto;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .SelectFileFrame  {
-	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .HorizontalLayout {
-	padding: 12px;
+  padding: 10px;
 }
 
 /*================================UIReferencesList=================================*/
@@ -591,36 +477,13 @@
   padding-bottom: 8px;
 }
 
-.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm {
-	width: auto;
-	padding: 30px;
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
+	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddIcon16x16 {
   margin-left: 5px;
   float: none;
-}
-
-.UIJCRExplorerPortlet .UIPermissionManager .UIGroupMembershipSelector {
-	padding: 10px;
-}
-
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .GroupSelector {
-	border: 1px solid #b7b7b7;
-}
-
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle {
-	border: none;
-	border-bottom: 1px solid #b7b7b7;
-}
-
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
-	border: solid 1px #b7b7b7;
-	background: white;
-}
-
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
-	border: none;
 }
 
 /*================================UINodeTypeInfo=================================*/
@@ -637,12 +500,9 @@
 /*================================UIPropertyTab=================================*/
 
 .UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16 {
-  margin-right: 3px;
-}
-
-.UIJCRExplorerPortlet .UIPropertyTab .MultiValue {
-  width: 80px;
-  margin: auto;
+	width: auto;
+	padding-left: 20px;
+	float: none;
 }
 
 /*================================UIGrid=================================*/
@@ -661,29 +521,6 @@
   border-top: solid 1px #cccccc;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser {
-	margin: 10px auto 0px auto;
-	padding: 0px 6px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList {
-	padding-top: 2px;
-	margin-left: 236px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList .UIGrid {
-	width: 100%;
-	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UIFormGrid td.FieldLabel {
-	width: 70px;
-}
-
-.UIJCRExplorer .UIJCRBrowser .UIFormWithTitle {
-	padding: 3px;
-}
-
 .UIJCRExplorer .UIJCRBrowser .UITrees .Node {
   line-height: 24px;
 }
@@ -700,13 +537,6 @@
 
 .UIJCRExplorer .UICategoryManager {
 	overflow: auto;
-}
-
-/*=================================UIRelationManager==============================*/
-
-.UIJCRExplorer .UIRelationManager {
-	width: 95%;
-	margin: auto;
 }
 
 /*====================================UISavedQuery==================================*/
@@ -756,44 +586,4 @@
 .UIJCRExplorer .MultiValueContainer .UIFormUploadInput .FileNameLabel {
 	width: auto;
 	padding: 0px;
-}
-
-/*====================================UIJCRBrowser==================================*/
-
-.UIJCRExplorer .UIJCRBrowser {
-	width: 95%;
-	margin: auto;
-	padding: 10px 0px;
-}
-
-.UIJCRExplorer .UIJCRBrowser .UIWorkspaceList {
-	padding-bottom: 8px ;
-	width: 98.5%;
-}
-
-.UIJCRExplorer  .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	border: solid 1px white;
-}
-
-.UIJCRExplorer  .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
-	background: white;
-	padding: 5px 0px;
-}
-
-.UIJCRExplorer  .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
-	padding: 1px;
-	border: solid 1px #B1B0B0;
-}
-
-.UIJCRExplorer .UIPopupWindow .UITabPane .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .FieldLabel{
-	width: 100px;
-}
-
-.UIJCRExplorer .UIWorkspaceList .UIFormGrid select{
-	width: 100px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIJCRBrowser .UITreeList .UIGrid {
-	width: 97%;
-	margin: 0px;
 }

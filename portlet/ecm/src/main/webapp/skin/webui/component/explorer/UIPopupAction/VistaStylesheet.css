@@ -231,11 +231,6 @@
   padding: 10px;
 }
 
-.UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout .UITabContentContainer {
-  margin: auto;
-  width: 97%;
-}
-
 .UIJCRExplorerPortlet .GridTitleBar {
   margin-top: 15px;
 }
@@ -263,59 +258,6 @@
 }
 /*############################## -- End UINodeTypeInfo -- ##############################*/
 
-/*############################## -- UIExport    -- ##############################*/
-.UIJCRExplorerPortlet .UIFormWithTitle .ExportImportNode {
-	margin-left: 160px;
-}
-
-.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle .HorizontalLayout {
-	border: 1px solid #b7b7b7;
-}
-
-.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .HorizontalLayout {
-	border: 1px solid #b7b7b7;
-}
-
-.UIJCRExplorerPortlet .UIFormWithTitle .ExportImportNode input {
-	float:left;
-  width: 20px ;
-}
-
-/*############################## -- End UIExport   -- ##############################*/
-/*############################## -- UITreeJCRExplorer   -- ##############################*/
-.Explorer {
-  margin-bottom: 10px;
-  float: left ;
-  width: 230px ;
-}
-
-
-.Explorer .ExplorerTree {
-  background: #f3f3f3;
-  border: solid 1px #c6c6c9;
-  padding: 1px;
-  margin-top: 1px;
-}
-
-.Explorer .InnerExplorerTree {
-  padding: 6px;
-}
-
-.Explorer .ExplorerTree .NodeLevel1 {
-  height: 30px; line-height: 30px;
-  padding-left: 15px;
-}
-
-.Explorer .ExplorerTree .NodeLevel2 {
-  height: 30px; line-height: 30px;
-  padding-left: 30px;
-}
-
-.UITreeList .UIGrid {
-  width: 310px;
-  margin-left: 5px ;
-}
-
 .UIJCRExplorerPortlet .UICategoriesAddedList .DeleteIcon {
   margin-left: 15px ;
 }
@@ -327,11 +269,6 @@
 /*############################## --End UITreeJCRExplorer   -- ##############################*/
 
 /*############################## -- UISearch   -- ##############################*/
-
-.UIJCRExplorerPortlet .UISearchContainer .UITabPane .WorkingAreaWithHelp {
-	width: 99%;
-	margin: auto;
-}
 
 .UIJCRExplorerPortlet .UISearchContainer .ConstraintOption {
   margin: 10px 0px;
@@ -392,10 +329,8 @@
 	margin-left: 0px;
 }
 
-.UIJCRExplorerPortlet .UIUploadManager {
+.UIJCRExplorerPortlet .UIUploadForm {
   padding: 10px;
-  border: 1px solid #b7b7b7;
-  margin: 10px;
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
@@ -407,29 +342,10 @@
 	width: 95%;
 }
 
-/*############################## -- End Others   -- ##############################*/
-
-/*############################## -- End UISearch   -- ##############################*/
-
 /*############################## -- UIActionManager   -- ##############################*/
-
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content .UITabPane {
-  margin: auto;
-  padding: 10px;
-}
-
-.UIJCRExplorerPortlet .UIDocumentFormController .FieldContainer .SelectFileFrame .SelectFileLabel {
-  width: 160px;
-  margin: 0px 5px 0px 25px;
-}
 
 .UIJCRExplorerPortlet .UIPopupAction .MultiRadioInput {
 	float: left;
 }
-
-.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .Content{
-  background: #ffffff;
-}
-
 /*############################## -- End UIActionManager   -- ##############################*/
 

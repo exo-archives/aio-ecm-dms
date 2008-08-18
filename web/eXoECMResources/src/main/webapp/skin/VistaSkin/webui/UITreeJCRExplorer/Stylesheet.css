@@ -5,7 +5,7 @@
 .ExplorerTree {
   float: left ;
   width: 230px ;
-  background: url(/eXoSkinMac/skin/MacSkin/background/Background1x4.png);
+  background: #f3f3f3;
 }
 
 .ExplorerTree .InnerExplorerTree {

@@ -281,49 +281,6 @@
 	padding: 0px;
 }
 
-/*############################## -- FIX BUG POPUP  -- ##############################*/
-.UIBrowseContentPortlet .UIJCRBrowser {
-  padding: 10px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList {
-	padding-bottom: 8px ;
-	margin: 10px 0px 0px 0px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
-	width: auto;
-	border: 1px solid #E1E1E1;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UITrees .Node {
-  line-height: 24px;
-}
-
-.UIBrowseContentPortlet .Explorer {
-  float: left;
-  width: 220px;
-}
-
-.UIBrowseContentPortlet .Explorer .ExplorerTree {
-  border: solid 1px #c6c6c9;
-  background: #f3f3f3;
-  padding: 1px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser .UITreeList {
-	margin-left: 230px;
-}
-
-.UIBrowseContentPortlet .Explorer .InnerExplorerTree {
-  border: solid 1px #b1b0b0;
-  padding: 10px;
-}
-
-.UIBrowseContentPortlet .UIJCRBrowser table {
-  *width: 94%;
-}
-
 /*############################## -- FIX BUG POPUP phai bo di  -- ##############################*/
 
 .UIBrowseContentPortlet .UISearchController {
