@@ -21,6 +21,7 @@
   int resultSize = uicomponent.getUIPageIterator().getAvailable();  
   def rcontext = _ctx.getRequestContext();
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/');
   SimpleDateFormat dateFormat = new SimpleDateFormat();
 	dateFormat.applyPattern("MM/dd/yyyy HH:mm:ss");
 %>
@@ -118,12 +119,29 @@
   	      
 	        if (nodePath.length() > 40 && nodePath.length() < 50) nodePath = "..." + nodePath.substring(20, nodePath.length()) ;
   	      else if(nodePath.length() > 40) nodePath = nodePath.substring(0, 30) + "...";
+  	      String excerpt = row.getValue("rep:excerpt(.)").getString();
+  	      String s = "";
       %>
           <tr class="$rowClass">
           	<td width="40px" align="center">
               <div class="default16x16Icon ItemIcon <%=Utils.getNodeTypeIcon(node, "16x16Icon")%>" style="margin:auto"><span></span></div>
             </td>
-            <td><div class="Text"><%=row.getValue("rep:excerpt(.)").getString()%></div></td>
+            <td>
+            	<strong><%=node.getName()%></strong>
+            	<%            		
+			  	      if (excerpt.length() > 150) {
+			  	      	s = excerpt.substring(0, 150) + "...";
+            	%>
+		            	<div class="Text">
+			           		<div class="ExpandIcon" style="float:left" onclick="eXo.ecm.ECMUtils.collapseExpandPart(this)"><span></span></div>
+			           		<div class="NodeGroup1" style="display: block;"><%=s%></div>
+			           		<div class="NodeGroup2" style="display: none;"><%=excerpt%></div>
+		          			<div style="clear: both;"><span/></div>
+		           		</div>
+           		<%} else {%>
+           				<div><%=excerpt%></div>
+           		<%}%>
+		        </td>
             <td><div class="Text"><%=row.getValue("jcr:score").getString()%></div></td>
 	          <td>
 	          	<div class="Text">	     

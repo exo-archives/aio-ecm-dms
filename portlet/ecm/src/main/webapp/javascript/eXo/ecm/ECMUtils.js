@@ -134,6 +134,22 @@ ECMUtils.prototype.collapseExpand = function(elemt) {
 	return true;
 };
 
+ECMUtils.prototype.collapseExpandPart = function(elemt) {
+	var node = elemt.parentNode ;
+	var subGroup1 = eXo.core.DOMUtil.findFirstChildByClass(node, "div", "NodeGroup1") ;
+	var subGroup2 = eXo.core.DOMUtil.findFirstChildByClass(node, "div", "NodeGroup2") ;
+	if (subGroup1.style.display == "none") {
+		if (elemt.className == "CollapseIcon") 	elemt.className = "ExpandIcon";
+		subGroup1.style.display = "block";
+		subGroup2.style.display = "none";
+	} else {
+		if (elemt.className == "ExpandIcon") elemt.className = "CollapseIcon";
+		subGroup1.style.display = "none";
+		subGroup2.style.display = "block";
+	}
+	return true;
+};
+
 ECMUtils.prototype.filterValue = function(frmId) {
 	var form = document.getElementById(frmId) ;
 	if (eXo.core.Browser.browserType == "ie") {

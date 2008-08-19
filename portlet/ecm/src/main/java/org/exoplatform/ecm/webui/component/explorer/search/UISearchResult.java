@@ -116,35 +116,6 @@ public class UISearchResult extends UIContainer {
   public Session getSession() throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getSession();
   }
-  
-  @SuppressWarnings("unchecked")
-//  public List<Node> getResultList() throws Exception {    
-//    List<Node> listNodes = new ArrayList<Node>();    
-//    long resultListSize = queryResult_.getNodes().getSize();
-//    if (!queryResult_.getNodes().hasNext()) return currentListNodes_;    
-//    if (resultListSize > 100) {
-//      for (NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
-//        Node node = iter.nextNode();
-//        addNode(listNodes, node);
-//        if (!iter.hasNext()) isEndOfIterator_ = true;
-//        if (listNodes.size() == 100) {
-//          currentListNodes_.addAll(listNodes);
-//          break;
-//        }
-//        if (listNodes.size() < 100 && !iter.hasNext()) currentListNodes_.addAll(listNodes);
-//        flag_ = true;
-//      }
-//    } else {
-//      for (NodeIterator iter = queryResult_.getNodes();iter.hasNext();) {
-//        Node node = iter.nextNode();        
-//        if (!iter.hasNext()) isEndOfIterator_ = true;
-//        addNode(listNodes, node);
-//      }
-//      currentListNodes_= listNodes;
-//    }
-//    return currentListNodes_;
-//  }
-    
     
   public List<Row> getResultList() throws Exception {    
     List<Node> listNodes = new ArrayList<Node>();
@@ -284,26 +255,23 @@ public class UISearchResult extends UIContainer {
         iconName = "";
         iconType = "";
         iconScore = "";
-        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());        
       } else if (objectId.equals("name")) {        
         iconName = "BlueDownArrow";
         iconDate = "";
         iconType = "";
         iconScore = "";
-        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());        
       } else if (objectId.equals("type")) {
         iconType = "BlueDownArrow";
         iconDate = "";
         iconName = "";
         iconScore = "";
-        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
       } else if (objectId.equals("score")) {
-//        iconScore = "BlueDownArrow";
-//        iconDate = "";
-//        iconName = "";
-//        iconType = "";
-//        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
+        iconScore = "BlueDownArrow";
+        iconDate = "";
+        iconName = "";
+        iconType = "";
       }
+      Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
       SearchResultPageList pageList = new SearchResultPageList(uiSearchResult.queryResult_, 
           uiSearchResult.currentListRows_, PAGE_SIZE, uiSearchResult.isEndOfIterator_);
       uiSearchResult.currentAvailablePage_ = uiSearchResult.currentListNodes_.size()/PAGE_SIZE;
@@ -322,26 +290,23 @@ public class UISearchResult extends UIContainer {
         iconName = "";
         iconType = "";
         iconScore = "";
-        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());        
       } else if (objectId.equals("name")) {        
         iconName = "BlueUpArrow";
         iconDate = "";
         iconType = "";
         iconScore = "";
-        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());        
       } else if (objectId.equals("type")) {
         iconType = "BlueUpArrow";
         iconDate = "";
         iconName = "";
         iconScore = "";
-        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
       } else if (objectId.equals("score")) {
-//        iconScore = "BlueUpArrow";
-//        iconDate = "";
-//        iconName = "";
-//        iconType = "";
-//        Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
+        iconScore = "BlueUpArrow";
+        iconDate = "";
+        iconName = "";
+        iconType = "";
       }
+      Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
       SearchResultPageList pageList = new SearchResultPageList(uiSearchResult.queryResult_, 
           uiSearchResult.currentListRows_, PAGE_SIZE, uiSearchResult.isEndOfIterator_);
       uiSearchResult.currentAvailablePage_ = uiSearchResult.currentListNodes_.size()/PAGE_SIZE;
@@ -354,17 +319,12 @@ public class UISearchResult extends UIContainer {
   private static class SearchComparator implements Comparator<Row> {
     public int compare(Row row1, Row row2) {
       try {
-//        String path1 = row1.getValue("jcr:path").getString();
-//        JCRPath nodePath1 = ((SessionImpl)session1).getLocationFactory().parseJCRPath(path1);
-//        Node node1 = (Node)session1.getItem(nodePath1.getAsString(false));                        
-//        String path2 = row1.getValue("jcr:path").getString();
-//        JCRPath nodePath2 = ((SessionImpl)session1).getLocationFactory().parseJCRPath(path2);
-//        Node node2 = (Node)session1.getItem(nodePath2.getAsString(false));        
         if (iconDate.equals("BlueUpArrow") || iconDate.equals("BlueDownArrow")) {
-          Date date1 = row1.getValue(Utils.EXO_CREATED_DATE).getDate().getTime();
-          Date date2 = row2.getValue(Utils.EXO_CREATED_DATE).getDate().getTime();
-          if (iconDate.equals("BlueUpArrow")) { return date2.compareTo(date1); }        
-          return date1.compareTo(date2);
+//          Date date1 = row1.getValue(Utils.EXO_CREATED_DATE).getDate().getTime();
+//          Date date2 = row2.getValue(Utils.EXO_CREATED_DATE).getDate().getTime();
+//          if (iconDate.equals("BlueUpArrow")) { return date2.compareTo(date1); }
+//          System.out.println(row1.getValues().length);
+//          return date1.compareTo(date2);
         } else if (iconName.equals("BlueUpArrow") || iconName.equals("BlueDownArrow")) {
 //          String s1 = node1.getName();
 //          String s2 = node2.getName();
@@ -381,7 +341,8 @@ public class UISearchResult extends UIContainer {
           if (iconScore.trim().equals("BlueUpArrow")) { return l2.compareTo(l1); }        
           return l1.compareTo(l2);
         }
-      } catch (Exception e) {        
+      } catch (Exception e) {  
+        e.printStackTrace();
       }            
       return 0;
     }        
