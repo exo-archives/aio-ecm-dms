@@ -24,6 +24,7 @@ import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -36,6 +37,7 @@ import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormWYSIWYGInput;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -62,15 +64,22 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
 
 
   public UICBCommentForm() throws Exception {
-    addChild(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
-    addChild(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
-    addChild(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null, true)) ;
     setActions(new String[] {"Save", "Cancel"}) ;
   }
 
   public Node getDocument() { return docNode_ ;}
   public void setDocument(Node node) { docNode_ = node ;}
 
+  private void prepareFields() throws Exception{
+    WebuiRequestContext requestContext = WebuiRequestContext.getCurrentInstance();
+    String userName = requestContext.getRemoteUser();
+    if(userName == null || userName.length() == 0){
+      addUIFormInput(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
+      addUIFormInput(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
+    } 
+    addUIFormInput(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null, true).addValidator(MandatoryValidator.class)) ;
+  }
+  
   public static class CancelActionListener extends EventListener<UICBCommentForm>{
     public void execute(Event<UICBCommentForm> event) throws Exception {
       UICBCommentForm uiForm = event.getSource() ;
@@ -80,7 +89,9 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
     }
   }  
 
-  public void activate() throws Exception { }
+  public void activate() throws Exception {
+    prepareFields();
+  }
   public void deActivate() throws Exception { }
 
   public static class SaveActionListener extends EventListener<UICBCommentForm>{

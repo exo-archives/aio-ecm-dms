@@ -16,11 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
@@ -36,6 +32,7 @@ import org.exoplatform.services.organization.UserHandler;
 import org.exoplatform.services.organization.UserProfile;
 import org.exoplatform.services.organization.UserProfileHandler;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -77,14 +74,13 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
   }
  
   private void prepareFields() throws Exception{
-	  Node node = getDocument();
-	  Session session = node.getSession();
-	  String userID = session.getUserID();
-	  if(userID == null || userID.length() == 0){
-		addUIFormInput(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
-		addUIFormInput(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
-	  } 
-	  addUIFormInput(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null, true).addValidator(MandatoryValidator.class)) ;
+    WebuiRequestContext requestContext = WebuiRequestContext.getCurrentInstance();
+    String userName = requestContext.getRemoteUser();
+    if(userName == null || userName.length() == 0){
+      addUIFormInput(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
+      addUIFormInput(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
+    } 
+    addUIFormInput(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null, true).addValidator(MandatoryValidator.class)) ;
   }
  
   public void activate() throws Exception {
