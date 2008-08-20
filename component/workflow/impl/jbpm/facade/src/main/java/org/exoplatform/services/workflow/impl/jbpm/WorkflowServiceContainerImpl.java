@@ -250,6 +250,11 @@ public class WorkflowServiceContainerImpl implements
               hashSet.addAll(tasks);
             }
           }
+          key = membership.getMembershipType() + ACTOR_ID_KEY_SEPARATOR + group.getId();
+          List tasks = session.getTaskMgmtSession().findTaskInstances(key);
+          if (tasks.size() > 0) {
+            hashSet.addAll(tasks);
+          }
         } else {
           key = membership.getMembershipType() + ACTOR_ID_KEY_SEPARATOR + group.getId();
           List tasks = session.getTaskMgmtSession().findTaskInstances(key);
