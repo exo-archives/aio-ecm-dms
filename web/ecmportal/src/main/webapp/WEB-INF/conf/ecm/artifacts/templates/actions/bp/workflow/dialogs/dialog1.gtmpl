@@ -1,3 +1,8 @@
+<%
+	def repository = uicomponent.repositoryName_;
+	String[] repositoryField = ["jcrPath=/node/exo:repository", "visible=false", repository] ;
+	uicomponent.addHiddenField("repository", repositoryField) ;
+%>
 <div class="UIFormWithTitle">
   <div class="TitleBar"><%=_ctx.appRes(uicomponent.getId() + ".title")%></div>
 	<% uiform.begin() %>
