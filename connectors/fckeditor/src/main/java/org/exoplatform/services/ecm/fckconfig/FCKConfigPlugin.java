@@ -16,24 +16,21 @@
  */
 package org.exoplatform.services.ecm.fckconfig;
 
+import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.webui.form.wysiwyg.FCKEditorConfig;
 
-/*
- * Created by The eXo Platform SAS
- * @author : Hoa.Pham
- *          hoa.pham@exoplatform.com
- * Jun 23, 2008  
- */
 /**
- * The Class FCKConfigServiceImpl.
+ * Created by The eXo Platform SAS.
+ * 
+ * @author : Hoa.Pham hoa.pham@exoplatform.com Jun 23, 2008
  */
-public class FCKConfigServiceImpl implements FCKConfigService{
+public abstract class FCKConfigPlugin extends BaseComponentPlugin {  
   
-  /* (non-Javadoc)
-   * @see org.exoplatform.services.ecm.fckconfig.FCKConfigService#addParameters(org.exoplatform.webui.form.wysiwyg.FCKEditorConfig)
+  /**
+   * This method is used to add/override some variables in fckconfig.js
+   * 
+   * @param config the config
+   * @throws Exception the exception
    */
-  public void addParameters(final FCKEditorConfig config) throws Exception {
-    //Do nothing with this implementation
-  }
-
+  public abstract void addParameters(final FCKEditorConfig config, final FCKEditorContext context) throws Exception; 
 }

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
-<configuration>
+<configuration>		       
+  
   <component>    
-  	<key>org.exoplatform.ecm.connector.fckeditor.FCKCoreRESTConnector</key>
-    <type>org.exoplatform.ecm.connector.fckeditor.FCKCoreRESTConnector</type>    
-  </component>       
+    <type>org.exoplatform.ecm.connector.fckeditor.FCKCoreRESTConnector</type>
+  </component>
+  
   <component>    
-    <key>org.exoplatform.services.ecm.fckconfig.FCKConfigService</key>
-    <type>org.exoplatform.services.ecm.fckconfig.FCKConfigServiceImpl</type>       
-  </component>           
+    <type>org.exoplatform.services.ecm.fckconfig.FCKConfigService</type>
+  </component>
+  
 </configuration>

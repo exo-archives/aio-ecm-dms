@@ -16,14 +16,43 @@
  */
 package org.exoplatform.services.ecm.fckconfig;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.webui.form.wysiwyg.FCKEditorConfig;
 
-/*
- * Created by The eXo Platform SAS
- * @author : Hoa.Pham
- *          hoa.pham@exoplatform.com
- * Jun 23, 2008  
+/**
+ * Created by The eXo Platform SAS.
+ * 
+ * @author : Hoa.Pham hoa.pham@exoplatform.com Jun 23, 2008
  */
-public interface FCKConfigService {  
-  public void addParameters(final FCKEditorConfig config) throws Exception;  
+public class FCKConfigService {
+  
+  private List<FCKConfigPlugin> fckConfigPlugins = new ArrayList<FCKConfigPlugin>();
+  
+  public FCKConfigService() { }
+  
+  /**
+   * Adds the FCKConfigPlugin.
+   * 
+   * @param plugin the FCKConfigPlugin
+   */
+  public void addPlugin(ComponentPlugin plugin) {
+    if(plugin instanceof FCKConfigPlugin) {
+      fckConfigPlugins.add(FCKConfigPlugin.class.cast(plugin));
+    }
+  }
+  
+  /**
+   * Use to configure the fckeditoConfig by via FCKConfigPlugin.
+   * 
+   * @param editorConfig the FCKEditorConfig
+   * @throws Exception the exception
+   */
+  public void processFCKEditorConfig(final FCKEditorConfig editorConfig, final FCKEditorContext context) throws Exception{
+    for(FCKConfigPlugin plugin: fckConfigPlugins) {
+      plugin.addParameters(editorConfig,context);
+    } 
+  }  
 }
