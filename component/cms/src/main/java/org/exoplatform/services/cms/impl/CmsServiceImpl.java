@@ -395,10 +395,17 @@ public class CmsServiceImpl implements CmsService {
       }      
       break;
     case PropertyType.REFERENCE:      
-//      if (value == null) throw new RepositoryException("null value for a reference " + requiredtype);
       if(value == null) {
-		if(value instanceof String) node.setProperty(propertyName, "");
-	  }
+        if(isMultiple) {
+          if (value instanceof String) {
+            node.setProperty(propertyName, "");
+          } else if (value instanceof String[]) {
+            node.setProperty(propertyName, new String[] {});          
+          }
+        } else {
+          node.setProperty(propertyName, "");
+        }
+      }
       if (value instanceof Value[]) {
         node.setProperty(propertyName, (Value[]) value);
       } else if (value instanceof String) {
