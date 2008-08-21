@@ -23,8 +23,8 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
 import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
@@ -48,13 +48,13 @@ import org.exoplatform.webui.event.Event.Phase;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     events = {
-      @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
+      @EventConfig(listeners = UIDialogForm.SaveActionListener.class),
       @EventConfig(listeners = UILanguageDialogForm.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UILanguageDialogForm.AddActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UILanguageDialogForm.RemoveActionListener.class, phase = Phase.DECODE)
     }
 )
-public class UILanguageDialogForm extends DialogFormFields {
+public class UILanguageDialogForm extends UIDialogForm {
 
   private boolean isAddNew_ = false ; 
   private String selectedLanguage_ = null;

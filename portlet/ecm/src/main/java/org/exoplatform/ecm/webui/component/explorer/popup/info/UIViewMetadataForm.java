@@ -24,8 +24,8 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 
-import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -58,7 +58,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIViewMetadataForm.RemoveActionListener.class, phase = Phase.DECODE)
     }
 )
-public class UIViewMetadataForm extends DialogFormFields {
+public class UIViewMetadataForm extends UIDialogForm {
 
   private String nodeType_ ;
   

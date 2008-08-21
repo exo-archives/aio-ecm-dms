@@ -31,9 +31,9 @@ import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
@@ -67,7 +67,7 @@ import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     events = {
-      @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
+      @EventConfig(listeners = UIDialogForm.SaveActionListener.class),
       @EventConfig(listeners = UIDocumentForm.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.AddActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE),
@@ -76,7 +76,7 @@ import org.exoplatform.webui.form.UIFormMultiValueInputSet;
     }
 )
 
-public class UIDocumentForm extends DialogFormFields implements UIPopupComponent, UISelector {
+public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UISelector {
 
   private String documentType_ ;
   private boolean isAddNew_ = false ; 

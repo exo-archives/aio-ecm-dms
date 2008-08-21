@@ -35,8 +35,9 @@ import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
+import org.exoplatform.ecm.webui.form.UIDialogForm;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
@@ -69,14 +70,14 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     events = {
-      @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
+      @EventConfig(listeners = UIDialogForm.SaveActionListener.class),
       @EventConfig(listeners = UIFastContentCreatortForm.AddActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIFastContentCreatortForm.RemoveActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIFastContentCreatortForm.ShowComponentActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIFastContentCreatortForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
-public class UIFastContentCreatortForm extends DialogFormFields implements UISelector {
+public class UIFastContentCreatortForm extends UIDialogForm implements UISelector {
 
   private String documentType_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
@@ -114,7 +115,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
   public Node getCurrentNode() throws Exception {  
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     PortletPreferences preferences = getPortletPreferences() ;
-    Session session = SessionsUtils.getSystemProvider().getSession(preferences.getValue("workspace", ""), 
+    Session session = SessionProviderFactory.createSystemProvider().getSession(preferences.getValue("workspace", ""), 
         repositoryService.getRepository(preferences.getValue(Utils.REPOSITORY, ""))) ;
     return (Node) session.getItem(preferences.getValue("path", ""));
   }
@@ -141,7 +142,7 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
       String workspaceName = preferences.getValue("workspace", "") ;    
       ManageableRepository manageableRepository = 
         getApplicationComponent(RepositoryService.class).getRepository(repositoryName) ;
-      Session session = SessionsUtils.getSystemProvider().getSession(workspaceName,manageableRepository) ;
+      Session session = SessionProviderFactory.createSystemProvider().getSession(workspaceName,manageableRepository) ;
       jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
     } catch(Exception e) { }
   }

@@ -24,9 +24,9 @@ import javax.jcr.RepositoryException;
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.DialogFormFields;
 import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
@@ -58,14 +58,14 @@ import org.exoplatform.webui.form.UIFormInputBase;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     events = {
-      @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
-      @EventConfig(listeners = DialogFormFields.OnchangeActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIDialogForm.SaveActionListener.class),
+      @EventConfig(listeners = UIDialogForm.OnchangeActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIActionForm.BackActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionForm.ShowComponentActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
-public class UIActionForm extends DialogFormFields implements UISelector {
+public class UIActionForm extends UIDialogForm implements UISelector {
   
   private String parentPath_ ;
   private String nodeTypeName_ = null ;
