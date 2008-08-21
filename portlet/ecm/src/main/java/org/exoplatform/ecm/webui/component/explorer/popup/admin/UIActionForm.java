@@ -58,7 +58,7 @@ import org.exoplatform.webui.form.UIFormInputBase;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     events = {
-      @EventConfig(listeners = UIDialogForm.SaveActionListener.class),
+      @EventConfig(listeners = UIActionForm.SaveActionListener.class),
       @EventConfig(listeners = UIDialogForm.OnchangeActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIActionForm.BackActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionForm.ShowComponentActionListener.class, phase = Phase.DECODE),
@@ -153,98 +153,97 @@ public class UIActionForm extends UIDialogForm implements UISelector {
     UIActionManager uiManager = getAncestorOfType(UIActionManager.class) ;
     uiManager.setRenderedChild(UIActionContainer.class) ;
     event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
-  }
-  
-  @SuppressWarnings("unchecked")
-  public Node storeValue(Event event) throws Exception {
-    UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
-    ActionServiceContainer actionServiceContainer = getApplicationComponent(ActionServiceContainer.class) ;
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;   
-    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-    Map sortedInputs = Utils.prepareMap(getChildren(), getInputProperties());
-    Node currentNode = uiExplorer.getCurrentNode();
-    if(!Utils.isAddNodeAuthorized(currentNode) || !Utils.isSetPropertyNodeAuthorized(currentNode)) {
-      uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    }
-    if(!isAddNew_) {
-      CmsService cmsService = getApplicationComponent(CmsService.class) ;      
-      Node storedHomeNode = getNode().getParent() ;
-      cmsService.storeNode(nodeTypeName_, storedHomeNode, sortedInputs, false,repository) ;
-      if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-      if(isEditInList_) {
-        UIActionManager uiManager = getAncestorOfType(UIActionManager.class) ;
-        UIPopupWindow uiPopup = uiManager.findComponentById("editActionPopup") ;
-        uiPopup.setShow(false) ;
-        uiPopup.setRendered(false) ;
-        uiManager.setDefaultConfig() ;
-        isEditInList_ = false ;
-        isAddNew_ = true ;
-        setIsOnchange(false) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
-        uiExplorer.setIsHidePopup(true) ;
-        uiExplorer.updateAjax(event) ;
-      } else {
-        uiExplorer.setIsHidePopup(false) ;
-        uiExplorer.updateAjax(event) ;
-      }
-      setPath(storedHomeNode.getPath()) ;
-      return getNode();
-    }
-    try{
-      JcrInputProperty rootProp = (JcrInputProperty) sortedInputs.get("/node");
-      if(rootProp == null) {
-        rootProp = new JcrInputProperty();
-        rootProp.setJcrPath("/node");
-        rootProp.setValue(((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue()) ;
-        sortedInputs.put("/node", rootProp) ;
-      } else {
-        rootProp.setValue(((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue());
-      }
-      String actionName = (String)((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue() ;
-      Node parentNode = getParentNode() ;
-      if(parentNode.hasNode(EXO_ACTIONS)) {
-        if(parentNode.getNode(EXO_ACTIONS).hasNode(actionName)) { 
-          Object[] args = {actionName} ;
-          uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args, 
-              ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return null;
-        }
-      }
-      if(parentNode.isNew()) {
-        String[] args = {parentNode.getPath()} ;
-        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add-action",args)) ;
+  }  
+  static public class SaveActionListener extends EventListener<UIActionForm> {
+    public void execute(Event<UIActionForm> event) throws Exception {
+      UIActionForm actionForm = event.getSource();
+      UIApplication uiApp = actionForm.getAncestorOfType(UIApplication.class) ;
+      ActionServiceContainer actionServiceContainer = actionForm.getApplicationComponent(ActionServiceContainer.class) ;
+      UIJCRExplorer uiExplorer = actionForm.getAncestorOfType(UIJCRExplorer.class) ;   
+      String repository = actionForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+      Map sortedInputs = Utils.prepareMap(actionForm.getChildren(), actionForm.getInputProperties());
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(!Utils.isAddNodeAuthorized(currentNode) || !Utils.isSetPropertyNodeAuthorized(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return null;
+        return;
       }
-      actionServiceContainer.addAction(parentNode, repository, nodeTypeName_, sortedInputs);
-      setIsOnchange(false) ;
-      if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-      UIActionManager uiActionManager = getAncestorOfType(UIActionManager.class) ;
-      createNewAction(uiExplorer.getCurrentNode(), nodeTypeName_, true) ;
-      UIActionList uiActionList = uiActionManager.findFirstComponentOfType(UIActionList.class) ;  
-      uiActionList.updateGrid(parentNode) ;
-      uiActionManager.setRenderedChild(UIActionListContainer.class) ;
-      reset() ;
-      isEditInList_ = false ;
-    } catch(RepositoryException repo) {      
-      String key = "UIActionForm.msg.repository-exception" ;
-      uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    } catch(NumberFormatException nume) {
-      String key = "UIActionForm.msg.numberformat-exception" ;
-      uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    } catch (Exception e) {   
-      e.printStackTrace() ;
-      uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null)) ;
-      return null;
+      if(!actionForm.isAddNew_) {
+        CmsService cmsService = actionForm.getApplicationComponent(CmsService.class) ;      
+        Node storedHomeNode = actionForm.getNode().getParent() ;
+        cmsService.storeNode(actionForm.nodeTypeName_, storedHomeNode, sortedInputs, false,repository) ;
+        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+        if(actionForm.isEditInList_) {
+          UIActionManager uiManager = actionForm.getAncestorOfType(UIActionManager.class) ;
+          UIPopupWindow uiPopup = uiManager.findComponentById("editActionPopup") ;
+          uiPopup.setShow(false) ;
+          uiPopup.setRendered(false) ;
+          uiManager.setDefaultConfig() ;
+          actionForm.isEditInList_ = false ;
+          actionForm.isAddNew_ = true ;
+          actionForm.setIsOnchange(false) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+          uiExplorer.setIsHidePopup(true) ;
+          uiExplorer.updateAjax(event) ;
+        } else {
+          uiExplorer.setIsHidePopup(false) ;
+          uiExplorer.updateAjax(event) ;
+        }
+        actionForm.setPath(storedHomeNode.getPath()) ;
+        return;
+      }
+      try{
+        JcrInputProperty rootProp = (JcrInputProperty) sortedInputs.get("/node");
+        if(rootProp == null) {
+          rootProp = new JcrInputProperty();
+          rootProp.setJcrPath("/node");
+          rootProp.setValue(((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue()) ;
+          sortedInputs.put("/node", rootProp) ;
+        } else {
+          rootProp.setValue(((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue());
+        }
+        String actionName = (String)((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue() ;
+        Node parentNode = actionForm.getParentNode() ;
+        if(parentNode.hasNode(EXO_ACTIONS)) {
+          if(parentNode.getNode(EXO_ACTIONS).hasNode(actionName)) { 
+            Object[] args = {actionName} ;
+            uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args, 
+                ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return;
+          }
+        }
+        if(parentNode.isNew()) {
+          String[] args = {parentNode.getPath()} ;
+          uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add-action",args)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return;
+        }
+        actionServiceContainer.addAction(parentNode, repository, actionForm.nodeTypeName_, sortedInputs);
+        actionForm.setIsOnchange(false) ;
+        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+        UIActionManager uiActionManager = actionForm.getAncestorOfType(UIActionManager.class) ;
+        actionForm.createNewAction(uiExplorer.getCurrentNode(), actionForm.nodeTypeName_, true) ;
+        UIActionList uiActionList = uiActionManager.findFirstComponentOfType(UIActionList.class) ;  
+        uiActionList.updateGrid(parentNode) ;
+        uiActionManager.setRenderedChild(UIActionListContainer.class) ;
+        actionForm.reset() ;
+        actionForm.isEditInList_ = false ;
+      } catch(RepositoryException repo) {      
+        String key = "UIActionForm.msg.repository-exception" ;
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      } catch(NumberFormatException nume) {
+        String key = "UIActionForm.msg.numberformat-exception" ;
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      } catch (Exception e) {           
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null)) ;
+        return;
+      }      
     }
-    return null ;
   }
   
   @SuppressWarnings("unchecked")

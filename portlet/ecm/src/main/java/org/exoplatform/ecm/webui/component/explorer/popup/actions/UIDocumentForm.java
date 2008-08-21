@@ -67,7 +67,7 @@ import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     events = {
-      @EventConfig(listeners = UIDialogForm.SaveActionListener.class),
+      @EventConfig(listeners = UIDocumentForm.SaveActionListener.class),
       @EventConfig(listeners = UIDocumentForm.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.AddActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE),
@@ -109,8 +109,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    try {
-      resetScriptInterceptor() ;
+    try {      
       return templateService.getTemplatePathByUser(true, documentType_, userName, repositoryName_) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
@@ -134,70 +133,71 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   }
 
   public boolean isEditing() { return !isAddNew_ ; }
-
-  @SuppressWarnings("unchecked")
-  public Node storeValue(Event event) throws Exception {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    List inputs = getChildren() ;
-    Map inputProperties = Utils.prepareMap(inputs, getInputProperties()) ;
-    Node newNode = null ;
-    String nodeType ;
-    Node homeNode ;
-    Node currentNode = uiExplorer.getCurrentNode();
-    UIApplication uiApp = getAncestorOfType(UIApplication.class);
-    if(isAddNew()) {
-      UIDocumentFormController uiDFController = getParent() ;
-      homeNode = currentNode ;
-      nodeType = uiDFController.getChild(UISelectDocumentForm.class).getSelectValue() ;
-    } else { 
-      homeNode = getNode().getParent();
-      nodeType = getNode().getPrimaryNodeType().getName() ;
-    }       
-    try {
-      CmsService cmsService = getApplicationComponent(CmsService.class) ;
-      String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, isAddNew(),repositoryName_);
+  
+  static  public class SaveActionListener extends EventListener<UIDocumentForm> {
+    public void execute(Event<UIDocumentForm> event) throws Exception {
+      UIDocumentForm documentForm = event.getSource();
+      UIJCRExplorer uiExplorer = documentForm.getAncestorOfType(UIJCRExplorer.class) ;
+      List inputs = documentForm.getChildren() ;
+      Map inputProperties = Utils.prepareMap(inputs, documentForm.getInputProperties()) ;
+      Node newNode = null ;
+      String nodeType ;
+      Node homeNode ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      UIApplication uiApp = documentForm.getAncestorOfType(UIApplication.class);
+      if(documentForm.isAddNew_) {
+        UIDocumentFormController uiDFController = documentForm.getParent() ;
+        homeNode = currentNode ;
+        nodeType = uiDFController.getChild(UISelectDocumentForm.class).getSelectValue() ;
+      } else { 
+        homeNode = documentForm.getNode().getParent();
+        nodeType = documentForm.getNode().getPrimaryNodeType().getName() ;
+      }       
       try {
-        homeNode.save() ;
-        newNode = (Node)homeNode.getSession().getItem(addedPath);
-      } catch(Exception e) {
+        CmsService cmsService = documentForm.getApplicationComponent(CmsService.class) ;
+        String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, documentForm.isAddNew_,documentForm.repositoryName_);
+        try {
+          homeNode.save() ;
+          newNode = (Node)homeNode.getSession().getItem(addedPath);
+        } catch(Exception e) {
+          if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+          uiExplorer.updateAjax(event);          
+        }
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-        uiExplorer.updateAjax(event);
-        return null ;
+        uiExplorer.updateAjax(event);        
+      } catch (AccessControlException ace) {
+        throw new AccessDeniedException(ace.getMessage());
+      } catch(VersionException ve) {
+        uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      } catch(ItemNotFoundException item) {
+        uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.item-not-found", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      } catch(RepositoryException repo) {
+        String key = "UIDocumentForm.msg.repository-exception" ;
+        if(ItemExistsException.class.isInstance(repo)) key = "UIDocumentForm.msg.not-allowed-same-name-sibling" ;
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      } catch(NumberFormatException nume) {
+        String key = "UIDocumentForm.msg.numberformat-exception" ;
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      } catch(Exception e) {
+        String key = "UIDocumentForm.msg.cannot-save" ;
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
       }
-      if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
-      uiExplorer.updateAjax(event);        
-    } catch (AccessControlException ace) {
-      throw new AccessDeniedException(ace.getMessage());
-    } catch(VersionException ve) {
-      uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
-          ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    } catch(ItemNotFoundException item) {
-      uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.item-not-found", null, 
-          ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;      
-    } catch(RepositoryException repo) {
-      String key = "UIDocumentForm.msg.repository-exception" ;
-      if(ItemExistsException.class.isInstance(repo)) key = "UIDocumentForm.msg.not-allowed-same-name-sibling" ;
-      uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    } catch(NumberFormatException nume) {
-      String key = "UIDocumentForm.msg.numberformat-exception" ;
-      uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    } catch(Exception e) {
-      String key = "UIDocumentForm.msg.cannot-save" ;
-      uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
+      event.getRequestContext().setAttribute("nodePath",newNode.getPath());      
     }
-    return newNode ;
   }
-
+  
   @SuppressWarnings("unchecked")
   static public class ShowComponentActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {

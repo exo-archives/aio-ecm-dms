@@ -48,7 +48,7 @@ import org.exoplatform.webui.event.Event.Phase;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     events = {
-      @EventConfig(listeners = UIDialogForm.SaveActionListener.class),
+      @EventConfig(listeners = UILanguageDialogForm.SaveActionListener.class),
       @EventConfig(listeners = UILanguageDialogForm.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UILanguageDialogForm.AddActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UILanguageDialogForm.RemoveActionListener.class, phase = Phase.DECODE)
@@ -71,8 +71,7 @@ public class UILanguageDialogForm extends UIDialogForm {
     repositoryName_ = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    try {
-      resetScriptInterceptor() ;
+    try {      
       return templateService.getTemplatePathByUser(true, documentType_, userName, repositoryName_) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
@@ -116,71 +115,72 @@ public class UILanguageDialogForm extends UIDialogForm {
     return false ;
   }
   
-  @SuppressWarnings("unused")
-  public Node storeValue(Event event) throws Exception {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Node node = uiExplorer.getCurrentNode() ;
-    MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class) ;
-    UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
-    if(selectedLanguage_ == null) {
-      uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.select-lang", null, 
-                                              ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    }
-    if(!uiExplorer.hasAddPermission()) {
-      uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
-                                              ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    }
-    if(node.hasNode(Utils.EXO_IMAGE)) {
-      Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties()) ;
-      try {
-        multiLanguageService.addLanguage(node, inputProperties, getSelectedLanguage(), isDefaultLanguage(), Utils.EXO_IMAGE) ;
-      } catch(AccessDeniedException ace) {
+  static  public class SaveActionListener extends EventListener<UILanguageDialogForm> {
+    public void execute(Event<UILanguageDialogForm> event) throws Exception {
+      UILanguageDialogForm languageDialogForm = event.getSource();
+      UIJCRExplorer uiExplorer = languageDialogForm.getAncestorOfType(UIJCRExplorer.class) ;
+      Node node = uiExplorer.getCurrentNode() ;
+      MultiLanguageService multiLanguageService = languageDialogForm.getApplicationComponent(MultiLanguageService.class) ;
+      UIApplication uiApp = languageDialogForm.getAncestorOfType(UIApplication.class) ;
+      if(languageDialogForm.selectedLanguage_ == null) {
+        uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.select-lang", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      }
+      if(!uiExplorer.hasAddPermission()) {
         uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return null;
+        return;
       }
-    } else if(hasNodeTypeNTResource(node)) {
-      Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties()) ;
-      try {
-        multiLanguageService.addFileLanguage(node, getSelectedLanguage(), inputProperties, isDefaultLanguage()) ;
-      } catch(AccessDeniedException ace) {
-        uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return null;
+      if(node.hasNode(Utils.EXO_IMAGE)) {
+        Map inputProperties = Utils.prepareMap(languageDialogForm.getChildren(), languageDialogForm.getInputProperties()) ;
+        try {
+          multiLanguageService.addLanguage(node, inputProperties, languageDialogForm.getSelectedLanguage(), languageDialogForm.isDefaultLanguage(), Utils.EXO_IMAGE) ;
+        } catch(AccessDeniedException ace) {
+          uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return;
+        }
+      } else if(languageDialogForm.hasNodeTypeNTResource(node)) {
+        Map inputProperties = Utils.prepareMap(languageDialogForm.getChildren(), languageDialogForm.getInputProperties()) ;
+        try {
+          multiLanguageService.addFileLanguage(node, languageDialogForm.getSelectedLanguage(), inputProperties, languageDialogForm.isDefaultLanguage()) ;
+        } catch(AccessDeniedException ace) {
+          uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return;
+        }
+      } else {
+        Map map = Utils.prepareMap(languageDialogForm.getChildren(), languageDialogForm.properties) ;
+        try {
+          multiLanguageService.addLanguage(node, map, languageDialogForm.getSelectedLanguage(), languageDialogForm.isDefaultLanguage()) ;
+        } catch(AccessDeniedException ace) {
+          uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
+                                                  ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return;        
+        }
       }
-    } else {
-      Map map = Utils.prepareMap(getChildren(), properties) ;
-      try {
-        multiLanguageService.addLanguage(node, map, getSelectedLanguage(), isDefaultLanguage()) ;
-      } catch(AccessDeniedException ace) {
-        uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.access-denied", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return null;        
-      }
+      node.save() ;
+      UIMultiLanguageManager uiManager = languageDialogForm.getAncestorOfType(UIMultiLanguageManager.class) ;
+      UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
+      uiMultiForm.updateSelect(node) ;
+      if(languageDialogForm.isDefaultLanguage()) uiExplorer.setLanguage(languageDialogForm.getSelectedLanguage()) ;
+      uiManager.setRenderedChild(UIMultiLanguageForm.class) ;
+      UIAddLanguageContainer uiAddContainer = uiManager.getChild(UIAddLanguageContainer.class) ;
+      UILanguageTypeForm uiLanguageTypeForm = uiAddContainer.getChild(UILanguageTypeForm.class) ;
+      uiLanguageTypeForm.resetLanguage() ;
+      uiAddContainer.removeChild(UILanguageDialogForm.class) ;
+      uiAddContainer.setComponentDisplay(languageDialogForm.documentType_) ;
+      if(!uiExplorer.getPreference().isJcrEnable()) node.getSession().save() ;
+      uiExplorer.setIsHidePopup(true) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+      uiExplorer.updateAjax(event) ;      
     }
-    node.save() ;
-    UIMultiLanguageManager uiManager = getAncestorOfType(UIMultiLanguageManager.class) ;
-    UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
-    uiMultiForm.updateSelect(node) ;
-    if(isDefaultLanguage()) uiExplorer.setLanguage(getSelectedLanguage()) ;
-    uiManager.setRenderedChild(UIMultiLanguageForm.class) ;
-    UIAddLanguageContainer uiAddContainer = uiManager.getChild(UIAddLanguageContainer.class) ;
-    UILanguageTypeForm uiLanguageTypeForm = uiAddContainer.getChild(UILanguageTypeForm.class) ;
-    uiLanguageTypeForm.resetLanguage() ;
-    uiAddContainer.removeChild(UILanguageDialogForm.class) ;
-    uiAddContainer.setComponentDisplay(documentType_) ;
-    if(!uiExplorer.getPreference().isJcrEnable()) node.getSession().save() ;
-    uiExplorer.setIsHidePopup(true) ;
-    event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
-    uiExplorer.updateAjax(event) ;
-    return null ;
   }
   
   static  public class CancelActionListener extends EventListener<UILanguageDialogForm> {

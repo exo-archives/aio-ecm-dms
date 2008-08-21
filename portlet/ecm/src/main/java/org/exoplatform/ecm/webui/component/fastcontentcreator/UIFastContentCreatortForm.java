@@ -70,7 +70,7 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     events = {
-      @EventConfig(listeners = UIDialogForm.SaveActionListener.class),
+      @EventConfig(listeners = UIFastContentCreatortForm.SaveActionListener.class),
       @EventConfig(listeners = UIFastContentCreatortForm.AddActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIFastContentCreatortForm.RemoveActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIFastContentCreatortForm.ShowComponentActionListener.class, phase = Phase.DECODE),
@@ -90,8 +90,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     String repository = getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
-    try {
-      resetScriptInterceptor() ;
+    try {      
       if(SessionsUtils.isAnonim()) {
         return templateService.getTemplatePathByAnonymous(true, documentType_, repository);
       }
@@ -146,97 +145,99 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
       jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
     } catch(Exception e) { }
   }
-
-  @SuppressWarnings("unused")
-  public Node storeValue(Event event) throws Exception {
-    CmsService cmsService = getApplicationComponent(CmsService.class) ;
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    UIApplication uiApp = getAncestorOfType(UIApplication.class);
-    PortletPreferences preferences = getPortletPreferences() ;
-    String repository = preferences.getValue(Utils.REPOSITORY, "") ;
-    String prefLocate = preferences.getValue("path", "") ;
-    String prefType = preferences.getValue("type", "") ;
-    String workspace = preferences.getValue("workspace", "") ;
-    Session session = null ;
-    try {
-      session = repositoryService.getRepository(repository).login(workspace) ;
-    } catch(Exception e) {
-      session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
-    }
-    Map inputProperties = Utils.prepareMap(getChildren(), getInputProperties()) ;
-    Node homeNode = null;
-    Node newNode = null ;
-    try {
-      homeNode = (Node) session.getItem(prefLocate);
-    } catch (AccessDeniedException ade){
-      Object[] args = { prefLocate } ;
-      uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.access-denied", args, 
-          ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null ;
-    } catch(PathNotFoundException pnfe) {
-      Object[] args = { prefLocate } ;
-      uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.path-not-found", args, 
-          ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null ;
-    }
-
-    try {
-      String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
-      homeNode.getSession().save() ;
-      if(homeNode.hasNode(addedPath.substring(addedPath.lastIndexOf("/") + 1))) {
-        newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ; 
-      }
-      reset() ;
-      setIsResetForm(true) ;
-      for(UIComponent uiChild : getChildren()) {
-        if(uiChild instanceof UIFormMultiValueInputSet) {
-          ((UIFormMultiValueInputSet)uiChild).setValue(new ArrayList<Value>()) ;
-        } else if(uiChild instanceof UIFormUploadInput) {
-          UploadService uploadService = getApplicationComponent(UploadService.class) ;
-          uploadService.removeUpload(((UIFormUploadInput)uiChild).getUploadId()) ;
-        }
-      }
-      session.save() ;
-      session.refresh(false) ;
-      homeNode.getSession().refresh(false) ;
-      Object[] args = { prefLocate } ;
-      uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.saved-successfully", args)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(this.getParent()) ;
-    } catch (AccessControlException ace) {
-      throw new AccessDeniedException(ace.getMessage());
-    } catch(VersionException ve) {
-      uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.in-versioning", null, 
-          ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    } catch(AccessDeniedException e) {
-      Object[] args = { prefLocate } ;
-      String key = "UIFastContentCreatortForm.msg.access-denied" ;
-      uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    } catch(LockException lock) {
-      Object[] args = { prefLocate } ;
-      String key = "UIFastContentCreatortForm.msg.node-locked" ;
-      uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    } catch(ItemExistsException item) {
-      Object[] args = { prefLocate } ;
-      String key = "UIFastContentCreatortForm.msg.node-isExist" ;
-      uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-    } finally {
-      if(session != null) {
-        session.logout();
-      }
-    }
-    return newNode ;
-  }
   
   @SuppressWarnings("unchecked")
+  static public class SaveActionListener extends EventListener<UIFastContentCreatortForm> {
+    public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
+      UIFastContentCreatortForm uiForm = event.getSource() ;
+      CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
+      RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class) ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+      PortletPreferences preferences = uiForm.getPortletPreferences() ;
+      String repository = preferences.getValue(Utils.REPOSITORY, "") ;
+      String prefLocate = preferences.getValue("path", "") ;
+      String prefType = preferences.getValue("type", "") ;
+      String workspace = preferences.getValue("workspace", "") ;
+      Session session = null ;
+      try {
+        session = repositoryService.getRepository(repository).login(workspace) ;
+      } catch(Exception e) {
+        session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
+      }
+      Map inputProperties = Utils.prepareMap(uiForm.getChildren(), uiForm.getInputProperties()) ;
+      Node homeNode = null;
+      Node newNode = null ;
+      try {
+        homeNode = (Node) session.getItem(prefLocate);
+      } catch (AccessDeniedException ade){
+        Object[] args = { prefLocate } ;
+        uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.access-denied", args, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      } catch(PathNotFoundException pnfe) {
+        Object[] args = { prefLocate } ;
+        uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.path-not-found", args, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      }
+
+      try {
+        String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
+        homeNode.getSession().save() ;
+        if(homeNode.hasNode(addedPath.substring(addedPath.lastIndexOf("/") + 1))) {
+          newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ; 
+        }
+        uiForm.reset() ;
+        uiForm.setIsResetForm(true) ;
+        for(UIComponent uiChild : uiForm.getChildren()) {
+          if(uiChild instanceof UIFormMultiValueInputSet) {
+            ((UIFormMultiValueInputSet)uiChild).setValue(new ArrayList<Value>()) ;
+          } else if(uiChild instanceof UIFormUploadInput) {
+            UploadService uploadService = uiForm.getApplicationComponent(UploadService.class) ;
+            uploadService.removeUpload(((UIFormUploadInput)uiChild).getUploadId()) ;
+          }
+        }
+        session.save() ;
+        session.refresh(false) ;
+        homeNode.getSession().refresh(false) ;
+        Object[] args = { prefLocate } ;
+        uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.saved-successfully", args)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
+      } catch (AccessControlException ace) {
+        throw new AccessDeniedException(ace.getMessage());
+      } catch(VersionException ve) {
+        uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.in-versioning", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      } catch(AccessDeniedException e) {
+        Object[] args = { prefLocate } ;
+        String key = "UIFastContentCreatortForm.msg.access-denied" ;
+        uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      } catch(LockException lock) {
+        Object[] args = { prefLocate } ;
+        String key = "UIFastContentCreatortForm.msg.node-locked" ;
+        uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      } catch(ItemExistsException item) {
+        Object[] args = { prefLocate } ;
+        String key = "UIFastContentCreatortForm.msg.node-isExist" ;
+        uiApp.addMessage(new ApplicationMessage(key, args, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      } finally {
+        if(session != null) {
+          session.logout();
+        }
+      }
+      event.getRequestContext().setAttribute("nodePath",newNode.getPath());
+    }
+  }  
+    
   static public class ShowComponentActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       UIFastContentCreatortForm uiForm = event.getSource() ;
@@ -278,7 +279,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
       ((ComponentSelector)uiComp).setComponent(uiForm, new String[]{param}) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
-  }  
+  }      
   
   static public class RemoveReferenceActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
