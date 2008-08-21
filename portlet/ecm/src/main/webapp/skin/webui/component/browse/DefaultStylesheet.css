@@ -504,13 +504,13 @@
 }
 			
 .UIBrowseContentPortlet .UIArticle .ArticleTLDecorator {
-	background: url('/ecm/skin/images/article/TopLRArticle51x100.gif') no-repeat left;
+	background: url('/ecm/skin/images/article/TopLeftArticle51x100.gif') no-repeat left;
 	padding-left: 51px;
 	height: 100px;
 }
 		
 .UIBrowseContentPortlet .UIArticle .ArticleTRDecorator {
-	background: url('/ecm/skin/images/article/TopLRArticle51x100.gif') no-repeat right ;
+	background: url('/ecm/skin/images/article/TopRightArticle154x100.gif') no-repeat right ;
 	padding-right:154px;
 	height: 100px;
 }
@@ -541,20 +541,20 @@
 }
 	
 .UIBrowseContentPortlet .UIArticle .ArticleBLDecorator {
-	background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -253px ;
+	background: url('/ecm/skin/images/article/BottomLeftArticle3x8.gif') no-repeat left;
 	padding-left: 3px;
 	height: 8px;
 	line-height: 8px;
 }
 
 .UIBrowseContentPortlet .UIArticle .ArticleBCDecorator {
-	background: url('/ecm/skin/images/article/Artitcle.gif') repeat-x left -261px ;
+	background: url('/ecm/skin/images/article/BottomCentertArticle1x8.gif') repeat-x left;
 	height: 8px;
 	line-height: 8px;
 }
 	
 .UIBrowseContentPortlet .UIArticle .ArticleBRDecorator {
-	background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat right -253px ;
+	background: url('/ecm/skin/images/article/BottomRightArticle10x8.gif') no-repeat right;
 	padding-right: 10px ;	
 	height: 8px;
 	line-height: 8px;
@@ -566,19 +566,19 @@
 }
 		
 .UIBrowseContentPortlet .UIArticle .ArticleFrame .TopLeftArticleFrame {
-	background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat left -220px;
+	background: url('/ecm/skin/images/article/TopLeftArticleFrame9x16.gif') no-repeat left;
 	padding-left: 9px;
 	height: 16px;
 }
 	
 .UIBrowseContentPortlet .UIArticle .ArticleFrame .TopRightArtictleFrame {
-	background: url('/ecm/skin/images/article/Artitcle.gif') no-repeat right -220px;
+	background: url('/ecm/skin/images/article/TopRightArticleFrame2x16.gif') no-repeat right;
 	padding-right: 2px;
 	height: 16px;
 }
 	
 .UIBrowseContentPortlet .UIArticle .ArticleFrame .TopCenterArticleFrame {
-	background: url('/ecm/skin/images/article/Artitcle.gif') repeat-x left -236px ;
+	background: url('/ecm/skin/images/article/TopCenterArticleFrame1x16.gif') repeat-x left;
 	height: 16px;
 }
 	
