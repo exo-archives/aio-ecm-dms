@@ -28,6 +28,7 @@ import javax.jcr.PropertyType;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
+import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.form.field.UIFormActionField;
 import org.exoplatform.ecm.webui.form.field.UIFormCalendarField;
 import org.exoplatform.ecm.webui.form.field.UIFormHiddenField;
@@ -43,11 +44,14 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
+import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.ecm.fckconfig.FCKConfigService;
 import org.exoplatform.services.ecm.fckconfig.FCKEditorContext;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -70,39 +74,44 @@ import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
  */
 @SuppressWarnings("unused")
 public class UIDialogForm extends UIForm {
-
-  protected final static String SAVE_ACTION = "Save".intern();
-  protected final static String CANCEL_ACTION = "Cancel".intern();
-  protected static final  String[]  ACTIONS = { SAVE_ACTION, CANCEL_ACTION };
-
-  public Map<String, Map> components = new HashMap<String, Map>();
-  public Map<String, String> propertiesName_ = new HashMap<String, String>() ;
-  public Map<String, String> fieldNames_ = new HashMap<String, String>() ;
-  protected boolean isUpdateSelect_ = false ;
-  protected String repositoryName_ = null ;
-  protected boolean isRemovePreference_ = false ;
-  protected boolean isShowingComponent_ = false;
-  protected Map<String, Object> properties = new HashMap<String, Object>();
-  private boolean isNotEditNode_ = false ;
-  private boolean isNTFile_ = false ;
-  private boolean isResetMultiField_ = false ;
-  private boolean isOnchange_ = false ;
-  private boolean isResetForm_ = false ;
-
-  private String workspaceName_ = null ; 
-  private String storedPath_ = null ;
-  private String nodePath_ ;
-  private String childPath_ ;
-  private List<String> prevScriptInterceptor_ = new ArrayList<String>() ;
-  private List<String> postScriptInterceptor_ = new ArrayList<String>() ;  
+  
   private final String REPOSITORY = "repository";
+  protected final static String CANCEL_ACTION = "Cancel".intern();
+  protected final static String SAVE_ACTION = "Save".intern();
+  protected static final  String[]  ACTIONS = { SAVE_ACTION, CANCEL_ACTION };  
 
+  protected Map<String, Map<String,String>> componentSelectors = new HashMap<String, Map<String,String>>();
+  protected Map<String, String> fieldNames = new HashMap<String, String>() ;
+  protected Map<String, String> propertiesName = new HashMap<String, String>() ;
+  protected String contentType;
+  protected boolean isAddNew;
+  protected boolean isRemovePreference = false ;
+  protected boolean isShowingComponent = false;
+  protected boolean isUpdateSelect = false ;
+  protected Map<String, JcrInputProperty> properties = new HashMap<String, JcrInputProperty>();
+  protected String repositoryName = null ;
+  protected JCRResourceResolver resourceResolver;
+  private String childPath ;
+  private boolean isNotEditNode = false ;
+  
+  private boolean isNTFile = false ; 
+  private boolean isOnchange = false ;
+  private boolean isResetForm = false ;
+  private boolean isResetMultiField = false ;
+  private String nodePath ;
+  private List<String> postScriptInterceptor = new ArrayList<String>() ;  
+  private List<String> prevScriptInterceptor = new ArrayList<String>() ;
+  
+  private String storedPath = null ;
+  
+  private String workspaceName = null ;
+  
   public UIDialogForm() throws Exception {}
-
+  
   public void addActionField(String name,String label,String[] arguments) throws Exception {
     UIFormActionField formActionField = new UIFormActionField(name,label,arguments);    
     if(formActionField.useSelector()) {
-      components.put(name, formActionField.getSelectorInfo()) ; 
+      componentSelectors.put(name, formActionField.getSelectorInfo()) ; 
     }
     String jcrPath = formActionField.getJcrPath();
     JcrInputProperty inputProperty = new JcrInputProperty();
@@ -119,14 +128,14 @@ public class UIDialogForm extends UIForm {
     }    
     String propertyName = getPropertyName(jcrPath);
     uiInput.setEditable(formActionField.isEditable()) ;
-    propertiesName_.put(name, propertyName) ;
-    fieldNames_.put(propertyName, name) ;
+    propertiesName.put(name, propertyName) ;
+    fieldNames.put(propertyName, name) ;
     Node node = getNode();
-    if(node != null && !isShowingComponent_ && !isRemovePreference_) {
+    if(node != null && !isShowingComponent && !isRemovePreference) {
       if(jcrPath.equals("/node") && (!formActionField.isEditable() || formActionField.isEditableIfNull())) {
         uiInput.setValue(node.getName()) ;
         uiInput.setEditable(false) ;
-      } else if(node.hasProperty(propertyName) && !isUpdateSelect_) {
+      } else if(node.hasProperty(propertyName) && !isUpdateSelect) {
         if(node.getProperty(propertyName).getDefinition().getRequiredType() == 
           PropertyType.REFERENCE) {
           String path = 
@@ -138,7 +147,7 @@ public class UIDialogForm extends UIForm {
       } 
     }
     Node childNode = getChildNode();
-    if(isNotEditNode_ && !isShowingComponent_ && !isRemovePreference_) {
+    if(isNotEditNode && !isShowingComponent && !isRemovePreference) {
       if(childNode != null) {
         uiInput.setValue(propertyName) ;
       } else if(childNode == null && jcrPath.equals("/node") && node != null) {
@@ -152,7 +161,7 @@ public class UIDialogForm extends UIForm {
   public void addActionField(String name, String[] arguments) throws Exception { 
     addActionField(name,null,arguments);
   }
-
+  
   public void addCalendarField(String name, String label, String[] arguments) throws Exception {
     UIFormCalendarField calendarField = new UIFormCalendarField(name,label,arguments);    
     String jcrPath = calendarField.getJcrPath();
@@ -170,14 +179,14 @@ public class UIDialogForm extends UIForm {
     }
     uiDateTime.setDisplayTime(calendarField.isDisplayTime()) ;
     String propertyName = getPropertyName(jcrPath);
-    propertiesName_.put(name, propertyName) ;
-    fieldNames_.put(propertyName, name) ;
+    propertiesName.put(name, propertyName) ;
+    fieldNames.put(propertyName, name) ;
     Node  node = getNode();
-    if(node != null && node.hasProperty(propertyName) && !isShowingComponent_ && !isRemovePreference_) {
+    if(node != null && node.hasProperty(propertyName) && !isShowingComponent && !isRemovePreference) {
       uiDateTime.setCalendar(node.getProperty(propertyName).getDate()) ;
     } 
     Node childNode = getChildNode();
-    if(isNotEditNode_ && !isShowingComponent_ && !isRemovePreference_) {
+    if(isNotEditNode && !isShowingComponent && !isRemovePreference) {
       if(childNode != null) {        
         if(childNode.hasProperty(propertyName)) {
           if(childNode.getProperty(propertyName).getDefinition().isMultiple()) {
@@ -197,12 +206,11 @@ public class UIDialogForm extends UIForm {
       }
     }
     if(calendarField.isVisible()) renderField(name) ;
-  }    
-
+  }
   public void addCalendarField(String name, String[] arguments) throws Exception {
     addCalendarField(name,null,arguments) ;
   }
-
+  
   public void addHiddenField(String name, String[] arguments) throws Exception {
     UIFormHiddenField formHiddenField = new UIFormHiddenField(name,null,arguments);
     String jcrPath = formHiddenField.getJcrPath();
@@ -224,13 +232,13 @@ public class UIDialogForm extends UIForm {
   public void addInterceptor(String scriptPath, String type) {
     if(scriptPath.length() > 0 && type.length() > 0){
       if(type.equals("prev")){
-        prevScriptInterceptor_.add(scriptPath) ;
+        prevScriptInterceptor.add(scriptPath) ;
       } else if(type.equals("post")){
-        postScriptInterceptor_.add(scriptPath) ;
+        postScriptInterceptor.add(scriptPath) ;
       }
     } 
   }
-
+  
   public void addMixinField(String name,String label,String[] arguments) throws Exception {
     UIMixinField mixinField = new UIMixinField(name,label,arguments);
     String jcrPath = mixinField.getJcrPath();
@@ -255,10 +263,12 @@ public class UIDialogForm extends UIForm {
       uiMixin.setEditable(false) ;
       renderField(name) ; 
     }
-  }
+  }    
+  
   public void addMixinField(String name, String[] arguments) throws Exception {
     addMixinField(name,null,arguments) ;
   }
+  public void addNewContent(boolean addNew) { this.isAddNew = addNew; }
 
   public void addSelectBoxField(String name, String label, String[] arguments) throws Exception {
     UIFormSelectBoxField formSelectBoxField = new UIFormSelectBoxField(name,label,arguments);           
@@ -274,13 +284,13 @@ public class UIDialogForm extends UIForm {
     String script = formSelectBoxField.getGroovyScript();
     List<SelectItemOption<String>> optionsList = new ArrayList<SelectItemOption<String>>();
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
-    if(uiSelectBox == null || isResetForm_) {
+    if(uiSelectBox == null || isResetForm) {
       uiSelectBox = new UIFormSelectBox(name, name, null);
       addUIFormInput(uiSelectBox) ;
       if (script != null) {
         try {
           String[] scriptParams = formSelectBoxField.getScriptParams();
-          if("repository".equals(scriptParams[0])) scriptParams[0] = repositoryName_ ;
+          if("repository".equals(scriptParams[0])) scriptParams[0] = repositoryName ;
           executeScript(script, uiSelectBox, scriptParams);
         } catch(Exception e) {
           uiSelectBox.setOptions(optionsList) ;
@@ -296,8 +306,8 @@ public class UIDialogForm extends UIForm {
       }      
       if(defaultValue != null) uiSelectBox.setValue(defaultValue) ;
     }
-    propertiesName_.put(name, getPropertyName(jcrPath)) ;
-    fieldNames_.put(getPropertyName(jcrPath), name) ;
+    propertiesName.put(name, getPropertyName(jcrPath)) ;
+    fieldNames.put(getPropertyName(jcrPath), name) ;
     String[] arrNodes = jcrPath.split("/") ;
     Node childNode = null ;
     Node node = getNode();
@@ -310,7 +320,7 @@ public class UIDialogForm extends UIForm {
       if(node != null && node.hasProperty(propertyName)) {
         if(node.getProperty(propertyName).getDefinition().isMultiple()) {
           uiSelectBox.setValue(node.getProperty(propertyName).getValues().toString()) ;
-        } else if(formSelectBoxField.isOnchange() && isOnchange_) {
+        } else if(formSelectBoxField.isOnchange() && isOnchange) {
           uiSelectBox.setValue(uiSelectBox.getValue()) ;
         } else {
           uiSelectBox.setValue(node.getProperty(propertyName).getValue().getString()) ;      
@@ -322,14 +332,14 @@ public class UIDialogForm extends UIForm {
     setInputProperty(name, inputProperty) ;    
     uiSelectBox.setEditable(formSelectBoxField.isEditable()) ;
     addUIFormInput(uiSelectBox) ;
-    if(isNotEditNode_) {      
+    if(isNotEditNode) {      
       Node child = getChildNode();
       if(child != null) 
         uiSelectBox.setValue(DialogFormUtil.getPropertyValueAsString(child,propertyName)) ; 
     }
     if(formSelectBoxField.isOnchange()) uiSelectBox.setOnChange("Onchange") ;
     renderField(name) ;   
-  }
+  }    
 
   public void addSelectBoxField(String name, String[] arguments) throws Exception {
     addSelectBoxField(name,null,arguments) ;
@@ -338,7 +348,7 @@ public class UIDialogForm extends UIForm {
   public void addTextAreaField(String name, String label, String[] arguments) throws Exception {
     UIFormTextAreaField formTextAreaField = new UIFormTextAreaField(name,label,arguments);            
     if(formTextAreaField.useSelector()) {
-      components.put(name, formTextAreaField.getSelectorInfo()) ;
+      componentSelectors.put(name, formTextAreaField.getSelectorInfo()) ;
     }    
     String jcrPath = formTextAreaField.getJcrPath();
     JcrInputProperty inputProperty = new JcrInputProperty();
@@ -356,10 +366,10 @@ public class UIDialogForm extends UIForm {
     if(uiTextArea.getValue() == null) uiTextArea.setValue(formTextAreaField.getDefaultValue()) ;    
     uiTextArea.setEditable(formTextAreaField.isEditable()) ;
     String propertyName = getPropertyName(jcrPath);
-    propertiesName_.put(name, propertyName) ;
-    fieldNames_.put(propertyName, name) ;
+    propertiesName.put(name, propertyName) ;
+    fieldNames.put(propertyName, name) ;
     Node node = getNode();
-    if(node != null && !isShowingComponent_ && !isRemovePreference_) {
+    if(node != null && !isShowingComponent && !isRemovePreference) {
       String value = "";
       if(node.hasProperty(propertyName)) {
         value = node.getProperty(propertyName).getValue().getString() ;
@@ -378,7 +388,7 @@ public class UIDialogForm extends UIForm {
       }
       uiTextArea.setValue(value) ;
     } 
-    if(isNotEditNode_ && !isShowingComponent_ && !isRemovePreference_) {
+    if(isNotEditNode && !isShowingComponent && !isRemovePreference) {
       Node childNode = getChildNode();
       if(node != null && node.hasNode("jcr:content") && childNode != null) {
         Node jcrContentNode = node.getNode("jcr:content") ;
@@ -395,10 +405,10 @@ public class UIDialogForm extends UIForm {
     }
     renderField(name) ;
   }
-
   public void addTextAreaField(String name, String[] arguments) throws Exception {
     addTextAreaField(name,null,arguments);
   }
+
   public void addTextField(String name, String label, String[] arguments) throws Exception {
     UIFormTextField formTextField = new UIFormTextField(name,label,arguments);
     String jcrPath = formTextField.getJcrPath();
@@ -411,8 +421,8 @@ public class UIDialogForm extends UIForm {
     if(mixintype != null) inputProperty.setMixintype(mixintype) ;
     if(jcrPath.equals("/node") && nodetype != null ) inputProperty.setNodetype(nodetype);
     properties.put(name, inputProperty) ;
-    propertiesName_.put(name, propertyName) ;
-    fieldNames_.put(propertyName, name) ;
+    propertiesName.put(name, propertyName) ;
+    fieldNames.put(propertyName, name) ;
     Node node = getNode();
     Node childNode = getChildNode();
     if(formTextField.isMultiValues()) {
@@ -444,7 +454,7 @@ public class UIDialogForm extends UIForm {
           uiMulti.setValue(valueList) ;
         }
       }
-      if(node != null && !isShowingComponent_ && !isRemovePreference_) {
+      if(node != null && !isShowingComponent && !isRemovePreference) {
         String propertyPath = jcrPath.substring("/node/".length()) ;
         if(node.hasProperty(propertyPath)) {
           Value[] values = node.getProperty(propertyPath).getValues() ;
@@ -454,7 +464,7 @@ public class UIDialogForm extends UIForm {
         }
         uiMulti.setValue(valueList) ;        
       }
-      if(isResetMultiField_) {
+      if(isResetMultiField) {
         uiMulti.setValue(new ArrayList<Value>()) ;
       }
       renderField(name) ;
@@ -467,7 +477,7 @@ public class UIDialogForm extends UIForm {
     }
     if(uiInput.getValue() == null) uiInput.setValue(formTextField.getDefaultValue()) ;       
     else uiInput.setEditable(true) ;
-    if(getNode() != null && !isShowingComponent_ && !isRemovePreference_) {
+    if(getNode() != null && !isShowingComponent && !isRemovePreference) {
       if(jcrPath.equals("/node") && (!formTextField.isEditable() || formTextField.isEditableIfNull())) {
         Node parentNode = node.getParent() ;
         //TODO code is smell
@@ -482,7 +492,7 @@ public class UIDialogForm extends UIForm {
         uiInput.setValue(node.getProperty(propertyName).getValue().getString()) ;
       } 
     }
-    if(isNotEditNode_ && !isShowingComponent_ && !isRemovePreference_) {
+    if(isNotEditNode && !isShowingComponent && !isRemovePreference) {
       if(childNode != null) {
         uiInput.setValue(propertyName) ;
       } else if(childNode == null && jcrPath.equals("/node") && node != null) {
@@ -493,10 +503,9 @@ public class UIDialogForm extends UIForm {
     }
     renderField(name) ;
   }
-
   public void addTextField(String name, String[] arguments) throws Exception {
     addTextField(name,null,arguments);
-  } ;
+  }
 
   public void addUploadField(String name,String label,String[] arguments) throws Exception {
     UIFormUploadField formUploadField = new UIFormUploadField(name,label,arguments);
@@ -515,14 +524,15 @@ public class UIDialogForm extends UIForm {
       addUIFormInput(uiInputUpload) ;
     }
     String propertyName = getPropertyName(jcrPath);
-    propertiesName_.put(name, propertyName) ;
-    fieldNames_.put(propertyName, name) ;
+    propertiesName.put(name, propertyName) ;
+    fieldNames.put(propertyName, name) ;
     renderField(name) ;
   }
 
   public void addUploadField(String name, String[] arguments) throws Exception {
     addUploadField(name,null,arguments) ;
   }
+
   public void addWYSIWYGField(String name, String label, String[] arguments) throws Exception {
     UIFormWYSIWYGField formWYSIWYGField = new UIFormWYSIWYGField(name,label,arguments);
     String jcrPath = formWYSIWYGField.getJcrPath();
@@ -544,20 +554,20 @@ public class UIDialogForm extends UIForm {
      * */
     FCKEditorConfig config = new FCKEditorConfig();
     FCKEditorContext editorContext = new FCKEditorContext();
-    if(repositoryName_ != null) {        
-      config.put("repositoryName",repositoryName_);
-      editorContext.setRepository(repositoryName_);
+    if(repositoryName != null) {        
+      config.put("repositoryName",repositoryName);
+      editorContext.setRepository(repositoryName);
     }
-    if(workspaceName_ != null) {
-      config.put("workspaceName",workspaceName_);
-      editorContext.setWorkspace(workspaceName_);
+    if(workspaceName != null) {
+      config.put("workspaceName",workspaceName);
+      editorContext.setWorkspace(workspaceName);
     }
-    if(nodePath_ != null) {
-      config.put("jcrPath",nodePath_);
-      editorContext.setCurrentNodePath(nodePath_);
+    if(nodePath != null) {
+      config.put("jcrPath",nodePath);
+      editorContext.setCurrentNodePath(nodePath);
     }else {
-      config.put("jcrPath",storedPath_);
-      editorContext.setCurrentNodePath(storedPath_);                                  
+      config.put("jcrPath",storedPath);
+      editorContext.setCurrentNodePath(storedPath);                                  
     }
     FCKConfigService fckConfigService = getApplicationComponent(FCKConfigService.class);
     editorContext.setPortalName(Util.getUIPortal().getName());
@@ -567,12 +577,12 @@ public class UIDialogForm extends UIForm {
     addUIFormInput(wysiwyg) ;
     if(wysiwyg.getValue() == null) wysiwyg.setValue(formWYSIWYGField.getDefaultValue()) ;
     String propertyName = getPropertyName(jcrPath);
-    propertiesName_.put(name, propertyName) ;
-    fieldNames_.put(propertyName, name) ;
+    propertiesName.put(name, propertyName) ;
+    fieldNames.put(propertyName, name) ;
     Node node = getNode();
 
-    if(!isShowingComponent_ && !isRemovePreference_) {
-      if(node != null && (node.isNodeType("nt:file") || isNTFile_)) {
+    if(!isShowingComponent && !isRemovePreference) {
+      if(node != null && (node.isNodeType("nt:file") || isNTFile)) {
         Node jcrContentNode = node.getNode("jcr:content") ;
         wysiwyg.setValue(jcrContentNode.getProperty("jcr:data").getValue().getString()) ;
       } else {
@@ -581,7 +591,7 @@ public class UIDialogForm extends UIForm {
         }
       }
     }
-    if(isNotEditNode_ && !isShowingComponent_ && !isRemovePreference_) {
+    if(isNotEditNode && !isShowingComponent && !isRemovePreference) {
       Node childNode = getChildNode();
       if(node != null && node.hasNode("jcr:content") && childNode != null) {
         Node jcrContentNode = node.getNode("jcr:content") ;
@@ -602,6 +612,55 @@ public class UIDialogForm extends UIForm {
   public void addWYSIWYGField(String name, String[] arguments) throws Exception {
     addWYSIWYGField(name,null,arguments);
   }
+  public Node getChildNode() throws Exception { 
+    if(childPath == null) return null ;
+    return (Node) getSesssion().getItem(childPath) ; 
+  }
+
+  public String getContentType() { return contentType; } ;
+
+  public Map<String, JcrInputProperty> getInputProperties() { return properties ; }
+
+  public JcrInputProperty getInputProperty(String name) { return properties.get(name) ; }
+  public JCRResourceResolver getJCRResourceResolver() { return resourceResolver; }
+
+  public Node getNode() throws Exception { 
+    if(nodePath == null) return null ;
+    return (Node) getSesssion().getItem(nodePath) ; 
+  }
+
+  public String getPropertyName(String jcrPath) { 
+    return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
+  } 
+
+  public String getSelectBoxFieldValue(String name) {
+    UIFormSelectBox uiSelectBox = findComponentById(name) ;
+    if (uiSelectBox != null) return uiSelectBox.getValue() ;
+    return null ;
+  }
+
+  public Session getSesssion() throws Exception {
+    return SessionProviderFactory.createSessionProvider().getSession(workspaceName, getRepository()) ;
+  }
+
+  public String getTemplate() {
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    String userName = Util.getPortalRequestContext().getRemoteUser() ;
+    try {      
+      return templateService.getTemplatePathByUser(true, contentType, userName, repositoryName) ;
+    } catch (Exception e) {
+      UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
+      Object[] arg = { contentType } ;
+      uiApp.addMessage(new ApplicationMessage("UIDialogForm.msg.not-support-contenttype", arg, ApplicationMessage.ERROR)) ;
+      return null ;
+    } 
+  }
+
+  public boolean isAddNewContent() { return isAddNew; }
+
+  public boolean isResetForm() { return isResetForm ; }
+
+  public void onchange(Event event) throws Exception {}
 
   @Override
   public void processAction(WebuiRequestContext context) throws Exception {       
@@ -613,70 +672,20 @@ public class UIDialogForm extends UIForm {
       if(nodePath != null) {
         executePostSaveEventInterceptor(nodePath); 
      }
-      prevScriptInterceptor_.clear();
-      postScriptInterceptor_.clear();
+      prevScriptInterceptor.clear();
+      postScriptInterceptor.clear();
     }else {
       super.processAction(context); 
     }    
-  } 
-
-  private void executePreSaveEventInterceptor() throws Exception {
-    if(prevScriptInterceptor_.size()>0) {
-      Map<String,JcrInputProperty> maps = DialogFormUtil.prepareMap(this.getChildren(),getInputProperties());    
-      for(String interceptor : prevScriptInterceptor_) {              
-        this.executeScript(interceptor, maps, null) ;                
-      } 
-    }           
   }
-
-  private void executePostSaveEventInterceptor(String nodePath) throws Exception {
-    if(postScriptInterceptor_.size()>0) {
-      String path = nodePath + "&workspaceName=" + this.workspaceName_ + "&repository=" + this.repositoryName_;
-      for(String interceptor : postScriptInterceptor_) {              
-        this.executeScript(interceptor, path, null) ;                
-      }      
-    }    
-  }
-
-  public Node getChildNode() throws Exception { 
-    if(childPath_ == null) return null ;
-    return (Node) getSesssion().getItem(childPath_) ; 
-  }
-
-  public Map<String, Object> getInputProperties() { return properties ; }
-
-  public Object getInputProperty(String name) { return properties.get(name) ; }
-
-  public Node getNode() throws Exception { 
-    if(nodePath_ == null) return null ;
-    return (Node) getSesssion().getItem(nodePath_) ; 
-  }
-
-  public String getPropertyName(String jcrPath) { 
-    return jcrPath.substring(jcrPath.lastIndexOf("/") + 1) ; 
-  }
-
-  public String getSelectBoxFieldValue(String name) {
-    UIFormSelectBox uiSelectBox = findComponentById(name) ;
-    if (uiSelectBox != null) return uiSelectBox.getValue() ;
-    return null ;
-  }
-
-  public Session getSesssion() throws Exception {
-    return SessionProviderFactory.createSessionProvider().getSession(workspaceName_, getRepository()) ;
-  }
-
-  public boolean isResetForm() { return isResetForm_ ; }
-
-  public void onchange(Event event) throws Exception {}
 
   //update by quangld
   public void removeComponent(String name) {
     if (!properties.isEmpty() && properties.containsKey(name)) {
       properties.remove(name);
-      String jcrPath = propertiesName_.get(name);
-      propertiesName_.remove(name);
-      fieldNames_.remove(jcrPath);
+      String jcrPath = propertiesName.get(name);
+      propertiesName.remove(name);
+      fieldNames.remove(jcrPath);
       removeChildById(name); 
     }
   }
@@ -686,8 +695,8 @@ public class UIDialogForm extends UIForm {
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
     Writer w = context.getWriter() ;
     uiInput.processRender(context) ;
-    if(components.get(name) != null) {
-      Map fieldPropertiesMap = components.get(name) ;
+    if(componentSelectors.get(name) != null) {
+      Map fieldPropertiesMap = componentSelectors.get(name) ;
       String fieldName = (String)fieldPropertiesMap.get("returnField") ;
       String iconClass = "Add16x16Icon" ;
       if(fieldPropertiesMap.get("selectorIcon") != null) {
@@ -707,38 +716,62 @@ public class UIDialogForm extends UIForm {
 
   public void resetProperties() { properties.clear() ; }
 
-  public void setChildPath(String childPath) { childPath_ = childPath ; }
+  public void setChildPath(String childPath) { this.childPath = childPath ; }
 
-  public void setInputProperty(String name, Object value) { properties.put(name, value) ; }
+  public void setContentType(String type) { this.contentType = type; }
 
-  public void setIsNotEditNode(boolean isNotEditNode) { isNotEditNode_ = isNotEditNode ; }    
+  public void setInputProperty(String name, JcrInputProperty value) { properties.put(name, value) ; }
 
-  public void setIsNTFile(boolean isNTFile) { isNTFile_ = isNTFile ; }
+  public void setIsNotEditNode(boolean isNotEditNode) { this.isNotEditNode = isNotEditNode ; }
 
-  public void setIsOnchange(boolean isOnchange) { isOnchange_ = isOnchange ; }
+  public void setIsNTFile(boolean isNTFile) { this.isNTFile = isNTFile ; }
 
-  public void setIsResetForm(boolean isResetForm) { isResetForm_ = isResetForm ; }
+  public void setIsOnchange(boolean isOnchange) { this.isOnchange = isOnchange ; }
+
+  public void setIsResetForm(boolean isResetForm) { this.isResetForm = isResetForm ; }    
 
   public void setIsResetMultiField(boolean isResetMultiField) { 
-    isResetMultiField_ = isResetMultiField ; 
+    this.isResetMultiField = isResetMultiField ; 
   }
 
-  public void setIsUpdateSelect(boolean isUpdateSelect) { isUpdateSelect_ = isUpdateSelect ; }      
+  public void setIsUpdateSelect(boolean isUpdateSelect) { this.isUpdateSelect = isUpdateSelect ; }
 
-  public void setNodePath(String nodePath) { nodePath_ = nodePath ; }
+  public void setJCRResourceResolver(JCRResourceResolver resourceResolver) {
+    this.resourceResolver = resourceResolver;
+  }
 
-  public void setRepositoryName(String repositoryName){ repositoryName_ = repositoryName ; }  
+  public void setNodePath(String nodePath) { this.nodePath = nodePath ; }
 
-  public void setStoredPath(String storedPath) { storedPath_ = storedPath ; }
+  public void setRepositoryName(String repositoryName){ this.repositoryName = repositoryName ; }      
 
-  public void setWorkspace(String workspace) { workspaceName_ = workspace ; }  
+  public void setStoredPath(String storedPath) { this.storedPath = storedPath ; }
+
+  public void setWorkspace(String workspace) { this.workspaceName = workspace ; }  
+
+  private void executePostSaveEventInterceptor(String nodePath) throws Exception {
+    if(postScriptInterceptor.size()>0) {
+      String path = nodePath + "&workspaceName=" + this.workspaceName + "&repository=" + this.repositoryName;
+      for(String interceptor : postScriptInterceptor) {              
+        this.executeScript(interceptor, path, null) ;                
+      }      
+    }    
+  }
+
+  private void executePreSaveEventInterceptor() throws Exception {
+    if(prevScriptInterceptor.size()>0) {
+      Map<String,JcrInputProperty> maps = DialogFormUtil.prepareMap(this.getChildren(),getInputProperties());    
+      for(String interceptor : prevScriptInterceptor) {              
+        this.executeScript(interceptor, maps, null) ;                
+      } 
+    }           
+  }  
 
   private void executeScript(String script, Object o, String[] params) throws Exception{
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
     try {
-      CmsScript dialogScript = scriptService.getScript(script, repositoryName_);
+      CmsScript dialogScript = scriptService.getScript(script, repositoryName);
       if(params != null) {
-        if(params.equals(REPOSITORY)) params = new String[] { repositoryName_ } ; 
+        if(params.equals(REPOSITORY)) params = new String[] { repositoryName } ; 
         dialogScript.setParams(params);
       }
       dialogScript.execute(o);
@@ -763,7 +796,7 @@ public class UIDialogForm extends UIForm {
 
   private ManageableRepository getRepository() throws Exception{         
     RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
-    return repositoryService.getRepository(repositoryName_);
+    return repositoryService.getRepository(repositoryName);
   } 
 
   private void renderMultiValuesInput(Class type, String name,String label) throws Exception{
@@ -778,7 +811,7 @@ public class UIDialogForm extends UIForm {
 
   static  public class OnchangeActionListener extends EventListener<UIDialogForm> {
     public void execute(Event<UIDialogForm> event) throws Exception {      
-      event.getSource().isOnchange_ = true ;
+      event.getSource().isOnchange = true ;
       event.getSource().onchange(event) ;
     }
   }  
