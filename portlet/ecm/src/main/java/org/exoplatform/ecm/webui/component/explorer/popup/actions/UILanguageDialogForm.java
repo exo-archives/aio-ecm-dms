@@ -68,11 +68,11 @@ public class UILanguageDialogForm extends UIDialogForm {
   public void setTemplateNode(String type) { documentType_ = type ;}
   
   public String getTemplate() {
-    repositoryName_ = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+    repositoryName = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {      
-      return templateService.getTemplatePathByUser(true, documentType_, userName, repositoryName_) ;
+      return templateService.getTemplatePathByUser(true, documentType_, userName, repositoryName) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;

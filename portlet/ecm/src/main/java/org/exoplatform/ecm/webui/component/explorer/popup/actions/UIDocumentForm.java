@@ -90,10 +90,10 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
 
   public void addNew(boolean b) {isAddNew_ = b ;}
 
-  public void setRepositoryName(String repositoryName) { repositoryName_ = repositoryName ; }
+  public void setRepositoryName(String repositoryName) { this.repositoryName = repositoryName ; }
 
   public void updateSelect(String selectField, String value) {
-    isUpdateSelect_ = true ;    
+    isUpdateSelect = true ;    
     UIFormInput formInput = getUIInput(selectField) ;
     if(formInput instanceof UIFormInputBase) {
       ((UIFormInputBase)formInput).setValue(value) ;
@@ -110,7 +110,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {      
-      return templateService.getTemplatePathByUser(true, documentType_, userName, repositoryName_) ;
+      return templateService.getTemplatePathByUser(true, documentType_, userName, repositoryName) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { documentType_ } ;
@@ -155,7 +155,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       }       
       try {
         CmsService cmsService = documentForm.getApplicationComponent(CmsService.class) ;
-        String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, documentForm.isAddNew_,documentForm.repositoryName_);
+        String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, documentForm.isAddNew_,documentForm.repositoryName);
         try {
           homeNode.save() ;
           newNode = (Node)homeNode.getSession().getItem(addedPath);
@@ -203,9 +203,9 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIDocumentForm uiForm = event.getSource() ;
       UIDocumentFormController uiContainer = uiForm.getParent() ;
-      uiForm.isShowingComponent_ = true;
+      uiForm.isShowingComponent = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
+      Map fieldPropertiesMap = uiForm.componentSelectors.get(fieldName) ;
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
       ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
       Class clazz = Class.forName(classPath, true, cl) ;
@@ -247,7 +247,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   static public class RemoveReferenceActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIDocumentForm uiForm = event.getSource() ;
-      uiForm.isRemovePreference_ = true;
+      uiForm.isRemovePreference = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiForm.getUIStringInput(fieldName).setValue(null) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;

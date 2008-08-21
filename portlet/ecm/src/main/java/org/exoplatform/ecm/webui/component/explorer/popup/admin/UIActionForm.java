@@ -83,7 +83,7 @@ public class UIActionForm extends UIDialogForm implements UISelector {
     parentPath_ = parentNode.getPath() ;
     nodeTypeName_ = actionType;
     isAddNew_ = isAddNew ;
-    components.clear() ;
+    componentSelectors.clear() ;
     properties.clear() ;
     getChildren().clear() ;
   }
@@ -91,7 +91,7 @@ public class UIActionForm extends UIDialogForm implements UISelector {
   private Node getParentNode() throws Exception{ return (Node) getSesssion().getItem(parentPath_) ; }
   
   public void updateSelect(String selectField, String value) {
-    isUpdateSelect_ = true ;
+    isUpdateSelect = true ;
     getUIStringInput(selectField).setValue(value) ;
     if(isEditInList_) {
       UIActionManager uiManager = getAncestorOfType(UIActionManager.class) ;
@@ -115,13 +115,13 @@ public class UIActionForm extends UIDialogForm implements UISelector {
   public String getTemplate() { return getDialogPath() ; }
 
   public String getDialogPath() {
-    repositoryName_ = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+    repositoryName = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     String dialogPath = null ;
     if (nodeTypeName_ != null) {
       try {
-        dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName_, userName, repositoryName_);
+        dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName_, userName, repositoryName);
       } catch (Exception e){
         e.printStackTrace() ;
       }      
@@ -251,14 +251,14 @@ public class UIActionForm extends UIDialogForm implements UISelector {
     public void execute(Event<UIActionForm> event) throws Exception {
       UIActionForm uiForm = event.getSource() ;
       UIContainer uiContainer = null;
-      uiForm.isShowingComponent_ = true;
+      uiForm.isShowingComponent = true;
       if(uiForm.isEditInList_) {
         uiContainer = uiForm.getAncestorOfType(UIActionListContainer.class) ;
       } else {
         uiContainer = uiForm.getParent() ;
       }
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
+      Map fieldPropertiesMap = uiForm.componentSelectors.get(fieldName) ;
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
       String rootPath = (String)fieldPropertiesMap.get("rootPath") ;
       ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
@@ -307,7 +307,7 @@ public class UIActionForm extends UIDialogForm implements UISelector {
   static public class RemoveReferenceActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UIActionForm uiForm = event.getSource() ;
-      uiForm.isRemovePreference_ = true;
+      uiForm.isRemovePreference = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiForm.getUIStringInput(fieldName).setValue(null) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;

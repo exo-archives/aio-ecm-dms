@@ -105,7 +105,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
   }
   
   public void updateSelect(String selectField, String value) {
-    isUpdateSelect_ = true ;
+    this.isUpdateSelect = true ;
     getUIStringInput(selectField).setValue(value) ;
     UIFastContentCreatorPortlet uiContainer = getParent() ;
     uiContainer.removeChildById("PopupComponent") ;
@@ -242,9 +242,9 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       UIFastContentCreatortForm uiForm = event.getSource() ;
       UIFastContentCreatorPortlet uiContainer = uiForm.getParent() ;
-      uiForm.isShowingComponent_ = true;
+      uiForm.isShowingComponent = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Map fieldPropertiesMap = uiForm.components.get(fieldName) ;
+      Map fieldPropertiesMap = uiForm.componentSelectors.get(fieldName) ;
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
       ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
       Class clazz = Class.forName(classPath, true, cl) ;
@@ -284,7 +284,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
   static public class RemoveReferenceActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       UIFastContentCreatortForm uiForm = event.getSource() ;
-      uiForm.isRemovePreference_ = true;
+      uiForm.isRemovePreference = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiForm.getUIStringInput(fieldName).setValue(null) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;

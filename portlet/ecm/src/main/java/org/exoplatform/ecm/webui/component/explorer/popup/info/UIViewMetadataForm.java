@@ -63,17 +63,17 @@ public class UIViewMetadataForm extends UIDialogForm {
   private String nodeType_ ;
   
   public UIViewMetadataForm() throws Exception {
-    setActions(new String[] {"Save", "Cancel"}) ;
+    setActions(ACTIONS) ;
   }
 
   public void setNodeType(String nodeType) { nodeType_ = nodeType ; }
   public String getNodeType() { return nodeType_ ; } 
   
   public String getDialogTemplatePath() { 
-    repositoryName_ = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+    repositoryName = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     try {
-      return metadataService.getMetadataPath(nodeType_, true, repositoryName_) ;
+      return metadataService.getMetadataPath(nodeType_, true, repositoryName) ;
     } catch (Exception e) {
       e.printStackTrace() ;
     } 
