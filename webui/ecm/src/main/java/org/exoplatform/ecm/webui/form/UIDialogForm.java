@@ -32,9 +32,12 @@ import javax.jcr.Value;
 
 import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
+import org.exoplatform.services.ecm.fckconfig.FCKConfigService;
+import org.exoplatform.services.ecm.fckconfig.FCKEditorContext;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -54,6 +57,7 @@ import org.exoplatform.webui.form.validator.DateTimeValidator;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.validator.NumberFormatValidator;
+import org.exoplatform.webui.form.wysiwyg.FCKEditorConfig;
 import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
 
 /**
@@ -502,39 +506,39 @@ public class UIDialogForm extends UIForm {
       isBasic = false;        
 
     UIFormWYSIWYGInput wysiwyg = findComponentById(name) ;
-//    if(wysiwyg == null) {
-//      wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, isBasic) ;      
-//    }                 
-//    /**
-//     * Broadcast some info about current node by FCKEditorConfig Object
-//     * FCKConfigService used to allow add custom config for fckeditor from service
-//     * */
-//    FCKEditorConfig config = new FCKEditorConfig();
-//    FCKEditorContext editorContext = new FCKEditorContext();
-//    if(repositoryName_ != null) {        
-//      config.put("repositoryName",repositoryName_);
-//      editorContext.setRepository(repositoryName_);
-//    }
-//    if(workspaceName_ != null) {
-//      config.put("workspaceName",workspaceName_);
-//      editorContext.setWorkspace(workspaceName_);
-//    }
-//    if(nodePath_ != null) {
-//      config.put("jcrPath",nodePath_);
-//      editorContext.setCurrentNodePath(nodePath_);
-//    }else {
-//      config.put("jcrPath",storedPath_);
-//      editorContext.setCurrentNodePath(storedPath_);                                  
-//    }
-//    FCKConfigService fckConfigService = getApplicationComponent(FCKConfigService.class);
-//    editorContext.setPortalName(Util.getUIPortal().getName());
-//    editorContext.setSkinName(Util.getUIPortalApplication().getSkin());
-//    fckConfigService.processFCKEditorConfig(config,editorContext);      
-//    wysiwyg.setFCKConfig(config);    
-//    if(validateType != null) {
-//      addValidators(wysiwyg, validateType);
-////    wysiwyg.addValidator(getValidator(validateType)) ;
-//    }
+    if(wysiwyg == null) {
+      wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, isBasic) ;      
+    }                 
+    /**
+     * Broadcast some info about current node by FCKEditorConfig Object
+     * FCKConfigService used to allow add custom config for fckeditor from service
+     * */
+    FCKEditorConfig config = new FCKEditorConfig();
+    FCKEditorContext editorContext = new FCKEditorContext();
+    if(repositoryName_ != null) {        
+      config.put("repositoryName",repositoryName_);
+      editorContext.setRepository(repositoryName_);
+    }
+    if(workspaceName_ != null) {
+      config.put("workspaceName",workspaceName_);
+      editorContext.setWorkspace(workspaceName_);
+    }
+    if(nodePath_ != null) {
+      config.put("jcrPath",nodePath_);
+      editorContext.setCurrentNodePath(nodePath_);
+    }else {
+      config.put("jcrPath",storedPath_);
+      editorContext.setCurrentNodePath(storedPath_);                                  
+    }
+    FCKConfigService fckConfigService = getApplicationComponent(FCKConfigService.class);
+    editorContext.setPortalName(Util.getUIPortal().getName());
+    editorContext.setSkinName(Util.getUIPortalApplication().getSkin());
+    fckConfigService.processFCKEditorConfig(config,editorContext);      
+    wysiwyg.setFCKConfig(config);    
+    if(validateType != null) {
+      addValidators(wysiwyg, validateType);
+//    wysiwyg.addValidator(getValidator(validateType)) ;
+    }
     addUIFormInput(wysiwyg) ;
     if(wysiwyg.getValue() == null) wysiwyg.setValue(defaultValue) ;
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
