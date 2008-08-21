@@ -96,7 +96,7 @@ public class UIDialogForm extends UIForm {
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ;
   private List<String> postScriptInterceptor_ = new ArrayList<String>() ;  
   private final String REPOSITORY = "repository";
-  
+
   public UIDialogForm() throws Exception {}
 
   public void addActionField(String name,String label,String[] arguments) throws Exception {
@@ -224,9 +224,9 @@ public class UIDialogForm extends UIForm {
   public void addInterceptor(String scriptPath, String type) {
     if(scriptPath.length() > 0 && type.length() > 0){
       if(type.equals("prev")){
-        prevScriptInterceptor_.add(scriptPath + ";" + type) ;
+        prevScriptInterceptor_.add(scriptPath) ;
       } else if(type.equals("post")){
-        postScriptInterceptor_.add(scriptPath + ";" + type) ;
+        postScriptInterceptor_.add(scriptPath) ;
       }
     } 
   }
@@ -570,7 +570,7 @@ public class UIDialogForm extends UIForm {
     propertiesName_.put(name, propertyName) ;
     fieldNames_.put(propertyName, name) ;
     Node node = getNode();
-    
+
     if(!isShowingComponent_ && !isRemovePreference_) {
       if(node != null && (node.isNodeType("nt:file") || isNTFile_)) {
         Node jcrContentNode = node.getNode("jcr:content") ;
@@ -602,6 +602,42 @@ public class UIDialogForm extends UIForm {
   public void addWYSIWYGField(String name, String[] arguments) throws Exception {
     addWYSIWYGField(name,null,arguments);
   }
+
+  @Override
+  public void processAction(WebuiRequestContext context) throws Exception {       
+    String action =  context.getRequestParameter(UIForm.ACTION) ;    
+    if(SAVE_ACTION.equalsIgnoreCase(action)) {
+      executePreSaveEventInterceptor();
+      super.processAction(context);
+      String nodePath = (String)context.getAttribute("nodePath");
+      if(nodePath != null) {
+        executePostSaveEventInterceptor(nodePath); 
+     }
+      prevScriptInterceptor_.clear();
+      postScriptInterceptor_.clear();
+    }else {
+      super.processAction(context); 
+    }    
+  } 
+
+  private void executePreSaveEventInterceptor() throws Exception {
+    if(prevScriptInterceptor_.size()>0) {
+      Map<String,JcrInputProperty> maps = DialogFormUtil.prepareMap(this.getChildren(),getInputProperties());    
+      for(String interceptor : prevScriptInterceptor_) {              
+        this.executeScript(interceptor, maps, null) ;                
+      } 
+    }           
+  }
+
+  private void executePostSaveEventInterceptor(String nodePath) throws Exception {
+    if(postScriptInterceptor_.size()>0) {
+      String path = nodePath + "&workspaceName=" + this.workspaceName_ + "&repository=" + this.repositoryName_;
+      for(String interceptor : postScriptInterceptor_) {              
+        this.executeScript(interceptor, path, null) ;                
+      }      
+    }    
+  }
+
   public Node getChildNode() throws Exception { 
     if(childPath_ == null) return null ;
     return (Node) getSesssion().getItem(childPath_) ; 
@@ -671,11 +707,6 @@ public class UIDialogForm extends UIForm {
 
   public void resetProperties() { properties.clear() ; }
 
-  public void resetScriptInterceptor(){
-    prevScriptInterceptor_.clear() ;
-    postScriptInterceptor_.clear() ;
-  }
-
   public void setChildPath(String childPath) { childPath_ = childPath ; }
 
   public void setInputProperty(String name, Object value) { properties.put(name, value) ; }
@@ -700,10 +731,8 @@ public class UIDialogForm extends UIForm {
 
   public void setStoredPath(String storedPath) { storedPath_ = storedPath ; }
 
-  public void setWorkspace(String workspace) { workspaceName_ = workspace ; }
+  public void setWorkspace(String workspace) { workspaceName_ = workspace ; }  
 
-  public Node storeValue(Event event) throws Exception { return null ; }
-  
   private void executeScript(String script, Object o, String[] params) throws Exception{
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
     try {
@@ -731,12 +760,12 @@ public class UIDialogForm extends UIForm {
     }
     return null;
   }  
-  
+
   private ManageableRepository getRepository() throws Exception{         
     RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
     return repositoryService.getRepository(repositoryName_);
   } 
-  
+
   private void renderMultiValuesInput(Class type, String name,String label) throws Exception{
     UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
     uiMulti.setId(name) ;
@@ -752,33 +781,5 @@ public class UIDialogForm extends UIForm {
       event.getSource().isOnchange_ = true ;
       event.getSource().onchange(event) ;
     }
-  }
-
-  static  public class SaveActionListener extends EventListener<UIDialogForm> {
-    public void execute(Event<UIDialogForm> event) throws Exception {
-      UIDialogForm dialogForm = event.getSource() ;
-      //TODO : workspace name is null
-      String path = dialogForm.storedPath_ + "&workspaceName=" + dialogForm.workspaceName_ + 
-      "&repository=" + dialogForm.repositoryName_;
-
-      for(String interceptor : dialogForm.prevScriptInterceptor_) {
-        String scriptPath = interceptor.split(";")[0] ;
-        String type = interceptor.split(";")[1] ;
-        if(type.equals("prev")) {
-          dialogForm.executeScript(scriptPath, path, null) ;          
-        } 
-      }
-      Node newNode = dialogForm.storeValue(event) ;
-      if(newNode == null) return ; 
-      path = newNode.getPath() + "&workspaceName=" + newNode.getSession().getWorkspace().getName() +
-      "&repository=" + dialogForm.repositoryName_;
-      for(String interceptor : dialogForm.postScriptInterceptor_) {
-        String scriptPath = interceptor.split(";")[0] ;
-        String type = interceptor.split(";")[1] ;
-        if(type.equals("post")) {
-          dialogForm.executeScript(scriptPath, path, null) ;          
-        } 
-      }      
-    }
-  }
+  }  
 }
