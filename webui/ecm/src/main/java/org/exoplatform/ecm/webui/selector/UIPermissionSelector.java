@@ -16,6 +16,12 @@
  */
 package org.exoplatform.ecm.webui.selector;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.exoplatform.commons.utils.PageList;
+import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.organization.User;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -33,7 +39,7 @@ import org.exoplatform.webui.organization.UIGroupMembershipSelector;
  */
 @ComponentConfigs({ 
   @ComponentConfig(
-      template = "system:/groovy/organization/webui/component/UIGroupMembershipSelector.gtmpl",
+      template = "classpath:groovy/ecm/webui/UIMemberSelector.gtmpl",
       events = {
           @EventConfig(listeners = UIPermissionSelector.ChangeNodeActionListener.class),
           @EventConfig(listeners = UIPermissionSelector.SelectMembershipActionListener.class),
@@ -55,8 +61,9 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
 
   final static public String defaultValue = "/admin" ;
   private UIComponent uiComponent ;
-  private String returnFieldName = null ;
-
+  private String returnFieldName = null ;  
+  private boolean isSelectedMembership;
+  private boolean isSelectedUser;
   public boolean isUsePopup = true ;
 
   /**
@@ -64,8 +71,8 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
    * 
    * @throws Exception the exception
    */
-  public UIPermissionSelector() throws Exception {
-    changeGroup(defaultValue) ;
+  public UIPermissionSelector() throws Exception {        
+    changeGroup(defaultValue);
   }
 
   /**
@@ -197,4 +204,31 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPermissionSelector) ;
     }
   }  
+  
+  public void setSelectedUser(boolean bool) {
+    isSelectedUser = bool;
+  }
+  
+  public boolean isSelectedUser() {
+    return isSelectedUser;
+  }
+  
+  public void setSelectedMembership(boolean bool) {
+    isSelectedMembership = bool;
+  }
+  
+  public boolean isSelectedMembership() {
+    return isSelectedMembership;
+  }
+  
+  public List getUsers() throws Exception {
+    List children = new ArrayList() ; 
+    OrganizationService service = getApplicationComponent(OrganizationService.class) ;
+    PageList userPageList = service.getUserHandler().findUsersByGroup(this.getCurrentGroup().getId()) ;    
+    for(Object child : userPageList.getAll()){
+      children.add((User)child) ;
+    }
+    return children ;
+  }
+  
 }
