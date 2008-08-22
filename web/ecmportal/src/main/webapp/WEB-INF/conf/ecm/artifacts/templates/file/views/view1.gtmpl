@@ -188,9 +188,10 @@
 			        	if(mimeType.startsWith("image")) {
 			        	//prevent ajax cache image
 			        	String rndString = String.valueOf(new Date().getTime());
+			        	String imgSrc = uicomponent.getDownloadLink(fileLangNode) ;
 			        %> 	
 				    		<div class="ContentDetail">
-				    			<image src="/${uicomponent.getPortalName()}/rest/jcr/${uicomponent.getRepository()}/${uicomponent.getWorkspaceName()}/${fileLangNode.getPath()}"/>              
+				    			<image src="$imgSrc"/>              
 			          </div>
 			        <%}else {%> 
 								<div style="text-align:center; font-style:italic">

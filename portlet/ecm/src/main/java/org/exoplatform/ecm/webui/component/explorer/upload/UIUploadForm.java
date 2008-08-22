@@ -89,6 +89,11 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
     isMultiLanguage_ = isMultiLanguage ;
     language_ = language ;
   }
+  
+  public void resetComponent() {
+    removeChildById(FIELD_UPLOAD);
+    addUIFormInput(new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD));
+  }
 
   public boolean isMultiLanguage() { return isMultiLanguage_ ; }
 
