@@ -27,6 +27,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.UserHandler;
 import org.exoplatform.services.organization.UserProfile;
 import org.exoplatform.services.organization.UserProfileHandler;
@@ -115,9 +116,9 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
         OrganizationService organizationService = uiForm.getApplicationComponent(OrganizationService.class);
         UserProfileHandler profileHandler = organizationService.getUserProfileHandler();
         UserHandler userHandler = organizationService.getUserHandler();
-        org.exoplatform.services.organization.User user = userHandler.findUserByName(userName);
+        User user = userHandler.findUserByName(userName);
         UserProfile userProfile = profileHandler.findUserProfileByName(userName);
-        website = userProfile.getAttribute("user.business-info.online.uri");
+        website = userProfile.getUserInfoMap().get("user.business-info.online.uri");
         email = user.getEmail();
       }
     
