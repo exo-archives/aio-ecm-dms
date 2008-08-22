@@ -22,7 +22,7 @@
       <tr>
   	    <th><%=_ctx.appRes("UIScriptList.header.name")%></th>
   	    <th><%=_ctx.appRes("UIScriptList.header.path")%></th>
-  	    <th><%=_ctx.appRes("UIScriptList.header.baseVersion")%></th>
+  	    <th align="center"><%=_ctx.appRes("UIScriptList.header.baseVersion")%></th>
   	    <th><%=_ctx.appRes("UIScriptList.header.action")%></th>
       </tr>
     </thead>
