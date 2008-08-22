@@ -96,12 +96,27 @@
 		        <div class="ButtonLeft">
 		          <div class="ButtonRight">
 		            <div class="ButtonMiddle">
-		              Close
+		              <%=_ctx.appRes("UIVersionInfo.action.close")%>
 		            </div>
 		          </div>
 		        </div>
 		      </a>
 	  		</td>
+	  		<%
+	  			if(uicomponent.isViewVersion()) {
+	  		%>
+	  			<td align="center">
+			      <a href="<%=uicomponent.event("CloseView")%>" class="ActionButton LightBlueStyle">
+			        <div class="ButtonLeft">
+			          <div class="ButtonRight">
+			            <div class="ButtonMiddle">
+			              <%=_ctx.appRes("UIVersionInfo.action.close-view")%>
+			            </div>
+			          </div>
+			        </div>
+			      </a>
+		  		</td>
+	  		<%}%>
 	  	</tr>
 	  </table>
   </div>

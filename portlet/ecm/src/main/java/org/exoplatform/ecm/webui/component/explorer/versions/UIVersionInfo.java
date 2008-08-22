@@ -52,7 +52,8 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIVersionInfo.CompareVersionActionListener.class),
         @EventConfig(listeners = UIVersionInfo.DeleteVersionActionListener.class, confirm = "UIVersionInfo.msg.confirm-delete"),
         @EventConfig(listeners = UIVersionInfo.RemoveLabelActionListener.class),
-        @EventConfig(listeners = UIVersionInfo.CloseActionListener.class)        
+        @EventConfig(listeners = UIVersionInfo.CloseActionListener.class),
+        @EventConfig(listeners = UIVersionInfo.CloseViewActionListener.class)
     }
 )
 
@@ -93,6 +94,12 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
 
   public VersionNode getCurrentVersionNode() { return curentVersion_ ;}
   public Node getCurrentNode() { return node_ ; }
+  
+  public boolean isViewVersion() {
+    UIViewVersion uiViewVersion = getChild(UIViewVersion.class);
+    if(uiViewVersion.isRendered()) return true;
+    return false;
+  }  
 
   static  public class ViewVersionActionListener extends EventListener<UIVersionInfo> {
     public void execute(Event<UIVersionInfo> event) throws Exception {
@@ -232,4 +239,16 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
       uiExplorer.cancelAction() ;
     }
   }
+  
+  static public class CloseViewActionListener extends EventListener<UIVersionInfo> {
+    public void execute(Event<UIVersionInfo> event) throws Exception {
+      UIVersionInfo uiVersionInfo = event.getSource();
+      UIViewVersion uiViewVersion = uiVersionInfo.getChild(UIViewVersion.class);
+      if(uiViewVersion.isRendered()) {
+        uiViewVersion.setRendered(false);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo);
+        return;
+      }
+    }
+  }  
 }
