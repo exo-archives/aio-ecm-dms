@@ -39,10 +39,14 @@ public class UIFormHiddenField extends DialogFormField {
 
   public JcrInputProperty createJcrInputProperty() {
     JcrInputProperty inputProperty = new JcrInputProperty();
+    System.out.println("===========>"+jcrPath);
+    System.out.println("===========>"+defaultValue);
+    System.out.println("===========>"+nodeType);
+    System.out.println("===========>"+mixinTypes);
     inputProperty.setJcrPath(jcrPath);
     if(defaultValue != null && defaultValue.length() > 0) {
       inputProperty.setValue(defaultValue) ;
-    }
+    }    
     if (nodeType != null || mixinTypes != null) {
       inputProperty.setType(JcrInputProperty.NODE);
       if(nodeType != null) inputProperty.setNodetype(nodeType);

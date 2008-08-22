@@ -85,7 +85,7 @@ public abstract class DialogFormField {
     this.selectorParams = parsedArguments.get(SELECTOR_PARAMS) ;
     this.options = parsedArguments.get(OPTIONS);
     this.visible = parsedArguments.get(VISIBLE);
-    this.nodeType = parsedArguments.get(nodeType);
+    this.nodeType = parsedArguments.get(NODETYPE);
     this.mixinTypes = parsedArguments.get(MIXINTYPE);
     this.onchange = parsedArguments.get(ONCHANGE);
     this.groovyScript = parsedArguments.get(SCRIPT);
@@ -187,7 +187,7 @@ public abstract class DialogFormField {
   public void setType(String type) { this.type = type;}
   
   public boolean isMultiValues() { return "true".equalsIgnoreCase(multiValues); }
-  public boolean isEditable() { return "true".equalsIgnoreCase(editable); }
+  public boolean isEditable() { return !"false".equalsIgnoreCase(editable); }
   public boolean isEditableIfNull() { return "if-null".equalsIgnoreCase(editable); }
   public boolean isVisibleIfNotNull() { return "if-not-null".equals(visible); }
   

@@ -83,7 +83,7 @@ public class UIDialogForm extends UIForm {
   protected Map<String, Map<String,String>> componentSelectors = new HashMap<String, Map<String,String>>();
   protected Map<String, String> fieldNames = new HashMap<String, String>() ;
   protected Map<String, String> propertiesName = new HashMap<String, String>() ;
-  protected String contentType;
+  protected String contentType; 
   protected boolean isAddNew;
   protected boolean isRemovePreference = false ;
   protected boolean isShowingComponent = false;
@@ -104,9 +104,19 @@ public class UIDialogForm extends UIForm {
   
   private String storedPath = null ;
   
-  private String workspaceName = null ;
+  private String workspaceName = null ; 
   
-  public UIDialogForm() throws Exception {}
+  public UIDialogForm() { }
+  
+  public boolean isEditing() { return !isAddNew;}
+  public boolean isAddNew() { return isAddNew;}
+  public void addNew(boolean b) { this.isAddNew = b; }
+  
+  public void setStoredLocation(String repository, String workspace, String storedPath) {
+    this.repositoryName = repository;
+    this.workspaceName = workspace;
+    this.storedPath = storedPath;
+  } 
   
   public void addActionField(String name,String label,String[] arguments) throws Exception {
     UIFormActionField formActionField = new UIFormActionField(name,label,arguments);    
@@ -214,21 +224,10 @@ public class UIDialogForm extends UIForm {
   public void addHiddenField(String name, String[] arguments) throws Exception {
     UIFormHiddenField formHiddenField = new UIFormHiddenField(name,null,arguments);
     String jcrPath = formHiddenField.getJcrPath();
-    JcrInputProperty inputProperty = new JcrInputProperty();
-    inputProperty.setJcrPath(jcrPath);
-    String defaultValue = formHiddenField.getDefaultValue();
-    if(defaultValue != null && defaultValue.length() > 0) {
-      inputProperty.setValue(defaultValue) ;
-    }
-    String nodetype = formHiddenField.getNodeType();
-    String mixintype = formHiddenField.getMixinTypes();
-    if (nodetype != null || mixintype != null) {
-      inputProperty.setType(JcrInputProperty.NODE);
-      if(nodetype != null) inputProperty.setNodetype(nodetype);
-      if(mixintype != null) inputProperty.setMixintype(mixintype);
-    }
+    JcrInputProperty inputProperty = formHiddenField.createJcrInputProperty();
     setInputProperty(name, inputProperty) ;
   }
+  
   public void addInterceptor(String scriptPath, String type) {
     if(scriptPath.length() > 0 && type.length() > 0){
       if(type.equals("prev")){
@@ -267,9 +266,8 @@ public class UIDialogForm extends UIForm {
   
   public void addMixinField(String name, String[] arguments) throws Exception {
     addMixinField(name,null,arguments) ;
-  }
-  public void addNewContent(boolean addNew) { this.isAddNew = addNew; }
-
+  }  
+  
   public void addSelectBoxField(String name, String label, String[] arguments) throws Exception {
     UIFormSelectBoxField formSelectBoxField = new UIFormSelectBoxField(name,label,arguments);           
     if(formSelectBoxField.isMultiValues()) {
@@ -654,10 +652,8 @@ public class UIDialogForm extends UIForm {
       uiApp.addMessage(new ApplicationMessage("UIDialogForm.msg.not-support-contenttype", arg, ApplicationMessage.ERROR)) ;
       return null ;
     } 
-  }
-
-  public boolean isAddNewContent() { return isAddNew; }
-
+  }  
+  
   public boolean isResetForm() { return isResetForm ; }
 
   public void onchange(Event event) throws Exception {}
