@@ -31,18 +31,14 @@ public class UIFormHiddenField extends DialogFormField {
   public UIFormHiddenField(String name, String label, String[] arguments) {
     super(name, label, arguments);
   }
-  
+
   @SuppressWarnings("unchecked")
-  public <T extends UIFormInputBase> T createUIFormInput() throws Exception {    
-    return null;
+  public <T extends UIFormInputBase> T createUIFormInput() throws Exception {
+    throw new UnsupportedOperationException("Unsupported this method");
   }
 
   public JcrInputProperty createJcrInputProperty() {
-    JcrInputProperty inputProperty = new JcrInputProperty();
-    System.out.println("===========>"+jcrPath);
-    System.out.println("===========>"+defaultValue);
-    System.out.println("===========>"+nodeType);
-    System.out.println("===========>"+mixinTypes);
+    JcrInputProperty inputProperty = new JcrInputProperty();    
     inputProperty.setJcrPath(jcrPath);
     if(defaultValue != null && defaultValue.length() > 0) {
       inputProperty.setValue(defaultValue) ;
