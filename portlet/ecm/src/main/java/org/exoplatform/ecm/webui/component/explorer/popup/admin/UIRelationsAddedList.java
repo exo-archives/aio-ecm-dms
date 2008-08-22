@@ -53,38 +53,39 @@ import org.exoplatform.webui.exception.MessageException;
 )
 public class UIRelationsAddedList extends UIContainer implements UISelector {
 
-  private static String[] RELATE_BEAN_FIELD = {"path"};
-  private static String[] ACTION = {"Delete"};
+  private static String[] RELATE_BEAN_FIELD = {"path"} ;
+  private static String[] ACTION = {"Delete"} ;
 
   public UIRelationsAddedList() throws Exception {
-    UIGrid uiGrid = addChild(UIGrid.class, null, "RelateAddedList");
+    UIGrid uiGrid = addChild(UIGrid.class, null, "RelateAddedList") ;
+    uiGrid.setDisplayedChars(150);
     uiGrid.getUIPageIterator().setId("RelateListIterator");
-    uiGrid.configure("path", RELATE_BEAN_FIELD, ACTION);
+    uiGrid.configure("path", RELATE_BEAN_FIELD, ACTION) ;
   }
   
   public void updateGrid (List<Node> nodes) throws Exception {
-    UIGrid uiGrid = getChildById("RelateAddedList");   
-    if (nodes == null) nodes = new ArrayList<Node>();
-    ObjectPageList objPageList = new ObjectPageList(nodes, 10);
-    uiGrid.getUIPageIterator().setPageList(objPageList);
+    UIGrid uiGrid = getChildById("RelateAddedList") ;   
+    if(nodes == null) nodes = new ArrayList<Node>() ;
+    ObjectPageList objPageList = new ObjectPageList(nodes, 10) ;
+    uiGrid.getUIPageIterator().setPageList(objPageList) ;
   }
   
   @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) throws Exception {    
-    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
-    RelationsService relateService = getApplicationComponent(RelationsService.class);
-    String currentFullPath = uiJCRExplorer.getCurrentWorkspace() + ":" + uiJCRExplorer.getCurrentNode().getPath();
-    if (value.equals(currentFullPath)) {
+  public void updateSelect(String selectField, String value) throws Exception {
+    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    RelationsService relateService = getApplicationComponent(RelationsService.class) ;
+    String currentFullPath = uiJCRExplorer.getCurrentWorkspace() + ":" + uiJCRExplorer.getCurrentNode().getPath() ;
+    if(value.equals(currentFullPath)) {
       throw new MessageException(new ApplicationMessage("UIRelationsAddedList.msg.can-not-add-itself",
-                                                        null, ApplicationMessage.WARNING));
+                                                        null, ApplicationMessage.WARNING)) ;
     }
     try {
-      String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
-      String wsName = value.substring(0, value.indexOf(":"));      
-      String path = value.substring(value.indexOf(":") + 1); 
-      
-      relateService.addRelation(uiJCRExplorer.getCurrentNode(), path, wsName, repository);
-      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName(), SessionsUtils.getSessionProvider()));      
+      String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+      String wsName = value.substring(0, value.indexOf(":")) ;
+      String path = value.substring(value.indexOf(":") + 1) ;           
+      //TODO maybe lost data here      
+      relateService.addRelation(uiJCRExplorer.getCurrentNode(), path, wsName,repository) ;
+      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName(),SessionsUtils.getSessionProvider())) ;      
       setRenderSibbling(UIRelationsAddedList.class) ;
     } catch(Exception e) {
       e.printStackTrace() ;
