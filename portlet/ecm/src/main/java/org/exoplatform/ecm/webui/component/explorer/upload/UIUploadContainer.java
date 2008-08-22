@@ -20,6 +20,7 @@ import javax.jcr.Item;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UILanguageTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -73,6 +74,9 @@ public class UIUploadContainer extends UIContainer {
       if(uiUploadForm.isMultiLanguage()) {
         UIMultiLanguageManager uiLanguageManager = uiUploadManager.getAncestorOfType(UIMultiLanguageManager.class) ;
         uiLanguageManager.setRenderedChild(UIMultiLanguageForm.class) ;
+        uiLanguageManager.findFirstComponentOfType(UILanguageTypeForm.class).resetLanguage();
+        uiUploadForm.resetComponent();
+        uiUploadManager.setRenderedChild(UIUploadForm.class);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiLanguageManager) ;
         return ;
       }

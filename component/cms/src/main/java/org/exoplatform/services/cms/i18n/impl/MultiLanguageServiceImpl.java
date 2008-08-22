@@ -503,7 +503,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         }
       }
       Node newJcrContent = ntFileLangNode.getNode(JCRCONTENT) ;
-      newJcrContent.setProperty(JCRDATA, value) ;
+      newJcrContent.setProperty(JCRDATA, oldValue) ;
       newJcrContent.setProperty(JCR_LASTMODIFIED, new GregorianCalendar()) ;
       setMixin(node, ntFileLangNode) ;
     } else {
@@ -519,6 +519,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       setCommentNode(node, ntFileLangNode, selectedFileLangeNode) ;
     }
     if(isDefault) node.setProperty(EXO_LANGUAGE, language) ;
+    node.save();
     node.getSession().save() ;    
   }
   
