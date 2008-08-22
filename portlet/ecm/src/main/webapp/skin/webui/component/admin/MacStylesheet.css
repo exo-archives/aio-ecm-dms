@@ -712,7 +712,7 @@
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UIForm .textarea {
-  width: 95%;
+  width: 400px;
   height: 350px;
   padding: 3px;
 }
