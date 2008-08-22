@@ -58,6 +58,7 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
 
   public UIRelationsAddedList() throws Exception {
     UIGrid uiGrid = addChild(UIGrid.class, null, "RelateAddedList") ;
+    uiGrid.setDisplayedChars(150);
     uiGrid.getUIPageIterator().setId("RelateListIterator");
     uiGrid.configure("path", RELATE_BEAN_FIELD, ACTION) ;
   }
