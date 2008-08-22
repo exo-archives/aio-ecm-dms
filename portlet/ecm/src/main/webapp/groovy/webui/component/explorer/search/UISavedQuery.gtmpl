@@ -71,7 +71,10 @@
 			          </td>	                    
 		          </tr>
 		        <%}%>
-		        <%if(object instanceof Node) { %>
+		        <%
+		        	if(object instanceof Node) { 
+		        		if(object.hasProperty("jcr:language")) {
+		        %>
 				  	   <tr class="$rowClass">
 		            <td><div class="Text"><%=object.getName()%></div></td>
 		            <td><div class="Text"><%=object.getProperty("jcr:language").getString()%></div></td>
@@ -101,6 +104,7 @@
 			          </td>	                    
 		          </tr>
 	      	 <%
+	      	    }
 	      		}  
 	      	}
 	      }
