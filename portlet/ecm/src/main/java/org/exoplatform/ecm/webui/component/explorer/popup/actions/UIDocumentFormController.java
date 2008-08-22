@@ -50,23 +50,20 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
   private String defaultDocument_ ;
   private static String DEFAULT_VALUE = "exo:article" ;
   private Node currentNode_ ;
-  private String repository_ ;
-  private String workspace_ ;
+  private String repository_ ;  
 
   public UIDocumentFormController() throws Exception {
     addChild(UISelectDocumentForm.class, null, null) ;
     UIDocumentForm uiDocumentForm = createUIComponent(UIDocumentForm.class, null, null) ;
-    uiDocumentForm.setTemplateNode(DEFAULT_VALUE) ;
-    uiDocumentForm.addNew(true) ;
+    uiDocumentForm.setContentType(DEFAULT_VALUE);
+    uiDocumentForm.addNew(true) ;    
     addChild(uiDocumentForm) ;
   }
 
   public void setCurrentNode(Node node) { currentNode_ = node ; }
 
   public void setRepository(String repository) { repository_ = repository ; }
-
-  public void setWorkspace(String workspace) { workspace_ = workspace ; }
-
+  
   public void initPopup(UIComponent uiComp) throws Exception {
     removeChildById("PopupComponent") ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "PopupComponent") ;
@@ -160,8 +157,8 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
 
   public void init() throws Exception {
     getChild(UIDocumentForm.class).setRepositoryName(repository_) ;
-    getChild(UIDocumentForm.class).setTemplateNode(defaultDocument_) ;
-    getChild(UIDocumentForm.class).setWorkspace(workspace_) ;
+    getChild(UIDocumentForm.class).setContentType(defaultDocument_);
+    getChild(UIDocumentForm.class).setWorkspace(currentNode_.getSession().getWorkspace().getName()) ;
     getChild(UIDocumentForm.class).setStoredPath(currentNode_.getPath()) ;
     getChild(UIDocumentForm.class).resetProperties();
   }

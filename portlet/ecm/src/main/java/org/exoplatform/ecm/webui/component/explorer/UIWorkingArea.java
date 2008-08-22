@@ -356,7 +356,7 @@ public class UIWorkingArea extends UIContainer {
           UIDocumentFormController uiController = 
             event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController") ;
           UIDocumentForm uiDocumentForm = uiController.getChild(UIDocumentForm.class) ;
-          uiDocumentForm.setTemplateNode(nodeType) ;
+          uiDocumentForm.setContentType(nodeType) ;
           uiDocumentForm.setRepositoryName(repository) ;
           uiDocumentForm.setWorkspace(wsName) ;
           uiDocumentForm.setNodePath(nodePath) ;

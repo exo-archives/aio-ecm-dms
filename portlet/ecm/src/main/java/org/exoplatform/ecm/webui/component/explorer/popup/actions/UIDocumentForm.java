@@ -76,22 +76,12 @@ import org.exoplatform.webui.form.UIFormMultiValueInputSet;
     }
 )
 
-public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UISelector {
-
-  private String documentType_ ;
-  private boolean isAddNew_ = false ; 
+public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UISelector {   
+  
   public UIDocumentForm() throws Exception {
-    setActions(new String[]{"Save", "Cancel"}) ;    
-  }
-
-  public void setTemplateNode(String type) { documentType_ = type ;}
-
-  public boolean isAddNew() {return isAddNew_ ;}
-
-  public void addNew(boolean b) {isAddNew_ = b ;}
-
-  public void setRepositoryName(String repositoryName) { this.repositoryName = repositoryName ; }
-
+    setActions(new String[]{"Save", "Cancel"}) ;  
+  }     
+  
   public void updateSelect(String selectField, String value) {
     isUpdateSelect = true ;    
     UIFormInput formInput = getUIInput(selectField) ;
@@ -110,10 +100,10 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {      
-      return templateService.getTemplatePathByUser(true, documentType_, userName, repositoryName) ;
+      return templateService.getTemplatePathByUser(true, contentType, userName, repositoryName) ;
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
-      Object[] arg = { documentType_ } ;
+      Object[] arg = { contentType } ;
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.not-support", arg, 
           ApplicationMessage.ERROR)) ;
       return null ;
@@ -131,8 +121,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   public Node getCurrentNode() throws Exception { 
     return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; 
   }
-
-  public boolean isEditing() { return !isAddNew_ ; }
   
   static  public class SaveActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
@@ -145,7 +133,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       Node homeNode ;
       Node currentNode = uiExplorer.getCurrentNode();
       UIApplication uiApp = documentForm.getAncestorOfType(UIApplication.class);
-      if(documentForm.isAddNew_) {
+      if(documentForm.isAddNew()) {
         UIDocumentFormController uiDFController = documentForm.getParent() ;
         homeNode = currentNode ;
         nodeType = uiDFController.getChild(UISelectDocumentForm.class).getSelectValue() ;
@@ -155,7 +143,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       }       
       try {
         CmsService cmsService = documentForm.getApplicationComponent(CmsService.class) ;
-        String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, documentForm.isAddNew_,documentForm.repositoryName);
+        String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, documentForm.isAddNew(),documentForm.repositoryName);
         try {
           homeNode.save() ;
           newNode = (Node)homeNode.getSession().getItem(addedPath);
@@ -178,6 +166,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
       } catch(RepositoryException repo) {
+        repo.printStackTrace();
         String key = "UIDocumentForm.msg.repository-exception" ;
         if(ItemExistsException.class.isInstance(repo)) key = "UIDocumentForm.msg.not-allowed-same-name-sibling" ;
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;

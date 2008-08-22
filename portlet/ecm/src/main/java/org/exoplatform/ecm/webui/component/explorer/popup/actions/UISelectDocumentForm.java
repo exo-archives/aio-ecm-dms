@@ -60,7 +60,7 @@ public class UISelectDocumentForm extends UIForm {
       documentForm.getChildren().clear() ;
       documentForm.resetProperties() ;
       // set path to DocumentForm
-      documentForm.setTemplateNode(uiSelectForm.getUIFormSelectBox(UISelectDocumentForm.FIELD_SELECT).getValue()) ;
+      documentForm.setContentType(uiSelectForm.getUIFormSelectBox(UISelectDocumentForm.FIELD_SELECT).getValue()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDCFormController) ;
     }
   }
