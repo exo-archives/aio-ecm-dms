@@ -53,9 +53,9 @@
 										}
 									} else {
 									%>
-										<span style="font-size:12px; font-weight: bold; padding-top:5px;">
+										<div style="font-size:12px; font-weight: bold; line-height: 17px;">
 								    	<%=_ctx.appRes("File.dialog.label.re-upload")%>
-								    </span>
+								    </div>
 									<%
 									}
 								} else {
