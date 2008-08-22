@@ -23,6 +23,11 @@ import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.services.cms.comments.CommentsService;
+import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.organization.User;
+import org.exoplatform.services.organization.UserHandler;
+import org.exoplatform.services.organization.UserProfile;
+import org.exoplatform.services.organization.UserProfileHandler;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -97,10 +102,22 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
   public static class SaveActionListener extends EventListener<UICBCommentForm>{
     public void execute(Event<UICBCommentForm> event) throws Exception {
       UICBCommentForm uiForm = event.getSource() ;
-      String name = event.getRequestContext().getRemoteUser() ;
-      if(Utils.isNameEmpty(name)) name = "anonymous" ;
-      String email = uiForm.getUIStringInput(FIELD_EMAIL).getValue() ;
-      String website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue() ;
+      String userName = event.getRequestContext().getRemoteUser() ;
+      String website = null;
+      String email = null;
+      if(userName == null || userName.trim().length() == 0){
+        userName = "anonymous" ;
+        website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue() ;
+        email = uiForm.getUIStringInput(FIELD_EMAIL).getValue();
+      } else {
+        OrganizationService organizationService = uiForm.getApplicationComponent(OrganizationService.class);
+        UserProfileHandler profileHandler = organizationService.getUserProfileHandler();
+        UserHandler userHandler = organizationService.getUserHandler();
+        User user = userHandler.findUserByName(userName);
+        UserProfile userProfile = profileHandler.findUserProfileByName(userName);
+        website = userProfile.getUserInfoMap().get("user.business-info.online.uri");
+        email = user.getEmail();
+      }
       String comment = (String)uiForm.<UIFormInputBase>getUIInput(FIELD_COMMENT).getValue() ;
       UIBrowseContentPortlet uiPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class) ;
       UIBrowseContainer uiBCContainer = uiPortlet.findFirstComponentOfType(UIBrowseContainer.class) ;
@@ -125,7 +142,7 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
         }
         CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ; 
         try {
-          commentsService.addComment(uiForm.getDocument(), name, email, website, comment, language) ;
+          commentsService.addComment(uiForm.getDocument(), userName, email, website, comment, language) ;
         } catch (LockException le) {
           uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.locked-doc", null, 
               ApplicationMessage.WARNING)) ;

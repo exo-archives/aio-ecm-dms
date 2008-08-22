@@ -117,7 +117,7 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
           UserHandler userHandler = organizationService.getUserHandler();
           User user = userHandler.findUserByName(userName);
           UserProfile userProfile = profileHandler.findUserProfileByName(userName);
-          website = userProfile.getAttribute("user.business-info.online.uri");
+          website = userProfile.getUserInfoMap().get("user.business-info.online.uri");
           email = user.getEmail();
       }
       String comment = (String)uiForm.<UIFormInputBase>getUIInput(FIELD_COMMENT).getValue() ;
