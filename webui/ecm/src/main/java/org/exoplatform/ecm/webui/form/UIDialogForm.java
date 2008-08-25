@@ -84,7 +84,7 @@ public class UIDialogForm extends UIForm {
   protected Map<String, String> fieldNames = new HashMap<String, String>() ;
   protected Map<String, String> propertiesName = new HashMap<String, String>() ;
   protected String contentType; 
-  protected boolean isAddNew;
+  protected boolean isAddNew = true;
   protected boolean isRemovePreference = false ;
   protected boolean isShowingComponent = false;
   protected boolean isUpdateSelect = false ;
