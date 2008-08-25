@@ -676,7 +676,10 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     while(nodeIter.hasNext()) {
       Node languageNode = nodeIter.nextNode() ;
       if(node.getPrimaryNodeType().getName().equals(NTFILE)) {
-        languageNode = getFileLangNode(languageNode) ;
+        Node jcrContentNode = node.getNode(JCRCONTENT);
+        if(!jcrContentNode.getProperty(JCR_MIMETYPE).getString().startsWith("text")) {
+          languageNode = getFileLangNode(languageNode) ;
+        }
       }
       if(!languageNode.getName().equals(defaultLang) && languageNode.hasProperty(VOTE_TOTAL_LANG_PROP)) {
         voteTotal = voteTotal + languageNode.getProperty(VOTE_TOTAL_LANG_PROP).getLong() ;
@@ -705,13 +708,15 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       Node selectedLangNode = languagesNode.getNode(language) ;
       Node newLang = languagesNode.addNode(defaultLanguage) ;
       if(node.getPrimaryNodeType().getName().equals(NTFILE)) {
-        selectedLangNode = getFileLangNode(selectedLangNode) ;
         Node jcrContentNode = node.getNode(JCRCONTENT) ;
-        newLang = addNewFileNode(node.getName(), newLang, jcrContentNode.getProperty(JCRDATA).getValue(), 
-            new GregorianCalendar(), jcrContentNode.getProperty(JCR_MIMETYPE).getString(), repositoryName) ;
-        Node newJcrContent = newLang.getNode(JCRCONTENT) ;
-        newJcrContent.setProperty(JCRDATA, jcrContentNode.getProperty(JCRDATA).getValue()) ;
-        newJcrContent.setProperty(JCR_MIMETYPE, jcrContentNode.getProperty(JCR_MIMETYPE).getString()) ;
+        if(!jcrContentNode.getProperty(JCR_MIMETYPE).getString().startsWith("text")) {
+          selectedLangNode = getFileLangNode(selectedLangNode) ;
+          newLang = addNewFileNode(node.getName(), newLang, jcrContentNode.getProperty(JCRDATA).getValue(), 
+              new GregorianCalendar(), jcrContentNode.getProperty(JCR_MIMETYPE).getString(), repositoryName) ;
+          Node newJcrContent = newLang.getNode(JCRCONTENT) ;
+          newJcrContent.setProperty(JCRDATA, jcrContentNode.getProperty(JCRDATA).getValue()) ;
+          newJcrContent.setProperty(JCR_MIMETYPE, jcrContentNode.getProperty(JCR_MIMETYPE).getString()) ;
+        }
       }
       PropertyDefinition[] properties = node.getPrimaryNodeType().getPropertyDefinitions() ;
       for(PropertyDefinition pro : properties){
@@ -739,6 +744,9 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         Node tempNode = node.addNode(TEMP_NODE, "nt:unstructured") ;
         node.getSession().move(node.getNode(JCRCONTENT).getPath(), tempNode.getPath() + "/" + JCRCONTENT) ;
         node.getSession().move(selectedLangNode.getNode(JCRCONTENT).getPath(), node.getPath() + "/" + JCRCONTENT) ;
+        if(node.getNode(JCRCONTENT).getProperty(JCR_MIMETYPE).getString().startsWith("text")) {
+          node.getSession().move(tempNode.getPath() + "/" + JCRCONTENT, newLang.getPath() + "/" + JCRCONTENT);
+        }
         tempNode.remove() ;
       } else if(hasNodeTypeNTResource(node)) {
         processWithDataChildNode(node, selectedLangNode, languagesNode, defaultLanguage, getChildNodeType(node)) ;
