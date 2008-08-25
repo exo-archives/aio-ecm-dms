@@ -16,6 +16,7 @@
  */
 package org.exoplatform.services.cms.queries.impl;
 
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -109,6 +110,12 @@ public class QueryPlugin extends BaseComponentPlugin {
     if(queryHome.hasNode(data.getName())) return ;    
     ValueFactory vt = queryHome.getSession().getValueFactory() ;
     Node queryNode = queryHome.addNode(data.getName(), "nt:query");
+    
+    if (!queryNode.isNodeType("exo:datetime")) {
+      queryNode.addMixin("exo:datetime");        
+    }
+    queryNode.setProperty("exo:dateModified",new GregorianCalendar()) ;
+    
     queryNode.addMixin("mix:sharedQuery") ;
     queryNode.setProperty(STATEMENT, data.getStatement()) ;
     queryNode.setProperty(LANGUAGE, data.getLanguage()) ;
