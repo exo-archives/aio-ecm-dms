@@ -172,8 +172,8 @@ public class UIActionBar extends UIForm {
   final static private String FIELD_XPATH = "xPath" ;
 
   final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1') order by exo:dateCreated DESC, jcr:primaryType DESC" ;
-  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1') order by jcr:path DESC, jcr:primaryType DESC" ;  
-
+  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1') order by jcr:path DESC, jcr:primaryType DESC";
+  
   public UIActionBar() throws Exception{
     UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions) ;
     selectTab.setOnChange("ChangeTab") ;
@@ -763,12 +763,12 @@ public class UIActionBar extends UIForm {
       }  
 
       PublicationService publicationService = uiActionBar.getApplicationComponent(PublicationService.class);
-      PublicationPresentationService publicationPresentationService = uiActionBar.getApplicationComponent(PublicationPresentationService.class);	      
+      PublicationPresentationService publicationPresentationService = uiActionBar.getApplicationComponent(PublicationPresentationService.class);        
 
       if (!publicationService.isNodeEnrolledInLifecycle(currentNode)) {          
         uiPopupAction.activate(UIActivePublication.class, 400);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
-        return;	    	  
+        return;         
       }
       UIContainer cont = uiActionBar.createUIComponent(UIContainer.class, null, null);
       UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);

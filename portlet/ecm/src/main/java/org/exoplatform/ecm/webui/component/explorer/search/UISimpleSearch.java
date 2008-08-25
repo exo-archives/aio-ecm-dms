@@ -25,6 +25,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -61,190 +62,190 @@ import org.exoplatform.webui.form.UIFormStringInput;
 )
 public class UISimpleSearch extends UIForm {
 
-  final static public String INPUT_SEARCH = "input" ;
-  final static public String CONSTRAINTS = "constraints" ;
-  final static public String NODE_PATH = "nodePath" ;
-  final static public String FIRST_OPERATOR = "firstOperator" ;
-  final static public String OR = "or".intern() ;
-  final static public String AND = "and".intern() ;
+  final static public String INPUT_SEARCH = "input";
+  final static public String CONSTRAINTS = "constraints";
+  final static public String NODE_PATH = "nodePath";
+  final static public String FIRST_OPERATOR = "firstOperator";
+  final static public String OR = "or".intern();
+  final static public String AND = "and".intern();
   
-  private List<String> constraints_ = new ArrayList<String>() ;
-  private List<String> virtualConstraints_ = new ArrayList<String>() ;
+  private List<String> constraints_ = new ArrayList<String>();
+  private List<String> virtualConstraints_ = new ArrayList<String>();
   
-  private static final String ROOT_XPATH_QUERY = "//*" ;
-  private static final String XPATH_QUERY = "/jcr:root$0//*" ;
+  private static final String ROOT_XPATH_QUERY = "//*";
+  private static final String XPATH_QUERY = "/jcr:root$0//*";
   
   public UISimpleSearch() throws Exception {
-    addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null)) ;
-    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null)) ;
-    List<SelectItemOption<String>> operators = new ArrayList<SelectItemOption<String>>() ;
-    operators.add(new SelectItemOption<String>(AND, AND)) ;
-    operators.add(new SelectItemOption<String>(OR, OR)) ;
-    addUIFormInput(new UIFormSelectBox(FIRST_OPERATOR, FIRST_OPERATOR, operators)) ;
-    UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("moreConstraints") ;
-    uiInputAct.addUIFormInput(new UIFormInputInfo(CONSTRAINTS, CONSTRAINTS, null)) ;
-    addUIComponentInput(uiInputAct) ;
-    setActions(new String[] {"MoreConstraints", "Search", "Save", "Cancel"}) ;
+    addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null));
+    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null).addValidator(SearchValidator.class));
+    List<SelectItemOption<String>> operators = new ArrayList<SelectItemOption<String>>();
+    operators.add(new SelectItemOption<String>(AND, AND));
+    operators.add(new SelectItemOption<String>(OR, OR));
+    addUIFormInput(new UIFormSelectBox(FIRST_OPERATOR, FIRST_OPERATOR, operators));
+    UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("moreConstraints");
+    uiInputAct.addUIFormInput(new UIFormInputInfo(CONSTRAINTS, CONSTRAINTS, null));
+    addUIComponentInput(uiInputAct);
+    setActions(new String[] {"MoreConstraints", "Search", "Save", "Cancel"});
   }
   
-  public List<String> getConstraints() { return constraints_ ; }
+  public List<String> getConstraints() { return constraints_; }
   
   public void updateAdvanceConstraint(String constraint, String operator, String virtualDateQuery) { 
     if(constraint.length() > 0) {
       if(constraints_.size() == 0) {
-        constraints_.add("(" + constraint + " )") ;
-        if(virtualDateQuery != null) virtualConstraints_.add("(" + virtualDateQuery + " )") ;
-        else virtualConstraints_.add("(" + constraint + " )") ;
+        constraints_.add("(" + constraint + " )");
+        if(virtualDateQuery != null) virtualConstraints_.add("(" + virtualDateQuery + " )");
+        else virtualConstraints_.add("(" + constraint + " )");
       } else {
-        constraints_.add(" "+operator.toLowerCase()+" (" + constraint + " ) ") ;
-        if(virtualDateQuery != null) virtualConstraints_.add(" "+operator.toLowerCase()+" (" + virtualDateQuery + " ) ") ;
-        else virtualConstraints_.add(" "+operator.toLowerCase()+" (" + constraint + " ) ") ;
+        constraints_.add(" "+operator.toLowerCase()+" (" + constraint + " ) ");
+        if(virtualDateQuery != null) virtualConstraints_.add(" "+operator.toLowerCase()+" (" + virtualDateQuery + " ) ");
+        else virtualConstraints_.add(" "+operator.toLowerCase()+" (" + constraint + " ) ");
       }
     }
-    UIFormInputSetWithAction inputInfor = getChildById("moreConstraints") ;
-    inputInfor.setIsDeleteOnly(true) ;
-    inputInfor.setListInfoField(CONSTRAINTS, virtualConstraints_) ;
-    String[] actionInfor = {"RemoveConstraint"} ;
-    inputInfor.setActionInfo(CONSTRAINTS, actionInfor) ;
+    UIFormInputSetWithAction inputInfor = getChildById("moreConstraints");
+    inputInfor.setIsDeleteOnly(true);
+    inputInfor.setListInfoField(CONSTRAINTS, virtualConstraints_);
+    String[] actionInfor = {"RemoveConstraint"};
+    inputInfor.setActionInfo(CONSTRAINTS, actionInfor);
   }
   
   private String getQueryStatement() throws Exception {
-    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
-    String statement = "" ;
-    String text = getUIStringInput(INPUT_SEARCH).getValue() ;
+    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
+    String statement = "";
+    String text = getUIStringInput(INPUT_SEARCH).getValue();
     if(text != null && constraints_.size() == 0) {
       if ("/".equals(currentNode.getPath())) {
-        statement = ROOT_XPATH_QUERY + "[(jcr:contains(.,'"+text+"'))" ;
+        statement = ROOT_XPATH_QUERY + "[(jcr:contains(.,'"+text+"'))";
       } else {
-        statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(jcr:contains(.,'"+text+"'))" ;
+        statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(jcr:contains(.,'"+text+"'))";
       }
-      statement = statement + "]" ;
+      statement = statement + "]";
     } else if(constraints_.size() > 0) {
       if(text == null) {
         if ("/".equals(currentNode.getPath())) {
-          statement = ROOT_XPATH_QUERY + "[(" ;
+          statement = ROOT_XPATH_QUERY + "[(";
         } else {
           statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(";
         } 
       } else {
-        String operator = getUIFormSelectBox(FIRST_OPERATOR).getValue() ;
+        String operator = getUIFormSelectBox(FIRST_OPERATOR).getValue();
         if ("/".equals(currentNode.getPath())) {
-          statement = ROOT_XPATH_QUERY + "[(jcr:contains(.,'"+text+"'))" ;
+          statement = ROOT_XPATH_QUERY + "[(jcr:contains(.,'"+text+"'))";
         } else {
-          statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(jcr:contains(.,'"+text+"'))" ;
+          statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(jcr:contains(.,'"+text+"'))";
         } 
         statement = statement + " " + operator + " (";
       }
       for(String constraint : constraints_) {
-        statement = statement + constraint ;
+        statement = statement + constraint;
       }
-      statement = statement + ")]" ;
+      statement = statement + ")]";
     }
-    return statement ;
+    return statement;
   }
   
   static  public class SaveActionListener extends EventListener<UISimpleSearch> {
     public void execute(Event<UISimpleSearch> event) throws Exception {
-      UISimpleSearch uiSimpleSearch = event.getSource() ;
-      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
-      String text = uiSimpleSearch.getUIStringInput(INPUT_SEARCH).getValue() ;
+      UISimpleSearch uiSimpleSearch = event.getSource();
+      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class);
+      String text = uiSimpleSearch.getUIStringInput(INPUT_SEARCH).getValue();
       if((text == null) && uiSimpleSearch.constraints_.size() == 0) {
-        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-save-null", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-save-null", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      UISearchContainer uiSearchContainer = uiSimpleSearch.getParent() ;
-      uiSearchContainer.initSaveQueryPopup(uiSimpleSearch.getQueryStatement(), true, Query.XPATH) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
+      UISearchContainer uiSearchContainer = uiSimpleSearch.getParent();
+      uiSearchContainer.initSaveQueryPopup(uiSimpleSearch.getQueryStatement(), true, Query.XPATH);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer);
     }
   }
   
   static  public class CancelActionListener extends EventListener<UISimpleSearch> {
     public void execute(Event<UISimpleSearch> event) throws Exception {
-      event.getSource().getAncestorOfType(UIJCRExplorer.class).cancelAction() ;
+      event.getSource().getAncestorOfType(UIJCRExplorer.class).cancelAction();
     }
   }
   
   static  public class RemoveConstraintActionListener extends EventListener<UISimpleSearch> {
     public void execute(Event<UISimpleSearch> event) throws Exception {
-      UISimpleSearch uiSimpleSearch = event.getSource() ;
-      int intIndex = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;
-      uiSimpleSearch.constraints_.remove(intIndex) ;
-      uiSimpleSearch.virtualConstraints_.remove(intIndex) ;
+      UISimpleSearch uiSimpleSearch = event.getSource();
+      int intIndex = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID));
+      uiSimpleSearch.constraints_.remove(intIndex);
+      uiSimpleSearch.virtualConstraints_.remove(intIndex);
       if(uiSimpleSearch.constraints_.size() > 0 && intIndex == 0) {
         String newFirstConstraint = null;
         String newFirstVirtualConstraint = null;
         if(uiSimpleSearch.constraints_.get(0).trim().startsWith(OR)) {
-          newFirstConstraint = uiSimpleSearch.constraints_.get(0).substring(3, uiSimpleSearch.constraints_.get(0).length()) ;
-          newFirstVirtualConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(3, uiSimpleSearch.virtualConstraints_.get(0).length()) ;
-          uiSimpleSearch.constraints_.set(0, newFirstConstraint) ;
-          uiSimpleSearch.virtualConstraints_.set(0, newFirstVirtualConstraint) ;
+          newFirstConstraint = uiSimpleSearch.constraints_.get(0).substring(3, uiSimpleSearch.constraints_.get(0).length());
+          newFirstVirtualConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(3, uiSimpleSearch.virtualConstraints_.get(0).length());
+          uiSimpleSearch.constraints_.set(0, newFirstConstraint);
+          uiSimpleSearch.virtualConstraints_.set(0, newFirstVirtualConstraint);
         } else if(uiSimpleSearch.constraints_.get(0).trim().startsWith(AND)) {
-          newFirstConstraint = uiSimpleSearch.constraints_.get(0).substring(4, uiSimpleSearch.constraints_.get(0).length()) ;
-          newFirstVirtualConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(4, uiSimpleSearch.virtualConstraints_.get(0).length()) ;
-          uiSimpleSearch.constraints_.set(0, newFirstConstraint) ;
-          uiSimpleSearch.virtualConstraints_.set(0, newFirstVirtualConstraint) ;
+          newFirstConstraint = uiSimpleSearch.constraints_.get(0).substring(4, uiSimpleSearch.constraints_.get(0).length());
+          newFirstVirtualConstraint = uiSimpleSearch.virtualConstraints_.get(0).substring(4, uiSimpleSearch.virtualConstraints_.get(0).length());
+          uiSimpleSearch.constraints_.set(0, newFirstConstraint);
+          uiSimpleSearch.virtualConstraints_.set(0, newFirstVirtualConstraint);
         }
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSimpleSearch.getParent()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSimpleSearch.getParent());
     }
   }
   
   static public class SearchActionListener extends EventListener<UISimpleSearch> {
     public void execute(Event<UISimpleSearch> event) throws Exception {
       UISimpleSearch uiSimpleSearch = event.getSource();
-      String text = uiSimpleSearch.getUIStringInput(INPUT_SEARCH).getValue() ;
+      String text = uiSimpleSearch.getUIStringInput(INPUT_SEARCH).getValue();
       UIJCRExplorer uiExplorer = uiSimpleSearch.getAncestorOfType(UIJCRExplorer.class);
-      Node currentNode = uiExplorer.getCurrentNode() ;
-      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
-      UIECMSearch uiECMSearch = uiSimpleSearch.getAncestorOfType(UIECMSearch.class) ; 
-      UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class) ;
-      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class) ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager();
+      UIECMSearch uiECMSearch = uiSimpleSearch.getAncestorOfType(UIECMSearch.class); 
+      UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class);
+      UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class);
       if(text == null && uiSimpleSearch.constraints_.size() == 0) {
-        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-null", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.value-null", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
       //TODO need review this code. should use validator for text field
-      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"} ;
+      String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"};
       if(text != null) {
         for(String filterChar : arrFilterChar) {
           if(text.indexOf(filterChar) > -1) {
             uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.inputSearch-invalid", null, 
-                ApplicationMessage.WARNING)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-            return ;
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
           }
         }
       }
-      String statement = uiSimpleSearch.getQueryStatement() + " order by @exo:dateCreated descending" ;
+      String statement = uiSimpleSearch.getQueryStatement() + " order by @exo:dateCreated descending";
       long startTime = System.currentTimeMillis();
       try {
         Query query = queryManager.createQuery(statement, Query.XPATH);      
         QueryResult queryResult = query.execute();
-        uiSearchResult.clearAll() ;
-        uiSearchResult.setQueryResults(queryResult) ;
-        uiSearchResult.updateGrid() ;
+        uiSearchResult.clearAll();
+        uiSearchResult.setQueryResults(queryResult);
+        uiSearchResult.updateGrid();
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.query-invalid", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
       long time = System.currentTimeMillis() - startTime;
       uiSearchResult.setSearchTime(time);
-      uiECMSearch.setRenderedChild(UISearchResult.class) ;
-      uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(currentNode.getPath()) ;
+      uiECMSearch.setRenderedChild(UISearchResult.class);
+      uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(currentNode.getPath());
     }
   }
   
   static  public class MoreConstraintsActionListener extends EventListener<UISimpleSearch> {
     public void execute(Event<UISimpleSearch> event) throws Exception {
-      UISearchContainer uiSearchContainer = event.getSource().getParent() ;
-      UIConstraintsForm uiConstraintsForm = uiSearchContainer.getChild(UIConstraintsForm.class) ;
-      if(uiConstraintsForm.isRendered()) uiConstraintsForm.setRendered(false) ;
-      else uiConstraintsForm.setRendered(true) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
+      UISearchContainer uiSearchContainer = event.getSource().getParent();
+      UIConstraintsForm uiConstraintsForm = uiSearchContainer.getChild(UIConstraintsForm.class);
+      if(uiConstraintsForm.isRendered()) uiConstraintsForm.setRendered(false);
+      else uiConstraintsForm.setRendered(true);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer);
     }
   }
 }
