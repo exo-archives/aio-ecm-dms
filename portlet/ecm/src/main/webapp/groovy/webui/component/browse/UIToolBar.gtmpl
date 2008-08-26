@@ -12,20 +12,20 @@
 <div class="UIToolBar" id="$uicomponent.id">
   <div class="LeftToolBar">
     <div class="SeparatorBarLeft Separator"><span></span></div>      
-    <%if(isEnableTree) {%>
-      <%
-        String iconName = "GreenRightArrow24x24Icon" ;
-        String tooltip  = _ctx.appRes(uicomponent.getName() + ".tooltip.Show") ;
-        if(uicomponent.isShowCategoryTree()) { 
-        	iconName = "GreenLeftArrow24x24Icon" ;
-        	tooltip = _ctx.appRes(uicomponent.getName() + ".tooltip.Hidden") ; 
-       	}
-      %>      
-      <a  href="$actionShowHidden" title="$tooltip">
-        <div class="ShowHiddenIcon $iconName"><span></span></div>
-      </a>
-    <%}%>
-    <%if(isEnablePath) {%>
+	<%
+	  if(isEnableTree) {
+	    String iconName = "GreenRightArrow24x24Icon" ;
+	    String tooltip  = _ctx.appRes(uicomponent.getName() + ".tooltip.Show") ;
+	    if(uicomponent.isShowCategoryTree()) { 
+	    	iconName = "GreenLeftArrow24x24Icon" ;
+	    	tooltip = _ctx.appRes(uicomponent.getName() + ".tooltip.Hidden") ; 
+	   	}
+  %>      
+	      <a href="$actionShowHidden" title="$tooltip">
+	        <div class="ShowHiddenIcon $iconName"><span></span></div>
+	      </a>
+  <%}%>
+   <%if(isEnablePath) {%>
       <div class="CategoryListIcon"><span></span></div>      
       <a class="PathLabel" href="<%=uicomponent.event('SelectPath', root.getPath())%>">      
 	      <%
@@ -48,9 +48,9 @@
 	    %>
       <div style="clear:left"></div>
     <%}%> 
-  </div>
-  <div class="CBActionContainer">
-  	<div class="SeparatorLine"><span></span></div>
+	</div>
+	<div class="CBActionContainer">
+	 	<div class="SeparatorLine"><span></span></div>
     <%
       String actionLabel = "" ;
       String link = "" ;
@@ -89,4 +89,3 @@
   </div>
   <div style="clear:both"><span></span></div>
 </div>
-
