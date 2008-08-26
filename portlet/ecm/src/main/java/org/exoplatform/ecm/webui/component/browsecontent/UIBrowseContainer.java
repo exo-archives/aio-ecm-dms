@@ -28,6 +28,7 @@ import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
@@ -272,6 +273,8 @@ public class UIBrowseContainer extends UIContainer {
     try{
       if(wsName_ == null) return (Node)getSession().getItem(nodePath) ;
       return (Node)getSession(getRepository(), wsName_).getItem(nodePath) ;
+    } catch(PathNotFoundException path) {
+      return (Node)getSession(getRepository(), wsName_).getItem(rootPath_) ;
     } catch(Exception e){
       return null  ;
     }
