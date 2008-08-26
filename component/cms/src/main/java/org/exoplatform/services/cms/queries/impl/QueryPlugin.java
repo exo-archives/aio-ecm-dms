@@ -114,7 +114,7 @@ public class QueryPlugin extends BaseComponentPlugin {
     if (!queryNode.isNodeType("exo:datetime")) {
       queryNode.addMixin("exo:datetime");        
     }
-    queryNode.setProperty("exo:dateModified",new GregorianCalendar()) ;
+    queryNode.setProperty("exo:dateCreated",new GregorianCalendar()) ;
     
     queryNode.addMixin("mix:sharedQuery") ;
     queryNode.setProperty(STATEMENT, data.getStatement()) ;

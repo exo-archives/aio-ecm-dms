@@ -17,6 +17,7 @@
 
 package org.exoplatform.services.cms.queries.impl;
 
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -113,7 +114,12 @@ public class NewUserListener extends UserEventListener {
       String statement = query.getQuery();
       Query queryNode = manager.createQuery(statement, language);
       String absPath = queriesHome.getPath() + "/" + queryName;
-      queryNode.storeAsNode(absPath);
+      Node node = queryNode.storeAsNode(absPath);
+      if (!node.isNodeType("exo:datetime")) {
+        node.addMixin("exo:datetime");        
+      }
+      node.setProperty("exo:dateCreated",new GregorianCalendar()) ;
+      node.getSession().save();
     }    
   }
 
