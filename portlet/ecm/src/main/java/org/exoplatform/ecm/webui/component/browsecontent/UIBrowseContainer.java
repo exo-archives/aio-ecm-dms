@@ -26,6 +26,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
@@ -275,7 +276,10 @@ public class UIBrowseContainer extends UIContainer {
       return (Node)getSession(getRepository(), wsName_).getItem(nodePath) ;
     } catch(PathNotFoundException path) {
       return (Node)getSession(getRepository(), wsName_).getItem(rootPath_) ;
+    } catch(AccessDeniedException ace) {
+      return null;
     } catch(Exception e){
+      e.printStackTrace();
       return null  ;
     }
   }
@@ -960,9 +964,9 @@ public class UIBrowseContainer extends UIContainer {
       } else {
         if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
           if(getNodeByPath(getCategoryPath()) == null || getNodeByPath(getRootNode().getPath()) == null) {
-            UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
-            uiPorlet.setPorletMode(PortletMode.HELP) ;
-            uiPorlet.reload() ;
+//            UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
+//            uiPorlet.setPorletMode(PortletMode.HELP) ;
+//            uiPorlet.reload() ;
           } else if(getNodeByPath(getSelectedTab().getPath()) == null || 
               getNodeByPath(getCurrentNode().getPath()) == null) {
             setSelectedTabPath(null) ;
