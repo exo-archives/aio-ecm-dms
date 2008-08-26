@@ -269,7 +269,6 @@ public class UIPathConfig extends UIForm implements UISelector{
     uiConfigTabPane.setNewConfig(true) ;
   }
 
-  @SuppressWarnings("unused")
   public static class SaveActionListener extends EventListener<UIPathConfig>{
     public void execute(Event<UIPathConfig> event) throws Exception {
       UIPathConfig uiForm = event.getSource() ;
@@ -293,7 +292,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       } 
       try {
         Session session = uiBCContainer.getSession(repository, workSpace) ;
-        Node node = (Node) session.getItem(jcrPath) ;
+        session.getItem(jcrPath) ;
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-path", null, 
                                               ApplicationMessage.WARNING)) ;
@@ -314,7 +313,6 @@ public class UIPathConfig extends UIForm implements UISelector{
         return ;
       }      
       if(Integer.parseInt(itemPerPage) <= 0) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-value", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
@@ -340,6 +338,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       prefs.setValue(Utils.CB_VIEW_COMMENT, String.valueOf(hasComment)) ; 
       prefs.setValue(Utils.CB_VIEW_VOTE, String.valueOf(hasVote)) ; 
       prefs.store() ;
+      uiBCContainer.setWorkspaceName(workSpace);
       uiBCContainer.setShowDocumentDetail(false) ;
       uiBCContainer.loadPortletConfig(prefs) ;
       uiForm.isEdit_ = false ;
