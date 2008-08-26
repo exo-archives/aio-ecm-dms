@@ -341,6 +341,7 @@ public class UIPathConfig extends UIForm implements UISelector{
       prefs.setValue(Utils.CB_VIEW_VOTE, String.valueOf(hasVote)) ; 
       prefs.store() ;
       uiBCContainer.setShowDocumentDetail(false) ;
+      uiBCContainer.setWorkspaceName(workSpace);
       uiBCContainer.loadPortletConfig(prefs) ;
       uiForm.isEdit_ = false ;
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
