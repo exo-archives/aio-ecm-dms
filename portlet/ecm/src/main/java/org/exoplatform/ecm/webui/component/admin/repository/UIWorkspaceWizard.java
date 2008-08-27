@@ -96,7 +96,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   final static public String FIELD_STEP2 = "step2" ;
   final static public String FIELD_STEP3 = "step3" ;
   final static public String KEY_SWAPDIRECTORY = "swap-directory" ;
-  final static public String KEY_SOURCENAME = "sourceName" ;
+  final static public String KEY_SOURCENAME = "source-name" ;
   final static public String KEY_DIALECT = "dialect" ;
   final static public String KEY_MULTIDB = "multi-db" ;
   final static public String KEY_MAXBUFFER = "max-buffer-size" ;
