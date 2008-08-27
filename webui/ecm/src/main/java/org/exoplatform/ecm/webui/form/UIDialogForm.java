@@ -360,15 +360,13 @@ public class UIDialogForm extends UIForm {
     if(uiTextArea == null) {
       uiTextArea = formTextAreaField.createUIFormInput();      
       addUIFormInput(uiTextArea) ;
-    }
-    if(uiTextArea.getValue() == null) uiTextArea.setValue(formTextAreaField.getDefaultValue()) ;    
-    uiTextArea.setEditable(formTextAreaField.isEditable()) ;
+    }    
     String propertyName = getPropertyName(jcrPath);
     propertiesName.put(name, propertyName) ;
     fieldNames.put(propertyName, name) ;
     Node node = getNode();
     if(node != null && !isShowingComponent && !isRemovePreference) {
-      String value = "";
+      String value = null;
       if(node.hasProperty(propertyName)) {
         value = node.getProperty(propertyName).getValue().getString() ;
       } else if(node.isNodeType("nt:file")) {
@@ -400,7 +398,13 @@ public class UIDialogForm extends UIForm {
           uiTextArea.setValue(null) ;
         }
       }
-    }
+    }    
+    //set default value for textarea if no value was setted by above code
+    if(uiTextArea.getValue() == null && formTextAreaField.getDefaultValue() != null) 
+    	uiTextArea.setValue(formTextAreaField.getDefaultValue()) ;
+    else 
+    	uiTextArea.setValue("");
+    uiTextArea.setEditable(formTextAreaField.isEditable()) ;
     renderField(name) ;
   }
   public void addTextAreaField(String name, String[] arguments) throws Exception {
