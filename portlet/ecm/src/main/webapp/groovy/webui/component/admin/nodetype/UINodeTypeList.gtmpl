@@ -58,7 +58,7 @@
                   }
                 %>
                 <div class="TrueFalseContainer">
-	                <div class="Icon16x16 ${iconType}16x16Icon"><span></span></div>
+	                <div class="Icon16x16 ${iconType}16x16Icon" style="float: left"><span></span></div>
 	                <div class="Text">$booleanText</div>
 	              </div>
               </td>
@@ -73,7 +73,7 @@
                   }
                 %>
                 <div class="TrueFalseContainer">
-	                <div class="Icon16x16 ${iconType}16x16Icon"><span></span></div>
+	                <div class="Icon16x16 ${iconType}16x16Icon" style="float: left"><span></span></div>
 	                <div class="Text">$booleanText</div>
 	              </div>
               </td>

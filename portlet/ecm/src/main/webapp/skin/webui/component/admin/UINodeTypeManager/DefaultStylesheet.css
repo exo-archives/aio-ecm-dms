@@ -62,12 +62,7 @@
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport {
-	width: 95%;
-	margin: 10px auto;	
-}
-
-.UIECMAdminPortlet .UINodeTypeManager .UINodeTypeExport .UIForm .HorizontalLayout {
-	border: none;
+	padding: 10px;	
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .HorizontalLayout .UIFormInputSet{

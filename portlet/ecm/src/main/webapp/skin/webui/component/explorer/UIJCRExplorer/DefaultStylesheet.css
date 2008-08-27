@@ -415,8 +415,10 @@
 /*================================UINodeTypeSelectForm=================================*/
 
 .UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm {
-	width: 95%;
-	margin: 10px auto;
+	margin: 10px;
+	border: 1px solid #AEAEAE;
+	background: #F7F7F7;
+	padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm {
