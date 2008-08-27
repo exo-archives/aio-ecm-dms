@@ -10,7 +10,7 @@
           <!-- for system storage -->
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
-              <property name="sourceName" value="jdbcexo"/>
+              <property name="source-name" value="jdbcexo"/>
               <property name="dialect" value="${dialect}"/>
               <!-- property name="db-type" value="mysql"/ -->
               <property name="multi-db" value="false"/>
@@ -35,7 +35,7 @@
               <property name="root-permissions" value="any read;*:/platform/administrators read;*:/platform/administrators add_node;*:/platform/administrators set_property;*:/platform/administrators remove" />
             </properties>
           </initializer>          
-         <cache enabled="true">
+         <cache enabled="true" class="org.exoplatform.services.jcr.impl.dataflow.persistent.LinkedWorkspaceStorageCacheImpl">
           <properties>
             <property name="maxSize" value="20000"/>
             <property name="liveTime" value="30000"/>
@@ -45,7 +45,7 @@
           <properties>
             <property name="indexDir" value="../temp/jcrlucenedb/system"/>
             <property name="support-highlighting" value="true"/>
-			<property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
+			      <property name="excerptprovider-class" value="org.exoplatform.services.jcr.impl.core.query.lucene.DefaultHTMLExcerpt"/>
           </properties>
          </query-handler>
          <lock-manager>
@@ -61,7 +61,7 @@
           <!-- for system storage -->
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
-              <property name="sourceName" value="jdbcexo"/>
+              <property name="source-name" value="jdbcexo"/>
               <property name="dialect" value="${dialect}"/>
               <!-- property name="db-type" value="mysql"/ -->
               <property name="multi-db" value="false"/>
@@ -86,7 +86,7 @@
               <property name="root-permissions" value="any read;*:/platform/administrators read;*:/platform/administrators add_node;*:/platform/administrators set_property;*:/platform/administrators remove" />
             </properties>
           </initializer>          
-         <cache enabled="true">
+         <cache enabled="true" class="org.exoplatform.services.jcr.impl.dataflow.persistent.LinkedWorkspaceStorageCacheImpl">
           <properties>
             <property name="maxSize" value="20000"/>
             <property name="liveTime" value="30000"/>
@@ -112,7 +112,7 @@
           <!-- for system storage -->
           <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
             <properties>
-              <property name="sourceName" value="jdbcexo"/>
+              <property name="source-name" value="jdbcexo"/>
               <property name="dialect" value="${dialect}"/>
               <!-- property name="db-type" value="mysql"/ -->
               <property name="multi-db" value="false"/>
@@ -137,7 +137,7 @@
               <property name="root-permissions" value="any read;*:/platform/administrators read;*:/platform/administrators add_node;*:/platform/administrators set_property;*:/platform/administrators remove" />
             </properties>
           </initializer>          
-         <cache enabled="true">
+         <cache enabled="true" class="org.exoplatform.services.jcr.impl.dataflow.persistent.LinkedWorkspaceStorageCacheImpl">
           <properties>
             <property name="maxSize" value="20000"/>
             <property name="liveTime" value="30000"/>
