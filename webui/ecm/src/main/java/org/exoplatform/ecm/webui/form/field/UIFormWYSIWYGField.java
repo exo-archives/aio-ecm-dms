@@ -34,13 +34,23 @@ public class UIFormWYSIWYGField extends DialogFormField {
   }
   
   @SuppressWarnings("unchecked")
-  public <T extends UIFormInputBase> T createUIFormInput() throws Exception {
-    boolean useBasicToolBar;
-    if("basic".equals(options)) 
-      useBasicToolBar = true ;
-    else 
-      useBasicToolBar = false;      
-    UIFormWYSIWYGInput wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue, useBasicToolBar) ;
+  public <T extends UIFormInputBase> T createUIFormInput() throws Exception {    
+    String toolBarName = null;
+    boolean sourceModeOnStartup = false;
+    if("basic".equals(options)) {
+    	toolBarName = UIFormWYSIWYGInput.BASIC_TOOLBAR;
+    }else if("Default".equals(options) || options == null) {
+    	toolBarName = UIFormWYSIWYGInput.DEFAULT_TOOLBAR;
+    }else if(options.indexOf(",")>0){
+    	String[] temp = options.split(",");
+    	toolBarName = temp[0];
+    	if(temp[1].equals("SourceModeOnStartup")) {
+    		sourceModeOnStartup = true;
+    	}
+    }          
+    UIFormWYSIWYGInput wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue);
+    wysiwyg.setToolBarName(toolBarName);
+    wysiwyg.setSourceModeOnStartup(sourceModeOnStartup);
     if(validateType != null) {
       DialogFormUtil.addValidators(wysiwyg, validateType);
     }    
