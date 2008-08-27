@@ -40,7 +40,7 @@
    	overflow: auto;
    	height: 300px;
     margin: auto;
-    width: 90%;
+    width: 89%;
    	padding: 10px;
    	border: 1px solid #b7b7b7;
   }
