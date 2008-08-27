@@ -667,6 +667,10 @@
 	background: #F7F7F7;
 }
 
+.UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
+	padding: 10px;
+}
+
 /*================================UINodeTypeInfo=================================*/
 
 .UINodeTypeInfo .NavigationButtonContainer {

@@ -562,10 +562,6 @@
 	padding: 0px;
 }
 
-/*================================UIConstraintsForm=================================*/
-
-/*================================UIActivateVersion=================================*/
-
 /*================================UIActionContainer=================================*/
 
 .UIJCRExplorerPortlet .UIActionContainer .UIActionTypeForm .UIFormWithTitle {
@@ -899,11 +895,4 @@
 	padding: 0px;
 }
 
-/*====================================UIDivInfo==================================*/
-
-.UIJCRExplorer .UIDivInfo .UITabPane {
-	width: 97%;
-	padding: 0px; 
-	margin: auto;
-}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
