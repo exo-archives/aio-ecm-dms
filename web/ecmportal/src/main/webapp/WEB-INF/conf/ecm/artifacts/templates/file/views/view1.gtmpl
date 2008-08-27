@@ -27,6 +27,10 @@
   	background: white;
   }
   
+  .FileContent .ECMIframe body {
+  	font-size: 13px;
+  }
+  
   .FileContent .Content {  
    	white-space: normal;
    	padding: 10px;
