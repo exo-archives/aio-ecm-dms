@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.Session;
@@ -84,6 +85,19 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
     getUIStringInput(FIELD_OLDNAME).setValue(oldName) ;
     getUIStringInput(FIELD_OLDNAME).setEditable(false) ;
     getUIStringInput(FIELD_NEWNAME).setValue("") ;    
+  }
+  
+  private void changeLockForChild(String srcPath, Node parentNewNode) throws Exception {
+    if(parentNewNode.hasNodes()) {
+      NodeIterator newNodeIter = parentNewNode.getNodes();
+      String newSRCPath = null;
+      while(newNodeIter.hasNext()) {
+        Node newChildNode = newNodeIter.nextNode();
+        newSRCPath = newChildNode.getPath().replace(parentNewNode.getPath(), srcPath);
+        if(newChildNode.isLocked()) Utils.changeLockToken(newSRCPath, newChildNode);
+        if(newChildNode.hasNodes()) changeLockForChild(newSRCPath, newChildNode);
+      }
+    }
   }
 
   static  public class SaveActionListener extends EventListener<UIRenameForm> {
@@ -158,6 +172,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         }
         Node destNode = (Node) nodeSession.getItem(destPath) ;
         if(destNode.isLocked()) Utils.changeLockToken(uiRenameForm.renameNode_, destNode) ;
+        uiRenameForm.changeLockForChild(srcPath, destNode);
         nodeSession.logout() ;
         if(!uiJCRExplorer.getPreference().isJcrEnable()) uiJCRExplorer.getSession().save() ;
         uiJCRExplorer.updateAjax(event) ;

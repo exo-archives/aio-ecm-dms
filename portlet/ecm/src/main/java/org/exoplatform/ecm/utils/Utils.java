@@ -491,6 +491,23 @@ public class Utils {
   }
   
   @SuppressWarnings("unchecked")
+  public static void changeLockToken(String srcPath, Node newNode) throws Exception {
+    PortalRequestContext requestContext = Util.getPortalRequestContext();
+    HttpSession httpSession = requestContext.getRequest().getSession();
+    String newKey = createLockKey(newNode);
+    String oldKey = getOldLockKey(srcPath, newNode);
+    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    if(lockedNodesInfo.containsKey(oldKey)) {
+      lockedNodesInfo.put(newKey, lockedNodesInfo.get(oldKey));
+      lockedNodesInfo.remove(oldKey);
+    }
+    if(lockedNodesInfo == null) {
+      lockedNodesInfo = new HashMap<String,String>();
+    }
+    httpSession.setAttribute(LockManager.class.getName(),lockedNodesInfo);
+  }
+  
+  @SuppressWarnings("unchecked")
   public static String getLockToken(Node node) throws Exception {    
     PortalRequestContext requestContext = Util.getPortalRequestContext();
     HttpSession httpSession = requestContext.getRequest().getSession();
@@ -499,6 +516,17 @@ public class Utils {
     if(lockedNodesInfo == null) return null;    
     return lockedNodesInfo.get(key);
   }  
+  
+  public static String getOldLockKey(String srcPath, Node node) throws Exception {
+    StringBuffer buffer = new StringBuffer();
+    Session session = node.getSession();
+    String repositoryName = ((ManageableRepository)session.getRepository()).getConfiguration().getName();    
+    buffer.append(repositoryName).append("/::/")
+          .append(session.getWorkspace().getName()).append("/::/")
+          .append(session.getUserID()).append(":/:")
+          .append(srcPath);      
+    return buffer.toString();
+  }
   
   public static String createLockKey(Node node) throws Exception {
     StringBuffer buffer = new StringBuffer();

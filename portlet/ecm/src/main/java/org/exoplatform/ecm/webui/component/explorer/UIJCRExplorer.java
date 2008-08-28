@@ -490,10 +490,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public Node getNodeByPath(String nodePath, Session session) throws Exception {    
     try {
-      Node node = (Node)session.getItem(nodePath) ;
-      String lockToken = Utils.getLockToken(node);
-      if(lockToken != null) session.addLockToken(lockToken);
-      return node;
+      return (Node)session.getItem(nodePath) ;
     } catch(PathNotFoundException e) {
       refreshExplorer() ;
       return (Node)session.getItem(rootPath_) ;
@@ -542,16 +539,12 @@ public class UIJCRExplorer extends UIContainer {
   public void setPreferences(Preference preference) {this.preferences_ = preference; } 
   
   public String getPreferencesPath() {
-//    PortletPreferences prefs_ = getPortletPreferences() ;
-//    String prefPath = prefs_.getValue(Utils.JCR_PATH, "") ;
     String prefPath = driveData_.getHomePath() ;
     if (prefPath == null || prefPath.length() == 0 || prefPath == "/") return "" ;
     return prefPath ;
   }
 
   public String getPreferencesWorkspace() {       
-//    PortletPreferences prefs_ = getPortletPreferences() ;
-//    String workspaceName = prefs_.getValue(Utils.WORKSPACE_NAME, "") ;
     String workspaceName = driveData_.getWorkspace() ;
     if(workspaceName == null || workspaceName.length() == 0) return "" ;
     return workspaceName ;
