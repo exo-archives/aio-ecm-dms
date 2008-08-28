@@ -59,6 +59,7 @@ public class UICategoriesSelector extends UIBaseNodeTreeSelector {
     UICategoriesContainer uiCategoriesContainer = getChild(UICategoriesContainer.class);
     UISelectedCategoriesGrid categoriesGrid = uiCategoriesContainer.getChild(UISelectedCategoriesGrid.class);
     categoriesGrid.setSelectedCategories(existedCategoryList);
+    categoriesGrid.updateGrid();
   }
 
   public void onChange(Node currentNode, Object context) throws Exception {
