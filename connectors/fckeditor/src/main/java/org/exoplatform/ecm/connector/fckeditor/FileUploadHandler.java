@@ -82,7 +82,7 @@ public class FileUploadHandler {
       return Response.Builder.ok(message).mediaType("text/xml").cacheControl(cacheControl).build();
     }
     uploadService.createUploadResource(uploadId,null,contentType,contentLength,inputStream);
-    return Response.Builder.ok().cacheControl(cacheControl).build();            
+    return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();            
   }
 
   public Response control(String uploadId, String action) throws Exception {
@@ -90,15 +90,15 @@ public class FileUploadHandler {
     cacheControl.setNoCache(true);
     if(FileUploadHandler.PROGRESS_ACTION.equals(action)) {
       Document currentProgress = getProgress(uploadId);      
-      return Response.Builder.ok(currentProgress).cacheControl(cacheControl).build();
+      return Response.Builder.ok(currentProgress).mediaType("text/xml").cacheControl(cacheControl).build();
     }else if(FileUploadHandler.ABORT_ACTION.equals(action)) {
       uploadService.removeUpload(uploadId);
-      return Response.Builder.ok().cacheControl(cacheControl).build();    
+      return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();    
     }else if(FileUploadHandler.DELETE_ACTION.equals(action)) {
       uploadService.removeUpload(uploadId);
-      return Response.Builder.ok().cacheControl(cacheControl).build();    
+      return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();    
     }
-    return Response.Builder.badRequest().cacheControl(cacheControl).build();
+    return Response.Builder.badRequest().mediaType("text/xml").cacheControl(cacheControl).build();
   }
   
   public Response saveAsNTFile(Node parent, String uploadId, String fileName, String language) throws Exception {
