@@ -98,7 +98,8 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Getmail.dialog.label.stote-path")%></td>
 	      <td class="FieldComponent">
 		      <% 
-		        String[] fieldStorePath = ["jcrPath=/node/exo:storePath", "cms/mail"] ;
+		        def storePath = uicomponent.getSesssion().getUserID() + "/Private/Mail";
+		        String[] fieldStorePath = ["jcrPath=/node/exo:storePath", storePath] ;
 		        uicomponent.addTextField("storePath", fieldStorePath)  ;
 		      %>
 		    </td>

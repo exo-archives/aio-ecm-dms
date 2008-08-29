@@ -21,6 +21,10 @@ import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.GregorianCalendar ;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Enumeration;
 
 import java.io.*;
 import javax.mail.*;
@@ -86,7 +90,7 @@ public class GetMailScript implements CmsScript {
 				int i = 0 ;
 				while(i < totalMess){				
 					Message mes = mess[i] ;
-					Node newMail = storeNode.addNode(mes.getSubject(), "exo:mail") ;
+					Node newMail = storeNode.addNode(getMD5MsgId(mes), "exo:mail") ;
 					newMail.setProperty("exo:from", getAddress(mes.getFrom())) ;
 					newMail.setProperty("exo:to", getAddress(mes.getRecipients(Message.RecipientType.TO))) ;
 					newMail.setProperty("exo:cc", getAddress(mes.getRecipients(Message.RecipientType.CC))) ;
@@ -174,7 +178,7 @@ public class GetMailScript implements CmsScript {
   private Node createStoreNode(String storePath) {
   	try{
       ManageableRepository manaRepository = repositoryService_.getDefaultRepository() ;
-      Node rootNode = manaRepository.getSystemSession(manaRepository.getConfiguration().getSystemWorkspaceName()).getRootNode();
+      Node rootNode = manaRepository.getSystemSession(manaRepository.getConfiguration().getDefaultWorkspaceName()).getRootNode();
 			//Node rootNode = session.getRootNode();
 			String[] array = storePath.split("/") ;
 			int i = 0 ;
@@ -213,6 +217,39 @@ public class GetMailScript implements CmsScript {
 			}
 		}		
 		return str ;
+  }
+  
+  /**
+   * @return a MD5 string
+   */
+  private String getMD5MsgId(Message msg) throws Exception {
+    // first construct a key by joining all headers
+    String key = "";
+    long t1 = System.currentTimeMillis();
+    Enumeration enu = msg.getAllHeaders() ;
+    while (enu.hasMoreElements()) {
+      Header header = (Header)enu.nextElement() ;
+      key += header.getValue() ;
+    }
+    String md5 = getMD5(key);
+    long t2 = System.currentTimeMillis();
+    return md5;
+  }
+  /**
+   * separated getMD5 method ... for a general use.
+   * @param s
+   * @return a MD5 string
+   */
+  private String getMD5(String s) {
+    try {
+      MessageDigest m = MessageDigest.getInstance("MD5");
+      m.update(s.getBytes(), 0, s.length());
+      return "" + new BigInteger(1, m.digest()).toString(16);
+    } catch (NoSuchAlgorithmException e) {
+      // almost never ... but the idea is we should control all exceptions
+      System.out.println("MD5 is not supported !!!");
+    }
+    return s;
   }
 
 }
