@@ -281,14 +281,12 @@ public class UIToolBar extends UIContainer {
         commentForm.setDocument(uiDocument.node_) ;
         uiPopupAction.activate(commentForm, 600, 0) ;
         uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       } else {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.readonly-doc", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(container) ;
     }
   }  
 }
