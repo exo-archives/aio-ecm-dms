@@ -2,14 +2,15 @@
 <style>
 	.WorkWorkFlow {
 		margin: 10px;
+		border-top: 1px solid #ccc;
 	}
 	
 </style>
 <div class="WorkWorkFlow">
 	<table class="UIGrid">      	 			
 	  <tr>
-	    <td style="width:25%"><%=_ctx.appRes("Workflow.view.label.name")%></td>
-	    <td>
+	    <td style="width:25%; border-top: none;"><%=_ctx.appRes("Workflow.view.label.name")%></td>
+	    <td style="border-top: none;">
 	      <%if(node.hasProperty("exo:name")) {%>
 			    <%=node.getProperty("exo:name").getString()%>
 			  <%}%>
