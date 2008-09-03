@@ -501,6 +501,7 @@
 
 .UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm {
 	padding: 10px;
+	border: 1px solid #b7b7b7;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm td.FieldLabel {
