@@ -150,6 +150,10 @@ public class UIDocumentForm extends DialogFormFields implements UIPopupComponent
       UIDocumentFormController uiDFController = getParent() ;
       homeNode = currentNode ;
       nodeType = uiDFController.getChild(UISelectDocumentForm.class).getSelectValue() ;
+      
+      if(homeNode.isLocked()) {
+        homeNode.getSession().addLockToken(Utils.getLockToken(homeNode));
+      }
     } else { 
       homeNode = getNode().getParent();
       nodeType = getNode().getPrimaryNodeType().getName() ;
