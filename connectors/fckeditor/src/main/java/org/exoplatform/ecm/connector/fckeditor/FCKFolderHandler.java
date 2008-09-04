@@ -18,10 +18,7 @@ package org.exoplatform.ecm.connector.fckeditor;
 
 import javax.jcr.Node;
 import javax.jcr.nodetype.NodeType;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 
-import org.apache.commons.httpclient.methods.GetMethod;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -32,39 +29,44 @@ import org.w3c.dom.Element;
 
 /**
  * Created by The eXo Platform SAS
- * @author : Hoa.Pham
- *          hoa.pham@exoplatform.com
- * Jun 23, 2008  
+ * 
+ * @author : Hoa.Pham hoa.pham@exoplatform.com Jun 23, 2008
  */
-public class FCKFolderHandler {  
-  private TemplateService templateService;  
-  private FCKMessage fckMessage;
+public class FCKFolderHandler {
+  private TemplateService templateService;
+
+  private FCKMessage      fckMessage;
+
   public FCKFolderHandler(ExoContainer container) {
-    templateService = (TemplateService)container.getComponentInstanceOfType(TemplateService.class);
+    templateService = (TemplateService) container.getComponentInstanceOfType(TemplateService.class);
     fckMessage = new FCKMessage();
   }
 
   public String getFolderType(final Node node) throws Exception {
-    //need use a service to get extended folder type for the node
-    NodeType nodeType = node.getPrimaryNodeType();    
+    // need use a service to get extended folder type for the node
+    NodeType nodeType = node.getPrimaryNodeType();
     String primaryType = nodeType.getName();
-    String repository = ((ManageableRepository) node.getSession().getRepository()).getConfiguration().getName();
-    if (templateService.getDocumentTemplates(repository).contains(primaryType)) return null;    
-    if (FCKUtils.NT_UNSTRUCTURED.equals(primaryType) || FCKUtils.NT_FOLDER.equals(primaryType)) return primaryType;    
-    if (nodeType.isNodeType(FCKUtils.NT_UNSTRUCTURED) || nodeType.isNodeType(FCKUtils.NT_FOLDER)) {
-      //check if the nodetype is exo:videoFolder...
+    String repository = ((ManageableRepository) node.getSession().getRepository())
+        .getConfiguration().getName();
+    if (templateService.getDocumentTemplates(repository).contains(primaryType))
+      return null;
+    if (FCKUtils.NT_UNSTRUCTURED.equals(primaryType) || FCKUtils.NT_FOLDER.equals(primaryType))
       return primaryType;
-    }    
+    if (nodeType.isNodeType(FCKUtils.NT_UNSTRUCTURED) || nodeType.isNodeType(FCKUtils.NT_FOLDER)) {
+      // check if the nodetype is exo:videoFolder...
+      return primaryType;
+    }
     return primaryType;
   }
 
   public String getFolderURL(final Node folder) throws Exception {
-    return FCKUtils.createWebdavURL(folder);    
+    return FCKUtils.createWebdavURL(folder);
   }
+
   /**
-   * Creates the folder element for connector response look like
-   * <folder name="" url="" folderType="" />
-   *         
+   * Creates the folder element for connector response look like <folder name=""
+   * url="" folderType="" />
+   * 
    * @param document the document
    * @param child the child
    * @param folderType the folder type
@@ -72,7 +74,8 @@ public class FCKFolderHandler {
    * @return the org.w3c.dom.Element element
    * @throws Exception the exception
    */
-  public Element createFolderElement(Document document, Node child, String folderType) throws Exception {            
+  public Element createFolderElement(Document document, Node child, String folderType)
+      throws Exception {
     Element folder = document.createElement("Folder");
     folder.setAttribute("name", child.getName());
     folder.setAttribute("url", getFolderURL(child));
@@ -80,32 +83,41 @@ public class FCKFolderHandler {
     return folder;
   }
 
-  public Response createNewFolder(Node currentNode, String newFolderName, String language) throws Exception {
+  public Response createNewFolder(Node currentNode, String newFolderName, String language)
+      throws Exception {
     CacheControl cacheControl = new CacheControl();
     cacheControl.setNoCache(true);
     Document document = null;
-    if(!FCKUtils.hasAddNodePermission(currentNode)) {
-      Object[] args = { currentNode.getPath() };
-      document = 
-        fckMessage.createMessage(FCKMessage.FOLDER_PERMISSION_CREATING,FCKMessage.ERROR,language,args);
+    if (currentNode != null) {
+      if (!FCKUtils.hasAddNodePermission(currentNode)) {
+        Object[] args = { currentNode.getPath() };
+        document = fckMessage.createMessage(FCKMessage.FOLDER_PERMISSION_CREATING, FCKMessage.ERROR,
+            language, args);
+        return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+      }
+      if (currentNode.hasNode(newFolderName)) {
+        Object[] args = { currentNode.getPath(), newFolderName };
+        document = fckMessage.createMessage(FCKMessage.FOLDER_EXISTED, FCKMessage.ERROR, language,
+            args);
+        return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
+      }
+      currentNode.addNode(newFolderName, FCKUtils.NT_FOLDER);
+      currentNode.getSession().save();
+
+      Element rootElement = FCKUtils.createRootElement("createFolder", currentNode,
+          getFolderType(currentNode));
+      document = rootElement.getOwnerDocument();
+      Element errorElement = document.createElement("Message");
+      errorElement.setAttribute("number", Integer.toString(FCKMessage.FOLDER_CREATED));
+      errorElement.setAttribute("text", fckMessage.getMessage(FCKMessage.FOLDER_CREATED, null,
+          language));
+      errorElement.setAttribute("type", FCKMessage.ERROR);
+      rootElement.appendChild(errorElement);
       return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
-    }
-    if(currentNode.hasNode(newFolderName)) {
-      Object[] args = { currentNode.getPath(),newFolderName };
-      document = 
-        fckMessage.createMessage(FCKMessage.FOLDER_EXISTED,FCKMessage.ERROR,language,args);
+    } else {      
+      document = fckMessage.createMessage(FCKMessage.FOLDER_NOT_CREATED, FCKMessage.ERROR,
+          language, null);
       return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
     }    
-    currentNode.addNode(newFolderName,FCKUtils.NT_FOLDER);
-    currentNode.getSession().save();
-        
-    Element rootElement = FCKUtils.createRootElement("createFolder", currentNode, getFolderType(currentNode));
-    document = rootElement.getOwnerDocument();
-    Element errorElement = document.createElement("Message");
-    errorElement.setAttribute("number", Integer.toString(FCKMessage.FOLDER_CREATED));
-    errorElement.setAttribute("text", fckMessage.getMessageKey(FCKMessage.FOLDER_CREATED));
-    errorElement.setAttribute("type", FCKMessage.ERROR);    
-    rootElement.appendChild(errorElement);
-    return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();    
   }
 }

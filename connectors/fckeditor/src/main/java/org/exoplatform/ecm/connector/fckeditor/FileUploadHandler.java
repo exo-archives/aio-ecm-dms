@@ -75,6 +75,11 @@ public class FileUploadHandler {
   public Response upload(String uploadId, String contentType, double contentLength, InputStream inputStream, Node currentNode, String language) throws Exception {
     CacheControl cacheControl = new CacheControl();
     cacheControl.setNoCache(true);
+    if (currentNode == null) {
+      Document message = 
+        fckMessage.createMessage(FCKMessage.FILE_UPLOAD_RESTRICTION,FCKMessage.ERROR, language, null);
+      return Response.Builder.ok(message).mediaType("text/xml").cacheControl(cacheControl).build();
+    }
     if(!FCKUtils.hasAddNodePermission(currentNode)) {
       Object[] args = { currentNode.getPath() };
       Document message = 
@@ -111,7 +116,7 @@ public class FileUploadHandler {
     if(parent.hasNode(fileName)) {
       Object args[] = { fileName, parent.getPath() };
       Document fileExisted = 
-        fckMessage.createMessage(FCKMessage.FILE_EXISTED,FCKMessage.ERROR,language,args);
+        fckMessage.createMessage(FCKMessage.FILE_EXISTED, FCKMessage.ERROR, language, args);
       return Response.Builder.ok(fileExisted).mediaType("text/xml").cacheControl(cacheControl).build();
     }                
     String location = resource.getStoreLocation();

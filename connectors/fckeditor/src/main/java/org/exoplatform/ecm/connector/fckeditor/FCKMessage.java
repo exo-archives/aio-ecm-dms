@@ -23,6 +23,9 @@ import java.util.ResourceBundle;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.services.resources.ResourceBundleService;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -53,6 +56,9 @@ public class FCKMessage {
   /** The Constant FOLDER_PERMISSION_CREATING. */
   public static final int    FOLDER_PERMISSION_CREATING = 103;
 
+  /** The Constant FOLDER_NOT_CREATED. */
+  public static final int    FOLDER_NOT_CREATED         = 104;
+
   /** The Constant UNKNOWN_ERROR. */
   public static final int    UNKNOWN_ERROR              = 110;
 
@@ -62,11 +68,15 @@ public class FCKMessage {
   /** The Constant FILE_NOT_FOUND. */
   public static final int    FILE_NOT_FOUND             = 202;
 
+  /** The Constant FILE_UPLOAD_RESTRICTION. */
   public static final int    FILE_UPLOAD_RESTRICTION    = 203;
+  
+  /** The Constant FILE_NOT_UPLOADED. */
+  public static final int FILE_NOT_UPLOADED = 204;
 
   /** The Constant FCK_RESOURCE_BUNDLE. */
   public static final String FCK_RESOURCE_BUNDLE_FILE   = "locale.services.fckeditor.FCKConnector"
-    .intern();
+                                                            .intern();
 
   /**
    * Instantiates a new fCK message.
@@ -77,13 +87,13 @@ public class FCKMessage {
   }
 
   public Document createMessage(int messageCode, String messageType, String language, Object[] args)
-  throws Exception {
+      throws Exception {
     String message = getMessage(messageCode, args, language);
     return createMessage(messageCode, message, messageType);
   }
 
   public Document createMessage(int messageCode, String message, String messageType)
-  throws Exception {
+      throws Exception {
     DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
     Document document = documentBuilder.newDocument();
     Element element = document.createElement("Message");
@@ -123,8 +133,8 @@ public class FCKMessage {
       locale = Locale.ENGLISH;
     } else {
       locale = new Locale(language);
-    }
-    ResourceBundle resourceBundle = ResourceBundle.getBundle(FCK_RESOURCE_BUNDLE_FILE, locale);
+    }                    
+    ResourceBundle resourceBundle = ResourceBundle.getBundle(FCK_RESOURCE_BUNDLE_FILE, locale);    
     String message = resourceBundle.getString(messageKey);
     if (args == null) {
       return message;
@@ -138,6 +148,9 @@ public class FCKMessage {
     case FOLDER_CREATED:
       messageKey = "fckeditor.folder-created";
       break;
+    case FOLDER_NOT_CREATED:
+      messageKey = "fckeditor.folder-not-created";
+      break;
     case FOLDER_INVALID_NAME:
       messageKey = "fckeditor.folder-invalid-name";
       break;
@@ -147,9 +160,21 @@ public class FCKMessage {
     case FOLDER_PERMISSION_CREATING:
       messageKey = "fckeditor.folder-permission-denied";
       break;
+    case FILE_EXISTED:
+      messageKey = "fckeditor.file-existed";
+      break;
+    case FILE_NOT_FOUND:
+      messageKey = "fckeditor.file-not-found";
+      break;
+    case FILE_NOT_UPLOADED:
+      messageKey = "fckeditor.file-not-uploaded";
+      break;
+    case FILE_UPLOAD_RESTRICTION:
+      messageKey = "fckeditor.file-uploaded-restriction";
+      break;
     default:
       messageKey = "connector.fckeditor.unknowm-message";
-    break;
+      break;
     }
     return messageKey;
   }
