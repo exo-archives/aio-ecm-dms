@@ -90,7 +90,7 @@ public class GetMailScript implements CmsScript {
 				int i = 0 ;
 				while(i < totalMess){				
 					Message mes = mess[i] ;
-					Node newMail = storeNode.addNode(getMD5MsgId(mes), "exo:mail") ;
+					Node newMail = storeNode.addNode(getMD5MsgId(mes.getAllHeaders()), "exo:mail") ;
 					newMail.setProperty("exo:from", getAddress(mes.getFrom())) ;
 					newMail.setProperty("exo:to", getAddress(mes.getRecipients(Message.RecipientType.TO))) ;
 					newMail.setProperty("exo:cc", getAddress(mes.getRecipients(Message.RecipientType.CC))) ;
@@ -152,7 +152,7 @@ public class GetMailScript implements CmsScript {
 					newMail.setProperty("exo:content", (String)mimeMultiPart.getBodyPart(0).getContent());				
 				}				
 			} else if (disposition.equalsIgnoreCase(Part.ATTACHMENT) || disposition.equalsIgnoreCase(Part.INLINE)) {
-				Node attachment = newMail.addNode(part.getFileName(), "nt:file") ;
+        Node attachment = newMail.addNode(getMD5MsgId(part.getAllHeaders()), "nt:file") ;
 				Node content = attachment.addNode("jcr:content", "nt:resource") ;
 				content.setProperty("jcr:encoding", "UTF-8") ;
 				if(contentType.indexOf(";") > 0) {
@@ -222,11 +222,10 @@ public class GetMailScript implements CmsScript {
   /**
    * @return a MD5 string
    */
-  private String getMD5MsgId(Message msg) throws Exception {
+  private String getMD5MsgId(Enumeration enu) throws Exception {
     // first construct a key by joining all headers
     String key = "";
     long t1 = System.currentTimeMillis();
-    Enumeration enu = msg.getAllHeaders() ;
     while (enu.hasMoreElements()) {
       Header header = (Header)enu.nextElement() ;
       key += header.getValue() ;
@@ -235,6 +234,7 @@ public class GetMailScript implements CmsScript {
     long t2 = System.currentTimeMillis();
     return md5;
   }
+ 
   /**
    * separated getMD5 method ... for a general use.
    * @param s
