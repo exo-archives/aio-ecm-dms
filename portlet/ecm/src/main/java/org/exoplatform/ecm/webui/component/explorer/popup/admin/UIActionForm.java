@@ -168,6 +168,10 @@ public class UIActionForm extends DialogFormFields implements UISelector {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null;
     }
+    if(currentNode.isLocked()) {
+      String lockToken = Utils.getLockToken(currentNode);
+      if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+    }
     if(!isAddNew_) {
       CmsService cmsService = getApplicationComponent(CmsService.class) ;      
       Node storedHomeNode = getNode().getParent() ;

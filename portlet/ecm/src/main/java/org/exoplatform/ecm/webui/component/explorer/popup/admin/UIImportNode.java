@@ -23,6 +23,7 @@ import java.util.zip.ZipInputStream;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ImportUUIDBehavior;
+import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.nodetype.ConstraintViolationException;
@@ -87,6 +88,11 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       Session session = uiExplorer.getSession() ;
       UIApplication uiApp = uiImport.getAncestorOfType(UIApplication.class) ;
       UIFormUploadInput input = uiImport.getUIInput(FILE_UPLOAD) ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(currentNode.isLocked()) {
+        String lockToken = Utils.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       if(input.getUploadResource() == null) {
         uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filename-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -107,19 +113,19 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
         return ;
       }
       try {
-        session.getItem(uiExplorer.getCurrentNode().getPath()) ;
+        session.getItem(currentNode.getPath()) ;
       } catch(PathNotFoundException path) {
-        session = uiExplorer.getCurrentNode().getSession() ;
+        session = currentNode.getSession() ;
       }
       try {
-        session.importXML(uiExplorer.getCurrentNode().getPath(),xmlInputStream,
+        session.importXML(currentNode.getPath(),xmlInputStream,
                           ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW) ;
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.access-denied", null,ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
       } catch(ConstraintViolationException con) {
-        Object[] args = { uiExplorer.getCurrentNode().getPrimaryNodeType().getName() } ;
+        Object[] args = { currentNode.getPrimaryNodeType().getName() } ;
         uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.constraint-violation-exception", 
                                                 args,ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

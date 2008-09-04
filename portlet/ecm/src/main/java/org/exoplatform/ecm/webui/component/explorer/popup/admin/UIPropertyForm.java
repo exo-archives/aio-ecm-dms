@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.jcr.Node;
 import javax.jcr.PropertyType;
 import javax.jcr.Value;
 import javax.jcr.ValueFactory;
@@ -193,18 +194,23 @@ public class UIPropertyForm extends UIForm {
       UIPropertyForm uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(currentNode.isLocked()) {
+        String lockToken = Utils.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.node-checkedin", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType() ;   
+      NodeType nodeType = currentNode.getPrimaryNodeType() ;   
       if(nodeType.isNodeType(Utils.NT_UNSTRUCTURED)) {
         UIFormMultiValueInputSet multiValueInputSet = uiForm.getUIInput(FIELD_VALUE) ;
-        ValueFactory valueFactory = uiExplorer.getCurrentNode().getSession().getValueFactory() ;
+        ValueFactory valueFactory = currentNode.getSession().getValueFactory() ;
         String namespace = uiForm.getUIFormSelectBox(FIELD_NAMESPACE).getValue() ;
         String name = namespace + ":" + uiForm.getUIStringInput(FIELD_PROPERTY).getValue() ;
-        if(uiExplorer.getCurrentNode().hasProperty(name)) {
+        if(currentNode.hasProperty(name)) {
           Object[] args = { name } ;
           uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.propertyName-exist", args, 
               ApplicationMessage.WARNING)) ;
@@ -213,16 +219,8 @@ public class UIPropertyForm extends UIForm {
           uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
           return ;
         }
-//      if ((name == null) || (name.trim().length() == 0)) {
-//      uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.name-invalid", null, 
-//      ApplicationMessage.WARNING)) ;
-//      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-//      UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class) ;
-//      uiPropertiesManager.setRenderedChild(UIPropertyForm.class) ;
-//      return ;
-//      } 
         int type = Integer.parseInt(uiForm.getUIFormSelectBox(FIELD_TYPE).getValue()) ;        
-        NodeType nodetype = uiExplorer.getCurrentNode().getPrimaryNodeType() ;
+        NodeType nodetype = currentNode.getPrimaryNodeType() ;
         List valueList = new ArrayList() ;
         if(type == 6) {
           for(UIComponent child : multiValueInputSet.getChildren()) {
@@ -270,8 +268,8 @@ public class UIPropertyForm extends UIForm {
           JCRExceptionManager.process(uiApp, e) ;
         }
         if(nodetype.canSetProperty(name, values)) {
-          uiExplorer.getCurrentNode().setProperty(name, values) ;
-          uiExplorer.getCurrentNode().save() ;
+          currentNode.setProperty(name, values) ;
+          currentNode.save() ;
           uiExplorer.getSession().save() ;
         }
         uiForm.refresh() ;

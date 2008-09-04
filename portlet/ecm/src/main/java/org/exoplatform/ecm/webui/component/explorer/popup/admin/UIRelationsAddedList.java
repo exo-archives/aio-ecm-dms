@@ -25,6 +25,7 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.SessionsUtils;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -83,7 +84,10 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
       String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       String wsName = value.substring(0, value.indexOf(":")) ;
       String path = value.substring(value.indexOf(":") + 1) ;           
-      //TODO maybe lost data here      
+      if(uiJCRExplorer.getCurrentNode().isLocked()) {
+        String lockToken = Utils.getLockToken(uiJCRExplorer.getCurrentNode());
+        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
+      }
       relateService.addRelation(uiJCRExplorer.getCurrentNode(), path, wsName,repository) ;
       updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName(),SessionsUtils.getSessionProvider())) ;      
       setRenderSibbling(UIRelationsAddedList.class) ;

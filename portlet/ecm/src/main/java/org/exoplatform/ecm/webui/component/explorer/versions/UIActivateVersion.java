@@ -60,8 +60,11 @@ public class UIActivateVersion extends UIContainer implements UIPopupComponent {
       UIActivateVersion uiActivateVersion = event.getSource();
       UIJCRExplorer uiExplorer = uiActivateVersion.getAncestorOfType(UIJCRExplorer.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
+      if(currentNode.isLocked()) {
+        String lockToken = Utils.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       if(currentNode.isNodeType("rma:filePlan")){
-        
         WebuiRequestContext contx = event.getRequestContext();
         UIPopupAction popupAction = uiExplorer.getChild(UIPopupAction.class) ;
         if(popupAction.isRendered()) {

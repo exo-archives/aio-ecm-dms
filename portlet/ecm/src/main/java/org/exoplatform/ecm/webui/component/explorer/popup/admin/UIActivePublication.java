@@ -20,6 +20,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
@@ -61,7 +62,10 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
       UIJCRExplorer uiExplorer = uiActivatePublication.getAncestorOfType(UIJCRExplorer.class) ;
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
       Node currentNode = uiExplorer.getCurrentNode() ;
-      
+      if(currentNode.isLocked()) {
+        String lockToken = Utils.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       PublicationService publicationService = uiActivatePublication.getApplicationComponent(PublicationService.class);
       PublicationPresentationService publicationPresentationService = uiActivatePublication.getApplicationComponent(PublicationPresentationService.class);
       publicationService.enrollNodeInLifecycle(currentNode, "StaticAndDirect");
