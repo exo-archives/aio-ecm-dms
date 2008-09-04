@@ -75,30 +75,6 @@
 		  	    	<%=_ctx.appRes("UISearchResult.header.score")%>	    		
 	  	    	</a>
 	  	    <% } %>
-  	    
-  	    <th>
-  	    	<%
-  	    		if (uicomponent.iconDate.equals("BlueUpArrow")) {
-  	    	%>
-	        	<a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("date"))%>" title="<%=_ctx.appRes("UISearchResult.title.datecreatedASC")%>">
-		  	    	<%=_ctx.appRes("UISearchResult.header.dateCreated")%>
-	  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueUpArrow16x16Icon">
-	  	    	</a>
-  	    	<%
-  	    		} else if (uicomponent.iconDate.equals("BlueDownArrow")) {
-  	    	%>
-  	    	<a href="<%=uicomponent.event("SortDESC", Utils.formatNodeName("date"))%>" title="<%=_ctx.appRes("UISearchResult.title.datecreatedDESC")%>">
-	  	    	<%=_ctx.appRes("UISearchResult.header.dateCreated")%>
-  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueDownArrow16x16Icon">
-  	    	</a>
-  	    	<%
-  	    		} else {
-  	    	%>
-  	    		<a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("date"))%>" title="<%=_ctx.appRes("UISearchResult.title.datecreatedASC")%>">
-		  	    	<%=_ctx.appRes("UISearchResult.header.dateCreated")%>	  		    		
-	  	    	</a>
-	  	    <% } %>   	    	  	    
-  	    </th>  	    
   	    <th><%=_ctx.appRes("UISearchResult.header.action")%></th>
       </tr>
     </thead>
@@ -116,8 +92,11 @@
   	      String nodePath = row.getValue("jcr:path").getString();
   	      JCRPath path = ((SessionImpl)uicomponent.getSession()).getLocationFactory().parseJCRPath(nodePath);
   	      Node node = (Node)uicomponent.getSession().getItem(path.getAsString(false));
-  	      
-	        if (nodePath.length() > 40 && nodePath.length() < 50) nodePath = "..." + nodePath.substring(20, nodePath.length()) ;
+  	      if (node.getPrimaryNodeType().getName().equals("nt:resource")) {
+  	      	node = node.getParent();
+  	      	nodePath = node.getPath();
+  	      }
+	        if (nodePath.length() > 40 && nodePath.length() < 50) nodePath = "..." + nodePath.substring(20, nodePath.length());
   	      else if(nodePath.length() > 40) nodePath = nodePath.substring(0, 30) + "...";
   	      String excerpt = row.getValue("rep:excerpt(.)").getString();
   	      String s = "";
@@ -128,7 +107,7 @@
             </td>
             <td>
             	<div class="Text" title="<%=dateFormat.format(node.getProperty("exo:dateCreated").getDate().getTime())%>">
-            		<strong><%=node.getName()%></strong>
+            		<%=node.getName()%>
             	</div>
             	<%            		
 			  	      if (excerpt.length() > 150) {
@@ -137,19 +116,16 @@
 		           		<div class="ExpandIcon" style="float:left" onclick="eXo.ecm.ECMUtils.collapseExpandPart(this)"><span></span></div>
 		           		<div class="NodeGroup1" style="display: block;"><%=s%></div>
 		           		<div class="NodeGroup2" style="display: none;"><%=excerpt%></div>
-		           		<div><strong><%=_ctx.appRes("UISearchResult.header.path")%></strong>: <%=nodePath%></div>
+		           		<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
+		           		<div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(node.getProperty("exo:dateCreated").getDate().getTime())%></div>
 	          			<div style="clear: both;"><span/></div>
            		<%} else {%>
            				<div><%=excerpt%></div>
-           				<div><strong><%=_ctx.appRes("UISearchResult.header.path")%></strong>: <%=nodePath%></div>
+           				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
+           				<div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(node.getProperty("exo:dateCreated").getDate().getTime())%></div>
            		<%}%>
 		        </td>
             <td><div class="Text"><%=row.getValue("jcr:score").getString()%></div></td>
-	          <td>
-	          	<div class="Text">	     
-	          		<%=dateFormat.format(node.getProperty("exo:dateCreated").getDate().getTime())%> 	
-	          	</div>
-	          </td>	  
 	          <td style="width:80px;">
 	            <a href="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>">
 	              <div class="View16x16Icon" style="margin-left:10px;float:left;"><span></span></div>

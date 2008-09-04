@@ -75,8 +75,6 @@ public class UISearchResult extends UIContainer {
   private List<Row> currentListRows_ = new ArrayList<Row>();
   private int currentAvailablePage_ = 0;
   private boolean isEndOfIterator_ = false;
-  private static String iconDate = "BlueUpArrow";
-  private static String iconName = "";
   private static String iconType = "";
   private static String iconScore = "";
   static private int PAGE_SIZE = 10;
@@ -125,9 +123,7 @@ public class UISearchResult extends UIContainer {
     if (resultListSize > 100) {
       for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
         Row r = iter.nextRow();
-        System.out.println("\n\nsize=========>" +r.getValues().length+ "\n\n");
         for(Value v : r.getValues()) {
-          System.out.println("\n\nvalue==========>>" +v.getString()+ "\n\n");
         }
         String path = r.getValue("jcr:path").getString();
         JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
@@ -151,7 +147,7 @@ public class UISearchResult extends UIContainer {
         if (!iter.hasNext()) isEndOfIterator_ = true;
         String path = r.getValue("jcr:path").getString();
         JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
-        Node resultNode = (Node)getSession().getItem(nodePath.getAsString(false));        
+        Node resultNode = (Node)getSession().getItem(nodePath.getAsString(false));
         addNode(listNodes, resultNode, listRows, r);        
       }
       currentListNodes_= listNodes;
@@ -250,25 +246,11 @@ public class UISearchResult extends UIContainer {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource();     
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
-      if (objectId.equals("date")) {        
-        iconDate = "BlueDownArrow";
-        iconName = "";
-        iconType = "";
-        iconScore = "";
-      } else if (objectId.equals("name")) {        
-        iconName = "BlueDownArrow";
-        iconDate = "";
-        iconType = "";
-        iconScore = "";
-      } else if (objectId.equals("type")) {
+      if (objectId.equals("type")) {
         iconType = "BlueDownArrow";
-        iconDate = "";
-        iconName = "";
         iconScore = "";
       } else if (objectId.equals("score")) {
         iconScore = "BlueDownArrow";
-        iconDate = "";
-        iconName = "";
         iconType = "";
       }
       Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
@@ -285,25 +267,11 @@ public class UISearchResult extends UIContainer {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource() ;     
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
-      if (objectId.equals("date")) {        
-        iconDate = "BlueUpArrow";
-        iconName = "";
-        iconType = "";
-        iconScore = "";
-      } else if (objectId.equals("name")) {        
-        iconName = "BlueUpArrow";
-        iconDate = "";
-        iconType = "";
-        iconScore = "";
-      } else if (objectId.equals("type")) {
+      if (objectId.equals("type")) {
         iconType = "BlueUpArrow";
-        iconDate = "";
-        iconName = "";
         iconScore = "";
       } else if (objectId.equals("score")) {
         iconScore = "BlueUpArrow";
-        iconDate = "";
-        iconName = "";
         iconType = "";
       }
       Collections.sort(uiSearchResult.currentListRows_, new SearchComparator());
@@ -319,18 +287,7 @@ public class UISearchResult extends UIContainer {
   private static class SearchComparator implements Comparator<Row> {
     public int compare(Row row1, Row row2) {
       try {
-        if (iconDate.equals("BlueUpArrow") || iconDate.equals("BlueDownArrow")) {
-//          Date date1 = row1.getValue(Utils.EXO_CREATED_DATE).getDate().getTime();
-//          Date date2 = row2.getValue(Utils.EXO_CREATED_DATE).getDate().getTime();
-//          if (iconDate.equals("BlueUpArrow")) { return date2.compareTo(date1); }
-//          System.out.println(row1.getValues().length);
-//          return date1.compareTo(date2);
-        } else if (iconName.equals("BlueUpArrow") || iconName.equals("BlueDownArrow")) {
-//          String s1 = node1.getName();
-//          String s2 = node2.getName();
-//          if (iconName.trim().equals("BlueUpArrow")) return s2.compareTo(s1);        
-//          return s1.compareTo(s2);
-        } else if (iconType.equals("BlueUpArrow") || iconType.equals("BlueDownArrow")) {
+        if (iconType.equals("BlueUpArrow") || iconType.equals("BlueDownArrow")) {
           String s1 = row1.getValue("jcr:primaryType").getString();
           String s2 = row2.getValue("jcr:primaryType").getString();
           if (iconType.trim().equals("BlueUpArrow")) { return s2.compareTo(s1); }        
