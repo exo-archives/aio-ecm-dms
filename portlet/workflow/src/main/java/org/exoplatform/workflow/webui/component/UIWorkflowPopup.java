@@ -63,6 +63,7 @@ public class UIWorkflowPopup extends UIContainer {
     UIPopupWindow popup = getChild(UIPopupWindow.class) ;
     if(popup.getUIComponent() != null) ((UIPopupComponent)popup.getUIComponent()).deActivate() ;
     popup.setUIComponent(null) ;
+    popup.setShow(false);
     popup.setRendered(false) ;
   }
   

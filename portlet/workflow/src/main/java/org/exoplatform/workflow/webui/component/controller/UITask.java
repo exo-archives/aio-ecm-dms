@@ -30,10 +30,12 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
+import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -61,6 +63,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
 import org.exoplatform.webui.form.UIFormWYSIWYGInput;
+import org.exoplatform.workflow.utils.SessionsUtils;
 import org.exoplatform.workflow.utils.Utils;
 import org.exoplatform.workflow.webui.component.BJARResourceResolver;
 import org.exoplatform.workflow.webui.component.InputInfo;
@@ -170,7 +173,7 @@ public class UITask extends UIForm {
       repository = jcrService.getDefaultRepository().getConfiguration().getName() ;
     }
     ManageableRepository mRepository = jcrService.getRepository(repository) ;
-    SessionProvider sessionProvider = Utils.getSessionProvider() ;
+    SessionProvider sessionProvider = SessionsUtils.getSessionProvider() ;
     List variables = form.getVariables();
     UIFormInput input = null;
     int i = 0;
@@ -393,6 +396,17 @@ public class UITask extends UIForm {
       VariableMaps maps = uiTask.prepareVariables();
       List submitButtons = uiTask.form.getSubmitButtons();
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      Task task = uiTask.serviceContainer.getTask(uiTask.identification_);
+      String processInstanceId = task.getProcessInstanceId();
+      Map variablesForService = uiTask.serviceContainer.getVariables(processInstanceId, uiTask.identification_);
+      String nodePath = (String)variablesForService.get("nodePath");
+      String srcPath = (String)variablesForService.get("srcPath");
+      String srcWorkspace = (String)variablesForService.get("srcWorkspace");
+      String repository = (String)variablesForService.get("repository");
+      RepositoryService repositoryService = uiTask.getApplicationComponent(RepositoryService.class);
+      Session session = 
+        SessionsUtils.getSessionProvider().getSession(srcWorkspace, repositoryService.getRepository(repository));
+      Node node = (Node)session.getItem(nodePath);
       for (Iterator iterator = submitButtons.iterator(); iterator.hasNext();) {
         Map attributes = (Map) iterator.next();
         String name = (String) attributes.get("name");
@@ -401,12 +415,25 @@ public class UITask extends UIForm {
           try {
             Map variables = maps.getWorkflowVariables();
             uiTask.serviceContainer.endTask(uiTask.identification_, variables, transition);
+            if(node.isLocked()) {
+              String actionName = (String)variablesForService.get("actionName");
+              ActionServiceContainer actionServiceContainer = 
+                uiTask.getApplicationComponent(ActionServiceContainer.class);
+              Node actionNode = actionServiceContainer.getAction((Node)session.getItem(srcPath), actionName);
+              String destPath = actionNode.getProperty("exo:destPath").getString() + nodePath.substring(nodePath.lastIndexOf("/"));
+              String destWorkspace = actionNode.getProperty("exo:destWorkspace").getString();
+              Session desSession = 
+                SessionsUtils.getSessionProvider().getSession(destWorkspace, repositoryService.getRepository(repository));
+              Node destNode = (Node)desSession.getItem(destPath);
+              Utils.changeLockToken(nodePath, destNode);
+              uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
+            }
+            return;
           } catch (Exception e) {
             //e.printStackTrace();
           }
         }
       }
-      uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
     }
   }
 }

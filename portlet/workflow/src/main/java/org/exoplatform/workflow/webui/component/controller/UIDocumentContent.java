@@ -161,7 +161,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   
   public Node getNodeByUUID(String uuid) throws Exception{ 
     ManageableRepository manageRepo = (ManageableRepository)node_.getSession().getRepository() ;
-    SessionProvider sessionProvider = Utils.getSessionProvider();
+    SessionProvider sessionProvider = SessionsUtils.getSessionProvider();
     for(String ws : manageRepo.getWorkspaceNames()) {
       try{
         return sessionProvider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;
@@ -273,7 +273,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     StringBuilder str = new StringBuilder(nodeType) ;
     if(node.isNodeType(Utils.NT_FILE)) {
       Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
-      str.append(" ").append(jcrContentNode.getProperty(Utils.JCR_MIMETY).getString().replaceFirst("/", "_")).append(appended);
+      str.append(" ").append(jcrContentNode.getProperty(Utils.JCR_MIMETYPE).getString().replaceFirst("/", "_")).append(appended);
     }
     return str.toString() ;
   }
