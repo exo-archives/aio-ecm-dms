@@ -569,7 +569,7 @@ public class UIActionBar extends UIForm {
         return;
       }      
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UIMultiLanguageManager.class, null,720, 550);
+      uiPopupAction.activate(UIMultiLanguageManager.class, null,780, 550);
       UIMultiLanguageManager uiMultiManager = 
         uiPopupAction.findFirstComponentOfType(UIMultiLanguageManager.class);
       UIAddLanguageContainer uiAddContainer = uiMultiManager.getChild(UIAddLanguageContainer.class);
@@ -1158,7 +1158,7 @@ public class UIActionBar extends UIForm {
         return;
       }      
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UICommentForm.class, 600);
+      uiPopupAction.activate(UICommentForm.class, 750);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
     }
   }

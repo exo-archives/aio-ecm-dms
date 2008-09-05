@@ -277,7 +277,7 @@ public class UIToolBar extends UIContainer {
         UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
         UICBCommentForm commentForm = uiComp.createUIComponent(UICBCommentForm.class, null, null) ;
         commentForm.setDocument(uiDocument.node_) ;
-        uiPopupAction.activate(commentForm, 600, 0) ;
+        uiPopupAction.activate(commentForm, 750, 0) ;
         uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       } else {
