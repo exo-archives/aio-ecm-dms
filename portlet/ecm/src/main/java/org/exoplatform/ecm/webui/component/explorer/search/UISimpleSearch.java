@@ -225,7 +225,7 @@ public class UISimpleSearch extends UIForm {
         QueryResult queryResult = query.execute();
         uiSearchResult.clearAll();
         uiSearchResult.setQueryResults(queryResult);
-        uiSearchResult.updateGrid();
+        uiSearchResult.updateGrid(true);
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.query-invalid", null, 
                                                 ApplicationMessage.WARNING));

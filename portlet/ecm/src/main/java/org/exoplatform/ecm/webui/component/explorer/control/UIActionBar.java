@@ -1029,7 +1029,7 @@ public class UIActionBar extends UIForm {
       uiSearchResult.setIsQuickSearch(true);
       uiSearchResult.clearAll();
       uiSearchResult.setQueryResults(queryResult);            
-      uiSearchResult.updateGrid();
+      uiSearchResult.updateGrid(true);
       long time = System.currentTimeMillis() - startTime;
       uiSearchResult.setSearchTime(time);
       uiDocumentWorkspace.setRenderedChild(UISearchResult.class);

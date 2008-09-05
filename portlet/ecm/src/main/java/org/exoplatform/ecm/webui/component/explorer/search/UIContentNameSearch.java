@@ -101,7 +101,7 @@ public class UIContentNameSearch extends UIForm {
       QueryResult queryResult = query.execute();
       uiSearchResult.clearAll();
       uiSearchResult.setQueryResults(queryResult);
-      uiSearchResult.updateGrid();
+      uiSearchResult.updateGrid(true);
       long time = System.currentTimeMillis() - startTime;
       uiSearchResult.setSearchTime(time);
       uiECMSearch.setRenderedChild(UISearchResult.class);

@@ -55,7 +55,7 @@ public class UIQueryResultPageIterator extends UIPageIterator {
       int page = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       UISearchResult uiSearchResult = uiPageIterator.getParent() ;
       int totalPageInThisIterator = uiSearchResult.getCurrentAvaiablePage() ; 
-      if(totalPageInThisIterator - page <= 2) uiSearchResult.updateGrid() ;
+      if(totalPageInThisIterator - page <= 2) uiSearchResult.updateGrid(false) ;
       uiPageIterator.setCurrentPage(page) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchResult);
     }

@@ -19,13 +19,11 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.Session;
-import javax.jcr.Value;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
@@ -123,8 +121,6 @@ public class UISearchResult extends UIContainer {
     if (resultListSize > 100) {
       for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
         Row r = iter.nextRow();
-        for(Value v : r.getValues()) {
-        }
         String path = r.getValue("jcr:path").getString();
         JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
         Node resultNode = (Node)getSession().getItem(nodePath.getAsString(false));
@@ -164,8 +160,13 @@ public class UISearchResult extends UIContainer {
   
   public UIQueryResultPageIterator getUIPageIterator() { return uiPageIterator_; }
 
-  public void updateGrid() throws Exception {
-    SearchResultPageList pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE, isEndOfIterator_);
+  public void updateGrid(boolean flagCheck) throws Exception {
+    SearchResultPageList pageList;
+    if (flagCheck) {
+      pageList = new SearchResultPageList(queryResult_, getResultList(), PAGE_SIZE, isEndOfIterator_);
+    } else {
+      pageList = new SearchResultPageList(queryResult_, currentListRows_, PAGE_SIZE, isEndOfIterator_);
+    }
     currentAvailablePage_ = currentListNodes_.size()/PAGE_SIZE;
     uiPageIterator_.setSearchResultPageList(pageList);
     uiPageIterator_.setPageList(pageList);
