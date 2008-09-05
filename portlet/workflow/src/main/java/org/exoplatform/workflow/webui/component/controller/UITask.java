@@ -426,14 +426,15 @@ public class UITask extends UIForm {
                 SessionsUtils.getSessionProvider().getSession(destWorkspace, repositoryService.getRepository(repository));
               Node destNode = (Node)desSession.getItem(destPath);
               Utils.changeLockToken(nodePath, destNode);
-              uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
             }
+            uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
             return;
           } catch (Exception e) {
             //e.printStackTrace();
           }
         }
       }
+      session.logout();
     }
   }
 }
