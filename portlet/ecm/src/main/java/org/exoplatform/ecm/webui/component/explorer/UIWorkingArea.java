@@ -1062,12 +1062,13 @@ public class UIWorkingArea extends UIContainer {
         relationsService.addRelation(addRef, destPath,session.getWorkspace().getName(),uiExplorer.getRepositoryName()) ;
         addRef.save() ;
       }      
-      for(ClipboardCommand currClip : uiExplorer.getAllClipBoard()) {
-        if(currClip.getSrcPath().equals(srcPath)) {
-          uiExplorer.getAllClipBoard().remove(currClip) ;
-          break ;
-        }
-      }
+//      for(ClipboardCommand currClip : uiExplorer.getAllClipBoard()) {
+//        if(currClip.getSrcPath().equals(srcPath)) {
+//          uiExplorer.getAllClipBoard().remove(currClip) ;
+//          break ;
+//        }
+//      }
+      uiExplorer.getAllClipBoard().clear();
       String currentPath = uiExplorer.getCurrentPath() ;
       if(srcPath.equals(currentPath) || currentPath.startsWith(srcPath)) {
         uiExplorer.setCurrentPath(srcNode.getParent().getPath()) ;
