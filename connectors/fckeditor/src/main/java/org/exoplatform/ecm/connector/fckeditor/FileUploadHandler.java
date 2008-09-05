@@ -75,17 +75,6 @@ public class FileUploadHandler {
   public Response upload(String uploadId, String contentType, double contentLength, InputStream inputStream, Node currentNode, String language) throws Exception {
     CacheControl cacheControl = new CacheControl();
     cacheControl.setNoCache(true);
-    if (currentNode == null) {
-      Document message = 
-        fckMessage.createMessage(FCKMessage.FILE_UPLOAD_RESTRICTION,FCKMessage.ERROR, language, null);
-      return Response.Builder.ok(message).mediaType("text/xml").cacheControl(cacheControl).build();
-    }
-    if(!FCKUtils.hasAddNodePermission(currentNode)) {
-      Object[] args = { currentNode.getPath() };
-      Document message = 
-        fckMessage.createMessage(FCKMessage.FILE_UPLOAD_RESTRICTION,FCKMessage.ERROR,language,args);
-      return Response.Builder.ok(message).mediaType("text/xml").cacheControl(cacheControl).build();
-    }
     uploadService.createUploadResource(uploadId,null,contentType,contentLength,inputStream);
     return Response.Builder.ok().mediaType("text/xml").cacheControl(cacheControl).build();            
   }
@@ -109,7 +98,18 @@ public class FileUploadHandler {
   public Response saveAsNTFile(Node parent, String uploadId, String fileName, String language) throws Exception {
     CacheControl cacheControl = new CacheControl();
     cacheControl.setNoCache(true);
-    UploadResource resource = uploadService.getUploadResource(uploadId) ;
+    UploadResource resource = uploadService.getUploadResource(uploadId);
+    if (parent == null) {
+      Document fileNotUploaded = 
+        fckMessage.createMessage(FCKMessage.FILE_NOT_UPLOADED, FCKMessage.ERROR, language, null);
+      return Response.Builder.ok(fileNotUploaded).mediaType("text/xml").cacheControl(cacheControl).build();
+    }
+    if(!FCKUtils.hasAddNodePermission(parent)) {
+      Object[] args = { parent.getPath() };
+      Document message = 
+        fckMessage.createMessage(FCKMessage.FILE_UPLOAD_RESTRICTION,FCKMessage.ERROR,language,args);
+      return Response.Builder.ok(message).mediaType("text/xml").cacheControl(cacheControl).build();
+    }
     if((fileName == null) || (fileName.length() == 0)) {
       fileName = resource.getFileName();
     }
