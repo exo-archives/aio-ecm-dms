@@ -116,6 +116,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
+      if(uiExplorer.getCurrentNode().isLocked()) {
+        String lockToken = Utils.getLockToken(uiExplorer.getCurrentNode());
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       String fileName = input.getUploadResource().getFileName().trim() ;
       MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
       if(fileName == null || fileName.equals("")) {
