@@ -78,7 +78,7 @@ UIJCRExplorer.prototype.initNodeTypeScroll = function() {
 	scrollMgr.renderElements();
 };
 
-UIJCRExplorer.prototype.manageIcon = function() {
+UIJCRExplorer.prototype.dropDownIconList = function() {
 	var DOMUtil = eXo.core.DOMUtil;
 	var actionBar = document.getElementById("UIActionBar");
 	var activeBoxContent = DOMUtil.findFirstDescendantByClass(actionBar, "div", "ActiveBoxContent");
