@@ -1239,6 +1239,10 @@ public class UIBrowseContainer extends UIContainer {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class) ;      
         uiContainer.setShowDocumentDetail(false) ;
         uiDocumentDetail.setRendered(false) ;
+        if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
+          uiContainer.setCurrentNodePath(uiContainer.categoryPath_) ;
+          uiContainer.setSelectedTabPath(uiContainer.categoryPath_) ;
+        }
       } else if(uiContainer.isShowDocumentDetail() && historyNode != null &&
           templates.contains(historyNode.getPrimaryNodeType().getName())) {
         uiContainer.setShowDocumentByTag(false) ;
