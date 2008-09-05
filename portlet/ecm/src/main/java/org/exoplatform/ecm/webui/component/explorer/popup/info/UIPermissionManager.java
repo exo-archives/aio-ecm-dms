@@ -61,6 +61,8 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
   }
   public void checkPermissonInfo(Node node) throws Exception {
     if(node.isLocked()){
+      String lockToken = Utils.getLockToken(node);
+      if(lockToken != null) node.getSession().addLockToken(lockToken);
       if(!Utils.isLockTokenHolder(node)) {
         getChild(UIPermissionInfo.class).getChild(UIGrid.class).configure("usersOrGroups", UIPermissionInfo.PERMISSION_BEAN_FIELD, new String[]{}) ;
         getChild(UIPermissionForm.class).setRendered(false) ;
