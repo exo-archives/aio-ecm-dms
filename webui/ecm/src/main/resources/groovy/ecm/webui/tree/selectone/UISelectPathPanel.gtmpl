@@ -40,7 +40,6 @@
 				            String path = node.getPath() ;
 				            String nodeName = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
 										String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");
-										System.out.println("=========> nodeTypeIcon: " + nodeTypeIcon);
 				           %>
 				          <div class="Text <%=nodeTypeIcon%>" style="padding-left:20px;">$nodeName</div>
 				        </td>
