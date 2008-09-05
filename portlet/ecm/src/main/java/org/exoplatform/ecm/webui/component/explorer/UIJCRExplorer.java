@@ -117,6 +117,8 @@ public class UIJCRExplorer extends UIContainer {
   }
   public Node getRootNode() throws Exception { return getNodeByPath(rootPath_, getSession()) ; }
 
+  public String getRootPath() { return rootPath_; }
+  
   public Node getCurrentNode() throws Exception { return getNodeByPath(currentPath_, getSession()) ; }
   
   public String getCurrentPath() { return currentPath_ ; }
@@ -188,7 +190,7 @@ public class UIJCRExplorer extends UIContainer {
   public void setWorkspaceName(String workspaceName) { currentWorkspaceName_ = workspaceName ; }
   public String getCurrentWorkspace() { return currentWorkspaceName_ ; }
 
-  private ManageableRepository getRepository() throws Exception{         
+  public ManageableRepository getRepository() throws Exception{         
     RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;      
     return repositoryService.getRepository(currentRepositoryName_);
   }
