@@ -7,6 +7,9 @@
  * 9:32:56 AM 
  */
 %>
+<% 
+	import org.exoplatform.ecm.webui.utils.Utils;
+%>
 <div class="UITreeList">
   <table class="UIGrid">
 	  <col></col>
@@ -36,8 +39,10 @@
 				          <%
 				            String path = node.getPath() ;
 				            String nodeName = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
+										String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");
+										System.out.println("=========> nodeTypeIcon: " + nodeTypeIcon);
 				           %>
-				          <div class="Text">$nodeName</div>
+				          <div class="Text <%=nodeTypeIcon%>" style="padding-left:20px;">$nodeName</div>
 				        </td>
 				        <td>
 			              <a href="<%=uicomponent.event("Select", node.getPath())%>">
