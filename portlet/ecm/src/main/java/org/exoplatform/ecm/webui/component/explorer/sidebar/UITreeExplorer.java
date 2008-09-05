@@ -22,6 +22,7 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.PortalContainer;
@@ -142,10 +143,17 @@ public class UITreeExplorer extends UIContainer {
     }
   }
   
+  private Node getRootNode() throws Exception {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    Session session = 
+      uiExplorer.getSessionProvider().getSession(uiExplorer.getCurrentWorkspace(), uiExplorer.getRepository());
+    return uiExplorer.getNodeByPath(uiExplorer.getRootPath(), session);
+  }
+  
   public void buildTree() throws Exception {    
     UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     int nodePerPages = jcrExplorer.getPreference().getNodesPerPage();
-    TreeNode treeRoot = new TreeNode(jcrExplorer.getRootNode()) ;
+    TreeNode treeRoot = new TreeNode(getRootNode()) ;
     String path = jcrExplorer.getCurrentNode().getPath() ;     
     String[] arr = path.replaceFirst(treeRoot.getPath(), "").split("/") ;
     TreeNode temp = treeRoot ;
