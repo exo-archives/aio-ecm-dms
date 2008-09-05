@@ -240,7 +240,6 @@ public class UIToolBar extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(container) ;
     }
   }  
   static public class CommentActionListener extends EventListener<UIToolBar> {
