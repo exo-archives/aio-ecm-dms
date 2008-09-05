@@ -19,6 +19,8 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
@@ -113,6 +115,13 @@ public class UISearchResult extends UIContainer {
     return getAncestorOfType(UIJCRExplorer.class).getSession();
   }
     
+  public Date getDateCreated(Node node) throws Exception{
+    if (node.hasProperty("exo:dateCreated")) {
+      return node.getProperty("exo:dateCreated").getDate().getTime();
+    }
+    return new GregorianCalendar().getTime();
+  }
+  
   public List<Row> getResultList() throws Exception {    
     List<Node> listNodes = new ArrayList<Node>();
     List<Row> listRows = new ArrayList<Row>();    
