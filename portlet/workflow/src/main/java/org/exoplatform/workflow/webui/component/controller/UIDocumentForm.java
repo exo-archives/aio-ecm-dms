@@ -108,7 +108,7 @@ public class UIDocumentForm extends DialogFormFields {
   @SuppressWarnings("unchecked")
   public Node storeValue(Event event) throws Exception {
     List inputs = getChildren() ;
-    Map inputProperties = Utils.prepareMap(inputs, getInputProperties(), node_.getSession()) ;
+    Map inputProperties = Utils.prepareMap(inputs, getInputProperties()) ;
     Node newNode = null ;
     Node homeNode = getNode().getParent() ;
     try {
