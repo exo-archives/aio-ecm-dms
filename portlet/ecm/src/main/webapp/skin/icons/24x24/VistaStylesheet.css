@@ -170,6 +170,30 @@
   background: url('VistaSkin/ViewReferencesIcon.png') no-repeat ;
 }
 
+/* <ECM-1543>
+	* minh.js.exo 
+	* add to manage group icon 
+	*/
+	
+.ArrowDownIcon {
+	width: 24px;	height: 24px;
+	background: url('/eXoResources/skin/PortletThemes/background/DefaultTheme.png') no-repeat center bottom;
+}
+
+a:hover .ArrowDownIcon {
+	background: url('/eXoResources/skin/PortletThemes/background/DefaultTheme.png') no-repeat center -249px;
+}
+
+.ShowHideBoxContainer {
+	display: none;
+}
+
+a:hover .ShowHideBoxContainer {
+	display: block;
+}
+
+/* </ECM-1543> */
+
 .ShowJCRStructureIcon {
 	width: 27px; height: 20px;
   background: url('VistaSkin/ShowJCRStructure.png') no-repeat ;

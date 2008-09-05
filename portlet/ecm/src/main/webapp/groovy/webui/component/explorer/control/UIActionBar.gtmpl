@@ -7,6 +7,12 @@
 	 * version: $Id$
 	 */
 %>
+<%
+  def rcontext = _ctx.getRequestContext() ;
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
+  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.UIJCRExplorer.dropDownIconList');
+  rcontext.getJavascriptManager().addOnResizeJavascript('eXo.ecm.UIJCRExplorer.dropDownIconList');
+%>
 <div class="UIActionBar UISelectBoxOnChange">
   <% 
   uiform.setSubmitAction(uicomponent.event("SimpleSearch")+";return false;");
@@ -20,15 +26,32 @@
   </div>
   <div class="Separator ActionBarSeparator"><span></span></div>
   <div class="ActionIconContainer">
-	  <div class="SelectBoxContentContainer">
+	  <div class="StoreBoxContentContainer">
+			<a href="javascript: void(0)">
+				<div class="ArrowDownIcon"><span></span></div>
+				<div class="ShowHideBoxContainer">
+					<div style="border: 1px solid white">	
+						<div class="StoreBoxContainer">
+						</div>
+						<div style="clear: left;"></div>
+					</div>
+				</div>
+			</a>
+	  </div>
+	  <div class="SelectBoxContentContainer" style="overflow: hidden;">
 		  <%
 		  def tabs = uicomponent.getTabs() ;
 		  int selectedIndex = uicomponent.getSelectedTab() ;
 		  String style = "display: none";
+		  String active = "";
 		  for(tab in tabs) {
-		    if(0 == selectedIndex--) style = "display: block" ;
-		    else style = "display: none" ;
-		    println "<div class=\"SelectBoxContent\" style=\"$style\">" ;
+		    if(0 == selectedIndex--) {
+				style = "display: block" ;
+				active = "ActiveBoxContent";
+			} else {
+				style = "display: none" ;
+			}
+		    println "<div class=\"SelectBoxContent $active\" style=\"$style\">" ;
 		    for(button in tab) {
 		  %>
 		    <div class="ActionBg">
@@ -51,6 +74,7 @@
 		      <div class="SavedQueries" onclick="<%=uicomponent.event("SavedQueries")%>" title="<%=_ctx.appRes("UIActionBar.title.SavedQueries")%>"><span></span></div>
 		    </div>
 		  </div>
+		  <div style="clear: both;"></div>
 	  </div>
   </div>
   <% uiform.end() %>

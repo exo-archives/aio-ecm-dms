@@ -78,4 +78,28 @@ UIJCRExplorer.prototype.initNodeTypeScroll = function() {
 	scrollMgr.renderElements();
 };
 
+UIJCRExplorer.prototype.manageIcon = function() {
+	var DOMUtil = eXo.core.DOMUtil;
+	var actionBar = document.getElementById("UIActionBar");
+	var activeBoxContent = DOMUtil.findFirstDescendantByClass(actionBar, "div", "ActiveBoxContent");
+	var actionBgs = DOMUtil.findChildrenByClass(activeBoxContent, "div", "ActionBg");
+	var nSize = actionBgs.length;
+	if (nSize) {
+		var storeBoxContentContainer = DOMUtil.findFirstDescendantByClass(actionBar, "div", "StoreBoxContentContainer");
+		storeBoxContentContainer.style.display = "none";
+		var storeBoxContainer = DOMUtil.findFirstDescendantByClass(actionBar, "div", "StoreBoxContainer");
+		storeBoxContainer.innerHTML = "";
+		var posY = eXo.core.Browser.findPosY(activeBoxContent);
+		for (var o = 0; o < nSize; ++ o) {
+			actionBgs[o].style.display = "block";
+			Y = eXo.core.Browser.findPosY(actionBgs[o]);
+			if (Y - posY) {
+				storeBoxContainer.appendChild(actionBgs[o].cloneNode(true));
+				actionBgs[o].style.display = "none";
+				storeBoxContentContainer.style.display = "block";
+			}
+		}
+	}
+}
+
 eXo.ecm.UIJCRExplorer = new UIJCRExplorer();

@@ -216,7 +216,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBg {
   float: left;
-  margin: 1px 5px;
+  margin: 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBg .Icon {
@@ -230,9 +230,34 @@
   margin: 2px 0px 0px 5px;
 }
 
+/* <ECM-1543>
+	* minh.js.exo 
+	* add to manage group icon 
+	*/
+	
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .StoreBoxContentContainer {
+  position: relative;
+  float: right;
+  width: 24px;
+  margin: 3px;
+  height: 28px;
+  display: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ShowHideBoxContainer {
+	position: absolute;
+	background: #f7f7f7;
+	border: 1px solid #b7b7b7;
+	width: 81px;
+	right: 0px;
+	padding-bottom: 6px;
+}
+
+/* </ECM-1543> */
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SearchIcon {
   float: left;
-  margin-left: 5px;
+  margin-left: 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SavedQueries {
