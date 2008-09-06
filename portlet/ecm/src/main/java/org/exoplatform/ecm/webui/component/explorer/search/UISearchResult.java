@@ -182,7 +182,36 @@ public class UISearchResult extends UIContainer {
   }
   
   public int getCurrentAvaiablePage() { return currentAvailablePage_; }
-   
+  
+  private static class SearchComparator implements Comparator<Row> {
+    public int compare(Row row1, Row row2) {
+      try {
+        if (iconType.equals("BlueUpArrow") || iconType.equals("BlueDownArrow")) {
+          String s1 = row1.getValue("jcr:primaryType").getString();
+          String s2 = row2.getValue("jcr:primaryType").getString();
+          if (iconType.trim().equals("BlueUpArrow")) { return s2.compareTo(s1); }        
+          return s1.compareTo(s2);
+        } else if (iconScore.equals("BlueUpArrow") || iconScore.equals("BlueDownArrow")) {
+          Long l1 = row1.getValue("jcr:score").getLong();
+          Long l2 = row2.getValue("jcr:score").getLong();
+          if (iconScore.trim().equals("BlueUpArrow")) { return l2.compareTo(l1); }        
+          return l1.compareTo(l2);
+        }
+      } catch (Exception e) {  
+        e.printStackTrace();
+      }            
+      return 0;
+    }        
+  }
+  
+  public String StriptHTML(String s) {
+    String[] targets = {"<div>", "</div>", "<span>", "</span>"};
+    for (String target : targets) {
+      s = s.replace(target, "");
+    }
+    return s; 
+  }
+  
   static  public class ViewActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource();            
@@ -293,25 +322,4 @@ public class UISearchResult extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchResult.getParent());      
     }
   } 
-  
-  private static class SearchComparator implements Comparator<Row> {
-    public int compare(Row row1, Row row2) {
-      try {
-        if (iconType.equals("BlueUpArrow") || iconType.equals("BlueDownArrow")) {
-          String s1 = row1.getValue("jcr:primaryType").getString();
-          String s2 = row2.getValue("jcr:primaryType").getString();
-          if (iconType.trim().equals("BlueUpArrow")) { return s2.compareTo(s1); }        
-          return s1.compareTo(s2);
-        } else if (iconScore.equals("BlueUpArrow") || iconScore.equals("BlueDownArrow")) {
-          Long l1 = row1.getValue("jcr:score").getLong();
-          Long l2 = row2.getValue("jcr:score").getLong();
-          if (iconScore.trim().equals("BlueUpArrow")) { return l2.compareTo(l1); }        
-          return l1.compareTo(l2);
-        }
-      } catch (Exception e) {  
-        e.printStackTrace();
-      }            
-      return 0;
-    }        
-  }
 }

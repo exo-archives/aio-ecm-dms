@@ -107,21 +107,9 @@
             	<div class="Text" title="<%=dateFormat.format(uicomponent.getDateCreated(node))%>">
             		<%=node.getName()%>
             	</div>
-            	<%            		
-			  	      if (excerpt.length() > 150) {
-			  	      	s = excerpt.substring(0, 150) + "...";
-            	%>
-		           		<div class="ExpandIcon" style="float:left" onclick="eXo.ecm.ECMUtils.collapseExpandPart(this)"><span></span></div>
-		           		<div class="NodeGroup1" style="display: block;"><%=s%></div>
-		           		<div class="NodeGroup2" style="display: none;"><%=excerpt%></div>
-		           		<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
-		           		<div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(uicomponent.getDateCreated(node))%></div>
-	          			<div style="clear: both;"><span/></div>
-           		<%} else {%>
-           				<div><%=excerpt%></div>
-           				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
-           				<div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(uicomponent.getDateCreated(node))%></div>
-           		<%}%>
+       				<div>$excerpt</div>
+       				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
+       				<div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(uicomponent.getDateCreated(node))%></div>
 		        </td>
             <td><div class="Text"><%=row.getValue("jcr:score").getString()%></div></td>
 	          <td style="width:80px;">
