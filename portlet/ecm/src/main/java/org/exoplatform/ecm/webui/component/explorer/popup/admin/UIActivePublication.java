@@ -68,6 +68,11 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
       }
       PublicationService publicationService = uiActivatePublication.getApplicationComponent(PublicationService.class);
       PublicationPresentationService publicationPresentationService = uiActivatePublication.getApplicationComponent(PublicationPresentationService.class);
+      Node parentNode = currentNode.getParent() ;
+      if(parentNode.isLocked()) {
+        String lockToken1 = Utils.getLockToken(parentNode);
+        uiExplorer.getSession().addLockToken(lockToken1) ;
+      }
       publicationService.enrollNodeInLifecycle(currentNode, "StaticAndDirect");
           
       UIContainer cont = uiActivatePublication.createUIComponent(UIContainer.class, null, null);
