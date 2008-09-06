@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
@@ -148,8 +149,40 @@ public class UISearchResult extends UIContainer {
     uiPageIterator_.setPageList(pageList);
   }
   
+  public Date getDateCreated(Node node) throws Exception{
+    if (node.hasProperty("exo:dateCreated")) {
+      return node.getProperty("exo:dateCreated").getDate().getTime();
+    }
+    return new GregorianCalendar().getTime();
+  }
+  
   public int getCurrentAvaiablePage() { return currentAvailablePage_; }
    
+  private static class SearchComparator implements Comparator<Node> {
+    public int compare(Node node1, Node node2) {
+      try {
+        if (iconDate.equals("BlueUpArrow") || iconDate.equals("BlueDownArrow")) {
+          Date date1 = node1.getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
+          Date date2 = node2.getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
+          if (iconDate.equals("BlueUpArrow")) { return date2.compareTo(date1); }        
+          return date1.compareTo(date2);
+        } else if (iconName.equals("BlueUpArrow") || iconName.equals("BlueDownArrow")) {
+          String s1 = node1.getName();
+          String s2 = node2.getName();
+          if (iconName.trim().equals("BlueUpArrow")) return s2.compareTo(s1);        
+          return s1.compareTo(s2);
+        } else if (iconType.equals("BlueUpArrow") || iconType.equals("BlueDownArrow")) {
+          String s1 = node1.getProperty("jcr:primaryType").getString();
+          String s2 = node2.getProperty("jcr:primaryType").getString();
+          if (iconType.trim().equals("BlueUpArrow")) { return s2.compareTo(s1); }        
+          return s1.compareTo(s2);
+        }
+      } catch (Exception e) {        
+      }            
+      return 0;
+    }        
+  }
+  
   static  public class ViewActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource();            
@@ -276,29 +309,4 @@ public class UISearchResult extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchResult.getParent());      
     }
   } 
-  
-  private static class SearchComparator implements Comparator<Node> {
-    public int compare(Node node1, Node node2) {
-      try {
-        if (iconDate.equals("BlueUpArrow") || iconDate.equals("BlueDownArrow")) {
-          Date date1 = node1.getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
-          Date date2 = node2.getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
-          if (iconDate.equals("BlueUpArrow")) { return date2.compareTo(date1); }        
-          return date1.compareTo(date2);
-        } else if (iconName.equals("BlueUpArrow") || iconName.equals("BlueDownArrow")) {
-          String s1 = node1.getName();
-          String s2 = node2.getName();
-          if (iconName.trim().equals("BlueUpArrow")) return s2.compareTo(s1);        
-          return s1.compareTo(s2);
-        } else if (iconType.equals("BlueUpArrow") || iconType.equals("BlueDownArrow")) {
-          String s1 = node1.getProperty("jcr:primaryType").getString();
-          String s2 = node2.getProperty("jcr:primaryType").getString();
-          if (iconType.trim().equals("BlueUpArrow")) { return s2.compareTo(s1); }        
-          return s1.compareTo(s2);
-        }
-      } catch (Exception e) {        
-      }            
-      return 0;
-    }        
-  }
 }

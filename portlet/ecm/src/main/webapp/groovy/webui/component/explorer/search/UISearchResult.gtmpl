@@ -121,15 +121,11 @@
 		            
 		            if(nodePath.length() > 40 && nodePath.length() < 50) nodePath = "..." + nodePath.substring(20, nodePath.length()) ;
 		            else if(nodePath.length() > 40) nodePath = nodePath.substring(0, 30) + "...";
-		            
-		            //String nodeType = node.getPrimaryNodeType().getName().toLowerCase();
-		            //def onClickCall = "";
-		            //if (nodeType.contains("fileplan")) onClickCall = "eXo.ecm.UIJCRExplorer.loadViewNodeScroll();";
 		          %>
 		          <td><div class="Text" title="<%=node.getPath()%>"><%=nodePath%></div></td>
 		          <td>
 		          	<div class="Text">	          	
-		          		<%=dateFormat.format(node.getProperty("exo:dateCreated").getDate().getTime())%>
+		          		<%=dateFormat.format(uicomponent.getDateCreated(node))%>
 		          	</div>
 		          </td>	         
 		          <td style="width:80px;">
