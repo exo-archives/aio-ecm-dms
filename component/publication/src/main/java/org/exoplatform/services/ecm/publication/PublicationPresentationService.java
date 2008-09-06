@@ -18,7 +18,6 @@ package org.exoplatform.services.ecm.publication;
 
 import javax.jcr.Node;
 
-import org.exoplatform.services.ecm.publication.plugins.PublicationPlugin;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.form.UIForm;
 

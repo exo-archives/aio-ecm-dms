@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.services.ecm.publication.plugins;
+package org.exoplatform.services.ecm.publication;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,7 +24,6 @@ import java.util.Locale;
 import javax.jcr.Node;
 
 import org.exoplatform.container.component.BaseComponentPlugin;
-import org.exoplatform.services.ecm.publication.IncorrectStateUpdateLifecycleException;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.form.UIForm;
 

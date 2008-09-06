@@ -25,7 +25,6 @@ import javax.jcr.Node;
 import javax.jcr.Value;
 
 import org.exoplatform.services.ecm.publication.PublicationService;
-import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
 import org.exoplatform.services.ecm.publication.plugins.webui.VersionNode;
 import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

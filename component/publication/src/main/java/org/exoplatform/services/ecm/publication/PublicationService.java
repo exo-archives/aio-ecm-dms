@@ -22,7 +22,6 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
-import org.exoplatform.services.ecm.publication.plugins.PublicationPlugin;
 
 /**
  * Created by The eXo Platform SAS

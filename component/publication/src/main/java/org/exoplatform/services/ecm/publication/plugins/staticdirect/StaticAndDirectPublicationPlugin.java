@@ -40,8 +40,8 @@ import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.ecm.publication.IncorrectStateUpdateLifecycleException;
+import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationService;
-import org.exoplatform.services.ecm.publication.plugins.PublicationPlugin;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
@@ -406,20 +406,26 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
 
   @Override
   public UIForm getStateUI(Node node, UIComponent component) throws Exception {
-
+    UIForm uiform = null;
     if (node.getProperty(CURRENT_STATE).getString().equals(ENROLLED) || node.getProperty(CURRENT_STATE).getString().equals(NON_PUBLISHED)) {
-      UINonPublishedForm form=  component.createUIComponent(UINonPublishedForm.class, null, null);
-      form.setNode(node);
-      return form;
+      UINonPublishedForm form = component.createUIComponent(UINonPublishedForm.class, null, null);
+      form.setNode(node);      
+      uiform = form;
     } else if (node.getProperty(CURRENT_STATE).getString().equals(PUBLISHED)) {
       UIPublishedForm form=  component.createUIComponent(UIPublishedForm.class, null, null);
       form.setNode(node);
-      return form;
+      uiform = form;
     } else {
       //should not append : unknown state
       throw new Exception("StaticAndDirectPublicationPlugin.getStateUI : Unknown state : "+node.getProperty(CURRENT_STATE).getString());
-    }
-
+    }    
+    UIStaticDirectVersionList uiVersionTreeList = 
+      uiform.findFirstComponentOfType(UIStaticDirectVersionList.class);
+    UIPublicationForm uiPublicationForm = 
+      uiform.findFirstComponentOfType(UIPublicationForm.class);
+    uiVersionTreeList.initVersion(node);
+    uiPublicationForm.initForm(node);
+    return uiform;
   }
 
   @Override
