@@ -102,7 +102,8 @@ public class CmsServiceImpl implements CmsService {
       }
     }
     if (isAddNew) {
-      currentNode = storeHomeNode.addNode(nodeName, primaryType);            
+      currentNode = storeHomeNode.addNode(nodeName, primaryType);
+      createNodeRecursively(NODE, currentNode, nodeType, mappings);
       if(mixinTypes != null){
         for(String type : mixinTypes){
           if(!currentNode.isNodeType(type)) {
@@ -111,8 +112,11 @@ public class CmsServiceImpl implements CmsService {
           NodeType mixinType = nodetypeManager.getNodeType(type);          
           createNodeRecursively(NODE, currentNode, mixinType, mappings);
         }
-      }        
-      createNodeRecursively(NODE, currentNode, nodeType, mappings);                       
+      }
+      //all document node should be mix:referenceable that allow retrieve UUID by method Node.getUUID()
+      if(!currentNode.isNodeType("mix:referenceable")) {
+    	  currentNode.addMixin("mix:referenceable");
+      }
     } else {
       currentNode = storeHomeNode.getNode(nodeName);      
       updateNodeRecursively(NODE, currentNode, nodeType, mappings);
