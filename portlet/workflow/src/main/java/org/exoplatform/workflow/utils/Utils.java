@@ -513,7 +513,6 @@ public class Utils {
     HttpSession httpSession = requestContext.getRequest().getSession();
     String key = createLockKey(node);
     Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
-   System.out.println("\n\nlockedNodesInfolockedNodesInfo---------->" +lockedNodesInfo+ "\n\n");
     if(lockedNodesInfo == null) return null;    
     return lockedNodesInfo.get(key);
   }  

@@ -18,50 +18,82 @@
 %>
 
 <div class="UITask UIFormWithTitle">
+
   <% 
     uiform.begin() 
     def resWorkflow = uicomponent.getWorkflowBundle() ;
   %>
   <div class="TitleBar"><%=resWorkflow.getString("title")%></div>
   <div class="HorizontalLayout">
-    <table class="UIFormGrid">
-			<%for(inputInfo in uicomponent.getInputInfo())  {%>
-					<tr>
-					  <td class="FieldLabel"><%=inputInfo.getLabel()%></td>
-					  <td class="FieldComponent"><% uicomponent.renderField(inputInfo.getInput()); %></td>
-					</tr>
-			<%}%>
-		</table>
-	  <div class="UIAction"> 
-	    <table align="center" class="ActionContainer">
-	    	<tr>
-	    		<td align="center">
-					  <%
-					  def buttons = uicomponent.getSubmitButtons() ;
-			      if(buttons.isEmpty()) {
-			        label = resWorkflow.getString("submit") ;
-				      if(uicomponent.isStart()) writeAction(label, "StartProcess", null) ;
-			        else writeAction(label, "EndOfState", null) ;
-			      } else {
-				      for(button in buttons) {
-				        name = button.get("name") ;
-				        submit = ".submit" ;
-				        label = name + submit ;
-				        label = resWorkflow.getString(label) ;
-				        writeAction(label, "Transition", name) ;
-				      }
-				    }
-				    writeAction("Cancel", "Cancel", null) ;
-				    %>
-					</td>
-				</tr>
-			</table>
-	  </div>
-		<%if(uicomponent.getStateImageURL() != "") {%>
-      <div align="center">					  		
-	  		<img src="$uicomponent.stateImageURL"/>
+  	<div class="Show">
+	  	<div class="DefaultShow">
+		    <table class="UIFormGrid">
+					<%for(inputInfo in uicomponent.getInputInfo())  {%>
+							<tr>
+							  <td class="FieldLabel"><%=inputInfo.getLabel()%></td>
+							  <td class="FieldComponent"><% uicomponent.renderField(inputInfo.getInput()); %></td>
+							</tr>
+					<%}%>
+				</table>
+			  <div class="UIAction"> 
+			    <table align="center" class="ActionContainer">
+			    	<tr>
+			    		<td align="center">
+							  <%
+							  def buttons = uicomponent.getSubmitButtons() ;
+					      if(buttons.isEmpty()) {
+					        label = resWorkflow.getString("submit") ;
+						      if(uicomponent.isStart()) writeAction(label, "StartProcess", null) ;
+					        else writeAction(label, "EndOfState", null) ;
+					      } else {
+						      for(button in buttons) {
+						        name = button.get("name") ;
+						        submit = ".submit" ;
+						        label = name + submit ;
+						        label = resWorkflow.getString(label) ;
+						        writeAction(label, "Transition", name) ;
+						      }
+						    }
+						    writeAction("Cancel", "Cancel", null) ;
+						    %>
+							</td>
+						</tr>
+					</table>
+			  </div>
 		  </div>
-		<%}%>
+		  <%
+		  	def hideProcess = _ctx.appRes("UITask.label.hide-process-link");
+		  	def showProcess = _ctx.appRes("UITask.label.show-process-link");
+		  %>
+		  <div onclick="(function(ele) {
+		  										var parent = ele.parentNode;
+			  								 	if(parent.className == 'Show') {
+			  								 		parent.className = 'Hide';
+			  								 		ele.innerHTML = '$hideProcess';
+			  								 	} else {
+			  								 		parent.className = 'Show'; 
+			  								 		ele.innerHTML = '$showProcess';								 	
+			  								 	}
+		  							})(this);" style="cursor: pointer; text-align: center; height: 23px; margin: 3px;font-weight:bold;text-decoration:underline;" >
+		  	$showProcess
+		  </div>
+			<%if(uicomponent.getStateImageURL() != "") {%>
+		    <div align="center" class="DefaultHide">					  		
+			  	<img src="$uicomponent.stateImageURL"/>
+				</div>
+			<%}%>
+		</div>
   </div>
   <%uiform.end()%>
 </div>
+<style type="text/css">
+	.HorizontalLayout .DefaultHide, .DefaultShow {
+		display: none;
+	}
+	.Hide .DefaultHide {
+		display: block;
+	}
+	.Show .DefaultShow {
+		display: block;
+	}
+</style>
