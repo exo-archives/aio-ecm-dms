@@ -110,7 +110,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
 		String repository = ((ManageableRepository) node.getSession().getRepository())
 		.getConfiguration().getName();
 		String templateType = null;
-		if (node.isNodeType("exo:presentationable")) {
+		if (node.isNodeType("exo:presentationable") && node.hasProperty("exo:presentationType")) {
 			templateType = node.getProperty("exo:presentationType").getString();
 		} else {
 			templateType = node.getPrimaryNodeType().getName();
