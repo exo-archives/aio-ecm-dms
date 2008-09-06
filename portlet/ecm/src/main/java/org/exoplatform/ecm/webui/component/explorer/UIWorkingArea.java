@@ -817,14 +817,20 @@ public class UIWorkingArea extends UIContainer {
         }
         Node parentNode = node.getParent() ;
         if(parentNode.isLocked()) {
-          String lockToken1 = Utils.getLockToken(parentNode);
-          session.addLockToken(lockToken1) ;
+          String lockToken = Utils.getLockToken(parentNode);
+          session.addLockToken(lockToken) ;
         }
         node.checkin();
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
             null,ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(LockException lock) {
+        Object[] arg = { nodePath } ;
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;     
         return ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
