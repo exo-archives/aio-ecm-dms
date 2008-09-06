@@ -25,6 +25,7 @@ import javax.jcr.Node;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -77,6 +78,11 @@ public class UICategoriesAddedList extends UIContainer implements UISelector{
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class) ;
     try {
+      Node currentNode = uiJCRExplorer.getCurrentNode() ;
+      if(currentNode.isLocked()) {
+        String lockToken = Utils.getLockToken(currentNode);
+        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
+      }
       categoriesService.addCategory(uiJCRExplorer.getCurrentNode(), value, uiJCRExplorer.getRepositoryName()) ;
       uiJCRExplorer.getCurrentNode().save() ;
       uiJCRExplorer.getSession().save() ;

@@ -19,14 +19,21 @@ package org.exoplatform.services.ecm.publication.plugins.staticdirect;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.servlet.http.HttpSession;
 
+import org.exoplatform.portal.application.PortalRequestContext;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin;
 import org.exoplatform.services.ecm.publication.plugins.webui.VersionNode;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.impl.core.lock.LockManager;
 import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -120,6 +127,27 @@ public class UIPublicationForm extends UIForm {
     curentVersion_ = versionNode ;
   }
   
+  @SuppressWarnings("unchecked")
+  public String getLockToken(Node node) throws Exception {    
+    PortalRequestContext requestContext = Util.getPortalRequestContext();
+    HttpSession httpSession = requestContext.getRequest().getSession();
+    String key = createLockKey(node);
+    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    if(lockedNodesInfo == null) return null;    
+    return lockedNodesInfo.get(key);
+  }
+  
+  public String createLockKey(Node node) throws Exception {
+    StringBuffer buffer = new StringBuffer();
+    Session session = node.getSession();
+    String repositoryName = ((ManageableRepository)session.getRepository()).getConfiguration().getName();    
+    buffer.append(repositoryName).append("/::/")
+          .append(session.getWorkspace().getName()).append("/::/")
+          .append(session.getUserID()).append(":/:")
+          .append(node.getPath());      
+    return buffer.toString();
+  }  
+  
   static public class SaveActionListener extends EventListener<UIPublicationForm> {
     public void execute(Event<UIPublicationForm> event) throws Exception {
       UIPublicationForm uiForm = event.getSource() ;
@@ -129,6 +157,10 @@ public class UIPublicationForm extends UIForm {
       HashMap<String,String> context = new HashMap<String,String>();
       context.put("nodeVersionUUID", uiForm.curentVersion_.getVersion().getUUID());
       context.put("visibility", visibility);
+      if(uiForm.currentNode_.isLocked()) {
+        String lockToken = uiForm.getLockToken(uiForm.currentNode_);
+        if(lockToken != null) uiForm.currentNode_.getSession().addLockToken(lockToken);
+      }
       publicationService.changeState(uiForm.currentNode_, state, context) ;
       UIPopupWindow uiPopup = uiForm.getAncestorOfType(UIPopupWindow.class) ;
       uiPopup.setRendered(false) ;

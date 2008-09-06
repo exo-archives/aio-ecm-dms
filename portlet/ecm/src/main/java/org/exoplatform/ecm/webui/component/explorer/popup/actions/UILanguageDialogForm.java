@@ -120,6 +120,10 @@ public class UILanguageDialogForm extends DialogFormFields {
   public Node storeValue(Event event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Node node = uiExplorer.getCurrentNode() ;
+    if(node.isLocked()) {
+      String lockToken = Utils.getLockToken(node);
+      if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+    }
     MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class) ;
     UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
     if(selectedLanguage_ == null) {

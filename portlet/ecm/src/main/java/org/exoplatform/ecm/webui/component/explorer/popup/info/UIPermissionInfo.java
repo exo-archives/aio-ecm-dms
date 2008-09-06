@@ -149,6 +149,11 @@ public class UIPermissionInfo extends UIContainer {
     public void execute(Event<UIPermissionInfo> event) throws Exception {
       UIPermissionInfo uicomp = event.getSource() ;
       UIJCRExplorer uiJCRExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
+      Node currentNode = uiJCRExplorer.getCurrentNode() ;
+      if(currentNode.isLocked()) {
+        String lockToken = Utils.getLockToken(currentNode);
+        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
+      }
       ExtendedNode node = (ExtendedNode)uiJCRExplorer.getCurrentNode() ; 
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
@@ -182,12 +187,6 @@ public class UIPermissionInfo extends UIContainer {
         }
         if(uiJCRExplorer.getRootNode().equals(node)) {
           if(!Utils.isReadAuthorized(uiJCRExplorer.getCurrentNode())) {
-//            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
-//            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
-//            prefs_.setValue(Utils.VIEWS,"") ;
-//            prefs_.setValue(Utils.JCR_PATH,"") ;
-//            prefs_.setValue(Utils.DRIVE,"") ;
-//            prefs_.store() ;
             uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
             return ;
           }

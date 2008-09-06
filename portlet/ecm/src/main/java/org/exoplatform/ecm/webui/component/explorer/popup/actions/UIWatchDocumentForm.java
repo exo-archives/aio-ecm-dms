@@ -22,6 +22,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.watch.WatchDocumentService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -118,6 +119,12 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
       String notifyType = uiForm.getUIFormSelectBox(NOTIFICATION_TYPE).getValue() ;
       WatchDocumentService watchService = uiForm.getApplicationComponent(WatchDocumentService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(currentNode.isLocked()) {
+        String lockToken = Utils.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       if(notifyType.equalsIgnoreCase(NOTIFICATION_BY_EMAIL)) {
         watchService.watchDocument(uiForm.getWatchNode(), uiForm.getUserName(), WatchDocumentService.NOTIFICATION_BY_EMAIL) ;
         uiForm.isWatching() ;
@@ -139,6 +146,12 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
       String notifyType = uiForm.getUIFormSelectBox(NOTIFICATION_TYPE).getValue() ;
       WatchDocumentService watchService = uiForm.getApplicationComponent(WatchDocumentService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(currentNode.isLocked()) {
+        String lockToken = Utils.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       if(notifyType.equalsIgnoreCase(NOTIFICATION_BY_EMAIL)) {
         watchService.unwatchDocument(uiForm.getWatchNode(), uiForm.getUserName(), WatchDocumentService.NOTIFICATION_BY_EMAIL) ;
       } else {
