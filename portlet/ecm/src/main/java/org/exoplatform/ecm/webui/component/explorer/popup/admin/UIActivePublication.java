@@ -76,13 +76,7 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
         uiPublicationManager.getChild(UIPublicationLogList.class);
       uiPopupAction.activate(uiPublicationManager, 700, 500) ;      
       uiPublicationLogList.setNode(uiExplorer.getCurrentNode()) ;
-      uiPublicationLogList.updateGrid();
-      UIPublicationForm uiPublicationForm = 
-        uiForm.findFirstComponentOfType(UIPublicationForm.class);
-      UIStaticDirectVersionList uiVersionTreeList = 
-        uiForm.findFirstComponentOfType(UIStaticDirectVersionList.class);
-      uiVersionTreeList.initVersion(currentNode);
-      uiPublicationForm.initForm(currentNode) ;
+      uiPublicationLogList.updateGrid();      
     }
   }
 

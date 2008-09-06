@@ -777,16 +777,10 @@ public class UIActionBar extends UIForm {
       uiPublicationManager.addChild(uiForm);
       uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false);
       UIPublicationLogList uiPublicationLogList = 
-        uiPublicationManager.getChild(UIPublicationLogList.class);
-      UIStaticDirectVersionList uiVersionTreeList = 
-        uiForm.findFirstComponentOfType(UIStaticDirectVersionList.class);
-      UIPublicationForm uiPublicationForm = 
-        uiForm.findFirstComponentOfType(UIPublicationForm.class);
+        uiPublicationManager.getChild(UIPublicationLogList.class);      
       uiPopupAction.activate(uiPublicationManager, 700, 500);
       uiPublicationLogList.setNode(uiExplorer.getCurrentNode());
-      uiPublicationLogList.updateGrid();
-      uiVersionTreeList.initVersion(currentNode);
-      uiPublicationForm.initForm(currentNode);
+      uiPublicationLogList.updateGrid();      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
     }
   }
