@@ -1283,6 +1283,9 @@ public class UIBrowseContainer extends UIContainer {
         if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH) && historyNode != null) {
           uiContainer.setCurrentNodePath(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT).getPath()) ;
           uiContainer.setSelectedTabPath(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED).getPath()) ;
+          if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
+            uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getSelectedTab()));
+          }
           uiContainer.getHistory().clear() ;
         }
       }
