@@ -266,6 +266,20 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     return Utils.encodeHTML(text) ;
   }
   
+  private Node getFileLangNode(Node currentNode) throws Exception {
+    if(currentNode.getNodes().getSize() > 0) {
+      NodeIterator nodeIter = currentNode.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node ntFile = nodeIter.nextNode() ;
+        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+          return ntFile ;
+        }
+      }
+      return currentNode ;
+    }
+    return currentNode ;
+  }  
+  
   static public class ChangeLanguageActionListener extends EventListener<UIViewVersion>{
     public void execute(Event<UIViewVersion> event) throws Exception {
       UIViewVersion uiViewVersion = event.getSource() ;
@@ -279,7 +293,7 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
   static  public class DownloadActionListener extends EventListener<UIViewVersion> {
     public void execute(Event<UIViewVersion> event) throws Exception {
       UIViewVersion uiComp = event.getSource() ;
-      String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
+      String downloadLink = uiComp.getDownloadLink(uiComp.getFileLangNode(uiComp.getNode())) ;
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
     }
   }

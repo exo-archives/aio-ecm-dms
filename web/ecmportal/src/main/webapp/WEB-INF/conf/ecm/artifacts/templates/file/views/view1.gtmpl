@@ -208,7 +208,7 @@
 		  </div> 
 	  <%}%>
 	  <div class="UIAction">                                          
-		  <table align="center" class="ActionContainer">  
+		  <table align="center" class="ActionContainer">
 		  	<tr>
 		  		<td align="center">
 			      <a href="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('<%=uicomponent.getWebDAVServerPrefix()%>','<%=uicomponent.getPortalName()%>','<%=uicomponent.getRepository()%>','<%=uicomponent.getWorkspaceName()%>','<%=formatNodeName(fileLangNode.getPath())%>','<%=mimeType%>')" class="ActionButton LightBlueStyle">
@@ -220,7 +220,7 @@
 			          </div>
 			        </div>
 			      </a>
-			      <a href="<%=uicomponent.getDownloadLink(fileLangNode)%>" class="ActionButton LightBlueStyle">
+			      <a href="<%=uicomponent.event("Download")%>" class="ActionButton LightBlueStyle">
 			        <div class="ButtonLeft">
 			          <div class="ButtonRight">
 			            <div class="ButtonMiddle" title="<%=_ctx.appRes("File.view.label.download")%>">

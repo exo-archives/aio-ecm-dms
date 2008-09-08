@@ -408,6 +408,20 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   public String getNameSortOrder() { return nameSortOrder_ ; }
 
   public String encodeHTML(String text) { return Utils.encodeHTML(text) ; }
+  
+  private Node getFileLangNode(Node currentNode) throws Exception {
+    if(currentNode.getNodes().getSize() > 0) {
+      NodeIterator nodeIter = currentNode.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node ntFile = nodeIter.nextNode() ;
+        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+          return ntFile ;
+        }
+      }
+      return currentNode ;
+    }
+    return currentNode ;
+  }
 
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {      
@@ -548,7 +562,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
   static  public class DownloadActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiComp = event.getSource() ;
-      String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
+      String downloadLink = uiComp.getDownloadLink(uiComp.getFileLangNode(uiComp.getNode())) ;
       event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");      
     }
   }

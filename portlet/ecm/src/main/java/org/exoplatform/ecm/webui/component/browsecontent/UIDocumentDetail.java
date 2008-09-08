@@ -333,6 +333,20 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     }
     return childrenList ;
   }
+  
+  private Node getFileLangNode(Node currentNode) throws Exception {
+    if(currentNode.getNodes().getSize() > 0) {
+      NodeIterator nodeIter = currentNode.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node ntFile = nodeIter.nextNode() ;
+        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+          return ntFile ;
+        }
+      }
+      return currentNode ;
+    }
+    return currentNode ;
+  }  
 
   static public class ChangeLanguageActionListener extends EventListener<UIDocumentDetail>{
     public void execute(Event<UIDocumentDetail> event) throws Exception {
@@ -380,7 +394,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
   static  public class DownloadActionListener extends EventListener<UIDocumentDetail> {
     public void execute(Event<UIDocumentDetail> event) throws Exception {
       UIDocumentDetail uiComp = event.getSource() ;
-      String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
+      String downloadLink = uiComp.getDownloadLink(uiComp.getFileLangNode(uiComp.getNode())) ;
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
     }
   }

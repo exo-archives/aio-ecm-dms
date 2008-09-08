@@ -352,10 +352,24 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
   }
   
+  private Node getFileLangNode(Node currentNode) throws Exception {
+    if(currentNode.getNodes().getSize() > 0) {
+      NodeIterator nodeIter = currentNode.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node ntFile = nodeIter.nextNode() ;
+        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+          return ntFile ;
+        }
+      }
+      return currentNode ;
+    }
+    return currentNode ;
+  }  
+  
   static  public class DownloadActionListener extends EventListener<UIDocumentContent> {
     public void execute(Event<UIDocumentContent> event) throws Exception {
       UIDocumentContent uiComp = event.getSource() ;
-      String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
+      String downloadLink = uiComp.getDownloadLink(uiComp.getFileLangNode(uiComp.getNode())) ;
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
     }
   }
