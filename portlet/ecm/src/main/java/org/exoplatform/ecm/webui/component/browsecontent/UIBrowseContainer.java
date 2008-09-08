@@ -588,6 +588,8 @@ public class UIBrowseContainer extends UIContainer {
     return getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
   }
   
+  public String getRootPath() { return rootPath_; }
+  
   public Node getRootNode() throws Exception { return getNodeByPath(rootPath_) ; }
   
   public int getRowPerBlock() { return rowPerBlock_ ; }
@@ -1342,10 +1344,12 @@ public class UIBrowseContainer extends UIContainer {
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository()) ;
       if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
         if(catPath != null) {
-          uiContainer.setCategoryPath(catPath) ;
-          Node currentCat  = uiContainer.getNodeByPath(catPath);
           uiContainer.storeHistory() ;
-          uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat)) ;
+          if(!catPath.equals("null")) {
+            uiContainer.setCategoryPath(catPath) ;
+            Node currentCat  = uiContainer.getNodeByPath(catPath);
+            uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat)) ;
+          }
         }
         ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
         String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
