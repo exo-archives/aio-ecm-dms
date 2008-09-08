@@ -149,7 +149,7 @@ public class UISearchResult extends UIContainer {
     uiPageIterator_.setPageList(pageList);
   }
   
-  public Date getDateCreated(Node node) throws Exception{
+  public static Date getDateCreated(Node node) throws Exception {
     if (node.hasProperty("exo:dateCreated")) {
       return node.getProperty("exo:dateCreated").getDate().getTime();
     }
@@ -162,8 +162,8 @@ public class UISearchResult extends UIContainer {
     public int compare(Node node1, Node node2) {
       try {
         if (iconDate.equals("BlueUpArrow") || iconDate.equals("BlueDownArrow")) {
-          Date date1 = node1.getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
-          Date date2 = node2.getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
+          Date date1 = getDateCreated(node1);
+          Date date2 = getDateCreated(node2);
           if (iconDate.equals("BlueUpArrow")) { return date2.compareTo(date1); }        
           return date1.compareTo(date2);
         } else if (iconName.equals("BlueUpArrow") || iconName.equals("BlueDownArrow")) {
