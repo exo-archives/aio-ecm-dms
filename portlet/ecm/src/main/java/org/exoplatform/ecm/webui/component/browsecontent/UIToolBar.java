@@ -247,12 +247,6 @@ public class UIToolBar extends UIContainer {
       UIBrowseContainer container = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
       UIApplication uiApp = uiComp.getAncestorOfType(UIApplication.class) ;
-      if(!container.hasAddPermission(uiDocument.node_)) {
-        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.access-add-denied", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
       if(!container.isShowDocumentDetail() || !uiDocument.isValidNode()) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null, 
             ApplicationMessage.WARNING)) ;
@@ -260,6 +254,12 @@ public class UIToolBar extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(container) ;
         return ;
       } 
+      if(!container.hasAddPermission(uiDocument.node_)) {
+        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.access-add-denied", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       if(!uiDocument.node_.isNodeType("mix:commentable")) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.not-support-comment", null, 
             ApplicationMessage.WARNING)) ;
