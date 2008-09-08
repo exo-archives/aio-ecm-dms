@@ -81,7 +81,7 @@
    padding: 3px 7px 3px 0px;
 }
 
-.UIBrowseContentPortlet .TagmapHolder .Icon{
+.UIBrowseContentPortlet .TagmapHolder .Icon {
 	float: left;
 	width: 19px; height: 16px; 
 	margin: 2px 5px 0px 5px;
@@ -89,11 +89,11 @@
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel {
-	width: 200px;
+	width: 128px;
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel:first-letter {
-		text-transform: capitalize;
+	text-transform: capitalize;
 }
 
 .UIBrowseContentPortlet .UICBCommentForm .UIFormGrid .FieldLabel {
@@ -402,6 +402,10 @@
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm {
   padding: 10px;
+}
+
+.UIBrowseContentPortlet .UICBCommentForm .UIFormGrid .FieldLabel {
+	width: auto;
 }
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .HorizontalLayout {

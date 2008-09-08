@@ -449,6 +449,10 @@
 	background: #f3f3f3;
 }
 
+.UIJCRExplorerPortlet .UICommentForm .UIFormGrid .FieldLabel  {
+	width: auto;
+}
+
 /*================================UISimpleSearch==============================*/
 
 .UIJCRExplorerPortlet .UISimpleSearch .moreConstraints .InforField {
@@ -461,11 +465,17 @@
 }
 
 .UIJCRExplorerPortlet .EditQueryForm {
-  padding: 10px;
+  margin: 10px;
+	border: 1px solid #AEAEAE;
+	background: #F7F7F7;
+	padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UISaveQueryForm  {
- 	padding: 10px;
+ 	margin: 10px;
+	border: 1px solid #AEAEAE;
+	background: #F7F7F7;
+	padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UISaveQueryForm .UIFormGrid .FieldLabel {
@@ -495,13 +505,17 @@
 /*================================UINodeTypeSelectForm=================================*/
 
 .UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm {
-	width: 95%;
-	margin: 10px auto;
+	margin: 10px;
+	border: 1px solid #AEAEAE;
+	background: #F7F7F7;
+	padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm {
+	margin: 10px;
+	border: 1px solid #AEAEAE;
+	background: #F7F7F7;
 	padding: 10px;
-	border: 1px solid #b7b7b7;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm td.FieldLabel {

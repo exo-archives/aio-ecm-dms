@@ -34,18 +34,13 @@
 	color: #E80C00;
 }
 
-.UIFastContentCreatorPortlet .UITabPane .TabPaneContent {
-  width: 600px;
-  margin: auto;
-}
-
 .UIFastContentCreatorPortlet .UITabPane {
   padding: 10px 0px 20px 0px;
 }
 
 .UIFastContentCreatorPortlet .UIFormWithTitle {
-  border: 1px solid #e1e1e1;
-  width: 650px;
+  border: 1px solid #b7b7b7;
+  width: 720px;
   margin: 10px auto ;
 }
 

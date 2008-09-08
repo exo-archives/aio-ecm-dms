@@ -78,7 +78,7 @@
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel {
-	width: 200px;
+	width: 128px;
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel:first-letter {
@@ -411,6 +411,10 @@
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm {
   padding: 10px;
+}
+
+.UIBrowseContentPortlet .UICBCommentForm .UIFormGrid .FieldLabel {
+	width: auto;
 }
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .HorizontalLayout {

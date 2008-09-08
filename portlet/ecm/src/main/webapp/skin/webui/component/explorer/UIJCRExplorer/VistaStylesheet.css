@@ -473,12 +473,10 @@
   border: none;
 }
 
-/*===============================UILanguageTypeForm===================================*/
-
 /*=============================UICommentForm=======================*/
 
-.UIJCRExplorerPortlet .UICommentForm .FieldContainer input {
-  border: solid 1px #b7b7b7;
+.UIJCRExplorerPortlet .UICommentForm .UIFormGrid .FieldLabel  {
+	width: auto;
 }
 
 /*================================UISimpleSearch=================================*/

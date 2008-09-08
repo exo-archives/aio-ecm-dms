@@ -455,6 +455,10 @@
   padding: 10px ;
 }
 
+.UIJCRExplorerPortlet .UICommentForm .UIFormGrid .FieldLabel  {
+	width: auto;
+}
+
 /*================================UISimpleSearch=================================*/
 
 .UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid {

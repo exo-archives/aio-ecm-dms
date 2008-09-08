@@ -386,8 +386,12 @@
 
 /*############################## -- End UIVoteForm	 -- ##############################*/
 
-.UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm {
+.UIBrowseContentPortlet .UICBCommentForm {
 	padding: 10px;
+}
+
+.UIBrowseContentPortlet .UICBCommentForm .UIFormGrid .FieldLabel {
+	width: auto;
 }
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .HorizontalLayout {
