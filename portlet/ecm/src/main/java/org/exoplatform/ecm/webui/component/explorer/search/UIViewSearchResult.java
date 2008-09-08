@@ -278,11 +278,25 @@ public class UIViewSearchResult extends UIContainer implements ECMViewComponent 
   public String encodeHTML(String text) throws Exception {
     return Utils.encodeHTML(text) ;
   }
+  
+  private Node getFileLangNode(Node currentNode) throws Exception {
+    if(currentNode.getNodes().getSize() > 0) {
+      NodeIterator nodeIter = currentNode.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node ntFile = nodeIter.nextNode() ;
+        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+          return ntFile ;
+        }
+      }
+      return currentNode ;
+    }
+    return currentNode ;
+  }  
 
   static  public class DownloadActionListener extends EventListener<UIViewSearchResult> {
     public void execute(Event<UIViewSearchResult> event) throws Exception {
       UIViewSearchResult uiComp = event.getSource() ;
-      String downloadLink = uiComp.getDownloadLink(uiComp.getOriginalNode()) ;
+      String downloadLink = uiComp.getDownloadLink(uiComp.getFileLangNode(uiComp.getNode()));
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
       event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()) ;
     }
