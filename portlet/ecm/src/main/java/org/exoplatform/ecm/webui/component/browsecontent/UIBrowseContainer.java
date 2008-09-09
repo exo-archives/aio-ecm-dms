@@ -1348,7 +1348,7 @@ public class UIBrowseContainer extends UIContainer {
       if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
         if(catPath != null) {
           uiContainer.storeHistory() ;
-          if(!catPath.equals("null")) {
+          if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
             uiContainer.setCategoryPath(catPath) ;
             Node currentCat  = uiContainer.getNodeByPath(catPath);
             uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat)) ;
