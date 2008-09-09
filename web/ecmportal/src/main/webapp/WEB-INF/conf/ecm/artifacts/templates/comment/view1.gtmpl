@@ -85,7 +85,6 @@
     .Comments .CommentBox .CommentBoxTopCenter {
       height: 12px;
       background: white url('/ecm/skin/images/article/CommentBox.gif') repeat-x left -12px;
-      height: 100%;
     }
    
     .Comments .CommentBox .CommentBoxMiddleLeft {
@@ -100,7 +99,8 @@
     
     .Comments .CommentBox .CommentBoxCenterBG {
     	padding: 8px; 
-    	background: white;   	         	    	
+    	background: white;   
+    	height: 100%;	         	    	
     }
     
     .Comments .CommentBox .CommentBoxBottomLeft {
