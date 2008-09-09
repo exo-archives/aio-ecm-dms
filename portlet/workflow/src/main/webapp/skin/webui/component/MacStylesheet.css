@@ -122,60 +122,6 @@
 }
 /*********************************************** End Icon24x24 *****************************************/
 
-.UIWorkflowPortlet .UIDocumentContent {
-  background: white;
-}
-
-.UIWorkflowPortlet .UIDocumentContent .TopLeftCornerDecorator {
-  background: url('DefaultSkin/background/LeftTop27x35.gif') no-repeat left;
-  height: 35px;
-  padding-left: 27px;
-}
-
-.UIWorkflowPortlet .UIDocumentContent .TopCenterDecorator {
-  background: url('DefaultSkin/background/CenterTop1x10.gif') repeat-x top;
-  height: 35px;
-}
-
-.UIWorkflowPortlet .UIDocumentContent .TopRightCornerDecorator {
-  background: url('DefaultSkin/background/RightTop41x35.gif') no-repeat right ;
-  height: 35px;
-  padding-right: 41px;
-}
-
-.UIWorkflowPortlet .UIDocumentContent .MiddleLeftSideDecorator {
-  background: url('DefaultSkin/background/LeftMiddle11x1.gif') repeat-y left;
-  padding-left: 13px ;  
-}
-
-.UIWorkflowPortlet .UIDocumentContent .MiddleCenterDecorator {
-  padding: 0px 10px 25px 10px;
-  background: url('DefaultSkin/background/CenterMiddleGB.gif') repeat-x bottom;
-}
-
-.UIWorkflowPortlet .UIDocumentContent .MiddleRightSideDecorator {
-  background: url('DefaultSkin/background/RightMiddle13x1.gif') repeat-y right;
-  padding-right: 15px ;  
-}
-
-.UIWorkflowPortlet .UIDocumentContent .BottomLeftCornerDecorator {
-  background: url('DefaultSkin/background/LeftBottom13x16.gif') no-repeat left ;
-  height: 16px;
-  padding-left: 13px;
-}
-
-.UIWorkflowPortlet .UIDocumentContent .BottomCenterDecorator {
-  background: url('DefaultSkin/background/CenterBottom1x14.gif') repeat-x bottom;
-  height: 16px;
-}
-
-.UIWorkflowPortlet .UIDocumentContent .BottomRightCornerDecorator {
-  background: url('DefaultSkin/background/RightBottom15x16.gif') no-repeat right ;
-  height: 16px;
-  padding-right: 15px ;  
-}
-
-/*##############################- End Decorator -################################*/
 .UIWorkflowPortlet .UIDocumentContent .Banner {
   height: 100px;
   background: url('DefaultSkin/background/BannerBG.gif') repeat-x bottom;

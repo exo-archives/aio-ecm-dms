@@ -747,18 +747,9 @@
 	padding: 10px;
 }
 
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .GroupSelector {
-	border: 1px solid #b7b7b7;
-}
-
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle {
 	border: none;
 	border-bottom: 1px solid #b7b7b7;
-}
-
-.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector {
-	border: solid 1px #b7b7b7;
-	background: white;
 }
 
 .UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
