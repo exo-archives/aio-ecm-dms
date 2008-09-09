@@ -391,7 +391,7 @@
 }
 
 .UIBrowseContentPortlet .UICBCommentForm .UIFormGrid .FieldLabel {
-	width: auto;
+	width: 100px;
 }
 
 .UIBrowseContentPortlet .UICBPopupAction .UICBCommentForm .HorizontalLayout {
