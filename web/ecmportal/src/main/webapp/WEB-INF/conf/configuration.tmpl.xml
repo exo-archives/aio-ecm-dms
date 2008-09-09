@@ -39,6 +39,7 @@
   <import>war:/conf/ecm/ecm-folksonomy-configuration.xml</import>
   <import>war:/conf/ecm/ecm-records-configuration.xml</import>
   <import>war:/conf/ecm/ecm-queries-configuration.xml</import>
-  <import>war:/conf/ecm/organization-component-plugins-configuration.xml</import>  
+  <import>war:/conf/ecm/organization-component-plugins-configuration.xml</import>
+  <import>war:/conf/ecm/publication-configuration.xml</import>  
   
 </configuration>
