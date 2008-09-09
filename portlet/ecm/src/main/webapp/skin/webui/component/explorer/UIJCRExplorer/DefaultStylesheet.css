@@ -741,15 +741,6 @@
 	margin: auto;
 }
 
-.UIJCRExplorer  .WorkKofax .UIGrid {
-	border-top: none;
-}
-
-.UIJCRExplorer .WorkKofax .UIGrid td {
-	border-top: solid 1px #cccccc;
-	line-height: 26px;
-}
-
 /*====================================UIActivateVersion==================================*/
 
 .UIJCRExplorer .UIActivateVersion {

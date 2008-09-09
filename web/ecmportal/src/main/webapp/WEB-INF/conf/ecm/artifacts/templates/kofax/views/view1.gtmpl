@@ -12,6 +12,12 @@
 	
 	.WorkKofax .UIGrid {
 		width: 97%;
+		border-top: none;
+	}
+
+ .WorkKofax .UIGrid td {
+		border-top: solid 1px #cccccc;
+		line-height: 26px;
 	}
 </style>
 <div class="WorkKofax">
