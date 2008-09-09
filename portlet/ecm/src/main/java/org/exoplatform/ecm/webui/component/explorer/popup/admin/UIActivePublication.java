@@ -1,5 +1,3 @@
-package org.exoplatform.ecm.webui.component.explorer.popup.admin;
-
 /*
  * Copyright (C) 2003-2008 eXo Platform SAS.
  *
@@ -16,75 +14,144 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
+package org.exoplatform.ecm.webui.component.explorer.popup.admin;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
-import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIPublicationForm;
-import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIStaticDirectVersionList;
 import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
 
-/**
+/*
  * Created by The eXo Platform SAS
- * Author : Ly Dinh Quang
- *          quang.ly@exoplatform.com
- *          xxx5669@yahoo.com
- * Jun 19, 2008  
+ * Author : Anh Do Ngoc
+ *          anh.do@exoplatform.com
+ * Sep 9, 2008  
  */
 
 @ComponentConfig(
-    type = UIActivePublication.class,
-    template = "app:/groovy/webui/component/explorer/popup/admin/UIActivePublication.gtmpl",
-    events = {                
-        @EventConfig(listeners = UIActivePublication.EnablePublicationActionListener.class),
+    template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
+    events = {
+        @EventConfig(listeners = UIActivePublication.EnrolActionListener.class),
         @EventConfig(listeners = UIActivePublication.CancelActionListener.class)
     }
 )
 
-public class UIActivePublication extends UIContainer implements UIPopupComponent {
+public class UIActivePublication extends UIGrid implements UIPopupComponent{
+  
+  public final static String LIFECYCLE_NAME   = "LifecycleName";
+
+  public final static String LIFECYCLE_DESC   = "LifecycleDesc";
+
+  public static String[]     LIFECYCLE_FIELDS = { LIFECYCLE_NAME, LIFECYCLE_DESC };
+
+  public static String[]     LIFECYCLE_ACTION = { "Enrol" };
+  
+  public final static String LIFECYCLE_SELECTED = "LifecycleSelected";
+  
+  public UIActivePublication() throws Exception {        
+    configure(LIFECYCLE_NAME, LIFECYCLE_FIELDS, LIFECYCLE_ACTION);
+    getUIPageIterator().setId("LifecyclesIterator");
+    updateLifecyclesGrid();
+  } 
+  
+  public String[] getActions() { 
+    return new String[]{"Cancel"};
+  }
+  
+  public void updateLifecyclesGrid() throws Exception {
+    List<PublicationLifecycleBean> publicationLifecycleBeans = new ArrayList<PublicationLifecycleBean>();
+    PublicationService publicationService = getApplicationComponent(PublicationService.class);
+    Collection<PublicationPlugin> publicationPlugins = publicationService.getPublicationPlugins()
+        .values();
+    if (publicationPlugins.size() != 0) {
+      for (Iterator<PublicationPlugin> iterator = publicationPlugins.iterator(); iterator.hasNext();) {
+        PublicationPlugin publicationPlugin = iterator.next();
+        PublicationLifecycleBean lifecycleBean = new PublicationLifecycleBean();
+        lifecycleBean.setLifecycleName(publicationPlugin.getLifecycleName());
+        lifecycleBean.setLifecycleDesc(publicationPlugin.getDescription());
+        publicationLifecycleBeans.add(lifecycleBean);
+      }
+    }   
+    ObjectPageList objectPageList = new ObjectPageList(publicationLifecycleBeans, 5);
+    getUIPageIterator().setPageList(objectPageList);
+  }
+  
   public void activate() throws Exception { }
+
   public void deActivate() throws Exception { }
   
-  static  public class EnablePublicationActionListener extends EventListener<UIActivePublication> {
-    public void execute(Event<UIActivePublication> event) throws Exception {    
-      UIActivePublication uiActivatePublication = event.getSource();      
-      UIJCRExplorer uiExplorer = uiActivatePublication.getAncestorOfType(UIJCRExplorer.class) ;
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      Node currentNode = uiExplorer.getCurrentNode() ;
-      
-      PublicationService publicationService = uiActivatePublication.getApplicationComponent(PublicationService.class);
-      PublicationPresentationService publicationPresentationService = uiActivatePublication.getApplicationComponent(PublicationPresentationService.class);
-      publicationService.enrollNodeInLifecycle(currentNode, "StaticAndDirect");
-      
-      UIContainer cont = uiActivatePublication.createUIComponent(UIContainer.class, null, null);
-      UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
-      UIPublicationManager uiPublicationManager = 
-        uiExplorer.createUIComponent(UIPublicationManager.class, null, null);
-      uiPublicationManager.addChild(uiForm) ;
-      uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false) ;
-      UIPublicationLogList uiPublicationLogList = 
-        uiPublicationManager.getChild(UIPublicationLogList.class);
-      uiPopupAction.activate(uiPublicationManager, 700, 500) ;      
-      uiPublicationLogList.setNode(uiExplorer.getCurrentNode()) ;
-      uiPublicationLogList.updateGrid();      
+  
+  public class PublicationLifecycleBean {
+    private String lifecycleName;
+
+    private String lifecycleDesc;
+
+    public String getLifecycleName() {
+      return lifecycleName;
+    }
+
+    public void setLifecycleName(String lifecycleName) {
+      this.lifecycleName = lifecycleName;
+    }
+
+    public String getLifecycleDesc() {
+      return lifecycleDesc;
+    }
+
+    public void setLifecycleDesc(String lifecycleDesc) {
+      this.lifecycleDesc = lifecycleDesc;
     }
   }
-
-  static public class CancelActionListener extends EventListener<UIActivePublication> {
-    public void execute(Event<UIActivePublication> event) throws Exception {      
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+  
+  public static class CancelActionListener extends EventListener<UIActivePublication> {
+    public void execute(Event<UIActivePublication> event) throws Exception {
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       uiExplorer.cancelAction();
     }
+  }
+  
+  public static class EnrolActionListener extends EventListener<UIActivePublication> {
+    @SuppressWarnings("deprecation")
+    public void execute(Event<UIActivePublication> event) throws Exception { 
+      UIActivePublication uiActivePub = event.getSource();
+      UIJCRExplorer uiJCRExplorer = uiActivePub.getAncestorOfType(UIJCRExplorer.class);
+      UIPopupAction popupAction = uiJCRExplorer.getChild(UIPopupAction.class);
+      UIPublicationManager uiPublicationManager = uiJCRExplorer.createUIComponent(UIPublicationManager.class, null, null);
+      Node currentNode = uiJCRExplorer.getCurrentNode();
+      PublicationService publicationService = uiActivePub.getApplicationComponent(PublicationService.class);
+      PublicationPresentationService publicationPresentationService = uiActivePub.getApplicationComponent(PublicationPresentationService.class);
+      String selectedLifecycle = event.getRequestContext().getRequestParameter(OBJECTID);
+      
+      publicationService.enrollNodeInLifecycle(currentNode, selectedLifecycle);      
+      UIContainer container = uiActivePub.createUIComponent(UIContainer.class, null, null);
+      UIForm uiFormPublicationManager = publicationPresentationService.getStateUI(currentNode, container); 
+      uiPublicationManager.addChild(uiFormPublicationManager);
+      uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false);
+      UIPublicationLogList uiPublicationLogList = uiPublicationManager
+      .getChild(UIPublicationLogList.class);
+      popupAction.activate(uiPublicationManager, 700, 500);
+      uiPublicationLogList.setNode(uiJCRExplorer.getCurrentNode());
+      uiPublicationLogList.updateGrid();
+    }    
   }
 
 }

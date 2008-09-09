@@ -28,7 +28,13 @@
 	    </tr>
 	  </thead>
 	  <tbody>
-	  <%
+	  <%if(uicomponent.getUIPageIterator().getAvailable() < 1) {%>
+	    <tr>
+	      <td align="center" style="font-style:italic; color: #FF5604" colspan="<%=beanFields.length+1%>">
+	        <%=_ctx.appRes(uicomponent.id + ".grid.msg.empty")%>
+	      </td>
+	    </tr>  
+	  <%} else { 
 	    def rowClass = null ;
 	    boolean even = true ;
 	    for (bean in uicomponent.getBeans())  {
@@ -75,7 +81,9 @@
 	        </td>
 	      <% } %>  
 	    </tr>
-	  <%}%>
+	  <%}
+	  }
+	  %>
 	  </tbody>
 	</table> 
 	<!--End UIGrid-->

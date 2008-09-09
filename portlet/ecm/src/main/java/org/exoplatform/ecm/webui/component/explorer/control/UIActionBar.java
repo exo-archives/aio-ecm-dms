@@ -92,11 +92,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
-import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIPublicationContainer;
-import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIPublicationForm;
-import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIStaticDirectVersionList;
 import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
-import org.exoplatform.services.ecm.publication.plugins.webui.UIVersionTreeList;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -766,7 +762,7 @@ public class UIActionBar extends UIForm {
       PublicationPresentationService publicationPresentationService = uiActionBar.getApplicationComponent(PublicationPresentationService.class);        
 
       if (!publicationService.isNodeEnrolledInLifecycle(currentNode)) {          
-        uiPopupAction.activate(UIActivePublication.class, 400);
+        uiPopupAction.activate(UIActivePublication.class, 600);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
         return;         
       }
