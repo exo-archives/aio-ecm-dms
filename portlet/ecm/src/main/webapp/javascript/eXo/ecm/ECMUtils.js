@@ -1,5 +1,8 @@
 function ECMUtils() {
-	this.popupArray =  new Array() ;
+	this.popupArray = new Array() ;
+	this.selectItemList = new Array();
+	this.temporaryItem = null;
+	this.concatWithPortal();
 };
 
 ECMUtils.prototype.init = function(portletId) {
@@ -251,4 +254,59 @@ ECMUtils.prototype.generateWebDAVLink = function(serverInfo,portalName,repositor
   } 
 } ;
 
-eXo.ecm.ECMUtils = new ECMUtils(); 
+/*
+ * multiply select in JCR Explorer
+ */
+
+ECMUtils.prototype.concatMethod =  function() {
+	 	var oArg = arguments;
+	 	var nSize = oArg.length;
+	 	if (nSize < 2) return;
+	 	var mSelf = oArg[0];
+		return function() {
+			var aArg = [];
+			for (var i = 0; i < arguments.length; ++ i) {
+				aArg.push(arguments[i]);
+			}
+			mSelf.apply(mSelf, aArg);
+			for (i = 1; i < nSize; ++ i) {
+				var oSet = {
+					method: oArg[i].method || function() {},
+					param: oArg[i].param || aArg
+				}
+				oSet.method.apply(oSet.method, oSet.param);
+			}
+		}
+};
+
+ECMUtils.prototype.clickLeftMouse = function(event, element, menuId, objId) {
+	var self = eXo.ecm.ECMUtils;
+	if((event.which && event.which > 1) || (event.button && event.button == 2))	{
+		return;
+	} else {
+			if (this.temporaryItem) this.temporaryItem.style.border = "none";
+			self.temporaryItem = element;
+			if (event.ctrlKey) {
+				self.selectItemList.push(element);
+			} else {
+				for (var i = 0 ; i < self.selectItemList.length; ++ i) {
+					self.selectItemList[i].style.border = "none";
+				}
+				self.selectItemList = new Array(element);
+			}
+			for (var i = 0 ; i < self.selectItemList.length; ++ i) {
+				self.selectItemList[i].style.border = "1px solid red";
+			}
+	}
+};
+
+ECMUtils.prototype.concatWithPortal = function() {
+	eXo.webui.UIRightClickPopupMenu.clickRightMouse =
+	this.concatMethod(eXo.webui.UIRightClickPopupMenu.clickRightMouse, {method: this.clickLeftMouse});
+}
+
+eXo.ecm.ECMUtils = new ECMUtils();
+
+
+
+
