@@ -4,42 +4,14 @@
   
   <component>
     <key>org.exoplatform.services.ecm.publication.PublicationService</key>
-    <type>org.exoplatform.services.ecm.publication.impl.PublicationServiceImpl</type>
-    <component-plugins>
-    	<component-plugin>
-		    <name>StaticAndDirect</name>
-		    <set-method>addPublicationPlugin</set-method>
-		    <type>org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin</type>
-		    <init-params>
-		      <values-param>
-		    		<name>StaticAndDirect</name>
-		    		<description>This publication lifecycle keeps the content at their original place. Any version of the Node can be published.</description>
-		      </values-param>
-		    </init-params>
-	  </component-plugin>
-    </component-plugins>
+    <type>org.exoplatform.services.ecm.publication.impl.PublicationServiceImpl</type>    
   </component>
 
   <component>
     <key>org.exoplatform.services.ecm.publication.PublicationPresentationService</key>
     <type>org.exoplatform.services.ecm.publication.impl.PublicationPresentationServiceImpl</type>
-  </component>
- 
-	<external-component-plugins>
-	  <target-component>org.exoplatform.services.ecm.publication.PublicationService</target-component>      
-	  <component-plugin>
-	    <name>addPublication</name>
-	    <set-method>addPublicationPlugin</set-method>
-	    <type>org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin</type>
-	    <init-params>
-	      <values-param>
-	        <name>StaticAndDirect</name>
-	        <description>StaticAndDirect Publication Plugin</description>
-	      </values-param>
-	    </init-params>
-	  </component-plugin>
-	</external-component-plugins>
-	
+  </component> 
+  	
 	<external-component-plugins>
   	<target-component>org.exoplatform.services.jcr.RepositoryService</target-component>
 		<component-plugin>
