@@ -1,12 +1,11 @@
 function ECMUtils() {
 	this.popupArray = new Array() ;
-	this.selectItemList = new Array();
-	this.temporaryItem = null;
 	this.concatWithPortal();
 };
 
 ECMUtils.prototype.init = function(portletId) {
-
+	this.temporaryItem = null;
+	this.selectItemList = new Array();
 	var portlet = document.getElementById(portletId) ;
 	// TODO: Fix temporary for the problem Minimize window in Page Mode
 	if(!portlet) return ;
@@ -279,30 +278,48 @@ ECMUtils.prototype.concatMethod =  function() {
 		}
 };
 
-ECMUtils.prototype.clickLeftMouse = function(event, element, menuId, objId) {
+ECMUtils.prototype.prepareSelectItem = function(event, element, menuId, objId) {
 	var self = eXo.ecm.ECMUtils;
+	var parent = eXo.core.DOMUtil.findAncestorByClass(element, "ActionIconBox");
+	var uiDocumentWorkspace = eXo.core.DOMUtil.findAncestorByClass(element ,"UIDocumentWorkspace");
+	if (!uiDocumentWorkspace) return;
 	if((event.which && event.which > 1) || (event.button && event.button == 2))	{
-		return;
+		document.getElementById(menuId).style.display = 'none' ; ;
 	} else {
 			if (this.temporaryItem) this.temporaryItem.style.border = "none";
-			self.temporaryItem = element;
+			self.temporaryItem = parent;
 			if (event.ctrlKey) {
-				self.selectItemList.push(element);
+				if (parent.isSelect) {
+					for (var i = 0 ; i < self.selectItemList.length; ++ i) {
+						if (parent == self.selectItemList[i]) {
+							parent.style.border = "none";
+							parent.isSelect = null;
+							self.selectItemList.splice(i, 1);
+							break;
+						}
+					}
+				} else {
+					self.selectItemList.push(parent);
+					parent.isSelect = true;
+				}
 			} else {
 				for (var i = 0 ; i < self.selectItemList.length; ++ i) {
+					self.selectItemList[i].isSelect = null;
 					self.selectItemList[i].style.border = "none";
 				}
-				self.selectItemList = new Array(element);
+				parent.isSelect = true;
+				self.selectItemList = new Array(parent);
 			}
 			for (var i = 0 ; i < self.selectItemList.length; ++ i) {
-				self.selectItemList[i].style.border = "1px solid red";
+				self.selectItemList[i].style.border = "1px solid blue";
 			}
 	}
 };
 
 ECMUtils.prototype.concatWithPortal = function() {
+	return;
 	eXo.webui.UIRightClickPopupMenu.clickRightMouse =
-	this.concatMethod(eXo.webui.UIRightClickPopupMenu.clickRightMouse, {method: this.clickLeftMouse});
+	this.concatMethod(eXo.webui.UIRightClickPopupMenu.clickRightMouse, {method: this.prepareSelectItem});
 }
 
 eXo.ecm.ECMUtils = new ECMUtils();
