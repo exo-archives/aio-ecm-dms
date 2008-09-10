@@ -16,7 +16,23 @@
  */
 package org.exoplatform.services.deployment.plugins;
 
+import java.io.InputStream;
+import java.util.Date;
+import java.util.Iterator;
+
+import javax.jcr.ImportUUIDBehavior;
+import javax.jcr.Session;
+
+import org.apache.commons.logging.Log;
+import org.exoplatform.container.configuration.ConfigurationManager;
+import org.exoplatform.container.xml.InitParams;
+import org.exoplatform.container.xml.ObjectParameter;
+import org.exoplatform.services.deployment.DeploymentDescriptor;
 import org.exoplatform.services.deployment.DeploymentPlugin;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 
 /**
  * Created by The eXo Platform SAS
@@ -25,8 +41,36 @@ import org.exoplatform.services.deployment.DeploymentPlugin;
  * Sep 6, 2008
  */
 public class XMLDeploymentPlugin extends DeploymentPlugin {
-  
-  public void deploy() throws Exception {    
+
+  private InitParams initParams;
+  private ConfigurationManager configurationManager;
+  private RepositoryService repositoryService;
+  private Log log = ExoLogger.getLogger(this.getClass());
+
+  public XMLDeploymentPlugin(InitParams initParams, ConfigurationManager configurationManager, RepositoryService repositoryService) {
+    this.initParams = initParams;
+    this.configurationManager = configurationManager;
+    this.repositoryService = repositoryService;
+  }
+
+  public void deploy() throws Exception {
+    Iterator iterator = initParams.getObjectParamIterator();
+    SessionProvider sessionProvider = SessionProvider.createSystemProvider();
+    while(iterator.hasNext()) {
+      ObjectParameter objectParameter = (ObjectParameter)iterator.next();
+      DeploymentDescriptor deploymentDescriptor = (DeploymentDescriptor)objectParameter.getObject();
+      String sourcePath = deploymentDescriptor.getSourcePath();
+      // sourcePath should start with: war:/, jar:/, classpath:/, file:/
+      InputStream inputStream = configurationManager.getInputStream(sourcePath);
+      ManageableRepository repository = repositoryService.getRepository(deploymentDescriptor.getTarget().getRepository());
+      Session session = sessionProvider.getSession(deploymentDescriptor.getTarget().getWorkspace(), repository);
+      session.importXML(deploymentDescriptor.getTarget().getNodePath(), inputStream, ImportUUIDBehavior.IMPORT_UUID_COLLISION_REPLACE_EXISTING);
+      session.save();
+      if(log.isInfoEnabled()) {
+        log.info(this.getName() + " is deployed succesful at " + new Date().getTime());
+      }
+    }
+    sessionProvider.close();
   }
 
 }

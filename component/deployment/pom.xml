@@ -56,13 +56,33 @@
       <scope>compile</scope>
     </dependency>    
   </dependencies>  
+
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>
-    <outputDirectory>target/classes</outputDirectory>    
+    <outputDirectory>target/classes</outputDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
+
     <resources>
       <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.xml</include>          
+        </includes>
+      </resource>
+      <resource>
         <directory>src/main/resources</directory>
-        <includes>          
+        <includes>
+          <include>**/*.xml</include>
+          <include>**/*.txt</include>
+        </includes>
+      </resource>
+    </resources>
+
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <includes>
           <include>**/*.properties</include>
           <include>**/*.xml</include>
           <include>**/*.drl</include>
@@ -75,9 +95,33 @@
           <include>**/*.pom</include>
           <include>**/*.sha1</include>
           <include>**/*.conf</include>
-          <include>**/*.gtmpl</include>                 
+          <include>**/*.gtmpl</include>
         </includes>
-      </resource>
-    </resources>        
-  </build>   
+      </testResource>
+      <testResource>
+        <directory>src/test/java</directory>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+      </testResource>
+    </testResources>
+
+    <plugins>      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <testFailureIgnore>${exo.test.failure.ignore}</testFailureIgnore>
+          <forkMode>${exo.test.forkmode}</forkMode>
+          <includes>
+            <include>**/TestContent.java</include>    						
+          </includes>
+          <excludes>
+            <exclude>**/*$*</exclude><!--nested classes prb, http://jira.codehaus.org/browse/SUREFIRE-288-->
+            <exclude>**/BaseTestCase</exclude>            
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
 </project>
