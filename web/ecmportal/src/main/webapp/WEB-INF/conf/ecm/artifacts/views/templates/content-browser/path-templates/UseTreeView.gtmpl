@@ -19,7 +19,7 @@
   boolean hasNoDocument = subDocumentList.isEmpty() ;
   int totalPages = uicomponent.getUIPageIterator().getAvailablePage() ;
 %>
-<div class="UIBrowseContainer" id="$uicomponent.id">  
+<div class="UIBrowseContainer TreeView" id="$uicomponent.id">  
 	<%if(uicomponent.isEnableToolBar()){uicomponent.renderChild(UIToolBar.class);}%>
 	<div class="ContentHolder">  
 	<%

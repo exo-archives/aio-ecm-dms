@@ -137,6 +137,10 @@
   margin: auto;
 }
 
+.UIBrowseContentPortlet .TreeView .UIEventViewer {
+	height: 100%;
+}
+
 /*############################## -- Begin UIToolBar -- ##############################*/
 .UIBrowseContentPortlet .UIToolBar {
 	background: url('DefaultSkin/background/CBToolbarBG1x27.gif') repeat-x;
