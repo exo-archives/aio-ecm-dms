@@ -230,7 +230,6 @@
 	    <% if(totalPages>1){ %>
 	    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
 	    <% } %>
-	    <div style="clear:left"><span></span></div>
 	    <%}%>
 	    <%if(!isShowAllDoc) {/*Begin UISubContent*/%>
 	        <div class="UISubContent" >

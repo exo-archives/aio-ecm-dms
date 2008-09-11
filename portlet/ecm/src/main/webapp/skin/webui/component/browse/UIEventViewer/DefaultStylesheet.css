@@ -32,7 +32,7 @@
   background: url('DefaultSkin/background/BlackDotBackArrow.gif') no-repeat;
 }
 
-.UIEventViewer .ViewPreviousDocument a{
+.UIEventViewer .ViewPreviousDocument a {
 	color: #333333;
 	line-height: 19px; 
 	font-weight: normal;
@@ -43,8 +43,8 @@
 	color: #058ee6;
 }
 
-.UIEventViewer .EventContent .TopEventContentDetail {
-  height: 100%;
+.UIEventViewer table {
+	width: 99%;
 }
 
 .UIEventViewer .EventContent .EventDocumentLabel {
