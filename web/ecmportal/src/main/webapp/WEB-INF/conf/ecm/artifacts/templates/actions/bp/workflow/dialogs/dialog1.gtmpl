@@ -1,5 +1,5 @@
 <%
-	def repository = uicomponent.repositoryName_;
+	def repository = uicomponent.getRepositoryName();
 	String[] repositoryField = ["jcrPath=/node/exo:repository", "visible=false", repository] ;
 	uicomponent.addHiddenField("repository", repositoryField) ;
 %>

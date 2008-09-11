@@ -129,6 +129,8 @@ public class UIActionForm extends UIDialogForm implements UISelector {
     return dialogPath ;    
   }
   
+  public String getRepositoryName() { return repositoryName; }
+  
   public String getTenmplateNodeType() { return nodeTypeName_ ; }
   
   private void setPath(String scriptPath) {
