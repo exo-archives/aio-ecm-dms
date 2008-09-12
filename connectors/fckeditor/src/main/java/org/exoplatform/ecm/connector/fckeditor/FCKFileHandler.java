@@ -75,9 +75,7 @@ public class FCKFileHandler {
    * @return the file url
    * @throws Exception the exception
    */
-  protected String getFileURL(final Node file) throws Exception {
-    if (file.getPrimaryNodeType().isNodeType("exo:linkFolder"))
-      return file.getProperty("exo:linkURL").getString();
+  protected String getFileURL(final Node file) throws Exception {   
     return FCKUtils.createWebdavURL(file);
   }    
   
