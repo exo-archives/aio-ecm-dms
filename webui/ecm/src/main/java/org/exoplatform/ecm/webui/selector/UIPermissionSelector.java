@@ -160,7 +160,12 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
         return;
       String groupId = uiPermissionSelector.getCurrentGroup().getId();
       String permission = event.getRequestContext().getRequestParameter(OBJECTID);
-      String value = permission + ":" + groupId;
+      String value = "";
+      if(uiPermissionSelector.isSelectedUser()) {
+        value = permission;
+      } else {
+        value = permission + ":" + groupId;
+      }
       String returnField = uiPermissionSelector.getReturnField();
       ((UISelectable) uiPermissionSelector.getSourceComponent()).doSelect(returnField, value);
       if (uiPermissionSelector.isUsePopup) {
