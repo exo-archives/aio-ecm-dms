@@ -40,7 +40,7 @@ import org.exoplatform.webui.core.UITree;
    * to render node tree for <code>javax.jcr.Node</code> 
    * 
    * */
-public class UINodeTree extends org.exoplatform.webui.core.UITree{
+public class UINodeTree extends UITree {
 
   /* 
    * render nodetype icon for node in tree

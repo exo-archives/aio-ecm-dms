@@ -33,7 +33,6 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.organization.UIGroupMembershipSelector;
 
-// TODO: Auto-generated Javadoc
 /**
  * Created by The eXo Platform SARL Author : Dang Van Minh
  * minh.dang@exoplatform.com Nov 17, 2006
@@ -46,16 +45,16 @@ import org.exoplatform.webui.organization.UIGroupMembershipSelector;
           @EventConfig(listeners = UIPermissionSelector.SelectMembershipActionListener.class),
           @EventConfig(listeners = UIPermissionSelector.SelectPathActionListener.class) 
         }),
-      @ComponentConfig(
-          type = UITree.class, 
-          id = "UITreeGroupSelector", 
-          template = "system:/groovy/webui/core/UITree.gtmpl", 
-          events = @EventConfig(listeners = UITree.ChangeNodeActionListener.class)),
-      @ComponentConfig(
-          type = UIBreadcumbs.class, 
-          id = "BreadcumbGroupSelector", 
-          template = "system:/groovy/webui/core/UIBreadcumbs.gtmpl", 
-          events = @EventConfig(listeners = UIBreadcumbs.SelectPathActionListener.class)) 
+    @ComponentConfig(
+        type = UITree.class, 
+        id = "UITreeGroupSelector", 
+        template = "system:/groovy/webui/core/UITree.gtmpl", 
+        events = @EventConfig(listeners = UITree.ChangeNodeActionListener.class)),
+    @ComponentConfig(
+        type = UIBreadcumbs.class, 
+        id = "BreadcumbGroupSelector", 
+        template = "system:/groovy/webui/core/UIBreadcumbs.gtmpl", 
+        events = @EventConfig(listeners = UIBreadcumbs.SelectPathActionListener.class)) 
     }
 )
 
@@ -77,7 +76,7 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
   private boolean            isSelectedUser;
 
   /** The is use popup. */
-  public boolean             isUsePopup      = true;
+  private boolean             isUsePopup      = true;
 
   /**
    * Instantiates a new uI permission selector.
@@ -117,6 +116,10 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
   public String getReturnField() {
     return returnFieldName;
   }
+  
+  public void setIsUsePopup(boolean isUsePopup) { this.isUsePopup = isUsePopup; }
+  
+  public boolean isUsePopup() { return isUsePopup; }
 
   /* (non-Javadoc)
    * @see org.exoplatform.ecm.webui.selector.ComponentSelector#setComponent(org.exoplatform.webui.core.UIComponent, java.lang.String[])
@@ -273,7 +276,7 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
    * @throws Exception the exception
    */
   public List getUsers() throws Exception {
-    List children = new ArrayList();
+    List<User> children = new ArrayList<User>();
     OrganizationService service = getApplicationComponent(OrganizationService.class);
     PageList userPageList = service.getUserHandler().findUsersByGroup(
         this.getCurrentGroup().getId());

@@ -46,23 +46,23 @@ import org.exoplatform.webui.event.EventListener;
 public class UISelectPathPanel extends UIContainer {
 
 
-  public List<String> acceptedMimeTypes = null ;
+  public String[] acceptedMimeTypes = {};
   private Node parentNode;
-  private List<String> acceptedNodeTypes = null;
+  private String[] acceptedNodeTypes = {};
 
 
   public UISelectPathPanel() { }
 
   public void setParentNode(Node node) { this.parentNode = node; }
 
-  public List<String> getAcceptedNodeTypes() { return acceptedNodeTypes; }
+  public String[] getAcceptedNodeTypes() { return acceptedNodeTypes; }
 
-  public void setAcceptedNodeTypes(List<String> acceptedNodeTypes) { 
+  public void setAcceptedNodeTypes(String[] acceptedNodeTypes) { 
     this.acceptedNodeTypes = acceptedNodeTypes;
   }
 
-  public List<String> getAcceptedMimeTypes() { return acceptedMimeTypes; }
-  public void setAcceptedMimeTypes(List<String> acceptedMimeTypes) { this.acceptedMimeTypes = acceptedMimeTypes; }  
+  public String[] getAcceptedMimeTypes() { return acceptedMimeTypes; }
+  public void setAcceptedMimeTypes(String[] acceptedMimeTypes) { this.acceptedMimeTypes = acceptedMimeTypes; }  
 
   public List<Node> getSelectableNodes() throws Exception {
     List<Node> list = new ArrayList<Node>();
@@ -78,7 +78,7 @@ public class UISelectPathPanel extends UIContainer {
   }      
 
   private boolean matchNodeType(Node node) throws Exception {
-    if(acceptedNodeTypes == null || acceptedNodeTypes.isEmpty()) return true;
+    if(acceptedNodeTypes == null || acceptedNodeTypes.length == 0) return true;
     for(String nodeType: acceptedNodeTypes) {
       if(node.isNodeType(nodeType)) 
         return true;
@@ -87,7 +87,7 @@ public class UISelectPathPanel extends UIContainer {
   }
 
   private boolean matchMimeType(Node node) throws Exception {
-    if(acceptedMimeTypes == null || acceptedMimeTypes.isEmpty()) return true;
+    if(acceptedMimeTypes == null || acceptedMimeTypes.length == 0) return true;
     if(!node.isNodeType("nt:file")) return true;
     String mimeType = node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
     for(String type: acceptedMimeTypes) {
@@ -101,9 +101,14 @@ public class UISelectPathPanel extends UIContainer {
     public void execute(Event<UISelectPathPanel> event) throws Exception {
       UISelectPathPanel uiDefault = event.getSource() ;
       String value = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIBaseNodeTreeSelector uiTreeSelector = uiDefault.getParent() ;
-      String returnField = uiTreeSelector.getReturnFieldName();
-      ((UISelectable)uiTreeSelector.getSourceComponent()).doSelect(returnField, value) ;
+      UIContainer uiTreeSelector = uiDefault.getParent();
+      if(uiTreeSelector instanceof UIOneNodePathSelector) {
+        if(!((UIOneNodePathSelector)uiTreeSelector).isDisable()) {
+          value = ((UIOneNodePathSelector)uiTreeSelector).getWorkspaceName() + ":" + value ;
+        }
+      } 
+      String returnField = ((UIBaseNodeTreeSelector)uiTreeSelector).getReturnFieldName();
+      ((UISelectable)((UIBaseNodeTreeSelector)uiTreeSelector).getSourceComponent()).doSelect(returnField, value) ;
     }
   }
 }

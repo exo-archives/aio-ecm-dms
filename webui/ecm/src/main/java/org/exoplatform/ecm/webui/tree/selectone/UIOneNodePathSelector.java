@@ -16,15 +16,11 @@
  */
 package org.exoplatform.ecm.webui.tree.selectone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.tree.UINodeTreeBuilder;
-import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -41,27 +37,32 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
 public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   
-  private List<String> acceptedNodeTypesInTree = new ArrayList<String>();  
-  private List<String> acceptedNodeTypesInPathPanel = new ArrayList<String>();
+  private String[] acceptedNodeTypesInTree = {};  
+  private String[] acceptedNodeTypesInPathPanel = {};
+  private String[] acceptedMimeTypes = {};
   
   private String repositoryName = null;
   private String workspaceName = null ;
   private String rootTreePath = null;
+  private boolean isDisable = false ;
   
   public UIOneNodePathSelector() throws Exception {
-    //addChild(UIDriveListForm.class, null, UIDriveListForm.class.getSimpleName()+hashCode()) ;
+    addChild(UIWorkspaceList.class, null, null);
     addChild(UINodeTreeBuilder.class, null, UINodeTreeBuilder.class.getSimpleName()+hashCode()) ;
     addChild(UISelectPathPanel.class,null,null);
   }
   
-  public void init() throws Exception {
-    SessionProvider provider = SessionProviderFactory.createSessionProvider();
+  public void init(SessionProvider sessionProvider) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
     ManageableRepository manageableRepository = repositoryService.getRepository(repositoryName);
-    Session session = provider.getSession(workspaceName,manageableRepository);
+    Session session = sessionProvider.getSession(workspaceName, manageableRepository);
     Node rootNode = (Node)session.getItem(rootTreePath);
     UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
     selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
+    selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
+    UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
+    uiWorkspaceList.setWorkspaceList(repositoryName);
+    uiWorkspaceList.setIsDisable(workspaceName, isDisable) ;
     UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);    
     builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);    
     builder.setRootTreeNode(rootNode);    
@@ -73,21 +74,41 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     this.rootTreePath = rootPath;    
   }
   
-  public List<String> getAcceptedNodeTypesInTree() {
+  public void setIsDisable(String wsName, boolean isDisable) {
+    setWorkspaceName(wsName) ;
+    this.isDisable = isDisable ;
+  }
+  
+  public boolean isDisable() { return isDisable ; }
+  
+  public void setIsShowSystem(boolean isShowSystem) {
+    getChild(UIWorkspaceList.class).setIsShowSystem(isShowSystem) ;
+  }
+  
+  public void setShowRootPathSelect(boolean isRendered) {
+    UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class) ;
+    uiWorkspaceList.setShowRootPathSelect(isRendered) ;
+  }
+  
+  public String[] getAcceptedNodeTypesInTree() {
     return acceptedNodeTypesInTree;
   }
 
-  public void setAcceptedNodeTypesInTree(List<String> acceptedNodeTypesInTree) {
+  public void setAcceptedNodeTypesInTree(String[] acceptedNodeTypesInTree) {
     this.acceptedNodeTypesInTree = acceptedNodeTypesInTree;
   }
 
-  public List<String> getAcceptedNodeTypesInPathPanel() {
+  public String[] getAcceptedNodeTypesInPathPanel() {
     return acceptedNodeTypesInPathPanel;
   }
 
-  public void setAcceptedNodeTypesInPathPanel(List<String> acceptedNodeTypesInPathPanel) {
+  public void setAcceptedNodeTypesInPathPanel(String[] acceptedNodeTypesInPathPanel) {
     this.acceptedNodeTypesInPathPanel = acceptedNodeTypesInPathPanel;
   }  
+  
+  public String[] getAcceptedMimeTypes() { return acceptedMimeTypes; }
+  
+  public void setAcceptedMimeTypes(String[] acceptedMimeTypes) { this.acceptedMimeTypes = acceptedMimeTypes; } 
 
   public String getRepositoryName() { return repositoryName; }
   public void setRepositoryName(String repositoryName) {

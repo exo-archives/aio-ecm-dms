@@ -42,7 +42,7 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UINodeTreeBuilder extends UIContainer {
 
-  private List<String> acceptedNodeTypes = new ArrayList<String>();
+  private String[] acceptedNodeTypes = {};
   
   /** The root tree node. */
   protected Node rootTreeNode;
@@ -100,14 +100,14 @@ public class UINodeTreeBuilder extends UIContainer {
    * 
    * @return the accepted node types
    */
-  public List<String> getAcceptedNodeTypes() { return acceptedNodeTypes; }
+  public String[] getAcceptedNodeTypes() { return acceptedNodeTypes; }
   
   /**
    * Sets the accepted node types.
    * 
    * @param acceptedNodeTypes the new accepted node types
    */
-  public void setAcceptedNodeTypes(List<String> acceptedNodeTypes) {
+  public void setAcceptedNodeTypes(String[] acceptedNodeTypes) {
     this.acceptedNodeTypes = acceptedNodeTypes;
   }
 
@@ -140,7 +140,7 @@ public class UINodeTreeBuilder extends UIContainer {
 
   private List<Node> filfer(final NodeIterator iterator) throws Exception{
     List<Node> list = new ArrayList<Node>();
-    if(acceptedNodeTypes.size()>0) {
+    if(acceptedNodeTypes.length > 0) {
       for(;iterator.hasNext();) {
         Node sibbling = iterator.nextNode();
         if(sibbling.isNodeType("exo:hiddenable")) continue;      
