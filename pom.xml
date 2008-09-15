@@ -20,6 +20,7 @@
     <module>component/workflow/impl/jbpm/facade</module>
 
     <module>component/cms</module>
+	<module>component/deployment</module>
 	<module>component/publication</module>
 	<module>connectors/fckeditor</module>
 	<module>webui/ecm</module>
