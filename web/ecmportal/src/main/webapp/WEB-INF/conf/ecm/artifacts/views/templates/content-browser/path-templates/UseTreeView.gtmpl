@@ -4,7 +4,7 @@
 	import org.exoplatform.ecm.webui.component.browsecontent.UITagList ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UICategoryTree ;
   import javax.jcr.Node;
-  import org.exoplatform.ecm.utils.Utils ;
+  import org.exoplatform.ecm.webui.utils.Utils ;
   
   String componentName = uicomponent.getName() ;
   def content = uicomponent.getTreeContent() ;                  

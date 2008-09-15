@@ -4,7 +4,7 @@
   import org.exoplatform.ecm.webui.component.browsecontent.UITagList ;
   import javax.jcr.Node ;
   import org.exoplatform.web.application.JavascriptManager;
-  import org.exoplatform.ecm.utils.Utils ;
+  import org.exoplatform.ecm.webui.utils.Utils ;
   
   String componentName = uicomponent.getName() ;
   def rcontext = _ctx.getRequestContext() ;

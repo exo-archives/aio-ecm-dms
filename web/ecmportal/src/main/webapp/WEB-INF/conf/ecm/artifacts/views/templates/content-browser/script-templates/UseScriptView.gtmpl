@@ -2,7 +2,7 @@
 	import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UITagList ;
-	import org.exoplatform.ecm.utils.Utils ;
+	import org.exoplatform.ecm.webui.utils.Utils ;
 	
 	String componentName = uicomponent.getName() ;
 	def subDocumentList = uicomponent.getCurrentList() ;
