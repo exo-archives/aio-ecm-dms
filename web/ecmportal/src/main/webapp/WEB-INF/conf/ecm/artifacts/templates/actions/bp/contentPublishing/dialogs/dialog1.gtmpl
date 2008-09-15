@@ -61,7 +61,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("ContentPublishing.dialog.label.public-path")%></td>
 	      <td class="FieldComponent">
 		      <% 
-		        String[] fieldPublicPath = ["jcrPath=/node/exo:publicPath", "selectorAction=selectPublicLocationPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "workspaceField=publicWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"] ;
+		        String[] fieldPublicPath = ["jcrPath=/node/exo:publicPath", "selectorAction=selectPublicLocationPath", "selectorClass=org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector", "workspaceField=publicWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"] ;
 		        uicomponent.addActionField("publicPath", fieldPublicPath)  ;
 		      %>
 		    </td>
@@ -88,7 +88,7 @@
         <td class="FieldLabel"><%=_ctx.appRes("ContentPublishing.dialog.label.pending-path")%></td>
         <td class="FieldComponent">
           <% 
-            String[] fieldPendingPath = ["jcrPath=/node/exo:pendingPath", "selectorAction=selectPendingLocationPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "workspaceField=pendingWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"] ;
+            String[] fieldPendingPath = ["jcrPath=/node/exo:pendingPath", "selectorAction=selectPendingLocationPath", "selectorClass=org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector", "workspaceField=pendingWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"] ;
             uicomponent.addActionField("pendingPath", fieldPendingPath)  ;
           %>
         </td>
@@ -106,7 +106,7 @@
       <td class="FieldLabel"><%=_ctx.appRes("ContentPublishing.dialog.label.backup-path")%></td>
       <td class="FieldComponent">
         <% 
-          String[] fieldBackupPath = ["jcrPath=/node/exo:backupPath", "selectorAction=selectBackupLocationPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "workspaceField=backupWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"] ;
+          String[] fieldBackupPath = ["jcrPath=/node/exo:backupPath", "selectorAction=selectBackupLocationPath", "selectorClass=org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector", "workspaceField=backupWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"] ;
           uicomponent.addActionField("backupPath", fieldBackupPath)  ;
         %>
       </td>
@@ -124,7 +124,7 @@
         <td class="FieldLabel"><%=_ctx.appRes("ContentPublishing.dialog.label.trash-path")%></td>
         <td class="FieldComponent">
           <% 
-            String[] fieldTrashPath = ["jcrPath=/node/exo:trashPath", "selectorAction=selectBackupLocationPath", "selectorClass=org.exoplatform.ecm.webui.component.UIJCRBrowser", "workspaceField=trashWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"] ;
+            String[] fieldTrashPath = ["jcrPath=/node/exo:trashPath", "selectorAction=selectBackupLocationPath", "selectorClass=org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector", "workspaceField=trashWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"] ;
             uicomponent.addActionField("trashPath", fieldTrashPath)  ;
           %>
         </td>
