@@ -23,10 +23,10 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -53,7 +53,7 @@ public class UICBScripts extends UIContainer {
   public UICBScripts() throws Exception {
     UIScriptList list = addChild(UIScriptList.class, null, SCRIPTLIST_NAME) ;
     list.getUIPageIterator().setId(SCRIPTLIST_NAME + SCRIPT_PAGE) ;
-    UIPopupAction uiPopupAction = addChild(UIPopupAction.class,null, "BCScriptPopupAction") ;
+    UIPopupContainer uiPopupAction = addChild(UIPopupContainer.class,null, "BCScriptPopupAction") ;
     uiPopupAction.getChild(UIPopupWindow.class).setId("BCScriptPopupWindow") ;
   }
 
@@ -68,7 +68,7 @@ public class UICBScripts extends UIContainer {
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     String repository =  portletPref.getValue(Utils.REPOSITORY, "") ;
     ScriptService scriptService = getApplicationComponent(ScriptService.class) ;
-    Node cbScripts = scriptService.getCBScriptHome(repository,SessionsUtils.getSystemProvider()) ;
+    Node cbScripts = scriptService.getCBScriptHome(repository,SessionProviderFactory.createSystemProvider()) ;
     NodeIterator nodeList = cbScripts.getNodes() ;
     ScriptData script ;
     while(nodeList.hasNext()) {

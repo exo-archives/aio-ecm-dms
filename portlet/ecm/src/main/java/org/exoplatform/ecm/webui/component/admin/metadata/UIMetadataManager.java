@@ -18,8 +18,8 @@ package org.exoplatform.ecm.webui.component.admin.metadata;
 
 import javax.jcr.nodetype.NodeType;
 
-import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -78,15 +78,16 @@ public class UIMetadataManager extends UIContainer {
     removeChildById(PERMISSION_POPUP) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, PERMISSION_POPUP);
     uiPopup.setWindowSize(560, 300);
-    UIECMPermissionBrowser uiECMPermission = 
-      createUIComponent(UIECMPermissionBrowser.class, null, "MetadataPermission") ;
+    UIPermissionSelector uiECMPermission = 
+      createUIComponent(UIPermissionSelector.class, null, "MetadataPermission") ;
+    uiECMPermission.setSelectedMembership(true);
     if(membership != null && membership.indexOf(":/") > -1) {
       String[] arrMember = membership.split(":/") ;
       uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
     }
     uiPopup.setUIComponent(uiECMPermission);
     UIMetadataForm uiForm = findFirstComponentOfType(UIMetadataForm.class) ;
-    uiECMPermission.setComponent(uiForm, null) ;
+    uiECMPermission.setSourceComponent(uiForm, null) ;
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;
   }

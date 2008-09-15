@@ -22,7 +22,7 @@ import java.util.List;
 import javax.jcr.nodetype.NodeType;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.web.application.ApplicationMessage;

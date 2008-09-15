@@ -22,15 +22,16 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
-import javax.jcr.RepositoryException;
-import javax.jcr.Session;
 import javax.jcr.version.VersionException;
 
+import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.form.UIDialogForm;
+import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.templates.TemplateService;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -41,10 +42,6 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
-import org.exoplatform.workflow.utils.SessionsUtils;
-import org.exoplatform.workflow.utils.Utils;
-import org.exoplatform.workflow.webui.component.DialogFormFields;
-import org.exoplatform.workflow.webui.component.JCRResourceResolver;
 
 /**
  * Created by The eXo Platform SARL
@@ -55,14 +52,14 @@ import org.exoplatform.workflow.webui.component.JCRResourceResolver;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     events = {
-      @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
+      @EventConfig(listeners = UIDocumentForm.SaveActionListener.class),
       @EventConfig(listeners = UIDocumentForm.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.AddActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE)
     }
 )
 
-public class UIDocumentForm extends DialogFormFields {
+public class UIDocumentForm extends UIDialogForm {
 
   private String documentType_ ;
   
@@ -72,8 +69,8 @@ public class UIDocumentForm extends DialogFormFields {
 
   public void setTemplateNode(String type) { documentType_ = type ; }
   
-  private String getRepository() throws RepositoryException {
-    ManageableRepository manaRepo = (ManageableRepository)node_.getSession().getRepository() ;
+  private String getRepository() throws Exception {
+    ManageableRepository manaRepo = (ManageableRepository)getCurrentNode().getSession().getRepository() ;
     return manaRepo.getConfiguration().getName() ;
   }
   
@@ -81,7 +78,6 @@ public class UIDocumentForm extends DialogFormFields {
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     try {
-      resetScriptInterceptor() ;
       return templateService.getTemplatePathByUser(true, documentType_, userName, getRepository()) ;
     } catch (Exception e) {
       return null ;
@@ -89,56 +85,50 @@ public class UIDocumentForm extends DialogFormFields {
   }
 
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     try {
-      ManageableRepository repository = repositoryService.getRepository(getRepository()) ;
-      String workspaceName = node_.getSession().getWorkspace().getName() ;
-      Session session = SessionsUtils.getSystemProvider().getSession(workspaceName, repository) ;
-      return new JCRResourceResolver(session, Utils.EXO_TEMPLATEFILE) ;
+      String workspaceName = getCurrentNode().getSession().getWorkspace().getName() ;
+      return new JCRResourceResolver(getRepository(), workspaceName, Utils.EXO_TEMPLATEFILE);
     } catch (Exception e) {
       e.printStackTrace();
     }
     return super.getTemplateResourceResolver(context, template);
   }
   
-  public Node getCurrentNode() { return node_ ; }
+  public Node getCurrentNode() throws Exception { return getNode() ; }
   
   public boolean isEditing() { return true ; }
   
-  @SuppressWarnings("unchecked")
-  public Node storeValue(Event event) throws Exception {
-    List inputs = getChildren() ;
-    Map inputProperties = Utils.prepareMap(inputs, getInputProperties(), node_.getSession()) ;
-    Node newNode = null ;
-    Node homeNode = getNode().getParent() ;
-    try {
-      String repository = getRepository() ;
-      CmsService cmsService = getApplicationComponent(CmsService.class) ;
-      String addedPath = 
-        cmsService.storeNode(documentType_, homeNode, inputProperties, false,repository);
-      homeNode.getSession().save() ;
-      newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ;
-      homeNode.save() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(getParent()) ;
-    } catch (AccessControlException ace) {
-      ace.printStackTrace() ;
-      throw new AccessDeniedException(ace.getMessage());
-    } catch(VersionException ve) {
-      ve.printStackTrace() ;
-      UIApplication uiApp = getAncestorOfType(UIApplication.class);
-      uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
-                                              ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
-    } catch(Exception e) {
-      e.printStackTrace() ;
-      UIApplication uiApp = getAncestorOfType(UIApplication.class);
-      String key = "UIDocumentForm.msg.cannot-save" ;
-      uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-      return null;
+  static  public class SaveActionListener extends EventListener<UIDocumentForm> {
+    public void execute(Event<UIDocumentForm> event) throws Exception {
+      UIDocumentForm uiForm = event.getSource();
+      List inputs = uiForm.getChildren() ;
+      Map inputProperties = DialogFormUtil.prepareMap(inputs, uiForm.getInputProperties()) ;
+      Node homeNode = uiForm.getNode().getParent() ;
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+      try {
+        String repository = uiForm.getRepository() ;
+        CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
+        cmsService.storeNode(uiForm.documentType_, homeNode, inputProperties, false,repository);
+        homeNode.getSession().save() ;
+        homeNode.save() ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
+      } catch (AccessControlException ace) {
+        ace.printStackTrace() ;
+        throw new AccessDeniedException(ace.getMessage());
+      } catch(VersionException ve) {
+        ve.printStackTrace() ;
+        uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.in-versioning", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      } catch(Exception e) {
+        e.printStackTrace() ;
+        String key = "UIDocumentForm.msg.cannot-save" ;
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
+      }
     }
-    return newNode ;
   }
 
   static  public class CancelActionListener extends EventListener<UIDocumentForm> {

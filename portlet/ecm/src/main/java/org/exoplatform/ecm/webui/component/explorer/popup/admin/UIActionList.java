@@ -24,11 +24,11 @@ import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;

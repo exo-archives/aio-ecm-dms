@@ -16,9 +16,9 @@
  */
 package org.exoplatform.ecm.webui.component.admin.repository;
 
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
+import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -47,7 +47,7 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
       @EventConfig(phase = Phase.DECODE, listeners = UIWorkspacePermissionForm.CancelActionListener.class)
     }
 )
-public class UIWorkspacePermissionForm extends UIForm implements UISelector {
+public class UIWorkspacePermissionForm extends UIForm implements UISelectable {
   final static public String FIELD_PERMISSION = "permission" ;
 
   public UIWorkspacePermissionForm() throws Exception {
@@ -65,8 +65,8 @@ public class UIWorkspacePermissionForm extends UIForm implements UISelector {
   }
 
   @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) {
-    getUIStringInput(FIELD_PERMISSION).setValue(value) ;
+  public void doSelect(String selectField, Object value) {
+    getUIStringInput(FIELD_PERMISSION).setValue(value.toString()) ;
     checkAll(false) ;
   }
 
@@ -83,7 +83,7 @@ public class UIWorkspacePermissionForm extends UIForm implements UISelector {
   protected void lockForm(boolean lock) {
     boolean editable = !lock ;
     UIPermissionContainer uiContainer = getAncestorOfType(UIPermissionContainer.class) ;
-    uiContainer.getChild(UIECMPermissionBrowser.class).setRendered(editable) ;
+    uiContainer.getChild(UIPermissionSelector.class).setRendered(editable) ;
     getUIStringInput(FIELD_PERMISSION).setEditable(false) ;
     for(String perm : PermissionType.ALL) {
       getUIFormCheckBoxInput(perm).setEnable(editable) ;
@@ -119,7 +119,7 @@ public class UIWorkspacePermissionForm extends UIForm implements UISelector {
       UIWizardStep1 ws1 = uiWizardForm.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       ws1.addPermissions(user, sb.toString()) ;
       ws1.refreshPermissionList() ;
-      UIPopupAction uiPopup = uiForm.getAncestorOfType(UIPopupAction.class) ;
+      UIPopupContainer uiPopup = uiForm.getAncestorOfType(UIPopupContainer.class) ;
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardForm) ;
@@ -129,7 +129,7 @@ public class UIWorkspacePermissionForm extends UIForm implements UISelector {
 
   public static class CancelActionListener extends EventListener<UIWorkspacePermissionForm> {
     public void execute(Event<UIWorkspacePermissionForm> event) throws Exception {
-      UIPopupAction uiPopup = event.getSource().getAncestorOfType(UIPopupAction.class) ;
+      UIPopupContainer uiPopup = event.getSource().getAncestorOfType(UIPopupContainer.class) ;
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     }

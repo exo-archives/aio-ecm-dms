@@ -31,6 +31,10 @@ import javax.jcr.nodetype.NodeTypeManager;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
+import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -45,10 +49,6 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.workflow.utils.SessionsUtils;
-import org.exoplatform.workflow.utils.Utils;
-import org.exoplatform.workflow.webui.component.ECMViewComponent;
-import org.exoplatform.workflow.webui.component.JCRResourceResolver;
 
 /**
  * Created by The eXo Platform SARL
@@ -65,7 +65,7 @@ import org.exoplatform.workflow.webui.component.JCRResourceResolver;
         @EventConfig(listeners = UIDocumentContent.ChangeNodeActionListener.class)
     }
 )
-public class UIDocumentContent extends UIContainer implements ECMViewComponent {
+public class UIDocumentContent extends UIContainer implements NodePresentation {
   private Node node_ ;
   public static final String DEFAULT_LANGUAGE = "default".intern() ;
   private String language_ = DEFAULT_LANGUAGE ;
@@ -99,11 +99,8 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   }
   
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     try {
-      ManageableRepository repository = repositoryService.getRepository(getRepository()) ;
-      Session session = SessionsUtils.getSystemProvider().getSession(getWorkspaceName(), repository) ;
-      return new JCRResourceResolver(session, Utils.EXO_TEMPLATEFILE) ;
+      return new JCRResourceResolver(getRepository(), getWorkspaceName(), Utils.EXO_TEMPLATEFILE) ;
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -133,7 +130,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   
   public Node getNodeByPath(String nodePath, String workspace) throws Exception {
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
-    Session session = SessionsUtils.getSystemProvider().getSession(workspace, manageRepo) ;
+    Session session = SessionProviderFactory.createSystemProvider().getSession(workspace, manageRepo) ;
     return (Node) session.getItem(nodePath) ;
   }
   
@@ -161,7 +158,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
   
   public Node getNodeByUUID(String uuid) throws Exception{ 
     ManageableRepository manageRepo = (ManageableRepository)node_.getSession().getRepository() ;
-    SessionProvider sessionProvider = Utils.getSessionProvider();
+    SessionProvider sessionProvider = SessionProviderFactory.createSessionProvider();
     for(String ws : manageRepo.getWorkspaceNames()) {
       try{
         return sessionProvider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;
@@ -273,7 +270,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
     StringBuilder str = new StringBuilder(nodeType) ;
     if(node.isNodeType(Utils.NT_FILE)) {
       Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
-      str.append(" ").append(jcrContentNode.getProperty(Utils.JCR_MIMETY).getString().replaceFirst("/", "_")).append(appended);
+      str.append(" ").append(jcrContentNode.getProperty(Utils.JCR_MIMETYPE).getString().replaceFirst("/", "_")).append(appended);
     }
     return str.toString() ;
   }
@@ -381,7 +378,7 @@ public class UIDocumentContent extends UIContainer implements ECMViewComponent {
       ManageableRepository repository = repositoryService.getRepository(uiComp.getRepository()) ;
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;
-      Session session = SessionsUtils.getSessionProvider().getSession(workspaceName, repository) ;
+      Session session = SessionProviderFactory.createSessionProvider().getSession(workspaceName, repository) ;
       Node selectedNode = (Node) session.getItem(uri) ;
       uiComp.setNode(selectedNode) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()) ;

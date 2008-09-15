@@ -27,12 +27,12 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
@@ -169,7 +169,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
           uiExplorer.setIsHidePopup(true) ;
           UIMultiLanguageManager uiManager = uiForm.getAncestorOfType(UIMultiLanguageManager.class) ;
           UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
-          uiMultiForm.updateSelect(uiExplorer.getCurrentNode()) ;
+          uiMultiForm.doSelect(uiExplorer.getCurrentNode()) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
         } else {
           if(!isExist) {            

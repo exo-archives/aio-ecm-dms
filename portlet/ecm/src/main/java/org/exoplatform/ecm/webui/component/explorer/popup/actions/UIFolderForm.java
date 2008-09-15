@@ -23,11 +23,11 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
-import org.exoplatform.ecm.jcr.ECMNameValidator;
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;

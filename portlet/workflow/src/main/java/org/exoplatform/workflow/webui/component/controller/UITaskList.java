@@ -24,6 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.workflow.Form;
@@ -39,7 +40,6 @@ import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.workflow.webui.component.UIWorkflowPopup;
 
 /**
  * Created by The eXo Platform SARL
@@ -142,7 +142,7 @@ public class UITaskList extends UIContainer {
         // Display the task management pop up
         uiTaskList.setRenderSibbling(UITaskList.class) ;
         UIWorkflowControllerPortlet uiControllerPortlet = uiTaskList.getAncestorOfType(UIWorkflowControllerPortlet.class) ;
-        UIWorkflowPopup uiPopupAction = uiControllerPortlet.getChild(UIWorkflowPopup.class) ;
+        UIPopupContainer uiPopupAction = uiControllerPortlet.getChild(UIPopupContainer.class) ;
         UITaskManager uiTaskManager = uiControllerPortlet.createUIComponent(UITaskManager.class, null, null) ;
         uiTaskManager.setTokenId(tokenId) ;
         uiTaskManager.setIsStart(false) ;

@@ -24,9 +24,9 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
 
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -51,7 +51,7 @@ import org.exoplatform.webui.form.UIFormTableInputSet;
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl",
+    template = "classpath:groovy/ecm/webui/form/UIFormInputSetWithAction.gtmpl",
     events = {
       @EventConfig(listeners = UINodeTypeOptionList.AddTypeActionListener.class)
     }

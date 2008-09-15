@@ -24,8 +24,8 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
-import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -77,7 +77,8 @@ public class UIQueriesList extends UIComponentDecorator {
   public List<Node> getAllSharedQueries() throws Exception {
     QueryService queryService = getApplicationComponent(QueryService.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    List<Node> queries = queryService.getSharedQueries(repository,SessionsUtils.getSystemProvider()) ;
+    List<Node> queries = queryService.getSharedQueries(repository, 
+        SessionProviderFactory.createSystemProvider()) ;
     Collections.sort(queries, new QueryComparator()) ;
     return queries ;
   }

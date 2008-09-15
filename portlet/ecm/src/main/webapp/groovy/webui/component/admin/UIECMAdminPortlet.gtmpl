@@ -2,14 +2,14 @@
   import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminControlPanel ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminWorkingArea ;
-  import org.exoplatform.ecm.webui.component.UIPopupAction ;
+  import org.exoplatform.ecm.webui.popup.UIPopupContainer;
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.webui.UIVerticalSlideTabs') ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/') ;
   rcontext.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.fixHeight('UIECMAdminPortlet') ;") ;
 %>
 <div class="UIECMAdminPortlet" id="UIECMAdminPortlet">
-  <%uicomponent.renderChild(UIPopupAction.class);%>
+  <%uicomponent.renderChild(UIPopupContainer.class);%>
 	<%uicomponent.renderChild(UIRepositoryControl.class);%>
 	<div class="UIResizableBlock" style="height: 400px">
 	  <%

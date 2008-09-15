@@ -19,8 +19,8 @@ package org.exoplatform.ecm.webui.component.admin.templates;
 import javax.jcr.Node;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -71,8 +71,8 @@ public class UITemplateEditForm extends UIForm {
 
   public void update(String nodeType) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
-    Node node = 
-      tempService.getTemplatesHome(getRepository(),SessionsUtils.getSessionProvider()).getNode(nodeType) ;
+    Node node = tempService.getTemplatesHome(getRepository(), 
+        SessionProviderFactory.createSessionProvider()).getNode(nodeType) ;
     String label = null ;
     if(node.hasProperty(TemplateService.TEMPLATE_LABEL)) {
       label = node.getProperty(TemplateService.TEMPLATE_LABEL).getString() ;
@@ -95,8 +95,8 @@ public class UITemplateEditForm extends UIForm {
     public void execute(Event<UITemplateEditForm> event) throws Exception {
       UITemplateEditForm uiForm = event.getSource() ;
       TemplateService tempService = uiForm.getApplicationComponent(TemplateService.class) ;
-      Node node = 
-        tempService.getTemplatesHome(uiForm.getRepository(),SessionsUtils.getSessionProvider()).getNode(nodeType_) ;
+      Node node = tempService.getTemplatesHome(uiForm.getRepository(), 
+          SessionProviderFactory.createSessionProvider()).getNode(nodeType_) ;
       node.setProperty(TemplateService.TEMPLATE_LABEL,uiForm.getUIStringInput(FIELD_LABEL).getValue()) ;
       node.save() ;
       uiForm.reset() ;

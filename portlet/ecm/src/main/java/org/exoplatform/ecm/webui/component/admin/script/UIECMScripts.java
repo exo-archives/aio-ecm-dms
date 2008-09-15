@@ -22,11 +22,11 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -52,14 +52,15 @@ public class UIECMScripts extends UIContainer {
     addChild(UIECMFilterForm.class, null, null) ;
     UIScriptList list = addChild(UIScriptList.class, null, SCRIPTLIST_NAME) ;
     list.getUIPageIterator().setId(SCRIPTLIST_NAME + SCRIPT_PAGE) ;
-    UIPopupAction uiPopupAction = addChild(UIPopupAction.class,null, "ECMScriptPopupAction") ;
+    UIPopupContainer uiPopupAction = addChild(UIPopupContainer.class,null, "ECMScriptPopupAction") ;
     uiPopupAction.getChild(UIPopupWindow.class).setId("ECMScriptPopupWindow") ;
   }
 
   private List<SelectItemOption<String>> getECMCategoryOptions() throws Exception {
     List<SelectItemOption<String>> ecmOptions = new ArrayList<SelectItemOption<String>>() ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    Node ecmScriptHome = getApplicationComponent(ScriptService.class).getECMScriptHome(repository,SessionsUtils.getSystemProvider()) ;
+    Node ecmScriptHome = getApplicationComponent(ScriptService.class).getECMScriptHome(repository, 
+        SessionProviderFactory.createSystemProvider()) ;
     NodeIterator categories = ecmScriptHome.getNodes() ;
     while(categories.hasNext()) {
       Node script = categories.nextNode() ;
@@ -85,11 +86,14 @@ public class UIECMScripts extends UIContainer {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     List<Node> scripts = new ArrayList<Node> () ;
     if(name.equals("action")) {
-      scripts = getApplicationComponent(ScriptService.class).getECMActionScripts(repository,SessionsUtils.getSystemProvider()) ;
+      scripts = getApplicationComponent(ScriptService.class).getECMActionScripts(repository, 
+          SessionProviderFactory.createSystemProvider()) ;
     }else if(name.equals("widget")){
-      scripts = getApplicationComponent(ScriptService.class).getECMWidgetScripts(repository,SessionsUtils.getSessionProvider()) ;
+      scripts = getApplicationComponent(ScriptService.class).getECMWidgetScripts(repository, 
+          SessionProviderFactory.createSessionProvider()) ;
     }else if(name.equals("interceptor")) {
-      scripts = getApplicationComponent(ScriptService.class).getECMInterceptorScripts(repository,SessionsUtils.getSystemProvider()) ;
+      scripts = getApplicationComponent(ScriptService.class).getECMInterceptorScripts(repository,
+          SessionProviderFactory.createSystemProvider()) ;
     }
     for(Node scriptNode : scripts) {
       String version = "" ;

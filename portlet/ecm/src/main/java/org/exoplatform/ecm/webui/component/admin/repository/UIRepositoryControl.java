@@ -21,9 +21,9 @@ import java.util.List;
 
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -107,7 +107,7 @@ public class UIRepositoryControl extends UIContainer {
       UIRepositoryControl uiControl = event.getSource() ;
       String repoName = uiControl.getChild(UIRepositorySelectForm.class).getSelectedValue() ;
       UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
-      UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiPopupAction = ecmPortlet.getChild(UIPopupContainer.class) ;
       UIRepositoryFormContainer uiForm = uiPopupAction.activate(UIRepositoryFormContainer.class, 600) ;
       RepositoryService rservice = uiControl.getApplicationComponent(RepositoryService.class) ;
       ManageableRepository repo = rservice.getRepository(repoName) ;
@@ -120,7 +120,7 @@ public class UIRepositoryControl extends UIContainer {
     public void execute(Event<UIRepositoryControl> event) throws Exception {     
       UIRepositoryControl uiControl = event.getSource() ;
       UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
-      UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiPopupAction = ecmPortlet.getChild(UIPopupContainer.class) ;
       UIRepositoryList uiList = uiPopupAction.activate(UIRepositoryList.class, 600) ;
       uiList.updateGrid() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
@@ -131,7 +131,7 @@ public class UIRepositoryControl extends UIContainer {
     public void execute(Event<UIRepositoryControl> event) throws Exception {
       UIRepositoryControl uiControl = event.getSource() ;
       UIECMAdminPortlet ecmPortlet = uiControl.getAncestorOfType(UIECMAdminPortlet.class) ;
-      UIPopupAction uiPopupAction = ecmPortlet.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiPopupAction = ecmPortlet.getChild(UIPopupContainer.class) ;
       UIRepositoryFormContainer uiForm = uiPopupAction.activate(UIRepositoryFormContainer.class, 600) ;
       RepositoryService rService = uiControl.getApplicationComponent(RepositoryService.class) ;
       uiForm.refresh(true ,rService.getDefaultRepository().getConfiguration()) ;

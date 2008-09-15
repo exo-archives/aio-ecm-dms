@@ -38,11 +38,7 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.version.VersionException;
 
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm;
@@ -52,6 +48,11 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContaine
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.jcrext.lock.LockTokenHolderService;
 import org.exoplatform.services.cms.relations.RelationsService;
@@ -61,7 +62,6 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.security.ConversationRegistry;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.IdentityRegistry;
 import org.exoplatform.services.security.MembershipEntry;
@@ -134,7 +134,7 @@ public class UIWorkingArea extends UIContainer {
     String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;    
     ManageableRepository repo = getApplicationComponent(RepositoryService.class).getRepository(repository);
     String workspace = repo.getConfiguration().getDefaultWorkspaceName() ;
-    Session session = SessionsUtils.getSystemProvider().getSession(workspace,repo) ;    
+    Session session = SessionProviderFactory.createSystemProvider().getSession(workspace,repo) ;    
     return session.getNodeByUUID(uuid);
   }
 
@@ -340,8 +340,8 @@ public class UIWorkingArea extends UIContainer {
             selectedNode.getPrimaryNodeType().getName(), false) ;
         uiActionForm.setWorkspace(wsName) ;
         uiActionForm.setNodePath(nodePath) ;
-        UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-        uiPopupAction.activate(uiContainer, 600, 550) ;
+        UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class) ;
+        UIPopupContainer.activate(uiContainer, 600, 550) ;
       } else {
         TemplateService tservice = uicomp.getApplicationComponent(TemplateService.class) ;
         String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
@@ -353,7 +353,7 @@ public class UIWorkingArea extends UIContainer {
           nodeType = selectedNode.getPrimaryNodeType().getName() ;
         }
         if(documentNodeType.contains(nodeType)){
-          UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
+          UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class) ;
           UIDocumentFormController uiController = 
             event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController") ;
           UIDocumentForm uiDocumentForm = uiController.getChild(UIDocumentForm.class) ;
@@ -363,7 +363,7 @@ public class UIWorkingArea extends UIContainer {
           uiDocumentForm.setNodePath(nodePath) ;
           uiDocumentForm.addNew(false) ;
           uiController.setRenderedChild(UIDocumentForm.class) ;
-          uiPopupAction.activate(uiController, 800, 600) ;
+          UIPopupContainer.activate(uiController, 800, 600) ;
         } else {          
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.not-support", arg, 
               ApplicationMessage.WARNING)) ;
@@ -427,9 +427,9 @@ public class UIWorkingArea extends UIContainer {
         UIActionBar uiActionBar = uiControl.getChild(UIActionBar.class) ;
         UIRenameForm uiRenameForm = uiActionBar.createUIComponent(UIRenameForm.class, null, null) ;
         uiRenameForm.update(renameNode, isReferencedNode) ;
-        UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class) ;
-        uiPopupAction.activate(uiRenameForm, 700, 0) ;
-        uiPopupAction.setRendered(true) ;
+        UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class) ;
+        UIPopupContainer.activate(uiRenameForm, 700, 0) ;
+        UIPopupContainer.setRendered(true) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -906,7 +906,7 @@ public class UIWorkingArea extends UIContainer {
         JCRExceptionManager.process(uiApp, e);
         return;
       }
-      if(!Utils.isAddNodeAuthorized(destNode)) {
+      if(!PermissionUtil.canRead(destNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-paste-node", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

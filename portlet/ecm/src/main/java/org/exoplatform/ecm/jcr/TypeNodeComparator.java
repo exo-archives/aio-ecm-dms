@@ -22,7 +22,7 @@ import java.util.StringTokenizer;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.jcr.model.Preference;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 
 public class TypeNodeComparator implements Comparator<javax.jcr.Node> {
 

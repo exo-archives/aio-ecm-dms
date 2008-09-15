@@ -16,8 +16,8 @@
  */
 package org.exoplatform.ecm.webui.component.admin.repository;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -32,14 +32,15 @@ import org.exoplatform.webui.form.UIFormStringInput;
  */
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
 
-public class UIPermissionContainer  extends UIContainer implements UIPopupComponent{
+public class UIPermissionContainer  extends UIContainer implements UIPopupComponent {
 
   public UIPermissionContainer() throws Exception {
-    UIECMPermissionBrowser uiECMPermission = 
-      addChild(UIECMPermissionBrowser.class, null, "PermissionPopupSelect") ;
+    UIPermissionSelector uiECMPermission = 
+      addChild(UIPermissionSelector.class, null, "PermissionPopupSelect") ;
     UIWorkspacePermissionForm uiWsPermissionForm = addChild(UIWorkspacePermissionForm.class, null, null) ;
-    uiECMPermission.isUsePopup_ = false ;
-    uiECMPermission.setComponent(uiWsPermissionForm, null) ;
+    uiECMPermission.setSelectedMembership(true);
+    uiECMPermission.setIsUsePopup(false) ;
+    uiECMPermission.setSourceComponent(uiWsPermissionForm, null) ;
   }
 
   protected void setValues(String user, String permission) {    

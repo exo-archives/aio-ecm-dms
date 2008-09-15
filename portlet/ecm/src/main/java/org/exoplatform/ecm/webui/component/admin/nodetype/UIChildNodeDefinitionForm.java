@@ -23,8 +23,8 @@ import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.nodetype.NodeDefinitionValue;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -46,7 +46,7 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
  * Sep 22, 2006
  * 11:50:10 AM 
  */
-@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "classpath:groovy/ecm/webui/form/UIFormInputSetWithAction.gtmpl")
 public class UIChildNodeDefinitionForm extends UIFormInputSetWithAction {
 
   final static public String NAMESPACE = "childNamespace" ;

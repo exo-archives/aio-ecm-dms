@@ -23,9 +23,10 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIJCRBrowser;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.comparator.ItemOptionNameComparator;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -77,11 +78,11 @@ public class UIConfigTabPane extends UIContainer {
   public List<SelectItemOption<String>> getBoxTemplateOption(String repository) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> docTemplates = getApplicationComponent(ManageViewService.class)
-    .getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository,SessionsUtils.getSystemProvider()) ;
+    .getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository, SessionProviderFactory.createSystemProvider()) ;
     for(Node template: docTemplates) {
       options.add(new SelectItemOption<String>(template.getName(), template.getName())) ;
     }
-    Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
+    Collections.sort(options, new ItemOptionNameComparator()) ;
     return options ;
   }
   
@@ -150,17 +151,20 @@ public class UIConfigTabPane extends UIContainer {
     removeChildById(DOCUMENT_SELECTOR) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, PATH_SELECTOR);
     uiPopup.setWindowSize(610, 300);    
-    UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;   
-    uiJCRBrowser.setRepository(repo) ;
-    uiJCRBrowser.setIsDisable(workSpace, true) ;
-    if(SessionsUtils.isAnonim()) {
-      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider()) ;
-    }
+    UIOneNodePathSelector uiOneNodePathSelector = 
+      createUIComponent(UIOneNodePathSelector.class, null, null);
+    uiOneNodePathSelector.setIsDisable(workSpace, true) ;
     String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED, "exo:taxonomy"} ;
-    uiJCRBrowser.setFilterType(filterType) ;
-    uiJCRBrowser.setShowRootPathSelect(true) ;
-    uiPopup.setUIComponent(uiJCRBrowser) ;
-    uiJCRBrowser.setComponent(uiForm, new String[] {UINewConfigForm.FIELD_CATEGORYPATH}) ;
+    uiOneNodePathSelector.setAcceptedNodeTypesInPathPanel(filterType) ;
+    uiOneNodePathSelector.setShowRootPathSelect(true) ;
+    uiOneNodePathSelector.setRootNodeLocation(repo, workSpace, "/");
+    if(SessionProviderFactory.isAnonim()) {
+      uiOneNodePathSelector.init(SessionProviderFactory.createAnonimProvider()) ;
+    } else {
+      uiOneNodePathSelector.init(SessionProviderFactory.createSessionProvider()) ;
+    }
+    uiPopup.setUIComponent(uiOneNodePathSelector) ;
+    uiOneNodePathSelector.setSourceComponent(uiForm, new String[] {UINewConfigForm.FIELD_CATEGORYPATH}) ;
     uiPopup.setShow(true) ;
   }
 
@@ -170,21 +174,22 @@ public class UIConfigTabPane extends UIContainer {
     removeChildById(DOCUMENT_SELECTOR) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, DOCUMENT_SELECTOR);
     uiPopup.setWindowSize(610, 300);
-    UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
-    uiJCRBrowser.setRepository(repo) ;
-    uiJCRBrowser.setWorkspace(workSpace) ;
-    uiJCRBrowser.setIsDisable(workSpace, true) ;
-    uiJCRBrowser.setRootPath(path) ;    
-    if(SessionsUtils.isAnonim()) {
-      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider()) ;
-    }
+    UIOneNodePathSelector uiOneNodePathSelector = 
+      createUIComponent(UIOneNodePathSelector.class, null, null);
+    uiOneNodePathSelector.setIsDisable(workSpace, true) ;
+    uiOneNodePathSelector.setRootNodeLocation(repo, workSpace, path);
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<String> documents = templateService.getDocumentTemplates(repo) ;
     String [] filterType = new String[documents.size()];
     documents.toArray(filterType) ;
-    uiJCRBrowser.setFilterType(filterType) ;
-    uiPopup.setUIComponent(uiJCRBrowser) ;
-    uiJCRBrowser.setComponent(uiForm, new String[] {UINewConfigForm.FIELD_DOCNAME}) ;
+    uiOneNodePathSelector.setAcceptedNodeTypesInPathPanel(filterType) ;
+    if(SessionProviderFactory.isAnonim()) {
+      uiOneNodePathSelector.init(SessionProviderFactory.createAnonimProvider()) ;
+    } else {
+      uiOneNodePathSelector.init(SessionProviderFactory.createSessionProvider()) ;
+    }
+    uiPopup.setUIComponent(uiOneNodePathSelector) ;
+    uiOneNodePathSelector.setSourceComponent(uiForm, new String[] {UINewConfigForm.FIELD_DOCNAME}) ;
     uiPopup.setShow(true) ;
   }
 }

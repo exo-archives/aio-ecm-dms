@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.exoplatform.ecm.jcr.ECMNameValidator;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
@@ -39,7 +39,7 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
  *          tuan.pham@exoplatform.com
  * Aug 8, 2007  
  */
-@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "classpath:groovy/ecm/webui/form/UIFormInputSetWithAction.gtmpl")
 public class UIWizardStep1 extends UIFormInputSetWithAction {
   final static public String FIELD_NAME = "name" ;  
   final static public String FIELD_NODETYPE = "autoInitializedRootNt" ;

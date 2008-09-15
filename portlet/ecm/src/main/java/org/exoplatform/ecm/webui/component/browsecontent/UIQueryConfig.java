@@ -20,16 +20,17 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
-import javax.jcr.query.InvalidQueryException;
-import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+import javax.jcr.nodetype.NoSuchNodeTypeException;
+import javax.jcr.query.InvalidQueryException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.comparator.ItemOptionNameComparator;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.queries.QueryService;
@@ -237,12 +238,12 @@ public class UIQueryConfig extends UIForm {
   @SuppressWarnings("unchecked")
   private List<SelectItemOption<String>> getQueryTemplate(String repository) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    List<Node> querylTemplates = getApplicationComponent(ManageViewService.class)
-    .getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repository,SessionsUtils.getSystemProvider()) ;
+    List<Node> querylTemplates = getApplicationComponent(ManageViewService.class).
+      getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repository, SessionProviderFactory.createSystemProvider()) ;
     for(Node node: querylTemplates){
       options.add(new SelectItemOption<String>(node.getName(),node.getName())) ;
     }
-    Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
+    Collections.sort(options, new ItemOptionNameComparator()) ;
     return options ;
   }
 
@@ -277,7 +278,7 @@ public class UIQueryConfig extends UIForm {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     String repository = getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ; 
     QueryService qservice = getApplicationComponent(QueryService.class) ;
-    SessionProvider provider = SessionsUtils.getSystemProvider();
+    SessionProvider provider = SessionProviderFactory.createSystemProvider();
     String userId = Util.getPortalRequestContext().getRemoteUser() ;
     if(UIQueryConfig.PERSONAL_QUERY.equals(queryType)) {
       List<Query> queries = qservice.getQueries(userId, repository,provider);
@@ -296,7 +297,7 @@ public class UIQueryConfig extends UIForm {
     if(options.isEmpty()) {
       options.add(new SelectItemOption<String>(EMPTYQUERY, EMPTYQUERY)) ;
     }
-    Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
+    Collections.sort(options, new ItemOptionNameComparator()) ;
     return options ;
   }
 
@@ -305,10 +306,10 @@ public class UIQueryConfig extends UIForm {
     String workspace = getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
     ManageableRepository repository = 
       getApplicationComponent(RepositoryService.class).getRepository(repositoryName) ;
-    if(SessionsUtils.isAnonim()) {
-      return SessionsUtils.getAnonimProvider().getSession(workspace,repository) ;
+    if(SessionProviderFactory.isAnonim()) {
+      return SessionProviderFactory.createAnonimProvider().getSession(workspace,repository) ;
     }
-    return SessionsUtils.getSessionProvider().getSession(workspace,repository) ;
+    return SessionProviderFactory.createSessionProvider().getSession(workspace,repository) ;
   }
 
   public static class SaveActionListener extends EventListener<UIQueryConfig>{

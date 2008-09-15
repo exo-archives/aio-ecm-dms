@@ -19,7 +19,7 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

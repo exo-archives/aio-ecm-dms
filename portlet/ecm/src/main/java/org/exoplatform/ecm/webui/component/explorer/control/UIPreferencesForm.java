@@ -19,11 +19,11 @@ package org.exoplatform.ecm.webui.component.explorer.control;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.jcr.model.Preference;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -145,7 +145,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
       UIPreferencesForm uiForm = event.getSource() ;
       UIJCRExplorerPortlet explorerPorltet = uiForm.getAncestorOfType(UIJCRExplorerPortlet.class) ;   
       UIJCRExplorer uiExplorer = explorerPorltet.getChild(UIJCRExplorer.class) ;
-      uiExplorer.getChild(UIPopupAction.class).cancelPopupAction();
+      uiExplorer.getChild(UIPopupContainer.class).cancelPopupAction();
     }
   }  
 }

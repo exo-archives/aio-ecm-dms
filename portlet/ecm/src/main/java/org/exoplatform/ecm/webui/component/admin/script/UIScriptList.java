@@ -24,9 +24,9 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -83,9 +83,10 @@ public class UIScriptList extends UIComponentDecorator {
       UIECMFilterForm filterForm = parent.findFirstComponentOfType(UIECMFilterForm.class) ;
       String categoryName = 
         filterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;
-      script = scriptService.getECMScriptHome(repository,SessionsUtils.getSystemProvider()).getNode(categoryName) ;
+      script = scriptService.getECMScriptHome(repository, 
+          SessionProviderFactory.createSystemProvider()).getNode(categoryName) ;
     } else {
-      script = scriptService.getCBScriptHome(repository,SessionsUtils.getSystemProvider()) ;
+      script = scriptService.getCBScriptHome(repository, SessionProviderFactory.createSystemProvider()) ;
     }
     String basePath = scriptService.getBaseScriptPath() + "/" ;
     return script.getPath().substring(basePath.length()) ;
@@ -112,10 +113,12 @@ public class UIScriptList extends UIComponentDecorator {
       UIECMFilterForm filterForm = parent.findFirstComponentOfType(UIECMFilterForm.class) ;
       String categoryName = 
         filterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;
-      Node category = scriptService.getECMScriptHome(repository,SessionsUtils.getSessionProvider()).getNode(categoryName) ;
+      Node category = scriptService.getECMScriptHome(repository, 
+          SessionProviderFactory.createSessionProvider()).getNode(categoryName) ;
       script = category.getNode(nodeName) ;  
     } else {
-      Node cbScript = scriptService.getCBScriptHome(repository,SessionsUtils.getSystemProvider()) ;
+      Node cbScript = scriptService.getCBScriptHome(repository, 
+          SessionProviderFactory.createSystemProvider()) ;
       script = cbScript.getNode(nodeName) ; 
     }
     return script ;
@@ -134,14 +137,16 @@ public class UIScriptList extends UIComponentDecorator {
       UIScriptList uiScriptList = event.getSource() ;
       UIScriptManager uiManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;
       if(uiScriptList.getId().equals(UIECMScripts.SCRIPTLIST_NAME)) {
-        UIPopupAction uiPopup = uiScriptList.getAncestorOfType(UIECMScripts.class).getChild(UIPopupAction.class) ;
+        UIPopupContainer uiPopup = 
+          uiScriptList.getAncestorOfType(UIECMScripts.class).getChild(UIPopupContainer.class) ;
         UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 600) ;
         uiForm.setId(UIECMScripts.SCRIPTFORM_NAME ) ;
         uiForm.update(null, true) ;
         uiManager.setRenderedChild(UIECMScripts.class) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
       } else if(uiScriptList.getId().equals(UICBScripts.SCRIPTLIST_NAME)) {
-        UIPopupAction uiPopup = uiScriptList.getAncestorOfType(UICBScripts.class).getChild(UIPopupAction.class) ;
+        UIPopupContainer uiPopup = 
+          uiScriptList.getAncestorOfType(UICBScripts.class).getChild(UIPopupContainer.class) ;
         UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 600) ;
         uiForm.setId(UICBScripts.SCRIPTFORM_NAME ) ;
         uiForm.update(null, true) ;
@@ -157,14 +162,16 @@ public class UIScriptList extends UIComponentDecorator {
       String scriptName = event.getRequestContext().getRequestParameter(OBJECTID); 
       UIScriptManager uiManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;      
       if(uiScriptList.getId().equals(UIECMScripts.SCRIPTLIST_NAME)) {
-        UIPopupAction uiPopup = uiScriptList.getAncestorOfType(UIECMScripts.class).getChild(UIPopupAction.class) ;
+        UIPopupContainer uiPopup = 
+          uiScriptList.getAncestorOfType(UIECMScripts.class).getChild(UIPopupContainer.class) ;
         UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 680) ;
         uiForm.setId(UIECMScripts.SCRIPTFORM_NAME ) ;
         uiForm.update(uiScriptList.getScriptNode(scriptName), false) ;
         uiManager.setRenderedChild(UIECMScripts.class) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
       } else if(uiScriptList.getId().equals(UICBScripts.SCRIPTLIST_NAME)) {
-        UIPopupAction uiPopup = uiScriptList.getAncestorOfType(UICBScripts.class).getChild(UIPopupAction.class) ;
+        UIPopupContainer uiPopup = 
+          uiScriptList.getAncestorOfType(UICBScripts.class).getChild(UIPopupContainer.class) ;
         UIScriptForm uiForm = uiPopup.activate(UIScriptForm.class, 680) ;
         uiForm.setId(UICBScripts.SCRIPTFORM_NAME ) ;
         uiForm.update(uiScriptList.getScriptNode(scriptName), false) ;
@@ -182,7 +189,8 @@ public class UIScriptList extends UIComponentDecorator {
       String scriptName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String namePrefix = uiScriptList.getScriptCategory() ;       
       try {
-        scriptService.removeScript(namePrefix + "/" + scriptName, repository,SessionsUtils.getSessionProvider()) ;
+        scriptService.removeScript(namePrefix + "/" + scriptName, repository, 
+            SessionProviderFactory.createSessionProvider()) ;
       } catch(AccessDeniedException ace) {
         throw new MessageException(new ApplicationMessage("UIECMAdminControlPanel.msg.access-denied", 
                                                           null, ApplicationMessage.WARNING)) ;

@@ -21,12 +21,14 @@ import java.util.Map;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
-import org.exoplatform.ecm.jcr.ComponentSelector;
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIJCRBrowser;
+import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
+import org.exoplatform.ecm.webui.selector.ComponentSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
@@ -65,7 +67,7 @@ import org.exoplatform.webui.form.UIFormInputBase;
       @EventConfig(listeners = UIActionForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
-public class UIActionForm extends UIDialogForm implements UISelector {
+public class UIActionForm extends UIDialogForm implements UISelectable {
   
   private String parentPath_ ;
   private String nodeTypeName_ = null ;
@@ -90,9 +92,9 @@ public class UIActionForm extends UIDialogForm implements UISelector {
   
   private Node getParentNode() throws Exception{ return (Node) getSesssion().getItem(parentPath_) ; }
   
-  public void updateSelect(String selectField, String value) {
+  public void doSelect(String selectField, Object value) {
     isUpdateSelect = true ;
-    getUIStringInput(selectField).setValue(value) ;
+    getUIStringInput(selectField).setValue(value.toString()) ;
     if(isEditInList_) {
       UIActionManager uiManager = getAncestorOfType(UIActionManager.class) ;
       UIActionListContainer uiActionListContainer = uiManager.getChild(UIActionListContainer.class) ;
@@ -155,7 +157,8 @@ public class UIActionForm extends UIDialogForm implements UISelector {
     UIActionManager uiManager = getAncestorOfType(UIActionManager.class) ;
     uiManager.setRenderedChild(UIActionContainer.class) ;
     event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
-  }  
+  }
+  
   static public class SaveActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UIActionForm actionForm = event.getSource();
@@ -163,9 +166,9 @@ public class UIActionForm extends UIDialogForm implements UISelector {
       ActionServiceContainer actionServiceContainer = actionForm.getApplicationComponent(ActionServiceContainer.class) ;
       UIJCRExplorer uiExplorer = actionForm.getAncestorOfType(UIJCRExplorer.class) ;   
       String repository = actionForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-      Map sortedInputs = Utils.prepareMap(actionForm.getChildren(), actionForm.getInputProperties());
+      Map<String, JcrInputProperty> sortedInputs = DialogFormUtil.prepareMap(actionForm.getChildren(), actionForm.getInputProperties());
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!Utils.isAddNodeAuthorized(currentNode) || !Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canAddNode(currentNode) || !PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
@@ -195,16 +198,16 @@ public class UIActionForm extends UIDialogForm implements UISelector {
         return;
       }
       try{
-        JcrInputProperty rootProp = (JcrInputProperty) sortedInputs.get("/node");
+        JcrInputProperty rootProp = sortedInputs.get("/node");
         if(rootProp == null) {
           rootProp = new JcrInputProperty();
           rootProp.setJcrPath("/node");
-          rootProp.setValue(((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue()) ;
+          rootProp.setValue((sortedInputs.get("/node/exo:name")).getValue()) ;
           sortedInputs.put("/node", rootProp) ;
         } else {
-          rootProp.setValue(((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue());
+          rootProp.setValue((sortedInputs.get("/node/exo:name")).getValue());
         }
-        String actionName = (String)((JcrInputProperty)sortedInputs.get("/node/exo:name")).getValue() ;
+        String actionName = (String)(sortedInputs.get("/node/exo:name")).getValue() ;
         Node parentNode = actionForm.getParentNode() ;
         if(parentNode.hasNode(EXO_ACTIONS)) {
           if(parentNode.getNode(EXO_ACTIONS).hasNode(actionName)) { 
@@ -266,38 +269,40 @@ public class UIActionForm extends UIDialogForm implements UISelector {
       ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
       Class clazz = Class.forName(classPath, true, cl) ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
-      if(uiComp instanceof UIJCRBrowser) {
+      if(uiComp instanceof UIOneNodePathSelector) {
         UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
         String repositoryName = explorer.getRepositoryName() ;
         SessionProvider provider = explorer.getSessionProvider() ;        
-        ((UIJCRBrowser)uiComp).setRepository(repositoryName) ;
-        ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
         String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
+        String wsName = "";
         if(wsFieldName != null && wsFieldName.length() > 0) {
-          String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;          
-          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;           
+          wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;          
+          ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true) ;           
         }
         String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
         if(selectorParams != null) {
           String[] arrParams = selectorParams.split(",") ;
           if(arrParams.length == 4) {
-            ((UIJCRBrowser)uiComp).setFilterType(new String[] {Utils.NT_FILE}) ;
-            ((UIJCRBrowser)uiComp).setIsDisable(arrParams[1], true) ;
-            ((UIJCRBrowser)uiComp).setRootPath(arrParams[2]) ;
+            ((UIOneNodePathSelector)uiComp).setAcceptedNodeTypesInPathPanel(new String[] {Utils.NT_FILE}) ;
+            wsName = arrParams[1];
+            rootPath = arrParams[2];
+            ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true) ;
             if(arrParams[3].indexOf(";") > -1) {
-              ((UIJCRBrowser)uiComp).setMimeTypes(arrParams[3].split(";")) ;
+              ((UIOneNodePathSelector)uiComp).setAcceptedMimeTypes(arrParams[3].split(";")) ;
             } else {
-              ((UIJCRBrowser)uiComp).setMimeTypes(new String[] {arrParams[3]}) ;
+              ((UIOneNodePathSelector)uiComp).setAcceptedMimeTypes(new String[] {arrParams[3]}) ;
             }
           }
         }
-        ((UIJCRBrowser)uiComp).setShowRootPathSelect(true);
-        if(rootPath != null) ((UIJCRBrowser)uiComp).setRootPath(rootPath) ;
+        if(rootPath == null) rootPath = "/";
+        ((UIOneNodePathSelector)uiComp).setRootNodeLocation(repositoryName, wsName, rootPath) ;
+        ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
+        ((UIOneNodePathSelector)uiComp).init(provider);
       }
       if(uiForm.isEditInList_) ((UIActionListContainer) uiContainer).initPopup(uiComp) ;
       else ((UIActionContainer)uiContainer).initPopup(uiComp) ;
       String param = "returnField=" + fieldName ;
-      ((ComponentSelector)uiComp).setComponent(uiForm, new String[]{param}) ;
+      ((ComponentSelector)uiComp).setSourceComponent(uiForm, new String[]{param}) ;
       if(uiForm.isAddNew_) {
         UIContainer uiParent = uiContainer.getParent() ;
         uiParent.setRenderedChild(uiContainer.getId()) ;

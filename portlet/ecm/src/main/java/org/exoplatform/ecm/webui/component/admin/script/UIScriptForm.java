@@ -23,13 +23,13 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.version.VersionHistory;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.jcr.model.VersionNode;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -226,7 +226,8 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;
       if(uiForm.isAddNew_ || !isEnableVersioning) { 
         try {
-          scriptService.addScript(namePrefix + "/" + name, content, repository,SessionsUtils.getSessionProvider()) ;
+          scriptService.addScript(namePrefix + "/" + name, content, repository, 
+              SessionProviderFactory.createSessionProvider()) ;
         } catch(AccessDeniedException ace) {
           uiApp.addMessage(new ApplicationMessage("UIECMAdminControlPanel.msg.access-denied", null, 
                                                   ApplicationMessage.WARNING)) ;
@@ -237,12 +238,13 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
         Node node = curentList.getScriptNode(name) ; 
         if(!node.isNodeType(Utils.MIX_VERSIONABLE)) node.addMixin(Utils.MIX_VERSIONABLE) ;
         else node.checkout() ;  
-        scriptService.addScript(namePrefix + "/" + name, content, repository,SessionsUtils.getSessionProvider()) ;
+        scriptService.addScript(namePrefix + "/" + name, content, repository, 
+            SessionProviderFactory.createSessionProvider()) ;
         node.save() ;
         node.checkin() ;
       }
       uiForm.reset() ;
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
+      UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class) ;
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       curentList.refresh() ;
@@ -270,7 +272,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
         uiScriptList.refresh() ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiScriptList) ;
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
+      UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class) ;
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
@@ -294,7 +296,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
       Node frozenNode = versionNode.getVersion().getNode(Utils.JCR_FROZEN) ;    
       String scriptContent = frozenNode.getProperty(Utils.JCR_DATA).getString() ;
       uiForm.getUIFormTextAreaInput(FIELD_SCRIPT_CONTENT).setValue(scriptContent) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupContainer.class)) ;
     }
   }
 
@@ -315,7 +317,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
         Node script = uiScriptList.getScriptNode(sciptName) ;  
         uiForm.update(script, false) ;
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupContainer.class)) ;
     }
   }
 
@@ -323,7 +325,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UIScriptForm> event) throws Exception {
       UIScriptForm uiForm = event.getSource();
       uiForm.reset() ;
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
+      UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class) ;
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }

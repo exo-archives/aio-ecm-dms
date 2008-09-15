@@ -19,7 +19,7 @@ package org.exoplatform.ecm.webui.component.admin.views;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.ViewConfig.Tab;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -36,7 +36,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
  * Jun 28, 2006
  */
 
-@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "classpath:groovy/ecm/webui/form/UIFormInputSetWithAction.gtmpl")
 public class UITabForm extends UIFormInputSetWithAction {
   
   final static public String FIELD_NAME = "tabName" ;

@@ -27,7 +27,7 @@ import javax.jcr.Session;
 
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.compress.CompressData;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

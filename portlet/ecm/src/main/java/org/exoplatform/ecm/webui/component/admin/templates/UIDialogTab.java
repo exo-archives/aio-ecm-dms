@@ -25,8 +25,8 @@ import javax.jcr.Value;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -77,7 +77,8 @@ public class UIDialogTab extends UIContainer {
   
   public void updateGrid(String nodeName, String repository) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
-    NodeIterator iter = tempService.getAllTemplatesOfNodeType(true, nodeName, repository,SessionsUtils.getSystemProvider()) ;
+    NodeIterator iter = tempService.getAllTemplatesOfNodeType(true, nodeName, repository, 
+        SessionProviderFactory.createSystemProvider()) ;
     List<DialogData> data = new ArrayList<DialogData>() ;
     DialogData item  ;
     while (iter.hasNext()){

@@ -27,10 +27,11 @@ import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.comparator.ItemOptionNameComparator;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -71,7 +72,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(phase = Phase.DECODE, listeners = UIPathConfig.ChangeWorkspaceActionListener.class)
     }
 )
-public class UIPathConfig extends UIForm implements UISelector{
+public class UIPathConfig extends UIForm implements UISelectable{
   final static public String FIELD_PATHSELECT = "path" ;
   protected boolean isEdit_ = false ;
   private List<String> repoNames_ = new ArrayList<String>() ;
@@ -134,7 +135,7 @@ public class UIPathConfig extends UIForm implements UISelector{
     .getRepository(repository).getWorkspaceNames() ;
     wsNames_.clear() ;
     for(String workspace:workspaceNames) {
-      session = SessionsUtils.getSessionProvider().getSession(workspace, getRepository(repository)) ;
+      session = SessionProviderFactory.createSessionProvider().getSession(workspace, getRepository(repository)) ;
       try {
         session.getRootNode() ;
         wsNames_.add(workspace) ;
@@ -248,20 +249,20 @@ public class UIPathConfig extends UIForm implements UISelector{
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
     ManageViewService viewService = 
       (ManageViewService)PortalContainer.getComponent(ManageViewService.class) ;
-    List<Node> scriptTemplates = 
-      viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repository, SessionsUtils.getSystemProvider()) ;
+    List<Node> scriptTemplates = viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repository, 
+          SessionProviderFactory.createSystemProvider()) ;
     for(Node template:scriptTemplates) {
       options.add(new SelectItemOption<String>(template.getName(),template.getName())) ;
     }
-    Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
+    Collections.sort(options, new ItemOptionNameComparator()) ;
     return options ;
   }
   
   @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) {
+  public void doSelect(String selectField, Object value) {
     UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
     UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
-    categoryPathField.setValue(value) ;
+    categoryPathField.setValue(value.toString()) ;
     UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class) ;
     UIPopupWindow uiPopupWindow = uiConfigTabPane.getChild(UIPopupWindow.class) ;
     uiPopupWindow.setShow(false) ;

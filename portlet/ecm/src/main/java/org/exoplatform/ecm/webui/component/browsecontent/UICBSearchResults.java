@@ -25,8 +25,8 @@ import javax.jcr.Node;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -100,7 +100,7 @@ public class UICBSearchResults extends UIContainer {
       UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
       if(uiResults.isDocumentTemplate(nodeType.getName())) {
         UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
+        UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
         UIDocumentDetail uiDocument =  uiPopupAction.activate(UIDocumentDetail.class, 600) ;// cbPortlet.createUIComponent(UIDocumentDetail.class, null, null) ;
         uiDocument.setNode(node) ;
         UIPopupWindow uiPopup  = uiPopupAction.getChildById("UICBPopupWindow") ;
@@ -148,7 +148,7 @@ public class UICBSearchResults extends UIContainer {
       }
       if(uiResults.isDocumentTemplate(parentNode.getPrimaryNodeType().getName())) {
         UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
+        UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
         UIDocumentDetail uiDocument =  uiPopupAction.activate(UIDocumentDetail.class, 600) ;// cbPortlet.createUIComponent(UIDocumentDetail.class, null, null) ;
         uiDocument.setNode(parentNode) ;
         UIPopupWindow uiPopup  = uiPopupAction.getChildById("UICBPopupWindow") ;

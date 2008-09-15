@@ -22,7 +22,8 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.portal.webui.util.Util;
@@ -135,7 +136,7 @@ public class UILanguageDialogForm extends UIDialogForm {
         return;
       }
       if(node.hasNode(Utils.EXO_IMAGE)) {
-        Map inputProperties = Utils.prepareMap(languageDialogForm.getChildren(), languageDialogForm.getInputProperties()) ;
+        Map inputProperties = DialogFormUtil.prepareMap(languageDialogForm.getChildren(), languageDialogForm.getInputProperties()) ;
         try {
           multiLanguageService.addLanguage(node, inputProperties, languageDialogForm.getSelectedLanguage(), languageDialogForm.isDefaultLanguage(), Utils.EXO_IMAGE) ;
         } catch(AccessDeniedException ace) {
@@ -145,7 +146,7 @@ public class UILanguageDialogForm extends UIDialogForm {
           return;
         }
       } else if(languageDialogForm.hasNodeTypeNTResource(node)) {
-        Map inputProperties = Utils.prepareMap(languageDialogForm.getChildren(), languageDialogForm.getInputProperties()) ;
+        Map inputProperties = DialogFormUtil.prepareMap(languageDialogForm.getChildren(), languageDialogForm.getInputProperties()) ;
         try {
           multiLanguageService.addFileLanguage(node, languageDialogForm.getSelectedLanguage(), inputProperties, languageDialogForm.isDefaultLanguage()) ;
         } catch(AccessDeniedException ace) {
@@ -155,7 +156,7 @@ public class UILanguageDialogForm extends UIDialogForm {
           return;
         }
       } else {
-        Map map = Utils.prepareMap(languageDialogForm.getChildren(), languageDialogForm.properties) ;
+        Map map = DialogFormUtil.prepareMap(languageDialogForm.getChildren(), languageDialogForm.properties) ;
         try {
           multiLanguageService.addLanguage(node, map, languageDialogForm.getSelectedLanguage(), languageDialogForm.isDefaultLanguage()) ;
         } catch(AccessDeniedException ace) {
@@ -168,7 +169,7 @@ public class UILanguageDialogForm extends UIDialogForm {
       node.save() ;
       UIMultiLanguageManager uiManager = languageDialogForm.getAncestorOfType(UIMultiLanguageManager.class) ;
       UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
-      uiMultiForm.updateSelect(node) ;
+      uiMultiForm.doSelect(node) ;
       if(languageDialogForm.isDefaultLanguage()) uiExplorer.setLanguage(languageDialogForm.getSelectedLanguage()) ;
       uiManager.setRenderedChild(UIMultiLanguageForm.class) ;
       UIAddLanguageContainer uiAddContainer = uiManager.getChild(UIAddLanguageContainer.class) ;

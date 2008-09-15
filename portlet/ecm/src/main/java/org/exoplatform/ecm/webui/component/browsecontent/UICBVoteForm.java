@@ -20,9 +20,9 @@ import javax.jcr.Node;
 import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -47,7 +47,7 @@ import org.exoplatform.webui.event.EventListener;
     }
 ) 
 
-public class UICBVoteForm extends UIComponent implements UIPopupComponent{
+public class UICBVoteForm extends UIComponent implements UIPopupComponent {
   public UICBVoteForm() {}
 
   public Node getDocument() throws Exception { 
@@ -98,7 +98,7 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;
+      UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class) ;
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiBCContainer) ;
@@ -107,7 +107,7 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
 
   static  public class CancelActionListener extends EventListener<UICBVoteForm> {
     public void execute(Event<UICBVoteForm> event) throws Exception {
-      event.getSource().getAncestorOfType(UIPopupAction.class).cancelPopupAction() ;
+      event.getSource().getAncestorOfType(UIPopupContainer.class).cancelPopupAction() ;
     }
   }
 }

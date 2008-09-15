@@ -27,13 +27,14 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.version.VersionException;
 
-import org.exoplatform.ecm.jcr.ComponentSelector;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIJCRBrowser;
+import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.selector.ComponentSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
@@ -76,21 +77,22 @@ import org.exoplatform.webui.form.UIFormMultiValueInputSet;
     }
 )
 
-public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UISelector {   
+public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UISelectable {   
   
   public UIDocumentForm() throws Exception {
     setActions(new String[]{"Save", "Cancel"}) ;  
   }     
   
-  public void updateSelect(String selectField, String value) {
+  @SuppressWarnings("unchecked")
+  public void doSelect(String selectField, Object value) {
     isUpdateSelect = true ;    
     UIFormInput formInput = getUIInput(selectField) ;
     if(formInput instanceof UIFormInputBase) {
-      ((UIFormInputBase)formInput).setValue(value) ;
+      ((UIFormInputBase)formInput).setValue(value.toString()) ;
     }else if(formInput instanceof UIFormMultiValueInputSet) {
       UIFormMultiValueInputSet  inputSet = (UIFormMultiValueInputSet) formInput ;
       UIFormInputBase input = inputSet.getChild(inputSet.getChildren().size()-1);
-      input.setValue(value);
+      input.setValue(value.toString());
     }
     UIDocumentFormController uiContainer = getParent() ;
     uiContainer.removeChildById("PopupComponent") ;
@@ -127,7 +129,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       UIDocumentForm documentForm = event.getSource();
       UIJCRExplorer uiExplorer = documentForm.getAncestorOfType(UIJCRExplorer.class) ;
       List inputs = documentForm.getChildren() ;
-      Map inputProperties = Utils.prepareMap(inputs, documentForm.getInputProperties()) ;
+      Map inputProperties = DialogFormUtil.prepareMap(inputs, documentForm.getInputProperties()) ;
       Node newNode = null ;
       String nodeType ;
       Node homeNode ;
@@ -178,6 +180,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
       } catch(Exception e) {
+        e.printStackTrace();
         String key = "UIDocumentForm.msg.cannot-save" ;
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -200,35 +203,39 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       Class clazz = Class.forName(classPath, true, cl) ;
       String rootPath = (String)fieldPropertiesMap.get("rootPath") ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
-      if(uiComp instanceof UIJCRBrowser) {
+      if(uiComp instanceof UIOneNodePathSelector) {
         UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
         String repositoryName = explorer.getRepositoryName() ;
         SessionProvider provider = explorer.getSessionProvider() ;                
-        ((UIJCRBrowser)uiComp).setRepository(repositoryName) ;
-        ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
         String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
+        String wsName = "";
         if(wsFieldName != null && wsFieldName.length() > 0) {
-          String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
-          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;      
+          wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
+          ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true) ;      
         }
-        if(wsFieldName != null && rootPath != null) ((UIJCRBrowser)uiComp).setRootPath(rootPath) ;
         String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
         if(selectorParams != null) {
           String[] arrParams = selectorParams.split(",") ;
           if(arrParams.length == 4) {
-            ((UIJCRBrowser)uiComp).setFilterType(new String[] {Utils.NT_FILE}) ;
-            ((UIJCRBrowser)uiComp).setRootPath(arrParams[2]) ;
+            ((UIOneNodePathSelector)uiComp).setAcceptedNodeTypesInPathPanel(new String[] {Utils.NT_FILE}) ;
+            wsName = arrParams[1];
+            rootPath = arrParams[2];
+            ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true) ;
             if(arrParams[3].indexOf(";") > -1) {
-              ((UIJCRBrowser)uiComp).setMimeTypes(arrParams[3].split(";")) ;
+              ((UIOneNodePathSelector)uiComp).setAcceptedMimeTypes(arrParams[3].split(";")) ;
             } else {
-              ((UIJCRBrowser)uiComp).setMimeTypes(new String[] {arrParams[3]}) ;
+              ((UIOneNodePathSelector)uiComp).setAcceptedMimeTypes(new String[] {arrParams[3]}) ;
             }
           }
         }
+        if(rootPath == null) rootPath = "/";
+        ((UIOneNodePathSelector)uiComp).setRootNodeLocation(repositoryName, wsName, rootPath) ;
+        ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
+        ((UIOneNodePathSelector)uiComp).init(provider);
       }
       uiContainer.initPopup(uiComp) ;
       String param = "returnField=" + fieldName ;
-      ((ComponentSelector)uiComp).setComponent(uiForm, new String[]{param}) ;
+      ((ComponentSelector)uiComp).setSourceComponent(uiForm, new String[]{param}) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }  

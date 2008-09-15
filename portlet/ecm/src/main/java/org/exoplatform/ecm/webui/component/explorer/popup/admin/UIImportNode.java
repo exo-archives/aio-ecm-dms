@@ -29,8 +29,8 @@ import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.MimeTypeResolver;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;

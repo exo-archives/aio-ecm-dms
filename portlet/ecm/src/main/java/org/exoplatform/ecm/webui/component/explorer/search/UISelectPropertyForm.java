@@ -26,9 +26,9 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -119,7 +119,7 @@ public class UISelectPropertyForm extends UIForm implements UIPopupComponent {
   static  public class CancelActionListener extends EventListener<UISelectPropertyForm> {
     public void execute(Event<UISelectPropertyForm> event) throws Exception {
       UISearchContainer uiSearchContainer = event.getSource().getAncestorOfType(UISearchContainer.class) ;
-      UIPopupAction uiPopup = uiSearchContainer.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiPopup = uiSearchContainer.getChild(UIPopupContainer.class) ;
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     }
@@ -129,13 +129,13 @@ public class UISelectPropertyForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UISelectPropertyForm> event) throws Exception {
       UISelectPropertyForm uiForm = event.getSource() ;
       String property = uiForm.<UIFormRadioBoxInput>getUIInput(PROPERTY).getValue();
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class);
-      UISearchContainer uiSearchContainer = uiPopupAction.getParent() ;
+      UIPopupContainer UIPopupContainer = uiForm.getAncestorOfType(UIPopupContainer.class);
+      UISearchContainer uiSearchContainer = UIPopupContainer.getParent() ;
       UIConstraintsForm uiConstraintsForm =
         uiSearchContainer.findFirstComponentOfType(UIConstraintsForm.class) ;
       uiConstraintsForm.getUIStringInput(uiForm.fieldName_).setValue(property) ;
-      uiPopupAction.deActivate() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+      UIPopupContainer.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConstraintsForm) ;
     }
   }

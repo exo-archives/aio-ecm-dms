@@ -26,8 +26,8 @@ import javax.jcr.Property;
 import javax.jcr.Value;
 import javax.jcr.query.QueryResult;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -113,7 +113,7 @@ public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
   static  public class CancelActionListener extends EventListener<UICompareExactlyForm> {
     public void execute(Event<UICompareExactlyForm> event) throws Exception {
       UISearchContainer uiSearchContainer = event.getSource().getAncestorOfType(UISearchContainer.class) ;
-      UIPopupAction uiPopup = uiSearchContainer.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiPopup = uiSearchContainer.getChild(UIPopupContainer.class) ;
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     }
@@ -123,7 +123,7 @@ public class UICompareExactlyForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UICompareExactlyForm> event) throws Exception {
       UICompareExactlyForm uiForm = event.getSource() ;
       String value = uiForm.getUIFormSelectBox(RESULT).getValue();
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class);
+      UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class);
       UISearchContainer uiSearchContainer = uiPopupAction.getParent() ;
       UIConstraintsForm uiConstraintsForm =
         uiSearchContainer.findFirstComponentOfType(UIConstraintsForm.class) ;

@@ -23,9 +23,9 @@ import java.util.ResourceBundle;
 
 import javax.jcr.Session;
 
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -66,7 +66,7 @@ import org.exoplatform.webui.form.UIFormTabPane;
       @EventConfig(listeners = UIDriveForm.ChangeActionListener.class, phase = Phase.DECODE)
     }
 )
-public class UIDriveForm extends UIFormTabPane implements UISelector {
+public class UIDriveForm extends UIFormTabPane implements UISelectable {
 
   private boolean isAddNew_ = true ;  
   final static public String[] ACTIONS = {"Save", "Refresh", "Cancel"} ;
@@ -93,8 +93,8 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
     }    
   }
 
-  public void updateSelect(String selectField, String value) {
-    getUIStringInput(selectField).setValue(value) ;
+  public void doSelect(String selectField, Object value) {
+    getUIStringInput(selectField).setValue(value.toString()) ;
     UIDriveManager uiContainer = getAncestorOfType(UIDriveManager.class) ;
     for(UIComponent uiChild : uiContainer.getChildren()) {
       if(uiChild.getId().equals(POPUP_DRIVEPERMISSION) || uiChild.getId().equals("JCRBrowser")
@@ -267,7 +267,10 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
     public void execute(Event<UIDriveForm> event) throws Exception {
       UIDriveForm uiDriveForm = event.getSource() ;
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
-      uiManager.initPopupJCRBrowserAssets() ;
+      UIDriveInputSet driveInputSet = uiDriveForm.getChild(UIDriveInputSet.class) ;
+      String workspace = 
+        driveInputSet.getUIFormSelectBox(UIDriveInputSet.FIELD_WORKSPACE).getValue() ;
+      uiManager.initPopupJCRBrowserAssets(workspace) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }

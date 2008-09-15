@@ -16,8 +16,8 @@
  */
 package org.exoplatform.ecm.webui.component.admin.taxonomy;
 
-import org.exoplatform.ecm.jcr.ECMNameValidator;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -56,8 +56,7 @@ public class UITaxonomyForm extends UIForm {
   public UITaxonomyForm() throws Exception {
     addUIFormInput(new UIFormInputInfo(FIELD_PARENT, FIELD_PARENT, null)) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
-    			addValidator(MandatoryValidator.class).
-                   addValidator(ECMNameValidator.class)) ;
+    			addValidator(MandatoryValidator.class).addValidator(ECMNameValidator.class)) ;
   }
   
   public void setParent(String path) {

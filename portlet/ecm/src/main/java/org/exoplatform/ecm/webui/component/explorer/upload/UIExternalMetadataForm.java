@@ -25,7 +25,7 @@ import javax.jcr.Node;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;

@@ -22,10 +22,10 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.SessionsUtils;
+import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -51,7 +51,7 @@ import org.exoplatform.webui.exception.MessageException;
       @EventConfig(listeners = UIRelationsAddedList.DeleteActionListener.class, confirm="UIRelationsAddedList.msg.confirm-delete")
     }
 )
-public class UIRelationsAddedList extends UIContainer implements UISelector {
+public class UIRelationsAddedList extends UIContainer implements UISelectable {
 
   private static String[] RELATE_BEAN_FIELD = {"path"} ;
   private static String[] ACTION = {"Delete"} ;
@@ -71,7 +71,7 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
   }
   
   @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) throws Exception {
+  public void doSelect(String selectField, Object value) throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     RelationsService relateService = getApplicationComponent(RelationsService.class) ;
     String currentFullPath = uiJCRExplorer.getCurrentWorkspace() + ":" + uiJCRExplorer.getCurrentNode().getPath() ;
@@ -81,11 +81,11 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
     }
     try {
       String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-      String wsName = value.substring(0, value.indexOf(":")) ;
-      String path = value.substring(value.indexOf(":") + 1) ;           
-      //TODO maybe lost data here      
+      String wsName = value.toString().substring(0, value.toString().indexOf(":")) ;
+      String path = value.toString().substring(value.toString().indexOf(":") + 1) ;           
       relateService.addRelation(uiJCRExplorer.getCurrentNode(), path, wsName,repository) ;
-      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName(),SessionsUtils.getSessionProvider())) ;      
+      updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), 
+          uiJCRExplorer.getRepositoryName(), SessionProviderFactory.createSessionProvider())) ;      
       setRenderSibbling(UIRelationsAddedList.class) ;
     } catch(Exception e) {
       e.printStackTrace() ;
@@ -103,7 +103,8 @@ public class UIRelationsAddedList extends UIContainer implements UISelector {
       UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
       try {
         relationService.removeRelation(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName()) ;
-        uiAddedList.updateGrid(relationService.getRelations(uiExplorer.getCurrentNode(),uiExplorer.getRepositoryName(),SessionsUtils.getSessionProvider())) ;
+        uiAddedList.updateGrid(relationService.getRelations(uiExplorer.getCurrentNode(),
+            uiExplorer.getRepositoryName(), SessionProviderFactory.createSessionProvider())) ;
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
       }

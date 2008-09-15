@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.exoplatform.container.ExoContainer;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.drives.ManageDriveService;
@@ -319,8 +319,10 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
   public static class SelectActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
-      UIRepositoryFormContainer uiRepoContainer = event.getSource().getAncestorOfType(UIRepositoryFormContainer.class) ;
-      UIRepositoryValueSelect uiSelect = uiRepoContainer.getChild(UIPopupAction.class).activate(UIRepositoryValueSelect.class, 500) ;
+      UIRepositoryFormContainer uiRepoContainer = 
+        event.getSource().getAncestorOfType(UIRepositoryFormContainer.class) ;
+      UIRepositoryValueSelect uiSelect = 
+        uiRepoContainer.getChild(UIPopupContainer.class).activate(UIRepositoryValueSelect.class, 500) ;
       uiSelect.isSetAuthentication_  = true ;
       List<ClassData> datas = new ArrayList<ClassData>() ;
       datas.add(new ClassData(UIRepositoryForm.KEY_AUTHENTICATIONPOLICY)) ;
@@ -331,14 +333,14 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm =  event.getSource() ;
       uiForm.ShowHidden() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupContainer.class)) ;
     }
   }
   public static class SaveActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
       UIRepositoryFormContainer uiControl = uiForm.getAncestorOfType(UIRepositoryFormContainer.class);
-      UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiWizardPopup = uiControl.getChild(UIPopupContainer.class) ;
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ;
       RepositoryEntry re = new RepositoryEntry() ;
@@ -441,7 +443,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIRepositoryControl uiRepoControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
       findFirstComponentOfType(UIRepositoryControl.class) ;
       uiRepoControl.reloadValue(true, rService) ;
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class) ;    
+      UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class) ;    
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ; 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiRepoControl) ;
@@ -451,13 +453,13 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
       UIRepositoryFormContainer uiControl = uiForm.getAncestorOfType(UIRepositoryFormContainer.class);
-      UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiWizardPopup = uiControl.getChild(UIPopupContainer.class) ;
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
       RepositoryService rService = uiForm.getApplicationComponent(RepositoryService.class) ;
       if(uiForm.isAddnew_) uiForm.refresh(rService.getDefaultRepository().getConfiguration()) ;
       else uiForm.refresh(rService.getRepository(uiForm.repoName_).getConfiguration());
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupContainer.class)) ;
     }
   }
 
@@ -494,8 +496,8 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         return ;
       }
       UIRepositoryFormContainer uiControl = uiForm.getAncestorOfType(UIRepositoryFormContainer.class);
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIECMAdminPortlet.class).findFirstComponentOfType(UIPopupAction.class) ;
-      UIPopupAction uiWorkspaceAction = uiControl.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIECMAdminPortlet.class).findFirstComponentOfType(UIPopupContainer.class) ;
+      UIPopupContainer uiWorkspaceAction = uiControl.getChild(UIPopupContainer.class) ;
       UIWorkspaceWizardContainer uiWsContainer = uiWorkspaceAction.activate(UIWorkspaceWizardContainer.class, 700) ; 
       WorkspaceEntry wsdf = null ;
       RepositoryEntry  repoEntry = rService.getDefaultRepository().getConfiguration() ;
@@ -513,11 +515,11 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
       UIRepositoryFormContainer uiControl = uiForm.getAncestorOfType(UIRepositoryFormContainer.class) ;
-      UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiWizardPopup = uiControl.getChild(UIPopupContainer.class) ;
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
       uiForm.refresh(null) ;
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIPopupAction.class);
+      UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class);
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
@@ -527,11 +529,11 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIRepositoryForm uiForm = event.getSource() ;
       String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIRepositoryFormContainer uiControl = uiForm.getAncestorOfType(UIRepositoryFormContainer.class) ;
-      UIPopupAction uiPopupAction = uiControl.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiPopupAction = uiControl.getChild(UIPopupContainer.class) ;
       uiPopupAction.deActivate() ;
       UIWorkspaceWizardContainer uiWsContainer = uiPopupAction.activate(UIWorkspaceWizardContainer.class, 600) ; 
       uiWsContainer.initWizard(uiForm.isAddnew_, false, uiForm.getWorkspace(workspaceName)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupAction.class)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupContainer.class)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
@@ -539,7 +541,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryForm uiForm = event.getSource() ;
       UIRepositoryFormContainer uiControl = uiForm.getAncestorOfType(UIRepositoryFormContainer.class) ; 
-      UIPopupAction uiWizardPopup = uiControl.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiWizardPopup = uiControl.getChild(UIPopupContainer.class) ;
       uiWizardPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWizardPopup) ; 
       String workspaceName = event.getRequestContext().getRequestParameter(OBJECTID) ;   

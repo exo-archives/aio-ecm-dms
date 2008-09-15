@@ -24,9 +24,9 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -75,8 +75,8 @@ public class UIECMTemplateList extends UIGrid {
   @SuppressWarnings("unchecked")
   public void updateTempListGrid() throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    List<Node> nodes = getApplicationComponent(ManageViewService.class)
-                      .getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES, repository,SessionsUtils.getSessionProvider()) ;
+    List<Node> nodes = getApplicationComponent(ManageViewService.class).
+      getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES, repository, SessionProviderFactory.createSessionProvider()) ;
     List<TemplateBean> tempBeans = new ArrayList<TemplateBean>() ;
     for(Node node : nodes) {
       tempBeans.add(new TemplateBean(node.getName(), node.getPath(), getBaseVersion(node))) ;
@@ -100,7 +100,7 @@ public class UIECMTemplateList extends UIGrid {
   static  public class AddActionListener extends EventListener<UIECMTemplateList> {
     public void execute(Event<UIECMTemplateList> event) throws Exception {
       UIECMTemplateList uiECMTempList = event.getSource() ;
-      SessionProvider provider = SessionsUtils.getSessionProvider() ;
+      SessionProvider provider = SessionProviderFactory.createSessionProvider() ;
       Node ecmTemplateHome = uiECMTempList.getApplicationComponent(ManageViewService.class)
       .getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, uiECMTempList.getRepository(),provider) ; 
       if(ecmTemplateHome == null) {

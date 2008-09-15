@@ -18,7 +18,6 @@ package org.exoplatform.ecm.webui.component.admin;
 
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.action.UIActionManager;
 import org.exoplatform.ecm.webui.component.admin.drives.UIDriveManager;
 import org.exoplatform.ecm.webui.component.admin.folksonomy.UIFolksonomyManager;
@@ -30,6 +29,7 @@ import org.exoplatform.ecm.webui.component.admin.script.UIScriptManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManager;
 import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
 import org.exoplatform.ecm.webui.component.admin.views.UIViewManager;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;

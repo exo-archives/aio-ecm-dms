@@ -29,8 +29,8 @@ import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
@@ -74,11 +74,11 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
       @EventConfig(listeners = UINodeTypeForm.SaveActionListener.class),
       @EventConfig(listeners = UIPropertyDefinitionForm.AddPropertyActionListener.class),
       @EventConfig(listeners = UIChildNodeDefinitionForm.AddChildActionListener.class),
-      @EventConfig(listeners = UINodeTypeForm.ViewChildNodeActionListener.class),
-      @EventConfig(listeners = UINodeTypeForm.ViewPropertyActionListener.class),
-      @EventConfig(listeners = UINodeTypeForm.AddSuperTypeActionListener.class),
-      @EventConfig(listeners = UIChildNodeDefinitionForm.AddDefaultTypeActionListener.class),
-      @EventConfig(listeners = UIChildNodeDefinitionForm.AddRequiredTypeActionListener.class),
+      @EventConfig(listeners = UINodeTypeForm.ViewChildNodeActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UINodeTypeForm.ViewPropertyActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UINodeTypeForm.AddSuperTypeActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIChildNodeDefinitionForm.AddDefaultTypeActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIChildNodeDefinitionForm.AddRequiredTypeActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UINodeTypeOptionList.AddTypeActionListener.class),
       @EventConfig(listeners = UIChildNodeDefinitionForm.RemoveChildNodeActionListener.class, confirm = "UINodeTypeForm.msg.confirm-delete-child"),
       @EventConfig(listeners = UIChildNodeDefinitionForm.EditChildNodeActionListener.class),
@@ -89,7 +89,7 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
       @EventConfig(listeners = UIPropertyDefinitionForm.UpdatePropertyActionListener.class),
       @EventConfig(listeners = UIPropertyDefinitionForm.CancelPropertyActionListener.class),
       @EventConfig(listeners = UIPropertyDefinitionForm.ChangeRequiredTypeActionListener.class),
-      @EventConfig(listeners = UIPropertyDefinitionForm.AddConstraintsActionListener.class),
+      @EventConfig(listeners = UIPropertyDefinitionForm.AddConstraintsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIPropertyDefinitionForm.AddValueActionListener.class),
       @EventConfig(listeners = UIPropertyDefinitionForm.CancelConstraintsActionListener.class),
       @EventConfig(listeners = UIPropertyDefinitionForm.AddActionListener.class),

@@ -14,11 +14,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.ecm.webui.component;
+package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -61,14 +62,14 @@ public class UIVoteForm extends UIComponent implements UIPopupComponent {
       double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiExplorer.getApplicationComponent(VotingService.class) ;
       votingService.vote(uiExplorer.getCurrentNode(), objId, userName, language) ;
-      event.getSource().getAncestorOfType(UIPopupAction.class).cancelPopupAction() ;
+      event.getSource().getAncestorOfType(UIPopupContainer.class).cancelPopupAction() ;
       uiExplorer.updateAjax(event) ;
     }
   }
 
   static  public class CancelActionListener extends EventListener<UIVoteForm> {
     public void execute(Event<UIVoteForm> event) throws Exception {
-      event.getSource().getAncestorOfType(UIPopupAction.class).cancelPopupAction() ;
+      event.getSource().getAncestorOfType(UIPopupContainer.class).cancelPopupAction() ;
     }
   }
 }

@@ -24,9 +24,9 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
-import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -62,7 +62,7 @@ public class UIViewRelationList extends UIContainer{
     ManageableRepository repository = repositoryService.getRepository(uiExplorer.getRepositoryName()) ;
     String[] wsNames = repository.getWorkspaceNames() ;
     for(String wsName : wsNames) {
-      Session session = SessionsUtils.getSystemProvider().getSession(wsName, repository) ;
+      Session session = SessionProviderFactory.createSystemProvider().getSession(wsName, repository) ;
       for(Value val : vals) {
         String uuid = val.getString();
         try {

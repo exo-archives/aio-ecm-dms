@@ -18,8 +18,9 @@ package org.exoplatform.ecm.webui.component.explorer.popup.info;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
@@ -66,7 +67,7 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
         getChild(UIPermissionForm.class).setRendered(false) ;
       }
     } else {
-      if(!Utils.hasChangePermissionRight(node)) {
+      if(!PermissionUtil.canChangePermission(node)) {
         getChild(UIPermissionInfo.class).getChild(UIGrid.class).configure("usersOrGroups", UIPermissionInfo.PERMISSION_BEAN_FIELD, new String[]{}) ;
         getChild(UIPermissionForm.class).setRendered(false) ;
       }

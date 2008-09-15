@@ -22,12 +22,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.exoplatform.container.ExoContainer;
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.CacheEntry;
 import org.exoplatform.services.jcr.config.ContainerEntry;
@@ -80,7 +80,7 @@ import org.exoplatform.webui.form.UIFormTabPane;
     }
 
 )
-public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
+public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
   private int wizardMaxStep_ = 3 ;
   private int selectedStep_ = 1 ;
   private int currentStep_ = 0 ;
@@ -294,10 +294,10 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     return sb.toString() ;
   }
   @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) {
+  public void doSelect(String selectField, Object value) {
     UIFormInputSetWithAction uiFormAction = getChildById(FIELD_STEP1) ;
     UIFormStringInput permissionField = uiFormAction.getUIStringInput(UIWizardStep1.FIELD_PERMISSION) ;
-    permissionField.setValue(value) ;
+    permissionField.setValue(value.toString()) ;
   }
   
   protected void showHidden(boolean isChecked) {
@@ -313,7 +313,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
       uiFormWizard.viewStep(1) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ; 
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupContainer.class)) ; 
     }
   }
 
@@ -400,7 +400,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         }
       }
       uiFormWizard.viewStep(2) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupContainer.class)) ;
     }
   }
 
@@ -527,7 +527,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
         uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SWAPPATH).setValue(swapPathAuto) ;
       }
       uiFormWizard.viewStep(3) ; 
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupAction.class)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiFormWizard.getAncestorOfType(UIPopupContainer.class)) ;
     }
   }
   
@@ -673,9 +673,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
           return;
         }
       }
-      UIPopupAction uiPopupAction = uiFormWizard.getAncestorOfType(UIPopupAction.class) ;
-      uiPopupAction.deActivate() ;      
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+      UIPopupContainer UIPopupContainer = uiFormWizard.getAncestorOfType(UIPopupContainer.class) ;
+      UIPopupContainer.deActivate() ;      
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiRepoForm) ;
     }
 
@@ -930,10 +930,10 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   public static class AddPermissionActionListener extends EventListener<UIWorkspaceWizard> {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiWizardForm = event.getSource() ;
-      UIPopupAction uiPopupAction = uiWizardForm.getAncestorOfType(UIWorkspaceWizardContainer.class).
-      getChild(UIPopupAction.class) ;
-      uiPopupAction.activate(UIPermissionContainer.class, 600) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+      UIPopupContainer UIPopupContainer = uiWizardForm.getAncestorOfType(UIWorkspaceWizardContainer.class).
+      getChild(UIPopupContainer.class) ;
+      UIPopupContainer.activate(UIPermissionContainer.class, 600) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer) ;
     }
 
   }
@@ -941,15 +941,15 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiForm = event.getSource() ;
       String permName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIPopupAction uiPopupAction = uiForm.getAncestorOfType(UIWorkspaceWizardContainer.class).
-      getChild(UIPopupAction.class) ;
+      UIPopupContainer UIPopupContainer = uiForm.getAncestorOfType(UIWorkspaceWizardContainer.class).
+      getChild(UIPopupContainer.class) ;
       UIWizardStep1 ws1 = uiForm.getChildById(FIELD_STEP1) ;
-      UIPermissionContainer uiContainer = uiPopupAction.activate(UIPermissionContainer.class, 600) ;
+      UIPermissionContainer uiContainer = UIPopupContainer.activate(UIPermissionContainer.class, 600) ;
       uiContainer.setValues(permName, ws1.getPermissions().get(permName)) ;
       uiContainer.lockForm(!uiForm.isNewRepo_ && !uiForm.isNewWizard_) ;
       ws1.refreshPermissionList() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIWorkspaceWizardContainer.class)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer) ;
     }
   }
 
@@ -968,9 +968,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
       uiFormWizard.refresh(null) ;
-      UIPopupAction uiPopupAction = uiFormWizard.getAncestorOfType(UIPopupAction.class) ;
-      uiPopupAction.deActivate() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+      UIPopupContainer UIPopupContainer = uiFormWizard.getAncestorOfType(UIPopupContainer.class) ;
+      UIPopupContainer.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer) ;
     }
   }
 
@@ -990,8 +990,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   public static class SelectContainerActionListener extends EventListener<UIWorkspaceWizard> {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiWizard = event.getSource() ;
-      UIPopupAction uiPopup = uiWizard.getAncestorOfType(UIWorkspaceWizardContainer.class).
-      getChild(UIPopupAction.class);
+      UIPopupContainer uiPopup = uiWizard.getAncestorOfType(UIWorkspaceWizardContainer.class).
+      getChild(UIPopupContainer.class);
       UIRepositoryValueSelect uiSelect = uiPopup.activate(UIRepositoryValueSelect.class, 500) ;
       uiSelect.isSetContainer_ = true ;
       List<ClassData> datas = new ArrayList<ClassData>() ;
@@ -1004,8 +1004,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   public static class SelectStoreActionListener extends EventListener<UIWorkspaceWizard> {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiWizard = event.getSource() ;
-      UIPopupAction uiPopup = uiWizard.getAncestorOfType(UIWorkspaceWizardContainer.class).
-      getChild(UIPopupAction.class);
+      UIPopupContainer uiPopup = uiWizard.getAncestorOfType(UIWorkspaceWizardContainer.class).
+      getChild(UIPopupContainer.class);
       UIRepositoryValueSelect uiSelect = uiPopup.activate(UIRepositoryValueSelect.class, 500) ;
       uiSelect.isSetStoreType_ = true ;
       List<ClassData> datas = new ArrayList<ClassData>() ;
@@ -1018,8 +1018,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelector {
   public static class SelectQueryHandlerActionListener extends EventListener<UIWorkspaceWizard> {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiWizard = event.getSource() ;
-      UIPopupAction uiPopup = uiWizard.getAncestorOfType(UIWorkspaceWizardContainer.class).
-      getChild(UIPopupAction.class);
+      UIPopupContainer uiPopup = uiWizard.getAncestorOfType(UIWorkspaceWizardContainer.class).
+      getChild(UIPopupContainer.class);
       UIRepositoryValueSelect uiSelect = uiPopup.activate(UIRepositoryValueSelect.class, 500) ;
       uiSelect.isSetQueryHandler_ = true ;
       List<ClassData> datas = new ArrayList<ClassData>() ;

@@ -21,9 +21,9 @@ import javax.portlet.PortletModeException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -45,91 +45,91 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 
 public class UIBrowseContentPortlet extends UIPortletApplication  {
 
-  private boolean isViewModing_ = true ;
+  private boolean isViewModing_ = true;
   @SuppressWarnings("unused") 
   public UIBrowseContentPortlet() throws Exception {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    String minWidth = portletPref.getValue(Utils.MIN_WIDTH, "") ;
-    if(minWidth != null && minWidth.length() > 0) setMinWidth(Integer.parseInt(minWidth)) ;
-    addChild(UIBrowseContentHelp.class, null, null) ;
-    PortletRequestContext context =  (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    UIPopupAction popup = addChild(UIPopupAction.class, null, null);
-    popup.setId("UICBPopupAction") ;
-    popup.getChild(UIPopupWindow.class).setId("UICBPopupWindow") ;
-    UIBrowseContainer uiBrowseContainer = addChild(UIBrowseContainer.class, null , null) ;
-    addChild(UIConfigTabPane.class, null, null) ;    
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+    String minWidth = portletPref.getValue(Utils.MIN_WIDTH, "");
+    if(minWidth != null && minWidth.length() > 0) setMinWidth(Integer.parseInt(minWidth));
+    addChild(UIBrowseContentHelp.class, null, null);
+    PortletRequestContext context =  (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    UIPopupContainer popup = addChild(UIPopupContainer.class, null, null);
+    popup.setId("UICBPopupAction");
+    popup.getChild(UIPopupWindow.class).setId("UICBPopupWindow");
+    UIBrowseContainer uiBrowseContainer = addChild(UIBrowseContainer.class, null , null);
+    addChild(UIConfigTabPane.class, null, null);    
     try {
-      uiBrowseContainer.loadPortletConfig(getPortletPreferences()) ;
+      uiBrowseContainer.loadPortletConfig(getPortletPreferences());
     } catch (Throwable e) {      
-      setPorletMode(PortletMode.HELP) ;
+      setPorletMode(PortletMode.HELP);
     }
   }
 
   public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {    
-    context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/") ;
-    context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIBrowseContentPortlet') ;");
-    PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
-    UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class) ;
-    UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class) ;
-    UIBrowseContentHelp uiBCHelp = getChild(UIBrowseContentHelp.class) ;
+    context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
+    context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIBrowseContentPortlet');");
+    PortletRequestContext portletReqContext = (PortletRequestContext)  context;
+    UIConfigTabPane uiTabPane = getChild(UIConfigTabPane.class);
+    UIBrowseContainer uiContainer = getChild(UIBrowseContainer.class);
+    UIBrowseContentHelp uiBCHelp = getChild(UIBrowseContentHelp.class);
     if(portletReqContext.getApplicationMode() == PortletMode.VIEW) {       
-      uiTabPane.setRendered(false) ;
-      uiBCHelp.setRendered(false) ;
-      uiContainer.setRendered(true) ;
-      if(!isViewModing_) uiContainer.refreshContent() ; 
-      isViewModing_ = true ;
+      uiTabPane.setRendered(false);
+      uiBCHelp.setRendered(false);
+      uiContainer.setRendered(true);
+      if(!isViewModing_) uiContainer.refreshContent(); 
+      isViewModing_ = true;
     } else if(portletReqContext.getApplicationMode() == PortletMode.EDIT) {      
-      if(!SessionsUtils.isAnonim()) {
-        if(!uiTabPane.isNewConfig()) uiTabPane.getCurrentConfig() ;
-        uiTabPane.setRendered(true) ;
-        uiBCHelp.setRendered(false) ;
-        uiContainer.setRendered(false) ;
-        isViewModing_ = false ;
+      if(!SessionProviderFactory.isAnonim()) {
+        if(!uiTabPane.isNewConfig()) uiTabPane.getCurrentConfig();
+        uiTabPane.setRendered(true);
+        uiBCHelp.setRendered(false);
+        uiContainer.setRendered(false);
+        isViewModing_ = false;
       }
     } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {      
-      uiTabPane.setRendered(false) ;
-      uiBCHelp.setRendered(true) ;
-      uiContainer.setRendered(false) ;
-      isViewModing_ = false ;
+      uiTabPane.setRendered(false);
+      uiBCHelp.setRendered(true);
+      uiContainer.setRendered(false);
+      isViewModing_ = false;
     }
     try {
-      super.processRender(app, context) ;
+      super.processRender(app, context);
     } catch (Exception e) {
-      e.printStackTrace() ;
+      e.printStackTrace();
     }
   }
   protected void reload() throws Exception {
-    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-    WebuiApplication app =  (WebuiApplication)context.getApplication() ;
-    processRender(app, context) ;
+    WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
+    WebuiApplication app =  (WebuiApplication)context.getApplication();
+    processRender(app, context);
   }
   
   protected void setPorletMode(PortletMode mode) throws PortletModeException {
-    PortletRequestContext portletReqContext =  (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    portletReqContext.setApplicationMode(mode) ;
+    PortletRequestContext portletReqContext =  (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    portletReqContext.setApplicationMode(mode);
   }
   protected boolean isExitsRepo(String repoName) {
-    RepositoryService rService = getApplicationComponent(RepositoryService.class) ;
+    RepositoryService rService = getApplicationComponent(RepositoryService.class);
     try {
-      rService.getRepository(repoName) ;
-      return true ;
+      rService.getRepository(repoName);
+      return true;
     } catch (Exception e) {
-      e.printStackTrace() ;
-      return false ;
+      e.printStackTrace();
+      return false;
     }
   }
 
   public PortletPreferences getPortletPreferences() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletRequest prequest = pcontext.getRequest() ;
-    PortletPreferences portletPref = prequest.getPreferences() ;
-    return portletPref ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    PortletRequest prequest = pcontext.getRequest();
+    PortletPreferences portletPref = prequest.getPreferences();
+    return portletPref;
   }
 
   public String getPreferenceRepository() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    return portletPref.getValue(Utils.REPOSITORY, "") ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+    return portletPref.getValue(Utils.REPOSITORY, "");
   }
 }

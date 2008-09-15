@@ -24,9 +24,9 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -71,7 +71,7 @@ public class UIViewList extends UIGrid {
   
   private String getBaseVersion(String name) throws Exception {
     Node node = getApplicationComponent(ManageViewService.class).getViewByName(name, 
-        getRepository(), SessionsUtils.getSystemProvider());
+        getRepository(), SessionProviderFactory.createSystemProvider());
     if(node == null) return null ;
     if(!node.isNodeType(Utils.MIX_VERSIONABLE) || node.isNodeType(Utils.NT_FROZEN)) return "";
     return node.getBaseVersion().getName();    
@@ -172,8 +172,8 @@ public class UIViewList extends UIGrid {
       String repository = uiViewList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       uiViewList.setRenderSibbling(UIViewList.class) ;
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;      
-      Node viewNode = uiViewList.getApplicationComponent(ManageViewService.class)
-                                .getViewByName(viewName, repository,SessionsUtils.getSystemProvider()) ;
+      Node viewNode = uiViewList.getApplicationComponent(ManageViewService.class).
+        getViewByName(viewName, repository, SessionProviderFactory.createSystemProvider()) ;
       UIViewContainer uiViewContainer = uiViewList.getParent() ;
       uiViewContainer.removeChildById(UIViewList.ST_VIEW) ;
       uiViewContainer.removeChildById(UIViewList.ST_ADD) ;      
@@ -199,12 +199,11 @@ public class UIViewList extends UIGrid {
   static  public class ViewActionListener extends EventListener<UIViewList> {
     public void execute(Event<UIViewList> event) throws Exception {
       UIViewList uiViewList = event.getSource() ;
-      String repository = uiViewList.getAncestorOfType(UIECMAdminPortlet.class)
-      .getPreferenceRepository() ;
+      String repository = uiViewList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       uiViewList.setRenderSibbling(UIViewList.class) ;
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Node viewNode = uiViewList.getApplicationComponent(ManageViewService.class).getViewByName(
-          viewName, repository,SessionsUtils.getSystemProvider()) ;
+          viewName, repository, SessionProviderFactory.createSystemProvider()) ;
       UIViewContainer uiViewContainer = uiViewList.getParent() ;
       uiViewContainer.removeChildById(UIViewList.ST_EDIT) ;
       uiViewContainer.removeChildById(UIViewList.ST_ADD) ;      

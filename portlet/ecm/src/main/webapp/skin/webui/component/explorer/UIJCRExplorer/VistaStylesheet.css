@@ -16,6 +16,13 @@
   width: 95%;
 }
 
+.UIJCRExplorerPortlet .UIOneNodePathSelector .UIFormWithTitle {
+  width: 600px;
+  margin: 10px auto;
+  border: 1px solid #b7b7b7;
+  background: #F3F3F3;
+}
+
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px;
 }
@@ -521,7 +528,7 @@
   border-top: solid 1px #cccccc;
 }
 
-.UIJCRExplorer .UIJCRBrowser .UITrees .Node {
+.UIJCRExplorer .UIOneNodePathSelector .UITrees .Node {
   line-height: 24px;
 }
 

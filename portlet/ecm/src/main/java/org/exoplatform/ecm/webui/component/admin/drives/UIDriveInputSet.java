@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.RequestContext;
@@ -40,7 +40,7 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
  *          trongtt@gmail.com
  * Jun 28, 2006
  */
-@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "classpath:groovy/ecm/webui/form/UIFormInputSetWithAction.gtmpl")
 public class UIDriveInputSet extends UIFormInputSetWithAction {
   final static public String FIELD_NAME = "name" ;
   final static public String FIELD_WORKSPACE = "workspace" ;

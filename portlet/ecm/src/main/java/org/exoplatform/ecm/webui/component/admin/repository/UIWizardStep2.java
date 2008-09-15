@@ -19,7 +19,7 @@ package org.exoplatform.ecm.webui.component.admin.repository;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.services.jcr.impl.storage.jdbc.DBConstants;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.model.SelectItemOption;
@@ -34,7 +34,7 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
  *          tuan.pham@exoplatform.com
  * Aug 8, 2007  
  */
-@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "classpath:groovy/ecm/webui/form/UIFormInputSetWithAction.gtmpl")
 public class UIWizardStep2 extends UIFormInputSetWithAction {
   final static public String FIELD_CONTAINER = "container" ;
   final static public String FIELD_SOURCENAME = "sourceName" ;  

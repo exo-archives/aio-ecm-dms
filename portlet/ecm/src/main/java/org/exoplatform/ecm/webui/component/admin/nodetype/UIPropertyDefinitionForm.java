@@ -23,8 +23,8 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.nodetype.PropertyDefinitionValue;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -49,7 +49,7 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
  * 3:36:17 PM 
  */
 @ComponentConfig(
-    template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl"
+    template = "classpath:groovy/ecm/webui/form/UIFormInputSetWithAction.gtmpl"
 )
 public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
 

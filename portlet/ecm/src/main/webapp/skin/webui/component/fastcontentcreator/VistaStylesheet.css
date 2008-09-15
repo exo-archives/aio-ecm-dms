@@ -95,12 +95,12 @@
   padding-top: 10px;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .UIFormWithTitle {
+.UIFastContentCreatorPortlet .UIOneNodePathSelector .UIFormWithTitle {
 	padding: 0px;
 	width: auto;
 }
 
-.UIFastContentCreatorPortlet .UIJCRBrowser .UITrees .Node {
+.UIFastContentCreatorPortlet .UIOneNodePathSelector .UITrees .Node {
   line-height: 24px;
 }
 

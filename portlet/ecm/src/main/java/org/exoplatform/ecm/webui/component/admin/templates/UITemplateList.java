@@ -25,8 +25,8 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.utils.SessionsUtils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -70,7 +70,8 @@ public class UITemplateList extends UIGrid {
   public void updateGrid() throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    Node templatesHome = templateService.getTemplatesHome(repository,SessionsUtils.getSessionProvider()) ;
+    Node templatesHome = templateService.getTemplatesHome(repository, 
+        SessionProviderFactory.createSessionProvider()) ;
     List<TemplateData> templateData = new ArrayList<TemplateData>() ;
     if(templatesHome != null) {
       NodeIterator nodes = templatesHome.getNodes() ;

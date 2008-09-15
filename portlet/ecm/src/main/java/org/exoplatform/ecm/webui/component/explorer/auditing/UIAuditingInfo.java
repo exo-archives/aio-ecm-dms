@@ -7,7 +7,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.ext.audit.AuditHistory;
 import org.exoplatform.services.jcr.ext.audit.AuditRecord;

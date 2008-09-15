@@ -18,11 +18,11 @@ package org.exoplatform.ecm.webui.component.explorer.control;
 
 import java.util.List;
 
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -88,7 +88,7 @@ public class UIViewBar extends UIForm {
     public void execute(Event<UIViewBar> event) throws Exception {
       UIViewBar viewBar = event.getSource();
       UIJCRExplorer uiJCRExplorer = viewBar.getAncestorOfType(UIJCRExplorer.class);                                         
-      UIPopupAction popupAction = uiJCRExplorer.getChild(UIPopupAction.class);
+      UIPopupContainer popupAction = uiJCRExplorer.getChild(UIPopupContainer.class);
       UIPreferencesForm uiPrefForm = popupAction.activate(UIPreferencesForm.class,600) ;
       uiPrefForm.update(uiJCRExplorer.getPreference()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;

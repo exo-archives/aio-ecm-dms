@@ -20,8 +20,8 @@ import java.util.List;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -90,7 +90,7 @@ public class UIViewMetadataTemplate extends UIContainer {
       UIViewMetadataManager uiMetaManager = uiViewTemplate.getAncestorOfType(UIViewMetadataManager.class) ;
       UIJCRExplorer uiExplorer = uiViewTemplate.getAncestorOfType(UIJCRExplorer.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
-      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canSetProperty(currentNode)) {
         throw new MessageException(new ApplicationMessage("UIViewMetadataTemplate.msg.access-denied",
                                                           null, ApplicationMessage.WARNING)) ;
       }

@@ -18,10 +18,10 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 
 import javax.jcr.AccessDeniedException;
 
-import org.exoplatform.ecm.jcr.ECMNameValidator;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -100,7 +100,7 @@ public class UISaveQueryForm extends UIForm implements UIPopupComponent {
       uiECMSearch.getChild(UISavedQuery.class).updateGrid() ;
       if(uiSaveQueryForm.isSimpleSearch_) {
         UISearchContainer uiSearchContainer = uiSaveQueryForm.getAncestorOfType(UISearchContainer.class) ;
-        UIPopupAction uiPopup = uiSearchContainer.getChild(UIPopupAction.class) ;
+        UIPopupContainer uiPopup = uiSearchContainer.getChild(UIPopupContainer.class) ;
         uiPopup.deActivate() ;
       }
       uiECMSearch.setRenderedChild(UISavedQuery.class) ;
@@ -111,7 +111,7 @@ public class UISaveQueryForm extends UIForm implements UIPopupComponent {
   static  public class CancelActionListener extends EventListener<UISaveQueryForm> {
     public void execute(Event<UISaveQueryForm> event) throws Exception {
       UISearchContainer uiSearchContainer = event.getSource().getAncestorOfType(UISearchContainer.class) ;
-      UIPopupAction uiPopup = uiSearchContainer.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiPopup = uiSearchContainer.getChild(UIPopupContainer.class) ;
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     }

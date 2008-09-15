@@ -25,8 +25,8 @@ import javax.jcr.Value;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -77,7 +77,8 @@ public class UIViewTab extends UIContainer {
   
   public void updateGrid(String nodeName) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
-    NodeIterator iter = tempService.getAllTemplatesOfNodeType(false, nodeName, getRepository(),SessionsUtils.getSystemProvider()) ;
+    NodeIterator iter = tempService.getAllTemplatesOfNodeType(false, nodeName, getRepository(), 
+        SessionProviderFactory.createSystemProvider()) ;
     List<ViewData> data = new ArrayList<ViewData>() ;
     ViewData item  ;
     while(iter.hasNext()) {

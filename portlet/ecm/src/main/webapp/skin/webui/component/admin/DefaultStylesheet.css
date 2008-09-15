@@ -256,6 +256,12 @@
   margin: 0px auto;
 }
 
+.UIECMAdminPortlet .UIOneNodePathSelector .UIFormWithTitle {
+	margin: 10px auto;
+	width: 580px;
+	border:1px solid #b7b7b7;
+}
+
 .UIECMAdminPortlet .UIFormGrid input {
   padding-left: 3px;
 }

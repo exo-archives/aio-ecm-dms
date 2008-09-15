@@ -31,6 +31,9 @@ import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
@@ -60,11 +63,9 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
-import org.exoplatform.webui.form.UIFormWYSIWYGInput;
-import org.exoplatform.workflow.utils.Utils;
+import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
 import org.exoplatform.workflow.webui.component.BJARResourceResolver;
 import org.exoplatform.workflow.webui.component.InputInfo;
-import org.exoplatform.workflow.webui.component.UIWorkflowPopup;
 import org.exoplatform.workflow.webui.component.VariableMaps;
 
 /**
@@ -170,7 +171,7 @@ public class UITask extends UIForm {
       repository = jcrService.getDefaultRepository().getConfiguration().getName() ;
     }
     ManageableRepository mRepository = jcrService.getRepository(repository) ;
-    SessionProvider sessionProvider = Utils.getSessionProvider() ;
+    SessionProvider sessionProvider = SessionProviderFactory.createSessionProvider() ;
     List variables = form.getVariables();
     UIFormInput input = null;
     int i = 0;
@@ -194,9 +195,9 @@ public class UITask extends UIForm {
         String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);          
         Node dialogNode = (Node) sessionProvider.getSession(workspaceName,mRepository).getItem(nodePath);
         String nodetype = dialogNode.getPrimaryNodeType().getName();
-        uiDocForm.setNode(dialogNode);
+        uiDocForm.setNodePath(nodePath);
         uiDocForm.setTemplateNode(nodetype) ;
-        uiDocForm.setRepository(repository) ;
+        uiDocForm.setRepositoryName(repository) ;
         Task task = serviceContainer.getTask(identification_);
         form = formsService.getForm(task.getProcessId(), task.getTaskName(), locale);
         uiTaskManager.addChild(uiDocForm) ;
@@ -216,7 +217,8 @@ public class UITask extends UIForm {
           input = new UIFormTextAreaInput(name, null, (String) value);
           ((UIFormTextAreaInput)input).setEditable(editable);
         } else if (WYSIWYG.equals(component)) {
-          input = new UIFormWYSIWYGInput(name, name, (String) value, false);
+          input = new UIFormWYSIWYGInput(name, name, (String) value);
+          ((UIFormWYSIWYGInput)input).setToolBarName(UIFormWYSIWYGInput.DEFAULT_TOOLBAR);
           ((UIFormWYSIWYGInput)input).setEditable(editable);
         } else if (DATE.equals(component) || DATE_TIME.equals(component)) {
           input = (value == null ? new UIFormDateTimeInput(name, null, new Date()) : 
@@ -333,13 +335,6 @@ public class UITask extends UIForm {
       }
       if (value == null) value = "";
       workflowVariables.put(name, value);
-
-//      String jcrPath = (String) input.getProperty("jcrPath");
-//      if (jcrPath != null) {
-//        jcrVariables.put(jcrPath, value);
-//      } else {
-//        workflowVariables.put(name, value);
-//      }
     }
     String repository = jcrService.getDefaultRepository().getConfiguration().getName() ;
     workflowVariables.put(Utils.REPOSITORY, repository) ;
@@ -362,7 +357,7 @@ public class UITask extends UIForm {
       VariableMaps maps = uiTask.prepareVariables();
       Map variables = maps.getWorkflowVariables();
       uiTask.serviceContainer.startProcess(remoteUser, uiTask.identification_, variables);
-      uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
+      uiTask.getAncestorOfType(UIPopupContainer.class).deActivate() ;
     }
   }
 
@@ -376,13 +371,13 @@ public class UITask extends UIForm {
       } catch (Exception ex) {
         ex.printStackTrace();
       }
-      uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
+      uiTask.getAncestorOfType(UIPopupContainer.class).deActivate() ;
     }
   }
 
   static  public class CancelActionListener extends EventListener<UITask> {
     public void execute(Event<UITask> event) throws Exception {
-      UIWorkflowPopup uiPopup = event.getSource().getAncestorOfType(UIWorkflowPopup.class) ;
+      UIPopupContainer uiPopup = event.getSource().getAncestorOfType(UIPopupContainer.class) ;
       uiPopup.deActivate() ;
     }
   }
@@ -406,7 +401,7 @@ public class UITask extends UIForm {
           }
         }
       }
-      uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
+      uiTask.getAncestorOfType(UIPopupContainer.class).deActivate() ;
     }
   }
 }

@@ -16,10 +16,10 @@
  */
 package org.exoplatform.ecm.webui.component.admin.metadata;
 
-import org.exoplatform.ecm.jcr.JCRResourceResolver;
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.groovyscript.text.TemplateService;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -51,7 +51,7 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
     }
 )
 
-public class UIMetadataForm extends UIFormTabPane implements UISelector {
+public class UIMetadataForm extends UIFormTabPane implements UISelectable {
 
   final static public String METADATA_PATH = "metadataPath" ;
   final static public String MAPPING = "mapping" ;
@@ -68,6 +68,7 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
   private boolean isAddNew_ = false ;
   private String metadataName_ ;
   private String repository_ ;
+  private String workspaceName_ ;
 
   public UIMetadataForm() throws Exception {
     super("UIMetadataForm") ;
@@ -88,8 +89,8 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
   }
 
   @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) {
-    getUIStringInput(VIEW_PERMISSION).setValue(value) ;
+  public void doSelect(String selectField, Object value) {
+    getUIStringInput(VIEW_PERMISSION).setValue(value.toString()) ;
     UIMetadataManager uiManager = getAncestorOfType(UIMetadataManager.class) ;
     uiManager.removeChildById(UIMetadataManager.PERMISSION_POPUP) ;
   }
@@ -98,6 +99,7 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
     metadataName_ = metadata ;
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     repository_ = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    workspaceName_ = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     getUIStringInput(METADATA_NAME).setValue(metadata) ;
     String dialogTemplate = metadataService.getMetadataTemplate(metadata, true, repository_) ;
     String viewTemplate = metadataService.getMetadataTemplate(metadata, false, repository_) ;
@@ -120,12 +122,12 @@ public class UIMetadataForm extends UIFormTabPane implements UISelector {
       if(viewTemplate == null) viewTemplate = "" ;
       if(!metadataService.hasMetadata(uiForm.metadataName_, uiForm.repository_)) uiForm.isAddNew_ = true ;
       else uiForm.isAddNew_ = false ;
-      String repository = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-      JCRResourceResolver resourceResolver = new JCRResourceResolver(null, "exo:templateFile") ;
+      JCRResourceResolver resourceResolver = 
+        new JCRResourceResolver(uiForm.repository_, uiForm.workspaceName_, "exo:templateFile") ;
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
-      String path = metadataService.addMetadata(uiForm.metadataName_, true, roles, dialogTemplate, uiForm.isAddNew_, repository) ;
+      String path = metadataService.addMetadata(uiForm.metadataName_, true, roles, dialogTemplate, uiForm.isAddNew_, uiForm.repository_) ;
       if(path != null) templateService.invalidateTemplate(path, resourceResolver) ;
-      path = metadataService.addMetadata(uiForm.metadataName_, false, roles, viewTemplate, uiForm.isAddNew_, repository) ;
+      path = metadataService.addMetadata(uiForm.metadataName_, false, roles, viewTemplate, uiForm.isAddNew_, uiForm.repository_) ;
       if(path != null) templateService.invalidateTemplate(path, resourceResolver) ;
       uiForm.reset() ;
       uiMetaManager.getChild(UIMetadataList.class).updateGrid() ;

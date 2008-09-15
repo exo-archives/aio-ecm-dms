@@ -18,11 +18,11 @@ package org.exoplatform.workflow.webui.component.controller ;
 
 import javax.jcr.PathNotFoundException;
 
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.workflow.webui.component.UIPopupComponent;
 
 /**
  * Created by The eXo Platform SARL

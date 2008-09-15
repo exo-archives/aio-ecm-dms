@@ -16,7 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.admin.queries;
 
-import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
+import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -55,15 +55,16 @@ public class UIQueriesManager extends UIContainer {
     removeChildById("PermissionPopup") ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "PermissionPopup");
     uiPopup.setWindowSize(560, 300);
-    UIECMPermissionBrowser uiECMPermission = 
-      createUIComponent(UIECMPermissionBrowser.class, null, "QueriesPermissionBrowse") ;
+    UIPermissionSelector uiECMPermission = 
+      createUIComponent(UIPermissionSelector.class, null, "QueriesPermissionBrowse") ;
+    uiECMPermission.setSelectedMembership(true);
     if(membership != null && membership.indexOf(":/") > -1) {
       String[] arrMember = membership.split(":/") ;
       uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
     }
     uiPopup.setUIComponent(uiECMPermission);
     UIQueriesForm uiForm = findFirstComponentOfType(UIQueriesForm.class) ;
-    uiECMPermission.setComponent(uiForm, new String[] {UIQueriesForm.PERMISSIONS}) ;
+    uiECMPermission.setSourceComponent(uiForm, new String[] {UIQueriesForm.PERMISSIONS}) ;
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;

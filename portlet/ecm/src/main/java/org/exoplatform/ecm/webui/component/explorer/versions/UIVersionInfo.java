@@ -21,10 +21,10 @@ import javax.jcr.ReferentialIntegrityException;
 import javax.jcr.version.Version;
 import javax.jcr.version.VersionHistory;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.jcr.model.VersionNode;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -180,6 +180,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
       uiVersionInfo.curentVersion_  = uiVersionInfo.rootVersion_.findVersionNode(objectId) ;
       Node node = uiVersionInfo.getCurrentNode() ;
       VersionHistory versionHistory = node.getVersionHistory() ;
+      UIApplication app = uiVersionInfo.getAncestorOfType(UIApplication.class) ;
       try {
         //TODO for JCR Group check VersionHistory.removeVersion(String versionName)
         versionHistory.removeVersion(uiVersionInfo.curentVersion_ .getName());
@@ -187,15 +188,17 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
         uiVersionInfo.curentVersion_ = uiVersionInfo.rootVersion_ ;
         if(!node.isCheckedOut()) node.checkout() ;
         uiExplorer.getSession().save() ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo.getAncestorOfType(UIPopupAction.class)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo.getAncestorOfType(UIPopupContainer.class)) ;
       } catch (ReferentialIntegrityException rie) {
         rie.printStackTrace() ;
-        /*UIApplication app = uiVersionInfo.getAncestorOfType(UIApplication.class) ;
-        app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;*/
+        app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
+        return;
       } catch (Exception e) {
         e.printStackTrace() ;
-        //UIApplication app = uiVersionInfo.getAncestorOfType(UIApplication.class) ;
-        //app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;
+        app.addMessage(new ApplicationMessage("UIVersionInfo.msg.cannot-remove-version",null)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
+        return;
       }
     }
   }

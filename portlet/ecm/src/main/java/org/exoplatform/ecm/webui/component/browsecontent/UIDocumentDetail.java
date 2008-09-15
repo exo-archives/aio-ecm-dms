@@ -31,12 +31,13 @@ import javax.portlet.PortletRequest;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.ecm.jcr.ECMViewComponent;
-import org.exoplatform.ecm.jcr.JCRResourceResolver;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -68,7 +69,7 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 
-public class UIDocumentDetail extends UIComponent implements ECMViewComponent, UIPopupComponent{
+public class UIDocumentDetail extends UIComponent implements NodePresentation, UIPopupComponent {
   protected Node node_ ;
   private String language_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
@@ -99,7 +100,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     try{
-      if(SessionsUtils.isAnonim()) {
+      if(SessionProviderFactory.isAnonim()) {
         return templateService.getTemplatePathByAnonymous(false, getNodeType(), repository);
       }
       return templateService.getTemplatePathByUser(false, getNodeType(), userName, repository) ;
@@ -127,8 +128,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
       ManageableRepository mRepository = 
         getApplicationComponent(RepositoryService.class).getRepository(repository) ;
       String systemWorkspace = mRepository.getConfiguration().getSystemWorkspaceName() ;
-      Session session = SessionsUtils.getSystemProvider().getSession(systemWorkspace,mRepository) ;
-      jcrTemplateResourceResolver_ = new JCRResourceResolver(session, Utils.EXO_TEMPLATEFILE) ;
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(repository, systemWorkspace, Utils.EXO_TEMPLATEFILE) ;
     }catch(Exception e) {
       e.printStackTrace() ;
     }     
@@ -253,11 +253,13 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
     String[] workspaces = manageRepo.getWorkspaceNames() ;
-    SessionProvider provider = SessionsUtils.getSessionProvider() ;
+    SessionProvider provider = SessionProviderFactory.createSessionProvider();
     for(String ws : workspaces) {
       try{
         return provider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;
-      }catch(Exception e) { }      
+      } catch(Exception e) { 
+        continue;
+      }      
     }
     return null;
   }
@@ -325,7 +327,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     List<Node> childrenList  = new ArrayList<Node>() ;
     while(childrenIterator.hasNext()) {
       Node child = (Node)childrenIterator.next() ;
-      if(Utils.isReadAuthorized(child)) {
+      if(PermissionUtil.canRead(child)) {
         childrenList.add(child) ;
       }
     }
@@ -360,7 +362,7 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
     public void execute(Event<UIDocumentDetail> event) throws Exception {
       UIDocumentDetail uiDocument = event.getSource() ;
       UIBrowseContentPortlet cbPortlet = uiDocument.getAncestorOfType(UIBrowseContentPortlet.class) ;
-      UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
+      UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
       uiPopupAction.deActivate() ;
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String wsName = event.getRequestContext().getRequestParameter("workspaceName") ;
@@ -372,14 +374,14 @@ public class UIDocumentDetail extends UIComponent implements ECMViewComponent, U
           uiDocument.getApplicationComponent(RepositoryService.class).getRepository(repository) ;        
         Session session = null ;
         if(path.indexOf("/jcr:system")>0) {
-          session = SessionsUtils.getSystemProvider().getSession(wsName,manageableRepository) ;
+          session = SessionProviderFactory.createSystemProvider().getSession(wsName,manageableRepository) ;
         }else {
-          if(SessionsUtils.isAnonim()) {
+          if(SessionProviderFactory.isAnonim()) {
             //TODO: Anonim session
             // session = SessionsUtils.getAnonimProvider().getSession(wsName,manageableRepository) ;
-            session = SessionsUtils.getSystemProvider().getSession(wsName,manageableRepository) ;
+            session = SessionProviderFactory.createSystemProvider().getSession(wsName,manageableRepository) ;
           }else {
-            session = SessionsUtils.getSessionProvider().getSession(wsName,manageableRepository) ;
+            session = SessionProviderFactory.createSessionProvider().getSession(wsName,manageableRepository) ;
           }
         } 
         node = (Node)session.getItem(path) ;

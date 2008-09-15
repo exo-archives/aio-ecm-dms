@@ -16,9 +16,9 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -42,7 +42,7 @@ public class UICategoryManager extends UIContainer implements UIPopupComponent {
   
   public UICategoryManager() throws Exception {
     addChild(UICategoriesAddedList.class, null, null) ;
-    addChild(UIJCRBrowser.class, null, null).setRendered(false) ;
+    addChild(UIOneNodePathSelector.class, null, null).setRendered(false) ;
   }
   
   public String[] getActions() { return ACTIONS ; }

@@ -16,7 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.info;
 
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
@@ -29,7 +29,7 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
  *          trongtt@gmail.com
  * Jun 28, 2006
  */
-@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "classpath:groovy/ecm/webui/form/UIFormInputSetWithAction.gtmpl")
 public class UIPermissionInputSet extends UIFormInputSetWithAction {
   
   final static public String FIELD_USERORGROUP = "userOrGroup" ;

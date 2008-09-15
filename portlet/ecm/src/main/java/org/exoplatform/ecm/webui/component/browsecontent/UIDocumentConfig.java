@@ -21,9 +21,9 @@ import java.util.List;
 
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -59,7 +59,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(phase = Phase.DECODE, listeners = UIDocumentConfig.BackActionListener.class)
     }
 )
-public class UIDocumentConfig extends UIForm implements UISelector{
+public class UIDocumentConfig extends UIForm implements UISelectable{
   final static public String FIELD_PATHSELECT = "path" ;
   final static public String FIELD_DOCSELECT = "doc" ;
   protected boolean isEdit_ = false ;
@@ -142,12 +142,12 @@ public class UIDocumentConfig extends UIForm implements UISelector{
   }
 
   @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) {
+  public void doSelect(String selectField, Object value) {
     UIConfigTabPane uiConfig = getAncestorOfType(UIConfigTabPane.class) ;
     if(uiConfig.getChildById(UIConfigTabPane.PATH_SELECTOR) != null ) {
       UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;
-      categoryPathField.setValue(value) ;
+      categoryPathField.setValue(value.toString()) ;
       UIFormInputSetWithAction documentSelect = getChildById(FIELD_DOCSELECT) ;
       UIFormStringInput documentNameField = documentSelect.getChildById(UINewConfigForm.FIELD_DOCNAME) ;
       documentNameField.setValue("") ;
@@ -156,10 +156,10 @@ public class UIDocumentConfig extends UIForm implements UISelector{
       UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT) ;
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH) ;  
       String path = categoryPathField.getValue() ;
-      value = value.substring(path.length()) ;
+      value = value.toString().substring(path.length()) ;
       UIFormInputSetWithAction documentSelect = getChildById(FIELD_DOCSELECT) ;
       UIFormStringInput documentNameField = documentSelect.getChildById(UINewConfigForm.FIELD_DOCNAME) ;
-      documentNameField.setValue(value) ;
+      documentNameField.setValue(value.toString()) ;
     }
     uiConfig.getChild(UIPopupWindow.class).setShow(false) ;
     isEdit_ = true ;

@@ -36,18 +36,19 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.jcr.AlphaNodeComparator;
-import org.exoplatform.ecm.jcr.DateTimeComparator;
-import org.exoplatform.ecm.jcr.JCRResourceResolver;
 import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.jcr.model.Preference;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.comparator.DateTimeComparator;
+import org.exoplatform.ecm.webui.comparator.NodeNameComparator;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -100,7 +101,7 @@ public class UIJCRExplorer extends UIContainer {
   public UIJCRExplorer() throws Exception {
     addChild(UIControl.class, null, null) ;
     addChild(UIWorkingArea.class, null, null) ;
-    addChild(UIPopupAction.class, null, null);    
+    addChild(UIPopupContainer.class, null, null);
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     pref_ = pcontext.getRequest().getPreferences() ;
   }
@@ -147,9 +148,9 @@ public class UIJCRExplorer extends UIContainer {
   public Set<String> getAddressPath() { return addressPath_ ; }
   public void setAddressPath(Set<String> s) {addressPath_ = s;} ;
 
-  public SessionProvider getSessionProvider() { return SessionsUtils.getSessionProvider() ; }  
+  public SessionProvider getSessionProvider() { return SessionProviderFactory.createSessionProvider(); }  
 
-  public SessionProvider getSystemProvider() { return SessionsUtils.getSystemProvider() ; }  
+  public SessionProvider getSystemProvider() { return SessionProviderFactory.createSystemProvider(); }  
 
   public Session getSession() throws Exception { 
     if(isReferenceNode_) return getSessionProvider().getSession(referenceWorkspace_, getRepository()) ;
@@ -175,11 +176,9 @@ public class UIJCRExplorer extends UIContainer {
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
   public void newJCRTemplateResourceResolver() {    
     try{                        
-//      String workspace =  getPortletPreferences().getValue(Utils.WORKSPACE_NAME,"") ; // repository.getConfiguration().get .getDefaultWorkspaceName() ;
       String workspace =  driveData_.getWorkspace() ;
-      Session session = getSystemProvider().getSession(workspace,getRepository());        
-      jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
-    }catch(Exception e) {
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(currentRepositoryName_, workspace, "exo:templateFile") ;
+    } catch(Exception e) {
       e.printStackTrace() ;
     }         
   }
@@ -225,7 +224,7 @@ public class UIJCRExplorer extends UIContainer {
       UITreeExplorer treeExplorer = findFirstComponentOfType(UITreeExplorer.class);
       treeExplorer.buildTree();
     }
-    UIPopupAction popupAction = getChild(UIPopupAction.class) ;
+    UIPopupContainer popupAction = getChild(UIPopupContainer.class) ;
     popupAction.deActivate() ;
   }
 
@@ -331,7 +330,7 @@ public class UIJCRExplorer extends UIContainer {
     uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;
     event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;    
     if(!isHidePopup_) {
-      UIPopupAction popupAction = getChild(UIPopupAction.class) ;
+      UIPopupContainer popupAction = getChild(UIPopupContainer.class) ;
       if(popupAction.isRendered()) {
         popupAction.deActivate() ;
         event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;
@@ -358,7 +357,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public void cancelAction() throws Exception {
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
-    UIPopupAction popupAction = getChild(UIPopupAction.class) ;
+    UIPopupContainer popupAction = getChild(UIPopupContainer.class) ;
     popupAction.deActivate() ;
     context.addUIComponentToUpdateByAjax(popupAction) ;
   }
@@ -415,7 +414,7 @@ public class UIJCRExplorer extends UIContainer {
     } 
     if(isReferenceableNode(getCurrentNode()) && isReferences) {
       ManageableRepository manageableRepository = repositoryService.getRepository(currentRepositoryName_) ;
-      SessionProvider sessionProvider = SessionsUtils.getSystemProvider();
+      SessionProvider sessionProvider = SessionProviderFactory.createSystemProvider();
       for(String workspace:manageableRepository.getWorkspaceNames()) {
         Session session = sessionProvider.getSession(workspace,manageableRepository) ;
         try {
@@ -435,7 +434,7 @@ public class UIJCRExplorer extends UIContainer {
       List documentTypes = templateService.getDocumentTemplates(currentRepositoryName_) ;      
       while(childrenIterator.hasNext()){
         Node child = (Node)childrenIterator.next() ;
-        if(Utils.isReadAuthorized(child)) {
+        if(PermissionUtil.canRead(child)) {
           NodeType type = child.getPrimaryNodeType() ;
           if(Utils.NT_UNSTRUCTURED.equals(type.getName()) || Utils.NT_FOLDER.equals(type.getName())) {
             childrenList.add(child) ;
@@ -447,13 +446,13 @@ public class UIJCRExplorer extends UIContainer {
     } else {
       while(childrenIterator.hasNext()) {
         Node child = (Node)childrenIterator.next() ;
-        if(Utils.isReadAuthorized(child))  childrenList.add(child) ;
+        if(PermissionUtil.canRead(child))  childrenList.add(child) ;
       }
     }
     List<Node> childList = new ArrayList<Node>() ;
     if(!preferences_.isShowHiddenNode()) {
       for(Node child : childrenList) {
-        if(Utils.isReadAuthorized(child) && !child.isNodeType("exo:hiddenable")) {
+        if(PermissionUtil.canRead(child) && !child.isNodeType("exo:hiddenable")) {
           childList.add(child) ;
         }
       }
@@ -466,7 +465,7 @@ public class UIJCRExplorer extends UIContainer {
   
   private void sort(List<Node> childrenList) {
     if(Preference.SORT_BY_NODENAME.equals(preferences_.getSortType())) {
-      Collections.sort(childrenList,new AlphaNodeComparator(preferences_.getOrder())) ;
+      Collections.sort(childrenList,new NodeNameComparator(preferences_.getOrder())) ;
     }else if(Preference.SORT_BY_NODETYPE.equals(preferences_.getSortType())) {
       Collections.sort(childrenList,new TypeNodeComparator(preferences_.getOrder())) ;
     }else if(Preference.SORT_BY_CREATED_DATE.equals(preferences_.getSortType()))  {

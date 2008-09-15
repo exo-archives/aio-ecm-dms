@@ -31,13 +31,13 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.model.Preference;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
@@ -242,7 +242,7 @@ public class UIDrivesBrowser extends UIContainer {
         for(String viewName : views) {
           viewName = viewName.trim() ;
           Node viewNode = 
-            uiDrive.getApplicationComponent(ManageViewService.class).getViewByName(viewName, uiDrive.repoName_,SessionsUtils.getSystemProvider()) ;
+            uiDrive.getApplicationComponent(ManageViewService.class).getViewByName(viewName, uiDrive.repoName_,SessionProviderFactory.createSystemProvider()) ;
           String permiss = viewNode.getProperty("exo:accessPermissions").getString();
           if(permiss.contains("${userId}")) permiss = permiss.replace("${userId}", userId) ;
           String[] viewPermissions = permiss.split(",") ;
@@ -276,7 +276,7 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.setDriveData(drive) ;
       uiJCRExplorer.setIsReferenceNode(false) ;
       
-      SessionProvider provider = SessionsUtils.getSessionProvider() ;                  
+      SessionProvider provider = SessionProviderFactory.createSessionProvider() ;                  
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;
       Node node = null ;
       try {

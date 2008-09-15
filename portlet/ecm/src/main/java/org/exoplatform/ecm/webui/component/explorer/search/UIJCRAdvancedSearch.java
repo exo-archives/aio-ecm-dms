@@ -26,9 +26,9 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -132,7 +132,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         uiPopup.setRendered(false) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiJAdvancedSearch.getParent()) ;
       } else {
-        uiJAdvancedSearch.getAncestorOfType(UIPopupAction.class).deActivate() ;
+        uiJAdvancedSearch.getAncestorOfType(UIPopupContainer.class).deActivate() ;
         uiJAdvancedSearch.getAncestorOfType(UIJCRExplorer.class).cancelAction() ;
       }
     }

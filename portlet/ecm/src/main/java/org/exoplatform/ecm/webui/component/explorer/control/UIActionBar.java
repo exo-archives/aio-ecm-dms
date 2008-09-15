@@ -33,11 +33,8 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.jcr.model.Preference;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIJCRBrowser;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
-import org.exoplatform.ecm.webui.component.UIVoteForm;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
@@ -50,6 +47,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIFolderForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UITaggingForm;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIVoteForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIWatchDocumentForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
@@ -82,6 +80,9 @@ import org.exoplatform.ecm.webui.component.explorer.sidebar.UIViewRelationList;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.categories.CategoriesService;
@@ -188,7 +189,8 @@ public class UIActionBar extends UIForm {
     tabs_.clear();
     tabs_ = new ArrayList<String[]>();
     String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
-    view_ = getApplicationComponent(ManageViewService.class).getViewByName(viewName,repository,SessionsUtils.getSystemProvider()); 
+    view_ = getApplicationComponent(ManageViewService.class).getViewByName(viewName,repository, 
+        SessionProviderFactory.createSystemProvider()); 
     NodeIterator tabs = view_.getNodes();
     int i = 0;
     while (tabs.hasNext()) {
@@ -229,7 +231,8 @@ public class UIActionBar extends UIForm {
   public List<Query> getSavedQueries() throws Exception {
     String userName = Util.getPortalRequestContext().getRemoteUser();
     String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
-    return getApplicationComponent(QueryService.class).getQueries(userName, repository,SessionsUtils.getSystemProvider());
+    return getApplicationComponent(QueryService.class).getQueries(userName, repository, 
+        SessionProviderFactory.createSystemProvider());
   }
 
   public List<String> getMetadataTemplates() throws Exception {
@@ -270,7 +273,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();      
-      if(!Utils.isAddNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -287,9 +290,9 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UIFolderForm.class, 600);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UIFolderForm.class, 600);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -298,7 +301,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();      
-      if(!Utils.isAddNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -315,7 +318,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }     
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIDocumentFormController uiController = 
         event.getSource().createUIComponent(UIDocumentFormController.class, null, null);
       uiController.setCurrentNode(uiExplorer.getCurrentNode());
@@ -327,8 +330,8 @@ public class UIActionBar extends UIForm {
         return;
       }
       uiController.init();
-      uiPopupAction.activate(uiController, 800, 600);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer.activate(uiController, 800, 600);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -338,7 +341,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
       Node selectedNode = uiExplorer.getCurrentNode();        
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
-      if(!Utils.isSetPropertyNodeAuthorized(selectedNode)) {
+      if(!PermissionUtil.canSetProperty(selectedNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-edit-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -365,9 +368,9 @@ public class UIActionBar extends UIForm {
         uiActionForm.setNodePath(selectedNode.getPath());
         uiActionForm.setWorkspace(uiExplorer.getCurrentWorkspace());
         uiActionForm.setStoredPath(selectedNode.getPath());
-        UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-        uiPopupAction.activate(uiContainer, 700, 550);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+        UIPopupContainer.activate(uiContainer, 700, 550);
+        event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
       } else {
         TemplateService tservice = uicomp.getApplicationComponent(TemplateService.class);
         String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
@@ -379,7 +382,7 @@ public class UIActionBar extends UIForm {
           nodeType = selectedNode.getPrimaryNodeType().getName();
         }        
         if(documentNodeType.contains(nodeType)){
-          UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
+          UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
           UIDocumentFormController uiController = 
             event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController");
           UIDocumentForm uiDocumentForm = uiController.getChild(UIDocumentForm.class);
@@ -399,8 +402,8 @@ public class UIActionBar extends UIForm {
           }
           uiDocumentForm.setStoredPath(selectedNode.getPath());
           uiController.setRenderedChild(UIDocumentForm.class);
-          uiPopupAction.activate(uiController, 800, 600);          
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+          UIPopupContainer.activate(uiController, 800, 600);          
+          event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
         } else {
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-support", null));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -415,7 +418,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!Utils.isAddNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -432,19 +435,19 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }      
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIUploadManager uiUploadManager = event.getSource().createUIComponent(UIUploadManager.class, null, null);
-      uiPopupAction.activate(uiUploadManager, 600, 500);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer.activate(uiUploadManager, 600, 500);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
   static public class SearchActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UIECMSearch .class, 700);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UIECMSearch .class, 700);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -460,7 +463,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -476,9 +479,9 @@ public class UIActionBar extends UIForm {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         }
-        UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-        uiPopupAction.activate(UIWatchDocumentForm.class, 600);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+        UIPopupContainer.activate(UIWatchDocumentForm.class, 600);
+        event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
         return;
       }
       uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-watch", null,
@@ -496,7 +499,7 @@ public class UIActionBar extends UIForm {
       Node currentNode = uiExplorer.getCurrentNode();
       NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType();
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
-      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -515,9 +518,9 @@ public class UIActionBar extends UIForm {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         }
-        UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-        uiPopupAction.activate(UITaggingForm.class, 600);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+        UIPopupContainer.activate(UITaggingForm.class, 600);
+        event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
         return;
       }
       uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-tagging", null,
@@ -532,7 +535,7 @@ public class UIActionBar extends UIForm {
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class);
       Node currentNode = uiExplorer.getCurrentNode();
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
-      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -564,10 +567,10 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }      
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UIMultiLanguageManager.class, null,780, 550);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UIMultiLanguageManager.class, null,780, 550);
       UIMultiLanguageManager uiMultiManager = 
-        uiPopupAction.findFirstComponentOfType(UIMultiLanguageManager.class);
+        UIPopupContainer.findFirstComponentOfType(UIMultiLanguageManager.class);
       UIAddLanguageContainer uiAddContainer = uiMultiManager.getChild(UIAddLanguageContainer.class);
       if(nodeType.getName().equals(Utils.NT_FILE)) {
         String mimeType = uiExplorer.getCurrentNode().getNode(Utils.JCR_CONTENT).
@@ -577,7 +580,7 @@ public class UIActionBar extends UIForm {
       } else {
         uiAddContainer.setComponentDisplay(nodeType.getName());
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -598,28 +601,28 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UIReferencesList.class, 600);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UIReferencesList.class, 600);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
   static public class ViewNodeTypeActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UINodeTypeInfo.class, 700);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UINodeTypeInfo.class, 700);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
   static public class ViewPermissionsActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class);
-      UIPermissionManager uiPerMan = uiPopupAction.activate(UIPermissionManager.class, 700);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UIPermissionManager uiPerMan = UIPopupContainer.activate(UIPermissionManager.class, 700);
       uiPerMan.checkPermissonInfo(uiJCRExplorer.getCurrentNode());
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -639,14 +642,14 @@ public class UIActionBar extends UIForm {
       UIPropertyForm uiForm = uiPropertiesManager.getChild(UIPropertyForm.class);
       uiForm.setRepositoryName(uiJCRExplorer.getRepositoryName());
       uiForm.getUIFormSelectBox(UIPropertyForm.FIELD_NAMESPACE).setOptions(uiForm.getNamespaces());
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(uiPropertiesManager, 700, 0);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(uiPropertiesManager, 700, 0);
       if(uiJCRExplorer.nodeIsLocked(node)){
         uiPropertiesManager.setLockForm(true);
       } else {
-        uiPropertiesManager.setLockForm(!Utils.isSetPropertyNodeAuthorized(node));
+        uiPropertiesManager.setLockForm(!PermissionUtil.canSetProperty(node));
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -693,7 +696,7 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource();
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       Node currentNode = uiExplorer.getCurrentNode();
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       uiExplorer.setIsHidePopup(false);
@@ -702,7 +705,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -715,13 +718,13 @@ public class UIActionBar extends UIForm {
         return;
       }      
       if (currentNode.canAddMixin(Utils.MIX_VERSIONABLE)) {
-        uiPopupAction.activate(UIActivateVersion.class, 400);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        UIPopupContainer.activate(UIActivateVersion.class, 400);
+        event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
         return;
       }
       if (currentNode.isNodeType(Utils.MIX_VERSIONABLE)) {
-        uiPopupAction.activate(UIVersionInfo.class, null, 700, 500);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        UIPopupContainer.activate(UIVersionInfo.class, null, 700, 500);
+        event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
         return;
       }
       uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-version", null));
@@ -733,7 +736,7 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource();
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       Node currentNode = uiExplorer.getCurrentNode();
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       uiExplorer.setIsHidePopup(false);
@@ -744,7 +747,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if (!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if (!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -762,8 +765,8 @@ public class UIActionBar extends UIForm {
       PublicationPresentationService publicationPresentationService = uiActionBar.getApplicationComponent(PublicationPresentationService.class);        
 
       if (!publicationService.isNodeEnrolledInLifecycle(currentNode)) {          
-        uiPopupAction.activate(UIActivePublication.class, 600);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        UIPopupContainer.activate(UIActivePublication.class, 600);
+        event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
         return;         
       }
       UIContainer cont = uiActionBar.createUIComponent(UIContainer.class, null, null);
@@ -774,10 +777,10 @@ public class UIActionBar extends UIForm {
       uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false);
       UIPublicationLogList uiPublicationLogList = 
         uiPublicationManager.getChild(UIPublicationLogList.class);      
-      uiPopupAction.activate(uiPublicationManager, 700, 500);
+      UIPopupContainer.activate(uiPublicationManager, 700, 500);
       uiPublicationLogList.setNode(uiExplorer.getCurrentNode());
       uiPublicationLogList.updateGrid();      
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -785,16 +788,16 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource();
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       Node currentNode = uiExplorer.getCurrentNode();
 
       if (!currentNode.isNodeType(Utils.EXO_AUDITABLE)) {
-        uiPopupAction.activate(UIActivateAuditing.class, 400);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        UIPopupContainer.activate(UIActivateAuditing.class, 400);
+        event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
         return;
       }
-      uiPopupAction.activate(UIAuditingInfo.class, null, 700, 500);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer.activate(UIAuditingInfo.class, null, 700, 500);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
       return;
     }
   }
@@ -806,6 +809,7 @@ public class UIActionBar extends UIForm {
       String repository = uiExplorer.getRepositoryName();
       ManageableRepository manaRepository = 
         uiActionBar.getApplicationComponent(RepositoryService.class).getRepository(repository);
+      String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
       NodeHierarchyCreator nodeHierarchyCreator = uiActionBar.getApplicationComponent(NodeHierarchyCreator.class);
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
@@ -820,7 +824,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -846,17 +850,15 @@ public class UIActionBar extends UIForm {
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null);
       UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
       uiCateAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), repository));
-      UIJCRBrowser uiJCRBrowser = uiManager.getChild(UIJCRBrowser.class);
-      uiJCRBrowser.setSessionProvider(uiExplorer.getSessionProvider());
-      uiJCRBrowser.setFilterType(null);
-      uiJCRBrowser.setRepository(repository);
-      uiJCRBrowser.setIsDisable(manaRepository.getConfiguration().getDefaultWorkspaceName(), true);
-      uiJCRBrowser.setRootPath(nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
-      uiJCRBrowser.setIsTab(true);
-      uiJCRBrowser.setComponent(uiCateAddedList, null);
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(uiManager, 630, 500);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIOneNodePathSelector uiNodePathSelector = uiManager.getChild(UIOneNodePathSelector.class);
+      uiNodePathSelector.setIsDisable(workspaceName, true);
+      uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
+          nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
+      uiNodePathSelector.init(uiExplorer.getSystemProvider());
+      uiNodePathSelector.setSourceComponent(uiCateAddedList, null);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(uiManager, 630, 500);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -877,7 +879,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -897,32 +899,28 @@ public class UIActionBar extends UIForm {
         uiActionBar.getApplicationComponent(RelationsService.class);
       UIRelationsAddedList uiRelateAddedList = 
         uiRelationManager.getChild(UIRelationsAddedList.class);
-      //TODO need renew here
       List<Node> relations = 
-        relateService.getRelations(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName(),SessionsUtils.getSessionProvider());
+        relateService.getRelations(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName(), 
+            SessionProviderFactory.createSessionProvider());
       uiRelateAddedList.updateGrid(relations);
       String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
-      UIJCRBrowser uiJCRBrowser = uiRelationManager.getChild(UIJCRBrowser.class);
-      uiJCRBrowser.setSessionProvider(uiExplorer.getSessionProvider());
-      TemplateService tservice = uiActionBar.getApplicationComponent(TemplateService.class);
-      List<String> documentNodeType = tservice.getDocumentTemplates(repository);
-      StringBuilder filters = new StringBuilder();
-      for(String document : documentNodeType) {
-        if(filters.length() > 0) filters.append(",");
-        filters.append(document);
-      }
       String defaultWsName = 
         repoService.getRepository(repository).getConfiguration().getDefaultWorkspaceName();
-      uiJCRBrowser.setFilterType(filters.toString().split(","));
-      uiJCRBrowser.setRepository(repository);
-      uiJCRBrowser.setIsDisable(defaultWsName, false);
-      uiJCRBrowser.setRootPath("/");
-      uiJCRBrowser.setIsTab(true);
-      uiJCRBrowser.setIsShowSystem(false);
-      uiJCRBrowser.setComponent(uiRelateAddedList, null);
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(uiRelationManager, 630, 500);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIOneNodePathSelector uiNodePathSelector = uiRelationManager.getChild(UIOneNodePathSelector.class);
+      uiNodePathSelector.setIsDisable(defaultWsName, false);
+      uiNodePathSelector.setRootNodeLocation(repository, defaultWsName, "/");
+      TemplateService tservice = uiActionBar.getApplicationComponent(TemplateService.class);
+      List<String> documentNodeType = tservice.getDocumentTemplates(repository);
+      String [] arrAcceptedNodeTypes = new String[documentNodeType.size()];
+      documentNodeType.toArray(arrAcceptedNodeTypes) ;
+      uiNodePathSelector.setAcceptedNodeTypesInPathPanel(arrAcceptedNodeTypes);
+      uiNodePathSelector.setIsShowSystem(false);
+      uiNodePathSelector.setAcceptedNodeTypesInTree(new String[] {Utils.NT_UNSTRUCTURED, Utils.NT_FOLDER});
+      uiNodePathSelector.init(uiExplorer.getSessionProvider());
+      uiNodePathSelector.setSourceComponent(uiRelateAddedList, null);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(uiRelationManager, 630, 500);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -932,7 +930,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -949,19 +947,19 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }      
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UIActionManager.class, null, 610, 550);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UIActionManager.class, null, 610, 550);
       uiExplorer.setIsHidePopup(true);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
   static public class ExportNodeActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);                   
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UIExportNode.class, 610);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UIExportNode.class, 610);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -970,7 +968,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!Utils.isAddNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -987,9 +985,9 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }      
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UIImportNode.class, 610);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UIImportNode.class, 610);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -1029,28 +1027,28 @@ public class UIActionBar extends UIForm {
   static public class AdvanceSearchActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
       UIECMSearch uiECMSearch = event.getSource().createUIComponent(UIECMSearch.class, null, null);
       UIContentNameSearch contentNameSearch = uiECMSearch.findFirstComponentOfType(UIContentNameSearch.class);
       String currentNodePath = uiJCRExplorer.getCurrentNode().getPath();
       contentNameSearch.setLocation(currentNodePath);
       UISimpleSearch uiSimpleSearch = uiECMSearch.findFirstComponentOfType(UISimpleSearch.class);
       uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(currentNodePath);
-      uiPopupAction.activate(uiECMSearch, 700, 500);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer.activate(uiECMSearch, 700, 500);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
   static public class SavedQueriesActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
       UISavedQuery uiSavedQuery = event.getSource().createUIComponent(UISavedQuery.class, null, null);
       uiSavedQuery.setIsQuickSearch(true);
       uiSavedQuery.setRepositoryName(uiJCRExplorer.getRepositoryName());
       uiSavedQuery.updateGrid();
-      uiPopupAction.activate(uiSavedQuery, 700, 400);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer.activate(uiSavedQuery, 700, 400);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -1059,7 +1057,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);   
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -1082,9 +1080,9 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }      
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UIVoteForm.class, 300);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UIVoteForm.class, 300);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -1098,10 +1096,10 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      UIPopupAction uiPopupAction = uiJCRExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UIViewMetadataManager.class, 700);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UIViewMetadataManager.class, 700);
       UIViewMetadataManager uiMetadataManager = 
-        uiPopupAction.findFirstComponentOfType(UIViewMetadataManager.class);
+        UIPopupContainer.findFirstComponentOfType(UIViewMetadataManager.class);
       UIViewMetadataContainer uiMetadataContainer = uiMetadataManager.getChild(UIViewMetadataContainer.class);
       // TODO need review 
       int i = 0;
@@ -1116,7 +1114,7 @@ public class UIActionBar extends UIForm {
           i++;
         }
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
@@ -1125,7 +1123,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!Utils.isAddNodeAuthorized(currentNode)) {
+      if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-add-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -1147,9 +1145,9 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }      
-      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
-      uiPopupAction.activate(UICommentForm.class, 750);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UICommentForm.class, 750);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 

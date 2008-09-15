@@ -16,7 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.admin.templates;
 
-import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
+import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
@@ -62,18 +62,19 @@ public class UITemplatesManager extends UIContainer{
     if(uiPopup == null) {
       uiPopup = addChild(UIPopupWindow.class, null, popupId);
       uiPopup.setWindowSize(560, 300);
-      UIECMPermissionBrowser uiECMPermission = 
-        createUIComponent(UIECMPermissionBrowser.class, null, null) ;
+      UIPermissionSelector uiECMPermission = 
+        createUIComponent(UIPermissionSelector.class, null, null) ;
+      uiECMPermission.setSelectedMembership(true);
       if(membership != null && membership.indexOf(":/") > -1) {
         String[] arrMember = membership.split(":/") ;
         uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
       }
       if(id.equals("AddNew")) {
         UITemplateForm uiForm = findFirstComponentOfType(UITemplateForm.class) ;
-        uiECMPermission.setComponent(uiForm, null) ;
+        uiECMPermission.setSourceComponent(uiForm, null) ;
       } else {
         UITemplateContent uiTemContent = findComponentById(id) ;
-        uiECMPermission.setComponent(uiTemContent, null) ;
+        uiECMPermission.setSourceComponent(uiTemContent, null) ;
       }
       uiPopup.setUIComponent(uiECMPermission);
       uiPopup.setShow(true) ;

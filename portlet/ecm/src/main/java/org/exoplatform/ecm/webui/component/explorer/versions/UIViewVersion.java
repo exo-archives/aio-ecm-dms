@@ -28,10 +28,10 @@ import javax.jcr.Value;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.ecm.jcr.ECMViewComponent;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -67,7 +67,7 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 
-public class UIViewVersion extends UIContainer implements ECMViewComponent {
+public class UIViewVersion extends UIContainer implements NodePresentation {
   private Node node_ ;
   protected Node originalNode_ ;
   private String language_ ;
@@ -118,9 +118,9 @@ public class UIViewVersion extends UIContainer implements ECMViewComponent {
     String[] workspaces = manageRepo.getWorkspaceNames() ;
     for(String ws : workspaces) {
       try{
-        return SessionsUtils.getSystemProvider().getSession(ws, manageRepo).getNodeByUUID(uuid) ;
+        return SessionProviderFactory.createSystemProvider().getSession(ws, manageRepo).getNodeByUUID(uuid) ;
       } catch(Exception e) {
-
+        continue;
       }      
     }
     return null;

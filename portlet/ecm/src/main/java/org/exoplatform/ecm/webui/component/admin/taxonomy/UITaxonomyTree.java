@@ -23,7 +23,7 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -96,7 +96,7 @@ public class UITaxonomyTree extends UIContainer {
     }
     while(sibbling.hasNext()) {
       Node sibblingNode = (Node)sibbling.next();
-      if(Utils.isReadAuthorized(sibblingNode) && !sibblingNode.isNodeType("exo:hiddenable")) {
+      if(PermissionUtil.canRead(sibblingNode) && !sibblingNode.isNodeType("exo:hiddenable")) {
         sibblingList.add(sibblingNode) ;      
       }
     }    
@@ -108,7 +108,7 @@ public class UITaxonomyTree extends UIContainer {
     if(children != null) {
       while(children.hasNext()) {
         Node childrenNode = (Node)children.next();
-        if(Utils.isReadAuthorized(childrenNode) && !childrenNode.isNodeType("exo:hiddenable")) {
+        if(PermissionUtil.canRead(childrenNode) && !childrenNode.isNodeType("exo:hiddenable")) {
           childrenList.add(childrenNode) ;        
         }
       }

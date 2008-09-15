@@ -26,12 +26,12 @@ import javax.jcr.query.QueryResult;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -65,166 +65,168 @@ import org.exoplatform.webui.event.EventListener;
 
 public class UISavedQuery extends UIContainer implements UIPopupComponent {
 
-  final static public String EDIT_FORM = "EditSavedQueryForm" ;
+  final static public String EDIT_FORM = "EditSavedQueryForm";
  
-  private UIPageIterator uiPageIterator_ ;
-  private List<Node> sharedQueries_ = new ArrayList<Node>() ;  
-  private List<Query> privateQueries = new ArrayList<Query>() ;
+  private UIPageIterator uiPageIterator_;
+  private List<Node> sharedQueries_ = new ArrayList<Node>();  
+  private List<Query> privateQueries = new ArrayList<Query>();
   
-  private boolean isQuickSearch_ = false ;
-  private String repositoryName_ ;
+  private boolean isQuickSearch_ = false;
+  private String repositoryName_;
 
   public UISavedQuery() throws Exception {        
     uiPageIterator_ = addChild(UIPageIterator.class, null, "SavedQueryIterator");
   }  
 
   public void updateGrid() throws Exception {
-    PageList pageList = new ObjectPageList(queryList(), 10) ;
-    uiPageIterator_.setPageList(pageList) ;  
+    PageList pageList = new ObjectPageList(queryList(), 10);
+    uiPageIterator_.setPageList(pageList);  
   }
   
   public List<Object> queryList() throws Exception {
-    List<Object> objectList = new ArrayList<Object>() ;
+    List<Object> objectList = new ArrayList<Object>();
     if(hasSharedQueries()) {
       for(Node node : getSharedQueries()) {
-        objectList.add(node) ;
+        objectList.add(node);
       }
     }
     if(hasQueries()) {
       for(Query query : getQueries()) {
-        objectList.add(query) ;
+        objectList.add(query);
       }
     }
-    return objectList ;
+    return objectList;
   }
 
-  public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
+  public UIPageIterator getUIPageIterator() { return uiPageIterator_; }
   
-  public List getQueryList() throws Exception { return uiPageIterator_.getCurrentPageData() ; }
+  public List getQueryList() throws Exception { return uiPageIterator_.getCurrentPageData(); }
   
   public void initPopupEditForm(Query query) throws Exception {
-    removeChildById(EDIT_FORM) ;
-    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, EDIT_FORM) ;
-    uiPopup.setWindowSize(500,0) ;
+    removeChildById(EDIT_FORM);
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, EDIT_FORM);
+    uiPopup.setWindowSize(500,0);
     UIJCRAdvancedSearch uiJAdvancedSearch = 
-      createUIComponent(UIJCRAdvancedSearch.class, null, "EditQueryForm") ;
-    uiJAdvancedSearch.setActions(new String[] {"Save", "Cancel"}) ;
-    uiPopup.setUIComponent(uiJAdvancedSearch) ;
-    uiPopup.setRendered(true) ;
-    uiJAdvancedSearch.setIsEdit(true) ;
-    uiJAdvancedSearch.setQuery(query) ;
-    uiJAdvancedSearch.update(query) ;
-    uiPopup.setShow(true) ;
-    uiPopup.setResizable(true) ;
+      createUIComponent(UIJCRAdvancedSearch.class, null, "EditQueryForm");
+    uiJAdvancedSearch.setActions(new String[] {"Save", "Cancel"});
+    uiPopup.setUIComponent(uiJAdvancedSearch);
+    uiPopup.setRendered(true);
+    uiJAdvancedSearch.setIsEdit(true);
+    uiJAdvancedSearch.setQuery(query);
+    uiJAdvancedSearch.update(query);
+    uiPopup.setShow(true);
+    uiPopup.setResizable(true);
   }
   
   public boolean hasQueries() throws Exception {
-    QueryService queryService = getApplicationComponent(QueryService.class) ;
+    QueryService queryService = getApplicationComponent(QueryService.class);
     try {
-      privateQueries = queryService.getQueries(getCurrentUserId(), repositoryName_,SessionsUtils.getSessionProvider());
-      return !privateQueries.isEmpty() ;    
+      privateQueries = queryService.getQueries(getCurrentUserId(), 
+          repositoryName_,SessionProviderFactory.createSessionProvider());
+      return !privateQueries.isEmpty();    
     } catch(AccessDeniedException ace) {
-      return privateQueries.isEmpty() ;
+      return privateQueries.isEmpty();
     }
   }
   
-  public List<Query> getQueries() throws Exception { return privateQueries ; }
+  public List<Query> getQueries() throws Exception { return privateQueries; }
   
-  public String getCurrentUserId() { return Util.getPortalRequestContext().getRemoteUser() ;}
+  public String getCurrentUserId() { return Util.getPortalRequestContext().getRemoteUser();}
   
   public boolean hasSharedQueries() throws Exception {    
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    QueryService queryService = getApplicationComponent(QueryService.class) ;
-    String userId = pcontext.getRemoteUser() ;    
-    SessionProvider provider = SessionsUtils.getSystemProvider() ;    
-    sharedQueries_ = queryService.getSharedQueries(userId, repositoryName_,provider) ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    QueryService queryService = getApplicationComponent(QueryService.class);
+    String userId = pcontext.getRemoteUser();    
+    SessionProvider provider = SessionProviderFactory.createSystemProvider();    
+    sharedQueries_ = queryService.getSharedQueries(userId, repositoryName_,provider);
     return !sharedQueries_.isEmpty();
   }
   
-  public List<Node> getSharedQueries() { return sharedQueries_ ; }
+  public List<Node> getSharedQueries() { return sharedQueries_; }
  
-  public void setRepositoryName(String repositoryName) { repositoryName_ = repositoryName ; }
+  public void setRepositoryName(String repositoryName) { repositoryName_ = repositoryName; }
   
   public void activate() throws Exception { }
   
   public void deActivate() throws Exception { }
   
-  public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch ; }
+  public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch; }
   
   static public class ExecuteActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
-      UISavedQuery uiQuery = event.getSource() ;
-      UIJCRExplorer uiExplorer = uiQuery.getAncestorOfType(UIJCRExplorer.class) ;
-      String wsName = uiQuery.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace() ;
-      UIApplication uiApp = uiQuery.getAncestorOfType(UIApplication.class) ;
-      QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;
-      String queryPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UISavedQuery uiQuery = event.getSource();
+      UIJCRExplorer uiExplorer = uiQuery.getAncestorOfType(UIJCRExplorer.class);
+      String wsName = uiQuery.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();
+      UIApplication uiApp = uiQuery.getAncestorOfType(UIApplication.class);
+      QueryService queryService = uiQuery.getApplicationComponent(QueryService.class);
+      String queryPath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIComponent uiSearch = null;
-      UISearchResult uiSearchResult = null ;
+      UISearchResult uiSearchResult = null;
       if(uiQuery.isQuickSearch_) {
-        uiSearch = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class) ;
-        uiSearchResult = ((UIDocumentWorkspace)uiSearch).getChild(UISearchResult.class) ;
-        uiSearchResult.setIsQuickSearch(true) ;
+        uiSearch = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class);
+        uiSearchResult = ((UIDocumentWorkspace)uiSearch).getChild(UISearchResult.class);
+        uiSearchResult.setIsQuickSearch(true);
       } else {
-        uiSearch = uiQuery.getParent() ;
-        ((UIECMSearch)uiSearch).setRenderedChild(UISearchResult.class) ;
+        uiSearch = uiQuery.getParent();
+        ((UIECMSearch)uiSearch).setRenderedChild(UISearchResult.class);
         uiSearchResult = ((UIECMSearch)uiSearch).getChild(UISearchResult.class); 
       }
-      QueryResult queryResult = null ;
+      QueryResult queryResult = null;
       try {
         queryResult = queryService.execute(queryPath, wsName, uiQuery.repositoryName_,
-            SessionsUtils.getSystemProvider(), uiQuery.getCurrentUserId()) ;
+            SessionProviderFactory.createSystemProvider(), uiQuery.getCurrentUserId());
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.query-invalid", null, 
-                                                ApplicationMessage.WARNING)) ;
-        if(!uiQuery.isQuickSearch_) ((UIECMSearch)uiSearch).setRenderedChild(UISavedQuery.class) ;
-        return ;
+                                                ApplicationMessage.WARNING));
+        if(!uiQuery.isQuickSearch_) ((UIECMSearch)uiSearch).setRenderedChild(UISavedQuery.class);
+        return;
       } finally {
         if(queryResult == null || queryResult.getNodes().getSize() ==0) {
-          uiApp.addMessage(new ApplicationMessage("UISavedQuery.msg.not-result-found", null)) ; 
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          if(!uiQuery.isQuickSearch_) ((UIECMSearch)uiSearch).setRenderedChild(UISavedQuery.class) ;
-          return ;
+          uiApp.addMessage(new ApplicationMessage("UISavedQuery.msg.not-result-found", null)); 
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          if(!uiQuery.isQuickSearch_) ((UIECMSearch)uiSearch).setRenderedChild(UISavedQuery.class);
+          return;
         }        
-        uiSearchResult.clearAll() ;
-        uiSearchResult.setQueryResults(queryResult) ;
-        uiSearchResult.updateGrid(true) ;
+        uiSearchResult.clearAll();
+        uiSearchResult.setQueryResults(queryResult);
+        uiSearchResult.updateGrid(true);
       }
       if(uiQuery.isQuickSearch_) {
-        ((UIDocumentWorkspace)uiSearch).setRenderedChild(UISearchResult.class) ;
-        UIPopupAction uiPopup = uiExplorer.getChild(UIPopupAction.class) ;
-        uiPopup.deActivate() ;
+        ((UIDocumentWorkspace)uiSearch).setRenderedChild(UISearchResult.class);
+        UIPopupContainer uiPopup = uiExplorer.getChild(UIPopupContainer.class);
+        uiPopup.deActivate();
       }
     }
   }
 
   static public class EditActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
-      UISavedQuery uiQuery = event.getSource() ;
-      String userName = Util.getPortalRequestContext().getRemoteUser() ;
-      QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;
-      String queryPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      Query query = queryService.getQueryByPath(queryPath, userName, uiQuery.repositoryName_,SessionsUtils.getSystemProvider()) ;
-      uiQuery.initPopupEditForm(query) ;
+      UISavedQuery uiQuery = event.getSource();
+      String userName = Util.getPortalRequestContext().getRemoteUser();
+      QueryService queryService = uiQuery.getApplicationComponent(QueryService.class);
+      String queryPath = event.getRequestContext().getRequestParameter(OBJECTID);
+      Query query = queryService.getQueryByPath(queryPath, userName, uiQuery.repositoryName_,
+          SessionProviderFactory.createSystemProvider());
+      uiQuery.initPopupEditForm(query);
       if(!uiQuery.isQuickSearch_) {
-        UIECMSearch uiECSearch = uiQuery.getParent() ;
-        uiECSearch.setRenderedChild(UISavedQuery.class) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiECSearch) ;
+        UIECMSearch uiECSearch = uiQuery.getParent();
+        uiECSearch.setRenderedChild(UISavedQuery.class);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiECSearch);
       } else {
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiQuery.getParent()) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiQuery.getParent());
       }
     }
   }
   
   static public class DeleteActionListener extends EventListener<UISavedQuery> {
     public void execute(Event<UISavedQuery> event) throws Exception {      
-      UISavedQuery uiQuery = event.getSource() ;
-      String userName = Util.getPortalRequestContext().getRemoteUser() ;
-      QueryService queryService = uiQuery.getApplicationComponent(QueryService.class) ;      
-      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      queryService.removeQuery(path, userName, uiQuery.repositoryName_) ;
-      uiQuery.updateGrid() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiQuery) ;
+      UISavedQuery uiQuery = event.getSource();
+      String userName = Util.getPortalRequestContext().getRemoteUser();
+      QueryService queryService = uiQuery.getApplicationComponent(QueryService.class);      
+      String path = event.getRequestContext().getRequestParameter(OBJECTID);
+      queryService.removeQuery(path, userName, uiQuery.repositoryName_);
+      uiQuery.updateGrid();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiQuery);
     }
   }
 }

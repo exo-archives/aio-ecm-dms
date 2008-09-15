@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -137,7 +137,7 @@ public class UINodeTypeSelectForm extends UIForm implements UIPopupComponent {
         }
       }
       uiForm.setNodeTypes(selectedNodeTypes) ;
-      UIPopupAction uiPopup = uiSearchContainer.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiPopup = uiSearchContainer.getChild(UIPopupContainer.class) ;
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
     }
@@ -146,7 +146,7 @@ public class UINodeTypeSelectForm extends UIForm implements UIPopupComponent {
   static public class CancelActionListener extends EventListener<UINodeTypeSelectForm> {
     public void execute(Event<UINodeTypeSelectForm> event) throws Exception {
       UISearchContainer uiSearchContainer = event.getSource().getAncestorOfType(UISearchContainer.class) ;
-      UIPopupAction uiPopup = uiSearchContainer.getChild(UIPopupAction.class) ;
+      UIPopupContainer uiPopup = uiSearchContainer.getChild(UIPopupContainer.class) ;
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
     }

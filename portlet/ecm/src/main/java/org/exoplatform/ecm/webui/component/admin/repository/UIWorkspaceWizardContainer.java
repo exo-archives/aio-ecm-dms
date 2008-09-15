@@ -16,9 +16,9 @@
  */
 package org.exoplatform.ecm.webui.component.admin.repository;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -36,37 +36,38 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 public class UIWorkspaceWizardContainer extends UIContainer implements UIPopupComponent {
 
   public UIWorkspaceWizardContainer() throws Exception {
-    addChild(UIWorkspaceWizard.class, null, null) ;
-    UIPopupAction uiPopupAction = addChild(UIPopupAction.class, null, "UIPopupWizard");
-    uiPopupAction.getChild(UIPopupWindow.class).setId("UIPopupWindowInWizard") ;
+    addChild(UIWorkspaceWizard.class, null, null);
+    UIPopupContainer UIPopupContainer = addChild(UIPopupContainer.class, null, "UIPopupWizard");
+    UIPopupContainer.getChild(UIPopupWindow.class).setId("UIPopupWindowInWizard");
   }
   protected void initWizard(boolean isAddnewRepo, boolean isAddNewWizard, WorkspaceEntry ws) throws Exception {
-    getChild(UIWorkspaceWizard.class).isNewWizard_ = isAddNewWizard ;
-    getChild(UIWorkspaceWizard.class).isNewRepo_ = isAddnewRepo ;
-    getChild(UIWorkspaceWizard.class).refresh(ws) ;
+    getChild(UIWorkspaceWizard.class).isNewWizard_ = isAddNewWizard;
+    getChild(UIWorkspaceWizard.class).isNewRepo_ = isAddnewRepo;
+    getChild(UIWorkspaceWizard.class).refresh(ws);
   }
   protected void initPopupPermission(String id, String membership, UIComponent comp) throws Exception {
-    UIPopupWindow uiPopup = getChildById(id) ;
+    UIPopupWindow uiPopup = getChildById(id);
     if(uiPopup == null) {
       uiPopup = addChild(UIPopupWindow.class, null, id);
       uiPopup.setWindowSize(560, 300);
-      UIECMPermissionBrowser uiECMPermission = 
-        createUIComponent(UIECMPermissionBrowser.class, null, null) ;
+      UIPermissionSelector uiECMPermission = 
+        createUIComponent(UIPermissionSelector.class, null, null);
+      uiECMPermission.setSelectedMembership(true);
       if(membership != null && membership.indexOf(":/") > -1) {
-        String[] arrMember = membership.split(":/") ;
-        uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
+        String[] arrMember = membership.split(":/");
+        uiECMPermission.setCurrentPermission("/" + arrMember[1]);
       }
-      uiECMPermission.setComponent(comp, null) ;
+      uiECMPermission.setSourceComponent(comp, null);
       uiPopup.setUIComponent(uiECMPermission);
-      uiPopup.setShow(true) ;
-      return ;
+      uiPopup.setShow(true);
+      return;
     }
-    uiPopup.setRendered(true) ;
-    uiPopup.setShow(true) ;
-    uiPopup.setResizable(true) ;
+    uiPopup.setRendered(true);
+    uiPopup.setShow(true);
+    uiPopup.setResizable(true);
   }
   protected void removePopup(String id) {
-    removeChildById(id) ;
+    removeChildById(id);
   }
 
   public void activate() throws Exception {

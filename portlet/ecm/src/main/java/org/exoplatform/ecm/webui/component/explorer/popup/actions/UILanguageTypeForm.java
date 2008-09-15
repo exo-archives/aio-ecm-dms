@@ -22,7 +22,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadForm;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;

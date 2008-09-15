@@ -40,6 +40,13 @@
   margin: 15px auto;
 }
 
+.UIJCRExplorerPortlet .UIOneNodePathSelector .UIFormWithTitle {
+  width: 580px;
+  margin: 10px auto;
+  border: 1px solid #b7b7b7;
+  background: #F3F3F3;
+}
+
 .UIJCRExplorerPortlet .UICompareExactlyForm .UIFormWithTitle {
   margin: 0px auto;
   background: #efefef;

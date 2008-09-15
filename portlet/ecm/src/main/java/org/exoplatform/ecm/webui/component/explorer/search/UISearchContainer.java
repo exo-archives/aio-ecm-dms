@@ -16,7 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.search;
 
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -39,12 +39,12 @@ public class UISearchContainer extends UIContainer {
   public UISearchContainer() throws Exception {
     addChild(UISimpleSearch.class, null, null) ;
     addChild(UIConstraintsForm.class, null, null).setRendered(false) ;
-    UIPopupAction popup = addChild(UIPopupAction.class, null, METADATA_POPUP) ;
+    UIPopupContainer popup = addChild(UIPopupContainer.class, null, METADATA_POPUP) ;
     popup.getChild(UIPopupWindow.class).setId(METADATA_POPUP + "_Popup") ;
   }
   
   public void initMetadataPopup(String fieldName) throws Exception {
-    UIPopupAction uiPopup = getChild(UIPopupAction.class) ;
+    UIPopupContainer uiPopup = getChild(UIPopupContainer.class) ;
     uiPopup.getChild(UIPopupWindow.class).setId(fieldName + METADATA_POPUP) ;
     UISelectPropertyForm uiSelectForm = createUIComponent(UISelectPropertyForm.class, null, null) ;
     uiSelectForm.setFieldName(fieldName) ;
@@ -52,7 +52,7 @@ public class UISearchContainer extends UIContainer {
   }
   
   public void initNodeTypePopup() throws Exception {
-    UIPopupAction uiPopup = getChild(UIPopupAction.class) ;
+    UIPopupContainer uiPopup = getChild(UIPopupContainer.class) ;
     uiPopup.getChild(UIPopupWindow.class).setId(NODETYPE_POPUP) ;
     UINodeTypeSelectForm uiSelectForm = createUIComponent(UINodeTypeSelectForm.class, null, null) ;
     uiPopup.activate(uiSelectForm, 400, 400) ;
@@ -60,7 +60,7 @@ public class UISearchContainer extends UIContainer {
   }
   
   public void initSaveQueryPopup(String statement, boolean isSimpleSearch, String queryType) throws Exception {
-    UIPopupAction uiPopup = getChild(UIPopupAction.class) ;
+    UIPopupContainer uiPopup = getChild(UIPopupContainer.class) ;
     uiPopup.getChild(UIPopupWindow.class).setId(SAVEQUERY_POPUP) ;
     UISaveQueryForm uiSaveQueryForm = createUIComponent(UISaveQueryForm.class, null, null) ;
     uiSaveQueryForm.setStatement(statement) ;

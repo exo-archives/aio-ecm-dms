@@ -19,8 +19,8 @@ package org.exoplatform.ecm.webui.component.admin.repository;
 import java.util.List;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIGrid;
@@ -82,7 +82,7 @@ public class UIRepositoryValueSelect  extends UIGrid implements UIPopupComponent
         }
         event.getRequestContext().addUIComponentToUpdateByAjax(uiWSContainer) ;
       }
-      UIPopupAction uiPopup = repoValueList.getAncestorOfType(UIPopupAction.class) ;
+      UIPopupContainer uiPopup = repoValueList.getAncestorOfType(UIPopupContainer.class) ;
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     }
@@ -90,7 +90,7 @@ public class UIRepositoryValueSelect  extends UIGrid implements UIPopupComponent
   static public class CloseActionListener extends EventListener<UIRepositoryValueSelect> {
     public void execute(Event<UIRepositoryValueSelect> event) throws Exception {
       UIRepositoryValueSelect repoValueList = event.getSource() ;
-      UIPopupAction uiPopup = repoValueList.getAncestorOfType(UIPopupAction.class) ;
+      UIPopupContainer uiPopup = repoValueList.getAncestorOfType(UIPopupContainer.class) ;
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     }

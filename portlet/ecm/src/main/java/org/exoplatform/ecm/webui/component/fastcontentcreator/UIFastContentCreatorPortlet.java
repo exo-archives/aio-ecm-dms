@@ -16,12 +16,16 @@
  */
 package org.exoplatform.ecm.webui.component.fastcontentcreator;
 
+import javax.jcr.RepositoryException;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.webui.component.UIJCRBrowser;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -50,16 +54,21 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
     removeChild(UIPopupWindow.class) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, null);
     uiPopup.setWindowSize(610, 300);
-    UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
-    if(SessionsUtils.isAnonim()) {      
-      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider()) ;
+    UIOneNodePathSelector uiOneNodePathSelector = 
+      createUIComponent(UIOneNodePathSelector.class, null, null);
+    uiOneNodePathSelector.setIsDisable(workspaceName, true) ;
+    uiOneNodePathSelector.setShowRootPathSelect(true) ;
+    uiOneNodePathSelector.setRootNodeLocation(repositoryName, workspaceName, "/");
+    if(SessionProviderFactory.isAnonim()) {
+      uiOneNodePathSelector.init(SessionProviderFactory.createAnonimProvider()) ;
+    } else if(workspaceName.equals(getSystemWorkspaceName(repositoryName))){
+      uiOneNodePathSelector.init(SessionProviderFactory.createSystemProvider()) ;
+    } else {
+      uiOneNodePathSelector.init(SessionProviderFactory.createSessionProvider()) ;
     }
-    uiJCRBrowser.setRepository(repositoryName) ;
-    uiJCRBrowser.setIsDisable(workspaceName, true) ;
-    uiJCRBrowser.setShowRootPathSelect(true) ;
-    uiPopup.setUIComponent(uiJCRBrowser);
+    uiPopup.setUIComponent(uiOneNodePathSelector);
     UIEditModeConfiguration uiEditModeDocumentType = getChild(UIEditModeConfiguration.class) ;
-    uiJCRBrowser.setComponent(uiEditModeDocumentType, new String[] {UIEditModeConfiguration.FIELD_SAVEDPATH}) ;
+    uiOneNodePathSelector.setSourceComponent(uiEditModeDocumentType, new String[] {UIEditModeConfiguration.FIELD_SAVEDPATH}) ;
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;
   }
@@ -72,6 +81,12 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;
   }
+  
+  private String getSystemWorkspaceName(String repository) throws RepositoryException, RepositoryConfigurationException {
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
+    ManageableRepository manageableRepository = repositoryService.getRepository(repository);
+    return manageableRepository.getConfiguration().getSystemWorkspaceName();
+  }  
 
   public void processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {    
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");

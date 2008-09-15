@@ -16,7 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -38,7 +38,7 @@ public class UIMultiLanguageManager extends UIContainer implements UIPopupCompon
 
   public void activate() throws Exception {
     UIMultiLanguageForm uiForm = getChild(UIMultiLanguageForm.class) ;
-    uiForm.updateSelect(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
+    uiForm.doSelect(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
   }
   public void deActivate() throws Exception {}
 

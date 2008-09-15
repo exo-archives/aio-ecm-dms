@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.workflow.Form;
@@ -35,7 +36,6 @@ import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.workflow.webui.component.UIWorkflowPopup;
 
 /**
  * Created by The eXo Platform SARL
@@ -91,7 +91,7 @@ public class UIControllerManager extends UIContainer {
       String processId = event.getRequestContext().getRequestParameter(OBJECTID);
       if(uiControllerManager.service_.hasStartTask(processId)) {      
         UIWorkflowControllerPortlet portlet = uiControllerManager.getParent() ;
-        UIWorkflowPopup uiPopup = portlet.getChild(UIWorkflowPopup.class) ;
+        UIPopupContainer uiPopup = portlet.getChild(UIPopupContainer.class) ;
         UITaskManager uiTaskManager = portlet.createUIComponent(UITaskManager.class, null, null) ;
         uiTaskManager.setTokenId(processId) ;
         uiTaskManager.setIsStart(true);

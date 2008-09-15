@@ -22,10 +22,10 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.PageList;
-import org.exoplatform.ecm.jcr.ComponentSelector;
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;
@@ -79,10 +79,10 @@ public class UIGroupSelector extends UIGroupMembershipSelector implements Compon
 
   public UIGroupSelector() throws Exception {}
 
-  public UIComponent getReturnComponent() { return uiComponent ; }
+  public UIComponent getSourceComponent() { return uiComponent ; }
   public String getReturnField() { return returnFieldName ; }
 
-  public void setComponent(UIComponent uicomponent, String[] initParams) {
+  public void setSourceComponent(UIComponent uicomponent, String[] initParams) {
     uiComponent = uicomponent ;
     if(initParams == null || initParams.length < 0) return ;
     for(int i = 0; i < initParams.length; i ++) {
@@ -143,7 +143,7 @@ public class UIGroupSelector extends UIGroupMembershipSelector implements Compon
         return ;
       }
       String returnField = uiGroupSelector.getReturnField() ;
-      ((UISelector)uiGroupSelector.getReturnComponent()).updateSelect(returnField, user) ;
+      ((UISelectable)uiGroupSelector.getSourceComponent()).doSelect(returnField, user) ;
       UIPopupWindow uiPopup = uiGroupSelector.getParent() ;
       uiGroupSelector.setDefaultValue() ;
       uiPopup.setShow(false) ;

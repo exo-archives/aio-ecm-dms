@@ -18,7 +18,7 @@ package org.exoplatform.ecm.webui.component.admin.templates;
 
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

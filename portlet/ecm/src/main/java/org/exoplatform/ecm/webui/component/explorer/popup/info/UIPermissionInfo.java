@@ -27,10 +27,11 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
@@ -165,7 +166,7 @@ public class UIPermissionInfo extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(Utils.hasChangePermissionRight(node)) {
+      if(PermissionUtil.canChangePermission(node)) {
         if(node.canAddMixin("exo:privilegeable"))  {
           node.addMixin("exo:privilegeable");
           node.setPermission(nodeOwner,PermissionType.ALL);
@@ -181,13 +182,7 @@ public class UIPermissionInfo extends UIContainer {
           return ;          
         }
         if(uiJCRExplorer.getRootNode().equals(node)) {
-          if(!Utils.isReadAuthorized(uiJCRExplorer.getCurrentNode())) {
-//            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
-//            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
-//            prefs_.setValue(Utils.VIEWS,"") ;
-//            prefs_.setValue(Utils.JCR_PATH,"") ;
-//            prefs_.setValue(Utils.DRIVE,"") ;
-//            prefs_.store() ;
+          if(!PermissionUtil.canRead(uiJCRExplorer.getCurrentNode())) {
             uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
             return ;
           }
@@ -202,8 +197,8 @@ public class UIPermissionInfo extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      UIPopupAction uiPopup = uicomp.getAncestorOfType(UIPopupAction.class) ;
-      if(!Utils.isReadAuthorized(node)) {
+      UIPopupContainer uiPopup = uicomp.getAncestorOfType(UIPopupContainer.class) ;
+      if(!PermissionUtil.canRead(node)) {
         uiJCRExplorer.setSelectNode(uiJCRExplorer.getRootNode().getPath(), uiJCRExplorer.getSession()) ;
         uiPopup.deActivate() ;
       } else {

@@ -16,8 +16,8 @@
  */
 package org.exoplatform.ecm.webui.component.admin.repository;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -33,26 +33,26 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
 
 public class UIRepositoryFormContainer extends UIContainer implements UIPopupComponent {
-  
-public UIRepositoryFormContainer() throws Exception {
-  addChild(UIRepositoryForm.class, null, null) ;
-  UIPopupAction uiPopupAction = addChild(UIPopupAction.class, null, "UIPopupControl");
-  uiPopupAction.getChild(UIPopupWindow.class).setId("UIPopupWindowControl") ;
-}
 
-protected void refresh(boolean isAddnew, RepositoryEntry re) throws Exception {
-  getChild(UIRepositoryForm.class).isAddnew_ = isAddnew ;
-  getChild(UIRepositoryForm.class).refresh(re) ;
-  getChild(UIRepositoryForm.class).lockForm(!isAddnew) ;
-}
+  public UIRepositoryFormContainer() throws Exception {
+    addChild(UIRepositoryForm.class, null, null) ;
+    UIPopupContainer uiPopupAction = addChild(UIPopupContainer.class, null, "UIPopupControl");
+    uiPopupAction.getChild(UIPopupWindow.class).setId("UIPopupWindowControl") ;
+  }
 
-public void activate() throws Exception {
-  // TODO Auto-generated method stub
-  
-}
+  protected void refresh(boolean isAddnew, RepositoryEntry re) throws Exception {
+    getChild(UIRepositoryForm.class).isAddnew_ = isAddnew ;
+    getChild(UIRepositoryForm.class).refresh(re) ;
+    getChild(UIRepositoryForm.class).lockForm(!isAddnew) ;
+  }
 
-public void deActivate() throws Exception {
-  // TODO Auto-generated method stub
-  
-}
+  public void activate() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
+
+  public void deActivate() throws Exception {
+    // TODO Auto-generated method stub
+
+  }
 }

@@ -22,9 +22,9 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.portlet.PortletMode;
 
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -141,7 +141,7 @@ public class UIToolBar extends UIContainer {
           ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class) ;
           String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
           String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
-          uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionsUtils.getSystemProvider())
+          uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionProviderFactory.createSystemProvider())
               .getNode(detailTemplateName).getPath())  ;
           uiContainer.viewDocument(selectNode, true) ;
         } else {
@@ -231,7 +231,7 @@ public class UIToolBar extends UIContainer {
       }
       if((uiDocument.node_.isCheckedOut())) {
         UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
+        UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
         uiPopupAction.activate(UICBVoteForm.class, 300) ;
         uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
       } else {
@@ -275,7 +275,7 @@ public class UIToolBar extends UIContainer {
       }
       if((uiDocument.node_.isCheckedOut())) {
         UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
+        UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
         UICBCommentForm commentForm = uiComp.createUIComponent(UICBCommentForm.class, null, null) ;
         commentForm.setDocument(uiDocument.node_) ;
         uiPopupAction.activate(commentForm, 750, 0) ;

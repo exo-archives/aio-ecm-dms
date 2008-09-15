@@ -16,7 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.admin.repository;
 
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormStringInput;
@@ -28,7 +28,7 @@ import org.exoplatform.webui.form.validator.NumberFormatValidator;
  *          tuan.pham@exoplatform.com
  * Aug 8, 2007  
  */
-@ComponentConfig(template = "app:/groovy/webui/component/UIFormInputSetWithAction.gtmpl")
+@ComponentConfig(template = "classpath:groovy/ecm/webui/form/UIFormInputSetWithAction.gtmpl")
 public class UIWizardStep3 extends UIFormInputSetWithAction {
   final static public String FIELD_QUERYHANDLER = "queryHandler" ;
   final static public String FIELD_INDEXPATH = "indexPath" ;

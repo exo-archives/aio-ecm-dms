@@ -18,13 +18,13 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;
@@ -43,9 +43,9 @@ import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.UIFormWYSIWYGInput;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
+import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -80,7 +80,7 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
       addUIFormInput(new UIFormStringInput(FIELD_EMAIL, FIELD_EMAIL, null).addValidator(EmailAddressValidator.class)) ;
       addUIFormInput(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null)) ;
     } 
-    addUIFormInput(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null, true).addValidator(MandatoryValidator.class)) ;
+    addUIFormInput(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null).addValidator(MandatoryValidator.class)) ;
   }
  
   public void activate() throws Exception {
@@ -97,7 +97,7 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
   
   public static class CancelActionListener extends EventListener<UICommentForm>{
     public void execute(Event<UICommentForm> event) throws Exception {
-      event.getSource().getAncestorOfType(UIPopupAction.class).cancelPopupAction() ;
+      event.getSource().getAncestorOfType(UIPopupContainer.class).cancelPopupAction() ;
     }
   }  
   

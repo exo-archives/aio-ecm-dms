@@ -16,10 +16,16 @@
  */
 package org.exoplatform.ecm.webui.component.admin.drives;
 
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIECMPermissionBrowser;
-import org.exoplatform.ecm.webui.component.UIJCRBrowser;
+import javax.jcr.RepositoryException;
+
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -61,16 +67,23 @@ public class UIDriveManager extends UIContainer {
     removeChildById(UIDriveForm.POPUP_DRIVEPERMISSION) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, UIDriveForm.POPUP_DRIVEPERMISSION);
     uiPopup.setWindowSize(560, 300);
-    UIECMPermissionBrowser uiECMPermission = 
-      createUIComponent(UIECMPermissionBrowser.class, null, null) ;
+    UIPermissionSelector uiECMPermission = 
+      createUIComponent(UIPermissionSelector.class, null, null) ;
+    uiECMPermission.setSelectedMembership(true);
     if(membership != null && membership.indexOf(":/") > -1) {
       String[] arrMember = membership.split(":/") ;
       uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
     }
     uiPopup.setUIComponent(uiECMPermission);
     UIDriveForm uiDriveForm = findFirstComponentOfType(UIDriveForm.class) ;
-    uiECMPermission.setComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_PERMISSION}) ;
+    uiECMPermission.setSourceComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_PERMISSION}) ;
     uiPopup.setShow(true) ;
+  }
+  
+  private String getSystemWorkspaceName(String repository) throws RepositoryException, RepositoryConfigurationException {
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
+    ManageableRepository manageableRepository = repositoryService.getRepository(repository);
+    return manageableRepository.getConfiguration().getSystemWorkspaceName();
   }
   
   public void initPopupJCRBrowser(String workspace, boolean isDisable) throws Exception {
@@ -79,30 +92,46 @@ public class UIDriveManager extends UIContainer {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "JCRBrowser");
     uiPopup.setWindowSize(610, 300);
-    UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
-    uiJCRBrowser.setRepository(repository) ;
-    uiJCRBrowser.setIsDisable(workspace, isDisable) ;
-    uiJCRBrowser.setShowRootPathSelect(true) ;
-    uiPopup.setUIComponent(uiJCRBrowser);
+    UIOneNodePathSelector uiOneNodePathSelector = 
+      createUIComponent(UIOneNodePathSelector.class, null, null);
+    uiOneNodePathSelector.setIsDisable(workspace, isDisable) ;
+    uiOneNodePathSelector.setShowRootPathSelect(true) ;
+    uiOneNodePathSelector.setRootNodeLocation(repository, workspace, "/");
+    if(SessionProviderFactory.isAnonim()) {
+      uiOneNodePathSelector.init(SessionProviderFactory.createAnonimProvider()) ;
+    } else if(workspace.equals(getSystemWorkspaceName(repository))){
+      uiOneNodePathSelector.init(SessionProviderFactory.createSystemProvider()) ;
+    } else {
+      uiOneNodePathSelector.init(SessionProviderFactory.createSessionProvider()) ;
+    }
+    uiPopup.setUIComponent(uiOneNodePathSelector);
     UIDriveForm uiDriveForm = findFirstComponentOfType(UIDriveForm.class) ;
-    uiJCRBrowser.setComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_HOMEPATH}) ;
+    uiOneNodePathSelector.setSourceComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_HOMEPATH}) ;
     uiPopup.setShow(true) ;
   }
   
-  public void initPopupJCRBrowserAssets() throws Exception {
+  public void initPopupJCRBrowserAssets(String workspace) throws Exception {
     removeChildById("JCRBrowserAssets") ;
     removeChildById("JCRBrowser") ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "JCRBrowserAssets");
     uiPopup.setWindowSize(610, 300);
-    UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
-    uiPopup.setUIComponent(uiJCRBrowser);
+    UIOneNodePathSelector uiOneNodePathSelector = 
+      createUIComponent(UIOneNodePathSelector.class, null, null);
     UIDriveForm uiDriveForm = findFirstComponentOfType(UIDriveForm.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    uiJCRBrowser.setRepository(repository) ;
-    uiJCRBrowser.setRootPath("/") ;
-    uiJCRBrowser.setFilterType(new String[] {Utils.NT_FILE}) ;
-    uiJCRBrowser.setMimeTypes(new String[] {"image/jpeg", "image/gif", "image/png"}) ;
-    uiJCRBrowser.setComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_WORKSPACEICON}) ;
+    uiOneNodePathSelector.setAcceptedNodeTypesInPathPanel(new String[] {Utils.NT_FILE}) ;
+    uiOneNodePathSelector.setAcceptedNodeTypesInTree(new String[] {Utils.NT_UNSTRUCTURED, Utils.NT_FOLDER});
+    uiOneNodePathSelector.setAcceptedMimeTypes(new String[] {"image/jpeg", "image/gif", "image/png"}) ;
+    uiOneNodePathSelector.setRootNodeLocation(repository, workspace, "/");
+    if(SessionProviderFactory.isAnonim()) {
+      uiOneNodePathSelector.init(SessionProviderFactory.createAnonimProvider()) ;
+    } else if(workspace.equals(getSystemWorkspaceName(repository))){
+      uiOneNodePathSelector.init(SessionProviderFactory.createSystemProvider()) ;
+    } else {
+      uiOneNodePathSelector.init(SessionProviderFactory.createSessionProvider()) ;
+    }
+    uiOneNodePathSelector.setSourceComponent(uiDriveForm, new String[] {UIDriveInputSet.FIELD_WORKSPACEICON}) ;
+    uiPopup.setUIComponent(uiOneNodePathSelector);
     uiPopup.setShow(true) ;
   }
 }

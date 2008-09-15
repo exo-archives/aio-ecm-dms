@@ -20,9 +20,9 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -92,7 +92,7 @@ public class UITaxonomyManager extends UIContainer {
   public Session getSession() throws Exception {
     String repositoryName = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     String workspace = getRepository(repositoryName).getConfiguration().getSystemWorkspaceName() ;
-    return SessionsUtils.getSystemProvider().getSession(workspace, getRepository(repositoryName)) ;
+    return SessionProviderFactory.createSystemProvider().getSession(workspace, getRepository(repositoryName)) ;
   }
   
   public ManageableRepository getRepository(String repositoryName) throws Exception{

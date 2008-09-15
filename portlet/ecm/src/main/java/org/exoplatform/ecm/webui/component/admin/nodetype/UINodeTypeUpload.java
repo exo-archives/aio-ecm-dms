@@ -23,7 +23,7 @@ import java.util.zip.ZipInputStream;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.core.nodetype.NodeTypeValuesList;
 import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;

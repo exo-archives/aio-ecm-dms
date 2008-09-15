@@ -23,10 +23,11 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -65,7 +66,7 @@ public class UIMultiLanguageForm extends UIForm {
     addUIFormInput(new UIFormSelectBox(Utils.LANGUAGES, Utils.LANGUAGES, languages)) ;
   }
 
-  public void updateSelect(Node currentNode) throws Exception {
+  public void doSelect(Node currentNode) throws Exception {
     List<SelectItemOption<String>> languages = new ArrayList<SelectItemOption<String>>() ;
     String defaultLang = currentNode.getProperty(Utils.EXO_LANGUAGE).getString() ;
     languages.add(new SelectItemOption<String>(defaultLang + "(default)", defaultLang)) ;
@@ -95,7 +96,7 @@ public class UIMultiLanguageForm extends UIForm {
       UIMultiLanguageForm uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      if(!Utils.isAddNodeAuthorized(uiExplorer.getCurrentNode())) { 
+      if(!PermissionUtil.canAddNode(uiExplorer.getCurrentNode())) { 
         throw new MessageException(new ApplicationMessage("UIMultiLanguageForm.msg.access-denied", 
                                                           null, ApplicationMessage.WARNING)) ;
       }

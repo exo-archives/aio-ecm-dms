@@ -23,8 +23,9 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.comparator.ItemOptionNameComparator;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -138,17 +139,17 @@ public class UIScriptConfig extends UIForm {
   private List<SelectItemOption<String>> getTemplateOption(String repository) throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
     List<Node> scriptTemplates = getApplicationComponent(ManageViewService.class).
-                getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES, repository,SessionsUtils.getSystemProvider()) ;
+                getAllTemplates(BasePath.CB_SCRIPT_TEMPLATES, repository, SessionProviderFactory.createSystemProvider()) ;
     for(Node template:scriptTemplates) {
       Options.add(new SelectItemOption<String>(template.getName(),template.getName())) ;
     }
-    Collections.sort(Options, new Utils.ItemOptionNameComparator()) ;
+    Collections.sort(Options, new ItemOptionNameComparator()) ;
     return Options ;
   }
 
   private List<SelectItemOption<String>> getScriptOption(String repository) throws Exception {
     List<SelectItemOption<String>> Options = new ArrayList<SelectItemOption<String>>() ;
-    Node cbScripts = getApplicationComponent(ScriptService.class).getCBScriptHome(repository,SessionsUtils.getSystemProvider()) ;
+    Node cbScripts = getApplicationComponent(ScriptService.class).getCBScriptHome(repository, SessionProviderFactory.createSystemProvider()) ;
     NodeIterator nodeList = cbScripts.getNodes() ;
     while(nodeList.hasNext()) {
       Node node = nodeList.nextNode() ;

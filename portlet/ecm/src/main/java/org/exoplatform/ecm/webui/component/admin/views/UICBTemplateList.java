@@ -24,9 +24,9 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -74,7 +74,7 @@ public class UICBTemplateList extends UIGrid {
     ManageViewService viewService = getApplicationComponent(ManageViewService.class) ;
     List<Node> templateList = new ArrayList<Node>() ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    SessionProvider provider = SessionsUtils.getSessionProvider() ;
+    SessionProvider provider = SessionProviderFactory.createSessionProvider() ;
     templateList.addAll(viewService.getAllTemplates(BasePath.CB_DETAIL_VIEW_TEMPLATES, repository,provider)) ;
     templateList.addAll(viewService.getAllTemplates(BasePath.CB_PATH_TEMPLATES, repository,provider)) ;
     templateList.addAll(viewService.getAllTemplates(BasePath.CB_QUERY_TEMPLATES, repository,provider)) ;
@@ -108,7 +108,7 @@ public class UICBTemplateList extends UIGrid {
   static  public class AddActionListener extends EventListener<UICBTemplateList> {
     public void execute(Event<UICBTemplateList> event) throws Exception {
       UICBTemplateList uiCBTemp = event.getSource() ;
-      SessionProvider provider = SessionsUtils.getSessionProvider() ;
+      SessionProvider provider = SessionProviderFactory.createSessionProvider() ;
       Node cbTemplateHome = uiCBTemp.getApplicationComponent(ManageViewService.class)
       .getTemplateHome(BasePath.CONTENT_BROWSER_TEMPLATES, uiCBTemp.getRepository(),provider) ;
       if(cbTemplateHome == null) {

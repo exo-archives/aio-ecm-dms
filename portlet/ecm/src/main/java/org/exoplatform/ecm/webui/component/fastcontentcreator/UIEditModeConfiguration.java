@@ -30,9 +30,9 @@ import javax.jcr.nodetype.NodeTypeManager;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
@@ -69,7 +69,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIEditModeConfiguration.ChangeRepositoryActionListener.class, phase=Phase.DECODE)
     }
 )
-public class UIEditModeConfiguration extends UIForm implements UISelector {
+public class UIEditModeConfiguration extends UIForm implements UISelectable {
 
   final static public String FIELD_SELECT = "selectTemplate" ;
   final static public String FIELD_SAVEDPATH = "savedPath" ;
@@ -227,12 +227,12 @@ public class UIEditModeConfiguration extends UIForm implements UISelector {
     }
   }
   
-  public void updateSelect(String selectField, String value) {
-    getUIStringInput(selectField).setValue(value) ;
+  public void doSelect(String selectField, Object value) {
+    getUIStringInput(selectField).setValue(value.toString()) ;
     String repoName = getUIFormSelectBox(REPOSITORY_NAME).getValue() ;
     String wsName = getUIFormSelectBox(WORKSPACE_NAME).getValue() ;
     try {
-      setTemplateOptions(value, repoName, wsName) ;
+      setTemplateOptions(value.toString(), repoName, wsName) ;
     } catch(Exception ex) {
       ex.printStackTrace() ;
     }

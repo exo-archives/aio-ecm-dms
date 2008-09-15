@@ -30,20 +30,19 @@ import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.jcr.ComponentSelector;
-import org.exoplatform.ecm.jcr.JCRResourceResolver;
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIJCRBrowser;
+import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
+import org.exoplatform.ecm.webui.selector.ComponentSelector;
+import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -77,7 +76,7 @@ import org.exoplatform.webui.form.UIFormUploadInput;
       @EventConfig(listeners = UIFastContentCreatortForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
-public class UIFastContentCreatortForm extends UIDialogForm implements UISelector {
+public class UIFastContentCreatortForm extends UIDialogForm implements UISelectable {
 
   private String documentType_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
@@ -91,7 +90,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     String repository = getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
     try {      
-      if(SessionsUtils.isAnonim()) {
+      if(SessionProviderFactory.isAnonim()) {
         return templateService.getTemplatePathByAnonymous(true, documentType_, repository);
       }
       return templateService.getTemplatePathByUser(true, documentType_, userName, repository) ;
@@ -104,9 +103,9 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
     }
   }
   
-  public void updateSelect(String selectField, String value) {
+  public void doSelect(String selectField, Object value) {
     this.isUpdateSelect = true ;
-    getUIStringInput(selectField).setValue(value) ;
+    getUIStringInput(selectField).setValue(value.toString()) ;
     UIFastContentCreatorPortlet uiContainer = getParent() ;
     uiContainer.removeChildById("PopupComponent") ;
   }
@@ -137,12 +136,8 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
   public void newJCRTemplateResourceResolver() {
     PortletPreferences preferences = getPortletPreferences();       
     try {
-      String repositoryName = preferences.getValue(Utils.REPOSITORY, "") ;
       String workspaceName = preferences.getValue("workspace", "") ;    
-      ManageableRepository manageableRepository = 
-        getApplicationComponent(RepositoryService.class).getRepository(repositoryName) ;
-      Session session = SessionProviderFactory.createSystemProvider().getSession(workspaceName,manageableRepository) ;
-      jcrTemplateResourceResolver_ = new JCRResourceResolver(session, "exo:templateFile") ;
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(repositoryName, workspaceName, "exo:templateFile") ;
     } catch(Exception e) { }
   }
   
@@ -164,7 +159,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
       } catch(Exception e) {
         session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
       }
-      Map inputProperties = Utils.prepareMap(uiForm.getChildren(), uiForm.getInputProperties()) ;
+      Map inputProperties = DialogFormUtil.prepareMap(uiForm.getChildren(), uiForm.getInputProperties()) ;
       Node homeNode = null;
       Node newNode = null ;
       try {
@@ -238,6 +233,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
     }
   }  
     
+  @SuppressWarnings("unchecked")
   static public class ShowComponentActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       UIFastContentCreatortForm uiForm = event.getSource() ;
@@ -246,37 +242,43 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecto
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       Map fieldPropertiesMap = uiForm.componentSelectors.get(fieldName) ;
       String classPath = (String)fieldPropertiesMap.get("selectorClass") ;
+      String rootPath = (String)fieldPropertiesMap.get("rootPath") ;
       ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
       Class clazz = Class.forName(classPath, true, cl) ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
-      if(uiComp instanceof UIJCRBrowser) {
+      if(uiComp instanceof UIOneNodePathSelector) {
         PortletPreferences preferences = uiForm.getPortletPreferences() ;
         String repositoryName = preferences.getValue("repository", "") ;
-        SessionProvider provider = SessionsUtils.getSystemProvider() ;                
-        ((UIJCRBrowser)uiComp).setRepository(repositoryName) ;
-        ((UIJCRBrowser)uiComp).setSessionProvider(provider) ;
+        SessionProvider provider = SessionProviderFactory.createSystemProvider() ;                
         String wsFieldName = (String)fieldPropertiesMap.get("workspaceField") ;
+        String wsName = "";
         if(wsFieldName != null && wsFieldName.length() > 0) {
-          String wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
-          ((UIJCRBrowser)uiComp).setIsDisable(wsName, true) ;      
+          wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue() ;
+          ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true) ;      
         }
         String selectorParams = (String)fieldPropertiesMap.get("selectorParams") ;
         if(selectorParams != null) {
           String[] arrParams = selectorParams.split(",") ;
           if(arrParams.length == 4) {
-            ((UIJCRBrowser)uiComp).setFilterType(new String[] {Utils.NT_FILE}) ;
-            ((UIJCRBrowser)uiComp).setRootPath(arrParams[2]) ;
+            ((UIOneNodePathSelector)uiComp).setAcceptedNodeTypesInPathPanel(new String[] {Utils.NT_FILE}) ;
+            wsName = arrParams[1];
+            rootPath = arrParams[2];
+            ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true) ;
             if(arrParams[3].indexOf(";") > -1) {
-              ((UIJCRBrowser)uiComp).setMimeTypes(arrParams[3].split(";")) ;
+              ((UIOneNodePathSelector)uiComp).setAcceptedMimeTypes(arrParams[3].split(";")) ;
             } else {
-              ((UIJCRBrowser)uiComp).setMimeTypes(new String[] {arrParams[3]}) ;
+              ((UIOneNodePathSelector)uiComp).setAcceptedMimeTypes(new String[] {arrParams[3]}) ;
             }
           }
         }
+        if(rootPath == null) rootPath = "/";
+        ((UIOneNodePathSelector)uiComp).setRootNodeLocation(repositoryName, wsName, rootPath) ;
+        ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
+        ((UIOneNodePathSelector)uiComp).init(provider);
       }
       uiContainer.initPopup(uiComp) ;
       String param = "returnField=" + fieldName ;
-      ((ComponentSelector)uiComp).setComponent(uiForm, new String[]{param}) ;
+      ((ComponentSelector)uiComp).setSourceComponent(uiForm, new String[]{param}) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer) ;
     }
   }      

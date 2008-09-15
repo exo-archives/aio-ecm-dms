@@ -19,9 +19,9 @@ package org.exoplatform.ecm.webui.component.admin.repository;
 import java.util.ArrayList;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
@@ -48,7 +48,7 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 
-public class UIRepositoryList extends UIGrid  implements UIPopupComponent{
+public class UIRepositoryList extends UIGrid  implements UIPopupComponent {
   private static String[] REPO_BEAN_FIELD = {"name", "workspaces", "isdefault","accesscontrol", "sessiontimeout" } ;
   private static String[] REPO_ACTION = {"Delete"} ;
 
@@ -100,14 +100,14 @@ public class UIRepositoryList extends UIGrid  implements UIPopupComponent{
       }
       uiList.updateGrid() ;
       uiControl.reloadValue(true, rservice);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiList.getAncestorOfType(UIPopupAction.class)) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiList.getAncestorOfType(UIPopupContainer.class)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiControl) ;
     }
   }
 
   static  public class CloseActionListener extends EventListener<UIRepositoryList> {
     public void execute(Event<UIRepositoryList> event) throws Exception {
-      UIPopupAction uiPopup = event.getSource().getAncestorOfType(UIPopupAction.class);
+      UIPopupContainer uiPopup = event.getSource().getAncestorOfType(UIPopupContainer.class);
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
     }

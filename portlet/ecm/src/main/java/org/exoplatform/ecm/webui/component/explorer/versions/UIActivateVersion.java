@@ -18,10 +18,10 @@ package org.exoplatform.ecm.webui.component.explorer.versions;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -63,7 +63,7 @@ public class UIActivateVersion extends UIContainer implements UIPopupComponent {
       if(currentNode.isNodeType("rma:filePlan")){
         
         WebuiRequestContext contx = event.getRequestContext();
-        UIPopupAction popupAction = uiExplorer.getChild(UIPopupAction.class) ;
+        UIPopupContainer popupAction = uiExplorer.getChild(UIPopupContainer.class) ;
         if(popupAction.isRendered()) {
           popupAction.deActivate() ;
           contx.addUIComponentToUpdateByAjax(popupAction) ;

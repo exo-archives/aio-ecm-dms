@@ -28,10 +28,10 @@ import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.jcr.UISelector;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
-import org.exoplatform.ecm.webui.component.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -71,7 +71,7 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
       @EventConfig(listeners = UITemplateForm.AddPermissionActionListener.class, phase = Phase.DECODE)
     }
 )
-public class UITemplateForm extends UIFormTabPane implements UISelector {  
+public class UITemplateForm extends UIFormTabPane implements UISelectable {  
   final static public String FIELD_NAME = "name" ;
   final static public String FIELD_LABEL = "label" ;
   final static public String FIELD_ISTEMPLATE = "isDocumentTemplate" ;
@@ -138,8 +138,8 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
     String repository = getRepository() ;       
     NodeTypeManager nodeTypeManager = 
       getApplicationComponent(RepositoryService.class).getRepository(repository).getNodeTypeManager() ; 
-    Node templatesHome = 
-      getApplicationComponent(TemplateService.class).getTemplatesHome(repository,SessionsUtils.getSessionProvider()) ;
+    Node templatesHome = getApplicationComponent(TemplateService.class).getTemplatesHome(repository,
+        SessionProviderFactory.createSessionProvider()) ;
     if(templatesHome != null) {
       NodeIterator templateIter = templatesHome.getNodes() ;
       List<String> templates = new ArrayList<String>() ;
@@ -158,9 +158,9 @@ public class UITemplateForm extends UIFormTabPane implements UISelector {
   }
 
   @SuppressWarnings("unused")
-  public void updateSelect(String selectField, String value) {
+  public void doSelect(String selectField, Object value) {
     UIFormInputSetWithAction uiFormAction = getChildById(FIELD_TAB_TEMPLATE) ;
-    uiFormAction.getUIStringInput(FIELD_PERMISSION).setValue(value) ;
+    uiFormAction.getUIStringInput(FIELD_PERMISSION).setValue(value.toString()) ;
     UITemplatesManager uiManager = getAncestorOfType(UITemplatesManager.class) ;
     uiManager.removeChildById("AddNewTemplatePermission") ;
   }

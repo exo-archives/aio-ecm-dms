@@ -24,14 +24,13 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.jcr.UIPopupComponent;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
-import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -55,7 +54,7 @@ import org.exoplatform.webui.form.UIForm;
     }
 )
 
-public class UIActivePublication extends UIGrid implements UIPopupComponent{
+public class UIActivePublication extends UIGrid implements UIPopupComponent {
   
   public final static String LIFECYCLE_NAME   = "LifecycleName";
 
@@ -134,7 +133,7 @@ public class UIActivePublication extends UIGrid implements UIPopupComponent{
     public void execute(Event<UIActivePublication> event) throws Exception { 
       UIActivePublication uiActivePub = event.getSource();
       UIJCRExplorer uiJCRExplorer = uiActivePub.getAncestorOfType(UIJCRExplorer.class);
-      UIPopupAction popupAction = uiJCRExplorer.getChild(UIPopupAction.class);
+      UIPopupContainer popupAction = uiJCRExplorer.getChild(UIPopupContainer.class);
       UIPublicationManager uiPublicationManager = uiJCRExplorer.createUIComponent(UIPublicationManager.class, null, null);
       Node currentNode = uiJCRExplorer.getCurrentNode();
       PublicationService publicationService = uiActivePub.getApplicationComponent(PublicationService.class);
@@ -153,5 +152,4 @@ public class UIActivePublication extends UIGrid implements UIPopupComponent{
       uiPublicationLogList.updateGrid();
     }    
   }
-
 }

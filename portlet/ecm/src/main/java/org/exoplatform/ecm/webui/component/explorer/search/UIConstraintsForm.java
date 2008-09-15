@@ -26,8 +26,8 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.exoplatform.commons.utils.ISO8601;
-import org.exoplatform.ecm.webui.component.UIPopupAction;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -389,7 +389,7 @@ public class UIConstraintsForm extends UIForm {
       UISearchContainer uiContainer = uiConstraintForm.getParent() ;
       UICompareExactlyForm uiCompareExactlyForm = 
         uiContainer.createUIComponent(UICompareExactlyForm.class, null, null) ;
-      UIPopupAction uiPopup = uiContainer.getChild(UIPopupAction.class);
+      UIPopupContainer uiPopup = uiContainer.getChild(UIPopupContainer.class);
       uiPopup.getChild(UIPopupWindow.class).setId("ExactlyFormPopup") ;
       uiCompareExactlyForm.init(property, result) ;
       uiPopup.activate(uiCompareExactlyForm, 600, 500) ;

@@ -34,6 +34,12 @@
 	width: 650px;
 }
 
+.UIBrowseContentPortlet .UIOneNodePathSelector .UIFormWithTitle {
+	margin: 10px auto;
+	width: 580px;
+	border:1px solid #b7b7b7;
+}
+
 .UIBrowseContentPortlet .UIConfigTabPane {
 	padding: 5px;
 }
@@ -372,7 +378,7 @@
 	width: auto;
 }
 
-.UIBrowseContentPortlet .UIJCRBrowser .rootNodeInfo .FormContainer {
+.UIBrowseContentPortlet .UIOneNodePathSelector .rootNodeInfo .FormContainer {
 	padding: 0px;
 }
 

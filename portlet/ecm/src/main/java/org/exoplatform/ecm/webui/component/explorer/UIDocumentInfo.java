@@ -36,13 +36,13 @@ import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.ecm.jcr.ECMViewComponent;
-import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.model.Preference;
-import org.exoplatform.ecm.utils.SessionsUtils;
-import org.exoplatform.ecm.utils.Utils;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
+import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -90,7 +90,7 @@ import org.exoplatform.webui.exception.MessageException;
         @EventConfig(listeners = UIDocumentInfo.ShowPageActionListener.class)
     }
 )
-public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
+public class UIDocumentInfo extends UIContainer implements NodePresentation {
 
   final private static String CONTENT_PAGE_ITERATOR_ID = "UIContentPageIterator".intern();
   private String typeSort_ = Preference.SORT_BY_NODETYPE;
@@ -141,9 +141,9 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
     String[] workspaces = manageRepo.getWorkspaceNames() ;
     for(String ws : workspaces) {
       try{
-        return SessionsUtils.getSystemProvider().getSession(ws, manageRepo).getNodeByUUID(uuid) ;
-      }catch(Exception e) {
-
+        return SessionProviderFactory.createSystemProvider().getSession(ws, manageRepo).getNodeByUUID(uuid) ;
+      } catch(Exception e) {
+        continue;
       }      
     }
     return null;
@@ -225,7 +225,7 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
 
   public Node getNodeByPath(String nodePath, String workspace) throws Exception {
     ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(getRepository()) ;
-    Session session = SessionsUtils.getSystemProvider().getSession(workspace, manageRepo) ;
+    Session session = SessionProviderFactory.createSystemProvider().getSession(workspace, manageRepo) ;
     return getAncestorOfType(UIJCRExplorer.class).getNodeByPath(nodePath, session) ;
   }
 
@@ -459,10 +459,9 @@ public class UIDocumentInfo extends UIContainer implements ECMViewComponent {
       if(workspaceName == null ) {
         session = uiExplorer.getSession() ;
       } else {
-//        String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
         RepositoryService repositoryService  = uicomp.getApplicationComponent(RepositoryService.class) ;
         ManageableRepository manageableRepository = repositoryService.getRepository(uicomp.getRepository()) ;
-        SessionProvider provider = SessionsUtils.getSessionProvider() ;
+        SessionProvider provider = SessionProviderFactory.createSessionProvider() ;
         session = provider.getSession(workspaceName,manageableRepository) ;
       }
       uiExplorer.setSelectNode(uri, session) ;

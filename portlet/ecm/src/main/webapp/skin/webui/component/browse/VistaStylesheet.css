@@ -387,7 +387,7 @@
 	line-height: 26px;
 }
 
-.UIBrowseContentPortlet .UIJCRBrowser .rootNodeInfo .FormContainer {
+.UIBrowseContentPortlet .UIOneNodePathSelector .rootNodeInfo .FormContainer {
 	padding: 0px;
 }
 
