@@ -1,4 +1,4 @@
-<%import org.exoplatform.ecm.utils.Utils ;%>
+<%import org.exoplatform.ecm.webui.utils.Utils ;%>
 <%
   String[] arrValues = uicomponent.arrUploadValues() ;
   String[] arrLabel = ["fileName", "nodeName", "fileSize", "mimeType"] ;

@@ -8,7 +8,7 @@
  */
 %>
 <%
-  import org.exoplatform.ecm.utils.Utils ;
+  import org.exoplatform.ecm.webui.utils.Utils ;
 %>
 <div class="UIDriveList" id="$uicomponent.id">
   <table class="UIGrid">

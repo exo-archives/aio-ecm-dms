@@ -11,7 +11,7 @@
   import org.exoplatform.webui.core.UIPopupWindow;
   import javax.jcr.query.Query;
   import javax.jcr.Node;
-  import org.exoplatform.ecm.utils.Utils ;
+  import org.exoplatform.ecm.webui.utils.Utils ;
   int totalPages = uicomponent.getUIPageIterator().getAvailablePage() ;
 %>
 <div class="UISavedQuery" id="UISavedQuery">
