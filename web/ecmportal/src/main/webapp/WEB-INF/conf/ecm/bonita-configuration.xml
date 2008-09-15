@@ -42,10 +42,10 @@
 	          <field name="processLocation"><string>war:/conf/bp</string></field>
 	          <field name="predefinedProcess">
 	            <collection type="java.util.HashSet">
-	              <value><string>/exo.ecm.bp.bonita.payraise-2.1.1.jar</string></value>
-	              <value><string>/exo.ecm.bp.bonita.holiday-2.1.1.jar</string></value>
-	              <value><string>/exo.ecm.bp.bonita.content.validation-2.1.1.jar</string></value>
-	              <value><string>/exo.ecm.bp.bonita.content.backup-2.1.1.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.payraise-2.1.2.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.holiday-2.1.2.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.content.validation-2.1.2.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.content.backup-2.1.2.jar</string></value>
 	            </collection>
 	          </field>
 	        </object>
