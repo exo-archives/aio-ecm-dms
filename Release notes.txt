@@ -1,0 +1,116 @@
+==============================================
+	eXo ECM Version 2.1.1 release notes
+==============================================
+
+- Introduction
+	eXo ECM (Enterprise Content Management) is a solution that values your operational productivity and helps your organization make
+  better decisions faster at the right moment by managing all forms of content and optimizing your business processes.
+  It allows you to transform unstructured content to structured content through all the document processes that are capturing, managing, 
+	storing, preserving and delivering documents while securely distributing it.
+  Furthermore, thanks to an innovative page layout, only content that need to be updated is reloaded, increasing eXo ECM performance.
+
+- System Requirements
+   +) Web Browser: IE6, IE7, FF2, FF3, Safari. Best for Frirefox 2 and Firefox 3
+   +) JVM: version 1.5.0_xx only
+   +) Application Server : Tomcat, JBoss, Jonas, Websphere
+   +) Building Tools: Maven 2.0.6 and up
+
+- Complete list of issues fixed in eXo ECM 2.1.1
+
+** Bug
+    * [ECM-2039] - IE6: Can not download 1 uploaded file twice
+    * [ECM-2050] - Problem with emptying the buffer
+    * [ECM-2056] - Unknown error when select Tag cloud in special case
+    * [ECM-2069] - demo user cannot upload a picture in fckeditor
+    * [ECM-2089] - Error and exception when view Browse Content in special case
+    * [ECM-2102] - Can not unlock node in special case
+    * [ECM-2137] - category is not whole displayed in the list of categories for a document
+    * [ECM-2224] - IE: Error in display in [View & Edit Template] in Vista and Mac skin
+    * [ECM-2252] - IE 6: Error in display navigation bar  when click on [Content Administration] tab
+    * [ECM-2258] - Need icons for publication and audit
+    * [ECM-2260] - Error in display in Content Browser
+    * [ECM-2261] - Error in display sidebar of [System files] drive when view refereneced document
+    * [ECM-2309] - Lost right border when view File document (mime type: text/plain)
+    * [ECM-2311] - Show duplicate File document in Content Browser 
+    * [ECM-2312] - Some errors in [Advanced search] popup
+    * [ECM-2315] - Set align for [Remove Item] and [Add Item] icon in [Metadata] form in Vista skin
+    * [ECM-2324] - Error in displaying [Add Relation] pop-up
+    * [ECM-2326] - Error in display default language with image file
+    * [ECM-2327] - IE6: Error in displaying [Read Ideas] 
+    * [ECM-2328] - IE6: Error when view content of document
+    * [ECM-2333] - [Basic Action] Can not unlock sub node after rename parent node
+    * [ECM-2336] - Should display full editor
+    * [ECM-2338] - IE6+7: Error in displaying form when add constraint in advanced search
+    * [ECM-2339] - Should change some forms
+    * [ECM-2341] - Error when add relation for node
+    * [ECM-2348] - Can not view content of File Plan document
+    * [ECM-2350] - Error in [Permission Browser] popup when select permission for exo:workflowAction
+    * [ECM-2352] - The root has no right to perform the publication workflow's action
+    * [ECM-2375] - Lost border in [Select permission] pop-up in Vista and Mac skin
+    * [ECM-2376] - Do not display any documents after view some documents when config for Content Browser using script
+    * [ECM-2381] - Can not view image in [Version Info] pop-up
+    * [ECM-2382] - [Unknown error] when cut related document and paste into folder
+    * [ECM-2383] - [Unknown error] when rename related document
+    * [ECM-2384] - Can not rename sub node while parent node is being locked by user who is not locker
+    * [ECM-2385] - Error in displaying [Node Type Information] popup when node has many tabs
+    * [ECM-2389] - Can not view image file when 'Name' field has space character at the end
+    * [ECM-2390] - Can not get mail using exo:getMailAction
+    * [ECM-2397] - IE6: Error in displaying [System files] drive of File Explorer
+    * [ECM-2398] - Lost border of TabsContainer in Content Browser
+    * [ECM-2400] - Error in displaying File Explorer after do search
+    * [ECM-2403] - Error in displaying [Advanced Search] pop-up after delete query in ECMAdmin
+    * [ECM-2406] - Error in [Ideas] when user doesn't login
+    * [ECM-2408] - In CB, after viewing 1 document in Collaboration ws, if you config for CB with other workspaces, it  still displaying paths of Collaboration ws
+    * [ECM-2410] - Error in displaying CB after cut/paste folder in File Explorer
+    * [ECM-2415] - Error in displaying path in Content Browser after viewing 1 document using tag
+    * [ECM-2417] - IE: Error in displaying pop-up message in CB
+    * [ECM-2422] - Update configuration to match JCR 1.9.x new tags
+    * [ECM-2427] - Can cut/paste node while user has only read permission on parent node
+    * [ECM-2437] - Task does not move to root path
+    * [ECM-2445] - [Lock folder]: use same user in two diffirent browsers in case  lock folder
+    * [ECM-2446] - [action tab][Add Document] Add a podcast document when do not input data in 'Name' field
+    * [ECM-2447] - [lock node] add document for folder has been in locked status
+    * [ECM-2448] - [lock node] Can not [delete] sub node while parent node is being locked by user who is not locker
+    * [ECM-2449] - Problem when do action in [Admin] tab with locked node
+    * [ECM-2451] - Error in File Explorer when view Article document
+    * [ECM-2452] - Exception when search by some specific strings
+    * [ECM-2460] - [lock node][upload] user locked node can't upload file into this node
+    * [ECM-2461] - FF2: Lost right border of nt:file in cases
+    * [ECM-2462] - Error in displaying document
+    * [ECM-2467] - Error  in displaying document in CB in special case
+    * [ECM-2468] - IE: Error in [Comment] popup
+
+
+
+** Improvement
+    * [ECM-1856] - improve the comment UI
+    * [ECM-1985] - Task manager dialog is too small
+    * [ECM-2081] - Error when add language for image file in special case
+    * [ECM-2230] - Make "is document template" enabled by default in the "Add new template dialog"
+    * [ECM-2334] - Need changes to make viewing multi-languages document in pop up more smoothly
+    * [ECM-2335] - Need top border for View template form when view from search result
+    * [ECM-2399] - List documents when config for CB using Created Documents query
+    * [ECM-2425] - Change the color of the publication state image in the publication dialog
+    * [ECM-2429] - Update jcr-configuration.xml with new properties name from JCR 1.9.1
+    * [ECM-2433] - Switch to use JCR 1.9.2 
+    * [ECM-2440] - add Dutch (nl) and German (de) locales
+
+
+** Task
+    * [ECM-2321] - IE: should change [Edit document] popup when edit 1 uploaded file in Vista skin to see better
+    * [ECM-2342] - Should leave the number of base version at the center in [Base version] column
+    * [ECM-2380] - Create branch ECM 2.1.1
+    * [ECM-2391] - Change the 'Cancel' button to 'Close' button in [Permission Management] pop-up
+    * [ECM-2407] - IE6: Should change the size of text in File document
+    * [ECM-2413] - Do not display task in Business Process Center when add workflow action for node
+    * [ECM-2432] - change content of warming message when click on comment but don't select document
+    * [ECM-2464] - Change border of [Select member] pop-up when add permission for node in Vista and Mac skin
+    * [ECM-2465] - FF: Need top border when displaying Kofax document in Content Browser
+
+- Other resources and links
+     Company site        http://www.exoplatform.com
+		 Blog								 http://blog.exoplatform.org
+     Community JIRA      http://jira.exoplatform.org
+     Community site      http://www.exoplatform.org
+     Developers wiki     http://wiki.exoplatform.org
+     Documentation       http://docs.exoplatform.org 
