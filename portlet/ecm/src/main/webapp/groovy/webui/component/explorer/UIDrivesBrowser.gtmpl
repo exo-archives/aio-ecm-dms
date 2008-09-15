@@ -6,54 +6,27 @@
   JavascriptManager jsmanager = rcontext.getJavascriptManager();
   
   jsmanager.importJavascript('eXo.webui.UIVerticalSlideTabs');
-  def driveList = uicomponent.getDrives(uicomponent.getRepository()) ;
+  String repoName = uicomponent.getRepository();
+  def driveList = uicomponent.getDrives(uicomponent.getRepository());
 %>
 
 <div class="UIDrivesBrowser" id="<%=uicomponent.getId()%>">
-
-	<div class="UIRepository">
-		<div class="RepositoryContainer">
-			<div class="RepositoryTitle">	<%=_ctx.appRes("UIDrivesBrowser.title.repositoryList" )%></div>
-			<div class="RepositoryList">
-			 <div class="UIVerticalSlideTabs">
-			 	<div class="UIVTab VTabSimpleStyle">
-			 		<%
-			 		String cssClass = "" ;
-			 		for(String name in uicomponent.getRepositoryList()){			 			
-			 			if(name.equals(uicomponent.getRepository())) cssClass = "SelectedTab" ;
-			 			else cssClass = "NormalTab" ;
-			 			String actionLink = uicomponent.event("SelectRepo","$name") ;
-			 		%>
-			 		<div class="$cssClass">
-			 			<div class="TabLeft">
-			 				<div class="TabRight">
-			 					<div class="TabRepeat">
-						 			<div class="LeftIcon"><span></span></div>
-						 			<div class="TabLabel">
-										<a href="$actionLink">$name</a>
-									</div>
-						 			<div style="clear: left"><span></span></div>
-						 		</div>
-						 	</div>
-						</div>
-			 		</div>
-			 		<%}%>
-			 	</div>
-			 </div>
-			 <div class="RepositoryDecorater"><span></span></div>
-			</div>
-		</div>
-	</div>
-	
 	<div class="UIDrivesList">
 		<div class="DrivesListTitleBG">
 			<div class="DrivesListTitleBGRight">
-				<div class="DrivesListTitle" >
-					<%=_ctx.appRes("UIDrivesBrowser.title.repository" )%>:
-					<%=uicomponent.getRepository()%>
+				<div class="DrivesListTitle">
+					<div style="float: left"><%=_ctx.appRes("UIDrivesBrowser.title.repository" )%>:</div>
+					<div style="float: left; margin-left:5px;">
+						<%
+							if (uicomponent.getRepoItem().size() == 1) out.println(repoName);
+							else uicomponent.renderChildren();
+						%>
+					</div>
+					<div style="clear: left"><span></span></div>
 				</div>
 			</div>
 		</div>
+		
 		<div class="DrivesListContainer" >
 		<%
       def personalDrives = uicomponent.personalDrives(driveList) ;

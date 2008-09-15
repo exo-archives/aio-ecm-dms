@@ -50,9 +50,11 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIDropDownControl;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -64,28 +66,43 @@ import org.exoplatform.webui.event.EventListener;
  * July 3, 2006
  * 10:07:15 AM
  */
-@ComponentConfig(
-    template =  "app:/groovy/webui/component/explorer/UIDrivesBrowser.gtmpl",
-    events = {
-        @EventConfig(listeners = UIDrivesBrowser.SelectDriveActionListener.class),
-        @EventConfig(listeners = UIDrivesBrowser.SelectRepoActionListener.class)
-    } 
+@ComponentConfigs( {
+  @ComponentConfig (
+      template =  "app:/groovy/webui/component/explorer/UIDrivesBrowser.gtmpl",
+      events = {
+          @EventConfig(listeners = UIDrivesBrowser.SelectRepoActionListener.class),
+          @EventConfig(listeners = UIDrivesBrowser.SelectDriveActionListener.class)
+      }
+  ),
 
-)
+  @ComponentConfig (
+      type = UIDropDownControl.class ,
+      id = "UIDropDownDriveBrowser",
+      template = "system:/groovy/webui/core/UIDropDownControl.gtmpl",
+      events = {
+        @EventConfig(listeners = UIDrivesBrowser.ChangeOptionRepoActionListener.class)
+      }
+  )
+})
 public class UIDrivesBrowser extends UIContainer {
 
   private String repoName_ ;
-
+  private RepositoryService rService;
   public UIDrivesBrowser() throws Exception {
-    RepositoryService rService = getApplicationComponent(RepositoryService.class) ;
+    rService = getApplicationComponent(RepositoryService.class) ;
     repoName_ = rService.getDefaultRepository().getConfiguration().getName() ;
+    initRepoList(repoName_);
+  }
+  
+  public void initRepoList(String defaultRepo) throws Exception {
+    UIDropDownControl uiDropDownControl = addChild(UIDropDownControl.class, "UIDropDownDriveBrowser", "UIDropDownDriveBrowser");
+    uiDropDownControl.setOptions(getRepoItem());
+    uiDropDownControl.setValue(defaultRepo);
   }
 
   public List<String> getRepositoryList() {
-
-    RepositoryService rService = getApplicationComponent(RepositoryService.class) ;    
     List<String> repositories = new ArrayList<String>() ;    
-    for( RepositoryEntry re : rService.getConfig().getRepositoryConfigurations()) {
+    for(RepositoryEntry re : rService.getConfig().getRepositoryConfigurations()) {
       repositories.add(re.getName()) ;
     }
     return repositories ;
@@ -96,9 +113,19 @@ public class UIDrivesBrowser extends UIContainer {
     return pcontainer.getPortalContainerInfo().getContainerName() ;  
   }
 
-  public String getRepository(){return repoName_ ;}
-  public void setRepository(String repoName){repoName_ = repoName ;}
-
+  public String getRepository() {return repoName_ ;}
+  
+  public void setRepository(String repoName) {repoName_ = repoName ;}
+  
+  private List<SelectItemOption<String>> getRepoItem() {
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
+    for(Object obj : rService.getConfig().getRepositoryConfigurations()) { 
+      RepositoryEntry repo  = (RepositoryEntry)obj;
+      options.add(new SelectItemOption<String>(repo.getName(), repo.getName()));
+    }
+    return options;
+  }
+  
   @SuppressWarnings("unchecked")
   public List<DriveData> getDrives(String repoName) throws Exception {    
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;      
@@ -183,6 +210,17 @@ public class UIDrivesBrowser extends UIContainer {
       String repoName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIDrivesBrowser uiDrivesBrowser = event.getSource() ;
       uiDrivesBrowser.setRepository(repoName) ;  
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDrivesBrowser) ;
+    }
+  }
+  
+  static  public class ChangeOptionRepoActionListener extends EventListener<UIDropDownControl> {
+    public void execute(Event<UIDropDownControl> event) throws Exception {
+      String repoName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIDropDownControl uiDropDown = event.getSource();
+      uiDropDown.setValue(repoName);
+      UIDrivesBrowser uiDrivesBrowser = uiDropDown.getParent();
+      uiDrivesBrowser.setRepository(repoName);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDrivesBrowser) ;
     }
   }

@@ -57,7 +57,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList  {
-  margin: 0px 0px 0px 220px; 
+  margin: 0px 0px 0px 0px; 
   border: 1px solid #d9d9d9; 
   padding: 1px;
   _height: 100%;
@@ -71,6 +71,15 @@
   vertical-align: middle;
   padding: 8px 0px;
   color: #ef5604;
+}
+
+.UIDrivesBrowser .UIDropDownControl .DropDownSelectLabel {
+  line-height: 23px;
+  color: black;
+  font-weight: bold;
+  font-size: 12px;
+  white-space: nowrap;
+	width:150px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle {
