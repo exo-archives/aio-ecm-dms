@@ -1,2 +1,2 @@
-<Context path="/workflow" docBase="../../../eXoProjects/ecm/branches/2.1.1/portlet/workflow/src/main/webapp" 
+<Context path="/workflow" docBase="../../../eXoProjects/ecm/tags/2.1.1/portlet/workflow/src/main/webapp" 
          debug="0" reloadable="true" />
