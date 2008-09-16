@@ -22,16 +22,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.exoplatform.container.ExoContainer;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.CacheEntry;
 import org.exoplatform.services.jcr.config.ContainerEntry;
 import org.exoplatform.services.jcr.config.LockManagerEntry;
+import org.exoplatform.services.jcr.config.LockPersisterEntry;
 import org.exoplatform.services.jcr.config.QueryHandlerEntry;
 import org.exoplatform.services.jcr.config.SimpleParameterEntry;
 import org.exoplatform.services.jcr.config.ValueStorageEntry;
@@ -109,6 +110,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
   final static public String KEY_STORETYPE = "org.exoplatform.services.jcr.impl.storage.value.fs.SimpleFileValueStorage" ;
   final static public String KEY_TREE_STORETYPE = "org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage" ;
   final static public String KEY_QUERYHANDLER = "org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex" ;
+  final static public String KEY_LOCKMANAGER = "org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister";
 
   public UIWorkspaceWizard() throws Exception {
     super("UIWorkspaceWizard");
@@ -179,9 +181,11 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       if(!isNewWizard_) {
         name = workSpace.getName() ;
         isDefaultWS = uiRepoForm.isDefaultWorkspace(name) ;
-        selectedNodeType = workSpace.getAutoInitializedRootNt() ;
+        selectedNodeType = workSpace.getAutoInitializedRootNt();
+//        selectedNodeType = workSpace.getInitializer().getParameterValue(WorkspaceInitializer.ROOT_NODETYPE_PARAMETER, null);
       }
-      permission = workSpace.getAutoInitPermissions() ;
+//      permission = workSpace.getInitializer().getParameterValue(WorkspaceInitializer.ROOT_PERMISSIONS_PARAMETER, null) ;
+      permission = workSpace.getAutoInitPermissions();
       if(workSpace.getLockManager() != null) {
         lockTime  = String.valueOf(workSpace.getLockManager().getTimeout()) ; 
       }
@@ -414,12 +418,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       String nodeType = uiWSFormStep1.getUIFormSelectBox(UIWizardStep1.FIELD_NODETYPE).getValue() ;
       String lockTimeOut = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_TIMEOUT).getValue() ;
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
+      UIWizardStep3 uiWSFormStep3 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP3) ;
       String sourceName = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SOURCENAME).getValue() ;
       String containerType = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_CONTAINER).getValue() ;
       String storeType = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STORETYPE).getValue() ;
       String storePath = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).getValue() ;
       String swapPath =  uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SWAPPATH).getValue() ;
-      String maxBuffer =  uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_MAXBUFFER).getValue() ;
+      String maxBuffer = uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_MAXBUFFER).getValue() ;
+      String indexPath = uiWSFormStep3.getUIStringInput(UIWizardStep3.FIELD_INDEXPATH).getValue();
       if(uiFormWizard.isCheckValid_) {
         if(uiWSFormStep1.isRendered()) {
           if(uiFormWizard.isEmpty(wsName)) {
@@ -519,6 +525,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
         boolean isExternalStoreage = uiWSFormStep2.getUIFormCheckBoxInput(UIWizardStep2.FIELD_EXTERNAL_STORE).isChecked() ;
         String swapPathAuto = swapPath ;
         swapPathAuto = swapPath.substring(0,swapPath.lastIndexOf("/")+1) + wsName ;
+        String indexPathAuto = indexPath.substring(0,indexPath.lastIndexOf("/")+1) + wsName ;
+        uiWSFormStep3.getUIStringInput(UIWizardStep3.FIELD_INDEXPATH).setValue(indexPathAuto);
         if(isExternalStoreage) {
           String storePathAuto = storePath ;
           storePathAuto = storePath.substring(0,storePath.lastIndexOf("/")+1) + wsName ;
@@ -633,6 +641,13 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       workspaceEntry.setAutoInitPermissions(permSb.toString()) ;
       LockManagerEntry lockEntry = new LockManagerEntry() ;
       lockEntry.setTimeout(lockTimeOutValue) ;
+      LockPersisterEntry persisterEntry = new LockPersisterEntry();
+      String lockPath = "../temp/lock/" + name; 
+      persisterEntry.setType(KEY_LOCKMANAGER);
+      ArrayList<SimpleParameterEntry> lpParams = new ArrayList<SimpleParameterEntry>();
+      lpParams.add(new SimpleParameterEntry("path", lockPath));
+      persisterEntry.setParameters(lpParams);
+      lockEntry.setPersister(persisterEntry);
       workspaceEntry.setLockManager(lockEntry) ;
       workspaceEntry.setContainer(newContainerEntry(containerType, sourceName, dbType, isMulti,storeType, filterType, bufferValue, swapPath, storePath, true,name));
       workspaceEntry.setCache(newCacheEntry(isCache, maxSizeValue, liveTimeValue)) ;
@@ -881,6 +896,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
         String swapPathAuto = swapPath ;
         swapPathAuto = swapPath.substring(0,swapPath.lastIndexOf("/")+1) + wsName ;
         uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SWAPPATH).setValue(swapPathAuto) ;
+        String indexPathAuto = indexPath.substring(0,indexPath.lastIndexOf("/")+1) + wsName ;
+        uiWSFormStep3.getUIStringInput(UIWizardStep3.FIELD_INDEXPATH).setValue(indexPathAuto);
         if(isExternalStoreage) {
           String storePathAuto = storePath ;
           storePathAuto = storePath.substring(0,storePath.lastIndexOf("/")+1) + wsName ;
