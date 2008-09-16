@@ -23,11 +23,11 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.ecm.webui.tree.UINodeTree;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.UITree;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -38,7 +38,7 @@ import org.exoplatform.webui.event.EventListener;
  * Apr 10, 2008 4:29:57 PM
  */
 @ComponentConfig(
-    template =  "app:/groovy/webui/component/UITreeJCRExplorer.gtmpl",
+    template =  "app:/groovy/webui/component/admin/taxonomy/UITaxonomyTree.gtmpl",
     events = @EventConfig(listeners = UITaxonomyTree.ChangeNodeActionListener.class)
 )
 public class UITaxonomyTree extends UIContainer {
@@ -48,11 +48,9 @@ public class UITaxonomyTree extends UIContainer {
   private String rootPath_ ;
   
   public UITaxonomyTree() throws Exception {
-    UITree tree = addChild(UITree.class, null, "UITaxonomyTree") ;
+    UINodeTree tree = addChild(UINodeTree.class, null, "UITaxonomyTree") ;
     tree.setBeanLabelField("name") ;
     tree.setBeanIdField("path") ;
-    tree.setIcon("nt_unstructured16x16Icon")  ;    
-    tree.setSelectedIcon("nt_unstructured16x16Icon") ;
   }
   
   public void update() throws Exception {
@@ -74,7 +72,7 @@ public class UITaxonomyTree extends UIContainer {
       children = rootNode_.getNodes() ;
       changeNode(rootNode_) ;
     }
-    UITree tree = getChildById("UITaxonomyTree") ;
+    UINodeTree tree = getChildById("UITaxonomyTree") ;
     Node nodeSelected = getSelectedNode() ;
     if(nodeSelected.getPath().equals(rootPath_) || rootNode_.getParent().getPath().equals(currentNode_.getPath())) {
       nodeSelected = rootNode_ ;
