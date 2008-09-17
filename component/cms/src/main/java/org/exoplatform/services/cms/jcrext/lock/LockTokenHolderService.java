@@ -27,6 +27,10 @@ import javax.jcr.Node;
  *          hoa.pham@exoplatform.com
  * Feb 26, 2008  
  */
+@Deprecated
+/*
+ * use LockManagerListener
+ */
 public class LockTokenHolderService {
 
   private final HashMap<String, String> lockTokenHolder = new HashMap<String,String>();

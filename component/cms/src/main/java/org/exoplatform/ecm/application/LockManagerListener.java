@@ -59,7 +59,7 @@ public class LockManagerListener implements HttpSessionListener {
       Session session = null;      
       for(Iterator<String> iter = lockedNodes.keySet().iterator(); iter.hasNext();) {                
         try{
-          //The key structrure is built in org.exoplatform.ecm.utils.Utils.createLockKey() method
+          //The key structrure is built in org.exoplatform.ecm.webui.utils.LockUtil.createLockKey() method
           key = iter.next();          
           temp = key.split(":/:");
           nodePath = temp[1];
@@ -74,6 +74,7 @@ public class LockManagerListener implements HttpSessionListener {
         }                
       }
     } catch(Exception ex) {
+      ex.printStackTrace();
     } finally {      
       sessionProvider.close();
     }
