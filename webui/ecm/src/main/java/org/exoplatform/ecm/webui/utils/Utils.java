@@ -114,6 +114,7 @@ public class Utils {
   final static public String JCR_MIMETYPE = "jcr:mimeType" ;
   final static public String JCR_FROZEN = "jcr:frozenNode" ;
   final public static String JCR_LASTMODIFIED = "jcr:lastModified" ;
+  final public static String JCR_PRIMARYTYPE = "jcr:primaryType";
   final static public String JCR_DATA = "jcr:data" ;
   final static public String EXO_ROLES = "exo:roles" ;
   final static public String EXO_TEMPLATEFILE = "exo:templateFile" ;
