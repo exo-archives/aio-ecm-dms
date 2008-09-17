@@ -37,7 +37,7 @@
 		</div>
 		<div id="selectArea" style="width: 0px; height: 0px; position: absolute"></div>
 	</div>
-	<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;" onmouseover="eXo.ecm.JCR.attachEvent(event, this);" >
+	<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;"  >
 	  <div class="ActionIconsContainer">
 	    <%for(data in uicomponent.getChildrenList()) { %>
 	      <div class="ActionIconBox" onmousedown="eXo.ecm.ECMUtils.prepareSelectItem(event, this);" style="padding: 4px 0px 4px 0px; height: auto;">
