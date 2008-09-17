@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.info;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -62,6 +63,8 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
   }
   public void checkPermissonInfo(Node node) throws Exception {
     if(node.isLocked()){
+      String lockToken = LockUtil.getLockToken(node);
+      if(lockToken != null) node.getSession().addLockToken(lockToken);
       if(!Utils.isLockTokenHolder(node)) {
         getChild(UIPermissionInfo.class).getChild(UIGrid.class).configure("usersOrGroups", UIPermissionInfo.PERMISSION_BEAN_FIELD, new String[]{}) ;
         getChild(UIPermissionForm.class).setRendered(false) ;

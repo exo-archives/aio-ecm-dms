@@ -27,11 +27,12 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.webui.utils.PermissionUtil;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.utils.LockUtil;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
@@ -150,10 +151,15 @@ public class UIPermissionInfo extends UIContainer {
     public void execute(Event<UIPermissionInfo> event) throws Exception {
       UIPermissionInfo uicomp = event.getSource() ;
       UIJCRExplorer uiJCRExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
-      ExtendedNode node = (ExtendedNode)uiJCRExplorer.getCurrentNode() ; 
+      Node currentNode = uiJCRExplorer.getCurrentNode() ;
+      if(currentNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(currentNode);
+        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
+      }
+      ExtendedNode node = (ExtendedNode)currentNode; 
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      if(!uiJCRExplorer.getCurrentNode().isCheckedOut()) {
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -182,7 +188,7 @@ public class UIPermissionInfo extends UIContainer {
           return ;          
         }
         if(uiJCRExplorer.getRootNode().equals(node)) {
-          if(!PermissionUtil.canRead(uiJCRExplorer.getCurrentNode())) {
+          if(!PermissionUtil.canRead(currentNode)) {
             uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
             return ;
           }

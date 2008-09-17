@@ -23,6 +23,7 @@ import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -172,6 +173,10 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
+      }
+      if(currentNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
       }
       if(!actionForm.isAddNew_) {
         CmsService cmsService = actionForm.getApplicationComponent(CmsService.class) ;      

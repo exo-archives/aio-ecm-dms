@@ -16,12 +16,16 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -92,6 +96,11 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
       String tagName = uiForm.getUIStringInput(TAG_NAMES).getValue() ;
       FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(currentNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }      
       if(tagName == null || tagName.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tag-name-empty", null, 
             ApplicationMessage.WARNING)) ;
@@ -99,7 +108,26 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
         return ;
       }
       String[] tagNames = null ;
-      if(tagName.indexOf(",") > -1) tagNames = tagName.split(",") ;
+      if (tagName.indexOf(",") > -1) {
+        tagNames = tagName.split(",");
+        List<String> listTagNames = new ArrayList<String>(tagNames.length);
+        List<String> listTagNamesClone = new ArrayList<String>(tagNames.length);
+        for (String tName : tagNames) {
+          listTagNames.add(tName.trim());          
+          listTagNamesClone.add(tName.trim());
+        }        
+        for (int i = 0; i < listTagNames.size(); i++) {          
+          String tag = listTagNames.get(i);
+          listTagNamesClone.remove(tag);
+          if (listTagNamesClone.contains(tag)) {
+            uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tag-name-duplicate", null, 
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
+          listTagNamesClone.add(tag);          
+        }
+      }
       else tagNames = new String[] {tagName} ;
       for(String t : tagNames) {
         if(t.trim().length() == 0) {
@@ -135,7 +163,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
           }
         }
       }
-      folksonomyService.addTag(uiExplorer.getCurrentNode(), tagNames, repository) ;
+      folksonomyService.addTag(currentNode, tagNames, repository) ;
       uiForm.activate() ;
       UISideBar uiSideBar = uiExplorer.findFirstComponentOfType(UISideBar.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;

@@ -23,6 +23,7 @@ import java.util.List;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
@@ -145,7 +146,12 @@ public class UIPermissionForm extends UIForm implements UISelectable {
       List<String> permsList = new ArrayList<String>();
       List<String> permsRemoveList = new ArrayList<String>();
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      if(!uiExplorer.getCurrentNode().isCheckedOut()) {
+      Node currentNode = uiExplorer.getCurrentNode() ;
+      if(currentNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

@@ -27,6 +27,7 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
@@ -129,17 +130,24 @@ public class UIActivePublication extends UIGrid implements UIPopupComponent {
   }
   
   public static class EnrolActionListener extends EventListener<UIActivePublication> {
-    @SuppressWarnings("deprecation")
     public void execute(Event<UIActivePublication> event) throws Exception { 
       UIActivePublication uiActivePub = event.getSource();
       UIJCRExplorer uiJCRExplorer = uiActivePub.getAncestorOfType(UIJCRExplorer.class);
       UIPopupContainer popupAction = uiJCRExplorer.getChild(UIPopupContainer.class);
       UIPublicationManager uiPublicationManager = uiJCRExplorer.createUIComponent(UIPublicationManager.class, null, null);
       Node currentNode = uiJCRExplorer.getCurrentNode();
+      if(currentNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(currentNode);
+        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
+      }
       PublicationService publicationService = uiActivePub.getApplicationComponent(PublicationService.class);
       PublicationPresentationService publicationPresentationService = uiActivePub.getApplicationComponent(PublicationPresentationService.class);
       String selectedLifecycle = event.getRequestContext().getRequestParameter(OBJECTID);
-      
+      Node parentNode = currentNode.getParent() ;
+      if(parentNode.isLocked()) {
+        String lockToken1 = LockUtil.getLockToken(parentNode);
+        uiJCRExplorer.getSession().addLockToken(lockToken1) ;
+      }
       publicationService.enrollNodeInLifecycle(currentNode, selectedLifecycle);      
       UIContainer container = uiActivePub.createUIComponent(UIContainer.class, null, null);
       UIForm uiFormPublicationManager = publicationPresentationService.getStateUI(currentNode, container); 

@@ -23,6 +23,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
@@ -121,6 +122,10 @@ public class UILanguageDialogForm extends UIDialogForm {
       UILanguageDialogForm languageDialogForm = event.getSource();
       UIJCRExplorer uiExplorer = languageDialogForm.getAncestorOfType(UIJCRExplorer.class) ;
       Node node = uiExplorer.getCurrentNode() ;
+      if(node.isLocked()) {
+        String lockToken = LockUtil.getLockToken(node);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       MultiLanguageService multiLanguageService = languageDialogForm.getApplicationComponent(MultiLanguageService.class) ;
       UIApplication uiApp = languageDialogForm.getAncestorOfType(UIApplication.class) ;
       if(languageDialogForm.selectedLanguage_ == null) {

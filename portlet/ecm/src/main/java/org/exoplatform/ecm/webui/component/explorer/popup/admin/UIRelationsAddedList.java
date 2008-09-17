@@ -25,6 +25,7 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -83,6 +84,10 @@ public class UIRelationsAddedList extends UIContainer implements UISelectable {
       String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       String wsName = value.toString().substring(0, value.toString().indexOf(":")) ;
       String path = value.toString().substring(value.toString().indexOf(":") + 1) ;           
+      if(uiJCRExplorer.getCurrentNode().isLocked()) {
+        String lockToken = LockUtil.getLockToken(uiJCRExplorer.getCurrentNode());
+        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
+      }
       relateService.addRelation(uiJCRExplorer.getCurrentNode(), path, wsName,repository) ;
       updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), 
           uiJCRExplorer.getRepositoryName(), SessionProviderFactory.createSessionProvider())) ;      

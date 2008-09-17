@@ -16,10 +16,13 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
+import javax.jcr.Node;
+
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -58,6 +61,11 @@ public class UIVoteForm extends UIComponent implements UIPopupComponent {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       UIDocumentInfo uiDocumentInfo = uiExplorer.findFirstComponentOfType(UIDocumentInfo.class) ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(currentNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       String language = uiDocumentInfo.getLanguage() ;
       double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiExplorer.getApplicationComponent(VotingService.class) ;

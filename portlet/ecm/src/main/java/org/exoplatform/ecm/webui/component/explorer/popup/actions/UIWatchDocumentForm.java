@@ -21,8 +21,9 @@ import java.util.List;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.cms.watch.WatchDocumentService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -57,9 +58,7 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
 
   final static public String NOTIFICATION_TYPE = "notificationType" ;
   final static public String NOTIFICATION_BY_EMAIL = "Email" ;
-  final static public String NOTIFICATION_BY_RSS = "RSS" ;
-  
-  private Node watchNode_ = null ;
+  final static public String NOTIFICATION_BY_RSS = "RSS" ;    
   
   public UIWatchDocumentForm() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
@@ -67,8 +66,8 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
     addUIFormInput(uiSelectBox) ;
   }
   
-  public Node getWatchNode() { return watchNode_ ; }
-  public void setWatchNode(Node node) { watchNode_ = node ; }
+  public Node getWatchNode() throws Exception{ 
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; }
   
   public String getUserName() { 
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
@@ -99,8 +98,7 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
     return watchService.getNotificationType(getWatchNode(), getUserName()) ;
   }
 
-  public void activate() throws Exception {
-    setWatchNode(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
+  public void activate() throws Exception {    
     if(!isWatching()) setActions(new String[] {"Watch", "Cancel"}) ;
     else setActions(new String[] {"Unwatch", "Cancel"}) ;
   }
@@ -121,6 +119,12 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
       String notifyType = uiForm.getUIFormSelectBox(NOTIFICATION_TYPE).getValue() ;
       WatchDocumentService watchService = uiForm.getApplicationComponent(WatchDocumentService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(currentNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       if(notifyType.equalsIgnoreCase(NOTIFICATION_BY_EMAIL)) {
         watchService.watchDocument(uiForm.getWatchNode(), uiForm.getUserName(), WatchDocumentService.NOTIFICATION_BY_EMAIL) ;
         uiForm.isWatching() ;
@@ -142,6 +146,12 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
       String notifyType = uiForm.getUIFormSelectBox(NOTIFICATION_TYPE).getValue() ;
       WatchDocumentService watchService = uiForm.getApplicationComponent(WatchDocumentService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(currentNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       if(notifyType.equalsIgnoreCase(NOTIFICATION_BY_EMAIL)) {
         watchService.unwatchDocument(uiForm.getWatchNode(), uiForm.getUserName(), WatchDocumentService.NOTIFICATION_BY_EMAIL) ;
       } else {

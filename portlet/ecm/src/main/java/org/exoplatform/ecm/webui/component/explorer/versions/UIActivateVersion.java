@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.component.explorer.versions;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
@@ -60,8 +61,11 @@ public class UIActivateVersion extends UIContainer implements UIPopupComponent {
       UIActivateVersion uiActivateVersion = event.getSource();
       UIJCRExplorer uiExplorer = uiActivateVersion.getAncestorOfType(UIJCRExplorer.class) ;
       Node currentNode = uiExplorer.getCurrentNode() ;
+      if(currentNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(currentNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       if(currentNode.isNodeType("rma:filePlan")){
-        
         WebuiRequestContext contx = event.getRequestContext();
         UIPopupContainer popupAction = uiExplorer.getChild(UIPopupContainer.class) ;
         if(popupAction.isRendered()) {

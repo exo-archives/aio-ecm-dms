@@ -40,6 +40,7 @@ import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.comparator.DateTimeComparator;
@@ -234,10 +235,13 @@ public class UIJCRExplorer extends UIContainer {
   }
 
   public boolean nodeIsLocked(Node node) throws Exception {
-    if(node.isLocked()) {
-      return !Utils.isLockTokenHolder(node) ; 
-    }
-    return false ;
+    if(!node.isLocked()) return false;        
+    String lockToken = LockUtil.getLockToken(node);
+    if(lockToken != null) {
+      node.getSession().addLockToken(lockToken);
+      return false;
+    }                
+    return true;
   }
 
   public boolean hasAddPermission() {
@@ -538,16 +542,12 @@ public class UIJCRExplorer extends UIContainer {
   public void setPreferences(Preference preference) {this.preferences_ = preference; } 
   
   public String getPreferencesPath() {
-//    PortletPreferences prefs_ = getPortletPreferences() ;
-//    String prefPath = prefs_.getValue(Utils.JCR_PATH, "") ;
     String prefPath = driveData_.getHomePath() ;
     if (prefPath == null || prefPath.length() == 0 || prefPath == "/") return "" ;
     return prefPath ;
   }
 
   public String getPreferencesWorkspace() {       
-//    PortletPreferences prefs_ = getPortletPreferences() ;
-//    String workspaceName = prefs_.getValue(Utils.WORKSPACE_NAME, "") ;
     String workspaceName = driveData_.getWorkspace() ;
     if(workspaceName == null || workspaceName.length() == 0) return "" ;
     return workspaceName ;

@@ -6,9 +6,9 @@ import java.util.List;
 
 import javax.jcr.Node;
 
-import org.exoplatform.container.PortalContainer;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.ext.audit.AuditHistory;
 import org.exoplatform.services.jcr.ext.audit.AuditRecord;
 import org.exoplatform.services.jcr.ext.audit.AuditService;
@@ -31,31 +31,29 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UIAuditingInfo extends UIContainer implements UIPopupComponent {
 
-  protected Node node_;
-  
   public UIAuditingInfo() throws Exception{
   }
 
   public void activate() throws Exception {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;    
-    node_ = uiExplorer.getCurrentNode() ;         
   }
 
-  
   public void deActivate() throws Exception {
-    node_=null;
   }
 
-  public Node getCurrentNode() { return node_ ; }
+  public Node getCurrentNode() throws Exception { 
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode(); 
+  }
 
-  public List<AuditRecord> getListRecords() {
+  public List<AuditRecord> getListRecords() throws Exception {
      List<AuditRecord> listRec = new ArrayList<AuditRecord>();
+     Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode(); 
      try{
-      PortalContainer cont = PortalContainer.getInstance();
-      AuditService auServ= (AuditService)cont.getComponentInstanceOfType(AuditService.class);
-      if(auServ.hasHistory(node_)){
-        if ("nt:file".equals(node_.getProperty("jcr:primaryType").getString())){ node_=node_.getNode("jcr:content");} 
-        AuditHistory auHistory = auServ.getHistory(node_);
+      AuditService auServ= getApplicationComponent(AuditService.class);
+      if(auServ.hasHistory(currentNode)){
+        if (Utils.NT_FILE.equals(currentNode.getProperty(Utils.JCR_PRIMARYTYPE).getString())) { 
+          currentNode = currentNode.getNode(Utils.JCR_CONTENT);
+        } 
+        AuditHistory auHistory = auServ.getHistory(currentNode);
         listRec=auHistory.getAuditRecords();     
         return listRec;
       }

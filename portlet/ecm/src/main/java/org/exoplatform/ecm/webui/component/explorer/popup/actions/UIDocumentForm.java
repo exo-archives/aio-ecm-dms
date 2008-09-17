@@ -27,14 +27,15 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.version.VersionException;
 
-import org.exoplatform.ecm.webui.selector.UISelectable;
-import org.exoplatform.ecm.webui.utils.DialogFormUtil;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
+import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.LockUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
@@ -139,9 +140,16 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         UIDocumentFormController uiDFController = documentForm.getParent() ;
         homeNode = currentNode ;
         nodeType = uiDFController.getChild(UISelectDocumentForm.class).getSelectValue() ;
+        if(homeNode.isLocked()) {
+          homeNode.getSession().addLockToken(LockUtil.getLockToken(homeNode));
+        }
       } else { 
-        homeNode = documentForm.getNode().getParent();
-        nodeType = documentForm.getNode().getPrimaryNodeType().getName() ;
+        Node documentNode = documentForm.getNode();
+        homeNode = documentNode.getParent();
+        nodeType = documentNode.getPrimaryNodeType().getName() ;
+        if(documentNode.isLocked()) {
+          documentNode.getSession().addLockToken(LockUtil.getLockToken(documentNode)) ;
+        }
       }       
       try {
         CmsService cmsService = documentForm.getApplicationComponent(CmsService.class) ;

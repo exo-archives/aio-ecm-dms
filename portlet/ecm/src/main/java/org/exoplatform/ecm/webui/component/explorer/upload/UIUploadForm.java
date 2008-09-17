@@ -27,6 +27,7 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
@@ -115,6 +116,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
+      }
+      if(uiExplorer.getCurrentNode().isLocked()) {
+        String lockToken = LockUtil.getLockToken(uiExplorer.getCurrentNode());
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
       }
       String fileName = input.getUploadResource().getFileName();
       MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;

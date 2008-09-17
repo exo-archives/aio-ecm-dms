@@ -25,6 +25,7 @@ import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -159,6 +160,10 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
       }
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiVersionInfo.curentVersion_  = uiVersionInfo.rootVersion_.findVersionNode(objectId) ;
+      if(uiVersionInfo.node_.isLocked()) {
+        String lockToken1 = LockUtil.getLockToken(uiVersionInfo.node_);
+        uiVersionInfo.node_.getSession().addLockToken(lockToken1) ;
+      }
       uiVersionInfo.node_.restore(uiVersionInfo.curentVersion_.getVersion(), true);
       Node node = uiVersionInfo.getCurrentNode() ;
       if(!node.isCheckedOut()) node.checkout() ;

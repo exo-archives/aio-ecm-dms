@@ -26,6 +26,7 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -77,7 +78,12 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable{
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class) ;
     try {
-      categoriesService.addCategory(uiJCRExplorer.getCurrentNode(), value.toString(), uiJCRExplorer.getRepositoryName()) ;
+      Node currentNode = uiJCRExplorer.getCurrentNode();
+      if(currentNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(currentNode);
+        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
+      }
+      categoriesService.addCategory(currentNode, value.toString(), uiJCRExplorer.getRepositoryName()) ;
       uiJCRExplorer.getCurrentNode().save() ;
       uiJCRExplorer.getSession().save() ;
       updateGrid(categoriesService.getCategories(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName())) ;
