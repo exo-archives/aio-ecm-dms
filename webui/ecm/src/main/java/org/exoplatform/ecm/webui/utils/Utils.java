@@ -166,6 +166,10 @@ public class Utils {
   public static boolean isNameEmpty(String name) {
     return (name == null || name.trim().length() == 0) ;
   }
+  
+  public static boolean isAuditable(Node node) throws RepositoryException {
+    return node.isNodeType(EXO_AUDITABLE);
+  }
 
   public static List<String> getListAllowedFileType(Node currentNode, String repository, TemplateService templateService) throws Exception {
     List<String> nodeTypes = new ArrayList<String>() ;
