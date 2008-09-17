@@ -7,19 +7,46 @@
   String componentId = uicomponent.getId();
   String serverUrl= uicomponent.getWebDAVServerPrefix();
   String portalName = uicomponent.getPortalName();
-  String repository = uicomponent.getRepository();  
+  String repository = uicomponent.getRepository(); 
+  
+  def rcontext = _ctx.getRequestContext() ;
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.JCREvent','/ecm/javascript/'); 
 %>
-<div id = "$componentId">	
-	<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;">
+<div id = "$componentId" onmousedown="eXo.ecm.ECMUtils.selectItem(event, this);">	
+	<div style="position: relative; width: 0px; height: 0px;">
+		<div id="groupItem" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
+			<div class="UIRightClickPopupMenu" style="display: block;">
+				<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
+					<a class="MenuItem" style="display: block;" onclick="eXo.ecm.ECMUtils.postGroupAction('Copy')"> 	
+						<div class="ItemIcon Copy16x16Icon">
+							Copy
+						</div>
+				 	</a>
+				 	<a class="MenuItem" style="display: block;" onclick="eXo.ecm.ECMUtils.postGroupAction('Cut')" > 	
+						<div class="ItemIcon Cut16x16Icon">
+							Cut
+						</div>
+				 	</a>
+				 	<a class="MenuItem" style="display: block;" onclick="eXo.ecm.ECMUtils.postGroupAction('Delete')"> 	
+						<div class="ItemIcon Delete16x16Icon">
+							Delete
+						</div>
+				 	</a>
+				 </div>	
+			 </div>
+		</div>
+		<div id="selectArea" style="width: 0px; height: 0px; position: absolute"></div>
+	</div>
+	<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;" onmouseover="eXo.ecm.JCR.attachEvent(event, this);" >
 	  <div class="ActionIconsContainer">
 	    <%for(data in uicomponent.getChildrenList()) { %>
-	      <div class="ActionIconBox">
+	      <div class="ActionIconBox" onmousedown="eXo.ecm.ECMUtils.prepareSelectItem(event, this);" style="padding: 4px 0px 4px 0px; height: auto;">
 	        <%
 	          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
 	          def preferenceWS = data.getSession().getWorkspace().getName() ;
 	          String name = data.getPath().substring(data.getPath().lastIndexOf("/") + 1) ;
-            String nodePath = data.getPath() + "&workspaceName=" + preferenceWS ;
-            String actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
+	          String nodePath = data.getPath() + "&workspaceName=" + preferenceWS ;
+	          String actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
 	          //Begin WebDav Action
 	          String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
 		        if(data.getPrimaryNodeType().getName().equals("nt:file")) {
@@ -49,30 +76,29 @@
 	          }
 	          strActs += "</div>" ;
 	          def rightClickMenu = "" ;
+	               
 	          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;
 	        %>   
-	        <div class="ActionIconContainer">
-	        	<div class="LeftActionIconContainer">
-	        		<div class="RightActionIconContainer">
-	        			<div class="MiddleActionIconContainer">
-				          <div class="NodeLabel">
-				            <div class="ActionIcon" <%=rightClickMenu%>>
-				              $strActs<a style="display: block;" ondblclick="$actionLink" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></a>
-				            </div>
-				          </div>
-				        </div>
-				      </div>
-				    </div>
-	        </div>
-	        <%
-	          if(name.length() < 20) subName = name ;
-	          else subName = name.substring(0,15) + "..." ;
-	        %>
-	        <div class="ActionIconLabel" <%=rightClickMenu%>>
-	          $strActs<a class="ActionLabel" ondblclick="$actionLink" title="$name">$subName</a>
-	        </div>
-	      </div> 
+	        <div onmouseover="this.className = 'ActionIconContainer'"  <%=rightClickMenu%> objectId="<%=data.getPath()%>" workspaceName="<%=preferenceWS%>"
+				 				ondblclick="$actionLink" onmouseout="this.className = ''" style="height: auto; width: auto; border: none;">
+				
+						<div class="NodeLabel">
+							<div class="ActionIcon" >
+								 <a style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></a>
+							</div>
+						 </div>
+						$strActs
+		        <%
+		          if(name.length() < 20) subName = name ;
+		          else subName = name.substring(0,15) + "..." ;
+		        %>
+		        <div class="ActionIconLabel" style="width: auto;">
+		          <a class="ActionLabel" title="$name">$subName</a>
+		        </div>
+		      </div> 
+	      </div>
 	    <%}%>
+	    
 	  </div>  
 	</div>
 	<% if(uicomponent.getContentPageIterator().getAvailablePage()>1) { %>	
