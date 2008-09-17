@@ -9,8 +9,8 @@
   String portalName = uicomponent.getPortalName();
   String repository = uicomponent.getRepository(); 
   
-  def rcontext = _ctx.getRequestContext() ;
-  rcontext.getJavascriptManager().importJavascript('eXo.ecm.JCREvent','/ecm/javascript/'); 
+  //def rcontext = _ctx.getRequestContext() ;
+  //rcontext.getJavascriptManager().importJavascript('eXo.ecm.JCREvent','/ecm/javascript/'); 
 %>
 <div id = "$componentId" onmousedown="eXo.ecm.ECMUtils.selectItem(event, this);">	
 	<div style="position: relative; width: 0px; height: 0px;">
