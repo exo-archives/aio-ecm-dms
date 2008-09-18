@@ -253,7 +253,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
     for(NodeType metadata: getAllMetadatasNodeType(repository)) {      
       ExtendedNodeType extNT = (ExtendedNodeType)metadata ;
       PropertyDefinition internalUseDef = extNT.getPropertyDefinitions(INTERNAL_USE).getAnyDefinition() ;
-      if(!internalUseDef.getDefaultValues()[0].getBoolean()) extenalMetaTypes.add(metadata.getName()) ;
+      if(!internalUseDef.getDefaultValues()[0].getBoolean() && !metadata.getName().equals(METADATA_TYPE)) extenalMetaTypes.add(metadata.getName()) ;
     }
     return extenalMetaTypes ;
   }
