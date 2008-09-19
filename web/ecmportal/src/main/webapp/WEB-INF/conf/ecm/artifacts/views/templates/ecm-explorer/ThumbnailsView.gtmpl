@@ -32,6 +32,16 @@
 							<%=_ctx.appRes("ECMContextMenu.event.Delete")%>
 						</div>
 				 	</a>
+				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Lock', 'MultiSelection')%>")> 	
+						<div class="ItemIcon Lock16x16Icon">
+							<%=_ctx.appRes("ECMContextMenu.event.Lock")%>
+						</div>
+				 	</a>
+				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Unlock', 'MultiSelection')%>")> 	
+						<div class="ItemIcon Unlock16x16Icon">
+							<%=_ctx.appRes("ECMContextMenu.event.UnLock")%>
+						</div>
+				 	</a>				 					 	
 				 </div>	
 			 </div>
 		</div>
@@ -76,10 +86,12 @@
 	          }
 	          strActs += "</div>" ;
 	          def rightClickMenu = "" ;
-	               
+	          String isLocked = "false";
+	          if(data.isLocked()) isLocked = "true";     
 	          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;
+	          
 	        %>   
-	        <div onmouseover="this.className = 'ActionIconContainer'"  <%=rightClickMenu%> objectId="<%=data.getPath()%>" workspaceName="<%=preferenceWS%>"
+	        <div onmouseover="this.className = 'ActionIconContainer'" locked="<%=isLocked%>"  <%=rightClickMenu%> objectId="<%=data.getPath()%>" workspaceName="<%=preferenceWS%>"
 				 				ondblclick="$actionLink" onmouseout="this.className = ''" style="height: auto; width: auto; border: none;">
 				
 						<div class="NodeLabel">
