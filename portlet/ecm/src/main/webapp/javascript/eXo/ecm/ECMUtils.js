@@ -264,6 +264,7 @@ function ECMUtils() {
 	
 	/*
 	 * multiply select in JCR Explorer
+	 * working with ThumbnailsView.gtmpl
 	 */
 	
 	ECMUtils.prototype.concatMethod =  function() {
@@ -298,10 +299,14 @@ function ECMUtils() {
 		else var parent = DOMUtils.findAncestorByClass(element, "ActionIconBox");
 		if (Self.temporaryItem) Self.temporaryItem.style.background = "none";
 		Self.temporaryItem = parent;
-
-		var groupItem = document.getElementById("groupItem");
-		groupItem.style.display = "none";
+		try {
+			var groupItem = document.getElementById("groupItem");
+			groupItem.style.display = "none";
+			var freeSpace = document.getElementById("freeSpace");
+			freeSpace.style.display = "none";
+		} catch(e) {}
 		if((event.which && event.which > 1) || (event.button && event.button == 2))	{
+			//right click in item
 			var inItemList = false;
 			for (var i = 0 ; i < Self.selectItemList.length; ++ i) {
 				if (parent == Self.selectItemList[i]) {
@@ -349,9 +354,16 @@ function ECMUtils() {
 	ECMUtils.prototype.selectItem = function(event, bgArea) {
 		var groupItem = document.getElementById("groupItem");
 		groupItem.style.display = "none";
+		var freeSpace = document.getElementById("freeSpace");
+		freeSpace.style.display = "none";
 		bgArea.holdMouse = false;
 		if(((event.which && event.which > 1) || (event.button && event.button == 2))) {
-					
+				var freeSpace = document.getElementById("freeSpace");
+				freeSpace.style.display = "block";
+				var posX = eXo.core.Browser.findMouseRelativeX(freeSpace.parentNode, event) ;
+				freeSpace.style.left = posX + "px";
+				var posY = eXo.core.Browser.findMouseRelativeY(freeSpace.parentNode, event) ;
+				freeSpace.style.top = posY + "px";
 		} else {
 			bgArea.holdMouse = true;
 			//clear all select item

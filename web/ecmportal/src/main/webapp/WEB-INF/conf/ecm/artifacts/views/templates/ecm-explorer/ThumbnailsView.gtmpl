@@ -12,7 +12,7 @@
   //def rcontext = _ctx.getRequestContext() ;
   //rcontext.getJavascriptManager().importJavascript('eXo.ecm.JCREvent','/ecm/javascript/'); 
 %>
-<div id = "$componentId" onmousedown="eXo.ecm.ECMUtils.selectItem(event, this);">	
+<div id="$componentId" onmousedown="eXo.ecm.ECMUtils.selectItem(event, this);">	
 	<div style="position: relative; width: 0px; height: 0px;">
 		<div id="groupItem" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
 			<div class="UIRightClickPopupMenu" style="display: block;">
@@ -42,6 +42,27 @@
 							<%=_ctx.appRes("ECMContextMenu.event.UnLock")%>
 						</div>
 				 	</a>				 					 	
+				 </div>	
+			 </div>
+		</div>
+		<div id="freeSpace" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;">
+			<div class="UIRightClickPopupMenu" style="display: block;">
+				<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
+					<a class="MenuItem" style="display: block;"> 	
+						<div class="ItemIcon Copy16x16Icon">
+							Sort
+						</div>
+				 	</a>
+				 	<a class="MenuItem" style="display: block;"> 	
+						<div class="ItemIcon Cut16x16Icon">
+							Group
+						</div>
+				 	</a>
+				 	<a class="MenuItem" style="display: block;"> 	
+						<div class="ItemIcon Delete16x16Icon">
+							Delete
+						</div>
+				 	</a>
 				 </div>	
 			 </div>
 		</div>
