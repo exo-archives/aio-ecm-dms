@@ -44,6 +44,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentFormController;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIFolderForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIRenameForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
@@ -105,7 +106,9 @@ import org.exoplatform.webui.exception.MessageException;
         @EventConfig(listeners = UIWorkingArea.CheckOutActionListener.class),
         @EventConfig(listeners = UIWorkingArea.RenameActionListener.class),
         @EventConfig(listeners = UIWorkingArea.CustomActionListener.class),
-        @EventConfig(listeners = UIWorkingArea.PasteActionListener.class)        
+        @EventConfig(listeners = UIWorkingArea.PasteActionListener.class),
+        @EventConfig(listeners = UIWorkingArea.AddFolderActionListener.class),
+        @EventConfig(listeners = UIWorkingArea.AddDocumentActionListener.class)
       }
   )
 })
@@ -1141,6 +1144,7 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       String destPath = event.getRequestContext().getRequestParameter(OBJECTID);
+      if(destPath == null) destPath = uiExplorer.getCurrentPath();
       Session session = uiExplorer.getSession();
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
       if(uiExplorer.getAllClipBoard().size()<1) {
@@ -1182,6 +1186,75 @@ public class UIWorkingArea extends UIContainer {
       }
       if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
       uiExplorer.updateAjax(event);
+    }
+  }
+  
+  static public class AddFolderActionListener extends EventListener<UIRightClickPopupMenu> {
+    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
+      UIWorkingArea uiWorkingArea = event.getSource().getParent();
+      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
+      Node currentNode = uiExplorer.getCurrentNode();      
+      if(!PermissionUtil.canRead(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } 
+      if(!currentNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UIFolderForm.class, 600);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+    }
+  }
+  
+  static public class AddDocumentActionListener extends EventListener<UIRightClickPopupMenu> {
+    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
+      UIWorkingArea uiWorkingArea = event.getSource().getParent();
+      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
+      Node currentNode = uiExplorer.getCurrentNode();      
+      if(!PermissionUtil.canRead(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(uiExplorer.nodeIsLocked(currentNode)){
+        Object[] arg = { currentNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(!currentNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }     
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIDocumentFormController uiController = 
+        event.getSource().createUIComponent(UIDocumentFormController.class, null, null);
+      uiController.setCurrentNode(uiExplorer.getCurrentNode());
+      uiController.setRepository(uiExplorer.getRepositoryName());
+      if(uiController.getListFileType().size() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.empty-file-type", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      uiController.init();
+      UIPopupContainer.activate(uiController, 800, 600);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 }

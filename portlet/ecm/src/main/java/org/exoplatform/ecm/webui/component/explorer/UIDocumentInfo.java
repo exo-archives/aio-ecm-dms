@@ -408,6 +408,12 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   public void setLanguage(String language) { 
     getAncestorOfType(UIJCRExplorer.class).setLanguage(language) ;
   }
+  
+  public boolean isCanPaste() {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    if(uiExplorer.getAllClipBoard().size() > 0) return true;
+    return false;
+  }
 
   public void updatePageListData() throws Exception {    
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
