@@ -17,19 +17,19 @@
 		<div id="groupItem" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
 			<div class="UIRightClickPopupMenu" style="display: block;">
 				<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
-					<a class="MenuItem" style="display: block;" onclick="eXo.ecm.ECMUtils.postGroupAction('Copy')"> 	
+					<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Copy', 'MultiSelection')%>")> 	
 						<div class="ItemIcon Copy16x16Icon">
-							Copy
+							<%=_ctx.appRes("ECMContextMenu.event.Copy")%>
 						</div>
 				 	</a>
-				 	<a class="MenuItem" style="display: block;" onclick="eXo.ecm.ECMUtils.postGroupAction('Cut')" > 	
+				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Cut', 'MultiSelection')%>")> 	
 						<div class="ItemIcon Cut16x16Icon">
-							Cut
+							<%=_ctx.appRes("ECMContextMenu.event.Cut")%>
 						</div>
 				 	</a>
-				 	<a class="MenuItem" style="display: block;" onclick="eXo.ecm.ECMUtils.postGroupAction('Delete')"> 	
+				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Delete', 'MultiSelection')%>")> 	
 						<div class="ItemIcon Delete16x16Icon">
-							Delete
+							<%=_ctx.appRes("ECMContextMenu.event.Delete")%>
 						</div>
 				 	</a>
 				 </div>	

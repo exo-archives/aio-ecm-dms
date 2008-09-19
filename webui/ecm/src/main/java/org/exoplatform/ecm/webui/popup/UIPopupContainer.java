@@ -93,6 +93,10 @@ public class UIPopupContainer extends UIContainer {
   public void activate(UIComponent uiComponent, int width, int height) throws Exception {
     activate(uiComponent, width, height, true);
   }
+  
+  public void activate(UIComponent uiComponent, int width) throws Exception {
+    activate(uiComponent, width, 0, true);
+  }
 
   /**
    * Activate.
