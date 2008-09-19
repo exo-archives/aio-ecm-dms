@@ -739,4 +739,16 @@
 	padding: 0px; 
 	margin: auto;
 }
+
+.UIJCRExplorer .RecycleBinFull {
+  background: url('DefaultSkin/background/Recycle_Bin_Full.gif') no-repeat left ;
+  padding-left: 40px;
+  height: 33px;
+  line-height: 33px;
+  margin: 8px 0px 0px 8px;
+}
+
+.UIJCRExplorerPortlet .UIConfirmMessage .HorizontalLayout {
+  border: 1px solid #b7b7b7;
+}
 /*############################## -- End UIDocumentWorkspace -- ##############################*/

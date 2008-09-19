@@ -502,9 +502,7 @@ function ECMUtils() {
 		}
 		Self.selectItemList = new Array();
 	};
-	ECMUtils.prototype.postGroupAction = function(name) {
-		var sAjaxGet = "ajaxGet('/portal/private/classic/contentmanagement/fileexplorer?portal:componentId=fileexplorer&portal:type=action&portal:isSecure=false&uicomponent=ECMContextMenu&op=_option_&objectId=_objectid_&ajaxRequest=true')";
-		sAjaxGet = sAjaxGet.replace("_option_", name);
+	ECMUtils.prototype.postGroupAction = function(url) {
 		var objectId = [];
 		var workspaceName = [];
 		if(Self.selectItemList && Self.selectItemList.length) {
@@ -519,8 +517,8 @@ function ECMUtils() {
 				if (oid) objectId.push(oid);
 				else objectId.push("");
 			}
-			sAjaxGet = sAjaxGet.replace("_objectid_", objectId.join(";") + "&workspaceName=" + workspaceName.join(";"));
-			eval(sAjaxGet);
+			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";"));
+			eval(url);
 		}
 	}	;
 	ECMUtils.prototype.concatWithPortal = function() {
