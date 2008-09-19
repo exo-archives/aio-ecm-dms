@@ -308,11 +308,10 @@ function ECMUtils() {
 		if((event.which && event.which > 1) || (event.button && event.button == 2))	{
 			//right click in item
 			var inItemList = false;
+			var checkUnlock = false;
 			for (var i = 0 ; i < Self.selectItemList.length; ++ i) {
-				if (parent == Self.selectItemList[i]) {
-					inItemList = true;
-					break;
-				}
+				if (parent == Self.selectItemList[i]) inItemList = true;
+				if (Self.selectItemList[i].getAttribute('locked') == "true") checkUnlock = true;
 			}
 			if (Self.selectItemList.length > 1 && inItemList) {
 				document.getElementById(menuId).style.display = 'none';
@@ -321,7 +320,19 @@ function ECMUtils() {
 				groupItem.style.left = posX + "px";
 				var posY = eXo.core.Browser.findMouseRelativeY(groupItem.parentNode, event) ;
 				groupItem.style.top = posY + "px";
-			} else {
+				
+				var lockAction = DOMUtils.findFirstDescendantByClass(groupItem, "div", "Lock16x16Icon");
+				var unlockAction = DOMUtils.findFirstDescendantByClass(groupItem, "div", "Unlock16x16Icon");
+
+				if (checkUnlock) {
+					unlockAction.parentNode.style.display = "block";
+					lockAction.parentNode.style.display = "none";
+				} else {
+					unlockAction.parentNode.style.display = "none";
+					lockAction.parentNode.style.display = "block";
+				}
+				
+ 			} else {
 					Self.clearSelectItem();
 					Self.selectItemList[0] = parent;
 			}
