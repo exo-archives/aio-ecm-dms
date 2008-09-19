@@ -74,7 +74,7 @@ import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
  */
 @SuppressWarnings("unused")
 public class UIDialogForm extends UIForm {
-  
+
   private final String REPOSITORY = "repository";
   protected final static String CANCEL_ACTION = "Cancel".intern();
   protected final static String SAVE_ACTION = "Save".intern();
@@ -93,7 +93,7 @@ public class UIDialogForm extends UIForm {
   protected JCRResourceResolver resourceResolver;
   private String childPath ;
   private boolean isNotEditNode = false ;
-  
+
   private boolean isNTFile = false ; 
   private boolean isOnchange = false ;
   private boolean isResetForm = false ;
@@ -101,23 +101,23 @@ public class UIDialogForm extends UIForm {
   private String nodePath ;
   private List<String> postScriptInterceptor = new ArrayList<String>() ;  
   private List<String> prevScriptInterceptor = new ArrayList<String>() ;
-  
+
   private String storedPath = null ;
-  
+
   private String workspaceName = null ; 
-  
+
   public UIDialogForm() { }
-  
+
   public boolean isEditing() { return !isAddNew;}
   public boolean isAddNew() { return isAddNew;}
   public void addNew(boolean b) { this.isAddNew = b; }
-  
+
   public void setStoredLocation(String repository, String workspace, String storedPath) {
     this.repositoryName = repository;
     this.workspaceName = workspace;
     this.storedPath = storedPath;
   } 
-  
+
   public void addActionField(String name,String label,String[] arguments) throws Exception {
     UIFormActionField formActionField = new UIFormActionField(name,label,arguments);    
     if(formActionField.useSelector()) {
@@ -171,7 +171,7 @@ public class UIDialogForm extends UIForm {
   public void addActionField(String name, String[] arguments) throws Exception { 
     addActionField(name,null,arguments);
   }
-  
+
   public void addCalendarField(String name, String label, String[] arguments) throws Exception {
     UIFormCalendarField calendarField = new UIFormCalendarField(name,label,arguments);    
     String jcrPath = calendarField.getJcrPath();
@@ -220,14 +220,14 @@ public class UIDialogForm extends UIForm {
   public void addCalendarField(String name, String[] arguments) throws Exception {
     addCalendarField(name,null,arguments) ;
   }
-  
+
   public void addHiddenField(String name, String[] arguments) throws Exception {
     UIFormHiddenField formHiddenField = new UIFormHiddenField(name,null,arguments);
     String jcrPath = formHiddenField.getJcrPath();
     JcrInputProperty inputProperty = formHiddenField.createJcrInputProperty();
     setInputProperty(name, inputProperty) ;
   }
-  
+
   public void addInterceptor(String scriptPath, String type) {
     if(scriptPath.length() > 0 && type.length() > 0){
       if(type.equals("prev")){
@@ -237,7 +237,7 @@ public class UIDialogForm extends UIForm {
       }
     } 
   }
-  
+
   public void addMixinField(String name,String label,String[] arguments) throws Exception {
     UIMixinField mixinField = new UIMixinField(name,label,arguments);
     String jcrPath = mixinField.getJcrPath();
@@ -263,11 +263,11 @@ public class UIDialogForm extends UIForm {
       renderField(name) ; 
     }
   }    
-  
+
   public void addMixinField(String name, String[] arguments) throws Exception {
     addMixinField(name,null,arguments) ;
   }  
-  
+
   public void addSelectBoxField(String name, String label, String[] arguments) throws Exception {
     UIFormSelectBoxField formSelectBoxField = new UIFormSelectBoxField(name,label,arguments);           
     if(formSelectBoxField.isMultiValues()) {
@@ -400,10 +400,12 @@ public class UIDialogForm extends UIForm {
       }
     }    
     //set default value for textarea if no value was setted by above code
-    if(uiTextArea.getValue() == null && formTextAreaField.getDefaultValue() != null) 
-    	uiTextArea.setValue(formTextAreaField.getDefaultValue()) ;
-    else 
-    	uiTextArea.setValue("");
+    if(uiTextArea.getValue() == null) {
+      if(formTextAreaField.getDefaultValue() != null)
+        uiTextArea.setValue(formTextAreaField.getDefaultValue()) ;
+      else
+        uiTextArea.setValue("");
+    }     	     
     uiTextArea.setEditable(formTextAreaField.isEditable()) ;
     renderField(name) ;
   }
@@ -657,7 +659,7 @@ public class UIDialogForm extends UIForm {
       return null ;
     } 
   }  
-  
+
   public boolean isResetForm() { return isResetForm ; }
 
   public void onchange(Event event) throws Exception {}
@@ -671,7 +673,7 @@ public class UIDialogForm extends UIForm {
       String nodePath = (String)context.getAttribute("nodePath");
       if(nodePath != null) {
         executePostSaveEventInterceptor(nodePath); 
-     }
+      }
       prevScriptInterceptor.clear();
       postScriptInterceptor.clear();
     }else {
