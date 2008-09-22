@@ -404,9 +404,6 @@ public class UITask extends UIForm {
       String srcWorkspace = (String)variablesForService.get("srcWorkspace");
       String repository = (String)variablesForService.get("repository");
       RepositoryService repositoryService = uiTask.getApplicationComponent(RepositoryService.class);
-      Session session = 
-        SessionsUtils.getSessionProvider().getSession(srcWorkspace, repositoryService.getRepository(repository));
-      Node node = (Node)session.getItem(nodePath);
       for (Iterator iterator = submitButtons.iterator(); iterator.hasNext();) {
         Map attributes = (Map) iterator.next();
         String name = (String) attributes.get("name");
@@ -415,17 +412,23 @@ public class UITask extends UIForm {
           try {
             Map variables = maps.getWorkflowVariables();
             uiTask.serviceContainer.endTask(uiTask.identification_, variables, transition);
-            if(node.isLocked()) {
-              String actionName = (String)variablesForService.get("actionName");
-              ActionServiceContainer actionServiceContainer = 
-                uiTask.getApplicationComponent(ActionServiceContainer.class);
-              Node actionNode = actionServiceContainer.getAction((Node)session.getItem(srcPath), actionName);
-              String destPath = actionNode.getProperty("exo:destPath").getString() + nodePath.substring(nodePath.lastIndexOf("/"));
-              String destWorkspace = actionNode.getProperty("exo:destWorkspace").getString();
-              Session desSession = 
-                SessionsUtils.getSessionProvider().getSession(destWorkspace, repositoryService.getRepository(repository));
-              Node destNode = (Node)desSession.getItem(destPath);
-              Utils.changeLockToken(nodePath, destNode);
+            if(nodePath != null) {
+              Session session = 
+                SessionsUtils.getSessionProvider().getSession(srcWorkspace, repositoryService.getRepository(repository));
+              Node node = (Node)session.getItem(nodePath);
+              if(node.isLocked()) {
+                String actionName = (String)variablesForService.get("actionName");
+                ActionServiceContainer actionServiceContainer = 
+                  uiTask.getApplicationComponent(ActionServiceContainer.class);
+                Node actionNode = actionServiceContainer.getAction((Node)session.getItem(srcPath), actionName);
+                String destPath = actionNode.getProperty("exo:destPath").getString() + nodePath.substring(nodePath.lastIndexOf("/"));
+                String destWorkspace = actionNode.getProperty("exo:destWorkspace").getString();
+                Session desSession = 
+                  SessionsUtils.getSessionProvider().getSession(destWorkspace, repositoryService.getRepository(repository));
+                Node destNode = (Node)desSession.getItem(destPath);
+                Utils.changeLockToken(nodePath, destNode);
+              }
+              session.logout();
             }
             uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
             return;
@@ -434,7 +437,6 @@ public class UITask extends UIForm {
           }
         }
       }
-      session.logout();
     }
   }
 }
