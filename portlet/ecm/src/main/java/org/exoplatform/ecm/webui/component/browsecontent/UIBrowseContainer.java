@@ -272,7 +272,10 @@ public class UIBrowseContainer extends UIContainer {
 
   public Node getNodeByPath(String nodePath) throws Exception{
     try{
-      if(wsName_ == null) return (Node)getSession().getItem(nodePath);
+      if(wsName_ == null) {
+        wsName_ = getWorkSpace();
+        return (Node)getSession().getItem(nodePath);
+      }
       return (Node)getSession(getRepository(), wsName_).getItem(nodePath);
     } catch(PathNotFoundException path) {
       return (Node)getSession(getRepository(), wsName_).getItem(rootPath_);
@@ -1336,7 +1339,7 @@ public class UIBrowseContainer extends UIContainer {
       Node selectNode = null;
       if(wsName != null) {
         selectNode = uiContainer.getNodeByPath(objectId, wsName);
-        uiContainer.wsName_ = wsName;
+        if (uiContainer.wsName_ == null) uiContainer.wsName_ = wsName;
       } else {
         selectNode = uiContainer.getNodeByPath(objectId);   
       }
