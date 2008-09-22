@@ -337,8 +337,7 @@ function ECMUtils() {
 					Self.selectItemList[0] = parent;
 			}
 		} else {
-				if (event.ctrlKey) {
-					if (parent.isSelect) {
+				if (event.ctrlKey && parent.isSelect) {
 						for (var i = 0 ; i < Self.selectItemList.length; ++ i) {
 							if (parent == Self.selectItemList[i]) {
 								parent.style.background = "none";
@@ -347,10 +346,9 @@ function ECMUtils() {
 								break;
 							}
 						}
-					} else {
+				} else if(event.ctrlKey && !parent.isSelect) {
 						Self.selectItemList.push(parent);
 						parent.isSelect = true;
-					}
 				} else {
 					Self.clearSelectItem();
 					Self.selectItemList[0] = parent;
