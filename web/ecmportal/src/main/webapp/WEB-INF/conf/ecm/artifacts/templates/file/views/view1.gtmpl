@@ -66,6 +66,7 @@
 <%
 	import javax.jcr.Node;
 	import javax.jcr.NodeIterator;
+	import org.exoplatform.ecm.utils.Utils;
   
   public Node getFileLangNode(Node currentNode) throws Exception {
     if(currentNode.getNodes().getSize() > 0) {
@@ -192,7 +193,12 @@
 			        	if(mimeType.startsWith("image")) {
 			        	//prevent ajax cache image
 			        	String rndString = String.valueOf(new Date().getTime());
-			        	String imgSrc = uicomponent.getDownloadLink(fileLangNode) ;
+			        	String imgSrc = "";
+			        	if(Utils.isVersionable(originalNode)) {
+			        	  imgSrc = uicomponent.getDownloadLink(fileLangNode) ;
+			        	} else {
+			        	  imgSrc = "/" + uicomponent.getPortalName() + "/rest/jcr/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + currentNode.getPath();
+			        	}
 			        %> 	
 				    		<div class="ContentDetail">
 				    			<image src="$imgSrc"/>              
