@@ -197,7 +197,7 @@
 			        	if(Utils.isVersionable(originalNode)) {
 			        	  imgSrc = uicomponent.getDownloadLink(fileLangNode) ;
 			        	} else {
-			        	  imgSrc = "/" + uicomponent.getPortalName() + "/rest/jcr/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + currentNode.getPath();
+			        	  imgSrc = "/" + uicomponent.getPortalName() + "/rest/jcr/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + fileLangNode.getPath();
 			        	}  
 			        %> 	
 				    		<div class="ContentDetail">
