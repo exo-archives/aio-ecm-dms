@@ -17,6 +17,8 @@
 package org.exoplatform.ecm.webui.component.explorer.control;
 
 import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
 import java.util.List;
 
 import javax.jcr.Item;
@@ -235,16 +237,17 @@ public class UIActionBar extends UIForm {
         SessionProviderFactory.createSystemProvider());
   }
 
-  public List<String> getMetadataTemplates() throws Exception {
-    MetadataService metadataService = getApplicationComponent(MetadataService.class);
-    Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
-    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
-    List<String> templates = new ArrayList<String>();
-
+  public Hashtable<String, String> getMetadataTemplates() throws Exception {
+    MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
+    Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+    Hashtable<String, String> templates = new Hashtable<String, String>();
+    List<String> metaDataList = metadataService.getMetadataList(repository);
+    
     NodeType[] nodeTypes = node.getMixinNodeTypes();
     for(NodeType nt : nodeTypes) {
-      if(metadataService.getMetadataList(repository).contains(nt.getName())) {
-        templates.add(metadataService.getMetadataPath(nt.getName(), false, repository));
+      if(metaDataList.contains(nt.getName())) {
+        templates.put(nt.getName(), metadataService.getMetadataPath(nt.getName(), false, repository));
       }
     }
     Item primaryItem = null;
@@ -256,8 +259,8 @@ public class UIActionBar extends UIForm {
       Node primaryNode = (Node) node.getPrimaryItem();
       NodeType[] primaryTypes = primaryNode.getMixinNodeTypes();
       for(NodeType nt : primaryTypes) {
-        if(metadataService.getMetadataList(repository).contains(nt.getName())) {
-          templates.add(metadataService.getMetadataPath(nt.getName(), false, repository));
+        if(metaDataList.contains(nt.getName())) {
+          templates.put(nt.getName(), metadataService.getMetadataPath(nt.getName(), false, repository));
         }
       }
     }
@@ -1091,7 +1094,8 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource();
       UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
-      if(uiActionBar.getMetadataTemplates().size() == 0) {
+      Hashtable<String, String> metaDataTemp = uiActionBar.getMetadataTemplates();
+      if (metaDataTemp.size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UIViewMetadataContainer.msg.path-not-found", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -1103,15 +1107,17 @@ public class UIActionBar extends UIForm {
       UIViewMetadataContainer uiMetadataContainer = uiMetadataManager.getChild(UIViewMetadataContainer.class);
       // TODO need review 
       int i = 0;
-      for(String template : uiActionBar.getMetadataTemplates()) {
+      Enumeration enu = metaDataTemp.keys();
+      while (enu.hasMoreElements()) {
+        String key = (String) enu.nextElement();
+        String template = metaDataTemp.get(key);
         if(template != null && template.length() > 0) {
-          String[] nodeTypes = template.split("/");
           UIViewMetadataTemplate uiMetaView = 
-            uiMetadataContainer.createUIComponent(UIViewMetadataTemplate.class, null, nodeTypes[4]);
-          uiMetaView.setTemplateType(nodeTypes[4]);
-          uiMetadataContainer.addChild(uiMetaView);
-          if(i != 0) uiMetaView.setRendered(false);
-          i++;
+            uiMetadataContainer.createUIComponent(UIViewMetadataTemplate.class, null, key) ;
+          uiMetaView.setTemplateType(key) ;
+          uiMetadataContainer.addChild(uiMetaView) ;
+          if(i != 0) uiMetaView.setRendered(false) ;
+          i++ ;
         }
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
