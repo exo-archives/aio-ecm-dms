@@ -28,18 +28,23 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
+import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
 
+// TODO: Auto-generated Javadoc
 /*
  * Created by The eXo Platform SAS
  * Author : Anh Do Ngoc
@@ -47,6 +52,9 @@ import org.exoplatform.webui.form.UIForm;
  * Sep 9, 2008  
  */
 
+/**
+ * The Class UIActivePublication.
+ */
 @ComponentConfig(
     template = "app:/groovy/webui/component/UIGridWithButton.gtmpl",
     events = {
@@ -57,26 +65,46 @@ import org.exoplatform.webui.form.UIForm;
 
 public class UIActivePublication extends UIGrid implements UIPopupComponent {
   
+  /** The Constant LIFECYCLE_NAME. */
   public final static String LIFECYCLE_NAME   = "LifecycleName";
 
+  /** The Constant LIFECYCLE_DESC. */
   public final static String LIFECYCLE_DESC   = "LifecycleDesc";
 
+  /** The LIFECYCL e_ fields. */
   public static String[]     LIFECYCLE_FIELDS = { LIFECYCLE_NAME, LIFECYCLE_DESC };
 
+  /** The LIFECYCL e_ action. */
   public static String[]     LIFECYCLE_ACTION = { "Enrol" };
   
+  /** The Constant LIFECYCLE_SELECTED. */
   public final static String LIFECYCLE_SELECTED = "LifecycleSelected";
   
+  /**
+   * Instantiates a new uI active publication.
+   * 
+   * @throws Exception the exception
+   */
   public UIActivePublication() throws Exception {        
     configure(LIFECYCLE_NAME, LIFECYCLE_FIELDS, LIFECYCLE_ACTION);
     getUIPageIterator().setId("LifecyclesIterator");
     updateLifecyclesGrid();
   } 
   
+  /**
+   * Gets the actions.
+   * 
+   * @return the actions
+   */
   public String[] getActions() { 
     return new String[]{"Cancel"};
   }
   
+  /**
+   * Update lifecycles grid.
+   * 
+   * @throws Exception the exception
+   */
   public void updateLifecyclesGrid() throws Exception {
     List<PublicationLifecycleBean> publicationLifecycleBeans = new ArrayList<PublicationLifecycleBean>();
     PublicationService publicationService = getApplicationComponent(PublicationService.class);
@@ -95,46 +123,111 @@ public class UIActivePublication extends UIGrid implements UIPopupComponent {
     getUIPageIterator().setPageList(objectPageList);
   }
   
+  /* (non-Javadoc)
+   * @see org.exoplatform.ecm.webui.popup.UIPopupComponent#activate()
+   */
   public void activate() throws Exception { }
 
+  /* (non-Javadoc)
+   * @see org.exoplatform.ecm.webui.popup.UIPopupComponent#deActivate()
+   */
   public void deActivate() throws Exception { }
   
   
+  /**
+   * The Class PublicationLifecycleBean.
+   */
   public class PublicationLifecycleBean {
+    
+    /** The lifecycle name. */
     private String lifecycleName;
 
+    /** The lifecycle desc. */
     private String lifecycleDesc;
 
+    /**
+     * Gets the lifecycle name.
+     * 
+     * @return the lifecycle name
+     */
     public String getLifecycleName() {
       return lifecycleName;
     }
 
+    /**
+     * Sets the lifecycle name.
+     * 
+     * @param lifecycleName the new lifecycle name
+     */
     public void setLifecycleName(String lifecycleName) {
       this.lifecycleName = lifecycleName;
     }
 
+    /**
+     * Gets the lifecycle desc.
+     * 
+     * @return the lifecycle desc
+     */
     public String getLifecycleDesc() {
       return lifecycleDesc;
     }
 
+    /**
+     * Sets the lifecycle desc.
+     * 
+     * @param lifecycleDesc the new lifecycle desc
+     */
     public void setLifecycleDesc(String lifecycleDesc) {
       this.lifecycleDesc = lifecycleDesc;
     }
   }
   
+  /**
+   * The listener interface for receiving cancelAction events.
+   * The class that is interested in processing a cancelAction
+   * event implements this interface, and the object created
+   * with that class is registered with a component using the
+   * component's <code>addCancelActionListener<code> method. When
+   * the cancelAction event occurs, that object's appropriate
+   * method is invoked.
+   * 
+   * @see CancelActionEvent
+   */
   public static class CancelActionListener extends EventListener<UIActivePublication> {
+    
+    /* (non-Javadoc)
+     * @see org.exoplatform.webui.event.EventListener#execute(org.exoplatform.webui.event.Event)
+     */
     public void execute(Event<UIActivePublication> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       uiExplorer.cancelAction();
     }
   }
   
+  /**
+   * The listener interface for receiving enrolAction events.
+   * The class that is interested in processing a enrolAction
+   * event implements this interface, and the object created
+   * with that class is registered with a component using the
+   * component's <code>addEnrolActionListener<code> method. When
+   * the enrolAction event occurs, that object's appropriate
+   * method is invoked.
+   * 
+   * @see EnrolActionEvent
+   */
   public static class EnrolActionListener extends EventListener<UIActivePublication> {
+    
+    /* (non-Javadoc)
+     * @see org.exoplatform.webui.event.EventListener#execute(org.exoplatform.webui.event.Event)
+     */
     public void execute(Event<UIActivePublication> event) throws Exception { 
       UIActivePublication uiActivePub = event.getSource();
       UIJCRExplorer uiJCRExplorer = uiActivePub.getAncestorOfType(UIJCRExplorer.class);
       UIPopupContainer popupAction = uiJCRExplorer.getChild(UIPopupContainer.class);
       UIPublicationManager uiPublicationManager = uiJCRExplorer.createUIComponent(UIPublicationManager.class, null, null);
+      TemplateService templateService = uiActivePub.getApplicationComponent(TemplateService.class);
+      RepositoryService repositoryService = uiActivePub.getApplicationComponent(RepositoryService.class);
+      String currentRepository = repositoryService.getCurrentRepository().getConfiguration().getName();
       Node currentNode = uiJCRExplorer.getCurrentNode();
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
@@ -147,7 +240,15 @@ public class UIActivePublication extends UIGrid implements UIPopupComponent {
       if(parentNode.isLocked()) {
         String lockToken1 = LockUtil.getLockToken(parentNode);
         uiJCRExplorer.getSession().addLockToken(lockToken1) ;
-      }
+      }      
+      List<String> documentTypes = templateService.getDocumentTemplates(currentRepository); 
+          if (!documentTypes.contains(currentNode.getPrimaryNodeType().getName())) {
+            UIApplication uiApp = uiActivePub.getAncestorOfType(UIApplication.class);
+            uiApp.addMessage(new ApplicationMessage("UIActivePublication.msg.node-type-invalid", null,
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          } 
       publicationService.enrollNodeInLifecycle(currentNode, selectedLifecycle);      
       UIContainer container = uiActivePub.createUIComponent(UIContainer.class, null, null);
       UIForm uiFormPublicationManager = publicationPresentationService.getStateUI(currentNode, container); 
