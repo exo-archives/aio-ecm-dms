@@ -150,7 +150,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   public String getCapacityOfFile(Node file) throws Exception {
-	Node contentNode = file.getNode(Utils.JCR_CONTENT) ;       
+    Node contentNode = file.getNode(Utils.JCR_CONTENT) ;       
     long size = contentNode.getProperty(Utils.JCR_DATA).getLength() ;    
     long capacity = size/1024 ;
     String strCapacity = Long.toString(capacity) ;
@@ -158,10 +158,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return strCapacity ;
   }
   
-//  public float getFileSize(Node file) throws Exception {
-//    return getAncestorOfType(UIJCRExplorer.class).getFileSize(file) ;
-//  }
-
   public List<String> getMultiValues(Node node, String name) throws Exception {
     return getAncestorOfType(UIJCRExplorer.class).getMultiValues(node, name) ;
   }
@@ -594,7 +590,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiComp = event.getSource() ;
       String downloadLink = uiComp.getDownloadLink(uiComp.getFileLangNode(uiComp.getNode()));
-      event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");      
+      event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");
     }
   }
 
