@@ -50,6 +50,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContaine
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
+import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
@@ -108,7 +109,8 @@ import org.exoplatform.webui.exception.MessageException;
         @EventConfig(listeners = UIWorkingArea.CustomActionListener.class),
         @EventConfig(listeners = UIWorkingArea.PasteActionListener.class),
         @EventConfig(listeners = UIWorkingArea.AddFolderActionListener.class),
-        @EventConfig(listeners = UIWorkingArea.AddDocumentActionListener.class)
+        @EventConfig(listeners = UIWorkingArea.AddDocumentActionListener.class),
+        @EventConfig(listeners = UIWorkingArea.UploadActionListener.class)
       }
   )
 })
@@ -678,7 +680,138 @@ public class UIWorkingArea extends UIContainer {
     if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
     uiExplorer.updateAjax(event);
   }
-
+  
+  public void doDelete(String nodePath, String wsName, Event event) throws Exception {
+    UIJCRExplorer uiExplorer = getParent();
+    if(nodePath.indexOf(";") > -1) {
+      isMultiSelect_ = true;
+      processRemoveMultiple(nodePath.split(";"), wsName.split(";"), event);
+    } else {
+      isMultiSelect_ = false;
+      processRemove(nodePath, wsName, event);
+    }
+    uiExplorer.updateAjax(event);
+    if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save(); 
+  }
+  
+  private void processMultiLock(String[] nodePaths, String[] wsNames, Event event) throws Exception {
+    UIJCRExplorer uiExplorer = getParent();
+    for(int i=0; i< nodePaths.length; i++) {
+      processLock(nodePaths[i], wsNames[i], event);
+    }
+    if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
+    uiExplorer.updateAjax(event);
+  }
+  
+  private void processLock(String nodePath, String wsName, Event event) throws Exception {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+    Session session = uiExplorer.getSessionByWorkspace(wsName);
+    Node node = null;
+    try {
+      node = (Node)session.getItem(nodePath);
+    } catch(PathNotFoundException path) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+          null,ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    } catch (Exception e) {
+      JCRExceptionManager.process(uiApp, e);
+      return;
+    }
+    try{
+      ((ExtendedNode) node).checkPermission(PermissionType.SET_PROPERTY);        
+    }catch (Exception e) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-lock-node",null,ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+    }
+    if(!node.isCheckedOut()){
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.is-checked-in-lock", null, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+    }
+    if(node.canAddMixin(Utils.MIX_LOCKABLE)){
+      node.addMixin(Utils.MIX_LOCKABLE);
+      node.save();
+    }
+    try {
+      Lock lock = node.lock(false, false);
+      LockUtil.keepLock(lock);
+    } catch(LockException le) {
+      le.printStackTrace();
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+    } catch (Exception e) {
+      e.printStackTrace();
+      JCRExceptionManager.process(uiApp, e);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);        
+    }
+  }
+  
+  private void processMultiUnlock(String[] nodePaths, String[] wsNames, Event event) throws Exception {
+    UIJCRExplorer uiExplorer = getParent();
+    for(int i=0; i< nodePaths.length; i++) {
+      processUnlock(nodePaths[i], wsNames[i], event);
+    }
+    if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
+    uiExplorer.updateAjax(event);
+  }
+  
+  private void processUnlock(String nodePath, String wsName, Event event) throws Exception {
+    UIJCRExplorer uiExplorer = getParent();
+    UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+    Session session = uiExplorer.getSessionByWorkspace(wsName);
+    Node node = null;
+    try {
+      node = (Node)session.getItem(nodePath);
+    } catch(PathNotFoundException path) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+          null,ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    } catch (Exception e) {
+      JCRExceptionManager.process(uiApp, e);
+      return;
+    }
+    try{
+      ((ExtendedNode) node).checkPermission(PermissionType.SET_PROPERTY);        
+    }catch (Exception e) {        
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-unlock-node",null,ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+    }
+    try {
+      if(node.holdsLock())  {           
+        String lockToken = LockUtil.getLockToken(node);
+        if(lockToken != null) {
+          session.addLockToken(lockToken);
+        }
+        node.unlock();          
+      }
+    } catch(LockException le) {
+      Object[] args = {node.getName()};
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-unlock-node", args, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+    } catch (Exception e) {
+      e.printStackTrace();
+      JCRExceptionManager.process(uiApp, e);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+    }
+  }
+  
   @SuppressWarnings("unused")
   static  public class EditDocumentActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
@@ -895,19 +1028,6 @@ public class UIWorkingArea extends UIContainer {
       }
     }
   }
-  
-  public void doDelete(String nodePath, String wsName, Event event) throws Exception {
-    UIJCRExplorer uiExplorer = getParent();
-    if(nodePath.indexOf(";") > -1) {
-      isMultiSelect_ = true;
-      processRemoveMultiple(nodePath.split(";"), wsName.split(";"), event);
-    } else {
-      isMultiSelect_ = false;
-      processRemove(nodePath, wsName, event);
-    }
-    uiExplorer.updateAjax(event);
-    if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save(); 
-  }
 
   static  public class DeleteActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
@@ -935,110 +1055,30 @@ public class UIWorkingArea extends UIContainer {
 
   static  public class LockActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
-      UIWorkingArea uicomp = event.getSource().getParent();
-      UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
+      UIWorkingArea uiWorkingArea = event.getSource().getParent();
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
-      Session session = uiExplorer.getSessionByWorkspace(wsName);
-      Node node = null;
-      try {
-        node = (Node)session.getItem(nodePath);
-      } catch(PathNotFoundException path) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
-            null,ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch (Exception e) {
-        JCRExceptionManager.process(uiApp, e);
-        return;
-      }
-      try{
-        ((ExtendedNode) node).checkPermission(PermissionType.SET_PROPERTY);        
-      }catch (Exception e) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-lock-node",null,ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        uiExplorer.updateAjax(event);
-        return;
-      }
-      if(!node.isCheckedOut()){
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.is-checked-in-lock", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        uiExplorer.updateAjax(event);
-        return;
-      }
-      if(node.canAddMixin(Utils.MIX_LOCKABLE)){
-        node.addMixin(Utils.MIX_LOCKABLE);
-        node.save();
-      }
-      try {
-        Lock lock = node.lock(false, false);
-        LockUtil.keepLock(lock);
-      } catch(LockException le) {
-        le.printStackTrace();
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        uiExplorer.updateAjax(event);
-        return;
-      } catch (Exception e) {
-        e.printStackTrace();
-        JCRExceptionManager.process(uiApp, e);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        uiExplorer.updateAjax(event);        
+      if(nodePath.indexOf(";") > -1) {
+        uiWorkingArea.isMultiSelect_ = true;
+        uiWorkingArea.processMultiLock(nodePath.split(";"), wsName.split(";"), event);
+      } else {
+        uiWorkingArea.isMultiSelect_ = false;
+        uiWorkingArea.processLock(nodePath, wsName, event);
       }
     }
   }
 
   static  public class UnlockActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
-      UIWorkingArea uicomp = event.getSource().getParent();
-      UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
+      UIWorkingArea uiWorkingArea = event.getSource().getParent();
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);      
-      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
-      Session session = uiExplorer.getSessionByWorkspace(wsName);
-      Node node = null;
-      try {
-        node = (Node)session.getItem(nodePath);
-      } catch(PathNotFoundException path) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
-            null,ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch (Exception e) {
-        JCRExceptionManager.process(uiApp, e);
-        return;
-      }
-      try{
-        ((ExtendedNode) node).checkPermission(PermissionType.SET_PROPERTY);        
-      }catch (Exception e) {        
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-unlock-node",null,ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        uiExplorer.updateAjax(event);
-        return;
-      }
-      try {
-        if(node.holdsLock())  {           
-          String lockToken = LockUtil.getLockToken(node);
-          if(lockToken != null) {
-            session.addLockToken(lockToken);
-          }
-          node.unlock();          
-        }
-      } catch(LockException le) {
-        Object[] args = {node.getName()};
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-unlock-node", args, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        uiExplorer.updateAjax(event);
-        return;
-      } catch (Exception e) {
-        e.printStackTrace();
-        JCRExceptionManager.process(uiApp, e);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        uiExplorer.updateAjax(event);
+      if(nodePath.indexOf(";") > -1) {
+        uiWorkingArea.isMultiSelect_ = true;
+        uiWorkingArea.processMultiUnlock(nodePath.split(";"), wsName.split(";"), event);
+      } else {
+        uiWorkingArea.isMultiSelect_ = false;
+        uiWorkingArea.processUnlock(nodePath, wsName, event);
       }
     }
   }
@@ -1254,6 +1294,36 @@ public class UIWorkingArea extends UIContainer {
       }
       uiController.init();
       UIPopupContainer.activate(uiController, 800, 600);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+    }
+  }
+  
+  static public class UploadActionListener extends EventListener<UIRightClickPopupMenu> {
+    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
+      UIWorkingArea uiWorkingArea = event.getSource().getParent();
+      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(!PermissionUtil.canRead(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(!currentNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }      
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIUploadManager uiUploadManager = event.getSource().createUIComponent(UIUploadManager.class, null, null);
+      UIPopupContainer.activate(uiUploadManager, 600, 500);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
