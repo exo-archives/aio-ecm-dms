@@ -32,12 +32,12 @@
 							<%=_ctx.appRes("ECMContextMenu.event.Delete")%>
 						</div>
 				 	</a>
-				 	<a class="MenuItem" style="display: block;"> 	
+				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Lock', 'MultiSelection')%>")> 	
 						<div class="ItemIcon Lock16x16Icon">
 							<%=_ctx.appRes("ECMContextMenu.event.Lock")%>
 						</div>
 				 	</a>
-				 	<a class="MenuItem" style="display: block;"> 	
+				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Unlock', 'MultiSelection')%>")> 	
 						<div class="ItemIcon Unlock16x16Icon">
 							<%=_ctx.appRes("ECMContextMenu.event.Unlock")%>
 						</div>
@@ -58,6 +58,11 @@
 							<%=_ctx.appRes("ECMContextMenu.event.AddDocument")%>
 						</div>
 				 	</a>
+				 	<a class="MenuItem" href="<%=contextMenu.event("Upload")%>" style="display: block;"> 	
+						<div class="ItemIcon UploadIcon">
+							<%=_ctx.appRes("ECMContextMenu.event.Upload")%>
+						</div>
+				 	</a>
 				 	<%if(uicomponent.isCanPaste()) {%>
 					 	<a class="MenuItem" href="<%=contextMenu.event("Paste")%>" style="display: block;"> 	
 							<div class="ItemIcon Paste16x16Icon">
@@ -73,7 +78,6 @@
 	<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;"  >
 	  <div class="ActionIconsContainer">
 	    <%for(data in uicomponent.getChildrenList()) { %>
-	      <div class="ActionIconBox" onmousedown="eXo.ecm.ECMUtils.prepareSelectItem(event, this);" style="padding: 4px 0px 4px 0px; height: auto;">
 	        <%
 	          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
 	          def preferenceWS = data.getSession().getWorkspace().getName() ;
@@ -114,7 +118,8 @@
 	          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;
 	          
 	        %>   
-	        <div onmouseover="this.className = 'ActionIconContainer'" locked="<%=isLocked%>"  <%=rightClickMenu%> objectId="<%=data.getPath()%>" workspaceName="<%=preferenceWS%>"
+	      <div class="ActionIconBox" locked="<%=isLocked%>" onmousedown="eXo.ecm.ECMUtils.prepareSelectItem(event, this);" style="padding: 4px 0px 4px 0px; height: auto;">
+	        <div onmouseover="this.className = 'ActionIconContainer'" <%=rightClickMenu%> objectId="<%=data.getPath()%>" workspaceName="<%=preferenceWS%>"
 				 				ondblclick="$actionLink" onmouseout="this.className = ''" style="height: auto; width: auto; border: none;">
 				
 						<div class="NodeLabel">
