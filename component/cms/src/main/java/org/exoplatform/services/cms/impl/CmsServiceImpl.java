@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -327,42 +328,36 @@ public class CmsServiceImpl implements CmsService {
       }
       break;
     case PropertyType.BINARY:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, "");
-      else if (value instanceof byte[])
-        node.setProperty(propertyName, 
-            new ByteArrayInputStream((byte[]) value));
-      else if (value instanceof String)
-        node.setProperty(propertyName, 
-            new ByteArrayInputStream(((String)value).getBytes()));
-      else if (value instanceof String[])        
-        node.setProperty(propertyName, 
-            new ByteArrayInputStream((((String[]) value)).toString().getBytes()));      
+      } else if(value instanceof InputStream) {
+        node.setProperty(propertyName, (InputStream)value);
+      } else if (value instanceof byte[]) {
+        node.setProperty(propertyName, new ByteArrayInputStream((byte[]) value));
+      } else if (value instanceof String) {
+        node.setProperty(propertyName, new ByteArrayInputStream(((String)value).getBytes()));
+      } else if (value instanceof String[]) {        
+        node.setProperty(propertyName, new ByteArrayInputStream((((String[]) value)).toString().getBytes()));      
+      }
       break;
     case PropertyType.BOOLEAN:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, false);
-      else if (value instanceof String)
-        node.setProperty(propertyName, 
-            new Boolean((String) value).booleanValue());
-      else if (value instanceof String[])
-        node.setProperty(propertyName, (String[]) value);         
+      } else if (value instanceof String) {
+        node.setProperty(propertyName, new Boolean((String) value).booleanValue());
+      } else if (value instanceof String[]) {
+        node.setProperty(propertyName, (String[]) value);
+      }
       break;
     case PropertyType.LONG:
-      if (value == null || "".equals(value))
-        node.setProperty(propertyName, 0);
-      else if (value instanceof String)
-        node.setProperty(propertyName, new Long((String) value).longValue());
-      else if (value instanceof String[])
-        node.setProperty(propertyName, (String[]) value);  
+      if (value == null || "".equals(value)) node.setProperty(propertyName, 0);
+      else if (value instanceof String) node.setProperty(propertyName, new Long((String) value).longValue());
+      else if (value instanceof String[]) node.setProperty(propertyName, (String[]) value);  
       break;
     case PropertyType.DOUBLE:
-      if (value == null || "".equals(value))
-        node.setProperty(propertyName, 0);
-      else if (value instanceof String)
-        node.setProperty(propertyName, new Double((String) value).doubleValue());
-      else if (value instanceof String[])
-        node.setProperty(propertyName, (String[]) value);        
+      if (value == null || "".equals(value)) node.setProperty(propertyName, 0);
+      else if (value instanceof String) node.setProperty(propertyName, new Double((String) value).doubleValue());
+      else if (value instanceof String[]) node.setProperty(propertyName, (String[]) value);        
       break;
     case PropertyType.DATE:      
       if (value == null){        
@@ -421,7 +416,7 @@ public class CmsServiceImpl implements CmsService {
             Node referenceNode = session2.getRootNode().getNode(referenceNodeName);
             Value value2add = session2.getValueFactory().createValue(referenceNode);
             node.setProperty(propertyName, value2add);                    
-          }else {
+          } else {
             node.setProperty(propertyName, session2.getValueFactory().createValue((String)value));
           }
         } else {
