@@ -238,19 +238,22 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         uiExplorer.getSession().save() ;
         UIUploadManager uiManager = uiForm.getParent() ;
         UIUploadContainer uiUploadContainer = uiManager.getChild(UIUploadContainer.class) ;
-        Node newNode = null ;
+        Node contentNode = null;
         if(uiForm.isMultiLanguage_) {
           uiUploadContainer.setUploadedNode(selectedNode) ; 
+          contentNode = uiUploadContainer.getUploadedNode().getNode(Utils.JCR_CONTENT);
         } else {
+          Node newNode = null ;
           if(!isExist) {
             newNode = uiExplorer.getSession().getNodeByUUID(newNodeUUID) ;
           } else {
             newNode = selectedNode.getNode(name) ;
           }
+          contentNode = newNode.getNode(Utils.JCR_CONTENT);
           uiUploadContainer.setUploadedNode(newNode) ;
         }
         UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
-        long size = newNode.getNode(Utils.JCR_CONTENT).getProperty(Utils.JCR_DATA).getLength()/1024;
+        long size = contentNode.getProperty(Utils.JCR_DATA).getLength()/1024;
         String fileSize = Long.toString(size);     
         String[] arrValues = {fileName, name, fileSize +" Kb", mimeType} ;
         uiUploadContent.setUploadValues(arrValues) ;
