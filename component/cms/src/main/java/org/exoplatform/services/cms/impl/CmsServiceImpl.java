@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
@@ -332,6 +333,8 @@ public class CmsServiceImpl implements CmsService {
     case PropertyType.BINARY:
       if (value == null) {
         node.setProperty(propertyName, "");
+      } else if(value instanceof InputStream) {
+        node.setProperty(propertyName, (InputStream)value);
       } else if (value instanceof byte[]) {
         node.setProperty(propertyName, 
             new ByteArrayInputStream((byte[]) value));
@@ -503,6 +506,10 @@ public class CmsServiceImpl implements CmsService {
     case PropertyType.BINARY:
       if (value == null) {
         node.setProperty(propertyName, "");
+      } else if(value instanceof InputStream) {
+        if(!property.getValue().getStream().equals(value)) {
+          node.setProperty(propertyName, (InputStream)value);
+        }
       } else if (value instanceof byte[]) {
         if(!property.getValue().getStream().equals(new ByteArrayInputStream((byte[]) value))) {
           node.setProperty(propertyName, new ByteArrayInputStream((byte[]) value));
