@@ -253,12 +253,12 @@ function ECMUtils() {
 		        path += encodeURIComponent(nodePath[i]) + "/";
 		      }
 		    }
-		    window.location = serverInfo+ "/"+portalName + "/rest/lnkproducer/openit.lnk?path=/"+repository +"/" +workspace + path;
+		    window.location = serverInfo+ "/"+portalName + "/rest/private/lnkproducer/openit.lnk?path=/"+repository +"/" +workspace + path;
 	   	} else {
-	 	  	window.location = serverInfo + "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath; 		 		
+	 	  	window.location = serverInfo + "/"+portalName + "/rest/private/jcr/"+repository +"/" +workspace + nodePath; 		 		
 	 	  } 	  
 	  } else {
-	    window.location = serverInfo+ "/"+portalName + "/rest/jcr/"+repository +"/" +workspace + nodePath;
+	    window.location = serverInfo+ "/"+portalName + "/rest/private/jcr/"+repository +"/" +workspace + nodePath;
 	  } 
 	} ;
 	
