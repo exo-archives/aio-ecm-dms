@@ -60,7 +60,7 @@
     <filter-class>org.exoplatform.ws.frameworks.servlet.AnonymousUserContextRedirectionFilter</filter-class>
 		<init-param>
       <param-name>context-name</param-name>
-      <param-value>/rest</param-value>
+      <param-value>/rest/private</param-value>
     </init-param>
   </filter>
   
@@ -91,19 +91,8 @@
 
   <filter-mapping>
     <filter-name>PortalContainerInitializedFilter</filter-name>
-    <url-pattern>/rest/*</url-pattern>
-  </filter-mapping>
-
-  <filter-mapping>
-    <filter-name>PortalContainerInitializedFilter</filter-name>
-    <url-pattern>/private/*</url-pattern>
-  </filter-mapping>
-
-  <filter-mapping>
-    <filter-name>PortalContainerInitializedFilter</filter-name>
-    <url-pattern>/public/*</url-pattern>
-  </filter-mapping>
-
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>  
   <filter-mapping>
     <filter-name>SetCurrentIdentityFilter</filter-name>
     <url-pattern>/*</url-pattern>
@@ -120,14 +109,14 @@
   </filter-mapping> 
 
   <filter-mapping>
-  <!-- This must be before ThreadLocalSessionProviderInitializedFilter for URI /rest/* -->
+  <!-- This must be before ThreadLocalSessionProviderInitializedFilter for URI /rest/private/* -->
     <filter-name>AnonymousUserContextRedirectionFilter</filter-name>
-    <url-pattern>/rest/*</url-pattern>
+    <url-pattern>/rest/private/*</url-pattern>
   </filter-mapping>
   
   <filter-mapping>
     <filter-name>ThreadLocalSessionProviderInitializedFilter</filter-name>
-    <url-pattern>/rest/*</url-pattern>
+    <url-pattern>/rest/private/*</url-pattern>
   </filter-mapping>   
 
   <!-- ================================================================== -->
@@ -141,6 +130,9 @@
   </listener>    
   <listener>
     <listener-class>org.exoplatform.portal.webui.javascript.JavascriptListener</listener-class>
+  </listener>
+  <listener>
+    <listener-class>org.exoplatform.services.security.web.JAASConversationStateListener</listener-class>
   </listener>
 
   <!-- ================================================================== -->
@@ -214,7 +206,12 @@
     <servlet-name>Controller</servlet-name>
     <url-pattern>/connector</url-pattern>
   </servlet-mapping> 
-
+  
+  <servlet-mapping>
+    <servlet-name>RestServer</servlet-name>
+    <url-pattern>/rest/private/*</url-pattern>
+  </servlet-mapping>
+  
   <servlet-mapping>
     <servlet-name>RestServer</servlet-name>
     <url-pattern>/rest/*</url-pattern>
