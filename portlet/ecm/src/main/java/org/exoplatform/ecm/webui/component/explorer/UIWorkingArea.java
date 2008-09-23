@@ -60,8 +60,8 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.security.ConversationRegistry;
 import org.exoplatform.services.security.Identity;
+import org.exoplatform.services.security.IdentityRegistry;
 import org.exoplatform.services.security.MembershipEntry;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -249,11 +249,11 @@ public class UIWorkingArea extends UIContainer {
   }
   
   private boolean hasPermission(String userName, Value[] roles) throws Exception {
-    ConversationRegistry conversationRegistry = getApplicationComponent(ConversationRegistry.class);
+    IdentityRegistry identityRegistry = getApplicationComponent(IdentityRegistry.class);
     if(SystemIdentity.SYSTEM.equalsIgnoreCase(userName)) {
       return true ;
     }
-    Identity identity = conversationRegistry.getState(userName).getIdentity() ;
+    Identity identity = identityRegistry.getIdentity(userName);
     if(identity == null) {
       return false ; 
     }        

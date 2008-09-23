@@ -34,8 +34,8 @@ import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
-import org.exoplatform.services.security.ConversationRegistry;
 import org.exoplatform.services.security.Identity;
+import org.exoplatform.services.security.IdentityRegistry;
 import org.exoplatform.services.security.MembershipEntry;
 import org.picocontainer.Startable;
 
@@ -46,15 +46,15 @@ public class TemplateServiceImpl implements TemplateService, Startable {
 
   private RepositoryService    repositoryService_;
 
-  private ConversationRegistry conversationRegistry_;
+  private IdentityRegistry identityRegistry_;
 
   private String               cmsTemplatesBasePath_;
 
   private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
 
   public TemplateServiceImpl(RepositoryService jcrService,
-      NodeHierarchyCreator nodeHierarchyCreator, ConversationRegistry conversationRegistry) throws Exception {
-    conversationRegistry_ = conversationRegistry;
+      NodeHierarchyCreator nodeHierarchyCreator, IdentityRegistry identityRegistry) throws Exception {
+    identityRegistry_ = identityRegistry;
     repositoryService_ = jcrService;
     cmsTemplatesBasePath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_TEMPLATES_PATH);
   }
@@ -154,7 +154,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     while (templateIter.hasNext()) {
       Node node = templateIter.nextNode();
       Value[] roles = node.getProperty(EXO_ROLES_PROP).getValues();
-      if(hasPermission(userName, roles, conversationRegistry_)) {
+      if(hasPermission(userName, roles, identityRegistry_)) {
         String templatePath = node.getPath() ;
         session.logout();
         return templatePath ;
@@ -341,11 +341,11 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return provider.getSession(systemWorksapce, manageableRepository);
   }
 
-  private boolean hasPermission(String userId,Value[] roles, ConversationRegistry conversationRegistry) throws Exception {        
+  private boolean hasPermission(String userId,Value[] roles, IdentityRegistry identityRegistry) throws Exception {        
     if(SystemIdentity.SYSTEM.equalsIgnoreCase(userId)) {
       return true ;
     }
-    Identity identity = conversationRegistry.getState(userId).getIdentity() ;
+    Identity identity = identityRegistry.getIdentity(userId);
     if(identity == null) {
       return false ; 
     }        

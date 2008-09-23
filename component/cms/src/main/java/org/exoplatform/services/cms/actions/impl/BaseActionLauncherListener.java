@@ -32,8 +32,8 @@ import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
-import org.exoplatform.services.security.ConversationRegistry;
 import org.exoplatform.services.security.Identity;
+import org.exoplatform.services.security.IdentityRegistry;
 import org.exoplatform.services.security.MembershipEntry;
 
 public abstract class BaseActionLauncherListener implements ECMEventListener {
@@ -66,8 +66,8 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
       (RepositoryService) exoContainer.getComponentInstanceOfType(RepositoryService.class);    
     ActionServiceContainer actionServiceContainer = 
       (ActionServiceContainer) exoContainer.getComponentInstanceOfType(ActionServiceContainer.class);
-    ConversationRegistry conversationRegistry =
-      (ConversationRegistry) exoContainer.getComponentInstanceOfType(ConversationRegistry.class);
+    IdentityRegistry identityRegistry =
+      (IdentityRegistry) exoContainer.getComponentInstanceOfType(IdentityRegistry.class);
     TemplateService templateService = 
       (TemplateService) exoContainer.getComponentInstanceOfType(TemplateService.class);       
     if (events.hasNext()) {
@@ -81,7 +81,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
         Node actionNode = actionServiceContainer.getAction(node, actionName_);
         Property rolesProp = actionNode.getProperty("exo:roles");        
         Value[] roles = rolesProp.getValues();        
-        boolean hasPermission = checkExcetuteable(userId, roles, conversationRegistry) ;
+        boolean hasPermission = checkExcetuteable(userId, roles, identityRegistry) ;
         if (!hasPermission) {
           jcrSession.logout();
           return;
@@ -118,11 +118,11 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
 
   }
 
-  private boolean checkExcetuteable(String userId,Value[] roles, ConversationRegistry conversationRegistry) throws Exception {        
+  private boolean checkExcetuteable(String userId,Value[] roles, IdentityRegistry identityRegistry) throws Exception {        
     if(SystemIdentity.SYSTEM.equalsIgnoreCase(userId)) {
       return true ;
     }
-    Identity identity = conversationRegistry.getState(userId).getIdentity() ;
+    Identity identity = identityRegistry.getIdentity(userId);
     if(identity == null) {
       return false ; 
     }        
