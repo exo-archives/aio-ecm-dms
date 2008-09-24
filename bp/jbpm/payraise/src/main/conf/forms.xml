@@ -9,7 +9,7 @@
               component="select" />
     <variable name="rewarded" 
               component="checkbox" />    
-    <variable name="reason" component="htmltextarea"/>
+    <variable name="reason" component="textarea"/>
   </form>
 
   <form>
