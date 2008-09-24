@@ -85,7 +85,7 @@ public class UINodeTree extends UITree {
     return builder.toString();
   }
 
-  private boolean isSelected(Object obj) throws Exception {
+  public boolean isSelected(Object obj) throws Exception {
     Node selectedNode = this.getSelected();
     Node node = (Node) obj;
     if(selectedNode == null) return false;    
