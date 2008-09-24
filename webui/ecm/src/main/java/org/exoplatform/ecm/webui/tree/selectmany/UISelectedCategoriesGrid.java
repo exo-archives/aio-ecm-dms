@@ -131,6 +131,11 @@ public class UISelectedCategoriesGrid extends UIGrid {
       String returnField = uiCategoriesSelector.getReturnFieldName();
       List<String> selectedCategories = uiSelectedCategoriesGrid.getSelectedCategories();
       UIApplication uiApplication = uiSelectedCategoriesGrid.getAncestorOfType(UIApplication.class);
+      if(selectedCategories.size() == 0) {
+        uiApplication.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, ApplicationMessage.INFO));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApplication.getUIPopupMessages());
+        return;
+      }
       try {
         ((UISelectable)uiCategoriesSelector.getSourceComponent()).doSelect(returnField, selectedCategories);
       } catch(Exception e) {
