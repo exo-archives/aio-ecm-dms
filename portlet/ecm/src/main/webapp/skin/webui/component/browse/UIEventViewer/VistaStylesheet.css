@@ -30,7 +30,7 @@
 	float: left;
   width: 16px; height: 16px;
   margin: 3px 0px 0px 2px;
-  background: url('DefaultSkin/background/BlackDotBackArrow.gif') no-repeat;
+  background: url('DefaultSkin/background/EventViewer.gif') no-repeat left top;
 }
 
 .UIEventViewer .ViewPreviousDocument a{
@@ -95,7 +95,7 @@
 
 .UIEventViewer .EventContent .TitleEventContent {
 	height: 17px;
-  background: url('DefaultSkin/background/TitleEventViewrBG1x17.gif') repeat-x;
+  background: url('DefaultSkin/background/EventViewer.gif') repeat-x left -16px;
   padding-left: 10px;
 }
 

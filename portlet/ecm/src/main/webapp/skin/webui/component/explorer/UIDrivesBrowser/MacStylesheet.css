@@ -119,15 +119,18 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .PersonalDrivesIcon {
-	background: url('MacSkin/background/Personal.png') no-repeat left center;
+	background: url('MacSkin/background/SmallDrivesIcon.png') no-repeat left -18px;
+	height: 18px; line-height: 18px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GroupDrivesIcon {
-	background: url('MacSkin/background/Group.png') no-repeat left center;
+	background: url('MacSkin/background/SmallDrivesIcon.png') no-repeat left top;
+	height: 18px; line-height: 18px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GeneralDriveIcon {
-	background: url('MacSkin/background/Earth.gif') no-repeat left center;
+	background: url('MacSkin/background/SmallDrivesIcon.png') no-repeat left -36px;
+	height: 18px; line-height: 18px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator {
@@ -172,55 +175,39 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .GroupDriveIcon {
-  background: url('MacSkin/background/GroupManagement58x45.gif') no-repeat;
+  background: url('MacSkin/background/DrivesIcon.gif') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UserDriveIcon {
-  background: url('MacSkin/background/UserManagement58x45.gif') no-repeat;
+  background: url('MacSkin/background/DrivesIcon.gif') no-repeat left -50px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DefaultDriveIcon {
-  background: url('MacSkin/background/MacDefaultDrive.gif') no-repeat;
+  background: url('MacSkin/background/DrivesIcon.gif') no-repeat left -100px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminproductionIcon {
-  background: url('MacSkin/background/AdminProduction.gif') no-repeat;
+  background: url('MacSkin/background/DrivesIcon.gif') no-repeat left -150px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdmindraftIcon {
-  background: url('MacSkin/background/AdminDraft.gif') no-repeat;
+  background: url('MacSkin/background/DrivesIcon.gif') no-repeat left -200px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminbackupIcon {
-  background: url('MacSkin/background/AdminBackup.gif') no-repeat;
+  background: url('MacSkin/background/DrivesIcon.gif') no-repeat -250px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdmintaxonomyIcon {
-  background: url('MacSkin/background/AdminTaxonomy.gif') no-repeat;
+  background: url('MacSkin/background/DrivesIcon.gif') no-repeat left -300px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Admindigital-assetsIcon {
-  background: url('MacSkin/background/AdminDigitalAssets.gif') no-repeat;
+  background: url('MacSkin/background/DrivesIcon.gif') no-repeat left -350px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminsystemIcon {
-  background: url('MacSkin/background/AdminSystem.gif') no-repeat;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .UserproductionIcon {
-  background: url('MacSkin/background/UserProduction.gif') no-repeat;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .UserdraftIcon {
-  background: url('MacSkin/background/UserDraft.gif') no-repeat;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .UserbackupIcon {
-  background: url('MacSkin/background/UserBackup.gif') no-repeat;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .UsertaxonomyIcon {
-  background: url('DefaultSkin/background/UserTaxonomy.gif') no-repeat;
+  background: url('MacSkin/background/DrivesIcon.gif') no-repeat left -400px;
 }
 
 /*############################## -- End UIDrivesBrowser -- ##############################*/

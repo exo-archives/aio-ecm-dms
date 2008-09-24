@@ -58,17 +58,17 @@
 
 .UIJCRExplorerPortlet .UIViewBar .BackToMainDriveButton {
 	width: 32px;	height: 26px;
-  background: url('VistaSkin/background/BackToMainDriveButton.png') no-repeat center ;
+  background: url('VistaSkin/background/ButtonIcon.png') no-repeat left top ;
 }
 
 .UIJCRExplorerPortlet .UIViewBar .SetupPreferencesButton {
   width: 32px;	height: 28px;
-  background: url('VistaSkin/background/SetupPreferencesButton.png') no-repeat bottom;
+  background: url('VistaSkin/background/ButtonIcon.png') no-repeat left -26px;
 }
 
 .UIJCRExplorerPortlet .UIViewBar .RefreshSessionButton  {
   width: 30px;	height: 26px;
-  background: url('VistaSkin/background/RefreshSessionButton.png') no-repeat bottom;
+  background: url('VistaSkin/background/ButtonIcon.png') no-repeat left -54px;
 }
 
 /*############################## -- End UIViewBar -- ##############################*/

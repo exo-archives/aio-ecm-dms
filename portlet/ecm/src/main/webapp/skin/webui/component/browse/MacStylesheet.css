@@ -177,7 +177,7 @@
 .UIBrowseContentPortlet .CategoryListIcon {
   float: left;
   height: 16px; width: 16px;
-  background: url('DefaultSkin/background/CategoryListIcon.gif') no-repeat;
+  background: url('DefaultSkin/background/BrowseDefault.gif') no-repeat left top;
   margin: 6px 5px 0px 8px;
 }
 
@@ -231,22 +231,22 @@
 
 .UIBrowseContentPortlet .UIToolBar .CBRefreshButton {
 	width: 24px; height: 24px;
-	background: url('DefaultSkin/background/CBRefreshButton.gif') no-repeat;
+	background: url('DefaultSkin/background/BrowseDefault.gif') no-repeat left -16px;
 }
 
 .UIBrowseContentPortlet .UIToolBar .CBSearchButton {
 	width: 24px; height: 24px;
-	background: url('MacSkin/background/CBSearchButton.gif') no-repeat;
+	background: url('MacSkin/background/BrowseDefault.gif') no-repeat left -40px;
 }
 
 .UIBrowseContentPortlet .UIToolBar .VoteDocumentButton{
 	width: 24px; height: 24px;
-	background: url('DefaultSkin/background/VoteDocumentButton.gif') no-repeat;
+	background: url('DefaultSkin/background/BrowseDefault.gif') no-repeat left -64px;
 }
 
 .UIBrowseContentPortlet .UIToolBar .WriteCommentButton {
 	width: 24px; height: 24px;
-	background:url('DefaultSkin/background/WriteCommentButton.gif') no-repeat;
+	background:url('DefaultSkin/background/BrowseDefault.gif') no-repeat left -88px;
 }
 
 .UIBrowseContainer .UIDocumentList {
@@ -345,7 +345,7 @@
 
 .UIBrowseContentPortlet .UISearchController .GotoIcon{
 	width: 16px ;  height: 16px ;
-  background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
+  background: url('DefaultSkin/background/BrowseDefault.gif') no-repeat left -112px;
 }
 
 /*############################## -- Begin UIVoteForm   -- ##############################*/

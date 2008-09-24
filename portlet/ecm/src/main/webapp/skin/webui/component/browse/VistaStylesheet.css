@@ -74,7 +74,7 @@
 	float: left;
 	width: 24px; height: 24px; 
 	margin: 0px 5px;
-	background: url('VistaSkin/background/TagMapIcon24x24.png') no-repeat; 
+	background: url('VistaSkin/background/BrowseVistaIcon.png') no-repeat left -136px; 
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel {
@@ -142,7 +142,7 @@
 /*############################## -- Begin UIToolBar -- ##############################*/
 
 .UIBrowseContentPortlet .UIToolBar {
-  background: url('VistaSkin/background/CBToolbarBG1x31.png') repeat-x;
+  background: url('VistaSkin/background/BrowseVistaIcon.png') repeat-x left -160px;
   height: 31px;
   margin-bottom: 5px;
 }
@@ -169,7 +169,7 @@
 .UIBrowseContentPortlet .CategoryListIcon {
   float: left;
   height: 24px; width: 24px;
-  background: url('VistaSkin/background/CategoryListIcon.png') no-repeat;
+  background: url('VistaSkin/background/BrowseVistaIcon.png') no-repeat left -112px;
   margin: 4px 5px 0px 8px;
   
 }
@@ -224,22 +224,22 @@
 
 .UIBrowseContentPortlet .UIToolBar .CBRefreshButton {
 	width: 28px; height: 28px;
-	background: url('VistaSkin/background/CBRefreshButton.png') no-repeat;
+	background: url('VistaSkin/background/BrowseVistaIcon.png') no-repeat left -84px;
 }
 
 .UIBrowseContentPortlet .UIToolBar .CBSearchButton {
 	width: 28px; height: 28px;
-	background: url('VistaSkin/background/CBSearchButton.png') no-repeat;
+	background: url('VistaSkin/background/BrowseVistaIcon.png') no-repeat left -56px;
 }
 
 .UIBrowseContentPortlet .UIToolBar .VoteDocumentButton{
 	width: 28px; height: 28px;
-	background: url('VistaSkin/background/VoteDocumentButton.png') no-repeat;
+	background: url('VistaSkin/background/BrowseVistaIcon.png') no-repeat left -28px;
 }
 
 .UIBrowseContentPortlet .UIToolBar .WriteCommentButton {
 	width: 28px; height: 28px;
-	background:url('VistaSkin/background/WriteCommentButton.png') no-repeat;
+	background:url('VistaSkin/background/BrowseVistaIcon.png') no-repeat left top;
 }
 
 .UIBrowseContainer .UIDocumentList {

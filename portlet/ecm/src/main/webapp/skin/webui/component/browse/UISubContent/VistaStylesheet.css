@@ -43,18 +43,18 @@
 }
 
 .UISubContent .SubContentTitle .LeftBar { 
-	background: url('VistaSkin/background/LeftHorizontalTab2x27.gif') no-repeat left;
+	background: url('VistaSkin/background/HorizontalTab.gif') no-repeat left top;
   padding-left: 2px;
 }
 
 .UISubContent .SubContentTitle .RightBar{ 
-	background: url('VistaSkin/background/RightHorizontalTab2x27.gif') no-repeat right;
+	background: url('VistaSkin/background/HorizontalTab.gif') no-repeat right top;
   padding-right: 2px;
 }
 
 .UISubContent .SubContentTitle .MiddleBar { 
 	line-height: 27px; height: 27px;
-	background: url('VistaSkin/background/CenterHorizontalTab1x27.gif') repeat-x;
+	background: url('VistaSkin/background/HorizontalTab.gif') repeat-x left -27px;
 }
 
 .UISubContent .SubContentTitle .ChildContainer{

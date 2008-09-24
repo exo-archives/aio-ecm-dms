@@ -124,15 +124,18 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .PersonalDrivesIcon {
-	background: url('VistaSkin/background/Personal.png') no-repeat left center;
+	background: url('VistaSkin/background/SmallDrivesIcon.png') no-repeat left top;
+	height: 20px; line-height: 20px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GroupDrivesIcon {
-	background: url('VistaSkin/background/Group.png') no-repeat left center;
+	background: url('VistaSkin/background/SmallDrivesIcon.png') no-repeat left -20px;
+	height: 20px; line-height: 20px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GeneralDriveIcon {
-	background: url('VistaSkin/background/Earth.gif') no-repeat left center;
+	background: url('VistaSkin/background/SmallDrivesIcon.png') no-repeat left center;
+	height: 20px; line-height: 20px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator {
@@ -182,51 +185,47 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .GroupDriveIcon {
-  background: url('VistaSkin/background/GroupManagement58x45.png') no-repeat;
+  background: url('VistaSkin/background/DrivesIcon.png') no-repeat;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UserDriveIcon {
-  background: url('VistaSkin/background/UserManagement58x45.png') no-repeat;
+  background: url('VistaSkin/background/DrivesIcon.png') no-repeat left -48px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DefaultDriveIcon {
-  background: url('VistaSkin/background/DefaultDrive.gif') no-repeat;
+  background: url('VistaSkin/background/DrivesIcon.png') no-repeat left -96px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminproductionIcon {
-  background: url('VistaSkin/background/AdminProduction.png') no-repeat;
+  background: url('VistaSkin/background/DrivesIcon.png') no-repeat -144p;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdmindraftIcon {
-  background: url('VistaSkin/background/AdminDraft.png') no-repeat;
+  background: url('VistaSkin/background/DrivesIcon.png') no-repeat left -192px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminbackupIcon {
-  background: url('VistaSkin/background/AdminBackup.png') no-repeat;
+  background: url('VistaSkin/background/DrivesIcon.png') no-repeat left -240px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdmintaxonomyIcon {
-  background: url('VistaSkin/background/AdminProduction.png') no-repeat;
+  background: url('VistaSkin/background/DrivesIcon.png') no-repeat left -144px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Admindigital-assetsIcon {
-  background: url('VistaSkin/background/AdminDigitalAssets.png') no-repeat;
+  background: url('VistaSkin/background/DrivesIcon.png') no-repeat left -288px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UserproductionIcon {
-  background: url('VistaSkin/background/AdminProduction.png') no-repeat;
+  background: url('VistaSkin/background/DrivesIcon.png') no-repeat left -144px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UserdraftIcon {
-  background: url('VistaSkin/background/AdminProduction.png') no-repeat;
+  background: url('VistaSkin/background/DrivesIcon.png') no-repeat left -144px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UserbackupIcon {
-  background: url('VistatSkin/background/AdminProduction.png') no-repeat;
-}
-
-.UIJCRExplorerPortlet .UIDrivesBrowser .UsertaxonomyIcon {
-  background: url('DefaultSkin/background/UserTaxonomy.gif') no-repeat;
+  background: url('VistatSkin/background/DrivesIcon.png') no-repeat left -144px;
 }
 
 /*############################## -- End UIDrivesBrowser -- ##############################*/

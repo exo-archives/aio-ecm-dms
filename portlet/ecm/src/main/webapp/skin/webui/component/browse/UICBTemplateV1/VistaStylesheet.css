@@ -126,17 +126,18 @@
 .UICBTemplateV1 .NodeButtonIcon .LeftButtonCategory {
 	margin-top: 5px;
 	float: left;
-	background: url('DefaultSkin/background/ButtonLeft5x19.gif') no-repeat left;
+	background: url('DefaultSkin/background/CategoryECM.gif') no-repeat left top;
 	padding-left: 4px;
 }
 
 .UICBTemplateV1 .NodeButtonIcon .RightButtonCategory {
-	background: url('DefaultSkin/background/ButtonRight17x19.gif') no-repeat right;
+	background: url('DefaultSkin/background/CategoryECM.gif') no-repeat right top;
 	padding-right: 17px;
 }
 
 .UICBTemplateV1 .NodeButtonIcon .MiddleButtonCategory {
-	background: url('DefaultSkin/background/MiddleButton1x19.gif') repeat-x ;
+	background: url('DefaultSkin/background/CategoryECM.gif') repeat-x left -19px;
+	height: 19px;
 }
 
 .UICBTemplateV1 .NodeButtonIcon .ButtonCategoryLabel {
@@ -148,18 +149,18 @@
 }
 
 .UICBTemplateV1 .ContainerButton .LeftSubMenu {
-	background: url('DefaultSkin/background/MenuLeft5x23.gif') no-repeat left;
+	background: url('DefaultSkin/background/CategoryECM.gif') no-repeat left -38px;
 	padding-left: 4px;
 }
 
 .UICBTemplateV1 .ContainerButton .RightSubMenu {
-	background: url('DefaultSkin/background/MenuRight5x23.gif') no-repeat right;
+	background: url('DefaultSkin/background/CategoryECM.gif') no-repeat right -38px;
 	padding-right: 4px;
 }
 
 .UICBTemplateV1 .ContainerButton .MiddleSubMenu {
 	height: 23px;
-	background: url('DefaultSkin/background/MiddleMenu1x23.gif') repeat-x ;
+	background: url('DefaultSkin/background/CategoryECM.gif') repeat-x left -61px;
 }
 
 .UICBTemplateV1 .ContainerButton .MiddleSubMenu .Label {
