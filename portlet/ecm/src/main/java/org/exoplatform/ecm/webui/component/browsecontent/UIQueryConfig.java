@@ -77,6 +77,7 @@ public class UIQueryConfig extends UIForm {
 
   final private String xpathDefault_ = "/jcr:root/Documents/Live//element(*, exo:article)" ;
   final private String sqlDefault_ = "select * from exo:article where jcr:path like '/Documents/Live%'" ;
+//TODO should i18n this variables
   final private static String NEW_QUERY = "New Query".intern() ;
   final private static String EXISTING_QUERY = "Existing Query".intern() ;
   final private static String PERSONAL_QUERY = "Personal Query".intern() ;
