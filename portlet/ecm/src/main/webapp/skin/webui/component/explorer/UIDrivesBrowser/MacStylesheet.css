@@ -195,7 +195,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdminbackupIcon {
-  background: url('MacSkin/background/DrivesIcon.gif') no-repeat -250px;
+  background: url('MacSkin/background/DrivesIcon.gif') no-repeat left -250px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .AdmintaxonomyIcon {
