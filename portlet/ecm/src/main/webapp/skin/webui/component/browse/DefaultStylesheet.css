@@ -229,7 +229,7 @@
 
 .UIBrowseContentPortlet .UIToolBar .CBSearchButton {
 	width: 24px; height: 24px;
-	background: url('MacSkin/background/BrowseDefault.gif') no-repeat left -40px;
+	background: url('DefaultSkin/background/BrowseDefault.gif') no-repeat left -40px;
 }
 
 .UIBrowseContentPortlet .UIToolBar .VoteDocumentButton{

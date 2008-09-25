@@ -189,7 +189,7 @@
   float: none;
   cursor: pointer;
   padding-left: 18px;
-  background-position: left center;
+  background-position: left -20px;
   width: auto; height: auto;
 }
 
@@ -197,7 +197,7 @@
   float: none;
   cursor: pointer;
   padding-left: 18px;
-  background-position: left center;
+  background-position: left top;
   width: auto; height: auto;
 }
 

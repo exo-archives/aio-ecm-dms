@@ -75,7 +75,7 @@
   float: left;
   width: 16px; height: 16px;
   cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGray.gif') no-repeat left -16px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .ColapseIcon {
@@ -83,7 +83,7 @@
   width: 16px; height: 16px;
   float: left;
   cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGray.gif') no-repeat left top;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .NodeActionsContainer {
@@ -253,19 +253,19 @@
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleLeftBar  {
   line-height: 24px;
-  background: url('VistaSkin/background/InfoBarLeftBg30x24.png') no-repeat left;
+  background: url('VistaSkin/background/InfoBar.png') no-repeat left top;
   padding-left:30px;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleRightBar {
   line-height: 24px;
-  background: url('VistaSkin/background/InfoBarRightBg35x24.png') no-repeat right;
-  padding-right: 35px;
+  background: url('VistaSkin/background/InfoBar.png') no-repeat right -24px;
+  padding-right: 34px;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleMiddleBar {
   line-height: 24px;
-  background: url('VistaSkin/background/InfoBarCenterBg1x24.png') repeat-x;
+  background: url('VistaSkin/background/InfoBar.png') repeat-x left -48px;
   padding: 0px 10px;
 }
 /*############################## -- End UINodeTypeInfo -- ##############################*/

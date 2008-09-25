@@ -105,13 +105,13 @@
  
 .ExpandIcon {
   width: 18px; height: 16px;
-  background: url('VistaSkin/SmallGrayMinus.gif') no-repeat ;
+  background: url('VistaSkin/SmallGray.png') no-repeat;
   cursor: pointer;
 }
 
-.CollapseIcon  {
+.CollapseIcon {
   width: 18px; height: 16px;
-  background: url('VistaSkin/SmallGrayPlus.gif') no-repeat ;
+  background: url('VistaSkin/SmallGray.png') no-repeat;
   cursor: pointer;
 }
 
