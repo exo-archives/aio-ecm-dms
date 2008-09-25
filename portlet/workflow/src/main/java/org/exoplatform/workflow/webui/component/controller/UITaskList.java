@@ -127,25 +127,27 @@ public class UITaskList extends UIContainer {
 
   static public class ManageStateActionListener extends EventListener<UITaskList> {
     public void execute(Event<UITaskList> event) throws Exception {
-
       UITaskList uiTaskList = event.getSource() ;
       String tokenId = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      
-      if(uiTaskList.isTaskActivated(tokenId)) {
-        // The task has been maanged by a user in the meanwhile
-        WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
-        UIApplication uiApp = context.getUIApplication() ;
+      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
+      UIApplication uiApp = context.getUIApplication();
+      if (uiTaskList.isTaskActivated(tokenId)) {
         uiApp.addMessage(new ApplicationMessage("UITaskList.msg.task-not-found", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-      }
-      else {
-        // Display the task management pop up
+      } else {
         uiTaskList.setRenderSibbling(UITaskList.class) ;
-        UIWorkflowControllerPortlet uiControllerPortlet = uiTaskList.getAncestorOfType(UIWorkflowControllerPortlet.class) ;
+        UIWorkflowControllerPortlet uiControllerPortlet = uiTaskList.getAncestorOfType(UIWorkflowControllerPortlet.class);
+        UITaskManager uiTaskManager = uiControllerPortlet.createUIComponent(UITaskManager.class, null, null);
+        uiTaskManager.setTokenId(tokenId);
+        uiTaskManager.setIsStart(false);
+        if (!uiTaskManager.checkBeforeActive()) {
+          uiApp.addMessage(new ApplicationMessage("UITaskList.msg.task-change", null, 
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiTaskList);
+          return;
+        }
         UIPopupContainer uiPopupAction = uiControllerPortlet.getChild(UIPopupContainer.class) ;
-        UITaskManager uiTaskManager = uiControllerPortlet.createUIComponent(UITaskManager.class, null, null) ;
-        uiTaskManager.setTokenId(tokenId) ;
-        uiTaskManager.setIsStart(false) ;
         uiPopupAction.activate(uiTaskManager, 600, 550) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       }

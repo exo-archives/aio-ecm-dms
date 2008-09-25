@@ -412,9 +412,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
       BnProjectLocal project = projectHome.findByPrimaryKey(
         new BnProjectPK(processInstanceId));
       processInstance = new ProcessInstanceData(project.getBnProjectValue());
-    }
-    catch(Exception e) {
-      e.printStackTrace();
+    } catch(Exception e) {
     }
     
     return processInstance;
@@ -467,9 +465,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
       BnNodeLocalHome nodeHome = BnNodeUtil.getLocalHome();
       BnNodeLocal node = nodeHome.findByPrimaryKey(new BnNodePK(taskId));
       task = new TaskData(node.getBnNodeValue());
-    }
-    catch(Exception e) {
-      e.printStackTrace();
+    } catch(Exception e) {
     }
     
     return task;
@@ -493,9 +489,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
           tasks.add(new TaskData(node.getBnNodeValue()));
         }
       }
-    }
-    catch(Exception e) {
-      e.printStackTrace();
+    }  catch(Exception e) {
     }
 
     return tasks;
