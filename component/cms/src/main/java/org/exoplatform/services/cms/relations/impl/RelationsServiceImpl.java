@@ -107,7 +107,8 @@ public class RelationsServiceImpl implements RelationsService, Startable {
         if (uuid2Remove == null) return;
       }
     }
-    node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
+    if(vals.size() == 0) node.removeMixin(RELATION_MIXIN);
+    else node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
     node.save() ;
   }
 
