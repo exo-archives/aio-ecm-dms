@@ -140,7 +140,7 @@ public class UITask extends UIForm {
   public String getStateImageURL() {
     try {
       Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;
-      if (isStart_) {
+      if (isStart()) {
         Process process = serviceContainer.getProcess(identification_);
         form = formsService.getForm(identification_, process.getStartStateName(), locale);
       } else {

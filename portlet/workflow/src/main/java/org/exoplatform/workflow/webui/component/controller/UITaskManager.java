@@ -45,20 +45,24 @@ public class UITaskManager extends UIContainer implements UIPopupComponent {
   
   public void setIsStart(boolean isStart) { isStart_ = isStart ; }
   
-  public void activate() throws Exception {
-    UITask uiTask = getChild(UITask.class) ;
+  public void activate() throws Exception { }
+  
+  public boolean checkBeforeActive() throws Exception {
     WorkflowServiceContainer workflowServiceContainer = 
-      getApplicationComponent(WorkflowServiceContainer.class) ;
+      getApplicationComponent(WorkflowServiceContainer.class);
     try {
-      uiTask.setIdentification(tokenId_) ;
-      uiTask.setIsStart(isStart_) ;
-      uiTask.updateUITree() ;
-    } catch (PathNotFoundException e){
+      UITask uiTask = getChild(UITask.class);
+      uiTask.setIdentification(tokenId_);
+      uiTask.setIsStart(isStart_);
+      uiTask.updateUITree();
+      return true;
+    } catch (PathNotFoundException e) {
       Task task = workflowServiceContainer.getTask(tokenId_);
       String pid = task.getProcessInstanceId();       
       workflowServiceContainer.deleteProcessInstance(pid);
-    }
+      return false;
+    } 
   }
-
+  
   public void deActivate() throws Exception { }
 }

@@ -442,9 +442,7 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
       for(BnProjectValue instance : instances) {
         processInstances.add(new ProcessInstanceData(instance));
       }
-    }
-    catch(Exception e) {
-      e.printStackTrace();
+    } catch(Exception e) {
     }
     finally {
       try {
@@ -462,16 +460,12 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
    */
   public Task getTask(String taskId) {
     Task task = null;
-    
     try {
       BnNodeLocalHome nodeHome = BnNodeUtil.getLocalHome();
       BnNodeLocal node = nodeHome.findByPrimaryKey(new BnNodePK(taskId));
       task = new TaskData(node.getBnNodeValue());
+    } catch(Exception e) {
     }
-    catch(Exception e) {
-      e.printStackTrace();
-    }
-    
     return task;
   }
   
