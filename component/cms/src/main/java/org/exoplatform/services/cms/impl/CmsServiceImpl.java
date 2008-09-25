@@ -222,6 +222,10 @@ public class CmsServiceImpl implements CmsService {
     if(create) {
       processAddEditProperty(true, currentNode, itemPath, currentNodeType, jcrVariables) ;
     } else {
+      List<String> keyList = new ArrayList<String>();
+      for(Object key : jcrVariables.keySet()) {
+        keyList.add(key.toString().substring(key.toString().lastIndexOf("/") + 1));
+      }
       for(PropertyIterator pi = currentNode.getProperties(); pi.hasNext();) {
         Property property = pi.nextProperty();
         PropertyDefinition propertyDef = property.getDefinition();
@@ -233,9 +237,10 @@ public class CmsServiceImpl implements CmsService {
         if(inputVariable != null) {
           value = inputVariable.getValue();
         }
-        if((value != null || (value == null && requiredtype == PropertyType.REFERENCE)) && 
-            !propertyDef.isProtected()) {
-          processProperty(property, currentNode, requiredtype, value, propertyDef.isMultiple());
+        if(keyList.contains(propertyName)) {
+          if(!propertyDef.isProtected()) {
+            processProperty(property, currentNode, requiredtype, value, propertyDef.isMultiple());
+          }
         }
       }
       processAddEditProperty(false, currentNode, itemPath, currentNodeType, jcrVariables) ;
