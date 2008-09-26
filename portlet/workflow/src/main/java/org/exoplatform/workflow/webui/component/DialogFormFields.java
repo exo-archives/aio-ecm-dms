@@ -16,6 +16,7 @@
  */
 package org.exoplatform.workflow.webui.component;
 
+import java.io.InputStream;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.workflow.utils.Utils;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
@@ -78,6 +81,7 @@ public class DialogFormFields extends UIForm {
   protected boolean isUpdateSelect_ = false ;
   protected String repository_ = null ;
   private boolean isResetForm_ = false ;
+  private boolean dataRemoved_ = false;
   
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
   private List<String> postScriptInterceptor_ = new ArrayList<String>() ;
@@ -122,6 +126,10 @@ public class DialogFormFields extends UIForm {
   public void setIsResetMultiField(boolean isResetMultiField) { 
     isResetMultiField_ = isResetMultiField ; 
   }
+  
+  public boolean dataRemoved() { return dataRemoved_; }
+  
+  public void setDataRemoved(boolean dataRemoved) { dataRemoved_ = dataRemoved; }
   
   public void setIsResetForm(boolean isResetForm) { isResetForm_ = isResetForm ; }
   public boolean isResetForm() { return isResetForm_ ; }
@@ -170,6 +178,16 @@ public class DialogFormFields extends UIForm {
       }
     }
     return "" ;
+  }
+  
+  public String getImage(Node node, String nodeTypeName) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    InputStreamDownloadResource dresource ;
+    Node imageNode = node.getNode(nodeTypeName) ;    
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
+    dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
   
   public void addActionField(String name, String[] arguments) throws Exception { 

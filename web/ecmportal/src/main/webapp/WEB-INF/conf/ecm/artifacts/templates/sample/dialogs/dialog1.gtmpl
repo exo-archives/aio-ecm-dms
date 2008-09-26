@@ -59,8 +59,33 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.upload-image")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldImage = ["jcrPath=/node/exo:image/jcr:data"] ;
-		        uicomponent.addUploadField("image", fieldImage) ;
+		        if(uicomponent.isEditing()) { 
+							def curNode = uicomponent.getNode() ;
+							if(curNode.hasNode("exo:image")) {
+								def imageNode = curNode.getNode("exo:image") ;
+								if(imageNode.getProperty("jcr:data").getStream().available() > 0) {
+									def imgSrc = uicomponent.getImage(curNode, "exo:image");
+									def actionLink = uicomponent.event("RemoveData", "/exo:image");
+						%>		
+									<div>
+										<image src="$imgSrc" width="100px" height="80px"/>
+										<a href="$actionLink">
+											<img src="/eXoResources/skin/DefaultSkin/background/Blank.gif" class="ActionIcon Remove16x16Icon"/>
+										</a>
+									</div>
+						<%
+								} else {
+					        String[] fieldImage = ["jcrPath=/node/exo:image/jcr:data"] ;
+					        uicomponent.addUploadField("image", fieldImage) ;								
+								}
+							}
+						} else if(uicomponent.dataRemoved()) {
+			        String[] fieldImage = ["jcrPath=/node/exo:image/jcr:data"] ;
+			        uicomponent.addUploadField("image", fieldImage) ;						
+						}	else {
+			        String[] fieldImage = ["jcrPath=/node/exo:image/jcr:data"] ;
+			        uicomponent.addUploadField("image", fieldImage) ;
+						}
 		      %>
 		    </td>
 	    </tr>
