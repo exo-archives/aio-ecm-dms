@@ -18,17 +18,19 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -60,11 +62,15 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
   }
 
   public void activate() throws Exception { 
+    RequestContext context = RequestContext.getCurrentInstance() ;
+    ResourceBundle res = context.getApplicationResourceBundle() ;
+    String ntUnstructredLabel = res.getString("NodeType.label.ntUnstructed");
+    String ntFolderLabel = res.getString("NodeType.label.ntFolder");
     allowCreateFolder_ = getAncestorOfType(UIJCRExplorer.class).getDriveData().getAllowCreateFolder() ;
     if(allowCreateFolder_.equals("Both")) {
       List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-      options.add(new SelectItemOption<String>(Utils.NT_UNSTRUCTURED, Utils.NT_UNSTRUCTURED)) ;
-      options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
+      options.add(new SelectItemOption<String>(ntUnstructredLabel, Utils.NT_UNSTRUCTURED)) ;
+      options.add(new SelectItemOption<String>(ntFolderLabel, Utils.NT_FOLDER)) ;
       addUIFormInput(new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, options)) ;
     }
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(ECMNameValidator.class)) ;
@@ -73,7 +79,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
     if(getUIFormSelectBox(FIELD_TYPE) != null) {
       if(getAncestorOfType(UIJCRExplorer.class).getCurrentNode().isNodeType(Utils.NT_FOLDER)) {
         List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-        options.add(new SelectItemOption<String>(Utils.NT_FOLDER, Utils.NT_FOLDER)) ;
+        options.add(new SelectItemOption<String>(ntFolderLabel, Utils.NT_FOLDER)) ;
         getUIFormSelectBox(FIELD_TYPE).setOptions(options) ;
       }
     }
