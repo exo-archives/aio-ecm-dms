@@ -16,6 +16,7 @@
  */
 package org.exoplatform.workflow.webui.component;
 
+import java.io.InputStream;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +32,8 @@ import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.workflow.utils.Utils;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.scripts.CmsScript;
@@ -170,6 +173,15 @@ public class DialogFormFields extends UIForm {
       }
     }
     return "" ;
+  }
+  
+  public String getImage(Node node, String nodeTypeName) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    Node imageNode = node.getNode(nodeTypeName) ;    
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
+    InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
   
   public void addActionField(String name, String[] arguments) throws Exception { 

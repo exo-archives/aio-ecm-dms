@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component;
 
+import java.io.InputStream;
 import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -33,6 +34,8 @@ import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.ISO8601;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.CronExpressionValidator;
 import org.exoplatform.ecm.jcr.ECMNameValidator;
 import org.exoplatform.ecm.jcr.RepeatCountValidator;
@@ -93,6 +96,7 @@ public class DialogFormFields extends UIForm {
   private String childPath_ ;
   private String rootPath_;
   protected boolean isShowingComponent_ = false;
+  private boolean dataRemoved_ = false;
 
   private List<String> prevScriptInterceptor_ = new ArrayList<String>() ; 
   private List<String> postScriptInterceptor_ = new ArrayList<String>() ;
@@ -127,7 +131,14 @@ public class DialogFormFields extends UIForm {
     if(nodePath_ == null) return null ;
     return (Node) getSesssion().getItem(nodePath_) ; 
   }
+  
   public void setNodePath(String nodePath) { nodePath_ = nodePath ; }
+
+  public String getNodePath() { return nodePath_; }
+  
+  public boolean dataRemoved() { return dataRemoved_; }
+  
+  public void setDataRemoved(boolean dataRemoved) { dataRemoved_ = dataRemoved; }
   
   public Session getSesssion() throws Exception {
     return SessionsUtils.getSessionProvider().getSession(workspaceName_, getRepository()) ;
@@ -269,6 +280,15 @@ public class DialogFormFields extends UIForm {
       }      
     }
     return null;
+  }
+  
+  public String getImage(Node node, String nodeTypeName) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    Node imageNode = node.getNode(nodeTypeName) ;    
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
+    InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
 
   public void addActionField(String name, String[] arguments) throws Exception { 
