@@ -74,7 +74,8 @@ import org.exoplatform.webui.form.UIFormMultiValueInputSet;
       @EventConfig(listeners = UIDocumentForm.AddActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.ShowComponentActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIDocumentForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
+      @EventConfig(listeners = UIDocumentForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE),
+      @EventConfig(listeners = UIDocumentForm.RemoveDataActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
 
@@ -258,6 +259,20 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     }
   }
 
+  static public class RemoveDataActionListener extends EventListener<UIDocumentForm> {
+    public void execute(Event<UIDocumentForm> event) throws Exception {
+      UIDocumentForm uiForm = event.getSource();
+      uiForm.isRemovePreference = true;
+      String referenceNodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      Node referenceNode = (Node)uiForm.getSesssion().getItem(uiForm.getNodePath() + referenceNodePath);
+      if(referenceNode.hasProperty(Utils.JCR_DATA)) {
+        referenceNode.setProperty(Utils.JCR_DATA, "");
+        uiForm.setDataRemoved(true);
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
+    }
+  }   
+  
   static  public class CancelActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;

@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.form;
 
+import java.io.InputStream;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
@@ -28,6 +29,8 @@ import javax.jcr.PropertyType;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.form.field.UIFormActionField;
 import org.exoplatform.ecm.webui.form.field.UIFormCalendarField;
@@ -39,6 +42,7 @@ import org.exoplatform.ecm.webui.form.field.UIFormUploadField;
 import org.exoplatform.ecm.webui.form.field.UIFormWYSIWYGField;
 import org.exoplatform.ecm.webui.form.field.UIMixinField;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
@@ -93,6 +97,7 @@ public class UIDialogForm extends UIForm {
   protected JCRResourceResolver resourceResolver;
   private String childPath ;
   private boolean isNotEditNode = false ;
+  private boolean dataRemoved_ = false;
 
   private boolean isNTFile = false ; 
   private boolean isOnchange = false ;
@@ -116,7 +121,7 @@ public class UIDialogForm extends UIForm {
     this.repositoryName = repository;
     this.workspaceName = workspace;
     this.storedPath = storedPath;
-  } 
+  }
 
   public void addActionField(String name,String label,String[] arguments) throws Exception {
     UIFormActionField formActionField = new UIFormActionField(name,label,arguments);    
@@ -715,6 +720,19 @@ public class UIDialogForm extends UIForm {
       } 
     }
   }
+  
+  public String getImage(Node node, String nodeTypeName) throws Exception {
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    Node imageNode = node.getNode(nodeTypeName) ;    
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
+    InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
+    dresource.setDownloadName(node.getName()) ;
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+  }
+  
+  public boolean dataRemoved() { return dataRemoved_; }
+  
+  public void setDataRemoved(boolean dataRemoved) { dataRemoved_ = dataRemoved; }
 
   public void resetProperties() { properties.clear() ; }
 
@@ -743,10 +761,14 @@ public class UIDialogForm extends UIForm {
   }
 
   public void setNodePath(String nodePath) { this.nodePath = nodePath ; }
+  
+  public String getNodePath() { return nodePath; }
 
   public void setRepositoryName(String repositoryName){ this.repositoryName = repositoryName ; }      
 
   public void setStoredPath(String storedPath) { this.storedPath = storedPath ; }
+  
+  public String getStoredPath() { return storedPath; }
 
   public void setWorkspace(String workspace) { this.workspaceName = workspace ; }  
 
