@@ -16,7 +16,6 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
-import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +28,6 @@ import javax.jcr.RepositoryException;
 import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 
-import org.exoplatform.download.DownloadService;
-import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.jcr.UISelector;
