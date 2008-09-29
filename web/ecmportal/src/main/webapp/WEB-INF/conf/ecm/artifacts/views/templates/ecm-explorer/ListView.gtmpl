@@ -199,7 +199,7 @@
 		        <td>
 							<div style="position: relative;">
 								<div class="NodeLabel">
-						    	$strActs<div style="cursor: pointer;" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></div>
+						    	$strActs<div style="cursor: pointer; -moz-user-select: none;" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></div>
 	  						</div>
 	  						<div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
 		 					</div>
@@ -211,31 +211,31 @@
 		        <td>
 		        	<div style="position: relative;">
 								<div class="NodeLabel" >
-									$strActs<div style="cursor: pointer;" title="$name">$subName</div>
+									$strActs<div style="cursor: pointer;  -moz-user-select: none;" title="$name">$subName</div>
 			 					</div>
 			 					<div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
 		 					</div>
 		        </td>
 		        <td style="width:100px;">
-		        	<div style="position: relative;">
+		        	<div style="position: relative; -moz-user-select: none;">
 		        		<%=dateFormat.format(uicomponent.getDateCreated(data))%>
 		        		<div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
 		 					</div>
 		        </td>
 		        <td style="width:100px;">
-			        <div style="position: relative;">
+			        <div style="position: relative; -moz-user-select: none;">
 	        			<%=dateFormat.format(uicomponent.getDateModified(data))%>
 	        			<div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
 	 						</div>
 		 				</td>
 		        <td style="width:80px;">
-			        <div style="position: relative;">
+			        <div style="position: relative; -moz-user-select: none;">
 			        	<%=uicomponent.getNodeOwner(data)%>
 			        	<div style="position: absolute; top: 0px; left: 0px; width: 100%; height: 100%;"></div>
 	 						</div>
 		        </td>
 		        <td style="width:50px;">
-			        <div style="position: relative;">
+			        <div style="position: relative; -moz-user-select: none;">
 			         	<%=Utils.isVersionable(data)%>
 			          <%
 			            if(Utils.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
@@ -246,7 +246,7 @@
 	 						</div>
 		        </td>
 		        <td style="width:60px;"><!--added CPop Bull SA -->
-			        <div style="position: relative;">
+			        <div style="position: relative; -moz-user-select: none;">
 		           <%=Utils.isAuditable(data)%>
 		           <% if (Utils.isAuditable(data)&& uicomponent.hasAuditHistory(data)) 
 		               println "("+ uicomponent.getNumAuditHistory(data)+")";

@@ -14,15 +14,10 @@ var JCR = function() {
 
 	//attach all event
 	JCR.prototype.initAllEvent = function(actionAreaId) {
-		if (Self.initAllEvent && (/function/).test(typeof Self.initAllEvent)) {
-			
-			Self.contextMenuId = 'ID-' + Math.random().toString().substring(2);
+			Self.contextMenuId = 'Id-' + Math.random().toString().substring(2);
 			Self.actionAreaId = actionAreaId;
-			Self.initAllEvent = null;
 			var actionArea = document.getElementById(actionAreaId);
-			actionArea.onmouseover = null;
-			actionArea.removeAttribute("onmouseover");
-			
+
 			Self.allItems = DOM.findDescendantsByClass(actionArea, "tr", "RowView");
 			var mousedown = null;
 			for (var i in Self.allItems) {
@@ -40,7 +35,6 @@ var JCR = function() {
 			}
 			actionArea.onmousedown = Self.mouseDownGround;
 			actionArea.onmouseup = Self.mouseUpGround;
-		}
 	};
 	
 	//event in item
@@ -105,7 +99,7 @@ var JCR = function() {
 	
 	JCR.prototype.mouseUpItem = function(event) {
 		var event = event || window.event;
-		event.cancelBubble = true;
+		//event.cancelBubble = true;
 		var element = this;
 		Self.enableDragDrop = null;
 		document.onmousemove = null;
@@ -183,6 +177,7 @@ var JCR = function() {
 			mark.style.width = "0px";
 			mark.style.height = "0px";
 			mark.style.border = "1px dotted red";
+			mark.style.zIndex = 1;
 			//store position for all item
 			for( var i = 0 ; i < Self.allItems.length; ++i) {
 				Self.allItems[i].posX = Math.abs(eXo.core.Browser.findPosXInContainer(Self.allItems[i], element));

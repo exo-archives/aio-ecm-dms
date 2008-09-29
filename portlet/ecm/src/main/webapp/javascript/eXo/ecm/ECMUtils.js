@@ -7,16 +7,8 @@ function ECMUtils() {
 	var RightClick = eXo.webui.UIRightClickPopupMenu;
 	
 	ECMUtils.prototype.popupArray = [];
-	ECMUtils.prototype.selectItemList = [];
-	ECMUtils.prototype.temporaryItem = null;
-	ECMUtils.prototype.allActionBox = [];
 	
 	ECMUtils.prototype.init = function(portletId) {
-		
-		//remove select item list;
-		Self.temporaryItem = null;
-		Self.selectItemList = [];
-		
 		var portlet = document.getElementById(portletId) ;
 		if(!portlet) return ;
 		RightClick.disableContextMenu(portletId) ;
@@ -267,269 +259,379 @@ function ECMUtils() {
 	 * working with ThumbnailsView.gtmpl
 	 */
 	
-	ECMUtils.prototype.concatMethod =  function() {
-		 	var oArg = arguments;
-		 	var nSize = oArg.length;
-		 	if (nSize < 2) return;
-		 	var mSelf = oArg[0];
-			return function() {
-				var aArg = [];
-				for (var i = 0; i < arguments.length; ++ i) {
-					aArg.push(arguments[i]);
+	ECMUtils.prototype.temporaryItem = null;
+	ECMUtils.prototype.itemsSelected = [];
+	ECMUtils.prototype.allItems = [];
+	ECMUtils.prototype.contextMenuId = null;
+	ECMUtils.prototype.actionAreaId = null;
+	ECMUtils.prototype.enableDragDrop = null;
+	
+	ECMUtils.prototype.initAllEvent = function(actionAreaId) {
+			Self.contextMenuId = 'Id-' + Math.random().toString().substring(2);
+			Self.actionAreaId = actionAreaId;
+			var actionArea = document.getElementById(actionAreaId);
+			Self.allItems = DOMUtils.findDescendantsByClass(actionArea, "div", "ActionIconBox");
+			var mousedown = null;
+			for (var i in Self.allItems) {
+				if (Array.prototype[i]) continue;
+				if (Self.allItems[i].hasAttribute("onmousedown")) {
+					mousedown = Self.allItems[i].getAttribute("onmousedown");
+					Self.allItems[i].setAttribute("mousedown", mousedown);
+					Self.allItems[i].onmousedown = null;
+					Self.allItems[i].removeAttribute("onmousedown");
 				}
-				mSelf.apply(mSelf, aArg);
-				for (i = 1; i < nSize; ++ i) {
-					var oSet = {
-						method: oArg[i].method || function() {},
-						param: oArg[i].param || aArg
-					}
-					oSet.method.apply(oSet.method, oSet.param);
-				}
+				Self.allItems[i].onmouseover = Self.mouseOverItem;
+				Self.allItems[i].onmousedown = Self.mouseDownItem;
+				Self.allItems[i].onmouseup = Self.mouseUpItem;
+				Self.allItems[i].onmouseout = Self.mouseOutItem;
 			}
+			actionArea.onmousedown = Self.mouseDownGround;
+			actionArea.onmouseup = Self.mouseUpGround;
 	};
 	
-	ECMUtils.prototype.prepareSelectItem = function(event, element, menuId, objId) {
-		
+	
+	ECMUtils.prototype.mouseOverItem = function(event) {
+		var event = event || window.event;
+		var element = this;
+		if (!element.selected) element.style.background = "#ecffe2";
+	};
+	
+	ECMUtils.prototype.mouseOutItem = function(event) {
+		var event = event || window.event;
+		var element = this;
+		if (!element.selected) element.style.background = "none";
+	};
+	
+	//event in item
+	ECMUtils.prototype.mouseDownItem = function(event) {
 		var event = event || window.event;
 		event.cancelBubble = true;
-		var uiDocumentWorkspace = DOMUtils.findAncestorByClass(element ,"UIDocumentWorkspace");
-		if (!uiDocumentWorkspace) return;
+		var element = this;
+		Self.enableDragDrop = true;
+		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
+		var leftClick = !rightClick;
+		Self.hideContextMenu();
 		
-		if (element.className == "ActionIconBox") var parent = element;
-		else var parent = DOMUtils.findAncestorByClass(element, "ActionIconBox");
-		if (Self.temporaryItem) Self.temporaryItem.style.background = "none";
-		Self.temporaryItem = parent;
-		try {
-			var groupItem = document.getElementById("groupItem");
-			groupItem.style.display = "none";
-			var freeSpace = document.getElementById("freeSpace");
-			freeSpace.style.display = "none";
-		} catch(e) {}
-		if((event.which && event.which > 1) || (event.button && event.button == 2))	{
-			//right click in item
-			var inItemList = false;
+		if (document.getElementById(Self.mobileId)) {
+			mobileElement = document.getElementById(Self.mobileId);
+			mobileElement.innerHTML = "";
+			mobileElement.parentNode.removeChild(mobileElement);
+		}
+		eXo.webui.UIRightClickPopupMenu.hideContextMenu();
+		if (leftClick) {
+			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey) {
+				Self.clickItem(event, element);
+			};
+			
+			// init drag drop;
+			return;	
+			document.onmousemove = Self.dragItemsSelected;
+			document.onmouseup = Self.dropItemsSelected;
+			//create mobile element
+			var mobileElement = document.createElement("div");
+			mobileElement.setAttribute("id", 'Id-' + Math.random().toString().substring(2));
+			Self.mobileId = mobileElement.id;
+			mobileElement.style.position = "absolute";
+			mobileElement.style.border = "1px solid red";
+			mobileElement.style.display = "none";
+			for(var i in Self.itemsSelected) {
+				if (Array.prototype[i]) continue;
+				mobileElement.appendChild(Self.itemsSelected[i].cloneNode(true));
+			}
+			document.body.appendChild(mobileElement);
+		}
+	};
+	
+	ECMUtils.prototype.dragItemsSelected = function(event) {
+			var event = event || window.event;
+			var mobileElement = document.getElementById(Self.mobileId);
+			if (Self.enableDragDrop && mobileElement) {
+				mobileElement.style.display = "block";
+				var X = eXo.core.Browser.findMouseXInPage(event);
+				var Y = eXo.core.Browser.findMouseYInPage(event);
+				mobileElement.style.top = Y + 2 + "px";
+				mobileElement.style.left = X + 2 + "px";
+			}
+	};
+	
+	ECMUtils.prototype.dropItemsSelected = function(event) {
+		if (document.getElementById(Self.mobileId)) {
+				mobileElement = document.getElementById(Self.mobileId);
+				mobileElement.parentNode.removeChild(mobileElement);
+		}
+		document.onmousemove = null;
+	};
+	
+	ECMUtils.prototype.clickItem = function(event, element, callback) {
+		var event = event || window.event;
+		unselect();
+		element.selected = true;
+		Self.itemsSelected = new Array(element);
+		element.style.background = "#ebf5ff";
+	};
+	
+	ECMUtils.prototype.mouseUpItem = function(event) {
+		var event = event || window.event;
+		//event.cancelBubble = true;
+		var element = this;
+		Self.enableDragDrop = null;
+		document.onmousemove = null;
+		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
+		var leftClick = !rightClick;
+		
+		if (leftClick) {
+			if (event.ctrlKey && !element.selected) {
+				element.selected = true;
+				Self.itemsSelected.push(element);
+			} else if(event.ctrlKey && element.selected) {
+				element.selected = null;
+				element.style.background = "none";
+				removeItem(Self.itemsSelected, element);
+			} else {
+				Self.clickItem(event, element);
+			}
+			
+			for(var i in Self.itemsSelected) {
+				if (Array.prototype[i]) continue;
+				Self.itemsSelected[i].style.background = "#ebf5ff";
+			}
+			
+		}else {
+			if (inArray(Self.itemsSelected, element) && Self.itemsSelected.length > 1){
+				Self.showItemContextMenu(event, element);
+			} else {
+				Self.clickItem(event, element);
+				eval(element.getAttribute("mousedown"));
+			}
+		}
+	};
+	
+	//event in ground
+	ECMUtils.prototype.mouseDownGround = function(event) {
+		var event = event || window.event;
+		var element = this;
+		element.holdMouse = true;
+		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
+		var leftClick = !rightClick;
+		Self.hideContextMenu();
+		if (rightClick) {
+			Self.showGroundContextMenu(event, element);
+		} else {
+			unselect();
+			element.onmousemove = Self.mutipleSelect;
+			var mark = DOMUtils.findFirstDescendantByClass(element, "div", "Mark");
+			var eDot = mark.parentNode;
+			mark.storeX = eXo.core.Browser.findMouseRelativeX(eDot, event);
+			mark.storeY = eXo.core.Browser.findMouseRelativeY(eDot, event);
+			mark.style.left = mark.storeX + "px";
+			mark.style.top = mark.storeY + "px";
+			mark.style.width = "0px";
+			mark.style.height = "0px";
+			mark.style.border = "1px dotted red";
+			mark.style.zIndex = 1;
+			//store position for all item
+			for( var i = 0 ; i < Self.allItems.length; ++i) {
+				Self.allItems[i].posX = Math.abs(eXo.core.Browser.findPosXInContainer(Self.allItems[i], element));
+				Self.allItems[i].posY = Math.abs(eXo.core.Browser.findPosYInContainer(Self.allItems[i], element));
+			}
+		}
+	};
+	
+	ECMUtils.prototype.mutipleSelect = function(event) {
+		var event = event || window.event;
+		var element = this;
+		var mark = DOMUtils.findFirstDescendantByClass(element, "div", "Mark");
+		if (element.holdMouse) {
+			//select mutiple item by mouse
+			unselect();
+			var eDot = mark.parentNode;
+			mark.X = eXo.core.Browser.findMouseRelativeX(eDot, event);
+			mark.Y = eXo.core.Browser.findMouseRelativeY(eDot, event);
+			mark.deltaX = mark.X - mark.storeX;
+			mark.deltaY = mark.Y - mark.storeY;
+			//goc phan tu thu 3
+			if (mark.deltaX < 0 && mark.deltaY > 0) {
+				mark.style.top = mark.storeY + "px";
+				mark.style.left = mark.X + "px";
+				mark.style.width = Math.abs(mark.deltaX) + "px";
+				mark.style.height = mark.deltaY + "px";
+				//detect element;
+				for (var i = 0; i < Self.allItems.length; ++ i) {
+					var itemBox = Self.allItems[i];
+					var posX = itemBox.posX + itemBox.offsetWidth/2;
+					var posY = itemBox.posY + itemBox.offsetHeight/2;
+					if (mark.X < posX && posX < mark.storeX &&
+							posY < mark.Y && mark.storeY < posY) {
+						itemBox.isSelect = true;
+						itemBox.style.background = "#ebf5ff";
+					} else {
+						itemBox.isSelect = null;
+						itemBox.style.background = "none";
+					}
+				}
+			//goc phan tu thu 4	
+			} else if (mark.deltaX < 0 && mark.deltaY < 0) {
+				mark.style.top = mark.Y + "px";
+				mark.style.left = mark.X + "px";
+				mark.style.width = Math.abs(mark.deltaX) + "px";
+				mark.style.height = Math.abs(mark.deltaY) + "px";
+				//detect element;
+				for (var i = 0; i < Self.allItems.length; ++ i) {
+					var itemBox = Self.allItems[i];
+					var posX = itemBox.posX + itemBox.offsetWidth/2;
+					var posY = itemBox.posY + itemBox.offsetHeight/2;
+					if (mark.X < posX && posX < mark.storeX &&
+							mark.Y < posY && posY < mark.storeY) {
+						itemBox.isSelect = true;
+						itemBox.style.background = "#ebf5ff";
+					} else {
+						itemBox.isSelect = null;
+						itemBox.style.background = "none";
+					}
+				}
+			//goc phan tu thu 2
+			} else if (mark.deltaX > 0 && mark.deltaY < 0) {
+				mark.style.top = mark.Y + "px";
+				mark.style.left = mark.storeX + "px";
+				mark.style.width = mark.deltaX + "px";
+				mark.style.height = Math.abs(mark.deltaY) + "px";
+				//detect element;
+				for (var i = 0; i < Self.allItems.length; ++ i) {
+					var itemBox = Self.allItems[i];
+					var posX = itemBox.posX + itemBox.offsetWidth/2;
+					var posY = itemBox.posY + itemBox.offsetHeight/2;
+					if ( posX < mark.X && mark.storeX < posX&&
+							mark.Y < posY && posY < mark.storeY ) {
+							itemBox.isSelect = true;
+							itemBox.style.background = "#ebf5ff";
+					} else {
+						itemBox.isSelect = null;
+						itemBox.style.background = "none";
+					}
+				}
+			//goc phan thu thu 1
+			} else {
+				mark.style.top = mark.storeY + "px";
+				mark.style.left = mark.storeX + "px";
+				mark.style.width = mark.deltaX + "px";
+				mark.style.height = mark.deltaY + "px";
+				//detect element;
+				for (var i = 0; i < Self.allItems.length; ++ i) {
+					var itemBox = Self.allItems[i];
+					var posX = itemBox.posX + itemBox.offsetWidth/2;
+					var posY = itemBox.posY + itemBox.offsetHeight/2;
+					if (mark.storeX < posX && posX < mark.X &&
+							mark.storeY < posY && posY < mark.Y) {
+						itemBox.isSelect = true;
+						itemBox.style.background = "#ebf5ff";
+					} else {
+						itemBox.isSelect = null;
+						itemBox.style.background = "none";
+					}
+				}
+			}
+		}
+	};
+	
+	ECMUtils.prototype.mouseUpGround = function(event) {
+		var event = event || window.event;
+		var element = this;
+		element.holdMouse = null;
+		var mark = DOMUtils.findFirstDescendantByClass(element, "div", "Mark");
+		mark.style.width = "0px";
+		mark.style.height = "0px";
+		mark.style.top = "0px";
+		mark.style.left = "0px";
+		mark.style.border = "none";
+		//select item
+		var item = null;
+		for(var i in Self.allItems) {
+			if (Array.prototype[i]) continue;
+			item = Self.allItems[i];
+			if (item.selected && !inArray(Self.itemsSelected, item)) Self.itemsSelected.push(item);
+		}
+		element.onmousemove = null;
+	} ;
+	
+	// working with item context menu
+	ECMUtils.prototype.showItemContextMenu = function(event, element) {
+			if (document.getElementById(Self.contextMenuId)) {
+				var contextMenu = document.getElementById(Self.contextMenuId);
+				contextMenu.style.position = "absolute";
+			} else {
+				var contextMenu = document.createElement("div");
+				contextMenu.setAttribute("id", Self.contextMenuId);
+				contextMenu.style.position = "absolute";
+				document.body.appendChild(contextMenu);
+			}
+			var actionArea = document.getElementById(Self.actionAreaId);
+			var context = DOMUtils.findFirstDescendantByClass(actionArea, "div", "ItemContextMenu");
+			contextMenu.innerHTML = context.innerHTML;
+			contextMenu.style.display = "block";
+			var X = eXo.core.Browser.findMouseXInPage(event);
+			var Y = eXo.core.Browser.findMouseYInPage(event);
+			contextMenu.style.top = Y + 5 + "px";
+			contextMenu.style.left = X + 5 + "px";
+			
+			//check lock, unlock action
 			var checkUnlock = false;
-			for (var i = 0 ; i < Self.selectItemList.length; ++ i) {
-				if (parent == Self.selectItemList[i]) inItemList = true;
-				if (Self.selectItemList[i].getAttribute('locked') == "true") checkUnlock = true;
+			for (var i in Self.itemsSelected) {
+				if (Array.prototype[i]) continue;
+				if (Self.itemsSelected[i].getAttribute('locked') == "true") checkUnlock = true;
 			}
-			if (Self.selectItemList.length > 1 && inItemList) {
-				document.getElementById(menuId).style.display = 'none';
-				groupItem.style.display = "block";
-				var posX = eXo.core.Browser.findMouseRelativeX(groupItem.parentNode, event) ;
-				groupItem.style.left = posX + "px";
-				var posY = eXo.core.Browser.findMouseRelativeY(groupItem.parentNode, event) ;
-				groupItem.style.top = posY + "px";
-				
-				var lockAction = DOMUtils.findFirstDescendantByClass(groupItem, "div", "Lock16x16Icon");
-				var unlockAction = DOMUtils.findFirstDescendantByClass(groupItem, "div", "Unlock16x16Icon");
+			var lockAction = DOMUtils.findFirstDescendantByClass(contextMenu, "div", "Lock16x16Icon");
+			var unlockAction = DOMUtils.findFirstDescendantByClass(contextMenu, "div", "Unlock16x16Icon");
 
-				if (checkUnlock) {
-					unlockAction.parentNode.style.display = "block";
-					lockAction.parentNode.style.display = "none";
-				} else {
-					unlockAction.parentNode.style.display = "none";
-					lockAction.parentNode.style.display = "block";
-				}
+			if (checkUnlock) {
+				unlockAction.parentNode.style.display = "block";
+				lockAction.parentNode.style.display = "none";
+			} else {
+				unlockAction.parentNode.style.display = "none";
+				lockAction.parentNode.style.display = "block";
+			}
 				
- 			} else {
-					Self.clearSelectItem();
-					Self.selectItemList[0] = parent;
+			contextMenu.onmouseup = Self.hideContextMenu;
+			document.body.onmousedown = Self.hideContextMenu;
+	};
+	// working with ground context menu
+	ECMUtils.prototype.showGroundContextMenu = function(event, element) {
+			if (document.getElementById(Self.contextMenuId)) {
+				var contextMenu = document.getElementById(Self.contextMenuId);
+				contextMenu.style.position = "absolute";
+			} else {
+				var contextMenu = document.createElement("div");
+				contextMenu.setAttribute("id", Self.contextMenuId);
+				contextMenu.style.position = "absolute";
+				document.body.appendChild(contextMenu);
 			}
-		} else {
-				if (event.ctrlKey && parent.isSelect) {
-						for (var i = 0 ; i < Self.selectItemList.length; ++ i) {
-							if (parent == Self.selectItemList[i]) {
-								parent.style.background = "none";
-								parent.isSelect = null;
-								Self.selectItemList.splice(i, 1);
-								break;
-							}
-						}
-				} else if(event.ctrlKey && !parent.isSelect) {
-						Self.selectItemList.push(parent);
-						parent.isSelect = true;
-				} else {
-					Self.clearSelectItem();
-					Self.selectItemList[0] = parent;
-				}
-		}
-		for (var i in Self.selectItemList) {
-			if (Array.prototype[i]) continue;
-			Self.selectItemList[i].style.background = "#F8F8F8";
+			var actionArea = document.getElementById(Self.actionAreaId);
+			var context = DOMUtils.findFirstDescendantByClass(actionArea, "div", "GroundContextMenu");
+			contextMenu.innerHTML = context.innerHTML;
+			contextMenu.style.display = "block";
+			var X = eXo.core.Browser.findMouseXInPage(event);
+			var Y = eXo.core.Browser.findMouseYInPage(event);
+			contextMenu.style.top = Y + 5 + "px";
+			contextMenu.style.left = X + 5 + "px";
+	};
+	
+	// hide contex menu
+	ECMUtils.prototype.hideContextMenu = function() {
+		var contextMenu = document.getElementById(Self.contextMenuId);
+		if (contextMenu) {
+			contextMenu.style.display = "none";
+			contextMenu.innerHTML = "";
+			contextMenu.onmouseup = null;
+			document.body.onmousedown = null;
 		}
 	};
 	
-	ECMUtils.prototype.selectItem = function(event, bgArea) {
-		var groupItem = document.getElementById("groupItem");
-		groupItem.style.display = "none";
-		var freeSpace = document.getElementById("freeSpace");
-		freeSpace.style.display = "none";
-		bgArea.holdMouse = false;
-		if(((event.which && event.which > 1) || (event.button && event.button == 2))) {
-				var freeSpace = document.getElementById("freeSpace");
-				freeSpace.style.display = "block";
-				var posX = eXo.core.Browser.findMouseRelativeX(freeSpace.parentNode, event) ;
-				freeSpace.style.left = posX + "px";
-				var posY = eXo.core.Browser.findMouseRelativeY(freeSpace.parentNode, event) ;
-				freeSpace.style.top = posY + "px";
-		} else {
-			bgArea.holdMouse = true;
-			//clear all select item
-			Self.clearSelectItem();
-			var selectArea = document.getElementById("selectArea");
-			selectArea.storeX = eXo.core.Browser.findMouseRelativeX(bgArea.parentNode, event);
-			selectArea.storeY = eXo.core.Browser.findMouseRelativeY(bgArea.parentNode, event);
-			selectArea.style.left = selectArea.storeX + "px";
-			selectArea.style.top = selectArea.storeY + "px";
-			selectArea.style.width = "0px";
-			selectArea.style.height = "0px";
-			selectArea.style.border = "1px dotted red";
-			var rootElement = DOMUtils.findAncestorByClass(selectArea ,"UIDocumentWorkspace");
-			var actionBoxs = DOMUtils.findDescendantsByClass(rootElement, 'div', 'ActionIconBox');
-			Self.allActionBox = new Array();
-			for(var i = 0 ; i < actionBoxs.length; ++ i) {
-				actionBoxs[i].posX = Browser.findPosXInContainer(rootElement, actionBoxs[i]);
-				actionBoxs[i].posY = Browser.findPosYInContainer(rootElement, actionBoxs[i]);
-				actionBoxs[i].posX = Math.abs(actionBoxs[i].posX);
-				actionBoxs[i].posY = Math.abs(actionBoxs[i].posY);  
-				Self.allActionBox.push(actionBoxs[i]);
-			}
-			bgArea.onmouseup = EventHandler.mouseUp; 
-			bgArea.onmousemove = EventHandler.mouseMove;
-		}
-	};
-	
-	var EventHandler = {
-		mouseMove: function(event) {
-			var bgArea = this;
-			if (bgArea.holdMouse) {
-				//select mutiple item by mouse
-				var selectArea = document.getElementById("selectArea");
-				selectArea.X = Browser.findMouseRelativeX(bgArea.parentNode, event);
-				selectArea.Y = Browser.findMouseRelativeY(bgArea.parentNode, event);
-				selectArea.deltaX = selectArea.X - selectArea.storeX;
-				selectArea.deltaY = selectArea.Y - selectArea.storeY;
-				//goc phan tu thu 3
-				if (selectArea.deltaX < 0 && selectArea.deltaY < 0) {
-					selectArea.style.top = selectArea.Y + "px";
-					selectArea.style.left = selectArea.X + "px";
-					selectArea.style.width = Math.abs(selectArea.deltaX) + "px";
-					selectArea.style.height = Math.abs(selectArea.deltaY) + "px";
-					//detect element;
-					for (var i = 0; i < Self.allActionBox.length; ++ i) {
-						var itemBox = Self.allActionBox[i];
-						var posX = itemBox.posX + itemBox.offsetWidth/2;
-						var posY = itemBox.posY + itemBox.offsetHeight/2;
-						if (selectArea.X < posX && posX < selectArea.storeX &&
-								selectArea.Y < posY && posY < selectArea.storeY) {
-							itemBox.isSelect = true;
-						} else {
-							itemBox.isSelect = null;
-						}
-					}
-				//goc phan tu thu 4	
-				} else if (selectArea.deltaX < 0 && selectArea.deltaY > 0) {
-					selectArea.style.top = selectArea.storeY + "px";
-					selectArea.style.left = selectArea.X + "px";
-					selectArea.style.width = Math.abs(selectArea.deltaX) + "px";
-					selectArea.style.height = selectArea.deltaY + "px";
-					//detect element;
-					for (var i = 0; i < Self.allActionBox.length; ++ i) {
-						var itemBox = Self.allActionBox[i];
-						var posX = itemBox.posX + itemBox.offsetWidth/2;
-						var posY = itemBox.posY + itemBox.offsetHeight/2;
-						if (selectArea.X < posX && posX < selectArea.storeX &&
-								posY < selectArea.Y && selectArea.storeY < posY) {
-							itemBox.isSelect = true;
-						} else {
-							itemBox.isSelect = null;
-						}
-					}
-				//goc phan tu thu 2
-				} else if (selectArea.deltaX > 0 && selectArea.deltaY < 0) {
-					selectArea.style.top = selectArea.Y + "px";
-					selectArea.style.left = selectArea.storeX + "px";
-					selectArea.style.width = selectArea.deltaX + "px";
-					selectArea.style.height = Math.abs(selectArea.deltaY) + "px";
-					//detect element;
-					for (var i = 0; i < Self.allActionBox.length; ++ i) {
-						var itemBox = Self.allActionBox[i];
-						var posX = itemBox.posX + itemBox.offsetWidth/2;
-						var posY = itemBox.posY + itemBox.offsetHeight/2;
-						if ( posX < selectArea.X && selectArea.storeX < posX&&
-								selectArea.Y < posY && posY < selectArea.storeY ) {
-								itemBox.isSelect = true;
-						} else {
-							itemBox.isSelect = null;
-						}
-					}
-				//goc phan thu thu 1
-				} else {
-					selectArea.style.top = selectArea.storeY + "px";
-					selectArea.style.left = selectArea.storeX + "px";
-					selectArea.style.width = selectArea.deltaX + "px";
-					selectArea.style.height = selectArea.deltaY + "px";
-					//detect element;
-					for (var i = 0; i < Self.allActionBox.length; ++ i) {
-						var itemBox = Self.allActionBox[i];
-						var posX = itemBox.posX + itemBox.offsetWidth/2;
-						var posY = itemBox.posY + itemBox.offsetHeight/2;
-						if (selectArea.storeX < posX && posX < selectArea.X &&
-								selectArea.storeY < posY && posY < selectArea.Y) {
-							itemBox.isSelect = true;
-						} else {
-							itemBox.isSelect = null;
-						}
-					}
-				}
-			}
-			for (var i = 0; i < Self.allActionBox.length; ++ i) {
-				var itemBox = Self.allActionBox[i];
-				if (itemBox.isSelect) {
-					itemBox.style.background = "#F8F8F8";
-				} else {
-					itemBox.style.background = "none";
-				}
-			}
-		},
-		mouseUp: function(event) {
-			Self.selectItemList = new Array();
-			var selectArea = document.getElementById("selectArea");
-			var bgArea = this;
-			bgArea.holdMouse = false;
-			selectArea.storeX = 0;
-			selectArea.storeY = 0;
-			selectArea.style.top = "0px";
-			selectArea.style.left = "0px";
-			selectArea.style.width = "0px";
-			selectArea.style.height = "0px";
-			selectArea.style.border = "none";
-			for (var i = 0; i < Self.allActionBox.length; ++ i) {
-				var itemBox = Self.allActionBox[i];
-				if (itemBox.isSelect) {
-					Self.selectItemList.push(itemBox);
-				}
-			}
-		}
-	};
-	
-	ECMUtils.prototype.clearSelectItem = function() {
-		for(var i in Self.selectItemList) {
-			if (Array.prototype[i]) continue;
-			Self.selectItemList[i].isSelect = null;
-			Self.selectItemList[i].style.background = "none";
-			delete Self.selectItemList[i];
-		}
-		Self.selectItemList = new Array();
-	};
 	ECMUtils.prototype.postGroupAction = function(url) {
 		var objectId = [];
 		var workspaceName = [];
-		if(Self.selectItemList && Self.selectItemList.length) {
-			for(var i in Self.selectItemList) {
+		if(Self.itemsSelected && Self.itemsSelected.length) {
+			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
-				var currentNode = Self.selectItemList[i].childNodes[1];
+				var currentNode = Self.itemsSelected[i].childNodes[1];
 				currentNode.isSelect = false;
 				var wsname = currentNode.getAttribute("workspaceName");
 				if (wsname) workspaceName.push(wsname);
@@ -542,17 +644,29 @@ function ECMUtils() {
 			eval(url);
 		}
 	}	;
-	ECMUtils.prototype.concatWithPortal = function() {
-		//return;
-		eXo.webui.UIRightClickPopupMenu.clickRightMouse =
-		Self.concatMethod(eXo.webui.UIRightClickPopupMenu.clickRightMouse, {method: Self.prepareSelectItem});
-	};
-	
-	Self.concatWithPortal();
-}
+	//private method
+	function unselect() {
+		for(var i in Self.itemsSelected) {
+			if (Array.prototype[i]) continue;
+			Self.itemsSelected[i].selected = null;
+			Self.itemsSelected[i].style.background = "none";
+		}
+		Self.itemsSelected = new Array();
+	}
+	function removeItem(arr, item) {
+		for(var i = 0, nSize = arr.length; i < nSize; ++i) {
+			if (arr[i] == item) {
+				arr.splice(i, 1);
+				break;
+			}
+		}
+	}
+	function inArray(arr, item) {
+		for(var i = 0, nSize = arr.length; i < nSize; ++i) {
+				if (arr[i] == item)	return true;
+		}
+		return false;
+	}
+};
 
 eXo.ecm.ECMUtils = new ECMUtils();
-
-
-
-
