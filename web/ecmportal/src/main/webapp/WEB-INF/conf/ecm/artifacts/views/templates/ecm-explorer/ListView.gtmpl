@@ -60,21 +60,28 @@
 							 top: 0px; left: 0px; display: none;">
 			<div class="UIRightClickPopupMenu" style="display: block;">
 				<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
-					<a class="MenuItem" style="display: block;"> 	
-						<div class="ItemIcon Copy16x16Icon">
-							Sort
+					<a class="MenuItem" href="<%=contextMenu.event("AddFolder")%>" style="display: block;"> 	
+						<div class="ItemIcon AddFolderIcon">
+							<%=_ctx.appRes("ECMContextMenu.event.AddFolder")%>
 						</div>
 				 	</a>
-				 	<a class="MenuItem" style="display: block;"> 	
-						<div class="ItemIcon Cut16x16Icon">
-							Group
+				 	<a class="MenuItem" href="<%=contextMenu.event("AddDocument")%>" style="display: block;"> 	
+						<div class="ItemIcon AddDocumentIcon">
+							<%=_ctx.appRes("ECMContextMenu.event.AddDocument")%>
 						</div>
 				 	</a>
-				 	<a class="MenuItem" style="display: block;"> 	
-						<div class="ItemIcon Delete16x16Icon">
-							Delete
+				 	<a class="MenuItem" href="<%=contextMenu.event("Upload")%>" style="display: block;"> 	
+						<div class="ItemIcon UploadIcon">
+							<%=_ctx.appRes("ECMContextMenu.event.Upload")%>
 						</div>
 				 	</a>
+				 	<%if(uicomponent.isCanPaste()) {%>
+					 	<a class="MenuItem" href="<%=contextMenu.event("Paste")%>" style="display: block;"> 	
+							<div class="ItemIcon Paste16x16Icon">
+								<%=_ctx.appRes("ECMContextMenu.event.Paste")%>
+							</div>
+					 	</a>
+				  <%}%>
 				 </div>	
 			 </div>
 		</div>
