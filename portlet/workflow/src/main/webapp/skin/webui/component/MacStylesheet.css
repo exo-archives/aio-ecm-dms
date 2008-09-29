@@ -93,7 +93,6 @@
 }
 
 /*********************************************** Begin Icon16x16 ***********************************/
-
 .ManageStartIcon {
 	width: 16px; height: 16px;
 	background: url('DefaultSkin/icons/Execute.gif') no-repeat;
@@ -104,21 +103,20 @@
 	background: url('DefaultSkin/icons/group.gif') no-repeat;
 }
 
-.Transition16x16Icon , .EndOfState16x16Icon , .StartProcess16x16Icon {
+.User16x16Icon {
 	width: 16px; height: 16px;
-	background: url('DefaultSkin/icons/Execute.gif') no-repeat;
+	background: url('DefaultSkin/icons/user.gif') no-repeat;
 }
-
 /*********************************************** End Icon16x16 *****************************************/
 /*********************************************** Begin Icon24x24 ***********************************/
 .Monitor24x24Icon {
 	width: 24px; height: 24px;
-	background: url('DefaultSkin/icons/IconMonitor24x24.gif') no-repeat;
+	background: url('DefaultSkin/icons/MediumIconECM.gif') no-repeat left top;
 }
 
 .Controller24x24Icon {
 	width: 24px; height: 24px;
-	background: url('DefaultSkin/icons/Controller24x24.gif') no-repeat;
+	background: url('DefaultSkin/icons/MediumIconECM.gif') no-repeat left -24px;
 }
 /*********************************************** End Icon24x24 *****************************************/
 
