@@ -19,13 +19,10 @@ package org.exoplatform.ecm.webui.contentviewer;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URLDecoder;
-import java.security.AccessControlException;
 import java.util.List;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.servlet.http.HttpServletRequestWrapper;
 
@@ -36,7 +33,6 @@ import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.application.WebuiApplication;
@@ -56,11 +52,9 @@ public class UIParameterizedContentViewerPortlet extends UIPortletApplication {
 
   public final static String CONTENT_NOT_FOUND_EXC        = "UIMessageBoard.msg.content-not-found";
 
-  public final static String REPOSITORY_CONFIGURATION_EXC = "UIMessageBoard.msg.repository-configuration-exc";
-
-  public final static String REPOSITORY_EXC               = "UIMessageBoard.msg.repository-exc";
-
   public final static String ACCESS_CONTROL_EXC           = "UIMessageBoard.msg.access-control-exc";
+  
+  public final static String CONTENT_UNSUPPORT_EXC           = "UIMessageBoard.msg.content-unsupport-exc";
 
   public UIParameterizedContentViewerPortlet() throws Exception {
   }
@@ -81,14 +75,21 @@ public class UIParameterizedContentViewerPortlet extends UIPortletApplication {
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
     }
+    if (parameters == null || parameters.trim().length() == 0 || parameters.indexOf("/") < 0) {
+      renderErrorMessage(context, CONTENT_NOT_FOUND_EXC);
+      return;
+    }
     String nodeIdentifier = null;
     String[] params = parameters.split("/");
+    if (params.length < 2) {
+      renderErrorMessage(context, CONTENT_NOT_FOUND_EXC);
+      return;
+    }
     String repository = params[0];
     String workspace = params[1];
     Node currentNode = null;
     SessionProvider sessionProvider = null;
     Session session = null;
-
     try {
       RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
       ManageableRepository manageableRepository = repositoryService.getRepository(repository);
@@ -99,34 +100,35 @@ public class UIParameterizedContentViewerPortlet extends UIPortletApplication {
         sessionProvider = SessionProviderFactory.createSessionProvider();
       }
 
-      session = sessionProvider.getSession(workspace, manageableRepository);
-      if (params.length > 2) {
-        StringBuffer identifier = new StringBuffer();
-        for (int i = 2; i < params.length; i++) {
-          identifier.append("/").append(params[i]);
-        }
-        nodeIdentifier = identifier.toString();
-        currentNode = (Node) session.getItem(nodeIdentifier);
-      } else if (params.length == 2) {
-        currentNode = session.getRootNode();
-      }
-    } catch (PathNotFoundException e) {
-      try {
-        String uuid = params[params.length - 1];
-        currentNode = session.getNodeByUUID(uuid);
-      } catch (ItemNotFoundException exc) {
-        renderErrorMessage(context, CONTENT_NOT_FOUND_EXC);
-        return;
-      }
-    } catch (RepositoryConfigurationException rce) {
-      renderErrorMessage(context, REPOSITORY_CONFIGURATION_EXC);
-      return;
-    } catch (RepositoryException e) {
-      renderErrorMessage(context, REPOSITORY_EXC);
-      return;
-    } catch (AccessControlException e) {
+      session = sessionProvider.getSession(workspace, manageableRepository);      
+    } catch (Exception e) {
       renderErrorMessage(context, ACCESS_CONTROL_EXC);
       return;
+    }
+
+    if (params.length > 2) {
+      StringBuffer identifier = new StringBuffer();
+      for (int i = 2; i < params.length; i++) {
+        identifier.append("/").append(params[i]);
+      }
+      nodeIdentifier = identifier.toString();
+      boolean isUUID = false;;
+      try {
+        currentNode = (Node) session.getItem(nodeIdentifier);  
+      } catch (Exception e) {
+        isUUID = true;
+      }
+      if (isUUID) {
+        try {
+          String uuid = params[params.length - 1];
+          currentNode = session.getNodeByUUID(uuid);
+        } catch (ItemNotFoundException exc) {
+          renderErrorMessage(context, CONTENT_NOT_FOUND_EXC);
+          return;
+        }
+      }      
+    } else if (params.length == 2) {
+      currentNode = session.getRootNode();
     }
     TemplateService templateService = getApplicationComponent(TemplateService.class);
     List<String> documentTypes = templateService.getDocumentTemplates(repository);
@@ -151,9 +153,7 @@ public class UIParameterizedContentViewerPortlet extends UIPortletApplication {
       uiContentViewer.setWorkspace(workspace);
       super.processRender(app, context);
     } else { // content is folder
-      Writer writer = context.getWriter();
-      writer.write("This is folder");
-      writer.close();
+      renderErrorMessage(context, CONTENT_UNSUPPORT_EXC);
     }
   }
 
