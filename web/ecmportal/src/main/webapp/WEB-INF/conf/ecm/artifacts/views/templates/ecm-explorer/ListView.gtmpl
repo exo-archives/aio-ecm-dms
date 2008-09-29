@@ -16,11 +16,15 @@
   String componentId = uicomponent.getId();
   java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm"); 
   
+  public long getViewId() {
+    Date date = new Date();
+    return date.getTime();
+  }
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.JCREvent','/ecm/javascript/'); 
-  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.JCR.initAllEvent('$componentId')");
+  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.JCR.initAllEvent('${componentId}-$viewId')");
 %>
-<div id="$componentId" class="JCRListView" style="padding-bottom: 30px;">	
+<div id="${componentId}-$viewId" class="JCRListView" style="padding-bottom: 30px;">	
 	<div class="Dot" style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
 		<div class="Mark" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px">
 		</div>
