@@ -57,6 +57,13 @@
 			      <%=value%>
 			    <%}%>  
 			    </td>
+			    <td>
+			    <%
+			    if(uicomponent.addedByUser(bean.getName())) {%> 			    
+			      <a href="<%=uicomponent.event("Edit", bean.getName())%>" title="<%=_ctx.appRes("UIPropertyTab.title.edit")%>"><img src="/eXoResources/skin/sharedImages/Blank.gif" class="EditIcon"></a>
+			      <a href="<%=uicomponent.event("Delete", bean.getName())%>" title="<%=_ctx.appRes("UIPropertyTab.title.delete")%>"><img src="/eXoResources/skin/sharedImages/Blank.gif" class="DeleteIcon"></a>
+			    <%}%>  
+			    </td>
 			  </tr>    
 	    <%}%>
 	  </tbody>

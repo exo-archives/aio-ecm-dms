@@ -16,11 +16,19 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.PropertyType;
 import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
+import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -39,26 +47,55 @@ import org.exoplatform.webui.event.EventListener;
 
 @ComponentConfig(
     template =  "app:/groovy/webui/component/explorer/popup/info/UIPropertyTab.gtmpl",
-    events = {@EventConfig(listeners = UIPropertyTab.CloseActionListener.class)}
+    events = {
+        @EventConfig(listeners = UIPropertyTab.CloseActionListener.class),
+        @EventConfig(listeners = UIPropertyTab.EditActionListener.class),
+        @EventConfig(listeners = UIPropertyTab.DeleteActionListener.class, confirm="UIPropertyTab.confirm.remove-property")
+    }
 )
 
 public class UIPropertyTab extends UIContainer {
-  private static String[] PRO_BEAN_FIELD = {"icon", "name", "multiValue", "value"} ;
-  final private static String PRO_KEY_BINARYTYPE = "binary" ;
-  final private static String PRO_KEY_CANNOTGET = "cannotget" ;
+  
+  private static String[] PRO_BEAN_FIELD = {"icon", "name", "multiValue", "value", "action"} ;
+  private final static String PRO_KEY_BINARYTYPE = "binary" ;
+  private final static String PRO_KEY_CANNOTGET = "cannotget" ;
+  
+  private List<String> propertiesName_ = new ArrayList<String>();
   
   public String[] getBeanFields() { return PRO_BEAN_FIELD ;}
   
   public String[] getActions() {return  new String[] {"Close"} ;}
   
-  public PropertyIterator getProperties() throws Exception { 
+  private Node getCurrentNode() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ; 
-    return uiExplorer.getCurrentNode().getProperties() ; 
+    return uiExplorer.getCurrentNode();
   }
   
-  /*private boolean isMultiValue(Property prop) throws Exception {
-    return prop.getDefinition().isMultiple() ;
-  }*/
+  public PropertyIterator getProperties() throws Exception { 
+    return getCurrentNode().getProperties() ; 
+  }
+  
+  private List<String> propertiesName() throws Exception {
+    if(propertiesName_.size() == 0) {
+      Node currentNode = getCurrentNode(); 
+      NodeType nodetype = currentNode.getPrimaryNodeType() ;
+      Collection<NodeType> types = new ArrayList<NodeType>() ;
+      types.add(nodetype) ;
+      NodeType[] mixins = currentNode.getMixinNodeTypes() ;
+      if (mixins != null) types.addAll(Arrays.asList(mixins)) ;
+      for(NodeType nodeType : types) {
+        for(PropertyDefinition property : nodeType.getPropertyDefinitions()) {
+          propertiesName_.add(property.getName());
+        }
+      }
+    }
+    return propertiesName_;
+  }
+  
+  public boolean addedByUser(String propertyName) throws Exception {
+    if(propertiesName().contains(propertyName)) return false;
+    return true;
+  }
 
   public String getPropertyValue(Property prop) throws Exception {
     if(prop.getType() == PropertyType.BINARY) return PRO_KEY_BINARYTYPE ;
@@ -83,6 +120,25 @@ public class UIPropertyTab extends UIContainer {
   static public class CloseActionListener extends EventListener<UIPropertyTab> {
     public void execute(Event<UIPropertyTab> event) throws Exception {
       event.getSource().getAncestorOfType(UIJCRExplorer.class).cancelAction() ;
+    }
+  }
+  
+  static public class EditActionListener extends EventListener<UIPropertyTab> {
+    public void execute(Event<UIPropertyTab> event) throws Exception {
+      UIPropertyTab uiPropertyTab = event.getSource();
+      String propertyName = event.getRequestContext().getRequestParameter(OBJECTID);
+      System.out.println("\n\nproperty name========>" +propertyName+ "\n\n");
+    }
+  }
+  
+  static public class DeleteActionListener extends EventListener<UIPropertyTab> {
+    public void execute(Event<UIPropertyTab> event) throws Exception {
+      UIPropertyTab uiPropertyTab = event.getSource();
+      String propertyName = event.getRequestContext().getRequestParameter(OBJECTID);
+      Node currentNode = uiPropertyTab.getCurrentNode();
+      if(currentNode.hasProperty(propertyName)) currentNode.getProperty(propertyName).remove();
+      currentNode.save();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPropertyTab.getParent());
     }
   }
 }
