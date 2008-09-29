@@ -79,12 +79,12 @@
     
     .Comments .CommentBox .CommentBoxTopRight {
       padding-right: 3px;
-      background: url('/ecm/skin/images/article/CommentBox.gif') no-repeat right top;
+      background: url('/ecm/skin/images/article/CommentBox.gif') no-repeat right -30px;
     }
     
     .Comments .CommentBox .CommentBoxTopCenter {
       height: 12px;
-      background: white url('/ecm/skin/images/article/CommentBox.gif') repeat-x left -12px;
+      background: url('/ecm/skin/images/article/CommentBox.gif') repeat-x left -12px;
     }
    
     .Comments .CommentBox .CommentBoxMiddleLeft {

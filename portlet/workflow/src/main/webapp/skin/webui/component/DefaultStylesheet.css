@@ -56,7 +56,7 @@
 .UIWorkflowPortlet .Toolbar .ButtonContainer {
 	float: left;
 	height: 29px;
-	background: url('DefaultSkin/background/ButtonContainerBG3x29.gif') repeat-x;
+	background: url('DefaultSkin/background/ButtonContainer.gif') repeat-x left top;
 }
 
 .UIWorkflowPortlet .Toolbar .ButtonContainer .TextButton {
@@ -69,7 +69,7 @@
 .UIWorkflowPortlet .Toolbar .ButtonContainerSelected {
 	float: left;
 	height: 29px;
-	background: url('DefaultSkin/background/ButtonContainerSelectedBG3x29.gif') repeat-x;
+	background: url('DefaultSkin/background/ButtonContainer.gif') repeat-x left -29px;
 }
 
 .UIWorkflowPortlet .Toolbar .ButtonContainerSelected .TextButton {
