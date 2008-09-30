@@ -69,7 +69,7 @@
                       <field  name="tabName"><string>Info</string></field>
                       <field  name="buttons">
                       	<string>
-                      		viewReferences; viewNodeType; viewPermissions; viewMetadatas; viewRelations; showJCRStructure
+                      		viewReferences; viewNodeType; viewPermissions; viewMetadatas; viewRelations; manageAuditing; showJCRStructure
                       	</string>
                       </field>
                     </object>
