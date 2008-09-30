@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 import javax.jcr.Node;
@@ -528,6 +529,11 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     }
     newarray[array.length] = value2add;
     return newarray; 
+  }
+  
+  public Node getNodeView(Node node, Map<String, Object> context) throws Exception {    
+    //TODO need implement to get specific version of node to view    
+    return null;
   }
   
 

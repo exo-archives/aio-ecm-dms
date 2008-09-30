@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.jcr.Node;
 
@@ -41,7 +42,7 @@ import org.exoplatform.webui.form.UIForm;
 public abstract class PublicationPlugin extends BaseComponentPlugin {
 
   /**
-   * Retrieves all possible states in the publication lifecycle
+   * Retrieves all possible states in the publication lifecycle.
    * 
    * @return an array of Strings giving the names of all possible states
    */
@@ -60,8 +61,10 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
    * @param newState the new state.
    * @param context a Hashmap containing contextual information needed
    * to change the state. The information set is defined on a State basis.
+   * 
    * @throws IncorrectStateUpdateLifecycleException if the update is not
    * allowed
+   * @throws Exception the exception
    */
   public abstract void changeState(Node node,
       String newState,
@@ -83,7 +86,11 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
    * selects the appropriate publication plugin and delegates the call to it.
    * 
    * @param node the Node from which the state UI should be retrieved
+   * @param component the component
+   * 
    * @return a WebUI form corresponding to the current state and node.
+   * 
+   * @throws Exception the exception
    */
   public abstract UIForm getStateUI(Node node, UIComponent component) throws Exception;
 
@@ -92,11 +99,17 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
    * The implementation of this method typically retrieves the current state
    * of the specified Node, then fetches the bytes of an appropriate image
    * found in the jar of the plugin. This image is supposed to be shown in
-   * the publication dialog of the JCR File Explorer Portlet. 
-   *
+   * the publication dialog of the JCR File Explorer Portlet.
+   * 
    * @param node the node from which the image should be obtained
+   * @param locale the locale
+   * 
    * @return an array of bytes corresponding to the image to be shown to the
    * user
+   * 
+   * @throws IOException Signals that an I/O exception has occurred.
+   * @throws FileNotFoundException the file not found exception
+   * @throws Exception the exception
    */
   public abstract byte[] getStateImage(Node node, Locale locale) throws IOException,FileNotFoundException,Exception;
 
@@ -115,12 +128,16 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
    * resource bundles (ie not hardcoded).
    * 
    * @param node the node from which the publication state should be retrieved
+   * @param locale the locale
+   * 
    * @return a String giving the current state.
+   * 
+   * @throws Exception the exception
    */
   public abstract String getUserInfo(Node node, Locale locale) throws Exception;
 
   /**
-   * Retrieves the lifecycleName
+   * Retrieves the lifecycleName.
    * 
    * @return a String giving the lifecycleName
    */
@@ -129,8 +146,10 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
     return getName();
   }
 
-  /** 
-   * Retrieves the description of the plugin
+  /**
+   * Retrieves the description of the plugin.
+   * 
+   * @param node the node
    * 
    * @return a String giving the description
    */
@@ -139,19 +158,34 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
   }
 
   /**
-   * Return if the plugin can add the specific mixin for the publication
+   * Return if the plugin can add the specific mixin for the publication.
+   * 
    * @param node the node to add the mixin
+   * 
    * @return boolean
+   * 
+   * @throws Exception the exception
    */
   public abstract boolean canAddMixin (Node node) throws Exception;
 
   /**
-   * Add the specific plugin mixin to the node
-   * @param node
+   * Add the specific plugin mixin to the node.
+   * 
+   * @param node the node
+   * 
+   * @throws Exception the exception
    */
   public abstract void addMixin (Node node) throws Exception;
   
-  
-  
-  
+  /**
+   * Retrieves a node view of the specific node in a context
+   * 
+   * @param node the node
+   * @param context the context
+   * 
+   * @return the node to view
+   * 
+   * @throws Exception the exception
+   */
+  public abstract Node getNodeView(Node node, Map<String,Object> context) throws Exception;
 }
