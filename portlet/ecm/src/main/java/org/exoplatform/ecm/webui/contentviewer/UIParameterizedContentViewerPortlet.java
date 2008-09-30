@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.contentviewer;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.net.URLDecoder;
+import java.security.AccessControlException;
 import java.util.List;
 
 import javax.jcr.ItemNotFoundException;
@@ -55,6 +56,8 @@ public class UIParameterizedContentViewerPortlet extends UIPortletApplication {
   public final static String ACCESS_CONTROL_EXC           = "UIMessageBoard.msg.access-control-exc";
   
   public final static String CONTENT_UNSUPPORT_EXC           = "UIMessageBoard.msg.content-unsupport-exc";
+  
+  public final static String PARAMETER_REGX           = "(.*)/(.*)";
 
   public UIParameterizedContentViewerPortlet() throws Exception {
   }
@@ -69,43 +72,42 @@ public class UIParameterizedContentViewerPortlet extends UIPortletApplication {
     String requestURI = requestWrapper.getRequestURI();
     String pageNodeSelected = uiPortal.getSelectedNode().getName();
     String parameters = null;
+    
     try {
       parameters = URLDecoder.decode(StringUtils.substringAfter(requestURI, portalURI
           .concat(pageNodeSelected + "/")), "UTF-8");
     } catch (UnsupportedEncodingException e) {
       e.printStackTrace();
     }
-    if (parameters == null || parameters.trim().length() == 0 || parameters.indexOf("/") < 0) {
+    if (! parameters.matches(PARAMETER_REGX)) {
       renderErrorMessage(context, CONTENT_NOT_FOUND_EXC);
       return;
     }
     String nodeIdentifier = null;
-    String[] params = parameters.split("/");
-    if (params.length < 2) {
-      renderErrorMessage(context, CONTENT_NOT_FOUND_EXC);
-      return;
-    }
+    String[] params = parameters.split("/");    
     String repository = params[0];
     String workspace = params[1];
     Node currentNode = null;
     SessionProvider sessionProvider = null;
     Session session = null;
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    if (userId == null) {
+      sessionProvider = SessionProviderFactory.createAnonimProvider();
+    } else {
+      sessionProvider = SessionProviderFactory.createSessionProvider();
+    }
+    
     try {
       RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
-      ManageableRepository manageableRepository = repositoryService.getRepository(repository);
-      String userId = Util.getPortalRequestContext().getRemoteUser();
-      if (userId == null) {
-        sessionProvider = SessionProviderFactory.createAnonimProvider();
-      } else {
-        sessionProvider = SessionProviderFactory.createSessionProvider();
-      }
-
+      ManageableRepository manageableRepository = repositoryService.getRepository(repository);      
       session = sessionProvider.getSession(workspace, manageableRepository);      
-    } catch (Exception e) {
+    } catch (AccessControlException ace) {
       renderErrorMessage(context, ACCESS_CONTROL_EXC);
       return;
+    } catch (Exception e) {
+      renderErrorMessage(context, CONTENT_NOT_FOUND_EXC);
+      return;
     }
-
     if (params.length > 2) {
       StringBuffer identifier = new StringBuffer();
       for (int i = 2; i < params.length; i++) {
