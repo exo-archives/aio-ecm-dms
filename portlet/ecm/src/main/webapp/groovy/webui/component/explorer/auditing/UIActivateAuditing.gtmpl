@@ -1,0 +1,30 @@
+<div class="UIActivateAuditing">
+  <div style="text-align: center; margin: 10px;"><%=_ctx.appRes(uicomponent.getId() + ".label.note")%></div>
+  <div style="text-align: center; margin: 10px;"><%=_ctx.appRes(uicomponent.getId() + ".label.question")%></div>
+	<div class="UIAction">
+	  <table class="ActionContainer"> 
+	    <tr>
+	    	<td align="center">
+		      <a href="<%=uicomponent.event("EnableAuditing")%>" class="ActionButton LightBlueStyle">
+		        <div class="ButtonLeft">
+		          <div class="ButtonRight">
+		            <div class="ButtonMiddle">
+		              Activate
+		            </div>
+		          </div>
+		        </div>
+		      </a>
+		      <a href="<%=uicomponent.event("Cancel")%>" class="ActionButton LightBlueStyle">
+		        <div class="ButtonLeft">
+		          <div class="ButtonRight">
+		            <div class="ButtonMiddle">
+		              Cancel 
+		            </div>
+		          </div>
+		        </div>
+		      </a>
+	  		</td>
+	  	</tr>
+	  </table>
+	</div>  
+</div>

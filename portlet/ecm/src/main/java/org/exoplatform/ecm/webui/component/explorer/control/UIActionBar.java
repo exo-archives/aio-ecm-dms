@@ -18,10 +18,8 @@ package org.exoplatform.ecm.webui.component.explorer.control;
 
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
-import java.util.Map;
 
 import javax.jcr.Item;
 import javax.jcr.ItemNotFoundException;
@@ -45,6 +43,8 @@ import org.exoplatform.ecm.webui.component.UIVoteForm;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.component.explorer.auditing.UIActivateAuditing;
+import org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIAddLanguageContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UICommentForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm;
@@ -103,6 +103,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.command.handler.GetApplicationHandler;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -141,6 +142,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.ViewRelationsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ShowJCRStructureActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageVersionsActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ManageAuditingActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManagePublicationsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageCategoriesActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageRelationsActionListener.class, phase = Phase.DECODE),
@@ -749,6 +751,24 @@ public class UIActionBar extends UIForm {
       }
       uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-version", null));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    }
+  }
+  
+  static public class ManageAuditingActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {
+      UIActionBar uiActionBar = event.getSource();
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
+      UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
+      Node currentNode = uiExplorer.getCurrentNode();
+      if (!currentNode.isNodeType(Utils.EXO_AUDITABLE)) {
+        uiPopupAction.activate(UIActivateAuditing.class, 400);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        return;
+      }
+      UIAuditingInfo uiAuditingInfo = uiExplorer.createUIComponent(UIAuditingInfo.class, null, null);
+      uiPopupAction.activate(uiAuditingInfo, 700, 500);
+      uiAuditingInfo.updateGrid();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
     }
   }
   
