@@ -16,7 +16,7 @@
 %>
 <div id="${componentId}-$viewComponentId">	
 	<div style="position: relative; width: 0px; height: 0px;">
-		<div class="Mark" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px">
+		<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px">
 		</div>
 		<div class="ItemContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
 			<div class="UIRightClickPopupMenu" style="display: block;">
@@ -76,8 +76,6 @@
 				  <%}%>
 				 </div>	
 			 </div>
-		</div>
-		<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px">
 		</div>
 	</div>
 	<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;"  >
