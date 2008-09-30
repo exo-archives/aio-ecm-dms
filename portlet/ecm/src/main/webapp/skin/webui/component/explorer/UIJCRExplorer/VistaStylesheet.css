@@ -343,11 +343,6 @@
 	margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UITaggingForm .FormContainer {
-	width: 400px;
-	margin: auto;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .UIMultiLanguageForm .FormContainer {
 	width: 400px;
 	margin: auto;
@@ -461,10 +456,29 @@
 }
 
 /*=============================UITaggingForm=======================*/
-
 .UIJCRExplorerPortlet .UITaggingForm .FieldContainer {
-  width: 480px;
+  width: 550px;
   margin: 0px auto;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .FormContainer {
+	width: 100%;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm {	
+  margin: auto;
+  padding: 10px 0px;
+  width: 550px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .HorizontalLayout {	
+	border: 1px solid #AEAEAE;
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIFormGrid .FieldLabel {
+	width: 70px;
 }
 
 /*==================================UIMultiLanguageForm==============================*/
