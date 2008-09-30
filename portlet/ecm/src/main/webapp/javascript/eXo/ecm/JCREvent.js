@@ -279,19 +279,25 @@ var JCR = function() {
 	
 	// working with item context menu
 	JCR.prototype.showItemContextMenu = function(event, element) {
+			var event = event || window.event;
+			event.cancelBubble = true;
 			if (document.getElementById(Self.contextMenuId)) {
 				var contextMenu = document.getElementById(Self.contextMenuId);
-				contextMenu.style.position = "absolute";
-			} else {
-				var contextMenu = document.createElement("div");
-				contextMenu.setAttribute("id", Self.contextMenuId);
-				contextMenu.style.position = "absolute";
-				document.body.appendChild(contextMenu);
+				contextMenu.parentNode.removeChild(contextMenu);
 			}
+			var contextMenu = document.createElement("div");
+			contextMenu.setAttribute("id", Self.contextMenuId);
+			contextMenu.style.position = "absolute";
+			contextMenu.style.height = "0px";
+			contextMenu.style.width = "0px";
+			contextMenu.style.top = "-1000px";
+			contextMenu.style.display = "block";
+			document.body.appendChild(contextMenu);
+
 			var actionArea = document.getElementById(Self.actionAreaId);
 			var context = DOM.findFirstDescendantByClass(actionArea, "div", "ItemContextMenu");
 			contextMenu.innerHTML = context.innerHTML;
-			contextMenu.style.display = "block";
+			
 			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
 			var Y = eXo.core.Browser.findMouseYInPage(event);
@@ -326,19 +332,26 @@ var JCR = function() {
 	
 	// working with ground context menu
 	JCR.prototype.showGroundContextMenu = function(event, element) {
+			var event = event || window.event;
+			event.cancelBubble = true;
+			unselect();
 			if (document.getElementById(Self.contextMenuId)) {
 				var contextMenu = document.getElementById(Self.contextMenuId);
-				contextMenu.style.position = "absolute";
-			} else {
-				var contextMenu = document.createElement("div");
-				contextMenu.setAttribute("id", Self.contextMenuId);
-				contextMenu.style.position = "absolute";
-				document.body.appendChild(contextMenu);
+				contextMenu.parentNode.removeChild(contextMenu);
 			}
+			var contextMenu = document.createElement("div");
+			contextMenu.setAttribute("id", Self.contextMenuId);
+			contextMenu.style.position = "absolute";
+			contextMenu.style.height = "0px";
+			contextMenu.style.width = "0px";
+			contextMenu.style.top = "-1000px";
+			contextMenu.style.display = "block";
+			document.body.appendChild(contextMenu);
+			
 			var actionArea = document.getElementById(Self.actionAreaId);
 			var context = DOM.findFirstDescendantByClass(actionArea, "div", "GroundContextMenu");
 			contextMenu.innerHTML = context.innerHTML;
-			contextMenu.style.display = "block";
+			
 			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
 			var Y = eXo.core.Browser.findMouseYInPage(event);
@@ -351,17 +364,12 @@ var JCR = function() {
 			contextMenu.style.left = X + 5 + "px";
 			
 			contextMenu.onmouseup = Self.hideContextMenu;
-	};
+		};
 	
-	// hide contex menu
+	// hide context menu
 	JCR.prototype.hideContextMenu = function() {
 		var contextMenu = document.getElementById(Self.contextMenuId);
-		if (contextMenu) {
-			contextMenu.style.display = "none";
-			contextMenu.innerHTML = "";
-			contextMenu.onmouseup = null;
-			document.body.onmousedown = null;
-		}
+		if (contextMenu) contextMenu.style.display = "none";
 	};
 	
 	JCR.prototype.postGroupAction = function(url) {

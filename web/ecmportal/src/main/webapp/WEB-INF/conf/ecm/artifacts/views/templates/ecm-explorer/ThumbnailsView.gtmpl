@@ -12,7 +12,7 @@
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/'); 
-  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initAllEvent('${componentId}-$viewComponentId')");
+  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.ECMUtils.initAllEvent('${componentId}-$viewComponentId')}");
 %>
 <div id="${componentId}-$viewComponentId">	
 	<div style="position: relative; width: 0px; height: 0px;">

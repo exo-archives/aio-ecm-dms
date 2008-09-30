@@ -557,19 +557,25 @@ function ECMUtils() {
 	
 	// working with item context menu
 	ECMUtils.prototype.showItemContextMenu = function(event, element) {
+			var event = event || window.event;
+			event.cancelBubble = true;
 			if (document.getElementById(Self.contextMenuId)) {
 				var contextMenu = document.getElementById(Self.contextMenuId);
-				contextMenu.style.position = "absolute";
-			} else {
-				var contextMenu = document.createElement("div");
-				contextMenu.setAttribute("id", Self.contextMenuId);
-				contextMenu.style.position = "absolute";
-				document.body.appendChild(contextMenu);
+				contextMenu.parentNode.removeChild(contextMenu);
 			}
+			var contextMenu = document.createElement("div");
+			contextMenu.setAttribute("id", Self.contextMenuId);
+			contextMenu.style.position = "absolute";
+			contextMenu.style.height = "0px";
+			contextMenu.style.width = "0px";
+			contextMenu.style.top = "-1000px";
+			contextMenu.style.display = "block";
+			document.body.appendChild(contextMenu);
+
 			var actionArea = document.getElementById(Self.actionAreaId);
 			var context = DOM.findFirstDescendantByClass(actionArea, "div", "ItemContextMenu");
 			contextMenu.innerHTML = context.innerHTML;
-			contextMenu.style.display = "block";
+			
 			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
 			var Y = eXo.core.Browser.findMouseYInPage(event);
@@ -603,19 +609,26 @@ function ECMUtils() {
 	};
 	// working with ground context menu
 	ECMUtils.prototype.showGroundContextMenu = function(event, element) {
+						var event = event || window.event;
+			event.cancelBubble = true;
+			unselect();
 			if (document.getElementById(Self.contextMenuId)) {
 				var contextMenu = document.getElementById(Self.contextMenuId);
-				contextMenu.style.position = "absolute";
-			} else {
-				var contextMenu = document.createElement("div");
-				contextMenu.setAttribute("id", Self.contextMenuId);
-				contextMenu.style.position = "absolute";
-				document.body.appendChild(contextMenu);
+				contextMenu.parentNode.removeChild(contextMenu);
 			}
+			var contextMenu = document.createElement("div");
+			contextMenu.setAttribute("id", Self.contextMenuId);
+			contextMenu.style.position = "absolute";
+			contextMenu.style.height = "0px";
+			contextMenu.style.width = "0px";
+			contextMenu.style.top = "-1000px";
+			contextMenu.style.display = "block";
+			document.body.appendChild(contextMenu);
+			
 			var actionArea = document.getElementById(Self.actionAreaId);
 			var context = DOM.findFirstDescendantByClass(actionArea, "div", "GroundContextMenu");
 			contextMenu.innerHTML = context.innerHTML;
-			contextMenu.style.display = "block";
+			
 			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
 			var Y = eXo.core.Browser.findMouseYInPage(event);
@@ -624,30 +637,25 @@ function ECMUtils() {
 			var contentMenu = DOM.findFirstChildByClass(contextMenu, "div", "UIRightClickPopupMenu");
 			if (event.clientX + contentMenu.offsetWidth > portWidth) X -= contentMenu.offsetWidth;
 			if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
-			
 			contextMenu.style.top = Y + 5 + "px";
 			contextMenu.style.left = X + 5 + "px";
 			
+			contextMenu.onmouseup = Self.hideContextMenu;
 	};
 	
-	// hide contex menu
+	// hide context menu
 	ECMUtils.prototype.hideContextMenu = function() {
 		var contextMenu = document.getElementById(Self.contextMenuId);
-		if (contextMenu) {
-			contextMenu.style.display = "none";
-			contextMenu.innerHTML = "";
-			contextMenu.onmouseup = null;
-			document.body.onmousedown = null;
-		}
+		if (contextMenu) contextMenu.style.display = "none";
 	};
 	
 	ECMUtils.prototype.postGroupAction = function(url) {
 		var objectId = [];
 		var workspaceName = [];
-		if(Self.itemsSelected && Self.itemsSelected.length) {
+		if(Self.itemsSelected.length) {
 			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
-				var currentNode = Self.itemsSelected[i].childNodes[1];
+				var currentNode = Self.itemsSelected[i];
 				currentNode.isSelect = false;
 				var wsname = currentNode.getAttribute("workspaceName");
 				if (wsname) workspaceName.push(wsname);
