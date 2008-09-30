@@ -174,10 +174,12 @@ var JCR = function() {
 			mask.storeY = eXo.core.Browser.findMouseRelativeY(eDot, event);
 			mask.style.left = mask.storeX + "px";
 			mask.style.top = mask.storeY + "px";
+			mask.style.zIndex = 1;
 			mask.style.width = "0px";
 			mask.style.height = "0px";
-			mask.style.border = "1px dotted red";
-			mask.style.zIndex = 1;
+			mask.style.border = "1px dotted black";
+			mask.style.backgroundColor = "violet";
+			eXo.core.Browser.setOpacity(mask, 17);
 			//store position for all item
 			for( var i = 0 ; i < Self.allItems.length; ++i) {
 				Self.allItems[i].posX = Math.abs(eXo.core.Browser.findPosXInContainer(Self.allItems[i], element));
