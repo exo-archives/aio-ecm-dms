@@ -1,6 +1,6 @@
 var JCR = function() {
 
-	// eXo.ecm.JCR
+	// eXo.ecm.JCREvent
 	var Self = this;
 
 	var DOM = eXo.core.DOMUtil;
@@ -64,11 +64,11 @@ var JCR = function() {
 			document.onmouseup = Self.dropItemsSelected;
 			//create mobile element
 			var mobileElement = document.createElement("div");
-			mobileElement.setAttribute("id", 'ID-' + Math.random().toString().substring(2));
+			mobileElement.setAttribute("id", 'Id-' + Math.random().toString().substring(2));
 			Self.mobileId = mobileElement.id;
 			mobileElement.style.position = "absolute";
-			mobileElement.style.border = "1px solid red";
 			mobileElement.style.display = "none";
+			mobileElement.style.border = "1px solid red";
 			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
 				mobileElement.appendChild(Self.itemsSelected[i].cloneNode(true));
@@ -168,16 +168,16 @@ var JCR = function() {
 		} else {
 			unselect();
 			element.onmousemove = Self.mutipleSelect;
-			var mark = DOM.findFirstDescendantByClass(element, "div", "Mark");
-			var eDot = mark.parentNode;
-			mark.storeX = eXo.core.Browser.findMouseRelativeX(eDot, event);
-			mark.storeY = eXo.core.Browser.findMouseRelativeY(eDot, event);
-			mark.style.left = mark.storeX + "px";
-			mark.style.top = mark.storeY + "px";
-			mark.style.width = "0px";
-			mark.style.height = "0px";
-			mark.style.border = "1px dotted red";
-			mark.style.zIndex = 1;
+			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
+			var eDot = mask.parentNode;
+			mask.storeX = eXo.core.Browser.findMouseRelativeX(eDot, event);
+			mask.storeY = eXo.core.Browser.findMouseRelativeY(eDot, event);
+			mask.style.left = mask.storeX + "px";
+			mask.style.top = mask.storeY + "px";
+			mask.style.width = "0px";
+			mask.style.height = "0px";
+			mask.style.border = "1px dotted red";
+			mask.style.zIndex = 1;
 			//store position for all item
 			for( var i = 0 ; i < Self.allItems.length; ++i) {
 				Self.allItems[i].posX = Math.abs(eXo.core.Browser.findPosXInContainer(Self.allItems[i], element));
@@ -189,28 +189,34 @@ var JCR = function() {
 	JCR.prototype.mutipleSelect = function(event) {
 		var event = event || window.event;
 		var element = this;
-		var mark = DOM.findFirstDescendantByClass(element, "div", "Mark");
+		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
 		if (element.holdMouse) {
 				//select mutiple item by mouse
 				unselect();
-				var eDot = mark.parentNode;
-				mark.X = eXo.core.Browser.findMouseRelativeX(eDot, event);
-				mark.Y = eXo.core.Browser.findMouseRelativeY(eDot, event);
-				mark.deltaX = mark.X - mark.storeX;
-				mark.deltaY = mark.Y - mark.storeY;
-				//goc phan tu thu 3
-				if (mark.deltaX < 0 && mark.deltaY < 0) {
-					mark.style.top = mark.Y + "px";
-					mark.style.left = mark.X + "px";
-					mark.style.width = Math.abs(mark.deltaX) + "px";
-					mark.style.height = Math.abs(mark.deltaY) + "px";
+				var eDot = mask.parentNode;
+				mask.X = eXo.core.Browser.findMouseRelativeX(eDot, event);
+				mask.Y = eXo.core.Browser.findMouseRelativeY(eDot, event);
+				mask.deltaX = mask.X - mask.storeX;
+				mask.deltaY = mask.Y - mask.storeY;
+				// IV of +
+				if (mask.deltaX < 0 && mask.deltaY > 0) {
+					mask.style.top = mask.storeY + "px";
+					mask.style.left = mask.X + "px";
+					mask.style.width = Math.abs(mask.deltaX) + "px";
+					mask.style.height = mask.deltaY + "px";
+				// III of +
+				}	else if (mask.deltaX < 0 && mask.deltaY < 0) {
+					mask.style.top = mask.Y + "px";
+					mask.style.left = mask.X + "px";
+					mask.style.width = Math.abs(mask.deltaX) + "px";
+					mask.style.height = Math.abs(mask.deltaY) + "px";
 					//detect element 
 					for (var i in Self.allItems) {
 						if (Array.prototype[i]) continue;
 						var itemBox = Self.allItems[i];
 						var posX = itemBox.posX + itemBox.offsetWidth/2;
 						var posY = itemBox.posY + itemBox.offsetHeight/2;
-						if (mark.Y < posY && posY < mark.storeY) {
+						if (mask.Y < posY && posY < mask.storeY) {
 							itemBox.selected = true;
 							itemBox.style.background = "#ebf5ff";
 						} else {
@@ -218,25 +224,19 @@ var JCR = function() {
 							itemBox.style.background = "none";
 						}
 					}
-				//goc phan tu thu 4	
-				} else if (mark.deltaX < 0 && mark.deltaY > 0) {
-					mark.style.top = mark.storeY + "px";
-					mark.style.left = mark.X + "px";
-					mark.style.width = Math.abs(mark.deltaX) + "px";
-					mark.style.height = mark.deltaY + "px";
-				//goc phan tu thu 2
-				} else if (mark.deltaX > 0 && mark.deltaY < 0) {
-					mark.style.top = mark.Y + "px";
-					mark.style.left = mark.storeX + "px";
-					mark.style.width = mark.deltaX + "px";
-					mark.style.height = Math.abs(mark.deltaY) + "px";
+				// II	of +
+				} else if (mask.deltaX > 0 && mask.deltaY < 0) {
+					mask.style.top = mask.Y + "px";
+					mask.style.left = mask.storeX + "px";
+					mask.style.width = mask.deltaX + "px";
+					mask.style.height = Math.abs(mask.deltaY) + "px";
 					//detect element;
 					for (var i in Self.allItems) {
 						if (Array.prototype[i]) continue;
 						var itemBox = Self.allItems[i];
 						var posX = itemBox.posX + itemBox.offsetWidth/2;
 						var posY = itemBox.posY + itemBox.offsetHeight/2;
-						if (mark.Y < posY && posY < mark.storeY ) {
+						if (mask.Y < posY && posY < mask.storeY ) {
 							itemBox.selected = true;
 							itemBox.style.background = "#ebf5ff";
 						} else {
@@ -244,12 +244,12 @@ var JCR = function() {
 							itemBox.style.background = "none";
 						}
 					}
-				//goc phan thu thu 1
+				// I of +
 				} else {
-					mark.style.top = mark.storeY + "px";
-					mark.style.left = mark.storeX + "px";
-					mark.style.width = mark.deltaX + "px";
-					mark.style.height = mark.deltaY + "px";
+					mask.style.top = mask.storeY + "px";
+					mask.style.left = mask.storeX + "px";
+					mask.style.width = mask.deltaX + "px";
+					mask.style.height = mask.deltaY + "px";
 				}
 		}
 		
@@ -259,12 +259,12 @@ var JCR = function() {
 		var event = event || window.event;
 		var element = this;
 		element.holdMouse = null;
-		var mark = DOM.findFirstDescendantByClass(element, "div", "Mark");
-		mark.style.width = "0px";
-		mark.style.height = "0px";
-		mark.style.top = "0px";
-		mark.style.left = "0px";
-		mark.style.border = "none";
+		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
+		mask.style.width = "0px";
+		mask.style.height = "0px";
+		mask.style.top = "0px";
+		mask.style.left = "0px";
+		mask.style.border = "none";
 		//select item
 		var item = null;
 		for(var i in Self.allItems) {
@@ -290,8 +290,14 @@ var JCR = function() {
 			var context = DOM.findFirstDescendantByClass(actionArea, "div", "ItemContextMenu");
 			contextMenu.innerHTML = context.innerHTML;
 			contextMenu.style.display = "block";
+			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
 			var Y = eXo.core.Browser.findMouseYInPage(event);
+			var portWidth = eXo.core.Browser.getBrowserWidth();
+			var portHeight = eXo.core.Browser.getBrowserHeight();
+			var contentMenu = DOM.findFirstChildByClass(contextMenu, "div", "UIRightClickPopupMenu");
+			if (event.clientX + contentMenu.offsetWidth > portWidth) X -= contentMenu.offsetWidth;
+			if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
 			contextMenu.style.top = Y + 5 + "px";
 			contextMenu.style.left = X + 5 + "px";
 			
@@ -331,10 +337,18 @@ var JCR = function() {
 			var context = DOM.findFirstDescendantByClass(actionArea, "div", "GroundContextMenu");
 			contextMenu.innerHTML = context.innerHTML;
 			contextMenu.style.display = "block";
+			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
 			var Y = eXo.core.Browser.findMouseYInPage(event);
+			var portWidth = eXo.core.Browser.getBrowserWidth();
+			var portHeight = eXo.core.Browser.getBrowserHeight();
+			var contentMenu = DOM.findFirstChildByClass(contextMenu, "div", "UIRightClickPopupMenu");
+			if (event.clientX + contentMenu.offsetWidth > portWidth) X -= contentMenu.offsetWidth;
+			if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
 			contextMenu.style.top = Y + 5 + "px";
 			contextMenu.style.left = X + 5 + "px";
+			
+			contextMenu.onmouseup = Self.hideContextMenu;
 	};
 	
 	// hide contex menu
@@ -393,4 +407,4 @@ var JCR = function() {
 	}
 };
 
-eXo.ecm.JCR = new JCR();
+eXo.ecm.JCREvent = new JCR();

@@ -2,7 +2,7 @@ function ECMUtils() {
 	var Self = this;
 
 	//set private property;
-	var DOMUtils = eXo.core.DOMUtil;
+	var DOM = eXo.core.DOMUtil;
 	var Browser = eXo.core.Browser;
 	var RightClick = eXo.webui.UIRightClickPopupMenu;
 	
@@ -18,10 +18,10 @@ function ECMUtils() {
 		if(document.getElementById("UIPageDesktop")) {
 			Self.fixHeight(portletId) ;
 			var uiPageDeskTop = document.getElementById("UIPageDesktop");
-			var uiJCRExplorers = DOMUtils.findDescendantsByClass(uiPageDeskTop, 'div', 'UIJCRExplorer') ;
+			var uiJCRExplorers = DOM.findDescendantsByClass(uiPageDeskTop, 'div', 'UIJCRExplorer') ;
 			if (uiJCRExplorers.length) {
 				for (var i = 0; i < uiJCRExplorers.length; i++) {
-					var uiResizeBlock = DOMUtils.findAncestorByClass(uiJCRExplorers[i], "UIResizableBlock");
+					var uiResizeBlock = DOM.findAncestorByClass(uiJCRExplorers[i], "UIResizableBlock");
 					if (uiResizeBlock) uiResizeBlock.style.overflow = "hidden";
 				}
 			}
@@ -30,10 +30,10 @@ function ECMUtils() {
 	
 	ECMUtils.prototype.fixHeight = function(portletId) {
 		var portlet = document.getElementById(portletId) ;
-		var refElement = DOMUtils.findAncestorByClass(portlet, "UIApplication") ;
+		var refElement = DOM.findAncestorByClass(portlet, "UIApplication") ;
 		if (refElement == null) return;
 		var delta = (parseInt(refElement.style.height) - portlet.offsetHeight);
-		var resizeObj = DOMUtils.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
+		var resizeObj = DOM.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
 		if(resizeObj.length) {
 			for(var i = 0; i < resizeObj.length; i++) {
 				resizeObj[i].style.height = (resizeObj[i].offsetHeight + delta) + "px" ;
@@ -44,8 +44,8 @@ function ECMUtils() {
 	ECMUtils.prototype.clickLeftMouse = function(event, clickedElement, position, option) {
 		var event = event || window.event;
 		event.cancelBubble = true;
-		popupSelector = DOMUtils.findAncestorByClass(clickedElement, "UIPopupSelector");
-		showBlock = DOMUtils.findFirstDescendantByClass(popupSelector,"div", "UISelectContent");
+		popupSelector = DOM.findAncestorByClass(clickedElement, "UIPopupSelector");
+		showBlock = DOM.findFirstDescendantByClass(popupSelector,"div", "UISelectContent");
 		if(option == 1) {
 			showBlock.style.width = (popupSelector.offsetWidth - 2) + "px";
 		}
@@ -72,8 +72,8 @@ function ECMUtils() {
 	ECMUtils.prototype.initVote = function(voteId, rate) {
 		var vote = document.getElementById(voteId) ;
 		vote.rate = rate = parseInt(rate) ;
-		var optsContainer = DOMUtils.findFirstDescendantByClass(vote, "div", "OptionsContainer") ;
-		var options = DOMUtils.getChildrenByTagName(optsContainer, "div") ;
+		var optsContainer = DOM.findFirstDescendantByClass(vote, "div", "OptionsContainer") ;
+		var options = DOM.getChildrenByTagName(optsContainer, "div") ;
 		for(var i = 0; i < options.length; i++) {
 			options[i].onmouseover = Self.overVote ;
 			if(i < rate) options[i].className = "RatedVote" ;
@@ -94,8 +94,8 @@ function ECMUtils() {
 	};
 	
 	ECMUtils.prototype.overVote = function(event) {
-		var optionsContainer = DOMUtils.findAncestorByClass(this, "OptionsContainer") ;
-		var opts = DOMUtils.getChildrenByTagName(optionsContainer, "div") ;
+		var optionsContainer = DOM.findAncestorByClass(this, "OptionsContainer") ;
+		var opts = DOM.getChildrenByTagName(optionsContainer, "div") ;
 		var i = opts.length;
 		for(--i; i >= 0; i--) {
 			if(opts[i] == this) break ;
@@ -125,7 +125,7 @@ function ECMUtils() {
 	
 	ECMUtils.prototype.collapseExpand = function(element) {
 		var node = element.parentNode ;
-		var subGroup = DOMUtils.findFirstChildByClass(node, "div", "NodeGroup") ;
+		var subGroup = DOM.findFirstChildByClass(node, "div", "NodeGroup") ;
 		if(!subGroup) return false;
 		if(subGroup.style.display == "none") {
 			if (element.className == "ExpandIcon") 	element.className = "CollapseIcon" ;
@@ -139,8 +139,8 @@ function ECMUtils() {
 	
 	ECMUtils.prototype.collapseExpandPart = function(element) {
 		var node = element.parentNode ;
-		var subGroup1 = DOMUtils.findFirstChildByClass(node, "div", "NodeGroup1") ;
-		var subGroup2 = DOMUtils.findFirstChildByClass(node, "div", "NodeGroup2") ;
+		var subGroup1 = DOM.findFirstChildByClass(node, "div", "NodeGroup1") ;
+		var subGroup2 = DOM.findFirstChildByClass(node, "div", "NodeGroup2") ;
 		if (subGroup1.style.display == "none") {
 			if (element.className == "CollapseIcon") 	element.className = "ExpandIcon";
 			subGroup1.style.display = "block";
@@ -270,7 +270,7 @@ function ECMUtils() {
 			Self.contextMenuId = 'Id-' + Math.random().toString().substring(2);
 			Self.actionAreaId = actionAreaId;
 			var actionArea = document.getElementById(actionAreaId);
-			Self.allItems = DOMUtils.findDescendantsByClass(actionArea, "div", "ActionIconBox");
+			Self.allItems = DOM.findDescendantsByClass(actionArea, "div", "ActionIconBox");
 			var mousedown = null;
 			for (var i in Self.allItems) {
 				if (Array.prototype[i]) continue;
@@ -332,8 +332,8 @@ function ECMUtils() {
 			mobileElement.setAttribute("id", 'Id-' + Math.random().toString().substring(2));
 			Self.mobileId = mobileElement.id;
 			mobileElement.style.position = "absolute";
-			mobileElement.style.border = "1px solid red";
 			mobileElement.style.display = "none";
+			mobileElement.style.border = "1px solid red";
 			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
 				mobileElement.appendChild(Self.itemsSelected[i].cloneNode(true));
@@ -419,16 +419,16 @@ function ECMUtils() {
 		} else {
 			unselect();
 			element.onmousemove = Self.mutipleSelect;
-			var mark = DOMUtils.findFirstDescendantByClass(element, "div", "Mark");
-			var eDot = mark.parentNode;
-			mark.storeX = eXo.core.Browser.findMouseRelativeX(eDot, event);
-			mark.storeY = eXo.core.Browser.findMouseRelativeY(eDot, event);
-			mark.style.left = mark.storeX + "px";
-			mark.style.top = mark.storeY + "px";
-			mark.style.width = "0px";
-			mark.style.height = "0px";
-			mark.style.border = "1px dotted red";
-			mark.style.zIndex = 1;
+			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
+			var eDot = mask.parentNode;
+			mask.storeX = eXo.core.Browser.findMouseRelativeX(eDot, event);
+			mask.storeY = eXo.core.Browser.findMouseRelativeY(eDot, event);
+			mask.style.left = mask.storeX + "px";
+			mask.style.top = mask.storeY + "px";
+			mask.style.width = "0px";
+			mask.style.height = "0px";
+			mask.style.border = "1px dotted red";
+			mask.style.zIndex = 1;
 			//store position for all item
 			for( var i = 0 ; i < Self.allItems.length; ++i) {
 				Self.allItems[i].posX = Math.abs(eXo.core.Browser.findPosXInContainer(Self.allItems[i], element));
@@ -440,92 +440,92 @@ function ECMUtils() {
 	ECMUtils.prototype.mutipleSelect = function(event) {
 		var event = event || window.event;
 		var element = this;
-		var mark = DOMUtils.findFirstDescendantByClass(element, "div", "Mark");
+		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
 		if (element.holdMouse) {
 			//select mutiple item by mouse
 			unselect();
-			var eDot = mark.parentNode;
-			mark.X = eXo.core.Browser.findMouseRelativeX(eDot, event);
-			mark.Y = eXo.core.Browser.findMouseRelativeY(eDot, event);
-			mark.deltaX = mark.X - mark.storeX;
-			mark.deltaY = mark.Y - mark.storeY;
-			//goc phan tu thu 3
-			if (mark.deltaX < 0 && mark.deltaY > 0) {
-				mark.style.top = mark.storeY + "px";
-				mark.style.left = mark.X + "px";
-				mark.style.width = Math.abs(mark.deltaX) + "px";
-				mark.style.height = mark.deltaY + "px";
+			var eDot = mask.parentNode;
+			mask.X = eXo.core.Browser.findMouseRelativeX(eDot, event);
+			mask.Y = eXo.core.Browser.findMouseRelativeY(eDot, event);
+			mask.deltaX = mask.X - mask.storeX;
+			mask.deltaY = mask.Y - mask.storeY;
+			//IV of +
+			if (mask.deltaX < 0 && mask.deltaY > 0) {
+				mask.style.top = mask.storeY + "px";
+				mask.style.left = mask.X + "px";
+				mask.style.width = Math.abs(mask.deltaX) + "px";
+				mask.style.height = mask.deltaY + "px";
 				//detect element;
 				for (var i = 0; i < Self.allItems.length; ++ i) {
 					var itemBox = Self.allItems[i];
 					var posX = itemBox.posX + itemBox.offsetWidth/2;
 					var posY = itemBox.posY + itemBox.offsetHeight/2;
-					if (mark.X < posX && posX < mark.storeX &&
-							posY < mark.Y && mark.storeY < posY) {
-						itemBox.isSelect = true;
+					if (mask.X < posX && posX < mask.storeX &&
+							posY < mask.Y && mask.storeY < posY) {
+						itemBox.selected = true;
 						itemBox.style.background = "#ebf5ff";
 					} else {
-						itemBox.isSelect = null;
+						itemBox.selected = null;
 						itemBox.style.background = "none";
 					}
 				}
-			//goc phan tu thu 4	
-			} else if (mark.deltaX < 0 && mark.deltaY < 0) {
-				mark.style.top = mark.Y + "px";
-				mark.style.left = mark.X + "px";
-				mark.style.width = Math.abs(mark.deltaX) + "px";
-				mark.style.height = Math.abs(mark.deltaY) + "px";
+			//III of +
+			} else if (mask.deltaX < 0 && mask.deltaY < 0) {
+				mask.style.top = mask.Y + "px";
+				mask.style.left = mask.X + "px";
+				mask.style.width = Math.abs(mask.deltaX) + "px";
+				mask.style.height = Math.abs(mask.deltaY) + "px";
 				//detect element;
 				for (var i = 0; i < Self.allItems.length; ++ i) {
 					var itemBox = Self.allItems[i];
 					var posX = itemBox.posX + itemBox.offsetWidth/2;
 					var posY = itemBox.posY + itemBox.offsetHeight/2;
-					if (mark.X < posX && posX < mark.storeX &&
-							mark.Y < posY && posY < mark.storeY) {
-						itemBox.isSelect = true;
+					if (mask.X < posX && posX < mask.storeX &&
+							mask.Y < posY && posY < mask.storeY) {
+						itemBox.selected = true;
 						itemBox.style.background = "#ebf5ff";
 					} else {
-						itemBox.isSelect = null;
+						itemBox.selected = null;
 						itemBox.style.background = "none";
 					}
 				}
-			//goc phan tu thu 2
-			} else if (mark.deltaX > 0 && mark.deltaY < 0) {
-				mark.style.top = mark.Y + "px";
-				mark.style.left = mark.storeX + "px";
-				mark.style.width = mark.deltaX + "px";
-				mark.style.height = Math.abs(mark.deltaY) + "px";
+			//II of +
+			} else if (mask.deltaX > 0 && mask.deltaY < 0) {
+				mask.style.top = mask.Y + "px";
+				mask.style.left = mask.storeX + "px";
+				mask.style.width = mask.deltaX + "px";
+				mask.style.height = Math.abs(mask.deltaY) + "px";
 				//detect element;
 				for (var i = 0; i < Self.allItems.length; ++ i) {
 					var itemBox = Self.allItems[i];
 					var posX = itemBox.posX + itemBox.offsetWidth/2;
 					var posY = itemBox.posY + itemBox.offsetHeight/2;
-					if ( posX < mark.X && mark.storeX < posX&&
-							mark.Y < posY && posY < mark.storeY ) {
-							itemBox.isSelect = true;
+					if ( posX < mask.X && mask.storeX < posX&&
+							mask.Y < posY && posY < mask.storeY ) {
+							itemBox.selected = true;
 							itemBox.style.background = "#ebf5ff";
 					} else {
-						itemBox.isSelect = null;
+						itemBox.selected = null;
 						itemBox.style.background = "none";
 					}
 				}
-			//goc phan thu thu 1
+			//I of +
 			} else {
-				mark.style.top = mark.storeY + "px";
-				mark.style.left = mark.storeX + "px";
-				mark.style.width = mark.deltaX + "px";
-				mark.style.height = mark.deltaY + "px";
+				mask.style.top = mask.storeY + "px";
+				mask.style.left = mask.storeX + "px";
+				mask.style.width = mask.deltaX + "px";
+				mask.style.height = mask.deltaY + "px";
 				//detect element;
 				for (var i = 0; i < Self.allItems.length; ++ i) {
 					var itemBox = Self.allItems[i];
 					var posX = itemBox.posX + itemBox.offsetWidth/2;
 					var posY = itemBox.posY + itemBox.offsetHeight/2;
-					if (mark.storeX < posX && posX < mark.X &&
-							mark.storeY < posY && posY < mark.Y) {
-						itemBox.isSelect = true;
+					if (mask.storeX < posX && posX < mask.X &&
+							mask.storeY < posY && posY < mask.Y) {
+						itemBox.selected = true;
 						itemBox.style.background = "#ebf5ff";
 					} else {
-						itemBox.isSelect = null;
+						itemBox.selected = null;
 						itemBox.style.background = "none";
 					}
 				}
@@ -537,12 +537,12 @@ function ECMUtils() {
 		var event = event || window.event;
 		var element = this;
 		element.holdMouse = null;
-		var mark = DOMUtils.findFirstDescendantByClass(element, "div", "Mark");
-		mark.style.width = "0px";
-		mark.style.height = "0px";
-		mark.style.top = "0px";
-		mark.style.left = "0px";
-		mark.style.border = "none";
+		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
+		mask.style.width = "0px";
+		mask.style.height = "0px";
+		mask.style.top = "0px";
+		mask.style.left = "0px";
+		mask.style.border = "none";
 		//select item
 		var item = null;
 		for(var i in Self.allItems) {
@@ -565,11 +565,17 @@ function ECMUtils() {
 				document.body.appendChild(contextMenu);
 			}
 			var actionArea = document.getElementById(Self.actionAreaId);
-			var context = DOMUtils.findFirstDescendantByClass(actionArea, "div", "ItemContextMenu");
+			var context = DOM.findFirstDescendantByClass(actionArea, "div", "ItemContextMenu");
 			contextMenu.innerHTML = context.innerHTML;
 			contextMenu.style.display = "block";
+			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
 			var Y = eXo.core.Browser.findMouseYInPage(event);
+			var portWidth = eXo.core.Browser.getBrowserWidth();
+			var portHeight = eXo.core.Browser.getBrowserHeight();
+			var contentMenu = DOM.findFirstChildByClass(contextMenu, "div", "UIRightClickPopupMenu");
+			if (event.clientX + contentMenu.offsetWidth > portWidth) X -= contentMenu.offsetWidth;
+			if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
 			contextMenu.style.top = Y + 5 + "px";
 			contextMenu.style.left = X + 5 + "px";
 			
@@ -579,8 +585,8 @@ function ECMUtils() {
 				if (Array.prototype[i]) continue;
 				if (Self.itemsSelected[i].getAttribute('locked') == "true") checkUnlock = true;
 			}
-			var lockAction = DOMUtils.findFirstDescendantByClass(contextMenu, "div", "Lock16x16Icon");
-			var unlockAction = DOMUtils.findFirstDescendantByClass(contextMenu, "div", "Unlock16x16Icon");
+			var lockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Lock16x16Icon");
+			var unlockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Unlock16x16Icon");
 
 			if (checkUnlock) {
 				unlockAction.parentNode.style.display = "block";
@@ -605,13 +611,21 @@ function ECMUtils() {
 				document.body.appendChild(contextMenu);
 			}
 			var actionArea = document.getElementById(Self.actionAreaId);
-			var context = DOMUtils.findFirstDescendantByClass(actionArea, "div", "GroundContextMenu");
+			var context = DOM.findFirstDescendantByClass(actionArea, "div", "GroundContextMenu");
 			contextMenu.innerHTML = context.innerHTML;
 			contextMenu.style.display = "block";
+			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
 			var Y = eXo.core.Browser.findMouseYInPage(event);
+			var portWidth = eXo.core.Browser.getBrowserWidth();
+			var portHeight = eXo.core.Browser.getBrowserHeight();
+			var contentMenu = DOM.findFirstChildByClass(contextMenu, "div", "UIRightClickPopupMenu");
+			if (event.clientX + contentMenu.offsetWidth > portWidth) X -= contentMenu.offsetWidth;
+			if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
+			
 			contextMenu.style.top = Y + 5 + "px";
 			contextMenu.style.left = X + 5 + "px";
+			
 	};
 	
 	// hide contex menu
