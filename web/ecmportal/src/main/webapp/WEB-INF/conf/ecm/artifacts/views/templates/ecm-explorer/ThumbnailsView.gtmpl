@@ -12,7 +12,7 @@
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/'); 
-  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.ECMUtils.initAllEvent('${componentId}-$viewComponentId');}");
+  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initAllEvent('${componentId}-$viewComponentId')");
 %>
 <div id="${componentId}-$viewComponentId">	
 	<div style="position: relative; width: 0px; height: 0px;">
@@ -77,7 +77,7 @@
 				 </div>	
 			 </div>
 		</div>
-		<div class="Mark" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px">
+		<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px">
 		</div>
 	</div>
 	<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;"  >
@@ -136,7 +136,7 @@
 		          if(name.length() < 20) subName = name ;
 		          else subName = name.substring(0,15) + "..." ;
 		        %>
-		        <div class="ActionIconLabel" style="width: auto;">
+		        <div class="ActionIconLabel" style="width: auto;-moz-use-select: none;">
 		          <a class="ActionLabel" title="$name">$subName</a>
 		        </div>
 		      </div> 
