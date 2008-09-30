@@ -146,7 +146,7 @@
 .UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
   background: url('DefaultSkin/background/HardDisk.gif') no-repeat center bottom;
   height: 15px;
-  margin-left: 10px;
+  padding-left: 20px;
   float: left;
 }
 

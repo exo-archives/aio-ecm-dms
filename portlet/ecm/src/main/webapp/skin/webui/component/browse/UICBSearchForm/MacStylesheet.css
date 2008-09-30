@@ -27,7 +27,7 @@
  float: left;
  width: 24px; height: 24px;
  margin-left: 10px;
- background: url('../DefaultSkin/background/CBSearchButton.gif') no-repeat ;
+ background: url('../DefaultSkin/background/BrowseDefault.gif') no-repeat left -40px;
 }
 
 .UICBSearchForm form {

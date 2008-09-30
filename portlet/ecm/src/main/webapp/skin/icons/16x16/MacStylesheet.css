@@ -117,13 +117,13 @@
  
 .ExpandIcon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGray.gif') no-repeat left -16px;
+  background: url('MacSkin/SmallGray.gif') no-repeat left -24px;
   cursor: pointer;
 }
 
 .CollapseIcon  {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGray.gif') no-repeat left top;
+  background: url('MacSkin/SmallGray.gif') no-repeat left top;
   cursor: pointer;
 }
 
