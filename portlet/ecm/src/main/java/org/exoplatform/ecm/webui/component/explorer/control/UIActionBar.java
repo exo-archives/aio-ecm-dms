@@ -799,7 +799,9 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
         return;
       }
+      UIAuditingInfo uiAuditingInfo = uiExplorer.createUIComponent(UIAuditingInfo.class, null, null);
       UIPopupContainer.activate(UIAuditingInfo.class, null, 700, 500);
+      uiAuditingInfo.updateGrid();
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
       return;
     }
