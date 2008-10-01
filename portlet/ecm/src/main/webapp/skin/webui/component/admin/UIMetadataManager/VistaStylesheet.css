@@ -72,7 +72,7 @@
 
 .UIECMAdminPortlet .MetadataInfo .GridTitleBar .GridTitleRightBar {
   line-height: 21px;
-  background: url('DefaultSkin/background/InfoBar.gif') no-repeat left -21px;
+  background: url('DefaultSkin/background/InfoBar.gif') no-repeat right -21px;
   padding-right: 21px;
 }
 
