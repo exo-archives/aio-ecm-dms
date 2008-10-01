@@ -28,6 +28,7 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
+import javax.jcr.nodetype.NodeType;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
@@ -41,6 +42,8 @@ import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.resources.ResourceBundleService;
+
+import com.lowagie.tools.concat_pdf;
 
 /**
  * Created by The eXo Platform SAS
@@ -155,6 +158,17 @@ public class PublicationServiceImpl implements PublicationService {
     publicationPlugins_.get(lifecycle).changeState(node, "enrolled", new HashMap<String,String>());
   }
 
+  public void unsubcribeLifecycle(Node node) throws NotInPublicationLifecycleException, Exception {
+    if(!isNodeEnrolledInLifecycle(node)) throw new NotInPublicationLifecycleException();    
+    //remove all extended publication mixin nodetype for this node
+    String lifecycleName = getNodeLifecycleName(node);
+    log.info("The document: " + node.getName() + " unsubcribe publication lifecycle: " + lifecycleName);
+    for(NodeType nodeType: node.getMixinNodeTypes()) {
+      if(!nodeType.isNodeType(PUBLICATION)) continue;      
+      node.removeMixin(nodeType.getName());
+    }    
+    node.getSession().save();               
+  }
   /* (non-Javadoc)
    * @see org.exoplatform.services.cms.publication.PublicationService#getCurrentState(javax.jcr.Node)
    */
@@ -231,13 +245,13 @@ public class PublicationServiceImpl implements PublicationService {
 //  log.info("###################");
 //  log.info("#  getStateImage  #");
 //  log.info("###################\n");    
-  if (!isNodeEnrolledInLifecycle(node)) {
-    throw new NotInPublicationLifecycleException();      
+    if (!isNodeEnrolledInLifecycle(node)) {
+      throw new NotInPublicationLifecycleException();      
+    }
+    String lifecycleName = getNodeLifecycleName(node);
+    PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
+    return nodePlugin.getStateImage(node, locale);
   }
-  String lifecycleName = getNodeLifecycleName(node);
-  PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
-  return nodePlugin.getStateImage(node, locale);
-}
 
 
   /* (non-Javadoc)
@@ -275,5 +289,5 @@ public class PublicationServiceImpl implements PublicationService {
 
     String result = resourceBundle.getString(key);
     return String.format(result,values);
-  }
+  }  
 }
