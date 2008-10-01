@@ -12,10 +12,10 @@
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/'); 
-  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.ECMUtils.initAllEvent('${componentId}-$viewComponentId')}");
+  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.ECMUtils.initAllEvent('${componentId}-$viewComponentId');}");
 %>
 <div id="${componentId}-$viewComponentId">	
-	<div style="position: relative; width: 0px; height: 0px;">
+	<div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
 		<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px">
 		</div>
 		<div class="ItemContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
@@ -125,7 +125,7 @@
 	       				objectId="<%=data.getPath()%>" workspaceName="<%=preferenceWS%>" ondblclick="$actionLink">
 	        <div style="height: auto; width: auto; border: none;">
 						<div class="NodeLabel">
-							<div class="ActionIcon" >
+							<div class="ActionIcon">
 								 <a style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></a>
 							</div>
 						 </div>
@@ -134,7 +134,7 @@
 		          if(name.length() < 20) subName = name ;
 		          else subName = name.substring(0,15) + "..." ;
 		        %>
-		        <div class="ActionIconLabel" style="width: auto;-moz-use-select: none;">
+		        <div class="ActionIconLabel" style="width: auto; -moz-user-select: none;">
 		          <a class="ActionLabel" title="$name">$subName</a>
 		        </div>
 		      </div> 

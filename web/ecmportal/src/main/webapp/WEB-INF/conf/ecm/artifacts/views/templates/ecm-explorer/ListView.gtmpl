@@ -22,7 +22,7 @@
   rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.JCREvent.initAllEvent('${componentId}-$viewComponentId');}");
 %>
 <div id="${componentId}-$viewComponentId" class="JCRListView" style="padding-bottom: 30px;">	
-	<div class="Dot" style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
+	<div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
 		<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px">
 		</div>
 		<div class="ItemContextMenu" style="position: absolute;

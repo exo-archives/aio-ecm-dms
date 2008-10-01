@@ -267,29 +267,32 @@ function ECMUtils() {
 	ECMUtils.prototype.enableDragDrop = null;
 	
 	ECMUtils.prototype.initAllEvent = function(actionAreaId) {
-			Self.contextMenuId = 'Id-' + Math.random().toString().substring(2);
-			Self.actionAreaId = actionAreaId;
-			var actionArea = document.getElementById(actionAreaId);
-			Self.allItems = DOM.findDescendantsByClass(actionArea, "div", "ActionIconBox");
-			var mousedown = null;
-			for (var i in Self.allItems) {
-				if (Array.prototype[i]) continue;
-				if (Self.allItems[i].hasAttribute("onmousedown")) {
-					mousedown = Self.allItems[i].getAttribute("onmousedown");
-					Self.allItems[i].setAttribute("mousedown", mousedown);
-					Self.allItems[i].onmousedown = null;
-					Self.allItems[i].removeAttribute("onmousedown");
-				}
-				Self.allItems[i].onmouseover = Self.mouseOverItem;
-				Self.allItems[i].onmousedown = Self.mouseDownItem;
-				Self.allItems[i].onmouseup = Self.mouseUpItem;
-				Self.allItems[i].onmouseout = Self.mouseOutItem;
+		Self.contextMenuId = "JCRContextMenu";
+		Self.actionAreaId = actionAreaId;
+		var actionArea = document.getElementById(actionAreaId);
+		Self.allItems = DOM.findDescendantsByClass(actionArea, "div", "ActionIconBox");
+		var mousedown = null;
+		for (var i in Self.allItems) {
+			if (Array.prototype[i]) continue;
+			if (Self.allItems[i].hasAttribute("onmousedown")) {
+				mousedown = Self.allItems[i].getAttribute("onmousedown");
+				Self.allItems[i].setAttribute("mousedown", mousedown);
+				Self.allItems[i].onmousedown = null;
+				Self.allItems[i].removeAttribute("onmousedown");
 			}
-			actionArea.onmousedown = Self.mouseDownGround;
-			actionArea.onmouseup = Self.mouseUpGround;
+			Self.allItems[i].onmouseover = Self.mouseOverItem;
+			Self.allItems[i].onmousedown = Self.mouseDownItem;
+			Self.allItems[i].onmouseup = Self.mouseUpItem;
+			Self.allItems[i].onmouseout = Self.mouseOutItem;
+		}
+		actionArea.onmousedown = Self.mouseDownGround;
+		actionArea.onmouseup = Self.mouseUpGround;
+		//remove context menu
+		var contextMenu = document.getElementById(Self.contextMenuId);
+		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
 	};
 	
-	
+	//event in item
 	ECMUtils.prototype.mouseOverItem = function(event) {
 		var event = event || window.event;
 		var element = this;
@@ -302,7 +305,6 @@ function ECMUtils() {
 		if (!element.selected) element.style.background = "none";
 	};
 	
-	//event in item
 	ECMUtils.prototype.mouseDownItem = function(event) {
 		var event = event || window.event;
 		event.cancelBubble = true;
@@ -314,7 +316,6 @@ function ECMUtils() {
 		
 		if (document.getElementById(Self.mobileId)) {
 			mobileElement = document.getElementById(Self.mobileId);
-			mobileElement.innerHTML = "";
 			mobileElement.parentNode.removeChild(mobileElement);
 		}
 		eXo.webui.UIRightClickPopupMenu.hideContextMenu();
@@ -372,7 +373,6 @@ function ECMUtils() {
 	
 	ECMUtils.prototype.mouseUpItem = function(event) {
 		var event = event || window.event;
-		//event.cancelBubble = true;
 		var element = this;
 		Self.enableDragDrop = null;
 		document.onmousemove = null;
@@ -397,6 +397,7 @@ function ECMUtils() {
 			}
 			
 		}else {
+			event.cancelBubble = true;
 			if (inArray(Self.itemsSelected, element) && Self.itemsSelected.length > 1){
 				Self.showItemContextMenu(event, element);
 			} else {
@@ -414,9 +415,7 @@ function ECMUtils() {
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		var leftClick = !rightClick;
 		Self.hideContextMenu();
-		if (rightClick) {
-			Self.showGroundContextMenu(event, element);
-		} else {
+		if (leftClick) {
 			unselect();
 			element.onmousemove = Self.mutipleSelect;
 			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
@@ -539,20 +538,26 @@ function ECMUtils() {
 		var event = event || window.event;
 		var element = this;
 		element.holdMouse = null;
+		element.onmousemove = null;
 		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
 		mask.style.width = "0px";
 		mask.style.height = "0px";
 		mask.style.top = "0px";
 		mask.style.left = "0px";
 		mask.style.border = "none";
-		//select item
+		//collect item
 		var item = null;
 		for(var i in Self.allItems) {
 			if (Array.prototype[i]) continue;
 			item = Self.allItems[i];
 			if (item.selected && !inArray(Self.itemsSelected, item)) Self.itemsSelected.push(item);
 		}
-		element.onmousemove = null;
+		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
+		var leftClick = !rightClick;
+		if (rightClick) {
+			event.cancelBubble = true;
+			Self.showGroundContextMenu(event, element);
+		} 
 	} ;
 	
 	// working with item context menu
@@ -609,7 +614,7 @@ function ECMUtils() {
 	};
 	// working with ground context menu
 	ECMUtils.prototype.showGroundContextMenu = function(event, element) {
-						var event = event || window.event;
+			var event = event || window.event;
 			event.cancelBubble = true;
 			unselect();
 			if (document.getElementById(Self.contextMenuId)) {
@@ -641,6 +646,7 @@ function ECMUtils() {
 			contextMenu.style.left = X + 5 + "px";
 			
 			contextMenu.onmouseup = Self.hideContextMenu;
+			document.body.onmousedown = Self.hideContextMenu;
 	};
 	
 	// hide context menu

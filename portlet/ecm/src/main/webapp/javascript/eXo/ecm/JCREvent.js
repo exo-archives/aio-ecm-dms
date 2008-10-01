@@ -14,30 +14,45 @@ var JCR = function() {
 
 	//attach all event
 	JCR.prototype.initAllEvent = function(actionAreaId) {
-			Self.contextMenuId = 'Id-' + Math.random().toString().substring(2);
-			Self.actionAreaId = actionAreaId;
-			var actionArea = document.getElementById(actionAreaId);
+		Self.contextMenuId = "JCRContextMenu";
+		Self.actionAreaId = actionAreaId;
+		var actionArea = document.getElementById(actionAreaId);
 
-			Self.allItems = DOM.findDescendantsByClass(actionArea, "tr", "RowView");
-			var mousedown = null;
-			for (var i in Self.allItems) {
-				if (Array.prototype[i]) continue;
-				if (Self.allItems[i].hasAttribute("onmousedown")) {
-					mousedown = Self.allItems[i].getAttribute("onmousedown");
-					Self.allItems[i].setAttribute("mousedown", mousedown);
-					Self.allItems[i].onmousedown = null;
-					Self.allItems[i].removeAttribute("onmousedown");
-				}
-				Self.allItems[i].onmouseover = Self.mouseOverItem;
-				Self.allItems[i].onmousedown = Self.mouseDownItem;
-				Self.allItems[i].onmouseup = Self.mouseUpItem;
-				Self.allItems[i].onmouseout = Self.mouseOutItem;
+		Self.allItems = DOM.findDescendantsByClass(actionArea, "tr", "RowView");
+		var mousedown = null;
+		for (var i in Self.allItems) {
+			if (Array.prototype[i]) continue;
+			if (Self.allItems[i].hasAttribute("onmousedown")) {
+				mousedown = Self.allItems[i].getAttribute("onmousedown");
+				Self.allItems[i].setAttribute("mousedown", mousedown);
+				Self.allItems[i].onmousedown = null;
+				Self.allItems[i].removeAttribute("onmousedown");
 			}
-			actionArea.onmousedown = Self.mouseDownGround;
-			actionArea.onmouseup = Self.mouseUpGround;
+			Self.allItems[i].onmouseover = Self.mouseOverItem;
+			Self.allItems[i].onmousedown = Self.mouseDownItem;
+			Self.allItems[i].onmouseup = Self.mouseUpItem;
+			Self.allItems[i].onmouseout = Self.mouseOutItem;
+		}
+		actionArea.onmousedown = Self.mouseDownGround;
+		actionArea.onmouseup = Self.mouseUpGround;
+		//remove context menu
+		var contextMenu = document.getElementById(Self.contextMenuId);
+		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
 	};
 	
 	//event in item
+	JCR.prototype.mouseOverItem = function(event) {
+		var event = event || window.event;
+		var element = this;
+		if (!element.selected) element.style.background = "#ecffe2";
+	};
+	
+	JCR.prototype.mouseOutItem = function(event) {
+		var event = event || window.event;
+		var element = this;
+		if (!element.selected) element.style.background = "none";
+	};
+	
 	JCR.prototype.mouseDownItem = function(event) {
 		var event = event || window.event;
 		event.cancelBubble = true;
@@ -95,11 +110,18 @@ var JCR = function() {
 				mobileElement.parentNode.removeChild(mobileElement);
 		}
 		document.onmousemove = null;
-	}
+	};
+	
+	JCR.prototype.clickItem = function(event, element, callback) {
+		var event = event || window.event;
+		unselect();
+		element.selected = true;
+		Self.itemsSelected = new Array(element);
+		element.style.background = "#ebf5ff";
+	};
 	
 	JCR.prototype.mouseUpItem = function(event) {
 		var event = event || window.event;
-		//event.cancelBubble = true;
 		var element = this;
 		Self.enableDragDrop = null;
 		document.onmousemove = null;
@@ -124,6 +146,7 @@ var JCR = function() {
 			}
 			
 		}else {
+			event.cancelBubble = true;
 			if (inArray(Self.itemsSelected, element) && Self.itemsSelected.length > 1){
 				Self.showItemContextMenu(event, element);
 			} else {
@@ -133,28 +156,6 @@ var JCR = function() {
 		}
 	};
 	
-	JCR.prototype.mouseOverItem = function(event) {
-		var event = event || window.event;
-		var element = this;
-		if (!element.selected) element.style.background = "#ecffe2";
-	};
-	
-	JCR.prototype.mouseOutItem = function(event) {
-		var event = event || window.event;
-		var element = this;
-		if (!element.selected) element.style.background = "none";
-	};
-	
-	JCR.prototype.clickItem = function(event, element, callback) {
-		var event = event || window.event;
-		unselect();
-		element.selected = true;
-		Self.itemsSelected = new Array(element);
-		element.style.background = "#ebf5ff";
-	};
-	
-
-	
 	//event in ground
 	JCR.prototype.mouseDownGround = function(event) {
 		var event = event || window.event;
@@ -163,9 +164,7 @@ var JCR = function() {
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		var leftClick = !rightClick;
 		Self.hideContextMenu();
-		if (rightClick) {
-			Self.showGroundContextMenu(event, element);
-		} else {
+		if (leftClick) {
 			unselect();
 			element.onmousemove = Self.mutipleSelect;
 			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
@@ -261,20 +260,26 @@ var JCR = function() {
 		var event = event || window.event;
 		var element = this;
 		element.holdMouse = null;
+		element.onmousemove = null;
 		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
 		mask.style.width = "0px";
 		mask.style.height = "0px";
 		mask.style.top = "0px";
 		mask.style.left = "0px";
 		mask.style.border = "none";
-		//select item
+		//collect item
 		var item = null;
 		for(var i in Self.allItems) {
 			if (Array.prototype[i]) continue;
 			item = Self.allItems[i];
 			if (item.selected && !inArray(Self.itemsSelected, item)) Self.itemsSelected.push(item);
 		}
-		element.onmousemove = null;
+		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
+		var leftClick = !rightClick;
+		if (rightClick) {
+			event.cancelBubble = true;
+			Self.showGroundContextMenu(event, element);
+		} 
 	} ;
 	
 	// working with item context menu
@@ -364,6 +369,7 @@ var JCR = function() {
 			contextMenu.style.left = X + 5 + "px";
 			
 			contextMenu.onmouseup = Self.hideContextMenu;
+			document.body.onmousedown = Self.hideContextMenu;
 		};
 	
 	// hide context menu
