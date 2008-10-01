@@ -18,7 +18,6 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -28,14 +27,13 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
-import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.ecm.publication.AlreadyInPublicationLifecycleException;
 import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -45,7 +43,6 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
 
-// TODO: Auto-generated Javadoc
 /*
  * Created by The eXo Platform SAS Author : Anh Do Ngoc anh.do@exoplatform.com
  * Sep 9, 2008
@@ -57,7 +54,7 @@ import org.exoplatform.webui.form.UIForm;
 @ComponentConfig(template = "app:/groovy/webui/component/UIGridWithButton.gtmpl", events = {
     @EventConfig(listeners = UIActivePublication.EnrolActionListener.class),
     @EventConfig(listeners = UIActivePublication.CancelActionListener.class) })
-public class UIActivePublication extends UIGrid implements UIPopupComponent {
+    public class UIActivePublication extends UIGrid implements UIPopupComponent {
 
   /** The Constant LIFECYCLE_NAME. */
   public final static String LIFECYCLE_NAME     = "LifecycleName";
@@ -81,8 +78,7 @@ public class UIActivePublication extends UIGrid implements UIPopupComponent {
    */
   public UIActivePublication() throws Exception {
     configure(LIFECYCLE_NAME, LIFECYCLE_FIELDS, LIFECYCLE_ACTION);
-    getUIPageIterator().setId("LifecyclesIterator");
-    updateLifecyclesGrid();
+    getUIPageIterator().setId("LifecyclesIterator");    
   }
 
   /**
@@ -102,11 +98,9 @@ public class UIActivePublication extends UIGrid implements UIPopupComponent {
   public void updateLifecyclesGrid() throws Exception {
     List<PublicationLifecycleBean> publicationLifecycleBeans = new ArrayList<PublicationLifecycleBean>();
     PublicationService publicationService = getApplicationComponent(PublicationService.class);
-    Collection<PublicationPlugin> publicationPlugins = publicationService.getPublicationPlugins()
-        .values();
+    Collection<PublicationPlugin> publicationPlugins = publicationService.getPublicationPlugins().values();
     if (publicationPlugins.size() != 0) {
-      for (Iterator<PublicationPlugin> iterator = publicationPlugins.iterator(); iterator.hasNext();) {
-        PublicationPlugin publicationPlugin = iterator.next();
+      for (PublicationPlugin publicationPlugin: publicationPlugins) {        
         PublicationLifecycleBean lifecycleBean = new PublicationLifecycleBean();
         lifecycleBean.setLifecycleName(publicationPlugin.getLifecycleName());
         lifecycleBean.setLifecycleDesc(publicationPlugin.getDescription());
@@ -115,8 +109,49 @@ public class UIActivePublication extends UIGrid implements UIPopupComponent {
     }
     ObjectPageList objectPageList = new ObjectPageList(publicationLifecycleBeans, 5);
     getUIPageIterator().setPageList(objectPageList);
+  } 
+  
+  public void enrolNodeInLifecycle(Node currentNode, String lifecycleName, WebuiRequestContext requestContext) throws Exception {
+    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);    
+    UIApplication uiApp = getAncestorOfType(UIApplication.class);
+    UIPublicationManager uiPublicationManager = uiJCRExplorer.createUIComponent(
+        UIPublicationManager.class, null, null);       
+    if (currentNode.isLocked()) {
+      String lockToken = LockUtil.getLockToken(currentNode);
+      if (lockToken != null)
+        uiJCRExplorer.getSession().addLockToken(lockToken);
+    }       
+    Node parentNode = currentNode.getParent();
+    if (parentNode.isLocked()) {
+      String lockToken1 = LockUtil.getLockToken(parentNode);
+      uiJCRExplorer.getSession().addLockToken(lockToken1);
+    }    
+    PublicationService publicationService = getApplicationComponent(PublicationService.class);
+    PublicationPresentationService publicationPresentationService = getApplicationComponent(PublicationPresentationService.class);
+    try {
+      publicationService.enrollNodeInLifecycle(currentNode, lifecycleName);
+    } catch (AlreadyInPublicationLifecycleException e) {
+      uiApp.addMessage(new ApplicationMessage("UIActivePublication.msg.already-enroled", null,
+          ApplicationMessage.ERROR));
+      requestContext.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    } catch (Exception e) {
+      e.printStackTrace();
+      uiApp.addMessage(new ApplicationMessage("UIActivePublication.msg.unknow-error",
+          new String[] { e.getMessage() }, ApplicationMessage.ERROR));
+      requestContext.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+    UIContainer container = createUIComponent(UIContainer.class, null, null);
+    UIForm uiFormPublicationManager = publicationPresentationService.getStateUI(currentNode, container);
+    uiPublicationManager.addChild(uiFormPublicationManager);
+    uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false);
+    UIPublicationLogList uiPublicationLogList = uiPublicationManager.getChild(UIPublicationLogList.class);
+    UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
+    UIPopupContainer.activate(uiPublicationManager, 700, 500);
+    uiPublicationLogList.setNode(uiJCRExplorer.getCurrentNode());
+    uiPublicationLogList.updateGrid();
   }
-
   /*
    * (non-Javadoc)
    * 
@@ -136,12 +171,8 @@ public class UIActivePublication extends UIGrid implements UIPopupComponent {
   /**
    * The Class PublicationLifecycleBean.
    */
-  public class PublicationLifecycleBean {
-
-    /** The lifecycle name. */
+  public class PublicationLifecycleBean {    
     private String lifecycleName;
-
-    /** The lifecycle desc. */
     private String lifecycleDesc;
 
     /**
@@ -224,61 +255,9 @@ public class UIActivePublication extends UIGrid implements UIPopupComponent {
     public void execute(Event<UIActivePublication> event) throws Exception {
       UIActivePublication uiActivePub = event.getSource();
       UIJCRExplorer uiJCRExplorer = uiActivePub.getAncestorOfType(UIJCRExplorer.class);
-      UIPopupContainer popupAction = uiJCRExplorer.getChild(UIPopupContainer.class);
-      UIApplication uiApp = uiActivePub.getAncestorOfType(UIApplication.class);
-      UIPublicationManager uiPublicationManager = uiJCRExplorer.createUIComponent(
-          UIPublicationManager.class, null, null);
-      TemplateService templateService = uiActivePub.getApplicationComponent(TemplateService.class);
-      RepositoryService repositoryService = uiActivePub
-          .getApplicationComponent(RepositoryService.class);
-      String currentRepository = repositoryService.getCurrentRepository().getConfiguration()
-          .getName();
-      Node currentNode = uiJCRExplorer.getCurrentNode();
-      if (currentNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(currentNode);
-        if (lockToken != null)
-          uiJCRExplorer.getSession().addLockToken(lockToken);
-      }
-      PublicationService publicationService = uiActivePub
-          .getApplicationComponent(PublicationService.class);
-      PublicationPresentationService publicationPresentationService = uiActivePub
-          .getApplicationComponent(PublicationPresentationService.class);
       String selectedLifecycle = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node parentNode = currentNode.getParent();
-      if (parentNode.isLocked()) {
-        String lockToken1 = LockUtil.getLockToken(parentNode);
-        uiJCRExplorer.getSession().addLockToken(lockToken1);
-      }
-      List<String> documentTypes = templateService.getDocumentTemplates(currentRepository);
-      if (!documentTypes.contains(currentNode.getPrimaryNodeType().getName())) {
-        uiApp.addMessage(new ApplicationMessage("UIActivePublication.msg.node-type-invalid", null,
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-      try {
-        publicationService.enrollNodeInLifecycle(currentNode, selectedLifecycle);
-      } catch (AlreadyInPublicationLifecycleException e) {
-        uiApp.addMessage(new ApplicationMessage("UIActivePublication.msg.already-enroled", null,
-            ApplicationMessage.ERROR));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch (Exception e) {
-        uiApp.addMessage(new ApplicationMessage("UIActivePublication.msg.unknow-error",
-            new String[] { e.getMessage() }, ApplicationMessage.ERROR));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-      UIContainer container = uiActivePub.createUIComponent(UIContainer.class, null, null);
-      UIForm uiFormPublicationManager = publicationPresentationService.getStateUI(currentNode,
-          container);
-      uiPublicationManager.addChild(uiFormPublicationManager);
-      uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false);
-      UIPublicationLogList uiPublicationLogList = uiPublicationManager
-          .getChild(UIPublicationLogList.class);
-      popupAction.activate(uiPublicationManager, 700, 500);
-      uiPublicationLogList.setNode(uiJCRExplorer.getCurrentNode());
-      uiPublicationLogList.updateGrid();
+      Node currentNode = uiJCRExplorer.getCurrentNode();
+      uiActivePub.enrolNodeInLifecycle(currentNode,selectedLifecycle,event.getRequestContext());
     }
   }
 }
