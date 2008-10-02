@@ -13,11 +13,13 @@
      .Comments .CommentBar .LeftCommentBar {
       padding-left: 5px;
       background: url('/ecm/skin/images/article/CommentBar.gif') no-repeat left top ;
+      height: 54px; line-height: 54px;
     }
     
     .Comments .CommentBar .RightCommentBar {
     	padding-right: 5px;
       background: url('/ecm/skin/images/article/CommentBar.gif') no-repeat right top;
+      height: 54px; line-height: 54px;
     }
     
     .Comments .CommentBar .MiddleCommentBar {    	
@@ -75,16 +77,19 @@
     .Comments .CommentBox .CommentBoxTopLeft {
     	padding-left:27px;  	
       background: url('/ecm/skin/images/article/CommentBox.gif') no-repeat left top;
+      height: 12px; line-height: 12px;
     }
     
     .Comments .CommentBox .CommentBoxTopRight {
       padding-right: 3px;
       background: url('/ecm/skin/images/article/CommentBox.gif') no-repeat right -30px;
+      height: 12px; line-height: 12px;
     }
     
     .Comments .CommentBox .CommentBoxTopCenter {
       height: 12px;
       background: url('/ecm/skin/images/article/CommentBox.gif') repeat-x left -12px;
+      height: 12px; line-height: 12px;
     }
    
     .Comments .CommentBox .CommentBoxMiddleLeft {
@@ -106,15 +111,17 @@
     .Comments .CommentBox .CommentBoxBottomLeft {
 			padding-left: 3px;
       background: url('/ecm/skin/images/article/CommentBox.gif') no-repeat left -24px ;
+      height: 3px; line-height: 3px;
     }
     
     .Comments .CommentBox .CommentBoxBottomRight {
     	padding-right: 3px;	
       background: url('/ecm/skin/images/article/CommentBox.gif') no-repeat right -24px;
+      height: 3px; line-height: 3px;
     }
     
     .Comments .CommentBox .CommentBoxBottomCenter {    	
-    	height: 3px;
+    	height: 3px; line-height: 3px;
       background: url('/ecm/skin/images/article/CommentBox.gif') repeat-x left -27px;
     }
 	</style>
