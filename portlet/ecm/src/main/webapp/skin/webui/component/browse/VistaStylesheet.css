@@ -357,6 +357,11 @@
   background: url('DefaultSkin/background/DefaultFolderIcon.gif') no-repeat ;
 }
 
+.UIBrowseContentPortlet .UISearchController .SearchResult .UICBSearchResults table {
+	*width: 99%;
+	margin: auto;
+}
+
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 
 ./*############################## -- Begin UIVoteForm   -- ##############################*/
