@@ -2,7 +2,7 @@
   import java.text.SimpleDateFormat ;
   def commentsList = uicomponent.getComments() ;
   if(commentsList.size() > 0) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a. EEE, MMM d, yy") ;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a. EEE, MMM d, yyyy") ;
     def lastComment = commentsList.get(0) ;
 %>
   <style>
