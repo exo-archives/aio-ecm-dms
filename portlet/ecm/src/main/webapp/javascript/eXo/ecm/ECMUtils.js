@@ -1,4 +1,4 @@
-function ECMUtils() {
+ function ECMUtils() {
 	var Self = this;
 
 	//set private property;
@@ -80,8 +80,8 @@ function ECMUtils() {
 		}
 	
 		vote.onmouseover = function() {
-			var optsCon= eXo.core.DOMUtil.findFirstDescendantByClass(this, "div", "OptionsContainer") ;
-			var opts = eXo.core.DOMUtil.getChildrenByTagName(optsCon, "div") ;
+			var optsCon= DOM.findFirstDescendantByClass(this, "div", "OptionsContainer") ;
+			var opts = DOM.getChildrenByTagName(optsCon, "div") ;
 			for(var j = 0; j < opts.length; j++) {
 				if(j < this.rate) opts[j].className = "RatedVote" ;
 				else opts[j].className = "NormalVote" ;
@@ -109,8 +109,8 @@ function ECMUtils() {
 	
 	 
 	ECMUtils.prototype.showHideComponent = function(elemtClicked) {
-		var nodeReference = DOMUtil.findAncestorByClass(elemtClicked,  "ShowHideContainer");
-		var elemt = DOMUtil.findFirstDescendantByClass(nodeReference, "div", "ShowHideComponent") ;
+		var nodeReference = DOM.findAncestorByClass(elemtClicked,  "ShowHideContainer");
+		var elemt = DOM.findFirstDescendantByClass(nodeReference, "div", "ShowHideComponent") ;
 	
 		if(elemt.style.display == 'none') {
 			elemtClicked.childNodes[0].style.display = 'none' ;
@@ -296,12 +296,16 @@ function ECMUtils() {
 	ECMUtils.prototype.mouseOverItem = function(event) {
 		var event = event || window.event;
 		var element = this;
-		if (!element.selected) element.style.background = "#ecffe2";
+		if (!element.selected) {
+			element.style.background = "#ecffe2";
+			element.temporary = true;
+		}
 	};
 	
 	ECMUtils.prototype.mouseOutItem = function(event) {
 		var event = event || window.event;
 		var element = this;
+		element.temporary = false;
 		if (!element.selected) element.style.background = "none";
 	};
 	
@@ -318,27 +322,27 @@ function ECMUtils() {
 			mobileElement = document.getElementById(Self.mobileId);
 			mobileElement.parentNode.removeChild(mobileElement);
 		}
-		eXo.webui.UIRightClickPopupMenu.hideContextMenu();
 		if (leftClick) {
 			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey) {
 				Self.clickItem(event, element);
 			};
 			
 			// init drag drop;
-			return;	
 			document.onmousemove = Self.dragItemsSelected;
 			document.onmouseup = Self.dropItemsSelected;
 			//create mobile element
 			var mobileElement = document.createElement("div");
 			mobileElement.setAttribute("id", 'Id-' + Math.random().toString().substring(2));
-			Self.mobileId = mobileElement.id;
+			Self.mobileId = mobileElement.getAttribute('id');
 			mobileElement.style.position = "absolute";
 			mobileElement.style.display = "none";
-			mobileElement.style.border = "1px solid red";
-			for(var i in Self.itemsSelected) {
-				if (Array.prototype[i]) continue;
-				mobileElement.appendChild(Self.itemsSelected[i].cloneNode(true));
-			}
+			mobileElement.style.padding = "5px";
+			mobileElement.style.width = "92px";
+			mobileElement.style.height = "36px";
+			mobileElement.style.textAlign = "center";
+			mobileElement.style.background = "#fff6a4";
+			mobileElement.style.border = "1px solid #ffae00";
+			mobileElement.innerHTML = "Items selected: " +  Self.itemsSelected.length;
 			document.body.appendChild(mobileElement);
 		}
 	};
@@ -346,21 +350,26 @@ function ECMUtils() {
 	ECMUtils.prototype.dragItemsSelected = function(event) {
 			var event = event || window.event;
 			var mobileElement = document.getElementById(Self.mobileId);
-			if (Self.enableDragDrop && mobileElement) {
+			if (Self.enableDragDrop && mobileElement && !event.ctrlKey) {
 				mobileElement.style.display = "block";
 				var X = eXo.core.Browser.findMouseXInPage(event);
 				var Y = eXo.core.Browser.findMouseYInPage(event);
-				mobileElement.style.top = Y + 2 + "px";
-				mobileElement.style.left = X + 2 + "px";
+				mobileElement.style.top = Y + 5 + "px";
+				mobileElement.style.left = X + 5 + "px";
+				mobileElement.move = true;
 			}
 	};
 	
 	ECMUtils.prototype.dropItemsSelected = function(event) {
+		var event = event || window.event;
+		Self.enableDragDrop = null;
+		//use when drop out of action area
 		if (document.getElementById(Self.mobileId)) {
 				mobileElement = document.getElementById(Self.mobileId);
 				mobileElement.parentNode.removeChild(mobileElement);
 		}
 		document.onmousemove = null;
+		document.onmouseup = null;
 	};
 	
 	ECMUtils.prototype.clickItem = function(event, element, callback) {
@@ -378,24 +387,31 @@ function ECMUtils() {
 		document.onmousemove = null;
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		var leftClick = !rightClick;
-		
 		if (leftClick) {
-			if (event.ctrlKey && !element.selected) {
-				element.selected = true;
-				Self.itemsSelected.push(element);
-			} else if(event.ctrlKey && element.selected) {
-				element.selected = null;
-				element.style.background = "none";
-				removeItem(Self.itemsSelected, element);
+			var mobileElement = document.getElementById(Self.mobileId);
+			if (mobileElement && mobileElement.move && element.temporary) {
+				//post action
+				var actionArea = document.getElementById(Self.actionAreaId);
+				var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
+				var wsTarget = element.getAttribute('workspacename');
+				var idTarget = element.getAttribute('objectId');
+				Self.postGroupAction(moveAction.innerHTML, "&dest="+idTarget+";"+wsTarget);
 			} else {
-				Self.clickItem(event, element);
+				if (event.ctrlKey && !element.selected) {
+					element.selected = true;
+					Self.itemsSelected.push(element);
+				} else if(event.ctrlKey && element.selected) {
+					element.selected = null;
+					element.style.background = "none";
+					removeItem(Self.itemsSelected, element);
+				} else {
+					Self.clickItem(event, element);
+				}
+				for(var i in Self.itemsSelected) {
+					if (Array.prototype[i]) continue;
+					Self.itemsSelected[i].style.background = "#ebf5ff";
+				}
 			}
-			
-			for(var i in Self.itemsSelected) {
-				if (Array.prototype[i]) continue;
-				Self.itemsSelected[i].style.background = "#ebf5ff";
-			}
-			
 		}else {
 			event.cancelBubble = true;
 			if (inArray(Self.itemsSelected, element) && Self.itemsSelected.length > 1){
@@ -428,7 +444,7 @@ function ECMUtils() {
 			mask.style.width = "0px";
 			mask.style.height = "0px";
 			mask.style.border = "1px dotted black";
-			mask.style.backgroundColor = "violet";
+			mask.style.backgroundColor = "gray";
 			eXo.core.Browser.setOpacity(mask, 17);
 			//store position for all item
 			for( var i = 0 ; i < Self.allItems.length; ++i) {
@@ -536,9 +552,12 @@ function ECMUtils() {
 	
 	ECMUtils.prototype.mouseUpGround = function(event) {
 		var event = event || window.event;
+		event.cancelBubble = true;
 		var element = this;
+		Self.enableDragDrop = null;
 		element.holdMouse = null;
 		element.onmousemove = null;
+		
 		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
 		mask.style.width = "0px";
 		mask.style.height = "0px";
@@ -557,7 +576,12 @@ function ECMUtils() {
 		if (rightClick) {
 			event.cancelBubble = true;
 			Self.showGroundContextMenu(event, element);
-		} 
+		}
+		//remove mobile element
+		if (document.getElementById(Self.mobileId)) {
+				mobileElement = document.getElementById(Self.mobileId);
+				mobileElement.parentNode.removeChild(mobileElement);
+		}
 	} ;
 	
 	// working with item context menu
@@ -655,9 +679,10 @@ function ECMUtils() {
 		if (contextMenu) contextMenu.style.display = "none";
 	};
 	
-	ECMUtils.prototype.postGroupAction = function(url) {
+	ECMUtils.prototype.postGroupAction = function(url, ext) {
 		var objectId = [];
 		var workspaceName = [];
+		var ext = ext? ext : "";
 		if(Self.itemsSelected.length) {
 			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
@@ -670,7 +695,7 @@ function ECMUtils() {
 				if (oid) objectId.push(oid);
 				else objectId.push("");
 			}
-			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";"));
+			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + ext);
 			eval(url);
 		}
 	}	;
