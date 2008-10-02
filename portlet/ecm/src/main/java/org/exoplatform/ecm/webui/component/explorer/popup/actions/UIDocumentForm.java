@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import java.security.AccessControlException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -54,6 +55,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
+import org.exoplatform.webui.form.UIFormUploadInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -282,7 +284,22 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
 
   static public class AddActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
-      event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
+      UIDocumentForm uiForm = event.getSource();
+      List<String> inputNames = new ArrayList<String>();
+      for(UIComponent uiComp : uiForm.getChildren()) {
+        if(uiComp instanceof UIFormMultiValueInputSet) {
+          for(UIComponent uiInput : ((UIFormMultiValueInputSet)uiComp).getChildren()) {
+            if(uiInput instanceof UIFormUploadInput) {
+              if(inputNames.contains(((UIFormUploadInput)uiInput).getName())) {
+                ((UIFormMultiValueInputSet)uiComp).removeChild(UIFormUploadInput.class);
+                break;
+              }
+              inputNames.add(((UIFormUploadInput)uiInput).getName());
+            }
+          }
+        }
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }
 
