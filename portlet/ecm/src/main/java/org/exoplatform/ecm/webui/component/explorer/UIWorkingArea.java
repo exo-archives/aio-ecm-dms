@@ -110,7 +110,8 @@ import org.exoplatform.webui.exception.MessageException;
         @EventConfig(listeners = UIWorkingArea.PasteActionListener.class),
         @EventConfig(listeners = UIWorkingArea.AddFolderActionListener.class),
         @EventConfig(listeners = UIWorkingArea.AddDocumentActionListener.class),
-        @EventConfig(listeners = UIWorkingArea.UploadActionListener.class)
+        @EventConfig(listeners = UIWorkingArea.UploadActionListener.class),
+        @EventConfig(listeners = UIWorkingArea.MoveNodeActionListener.class, confirm="UIWorkingArea.msg.confirm-move")
       }
   )
 })
@@ -812,6 +813,24 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
+  private void moveNode(String srcPath, String wsName, String destPath) throws Exception {
+    UIJCRExplorer uiExplorer = getParent();
+    Workspace workspace = uiExplorer.getSession().getWorkspace();
+    if(destPath.endsWith("/")) {
+      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/") + 1);
+    } else {
+      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/"));
+    }
+    workspace.move(srcPath, destPath);
+  }
+  
+  private void moveMultiNode(String[] srcPaths, String[] wsNames, String destPath) throws Exception {
+    UIJCRExplorer uiExplorer = getParent();
+    for(int i=0; i< srcPaths.length; i++) {
+      moveNode(srcPaths[i], wsNames[i], destPath);
+    }
+  }
+  
   @SuppressWarnings("unused")
   static  public class EditDocumentActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
@@ -1325,6 +1344,52 @@ public class UIWorkingArea extends UIContainer {
       UIUploadManager uiUploadManager = event.getSource().createUIComponent(UIUploadManager.class, null, null);
       UIPopupContainer.activate(uiUploadManager, 600, 500);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+    }
+  }
+  
+  static public class MoveNodeActionListener extends EventListener<UIRightClickPopupMenu> {
+    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
+      UIWorkingArea uiWorkingArea = event.getSource().getParent();
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
+      String[] destInfo = event.getRequestContext().getRequestParameter("destInfo").split(";");
+      UIJCRExplorer uiExplorer = uiWorkingArea.getParent();
+      UIApplication uiApp = uiWorkingArea.getAncestorOfType(UIApplication.class);
+      Node destNode = null;
+      try {
+        destNode = (Node)uiExplorer.getSession().getItem(destInfo[0]);
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+            null,ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
+      if(!PermissionUtil.canRead(destNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-move-node", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        uiExplorer.updateAjax(event);
+        return;
+      }
+      if(uiExplorer.nodeIsLocked(destNode)) {
+        Object[] arg = { destInfo[0] };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
+        return;
+      }
+      if(nodePath.indexOf(";") > -1) {
+        uiWorkingArea.isMultiSelect_ = true;
+        uiWorkingArea.moveMultiNode(nodePath.split(";"), wsName.split(";"), destInfo[0]);
+      } else {
+        uiWorkingArea.isMultiSelect_ = false;
+        uiWorkingArea.moveNode(nodePath, wsName, destInfo[0]);
+      }
+      uiExplorer.getSession().save();
+      uiExplorer.updateAjax(event);
     }
   }
 }

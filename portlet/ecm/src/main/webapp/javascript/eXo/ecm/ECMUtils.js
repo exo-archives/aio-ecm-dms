@@ -395,7 +395,7 @@
 				var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 				var wsTarget = element.getAttribute('workspacename');
 				var idTarget = element.getAttribute('objectId');
-				Self.postGroupAction(moveAction.innerHTML, "&dest="+idTarget+";"+wsTarget);
+				Self.postGroupAction(moveAction.getAttribute('request'), "&destInfo="+idTarget+";"+wsTarget);
 			} else {
 				if (event.ctrlKey && !element.selected) {
 					element.selected = true;
