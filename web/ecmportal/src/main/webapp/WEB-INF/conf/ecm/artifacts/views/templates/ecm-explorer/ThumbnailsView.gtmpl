@@ -16,8 +16,8 @@
 %>
 <div id="${componentId}-$viewComponentId">	
 	<div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
-		<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px">
-		</div>
+		<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px"></div>
+		<div class="JCRMoveAction" style="display: none;"><%=contextMenu.event("Move", "MultiSelection")%></div>
 		<div class="ItemContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
 			<div class="UIRightClickPopupMenu" style="display: block;">
 				<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
@@ -123,10 +123,10 @@
 	        %>   
 	      <div class="ActionIconBox" locked="<%=isLocked%>" <%=rightClickMenu%> style="padding: 4px 0px 4px 0px; height: auto;"
 	       				objectId="<%=data.getPath()%>" workspaceName="<%=preferenceWS%>" ondblclick="$actionLink">
-	        <div style="height: auto; width: auto; border: none;">
+	        <div style="height: auto; width: auto; border: none; -moz-user-select: none;">
 						<div class="NodeLabel">
 							<div class="ActionIcon">
-								 <a style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></a>
+								 <span style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></span>
 							</div>
 						 </div>
 						$strActs
@@ -134,7 +134,7 @@
 		          if(name.length() < 20) subName = name ;
 		          else subName = name.substring(0,15) + "..." ;
 		        %>
-		        <div class="ActionIconLabel" style="width: auto; -moz-user-select: none;">
+		        <div class="ActionIconLabel" style="width: auto;">
 		          <a class="ActionLabel" title="$name">$subName</a>
 		        </div>
 		      </div> 
