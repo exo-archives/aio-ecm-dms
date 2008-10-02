@@ -274,8 +274,8 @@
 		var mousedown = null;
 		for (var i in Self.allItems) {
 			if (Array.prototype[i]) continue;
-			if (Self.allItems[i].hasAttribute("onmousedown")) {
-				mousedown = Self.allItems[i].getAttribute("onmousedown");
+			if (Self.allItems[i].getAttribute("onmousedown")) {
+				mousedown = Self.allItems[i].getAttributeNode("onmousedown").value;
 				Self.allItems[i].setAttribute("mousedown", mousedown);
 				Self.allItems[i].onmousedown = null;
 				Self.allItems[i].removeAttribute("onmousedown");
