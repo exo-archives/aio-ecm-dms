@@ -41,7 +41,7 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
  * Jan 28, 2007  
  */
 public class CommentsServiceImpl implements CommentsService {
-  
+
   private final static String COMMENTS = "comments".intern() ;
   private final static String COMMENTABLE = "mix:commentable".intern() ;
   private final static String EXO_COMMENTS = "exo:comments".intern() ;
@@ -53,16 +53,16 @@ public class CommentsServiceImpl implements CommentsService {
   private final static String CREATED_DATE = "exo:commentDate".intern() ;
   private static final String LANGUAGES = "languages".intern() ;
   private static final String ANONYMOUS = "anonymous".intern() ;
-  
+
   private ExoCache commentsCache_ ;
   private MultiLanguageService multiLangService_ ;  
-  
+
   public CommentsServiceImpl(CacheService cacheService, 
       MultiLanguageService multiLangService) throws Exception {    
     commentsCache_ = cacheService.getCacheInstance(CommentsService.class.getName()) ;
     multiLangService_ = multiLangService ;    
   }
-  
+
   public void addComment(Node node, String commentor,String email, String site, String comment,String language) throws Exception {
     Session session = node.getSession();
     ManageableRepository  repository = (ManageableRepository)session.getRepository();
@@ -74,10 +74,13 @@ public class CommentsServiceImpl implements CommentsService {
       else throw new Exception("This node does not support comments.") ;  
     }        
     Node multiLanguages =null, languageNode= null, commentNode = null ;
-    
+
     if(!document.hasNode(LANGUAGES) || language.equals(multiLangService_.getDefault(document))) {
       if(document.hasNode(COMMENTS)) commentNode = document.getNode(COMMENTS) ;
-      else commentNode = document.addNode(COMMENTS,NT_UNSTRUCTURE) ;
+      else { 
+        commentNode = document.addNode(COMMENTS,NT_UNSTRUCTURE) ; 
+        commentNode.addMixin("exo:hiddenable");
+      }
     } else {
       multiLanguages = document.getNode(LANGUAGES) ;
       if(multiLanguages.hasNode(language)) {
@@ -89,13 +92,14 @@ public class CommentsServiceImpl implements CommentsService {
         commentNode = languageNode.getNode(COMMENTS) ;
       } else{
         commentNode = languageNode.addNode(COMMENTS,NT_UNSTRUCTURE) ;
+        commentNode.addMixin("exo:hiddenable");
       }
     }
-     
+
     if(commentor == null || commentor.length() == 0) {
       commentor = ANONYMOUS ;      
     }
-    
+
     Calendar commentDate = new GregorianCalendar() ;
     String name = Long.toString(commentDate.getTimeInMillis()) ;    
     Node newComment = commentNode.addNode(name,EXO_COMMENTS) ;     
@@ -150,7 +154,7 @@ public class CommentsServiceImpl implements CommentsService {
     commentsCache_.put(commentsNode.getPath(),list) ;        
     return list;
   }  
-  
+
   private class DateComparator implements Comparator<Node> {
 
     public int compare(Node node1, Node node2) {
@@ -163,11 +167,11 @@ public class CommentsServiceImpl implements CommentsService {
       return 0;
     }        
   }
-  
+
   private boolean isSupportedLocalize(Node document,String language)throws Exception {
     List<String> locales= multiLangService_.getSupportedLanguages(document) ;
     if(Collections.frequency(locales,language) >0) return true ;
     return false ;
   }
-  
+
 }
