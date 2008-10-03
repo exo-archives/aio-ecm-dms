@@ -98,7 +98,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
 
   private VersionNode getRootVersion(Node node) throws Exception{       
     VersionHistory vH = node.getVersionHistory() ;
-    return (vH == null) ? null : new VersionNode(vH.getRootVersion()) ; 
+    return (vH == null) ? null : new VersionNode(vH.getRootVersion(), node.getSession()) ; 
   }
 
   private List<String> getNodeVersions(List<VersionNode> children) throws Exception {         

@@ -86,7 +86,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
   public void activate() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     node_ = uiExplorer.getCurrentNode() ;   
-    rootVersion_ = new VersionNode(node_.getVersionHistory().getRootVersion()) ;
+    rootVersion_ = new VersionNode(node_.getVersionHistory().getRootVersion(), uiExplorer.getSession()) ;
     curentVersion_ = rootVersion_ ;
     getChild(UIViewVersion.class).update() ;  
   }
@@ -186,12 +186,12 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
       Node node = uiVersionInfo.getCurrentNode() ;
       VersionHistory versionHistory = node.getVersionHistory() ;
       try {
-        //TODO for JCR Group check VersionHistory.removeVersion(String versionName)
-        versionHistory.removeVersion(uiVersionInfo.curentVersion_ .getName());
-        uiVersionInfo.rootVersion_ = new VersionNode(node.getVersionHistory().getRootVersion()) ;
+        versionHistory.removeVersion(uiVersionInfo.curentVersion_.getName());
+        uiVersionInfo.rootVersion_.removeVersionInChild(uiVersionInfo.rootVersion_, uiVersionInfo.curentVersion_);
+        uiVersionInfo.rootVersion_ = new VersionNode(node.getVersionHistory().getRootVersion(), uiExplorer.getSession()) ;
         uiVersionInfo.curentVersion_ = uiVersionInfo.rootVersion_ ;
         if(!node.isCheckedOut()) node.checkout() ;
-        uiExplorer.getSession().save() ;
+        uiExplorer.getSession().save();
         event.getRequestContext().addUIComponentToUpdateByAjax(uiVersionInfo.getAncestorOfType(UIPopupAction.class)) ;
       } catch (ReferentialIntegrityException rie) {
         rie.printStackTrace() ;

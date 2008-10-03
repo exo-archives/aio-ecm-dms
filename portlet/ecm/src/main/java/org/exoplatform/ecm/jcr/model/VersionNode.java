@@ -20,8 +20,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.jcr.PathNotFoundException;
+import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 import javax.jcr.version.Version;
 
 public class VersionNode {
@@ -30,15 +34,20 @@ public class VersionNode {
   private Version version_ ;
   private List<VersionNode> children_ = new ArrayList<VersionNode>() ;
 
-  public VersionNode(Version version) throws RepositoryException {
+  public VersionNode(Version version, Session session) {
     version_ = version;
     try {      
-      Version[] versions = version.getSuccessors() ;
-      if(versions == null || versions.length == 0) isExpanded = false;
-      for (Version versionChild : versions) {
-        children_.add(new VersionNode(versionChild)) ;
+      String uuid = version.getUUID();
+      QueryManager queryManager = session.getWorkspace().getQueryManager();
+      Query query = queryManager.createQuery("//element(*, nt:version)[@jcr:predecessors='" + uuid + "']", Query.XPATH);
+      QueryResult queryResult = query.execute();
+      NodeIterator iterate = queryResult.getNodes();
+      while (iterate.hasNext()) {
+        Version version1 = (Version) iterate.nextNode();
+        children_.add(new VersionNode(version1, session));
       }
-    } catch (PathNotFoundException e) {
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
@@ -68,5 +77,14 @@ public class VersionNode {
       if(node != null) return node;
     }
     return null;
+  }
+  
+  public void removeVersionInChild(VersionNode versionNode1, VersionNode versionNodeRemove) throws RepositoryException {
+    if (versionNode1.getChildren().contains(versionNodeRemove)) versionNode1.getChildren().remove(versionNodeRemove);
+    else {
+      for (VersionNode vsN : versionNode1.getChildren()) {
+        removeVersionInChild(vsN, versionNodeRemove);
+      }
+    }
   }
 }
