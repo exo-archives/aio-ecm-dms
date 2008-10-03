@@ -146,7 +146,7 @@ public class UITemplateForm extends UIForm {
 
   private VersionNode getRootVersion(Node node) throws Exception{       
     VersionHistory vH = node.getVersionHistory() ;
-    return (vH != null) ? new VersionNode(vH.getRootVersion()) : null ;
+    return (vH != null) ? new VersionNode(vH.getRootVersion(), node.getSession()) : null ;
   }
 
   private List<String> getNodeVersions(List<VersionNode> children) throws Exception {         

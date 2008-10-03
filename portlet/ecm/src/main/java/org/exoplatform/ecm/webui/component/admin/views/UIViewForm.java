@@ -139,7 +139,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelectable
 
   private VersionNode getRootVersion(Node node) throws Exception{       
     VersionHistory vH = node.getVersionHistory() ;
-    if(vH != null) return new VersionNode(vH.getRootVersion()) ;
+    if(vH != null) return new VersionNode(vH.getRootVersion(), node.getSession()) ;
     return null ;
   }
 
