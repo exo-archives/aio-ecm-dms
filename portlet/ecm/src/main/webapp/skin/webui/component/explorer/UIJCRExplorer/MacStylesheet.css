@@ -321,6 +321,12 @@
 	width: auto;
 }
 
+.UIJCRExplorerPortlet .UIDocumentFormController .SelectFileFrame { 
+	width: 300px;
+	overflow: hidden;
+	margin: 0px;
+}
+
 .UIJCRExplorerPortlet  .FileNameLabel {
 	width: auto;
 	padding: 0px;	
