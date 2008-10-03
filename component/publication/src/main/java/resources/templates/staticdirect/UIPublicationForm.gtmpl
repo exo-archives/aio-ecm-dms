@@ -6,18 +6,14 @@
 			  <table class="UIFormGrid">
 					<tr>
 						<td class="FieldLabel">Visibility:</td>
-						<td class="FieldComponent" style="width: 80px;">
-							<% uiform.renderField(uicomponent.getChildById("visibility")) %>
-						</td>
 						<td class="FieldComponent">
+							<% uiform.renderField(uicomponent.getChildById("visibility")) %>
 						</td>
 					</tr>
 					<tr>
 						<td class="FieldLabel">State:</td>
 						<td class="FieldComponent">
 						  <% uiform.renderField(uicomponent.getChildById("state")) %>
-						</td>
-						<td class="FieldComponent">
 						</td>
 					</tr>
   			</table>
