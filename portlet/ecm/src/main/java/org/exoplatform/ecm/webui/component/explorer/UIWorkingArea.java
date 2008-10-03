@@ -1110,8 +1110,16 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
       Session session = uiExplorer.getSessionByWorkspace(wsName);
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);         
+      Node node = uiExplorer.getNodeByPath(nodePath, session);
+      try{
+        ((ExtendedNode) node).checkPermission(PermissionType.SET_PROPERTY);        
+      } catch (Exception e) {        
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-checkin-node", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       try {
-        Node node = uiExplorer.getNodeByPath(nodePath, session);
         if(uiExplorer.nodeIsLocked(node)) {
           Object[] arg = { nodePath };
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
@@ -1146,8 +1154,16 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
       Session session = uiExplorer.getSessionByWorkspace(wsName);      
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);       
+      Node node = uiExplorer.getNodeByPath(nodePath, session);
+      try{
+        ((ExtendedNode) node).checkPermission(PermissionType.SET_PROPERTY);        
+      } catch (Exception e) {        
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-checkout-node", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
       try {
-        Node node = uiExplorer.getNodeByPath(nodePath, session);
         if(uiExplorer.nodeIsLocked(node)) {
           Object[] arg = { nodePath };
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
