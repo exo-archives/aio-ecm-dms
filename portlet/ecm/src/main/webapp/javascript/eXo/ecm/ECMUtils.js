@@ -334,6 +334,7 @@
 			var mobileElement = document.createElement("div");
 			mobileElement.setAttribute("id", 'Id-' + Math.random().toString().substring(2));
 			Self.mobileId = mobileElement.getAttribute('id');
+			document.body.setAttribute("onselectable", "on");
 			mobileElement.style.position = "absolute";
 			mobileElement.style.display = "none";
 			mobileElement.style.padding = "5px";
@@ -350,12 +351,13 @@
 	ECMUtils.prototype.dragItemsSelected = function(event) {
 			var event = event || window.event;
 			var mobileElement = document.getElementById(Self.mobileId);
+			document.onselectstart = function(){return false;}
 			if (Self.enableDragDrop && mobileElement && !event.ctrlKey) {
 				mobileElement.style.display = "block";
 				var X = eXo.core.Browser.findMouseXInPage(event);
 				var Y = eXo.core.Browser.findMouseYInPage(event);
-				mobileElement.style.top = Y + 5 + "px";
-				mobileElement.style.left = X + 5 + "px";
+				mobileElement.style.top = Y + "px";
+				mobileElement.style.left = X + "px";
 				mobileElement.move = true;
 			}
 	};
@@ -370,6 +372,7 @@
 		}
 		document.onmousemove = null;
 		document.onmouseup = null;
+		document.onselectstart = function(){return true;}
 	};
 	
 	ECMUtils.prototype.clickItem = function(event, element, callback) {
@@ -385,6 +388,7 @@
 		var element = this;
 		Self.enableDragDrop = null;
 		document.onmousemove = null;
+		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		var leftClick = !rightClick;
 		if (leftClick) {
@@ -428,6 +432,7 @@
 		var event = event || window.event;
 		var element = this;
 		element.holdMouse = true;
+		document.onselectstart = function(){return false};
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		var leftClick = !rightClick;
 		Self.hideContextMenu();
@@ -466,6 +471,7 @@
 			mask.Y = eXo.core.Browser.findMouseRelativeY(eDot, event);
 			mask.deltaX = mask.X - mask.storeX;
 			mask.deltaY = mask.Y - mask.storeY;
+			
 			//IV of +
 			if (mask.deltaX < 0 && mask.deltaY > 0) {
 				mask.style.top = mask.storeY + "px";
@@ -557,6 +563,7 @@
 		Self.enableDragDrop = null;
 		element.holdMouse = null;
 		element.onmousemove = null;
+		document.onselectstart = function(){return true};
 		
 		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
 		mask.style.width = "0px";
