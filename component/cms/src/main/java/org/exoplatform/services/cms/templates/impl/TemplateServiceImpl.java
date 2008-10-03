@@ -18,21 +18,28 @@ package org.exoplatform.services.cms.templates.impl;
 
 import java.security.AccessControlException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 import javax.jcr.Value;
+import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.Utils;
+import org.exoplatform.services.cms.templates.ContentTypeFilterPlugin;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.cms.templates.ContentTypeFilterPlugin.FolderFilterConfig;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.security.Identity;
@@ -44,331 +51,425 @@ import org.picocontainer.Startable;
  * @author benjaminmestrallet
  */
 public class TemplateServiceImpl implements TemplateService, Startable {
+  private RepositoryService    repositoryService_;
+  private IdentityRegistry identityRegistry_;
+  private String               cmsTemplatesBasePath_;
+  private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
 
-	private RepositoryService    repositoryService_;
+  private Map<String,HashMap<String,List<String>>> foldersFilterMap = new HashMap<String,HashMap<String,List<String>>> ();  
+  private Map<String,List<String>> managedDocumentTypesMap = new HashMap<String,List<String>>();
 
-	private IdentityRegistry identityRegistry_;
+  public TemplateServiceImpl(RepositoryService jcrService,
+      NodeHierarchyCreator nodeHierarchyCreator, IdentityRegistry identityRegistry) throws Exception {
+    identityRegistry_ = identityRegistry;
+    repositoryService_ = jcrService;
+    cmsTemplatesBasePath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_TEMPLATES_PATH);
+  }
 
-	private String               cmsTemplatesBasePath_;
+  public void start() {
+    try {
+      for (TemplatePlugin plugin : plugins_) {
+        plugin.init();
+      }
+      //Cached all nodetypes that is document type in the map
+      for(RepositoryEntry repositoryEntry:repositoryService_.getConfig().getRepositoryConfigurations()) {
+        String repositoryName = repositoryEntry.getName();
+        List<String> managedContentTypes = getAllDocumentNodeTypes(repositoryEntry.getName());
+        if(managedContentTypes.size() != 0) {
+          managedDocumentTypesMap.put(repositoryName,managedContentTypes);
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
 
-	private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
+  public void stop() {
+  }
 
-	public TemplateServiceImpl(RepositoryService jcrService,
-			NodeHierarchyCreator nodeHierarchyCreator, IdentityRegistry identityRegistry) throws Exception {
-		identityRegistry_ = identityRegistry;
-		repositoryService_ = jcrService;
-		cmsTemplatesBasePath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_TEMPLATES_PATH);
-	}
+  public void addContentTypeFilterPlugin(ContentTypeFilterPlugin filterPlugin) {
+    String repository = filterPlugin.getRepository();
+    HashMap<String,List<String>> folderFilterMap = foldersFilterMap.get(repository); 
+    if(folderFilterMap == null) {
+      folderFilterMap = new HashMap<String,List<String>>();
+    }    
+    for(FolderFilterConfig filterConfig: filterPlugin.getFolderFilterConfigList()) {      
+      String folderType = filterConfig.getFolderType();
+      List<String> contentTypes = filterConfig.getContentTypes();
+      List<String> value = folderFilterMap.get(folderType);
+      if(value == null) {
+        folderFilterMap.put(folderType,contentTypes);
+      }else {
+        value.addAll(contentTypes);
+        folderFilterMap.put(folderType,value);
+      }
+    }
+    foldersFilterMap.put(repository,folderFilterMap);
+  }
 
-	public void start() {
-		try {
-			for (TemplatePlugin plugin : plugins_) {
-				plugin.init();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+  public void addTemplates(ComponentPlugin plugin) {
+    if (plugin instanceof TemplatePlugin)
+      plugins_.add((TemplatePlugin) plugin);
+  }
 
-	public void stop() {
-	}
+  public void init(String repository) throws Exception {
+    for (TemplatePlugin plugin : plugins_) {
+      plugin.init(repository);
+    }
+  }
 
-	public void addTemplates(ComponentPlugin plugin) {
-		if (plugin instanceof TemplatePlugin)
-			plugins_.add((TemplatePlugin) plugin);
-	}
+  public Node getTemplatesHome(String repository, SessionProvider provider) throws Exception {
+    try {
+      Session session = getSession(repository, provider);
+      return (Node) session.getItem(cmsTemplatesBasePath_);
+    } catch (AccessDeniedException ace) {
+      return null;
+    }
+  }
 
-	public void init(String repository) throws Exception {
-		for (TemplatePlugin plugin : plugins_) {
-			plugin.init(repository);
-		}
-	}
+  public List<String> getCreationableContentTypes(Node node) throws Exception {
+    String folderType = node.getPrimaryNodeType().getName();    
+    String repository = ((ManageableRepository)node.getSession().getRepository()).getConfiguration().getName();
+    List<String> testContentTypes = null;    
+    HashMap<String,List<String>> folderFilterMap = foldersFilterMap.get(repository);
+    if(folderFilterMap != null) {
+      List<String> list = folderFilterMap.get(folderType);
+      if(list != null && list.size() != 0) {
+        testContentTypes = list;
+      }
+    }
+    if(testContentTypes == null) {
+      testContentTypes = getDocumentTemplates(repository);
+    }    
+    List<String> result = new ArrayList<String>();
+    for(String contentType: testContentTypes) {
+      if(isChildNodePrimaryTypeAllowed(node,contentType))
+        result.add(contentType);        
+    }            
+    return result;
+  }
 
-	public Node getTemplatesHome(String repository, SessionProvider provider) throws Exception {
-		try {
-			Session session = getSession(repository, provider);
-			return (Node) session.getItem(cmsTemplatesBasePath_);
-		} catch (AccessDeniedException ace) {
-			return null;
-		}
-	}
+  public boolean isChildNodePrimaryTypeAllowed(Node parent, String childNodeTypeName) throws Exception{
+    NodeType childNodeType = parent.getSession().getWorkspace().getNodeTypeManager().getNodeType(childNodeTypeName);
+    //In some cases, the child node is mixins type of a nt:file example
+    if(childNodeType.isMixin()) return true;    
+    List<ExtendedNodeType> allNodeTypes = new ArrayList<ExtendedNodeType>();
+    allNodeTypes.add((ExtendedNodeType)parent.getPrimaryNodeType());
+    for(NodeType mixin: parent.getMixinNodeTypes()) {
+      allNodeTypes.add((ExtendedNodeType)mixin);
+    }
+    for (ExtendedNodeType nodetype:allNodeTypes) {      
+      if (nodetype.isChildNodePrimaryTypeAllowed(childNodeTypeName)) {
+        return true;
+      } 
+    }
+    return false;
+  }
 
-	public boolean isManagedNodeType(String nodeTypeName, String repository) throws Exception {
-		SessionProvider provider = SessionProvider.createSystemProvider();
-		Session session = getSession(repository, provider);
-		Node systemTemplatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
-		boolean b = false;
-		if (systemTemplatesHome.hasNode(nodeTypeName)) {
-			b = true;
-		}
-		provider.close();
-		return b;
-	}
+  public boolean isManagedNodeType(String nodeTypeName, String repository) throws Exception {
+    //check if the node type is document type first
+    List<String> managedDocumentTypes = managedDocumentTypesMap.get(repository);
+    if(managedDocumentTypes != null && managedDocumentTypes.contains(nodeTypeName)) 
+      return true;
+    SessionProvider provider = SessionProvider.createSystemProvider();
+    Session session = getSession(repository, provider);
+    Node systemTemplatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
+    boolean b = false;
+    if (systemTemplatesHome.hasNode(nodeTypeName)) {
+      b = true;
+    }
+    provider.close();
+    return b;
+  }
 
-	public String getTemplatePath(Node node, boolean isDialog) throws Exception {
-		String userId = node.getSession().getUserID();
-		String repository = ((ManageableRepository) node.getSession().getRepository())
-		.getConfiguration().getName();
-		String templateType = null;
-		if (node.isNodeType("exo:presentationable") && node.hasProperty("exo:presentationType")) {
-			templateType = node.getProperty("exo:presentationType").getString();
-		} else {
-			templateType = node.getPrimaryNodeType().getName();
-		}
-		if (isManagedNodeType(templateType, repository))
-			return getTemplatePathByUser(isDialog, templateType, userId, repository);
-		throw new Exception("The content type: " + templateType + " doesn't be supported by any template");
-	}
+  public String getTemplatePath(Node node, boolean isDialog) throws Exception {
+    String userId = node.getSession().getUserID();
+    String repository = ((ManageableRepository) node.getSession().getRepository())
+    .getConfiguration().getName();
+    String templateType = null;
+    if (node.isNodeType("exo:presentationable") && node.hasProperty("exo:presentationType")) {
+      templateType = node.getProperty("exo:presentationType").getString();
+    } else {
+      templateType = node.getPrimaryNodeType().getName();
+    }
+    if (isManagedNodeType(templateType, repository))
+      return getTemplatePathByUser(isDialog, templateType, userId, repository);
+    throw new Exception("The content type: " + templateType + " doesn't be supported by any template");
+  }
 
-	public NodeIterator getAllTemplatesOfNodeType(boolean isDialog, String nodeTypeName,
-			String repository, SessionProvider provider) throws Exception {
-		Node nodeTypeHome = getTemplatesHome(repository, provider).getNode(nodeTypeName);
-		if (isDialog)
-			return nodeTypeHome.getNode(DIALOGS).getNodes();
-		return nodeTypeHome.getNode(VIEWS).getNodes();
-	}
+  public NodeIterator getAllTemplatesOfNodeType(boolean isDialog, String nodeTypeName,
+      String repository, SessionProvider provider) throws Exception {
+    Node nodeTypeHome = getTemplatesHome(repository, provider).getNode(nodeTypeName);
+    if (isDialog)
+      return nodeTypeHome.getNode(DIALOGS).getNodes();
+    return nodeTypeHome.getNode(VIEWS).getNodes();
+  }
 
-	public String getDefaultTemplatePath(boolean isDialog, String nodeTypeName) {
-		if (isDialog)
-			return cmsTemplatesBasePath_ + "/" + nodeTypeName + DEFAULT_DIALOGS_PATH;
-		return cmsTemplatesBasePath_ + "/" + nodeTypeName + DEFAULT_VIEWS_PATH;
-	}
+  public String getDefaultTemplatePath(boolean isDialog, String nodeTypeName) {
+    if (isDialog)
+      return cmsTemplatesBasePath_ + "/" + nodeTypeName + DEFAULT_DIALOGS_PATH;
+    return cmsTemplatesBasePath_ + "/" + nodeTypeName + DEFAULT_VIEWS_PATH;
+  }
 
-	public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName,
-			String repository, SessionProvider provider) throws Exception {
-		String type = DIALOGS;
-		if (!isDialog)
-			type = VIEWS;
-		Node nodeTypeNode = getTemplatesHome(repository, provider).getNode(nodeTypeName);
-		return nodeTypeNode.getNode(type).getNode(templateName);
-	}
+  public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName,
+      String repository, SessionProvider provider) throws Exception {
+    String type = DIALOGS;
+    if (!isDialog)
+      type = VIEWS;
+    Node nodeTypeNode = getTemplatesHome(repository, provider).getNode(nodeTypeName);
+    return nodeTypeNode.getNode(type).getNode(templateName);
+  }
 
-	public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName,
-			String repository) throws Exception {
-		if(SystemIdentity.ANONIM.equals(userName) || userName == null) {
-			return getTemplatePathByAnonymous(isDialog, nodeTypeName, repository);
-		}
-		Session session = getSession(repository);
-		Node templateHomeNode = (Node) session.getItem(cmsTemplatesBasePath_);
-		String type = DIALOGS;
-		if (!isDialog)
-			type = VIEWS;
-		Node nodeTypeNode = templateHomeNode.getNode(nodeTypeName);
-		NodeIterator templateIter = nodeTypeNode.getNode(type).getNodes();
-		while (templateIter.hasNext()) {
-			Node node = templateIter.nextNode();
-			Value[] roles = node.getProperty(EXO_ROLES_PROP).getValues();
-			if(hasPermission(userName, roles, identityRegistry_)) {
-				String templatePath = node.getPath() ;
-				session.logout();
-				return templatePath ;
-			}
-		}
-		session.logout();
-		throw new AccessControlException("You don't have permission to access any template");
-	}
+  public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName,
+      String repository) throws Exception {
+    if(SystemIdentity.ANONIM.equals(userName) || userName == null) {
+      return getTemplatePathByAnonymous(isDialog, nodeTypeName, repository);
+    }
+    Session session = getSession(repository);
+    Node templateHomeNode = (Node) session.getItem(cmsTemplatesBasePath_);
+    String type = DIALOGS;
+    if (!isDialog)
+      type = VIEWS;
+    Node nodeTypeNode = templateHomeNode.getNode(nodeTypeName);
+    NodeIterator templateIter = nodeTypeNode.getNode(type).getNodes();
+    while (templateIter.hasNext()) {
+      Node node = templateIter.nextNode();
+      Value[] roles = node.getProperty(EXO_ROLES_PROP).getValues();
+      if(hasPermission(userName, roles, identityRegistry_)) {
+        String templatePath = node.getPath() ;
+        session.logout();
+        return templatePath ;
+      }
+    }
+    session.logout();
+    throw new AccessControlException("You don't have permission to access any template");
+  }
 
-	public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName,
-			String repository) throws Exception {
-		Session session = getSession(repository);
-		Node templateNode = getTemplateNode(session, isDialog, nodeTypeName, templateName, repository);
-		String path = templateNode.getPath();
-		session.logout();
-		return path;
-	}
+  public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName,
+      String repository) throws Exception {
+    Session session = getSession(repository);
+    Node templateNode = getTemplateNode(session, isDialog, nodeTypeName, templateName, repository);
+    String path = templateNode.getPath();
+    session.logout();
+    return path;
+  }
 
-	public String getTemplateLabel(String nodeTypeName, String repository) throws Exception {
-		SessionProvider provider = SessionProvider.createSystemProvider();
-		Node templateHome = getTemplatesHome(repository, provider);
-		Node nodeType = templateHome.getNode(nodeTypeName);
-		String label = "";
-		if (nodeType.hasProperty("label")) {
-			label = nodeType.getProperty("label").getString();
-		}
-		provider.close();
-		return label;
-	}
+  public String getTemplateLabel(String nodeTypeName, String repository) throws Exception {
+    SessionProvider provider = SessionProvider.createSystemProvider();
+    Node templateHome = getTemplatesHome(repository, provider);
+    Node nodeType = templateHome.getNode(nodeTypeName);
+    String label = "";
+    if (nodeType.hasProperty("label")) {
+      label = nodeType.getProperty("label").getString();
+    }
+    provider.close();
+    return label;
+  }
 
-	public String getTemplate(boolean isDialog, String nodeTypeName, String templateName,
-			String repository) throws Exception {
-		Session session = getSession(repository);
-		Node templateNode = getTemplateNode(session, isDialog, nodeTypeName, templateName, repository);
-		String template = templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
-		session.logout();
-		return template;
-	}
+  public String getTemplate(boolean isDialog, String nodeTypeName, String templateName,
+      String repository) throws Exception {
+    Session session = getSession(repository);
+    Node templateNode = getTemplateNode(session, isDialog, nodeTypeName, templateName, repository);
+    String template = templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
+    session.logout();
+    return template;
+  }
 
-	public String getTemplateRoles(boolean isDialog, String nodeTypeName, String templateName,
-			String repository) throws Exception {
-		Session session = getSession(repository);
-		Node templateNode = getTemplateNode(session, isDialog, nodeTypeName, templateName, repository);
-		Value[] values = templateNode.getProperty(EXO_ROLES_PROP).getValues();
-		StringBuffer roles = new StringBuffer();
-		for (int i = 0; i < values.length; i++) {
-			if (roles.length() > 0)
-				roles.append("; ");
-			roles.append(values[i].getString());
-		}
-		session.logout();
-		return roles.toString();
-	}
+  public String getTemplateRoles(boolean isDialog, String nodeTypeName, String templateName,
+      String repository) throws Exception {
+    Session session = getSession(repository);
+    Node templateNode = getTemplateNode(session, isDialog, nodeTypeName, templateName, repository);
+    Value[] values = templateNode.getProperty(EXO_ROLES_PROP).getValues();
+    StringBuffer roles = new StringBuffer();
+    for (int i = 0; i < values.length; i++) {
+      if (roles.length() > 0)
+        roles.append("; ");
+      roles.append(values[i].getString());
+    }
+    session.logout();
+    return roles.toString();
+  }
 
-	@SuppressWarnings("unused")
-	private Node getTemplateNode(Session session, boolean isDialog, String nodeTypeName,
-			String templateName, String repository) throws Exception {
-		String type = DIALOGS;
-		if (!isDialog)
-			type = VIEWS;
-		Node homeNode = (Node) session.getItem(cmsTemplatesBasePath_);
-		Node nodeTypeNode = homeNode.getNode(nodeTypeName);
-		return nodeTypeNode.getNode(type).getNode(templateName);
-	}
+  @SuppressWarnings("unused")
+  private Node getTemplateNode(Session session, boolean isDialog, String nodeTypeName,
+      String templateName, String repository) throws Exception {
+    String type = DIALOGS;
+    if (!isDialog)
+      type = VIEWS;
+    Node homeNode = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node nodeTypeNode = homeNode.getNode(nodeTypeName);
+    return nodeTypeNode.getNode(type).getNode(templateName);
+  }
 
-	public void removeTemplate(boolean isDialog, String nodeTypeName, String templateName,
-			String repository) throws Exception {
-		Session session = getSession(repository);
-		Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
-		Node nodeTypeHome = templatesHome.getNode(nodeTypeName);
-		Node specifiedTemplatesHome = null;
-		if (isDialog) {
-			specifiedTemplatesHome = nodeTypeHome.getNode(DIALOGS);
-		} else {
-			specifiedTemplatesHome = nodeTypeHome.getNode(VIEWS);
-		}
-		Node contentNode = specifiedTemplatesHome.getNode(templateName);
-		contentNode.remove();
-		nodeTypeHome.save();
-		session.save();
-		session.logout();
-	}
+  public void removeTemplate(boolean isDialog, String nodeTypeName, String templateName,
+      String repository) throws Exception {
+    Session session = getSession(repository);
+    Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node nodeTypeHome = templatesHome.getNode(nodeTypeName);
+    Node specifiedTemplatesHome = null;
+    if (isDialog) {
+      specifiedTemplatesHome = nodeTypeHome.getNode(DIALOGS);
+    } else {
+      specifiedTemplatesHome = nodeTypeHome.getNode(VIEWS);
+    }
+    Node contentNode = specifiedTemplatesHome.getNode(templateName);
+    contentNode.remove();
+    nodeTypeHome.save();
+    session.save();
+    session.logout();
+  }
 
-	public void removeManagedNodeType(String nodeTypeName, String repository) throws Exception {
-		Session session = getSession(repository);
-		Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
-		Node managedNodeType = templatesHome.getNode(nodeTypeName);
-		managedNodeType.remove();
-		templatesHome.save();
-		session.save();
-		session.logout();
-	}
+  public void removeManagedNodeType(String nodeTypeName, String repository) throws Exception {
+    Session session = getSession(repository);
+    Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node managedNodeType = templatesHome.getNode(nodeTypeName);
+    managedNodeType.remove();    
+    session.save();
+    session.logout();
+    //Update managedDocumentTypeMap
+    List<String> managedDocumentTypes = managedDocumentTypesMap.get(repository);
+    managedDocumentTypes.remove(nodeTypeName);
+  }
 
-	public String addTemplate(boolean isDialog, String nodeTypeName, String label,
-			boolean isDocumentTemplate, String templateName, String[] roles, String templateFile,
-			String repository) throws Exception {
-		Session session = getSession(repository);
-		Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
-		Node nodeTypeHome = null;
-		if (!templatesHome.hasNode(nodeTypeName)) {
-			nodeTypeHome = Utils.makePath(templatesHome, nodeTypeName, NT_UNSTRUCTURED);
-			if (isDocumentTemplate) {
-				nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, true);
-			} else
-				nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, false);
-			nodeTypeHome.setProperty(TEMPLATE_LABEL, label);
-		} else {
-			nodeTypeHome = templatesHome.getNode(nodeTypeName);
-		}
+  public String addTemplate(boolean isDialog, String nodeTypeName, String label,
+      boolean isDocumentTemplate, String templateName, String[] roles, String templateFile,
+      String repository) throws Exception {
+    Session session = getSession(repository);
+    Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node nodeTypeHome = null;
+    if (!templatesHome.hasNode(nodeTypeName)) {
+      nodeTypeHome = Utils.makePath(templatesHome, nodeTypeName, NT_UNSTRUCTURED);
+      if (isDocumentTemplate) {
+        nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, true);
+      } else
+        nodeTypeHome.setProperty(DOCUMENT_TEMPLATE_PROP, false);
+      nodeTypeHome.setProperty(TEMPLATE_LABEL, label);
+    } else {
+      nodeTypeHome = templatesHome.getNode(nodeTypeName);
+    }
+    Node specifiedTemplatesHome = null;
+    if (isDialog) {
+      if (!nodeTypeHome.hasNode(DIALOGS)) {
+        specifiedTemplatesHome = Utils.makePath(nodeTypeHome, DIALOGS, NT_UNSTRUCTURED);
+      } else {
+        specifiedTemplatesHome = nodeTypeHome.getNode(DIALOGS);
+      }
+    } else {
+      if (!nodeTypeHome.hasNode(VIEWS)) {
+        specifiedTemplatesHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
+      } else {
+        specifiedTemplatesHome = nodeTypeHome.getNode(VIEWS);
+      }
+    }
 
-		Node specifiedTemplatesHome = null;
-		if (isDialog) {
-			if (!nodeTypeHome.hasNode(DIALOGS)) {
-				specifiedTemplatesHome = Utils.makePath(nodeTypeHome, DIALOGS, NT_UNSTRUCTURED);
-			} else {
-				specifiedTemplatesHome = nodeTypeHome.getNode(DIALOGS);
-			}
-		} else {
-			if (!nodeTypeHome.hasNode(VIEWS)) {
-				specifiedTemplatesHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
-			} else {
-				specifiedTemplatesHome = nodeTypeHome.getNode(VIEWS);
-			}
-		}
+    Node contentNode = null;
+    if (specifiedTemplatesHome.hasNode(templateName)) {
+      contentNode = specifiedTemplatesHome.getNode(templateName);
+    } else {
+      contentNode = specifiedTemplatesHome.addNode(templateName, EXO_TEMPLATE);
+    }
+    contentNode.setProperty(EXO_ROLES_PROP, roles);
+    contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
 
-		Node contentNode = null;
-		if (specifiedTemplatesHome.hasNode(templateName)) {
-			contentNode = specifiedTemplatesHome.getNode(templateName);
-		} else {
-			contentNode = specifiedTemplatesHome.addNode(templateName, EXO_TEMPLATE);
-		}
-		contentNode.setProperty(EXO_ROLES_PROP, roles);
-		contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
+    templatesHome.save();
+    session.save();
+    session.logout();
+    //Update managedDocumentTypesMap
+    if(isDocumentTemplate) {
+      List<String> documentList = managedDocumentTypesMap.get(repository);
+      if(documentList == null) {
+        documentList = new ArrayList<String>();
+        documentList.add(nodeTypeName);
+        managedDocumentTypesMap.put(repository,documentList);
+      }else {
+        if(!documentList.contains(nodeTypeName)) {
+          documentList.add(nodeTypeName);
+          managedDocumentTypesMap.put(repository,documentList);
+        } 
+      }
+    }
+    return contentNode.getPath();
+  }
 
-		templatesHome.save();
-		session.save();
-		session.logout();
-		return contentNode.getPath();
-	}
+  public List<String> getDocumentTemplates(String repository) throws Exception {    
+    List<String> templates = managedDocumentTypesMap.get(repository);
+    if(templates != null) 
+      return templates;
+    templates = getAllDocumentNodeTypes(repository);
+    managedDocumentTypesMap.put(repository,templates);
+    return templates;    
+  }
 
-	public List<String> getDocumentTemplates(String repository) throws Exception {
-		List<String> templates = new ArrayList<String>();
-		Session session = getSession(repository);
-		Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
-		for (NodeIterator templateIter = templatesHome.getNodes(); templateIter.hasNext();) {
-			Node template = templateIter.nextNode();
-			if (template.getProperty(DOCUMENT_TEMPLATE_PROP).getBoolean())
-				templates.add(template.getName());
-		}
-		session.logout();
-		return templates;
-	}
+  public String getTemplatePathByAnonymous(boolean isDialog, String nodeTypeName, String repository) throws Exception {
+    Session session = getSession(repository);
+    String type = DIALOGS;
+    if (!isDialog)
+      type = VIEWS;
+    Node homeNode = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node nodeTypeNode = homeNode.getNode(nodeTypeName);
+    NodeIterator templateIter = nodeTypeNode.getNode(type).getNodes();
+    while (templateIter.hasNext()) {
+      Node node = templateIter.nextNode();
+      Value[] roles = node.getProperty(EXO_ROLES_PROP).getValues();
+      if(hasPublicTemplate(roles)) {
+        String templatePath = node.getPath() ;
+        session.logout();
+        return templatePath ;
+      }
+    }
+    session.logout();
+    return null;
+  }  
 
-	public String getTemplatePathByAnonymous(boolean isDialog, String nodeTypeName, String repository) throws Exception {
-		Session session = getSession(repository);
-		String type = DIALOGS;
-		if (!isDialog)
-			type = VIEWS;
-		Node homeNode = (Node) session.getItem(cmsTemplatesBasePath_);
-		Node nodeTypeNode = homeNode.getNode(nodeTypeName);
-		NodeIterator templateIter = nodeTypeNode.getNode(type).getNodes();
-		while (templateIter.hasNext()) {
-			Node node = templateIter.nextNode();
-			Value[] roles = node.getProperty(EXO_ROLES_PROP).getValues();
-			if(hasPublicTemplate(roles)) {
-				String templatePath = node.getPath() ;
-				session.logout();
-				return templatePath ;
-			}
-		}
-		session.logout();
-		return null;
-	}  
+  private Session getSession(String repository) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
+    String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
+    return manageableRepository.getSystemSession(systemWorksapce);
+  }
 
-	private Session getSession(String repository) throws Exception {
-		ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
-		String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
-		return manageableRepository.getSystemSession(systemWorksapce);
-	}
+  private List<String> getAllDocumentNodeTypes(String repository) throws Exception {
+    List<String> contentTypes = new ArrayList<String>();
+    Session session = getSession(repository);
+    Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
+    for (NodeIterator templateIter = templatesHome.getNodes(); templateIter.hasNext();) {
+      Node template = templateIter.nextNode();
+      if (template.getProperty(DOCUMENT_TEMPLATE_PROP).getBoolean())
+        contentTypes.add(template.getName());
+    }
+    session.logout();
+    return contentTypes;
+  }
 
-	private Session getSession(String repository, SessionProvider provider) throws Exception {
-		ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
-		String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
-		return provider.getSession(systemWorksapce, manageableRepository);
-	}
+  private Session getSession(String repository, SessionProvider provider) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
+    String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
+    return provider.getSession(systemWorksapce, manageableRepository);
+  }
 
-	private boolean hasPermission(String userId,Value[] roles, IdentityRegistry identityRegistry) throws Exception {        
-		if(SystemIdentity.SYSTEM.equalsIgnoreCase(userId)) {
-			return true ;
-		} 
-		Identity identity = identityRegistry.getIdentity(userId) ;
-		if(identity == null) {
-			return false ; 
-		}        
-		for (int i = 0; i < roles.length; i++) {
-			String role = roles[i].getString();
-			if("*".equalsIgnoreCase(role)) return true ;
-			MembershipEntry membershipEntry = MembershipEntry.parse(role) ;
-			if(identity.isMemberOf(membershipEntry)) {
-				return true ;
-			}
-		}
-		return false ;
-	}
+  private boolean hasPermission(String userId,Value[] roles, IdentityRegistry identityRegistry) throws Exception {        
+    if(SystemIdentity.SYSTEM.equalsIgnoreCase(userId)) {
+      return true ;
+    } 
+    Identity identity = identityRegistry.getIdentity(userId) ;
+    if(identity == null) {
+      return false ; 
+    }        
+    for (int i = 0; i < roles.length; i++) {
+      String role = roles[i].getString();
+      if("*".equalsIgnoreCase(role)) return true ;
+      MembershipEntry membershipEntry = MembershipEntry.parse(role) ;
+      if(identity.isMemberOf(membershipEntry)) {
+        return true ;
+      }
+    }
+    return false ;
+  }
 
-	private boolean hasPublicTemplate(Value[] roles) throws Exception {
-		for (int i = 0; i < roles.length; i++) {
-			String role = roles[i].getString();
-			if("*".equalsIgnoreCase(role)) return true ;
-		}
-		return false ;
-	}  
+  private boolean hasPublicTemplate(Value[] roles) throws Exception {
+    for (int i = 0; i < roles.length; i++) {
+      String role = roles[i].getString();
+      if("*".equalsIgnoreCase(role)) return true ;
+    }
+    return false ;
+  }
 }

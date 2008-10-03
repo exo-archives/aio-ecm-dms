@@ -95,5 +95,7 @@ public interface TemplateService {
   
   public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName, String repository, SessionProvider provider) throws Exception ;
   
+  public List<String> getCreationableContentTypes(Node node) throws Exception;
+  
   public void init(String repository) throws Exception ;
 }
