@@ -102,7 +102,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
   final static public String FIELD_BSEPATH = "directoryPath" ;
   final static public String FIELD_BSEMAXBUFFER = "maxBufferSize" ;
-  final static public String KEY_AUTHENTICATIONPOLICY = "org.exoplatform.services.jcr.impl.core.access.PortalAuthenticationPolicy" ;
+  final static public String KEY_AUTHENTICATIONPOLICY = "org.exoplatform.services.jcr.impl.core.access.JAASAuthenticator" ;
   protected boolean isAddnew_ = true ;  
   protected String defaulWorkspace_ = null ;
   protected String repoName_ = null ;
