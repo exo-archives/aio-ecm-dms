@@ -27,6 +27,7 @@ import org.exoplatform.services.workflow.Form;
 import org.exoplatform.services.workflow.Process;
 import org.exoplatform.services.workflow.WorkflowFormsService;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
@@ -95,6 +96,7 @@ public class UIControllerManager extends UIContainer {
         UITaskManager uiTaskManager = portlet.createUIComponent(UITaskManager.class, null, null) ;
         uiTaskManager.setTokenId(processId) ;
         uiTaskManager.setIsStart(true);
+        uiTaskManager.checkBeforeActive();
         uiPopup.activate(uiTaskManager, 600, 500) ;
       } else {
         uiControllerManager.service_.startProcess(processId);
