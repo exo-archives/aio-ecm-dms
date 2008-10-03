@@ -123,13 +123,12 @@
 	        %>   
 	      <div class="ActionIconBox" locked="<%=isLocked%>" <%=rightClickMenu%> style="padding: 4px 0px 4px 0px; height: auto;"
 	       				objectId="<%=data.getPath()%>" workspaceName="<%=preferenceWS%>" ondblclick="$actionLink">
-	        <div style="height: auto; width: auto; border: none; -moz-user-select: none;">
+	        <div style="height: auto; width: auto; border: none; -moz-user-select: none;" unselectable="on">
 						<div class="NodeLabel">
 							<div class="ActionIcon">
 								 <span style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></span>
 							</div>
-						 </div>
-						$strActs
+						</div>
 		        <%
 		          if(name.length() < 20) subName = name ;
 		          else subName = name.substring(0,15) + "..." ;
@@ -137,7 +136,8 @@
 		        <div class="ActionIconLabel" style="width: auto;">
 		          <a class="ActionLabel" title="$name">$subName</a>
 		        </div>
-		      </div> 
+		      </div>
+		      $strActs
 	      </div>
 	    <%}%>
 	    
