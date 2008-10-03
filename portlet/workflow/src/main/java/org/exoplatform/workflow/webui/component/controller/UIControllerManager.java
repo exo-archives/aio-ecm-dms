@@ -95,6 +95,7 @@ public class UIControllerManager extends UIContainer {
         UITaskManager uiTaskManager = portlet.createUIComponent(UITaskManager.class, null, null) ;
         uiTaskManager.setTokenId(processId) ;
         uiTaskManager.setIsStart(true);
+        uiTaskManager.checkBeforeActive();
         uiPopup.activate(uiTaskManager, 600, 500) ;
       } else {
         uiControllerManager.service_.startProcess(processId);
