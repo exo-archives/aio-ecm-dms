@@ -573,11 +573,6 @@
   padding-bottom: 8px;
 }
 
-.UIJCRExplorerPortlet .UIActionContainer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer{
-  border: solid 1px #b7b7b7;
-  border-top: none;
-}
-
 .UIJCRExplorerPortlet .UIActionContainer .UIJCRBrowser{
   width: 95%;
   margin: auto;

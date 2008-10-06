@@ -522,11 +522,6 @@
 
 /*================================UIActionContainer=================================*/
 
-.UIJCRExplorerPortlet .UIActionContainer .UIGroupMembershipSelector .MembershipSelector .OverflowContainer{
-  border: solid 1px #b7b7b7;
-  border-top: none;
-}
-
 .UIJCRExplorer .UIJCRBrowser {
 	width: 95%;
 	margin: auto;
