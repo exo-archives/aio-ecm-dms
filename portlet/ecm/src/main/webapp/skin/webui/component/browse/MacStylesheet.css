@@ -251,7 +251,7 @@
 
 .UIBrowseContainer .UIDocumentList {
 	width: 97%;
-	margin: auto;
+	margin: 5px auto;
 }
 
 .UIBrowseContainer .DocNodeIcon{
