@@ -19,6 +19,8 @@ package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
@@ -28,6 +30,7 @@ import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -88,31 +91,27 @@ public class UIViewRelationList extends UIContainer{
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;
       Session session = uiExplorer.getSessionByWorkspace(workspaceName);
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      String prefPath = uiExplorer.getPreferencesPath() ;
-      if((!prefPath.equals("")) && (uiExplorer.getCurrentWorkspace().equals(workspaceName))) {
-        if(!uri.contains(prefPath)) {         
-          JCRExceptionManager.process(uiApp,new PathNotFoundException());
-          return ;
-        }
-        if ((".." + prefPath).equals(uri)) {
-          if (prefPath.equals(uiExplorer.getCurrentNode().getPath())) {
-            uiExplorer.setSelectNode(uiExplorer.getCurrentNode().getParent());
-            uiExplorer.updateAjax(event) ;
-          }
-          return ;
-        }
-        uiExplorer.setSelectNode(uri, session);
-        uiExplorer.updateAjax(event) ;
+      try {
+        session.getItem(uri);
+      } catch(ItemNotFoundException nu) {
+        uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      } 
-      if ("../".equals(uri)) {
-        if (!"/".equals(uiExplorer.getCurrentNode().getPath())) {
-          uiExplorer.setSelectNode(uiExplorer.getCurrentNode().getParent());
-          uiExplorer.updateAjax(event) ;
-        }
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;          
+      } catch(Exception e) {    
+        JCRExceptionManager.process(uiApp, e);
         return ;
       }
       uiExplorer.setSelectNode(uri, session);
+      if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {              
+        uiExplorer.setIsReferenceNode(true) ;
+        uiExplorer.setReferenceWorkspace(workspaceName) ;
+      } else {              
+        uiExplorer.setIsReferenceNode(false) ;
+      }
       uiExplorer.updateAjax(event) ;
     }
   }

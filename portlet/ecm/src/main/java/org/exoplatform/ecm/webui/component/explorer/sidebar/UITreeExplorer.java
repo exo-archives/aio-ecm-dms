@@ -26,6 +26,7 @@ import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -189,7 +190,16 @@ public class UITreeExplorer extends UIContainer {
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
       UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class) ;
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
       Node selectedNode = null ;
+      if(workspaceName != null && workspaceName.length() > 0) {
+        if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {              
+          uiExplorer.setIsReferenceNode(true) ;
+          uiExplorer.setReferenceWorkspace(workspaceName) ;
+        } else {              
+          uiExplorer.setIsReferenceNode(false) ;
+        }
+      }
       try {
         selectedNode = (Node) uiExplorer.getSession().getItem(path) ;
       } catch(PathNotFoundException pa) {

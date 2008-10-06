@@ -79,7 +79,16 @@ public class UIAddressBar extends UIForm {
           uiExplorer.setIsViewTag(false) ;
           uiExplorer.setSelectNode(uiExplorer.getCurrentStateNode()) ;
         } else {
-          String previousNodePath = uiExplorer.rewind() ;
+          String previousNodePath = uiExplorer.rewind();
+          String previousWs = uiExplorer.previousWsName();
+          if(previousWs != null && previousWs.length() > 0) {
+            if(!previousWs.equals(uiExplorer.getCurrentWorkspace())) {              
+              uiExplorer.setIsReferenceNode(true) ;
+              uiExplorer.setReferenceWorkspace(previousWs) ;
+            } else {              
+              uiExplorer.setIsReferenceNode(false) ;
+            }
+          }
           uiExplorer.setBackNodePath(previousNodePath) ;
         }
         uiExplorer.updateAjax(event) ;

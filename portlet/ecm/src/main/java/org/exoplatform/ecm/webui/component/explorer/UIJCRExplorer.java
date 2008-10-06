@@ -76,6 +76,7 @@ public class UIJCRExplorer extends UIContainer {
 
   private LinkedList<ClipboardCommand> clipboards_ = new LinkedList<ClipboardCommand>();
   private LinkedList<String> nodesHistory_ = new LinkedList<String>();
+  private LinkedList<String> wsHistory_ = new LinkedList<String>();
 
   private PortletPreferences pref_;
   private Preference preferences_;
@@ -143,6 +144,9 @@ public class UIJCRExplorer extends UIContainer {
 
   public LinkedList<String> getNodesHistory() { return nodesHistory_; }
   public void setNodesHistory(LinkedList<String> h) {nodesHistory_ = h;}
+  
+  public LinkedList<String> getWorkspacesHistory() { return wsHistory_; }
+  public void setWorkspaceHistory(LinkedList<String> wsHistory) { wsHistory_ =  wsHistory; }
 
   public Set<String> getAddressPath() { return addressPath_; }
   public void setAddressPath(Set<String> s) {addressPath_ = s;};
@@ -365,17 +369,23 @@ public class UIJCRExplorer extends UIContainer {
     context.addUIComponentToUpdateByAjax(popupAction);
   }
 
-  public void record(String str) {
+  public void record(String str, String ws) {
     nodesHistory_.add(str);
+    wsHistory_.add(ws);
     addressPath_.add(str);
   }
 
   public String rewind() { return nodesHistory_.removeLast(); }
+  
+  public String previousWsName() { return wsHistory_.removeLast(); }
 
   public void setSelectNode(Node node) throws Exception {
     currentPath_ = node.getPath();
     Node currentNode = getCurrentNode();
-    if(currentNode != null && !node.getPath().equals(currentPath_)) record(currentPath_);
+    if(currentNode != null && !node.getPath().equals(currentPath_)) {
+      if(isReferenceNode_) record(currentPath_, referenceWorkspace_);
+      else record(currentPath_, currentWorkspaceName_);
+    }
     if(currentNode.hasProperty(Utils.EXO_LANGUAGE)) {
       setLanguage(currentNode.getProperty(Utils.EXO_LANGUAGE).getValue().getString());
     }    
@@ -396,7 +406,10 @@ public class UIJCRExplorer extends UIContainer {
     if(currentNode.hasProperty(Utils.EXO_LANGUAGE)) {
       setLanguage(currentNode.getProperty(Utils.EXO_LANGUAGE).getValue().getString());
     }
-    if(previousNode != null && !currentNode.equals(previousNode)) record(previousNode.getPath());    
+    if(previousNode != null && !currentNode.equals(previousNode)) {
+      if(isReferenceNode_) record(previousNode.getPath(), referenceWorkspace_);
+      else record(previousNode.getPath(), currentWorkspaceName_);
+    }
   }
 
   public List<Node> getChildrenList(Node node, boolean isReferences) throws Exception {
