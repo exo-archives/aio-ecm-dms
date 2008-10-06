@@ -308,17 +308,17 @@ public class UIPathConfig extends UIForm implements UISelectable{
       }
       String template = uiForm.getUIFormSelectBox(UINewConfigForm.FIELD_TEMPLATE).getValue() ;
       String itemPerPage = uiForm.getUIStringInput(UINewConfigForm.FIELD_ITEMPERPAGE).getValue() ;
-      if(Integer.parseInt(itemPerPage) == 0) {
-        uiApp.addMessage(new ApplicationMessage("UIQueryConfig.msg.invalid-value", null,
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }      
-      if(Integer.parseInt(itemPerPage) <= 0) {
-        UIApplication app = uiForm.getAncestorOfType(UIApplication.class) ;
-        uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-value", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+      try {
+        if (Integer.parseInt(itemPerPage) <= 0) {
+          uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-value", null));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+      } catch (NumberFormatException e) {
+        uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-number", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue() ;
       boolean hasChildDoc = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECHILDDOC).isChecked() ;
