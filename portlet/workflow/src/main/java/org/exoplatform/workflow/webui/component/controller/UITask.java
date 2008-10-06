@@ -253,7 +253,7 @@ public class UITask extends UIForm {
           String key = name + ".checkbox";
           input = new UIFormCheckBoxInput<Boolean>(name, bundle.getString(key), Boolean.valueOf(
               (String) value).booleanValue());
-          ((UIFormCheckBoxInput)input).setEditable(editable);
+          ((UIFormCheckBoxInput)input).setEnable(editable);
         } else if (UPLOAD.equals(component)) {
           input = new UIFormUploadInput(name, name);
         } else if (RADIO_BOX.equals(component)) {
@@ -336,13 +336,6 @@ public class UITask extends UIForm {
       }
       if (value == null) value = "";
       workflowVariables.put(name, value);
-
-//      String jcrPath = (String) input.getProperty("jcrPath");
-//      if (jcrPath != null) {
-//        jcrVariables.put(jcrPath, value);
-//      } else {
-//        workflowVariables.put(name, value);
-//      }
     }
     String repository = jcrService.getDefaultRepository().getConfiguration().getName() ;
     workflowVariables.put(Utils.REPOSITORY, repository) ;
