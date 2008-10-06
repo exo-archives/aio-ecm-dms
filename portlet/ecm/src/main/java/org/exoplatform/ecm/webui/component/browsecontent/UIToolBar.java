@@ -234,7 +234,6 @@ public class UIToolBar extends UIContainer {
         UIPopupAction uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
         uiPopupAction.activate(UICBVoteForm.class, 300) ;
         uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
       } else {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.readonly-doc", null, 
             ApplicationMessage.WARNING)) ;
