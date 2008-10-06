@@ -67,9 +67,12 @@ public class UICBSearchForm extends UIForm {
   public static final String CATEGORY_SEARCH = "Category" ;
   public static final String DOCUMENT_SEARCH = "Content" ;  
   public static final String CATEGORY_QUERY = "select * from $0 where jcr:path like '%/$1[%]' "  ;
-  public static final String DOCUMENT_QUERY = "select * from $0 where contains(*, '$1') AND jcr:path like '$2[%]/%' ";  
+  public static final String DOCUMENT_QUERY = "select * from $0 where contains(*, '$1') AND jcr:path like '$2[%]/%' ";
+  public static final String DOCUMENT_ROOT_QUERY = "select * from $0 where contains(*, '$1') ";
   public boolean isDocumentType = true ;
+  
   protected long duration_ = 0 ; 
+  
   public UICBSearchForm() {
     UIFormSelectBox selectType = new UIFormSelectBox(FIELD_OPTION, FIELD_OPTION, getOptions()) ;
     selectType.setOnChange("ChangeType") ;
@@ -133,7 +136,6 @@ public class UICBSearchForm extends UIForm {
   public List<ResultData> searchDocument(String keyword, boolean reference,
       boolean relation, Node currentNode) throws Exception { 
     String nodePath = currentNode.getPath() ;
-    if(nodePath.equals("/")) nodePath = "" ;
     List<ResultData> resultList = new ArrayList<ResultData>() ;
     Map<String, ResultData> temp = new HashMap<String, ResultData>() ;
     QueryManager queryManager = null ;
@@ -145,7 +147,11 @@ public class UICBSearchForm extends UIForm {
     }
     ResultData result ;
     String statement = StringUtils.replace(DOCUMENT_QUERY, "$1", keyword) ;
-    statement = StringUtils.replace(statement, "$2", nodePath) ;    
+    if(nodePath.equals("/")) {
+      statement = StringUtils.replace(DOCUMENT_ROOT_QUERY, "$1", keyword) ;
+    } else {
+      statement = StringUtils.replace(statement, "$2", nodePath) ;    
+    }
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;           
     duration_ = 0 ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
