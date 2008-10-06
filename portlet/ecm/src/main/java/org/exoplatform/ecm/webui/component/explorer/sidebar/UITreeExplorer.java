@@ -190,6 +190,15 @@ public class UITreeExplorer extends UIContainer {
       UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
       UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class) ;
       Node selectedNode = null ;
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
+      if(workspaceName != null && workspaceName.length() > 0) {
+        if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {              
+          uiExplorer.setIsReferenceNode(true) ;
+          uiExplorer.setReferenceWorkspace(workspaceName) ;
+        } else {              
+          uiExplorer.setIsReferenceNode(false) ;
+        }
+      }
       try {
         selectedNode = (Node) uiExplorer.getSession().getItem(path) ;
       } catch(PathNotFoundException pa) {
