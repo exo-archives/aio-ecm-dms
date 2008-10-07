@@ -781,11 +781,13 @@ public class UIActionBar extends UIForm {
       if (!publicationService.isNodeEnrolledInLifecycle(currentNode)) {                  
         UIActivePublication activePublication = uiActionBar.createUIComponent(UIActivePublication.class,null,null);
         if(publicationService.getPublicationPlugins().size() == 1) {
+          activePublication.setRendered(false);
           uiExplorer.addChild(activePublication);
           String lifecycleName = publicationService.getPublicationPlugins().keySet().iterator().next();
-          activePublication.enrolNodeInLifecycle(currentNode,lifecycleName,event.getRequestContext());
+          activePublication.enrolNodeInLifecycle(currentNode,lifecycleName,event.getRequestContext());                    
           return;
         }
+        activePublication.setRendered(true);
         activePublication.updateLifecyclesGrid();
         UIPopupContainer.activate(activePublication, 600);
         event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
