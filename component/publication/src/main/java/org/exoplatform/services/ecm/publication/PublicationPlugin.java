@@ -188,4 +188,17 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
    * @throws Exception the exception
    */
   public abstract Node getNodeView(Node node, Map<String,Object> context) throws Exception;
+  
+  /**
+   * Get localized log messages and substitute variables.
+   * 
+   * @param locale : the locale to use
+   * @param key : the key to translate
+   * @param values : array of string to susbtitute in the string
+   * 
+   * @return the localized and substitute log
+   * 
+   * @result a string localized and where values are substitute
+   */
+  public abstract String getLocalizedAndSubstituteMessage(Locale locale, String key, String[] values) throws Exception;   
 }

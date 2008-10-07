@@ -536,5 +536,14 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     return null;
   }
   
+  public String getLocalizedAndSubstituteMessage(Locale locale, String key, String[] values) throws Exception{
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    ResourceBundleService resourceBundleService = (ResourceBundleService) container.getComponentInstanceOfType(ResourceBundleService.class);
+    ClassLoader cl=this.getClass().getClassLoader();
+    ResourceBundle resourceBundle=resourceBundleService.getResourceBundle(localeFile,locale,cl);
+    String result = resourceBundle.getString(key);
+    return String.format(result,values);
+  }
+  
 
 }

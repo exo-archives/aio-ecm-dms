@@ -43,8 +43,6 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.resources.ResourceBundleService;
 
-import com.lowagie.tools.concat_pdf;
-
 /**
  * Created by The eXo Platform SAS
  * Author : Romain Dénarié
@@ -107,8 +105,8 @@ public class PublicationServiceImpl implements PublicationService {
     Value value2add=systemSession.getValueFactory().createValue(string2add);
     newValues.add(value2add);
     node.setProperty(HISTORY,newValues.toArray(new Value[newValues.size()])) ; 
-  }
-
+  } 
+  
   /* (non-Javadoc)
    * @see org.exoplatform.services.cms.publication.PublicationService#addPublicationPlugin(org.exoplatform.services.cms.publication.PublicationPlugin)
    */
@@ -286,8 +284,18 @@ public class PublicationServiceImpl implements PublicationService {
     ResourceBundleService resourceBundleService = (ResourceBundleService) container.getComponentInstanceOfType(ResourceBundleService.class);
     ClassLoader cl=this.getClass().getClassLoader();
     ResourceBundle resourceBundle=resourceBundleService.getResourceBundle(localeFile,locale,cl);
-
     String result = resourceBundle.getString(key);
     return String.format(result,values);
-  }  
+  }
+
+  public String getLocalizedAndSubstituteLog(Node node, Locale locale, String key, String[] values) throws NotInPublicationLifecycleException, Exception{
+    String lifecycleName = getNodeLifecycleName(node);
+    PublicationPlugin publicationPlugin = publicationPlugins_.get(lifecycleName);
+    try {
+      return publicationPlugin.getLocalizedAndSubstituteMessage(locale,key,values); 
+    } catch (Exception e) {
+      log.warn("Exception when get log message",e);
+      return key;
+    }        
+  }   
 }

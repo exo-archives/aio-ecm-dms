@@ -72,7 +72,7 @@ public class UIPublicationLogList extends UIComponentDecorator {
       for (int j=4;j<currentLog.length;j++) {
         values[j-4]=currentLog[j];
       }
-      String description=publicationService.getLocalizedAndSubstituteLog(Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale(), currentLog[3], values);
+      String description=publicationService.getLocalizedAndSubstituteLog(currentNode_, Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale(), currentLog[3], values);
       bean.setDescription(description);
       list.add(bean); 
     }

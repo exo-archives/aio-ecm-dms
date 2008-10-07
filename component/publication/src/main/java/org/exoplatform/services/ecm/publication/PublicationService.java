@@ -22,6 +22,7 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
+// TODO: Auto-generated Javadoc
 /**
  * Created by The eXo Platform SAS
  * Author : Romain Dénarié
@@ -130,7 +131,7 @@ public interface PublicationService {
    * @throws Exception the exception
    */
   public String getUserInfo(Node node, Locale locale) throws NotInPublicationLifecycleException ,Exception;
-
+  
   /**
    * Retrieves the history of publication changes made to the specified Node.
    * 
@@ -155,7 +156,18 @@ public interface PublicationService {
    * @throws Exception the exception
    */
   public String[][] getLog(Node node) throws NotInPublicationLifecycleException, Exception; 
+  
+  /**
+   * Adds the log.
+   * 
+   * @param node the node
+   * @param log the log
+   * 
+   * @throws NotInPublicationLifecycleException the not in publication lifecycle exception
+   * @throws Exception the exception
+   */
 
+  
   /**
    * Adds a log entry to the specified Node.
    * The specified array of String defines the Log information to be added.
@@ -171,8 +183,8 @@ public interface PublicationService {
    * mixin has been found).
    * @throws Exception the exception
    */
-  public void addLog(Node node, String[] log) throws NotInPublicationLifecycleException, Exception;
-
+  public void addLog(Node node, String[] log) throws NotInPublicationLifecycleException, Exception; 
+  
   /**
    * Determines whether the specified Node has been enrolled into a
    * lifecycle.
@@ -244,9 +256,8 @@ public interface PublicationService {
    * @throws NotInPublicationLifecycleException the not in publication lifecycle exception
    * @throws Exception the exception
    */
-  public void unsubcribeLifecycle(Node node) throws NotInPublicationLifecycleException, Exception;
-
-
+  public void unsubcribeLifecycle(Node node) throws NotInPublicationLifecycleException, Exception;  
+  
   /**
    * Get localized log messages and substitute variables.
    * 
@@ -257,7 +268,22 @@ public interface PublicationService {
    * @return the localized and substitute log
    * 
    * @result a string localized and where values are substitute
-   */
+   */  
   public String getLocalizedAndSubstituteLog(Locale locale, String key, String[] values);
-
+  
+  /**
+   * Gets the localized and substitute log for current node. 
+   * Base on lifecycle that node is enroll. The method call to get message for each lifecycle
+   * 
+   * @param node the node
+   * @param locale the locale
+   * @param key the key
+   * @param values the values
+   * 
+   * @return the localized and substitute log
+   * 
+   * @throws NotInPublicationLifecycleException the not in publication lifecycle exception
+   * @throws Exception the exception
+   */
+  public String getLocalizedAndSubstituteLog(Node node, Locale locale, String key, String[] values) throws NotInPublicationLifecycleException, Exception;
 }
