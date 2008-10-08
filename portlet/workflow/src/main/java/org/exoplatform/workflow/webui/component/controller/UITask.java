@@ -403,8 +403,6 @@ public class UITask extends UIForm {
         if (objectId.equals(name)) {
           String transition = (String) attributes.get("transition");
           try {
-            Map variables = maps.getWorkflowVariables();
-            uiTask.serviceContainer.endTask(uiTask.identification_, variables, transition);
             if(nodePath != null) {
               Session session = 
                 SessionsUtils.getSessionProvider().getSession(srcWorkspace, repositoryService.getRepository(repository));
@@ -423,10 +421,12 @@ public class UITask extends UIForm {
               }
               session.logout();
             }
+            Map variables = maps.getWorkflowVariables();
+            uiTask.serviceContainer.endTask(uiTask.identification_, variables, transition);
             uiTask.getAncestorOfType(UIWorkflowPopup.class).deActivate() ;
             return;
           } catch (Exception e) {
-            //e.printStackTrace();
+            e.printStackTrace();
           }
         }
       }
