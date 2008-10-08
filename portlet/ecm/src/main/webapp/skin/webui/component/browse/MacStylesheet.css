@@ -356,6 +356,12 @@
 	margin: auto;
 }
 
+.UIBrowseContentPortlet .UISearchController .SearchResult .UICBSearchResults .UIAction table {
+	width: auto;
+	margin: auto;
+	align: center;
+}
+
 /*############################## -- Begin UIVoteForm   -- ##############################*/
 
 .UIBrowseContentPortlet .UIVoteForm {
