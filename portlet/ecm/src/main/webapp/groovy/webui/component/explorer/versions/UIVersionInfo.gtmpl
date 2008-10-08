@@ -41,19 +41,9 @@
 				         uicomponent.event("DeleteVersion",   node.getPath()) + "\" title=\"" + _ctx.appRes("UIVersionInfo.tooltip.deleteVersion") + "\"><span></span></div>" ;
 			}         
 			println "</div>" ;
-						
-			if(node.getChildrenSize() > 0) {
-	      if(node.isExpanded()) {
-	  			println "<div class=\"ColapseIcon\" onclick=\"window.location.href='" + uicomponent.event("Select",node.getPath()) + "'\"><span></span></div>" ;
-					println "<div class=\"Icon16x16 nt_versionHistory16x16Icon\"><span></span></div>" ;
-	      } else {
-	  			println "<div class=\"ExpandIcon\" onclick=\"window.location.href='" + uicomponent.event("Select",node.getPath()) + "'\"><span></span></div>" ;
-					println "<div class=\"Icon16x16 nt_versionHistory16x16Icon\"><span></span></div>" ;
-	      }
-			} else {
-  			println "<div class=\"NoneIcon\"><span></span></div>" ;
-				println "<div class=\"Icon16x16  nt_versionHistory16x16Icon\"><span></span></div>" ;
-			}
+		  println "<div class=\"NoneIcon\"><span></span></div>" ;
+			println "<div class=\"Icon16x16  nt_versionHistory16x16Icon\"><span></span></div>" ;				
+		
 			String baseVersion = "" ;
 			if(uicomponent.isBaseVersion(node)) {			
 			  baseVersion = " (Base Version)" ;
