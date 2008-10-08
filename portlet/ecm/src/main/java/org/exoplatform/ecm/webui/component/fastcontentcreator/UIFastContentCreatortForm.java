@@ -180,7 +180,8 @@ public class UIFastContentCreatortForm extends DialogFormFields implements UISel
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return null ;
     }
-
+    String lockToken = Utils.getLockToken(homeNode);
+    if(lockToken != null) session.addLockToken(lockToken);
     try {
       String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
       homeNode.getSession().save() ;

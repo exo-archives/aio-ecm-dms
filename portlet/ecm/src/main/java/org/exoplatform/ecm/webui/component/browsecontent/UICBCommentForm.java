@@ -141,6 +141,8 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
           }
         }
         CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class) ; 
+        String lockToken = Utils.getLockToken(currentDoc);
+        if(lockToken != null) currentDoc.getSession().addLockToken(lockToken);
         try {
           commentsService.addComment(uiForm.getDocument(), userName, email, website, comment, language) ;
         } catch (LockException le) {

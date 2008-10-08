@@ -77,6 +77,8 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent{
       String language = uiDocumentDetail.getLanguage() ;
       Node currentDoc = uiForm.getDocument() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      String lockToken = Utils.getLockToken(currentDoc);
+      if(lockToken != null) currentDoc.getSession().addLockToken(lockToken);
       if(language == null && currentDoc.hasProperty(Utils.EXO_LANGUAGE)) {
         language = currentDoc.getProperty(Utils.EXO_LANGUAGE).getValue().getString() ;
       }
