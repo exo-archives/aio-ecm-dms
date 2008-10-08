@@ -117,6 +117,7 @@
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {
 	padding: 0px 4px;
 	vertical-align: middle;
+	width: 128px;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer {
