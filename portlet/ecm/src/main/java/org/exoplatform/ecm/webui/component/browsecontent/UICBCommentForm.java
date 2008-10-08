@@ -19,6 +19,7 @@ import javax.jcr.Node;
 import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
@@ -141,6 +142,8 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
           }
         }
         CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class); 
+        String lockToken = LockUtil.getLockToken(currentDoc);
+        if(lockToken != null) currentDoc.getSession().addLockToken(lockToken);
         try {
           commentsService.addComment(uiForm.getDocument(), userName, email, website, comment, language);
         } catch (LockException le) {

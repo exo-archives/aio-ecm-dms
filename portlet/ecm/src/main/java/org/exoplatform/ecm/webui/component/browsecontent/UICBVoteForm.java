@@ -20,6 +20,7 @@ import javax.jcr.Node;
 import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
@@ -80,6 +81,8 @@ public class UICBVoteForm extends UIComponent implements UIPopupComponent {
       if(language == null && currentDoc.hasProperty(Utils.EXO_LANGUAGE)) {
         language = currentDoc.getProperty(Utils.EXO_LANGUAGE).getValue().getString() ;
       }
+      String lockToken = LockUtil.getLockToken(currentDoc);
+      if(lockToken != null) currentDoc.getSession().addLockToken(lockToken);
       try {
         votingService.vote(currentDoc, objId, userName, language) ;
       } catch (LockException le) {

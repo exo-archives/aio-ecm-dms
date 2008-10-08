@@ -31,12 +31,13 @@ import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.ecm.webui.utils.DialogFormUtil;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.LockUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -177,7 +178,8 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
       }
-
+      String lockToken = LockUtil.getLockToken(homeNode);
+      if(lockToken != null) session.addLockToken(lockToken);
       try {
         String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
         homeNode.getSession().save() ;
