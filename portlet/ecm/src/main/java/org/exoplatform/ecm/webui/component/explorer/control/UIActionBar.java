@@ -786,7 +786,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if (!Utils.isSetPropertyNodeAuthorized(currentNode)) {
+      if (!Utils.isSetPropertyNodeAuthorized(currentNode) || !Utils.isRemoveNodeAuthorized(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

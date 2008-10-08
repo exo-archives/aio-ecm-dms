@@ -17,8 +17,11 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
 
+import java.security.AccessControlException;
+
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.jcr.JCRExceptionManager;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.UIPopupAction;
@@ -28,8 +31,10 @@ import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIPublicationForm;
 import org.exoplatform.services.ecm.publication.plugins.staticdirect.UIStaticDirectVersionList;
 import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -62,6 +67,7 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
       UIJCRExplorer uiExplorer = uiActivatePublication.getAncestorOfType(UIJCRExplorer.class) ;
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
       Node currentNode = uiExplorer.getCurrentNode() ;
+      UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
       if(currentNode.isLocked()) {
         String lockToken = Utils.getLockToken(currentNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
@@ -73,8 +79,12 @@ public class UIActivePublication extends UIContainer implements UIPopupComponent
         String lockToken1 = Utils.getLockToken(parentNode);
         uiExplorer.getSession().addLockToken(lockToken1) ;
       }
-      publicationService.enrollNodeInLifecycle(currentNode, "StaticAndDirect");
-          
+      try {
+        publicationService.enrollNodeInLifecycle(currentNode, "StaticAndDirect");
+      } catch(Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+      }
       UIContainer cont = uiActivatePublication.createUIComponent(UIContainer.class, null, null);
       UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
       UIPublicationManager uiPublicationManager = 
