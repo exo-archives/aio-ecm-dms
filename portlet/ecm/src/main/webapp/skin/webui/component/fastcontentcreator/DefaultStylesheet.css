@@ -64,6 +64,10 @@
   padding-top: 10px;
 }
 
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet {
+  padding: 0px;
+}
+
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle  {
   border: none;
 }

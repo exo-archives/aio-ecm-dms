@@ -59,7 +59,10 @@
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle .HorizontalLayout {
   width: 500px;
   margin: auto;
-  padding-top: 10px;
+}
+
+.UIFastContentCreatorPortlet .HorizontalLayout .UIFormInputSet {
+  padding: 0px;
 }
 
 .UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
@@ -84,10 +87,6 @@
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
 	width: 550px;
 	margin: auto;
-}
-
-.UIFastContentCreatorPortlet .UIForm .HorizontalLayout {
-  padding-top: 10px;
 }
 
 .UIFastContentCreatorPortlet .UIJCRBrowser .UIFormWithTitle {
