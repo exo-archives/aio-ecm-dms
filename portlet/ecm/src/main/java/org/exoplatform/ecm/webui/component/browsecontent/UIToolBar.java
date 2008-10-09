@@ -223,6 +223,8 @@ public class UIToolBar extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;  
       }
+      String lockToken = Utils.getLockToken(uiDocument.node_);
+      if(lockToken != null) uiDocument.node_.getSession().addLockToken(lockToken);
       if(container.nodeIsLocked(uiDocument.node_)) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-is-locked", null, 
                                                 ApplicationMessage.WARNING)) ;
@@ -267,6 +269,8 @@ public class UIToolBar extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
       }
+      String lockToken = Utils.getLockToken(uiDocument.node_);
+      if(lockToken != null) uiDocument.node_.getSession().addLockToken(lockToken);
       if(container.nodeIsLocked(uiDocument.node_)) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-is-locked", null, 
                                                 ApplicationMessage.WARNING)) ;
