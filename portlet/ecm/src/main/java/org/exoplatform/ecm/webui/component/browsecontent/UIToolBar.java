@@ -22,6 +22,7 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.portlet.PortletMode;
 
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -223,6 +224,8 @@ public class UIToolBar extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;  
       }
+      String lockToken = LockUtil.getLockToken(uiDocument.node_);
+      if(lockToken != null) uiDocument.node_.getSession().addLockToken(lockToken);
       if(container.nodeIsLocked(uiDocument.node_)) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-is-locked", null, 
                                                 ApplicationMessage.WARNING)) ;
@@ -267,6 +270,8 @@ public class UIToolBar extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
       }
+      String lockToken = LockUtil.getLockToken(uiDocument.node_);
+      if(lockToken != null) uiDocument.node_.getSession().addLockToken(lockToken);
       if(container.nodeIsLocked(uiDocument.node_)) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-is-locked", null, 
                                                 ApplicationMessage.WARNING)) ;
