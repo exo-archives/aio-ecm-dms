@@ -956,27 +956,27 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-    if(!PermissionUtil.canSetProperty(currentNode)) {
-    uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
-    ApplicationMessage.WARNING));
-    event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-    return;
-    }
-    if(uiExplorer.nodeIsLocked(currentNode)) {
-    Object[] arg = { currentNode.getPath() };
-    uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
-    event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-    return;
-    }
-    if(!currentNode.isCheckedOut()) {
-    uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
-    event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-    return;
-    }      
-    UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
-    UIPopupContainer.activate(UIActionManager.class, null, 610, 550);
-    uiExplorer.setIsHidePopup(true);
-    event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);      
+      if(!PermissionUtil.canSetProperty(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(!currentNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }      
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(UIActionManager.class, null, 610, 550);
+      uiExplorer.setIsHidePopup(true);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);      
     }
   }
 

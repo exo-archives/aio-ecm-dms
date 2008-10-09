@@ -31,8 +31,11 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -126,8 +129,31 @@ public class UIPropertyTab extends UIContainer {
   static public class EditActionListener extends EventListener<UIPropertyTab> {
     public void execute(Event<UIPropertyTab> event) throws Exception {
       UIPropertyTab uiPropertyTab = event.getSource();
+      UIPropertiesManager uiManager = uiPropertyTab.getParent();
+      UIApplication uiApp = uiManager.getAncestorOfType(UIApplication.class);
+      UIJCRExplorer uiExplorer = uiManager.getAncestorOfType(UIJCRExplorer.class);
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(!PermissionUtil.canSetProperty(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(!currentNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }    
       String propertyName = event.getRequestContext().getRequestParameter(OBJECTID);
-      System.out.println("\n\nproperty name========>" +propertyName+ "\n\n");
+      UIPropertyForm uiForm = uiManager.getChild(UIPropertyForm.class);
+      uiForm.loadForm(propertyName);
+      uiManager.setRenderedChild(UIPropertyForm.class);
     }
   }
   
