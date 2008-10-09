@@ -17,7 +17,7 @@ var JCR = function() {
 		Self.contextMenuId = "JCRContextMenu";
 		Self.actionAreaId = actionAreaId;
 		var actionArea = document.getElementById(actionAreaId);
-		Self.allItems = DOM.findDescendantsByClass(actionArea, "tr", "RowView");
+		Self.allItems = DOM.findDescendantsByClass(actionArea, "div", "RowView");
 		var mousedown = null;
 		for (var i in Self.allItems) {
 			if (Array.prototype[i]) continue;

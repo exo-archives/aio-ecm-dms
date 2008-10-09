@@ -349,14 +349,14 @@
 
 	ECMUtils.prototype.dragItemsSelected = function(event) {
 			var event = event || window.event;
-			var mobileElement = document.getElementById(Self.mobileId);
 			document.onselectstart = function(){return false;}
+			var mobileElement = document.getElementById(Self.mobileId);
 			if (Self.enableDragDrop && mobileElement && !event.ctrlKey) {
 				mobileElement.style.display = "block";
 				var X = eXo.core.Browser.findMouseXInPage(event);
 				var Y = eXo.core.Browser.findMouseYInPage(event);
-				mobileElement.style.top = Y + 2 + "px";
-				mobileElement.style.left = X + 2 + "px";
+				mobileElement.style.top = Y + 5 + "px";
+				mobileElement.style.left = X + 5 + "px";
 				mobileElement.move = true;
 			}
 	};
