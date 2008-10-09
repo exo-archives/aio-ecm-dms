@@ -500,6 +500,11 @@
   margin: 10px;
 }
 
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid {
+	width: 97%;
+}
+
 /*================================UIJCRAdvancedSearch=================================*/
 
 .UIJCRExplorerPortlet .UIJCRAdvancedSearch {

@@ -110,6 +110,7 @@
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .NavigationContainer{  
   padding-bottom: 5px;
+  border: none;
 }
 	
 .UIJCRExplorerPortlet .UIDiff .FileContent .TopTitle{  

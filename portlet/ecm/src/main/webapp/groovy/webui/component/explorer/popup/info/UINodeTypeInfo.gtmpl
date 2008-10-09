@@ -77,7 +77,7 @@
 	  style="display: block;" ;
 	    for(nodeType in collect) {%>
 	      <div class="UITabContent" style="$style">
-	        <table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;">
+	        <table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;*width: 97%;">
 	          <thead>
 	            <tr>
 	              <th><%=_ctx.appRes("UINodeTypeInfo.label.name")%></th>
@@ -123,7 +123,7 @@
 	        		</tr>
 	        	</table>
 	        </div>
-	        <table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;">
+	        <table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%; *width: 97%;">
 	          <col><col><col width="50"><col width="50"><col width="50"><col width="50"><col><col>
 	          <thead>
 	            <tr>
@@ -177,7 +177,7 @@
 	        		</tr>
 	        	</table>
 	        </div>
-	        <table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;">
+	        <table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%; *width: 97%;">
 	          <col><col><col width="60"><col width="60"><col width="60"><col>
 	          <thead>
 	            <tr>

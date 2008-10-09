@@ -17,7 +17,7 @@
 			</tr>
 		</table>
 	</div>
-	<table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;">
+	<table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 97%;">
 	  <col width="40px;"><col><col><col><col>
 	  <thead>
 	    <tr>
@@ -53,7 +53,7 @@
 			</tr>
 		</table> 
 	</div>
-	<table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;">
+	<table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 97%;">
 	  <col width="50px;"><col><col width="50px;">
 	  <thead>
 	    <tr>

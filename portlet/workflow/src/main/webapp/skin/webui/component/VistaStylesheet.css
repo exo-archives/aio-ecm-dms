@@ -88,7 +88,7 @@
 }
 
 .UIWorkflowPortlet .UIAdministrationManager .UITabContent .UIGrid {
-	width: 99.7%;
+	width: 98%;
 }
 
 /*********************************************** Begin Icon16x16 ***********************************/
@@ -172,6 +172,7 @@
 
 .UIWorkflowPortlet .WorkflowPortletContent .UITabPane .TabPaneContent .UITabContentContainer {
   padding: 0px;
+  *width: 99.5%;
 }
 
 .UIWorkflowPortlet .WorkflowPortletContent ..UITabPane .TabPaneContent .UIGrid {
