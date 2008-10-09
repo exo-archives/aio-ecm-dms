@@ -334,7 +334,6 @@
 			var mobileElement = document.createElement("div");
 			mobileElement.setAttribute("id", 'Id-' + Math.random().toString().substring(2));
 			Self.mobileId = mobileElement.getAttribute('id');
-			document.body.setAttribute("onselectable", "on");
 			mobileElement.style.position = "absolute";
 			mobileElement.style.display = "none";
 			mobileElement.style.padding = "5px";
@@ -347,7 +346,7 @@
 			document.body.appendChild(mobileElement);
 		}
 	};
-	
+
 	ECMUtils.prototype.dragItemsSelected = function(event) {
 			var event = event || window.event;
 			var mobileElement = document.getElementById(Self.mobileId);
@@ -356,8 +355,8 @@
 				mobileElement.style.display = "block";
 				var X = eXo.core.Browser.findMouseXInPage(event);
 				var Y = eXo.core.Browser.findMouseYInPage(event);
-				mobileElement.style.top = Y + "px";
-				mobileElement.style.left = X + "px";
+				mobileElement.style.top = Y + 2 + "px";
+				mobileElement.style.left = X + 2 + "px";
 				mobileElement.move = true;
 			}
 	};
@@ -534,10 +533,12 @@
 				}
 			//I of +
 			} else {
+			 try {
 				mask.style.top = mask.storeY + "px";
 				mask.style.left = mask.storeX + "px";
 				mask.style.width = mask.deltaX + "px";
 				mask.style.height = mask.deltaY + "px";
+				} catch(e) {}
 				//detect element;
 				for (var i = 0; i < Self.allItems.length; ++ i) {
 					var itemBox = Self.allItems[i];
