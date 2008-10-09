@@ -85,6 +85,7 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
    */
   public UIPermissionSelector() throws Exception {
     changeGroup(defaultValue);
+    addChild(UIAnyPermission.class, null, null);
   }
 
   /**
@@ -137,7 +138,7 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
       returnFieldName = initParams[0];
     }
   }
-
+  
   /**
    * The listener interface for receiving selectMembershipAction events. The
    * class that is interested in processing a selectMembershipAction event

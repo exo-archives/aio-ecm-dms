@@ -1,10 +1,12 @@
 <% 
   import  org.exoplatform.webui.core.UIBreadcumbs; 
   import  org.exoplatform.webui.core.UITree; 
+  import org.exoplatform.ecm.webui.selector.UIAnyPermission;
 %>
 <div class="UIGroupMembershipSelector" id="$uicomponent.id">
   <div class="Container">
 		<div class="SelectedGroupPath"><% uicomponent.renderChild(UIBreadcumbs.class); %></div>
+		<%uicomponent.renderChild(UIAnyPermission.class);%>
 		<div class="GroupSelector">
 			<div class="ContentContainer">
 			  <div class="MembershipTitle"><%=_ctx.appRes(uicomponent.id+".label.selectGroup")%></div>
