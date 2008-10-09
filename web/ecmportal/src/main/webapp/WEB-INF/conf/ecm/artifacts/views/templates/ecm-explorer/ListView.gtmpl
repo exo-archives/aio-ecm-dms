@@ -21,7 +21,7 @@
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.JCREvent','/ecm/javascript/'); 
   rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.JCREvent.initAllEvent('${componentId}-$viewComponentId');}");
 %>
-<div id="${componentId}-$viewComponentId" class="JCRListView" style="padding-bottom: 30px;">	
+<div id="${componentId}-$viewComponentId" class="JCRListView" style="padding-bottom: 30px; posititon: relative;">	
 	<div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
 		<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px"></div>
 		<div class="JCRMoveAction" style="display: none;" request="<%=contextMenu.event('MoveNode', 'MultiSelection')%>"></div>
@@ -87,8 +87,8 @@
 			 </div>
 		</div>
 	</div>
-	<div class="UIListView" style="overflow-y: auto; overflow-x: hidden; height: 275px;">
-	  <table class="UIGridControl">
+	<div class="UIListView" style="overflow-y: auto; overflow-x: hidden; height: 275px; width: auto;">
+	  <table class="UIGridControl" style="width: 100%; table-layout: fixed; float: none;">
 	    <%
 	      String typeSort = uicomponent.getTypeSort() ;
 	      String typeSortOrder = uicomponent.getTypeSortOrder() ;
@@ -123,13 +123,8 @@
 	        }
 	      }
 	    %>
-	    <col style="$typeBgColor ;width: 40px;"></col>
-	    <col style="$nameBgColor"></col>
-	    <col></col>
-	    <col></col>
-	    <thead>
 	      <tr>
-	        <th class="$typeClass;">
+	        <th class="$typeClass;" style="width: 40px;">
 	          <a href="$typeActionLink">
 	            <div class="SortButton ${classSortTypeIcon}16x16Icon"><span></span></div>          
 	          </a>
@@ -140,14 +135,14 @@
 	            <div class="SortButton ${classSortNameIcon}16x16Icon"><span></span></div>
 	          </a>
 	        </th>
-	        <th><%=_ctx.appRes("ListView.view.label.dateCreated")%></th>
-	        <th><%=_ctx.appRes("ListView.view.label.dateModified")%></th>
-	        <th><%=_ctx.appRes("ListView.view.label.owner")%></th>
-	        <th><%=_ctx.appRes("ListView.view.label.versionable")%></th>
-	        <th><%=_ctx.appRes("ListView.view.label.auditing")%></th>
+	        <th style="width: 100px;"><%=_ctx.appRes("ListView.view.label.dateCreated")%></th>
+	        <th style="width: 100px;"><%=_ctx.appRes("ListView.view.label.dateModified")%></th>
+	        <th style="width: 80px;"><%=_ctx.appRes("ListView.view.label.owner")%></th>
+	        <th style="width: 50px;"><%=_ctx.appRes("ListView.view.label.versionable")%></th>
+	        <th style="width: 60px;"><%=_ctx.appRes("ListView.view.label.auditing")%></th>
 	      </tr>
-	    </thead>
-	    <tbody>
+	    </table>  
+	    
 	      <%
 	      	String serverUrl = uicomponent.getWebDAVServerPrefix();
 	      	String portalName = uicomponent.getPortalName() ;
@@ -191,51 +186,55 @@
 	          String isLocked = "false";
 	          if(data.isLocked()) isLocked = "true";    
 	          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;	          
+	      
 	      %>
-		      <tr <%=rightClickMenu%> class="RowView Normal" locked="$isLocked" workspacename="$preferenceWS" objectId="$nodePath" ondblclick="$actionLink" style="position: relative;">
-		        <td style="-moz-outline: none; -moz-user-select: none;">
-								<div class="NodeLabel">
-						    	$strActs<div style="cursor: pointer; -moz-user-select: none;" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></div>
-	  						</div>
-		        </td>
-		        <%
-	  	        if(name.length() < 50) subName = name ;
-			        else subName = name.substring(0,50) + "..." ;
-		        %>
-		        <td style="width: 400px; -moz-outline: none; -moz-user-select: none;">
-								<div class="NodeLabel" >
-									$strActs<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="$name">$subName</div>
-			 					</div>
-		        </td>
-		        <td style="width: 100px; -moz-outline: none; -moz-user-select: none;">
-		        		<%=dateFormat.format(uicomponent.getDateCreated(data))%>
-		        </td>
-		        <td style="width: 100px; -moz-outline: none; -moz-user-select: none;">
-	        			<%=dateFormat.format(uicomponent.getDateModified(data))%>
-		 				</td>
-		        <td style="width: 80px; -moz-outline: none; -moz-user-select: none;">
-			        	<%=uicomponent.getNodeOwner(data)%>
-		        </td>
-		        <td style="width: 50px; -moz-outline: none; -moz-user-select: none;">
-			         	<%=Utils.isVersionable(data)%>
-			          <%
-			            if(Utils.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
-			              println "(" + uicomponent.getVersionName(data) + ")" ;
-			            }
-			          %>
-		        </td>
-		        <td style="width: 60px; -moz-outline: none; -moz-user-select: none;"><!--added CPop Bull SA -->
-		           <%=Utils.isAuditable(data)%>
-		           <% if (Utils.isAuditable(data)&& uicomponent.hasAuditHistory(data)) 
-		               println "("+ uicomponent.getNumAuditHistory(data)+")";
-		              else
-		               println ""; 
-		            %>
-		        </td>
-		      </tr>
+	      <div <%=rightClickMenu%> class="RowView Normal" style="width: 100%; overflow: hidden;" locked="$isLocked" workspacename="$preferenceWS" objectId="$nodePath" ondblclick="$actionLink">
+		      $strActs
+		      <table style="table-layout: fixed;" width="100%">
+			      <tr>
+			        <td style="width: 40px; -moz-outline: none; -moz-user-select: none;">
+									<div class="NodeLabel" unselectable="on">
+							    	<div style="cursor: pointer; -moz-user-select: none;" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></div>
+		  						</div>
+			        </td>
+			        <%
+		  	        if(name.length() < 50) subName = name ;
+				        else subName = name.substring(0,50) + "..." ;
+			        %>
+			        <td style="-moz-outline: none; -moz-user-select: none;">
+									<div class="NodeLabel">
+										<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="$name">$subName</div>
+				 					</div>
+			        </td>
+			        <td style="width: 100px; -moz-outline: none; -moz-user-select: none;">
+			        		<%=dateFormat.format(uicomponent.getDateCreated(data))%>
+			        </td>
+			        <td style="width: 100px; -moz-outline: none; -moz-user-select: none;">
+		        			<%=dateFormat.format(uicomponent.getDateModified(data))%>
+			 				</td>
+			        <td style="width: 80px; -moz-outline: none; -moz-user-select: none;">
+				        	<%=uicomponent.getNodeOwner(data)%>
+			        </td>
+			        <td style="width: 50px; -moz-outline: none; -moz-user-select: none;">
+				         	<%=Utils.isVersionable(data)%>
+				          <%
+				            if(Utils.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
+				              println "(" + uicomponent.getVersionName(data) + ")" ;
+				            }
+				          %>
+			        </td>
+			        <td style="width: 60px; -moz-outline: none; -moz-user-select: none;"><!--added CPop Bull SA -->
+			           <%=Utils.isAuditable(data)%>
+			           <% if (Utils.isAuditable(data)&& uicomponent.hasAuditHistory(data)) 
+			               println "("+ uicomponent.getNumAuditHistory(data)+")";
+			              else
+			               println ""; 
+			            %>
+			        </td>
+			      </tr>
+			     </table> 
+		    </div>
 	      <%}%>
-	    </tbody>
-	  </table>	   
 	</div>
 	<% if(uicomponent.getContentPageIterator().getAvailablePage()>1) { %>	
 		<div style="margin:4px 0px 4px 0px;">
