@@ -196,6 +196,7 @@ public class UIPropertyForm extends UIForm {
         default: listValue.add(value.getString()); 
       }
     }
+    changeType(multiValueInputSet, property.getType());
     multiValueInputSet.setValue(listValue);
   }
   
@@ -227,6 +228,17 @@ public class UIPropertyForm extends UIForm {
     return valueList;
   }
   
+  private void changeType(UIFormMultiValueInputSet uiFormMultiValue, int type) {
+    if(PropertyType.BINARY == type) {        
+      uiFormMultiValue.setType(UIFormUploadInput.class);  
+    } else if(PropertyType.BOOLEAN == type) {
+      uiFormMultiValue.setType(UIFormCheckBoxInput.class);
+    } else if(PropertyType.DATE == type) {
+      uiFormMultiValue.setType(UIFormDateTimeInput.class);
+    } else {
+      uiFormMultiValue.setType(UIFormStringInput.class);
+    }
+  }
 
   static public class ChangeTypeActionListener extends EventListener {
     public void execute(Event event) throws Exception {
@@ -237,15 +249,7 @@ public class UIPropertyForm extends UIForm {
         uiForm.createUIComponent(UIFormMultiValueInputSet.class, null, null);
       uiFormMultiValue.setId(FIELD_VALUE);
       uiFormMultiValue.setName(FIELD_VALUE);
-      if(PropertyType.BINARY == type) {        
-        uiFormMultiValue.setType(UIFormUploadInput.class);  
-      } else if(PropertyType.BOOLEAN == type) {
-        uiFormMultiValue.setType(UIFormCheckBoxInput.class);
-      } else if(PropertyType.DATE == type) {
-        uiFormMultiValue.setType(UIFormDateTimeInput.class);
-      } else {
-        uiFormMultiValue.setType(UIFormStringInput.class);
-      }
+      uiForm.changeType(uiFormMultiValue, type);
       uiForm.addUIFormInput(uiFormMultiValue);
       UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class);
       uiPropertiesManager.setRenderedChild(UIPropertyForm.class);
