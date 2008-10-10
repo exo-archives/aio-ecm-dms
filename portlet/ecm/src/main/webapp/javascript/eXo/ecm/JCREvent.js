@@ -99,6 +99,7 @@ var JCR = function() {
 	
 	JCR.prototype.dragItemsSelected = function(event) {
 			var event = event || window.event;
+			document.onselectstart = function(){return false;}
 			var mobileElement = document.getElementById(Self.mobileId);
 			if (Self.enableDragDrop && mobileElement && !event.ctrlKey) {
 				mobileElement.style.display = "block";
@@ -120,6 +121,7 @@ var JCR = function() {
 		}
 		document.onmousemove = null;
 		document.onmouseup = null;
+		document.onselectstart = function(){return true;}
 	};
 	
 	JCR.prototype.clickItem = function(event, element, callback) {
@@ -179,6 +181,7 @@ var JCR = function() {
 		var event = event || window.event;
 		var element = this;
 		element.holdMouse = true;
+		document.onselectstart = function(){return false};
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		var leftClick = !rightClick;
 		Self.hideContextMenu();
@@ -208,26 +211,48 @@ var JCR = function() {
 		var event = event || window.event;
 		var element = this;
 		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
+		
+		var top = mask.storeY - 2;
+		var right = element.offsetWidth - mask.storeX - 2;
+		var bottom = element.offsetHeight - mask.storeY - 2;
+		var left = mask.storeX - 2;
+		
 		if (element.holdMouse) {
 				//select mutiple item by mouse
 				unselect();
-				var eDot = mask.parentNode;
-				mask.X = eXo.core.Browser.findMouseRelativeX(eDot, event);
-				mask.Y = eXo.core.Browser.findMouseRelativeY(eDot, event);
+				mask.X = eXo.core.Browser.findMouseRelativeX(element, event);
+				mask.Y = eXo.core.Browser.findMouseRelativeY(element, event);
 				mask.deltaX = mask.X - mask.storeX;
 				mask.deltaY = mask.Y - mask.storeY;
+				
+				mask.style.width = Math.abs(mask.deltaX) + "px";
+				mask.style.height = Math.abs(mask.deltaY) + "px";
 				// IV of +
 				if (mask.deltaX < 0 && mask.deltaY > 0) {
-					mask.style.top = mask.storeY + "px";
-					mask.style.left = mask.X + "px";
-					mask.style.width = Math.abs(mask.deltaX) + "px";
-					mask.style.height = mask.deltaY + "px";
+					if (mask.offsetHeight > bottom) {
+						mask.style.height = bottom + "px";
+					}
+					mask.style.top = mask.storeY + "px";	
+					if (mask.offsetWidth > left) {
+						mask.style.width = left + "px";
+						mask.style.left = 0 + "px";
+					} else {
+						mask.style.left = mask.X + "px";
+					}
 				// III of +
 				}	else if (mask.deltaX < 0 && mask.deltaY < 0) {
-					mask.style.top = mask.Y + "px";
-					mask.style.left = mask.X + "px";
-					mask.style.width = Math.abs(mask.deltaX) + "px";
-					mask.style.height = Math.abs(mask.deltaY) + "px";
+					if (mask.offsetHeight > top) {
+						mask.style.height = top + "px";
+						mask.style.top = 0 + "px";
+					} else {
+						mask.style.top = mask.Y + "px";
+					}
+					if (mask.offsetWidth > left) {
+						mask.style.width = left + "px";
+						mask.style.left = 0 + "px";
+					} else {
+						mask.style.left = mask.X + "px";
+					}
 					//detect element 
 					for (var i in Self.allItems) {
 						if (Array.prototype[i]) continue;
@@ -244,10 +269,16 @@ var JCR = function() {
 					}
 				// II	of +
 				} else if (mask.deltaX > 0 && mask.deltaY < 0) {
-					mask.style.top = mask.Y + "px";
+					if (mask.offsetHeight > top) {
+						mask.style.height = top + "px";
+						mask.style.top = 0 + "px";
+					} else {
+						mask.style.top = mask.Y + "px";
+					}	
+					if (mask.offsetWidth > right) {
+						mask.style.width = right + "px";
+					} 
 					mask.style.left = mask.storeX + "px";
-					mask.style.width = mask.deltaX + "px";
-					mask.style.height = Math.abs(mask.deltaY) + "px";
 					//detect element;
 					for (var i in Self.allItems) {
 						if (Array.prototype[i]) continue;
@@ -264,10 +295,14 @@ var JCR = function() {
 					}
 				// I of +
 				} else {
-					mask.style.top = mask.storeY + "px";
+					if (mask.offsetHeight > bottom) {
+						mask.style.height = bottom + "px";
+					}
+					mask.style.top = mask.storeY + "px";	
+					if (mask.offsetWidth > right) {
+						mask.style.width = right + "px";
+					}
 					mask.style.left = mask.storeX + "px";
-					mask.style.width = mask.deltaX + "px";
-					mask.style.height = mask.deltaY + "px";
 				}
 		}
 		
@@ -278,6 +313,8 @@ var JCR = function() {
 		var element = this;
 		element.holdMouse = null;
 		element.onmousemove = null;
+		document.onselectstart = function(){return true};
+		
 		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
 		mask.style.width = "0px";
 		mask.style.height = "0px";

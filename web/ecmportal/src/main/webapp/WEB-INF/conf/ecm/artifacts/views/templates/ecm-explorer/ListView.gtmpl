@@ -88,61 +88,65 @@
 		</div>
 	</div>
 	<div class="UIListView" style="overflow-y: auto; overflow-x: hidden; height: 275px; width: auto;">
-	  <table class="UIGridControl" style="width: 100%; table-layout: fixed; float: none;">
-	    <%
-	      String typeSort = uicomponent.getTypeSort() ;
-	      String typeSortOrder = uicomponent.getTypeSortOrder() ;
-	      String nameSortOrder = uicomponent.getNameSortOrder() ;
-	      String typeClass = "" ;
-	      String nameClass = "" ;
-	      String typeBgColor = "" ;
-	      String nameBgColor = "" ;
-	      String classSortTypeIcon = "BlueDownArrow";
-	      String classSortNameIcon = "BlueDownArrow";
-	      String typeActionLink  = uicomponent.event("Sort","Type;Descending") ;
-	      String nameActionLink = uicomponent.event("Sort","Alphabetic;Descending") ;
-	      if(typeSort.equals("Type")) { 
-	        typeClass = "OverHeader" ;
-	        //typeBgColor = "background: #f1f2f5" ;
-	        if(typeSortOrder.equals("Ascending")) {
-	          classSortTypeIcon = "BlueDownArrow" ;
-	          typeActionLink = uicomponent.event("Sort","Type;Descending") ;
-	        } else if(typeSortOrder.equals("Descending")) {
-	          classSortTypeIcon = "BlueUpArrow" ;
-	          typeActionLink = uicomponent.event("Sort","Type;Ascending") ;
-	        }
-	      } else if(typeSort.equals("Alphabetic")) {
-	        nameClass = "OverHeader" ;
-	        nameBgColor = "background: #f1f2f5" ;
-	        if(nameSortOrder.equals("Ascending")) {
-	          classSortNameIcon = "BlueDownArrow" ;
-	          nameActionLink = uicomponent.event("Sort","Alphabetic;Descending") ;
-	        } else if(nameSortOrder.equals("Descending")) {
-	          classSortNameIcon = "BlueUpArrow" ;
-	          nameActionLink = uicomponent.event("Sort","Alphabetic;Ascending") ;
-	        }
-	      }
-	    %>
-	      <tr>
-	        <th class="$typeClass;" style="width: 40px;">
-	          <a href="$typeActionLink">
-	            <div class="SortButton ${classSortTypeIcon}16x16Icon"><span></span></div>          
-	          </a>
-	        </th>
-	        <th class="$nameClass">
-	          <div class="HeaderLabel"><%=_ctx.appRes("ListView.view.label.name")%></div>
-	          <a href="$nameActionLink">
-	            <div class="SortButton ${classSortNameIcon}16x16Icon"><span></span></div>
-	          </a>
-	        </th>
-	        <th style="width: 100px;"><%=_ctx.appRes("ListView.view.label.dateCreated")%></th>
-	        <th style="width: 100px;"><%=_ctx.appRes("ListView.view.label.dateModified")%></th>
-	        <th style="width: 80px;"><%=_ctx.appRes("ListView.view.label.owner")%></th>
-	        <th style="width: 50px;"><%=_ctx.appRes("ListView.view.label.versionable")%></th>
-	        <th style="width: 60px;"><%=_ctx.appRes("ListView.view.label.auditing")%></th>
-	      </tr>
-	    </table>  
-	    
+		 <div style="width: 100%; font-weight: bold;
+		 						 background: #D2DDF1;
+		 						 padding-bottom: 5px; padding-top: 3px;">
+		  <table style="table-layout: fixed;" width="100%">
+		    <%
+		      String typeSort = uicomponent.getTypeSort() ;
+		      String typeSortOrder = uicomponent.getTypeSortOrder() ;
+		      String nameSortOrder = uicomponent.getNameSortOrder() ;
+		      String typeClass = "" ;
+		      String nameClass = "" ;
+		      String typeBgColor = "" ;
+		      String nameBgColor = "" ;
+		      String classSortTypeIcon = "BlueDownArrow";
+		      String classSortNameIcon = "BlueDownArrow";
+		      String typeActionLink  = uicomponent.event("Sort","Type;Descending") ;
+		      String nameActionLink = uicomponent.event("Sort","Alphabetic;Descending") ;
+		      if(typeSort.equals("Type")) { 
+		        typeClass = "OverHeader" ;
+		        //typeBgColor = "background: #f1f2f5" ;
+		        if(typeSortOrder.equals("Ascending")) {
+		          classSortTypeIcon = "BlueDownArrow" ;
+		          typeActionLink = uicomponent.event("Sort","Type;Descending") ;
+		        } else if(typeSortOrder.equals("Descending")) {
+		          classSortTypeIcon = "BlueUpArrow" ;
+		          typeActionLink = uicomponent.event("Sort","Type;Ascending") ;
+		        }
+		      } else if(typeSort.equals("Alphabetic")) {
+		        nameClass = "OverHeader" ;
+		        nameBgColor = "background: #f1f2f5" ;
+		        if(nameSortOrder.equals("Ascending")) {
+		          classSortNameIcon = "BlueDownArrow" ;
+		          nameActionLink = uicomponent.event("Sort","Alphabetic;Descending") ;
+		        } else if(nameSortOrder.equals("Descending")) {
+		          classSortNameIcon = "BlueUpArrow" ;
+		          nameActionLink = uicomponent.event("Sort","Alphabetic;Ascending") ;
+		        }
+		      }
+		    %>
+		      <tr>
+		        <td class="$typeClass;" style="width: 40px; -moz-user-select: none;">
+		          <a href="$typeActionLink">
+		            <div class="SortButton ${classSortTypeIcon}16x16Icon"><span></span></div>          
+		          </a>
+		        </td>
+		        <td class="$nameClass" style="-moz-user-select: none;">
+		          <a href="$nameActionLink">
+		            <div class="SortButton ${classSortNameIcon}16x16Icon" style="width: auto;">
+		            	<span style="margin-left: 24px;"><%=_ctx.appRes("ListView.view.label.name")%></span>
+		            </div>
+		          </a>
+		        </td>
+		        <td style="width: 100px; -moz-user-select: none;"><%=_ctx.appRes("ListView.view.label.dateCreated")%></td>
+		        <td style="width: 100px; -moz-user-select: none;"><%=_ctx.appRes("ListView.view.label.dateModified")%></td>
+		        <td style="width: 60px; -moz-user-select: none;"><%=_ctx.appRes("ListView.view.label.owner")%></th>
+		        <td style="width: 100px; -moz-user-select: none;"><%=_ctx.appRes("ListView.view.label.versionable")%></td>
+		        <td style="width: 100px; -moz-user-select: none;"><%=_ctx.appRes("ListView.view.label.auditing")%></td>
+		      </tr>
+		    </table>  
+	    </div>
 	      <%
 	      	String serverUrl = uicomponent.getWebDAVServerPrefix();
 	      	String portalName = uicomponent.getPortalName() ;
@@ -188,7 +192,7 @@
 	          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;	          
 	      
 	      %>
-	      <div <%=rightClickMenu%> class="RowView Normal" style="width: 100%; overflow: hidden;" locked="$isLocked" workspacename="$preferenceWS" objectId="$nodePath" ondblclick="$actionLink">
+	      <div <%=rightClickMenu%> class="RowView Normal" style="width: 100%;" locked="$isLocked" workspacename="$preferenceWS" objectId="$nodePath" ondblclick="$actionLink">
 		      $strActs
 		      <table style="table-layout: fixed;" width="100%">
 			      <tr>
@@ -212,10 +216,10 @@
 			        <td style="width: 100px; -moz-outline: none; -moz-user-select: none;">
 		        			<%=dateFormat.format(uicomponent.getDateModified(data))%>
 			 				</td>
-			        <td style="width: 80px; -moz-outline: none; -moz-user-select: none;">
+			        <td style="width: 60px; -moz-outline: none; -moz-user-select: none;">
 				        	<%=uicomponent.getNodeOwner(data)%>
 			        </td>
-			        <td style="width: 50px; -moz-outline: none; -moz-user-select: none;">
+			        <td style="width: 100px; -moz-outline: none; -moz-user-select: none;">
 				         	<%=Utils.isVersionable(data)%>
 				          <%
 				            if(Utils.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
@@ -223,7 +227,7 @@
 				            }
 				          %>
 			        </td>
-			        <td style="width: 60px; -moz-outline: none; -moz-user-select: none;"><!--added CPop Bull SA -->
+			        <td style="width: 100px; -moz-outline: none; -moz-user-select: none;"><!--added CPop Bull SA -->
 			           <%=Utils.isAuditable(data)%>
 			           <% if (Utils.isAuditable(data)&& uicomponent.hasAuditHistory(data)) 
 			               println "("+ uicomponent.getNumAuditHistory(data)+")";
