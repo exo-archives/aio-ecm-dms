@@ -334,15 +334,15 @@
 			var mobileElement = document.createElement("div");
 			mobileElement.setAttribute("id", 'Id-' + Math.random().toString().substring(2));
 			Self.mobileId = mobileElement.getAttribute('id');
+			mobileElement.className = "UIJCRExplorerPortlet";
 			mobileElement.style.position = "absolute";
 			mobileElement.style.display = "none";
-			mobileElement.style.padding = "5px";
-			mobileElement.style.width = "92px";
-			mobileElement.style.height = "36px";
-			mobileElement.style.textAlign = "center";
 			mobileElement.style.background = "#fff6a4";
 			mobileElement.style.border = "1px solid #ffae00";
-			mobileElement.innerHTML = "Items selected: " +  Self.itemsSelected.length;
+			
+			var actionArea = document.getElementById(Self.actionAreaId);
+			var JCRMoveIcon = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveIcon");
+			mobileElement.innerHTML = JCRMoveIcon.innerHTML.replace("{number}", Self.itemsSelected.length);
 			document.body.appendChild(mobileElement);
 		}
 	};
@@ -439,9 +439,8 @@
 			unselect();
 			element.onmousemove = Self.mutipleSelect;
 			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
-			var eDot = mask.parentNode;
-			mask.storeX = eXo.core.Browser.findMouseRelativeX(eDot, event);
-			mask.storeY = eXo.core.Browser.findMouseRelativeY(eDot, event);
+			mask.storeX = eXo.core.Browser.findMouseRelativeX(element, event);
+			mask.storeY = eXo.core.Browser.findMouseRelativeY(element, event);
 			mask.style.left = mask.storeX + "px";
 			mask.style.top = mask.storeY + "px";
 			mask.style.zIndex = 1;
@@ -462,21 +461,35 @@
 		var event = event || window.event;
 		var element = this;
 		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
+		
+		var top = mask.storeY - 2;
+		var right = element.offsetWidth - mask.storeX - 2;
+		var bottom = element.offsetHeight - mask.storeY - 2;
+		var left = mask.storeX - 2;
+		
 		if (element.holdMouse) {
 			//select mutiple item by mouse
 			unselect();
-			var eDot = mask.parentNode;
-			mask.X = eXo.core.Browser.findMouseRelativeX(eDot, event);
-			mask.Y = eXo.core.Browser.findMouseRelativeY(eDot, event);
+			mask.X = eXo.core.Browser.findMouseRelativeX(element, event);
+			mask.Y = eXo.core.Browser.findMouseRelativeY(element, event);
 			mask.deltaX = mask.X - mask.storeX;
 			mask.deltaY = mask.Y - mask.storeY;
 			
+			mask.style.width = Math.abs(mask.deltaX) + "px";
+			mask.style.height = Math.abs(mask.deltaY) + "px";
+			
 			//IV of +
 			if (mask.deltaX < 0 && mask.deltaY > 0) {
-				mask.style.top = mask.storeY + "px";
-				mask.style.left = mask.X + "px";
-				mask.style.width = Math.abs(mask.deltaX) + "px";
-				mask.style.height = mask.deltaY + "px";
+				if (mask.offsetHeight > bottom) {
+					mask.style.height = bottom + "px";
+				}
+				mask.style.top = mask.storeY + "px";	
+				if (mask.offsetWidth > left) {
+					mask.style.width = left + "px";
+					mask.style.left = 0 + "px";
+				} else {
+					mask.style.left = mask.X + "px";
+				}
 				//detect element;
 				for (var i = 0; i < Self.allItems.length; ++ i) {
 					var itemBox = Self.allItems[i];
@@ -493,10 +506,18 @@
 				}
 			//III of +
 			} else if (mask.deltaX < 0 && mask.deltaY < 0) {
-				mask.style.top = mask.Y + "px";
-				mask.style.left = mask.X + "px";
-				mask.style.width = Math.abs(mask.deltaX) + "px";
-				mask.style.height = Math.abs(mask.deltaY) + "px";
+				if (mask.offsetHeight > top) {
+					mask.style.height = top + "px";
+					mask.style.top = 0 + "px";
+				} else {
+					mask.style.top = mask.Y + "px";
+				}
+				if (mask.offsetWidth > left) {
+					mask.style.width = left + "px";
+					mask.style.left = 0 + "px";
+				} else {
+					mask.style.left = mask.X + "px";
+				}
 				//detect element;
 				for (var i = 0; i < Self.allItems.length; ++ i) {
 					var itemBox = Self.allItems[i];
@@ -513,10 +534,16 @@
 				}
 			//II of +
 			} else if (mask.deltaX > 0 && mask.deltaY < 0) {
-				mask.style.top = mask.Y + "px";
+				if (mask.offsetHeight > top) {
+					mask.style.height = top + "px";
+					mask.style.top = 0 + "px";
+				} else {
+					mask.style.top = mask.Y + "px";
+				}	
+				if (mask.offsetWidth > right) {
+					mask.style.width = right + "px";
+				} 
 				mask.style.left = mask.storeX + "px";
-				mask.style.width = mask.deltaX + "px";
-				mask.style.height = Math.abs(mask.deltaY) + "px";
 				//detect element;
 				for (var i = 0; i < Self.allItems.length; ++ i) {
 					var itemBox = Self.allItems[i];
@@ -533,12 +560,14 @@
 				}
 			//I of +
 			} else {
-			 try {
-				mask.style.top = mask.storeY + "px";
+				if (mask.offsetHeight > bottom) {
+					mask.style.height = bottom + "px";
+				}
+				mask.style.top = mask.storeY + "px";	
+				if (mask.offsetWidth > right) {
+					mask.style.width = right + "px";
+				}
 				mask.style.left = mask.storeX + "px";
-				mask.style.width = mask.deltaX + "px";
-				mask.style.height = mask.deltaY + "px";
-				} catch(e) {}
 				//detect element;
 				for (var i = 0; i < Self.allItems.length; ++ i) {
 					var itemBox = Self.allItems[i];

@@ -11,6 +11,19 @@
 .UIJCRExplorerPortlet .UIJCRExplorer {
 }
 
+.UIJCRExplorerPortlet .MoveNode {
+	background: url('DefaultSkin/background/MoveNode.gif') no-repeat center center;
+	font-size: 14px;
+	font-weight: bold;
+	height: 64px;
+	line-height: 64px;
+	text-align: center;
+	width: 64px;
+	/*
+	 minh.js.exo
+	*/
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
   width: 2px;
   background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;

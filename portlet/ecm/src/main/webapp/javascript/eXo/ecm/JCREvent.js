@@ -13,6 +13,7 @@ var JCR = function() {
 	JCR.prototype.enableDragDrop = null;
 
 	//attach all event
+	
 	JCR.prototype.initAllEvent = function(actionAreaId) {
 		Self.contextMenuId = "JCRContextMenu";
 		Self.actionAreaId = actionAreaId;
@@ -185,9 +186,8 @@ var JCR = function() {
 			unselect();
 			element.onmousemove = Self.mutipleSelect;
 			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
-			var eDot = mask.parentNode;
-			mask.storeX = eXo.core.Browser.findMouseRelativeX(eDot, event);
-			mask.storeY = eXo.core.Browser.findMouseRelativeY(eDot, event);
+			mask.storeX = eXo.core.Browser.findMouseRelativeX(element, event);
+			mask.storeY = eXo.core.Browser.findMouseRelativeY(element, event);
 			mask.style.left = mask.storeX + "px";
 			mask.style.top = mask.storeY + "px";
 			mask.style.zIndex = 1;
