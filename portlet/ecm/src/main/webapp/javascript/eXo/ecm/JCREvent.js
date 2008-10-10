@@ -86,14 +86,16 @@ var JCR = function() {
 			Self.mobileId = mobileElement.getAttribute('id');
 			mobileElement.style.position = "absolute";
 			mobileElement.style.display = "none";
-			mobileElement.style.padding = "5px";
-			mobileElement.style.width = "92px";
-			mobileElement.style.height = "36px";
-			mobileElement.style.textAlign = "center";
+			mobileElement.style.padding = "2px";
 			mobileElement.style.background = "#fff6a4";
 			mobileElement.style.border = "1px solid #ffae00";
-			mobileElement.innerHTML = "Items selected: " +  Self.itemsSelected.length;
+			for(var i in Self.itemsSelected) {
+				if (Array.prototype[i]) continue;
+				mobileElement.appendChild(Self.itemsSelected[i].cloneNode(true));
+			}
 			document.body.appendChild(mobileElement);
+			var actionArea = document.getElementById(Self.actionAreaId);
+			mobileElement.style.width = actionArea.offsetWidth + "px";
 		}
 	};
 	
