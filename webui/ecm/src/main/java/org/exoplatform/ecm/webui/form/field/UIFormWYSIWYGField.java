@@ -28,52 +28,61 @@ import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
  * Jun 23, 2008  
  */
 public class UIFormWYSIWYGField extends DialogFormField {
-	private final String TOOBAR = "toolbar".intern();
-	private final String SOURCE_MODE = "SourceModeOnStartup".intern();
+  private final String TOOBAR = "toolbar".intern();
+  private final String SOURCE_MODE = "SourceModeOnStartup".intern();
+  private final String WIDTH = "width".intern();
+  private final String HEIGHT = "height".intern();
 
-	private String toolbarName;
-	private boolean sourceModeOnStartup = false;
+  private String toolbarName;
+  private boolean sourceModeOnStartup = false;
+  private String width;
+  private String height;
 
-	public UIFormWYSIWYGField(String name, String label, String[] arguments) {
-		super(name, label, arguments);
-	}
+  public UIFormWYSIWYGField(String name, String label, String[] arguments) {
+    super(name, label, arguments);
+  }
 
-	@SuppressWarnings("unchecked")
-	public <T extends UIFormInputBase> T createUIFormInput() throws Exception {    		          
-		UIFormWYSIWYGInput wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue);
-		parseOptions();
-		wysiwyg.setToolBarName(toolbarName);
-		wysiwyg.setSourceModeOnStartup(sourceModeOnStartup);
-		if(validateType != null) {
-			DialogFormUtil.addValidators(wysiwyg, validateType);
-		}    
-		return (T)wysiwyg;
-	}
+  @SuppressWarnings("unchecked")
+  public <T extends UIFormInputBase> T createUIFormInput() throws Exception {    		          
+    UIFormWYSIWYGInput wysiwyg = new UIFormWYSIWYGInput(name, name, defaultValue);
+    parseOptions();
+    wysiwyg.setToolBarName(toolbarName);
+    wysiwyg.setSourceModeOnStartup(sourceModeOnStartup);
+    wysiwyg.setWidth(width);
+    wysiwyg.setHeight(height);
+    if(validateType != null) {
+      DialogFormUtil.addValidators(wysiwyg, validateType);
+    }    
+    return (T)wysiwyg;
+  }
 
-	private void parseOptions() {
-		if("basic".equals(options)) {
-			toolbarName = UIFormWYSIWYGInput.BASIC_TOOLBAR;
-		}else if("default".equals(options) || options == null) {
-			toolbarName = UIFormWYSIWYGInput.DEFAULT_TOOLBAR;
-		}else if(options.indexOf(",")>0){				    
-			for(String s: options.split(",")) {
-				String[] entry = s.split(":");
-				if(TOOBAR.equals(entry[0])) {
-					toolbarName = entry[1];
-				}else if(SOURCE_MODE.equals(entry[0])) {
-					sourceModeOnStartup = Boolean.parseBoolean(entry[1]);
-				}
-			}
-		}else if(options.indexOf(":")>0) {	
-			String[] entry = options.split(":");
-			if(TOOBAR.equals(entry[0])) {
-				toolbarName = entry[1];
-			}else if(SOURCE_MODE.equals(entry[0])) {
-				sourceModeOnStartup = Boolean.parseBoolean(entry[1]);
-			}
-		}else {
-			toolbarName = UIFormWYSIWYGInput.DEFAULT_TOOLBAR;
-			sourceModeOnStartup = false;
-		}
-	}
+  private void parseOptions() {
+    if("basic".equals(options)) {
+      toolbarName = UIFormWYSIWYGInput.BASIC_TOOLBAR;
+    }else if("default".equals(options) || options == null) {
+      toolbarName = UIFormWYSIWYGInput.DEFAULT_TOOLBAR;
+    }else if(options.indexOf(",")>0){				    
+      for(String s: options.split(",")) {				
+        setPredefineOptions(s);
+      }
+    }else if(options.indexOf(":")>0) {			
+      setPredefineOptions(options);
+    }else {
+      toolbarName = UIFormWYSIWYGInput.DEFAULT_TOOLBAR;
+      sourceModeOnStartup = false;
+    }
+  }
+
+  private void setPredefineOptions(String option) {
+    String[] entry = option.split(":");
+    if(TOOBAR.equals(entry[0])) {
+      toolbarName = entry[1];
+    }else if(SOURCE_MODE.equals(entry[0])) {
+      sourceModeOnStartup = Boolean.parseBoolean(entry[1]);
+    }else if(WIDTH.equals(entry[0])) {
+      width = entry[1];
+    }else if(HEIGHT.equals(entry[0])) {
+      height = entry[1];
+    }
+  }
 }
