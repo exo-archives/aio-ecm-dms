@@ -14,8 +14,9 @@
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/'); 
   rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.ECMUtils.initAllEvent('${componentId}-$viewComponentId');}");
 %>
-<div id="${componentId}-$viewComponentId">	
+<div id="${componentId}-$viewComponentId">
 	<div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
+		<div class="JCRMoveIcon" style="display: none;"><div class="MoveNode"><span>{number}</span></div></div>
 		<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px"></div>
 		<div class="JCRMoveAction" style="display: none;" request="<%=contextMenu.event('MoveNode', 'MultiSelection')%>"></div>
 		<div class="ItemContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
@@ -78,7 +79,7 @@
 			 </div>
 		</div>
 	</div>
-	<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;"  >
+	<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;">
 	  <div class="ActionIconsContainer">
 	    <%for(data in uicomponent.getChildrenList()) { %>
 	        <%
