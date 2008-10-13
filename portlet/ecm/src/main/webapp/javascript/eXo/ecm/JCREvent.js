@@ -38,8 +38,30 @@ var JCR = function() {
 		//remove context menu
 		var contextMenu = document.getElementById(Self.contextMenuId);
 		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
+		//apply action drop in tree list
+		var UIWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
+		var UITreeExplorer = DOM.findFirstDescendantByClass(UIWorkingArea, "div", "UITreeExplorer");
+		DOM.getElementsBy(
+				function(element) {return element.getAttribute("objectId");},
+				"div",
+				UITreeExplorer,
+				function(element) {element.onmouseup = Self.dropTreeItem;}
+		);
 	};
-	
+	//working with tree list
+	JCR.prototype.dropTreeItem = function(event) {
+		var event = event || window.event;
+		var element = this;
+		var mobileElement = document.getElementById(Self.mobileId);
+		if (mobileElement && mobileElement.move) {
+			//post action
+			var actionArea = document.getElementById(Self.actionAreaId);
+			var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
+			var wsTarget = element.getAttribute('workspacename');
+			var idTarget = element.getAttribute('objectId');
+			Self.postGroupAction(moveAction.getAttribute('request'), "&destInfo="+idTarget+";"+wsTarget);
+		}
+	};
 	//event in item
 	JCR.prototype.mouseOverItem = function(event) {
 		var event = event || window.event;
