@@ -337,7 +337,7 @@
 			mobileElement.style.position = "absolute";
 			mobileElement.style.display = "none";
 			mobileElement.style.background = "#fff6a4";
-			mobileElement.style.border = "1px solid #ffae00";
+			mobileElement.style.border = "1px solid #f7f7f7";
 			eXo.core.Browser.setOpacity(mobileElement, 72);
 			var coverElement = document.createElement("div");
 			coverElement.setAttribute("class", "UIThumbnailsView");
