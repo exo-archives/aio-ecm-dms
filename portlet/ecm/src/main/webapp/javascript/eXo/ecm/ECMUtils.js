@@ -326,7 +326,6 @@
 			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey) {
 				Self.clickItem(event, element);
 			};
-			
 			// init drag drop;
 			document.onmousemove = Self.dragItemsSelected;
 			document.onmouseup = Self.dropItemsSelected;
@@ -334,15 +333,22 @@
 			var mobileElement = document.createElement("div");
 			mobileElement.setAttribute("id", 'Id-' + Math.random().toString().substring(2));
 			Self.mobileId = mobileElement.getAttribute('id');
-			mobileElement.className = "UIJCRExplorerPortlet";
+			mobileElement.setAttribute("class", "UIJCRExplorerPortlet");
 			mobileElement.style.position = "absolute";
 			mobileElement.style.display = "none";
 			mobileElement.style.background = "#fff6a4";
 			mobileElement.style.border = "1px solid #ffae00";
-			
-			var actionArea = document.getElementById(Self.actionAreaId);
-			var JCRMoveIcon = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveIcon");
-			mobileElement.innerHTML = JCRMoveIcon.innerHTML.replace("{number}", Self.itemsSelected.length);
+			eXo.core.Browser.setOpacity(mobileElement, 72);
+			var coverElement = document.createElement("div");
+			coverElement.setAttribute("class", "UIThumbnailsView");
+			for(var i in Self.itemsSelected) {
+				if (Array.prototype[i]) continue;
+				coverElement.appendChild( Self.itemsSelected[i].cloneNode(true));
+			}
+			var closeElement = document.createElement("div");
+			closeElement.style.clear = "left";
+			coverElement.appendChild(closeElement);
+			mobileElement.appendChild(coverElement);
 			document.body.appendChild(mobileElement);
 		}
 	};

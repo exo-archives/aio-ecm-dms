@@ -76,8 +76,7 @@ var JCR = function() {
 			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey) {
 				Self.clickItem(event, element);
 			};
-			
-		// init drag drop;
+			// init drag drop;
 			document.onmousemove = Self.dragItemsSelected;
 			document.onmouseup = Self.dropItemsSelected;
 			//create mobile element
@@ -89,6 +88,7 @@ var JCR = function() {
 			mobileElement.style.padding = "2px";
 			mobileElement.style.background = "#fff6a4";
 			mobileElement.style.border = "1px solid #ffae00";
+			eXo.core.Browser.setOpacity(mobileElement, 72);
 			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
 				mobileElement.appendChild(Self.itemsSelected[i].cloneNode(true));
@@ -150,7 +150,7 @@ var JCR = function() {
 				var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 				var wsTarget = element.getAttribute('workspacename');
 				var idTarget = element.getAttribute('objectId');
-				Self.postGroupAction(moveAction.innerHTML, "&targetId="+idTarget+"&targetName="+wsTarget);
+				Self.postGroupAction(moveAction.getAttribute('request'), "&destInfo="+idTarget+";"+wsTarget);
 			} else {
 				if (event.ctrlKey && !element.selected) {
 					element.selected = true;
@@ -439,9 +439,10 @@ var JCR = function() {
 		if (contextMenu) contextMenu.style.display = "none";
 	};
 	
-	JCR.prototype.postGroupAction = function(url) {
+	JCR.prototype.postGroupAction = function(url, ext) {
 		var objectId = [];
 		var workspaceName = [];
+		var ext = ext? ext : "";
 		if(Self.itemsSelected.length) {
 			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
@@ -454,7 +455,7 @@ var JCR = function() {
 				if (oid) objectId.push(oid);
 				else objectId.push("");
 			}
-			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";"));
+			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + ext);
 			eval(url);
 		}
 	};
