@@ -65,7 +65,7 @@ public class UIPublicationLogList extends UIComponentDecorator {
     for (int i = 0; i < array.length; i++) {
       HistoryBean bean = new HistoryBean();
       String[] currentLog=array[i];
-      bean.setDate(currentLog[0]);
+      bean.setDate(bean.formatStringByDateTime(currentLog[0]));
       bean.setNewState(currentLog[1]);
       bean.setUser(currentLog[2]);
       String[] values=new String[currentLog.length-4];
@@ -114,5 +114,28 @@ public class UIPublicationLogList extends UIComponentDecorator {
     public void setNewState(String newState) { this.newState = newState; }
     public String getUser() { return user; }
     public void setUser(String user) { this.user = user; }
+    
+    /**
+     * Updated by Nguyen Van Chien
+     * @param stringInput
+     * @return
+     */
+    public String formatStringByDateTime(String stringInput) {      
+      String dateYear = stringInput.substring(0, 4);
+      String dateMonth = stringInput.substring(4, 6);
+      String dateDay = stringInput.substring(6, 8);
+      String dateHour = stringInput.substring(9, 11);
+      String dateMinute = stringInput.substring(11, 13);
+      String dateSecond = stringInput.substring(13, 15);      
+      StringBuilder builder = new StringBuilder();      
+      builder.append(dateMonth).append("/")
+            .append(dateDay).append("/")
+            .append(dateYear).append(" ")
+            .append(dateHour).append(":")
+            .append(dateMinute).append(":")
+            .append(dateSecond);
+      
+      return builder.toString();
+    }
   }
 }
