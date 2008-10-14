@@ -21,6 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.Value;
 import javax.jcr.lock.LockException;
@@ -267,12 +268,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       } catch(ConstraintViolationException con) {
         Object[] args = {name, } ;
-        con.printStackTrace() ;
         throw new MessageException(new ApplicationMessage("UIUploadForm.msg.contraint-violation", 
                                                            args, ApplicationMessage.WARNING)) ;
       } catch(LockException lock) {
         throw new MessageException(new ApplicationMessage("UIUploadForm.msg.lock-exception", 
             null, ApplicationMessage.WARNING)) ;        
+      } catch(AccessDeniedException ace) {
+        throw new MessageException(new ApplicationMessage("UIActionBar.msg.access-add-denied", 
+            null, ApplicationMessage.WARNING)) ; 
       } catch(Exception e) {
         e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
