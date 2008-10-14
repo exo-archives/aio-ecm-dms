@@ -635,9 +635,8 @@
 }
 
 .UIECMAdminPortlet .UITemplatesManager .UIForm .textarea {
-  width: 400px;
+  width: 435px;
   height: 350px;
-  padding: 3px;
 }
 
 .UITemplatesManager .UITabPane {
@@ -663,6 +662,7 @@
 
 .UITemplatesManager .UITabPane .UIDialogTab .DialogForm .FormContainer {
 	padding-top: 10px;
+	padding-left: 0px;
 }
 
 .UITemplatesManager .DialogForm .HorizontalLayout .UIFormInputSet {
@@ -682,6 +682,7 @@
 
 .UITemplatesManager .UITabPane .UIViewTab .ViewForm .FormContainer {
 	padding-top: 10px;
+	padding-left: 0px;
 }
 
 .UITemplatesManager .ViewForm .HorizontalLayout .UIFormInputSet {
@@ -755,3 +756,4 @@
 .UIECMAdminPortlet .UIPopupWindow .Content {
   border: solid 1px #cdcdcd;
 }
+

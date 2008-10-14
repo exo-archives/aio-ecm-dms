@@ -279,7 +279,7 @@
 }
 
 .UIECMAdminPortlet .UIFormGrid .FieldLabel {
-  width: 128px;
+  width: 110px;
 }
 
 .UIECMAdminPortlet .UIECMPortletLayout {
@@ -574,13 +574,13 @@
 }
 
 .UITemplatesManager .UIDialogTab .UIForm .textarea {
-  width: 400px;  
+  width: 450px;  
   height: 320px; 
   padding: 3px;
 }
 
 .UITemplatesManager .UIViewTab .UIForm .textarea {
-  width: 380px;  
+  width: 450px;  
   height: 320px; 
   padding: 3px;
 }
@@ -601,6 +601,16 @@
 .UITemplatesManager .UITemplateContent .UIFormInputSet .UIFormGrid td.FieldLabel { 
 	padding: 4px 4px 4px 0px;
 }
+
+.UITemplatesManager .UITemplateContent .UIFormInputSet .UIFormInputSetWithAction .FormContainer { 
+	padding: 10px 10px 10px 0px;
+}
+
+.UIECMAdminPortlet .UITemplateContent .UIFormInputSet .UIFormInputSetWithAction .FormContainer .UIFormGrid td.FieldLabel{
+  width: 110px;
+}
+
+
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UINamespaceManager .HorizontalLayout {
