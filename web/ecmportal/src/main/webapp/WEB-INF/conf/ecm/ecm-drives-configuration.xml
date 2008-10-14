@@ -42,7 +42,7 @@
               <field  name="homePath"><string>/</string></field>
               <field  name="icon"><string></string></field>
               <field  name="views">
-                <string>simple-view, admin-view</string>
+                <string>simple-view, admin-view, cover-flow</string>
               </field>
               <field  name="viewPreferences"><boolean>false</boolean></field>
               <field  name="viewNonDocument"><boolean>false</boolean></field>

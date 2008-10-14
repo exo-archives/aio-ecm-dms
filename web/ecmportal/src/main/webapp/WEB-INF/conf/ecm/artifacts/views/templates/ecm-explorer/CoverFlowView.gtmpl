@@ -1,0 +1,20 @@
+<%
+  /**
+   * Created by The eXo Platform SARL
+   * Author : Dang Van Minh
+   *          minhdv@exoplatform.com
+   * Oct 10, 2008
+   * 1:36:23 PM
+   */
+%>
+<%
+  def images = uicomponent.getImages();
+  String imgSrc = "";
+  String portalName = uicomponent.getPortalName();
+  String wsName = uicomponent.getWorkspaceName();
+  String repoName = uicomponent.getRepository();
+  for(image in images) {
+    imgSrc = "/" + portalName + "/rest/jcr/" + repoName + "/" + wsName + image.getPath();
+    println "<image src=\"$imgSrc\" />";
+  }
+%>

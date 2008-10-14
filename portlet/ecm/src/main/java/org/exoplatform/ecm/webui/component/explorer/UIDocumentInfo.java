@@ -48,6 +48,7 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
@@ -365,6 +366,9 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   public String getWorkspaceName() throws Exception {
+    if(currentNode_ == null) {
+      return getOriginalNode().getSession().getWorkspace().getName();
+    }
     return currentNode_.getSession().getWorkspace().getName();
   }
 
@@ -393,7 +397,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-//    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     return tempServ.getTemplatePath(false, nodeTypeName, templateName, getRepository()) ;
   }
 
@@ -449,6 +452,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       return currentNode ;
     }
     return currentNode ;
+  }
+  
+  public List<Node> getImages() throws Exception {
+    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+    return thumbnailService.getImages(getOriginalNode());
   }
   
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
