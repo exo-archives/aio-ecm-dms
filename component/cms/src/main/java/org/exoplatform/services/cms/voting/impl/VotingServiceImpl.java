@@ -93,7 +93,7 @@ public class VotingServiceImpl implements VotingService {
     }        
     String defaultLang = multiLangService_.getDefault(node) ;           
     Node multiLanguages =null, languageNode= null ;
-    if(language.equals(defaultLang)) {
+    if((defaultLang == null && language == null) || language.equals(defaultLang)) {
       languageNode = node ;
     } else {
       if(node.hasNode(LANGUAGES)) {

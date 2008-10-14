@@ -68,7 +68,12 @@ public class UIMultiLanguageForm extends UIForm {
 
   public void doSelect(Node currentNode) throws Exception {
     List<SelectItemOption<String>> languages = new ArrayList<SelectItemOption<String>>() ;
-    String defaultLang = currentNode.getProperty(Utils.EXO_LANGUAGE).getString() ;
+    if(!currentNode.hasProperty(Utils.EXO_LANGUAGE)) {
+      currentNode.addMixin("mix:i18n");
+      currentNode.save();
+    }
+    String defaultLang = currentNode.getProperty(Utils.EXO_LANGUAGE).getString();
+    
     languages.add(new SelectItemOption<String>(defaultLang + "(default)", defaultLang)) ;
     if(currentNode.hasNode(Utils.LANGUAGES)){
       Node languageNode = currentNode.getNode(Utils.LANGUAGES) ;
