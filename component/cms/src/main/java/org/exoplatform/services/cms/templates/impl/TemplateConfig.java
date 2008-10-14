@@ -26,8 +26,8 @@ import org.apache.commons.lang.StringUtils;
  */
 public class TemplateConfig {  
   
-  private List<NodeType> nodeTypes = new ArrayList<NodeType>(5);
-  private List<Template> templates = new ArrayList<Template>(3);  
+  private List<NodeType> nodeTypes = new ArrayList<NodeType>();
+  private List<Template> templates = new ArrayList<Template>();  
   
   public List<NodeType> getNodeTypes() {   return this.nodeTypes; }
   public void setNodeTypes(List<NodeType> s) {  this.nodeTypes = s; }    

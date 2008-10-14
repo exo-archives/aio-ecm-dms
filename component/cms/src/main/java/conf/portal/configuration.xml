@@ -148,6 +148,11 @@
     <type>org.exoplatform.services.cms.jcrext.lock.LockTokenHolderService</type>
   </component>
   
+  <component>
+	  <key>org.exoplatform.services.cms.thumbnail.ThumbnailService</key>  
+	  <type>org.exoplatform.services.cms.thumbnail.impl.ThumbnailServiceImpl</type>      
+	</component>
+  
    <!-- component>
     <key>org.exoplatform.services.resources.LocaleConfigService</key>
     <type>org.exoplatform.services.resources.impl.LocaleConfigServiceImpl</type>

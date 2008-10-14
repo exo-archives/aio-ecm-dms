@@ -30,7 +30,7 @@ public class ViewConfig {
   private String name ;
   private String permissions ;
   private String template ;
-  private List<Tab> tabList = new ArrayList<Tab>(5) ;
+  private List<Tab> tabList = new ArrayList<Tab>() ;
 
   public  ViewConfig() { }
   
