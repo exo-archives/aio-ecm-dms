@@ -226,8 +226,10 @@ public class UIWorkingArea extends UIContainer {
       if(node.isCheckedOut()) {
         if(isVersionable) actionsList.append("CheckIn");
         if(isEditable) actionsList.append(",EditDocument");
-        if(holdsLock) actionsList.append(",Unlock");
-        else if(!isLocked) actionsList.append(",Lock");
+        if(!isSameNameSibling) {
+          if(holdsLock) actionsList.append(",Unlock");
+          else if(!isLocked) actionsList.append(",Lock");
+        }
         if(!isSameNameSibling) {
           actionsList.append(",Copy");
           actionsList.append(",Cut");
@@ -237,17 +239,21 @@ public class UIWorkingArea extends UIContainer {
         actionsList.append(",Delete");          
       } else {
         if(isVersionable) actionsList.append(",CheckOut");
-        if(holdsLock) actionsList.append(",Unlock");
-        else if(!isLocked) actionsList.append(",Lock");
+        if(!isSameNameSibling) {
+          if(holdsLock) actionsList.append(",Unlock");
+          else if(!isLocked) actionsList.append(",Lock");
+        }
         if(!isSameNameSibling) actionsList.append(",Copy");
         actionsList.append(",Rename");          
       }
     } else {
       if(isEditable) actionsList.append(",EditDocument");
-      if(holdsLock) {
-        actionsList.append(",Unlock");
-      } else if(!isLocked) {
-        actionsList.append(",Lock");
+      if(!isSameNameSibling) {
+        if(holdsLock) {
+          actionsList.append(",Unlock");
+        } else if(!isLocked) {
+          actionsList.append(",Lock");
+        }
       }
       if(!isSameNameSibling) {
         actionsList.append(",Copy");
@@ -781,7 +787,7 @@ public class UIWorkingArea extends UIContainer {
     } catch (Exception e) {
       JCRExceptionManager.process(uiApp, e);
       return;
-    }
+    }    
     try{
       ((ExtendedNode) node).checkPermission(PermissionType.SET_PROPERTY);        
     }catch (Exception e) {        
@@ -789,14 +795,14 @@ public class UIWorkingArea extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
       return;
-    }
+    }    
     try {
-      if(node.holdsLock())  {           
-        String lockToken = LockUtil.getLockToken(node);
+      if(node.holdsLock()) {
+        String lockToken = LockUtil.getLockToken(node);        
         if(lockToken != null) {
           session.addLockToken(lockToken);
         }
-        node.unlock();          
+        node.unlock();        
       }
     } catch(LockException le) {
       Object[] args = {node.getName()};
@@ -810,7 +816,7 @@ public class UIWorkingArea extends UIContainer {
       JCRExceptionManager.process(uiApp, e);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
-    }
+    }    
   }
   
   private void moveNode(String srcPath, String wsName, String destPath) throws Exception {
