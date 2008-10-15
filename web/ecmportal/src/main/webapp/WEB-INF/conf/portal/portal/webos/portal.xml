@@ -6,9 +6,6 @@
   <edit-permission>manager:/platform/administrators</edit-permission>
   <creator>root</creator>
   
-  <widget-layout>
-  </widget-layout>
-  
  	<portal-layout> 
     <page-body>    
 	  </page-body>    
