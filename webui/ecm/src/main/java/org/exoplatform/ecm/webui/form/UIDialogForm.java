@@ -29,6 +29,7 @@ import javax.jcr.PropertyType;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
+import org.apache.velocity.runtime.parser.node.SetExecutor;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
@@ -285,6 +286,7 @@ public class UIDialogForm extends UIForm {
     String defaultValue = formSelectBoxField.getDefaultValue();
     String options = formSelectBoxField.getOptions();
     String script = formSelectBoxField.getGroovyScript();
+    if (editable == null) formSelectBoxField.setEditable("true");
     List<SelectItemOption<String>> optionsList = new ArrayList<SelectItemOption<String>>();
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
     if(uiSelectBox == null || isResetForm) {
@@ -332,7 +334,7 @@ public class UIDialogForm extends UIForm {
     }
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
-    setInputProperty(name, inputProperty) ;    
+    setInputProperty(name, inputProperty) ;
     uiSelectBox.setEditable(formSelectBoxField.isEditable()) ;
     addUIFormInput(uiSelectBox) ;
     if(isNotEditNode) {      
