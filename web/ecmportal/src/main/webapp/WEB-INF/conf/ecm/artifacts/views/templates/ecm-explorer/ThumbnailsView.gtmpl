@@ -11,8 +11,8 @@
   
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
-  rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/'); 
-  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.ECMUtils.initAllEvent('${componentId}-$viewComponentId');}");
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UISimpleView','/ecm/javascript/'); 
+  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UISimpleView.initAllEvent('${componentId}-$viewComponentId');}");
 %>
 <div id="${componentId}-$viewComponentId">
 	<div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
@@ -22,27 +22,27 @@
 		<div class="ItemContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
 			<div class="UIRightClickPopupMenu" style="display: block;">
 				<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
-					<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Copy', 'MultiSelection')%>")> 	
+					<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Copy', 'MultiSelection')%>")> 	
 						<div class="ItemIcon Copy16x16Icon">
 							<%=_ctx.appRes("ECMContextMenu.event.Copy")%>
 						</div>
 				 	</a>
-				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Cut', 'MultiSelection')%>")> 	
+				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Cut', 'MultiSelection')%>")> 	
 						<div class="ItemIcon Cut16x16Icon">
 							<%=_ctx.appRes("ECMContextMenu.event.Cut")%>
 						</div>
 				 	</a>
-				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Delete', 'MultiSelection')%>")> 	
+				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Delete', 'MultiSelection')%>")> 	
 						<div class="ItemIcon Delete16x16Icon">
 							<%=_ctx.appRes("ECMContextMenu.event.Delete")%>
 						</div>
 				 	</a>
-				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Lock', 'MultiSelection')%>")> 	
+				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Lock', 'MultiSelection')%>")> 	
 						<div class="ItemIcon Lock16x16Icon">
 							<%=_ctx.appRes("ECMContextMenu.event.Lock")%>
 						</div>
 				 	</a>
-				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.ECMUtils.postGroupAction("<%=contextMenu.event('Unlock', 'MultiSelection')%>")> 	
+				 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Unlock', 'MultiSelection')%>")> 	
 						<div class="ItemIcon Unlock16x16Icon">
 							<%=_ctx.appRes("ECMContextMenu.event.Unlock")%>
 						</div>
