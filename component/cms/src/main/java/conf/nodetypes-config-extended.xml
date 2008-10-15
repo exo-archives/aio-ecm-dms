@@ -808,7 +808,10 @@
 			</propertyDefinition>
 			<propertyDefinition name="exo:bigSize" requiredType="String" autoCreated="true" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
 				<valueConstraints/>
-			</propertyDefinition>						
+			</propertyDefinition>
+			<propertyDefinition name="exo:specifiedSize" requiredType="String" autoCreated="true" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
+				<valueConstraints/>
+			</propertyDefinition>								
     </propertyDefinitions>
   </nodeType>
    	 	       	             

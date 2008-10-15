@@ -16,6 +16,7 @@
  */
 package org.exoplatform.services.cms.thumbnail.impl;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,6 +34,12 @@ import org.exoplatform.services.cms.thumbnail.ThumbnailService;
  */
 public class ThumbnailServiceImpl implements ThumbnailService {
 
+  public static String EXO_THUMBNAIL = "exo:thumbnail";
+  public static String SMALL_SIZE = "exo:smallSize";
+  public static String MEDIUM_SIZE = "exo:mediumSize";
+  public static String BIG_SIZE = "exo:bigSize";
+  public static String SPECIFIED_SIZE = "exo:specifiedSize";
+  
   private boolean isEnableThumbnail_ = false;
   
   public List<Node> getImages(Node node) throws RepositoryException {
@@ -80,5 +87,27 @@ public class ThumbnailServiceImpl implements ThumbnailService {
 
   public void setEnableThumbnail(boolean isEnable) {
     isEnableThumbnail_ = isEnable;
+  }
+
+  public void createThumbnail(Node node) throws Exception {
+    if(!node.isNodeType(EXO_THUMBNAIL)) {
+      if(node.canAddMixin(EXO_THUMBNAIL)) {
+        node.addMixin(EXO_THUMBNAIL);
+      }
+    }
+    
+  }
+
+  public InputStream getThumbnail(Node node, String thumbnailType) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public void createThumbnail(Node node, String width, String height) throws Exception {
+    if(!node.isNodeType(EXO_THUMBNAIL)) {
+      if(node.canAddMixin(EXO_THUMBNAIL)) {
+        node.addMixin(EXO_THUMBNAIL);
+      }
+    }
   }
 }
