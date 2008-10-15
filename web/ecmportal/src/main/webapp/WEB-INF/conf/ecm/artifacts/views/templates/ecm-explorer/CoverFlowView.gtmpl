@@ -8,13 +8,10 @@
    */
 %>
 <%
-  def images = uicomponent.getImages();
+  def flowImages = uicomponent.getFlowImages();
   String imgSrc = "";
-  String portalName = uicomponent.getPortalName();
-  String wsName = uicomponent.getWorkspaceName();
-  String repoName = uicomponent.getRepository();
-  for(image in images) {
-    imgSrc = "/" + portalName + "/rest/jcr/" + repoName + "/" + wsName + image.getPath();
+  for(image in flowImages) {
+    imgSrc = uicomponent.getFlowImage(image);
     println "<image src=\"$imgSrc\" />";
   }
 %>

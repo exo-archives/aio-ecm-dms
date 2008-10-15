@@ -33,7 +33,14 @@ import javax.jcr.RepositoryException;
  * Get image and any file type in node
  */
 public interface ThumbnailService {
-/**
+
+  final public static String EXO_THUMBNAIL = "exo:thumbnail".intern();
+  final public static String SMALL_SIZE = "exo:smallSize".intern();
+  final public static String MEDIUM_SIZE = "exo:mediumSize".intern();
+  final public static String BIG_SIZE = "exo:bigSize".intern();
+  final public static String SPECIFIED_SIZE = "exo:specifiedSize".intern();
+  
+  /**
  * Return all nt:file node at current node
  * @param node Current node
  * @return List<Node>
@@ -55,7 +62,7 @@ public interface ThumbnailService {
  * @return List<Node>
  * @throws RepositoryException
  */  
-  public List<Node> getImages(Node node) throws RepositoryException;
+  public List<Node> getFlowImages(Node node) throws RepositoryException;
 /**
  * To setup status of node is allow thumbnail or not
  * @param isEnable
@@ -70,9 +77,11 @@ public interface ThumbnailService {
  * Create thumbnail for node with default size:
  * Small size, medium size, big size
  * @param node
+ * @param inputStream Image stream
+ * @param mimeType Image type
  * @throws Exception
  */  
-  public void createThumbnail(Node node) throws Exception;
+  public void createThumbnail(Node node, InputStream inputStream, String mimeType) throws Exception;
 /**
  * Return the data of thumbnail with specified type
  * @param node
@@ -83,10 +92,12 @@ public interface ThumbnailService {
   public InputStream getThumbnail(Node node, String thumbnailType) throws Exception;
 /**
  * Create a thumbnail for node with size specified 
+ * @param inputStream Image stream
+ * @param mimeType Image type
  * @param node 
  * @param width Width of thumbnail image
  * @param height Height of thumbnail image
  * @throws Exception
  */  
-  public void createThumbnail(Node node, String width, String height) throws Exception;
+  public void createThumbnail(Node node, InputStream inputStream, String mimeType, int width, int height) throws Exception;
 }

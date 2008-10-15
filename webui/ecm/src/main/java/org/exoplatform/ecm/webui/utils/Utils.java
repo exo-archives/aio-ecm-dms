@@ -18,6 +18,7 @@ package org.exoplatform.ecm.webui.utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -34,6 +35,8 @@ import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.organization.Group;
@@ -47,103 +50,103 @@ import org.exoplatform.services.organization.OrganizationService;
  * May 8, 2008 3:13:32 PM
  */
 public class Utils {
-  final public static String WORKSPACE_NAME = "workspace".intern() ;   
-  final public static String JCR_PATH = "path".intern() ; 
-  final public static String DRIVE_FOLDER = "allowCreateFolder".intern() ; 
-  final public static String MIN_WIDTH = "minwidth".intern() ;
-  final public static String CB_DOCUMENT_NAME = "documentName".intern() ;
-  final public static String CB_SCRIPT_NAME = "scriptName".intern() ;
-  final public static String CB_REF_DOCUMENT = "reference".intern() ;  
+  final public static String WORKSPACE_NAME = "workspace".intern();   
+  final public static String JCR_PATH = "path".intern(); 
+  final public static String DRIVE_FOLDER = "allowCreateFolder".intern(); 
+  final public static String MIN_WIDTH = "minwidth".intern();
+  final public static String CB_DOCUMENT_NAME = "documentName".intern();
+  final public static String CB_SCRIPT_NAME = "scriptName".intern();
+  final public static String CB_REF_DOCUMENT = "reference".intern();  
   final public static String CB_CHILD_DOCUMENT = "child".intern();
-  final public static String CB_NB_PER_PAGE = "nbPerPage".intern() ;
-  final public static String CB_QUERY_STATEMENT = "queryStatement".intern() ;
-  final public static String CB_QUERY_ISNEW = "isAddNew".intern() ;
-  final public static String CB_QUERY_TYPE = "queryType".intern() ;
-  final public static String CB_QUERY_STORE = "queryStore".intern() ;
-  final public static String CB_QUERY_LANGUAGE = "queryLanguage".intern() ;
+  final public static String CB_NB_PER_PAGE = "nbPerPage".intern();
+  final public static String CB_QUERY_STATEMENT = "queryStatement".intern();
+  final public static String CB_QUERY_ISNEW = "isAddNew".intern();
+  final public static String CB_QUERY_TYPE = "queryType".intern();
+  final public static String CB_QUERY_STORE = "queryStore".intern();
+  final public static String CB_QUERY_LANGUAGE = "queryLanguage".intern();
   final public static String CB_VIEW_TOOLBAR = "viewToolbar".intern();
   final public static String CB_VIEW_TAGMAP = "viewTagMap".intern();
   final public static String CB_VIEW_COMMENT = "viewComment".intern();
   final public static String CB_VIEW_VOTE= "viewVote".intern();
-  final static public String EXO_AUDITABLE = "exo:auditable" ;
+  final static public String EXO_AUDITABLE = "exo:auditable";
   final public static String CB_BOX_TEMPLATE = "boxTemplate".intern();   
-  final public static String CB_TEMPLATE = "template" ;
-  final public static String CB_USECASE = "usecase".intern() ;
+  final public static String CB_TEMPLATE = "template";
+  final public static String CB_USECASE = "usecase".intern();
 
-  final public static String FROM_PATH = "From Path".intern() ;
-  final public static String USE_DOCUMENT = "Document".intern() ;
-  final public static String USE_JCR_QUERY = "Using a JCR query".intern() ;
-  final public static String USE_SCRIPT = "Using a script".intern() ;
+  final public static String FROM_PATH = "From Path".intern();
+  final public static String USE_DOCUMENT = "Document".intern();
+  final public static String USE_JCR_QUERY = "Using a JCR query".intern();
+  final public static String USE_SCRIPT = "Using a script".intern();
 
-  final public static String CB_USE_FROM_PATH = "path".intern() ;
-  final public static String CB_USE_DOCUMENT = "detail-document".intern() ;
-  final public static String CB_USE_JCR_QUERY = "query".intern() ;
-  final public static String CB_USE_SCRIPT = "script".intern() ;  
+  final public static String CB_USE_FROM_PATH = "path".intern();
+  final public static String CB_USE_DOCUMENT = "detail-document".intern();
+  final public static String CB_USE_JCR_QUERY = "query".intern();
+  final public static String CB_USE_SCRIPT = "script".intern();  
 
-  final public static String SEMI_COLON = ";".intern() ;
-  final public static String COLON = ":".intern() ;
-  final public static String SLASH = "/".intern() ;
-  final public static String BACKSLASH = "\\".intern() ;
-  final public static String EXO_CREATED_DATE = "exo:dateCreated" ;
-  final public static String EXO_MODIFIED_DATE = "exo:dateModified" ;
+  final public static String SEMI_COLON = ";".intern();
+  final public static String COLON = ":".intern();
+  final public static String SLASH = "/".intern();
+  final public static String BACKSLASH = "\\".intern();
+  final public static String EXO_CREATED_DATE = "exo:dateCreated";
+  final public static String EXO_MODIFIED_DATE = "exo:dateModified";
 
 
-  final public static String SPECIALCHARACTER[] = {SEMI_COLON,COLON,SLASH,BACKSLASH,"'","|",">","<","\"", "?", "!", "@", "#", "$", "%","^","&","*"} ;
-  final public static String REPOSITORY = "repository".intern() ;
-  final public static String VIEWS = "views".intern() ;
-  final public static String DRIVE = "drive".intern() ;
+  final public static String SPECIALCHARACTER[] = {SEMI_COLON,COLON,SLASH,BACKSLASH,"'","|",">","<","\"", "?", "!", "@", "#", "$", "%","^","&","*"};
+  final public static String REPOSITORY = "repository".intern();
+  final public static String VIEWS = "views".intern();
+  final public static String DRIVE = "drive".intern();
   final public static String JCR_INFO = "jcrInfo";
-  final static public String NT_UNSTRUCTURED = "nt:unstructured" ;
-  final static public String NT_FILE = "nt:file" ;
-  final static public String NT_FOLDER = "nt:folder" ;
-  final static public String NT_FROZEN = "nt:frozenNode".intern() ;
-  final static public String EXO_TITLE = "exo:title" ;
-  final static public String EXO_SUMMARY = "exo:summary" ;
-  final static public String EXO_RELATION = "exo:relation" ;
-  final static public String EXO_TAXANOMY = "exo:taxonomy" ;
-  final static public String EXO_IMAGE = "exo:image" ;
-  final static public String EXO_ARTICLE = "exo:article" ;
-  final static public String EXO_LANGUAGE = "exo:language" ;
-  final static public String LANGUAGES = "languages" ;
-  final static public String EXO_METADATA = "exo:metadata" ;
-  final static public String MIX_REFERENCEABLE = "mix:referenceable" ;
-  final static public String MIX_VERSIONABLE = "mix:versionable" ;
-  final static public String NT_RESOURCE = "nt:resource" ;
-  final static public String DEFAULT = "default" ;
-  final static public String JCR_CONTENT = "jcr:content" ;
-  final static public String JCR_MIMETYPE = "jcr:mimeType" ;
-  final static public String JCR_FROZEN = "jcr:frozenNode" ;
-  final public static String JCR_LASTMODIFIED = "jcr:lastModified" ;
+  final static public String NT_UNSTRUCTURED = "nt:unstructured";
+  final static public String NT_FILE = "nt:file";
+  final static public String NT_FOLDER = "nt:folder";
+  final static public String NT_FROZEN = "nt:frozenNode".intern();
+  final static public String EXO_TITLE = "exo:title";
+  final static public String EXO_SUMMARY = "exo:summary";
+  final static public String EXO_RELATION = "exo:relation";
+  final static public String EXO_TAXANOMY = "exo:taxonomy";
+  final static public String EXO_IMAGE = "exo:image";
+  final static public String EXO_ARTICLE = "exo:article";
+  final static public String EXO_LANGUAGE = "exo:language";
+  final static public String LANGUAGES = "languages";
+  final static public String EXO_METADATA = "exo:metadata";
+  final static public String MIX_REFERENCEABLE = "mix:referenceable";
+  final static public String MIX_VERSIONABLE = "mix:versionable";
+  final static public String NT_RESOURCE = "nt:resource";
+  final static public String DEFAULT = "default";
+  final static public String JCR_CONTENT = "jcr:content";
+  final static public String JCR_MIMETYPE = "jcr:mimeType";
+  final static public String JCR_FROZEN = "jcr:frozenNode";
+  final public static String JCR_LASTMODIFIED = "jcr:lastModified";
   final public static String JCR_PRIMARYTYPE = "jcr:primaryType";
-  final static public String JCR_DATA = "jcr:data" ;
-  final static public String EXO_ROLES = "exo:roles" ;
-  final static public String EXO_TEMPLATEFILE = "exo:templateFile" ;
-  final static public String EXO_TEMPLATE = "exo:template" ;
-  final static public String EXO_ACTION = "exo:action" ;
-  final static public String MIX_LOCKABLE = "mix:lockable" ;
-  final static public String EXO_CATEGORIZED = "exo:categorized" ;
-  final static public String EXO_CATEGORY = "exo:category" ;
+  final static public String JCR_DATA = "jcr:data";
+  final static public String EXO_ROLES = "exo:roles";
+  final static public String EXO_TEMPLATEFILE = "exo:templateFile";
+  final static public String EXO_TEMPLATE = "exo:template";
+  final static public String EXO_ACTION = "exo:action";
+  final static public String MIX_LOCKABLE = "mix:lockable";
+  final static public String EXO_CATEGORIZED = "exo:categorized";
+  final static public String EXO_CATEGORY = "exo:category";
 
   final static public String EXO_MUSICFOLDER = "exo:musicFolder";
   final static public String EXO_VIDEOFOLDER = "exo:videoFolder";
   final static public String EXO_PICTUREFOLDER = "exo:pictureFolder";
   final static public String EXO_DOCUMENTFOLDER = "exo:documentFolder";
   final static public String EXO_SEARCHFOLDER = "exo:searchFolder";
-  final static public String RMA_RECORD = "rma:record" ;
+  final static public String RMA_RECORD = "rma:record";
   final static public String[] SPECIFIC_FOLDERS = {EXO_MUSICFOLDER,EXO_VIDEOFOLDER,EXO_PICTUREFOLDER,EXO_DOCUMENTFOLDER,EXO_SEARCHFOLDER };
 
   final static public String[] FOLDERS = {NT_UNSTRUCTURED, NT_FOLDER};
   final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
-  final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY} ;  
-  public Map<String, Object> maps_ = new HashMap<String, Object>() ;
+  final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY};  
+  public Map<String, Object> maps_ = new HashMap<String, Object>();
 
   public static String encodeHTML(String text) {
     return text.replaceAll("&", "&amp;").replaceAll("\"", "&quot;")
-    .replaceAll("<", "&lt;").replaceAll(">", "&gt;") ;
+    .replaceAll("<", "&lt;").replaceAll(">", "&gt;");
   }
 
   public static String formatNodeName(String text) {
-    return text.replaceAll("'", "\\\\'") ;
+    return text.replaceAll("'", "\\\\'");
   }
 
   public static boolean isVersionable(Node node) throws RepositoryException {
@@ -152,19 +155,19 @@ public class Utils {
   
   static public class NodeTypeNameComparator implements Comparator {
     public int compare(Object o1, Object o2) throws ClassCastException {
-      String name1 = ((NodeType) o1).getName() ;
-      String name2 = ((NodeType) o2).getName() ;
-      return name1.compareToIgnoreCase(name2) ;
+      String name1 = ((NodeType) o1).getName();
+      String name2 = ((NodeType) o2).getName();
+      return name1.compareToIgnoreCase(name2);
     }
   }
 
   public static boolean isNameValid(String name, String[] regexpression) {
-    for(String c : regexpression){ if(name.contains(c)) return false ;}
-    return true ;
+    for(String c : regexpression){ if(name.contains(c)) return false;}
+    return true;
   }
 
   public static boolean isNameEmpty(String name) {
-    return (name == null || name.trim().length() == 0) ;
+    return (name == null || name.trim().length() == 0);
   }
   
   public static boolean isAuditable(Node node) throws RepositoryException {
@@ -172,28 +175,28 @@ public class Utils {
   }
 
   public static List<String> getListAllowedFileType(Node currentNode, String repository, TemplateService templateService) throws Exception {
-    List<String> nodeTypes = new ArrayList<String>() ;
-    NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager() ; 
-    NodeType currentNodeType = currentNode.getPrimaryNodeType() ; 
-    NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions() ;
-    List templates = templateService.getDocumentTemplates(repository) ;
+    List<String> nodeTypes = new ArrayList<String>();
+    NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager(); 
+    NodeType currentNodeType = currentNode.getPrimaryNodeType(); 
+    NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions();
+    List templates = templateService.getDocumentTemplates(repository);
     try {
       for(int i = 0; i < templates.size(); i ++){
-        String nodeTypeName = templates.get(i).toString() ; 
-        NodeType nodeType = ntManager.getNodeType(nodeTypeName) ;
-        NodeType[] superTypes = nodeType.getSupertypes() ;
-        boolean isCanCreateDocument = false ;
+        String nodeTypeName = templates.get(i).toString(); 
+        NodeType nodeType = ntManager.getNodeType(nodeTypeName);
+        NodeType[] superTypes = nodeType.getSupertypes();
+        boolean isCanCreateDocument = false;
         for(NodeDefinition childDef : childDefs){
-          NodeType[] requiredChilds = childDef.getRequiredPrimaryTypes() ;
+          NodeType[] requiredChilds = childDef.getRequiredPrimaryTypes();
           for(NodeType requiredChild : requiredChilds) {          
             if(nodeTypeName.equals(requiredChild.getName())){            
-              isCanCreateDocument = true ;
-              break ;
+              isCanCreateDocument = true;
+              break;
             }            
           }
           if(nodeTypeName.equals(childDef.getName()) || isCanCreateDocument) {
-            if(!nodeTypes.contains(nodeTypeName)) nodeTypes.add(nodeTypeName) ;
-            isCanCreateDocument = true ;          
+            if(!nodeTypes.contains(nodeTypeName)) nodeTypes.add(nodeTypeName);
+            isCanCreateDocument = true;          
           }
         }      
         if(!isCanCreateDocument){
@@ -201,27 +204,27 @@ public class Utils {
             for(NodeDefinition childDef : childDefs){          
               for(NodeType requiredType : childDef.getRequiredPrimaryTypes()) {              
                 if (superType.getName().equals(requiredType.getName())) {
-                  if(!nodeTypes.contains(nodeTypeName)) nodeTypes.add(nodeTypeName) ;
-                  isCanCreateDocument = true ;
+                  if(!nodeTypes.contains(nodeTypeName)) nodeTypes.add(nodeTypeName);
+                  isCanCreateDocument = true;
                   break;
                 }
               }
-              if(isCanCreateDocument) break ;
+              if(isCanCreateDocument) break;
             }
-            if(isCanCreateDocument) break ;
+            if(isCanCreateDocument) break;
           }
         }            
       }
     } catch(Exception e) {
-      e.printStackTrace() ;
+      e.printStackTrace();
     }
-    return nodeTypes ;
+    return nodeTypes;
   }
 
   public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {
-    StringBuilder str = new StringBuilder() ;
-    String nodeType = node.getPrimaryNodeType().getName() ;
-    //String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended ;
+    StringBuilder str = new StringBuilder();
+    String nodeType = node.getPrimaryNodeType().getName();
+    //String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended;
     if(nodeType.equals(NT_UNSTRUCTURED) || nodeType.equals(NT_FOLDER)) {
       for(String specificFolder:SPECIFIC_FOLDERS) {
         if(node.isNodeType(specificFolder)) {
@@ -230,75 +233,75 @@ public class Utils {
         }
       }
     }
-    nodeType = nodeType.replaceAll(":","_") + appended ;    
-    str.append(nodeType) ;
-    if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType) ;
+    nodeType = nodeType.replaceAll(":","_") + appended;    
+    str.append(nodeType);
+    if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType);
     if(node.isNodeType(NT_FILE)) {
-      Node jcrContentNode = node.getNode(JCR_CONTENT) ;
+      Node jcrContentNode = node.getNode(JCR_CONTENT);
       str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETYPE).getString().replaceAll("/|\\.","_")).append(appended);      
     }
-    return str.toString() ;
+    return str.toString();
   }
 
   public static String getNodeTypeIcon(Node node, String appended) throws RepositoryException {
-    return getNodeTypeIcon(node, appended, null) ;
+    return getNodeTypeIcon(node, appended, null);
   }  
   
   public static NodeIterator getAuthorizedChildNodes(Node node) throws Exception {
-    NodeIterator iter = node.getNodes() ;
+    NodeIterator iter = node.getNodes();
     while(iter.hasNext()) {
-      if(!PermissionUtil.canRead(iter.nextNode())) iter.remove() ; 
+      if(!PermissionUtil.canRead(iter.nextNode())) iter.remove(); 
     }  
-    return iter ;
+    return iter;
   }
 
   public static List<Node> getAuthorizedChildList(Node node) throws Exception {
-    List<Node> children = new ArrayList<Node>() ;
-    NodeIterator iter = node.getNodes() ;
+    List<Node> children = new ArrayList<Node>();
+    NodeIterator iter = node.getNodes();
     while(iter.hasNext()) {
-      Node child = iter.nextNode() ;
-      if(PermissionUtil.canRead(child)) children.add(child) ;
+      Node child = iter.nextNode();
+      if(PermissionUtil.canRead(child)) children.add(child);
     }  
-    return children ;
+    return children;
   }
 
   public static boolean isLockTokenHolder(Node node) throws Exception {
     if(node.getLock().getLockToken() != null) { 
-      return true ; 
+      return true; 
     } 
-    return false ;    
+    return false;    
   }     
   
   public static List<String> getMemberships() throws Exception {
-    String userId = Util.getPortalRequestContext().getRemoteUser() ;
-    OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class) ;
-    List<String> userMemberships = new ArrayList<String> () ;
-    userMemberships.add(userId) ;
-    Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userId) ;
-    if(memberships == null || memberships.size() < 0) return userMemberships ;
-    Object[] objects = memberships.toArray() ;
-    for(int i = 0 ; i < objects.length ; i ++ ){
-      Membership membership = (Membership)objects[i] ;
-      String role = membership.getMembershipType() + ":" + membership.getGroupId() ;
-      userMemberships.add(role) ;     
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class);
+    List<String> userMemberships = new ArrayList<String> ();
+    userMemberships.add(userId);
+    Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userId);
+    if(memberships == null || memberships.size() < 0) return userMemberships;
+    Object[] objects = memberships.toArray();
+    for(int i = 0; i < objects.length; i ++ ){
+      Membership membership = (Membership)objects[i];
+      String role = membership.getMembershipType() + ":" + membership.getGroupId();
+      userMemberships.add(role);     
     }
-    return userMemberships ;
+    return userMemberships;
   }
 
   public static List<String> getGroups() throws Exception {
-    String userId = Util.getPortalRequestContext().getRemoteUser() ;
-    OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class) ;
-    List<String> groupList = new ArrayList<String> () ;
-    Collection groups = oservice.getGroupHandler().findGroupsOfUser(userId) ;
-    Object[] objects = groups.toArray() ;
-    for(int i = 0 ; i < objects.length ; i ++ ){
-      Group group = (Group)objects[i] ;
-      String groupPath = null ;
-      if(group.getParentId() == null || group.getParentId().length() == 0) groupPath = "/" + group.getGroupName() ; 
-      else groupPath = group.getParentId() + "/" + group.getGroupName() ; 
-      groupList.add(groupPath) ;
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class);
+    List<String> groupList = new ArrayList<String> ();
+    Collection groups = oservice.getGroupHandler().findGroupsOfUser(userId);
+    Object[] objects = groups.toArray();
+    for(int i = 0; i < objects.length; i ++ ){
+      Group group = (Group)objects[i];
+      String groupPath = null;
+      if(group.getParentId() == null || group.getParentId().length() == 0) groupPath = "/" + group.getGroupName(); 
+      else groupPath = group.getParentId() + "/" + group.getGroupName(); 
+      groupList.add(groupPath);
     }
-    return groupList ;
+    return groupList;
   }
 
   public static String getNodeOwner(Node node) throws Exception {
@@ -307,17 +310,17 @@ public class Utils {
         return node.getProperty("exo:owner").getString();
       }
     } catch (Exception e) {
-      //e.printStackTrace() ;
+      //e.printStackTrace();
     } 
-    return null ;
+    return null;
   }
 
   public static ByteArrayInputStream extractFromZipFile(ZipInputStream zipStream) throws Exception {
     ByteArrayOutputStream out= new ByteArrayOutputStream();
     byte[] data  = new byte[1024];   
-    ZipEntry entry = zipStream.getNextEntry() ;
+    ZipEntry entry = zipStream.getNextEntry();
     while(entry != null) {
-      int available = -1 ;
+      int available = -1;
       while ((available = zipStream.read(data, 0, 1024)) > -1) {
         out.write(data, 0, available); 
       }                         
@@ -326,7 +329,18 @@ public class Utils {
     }
     out.close();
     zipStream.close();
-    ByteArrayInputStream inputStream = new ByteArrayInputStream(out.toByteArray()) ;
-    return inputStream ;
+    ByteArrayInputStream inputStream = new ByteArrayInputStream(out.toByteArray());
+    return inputStream;
+  }
+  
+  public static String getThumbnailImage(Node node, String propertyName) throws Exception {
+    if(node.hasProperty(propertyName)) {
+      DownloadService dservice = Util.getUIPortal().getApplicationComponent(DownloadService.class);
+      InputStream input = node.getProperty(propertyName).getStream();
+      InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image");
+      dresource.setDownloadName(node.getName());
+      return dservice.getDownloadLink(dservice.addDownloadResource(dresource));
+    }
+    return null;
   }
 }

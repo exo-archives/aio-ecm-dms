@@ -454,9 +454,13 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return currentNode ;
   }
   
-  public List<Node> getImages() throws Exception {
+  public List<Node> getFlowImages() throws Exception {
     ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
-    return thumbnailService.getImages(getOriginalNode());
+    return thumbnailService.getFlowImages(getOriginalNode());
+  }
+  
+  public String getFlowImage(Node node) throws Exception {
+    return Utils.getThumbnailImage(node, ThumbnailService.BIG_SIZE);
   }
   
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
