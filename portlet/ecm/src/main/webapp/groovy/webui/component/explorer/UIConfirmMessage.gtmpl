@@ -7,7 +7,7 @@
 	 * version: 2.2
 	 */  
 %>
-<div class="UIFormWithTitle $uicomponent.id">
+<div class="UIForm $uicomponent.id">
   <%
     String msgValue = _ctx.appRes(uicomponent.getMessageKey());
     String[] msgArguments = uicomponent.getArguments();
@@ -18,35 +18,39 @@
     }
   %>
   <div class="HorizontalLayout">
-    <div class="RecycleBinFull"><%=msgValue%></div>
-  <div class="UIAction"> 
-    <table class="ActionContainer" align="center">
-      <tr>
-        <td>
-						<a href="<%=uicomponent.event("OK")%>" class="ActionButton LightBlueStyle">
-            <div class="ButtonLeft">
-              <div class="ButtonRight">
-                <div class="ButtonMiddle">
-										OK
-                </div>
-              </div>
-            </div>
-						</a>
-      	</td>
-      	<td>
-						<a href="<%=uicomponent.event("Close")%>" class="ActionButton LightBlueStyle">
-            <div class="ButtonLeft">
-              <div class="ButtonRight">
-                <div class="ButtonMiddle">
-										Close
-                </div>
-              </div>
-            </div>
-						</a>
-      	</td>
-      </tr>          
-    </table>
-  </div>
+    <div class="">
+    	<div class="RecycleBinFull"><span></span></div>
+    	<div class="Text"><%=msgValue%></div>   
+    	<div style="clear: left"><span></span></div>
+    </div>
+	  <div class="UIAction"> 
+	    <table class="ActionContainer" align="center">
+	      <tr>
+	        <td>
+							<a href="<%=uicomponent.event("OK")%>" class="ActionButton LightBlueStyle">
+	            <div class="ButtonLeft">
+	              <div class="ButtonRight">
+	                <div class="ButtonMiddle">
+											OK
+	                </div>
+	              </div>
+	            </div>
+							</a>
+	      	</td>
+	      	<td>
+							<a href="<%=uicomponent.event("Close")%>" class="ActionButton LightBlueStyle">
+	            <div class="ButtonLeft">
+	              <div class="ButtonRight">
+	                <div class="ButtonMiddle">
+											Close
+	                </div>
+	              </div>
+	            </div>
+							</a>
+	      	</td>
+	      </tr>          
+	    </table>
+	  </div>
 	      <%// end render action%>
   </div>
 </div>  
