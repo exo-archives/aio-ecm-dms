@@ -226,24 +226,38 @@ public class CmsServiceImpl implements CmsService {
       for(Object key : jcrVariables.keySet()) {
         keyList.add(key.toString().substring(key.toString().lastIndexOf("/") + 1));
       }
+      List<String> currentListPropertyName = new ArrayList<String>();    
       for(PropertyIterator pi = currentNode.getProperties(); pi.hasNext();) {
         Property property = pi.nextProperty();
-        PropertyDefinition propertyDef = property.getDefinition();
-        String propertyName = property.getName();
-        int requiredtype = property.getType();
+        currentListPropertyName.add(property.getName());                        
+      }
+      PropertyDefinition[] propertyDefs = currentNodeType.getPropertyDefinitions();
+      for (int i = 0; i < propertyDefs.length; i++) {
+        PropertyDefinition propertyDef = propertyDefs[i];
+        String propertyName = propertyDef.getName();
+        Object value = null;
         String currentPath = itemPath + "/" + propertyName;
         JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath) ;
-        Object value = null;
         if(inputVariable != null) {
           value = inputVariable.getValue();
         }
-        if(keyList.contains(propertyName)) {
-          if(!propertyDef.isProtected()) {
-            processProperty(property, currentNode, requiredtype, value, propertyDef.isMultiple());
+        if (currentListPropertyName.contains(propertyName)) {                               
+          Property property = currentNode.getProperty(propertyName);
+          int requiredtype = property.getType();
+          if(keyList.contains(propertyName)) {
+            if(!propertyDef.isProtected()) {
+              processProperty(property, currentNode, requiredtype, value, propertyDef.isMultiple());
+            }
+          }
+        } else {                                                                        
+          if (!propertyDef.isAutoCreated() && !propertyDef.isProtected()) {        
+            int requiredtype = propertyDef.getRequiredType();
+            if(value != null || propertyDef.isMandatory()) {
+              processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple()) ;
+            }
           }
         }
       }
-      processAddEditProperty(false, currentNode, itemPath, currentNodeType, jcrVariables) ;
     }
     int itemLevel = StringUtils.countMatches(itemPath, "/") ;            
     List<JcrInputProperty>childNodeInputs = extractNodeInputs(jcrVariables, itemLevel + 1) ;    

@@ -814,14 +814,14 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       Node currentNode = uiExplorer.getCurrentNode();
-
+      
       if (!currentNode.isNodeType(Utils.EXO_AUDITABLE)) {
         UIPopupContainer.activate(UIActivateAuditing.class, 400);
         event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
         return;
       }
       UIAuditingInfo uiAuditingInfo = uiExplorer.createUIComponent(UIAuditingInfo.class, null, null);
-      UIPopupContainer.activate(UIAuditingInfo.class, null, 700, 500);
+      UIPopupContainer.activate(uiAuditingInfo, 700, 500);
       uiAuditingInfo.updateGrid();
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
       return;
