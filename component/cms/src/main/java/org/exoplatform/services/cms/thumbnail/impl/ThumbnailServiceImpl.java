@@ -24,6 +24,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 
+import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.impl.ImageUtils;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 
@@ -39,6 +40,15 @@ public class ThumbnailServiceImpl implements ThumbnailService {
   final private static String JCR_MIMETYPE = "jcr:mimeType".intern();
   
   private boolean isEnableThumbnail_ = false;
+  private String smallSize_;
+  private String mediumSize_;
+  private String bigSize_;
+  
+  public ThumbnailServiceImpl(InitParams initParams) throws Exception {
+    smallSize_ = initParams.getValueParam("smallSize").getValue();
+    mediumSize_ = initParams.getValueParam("mediumSize").getValue();
+    bigSize_ = initParams.getValueParam("bigSize").getValue();
+  }
   
   public List<Node> getFlowImages(Node node) throws RepositoryException {
     List<Node> fileListNodes = getAllFileInNode(node);
@@ -87,11 +97,10 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     isEnableThumbnail_ = isEnable;
   }
 
-  public void createThumbnail(Node node, InputStream inputStream, String mimeType) throws Exception {
-    //TODO: Should use init params to get size
-    createThumbnail(node, inputStream, mimeType, 32, 32, SMALL_SIZE);
-    createThumbnail(node, inputStream, mimeType, 48, 48, MEDIUM_SIZE);
-    createThumbnail(node, inputStream, mimeType, 100, 100, BIG_SIZE);
+  public void createThumbnail(Node node, Node contentNode) throws Exception {
+    parseImageSize(node, contentNode, smallSize_, SMALL_SIZE);
+    parseImageSize(node, contentNode, mediumSize_, MEDIUM_SIZE);
+    parseImageSize(node, contentNode, bigSize_, BIG_SIZE);
   }
 
   public InputStream getThumbnail(Node node, String thumbnailType) throws Exception {
@@ -101,21 +110,24 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     return null;
   }
 
-  public void createThumbnail(Node node, InputStream inputStream, String mimeType, int width, 
-      int height) throws Exception {
-    createThumbnail(node, inputStream, mimeType, width, height, SPECIFIED_SIZE);
+  public void createThumbnail(Node node, Node contentNode, int width, int height) throws Exception {
+    createThumbnail(node, contentNode, width, height, SPECIFIED_SIZE);
   }
   
-  private void createThumbnail(Node node, InputStream inputStream, String mimeType, int width, int height, 
+  private void createThumbnail(Node node, Node contentNode, int width, int height, 
       String propertyName) throws Exception {
     if(!node.isNodeType(EXO_THUMBNAIL)) node.addMixin(EXO_THUMBNAIL);
-    InputStream thumbnailStream = ImageUtils.scaleImage(inputStream, width, height, mimeType);
-    createThumbnailType(node, thumbnailStream, propertyName);
+    InputStream thumbnailStream = ImageUtils.scaleImage(contentNode, width, height);
+    node.setProperty(propertyName, thumbnailStream);
+    thumbnailStream.close();
   }
   
-  private void createThumbnailType(Node node, InputStream iStream, String type) throws Exception {
-    if(node.hasProperty(type)) {
-      node.getProperty(type).setValue(iStream);
+  private void parseImageSize(Node node, Node contentNode, String size, String sizeType) throws Exception {
+    if(size.indexOf("x") > -1) {
+      String[] imageSize = size.split("x");
+      int width = Integer.parseInt(imageSize[0]);
+      int height = Integer.parseInt(imageSize[1]);
+      createThumbnail(node, contentNode, width, height, sizeType);
     }
   }
 }

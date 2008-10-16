@@ -38,6 +38,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
 import org.exoplatform.upload.UploadService;
@@ -239,10 +240,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         uiExplorer.getSession().save() ;
         UIUploadManager uiManager = uiForm.getParent() ;
         UIUploadContainer uiUploadContainer = uiManager.getChild(UIUploadContainer.class) ;
-        Node contentNode = null;
+        UploadService uploadService = uiForm.getApplicationComponent(UploadService.class) ;
+        UIFormUploadInput uiChild = uiForm.getChild(UIFormUploadInput.class) ;
         if(uiForm.isMultiLanguage_) {
           uiUploadContainer.setUploadedNode(selectedNode) ; 
-          contentNode = uiUploadContainer.getUploadedNode().getNode(Utils.JCR_CONTENT);
         } else {
           Node newNode = null ;
           if(!isExist) {
@@ -250,16 +251,16 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
           } else {
             newNode = selectedNode.getNode(name) ;
           }
-          contentNode = newNode.getNode(Utils.JCR_CONTENT);
           uiUploadContainer.setUploadedNode(newNode) ;
+          ThumbnailService thumbnailService = uiForm.getApplicationComponent(ThumbnailService.class);
+          thumbnailService.createThumbnail(newNode, newNode.getNode(Utils.JCR_CONTENT));
+          newNode.save();
         }
         UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
-        long size = contentNode.getProperty(Utils.JCR_DATA).getLength()/1024;
-        String fileSize = Long.toString(size);     
+        double size = uploadService.getUploadResource(uiChild.getUploadId()).getEstimatedSize()/1024;
+        String fileSize = Double.toString(size);     
         String[] arrValues = {fileName, name, fileSize +" Kb", mimeType} ;
         uiUploadContent.setUploadValues(arrValues) ;
-        UploadService uploadService = uiForm.getApplicationComponent(UploadService.class) ;
-        UIFormUploadInput uiChild = uiForm.getChild(UIFormUploadInput.class) ;
         inputStream.close();
         uploadService.removeUpload(uiChild.getUploadId()) ;
         uiManager.setRenderedChild(UIUploadContainer.class) ;

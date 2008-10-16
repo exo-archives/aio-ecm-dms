@@ -76,28 +76,25 @@ public interface ThumbnailService {
 /**
  * Create thumbnail for node with default size:
  * Small size, medium size, big size
- * @param node
- * @param inputStream Image stream
- * @param mimeType Image type
+ * @param node Current node which will be added thumbnail
+ * @param contentNode Node uploaded which contain the data
  * @throws Exception
  */  
-  public void createThumbnail(Node node, InputStream inputStream, String mimeType) throws Exception;
+  public void createThumbnail(Node node, Node contentNode) throws Exception;
 /**
  * Return the data of thumbnail with specified type
- * @param node
+ * @param node Current node which will be added thumbnail
  * @param thumbnailType Type of thumbnail will be return (small, medium, big or specified if has)
- * @return InputStream data
  * @throws Exception
  */  
   public InputStream getThumbnail(Node node, String thumbnailType) throws Exception;
 /**
  * Create a thumbnail for node with size specified 
- * @param inputStream Image stream
- * @param mimeType Image type
- * @param node 
+ * @param node Current node which will be added thumbnail
+ * @param contentNode Node uploaded which contain the data
  * @param width Width of thumbnail image
  * @param height Height of thumbnail image
  * @throws Exception
  */  
-  public void createThumbnail(Node node, InputStream inputStream, String mimeType, int width, int height) throws Exception;
+  public void createThumbnail(Node node, Node contentNode, int width, int height) throws Exception;
 }
