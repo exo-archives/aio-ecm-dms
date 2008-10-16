@@ -1378,6 +1378,12 @@ public class UIWorkingArea extends UIContainer {
       UIJCRExplorer uiExplorer = uiWorkingArea.getParent();
       UIApplication uiApp = uiWorkingArea.getAncestorOfType(UIApplication.class);
       Node destNode = null;
+      if(destInfo[0].startsWith(nodePath)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.bound-move-exception", 
+            null,ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       try {
         destNode = (Node)uiExplorer.getSession().getItem(destInfo[0]);
       } catch(PathNotFoundException path) {
