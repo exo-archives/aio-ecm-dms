@@ -77,7 +77,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Podcast.dialog.label.publish-date")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldPublishedDate = ["jcrPath=/node/exo:publishedDate", "options=displaytime", "validate=datetime"] ;
+		        String[] fieldPublishedDate = ["jcrPath=/node/exo:publishedDate", "options=displaytime", "validate=datetime", "visible=true"] ;
 		        uicomponent.addCalendarField("publishedDate", fieldPublishedDate) ;
 		      %>
 		    </td>

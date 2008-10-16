@@ -31,7 +31,9 @@ import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
+import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
+import org.exoplatform.webui.form.UIFormStringInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -81,11 +83,16 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     }    
     Collections.sort(options, new ItemOptionNameComparator()) ;
     if(options.size()>0) {
-      UISelectDocumentForm uiSelectForm = getChild(UISelectDocumentForm.class) ;
-      UIFormSelectBox uiSelectBox = uiSelectForm.getUIFormSelectBox(UISelectDocumentForm.FIELD_SELECT) ;
       defaultDocument_ = options.get(0).getValue();
-      uiSelectBox.setValue(defaultDocument_);
-      uiSelectBox.setOptions(options);
+      if (options.size() > 1) {
+        UISelectDocumentForm uiSelectForm = getChild(UISelectDocumentForm.class) ;
+        UIFormSelectBox uiSelectBox = uiSelectForm.getUIFormSelectBox(UISelectDocumentForm.FIELD_SELECT) ;
+        uiSelectBox.setValue(defaultDocument_);
+        uiSelectBox.setOptions(options);
+      } else {
+        this.removeChild(UISelectDocumentForm.class);
+      }
+      
     }        
     return options ;
   }

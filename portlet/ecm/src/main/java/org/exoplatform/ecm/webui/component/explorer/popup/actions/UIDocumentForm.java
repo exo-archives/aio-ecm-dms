@@ -142,7 +142,12 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       if(documentForm.isAddNew()) {
         UIDocumentFormController uiDFController = documentForm.getParent() ;
         homeNode = currentNode ;
-        nodeType = uiDFController.getChild(UISelectDocumentForm.class).getSelectValue() ;
+        UISelectDocumentForm uiSelectDocumentForm = uiDFController.getChild(UISelectDocumentForm.class);
+        if (uiSelectDocumentForm != null) {
+          nodeType = uiSelectDocumentForm.getSelectValue();                           // Exist select box, get selected value
+        } else {
+          nodeType = uiDFController.getChild(UIDocumentForm.class).getContentType();  // Not exist select box, get default value
+        }
         if(homeNode.isLocked()) {
           homeNode.getSession().addLockToken(LockUtil.getLockToken(homeNode));
         }

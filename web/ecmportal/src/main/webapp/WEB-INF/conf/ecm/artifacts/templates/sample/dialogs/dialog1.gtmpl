@@ -41,7 +41,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.date")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldDate = ["jcrPath=/node/exo:date", "validate=datetime"] ; 
+		        String[] fieldDate = ["jcrPath=/node/exo:date", "validate=datetime", "visible=true"] ; 
 		        uicomponent.addCalendarField("date", fieldDate) ;
 		      %>
 		    </td>
@@ -50,7 +50,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.date-time")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldDateTime = ["jcrPath=/node/exo:datetime", "options=displaytime", "validate=datetime"] ;
+		        String[] fieldDateTime = ["jcrPath=/node/exo:datetime", "options=displaytime", "validate=datetime", "visible=true"] ;
 		        uicomponent.addCalendarField("datetime", fieldDateTime) ;  
 		      %>
 		    </td>
