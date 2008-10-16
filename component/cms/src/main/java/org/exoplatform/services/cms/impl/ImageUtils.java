@@ -44,10 +44,9 @@ public class ImageUtils {
 
   /**
    * Return the image which resized
-   * @param inputStream Real size of image
+   * @param contentNode Node hold the input data
    * @param width Width of thumbnail will be resized
    * @param height Height of thumbnail will be resized
-   * @param mimeType Type of image(JPG, GIF, PNG,..)
    * @return InputStream
    * @throws Exception
    */  
