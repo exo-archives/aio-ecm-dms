@@ -7,7 +7,7 @@ var SimpleView = function() {
 	// eXo.ecm.UISimpleView
 	var Self = this;
 	var DOM = eXo.core.DOMUtil;
-
+	
 	SimpleView.prototype.temporaryItem = null;
 	SimpleView.prototype.itemsSelected = [];
 	SimpleView.prototype.allItems = [];
@@ -15,6 +15,7 @@ var SimpleView = function() {
 	SimpleView.prototype.actionAreaId = null;
 	SimpleView.prototype.enableDragDrop = null;
 	
+	//init event
 	SimpleView.prototype.initAllEvent = function(actionAreaId) {
 		Self.contextMenuId = "JCRContextMenu";
 		Self.actionAreaId = actionAreaId;
@@ -39,20 +40,68 @@ var SimpleView = function() {
 		//remove context menu
 		var contextMenu = document.getElementById(Self.contextMenuId);
 		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
-		//apply action drop in tree list
+		//registry action drag drop in tree list
 		var UIWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
 		var UITreeExplorer = DOM.findFirstDescendantByClass(UIWorkingArea, "div", "UITreeExplorer");
 		DOM.getElementsBy(
 				function(element) {return element.getAttribute("objectId");},
 				"div",
 				UITreeExplorer,
-				function(element) {element.onmouseup = Self.dropTreeItem;}
+				function(element) {
+					if (element.getAttribute("onmousedown")) {
+						mousedown = element.getAttributeNode("onmousedown").value;
+						element.setAttribute("mousedown", mousedown);
+					}
+					element.onmousedown = Self.mouseDownTree;
+					element.onmouseup = Self.mouseUpTree;
+				}
 		);
 	};
-	//working with tree list
-	SimpleView.prototype.dropTreeItem = function(event) {
+	
+	//event in tree list
+	SimpleView.prototype.mouseDownTree = function(event) {
 		var event = event || window.event;
 		var element = this;
+		Self.enableDragDrop = true;
+		resetArrayItemsSelected();
+		
+		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
+		if (rightClick) {
+			eval(element.getAttribute("mousedown"));
+		} else {
+			// init drag drop;
+			document.onmousemove = Self.dragItemsSelected;
+			document.onmouseup = Self.dropOutActionArea;
+			
+			var itemSelected = element.cloneNode(true);
+			Self.itemsSelected = new Array(itemSelected);
+			
+			var uiResizableBlock = DOM.findAncestorByClass(element, "UIResizableBlock");
+			uiResizableBlock.style.overflow = "hidden";
+			
+			//create mobile element
+			var mobileElement = document.createElement("div");
+			mobileElement.setAttribute("id", DOM.generateId('Id'));
+			Self.mobileId = mobileElement.getAttribute('id');
+			mobileElement.setAttribute("class", "UIJCRExplorerPortlet");
+			mobileElement.style.position = "absolute";
+			mobileElement.style.display = "none";
+			mobileElement.style.background = "white";
+			var coverElement = document.createElement("div");
+			coverElement.setAttribute("class", "UITreeExplorer");
+			coverElement.style.margin = "3px 3px 0px 3px";
+			coverElement.appendChild(itemSelected);
+			mobileElement.appendChild(coverElement);
+			document.body.appendChild(mobileElement);
+		}
+	};
+	
+	SimpleView.prototype.mouseUpTree = function(event) {
+		var event = event || window.event;
+		var element = this;
+		revertResizableBlock();
+		Self.enableDragDrop = null;
+		
 		var mobileElement = document.getElementById(Self.mobileId);
 		if (mobileElement && mobileElement.move) {
 			//post action
@@ -63,6 +112,7 @@ var SimpleView = function() {
 			Self.postGroupAction(moveAction.getAttribute('request'), "&destInfo="+idTarget+";"+wsTarget);
 		}
 	};
+	
 	//event in item
 	SimpleView.prototype.mouseOverItem = function(event) {
 		var event = event || window.event;
@@ -84,25 +134,22 @@ var SimpleView = function() {
 		var event = event || window.event;
 		event.cancelBubble = true;
 		var element = this;
+		removeMobileElement();
+		Self.hideContextMenu();
 		Self.enableDragDrop = true;
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
-		var leftClick = !rightClick;
-		Self.hideContextMenu();
-		
-		if (document.getElementById(Self.mobileId)) {
-			mobileElement = document.getElementById(Self.mobileId);
-			mobileElement.parentNode.removeChild(mobileElement);
-		}
-		if (leftClick) {
+		if (!rightClick) {
 			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey) {
 				Self.clickItem(event, element);
 			};
+			
 			// init drag drop;
 			document.onmousemove = Self.dragItemsSelected;
-			document.onmouseup = Self.dropItemsSelected;
+			document.onmouseup = Self.dropOutActionArea;
+			
 			//create mobile element
 			var mobileElement = document.createElement("div");
-			mobileElement.setAttribute("id", 'Id-' + Math.random().toString().substring(2));
+			mobileElement.setAttribute("id", DOM.generateId('Id'));
 			Self.mobileId = mobileElement.getAttribute('id');
 			mobileElement.setAttribute("class", "UIJCRExplorerPortlet");
 			mobileElement.style.position = "absolute";
@@ -112,13 +159,11 @@ var SimpleView = function() {
 			eXo.core.Browser.setOpacity(mobileElement, 72);
 			var coverElement = document.createElement("div");
 			coverElement.setAttribute("class", "UIThumbnailsView");
+			coverElement.style.clear = "left";
 			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
 				coverElement.appendChild( Self.itemsSelected[i].cloneNode(true));
 			}
-			var closeElement = document.createElement("div");
-			closeElement.style.clear = "left";
-			coverElement.appendChild(closeElement);
 			mobileElement.appendChild(coverElement);
 			document.body.appendChild(mobileElement);
 		}
@@ -138,9 +183,10 @@ var SimpleView = function() {
 			}
 	};
 	
-	SimpleView.prototype.dropItemsSelected = function(event) {
+	SimpleView.prototype.dropOutActionArea = function(event) {
 		var event = event || window.event;
 		Self.enableDragDrop = null;
+		revertResizableBlock();
 		//use when drop out of action area
 		if (document.getElementById(Self.mobileId)) {
 				mobileElement = document.getElementById(Self.mobileId);
@@ -153,7 +199,7 @@ var SimpleView = function() {
 	
 	SimpleView.prototype.clickItem = function(event, element, callback) {
 		var event = event || window.event;
-		unselect();
+		resetArrayItemsSelected();
 		element.selected = true;
 		Self.itemsSelected = new Array(element);
 		element.style.background = "#ebf5ff";
@@ -164,6 +210,7 @@ var SimpleView = function() {
 		var element = this;
 		Self.enableDragDrop = null;
 		document.onmousemove = null;
+		revertResizableBlock();
 		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		var leftClick = !rightClick;
@@ -208,12 +255,15 @@ var SimpleView = function() {
 		var event = event || window.event;
 		var element = this;
 		element.holdMouse = true;
-		document.onselectstart = function(){return false};
-		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
-		var leftClick = !rightClick;
 		Self.hideContextMenu();
-		if (leftClick) {
-			unselect();
+		document.onselectstart = function(){return false};
+		
+		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
+		if (rightClick) {
+			event.cancelBubble = true;
+			Self.showGroundContextMenu(event, element);
+		} else {
+			resetArrayItemsSelected();
 			element.onmousemove = Self.mutipleSelect;
 			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
 			mask.storeX = eXo.core.Browser.findMouseRelativeX(element, event);
@@ -226,6 +276,7 @@ var SimpleView = function() {
 			mask.style.border = "1px dotted black";
 			mask.style.backgroundColor = "gray";
 			eXo.core.Browser.setOpacity(mask, 17);
+			
 			//store position for all item
 			for( var i = 0 ; i < Self.allItems.length; ++i) {
 				Self.allItems[i].posX = Math.abs(eXo.core.Browser.findPosXInContainer(Self.allItems[i], element));
@@ -245,8 +296,8 @@ var SimpleView = function() {
 		var left = mask.storeX - 2;
 		
 		if (element.holdMouse) {
+			resetArrayItemsSelected();
 			//select mutiple item by mouse
-			unselect();
 			mask.X = eXo.core.Browser.findMouseRelativeX(element, event);
 			mask.Y = eXo.core.Browser.findMouseRelativeY(element, event);
 			mask.deltaX = mask.X - mask.storeX;
@@ -365,11 +416,12 @@ var SimpleView = function() {
 	
 	SimpleView.prototype.mouseUpGround = function(event) {
 		var event = event || window.event;
-		event.cancelBubble = true;
 		var element = this;
-		Self.enableDragDrop = null;
 		element.holdMouse = null;
 		element.onmousemove = null;
+		revertResizableBlock();
+		removeMobileElement();
+		Self.enableDragDrop = null;
 		document.onselectstart = function(){return true};
 		
 		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
@@ -384,17 +436,6 @@ var SimpleView = function() {
 			if (Array.prototype[i]) continue;
 			item = Self.allItems[i];
 			if (item.selected && !inArray(Self.itemsSelected, item)) Self.itemsSelected.push(item);
-		}
-		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
-		var leftClick = !rightClick;
-		if (rightClick) {
-			event.cancelBubble = true;
-			Self.showGroundContextMenu(event, element);
-		}
-		//remove mobile element
-		if (document.getElementById(Self.mobileId)) {
-				mobileElement = document.getElementById(Self.mobileId);
-				mobileElement.parentNode.removeChild(mobileElement);
 		}
 	} ;
 	
@@ -454,7 +495,7 @@ var SimpleView = function() {
 	SimpleView.prototype.showGroundContextMenu = function(event, element) {
 			var event = event || window.event;
 			event.cancelBubble = true;
-			unselect();
+			resetArrayItemsSelected();
 			if (document.getElementById(Self.contextMenuId)) {
 				var contextMenu = document.getElementById(Self.contextMenuId);
 				contextMenu.parentNode.removeChild(contextMenu);
@@ -514,7 +555,18 @@ var SimpleView = function() {
 		}
 	}	;
 	//private method
-	function unselect() {
+	function revertResizableBlock() {
+		//revert status overflow for UIResizableBlock;
+		var actionArea = document.getElementById(Self.actionAreaId);
+		var uiWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
+		var uiResizableBlock = DOM.findFirstDescendantByClass(uiWorkingArea, "div", "UIResizableBlock");
+		uiResizableBlock.style.overflow = "auto";
+	}
+	function removeMobileElement() {
+			var mobileElement = document.getElementById(Self.mobileId);
+			if (mobileElement) document.body.removeChild(mobileElement);
+	}
+	function resetArrayItemsSelected() {
 		for(var i in Self.itemsSelected) {
 			if (Array.prototype[i]) continue;
 			Self.itemsSelected[i].selected = null;

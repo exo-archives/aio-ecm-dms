@@ -74,7 +74,7 @@
 	    println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
 	    println "  <div onclick=\"" + expandLink + "\" objectId=\"" + treeNode.getPath() + "\" workspacename=\"" + preferenceWS + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + ctMenu + ">" + strActs ;
 	    println "  <div class=\"NodeLabel\" " + ctMenu + ">" + strActs;
-	    println "<a href=\"" + expandLink + "\" title=\"$treeNodeName\">$treeNodeName</a>" ;
+	    println "			<a href=\"" + expandLink + "\" title=\"$treeNodeName\">$treeNodeName</a>" ;
 	    println "  </div>" ; 
 	    println "  </div>" ; 
 	    println "  </div>" ; 
@@ -96,7 +96,7 @@
   String contextMenuEvent = uicomponent.getRootActionList() ;
 %>
 <div class="UITreeExplorer" id="UITreeExplorer">
-  <div style="white-space:nowrap;">
+  <div style="white-space: nowrap; -moz-user-select: none;">
     <div class="HomeNode">
       <div class="HardDisk24x24Icon" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><span></span></div>
       <div class="NodeLabel"><a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><%=_ctx.appRes("UITreeExplorer.label.Root")%></a></div>
