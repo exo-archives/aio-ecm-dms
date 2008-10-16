@@ -21,7 +21,7 @@
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIListView','/ecm/javascript/'); 
   rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UIListView.initAllEvent('${componentId}-$viewComponentId');}");
 %>
-<div id="${componentId}-$viewComponentId" class="JCRListView" style="padding-bottom: 30px; posititon: relative;">	
+<div id="${componentId}-$viewComponentId" class="UIListView" style="">	
 	<div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
 		<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px"></div>
 		<div class="JCRMoveAction" style="display: none;" request="<%=contextMenu.event('MoveNode', 'MultiSelection')%>"></div>
@@ -87,11 +87,9 @@
 			 </div>
 		</div>
 	</div>
-	<div class="UIListView" style="overflow-y: auto; overflow-x: hidden; height: 275px; width: auto;">
-		 <div style="width: 100%; font-weight: bold;
-		 						 background: #D2DDF1;
-		 						 padding-bottom: 5px; padding-top: 3px;">
-		  <table style="table-layout: fixed;" width="100%">
+	<div class="UIListGrid" style="">
+			<div class="TitleTable" style="">
+			  
 		    <%
 		      String typeSort = uicomponent.getTypeSort() ;
 		      String typeSortOrder = uicomponent.getTypeSortOrder() ;
@@ -126,119 +124,114 @@
 		        }
 		      }
 		    %>
-		      <tr>
-		        <td class="$typeClass;" style="width: 40px; -moz-user-select: none;">
-		          <a href="$typeActionLink">
-		            <div class="SortButton ${classSortTypeIcon}16x16Icon"><span></span></div>          
-		          </a>
-		        </td>
-		        <td class="$nameClass" style="-moz-user-select: none;">
-		          <a href="$nameActionLink">
-		            <div class="SortButton ${classSortNameIcon}16x16Icon" style="width: auto;">
-		            	<span style="margin-left: 24px;"><%=_ctx.appRes("ListView.view.label.name")%></span>
-		            </div>
-		          </a>
-		        </td>
-		        <td style="width: 100px; -moz-user-select: none;"><%=_ctx.appRes("ListView.view.label.dateCreated")%></td>
-		        <td style="width: 100px; -moz-user-select: none;"><%=_ctx.appRes("ListView.view.label.dateModified")%></td>
-		        <td style="width: 60px; -moz-user-select: none;"><%=_ctx.appRes("ListView.view.label.owner")%></th>
-		        <td style="width: 100px; -moz-user-select: none;"><%=_ctx.appRes("ListView.view.label.versionable")%></td>
-		        <td style="width: 100px; -moz-user-select: none;"><%=_ctx.appRes("ListView.view.label.auditing")%></td>
-		      </tr>
-		    </table>  
-	    </div>
-	      <%
-	      	String serverUrl = uicomponent.getWebDAVServerPrefix();
-	      	String portalName = uicomponent.getPortalName() ;
-	      	String repository = uicomponent.getRepository();
-	        for(data in uicomponent.getChildrenList()) {
-	          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
-	          def preferenceWS = data.getSession().getWorkspace().getName() ;
-	          String nodePath = data.getPath() ;
-	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;   
-	          String subName ;
-	          //nodePath = nodePath + "&workspaceName=" + preferenceWS ;
-	          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
-	          //Begin WebDav Action
-	          String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
-		        if(data.getPrimaryNodeType().getName().equals("nt:file")) {
-					  	String mimeType=data.getNode("jcr:content").getProperty("jcr:mimeType").getString();
-					  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+serverUrl+"','"+ portalName +"','"+repository+"','"+ preferenceWS+ "','" +Utils.formatNodeName(data.getPath())+"','"+mimeType+"')";				  					  					  	
-					  	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\" >" ;	        
-					  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">WebDav View</div>" ;
-						  strActs += 		"</a>" ;				  	
-					  }else {
-					  	String link = serverUrl + "/" + portalName + "/rest/private/jcr/" + repository+ "/" + preferenceWS + Utils.formatNodeName(data.getPath()); 
-					  	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">" ;	        
-					  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">WebDav View</div>" ;
-						  strActs += 		"</a>" ;				  	
-					  }
-					  //End WebDav Action
-	          List customActs = uicomponent.getCustomActions(data) ;          
-	          Parameter[] params ;
-	          if(customActs.size() > 0) {            
-	            for(act in customActs) {
-	              String actName = act.getProperty("exo:name").getValue().getString() ;
-	              params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName",Utils.formatNodeName(act.getName()))] ;
-	              strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + contextMenu.event("Custom",Utils.formatNodeName(nodePath),params) + "\">" ;
-	              strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">$actName</div>" ;
-	              strActs += "</a>" ;
-	            }            
-	          }
-	          strActs += "</div>" ;
-	          def rightClickMenu = "" ;
-	          String isLocked = "false";
-	          if(data.isLocked()) isLocked = "true";    
-	          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;	          
-	      
-	      %>
-	      <div <%=rightClickMenu%> class="RowView Normal" style="width: 100%;" locked="$isLocked" workspacename="$preferenceWS" objectId="$nodePath" ondblclick="$actionLink">
-		      $strActs
-		      <table style="table-layout: fixed;" width="100%">
-			      <tr>
-			        <td style="width: 40px; -moz-outline: none; -moz-user-select: none;">
-									<div class="NodeLabel" unselectable="on">
-							    	<div style="cursor: pointer; -moz-user-select: none;" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></div>
-		  						</div>
-			        </td>
-			        <%
-		  	        if(name.length() < 50) subName = name ;
-				        else subName = name.substring(0,50) + "..." ;
-			        %>
-			        <td style="-moz-outline: none; -moz-user-select: none;">
-									<div class="NodeLabel">
-										<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="$name">$subName</div>
-				 					</div>
-			        </td>
-			        <td style="width: 100px; -moz-outline: none; -moz-user-select: none;">
-			        		<%=dateFormat.format(uicomponent.getDateCreated(data))%>
-			        </td>
-			        <td style="width: 100px; -moz-outline: none; -moz-user-select: none;">
-		        			<%=dateFormat.format(uicomponent.getDateModified(data))%>
-			 				</td>
-			        <td style="width: 60px; -moz-outline: none; -moz-user-select: none;">
-				        	<%=uicomponent.getNodeOwner(data)%>
-			        </td>
-			        <td style="width: 100px; -moz-outline: none; -moz-user-select: none;">
-				         	<%=Utils.isVersionable(data)%>
-				          <%
-				            if(Utils.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
-				              println "(" + uicomponent.getVersionName(data) + ")" ;
-				            }
-				          %>
-			        </td>
-			        <td style="width: 100px; -moz-outline: none; -moz-user-select: none;"><!--added CPop Bull SA -->
-			           <%=Utils.isAuditable(data)%>
-			           <% if (Utils.isAuditable(data)&& uicomponent.hasAuditHistory(data)) 
-			               println "("+ uicomponent.getNumAuditHistory(data)+")";
-			              else
-			               println ""; 
-			            %>
-			        </td>
-			      </tr>
-			     </table> 
+		    <div class="LeftColumn $typeClass" style="float: left; border-right: 1px solid #b7b7b7; width: 30px; height: 19px; ">
+		      <a href="$typeActionLink" style="display: block">
+		        <div style="margin: auto" class="SortButton ${classSortTypeIcon}16x16Icon"><span></span></div>          
+		      </a>
 		    </div>
-	      <%}%>
+		    
+		    <div class="RightColumn" style="border: none"><%=_ctx.appRes("ListView.view.label.auditing")%></div>
+		    <div class="RightColumn"><%=_ctx.appRes("ListView.view.label.versionable")%></div>
+		    <div class="RightColumn" style="width: 60px;"><%=_ctx.appRes("ListView.view.label.owner")%></div>
+		    <div class="RightColumn" style="width: 100px;"><%=_ctx.appRes("ListView.view.label.dateModified")%></div>
+		    <div class="RightColumn" style="width: 100px;"><%=_ctx.appRes("ListView.view.label.dateCreated")%></div>
+		    <div class="ResizeColumn $nameClass">
+		      <a href="$nameActionLink">
+		        <div class="SortButton ${classSortNameIcon}16x16Icon" style="width: auto; padding-left: 20px;">
+		        	<%=_ctx.appRes("ListView.view.label.name")%>
+		        </div>
+		      </a>
+		    </div>
+		    <div style="clear: both"><span></span></div>
+			</div>
+      <%
+      	String serverUrl = uicomponent.getWebDAVServerPrefix();
+      	String portalName = uicomponent.getPortalName() ;
+      	String repository = uicomponent.getRepository();
+        for(data in uicomponent.getChildrenList()) {
+          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
+          def preferenceWS = data.getSession().getWorkspace().getName() ;
+          String nodePath = data.getPath() ;
+          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;   
+          String subName ;
+          //nodePath = nodePath + "&workspaceName=" + preferenceWS ;
+          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
+          //Begin WebDav Action
+          String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
+	        if(data.getPrimaryNodeType().getName().equals("nt:file")) {
+				  	String mimeType=data.getNode("jcr:content").getProperty("jcr:mimeType").getString();
+				  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+serverUrl+"','"+ portalName +"','"+repository+"','"+ preferenceWS+ "','" +Utils.formatNodeName(data.getPath())+"','"+mimeType+"')";				  					  					  	
+				  	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\" >" ;	        
+				  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">WebDav View</div>" ;
+					  strActs += 		"</a>" ;				  	
+				  }else {
+				  	String link = serverUrl + "/" + portalName + "/rest/private/jcr/" + repository+ "/" + preferenceWS + Utils.formatNodeName(data.getPath()); 
+				  	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">" ;	        
+				  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">WebDav View</div>" ;
+					  strActs += 		"</a>" ;				  	
+				  }
+				  //End WebDav Action
+          List customActs = uicomponent.getCustomActions(data) ;          
+          Parameter[] params ;
+          if(customActs.size() > 0) {            
+            for(act in customActs) {
+              String actName = act.getProperty("exo:name").getValue().getString() ;
+              params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName",Utils.formatNodeName(act.getName()))] ;
+              strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + contextMenu.event("Custom",Utils.formatNodeName(nodePath),params) + "\">" ;
+              strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">$actName</div>" ;
+              strActs += "</a>" ;
+            }            
+          }
+          strActs += "</div>" ;
+          def rightClickMenu = "" ;
+          String isLocked = "false";
+          if(data.isLocked()) isLocked = "true";    
+          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;	          
+      
+      %>
+      <div <%=rightClickMenu%> class="RowView Normal" locked="$isLocked" workspacename="$preferenceWS" objectId="$nodePath" ondblclick="$actionLink">
+	      $strActs
+        <div class="LeftColumn" style="float: left; width: 30px; height: 19px; padding: 2px 0px; 	border-right: none;">
+				  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div>
+        </div>
+        <%
+  	        if(name.length() < 50) subName = name ;
+		        else subName = name.substring(0,50) + "..." ;
+	        %>
+        <div class="RightColumn" style="border: none"><!--added CPop Bull SA -->
+           <%=Utils.isAuditable(data)%>
+           <% if (Utils.isAuditable(data)&& uicomponent.hasAuditHistory(data)) 
+               println "("+ uicomponent.getNumAuditHistory(data)+")";
+              else
+               println ""; 
+            %>
+        </div>
+        <div class="RightColumn">
+	         	<%=Utils.isVersionable(data)%>
+	          <%
+	            if(Utils.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
+	              println "(" + uicomponent.getVersionName(data) + ")" ;
+	            }
+	          %>
+        </div>
+        <div class="RightColumn" style="width: 60px">
+	        	<%=uicomponent.getNodeOwner(data)%>
+        </div>
+        <div class="RightColumn" style="width: 100px">
+    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
+ 				</div>
+       
+        <div class="RightColumn" style="width: 100px;">
+        		<%=dateFormat.format(uicomponent.getDateCreated(data))%>
+        </div>
+        <div class="ResizeColumn">
+						<div class="NodeLabel">
+							<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="$name">$subName</div>
+	 					</div>
+        </div>
+        <div style="clear: both"><span></span></div>
+	    </div>
+      <%}%>
 	</div>
 	<% if(uicomponent.getContentPageIterator().getAvailablePage()>1) { %>	
 		<div style="margin:4px 0px 4px 0px;">

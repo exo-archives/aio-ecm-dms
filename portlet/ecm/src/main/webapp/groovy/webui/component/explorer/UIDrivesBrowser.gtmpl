@@ -15,14 +15,13 @@
 		<div class="DrivesListTitleBG">
 			<div class="DrivesListTitleBGRight">
 				<div class="DrivesListTitle">
-					<div style="float: left"><%=_ctx.appRes("UIDrivesBrowser.title.repository" )%>:</div>
-					<div style="float: left; margin-left:5px;">
+					<span><%=_ctx.appRes("UIDrivesBrowser.title.repository" )%>:</span>
+					<span style=" margin-left:5px;">
 						<%
 							if (uicomponent.getRepoItem().size() == 1) out.println(repoName);
 							else uicomponent.renderChildren();
 						%>
-					</div>
-					<div style="clear: left"><span></span></div>
+					</span>
 				</div>
 			</div>
 		</div>

@@ -64,65 +64,73 @@
 /*############################## -- End UIJCRExplorer -- ##############################*/
 
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
+
 .UIJCRExplorerPortlet .UIListView {
-	border: solid 1px white;
-	border-top: none;
+	padding-bottom: 30px; 
+	posititon: relative;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl {
-  float: left;      
-  font-size: 11px ;
+.UIJCRExplorerPortlet .UIListView .UIListGrid {
+	overflow: auto;
+	height: 275px;
+	-moz-user-select: none;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl th {
-  line-height: 22px; text-align: left; 
-  background: url('VistaSkin/background/ThGridRepeatBg1x22.png') repeat-x center;
-  border-bottom: solid 1px #d8d8d6; border-right: solid 1px #b0b0b0;
-  padding: 0px 5px;
-  font-weight: normal;
+.UIJCRExplorerPortlet .UIListView .TitleTable {
+	font-weight: bold; 
+	line-height: 19px; height: 19px;
+  background: url('DefaultSkin/background/ThGridRepeatBg1x19.gif') repeat-x center;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl .OverHeader {
-  background: url('VistaSkin/background/OverThGridRepeatBg1x22.png') repeat-x center;
+.UIJCRExplorerPortlet .UIListView .OverHeader {
+  background: url('DefaultSkin/background/OverThGridRepeatBg1x19.gif') repeat-x center;
+	font-weight: bold; 
+	line-height: 19px; height: 19px;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl td {
-  line-height: 24px;
-  padding: 0px 5px;
+.UIJCRExplorerPortlet .UIListGrid .LeftColumn {
+	float: left; 
+	border-right: 1px solid #b7b7b7; 
+	width: 30px; height: 19px; 
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl .HeaderLabel {
-  float: left;
-  font-size: 11px ;
-  font-weight: normal;
+.UIJCRExplorerPortlet .UIListGrid .RightColumn {
+	float: right; 
+	border-right: 1px solid #b7b7b7; 
+	padding-left: 3px; 
+	width: 80px;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl .SortButton {
-  float: left;
-  margin: 3px 5px 0px 2px;
+.UIJCRExplorerPortlet .UIListGrid .ResizeColumn {
+	border-right: 1px solid #b7b7b7; 
+	height: 19px; 
+	margin: 0px 440px 0px 30px;
+	padding-left: 5px;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl .Icon16x16 {
-  float: left;
-  margin: 3px 5px 0px 2px;
+.UIJCRExplorerPortlet .UIListGrid .RowView {
+	line-height: 19px;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel {
-  padding-left: 5px;
-  color: #058ee9;
+.UIJCRExplorerPortlet .UIListGrid .RowView .RightColumn {
+	padding: 2px 0px 2px 3px;
+ 	border-right: none;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel a {
-  color: #0766e7;
+.UIJCRExplorerPortlet .UIListGrid .RowView .LeftColumn {
+	padding: 2px 0px;
+ 	border-right: none;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel a:hover{
-  color: #fb8404;
+.UIJCRExplorerPortlet .UIListGrid .RowView .LeftColumn .Icon16x16 {
+	float: none;
+	margin: auto;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIGridControl a { 
-  color: #2e61b6;
-}
+.UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn {
+ 	border-right: none;
+	padding: 2px 0px 2px 3px;
+} 
 
 /*############################## -- Begin MenuPopup -- ##############################*/
 
