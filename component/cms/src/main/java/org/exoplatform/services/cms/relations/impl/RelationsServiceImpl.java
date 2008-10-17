@@ -142,7 +142,8 @@ public class RelationsServiceImpl implements RelationsService, Startable {
           removeRelation(node, relationPath, repository) ;
           continue ;
         }
-        if(refNode.getPath().equals(relationPath)) return;
+        if (refNode == null) continue;
+        else if (refNode.getPath().equals(relationPath)) return;
         vals.add(value);
       }
       vals.add(value2add);
