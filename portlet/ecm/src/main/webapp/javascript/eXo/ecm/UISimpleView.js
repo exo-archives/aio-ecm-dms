@@ -1,10 +1,7 @@
 var SimpleView = function() {
-	/*
-	 * multiply select in JCR Explorer
-	 * working with ThumbnailsView.gtmpl
-	 */
-	
-	// eXo.ecm.UISimpleView
+
+	//eXo.ecm.UISimpleView
+
 	var Self = this;
 	var DOM = eXo.core.DOMUtil;
 	
@@ -267,10 +264,7 @@ var SimpleView = function() {
 		document.onselectstart = function(){return false};
 		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
-		if (rightClick) {
-			//event.cancelBubble = true;
-			Self.showGroundContextMenu(event, element);
-		} else {
+		if (!rightClick) {
 			resetArrayItemsSelected();
 			element.onmousemove = Self.mutipleSelect;
 			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
@@ -328,8 +322,9 @@ var SimpleView = function() {
 				} else {
 					mask.style.left = mask.X + "px";
 				}
-				//detect element;
-				for (var i = 0; i < Self.allItems.length; ++ i) {
+				//detect element 
+				for (var i in Self.allItems) {
+					if (Array.prototype[i]) continue;
 					var itemBox = Self.allItems[i];
 					var posX = itemBox.posX + itemBox.offsetWidth/2;
 					var posY = itemBox.posY + itemBox.offsetHeight/2;
@@ -356,8 +351,9 @@ var SimpleView = function() {
 				} else {
 					mask.style.left = mask.X + "px";
 				}
-				//detect element;
-				for (var i = 0; i < Self.allItems.length; ++ i) {
+				//detect element 
+				for (var i in Self.allItems) {
+					if (Array.prototype[i]) continue;
 					var itemBox = Self.allItems[i];
 					var posX = itemBox.posX + itemBox.offsetWidth/2;
 					var posY = itemBox.posY + itemBox.offsetHeight/2;
@@ -382,8 +378,9 @@ var SimpleView = function() {
 					mask.style.width = right + "px";
 				} 
 				mask.style.left = mask.storeX + "px";
-				//detect element;
-				for (var i = 0; i < Self.allItems.length; ++ i) {
+				//detect element 
+				for (var i in Self.allItems) {
+					if (Array.prototype[i]) continue;
 					var itemBox = Self.allItems[i];
 					var posX = itemBox.posX + itemBox.offsetWidth/2;
 					var posY = itemBox.posY + itemBox.offsetHeight/2;
@@ -443,6 +440,9 @@ var SimpleView = function() {
 			item = Self.allItems[i];
 			if (item.selected && !inArray(Self.itemsSelected, item)) Self.itemsSelected.push(item);
 		}
+		//show context menu
+		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
+		if (rightClick) Self.showGroundContextMenu(event, element);
 	} ;
 	
 	// working with item context menu
@@ -503,7 +503,6 @@ var SimpleView = function() {
 	// working with ground context menu
 	SimpleView.prototype.showGroundContextMenu = function(event, element) {
 			var event = event || window.event;
-			event.cancelBubble = true;
 			resetArrayItemsSelected();
 			if (document.getElementById(Self.contextMenuId)) {
 				var contextMenu = document.getElementById(Self.contextMenuId);
@@ -583,13 +582,6 @@ var SimpleView = function() {
 			element.style[o] = style[o];
 		}
 	}
-	function revertResizableBlock() {
-		//revert status overflow for UIResizableBlock;
-		var actionArea = document.getElementById(Self.actionAreaId);
-		var uiWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
-		var uiResizableBlock = DOM.findFirstDescendantByClass(uiWorkingArea, "div", "UIResizableBlock");
-		uiResizableBlock.style.overflow = "auto";
-	}
 	function removeMobileElement() {
 			var mobileElement = document.getElementById(Self.mobileId);
 			if (mobileElement) document.body.removeChild(mobileElement);
@@ -615,6 +607,13 @@ var SimpleView = function() {
 				if (arr[i] == item)	return true;
 		}
 		return false;
+	}
+	function revertResizableBlock() {
+		//revert status overflow for UIResizableBlock;
+		var actionArea = document.getElementById(Self.actionAreaId);
+		var uiWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
+		var uiResizableBlock = DOM.findFirstDescendantByClass(uiWorkingArea, "div", "UIResizableBlock");
+		uiResizableBlock.style.overflow = "auto";
 	}
 };
 

@@ -1,6 +1,7 @@
 var ListView = function() {
 
 	// eXo.ecm.UIListView
+	
 	var Self = this;
 	var DOM = eXo.core.DOMUtil;
 	
@@ -37,20 +38,72 @@ var ListView = function() {
 		//remove context menu
 		var contextMenu = document.getElementById(Self.contextMenuId);
 		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
-		//apply action drop in tree list
+		//registry action drag drop in tree list
 		var UIWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
 		var UITreeExplorer = DOM.findFirstDescendantByClass(UIWorkingArea, "div", "UITreeExplorer");
 		DOM.getElementsBy(
 				function(element) {return element.getAttribute("objectId");},
 				"div",
 				UITreeExplorer,
-				function(element) {element.onmouseup = Self.dropTreeItem;}
+				function(element) {
+					if (element.getAttribute("onmousedown")) {
+						mousedown = element.getAttributeNode("onmousedown").value;
+						element.setAttribute("mousedown", mousedown);
+					}
+					element.onmousedown = Self.mouseDownTree;
+					element.onmouseup = Self.mouseUpTree;
+				}
 		);
 	};
-	//working with tree list
-	ListView.prototype.dropTreeItem = function(event) {
+	
+	//event in tree list
+	ListView.prototype.mouseDownTree = function(event) {
 		var event = event || window.event;
 		var element = this;
+		Self.enableDragDrop = true;
+		resetArrayItemsSelected();
+		
+		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
+		if (rightClick) {
+			eval(element.getAttribute("mousedown"));
+		} else {
+			// init drag drop;
+			document.onmousemove = Self.dragItemsSelected;
+			document.onmouseup = Self.dropOutActionArea;
+			
+			var itemSelected = element.cloneNode(true);
+			Self.itemsSelected = new Array(itemSelected);
+			
+			var uiResizableBlock = DOM.findAncestorByClass(element, "UIResizableBlock");
+			uiResizableBlock.style.overflow = "hidden";
+			
+			//create mobile element
+			var mobileElement = newElement({
+				className: "UIJCRExplorerPortlet",
+				id: DOM.generateId('Id'),
+				style: {
+					position: "absolute",
+					display: "none",
+					background: "white"
+				}
+			});
+			Self.mobileId = mobileElement.id;
+			var coverElement = newElement({
+				className: "UITreeExplorer",
+				style: {margin: "3px 3px 0px 3px"}
+			});
+			coverElement.appendChild(itemSelected);
+			mobileElement.appendChild(coverElement);
+			document.body.appendChild(mobileElement);
+		}
+	};
+	
+	ListView.prototype.mouseUpTree = function(event) {
+		var event = event || window.event;
+		var element = this;
+		revertResizableBlock();
+		Self.enableDragDrop = null;
+		
 		var mobileElement = document.getElementById(Self.mobileId);
 		if (mobileElement && mobileElement.move) {
 			//post action
@@ -61,6 +114,7 @@ var ListView = function() {
 			Self.postGroupAction(moveAction.getAttribute('request'), "&destInfo="+idTarget+";"+wsTarget);
 		}
 	};
+	
 	//event in item
 	ListView.prototype.mouseOverItem = function(event) {
 		var event = event || window.event;
@@ -82,41 +136,43 @@ var ListView = function() {
 		var event = event || window.event;
 		event.cancelBubble = true;
 		var element = this;
+		removeMobileElement();
+		Self.hideContextMenu();
 		Self.enableDragDrop = true;
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
-		var leftClick = !rightClick;
-		Self.hideContextMenu();
-		
-		if (document.getElementById(Self.mobileId)) {
-			mobileElement = document.getElementById(Self.mobileId);
-			mobileElement.innerHTML = "";
-			mobileElement.parentNode.removeChild(mobileElement);
-		}
-		eXo.webui.UIRightClickPopupMenu.hideContextMenu();
-		if (leftClick) {
+		if (!rightClick) {
 			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey) {
 				Self.clickItem(event, element);
 			};
+
 			// init drag drop;
 			document.onmousemove = Self.dragItemsSelected;
-			document.onmouseup = Self.dropItemsSelected;
+			document.onmouseup = Self.dropOutActionArea;
+
 			//create mobile element
-			var mobileElement = document.createElement("div");
-			mobileElement.setAttribute("id", 'Id-' + Math.random().toString().substring(2));
+			var mobileElement = newElement({
+				className: "UIJCRExplorerPortlet MoveItem",
+				id: DOM.generateId('Id'),
+				style: {
+						position: "absolute",
+						display: "none",
+						padding: "1px",
+						background: "white",
+						border: "1px solid #ffc761",
+						width: document.getElementById(Self.actionAreaId).offsetWidth + "px"
+				}
+			});
+			eXo.core.Browser.setOpacity(mobileElement, 64);
 			Self.mobileId = mobileElement.getAttribute('id');
-			mobileElement.style.position = "absolute";
-			mobileElement.style.display = "none";
-			mobileElement.style.padding = "2px";
-			mobileElement.style.background = "#fff6a4";
-			mobileElement.style.border = "1px solid #ffae00";
-			eXo.core.Browser.setOpacity(mobileElement, 72);
+			var coverElement = newElement({className: "UIListGrid"});
 			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
-				mobileElement.appendChild(Self.itemsSelected[i].cloneNode(true));
+				var childNode = Self.itemsSelected[i].cloneNode(true);
+				childNode.style.background = "#f7f7f7";
+				coverElement.appendChild(childNode);
 			}
+			mobileElement.appendChild(coverElement);
 			document.body.appendChild(mobileElement);
-			var actionArea = document.getElementById(Self.actionAreaId);
-			mobileElement.style.width = actionArea.offsetWidth + "px";
 		}
 	};
 	
@@ -134,9 +190,10 @@ var ListView = function() {
 			}
 	};
 	
-	ListView.prototype.dropItemsSelected = function(event) {
+	ListView.prototype.dropOutActionArea = function(event) {
 		var event = event || window.event;
 		Self.enableDragDrop = null;
+		revertResizableBlock();
 		//use when drop out of action area
 		if (document.getElementById(Self.mobileId)) {
 				mobileElement = document.getElementById(Self.mobileId);
@@ -149,7 +206,7 @@ var ListView = function() {
 	
 	ListView.prototype.clickItem = function(event, element, callback) {
 		var event = event || window.event;
-		unselect();
+		resetArrayItemsSelected();
 		element.selected = true;
 		Self.itemsSelected = new Array(element);
 		element.style.background = "#ebf5ff";
@@ -160,9 +217,10 @@ var ListView = function() {
 		var element = this;
 		Self.enableDragDrop = null;
 		document.onmousemove = null;
+		revertResizableBlock();
+		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		var leftClick = !rightClick;
-		
 		if (leftClick) {
 			var mobileElement = document.getElementById(Self.mobileId);
 			if (mobileElement && mobileElement.move && element.temporary) {
@@ -204,24 +262,27 @@ var ListView = function() {
 		var event = event || window.event;
 		var element = this;
 		element.holdMouse = true;
-		document.onselectstart = function(){return false};
-		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
-		var leftClick = !rightClick;
 		Self.hideContextMenu();
-		if (leftClick) {
-			unselect();
+		document.onselectstart = function(){return false};
+		
+		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
+		if (!rightClick) {
+			resetArrayItemsSelected();
 			element.onmousemove = Self.mutipleSelect;
 			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
 			mask.storeX = eXo.core.Browser.findMouseRelativeX(element, event);
 			mask.storeY = eXo.core.Browser.findMouseRelativeY(element, event);
-			mask.style.left = mask.storeX + "px";
-			mask.style.top = mask.storeY + "px";
-			mask.style.zIndex = 1;
-			mask.style.width = "0px";
-			mask.style.height = "0px";
-			mask.style.border = "1px dotted black";
-			mask.style.backgroundColor = "gray";
+			addStyle(mask, {
+				left: mask.storeX + "px",
+				top: mask.storeY + "px",
+				zIndex: 1,
+				width: "0px",
+				height: "0px",
+				backgroundColor: "gray",
+				border: "1px dotted black"
+			});
 			eXo.core.Browser.setOpacity(mask, 17);
+			
 			//store position for all item
 			for( var i = 0 ; i < Self.allItems.length; ++i) {
 				Self.allItems[i].posX = Math.abs(eXo.core.Browser.findPosXInContainer(Self.allItems[i], element));
@@ -241,8 +302,9 @@ var ListView = function() {
 		var left = mask.storeX - 2;
 		
 		if (element.holdMouse) {
+				resetArrayItemsSelected();
 				//select mutiple item by mouse
-				unselect();
+				
 				mask.X = eXo.core.Browser.findMouseRelativeX(element, event);
 				mask.Y = eXo.core.Browser.findMouseRelativeY(element, event);
 				mask.deltaX = mask.X - mask.storeX;
@@ -336,14 +398,13 @@ var ListView = function() {
 		var element = this;
 		element.holdMouse = null;
 		element.onmousemove = null;
+		revertResizableBlock();
+		removeMobileElement();
+		Self.enableDragDrop = null;
 		document.onselectstart = function(){return true};
 		
 		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
-		mask.style.width = "0px";
-		mask.style.height = "0px";
-		mask.style.top = "0px";
-		mask.style.left = "0px";
-		mask.style.border = "none";
+		addStyle(mask, {width: "0px", height: "0px", top: "0px", left: "0px", border: "none"});
 		//collect item
 		var item = null;
 		for(var i in Self.allItems) {
@@ -351,17 +412,9 @@ var ListView = function() {
 			item = Self.allItems[i];
 			if (item.selected && !inArray(Self.itemsSelected, item)) Self.itemsSelected.push(item);
 		}
+		//show context menu
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
-		var leftClick = !rightClick;
-		if (rightClick) {
-			event.cancelBubble = true;
-			Self.showGroundContextMenu(event, element);
-		} 
-		//remove mobile element
-		if (document.getElementById(Self.mobileId)) {
-				mobileElement = document.getElementById(Self.mobileId);
-				mobileElement.parentNode.removeChild(mobileElement);
-		}
+		if (rightClick) Self.showGroundContextMenu(event, element);
 	} ;
 	
 	// working with item context menu
@@ -372,18 +425,21 @@ var ListView = function() {
 				var contextMenu = document.getElementById(Self.contextMenuId);
 				contextMenu.parentNode.removeChild(contextMenu);
 			}
-			var contextMenu = document.createElement("div");
-			contextMenu.setAttribute("id", Self.contextMenuId);
-			contextMenu.style.position = "absolute";
-			contextMenu.style.height = "0px";
-			contextMenu.style.width = "0px";
-			contextMenu.style.top = "-1000px";
-			contextMenu.style.display = "block";
-			document.body.appendChild(contextMenu);
-
+			//create context menu
 			var actionArea = document.getElementById(Self.actionAreaId);
 			var context = DOM.findFirstDescendantByClass(actionArea, "div", "ItemContextMenu");
-			contextMenu.innerHTML = context.innerHTML;
+			var contextMenu = newElement({
+				innerHTML: context.innerHTML,
+				id: Self.contextMenuId,
+				style: {
+					position: "absolute",
+					height: "0px",
+					width: "0px",
+					top: "-1000px",
+					display: "block"
+				}
+			});
+			document.body.appendChild(contextMenu);
 			
 			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
@@ -420,24 +476,26 @@ var ListView = function() {
 	// working with ground context menu
 	ListView.prototype.showGroundContextMenu = function(event, element) {
 			var event = event || window.event;
-			event.cancelBubble = true;
-			unselect();
+			resetArrayItemsSelected();
 			if (document.getElementById(Self.contextMenuId)) {
 				var contextMenu = document.getElementById(Self.contextMenuId);
 				contextMenu.parentNode.removeChild(contextMenu);
 			}
-			var contextMenu = document.createElement("div");
-			contextMenu.setAttribute("id", Self.contextMenuId);
-			contextMenu.style.position = "absolute";
-			contextMenu.style.height = "0px";
-			contextMenu.style.width = "0px";
-			contextMenu.style.top = "-1000px";
-			contextMenu.style.display = "block";
-			document.body.appendChild(contextMenu);
-			
+			//create context menu
 			var actionArea = document.getElementById(Self.actionAreaId);
 			var context = DOM.findFirstDescendantByClass(actionArea, "div", "GroundContextMenu");
-			contextMenu.innerHTML = context.innerHTML;
+			var contextMenu = newElement({
+				innerHTML: context.innerHTML,
+				id: Self.contextMenuId,
+				style: {
+					position: "absolute",
+					height: "0px",
+					width: "0px",
+					top: "-1000px",
+					display: "block"
+				}
+			});
+			document.body.appendChild(contextMenu);
 			
 			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
@@ -482,7 +540,26 @@ var ListView = function() {
 	};
 	
 	//private method
-	function unselect() {
+	function newElement(option) {
+		var div = document.createElement('div');
+		addStyle(div, option.style);
+		delete option.style;
+		for (var o in option) {
+			div[o] = option[o];
+		}
+		return div;
+	}
+	function addStyle(element, style) {
+		for (var o in style) {
+			if (Object.prototype[o]) continue;
+			element.style[o] = style[o];
+		}
+	}
+	function removeMobileElement() {
+			var mobileElement = document.getElementById(Self.mobileId);
+			if (mobileElement) document.body.removeChild(mobileElement);
+	}
+	function resetArrayItemsSelected() {
 		for(var i in Self.itemsSelected) {
 			if (Array.prototype[i]) continue;
 			Self.itemsSelected[i].selected = null;
@@ -503,6 +580,13 @@ var ListView = function() {
 				if (arr[i] == item)	return true;
 		}
 		return false;
+	}
+	function revertResizableBlock() {
+		//revert status overflow for UIResizableBlock;
+		var actionArea = document.getElementById(Self.actionAreaId);
+		var uiWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
+		var uiResizableBlock = DOM.findFirstDescendantByClass(uiWorkingArea, "div", "UIResizableBlock");
+		uiResizableBlock.style.overflow = "auto";
 	}
 };
 
