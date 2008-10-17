@@ -443,101 +443,101 @@ var SimpleView = function() {
 		//show context menu
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		if (rightClick) Self.showGroundContextMenu(event, element);
-	} ;
+	};
 	
 	// working with item context menu
 	SimpleView.prototype.showItemContextMenu = function(event, element) {
-			var event = event || window.event;
-			event.cancelBubble = true;
-			if (document.getElementById(Self.contextMenuId)) {
-				var contextMenu = document.getElementById(Self.contextMenuId);
-				contextMenu.parentNode.removeChild(contextMenu);
+		var event = event || window.event;
+		event.cancelBubble = true;
+		if (document.getElementById(Self.contextMenuId)) {
+			var contextMenu = document.getElementById(Self.contextMenuId);
+			contextMenu.parentNode.removeChild(contextMenu);
+		}
+		//create context menu
+		var actionArea = document.getElementById(Self.actionAreaId);
+		var context = DOM.findFirstDescendantByClass(actionArea, "div", "ItemContextMenu");
+		var contextMenu = newElement({
+			innerHTML: context.innerHTML,
+			id: Self.contextMenuId,
+			style: {
+				position: "absolute",
+				height: "0px",
+				width: "0px",
+				top: "-1000px",
+				display: "block"
 			}
-			//create context menu
-			var actionArea = document.getElementById(Self.actionAreaId);
-			var context = DOM.findFirstDescendantByClass(actionArea, "div", "ItemContextMenu");
-			var contextMenu = newElement({
-				innerHTML: context.innerHTML,
-				id: Self.contextMenuId,
-				style: {
-					position: "absolute",
-					height: "0px",
-					width: "0px",
-					top: "-1000px",
-					display: "block"
-				}
-			});
-			document.body.appendChild(contextMenu);
+		});
+		document.body.appendChild(contextMenu);
+	
+		//check position popup
+		var X = eXo.core.Browser.findMouseXInPage(event);
+		var Y = eXo.core.Browser.findMouseYInPage(event);
+		var portWidth = eXo.core.Browser.getBrowserWidth();
+		var portHeight = eXo.core.Browser.getBrowserHeight();
+		var contentMenu = DOM.findFirstChildByClass(contextMenu, "div", "UIRightClickPopupMenu");
+		if (event.clientX + contentMenu.offsetWidth > portWidth) X -= contentMenu.offsetWidth;
+		if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
+		contextMenu.style.top = Y + 5 + "px";
+		contextMenu.style.left = X + 5 + "px";
 		
-			//check position popup
-			var X = eXo.core.Browser.findMouseXInPage(event);
-			var Y = eXo.core.Browser.findMouseYInPage(event);
-			var portWidth = eXo.core.Browser.getBrowserWidth();
-			var portHeight = eXo.core.Browser.getBrowserHeight();
-			var contentMenu = DOM.findFirstChildByClass(contextMenu, "div", "UIRightClickPopupMenu");
-			if (event.clientX + contentMenu.offsetWidth > portWidth) X -= contentMenu.offsetWidth;
-			if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
-			contextMenu.style.top = Y + 5 + "px";
-			contextMenu.style.left = X + 5 + "px";
-			
-			//check lock, unlock action
-			var checkUnlock = false;
-			for (var i in Self.itemsSelected) {
-				if (Array.prototype[i]) continue;
-				if (Self.itemsSelected[i].getAttribute('locked') == "true") checkUnlock = true;
-			}
-			var lockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Lock16x16Icon");
-			var unlockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Unlock16x16Icon");
+		//check lock, unlock action
+		var checkUnlock = false;
+		for (var i in Self.itemsSelected) {
+			if (Array.prototype[i]) continue;
+			if (Self.itemsSelected[i].getAttribute('locked') == "true") checkUnlock = true;
+		}
+		var lockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Lock16x16Icon");
+		var unlockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Unlock16x16Icon");
 
-			if (checkUnlock) {
-				unlockAction.parentNode.style.display = "block";
-				lockAction.parentNode.style.display = "none";
-			} else {
-				unlockAction.parentNode.style.display = "none";
-				lockAction.parentNode.style.display = "block";
-			}
-				
-			contextMenu.onmouseup = Self.hideContextMenu;
-			document.body.onmousedown = Self.hideContextMenu;
+		if (checkUnlock) {
+			unlockAction.parentNode.style.display = "block";
+			lockAction.parentNode.style.display = "none";
+		} else {
+			unlockAction.parentNode.style.display = "none";
+			lockAction.parentNode.style.display = "block";
+		}
+			
+		contextMenu.onmouseup = Self.hideContextMenu;
+		document.body.onmousedown = Self.hideContextMenu;
 	};
+	
 	// working with ground context menu
 	SimpleView.prototype.showGroundContextMenu = function(event, element) {
-			var event = event || window.event;
-			resetArrayItemsSelected();
-			if (document.getElementById(Self.contextMenuId)) {
-				var contextMenu = document.getElementById(Self.contextMenuId);
-				contextMenu.parentNode.removeChild(contextMenu);
+		var event = event || window.event;
+		resetArrayItemsSelected();
+		if (document.getElementById(Self.contextMenuId)) {
+			var contextMenu = document.getElementById(Self.contextMenuId);
+			contextMenu.parentNode.removeChild(contextMenu);
+		}
+		//create context menu
+		var actionArea = document.getElementById(Self.actionAreaId);
+		var context = DOM.findFirstDescendantByClass(actionArea, "div", "GroundContextMenu");
+		var contextMenu = newElement({
+			innerHTML: context.innerHTML,
+			id: Self.contextMenuId,
+			style: {
+				position: "absolute",
+				height: "0px",
+				width: "0px",
+				top: "-1000px",
+				display: "block"
 			}
-			//create context menu
-			var actionArea = document.getElementById(Self.actionAreaId);
-			var context = DOM.findFirstDescendantByClass(actionArea, "div", "GroundContextMenu");
-			var contextMenu = newElement({
-				innerHTML: context.innerHTML,
-				id: Self.contextMenuId,
-				style: {
-					position: "absolute",
-					height: "0px",
-					width: "0px",
-					top: "-1000px",
-					display: "block"
-				}
-			});
-			document.body.appendChild(contextMenu);
-		
-			//check position popup
-			var X = eXo.core.Browser.findMouseXInPage(event);
-			var Y = eXo.core.Browser.findMouseYInPage(event);
-			var portWidth = eXo.core.Browser.getBrowserWidth();
-			var portHeight = eXo.core.Browser.getBrowserHeight();
-			var contentMenu = DOM.findFirstChildByClass(contextMenu, "div", "UIRightClickPopupMenu");
-			if (event.clientX + contentMenu.offsetWidth > portWidth) X -= contentMenu.offsetWidth;
-			if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
-			contextMenu.style.top = Y + 5 + "px";
-			contextMenu.style.left = X + 5 + "px";
-		
-			contextMenu.onmouseup = Self.hideContextMenu;
-			document.body.onmousedown = Self.hideContextMenu;
-			
+		});
+		document.body.appendChild(contextMenu);
+	
+		//check position popup
+		var X = eXo.core.Browser.findMouseXInPage(event);
+		var Y = eXo.core.Browser.findMouseYInPage(event);
+		var portWidth = eXo.core.Browser.getBrowserWidth();
+		var portHeight = eXo.core.Browser.getBrowserHeight();
+		var contentMenu = DOM.findFirstChildByClass(contextMenu, "div", "UIRightClickPopupMenu");
+		if (event.clientX + contentMenu.offsetWidth > portWidth) X -= contentMenu.offsetWidth;
+		if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
+		contextMenu.style.top = Y + 5 + "px";
+		contextMenu.style.left = X + 5 + "px";
+	
+		contextMenu.onmouseup = Self.hideContextMenu;
+		document.body.onmousedown = Self.hideContextMenu;
 	};
 	
 	// hide context menu
@@ -565,7 +565,8 @@ var SimpleView = function() {
 			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + ext);
 			eval(url);
 		}
-	}	;
+	};
+	
 	//private method
 	function newElement(option) {
 		var div = document.createElement('div');
