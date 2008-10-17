@@ -528,7 +528,22 @@
 }
 
 .UIECMAdminPortlet .UIAnyPermission {
-	border: 1px solid red;
+	border: 1px solid #B7B7B7;
+	margin-bottom: 2px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid {
+	width: auto;
+	margin: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormWithTitle .HorizontalLayout {	
+	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
+	vertical-align: middle;
+	padding: 2px;
 }
 
 .UIECMAdminPortlet .UIECMScripts .UIScriptFilterForm  {
