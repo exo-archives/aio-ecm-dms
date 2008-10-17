@@ -138,6 +138,7 @@ var ListView = function() {
 		removeMobileElement();
 		Self.hideContextMenu();
 		Self.enableDragDrop = true;
+		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		if (!rightClick) {
 			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey) {
@@ -513,6 +514,10 @@ var ListView = function() {
 	ListView.prototype.hideContextMenu = function() {
 		var contextMenu = document.getElementById(Self.contextMenuId);
 		if (contextMenu) contextMenu.style.display = "none";
+		
+		//remove default context menu;
+		eval(eXo.core.MouseEventManager.onMouseDownHandlers);
+		eXo.core.MouseEventManager.onMouseDownHandlers = null;
 	};
 	
 	ListView.prototype.postGroupAction = function(url, ext) {
