@@ -538,6 +538,29 @@
   padding-top: 10px;
 }
 
+.UIECMAdminPortlet .UIAnyPermission {
+	border: 1px solid #B7B7B7;
+	margin-bottom: 2px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid {
+	width: auto;
+	margin: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid .FieldLabel {
+	width: 100px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormWithTitle .HorizontalLayout .FormContainer {	
+	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
+	vertical-align: middle;
+	padding: 2px;
+}
+
 /*------------------------------UICBScripts------------------------*/
 
 .UICBScripts .CBScriptForm {

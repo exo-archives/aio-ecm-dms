@@ -690,3 +690,32 @@
   float: left;
   margin: 3px 5px 0px 5px;
 }
+
+/*############################## -- Any Permission -- ########################*/
+.UIECMAdminPortlet .UIAnyPermission {
+	border: 1px solid #B7B7B7;
+	margin-bottom: 2px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormWithTitle {
+	width: auto;
+	margin: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIForm .HorizontalLayout .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid {
+	width: auto;
+	margin: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormWithTitle .HorizontalLayout {	
+	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
+	vertical-align: middle;
+	padding: 2px;
+}
