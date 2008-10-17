@@ -252,9 +252,11 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             newNode = selectedNode.getNode(name) ;
           }
           uiUploadContainer.setUploadedNode(newNode) ;
-          ThumbnailService thumbnailService = uiForm.getApplicationComponent(ThumbnailService.class);
-          thumbnailService.createThumbnail(newNode, newNode.getNode(Utils.JCR_CONTENT));
-          newNode.save();
+          if(mimeType.startsWith("image")) {
+            ThumbnailService thumbnailService = uiForm.getApplicationComponent(ThumbnailService.class);
+            thumbnailService.createThumbnail(newNode, newNode.getNode(Utils.JCR_CONTENT));
+            newNode.save();
+          }
         }
         UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
         double size = uploadService.getUploadResource(uiChild.getUploadId()).getEstimatedSize()/1024;
