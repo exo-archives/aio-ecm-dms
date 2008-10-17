@@ -80,16 +80,20 @@ var SimpleView = function() {
 			uiResizableBlock.style.overflow = "hidden";
 			
 			//create mobile element
-			var mobileElement = document.createElement("div");
-			mobileElement.setAttribute("id", DOM.generateId('Id'));
-			Self.mobileId = mobileElement.getAttribute('id');
-			mobileElement.setAttribute("class", "UIJCRExplorerPortlet");
-			mobileElement.style.position = "absolute";
-			mobileElement.style.display = "none";
-			mobileElement.style.background = "white";
-			var coverElement = document.createElement("div");
-			coverElement.setAttribute("class", "UITreeExplorer");
-			coverElement.style.margin = "3px 3px 0px 3px";
+			var mobileElement = newElement({
+				className: "UIJCRExplorerPortlet",
+				id: DOM.generateId('Id'),
+				style: {
+					position: "absolute",
+					display: "none",
+					background: "white"
+				}
+			});
+			Self.mobileId = mobileElement.id;
+			var coverElement = newElement({
+				className: "UITreeExplorer",
+				style: {margin: "3px 3px 0px 3px"}
+			});
 			coverElement.appendChild(itemSelected);
 			mobileElement.appendChild(coverElement);
 			document.body.appendChild(mobileElement);
@@ -148,18 +152,22 @@ var SimpleView = function() {
 			document.onmouseup = Self.dropOutActionArea;
 			
 			//create mobile element
-			var mobileElement = document.createElement("div");
-			mobileElement.setAttribute("id", DOM.generateId('Id'));
-			Self.mobileId = mobileElement.getAttribute('id');
-			mobileElement.setAttribute("class", "UIJCRExplorerPortlet");
-			mobileElement.style.position = "absolute";
-			mobileElement.style.display = "none";
-			mobileElement.style.background = "#fff6a4";
-			mobileElement.style.border = "1px solid #f7f7f7";
+			var mobileElement = newElement({
+				className: "UIJCRExplorerPortlet",
+				id: DOM.generateId('Id'),
+				style: {
+						position: "absolute",
+						display: "none",
+						background: "#fff6a4",
+						border: "1px solid #b7b7b7"
+				}
+			});
 			eXo.core.Browser.setOpacity(mobileElement, 72);
-			var coverElement = document.createElement("div");
-			coverElement.setAttribute("class", "UIThumbnailsView");
-			coverElement.style.clear = "left";
+			Self.mobileId = mobileElement.getAttribute('id');
+			var coverElement = newElement({
+				className: "UIThumbnailsView",
+				style: {clear: "left"}
+			});
 			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
 				coverElement.appendChild( Self.itemsSelected[i].cloneNode(true));
@@ -260,7 +268,7 @@ var SimpleView = function() {
 		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		if (rightClick) {
-			event.cancelBubble = true;
+			//event.cancelBubble = true;
 			Self.showGroundContextMenu(event, element);
 		} else {
 			resetArrayItemsSelected();
@@ -268,13 +276,15 @@ var SimpleView = function() {
 			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
 			mask.storeX = eXo.core.Browser.findMouseRelativeX(element, event);
 			mask.storeY = eXo.core.Browser.findMouseRelativeY(element, event);
-			mask.style.left = mask.storeX + "px";
-			mask.style.top = mask.storeY + "px";
-			mask.style.zIndex = 1;
-			mask.style.width = "0px";
-			mask.style.height = "0px";
-			mask.style.border = "1px dotted black";
-			mask.style.backgroundColor = "gray";
+			addStyle(mask, {
+				left: mask.storeX + "px",
+				top: mask.storeY + "px",
+				zIndex: 1,
+				width: "0px",
+				height: "0px",
+				backgroundColor: "gray",
+				border: "1px dotted black"
+			});
 			eXo.core.Browser.setOpacity(mask, 17);
 			
 			//store position for all item
@@ -425,11 +435,7 @@ var SimpleView = function() {
 		document.onselectstart = function(){return true};
 		
 		var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
-		mask.style.width = "0px";
-		mask.style.height = "0px";
-		mask.style.top = "0px";
-		mask.style.left = "0px";
-		mask.style.border = "none";
+		addStyle(mask, {width: "0px", height: "0px", top: "0px", left: "0px", border: "none"});
 		//collect item
 		var item = null;
 		for(var i in Self.allItems) {
@@ -447,19 +453,22 @@ var SimpleView = function() {
 				var contextMenu = document.getElementById(Self.contextMenuId);
 				contextMenu.parentNode.removeChild(contextMenu);
 			}
-			var contextMenu = document.createElement("div");
-			contextMenu.setAttribute("id", Self.contextMenuId);
-			contextMenu.style.position = "absolute";
-			contextMenu.style.height = "0px";
-			contextMenu.style.width = "0px";
-			contextMenu.style.top = "-1000px";
-			contextMenu.style.display = "block";
-			document.body.appendChild(contextMenu);
-
+			//create context menu
 			var actionArea = document.getElementById(Self.actionAreaId);
 			var context = DOM.findFirstDescendantByClass(actionArea, "div", "ItemContextMenu");
-			contextMenu.innerHTML = context.innerHTML;
-			
+			var contextMenu = newElement({
+				innerHTML: context.innerHTML,
+				id: Self.contextMenuId,
+				style: {
+					position: "absolute",
+					height: "0px",
+					width: "0px",
+					top: "-1000px",
+					display: "block"
+				}
+			});
+			document.body.appendChild(contextMenu);
+		
 			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
 			var Y = eXo.core.Browser.findMouseYInPage(event);
@@ -500,19 +509,22 @@ var SimpleView = function() {
 				var contextMenu = document.getElementById(Self.contextMenuId);
 				contextMenu.parentNode.removeChild(contextMenu);
 			}
-			var contextMenu = document.createElement("div");
-			contextMenu.setAttribute("id", Self.contextMenuId);
-			contextMenu.style.position = "absolute";
-			contextMenu.style.height = "0px";
-			contextMenu.style.width = "0px";
-			contextMenu.style.top = "-1000px";
-			contextMenu.style.display = "block";
-			document.body.appendChild(contextMenu);
-			
+			//create context menu
 			var actionArea = document.getElementById(Self.actionAreaId);
 			var context = DOM.findFirstDescendantByClass(actionArea, "div", "GroundContextMenu");
-			contextMenu.innerHTML = context.innerHTML;
-			
+			var contextMenu = newElement({
+				innerHTML: context.innerHTML,
+				id: Self.contextMenuId,
+				style: {
+					position: "absolute",
+					height: "0px",
+					width: "0px",
+					top: "-1000px",
+					display: "block"
+				}
+			});
+			document.body.appendChild(contextMenu);
+		
 			//check position popup
 			var X = eXo.core.Browser.findMouseXInPage(event);
 			var Y = eXo.core.Browser.findMouseYInPage(event);
@@ -523,9 +535,10 @@ var SimpleView = function() {
 			if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
 			contextMenu.style.top = Y + 5 + "px";
 			contextMenu.style.left = X + 5 + "px";
-			
+		
 			contextMenu.onmouseup = Self.hideContextMenu;
 			document.body.onmousedown = Self.hideContextMenu;
+			
 	};
 	
 	// hide context menu
@@ -555,6 +568,21 @@ var SimpleView = function() {
 		}
 	}	;
 	//private method
+	function newElement(option) {
+		var div = document.createElement('div');
+		addStyle(div, option.style);
+		delete option.style;
+		for (var o in option) {
+			div[o] = option[o];
+		}
+		return div;
+	}
+	function addStyle(element, style) {
+		for (var o in style) {
+			if (Object.prototype[o]) continue;
+			element.style[o] = style[o];
+		}
+	}
 	function revertResizableBlock() {
 		//revert status overflow for UIResizableBlock;
 		var actionArea = document.getElementById(Self.actionAreaId);
