@@ -76,6 +76,26 @@
   cursor: pointer;
 }
 
+.Upload16x16Icon {
+	width: 16px; height: 16px;
+  background: url('VistaSkin/UploadFile.png') no-repeat ;
+}
+
+.AddFolder16x16Icon {
+	width: 16px; height: 16px;
+  background: url('VistaSkin/AddFolder.png') no-repeat ;
+}
+
+.AddDocument16x16Icon {
+	width: 16px; height: 16px;
+  background: url('VistaSkin/AddDocument.png') no-repeat ;
+}
+
+.ViewProperties16x16Icon {
+	width: 16px; height: 16px;
+  background: url('VistaSkin/ViewProperties.png') no-repeat ;
+}
+
 .SelectMemberIcon {
   width: 16px; height: 16px;
   background: url('VistaSkin/SmallMemberIcon.png') no-repeat;

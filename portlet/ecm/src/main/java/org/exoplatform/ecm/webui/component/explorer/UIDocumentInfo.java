@@ -171,6 +171,19 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     if(systemWsName.equals(uiExplorer.getCurrentWorkspace())) return true ;
     return false ;
   }
+  
+  public boolean isImageType(Node node) throws Exception {
+    String nodeType = node.getPrimaryNodeType().getName();
+    if(nodeType.equals(Utils.NT_FILE)) {
+      String mimeType = node.getNode(Utils.JCR_CONTENT).getProperty(Utils.JCR_MIMETYPE).getString();
+      if(mimeType.startsWith("image")) return true;
+    }
+    return false;
+  }
+  
+  public String getThumbnailImage(Node node) throws Exception {
+    return Utils.getThumbnailImage(node, ThumbnailService.MEDIUM_SIZE);
+  }
 
   public String getDownloadLink(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;    

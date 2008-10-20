@@ -421,6 +421,11 @@
   background: url('DefaultSkin/Webdav.gif') no-repeat ;  
 }
 
+.ViewProperties16x16Icon {
+  height: 16px;
+  background: url('DefaultSkin/ViewProperties.gif') no-repeat ;  
+}
+
 .DownLoad16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/DownLoadIcon.gif') no-repeat ;   
@@ -504,6 +509,25 @@
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;
 }
 
+.Upload16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/UploadFile.gif') no-repeat ;
+}
+
+.AddFolder16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/AddFolder.gif') no-repeat ;
+}
+
+.AddDocument16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/AddDocument.gif') no-repeat ;
+}
+
+.ViewProperties16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/ViewProperties.gif') no-repeat ;
+}
 
 .AddView16x16Icon {
   width: 16px; height: 16px;

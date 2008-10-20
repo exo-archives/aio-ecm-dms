@@ -7,7 +7,6 @@
 	 */
 %>
 
-
 <div class="UIActivateAuditing">
   <div style="text-align: center; margin: 10px;"><%=_ctx.appRes(uicomponent.getId() + ".label.note")%></div>
   <div style="text-align: center; margin: 10px;"><%=_ctx.appRes(uicomponent.getId() + ".label.question")%></div>
@@ -19,7 +18,7 @@
 		        <div class="ButtonLeft">
 		          <div class="ButtonRight">
 		            <div class="ButtonMiddle">
-		              Activate
+		              <%=_ctx.appRes("UIActivateAuditing.action.activate")%>
 		            </div>
 		          </div>
 		        </div>
@@ -28,7 +27,7 @@
 		        <div class="ButtonLeft">
 		          <div class="ButtonRight">
 		            <div class="ButtonMiddle">
-		              Cancel 
+		              <%=_ctx.appRes("UIActivateAuditing.action.cancel")%> 
 		            </div>
 		          </div>
 		        </div>

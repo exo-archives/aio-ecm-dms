@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
@@ -47,6 +48,7 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -255,8 +257,11 @@ public class UIDrivesBrowser extends UIContainer {
       }
       String viewListStr = "";
       List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>();
+      ResourceBundle res = event.getRequestContext().getApplicationResourceBundle();
+      String viewLabel = null;
       for(String viewName : viewLists) {
-        viewOptions.add(new SelectItemOption<String>(viewName, viewName));
+        viewLabel = res.getString("Views.label." + viewName) ;
+        viewOptions.add(new SelectItemOption<String>(viewLabel, viewName));
         if(viewListStr.length() > 0) viewListStr = viewListStr + "," + viewName;
         else viewListStr = viewName;
       }

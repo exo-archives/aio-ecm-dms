@@ -19,7 +19,7 @@
   uiform.begin() 
   %>
   <div class="Separator ActionBarSeparator"><span></span></div>
-  <div class="ActionLabel">$uicomponent.templateName</div>
+  <div class="ActionLabel"><%=_ctx.appRes("UIActionBar.title.select-tab")%></div>
   <div class="Separator ActionBarSeparator"><span></span></div>
   <div class="ActionComboBox">
     <% uicomponent.renderChild(0); %>

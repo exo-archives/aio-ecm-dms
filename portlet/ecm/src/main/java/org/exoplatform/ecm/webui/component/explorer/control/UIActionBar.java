@@ -46,6 +46,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIAddLanguageC
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UICommentForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentFormController;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIEnableThumbnail;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIFolderForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UITaggingForm;
@@ -151,7 +152,8 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.ViewMetadatasActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.VoteActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIActionBar.CommentActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIActionBar.CommentActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.EnableThumbnailActionListener.class, phase = Phase.DECODE)
     }
 )
 
@@ -825,6 +827,28 @@ public class UIActionBar extends UIForm {
       uiAuditingInfo.updateGrid();
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
       return;
+    }
+  }
+  
+  static public class EnableThumbnailActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {
+      UIActionBar uiActionBar = event.getSource();
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      Node currentNode = uiExplorer.getCurrentNode();
+      NodeType nodeType = currentNode.getPrimaryNodeType();
+      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
+      if(!nodeType.isNodeType(Utils.NT_UNSTRUCTURED) && !nodeType.isNodeType(Utils.NT_FOLDER)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.can-not-add", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if (!currentNode.isNodeType(Utils.EXO_THUMBNAILABLE)) {
+        UIPopupContainer.activate(UIEnableThumbnail.class, 400);
+        event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+        return;
+      }
     }
   }
 
