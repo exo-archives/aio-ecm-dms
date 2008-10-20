@@ -21,16 +21,17 @@ var SimpleView = function() {
 		var mousedown = null;
 		for (var i in Self.allItems) {
 			if (Array.prototype[i]) continue;
-			if (Self.allItems[i].getAttribute("onmousedown")) {
+			var item = Self.allItems[i];
+			if (item.getAttribute("onmousedown")) {
 				mousedown = Self.allItems[i].getAttributeNode("onmousedown").value;
-				Self.allItems[i].setAttribute("mousedown", mousedown);
-				Self.allItems[i].onmousedown = null;
-				Self.allItems[i].removeAttribute("onmousedown");
+				item.setAttribute("mousedown", mousedown);
+				item.onmousedown = null;
+				item.removeAttribute("onmousedown");
 			}
-			Self.allItems[i].onmouseover = Self.mouseOverItem;
-			Self.allItems[i].onmousedown = Self.mouseDownItem;
-			Self.allItems[i].onmouseup = Self.mouseUpItem;
-			Self.allItems[i].onmouseout = Self.mouseOutItem;
+			item.onmouseover = Self.mouseOverItem;
+			item.onmousedown = Self.mouseDownItem;
+			item.onmouseup = Self.mouseUpItem;
+			item.onmouseout = Self.mouseOutItem;
 		}
 		actionArea.onmousedown = Self.mouseDownGround;
 		actionArea.onmouseup = Self.mouseUpGround;
@@ -283,9 +284,10 @@ var SimpleView = function() {
 			eXo.core.Browser.setOpacity(mask, 17);
 			
 			//store position for all item
+			var thumbnailView = DOM.findFirstDescendantByClass(element, "div", "UIThumbnailsView");
 			for( var i = 0 ; i < Self.allItems.length; ++i) {
-				Self.allItems[i].posX = Math.abs(eXo.core.Browser.findPosXInContainer(Self.allItems[i], element));
-				Self.allItems[i].posY = Math.abs(eXo.core.Browser.findPosYInContainer(Self.allItems[i], element));
+				Self.allItems[i].posX = Math.abs(eXo.core.Browser.findPosXInContainer(Self.allItems[i], element)) - thumbnailView.scrollLeft;
+				Self.allItems[i].posY = Math.abs(eXo.core.Browser.findPosYInContainer(Self.allItems[i], element)) - thumbnailView.scrollTop;
 			}
 		}
 	};

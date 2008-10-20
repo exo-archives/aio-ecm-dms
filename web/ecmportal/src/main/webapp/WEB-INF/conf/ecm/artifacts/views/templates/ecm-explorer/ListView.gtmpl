@@ -87,8 +87,8 @@
 			 </div>
 		</div>
 	</div>
-	<div class="UIListGrid" style="">
-			<div class="TitleTable" style="">
+	<div class="UIListGrid">
+			<div class="TitleTable">
 			  
 		    <%
 		      String typeSort = uicomponent.getTypeSort() ;

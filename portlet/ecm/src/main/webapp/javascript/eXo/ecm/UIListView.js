@@ -284,9 +284,10 @@ var ListView = function() {
 			eXo.core.Browser.setOpacity(mask, 17);
 			
 			//store position for all item
+			var listGrid = DOM.findFirstDescendantByClass(element, "div", "UIListGrid");
 			for( var i = 0 ; i < Self.allItems.length; ++i) {
-				Self.allItems[i].posX = Math.abs(eXo.core.Browser.findPosXInContainer(Self.allItems[i], element));
-				Self.allItems[i].posY = Math.abs(eXo.core.Browser.findPosYInContainer(Self.allItems[i], element));
+				Self.allItems[i].posX = Math.abs(eXo.core.Browser.findPosXInContainer(Self.allItems[i], element)) - listGrid.scrollLeft;
+				Self.allItems[i].posY = Math.abs(eXo.core.Browser.findPosYInContainer(Self.allItems[i], element)) - listGrid.scrollTop;
 			}
 		}
 	};
