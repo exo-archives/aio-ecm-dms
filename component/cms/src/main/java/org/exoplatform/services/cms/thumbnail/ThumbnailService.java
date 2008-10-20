@@ -38,7 +38,6 @@ public interface ThumbnailService {
   final public static String SMALL_SIZE = "exo:smallSize".intern();
   final public static String MEDIUM_SIZE = "exo:mediumSize".intern();
   final public static String BIG_SIZE = "exo:bigSize".intern();
-  final public static String SPECIFIED_SIZE = "exo:specifiedSize".intern();
   
   /**
  * Return all nt:file node at current node
@@ -94,7 +93,8 @@ public interface ThumbnailService {
  * @param contentNode Node uploaded which contain the data
  * @param width Width of thumbnail image
  * @param height Height of thumbnail image
+ * @param propertyName Data will be set to this property
  * @throws Exception
  */  
-  public void createThumbnail(Node node, Node contentNode, int width, int height) throws Exception;
+  public void createThumbnail(Node node, Node contentNode, String propertyName) throws Exception;
 }

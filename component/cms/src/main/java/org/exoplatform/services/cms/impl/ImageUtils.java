@@ -43,7 +43,7 @@ import com.sun.image.codec.jpeg.JPEGImageEncoder;
 public class ImageUtils {
 
   /**
-   * Return the image which resized
+   * Return the image which resized(support JPG, PNG, GIF)
    * @param contentNode Node hold the input data
    * @param width Width of thumbnail will be resized
    * @param height Height of thumbnail will be resized

@@ -109,11 +109,13 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     }
     return null;
   }
-
-  public void createThumbnail(Node node, Node contentNode, int width, int height) throws Exception {
-    createThumbnail(node, contentNode, width, height, SPECIFIED_SIZE);
-  }
   
+  public void createThumbnail(Node node, Node contentNode, String propertyName) throws Exception {
+    if(propertyName.equals(SMALL_SIZE)) parseImageSize(node, contentNode, smallSize_, SMALL_SIZE);
+    else if(propertyName.equals(MEDIUM_SIZE)) parseImageSize(node, contentNode, mediumSize_, MEDIUM_SIZE);
+    else if(propertyName.equals(BIG_SIZE)) parseImageSize(node, contentNode, bigSize_, BIG_SIZE);
+  }
+
   private void createThumbnail(Node node, Node contentNode, int width, int height, 
       String propertyName) throws Exception {
     if(!node.isNodeType(EXO_THUMBNAIL)) node.addMixin(EXO_THUMBNAIL);
@@ -122,12 +124,12 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     thumbnailStream.close();
   }
   
-  private void parseImageSize(Node node, Node contentNode, String size, String sizeType) throws Exception {
+  private void parseImageSize(Node node, Node contentNode, String size, String propertyName) throws Exception {
     if(size.indexOf("x") > -1) {
       String[] imageSize = size.split("x");
       int width = Integer.parseInt(imageSize[0]);
       int height = Integer.parseInt(imageSize[1]);
-      createThumbnail(node, contentNode, width, height, sizeType);
+      createThumbnail(node, contentNode, width, height, propertyName);
     }
   }
 }

@@ -32,12 +32,12 @@ import org.exoplatform.services.command.action.Action;
 public class AddDateTimeAction implements Action{
 
   public boolean execute(Context context) throws Exception {                         
-    Node node = (Node)context.get("currentItem") ; ;
+    Node node = (Node)context.get("currentItem");
     if(node.canAddMixin("exo:datetime")) {
-      node.addMixin("exo:datetime") ;            
+      node.addMixin("exo:datetime");            
     }
-    node.setProperty("exo:dateCreated",new GregorianCalendar()) ;
-    node.setProperty("exo:dateModified",new GregorianCalendar()) ;    
+    node.setProperty("exo:dateCreated",new GregorianCalendar());
+    node.setProperty("exo:dateModified",new GregorianCalendar());    
     return false;
   }
 
