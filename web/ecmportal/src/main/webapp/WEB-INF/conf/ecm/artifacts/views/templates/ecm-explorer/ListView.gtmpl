@@ -62,17 +62,17 @@
 			<div class="UIRightClickPopupMenu" style="display: block;">
 				<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
 					<a class="MenuItem" href="<%=contextMenu.event("AddFolder")%>" style="display: block;"> 	
-						<div class="ItemIcon AddFolderIcon">
+						<div class="ItemIcon AddFolder16x16Icon">
 							<%=_ctx.appRes("ECMContextMenu.event.AddFolder")%>
 						</div>
 				 	</a>
 				 	<a class="MenuItem" href="<%=contextMenu.event("AddDocument")%>" style="display: block;"> 	
-						<div class="ItemIcon AddDocumentIcon">
+						<div class="ItemIcon AddDocument16x16Icon">
 							<%=_ctx.appRes("ECMContextMenu.event.AddDocument")%>
 						</div>
 				 	</a>
 				 	<a class="MenuItem" href="<%=contextMenu.event("Upload")%>" style="display: block;"> 	
-						<div class="ItemIcon UploadIcon">
+						<div class="ItemIcon Upload16x16Icon">
 							<%=_ctx.appRes("ECMContextMenu.event.Upload")%>
 						</div>
 				 	</a>

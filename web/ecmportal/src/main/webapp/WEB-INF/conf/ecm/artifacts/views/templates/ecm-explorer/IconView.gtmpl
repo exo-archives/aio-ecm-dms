@@ -127,18 +127,7 @@
 	        <div style="height: auto; width: auto; border: none; -moz-user-select: none;" unselectable="on">
 						<div class="NodeLabel">
 							<div class="ActionIcon">
-								<%if(uicomponent.isImageType(data)) {
-								    String thumbnailImage = uicomponent.getThumbnailImage(data);
-								    if(thumbnailImage != null) {
-								%>
-								      <span style="display: block;" class="Icon48x48"><img src="$thumbnailImage"/></span>
-								<%  } else { %>
-								      <span style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></span>
-								<%
-								    }
-								  } else {%>
-								   <span style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></span>
-							  <%}%>
+								<span style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></span>
 							</div>
 						</div>
 		        <%
