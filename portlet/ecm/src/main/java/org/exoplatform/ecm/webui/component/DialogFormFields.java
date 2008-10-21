@@ -784,15 +784,6 @@ public class DialogFormFields extends UIForm {
         defaultValue = argument;
       } 
     }
-    if(multiValues != null && multiValues.equals("true")) {
-      UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
-      uiMulti.setId(name) ;
-      uiMulti.setName(name) ;
-      uiMulti.setType(UIFormSelectBox.class) ;
-      addUIFormInput(uiMulti) ;
-      renderField(name) ;
-      return ;
-    }
     List<SelectItemOption<String>> optionsList = new ArrayList<SelectItemOption<String>>();
     UIFormSelectBox uiSelectBox = findComponentById(name) ;
     if(uiSelectBox == null || isResetForm_) {
@@ -815,6 +806,9 @@ public class DialogFormFields extends UIForm {
         uiSelectBox.setOptions(optionsList) ;
       }      
       if(defaultValue != null) uiSelectBox.setValue(defaultValue) ;
+    }
+    if(multiValues != null && multiValues.equals("true")) {
+      uiSelectBox.setMultiple(true);
     }
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
