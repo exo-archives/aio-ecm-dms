@@ -84,13 +84,14 @@ var SimpleView = function() {
 				style: {
 					position: "absolute",
 					display: "none",
-					background: "white"
+					background: "white",
+					width: itemSelected.offsetWidth
 				}
 			});
 			Self.mobileId = mobileElement.id;
 			var coverElement = newElement({
 				className: "UITreeExplorer",
-				style: {margin: "3px 3px 0px 3px"}
+				style: {margin: "0px 3px", padding: "3px 0px"}
 			});
 			coverElement.appendChild(itemSelected);
 			mobileElement.appendChild(coverElement);
