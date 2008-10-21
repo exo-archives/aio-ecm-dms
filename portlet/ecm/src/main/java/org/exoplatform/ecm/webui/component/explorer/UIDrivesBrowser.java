@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -260,7 +261,11 @@ public class UIDrivesBrowser extends UIContainer {
       ResourceBundle res = event.getRequestContext().getApplicationResourceBundle();
       String viewLabel = null;
       for(String viewName : viewLists) {
-        viewLabel = res.getString("Views.label." + viewName) ;
+        try {
+          viewLabel = res.getString("Views.label." + viewName) ; 
+        } catch (MissingResourceException e) {
+          viewLabel = viewName;
+        }        
         viewOptions.add(new SelectItemOption<String>(viewLabel, viewName));
         if(viewListStr.length() > 0) viewListStr = viewListStr + "," + viewName;
         else viewListStr = viewName;
