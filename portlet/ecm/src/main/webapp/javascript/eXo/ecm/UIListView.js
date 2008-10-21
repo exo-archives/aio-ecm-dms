@@ -84,7 +84,7 @@ var ListView = function() {
 					position: "absolute",
 					display: "none",
 					background: "white",
-					width: itemSelected.offsetWidth
+					width: element.offsetWidth + "px"
 				}
 			});
 			Self.mobileId = mobileElement.id;

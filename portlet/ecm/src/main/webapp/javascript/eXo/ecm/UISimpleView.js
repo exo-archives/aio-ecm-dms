@@ -69,7 +69,7 @@ var SimpleView = function() {
 		} else {
 			// init drag drop;
 			document.onmousemove = Self.dragItemsSelected;
-			document.onmouseup = Self.dropOutActionArea;
+			//document.onmouseup = Self.dropOutActionArea;
 			
 			var itemSelected = element.cloneNode(true);
 			Self.itemsSelected = new Array(itemSelected);
@@ -85,7 +85,7 @@ var SimpleView = function() {
 					position: "absolute",
 					display: "none",
 					background: "white",
-					width: itemSelected.offsetWidth
+					width: element.offsetWidth + "px"
 				}
 			});
 			Self.mobileId = mobileElement.id;
