@@ -81,9 +81,9 @@ function glideTo(x, new_caption_id) {
 	
 	/* Display new caption */
 	caption_id = new_caption_id;
-	caption = img_div.childNodes.item(array_images[caption_id]).getAttribute('alt');
-	if (caption == '') caption = '&nbsp;';
-	caption_div.innerHTML = caption;
+	//caption = img_div.childNodes.item(array_images[caption_id]).getAttribute('alt');
+	//if (caption == '') caption = '&nbsp;';
+	//caption_div.innerHTML = caption;
 
 	/* Set scrollbar slider to new position */
 	if (dragging == false) {
@@ -176,7 +176,7 @@ function refresh(onload) {
 	img_div = document.getElementById(conf_images);
 	scrollbar_div = document.getElementById(conf_scrollbar);
 	slider_div = document.getElementById(conf_slider);
-	caption_div = document.getElementById(conf_captions);
+	//caption_div = document.getElementById(conf_captions);
 
 	/* Cache global variables, that only change on refresh */
 	images_width = img_div.offsetWidth;
@@ -192,14 +192,16 @@ function refresh(onload) {
 	//imageflow_div.style.height = max_height + 'px';
 
 	/* Change images div properties */
-	img_div.style.height = images_width * 0.338 + 'px';
+	//value default: 0.338
+	img_div.style.height = images_width * 0.32 + 'px';
 
 	/* Change captions div properties */
-	caption_div.style.width = images_width + 'px';
-	caption_div.style.marginTop = images_width * 0.03 + 'px';
+	//caption_div.style.width = images_width + 'px';
+	//caption_div.style.marginTop = images_width * 0.03 + 'px';
 
 	/* Change scrollbar div properties */
-	scrollbar_div.style.marginTop = images_width * 0.02 + 'px';
+	//default: 0.02
+	scrollbar_div.style.marginTop = images_width * 0.012 + 'px';
 	scrollbar_div.style.marginLeft = images_width * 0.2 + 'px';
 	scrollbar_div.style.width = scrollbar_width + 'px';
 	
@@ -266,7 +268,8 @@ function hide(id) {
 	element.style.display = 'none';
 }
 function init() {
-	if (document.getElementById(conf_imageflow)) {
+	var images = document.getElementById(conf_images)
+	if (images && images.childNodes.length) {
 		refresh(true);
 		initMouseWheel();
 		initMouseDrag();

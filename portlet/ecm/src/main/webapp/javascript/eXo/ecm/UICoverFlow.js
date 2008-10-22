@@ -17,7 +17,7 @@ var CoverFlow = function() {
 		idoc.write(album.value);
 		idoc.close();
 		var workingArea = DOM.findAncestorByClass(portlet, "UIWorkingArea");
-		iframe.style.width = portlet.offsetWidth - 5 + "px";
+		iframe.style.width = "100%";
 		iframe.style.height = workingArea.offsetHeight - 5 + "px";
 	};
 };
