@@ -26,6 +26,7 @@ import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -226,11 +227,15 @@ public class UIToolBar extends UIContainer {
       }
       String lockToken = LockUtil.getLockToken(uiDocument.node_);
       if(lockToken != null) uiDocument.node_.getSession().addLockToken(lockToken);
-      if(container.nodeIsLocked(uiDocument.node_)) {
-        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-is-locked", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;        
+      if (container.nodeIsLocked(uiDocument.node_)) {
+        String strLockOwner = uiDocument.node_.getLock().getLockOwner();
+        String userId = Util.getPortalRequestContext().getRemoteUser();
+        if (!strLockOwner.equals(userId)) {
+          uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-is-locked", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
       }
       if((uiDocument.node_.isCheckedOut())) {
         UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
@@ -273,10 +278,14 @@ public class UIToolBar extends UIContainer {
       String lockToken = LockUtil.getLockToken(uiDocument.node_);
       if(lockToken != null) uiDocument.node_.getSession().addLockToken(lockToken);
       if(container.nodeIsLocked(uiDocument.node_)) {
-        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-is-locked", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;        
+        String strLockOwner = uiDocument.node_.getLock().getLockOwner();
+        String userId = Util.getPortalRequestContext().getRemoteUser();
+        if (!strLockOwner.equals(userId)) {
+          uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-is-locked", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
       }
       if((uiDocument.node_.isCheckedOut())) {
         UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
