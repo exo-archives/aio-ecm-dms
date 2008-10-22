@@ -10,9 +10,7 @@ var CoverFlow = function() {
 		var iframe = document.createElement("iframe");
 		iframe.setAttribute("frameborder", "0");
 		portlet.insertBefore(iframe, album);
-		if (iframe.contentDocument) var idoc = iframe.contentDocument;  
- 		else if (iframe.contentWindow) var idoc = iframe.contentWindow.document;  
-   	else if (iframe.document) var idoc = iframe.document; 
+		var idoc = iframe.contentWindow.document;  
 		idoc.open();
 		idoc.write(album.value);
 		idoc.close();
