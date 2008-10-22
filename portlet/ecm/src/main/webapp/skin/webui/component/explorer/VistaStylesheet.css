@@ -102,3 +102,22 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPublicationContainer .UIFormGrid .FieldComponent {
   padding: 6px;
 }
+
+.UIGroupMembershipSelector .UIForm .UIFormGrid td.FieldLabel {
+  height: 40px;
+  line-height: 40px;
+}
+
+.UIGroupMembershipSelector .UIForm .UIFormGrid td.FieldLabel {
+  height: 40px;
+  line-height: 40px;
+}
+
+.UIGroupMembershipSelector .UIForm .HorizontalLayout {
+	border: 0 none;
+	width: 440px;
+}
+
+.UIGroupMembershipSelector .UIForm .HorizontalLayout td.FieldComponent {
+  padding-top: 2px;
+}

@@ -37,7 +37,7 @@ import org.exoplatform.webui.organization.UIGroupMembershipSelector;
  */
 @ComponentConfigs({ 
   @ComponentConfig(
-      template = "system:/groovy/organization/webui/component/UIGroupMembershipSelector.gtmpl",
+      template = "app:/groovy/webui/component/UIGroupMembershipSelector.gtmpl",
       events = {
           @EventConfig(listeners = UIECMPermissionBrowser.ChangeNodeActionListener.class),
           @EventConfig(listeners = UIECMPermissionBrowser.SelectMembershipActionListener.class),
@@ -60,9 +60,11 @@ public class UIECMPermissionBrowser extends UIGroupMembershipSelector implements
   final static public String defaultValue = "/admin" ;
   private UIComponent uiComponent ;
   private String returnFieldName = null ;
+
   public boolean isUsePopup_ = true ;
   public UIECMPermissionBrowser() throws Exception {
     changeGroup(defaultValue) ;
+    addChild(UIAnyPermission.class, null, null);
   }
 
   public void setCurrentPermission(String per) throws Exception { changeGroup(per) ; }
@@ -128,4 +130,5 @@ public class UIECMPermissionBrowser extends UIGroupMembershipSelector implements
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPermissionSelector) ;
     }
   }
+
 }

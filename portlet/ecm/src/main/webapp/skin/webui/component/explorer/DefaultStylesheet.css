@@ -108,3 +108,12 @@
   padding: 6px;
 }
 
+.UIGroupMembershipSelector .UIForm .UIFormGrid td.FieldLabel {
+  height: 20px;
+  line-height: 20px;
+}
+
+.UIGroupMembershipSelector .UIForm .HorizontalLayout {
+	border: 0 none;
+	width: 440px;
+}

@@ -494,6 +494,16 @@
   margin: auto;
 }
 
+.UIGroupMembershipSelector .UIForm .UIFormGrid td.FieldLabel {
+  height: 20px;
+  line-height: 20px;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .anyPermission .UIFormInputSet {
+	width: 350px;
+	margin: auto;
+}
+
 .UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
 	width: auto;
 }
@@ -840,4 +850,13 @@
 
 .UIECMAdminPortlet .UIPopupWindow .Content {
   border: solid 1px #cdcdcd;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIGroupMembershipSelector .UIForm .HorizontalLayout {
+	border: 0 none;
+	width: 452px;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIGroupMembershipSelector .UIForm .HorizontalLayout td.FieldComponent {
+  padding: 3px;
 }

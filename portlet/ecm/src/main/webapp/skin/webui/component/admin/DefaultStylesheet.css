@@ -477,6 +477,22 @@
 	margin: auto;
 }
 
+.UIGroupMembershipSelector .UIForm .UIFormGrid td.FieldLabel {
+  height: 25px;
+  line-height: 25px;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .anyPermission .UIFormInputSet {
+	width: 350px;
+	margin: auto;
+}
+
+.UIECMAdminPortlet .UIDriveManager .UIGroupMembershipSelector .UIForm .HorizontalLayout {
+	background: #F4F4F4 none repeat scroll 0 0;
+	border: 0 none;
+	width: 450px;
+}
+
 .UIECMAdminPortlet .UIDriveManager .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
 	width: auto;
 }

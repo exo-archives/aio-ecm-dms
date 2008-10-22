@@ -641,6 +641,16 @@
   padding-bottom: 8px;
 }
 
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo .UIAnyPermission .HorizontalLayout .UIFormGrid .FieldLabel{
+  height: 20px;
+  line-height: 20px;
+  width: 128px;
+}
+
+ .UIAnyPermission {
+   border:  1px solid #efefef;
+ }
+
 .UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
   padding: 0px;
   border: none;

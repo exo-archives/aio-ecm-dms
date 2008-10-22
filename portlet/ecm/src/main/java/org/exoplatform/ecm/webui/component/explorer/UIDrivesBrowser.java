@@ -26,6 +26,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.LoginException;
 import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.Node;
 import javax.jcr.Session;
@@ -43,6 +44,7 @@ import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.cms.views.impl.ManageViewServiceImpl;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -106,25 +108,45 @@ public class UIDrivesBrowser extends UIContainer {
     List<String> userRoles = Utils.getMemberships() ;    
     List<DriveData> allDrives = driveService.getAllDrives(repoName);
     Set<DriveData> temp = new HashSet<DriveData>();
-    //We will improve ManageDrive service to allow getAllDriveByUser
-    for(DriveData driveData:allDrives) {
-      String[] allPermission = driveData.getAllPermissions();
-      boolean flag = false;
-      for(String permission:allPermission) {
-        if(permission.equalsIgnoreCase("${userId}")) {
-          temp.add(driveData);
-          flag = true;
-          break;
+    
+    String userId = Util.getPortalRequestContext().getRemoteUser() ;
+    if (userId != null) {
+      // We will improve ManageDrive service to allow getAllDriveByUser
+      for (DriveData driveData : allDrives) {
+        String[] allPermission = driveData.getAllPermissions();
+        boolean flag = false;
+        for (String permission : allPermission) {
+          if (permission.equalsIgnoreCase("${userId}")) {
+            temp.add(driveData);
+            flag = true;
+            break;
+          }
+          if (permission.equalsIgnoreCase("*")) {
+            temp.add(driveData);
+            flag = true;
+            break;
+          }
+          if (flag)
+            continue;
+          for (String rolse : userRoles) {
+            if (driveData.hasPermission(allPermission, rolse)) {
+              temp.add(driveData);
+              break;
+            }
+          }
         }
-        if(flag) continue;
-        for(String rolse:userRoles) {
-          if(driveData.hasPermission(allPermission,rolse)) {
+      }
+    } else {
+      for (DriveData driveData : allDrives) {
+        String[] allPermission = driveData.getAllPermissions();
+        for (String permission : allPermission) {
+          if (permission.equalsIgnoreCase("*")) {
             temp.add(driveData);
             break;
           }
         }
-      }      
-    }        
+      }
+    }       
     for(Iterator<DriveData> iterator = temp.iterator();iterator.hasNext();) {
       driveList.add(iterator.next());
     }
@@ -199,19 +221,32 @@ public class UIDrivesBrowser extends UIContainer {
       List<String> userRoles = Utils.getMemberships() ;
       Map<String, String> viewMap = new HashMap<String, String>() ;
       String viewList = "";
-      for(String role : userRoles){
+      if (userId != null) {
+        for(String role : userRoles){
+          String[] views = drive.getViews().split(",") ;
+          for(String viewName : views) {
+            viewName = viewName.trim() ;
+            Node viewNode = 
+              uiDrive.getApplicationComponent(ManageViewService.class).getViewByName(viewName, uiDrive.repoName_,SessionsUtils.getSystemProvider()) ;
+            String permiss = viewNode.getProperty("exo:accessPermissions").getString();
+            if(permiss.contains("${userId}")) permiss = permiss.replace("${userId}", userId) ;
+            String[] viewPermissions = permiss.split(",") ;
+            if(permiss.equals("*")) viewMap.put(viewName, viewName) ;
+            if(drive.hasPermission(viewPermissions, role)) viewMap.put(viewName, viewName) ;
+          }
+        }
+      } else {
         String[] views = drive.getViews().split(",") ;
         for(String viewName : views) {
           viewName = viewName.trim() ;
           Node viewNode = 
             uiDrive.getApplicationComponent(ManageViewService.class).getViewByName(viewName, uiDrive.repoName_,SessionsUtils.getSystemProvider()) ;
           String permiss = viewNode.getProperty("exo:accessPermissions").getString();
-          if(permiss.contains("${userId}")) permiss = permiss.replace("${userId}", userId) ;
-          String[] viewPermissions = permiss.split(",") ;
           if(permiss.equals("*")) viewMap.put(viewName, viewName) ;
-          if(drive.hasPermission(viewPermissions, role)) viewMap.put(viewName, viewName) ;
         }
       }
+      
+      
       if(viewMap.isEmpty()) {
         Object[] args = { driveName } ;
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.no-view-found", args)) ;
@@ -237,13 +272,17 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.setPreferences(pref);
       uiJCRExplorer.setDriveData(drive) ;
       uiJCRExplorer.setIsReferenceNode(false) ;
-      
-      SessionProvider provider = SessionsUtils.getSessionProvider() ;                  
+      SessionProvider provider;
+      if (userId != null) {
+        provider = SessionsUtils.getSessionProvider() ; 
+      } else {
+        provider = SessionsUtils.getAnonimProvider();
+      }
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_) ;
       Node node = null ;
       try {
-        Session session = provider.getSession(drive.getWorkspace(),repository) ;      
-        node = (Node) session.getItem(homePath) ;        
+        Session session = provider.getSession(drive.getWorkspace(),repository) ;  
+        node = (Node) session.getItem(homePath) ;
       } catch(AccessDeniedException ace) {
         Object[] args = { driveName } ;
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args, 
@@ -255,8 +294,15 @@ public class UIDrivesBrowser extends UIContainer {
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.workspace-not-exist", args, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;        
+        return ;
+      } catch(LoginException loginE) {
+        Object[] args = { driveName };
+        uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       } catch(Exception e) {
+        e.printStackTrace();
         JCRExceptionManager.process(uiApp, e) ;
         return ;
       } 
@@ -264,6 +310,7 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.setRepositoryName(uiDrive.repoName_) ;
       uiJCRExplorer.setWorkspaceName(drive.getWorkspace()) ;
       uiJCRExplorer.setRootPath(homePath) ;
+      
       uiJCRExplorer.setSelectNode(node) ;
       uiJCRExplorer.refreshExplorer() ;      
       List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>() ;

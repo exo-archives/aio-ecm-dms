@@ -7,29 +7,28 @@
  * 
  */
 %>
-<div class="$uicomponent.id">
-  <div class="UIFormWithTitle">
-    <% uiform.begin() %>
-    <div class="HorizontalLayout" style="border: none;">
-      <table class="UIFormGrid">
-      <% 
-        for(field in uiform.getChildren()) { 
-          if(field.isRendered()) {
-      %>
-						<tr>
-              				<%if(!uicomponent.getLabel(field.getName()).equals(uicomponent.getId())) { %>                        
-								<td class="FieldLabel"><%=uicomponent.getLabel(field.getName())%></td>
-  						        <td class="FieldComponent"><% uiform.renderField(field) %></td>
-              				<%} else {%>
-                				<td colspan="2" class="FieldComponent"><% uiform.renderField(field) %></td>
-              				<%}%>
-					   </tr>
+<div class="UIFormWithoutAction  $uicomponent.id" style="border: 1px solid green">
+  <% uiform.begin() %>
+  <div class="HorizontalLayout">
+    <table class="UIFormGrid">
+    <% 
+      for(field in uiform.getChildren()) { 
+        if(field.isRendered()) {
+    %>
+			<tr>
+      <%
+      if(!uicomponent.getLabel(field.getName()).equals(uicomponent.getId())) { %>                        
+				<td class="FieldLabel"><%=uicomponent.getLabel(field.getName())%></td>
+  		  <td class="FieldComponent"><% uiform.renderField(field) %></td>
+      <%} else {%>
+        <td colspan="2" class="FieldComponent"><% uiform.renderField(field) %></td>
+      <%}%>
+			</tr>
       <%
           }
         }
       %>
-      </table>
-    </div>
-    <%uiform.end()%>
+    </table>
   </div>
+  <%uiform.end()%>
 </div>
