@@ -16,7 +16,6 @@
  */
 package org.exoplatform.services.cms.records.impl;
 
-
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -39,52 +38,66 @@ public class RecordsJob extends BaseJob {
 
   private static final String QUERY = "SELECT * FROM rma:filePlan";
 
-  private static Log log_ = ExoLogger.getLogger("job.RecordsJob");
+  /**
+   * Logger.
+   */
+  private static final Log          LOG  = ExoLogger.getLogger("job.RecordsJob");
 
-  private RepositoryService repositoryService_ ;
-  private RecordsService recordsService_ ;  
+  private RepositoryService   repositoryService_;
 
+  private RecordsService      recordsService_;
+
+  /**
+   * {@inheritDoc}
+   */
   public void execute(JobContext context) throws Exception {
-    Session session = null ;
+    Session session = null;
     try {
-      if(log_.isDebugEnabled())
-        log_.debug("File plan job started");
+      if (LOG.isDebugEnabled())
+        LOG.debug("File plan job started");
       ExoContainer container = ExoContainerContext.getCurrentContainer();
       repositoryService_ = (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
       recordsService_ = (RecordsService) container.getComponentInstanceOfType(RecordsService.class);
       ManageableRepository repository = repositoryService_.getDefaultRepository();
-      String[] workspaces = repository.getWorkspaceNames();      
-      for (int i = 0; i < workspaces.length; i++) {
-        String workspaceName = workspaces[i];
-        if(log_.isDebugEnabled())
-          log_.debug("Search File plans in workspace : " + workspaceName);
-        session = repository.getSystemSession(workspaceName);
-        QueryManager queryManager = session.getWorkspace().getQueryManager();
-        Query query = queryManager.createQuery(QUERY, Query.SQL);
-        QueryResult results = query.execute();
-        NodeIterator iter = results.getNodes();
-        if(log_.isDebugEnabled())
-          log_.debug("File plan nodes : " + iter.getSize());
-        while (iter.hasNext()) {
-          Node filePlan = iter.nextNode();
-          try {
-            recordsService_.computeCutoffs(filePlan);
-            recordsService_.computeHolds(filePlan);
-            recordsService_.computeTransfers(filePlan);
-            recordsService_.computeAccessions(filePlan);
-            recordsService_.computeDestructions(filePlan);
-          } catch (RepositoryException ex) {
-            log_.error(ex.getMessage(), ex);
+
+      if (repository.getState() != ManageableRepository.OFFLINE) {
+        String[] workspaces = repository.getWorkspaceNames();
+        for (int i = 0; i < workspaces.length; i++) {
+          String workspaceName = workspaces[i];
+          if (LOG.isDebugEnabled())
+            LOG.debug("Search File plans in workspace : " + workspaceName);
+          
+          session = repository.getSystemSession(workspaceName);
+          QueryManager queryManager = session.getWorkspace().getQueryManager();
+          Query query = queryManager.createQuery(QUERY, Query.SQL);
+          QueryResult results = query.execute();
+          NodeIterator iter = results.getNodes();
+          if (LOG.isDebugEnabled())
+            LOG.debug("File plan nodes : " + iter.getSize());
+          while (iter.hasNext()) {
+            Node filePlan = iter.nextNode();
+            try {
+              recordsService_.computeCutoffs(filePlan);
+              recordsService_.computeHolds(filePlan);
+              recordsService_.computeTransfers(filePlan);
+              recordsService_.computeAccessions(filePlan);
+              recordsService_.computeDestructions(filePlan);
+            } catch (RepositoryException ex) {
+              LOG.error(ex.getMessage(), ex);
+            }
           }
+          session.logout();
         }
-        session.logout();
+      } else {
+        LOG.warn("Repository '" + repository.getConfiguration().getName()
+              + "' is not started. Execution skipped.");
       }
     } catch (Exception e) {
-      if(session != null) {
-        session.logout(); 
-      }      
-    } 
-    if(log_.isDebugEnabled())
-      log_.debug("File plan job done");
+      if (session != null) {
+        session.logout();
+      }
+    }
+    if (LOG.isDebugEnabled())
+      LOG.debug("File plan job done");
   }
 }
