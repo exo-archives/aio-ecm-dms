@@ -128,13 +128,13 @@
  
 .ExpandIcon {
   width: 18px; height: 16px;
-  background: url('VistaSkin/SmallGrayMinus.gif') no-repeat ;
+  background: url('VistaSkin/SmallGrayMinus.gif') no-repeat left -16px;
   cursor: pointer;
 }
 
 .CollapseIcon  {
   width: 18px; height: 16px;
-  background: url('VistaSkin/SmallGrayPlus.gif') no-repeat ;
+  background: url('VistaSkin/SmallGrayPlus.gif') no-repeat left top;
   cursor: pointer;
 }
 

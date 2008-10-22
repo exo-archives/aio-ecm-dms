@@ -71,14 +71,14 @@
   margin: 7px 0px;
   float: left;
   cursor: pointer;
-  background: url('DefaultSkin/background/SmallGrayMinus.gif');
+  background: url('DefaultSkin/background/SmallGray.gif') no-repeat left -16px;
 }
 
 .UIECMAdminPortlet .UITaxonomyManager .ColapseIcon {
   margin: 7px 0px;
   float: left;
   cursor: pointer;
-  background: url('DefaultSkin/background/SmallGrayPlus.gif');
+  background: url('DefaultSkin/background/SmallGray.gif') no-repeat left top;
 	width: 16px; height: 16px;
 }
 

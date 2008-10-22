@@ -75,7 +75,7 @@
   float: left;
   width: 16px; height: 16px;
   cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayMinus.gif') no-repeat ;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGray.gif') no-repeat left -16px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .ColapseIcon {
@@ -83,7 +83,7 @@
   width: 16px; height: 16px;
   float: left;
   cursor: pointer;
-  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGrayPlus.gif') no-repeat ;
+  background: url('/eXoResources/icons/16x16/DefaultSkin/SmallGray.gif') no-repeat left top;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .NodeActionsContainer {
@@ -193,21 +193,21 @@
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .NormalVote {
-  background: url(/ecm/skin/images/vote/VoteBar.gif) no-repeat left -122px;
+  background: url(/ecm/skin/images/vote/ImageVote.gif') left -16px;
   float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
 } 
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .RatedVote {
-  background: url(/ecm/skin/images/vote/VoteBar.gif) no-repeat left -122px;
+  background: url(/ecm/skin/images/vote/ImageVote.gif') left -16px;
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .OverVote {
-  background: url(/ecm/skin/images/vote/VoteBar.gif) no-repeat left -106px;
+  background: url(/ecm/skin/images/vote/ImageVote.gif') left top;
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;

@@ -6,19 +6,17 @@
 		}
 			
 		.UIArticle .ArticleTLDecorator {
-		  background: url('/eXoECMResources/skin/images/article/TopLRArticle51x100.gif') no-repeat left;
+		  background: url('/eXoECMResources/skin/images/article/BackgroundArticle.gif') no-repeat left top;
 		  padding-left: 51px;
-		  height: 100px;
 		}
 		
 		.UIArticle .ArticleTRDecorator {
-		  background: url('/eXoECMResources/skin/images/article/TopLRArticle51x100.gif') no-repeat right ;
+		  background: url('/eXoECMResources/skin/images/article/BackgroundArticle.gif') no-repeat right top;
 		  padding-right:154px;
-		  height: 100px;
 		}
 		
 		.UIArticle .ArticleTCDecorator {
-		  background: url('/eXoECMResources/skin/images/article/TopCentertArticle1x100.gif') repeat-x ;
+		  background: url('/eXoECMResources/skin/images/article/BackgroundArticle.gif') repeat-x left -100px;
 		  height: 100px;
 		}
 		
@@ -43,23 +41,19 @@
 		}
 		
 		.UIArticle .ArticleBLDecorator {
-		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat left -253px ;
+		  background: url('/eXoECMResources/skin/images/article/ImageArticle.gif') no-repeat left top;
 		  padding-left: 3px;
-		  height: 8px;
-		  line-height: 8px;
 		}
 		
 		.UIArticle .ArticleBCDecorator {
-		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') repeat-x left -261px ;
+		  background: url('/eXoECMResources/skin/images/ImageArticle.gif') repeat-x left -8px;
 		  height: 8px;
 		  line-height: 8px;
 		}
 		
 		.UIArticle .ArticleBRDecorator {
-		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat right -253px ;
+		  background: url('/eXoECMResources/skin/images/article/ImageArticle.gif') no-repeat right top;
 		  padding-right: 10px ;  
-		  height: 8px;
-		  line-height: 8px;
 		}
 		
 		.UIArticle .ArticleFrame {
@@ -68,19 +62,17 @@
 		}
 			
 		.UIArticle .ArticleFrame .TopLeftArticleFrame {
-		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat left -220px;
+		  background: url('/eXoECMResources/skin/images/article/ImageArticle.gif') no-repeat left -16px;
 		  padding-left: 9px;
-		  height: 16px;
 		}
 		
 		.UIArticle .ArticleFrame .TopRightArtictleFrame {
-		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat right -220px;
+		  background: url('/eXoECMResources/skin/images/article/ImageArticle.gif') no-repeat right -16px;
 		  padding-right: 2px;
-		  height: 16px;
 		}
 		
 		.UIArticle .ArticleFrame .TopCenterArticleFrame {
-		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') repeat-x left -236px ;
+		  background: url('/eXoECMResources/skin/images/article/ImageArticle.gif') repeat-x right -32px;
 		  height: 16px;
 		}
 		
@@ -111,11 +103,11 @@
 		}
 		
 		.UIArticle .SummaryIcon {
-		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat left top;
+		  background: url('/eXoECMResources/skin/images/article/ImageArticle.gif') no-repeat left -48px;
 		}
 		
 		.UIArticle .AttachmentsIcon {
-		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat left -48px;
+		  background: url('/eXoECMResources/skin/images/article/ImageArticle.gif') no-repeat left -64px;
 		}
 		
 		.UIArticle .RatingIcon {
@@ -131,11 +123,11 @@
 		}
 		
 		.UIArticle .ContentIcon {
-		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat left -16px;
+		  background: url('/eXoECMResources/skin/images/article/ImageArticle.gif') no-repeat left -96px;
 		}
 		
 		.UIArticle .LinksIcon {
-		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat left -32px;
+		  background: url('/eXoECMResources/skin/images/article/ImageArticle.gif') no-repeat left -80px;
 		}
 		
 		.UIArticle .FieldContent {

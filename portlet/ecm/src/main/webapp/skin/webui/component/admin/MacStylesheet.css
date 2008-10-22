@@ -124,13 +124,13 @@
 
 .UIECMAdminPortlet .CollapseSideBar {
 	width: 6px; height: 100%;
-	background: url('MacSkin/background/CollapseSideBar.gif') no-repeat center center;
+	background: url('MacSkin/background/SideBar.gif') no-repeat left center;
 	cursor: pointer;
 }
 
 .UIECMAdminPortlet .ExpandSideBar {
 	width: 6px; height: 100%;
-	background: url('MacSkin/background/ExpandSideBar.gif') no-repeat center center;
+	background: url('MacSkin/background/SideBar.gif') no-repeat right center;
 	cursor: pointer;
 }
 

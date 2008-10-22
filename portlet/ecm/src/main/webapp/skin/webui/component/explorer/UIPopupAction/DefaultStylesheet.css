@@ -90,7 +90,7 @@
   float: left;
   width: 16px; height: 16px;
   cursor: pointer;
-  background: url('/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SmallGrayMinus.gif') no-repeat ;
+  background: url('/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SmallGray.gif') no-repeat left -16px;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .ColapseIcon {
@@ -98,7 +98,7 @@
   width: 16px; height: 16px;
   float: left;
   cursor: pointer;
-  background: url('/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SmallGrayPlus.gif') no-repeat ;
+  background: url('/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SmallGray.gif') no-repeat left top;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .NodeActionsContainer {
@@ -259,19 +259,19 @@
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleLeftBar  {
   padding-left: 5px;
   line-height: 21px;
-  background: url('DefaultSkin/background/InfoBarLeftBg5x21.gif') no-repeat left;
+  background: url('DefaultSkin/background/InfoBar.gif') no-repeat left top;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleRightBar {
   padding-right: 21px;
   line-height: 21px;
-  background: url('DefaultSkin/background/InfoBarRightBg22x21.gif') no-repeat right;
+  background: url('DefaultSkin/background/InfoBar.gif') no-repeat right -21px;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleMiddleBar {
   line-height: 21px;
   vertical-align: middle;
-  background: url('DefaultSkin/background/InfoBarCenterBg1x21.gif') repeat-x;
+  background: url('DefaultSkin/background/InfoBar.gif') no-repeat left -42px;
   padding: 0px 10px;
 }
 
@@ -311,21 +311,21 @@
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .NormalVote {
-  background: url(/eXoECMResources/skin/images/vote/VoteBar.gif) no-repeat left -122px;
+  background: url(/eXoECMResources/skin/images/vote/ImageVote.gif') left -16px;
   float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
 } 
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .RatedVote {
-  background: url(/eXoECMResources/skin/images/vote/VoteBar.gif) no-repeat left -122px;
+  background: url(/eXoECMResources/skin/images/vote/ImageVote.gif') left -16px;
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
 }
 
 .UIJCRExplorerPortlet .UIVoteForm .OptionsContainer .OverVote {
-  background: url(/eXoECMResources/skin/images/vote/VoteBar.gif) no-repeat left -106px;
+  background: url(/eXoECMResources/skin/images/vote/ImageVote.gif') left top;
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
