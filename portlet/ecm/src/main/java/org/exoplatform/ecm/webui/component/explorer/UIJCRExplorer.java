@@ -53,6 +53,7 @@ import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
@@ -474,6 +475,10 @@ public class UIJCRExplorer extends UIContainer {
       }
     } else {
       childList = childrenList ;
+    }
+    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+    if(thumbnailService.isEnableThumbnail()) {
+      thumbnailService.processThumbnailList(childList);
     }
     sort(childList);
     return childList ;

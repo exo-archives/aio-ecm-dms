@@ -181,6 +181,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return false;
   }
   
+  public boolean hasThumbnailImage(Node node) throws Exception {
+    if(node.hasProperty(ThumbnailService.MEDIUM_SIZE)) return true;
+    return false;
+  }
+  
   public String getThumbnailImage(Node node) throws Exception {
     return Utils.getThumbnailImage(node, ThumbnailService.MEDIUM_SIZE);
   }

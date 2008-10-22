@@ -38,7 +38,6 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
-import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
 import org.exoplatform.upload.UploadService;
@@ -252,11 +251,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             newNode = selectedNode.getNode(name) ;
           }
           uiUploadContainer.setUploadedNode(newNode) ;
-          if(mimeType.startsWith("image")) {
-            ThumbnailService thumbnailService = uiForm.getApplicationComponent(ThumbnailService.class);
-            thumbnailService.createThumbnail(newNode, newNode.getNode(Utils.JCR_CONTENT));
-            newNode.save();
-          }
         }
         UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
         double size = uploadService.getUploadResource(uiChild.getUploadId()).getEstimatedSize()/1024;
