@@ -337,6 +337,10 @@
   padding: 10px;
 }
 
+.UIJCRExplorerPortlet .UIUploadForm td.FieldComponent {
+	padding: 4px;
+}
+
 .UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame { 
 	width: 330px;
 	overflow: hidden;
@@ -348,15 +352,9 @@
 	margin-left: 0px;
 }
 
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .SelectFileFrame { 
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileNameLabel {
 	width: 330px;
 	overflow: hidden;
-	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileNameLabel {
-	width: auto;
-	padding: 0px;
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
@@ -757,3 +755,27 @@
 	margin-left: 40px;
 }
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
+/*====================================UIAnyPermission==================================*/
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission {
+	border: 1px solid #B7B7B7;
+	margin-bottom: 2px;
+}
+
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle {
+	width: auto;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormGrid {
+	width: auto;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .HorizontalLayout {	
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
+	vertical-align: middle;
+	padding: 2px;
+}

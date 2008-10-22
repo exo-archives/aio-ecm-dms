@@ -363,6 +363,14 @@
   padding: 10px;
 }
 
+.UIJCRExplorerPortlet .UIUploadManager .SelectFileFrame {
+	white-space: normal;
+}
+.UIJCRExplorerPortlet .UIUploadManager .SelectFileFrame .FileNameLabel {
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
 /*=============================UIWatchDocumentForm=======================*/
 
 .UIJCRExplorerPortlet .UIWatchDocumentForm {
@@ -653,3 +661,29 @@
 }
 
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
+
+/*====================================UIAnyPermission==================================*/
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission {
+	border: 1px solid #B7B7B7;
+	margin-bottom: 2px;
+}
+
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle {
+	width: auto;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormGrid {
+	width: auto;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .HorizontalLayout {	
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
+	vertical-align: middle;
+	padding: 2px;
+}
+
