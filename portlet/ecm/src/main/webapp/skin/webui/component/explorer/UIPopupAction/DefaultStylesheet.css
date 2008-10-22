@@ -271,7 +271,7 @@
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleMiddleBar {
   line-height: 21px;
   vertical-align: middle;
-  background: url('DefaultSkin/background/InfoBar.gif') no-repeat left -42px;
+  background: url('DefaultSkin/background/InfoBar.gif') repeat-x left -42px;
   padding: 0px 10px;
 }
 
