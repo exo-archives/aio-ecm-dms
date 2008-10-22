@@ -9,7 +9,7 @@
     	<value-param>
     		<name>buttons</name>
     		<value>
-    			addFolder; addDocument; editDocument; upload; enableThumbnail; viewReferences; viewMetadatas;
+    			addFolder; addDocument; editDocument; upload; viewReferences; viewMetadatas;
                 viewNodeType; viewPermissions; viewProperties; manageVersions; manageAuditing; manageCategories; manageRelations; managePublications; 
     			manageActions; exportNode; importNode; viewRelations; showJCRStructure; watchDocument; taggingDocument; multiLanguage
     		</value>
@@ -94,7 +94,7 @@
                       <field name="tabName"><string>Actions</string></field>
                       <field name="buttons">
                       	<string>
-                      		addFolder; addDocument; editDocument; upload; enableThumbnail
+                      		addFolder; addDocument; editDocument; upload
                       	</string>
                       </field>
                     </object>
@@ -127,7 +127,7 @@
                       <field name="tabName"><string>Actions</string></field>
                       <field name="buttons">
                       	<string>
-                      		addFolder; addDocument; editDocument; upload; enableThumbnail
+                      		addFolder; addDocument; editDocument; upload
                       	</string>
                       </field>
                     </object>
@@ -160,7 +160,7 @@
                       <field name="tabName"><string>Actions</string></field>
                       <field name="buttons">
                       	<string>
-                      		addFolder; addDocument; editDocument; upload; enableThumbnail
+                      		addFolder; addDocument; editDocument; upload
                       	</string>
                       </field>
                     </object>
@@ -193,7 +193,7 @@
                       <field name="tabName"><string>Actions</string></field>
                       <field name="buttons">
                       	<string>
-                      		addFolder; addDocument; editDocument; upload; enableThumbnail
+                      		addFolder; addDocument; editDocument; upload
                       	</string>
                       </field>
                     </object>
