@@ -65,9 +65,6 @@
 			</head>
 			<body>
 			<div id="imageflow">
-				<div id="scrollbar">
-					<div id="slider"></div>
-				</div>
 				<div id="images">
 				<%
 				  def flowImages = uicomponent.getFlowImages();
@@ -77,6 +74,9 @@
 				    println "<image src=\"$imgSrc\" w=\"300\" h=\"300\"/>";
 				  }
 				%>
+				</div>
+				<div id="scrollbar">
+					<div id="slider"></div>
 				</div>
 			</div>
 			</body>
