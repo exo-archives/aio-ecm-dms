@@ -38,6 +38,7 @@ public interface ThumbnailService {
   final public static String SMALL_SIZE = "exo:smallSize".intern();
   final public static String MEDIUM_SIZE = "exo:mediumSize".intern();
   final public static String BIG_SIZE = "exo:bigSize".intern();
+  final public static String THUMBNAIL_LAST_MODIFIED = "exo:thumbnailLastModified".intern();
   
   /**
  * Return all nt:file node at current node
@@ -77,9 +78,10 @@ public interface ThumbnailService {
  * Small size, medium size, big size
  * @param node Current node which will be added thumbnail
  * @param contentNode Node uploaded which contain the data
+ * @param mimeType File type
  * @throws Exception
  */  
-  public void createThumbnail(Node node, Node contentNode) throws Exception;
+  public void createThumbnailImage(Node node, Node contentNode, String mimeType) throws Exception;
 /**
  * Return the data of thumbnail with specified type
  * @param node Current node which will be added thumbnail
@@ -97,4 +99,10 @@ public interface ThumbnailService {
  * @throws Exception
  */  
   public void createThumbnail(Node node, Node contentNode, String propertyName) throws Exception;
+/**
+ * Process thumbnail with list nodes
+ * @param listNodes List node which will be process to add thumbnail
+ * @throws Exception
+ */  
+  public void processThumbnailList(List<Node> listNodes) throws Exception;
 }

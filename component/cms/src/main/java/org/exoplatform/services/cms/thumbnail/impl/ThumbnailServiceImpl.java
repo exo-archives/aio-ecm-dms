@@ -23,10 +23,12 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
+import javax.jcr.Value;
 
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.impl.ImageUtils;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
+import org.picocontainer.Startable;
 
 /**
  * Created by The eXo Platform SARL
@@ -34,10 +36,11 @@ import org.exoplatform.services.cms.thumbnail.ThumbnailService;
  *          minh.dang@exoplatform.com
  * Oct 10, 2008 1:58:10 PM
  */
-public class ThumbnailServiceImpl implements ThumbnailService {
+public class ThumbnailServiceImpl implements ThumbnailService, Startable {
 
   final private static String JCR_CONTENT = "jcr:content".intern();
   final private static String JCR_MIMETYPE = "jcr:mimeType".intern();
+  final private static String NT_FILE = "nt:file".intern();
   
   private boolean isEnableThumbnail_ = false;
   private String smallSize_;
@@ -48,8 +51,9 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     smallSize_ = initParams.getValueParam("smallSize").getValue();
     mediumSize_ = initParams.getValueParam("mediumSize").getValue();
     bigSize_ = initParams.getValueParam("bigSize").getValue();
+    isEnableThumbnail_ = Boolean.parseBoolean(initParams.getValueParam("enable").getValue());
   }
-  
+
   public List<Node> getFlowImages(Node node) throws RepositoryException {
     List<Node> fileListNodes = getAllFileInNode(node);
     List<Node> listNodes = new ArrayList<Node>();
@@ -97,10 +101,10 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     isEnableThumbnail_ = isEnable;
   }
 
-  public void createThumbnail(Node node, Node contentNode) throws Exception {
-    parseImageSize(node, contentNode, smallSize_, SMALL_SIZE);
-    parseImageSize(node, contentNode, mediumSize_, MEDIUM_SIZE);
-    parseImageSize(node, contentNode, bigSize_, BIG_SIZE);
+  public void createThumbnailImage(Node node, Node contentNode, String mimeType) throws Exception {
+    if(!node.isNodeType(EXO_THUMBNAIL)) node.addMixin(EXO_THUMBNAIL);
+    if(mimeType.startsWith("image")) processImage2Image(node, contentNode);
+    node.setProperty(THUMBNAIL_LAST_MODIFIED, contentNode.getProperty("jcr:lastModified").getValue());
   }
 
   public InputStream getThumbnail(Node node, String thumbnailType) throws Exception {
@@ -111,25 +115,46 @@ public class ThumbnailServiceImpl implements ThumbnailService {
   }
   
   public void createThumbnail(Node node, Node contentNode, String propertyName) throws Exception {
-    if(propertyName.equals(SMALL_SIZE)) parseImageSize(node, contentNode, smallSize_, SMALL_SIZE);
-    else if(propertyName.equals(MEDIUM_SIZE)) parseImageSize(node, contentNode, mediumSize_, MEDIUM_SIZE);
-    else if(propertyName.equals(BIG_SIZE)) parseImageSize(node, contentNode, bigSize_, BIG_SIZE);
+    if(propertyName.equals(SMALL_SIZE)) createThumbnail(node, contentNode, smallSize_, SMALL_SIZE);
+    else if(propertyName.equals(MEDIUM_SIZE)) createThumbnail(node, contentNode, mediumSize_, MEDIUM_SIZE);
+    else if(propertyName.equals(BIG_SIZE)) createThumbnail(node, contentNode, bigSize_, BIG_SIZE);
   }
 
-  private void createThumbnail(Node node, Node contentNode, int width, int height, 
-      String propertyName) throws Exception {
+  private void createThumbnail(Node node, Node contentNode, String width, String propertyName) throws Exception {
     if(!node.isNodeType(EXO_THUMBNAIL)) node.addMixin(EXO_THUMBNAIL);
-    InputStream thumbnailStream = ImageUtils.scaleImage(contentNode, width, height);
+    InputStream thumbnailStream = ImageUtils.scaleImage(contentNode, Integer.parseInt(width));
     node.setProperty(propertyName, thumbnailStream);
     thumbnailStream.close();
   }
   
-  private void parseImageSize(Node node, Node contentNode, String size, String propertyName) throws Exception {
-    if(size.indexOf("x") > -1) {
-      String[] imageSize = size.split("x");
-      int width = Integer.parseInt(imageSize[0]);
-      int height = Integer.parseInt(imageSize[1]);
-      createThumbnail(node, contentNode, width, height, propertyName);
+  private void processImage2Image(Node node, Node contentNode) throws Exception {
+    if(!isOverLoad(node, contentNode)) {
+      createThumbnail(node, contentNode, smallSize_, SMALL_SIZE);
+      createThumbnail(node, contentNode, mediumSize_, MEDIUM_SIZE);
+      createThumbnail(node, contentNode, bigSize_, BIG_SIZE);
     }
   }
+  
+  private boolean isOverLoad(Node node, Node contentNode) throws Exception {
+    Value contentLastModified = contentNode.getProperty("jcr:lastModified").getValue();
+    if(node.hasProperty(THUMBNAIL_LAST_MODIFIED)) {
+      Value thumbnailModified = node.getProperty(THUMBNAIL_LAST_MODIFIED).getValue();
+      if(contentLastModified.equals(thumbnailModified)) return false;
+      return true;
+    } 
+    return false;
+  }
+  
+  public void processThumbnailList(List<Node> listNodes) throws Exception {
+    for(Node node : listNodes) {
+      if(node.isNodeType(NT_FILE)) {
+        Node contentNode = node.getNode(JCR_CONTENT);
+        createThumbnailImage(node, contentNode, contentNode.getProperty(JCR_MIMETYPE).getString());
+      }
+    }
+  }
+
+  public void start() { }
+
+  public void stop() { }
 }

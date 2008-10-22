@@ -50,27 +50,24 @@ public class ImageUtils {
    * @return InputStream
    * @throws Exception
    */  
-  public static InputStream scaleImage(Node contentNode, int width, int height) throws Exception {
+  public static InputStream scaleImage(Node contentNode, int maxWidth) throws Exception {
     Image image = ImageIO.read(contentNode.getProperty("jcr:data").getStream());
-    int thumbWidth = width;
-    int thumbHeight = height;        
     // Make sure the aspect ratio is maintained, so the image is not skewed
-    double thumbRatio = (double)thumbWidth / (double)thumbHeight;
     int imageWidth = image.getWidth(null);
     int imageHeight = image.getHeight(null);
-    double imageRatio = (double)imageWidth / (double)imageHeight;
-    if (thumbRatio < imageRatio) {
-      thumbHeight = (int)(thumbWidth / imageRatio);
-    } else {
-      thumbWidth = (int)(thumbHeight * imageRatio);
+    if (maxWidth > 0 && imageWidth > maxWidth) {
+      // Determine the shrink ratio
+      double imageRatio = (double) maxWidth / imageWidth;
+      imageHeight = (int) (imageHeight * imageRatio);
+      imageWidth = maxWidth;
     }
     // Draw the scaled image
-    BufferedImage thumbImage = new BufferedImage(thumbWidth, 
-        thumbHeight, BufferedImage.TYPE_INT_RGB);
+    BufferedImage thumbImage = new BufferedImage(imageWidth, 
+        imageHeight, BufferedImage.TYPE_INT_RGB);
     Graphics2D graphics2D = thumbImage.createGraphics();
     graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
         RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-    graphics2D.drawImage(image, 0, 0, thumbWidth, thumbHeight, null);
+    graphics2D.drawImage(image, 0, 0, imageWidth, imageHeight, null);
 
     // Write the scaled image to the outputstream
     ByteArrayOutputStream out = new ByteArrayOutputStream();
