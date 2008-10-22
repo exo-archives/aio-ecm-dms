@@ -189,7 +189,7 @@ function refresh(onload) {
 	max_height = images_width * 0.51;
 
 	/* Change imageflow div properties */
-	imageflow_div.style.height = max_height + 'px';
+	//imageflow_div.style.height = max_height + 'px';
 
 	/* Change images div properties */
 	img_div.style.height = images_width * 0.338 + 'px';
@@ -275,7 +275,7 @@ function init() {
 }
 
 /* Hide loading bar, show content and initialize mouse event listening after loading */
-window.onload = function() {}
+window.onload = function() {init()}
 
 /* Refresh ImageFlow on window resize */
 window.onresize = function() {

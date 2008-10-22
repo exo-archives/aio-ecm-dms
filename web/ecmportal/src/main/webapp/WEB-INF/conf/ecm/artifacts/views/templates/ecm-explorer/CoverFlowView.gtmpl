@@ -12,7 +12,7 @@
   rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UICoverFlow.initEvent('$viewComponentId')");
 %>
 <div id="$viewComponentId">
-	<xmp class="Album" style="display: none">
+	<textarea class="Album" style="display: none">
 			<!DOCTYPE html 
 		    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		           "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -53,7 +53,7 @@
 					}
 					#scrollbar{
 						position:relative; 
-						border-bottom:1px solid #b3b3b3;
+						border-bottom:2px solid #b3b3b3;
 						z-index:10001;
 					}
 					#slider{
@@ -71,11 +71,15 @@
 						text-align:left;
 					}
 				</style>
+				<script type="text/javascript"> window.isCheck = true </script>
 				<script type="text/javascript" src="/ecm/javascript/eXo/ecm/CoverFlowLib.js"></script>
 			</head>
 			<body>
-			<img id="preload" src="slider00.png" />
 			<div id="imageflow">
+				<div id="captions"></div>
+				<div id="scrollbar">
+					<div id="slider"></div>
+				</div>
 				<div id="images">
 				<%
 				  def flowImages = uicomponent.getFlowImages();
@@ -86,17 +90,8 @@
 				  }
 				%>
 				</div>
-				<div id="captions"></div>
-				<div id="scrollbar">
-					<div id="slider"></div>
-				</div>
 			</div>
 			</body>
-			<script type="text/javascript">
-				var isCheck = true;
-				init();
-			</script>
-			</html>
-	</xmp>
-	<iframe class="CoverFrame" style="width: 100%; height: 100%; border: none;" frameborder="0px" border="0px"></iframe>
+		</html>
+	</textarea>
 </div>
