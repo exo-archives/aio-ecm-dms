@@ -16,12 +16,14 @@
  */
 package org.exoplatform.ecm.webui.component.explorer;
 
+import java.awt.Image;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
@@ -479,6 +481,16 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   
   public String getFlowImage(Node node) throws Exception {
     return Utils.getThumbnailImage(node, ThumbnailService.BIG_SIZE);
+  }
+  
+  public String getThumbnailSize(Node node) throws Exception {
+    String imageSize = null;
+    if(node.hasProperty(ThumbnailService.BIG_SIZE)) {
+      Image image = ImageIO.read(node.getProperty(ThumbnailService.BIG_SIZE).getStream());
+      imageSize = 
+        Integer.toString(image.getWidth(null)) + "x" + Integer.toString(image.getHeight(null));
+    }
+    return imageSize;
   }
   
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {

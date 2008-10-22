@@ -69,9 +69,12 @@
 				<%
 				  def flowImages = uicomponent.getFlowImages();
 				  String imgSrc = "";
+				  String imageSize = "";
 				  for(image in flowImages) {
+				    imageSize = uicomponent.getThumbnailSize(image);
+				    String[] arrSize = imageSize.split("x");
 				    imgSrc = uicomponent.getFlowImage(image);
-				    println "<image src=\"$imgSrc\" w=\"300\" h=\"300\"/>";
+				    println "<image src=\"$imgSrc\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\"/>";
 				  }
 				%>
 				</div>

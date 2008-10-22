@@ -55,12 +55,11 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
   }
 
   public List<Node> getFlowImages(Node node) throws RepositoryException {
-    List<Node> fileListNodes = getAllFileInNode(node);
+    NodeIterator nodeIter = node.getNodes();
     List<Node> listNodes = new ArrayList<Node>();
-    Node contentNode = null;
-    for(Node childNode : fileListNodes) {
-      contentNode = childNode.getNode(JCR_CONTENT);
-      if(contentNode.getProperty(JCR_MIMETYPE).getString().startsWith("image")) {
+    while(nodeIter.hasNext()) {
+      Node childNode = nodeIter.nextNode();
+      if(childNode.isNodeType(EXO_THUMBNAIL)) {
         listNodes.add(childNode);
       }
     }
