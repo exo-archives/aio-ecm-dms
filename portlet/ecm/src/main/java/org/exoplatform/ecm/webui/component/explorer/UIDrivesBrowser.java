@@ -134,25 +134,45 @@ public class UIDrivesBrowser extends UIContainer {
     List<String> userRoles = Utils.getMemberships();    
     List<DriveData> allDrives = driveService.getAllDrives(repoName);
     Set<DriveData> temp = new HashSet<DriveData>();
-    //We will improve ManageDrive service to allow getAllDriveByUser
-    for(DriveData driveData:allDrives) {
-      String[] allPermission = driveData.getAllPermissions();
-      boolean flag = false;
-      for(String permission:allPermission) {
-        if(permission.equalsIgnoreCase("${userId}")) {
-          temp.add(driveData);
-          flag = true;
-          break;
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    if (userId != null) {
+      // We will improve ManageDrive service to allow getAllDriveByUser
+      for (DriveData driveData : allDrives) {
+        String[] allPermission = driveData.getAllPermissions();
+        boolean flag = false;
+        for (String permission : allPermission) {
+          if (permission.equalsIgnoreCase("${userId}")) {
+            temp.add(driveData);
+            flag = true;
+            break;
+          }
+          if (permission.equalsIgnoreCase("*")) {
+            temp.add(driveData);
+            flag = true;
+            break;
+          }
+          if (flag)
+            continue;
+          for (String rolse : userRoles) {
+            if (driveData.hasPermission(allPermission, rolse)) {
+              temp.add(driveData);
+              break;
+            }
+          }
         }
-        if(flag) continue;
-        for(String rolse:userRoles) {
-          if(driveData.hasPermission(allPermission,rolse)) {
+      }
+    } else {
+      for (DriveData driveData : allDrives) {
+        String[] allPermission = driveData.getAllPermissions();
+        for (String permission : allPermission) {
+          if (permission.equalsIgnoreCase("*")) {
             temp.add(driveData);
             break;
           }
         }
-      }      
-    }        
+      }
+    }
+    
     for(Iterator<DriveData> iterator = temp.iterator();iterator.hasNext();) {
       driveList.add(iterator.next());
     }

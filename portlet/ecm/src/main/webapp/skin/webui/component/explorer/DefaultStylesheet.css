@@ -123,3 +123,7 @@
 .EditFormController {
 	padding: 10px;
 }
+
+.UIAnyPermission {
+  border: 1px solid #F5F5F5;
+}
