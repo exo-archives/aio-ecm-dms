@@ -251,6 +251,7 @@
 .UIBrowseContainer .DocNodeIcon {
 	float: left;
 	margin: 2px 3px 0px 10px;
+	width: 16px; height: 16px;
 }
 
 .UIBrowseContainer .UIDocumentList .DocumentLabel {
