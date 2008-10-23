@@ -25,6 +25,7 @@
 
 .UIJCRExplorerPortlet .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px;
+  float: none;
 }
 
 .UIJCRExplorerPortlet .DecoratorMiddle {
@@ -646,4 +647,11 @@
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
 	vertical-align: middle;
 	padding: 2px;
+}
+
+/*====================================UIActionManager==================================*/
+.UIJCRExplorerPortlet .UITabContentContainer .UIActionContainer .UIFormWithoutAction {
+	border: 1px solid #B7B7B7;
+	width: 95%;
+	margin: 10px auto;
 }
