@@ -105,19 +105,25 @@ public class UIPropertyTab extends UIContainer {
 
   public String getPropertyValue(Property prop) throws Exception {
     if(prop.getType() == PropertyType.BINARY) return PRO_KEY_BINARYTYPE ;
+    boolean flag = true;
     try {
       if(prop.getDefinition() != null && prop.getDefinition().isMultiple()) {
         Value[] values =  prop.getValues();
         StringBuilder sB = new StringBuilder();
         for (int i = 0; i < values.length; i++) {
-        if (prop.getType() == PropertyType.REFERENCE) {
-          String uuid = values[i].getString();
-          Node node = this.getNodeByUUID(uuid);
-          if (node == null) continue;
-        }
-        if(i > 0) sB.append("; ") ;
-                  
+          if (prop.getType() == PropertyType.REFERENCE) {
+            String uuid = values[i].getString();
+            Node node = this.getNodeByUUID(uuid);
+            if (node == null) {
+              if (i == 0) flag = false;
+              continue;
+            }
+              
+          }
+          if ((i > 0) && flag)
+            sB.append("; ");
           sB.append(values[i].getString());
+          flag = true;
         }
         return sB.toString();
       }

@@ -116,3 +116,8 @@
 .UIFolderForm {
 	padding: 10px;
 }
+
+.UITabPane .UITabContent .UIPropertyTab .UIGrid thead tr th {
+  padding: 0px;
+  width: 20px;
+}
