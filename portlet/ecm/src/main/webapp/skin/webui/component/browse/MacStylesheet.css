@@ -396,4 +396,15 @@
 	line-height: 26px;
 }
 /*********************************Template Style - Fix for IE*************************************/
+.UIBrowseContentPortlet .UIFormWithTitle .HorizontalLayout .FormContainer{
+	padding: 0px;
+}
+
+.UIBrowseContentPortlet .UIForm .HorizontalLayout .rootNodeInfo td.FieldComponent {
+	padding: 0px;
+}
+
+.UIBrowseContentPortlet .UITrees .Node .NodeIcon {
+	padding-left: 25px;
+}
 	

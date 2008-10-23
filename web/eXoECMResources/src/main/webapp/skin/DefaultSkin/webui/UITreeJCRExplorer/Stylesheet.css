@@ -31,3 +31,7 @@
  background-image: url('images/SelectPage.gif');
  cursor: pointer;
 }
+
+.UITreeList .Text {
+	padding-left: 24px;
+}
