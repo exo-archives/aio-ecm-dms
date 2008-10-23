@@ -69,7 +69,6 @@ public class Utils {
   final public static String CB_VIEW_COMMENT = "viewComment".intern();
   final public static String CB_VIEW_VOTE= "viewVote".intern();
   final static public String EXO_AUDITABLE = "exo:auditable";
-  final static public String EXO_THUMBNAILABLE = "exo:thumbnailable";
   final public static String CB_BOX_TEMPLATE = "boxTemplate".intern();   
   final public static String CB_TEMPLATE = "template";
   final public static String CB_USECASE = "usecase".intern();

@@ -475,6 +475,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return currentNode ;
   }
   
+  public boolean isEnableThumbnail() {
+    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+    return thumbnailService.isEnableThumbnail();
+  }
+  
   public List<Node> getFlowImages() throws Exception {
     ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
     return thumbnailService.getFlowImages(getOriginalNode());

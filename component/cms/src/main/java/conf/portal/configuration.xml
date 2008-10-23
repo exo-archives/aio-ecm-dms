@@ -154,15 +154,15 @@
 	  <init-params>
       <value-param>
       	<name>smallSize</name>
-	      <value>32</value>
+	      <value>32x32</value>
       </value-param>
       <value-param>
       	<name>mediumSize</name>
-	      <value>64</value>
+	      <value>64x64</value>
       </value-param> 
       <value-param>
       	<name>bigSize</name>
-	      <value>300</value>
+	      <value>300x300</value>
       </value-param>
       <value-param>
       	<name>enable</name>

@@ -50,7 +50,7 @@ public class ImageUtils {
    * @return InputStream
    * @throws Exception
    */  
-  public static InputStream scaleImage(Node contentNode, int maxWidth) throws Exception {
+  public static InputStream scaleImage(Node contentNode, int maxWidth, int maxHeight) throws Exception {
     Image image = ImageIO.read(contentNode.getProperty("jcr:data").getStream());
     // Make sure the aspect ratio is maintained, so the image is not skewed
     int imageWidth = image.getWidth(null);
@@ -60,6 +60,12 @@ public class ImageUtils {
       double imageRatio = (double) maxWidth / imageWidth;
       imageHeight = (int) (imageHeight * imageRatio);
       imageWidth = maxWidth;
+    }
+    if (maxHeight > 0 && imageHeight > maxHeight) {
+      // Determine the shrink ratio
+      double imageRatio = (double) maxHeight / imageHeight;
+      imageWidth = (int) (imageWidth * imageRatio);
+      imageHeight = maxHeight;
     }
     // Draw the scaled image
     BufferedImage thumbImage = new BufferedImage(imageWidth, 

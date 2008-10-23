@@ -6,6 +6,9 @@
    * Oct 10, 2008
    * 1:36:23 PM
    */
+   
+  import org.exoplatform.web.application.Parameter ;
+   
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UICoverFlow','/ecm/javascript/'); 
@@ -25,6 +28,7 @@
 						color: #fff;
 						margin: 0px;
 						padding: 0px;
+						width: 100%;
 					}
 					img { 
 						position: absolute; 
@@ -57,27 +61,45 @@
 						height: 16px;	
 					}
 					#imageflow{
-						text-align:left;
+						text-align: left;
+						width: 72%;
+						margin: auto;
 					}
+					#imageflow #captions {
+						font-weight: bold;
+						position: relative; 
+						text-align: center;
+						color:black;
+						z-index: 10000;
+				  }
 				</style>
 				<script type="text/javascript"> window.isCheck = true </script>
 				<script type="text/javascript" src="/ecm/javascript/eXo/ecm/CoverFlowLib.js"></script>
 			</head>
 			<body>
-			<div id="imageflow">
+			<div id="imageflow" style="margin-top: 33px;">
 				<div id="images">
 				<%
-				  def flowImages = uicomponent.getFlowImages();
-				  String imgSrc = "";
-				  String imageSize = "";
-				  for(image in flowImages) {
-				    imageSize = uicomponent.getThumbnailSize(image);
-				    String[] arrSize = imageSize.split("x");
-				    imgSrc = uicomponent.getFlowImage(image);
-				    println "<image src=\"$imgSrc\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\"/>";
-				  }
+				  if(uicomponent.isEnableThumbnail()) {
+					  def flowImages = uicomponent.getFlowImages();
+					  String imgSrc = "";
+					  String imageSize = "";
+					  def actionLink = "";
+					  def wsName = "";
+					  for(image in flowImages) {
+					    imageSize = uicomponent.getThumbnailSize(image);
+					    String[] arrSize = imageSize.split("x");
+					    imgSrc = uicomponent.getFlowImage(image);
+					    wsName = image.getSession().getWorkspace().getName();
+					    actionLink = uicomponent.event("ChangeNode", image.getPath(), new Parameter("workspaceName", wsName));
+					    println "<image src=\"$imgSrc\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+image.getName()+"\"/>";
+					  }
+					} else {
+					  println "<image src=\"\" w=\"300\" h=\"300\"/>";
+					}
 				%>
 				</div>
+				<div id="captions"></div>
 				<div id="scrollbar">
 					<div id="slider"></div>
 				</div>
