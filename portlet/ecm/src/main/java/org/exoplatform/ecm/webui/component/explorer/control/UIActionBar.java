@@ -1011,16 +1011,23 @@ public class UIActionBar extends UIForm {
         return;
       }      
       String[] arrFilterChars = {"+", "-", "&", "|", "!", "(", ")", "{", "}", "[", "]", "^", "\"", 
-          "~", "?", ":", "\\"};   
+          "~", "?", ":", "\\", "'"};   
       for (String arrFilterChar : arrFilterChars) {
         if (text.startsWith(arrFilterChar)) {
           uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.Invalid-char", null));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         }
+        if (arrFilterChar.equals("'")) {
+          if (text.contains("'")) {
+            uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.Invalid-char", null));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
+        }
       }
       String[] arrFilterChars1 = {"!", "(", ")", "{", "}", "[", "]", "^", "\"", 
-          ":", "\\"};
+          ":", "\\", "'"};
       for (String arrFilterChar : arrFilterChars1) {
         if (text.endsWith(arrFilterChar)) {
           uiApp.addMessage(new ApplicationMessage("UISimpleSearch.msg.Invalid-char", null));
@@ -1028,6 +1035,7 @@ public class UIActionBar extends UIForm {
           return;
         }
       }
+      
       //finish
       
       Node currentNode = uiExplorer.getCurrentNode();
