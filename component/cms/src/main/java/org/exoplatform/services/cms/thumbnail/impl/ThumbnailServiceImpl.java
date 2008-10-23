@@ -104,6 +104,7 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
     if(!node.isNodeType(EXO_THUMBNAIL)) node.addMixin(EXO_THUMBNAIL);
     if(mimeType.startsWith("image")) processImage2Image(node, contentNode);
     node.setProperty(THUMBNAIL_LAST_MODIFIED, contentNode.getProperty("jcr:lastModified").getValue());
+    node.save();
   }
 
   public InputStream getThumbnail(Node node, String thumbnailType) throws Exception {
