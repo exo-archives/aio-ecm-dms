@@ -70,7 +70,7 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
   private String             returnFieldName = null;
 
   /** The is selected membership. */
-  private boolean            isSelectedMembership;
+  private boolean            isSelectedMembership = true;
 
   /** The is selected user. */
   private boolean            isSelectedUser;

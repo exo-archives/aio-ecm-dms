@@ -48,7 +48,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Workflow.dialog.label.validator")%></td>
 	      <td class="FieldComponent">
 		      <% 
-		        String[] fieldValidator = ["jcrPath=/node/exo:validator", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.component.UIECMPermissionBrowser", "selectorIcon=Permission24x24Icon", "validate=empty", "editable=false"] ;
+		        String[] fieldValidator = ["jcrPath=/node/exo:validator", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.selector.UIPermissionSelector", "selectorIcon=Permission24x24Icon", "validate=empty", "editable=false"] ;
 		        uicomponent.addActionField("validator", fieldValidator) ;
 		      %>
 		    </td>
