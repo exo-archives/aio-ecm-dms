@@ -262,6 +262,14 @@
   cursor: pointer;
 }
 
+.UIJCRExplorerPortlet .UIThumbnailsView .ThumbnailImage {
+  width: 64px;
+  height: 64px;
+  border: 1px solid #afffff;
+  text-align: center;
+  margin: auto;
+}
+
 .UIJCRExplorerPortlet .UIThumbnailsView .UIMenuPopup .UISelectContent {
   width: 150px;
   background-color: white;

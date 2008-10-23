@@ -242,7 +242,7 @@ function refresh(onload) {
 
 			/* Set ondblclick event */
 			image.url = image.getAttribute('longdesc');
-			image.ondblclick = function() { /*document.location = this.url;*/ }
+			image.ondblclick = function() { document.href = this.url; }
 
 			/* Set image cursor type */
 			image.style.cursor = conf_images_cursor;

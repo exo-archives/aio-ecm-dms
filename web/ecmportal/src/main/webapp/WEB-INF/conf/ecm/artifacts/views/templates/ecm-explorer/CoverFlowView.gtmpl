@@ -62,7 +62,7 @@
 					}
 					#imageflow{
 						text-align: left;
-						width: 72%;
+						width: 90%;
 						margin: auto;
 					}
 					#imageflow #captions {
@@ -92,7 +92,7 @@
 					    imgSrc = uicomponent.getFlowImage(image);
 					    wsName = image.getSession().getWorkspace().getName();
 					    actionLink = uicomponent.event("ChangeNode", image.getPath(), new Parameter("workspaceName", wsName));
-					    println "<image src=\"$imgSrc\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+image.getName()+"\"/>";
+					    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+image.getName()+"\"/>";
 					  }
 					} else {
 					  println "<image src=\"\" w=\"300\" h=\"300\"/>";

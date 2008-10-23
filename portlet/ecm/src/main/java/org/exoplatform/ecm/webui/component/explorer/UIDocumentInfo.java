@@ -95,7 +95,7 @@ import org.exoplatform.webui.exception.MessageException;
 )
 public class UIDocumentInfo extends UIContainer implements NodePresentation {
 
-  final private static String CONTENT_PAGE_ITERATOR_ID = "UIContentPageIterator".intern();
+  final private static String CONTENT_PAGE_ITERATOR_ID = "ContentPageIterator".intern();
   private String typeSort_ = Preference.SORT_BY_NODETYPE;
   private String typeSortOrder_ = Preference.ASCENDING_ORDER;
   private String nameSortOrder_ = Preference.ASCENDING_ORDER;

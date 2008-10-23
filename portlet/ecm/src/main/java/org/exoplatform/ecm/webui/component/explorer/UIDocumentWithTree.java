@@ -41,7 +41,7 @@ import org.exoplatform.webui.core.UIPageIterator;
 public class UIDocumentWithTree extends UIDocumentInfo {
 
   public UIDocumentWithTree() throws Exception {
-    getChild(UIPageIterator.class).setId("PageIteratorWihtTreeView") ;
+    getChild(UIPageIterator.class).setId("PageIteratorWithTreeView") ;
   }
   
   public String getTemplate() {
