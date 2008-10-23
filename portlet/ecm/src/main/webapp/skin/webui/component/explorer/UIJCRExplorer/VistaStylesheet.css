@@ -554,6 +554,9 @@
 	overflow: auto;
 }
 
+.UIJCRExplorerPortlet .UICategoryManager .UIOneNodePathSelector .UIFormWithTitle {
+	width: auto;
+}
 /*====================================UISavedQuery==================================*/
 
 .UIJCRExplorer .UISavedQuery {

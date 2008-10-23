@@ -649,6 +649,10 @@
 	margin: auto;
 }
 
+.UIJCRExplorerPortlet .UICategoryManager .UIOneNodePathSelector .UIFormWithTitle {
+	width: auto;
+}
+
 /*================================DecoratorBoxNested=================================*/
 
 .UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16 {
