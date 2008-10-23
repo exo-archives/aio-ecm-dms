@@ -154,14 +154,17 @@
 					<div style="width: 100%;" >
 						<%
 						  for(rel in relations) {
-						  String actionLink2 = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", rel.getSession().getWorkspace().getName())) ;
-						%>
-							<div style="font-size: 12px; padding: 10px;">
-								-	<a href="$actionLink2">
-										<%=rel.getName()%>
-									</a>
-							</div>
-						<%}%>	  	
+							  if (rel != null) {
+							  String actionLink2 = uicomponent.event("ChangeNode", rel.getPath(), new Parameter("workspaceName", rel.getSession().getWorkspace().getName())) ;
+							%>
+								<div style="font-size: 12px; padding: 10px;">
+									-	<a href="$actionLink2">
+											<%=rel.getName()%>
+										</a>
+								</div>
+								
+						<%  }
+						  }%>	  	
 					</div>		  
 				<%} else {%>
 					<div style="width: 100%; height: 20px;"> </div>

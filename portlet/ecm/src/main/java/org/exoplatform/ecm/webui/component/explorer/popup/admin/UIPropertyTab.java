@@ -21,10 +21,13 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.PropertyType;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
 import javax.jcr.nodetype.NodeType;
@@ -107,7 +110,13 @@ public class UIPropertyTab extends UIContainer {
         Value[] values =  prop.getValues();
         StringBuilder sB = new StringBuilder();
         for (int i = 0; i < values.length; i++) {
-          if(i > 0) sB.append("; ") ;
+        if (prop.getType() == PropertyType.REFERENCE) {
+          String uuid = values[i].getString();
+          Node node = this.getNodeByUUID(uuid);
+          if (node == null) continue;
+        }
+        if(i > 0) sB.append("; ") ;
+                  
           sB.append(values[i].getString());
         }
         return sB.toString();
@@ -120,6 +129,17 @@ public class UIPropertyTab extends UIContainer {
     }
   }
   
+  public Node getNodeByUUID(String uuid) {
+    Node node = null;
+    try {
+      UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+      Session session = uiExplorer.getSession();
+      node = session.getNodeByUUID(uuid);
+    } catch (Exception e) {
+    }
+    return node;
+
+  }
   static public class CloseActionListener extends EventListener<UIPropertyTab> {
     public void execute(Event<UIPropertyTab> event) throws Exception {
       event.getSource().getAncestorOfType(UIJCRExplorer.class).cancelAction() ;

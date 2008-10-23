@@ -303,7 +303,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       for (int i = 0; i < vals.length; i++) {
         String uuid = vals[i].getString();
         Node node = getNodeByUUID(uuid);
-        relations.add(node);
+        if (node != null)
+          relations.add(node);
       }
     }
     return relations;

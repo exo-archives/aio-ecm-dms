@@ -127,3 +127,7 @@
 .UIAnyPermission {
   border: 1px solid #F5F5F5;
 }
+
+.UINavigationPortlet .UIPropertyTab th {
+  width: 20px;
+}
