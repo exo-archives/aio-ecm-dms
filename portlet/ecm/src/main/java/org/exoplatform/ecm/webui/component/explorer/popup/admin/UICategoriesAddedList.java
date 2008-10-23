@@ -16,7 +16,6 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
@@ -32,8 +31,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.UIGrid;
-import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.exception.MessageException;
@@ -46,63 +44,67 @@ import org.exoplatform.webui.exception.MessageException;
  * 2:28:18 PM 
  */
 @ComponentConfig(
-    lifecycle = UIContainerLifecycle.class,
+    template = "app:/groovy/webui/component/explorer/popup/admin/UICategoriesAddedList.gtmpl",
     events = {
       @EventConfig(listeners = UICategoriesAddedList.DeleteActionListener.class, confirm="UICategoriesAddedList.msg.confirm-delete")
     }
 )
-public class UICategoriesAddedList extends UIContainer implements UISelector{
-
-  private static String[] CATE_BEAN_FIELD = {"path"} ;
-  private static String[] ACTION = {"Delete"} ;
-
-  public UICategoriesAddedList() throws Exception {
-    UIGrid uiGrid = addChild(UIGrid.class, null, "CateAddedList") ;
-    uiGrid.getUIPageIterator().setId("CategoriesListIterator");
-    uiGrid.configure("path", CATE_BEAN_FIELD, ACTION) ;
+public class UICategoriesAddedList extends UIContainer implements UISelector {
+  private UIPageIterator uiPageIterator_;
+  
+  public UICategoriesAddedList() throws Exception { 
+    uiPageIterator_ = addChild(UIPageIterator.class, null, "CategoriesAddedList");
   }
   
-  public void updateGrid(List<Node> nodes) throws Exception {
-    UIGrid uiGrid = getChild(UIGrid.class) ;   
-    if(nodes == null) nodes = new ArrayList<Node>() ;
-    ObjectPageList objPageList = new ObjectPageList(nodes, 10) ;
-    uiGrid.getUIPageIterator().setPageList(objPageList) ;
+  public UIPageIterator getUIPageIterator() { return uiPageIterator_; }
+  
+  public List getListCategories() throws Exception { return uiPageIterator_.getCurrentPageData(); }
+  
+  public void updateGrid() throws Exception {
+    ObjectPageList objPageList = new ObjectPageList(getCategories(), 10);
+    uiPageIterator_.setPageList(objPageList);
+  }
+  
+  public List<Node> getCategories() throws Exception {
+    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
+    CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
+    return categoriesService.getCategories(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName());
   }
   
   @SuppressWarnings("unused")
   public void updateSelect(String selectField, String value) {
-    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    CategoriesService categoriesService = getApplicationComponent(CategoriesService.class) ;
+    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
+    CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
     try {
-      categoriesService.addCategory(uiJCRExplorer.getCurrentNode(), value, uiJCRExplorer.getRepositoryName()) ;
-      uiJCRExplorer.getCurrentNode().save() ;
-      uiJCRExplorer.getSession().save() ;
-      updateGrid(categoriesService.getCategories(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName())) ;
-      setRenderSibbling(UICategoriesAddedList.class) ;
+      categoriesService.addCategory(uiJCRExplorer.getCurrentNode(), value, uiJCRExplorer.getRepositoryName());
+      uiJCRExplorer.getCurrentNode().save();
+      uiJCRExplorer.getSession().save();
+      updateGrid();
+      setRenderSibbling(UICategoriesAddedList.class);
     } catch(Exception e) {
-      e.printStackTrace() ;
+      e.printStackTrace();
     }
   }
   
   static public class DeleteActionListener extends EventListener<UICategoriesAddedList> {
     public void execute(Event<UICategoriesAddedList> event) throws Exception {
-      UICategoriesAddedList uiAddedList = event.getSource() ;
-      UICategoryManager uiManager = uiAddedList.getParent() ;
-      UIApplication uiApp = uiAddedList.getAncestorOfType(UIApplication.class) ;
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
+      UICategoriesAddedList uiAddedList = event.getSource();
+      UICategoryManager uiManager = uiAddedList.getParent();
+      UIApplication uiApp = uiAddedList.getAncestorOfType(UIApplication.class);
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class);
       CategoriesService categoriesService = 
-        uiAddedList.getApplicationComponent(CategoriesService.class) ;
+        uiAddedList.getApplicationComponent(CategoriesService.class);
       try {
-        categoriesService.removeCategory(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName()) ;
-        uiAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName())) ;
+        categoriesService.removeCategory(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName());
+        uiAddedList.updateGrid();
       } catch(AccessDeniedException ace) {
         throw new MessageException(new ApplicationMessage("UICategoriesAddedList.msg.access-denied",
-                                   null, ApplicationMessage.WARNING)) ;
+                                   null, ApplicationMessage.WARNING));
       } catch(Exception e) {
-        JCRExceptionManager.process(uiApp, e) ;
+        JCRExceptionManager.process(uiApp, e);
       }
-      uiManager.setRenderedChild("UICategoriesAddedList") ;
+      uiManager.setRenderedChild("UICategoriesAddedList");
     }
   }
 }

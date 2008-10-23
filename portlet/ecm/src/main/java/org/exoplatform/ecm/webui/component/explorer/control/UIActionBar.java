@@ -82,7 +82,6 @@ import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.metadata.MetadataService;
@@ -848,10 +847,7 @@ public class UIActionBar extends UIForm {
         return;        
       }
       uiExplorer.setIsHidePopup(true);
-      CategoriesService categoriesService = uiActionBar.getApplicationComponent(CategoriesService.class);
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null);
-      UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
-      uiCateAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), repository));
       UIJCRBrowser uiJCRBrowser = uiManager.getChild(UIJCRBrowser.class);
       uiJCRBrowser.setSessionProvider(uiExplorer.getSessionProvider());
       uiJCRBrowser.setFilterType(null);
@@ -859,7 +855,9 @@ public class UIActionBar extends UIForm {
       uiJCRBrowser.setIsDisable(manaRepository.getConfiguration().getDefaultWorkspaceName(), true);
       uiJCRBrowser.setRootPath(nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
       uiJCRBrowser.setIsTab(true);
+      UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
       uiJCRBrowser.setComponent(uiCateAddedList, null);
+      
       UIPopupAction uiPopupAction = uiExplorer.getChild(UIPopupAction.class);
       uiPopupAction.activate(uiManager, 630, 500);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
