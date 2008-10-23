@@ -47,13 +47,15 @@ public class UISelectPathPanel extends UIContainer {
 
 
   public String[] acceptedMimeTypes = {};
-  private Node parentNode;
+  protected Node parentNode;
   private String[] acceptedNodeTypes = {};
 
 
   public UISelectPathPanel() { }
 
   public void setParentNode(Node node) { this.parentNode = node; }
+  
+  public Node getParentNode() { return parentNode; }
 
   public String[] getAcceptedNodeTypes() { return acceptedNodeTypes; }
 
@@ -77,7 +79,7 @@ public class UISelectPathPanel extends UIContainer {
     return list;
   }      
 
-  private boolean matchNodeType(Node node) throws Exception {
+  protected boolean matchNodeType(Node node) throws Exception {
     if(acceptedNodeTypes == null || acceptedNodeTypes.length == 0) return true;
     for(String nodeType: acceptedNodeTypes) {
       if(node.isNodeType(nodeType)) 
@@ -86,7 +88,7 @@ public class UISelectPathPanel extends UIContainer {
     return false;
   }
 
-  private boolean matchMimeType(Node node) throws Exception {
+  protected boolean matchMimeType(Node node) throws Exception {
     if(acceptedMimeTypes == null || acceptedMimeTypes.length == 0) return true;
     if(!node.isNodeType("nt:file")) return true;
     String mimeType = node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
