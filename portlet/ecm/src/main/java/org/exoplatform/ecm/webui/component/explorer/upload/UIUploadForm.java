@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.upload;
 
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -105,6 +106,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIFormUploadInput input = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD);
+      
       if(input.getUploadResource() == null) {
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
                                                 ApplicationMessage.WARNING)) ;
@@ -183,10 +185,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             jcrContent.setNodetype(Utils.NT_RESOURCE) ;
             jcrContent.setType(JcrInputProperty.NODE) ;
             inputProperties.put("/node/jcr:content",jcrContent) ;
-
+            
+            String string = new String(content);
+            byte[] utf8 = string.getBytes("UTF-8");
             JcrInputProperty jcrData = new JcrInputProperty() ;
             jcrData.setJcrPath("/node/jcr:content/jcr:data") ;            
-            jcrData.setValue(content) ;          
+            jcrData.setValue(utf8) ;          
             inputProperties.put("/node/jcr:content/jcr:data",jcrData) ; 
 
             JcrInputProperty jcrMimeType = new JcrInputProperty() ;
@@ -207,7 +211,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
             newNodeUUID = cmsService.storeNodeByUUID(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
             selectedNode.save() ;
-            selectedNode.getSession().save() ;                        
+            selectedNode.getSession().save() ;     
           } else {
             Node node = selectedNode.getNode(name) ;
             if(!node.getPrimaryNodeType().isNodeType(Utils.NT_FILE)) {
@@ -218,7 +222,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
               return ;
             }
             Node contentNode = node.getNode(Utils.JCR_CONTENT);
-            if(node.isNodeType(Utils.MIX_VERSIONABLE)) {              
+            if (node.isNodeType(Utils.MIX_VERSIONABLE)) {              
               if(!node.isCheckedOut()) node.checkout() ; 
               contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));
               contentNode.setProperty(Utils.JCR_MIMETYPE, mimeType);
