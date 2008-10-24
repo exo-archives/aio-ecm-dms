@@ -961,9 +961,9 @@ public class UIBrowseContainer extends UIContainer {
       } else {
         if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
           if(getNodeByPath(getCategoryPath()) == null || getNodeByPath(getRootNode().getPath()) == null) {
-            UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
-            uiPorlet.setPorletMode(PortletMode.HELP) ;
-            uiPorlet.reload() ;
+//            UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class) ;
+//            uiPorlet.setPorletMode(PortletMode.HELP) ;
+//            uiPorlet.reload() ;
           } else if(getNodeByPath(getSelectedTab().getPath()) == null || 
               getNodeByPath(getCurrentNode().getPath()) == null) {
             setSelectedTabPath(null) ;
