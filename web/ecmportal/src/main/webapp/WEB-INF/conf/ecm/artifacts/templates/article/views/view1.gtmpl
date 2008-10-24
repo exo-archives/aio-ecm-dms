@@ -46,7 +46,7 @@
 		}
 		
 		.UIArticle .ArticleBCDecorator {
-		  background: url('/eXoECMResources/skin/images/ImageArticle.gif') repeat-x left -8px;
+		  background: url('/eXoECMResources/skin/images/article/ImageArticle.gif') repeat-x left -8px;
 		  height: 8px;
 		  line-height: 8px;
 		}
