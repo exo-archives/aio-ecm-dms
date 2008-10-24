@@ -36,6 +36,11 @@
 	border: 1px solid red;
 }
 
+.UIFastContentCreatorPortlet .UITabPane .TabPaneContent {
+  width: 600px;
+  margin: auto;
+}
+
 .UIFastContentCreatorPortlet .UIFormGrid .FieldLabel {
 	width: 160px;
 }

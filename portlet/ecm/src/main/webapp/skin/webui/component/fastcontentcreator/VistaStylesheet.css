@@ -95,6 +95,10 @@
   padding-top: 10px;
 }
 
+.UIFastContentCreatorPortlet .UITabPane .UIForm .HorizontalLayout {
+  padding-top: 0px;
+}
+
 .UIFastContentCreatorPortlet .UIOneNodePathSelector .UIFormWithTitle {
 	padding: 0px;
 	width: auto;
