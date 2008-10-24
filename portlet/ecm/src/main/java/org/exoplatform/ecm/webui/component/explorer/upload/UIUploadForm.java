@@ -17,7 +17,6 @@
 package org.exoplatform.ecm.webui.component.explorer.upload;
 
 import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -186,11 +185,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             jcrContent.setType(JcrInputProperty.NODE) ;
             inputProperties.put("/node/jcr:content",jcrContent) ;
             
-            String string = new String(content);
-            byte[] utf8 = string.getBytes("UTF-8");
+            String newContent = new String(content);
+            byte[] contentUTF8 = newContent.getBytes("UTF-8");
+            
             JcrInputProperty jcrData = new JcrInputProperty() ;
             jcrData.setJcrPath("/node/jcr:content/jcr:data") ;            
-            jcrData.setValue(utf8) ;          
+            jcrData.setValue(contentUTF8) ;          
             inputProperties.put("/node/jcr:content/jcr:data",jcrData) ; 
 
             JcrInputProperty jcrMimeType = new JcrInputProperty() ;
