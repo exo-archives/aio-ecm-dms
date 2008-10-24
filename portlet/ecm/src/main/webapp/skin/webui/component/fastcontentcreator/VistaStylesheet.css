@@ -143,3 +143,31 @@
 .UIFastContentCreatorPortlet .UIFormUploadInput  .ProgressBar {
 	margin: 0px;
 }
+
+.UIFastContentCreatorPortlet .UIOneNodePathSelector .rootNodeInfo .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .rootNodeInfo .UIFormInputSet .FormContainer {
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormGrid .AddIcon16x16 {
+	float: none;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
+	width: 555px;
+	margin: auto;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet {
+	margin: auto;
+	padding: 0px;
+	width: 555px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .FieldComponent .actionInput {
+	width: 555px;
+	padding: 0px;
+}

@@ -79,3 +79,27 @@
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .FieldComponent .actionInput .FieldComponent {
 	padding: 4px 0px;
 }
+
+.UIFastContentCreatorPortlet .UIOneNodePathSelector .rootNodeInfo .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
+	width: 555px;
+	margin: auto;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet {
+	margin: auto;
+	padding: 0px;
+	width: 555px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .FieldComponent .actionInput {
+	width: 555px;
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIForm .HorizontalLayout input {
+	width: 235px;
+}

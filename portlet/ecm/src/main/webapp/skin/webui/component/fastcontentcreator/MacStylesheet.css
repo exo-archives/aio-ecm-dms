@@ -148,3 +148,15 @@
   padding: 0px 4px;
   vertical-align: middle;
 }
+
+.UIFastContentCreatorPortlet .UIOneNodePathSelector .rootNodeInfo .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .rootNodeInfo .UIFormInputSet .FormContainer {
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormGrid .AddIcon16x16 {
+	float: none;
+}
