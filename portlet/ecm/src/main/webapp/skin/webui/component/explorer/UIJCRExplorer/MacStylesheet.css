@@ -136,6 +136,7 @@
 .UIJCRExplorerPortlet .UIListGrid .RowView .LeftColumn .Icon16x16 {
 	float: none;
 	margin: auto;
+	width: auto; height: 24px;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn {
