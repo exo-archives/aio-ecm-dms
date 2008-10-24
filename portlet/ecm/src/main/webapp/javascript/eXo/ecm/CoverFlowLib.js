@@ -160,7 +160,10 @@ function moveTo(x) {
 					break;
 				default:
 					zIndex = zIndex + 1;
-					image.onclick = function() { /*document.location = this.url;*/ }
+					image.onclick = function() {
+						var url = this.url.replace("ajaxGet", "window.top.ajaxGet");
+						document.location = url;
+					}
 					break;
 			}
 			image.style.zIndex = zIndex;
@@ -268,8 +271,10 @@ function hide(id) {
 	element.style.display = 'none';
 }
 function init() {
-	var images = document.getElementById(conf_images)
-	if (images && images.childNodes.length) {
+	var image = document.getElementById(conf_images);
+	var imgs = null;
+	if (image) imgs = image.getElementsByTagName("img");
+	if (imgs && imgs.length) {
 		refresh(true);
 		initMouseWheel();
 		initMouseDrag();
@@ -278,11 +283,14 @@ function init() {
 }
 
 /* Hide loading bar, show content and initialize mouse event listening after loading */
-window.onload = function() {init()}
+window.onload = function() {};
 
 /* Refresh ImageFlow on window resize */
 window.onresize = function() {
-	if (document.getElementById(conf_imageflow)) refresh();
+	var image = document.getElementById(conf_images);
+	var imgs = null;
+	if (image) imgs = image.getElementsByTagName("img");
+	if (imgs && imgs.length) refresh();
 }
 
 /* Fixes the back button issue */
