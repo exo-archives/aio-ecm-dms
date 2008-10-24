@@ -51,6 +51,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertiesManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertyForm;
+import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertyTab;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
@@ -1429,10 +1430,18 @@ public class UIWorkingArea extends UIContainer {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {      
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getParent();
+      Node node = null;
+      String wsName = null;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      Session session = uiExplorer.getSessionByWorkspace(wsName);
-      Node node = uiExplorer.getNodeByPath(nodePath, session);
+      if(nodePath == null) {
+        node = uiExplorer.getCurrentNode();
+        nodePath = node.getPath();
+        wsName = node.getSession().getWorkspace().getName();
+      } else {
+        wsName = event.getRequestContext().getRequestParameter(WS_NAME);
+        Session session = uiExplorer.getSessionByWorkspace(wsName);
+        node = uiExplorer.getNodeByPath(nodePath, session);
+      }
       if(uiExplorer.getRootNode().equals(node)) {
         UIApplication uiApp = uiWorkingArea.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null));
@@ -1446,6 +1455,8 @@ public class UIWorkingArea extends UIContainer {
       uiForm.getUIFormSelectBox(UIPropertyForm.FIELD_NAMESPACE).setOptions(uiForm.getNamespaces());
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIPopupContainer.activate(uiPropertiesManager, 700, 0);
+      UIPropertyTab uiPropertyTab = uiPropertiesManager.getChild(UIPropertyTab.class);
+      uiPropertyTab.setSelectedPath(nodePath, wsName);
       if(uiExplorer.nodeIsLocked(node)){
         uiPropertiesManager.setLockForm(true);
       } else {

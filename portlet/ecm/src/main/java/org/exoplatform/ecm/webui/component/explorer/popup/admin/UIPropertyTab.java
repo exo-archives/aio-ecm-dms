@@ -67,6 +67,8 @@ public class UIPropertyTab extends UIContainer {
   private final static String PRO_KEY_CANNOTGET = "cannotget" ;
   
   private List<String> propertiesName_ = new ArrayList<String>();
+  private String selectedPath_ = null;
+  private String wsName_ = null;
   
   public String[] getBeanFields() { return PRO_BEAN_FIELD ;}
   
@@ -74,8 +76,18 @@ public class UIPropertyTab extends UIContainer {
   
   private Node getCurrentNode() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ; 
+    if(selectedPath_ != null) {
+      return uiExplorer.getNodeByPath(selectedPath_, uiExplorer.getSessionByWorkspace(wsName_));
+    }
     return uiExplorer.getCurrentNode();
   }
+  
+  public void setSelectedPath(String selectedPath, String wsName) { 
+    selectedPath_ = selectedPath; 
+    wsName_ = wsName;
+  }
+  
+  public String getSelectedPath() { return selectedPath_; }
   
   public PropertyIterator getProperties() throws Exception { 
     return getCurrentNode().getProperties() ; 

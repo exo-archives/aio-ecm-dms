@@ -76,6 +76,11 @@
 								</div>
 						 	</a>
 					  <%}%>
+					  <a class="MenuItem" href="<%=contextMenu.event("ViewProperties")%>" style="display: block;"> 	
+							<div class="ItemIcon ViewProperties16x16Icon">
+								<%=_ctx.appRes("ECMContextMenu.event.ViewProperties")%>
+							</div>
+					 	</a>					  
 					 </div>	
 				 </div>
 			</div>
