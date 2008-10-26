@@ -836,7 +836,6 @@ public class UIWorkingArea extends UIContainer {
   }
   
   private void moveMultiNode(String[] srcPaths, String[] wsNames, String destPath) throws Exception {
-    UIJCRExplorer uiExplorer = getParent();
     for(int i=0; i< srcPaths.length; i++) {
       moveNode(srcPaths[i], wsNames[i], destPath);
     }
@@ -1414,15 +1413,38 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
         return;
       }
-      if(nodePath.indexOf(";") > -1) {
-        uiWorkingArea.isMultiSelect_ = true;
-        uiWorkingArea.moveMultiNode(nodePath.split(";"), wsName.split(";"), destInfo[0]);
-      } else {
-        uiWorkingArea.isMultiSelect_ = false;
-        uiWorkingArea.moveNode(nodePath, wsName, destInfo[0]);
+      Node selectedNode = uiExplorer.getNodeByPath(nodePath, uiExplorer.getSessionByWorkspace(wsName));
+      if(!selectedNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      uiExplorer.getSession().save();
-      uiExplorer.updateAjax(event);
+      if(selectedNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(selectedNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
+      try {
+        if(nodePath.indexOf(";") > -1) {
+          uiWorkingArea.isMultiSelect_ = true;
+          uiWorkingArea.moveMultiNode(nodePath.split(";"), wsName.split(";"), destInfo[0]);
+        } else {
+          uiWorkingArea.isMultiSelect_ = false;
+          uiWorkingArea.moveNode(nodePath, wsName, destInfo[0]);
+        }
+        uiExplorer.getSession().save();
+        uiExplorer.updateAjax(event);
+      } catch(AccessDeniedException ace) {
+        Object[] arg = { destInfo[0] };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", arg, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
+        return;        
+      } catch(Exception e) {
+        e.printStackTrace();
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      }
     }
   }
   
