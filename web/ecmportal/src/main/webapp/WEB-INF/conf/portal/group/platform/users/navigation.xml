@@ -9,7 +9,6 @@
 	    <uri>contentmanagement</uri>
 	    <name>contentmanagement</name>
 	    <label>#{platform.users.content-management}</label>
-	    <page-reference>group::platform/users::ContentManagement</page-reference>
 	    
 	    <node>
 		    <uri>contentmanagement/fileexplorer</uri>

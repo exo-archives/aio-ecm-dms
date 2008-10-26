@@ -42,7 +42,6 @@
       <uri>contentAdministration</uri>
       <name>contentAdministration</name>
       <label>#{administration.contentAdministration}</label>     
-      <page-reference>group::platform/administrators::contentAdministration</page-reference>      
       
       <node>
 		    <uri>contentAdministration/ECMAdmin</uri>

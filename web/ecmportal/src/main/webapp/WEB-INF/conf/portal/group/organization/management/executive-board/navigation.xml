@@ -36,7 +36,6 @@
       <uri>businessprocess</uri>
       <name>businessprocess</name>
       <label>#{group.executive-board.businessprocess}</label>
-      <page-reference>group::organization/management/executive-board::BusinessProcess</page-reference>
       
       <node>
 	      <uri>businessprocess/workflowadministrator</uri>
