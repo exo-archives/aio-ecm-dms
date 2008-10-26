@@ -16,75 +16,77 @@
 %>
 <div id="$componentId">
 	<div id="${componentId}-$viewComponentId">
-		<div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
-			<div class="JCRMoveIcon" style="display: none;"><div class="MoveNode"><span>{number}</span></div></div>
-			<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px"></div>
-			<div class="JCRMoveAction" style="display: none;" request="<%=contextMenu.event('MoveNode', 'MultiSelection')%>"></div>
-			<div class="ItemContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
-				<div class="UIRightClickPopupMenu" style="display: block;">
-					<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
-						<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Copy', 'MultiSelection')%>")> 	
-							<div class="ItemIcon Copy16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Copy")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Cut', 'MultiSelection')%>")> 	
-							<div class="ItemIcon Cut16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Cut")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Delete', 'MultiSelection')%>")> 	
-							<div class="ItemIcon Delete16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Delete")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Lock', 'MultiSelection')%>")> 	
-							<div class="ItemIcon Lock16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Lock")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Unlock', 'MultiSelection')%>")> 	
-							<div class="ItemIcon Unlock16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Unlock")%>
-							</div>
-					 	</a>				 					 	
-					 </div>	
-				 </div>
-			</div>
-			<div class="GroundContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;">
-				<div class="UIRightClickPopupMenu" style="display: block;">
-					<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
-						<a class="MenuItem" href="<%=contextMenu.event("AddFolder")%>" style="display: block;"> 	
-							<div class="ItemIcon AddFolder16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.AddFolder")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" href="<%=contextMenu.event("AddDocument")%>" style="display: block;"> 	
-							<div class="ItemIcon AddDocument16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.AddDocument")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" href="<%=contextMenu.event("Upload")%>" style="display: block;"> 	
-							<div class="ItemIcon Upload16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Upload")%>
-							</div>
-					 	</a>
-					 	<%if(uicomponent.isCanPaste()) {%>
-						 	<a class="MenuItem" href="<%=contextMenu.event("Paste")%>" style="display: block;"> 	
-								<div class="ItemIcon Paste16x16Icon">
-									<%=_ctx.appRes("ECMContextMenu.event.Paste")%>
+		<%if(!uicomponent.isSystemWorkspace()) {%>
+			<div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
+				<div class="JCRMoveIcon" style="display: none;"><div class="MoveNode"><span>{number}</span></div></div>
+				<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px"></div>
+				<div class="JCRMoveAction" style="display: none;" request="<%=contextMenu.event('MoveNode', 'MultiSelection')%>"></div>
+				<div class="ItemContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
+					<div class="UIRightClickPopupMenu" style="display: block;">
+						<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
+							<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Copy', 'MultiSelection')%>")> 	
+								<div class="ItemIcon Copy16x16Icon">
+									<%=_ctx.appRes("ECMContextMenu.event.Copy")%>
 								</div>
 						 	</a>
-					  <%}%>
-					  <a class="MenuItem" href="<%=contextMenu.event("ViewProperties")%>" style="display: block;"> 	
-							<div class="ItemIcon ViewProperties16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.ViewProperties")%>
-							</div>
-					 	</a>
-					 </div>	
-				 </div>
+						 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Cut', 'MultiSelection')%>")> 	
+								<div class="ItemIcon Cut16x16Icon">
+									<%=_ctx.appRes("ECMContextMenu.event.Cut")%>
+								</div>
+						 	</a>
+						 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Delete', 'MultiSelection')%>")> 	
+								<div class="ItemIcon Delete16x16Icon">
+									<%=_ctx.appRes("ECMContextMenu.event.Delete")%>
+								</div>
+						 	</a>
+						 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Lock', 'MultiSelection')%>")> 	
+								<div class="ItemIcon Lock16x16Icon">
+									<%=_ctx.appRes("ECMContextMenu.event.Lock")%>
+								</div>
+						 	</a>
+						 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Unlock', 'MultiSelection')%>")> 	
+								<div class="ItemIcon Unlock16x16Icon">
+									<%=_ctx.appRes("ECMContextMenu.event.Unlock")%>
+								</div>
+						 	</a>				 					 	
+						 </div>	
+					 </div>
+				</div>
+				<div class="GroundContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;">
+					<div class="UIRightClickPopupMenu" style="display: block;">
+						<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
+							<a class="MenuItem" href="<%=contextMenu.event("AddFolder")%>" style="display: block;"> 	
+								<div class="ItemIcon AddFolder16x16Icon">
+									<%=_ctx.appRes("ECMContextMenu.event.AddFolder")%>
+								</div>
+						 	</a>
+						 	<a class="MenuItem" href="<%=contextMenu.event("AddDocument")%>" style="display: block;"> 	
+								<div class="ItemIcon AddDocument16x16Icon">
+									<%=_ctx.appRes("ECMContextMenu.event.AddDocument")%>
+								</div>
+						 	</a>
+						 	<a class="MenuItem" href="<%=contextMenu.event("Upload")%>" style="display: block;"> 	
+								<div class="ItemIcon Upload16x16Icon">
+									<%=_ctx.appRes("ECMContextMenu.event.Upload")%>
+								</div>
+						 	</a>
+						 	<%if(uicomponent.isCanPaste()) {%>
+							 	<a class="MenuItem" href="<%=contextMenu.event("Paste")%>" style="display: block;"> 	
+									<div class="ItemIcon Paste16x16Icon">
+										<%=_ctx.appRes("ECMContextMenu.event.Paste")%>
+									</div>
+							 	</a>
+						  <%}%>
+						  <a class="MenuItem" href="<%=contextMenu.event("ViewProperties")%>" style="display: block;"> 	
+								<div class="ItemIcon ViewProperties16x16Icon">
+									<%=_ctx.appRes("ECMContextMenu.event.ViewProperties")%>
+								</div>
+						 	</a>
+						 </div>	
+					 </div>
+				</div>
 			</div>
-		</div>
+		<%}%>	
 		<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;">
 		  <div class="ActionIconsContainer">
 		    <%for(data in uicomponent.getChildrenList()) { %>
