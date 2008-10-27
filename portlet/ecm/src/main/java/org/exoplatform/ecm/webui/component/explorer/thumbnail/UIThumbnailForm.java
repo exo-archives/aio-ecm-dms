@@ -20,12 +20,14 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -105,7 +107,17 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
       InputStream inputStream = input.getUploadDataAsStream();
       ThumbnailService thumbnailService = uiForm.getApplicationComponent(ThumbnailService.class);
       BufferedImage image = ImageIO.read(inputStream);
-      thumbnailService.createSpecifiedThumbnail(selectedNode, image, ThumbnailService.MEDIUM_SIZE);
+      try {
+        thumbnailService.createSpecifiedThumbnail(selectedNode, image, ThumbnailService.MEDIUM_SIZE);
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UIThumbnailForm.msg.access-denied", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch(Exception e) {
+        e.printStackTrace();
+        JCRExceptionManager.process(uiApp, e);
+      }
       uiExplorer.getSession().save();
       uiExplorer.updateAjax(event);
     }
