@@ -16,7 +16,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("ContentPublishing.dialog.label.name")%></td>
 	      <td class="FieldComponent">
 		      <% 
-		        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
+		        String[] fieldName = ["jcrPath=/node/exo:name", "validate=empty"];
 		        uicomponent.addTextField("name", fieldName)  ;
 		      %>
 		    </td>
@@ -116,7 +116,7 @@
         <td class="FieldComponent">
           <% 
             String[] fieldTrashWorkspace = ["jcrPath=/node/exo:trashWorkspace", "script=ecm-explorer/widget/FillSelectBoxWithWorkspaces.groovy", "scriptParams=repository", "onchange=true"] ;
-            uicomponent.addSelectBoxField("backupTrashspace", fieldTrashWorkspace) ;
+            uicomponent.addSelectBoxField("trashWorkspace", fieldTrashWorkspace);
           %>
         </td>
       </tr>

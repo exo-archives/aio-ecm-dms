@@ -17,7 +17,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Getmail.dialog.label.name")%></td>
 	      <td class="FieldComponent">
 		      <% 
-		        String[] fieldName = ["jcrPath=/node/exo:name", "validate=name"] ;
+		        String[] fieldName = ["jcrPath=/node/exo:name", "validate=empty"];
 		        uicomponent.addTextField("name", fieldName)  ;
 		      %>
 		    </td>
