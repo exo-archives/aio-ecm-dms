@@ -27,8 +27,13 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.voting.VotingService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 /**
  * Created by The eXo Platform SAS
@@ -86,7 +91,19 @@ public class VotingServiceImpl implements VotingService {
   }
   
   public void vote(Node node, double rate, String userName, String language) throws Exception {
-    Session session = node.getSession() ;
+    Session session = node.getSession();
+    if (userName == null) {
+      String strWorkspaceName = node.getSession().getWorkspace().getName();
+      ExoContainer eXoContainer = ExoContainerContext.getCurrentContainer();
+      RepositoryService repositoryService = (RepositoryService) eXoContainer
+          .getComponentInstanceOfType(RepositoryService.class);
+      ManageableRepository manageRepository = repositoryService.getCurrentRepository();
+      session = SessionProvider.createSystemProvider().getSession(strWorkspaceName,
+          manageRepository);
+      String uid = node.getUUID();
+      node = session.getNodeByUUID(uid);
+    }
+    
     if(!node.isNodeType(VOTABLE)) {
       if(node.canAddMixin(VOTABLE)) node.addMixin(VOTABLE) ;
       else throw new NoSuchNodeTypeException() ;
