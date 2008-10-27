@@ -81,9 +81,19 @@ function glideTo(x, new_caption_id) {
 	
 	/* Display new caption */
 	caption_id = new_caption_id;
+	var preId = new_caption_id - 1;
+	var nextId = new_caption_id + 1;
+	var preImage = "";
+	var nextImage = "";
+	if(array_images[preId]) var preImage = img_div.childNodes.item(array_images[preId]).getAttribute('alt');
+	if(array_images[nextId]) var nextImage = img_div.childNodes.item(array_images[nextId]).getAttribute('alt');
+	
 	caption = img_div.childNodes.item(array_images[caption_id]).getAttribute('alt');
 	if (caption == '') caption = '&nbsp;';
-	caption_div.innerHTML = caption;
+	
+	caption_div.innerHTML = "<span style='font-size: small;color: gray'> " + preImage + " </span>" 
+													+ caption +
+													"<span style='font-size: small;color: gray'> " + nextImage + " </span>";
 
 	/* Set scrollbar slider to new position */
 	if (dragging == false) {
@@ -271,10 +281,13 @@ function hide(id) {
 	element.style.display = 'none';
 }
 function init() {
+	
 	var image = document.getElementById(conf_images);
 	var imgs = null;
+
 	if (image) imgs = image.getElementsByTagName("img");
 	if (imgs && imgs.length) {
+		
 		refresh(true);
 		initMouseWheel();
 		initMouseDrag();
@@ -407,4 +420,9 @@ document.onkeydown = function(event) {
 			break;
 	}
 }
+
+
+
+init();
+
 
