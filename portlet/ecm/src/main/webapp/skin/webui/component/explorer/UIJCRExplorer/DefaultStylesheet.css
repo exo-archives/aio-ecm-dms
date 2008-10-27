@@ -87,7 +87,8 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIContextMenuContainer {
-	width: 120px;
+	width: 200px;
+	overflow: hidden;
 }
 
 .UIJCRExplorerPortlet .rootNodeInfo .UIFormInputSet .UIFormInputSetWithAction .FormContainer {
