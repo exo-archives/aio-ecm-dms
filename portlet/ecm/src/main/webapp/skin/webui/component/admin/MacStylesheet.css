@@ -310,6 +310,10 @@
 	margin: 0px;
 }
 
+.UIECMAdminPortlet .UIRepositoryFormContainer .FormContainer .FieldComponent a:hover {
+	color: #0585D7; 
+}
+
 .UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
 	display: none  ;	
 }

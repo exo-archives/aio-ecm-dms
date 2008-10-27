@@ -162,6 +162,18 @@
 	height: 16px;
 }
 
+.UIECMAdminPortlet .UIRepositoryFormContainer .wsInputSet .UIFormGrid td.FieldComponent {
+	padding-top: 0px; padding-left: 2px;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .FormContainer .FieldComponent a {
+	line-height: 24px;
+}
+
+.UIECMAdminPortlet .UIRepositoryFormContainer .FormContainer .FieldComponent a:hover {
+	color: #0183F1;
+}
+
 .UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet {
 	padding: 10px 0px;
 }

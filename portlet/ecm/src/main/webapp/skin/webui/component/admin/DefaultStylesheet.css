@@ -131,6 +131,10 @@
 	height: 16px;
 }
 
+.UIECMAdminPortlet .UIRepositoryFormContainer .FormContainer .FieldComponent a:hover {
+	color: #0183F1; 
+}
+
 /*=====================================UIWorkspaceWizardContainer==========================*/
 
 .UIRepositoryFormContainer .UIWorkspaceWizard {
