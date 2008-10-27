@@ -535,12 +535,8 @@
 
 /*================================UINodeTypeSelectForm=================================*/
 
-.UIJCRExplorerPortlet .UISearchContainer .UISearchResult {
-	margin: auto;
-}
-
-.UIJCRExplorerPortlet .UISearchContainer .UISearchResult .UIGrid td {
-	padding: 0px 5px;
+.UIJCRExplorerPortlet .UIDocumentWorkspace .UISearchResult {
+	padding: 10px;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm {

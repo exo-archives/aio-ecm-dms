@@ -26,10 +26,10 @@
 	dateFormat.applyPattern("MM/dd/yyyy HH:mm:ss");
 %>
 <div class="UISearchResult" id="$uicomponent.id">
-  <table class="UIGrid">
+  <table class="UIGrid" style="width: 99.5%">
     <thead>
       <tr>
-        <th>
+        <th width="40px">
   	    	<%
   	    		if (uicomponent.iconType.equals("BlueUpArrow")) {
   	    	%>
@@ -53,7 +53,7 @@
 	  	    <% } %>
         </th>
   	    <th><%=_ctx.appRes("UISearchResult.header.name")%></th>  	
-  	    <th>
+  	    <th style="width:80px;">
   	    	<%
   	    		if (uicomponent.iconScore.equals("BlueUpArrow")) {
   	    	%>
@@ -75,7 +75,7 @@
 		  	    	<%=_ctx.appRes("UISearchResult.header.score")%>	    		
 	  	    	</a>
 	  	    <% } %>
-  	    <th><%=_ctx.appRes("UISearchResult.header.action")%></th>
+  	    <th style="width:80px;"><%=_ctx.appRes("UISearchResult.header.action")%></th>
       </tr>
     </thead>
     <tbody>
@@ -100,7 +100,7 @@
   	      String s = "";
       %>
           <tr class="$rowClass">
-          	<td width="40px" align="center">
+          	<td align="center">
               <div class="default16x16Icon ItemIcon <%=Utils.getNodeTypeIcon(node, "16x16Icon")%>" style="margin:auto"><span></span></div>
             </td>
             <td>
@@ -111,14 +111,16 @@
        				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
        				<div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(uicomponent.getDateCreated(node))%></div>
 		        </td>
-            <td><div class="Text"><%=row.getValue("jcr:score").getString()%></div></td>
-	          <td style="width:80px;">
-	            <a href="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>">
-	              <div class="View16x16Icon" style="margin-left:10px;float:left;"><span></span></div>
-	            </a>
-	            <a href="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>">
-	              <div class="OpenFolder16x16Icon" style="margin-left:10px ;float:left; "><span></span></div>
-	            </a>
+            <td><div class="ActionContainer"><%=row.getValue("jcr:score").getString()%></div></td>
+	          <td>
+	          	<div class="ActionContainer">
+		            <a href="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>">
+		              <img src="/eXoResources/skin/sharedImages/Blank.gif" class="View16x16Icon"/>
+		            </a>
+		            <a href="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>">
+		              <img src="/eXoResources/skin/sharedImages/Blank.gif" class="OpenFolder16x16Icon"/>
+		            </a>
+		          </div>
 	          </td>	                  
           </tr>
     <%
@@ -126,7 +128,7 @@
       } else {
     %>
       <tr class="EvenRow">
-        <td colspan="5" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UISearchResult.msg.empty")%></td>
+        <td colspan="4" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UISearchResult.msg.empty")%></td>
       </tr>
     <%}%>
     </tbody>

@@ -280,8 +280,8 @@
 }
 /*############################## -- End UIThumbnailsView -- ##############################*/
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UISearchResult table {
-  width: 99.6%;
+.UIJCRExplorerPortlet .UIDocumentWorkspace .UISearchResult {
+  padding: 10px;
 }
 
 .UIJCRExplorerPortlet .ActionButton {
