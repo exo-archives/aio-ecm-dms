@@ -426,6 +426,11 @@
   background: url('DefaultSkin/ViewProperties.gif') no-repeat ;  
 }
 
+.AddThumbnail16x16Icon {
+  height: 16px;
+  background: url('DefaultSkin/AddThumbnails.gif') no-repeat ;  
+}
+
 .DownLoad16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/DownLoadIcon.gif') no-repeat ;   

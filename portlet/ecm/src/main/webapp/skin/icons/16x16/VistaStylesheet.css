@@ -96,6 +96,11 @@
   background: url('VistaSkin/ViewProperties.png') no-repeat ;
 }
 
+.AddThumbnail16x16Icon {
+  height: 16px;
+  background: url('VistaSkin/AddThumbnails.gif') no-repeat ;  
+}
+
 .SelectMemberIcon {
   width: 16px; height: 16px;
   background: url('VistaSkin/SmallMemberIcon.png') no-repeat;
