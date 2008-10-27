@@ -29,6 +29,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -49,10 +50,12 @@ import org.exoplatform.webui.form.UIFormUploadInput;
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template =  "system:/groovy/webui/form/UIForm.gtmpl",
+    template =  "app:/groovy/webui/component/explorer/thumbnail/UIThumbnailForm.gtmpl",
     events = {
       @EventConfig(listeners = UIThumbnailForm.SaveActionListener.class), 
-      @EventConfig(listeners = UIThumbnailForm.CancelActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIThumbnailForm.CancelActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIThumbnailForm.RemoveThumbnailActionListener.class, 
+          confirm = "UIThumbnailForm.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
 public class UIThumbnailForm extends UIForm implements UIPopupComponent {
@@ -60,6 +63,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
   final static public String MEDIUM_SIZE = "mediumSize";
   private String selectedPath_;
   private String wsName_;
+  private boolean thumbnailRemoved_ = false;
   
   public UIThumbnailForm() throws Exception {
     setMultiPart(true) ;
@@ -67,16 +71,24 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
     addUIFormInput(uiInput) ;
   }
   
+  public String getThumbnailImage(Node node) throws Exception {
+    return Utils.getThumbnailImage(node, ThumbnailService.MEDIUM_SIZE);
+  }
+  
+  public boolean isRemovedThumbnail() { return thumbnailRemoved_; }
+  
   public void setSelectedInfo(String nodePath, String wsName) { 
     selectedPath_ = nodePath; 
     wsName_ = wsName;
   }
   
-  public Node getNodeByPath() throws Exception {
+  public Node getSelectedNode() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     Session session = uiExplorer.getSessionByWorkspace(wsName_);
     return uiExplorer.getNodeByPath(selectedPath_, session);
   }
+  
+  public String[] getActions() { return new String[] {"Save", "Cancel"}; }
   
   static  public class SaveActionListener extends EventListener<UIThumbnailForm> {
     public void execute(Event<UIThumbnailForm> event) throws Exception {
@@ -90,7 +102,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      Node selectedNode = uiForm.getNodeByPath();
+      Node selectedNode = uiForm.getSelectedNode();
       if(selectedNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(selectedNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
@@ -122,6 +134,22 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
       uiExplorer.updateAjax(event);
     }
   }
+  
+  static  public class RemoveThumbnailActionListener extends EventListener<UIThumbnailForm> {
+    public void execute(Event<UIThumbnailForm> event) throws Exception {
+      UIThumbnailForm uiForm = event.getSource();
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+      uiForm.thumbnailRemoved_ = true;
+      Node selectedNode = uiForm.getSelectedNode();
+      if(selectedNode.hasProperty(ThumbnailService.MEDIUM_SIZE)) {
+        selectedNode.getProperty(ThumbnailService.MEDIUM_SIZE).remove();
+      }
+      selectedNode.save();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
+      uiExplorer.setIsHidePopup(true);
+      uiExplorer.updateAjax(event);
+    }
+  }  
   
   static  public class CancelActionListener extends EventListener<UIThumbnailForm> {
     public void execute(Event<UIThumbnailForm> event) throws Exception {

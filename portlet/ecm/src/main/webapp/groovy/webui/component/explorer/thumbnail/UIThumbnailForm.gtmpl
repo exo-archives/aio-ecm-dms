@@ -1,0 +1,58 @@
+<%
+  def selectedNode = uicomponent.getSelectedNode();
+%>
+<div class="UIForm LayoutContent">
+	<% uiform.begin() %>
+  <div class="HorizontalLayout">
+  	<table class="UIFormGrid">	  
+	    <tr>		          					
+	      <td class="FieldLabel"><%=_ctx.appRes("UIThumbnailForm.label.mediumSize")%></td>
+	      <td class="FieldComponent">
+		      <%
+		        if(selectedNode.hasProperty("exo:mediumSize")) { 
+							String thumbnailImage = uicomponent.getThumbnailImage(selectedNode);
+							def actionLink = uicomponent.event("RemoveThumbnail");
+						%>		
+							<div>
+								<image src="$thumbnailImage"/>
+								<a href="$actionLink">
+									<img src="/eXoResources/skin/DefaultSkin/background/Blank.gif" class="ActionIcon Remove16x16Icon" title=<%=_ctx.appRes("UIThumbnailForm.title.remove-thumbnail")%>/>
+								</a>
+							</div>
+						<%
+						} else if(uicomponent.isRemovedThumbnail()) {
+						  uicomponent.renderChildren();
+						}	else {
+              uicomponent.renderChildren();
+						}
+		      %>
+		    </td>
+	    </tr>
+	  </table>
+		<%/* start render action*/%>
+		<div class="UIAction"> 
+	    <table align="center" class="ActionContainer">
+	    	<tr>
+	    		<td align="center">
+			      <% for(action in uicomponent.getActions()) { 
+			      		 String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) ;
+								 String link = uicomponent.event(action) ;
+			      %>
+			          <a href="$link" class="ActionButton LightBlueStyle">
+									<div class="ButtonLeft">
+									  <div class="ButtonRight">
+										  <div class="ButtonMiddle">
+										    $actionLabel
+								      </div>
+								    </div>
+							    </div>
+								</a>
+			      <%}%>          
+	      	</td>
+	      </tr>
+	    </table>
+	  </div>
+	  <%/* end render action*/%>
+  </div>
+  <% uiform.end() %>
+</div>
