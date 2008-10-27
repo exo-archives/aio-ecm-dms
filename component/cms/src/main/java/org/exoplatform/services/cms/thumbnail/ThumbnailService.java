@@ -16,6 +16,7 @@
  */
 package org.exoplatform.services.cms.thumbnail;
 
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.List;
 
@@ -77,11 +78,11 @@ public interface ThumbnailService {
  * Create thumbnail for node with default size:
  * Small size, medium size, big size
  * @param node Current node which will be added thumbnail
- * @param contentNode Node uploaded which contain the data
+ * @param image BufferedImage which contain the original image
  * @param mimeType File type
  * @throws Exception
  */  
-  public void createThumbnailImage(Node node, Node contentNode, String mimeType) throws Exception;
+  public void createThumbnailImage(Node node, BufferedImage image, String mimeType) throws Exception;
 /**
  * Return the data of thumbnail with specified type
  * @param node Current node which will be added thumbnail
@@ -92,13 +93,13 @@ public interface ThumbnailService {
 /**
  * Create a thumbnail for node with size specified 
  * @param node Current node which will be added thumbnail
- * @param contentNode Node uploaded which contain the data
+ * @param image BufferedImage which contain the original image
  * @param width Width of thumbnail image
  * @param height Height of thumbnail image
  * @param propertyName Data will be set to this property
  * @throws Exception
  */  
-  public void createThumbnail(Node node, Node contentNode, String propertyName) throws Exception;
+  public void createSpecifiedThumbnail(Node node, BufferedImage image, String propertyName) throws Exception;
 /**
  * Process thumbnail with list nodes
  * @param listNodes List node which will be process to add thumbnail
