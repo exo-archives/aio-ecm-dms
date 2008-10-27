@@ -26,7 +26,10 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyType;
 
+import org.exoplatform.ecm.webui.form.validator.CronExpressionValidator;
 import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
+import org.exoplatform.ecm.webui.form.validator.RepeatCountValidator;
+import org.exoplatform.ecm.webui.form.validator.RepeatIntervalValidator;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormInputBase;
@@ -170,8 +173,14 @@ public class DialogFormUtil {
       return MandatoryValidator.class ;
     }else if(validatorType.equals("datetime")) {
       return DateTimeValidator.class;
+    }else if(validatorType.equals("cronExpressionValidator")) {      
+      return CronExpressionValidator.class;    
+    }else if(validatorType.equals("repeatCountValidator")) {      
+      return RepeatCountValidator.class;
+    }else if(validatorType.equals("repeatIntervalValidator")) {      
+      return RepeatIntervalValidator.class;
     }else {
-      ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
+      ClassLoader cl = Thread.currentThread().getContextClassLoader();
       return cl.loadClass(validatorType);
     }
   }
