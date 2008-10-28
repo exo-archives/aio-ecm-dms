@@ -60,8 +60,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList  {
-  margin: 0px 0px 0px 230px; 
-  border: 1px solid #b7b7b7; 
+  margin: 0px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitleBG {
