@@ -103,7 +103,8 @@ public interface ThumbnailService {
 /**
  * Process thumbnail with list nodes
  * @param listNodes List node which will be process to add thumbnail
+ * @param type Type of thumbnail image
  * @throws Exception
  */  
-  public void processThumbnailList(List<Node> listNodes) throws Exception;
+  public void processThumbnailList(List<Node> listNodes, String type) throws Exception;
 }

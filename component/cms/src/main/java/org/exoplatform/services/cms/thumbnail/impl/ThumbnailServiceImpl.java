@@ -122,23 +122,15 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
     node.setProperty(THUMBNAIL_LAST_MODIFIED, new GregorianCalendar());
     node.save();
   }
-//  private boolean isOverLoad(Node node, Node contentNode) throws Exception {
-////    Value contentLastModified = contentNode.getProperty("jcr:lastModified").getValue();
-////    if(node.hasProperty(THUMBNAIL_LAST_MODIFIED)) {
-////      Value thumbnailModified = node.getProperty(THUMBNAIL_LAST_MODIFIED).getValue();
-////      if(contentLastModified.equals(thumbnailModified)) return false;
-////      return true;
-////    }
-//    if(node.hasProperty(THUMBNAIL_LAST_MODIFIED)) return false;
-//    return true;
-//  }
   
-  public void processThumbnailList(List<Node> listNodes) throws Exception {
+  public void processThumbnailList(List<Node> listNodes, String type) throws Exception {
     for(Node node : listNodes) {
       if(!node.hasProperty(THUMBNAIL_LAST_MODIFIED) && node.isNodeType(NT_FILE)) {
         Node contentNode = node.getNode(JCR_CONTENT);
-        BufferedImage image = ImageIO.read(contentNode.getProperty(JCR_DATA).getStream());
-        createThumbnailImage(node, image, contentNode.getProperty(JCR_MIMETYPE).getString());
+        if(contentNode.getProperty(JCR_MIMETYPE).getString().startsWith("image")) {
+          BufferedImage image = ImageIO.read(contentNode.getProperty(JCR_DATA).getStream());
+          createSpecifiedThumbnail(node, image, type);
+        }
       }
     }
   }
@@ -148,11 +140,9 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
   public void stop() { }
   
   private void processImage2Image(Node node, BufferedImage image) throws Exception {
-//  if(!isOverLoad(node, contentNode)) {
     parseImageSize(node, image, smallSize_, SMALL_SIZE);
     parseImageSize(node, image, mediumSize_, MEDIUM_SIZE);
     parseImageSize(node, image, bigSize_, BIG_SIZE);
-//  }
   }
   
   private void createThumbnailImage(Node selectedNode, BufferedImage image, int width, int height, 
