@@ -42,9 +42,10 @@ public class ImageUtils {
 
   /**
    * Return the image which resized(support JPG, PNG, GIF)
-   * @param contentNode Node hold the input data
-   * @param width Width of thumbnail will be resized
-   * @param height Height of thumbnail will be resized
+   * @param image The BufferedImage which based on InputStream
+   * BufferedImage image = ImageIO.read(InputStream)
+   * @param width Max width of thumbnail will be resized
+   * @param height Max height of thumbnail will be resized
    * @return InputStream
    * @throws Exception
    */  
