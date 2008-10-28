@@ -828,9 +828,21 @@ public class UIWorkingArea extends UIContainer {
     }    
   }
   
-  private void moveNode(String srcPath, String wsName, String destPath) throws Exception {
+  private void moveNode(String srcPath, String wsName, String destPath, Event event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
     Workspace workspace = uiExplorer.getSession().getWorkspace();
+    Node selectedNode = uiExplorer.getNodeByPath(srcPath, uiExplorer.getSessionByWorkspace(wsName));
+    UIApplication uiApp = getAncestorOfType(UIApplication.class);
+    if(!selectedNode.isCheckedOut()) {
+      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+    if(selectedNode.isLocked()) {
+      String lockToken = LockUtil.getLockToken(selectedNode);
+      if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+    }
     if(destPath.endsWith("/")) {
       destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/") + 1);
     } else {
@@ -839,9 +851,10 @@ public class UIWorkingArea extends UIContainer {
     workspace.move(srcPath, destPath);
   }
   
-  private void moveMultiNode(String[] srcPaths, String[] wsNames, String destPath) throws Exception {
+  private void moveMultiNode(String[] srcPaths, String[] wsNames, String destPath, 
+      Event event) throws Exception {
     for(int i=0; i< srcPaths.length; i++) {
-      moveNode(srcPaths[i], wsNames[i], destPath);
+      moveNode(srcPaths[i], wsNames[i], destPath, event);
     }
   }
   
@@ -1417,24 +1430,13 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
         return;
       }
-      Node selectedNode = uiExplorer.getNodeByPath(nodePath, uiExplorer.getSessionByWorkspace(wsName));
-      if(!selectedNode.isCheckedOut()) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-      if(selectedNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(selectedNode);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-      }
       try {
         if(nodePath.indexOf(";") > -1) {
           uiWorkingArea.isMultiSelect_ = true;
-          uiWorkingArea.moveMultiNode(nodePath.split(";"), wsName.split(";"), destInfo[0]);
+          uiWorkingArea.moveMultiNode(nodePath.split(";"), wsName.split(";"), destInfo[0], event);
         } else {
           uiWorkingArea.isMultiSelect_ = false;
-          uiWorkingArea.moveNode(nodePath, wsName, destInfo[0]);
+          uiWorkingArea.moveNode(nodePath, wsName, destInfo[0], event);
         }
         uiExplorer.getSession().save();
         uiExplorer.updateAjax(event);
@@ -1444,6 +1446,17 @@ public class UIWorkingArea extends UIContainer {
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
         return;        
+      } catch(LockException lock) {
+        Object[] arg = { nodePath };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
+        return;
+      } catch(ConstraintViolationException constraint) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.move-constraint-exception", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
+        return;       
       } catch(Exception e) {
         e.printStackTrace();
         JCRExceptionManager.process(uiApp, e);
