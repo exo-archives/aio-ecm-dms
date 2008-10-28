@@ -87,7 +87,8 @@
 		</div>
 		<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;">
 		  <div class="ActionIconsContainer">
-		    <%for(data in uicomponent.getChildrenList()) { %>
+		    <%
+		      for(data in uicomponent.getChildrenList()) { %>
 		        <%
 		          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
 		          def preferenceWS = data.getSession().getWorkspace().getName() ;
