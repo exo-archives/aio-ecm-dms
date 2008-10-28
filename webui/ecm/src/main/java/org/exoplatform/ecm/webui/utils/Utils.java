@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import javax.imageio.ImageIO;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -39,6 +40,7 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
@@ -334,6 +336,15 @@ public class Utils {
   }
   
   public static String getThumbnailImage(Node node, String propertyName) throws Exception {
+    if(!node.hasProperty(propertyName) && node.getPrimaryNodeType().getName().equals(NT_FILE)) {
+      String mimeType = node.getNode(JCR_CONTENT).getProperty(JCR_MIMETYPE).getString();
+      if(mimeType.startsWith("image")) {
+        InputStream inputStream = node.getNode(JCR_CONTENT).getProperty(JCR_DATA).getStream();
+        ThumbnailService thumbnailService = 
+          Util.getUIPortal().getApplicationComponent(ThumbnailService.class);
+        thumbnailService.createSpecifiedThumbnail(node, ImageIO.read(inputStream), propertyName);
+      }
+    }
     if(node.hasProperty(propertyName)) {
       DownloadService dservice = Util.getUIPortal().getApplicationComponent(DownloadService.class);
       InputStream input = node.getProperty(propertyName).getStream();
