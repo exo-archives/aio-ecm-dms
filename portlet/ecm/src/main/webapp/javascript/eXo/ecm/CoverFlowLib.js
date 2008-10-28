@@ -81,19 +81,27 @@ function glideTo(x, new_caption_id) {
 	
 	/* Display new caption */
 	caption_id = new_caption_id;
-	var preId = new_caption_id - 1;
-	var nextId = new_caption_id + 1;
-	var preImage = "";
-	var nextImage = "";
-	if(array_images[preId]) var preImage = img_div.childNodes.item(array_images[preId]).getAttribute('alt');
-	if(array_images[nextId]) var nextImage = img_div.childNodes.item(array_images[nextId]).getAttribute('alt');
+	var firstId = new_caption_id - 2;
+	var secondId = new_caption_id - 1 ;
+	var fourthId = new_caption_id + 1;
+	var fifthId = new_caption_id + 2;
+	var firstImage = "";
+	var secondImage = "";
+	var fourthImage = "";
+	var fifthImage = "";
+	if(array_images[firstId]) var firstImage = img_div.childNodes.item(array_images[firstId]).getAttribute('alt');
+	if(array_images[secondId]) var secondImage = img_div.childNodes.item(array_images[secondId]).getAttribute('alt');
+	if(array_images[fourthId]) var fourthImage = img_div.childNodes.item(array_images[fourthId]).getAttribute('alt');
+	if(array_images[fifthId]) var fifthImage = img_div.childNodes.item(array_images[fifthId]).getAttribute('alt');
 	
 	caption = img_div.childNodes.item(array_images[caption_id]).getAttribute('alt');
 	if (caption == '') caption = '&nbsp;';
 	
-	caption_div.innerHTML = "<span style='font-size: small;color: gray'> " + preImage + " </span>" 
-													+ caption +
-													"<span style='font-size: small;color: gray'> " + nextImage + " </span>";
+	caption_div.innerHTML = "<span style='font-size: small;color: gray; margin-right: 49px'> " + firstImage + " </span>" + 
+	                        "<span style='font-size: small;color: gray; margin-right: 49px'> " + secondImage + " </span>" + 
+													caption +
+													"<span style='font-size: small;color: gray; margin-left: 49px'> " + fourthImage + " </span>" +
+													"<span style='font-size: small;color: gray; margin-left: 49px'> " + fifthImage + " </span>";
 
 	/* Set scrollbar slider to new position */
 	if (dragging == false) {

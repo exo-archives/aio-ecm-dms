@@ -288,6 +288,7 @@ public class UIWorkingArea extends UIContainer {
       String role = roles[i].getString();
       if("*".equalsIgnoreCase(role)) return true;
       MembershipEntry membershipEntry = MembershipEntry.parse(role);
+      if(membershipEntry == null) return false;
       if(identity.isMemberOf(membershipEntry)) {
         return true;
       }

@@ -447,7 +447,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     }
     int nodesPerPage = pref.getNodesPerPage();    
     PageList pageList = new ObjectPageList(childrenList,nodesPerPage) ;
-    pageIterator_.setPageList(pageList) ;        
+    pageIterator_.setPageList(pageList);        
   }
 
   @SuppressWarnings("unchecked")
@@ -478,11 +478,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   public boolean isEnableThumbnail() {
     ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
     return thumbnailService.isEnableThumbnail();
-  }
-  
-  public List<Node> getFlowImages() throws Exception {
-    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
-    return thumbnailService.getFlowImages(getOriginalNode());
   }
   
   public String getFlowImage(Node node) throws Exception {

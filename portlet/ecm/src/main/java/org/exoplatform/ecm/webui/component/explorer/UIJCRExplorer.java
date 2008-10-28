@@ -40,15 +40,15 @@ import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.ecm.webui.utils.LockUtil;
-import org.exoplatform.ecm.webui.utils.PermissionUtil;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.comparator.DateTimeComparator;
 import org.exoplatform.ecm.webui.comparator.NodeNameComparator;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.utils.LockUtil;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
@@ -186,6 +186,13 @@ public class UIJCRExplorer extends UIContainer {
     } catch(Exception e) {
       e.printStackTrace() ;
     }         
+  }
+  
+  public void processAddThumbnail(List<Node> listNodes, String type) throws Exception {
+    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+    if(thumbnailService.isEnableThumbnail()) {
+      thumbnailService.processThumbnailList(listNodes, type);
+    }
   }
 
   public void setRepositoryName(String repositoryName) { currentRepositoryName_ = repositoryName ; }
@@ -475,10 +482,6 @@ public class UIJCRExplorer extends UIContainer {
       }
     } else {
       childList = childrenList ;
-    }
-    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
-    if(thumbnailService.isEnableThumbnail()) {
-      thumbnailService.processThumbnailList(childList);
     }
     sort(childList);
     return childList ;
