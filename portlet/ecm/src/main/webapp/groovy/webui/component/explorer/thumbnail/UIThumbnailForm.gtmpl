@@ -16,7 +16,7 @@
 							<div>
 								<image src="$thumbnailImage"/>
 								<a href="$actionLink">
-									<img src="/eXoResources/skin/DefaultSkin/background/Blank.gif" class="ActionIcon Remove16x16Icon" title=<%=_ctx.appRes("UIThumbnailForm.title.remove-thumbnail")%>/>
+									<img src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt="" class="ActionIcon Remove16x16Icon" title=<%=_ctx.appRes("UIThumbnailForm.title.remove-thumbnail")%>/>
 								</a>
 							</div>
 						<%
