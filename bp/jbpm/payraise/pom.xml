@@ -13,7 +13,14 @@
   <url>http://www.exoplatform.org</url>
   <description>eXo payraise BP for jBPM</description>
  
-  <dependencies/> 
+  <dependencies>
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.workflow.impl.jbpm.facade</artifactId>
+      <version>${org.exoplatform.ecm.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
   
   <build>
     <plugins>

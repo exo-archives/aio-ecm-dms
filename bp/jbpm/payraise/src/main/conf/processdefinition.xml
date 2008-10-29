@@ -5,6 +5,14 @@
   <description>pay raise process</description>    
 
   <swimlane name="initiator" />
+  
+  <swimlane name="boss">
+    <assignment class="org.exoplatform.processes.payraise.BossAssignementHandler"/>
+  </swimlane>
+  
+  <swimlane name="hr mgr">
+    <assignment class="org.exoplatform.processes.payraise.HRAssignementHandler"/>
+  </swimlane>
 
   <!-- START-STATE -->
   <start-state name="start">
@@ -21,7 +29,7 @@
 
   <!-- NODES -->
   <task-node name="evaluation">
-    <task swimlane="initiator">
+    <task swimlane="boss">
       <controller>
         <variable name="requester" />      
         <variable name="amount-granted" />      
@@ -30,7 +38,8 @@
         <variable name="rewarded" />
         <variable name="reason" />    
       </controller>
-    </task>  
+    </task>
+ 
     <transition name="grant" to="hr update"/>
     <transition name="deny"  to="end"/>
   </task-node>
