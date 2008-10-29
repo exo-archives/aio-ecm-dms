@@ -47,7 +47,7 @@
 							<div class="ItemIcon Unlock16x16Icon">
 								<%=_ctx.appRes("ECMContextMenu.event.Unlock")%>
 							</div>
-					 	</a>				 					 	
+					 	</a>		 	
 					 </div>	
 				 </div>
 			</div>
@@ -122,7 +122,13 @@
 		              strActs += "</a>" ;
 		            }            
 		          }
+		          strActs +=	"<a class='MenuItem' style='display: block;' onclick=eXo.ecm.ECMUtils.pushToClipboard(event,'ohaynhi')>" ;
+							strActs +=  "	<div class='ItemIcon'>" ;
+							strActs +=	"		Copy Path" ;
+							strActs +=  "	</div>" ;
+					 		strActs +=  "</a>";
 		          strActs += "</div>" ;
+		          
 		          def rightClickMenu = "" ;
 		          String isLocked = "false";
 		          if(data.isLocked()) isLocked = "true";     
