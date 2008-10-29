@@ -47,6 +47,10 @@
   margin: 6px 0px 16px 0px;
 }
 
+.UIVersionTreeList .UITrees {
+	border: none;
+}
+
 .UIVersionTreeList .ItemIcon {
   width: 16px; height: 16px;
   margin-top: 3px;
@@ -98,6 +102,10 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPuplicationForm .UIFormGrid .FieldLabel {
   font-weight: bold;  
+}
+
+.UIJCRExplorerPortlet .UIPuplicationForm .UIFormGrid .FieldComponent input.radio {
+	width: 25px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPublicationContainer .UIFormGrid .FieldComponent {
