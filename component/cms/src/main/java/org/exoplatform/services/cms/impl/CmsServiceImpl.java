@@ -327,8 +327,9 @@ public class CmsServiceImpl implements CmsService {
             node.setProperty(propertyName, new String[] { (String)value});
           else if (value instanceof String[])
             node.setProperty(propertyName, (String[]) value);          
-        } else
-          node.setProperty(propertyName, (String) value);
+        } else {          
+          node.setProperty(propertyName, value.toString());
+        }
       }
       break;
     case PropertyType.BINARY:
@@ -345,13 +346,15 @@ public class CmsServiceImpl implements CmsService {
             new ByteArrayInputStream((((String[]) value)).toString().getBytes()));      
       break;
     case PropertyType.BOOLEAN:
-      if (value == null)
+      if (value == null) {
         node.setProperty(propertyName, false);
-      else if (value instanceof String)
+      } else if (value instanceof String) {
         node.setProperty(propertyName, 
             new Boolean((String) value).booleanValue());
-      else if (value instanceof String[])
-        node.setProperty(propertyName, (String[]) value);         
+      } else if (value instanceof String[]) {
+        String[] arrValue = (String[]) value;
+        node.setProperty(propertyName, Boolean.parseBoolean(arrValue[0]));         
+      }
       break;
     case PropertyType.LONG:
       if (value == null || "".equals(value))

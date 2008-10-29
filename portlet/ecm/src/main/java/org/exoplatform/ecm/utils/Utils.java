@@ -58,6 +58,7 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
+import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormUploadInput;
 
 public class Utils {
@@ -386,6 +387,10 @@ public class Utils {
             property.setValue(content);
           } else if(input instanceof UIFormDateTimeInput) {
             property.setValue(((UIFormDateTimeInput)input).getCalendar()) ;
+          } else if(input instanceof UIFormSelectBox) {
+            UIFormSelectBox uiSelectBox = (UIFormSelectBox) input;
+            if(!uiSelectBox.isMultiple()) property.setValue(uiSelectBox.getValue());
+            else property.setValue(uiSelectBox.getSelectedValues());
           } else {
             property.setValue(input.getValue()) ;
           }

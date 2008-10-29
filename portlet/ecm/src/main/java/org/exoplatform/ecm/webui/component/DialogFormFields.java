@@ -806,28 +806,57 @@ public class DialogFormFields extends UIForm {
         uiSelectBox.setOptions(optionsList) ;
       }      
       if(defaultValue != null) uiSelectBox.setValue(defaultValue) ;
-    }
-    if(multiValues != null && multiValues.equals("true")) {
-      uiSelectBox.setMultiple(true);
-    }
+    }    
     propertiesName_.put(name, getPropertyName(jcrPath)) ;
     fieldNames_.put(getPropertyName(jcrPath), name) ;
     String[] arrNodes = jcrPath.split("/") ;
     Node childNode = null ;
-    if(getNode() != null && arrNodes.length == 4) childNode = getNode().getNode(arrNodes[2]) ;
-    if(childNode != null) {
-      uiSelectBox.setValue(childNode.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
-    } else {
-      if(getNode() != null && getNode().hasProperty(getPropertyName(jcrPath))) {
-        if(getNode().getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
-          uiSelectBox.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
-        } else if(onchange.equals("true") && isOnchange_) {
-          uiSelectBox.setValue(uiSelectBox.getValue()) ;
-        } else {
-          uiSelectBox.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValue().getString()) ;      
+    if(getNode() != null && arrNodes.length == 4) childNode = getNode().getNode(arrNodes[2]) ;        
+    if(multiValues != null && multiValues.equals("true")) {
+      uiSelectBox.setMultiple(true);
+      StringBuffer buffer = new StringBuffer();
+      if(childNode != null) {      
+        List<String> valueList = new ArrayList<String>();      
+        Value[] values = childNode.getProperty(getPropertyName(jcrPath)).getValues();
+        for(Value value : values) {
+          buffer.append(value.getString()).append(",");
+        }
+        uiSelectBox.setSelectedValues(StringUtils.split(buffer.toString(), ","));
+      } else {
+        if(getNode() != null && getNode().hasProperty(getPropertyName(jcrPath))) {
+          List<String> valueList = new ArrayList<String>();
+          if(getNode().getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
+            Value[] values = getNode().getProperty(getPropertyName(jcrPath)).getValues();
+            for(Value value : values) {
+              buffer.append(value.getString()).append(",");
+            }          
+          } else if(onchange.equals("true") && isOnchange_) {
+            String values = uiSelectBox.getValue();
+            buffer.append(values).append(",");
+          } else {
+            Value[] values = getNode().getProperty(getPropertyName(jcrPath)).getValues();          
+            for(Value value : values) {
+              buffer.append(value.getString()).append(",");
+            }                
+          }        
+          uiSelectBox.setSelectedValues(StringUtils.split(buffer.toString(), ","));
         }
       }
-    }
+    } else{
+      if(childNode != null) {
+        uiSelectBox.setValue(childNode.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
+      } else {
+        if(getNode() != null && getNode().hasProperty(getPropertyName(jcrPath))) {
+          if(getNode().getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
+            uiSelectBox.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
+          } else if(onchange.equals("true") && isOnchange_) {
+            uiSelectBox.setValue(uiSelectBox.getValue()) ;
+          } else {
+            uiSelectBox.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValue().getString()) ;      
+          }
+        }
+      }
+    }    
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty) ;
