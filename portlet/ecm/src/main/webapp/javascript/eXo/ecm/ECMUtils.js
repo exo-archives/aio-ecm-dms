@@ -253,6 +253,27 @@
 	    window.location = serverInfo+ "/"+portalName + "/rest/private/jcr/"+repository +"/" +workspace + nodePath;
 	  } 
 	} ;
+	
+	ECMUtils.prototype.pushToClipboard = function(event, url) {
+    if(window.clipboardData) {
+			window.clipboardData.setData('text',url);
+	  } else {
+	    var clipboard = document.getElementById('ecm-clipboard');
+			if (clipboard == null) {
+		   	clipboard = document.createElement('div');
+		   	clipboard.setAttribute("id", "ecm-clipboard");
+		   	clipboard.style.display = "block";
+		   	document.body.appendChild(clipboard);
+			}
+	    clipboard.innerHTML = '<embed src="/ecm/javascript/eXo/ecm/ECMClipboard.swf" FlashVars="clipboard=' + encodeURIComponent(url)
+	    											 + '"width="0" height="0" type="application/x-shockwave-flash"></embed>';
+	    document.body.removeChild(clipboard);
+	  }
+	 	eXo.core.MouseEventManager.docMouseDownEvt(event);
+	  return false;
+	};
 };
 
 eXo.ecm.ECMUtils = new ECMUtils();
+
+
