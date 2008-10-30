@@ -406,6 +406,10 @@
   color: orange;
 }
 
+.UIECMAdminPortlet .UIViewContainer .UIPopupWindow .UITabPane .FormContainer a:hover {
+	color: #058EE6;
+}
+
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UIECMAdminPortlet .UINamespaceManager {

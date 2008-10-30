@@ -34,7 +34,9 @@
 	padding: 10px;
 }
 
-
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
+ 	line-height: 24px;
+}
 
 /***********************UIRepositoryControl**************************/
 .UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
@@ -417,6 +419,10 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithActions .ActionField a:hover {
   color: orange;
+}
+
+.UIECMAdminPortlet .UIViewContainer .UIPopupWindow .UITabPane .FormContainer a:hover {
+	color: #058EE6;
 }
 
 /*############################## -- UINamespaceManager -- ########################*/

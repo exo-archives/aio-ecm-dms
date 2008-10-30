@@ -322,3 +322,12 @@
   text-transform: uppercase;
 }
 
+/*********************************************** UITaskManager ***********************************/
+.UIWorkflowPortlet .UITabPane .UITabContent .UIFormWithTitle {
+	width: 525px;
+}
+
+.UIWorkflowPortlet .UITabPane .UIForm .HorizontalLayout {
+	padding: 1px;
+}
+

@@ -6,7 +6,7 @@
 			  <table class="UIFormGrid">
 					<tr>
 						<td class="FieldLabel">Visibility:</td>
-						<td class="FieldComponent" style="width: 80px;">
+						<td class="FieldComponent">
 							<% uiform.renderField(uicomponent.getChildById("visibility")) %>
 						</td>
 						<td class="FieldComponent">

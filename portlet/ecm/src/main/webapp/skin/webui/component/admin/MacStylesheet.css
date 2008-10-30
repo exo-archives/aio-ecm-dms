@@ -247,6 +247,7 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
  	padding: 4px 8px 4px 0px;
+ 	line-height: 18px;
 }
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
@@ -259,6 +260,10 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a:hover {
   color: orange;
+}
+
+.UIECMAdminPortlet .UIViewContainer .UIPopupWindow .UITabPane .FormContainer a:hover {
+	color: #058EE6;
 }
 
 /*----------------------------UIRepositoryForm -------------------------*/

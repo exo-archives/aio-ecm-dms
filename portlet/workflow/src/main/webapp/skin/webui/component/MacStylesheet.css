@@ -340,3 +340,12 @@
 	background: url('MacSkin/background/Background1x4.png') repeat;
 	padding-top: 10px;
 }
+
+/*********************************************** UITaskManager ***********************************/
+.UIWorkflowPortlet .UITabPane .UITabContent .UIFormWithTitle {
+	width: 525px;
+}
+
+.UIWorkflowPortlet .UITabPane .UIForm .HorizontalLayout {
+	padding: 1px;
+}

@@ -135,4 +135,8 @@
 	margin: 15px auto;
 }
 
+.UIECMAdminPortlet .UINodeTypeManager .FormContainer .UIFormGrid .FieldComponent a:hover {
+	color: #058EE6;
+}
+
 /*############################## -- End UINodeTypeManager-- ########################*/
