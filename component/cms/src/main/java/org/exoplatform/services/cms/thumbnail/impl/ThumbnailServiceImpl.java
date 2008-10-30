@@ -19,6 +19,7 @@ package org.exoplatform.services.cms.thumbnail.impl;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -49,11 +50,13 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
   private String smallSize_;
   private String mediumSize_;
   private String bigSize_;
+  private String mimeTypes_;
   
   public ThumbnailServiceImpl(InitParams initParams) throws Exception {
     smallSize_ = initParams.getValueParam("smallSize").getValue();
     mediumSize_ = initParams.getValueParam("mediumSize").getValue();
     bigSize_ = initParams.getValueParam("bigSize").getValue();
+    mimeTypes_ = initParams.getValueParam("mimetypes").getValue();
     isEnableThumbnail_ = Boolean.parseBoolean(initParams.getValueParam("enable").getValue());
   }
 
@@ -135,6 +138,17 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
     }
   }
   
+  public List<String> getMimeTypes() {
+    return Arrays.asList(mimeTypes_.split(";"));
+  }
+  
+  public boolean isAllowViewCoverFlow(Node node) throws Exception {
+    if(node.getPrimaryNodeType().getName().equals(NT_FILE)) {
+      String mimeType = node.getNode(JCR_CONTENT).getProperty(JCR_MIMETYPE).getString();
+      if(getMimeTypes().contains(mimeType)) return true;
+    }
+    return false;
+  }
   public void start() { }
   
   public void stop() { }

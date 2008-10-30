@@ -107,4 +107,16 @@ public interface ThumbnailService {
  * @throws Exception
  */  
   public void processThumbnailList(List<Node> listNodes, String type) throws Exception;
+/**
+ * Get mime types which allow to view
+ * @return List<String> 
+ */  
+  public List<String> getMimeTypes();
+/**
+ * Check to make sure a node can be view by coverflow or not
+ * @param node Node will be check via mimetype
+ * @return Boolean 
+ * @throws Exception
+ */
+  public boolean isAllowViewCoverFlow(Node node) throws Exception;
 }

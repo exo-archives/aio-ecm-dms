@@ -133,7 +133,6 @@
 		          String isLocked = "false";
 		          if(data.isLocked()) isLocked = "true";     
 		          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;
-		          
 		        %>   
 		      <div class="ActionIconBox" locked="<%=isLocked%>" <%=rightClickMenu%> style="padding: 4px 0px 4px 0px; height: auto;"
 		       				objectId="<%=data.getPath()%>" workspaceName="<%=preferenceWS%>" ondblclick="$actionLink">
@@ -142,13 +141,9 @@
 								<div class="ThumbnailImage">
 									<%
 									  String thumbnailImage = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + data.getPath() + "/?size=medium";
-									  if(thumbnailImage != null) {
 									%>
-									    <span style="display: block;" class="LoadingProgressIcon"><img src="$thumbnailImage" onload="this.parentNode.style.background='none'" /></span>
-									    
-									<%} else { %>
-									    <span style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></span>
-									<%}%>
+								    <span style="display: block;" class="LoadingProgressIcon"><img src="$thumbnailImage" onerror='eXo.ecm.UISimpleView.errorCallback(this);' onload="this.parentNode.style.background='none'" /></span>
+								    <span style="display: none;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></span>
 								</div>
 							</div>
 			        <%

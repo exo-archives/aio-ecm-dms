@@ -174,18 +174,9 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return false ;
   }
   
-  public boolean isImageType(Node node) throws Exception {
-    String nodeType = node.getPrimaryNodeType().getName();
-    if(nodeType.equals(Utils.NT_FILE)) {
-      String mimeType = node.getNode(Utils.JCR_CONTENT).getProperty(Utils.JCR_MIMETYPE).getString();
-      if(mimeType.startsWith("image")) return true;
-    }
-    return false;
-  }
-  
-  public boolean hasThumbnailImage(Node node) throws Exception {
-    if(node.hasProperty(ThumbnailService.MEDIUM_SIZE)) return true;
-    return false;
+  public boolean isAllowViewCoverFlow(Node node) throws Exception {
+    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+    return thumbnailService.isAllowViewCoverFlow(node); 
   }
   
   public String getThumbnailImage(Node node) throws Exception {

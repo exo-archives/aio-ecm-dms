@@ -574,7 +574,11 @@ var SimpleView = function() {
 			eval(url);
 		}
 	};
-	
+	SimpleView.prototype.errorCallback = function(obj){
+	  var img = eXo.core.DOMUtil.findNextElementByTagName(obj.parentNode,"span");
+	  img.style.display = "block";
+	  obj.parentNode.style.display = "none";
+	};
 	//private method
 	function newElement(option) {
 		var div = document.createElement('div');

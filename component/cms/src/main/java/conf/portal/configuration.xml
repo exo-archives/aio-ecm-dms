@@ -167,7 +167,11 @@
       <value-param>
       	<name>enable</name>
 	      <value>false</value>
-      </value-param>      
+      </value-param>
+      <value-param>
+        <name>mimetypes</name>
+        <value>image/jpeg;image/png;image/gif;image/bmp</value>
+      </value-param>            
     </init-params>
 	</component>
 	

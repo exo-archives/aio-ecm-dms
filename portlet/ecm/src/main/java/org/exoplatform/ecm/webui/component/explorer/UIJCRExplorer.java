@@ -53,7 +53,6 @@ import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
-import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ExtendedNode;
@@ -188,13 +187,6 @@ public class UIJCRExplorer extends UIContainer {
     }         
   }
   
-  public void processAddThumbnail(List<Node> listNodes, String type) throws Exception {
-    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
-    if(thumbnailService.isEnableThumbnail()) {
-      thumbnailService.processThumbnailList(listNodes, type);
-    }
-  }
-
   public void setRepositoryName(String repositoryName) { currentRepositoryName_ = repositoryName ; }
   public String getRepositoryName() { return currentRepositoryName_ ; }
   
