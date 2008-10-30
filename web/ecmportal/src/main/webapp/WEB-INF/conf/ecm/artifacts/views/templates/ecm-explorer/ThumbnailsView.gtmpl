@@ -141,10 +141,11 @@
 							<div class="NodeLabel">
 								<div class="ThumbnailImage">
 									<%
-									  String thumbnailImage = uicomponent.getThumbnailImage(data);
+									  String thumbnailImage = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + data.getPath() + "/?size=medium";
 									  if(thumbnailImage != null) {
 									%>
-									    <span style="display: block;"><img src="$thumbnailImage"/></span>
+									    <span style="display: block;" class="LoadingProgressIcon"><img src="$thumbnailImage" onload="this.parentNode.style.background='none'" /></span>
+									    
 									<%} else { %>
 									    <span style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></span>
 									<%}%>

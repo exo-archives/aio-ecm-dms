@@ -150,6 +150,7 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
     if(!selectedNode.isNodeType(EXO_THUMBNAIL)) selectedNode.addMixin(EXO_THUMBNAIL);
     InputStream thumbnailStream = ImageUtils.scaleImage(image, width, height);
     selectedNode.setProperty(propertyName, thumbnailStream);
+    selectedNode.setProperty(THUMBNAIL_LAST_MODIFIED, new GregorianCalendar());
     selectedNode.save();
     thumbnailStream.close();
   }
