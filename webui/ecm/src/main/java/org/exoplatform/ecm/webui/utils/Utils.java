@@ -93,7 +93,9 @@ public class Utils {
   final public static String EXO_MODIFIED_DATE = "exo:dateModified";
 
 
-  final public static String SPECIALCHARACTER[] = {SEMI_COLON,COLON,SLASH,BACKSLASH,"'","|",">","<","\"", "?", "!", "@", "#", "$", "%","^","&","*"};
+  final public static String SPECIALCHARACTER[] = {SEMI_COLON,COLON,SLASH,BACKSLASH,"'","|",">","<",
+                                                   "\"", "?", "!", "@", "#", "$", "%","^","&","*",
+                                                   "(", ")", "[", "]", "{", "}"};
   final public static String REPOSITORY = "repository".intern();
   final public static String VIEWS = "views".intern();
   final public static String DRIVE = "drive".intern();
