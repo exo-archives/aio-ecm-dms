@@ -37,7 +37,7 @@
 	            %>
 	              <td><%=_ctx.appRes("UIAuditingInfo.msg.noVersion")%></td>
 	            <%} else { %>
-	              <td><%=verionName%></td>
+	              <td><%=versionName%></td>
 	            <%}%>  
 	          </tr>
 	     <% 
