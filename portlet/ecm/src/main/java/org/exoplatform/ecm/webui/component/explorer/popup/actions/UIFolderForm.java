@@ -102,7 +102,16 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
-      }
+      }      
+      String[] arrFilterChar = {".", "/", ":", "[", "]", "*", "'", "|", "\""};
+      for(String filterChar : arrFilterChar) {
+        if(name.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null, 
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+      }    
       String type = null ;
       if(uiFolderForm.allowCreateFolder_.equals("Both")) {
         type = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;

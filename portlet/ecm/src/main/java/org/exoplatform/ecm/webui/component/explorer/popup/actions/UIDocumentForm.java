@@ -40,6 +40,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
+import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -132,13 +133,28 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIDocumentForm documentForm = event.getSource();
       UIJCRExplorer uiExplorer = documentForm.getAncestorOfType(UIJCRExplorer.class) ;
-      List inputs = documentForm.getChildren() ;
+      List inputs = documentForm.getChildren();
+      UIApplication uiApp = documentForm.getAncestorOfType(UIApplication.class);
+      for (int i = 0; i < inputs.size(); i++) {
+        UIFormInputBase input = (UIFormInputBase) inputs.get(i);
+        if((input.getName() != null) && input.getName().equals("name")) {
+          String[] arrFilterChar = {".", "/", ":", "[", "]", "*", "'", "|", "\""};          
+          String valueName = input.getValue().toString();          
+          for(String filterChar : arrFilterChar) {
+            if(valueName.indexOf(filterChar) > -1) {
+              uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null, 
+                  ApplicationMessage.WARNING));
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
+            }
+          }
+        }
+      }
       Map inputProperties = DialogFormUtil.prepareMap(inputs, documentForm.getInputProperties()) ;
       Node newNode = null ;
       String nodeType ;
       Node homeNode ;
-      Node currentNode = uiExplorer.getCurrentNode();
-      UIApplication uiApp = documentForm.getAncestorOfType(UIApplication.class);
+      Node currentNode = uiExplorer.getCurrentNode();      
       if(documentForm.isAddNew()) {
         UIDocumentFormController uiDFController = documentForm.getParent() ;
         homeNode = currentNode ;

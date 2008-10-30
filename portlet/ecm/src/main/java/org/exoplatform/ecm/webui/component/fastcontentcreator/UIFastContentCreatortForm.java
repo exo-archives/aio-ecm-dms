@@ -18,6 +18,7 @@ package org.exoplatform.ecm.webui.component.fastcontentcreator;
 
 import java.security.AccessControlException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
@@ -160,6 +161,22 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       } catch(Exception e) {
         session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
       }
+      List inputs = uiForm.getChildren();
+      for (int i = 0; i < inputs.size(); i++) {
+        UIFormInputBase input = (UIFormInputBase) inputs.get(i);
+        if((input.getName() != null) && input.getName().equals("name")) {
+          String[] arrFilterChar = {".", "/", ":", "[", "]", "*", "'", "|", "\""};          
+          String valueName = input.getValue().toString();          
+          for(String filterChar : arrFilterChar) {
+            if(valueName.indexOf(filterChar) > -1) {
+              uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.name-not-allowed", null, 
+                  ApplicationMessage.WARNING));
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
+            }
+          }
+        }
+      }
       Map inputProperties = DialogFormUtil.prepareMap(uiForm.getChildren(), uiForm.getInputProperties()) ;
       Node homeNode = null;
       Node newNode = null ;
@@ -184,7 +201,8 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
         String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
         homeNode.getSession().save() ;
         if(homeNode.hasNode(addedPath.substring(addedPath.lastIndexOf("/") + 1))) {
-          newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1)) ; 
+          newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1));
+          event.getRequestContext().setAttribute("nodePath", newNode.getPath());
         }
         uiForm.reset() ;
         uiForm.setIsResetForm(true) ;
@@ -231,7 +249,6 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
           session.logout();
         }
       }
-      event.getRequestContext().setAttribute("nodePath",newNode.getPath());
     }
   }  
     
