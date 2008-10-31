@@ -22,7 +22,6 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -61,8 +60,6 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 public class UIThumbnailForm extends UIForm implements UIPopupComponent {
  
   final static public String MEDIUM_SIZE = "mediumSize";
-  private String selectedPath_;
-  private String wsName_;
   private boolean thumbnailRemoved_ = false;
   
   public UIThumbnailForm() throws Exception {
@@ -75,18 +72,11 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
     return Utils.getThumbnailImage(node, ThumbnailService.MEDIUM_SIZE);
   }
   
-  public boolean isRemovedThumbnail() { return thumbnailRemoved_; }
-  
-  public void setSelectedInfo(String nodePath, String wsName) { 
-    selectedPath_ = nodePath; 
-    wsName_ = wsName;
-  }
-  
   public Node getSelectedNode() throws Exception {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    Session session = uiExplorer.getSessionByWorkspace(wsName_);
-    return uiExplorer.getNodeByPath(selectedPath_, session);
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
   }
+  
+  public boolean isRemovedThumbnail() { return thumbnailRemoved_; }
   
   public String[] getActions() { return new String[] {"Save", "Cancel"}; }
   
@@ -102,7 +92,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      Node selectedNode = uiForm.getSelectedNode();
+      Node selectedNode = uiExplorer.getCurrentNode();
       if(selectedNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(selectedNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
@@ -140,7 +130,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
       UIThumbnailForm uiForm = event.getSource();
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       uiForm.thumbnailRemoved_ = true;
-      Node selectedNode = uiForm.getSelectedNode();
+      Node selectedNode = uiExplorer.getCurrentNode();
       if(selectedNode.hasProperty(ThumbnailService.MEDIUM_SIZE)) {
         selectedNode.getProperty(ThumbnailService.MEDIUM_SIZE).remove();
       }

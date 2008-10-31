@@ -173,10 +173,14 @@ public class UIPropertyForm extends UIForm {
     getUIFormSelectBox(FIELD_NAMESPACE).setEnable(!isLock);
   }
   
+  private Node getCurrentNode() throws Exception {
+    UIPropertiesManager uiManager = getParent();
+    return uiManager.getCurrentNode();
+  }
+  
   @SuppressWarnings("unchecked")
   public void loadForm(String propertyName) throws Exception {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    Node currentNode = uiExplorer.getCurrentNode();
+    Node currentNode = getCurrentNode();
     propertyName_ = propertyName;
     isAddNew_ = false;
     String[] propertyInfo = propertyName.split(":");
@@ -263,7 +267,7 @@ public class UIPropertyForm extends UIForm {
       UIPropertyForm uiForm = event.getSource();
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
-      Node currentNode = uiExplorer.getCurrentNode();
+      Node currentNode = uiForm.getCurrentNode();
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
@@ -320,8 +324,8 @@ public class UIPropertyForm extends UIForm {
         JCRExceptionManager.process(uiApp, e);
       }
       if(nodeType.canSetProperty(name, values)) {
-        uiExplorer.getCurrentNode().setProperty(name, values);
-        uiExplorer.getCurrentNode().save();
+        currentNode.setProperty(name, values);
+        currentNode.save();
         uiExplorer.getSession().save();
       }
       uiForm.refresh();

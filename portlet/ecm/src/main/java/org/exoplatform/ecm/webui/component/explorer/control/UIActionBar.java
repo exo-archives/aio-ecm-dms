@@ -77,6 +77,7 @@ import org.exoplatform.ecm.webui.component.explorer.search.UISimpleSearch;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UIViewRelationList;
+import org.exoplatform.ecm.webui.component.explorer.thumbnail.UIThumbnailForm;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
@@ -151,7 +152,8 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.ViewMetadatasActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.VoteActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIActionBar.CommentActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIActionBar.CommentActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.OverloadThumbnailActionListener.class, phase = Phase.DECODE)
     }
 )
 
@@ -1176,6 +1178,26 @@ public class UIActionBar extends UIForm {
       }      
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIPopupContainer.activate(UICommentForm.class, 750);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+    }
+  }
+  
+  static public class OverloadThumbnailActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {      
+      UIActionBar uiActionBar = event.getSource();
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
+      Node selectedNode = uiExplorer.getCurrentNode();
+      if(uiExplorer.getRootNode().equals(selectedNode)) {
+        UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      UIThumbnailForm uiThumbnailForm = 
+        uiExplorer.createUIComponent(UIThumbnailForm.class, null, null);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(uiThumbnailForm, 500, 0);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }

@@ -267,7 +267,6 @@
 			}
 	    clipboard.innerHTML = '<embed src="/ecm/javascript/eXo/ecm/ECMClipboard.swf" FlashVars="clipboard=' + encodeURIComponent(url)
 	    											 + '"width="0" height="0" type="application/x-shockwave-flash"></embed>';
-	    document.body.removeChild(clipboard);
 	  }
 	 	eXo.core.MouseEventManager.docMouseDownEvt(event);
 	  return false;

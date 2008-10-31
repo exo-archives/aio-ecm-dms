@@ -163,9 +163,9 @@
   background: url('DefaultSkin/UploadFile.gif') no-repeat ;
 }
 
-.EnableThumbnailIcon {
+.OverloadThumbnailIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewReferences.gif') no-repeat ;
+  background: url('DefaultSkin/GreenRightArrow.gif') no-repeat ;
 }
 
 .ViewReferencesIcon {

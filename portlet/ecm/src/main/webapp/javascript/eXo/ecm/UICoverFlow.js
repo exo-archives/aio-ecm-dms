@@ -22,6 +22,13 @@ var CoverFlow = function() {
 		  idoc.write(album.value);
 		  setTimeout(function() {idoc.close()}, 1000);
 	};
+	
+	CoverFlow.prototype.errorCallbackImage = function(obj){
+	  alert('test');
+	  var img = eXo.core.DOMUtil.findNextElementByTagName(obj.parentNode,"image");
+	  img.style.display = "block";
+	  obj.style.display = "none";
+	};
 };
 
 eXo.ecm.UICoverFlow = new CoverFlow();

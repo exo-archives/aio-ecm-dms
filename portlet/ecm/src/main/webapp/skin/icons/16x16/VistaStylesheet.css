@@ -91,9 +91,9 @@
   background: url('VistaSkin/AddDocument.png') no-repeat ;
 }
 
-.ViewProperties16x16Icon {
-	width: 16px; height: 16px;
-  background: url('VistaSkin/ViewProperties.png') no-repeat ;
+.GetURL16x16Icon {
+  height: 16px;
+  background: url('DefaultSkin/Documents.gif') no-repeat ;  
 }
 
 .AddThumbnail16x16Icon {

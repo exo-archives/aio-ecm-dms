@@ -294,6 +294,11 @@ a:hover .ShowHideBoxContainer {
   background: url('DefaultSkin/ViewReferences.gif') no-repeat ;
 }
 
+.OverloadThumbnailIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/GreenRightArrow.gif') no-repeat ;
+}
+
 .ShowJCRStructureIcon {
 	width: 24px; height: 24px;
   background: url('DefaultSkin/ShowJCRStructure.gif') no-repeat ;

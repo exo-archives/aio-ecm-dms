@@ -16,6 +16,9 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
+import javax.jcr.Node;
+
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -39,9 +42,25 @@ import org.exoplatform.webui.event.EventListener;
 
 public class UIPropertiesManager extends UIContainer implements UIPopupComponent {
   
+  private String selectedPath_ = null;
+  private String wsName_ = null;
+  
   public UIPropertiesManager() throws Exception {
     addChild(UIPropertyTab.class, null, null)  ;
     addChild(UIPropertyForm.class, null, null).setRendered(false) ;
+  }
+  
+  public Node getCurrentNode() throws Exception {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ; 
+    if(selectedPath_ != null) {
+      return uiExplorer.getNodeByPath(selectedPath_, uiExplorer.getSessionByWorkspace(wsName_));
+    }
+    return uiExplorer.getCurrentNode();
+  }
+  
+  public void setSelectedPath(String selectedPath, String wsName) { 
+    selectedPath_ = selectedPath; 
+    wsName_ = wsName;
   }
   
   public void activate() throws Exception {

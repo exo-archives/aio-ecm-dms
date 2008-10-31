@@ -49,11 +49,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIRenameForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
-import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertiesManager;
-import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertyForm;
-import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertyTab;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
-import org.exoplatform.ecm.webui.component.explorer.thumbnail.UIThumbnailForm;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
@@ -115,9 +111,7 @@ import org.exoplatform.webui.exception.MessageException;
         @EventConfig(listeners = UIWorkingArea.AddFolderActionListener.class),
         @EventConfig(listeners = UIWorkingArea.AddDocumentActionListener.class),
         @EventConfig(listeners = UIWorkingArea.UploadActionListener.class),
-        @EventConfig(listeners = UIWorkingArea.MoveNodeActionListener.class, confirm="UIWorkingArea.msg.confirm-move"),
-        @EventConfig(listeners = UIWorkingArea.ViewPropertiesActionListener.class),
-        @EventConfig(listeners = UIWorkingArea.AddThumbnailActionListener.class)
+        @EventConfig(listeners = UIWorkingArea.MoveNodeActionListener.class, confirm="UIWorkingArea.msg.confirm-move")
       }
   )
 })
@@ -270,8 +264,6 @@ public class UIWorkingArea extends UIContainer {
       actionsList.append(",Delete");
     }
     if(uiExplorer.getAllClipBoard().size() > 0) actionsList.append(",Paste");
-    actionsList.append(",AddThumbnail");
-    actionsList.append(",ViewProperties");
     return actionsList.toString();
   }
   
@@ -1462,75 +1454,6 @@ public class UIWorkingArea extends UIContainer {
         JCRExceptionManager.process(uiApp, e);
         return;
       }
-    }
-  }
-  
-  static public class ViewPropertiesActionListener extends EventListener<UIRightClickPopupMenu> {
-    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {      
-      UIWorkingArea uiWorkingArea = event.getSource().getParent();
-      UIJCRExplorer uiExplorer = uiWorkingArea.getParent();
-      Node node = null;
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      if(nodePath == null) {
-        node = uiExplorer.getCurrentNode();
-        nodePath = node.getPath();
-        wsName = node.getSession().getWorkspace().getName();
-      } else {
-        node = uiExplorer.getNodeByPath(nodePath, uiExplorer.getSessionByWorkspace(wsName));
-      }
-      if(uiExplorer.getRootNode().equals(node)) {
-        UIApplication uiApp = uiWorkingArea.getAncestorOfType(UIApplication.class);
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-      UIPropertiesManager uiPropertiesManager = 
-        uiExplorer.createUIComponent(UIPropertiesManager.class, null, null);
-      UIPropertyForm uiForm = uiPropertiesManager.getChild(UIPropertyForm.class);
-      uiForm.setRepositoryName(uiExplorer.getRepositoryName());
-      uiForm.getUIFormSelectBox(UIPropertyForm.FIELD_NAMESPACE).setOptions(uiForm.getNamespaces());
-      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
-      UIPopupContainer.activate(uiPropertiesManager, 700, 0);
-      UIPropertyTab uiPropertyTab = uiPropertiesManager.getChild(UIPropertyTab.class);
-      uiPropertyTab.setSelectedPath(nodePath, wsName);
-      if(uiExplorer.nodeIsLocked(node)){
-        uiPropertiesManager.setLockForm(true);
-      } else {
-        uiPropertiesManager.setLockForm(!PermissionUtil.canSetProperty(node));
-      }
-      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
-    }
-  }
-  
-  static public class AddThumbnailActionListener extends EventListener<UIRightClickPopupMenu> {
-    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {      
-      UIWorkingArea uiWorkingArea = event.getSource().getParent();
-      UIJCRExplorer uiExplorer = uiWorkingArea.getParent();
-      Node selectedNode = null;
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      if(nodePath == null) {
-        selectedNode = uiExplorer.getCurrentNode();
-        nodePath = selectedNode.getPath();
-        wsName = selectedNode.getSession().getWorkspace().getName();
-      } else {
-        selectedNode = uiExplorer.getNodeByPath(nodePath, uiExplorer.getSessionByWorkspace(wsName));
-      }
-      if(uiExplorer.getRootNode().equals(selectedNode)) {
-        UIApplication uiApp = uiWorkingArea.getAncestorOfType(UIApplication.class);
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-      UIThumbnailForm uiThumbnailForm = 
-        uiExplorer.createUIComponent(UIThumbnailForm.class, null, null);
-      uiThumbnailForm.setSelectedInfo(nodePath, wsName);
-      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
-      UIPopupContainer.activate(uiThumbnailForm, 500, 0);
-      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 }

@@ -155,6 +155,11 @@
   background: url('VistaSkin/AddTicket.gif') no-repeat ;
 }
 
+.OverloadThumbnailIcon {
+	width: 24px; height: 24px;
+  background: url('VistaSkin/GreenRightArrowDoubleScreen.png') no-repeat ;
+}
+
 .AddFolderIcon {
 	width: 24px; height: 26px;
   background: url('VistaSkin/AddFolder.png') no-repeat ;

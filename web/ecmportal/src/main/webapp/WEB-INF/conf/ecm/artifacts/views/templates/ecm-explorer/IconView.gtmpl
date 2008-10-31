@@ -77,11 +77,6 @@
 									</div>
 							 	</a>
 						  <%}%>
-						  <a class="MenuItem" href="<%=contextMenu.event("ViewProperties")%>" style="display: block;"> 	
-								<div class="ItemIcon ViewProperties16x16Icon">
-									<%=_ctx.appRes("ECMContextMenu.event.ViewProperties")%>
-								</div>
-						 	</a>
 						 </div>	
 					 </div>
 				</div>
@@ -123,6 +118,12 @@
 		              strActs += "</a>" ;
 		            }            
 		          }
+		          String clipboardLink = serverUrl + "/" + portalName + "/rest/jcr/" + repository + "/" + preferenceWS + data.getPath();
+		          strActs +=	"<a class='MenuItem' style='display: block;' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
+							strActs +=  "	<div class='ItemIcon GetURL16x16Icon'>" ;
+							strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
+							strActs +=  "	</div>" ;
+					 		strActs +=  "</a>";		          
 		          strActs += "</div>" ;
 		          def rightClickMenu = "" ;
 		          String isLocked = "false";
