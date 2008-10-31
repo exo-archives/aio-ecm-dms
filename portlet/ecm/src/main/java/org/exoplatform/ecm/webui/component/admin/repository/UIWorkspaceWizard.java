@@ -64,20 +64,20 @@ import org.exoplatform.webui.form.UIFormTabPane;
     lifecycle = UIFormLifecycle.class,
     template = "app:/groovy/webui/component/admin/UIWorkspaceWizard.gtmpl",    
     events = {
-      @EventConfig(listeners = UIWorkspaceWizard.AddPermissionActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.SelectContainerActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.SelectStoreActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.SelectQueryHandlerActionListener.class),
+      @EventConfig(listeners = UIWorkspaceWizard.AddPermissionActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.SelectContainerActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.SelectStoreActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.SelectQueryHandlerActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIWorkspaceWizard.FinishActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.NextActionListener.class ),
-      @EventConfig(listeners = UIWorkspaceWizard.BackActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.ViewStep1ActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.ViewStep2ActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.ViewStep3ActionListener.class),
+      @EventConfig(listeners = UIWorkspaceWizard.NextActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.BackActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.ViewStep1ActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.ViewStep2ActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.ViewStep3ActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIWorkspaceWizard.CancelActionListener.class, phase=Phase.DECODE),
-      @EventConfig(listeners = UIWorkspaceWizard.EditPermissionActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.RemovePermissionActionListener.class),
-      @EventConfig(listeners = UIWorkspaceWizard.ChangeTypeStoreActionListener.class)
+      @EventConfig(listeners = UIWorkspaceWizard.EditPermissionActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.RemovePermissionActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIWorkspaceWizard.ChangeTypeStoreActionListener.class, phase=Phase.DECODE)
     }
 
 )
@@ -102,9 +102,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
   final static public String KEY_MULTIDB = "multi-db" ;
   final static public String KEY_MAXBUFFER = "max-buffer-size" ;
   final static public String KEY_PATH = "path"  ;
-  final static public String KEY_INDEXDIR = "indexDir" ;
-  final static public String KEY_MAXSIZE = "maxSize" ;
-  final static public String KEY_LIVETIME = "liveTime" ;
+  final static public String KEY_INDEXDIR = "index-dir" ;
+  final static public String KEY_MAXSIZE = "max-size" ;
+  final static public String KEY_LIVETIME = "live-time" ;
   final static public String KEY_UPDATESTORE = "update-storage";
   final static public String KEY_CONTAINERTYPE = "org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer" ;
   final static public String KEY_STORETYPE = "org.exoplatform.services.jcr.impl.storage.value.fs.SimpleFileValueStorage" ;
@@ -182,9 +182,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
         name = workSpace.getName() ;
         isDefaultWS = uiRepoForm.isDefaultWorkspace(name) ;
         selectedNodeType = workSpace.getAutoInitializedRootNt();
-//        selectedNodeType = workSpace.getInitializer().getParameterValue(WorkspaceInitializer.ROOT_NODETYPE_PARAMETER, null);
       }
-//      permission = workSpace.getInitializer().getParameterValue(WorkspaceInitializer.ROOT_PERMISSIONS_PARAMETER, null) ;
       permission = workSpace.getAutoInitPermissions();
       if(workSpace.getLockManager() != null) {
         lockTime  = String.valueOf(workSpace.getLockManager().getTimeout()) ; 
@@ -497,18 +495,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
-          try {
-            Integer.parseInt(maxBuffer.trim()) ;
-          } catch (Exception e) {
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-invalid", null)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-            return ;
-          }
-          if(Integer.parseInt(maxBuffer) <= 0) {
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-zero", null)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-            return ;
-          }
           if(Utils.isNameEmpty(swapPath)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.swapPath-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -544,9 +530,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
       uiFormWizard.removePopup(UIWorkspaceWizard.POPUPID) ;
       long lockTimeOutValue = 0 ;
-      long bufferValue = 0 ;
-      long maxSizeValue = 0 ;
-      long liveTimeValue = 0 ;
 
       UIWizardStep1 uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       String name = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_NAME).getValue() ;
@@ -591,38 +574,13 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
-          try {
-            maxSizeValue = Integer.parseInt(maxSize.trim()) ;
-          } catch (NumberFormatException nfe) {
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.maxSize-invalid", null)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-            return ;
-          }
-          if(maxSizeValue < 0) {
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.maxSize-rezo", null)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-            return ;
-          }
           if(uiFormWizard.isEmpty(liveTime)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.liveTime-require", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
-          try {
-            liveTimeValue = Integer.parseInt(liveTime.trim()) ;
-          } catch (NumberFormatException nfe) {
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.liveTime-invalid", null)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-            return ;
-          }
-          if(liveTimeValue < 0) {
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.liveTime-rezo", null)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-            return ;
-          }
         }
         lockTimeOutValue = Integer.parseInt(lockTimeOut) ;
-        bufferValue = Integer.parseInt(maxBuffer) ;
         if(uiFormWizard.isNewWizard_) {
           if(uiRepoForm.isExistWorkspace(name)){
             Object[] args = new Object[]{name}  ;        
@@ -649,8 +607,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       persisterEntry.setParameters(lpParams);
       lockEntry.setPersister(persisterEntry);
       workspaceEntry.setLockManager(lockEntry) ;
-      workspaceEntry.setContainer(newContainerEntry(containerType, sourceName, dbType, isMulti,storeType, filterType, bufferValue, swapPath, storePath, true,name));
-      workspaceEntry.setCache(newCacheEntry(isCache, maxSizeValue, liveTimeValue)) ;
+      workspaceEntry.setContainer(newContainerEntry(containerType, sourceName, dbType, isMulti,storeType, filterType, maxBuffer, swapPath, storePath, true,name));
+      workspaceEntry.setCache(newCacheEntry(isCache, maxSize, liveTime)) ;
       workspaceEntry.setQueryHandler(newQueryHandlerEntry(queryHandlerType, indexPath)) ;
 
       if(uiRepoForm.isAddnew_) {
@@ -696,13 +654,13 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
 
     @SuppressWarnings("unchecked")
     private ContainerEntry newContainerEntry(String containerType, String sourceName, String dbType, boolean  isMulti,
-        String storeType, String filterType, long bufferValue, String swapPath, String storePath, boolean isUpdateStore,String valueStorageId) {
+        String storeType, String filterType, String bufferValue, String swapPath, String storePath, boolean isUpdateStore,String valueStorageId) {
       List containerParams = new ArrayList();
       containerParams.add(new SimpleParameterEntry(KEY_SOURCENAME, sourceName)) ;
       containerParams.add(new SimpleParameterEntry(KEY_DIALECT, dbType)) ;
       containerParams.add(new SimpleParameterEntry(KEY_MULTIDB, String.valueOf(isMulti))) ;
       containerParams.add(new SimpleParameterEntry(KEY_UPDATESTORE, String.valueOf(isUpdateStore))) ;
-      containerParams.add(new SimpleParameterEntry(KEY_MAXBUFFER, String.valueOf(bufferValue))) ;
+      containerParams.add(new SimpleParameterEntry(KEY_MAXBUFFER, bufferValue)) ;
       containerParams.add(new SimpleParameterEntry(KEY_SWAPDIRECTORY, swapPath)) ;
       ContainerEntry containerEntry = new ContainerEntry(containerType, (ArrayList) containerParams) ;      
       containerEntry.setParameters(containerParams);
@@ -735,12 +693,12 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       ValueStorageEntry valueStorageEntry = new ValueStorageEntry(storeType, vsparams)  ;
       return valueStorageEntry ;
     }
-    private CacheEntry newCacheEntry(boolean isCache, long maxSizeValue, long liveTimeValue) {
+    private CacheEntry newCacheEntry(boolean isCache, String maxSizeValue, String liveTimeValue) {
       CacheEntry cache = new CacheEntry() ;
       cache.setEnabled(isCache) ;      
       ArrayList<SimpleParameterEntry> cacheParams = new ArrayList<SimpleParameterEntry>() ;
-      cacheParams.add(new SimpleParameterEntry(KEY_MAXSIZE, String.valueOf(maxSizeValue))) ;
-      cacheParams.add(new SimpleParameterEntry(KEY_LIVETIME, String.valueOf(liveTimeValue))) ;
+      cacheParams.add(new SimpleParameterEntry(KEY_MAXSIZE, maxSizeValue)) ;
+      cacheParams.add(new SimpleParameterEntry(KEY_LIVETIME, liveTimeValue)) ;
       cache.setParameters(cacheParams) ;
       return cache ;
     }
@@ -846,30 +804,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
           }  
           if(uiFormWizard.isEmpty(maxBuffer)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-require", null)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-            return ;
-          }
-          try {
-            Integer.parseInt(maxBuffer) ;
-          } catch (Exception e) {
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-invalid", null)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-            return ;
-          }
-          if(Integer.parseInt(maxBuffer) <= 0) {
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.buffer-zero", null)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-            return ;
-          }
-          try {
-            Integer.parseInt(maxCacheSize) ;
-          } catch (Exception e) {
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.maxCacheSize-invalid", null)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
-            return ;
-          }
-          if(Integer.parseInt(maxCacheSize) <= 0) {
-            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.maxCacheSize-zero", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }

@@ -26,7 +26,6 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.NumberFormatValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -54,7 +53,7 @@ public class UIWizardStep2 extends UIFormInputSetWithAction {
     addChild(new UIFormStringInput(FIELD_SOURCENAME, FIELD_SOURCENAME, null)) ;
     addChild(new UIFormSelectBox(FIELD_DBTYPE, FIELD_DBTYPE, getDbType())) ;
     addChild(new UIFormCheckBoxInput<Boolean>(FIELD_ISMULTI, FIELD_ISMULTI, null)) ;
-    addChild(new UIFormStringInput(FIELD_MAXBUFFER, FIELD_MAXBUFFER, null).addValidator(NumberFormatValidator.class)) ;
+    addChild(new UIFormStringInput(FIELD_MAXBUFFER, FIELD_MAXBUFFER, null)) ;
     addChild(new UIFormStringInput(FIELD_SWAPPATH, FIELD_SWAPPATH, null)) ;
     UIFormCheckBoxInput<Boolean> externalStore = new UIFormCheckBoxInput<Boolean>(FIELD_EXTERNAL_STORE,FIELD_EXTERNAL_STORE, null) ;
     externalStore.setOnChange("ChangeTypeStore") ;

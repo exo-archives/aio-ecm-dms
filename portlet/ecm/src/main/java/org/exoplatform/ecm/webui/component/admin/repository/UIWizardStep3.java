@@ -20,7 +20,6 @@ import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.NumberFormatValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -43,8 +42,8 @@ public class UIWizardStep3 extends UIFormInputSetWithAction {
     setActionInfo(FIELD_QUERYHANDLER, new String[]{"SelectQueryHandler"}) ;
     addChild(new UIFormStringInput(FIELD_INDEXPATH, FIELD_INDEXPATH, null)) ;
     addChild(new UIFormCheckBoxInput<Boolean>(FIELD_ISCACHE, FIELD_ISCACHE, null)) ;
-    addChild(new UIFormStringInput(FIELD_MAXSIZE, FIELD_MAXSIZE, null).addValidator(NumberFormatValidator.class)) ;
-    addChild(new UIFormStringInput(FIELD_LIVETIME, FIELD_LIVETIME, null).addValidator(NumberFormatValidator.class)) ;     
+    addChild(new UIFormStringInput(FIELD_MAXSIZE, FIELD_MAXSIZE, null)) ;
+    addChild(new UIFormStringInput(FIELD_LIVETIME, FIELD_LIVETIME, null)) ;     
   }
   protected void setFieldQueryHandler(String queryHandler) {
     getUIStringInput(FIELD_QUERYHANDLER).setValue(queryHandler) ;
