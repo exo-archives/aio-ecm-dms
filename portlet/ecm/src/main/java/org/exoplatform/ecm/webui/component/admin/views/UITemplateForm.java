@@ -242,7 +242,6 @@ public class UITemplateForm extends UIForm {
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class);
       ManageViewService manageViewService = uiForm.getApplicationComponent(ManageViewService.class);
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
-      String workspaceName = uiForm.template_.getSession().getWorkspace().getName();
       if(homeTemplate == null) {
         String tempPath = uiForm.template_.getPath();
         homeTemplate = tempPath.substring(0, tempPath.lastIndexOf("/"));
@@ -303,6 +302,7 @@ public class UITemplateForm extends UIForm {
           uiForm.template_.checkin();
         }
       }
+      String workspaceName = uiForm.template_.getSession().getWorkspace().getName();
       JCRResourceResolver resourceResolver = 
         new JCRResourceResolver(repository, workspaceName, "exo:templateFile");
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class);
