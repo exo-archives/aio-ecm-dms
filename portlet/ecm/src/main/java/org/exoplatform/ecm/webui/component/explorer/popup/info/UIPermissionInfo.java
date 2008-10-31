@@ -205,7 +205,8 @@ public class UIPermissionInfo extends UIContainer {
       }
       UIPopupContainer uiPopup = uicomp.getAncestorOfType(UIPopupContainer.class) ;
       if(!PermissionUtil.canRead(node)) {
-        uiJCRExplorer.setSelectNode(uiJCRExplorer.getRootNode().getPath(), uiJCRExplorer.getSession()) ;
+        uiJCRExplorer.setCurrentPath(node.getParent().getPath());
+        uiJCRExplorer.setSelectNode(node.getParent().getPath(), uiJCRExplorer.getSession());
         uiPopup.deActivate() ;
       } else {
         uicomp.updateGrid() ;
