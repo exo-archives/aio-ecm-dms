@@ -64,10 +64,10 @@ public class XMLDeploymentPlugin extends DeploymentPlugin {
       InputStream inputStream = configurationManager.getInputStream(sourcePath);
       ManageableRepository repository = repositoryService.getRepository(deploymentDescriptor.getTarget().getRepository());
       Session session = sessionProvider.getSession(deploymentDescriptor.getTarget().getWorkspace(), repository);
-      session.importXML(deploymentDescriptor.getTarget().getNodePath(), inputStream, ImportUUIDBehavior.IMPORT_UUID_COLLISION_REPLACE_EXISTING);
+      session.importXML(deploymentDescriptor.getTarget().getNodePath(), inputStream, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW );
       session.save();
       if(log.isInfoEnabled()) {
-        log.info(this.getName() + " is deployed succesful at " + new Date().getTime());
+        log.info(this.getName() + " is deployed succesful at " + new Date().toString());
       }
     }
     sessionProvider.close();

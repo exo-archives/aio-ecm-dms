@@ -23,9 +23,11 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
 /**
@@ -38,6 +40,7 @@ public class ContentInitializerService implements Startable{
   
   private List<DeploymentPlugin> listDeploymentPlugin = new ArrayList<DeploymentPlugin>();
   private RepositoryService repositoryService;
+  private Log log = ExoLogger.getLogger(this.getClass());
   
   public ContentInitializerService(RepositoryService repositoryService) {
     this.repositoryService = repositoryService;
@@ -61,14 +64,15 @@ public class ContentInitializerService implements Startable{
         contentInitializerService = serviceFolder.addNode("ContentInitializerService", "nt:unstructured");
       }
       if (!contentInitializerService.hasNode("ContentInitializerServiceLog")) {
-        long time = new Date().getTime();
+        Date date = new Date();
         StringBuffer logData = new StringBuffer();      
         for (DeploymentPlugin deploymentPlugin : listDeploymentPlugin) {
           try {
             deploymentPlugin.deploy();
-            logData.append("deploy " + deploymentPlugin.getName() + " deployment plugin succesfull at " + time + "\n");
+            logData.append("deploy " + deploymentPlugin.getName() + " deployment plugin succesful at " + date.toString() + "\n");
           } catch (Exception e) {
-            logData.append("deploy " + deploymentPlugin.getName() + " deployment plugin failure at " + time + " by " + e.getMessage() + "\n");
+            log.error("deploy " + deploymentPlugin.getName() + " deployment plugin failure at " + date.toString() + " by " + e.getMessage() + "\n");
+            logData.append("deploy " + deploymentPlugin.getName() + " deployment plugin failure at " + date.toString() + " by " + e.getMessage() + "\n");
           }                            
         } 
         
@@ -77,10 +81,10 @@ public class ContentInitializerService implements Startable{
         contentInitializerServiceLogContent.setProperty("jcr:encoding", "UTF-8");
         contentInitializerServiceLogContent.setProperty("jcr:mimeType", "text/plain");
         contentInitializerServiceLogContent.setProperty("jcr:data", logData.toString());
-        contentInitializerServiceLogContent.setProperty("jcr:lastModified", time);
+        contentInitializerServiceLogContent.setProperty("jcr:lastModified", date.getTime());
         session.save();
-      } 
-    } catch (Exception e) {
+      }
+    } catch (Exception e) { 
     } finally {
       sessionProvider.close();
     }
