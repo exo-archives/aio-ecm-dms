@@ -40,6 +40,7 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
@@ -56,7 +57,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
     template = "app:/groovy/webui/component/browse/UICBSearchForm.gtmpl",
     events = {
       @EventConfig(listeners = UICBSearchForm.SearchActionListener.class),
-      @EventConfig(listeners = UICBSearchForm.ChangeTypeActionListener.class)
+      @EventConfig(listeners = UICBSearchForm.ChangeTypeActionListener.class, phase = Phase.DECODE)
     }
 )
 public class UICBSearchForm extends UIForm {
