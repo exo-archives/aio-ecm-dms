@@ -22,6 +22,7 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.version.VersionException;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -116,6 +117,11 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
+      } catch(VersionException ver) {
+        uiApp.addMessage(new ApplicationMessage("UIThumbnailForm.msg.is-checked-in", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       } catch(Exception e) {
         e.printStackTrace();
         JCRExceptionManager.process(uiApp, e);
@@ -131,6 +137,13 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       uiForm.thumbnailRemoved_ = true;
       Node selectedNode = uiExplorer.getCurrentNode();
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+      if(!selectedNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIThumbnailForm.msg.is-checked-in", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       if(selectedNode.hasProperty(ThumbnailService.MEDIUM_SIZE)) {
         selectedNode.getProperty(ThumbnailService.MEDIUM_SIZE).remove();
       }
