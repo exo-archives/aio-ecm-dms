@@ -19,13 +19,12 @@
     <module>component/workflow/impl/jbpm/engine</module>
     <module>component/workflow/impl/jbpm/facade</module>
     <module>component/cms</module>
-	<module>component/deployment</module>
-	<module>component/publication</module>
-	<module>connectors/fckeditor</module>
-	<module>webui/ecm</module>
-	<module>web/eXoECMResources</module>	
+	  <module>component/deployment</module>
+	  <module>component/publication</module>
+	  <module>connectors/fckeditor</module>
+	  <module>webui/ecm</module>
+	  <module>web/eXoECMResources</module>	
     <module>bp</module>
-    <module>web/rest</module>
     <module>portlet/ecm</module>
     <module>portlet/workflow</module>
     <module>web/ecmportal</module>
