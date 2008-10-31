@@ -33,10 +33,11 @@ public class DelegateActionHandler implements ActionHandler {
   private boolean executed = false;
   
   public void execute(ExecutionContext context) {    
-    try {      
+    try {
       System.err.println("Delegate"+context.getVariable("delegate").toString());
       System.err.println("initiator"+context.getVariable("initiator").toString());
       System.err.println("exo:validator"+context.getVariable("exo:validator").toString());
+      context.setVariable("delegate_flg","true");                /* Set flag for delegate process */
       ProcessUtil.delegate(context);
     } catch (Exception e) {      
     } 

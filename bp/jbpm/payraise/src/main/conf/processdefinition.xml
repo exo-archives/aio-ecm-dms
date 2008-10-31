@@ -45,12 +45,13 @@
   </task-node>
 
   <task-node name="hr update">
-    <task swimlane="initiator">
+    <task swimlane="hr mgr">
       <controller>
         <variable name="requester" />      
         <variable name="amount-granted" />      
       </controller>
-    </task>  
+    </task
+    >  
     <transition to="end" />
   </task-node>
 

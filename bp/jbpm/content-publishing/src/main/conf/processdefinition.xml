@@ -8,7 +8,6 @@
 
   <!-- SWIMLANES -->
   <swimlane name="initiator" />    
-
   <!-- START-STATE -->
   <start-state name="start">  
     <task swimlane="initiator"/>    
@@ -49,6 +48,7 @@
       <action class="org.exoplatform.processes.publishing.DelegateActionHandler"/>
     </event>
     <sub-process name="content-publishing" />
+    <variable name="delegate_flg" access="read,write" mapped-name="delegate_flg" />
     <variable name="delegate" access="read,write" mapped-name="initiator" />
     <variable name="delegate" access="read,write" mapped-name="exo:validator" />
     <variable name="document-type" access="read,write" mapped-name="document-type" />    
@@ -59,7 +59,7 @@
     <variable name="actionName" access="read,write" mapped-name="actionName" />    
     <transition name="end" to="end"/>  
   </process-state>   
-
+ 
   <state name="manage-publication">
     <event type="node-enter">
       <action class="org.exoplatform.processes.publishing.SchedulePublicationTimerActionHandler"/>

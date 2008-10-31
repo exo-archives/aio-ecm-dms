@@ -17,6 +17,7 @@
 
 package org.exoplatform.processes.publishing;
 
+import org.jbpm.graph.def.Transition;
 import org.jbpm.graph.exe.ExecutionContext;
 import org.jbpm.taskmgmt.def.AssignmentHandler;
 import org.jbpm.taskmgmt.exe.Assignable;
@@ -27,11 +28,17 @@ import org.jbpm.taskmgmt.exe.Assignable;
  *          hoa.pham@exoplatform.com
  * Jan 2, 2008  
  */
-public class ValidatorAssignmentHandler implements AssignmentHandler{
+public class ValidatorAssignmentHandler implements AssignmentHandler {
 
   public void assign(Assignable assignable, ExecutionContext executionContext) throws Exception {
     String validator = (String) executionContext.getVariable("exo:validator");
-    assignable.setActorId(validator);    
+    String initiator = (String) executionContext.getVariable("initiator");
+    String delegate_flg = (String) executionContext.getVariable("delegate_flg");
+    
+    if ((delegate_flg != null) && delegate_flg.equals("true")) {                  /* When execute delegate process */ 
+      assignable.setActorId(initiator);
+    } else
+      assignable.setActorId(validator);
   }
 
 }
