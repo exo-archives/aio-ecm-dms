@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.PropertyDefinition;
 
@@ -78,9 +79,13 @@ public class UIMetadataList extends UIContainer {
       Metadata mt = new Metadata() ;
       mt.setName(nt.getName()) ;
       mt.isTemplate(metadataService.hasMetadata(nt.getName(), repository)) ;
-      PropertyDefinition def =((ExtendedNodeType)nt).getPropertyDefinitions(INTERNAL_USE).getAnyDefinition() ;
-      if(def.getDefaultValues()[0].getBoolean()) mt.setInternalUse("True") ;
-      else mt.setInternalUse("False") ;
+      PropertyDefinition def =
+        ((ExtendedNodeType)nt).getPropertyDefinitions(INTERNAL_USE).getAnyDefinition() ;
+      if(def.getDefaultValues() != null && def.getDefaultValues()[0].getBoolean()) {
+        mt.setInternalUse("True") ;
+      } else {
+        mt.setInternalUse("False") ;
+      }
       metadatas.add(mt) ;
     }
     return metadatas ; 
