@@ -79,7 +79,7 @@ public class UIMetadataList extends UIContainer {
       mt.setName(nt.getName()) ;
       mt.isTemplate(metadataService.hasMetadata(nt.getName(), repository)) ;
       PropertyDefinition def =((ExtendedNodeType)nt).getPropertyDefinitions(INTERNAL_USE).getAnyDefinition() ;
-      if(def.getDefaultValues()[0].getBoolean()) mt.setInternalUse("True") ;
+      if(def.getDefaultValues() != null && def.getDefaultValues()[0].getBoolean()) mt.setInternalUse("True") ;
       else mt.setInternalUse("False") ;
       metadatas.add(mt) ;
     }
