@@ -76,10 +76,14 @@ public class UIPropertyForm extends UIForm {
   final static public String FIELD_TYPE = "type";
   final static public String FIELD_VALUE = "value";
   final static public String FIELD_NAMESPACE = "namespace";
+  final static public String FIELD_MULTIPLE = "multiple";
+  final static private String FALSE = "false";
+  final static private String TRUE = "true";
 
   private String repositoryName_;
-  private boolean isAddNew_ = true;
   private String propertyName_;
+  private boolean isAddNew_ = true;
+  private boolean isMultiple_ = false;
   
   public UIPropertyForm() throws Exception {
     setMultiPart(true);
@@ -110,7 +114,13 @@ public class UIPropertyForm extends UIForm {
     UIFormSelectBox uiSelectBox = new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, options); 
     uiSelectBox.setOnChange("ChangeType");
     addUIFormInput(uiSelectBox);
-    initMultiValuesField();    
+    List<SelectItemOption<String>> multipleOpt = new ArrayList<SelectItemOption<String>>();
+    multipleOpt.add(new SelectItemOption<String>(TRUE, TRUE));
+    multipleOpt.add(new SelectItemOption<String>(FALSE, FALSE));
+    UIFormSelectBox uiMultiSelectBox = new UIFormSelectBox(FIELD_MULTIPLE,FIELD_MULTIPLE, multipleOpt);
+    uiMultiSelectBox.setOnChange("ChangeType");
+    addUIFormInput(uiMultiSelectBox);
+    initValueField();    
     setActions(new String[]{"Save", "Reset", "Cancel"});
   }
 
@@ -132,12 +142,12 @@ public class UIPropertyForm extends UIForm {
     getUIStringInput(FIELD_PROPERTY).setEditable(isAddNew_);
     getUIFormSelectBox(FIELD_TYPE).setEnable(isAddNew_);
     getUIFormSelectBox(FIELD_NAMESPACE).setEnable(isAddNew_);
-    initMultiValuesField();
+    initValueField();
   }
 
   public void setRepositoryName(String repositoryName) { repositoryName_ = repositoryName; }
   
-  private void initMultiValuesField() throws Exception{
+  private void initValueField() throws Exception {
     UIFormMultiValueInputSet uiFormMValue = 
       createUIComponent(UIFormMultiValueInputSet.class, null, null);
     uiFormMValue.setId(FIELD_VALUE);
@@ -187,36 +197,93 @@ public class UIPropertyForm extends UIForm {
     getUIFormSelectBox(FIELD_NAMESPACE).setEditable(false).setValue(propertyInfo[0]);
     getUIStringInput(FIELD_PROPERTY).setEditable(false).setValue(propertyInfo[1]);
     Property property = currentNode.getProperty(propertyName);
+    isMultiple_ = property.getDefinition().isMultiple();
     getUIFormSelectBox(FIELD_TYPE).setValue(Integer.toString(property.getType()));
-    UIFormMultiValueInputSet multiValueInputSet = getUIInput(FIELD_VALUE);
-    List listValue = new ArrayList();
-    for(Value value : property.getValues()) {
+    getUIFormSelectBox(FIELD_MULTIPLE).setValue(Boolean.toString(isMultiple_));
+    if(isMultiple_) {
+      UIFormMultiValueInputSet multiValueInputSet = getUIInput(FIELD_VALUE);
+      List listValue = new ArrayList();
+      for(Value value : property.getValues()) {
+        switch (property.getType()) {
+          case 2:  break;
+          case 3:  {
+            listValue.add(Long.toString(value.getLong()));
+            break;
+          }
+          case 4:  {
+            listValue.add(Double.toString(value.getDouble()));
+            break;
+          }
+          case 5:  {
+            listValue.add(value.getDate().getTime().toString());
+            break;
+          }
+          case 6: {
+            listValue.add(Boolean.toString(value.getBoolean()));
+            break;
+          }
+          default: {
+            listValue.add(value.getString()); 
+            break;
+          }
+        }
+      }
+      changeMultipleType(multiValueInputSet, property.getType());
+      multiValueInputSet.setValue(listValue);
+    } else {
+      Value value = property.getValue();
+      changeSingleType(property.getType());
       switch (property.getType()) {
         case 2:  break;
         case 3:  {
-          listValue.add(Long.toString(value.getLong()));
+          UIFormStringInput uiForm = getUIStringInput(FIELD_VALUE);
+          uiForm.setValue(Long.toString(value.getLong()));
           break;
         }
         case 4:  {
-          listValue.add(Double.toString(value.getDouble()));
+          UIFormStringInput uiForm = getUIStringInput(FIELD_VALUE);
+          uiForm.setValue(Double.toString(value.getDouble()));
           break;
         }
         case 5:  {
-          listValue.add(value.getDate().getTime().toString());
+          UIFormDateTimeInput uiFormDateTimeInput = getUIFormDateTimeInput(FIELD_VALUE);
+          uiFormDateTimeInput.setValue(value.getDate().getTime().toString());
           break;
         }
         case 6: {
-          listValue.add(Boolean.toString(value.getBoolean()));
+          UIFormCheckBoxInput uiFormCheckBoxInput = getUIFormCheckBoxInput(FIELD_VALUE);
+          uiFormCheckBoxInput.setValue(Boolean.toString(value.getBoolean()));
           break;
         }
         default: {
-          listValue.add(value.getString()); 
+          UIFormStringInput uiForm = getUIStringInput(FIELD_VALUE);
+          uiForm.setValue(value.getString()); 
           break;
         }
       }
     }
-    changeType(multiValueInputSet, property.getType());
-    multiValueInputSet.setValue(listValue);
+  }
+  
+  @SuppressWarnings("unchecked")
+  private Object processValue(int type) throws Exception {
+    Object value = null;
+    UIComponent uiChild = getChildById(FIELD_VALUE);
+    if(type == 6) {
+      UIFormCheckBoxInput checkbox = (UIFormCheckBoxInput)uiChild;
+      value = checkbox.isChecked();
+    } else if(type == 5) {
+        UIFormDateTimeInput dateInput = (UIFormDateTimeInput)uiChild;
+        value = dateInput.getCalendar();
+    } else if(type == 2) {
+        UIFormUploadInput binaryInput = (UIFormUploadInput)uiChild;
+        if(binaryInput.getUploadData() != null) {
+          value = binaryInput.getUploadData();    
+        }
+    } else {
+      UIFormStringInput uiStringInput = (UIFormStringInput)uiChild;
+      value = uiStringInput.getValue();
+    }
+    return value;
   }
   
   @SuppressWarnings("unchecked")
@@ -247,7 +314,7 @@ public class UIPropertyForm extends UIForm {
     return valueList;
   }
   
-  private void changeType(UIFormMultiValueInputSet uiFormMultiValue, int type) {
+  private void changeMultipleType(UIFormMultiValueInputSet uiFormMultiValue, int type) {
     if(PropertyType.BINARY == type) {        
       uiFormMultiValue.setType(UIFormUploadInput.class);  
     } else if(PropertyType.BOOLEAN == type) {
@@ -258,23 +325,64 @@ public class UIPropertyForm extends UIForm {
       uiFormMultiValue.setType(UIFormStringInput.class);
     }
   }
+  
+  @SuppressWarnings("unchecked")
+  private void changeSingleType(int type) {
+    removeChildById(FIELD_VALUE);
+    if(PropertyType.BINARY == type) {
+      addUIFormInput(new UIFormUploadInput(FIELD_VALUE, FIELD_VALUE));
+    } else if(PropertyType.BOOLEAN == type) {
+      addUIFormInput(new UIFormCheckBoxInput(FIELD_VALUE, FIELD_VALUE, null));
+    } else if(PropertyType.DATE == type) {
+      addUIFormInput(new UIFormDateTimeInput(FIELD_VALUE, FIELD_VALUE, null));
+    } else {
+      addUIFormInput(new UIFormStringInput(FIELD_VALUE, FIELD_VALUE, null));
+    }
+  }
 
   static public class ChangeTypeActionListener extends EventListener {
     public void execute(Event event) throws Exception {
       UIPropertyForm uiForm = (UIPropertyForm) event.getSource();
       int type = Integer.parseInt(uiForm.getUIFormSelectBox(FIELD_TYPE).getValue());
       uiForm.removeChildById(FIELD_VALUE);
-      UIFormMultiValueInputSet uiFormMultiValue = 
-        uiForm.createUIComponent(UIFormMultiValueInputSet.class, null, null);
-      uiFormMultiValue.setId(FIELD_VALUE);
-      uiFormMultiValue.setName(FIELD_VALUE);
-      uiForm.changeType(uiFormMultiValue, type);
-      uiForm.addUIFormInput(uiFormMultiValue);
+      boolean isMultiple = Boolean.parseBoolean(uiForm.getUIFormSelectBox(FIELD_MULTIPLE).getValue());
+      if(isMultiple) {
+        UIFormMultiValueInputSet uiFormMultiValue = 
+          uiForm.createUIComponent(UIFormMultiValueInputSet.class, null, null);
+        uiFormMultiValue.setId(FIELD_VALUE);
+        uiFormMultiValue.setName(FIELD_VALUE);
+        uiForm.changeMultipleType(uiFormMultiValue, type);
+        uiForm.addUIFormInput(uiFormMultiValue);
+      } else {
+        uiForm.changeSingleType(type);
+      }
       UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class);
       uiPropertiesManager.setRenderedChild(UIPropertyForm.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }
+  
+//  static public class ChangeMultiTypeActionListener extends EventListener {
+//    public void execute(Event event) throws Exception {
+//      UIPropertyForm uiForm = (UIPropertyForm) event.getSource();
+//      int type = Integer.parseInt(uiForm.getUIFormSelectBox(FIELD_TYPE).getValue());
+//      uiForm.removeChildById(FIELD_VALUE);
+//      boolean isMultiple = Boolean.parseBoolean(uiForm.getUIFormSelectBox(FIELD_MULTIPLE).getValue());
+//      if(isMultiple) {
+//        UIFormMultiValueInputSet uiFormMultiValue = 
+//          uiForm.createUIComponent(UIFormMultiValueInputSet.class, null, null);
+//        uiFormMultiValue.setId(FIELD_VALUE);
+//        uiFormMultiValue.setName(FIELD_VALUE);
+//        uiForm.changeMultipleType(uiFormMultiValue, type);
+//        uiForm.addUIFormInput(uiFormMultiValue);
+//      } else {
+//        uiForm.changeSingleType(type);
+//      }
+//      UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class);
+//      uiPropertiesManager.setRenderedChild(UIPropertyForm.class);
+//      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
+//    }
+//  }
 
   @SuppressWarnings("unchecked")
   static public class SaveActionListener extends EventListener<UIPropertyForm> {
@@ -293,17 +401,17 @@ public class UIPropertyForm extends UIForm {
         return;
       }
       NodeType nodeType = currentNode.getPrimaryNodeType();
-      if(!nodeType.isNodeType(Utils.NT_UNSTRUCTURED)) {
-        uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.can-not-add", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class);
-        uiPropertiesManager.setRenderedChild(UIPropertyForm.class);
-        return;
-      }
       String name = "";
       int type;
       if(uiForm.isAddNew_) {
+        if(!nodeType.isNodeType(Utils.NT_UNSTRUCTURED)) {
+          uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.can-not-add", null, 
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class);
+          uiPropertiesManager.setRenderedChild(UIPropertyForm.class);
+          return;
+        }
         String namespace = uiForm.getUIFormSelectBox(FIELD_NAMESPACE).getValue();
         name = namespace + ":" + uiForm.getUIStringInput(FIELD_PROPERTY).getValue();
         if(currentNode.hasProperty(name)) {
@@ -320,10 +428,24 @@ public class UIPropertyForm extends UIForm {
         name = uiForm.propertyName_;
         type = currentNode.getProperty(name).getType();
       }
-      Value[] values = {};
-      List valueList = uiForm.processValues(type);
+      boolean isMultiple = Boolean.parseBoolean(uiForm.getUIFormSelectBox(FIELD_MULTIPLE).getValue());
       try {
-        values = uiForm.createValues(valueList, type, currentNode.getSession().getValueFactory());
+        if(isMultiple) {
+          Value[] values = {};
+          List valueList = uiForm.processValues(type);
+          values = uiForm.createValues(valueList, type, currentNode.getSession().getValueFactory());
+          if(nodeType.canSetProperty(name, values)) {
+            currentNode.setProperty(name, values);
+          }
+        } else {
+          Object objValue = uiForm.processValue(type);
+          Value value = uiForm.createValue(objValue, type, currentNode.getSession().getValueFactory());
+          if(nodeType.canSetProperty(name, value)) {
+            currentNode.setProperty(name, value);
+          }
+        }
+        currentNode.save();
+        uiExplorer.getSession().save();
       } catch(NullPointerException ne) {
         ne.printStackTrace();
         uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.propertyValu-null", null, 
@@ -336,12 +458,9 @@ public class UIPropertyForm extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(Exception e) {
+        e.printStackTrace();
         JCRExceptionManager.process(uiApp, e);
-      }
-      if(nodeType.canSetProperty(name, values)) {
-        currentNode.setProperty(name, values);
-        currentNode.save();
-        uiExplorer.getSession().save();
+        return;
       }
       uiForm.refresh();
       UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class);

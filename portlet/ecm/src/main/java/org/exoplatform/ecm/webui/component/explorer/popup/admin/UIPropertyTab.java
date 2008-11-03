@@ -100,6 +100,13 @@ public class UIPropertyTab extends UIContainer {
     if(propertiesName().contains(propertyName)) return false;
     return true;
   }
+  
+  public boolean isCanbeEdit(Property property) throws Exception {
+    if(property.getDefinition().isAutoCreated() || property.getDefinition().isProtected()) {
+      return false;
+    }
+    return true;
+  }
 
   public String getPropertyValue(Property prop) throws Exception {
     if(prop.getType() == PropertyType.BINARY) return PRO_KEY_BINARYTYPE ;
