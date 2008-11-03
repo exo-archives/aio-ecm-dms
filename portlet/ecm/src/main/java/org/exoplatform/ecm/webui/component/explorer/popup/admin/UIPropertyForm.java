@@ -149,11 +149,11 @@ public class UIPropertyForm extends UIForm {
   private Value createValue(Object value, int type, ValueFactory valueFactory) throws Exception {
     switch (type) {
     case 2:  return valueFactory.createValue(new ByteArrayInputStream((byte[])value));
-    case 3:  return valueFactory.createValue((Long.valueOf((String)value)));
-    case 4:  return valueFactory.createValue((Double.valueOf((String)value)));
+    case 3:  return valueFactory.createValue(Long.parseLong(value.toString()));
+    case 4:  return valueFactory.createValue(Double.parseDouble(value.toString()));
     case 5:  return valueFactory.createValue((GregorianCalendar)value);
     case 6:  return valueFactory.createValue(Boolean.parseBoolean(value.toString()));
-    default: return valueFactory.createValue((String)value); 
+    default: return valueFactory.createValue(value.toString(), type); 
     }
   }
 
@@ -193,11 +193,26 @@ public class UIPropertyForm extends UIForm {
     for(Value value : property.getValues()) {
       switch (property.getType()) {
         case 2:  break;
-        case 3:  listValue.add(Long.valueOf(value.getString()));
-        case 4:  listValue.add(Double.valueOf(value.getString()));
-        case 5:  listValue.add(value);
-        case 6:  listValue.add(Boolean.parseBoolean(value.getString()));
-        default: listValue.add(value.getString()); 
+        case 3:  {
+          listValue.add(Long.toString(value.getLong()));
+          break;
+        }
+        case 4:  {
+          listValue.add(Double.toString(value.getDouble()));
+          break;
+        }
+        case 5:  {
+          listValue.add(value.getDate().getTime().toString());
+          break;
+        }
+        case 6: {
+          listValue.add(Boolean.toString(value.getBoolean()));
+          break;
+        }
+        default: {
+          listValue.add(value.getString()); 
+          break;
+        }
       }
     }
     changeType(multiValueInputSet, property.getType());
