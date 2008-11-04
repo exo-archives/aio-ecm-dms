@@ -16,6 +16,10 @@
 	.WorkKofax .UIGrid {
 		width: 97%;
 	}
+	
+	.WorkKofax .UIGrid td {
+		border: 1px solid #CCCCCC
+	}
 </style>
 <div class="WorkKofax">
 	<table class="UIGrid">      	 			
