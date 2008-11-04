@@ -146,10 +146,10 @@ public class UIParameterizedContentViewerPortlet extends UIPortletApplication {
       return;
     } else if (isDocumentType) { // content is document
       if (hasChildren()) {
-        removeChild(UIContentViewer.class);
+        removeChild(UIContentViewerContainer.class);
       }
-      UIContentViewer uiContentViewer = addChild(UIContentViewer.class, null,
-          UIPortletApplication.VIEW_MODE);
+      UIContentViewerContainer contentViewerContainer = addChild(UIContentViewerContainer.class, null, UIPortletApplication.VIEW_MODE);
+      UIContentViewer uiContentViewer = contentViewerContainer.getChild(UIContentViewer.class);
       uiContentViewer.setNode(currentNode);
       uiContentViewer.setRepository(repository);
       uiContentViewer.setWorkspace(workspace);

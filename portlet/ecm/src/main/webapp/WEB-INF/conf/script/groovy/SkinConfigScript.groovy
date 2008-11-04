@@ -82,3 +82,24 @@ SkinService.addSkin(
     "/ecm/skin/webui/component/fastcontentcreator/MacStylesheet.css",
     ServletContext
 ) ;
+
+SkinService.addSkin(
+    "ecm/ContentViewerPortlet",
+    "Default",
+    "/ecm/skin/webui/contentviewer/DefaultStylesheet.css",
+    ServletContext
+) ;
+
+SkinService.addSkin(
+    "ecm/ContentViewerPortlet",
+    "Vista",
+    "/ecm/skin/webui/contentviewer/VistaStylesheet.css",
+    ServletContext
+) ;
+ 
+SkinService.addSkin(
+    "ecm/ContentViewerPortlet",
+    "Mac",
+    "/ecm/skin/webui/contentviewer/MacStylesheet.css",
+    ServletContext
+) ;

@@ -1,0 +1,40 @@
+.UIContentViewer .ContentViewerBar .LeftBar {
+	background: url(DefaultSkin/background/LeftBar.gif) no-repeat left;
+	padding-left: 2px;
+}
+
+.UIContentViewer .ContentViewerBar .RightBar {
+	background: url(DefaultSkin/background/RightBar.gif) no-repeat right;
+	padding-right: 2px;
+}
+
+.UIContentViewer .ContentViewerBar .CenterBar {
+	background: url(DefaultSkin/background/CenterBar.gif) repeat-x center;
+	height: 33px;
+}
+
+.UIContentViewer .ContentViewerBar .LeftButton {
+	background: url(DefaultSkin/background/LeftButton.gif) no-repeat left;
+	padding-left: 9px;
+	float: left;
+	margin: 5px 0px 0px 8px;
+}
+
+.UIContentViewer .ContentViewerBar .RightButton {
+	background: url(DefaultSkin/background/RightButton.gif) no-repeat right;
+	padding-right: 9px;
+}
+
+.UIContentViewer .ContentViewerBar .CenterButton {
+	background: url(DefaultSkin/background/CenterButton.gif) repeat-x center;
+	height: 24px;
+	padding: 0px 8px;
+	cursor: pointer;
+}
+
+.UIContentViewer .ContentViewerBar .BackIcon{
+	background: url(DefaultSkin/background/BackIcon.gif) no-repeat left center;
+	padding-left: 20px;
+	font-weight: bold;
+	line-height: 22px;
+}
