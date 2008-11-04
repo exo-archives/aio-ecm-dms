@@ -311,7 +311,7 @@ function init() {
 }
 
 /* Hide loading bar, show content and initialize mouse event listening after loading */
-window.onload = function() {};
+window.onload = function() {init()};
 
 /* Refresh ImageFlow on window resize */
 window.onresize = function() {
@@ -435,4 +435,6 @@ document.onkeydown = function(event) {
 			break;
 	}
 }
+
+init();
 

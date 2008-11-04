@@ -24,7 +24,6 @@ var CoverFlow = function() {
 	};
 	
 	CoverFlow.prototype.errorCallbackImage = function(obj){
-	  alert('test');
 	  var img = eXo.core.DOMUtil.findNextElementByTagName(obj.parentNode,"image");
 	  img.style.display = "block";
 	  obj.style.display = "none";
