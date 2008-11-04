@@ -612,7 +612,7 @@
 	padding-top: 10px;
 }
 
-.UIQueriesManager .UIQueriesForm .UIForm .textarea {
+.UIECMAdminPortlet .UIQueriesManager .UIQueriesForm .UIForm .textarea {
 	height: 350px ;
 	width: 95%;
 }
