@@ -73,6 +73,10 @@
 							text-align: center;
 							color: black;
 							z-index: 10000;
+							
+					  }
+					  #captions * {
+						  cursor: pointer;
 					  }
 					</style>
 					<script type="text/javascript"> window.isCheck = true </script>
@@ -92,7 +96,7 @@
 							    imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + image.getPath() + "/?size=big";
 							    wsName = image.getSession().getWorkspace().getName();
 							    actionLink = uicomponent.event("ChangeNode", image.getPath(), new Parameter("workspaceName", wsName));
-							    println "<image class='LoadingProgressIcon' src=\"$imgSrc\" longdesc=\""+actionLink+"\" onload='this.w=this.width; this.h=this.height;' alt=\""+image.getName()+"\"/>";
+							    println "<image class='LoadingProgressIcon' style='width: auto; height: auto;' src=\"$imgSrc\" longdesc=\""+actionLink+"\" onload='this.w=this.width; this.h=this.height;' alt=\""+image.getName()+"\"/>";
 						    }
 						  }
 						} else {

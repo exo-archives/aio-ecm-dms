@@ -85,24 +85,31 @@ function glideTo(x, new_caption_id) {
 	var secondId = new_caption_id - 1 ;
 	var fourthId = new_caption_id + 1;
 	var fifthId = new_caption_id + 2;
-	var firstImage = "";
-	var secondImage = "";
-	var fourthImage = "";
-	var fifthImage = "";
-	if(array_images[firstId]) var firstImage = img_div.childNodes.item(array_images[firstId]).getAttribute('alt');
-	if(array_images[secondId]) var secondImage = img_div.childNodes.item(array_images[secondId]).getAttribute('alt');
-	if(array_images[fourthId]) var fourthImage = img_div.childNodes.item(array_images[fourthId]).getAttribute('alt');
-	if(array_images[fifthId]) var fifthImage = img_div.childNodes.item(array_images[fifthId]).getAttribute('alt');
+	var sHTML = "";
+	if(array_images[firstId]) {
+		var firstImage = img_div.childNodes.item(array_images[firstId]);
+		sHTML += "<span style='font-size: small;color: gray; margin-right: 49px' onclick='glideTo(" + firstImage.x_pos + ", " + firstImage.i + "); '> " + firstImage.getAttribute('alt') + " </span>";
+	}
+	if(array_images[secondId]) {
+		var secondImage = img_div.childNodes.item(array_images[secondId]);
+		sHTML += "<span style='font-size: small;color: gray; margin-right: 49px' onclick='glideTo(" + secondImage.x_pos + ", " + secondImage.i + "); '> " + secondImage.getAttribute('alt') + " </span>"; 
+	}
+	if (img_div.childNodes.item(array_images[caption_id])) {
+		var centerImage = img_div.childNodes.item(array_images[caption_id]);
+		window.address = centerImage.url.replace('ajaxGet', 'window.top.ajaxGet');
+		sHTML += "<span onclick=\"document.location=window.address;\"> " + centerImage.getAttribute('alt') + " </span>"; 
+	}
+	if(array_images[fourthId]) {
+		var fourthImage = img_div.childNodes.item(array_images[fourthId]);
+		sHTML += "<span style='font-size: small;color: gray; margin-left: 49px' onclick='glideTo(" + fourthImage.x_pos + ", " + fourthImage.i + "); '> " + fourthImage.getAttribute('alt') + " </span>" ;
+	}
+	if(array_images[fifthId]) {
+		var fifthImage = img_div.childNodes.item(array_images[fifthId]);
+		sHTML += "<span style='font-size: small;color: gray; margin-left: 49px' onclick='glideTo(" + fifthImage.x_pos + ", " + fifthImage.i + "); '> " + fifthImage.getAttribute('alt') + " </span>";
+	}
 	
-	caption = img_div.childNodes.item(array_images[caption_id]).getAttribute('alt');
-	if (caption == '') caption = '&nbsp;';
-	
-	caption_div.innerHTML = "<span style='font-size: small;color: gray; margin-right: 49px'> " + firstImage + " </span>" + 
-	                        "<span style='font-size: small;color: gray; margin-right: 49px'> " + secondImage + " </span>" + 
-													caption +
-													"<span style='font-size: small;color: gray; margin-left: 49px'> " + fourthImage + " </span>" +
-													"<span style='font-size: small;color: gray; margin-left: 49px'> " + fifthImage + " </span>";
-
+	caption_div.innerHTML =  sHTML;
+													
 	/* Set scrollbar slider to new position */
 	if (dragging == false) {
 		new_slider_pos = (scrollbar_width * (-(x*100/((max-1)*xstep))) / 100) - new_posx;
@@ -263,7 +270,7 @@ function refresh(onload) {
 
 			/* Set ondblclick event */
 			image.url = image.getAttribute('longdesc');
-			image.ondblclick = function() { document.href = this.url; }
+			image.ondblclick = function() {/* document.href = this.url; */}
 
 			/* Set image cursor type */
 			image.style.cursor = conf_images_cursor;
