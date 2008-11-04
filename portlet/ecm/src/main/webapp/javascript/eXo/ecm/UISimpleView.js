@@ -12,10 +12,15 @@ var SimpleView = function() {
 	SimpleView.prototype.actionAreaId = null;
 	SimpleView.prototype.enableDragDrop = null;
 	
+	SimpleView.prototype.colorSelected = "#e7f3ff";
+	SimpleView.prototype.colorHover = "#f2f8ff";
+	
+	
 	//init event
 	SimpleView.prototype.initAllEvent = function(actionAreaId) {
 		Self.contextMenuId = "JCRContextMenu";
 		Self.actionAreaId = actionAreaId;
+
 		var actionArea = document.getElementById(actionAreaId);
 		Self.allItems = DOM.findDescendantsByClass(actionArea, "div", "ActionIconBox");
 		var mousedown = null;
@@ -32,6 +37,7 @@ var SimpleView = function() {
 			item.onmousedown = Self.mouseDownItem;
 			item.onmouseup = Self.mouseUpItem;
 			item.onmouseout = Self.mouseOutItem;
+			eXo.core.Browser.setOpacity(item, 85);
 		}
 		actionArea.onmousedown = Self.mouseDownGround;
 		actionArea.onmouseup = Self.mouseUpGround;
@@ -121,8 +127,9 @@ var SimpleView = function() {
 		var event = event || window.event;
 		var element = this;
 		if (!element.selected) {
-			element.style.background = "#ecffe2";
+			element.style.background = Self.colorHover;
 			element.temporary = true;
+			eXo.core.Browser.setOpacity(element, 100);
 		}
 	};
 	
@@ -130,7 +137,11 @@ var SimpleView = function() {
 		var event = event || window.event;
 		var element = this;
 		element.temporary = false;
-		if (!element.selected) element.style.background = "none";
+		if (!element.selected) {
+			element.style.background = "none";
+			eXo.core.Browser.setOpacity(element, 85);
+		}
+			
 	};
 	
 	SimpleView.prototype.mouseDownItem = function(event) {
@@ -158,11 +169,11 @@ var SimpleView = function() {
 				style: {
 						position: "absolute",
 						display: "none",
-						background: "#fff6a4",
-						border: "1px solid #b7b7b7"
+						background: "#dbdbdb",
+						border: "1px solid gray"
 				}
 			});
-			eXo.core.Browser.setOpacity(mobileElement, 72);
+			eXo.core.Browser.setOpacity(mobileElement, 85);
 			Self.mobileId = mobileElement.getAttribute('id');
 			var coverElement = newElement({
 				className: "UIThumbnailsView",
@@ -210,7 +221,8 @@ var SimpleView = function() {
 		resetArrayItemsSelected();
 		element.selected = true;
 		Self.itemsSelected = new Array(element);
-		element.style.background = "#ebf5ff";
+		element.style.background = Self.colorSelected;
+		eXo.core.Browser.setOpacity(element, 100);
 	};
 	
 	SimpleView.prototype.mouseUpItem = function(event) {
@@ -244,7 +256,8 @@ var SimpleView = function() {
 				}
 				for(var i in Self.itemsSelected) {
 					if (Array.prototype[i]) continue;
-					Self.itemsSelected[i].style.background = "#ebf5ff";
+					eXo.core.Browser.setOpacity(Self.itemsSelected[i], 100);
+					Self.itemsSelected[i].style.background = Self.colorSelected;
 				}
 			}
 		}else {
@@ -335,10 +348,12 @@ var SimpleView = function() {
 					if (mask.X < posX && posX < mask.storeX &&
 							posY < mask.Y && mask.storeY < posY) {
 						itemBox.selected = true;
-						itemBox.style.background = "#ebf5ff";
+						itemBox.style.background = Self.colorSelected;
+						eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
 						itemBox.style.background = "none";
+						eXo.core.Browser.setOpacity(itemBox, 85);
 					}
 				}
 			//III of +
@@ -364,10 +379,12 @@ var SimpleView = function() {
 					if (mask.X < posX && posX < mask.storeX &&
 							mask.Y < posY && posY < mask.storeY) {
 						itemBox.selected = true;
-						itemBox.style.background = "#ebf5ff";
+						itemBox.style.background = Self.colorSelected;
+						eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
 						itemBox.style.background = "none";
+						eXo.core.Browser.setOpacity(itemBox, 85);
 					}
 				}
 			//II of +
@@ -391,10 +408,12 @@ var SimpleView = function() {
 					if ( posX < mask.X && mask.storeX < posX&&
 							mask.Y < posY && posY < mask.storeY ) {
 							itemBox.selected = true;
-							itemBox.style.background = "#ebf5ff";
+							itemBox.style.background = Self.colorSelected;
+							eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
 						itemBox.style.background = "none";
+						eXo.core.Browser.setOpacity(itemBox, 85);
 					}
 				}
 			//I of +
@@ -415,10 +434,12 @@ var SimpleView = function() {
 					if (mask.storeX < posX && posX < mask.X &&
 							mask.storeY < posY && posY < mask.Y) {
 						itemBox.selected = true;
-						itemBox.style.background = "#ebf5ff";
+						itemBox.style.background = Self.colorSelected;
+						eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
 						itemBox.style.background = "none";
+						eXo.core.Browser.setOpacity(itemBox, 85);
 					}
 				}
 			}
@@ -604,6 +625,7 @@ var SimpleView = function() {
 			if (Array.prototype[i]) continue;
 			Self.itemsSelected[i].selected = null;
 			Self.itemsSelected[i].style.background = "none";
+			eXo.core.Browser.setOpacity(Self.itemsSelected[i], 85);
 		}
 		Self.itemsSelected = new Array();
 	}

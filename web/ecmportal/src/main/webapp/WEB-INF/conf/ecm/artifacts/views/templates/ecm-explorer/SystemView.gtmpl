@@ -68,9 +68,9 @@
 			    
 			    <div class="RightColumn" style="border: none"><%=_ctx.appRes("ListView.view.label.auditing")%></div>
 			    <div class="RightColumn"><%=_ctx.appRes("ListView.view.label.versionable")%></div>
-			    <div class="RightColumn" style="width: 60px;"><%=_ctx.appRes("ListView.view.label.owner")%></div>
-			    <div class="RightColumn" style="width: 100px;"><%=_ctx.appRes("ListView.view.label.dateModified")%></div>
-			    <div class="RightColumn" style="width: 100px;"><%=_ctx.appRes("ListView.view.label.dateCreated")%></div>
+			    <div class="RightColumn" style="width: 100px;"><%=_ctx.appRes("ListView.view.label.owner")%></div>
+			    <div class="RightColumn" style="width: 125px;"><%=_ctx.appRes("ListView.view.label.dateModified")%></div>
+			    <div class="RightColumn" style="width: 115px;"><%=_ctx.appRes("ListView.view.label.dateCreated")%></div>
 			    <div class="ResizeColumn $nameClass">
 			      <a href="$nameActionLink">
 			        <div class="SortButton ${classSortNameIcon}16x16Icon" style="width: auto; padding-left: 20px;">
@@ -117,14 +117,14 @@
 		            }
 		          %>
 	        </div>
-	        <div class="RightColumn" style="width: 60px">
+	        <div class="RightColumn" style="width: 100px">
 		        	<%=uicomponent.getNodeOwner(data)%>
 	        </div>
-	        <div class="RightColumn" style="width: 100px">
+	        <div class="RightColumn" style="width: 125px">
 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
 	 				</div>
 	       
-	        <div class="RightColumn" style="width: 100px;">
+	        <div class="RightColumn" style="width: 115px;">
 	        		<%=dateFormat.format(uicomponent.getDateCreated(data))%>
 	        </div>
 	        <div class="ResizeColumn">
