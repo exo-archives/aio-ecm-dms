@@ -153,7 +153,8 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.VoteActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.CommentActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIActionBar.OverloadThumbnailActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIActionBar.OverloadThumbnailActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ManageHiddenActionListener.class, phase = Phase.DECODE)
     }
 )
 
@@ -1199,6 +1200,36 @@ public class UIActionBar extends UIForm {
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIPopupContainer.activate(uiThumbnailForm, 500, 0);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+    }
+  }
+  
+  static public class ManageHiddenActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {      
+      UIActionBar uiActionBar = event.getSource();
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
+      Node selectedNode = uiExplorer.getCurrentNode();
+      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
+      if(uiExplorer.getRootNode().equals(selectedNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(selectedNode.isNodeType("exo:hiddenable")) {
+        selectedNode.removeMixin("exo:hiddenable");
+        selectedNode.save();
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.removed-hidden-mixin", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        uiExplorer.updateAjax(event);
+        return;
+      } else if(selectedNode.canAddMixin("exo:hiddenable")){
+        selectedNode.addMixin("exo:hiddenable");
+        selectedNode.save();
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.added-hidden-mixin", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        uiExplorer.updateAjax(event);
+        return;
+      }
     }
   }
 

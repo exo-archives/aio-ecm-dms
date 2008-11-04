@@ -264,6 +264,11 @@ a:hover .ShowHideBoxContainer {
   background: url('DefaultSkin/ImportNode.gif') no-repeat ;
 }
 
+.ManageHiddenIcon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/AddRemoveHidden.gif') no-repeat ;
+}
+
 .ExportNodeIcon {
 	width: 24px; height: 24px;
   background: url('DefaultSkin/ExportNode.gif') no-repeat ;

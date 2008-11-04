@@ -129,6 +129,11 @@
   background: url('VistaSkin/ImportNodeIcon.png') no-repeat ;
 }
 
+.ManageHiddenIcon {
+  width: 24px; height: 24px;
+  background: url('VistaSkin/AddRemoveHidden.gif') no-repeat ;
+}
+
 .ExportNodeIcon {
 	width: 32px; height: 30px;
   background: url('VistaSkin/ExportNodeIcon.png') no-repeat ;
