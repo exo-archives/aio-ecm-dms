@@ -494,6 +494,11 @@
 	padding: 10px;
 }
 
+.UIJCRExplorerPortlet .UIPermissionManager .UIForm .HorizontalLayout {
+	border: 1px solid #BEC1C7;
+	border-top: none;
+}
+
 .UIJCRExplorerPortlet .UIPermissionManager .UIPageIterator {
   width: 100%;
 }

@@ -37,6 +37,11 @@
   border: none;
 }
 
+.UIJCRExplorerPortlet .UIPreferencesForm .UIForm .HorizontalLayout {
+	border: 1px solid #BEC1C7;
+	border-top: none;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPageIterator {
 	width: auto;
 	padding-right: 10px;

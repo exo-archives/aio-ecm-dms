@@ -18,6 +18,8 @@
 
 .UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .HorizontalLayout {
   padding: 1px;
+  border: 1px solid #BEC1C7;
+  border-top: none;
 }
 
 .UIJCRExplorerPortlet .UIVersionInfo .UILabelForm .HorizontalLayout .FormContainer {
@@ -334,6 +336,10 @@
   padding: 10px;
 }
 
+.UIJCRExplorerPortlet .PopupContent .UIUploadForm .UIForm .HorizontalLayout {
+	border: 1px solid #BEC1C7;
+}
+
 .UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
 	border: 1px solid #b7b7b7;
 	margin: 10px;
@@ -349,4 +355,3 @@
 	float: left;
 }
 /*############################## -- End UIActionManager   -- ##############################*/
-
