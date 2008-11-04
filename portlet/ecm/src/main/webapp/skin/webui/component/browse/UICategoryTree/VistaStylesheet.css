@@ -48,6 +48,7 @@
 .UICategoryTree .MiddleCategoryTree .TreeRootIcon{
   float: left;
   margin: 2px 3px 0px 5px;
+  width: 16px; height: 16px;
 }
 
 .UICategoryTree .MiddleCategoryTree .RootTreeNode{
@@ -67,6 +68,7 @@
 .UICategoryTree .MiddleCategoryTree .ListMenu .SelectIcon {
 	float: left;
 	margin-top: 2px;
+	width: 16px; height: 16px;
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .CategoryTreeLabel {
