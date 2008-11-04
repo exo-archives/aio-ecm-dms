@@ -436,8 +436,3 @@ document.onkeydown = function(event) {
 	}
 }
 
-
-
-init();
-
-
