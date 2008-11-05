@@ -535,6 +535,11 @@
 	float: none;
 }
 
+.UIJCRExplorerPortlet .UIPropertyTab .MultiValue {
+	width: 50px;
+	margin: auto;
+}
+
 /*================================UINodeTypeInfo=================================*/
 
 .UINodeTypeInfo .NavigationButtonContainer {

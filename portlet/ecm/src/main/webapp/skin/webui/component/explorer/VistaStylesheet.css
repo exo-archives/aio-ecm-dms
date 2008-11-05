@@ -126,12 +126,24 @@
 .EditFormController {
 	padding: 10px;
 }
+
 .UIFolderForm {
 	padding: 10px;
 }
 
-.UITabPane .UITabContent .UIPropertyTab .UIGrid thead tr th {
+.UIJCRExplorerPortlet .UITabPane .UITabContent .UIPropertyTab .UIGrid thead tr th {
   padding: 0px;
-  width: 20px;
   white-space: nowrap;
+  width: auto;
+}
+
+.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16  {
+  float: none;
+  vertical-align: middle;
+  margin: auto;
+  width: 16px;
+}
+
+.UIJCRExplorerPortlet .UITabContent .UIPropertyTab .UIGrid .CenterColumn {
+	text-align: center;
 }

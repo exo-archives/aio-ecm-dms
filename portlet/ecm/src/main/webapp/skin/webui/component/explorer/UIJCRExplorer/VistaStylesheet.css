@@ -528,8 +528,12 @@
 	cursor: pointer;
 }
 /*================================UIPropertyTab=================================*/
+.UIJCRExplorerPortlet .UIPropertyTab .MultiValue {
+	width: 50px;
+	margin: auto;
+}
 
-.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16 {
+.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .MultiValue .Icon16x16 {
 	width: auto;
 	padding-left: 20px;
 	float: none;

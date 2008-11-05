@@ -37,7 +37,7 @@
 	      else rowClass =  "OddRow" ; 
 	      even = !even ; %>
 		    <tr class="$rowClass">
-		      <td align="center">
+		      <td>
 		        <div class="Icon16x16 default16x16Icon ${nodeIcon}16x16Icon"><span></span></div>					        
 		      </td>
 			    <td>$bean.name</td>
@@ -57,7 +57,7 @@
 			      <%=value%>
 			    <%}%>  
 			    </td>
-			    <td>
+			    <td class="CenterColumn">
 			    <%
 			    if(uicomponent.isCanbeEdit(bean)) {%> 			    
 			      <a href="<%=uicomponent.event("Edit", bean.getName())%>" title="<%=_ctx.appRes("UIPropertyTab.title.edit")%>"><img src="/eXoResources/skin/sharedImages/Blank.gif" class="EditIcon"></a>
