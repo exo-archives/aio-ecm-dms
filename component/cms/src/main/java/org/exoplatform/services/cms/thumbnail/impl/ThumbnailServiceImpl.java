@@ -114,12 +114,14 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
   }
  
   public void createSpecifiedThumbnail(Node node, BufferedImage image, String propertyName) throws Exception {
+    if(!node.isCheckedOut()) return;
     if(propertyName.equals(SMALL_SIZE)) parseImageSize(node, image, smallSize_, SMALL_SIZE);
     else if(propertyName.equals(MEDIUM_SIZE)) parseImageSize(node, image, mediumSize_, MEDIUM_SIZE);
     else if(propertyName.equals(BIG_SIZE)) parseImageSize(node, image, bigSize_, BIG_SIZE);
   }
   
   public void createThumbnailImage(Node node, BufferedImage image, String mimeType) throws Exception {
+    if(!node.isCheckedOut()) return;
     if(!node.isNodeType(EXO_THUMBNAIL)) node.addMixin(EXO_THUMBNAIL);
     if(mimeType.startsWith("image")) processImage2Image(node, image);
     node.setProperty(THUMBNAIL_LAST_MODIFIED, new GregorianCalendar());

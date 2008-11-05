@@ -92,6 +92,7 @@ public class ThumbnailRESTService implements ResourceContainer {
       String propertyName) throws Exception {
     if(thumbnailService_.isEnableThumbnail()) {
       Node showingNode = getShowingNode(repoName, wsName, nodePath);
+      if(!showingNode.isCheckedOut()) return Response.Builder.ok().build(); 
       if(!showingNode.hasProperty(propertyName)) {
         if(showingNode.getPrimaryNodeType().getName().equals("nt:file")) {
           Node content = showingNode.getNode("jcr:content");

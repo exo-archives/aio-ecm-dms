@@ -22,6 +22,8 @@ import java.io.InputStream;
 import javax.imageio.ImageIO;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
@@ -122,9 +124,22 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
+      } catch(LockException lock) {
+        Object[] arg = { selectedNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
+        return;
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+            null,ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       } catch(Exception e) {
         e.printStackTrace();
         JCRExceptionManager.process(uiApp, e);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
       uiExplorer.getSession().save();
       uiExplorer.updateAjax(event);
@@ -144,8 +159,36 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      if(selectedNode.isLocked()) {
+        String lockToken = LockUtil.getLockToken(selectedNode);
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
       if(selectedNode.hasProperty(ThumbnailService.MEDIUM_SIZE)) {
-        selectedNode.getProperty(ThumbnailService.MEDIUM_SIZE).remove();
+        try {
+          selectedNode.getProperty(ThumbnailService.MEDIUM_SIZE).remove();
+        } catch(LockException lock) {
+          Object[] arg = { selectedNode.getPath() };
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
+          return;
+        } catch(AccessDeniedException ace) {
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.access-denied", null, 
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          uiExplorer.updateAjax(event);
+          return;
+        } catch(PathNotFoundException path) {
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+              null,ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        } catch(Exception e) {
+          e.printStackTrace();
+          JCRExceptionManager.process(uiApp, e);
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
       }
       selectedNode.save();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
