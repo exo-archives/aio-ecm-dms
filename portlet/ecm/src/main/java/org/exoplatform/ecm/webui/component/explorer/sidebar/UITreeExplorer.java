@@ -48,7 +48,8 @@ import org.exoplatform.webui.event.EventListener;
     template =  "app:/groovy/webui/component/explorer/sidebar/UITreeExplorer.gtmpl",
     events = {
         @EventConfig(listeners = UITreeExplorer.ExpandActionListener.class),
-        @EventConfig(listeners = UITreeExplorer.CollapseActionListener.class)
+        @EventConfig(listeners = UITreeExplorer.CollapseActionListener.class),
+        @EventConfig(listeners = UITreeExplorer.ExpandTreeActionListener.class)
     }    
 )
 
@@ -150,11 +151,11 @@ public class UITreeExplorer extends UIContainer {
     return uiExplorer.getNodeByPath(uiExplorer.getRootPath(), session);
   }  
   
-  public void buildTree() throws Exception {    
+  private void buildTree(String path) throws Exception {
     UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     int nodePerPages = jcrExplorer.getPreference().getNodesPerPage();
     TreeNode treeRoot = new TreeNode(getRootNode()) ;
-    String path = jcrExplorer.getCurrentNode().getPath() ;     
+    if(path == null) path = jcrExplorer.getCurrentNode().getPath() ;     
     String[] arr = path.replaceFirst(treeRoot.getPath(), "").split("/") ;
     TreeNode temp = treeRoot ;
     String subPath = null ;
@@ -180,7 +181,11 @@ public class UITreeExplorer extends UIContainer {
       ObjectPageList list = new ObjectPageList(temp.getChildren(),nodePerPages);
       addTreeNodePageIteratorAsChild(temp.getPath(),list,temp.getPath(),path);
     }    
-    treeRoot_ = treeRoot ;    
+    treeRoot_ = treeRoot ;  
+  }
+  
+  public void buildTree() throws Exception {    
+    buildTree(null);
   }
   
   static public class ExpandActionListener extends EventListener<UITreeExplorer> {
@@ -211,6 +216,37 @@ public class UITreeExplorer extends UIContainer {
       }
       uiExplorer.setSelectNode(selectedNode.getPath(), uiExplorer.getSession()) ; 
       uiExplorer.updateAjax(event) ;      
+    }
+  }
+  
+  static public class ExpandTreeActionListener extends EventListener<UITreeExplorer> {
+    public void execute(Event<UITreeExplorer> event) throws Exception {
+      UITreeExplorer uiTreeExplorer = event.getSource();
+      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
+      UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class) ;
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
+      if(workspaceName != null && workspaceName.length() > 0) {
+        if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {              
+          uiExplorer.setIsReferenceNode(true) ;
+          uiExplorer.setReferenceWorkspace(workspaceName) ;
+        } else {              
+          uiExplorer.setIsReferenceNode(false) ;
+        }
+      }
+      try {
+        uiExplorer.getSession().getItem(path) ;
+      } catch(PathNotFoundException pa) {
+        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(AccessDeniedException ace) {
+        path = uiExplorer.getSession().getRootNode().getPath();
+      }
+      if(uiExplorer.getPreference().isShowSideBar()) {
+        uiTreeExplorer.buildTree(path);
+      }
     }
   }
   

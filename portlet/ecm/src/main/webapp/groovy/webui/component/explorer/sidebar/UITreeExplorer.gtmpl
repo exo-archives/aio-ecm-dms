@@ -23,10 +23,14 @@
 	    String treeNodeName = treeNode.getName();
 	    def isPreferenceNode = uicomponent.isPreferenceNode(node) ;
 	    def preferenceWS = node.getSession().getWorkspace().getName() ;
-	    String mode = "Expand" ;
+	    String mode = "ExpandTree";
+	    String iconType = "Expand";
 	    String actionLink  ;
 	    String expandLink ;
-	    if(treeNode.isExpanded()) mode = "Collapse" ;
+	    if(treeNode.isExpanded()) { 
+	      mode = "Collapse" ;
+	      iconType = "Collapse";
+	    }
 	    if(isPreferenceNode) {
 	      actionLink = uicomponent.event(mode, treeNode.getPath(), new Parameter("workspaceName", preferenceWS)) ;
 	      expandLink = uicomponent.event("Expand", Utils.formatNodeName(treeNode.getPath()), new Parameter("workspaceName", preferenceWS)) ;
@@ -71,8 +75,8 @@
 	    def ctMenu = "" ;
 	    if(!uicomponent.isSystemWorkspace()) ctMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) ;
 	    println "<div class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
-	    println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
-	    println "  <div onclick=\"" + expandLink + "\" objectId=\"" + treeNode.getPath() + "\" workspacename=\"" + preferenceWS + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + ctMenu + ">" + strActs ;
+	    println "  <div class=\"${iconType}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
+	    println "  <div onclick=\"" + expandLink + "\" objectId=\"" + treeNode.getPath() + "\" workspacename=\"" + preferenceWS + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", iconType) + "\" " + ctMenu + ">" + strActs ;
 	    println "  <div class=\"NodeLabel\" " + ctMenu + ">" + strActs;
 	    println "			<a href=\"" + expandLink + "\" title=\"$treeNodeName\">$treeNodeName</a>" ;
 	    println "  </div>" ; 
