@@ -55,7 +55,9 @@ public class UICategoryManager extends UIContainer implements UIPopupComponent {
     }
   }
 
-  public void activate() throws Exception { }
+  public void activate() throws Exception { 
+    getChild(UICategoriesAddedList.class).updateGrid();
+  }
 
   public void deActivate() throws Exception { }
 }

@@ -876,15 +876,13 @@ public class UIActionBar extends UIForm {
         return;        
       }
       uiExplorer.setIsHidePopup(true);
-      CategoriesService categoriesService = uiActionBar.getApplicationComponent(CategoriesService.class);
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null);
-      UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
-      uiCateAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), repository));
       UIOneNodePathSelector uiNodePathSelector = uiManager.getChild(UIOneNodePathSelector.class);
       uiNodePathSelector.setIsDisable(workspaceName, true);
       uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
           nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
       uiNodePathSelector.init(uiExplorer.getSystemProvider());
+      UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
       uiNodePathSelector.setSourceComponent(uiCateAddedList, null);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIPopupContainer.activate(uiManager, 630, 500);
