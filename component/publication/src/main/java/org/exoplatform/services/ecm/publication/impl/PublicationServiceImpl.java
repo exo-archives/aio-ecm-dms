@@ -297,5 +297,11 @@ public class PublicationServiceImpl implements PublicationService {
       log.warn("Exception when get log message",e);
       return key;
     }        
+  }
+
+  public boolean isUnsubcribeLifecycle(Node node) throws Exception {
+    /* Check lifecycle of node */
+    if(isNodeEnrolledInLifecycle(node)) return false;
+    return true;
   }   
 }

@@ -259,6 +259,16 @@ public interface PublicationService {
   public void unsubcribeLifecycle(Node node) throws NotInPublicationLifecycleException, Exception;  
   
   /**
+   * Check current node is unsubcriber or nots
+   * @param node
+   * @return
+   *         - true: this node is unsubcriber Lifecycle
+   *         - false: this node is not unsubcriber Lifecycle
+   * @throws Exception
+   */
+  public boolean isUnsubcribeLifecycle(Node node) throws Exception;  
+  
+  /**
    * Get localized log messages and substitute variables.
    * 
    * @param locale : the locale to use

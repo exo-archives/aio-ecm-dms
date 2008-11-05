@@ -124,6 +124,11 @@
   background: url('VistaSkin/ManageRelationsIcon.png') no-repeat ;
 }
 
+.UnsubcribeLifecycleIcon {
+	width: 24px; height: 24px;
+  border: 1px solid #b7b7b7;
+}
+
 .ImportNodeIcon {
 	width: 32px; height: 32px;
   background: url('VistaSkin/ImportNodeIcon.png') no-repeat ;

@@ -154,7 +154,8 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.VoteActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.CommentActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.OverloadThumbnailActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIActionBar.ManageHiddenActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIActionBar.ManageHiddenActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.UnsubcribeLifecycleActionListener.class, phase = Phase.DECODE)
     }
 )
 
@@ -1236,6 +1237,56 @@ public class UIActionBar extends UIForm {
   static public class ChangeTabActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource());
+    }
+  }
+  
+  static public class UnsubcribeLifecycleActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {
+      UIActionBar uiActionBar = event.getSource();
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
+      Node selectedNode = uiExplorer.getCurrentNode();
+      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
+      String currentRepository = uiExplorer.getRepositoryName();
+      /*
+       * Check the current node, display warning message if it's the root.
+       */
+      if (uiExplorer.getRootNode().equals(selectedNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      
+      /*
+       * Check this node is a document and if not: display warning message
+       */
+      TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class);
+      List<String> documentTypes = templateService.getDocumentTemplates(currentRepository);    
+      if (!documentTypes.contains(selectedNode.getPrimaryNodeType().getName())) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsubcriber-lifecycle.not-supported-nodetype", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }  
+      /*
+       * Check unsubcribe and display message incase node has already been unsubcribed
+       */
+      PublicationService publicationService = uiActionBar
+          .getApplicationComponent(PublicationService.class);
+      if (publicationService.isUnsubcribeLifecycle(selectedNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsubcriber-lifecycle", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      
+      /*
+       * Unsubcribe lifecycle and display message to inform
+       */
+      publicationService.unsubcribeLifecycle(selectedNode);
+      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsubcriber-lifecycle-finish", null));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
     }
   }
 }
