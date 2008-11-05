@@ -58,11 +58,28 @@ var SimpleView = function() {
 					}
 					element.onmousedown = Self.mouseDownTree;
 					element.onmouseup = Self.mouseUpTree;
+					element.onmouseover = Self.mouseOverTree;
+					element.onmouseout = Self.mouseOutTree;
 				}
 		);
 	};
 	
 	//event in tree list
+	SimpleView.prototype.mouseOverTree = function(event) {
+		var event = event || window.event;
+		var element = this;
+		var mobileElement = document.getElementById(Self.mobileId);
+		if (mobileElement && mobileElement.move) {
+			var expandElement = DOM.findAncestorByClass(element, "ExpandIcon");
+			if(expandElement && expandElement.onclick) {
+				if (expandElement.onclick instanceof Function) expandElement.onclick();
+			}
+		}
+	};
+	
+	SimpleView.prototype.mouseOutTree = function(event) {
+	};
+	
 	SimpleView.prototype.mouseDownTree = function(event) {
 		var event = event || window.event;
 		var element = this;
