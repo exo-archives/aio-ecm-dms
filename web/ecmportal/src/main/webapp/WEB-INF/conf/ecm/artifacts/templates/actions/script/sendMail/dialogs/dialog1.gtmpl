@@ -11,14 +11,13 @@
 					 uicomponent.addMixinField("id", fieldId) ;  
 				  %>				  		      
 				  </td>
-				</tr>
-				
+				</tr>				
 				<tr>
 				  <td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.name")%></td>
 				  <td class="FieldComponent">				  
 				  <% 
 						String[] fieldName = ["jcrPath=/node/exo:name", "validate=empty"];
-						uicomponent.addTextField("name", fieldName) ;
+						uicomponent.addTextField("actionName", fieldName);
 				  %>
 				  </td>
 				</tr>				
@@ -124,7 +123,7 @@
 			  <td class="FieldLabel"><%=_ctx.appRes("SendMail.dialog.label.mail-to")%></td>
 			  <td class="FieldComponent">
 			  <% 
-					String[] fieldMailTo = ["jcrPath=/node/exo:to", "validate=email"] ;
+					String[] fieldMailTo = ["jcrPath=/node/exo:to", "validate=empty,email"];
 					uicomponent.addTextField("to", fieldMailTo) ;
 			  %>
 			  </td>

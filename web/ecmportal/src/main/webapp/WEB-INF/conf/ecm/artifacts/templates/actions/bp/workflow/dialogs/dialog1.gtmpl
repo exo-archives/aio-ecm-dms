@@ -22,7 +22,7 @@
 	      <td class="FieldComponent">
 		      <% 
 		        String[] fieldName = ["jcrPath=/node/exo:name", "validate=empty"];
-		        uicomponent.addTextField("name", fieldName)  ;
+		        uicomponent.addTextField("actionName", fieldName)  ;
 		      %>
 		    </td>
 		  </tr>
