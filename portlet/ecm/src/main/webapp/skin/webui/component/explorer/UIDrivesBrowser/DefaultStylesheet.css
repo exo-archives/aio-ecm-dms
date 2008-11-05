@@ -14,6 +14,10 @@
   *width: 97%;
 }
 
+.UIJCRExplorerPortlet .UIDrivesBrowser .UIDropDownControl {
+	width: 99%;
+}
+
 .UIJCRExplorerPortlet .UIRepository {
   float: left;
   width: 210px;
