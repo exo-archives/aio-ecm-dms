@@ -8,138 +8,110 @@
 	</component>    
 	
   <external-component-plugins>
-    <target-component>org.exoplatform.services.cms.actions.ActionServiceContainer</target-component>       
-	  <component-plugin>
-	    <name>exo:businessProcessAction</name>
-	    <set-method>addPlugin</set-method>
-	    <type>org.exoplatform.services.cms.actions.impl.BPActionPlugin</type>
-	    <init-params>
-	      <object-param>
-	        <name>predefined.actions</name>
-	        <description>description</description>
-	        <object type="org.exoplatform.services.cms.actions.impl.ActionConfig">
-	        	<field  name="repository"><string>repository</string></field>
-	          <field  name="workspace"><string>collaboration</string></field>
-	          <field  name="actions">
-	            <collection type="java.util.ArrayList">                                   
-	              <value>
-	                <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
-	                  <field  name="type"><string>exo:publishingProcess</string></field>
-	                  <field  name="name"><string>content publishing</string></field>                  
-	                  <field  name="description"><string>content publishing workflow</string></field>
-	                  <field  name="srcWorkspace"><string>collaboration</string></field>
-	                  <field  name="srcPath"><string>/Documents/Validation Requests</string></field>
-	                  <field  name="lifecyclePhase"><string>add</string></field>                      
-	                  <field  name="roles"><string>*:/platform/users</string></field>                     
-	                  <field  name="variables">
-	                    <string>exo:supervisor=*:/organization/management/executive-board</string>
-	                  </field>              
-	                  <field name="mixins">
-	                    <collection type="java.util.ArrayList">
-	                      <value>
-	                        <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
-	                          <field  name="name"><string>exo:publishLocation</string></field>
-	                          <field  name="properties">
-	                            <string>exo:publishWorkspace=collaboration;exo:publishPath=/Documents/Live;exo:validator=*:/platform/administrators</string>
-	                          </field>
-	                        </object>
-	                      </value>
-	                      <value>
-	                        <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
-	                          <field  name="name"><string>exo:pendingLocation</string></field>
-	                          <field  name="properties">
-	                            <string>exo:pendingWorkspace=collaboration;exo:pendingPath=/Documents/Pending</string>
-	                          </field>
-	                        </object>
-	                      </value>
-	                      <value>
-	                        <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
-	                          <field  name="name"><string>exo:backupLocation</string></field>
-	                          <field  name="properties">
-	                            <string>exo:backupWorkspace=backup;exo:backupPath=/Expired Documents</string>
-	                          </field>
-	                        </object>
-	                      </value>
-	                      <value>
-	                        <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
-	                          <field  name="name"><string>exo:trashLocation</string></field>
-	                          <field  name="properties">
-	                            <string>exo:trashWorkspace=collaboration;exo:trashPath=/Documents/Trash</string>
-	                          </field>
-	                        </object>
-	                      </value>
-	                    </collection>     
-	                  </field>    
-	                </object>  
-	              </value>
-	                                 
-	            </collection>   
-	          </field>  
-	        </object>
-	      </object-param>
-	    </init-params>          
-	  </component-plugin>
-	  <component-plugin>
-	    <name>exo:scriptAction</name>   
-	    <set-method>addPlugin</set-method>
-	    <type>org.exoplatform.services.cms.actions.impl.ScriptActionPlugin</type>
-	    <init-params>
-	      <object-param>
-	        <name>predefined.actions</name>
-	        <description>description</description>
-	        <object type="org.exoplatform.services.cms.actions.impl.ActionConfig">
-	        	<field  name="repository"><string>repository</string></field>
-	          <field  name="workspace"><string>collaboration</string></field>
-	          <field  name="actions">
-	            <collection type="java.util.ArrayList">
-	              <value>
-	                <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
-	                  <field  name="type"><string>exo:sendMailAction</string></field>
-	                  <field  name="name"><string>sendMail</string></field>                  
-	                  <field  name="description"><string>send a notification mail</string></field>
-	                  <field  name="srcWorkspace"><string>collaboration</string></field>
-	                  <field  name="srcPath"><string>/Documents/Validation Requests</string></field>
-	                  <field  name="lifecyclePhase"><string>read</string></field>
-	                  <field  name="roles"><string>*:/platform/administrators</string></field>
-	                  <field  name="variables">
-	                    <string>exo:to=benjamin.mestrallet@exoplatform.com</string>
-	                  </field>                  
-	                </object>  
-	              </value>
-	              <value>
-	                <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
-	                  <field  name="type"><string>exo:publishingRequest</string></field>
-	                  <field  name="name"><string>publishing request</string></field>                  
-	                  <field  name="description"><string>request for publishing a document</string></field>
-	                  <field  name="srcWorkspace"><string>collaboration</string></field>
-	                  <field  name="srcPath"><string>/Users/marry/Private/Documents</string></field>
-	                  <field  name="lifecyclePhase"><string>read</string></field>
-	                  <field  name="roles"><string>marry</string></field>
-	                  <field  name="variables">
-	                    <string>exo:requestPath=/Documents/Validation Requests;exo:reservePath=/Users/marry/Private/Documents/Publishing Requested</string>
-	                  </field>                  
-	                </object>  
-	              </value>
-	              <value>
-	                <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
-	                  <field  name="type"><string>exo:publishingRequest</string></field>
-	                  <field  name="name"><string>publishing request</string></field>                  
-	                  <field  name="description"><string>request for publishing a document</string></field>
-	                  <field  name="srcWorkspace"><string>collaboration</string></field>
-	                  <field  name="srcPath"><string>/Users/root/Private/Documents</string></field>
-	                  <field  name="lifecyclePhase"><string>read</string></field>
-	                  <field  name="roles"><string>root</string></field>
-	                  <field  name="variables">
-	                    <string>exo:requestPath=/Documents/Validation Requests;exo:reservePath=/Users/root/Private/Documents/Publishing Requested</string>
-	                  </field>                  
-	                </object>  
-	              </value>                                  
-	            </collection>   
-	          </field>  
-	        </object>
-	      </object-param>
-	    </init-params>    
-	  </component-plugin>
+    <target-component>org.exoplatform.services.cms.actions.ActionServiceContainer</target-component>      
+
+      <component-plugin>
+        <name>exo:businessProcessAction</name>
+        <set-method>addPlugin</set-method>
+        <type>org.exoplatform.services.cms.actions.impl.BPActionPlugin</type>
+        <init-params>
+          <object-param>
+            <name>predefined.actions</name>
+            <description>description</description>
+            <object type="org.exoplatform.services.cms.actions.impl.ActionConfig">
+            	<field  name="repository"><string>repository</string></field>
+              <field  name="workspace"><string>collaboration</string></field>
+              <field  name="actions">
+                <collection type="java.util.ArrayList">
+                  <value>
+                    <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
+                      <field  name="type"><string>exo:workflowAction</string></field>
+                      <field  name="name"><string>publication</string></field>                  
+                      <field  name="description"><string>publication workflow</string></field>
+                      <field  name="srcWorkspace"><string>collaboration</string></field>
+                      <field  name="srcPath"><string>/Documents/Validation Requests</string></field>
+                      <field  name="lifecyclePhase"><string>add</string></field>                      
+                      <field  name="roles"><string>*:/platform/users</string></field>                     
+                      <field  name="variables">
+                        <string>exo:validator=validator:/platform/administrators</string>
+                      </field>              
+                      <field name="mixins">
+                        <collection type="java.util.ArrayList">
+                          <value>
+                            <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
+                              <field  name="name"><string>exo:move</string></field>
+                              <field  name="properties">
+                                <string>exo:destWorkspace=collaboration;exo:destPath=/Documents/Live;exo:repository=repository</string>
+                              </field>
+                            </object>
+                          </value>
+                        </collection>     
+                      </field>    
+                    </object>  
+                  </value> 
+                  <value>
+                    <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
+                      <field  name="type"><string>exo:backupAction</string></field>
+                      <field  name="name"><string>backup</string></field>                  
+                      <field  name="description"><string>backup workflow</string></field>
+                      <field  name="srcWorkspace"><string>collaboration</string></field>
+                      <field  name="srcPath"><string>/Documents/Live</string></field>
+                      <field  name="lifecyclePhase"><string>add</string></field>                      
+                      <field  name="roles"><string>*:/platform/users</string></field>     
+                      <field name="mixins">
+                        <collection type="java.util.ArrayList">
+                          <value>
+                            <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Mixin">
+                              <field  name="name"><string>exo:move</string></field>
+                              <field  name="properties">
+                                <string>exo:destWorkspace=backup;exo:destPath=/Expired Documents;exo:repository=repository</string>
+                              </field>
+                            </object>
+                          </value>
+                        </collection>     
+                      </field>                                                                
+                    </object>  
+                  </value> 
+                </collection>   
+              </field>  
+            </object>
+          </object-param>
+        </init-params>          
+      </component-plugin>
+      <component-plugin>
+        <name>exo:scriptAction</name>   
+        <set-method>addPlugin</set-method>
+        <type>org.exoplatform.services.cms.actions.impl.ScriptActionPlugin</type>
+        <init-params>
+          <object-param>
+            <name>predefined.actions</name>
+            <description>description</description>
+            <object type="org.exoplatform.services.cms.actions.impl.ActionConfig">
+            	<field  name="repository"><string>repository</string></field>
+              <field  name="workspace"><string>collaboration</string></field>
+              <field  name="actions">
+                <collection type="java.util.ArrayList">
+                  <value>
+                    <object type="org.exoplatform.services.cms.actions.impl.ActionConfig$Action">
+                      <field  name="type"><string>exo:sendMailAction</string></field>
+                      <field  name="name"><string>sendMail</string></field>                  
+                      <field  name="description"><string>send a notification mail</string></field>
+                      <field  name="srcWorkspace"><string>collaboration</string></field>
+                      <field  name="srcPath"><string>/Documents/Validation Requests</string></field>
+                      <field  name="lifecyclePhase"><string>read</string></field>
+                      <field  name="roles"><string>*:/platform/administrators</string></field>
+                      <field  name="variables">
+                        <string>exo:to=benjamin.mestrallet@exoplatform.com</string>
+                      </field>                  
+                    </object>  
+                  </value>                                  
+                </collection>   
+              </field>  
+            </object>
+          </object-param>
+        </init-params>    
+      </component-plugin>      
+    
  </external-component-plugins>
 
 </configuration>

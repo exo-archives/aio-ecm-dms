@@ -45,7 +45,9 @@
               <collection type="java.util.HashSet">
                 <value><string>/exo.ecm.bp.jbpm.payraise-trunk.jar</string></value>
                 <value><string>/exo.ecm.bp.jbpm.holiday-trunk.jar</string></value>                
-                <value><string>/exo.ecm.bp.jbpm.content.publishing-trunk.jar</string></value>                
+                <value><string>/exo.ecm.bp.jbpm.content.validation-trunk.jar</string></value>     
+                <value><string>/exo.ecm.bp.jbpm.content.backup-trunk.jar</string></value>     
+                <!--<value><string>/exo.ecm.bp.jbpm.content.publishing-trunk.jar</string></value> -->                
               </collection>
             </field>
           </object>
