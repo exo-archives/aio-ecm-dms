@@ -644,7 +644,6 @@
   width: 100%;
 }
 
-
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
   padding-bottom: 8px;
 }
@@ -791,6 +790,15 @@
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
 	vertical-align: middle;
 	padding: 2px;
+}
+
+.UIJCRExplorerPortlet .UIAnyPermission .UIFormWithTitle .HorizontalLayout .FormContainer {
+	padding: 0px;
+	width: auto;
+}
+
+.UIJCRExplorerPortlet .UIAnyPermission .HorizontalLayout .UIFormGrid .FieldLabel {
+	width: 108px;
 }
 
 /*====================================UIActionManager==================================*/
