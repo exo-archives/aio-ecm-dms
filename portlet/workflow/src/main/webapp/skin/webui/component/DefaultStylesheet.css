@@ -331,3 +331,9 @@
 	padding: 1px;
 }
 
+.UIWorkflowPortlet .Toolbar .RefreshSessionButton  {
+  width: 24px;	height: 24px;
+  background: url('DefaultSkin/icons/RefreshSessionButton.gif') no-repeat bottom;
+  float: right;
+  margin-top: 3px;
+}

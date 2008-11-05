@@ -54,7 +54,6 @@ public class UIWorkflowControllerPortlet extends UIPortletApplication {
   
   static public class RefreshSessionActionListener extends EventListener<UIWorkflowControllerPortlet> {
     public void execute(Event<UIWorkflowControllerPortlet> event) throws Exception {
-      UIWorkflowControllerPortlet uiWorkflowControllerPortlet = event.getSource();
       WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
       UIApplication uiApp = context.getUIApplication();
       String mess = "UIWorkflowControllerPortlet.msg.refresh-session-success";
