@@ -10,7 +10,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Published.dialog.label.start-publication")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldStartPublication = ["jcrPath=/node/exo:published/exo:startPublication", "options=displaytime"] ;
+		        String[] fieldStartPublication = ["jcrPath=/node/exo:published/exo:startPublication", "options=displaytime", "visible=true"];
 		        uicomponent.addCalendarField("startPublication", fieldStartPublication) ;
 		      %>
 		    </td>

@@ -51,7 +51,7 @@
 							  <td class="FieldLabel"><%=_ctx.appRes("EnableVersioning.dialog.label.start-time")%></td>
 							  <td class="FieldComponent">
 								  <% 
-									String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime", "validate=datetime"] ;
+									String[] fieldStartTime = ["jcrPath=/node/exo:startTime", "options=displaytime", "validate=datetime", "visible=true"];
 									uicomponent.addCalendarField("startTime", fieldStartTime) ;
 								  %>
 								</td>
@@ -60,7 +60,7 @@
 							  <td class="FieldLabel"><%=_ctx.appRes("EnableVersioning.dialog.label.end-time")%></td>
 							  <td class="FieldComponent">
 								  <% 
-								   String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime", "validate=datetime"] ;
+								  String[] fieldEndTime = ["jcrPath=/node/exo:endTime", "options=displaytime", "validate=datetime", "visible=true"];
 									uicomponent.addCalendarField("endTime", fieldEndTime) ;
 								  %>
 								</td>
