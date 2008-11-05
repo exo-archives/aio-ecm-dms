@@ -101,6 +101,11 @@
 	
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 
+.UIJCRExplorerPortlet .UIDocumentWorkspace {
+  height: 320px;
+  overflow: auto;
+}
+
 .UIJCRExplorerPortlet .UIListView {
 	padding-bottom: 30px; 
 	posititon: relative;

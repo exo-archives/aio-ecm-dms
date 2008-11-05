@@ -7,9 +7,8 @@
  */
  
 /*############################## -- Begin UISideBar   -- ##############################*/
-
 .UIJCRExplorerPortlet .UISideBar {
-  padding-right: 4px;
+	padding-right: 4px;
   background: url('DefaultSkin/background/LineDecorator4x1.gif') repeat-y top right;
 }
 
