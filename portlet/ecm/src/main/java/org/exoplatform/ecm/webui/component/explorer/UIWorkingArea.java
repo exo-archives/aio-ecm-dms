@@ -562,28 +562,7 @@ public class UIWorkingArea extends UIContainer {
       session.addLockToken(lockToken1);
     }
     try {
-      if(node.isNodeType(Utils.RMA_RECORD)) removeMixins(node);
-      // Begin update for exo:relation property
-      PropertyIterator references = null;
-      boolean isReference = false;
-      try {
-        references = node.getReferences();
-        isReference = true;
-      } catch(Exception e) {
-        isReference = false;
-      }  
-      if(isReference && references != null) {
-        if(references.getSize() > 0 ) {          
-          uiExplorer.getSession().refresh(false);
-          uiExplorer.refreshExplorer();
-          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-referentialIntegrityException", 
-              null,ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          uiExplorer.updateAjax(event);
-          return;
-        }
-      }
-      // End update for exo:relation property
+      if(node.isNodeType(Utils.RMA_RECORD)) removeMixins(node);      
       node.remove();
       parentNode.save();
     } catch(VersionException ve) {
@@ -593,6 +572,14 @@ public class UIWorkingArea extends UIContainer {
       uiExplorer.updateAjax(event);
       return;    
     } catch(ReferentialIntegrityException ref) {
+      uiExplorer.getSession().refresh(false);
+      uiExplorer.refreshExplorer();
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-referentialIntegrityException", 
+          null,ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+      /*
       uiExplorer.getSession().refresh(false);
       uiExplorer.refreshExplorer();
       removeMixins(node);
@@ -617,6 +604,7 @@ public class UIWorkingArea extends UIContainer {
       }
       uiExplorer.setSelectNode(parentNode);
       uiExplorer.updateAjax(event);
+      */
     } catch(ConstraintViolationException cons) {
       uiExplorer.getSession().refresh(false);
       uiExplorer.refreshExplorer();
@@ -629,8 +617,7 @@ public class UIWorkingArea extends UIContainer {
       e.printStackTrace();
       JCRExceptionManager.process(uiApp, e);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-      uiExplorer.getSession().refresh(false);
-      uiExplorer.refreshExplorer();
+      return;
     }
     if(!isMultiSelect_) uiExplorer.setSelectNode(parentNode);
   }
