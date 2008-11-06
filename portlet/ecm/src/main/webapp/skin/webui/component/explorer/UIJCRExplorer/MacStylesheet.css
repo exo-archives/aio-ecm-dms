@@ -764,7 +764,9 @@
 }
 
 .UIJCRExplorer .UIConfirmMessage .Text {
-	margin-left: 40px;
+	float: left;
+	padding-left: 10px;
+	width: 90%;
 }
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
 /*====================================UIAnyPermission==================================*/

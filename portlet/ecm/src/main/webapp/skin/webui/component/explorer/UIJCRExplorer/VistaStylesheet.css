@@ -641,9 +641,10 @@
 }
 
 .UIJCRExplorer .UIConfirmMessage .Text {
-	margin-left: 40px;
+	padding-left: 10px;
+	float: left;
+	width: 90%;
 }
-
 /*================================UIUploadForm===================================*/
 .UIJCRExplorerPortlet .UIUploadManager .SelectFileFrame .FileNameLabel { 
 	width: 300px;
