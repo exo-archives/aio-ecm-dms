@@ -537,6 +537,18 @@
   background: url('/eXoECMResources/skin/DefaultSkin/skinIcons/16x16/icons/Properties/exo-validator.gif') no-repeat;  
 }
 
+.exo_registry16x16Icon {
+	background: url('icons/NodeTypes/nt-unstructured.gif') no-repeat;
+}
+
+.exo_registryGroup16x16Icon {
+	background: url('icons/NodeTypes/nt-unstructured.gif') no-repeat;
+}
+
+.exo_registryEntry16x16Icon {
+	background: url('icons/NodeTypes/nt-unstructured.gif') no-repeat;
+}
+
 .jcr_autoCreated16x16Icon {
   background: url('/eXoECMResources/skin/DefaultSkin/skinIcons/16x16/icons/Properties/jcr-autoCreated.gif') no-repeat;  
 }

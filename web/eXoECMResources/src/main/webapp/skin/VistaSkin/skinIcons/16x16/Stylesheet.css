@@ -155,6 +155,18 @@
   background: url('icons/NodeTypes/exo-musicFolder.png') no-repeat;  
 }
 
+.exo_registry16x16Icon {
+	background: url(icons/NodeTypes/nt-unstructured.gif) no-repeat;
+}
+
+.exo_registryGroup16x16Icon {
+	background: url(icons/NodeTypes/nt-unstructured.gif) no-repeat;
+}
+
+.exo_registryEntry16x16Icon {
+	background: url(icons/NodeTypes/nt-unstructured.gif) no-repeat;
+}
+
 .mix_lockable16x16Icon {
   background: url('/eXoECMResources/skin/DefaultSkin/skinIcons/16x16/icons/NodeTypes/mix-lockable.gif') no-repeat;  
 }

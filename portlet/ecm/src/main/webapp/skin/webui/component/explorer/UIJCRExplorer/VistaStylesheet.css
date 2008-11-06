@@ -668,6 +668,14 @@
 	margin: 0px;
 }
 
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .HorizontalLayout .FormContainer {
+	padding: 0px;
+}
+
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .HorizontalLayout {	
 	padding: 0px;
 }
