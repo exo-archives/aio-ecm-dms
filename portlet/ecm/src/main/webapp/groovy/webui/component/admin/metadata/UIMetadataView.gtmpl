@@ -68,7 +68,7 @@
 	            }
 	          %>
 	          <div style="width: 65px; margin: auto;">
-		          <div class="Icon16x16 ${iconType}16x16Icon"><span></span></div>
+		          <div class="Icon16x16 ${iconType}16x16Icon" style="float: left; margin: 4px;"><span></span></div>
 		          <div class="Text">$booleanText</div>
 		        </div>
 	        </td>
