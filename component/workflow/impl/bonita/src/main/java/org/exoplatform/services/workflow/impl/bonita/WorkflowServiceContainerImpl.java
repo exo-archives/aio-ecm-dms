@@ -898,9 +898,8 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
         // Free up the Thread Local
         WorkflowServiceContainerImpl.InitialVariables.remove();
       } 
-      catch (Exception e) {
-        e.printStackTrace();
-      }      
+      catch(Exception ignore) {
+      }
     }
   }
 
