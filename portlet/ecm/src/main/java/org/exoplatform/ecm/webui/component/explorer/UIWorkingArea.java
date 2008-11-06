@@ -563,6 +563,27 @@ public class UIWorkingArea extends UIContainer {
     }
     try {
       if(node.isNodeType(Utils.RMA_RECORD)) removeMixins(node);
+      // Begin update for exo:relation property
+      PropertyIterator references = null;
+      boolean isReference = false;
+      try {
+        references = node.getReferences();
+        isReference = true;
+      } catch(Exception e) {
+        isReference = false;
+      }  
+      if(isReference && references != null) {
+        if(references.getSize() > 0 ) {          
+          uiExplorer.getSession().refresh(false);
+          uiExplorer.refreshExplorer();
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-referentialIntegrityException", 
+              null,ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          uiExplorer.updateAjax(event);
+          return;
+        }
+      }
+      // End update for exo:relation property
       node.remove();
       parentNode.save();
     } catch(VersionException ve) {
