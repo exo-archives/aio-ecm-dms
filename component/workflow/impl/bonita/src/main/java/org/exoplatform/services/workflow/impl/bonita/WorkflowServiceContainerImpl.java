@@ -889,12 +889,17 @@ public class WorkflowServiceContainerImpl implements WorkflowServiceContainer,
       
       // Delegate the call
       this.startProcess(remoteUser, processId, variables);
-      
-      // Free up the Thread Local
-      WorkflowServiceContainerImpl.InitialVariables.remove();
     }
     catch(Exception e) {
       e.printStackTrace();
+    }
+    finally {
+      try {
+        // Free up the Thread Local
+        WorkflowServiceContainerImpl.InitialVariables.remove();
+      } 
+      catch(Exception ignore) {
+      }
     }
   }
 
