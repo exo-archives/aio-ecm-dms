@@ -99,7 +99,7 @@ public class UIToolBar extends UIContainer {
   public Node getRootNode() throws Exception {
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
     if(uiContainer.getRootPath() != null) return uiContainer.getRootNode() ;
-    return uiContainer.getCurrentNode().getSession().getRootNode();
+    return uiContainer.getSession().getRootNode();
   }
 
   public Node getCurrentNode() throws Exception {
