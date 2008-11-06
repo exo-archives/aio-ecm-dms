@@ -105,7 +105,9 @@ public class ExoUserBase implements UserBase {
       return uinfos;    
     } catch (Exception ne) {
         throw new UserBaseException(ne.getMessage());
-    }
+    } finally{
+      PortalContainer.setInstance(null);
+    }   
   }
   
   /* (non-Javadoc)
@@ -152,7 +154,9 @@ public class ExoUserBase implements UserBase {
       return allUsers;         
     } catch (Exception ne) {
         throw new UserBaseException(ne.getMessage());
-    } 
+    } finally {
+      PortalContainer.setInstance(null);
+    }
   }
   
   /* (non-Javadoc)
@@ -211,7 +215,9 @@ public class ExoUserBase implements UserBase {
            
     } catch (Exception ne) {
       throw new UserBaseException(ne.getMessage());
-    }      
+    } finally {
+      PortalContainer.setInstance(null);
+    }
   }
   
   /* (non-Javadoc)
@@ -253,10 +259,11 @@ public class ExoUserBase implements UserBase {
         PortalContainer.setInstance(null);
         checkpoint=false;
       }
-           
     } catch (Exception ne) {
       throw new UserBaseException(ne.getMessage());
-    }      
+    } finally {
+      PortalContainer.setInstance(null);
+    }
   }
   
   /* (non-Javadoc)
@@ -285,9 +292,10 @@ public class ExoUserBase implements UserBase {
         PortalContainer.setInstance(null);
         checkpoint=false;
       }
-           
     } catch (Exception ne) {
       throw new UserBaseException(ne.getMessage());
-    }     
+    } finally {
+      PortalContainer.setInstance(null);
+    }
   } 
 }
