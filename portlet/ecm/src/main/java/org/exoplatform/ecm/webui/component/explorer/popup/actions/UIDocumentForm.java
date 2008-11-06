@@ -135,17 +135,19 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       UIJCRExplorer uiExplorer = documentForm.getAncestorOfType(UIJCRExplorer.class) ;
       List inputs = documentForm.getChildren();
       UIApplication uiApp = documentForm.getAncestorOfType(UIApplication.class);
-      for (int i = 0; i < inputs.size(); i++) {
-        UIFormInputBase input = (UIFormInputBase) inputs.get(i);
-        if((input.getName() != null) && input.getName().equals("name")) {
-          String[] arrFilterChar = {".", "/", ":", "[", "]", "*", "'", "|", "\""};          
-          String valueName = input.getValue().toString();          
-          for(String filterChar : arrFilterChar) {
-            if(valueName.indexOf(filterChar) > -1) {
-              uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null, 
-                  ApplicationMessage.WARNING));
-              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-              return;
+      if(documentForm.isAddNew()) {
+        for (int i = 0; i < inputs.size(); i++) {
+          UIFormInputBase input = (UIFormInputBase) inputs.get(i);
+          if((input.getName() != null) && input.getName().equals("name")) {
+            String[] arrFilterChar = {".", "/", ":", "[", "]", "*", "'", "|", "\""};          
+            String valueName = input.getValue().toString();          
+            for(String filterChar : arrFilterChar) {
+              if(valueName.indexOf(filterChar) > -1) {
+                uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null, 
+                    ApplicationMessage.WARNING));
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                return;
+              }
             }
           }
         }
