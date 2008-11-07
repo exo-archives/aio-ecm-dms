@@ -154,7 +154,7 @@
 	};
 	
 	ECMUtils.prototype.filterValue = function(frmId) {
-		var form = document.getElementByIdR(frmId) ;
+		var form = document.getElementById(frmId) ;
 		if (eXo.core.Browser.browserType == "ie") {
 			var text = document.createTextNode(form['tempSel'].innerHTML);
 			form['result'].appendChild(text);
