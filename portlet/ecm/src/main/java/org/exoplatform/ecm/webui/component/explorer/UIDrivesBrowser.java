@@ -49,16 +49,16 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.UIDropDownControl;
+import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.form.UIFormSelectBox;
 
 /**
  * Created by The eXo Platform SARL
@@ -67,26 +67,18 @@ import org.exoplatform.webui.event.EventListener;
  * July 3, 2006
  * 10:07:15 AM
  */
-@ComponentConfigs( {
-  @ComponentConfig (
+
+@ComponentConfig (
       template =  "app:/groovy/webui/component/explorer/UIDrivesBrowser.gtmpl",
       events = {
-          @EventConfig(listeners = UIDrivesBrowser.SelectRepoActionListener.class),
-          @EventConfig(listeners = UIDrivesBrowser.SelectDriveActionListener.class)
+        @EventConfig(listeners = UIDrivesBrowser.SelectRepoActionListener.class),
+        @EventConfig(listeners = UIDrivesBrowser.SelectDriveActionListener.class)
       }
-  ),
+)
 
-  @ComponentConfig (
-      type = UIDropDownControl.class ,
-      id = "UIDropDownDriveBrowser",
-      template = "system:/groovy/webui/core/UIDropDownControl.gtmpl",
-      events = {
-        @EventConfig(listeners = UIDrivesBrowser.ChangeOptionRepoActionListener.class)
-      }
-  )
-})
+
 public class UIDrivesBrowser extends UIContainer {
-
+  final public static String FIELD_SELECTREPO = "selectRepo" ; 
   private String repoName_;
   private RepositoryService rService;
   public UIDrivesBrowser() throws Exception {
@@ -95,10 +87,12 @@ public class UIDrivesBrowser extends UIContainer {
     initRepoList(repoName_);
   }
   
-  public void initRepoList(String defaultRepo) throws Exception {
-    UIDropDownControl uiDropDownControl = addChild(UIDropDownControl.class, "UIDropDownDriveBrowser", "UIDropDownDriveBrowser");
-    uiDropDownControl.setOptions(getRepoItem());
-    uiDropDownControl.setValue(defaultRepo);
+  private void initRepoList(String defaultRepo) throws Exception {
+    /*UIFormSelectBox uiFormSelectBox = new UIFormSelectBox(FIELD_SELECTREPO, FIELD_SELECTREPO, null);
+    uiFormSelectBox.setOptions(getRepoItem());
+    uiFormSelectBox.setOnChange("ChangeRepo");
+    uiFormSelectBox.setDefaultValue(defaultRepo);
+    addChild(uiFormSelectBox);*/
   }
 
   public List<String> getRepositoryList() {
@@ -235,17 +229,6 @@ public class UIDrivesBrowser extends UIContainer {
     }
   }
   
-  static  public class ChangeOptionRepoActionListener extends EventListener<UIDropDownControl> {
-    public void execute(Event<UIDropDownControl> event) throws Exception {
-      String repoName = event.getRequestContext().getRequestParameter(OBJECTID);
-      UIDropDownControl uiDropDown = event.getSource();
-      uiDropDown.setValue(repoName);
-      UIDrivesBrowser uiDrivesBrowser = uiDropDown.getParent();
-      uiDrivesBrowser.setRepository(repoName);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDrivesBrowser);
-    }
-  }
-
   static  public class SelectDriveActionListener extends EventListener<UIDrivesBrowser> {
     public void execute(Event<UIDrivesBrowser> event) throws Exception {
       UIDrivesBrowser uiDrive = event.getSource();
@@ -293,7 +276,7 @@ public class UIDrivesBrowser extends UIContainer {
       drive.setViews(viewListStr);
       String homePath = drive.getHomePath();
       if(homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId);
-      UIJCRExplorerPortlet uiParent = uiDrive.getParent();      
+      UIJCRExplorerPortlet uiParent = uiDrive.getAncestorOfType(UIJCRExplorerPortlet.class);      
       UIJCRExplorer uiJCRExplorer = uiParent.getChild(UIJCRExplorer.class);
 
       Preference pref = new Preference();

@@ -19,7 +19,7 @@ package org.exoplatform.ecm.webui.component.explorer.control;
 import java.util.List;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
-import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
@@ -80,7 +80,7 @@ public class UIViewBar extends UIForm {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       UISearchResult simpleSearchResult = uiJCRExplorer.findComponentById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);
       if(simpleSearchResult != null) simpleSearchResult.setRendered(false);
-      uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
+      uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class) ;
     }
   }  
 

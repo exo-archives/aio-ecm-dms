@@ -8,7 +8,14 @@
  
  
 .UIJCRExplorerPortlet .UIDrivesBrowser {
+  padding: 0px 15px 15px;
+  *width: 96.6%;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIDrivesRepoList .UIDrivesBrowser {
   padding: 15px;
+  padding: 15px 15px 0px;
   *width: 96.6%;
   margin: auto;
 }

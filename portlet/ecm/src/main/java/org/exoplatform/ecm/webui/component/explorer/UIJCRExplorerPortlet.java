@@ -34,7 +34,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
   
   public UIJCRExplorerPortlet() throws Exception {
     setMinWidth(585) ;
-    addChild(UIDrivesBrowser.class, null, null);
+    addChild(UIDrivesBrowserContainer.class, null, null);
     addChild(UIJCRExplorer.class, null, null).setRendered(false) ;    
   }
   

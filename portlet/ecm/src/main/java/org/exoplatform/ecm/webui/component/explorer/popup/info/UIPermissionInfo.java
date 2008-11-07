@@ -27,7 +27,7 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
@@ -189,7 +189,7 @@ public class UIPermissionInfo extends UIContainer {
         }
         if(uiJCRExplorer.getRootNode().equals(node)) {
           if(!PermissionUtil.canRead(currentNode)) {
-            uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
+            uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class) ;
             return ;
           }
         }

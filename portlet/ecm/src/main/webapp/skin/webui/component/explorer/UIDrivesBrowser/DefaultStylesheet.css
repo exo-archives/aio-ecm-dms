@@ -10,10 +10,13 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser {
   overflow: auto;
-  padding: 10px;
-  *width: 97%;
+  padding: 0px 10px 10px;
 }
 
+.UIJCRExplorerPortlet .UIDrivesRepoList .UIDrivesBrowser {
+  overflow: auto;
+  padding: 10px 10px 0px;
+}
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDropDownControl {
 	width: 99%;
 }
@@ -61,10 +64,20 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList  {
-  margin: 0px 0px 0px 0px; 
-  border: 1px solid #d9d9d9; 
+  margin: 0px; 
+  border: 1px solid #d9d9d9;
+  border-top: 0px solid #d9d9d9; 
   padding: 1px;
   _height: 100%;
+}
+
+.UIJCRExplorerPortlet .UIDrivesRepoList .UIDrivesBrowser .UIDrivesList  {
+  margin: 0px; 
+  border: 1px solid #d9d9d9; 
+  border-bottom: 0px solid #d9d9d9; 
+  padding: 1px;
+  _height: 100%;
+  
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList .EmptyDrives {

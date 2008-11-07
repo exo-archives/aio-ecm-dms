@@ -23,13 +23,13 @@ import java.util.List;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.webui.utils.LockUtil;
-import org.exoplatform.ecm.webui.utils.PermissionUtil;
-import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowser;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.utils.LockUtil;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
@@ -204,7 +204,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
         node.save();
         if(uiJCRExplorer.getRootNode().equals(node)) {
           if(!PermissionUtil.canRead(uiJCRExplorer.getCurrentNode())) {
-            uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
+            uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class) ;
             return ;
           }
         }

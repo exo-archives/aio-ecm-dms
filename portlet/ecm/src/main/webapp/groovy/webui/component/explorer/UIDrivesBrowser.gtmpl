@@ -12,20 +12,6 @@
 
 <div class="UIDrivesBrowser" id="<%=uicomponent.getId()%>">
 	<div class="UIDrivesList">
-		<div class="DrivesListTitleBG">
-			<div class="DrivesListTitleBGRight">
-				<div class="DrivesListTitle">
-					<span><%=_ctx.appRes("UIDrivesBrowser.title.repository" )%>:</span>
-					<span style=" margin-left:5px;">
-						<%
-							if (uicomponent.getRepoItem().size() == 1) out.println(repoName);
-							else uicomponent.renderChildren();
-						%>
-					</span>
-				</div>
-			</div>
-		</div>
-		
 		<div class="DrivesListContainer" >
 		<%
       def personalDrives = uicomponent.personalDrives(driveList) ;
@@ -221,5 +207,4 @@
 		  
 		</div>
 	</div>
-
 </div>

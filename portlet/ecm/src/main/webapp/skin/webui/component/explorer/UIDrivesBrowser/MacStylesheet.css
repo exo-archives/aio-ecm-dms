@@ -10,7 +10,14 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser {
   overflow: auto;
-  padding: 10px;
+  padding: 0px 10px 10px;
+  *width: 97%;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIDrivesRepoList .UIDrivesBrowser {
+  overflow: auto;
+  padding: 10px 10px 0px;
   *width: 97%;
   margin: auto;
 }
@@ -66,9 +73,17 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList  {
-  margin: 0px 0px 0px 0px; 
+  margin: 0px;
   padding: 1px;
   border: solid 1px #dfdfdf;
+  border-top: 0px solid #dfdfdf;
+}
+
+.UIJCRExplorerPortlet .UIDrivesRepoList .UIDrivesBrowser .UIDrivesList  {
+  margin: 0px;
+  padding: 1px;
+  border: solid 1px #dfdfdf;
+  border-bottom: 0px solid #dfdfdf; 
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList .EmptyDrives {
