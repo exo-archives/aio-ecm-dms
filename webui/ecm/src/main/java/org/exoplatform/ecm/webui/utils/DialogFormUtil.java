@@ -34,6 +34,7 @@ import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
+import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormUploadInput;
 import org.exoplatform.webui.form.validator.DateTimeValidator;
 import org.exoplatform.webui.form.validator.EmailAddressValidator;
@@ -83,6 +84,13 @@ public class DialogFormUtil {
             property.setValue(content);
           } else if(input instanceof UIFormDateTimeInput) {
             property.setValue(((UIFormDateTimeInput)input).getCalendar()) ;
+          } else if(input instanceof UIFormSelectBox) {
+            UIFormSelectBox uiSelectBox = (UIFormSelectBox) input;
+            if(!uiSelectBox.isMultiple()) {
+              property.setValue(uiSelectBox.getValue());              
+            }else {
+              property.setValue(uiSelectBox.getSelectedValues());
+            }
           } else {
             property.setValue(input.getValue()) ;
           }

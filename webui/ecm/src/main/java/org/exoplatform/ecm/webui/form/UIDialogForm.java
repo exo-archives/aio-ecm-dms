@@ -29,6 +29,7 @@ import javax.jcr.PropertyType;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.velocity.runtime.parser.node.SetExecutor;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
@@ -277,13 +278,6 @@ public class UIDialogForm extends UIForm {
   public void addSelectBoxField(String name, String label, String[] arguments) throws Exception {
     UIFormSelectBoxField formSelectBoxField = new UIFormSelectBoxField(name,label,arguments);
     
-    /*
-    if(formSelectBoxField.isMultiValues()) {
-      renderMultiValuesInput(UIFormSelectBox.class,name,label);
-      return;
-    }
-    */
-    
     String jcrPath = formSelectBoxField.getJcrPath();
     String editable = formSelectBoxField.getEditable();
     String onchange = formSelectBoxField.getOnchange();
@@ -315,9 +309,6 @@ public class UIDialogForm extends UIForm {
       }      
       if(defaultValue != null) uiSelectBox.setValue(defaultValue);
     }
-    if(formSelectBoxField.isMultiValues()) {
-      uiSelectBox.setMultiple(true);
-    }
     propertiesName.put(name, getPropertyName(jcrPath));
     fieldNames.put(getPropertyName(jcrPath), name);
     String[] arrNodes = jcrPath.split("/");
@@ -325,20 +316,52 @@ public class UIDialogForm extends UIForm {
     Node node = getNode();
     String propertyName = getPropertyName(jcrPath);
     //TODO code is smell.
-    if(node != null && arrNodes.length == 4) childNode = node.getNode(arrNodes[2]);
-    if(childNode != null) {
-      uiSelectBox.setValue(childNode.getProperty(propertyName).getValue().getString());
-    } else {
-      if(node != null && node.hasProperty(propertyName)) {
-        if(node.getProperty(propertyName).getDefinition().isMultiple()) {
-          uiSelectBox.setValue(node.getProperty(propertyName).getValues().toString());
-        } else if(formSelectBoxField.isOnchange() && isOnchange) {
-          uiSelectBox.setValue(uiSelectBox.getValue());
-        } else {
-          uiSelectBox.setValue(node.getProperty(propertyName).getValue().getString());      
+    if(node != null && arrNodes.length == 4) childNode = node.getNode(arrNodes[2]);    
+    if(formSelectBoxField.isMultiValues()) {
+      uiSelectBox.setMultiple(true);      
+      StringBuffer buffer = new StringBuffer();
+      if(childNode != null) {      
+        List<String> valueList = new ArrayList<String>();      
+        Value[] values = childNode.getProperty(propertyName).getValues();
+        for(Value value : values) {
+          buffer.append(value.getString()).append(",");
         }
-      }
-    }
+        uiSelectBox.setSelectedValues(StringUtils.split(buffer.toString(), ","));
+      } else {
+        if(node != null && node.hasProperty(propertyName)) {
+          List<String> valueList = new ArrayList<String>();
+          if(node.getProperty(propertyName).getDefinition().isMultiple()) {
+            Value[] values = node.getProperty(propertyName).getValues();
+            for(Value value : values) {
+              buffer.append(value.getString()).append(",");
+            }          
+          } else if(onchange.equals("true") && isOnchange) {
+            String values = uiSelectBox.getValue();
+            buffer.append(values).append(",");
+          } else {
+            Value[] values = node.getProperty(propertyName).getValues();          
+            for(Value value : values) {
+              buffer.append(value.getString()).append(",");
+            }                
+          }        
+          uiSelectBox.setSelectedValues(StringUtils.split(buffer.toString(), ","));
+        }
+      }      
+    } else {
+      if(childNode != null) {
+        uiSelectBox.setValue(childNode.getProperty(propertyName).getValue().getString());
+      } else {
+        if(node != null && node.hasProperty(propertyName)) {
+          if(node.getProperty(propertyName).getDefinition().isMultiple()) {
+            uiSelectBox.setValue(node.getProperty(propertyName).getValues().toString());
+          } else if(formSelectBoxField.isOnchange() && isOnchange) {
+            uiSelectBox.setValue(uiSelectBox.getValue());
+          } else {
+            uiSelectBox.setValue(node.getProperty(propertyName).getValue().getString());      
+          }
+        }
+      }  
+    }    
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
     setInputProperty(name, inputProperty);
