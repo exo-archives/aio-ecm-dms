@@ -131,7 +131,7 @@ public class UIBrowseContainer extends UIContainer {
   final public static String TREEROOT = "treeRoot" ;
   final public static String USECASE = "usecase" ;
 
-  private String categoryPath_ ;
+  private String categoryPath_ = null;
   private String currentPath_ ;
   private String rootPath_ ;
   private String selectedTabPath_ ;
@@ -320,7 +320,6 @@ public class UIBrowseContainer extends UIContainer {
     
     try {
       QueryResult queryResult = null;
-      
       if(Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_QUERY_ISNEW,""))) {
         // New query
         queryResult = getQueryResultNew();
@@ -333,7 +332,8 @@ public class UIBrowseContainer extends UIContainer {
       NodeIterator iter = queryResult.getNodes();
       int count = 0 ; 
       while (iter.hasNext() && (count++ != recordNumber)) {
-        queryDocuments.add(iter.nextNode()) ;
+        Node node = iter.nextNode();
+        if(Utils.isReadAuthorized(node)) queryDocuments.add(node) ;
       }
     } catch(Exception e) {
       // Display the stack trace
@@ -608,10 +608,9 @@ public class UIBrowseContainer extends UIContainer {
 
   public Session getSession() throws Exception{
     Session session = null ;
-    String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH,"") ;
     String workspace = getWorkSpace() ;
     ManageableRepository manageableRepository = getRepositoryService().getRepository(getRepository()) ;
-    if(categoryPath.startsWith("/jcr:system")) {         
+    if(categoryPath_ != null && categoryPath_.startsWith("/jcr:system")) {         
       session = getSystemProvider().getSession(workspace,manageableRepository) ;
     } else {
       if(SessionsUtils.isAnonim()) {
@@ -625,15 +624,12 @@ public class UIBrowseContainer extends UIContainer {
   
   public Session getSession(String repository, String workspace) throws Exception{
     Session session = null ;
-    String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH,"") ;
     ManageableRepository manageableRepository = getRepositoryService().getRepository(repository) ;
-    if(categoryPath.startsWith("/jcr:system")) {         
+    if(categoryPath_ != null && categoryPath_.startsWith("/jcr:system")) {         
       session = getSystemProvider().getSession(workspace,manageableRepository) ;
     } else {
       if(SessionsUtils.isAnonim()) {
-        //TODO Anonim Session - Failed if we use AnonimProvider
         session = getAnonimProvider().getSession(workspace,manageableRepository) ;
-//        session = getSystemProvider().getSession(workspace,manageableRepository) ;
       } else {
         session = getSessionProvider().getSession(workspace,manageableRepository) ; 
       }
