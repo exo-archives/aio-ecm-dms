@@ -144,7 +144,9 @@
   <listener>
     <listener-class>org.exoplatform.portal.webui.javascript.JavascriptListener</listener-class>
   </listener>
-
+  <listener>
+    <listener-class>org.exoplatform.services.security.web.JAASConversationStateListener</listener-class>
+  </listener>
   <!-- ================================================================== -->
   <!--           SERVLET                                                  -->
   <!-- ================================================================== -->

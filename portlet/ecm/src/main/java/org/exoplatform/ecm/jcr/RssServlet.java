@@ -103,6 +103,7 @@ public class RssServlet extends HttpServlet {
       e.printStackTrace() ;
       throw new ServletException(e) ;
     }finally{
+      PortalContainer.setInstance(null);
       if(session != null) {
         session.logout() ;
       }
