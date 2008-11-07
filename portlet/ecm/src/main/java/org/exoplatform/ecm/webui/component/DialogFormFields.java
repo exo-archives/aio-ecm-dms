@@ -752,99 +752,122 @@ public class DialogFormFields extends UIForm {
   }
 
   public void addSelectBoxField(String name, String[] arguments) throws Exception {
-    String jcrPath = null;
-    String editable = "true";
-    String onchange = "false" ;
-    String defaultValue = "" ;
-    String options = null;
-    String script = null;
-    String[] scriptParams = null;
-    String multiValues = null ;
-    String rootPath = null;
-    for(int i = 0; i < arguments.length; i++) {
-      String argument = arguments[i];
-      if (argument.startsWith(JCR_PATH)) {
-        jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
-      } else if (argument.startsWith(EDITABLE)) {
-        editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
-      } else if (argument.startsWith(OPTIONS)) {
-        options = argument.substring(argument.indexOf(SEPARATOR) + 1);
-      } else if (argument.startsWith(SCRIPT)) {
-        script = argument.substring(argument.indexOf(SEPARATOR) + 1);
-      } else if (argument.startsWith(SCRIPT_PARAMS)) {
-        String params = argument.substring(argument.indexOf(SEPARATOR) + 1);
-        scriptParams = StringUtils.split(params, ","); 
-      } else if (argument.startsWith(MULTI_VALUES)) {
-        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
-      } else if(argument.startsWith(ONCHANGE)) {
-        onchange = argument.substring(argument.indexOf(SEPARATOR) + 1) ;
-      }else if(argument.startsWith(ROOTPATH)){
-    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
-      }else {
-        defaultValue = argument;
-      } 
-    }
-    if(multiValues != null && multiValues.equals("true")) {
-      UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null) ;
-      uiMulti.setId(name) ;
-      uiMulti.setName(name) ;
-      uiMulti.setType(UIFormSelectBox.class) ;
-      addUIFormInput(uiMulti) ;
-      renderField(name) ;
-      return ;
-    }
-    List<SelectItemOption<String>> optionsList = new ArrayList<SelectItemOption<String>>();
-    UIFormSelectBox uiSelectBox = findComponentById(name) ;
-    if(uiSelectBox == null || isResetForm_) {
-      uiSelectBox = new UIFormSelectBox(name, name, null);
-      addUIFormInput(uiSelectBox) ;
-      if (script != null) {
-        try {
-          if(scriptParams[0].equals("repository")) scriptParams[0] = repositoryName_ ;
-          executeScript(script, uiSelectBox, scriptParams);
-        } catch(Exception e) {
-          uiSelectBox.setOptions(optionsList) ;
-        }      
-      } else if (options != null && options.length() >0) {
-        String[] array = options.split(",");
-        for(int i = 0; i < array.length; i++) {
-          optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
-        }
-        uiSelectBox.setOptions(optionsList);
-      } else {
-        uiSelectBox.setOptions(optionsList) ;
-      }      
-      if(defaultValue != null) uiSelectBox.setValue(defaultValue) ;
-    }
-    propertiesName_.put(name, getPropertyName(jcrPath)) ;
-    fieldNames_.put(getPropertyName(jcrPath), name) ;
-    String[] arrNodes = jcrPath.split("/") ;
-    Node childNode = null ;
-    if(getNode() != null && arrNodes.length == 4) childNode = getNode().getNode(arrNodes[2]) ;
-    if(childNode != null) {
-      uiSelectBox.setValue(childNode.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
-    } else {
-      if(getNode() != null && getNode().hasProperty(getPropertyName(jcrPath))) {
-        if(getNode().getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
-          uiSelectBox.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
-        } else if(onchange.equals("true") && isOnchange_) {
-          uiSelectBox.setValue(uiSelectBox.getValue()) ;
-        } else {
-          uiSelectBox.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValue().getString()) ;      
-        }
-      }
-    }
-    JcrInputProperty inputProperty = new JcrInputProperty();
-    inputProperty.setJcrPath(jcrPath);
-    setInputProperty(name, inputProperty) ;
-    if(editable.equals("false")) uiSelectBox.setDisabled(false) ;
-    else uiSelectBox.setEditable(true) ;
-    addUIFormInput(uiSelectBox) ;
-    if(isNotEditNode_) {
-      if(getChildNode() != null) uiSelectBox.setValue(getPropertyValue(jcrPath)) ; 
-    }
-    if(onchange.equals("true")) uiSelectBox.setOnChange("Onchange") ;
-    renderField(name) ;
+	  String jcrPath = null;
+	    String editable = "true";
+	    String onchange = "false" ;
+	    String defaultValue = "" ;
+	    String options = null;
+	    String script = null;
+	    String[] scriptParams = null;
+	    String multiValues = null ;
+	    String rootPath = null;
+	    for(int i = 0; i < arguments.length; i++) {
+	      String argument = arguments[i];
+	      if (argument.startsWith(JCR_PATH)) {
+	        jcrPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+	      } else if (argument.startsWith(EDITABLE)) {
+	        editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
+	      } else if (argument.startsWith(OPTIONS)) {
+	        options = argument.substring(argument.indexOf(SEPARATOR) + 1);
+	      } else if (argument.startsWith(SCRIPT)) {
+	        script = argument.substring(argument.indexOf(SEPARATOR) + 1);
+	      } else if (argument.startsWith(SCRIPT_PARAMS)) {
+	        String params = argument.substring(argument.indexOf(SEPARATOR) + 1);
+	        scriptParams = StringUtils.split(params, ","); 
+	      } else if (argument.startsWith(MULTI_VALUES)) {
+	        multiValues = argument.substring(argument.indexOf(SEPARATOR) + 1);        
+	      } else if(argument.startsWith(ONCHANGE)) {
+	        onchange = argument.substring(argument.indexOf(SEPARATOR) + 1) ;
+	      }else if(argument.startsWith(ROOTPATH)){
+	      rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+	      }else {
+	        defaultValue = argument;
+	      } 
+	    }
+	    List<SelectItemOption<String>> optionsList = new ArrayList<SelectItemOption<String>>();
+	    UIFormSelectBox uiSelectBox = findComponentById(name) ;
+	    if(uiSelectBox == null || isResetForm_) {
+	      uiSelectBox = new UIFormSelectBox(name, name, null);
+	      addUIFormInput(uiSelectBox) ;
+	      if (script != null) {
+	        try {
+	          if(scriptParams[0].equals("repository")) scriptParams[0] = repositoryName_ ;
+	          executeScript(script, uiSelectBox, scriptParams);
+	        } catch(Exception e) {
+	          uiSelectBox.setOptions(optionsList) ;
+	        }      
+	      } else if (options != null && options.length() >0) {
+	        String[] array = options.split(",");
+	        for(int i = 0; i < array.length; i++) {
+	          optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
+	        }
+	        uiSelectBox.setOptions(optionsList);
+	      } else {
+	        uiSelectBox.setOptions(optionsList) ;
+	      }      
+	      if(defaultValue != null) uiSelectBox.setValue(defaultValue) ;
+	    }    
+	    propertiesName_.put(name, getPropertyName(jcrPath)) ;
+	    fieldNames_.put(getPropertyName(jcrPath), name) ;
+	    String[] arrNodes = jcrPath.split("/") ;
+	    Node childNode = null ;
+	    if(getNode() != null && arrNodes.length == 4) childNode = getNode().getNode(arrNodes[2]) ;        
+	    if(multiValues != null && multiValues.equals("true")) {
+	      uiSelectBox.setMultiple(true);
+	      StringBuffer buffer = new StringBuffer();
+	      if(childNode != null) {      
+	        List<String> valueList = new ArrayList<String>();      
+	        Value[] values = childNode.getProperty(getPropertyName(jcrPath)).getValues();
+	        for(Value value : values) {
+	          buffer.append(value.getString()).append(",");
+	        }
+	        uiSelectBox.setSelectedValues(StringUtils.split(buffer.toString(), ","));
+	      } else {
+	        if(getNode() != null && getNode().hasProperty(getPropertyName(jcrPath))) {
+	          List<String> valueList = new ArrayList<String>();
+	          if(getNode().getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
+	            Value[] values = getNode().getProperty(getPropertyName(jcrPath)).getValues();
+	            for(Value value : values) {
+	              buffer.append(value.getString()).append(",");
+	            }          
+	          } else if(onchange.equals("true") && isOnchange_) {
+	            String values = uiSelectBox.getValue();
+	            buffer.append(values).append(",");
+	          } else {
+	            Value[] values = getNode().getProperty(getPropertyName(jcrPath)).getValues();          
+	            for(Value value : values) {
+	              buffer.append(value.getString()).append(",");
+	            }                
+	          }        
+	          uiSelectBox.setSelectedValues(StringUtils.split(buffer.toString(), ","));
+	        }
+	      }
+	    } else{
+	      if(childNode != null) {
+	        uiSelectBox.setValue(childNode.getProperty(getPropertyName(jcrPath)).getValue().getString()) ;
+	      } else {
+	        if(getNode() != null && getNode().hasProperty(getPropertyName(jcrPath))) {
+	          if(getNode().getProperty(getPropertyName(jcrPath)).getDefinition().isMultiple()) {
+	            uiSelectBox.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValues().toString()) ;
+	          } else if(onchange.equals("true") && isOnchange_) {
+	            uiSelectBox.setValue(uiSelectBox.getValue()) ;
+	          } else {
+	            uiSelectBox.setValue(getNode().getProperty(getPropertyName(jcrPath)).getValue().getString()) ;      
+	          }
+	        }
+	      }
+	    }    
+	    JcrInputProperty inputProperty = new JcrInputProperty();
+	    inputProperty.setJcrPath(jcrPath);
+	    setInputProperty(name, inputProperty) ;
+	    if(editable.equals("false")) uiSelectBox.setDisabled(false) ;
+	    else uiSelectBox.setEditable(true) ;
+	    addUIFormInput(uiSelectBox) ;
+	    if(isNotEditNode_) {
+	      if(getChildNode() != null) uiSelectBox.setValue(getPropertyValue(jcrPath)) ; 
+	    }
+	    if(onchange.equals("true")) uiSelectBox.setOnChange("Onchange") ;
+	    renderField(name) ;
   }
 
   public String getSelectBoxFieldValue(String name) {
