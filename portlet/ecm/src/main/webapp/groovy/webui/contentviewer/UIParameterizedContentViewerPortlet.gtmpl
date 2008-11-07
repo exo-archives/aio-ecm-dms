@@ -21,3 +21,4 @@
 		<% uicomponent.renderChildren(); %>	
 	</div>	
 </div>
+<div style="clear: both;"><span></span></div>
