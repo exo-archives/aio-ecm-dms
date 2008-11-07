@@ -608,10 +608,9 @@ public class UIBrowseContainer extends UIContainer {
 
   public Session getSession() throws Exception{
     Session session = null;
-    String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH,"");
     String workspace = getWorkSpace();
     ManageableRepository manageableRepository = getRepositoryService().getRepository(getRepository());
-    if(categoryPath.startsWith("/jcr:system")) {         
+    if(categoryPath_ != null && categoryPath_.startsWith("/jcr:system")) {         
       session = getSystemProvider().getSession(workspace,manageableRepository);
     } else {
       if(SessionProviderFactory.isAnonim()) {
@@ -625,15 +624,12 @@ public class UIBrowseContainer extends UIContainer {
   
   public Session getSession(String repository, String workspace) throws Exception{
     Session session = null;
-    String categoryPath = getPortletPreferences().getValue(Utils.JCR_PATH,"");
     ManageableRepository manageableRepository = getRepositoryService().getRepository(repository);
-    if(categoryPath.startsWith("/jcr:system")) {         
+    if(categoryPath_ != null && categoryPath_.startsWith("/jcr:system")) {       
       session = getSystemProvider().getSession(workspace,manageableRepository);
     } else {
       if(SessionProviderFactory.isAnonim()) {
-        //TODO Anonim Session - Failed if we use AnonimProvider
         session = getAnonimProvider().getSession(workspace,manageableRepository);
-//        session = getSystemProvider().getSession(workspace,manageableRepository);
       } else {
         session = getSessionProvider().getSession(workspace,manageableRepository); 
       }
