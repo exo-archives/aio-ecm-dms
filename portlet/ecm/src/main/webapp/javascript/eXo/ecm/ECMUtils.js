@@ -271,6 +271,27 @@
 	 	eXo.core.MouseEventManager.docMouseDownEvt(event);
 	  return false;
 	};
+	
+ 	ECMUtils.prototype.concatMethod =  function() {
+		var oArg = arguments;
+		var nSize = oArg.length;
+		if (nSize < 2) return;
+		var mSelf = oArg[0];
+		return function() {
+			var aArg = [];
+			for (var i = 0; i < arguments.length; ++ i) {
+				aArg.push(arguments[i]);
+			}
+			mSelf.apply(mSelf, aArg);
+			for (i = 1; i < nSize; ++ i) {
+				var oSet = {
+					method: oArg[i].method || function() {},
+					param: oArg[i].param || aArg
+				}
+				oSet.method.apply(oSet.method, oSet.param);
+			}
+		}
+	};
 };
 
 eXo.ecm.ECMUtils = new ECMUtils();

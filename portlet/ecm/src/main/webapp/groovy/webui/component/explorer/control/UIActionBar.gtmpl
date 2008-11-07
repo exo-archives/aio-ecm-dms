@@ -8,10 +8,11 @@
 	 */
 %>
 <%
+  def uniqueId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
-  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.UIJCRExplorer.dropDownIconList');
-  rcontext.getJavascriptManager().addOnResizeJavascript('eXo.ecm.UIJCRExplorer.dropDownIconList');
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIJCRExplorer.dropDownIconList('$uniqueId');");
+  rcontext.getJavascriptManager().addOnResizeJavascript("function(){eXo.ecm.UIJCRExplorer.dropDownIconList('$uniqueId')}");
 %>
 <div class="UIActionBar UISelectBoxOnChange">
   <% 
@@ -25,17 +26,11 @@
     <% uicomponent.renderChild(0); %>
   </div>
   <div class="Separator ActionBarSeparator"><span></span></div>
-  <div class="ActionIconContainer">
+  <div class="ActionIconContainer" id="$uniqueId">
 	  <div class="StoreBoxContentContainer">
 			<a href="javascript: void(0)">
 				<div class="ArrowDownIcon"><span></span></div>
-				<div class="ShowHideBoxContainer">
-					<div style="border: 1px solid white">	
-						<div class="StoreBoxContainer">
-						</div>
-						<div style="clear: left;"></div>
-					</div>
-				</div>
+				<div class="ShowHideBoxContainer" style="z-index: 9;"></div>
 			</a>
 	  </div>
 	  <div class="SelectBoxContentContainer" style="overflow: hidden;">

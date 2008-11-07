@@ -78,28 +78,34 @@ UIJCRExplorer.prototype.initNodeTypeScroll = function() {
 	scrollMgr.renderElements();
 };
 
-UIJCRExplorer.prototype.dropDownIconList = function() {
+UIJCRExplorer.prototype.dropDownIconList = function(uniqueId) {
 	var DOMUtil = eXo.core.DOMUtil;
-	var actionBar = document.getElementById("UIActionBar");
+	var actionBar = document.getElementById(uniqueId);
 	var activeBoxContent = DOMUtil.findFirstDescendantByClass(actionBar, "div", "ActiveBoxContent");
 	var actionBgs = DOMUtil.findChildrenByClass(activeBoxContent, "div", "ActionBg");
 	var nSize = actionBgs.length;
 	if (nSize) {
 		var storeBoxContentContainer = DOMUtil.findFirstDescendantByClass(actionBar, "div", "StoreBoxContentContainer");
-		storeBoxContentContainer.style.display = "none";
-		var storeBoxContainer = DOMUtil.findFirstDescendantByClass(actionBar, "div", "StoreBoxContainer");
-		storeBoxContainer.innerHTML = "";
+		storeBoxContentContainer.style.display = "block";
+		var showHideBoxContainer = DOMUtil.findFirstDescendantByClass(actionBar, "div", "ShowHideBoxContainer");
+		showHideBoxContainer.innerHTML = "";
 		var posY = eXo.core.Browser.findPosY(activeBoxContent);
 		for (var o = 0; o < nSize; ++ o) {
 			actionBgs[o].style.display = "block";
 			Y = eXo.core.Browser.findPosY(actionBgs[o]);
 			if (Y - posY) {
-				storeBoxContainer.appendChild(actionBgs[o].cloneNode(true));
+				showHideBoxContainer.appendChild(actionBgs[o].cloneNode(true));
 				actionBgs[o].style.display = "none";
-				storeBoxContentContainer.style.display = "block";
 			}
 		}
+		if (showHideBoxContainer.innerHTML == "") {
+			storeBoxContentContainer.style.display = "none";
+		} else {
+			var clearElement = document.createElement("div");
+			clearElement.style.clear = "left";
+			showHideBoxContainer.appendChild(clearElement);
+		}
 	}
-}
+};
 
 eXo.ecm.UIJCRExplorer = new UIJCRExplorer();
