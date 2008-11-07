@@ -20,7 +20,9 @@
       margin: 20px 20px 20px 20px;
     }
     
-    .Label {
+    .LabelMetadata {
+    	border-bottom: 1px dotted #666666;
+    	padding-bottom: 5px;
       height:14px;
       font-weight: bold;
       font-size: 12px;
@@ -36,10 +38,6 @@
       text-align: left ;      
     }
     
-    .Line {
-      background: url('/eXoECMResources/skin/images/metadata/Metadata.gif') repeat-x left -21px;
-      height: 10px;
-    }       
   </style>  
 </head>
 <%
@@ -65,8 +63,7 @@
 <div id="rma_record">
   <div class="ContentBlock" style="width:45%">
     <div class="Title">
-      <div class="Label"><%=_ctx.appRes("Record.view.label.record-identifier")%></div>
-      <div class="Line"><span></span></div>
+      <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.record-identifier")%></div>
     </div>          
     <div><% renderDCValues("rma:recordIdentifier") %></div>
   </div>
@@ -75,8 +72,7 @@
     <div id="ContentLeftNote" style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.subject")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.subject")%></div>
           <div><% renderDCValues("rma:subject") %></div>
         </div>                        
       </div>
@@ -84,8 +80,7 @@
     <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.format")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.format")%></div>
         </div>
         <div><% renderDCValues("rma:format") %></div>
       </div>
@@ -97,8 +92,7 @@
     <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.media-format")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.media-format")%></div>
           <div><% renderDCValues("rma:mediaFormat") %></div>
         </div>                        
       </div>
@@ -106,8 +100,7 @@
     <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.date-field")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.date-field")%></div>
         </div>
         <div><% renderDCValues("rma:dateFiled") %></div>
       </div>
@@ -119,8 +112,7 @@
     <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.publication-date")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.publication-date")%></div>
           <div><% renderDCValues("rma:publicationDate") %></div>
         </div>                        
       </div>
@@ -128,8 +120,7 @@
     <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.date-received")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.date-received")%></div>
         </div>
         <div><% renderDCValues("rma:dateReceived") %></div>
       </div>
@@ -141,8 +132,7 @@
     <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.originator")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.originator")%></div>
           <div><% renderDCValues("rma:originator") %></div>
         </div>                        
       </div>
@@ -150,8 +140,7 @@
     <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.originating-organization")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.originating-organization")%></div>
         </div>
         <div><% renderDCValues("rma:originatingOrganization") %></div>
       </div>
@@ -163,8 +152,7 @@
     <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.addresses")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.addresses")%></div>
           <div><% renderDCValues("rma:addressees") %></div>
         </div>                        
       </div>
@@ -172,8 +160,7 @@
     <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.other-addresses")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.other-addresses")%></div>
         </div>
         <div><% renderDCValues("rma:otherAddressees") %></div>
       </div>
@@ -185,8 +172,7 @@
     <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.supplemental-marking-list")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.supplemental-marking-list")%></div>
           <div><% renderDCValues("rma:supplementalMArkingList") %></div>
         </div>                        
       </div>
@@ -194,8 +180,7 @@
     <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.is-obsolete")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.is-obsolete")%></div>
         </div>
         <div><% renderDCValues("rma:isObsolete") %></div>
       </div>
@@ -207,8 +192,7 @@
     <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.superseded")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.superseded")%></div>
           <div><% renderDCValues("rma:superseded") %></div>
         </div>                        
       </div>
@@ -216,8 +200,7 @@
     <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Record.view.label.record-note")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Record.view.label.record-note")%></div>
         </div>
         <div><% renderDCValues("rma:recordNote") %></div>
       </div>

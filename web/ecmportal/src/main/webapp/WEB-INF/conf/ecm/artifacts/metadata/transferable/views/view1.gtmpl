@@ -20,7 +20,9 @@
       margin: 20px 20px 20px 20px;
     }
     
-    .Label {
+    .LabelMetadata {
+    	border-bottom: 1px dotted #666666;
+    	padding-bottom: 5px;
       height:14px;
       font-weight: bold;
       font-size: 12px;
@@ -35,11 +37,6 @@
       font-style: Verdana;
       text-align: left ;      
     }
-    
-    .Line {
-      background: url('/eXoECMResources/skin/images/metadata/Metadata.gif') repeat-x left -21px;
-      height: 10px;
-    }       
   </style>  
 </head>
 
@@ -67,8 +64,7 @@
 <div id="rma_transferable">     
   <div class="ContentBlock" style="width:44%">
     <div class="Title">
-      <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-executed")%></div>
-      <div class="Line"><span></span></div>
+      <div class="LabelMetadata"><%=_ctx.appRes("Transferable.view.label.transfer-executed")%></div>
     </div>          
     <div><% renderDCValues("rma:transferExecuted") %></div>
   </div>
@@ -77,8 +73,7 @@
     <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-date")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Transferable.view.label.transfer-date")%></div>
           <div><% renderDCValues("rma:transferDate") %></div>
         </div>                        
       </div>
@@ -86,8 +81,7 @@
     <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Transferable.view.label.transfer-location")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Transferable.view.label.transfer-location")%></div>
         </div>
         <div><% renderDCValues("rma:transferLocation") %></div>
       </div>

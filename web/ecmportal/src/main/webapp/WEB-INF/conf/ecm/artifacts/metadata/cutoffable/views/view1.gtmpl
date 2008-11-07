@@ -20,6 +20,9 @@
       margin:20px 20px 20px 20px;
     }
     
+    .LabelMetadata {
+    	border-bottom: 1px dotted #666666;
+    	padding-bottom: 5px;
       height:14px;
       font-weight: bold;
       font-size: 12px;
@@ -35,10 +38,6 @@
       text-align: left ;      
     }
     
-    .Line {
-      background: url('/eXoECMResources/skin/images/metadata/Metadata.gif') repeat-x left -21px;
-      height: 10px;
-    }       
   </style>  
 </head>
 
@@ -65,8 +64,7 @@
 <div id="rma_cutoffable">     
   <div class="ContentBlock" style="width:43%">
     <div class="Title">
-      <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-executed")%></div>
-      <div class="Line"><span></span></div>
+      <div class="LabelMetadata"><%=_ctx.appRes("Cutoffable.view.label.cutoff-executed")%></div>
     </div>          
     <div><% renderDCValues("rma:cutoffExecuted") %></div>
   </div>
@@ -75,8 +73,7 @@
     <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-now")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Cutoffable.view.label.cutoff-now")%></div>
           <div><% renderDCValues("rma:cutoffNow") %></div>
         </div>                        
       </div>
@@ -84,8 +81,7 @@
     <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-date-time")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Cutoffable.view.label.cutoff-date-time")%></div>
         </div>
         <div><% renderDCValues("rma:cutoffDateTime") %></div>
       </div>
@@ -97,8 +93,7 @@
     <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-event")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Cutoffable.view.label.cutoff-event")%></div>
           <div><% renderDCValues("rma:cutoffEvent") %></div>
         </div>                        
       </div>
@@ -106,8 +101,7 @@
     <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-obsolete")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Cutoffable.view.label.cutoff-obsolete")%></div>
         </div>
         <div><% renderDCValues("rma:cutoffObsolete") %></div>
       </div>
@@ -119,8 +113,7 @@
     <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("Cutoffable.view.label.cutoff-superseded")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("Cutoffable.view.label.cutoff-superseded")%></div>
           <div><% renderDCValues("rma:cutoffSuperseded") %></div>
         </div>                        
       </div>

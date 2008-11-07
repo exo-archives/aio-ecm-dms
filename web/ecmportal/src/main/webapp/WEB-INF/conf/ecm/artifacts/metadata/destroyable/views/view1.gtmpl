@@ -20,7 +20,9 @@
       margin:20px 20px 20px 20px;
     }
     
-    .Label {
+    .LabelMetadata {
+    	border-bottom: 1px dotted #666666;
+    	padding-bottom: 5px;
       height:14px;
       font-weight: bold;
       font-size: 12px;
@@ -36,10 +38,6 @@
       text-align: left ;      
     }
     
-    .Line {
-      background: url('/eXoECMResources/skin/images/metadata/Metadata.gif') repeat-x left -21px;
-      height: 10px;
-    }       
   </style>  
 </head>
 
@@ -66,8 +64,7 @@
 <div id="rma_destroyable">     
   <div class="ContentBlock" style="width:43%">
     <div class="Title">
-      <div class="Label"><%=_ctx.appRes("Destroyable.view.label.destruction-date")%></div>
-      <div class="Line"><span></span></div>
+      <div class="LabelMetadata"><%=_ctx.appRes("Destroyable.view.label.destruction-date")%></div>
     </div>          
     <div><% renderDCValues("rma:destructionDate") %></div>
   </div>

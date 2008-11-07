@@ -20,7 +20,9 @@
       margin: 20px;
     }
     
-    .Label {
+    .LabelMetadata {
+    	border-bottom: 1px dotted #666666;
+    	padding-bottom: 5px;
       height:14px;
       font-weight: bold;
       font-size: 12px;
@@ -36,10 +38,6 @@
       text-align: left ;      
     }
     
-    .Line {
-      background: url('/eXoECMResources/skin/images/metadata/Metadata.gif') repeat-x left -21px;
-      height: 10px;
-    }       
   </style>  
 </head>
 <%
@@ -65,8 +63,7 @@
 <div id="rma_vitalRecord">
   <div class="ContentBlock" style="width:43%">
     <div class="Title">
-      <div class="Label"><%=_ctx.appRes("VitalRecord.view.label.is-vital-record")%></div>
-      <div class="Line"><span></span></div>
+      <div class="LabelMetadata"><%=_ctx.appRes("VitalRecord.view.label.is-vital-record")%></div>
     </div>          
     <div><% renderDCValues("rma:isVitalRecord") %></div>
   </div>
@@ -75,8 +72,7 @@
     <div id="ContentLeftNote"  style="float: left; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("VitalRecord.view.label.prev-review-date")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("VitalRecord.view.label.prev-review-date")%></div>
           <div><% renderDCValues("rma:prevReviewDate") %></div>
         </div>                        
       </div>
@@ -84,8 +80,7 @@
     <div id="ContentRightNote" style="float:right; width:44%">
       <div class="ContentBlock">
         <div class="Title">
-          <div class="Label"><%=_ctx.appRes("VitalRecord.view.label.next-review-date")%></div>
-          <div class="Line"><span></span></div>
+          <div class="LabelMetadata"><%=_ctx.appRes("VitalRecord.view.label.next-review-date")%></div>
         </div>
         <div><% renderDCValues("rma:nextReviewDate") %></div>
       </div>

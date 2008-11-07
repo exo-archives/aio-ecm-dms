@@ -112,7 +112,7 @@
   padding: 6px;
 }
 
-.UIJCRExplorerPortlet .UITabPane .UITabContent .UIPropertyTab .UIGrid thead tr th {
+.UIJCRExplorerPortlet .UITabContent .UIPropertyTab .UIGrid th {
   padding: 0px;
   white-space: nowrap;
 }
@@ -121,10 +121,6 @@
   float: none;
   vertical-align: middle;
   margin: auto;
-}
-
-.UIJCRExplorerPortlet .UITabContent .UIPropertyTab .UIGrid .CenterColumn {
-	text-align: center;
 }
 
 .UIJCRExplorerPortlet .UIPropertyTab .UIGrid td  {
