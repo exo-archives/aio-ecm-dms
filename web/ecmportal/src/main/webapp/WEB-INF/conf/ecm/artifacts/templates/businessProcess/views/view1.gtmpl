@@ -36,10 +36,9 @@
 #set($childs = $node.getChildNodes())<br><br>
 <ul class="menu">
   <li>
-    <a href="#" onclick="javascript:expand(this)">
-      <img src="/cms-content/images/small/collapsed.gif"/>
-      <font size="2"><b>Properties</b></font>
-    </a>
+    <>
+      <img onclick="javascript:expand(this)" alt="" src="/cms-content/images/small/collapsed.gif"/>
+      <a href="#" onclick="javascript:expand(this)">Properties</a>
     <ul>
       #if($childs.size() > 0)
         #foreach($child in $childs)
@@ -72,10 +71,9 @@
 
 <ul class="menu">
   <li>
-    <a href="#" onclick="javascript:expand(this)">
-      <img src="/cms-content/images/small/collapsed.gif"/>
-      <font size="2"><b>XML</b></font>
-    </a>
+    <>
+      <img onclick="javascript:expand(this)" alt="" src="/cms-content/images/small/collapsed.gif"/>
+      <a href="#" onclick="javascript:expand(this)">XML</a>
     <ul>
       #if($childs.size() > 0)
         #foreach($child in $childs)

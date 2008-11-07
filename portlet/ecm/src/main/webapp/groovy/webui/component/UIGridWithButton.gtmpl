@@ -31,8 +31,10 @@
 	  <tbody>
 	  <%if(uicomponent.getUIPageIterator().getAvailable() < 1) {%>
 	    <tr>
-	      <td align="center" style="font-style:italic; color: #FF5604" colspan="<%=beanFields.length+1%>">
-	        <%=_ctx.appRes(uicomponent.id + ".grid.msg.empty")%>
+	      <td style="font-style:italic; color: #FF5604" colspan="<%=beanFields.length+1%>">
+	      	<div class="ActionContainer">
+		        <%=_ctx.appRes(uicomponent.id + ".grid.msg.empty")%>
+		      </div>
 	      </td>
 	    </tr>  
 	  <%} else { 
@@ -61,9 +63,8 @@
 	          
 	      <%}%>
 	      <%if(beanActions != null && beanActions.length > 0) { %>
-	        <td align="center">         
-	          <div class="ActionContainer" style="margin: 0px auto;">
-	            <div class="OverflowContainer" style="margin: auto;">          
+	        <td>         
+	          <div class="ActionContainer">
 	            <%def beanIdField = uicomponent.getBeanIdField() ; %>          
 	            <%for(action in beanActions) { %>
 	            <%  def beanId = uicomponent.getFieldValue(bean,beanIdField)  ; %>               
@@ -71,13 +72,12 @@
 	                if(action != null) { 
 	                  if(uicomponent.isUseAjax()){
 	             %>             
-	                    <a href="<%=uicomponent.event(action, beanId)%>" title = "<%=_ctx.appRes(uiParent.getId()+".title."+ action)%>"><img src="/eXoResources/skin/sharedImages/Blank.gif" class="${action}Icon" ></a>             
+	                    <img onclick="<%=uicomponent.event(action, beanId)%>" title = "<%=_ctx.appRes(uiParent.getId()+".title."+ action)%>" src="/eXoResources/skin/sharedImages/Blank.gif" class="${action}Icon" alt="" />
 	              <%  }else{ %>
-	                    <a href="<%=uicomponent.url(action, beanId)%>" title = "<%=_ctx.appRes(uiParent.getId()+".title."+ action)%>"><img src="/eXoResources/skin/sharedImages/Blank.gif" class="${action}Icon" ></a>             
+	                    <img onclick="<%=uicomponent.url(action, beanId)%>" title = "<%=_ctx.appRes(uiParent.getId()+".title."+ action)%>" src="/eXoResources/skin/sharedImages/Blank.gif" class="${action}Icon" alt="" />
 	              <%  } %> 
 	              <%} %> 
 	            <%}%>                 
-	            </div>
 	          </div>
 	        </td>
 	      <% } %>  
@@ -95,19 +95,19 @@
 
 <% if(uicomponent.getActions() != null) { %>
     <div class="UIAction"> 
-      <table class="ActionContainer" align="center">
+      <table class="ActionContainer">
       	<tr>
-      		<td align="center">
+      		<td>
 	        <% for(action in uicomponent.getActions()) { %>
-            <a href="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle" >
+            <div onclick="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle" >
               <div class="ButtonLeft">
                 <div class="ButtonRight">
                   <div class="ButtonMiddle">
-                      <%=_ctx.appRes(uicomponent.getId() + ".action." + action)%>
+                    <a href="javascript:void(0);"><%=_ctx.appRes(uicomponent.getId() + ".action." + action)%></a>
                   </div>
                 </div>
               </div>
-            </a>
+            </div>
 	        <% } %>
 					</td>
 				</tr>	       

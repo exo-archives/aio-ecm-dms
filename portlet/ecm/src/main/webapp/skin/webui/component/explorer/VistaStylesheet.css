@@ -98,22 +98,14 @@
   line-height: 24px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIPuplication .UIFormGrid .FieldLabel {
+.UIPublicationContainer .State input.radio {
+	margin: 0px 7px;
+}
+
+.UIPublicationContainer .UIFormGrid .FieldLabel {
   width: 100px;
   padding: 6px 6px 6px 16px;
   text-align: left;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIPuplicationForm .UIFormGrid .FieldLabel {
-  font-weight: bold;  
-}
-
-.UIJCRExplorerPortlet .UIPuplicationForm .UIFormGrid .FieldComponent input.radio {
-	width: 25px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIPublicationContainer .UIFormGrid .FieldComponent {
-  padding: 6px;
 }
 
 /*******************************************************************************/

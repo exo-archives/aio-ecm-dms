@@ -34,10 +34,6 @@
 	padding: 10px;
 }
 
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
- 	line-height: 24px;
-}
-
 /***********************UIRepositoryControl**************************/
 .UIECMAdminPortlet .UIRepositoryControl .ControlLayout {
   background: url('VistaSkin/background/ECMAdminTitleBar1x35.gif') repeat-x left top ; 

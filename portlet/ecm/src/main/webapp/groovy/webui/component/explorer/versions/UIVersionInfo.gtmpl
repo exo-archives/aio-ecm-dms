@@ -79,34 +79,32 @@
     uicomponent.renderChildren(); 
   %>
   <div class="UIAction">
-	  <table class="ActionContainer" align="center"> 
+	  <table class="ActionContainer"> 
 	  	<tr>
-	  		<td align="center">
-		      <a href="<%=uicomponent.event("Close")%>" class="ActionButton LightBlueStyle">
+	  		<td>
+		      <div onclick="<%=uicomponent.event("Close")%>" class="ActionButton LightBlueStyle">
 		        <div class="ButtonLeft">
 		          <div class="ButtonRight">
 		            <div class="ButtonMiddle">
-		              <%=_ctx.appRes("UIVersionInfo.action.close")%>
+		              <a href="javascript:void(0);"><%=_ctx.appRes("UIVersionInfo.action.close")%></a>
 		            </div>
 		          </div>
 		        </div>
-		      </a>
-	  		</td>
+		      </div>
 	  		<%
 	  			if(uicomponent.isViewVersion()) {
 	  		%>
-	  			<td align="center">
-			      <a href="<%=uicomponent.event("CloseView")%>" class="ActionButton LightBlueStyle">
-			        <div class="ButtonLeft">
-			          <div class="ButtonRight">
-			            <div class="ButtonMiddle">
-			              <%=_ctx.appRes("UIVersionInfo.action.close-view")%>
-			            </div>
-			          </div>
-			        </div>
-			      </a>
-		  		</td>
+		      <div onclick="<%=uicomponent.event("CloseView")%>" class="ActionButton LightBlueStyle">
+		        <div class="ButtonLeft">
+		          <div class="ButtonRight">
+		            <div class="ButtonMiddle">
+		              <a href="javascript:void(0);"><%=_ctx.appRes("UIVersionInfo.action.close-view")%></a>
+		            </div>
+		          </div>
+		        </div>
+		      </div>
 	  		<%}%>
+	  		</td>
 	  	</tr>
 	  </table>
   </div>

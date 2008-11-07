@@ -36,33 +36,21 @@
 			           %>
 			          <div class="Text">$nodeName</div>
 			        </td>
-			        <td align="center" style="padding: 0px;">
-	              <%
-	                if(uicomponent.isRootNode()) {
-	              %>
-	                <a href="<%=uicomponent.event("Add", node.getPath())%>">
-	                  <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Add16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.add")%>">
-	                </a>
-	                <a href="<%=uicomponent.event("Paste", node.getPath())%>">
-	                  <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Paste16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.paste")%>">
-	                </a>
-	              <%} else {%>
-		              <a href="<%=uicomponent.event("Add", node.getPath())%>">
-		                <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Add16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.add")%>">
-		              </a>
-		              <a href="<%=uicomponent.event("Copy", node.getPath())%>">
-		                <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Copy16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.copy")%>">
-		              </a>
-		              <a href="<%=uicomponent.event("Cut", node.getPath())%>">
-		                <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Cut16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.cut")%>">
-		              </a>
-		              <a href="<%=uicomponent.event("Paste", node.getPath())%>">
-		                <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Paste16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.paste")%>">
-		              </a>
-		              <a href="<%=uicomponent.event("Remove", node.getPath())%>">
-		                <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Remove16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.remove")%>">
-		              </a>
-	              <%}%>
+			        <td>
+			        	<div class="ActionContainer">
+		              <%
+		                if(uicomponent.isRootNode()) {
+		              %>
+		                <img onclick="<%=uicomponent.event("Add", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Add16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.add")%>">
+		                <img onclick="<%=uicomponent.event("Paste", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Paste16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.paste")%>">
+		              <%} else {%>
+			              <img onclick="<%=uicomponent.event("Add", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Add16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.add")%>">
+		                <img onclick="<%=uicomponent.event("Copy", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Copy16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.copy")%>">
+			              <img onclick="<%=uicomponent.event("Cut", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Cut16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.cut")%>">
+		                <img onclick="<%=uicomponent.event("Paste", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Paste16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.paste")%>">
+		                <img onclick="<%=uicomponent.event("Remove", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Remove16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.remove")%>">
+		              <%}%>
+		            </div>
 			        </td>
 			      </tr>
 			<%
@@ -70,7 +58,7 @@
 		    } else {
 		  %>
 		  		<tr class="EvenRow">
-		  			<td colspan="2" style="align:center;"><%=_ctx.appRes("UITreeList.info.child-not-found")%></td>
+		  			<td colspan="2"><div class="Text"><%=_ctx.appRes("UITreeList.info.child-not-found")%></div></td>
 		  		</tr>
 		  <%  	
 		    }

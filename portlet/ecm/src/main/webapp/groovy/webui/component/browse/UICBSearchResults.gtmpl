@@ -45,13 +45,11 @@
 	            else if(nodePath.length() > 40) nodePath = "..." + nodePath.substring(30, nodePath.length()) ;
 	          %>
 	          <td><div class="Text" title="<%=node.getPath()%>"><%=nodePath%></div></td>
-	          <td style="width:80px;">
-	            <a href="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UICBSearchResults.tooltip.View")%>">
-	              <div class="View16x16Icon" style="margin-left:10px;float:left;"><span></span></div>
-	            </a>
-	            <a href="<%=uicomponent.event("Goto", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UICBSearchResults.tooltip.Goto")%>">
-	              <div class="OpenFolder16x16Icon" style="margin-left:10px ;float:left; "><span></span></div>
-	            </a>
+	          <td>
+	          	<div class="ActionContainer">
+	            	<img class="View16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" onclick="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UICBSearchResults.tooltip.View")%>"/>
+	            	<img class="OpenFolder16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" onclick="<%=uicomponent.event("Goto", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UICBSearchResults.tooltip.Goto")%>"/>
+	           	</div>
 	          </td>	                    
           </tr>
     <%
@@ -73,19 +71,19 @@
 <% if(uicomponent.getActions() != null) { %>
   <div class="$uicomponent.id">
     <div class="UIAction"> 
-      <table class="ActionContainer" align="center">
+      <table class="ActionContainer">
       	<tr>
-      		<td align="center">
+      		<td>
 	        <% for(action in uicomponent.getActions()) { %>
-            <a href="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle" >
+            <div onclick="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle" >
               <div class="ButtonLeft">
                 <div class="ButtonRight">
                   <div class="ButtonMiddle">
-                      <%=_ctx.appRes(uicomponent.getId() + ".action." + action)%>
+                    <a href="javascript:void(0);"><%=_ctx.appRes(uicomponent.getId() + ".action." + action)%></a>
                   </div>
                 </div>
               </div>
-            </a>
+            </div>
 	        <% } %>
 					</td>
 				</tr>	       

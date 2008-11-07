@@ -35,3 +35,7 @@
 .UITreeList .Text {
 	padding-left: 24px;
 }
+
+.UIOneNodePathSelector {
+	padding: 10px;
+}

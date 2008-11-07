@@ -26,9 +26,11 @@
   <div class="HorizontalLayout">
     <table class="UIFormGrid">
     	<tr>
-		    <th colspan="2" height="50" align="center">
-		      My custom groovy form <br>
-		      <img src="http://wiki.bonita.objectweb.org/xwiki/bin/download/XWiki/MySkin/banniere" border="0">
+		    <th colspan="2" height="50">
+		    	<div style="text-align: center">
+			      My custom groovy form <br>
+			      <img src="http://wiki.bonita.objectweb.org/xwiki/bin/download/XWiki/MySkin/banniere" alt="" border="0">
+			    </div>
 		    </th>
 		  </tr>    	
 			<%for(inputInfo in uicomponent.getInputInfo())  {%>
@@ -39,9 +41,9 @@
 			<%}%>
 		</table>
 	  <div class="UIAction"> 
-	    <table align="center" class="ActionContainer">
+	    <table class="ActionContainer">
 	    	<tr>
-	    		<td align="center">
+	    		<td>
 			  <%
 			  	writeAction("Finish it", "EndOfState", null) ;
 			    writeAction("Cancel", "Cancel", null) ;

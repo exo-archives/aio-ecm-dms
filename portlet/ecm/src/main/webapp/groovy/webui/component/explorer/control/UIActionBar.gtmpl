@@ -69,7 +69,7 @@
 		      <div class="SavedQueries" onclick="<%=uicomponent.event("SavedQueries")%>" title="<%=_ctx.appRes("UIActionBar.title.SavedQueries")%>"><span></span></div>
 		    </div>
 		  </div>
-		  <div style="clear: both;"></div>
+		  <div style="clear: both; height: 0px;"><span></span></div>
 	  </div>
   </div>
   <% uiform.end() %>

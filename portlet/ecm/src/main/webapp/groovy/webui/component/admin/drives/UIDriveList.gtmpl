@@ -35,26 +35,20 @@
           <tr class="$rowClass">
             <td>
             <%if(drive.getIcon() != null && drive.getIcon().length() > 0) {%>
-              <img src="$drive.icon" width="20px" height="20px" />
+              <img src="$drive.icon" alt="" width="20px" height="20px" />
             <%} else {%>
               <span></span>
             <%}%>
             </td>
-            <td><div class="Text"><%=drive.getName().replace("|", " | ")%></div></td>
-            <td><div class="Text">$drive.workspace</div></td>
-            <td><div class="Text"><%=drive.getHomePath().replace("/", " /")%></div></td>
-            <td><div class="Text">$drive.permissions</div></td>
-            <td><div class="Text">$drive.views</div></td>
-	          <td align="center" style="padding: 5px 0px;">
+            <td><div class="Text" title="<%=drive.getName().replace("|", " | ")%>"><%=drive.getName().replace("|", " | ")%></div></td>
+            <td><div class="Text" title="$drive.workspace">$drive.workspace</div></td>
+            <td><div class="Text" title="<%=drive.getHomePath().replace("/", " /")%></div>"><%=drive.getHomePath().replace("/", " /")%></div></td>
+            <td><div class="Text" title="$drive.permissions">$drive.permissions</div></td>
+            <td><div class="Text" title="$drive.views">$drive.views</div></td>
+	          <td>
 	          	<div class="ActionContainer">
-			          <div class="OverflowContainer">  
-			            <a href="<%=uicomponent.event("EditInfo", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.EditInfo")%>">
-			              <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Edit16x16Icon">
-			            </a>
-			            <a href="<%=uicomponent.event("Delete", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.Delete")%>">
-			              <img src="/eXoResources/skin/sharedImages/Blank.gif" class="Delete16x16Icon">
-			            </a>
-			          </div>
+	              <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("EditInfo", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.EditInfo")%>" alt="" class="Edit16x16Icon">
+	              <img src="/eXoResources/skin/sharedImages/Blank.gif" href="<%=uicomponent.event("Delete", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.Delete")%>" alt="" class="Delete16x16Icon">
 			        </div>
 	          </td>	                    
           </tr>
@@ -67,19 +61,19 @@
   </div>
   <% } %>
   <div class="UIAction"> 
-    <table class="ActionContainer" align="center">
+    <table class="ActionContainer">
     	<tr>
-    		<td align="center">
+    		<td>
 		      <% for(action in uicomponent.getActions()) { %>
-	          <a href="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle" >
+	          <div onclick="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle" >
 	  					<div class="ButtonLeft">
 	  					  <div class="ButtonRight">
 	  						  <div class="ButtonMiddle">
-	  							    <%=_ctx.appRes("UIDriveList.action." + action)%>
+	  							  <a href="javascipt:void(0);"><%=_ctx.appRes("UIDriveList.action." + action)%></a>
 	  				      </div>
 	  				    </div>
 	  			    </div>
-	  				</a>
+	  				</div>
 		      <% } %>
       	</td>
       </tr>

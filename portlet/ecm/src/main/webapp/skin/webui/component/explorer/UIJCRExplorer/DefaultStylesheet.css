@@ -532,7 +532,7 @@
   float: none;
 }
 
-/*================================DecoratorBoxNested=================================*/
+/*================================UIPropertyTab=================================*/
 
 .UIJCRExplorerPortlet .UIPropertyTab .MultiValue .Icon16x16 {
 	width: auto;
@@ -545,6 +545,25 @@
 	margin: auto;
 }
 
+.UIJCRExplorerPortlet .UIPropertyTab .UIGrid th {
+  padding: 0px;
+  white-space: nowrap;
+  height: 19px;
+}
+
+.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Field1 {
+	width: 30px;
+}
+
+.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Field3,.Field5 {
+	width: 80px;
+}
+
+.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16 {
+  float: none;
+  vertical-align: middle;
+  margin: auto;
+}
 /*================================UINodeTypeInfo=================================*/
 
 .UINodeTypeInfo .NavigationButtonContainer {
@@ -561,12 +580,6 @@
 
 .UIJCRExplorerPortlet .UIGrid tr {
   background: #f3f3f3;
-}
-
-/*=================================UITabContentContainer==============================*/
-
-.UIJCRExplorerPortlet .UITabContentContainer .UITabContent .UIActionViewContainer .UIGrid td {
-  border-top: solid 1px #cccccc;
 }
 
 /*=================================UICategoryManager==============================*/
@@ -603,12 +616,6 @@
 }
 
 /*================================ UIViewMetadataManager ====================================*/
-
-.UIJCRExplorerPortlet .UIViewMetadataManager .UITabPane {
-  width: 95%;
-  margin: 10px auto;
-  padding: 0px;
-}
 
 .UIJCRExplorerPortlet .UIViewMetadataManager #UIViewMetadataForm {
 	border: 1px solid #b7b7b7;

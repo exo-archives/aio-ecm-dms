@@ -8,14 +8,12 @@
  
 /*############################## -- UIMetadataManager-- ########################*/
 
-.UIECMAdminPortlet .UIMetadataManager .Icon16x16 {
-	float: none;
+.UIECMAdminPortlet .UIMetadataManager  {
+  padding: 0px 10px;
 }
 
-.UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
-  width: 92%;
-  height: 320px;
-  padding: 3px;
+.UIECMAdminPortlet .UIMetadataManager .Icon16x16 {
+	float: none;
 }
 
 .UIECMAdminPortlet .MetadataInfo .GridTitleBar {

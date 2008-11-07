@@ -121,6 +121,7 @@
   margin: 0px 3px; 
   padding-left: 20px;
   height: 20px; width: auto;
+  background-position: left center;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {

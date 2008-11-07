@@ -50,14 +50,14 @@
 		        <td>
 		          <div class="Text">[<%=action.getPrimaryNodeType().getName()%>]</div>
 		        </td>
-		        <td style="width:120px;">
-		        <%
-		          for(act in uicomponent.getActions()) { 
-		        %>
-	              <a href="<%=uicomponent.event(act, action.getName())%>">
-	                <div class="${act}16x16Icon" title="$act" style="margin-left:7px;float:left;"></div>
-	              </a>
-		        <%} %>
+		        <td>
+		        	<div class="ActionContainer">
+			        <%
+			          for(act in uicomponent.getActions()) { 
+			        %>
+	            	<img class="${act}16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" onclick="<%=uicomponent.event(act, action.getName())%>"  title="$act"/>
+			        <%} %>
+	           	</div>
 		        </td>
 		      </tr>
 	    <%
@@ -72,16 +72,16 @@
   <div class="UIAction"> 
     <table class="ActionContainer">
     	<tr>
-    		<td align="center">
-		      <a href="<%=uicomponent.event("Close")%>" class="ActionButton LightBlueStyle" >
+    		<td>
+		      <div onclick="<%=uicomponent.event("Close")%>" class="ActionButton LightBlueStyle" >
 						<div class="ButtonLeft">
 						  <div class="ButtonRight">
 							  <div class="ButtonMiddle">
-									<%=_ctx.appRes("UIActionList.action.Close")%>
+									<a href="javascript:void(0);"><%=_ctx.appRes("UIActionList.action.Close")%></a>
 					      </div>
 					    </div>
 				    </div>
-					</a>
+					</div>
     		</td>
     	</tr>
     </table>

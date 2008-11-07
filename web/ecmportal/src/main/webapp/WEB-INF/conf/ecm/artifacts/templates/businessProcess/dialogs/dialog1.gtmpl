@@ -33,10 +33,8 @@
 
 <ul class="menu">
   <li>
-    <a href="#" onclick="javascript:expand(this)">
-      <img src="/cms-content/images/small/collapsed.gif"/>
-      <font size="2"><b>Properties</b></font>
-    </a>
+      <img onclick="javascript:expand(this)" src="/cms-content/images/small/collapsed.gif" alt=""/>
+      <a href="#" onclick="javascript:expand(this)" style="font-weight: bold">Properties</a>
     <ul>
       #if($childs.size() > 0)
         #foreach($child in $childs)
@@ -65,10 +63,9 @@
 </ul>
 <ul class="menu">
   <li>
-    <a href="#" onclick="javascript:expand(this)">
-      <img src="/cms-content/images/small/collapsed.gif"/>
-      <font size="2"><b>XML</b></font>
-    </a>
+    <>
+      <img onclick="javascript:expand(this)" src="/cms-content/images/small/collapsed.gif" alt=""/>
+      <a href="#" onclick="javascript:expand(this)" style="font-weight: bold"> XML </a>
     <ul>
       #if($childs.size() > 0)
         #foreach($child in $childs)

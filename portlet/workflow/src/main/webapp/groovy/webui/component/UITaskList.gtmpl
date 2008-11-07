@@ -29,22 +29,22 @@
 	      even = !even ;
   %>
 	    <tr class="$rowClass">
-	      <td class="text"><img src="<%=uicomponent.getIconURL(task)%>"/></td>
-	      <td class="text">
+	      <td class="Text"><img src="<%=uicomponent.getIconURL(task)%>" alt="" /></td>
+	      <td class="Text">
 	        <%
             if(task.getActorId().indexOf(":/") > -1) println "<div class=\"Group16x16Icon\"></div>" ;
 						else println "<div class=\"User16x16Icon\"></div>" ;
 					%>
 				</td>
-	      <td class="text">$task.id</td>
-	      <td class="text"><%=uicomponent.getProcessName(task)%></td>
-	      <td class="text">$task.taskName</td>
+	      <td class="Text">$task.id</td>
+	      <td class="Text"><%=uicomponent.getProcessName(task)%></td>
+	      <td class="Text">$task.taskName</td>
 
-	      <td class="text"><%=(task.getDescription() == null ? "&nbsp;" : task.getDescription()) ;%></td>
-	      <td class="text"><%=task.getActorId()%></td>
+	      <td class="Text"><%=(task.getDescription() == null ? "&nbsp;" : task.getDescription()) ;%></td>
+	      <td class="Text"><%=task.getActorId()%></td>
 
-	      <td class="text"><%=dateFormat.format(uicomponent.getProcessInstanceStartDate(task))%></td>
-	      <td class="text"><a href="<%=uicomponent.event("ManageState", task.getId())%>"><%= _ctx.appRes("UITaskList.label.managerState") %></a></td>
+	      <td class="Text"><%=dateFormat.format(uicomponent.getProcessInstanceStartDate(task))%></td>
+	      <td class="Text"><a href="<%=uicomponent.event("ManageState", task.getId())%>"><%= _ctx.appRes("UITaskList.label.managerState") %></a></td>
 	    </tr>
   <%
       }

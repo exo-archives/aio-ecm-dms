@@ -38,14 +38,12 @@
           <tr class="$rowClass">
             <td><div class="Text"><%=node.getName()%></div></td>
             <td><div class="Text" title="<%=node.getPath()%>"><%=pathTitle(node.getPath(), 30)%></div></td>
-            <td align="center"><div class="Text"><%=node.getBaseVersion()%></div></td>
-	          <td style="width:80px;">
-	            <a href="<%=uicomponent.event("Edit", node.getName())%>" title="<%=_ctx.appRes("UIScriptList.tooltip.Edit")%>">
-	              <div class="Edit16x16Icon" style="margin-left:10px; float: left;"><span></span></div>
-	            </a>
-	            <a href="<%=uicomponent.event("Delete", node.getName())%>" title="<%=_ctx.appRes("UIScriptList.tooltip.Delete")%>">
-	              <div class="Delete16x16Icon" style="margin-left:5px;float: left;"><span></span></div>
-	            </a>
+            <td><div class="Text"><%=node.getBaseVersion()%></div></td>
+	          <td>
+	          	<div class="ActionContainer">
+	            	<img class="Edit16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("Edit", node.getName())%>" alt="" title="<%=_ctx.appRes("UIScriptList.tooltip.Edit")%>"/>
+	            	<img class="Delete16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("Delete", node.getName())%>" alt="" title="<%=_ctx.appRes("UIScriptList.tooltip.Delete")%>"/>
+	            </div>
 	          </td>	                    
           </tr>
       <%}%>  
@@ -57,19 +55,19 @@
   </div>
   <% } %>
 	<div class="UIAction">
-    <table align="center" class="ActionContainer">
+    <table class="ActionContainer">
     	<tr>
-    		<td align="center">
+    		<td>
 		      <% for(action in uicomponent.getActions()) { %>
-	          <a href="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle">
+	          <div onclick="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle">
 	  					<div class="ButtonLeft">
 	  					  <div class="ButtonRight">
 	  						  <div class="ButtonMiddle">
-	  							    <%=_ctx.appRes("UIScriptList.action." + action)%>
+	  							  <a href="javascript:void(0);"><%=_ctx.appRes("UIScriptList.action." + action)%></a>
 	  				      </div>
 	  				    </div>
 	  			    </div>
-	  				</a>
+	  				</div>
 		      <% } %>
     		</td>
     	</tr>

@@ -220,7 +220,7 @@
 }
 
 .UIECMAdminPortlet .UIFormGrid .FieldLabel {
-  width: 128px;
+  width: 110px;
 }
 
 .UIECMAdminPortlet .UIFormWithTitle .FieldContainer .MultiValueContainer .AddNewNodeIcon  {
@@ -236,34 +236,9 @@
 }
 
 .UIECMAdminPortlet .HorizontalLayout .UIFormInputSet {
-	width: 95%;
+	width: 100%;
 	margin: 0px auto;
 	padding: 0px;
-}
-
-.UIECMAdminPortlet .UITabContentContainer .UIFormTableInputSet .UIGrid td {
- 	padding: 4px;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
- 	padding: 4px 8px 4px 0px;
- 	line-height: 18px;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField {
-  margin: 0px 0px 5px 0px ;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
-  color: blue;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a:hover {
-  color: orange;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIPopupWindow .UITabPane .FormContainer a:hover {
-	color: #058EE6;
 }
 
 /*----------------------------UIRepositoryForm -------------------------*/
@@ -374,40 +349,13 @@
   color: red;
 }
 
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane {
-	padding: 0px;
-}
-
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UITabPane .TabPaneContent {
-	padding: 0px;
-}
-
-.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet .FormContainer {
-	width: 500px;
-	margin: auto;
-}
-
-.UIWorkspaceWizard .HorizontalLayout .UITabContent .step1 .UIFormInputSet .AddPermissionIcon  {
-	margin: 0px;
-}
-
- .UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet {
-	padding: 10px 0px;
-	margin: 0px;
-}
-
 .UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm {
   padding: 10px;
 }
 
-.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm .HorizontalLayout{
+.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm .HorizontalLayout {
   background:  url(MacSkin/background/Background1x4.png) repeat 0%;
 	padding-top: 10px;
-}
-
-.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm .UIFormGrid {
-  width: 500px;
-  margin: auto;
 }
 
 /*############################## -- UINamespaceManager -- ########################*/
@@ -420,7 +368,7 @@
   padding: 10px;
 }
 
-.UIECMAdminPortlet .UINamespaceForm .HorizontalLayout{
+.UIECMAdminPortlet .UINamespaceForm .HorizontalLayout {
   background:  url(MacSkin/background/Background1x4.png) repeat 0%;
 	padding-top: 10px;
 }
@@ -469,11 +417,6 @@
 .UIECMAdminPortlet .UIViewContainer .UIViewForm .FormContainer {
   width: 500px ;
   margin: auto;
-}
-
-.UIECMAdminPortlet .UIViewManager .UIFormTabPane {
-	width: 550px ;
-	margin-left: auto; margin-right: auto;
 }
 
 .UIECMAdminPortlet .UIViewContainer .UITabContent .FormContainer {
@@ -548,26 +491,7 @@
 }
 
 .UIECMAdminPortlet .UIAnyPermission {
-	border: 1px solid #B7B7B7;
 	margin-bottom: 2px;
-}
-
-.UIECMAdminPortlet .UIAnyPermission .UIFormGrid {
-	width: auto;
-	margin: 0px;
-}
-
-.UIECMAdminPortlet .UIAnyPermission .UIFormGrid .FieldLabel {
-	width: 100px;
-}
-
-.UIECMAdminPortlet .UIAnyPermission .UIFormWithTitle .HorizontalLayout .FormContainer {	
-	padding: 0px;
-}
-
-.UIECMAdminPortlet .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
-	vertical-align: middle;
-	padding: 2px;
 }
 
 /*------------------------------UICBScripts------------------------*/

@@ -35,14 +35,14 @@
   	    	%>
 	        	<div onclick="<%=uicomponent.event("SortASC", Utils.formatNodeName("type"))%>" title="<%=_ctx.appRes("UISearchResult.title.typeASC")%>">
 		  	    	<%=_ctx.appRes("UISearchResult.header.type")%>
-	  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueUpArrow16x16Icon">
+	  		    	<img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueUpArrow16x16Icon">
 	  	    	</div>
   	    	<%
   	    		} else if (uicomponent.iconType.equals("BlueDownArrow")) {
   	    	%>
   	    	<div onclick="<%=uicomponent.event("SortDESC", Utils.formatNodeName("type"))%>" title="<%=_ctx.appRes("UISearchResult.title.typeDESC")%>">
 	  	    	<%=_ctx.appRes("UISearchResult.header.type")%>
-  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueDownArrow16x16Icon">
+  		    	<img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueDownArrow16x16Icon">
   	    	</div>
   	    	<%
   	    		} else {
@@ -59,14 +59,14 @@
   	    	%>
 	        	<a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("score"))%>" title="<%=_ctx.appRes("UISearchResult.title.scoreASC")%>">
 		  	    	<%=_ctx.appRes("UISearchResult.header.score")%>
-	  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueUpArrow16x16Icon"/>
+	  		    	<img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueUpArrow16x16Icon"/>
 	  	    	</a>
   	    	<%
   	    		} else if (uicomponent.iconScore.equals("BlueDownArrow")) {
   	    	%>
   	    	<a href="<%=uicomponent.event("SortDESC", Utils.formatNodeName("score"))%>" title="<%=_ctx.appRes("UISearchResult.title.scoreDESC")%>">
 	  	    	<%=_ctx.appRes("UISearchResult.header.score")%>
-  		    		<img src="/eXoResources/skin/sharedImages/Blank.gif" class="BlueDownArrow16x16Icon"/>
+  		    	<img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueDownArrow16x16Icon"/>
   	    	</a>
   	    	<%
   	    		} else {
@@ -100,7 +100,7 @@
   	      String s = "";
       %>
           <tr class="$rowClass">
-          	<td align="center">
+          	<td>
               <div class="default16x16Icon ItemIcon <%=Utils.getNodeTypeIcon(node, "16x16Icon")%>" style="margin:auto"><span></span></div>
             </td>
             <td>
@@ -114,12 +114,8 @@
             <td><div class="ActionContainer"><%=row.getValue("jcr:score").getString()%></div></td>
 	          <td>
 	          	<div class="ActionContainer">
-		            <a href="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>">
-		              <img src="/eXoResources/skin/sharedImages/Blank.gif" class="View16x16Icon"/>
-		            </a>
-		            <a href="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>">
-		              <img src="/eXoResources/skin/sharedImages/Blank.gif" class="OpenFolder16x16Icon"/>
-		            </a>
+		            <img onclick="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" alt="" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>" src="/eXoResources/skin/sharedImages/Blank.gif" class="View16x16Icon"/>
+		            <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>" alt="" class="OpenFolder16x16Icon"/>
 		          </div>
 	          </td>	                  
           </tr>

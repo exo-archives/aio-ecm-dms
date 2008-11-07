@@ -235,6 +235,7 @@
   float: none;
   width: auto; height: 20px;
   padding-left: 20px;
+  background-position: left center;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
@@ -335,11 +336,6 @@
 
 /*############################## -- UISearch   -- ##############################*/
 
-.UIJCRExplorerPortlet .UISearchContainer .UITabPane .WorkingAreaWithHelp {
-	width: 99%;
-	margin: auto;
-}
-
 .UIJCRExplorerPortlet .UISearchContainer .ConstraintOption {
   margin: 10px 0px 10px 5px;
 }
@@ -350,6 +346,12 @@
 
 .UIJCRExplorerPortlet .UISearchContainer .ConstraintOption input.checkbox {
  	margin: 5px 3px 0px 0px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UICompareExactlyForm {
+	background: #F7F7F7;
+	border: 1px solid #AEAEAE;
+	margin: 10px;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .UICompareExactlyForm select {

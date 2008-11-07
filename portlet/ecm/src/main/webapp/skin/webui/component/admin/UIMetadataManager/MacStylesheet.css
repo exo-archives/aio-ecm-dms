@@ -9,31 +9,12 @@
 /*############################## -- UIMetadataManager-- ########################*/
 
 .UIECMAdminPortlet .UIMetadataManager  {
-  padding: 5px;
+  padding: 0px 10px;
 }
 
 .UIECMAdminPortlet .metadataTypeTab .FormContainer {
   width: 500px;
   margin: auto;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .UIForm .FieldLabel {
-  width: 128px;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .UIForm .textarea {
-  width: 94%;
-  height: 350px;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .MetadataInfo {
-  width: 96%;
-  margin: auto;
-}
-
-.UIECMAdminPortlet .UIMetadataManager .metadataTypeTab .UIFormInputSet .FormContainer {
-	width: 500px;
-	margin: auto;
 }
 
 .UIECMAdminPortlet .MetadataInfo .GridTitleBar {
@@ -60,8 +41,4 @@
   padding: 0px 10px;
 }
 
-.UIECMAdminPortlet .UIMetadataManager .MetadataInfoDetails{
-  width: 96%;
-  margin: auto;
-}
 /*############################## -- End UIMetadataManager-- ########################*/

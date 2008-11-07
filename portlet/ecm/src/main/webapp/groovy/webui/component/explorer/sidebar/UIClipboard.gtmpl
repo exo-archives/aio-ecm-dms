@@ -31,8 +31,10 @@
 	  <tbody>
 	  <%if (uicomponent.getClipboardData().isEmpty()) { %>
 	    <tr class="OddRow">
-	      <td class="text" colspan="3" align="center">
-	        <%=_ctx.appRes(name+".label.nocommand")%>
+	      <td class="Text" colspan="3">
+	      	<div class="ActionContainer">
+		        <%=_ctx.appRes(name+".label.nocommand")%>
+		      </div>
 	      </td>
 	    </tr>  
     <%} else {
@@ -48,23 +50,21 @@
 		      if (path.length() > 20 ) path = "..." + path.substring(path.length() - 20, path.length());
 		%>
 		    <tr class="$rowClass">
-		      <td class="text" title="<%=fullPath%>"><%=path%></td>
-		    	<td class="text"><%=item.getType()%></td>
-			      <td align="center">         
-			        <div class="ActionContainer">
-			          <div class="OverflowContainer">          
-			          <%for(action in beanActions) { %>
-	                <a href="<%=uicomponent.event(action, index.toString())%>" title = "$action"><img src="/eXoResources/skin/sharedImages/Blank.gif" class="${action}Icon" ></a>	           
-			          <%}%>        
-			          </div>
-			        </div>
-			      </td>
+		      <td class="Text" title="<%=fullPath%>"><%=path%></td>
+		    	<td class="Text"><%=item.getType()%></td>
+		      <td>         
+		        <div class="ActionContainer">
+		          <%for(action in beanActions) { %>
+                <img onclick="<%=uicomponent.event(action, index.toString())%>" title = "$action" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="${action}Icon" >
+		          <%}%>        
+		        </div>
+		      </td>
 		    </tr>
 		    <%index++ ;
 		    }%>
 		  <tr class="EvenRow">
-	      <td class="text" colspan="3" align="center">
-	        <div class="ClearAllBlock">
+	      <td class="Text" colspan="3">
+	        <div class="ClearAllBlock" style="text-align: center">
 						<a  class="Icon ScissorsEraserWarning16x16Icon" href="<%=uicomponent.event('ClearAll', 'All')%>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 						  <%=_ctx.appRes(name+".action.clearall")%>
 						</a>

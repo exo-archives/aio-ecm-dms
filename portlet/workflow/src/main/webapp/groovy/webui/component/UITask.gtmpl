@@ -1,18 +1,18 @@
 <%
   public void writeAction(String label, String action, String param) {
 				if(param != null)
-				  println " <a href=\"" + uicomponent.event(action, param) + "\" class=\"ActionButton LightBlueStyle\">" ;
+				  println " <div onclick=\"" + uicomponent.event(action, param) + "\" class=\"ActionButton LightBlueStyle\">" ;
 				else
-		  		println " <a href=\"" + uicomponent.event(action) + "\" class=\"ActionButton LightBlueStyle\">" ;
+		  		println " <div onclick=\"" + uicomponent.event(action) + "\" class=\"ActionButton LightBlueStyle\">" ;
     println """
 					<div class="ButtonLeft">
 					  <div class="ButtonRight">
 						  <div class="ButtonMiddle">
-							    $label
+							   <a href="javascript:void(0);"> $label</a>
 				      </div>
 				    </div>
 			    </div>
-				</a>
+				</div>
 		""" ;
   }
 %>
@@ -36,9 +36,9 @@
 					<%}%>
 				</table>
 			  <div class="UIAction"> 
-			    <table align="center" class="ActionContainer">
+			    <table class="ActionContainer">
 			    	<tr>
-			    		<td align="center">
+			    		<td>
 							  <%
 							  def buttons = uicomponent.getSubmitButtons() ;
 					      if(buttons.isEmpty()) {
@@ -78,8 +78,8 @@
 		  	$showProcess
 		  </div>
 			<%if(uicomponent.getStateImageURL() != "") {%>
-		    <div align="center" class="DefaultHide">					  		
-			  	<img src="$uicomponent.stateImageURL"/>
+		    <div class="DefaultHide ActionContainer">					  		
+			  	<img src="$uicomponent.stateImageURL" alt="" />
 				</div>
 			<%}%>
 		</div>

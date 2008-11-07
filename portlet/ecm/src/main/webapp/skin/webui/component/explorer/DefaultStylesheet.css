@@ -57,7 +57,7 @@
 
 .UIVersionTreeList .ItemIcon {
   width: 16px; height: 16px;
-  margin-top: 3px;
+  margin: 3px auto 0px;
 }
 
 .UIVersionTreeList .UIGrid .EvenRow {
@@ -69,7 +69,7 @@
 }
 
 .UIVersionTreeList .UIGrid td {
-  padding: 0px 0px 0px 7px
+  padding: 0px 0px 0px 7px;
 }
 
 .UIVersionTreeList .UITrees .Node {
@@ -98,29 +98,14 @@
   line-height: 24px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIPublicationContainer .UIFormGrid .FieldLabel {
+.UIPublicationContainer .State input.radio {
+	margin: 0px 7px;
+}
+
+.UIPublicationContainer .UIFormGrid .FieldLabel {
   width: 100px;
   padding: 6px 6px 6px 16px;
   text-align: left;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIPuplication .UIFormGrid .FieldLabel {
-  width: 100px;
-  padding: 6px 6px 6px 16px;
-  text-align: left;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIPuplicationForm .UIFormGrid .FieldLabel {
-  font-weight: bold;  
-  text-align: right;
-}
-
-.UIJCRExplorerPortlet .UIPuplicationForm .UIFormGrid .FieldComponent input.radio {
-	width: 25px;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIPublicationContainer .UIFormGrid .FieldComponent {
-  padding: 6px;
 }
 
 /*******************************UIDocumentFormController****************************************/
@@ -135,17 +120,4 @@
 
 .UIAnyPermission {
   border: 1px solid #F5F5F5;
-}
-
-/*******************************Properties Management****************************************/
-.UIJCRExplorerPortlet .UITabPane .UIPropertyTab .UIGrid th {
-  padding: 0px;
-  white-space: nowrap;
-  height: 19px;
-}
-
-.UIJCRExplorerPortlet .UITabContent .UIPropertyTab .UIGrid .Icon16x16  {
-  float: none;
-  vertical-align: middle;
-  margin: auto;
 }
