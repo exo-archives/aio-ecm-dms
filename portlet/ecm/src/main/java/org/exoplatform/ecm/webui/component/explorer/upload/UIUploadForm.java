@@ -16,7 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.upload;
 
-import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -89,6 +89,11 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
     isMultiLanguage_ = isMultiLanguage ;
     language_ = language ;
   }
+  
+  public void resetComponent() {
+    removeChildById(FIELD_UPLOAD);
+    addUIFormInput(new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD));
+  }
 
   public boolean isMultiLanguage() { return isMultiLanguage_ ; }
 
@@ -105,14 +110,17 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIFormUploadInput input = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD);
-      
       if(input.getUploadResource() == null) {
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String fileName = input.getUploadResource().getFileName() ;
+      if(uiExplorer.getCurrentNode().isLocked()) {
+        String lockToken = Utils.getLockToken(uiExplorer.getCurrentNode());
+        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+      }
+      String fileName = input.getUploadResource().getFileName().trim() ;
       MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
       if(fileName == null || fileName.equals("")) {
           uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
@@ -128,11 +136,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
           return ;
         }
       }
-
-      byte[] content = input.getUploadData() ;
-      String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
+      InputStream dataStream = input.getUploadDataAsStream();
+      String name = uiForm.getUIStringInput(FIELD_NAME).getValue();
       if (name == null) name = fileName;      
-      
+      else name = name.trim();
       for(String filterChar : arrFilterChar) {
         if(name.indexOf(filterChar) > -1) {
           uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null, ApplicationMessage.WARNING)) ;
@@ -140,18 +147,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
           return ;
         }
       }
-/*
-      InputStream in = new ByteArrayInputStream(content) ;
-      float fileLeng = in.available()/1024 ;
-      if(fileLeng > 20240) {
-        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileSize-too-big", null, ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-*/
       MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
       String mimeType = mimeTypeSolver.getMimeType(fileName) ;
-      //String mimeType = input.getUploadResource().getMimeType() ;
       Node selectedNode = uiExplorer.getCurrentNode();      
       boolean isExist = selectedNode.hasNode(name) ;
       String newNodeUUID = null;
@@ -160,7 +157,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         selectedNode.getSession().checkPermission(selectedNode.getPath(), pers);        
         if(uiForm.isMultiLanguage()) {
           ValueFactoryImpl valueFactory = (ValueFactoryImpl) uiExplorer.getSession().getValueFactory() ;
-          Value contentValue = valueFactory.createValue(new ByteArrayInputStream(content)) ;
+          Value contentValue = valueFactory.createValue(dataStream) ;
           multiLangService.addFileLanguage(selectedNode, name, contentValue, mimeType, uiForm.getLanguageSelected(), uiExplorer.getRepositoryName(), uiForm.isDefault_) ;
           uiExplorer.setIsHidePopup(true) ;
           UIMultiLanguageManager uiManager = uiForm.getAncestorOfType(UIMultiLanguageManager.class) ;
@@ -184,13 +181,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             jcrContent.setNodetype(Utils.NT_RESOURCE) ;
             jcrContent.setType(JcrInputProperty.NODE) ;
             inputProperties.put("/node/jcr:content",jcrContent) ;
-            
-            String newContent = new String(content);
-            byte[] contentUTF8 = newContent.getBytes("UTF-8");
-            
+
             JcrInputProperty jcrData = new JcrInputProperty() ;
             jcrData.setJcrPath("/node/jcr:content/jcr:data") ;            
-            jcrData.setValue(contentUTF8) ;          
+            jcrData.setValue(dataStream) ;          
             inputProperties.put("/node/jcr:content/jcr:data",jcrData) ; 
 
             JcrInputProperty jcrMimeType = new JcrInputProperty() ;
@@ -211,7 +205,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
             String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
             newNodeUUID = cmsService.storeNodeByUUID(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
             selectedNode.save() ;
-            selectedNode.getSession().save() ;     
+            selectedNode.getSession().save() ;                        
           } else {
             Node node = selectedNode.getNode(name) ;
             if(!node.getPrimaryNodeType().isNodeType(Utils.NT_FILE)) {
@@ -222,16 +216,16 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
               return ;
             }
             Node contentNode = node.getNode(Utils.JCR_CONTENT);
-            if (node.isNodeType(Utils.MIX_VERSIONABLE)) {              
+            if(node.isNodeType(Utils.MIX_VERSIONABLE)) {              
               if(!node.isCheckedOut()) node.checkout() ; 
-              contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));
+              contentNode.setProperty(Utils.JCR_DATA, dataStream);
               contentNode.setProperty(Utils.JCR_MIMETYPE, mimeType);
               contentNode.setProperty(Utils.JCR_LASTMODIFIED, new GregorianCalendar());
               node.save() ;       
               node.checkin() ;
               node.checkout() ;
             }else {
-              contentNode.setProperty(Utils.JCR_DATA, new ByteArrayInputStream(content));              
+              contentNode.setProperty(Utils.JCR_DATA, dataStream);              
             }
             if(node.isNodeType("exo:datetime")) {
               node.setProperty("exo:dateModified",new GregorianCalendar()) ;
@@ -242,8 +236,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
         uiExplorer.getSession().save() ;
         UIUploadManager uiManager = uiForm.getParent() ;
         UIUploadContainer uiUploadContainer = uiManager.getChild(UIUploadContainer.class) ;
+        Node contentNode = null;
         if(uiForm.isMultiLanguage_) {
           uiUploadContainer.setUploadedNode(selectedNode) ; 
+          contentNode = uiUploadContainer.getUploadedNode().getNode(Utils.JCR_CONTENT);
         } else {
           Node newNode = null ;
           if(!isExist) {
@@ -251,10 +247,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent {
           } else {
             newNode = selectedNode.getNode(name) ;
           }
+          contentNode = newNode.getNode(Utils.JCR_CONTENT);
           uiUploadContainer.setUploadedNode(newNode) ;
         }
         UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
-        String fileSize = String.valueOf((((float)(content.length/100))/10));     
+        long size = contentNode.getProperty(Utils.JCR_DATA).getLength()/1024;
+        String fileSize = Long.toString(size);       
         String[] arrValues = {fileName, name, fileSize +" Kb", mimeType} ;
         uiUploadContent.setUploadValues(arrValues) ;
         UploadService uploadService = uiForm.getApplicationComponent(UploadService.class) ;
