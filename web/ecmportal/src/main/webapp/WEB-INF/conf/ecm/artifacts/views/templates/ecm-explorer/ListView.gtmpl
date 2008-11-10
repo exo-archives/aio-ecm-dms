@@ -16,7 +16,7 @@
   String componentId = uicomponent.getId();
   java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm");  
 %>
-<div id = "$componentId">	
+<div id="$componentId">	
 	<div class="UIListView" style="overflow-y: auto; overflow-x: hidden; height: 275px;">
 	  <table class="UIGridControl">
 	    <%
@@ -60,15 +60,11 @@
 	    <thead>
 	      <tr>
 	        <th class="$typeClass;">
-	          <a href="$typeActionLink">
-	            <div class="SortButton ${classSortTypeIcon}16x16Icon"><span></span></div>          
-	          </a>
+            <div onclick="$typeActionLink" class="SortButton ${classSortTypeIcon}16x16Icon"><span></span></div>
 	        </th>
 	        <th class="$nameClass">
 	          <div class="HeaderLabel"><%=_ctx.appRes("ListView.view.label.name")%></div>
-	          <a href="$nameActionLink">
-	            <div class="SortButton ${classSortNameIcon}16x16Icon"><span></span></div>
-	          </a>
+            <div onclick="$nameActionLink" class="SortButton ${classSortNameIcon}16x16Icon"><span></span></div>
 	        </th>
 	        <th><%=_ctx.appRes("ListView.view.label.dateCreated")%></th>
 	        <th><%=_ctx.appRes("ListView.view.label.dateModified")%></th>
@@ -122,7 +118,7 @@
 		      <tr>
 		        <td>
 							<div class="NodeLabel" <%=rightClickMenu%>>
-						    $strActs<a href="$actionLink" title="$name"><div class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div></a>
+						    $strActs<div onclick="$actionLink" title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div>
 	  					</div>
 		        </td>
 		        <%

@@ -37,7 +37,7 @@
 <ul class="menu">
   <li>
     <a href="#" onclick="javascript:expand(this)">
-      <img src="/cms-content/images/small/collapsed.gif"/>
+      <img src="/cms-content/images/small/collapsed.gif" alt=""/>
       <font size="2"><b>Properties</b></font>
     </a>
     <ul>
@@ -73,7 +73,7 @@
 <ul class="menu">
   <li>
     <a href="#" onclick="javascript:expand(this)">
-      <img src="/cms-content/images/small/collapsed.gif"/>
+      <img src="/cms-content/images/small/collapsed.gif" alt=""/>
       <font size="2"><b>XML</b></font>
     </a>
     <ul>
