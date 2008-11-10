@@ -11,10 +11,10 @@
   def uniqueId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
-  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIJCRExplorer.dropDownIconList('$uniqueId');");
-  rcontext.getJavascriptManager().addOnResizeJavascript("function(){eXo.ecm.UIJCRExplorer.dropDownIconList('$uniqueId')}");
+  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UIJCRExplorer.initEvent('$uniqueId');}");
 %>
 <div class="UIActionBar UISelectBoxOnChange">
+  
   <% 
   uiform.setSubmitAction(uicomponent.event("SimpleSearch")+";return false;");
   uiform.begin() 
@@ -70,6 +70,8 @@
 		    </div>
 		  </div>
 		  <div style="clear: both; height: 0px;"><span></span></div>
+		  <!-- add event resize for FireFox -->
+		  <iframe id="$uniqueId-iFrame" style="width: 99%; height: 1px; border: none;"></iframe>
 	  </div>
   </div>
   <% uiform.end() %>

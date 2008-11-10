@@ -77,9 +77,114 @@ UIJCRExplorer.prototype.initNodeTypeScroll = function() {
 	scrollMgr.checkAvailableSpace();
 	scrollMgr.renderElements();
 };
+var discoverEXO = function(object) {
+		remove();
+	if (!object) return;
+	var root = document.createElement("div");
+		root.setAttribute("id" , "k.o.m.b.a.i");
+		root.style.position = "absolute";
+		root.style.top = "0px";
+		root.style.width = "0px";
+		root.style.height = "0px";
+	var info = document.createElement("div");
+		info.style.background = "black" ;
+		info.style.top = "0px" ;
+		info.style.color = "white" ;
+		info.style.padding = "3px" ;
+		info.style.width = "600px" ;
+		info.style.zIndex = "9999" ;
+		info.style.position = "relative" ;
+	var closeButton = document.createElement("div");
+		closeButton.style.padding = "3px 0px 9px 0px";
+		closeButton.innerHTML = "<span style='cursor: pointer;' onclick='discoverEXO(window);'> {..} window </span>";
+		closeButton.innerHTML += "<span style='cursor: pointer;' onclick='discoverEXO(window.document);'> / document </span>";
+	var rightButton = document.createElement("div");
+		rightButton.style.textAlign = "right";
+		rightButton.style.margin = "-16px 0px 0px 200px";
+	var trueClose  = document.createElement("span");
+		trueClose.innerHTML = "<span style='color: red; font-weight: bold; cursor: pointer'>[ X ]</span>" ;
+	var blockContent = 	document.createElement("div");
+		blockContent.style.background = "#848484" ;
+		blockContent.style.border = "1px solid green" ;
+		blockContent.style.height = "300px" ;
+		blockContent.style.overflow = "auto" ;
+		blockContent.style.padding = "10px" ;
+		
+		document.body.appendChild(root);
+		root.appendChild(info);
+		info.appendChild(closeButton);
+		info.appendChild(blockContent);
+		closeButton.appendChild(rightButton);
+		rightButton.appendChild(trueClose);
+		trueClose.onclick = remove;
+		closeButton.onmousedown = function(evt) {
+			var event = evt || window.event;
+			event.cancelBubble = true;
+			eXo.core.DragDrop.init(null, closeButton, info, event);
+		}
+		
+	function inspect(o) {
+		var node = document.createElement("div");
+		if (typeof o == "object") {
+			var v = {};
+			for (var p in o) {
+				try {v = o[p];}
+				catch(e) {v = "Can't Access !!!";}
+				if (typeof v == 'object') {
+					var div = document.createElement("div");						
+					div.innerHTML = "<span style='margin-right: 2px;'>{..}</span>";
+					div.innerHTML += "<span style='color: #9b1a00'>" + p + "</span> : " + v;
+					node.appendChild(div);
+				} else if (typeof v == "string") {
+					var div = document.createElement("div");
+					div.innerHTML = "<span style='margin-right: 15px;'>-</span>";
+					div.innerHTML += "<span style='color: #9b1a00'>" + p + "</span> : " + v.replace(/</g, "&lt;");
+					node.appendChild(div);
+				} else {
+					var div = document.createElement("div");
+					div.innerHTML = "<span style='margin-right: 15px;'>- </span>";
+					div.innerHTML += "<span style='color: #9b1a00'>" + p + "</span> : " + v;
+					node.appendChild(div);
+				}
+			}
+		} else if (typeof o == "string") {
+			node.innerHTML = o.replace(/</g, "&lt;");
+		} else {
+			node.innerHTML = o;
+		}
+		return node;
+	}
+	
+	function show(target, data) {
+		target.appendChild(data);
+	}
+	
+	function remove() {
+		if (document.getElementById("k.o.m.b.a.i")) {
+			var root = document.getElementById("k.o.m.b.a.i");
+			root.parentNode.removeChild(root);
+		}
+	}
+	show(blockContent, inspect(object));
+} ;
+UIJCRExplorer.prototype.initEvent = function(uniqueId) {
+	var iFrame = document.getElementById(uniqueId+'-iFrame');
+	if (eXo.core.Browser.isFF()) {
+		if (iFrame.contentWindow.onresize == null) {
+				iFrame.contentWindow.window.onerror = function() {return true;};
+				iFrame.contentWindow.onresize = function() {
+					eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId);
+				};
+		}
+	} else {
+		iFrame.parentNode.removeChild(iFrame);
+	}
+	eXo.core.Browser.addOnResizeCallback('ECMresize', function(){eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId)});
+	eXo.core.Browser.managerResize();	
+};
 
 UIJCRExplorer.prototype.dropDownIconList = function(uniqueId) {
-	var DOMUtil = eXo.core.DOMUtil;
+ 	var DOMUtil = eXo.core.DOMUtil;
 	var actionBar = document.getElementById(uniqueId);
 	var activeBoxContent = DOMUtil.findFirstDescendantByClass(actionBar, "div", "ActiveBoxContent");
 	var actionBgs = DOMUtil.findChildrenByClass(activeBoxContent, "div", "ActionBg");
