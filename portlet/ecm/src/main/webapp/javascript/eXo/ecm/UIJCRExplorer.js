@@ -81,6 +81,11 @@ UIJCRExplorer.prototype.initNodeTypeScroll = function() {
 UIJCRExplorer.prototype.initEvent = function(uniqueId) {
 	eXo.core.Browser.addOnResizeCallback('ECMresize', function(){eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId)});
 	eXo.core.Browser.managerResize();	
+	var store =	eXo.portal.UIControlWorkspace.showWorkspace;
+	eXo.portal.UIControlWorkspace.showWorkspace = function() {
+		store.call(eXo.portal.UIControlWorkspace);
+		eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId);
+	}
 };
 
 UIJCRExplorer.prototype.dropDownIconList = function(uniqueId) {
