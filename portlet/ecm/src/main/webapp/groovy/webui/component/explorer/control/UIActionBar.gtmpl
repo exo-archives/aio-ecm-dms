@@ -70,9 +70,7 @@
 		    </div>
 		  </div>
 		  <div style="clear: both; height: 0px;"><span></span></div>
-		  <!-- add event resize for FireFox -->
-		  <iframe id="$uniqueId-iFrame" style="width: 99%; height: 1px; border: none;"></iframe>
-	  </div>
+		 </div>
   </div>
   <% uiform.end() %>
 </div>

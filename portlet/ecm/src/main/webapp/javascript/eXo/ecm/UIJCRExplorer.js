@@ -79,17 +79,6 @@ UIJCRExplorer.prototype.initNodeTypeScroll = function() {
 };
 
 UIJCRExplorer.prototype.initEvent = function(uniqueId) {
-	var iFrame = document.getElementById(uniqueId+'-iFrame');
-	if (eXo.core.Browser.isFF()) {
-		if (iFrame.contentWindow.onresize == null) {
-				iFrame.contentWindow.window.onerror = function() {return true;};
-				iFrame.contentWindow.onresize = function() {
-					eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId);
-				};
-		}
-	} else {
-		iFrame.parentNode.removeChild(iFrame);
-	}
 	eXo.core.Browser.addOnResizeCallback('ECMresize', function(){eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId)});
 	eXo.core.Browser.managerResize();	
 };
