@@ -67,7 +67,7 @@ public class FileUploadHandler {
    * 
    * @param container the container
    */
-  public FileUploadHandler(ExoContainer container) {
+  public FileUploadHandler(ExoContainer container) {	
     uploadService = (UploadService)container.getComponentInstanceOfType(UploadService.class);
     fckMessage = new FCKMessage();
   }
@@ -124,7 +124,7 @@ public class FileUploadHandler {
     Node file = parent.addNode(fileName,FCKUtils.NT_FILE);
     Node jcrContent = file.addNode("jcr:content","nt:resource");
     MimeTypeResolver mimeTypeResolver = new MimeTypeResolver();
-    String mimetype = mimeTypeResolver.getMimeType(fileName);
+    String mimetype = mimeTypeResolver.getMimeType(resource.getFileName());
     jcrContent.setProperty("jcr:data",new ByteArrayInputStream(uploadData));
     jcrContent.setProperty("jcr:lastModified",new GregorianCalendar());    
     jcrContent.setProperty("jcr:mimeType",mimetype);
