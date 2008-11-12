@@ -79,16 +79,10 @@
 .UIFastContentCreatorPortlet .UIEditModeConfiguration {
   margin: 10px auto;
   width: 600px;
-  border: solid 1px #e1e1e1;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .UIFormWithTitle  {
   border: none;
-}
-
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
-	width: 550px;
-	margin: auto;
 }
 
 .UIFastContentCreatorPortlet .UIForm .HorizontalLayout {

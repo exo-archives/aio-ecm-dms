@@ -74,9 +74,33 @@
   margin: 15px auto;
   width: 600px;
   background: url('MacSkin/background/Background1x4.png') repeat;
-  border: 1px solid red;
 }
 
 .UIFastContentCreatorPortlet .UIOneNodePathSelector {
   padding: 10px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet{
+	width: 555px;
+	padding: 0px;
+	margin: auto;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .FieldComponent .actionInput {
+	width: 555px;
+	padding: 0px;
+}
+
+.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .FormContainer {
+	width: 555px;
+	margin: auto;
+}
+
+.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent {
+  padding: 4px 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
+  padding: 0px 4px 0px 4px;
+  vertical-align: middle;
 }

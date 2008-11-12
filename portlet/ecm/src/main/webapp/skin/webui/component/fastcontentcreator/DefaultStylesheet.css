@@ -70,12 +70,6 @@
 	width: auto;	
 }
 
-.UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet {
-	margin: auto;
-	padding-bottom: 0px;
-	width: 100%;
-}
-
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet .AddIcon16x16{
 	margin-left: 5px;
 	float: none;
@@ -97,14 +91,23 @@
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .HorizontalLayout .UIFormInputSet {
 	margin: auto;
 	padding: 0px;
-	width: 555px;
+	width: 100%;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .FieldComponent .actionInput {
-	width: 555px;
+	width: 100%;
 	padding: 0px;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration .UIForm .HorizontalLayout input {
 	width: 235px;
+}
+
+.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent {
+  padding: 4px 0px;
+}
+
+.UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
+  padding: 0px 4px 0px 4px;
+  vertical-align: middle;
 }
