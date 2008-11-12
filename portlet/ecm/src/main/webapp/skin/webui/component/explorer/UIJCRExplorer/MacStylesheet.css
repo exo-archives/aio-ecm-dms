@@ -775,6 +775,15 @@
 	margin-bottom: 2px;
 }
 
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .HorizontalLayout {
+	border: none;
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIAnyPermission .UIFormGrid td.FieldLabel {
+	vertical-align: middle;
+}
+
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle {
 	width: auto;
 	margin: 0px;

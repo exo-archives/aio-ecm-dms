@@ -658,6 +658,15 @@
 	margin-bottom: 2px;
 }
 
+.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .HorizontalLayout {
+	border: none;
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIAnyPermission .UIFormGrid td.FieldLabel {
+	vertical-align: middle;
+}
+
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle {
 	width: auto;
 	margin: 0px;
@@ -683,6 +692,10 @@
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
 	vertical-align: middle;
 	padding: 2px;
+}
+
+.UIJCRExplorerPortlet .UIAnyPermission .HorizontalLayout .UIFormGrid .FieldLabel {
+	width: 108px;
 }
 
 /*====================================UIActionManager==================================*/
