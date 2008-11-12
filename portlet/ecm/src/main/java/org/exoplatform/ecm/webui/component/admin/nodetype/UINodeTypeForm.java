@@ -29,8 +29,8 @@ import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
@@ -54,7 +54,6 @@ import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTabPane;
-import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -146,12 +145,12 @@ public class UINodeTypeForm extends UIFormTabPane {
     super("UINodeTypeForm");
     UIFormInputSetWithAction nodeTypeTab = new UIFormInputSetWithAction(NODETYPE_DEFINITION) ;
     nodeTypeTab.addUIFormInput(new UIFormSelectBox(NAMESPACE,NAMESPACE, null)).
-                addUIFormInput(new UIFormStringInput(NODETYPE_NAME,NODETYPE_NAME, null).addValidator(MandatoryValidator.class)).                                 
+                addUIFormInput(new UIFormStringInput(NODETYPE_NAME,NODETYPE_NAME, null)).                                 
                 addUIFormInput(new UIFormSelectBox(MIXIN_TYPE,MIXIN_TYPE, null)).
                 addUIFormInput(new UIFormSelectBox(HAS_ORDERABLE_CHILDNODES,
                                                    HAS_ORDERABLE_CHILDNODES, null)).
                 addUIFormInput(new UIFormStringInput(PRIMARY_ITEMNAME,PRIMARY_ITEMNAME, null)).
-                addUIFormInput(new UIFormStringInput(SUPER_TYPE,SUPER_TYPE, null).addValidator(MandatoryValidator.class)).
+                addUIFormInput(new UIFormStringInput(SUPER_TYPE,SUPER_TYPE, null)).
                 addUIFormInput(new UIFormInputInfo(PROPERTY_DEFINITIONS,PROPERTY_DEFINITIONS, null)).
                 addUIFormInput(new UIFormInputInfo(CHILDNODE_DEFINITIONS,CHILDNODE_DEFINITIONS, null)) ; 
     setActionInTab(nodeTypeTab) ;     
