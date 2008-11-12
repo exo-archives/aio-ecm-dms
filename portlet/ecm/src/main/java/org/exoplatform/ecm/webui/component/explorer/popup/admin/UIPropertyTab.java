@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
@@ -193,9 +194,21 @@ public class UIPropertyTab extends UIContainer {
       UIPropertyTab uiPropertyTab = event.getSource();
       String propertyName = event.getRequestContext().getRequestParameter(OBJECTID);
       Node currentNode = uiPropertyTab.getCurrentNode();
-      if(currentNode.hasProperty(propertyName)) currentNode.getProperty(propertyName).remove();
-      currentNode.save();
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPropertyTab.getParent());
+      UIApplication uiApp = uiPropertyTab.getAncestorOfType(UIApplication.class);
+      try {
+        if(currentNode.hasProperty(propertyName)) currentNode.getProperty(propertyName).remove();
+        currentNode.save();
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPropertyTab.getParent());
+        return;
+      } catch(AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch(Exception e) {
+        e.printStackTrace();
+        return;
+      }
     }
   }
 }
