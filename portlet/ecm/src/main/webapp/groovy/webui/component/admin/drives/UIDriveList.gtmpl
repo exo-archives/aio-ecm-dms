@@ -69,7 +69,7 @@
 	  					<div class="ButtonLeft">
 	  					  <div class="ButtonRight">
 	  						  <div class="ButtonMiddle">
-	  							  <a href="javascipt:void(0);"><%=_ctx.appRes("UIDriveList.action." + action)%></a>
+	  							  <a href="javasrcipt:void(0);"><%=_ctx.appRes("UIDriveList.action." + action)%></a>
 	  				      </div>
 	  				    </div>
 	  			    </div>
