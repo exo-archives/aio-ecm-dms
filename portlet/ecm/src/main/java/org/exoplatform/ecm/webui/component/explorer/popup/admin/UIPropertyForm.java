@@ -480,7 +480,6 @@ public class UIPropertyForm extends UIForm {
     public void execute(Event<UIPropertyForm> event) throws Exception {
       UIPropertyForm uiForm = event.getSource();
       UIPropertiesManager uiPropertiesManager = uiForm.getAncestorOfType(UIPropertiesManager.class);
-      uiForm.refresh();
       uiPropertiesManager.setRenderedChild(UIPropertyForm.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
