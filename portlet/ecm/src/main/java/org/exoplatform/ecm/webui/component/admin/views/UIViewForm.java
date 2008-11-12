@@ -75,6 +75,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelectable
   private List<String> listVersion = new ArrayList<String>() ;
   private Version baseVersion_;
   private VersionNode selectedVersion_;
+  private VersionNode rootVersionNode;
   
   public String getRepository() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
@@ -227,6 +228,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelectable
 
       getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setRendered(true) ;
       if (isVersioned(views_)) {              
+        rootVersionNode = getRootVersion(views_);
         getUIFormSelectBox(FIELD_VERSION).setOptions(getVersionValues(views_)).setRendered(true) ;
         getUIFormSelectBox(FIELD_VERSION).setValue(baseVersion_.getName()) ;
         getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(true) ;
@@ -368,8 +370,8 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelectable
 
   public void changeVersion() throws Exception {
     String path = 
-      views_.getVersionHistory().getVersion(getUIFormSelectBox(FIELD_VERSION).getValue()).getPath() ;
-    VersionNode selectedVesion = getRootVersion(views_).findVersionNode(path);
+      views_.getVersionHistory().getVersion(getUIFormSelectBox(FIELD_VERSION).getValue()).getPath();
+    VersionNode selectedVesion = rootVersionNode.findVersionNode(path);
     update(null, false, selectedVesion) ;
   }
   
