@@ -113,11 +113,6 @@
   background: url('DefaultSkin/ManagerPuplication.gif') no-repeat ;
 }
 
-.UnsubcribeLifecycleIcon {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/UnsubscribeLifecycle.gif') no-repeat ;
-}
-
 .ManageActionsIcon {
 	width: 24px; height: 24px;
   background: url('DefaultSkin/ManageActions.gif') no-repeat ;

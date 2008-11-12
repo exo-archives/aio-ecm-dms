@@ -50,6 +50,7 @@ import org.exoplatform.webui.form.UIFormRadioBoxInput;
     template = "classpath:resources/templates/staticdirect/UIPublicationForm.gtmpl",
     events = {
       @EventConfig(listeners = UIPublicationForm.SaveActionListener.class),
+      @EventConfig(listeners = UIPublicationForm.UnsubcriberLifeCycleActionListener.class),
       @EventConfig(listeners = UIPublicationForm.CancelActionListener.class)
     }
 )
@@ -143,6 +144,44 @@ public class UIPublicationForm extends UIForm {
       uiPopup.setShow(false);
     }
   }
+  /**
+   * Fire event when click button Unsubcriber lifecycle button
+   *
+   */
+  static public class UnsubcriberLifeCycleActionListener extends EventListener<UIPublicationForm> {
+    public void execute(Event<UIPublicationForm> event) throws Exception {
+      System.out.println("Unsubcriber life cycle");
+      UIPublicationForm uiPublicationForm = event.getSource();
+      Node selectedNode = uiPublicationForm.currentNode_;
+      UIApplication uiApp = uiPublicationForm.getAncestorOfType(UIApplication.class);
+      /*
+       * Check unsubcribe and display message incase node has already been
+       * unsubcribed
+       */
+      PublicationService publicationService = uiPublicationForm
+          .getApplicationComponent(PublicationService.class);
+      if (publicationService.isUnsubcribeLifecycle(selectedNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsubcriber-lifecycle", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      /*
+       * Close popup window
+       */
+      UIPopupWindow uiPopup = uiPublicationForm.getAncestorOfType(UIPopupWindow.class);
+      uiPopup.setRendered(false);
+      uiPopup.setShow(false);
+      /*
+       * Unsubcribe lifecycle and display message to inform
+       */
+      publicationService.unsubcribeLifecycle(selectedNode);
+      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsubcriber-lifecycle-finish", null));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup.getParent());
+      return;
+    }
+  }
   
   static public class CancelActionListener extends EventListener<UIPublicationForm> {
     public void execute(Event<UIPublicationForm> event) throws Exception {
@@ -152,4 +191,5 @@ public class UIPublicationForm extends UIForm {
       uiPopup.setShow(false);
     }
   }
+ 
 }
