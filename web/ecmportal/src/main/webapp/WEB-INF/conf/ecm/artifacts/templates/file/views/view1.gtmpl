@@ -214,7 +214,7 @@
 		          </div>
 		        </div>
 		      </div>
-		      <div onclick="<%=uicomponent.getDownloadLink(fileLangNode)%>" class="ActionButton LightBlueStyle">
+		      <div onclick="<%=uicomponent.event("Download")%>" class="ActionButton LightBlueStyle">
 		        <div class="ButtonLeft">
 		          <div class="ButtonRight">
 		            <div class="ButtonMiddle" title="<%=_ctx.appRes("File.view.label.download")%>">
