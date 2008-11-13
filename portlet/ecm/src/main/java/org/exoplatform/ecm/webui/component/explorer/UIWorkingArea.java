@@ -214,6 +214,7 @@ public class UIWorkingArea extends UIContainer {
 
   public String getActionsList(Node node) throws Exception {
     if(node == null) return "";
+    node.refresh(true);
     StringBuilder actionsList = new StringBuilder();        
     boolean isEditable = isEditable(node);    
     boolean isLocked = node.isLocked();
