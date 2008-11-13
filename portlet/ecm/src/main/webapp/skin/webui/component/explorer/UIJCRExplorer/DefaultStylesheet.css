@@ -306,14 +306,11 @@
   text-align:center;
   width: 100px;
   line-height: 24px;
-  font-size: 11px;
   margin: auto;
   height: 30px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a {
-  color: #000000;
-  text-align:center;
   cursor: pointer;
 }
 

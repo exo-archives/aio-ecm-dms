@@ -173,6 +173,11 @@
   background: url('DefaultSkin/GreenRightArrow.gif') no-repeat ;
 }
 
+.OverloadThumbnailIcon {
+	width: 24px; height: 24px;
+  background: url('DefaultSkin/OverloadThumbnailIcon.gif') no-repeat ;
+}
+
 .ViewReferencesIcon {
 	width: 24px; height: 24px;
   background: url('DefaultSkin/ViewReferences.gif') no-repeat ;
