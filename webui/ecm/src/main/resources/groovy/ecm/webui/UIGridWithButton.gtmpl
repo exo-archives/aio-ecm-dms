@@ -63,7 +63,7 @@
 	                if(action != null) { 
 	                  if(uicomponent.isUseAjax()){
 	              %>             
-	                    <img onlick="<%=uicomponent.event(action, beanId)%>" title = "$action" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="${action}Icon" />
+	                    <img onclick="<%=uicomponent.event(action, beanId)%>" title = "$action" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="${action}Icon" />
 	              <%  }else{ %>
 	                    <img onclick="<%=uicomponent.url(action, beanId)%>" title = "$action" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="${action}Icon" />
 	              <%  } %> 
