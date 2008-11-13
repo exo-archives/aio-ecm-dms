@@ -93,7 +93,7 @@
               <div class="ButtonLeft">
                 <div class="ButtonRight">
                   <div class="ButtonMiddle">
-                    <a href="javscript:void(0);"><%=_ctx.appRes(uicomponent.getId() + ".action." + action)%></a>
+                    <a href="javascript:void(0);"><%=_ctx.appRes(uicomponent.getId() + ".action." + action)%></a>
                   </div>
                 </div>
               </div>
