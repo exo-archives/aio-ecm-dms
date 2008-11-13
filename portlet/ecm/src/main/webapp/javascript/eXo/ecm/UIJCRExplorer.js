@@ -85,10 +85,12 @@ UIJCRExplorer.prototype.initEvent = function(uniqueId) {
 		eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId);
 	}
 	eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId);
-	eXo.core.Browser.addOnResizeCallback(
-		'ECMresize', 
-		function(){eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId)}
-	);
+	if (eXo.core.Browser.isFF()) {
+		eXo.core.Browser.addOnResizeCallback(
+			'ECMresize', 
+			function(){eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId)}
+		);
+	}
 };
 
 UIJCRExplorer.prototype.dropDownIconList = function(uniqueId) {
