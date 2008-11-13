@@ -32,6 +32,12 @@
 	padding-left: 26px;
 }
 
+.UIRelationManager .UITreeList .Text {
+	width: auto; height: 20px;
+	line-height: 20px;
+	padding-left: 26px;
+}
+
 .UIOneNodePathSelector {
 	padding: 10px;
 }

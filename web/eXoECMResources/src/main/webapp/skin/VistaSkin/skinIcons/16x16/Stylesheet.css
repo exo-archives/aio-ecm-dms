@@ -31,6 +31,10 @@
   background: url('/eXoECMResources/skin/DefaultSkin/skinIcons/16x16/icons/NodeTypes/dc-elementSet.gif') no-repeat;  
 }
 
+.exo_sample16x16Icon {
+  background: url('/eXoECMResources/skin/DefaultSkin/skinIcons/16x16/icons/NodeTypes/default.gif') no-repeat;  
+}
+
 .exo_accessControllable16x16Icon {
   background: url('/eXoECMResources/skin/DefaultSkin/skinIcons/16x16/icons/NodeTypes/exo-accessControllable.gif') no-repeat;  
 }
