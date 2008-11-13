@@ -254,6 +254,13 @@
   margin: auto;
 }
 
+.UIJCRExplorerPortlet .UIThumbnailsView .Icon48x48 {
+  width: 48px;
+  height: 48px;
+  margin: auto;
+  cursor: pointer;
+}
+
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel {
   text-align:center;
   width: 100px;
