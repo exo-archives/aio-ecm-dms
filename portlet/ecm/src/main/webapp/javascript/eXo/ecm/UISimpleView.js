@@ -98,7 +98,7 @@ var SimpleView = function() {
 			Self.itemsSelected = new Array(itemSelected);
 			
 			var uiResizableBlock = DOM.findAncestorByClass(element, "UIResizableBlock");
-			uiResizableBlock.style.overflow = "hidden";
+			if (uiResizableBlock) uiResizableBlock.style.overflow = "hidden";
 			
 			//create mobile element
 			var mobileElement = newElement({
@@ -665,7 +665,7 @@ var SimpleView = function() {
 		var actionArea = document.getElementById(Self.actionAreaId);
 		var uiWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
 		var uiResizableBlock = DOM.findFirstDescendantByClass(uiWorkingArea, "div", "UIResizableBlock");
-		uiResizableBlock.style.overflow = "auto";
+		if (uiResizableBlock) uiResizableBlock.style.overflow = "auto";
 	}
 };
 

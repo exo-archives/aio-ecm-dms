@@ -79,13 +79,16 @@ UIJCRExplorer.prototype.initNodeTypeScroll = function() {
 };
 
 UIJCRExplorer.prototype.initEvent = function(uniqueId) {
-	eXo.core.Browser.addOnResizeCallback('ECMresize', function(){eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId)});
-	eXo.core.Browser.managerResize();	
 	var store =	eXo.portal.UIControlWorkspace.showWorkspace;
 	eXo.portal.UIControlWorkspace.showWorkspace = function() {
 		store.call(eXo.portal.UIControlWorkspace);
 		eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId);
 	}
+	eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId);
+	eXo.core.Browser.addOnResizeCallback(
+		'ECMresize', 
+		function(){eXo.ecm.UIJCRExplorer.dropDownIconList(uniqueId)}
+	);
 };
 
 UIJCRExplorer.prototype.dropDownIconList = function(uniqueId) {
@@ -108,12 +111,13 @@ UIJCRExplorer.prototype.dropDownIconList = function(uniqueId) {
 				actionBgs[o].style.display = "none";
 			}
 		}
-		if (showHideBoxContainer.innerHTML == "") {
-			storeBoxContentContainer.style.display = "none";
-		} else {
+		if (showHideBoxContainer.innerHTML != "") {
+			//storeBoxContentContainer.style.display = "block";
 			var clearElement = document.createElement("div");
 			clearElement.style.clear = "left";
 			showHideBoxContainer.appendChild(clearElement);
+		} else {
+			storeBoxContentContainer.style.display = "none";
 		}
 	}
 };

@@ -25,6 +25,8 @@
 					if (uiResizeBlock) uiResizeBlock.style.overflow = "hidden";
 				}
 			}
+		} else {
+			Self.controlLayout(portletId) ;
 		}
 	};
 	
@@ -39,6 +41,24 @@
 				resizeObj[i].style.height = (resizeObj[i].offsetHeight + delta) + "px" ;
 			}
 		}
+	};
+	
+	ECMUtils.prototype.controlLayout = function(portletId) {
+		var portlet = document.getElementById(portletId) ;
+		var uiWorkingArea = DOM.findFirstDescendantByClass(portlet, 'div', 'UIWorkingArea');
+		if (!uiWorkingArea) return;
+		var delta = document.body.scrollHeight - eXo.core.Browser.getBrowserHeight();
+		if (delta < 0) {
+			var resizeObj = DOM.findDescendantsByClass(portlet, 'div', 'UIResizableBlock');
+			if(resizeObj.length) {
+				for(var i = 0; i < resizeObj.length; i++) {
+					resizeObj[i].style.height = resizeObj[i].offsetHeight - delta + "px" ;
+				}
+			}
+			var uiDocumentWorkspace = DOM.findFirstDescendantByClass(portlet, 'div', 'UIDocumentWorkspace');
+			if (uiDocumentWorkspace) uiDocumentWorkspace.style.height = uiDocumentWorkspace.offsetHeight - delta + "px";
+		}
+		eXo.core.Browser.addOnResizeCallback('controlLayout', function(){eXo.ecm.ECMUtils.controlLayout(portletId)});
 	};
 	
 	ECMUtils.prototype.clickLeftMouse = function(event, clickedElement, position, option) {
