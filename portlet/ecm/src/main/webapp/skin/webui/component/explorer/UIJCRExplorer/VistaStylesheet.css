@@ -376,6 +376,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .FieldLabel {	
 	width: 130px;
+	vertical-align: middle;
 }
 
 /*############################## -- END UIFolderForm -- ##############################*/

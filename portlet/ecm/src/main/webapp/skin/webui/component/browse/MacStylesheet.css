@@ -409,4 +409,8 @@
 .UIBrowseContentPortlet .UITrees .Node .NodeIcon {
 	padding-left: 25px;
 }
+
+.UIJCRExplorer .UITrees .Node .NodeIcon {
+	padding-left: 25px;
+}
 	
