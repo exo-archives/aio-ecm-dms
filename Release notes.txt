@@ -1,5 +1,5 @@
 ==============================================
-	eXo ECM 2.0.3 release notes
+	eXo ECM 2.0.4 release notes
 ==============================================
 
 - Introduction
@@ -10,19 +10,41 @@
   Furthermore, thanks to an innovative page layout, only content that need to be updated is reloaded, increasing eXo ECM performance.
 
 - System Requirements
-   +) Web Browser: IE6, IE7, FF2, FF3, Safari. Best for Frirefox 2 and upgrading to Firefox 3
+   +) Web Browser: IE6, IE7, FF2, FF3, Safari. Best for Frirefox 2 and Firefox 3
    +) JVM: version 1.5.0_xx only
    +) Application Server : Tomcat, JBoss, Jonas, Websphere
    +) Building Tools: Maven 2.0.6 and up
 
-- Complete list of issues fixed in eXo ECM 2.0.3
-	
-	** Bug
-    * [ECM-2532] - Upload field with multivalues creates NPE in UIFormUploadInput.decode
-		* [ECM-2491] - when user want to edit an article, an clean a non mandatory field, the save as no effect.
-		* [ECM-2492] - it is not possible to remove an uploaded image
-		* [ECM-2521] - After delete a relation, export work, but import failed
+- Complete list of issues fixed in eXo ECM 2.0.4
 
+** Bug
+    * [ECM-2585] - Search engine does not work with apostrophe
+    * [ECM-2586] - Do not auto detect code for other code set than utf-8
+    * [ECM-2589] - Customer issue : Exception while recreating a relation to a removed document
+    * [ECM-2593] - Unable to create multivalued select in dialog
+    * [ECM-2594] - Unable to create a drive accessible for anonymous
+    * [ECM-2596] - In ecm, when I want to search a document, I can't put "fileName*", the '*' is saw like a wrong char.
+    * [ECM-2597] - When I upload a txt file, encoded in utf-8, with french accentued char like é, I cant make a search containing the special char
+    * [ECM-2600] - Problem with permissions on stored query
+    * [ECM-2601] - Bug in search form result with multivalues
+    * [ECM-2620] - lost [tag map] on Welcome Center/ News/ ideas page on default skin/ IE6
+    * [ECM-2654] - javax.portlet.PortletModeException in Browse Content portlet
+    * [ECM-2660] - [public mode] has some errors when validator HTML of  write ideas page 
+    * [ECM-2661] - [public mode] have some errors when validate code of Registry Page
+    * [ECM-2662] - [pulic mode] have some errors when validate HTML code of News page
+    * [ECM-2693] - Issue with publication workflow
+    * [ECM-2711] - The org.exoplatform.services.workflow.impl.bonita.WorkflowServiceContainerImpl doesn't release properly the resources stored into the ThreadLocal
+    * [ECM-2714] - Make ECM 2.0.x reuse JCR 1.8.3.1
+
+
+** Improvement
+    * [ECM-2599] - When displaying taxonomies in ECM, full path is displayed, it is not useful
+    * [ECM-2605] - Customer : Make 2.0.4 depend on portal 2.1.2
+
+
+** Task
+    * [ECM-2535] - IE: Need to reduce the size Comment-box 
+    
 - Other resources and links
      Company site        http://www.exoplatform.com
      Community JIRA      http://jira.exoplatform.org
