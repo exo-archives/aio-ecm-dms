@@ -95,8 +95,11 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarContainer {
   width: 100%;
-  height: 295px;
+  height: 406px;
   overflow: auto;
+  /*
+  * minh.js.exo
+  */
 }
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .FrameContent {

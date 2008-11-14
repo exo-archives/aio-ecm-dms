@@ -27,18 +27,24 @@
 			}
 		} else {
 			Self.controlLayout(portletId) ;
+			eXo.core.Browser.addOnResizeCallback(
+				'controlLayout',
+				function(){
+					eXo.ecm.ECMUtils.controlLayout(portletId);
+				}
+			);
 		}
 	};
 	
 	ECMUtils.prototype.fixHeight = function(portletId) {
-		var portlet = document.getElementById(portletId) ;
-		var refElement = DOM.findAncestorByClass(portlet, "UIApplication") ;
+		var portlet = document.getElementById(portletId);
+		var refElement = DOM.findAncestorByClass(portlet, "UIApplication");
 		if (refElement == null) return;
 		var delta = (parseInt(refElement.style.height) - portlet.offsetHeight);
-		var resizeObj = DOM.findDescendantsByClass(portlet, 'div', 'UIResizableBlock') ;
+		var resizeObj = DOM.findDescendantsByClass(portlet, 'div', 'UIResizableBlock');
 		if(resizeObj.length) {
 			for(var i = 0; i < resizeObj.length; i++) {
-				resizeObj[i].style.height = (resizeObj[i].offsetHeight + delta) + "px" ;
+				resizeObj[i].style.height = (resizeObj[i].offsetHeight + delta) + "px";
 			}
 		}
 	};

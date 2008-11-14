@@ -34,7 +34,7 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UIResizableBlock {
-	height: 320px;
+	height: 400px;
 	overflow: auto;
 }
 
@@ -102,8 +102,11 @@
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 
 .UIJCRExplorerPortlet .UIDocumentWorkspace {
-  height: 320px;
+  height: 421px;
   overflow: auto;
+  /*
+	* minh.js.exo
+	*/
 }
 
 .UIJCRExplorerPortlet .UIListView {
@@ -113,7 +116,7 @@
 
 .UIJCRExplorerPortlet .UIListView .UIListGrid {
 	overflow: auto;
-	height: 275px;
+	height: 385px;
 	-moz-user-select: none;
 }
 

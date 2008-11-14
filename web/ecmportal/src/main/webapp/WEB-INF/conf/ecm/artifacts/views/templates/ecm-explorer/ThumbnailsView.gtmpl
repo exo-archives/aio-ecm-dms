@@ -80,7 +80,7 @@
 				 </div>
 			</div>
 		</div>
-		<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;">
+		<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 365px;">
 		  <div class="ActionIconsContainer">
 		    <%
 		      for(data in uicomponent.getChildrenList()) { %>

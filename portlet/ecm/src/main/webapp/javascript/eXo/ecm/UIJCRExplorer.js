@@ -114,7 +114,6 @@ UIJCRExplorer.prototype.dropDownIconList = function(uniqueId) {
 			}
 		}
 		if (showHideBoxContainer.innerHTML != "") {
-			//storeBoxContentContainer.style.display = "block";
 			var clearElement = document.createElement("div");
 			clearElement.style.clear = "left";
 			showHideBoxContainer.appendChild(clearElement);
