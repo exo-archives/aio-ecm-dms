@@ -31,7 +31,7 @@ import org.exoplatform.workflow.webui.component.UIPopupComponent;
  * July 3, 2006
  * 10:07:15 AM
  */
-@ComponentConfig(template = "system:/groovy/webui/core/UITabPane.gtmpl")
+@ComponentConfig(template = "app:/groovy/webui/component/UITabPane.gtmpl")
 public class UITaskManager extends UIContainer implements UIPopupComponent {
   
   private String tokenId_ ;

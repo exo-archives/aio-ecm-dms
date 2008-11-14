@@ -222,8 +222,9 @@ public class UITask extends UIForm {
           input = new UIFormWYSIWYGInput(name, name, (String) value, false);
           ((UIFormWYSIWYGInput)input).setEditable(editable);
         } else if (DATE.equals(component) || DATE_TIME.equals(component)) {
-          input = (value == null ? new UIFormDateTimeInput(name, null, new Date()) : 
-                                   new UIFormDateTimeInput(name, null, (Date)value)) ;
+          input = (value == null ? new UIFormDateTimeInput(name, null, new Date(), DATE_TIME
+              .equals(component)) : new UIFormDateTimeInput(name, null, (Date) value, DATE_TIME
+              .equals(component)));
         } else if (SELECT.equals(component)) {
           String baseKey = name + ".select-";
           List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
