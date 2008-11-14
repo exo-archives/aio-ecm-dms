@@ -826,3 +826,9 @@
 	margin: 10px auto;
 	padding: 5px 0px;
 }
+
+.LoadingProgressIcon {
+  width: 64px;
+  height: 64px;
+  background: url('DefaultSkin/background/LoadingProgress.gif') no-repeat center center;
+}

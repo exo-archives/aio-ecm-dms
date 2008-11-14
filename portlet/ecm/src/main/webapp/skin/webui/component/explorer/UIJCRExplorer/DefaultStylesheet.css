@@ -303,19 +303,19 @@
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel {
-  text-align:center;
   width: 100px;
   line-height: 24px;
   margin: auto;
   height: 30px;
+  text-align: center;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a {
-  cursor: pointer;
+  color: red;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a:hover {
-  color: blue;
+  color: orange;
 }
 
 /*############################## -- End UIThumbnailsView -- ##############################*/
