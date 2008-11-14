@@ -4,7 +4,7 @@
     <resource-bundle>request</resource-bundle>
     <state-name>request</state-name>
     <variable name="start" component="date"/>
-    <variable name="end" component="datetime"/>
+    <variable name="end" component="date"/>
   </form>
 
   <form>
@@ -12,7 +12,7 @@
   	  <state-name>evaluation</state-name>
     <variable name="initiator" />
     <variable name="start" component="date"/>
-    <variable name="end" component="datetime"/>
+    <variable name="end" component="date"/>
     <submitbutton name="approve" transition-name="approve" />
     <submitbutton name="disapprove" transition-name="disapprove" />
     <submitbutton name="refuse" transition-name="refuse" />
@@ -21,7 +21,7 @@
   <form>
   	  <resource-bundle>change-request</resource-bundle>
   	  <state-name>change request</state-name>
-    <variable name="start" component="datetime"/>
+    <variable name="start" component="date"/>
     <variable name="end" component="date"/>
     <submitbutton name="submit" transition-name="submit" />
     <submitbutton name="cancel" transition-name="cancel" />
