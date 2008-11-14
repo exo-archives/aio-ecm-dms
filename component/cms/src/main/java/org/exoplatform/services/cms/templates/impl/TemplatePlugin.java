@@ -17,12 +17,17 @@
 package org.exoplatform.services.cms.templates.impl;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
+import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.NodeTypeIterator;
+import javax.jcr.nodetype.NodeTypeManager;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.xml.InitParams;
@@ -34,6 +39,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 
 public class TemplatePlugin extends BaseComponentPlugin {
 
@@ -62,7 +68,8 @@ public class TemplatePlugin extends BaseComponentPlugin {
   private InitParams params_ ;
   private String storedLocation_ ;
   private boolean autoCreateInNewRepository_=false;
-
+  private Log log = ExoLogger.getLogger("Templateplugin") ;
+  
   public TemplatePlugin(InitParams params, RepositoryService jcrService, ConfigurationManager configManager,
       NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
     nodeHierarchyCreator_ = nodeHierarchyCreator;
@@ -102,11 +109,22 @@ public class TemplatePlugin extends BaseComponentPlugin {
     }          
   }
   private void addTemplate(TemplateConfig templateConfig, Node templatesHome,String storedLocation) throws Exception{
+    NodeTypeManager ntManager = templatesHome.getSession().getWorkspace().getNodeTypeManager() ;
+    NodeTypeIterator nodetypeIter = ntManager.getAllNodeTypes();
+    List<String> listNodeTypeName = new ArrayList<String>();
+    while (nodetypeIter.hasNext()) {
+      NodeType n1 = nodetypeIter.nextNodeType();
+      listNodeTypeName.add(n1.getName());
+    }
     List nodetypes = templateConfig.getNodeTypes();
     TemplateConfig.NodeType nodeType = null ;       
     Iterator iter = nodetypes.iterator() ;
     while(iter.hasNext()) {
       nodeType = (TemplateConfig.NodeType) iter.next();
+      if (!listNodeTypeName.contains(nodeType.getNodetypeName())) {
+        log.error("The nodetype: " + nodeType.getNodetypeName() + " doesn't exist!");
+        continue;
+      }
       Node nodeTypeHome = null;      
       nodeTypeHome = Utils.makePath(templatesHome, nodeType.getNodetypeName(),NT_UNSTRUCTURED);
       if(nodeType.getDocumentTemplate())
