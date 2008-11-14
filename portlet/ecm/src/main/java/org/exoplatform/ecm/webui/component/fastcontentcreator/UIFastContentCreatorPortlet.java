@@ -51,17 +51,21 @@ public class UIFastContentCreatorPortlet extends UIPortletApplication {
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, null);
     uiPopup.setWindowSize(610, 300);
     UIJCRBrowser uiJCRBrowser = createUIComponent(UIJCRBrowser.class, null, null) ;
-    if(SessionsUtils.isAnonim()) {      
-      uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider()) ;
-    }
-    uiJCRBrowser.setRepository(repositoryName) ;
-    uiJCRBrowser.setIsDisable(workspaceName, true) ;
-    uiJCRBrowser.setShowRootPathSelect(true) ;
-    uiPopup.setUIComponent(uiJCRBrowser);
-    UIEditModeConfiguration uiEditModeDocumentType = getChild(UIEditModeConfiguration.class) ;
-    uiJCRBrowser.setComponent(uiEditModeDocumentType, new String[] {UIEditModeConfiguration.FIELD_SAVEDPATH}) ;
-    uiPopup.setShow(true) ;
-    uiPopup.setResizable(true) ;
+    try {
+      if(SessionsUtils.isAnonim()) {      
+        uiJCRBrowser.setSessionProvider(SessionsUtils.getAnonimProvider());
+      }
+      uiJCRBrowser.setRepository(repositoryName) ;
+      uiJCRBrowser.setIsDisable(workspaceName, true) ;
+      uiJCRBrowser.setShowRootPathSelect(true) ;
+      uiPopup.setUIComponent(uiJCRBrowser);
+      UIEditModeConfiguration uiEditModeDocumentType = getChild(UIEditModeConfiguration.class) ;
+      uiJCRBrowser.setComponent(uiEditModeDocumentType, new String[] {UIEditModeConfiguration.FIELD_SAVEDPATH}) ;
+      uiPopup.setShow(true) ;
+      uiPopup.setResizable(true);
+    } finally {
+      uiJCRBrowser.getSessionProvider().close();
+    }    
   }
   
   public void initPopup(UIComponent uiComp) throws Exception {
