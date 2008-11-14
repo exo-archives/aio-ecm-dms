@@ -23,6 +23,9 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.NodeTypeIterator;
+import javax.jcr.nodetype.NodeTypeManager;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.utils.SessionsUtils;
@@ -73,9 +76,19 @@ public class UITemplateList extends UIGrid {
     Node templatesHome = templateService.getTemplatesHome(repository,SessionsUtils.getSessionProvider()) ;
     List<TemplateData> templateData = new ArrayList<TemplateData>() ;
     if(templatesHome != null) {
+      NodeTypeManager ntManager = templatesHome.getSession().getWorkspace().getNodeTypeManager();
+      NodeTypeIterator nodetypeIter = ntManager.getAllNodeTypes();
+      List<String> listNodeTypeName = new ArrayList<String>();
+      while (nodetypeIter.hasNext()) {
+        NodeType n1 = nodetypeIter.nextNodeType();
+        listNodeTypeName.add(n1.getName());
+      }
       NodeIterator nodes = templatesHome.getNodes() ;
       while (nodes.hasNext()) {
-        templateData.add(new TemplateData(nodes.nextNode().getName())) ;
+        Node node = nodes.nextNode();
+        if (listNodeTypeName.contains(node.getName())) {
+          templateData.add(new TemplateData(node.getName())) ;
+        }
       }
       Collections.sort(templateData, new TemplateComparator()) ;
     } 

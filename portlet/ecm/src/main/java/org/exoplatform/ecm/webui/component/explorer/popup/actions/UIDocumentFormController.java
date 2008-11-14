@@ -87,8 +87,8 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List templates = templateService.getDocumentTemplates(repository_) ;
-    try {
-      for(int i = 0; i < templates.size(); i ++){
+    for(int i = 0; i < templates.size(); i ++) {
+      try {
         String nodeTypeName = templates.get(i).toString() ;        
         String label = templateService.getTemplateLabel(nodeTypeName, repository_) ;
         NodeType nodeType = ntManager.getNodeType(nodeTypeName) ;
@@ -143,18 +143,18 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
             if(isCanCreateDocument) break ;
           }
         }            
+      } catch (Exception e) {
+        continue;
       }
-      Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
-      uiSelectBox.setOptions(options) ;
-      if(hasDefaultDoc) {
-        uiSelectBox.setValue(defaultDocument_);
-      } else if(options.size() > 0) {
-        defaultDocument_ = options.get(0).getValue() ;
-        uiSelectBox.setValue(defaultDocument_);
-      } 
-    } catch(Exception e) {
-//    e.printStackTrace() ;
     }
+    Collections.sort(options, new Utils.ItemOptionNameComparator()) ;
+    uiSelectBox.setOptions(options) ;
+    if(hasDefaultDoc) {
+      uiSelectBox.setValue(defaultDocument_);
+    } else if(options.size() > 0) {
+      defaultDocument_ = options.get(0).getValue() ;
+      uiSelectBox.setValue(defaultDocument_);
+    } 
     return options ;
   }
 
