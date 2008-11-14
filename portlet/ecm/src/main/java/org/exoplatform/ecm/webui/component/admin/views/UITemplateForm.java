@@ -86,6 +86,7 @@ public class UITemplateForm extends UIForm {
   private VersionNode selectedVersion_;
   public boolean isAddNew_ = false ;
   private String templatePath_ ;
+  private VersionNode rootVersionNode;
 
   public UITemplateForm() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
@@ -207,6 +208,7 @@ public class UITemplateForm extends UIForm {
       getUIFormSelectBox(FIELD_HOMETEMPLATE).setDisabled(true) ;
       getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setRendered(true) ;
       if (isVersioned(template_)) {
+        rootVersionNode = getRootVersion(template_);
         baseVersion_ = template_.getBaseVersion() ;
         List<SelectItemOption<String>> options = getVersionValues(template_) ;
         getUIFormSelectBox(FIELD_VERSION).setOptions(options).setRendered(true) ;
@@ -358,7 +360,7 @@ public class UITemplateForm extends UIForm {
       UITemplateForm uiForm = event.getSource() ;
       String version = uiForm.getUIFormSelectBox(FIELD_VERSION).getValue() ;
       String path = uiForm.template_.getVersionHistory().getVersion(version).getPath() ;
-      VersionNode versionNode = uiForm.getRootVersion(uiForm.template_).findVersionNode(path);
+      VersionNode versionNode = uiForm.rootVersionNode.findVersionNode(path);
       Node frozenNode = versionNode.getVersion().getNode(Utils.JCR_FROZEN) ;
       String content = frozenNode.getProperty(Utils.EXO_TEMPLATEFILE).getString() ;
       uiForm.getUIFormTextAreaInput(FIELD_CONTENT).setValue(content) ;
@@ -379,7 +381,7 @@ public class UITemplateForm extends UIForm {
       UITemplateForm uiForm = event.getSource() ;
       String version = uiForm.getUIFormSelectBox(FIELD_VERSION).getValue() ;
       String path = uiForm.template_.getVersionHistory().getVersion(version).getPath() ;
-      VersionNode selectedVesion = uiForm.getRootVersion(uiForm.template_).findVersionNode(path);
+      VersionNode selectedVesion = uiForm.rootVersionNode.findVersionNode(path);
       if(uiForm.baseVersion_.getName().equals(selectedVesion.getName())) return ;
       uiForm.update(null, selectedVesion) ;
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class) ;
