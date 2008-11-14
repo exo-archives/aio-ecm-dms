@@ -109,6 +109,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     try {      
       return templateService.getTemplatePathByUser(true, contentType, userName, repositoryName) ;
     } catch (Exception e) {
+      e.printStackTrace();
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
       Object[] arg = { contentType } ;
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.not-support", arg, 
