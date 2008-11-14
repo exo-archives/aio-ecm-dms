@@ -55,17 +55,21 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   public void init(SessionProvider sessionProvider) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
     ManageableRepository manageableRepository = repositoryService.getRepository(repositoryName);
-    Session session = sessionProvider.getSession(workspaceName, manageableRepository);
-    Node rootNode = (Node)session.getItem(rootTreePath);
-    UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
-    selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
-    selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
-    UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
-    uiWorkspaceList.setWorkspaceList(repositoryName);
-    uiWorkspaceList.setIsDisable(workspaceName, isDisable) ;
-    UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);    
-    builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);    
-    builder.setRootTreeNode(rootNode);    
+    try {
+      Session session = sessionProvider.getSession(workspaceName, manageableRepository);
+      Node rootNode = (Node)session.getItem(rootTreePath);
+      UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
+      selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
+      selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
+      UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
+      uiWorkspaceList.setWorkspaceList(repositoryName);
+      uiWorkspaceList.setIsDisable(workspaceName, isDisable) ;
+      UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);    
+      builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);    
+      builder.setRootTreeNode(rootNode);
+    } finally {
+      sessionProvider.close();
+    }        
   }
   
   public void setRootNodeLocation(String repository, String workspace, String rootPath) throws Exception {
