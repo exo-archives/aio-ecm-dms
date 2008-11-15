@@ -412,9 +412,9 @@
 					<div class="ArticleBCDecorator"><span></span></div>
 				</div>
 			</div> 
-			<% _ctx.include(uicomponent.getViewTemplate("exo:vote", "view1")); %> 
+			<% _ctx.include(uicomponent.getViewTemplate("mix:votable", "view1")); %> 
 		</div>
-		<% _ctx.include(uicomponent.getViewTemplate("exo:comment", "view1")); %>
+		<% _ctx.include(uicomponent.getViewTemplate("exo:comments", "view1")); %>
   <%} else {%>
       <div class="UIArticle">
         <div class="FieldLabel"><%=_ctx.appRes("Article.msg.no-view")%> </div>

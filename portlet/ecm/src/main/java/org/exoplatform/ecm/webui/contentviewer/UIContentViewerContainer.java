@@ -16,14 +16,11 @@
  */
 package org.exoplatform.ecm.webui.contentviewer;
 
-import javax.jcr.Node;
-
 import org.exoplatform.portal.config.DataStorage;
 import org.exoplatform.portal.config.UserACL;
 import org.exoplatform.portal.config.model.PortalConfig;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.portal.webui.util.Util;
-import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -64,25 +61,25 @@ public class UIContentViewerContainer extends UIContainer {
 
   public static class QuickEditActionListener extends EventListener<UIContentViewerContainer> {
     public void execute(Event<UIContentViewerContainer> event) throws Exception {
-      UIContentViewerContainer uiContentViewerContainer = event.getSource();
-      UIContentViewer uiContentViewer = uiContentViewerContainer.getChild(UIContentViewer.class);
-      Node contentNode = uiContentViewer.getNode();
-      ManageableRepository manageableRepository = (ManageableRepository) contentNode.getSession()
-                                                                                    .getRepository();
-      String repository = manageableRepository.getConfiguration().getName();
-      String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName();
-      uiContentViewerContainer.removeChild(UIContentViewer.class);
-      UIDocumentDialogForm uiDocumentForm = uiContentViewerContainer.createUIComponent(UIDocumentDialogForm.class,
-                                                                                       null,
-                                                                                       null);
-      uiDocumentForm.setRepositoryName(repository);
-      uiDocumentForm.setWorkspace(workspace);
-      uiDocumentForm.setContentType(contentNode.getPrimaryNodeType().getName());
-      uiDocumentForm.setNodePath(contentNode.getPath());
-      uiDocumentForm.setStoredPath(contentNode.getPath());
-      uiDocumentForm.addNew(false);
-      uiContentViewerContainer.addChild(uiDocumentForm);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContentViewerContainer);
+//      UIContentViewerContainer uiContentViewerContainer = event.getSource();
+//      UIContentViewer uiContentViewer = uiContentViewerContainer.getChild(UIContentViewer.class);
+//      Node contentNode = uiContentViewer.getNode();
+//      ManageableRepository manageableRepository = (ManageableRepository) contentNode.getSession()
+//                                                                                    .getRepository();
+//      String repository = manageableRepository.getConfiguration().getName();
+//      String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName();
+//      uiContentViewerContainer.removeChild(UIContentViewer.class);
+//      UIDocumentDialogForm uiDocumentForm = uiContentViewerContainer.createUIComponent(UIDocumentDialogForm.class,
+//                                                                                       null,
+//                                                                                       null);
+//      uiDocumentForm.setRepositoryName(repository);
+//      uiDocumentForm.setWorkspace(workspace);
+//      uiDocumentForm.setContentType(contentNode.getPrimaryNodeType().getName());
+//      uiDocumentForm.setNodePath(contentNode.getPath());
+//      uiDocumentForm.setStoredPath(contentNode.getPath());
+//      uiDocumentForm.addNew(false);
+//      uiContentViewerContainer.addChild(uiDocumentForm);
+//      event.getRequestContext().addUIComponentToUpdateByAjax(uiContentViewerContainer);
     }
   }
 

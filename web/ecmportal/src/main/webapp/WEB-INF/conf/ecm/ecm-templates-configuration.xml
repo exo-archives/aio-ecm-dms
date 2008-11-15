@@ -538,7 +538,7 @@
                   </value>
                   <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
-                      <field name="nodetypeName"><string>exo:vote</string></field>
+                      <field name="nodetypeName"><string>mix:votable</string></field>
                       <field name="documentTemplate"><boolean>false</boolean></field>
                       <field name="label"><string>Vote Info</string></field>
                       <field name="referencedView">
@@ -555,7 +555,7 @@
                   </value>
                   <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
-                      <field name="nodetypeName"><string>exo:comment</string></field>
+                      <field name="nodetypeName"><string>exo:comments</string></field>
                       <field name="documentTemplate"><boolean>false</boolean></field>
                       <field name="label"><string>Comments Info</string></field>
                       <field name="referencedView">
