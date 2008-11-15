@@ -114,6 +114,11 @@
 	posititon: relative;
 }
 
+.UIJCRExplorerPortlet .UITabPane .UIListView {
+	background: white;
+	border: 1px solid #b7b7b7;
+}
+
 .UIJCRExplorerPortlet .UIListView .UIListGrid {
 	overflow: auto;
 	height: 385px;
