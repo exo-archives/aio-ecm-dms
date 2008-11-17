@@ -29,6 +29,7 @@ import javax.jcr.RepositoryException;
 import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.form.DialogFormActionListeners;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
@@ -40,7 +41,6 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
-import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -78,7 +78,7 @@ import org.exoplatform.webui.form.UIFormUploadInput;
       @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.ShowComponentActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE),
-      @EventConfig(listeners = UIDocumentForm.RemoveDataActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
+      @EventConfig(listeners = DialogFormActionListeners.RemoveDataActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
 
@@ -285,20 +285,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     }
   }
 
-  static public class RemoveDataActionListener extends EventListener<UIDocumentForm> {
-    public void execute(Event<UIDocumentForm> event) throws Exception {
-      UIDocumentForm uiForm = event.getSource();
-      uiForm.isRemovePreference = true;
-      String referenceNodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node referenceNode = (Node)uiForm.getSesssion().getItem(uiForm.getNodePath() + referenceNodePath);
-      if(referenceNode.hasProperty(Utils.JCR_DATA)) {
-        referenceNode.setProperty(Utils.JCR_DATA, "");
-        uiForm.setDataRemoved(true);
-      }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
-    }
-  }   
-  
   static  public class CancelActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
