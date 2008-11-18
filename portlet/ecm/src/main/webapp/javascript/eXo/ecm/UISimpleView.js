@@ -27,6 +27,7 @@ var SimpleView = function() {
 		for (var i in Self.allItems) {
 			if (Array.prototype[i]) continue;
 			var item = Self.allItems[i];
+			item.storeIndex = i;
 			if (item.getAttribute("onmousedown")) {
 				mousedown = Self.allItems[i].getAttributeNode("onmousedown").value;
 				item.setAttribute("mousedown", mousedown);
@@ -171,10 +172,11 @@ var SimpleView = function() {
 
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		if (!rightClick) {
+			/*
 			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey) {
 				Self.clickItem(event, element);
 			};
-			
+			*/
 			// init drag drop;
 			document.onmousemove = Self.dragItemsSelected;
 			document.onmouseup = Self.dropOutActionArea;
@@ -237,6 +239,8 @@ var SimpleView = function() {
 		var event = event || window.event;
 		resetArrayItemsSelected();
 		element.selected = true;
+		//for select use shilf key;
+		Self.temporaryItem = element;
 		Self.itemsSelected = new Array(element);
 		element.style.background = Self.colorSelected;
 		eXo.core.Browser.setOpacity(element, 100);
@@ -261,13 +265,32 @@ var SimpleView = function() {
 				var idTarget = element.getAttribute('objectId');
 				Self.postGroupAction(moveAction.getAttribute('request'), "&destInfo="+idTarget+";"+wsTarget);
 			} else {
+				if (event.ctrlKey) {
+					alert(event.keyCode);
+				}
 				if (event.ctrlKey && !element.selected) {
 					element.selected = true;
+					//for select use shilf key;
+					Self.temporaryItem = element;
 					Self.itemsSelected.push(element);
 				} else if(event.ctrlKey && element.selected) {
 					element.selected = null;
 					element.style.background = "none";
 					removeItem(Self.itemsSelected, element);
+				} else if (event.shiftKey) {
+					//use shift key to select;
+					//need clear temporaryItem when mousedown in ground;
+					var lowIndex = 0;
+					var heightIndex = element.storeIndex;
+					if (Self.temporaryItem) {
+						lowIndex = Math.min(Self.temporaryItem.storeIndex,  element.storeIndex);
+						heightIndex = Math.max(Self.temporaryItem.storeIndex,  element.storeIndex);
+					}
+					resetArrayItemsSelected();
+					for (var i = lowIndex; i <= heightIndex; i++) {
+						Self.allItems[i].selected = true;
+						Self.itemsSelected.push(Self.allItems[i]);
+					}
 				} else {
 					Self.clickItem(event, element);
 				}
@@ -294,6 +317,7 @@ var SimpleView = function() {
 		var element = this;
 		element.holdMouse = true;
 		Self.hideContextMenu();
+		Self.temporaryItem = null;
 		document.onselectstart = function(){return false};
 		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
