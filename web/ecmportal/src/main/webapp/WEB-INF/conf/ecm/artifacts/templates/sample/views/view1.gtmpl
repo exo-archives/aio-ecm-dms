@@ -194,6 +194,6 @@
 			<div style="clear: both"><span></span></div>
 		</div>		
 	</div>
-	<div><% _ctx.include(uicomponent.getViewTemplate("exo:vote", "view1")); %></div>
-  <div><% _ctx.include(uicomponent.getViewTemplate("exo:comment", "view1")); %></div>
+	<div><% _ctx.include(uicomponent.getViewTemplate("mix:votable", "view1")); %></div>
+  <div><% _ctx.include(uicomponent.getViewTemplate("exo:comments", "view1")); %></div>
 </div>
