@@ -265,9 +265,6 @@ var SimpleView = function() {
 				var idTarget = element.getAttribute('objectId');
 				Self.postGroupAction(moveAction.getAttribute('request'), "&destInfo="+idTarget+";"+wsTarget);
 			} else {
-				if (event.ctrlKey) {
-					alert(event.keyCode);
-				}
 				if (event.ctrlKey && !element.selected) {
 					element.selected = true;
 					//for select use shilf key;
