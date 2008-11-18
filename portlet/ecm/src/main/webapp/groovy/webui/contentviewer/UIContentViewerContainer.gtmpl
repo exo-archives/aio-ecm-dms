@@ -1,6 +1,6 @@
-<% 
-	String link = uicomponent.event("QuickEdit");
-	String backActionLable = _ctx.appRes("UIContentViewerContainer.action.back");
+<%
+String link = uicomponent.event("QuickEdit");
+String backActionLable = _ctx.appRes("UIContentViewerContainer.action.back");
 %>
 <div id="$uicomponent.id" class="$uicomponent.id">
   <div class="ContentViewerBar">
@@ -10,15 +10,19 @@
           <div class="LeftButton">
             <div class="RightButton">
               <div class="CenterButton" onclick="history.go(-1)">
-                <div class="BackIcon">$backActionLable</div>
+                <div class="BackIcon">
+                  $backActionLable
+                </div>
               </div>
             </div>
           </div>
-          <%                    
+          <%
           if (uicomponent.isQuickEditAble()) {
+            %>
+            <a href="$link" class="DocumentQuickEdit"></a>
+            <%
+          }
           %>
-          <a href="$link" class="DocumentQuickEdit"/>
-          <% } %>
           <div style="clear: left;">
             <span>
             </span>
@@ -28,7 +32,7 @@
     </div>
   </div>
   <%
-    	uicomponent.renderChildren();
+  uicomponent.renderChildren();
   %>
   <div style="clear: both;">
     <span>

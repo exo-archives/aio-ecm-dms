@@ -48,9 +48,8 @@
 }
 
 .UIParameterizedContentViewerPortlet .UIContentViewerContainer .ContentViewerBar .DocumentQuickEdit {
-	background:url('DefaultSkin/background/quickEdit.png') no-repeat scroll left top;
+	background:url('DefaultSkin/background/quickEdit.png') no-repeat right top;
 	height:50px;
-	width: 50px;
-	padding-left: 0px;
+	width: 50px;	
 	float: right;
 }
