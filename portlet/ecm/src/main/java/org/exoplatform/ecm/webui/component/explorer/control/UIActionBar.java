@@ -594,10 +594,10 @@ public class UIActionBar extends UIForm {
         uiPopupAction.findFirstComponentOfType(UIMultiLanguageManager.class) ;
       UIAddLanguageContainer uiAddContainer = uiMultiManager.getChild(UIAddLanguageContainer.class) ;
       if(nodeType.getName().equals(Utils.NT_FILE)) {
-        String mimeType = uiExplorer.getCurrentNode().getNode(Utils.JCR_CONTENT).
-        getProperty(Utils.JCR_MIMETYPE).getString() ;
-        if(mimeType.startsWith("text")) uiAddContainer.setComponentDisplay(nodeType.getName()) ;
-        else uiAddContainer.addChild(UIUploadManager.class, null, null) ;
+//        String mimeType = 
+//          uiExplorer.getCurrentNode().getNode(Utils.JCR_CONTENT).getProperty(Utils.JCR_MIMETYPE).getString() ;
+//        if(mimeType.startsWith("text")) uiAddContainer.setComponentDisplay(nodeType.getName()) ;
+        uiAddContainer.addChild(UIUploadManager.class, null, null) ;
       } else {
         uiAddContainer.setComponentDisplay(nodeType.getName()) ;
       }

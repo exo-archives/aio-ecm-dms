@@ -39,11 +39,9 @@ public class UIAddLanguageContainer extends UIContainer {
   
   public void setComponentDisplay(String nodeTypeName) throws Exception {
     nodeTypeName_ = nodeTypeName ;
-//    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
     String currentPath = getAncestorOfType(UIJCRExplorer.class).getCurrentPath() ;
     UILanguageDialogForm uiDialogForm = createUIComponent(UILanguageDialogForm.class, null, null) ;
     uiDialogForm.setTemplateNode(nodeTypeName) ;
-//    uiDialogForm.setNode(currentNode) ;
     uiDialogForm.setNodePath(currentPath) ;
     uiDialogForm.setWorkspace(getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace()) ;
     uiDialogForm.setStoredPath(currentPath) ;
