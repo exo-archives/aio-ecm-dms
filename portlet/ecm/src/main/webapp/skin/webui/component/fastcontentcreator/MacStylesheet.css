@@ -34,6 +34,10 @@
 	color: #E80C00;
 }
 
+.UIFastContentCreatorPortlet .UITrees .Node .NodeIcon {
+	padding-left: 25px;
+}
+
 .UIFastContentCreatorPortlet .UIFormGrid .FieldLabel {
 	width: 160px;
 }
@@ -70,6 +74,10 @@
 	margin: 0px;
 }
 
+.UIFastContentCreatorPortlet .UIOneNodePathSelector .rootNodeInfo .UIFormInputSet {
+	padding: 0px;
+}
+
 .UIFastContentCreatorPortlet .UIEditModeConfiguration {
   margin: 15px auto;
   width: 600px;
@@ -96,8 +104,12 @@
 	margin: auto;
 }
 
-.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent {
+.UIFastContentCreatorPortlet .UIForm td.FieldComponent {
   padding: 4px 0px;
+}
+
+.UIFastContentCreatorPortlet .UIForm .rootNodeInfo td.FieldComponent {
+	padding: 0px;
 }
 
 .UIFastContentCreatorPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {

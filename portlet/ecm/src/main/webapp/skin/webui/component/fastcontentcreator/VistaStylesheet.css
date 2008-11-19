@@ -72,8 +72,12 @@
   vertical-align: middle;
 }
 
-.UIFastContentCreatorPortlet .UIForm .HorizontalLayout .UIFormGrid td.FieldComponent {
+.UIFastContentCreatorPortlet .UIForm td.FieldComponent {
   padding: 4px 0px;
+}
+
+.UIFastContentCreatorPortlet .UIForm .rootNodeInfo td.FieldComponent {
+	padding: 0px;
 }
 
 .UIFastContentCreatorPortlet .UIEditModeConfiguration {
@@ -140,10 +144,6 @@
 
 .UIFastContentCreatorPortlet .UIFormUploadInput  .ProgressBar {
 	margin: 0px;
-}
-
-.UIFastContentCreatorPortlet .UIOneNodePathSelector .rootNodeInfo .UIFormInputSet {
-	padding: 0px;
 }
 
 .UIFastContentCreatorPortlet .rootNodeInfo .UIFormInputSet .FormContainer {
