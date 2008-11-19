@@ -25,6 +25,7 @@ var ListView = function() {
 		for (var i in Self.allItems) {
 			if (Array.prototype[i]) continue;
 			var item = Self.allItems[i];
+			item.storeIndex = i;
 			if (item.getAttribute("onmousedown")) {
 				mousedown = item.getAttributeNode("onmousedown").value;
 				item.setAttribute("mousedown", mousedown);
@@ -168,7 +169,8 @@ var ListView = function() {
 		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		if (!rightClick) {
-			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey) {
+			
+			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey && !event.shiftKey) {
 				Self.clickItem(event, element);
 			};
 
@@ -235,6 +237,8 @@ var ListView = function() {
 		var event = event || window.event;
 		resetArrayItemsSelected();
 		element.selected = true;
+		//for select use shilf key;
+		Self.temporaryItem = element;
 		Self.itemsSelected = new Array(element);
 		element.style.background = Self.colorSelected;
 		eXo.core.Browser.setOpacity(element, 100);
@@ -266,6 +270,20 @@ var ListView = function() {
 					element.selected = null;
 					element.style.background = "none";
 					removeItem(Self.itemsSelected, element);
+				} else if (event.shiftKey) {
+					//use shift key to select;
+					//need clear temporaryItem when mousedown in ground;
+					var lowIndex = 0;
+					var heightIndex = element.storeIndex;
+					if (Self.temporaryItem) {
+						lowIndex = Math.min(Self.temporaryItem.storeIndex,  element.storeIndex);
+						heightIndex = Math.max(Self.temporaryItem.storeIndex,  element.storeIndex);
+					}
+					resetArrayItemsSelected();
+					for (var i = lowIndex; i <= heightIndex; i++) {
+						Self.allItems[i].selected = true;
+						Self.itemsSelected.push(Self.allItems[i]);
+					}
 				} else {
 					Self.clickItem(event, element);
 				}
@@ -292,6 +310,7 @@ var ListView = function() {
 		var element = this;
 		element.holdMouse = true;
 		Self.hideContextMenu();
+		Self.temporaryItem = null;
 		document.onselectstart = function(){return false};
 		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
