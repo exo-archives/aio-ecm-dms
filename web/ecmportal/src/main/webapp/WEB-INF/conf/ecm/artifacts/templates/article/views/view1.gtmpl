@@ -115,10 +115,9 @@
 		}
 		
 		.UIArticle .AttachmentsContaienr .AttachmentsContentIcon {
-		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat left -48px;
-		  width: 16px;
-		  height: 16px;
+		  background: url('/eXoECMResources/skin/images/article/AttachmentsIcon.gif') no-repeat left top;
 		  margin: 0px 5px 0px 3px;
+		  padding-left: 25px;
 		  float: left;
 		}
 		
@@ -216,6 +215,7 @@
 		
 		.UIArticle .FieldContent .AttachmentsContaienr {
 		  margin: 0px 6px 1px 0px;
+		  width: 30%; overflow-x: hidden;
 		  float: left;
 		}
 		
@@ -389,9 +389,10 @@
 		  													String attPath = att.getPath() + "&workspaceName=" + wsName ;
 														%>
 														  <div class="AttachmentsContaienr">	
-							                  <div class="AttachmentsContentIcon"><span></span></div>
-							                  <div><a href="<%=uicomponent.event("ChangeNode", attPath)%>"><%=att.getName()%></a></div>
-							                  <div style="clear: left; overflow: hidden;"><span></span></div>
+							                  <div class="AttachmentsContentIcon">
+							                  	<a href="<%=uicomponent.event("ChangeNode", attPath)%>"><%=att.getName()%></a>
+							                  </div>
+							                  <div style="clear: left;"><span></span></div>
 							                </div>
 						              <%	}
 						              	} 
