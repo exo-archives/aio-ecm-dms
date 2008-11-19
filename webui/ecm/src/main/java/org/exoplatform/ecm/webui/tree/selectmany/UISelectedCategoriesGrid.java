@@ -52,6 +52,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
   public final static String[] ACTIONS = {"SaveCategories"} ;
 
   private List<String> selectedCategories = new ArrayList<String>();
+  private boolean isDeleteAllCategory;
 
 
   public UISelectedCategoriesGrid() throws Exception {
@@ -119,6 +120,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
       UISelectedCategoriesGrid uiSelectedCategoriesGrid = event.getSource();
       String value = event.getRequestContext().getRequestParameter(OBJECTID);
       uiSelectedCategoriesGrid.removeCategory(value);
+      if (uiSelectedCategoriesGrid.getSelectedCategories().size() == 0) uiSelectedCategoriesGrid.setDeleteAllCategory(true);
       uiSelectedCategoriesGrid.updateGrid();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSelectedCategoriesGrid);
     }
@@ -131,7 +133,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
       String returnField = uiCategoriesSelector.getReturnFieldName();
       List<String> selectedCategories = uiSelectedCategoriesGrid.getSelectedCategories();
       UIApplication uiApplication = uiSelectedCategoriesGrid.getAncestorOfType(UIApplication.class);
-      if(selectedCategories.size() == 0) {
+      if(selectedCategories.size() == 0 && uiSelectedCategoriesGrid.isDeleteAllCategory()) {
         uiApplication.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, ApplicationMessage.INFO));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApplication.getUIPopupMessages());
         return;
@@ -145,5 +147,13 @@ public class UISelectedCategoriesGrid extends UIGrid {
       uiApplication.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.have-saved", null, ApplicationMessage.INFO));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApplication.getUIPopupMessages());
     }
+  }
+
+  public boolean isDeleteAllCategory() {
+    return isDeleteAllCategory;
+  }
+
+  public void setDeleteAllCategory(boolean isDeleteAllCategory) {
+    this.isDeleteAllCategory = isDeleteAllCategory;
   }
 }
