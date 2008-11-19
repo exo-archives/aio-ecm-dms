@@ -174,11 +174,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return false ;
   }
   
-  public boolean isAllowViewCoverFlow(Node node) throws Exception {
-    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
-    return thumbnailService.isAllowViewCoverFlow(node); 
-  }
-  
   public boolean isImageType(Node node) throws Exception {
     if(node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) {
       Node contentNode = node.getNode(Utils.JCR_CONTENT);

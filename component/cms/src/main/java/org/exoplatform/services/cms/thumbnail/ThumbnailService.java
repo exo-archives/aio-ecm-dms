@@ -40,7 +40,9 @@ public interface ThumbnailService {
   final public static String MEDIUM_SIZE = "exo:mediumSize".intern();
   final public static String BIG_SIZE = "exo:bigSize".intern();
   final public static String THUMBNAIL_LAST_MODIFIED = "exo:thumbnailLastModified".intern();
-  
+  final public static String EXO_THUMBNAILS_FOLDER = "exo:thumbnails".intern();
+  final public static String HIDDENABLE_NODETYPE = "exo:hiddenable";
+ 
   /**
  * Return all nt:file node at current node
  * @param node Current node
@@ -56,14 +58,14 @@ public interface ThumbnailService {
  * @return List<Node>
  * @throws RepositoryException
  */  
-  public List<Node> getFileNodesByType(Node node, String jcrMimeType) throws RepositoryException;
+  public List<Node> getFileNodesByType(Node node, String jcrMimeType) throws Exception;
 /**
  * Return a list image in node
  * @param node Current node
  * @return List<Node>
  * @throws RepositoryException
  */  
-  public List<Node> getFlowImages(Node node) throws RepositoryException;
+  public List<Node> getFlowImages(Node node) throws Exception;
 /**
  * To setup status of node is allow thumbnail or not
  * @param isEnable
@@ -89,18 +91,38 @@ public interface ThumbnailService {
  * @param thumbnailType Type of thumbnail will be return (small, medium, big or specified if has)
  * @throws Exception
  */  
-  public InputStream getThumbnail(Node node, String thumbnailType) throws Exception;
+  public InputStream getThumbnailImage(Node node, String thumbnailType) throws Exception;
+ /**
+  * Create thumbnail node
+  * @param node Current node which included thumbnail
+  * @return Node
+  * @throws Exception
+  */ 
+  public Node addThumbnailNode(Node node) throws Exception;
+/**
+ * Get thumbnail node
+ * @param node
+ * @return Node
+ * @throws Exception
+ */  
+  public Node getThumbnailNode(Node node) throws Exception;
 /**
  * Create a thumbnail for node with size specified 
  * @param node Current node which will be added thumbnail
  * @param image BufferedImage which contain the original image
- * @param width Width of thumbnail image
- * @param height Height of thumbnail image
  * @param propertyName Data will be set to this property
  * @throws Exception
  */  
   public void createSpecifiedThumbnail(Node node, BufferedImage image, String propertyName) throws Exception;
-/**
+  /**
+   * Add a thumbnail image to node 
+   * @param node Current node which will be added thumbnail
+   * @param image BufferedImage which contain the original image
+   * @param propertyName Data will be set to this property
+   * @throws Exception
+   */  
+  public void addThumbnailImage(Node node, BufferedImage image, String propertyName) throws Exception;
+  /**
  * Process thumbnail with list nodes
  * @param listNodes List node which will be process to add thumbnail
  * @param type Type of thumbnail image
@@ -112,11 +134,5 @@ public interface ThumbnailService {
  * @return List<String> 
  */  
   public List<String> getMimeTypes();
-/**
- * Check to make sure a node can be view by coverflow or not
- * @param node Node will be check via mimetype
- * @return Boolean 
- * @throws Exception
- */
-  public boolean isAllowViewCoverFlow(Node node) throws Exception;
+
 }

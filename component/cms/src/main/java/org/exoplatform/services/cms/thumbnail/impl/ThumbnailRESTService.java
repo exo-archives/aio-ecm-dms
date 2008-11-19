@@ -21,6 +21,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 
 import org.exoplatform.container.ExoContainer;
@@ -30,6 +31,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.rest.HTTPMethod;
 import org.exoplatform.services.rest.InputTransformer;
 import org.exoplatform.services.rest.OutputTransformer;
@@ -90,30 +92,49 @@ public class ThumbnailRESTService implements ResourceContainer {
   
   private Response getThumbnailByType(String repoName, String wsName, String nodePath, 
       String propertyName) throws Exception {
-    if(thumbnailService_.isEnableThumbnail()) {
-      Node showingNode = getShowingNode(repoName, wsName, nodePath);
-      if(!showingNode.isCheckedOut()) return Response.Builder.ok().build(); 
-      if(!showingNode.hasProperty(propertyName)) {
-        if(showingNode.getPrimaryNodeType().getName().equals("nt:file")) {
-          Node content = showingNode.getNode("jcr:content");
-          BufferedImage image = ImageIO.read(content.getProperty("jcr:data").getStream());
-          if(content.getProperty("jcr:mimeType").getString().startsWith("image")) {
-            thumbnailService_.createSpecifiedThumbnail(showingNode, image, propertyName);
+    if(!thumbnailService_.isEnableThumbnail()) return Response.Builder.ok().build();
+    Node showingNode = getShowingNode(repoName, wsName, nodePath);
+    if(showingNode.getPrimaryNodeType().getName().equals("nt:file")) {
+      Node content = showingNode.getNode("jcr:content");
+      if(content.getProperty("jcr:mimeType").getString().startsWith("image")) {
+        Node parentNode = showingNode.getParent();
+        Node thumbnailFolder = null;
+        try {
+          thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
+        } catch(PathNotFoundException e) {
+          thumbnailFolder = parentNode.addNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
+          parentNode.save();
+          if(thumbnailFolder.canAddMixin(ThumbnailService.HIDDENABLE_NODETYPE)) {
+            thumbnailFolder.addMixin(ThumbnailService.HIDDENABLE_NODETYPE);
           }
+          thumbnailFolder.save();
         }
+        String identifier = ((NodeImpl) showingNode).getInternalIdentifier();
+        Node thumbnailNode = null;
+        try {
+          thumbnailNode = thumbnailFolder.getNode(identifier);
+        } catch(PathNotFoundException path) {
+          thumbnailNode = thumbnailFolder.addNode(identifier);
+        }
+        thumbnailFolder.save();
+        if(!thumbnailNode.hasProperty(propertyName)) {
+          BufferedImage image = ImageIO.read(content.getProperty("jcr:data").getStream());
+          thumbnailService_.addThumbnailImage(thumbnailNode, image, propertyName);
+        }
+        String lastModified = null;
+        if(thumbnailNode.hasProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED)) {
+          lastModified = thumbnailNode.getProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED).getString();
+        }
+        InputStream inputStream = null;
+        if(thumbnailNode.hasProperty(propertyName)) {
+          inputStream = thumbnailNode.getProperty(propertyName).getStream();
+        }
+        showingNode.getSession().save();
+        return Response.Builder.ok()
+        .header(LASTMODIFIED, lastModified)
+        .entity(inputStream, "image")
+        .build();
       }
-      String lastModified = null;
-      if(showingNode.hasProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED)) {
-        lastModified = showingNode.getProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED).getString();
-      }
-      InputStream inputStream = null;
-      if(showingNode.hasProperty(propertyName)) {
-        inputStream = showingNode.getProperty(propertyName).getStream();
-      }
-      return Response.Builder.ok()
-                             .header(LASTMODIFIED, lastModified)
-                             .entity(inputStream, "image")
-                             .build();
     }
     return Response.Builder.ok().build();
   }
