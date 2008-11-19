@@ -38,6 +38,7 @@ var SimpleView = function() {
 			item.onmousedown = Self.mouseDownItem;
 			item.onmouseup = Self.mouseUpItem;
 			item.onmouseout = Self.mouseOutItem;
+			
 			eXo.core.Browser.setOpacity(item, 85);
 		}
 		actionArea.onmousedown = Self.mouseDownGround;
@@ -61,6 +62,7 @@ var SimpleView = function() {
 					element.onmouseup = Self.mouseUpTree;
 					element.onmouseover = Self.mouseOverTree;
 					element.onmouseout = Self.mouseOutTree;
+					
 				}
 		);
 	};
@@ -159,7 +161,6 @@ var SimpleView = function() {
 			element.style.background = "none";
 			eXo.core.Browser.setOpacity(element, 85);
 		}
-			
 	};
 	
 	SimpleView.prototype.mouseDownItem = function(event) {
@@ -172,11 +173,11 @@ var SimpleView = function() {
 
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		if (!rightClick) {
-			/*
-			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey) {
+			
+			if (!inArray(Self.itemsSelected, element) && !event.ctrlKey && !event.shiftKey) {
 				Self.clickItem(event, element);
 			};
-			*/
+		
 			// init drag drop;
 			document.onmousemove = Self.dragItemsSelected;
 			document.onmouseup = Self.dropOutActionArea;
