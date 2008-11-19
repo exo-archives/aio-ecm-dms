@@ -515,6 +515,10 @@
   padding: 3px;
 }
 
+.UIECMAdminPortlet .UIForm .UIViewForm .FormContainer {
+	padding: 0px;
+}
+
 /*############################## -- UIActionManager -- ########################*/
 
 .UIECMAdminPortlet .UIActionManager .UIActionTypeForm {
