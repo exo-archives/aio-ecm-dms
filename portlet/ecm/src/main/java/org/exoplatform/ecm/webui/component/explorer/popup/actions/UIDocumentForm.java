@@ -34,6 +34,7 @@ import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
 import org.exoplatform.ecm.webui.utils.LockUtil;
@@ -41,6 +42,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
+import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -136,9 +138,11 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       UIJCRExplorer uiExplorer = documentForm.getAncestorOfType(UIJCRExplorer.class) ;
       List inputs = documentForm.getChildren();
       UIApplication uiApp = documentForm.getAncestorOfType(UIApplication.class);
+      boolean hasCategories = false;
+      String categoriesPath = null;
       if(documentForm.isAddNew()) {
         for (int i = 0; i < inputs.size(); i++) {
-          UIFormInputBase input = (UIFormInputBase) inputs.get(i);
+          UIFormInputBase input = (UIFormInputBase) inputs.get(i);          
           if((input.getName() != null) && input.getName().equals("name")) {
             String[] arrFilterChar = {".", "/", ":", "[", "]", "*", "'", "|", "\""};          
             String valueName = input.getValue().toString();          
@@ -151,9 +155,15 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
               }
             }
           }
+          
+          // Update for many categories ECM-2626
+          if((input.getName() != null) && input.getName().equals("categories")) {
+            hasCategories = true;
+            categoriesPath = input.getValue().toString();            
+          }
         }
       }
-      Map inputProperties = DialogFormUtil.prepareMap(inputs, documentForm.getInputProperties()) ;
+      Map inputProperties = DialogFormUtil.prepareMap(inputs, documentForm.getInputProperties());
       Node newNode = null ;
       String nodeType ;
       Node homeNode ;
@@ -184,6 +194,17 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         try {
           homeNode.save() ;
           newNode = (Node)homeNode.getSession().getItem(addedPath);
+          
+          // Update for many categories ECM-2626
+          if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
+            String repository = uiExplorer.getRepositoryName();
+            CategoriesService categoriesService = documentForm.getApplicationComponent(CategoriesService.class);
+            categoriesPath = categoriesPath.substring(1, categoriesPath.length() -1);
+            String[] categoriesPathList = categoriesPath.split(",") ;            
+            for (String categoryPath : categoriesPathList){
+              categoriesService.addCategory(newNode, categoryPath, repository);
+            } 
+          }
         } catch(Exception e) {
           if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
           uiExplorer.updateAjax(event);          
@@ -267,6 +288,9 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         ((UIOneNodePathSelector)uiComp).setRootNodeLocation(repositoryName, wsName, rootPath) ;
         ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
         ((UIOneNodePathSelector)uiComp).init(provider);
+      } else if (uiComp instanceof UICategoriesSelector){
+        // Update for many categories ECM-2626
+        ((UICategoriesSelector)uiComp).init();
       }
       uiContainer.initPopup(uiComp) ;
       String param = "returnField=" + fieldName ;

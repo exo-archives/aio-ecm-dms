@@ -19,6 +19,15 @@
 		      %>
 		    </td>
 	    </tr>
+	    <tr>
+	      <td class="FieldLabel">Categories</td>
+	      <td class="FieldComponent">
+		      <% 
+		        String[] fieldCategories = ["jcrPath=/node/exo:category", "selectorClass=org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector", "selectorIcon=AddNewNodeIcon", "validate=empty"];
+		        uicomponent.addActionField("categories", fieldCategories);
+		      %>
+		    </td>
+		  </tr>
 	    <tr>		          					
 	      <td class="FieldLabel"><%=_ctx.appRes("Podcast.dialog.label.title")%></td>
 	      <td class="FieldComponent">
