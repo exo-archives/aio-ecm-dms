@@ -265,6 +265,8 @@ var ListView = function() {
 			} else {
 				if (event.ctrlKey && !element.selected) {
 					element.selected = true;
+					//for select use shilf key;
+					Self.temporaryItem = element;
 					Self.itemsSelected.push(element);
 				} else if(event.ctrlKey && element.selected) {
 					element.selected = null;
