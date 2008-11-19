@@ -150,34 +150,6 @@
   </portlet> 
   
   <portlet>
-  	<description xml:lang="EN">Parameterized Content Viewer</description>
-  	<portlet-name>ContentViewerPortlet</portlet-name>
-  	<display-name xml:lang="EN">Content Viewer</display-name>
-  	<portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
-  	
-  	<init-param>
-      <name>webui.configuration</name>
-      <value>/WEB-INF/conf/portlet/ecm/ParameterizedContentViewerPortlet/webui/configuration.xml</value>
-    </init-param>    
-  	
-  	<expiration-cache>0</expiration-cache>
-  	
-    <supports>
-      <mime-type>text/html</mime-type>
-      <portlet-mode>help</portlet-mode>
-      <portlet-mode>edit</portlet-mode>
-    </supports>    
-    <supported-locale>en</supported-locale>    
-    <resource-bundle>locale.portlet.ecm.ParameterizedContentViewer</resource-bundle>    																														
-    
-     <portlet-info>
-      <title>Content Viewer</title>
-      <short-title>Content Viewer</short-title>
-      <keywords>portlet, content</keywords>
-    </portlet-info>
-  </portlet>
-  
-  <portlet>
     <description xml:lang="EN">Portlet content browser</description>
     <portlet-name>ContentBrowserPortlet</portlet-name>
     <display-name xml:lang="EN">Content Browser</display-name>
