@@ -128,7 +128,13 @@ import org.exoplatform.webui.form.UIForm;
     }    
     PublicationService publicationService = getApplicationComponent(PublicationService.class);
     PublicationPresentationService publicationPresentationService = getApplicationComponent(PublicationPresentationService.class);
-    try {
+    try {            
+      if(!currentNode.isCheckedOut()) {        
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
+            ApplicationMessage.WARNING));
+        requestContext.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }      
       publicationService.enrollNodeInLifecycle(currentNode, lifecycleName);
     } catch (AlreadyInPublicationLifecycleException e) {
       uiApp.addMessage(new ApplicationMessage("UIActivePublication.msg.already-enroled", null,
