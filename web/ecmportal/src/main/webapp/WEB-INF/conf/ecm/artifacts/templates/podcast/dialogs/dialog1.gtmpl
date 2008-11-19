@@ -20,7 +20,7 @@
 		    </td>
 	    </tr>
 	    <tr>
-	      <td class="FieldLabel">Categories</td>
+	      <td class="FieldLabel"><%=_ctx.appRes("Podcast.dialog.label.categories")%></td>
 	      <td class="FieldComponent">
 		      <% 
 		        String[] fieldCategories = ["jcrPath=/node/exo:category", "selectorClass=org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector", "selectorIcon=AddNewNodeIcon", "validate=empty"];

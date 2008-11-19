@@ -26,6 +26,7 @@ import javax.jcr.ItemExistsException;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -140,6 +141,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       UIApplication uiApp = documentForm.getAncestorOfType(UIApplication.class);
       boolean hasCategories = false;
       String categoriesPath = null;
+      String[] categoriesPathList = null;
+      String repository = uiExplorer.getRepositoryName();
       if(documentForm.isAddNew()) {
         for (int i = 0; i < inputs.size(); i++) {
           UIFormInputBase input = (UIFormInputBase) inputs.get(i);          
@@ -154,15 +157,43 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
                 return;
               }
             }
-          }
-          
-          // Update for many categories ECM-2626
-          if((input.getName() != null) && input.getName().equals("categories")) {
-            hasCategories = true;
-            categoriesPath = input.getValue().toString();            
-          }
+          }          
         }
-      }
+      }      
+      // Update for many categories ECM-2626
+      for (int i = 0; i < inputs.size(); i++) {        
+        UIFormInputBase input = (UIFormInputBase) inputs.get(i);
+        if((input.getName() != null) && input.getName().equals("categories")) {
+          hasCategories = true;
+          categoriesPath = input.getValue().toString();
+          if(categoriesPath.substring(0).equals("[") 
+              && categoriesPath.substring(categoriesPath.length() -1).equals("]"))
+            categoriesPath = categoriesPath.substring(1, categoriesPath.length() -1);
+          categoriesPathList = categoriesPath.split(",");
+          Session systemSession = uiExplorer.getSystemSession();            
+          for(String categoryPath : categoriesPathList) {              
+            try {
+              systemSession.getItem(categoryPath.trim());
+            } catch (ItemNotFoundException e) {
+              uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                  ApplicationMessage.WARNING)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+              return;
+            } catch (RepositoryException re) {
+              uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                  ApplicationMessage.WARNING)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
+            } catch(Exception e) {
+              e.printStackTrace();
+              uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                  ApplicationMessage.WARNING)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
+            }
+          }            
+        }
+      }      
       Map inputProperties = DialogFormUtil.prepareMap(inputs, documentForm.getInputProperties());
       Node newNode = null ;
       String nodeType ;
@@ -196,14 +227,9 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           newNode = (Node)homeNode.getSession().getItem(addedPath);
           
           // Update for many categories ECM-2626
-          if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
-            String repository = uiExplorer.getRepositoryName();
-            CategoriesService categoriesService = documentForm.getApplicationComponent(CategoriesService.class);
-            categoriesPath = categoriesPath.substring(1, categoriesPath.length() -1);
-            String[] categoriesPathList = categoriesPath.split(",") ;            
-            for (String categoryPath : categoriesPathList){
-              categoriesService.addCategory(newNode, categoryPath, repository);
-            } 
+          if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){            
+            CategoriesService categoriesService = documentForm.getApplicationComponent(CategoriesService.class);                        
+            categoriesService.addMultiCategory(newNode, categoriesPathList, repository);            
           }
         } catch(Exception e) {
           if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;

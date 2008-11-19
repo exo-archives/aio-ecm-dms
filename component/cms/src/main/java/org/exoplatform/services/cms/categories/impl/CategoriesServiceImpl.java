@@ -161,34 +161,39 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
     node.getSession().save() ;
     systemSession.logout();
   }
-
-  public void addCategory(Node node, String categoryPath, String repository) throws Exception {    
-    Session systemSession = getSession(repository) ;
-    Node catNode = (Node) systemSession.getItem(categoryPath);
-    Session currentSession = node.getSession() ;		
-    Value value2add = currentSession.getValueFactory().createValue(catNode);   		
-    if (!node.isNodeType(CATEGORY_MIXIN)) {			
+  
+  private void processCategory(Session systemSession, Node node, String categoryPath) throws Exception {
+    Node catNode = (Node) systemSession.getItem(categoryPath.trim());
+    Value value2add = node.getSession().getValueFactory().createValue(catNode);      
+    if (!node.isNodeType(CATEGORY_MIXIN)) {     
       node.addMixin(CATEGORY_MIXIN);    
       node.setProperty(CATEGORY_PROP, new Value[] {value2add});
+      node.save();
     } else {
       List<Value> vals = new ArrayList<Value>();
       Value[] values = node.getProperty(CATEGORY_PROP).getValues();
       for (int i = 0; i < values.length; i++) {
-        Value value = values[i];
-        String uuid = value.getString();
-        Node refNode = systemSession.getNodeByUUID(uuid);				
-        if(refNode.getPath().equals(categoryPath)) {
-          systemSession.logout();
-          return; 
-        }					
-        vals.add(value);
+        Value value = values[i];                       
+        if(!vals.contains(value)) vals.add(value);
       }
       vals.add(value2add);
       node.setProperty(CATEGORY_PROP, vals.toArray(new Value[vals.size()]));
       node.save();
-      currentSession.save();
-      systemSession.logout();
-    }			
+    }     
+  }
+
+  public void addMultiCategory(Node node, String[] arrCategoryPath, String repository) throws Exception {
+    Session systemSession = getSession(repository) ;    
+    for(String categoryPath : arrCategoryPath) {      
+      processCategory(systemSession, node, categoryPath);
+    }
+    systemSession.logout();
+  }
+  
+  public void addCategory(Node node, String categoryPath, String repository) throws Exception {    
+    Session systemSession = getSession(repository) ;
+    processCategory(systemSession, node, categoryPath);
+    systemSession.logout();
   }
 
   public void addCategory(Node node, String categoryPath, boolean replaceAll, String repository) throws Exception {
@@ -222,7 +227,6 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   }
 
   public void stop() {
-    // TODO Auto-generated method stub
     
   }
 }

@@ -35,6 +35,8 @@ public interface CategoriesService {
 	public List<Node> getCategories(Node node, String repository) throws Exception;
 	public void removeCategory(Node node, String categoryPath, String repository) throws Exception;
 	
+  public void addMultiCategory(Node node, String[] arrCategoryPath, String repository) throws Exception;
+  
 	public void addCategory(Node node, String categoryPath, String repository) throws Exception;   
 	public void addCategory(Node node, String categoryPath, boolean replaceAll, String repository) throws Exception;
   
