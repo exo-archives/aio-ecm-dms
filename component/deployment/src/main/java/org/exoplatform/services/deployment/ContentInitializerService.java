@@ -63,7 +63,7 @@ public class ContentInitializerService implements Startable{
       } else {
         contentInitializerService = serviceFolder.addNode("ContentInitializerService", "nt:unstructured");
       }
-      if (!contentInitializerService.hasNode("ContentInitializerServiceLog")) {
+      if (!contentInitializerService.hasNode("ContentInitializerServiceLog")) {                                              
         Date date = new Date();
         StringBuffer logData = new StringBuffer();      
         for (DeploymentPlugin deploymentPlugin : listDeploymentPlugin) {
@@ -76,7 +76,7 @@ public class ContentInitializerService implements Startable{
           }                            
         } 
         
-        Node contentInitializerServiceLog = serviceFolder.addNode("ContentInitializerServiceLog", "nt:file");
+        Node contentInitializerServiceLog = contentInitializerService.addNode("ContentInitializerServiceLog", "nt:file");
         Node contentInitializerServiceLogContent = contentInitializerServiceLog.addNode("jcr:content", "nt:resource");
         contentInitializerServiceLogContent.setProperty("jcr:encoding", "UTF-8");
         contentInitializerServiceLogContent.setProperty("jcr:mimeType", "text/plain");
