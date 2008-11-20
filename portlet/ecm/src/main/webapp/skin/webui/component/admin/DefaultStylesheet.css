@@ -640,3 +640,22 @@
   height: 350px;
 }
 
+/*############################## -- Any Permission -- ########################*/
+.UIECMAdminPortlet .UIAnyPermission {
+	border: 1px solid #B7B7B7;
+	margin-bottom: 2px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .HorizontalLayout {
+	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid td.FieldLabel {
+	vertical-align: middle;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid {
+	width: auto;
+	margin: 0px;
+}
+
