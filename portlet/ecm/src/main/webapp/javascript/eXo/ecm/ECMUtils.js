@@ -171,21 +171,16 @@ ECMUtils.prototype.convertElemtToHTML = function(id) {
 ECMUtils.prototype.onKeyPress = function() {
 	var uiAddressBarControl = document.getElementById("UIAddressBarControl");
 	if(uiAddressBarControl) {
-		uiAddressBarControl.onkeypress = eXo.ecm.ECMUtils.onEnterPress ;
+		uiAddressBarControl.onkeypress = this.onEnterPress ;
 	}
 };
 
-ECMUtils.prototype.onEnterPress = function(e) {
+ECMUtils.prototype.onEnterPress = function(event) {
 	var uiAdressBarAction = document.getElementById("UIAddressBarAction");
-	if(uiAdressBarAction) {
-		var code;
-		if(!e) e = window.event;
-		if(e.keyCode) code = e.keyCode;
-		else if (e.which) code = e.which;
-		
-		if(code == 13) {
-			window.location.href = uiAdressBarAction.href ;
-		}
+	var event = event || window.event;
+	if(uiAdressBarAction && event.keyCode == 13) {
+		eval(uiAdressBarAction.href);
+		return false;
 	}
 };
 
