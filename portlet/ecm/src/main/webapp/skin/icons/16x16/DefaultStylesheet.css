@@ -423,7 +423,7 @@
 
 .GetURL16x16Icon {
   height: 16px;
-  background: url('DefaultSkin/Documents.gif') no-repeat ;  
+  background: url('DefaultSkin/Documents.gif') no-repeat 0px ;  
 }
 
 .AddThumbnail16x16Icon {
