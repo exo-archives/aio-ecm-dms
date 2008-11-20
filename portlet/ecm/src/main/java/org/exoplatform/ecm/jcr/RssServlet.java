@@ -31,6 +31,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.RootContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -53,12 +55,15 @@ public class RssServlet extends HttpServlet {
     portalName = pathInfo.substring(1, pathInfo.indexOf("/", 1)) ;
     wsName = pathInfo.substring(portalName.length() + 2, pathInfo.indexOf("/", portalName.length() + 2)) ;
     path = pathInfo.substring(pathInfo.indexOf(wsName)+ wsName.length() + 1) ;
-    PortalContainer pcontainer = getPortalContainer(portalName) ;
-    PortalContainer.setInstance(pcontainer) ;
+    /* Get currect ExoContainer object */
+    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
+    /*
+     * Get services from current ExoContainer
+     */
     RepositoryService repositoryService = 
-      (RepositoryService)pcontainer.getComponentInstanceOfType(RepositoryService.class) ;
+      (RepositoryService)exoContainer.getComponentInstanceOfType(RepositoryService.class) ;
     TemplateService tservice = 
-      (TemplateService)pcontainer.getComponentInstanceOfType(TemplateService.class) ;
+      (TemplateService)exoContainer.getComponentInstanceOfType(TemplateService.class) ;
     Session session = null ;
     try{
       session = repositoryService.getDefaultRepository().getSystemSession(wsName) ;
@@ -109,9 +114,4 @@ public class RssServlet extends HttpServlet {
       }
     }    		
 	}  
-  
-  private  PortalContainer getPortalContainer(String portalName) {
-    PortalContainer pcontainer =  RootContainer.getInstance().getPortalContainer(portalName) ;
-    return pcontainer ;
-  }
 }
