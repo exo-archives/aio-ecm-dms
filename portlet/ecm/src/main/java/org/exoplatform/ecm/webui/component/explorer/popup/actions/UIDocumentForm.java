@@ -160,8 +160,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
             }
           }          
         }
-      }      
-      // Update for many categories ECM-2626
+      }
       for (int i = 0; i < inputs.size(); i++) {        
         UIFormInputBase input = (UIFormInputBase) inputs.get(i);
         if((input.getName() != null) && input.getName().equals("categories")) {
@@ -225,9 +224,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, documentForm.isAddNew(),documentForm.repositoryName);
         try {
           homeNode.save() ;
-          newNode = (Node)homeNode.getSession().getItem(addedPath);
-          
-          // Update for many categories ECM-2626
+          newNode = (Node)homeNode.getSession().getItem(addedPath);          
           if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
             categoriesService.addMultiCategory(newNode, categoriesPathList, repository);            
           }
@@ -316,6 +313,16 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         ((UIOneNodePathSelector)uiComp).init(provider);
       } else if (uiComp instanceof UICategoriesSelector){
         // Update for many categories ECM-2626
+        CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
+        UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+        Node currentNode = uiExplorer.getCurrentNode();
+        String repository = uiExplorer.getRepositoryName();
+        List<Node> cats = categoriesService.getCategories(currentNode, repository);
+        List<String> arrCategoriesList = new ArrayList<String>();        
+        for(int i=0; i<cats.size(); i++) {
+          arrCategoriesList.add(cats.get(i).getPath());          
+        }        
+        ((UICategoriesSelector)uiComp).setExistedCategoryList(arrCategoriesList);                
         ((UICategoriesSelector)uiComp).init();
       }
       uiContainer.initPopup(uiComp) ;

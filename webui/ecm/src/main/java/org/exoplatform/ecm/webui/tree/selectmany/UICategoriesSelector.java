@@ -21,13 +21,17 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.tree.UINodeTreeBuilder;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
+import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIPopupWindow;
+import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SAS
@@ -36,15 +40,35 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
  * Aug 11, 2008  
  */
 
-@ComponentConfig(lifecycle = UIContainerLifecycle.class)
+@ComponentConfig(
+    template = "classpath:groovy/ecm/webui/UIContainerWithAction.gtmpl", 
+    events = @EventConfig(listeners = UICategoriesSelector.CloseActionListener.class)
+)
 
-public class UICategoriesSelector extends UIBaseNodeTreeSelector {
-
+public class UICategoriesSelector extends UIBaseNodeTreeSelector implements UIPopupComponent {
+  
+  final static public String[] ACTIONS = {"Close"};
   private List<String> existedCategoryList = new ArrayList<String>();
 
   public UICategoriesSelector() throws Exception {
     addChild(UINodeTreeBuilder.class,null,null);
     addChild(UICategoriesContainer.class,null,null);
+  }
+  
+  public String[] getActions() { return ACTIONS ; }
+
+  static public class CloseActionListener extends EventListener<UICategoriesSelector> {
+    public void execute(Event<UICategoriesSelector> event) throws Exception {      
+      UICategoriesSelector uiCategoriesSelector = event.getSource();
+      UIPopupWindow uiPopup = uiCategoriesSelector.getParent();
+      if(uiPopup != null) {
+        uiPopup.setShow(false);
+        uiPopup.setRendered(false);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup.getParent());
+        return;
+      }
+      uiCategoriesSelector.deActivate();
+    }
   }
 
   public void init() throws Exception{
@@ -75,5 +99,10 @@ public class UICategoriesSelector extends UIBaseNodeTreeSelector {
   public void setExistedCategoryList(List<String> existedCategoryList) {
     this.existedCategoryList = existedCategoryList; 
   }
-
+  
+  public void activate() throws Exception {    
+  }
+  
+  public void deActivate() throws Exception {
+  }
 }

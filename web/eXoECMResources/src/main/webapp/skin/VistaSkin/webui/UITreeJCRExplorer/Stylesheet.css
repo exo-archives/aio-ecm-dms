@@ -10,6 +10,7 @@
 
 .ExplorerTree .InnerExplorerTree {
   border: solid 1px #b1b0b0;
+  margin-top: 20px;
   padding: 10px;
 }
 
@@ -40,4 +41,16 @@
 
 .UIOneNodePathSelector {
 	padding: 10px;
+}
+
+.UICategoriesSelector .UITabPane .TabPaneContent {
+  overflow: hidden;
+  padding: 8px;
+}
+
+.UICategoriesSelector .ExplorerTree {
+  float: left ;
+  width: 230px ;
+  background: #f3f3f3;
+  margin:10px;
 }
