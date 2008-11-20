@@ -754,3 +754,9 @@
 	padding: 4px;
 }
 
+/*############################## -- Edit View -- ########################*/
+
+.UIECMAdminPortlet .UITabPane .UIFormInputSet .FormContainer {
+	padding: 0px;
+}
+

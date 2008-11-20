@@ -91,9 +91,9 @@
                       %>
                       <div class="ActionFieldContainer">
                        <div class="ActionField">
-                         [ <div onclick="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');">
+                         [ <span onclick="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');">
                            <a href="javascript:void(0);"><%=arrInfor[i]%></a>
-                         </div> ]
+                         </span> ]
                        </div>  
                       </div>
                     <%

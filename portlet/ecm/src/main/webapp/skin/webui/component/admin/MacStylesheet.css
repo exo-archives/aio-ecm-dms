@@ -739,3 +739,18 @@
 .UIECMAdminPortlet .UIAnyPermission .UIFormGrid td.FieldComponent {
 	padding: 4px;
 }
+
+
+/*############################## -- Edit View -- ########################*/
+
+.UIECMAdminPortlet .UITabPane .UIFormInputSet .FormContainer {
+	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
+  color: blue;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a:hover {
+  color: orange;
+}
