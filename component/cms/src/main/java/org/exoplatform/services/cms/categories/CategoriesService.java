@@ -19,6 +19,7 @@ package org.exoplatform.services.cms.categories;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -37,7 +38,8 @@ public interface CategoriesService {
 	
   public void addMultiCategory(Node node, String[] arrCategoryPath, String repository) throws Exception;
   
-	public void addCategory(Node node, String categoryPath, String repository) throws Exception;   
+	public void addCategory(Node node, String categoryPath, String repository) throws Exception;
+  public Session getSession(String repository) throws Exception;
 	public void addCategory(Node node, String categoryPath, boolean replaceAll, String repository) throws Exception;
   
   public void init(String repository) throws Exception ;

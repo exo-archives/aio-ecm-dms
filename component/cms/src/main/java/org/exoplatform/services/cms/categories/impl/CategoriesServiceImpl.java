@@ -203,7 +203,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
     addCategory(node, categoryPath, repository) ;
   }    
 
-  private Session getSession(String repository) throws Exception {    
+  public Session getSession(String repository) throws Exception {    
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
     String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
     return manageableRepository.getSystemSession(workspace) ;

@@ -143,6 +143,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       String categoriesPath = null;
       String[] categoriesPathList = null;
       String repository = uiExplorer.getRepositoryName();
+      CategoriesService categoriesService = documentForm.getApplicationComponent(CategoriesService.class);
       if(documentForm.isAddNew()) {
         for (int i = 0; i < inputs.size(); i++) {
           UIFormInputBase input = (UIFormInputBase) inputs.get(i);          
@@ -165,33 +166,33 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         UIFormInputBase input = (UIFormInputBase) inputs.get(i);
         if((input.getName() != null) && input.getName().equals("categories")) {
           hasCategories = true;
-          categoriesPath = input.getValue().toString();
-          if(categoriesPath.substring(0).equals("[") 
-              && categoriesPath.substring(categoriesPath.length() -1).equals("]"))
-            categoriesPath = categoriesPath.substring(1, categoriesPath.length() -1);
-          categoriesPathList = categoriesPath.split(",");
-          Session systemSession = uiExplorer.getSystemSession();            
+          categoriesPath = input.getValue().toString();          
+          categoriesPath = categoriesPath.substring(1, categoriesPath.length() -1);
+          categoriesPathList = categoriesPath.split(",");                    
+          Session systemSession = categoriesService.getSession(repository);          
           for(String categoryPath : categoriesPathList) {              
-            try {
-              systemSession.getItem(categoryPath.trim());
-            } catch (ItemNotFoundException e) {
-              uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                  ApplicationMessage.WARNING)) ;
-              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-              return;
-            } catch (RepositoryException re) {
-              uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                  ApplicationMessage.WARNING)) ;
-              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-              return;
-            } catch(Exception e) {
-              e.printStackTrace();
-              uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                  ApplicationMessage.WARNING)) ;
-              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-              return;
+            if((categoryPath != null) && (categoryPath.trim().length() > 0)){
+              try {
+                systemSession.getItem(categoryPath.trim());
+              } catch (ItemNotFoundException e) {
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING)) ;
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+                return;
+              } catch (RepositoryException re) {
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING)) ;
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                return;
+              } catch(Exception e) {
+                e.printStackTrace();
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING)) ;
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                return;
+              }
             }
-          }            
+          }                      
         }
       }      
       Map inputProperties = DialogFormUtil.prepareMap(inputs, documentForm.getInputProperties());
@@ -227,8 +228,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           newNode = (Node)homeNode.getSession().getItem(addedPath);
           
           // Update for many categories ECM-2626
-          if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){            
-            CategoriesService categoriesService = documentForm.getApplicationComponent(CategoriesService.class);                        
+          if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
             categoriesService.addMultiCategory(newNode, categoriesPathList, repository);            
           }
         } catch(Exception e) {
