@@ -198,7 +198,7 @@
 .UIWorkspaceWizard .UIWizardAction .UIAction {
 	float: right;
 	padding-right: 10px;
-	width: 60%;
+	width: auto;
 }
 
 .UIWorkspaceWizard .UIWizardAction .UIAction .ActionContainer {

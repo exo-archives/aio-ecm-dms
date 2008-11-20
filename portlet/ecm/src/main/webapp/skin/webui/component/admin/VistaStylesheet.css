@@ -245,7 +245,7 @@
 .UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction .UIAction {
 	float: right;
 	padding-right: 5px;
-	width: 50%;
+	width: auto;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction .ActionContainer {
