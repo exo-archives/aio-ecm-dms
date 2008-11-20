@@ -134,5 +134,10 @@ public interface ThumbnailService {
  * @return List<String> 
  */  
   public List<String> getMimeTypes();
-
+/**
+ * Process to remove thumbnail
+ * @param showingNode Node contain the thumbnail
+ * @throws Exception
+ */  
+  public void processRemoveThumbnail(Node showingNode) throws Exception;
 }

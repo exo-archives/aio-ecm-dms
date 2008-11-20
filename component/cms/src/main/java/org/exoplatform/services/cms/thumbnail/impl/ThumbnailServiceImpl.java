@@ -196,6 +196,20 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
     }
   }
   
+  public void processRemoveThumbnail(Node showingNode) throws Exception {
+    Node parentNode = showingNode.getParent();
+    if(parentNode.hasNode(EXO_THUMBNAILS_FOLDER)) {
+      if(showingNode.getPrimaryNodeType().getName().equals(NT_FILE)) {
+        Node content = showingNode.getNode("jcr:content");
+        if(content.getProperty("jcr:mimeType").getString().startsWith("image")) {
+          Node thumbnailFolder = parentNode.getNode(EXO_THUMBNAILS_FOLDER);
+          thumbnailFolder.getNode(((NodeImpl) showingNode).getInternalIdentifier()).remove();
+          thumbnailFolder.save();
+        }
+      }
+    }
+  }
+  
   private void processImage2Image(Node node, BufferedImage image) throws Exception {
     parseImageSize(node, image, smallSize_, SMALL_SIZE);
     parseImageSize(node, image, mediumSize_, MEDIUM_SIZE);

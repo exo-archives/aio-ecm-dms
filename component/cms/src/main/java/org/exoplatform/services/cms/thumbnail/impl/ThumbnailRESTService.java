@@ -94,10 +94,11 @@ public class ThumbnailRESTService implements ResourceContainer {
       String propertyName) throws Exception {
     if(!thumbnailService_.isEnableThumbnail()) return Response.Builder.ok().build();
     Node showingNode = getShowingNode(repoName, wsName, nodePath);
+    Node parentNode = showingNode.getParent();
+    String identifier = ((NodeImpl) showingNode).getInternalIdentifier();
     if(showingNode.getPrimaryNodeType().getName().equals("nt:file")) {
       Node content = showingNode.getNode("jcr:content");
       if(content.getProperty("jcr:mimeType").getString().startsWith("image")) {
-        Node parentNode = showingNode.getParent();
         Node thumbnailFolder = null;
         try {
           thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
@@ -109,7 +110,6 @@ public class ThumbnailRESTService implements ResourceContainer {
           }
           thumbnailFolder.save();
         }
-        String identifier = ((NodeImpl) showingNode).getInternalIdentifier();
         Node thumbnailNode = null;
         try {
           thumbnailNode = thumbnailFolder.getNode(identifier);
@@ -134,6 +134,30 @@ public class ThumbnailRESTService implements ResourceContainer {
         .header(LASTMODIFIED, lastModified)
         .entity(inputStream, "image")
         .build();
+      }
+      if(parentNode.hasNode(ThumbnailService.EXO_THUMBNAILS_FOLDER)) {
+        Node thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
+        if(thumbnailFolder.hasNode(identifier)) {
+          Node thumbnailNode = thumbnailFolder.getNode(identifier);
+          if(thumbnailNode.hasProperty(propertyName)) {
+            InputStream inputStream = thumbnailNode.getProperty(propertyName).getStream();
+            return Response.Builder.ok()
+            .entity(inputStream, "image")
+            .build();
+          }
+        }
+      }
+    }
+    if(parentNode.hasNode(ThumbnailService.EXO_THUMBNAILS_FOLDER)) {
+      Node thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
+      if(thumbnailFolder.hasNode(identifier)) {
+        Node thumbnailNode = thumbnailFolder.getNode(identifier);
+        if(thumbnailNode.hasProperty(propertyName)) {
+          InputStream inputStream = thumbnailNode.getProperty(propertyName).getStream();
+          return Response.Builder.ok()
+          .entity(inputStream, "image")
+          .build();
+        }
       }
     }
     return Response.Builder.ok().build();

@@ -24,7 +24,6 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
 import javax.jcr.Node;
-import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
@@ -60,6 +59,7 @@ import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
@@ -564,6 +564,8 @@ public class UIWorkingArea extends UIContainer {
     }
     try {
       if(node.isNodeType(Utils.RMA_RECORD)) removeMixins(node);      
+      ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+      thumbnailService.processRemoveThumbnail(node);
       node.remove();
       parentNode.save();
     } catch(VersionException ve) {
@@ -1078,7 +1080,6 @@ public class UIWorkingArea extends UIContainer {
 
   static  public class DeleteActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
-//    TODO: Need review this method with remove record.
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
