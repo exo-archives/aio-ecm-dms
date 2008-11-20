@@ -1,2 +1,5 @@
 @import url('skinIcons/Stylesheet.css');
 @import url('webui/Stylesheet.css');
+.UINavigationPortlet .UIHorizontalTabs {
+	white-space: nowrap;
+}

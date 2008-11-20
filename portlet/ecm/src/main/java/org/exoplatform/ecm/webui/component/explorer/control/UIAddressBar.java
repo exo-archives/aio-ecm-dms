@@ -57,7 +57,6 @@ public class UIAddressBar extends UIForm {
   
   public UIAddressBar() throws Exception {
     addUIFormInput(new UIFormStringInput(FIELD_ADDRESS, FIELD_ADDRESS, null)) ;
-    setSubmitAction(this.event("ChangeNode"));
   }
 
   public Set<String> getHistory() {
