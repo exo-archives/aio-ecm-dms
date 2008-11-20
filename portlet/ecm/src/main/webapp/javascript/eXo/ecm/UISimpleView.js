@@ -112,7 +112,7 @@ var SimpleView = function() {
 					display: "none",
 					overflow: "hidden",
 					background: "white",
-					width: element.offsetWidth + "px",
+					width: element.offsetWidth + "px"
 				}
 			});
 			Self.mobileId = mobileElement.id;
