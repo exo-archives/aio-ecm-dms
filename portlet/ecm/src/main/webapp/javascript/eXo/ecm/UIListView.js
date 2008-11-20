@@ -166,6 +166,7 @@ var ListView = function() {
 		removeMobileElement();
 		Self.hideContextMenu();
 		Self.enableDragDrop = true;
+		document.onselectstart = function(){return false};
 		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		if (!rightClick) {
