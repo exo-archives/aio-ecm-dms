@@ -110,8 +110,9 @@ var SimpleView = function() {
 				style: {
 					position: "absolute",
 					display: "none",
+					overflow: "hidden",
 					background: "white",
-					width: element.offsetWidth + "px"
+					width: element.offsetWidth + "px",
 				}
 			});
 			Self.mobileId = mobileElement.id;

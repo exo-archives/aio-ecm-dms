@@ -106,6 +106,7 @@ var ListView = function() {
 				style: {
 					position: "absolute",
 					display: "none",
+					overflow: "hidden",
 					background: "white",
 					width: element.offsetWidth + "px"
 				}
