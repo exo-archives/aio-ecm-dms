@@ -15,7 +15,6 @@ var SimpleView = function() {
 	SimpleView.prototype.colorSelected = "#e7f3ff";
 	SimpleView.prototype.colorHover = "#f2f8ff";
 	
-	
 	//init event
 	SimpleView.prototype.initAllEvent = function(actionAreaId) {
 		Self.contextMenuId = "JCRContextMenu";
@@ -38,11 +37,13 @@ var SimpleView = function() {
 			item.onmousedown = Self.mouseDownItem;
 			item.onmouseup = Self.mouseUpItem;
 			item.onmouseout = Self.mouseOutItem;
-			
-			eXo.core.Browser.setOpacity(item, 85);
+			//eXo.core.Browser.setOpacity(item, 85);
 		}
 		actionArea.onmousedown = Self.mouseDownGround;
 		actionArea.onmouseup = Self.mouseUpGround;
+		actionArea.onmouseover = Self.mouseOverGround;
+		actionArea.onmouseout = Self.mouseOutGround;
+		
 		//remove context menu
 		var contextMenu = document.getElementById(Self.contextMenuId);
 		if (contextMenu) contextMenu.parentNode.removeChild(contextMenu);
@@ -62,7 +63,6 @@ var SimpleView = function() {
 					element.onmouseup = Self.mouseUpTree;
 					element.onmouseover = Self.mouseOverTree;
 					element.onmouseout = Self.mouseOutTree;
-					
 				}
 		);
 	};
@@ -150,7 +150,7 @@ var SimpleView = function() {
 		if (!element.selected) {
 			element.style.background = Self.colorHover;
 			element.temporary = true;
-			eXo.core.Browser.setOpacity(element, 100);
+			//eXo.core.Browser.setOpacity(element, 100);
 		}
 	};
 	
@@ -160,7 +160,7 @@ var SimpleView = function() {
 		element.temporary = false;
 		if (!element.selected) {
 			element.style.background = "none";
-			eXo.core.Browser.setOpacity(element, 85);
+			//eXo.core.Browser.setOpacity(element, 85);
 		}
 	};
 	
@@ -195,7 +195,7 @@ var SimpleView = function() {
 						border: "1px solid gray"
 				}
 			});
-			eXo.core.Browser.setOpacity(mobileElement, 85);
+			eXo.core.Browser.setOpacity(mobileElement, 64);
 			Self.mobileId = mobileElement.getAttribute('id');
 			var coverElement = newElement({
 				className: "UIThumbnailsView",
@@ -246,7 +246,7 @@ var SimpleView = function() {
 		Self.temporaryItem = element;
 		Self.itemsSelected = new Array(element);
 		element.style.background = Self.colorSelected;
-		eXo.core.Browser.setOpacity(element, 100);
+		//eXo.core.Browser.setOpacity(element, 100);
 	};
 	
 	SimpleView.prototype.mouseUpItem = function(event) {
@@ -296,7 +296,7 @@ var SimpleView = function() {
 				}
 				for(var i in Self.itemsSelected) {
 					if (Array.prototype[i]) continue;
-					eXo.core.Browser.setOpacity(Self.itemsSelected[i], 100);
+					//eXo.core.Browser.setOpacity(Self.itemsSelected[i], 100);
 					Self.itemsSelected[i].style.background = Self.colorSelected;
 				}
 			}
@@ -312,6 +312,35 @@ var SimpleView = function() {
 	};
 	
 	//event in ground
+	SimpleView.prototype.mouseOverGround = function(event) {
+		var event = event || window.event;
+		var element = this;
+		document.onkeydown = function(event) {
+			var event = event || window.event;
+			if (event.ctrlKey && event.keyCode == 65) {
+				Self.selectAllItems(element);
+				return false;
+			}
+		}
+	};
+	
+	SimpleView.prototype.mouseOutGround = function(event) {
+		document.onkeydown = function(event) {
+			return true;
+		}
+	};
+	
+	SimpleView.prototype.selectAllItems = function(element) {
+		if (Self.allItems) {
+			Self.itemsSelected = Self.allItems;
+			for(var i in Self.itemsSelected) {
+				if (Array.prototype[i]) continue;
+				//eXo.core.Browser.setOpacity(Self.itemsSelected[i], 100);
+				Self.itemsSelected[i].style.background = Self.colorSelected;
+			}
+		}
+	};
+	
 	SimpleView.prototype.mouseDownGround = function(event) {
 		var event = event || window.event;
 		var element = this;
@@ -390,11 +419,11 @@ var SimpleView = function() {
 							posY < mask.Y && mask.storeY < posY) {
 						itemBox.selected = true;
 						itemBox.style.background = Self.colorSelected;
-						eXo.core.Browser.setOpacity(itemBox, 100);
+						//eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
 						itemBox.style.background = "none";
-						eXo.core.Browser.setOpacity(itemBox, 85);
+						//eXo.core.Browser.setOpacity(itemBox, 85);
 					}
 				}
 			//III of +
@@ -421,11 +450,11 @@ var SimpleView = function() {
 							mask.Y < posY && posY < mask.storeY) {
 						itemBox.selected = true;
 						itemBox.style.background = Self.colorSelected;
-						eXo.core.Browser.setOpacity(itemBox, 100);
+						//eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
 						itemBox.style.background = "none";
-						eXo.core.Browser.setOpacity(itemBox, 85);
+						//eXo.core.Browser.setOpacity(itemBox, 85);
 					}
 				}
 			//II of +
@@ -450,11 +479,11 @@ var SimpleView = function() {
 							mask.Y < posY && posY < mask.storeY ) {
 							itemBox.selected = true;
 							itemBox.style.background = Self.colorSelected;
-							eXo.core.Browser.setOpacity(itemBox, 100);
+							//eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
 						itemBox.style.background = "none";
-						eXo.core.Browser.setOpacity(itemBox, 85);
+						//eXo.core.Browser.setOpacity(itemBox, 85);
 					}
 				}
 			//I of +
@@ -476,11 +505,11 @@ var SimpleView = function() {
 							mask.storeY < posY && posY < mask.Y) {
 						itemBox.selected = true;
 						itemBox.style.background = Self.colorSelected;
-						eXo.core.Browser.setOpacity(itemBox, 100);
+						//eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
 						itemBox.style.background = "none";
-						eXo.core.Browser.setOpacity(itemBox, 85);
+						//eXo.core.Browser.setOpacity(itemBox, 85);
 					}
 				}
 			}
@@ -666,7 +695,7 @@ var SimpleView = function() {
 			if (Array.prototype[i]) continue;
 			Self.itemsSelected[i].selected = null;
 			Self.itemsSelected[i].style.background = "none";
-			eXo.core.Browser.setOpacity(Self.itemsSelected[i], 85);
+			//eXo.core.Browser.setOpacity(Self.itemsSelected[i], 85);
 		}
 		Self.itemsSelected = new Array();
 	}

@@ -36,7 +36,7 @@ var ListView = function() {
 			item.onmousedown = Self.mouseDownItem;
 			item.onmouseup = Self.mouseUpItem;
 			item.onmouseout = Self.mouseOutItem;
-			eXo.core.Browser.setOpacity(item, 85);
+			//eXo.core.Browser.setOpacity(item, 85);
 		}
 		actionArea.onmousedown = Self.mouseDownGround;
 		actionArea.onmouseup = Self.mouseUpGround;
@@ -146,7 +146,7 @@ var ListView = function() {
 		if (!element.selected) {
 			element.style.background = Self.colorHover;
 			element.temporary = true;
-			eXo.core.Browser.setOpacity(element, 100);
+			//eXo.core.Browser.setOpacity(element, 100);
 		}
 	};
 	
@@ -156,7 +156,7 @@ var ListView = function() {
 		element.temporary = false;
 		if (!element.selected) {
 			element.style.background = "none";
-			eXo.core.Browser.setOpacity(element, 85);
+			//eXo.core.Browser.setOpacity(element, 85);
 		}
 	};
 	
@@ -243,7 +243,7 @@ var ListView = function() {
 		Self.temporaryItem = element;
 		Self.itemsSelected = new Array(element);
 		element.style.background = Self.colorSelected;
-		eXo.core.Browser.setOpacity(element, 100);
+		//eXo.core.Browser.setOpacity(element, 100);
 	};
 	
 	ListView.prototype.mouseUpItem = function(event) {
@@ -294,7 +294,7 @@ var ListView = function() {
 				for(var i in Self.itemsSelected) {
 					if (Array.prototype[i]) continue;
 					Self.itemsSelected[i].style.background = Self.colorSelected;
-					eXo.core.Browser.setOpacity(Self.itemsSelected[i], 100);
+					//eXo.core.Browser.setOpacity(Self.itemsSelected[i], 100);
 				}
 			}
 		} else {
@@ -399,11 +399,11 @@ var ListView = function() {
 						if (mask.Y < posY && posY < mask.storeY) {
 							itemBox.selected = true;
 							itemBox.style.background = Self.colorSelected;
-							eXo.core.Browser.setOpacity(itemBox, 100);
+							//eXo.core.Browser.setOpacity(itemBox, 100);
 						} else {
 							itemBox.selected = null;
 							itemBox.style.background = "none";
-							eXo.core.Browser.setOpacity(itemBox, 85);
+							//eXo.core.Browser.setOpacity(itemBox, 85);
 						}
 					}
 				// II	of +
@@ -427,11 +427,11 @@ var ListView = function() {
 						if (mask.Y < posY && posY < mask.storeY ) {
 							itemBox.selected = true;
 							itemBox.style.background = Self.colorSelected;
-							eXo.core.Browser.setOpacity(itemBox, 100);
+							//eXo.core.Browser.setOpacity(itemBox, 100);
 						} else {
 							itemBox.selected = null;
 							itemBox.style.background = "none";
-							eXo.core.Browser.setOpacity(itemBox, 85);
+							//eXo.core.Browser.setOpacity(itemBox, 85);
 						}
 					}
 				// I of +
@@ -623,7 +623,7 @@ var ListView = function() {
 			if (Array.prototype[i]) continue;
 			Self.itemsSelected[i].selected = null;
 			Self.itemsSelected[i].style.background = "none";
-			eXo.core.Browser.setOpacity(Self.itemsSelected[i], 85);
+			//eXo.core.Browser.setOpacity(Self.itemsSelected[i], 85);
 		}
 		Self.itemsSelected = new Array();
 	}
