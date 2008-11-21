@@ -282,6 +282,18 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       Class clazz = Class.forName(classPath, true, cl) ;
       String rootPath = (String)fieldPropertiesMap.get("rootPath") ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
+      
+      String value = uiForm.getUIStringInput(fieldName).getValue();
+      String[] arrayTaxonomy = new String[1];
+      if (value != null && !value.equals("")) {
+        arrayTaxonomy = value.split(",");
+        if (arrayTaxonomy.length > 0) {
+          if (arrayTaxonomy[0].startsWith("[")) arrayTaxonomy[0] = arrayTaxonomy[0].substring(1, arrayTaxonomy[0].length());
+          if (arrayTaxonomy[arrayTaxonomy.length - 1].endsWith("]")) {
+            arrayTaxonomy[arrayTaxonomy.length - 1] = arrayTaxonomy[arrayTaxonomy.length - 1].substring(0, arrayTaxonomy[arrayTaxonomy.length - 1].length() - 1);  
+          }
+        }
+      }
       if(uiComp instanceof UIOneNodePathSelector) {
         UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
         String repositoryName = explorer.getRepositoryName() ;
@@ -322,7 +334,16 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         for(int i=0; i<cats.size(); i++) {
           arrCategoriesList.add(cats.get(i).getPath());          
         }        
-        ((UICategoriesSelector)uiComp).setExistedCategoryList(arrCategoriesList);                
+        ((UICategoriesSelector)uiComp).setExistedCategoryList(arrCategoriesList);       
+        if (value != null && !value.equals("")) {
+          List<String> listTaxonomy = new ArrayList<String>();
+          if (arrayTaxonomy.length > 0) {
+            for (int i = 0; i < arrayTaxonomy.length; i++) {
+              listTaxonomy.add(arrayTaxonomy[i]);
+            }
+          }
+          ((UICategoriesSelector)uiComp).setExistedCategoryList(listTaxonomy);
+        }
         ((UICategoriesSelector)uiComp).init();
       }
       uiContainer.initPopup(uiComp) ;

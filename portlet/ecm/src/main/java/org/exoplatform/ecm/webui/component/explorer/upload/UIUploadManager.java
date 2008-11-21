@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.upload;
 
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -28,14 +29,19 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
  *          minh.dang@exoplatform.com
  * May 24, 2007 2:12:48 PM
  */
-@ComponentConfig(lifecycle = UIContainerLifecycle.class)
+@ComponentConfig(
+    lifecycle = UIContainerLifecycle.class
+)
 public class UIUploadManager extends UIContainer implements UIPopupComponent {
 
   final static public String EXTARNAL_METADATA_POPUP = "AddMetadataPopup" ;
+  final static public String POPUP_TAXONOMY = "UIPopupTaxonomy";
   
   public UIUploadManager() throws Exception {
-    addChild(UIUploadForm.class, null, null) ;
-    addChild(UIUploadContainer.class, null, null).setRendered(false) ;
+    addChild(UIUploadForm.class, null, null);
+    addChild(UIUploadContainer.class, null, null).setRendered(false);
+    UIPopupWindow uiPopupWindow = addChild(UIPopupWindow.class, null, POPUP_TAXONOMY);
+    uiPopupWindow.setWindowSize(700, 350);
   }
 
   public void activate() throws Exception {}

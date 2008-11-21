@@ -36,4 +36,5 @@ public interface CmsService {
   
   public void moveNode(String nodePath, String srcWorkspace, String destWorkspace, String destPath, String repository);  
     
+  public boolean isCategoriesMandatory();
 }

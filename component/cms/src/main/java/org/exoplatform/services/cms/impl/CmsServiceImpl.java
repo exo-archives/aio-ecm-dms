@@ -42,6 +42,8 @@ import javax.jcr.nodetype.PropertyDefinition;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.ISO8601;
+import org.exoplatform.container.xml.InitParams;
+import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.idgenerator.IDGeneratorService;
@@ -58,12 +60,27 @@ public class CmsServiceImpl implements CmsService {
   private RepositoryService jcrService;  
   private IDGeneratorService idGeneratorService;  
   private static final String MIX_REFERENCEABLE = "mix:referenceable" ;
-
-  public CmsServiceImpl(RepositoryService jcrService, IDGeneratorService idGeneratorService) {
+  private boolean isCategoriesMandatory;
+  private static final String CATEGORIES_MANDATORY = "categoryMandatoryWhenFileUpload";
+  
+  public CmsServiceImpl(RepositoryService jcrService, IDGeneratorService idGeneratorService, InitParams params) {
     this.idGeneratorService = idGeneratorService;
     this.jcrService = jcrService;      
+    Iterator<ValueParam> iterator = params.getValueParamIterator();   
+    while (iterator.hasNext()) {      
+      ValueParam object = iterator.next();
+      if (object.getName().trim().equalsIgnoreCase(CATEGORIES_MANDATORY)) {
+        String objectValue = object.getValue().trim();
+        if (objectValue.equalsIgnoreCase("true")) isCategoriesMandatory = true;
+        else isCategoriesMandatory = false;
+      }
+    } 
   }
-
+  
+  public boolean isCategoriesMandatory() {
+    return isCategoriesMandatory;
+  }
+  
   public String storeNode(String workspace, String nodeTypeName, String storePath, 
       Map mappings, String repository) throws Exception {    
     Session session = jcrService.getRepository(repository).login(workspace);

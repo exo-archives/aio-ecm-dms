@@ -141,6 +141,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
       try {
         ((UISelectable)uiCategoriesSelector.getSourceComponent()).doSelect(returnField, selectedCategories);
       } catch(Exception e) {
+        e.printStackTrace();
         uiApplication.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.cannot-save", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApplication.getUIPopupMessages());
       }

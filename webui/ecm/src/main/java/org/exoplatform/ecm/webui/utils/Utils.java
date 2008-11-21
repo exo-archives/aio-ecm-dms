@@ -141,7 +141,8 @@ public class Utils {
 
   final static public String[] FOLDERS = {NT_UNSTRUCTURED, NT_FOLDER};
   final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
-  final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY};  
+  final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY};
+  
   public Map<String, Object> maps_ = new HashMap<String, Object>();
 
   public static String encodeHTML(String text) {

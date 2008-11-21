@@ -113,8 +113,13 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   }	
 
   public boolean hasCategories(Node node) throws Exception {
-    if (node.isNodeType(CATEGORY_MIXIN))
-      return true;
+    if (node.isNodeType(CATEGORY_MIXIN)) {
+      if (node.hasProperty("exo:category")) {
+        Value[] values = node.getProperty("exo:category").getValues();
+        if (values.length > 0)
+          return true;
+      }
+    }
     return false;
   }
 
@@ -122,7 +127,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   public List<Node> getCategories(Node node, String repository) throws Exception {
     List<Node> cats = new ArrayList<Node>();
     Session session = getSession(repository) ;
-    if(node.hasProperty("exo:category")) {
+    if (node.hasProperty("exo:category")) {
       try {			
         Property categories = node.getProperty("exo:category");
         Value[] values = categories.getValues();
