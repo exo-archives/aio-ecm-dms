@@ -28,7 +28,33 @@ import javax.jcr.Node;
  */
 public interface CommentsService {
   
-  public void addComment(Node document,String commentor, String email,String site, String comment,String language) throws Exception ;
-  public List<Node> getComments(Node document,String language) throws Exception ;
+  /**
+   * Comment the document is specified by the node by giving the commentor, email, site, comment and
+   * language params
+   * Any language belongs to this document can be commented.
+   * This method uses variables to store values which are commented from user for all kind languages 
+   * of this document
+   * @param document        The node document is commented
+   * @param commentor       The name of current user
+   *                        Can be <code>null</code>
+   * @param email           The email of current user
+   *                        Can be <code>null</code>
+   * @param site            The site of current user
+   *                        Can be <code>null</code>                      
+   * @param comment         The comment's content
+   * @param language        The language of this document is commented
+   * @see                   Node
+   * @throws Exception
+   */
+  public void addComment(Node document, String commentor, String email, String site, String comment, String language) throws Exception ;
+  
+  /**
+   * Gets all comments from the specified node 
+   * @param document        The node document is commented
+   * @param language        The language of this document is commented
+   * @see                   Node
+   * @throws Exception
+   */
+  public List<Node> getComments(Node document, String language) throws Exception ;
   
 }
