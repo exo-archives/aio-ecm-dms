@@ -318,7 +318,7 @@ var SimpleView = function() {
 		document.onkeydown = function(event) {
 			var event = event || window.event;
 			if (event.ctrlKey && event.keyCode == 65) {
-				Self.selectAllItems(element);
+				Self.selectAllItems();
 				return false;
 			}
 		}
@@ -330,13 +330,15 @@ var SimpleView = function() {
 		}
 	};
 	
-	SimpleView.prototype.selectAllItems = function(element) {
+	SimpleView.prototype.selectAllItems = function() {
 		if (Self.allItems) {
-			Self.itemsSelected = Self.allItems;
-			for(var i in Self.itemsSelected) {
+			resetArrayItemsSelected();
+			for(var i in Self.allItems) {
 				if (Array.prototype[i]) continue;
-				//eXo.core.Browser.setOpacity(Self.itemsSelected[i], 100);
-				Self.itemsSelected[i].style.background = Self.colorSelected;
+				var item = Self.allItems[i];
+				item.selected = true;
+				item.style.background = Self.colorSelected;
+				Self.itemsSelected.push(item);
 			}
 		}
 	};
