@@ -1,4 +1,4 @@
-<div class="$uicomponent.id">
+<div class="$uicomponent.id" id="$uicomponent.id">
   <div>
     <% uicomponent.renderChildren(); %>
   </div>
