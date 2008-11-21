@@ -21,14 +21,9 @@
      
   <filter-mapping>
     <filter-name>ResourceRequestFilter</filter-name>
-    <url-pattern>/javascript/*</url-pattern>
-  </filter-mapping>
-
-  <filter-mapping>
-    <filter-name>ResourceRequestFilter</filter-name>
-    <url-pattern>/css/*</url-pattern>
-  </filter-mapping>    
-    	
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>     
+      	
   <listener>
     <listener-class>org.exoplatform.services.portletcontainer.impl.servlet.PortletApplicationListener</listener-class>
   </listener>
