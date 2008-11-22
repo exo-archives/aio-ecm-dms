@@ -51,29 +51,100 @@ import org.exoplatform.services.jcr.core.nodetype.NodeTypeValue;
 import org.exoplatform.services.jcr.core.nodetype.PropertyDefinitionValue;
 import org.picocontainer.Startable;
 
+/**
+ * Process with action for node
+ * @author exo
+ *
+ */
 public class ActionServiceContainerImpl implements ActionServiceContainer, Startable {
 
+  /**
+   * Define nodetype ACTIONABLE
+   */
   private static final String         ACTIONABLE           = "exo:actionable".intern();
+  
+  /**
+   * Define nodetype ACTION 
+   */
   private static final String         ACTION               = "exo:action".intern();
+  
+  /**
+   * Define nodetype JOB_NAME_PROP
+   */
   private static final String         JOB_NAME_PROP        = "exo:jobName".intern();
+  
+  /**
+   * Define nodetype JOB_NAME_PROP
+   */
   private static final String         JOB_GROUP_PROP       = "exo:jobGroup".intern();
+  
+  /**
+   * Define nodetype JOB_CLASS_PROP
+   */
   private static final String         JOB_CLASS_PROP       = "exo:jobClass".intern();
+  
+  /**
+   * Define nodetype LIFECYCLE_PHASE_PROP
+   */
   private static final String         LIFECYCLE_PHASE_PROP = "exo:lifecyclePhase".intern() ;
+  
+  /**
+   * Define query statement
+   */
   private static final String         ACTION_QUERY         = "//element(*, exo:action)".intern() ;
+  
+  /**
+   * Define nodetype SCHEDULABLE_MIXIN
+   */
   private static final String         SCHEDULABLE_MIXIN    = "exo:schedulableInfo".intern();
+  
+  /**
+   * Define relative path for action node
+   */
   private static final String         EXO_ACTIONS          = "exo:actions".intern();
+  
+  /**
+   * Define nodetype ACTION_STORAGE
+   */
   private static final String         ACTION_STORAGE       = "exo:actionStorage".intern();
+  
+  /**
+   * Define nodetype EXO_HIDDENABLE
+   */
   private static final String         EXO_HIDDENABLE       = "exo:hiddenable".intern();
-  private RepositoryService           repositoryService_;  
+  
+  /**
+   * RepositoryService
+   */
+  private RepositoryService           repositoryService_;
+  
+  /**
+   * CmsService
+   */
   private CmsService                  cmsService_;
+  
+  /**
+   * Collection of ComponentPlugin
+   */
   private Collection<ComponentPlugin> actionPlugins        = new ArrayList<ComponentPlugin>();
 
+  /**
+   * Constructor method
+   * @param params            init parameter
+   * @param repositoryService RepositoryService
+   * @param cmsService        CmsService
+   * @throws Exception
+   */
   public ActionServiceContainerImpl(InitParams params, RepositoryService repositoryService,
       CmsService cmsService) throws Exception {
     repositoryService_ = repositoryService;
     cmsService_ = cmsService;    
   }
 
+  /**
+   * Implement method start service
+   * Add mixin exo:actionable for node
+   */
   public void start() {
     try {
       for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
@@ -85,9 +156,18 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       e.printStackTrace();
     }
   }
+  
+  /**
+   * Implement method stop service
+   */
   public void stop() {
   }
 
+  /**
+   * Add mixin exo:actionable for node in repository
+   * @param repository   repository name
+   * @throws Exception
+   */
   public void init(String repository) {
     try {
       for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
@@ -99,6 +179,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       e.printStackTrace();
     }
   }
+  
   public Collection<String> getActionPluginNames() {
     Collection<String> actionPluginNames = new ArrayList<String>();
     for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
@@ -107,7 +188,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     }
     return actionPluginNames;
   }
-
+  
   public ActionPlugin getActionPlugin(String actionsServiceName) {
     for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
       ComponentPlugin plugin = (ComponentPlugin) iter.next();
@@ -116,7 +197,17 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     }
     return null;
   }
-
+  
+  /**
+   * Create NodeTypeValue is in kind of ActionType following action type name
+   * @param actionTypeName        name of action type
+   * @param parentActionTypeName  name of parent action
+   * @param executable            String value of execuable
+   * @param variableNames         List name of variable
+   * @param isMoveType            is moved or not
+   * @param repository            repository name
+   * @throws Exception
+   */
   @SuppressWarnings("unchecked")
   public void createActionType(String actionTypeName, String parentActionTypeName, String executable, 
       List<String> variableNames, boolean isMoveType, String repository) throws Exception {
@@ -149,6 +240,13 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     ntmanager.registerNodeType(nodeTypeValue, ExtendedNodeTypeManager.IGNORE_IF_EXISTS);
   }
 
+  /**
+   * Definite new property with propertyname = name
+   * mandatory = false, multiple = false, readonly = false, autocreate = false, onversion = 1
+   * type = STRING, default value = new ArrayList(), Value constraints = new ArrayList()
+   * @param name name of property
+   * @return PropertyDefinitionValue
+   */
   @SuppressWarnings("unchecked")
   private PropertyDefinitionValue createPropertyDef(String name) {
     PropertyDefinitionValue def = new PropertyDefinitionValue();
@@ -164,6 +262,12 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     return def;
   }
 
+  /**
+   * Get all created node with nodetype = "exo:action
+   * @param repository  repository name
+   * @return Collection of NodeType
+   * @throws Exception
+   */
   public Collection<NodeType> getCreatedActionTypes(String repository) throws Exception {
     Collection<NodeType> createsActions = new ArrayList<NodeType>();    
     NodeTypeManager ntmanager = repositoryService_.getRepository(repository).getNodeTypeManager();
@@ -176,7 +280,13 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     }        
     return createsActions;
   }
-
+  
+  /**
+   * Check ComponentPlugin is abstract type or not
+   * @param name  name of ComponentPlugin
+   * @return true: ComponentPlugin with name is abstract type
+   *         false: ComponentPlugin with name is not abstract type
+   */
   private boolean isAbstractType(String name) {
     for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
       ComponentPlugin plugin = (ComponentPlugin) iter.next();
@@ -186,6 +296,14 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     return false;
   }
   
+  /**
+   * Get SystemSession of specific workspace and repository
+   * @param repository
+   * @param workspace
+   * @return
+   * @throws RepositoryException
+   * @throws RepositoryConfigurationException
+   */
   private Session getSystemSession(String repository, String workspace) throws RepositoryException,
   RepositoryConfigurationException {
     ManageableRepository jcrRepository = repositoryService_.getRepository(repository);
@@ -242,6 +360,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     }
     return actions;
   }
+
 
   public void removeAction(Node node, String actionName, String repository) throws Exception {
     if(!node.isNodeType(ACTIONABLE)) return  ;    
@@ -303,6 +422,16 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     }
   }
 
+  /**
+   * Call addAction(Node node, String repository, String type, Map mappings) to
+   * execute action following userId, node, repository, initiated variables
+   * @param userId user identify
+   * @param node current node
+   * @param actionName name of action
+   * @param repository current repository
+   * @throws Exception
+   * @see {@link #executeAction(String, Node, String, Map, String)}
+   */
   public void executeAction(String userId, Node node, String actionName, String repository) throws Exception {
     Map<String, String> variables = new HashMap<String, String>();
     variables.put("initiator", userId);
@@ -329,6 +458,14 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     executeAction(userId, node, actionName, variables, repository);
   }
 
+  
+  /**
+   * Put to Map with key = propery name and value = value of property in actionNode
+   * @param actionNode  get value of property in this node
+   * @param nodeType    get property definition from this object
+   * @param variables   Map to keep (key, value) of all property
+   * @throws Exception
+   */
   private void fillVariables(Node actionNode, NodeType nodeType, Map variables) throws Exception {    
     for(PropertyDefinition def:nodeType.getDeclaredPropertyDefinitions()) {
       String propName = def.getName();
@@ -338,7 +475,16 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       }
     }    
   }
-
+  
+  /**
+   * Execute action following userId, node, variables, repository
+   * @param userId      user identify
+   * @param node        current node
+   * @param actionName  name of action
+   * @param variables   Map with variables and value
+   * @param repository  current repository
+   * @throws Exception
+   */
   public void executeAction(String userId, Node node, String actionName, Map variables, String repository) throws Exception {
     Node parentNode = node.getParent() ;
     if (!parentNode.isNodeType(ACTIONABLE)) return ;
@@ -354,14 +500,34 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     }    
   }
 
+  /**
+   * Add ComponentPlugin
+   * @param plugin  ComponentPlugin
+   */
   public void addPlugin(ComponentPlugin plugin) { actionPlugins.add(plugin); }
 
+  /**
+   * Need implemented
+   * @param pluginName
+   * @return
+   */
   public ComponentPlugin removePlugin(String pluginName) {
     return null;
   }
 
+  /**
+   * Get all ComponentPlugin
+   * @return  Collection of ComponentPlugins
+   */
   public Collection getPlugins() { return actionPlugins; }
 
+  /**
+   * Get QueryManager, call initAction(QueryManager queryManager, String repository, String workspace)
+   * to init action listener for all available repositories and workspaces
+   * @param repository  repository name
+   * @throws Exception
+   * @see {@link #initAction(QueryManager, String, String)}
+   */
   private void initiateActionConfiguration() throws Exception {
     List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
     ManageableRepository jcrRepository = null ;
@@ -387,6 +553,13 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     }    
   }
 
+  /**
+   * Get QueryManager, call initAction(QueryManager queryManager, String repository, String workspace)
+   * to init action listener
+   * @param repository  repository name
+   * @throws Exception
+   * @see {@link #initAction(QueryManager, String, String)}
+   */
   private void reInitiateActionConfiguration(String repository) throws Exception {
     ManageableRepository jcrRepository = repositoryService_.getRepository(repository);    
     for (String workspace : jcrRepository.getWorkspaceNames()) {
@@ -407,6 +580,14 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     }
   }
 
+  /**
+   * Init action listener for all node in repository 
+   * All node is got by query following ACTION_QUERY
+   * @param queryManager QueryManager
+   * @param repository   repository name 
+   * @param workspace    workspace name
+   * @throws Exception
+   */
   private void initAction(QueryManager queryManager, String repository, String workspace) throws Exception {
     try {
       Query query = queryManager.createQuery(ACTION_QUERY, Query.XPATH);

@@ -180,18 +180,46 @@ public class CmsServiceImpl implements CmsService {
     return currentNode.getUUID();
   }
 
+  /**
+   * Call function processNodeRecursively() to update property for specific node and all its children
+   * @param path            Path to node
+   * @param currentNode     Node is updated
+   * @param currentNodeType Node type
+   * @param jcrVariables    Maping key = property name and value
+   * @throws Exception
+   * @see {@link #processNodeRecursively(boolean, String, Node, NodeType, Map)}
+   */
   private void updateNodeRecursively(String path, Node currentNode,
       NodeType currentNodeType, Map jcrVariables) throws Exception {
     processNodeRecursively(false, path, currentNode, currentNodeType,
         jcrVariables);
   }
 
+  /**
+   * Call function processNodeRecursively() to add property for specific node and all its children
+   * @param path            Path to node
+   * @param currentNode     Node is updated
+   * @param currentNodeType Node type
+   * @param jcrVariables    Maping key = property name and value
+   * @throws Exception
+   * @see {@link #processNodeRecursively(boolean, String, Node, NodeType, Map)}
+   */
   private void createNodeRecursively(String path, Node currentNode,
       NodeType currentNodeType, Map jcrVariables) throws Exception {
     processNodeRecursively(true, path, currentNode, currentNodeType,
         jcrVariables);
   }
 
+  /**
+   * Add property for current node when create variable = true
+   * Value of property is got in Map jcrVariabes by key = path + / property name
+   * @param create          create = true or false
+   * @param currentNode     Node is updated
+   * @param currentNodeType Node type
+   * @param jcrVariables    Maping key = property name and value
+   * @throws Exception\
+   * @see {@link #processProperty(String, Node, int, Object, boolean)}
+   */
   private void processAddEditProperty(boolean create, Node currentNode, String path, 
       NodeType currentNodeType, Map jcrVariables) throws Exception {
     if(create) {
@@ -215,6 +243,18 @@ public class CmsServiceImpl implements CmsService {
     }
   }
   
+  /**
+   * Process to update or add property for current node and all its property
+   * Properties of node is given in current NodeType
+   * To add/update property of all node, need check that property is created automatically or protected
+   * When property is not created automatically and not protected then update for all child of node
+   * @param create          create = true: process adding, create = false, process updating
+   * @param itemPath        used with property name as key to get value of one property
+   * @param currentNode     Node is updated
+   * @param currentNodeType Node type
+   * @param jcrVariables    Maping key = property name and value
+   * @throws Exception
+   */
   @SuppressWarnings("unchecked")
   private void processNodeRecursively(boolean create, String itemPath, 
       Node currentNode, NodeType currentNodeType, Map jcrVariables)
@@ -329,6 +369,17 @@ public class CmsServiceImpl implements CmsService {
       }
     }    
   }
+
+  /**
+   * Process when add property for node.
+   * Base on type of property, needing specific proccessing
+   * @param propertyName    name of property
+   * @param node            node to process
+   * @param requiredtype    type of property: STRING, BINARY, BOOLEAN, LONG, DOUBLE, DATE, REFERENCE
+   * @param value           value of property
+   * @param isMultiple      value add is multiple or not
+   * @throws Exception
+   */
 
   private void processProperty(String propertyName, Node node, int requiredtype, Object value, 
       boolean isMultiple) throws Exception {
@@ -499,6 +550,16 @@ public class CmsServiceImpl implements CmsService {
     }
   }
   
+  /**
+   * Process when update property for node.
+   * Base on type of property, needing specific proccessing
+   * @param property        Property of node
+   * @param node            node to process
+   * @param requiredtype    type of property: STRING, BINARY, BOOLEAN, LONG, DOUBLE, DATE, REFERENCE
+   * @param value           value of property
+   * @param isMultiple      value add is multiple or not
+   * @throws Exception
+   */
   private void processProperty(Property property, Node node, int requiredtype,
       Object value, boolean isMultiple) throws Exception {
     String propertyName = property.getName() ;
@@ -708,6 +769,12 @@ public class CmsServiceImpl implements CmsService {
     }
   }  
 
+  /**
+   * Get node name from set
+   * In set, node name ends with NODE
+   * @param keys
+   * @return
+   */
   private String extractNodeName(Set keys) {
     for (Iterator iter = keys.iterator(); iter.hasNext();) {
       String key = (String) iter.next();
@@ -771,6 +838,12 @@ public class CmsServiceImpl implements CmsService {
     }
   }
 
+  /**
+   * Create node following path in uri
+   * @param session Session
+   * @param uri     path to created node
+   * @throws RepositoryException
+   */
   private void createNode(Session session, String uri) throws RepositoryException {
     String[] splittedName = StringUtils.split(uri, "/"); 
     Node rootNode = session.getRootNode();
@@ -786,6 +859,14 @@ public class CmsServiceImpl implements CmsService {
     session.save() ;    
   }
 
+  /**
+   * Get all value in Map.
+   * Base on key, iterate each key to get value in map
+   * @param map       Map of key and value of property
+   * @param itemLevel level of child of specific node
+   * @return
+   * @see {@link #processNodeRecursively(boolean, String, Node, NodeType, Map)}
+   */
   private List<JcrInputProperty> extractNodeInputs(Map<String, JcrInputProperty> map, int itemLevel) {    
     List<JcrInputProperty> list = new ArrayList<JcrInputProperty>() ;
     for(Iterator<String> iterator = map.keySet().iterator();iterator.hasNext();) {
@@ -800,6 +881,13 @@ public class CmsServiceImpl implements CmsService {
     return list ;
   }
 
+  /**
+   * Check whether node type can add property in NodeDefinition
+   * @param nodeDef   NodeDefinition
+   * @param nodeType  NodeType
+   * @return  true: can add propety to node
+   *          false: can't add
+   */
   private boolean canAddNode(NodeDefinition nodeDef, NodeType nodeType) {
     for(NodeType type: nodeDef.getRequiredPrimaryTypes()) {
       if(nodeType.isNodeType(type.getName())) {
@@ -808,7 +896,16 @@ public class CmsServiceImpl implements CmsService {
     }
     return false ;
   }
-
+  
+  /**
+   * Add child node for current node
+   * @param currentNode current node
+   * @param nodeName    name of child node
+   * @param nodeType    nodetype of child node
+   * @param mixinTypes  array of mixin type
+   * @return child node
+   * @throws Exception
+   */
   private Node doAddNode(Node currentNode, String nodeName, String nodeType, String[] mixinTypes) throws Exception {
     Node childNode = null;    
     try {
