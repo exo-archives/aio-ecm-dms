@@ -22,15 +22,12 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.exoplatform.commons.utils.ISO8601;
-import org.exoplatform.ecm.webui.component.admin.drives.UIDriveManager;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.web.application.ApplicationMessage;
