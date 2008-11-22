@@ -44,6 +44,11 @@
   background: url('zSkin/ManageNodeTypeIcon.gif') no-repeat ;
 }
 
+.AddCategoryIcon {
+	width: 24px;	height: 24px;
+  background: url('zSkin/ManageNodeTypeIcon.gif') no-repeat ;
+}
+
 .ExpandFolder24x24Icon {
   width: 28px; height: 28px;
   background: url('VistaSkin/BlueClosedFolder.png') no-repeat;

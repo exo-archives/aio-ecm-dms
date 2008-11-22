@@ -40,6 +40,11 @@
   background: url('MacSkin/ManageNodeTypeIcon.gif') no-repeat ;
 }
 
+.AddCategoryIcon {
+	width: 24px;	height: 24px;
+  background: url('MacSkin/ManageNodeTypeIcon.gif') no-repeat ;
+}
+
 .SearchIcon {
 	width: 24px; height: 24px;
   background: url('MacSkin/IconSearch.gif') no-repeat ;

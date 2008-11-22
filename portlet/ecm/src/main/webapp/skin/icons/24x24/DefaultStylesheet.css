@@ -329,6 +329,10 @@ a:hover .ShowHideBoxContainer {
   background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
 }
 
+.AddCategoryIcon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
+}
 .TypesOfContentIcon {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/CreateDocumentTypes.gif') no-repeat ;
