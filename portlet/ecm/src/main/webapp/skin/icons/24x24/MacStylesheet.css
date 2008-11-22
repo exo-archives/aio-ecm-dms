@@ -42,7 +42,8 @@
 
 .AddCategoryIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageNodeTypeIcon.gif') no-repeat ;
+  background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat ;
+  cursor: pointer;
 }
 
 .SearchIcon {

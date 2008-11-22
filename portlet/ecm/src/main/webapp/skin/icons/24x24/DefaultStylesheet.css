@@ -331,7 +331,8 @@ a:hover .ShowHideBoxContainer {
 
 .AddCategoryIcon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
+  background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat ;
+  cursor: pointer;
 }
 .TypesOfContentIcon {
 	width: 24px;	height: 24px;

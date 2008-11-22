@@ -46,7 +46,8 @@
 
 .AddCategoryIcon {
 	width: 24px;	height: 24px;
-  background: url('zSkin/ManageNodeTypeIcon.gif') no-repeat ;
+  background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat ;
+  cursor: pointer;
 }
 
 .ExpandFolder24x24Icon {
