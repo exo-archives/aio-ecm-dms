@@ -69,6 +69,7 @@
 .AddMetadataTypeIcon {
 	width: 24px;	height: 24px;
   background: url('MacSkin/ManageMetadataIcon.gif') no-repeat ;
+  cursor: pointer;
 }
 
 .UINamespaceManagerIcon {

@@ -42,6 +42,7 @@
 .AddNodeTypeIcon {
 	width: 24px;	height: 24px;
   background: url('zSkin/ManageNodeTypeIcon.gif') no-repeat ;
+  cursor: pointer;
 }
 
 .AddCategoryIcon {
@@ -446,6 +447,7 @@ a:hover .ShowHideBoxContainer {
 .AddMetadataTypeIcon {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat ;
+  cursor: pointer;
 }
 
 .GreenUpArrowFolder24x24Icon {
