@@ -851,7 +851,15 @@ public class UIWorkingArea extends UIContainer {
     } else {
       destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/"));
     }
-    workspace.move(srcPath, destPath);
+    try {
+      workspace.move(srcPath, destPath);
+    } catch(Exception e) {
+      Object[] args = { srcPath, destPath };
+      uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.move-problem", args, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
   }
   
   private void moveMultiNode(String[] srcPaths, String[] wsNames, String destPath, 
