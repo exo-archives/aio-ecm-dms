@@ -72,24 +72,34 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList  {
   margin: 0px;
+  border: 1px solid #dfdfdf;
+  border-top: none;
+  padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIDrivesRepoList .UIDrivesBrowser .UIDrivesList  {
+  margin: 0px;
+  border: solid 1px #dfdfdf;
+  border-bottom: none;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitleBG {
   background: url('VistaSkin/background/DrivesListTitleBG1x26.gif') repeat-x center;
   line-height: 26px;
+  height: 26px;
 	width: auto;
 	white-space: nowrap;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitleBGRight {
   background: url('VistaSkin/background/DrivesListTitleBGRight31x26.gif') no-repeat right;
-  line-height: 26px;
+  line-height: 26px; height: 26px;
   padding-right: 31px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle {
   background: url('VistaSkin/background/DrivesListTitle161x26.gif') no-repeat left;
-  line-height: 26px;
+  line-height: 26px; height: 26px;
   font-weight: bold;
   padding-left: 10px;
   font-family: Verdana;
@@ -97,7 +107,7 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListContainer {
-  margin: 3px 1px 1px 1px;
+  margin: 0px 1px 1px 1px;
   padding: 7px;
 }
 

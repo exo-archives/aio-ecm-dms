@@ -490,10 +490,6 @@
   padding-top: 10px;
 }
 
-.UIECMAdminPortlet .UIAnyPermission {
-	margin-bottom: 2px;
-}
-
 /*------------------------------UICBScripts------------------------*/
 
 .UICBScripts .CBScriptForm {
@@ -721,6 +717,7 @@
 
 .UIECMAdminPortlet .UIAnyPermission .HorizontalLayout {
 	padding: 0px;
+	border: none;
 }
 
 .UIECMAdminPortlet .UIAnyPermission .UIFormGrid td.FieldLabel {
