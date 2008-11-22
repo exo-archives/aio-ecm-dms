@@ -165,8 +165,15 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         UIFormInputBase input = (UIFormInputBase) inputs.get(i);
         if((input.getName() != null) && input.getName().equals("categories")) {
           hasCategories = true;
-          categoriesPath = input.getValue().toString();          
-          categoriesPath = categoriesPath.substring(1, categoriesPath.length() -1);
+          categoriesPath = input.getValue().toString();
+          if (categoriesPath.startsWith("[")) categoriesPath = categoriesPath.substring(1, categoriesPath.length()).trim();
+          if (categoriesPath.endsWith("]")) categoriesPath = categoriesPath.substring(0, categoriesPath.length()-1).trim();
+          if ((categoriesPath == null) || (categoriesPath.length() == 0)) {
+            uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return;
+          }
           categoriesPathList = categoriesPath.split(",");                    
           Session systemSession = categoriesService.getSession(repository);          
           for(String categoryPath : categoriesPathList) {              
@@ -324,7 +331,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
         ((UIOneNodePathSelector)uiComp).init(provider);
       } else if (uiComp instanceof UICategoriesSelector){
-        // Update for many categories ECM-2626
         CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
         UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
         Node currentNode = uiExplorer.getCurrentNode();
@@ -339,7 +345,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           List<String> listTaxonomy = new ArrayList<String>();
           if (arrayTaxonomy.length > 0) {
             for (int i = 0; i < arrayTaxonomy.length; i++) {
-              listTaxonomy.add(arrayTaxonomy[i]);
+              if ((arrayTaxonomy[i] != null) && (arrayTaxonomy[i].length() > 0) && !listTaxonomy.contains(arrayTaxonomy[i])) 
+                listTaxonomy.add(arrayTaxonomy[i]);
             }
           }
           ((UICategoriesSelector)uiComp).setExistedCategoryList(listTaxonomy);
