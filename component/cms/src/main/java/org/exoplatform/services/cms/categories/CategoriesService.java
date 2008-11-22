@@ -153,4 +153,13 @@ public interface CategoriesService {
    * @throws Exception
    */  
   public void init(String repository) throws Exception;
+  
+  /**
+   * Retuns <code>true</code> if the categoryMandatoryWhenFileUpload params is <code>true</code>
+   * </p>The categoryMandatoryWhenFileUpload params is used when uploading document. 
+   * When categoryMandatoryWhenFileUpload is <code>true</code>, the process upload must add category
+   *  before save
+   * @return
+   */
+  public boolean isCategoriesMandatory();
 }

@@ -148,7 +148,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         String lockToken = LockUtil.getLockToken(uiExplorer.getCurrentNode());
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
       }
-      if (cmsService.isCategoriesMandatory() && (valueTaxonomy == null || valueTaxonomy.equals(""))) {
+      if (categoriesService.isCategoriesMandatory() && (valueTaxonomy == null || valueTaxonomy.equals(""))) {
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.taxonomyPath-error", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
