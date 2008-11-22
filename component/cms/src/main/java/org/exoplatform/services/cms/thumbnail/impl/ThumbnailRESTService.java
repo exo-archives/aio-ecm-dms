@@ -135,19 +135,11 @@ public class ThumbnailRESTService implements ResourceContainer {
         .entity(inputStream, "image")
         .build();
       }
-      if(parentNode.hasNode(ThumbnailService.EXO_THUMBNAILS_FOLDER)) {
-        Node thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
-        if(thumbnailFolder.hasNode(identifier)) {
-          Node thumbnailNode = thumbnailFolder.getNode(identifier);
-          if(thumbnailNode.hasProperty(propertyName)) {
-            InputStream inputStream = thumbnailNode.getProperty(propertyName).getStream();
-            return Response.Builder.ok()
-            .entity(inputStream, "image")
-            .build();
-          }
-        }
-      }
     }
+    return getThumbnailRes(parentNode, identifier, propertyName);
+  }
+  
+  private Response getThumbnailRes(Node parentNode, String identifier, String propertyName) throws Exception{
     if(parentNode.hasNode(ThumbnailService.EXO_THUMBNAILS_FOLDER)) {
       Node thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
       if(thumbnailFolder.hasNode(identifier)) {
