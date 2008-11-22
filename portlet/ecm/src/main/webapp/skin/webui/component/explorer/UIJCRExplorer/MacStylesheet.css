@@ -151,7 +151,10 @@
 	padding: 2px 0px 2px 3px;
 } 
 
-
+.UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn .NodeLabel {
+	width: 95%;
+	overflow: hidden;
+} 
 /*############################## -- Begin MenuPopup -- ##############################*/
 
 .UIJCRExplorerPortlet .UIMenuPopup {
@@ -220,8 +223,6 @@
   padding-left: 10px ;
 }
 /*############################## -- End UIMenuPopup   -- ##############################*/
-.UIJCRExplorerPortlet .UIThumbnailsView {
-}
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconsContainer {
   padding-left: 10px;;

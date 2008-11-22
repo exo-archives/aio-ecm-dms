@@ -181,6 +181,10 @@
 	padding: 2px 0px 2px 3px;
 } 
 
+.UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn .NodeLabel {
+	width: 95%;
+	overflow: hidden;
+} 
 /*############################## -- Begin MenuPopup -- ##############################*/
 
 .UIJCRExplorerPortlet  .UIActionListContainer .UIFormWithTitle  {
