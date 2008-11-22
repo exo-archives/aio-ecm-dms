@@ -485,6 +485,11 @@
   padding: 10px;
 }
 
+.UIJCRExplorerPortlet .UIExportNode .UIFormGrid {
+	width: auto;
+	margin: auto;
+}
+
 /*================================.UIImportNode=================================*/
 
 .UIJCRExplorerPortlet .UIImportNode {
