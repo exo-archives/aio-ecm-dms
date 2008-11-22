@@ -72,7 +72,11 @@ public class QueryServiceImpl implements QueryService, Startable{
     baseUserPath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
     baseQueriesPath_ = nodeHierarchyCreator.getJcrPath(BasePath.QUERIES_PATH) ;
   }
-
+  
+  /**
+   * This method will start to init query plugin
+   * @see QueryPlugin
+   */
   public void start() {
     for(QueryPlugin queryPlugin : queryPlugins_){
       try{
@@ -84,6 +88,9 @@ public class QueryServiceImpl implements QueryService, Startable{
     }
   }
 
+  /**
+   * This method will start to init query plugin
+   */
   public void stop() {
     // TODO Auto-generated method stub    
   }
@@ -98,11 +105,16 @@ public class QueryServiceImpl implements QueryService, Startable{
       }
     } 
   }
-
+  
+  /**
+   * This method will add QueryPlugin to proccess
+   * @see                   QueryPlugin
+   * @param queryPlugin     QueryPlugin
+   */
   public void setQueryPlugin(QueryPlugin queryPlugin) {
     queryPlugins_.add(queryPlugin) ;
   }
-
+  
   public String getRelativePath() { return relativePath_; }
 
   public List<Query> getQueries(String userName, String repository,SessionProvider provider) throws Exception {
