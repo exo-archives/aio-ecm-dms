@@ -735,10 +735,16 @@
   background: url('DefaultSkin/background/LoadingProgress.gif') no-repeat center center;
 }
 
-/*======================================================================================*/
+/*===========================================UIRightClickPopupMenu===========================================*/
 .UIRightClickPopupMenu .MenuIcon {
 	line-height:16px;
 	margin:0 7px;
 	padding:0px 0 10px 26px;
 	width:auto;
+}
+
+/*############################## --UIPropertiesManager-- ##############################*/
+.UIJCRExplorerPortlet .UITabPane .UIPropertyTab .Text {
+	width: 300px;
+	overflow: hidden;
 }
