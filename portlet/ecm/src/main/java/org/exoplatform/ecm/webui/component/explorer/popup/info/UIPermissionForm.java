@@ -195,7 +195,6 @@ public class UIPermissionForm extends UIForm implements UISelector {
                                                     ApplicationMessage.WARNING));
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
             return;
-//            continue ;
           }
         } 
         if(Utils.hasChangePermissionRight(node)) node.setPermission(userOrGroup, permsArray);
@@ -203,12 +202,6 @@ public class UIPermissionForm extends UIForm implements UISelector {
         node.save();
         if(uiJCRExplorer.getRootNode().equals(node)) {
           if(!Utils.isReadAuthorized(uiJCRExplorer.getCurrentNode())) {
-//            PortletPreferences prefs_ = uiJCRExplorer.getPortletPreferences();
-//            prefs_.setValue(Utils.WORKSPACE_NAME,"") ;
-//            prefs_.setValue(Utils.VIEWS,"") ;
-//            prefs_.setValue(Utils.JCR_PATH,"") ;
-//            prefs_.setValue(Utils.DRIVE,"") ;
-//            prefs_.store() ;
             uiJCRExplorer.setRenderSibbling(UIDrivesBrowser.class) ;
             return ;
           }
@@ -230,10 +223,10 @@ public class UIPermissionForm extends UIForm implements UISelector {
   static public class SelectUserActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
-      UIGroupSelector uiGroupSelector = uiForm.createUIComponent(UIGroupSelector.class, null, null);
-      uiGroupSelector.setSelectUser(true);
-      uiGroupSelector.setComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
-      uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(uiGroupSelector);
+      UIUserSelector uiUserSelector = uiForm.createUIComponent(UIUserSelector.class, null, null);
+      uiUserSelector.setMulti(false);
+      uiUserSelector.setComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
+      uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(uiUserSelector, 650, 465);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }
@@ -256,7 +249,7 @@ public class UIPermissionForm extends UIForm implements UISelector {
       UIECMPermissionBrowser uiMemberSelect = uiForm.createUIComponent(
           UIECMPermissionBrowser.class, null, null);
       uiMemberSelect.setComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
-      uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(uiMemberSelect);
+      uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(uiMemberSelect, 560, 300);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }

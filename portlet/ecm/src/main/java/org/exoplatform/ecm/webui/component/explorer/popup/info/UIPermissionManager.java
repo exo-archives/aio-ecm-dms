@@ -44,11 +44,11 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
     addChild(UIPermissionInfo.class, null, null);    
     addChild(UIPermissionForm.class, null, null);    
   }
-  public void initPopupPermission(UIComponent uiSelector) throws Exception {
+  public void initPopupPermission(UIComponent uiSelector, int width, int height) throws Exception {
     UIPopupWindow uiPopup = getChildById(UIPermissionForm.POPUP_SELECT) ;
     if(uiPopup == null) {
       uiPopup = addChild(UIPopupWindow.class, null, UIPermissionForm.POPUP_SELECT);
-      uiPopup.setWindowSize(560, 300);
+      uiPopup.setWindowSize(width, height);
     } else {
       uiPopup.setRendered(true) ;
     }
