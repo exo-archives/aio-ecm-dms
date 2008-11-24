@@ -536,6 +536,10 @@
   float: none;
 }
 
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption .IconConstraint {
+	cursor: pointer;
+}
+
 /*================================UIMetadataSelectForm=================================*/
 
 .UIJCRExplorerPortlet .UIMetadataSelectForm {

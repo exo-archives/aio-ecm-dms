@@ -43,7 +43,6 @@
 .AddCategoryIcon {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat ;
-  cursor: pointer;
 }
 
 .SearchIcon {
@@ -69,7 +68,6 @@
 .AddMetadataTypeIcon {
 	width: 24px;	height: 24px;
   background: url('MacSkin/ManageMetadataIcon.gif') no-repeat ;
-  cursor: pointer;
 }
 
 .UINamespaceManagerIcon {

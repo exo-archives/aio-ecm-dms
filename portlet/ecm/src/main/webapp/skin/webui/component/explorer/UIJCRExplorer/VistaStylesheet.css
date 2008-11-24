@@ -479,6 +479,10 @@
   margin: 10px;
 }
 
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption .IconConstraint {
+	cursor: pointer;
+}
+
 /*================================.UIExportNode=================================*/
 
 .UIJCRExplorerPortlet .UIExportNode {

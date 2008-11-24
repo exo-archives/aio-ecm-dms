@@ -444,6 +444,9 @@
   padding: 3px;
 }
 
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption .IconConstraint {
+	cursor: pointer;
+}
 /*================================UIConstraintsForm=================================*/
 
 /*================================UIMetadataSelectForm=================================*/
