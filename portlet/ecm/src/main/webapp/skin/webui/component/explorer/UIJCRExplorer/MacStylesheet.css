@@ -854,8 +854,3 @@
 	width:auto;
 }
 
-/*############################## --UIPropertiesManager-- ##############################*/
-.UIJCRExplorerPortlet .UITabPane .UIPropertyTab .Text {
-	width: 300px;
-	overflow: hidden;
-}

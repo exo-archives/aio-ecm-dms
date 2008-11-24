@@ -734,9 +734,3 @@
 .UIJCRExplorerPortlet .UIRightClickPopupMenu .UIContextMenuContainer {
 	width: 200px;
 }
-
-/*============================================UIPropertiesManager=========================================*/
-.UIJCRExplorerPortlet .UITabPane .UIPropertyTab .Text {
-	width: 300px;
-	overflow: hidden;
-}
