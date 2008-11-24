@@ -1,0 +1,24 @@
+<forms>
+
+  <form>
+    <resource-bundle>evaluation</resource-bundle>
+    <activity>evaluation</activity>
+    <variable name="document-id" component="nodeview"/>
+    <variable name="initiator" editable="false"/>
+    <variable name="startDate" component="datetime"/>
+    <variable name="endDate" component="datetime"/>
+    <variable name="reason" component="textarea"/>
+    <submitbutton name="approve" variable="decision" />
+    <submitbutton name="disapprove" variable="decision" />
+    <submitbutton name="delegate" variable="decision" />    
+    <submitbutton name="refuse" variable="decision" />
+  </form>
+
+  <form>
+    <resource-bundle>change-request</resource-bundle>
+    <activity>change-request</activity>
+    <variable name="document-id" component="nodeedit"/>
+    <submitbutton name="submit" variable="changeDecision" />
+    <submitbutton name="cancel" variable="changeDecision" />
+  </form>
+</forms>

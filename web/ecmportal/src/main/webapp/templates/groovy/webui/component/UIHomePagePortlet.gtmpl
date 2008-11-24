@@ -1,0 +1,76 @@
+<%
+  import org.exoplatform.services.resources.ResourceBundleService ;
+  import org.exoplatform.container.PortalContainer;
+  import org.exoplatform.portal.webui.util.Util;
+  import java.util.Locale;
+  import org.exoplatform.portal.webui.workspace.UIPortalApplication;
+  import java.util.ResourceBundle;
+  
+  ResourceBundleService service = 
+      (ResourceBundleService)PortalContainer.getComponent(ResourceBundleService.class) ;
+  Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;
+  
+  /*
+    Using a specific bundle and not the one provided by WebUI, 
+    so that each project can specify its own messages and translations
+  */
+  ResourceBundle res = service.getResourceBundle("locale.ecm.homepage", locale) ;
+%>
+<div class="UIHomePagePortlet" id="$uicomponent.id">
+	<div class="PortletDecoration">
+		<div class="HomePortletAdBackround">
+			<div class="AdImage">
+				<div class="EmptyBlock"><span></span></div>
+				<div class="ProductSlogan"><%=res.getString("Homepage.ecm.label.slogan")%></div>
+				<div class="ProductIntro"><%=res.getString("Homepage.ecm.label.productIntro")%></div>
+			</div>
+		</div>
+		<div class="HomePortletContent">
+			<div class="InstructionTitle"><%=res.getString("Homepage.ecm.label.instructionTitle")%>:</div>
+			<div class="UserAccountsContainer">
+				<div class="AccountsContainerDeco">
+					<div class="AccountBlock AdministratorUser">
+						<div class="AccountInfos">
+							<div class="AccountTitle"><%=res.getString("Homepage.ecm.label.admin")%></div>
+							<div class="Username"><%=res.getString("Homepage.ecm.label.userName")%>:<span>root</span></div>
+							<div class="Passwords"><%=res.getString("Homepage.ecm.label.password")%>:<span>exo</span></div>
+						</div>
+					</div>
+					<div class="SeparatorLine"><span></span></div>
+					<div class="AccountBlock ManagerUser">
+						<div class="AccountInfos">
+							<div class="AccountTitle"><%=res.getString("Homepage.ecm.label.manager")%></div>
+							<div class="Username"><%=res.getString("Homepage.ecm.label.userName")%>:<span>john</span></div>
+							<div class="Passwords"><%=res.getString("Homepage.ecm.label.password")%>:<span>exo</span></div>
+						</div>
+					</div>
+					<div class="SeparatorLine"><span></span></div>
+					<div class="AccountBlock HRManagerUser">
+						<div class="AccountInfos">
+							<div class="AccountTitle"><%=res.getString("Homepage.ecm.label.hr-manager")%></div>
+							<div class="Username"><%=res.getString("Homepage.ecm.label.userName")%>:<span>james</span></div>
+							<div class="Passwords"><%=res.getString("Homepage.ecm.label.password")%>:<span>exo</span></div>
+						</div>
+					</div>
+					<div class="SeparatorLine"><span></span></div>
+					<div class="AccountBlock NormalUser">
+						<div class="AccountInfos">
+							<div class="AccountTitle"><%=res.getString("Homepage.ecm.label.user")%></div>
+							<div class="Username"><%=res.getString("Homepage.ecm.label.userName")%>:<span>marry</span></div>
+							<div class="Passwords"><%=res.getString("Homepage.ecm.label.password")%>:<span>exo</span></div>
+						</div>
+					</div>
+					<div class="SeparatorLine"><span></span></div>
+					<div class="AccountBlock DemoUser" style="margin-right: 0px;">
+						<div class="AccountInfos">
+							<div class="AccountTitle"><%=res.getString("Homepage.ecm.label.demo")%></div>
+							<div class="Username"><%=res.getString("Homepage.ecm.label.userName")%>:<span>demo</span></div>
+							<div class="Passwords"><%=res.getString("Homepage.ecm.label.password")%>:<span>exo</span></div>
+						</div>
+					</div>
+					<div style="clear: both"><span></span></div>
+				</div>
+			</div>
+		</div>
+	</div>		
+</div>

@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+  <class name="org.jbpm.graph.def.ProcessDefinition" 
+         table="JBPM_PROCESSDEFINITION"
+         lazy="false">
+    <cache usage="nonstrict-read-write"/>
+    <id name="id" column="ID_"><generator class="native" /></id>
+
+    <!-- GRAPHELEMENT -->
+    <!-- base class fields are mapped here -->
+    <property name="name" column="NAME_" />
+    <map name="events" cascade="all">
+      <key column="PROCESSDEFINITION_" foreign-key="FK_EVENT_PROCDEF" />
+      <index column="EVENTTYPE_" type="string"/>
+      <one-to-many class="org.jbpm.graph.def.Event" />
+    </map>
+    <list name="exceptionHandlers" cascade="all">
+      <key column="PROCESSDEFINITION_" foreign-key="none" />
+      <list-index column="GRAPHELEMENTINDEX_" />
+      <one-to-many class="org.jbpm.graph.def.ExceptionHandler" />
+    </list>
+    <!-- ============ -->
+
+    <property name="version" column="VERSION_"/>
+    <property name="isTerminationImplicit" column="ISTERMINATIONIMPLICIT_"/>
+    <many-to-one name="startState" 
+                 column="STARTSTATE_"
+                 foreign-key="FK_PROCDEF_STRTSTA" />
+    <list name="nodes" cascade="all">
+      <key column="PROCESSDEFINITION_" />
+      <list-index column="NODECOLLECTIONINDEX_" />
+      <one-to-many class="org.jbpm.graph.def.Node" />
+    </list>
+    <map name="actions" cascade="all" inverse="true">
+      <key column="PROCESSDEFINITION_" />
+      <map-key column="NAME_" type="string"/>
+      <one-to-many class="org.jbpm.graph.def.Action" />
+    </map>
+    <map name="definitions" cascade="all">
+      <key column="PROCESSDEFINITION_" />
+      <map-key column="NAME_" type="string"/>
+      <one-to-many class="org.jbpm.module.def.ModuleDefinition" />
+    </map>
+
+  </class>
+</hibernate-mapping>

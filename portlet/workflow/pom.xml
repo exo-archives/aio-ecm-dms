@@ -1,0 +1,63 @@
+<project>
+  <parent>
+    <groupId>org.exoplatform.ecm</groupId>
+    <artifactId>config</artifactId>
+    <version>trunk</version>
+  </parent>
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>exo.ecm.portlet.workflow</artifactId>
+  <version>${org.exoplatform.ecm.version}</version>
+  <packaging>war</packaging>
+  <name>ecm.portlets.workflow Portlet</name>
+  <url>http://www.exoplatform.org</url>
+  <description>ecm.portlets.workflow Portlet</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.eXo</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.portal</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.cms</artifactId>
+      <version>${org.exoplatform.ecm.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.workflow.impl.jbpm.engine</artifactId>
+      <version>3.0</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.component.workflow.impl.jbpm.facade</artifactId>
+      <version>${org.exoplatform.ecm.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.ecm</groupId>
+      <artifactId>exo.ecm.webui.ecm</artifactId>
+      <version>${org.exoplatform.ecm.version}</version>
+      <scope>provided</scope>
+    </dependency>  
+  </dependencies>
+
+  <build>
+    <finalName>workflow</finalName>
+  </build>
+</project>

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping default-access="field">
+  <class name="org.jbpm.graph.exe.Token" 
+         table="JBPM_TOKEN"
+         lazy="false">
+    <id name="id" column="ID_"><generator class="native" /></id>
+    
+    <property name="name" column="NAME_"/>
+    <property name="start" column="START_"/>
+    <property name="end" column="END_"/>
+    <property name="nodeEnter" column="NODEENTER_"/>
+    <property name="nextLogIndex" column="NEXTLOGINDEX_"/>
+    <property name="isAbleToReactivateParent" column="ISABLETOREACTIVATEPARENT_"/>
+    <property name="isTerminationImplicit" column="ISTERMINATIONIMPLICIT_"/>
+    
+    <many-to-one name="node" 
+                 column="NODE_" 
+                 foreign-key="FK_TOKEN_NODE"/>
+    <many-to-one name="processInstance" 
+                 column="PROCESSINSTANCE_" 
+                 foreign-key="FK_TOKEN_PROCINST"/>
+    <many-to-one name="parent" 
+                 column="PARENT_" 
+                 foreign-key="FK_TOKEN_PARENT" />
+    <map name="children" inverse="true" cascade="all" >
+      <key column="PARENT_" />
+      <index column="NAME_" type="string" />
+      <one-to-many class="org.jbpm.graph.exe.Token" />
+    </map>
+    <list name="comments" cascade="all" >
+      <key column="TOKEN_" />
+      <index column="TOKENINDEX_"  />
+      <one-to-many class="org.jbpm.graph.exe.Comment" />
+    </list>
+    
+  </class>
+</hibernate-mapping>

@@ -1,0 +1,115 @@
+<%
+  import javax.jcr.Node;
+  import javax.jcr.AccessDeniedException ;
+  import org.exoplatform.ecm.webui.utils.Utils;
+  import org.exoplatform.web.application.Parameter ;
+  import org.exoplatform.webui.core.UIRightClickPopupMenu ;
+  import org.exoplatform.ecm.webui.component.explorer.sidebar.TreeNode ;
+  import java.util.List;
+%>
+<%
+  public void writeNodes(TreeNode rootTree) {
+    UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
+    String serverPath = uicomponent.getServerPath();
+    String portalName = uicomponent.getPortalName();
+    String repository = uicomponent.getRepository() ;   
+    int counter = 1 ;     
+    List childrenNodes=uicomponent.getRenderedChildren(rootTree);
+    boolean isPaginated=uicomponent.isPaginated(rootTree);
+    int childrenSize = childrenNodes.size() ;                 
+    for(treeNode in childrenNodes) {	    
+    	Node node = treeNode.getNode() ;	      	    
+	    String path = node.getPath() ;
+	    String treeNodeName = treeNode.getName();
+	    def isPreferenceNode = uicomponent.isPreferenceNode(node) ;
+	    def preferenceWS = node.getSession().getWorkspace().getName() ;
+	    String mode = "Expand" ;
+	    String actionLink  ;
+	    String expandLink ;
+	    if(treeNode.isExpanded()) mode = "Collapse" ;
+	    if(isPreferenceNode) {
+	      actionLink = uicomponent.event(mode, treeNode.getPath(), new Parameter("workspaceName", preferenceWS)) ;
+	      expandLink = uicomponent.event("Expand", Utils.formatNodeName(treeNode.getPath()), new Parameter("workspaceName", preferenceWS)) ;
+	      path = path + "&workspaceName=" + preferenceWS ;
+	    } else {
+	      actionLink = uicomponent.event(mode, treeNode.getPath()) ;
+	      expandLink = uicomponent.event("Expand", Utils.formatNodeName(treeNode.getPath())) ;
+	    }
+	    //Begin for WebDav action
+	    String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
+	    if(node.getPrimaryNodeType().getName().equals("nt:file")) {
+		  	String mimeType=node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
+		  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+ serverPath+"','"+ portalName +"','"+ repository +"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";				  					  					  	
+	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\">" ;	        
+		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
+			  strActs += "</a>" ;				  	
+		  } else {
+		  	String link = serverPath + "/" + portalName +"/rest/private/jcr/" + repository + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
+	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">" ;	        
+		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
+			  strActs += "</a>" ;				  	
+		  }
+		  //End WebDAV Action					        
+		  List customActs = uicomponent.getCustomActions(node) ;				  
+	    Parameter[] params ;
+	    if(customActs.size() > 0) {				    
+			  for(act in customActs) {
+			    String actName = act.getProperty("exo:name").getValue().getString() ;
+			    params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName", Utils.formatNodeName(act.getName()))] ;
+			    strActs += "<a class=\"MenuItem\" title=\"$actName\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + contextMenu.event("Custom", Utils.formatNodeName(path), params) + "\">" ;
+		      strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">";
+		      if (actName.length() > 10) strActs += actName.substring(0, 10) + "...";
+		      else strActs += actName;
+			    strActs += "</div></a>" ;
+			  }				    
+	    }
+	    strActs += "</div>" ;	    
+	    String lastNodeClass = "" ;
+	    if (counter >= childrenSize && !isPaginated) {
+	    	lastNodeClass = "LastNode " ;
+	    }
+	    def ctMenu = "" ;
+	    if(!uicomponent.isSystemWorkspace()) ctMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) ;
+	    println "<div class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
+	    println "  <div class=\"${mode}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
+	    println "  <div onclick=\"" + expandLink + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", mode) + "\" " + ctMenu + ">" + strActs ;
+	    println "  <div class=\"NodeLabel\" " + ctMenu + ">" + strActs;
+	    println "<a href=\"" + expandLink + "\" title=\"$treeNodeName\">$treeNodeName</a>" ;
+	    println "  </div>" ; 
+	    println "  </div>" ; 
+	    println "  </div>" ; 
+	    if(treeNode.getChildrenSize() > 0) {
+	      println "<div class=\"NodeGroup\">" ;
+	      writeNodes(treeNode) ;
+	      if(uicomponent.isPaginated(treeNode)) {
+			      println "<div class=\"Node PageIterator\">"	    	
+		    		_ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNode.getPath())); 				
+		    		println "</div>" ;
+		    }		    	
+	      println "</div>" ;
+	    }	    
+	    println "</div>" ;	    	    	 			           	   
+			counter ++ ;
+		}			
+  }  
+  TreeNode treeNodeRoot = uicomponent.getRootTreeNode() ;
+  String contextMenuEvent = uicomponent.getRootActionList() ;
+%>
+<div class="UITreeExplorer" id="UITreeExplorer">
+  <div style="white-space:nowrap;">
+    <div class="HomeNode">
+      <div class="HardDisk24x24Icon" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><span></span></div>
+      <div class="NodeLabel"><a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><%=_ctx.appRes("UITreeExplorer.label.Root")%></a></div>
+    </div>
+    <div class="NodeGroup">
+      <%
+      	writeNodes(treeNodeRoot);
+       	if(uicomponent.isPaginated(treeNodeRoot)) {%>
+       			<div class="Node PageIterator">
+       				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNodeRoot.getPath())); %>
+       			</div>       	
+				<%}
+			%>
+    </div>
+  </div>   	    
+</div>

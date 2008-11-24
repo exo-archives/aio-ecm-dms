@@ -1,0 +1,27 @@
+.UIJCRBrowser {
+	padding: 10px;
+}
+
+.ExplorerTree {
+  float: left ;
+  width: 230px ;
+  background: url(/eXoSkinMac/skin/MacSkin/background/Background1x4.png);
+}
+
+.ExplorerTree .InnerExplorerTree {
+  border: solid 1px #b1b0b0;
+  padding: 10px;
+}
+
+.UITreeList {
+  margin-left: 240px;
+}
+
+.UITreeList table {
+	*width: 94%;
+}
+
+.UITreeList table .Icon16x16 {
+	float: none;
+	margin: 5px;
+}

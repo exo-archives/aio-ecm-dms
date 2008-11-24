@@ -1,0 +1,105 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
+ * version: $Id$
+ */
+
+@import url("../../../icons/MacStylesheet.css");
+@import url("control/MacStylesheet.css");
+@import url("sidebar/MacStylesheet.css");
+@import url("UIPopupAction/MacStylesheet.css");
+@import url("UIDrivesBrowser/MacStylesheet.css");
+@import url("UIJCRExplorer/MacStylesheet.css");
+
+.UIPageDesktop .UIJCRExplorerPortlet {
+  overflow: hidden;
+}
+
+.UIWindow .UIJCRExplorerPortlet {
+	border: none;
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet {
+	background: white;
+	border: 1px solid #b7b7b7;
+	margin: 5px;
+}
+
+.UIJCRExplorerPortlet .UIFormGrid {
+	width: 100%;
+}
+
+.UIJCRExplorerPortlet .UIPreferencesForm  {
+  width: 500px;
+  margin: 10px auto;
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIPageIterator {
+	width: auto;
+	padding-right: 10px;
+}
+
+.UIVersionTreeList {
+  margin: 6px 0px 16px 0px;
+}
+
+.UIVersionTreeList .ItemIcon {
+  width: 16px; height: 16px;
+  margin-top: 3px;
+}
+
+.UIVersionTreeList .UIGrid .EvenRow {
+  background: #F5F5F5;
+}
+
+.UIVersionTreeList .UIGrid .OddRow {
+  background: #F0F0F0;
+}
+
+.UIVersionTreeList .UIGrid td {
+  padding: 0px 0px 0px 7px;
+}
+
+.UIVersionTreeList .UITrees .Node {
+  padding-top: 0px;
+  height: 23px;
+}
+
+.UIVersionTreeList .UIGrid .FieldLabel {
+  width: 100px;
+}
+
+.UIVersionTreeList .UIGrid .SelectRow {
+  background: #cedeed;
+  font-weight: bold;
+}
+
+.UIVersionTreeList .UITrees .Node .ExpandIcon {
+  height: 20px;
+  background-position: left bottom;
+  line-height: 24px;
+}
+
+.UIVersionTreeList .UITrees .Node .CollapseIcon {
+  height: 20px;
+  background-position: left bottom;
+  line-height: 24px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIPuplication .UIFormGrid .FieldLabel {
+  width: 100px;
+  padding: 6px 6px 6px 16px;
+  text-align: left;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIPuplicationForm .UIFormGrid .FieldLabel {
+  font-weight: bold;  
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIPublicationContainer .UIFormGrid .FieldComponent {
+  padding: 6px;
+}

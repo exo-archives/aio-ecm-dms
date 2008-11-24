@@ -1,0 +1,17 @@
+<project>
+  <parent>
+    <groupId>org.exoplatform.ecm</groupId>
+    <artifactId>config</artifactId>
+    <version>trunk</version>
+  </parent> 
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>exo.ecm.web.eXoECMResources</artifactId>
+  <packaging>war</packaging> 
+  <version>${org.exoplatform.ecm.version}</version>
+  <name>eXo ECM Resources</name>
+
+  <build>
+    <finalName>eXoECMResources</finalName>
+  </build>
+</project>
