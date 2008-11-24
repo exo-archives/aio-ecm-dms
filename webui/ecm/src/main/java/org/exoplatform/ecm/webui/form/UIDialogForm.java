@@ -155,7 +155,7 @@ public class UIDialogForm extends UIForm {
       } else if(node.hasProperty(propertyName) && !isUpdateSelect) {
         if(node.getProperty(propertyName).getDefinition().getRequiredType() == 
           PropertyType.REFERENCE) {
-          // Update for many categories ECM-2626
+          // Update for many categories
           if(node.getProperty(propertyName).getDefinition().isMultiple()) {
             StringBuffer buffer = new StringBuffer();
             buffer.append("[");
@@ -163,6 +163,7 @@ public class UIDialogForm extends UIForm {
             for(Value value : values) {              
               buffer.append(node.getSession().getNodeByUUID(value.getString()).getPath()).append(",");                
             }
+            if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);
             buffer.append("]");
             uiInput.setValue(buffer.toString());
           } else{
@@ -178,7 +179,8 @@ public class UIDialogForm extends UIForm {
             for(Value value : values) {
               buffer.append(node.getSession().getNodeByUUID(value.getString()).getPath()).append(",");
             }
-            buffer.append("]");
+            if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);
+            buffer.append("]");            
             uiInput.setValue(buffer.toString());
           } else {
             uiInput.setValue(node.getProperty(propertyName).getValue().getString());  
