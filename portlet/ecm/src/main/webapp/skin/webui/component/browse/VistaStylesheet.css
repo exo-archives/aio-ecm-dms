@@ -108,7 +108,15 @@
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16 {
-	float:none;
+	float: none;
+	margin-left: 5px;
+}
+ 
+.UIBrowseContentPortlet .UIForm .FieldComponent .FieldComponent input {
+	width: 200px;
+}
+
+.UIBrowseContentPortlet .UIForm .FieldComponent .FieldComponent .AddIcon16x16 {
 	margin-left: 5px;
 }
 

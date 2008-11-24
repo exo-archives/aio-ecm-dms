@@ -109,6 +109,10 @@
 	margin: auto;
 }
 
+.UIBrowseContentPortlet .UIForm .FieldComponent .FieldComponent .AddIcon16x16 {
+	margin-left: 5px;
+}
+
 .UIBrowseContentPortlet .UIForm .HorizontalLayout td.FieldComponent {
 	padding: 4px 0px;
 }
