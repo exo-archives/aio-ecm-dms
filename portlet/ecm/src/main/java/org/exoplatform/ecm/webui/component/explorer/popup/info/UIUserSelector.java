@@ -96,8 +96,8 @@ public class UIUserSelector extends UIForm implements UIPopupComponent, Componen
     UISelectGroupForm uiGroup = createUIComponent(UISelectGroupForm.class, null, null);
     uiPopup.setUIComponent(uiGroup);
     uiGroup.setId("GroupSelector");
-    uiGroup.getChild(UITree.class).setId("TreeGroupSelector");
-    uiGroup.getChild(UIBreadcumbs.class).setId("BreadcumbsGroupSelector");
+    uiGroup.getChild(UITree.class).setId("UITreeGroupInUserSelector");
+    uiGroup.getChild(UIBreadcumbs.class).setId("BreadcumbGroupInUserSelector");
   }
   @SuppressWarnings("unchecked")
   public List<User> getData() throws Exception {
@@ -272,20 +272,20 @@ public class UIUserSelector extends UIForm implements UIPopupComponent, Componen
   static  public class CloseActionListener extends EventListener<UIUserSelector> {
     public void execute(Event<UIUserSelector> event) throws Exception {
       UIUserSelector uiForm = event.getSource();  
-      UIPermissionManager uiManager = uiForm.getAncestorOfType(UIPermissionManager.class);
-      UIPopupWindow uiPopup = uiManager.findComponentById(UIPermissionForm.POPUP_SELECT);
-      if(uiPopup !=null) {
-        uiPopup.setShow(false);
-        uiPopup.setRendered(false);
+      UIPopupWindow uiPopup = uiForm.getParent();
+      uiPopup.setShow(false);
+      uiPopup.setRendered(false);
+      if(uiPopup.getParent() != null) {
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup.getParent());
       }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
     }
   }
   
   static  public class SearchGroupActionListener extends EventListener<UIUserSelector> {
     public void execute(Event<UIUserSelector> event) throws Exception {
       UIUserSelector uiForm = event.getSource();
-      uiForm.getChild(UIPopupWindow.class).setShow(true);
+      UIFormPopupWindow uiPopup = uiForm.getChildById("PopupGroupSelector");
+      uiPopup.setShow(true);
     }
   }
   static  public class ShowPageActionListener extends EventListener<UIUserSelector> {

@@ -53,12 +53,12 @@ import org.exoplatform.webui.form.UIForm;
       }  
   ),
   @ComponentConfig(
-      type = UITree.class, id = "UITreeGroupSelector",
+      type = UITree.class, id = "UITreeGroupInUserSelector",
       template = "system:/groovy/webui/core/UITree.gtmpl",
       events = @EventConfig(phase = Phase.DECODE, listeners = UITree.ChangeNodeActionListener.class)
   ),
   @ComponentConfig(
-      type = UIBreadcumbs.class, id = "BreadcumbGroupSelector",
+      type = UIBreadcumbs.class, id = "BreadcumbGroupInUserSelector",
       template = "system:/groovy/webui/core/UIBreadcumbs.gtmpl",
       events = @EventConfig(phase = Phase.DECODE, listeners = UIBreadcumbs.SelectPathActionListener.class)
   )
@@ -68,8 +68,9 @@ public class UISelectGroupForm extends UIContainer {
   private Group selectGroup_ ;
  
   public UISelectGroupForm() throws Exception {
-    UIBreadcumbs uiBreadcumbs = addChild(UIBreadcumbs.class, "BreadcumbGroupSelector", "BreadcumbGroupSelector") ;
-    UITree tree = addChild(UITree.class, "UITreeGroupSelector", "TreeGroupSelector");
+    UIBreadcumbs uiBreadcumbs = 
+      addChild(UIBreadcumbs.class, "BreadcumbGroupInUserSelector", "BreadcumbGroupInUserSelector") ;
+    UITree tree = addChild(UITree.class, "UITreeGroupInUserSelector", "UITreeGroupInUserSelector");
     OrganizationService service = getApplicationComponent(OrganizationService.class) ;
     Collection<?> sibblingsGroup = service.getGroupHandler().findGroups(null); 
     

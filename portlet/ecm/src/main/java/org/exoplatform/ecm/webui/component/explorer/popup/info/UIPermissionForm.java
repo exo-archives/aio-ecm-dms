@@ -63,6 +63,7 @@ import org.exoplatform.webui.form.UIForm;
 public class UIPermissionForm extends UIForm implements UISelector {
   final static public String PERMISSION   = "permission";
   final static public String POPUP_SELECT = "SelectUserOrGroup";
+  final static public String POPUP_SELECT_USER = "SelectUser";
   public UIPermissionForm() throws Exception {
     addChild(new UIPermissionInputSet(PERMISSION));
     setActions(new String[] { "Save", "Reset", "Close" });
@@ -226,7 +227,8 @@ public class UIPermissionForm extends UIForm implements UISelector {
       UIUserSelector uiUserSelector = uiForm.createUIComponent(UIUserSelector.class, null, null);
       uiUserSelector.setMulti(false);
       uiUserSelector.setComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
-      uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(uiUserSelector, 650, 465);
+      uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(
+          POPUP_SELECT_USER, uiUserSelector, 650, 465);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }
@@ -249,7 +251,8 @@ public class UIPermissionForm extends UIForm implements UISelector {
       UIECMPermissionBrowser uiMemberSelect = uiForm.createUIComponent(
           UIECMPermissionBrowser.class, null, null);
       uiMemberSelect.setComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
-      uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(uiMemberSelect, 560, 300);
+      uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(
+          POPUP_SELECT, uiMemberSelect, 560, 300);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }
