@@ -23,6 +23,7 @@ import java.util.Map;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.PropertyType;
 
@@ -146,7 +147,7 @@ public class DialogFormUtil {
     Property property = null;
     try{
       property = node.getProperty(propertyName);      
-    }catch (ItemNotFoundException e) {
+    }catch (PathNotFoundException e) {
       return "";
     }     
     int valueType = property.getType() ;

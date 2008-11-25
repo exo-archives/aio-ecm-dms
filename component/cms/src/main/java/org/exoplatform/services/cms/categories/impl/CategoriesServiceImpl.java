@@ -185,6 +185,12 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
     systemSession.logout();
   }
   
+  private void processRemoveCategory(Node node) throws Exception {
+    List<Value> vals = new ArrayList<Value>();
+    if (node.hasProperty("exo:category")) node.setProperty(CATEGORY_PROP, vals.toArray(new Value[vals.size()]));
+    node.save();
+  }
+  
   private void processCategory(Session systemSession, Node node, String categoryPath) throws Exception {
     Node catNode = (Node) systemSession.getItem(categoryPath.trim());
     Value value2add = node.getSession().getValueFactory().createValue(catNode);      
@@ -206,7 +212,8 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   }
 
   public void addMultiCategory(Node node, String[] arrCategoryPath, String repository) throws Exception {
-    Session systemSession = getSession(repository) ;    
+    Session systemSession = getSession(repository);    
+    processRemoveCategory(node);
     for(String categoryPath : arrCategoryPath) {      
       processCategory(systemSession, node, categoryPath);
     }

@@ -22,9 +22,9 @@ import java.util.List;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadForm;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.resources.LocaleConfig;
 import org.exoplatform.services.resources.LocaleConfigService;
@@ -99,7 +99,7 @@ public class UILanguageTypeForm extends UIForm {
         UILanguageDialogForm uiDialogForm = uiContainer.getChild(UILanguageDialogForm.class) ;
         uiDialogForm.getChildren().clear() ;
         uiDialogForm.setTemplateNode(uiContainer.nodeTypeName_) ;
-        Node node = uiExplorer.getCurrentNode() ;
+        Node node = uiExplorer.getCurrentNode() ;        
         String currentPath = uiExplorer.getCurrentPath() ;
         if(selectedLanguage.equals(multiLanguageService.getDefault(node))) {
           uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setChecked(true) ;

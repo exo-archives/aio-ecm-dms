@@ -110,6 +110,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {      
+      System.out.println("AAA" + templateService.getTemplatePathByUser(true, contentType, userName, repositoryName));
       return templateService.getTemplatePathByUser(true, contentType, userName, repositoryName) ;
     } catch (Exception e) {
       e.printStackTrace();
