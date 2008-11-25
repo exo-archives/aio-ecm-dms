@@ -46,9 +46,9 @@
 	          <field name="processLocation"><string>war:/conf/bp</string></field>
 	          <field name="predefinedProcess">
 	            <collection type="java.util.HashSet">
-	              <value><string>/exo.workflow.bp.bonita.payraise-trunk.jar</string></value>
+	              <value><string>/exo.workflow.bp.bonita.payraise-novabonita.jar</string></value>
 	              <!--<value><string>/exo.workflow.bp.bonita.holiday-trunk.jar</string></value>-->
-	              <value><string>/exo.ecm.bp.bonita.content-publishing-trunk.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.content-publishing-novabonita.jar</string></value>
 	            </collection>
 	          </field>
 	        </object>

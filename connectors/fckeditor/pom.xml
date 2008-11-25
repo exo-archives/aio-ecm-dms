@@ -2,7 +2,7 @@
   <parent>
     <groupId>org.exoplatform.ecm</groupId>
     <artifactId>config</artifactId>
-    <version>trunk</version>
+    <version>novabonita</version>
   </parent> 
 
   <modelVersion>4.0.0</modelVersion>
@@ -42,24 +42,43 @@
       <version>${org.exoplatform.jcr.version}</version>
       <scope>compile</scope>
     </dependency>        
+
     
+
     <dependency>
+
       <groupId>org.exoplatform.portal</groupId>
+
       <artifactId>exo.portal.component.portal</artifactId>
+
       <version>${org.exoplatform.portal.version}</version>
+
     </dependency>
+
     
+
     <dependency>
+
       <groupId>org.exoplatform.portal</groupId>
+
       <artifactId>exo.portal.component.web</artifactId>
+
       <version>${org.exoplatform.portal.version}</version>
+
     </dependency>  
+
         
+
     <dependency>
+
       <groupId>org.exoplatform.ecm</groupId>
+
       <artifactId>exo.ecm.component.cms</artifactId>
+
       <version>${org.exoplatform.ecm.version}</version>
+
       <scope>provided</scope>
+
     </dependency>
     
     <dependency>

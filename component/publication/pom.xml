@@ -2,7 +2,7 @@
   <parent>
     <groupId>org.exoplatform.ecm</groupId>
     <artifactId>config</artifactId>
-    <version>trunk</version>
+    <version>novabonita</version>
   </parent> 
 
   <modelVersion>4.0.0</modelVersion>
@@ -79,9 +79,9 @@
     </dependency>
     
     <dependency>
-      <groupId>org.exoplatform.ecm</groupId>
-      <artifactId>exo.ecm.component.workflow.api</artifactId>
-      <version>${org.exoplatform.ecm.version}</version>
+      <groupId>org.exoplatform.workflow</groupId>
+      <artifactId>exo.workflow.component.workflow.api</artifactId>
+      <version>trunk</version>
       <scope>compile</scope>
     </dependency>    
 

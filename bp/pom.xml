@@ -2,13 +2,13 @@
   <parent>
     <groupId>org.exoplatform.ecm</groupId>
     <artifactId>config</artifactId>
-    <version>trunk</version>
+    <version>novabonita</version>
   </parent> 
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.bp</groupId>
   <artifactId>config</artifactId>
-  <version>trunk</version>
+  <version>novabonita</version>
   <name>ECM business processes configuration</name>
   <packaging>pom</packaging>
 

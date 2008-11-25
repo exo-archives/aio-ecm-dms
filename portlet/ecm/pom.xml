@@ -2,7 +2,7 @@
   <parent>
     <groupId>org.exoplatform.ecm</groupId>
     <artifactId>config</artifactId>
-    <version>trunk</version>
+    <version>novabonita</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -64,23 +64,23 @@
     </dependency>
 
     <dependency>
-      <groupId>org.exoplatform.ecm</groupId>
-      <artifactId>exo.ecm.component.workflow.impl.jbpm.engine</artifactId>
+      <groupId>org.exoplatform.workflow</groupId>
+      <artifactId>exo.workflow.component.workflow.impl.jbpm.engine</artifactId>
       <version>3.0</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.exoplatform.ecm</groupId>
-      <artifactId>exo.ecm.component.workflow.impl.jbpm.facade</artifactId>
-      <version>${org.exoplatform.ecm.version}</version>
+      <groupId>org.exoplatform.workflow</groupId>
+      <artifactId>exo.workflow.component.workflow.impl.jbpm.facade</artifactId>
+      <version>trunk</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.exoplatform.ecm</groupId>
-      <artifactId>exo.ecm.component.workflow.impl.bonita</artifactId>
-      <version>${org.exoplatform.ecm.version}</version>
+      <groupId>org.exoplatform.workflow</groupId>
+      <artifactId>exo.workflow.component.workflow.impl.bonita</artifactId>
+      <version>trunk</version>
       <scope>provided</scope>
     </dependency>
 
