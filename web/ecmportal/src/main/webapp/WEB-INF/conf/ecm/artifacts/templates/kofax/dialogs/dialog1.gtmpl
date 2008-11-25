@@ -14,16 +14,18 @@
 	        uicomponent.addTextField("name", fieldName) ; 
 	      %>			  
 			  </td>
-			</tr>		
-			<tr>
-	      <td class="FieldLabel"><%=_ctx.appRes("Kofax.dialog.label.categories")%></td>
-	      <td class="FieldComponent">
-		      <% 
-		        String[] fieldCategories = ["jcrPath=/node/exo:category", "selectorClass=org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector", "selectorIcon=AddNewNodeIcon", "validate=empty"];
-		        uicomponent.addActionField("categories", fieldCategories);
-		      %>
-		    </td>
-		  </tr>
+			</tr>
+			<%if(!uicomponent.getId().equals("UILanguageDialogForm")){%>		
+				<tr>
+		      <td class="FieldLabel"><%=_ctx.appRes("Kofax.dialog.label.categories")%></td>
+		      <td class="FieldComponent">
+			      <% 
+			        String[] fieldCategories = ["jcrPath=/node/exo:category", "selectorClass=org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector", "selectorIcon=AddNewNodeIcon", "validate=empty"];
+			        uicomponent.addActionField("categories", fieldCategories);
+			      %>
+			    </td>
+			  </tr>
+		  <%}%>
 	    <%
 	      int i = 1;
 	      for(property in node.getProperties()) {

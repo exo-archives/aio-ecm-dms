@@ -104,7 +104,6 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
     TemplateService templateService = getApplicationComponent(TemplateService.class);
     String userName = Util.getPortalRequestContext().getRemoteUser();
     try {      
-      System.out.println("==>" + templateService.getTemplatePathByUser(true, documentType_, userName, repositoryName));
       return templateService.getTemplatePathByUser(true, documentType_, userName, repositoryName);
     } catch (Exception e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
