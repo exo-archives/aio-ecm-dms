@@ -1,11 +1,12 @@
 <%
- import org.exoplatform.services.organization.User;
- import org.exoplatform.webui.core.UIPopupWindow;
- uiform.begin()
- def rcontext = _ctx.getRequestContext() ;
- boolean isMulti = uicomponent.getMulti();
-// rcontext.getJavascriptManager().importJavascript("eXo.ecm.UIUserSelector","/ecm/javascript/");
-// rcontext.getJavascriptManager().addJavascript('eXo.ecm.UIUserSelector.init("'+uiform.id+'") ;') ;
+  import org.exoplatform.services.organization.User;
+  import org.exoplatform.webui.core.UIPopupWindow;
+  uiform.begin()
+  def rcontext = _ctx.getRequestContext() ;
+  boolean isMulti = uicomponent.getMulti();
+  //rcontext.getJavascriptManager().addJavascript('eXo.ecm.UIUserSelector.init("'+uiform.id+'") ;') ;
+  //rcontext.getJavascriptManager().addJavascript('eXo.ecm.UIUserSelector.captureInput("'+uiform.FIELD_KEYWORD+'","'+uicomponent.event('Search')+'") ;') ;
+  //rcontext.getJavascriptManager().addJavascript('eXo.ecm.UIUserSelector.captureInput("'+uiform.FIELD_GROUP+'","'+uicomponent.event('FindGroup',uicomponent.getSelectedGroup())+'") ;') ;
 %> 
 <div class="$uicomponent.id" id="$uicomponent.id">
   <div class="SelectUserContainer">

@@ -10,11 +10,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.ComponentSelector;
 import org.exoplatform.ecm.jcr.UIPopupComponent;
 import org.exoplatform.ecm.jcr.UISelector;
+import org.exoplatform.services.organization.MembershipHandler;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.Query;
 import org.exoplatform.services.organization.User;
@@ -248,22 +250,34 @@ public class UIUserSelector extends UIForm implements UIPopupComponent, Componen
       String filter = uiForm.getUIFormSelectBox(FIELD_FILTER).getValue();
       if(filter == null || filter.trim().length() == 0) return;
       Query q = new Query();
-      keyword = "*" + keyword + "*";
-      if(USER_NAME.equals(filter)) {
-        q.setUserName(keyword);
-      } 
-      if(LAST_NAME.equals(filter)) {
-        q.setLastName(keyword);
+      if(keyword != null && keyword.trim().length() != 0) {
+        keyword = "*" + keyword + "*" ;
+        if(USER_NAME.equals(filter)) {
+          q.setUserName(keyword) ;
+        } 
+        if(LAST_NAME.equals(filter)) {
+          q.setLastName(keyword) ;
+        }
+        if(FIRST_NAME.equals(filter)) {
+          q.setFirstName(keyword) ;
+        }
+        if(EMAIL.equals(filter)) {
+          q.setEmail(keyword) ;
+        }
       }
-      if(FIRST_NAME.equals(filter)) {
-        q.setFirstName(keyword);
-      }
-      if(EMAIL.equals(filter)) {
-        q.setEmail(keyword);
-      }
-      List results = new ArrayList();
+      List results = new CopyOnWriteArrayList() ;
       results.addAll(service.getUserHandler().findUsers(q).getAll());
-      ObjectPageList objPageList = new ObjectPageList(results, 10);
+      // remove if user doesn't exist in selected group
+      MembershipHandler memberShipHandler = service.getMembershipHandler();
+      String groupId = uiForm.getSelectedGroup();
+      if(groupId != null && groupId.trim().length() != 0) {
+        for(Object user : results) {
+          if(memberShipHandler.findMembershipsByUserAndGroup(((User)user).getUserName(), groupId).size() == 0) {
+            results.remove(user);
+          }
+        }
+      }
+      ObjectPageList objPageList = new ObjectPageList(results, 10) ;
       uiForm.uiIterator_.setPageList(objPageList);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
