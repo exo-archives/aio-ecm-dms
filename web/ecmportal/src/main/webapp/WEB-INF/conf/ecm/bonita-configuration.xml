@@ -42,10 +42,10 @@
 	          <field name="processLocation"><string>war:/conf/bp</string></field>
 	          <field name="predefinedProcess">
 	            <collection type="java.util.HashSet">
-	              <value><string>/exo.ecm.bp.bonita.payraise-2.1.3.jar</string></value>
-	              <value><string>/exo.ecm.bp.bonita.holiday-2.1.3.jar</string></value>
-	              <value><string>/exo.ecm.bp.bonita.content.validation-2.1.3.jar</string></value>
-	              <value><string>/exo.ecm.bp.bonita.content.backup-2.1.3.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.payraise-2.1.x.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.holiday-2.1.x.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.content.validation-2.1.x.jar</string></value>
+	              <value><string>/exo.ecm.bp.bonita.content.backup-2.1.x.jar</string></value>
 	            </collection>
 	          </field>
 	        </object>
@@ -65,7 +65,7 @@
 	        <value-param>
 	        	<name>autoCreateInNewRepository</name>
 	        	<value>true</value>
-	        </value-param>	        
+          </value-param>
 	        <value-param>
 	        	<name>repository</name>
 	        	<value>repository</value>
