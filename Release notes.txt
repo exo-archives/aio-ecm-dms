@@ -1,5 +1,5 @@
 ==============================================
-	eXo ECM Version 2.1.2 release notes
+	eXo ECM Version 2.1.3 release notes
 ==============================================
 
 - Introduction
@@ -15,76 +15,26 @@
    +) Application Server : Tomcat, JBoss, Jonas, Websphere
    +) Building Tools: Maven 2.0.6 and up
 
-- Complete list of issues fixed in eXo ECM 2.1.2
+Release Notes - exo-ecm - Version 2.1.3
 
 ** Bug
-    * [ECM-1859] - Error when delete version of node in special case
-    * [ECM-2416] - IE: Show message when click on [Vote] or [Comment] icon after search Podcast document
-    * [ECM-2435] - FF: Error in displaying right-click pop-up menu when the name of action is so long
-    * [ECM-2455] - Simple search result: Error in displaying icon in Action column
-    * [ECM-2456] - Error in displaying BC when use 'Previous view'
-    * [ECM-2471] - CmsServiceImpl doesn't support big files
-    * [ECM-2472] - UIUploadForm doesn't support big files
-    * [ECM-2473] - Payrraise sample work flow: invalid form item for the "reasons"
-    * [ECM-2476] - Error in displaying [View Metadata] popup in special case
-    * [ECM-2479] - Don't force to use ExoBroadcastJAASLoginModule
-    * [ECM-2480] - IE: Error in displaying [Path config] and [Document config] form in Content Browser with Vista and Mac skin
-    * [ECM-2483] - Do not display the new language image file
-    * [ECM-2485] - Exception when add getmail action
-    * [ECM-2486] - Error when do action in Workflow controller
-    * [ECM-2487] - Error when show process link when add new process manually in Bussiness Process Center
-    * [ECM-2488] - Error with process task in Process center in special case
-    * [ECM-2489] - Error in background when view comment of Kofax document
-    * [ECM-2490] - Showing paths of Collaboration ws after viewing document in System ws
-    * [ECM-2491] - when user want to edit an article, an clean a non mandatory field, the save as no effect.
-    * [ECM-2492] - it is not possible to remove an uploaded image
-    * [ECM-2496] - Do not display image after download file
-    * [ECM-2511] - Do not identify between state of node and imange icon in Manage Publication
-    * [ECM-2512] - IE Lose stylesheet when view document in Content Browser with Vista and Mac skin
-    * [ECM-2513] - Exception when view 1 nt:file
-    * [ECM-2515] - Lost icon in 'Action' of [BP Definition Controller] tab of Business Process Center with Vista and Mac skin
-    * [ECM-2517] - IE6: Little error in some forms with Vista skin
-    * [ECM-2520] - [admin tab][manageversion] user, who only has read right  with node, can create version for node
-    * [ECM-2521] - After delete a relation, export work, but import failed
-    * [ECM-2523] - IE: Error in displaying when select [File View] of Kofax and File Plan document
-    * [ECM-2524] - IE6: Error in [Path Select]  with Vista skin
-    * [ECM-2526] - Lose [Search] icon in forms 
-    * [ECM-2528] - Do not display values in fields when view a document with a new language after edit that doument
-    * [ECM-2529] - IE6: Error with displaying +/- icon when view 1 node in Vista and Mac skin
-    * [ECM-2530] - Error in [Metadata Information] form
-    * [ECM-2531] - Little error in forms in Fast Content Creator with Vista skin
-    * [ECM-2532] - Upload field with multivalues creates NPE in UIFormUploadInput.decode
-    * [ECM-2534] - IE6: Error in displaying [Search] form of [News] and [Read Ideas] after login
-    * [ECM-2536] - IE: Error in displaying comment-box of Podcast document with default skin
-    * [ECM-2538] - Can not view metadata of uploaded file when add  exo:metadata for this file
-    * [ECM-2541] - Error when do action in [Business Process Center] 
-    * [ECM-2542] - Error when viewing related document of other workspaces
-    * [ECM-2544] - Can not search document in Content Browser with category path is root
-    * [ECM-2549] - Can not view content of File and Kofax document in [Task Manager] pop-up
-    * [ECM-2552] -  [Unknown error] when do not put value in [Item per page] field when config for Content Browser
-    * [ECM-2557] - Auditing info event name properties missing for extended event types
-    * [ECM-2558] - Auditing action cannot be changed of  view
-    * [ECM-2559] - File Explorer - Manage publication cannot be cganed of view
-    * [ECM-2566] - [Unknown error] when enrol for child node of [Groups] in Collaboration Center drive
-    * [ECM-2567] - [content browser], [fast content creator] [lock node] can't create new document or vote or comment for document from fast content creator and CB  when location node is locked by user locked node
-
+    * [ECM-2506] - Need a refresh action to display Check In option in right click menu after enroll
+    * [ECM-2685] - CLONE -[Unknow error] appears when click on Manager Metadata (ECM 2.1)
+    * [ECM-2695] - PortletMode Exception raised when trying to use ContentBrowser Portlet Document view using an anonymous access
+    * [ECM-2704] - Content Permissions are not applied when doing a query in the content browser portlet
+    * [ECM-2711] - The org.exoplatform.services.workflow.impl.bonita.WorkflowServiceContainerImpl doesn't release properly the resources stored into the ThreadLocal
+    * [ECM-2713] - Error during import in ECM bases products.
+    * [ECM-2745] - The forms.xml generate the same component for Type=date & type=datetime
+    * [ECM-2746] - Refresh of the content view after modifying the folder path manually in the path field
+    * [ECM-2747] - The class org.exoplatform.ecm.webui.component.fastcontentcreator.UIFastContentCreatorPortlet needs to close the session provider properly in anonymous mode
+    * [ECM-2750] - JCR Explorer "Edit/Add" node stop working when one association template-node type is invalid
+    * [ECM-2769] - Can not set default for nt:file when change localised
 
 ** Improvement
-    * [ECM-2482] - Add ressource bundle for nt:folder and nt:unstructured
-
-** New Feature
-    * [ECM-2522] - Switch to JCR 1.9.3
+    * * [ECM-2743] - Check if the class org.exoplatform.ecm.jcr.RssServlet can better handle the Portal Container to be compatible with multiple portal instance
+    * * [ECM-2817] - Use an appropriate user selector
 
 ** Task
-    * [ECM-2414] - Backport Audit function to 2.1.2
-    * [ECM-2477] - Change [Manage Publication] form
-    * [ECM-2484] - Document Contentbrowser preferences
-    * [ECM-2510] - Switch to use JCR 1.9.3
-    * [ECM-2516] - In Vista skin, should put the second text on the same line with the first in [Tagging this document] popup
-    * [ECM-2525] - IE6: Need to put  background of icons in a straight line in Vista and Mac skin
-    * [ECM-2550] - Change border of [Permission Browser] pop-up when add workflow action for node
-    * [ECM-2555] - FF: Need space between [Event View] and [Information] in Content Browser with Mac skin
-    * [ECM-2561] - IE: Need put the [close] button in the center of [Search] form
-    * [ECM-2565] - Need border of  [compare] form when compare version of Podcast document with Mac skin
-    * [ECM-2569] - Release ECM 2.1.2
+    * [ECM-2708] - Unable to create multivalued select box in dialog
+
 
