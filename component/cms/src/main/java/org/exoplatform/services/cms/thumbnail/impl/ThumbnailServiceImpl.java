@@ -200,9 +200,9 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
     Node parentNode = showingNode.getParent();
     if(parentNode.hasNode(EXO_THUMBNAILS_FOLDER)) {
       Node thumbnailFolder = parentNode.getNode(EXO_THUMBNAILS_FOLDER);
-      thumbnailFolder.save();
       try {
         thumbnailFolder.getNode(((NodeImpl) showingNode).getInternalIdentifier()).remove();
+        thumbnailFolder.save();
       } catch(PathNotFoundException path) {
         return;
       }

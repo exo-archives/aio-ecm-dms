@@ -130,10 +130,9 @@ public class ThumbnailRESTService implements ResourceContainer {
           inputStream = thumbnailNode.getProperty(propertyName).getStream();
         }
         showingNode.getSession().save();
-        return Response.Builder.ok()
-        .header(LASTMODIFIED, lastModified)
-        .entity(inputStream, "image")
-        .build();
+        return Response.Builder.ok().header(LASTMODIFIED, lastModified)
+                                    .entity(inputStream, "image")
+                                    .build();
       }
     }
     return getThumbnailRes(parentNode, identifier, propertyName);

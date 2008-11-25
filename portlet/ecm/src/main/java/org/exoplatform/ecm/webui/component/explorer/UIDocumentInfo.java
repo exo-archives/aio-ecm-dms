@@ -185,6 +185,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   public String getThumbnailImage(Node node) throws Exception {
     return Utils.getThumbnailImage(node, ThumbnailService.MEDIUM_SIZE);
   }
+  
+  public Node getThumbnailNode(Node node) throws Exception {
+    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+    return thumbnailService.getThumbnailNode(node);
+  }
 
   public String getDownloadLink(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;    
