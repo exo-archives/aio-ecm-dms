@@ -23,8 +23,10 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemExistsException;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.lock.LockException;
@@ -35,6 +37,7 @@ import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
 import org.exoplatform.ecm.webui.utils.LockUtil;
@@ -43,6 +46,7 @@ import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
+import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -150,6 +154,10 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
       RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+      boolean hasCategories = false;
+      String categoriesPath = null;
+      String[] categoriesPathList = null;
+      CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);      
       PortletPreferences preferences = uiForm.getPortletPreferences() ;
       String repository = preferences.getValue(Utils.REPOSITORY, "") ;
       String prefLocate = preferences.getValue("path", "") ;
@@ -177,6 +185,46 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
           }
         }
       }
+      for (int i = 0; i < inputs.size(); i++) {        
+        UIFormInputBase input = (UIFormInputBase) inputs.get(i);
+        if((input.getName() != null) && input.getName().equals("categories")) {
+          hasCategories = true;
+          categoriesPath = input.getValue().toString();
+          if (categoriesPath.startsWith("[")) categoriesPath = categoriesPath.substring(1, categoriesPath.length()).trim();
+          if (categoriesPath.endsWith("]")) categoriesPath = categoriesPath.substring(0, categoriesPath.length()-1).trim();
+          if ((categoriesPath == null) || (categoriesPath.length() == 0)) {
+            uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return;
+          }
+          categoriesPathList = categoriesPath.split(",");                    
+          Session systemSession = categoriesService.getSession(repository);          
+          for(String categoryPath : categoriesPathList) {              
+            if((categoryPath != null) && (categoryPath.trim().length() > 0)){
+              try {
+                systemSession.getItem(categoryPath.trim());
+              } catch (ItemNotFoundException e) {
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING)) ;
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+                return;
+              } catch (RepositoryException re) {
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING)) ;
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                return;
+              } catch(Exception e) {
+                e.printStackTrace();
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING)) ;
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                return;
+              }
+            }
+          }                      
+        }
+      }
       Map inputProperties = DialogFormUtil.prepareMap(uiForm.getChildren(), uiForm.getInputProperties()) ;
       Node homeNode = null;
       Node newNode = null ;
@@ -202,6 +250,9 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
         homeNode.getSession().save() ;
         if(homeNode.hasNode(addedPath.substring(addedPath.lastIndexOf("/") + 1))) {
           newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1));
+          if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
+            categoriesService.addMultiCategory(newNode, categoriesPathList, repository);            
+          }
           event.getRequestContext().setAttribute("nodePath", newNode.getPath());
         }
         uiForm.reset() ;
@@ -265,6 +316,18 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
       Class clazz = Class.forName(classPath, true, cl) ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
+      
+      String value = uiForm.getUIStringInput(fieldName).getValue();
+      String[] arrayTaxonomy = new String[1];
+      if (value != null && !value.equals("")) {
+        arrayTaxonomy = value.split(",");
+        if (arrayTaxonomy.length > 0) {
+          if (arrayTaxonomy[0].startsWith("[")) arrayTaxonomy[0] = arrayTaxonomy[0].substring(1, arrayTaxonomy[0].length());
+          if (arrayTaxonomy[arrayTaxonomy.length - 1].endsWith("]")) {
+            arrayTaxonomy[arrayTaxonomy.length - 1] = arrayTaxonomy[arrayTaxonomy.length - 1].substring(0, arrayTaxonomy[arrayTaxonomy.length - 1].length() - 1);  
+          }
+        }
+      }
       if(uiComp instanceof UIOneNodePathSelector) {
         PortletPreferences preferences = uiForm.getPortletPreferences() ;
         String repositoryName = preferences.getValue("repository", "") ;
@@ -294,6 +357,37 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
         ((UIOneNodePathSelector)uiComp).setRootNodeLocation(repositoryName, wsName, rootPath) ;
         ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
         ((UIOneNodePathSelector)uiComp).init(provider);
+      }else if (uiComp instanceof UICategoriesSelector){
+        CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
+        PortletPreferences preferences = uiForm.getPortletPreferences() ;
+        String repository = preferences.getValue(Utils.REPOSITORY, "") ;
+        String prefLocate = preferences.getValue("path", "") ;
+        String workspace = preferences.getValue("workspace", "");
+        RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class);
+        Session session = null;
+        try {
+          session = repositoryService.getRepository(repository).login(workspace) ;
+        } catch(Exception e) {
+          session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
+        }
+        Node currentNode = (Node) session.getItem(prefLocate);        
+        List<Node> cats = categoriesService.getCategories(currentNode, repository);
+        List<String> arrCategoriesList = new ArrayList<String>();        
+        for(int i=0; i<cats.size(); i++) {
+          arrCategoriesList.add(cats.get(i).getPath());          
+        }        
+        ((UICategoriesSelector)uiComp).setExistedCategoryList(arrCategoriesList);       
+        if (value != null && !value.equals("")) {
+          List<String> listTaxonomy = new ArrayList<String>();
+          if (arrayTaxonomy.length > 0) {
+            for (int i = 0; i < arrayTaxonomy.length; i++) {
+              if ((arrayTaxonomy[i] != null) && (arrayTaxonomy[i].length() > 0) && !listTaxonomy.contains(arrayTaxonomy[i])) 
+                listTaxonomy.add(arrayTaxonomy[i]);
+            }
+          }
+          ((UICategoriesSelector)uiComp).setExistedCategoryList(listTaxonomy);
+        }
+        ((UICategoriesSelector)uiComp).init();
       }
       uiContainer.initPopup(uiComp) ;
       String param = "returnField=" + fieldName ;
