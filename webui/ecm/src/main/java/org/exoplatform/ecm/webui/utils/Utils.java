@@ -143,6 +143,8 @@ public class Utils {
   final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
   final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY};
   
+  final static public String CATEGORY_MANDATORY = "categoryMandatoryWhenFileUpload";
+  
   public Map<String, Object> maps_ = new HashMap<String, Object>();
 
   public static String encodeHTML(String text) {

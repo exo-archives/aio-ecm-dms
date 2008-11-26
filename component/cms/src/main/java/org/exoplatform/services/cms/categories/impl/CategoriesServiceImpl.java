@@ -17,7 +17,6 @@
 package org.exoplatform.services.cms.categories.impl;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.ItemExistsException;
@@ -29,8 +28,6 @@ import javax.jcr.Value;
 import javax.jcr.Workspace;
 
 import org.exoplatform.container.component.ComponentPlugin;
-import org.exoplatform.container.xml.InitParams;
-import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -44,36 +41,21 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   private static final String CATEGORY_PROP = "exo:category";
   private static final String COPY = "copy";
   private static final String CUT = "cut"; 
-  private static final String CATEGORIES_MANDATORY = "categoryMandatoryWhenFileUpload";
   
-  private boolean isCategoriesMandatory;
   private RepositoryService repositoryService_;  
   private String baseTaxonomyPath_ ;  
   List<TaxonomyPlugin> plugins_ = new ArrayList<TaxonomyPlugin>() ;
 
   public CategoriesServiceImpl(RepositoryService repositoryService,
-      NodeHierarchyCreator nodeHierarchyCreator, InitParams params) throws Exception{  
+      NodeHierarchyCreator nodeHierarchyCreator) throws Exception{  
     repositoryService_ = repositoryService;    
     baseTaxonomyPath_ = nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);
-    Iterator<ValueParam> iterator = params.getValueParamIterator();   
-    while (iterator.hasNext()) {      
-      ValueParam object = iterator.next();
-      if (object.getName().trim().equalsIgnoreCase(CATEGORIES_MANDATORY)) {
-        String objectValue = object.getValue().trim();
-        if (objectValue.equalsIgnoreCase("true")) isCategoriesMandatory = true;
-        else isCategoriesMandatory = false;
-      }
-    } 
   }
   
   public void init(String repository) throws Exception {
     for(TaxonomyPlugin plugin : plugins_) {
       plugin.init(repository) ;
     }
-  }
-  
-  public boolean isCategoriesMandatory() {
-    return isCategoriesMandatory;
   }
   
   public void addTaxonomyPlugin(ComponentPlugin plugin) {    
