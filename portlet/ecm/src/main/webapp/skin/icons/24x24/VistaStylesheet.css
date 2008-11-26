@@ -136,7 +136,7 @@
 
 .ManageHiddenIcon {
   width: 24px; height: 24px;
-  background: url('VistaSkin/AddRemoveHidden.gif') no-repeat ;
+  background: url('DefaultSkin/AddRemoveHidden.gif') no-repeat ;
 }
 
 .ExportNodeIcon {
