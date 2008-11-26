@@ -102,7 +102,7 @@
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 
 .UIJCRExplorerPortlet .UIDocumentWorkspace {
-  height: 421px;
+  height: 431px;
   overflow: auto;
   /*
 	* minh.js.exo
@@ -174,6 +174,7 @@
 .UIJCRExplorerPortlet .UIListGrid .LeftColumn .Icon16x16 {
 	float: none;
 	margin: auto;
+	width: 20px;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn {
@@ -185,6 +186,56 @@
 	width: 95%;
 	overflow: hidden;
 } 
+
+/*############################## -- Begin CoverFlow -- ##############################*/
+.UIJCRExplorerPortlet .UICoverFlowView .TLBox {
+	background: url('DefaultSkin/background/CoverFlow.png') no-repeat left top;
+	padding-left: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .TRBox {
+	background: url('DefaultSkin/background/CoverFlow.png') no-repeat right top;
+	padding-right: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .TMBox {
+	background: url('DefaultSkin/background/CoverFlow.png') repeat-x center -23px;
+	height: 22px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .MLBox {
+	background: url('DefaultSkin/background/MiddleCoverFlow.png') repeat-y left top;
+	padding-left: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .MRBox {
+	background: white url('DefaultSkin/background/MiddleCoverFlow.png') repeat-y right top;
+	padding-right: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .MCBox {
+	background: white;
+	padding: 0px 20px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .BLBox {
+	background: url('DefaultSkin/background/CoverFlow.png') no-repeat left bottom;
+	padding-left: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .BRBox {
+	background: url('DefaultSkin/background/CoverFlow.png') no-repeat right bottom;
+	padding-right: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .BMBox {
+	background: url('DefaultSkin/background/CoverFlow.png') repeat-x center -46px;
+	height: 22px;
+}
+
+
+
+
 /*############################## -- Begin MenuPopup -- ##############################*/
 
 .UIJCRExplorerPortlet  .UIActionListContainer .UIFormWithTitle  {
