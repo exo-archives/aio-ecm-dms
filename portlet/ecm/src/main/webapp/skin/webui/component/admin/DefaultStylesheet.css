@@ -198,7 +198,6 @@
 .UIWorkspaceWizard .UIWizardAction .UIAction {
 	float: right;
 	padding-right: 10px;
-	width: auto;
 }
 
 .UIWorkspaceWizard .UIWizardAction .UIAction .ActionContainer {
@@ -395,10 +394,6 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a:hover {
   color: orange;
-}
-
-.UIECMAdminPortlet .UIViewContainer .UIPopupWindow .UITabPane .FormContainer a:hover {
-	color: #058EE6;
 }
 
 /*############################## -- UINamespaceManager -- ########################*/

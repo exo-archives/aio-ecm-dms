@@ -283,7 +283,6 @@
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIAction {
 	float: right;
 	padding-right: 15px;
-	width: auto;
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIAction .ActionContainer {

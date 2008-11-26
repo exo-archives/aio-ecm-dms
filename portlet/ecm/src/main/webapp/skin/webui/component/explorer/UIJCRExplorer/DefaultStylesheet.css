@@ -740,12 +740,10 @@
 
 /*====================================UIAnyPermission==================================*/
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission {
-	border: 1px solid #B7B7B7;
 	margin-bottom: 2px;
 }
 
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .HorizontalLayout {
-	border: none;
 	padding: 0px;
 }
 
@@ -770,10 +768,6 @@
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
 	vertical-align: middle;
 	padding: 2px;
-}
-
-.UIJCRExplorerPortlet .UIAnyPermission .HorizontalLayout .UIFormGrid .FieldLabel {
-	width: 108px;
 }
 
 /*====================================UIActionManager==================================*/
