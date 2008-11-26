@@ -25,24 +25,25 @@
 .UIHomePagePortlet .AdImageRight {
 	background: url('DefaultSkin/background/RightHome.jpg') no-repeat right;
 	text-align: right;
-	height: 240px; oveflow: hidden;
-	padding: 0px 32% 0px 0px;
+	height: 257px; oveflow: hidden;
+	padding: 0px 36px 0px 0px;
 	letter-spacing: 1px;
 }
 
 .UIHomePagePortlet .AdImageLeft .EmptyBlock {
-	height: 100px;
+	height: 105px;
 }
 
 .UIHomePagePortlet .AdImageLeft .ProductSlogan {
-	font-size: 22px; font-weight: bold;
-	color: #9b166f;
+	font-size: 22px; font-style: italic;
+	color: #2c2c2c;
+	font-family: Lucida Sans;
 }
 
 .UIHomePagePortlet .AdImageLeft .ProductIntro {
 	font-size: 14px;
-	color: #2d6d92;
-	line-height: 16px;
+	color: #3485b4; font-weight: bold;
+	line-height: 30px;
 }
 
 .UIHomePagePortlet .HomePortletContent {
