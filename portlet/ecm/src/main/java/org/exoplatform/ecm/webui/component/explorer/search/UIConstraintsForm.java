@@ -468,8 +468,10 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
    * @param value: value of choosen category
    */
   public void doSelect(String selectField, Object value) throws Exception {
-    /* Set value to text box*/
+    /* Set value to textbox */
     getUIStringInput(selectField).setValue(value.toString());
+    /* Set value for checkbox is checked */
+    getUIFormCheckBoxInput(UIConstraintsForm.CATEGORY_PROPERTY).setChecked(true);
     UISearchContainer uiSearchContainer = getAncestorOfType(UISearchContainer.class);
     /* Disable all tab */
     for(UIComponent uiComponent : getAncestorOfType(UIECMSearch.class).getChildren()) {

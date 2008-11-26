@@ -136,7 +136,10 @@ public class UINodeTypeSelectForm extends UIForm implements UIPopupComponent {
           selectedNodeTypes.remove(listCheckbox.get(i).getName()) ;
         }
       }
+      /* Set value for textbox */
       uiForm.setNodeTypes(selectedNodeTypes) ;
+      /* Set value of checkbox is checked */
+      uiConstraintsForm.getUIFormCheckBoxInput(UIConstraintsForm.NODETYPE_PROPERTY).setChecked(true);
       UIPopupContainer uiPopup = uiSearchContainer.getChild(UIPopupContainer.class) ;
       uiPopup.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;

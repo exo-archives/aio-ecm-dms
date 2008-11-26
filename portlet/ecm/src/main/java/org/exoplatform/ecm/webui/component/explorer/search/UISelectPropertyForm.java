@@ -26,6 +26,7 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 
+import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
@@ -39,6 +40,7 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormRadioBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 
@@ -133,7 +135,16 @@ public class UISelectPropertyForm extends UIForm implements UIPopupComponent {
       UISearchContainer uiSearchContainer = UIPopupContainer.getParent() ;
       UIConstraintsForm uiConstraintsForm =
         uiSearchContainer.findFirstComponentOfType(UIConstraintsForm.class) ;
+      /* Set value for textbox */
       uiConstraintsForm.getUIStringInput(uiForm.fieldName_).setValue(property) ;
+      /*  Set value of checkbox is checked when choose value of property */
+      if (uiForm.fieldName_.equals(UIConstraintsForm.PROPERTY1)) {
+        uiConstraintsForm.getUIFormCheckBoxInput(UIConstraintsForm.EXACTLY_PROPERTY).setChecked(true);
+      } else if (uiForm.fieldName_.equals(UIConstraintsForm.PROPERTY2)) {
+        uiConstraintsForm.getUIFormCheckBoxInput(UIConstraintsForm.CONTAIN_PROPERTY).setChecked(true);
+      } else if (uiForm.fieldName_.equals(UIConstraintsForm.PROPERTY3)) {
+        uiConstraintsForm.getUIFormCheckBoxInput(UIConstraintsForm.NOT_CONTAIN_PROPERTY).setChecked(true);
+      }
       UIPopupContainer.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiConstraintsForm) ;
