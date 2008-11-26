@@ -35,6 +35,7 @@ import javax.jcr.RepositoryException;
  */
 public interface ThumbnailService {
 
+  final public static String EXO_THUNBNAILS = "exo:thumbnails".intern();
   final public static String EXO_THUMBNAIL = "exo:thumbnail".intern();
   final public static String SMALL_SIZE = "exo:smallSize".intern();
   final public static String MEDIUM_SIZE = "exo:mediumSize".intern();

@@ -49,6 +49,14 @@ import org.exoplatform.services.rest.transformer.PassthroughOutputTransformer;
  *          minh.dang@exoplatform.com
  * Oct 23, 2008 11:09:39 AM
  */
+/**
+ * Provide the request which will be used to get the response data
+ * {repoName} Repository name
+ * {workspaceName} Name of workspace
+ * {nodePath} The node path
+ * Example: 
+ * <img src="/portal/rest/thumbnailImage/repository/collaboration/test.gif" />
+ */
 @URITemplate("/thumbnailImage/{repoName}/{workspaceName}/{nodePath}/")
 public class ThumbnailRESTService implements ResourceContainer {
   
@@ -61,7 +69,15 @@ public class ThumbnailRESTService implements ResourceContainer {
     repositoryService_ = repositoryService;
     thumbnailService_ = thumbnailService;
   }
-  
+/**
+ * Get the image with medium size
+ * ex: /portal/rest/thumbnailImage/repository/collaboration/test.gif/?size=medium
+ * @param repoName Repository name
+ * @param wsName Workspace name
+ * @param nodePath Node path
+ * @return Response inputstream
+ * @throws Exception
+ */  
   @QueryTemplate("size=medium")
   @HTTPMethod("GET")
   @InputTransformer(PassthroughInputTransformer.class)
@@ -72,6 +88,15 @@ public class ThumbnailRESTService implements ResourceContainer {
     return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.MEDIUM_SIZE);
   }
   
+/**
+ * Get the image with big size
+ * ex: /portal/rest/thumbnailImage/repository/collaboration/test.gif/?size=big
+ * @param repoName Repository name
+ * @param wsName Workspace name
+ * @param nodePath Node path
+ * @return Response inputstream
+ * @throws Exception
+ */   
   @QueryTemplate("size=big")
   @HTTPMethod("GET")
   @InputTransformer(PassthroughInputTransformer.class)
@@ -82,6 +107,15 @@ public class ThumbnailRESTService implements ResourceContainer {
     return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.BIG_SIZE);
   }
   
+/**
+ * Get the image with small size
+ * ex: /portal/rest/thumbnailImage/repository/collaboration/test.gif/?size=small
+ * @param repoName Repository name
+ * @param wsName Workspace name
+ * @param nodePath Node path
+ * @return Response inputstream
+ * @throws Exception
+ */   
   @QueryTemplate("size=small")
   @HTTPMethod("GET")
   public Response getSmallImage(@URIParam("repoName") String repoName, 
@@ -103,7 +137,8 @@ public class ThumbnailRESTService implements ResourceContainer {
         try {
           thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
         } catch(PathNotFoundException e) {
-          thumbnailFolder = parentNode.addNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
+          thumbnailFolder = 
+            parentNode.addNode(ThumbnailService.EXO_THUMBNAILS_FOLDER, ThumbnailService.EXO_THUNBNAILS);
           parentNode.save();
           if(thumbnailFolder.canAddMixin(ThumbnailService.HIDDENABLE_NODETYPE)) {
             thumbnailFolder.addMixin(ThumbnailService.HIDDENABLE_NODETYPE);
@@ -114,9 +149,9 @@ public class ThumbnailRESTService implements ResourceContainer {
         try {
           thumbnailNode = thumbnailFolder.getNode(identifier);
         } catch(PathNotFoundException path) {
-          thumbnailNode = thumbnailFolder.addNode(identifier);
+          thumbnailNode = thumbnailFolder.addNode(identifier, ThumbnailService.EXO_THUMBNAIL);
+          thumbnailFolder.save();
         }
-        thumbnailFolder.save();
         if(!thumbnailNode.hasProperty(propertyName)) {
           BufferedImage image = ImageIO.read(content.getProperty("jcr:data").getStream());
           thumbnailService_.addThumbnailImage(thumbnailNode, image, propertyName);

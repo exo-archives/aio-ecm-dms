@@ -69,8 +69,8 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
     while(nodeIter.hasNext()) {
       Node childNode = nodeIter.nextNode();
       thumbnailNode = addThumbnailNode(childNode);
-      if(thumbnailNode != null && thumbnailNode.isNodeType(EXO_THUMBNAIL) && 
-          thumbnailNode.hasProperty(BIG_SIZE)) {
+      if(thumbnailNode != null && thumbnailNode.getPrimaryNodeType().getName().equals(EXO_THUMBNAIL)
+          && thumbnailNode.hasProperty(BIG_SIZE)) {
         listNodes.add(childNode);
       }
     }
@@ -120,9 +120,6 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
   }
   
   public void addThumbnailImage(Node thumbnailNode, BufferedImage image, String propertyName) throws Exception {
-    if(!thumbnailNode.isNodeType(EXO_THUMBNAIL) && thumbnailNode.canAddMixin(EXO_THUMBNAIL)) {
-      thumbnailNode.addMixin(EXO_THUMBNAIL);
-    }
     if(propertyName.equals(SMALL_SIZE)) parseImageSize(thumbnailNode, image, smallSize_, SMALL_SIZE);
     else if(propertyName.equals(MEDIUM_SIZE)) parseImageSize(thumbnailNode, image, mediumSize_, MEDIUM_SIZE);
     else if(propertyName.equals(BIG_SIZE)) parseImageSize(thumbnailNode, image, bigSize_, BIG_SIZE);
@@ -169,7 +166,7 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
     try {
       thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
     } catch(PathNotFoundException e) {
-      thumbnailFolder = parentNode.addNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
+      thumbnailFolder = parentNode.addNode(EXO_THUMBNAILS_FOLDER, EXO_THUNBNAILS);
       if(thumbnailFolder.canAddMixin(ThumbnailService.HIDDENABLE_NODETYPE)) {
         thumbnailFolder.addMixin(ThumbnailService.HIDDENABLE_NODETYPE);
       }
@@ -180,7 +177,7 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
     try {
       thumbnailNode = thumbnailFolder.getNode(identifier);
     } catch(PathNotFoundException path) {
-      thumbnailNode = thumbnailFolder.addNode(identifier);
+      thumbnailNode = thumbnailFolder.addNode(identifier, EXO_THUMBNAIL);
     }
     thumbnailFolder.save();
     return thumbnailNode;
