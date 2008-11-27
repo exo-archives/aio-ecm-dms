@@ -80,7 +80,7 @@
 									 }
 									 .RightScrollBar {
 										background: url('/eXoECMResources/skin/images/CoverFlow/Slice.png') no-repeat right -64px;
-										padding-right: 32px;
+										padding-right: 28px;
 									 }
 									 .CenterScrollBar {
 										background: url('/eXoECMResources/skin/images/CoverFlow/Slice.png') repeat-x center -96px;
