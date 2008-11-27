@@ -90,6 +90,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   final static public String FIELD_UPLOAD = "upload" ;  
   final static public String JCRCONTENT = "jcr:content";
   final static public String FIELD_TAXONOMY = "fieldTaxonomy";
+  final static public String FIELD_LISTTAXONOMY = "fieldListTaxonomy";
   final static public String POPUP_TAXONOMY = "UIPopupTaxonomy";
   
   private boolean isMultiLanguage_ = false ;
@@ -97,6 +98,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   private boolean isDefault_ = false ;
   private List<String> listTaxonomy = new ArrayList<String>();
   private List<String> listTaxonomy_Temp = new ArrayList<String>();
+  private List<String> listTaxonomy_TempName = new ArrayList<String>();
   
   public UIUploadForm() throws Exception {
     setMultiPart(true) ;
@@ -114,13 +116,32 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       for (int i = 0; i < values.length; i++) {
         String path  = uiExplorer.getSession().getNodeByUUID(values[i].getString()).getPath();
         if (!listTaxonomy.contains(path)) listTaxonomy.add(path);
-        if (!listTaxonomy_Temp.contains(path)) listTaxonomy_Temp.add(path);
+        if (!listTaxonomy_Temp.contains(path)) {
+          listTaxonomy_Temp.add(path);
+          listTaxonomy_TempName.add(cutPath(path));
+        }
       }
     }
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("AddTaxonomy");
-    uiInputAct.setActionInfo(FIELD_TAXONOMY, new String[] {"AddTaxonomy"});
     uiInputAct.addUIFormInput(new UIFormInputInfo(FIELD_TAXONOMY, FIELD_TAXONOMY, null));
+    uiInputAct.setActionInfo(FIELD_TAXONOMY, new String[] {"AddTaxonomy"});
     addUIComponentInput(uiInputAct);
+    
+    UIFormInputSetWithAction uiInputArray = new UIFormInputSetWithAction("ListTaxonomy");
+    uiInputArray.addUIFormInput(new UIFormInputInfo(FIELD_LISTTAXONOMY, FIELD_LISTTAXONOMY, null));
+    addUIComponentInput(uiInputArray);
+  }
+  
+  private String cutPath(String path) {
+    String[] array = path.split("/");
+    String value = "";
+    if (array.length > 4) {
+      for (int i = 4; i < array.length; i++) {
+        value += array[i]; 
+        if (i < array.length - 1) value += "/";
+      }
+    } else value = path;
+    return value;
   }
   
   public List<String> getListTaxonomy() {
@@ -129,6 +150,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   
   public List<String> getlistTaxonomy_Temp() {
     return listTaxonomy_Temp;
+  }
+  
+  public List<String> getlistTaxonomy_TempName() {
+    return listTaxonomy_TempName;
   }
   
   public void setListTaxonomy(List<String> listTaxonomyNew) {
@@ -165,7 +190,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         arrayTaxonomy[arrayTaxonomy.length - 1] = arrayTaxonomy[arrayTaxonomy.length - 1].substring(0, arrayTaxonomy[arrayTaxonomy.length - 1].length() - 1);  
       }
       for (String taxonomy : arrayTaxonomy) {
-        if (!listTaxonomy_Temp.contains(taxonomy.trim())) listTaxonomy_Temp.add(taxonomy.trim());
+        if (!listTaxonomy_Temp.contains(taxonomy.trim())) {
+          listTaxonomy_Temp.add(taxonomy.trim());
+          listTaxonomy_TempName.add(cutPath(taxonomy.trim()));
+        }
       }
     }
     updateAdvanceTaxonomy();
@@ -174,11 +202,11 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   }
   
   private void updateAdvanceTaxonomy() { 
-    UIFormInputSetWithAction inputInfor = getChildById("AddTaxonomy");
+    UIFormInputSetWithAction inputInfor = getChildById("ListTaxonomy");
     inputInfor.setIsDeleteOnly(true);
-    inputInfor.setListInfoField(FIELD_TAXONOMY, listTaxonomy_Temp);
+    inputInfor.setListInfoField(FIELD_LISTTAXONOMY, listTaxonomy_TempName);
     String[] actionInfor = {"RemoveTaxonomy"};
-    inputInfor.setActionInfo(FIELD_TAXONOMY, actionInfor);
+    inputInfor.setActionInfo(FIELD_LISTTAXONOMY, actionInfor);
   }
   
   static  public class SaveActionListener extends EventListener<UIUploadForm> {
@@ -416,6 +444,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       UIUploadForm uiUploadForm = event.getSource();
       UIUploadManager uiUploadManager = uiUploadForm.getParent();
       uiUploadForm.getlistTaxonomy_Temp().remove(intIndex);
+      uiUploadForm.getlistTaxonomy_TempName().remove(intIndex);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadManager);
     }
   }
