@@ -50,21 +50,23 @@ var SimpleView = function() {
 		//registry action drag drop in tree list
 		var UIWorkingArea = DOM.findAncestorByClass(actionArea, "UIWorkingArea");
 		var UITreeExplorer = DOM.findFirstDescendantByClass(UIWorkingArea, "div", "UITreeExplorer");
-		DOM.getElementsBy(
-				function(element) {return element.getAttribute("objectId");},
-				"div",
-				UITreeExplorer,
-				function(element) {
-					if (element.getAttribute("onmousedown")) {
-						mousedown = element.getAttributeNode("onmousedown").value;
-						element.setAttribute("mousedown", mousedown);
+		if (UITreeExplorer) {
+			DOM.getElementsBy(
+					function(element) {return element.getAttribute("objectId");},
+					"div",
+					UITreeExplorer,
+					function(element) {
+						if (element.getAttribute("onmousedown")) {
+							mousedown = element.getAttributeNode("onmousedown").value;
+							element.setAttribute("mousedown", mousedown);
+						}
+						element.onmousedown = Self.mouseDownTree;
+						element.onmouseup = Self.mouseUpTree;
+						element.onmouseover = Self.mouseOverTree;
+						element.onmouseout = Self.mouseOutTree;
 					}
-					element.onmousedown = Self.mouseDownTree;
-					element.onmouseup = Self.mouseUpTree;
-					element.onmouseover = Self.mouseOverTree;
-					element.onmouseout = Self.mouseOutTree;
-				}
-		);
+			);
+		}
 	};
 	
 	//event in tree list
