@@ -153,6 +153,8 @@ public class UIDialogForm extends UIForm {
         uiInput.setValue(node.getName());
         uiInput.setEditable(false);
       } else if(node.hasProperty(propertyName) && !isUpdateSelect) {
+        String relPath = "";
+        String itemRelPath = "";
         if(node.getProperty(propertyName).getDefinition().getRequiredType() == 
           PropertyType.REFERENCE) {
           // Update for many categories
@@ -161,7 +163,9 @@ public class UIDialogForm extends UIForm {
             buffer.append("[");
             Value[] values = node.getProperty(propertyName).getValues();            
             for(Value value : values) {              
-              buffer.append(node.getSession().getNodeByUUID(value.getString()).getPath()).append(",");                
+              relPath = node.getSession().getNodeByUUID(value.getString()).getPath();
+              itemRelPath = relPath.replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
+              buffer.append(itemRelPath).append(",");              
             }
             if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);
             buffer.append("]");
@@ -176,8 +180,10 @@ public class UIDialogForm extends UIForm {
             Value[] values = node.getProperty(propertyName).getValues();
             StringBuffer buffer = new StringBuffer();
             buffer.append("[");
-            for(Value value : values) {
-              buffer.append(node.getSession().getNodeByUUID(value.getString()).getPath()).append(",");
+            for(Value value : values) {              
+              relPath = node.getSession().getNodeByUUID(value.getString()).getPath();
+              itemRelPath = relPath.replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
+              buffer.append(itemRelPath).append(",");
             }
             if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);
             buffer.append("]");            
