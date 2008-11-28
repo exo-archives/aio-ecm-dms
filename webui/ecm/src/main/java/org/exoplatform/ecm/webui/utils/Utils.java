@@ -141,7 +141,10 @@ public class Utils {
 
   final static public String[] FOLDERS = {NT_UNSTRUCTURED, NT_FOLDER};
   final static public String[] NON_EDITABLE_NODETYPES = {NT_UNSTRUCTURED, NT_FOLDER, NT_RESOURCE};
-  final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY};  
+  final public static String[] CATEGORY_NODE_TYPES = {NT_FOLDER, NT_UNSTRUCTURED, EXO_TAXANOMY};
+  
+  final static public String CATEGORY_MANDATORY = "categoryMandatoryWhenFileUpload";
+  
   public Map<String, Object> maps_ = new HashMap<String, Object>();
 
   public static String encodeHTML(String text) {
@@ -338,18 +341,20 @@ public class Utils {
   }
   
   public static String getThumbnailImage(Node node, String propertyName) throws Exception {
-    if(!node.hasProperty(propertyName) && node.getPrimaryNodeType().getName().equals(NT_FILE)) {
+    ThumbnailService thumbnailService = 
+      Util.getUIPortal().getApplicationComponent(ThumbnailService.class);
+    if(node.getPrimaryNodeType().getName().equals(NT_FILE)) {
       String mimeType = node.getNode(JCR_CONTENT).getProperty(JCR_MIMETYPE).getString();
       if(mimeType.startsWith("image")) {
+        Node thumbnailNode = thumbnailService.addThumbnailNode(node);
         InputStream inputStream = node.getNode(JCR_CONTENT).getProperty(JCR_DATA).getStream();
-        ThumbnailService thumbnailService = 
-          Util.getUIPortal().getApplicationComponent(ThumbnailService.class);
-        thumbnailService.createSpecifiedThumbnail(node, ImageIO.read(inputStream), propertyName);
+        thumbnailService.createSpecifiedThumbnail(thumbnailNode, ImageIO.read(inputStream), propertyName);
       }
     }
-    if(node.hasProperty(propertyName)) {
+    Node thumbnailNode = thumbnailService.getThumbnailNode(node);
+    if(thumbnailNode != null && thumbnailNode.hasProperty(propertyName)) {
       DownloadService dservice = Util.getUIPortal().getApplicationComponent(DownloadService.class);
-      InputStream input = node.getProperty(propertyName).getStream();
+      InputStream input = thumbnailNode.getProperty(propertyName).getStream();
       InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image");
       dresource.setDownloadName(node.getName());
       return dservice.getDownloadLink(dservice.addDownloadResource(dresource));

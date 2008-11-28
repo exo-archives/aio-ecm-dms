@@ -7,10 +7,8 @@
  * 9:32:56 AM 
  */
 %>
-<div class="UITreeList">
-  <table class="UIGrid">
-	  <col></col>
-	  <col style="width:60px;"></col>
+<div id="$uicomponent.id">
+  <table class="UIGrid">	  
 	  <thead>
 	    <tr>
 	      <th><%=_ctx.appRes("UITreeList.header.name")%></th>
@@ -32,13 +30,11 @@
 				      even = !even ;
 	      %>
 				      <tr class="$rowClass">
-				        <td>
-				          <%
-				            String path = node.getPath() ;
-				            String nodeName = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
-				           %>
-				          <div class="Text">$nodeName</div>
-				        </td>
+				        <%
+			            String path = node.getPath();
+			            String nodeName = path.substring(path.lastIndexOf("/") + 1, path.length());
+                %>
+				        <td class="Text">$nodeName</td>
 				        <td>
 			              <a href="<%=uicomponent.event("Select", node.getPath())%>">
 			                <div class="Select16x16Icon" style="margin-left:15px; line-height: 24px;"><%=_ctx.appRes("UITreeList.action")%></div>

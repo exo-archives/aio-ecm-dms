@@ -43,11 +43,11 @@
             <field name="processLocation"><string>war:/conf/bp</string></field>
             <field name="predefinedProcess">
               <collection type="java.util.HashSet">
-                <value><string>/exo.ecm.bp.jbpm.payraise-2.2rc1.jar</string></value>
-                <value><string>/exo.ecm.bp.jbpm.holiday-2.2rc1.jar</string></value>                
-                <value><string>/exo.ecm.bp.jbpm.content.validation-2.2rc1.jar</string></value>     
-                <value><string>/exo.ecm.bp.jbpm.content.backup-2.2rc1.jar</string></value>     
-                <!--<value><string>/exo.ecm.bp.jbpm.content.publishing-2.2rc1.jar</string></value> -->                
+                <value><string>/exo.ecm.bp.jbpm.payraise-2.2-SNAPSHOT.jar</string></value>
+                <value><string>/exo.ecm.bp.jbpm.holiday-2.2-SNAPSHOT.jar</string></value>                
+                <value><string>/exo.ecm.bp.jbpm.content.validation-2.2-SNAPSHOT.jar</string></value>     
+                <value><string>/exo.ecm.bp.jbpm.content.backup-2.2-SNAPSHOT.jar</string></value>     
+                <!--<value><string>/exo.ecm.bp.jbpm.content.publishing-trunk.jar</string></value> -->                
               </collection>
             </field>
           </object>

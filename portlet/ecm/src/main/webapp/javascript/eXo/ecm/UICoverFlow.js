@@ -14,7 +14,7 @@ var CoverFlow = function() {
 		iframe.style.border = "none";
 		var workingArea = DOM.findAncestorByClass(portlet, "UIWorkingArea");
 		iframe.style.width = "98%";
-		iframe.style.height = workingArea.offsetHeight - 5 + "px";
+		iframe.style.height = workingArea.offsetHeight - 47 + "px";
 		iframe.style.margin = "auto";
 		portlet.insertBefore(iframe, album);
 		var idoc = iframe.contentWindow.document;  

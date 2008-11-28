@@ -47,32 +47,117 @@ import org.picocontainer.Startable;
  * Dec 5, 2006  
  */
 public class FolksonomyServiceImpl implements FolksonomyService, Startable {
-
+  
+  /**
+   * NodeType EXO_FOLKSONOMIZED_MIXIN
+   */
   final private static String EXO_FOLKSONOMIZED_MIXIN = "exo:folksonomized".intern() ;
+  
+  /**
+   * Property name EXO_FOLKSONOMY_PROP
+   */
   final private static String EXO_FOLKSONOMY_PROP = "exo:folksonomy".intern() ;
+  
+  /**
+   * Mixin Type MIX_REFERENCEABLE_MIXIN
+   */
   final private static String MIX_REFERENCEABLE_MIXIN = "mix:referenceable".intern() ;
+  
+  /**
+   * Node type name EXO_TAG
+   */
   final private static String EXO_TAG = "exo:tag".intern() ;
+  
+  /**
+   * Property name TAG_CREATED_DATE_PROP
+   */
   final private static String TAG_CREATED_DATE_PROP = "exo:tagCreatedDate".intern() ;
+  
+  /**
+   * Property name TAG_STATUS_PROP
+   */
   final private static String TAG_STATUS_PROP = "exo:tagStatus".intern() ;
+  
+  /**
+   * Property name TAG_LAST_UPDATED_DATE_PROP
+   */
   final private static String TAG_LAST_UPDATED_DATE_PROP = "exo:lastUpdatedDate".intern() ;
   
 //  final private static String EXO_TAG_STYLE = "exo:tagStyle".intern() ;
+  
+  /**
+   * Property name TAG_RATE_PROP
+   */
   final private static String TAG_RATE_PROP = "exo:styleRange".intern() ;
+  
+  /**
+   * Property name HTML_STYLE_PROP
+   */
   final private static String HTML_STYLE_PROP = "exo:htmlStyle".intern() ;
 
+  /**
+   * Name of node NORMAL_STYLE
+   */
   final private static String NORMAL_STYLE = "nomal".intern() ;
+  
+  /**
+   * Name of node INTERSTING_STYLE
+   */
   final private static String INTERSTING_STYLE = "interesting".intern() ;
+  
+  /**
+   * Name of nodes ATTRACTIVE_STYLE
+   */
   final private static String ATTRACTIVE_STYLE = "attractive".intern() ;
+  
+  /**
+   * Name of nodes HOT_STYLE
+   */
   final private static String HOT_STYLE = "hot".intern() ;
+  
+  /**
+   * Name of nodes HOSTES_STYLE
+   */
   final private static String HOSTES_STYLE = "hotest".intern() ;    
 
+  /**
+   * RepositoryService object
+   */
   private RepositoryService repoService_ ;
+  
+  /**
+   * NodeHierarchyCreator object
+   */
   private NodeHierarchyCreator nodeHierarchyCreator_ ;   
+  
+  /**
+   * Base path to tag 
+   */
   private String baseTagsPath_ ;  
+  
+  /**
+   * 
+   */
   private String exoTagStylePath_ ;
+  
+  /**
+   * List of TagStylePlugin
+   */
   private List<TagStylePlugin> plugin_ = new ArrayList<TagStylePlugin>() ;
+  
+  /**
+   * ExoCache object
+   */
   private ExoCache cache_ ;  
   
+  /**
+   * Constructor method
+   * Construct repoService_, nodeHierarchyCreator_, baseTagsPath_, exoTagStylePath_, cache_
+   * @param repoService             RepositoryService object
+   * @param nodeHierarchyCreator    NodeHierarchyCreator object
+   * @param cacheService            CacheService object     
+   * @throws Exception
+   */
   public FolksonomyServiceImpl(RepositoryService repoService,
       NodeHierarchyCreator nodeHierarchyCreator, CacheService cacheService ) throws Exception{
     repoService_ = repoService ;
@@ -82,6 +167,11 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     cache_ = cacheService.getCacheInstance(FolksonomyServiceImpl.class.getName()) ;       
   }
 
+  /**
+   * Implement method in Startable
+   * Call init() method
+   * @see {@link #init()}
+   */
   public void start() {
     try {
       init() ;
@@ -90,14 +180,25 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     }
   }
 
+  /**
+   * Implement method in Startable
+   */
   public void stop() { }
 
+  /**
+   * Add new TagStylePlugin in plugin_
+   * @param plugin
+   */
   public void addTagStylePlugin(ComponentPlugin plugin) {      
     if(plugin instanceof TagStylePlugin) {
       plugin_.add((TagStylePlugin)plugin) ;
     }    
   }
   
+  /**
+   * init all avaiable TagStylePlugin
+   * @throws Exception
+   */
   private void init() throws Exception {    
     for(TagStylePlugin plugin : plugin_) {
       try{
@@ -108,6 +209,10 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     }
   }
   
+  /**
+   * Init all TagStylePlugin with session in repository name
+   * @param repository     repository name
+   */
   public void init(String repository) throws Exception {
     for(TagStylePlugin plugin : plugin_) {
       try{
@@ -118,6 +223,18 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     }
   }
   
+  /**
+   * Add new child node in node baseTagsPath_
+   * If there are not node with name in tagNames then create new one
+   * Add mixin type MIX_REFERENCEABLE_MIXIN for new node
+   * Add new property TAG_CREATED_DATE_PROP, TAG_STATUS_PROP
+   * Add new mixin type EXO_FOLKSONOMIZED_MIXIN to current node if not exist
+   * Set property EXO_FOLKSONOMY_PROP for current node
+   * @param node        current node
+   * @param tagNames    Array of node name as child node of exoTagsHomeNode_
+   * @param repository
+   * @throws Exception
+   */
   public void addTag(Node node, String[] tagNames, String repository) throws Exception {        
     Session systemSession = getSystemSession(repository) ;     
     Session currentSession = node.getSession() ;    
@@ -160,11 +277,25 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     systemSession.logout();
   }
   
+  /**
+   * Get node following path in repository
+   * @param path          path to node
+   * @param repository    repository name
+   * @return  node following path
+   * @throws Exception
+   */
   public Node getTag(String path, String repository) throws Exception {    
     Session systemSession = getSystemSession(repository) ;
     return (Node)systemSession.getItem(path) ;
   }
 
+  /**
+   * Get document list      from repository
+   * @param tagPath         path to node in all workspace
+   * @param repository      repository name
+   * @return ArrayList of node
+   * @throws Exception
+   */
   public List<Node> getDocumentsOnTag(String tagPath, String repository) throws Exception {
 //    if(cache_.get(tagPath)!=null) {
 //      return (List<Node>)cache_.get(tagPath) ;
@@ -191,6 +322,11 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return documentList;
   } 
 
+  /**
+   * Get all node base on path = baseTagsPath_ in repository
+   * @param repository      repository name
+   * @return ArrayList of Node
+   */
   public List<Node> getAllTags(String repository) throws Exception {
 //    Object cachedList = cache_.get(baseTagsPath_) ;
 //    if(cachedList != null ) {
@@ -207,6 +343,12 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return tagList ;
   }
   
+  /**
+   *  Get all node base on path = exoTagStylePath_ in repository
+   * @param repository
+   * @return ArrayList of Node
+   * @throws Exception
+   */
   public List<Node> getAllTagStyle(String repository) throws Exception {
 //    Object cachedList = cache_.get(exoTagStylePath_) ;
 //    if(cachedList != null ) {
@@ -223,11 +365,24 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return tagStyleList ;
   }    
   
+  /**
+   * Get session from repository and system workspace
+   * @param repository    repository name
+   * @return session
+   * @throws Exception
+   */
   protected Session getSystemSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repoService_.getRepository(repository) ;
     return manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName()) ;    
   }  
 
+  /**
+   * Get HTML_STYLE_PROP property in styleName node in repository
+   * @param styleName       name of node
+   * @param repository      repository name
+   * @return  value of HTML_STYLE_PROP property of styleName node
+   * @throws Exception
+   */
   public String getTagStyle(String styleName, String repository) throws Exception {
 //    Object cachedObj = cache_.get(styleName) ;
 //    if(cachedObj != null) {
@@ -242,6 +397,15 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return htmlStyle ;
   }
 
+  /**
+   * Update property TAG_RATE_PROP, HTML_STYLE_PROP following value tagRate, htmlStyle
+   * for node in tagPath in repository
+   * @param tagPath     path to node
+   * @param tagRate
+   * @param htmlStyle
+   * @param repository
+   * @throws Exception
+   */
   public void updateStype(String tagPath, String tagRate, String htmlStyle, String repository) throws Exception {
     Session session = getSystemSession(repository) ;
     Node tagStyle = (Node)session.getItem(tagPath) ;
@@ -255,6 +419,12 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
 //    cache_.remove(exoTagStylePath_) ;
   }
 
+  /**
+   * Update TAG_STATUS_PROP property for node in path = tagPath
+   * @param tagPath         path to node
+   * @param repository      repository name
+   * @throws Exception
+   */
   private void updateTagStatus(String tagPath, String repository) throws Exception {    
     int numberOfDocumentOnTag = getDocumentsOnTag(tagPath, repository).size() ;
     Session systemSession = getSystemSession(repository) ;
@@ -289,6 +459,14 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     systemSession.logout();    
   }
 
+  /**
+   * Check numOfDocument is in range of value of TAG_RATE_PROP property in tagStyle node 
+   * @param numOfDocument number of document      
+   * @param tagStyle      tagStyle Node
+   * @return  true if numOfDocument is in range
+   *          false if not
+   * @throws Exception
+   */
   private boolean checkTagRateOnTagStyle(int numOfDocument, Node tagStyle) throws Exception {
     String tagRate = tagStyle.getProperty(TAG_RATE_PROP).getValue().getString() ;
     String[] vals = StringUtils.split(tagRate,"..") ;    
@@ -303,6 +481,14 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return false ;
   }
   
+  /**
+   * Base on uuid in values in EXO_FOLKSONOMY_PROP property in document node,
+   * get all node linked to this document node
+   * @param document          document node
+   * @param repository        repository name
+   * @return                  ArrayList of Node
+   * @throws Exception
+   */
   public List<Node> getLinkedTagsOfDocument(Node document, String repository) throws Exception {
     if(document == null || !document.hasProperty(EXO_FOLKSONOMY_PROP)) 
       return new ArrayList<Node>() ;

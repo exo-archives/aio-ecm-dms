@@ -26,13 +26,16 @@ import javax.jcr.ItemExistsException;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.form.DialogFormActionListeners;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
 import org.exoplatform.ecm.webui.utils.LockUtil;
@@ -40,7 +43,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.CmsService;
-import org.exoplatform.services.cms.JcrInputProperty;
+import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -78,12 +81,13 @@ import org.exoplatform.webui.form.UIFormUploadInput;
       @EventConfig(listeners = UIDocumentForm.RemoveActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.ShowComponentActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIDocumentForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE),
-      @EventConfig(listeners = UIDocumentForm.RemoveDataActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
+      @EventConfig(listeners = DialogFormActionListeners.RemoveDataActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
 
 public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UISelectable {   
   
+  final static public String PATH_TAXONOMY = "/jcr:system/exo:ecm/exo:taxonomies/";
   public UIDocumentForm() throws Exception {
     setActions(new String[]{"Save", "Cancel"}) ;  
   }     
@@ -107,7 +111,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {      
-      return templateService.getTemplatePathByUser(true, contentType, userName, repositoryName) ;
+      return templateService.getTemplatePathByUser(true, contentType, userName, repositoryName);
     } catch (Exception e) {
       e.printStackTrace();
       UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
@@ -136,9 +140,14 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       UIJCRExplorer uiExplorer = documentForm.getAncestorOfType(UIJCRExplorer.class) ;
       List inputs = documentForm.getChildren();
       UIApplication uiApp = documentForm.getAncestorOfType(UIApplication.class);
+      boolean hasCategories = false;
+      String categoriesPath = null;
+      String[] categoriesPathList = null;
+      String repository = uiExplorer.getRepositoryName();
+      CategoriesService categoriesService = documentForm.getApplicationComponent(CategoriesService.class);
       if(documentForm.isAddNew()) {
         for (int i = 0; i < inputs.size(); i++) {
-          UIFormInputBase input = (UIFormInputBase) inputs.get(i);
+          UIFormInputBase input = (UIFormInputBase) inputs.get(i);          
           if((input.getName() != null) && input.getName().equals("name")) {
             String[] arrFilterChar = {".", "/", ":", "[", "]", "*", "'", "|", "\""};          
             String valueName = input.getValue().toString();          
@@ -150,10 +159,51 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
                 return;
               }
             }
-          }
+          }          
         }
       }
-      Map inputProperties = DialogFormUtil.prepareMap(inputs, documentForm.getInputProperties()) ;
+      for (int i = 0; i < inputs.size(); i++) {        
+        UIFormInputBase input = (UIFormInputBase) inputs.get(i);
+        if((input.getName() != null) && input.getName().equals("categories")) {
+          hasCategories = true;
+          categoriesPath = input.getValue().toString();
+          if (categoriesPath.startsWith("[")) categoriesPath = categoriesPath.substring(1, categoriesPath.length()).trim();
+          if (categoriesPath.endsWith("]")) categoriesPath = categoriesPath.substring(0, categoriesPath.length()-1).trim();
+          if ((categoriesPath == null) || (categoriesPath.length() == 0)) {
+            uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return;
+          }
+          categoriesPathList = categoriesPath.split(",");                    
+          Session systemSession = categoriesService.getSession(repository);          
+          for(String categoryPath : categoriesPathList) {              
+            if((categoryPath != null) && (categoryPath.trim().length() > 0)){
+              categoryPath = PATH_TAXONOMY + categoryPath.trim();
+              try {
+                systemSession.getItem(categoryPath.trim());
+              } catch (ItemNotFoundException e) {
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING)) ;
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+                return;
+              } catch (RepositoryException re) {
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING)) ;
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                return;
+              } catch(Exception e) {
+                e.printStackTrace();
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING)) ;
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                return;
+              }
+            }
+          }                      
+        }
+      }      
+      Map inputProperties = DialogFormUtil.prepareMap(inputs, documentForm.getInputProperties());
       Node newNode = null ;
       String nodeType ;
       Node homeNode ;
@@ -183,7 +233,13 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         String addedPath = cmsService.storeNode(nodeType, homeNode, inputProperties, documentForm.isAddNew(),documentForm.repositoryName);
         try {
           homeNode.save() ;
-          newNode = (Node)homeNode.getSession().getItem(addedPath);
+          newNode = (Node)homeNode.getSession().getItem(addedPath);          
+          if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
+            for(int i = 0; i < categoriesPathList.length; i ++ ){
+              categoriesPathList[i] = PATH_TAXONOMY + categoriesPathList[i].trim();
+            }
+            categoriesService.addMultiCategory(newNode, categoriesPathList, repository);            
+          }
         } catch(Exception e) {
           if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
           uiExplorer.updateAjax(event);          
@@ -238,6 +294,18 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       Class clazz = Class.forName(classPath, true, cl) ;
       String rootPath = (String)fieldPropertiesMap.get("rootPath") ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
+      
+      String value = uiForm.getUIStringInput(fieldName).getValue();
+      String[] arrayTaxonomy = new String[1];
+      if (value != null && !value.equals("")) {
+        arrayTaxonomy = value.split(",");
+        if (arrayTaxonomy.length > 0) {
+          if (arrayTaxonomy[0].startsWith("[")) arrayTaxonomy[0] = arrayTaxonomy[0].substring(1, arrayTaxonomy[0].length());
+          if (arrayTaxonomy[arrayTaxonomy.length - 1].endsWith("]")) {
+            arrayTaxonomy[arrayTaxonomy.length - 1] = arrayTaxonomy[arrayTaxonomy.length - 1].substring(0, arrayTaxonomy[arrayTaxonomy.length - 1].length() - 1);  
+          }
+        }
+      }
       if(uiComp instanceof UIOneNodePathSelector) {
         UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
         String repositoryName = explorer.getRepositoryName() ;
@@ -267,6 +335,28 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         ((UIOneNodePathSelector)uiComp).setRootNodeLocation(repositoryName, wsName, rootPath) ;
         ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
         ((UIOneNodePathSelector)uiComp).init(provider);
+      } else if (uiComp instanceof UICategoriesSelector){
+        CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
+        UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+        Node currentNode = uiExplorer.getCurrentNode();
+        String repository = uiExplorer.getRepositoryName();
+        List<Node> cats = categoriesService.getCategories(currentNode, repository);
+        List<String> arrCategoriesList = new ArrayList<String>();        
+        for(int i=0; i<cats.size(); i++) {
+          arrCategoriesList.add(cats.get(i).getPath());          
+        }        
+        ((UICategoriesSelector)uiComp).setExistedCategoryList(arrCategoriesList);       
+        if (value != null && !value.equals("")) {
+          List<String> listTaxonomy = new ArrayList<String>();
+          if (arrayTaxonomy.length > 0) {
+            for (int i = 0; i < arrayTaxonomy.length; i++) {
+              if ((arrayTaxonomy[i] != null) && (arrayTaxonomy[i].length() > 0) && !listTaxonomy.contains(arrayTaxonomy[i])) 
+                listTaxonomy.add(arrayTaxonomy[i]);
+            }
+          }
+          ((UICategoriesSelector)uiComp).setExistedCategoryList(listTaxonomy);
+        }
+        ((UICategoriesSelector)uiComp).init();
       }
       uiContainer.initPopup(uiComp) ;
       String param = "returnField=" + fieldName ;
@@ -285,20 +375,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     }
   }
 
-  static public class RemoveDataActionListener extends EventListener<UIDocumentForm> {
-    public void execute(Event<UIDocumentForm> event) throws Exception {
-      UIDocumentForm uiForm = event.getSource();
-      uiForm.isRemovePreference = true;
-      String referenceNodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node referenceNode = (Node)uiForm.getSesssion().getItem(uiForm.getNodePath() + referenceNodePath);
-      if(referenceNode.hasProperty(Utils.JCR_DATA)) {
-        referenceNode.setProperty(Utils.JCR_DATA, "");
-        uiForm.setDataRemoved(true);
-      }
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
-    }
-  }   
-  
   static  public class CancelActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;

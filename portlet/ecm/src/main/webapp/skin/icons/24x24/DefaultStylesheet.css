@@ -170,11 +170,6 @@
 
 .OverloadThumbnailIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/GreenRightArrow.gif') no-repeat ;
-}
-
-.OverloadThumbnailIcon {
-	width: 24px; height: 24px;
   background: url('DefaultSkin/OverloadThumbnailIcon.gif') no-repeat ;
 }
 
@@ -332,6 +327,11 @@ a:hover .ShowHideBoxContainer {
 .AddNodeTypeIcon {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat ;
+}
+
+.AddCategoryIcon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat ;
 }
 
 .TypesOfContentIcon {

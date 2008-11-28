@@ -21,6 +21,7 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 
 import org.exoplatform.container.ExoContainer;
@@ -30,6 +31,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.rest.HTTPMethod;
 import org.exoplatform.services.rest.InputTransformer;
 import org.exoplatform.services.rest.OutputTransformer;
@@ -47,6 +49,14 @@ import org.exoplatform.services.rest.transformer.PassthroughOutputTransformer;
  *          minh.dang@exoplatform.com
  * Oct 23, 2008 11:09:39 AM
  */
+/**
+ * Provide the request which will be used to get the response data
+ * {repoName} Repository name
+ * {workspaceName} Name of workspace
+ * {nodePath} The node path
+ * Example: 
+ * <img src="/portal/rest/thumbnailImage/repository/collaboration/test.gif" />
+ */
 @URITemplate("/thumbnailImage/{repoName}/{workspaceName}/{nodePath}/")
 public class ThumbnailRESTService implements ResourceContainer {
   
@@ -59,7 +69,15 @@ public class ThumbnailRESTService implements ResourceContainer {
     repositoryService_ = repositoryService;
     thumbnailService_ = thumbnailService;
   }
-  
+/**
+ * Get the image with medium size
+ * ex: /portal/rest/thumbnailImage/repository/collaboration/test.gif/?size=medium
+ * @param repoName Repository name
+ * @param wsName Workspace name
+ * @param nodePath Node path
+ * @return Response inputstream
+ * @throws Exception
+ */  
   @QueryTemplate("size=medium")
   @HTTPMethod("GET")
   @InputTransformer(PassthroughInputTransformer.class)
@@ -70,6 +88,15 @@ public class ThumbnailRESTService implements ResourceContainer {
     return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.MEDIUM_SIZE);
   }
   
+/**
+ * Get the image with big size
+ * ex: /portal/rest/thumbnailImage/repository/collaboration/test.gif/?size=big
+ * @param repoName Repository name
+ * @param wsName Workspace name
+ * @param nodePath Node path
+ * @return Response inputstream
+ * @throws Exception
+ */   
   @QueryTemplate("size=big")
   @HTTPMethod("GET")
   @InputTransformer(PassthroughInputTransformer.class)
@@ -80,6 +107,15 @@ public class ThumbnailRESTService implements ResourceContainer {
     return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.BIG_SIZE);
   }
   
+/**
+ * Get the image with small size
+ * ex: /portal/rest/thumbnailImage/repository/collaboration/test.gif/?size=small
+ * @param repoName Repository name
+ * @param wsName Workspace name
+ * @param nodePath Node path
+ * @return Response inputstream
+ * @throws Exception
+ */   
   @QueryTemplate("size=small")
   @HTTPMethod("GET")
   public Response getSmallImage(@URIParam("repoName") String repoName, 
@@ -90,30 +126,65 @@ public class ThumbnailRESTService implements ResourceContainer {
   
   private Response getThumbnailByType(String repoName, String wsName, String nodePath, 
       String propertyName) throws Exception {
-    if(thumbnailService_.isEnableThumbnail()) {
-      Node showingNode = getShowingNode(repoName, wsName, nodePath);
-      if(!showingNode.isCheckedOut()) return Response.Builder.ok().build(); 
-      if(!showingNode.hasProperty(propertyName)) {
-        if(showingNode.getPrimaryNodeType().getName().equals("nt:file")) {
-          Node content = showingNode.getNode("jcr:content");
-          BufferedImage image = ImageIO.read(content.getProperty("jcr:data").getStream());
-          if(content.getProperty("jcr:mimeType").getString().startsWith("image")) {
-            thumbnailService_.createSpecifiedThumbnail(showingNode, image, propertyName);
+    if(!thumbnailService_.isEnableThumbnail()) return Response.Builder.ok().build();
+    Node showingNode = getShowingNode(repoName, wsName, nodePath);
+    Node parentNode = showingNode.getParent();
+    String identifier = ((NodeImpl) showingNode).getInternalIdentifier();
+    if(showingNode.getPrimaryNodeType().getName().equals("nt:file")) {
+      Node content = showingNode.getNode("jcr:content");
+      if(content.getProperty("jcr:mimeType").getString().startsWith("image")) {
+        Node thumbnailFolder = null;
+        try {
+          thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
+        } catch(PathNotFoundException e) {
+          thumbnailFolder = 
+            parentNode.addNode(ThumbnailService.EXO_THUMBNAILS_FOLDER, ThumbnailService.EXO_THUNBNAILS);
+          parentNode.save();
+          if(thumbnailFolder.canAddMixin(ThumbnailService.HIDDENABLE_NODETYPE)) {
+            thumbnailFolder.addMixin(ThumbnailService.HIDDENABLE_NODETYPE);
           }
+          thumbnailFolder.save();
+        }
+        Node thumbnailNode = null;
+        try {
+          thumbnailNode = thumbnailFolder.getNode(identifier);
+        } catch(PathNotFoundException path) {
+          thumbnailNode = thumbnailFolder.addNode(identifier, ThumbnailService.EXO_THUMBNAIL);
+          thumbnailFolder.save();
+        }
+        if(!thumbnailNode.hasProperty(propertyName)) {
+          BufferedImage image = ImageIO.read(content.getProperty("jcr:data").getStream());
+          thumbnailService_.addThumbnailImage(thumbnailNode, image, propertyName);
+        }
+        String lastModified = null;
+        if(thumbnailNode.hasProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED)) {
+          lastModified = thumbnailNode.getProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED).getString();
+        }
+        InputStream inputStream = null;
+        if(thumbnailNode.hasProperty(propertyName)) {
+          inputStream = thumbnailNode.getProperty(propertyName).getStream();
+        }
+        showingNode.getSession().save();
+        return Response.Builder.ok().header(LASTMODIFIED, lastModified)
+                                    .entity(inputStream, "image")
+                                    .build();
+      }
+    }
+    return getThumbnailRes(parentNode, identifier, propertyName);
+  }
+  
+  private Response getThumbnailRes(Node parentNode, String identifier, String propertyName) throws Exception{
+    if(parentNode.hasNode(ThumbnailService.EXO_THUMBNAILS_FOLDER)) {
+      Node thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
+      if(thumbnailFolder.hasNode(identifier)) {
+        Node thumbnailNode = thumbnailFolder.getNode(identifier);
+        if(thumbnailNode.hasProperty(propertyName)) {
+          InputStream inputStream = thumbnailNode.getProperty(propertyName).getStream();
+          return Response.Builder.ok()
+          .entity(inputStream, "image")
+          .build();
         }
       }
-      String lastModified = null;
-      if(showingNode.hasProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED)) {
-        lastModified = showingNode.getProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED).getString();
-      }
-      InputStream inputStream = null;
-      if(showingNode.hasProperty(propertyName)) {
-        inputStream = showingNode.getProperty(propertyName).getStream();
-      }
-      return Response.Builder.ok()
-                             .header(LASTMODIFIED, lastModified)
-                             .entity(inputStream, "image")
-                             .build();
     }
     return Response.Builder.ok().build();
   }

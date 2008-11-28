@@ -1,0 +1,22 @@
+<div class="$uicomponent.id" id="$uicomponent.id">
+  <div>
+    <% uicomponent.renderChildren(); %>
+  </div>
+  <div class="UIAction"> 
+    <table align="center" class="ActionContainer">
+    	<tr>
+    		<td align="center">
+	        <a href="<%=uicomponent.event("Close")%>" class="ActionButton LightBlueStyle" >
+	          <div class="ButtonLeft">
+	            <div class="ButtonRight">
+	              <div class="ButtonMiddle">
+	                <%=_ctx.appRes(uicomponent.getId() + ".action.close")%>
+	              </div>
+	            </div>
+	          </div>
+	        </a>
+    	</td>
+    </tr>
+    </table>
+  </div>
+</div>

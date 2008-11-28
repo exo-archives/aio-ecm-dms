@@ -112,7 +112,13 @@ public class RSSServiceImpl implements RSSService{
     if(feedType.equals("rss")) generateRSS(context) ;
     else if(feedType.equals("podcast") || feedType.equals("video podcast")) generatePodcast(context) ;
   }
-
+  
+  /**
+   *  Create a Feed file with feed type is RSS
+   * @param context     Map
+   *                    Consist of among information  
+   * @see               Map
+   */
   private void generateRSS(Map context) {  
     String actionName = (String)context.get("actionName") ;
     String srcWorkspace = (String)context.get(SRC_WORKSPACE);                   
@@ -185,7 +191,13 @@ public class RSSServiceImpl implements RSSService{
     }     
   }
 
-  @SuppressWarnings("unchecked")
+  /**
+   *  Create a Feed file with feed type is RSS
+   * @param context     Map
+   *                    Consist of among information  
+   * @see               Map
+   */
+  @SuppressWarnings("unchecked")  
   private void generatePodcast(Map context){
     try{
       String actionName = (String)context.get("actionName") ;
@@ -367,6 +379,17 @@ public class RSSServiceImpl implements RSSService{
       e.printStackTrace() ;
     }
   }
+  
+  /**
+   * Create a new node that is using in feed creation
+   * @param feedXML           String
+   * @param rssStoredPath     String
+   *                          The path is used to store RSS
+   * @param rssNodeName       String
+   *                          The name of specified node is used to store RSS
+   * @param repository        String
+   *                          The name of repository
+   */
   private void storeXML(String feedXML, String rssStoredPath, String rssNodeName, String repository){   
     try {      
       ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
@@ -416,7 +439,18 @@ public class RSSServiceImpl implements RSSService{
       e.printStackTrace();
     }
   }
-
+  
+  /**
+   * Return entry url of specified path
+   * @param portalName        String
+   *                          The name of specified portal
+   * @param wsName            String
+   *                          The name of specified workspace
+   * @param path              String
+   * @param rssUrl            String
+   *                          The url of given RSS 
+   * @throws Exception
+   */
   private String getEntryUrl(String portalName, String wsName, String path, String rssUrl) throws Exception{
     StringBuilder url = new StringBuilder("") ;
     if(rssUrl.indexOf(RSS) > -1 ) {

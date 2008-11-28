@@ -14,7 +14,7 @@
 	  height: 21px; line-height: 21px;
 	  font-family: Verdana;
 	  color: #058ee6; font-weight: bold; 
-	  background: url('/eXoECMResources/skin/images/file/TitleBG1x21.gif') repeat-x;
+	  background: url('/ecm/skin/images/file/TitleBG1x21.gif') repeat-x;
 	  border: 1px solid #cbcbcb;
 	}
 	
@@ -34,8 +34,10 @@
 		<div class="TopTitle">$node.name</div>
 		<div class="Content">
 			<%
-	  		if(node.hasProperty("data")) {
-	  	 		println "<pre>" + uicomponent.encodeHTML(node.getProperty("data").getString()) + "</pre>";		  	
+	  		if(node.hasProperty("jcr:data") && node.hasProperty("jcr:mimeType")) {
+	  	 		if(node.getProperty("jcr:mimeType").getString().startsWith("text")) {
+	  	 		  println "<pre>" + uicomponent.encodeHTML(node.getProperty("jcr:data").getString()) + "</pre>";		  	
+	  	 	  }
 	  	 	}
 	  	%>	  	 
 		</div>	

@@ -49,26 +49,101 @@ import org.exoplatform.services.jcr.impl.core.value.StringValue;
  */
 
 public class MultiLanguageServiceImpl implements MultiLanguageService{
+  
+  /**
+   * Path to child node keep content of parent node
+   */
   final static public String  JCRCONTENT = "jcr:content";
+  
+  /**
+   * Property name keep data of node
+   */
   final static public String  JCRDATA = "jcr:data";
+  
+  /**
+   * Property name keep mimeType of data
+   */
   final static public String  JCR_MIMETYPE = "jcr:mimeType";
+  
+  /**
+   * NodeType name nt:unstructured
+   */
   final static public String  NTUNSTRUCTURED = "nt:unstructured";
+  
+  /**
+   * NodeType name nt:file
+   */
   final static public String  NTFILE = "nt:file";
+  
+  /**
+   * Property name jcr:lastModified
+   */
   final static public String JCR_LASTMODIFIED = "jcr:lastModified" ;
+  
+  /**
+   * Property name exo:voter
+   */
   final static String VOTER_PROP = "exo:voter".intern() ;  
+  
+  /**
+   * Property name exo:votingRate
+   */
   final static String VOTING_RATE_PROP = "exo:votingRate".intern() ;
+  
+  /**
+   * Property name exo:voteTotal
+   */
   final static String VOTE_TOTAL_PROP = "exo:voteTotal".intern() ; 
+  
+  /**
+   * Property name exo:boteTotalOfLang
+   */
   final static String VOTE_TOTAL_LANG_PROP = "exo:voteTotalOfLang".intern() ;
+  
+  /**
+   * Node path
+   */
   final static String NODE = "/node/" ;
+  
+  /**
+   * Node path for language
+   */
   final static String NODE_LANGUAGE = "/node/languages/" ;
+  
+  /**
+   * Path to content node
+   */
   final static String CONTENT_PATH = "/node/jcr:content/" ;
+  
+  /**
+   * Name of temporatory node
+   */
   final static String TEMP_NODE = "temp" ;
+  
+  /**
+   * CmsService
+   */
   private CmsService cmsService_ ;
 
+  
+  /**
+   * Constructor method
+   * @param cmsService  CmsService object
+   * @throws Exception
+   */
   public MultiLanguageServiceImpl(CmsService cmsService) throws Exception {
     cmsService_ = cmsService ;
   }
 
+  /**
+   * Set property for given node with value, property name, PropertyType, multiple
+   * @param propertyName  name of property set to node
+   * @param node          node which is added new property 
+   * @param requiredtype  Type of property
+   * @param value         Value of property 
+   * @param isMultiple    This property is multiple if isMultiple = true or not if isMultiple = false 
+   * @throws Exception
+   */
   private void setPropertyValue(String propertyName, Node node, int requiredtype, Object value, boolean isMultiple) throws Exception {
     switch (requiredtype) {
     case PropertyType.STRING:
@@ -160,6 +235,13 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     }
   }
 
+  /**
+   * Add all available mixintype from current node to newLang Node
+   * Set value of all mixintype from current node to newLang Node
+   * @param node        current node
+   * @param newLang     new node that is added mixintype
+   * @throws Exception
+   */
   private void setMixin(Node node, Node newLang) throws Exception {
     NodeType[] mixins = node.getMixinNodeTypes() ;
     for(NodeType mixin:mixins) {
@@ -183,6 +265,17 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     }
   }
 
+  /**
+   * Add new file with data = value to newLanguageNode node
+   * @param fileName        name of file
+   * @param newLanguageNode current node to add file
+   * @param value           data of file
+   * @param lastModified    datetime of modification
+   * @param mimeType        mimitype
+   * @param repositoryName  name of repository
+   * @return                Node which is added with data is file 
+   * @throws Exception
+   */
   private Node addNewFileNode(String fileName, Node newLanguageNode, Value value, Object lastModified, String mimeType, String repositoryName) throws Exception {
     Map<String,JcrInputProperty> inputProperties = new HashMap<String,JcrInputProperty>() ;            
     JcrInputProperty nodeInput = new JcrInputProperty() ;
@@ -223,6 +316,13 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     return newLanguageNode.getNode(fileName) ;
   }
 
+  /**
+   * Get child node of languageNode with primarytype = nt:file
+   * @param languageNode
+   * @return  child node if exist primaryNodeType of child node = nt:file
+   *          null if not exist
+   * @throws Exception
+   */
   public Node getFileLangNode(Node languageNode) throws Exception {
     if(languageNode.getNodes().getSize() > 0) {
       NodeIterator nodeIter = languageNode.getNodes() ;
@@ -627,6 +727,11 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     return null ;
   }
 
+  /**
+   * Get list of value in exo:language property in child node of current node
+   * @param node    current node
+   * @return value of exo:language property
+   */
   public List<String> getSupportedLanguages(Node node) throws Exception {
     List<String> languages = new ArrayList<String>();
     String defaultLang = getDefault(node) ;
@@ -640,7 +745,15 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     } 
     return languages;
   }
-
+  
+  /**
+   * Set property concerning vote for newLang node from node.
+   * Set property concerning vote for node from selectedLangNode
+   * @param newLang               node for new language
+   * @param node                  current node
+   * @param selectedLangNode      selected language node
+   * @throws Exception
+   */
   private void setVoteProperty(Node newLang, Node node, Node selectedLangNode) throws Exception {
     if(hasMixin(newLang, "mix:votable")) {
       newLang.setProperty(VOTE_TOTAL_PROP, getVoteTotal(node)) ; 
@@ -671,7 +784,15 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       }
     }
   }
-
+  
+  /**
+   * Move COMMENTS child node of current node to newLang node
+   * Move COMMENTS child node of selected node to current node
+   * @param newLang               node for new language
+   * @param node                  current node
+   * @param selectedLangNode      selected language node
+   * @throws Exception
+   */
   private void setCommentNode(Node node, Node newLang, Node selectedLangNode) throws Exception {
     if(node.hasNode(COMMENTS)) {
       node.getSession().move(node.getPath() + "/" + COMMENTS, newLang.getPath() + "/" + COMMENTS) ;
@@ -681,6 +802,12 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     }
   }
 
+  /**
+   * Get total value in VOTE_TOTAL_LANG_PROP property of current node and all file child node
+   * @param node        current node
+   * @return
+   * @throws Exception
+   */
   public long getVoteTotal(Node node) throws Exception {
     long voteTotal = 0;
     if(!node.hasNode(LANGUAGES) && node.hasProperty(VOTE_TOTAL_PROP)) {
@@ -705,6 +832,14 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     return voteTotal ;
   }
 
+  /**
+   * Check whether current node has MixinTypes name = noteTypeName
+   * @param node
+   * @param nodeTypeName
+   * @return  true: if exist noteTypeName in MixtinTypes
+   *          false: if not exist
+   * @throws Exception
+   */
   private boolean hasMixin(Node node, String nodeTypeName) throws Exception {
     NodeType[] mixinTypes = node.getMixinNodeTypes() ; 
     for(NodeType nodeType : mixinTypes) {
@@ -712,7 +847,14 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     }
     return false ;
   }
-
+  
+  /**
+   * Set data for current node
+   * @param node              current node
+   * @param language          language name
+   * @param repositoryName    repository name
+   * @throws Exception
+   */
   public void setDefault(Node node, String language, String repositoryName) throws Exception {
     String defaultLanguage = getDefault(node) ;
     if(!defaultLanguage.equals(language)){
@@ -784,6 +926,16 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     }
   }
 
+  /**
+   * Move child node of current node with name = nodeType to languagesNode
+   * Move child node of selectedLangNode  name = nodeType to current node
+   * @param node              current node
+   * @param selectedLangNode  selected language node
+   * @param languagesNode     language node
+   * @param defaultLanguage   default language of node
+   * @param nodeType          
+   * @throws Exception
+   */
   private void processWithDataChildNode(Node node, Node selectedLangNode, Node languagesNode, 
       String defaultLanguage, String nodeType) throws Exception {
     Node tempNode = node.addNode(TEMP_NODE, "nt:unstructured") ;
@@ -792,7 +944,14 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     node.getSession().move(tempNode.getNode(nodeType).getPath(), languagesNode.getPath() + "/" + defaultLanguage + "/" + nodeType) ;
     tempNode.remove() ;
   }
-
+  
+  /**
+   * Check whether exist child node with primarynodetype = nt:resource
+   * @param node  current node
+   * @return  true: exist
+   *          false: not exist
+   * @throws Exception
+   */
   private boolean hasNodeTypeNTResource(Node node) throws Exception {
     if(node.hasNodes()) {
       NodeIterator nodeIter = node.getNodes() ;
@@ -804,6 +963,13 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     return false ;
   }
 
+  /**
+   * Get name of child node of current node with name of PrimaryNodeType in child node = nt:resource
+   * @param node  current node
+   * @return name of child node if exist child node with PrimaryNodeType = nt:resource
+   *         null if not exist
+   * @throws Exception
+   */
   private String getChildNodeType(Node node) throws Exception {
     if(node.hasNodes()) {
       NodeIterator nodeIter = node.getNodes() ;

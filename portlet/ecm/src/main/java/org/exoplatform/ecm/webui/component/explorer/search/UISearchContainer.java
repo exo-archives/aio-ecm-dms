@@ -16,7 +16,13 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.search;
 
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
@@ -35,6 +41,7 @@ public class UISearchContainer extends UIContainer {
   final static public String METADATA_POPUP = "MetadataPopup" ;
   final static public String NODETYPE_POPUP = "NodeTypePopup" ;
   final static public String SAVEQUERY_POPUP = "SaveQueryPopup" ;
+  final static public String CATEGORY_POPUP = "CategoryPopup" ;
   
   public UISearchContainer() throws Exception {
     addChild(UISimpleSearch.class, null, null) ;
@@ -59,6 +66,30 @@ public class UISearchContainer extends UIContainer {
     uiSelectForm.setRenderNodeTypes() ;
   }
   
+  public void initCategoryPopup() throws Exception {
+    /* Get UIJCRExplorer object*/
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    /* Get repository name */
+    String repository = uiExplorer.getRepositoryName();
+    ManageableRepository manaRepository = 
+      uiExplorer.getApplicationComponent(RepositoryService.class).getRepository(repository);
+    String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
+    NodeHierarchyCreator nodeHierarchyCreator = uiExplorer.getApplicationComponent(NodeHierarchyCreator.class);
+    uiExplorer.setIsHidePopup(true);
+    /* Create Category panel in Search function */
+    UICategoryManagerSearch uiCategoryManagerSearch = uiExplorer.createUIComponent(UICategoryManagerSearch.class, null, null);
+    UIOneNodePathSelector uiNodePathSelector = uiCategoryManagerSearch.getChild(UIOneNodePathSelector.class);
+    uiNodePathSelector.setIsDisable(workspaceName, true);
+    uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
+        nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
+    uiNodePathSelector.init(uiExplorer.getSystemProvider());
+    UIConstraintsForm uiConstraintsForm = findFirstComponentOfType(UIConstraintsForm.class);
+    uiNodePathSelector.setSourceComponent(uiConstraintsForm, new String[] {UIConstraintsForm.CATEGORY_TYPE});
+    UIPopupContainer UIPopupContainer = getChild(UIPopupContainer.class);
+    UIPopupContainer.getChild(UIPopupWindow.class).setId(CATEGORY_POPUP) ;
+    UIPopupContainer.activate(uiCategoryManagerSearch, 630, 500);
+  }
+  
   public void initSaveQueryPopup(String statement, boolean isSimpleSearch, String queryType) throws Exception {
     UIPopupContainer uiPopup = getChild(UIPopupContainer.class) ;
     uiPopup.getChild(UIPopupWindow.class).setId(SAVEQUERY_POPUP) ;
@@ -66,6 +97,6 @@ public class UISearchContainer extends UIContainer {
     uiSaveQueryForm.setStatement(statement) ;
     uiSaveQueryForm.setSimpleSearch(isSimpleSearch) ;
     uiSaveQueryForm.setQueryType(queryType) ;
-    uiPopup.activate(uiSaveQueryForm, 400, 300) ;
+    uiPopup.activate(uiSaveQueryForm, 400, 250) ;
   }
 }

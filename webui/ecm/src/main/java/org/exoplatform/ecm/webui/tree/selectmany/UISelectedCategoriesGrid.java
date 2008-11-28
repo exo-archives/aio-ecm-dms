@@ -52,6 +52,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
   public final static String[] ACTIONS = {"SaveCategories"} ;
 
   private List<String> selectedCategories = new ArrayList<String>();
+  private boolean isDeleteAllCategory;
 
 
   public UISelectedCategoriesGrid() throws Exception {
@@ -119,6 +120,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
       UISelectedCategoriesGrid uiSelectedCategoriesGrid = event.getSource();
       String value = event.getRequestContext().getRequestParameter(OBJECTID);
       uiSelectedCategoriesGrid.removeCategory(value);
+      if (uiSelectedCategoriesGrid.getSelectedCategories().size() == 0) uiSelectedCategoriesGrid.setDeleteAllCategory(true);
       uiSelectedCategoriesGrid.updateGrid();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSelectedCategoriesGrid);
     }
@@ -130,20 +132,32 @@ public class UISelectedCategoriesGrid extends UIGrid {
       UICategoriesSelector uiCategoriesSelector = uiSelectedCategoriesGrid.getAncestorOfType(UICategoriesSelector.class);
       String returnField = uiCategoriesSelector.getReturnFieldName();
       List<String> selectedCategories = uiSelectedCategoriesGrid.getSelectedCategories();
+      List<String> selectedCategoriesName = new ArrayList<String>();
+      for(String item :selectedCategories){
+        selectedCategoriesName.add(item.replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", ""));
+      }      
       UIApplication uiApplication = uiSelectedCategoriesGrid.getAncestorOfType(UIApplication.class);
-      if(selectedCategories.size() == 0) {
+      if(selectedCategories.size() == 0 && !uiSelectedCategoriesGrid.isDeleteAllCategory()) {
         uiApplication.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, ApplicationMessage.INFO));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApplication.getUIPopupMessages());
         return;
       }
       try {
-        ((UISelectable)uiCategoriesSelector.getSourceComponent()).doSelect(returnField, selectedCategories);
+        ((UISelectable)uiCategoriesSelector.getSourceComponent()).doSelect(returnField, selectedCategoriesName);
       } catch(Exception e) {
+        e.printStackTrace();
         uiApplication.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.cannot-save", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApplication.getUIPopupMessages());
       }
-      uiApplication.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.have-saved", null, ApplicationMessage.INFO));
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApplication.getUIPopupMessages());
+      uiCategoriesSelector.deActivate();
     }
+  }
+
+  public boolean isDeleteAllCategory() {
+    return isDeleteAllCategory;
+  }
+
+  public void setDeleteAllCategory(boolean isDeleteAllCategory) {
+    this.isDeleteAllCategory = isDeleteAllCategory;
   }
 }

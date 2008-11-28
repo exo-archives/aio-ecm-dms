@@ -47,55 +47,249 @@ public interface TemplateService {
   static final public String DOCUMENT_TEMPLATE_PROP = "isDocumentTemplate".intern() ;  
   static final public String TEMPLATE_LABEL = "label".intern() ;
   
+  /**
+   * Return path of default template by giving the following params
+   * @param isDialog        boolean
+   *                        The boolean value which specify the type of template                  
+   * @param nodeTypeName    String
+   *                        The name of NodeType
+   */
   public String getDefaultTemplatePath(boolean isDialog, String nodeTypeName) ;  
   
+  /**
+   * Return template home of repository
+   * @param repository      String
+   *                        The name of repository              
+   * @param provider        SessionProvider
+   *                        The SessionProvider object is used to managed Sessions
+   * @see                   Node                        
+   * @throws Exception
+   */
   public Node getTemplatesHome(String repository,SessionProvider provider) throws Exception ;
   
+  /**
+   * Return path template of the specified node
+   * @param node            Node
+   *                        The specified node
+   * @param isDialog        boolean
+   *                        The boolean value which specify the type of template
+   * @see                   Node                       
+   * @throws Exception
+   */
   public String getTemplatePath(Node node, boolean isDialog) throws Exception ;
   
   /**
-   * Return the public template
-   * @param isDialog  the boolean value which specify the type of template
-   * @param nodeTypeName  specify the name of node type
-   * @param repository  repository value
-   * @return  the template path
+   * Return the path public template
+   * @param isDialog        boolean
+   *                        The boolean value which specify the type of template
+   * @param nodeTypeName    String
+   *                        The specify name of node type
+   * @param repository      String
+   *                        The name of repository 
    * @throws Exception
    */
   public String getTemplatePathByAnonymous(boolean isDialog, String nodeTypeName, String repository) throws Exception;
   
   /**
    * Return the template by user
-   * @param isDialog  the boolean value which specify the type of template
-   * @param nodeTypeName  specify the name of node type
-   * @param userName  the user name
-   * @param repository  repository value
-   * @return  the template path
+   * @param isDialog        boolean
+   *                        The boolean value which specify the type of template
+   * @param nodeTypeName    String
+   *                        The specify name of node type
+   * @param userName        String
+   *                        The current user
+   * @param repository      String  
+   *                        The name of repository
+   * @see                   Node
+   * @see                   Session                        
    * @throws Exception
    */  
   public String getTemplatePathByUser(boolean isDialog, String nodeTypeName, String userName, String repository) throws Exception ;
+  
+  /**
+   * Return path template of the specified node
+   * @param isDialog        boolean
+   *                        The boolean value which specify the type of template
+   * @param nodeTypeName    String
+   *                        The specify name of node type
+   * @param templateName    String
+   *                        The name of template
+   * @param repository      String
+   *                        The name of repository
+   * @see                   Session
+   * @see                   Node                        
+   * @throws Exception
+   */
   public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
-    
+  
+  /**
+   * Return template file of the specified node
+   * @param isDialog        boolean
+   *                        The boolean value which specify the type of template
+   * @param nodeTypeName    String
+   *                        The specify name of node type
+   * @param templateName    String
+   *                        The name of template
+   * @param repository      String
+   *                        The name of repository
+   * @see                   Session
+   * @see                   Node                        
+   * @throws Exception
+   */
   public String getTemplate(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
   
+  /**
+   * Insert a new template into NodeType by giving the following params
+   * @param isDialog            boolean
+   *                            The boolean value which specify the type of template
+   * @param nodeTypeName        String
+   *                            The specify name of NodType
+   * @param label               String
+   *                            The label of the specified template
+   * @param isDocumentTemplate  boolean
+   *                            The boolean value which yes or no is DocumentTemplate
+   * @param templateName        String
+   *                            The name of template
+   * @param roles               String[]
+   *                            The roles of template
+   * @param templateFile        String
+   *                            The file of template
+   * @param repository          String
+   *                            The name of repository
+   * @see                       Session
+   * @see                       Node                            
+   * @throws Exception
+   */
   public String addTemplate(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, String templateName, 
-      String[] roles, String templateFile, String repository) throws Exception;  
+      String[] roles, String templateFile, String repository) throws Exception;
+  
+  /**
+   * Insert a template of NodeType by giving the following params
+   * @param isDialog          boolean
+   *                          The boolean value which specify the type of template
+   * @param nodeTypeName      String
+   *                          The specify name of NodType
+   * @param templateName      String
+   *                          The name of template
+   * @param repository        String
+   *                          The name of repository
+   * @see                     Session
+   * @see                     Node                                 
+   * @throws Exception
+   */
   public void removeTemplate(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception;
   
+  /**
+   * Return true is the given repository has nodeTypeName
+   * @param nodeTypeName    String
+   *                        The name of NodeType
+   * @param repository      String
+   *                        The name of repository
+   * @see                   SessionProvider
+   * @see                   Session
+   * @see                   Node                        
+   * @throws Exception
+   */
   public boolean isManagedNodeType(String nodeTypeName, String repository) throws Exception ; 
   
+  /**
+   * Get all templates is document type of the specified repository  
+   * @param repository      String
+   *                        The name of repository
+   * @see                   Session
+   * @see                   Node                               
+   * @throws Exception
+   */
   public List<String> getDocumentTemplates(String repository) throws Exception ;
   
+  /**
+   * Return all teamplate of the specified NodeType
+   * @param isDialog        boolean        
+   *                        The boolean value which specify the type of template
+   * @param nodeTypeName    String
+   *                        The name of NodeType
+   * @param repository      String
+   *                        The name of repository
+   * @param provider        SessionProvider
+   *                        The SessionProvider object is used to managed Sessions
+   * @see                   SessionProvider
+   * @see                   Node                                              
+   * @throws Exception
+   */
   public NodeIterator getAllTemplatesOfNodeType(boolean isDialog, String nodeTypeName, String repository,SessionProvider provider) throws Exception;  
   
+  /**
+   * Removes the NodeType by giving the name of NodeType
+   * @param nodeTypeName    String
+   *                        The name of NodeType           
+   * @param repository      String
+   *                        The name of repository
+   * @see                   Session
+   * @see                   Node                        
+   * @throws Exception
+   */
   public void removeManagedNodeType(String nodeTypeName, String repository) throws Exception ;
   
+  /**
+   * Return the label of the specified template by giving the following params
+   * @param nodeTypeName    String
+   *                        The specified name of NodeType
+   * @param repository      String
+   *                        The name of repository
+   * @see                   SessionProvider
+   * @see                   Node                        
+   * @throws Exception
+   */
   public String getTemplateLabel(String nodeTypeName, String repository)  throws Exception ;
   
+  /**
+   * Return roles of the specified template by giving the following params
+   * @param isDialog        boolean        
+   *                        The boolean value which specify the type of template
+   * @param nodeTypeName    String
+   *                        The name of NodeType
+   * @param templateName    String
+   *                        The name of teamplate
+   * @param repository      String
+   *                        The name of repository
+   * @see                   Session
+   * @see                   Node                        
+   * @throws Exception
+   */
   public String getTemplateRoles(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
   
+  /**
+   * Return template Node (Name of NodeType, Name of Template) by giving the following params 
+   * @param isDialog        boolean        
+   *                        The boolean value which specify the type of template
+   * @param nodeTypeName    String
+   *                        The name of NodeType
+   * @param templateName    String
+   *                        The name of teamplate
+   * @param repository      String
+   *                        The name of repository
+   * @param provider        SessionProvider
+   *                        The SessionProvider object is used to managed Sessions
+   * @see                   SessionProvider
+   * @see                   Node                              
+   * @throws Exception
+   */
   public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName, String repository, SessionProvider provider) throws Exception ;
   
+  /**
+   * Return CreationableContent Types to the given node
+   * @param node          The specified node
+   * @see                 Node              
+   * @throws Exception
+   */
   public List<String> getCreationableContentTypes(Node node) throws Exception;
   
+  /**
+   * Get all template that is configed in XML file of specified repository 
+   * @param repository      String
+   *                        The name of repository
+   * @see                   TemplatePlugin                       
+   * @throws Exception
+   */
   public void init(String repository) throws Exception ;
 }

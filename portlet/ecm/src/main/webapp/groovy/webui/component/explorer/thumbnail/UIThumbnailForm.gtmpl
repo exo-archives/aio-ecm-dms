@@ -9,7 +9,8 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("UIThumbnailForm.label.mediumSize")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        if(selectedNode.hasProperty("exo:mediumSize")) { 
+		        def thumbnailNode = uicomponent.getThumbnailNode(selectedNode);
+		        if(thumbnailNode != null && thumbnailNode.hasProperty("exo:mediumSize")) { 
 							String thumbnailImage = uicomponent.getThumbnailImage(selectedNode);
 							def actionLink = uicomponent.event("RemoveThumbnail");
 						%>		

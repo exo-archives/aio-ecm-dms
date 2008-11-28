@@ -245,7 +245,6 @@
 .UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction .UIAction {
 	float: right;
 	padding-right: 5px;
-	width: 50%;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction .ActionContainer {
@@ -417,10 +416,6 @@
   color: orange;
 }
 
-.UIECMAdminPortlet .UIViewContainer .UIPopupWindow .UITabPane .FormContainer a:hover {
-	color: #058EE6;
-}
-
 /*############################## -- UINamespaceManager -- ########################*/
 
 .UIECMAdminPortlet .UINamespaceManager {
@@ -513,6 +508,10 @@
   width: 380px;
   height: 300px;
   padding: 3px;
+}
+
+.UIECMAdminPortlet .UIForm .UIViewForm .FormContainer {
+	padding: 0px;
 }
 
 /*############################## -- UIActionManager -- ########################*/
@@ -711,6 +710,18 @@
 	margin-bottom: 2px;
 }
 
+.UIECMAdminPortlet .UIAnyPermission .HorizontalLayout {
+	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid td.FieldLabel {
+	vertical-align: middle;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid .FormContainer {
+	padding: 0px;
+}
+
 .UIECMAdminPortlet .UIAnyPermission .UIFormWithTitle {
 	width: auto;
 	margin: 0px;
@@ -733,3 +744,14 @@
 	vertical-align: middle;
 	padding: 2px;
 }
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid td.FieldComponent {
+	padding: 4px;
+}
+
+/*############################## -- Edit View -- ########################*/
+
+.UIECMAdminPortlet .UITabPane .UIFormInputSet .FormContainer {
+	padding: 0px;
+}
+

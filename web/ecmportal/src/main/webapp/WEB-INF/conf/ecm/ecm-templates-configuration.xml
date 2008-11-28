@@ -573,7 +573,7 @@
                   
                   <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
-                      <field  name="nodetypeName"><string>exo:data</string></field>
+                      <field  name="nodetypeName"><string>nt:resource</string></field>
                       <field  name="documentTemplate"><boolean>false</boolean></field>
                       <field  name="label"><string>Exo data</string></field>
                       <field  name="referencedView">

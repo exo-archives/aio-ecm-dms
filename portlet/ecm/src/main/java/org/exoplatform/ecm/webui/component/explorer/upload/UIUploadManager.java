@@ -28,17 +28,21 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
  *          minh.dang@exoplatform.com
  * May 24, 2007 2:12:48 PM
  */
-@ComponentConfig(lifecycle = UIContainerLifecycle.class)
+@ComponentConfig(
+    lifecycle = UIContainerLifecycle.class
+)
 public class UIUploadManager extends UIContainer implements UIPopupComponent {
-
   final static public String EXTARNAL_METADATA_POPUP = "AddMetadataPopup" ;
   
   public UIUploadManager() throws Exception {
-    addChild(UIUploadForm.class, null, null) ;
-    addChild(UIUploadContainer.class, null, null).setRendered(false) ;
+    addChild(UIUploadForm.class, null, null);
+    addChild(UIUploadContainer.class, null, null).setRendered(false);
   }
-
-  public void activate() throws Exception {}
+  
+  public void activate() throws Exception {
+    UIUploadForm uiUploadForm = getChild(UIUploadForm.class);
+    uiUploadForm.initFieldInput();
+  }
 
   public void deActivate() throws Exception {}
   

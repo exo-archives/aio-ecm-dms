@@ -337,3 +337,7 @@
   float: right;
   margin-top: 3px;
 }
+
+.UIWorkflowPortlet .UIForm .Hide .DefaultHide {
+	text-align: center;
+}

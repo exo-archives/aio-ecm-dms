@@ -102,7 +102,7 @@
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 
 .UIJCRExplorerPortlet .UIDocumentWorkspace {
-  height: 421px;
+  height: 431px;
   overflow: auto;
   /*
 	* minh.js.exo
@@ -174,12 +174,67 @@
 .UIJCRExplorerPortlet .UIListGrid .LeftColumn .Icon16x16 {
 	float: none;
 	margin: auto;
+	width: 20px;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn {
  	border-right: none;
 	padding: 2px 0px 2px 3px;
 } 
+
+.UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn .NodeLabel {
+	width: 95%;
+	overflow: hidden;
+} 
+
+/*############################## -- Begin CoverFlow -- ##############################*/
+.UIJCRExplorerPortlet .UICoverFlowView .TLBox {
+	background: url('DefaultSkin/background/CoverFlow.png') no-repeat left top;
+	padding-left: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .TRBox {
+	background: url('DefaultSkin/background/CoverFlow.png') no-repeat right top;
+	padding-right: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .TMBox {
+	background: url('DefaultSkin/background/CoverFlow.png') repeat-x center -23px;
+	height: 22px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .MLBox {
+	background: url('DefaultSkin/background/MiddleCoverFlow.png') repeat-y left top;
+	padding-left: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .MRBox {
+	background: white url('DefaultSkin/background/MiddleCoverFlow.png') repeat-y right top;
+	padding-right: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .MCBox {
+	background: white;
+	padding: 0px 20px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .BLBox {
+	background: url('DefaultSkin/background/CoverFlow.png') no-repeat left bottom;
+	padding-left: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .BRBox {
+	background: url('DefaultSkin/background/CoverFlow.png') no-repeat right bottom;
+	padding-right: 25px;
+}
+
+.UIJCRExplorerPortlet .UICoverFlowView .BMBox {
+	background: url('DefaultSkin/background/CoverFlow.png') repeat-x center -46px;
+	height: 22px;
+}
+
+
+
 
 /*############################## -- Begin MenuPopup -- ##############################*/
 
@@ -440,6 +495,9 @@
   padding: 3px;
 }
 
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption .IconConstraint {
+	cursor: pointer;
+}
 /*================================UIConstraintsForm=================================*/
 
 /*================================UIMetadataSelectForm=================================*/
@@ -682,12 +740,10 @@
 
 /*====================================UIAnyPermission==================================*/
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission {
-	border: 1px solid #B7B7B7;
 	margin-bottom: 2px;
 }
 
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .HorizontalLayout {
-	border: none;
 	padding: 0px;
 }
 
@@ -714,10 +770,6 @@
 	padding: 2px;
 }
 
-.UIJCRExplorerPortlet .UIAnyPermission .HorizontalLayout .UIFormGrid .FieldLabel {
-	width: 108px;
-}
-
 /*====================================UIActionManager==================================*/
 .UIJCRExplorerPortlet .UITabContentContainer .UIActionContainer .UIFormWithoutAction {
 	border: 1px solid #B7B7B7;
@@ -730,3 +782,12 @@
   height: 64px;
   background: url('DefaultSkin/background/LoadingProgress.gif') no-repeat center center;
 }
+
+/*===========================================UIRightClickPopupMenu===========================================*/
+.UIRightClickPopupMenu .MenuIcon {
+	line-height:16px;
+	margin:0 7px;
+	padding:0px 0 10px 26px;
+	width:auto;
+}
+

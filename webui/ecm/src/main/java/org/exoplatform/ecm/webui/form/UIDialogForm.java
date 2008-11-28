@@ -155,11 +155,36 @@ public class UIDialogForm extends UIForm {
       } else if(node.hasProperty(propertyName) && !isUpdateSelect) {
         if(node.getProperty(propertyName).getDefinition().getRequiredType() == 
           PropertyType.REFERENCE) {
-          String path = 
-            getNodePathByUUID(node.getProperty(propertyName).getValue().getString());
-          uiInput.setValue(path);
+          // Update for many categories
+          if(node.getProperty(propertyName).getDefinition().isMultiple()) {
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("[");
+            Value[] values = node.getProperty(propertyName).getValues();            
+            for(Value value : values) {              
+              buffer.append(node.getSession().getNodeByUUID(value.getString()).getPath()).append(",");                
+            }
+            if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);
+            buffer.append("]");
+            uiInput.setValue(buffer.toString());
+          } else{
+            String path = 
+              getNodePathByUUID(node.getProperty(propertyName).getValue().getString());
+            uiInput.setValue(path);
+          }          
         } else {
-          uiInput.setValue(node.getProperty(propertyName).getValue().getString());
+          if(node.getProperty(propertyName).getDefinition().isMultiple()) {
+            Value[] values = node.getProperty(propertyName).getValues();
+            StringBuffer buffer = new StringBuffer();
+            buffer.append("[");
+            for(Value value : values) {
+              buffer.append(node.getSession().getNodeByUUID(value.getString()).getPath()).append(",");
+            }
+            if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);
+            buffer.append("]");            
+            uiInput.setValue(buffer.toString());
+          } else {
+            uiInput.setValue(node.getProperty(propertyName).getValue().getString());  
+          }          
         }
       } 
     }

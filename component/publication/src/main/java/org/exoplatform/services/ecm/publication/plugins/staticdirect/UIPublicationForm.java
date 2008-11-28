@@ -153,7 +153,14 @@ public class UIPublicationForm extends UIForm {
       System.out.println("Unsubcriber life cycle");
       UIPublicationForm uiPublicationForm = event.getSource();
       Node selectedNode = uiPublicationForm.currentNode_;
-      UIApplication uiApp = uiPublicationForm.getAncestorOfType(UIApplication.class);
+      UIApplication uiApp = uiPublicationForm.getAncestorOfType(UIApplication.class);      
+      if(!selectedNode.isCheckedOut()) {        
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      
       /*
        * Check unsubcribe and display message incase node has already been
        * unsubcribed

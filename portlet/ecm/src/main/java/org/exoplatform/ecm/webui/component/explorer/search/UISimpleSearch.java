@@ -77,7 +77,7 @@ public class UISimpleSearch extends UIForm {
   
   public UISimpleSearch() throws Exception {
     addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null));
-    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null).addValidator(SearchValidator.class));
+    addUIFormInput(new UIFormStringInput(INPUT_SEARCH, INPUT_SEARCH, null));
     List<SelectItemOption<String>> operators = new ArrayList<SelectItemOption<String>>();
     operators.add(new SelectItemOption<String>(AND, AND));
     operators.add(new SelectItemOption<String>(OR, OR));

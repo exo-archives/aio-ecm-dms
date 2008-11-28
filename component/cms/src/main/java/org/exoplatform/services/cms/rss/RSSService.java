@@ -25,6 +25,12 @@ import java.util.Map;
 
 public interface RSSService {
   
+  /**
+   *  Create a Feed file (feed type is RSS or Podcast)
+   * @param context     Map
+   *                    Consist of among information  
+   * @see               Map
+   */
 	public void generateFeed(Map context);
 
 }

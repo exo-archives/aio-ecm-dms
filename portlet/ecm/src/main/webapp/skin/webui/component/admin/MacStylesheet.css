@@ -283,7 +283,6 @@
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIAction {
 	float: right;
 	padding-right: 15px;
-	width: 50%;
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIAction .ActionContainer {
@@ -488,10 +487,6 @@
 .UIECMScripts .ECMScriptForm .HorizontalLayout {
   background:  url(MacSkin/background/Background1x4.png) repeat 0%;
   padding-top: 10px;
-}
-
-.UIECMAdminPortlet .UIAnyPermission {
-	margin-bottom: 2px;
 }
 
 /*------------------------------UICBScripts------------------------*/
@@ -713,3 +708,45 @@
   border: solid 1px #cdcdcd;
 }
 
+/*############################## -- Any Permission -- ########################*/
+.UIECMAdminPortlet .UIAnyPermission {
+	border: 1px solid #B7B7B7;
+	margin-bottom: 2px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .HorizontalLayout {
+	padding: 0px;
+	border: none;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid td.FieldLabel {
+	vertical-align: middle;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid .FormContainer {
+	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid {
+	width: auto;
+	margin: 0px;
+}
+
+.UIECMAdminPortlet .UIAnyPermission .UIFormGrid td.FieldComponent {
+	padding: 4px;
+}
+
+
+/*############################## -- Edit View -- ########################*/
+
+.UIECMAdminPortlet .UITabPane .UIFormInputSet .FormContainer {
+	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
+  color: blue;
+}
+
+.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a:hover {
+  color: orange;
+}

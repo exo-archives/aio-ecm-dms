@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.jcr.Node;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -28,10 +29,12 @@ import javax.jcr.query.QueryResult;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
@@ -59,10 +62,11 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIConstraintsForm.AddActionListener.class),
       @EventConfig(listeners = UIConstraintsForm.CompareExactlyActionListener.class),
       @EventConfig(listeners = UIConstraintsForm.AddMetadataTypeActionListener.class),
-      @EventConfig(listeners = UIConstraintsForm.AddNodeTypeActionListener.class)
+      @EventConfig(listeners = UIConstraintsForm.AddNodeTypeActionListener.class),
+      @EventConfig(listeners = UIConstraintsForm.AddCategoryActionListener.class)
     }    
 )
-public class UIConstraintsForm extends UIForm {
+public class UIConstraintsForm extends UIForm implements UISelectable{
 
   final static public String OPERATOR = "operator" ;
   final static public String TIME_OPTION = "timeOpt" ;
@@ -75,6 +79,7 @@ public class UIConstraintsForm extends UIForm {
   final static public String START_TIME = "startTime" ;
   final static public String END_TIME = "endTime" ;
   final static public String DOC_TYPE = "docType" ;
+  final static public String CATEGORY_TYPE = "categoryType" ;
   final static public String AND_OPERATION = "and" ;
   final static public String OR_OPERATION = "or" ;
   final static public String CREATED_DATE = "CREATED" ;
@@ -84,6 +89,7 @@ public class UIConstraintsForm extends UIForm {
   final static public String NOT_CONTAIN_PROPERTY = "notContainPro" ;
   final static public String DATE_PROPERTY = "datePro" ;
   final static public String NODETYPE_PROPERTY = "nodetypePro" ;
+  final static public String CATEGORY_PROPERTY = "categoryPro" ;
   final static private String SPLIT_REGEX = "/|\\s+|:" ;
   final static private String DATETIME_REGEX = 
     "^(\\d{1,2}\\/\\d{1,2}\\/\\d{1,4})\\s*(\\s+\\d{1,2}:\\d{1,2}:\\d{1,2})?$" ;
@@ -121,10 +127,14 @@ public class UIConstraintsForm extends UIForm {
     UIFormDateTimeInput uiToDate = new UIFormDateTimeInput(END_TIME, END_TIME, null) ;
     uiToDate.setDisplayTime(false) ;
     addUIFormInput(uiToDate) ;
-    addUIFormInput(new UIFormStringInput(DOC_TYPE, DOC_TYPE, null)) ;
-
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(NODETYPE_PROPERTY, NODETYPE_PROPERTY, null)) ;
     addUIFormInput(new UIFormStringInput(DOC_TYPE, DOC_TYPE, null)) ;
+    /*
+     * Add category
+     */
+    addUIFormInput(new UIFormCheckBoxInput<Boolean>(CATEGORY_PROPERTY, CATEGORY_PROPERTY, null)) ;
+    addUIFormInput(new UIFormStringInput(CATEGORY_TYPE, CATEGORY_TYPE, null)) ;
+    
   }
 
   private String getContainQueryString(String property, String type, boolean isContain) {
@@ -175,6 +185,24 @@ public class UIConstraintsForm extends UIForm {
     return advanceQuery;
   }
   
+  /**
+   * Create query string for category
+   * @param category
+   * @return
+   */
+  private String getCategoryQueryString(String categoryPath) {
+    if (categoryPath == null || categoryPath.length() == 0) return "";
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    String uuid = null;
+    try {
+      uuid = ((Node)(uiExplorer.getSession().getItem(categoryPath))).getUUID(); 
+    } catch (Exception e) {
+      return "";
+    }
+    if (uuid == null || uuid.length() == 0) return "";
+    return ("@exo:category = '" + uuid + "'");
+  }
+  
   private void addConstraint(int opt) throws Exception {
     String advanceQuery = "" ;
     String property ;
@@ -204,6 +232,10 @@ public class UIConstraintsForm extends UIForm {
         property = getUIStringInput(DOC_TYPE).getValue() ;
         advanceQuery = getNodeTypeQueryString(property) ;
         break;
+      case 5:
+        property = getUIStringInput(CATEGORY_TYPE).getValue() ;
+        advanceQuery = getCategoryQueryString(property) ;
+        break;
       default:
         break;
     }
@@ -211,12 +243,13 @@ public class UIConstraintsForm extends UIForm {
   }
   
   private void resetConstraintForm() {
-    reset() ;
-    getUIFormCheckBoxInput(EXACTLY_PROPERTY).setChecked(false) ;
-    getUIFormCheckBoxInput(CONTAIN_PROPERTY).setChecked(false) ;
-    getUIFormCheckBoxInput(NOT_CONTAIN_PROPERTY).setChecked(false) ;
-    getUIFormCheckBoxInput(DATE_PROPERTY).setChecked(false) ;
-    getUIFormCheckBoxInput(NODETYPE_PROPERTY).setChecked(false) ;
+    reset();
+    getUIFormCheckBoxInput(EXACTLY_PROPERTY).setChecked(false);
+    getUIFormCheckBoxInput(CONTAIN_PROPERTY).setChecked(false);
+    getUIFormCheckBoxInput(NOT_CONTAIN_PROPERTY).setChecked(false);
+    getUIFormCheckBoxInput(DATE_PROPERTY).setChecked(false);
+    getUIFormCheckBoxInput(NODETYPE_PROPERTY).setChecked(false);
+    getUIFormCheckBoxInput(CATEGORY_PROPERTY).setChecked(false);
   }
   
   private boolean isValidDateTime(String dateTime) {
@@ -237,8 +270,9 @@ public class UIConstraintsForm extends UIForm {
       boolean isNotContain = uiForm.getUIFormCheckBoxInput(NOT_CONTAIN_PROPERTY).isChecked() ;
       boolean isDateTime = uiForm.getUIFormCheckBoxInput(DATE_PROPERTY).isChecked() ;
       boolean isNodeType = uiForm.getUIFormCheckBoxInput(NODETYPE_PROPERTY).isChecked() ;
+      boolean isCategory = uiForm.getUIFormCheckBoxInput(CATEGORY_PROPERTY).isChecked() ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      if(!isExactly && !isContain && !isNotContain && !isDateTime && !isNodeType) {
+      if(!isExactly && !isContain && !isNotContain && !isDateTime && !isNodeType && !isCategory) {
         uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.must-choose-one", null, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
@@ -331,12 +365,27 @@ public class UIConstraintsForm extends UIForm {
         String property = uiForm.getUIStringInput(DOC_TYPE).getValue() ;
         if(property == null || property.length() < 1) {
           uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required", null, 
-                                                  ApplicationMessage.WARNING)) ;
+              ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
         }
         uiForm.addConstraint(4) ;
       }
+      
+      /*
+       * Add category in constrain
+       */
+      if (isCategory) {
+        String category = uiForm.getUIStringInput(CATEGORY_TYPE).getValue();
+        if (category == null || category.length() < 1) {
+          uiApp.addMessage(new ApplicationMessage("UIConstraintsForm.msg.properties-required",
+              null, ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+        uiForm.addConstraint(5);
+      }
+      
       uiForm.resetConstraintForm() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent()) ;
     }
@@ -397,11 +446,44 @@ public class UIConstraintsForm extends UIForm {
     }
   }
   
+  static public class AddCategoryActionListener extends EventListener<UIConstraintsForm> {
+    public void execute(Event<UIConstraintsForm> event) throws Exception {
+      UISearchContainer uiSearchContainer = event.getSource().getParent();
+      uiSearchContainer.initCategoryPopup();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
+    }
+  }
+  
   static  public class CancelActionListener extends EventListener<UIConstraintsForm> {
     public void execute(Event<UIConstraintsForm> event) throws Exception {
       UISearchContainer uiSearchContainer = event.getSource().getParent() ;
       event.getSource().setRendered(false) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSearchContainer) ;
     }
+  }
+
+  /**
+   * Set category to text box and closeof choose category popup window
+   * @param selectField: name of text field input
+   * @param value: value of choosen category
+   */
+  public void doSelect(String selectField, Object value) throws Exception {
+    /* Set value to textbox */
+    getUIStringInput(selectField).setValue(value.toString());
+    /* Set value for checkbox is checked */
+    getUIFormCheckBoxInput(UIConstraintsForm.CATEGORY_PROPERTY).setChecked(true);
+    UISearchContainer uiSearchContainer = getAncestorOfType(UISearchContainer.class);
+    /* Disable all tab */
+    for(UIComponent uiComponent : getAncestorOfType(UIECMSearch.class).getChildren()) {
+      uiComponent.setRendered(false);
+    }
+    /* Focus on Advance search tab */
+    uiSearchContainer.setRendered(true);
+    /*
+     *  Close popup window when finish choose category
+     */
+    UIPopupWindow uiPopup = uiSearchContainer.findComponentById(UISearchContainer.CATEGORY_POPUP);
+    uiPopup.setRendered(false);
+    uiPopup.setShow(false);
   }
 }

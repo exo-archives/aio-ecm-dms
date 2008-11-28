@@ -1,5 +1,5 @@
-﻿==============================================
-	eXo ECM Version 2.2 RC1 release notes
+==============================================
+	eXo ECM 2.2RC1 release notes
 ==============================================
 
 - Introduction
@@ -15,191 +15,27 @@
    +) Application Server : Tomcat, JBoss, Jonas, Websphere
    +) Building Tools: Maven 2.0.6 and up
 
-- Complete list of issues fixed in eXo ECM 2.2 RC1
+- Complete list of issues fixed in eXo ECM 2.2RC1
 
 ** Bug
-    * [ECM-1543] - Handle the case when too much icons are displayed in the JCR File Explorer toolbar
-    * [ECM-1828] - Lose 1 item in clipboard after change skin 
-    * [ECM-2025] - Exception when do actions in 2 same name File Plan
-    * [ECM-2100] - Lock a node when parent of it  is locked 
-    * [ECM-2275] - Do not display record  of File Plan when the name of File Plan include space character
-    * [ECM-2287] - Cannot issue a query containing a number
-    * [ECM-2308] - Name of same siblings changes when removing a node with index
-    * [ECM-2341] - Error when add relation for node
-    * [ECM-2348] - Can not view content of File Plan document
-    * [ECM-2430] - validate characters of folder's name: '[', ']', ':'
-    * [ECM-2444] - Cannot parse PDF/A metadata
-    * [ECM-2450] - Type only spacebar on name field when create new folder-->click save-->can create.
-    * [ECM-2454] - Bad interface with datagrid in sites explorer.
-    * [ECM-2470] - chaos interface when title of article document have max length.
-    * [ECM-2494] - error display with reposity bar of ECM.
-    * [ECM-2495] - Create article document--> not input data on name field --> then click save buttonn--> have string character.
-    * [ECM-2501] - NullpointerException & no mail when use exo:getmail action
-    * [ECM-2502] - Always return 0 message to get when add getMailAction with lifecycle is not "read"
-    * [ECM-2505] - Unknown error with publication management while  in check in status
-    * [ECM-2506] - Need a refresh action to display Check In option in right click menu after enroll
-    * [ECM-2507] - Remove no need "b" letter in "Unpubblished" label
-    * [ECM-2508] - Error in displaying options for publication
-    * [ECM-2543] - Vote for web content --> display "unknown error" message
-    * [ECM-2546] - Error interface in sites explorer when change language into French.
-    * [ECM-2572] - [news][action basic ][lock node] can't vote or comment for locked node in news page by user who locked node
-    * [ECM-2576] - Do not display the description when viewing Sample Node or Podcast document in special case
-    * [ECM-2577] - [News page][idea page] displaying form seem too big in IE6 + can't see star in vote form in IE6
-    * [ECM-2579] - can not find resource bundle for key
-    * [ECM-2581] - [administration][ applicationregistry] exception happen when select [applicationregistry]
-    * [ECM-2583] - Exception  when delete related document of Sample Node document
-    * [ECM-2584] - IE6: Error in forms when add action for node with Vista and Mac skin
-    * [ECM-2587] - Do not display [Manage Auditing] icon in Vista skin
-    * [ECM-2590] - Exception when select version to restore of  view (or template) in Manage View
-    * [ECM-2591] - UI: Size between lines in JCR Detailed view has been reduced since D&D is implemented
-    * [ECM-2592] - Cannot create an nt:file of subtype "plain"
-    * [ECM-2602] - Bug when add drive in ECMAdmin
-    * [ECM-2607] - [file explorer][add document] lost UI Calendar in form create Podcast and sample node document
-    * [ECM-2608] - [ideas] on ideas page, Guest can't vote for documents which has created by user in system
-    * [ECM-2609] - [file explorer] lost border on form displaying of drive when user selects a drive 
-    * [ECM-2611] - [action tab][upload] when user uploads file with name too long in default skin of FireFox browser
-    * [ECM-2612] - Lost border in some forms on Vista skin
-    * [ECM-2613] - [file explorer][drive] 
-    * [ECM-2614] - IE6: Error in action bar when select other tab
-    * [ECM-2615] - IE: Do not display content in message pop-up when delete node
-    * [ECM-2616] - Throw exception when add permission for exo:workflowaction
-    * [ECM-2619] - [file explorer] has some problem with paging on file explorer
-    * [ECM-2620] - lost [tag map] on Welcome Center/ News/ ideas page on default skin/ IE6
-    * [ECM-2622] - Small UI bug with Tab selecx box in Fileexplorer
-    * [ECM-2623] - [search tab][simple search & saved queries search] result of simple search & saved queries search displays not well on Default and MAC skin on IE6
-    * [ECM-2624] - [basic action] [delete node] don't display name of node in dialog to confirm delete node on Default and Mac skin on IE6
-    * [ECM-2629] - Lost icon of documents and folders in Content Browser
-    * [ECM-2630] - [UI] lost top Border of displaying form of kofax document on Default and Vista skin/ FF2.0
-    * [ECM-2631] - Unknown error when select [Categorized Documents Center] drive
-    * [ECM-2632] - Repair the UI in [System files] drive
-    * [ECM-2633] - Error in displaying icon when select path in Content Browser in Vista and Mac skin
-    * [ECM-2635] - Do not display [View Property] icon when right click on node in Vista skin
-    * [ECM-2638] - Error in displaying [Add category] and [Add Relation] pop-up in Vista and Mac skin
-    * [ECM-2639] - Put icons in the same line in forms when add action for node in Vista skin
-    * [ECM-2642] - Error in displaying background of [Select location] in Fast Content Creator 
-    * [ECM-2643] - Error in [Tab form] when create or edit a view
-    * [ECM-2644] - Displaying drives in Vista must be consistent with Default
-    * [ECM-2645] - [business process controllor][pay raise process] pay raise request alway sends back to creator
-    * [ECM-2646] - Error in displaying form to create File Plan document by Fast Content Creator in Vista skin
-    * [ECM-2647] - Do not display icon of version in [Version Infor] pop-up in Vista skin
-    * [ECM-2649] - Class not found exception when creating a publishing process action
-    * [ECM-2651] - Lost bottom border when view Article document
-    * [ECM-2652] - Throw exception when select 'schedule' lifecycle 
-    * [ECM-2655] - Throw exception when edit some properties of node
-    * [ECM-2656] - Some problems when drag and drop node
-    * [ECM-2657] - Check the length of the right click menu
-    * [ECM-2664] - 'msg' message when drag and drop node in cases
-    * [ECM-2665] -  [business process controllor] Can't delegate the approving a pending document for other user
-    * [ECM-2666] - Throw exception when activate auditing for node has version
-    * [ECM-2667] - [file explorer] [infor tab][permission] appear UNKNOWN ERROR when user delete permission of himself/herself after delete permission of 'any'
-    * [ECM-2668] - [ile explorer] [admin tab][manage version] some probblem relate to validate special characters which input in label for version
-    * [ECM-2669] - Values in 'Operation' are iterative in [Auditing Infomation]
-    * [ECM-2670] - In FF: Error in displaying icons in 'Action' column of 'Properties Management' pop-up in Vista skin
-    * [ECM-2671] - Error in 'Task Manager' when show process link
-    * [ECM-2672] - Unknown error when add new workspace
-    * [ECM-2674] - Collaboration Center crashes while working with versionable files.
-    * [ECM-2676] - UI issue in JCR FE detailed view, when column names are too long
-    * [ECM-2678] - Unknown error when create ECM template/BC template
-    * [ECM-2680] - Lose icon of Sample Node document in forms
-    * [ECM-2681] - FF: Error in displaying right click menu in Mac skin
-    * [ECM-2682] - Show message when change type of search in Content Browser
-    * [ECM-2683] - Error in displaying File Explorer portlet when has so many search results
-    * [ECM-2687] - Test coverflow with IE7
-    * [ECM-2692] - Show duplicate 'Any permission' label in 'Select Permission'  form
-    * [ECM-2697] - IE6: Error in list of repository In File Explorer
-    * [ECM-2698] - Set align for label and text in 'Orderable children' column in 'Metadata Information' pop-up
-    * [ECM-2699] - Do not display 'Start time' and 'End time' field in form to add action for node
-    * [ECM-2700] - Do not diplay icon of   'exo:registry' in select location forms
-    * [ECM-2701] - Thumnail generation when a node is checked in
-    * [ECM-2705] - The org.exoplatform.ecm.jcr.RssServlet doesn't release properly the resources stored into the ThreadLocal
-    * [ECM-2706] - The org.exoplatform.services.workflow.impl.bonita.ExoUserBase doesn't release properly the resources stored into the ThreadLocal
-    * [ECM-2707] - When do advanced search, 'Filter' does not work 
-    * [ECM-2711] - The org.exoplatform.services.workflow.impl.bonita.WorkflowServiceContainerImpl doesn't release properly the resources stored into the ThreadLocal
-    * [ECM-2715] - Stylesheet of view metadata, which affected to Stylesheet of Sites Explorer.
-    * [ECM-2719] - In thumbnail view, still display removed image of node
-    * [ECM-2730] - Change label "Add/Remove hidden mixin"
-    * [ECM-2733] - Error in displayindgFast Content Creator in Mac skin
-    * [ECM-2734] - Can not add new node type
-    * [ECM-2736] - 'msg' message when edit property of node in case change the multiple
-    * [ECM-2742] - IE6: Error in displaying select path pop up in Vista and Mac skin
-    * [ECM-2744] - Error in displaying 'Advanced Search'
-    * [ECM-2745] - The forms.xml generate the same component for Type=date & type=datetime
+    * [ECM-2721] - IE6: Error in diplaying label of node
     * [ECM-2746] - Refresh of the content view after modifying the folder path manually in the path field
-    * [ECM-2747] - The class org.exoplatform.ecm.webui.component.fastcontentcreator.UIFastContentCreatorPortlet needs to close the session provider properly in anonymous mode
-    * [ECM-2750] - JCR Explorer "Edit/Add" node stop working when one association template-node type is invalid
-    * [ECM-2752] - Do not display image icon of node in thumnails view in Vista or Mac skin
+    * [ECM-2758] - Fix navigation issue on Mac
+    * [ECM-2829] - Do not thumbnail for image file in Document Folder
 
 ** Improvement
-    * [ECM-1139] - improve the browsing in the taxonomy
-    * [ECM-1810] - Customer request: Allow user can delete or change property 
-    * [ECM-1955] - Implement Drag & Drop in JCR File Explorer
-    * [ECM-2206] - Add a refresh button to the Workflow Controller Portlet
-    * [ECM-2209] - Need to check that all related drives are removed before removing a workspace
-    * [ECM-2221] - Need to put WebUI classes outside of the Portlets
-    * [ECM-2242] - Support Fuzzy searches and SynonymSearch
-    * [ECM-2367] - Folder types friendly names
-    * [ECM-2368] - Elastic layout on File Explorer
-    * [ECM-2393] - limit number of document type in document form for specific folder
-    * [ECM-2438] - Allow set 'any' permission for dialog/view template in manage template
-    * [ECM-2463] - Allow user uses custom publication plugin when manage publication
-    * [ECM-2474] - Button to get direct download link for a resource in jcr
-    * [ECM-2478] - Replace LockTokenHolderService by LockManagerListener
-    * [ECM-2498] - Only allow to enrol publication lifecycle for document nodetypes
-    * [ECM-2500] - Change REST request URI 
-    * [ECM-2533] - Should allow add or remove hidden property
-    * [ECM-2537] - Add new method into PublicationPlugin allow use a version of content to view node
-    * [ECM-2539] - Implement method getNodeView() in StaticAndDirectPublicationPlugin
-    * [ECM-2540] - Allow user unsubcribe a publication lifecyle
-    * [ECM-2553] - Do not so document type select box if only 1 document type
-    * [ECM-2575] - Increase edit/add template size 
-    * [ECM-2598] - Implement new ApplicationTemplateManagerSerivce
-    * [ECM-2658] - Migrate to JCR 1.10
-    * [ECM-2677] - Allow the coverflow to rotate when the user clicks on document names
-    * [ECM-2696] - Customize UICategoriesAddlist template
-    * [ECM-2723] - Improve the home page picture
-    * [ECM-2741] - Add edit button in PCV
-    * [ECM-2754] - Allow remove upload binary for property of node
+    * [ECM-2689] - Reuse portal maven version fashion
+    * [ECM-2759] - Refactor thumnails implementation
+    * [ECM-2833] - Add skin to use ECM banner portlet
+    * [ECM-2401] - [JAVADOC] Writing javadoc for services in component/cms
+    * [ECM-2625] - Add a taxonomy panel in last step of the upload
+    * [ECM-2626] - Create a component to select some categories in edition template when creating a new document.
+    * [ECM-2627] - Add a new parameter in advanced search to search on taxonomies
+    * [ECM-2725] - Allow Shift to select multiple items
 
-** New Feature
-    * [ECM-2291] - Column sort on search results
-    * [ECM-2292] - Exerpts on search results
-    * [ECM-2293] - Hilight matching terms on search results
-    * [ECM-2294] - Score column in search results
-    * [ECM-2394] - Allow multiple selection in JCR File Explorer
-    * [ECM-2395] - Create a thumbnail service
-    * [ECM-2396] - Create a cover flow
-    * [ECM-2409] - Change the location of the repository list in the first panel of JCR File Explorer
-    * [ECM-2436] - Create new content deployment initializer service
-    * [ECM-2442] - Provide a "copy path" feature in the file explorer
-    * [ECM-2518] - Create new Parameterized Content Viewer Portlet
-    
-
-** Task
-    * [ECM-2240] - Remove rest application in ecm
-    * [ECM-2509] - Change displaying format for datetime in Manage Publication form
-    * [ECM-2535] - IE: Need to reduce the size Comment-box 
-    * [ECM-2571] - Create ecm 2.2 branches
-    * [ECM-2573] - Repair the interface in Select Permission
-    * [ECM-2588] - Change border of table in Manage Publication form in Vista skin
-    * [ECM-2610] - Change the border of 'Select template' when create new document
-    * [ECM-2617] - admin tab] [manage actions] Can add action for node with name of action is null 
-    * [ECM-2618] - [action tab][upload file] should has message warming in case name of new file upload has the same name with a file which has uploaded but has yet activate version
-    * [ECM-2621] - [action tab][add document] should validate name of file or file plan or article in case: name is null
-    * [ECM-2634] - [ECM admin][repository] form edit repository: display not well on Vista skin on FF
-    * [ECM-2636] - [Advanced Configuration] [manage Queries]: on Add or edit form query, check box [ Enable cache results] displays not well on default skin
-    * [ECM-2637] - RecordsJob should check Repository state
-    * [ECM-2648] - Change the icon of upload file when right click on the right pane in Vista and Mac skin
-    * [ECM-2653] - Change the color of links
-    * [ECM-2673] - Change the name of folder when create new workspace
-    * [ECM-2679] - Change message when do not put name for action
-    * [ECM-2702] - Set align for 'Any Permission' label in 'Select member' form in Mac skin
-    * [ECM-2703] - FF: Remove scroll bar in 'Task Manager' form of holiday process in Business Process Center
-    * [ECM-2718] - Integrate ECM with Portal 2.5RC1
-    * [ECM-2720] - Set align for 'Thumbnail image' after upload image for node in defaul skin
-    * [ECM-2722] - Change the 'Overload thumbnail' icon in action bar
-    * [ECM-2731] - FF: Let the image icon in the center of frame in Mac skin
-    * [ECM-2738] - Change border of 'Any Permission' form  in 'Select member'  when add permission for node
-    * [ECM-2748] - Comment for language properties file
-    * [ECM-2751] - Lost image in title of document File
-    * [ECM-2757] - Release ECM 2.2RC1
-
+- Other resources and links
+     Company site        http://www.exoplatform.com
+     Community JIRA      http://jira.exoplatform.org
+     Comminity site      http://www.exoplatform.org
+     Developers wiki     http://wiki.exoplatform.org
+     Documentation       http://docs.exoplatform.org 

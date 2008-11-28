@@ -113,7 +113,11 @@ function glideTo(x, new_caption_id) {
 	/* Set scrollbar slider to new position */
 	if (dragging == false) {
 		new_slider_pos = (scrollbar_width * (-(x*100/((max-1)*xstep))) / 100) - new_posx;
-		slider_div.style.marginLeft = (new_slider_pos - conf_slider_width) + 'px';
+		/*
+		* defauld: slider_div.style.marginLeft = (new_slider_pos - conf_slider_width) + 'px';
+		* add: slider_div.offsetWidth /2
+		*/
+		slider_div.style.marginLeft = (new_slider_pos - conf_slider_width - slider_div.offsetWidth / 2 ) + 'px';
 	}
 }
 
@@ -212,7 +216,7 @@ function refresh(onload) {
 	images_left = imageflow_div.offsetLeft;
 	max_conf_focus = conf_focus * xstep;
 	size = images_width * 0.5;
-	scrollbar_width = images_width * 0.6;
+	scrollbar_width = images_width * 0.72;
 	conf_slider_width = conf_slider_width * 0.5;
 	max_height = images_width * 0.51;
 
@@ -230,7 +234,8 @@ function refresh(onload) {
 	/* Change scrollbar div properties */
 	//default: 0.02
 	scrollbar_div.style.marginTop = images_width * 0.012 + 'px';
-	scrollbar_div.style.marginLeft = images_width * 0.2 + 'px';
+	//default: 0.2
+	scrollbar_div.style.marginLeft = images_width * 0.12 + 'px';
 	scrollbar_div.style.width = scrollbar_width + 'px';
 	
 	/* Set slider attributes */

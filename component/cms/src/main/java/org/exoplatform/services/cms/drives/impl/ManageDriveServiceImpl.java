@@ -39,22 +39,83 @@ import org.picocontainer.Startable;
  */
 public class ManageDriveServiceImpl implements ManageDriveService, Startable {
 
+  /**
+   * Name of property WORKSPACE
+   */
   private static String WORKSPACE = "exo:workspace".intern() ;
+  
+  /**
+   * Name of property PERMISSIONS
+   */
   private static String PERMISSIONS = "exo:accessPermissions".intern() ;
+  
+  /**
+   * Name of property VIEWS
+   */
   private static String VIEWS = "exo:views".intern() ;
+  
+  /**
+   * Name of property ICON
+   */
   private static String ICON = "exo:icon".intern() ;
+  
+  /**
+   * Name of property PATH
+   */
   private static String PATH = "exo:path".intern() ;
+  
+  /**
+   * Name of property VIEW_REFERENCES
+   */
   private static String VIEW_REFERENCES = "exo:viewPreferences".intern() ;
+  
+  /**
+   * Name of property VIEW_NON_DOCUMENT
+   */
   private static String VIEW_NON_DOCUMENT = "exo:viewNonDocument".intern() ;
+  
+  /**
+   * Name of property VIEW_SIDEBAR
+   */
   private static String VIEW_SIDEBAR = "exo:viewSideBar".intern() ;
+  
+  /**
+   * Name of property SHOW_HIDDEN_NODE
+   */
   private static String SHOW_HIDDEN_NODE = "exo:showHiddenNode".intern() ;
+  
+  /**
+   *  Name of property ALLOW_CREATE_FOLDER
+   */
   private static String ALLOW_CREATE_FOLDER = "exo:allowCreateFolder".intern() ;
 
+  /**
+   * List of ManageDrivePlugin
+   */
   private List<ManageDrivePlugin> drivePlugins_  = new ArrayList<ManageDrivePlugin> ();
+  
+  /**
+   * RepositoryService object
+   */
   private RepositoryService repositoryService_ ;
+  
+  /**
+   * Path to drive home directory
+   */
   private String baseDrivePath_ ;
+  
+  /**
+   * NodeHierarchyCreator object 
+   */
   private NodeHierarchyCreator nodeHierarchyCreator_ ;
 
+  /**
+   * Constructor method
+   * Construcs RepositoryService, NodeHierarchyCreator, baseDrivePath_
+   * @param jcrService
+   * @param nodeHierarchyCreator
+   * @throws Exception
+   */
   public ManageDriveServiceImpl(RepositoryService jcrService, 
       NodeHierarchyCreator nodeHierarchyCreator) throws Exception{
     repositoryService_ = jcrService ;
@@ -62,6 +123,10 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     baseDrivePath_ = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_DRIVES_PATH);
   }
 
+  /**
+   * Implemented method from Startable class
+   * init all ManageDrivePlugin
+   */
   public void start() {
     try{
       for(ManageDrivePlugin plugin : drivePlugins_) {
@@ -71,6 +136,9 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     }    
   }
 
+  /**
+   * Implemented method from Startable class
+   */
   public void stop() { }
 
   public void init(String repository) throws Exception {
@@ -80,13 +148,13 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
   }
 
   /**
-   * 
+   * Add new ManageDrivePlugin to drivePlugins_
    * @param drivePlugin
    */
   public void setManageDrivePlugin(ManageDrivePlugin drivePlugin) {
     drivePlugins_.add(drivePlugin) ;
   }    
-  
+
   public List<DriveData> getAllDrives(String repository) throws Exception {
     Session session = getSession(repository) ;    
     Node driveHome = (Node)session.getItem(baseDrivePath_);
@@ -171,7 +239,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     session.save() ;
     session.logout();
   }
-  
+
   public List<DriveData> getAllDriveByPermission(String permission, String repository) throws Exception {
     List<DriveData> driveByPermission = new ArrayList<DriveData>() ;
     try{
@@ -200,6 +268,12 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     session.logout();
   } 
 
+  /**
+   * Get session from repository in SystemWorkspace name
+   * @param repository    repository name
+   * @return session
+   * @throws Exception
+   */
   private Session getSession(String repository) throws Exception{    
     ManageableRepository manaRepository = repositoryService_.getRepository(repository) ;
     return manaRepository.getSystemSession(manaRepository.getConfiguration().getSystemWorkspaceName()) ;          

@@ -151,7 +151,10 @@
 	padding: 2px 0px 2px 3px;
 } 
 
-
+.UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn .NodeLabel {
+	width: 95%;
+	overflow: hidden;
+} 
 /*############################## -- Begin MenuPopup -- ##############################*/
 
 .UIJCRExplorerPortlet .UIMenuPopup {
@@ -220,8 +223,6 @@
   padding-left: 10px ;
 }
 /*############################## -- End UIMenuPopup   -- ##############################*/
-.UIJCRExplorerPortlet .UIThumbnailsView {
-}
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconsContainer {
   padding-left: 10px;;
@@ -535,6 +536,10 @@
   float: none;
 }
 
+.UIJCRExplorerPortlet .UISearchContainer .ConstraintOption .IconConstraint {
+	cursor: pointer;
+}
+
 /*================================UIMetadataSelectForm=================================*/
 
 .UIJCRExplorerPortlet .UIMetadataSelectForm {
@@ -573,6 +578,11 @@
 
 .UIJCRExplorerPortlet .UIExportNode { 
 	padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIExportNode .UIFormGrid {
+	width: auto;
+	margin: auto;
 }
 
 /*================================.UIImportNode=================================*/
@@ -781,13 +791,15 @@
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
 /*====================================UIAnyPermission==================================*/
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission {
-	border: 1px solid #B7B7B7;
 	margin-bottom: 2px;
 }
 
 .UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .HorizontalLayout {
-	border: none;
 	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIAnyPermission .UIFormInputSetWithAction .UIFormGrid td {
+	padding: 7px 8px 4px 0;
 }
 
 .UIJCRExplorerPortlet .UIAnyPermission .UIFormGrid td.FieldLabel {
@@ -818,10 +830,6 @@
 	width: auto;
 }
 
-.UIJCRExplorerPortlet .UIAnyPermission .HorizontalLayout .UIFormGrid .FieldLabel {
-	width: 108px;
-}
-
 /*====================================UIActionManager==================================*/
 .UIJCRExplorerPortlet .UITabContentContainer .UIActionContainer .UIFormWithoutAction {
 	border: 1px solid #B7B7B7;
@@ -835,3 +843,12 @@
   height: 64px;
   background: url('DefaultSkin/background/LoadingProgress.gif') no-repeat center center;
 }
+
+/*===========================================UIRightClickPopupMenu===========================================*/
+.UIRightClickPopupMenu .MenuIcon {
+	line-height:16px;
+	margin:0 7px;
+	padding:0px 0 10px 26px;
+	width:auto;
+}
+

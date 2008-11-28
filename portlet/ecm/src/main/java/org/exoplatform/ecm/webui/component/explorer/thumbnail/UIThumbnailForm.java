@@ -62,12 +62,12 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 )
 public class UIThumbnailForm extends UIForm implements UIPopupComponent {
  
-  final static public String MEDIUM_SIZE = "mediumSize";
+  final static public String THUMBNAIL_FIELD = "mediumSize";
   private boolean thumbnailRemoved_ = false;
   
   public UIThumbnailForm() throws Exception {
     setMultiPart(true) ;
-    UIFormUploadInput uiInput = new UIFormUploadInput(MEDIUM_SIZE, MEDIUM_SIZE) ;
+    UIFormUploadInput uiInput = new UIFormUploadInput(THUMBNAIL_FIELD, THUMBNAIL_FIELD) ;
     addUIFormInput(uiInput) ;
   }
   
@@ -79,6 +79,11 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
     return getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
   }
   
+  public Node getThumbnailNode(Node node) throws Exception {
+    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+    return thumbnailService.getThumbnailNode(node);
+  }
+  
   public boolean isRemovedThumbnail() { return thumbnailRemoved_; }
   
   public String[] getActions() { return new String[] {"Save", "Cancel"}; }
@@ -88,7 +93,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
       UIThumbnailForm uiForm = event.getSource();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
-      UIFormUploadInput input = (UIFormUploadInput)uiForm.getUIInput(MEDIUM_SIZE);
+      UIFormUploadInput input = (UIFormUploadInput)uiForm.getUIInput(THUMBNAIL_FIELD);
       if(input.getUploadResource() == null) {
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
                                                 ApplicationMessage.WARNING));
@@ -113,7 +118,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
       ThumbnailService thumbnailService = uiForm.getApplicationComponent(ThumbnailService.class);
       BufferedImage image = ImageIO.read(inputStream);
       try {
-        thumbnailService.createSpecifiedThumbnail(selectedNode, image, ThumbnailService.MEDIUM_SIZE);
+        thumbnailService.createThumbnailImage(selectedNode, image, mimeType);
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UIThumbnailForm.msg.access-denied", null, 
             ApplicationMessage.WARNING));
@@ -153,19 +158,16 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
       uiForm.thumbnailRemoved_ = true;
       Node selectedNode = uiExplorer.getCurrentNode();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
-      if(!selectedNode.isCheckedOut()) {
-        uiApp.addMessage(new ApplicationMessage("UIThumbnailForm.msg.is-checked-in", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
       if(selectedNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(selectedNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
       }
-      if(selectedNode.hasProperty(ThumbnailService.MEDIUM_SIZE)) {
+      ThumbnailService thumbnailService = uiForm.getApplicationComponent(ThumbnailService.class);
+      Node thumbnailNode = thumbnailService.getThumbnailNode(selectedNode);
+      if(thumbnailNode != null) {
         try {
-          selectedNode.getProperty(ThumbnailService.MEDIUM_SIZE).remove();
+          thumbnailNode.remove();
+          uiExplorer.getSession().save();
         } catch(LockException lock) {
           Object[] arg = { selectedNode.getPath() };
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
@@ -190,7 +192,6 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
           return;
         }
       }
-      selectedNode.save();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
       uiExplorer.setIsHidePopup(true);
       uiExplorer.updateAjax(event);

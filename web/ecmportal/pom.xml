@@ -2,7 +2,7 @@
   <parent>
     <groupId>org.exoplatform.ecm</groupId>
     <artifactId>config</artifactId>
-    <version>2.2rc1</version>
+    <version>2.2-SNAPSHOT</version>
   </parent> 
 
   <modelVersion>4.0.0</modelVersion>
@@ -26,6 +26,7 @@
                 <exclude>WEB-INF/web.xml</exclude>                     
                 <exclude>WEB-INF/conf/</exclude>                                     
                 <exclude>WEB-INF/classes/locale/navigation/</exclude>
+                <exclude>WEB-INF/conf/script/groovy/SkinConfigScript.groovy</exclude>
                 <exclude>templates/groovy/webui/component/UIHomePagePortlet.gtmpl</exclude>
                 <exclude>templates/skin/webui/component/UIHomePagePortlet/</exclude>                     
               </excludes>

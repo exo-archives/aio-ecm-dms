@@ -11,7 +11,6 @@ import javax.jcr.Item;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.Repository;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
@@ -33,19 +32,60 @@ import org.exoplatform.services.log.ExoLogger;
 
 public class RecordsServiceImpl implements RecordsService {
 
+  /**
+   * Type of order in query statement: orderType = ascending
+   */
   final static public String ASCENDING = "ascending" ;
+  
+  /**
+   * Type of order in query statement: orderType = dedcending
+   */
   final static public String DESCENDING = "dedcending" ;  
 
+  /**
+   * Base query statement
+   */
   final static public String BASE_STATEMENT = "/jcr:root$path//element(*,$recordType) order by @$orderProperty $orderType";
+  
+  /**
+   *  Query statement with property constraints 
+   */
   final static public String CONSTRAINTS_STATEMENT = "/jcr:root$path//element(*,$recordType) $propertyConstraints order by @$orderProperty $orderType";
 
+  /**
+   * Construct log object
+   */
   private static Log log_ = ExoLogger.getLogger("services.cms.records");
+  
+  /**
+   * ActionServiceContainer object: process for action with node
+   */
   private ActionServiceContainer actionsService_;
+  
+  /**
+   * SessionProviderService object: Get Session and QueryManager
+   */
   private SessionProviderService providerService_ ;
+  
+  /**
+   * RepositoryService object
+   */
   private RepositoryService repositoryService_ ;
 
+  /**
+   * AuditService object
+   */
   private AuditService auditService_;
 
+  
+  /**
+   * Constructor method
+   * init object
+   * @param actionServiceContainer        ActionServiceContainer object
+   * @param auditService                  AuditService object  
+   * @param sessionProviderService        SessionProviderService object
+   * @param repositoryService             RepositoryService object
+   */
   public RecordsServiceImpl(ActionServiceContainer actionServiceContainer, AuditService auditService,
                             SessionProviderService sessionProviderService, RepositoryService repositoryService) {
     actionsService_ = actionServiceContainer;
@@ -54,7 +94,6 @@ public class RecordsServiceImpl implements RecordsService {
     repositoryService_ = repositoryService;
   }
 
-  // TODO handle a lock
   public void addRecord(Node filePlan, Node record) throws RepositoryException {
     //TODO need filter nodetype whe register evenlistener for observation
     if(!record.isNodeType("nt:file")) return;
@@ -70,7 +109,7 @@ public class RecordsServiceImpl implements RecordsService {
     filePlan.save();    
     filePlan.getSession().save() ;
   }
-
+  
   public void bindFilePlanAction(Node filePlan, String repository) throws Exception {
     Map<String,JcrInputProperty> mappings = new HashMap<String,JcrInputProperty>();
 
@@ -123,6 +162,10 @@ public class RecordsServiceImpl implements RecordsService {
     log_.info("Compute records accession over");
   }
 
+  /*
+   * (non-Javadoc)
+   * @see #cutoffObsolete(javax.jcr.Node,javax.jcr.Node)
+   */
   public void computeCutoffs(Node filePlan) throws RepositoryException {
     List<Node>toCutoffList = getCutoffRecords(filePlan) ; 
     for(Node record: toCutoffList){
@@ -223,49 +266,95 @@ public class RecordsServiceImpl implements RecordsService {
     log_.info("Transfer records over");
   }
 
+  /**
+   * Get list of node by query statement following recordType = "rma:accessionable", 
+   * orderProperty = "rma:dateReceived", orderType = ASCENDING
+   * and constrain @rma:accessionExecuted= 'false'
+   */  
   public List<Node> getAccessionableRecords(Node filePlan) throws RepositoryException {
     String statement = makeConstraintsStatement("[@rma:accessionExecuted= 'false']");
     return getRecordsByQuery(filePlan,statement,"rma:accessionable","rma:dateReceived",ASCENDING);        
   }
 
+  /**
+   * Get list of node by query statement following recordType = "rma:cutoffable", 
+   * orderProperty = "rma:dateReceived", orderType = ASCENDING
+   * and constrain @rma:cutoffExecuted= 'false'
+   */  
   public List<Node> getCutoffRecords(Node filePlan) throws RepositoryException {
     String statement = makeConstraintsStatement("[@rma:cutoffExecuted= 'false']");    
     return getRecordsByQuery(filePlan,statement,"rma:cutoffable","rma:dateReceived",ASCENDING);
   }
 
+  /**
+   * Get list of node by BASE_STATEMENT statement following recordType = "rma:destroyable", 
+   * orderProperty = "rma:dateReceived", orderType = ASCENDING
+   */  
   public List<Node> getDestroyableRecords(Node filePlan) throws RepositoryException {
     return getRecordsByQuery(filePlan,BASE_STATEMENT,"rma:destroyable","rma:dateReceived",ASCENDING);
   }
-
+  
+  /**
+   * Get list of node by query statement following recordType = "rma:record", 
+   * orderProperty = "rma:dateReceived", orderType = ASCENDING
+   * and constrain @rma:holdExecuted= 'false'
+   */  
   public List<Node> getHolableRecords(Node filePlan) throws RepositoryException {    
     String statement = makeConstraintsStatement("[@rma:holdExecuted= 'false']");
     return getRecordsByQuery(filePlan,statement,"rma:holdable","rma:dateReceived",ASCENDING);
   }
 
+  /**
+   * Get list of node by query statement following recordType = "rma:record", 
+   * orderProperty = "rma:dateReceived", orderType = ASCENDING
+   * and constrain @rma:isObsolete= 'true'
+   */  
   public List<Node> getObsoleteRecords(Node filePlan) throws RepositoryException {        
     String statement = makeConstraintsStatement("[@rma:isObsolete= 'true']");
     return getRecordsByQuery(filePlan,statement,"rma:record","rma:dateReceived",ASCENDING);    
   }
 
+  /**
+   * Get list of node by BASE_STATEMENT statement following recordType = "rma:record", 
+   * orderProperty = "rma:dateReceived", orderType = ASCENDING
+   */
   public List<Node> getRecords(Node filePlan) throws RepositoryException {
     return getRecordsByQuery(filePlan,BASE_STATEMENT, "rma:record","rma:dateReceived",ASCENDING);   
   }
 
+  /**
+   * Get list of node by query statement following recordType = "rma:record", 
+   * orderProperty = "rma:dateReceived", orderType = ASCENDING
+   * and constrain @rma:superseded = 'true'
+   */
   public List<Node> getSupersededRecords(Node filePlan) throws RepositoryException {
     String statement = makeConstraintsStatement("[@rma:superseded = 'true']") ;    
     return getRecordsByQuery(filePlan,statement,"rma:record","rma:dateReceived",ASCENDING);    
   }
-
+  
+  /**
+   * Get list of node by query statement following recordType = "rma:transferable", 
+   * orderProperty = "rma:dateReceived", orderType = ASCENDING
+   * and constrain @rma:transferExecuted = 'false'
+   */
   public List<Node> getTransferableRecords(Node filePlan) throws RepositoryException {    
     String statement = makeConstraintsStatement("[@rma:transferExecuted = 'false']") ;
     return getRecordsByQuery(filePlan,statement,"rma:transferable","rma:dateReceived",ASCENDING);       
   }
 
+  /**
+   * Get list of node by query statement following recordType = "rma:vitalRecord", 
+   * orderProperty = "rma:nextReviewDate", orderType = DESCENDING
+   */
   public List<Node> getVitalRecords(Node filePlan) throws RepositoryException {    
     return getRecordsByQuery(filePlan,BASE_STATEMENT,"rma:vitalRecord","rma:nextReviewDate",DESCENDING);
   }
 
-  // after holding a process can be moved to a national agency
+  /**
+   * after holding a process can be moved to a national agency
+   * @param filePlan    filePlane node
+   * @param record      record node
+   */ 
   private void setupAccession(Node filePlan, Node record) {
     try {
       boolean processAccession = filePlan.getProperty("rma:processAccession")
@@ -284,7 +373,11 @@ public class RecordsServiceImpl implements RecordsService {
     }
   }
 
-  // after cutoff or holding a record maybe detroyed
+  /**
+   * after cutoff or holding a record maybe detroyed
+   * @param filePlan    filePlane node
+   * @param record      record node
+   */
   private void setupDestruction(Node filePlan, Node record) {
     try {
       record.addMixin("rma:destroyable");
@@ -300,7 +393,11 @@ public class RecordsServiceImpl implements RecordsService {
     }
   }
 
-  // after cutoff or holding a process can be transfered
+  /**
+   * after cutoff or holding a process can be transfered
+   * @param filePlan    filePlane node
+   * @param record      record node
+   */
   private void setupTransfer(Node filePlan, Node record) {
     try {
       record.addMixin("rma:transferable");
@@ -321,6 +418,11 @@ public class RecordsServiceImpl implements RecordsService {
     }
   }
 
+  /**
+   * Add time for current date
+   * @param currentDate   current date time
+   * @param period        type of time for adding to current date time
+   */
   private void calculateNextRevDate(Calendar currentDate, String period) {
     if ("one minute".equals(period)) {
       currentDate.add(Calendar.MINUTE, 1);
@@ -339,7 +441,11 @@ public class RecordsServiceImpl implements RecordsService {
     }
   }
 
-  // determine if the next phase is a hold, transfer or destruction
+  /**
+   * determine if the next phase is a hold, transfer or destruction
+   * @param filePlan    filePlane node
+   * @param record      record node
+   */ 
   private void computeNextRecordPhaseAfterCutoff(Node filePlan, Node record) throws RepositoryException {
     boolean processHold = filePlan.getProperty("rma:processHold").getBoolean();
     boolean processTransfer = filePlan.getProperty("rma:processTransfer").getBoolean();
@@ -372,6 +478,12 @@ public class RecordsServiceImpl implements RecordsService {
     filePlan.save() ;
   }
 
+  /**
+   * @param filePlan    filePlane node
+   * @param record      record node
+   * @return             false
+   * @throws RepositoryException
+   */
   private boolean cutoffEvent(Node filePlan, Node record)
   throws RepositoryException {
     //String cutoffEvent = record.getProperty("rma:cutoffEvent").getString();
@@ -379,6 +491,14 @@ public class RecordsServiceImpl implements RecordsService {
     return false;
   }
 
+  /**
+   * Call next phase if property rma:cutoffDateTime of record node = true
+   * @param filePlan    filePlane node
+   * @param record      record node
+   * @return            true if transfer to next phase <br>
+   *                    false if not
+   * @throws RepositoryException
+   */
   private boolean cutoffHasExpired(Node filePlan, Node record)
   throws RepositoryException {
     Calendar cutoffDateTime = record.getProperty("rma:cutoffDateTime").getDate();
@@ -391,6 +511,14 @@ public class RecordsServiceImpl implements RecordsService {
     return false;
   }
 
+  /**
+   * Call next phase if property rma:cutoffNow of record node = true
+   * @param filePlan    filePlane node
+   * @param record      record node
+   * @return            true if transfer to next phase <br>
+   *                    false if not
+   * @throws RepositoryException
+   */
   private boolean cutoffNow(Node filePlan, Node record)
   throws RepositoryException {
     boolean cutoffNow = record.getProperty("rma:cutoffNow").getBoolean();
@@ -401,7 +529,15 @@ public class RecordsServiceImpl implements RecordsService {
     }
     return false;
   }
-
+  
+  /**
+   * Call next phase if property rma:isObsolete of record node = true
+   * @param filePlan    filePlane node
+   * @param record      record node
+   * @return            true if transfer to next phase <br>
+   *                    false if not
+   * @throws RepositoryException
+   */
   private boolean cutoffObsolete(Node filePlan, Node record)
   throws RepositoryException {
     boolean cutoffIsObsolete = record.getProperty("rma:isObsolete").getBoolean();
@@ -413,6 +549,14 @@ public class RecordsServiceImpl implements RecordsService {
     return false;
   }
 
+  /**
+   * Call next phase if property rma:superseded of record node = true
+   * @param filePlan    filePlane node
+   * @param record      record node
+   * @return            true if transfer to next phase <br>
+   *                    false if not
+   * @throws RepositoryException
+   */
   private boolean cutoffSuperseded(Node filePlan, Node record) throws RepositoryException {    
     boolean cutoffIsSuperseded = record.getProperty("rma:superseded").getBoolean();
     if(cutoffIsSuperseded) {
@@ -423,6 +567,16 @@ public class RecordsServiceImpl implements RecordsService {
     return false;
   }
 
+  /**
+   * Execute query to get all node following query statement
+   * @param filePlan            Node to get worspace name
+   * @param templateStatement   template of query statement
+   * @param recordType          value of $recordType in query statement
+   * @param orderProperty       value of $orderProperty in query statement
+   * @param orderType           value of $orderType in query statement
+   * @return                    ArrayList of node in result query
+   * @throws RepositoryException
+   */
   private List<Node> getRecordsByQuery(Node filePlan, String templateStatement, String recordType,String orderProperty,String orderType) throws RepositoryException{
     List<Node> list = new ArrayList<Node>();
     String statement = StringUtils.replace(templateStatement,"$path",filePlan.getPath());
@@ -446,10 +600,20 @@ public class RecordsServiceImpl implements RecordsService {
     return list;
   }
 
+  /**
+   * Create query constraining property
+   * @param constraints
+   * @return  query string
+   */
   private String makeConstraintsStatement(String constraints) {
     return StringUtils.replace(CONSTRAINTS_STATEMENT,"$propertyConstraints",constraints);
   }
 
+  /**
+   * Set property for record node base on rma:processCutoff property in filePlan node
+   * @param filePlan      filePlan node
+   * @param record        record node
+   */
   private void processCutoffInformation(Node filePlan, Node record) {
     boolean isCutoffable;
     try {
@@ -497,6 +661,13 @@ public class RecordsServiceImpl implements RecordsService {
     }
   }
 
+  /**
+   * Set property for record node
+   * @param filePlan      filePlan node
+   * @param record        record node
+   * @param counter       value is set in rma:recordIdentifier property
+   * @throws RepositoryException
+   */
   private void processDefaultRecordProperties(Node filePlan, Node record,
       long counter) throws RepositoryException {
     record.addMixin("rma:record");
@@ -551,6 +722,13 @@ public class RecordsServiceImpl implements RecordsService {
     filePlan.save() ;       
   }
 
+  /**
+   * Base on property rma:vitalRecordIndicator in filePlan node
+   * Add mixin rma:vitalRecord for record node
+   * Set value for rma:prevReviewDate, rma:nextReviewDate property of record node
+   * @param filePlan      filePlan node
+   * @param record        record node
+   */
   private void processVitalInformation(Node filePlan, Node record) {
     try {
       boolean isVital = filePlan.getProperty("rma:vitalRecordIndicator").getBoolean();

@@ -26,14 +26,59 @@ import javax.jcr.Node;
  */
 public interface CmsService {
   
+  /**
+   * Constant string to refer property of node in Map
+   * For getting propreties of specific node in Map, 
+   * use key = NODE + propertyName 
+   */
   public static final String NODE = "/node";  
   
+  /**
+   * Store node in given workspace and repository with given properties
+   * @param workspace       name of workspace
+   * @param nodetypeName    NodeType's name
+   * @param storePath       Path to store node
+   * @param inputProperties Map of node's property including (property name, value)
+   * @param repository      Repository's name
+   * @throws Exception      Throwing exception 
+   * @return path to saved noded
+   * @see #storeNode(String nodetypeName, Node storeNode, Map inputProperties, boolean isAddNew,String repository) throws Exception
+   */
   public String storeNode(String workspace, String nodetypeName, String storePath, Map inputProperties,String repository) throws Exception;
   
+  /**
+   * Store node in given repository with given properties
+   * @param nodetypeName    NodeType's name
+   * @param storeNode       Node is stored
+   * @param inputProperties Map of node's property including (property name, value)
+   * @param isAddNew        flag to decide whether this situation is adding node or updating node
+   * @param repository      Name of repository
+   * @return                return path to saved noded
+   * @throws Exception
+   */
   public String storeNode(String nodetypeName, Node storeNode, Map inputProperties, boolean isAddNew,String repository) throws Exception;
   
+  /**
+   * Store node in given repository with given properties and return UUID of saved node
+   * @param nodetypeName    NodeType's name
+   * @param storeNode       Node is stored
+   * @param inputProperties Map of node's property including (property name, value)
+   * @param isAddNew        flag to decide whether this situation is adding node or updating node
+   * @param repository      Name of repository
+   * @return                return UUID of saved node
+   * @throws Exception
+   * @see #storeNode(String nodetypeName, Node storeNode, Map inputProperties, boolean isAddNew,String repository) throws Exception
+   * @see #storeNode(String workspace, String nodetypeName, String storePath, Map inputProperties,String repository) throws Exception
+   */
   public String storeNodeByUUID(String nodetypeName, Node storeNode, Map inputProperties, boolean isAddNew,String repository) throws Exception;
   
+  /**
+   * Move node from one workspace to the other, with the same repository
+   * @param nodePath      Path to node in source workpace
+   * @param srcWorkspace  Source workspace name
+   * @param destWorkspace Destination of workspace name
+   * @param destPath      Destination of node path
+   * @param repository    Repository name
+   */
   public void moveNode(String nodePath, String srcWorkspace, String destWorkspace, String destPath, String repository);  
-    
 }

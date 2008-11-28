@@ -55,23 +55,23 @@
 				<div class="UIRightClickPopupMenu" style="display: block;">
 					<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
 						<a class="MenuItem" href="<%=contextMenu.event("AddFolder")%>" style="display: block;"> 	
-							<div class="ItemIcon AddFolder16x16Icon">
+							<div class="MenuIcon AddFolder16x16Icon">
 								<%=_ctx.appRes("ECMContextMenu.event.AddFolder")%>
 							</div>
 					 	</a>
 					 	<a class="MenuItem" href="<%=contextMenu.event("AddDocument")%>" style="display: block;"> 	
-							<div class="ItemIcon AddDocument16x16Icon">
+							<div class="MenuIcon AddDocument16x16Icon">
 								<%=_ctx.appRes("ECMContextMenu.event.AddDocument")%>
 							</div>
 					 	</a>
 					 	<a class="MenuItem" href="<%=contextMenu.event("Upload")%>" style="display: block;"> 	
-							<div class="ItemIcon Upload16x16Icon">
+							<div class="MenuIcon Upload16x16Icon">
 								<%=_ctx.appRes("ECMContextMenu.event.Upload")%>
 							</div>
 					 	</a>
 					 	<%if(uicomponent.isCanPaste()) {%>
 						 	<a class="MenuItem" href="<%=contextMenu.event("Paste")%>" style="display: block;"> 	
-								<div class="ItemIcon Paste16x16Icon">
+								<div class="MenuIcon Paste16x16Icon">
 									<%=_ctx.appRes("ECMContextMenu.event.Paste")%>
 								</div>
 						 	</a>
@@ -119,7 +119,7 @@
 		          }
 		          String clipboardLink = serverUrl + "/" + portalName + "/rest/jcr/" + repository + "/" + preferenceWS + data.getPath();
 		          strActs +=	"<a class='MenuItem' style='display: block;' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
-							strActs +=  "	<div class='ItemIcon GetURL16x16Icon'>" ;
+							strActs +=  "	<div class='MenuIcon GetURL16x16Icon'>" ;
 							strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
 							strActs +=  "	</div>" ;
 					 		strActs +=  "</a>";
@@ -136,9 +136,9 @@
 							<div class="NodeLabel">
 								<div class="ThumbnailImage">
 									<%
-									  String thumbnailImage = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + data.getPath() + "/?size=medium";
+									  String thumbnailImage = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + data.getPath() + "/?size=medium&reloadnum=" + Math.random();
 									%>
-								    <span style="display: block;" class="LoadingProgressIcon"><img src="$thumbnailImage" onerror='eXo.ecm.UISimpleView.errorCallback(this);'" /></span>
+								    <span style="display: block;" class="LoadingProgressIcon"><img src="$thumbnailImage" onerror='eXo.ecm.UISimpleView.errorCallback(this);' onload="this.parentNode.style.backgroundImage='none'" /></span>
 								    <span style="display: none;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></span>
 								</div>
 							</div>

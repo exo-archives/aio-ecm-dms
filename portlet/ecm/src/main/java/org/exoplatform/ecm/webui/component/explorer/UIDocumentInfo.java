@@ -174,11 +174,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return false ;
   }
   
-  public boolean isAllowViewCoverFlow(Node node) throws Exception {
-    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
-    return thumbnailService.isAllowViewCoverFlow(node); 
-  }
-  
   public boolean isImageType(Node node) throws Exception {
     if(node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) {
       Node contentNode = node.getNode(Utils.JCR_CONTENT);
@@ -189,6 +184,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   
   public String getThumbnailImage(Node node) throws Exception {
     return Utils.getThumbnailImage(node, ThumbnailService.MEDIUM_SIZE);
+  }
+  
+  public Node getThumbnailNode(Node node) throws Exception {
+    ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+    return thumbnailService.getThumbnailNode(node);
   }
 
   public String getDownloadLink(Node node) throws Exception {

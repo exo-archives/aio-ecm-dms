@@ -219,15 +219,10 @@
 	
 	ECMUtils.prototype.onEnterPress = function(event) {
 		var uiAdressBarAction = document.getElementById("UIAddressBarAction");
-		if(uiAdressBarAction) {
-			var code;
-			var event = event || window.event;
-			if(event.keyCode) code = event.keyCode;
-			else if (event.which) code = event.which;
-			
-			if(code == 13) {
-				window.location.href = uiAdressBarAction.href ;
-			}
+		var event = event || window.event;
+		if(uiAdressBarAction && event.keyCode == 13) {
+			eval(uiAdressBarAction.href);
+			return false;
 		}
 	};
 	
