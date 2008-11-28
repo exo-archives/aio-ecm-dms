@@ -84,6 +84,7 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 )
 public class UIFastContentCreatortForm extends UIDialogForm implements UISelectable {
 
+  final static public String PATH_TAXONOMY = "/jcr:system/exo:ecm/exo:taxonomies/";
   private String documentType_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
@@ -202,6 +203,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
           Session systemSession = categoriesService.getSession(repository);          
           for(String categoryPath : categoriesPathList) {              
             if((categoryPath != null) && (categoryPath.trim().length() > 0)){
+              categoryPath = PATH_TAXONOMY + categoryPath.trim();
               try {
                 systemSession.getItem(categoryPath.trim());
               } catch (ItemNotFoundException e) {
@@ -251,6 +253,9 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
         if(homeNode.hasNode(addedPath.substring(addedPath.lastIndexOf("/") + 1))) {
           newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1));
           if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
+            for(int i = 0; i < categoriesPathList.length; i ++ ){
+              categoriesPathList[i] = PATH_TAXONOMY + categoriesPathList[i].trim();
+            }
             categoriesService.addMultiCategory(newNode, categoriesPathList, repository);            
           }
           event.getRequestContext().setAttribute("nodePath", newNode.getPath());

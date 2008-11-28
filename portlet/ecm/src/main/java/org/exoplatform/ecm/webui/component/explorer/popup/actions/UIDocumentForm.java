@@ -87,6 +87,7 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 
 public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UISelectable {   
   
+  final static public String PATH_TAXONOMY = "/jcr:system/exo:ecm/exo:taxonomies/";
   public UIDocumentForm() throws Exception {
     setActions(new String[]{"Save", "Cancel"}) ;  
   }     
@@ -178,6 +179,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           Session systemSession = categoriesService.getSession(repository);          
           for(String categoryPath : categoriesPathList) {              
             if((categoryPath != null) && (categoryPath.trim().length() > 0)){
+              categoryPath = PATH_TAXONOMY + categoryPath.trim();
               try {
                 systemSession.getItem(categoryPath.trim());
               } catch (ItemNotFoundException e) {
@@ -233,6 +235,9 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           homeNode.save() ;
           newNode = (Node)homeNode.getSession().getItem(addedPath);          
           if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
+            for(int i = 0; i < categoriesPathList.length; i ++ ){
+              categoriesPathList[i] = PATH_TAXONOMY + categoriesPathList[i].trim();
+            }
             categoriesService.addMultiCategory(newNode, categoriesPathList, repository);            
           }
         } catch(Exception e) {

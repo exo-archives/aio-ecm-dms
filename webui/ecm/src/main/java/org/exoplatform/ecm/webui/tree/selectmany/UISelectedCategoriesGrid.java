@@ -132,6 +132,10 @@ public class UISelectedCategoriesGrid extends UIGrid {
       UICategoriesSelector uiCategoriesSelector = uiSelectedCategoriesGrid.getAncestorOfType(UICategoriesSelector.class);
       String returnField = uiCategoriesSelector.getReturnFieldName();
       List<String> selectedCategories = uiSelectedCategoriesGrid.getSelectedCategories();
+      List<String> selectedCategoriesName = new ArrayList<String>();
+      for(String item :selectedCategories){
+        selectedCategoriesName.add(item.replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", ""));
+      }      
       UIApplication uiApplication = uiSelectedCategoriesGrid.getAncestorOfType(UIApplication.class);
       if(selectedCategories.size() == 0 && !uiSelectedCategoriesGrid.isDeleteAllCategory()) {
         uiApplication.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, ApplicationMessage.INFO));
@@ -139,7 +143,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
         return;
       }
       try {
-        ((UISelectable)uiCategoriesSelector.getSourceComponent()).doSelect(returnField, selectedCategories);
+        ((UISelectable)uiCategoriesSelector.getSourceComponent()).doSelect(returnField, selectedCategoriesName);
       } catch(Exception e) {
         e.printStackTrace();
         uiApplication.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.cannot-save", null, ApplicationMessage.WARNING));
