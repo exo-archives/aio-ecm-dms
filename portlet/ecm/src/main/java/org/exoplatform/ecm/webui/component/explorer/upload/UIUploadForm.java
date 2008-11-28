@@ -61,6 +61,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
@@ -109,6 +110,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   final static public String FIELD_TAXONOMY = "fieldTaxonomy";
   final static public String FIELD_LISTTAXONOMY = "fieldListTaxonomy";
   final static public String POPUP_TAXONOMY = "UIPopupTaxonomy";
+  final static public String PATH_TAXONOMY = "/jcr:system/exo:ecm/exo:taxonomies/";
   
   private boolean isMultiLanguage_ = false ;
   private String language_ = null ;
@@ -135,6 +137,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     listTaxonomy = listTaxonomyNew;
   }
   
+  public void setListTaxonomyName(List<String> listTaxonomyNameNew) {
+    listTaxonomyName = listTaxonomyNameNew;
+  }
   
   public void initFieldInput() throws Exception {
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
@@ -262,11 +267,28 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
           return ;
         }
       }
+      
+      UIFormMultiValueInputSet uiSet = uiForm.getChild(UIFormMultiValueInputSet.class);
+      List<UIComponent> listChildren = uiSet.getChildren();
+      List<String> listTaxonomyNew = new ArrayList<String>();
+      List<String> listTaxonomyNameNew = new ArrayList<String>();
+      for (UIComponent component : listChildren) {
+        UIFormStringInput uiStringInput = (UIFormStringInput)component;
+        String value = uiStringInput.getValue().trim();
+        listTaxonomyNameNew.add(value);
+        listTaxonomyNew.add(uiForm.PATH_TAXONOMY + value);
+      }
+      
+      uiForm.setListTaxonomy(listTaxonomyNew);
+      uiForm.setListTaxonomyName(listTaxonomyNameNew);
+      
+      uiSet.setValue(uiForm.getListTaxonomy());
+      
       String[] arrayTaxonomy = new String[uiForm.getListTaxonomy().size()];
       for (int i = 0; i < arrayTaxonomy.length; i++) {
         arrayTaxonomy[i] = uiForm.getListTaxonomy().get(i).trim();
       }
-      
+           
       Session session = uiExplorer.getSession();          
       for(String categoryPath : arrayTaxonomy) {              
         if((categoryPath != null) && (categoryPath.trim().length() > 0)){
