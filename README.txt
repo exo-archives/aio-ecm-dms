@@ -142,6 +142,19 @@ And:
    </field>
 </object>
 
+Support add references when upload file
+
+In the portlet File Explorer of ECM 2.2, you can add references to the file which will be uploaded. 
+By default this function is not mandatory. You can change the value equal true in the parameter categoryMandatoryWhenFileUpload
+to make sure every files will be added the categories when uploaded. 
+You can see and change the configuration if you want in the file exo.ecm.portlet.ecm/src/main/webapp/WEB-INF/portlet.xml
+
+<preference>
+  <name>categoryMandatoryWhenFileUpload</name>     
+  <value>false</value>        
+  <read-only>false</read-only>
+</preference>
+
 
 
 
