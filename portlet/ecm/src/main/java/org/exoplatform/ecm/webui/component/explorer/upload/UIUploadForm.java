@@ -196,6 +196,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   public void activate() throws Exception {}
   public void deActivate() throws Exception {}
 
+  @SuppressWarnings("unused")
   public void doSelect(String selectField, Object value) throws Exception {
     String valueTaxonomy = String.valueOf(value).trim();
     if (!listTaxonomy.contains(valueTaxonomy)) {
@@ -274,9 +275,11 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       List<String> listTaxonomyNameNew = new ArrayList<String>();
       for (UIComponent component : listChildren) {
         UIFormStringInput uiStringInput = (UIFormStringInput)component;
-        String value = uiStringInput.getValue().trim();
-        listTaxonomyNameNew.add(value);
-        listTaxonomyNew.add(uiForm.PATH_TAXONOMY + value);
+        if(uiStringInput.getValue() != null) {
+          String value = uiStringInput.getValue().trim();
+          listTaxonomyNameNew.add(value);
+          listTaxonomyNew.add(PATH_TAXONOMY + value);
+        }
       }
       
       uiForm.setListTaxonomy(listTaxonomyNew);
@@ -373,9 +376,11 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
             newNodeUUID = cmsService.storeNodeByUUID(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
             
             selectedNode.save() ;
-            Node newNode = selectedNode.getSession().getNodeByUUID(newNodeUUID);
-            categoriesService.addMultiCategory(newNode, arrayTaxonomy, uiExplorer.getRepositoryName());
-            selectedNode.getSession().save() ;                        
+            if(arrayTaxonomy.length > 0) {
+              Node newNode = selectedNode.getSession().getNodeByUUID(newNodeUUID);
+              categoriesService.addMultiCategory(newNode, arrayTaxonomy, uiExplorer.getRepositoryName());
+              selectedNode.getSession().save() ;                        
+            }
           } else {
             Node node = selectedNode.getNode(name) ;
             if(!node.getPrimaryNodeType().isNodeType(Utils.NT_FILE)) {
@@ -400,7 +405,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
             if(node.isNodeType("exo:datetime")) {
               node.setProperty("exo:dateModified",new GregorianCalendar()) ;
             }
-            categoriesService.addMultiCategory(node, arrayTaxonomy, uiExplorer.getRepositoryName());
+            if(arrayTaxonomy.length > 0) {
+              categoriesService.addMultiCategory(node, arrayTaxonomy, uiExplorer.getRepositoryName());
+            }
             node.save();
           }
         }
