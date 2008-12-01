@@ -129,7 +129,11 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
         }
       }
       else tagNames = new String[] {tagName} ;
+      String[] fitlerTagNames = new String[tagNames.length];
+      int i = 0;
       for(String t : tagNames) {
+        fitlerTagNames[i] = tagNames[i].trim();
+        i++;
         if(t.trim().length() == 0) {
           uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tag-name-empty", null, 
               ApplicationMessage.WARNING)) ;
@@ -153,7 +157,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
         }
       }
       for(Node tag : folksonomyService.getLinkedTagsOfDocument(uiExplorer.getCurrentNode(), repository)) {
-        for(String t : tagNames) {
+        for(String t : fitlerTagNames) {
           if(t.equals(tag.getName())) {
             Object[] args = {t} ;
             uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.name-exist", args, 
@@ -163,7 +167,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
           }
         }
       }
-      folksonomyService.addTag(currentNode, tagNames, repository) ;
+      folksonomyService.addTag(currentNode, fitlerTagNames, repository) ;
       uiForm.activate() ;
       UISideBar uiSideBar = uiExplorer.findFirstComponentOfType(UISideBar.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
