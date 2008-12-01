@@ -791,3 +791,10 @@
 	width:auto;
 }
 
+.UIRightClickPopupMenu .MenuURLIcon {
+	line-height:16px;
+	margin:0 7px;
+	padding:3px 0 3px 26px;
+	width:auto;
+}
+

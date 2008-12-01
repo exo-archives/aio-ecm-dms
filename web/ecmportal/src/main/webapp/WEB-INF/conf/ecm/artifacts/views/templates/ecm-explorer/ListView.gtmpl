@@ -185,7 +185,7 @@
 	          }
 	          String clipboardLink = serverUrl + "/" + portalName + "/rest/jcr/" + repository + "/" + preferenceWS + data.getPath();
 	          strActs +=	"<a class='MenuItem' style='display: block;' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
-						strActs +=  "	<div class='MenuIcon GetURL16x16Icon'>" ;
+						strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
 						strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
 						strActs +=  "	</div>" ;
 				 		strActs +=  "</a>";	          
