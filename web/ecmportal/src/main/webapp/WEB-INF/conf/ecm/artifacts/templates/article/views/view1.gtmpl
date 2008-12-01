@@ -114,11 +114,20 @@
 		  background: url('/eXoECMResources/skin/images/article/Artitcle.gif') no-repeat left -64px;
 		}
 		
-		.UIArticle .AttachmentsContaienr .AttachmentsContentIcon {
+		.UIArticle .AttachmentsContainer .AttachmentsContentIcon {
 		  background: url('/eXoECMResources/skin/images/article/AttachmentsIcon.gif') no-repeat left top;
 		  margin: 0px 5px 0px 3px;
-		  padding-left: 25px;
+		  padding-left: 18px;
+		  height: 15px;
 		  float: left;
+		}
+		
+		.UIArticle .AttachmentsContainer .RemoveAttachments {
+		  background: url('/eXoECMResources/skin/images/article/RemoveAttachmentsIcon.gif') no-repeat left top;
+		  margin: 0px 5px 0px 3px;
+		  padding-left: 18px;
+		  height: 15px;
+		  cursor: pointer;
 		}
 		
 		.UIArticle .ContentIcon {
@@ -213,19 +222,19 @@
 			margin: 0px 0px 0px auto;
 		}
 		
-		.UIArticle .FieldContent .AttachmentsContaienr {
+		.UIArticle .FieldContent .AttachmentsContainer {
 		  margin: 0px 6px 1px 0px;
-		  width: 30%; overflow-x: hidden;
+		  overflow-x: hidden;
 		  float: left;
 		}
 		
-		.UIArticle .AttachmentsContaienr a {
+		.UIArticle .AttachmentsContainer a {
 		  text-decortaion: none;
 		  color: #058ee6;
 		  float: left;
 		}
 		
-		.UIArticle .AttachmentsContaienr a:hover {
+		.UIArticle .AttachmentsContainer a:hover {
 		  text-decortaion: underline;
 		  color: orange;
 		}
@@ -388,10 +397,14 @@
 		  													String wsName = att.getSession().getWorkspace().getName() ;
 		  													String attPath = att.getPath() + "&workspaceName=" + wsName ;
 														%>
-														  <div class="AttachmentsContaienr">	
+														  <div class="AttachmentsContainer">	
 							                  <div class="AttachmentsContentIcon">
 							                  	<a href="<%=uicomponent.event("ChangeNode", attPath)%>"><%=att.getName()%></a>
 							                  </div>
+							                    <a href="<%=uicomponent.event("RemoveAttach", attPath)%>" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-attachment")%>">
+							                      <div class="RemoveAttachments"><span></span></div>
+							                    </a>
+
 							                  <div style="clear: left;"><span></span></div>
 							                </div>
 						              <%	}

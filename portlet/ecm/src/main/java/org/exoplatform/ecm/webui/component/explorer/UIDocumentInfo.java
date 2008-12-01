@@ -39,11 +39,11 @@ import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -85,6 +85,7 @@ import org.exoplatform.webui.exception.MessageException;
 @ComponentConfig(
     events = {
         @EventConfig(listeners = UIDocumentInfo.ChangeNodeActionListener.class),
+        @EventConfig(listeners = UIDocumentInfo.RemoveAttachActionListener.class, confirm="UIDocumentInfo.msg.confirm-deleteattachment"),
         @EventConfig(listeners = UIDocumentInfo.ViewNodeActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.SortActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.VoteActionListener.class),
@@ -569,6 +570,23 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
           return ;
         }
       }      
+    }
+  }
+  
+  /**
+   * Remove attachment file in an article
+   */
+  static  public class RemoveAttachActionListener extends EventListener<UIDocumentInfo> {
+    public void execute(Event<UIDocumentInfo> event) throws Exception {
+      /* get nodepath of attached node */
+      String attachNodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      /* Get UIWorkingArea object */
+      UIWorkingArea uiWorkingArea = event.getSource().getAncestorOfType(UIWorkingArea.class);
+      /* Get workspace name */
+      String wsName = event.getRequestContext().getRequestParameter(UIWorkingArea.WS_NAME);
+      /* Delete attachment files */
+      uiWorkingArea.doDelete(attachNodePath, wsName,event);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea);
     }
   }
 
