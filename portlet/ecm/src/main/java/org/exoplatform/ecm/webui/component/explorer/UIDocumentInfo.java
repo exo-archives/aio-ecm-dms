@@ -578,13 +578,9 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
    */
   static  public class RemoveAttachActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
-      /* get nodepath of attached node */
       String attachNodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      /* Get UIWorkingArea object */
       UIWorkingArea uiWorkingArea = event.getSource().getAncestorOfType(UIWorkingArea.class);
-      /* Get workspace name */
       String wsName = event.getRequestContext().getRequestParameter(UIWorkingArea.WS_NAME);
-      /* Delete attachment files */
       uiWorkingArea.doDelete(attachNodePath, wsName,event);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea);
     }

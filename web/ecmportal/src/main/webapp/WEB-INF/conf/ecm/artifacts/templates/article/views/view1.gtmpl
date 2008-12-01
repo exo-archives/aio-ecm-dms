@@ -1,3 +1,7 @@
+
+<%
+  import org.exoplatform.ecm.webui.utils.PermissionUtil;
+%>
 <div id="$uicomponent.id" class="UIResizableBlock">
 	<style>
 		.UIArticle {
@@ -401,10 +405,11 @@
 							                  <div class="AttachmentsContentIcon">
 							                  	<a href="<%=uicomponent.event("ChangeNode", attPath)%>"><%=att.getName()%></a>
 							                  </div>
+							                  <% if (PermissionUtil.canRemoveNode(att)) {%>
 							                    <a href="<%=uicomponent.event("RemoveAttach", attPath)%>" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-attachment")%>">
 							                      <div class="RemoveAttachments"><span></span></div>
 							                    </a>
-
+                                <% } %>
 							                  <div style="clear: left;"><span></span></div>
 							                </div>
 						              <%	}
