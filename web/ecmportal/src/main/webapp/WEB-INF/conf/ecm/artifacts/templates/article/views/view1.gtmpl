@@ -127,10 +127,10 @@
 		}
 		
 		.UIArticle .AttachmentsContainer .RemoveAttachments {
-		  background: url('/eXoECMResources/skin/images/article/RemoveAttachmentsIcon.gif') no-repeat left top;
+		  background: url('/eXoECMResources/skin/images/article/DustBin.gif') no-repeat left top;
 		  margin: 0px 5px 0px 3px;
 		  padding-left: 18px;
-		  height: 15px;
+		  height: 16px;
 		  cursor: pointer;
 		}
 		
@@ -229,7 +229,6 @@
 		.UIArticle .FieldContent .AttachmentsContainer {
 		  margin: 0px 6px 1px 0px;
 		  overflow-x: hidden;
-		  float: left;
 		}
 		
 		.UIArticle .AttachmentsContainer a {
@@ -415,7 +414,6 @@
 						              <%	}
 						              	} 
 												 	}%>
-												<div style="clear: left;"><span></span></div>
 											</div>
 										</div>
 								  </div>
