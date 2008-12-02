@@ -49,3 +49,26 @@
 .UIFastContentCreatorPortlet .UIWorkspaceList .rootNodeInfo .UIFormGrid {
 	width: 100%;
 }
+
+/*====================================UIAnyPermission==================================*/
+.UIAnyPermission {
+	margin-bottom: 2px;
+	border-top: 1px solid #B7B7B7;
+}
+
+.UIAnyPermission .UIForm .UIFormInputSetWithAction .UIFormGrid td {
+	padding: 7px 8px 4px 0;
+}
+
+.UIAnyPermission .UIForm .UIFormGrid td.FieldLabel {
+	vertical-align: middle;
+}
+
+.UIAnyPermission .UIForm .UIFormGrid {
+	width: auto;
+	margin: 0px;
+}
+
+.UIAnyPermission .UIForm .UIFormGrid .UIFormInputSet {
+	padding: 0px;
+}

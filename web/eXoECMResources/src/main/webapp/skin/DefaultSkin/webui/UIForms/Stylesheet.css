@@ -50,3 +50,26 @@
 .UIFastContentCreatorPortlet .UIWorkspaceList .rootNodeInfo .UIFormGrid {
 	width: 100%;
 }
+
+/*====================================UIAnyPermission==================================*/
+.UIAnyPermission {
+	margin-bottom: 2px;
+}
+
+.UIAnyPermission .UIForm .HorizontalLayout {
+	padding: 0px;
+}
+
+.UIAnyPermission .UIForm .UIFormGrid td.FieldLabel {
+	vertical-align: middle;
+}
+
+.UIAnyPermission .UIForm .HorizontalLayout .UIFormGrid {
+	width: auto;
+	margin: 0px;
+}
+
+.UIAnyPermission .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {	
+	vertical-align: middle;
+	padding: 2px;
+}
