@@ -377,7 +377,7 @@
 }
 
 .UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileNameLabel {
-	width: 330px;
+	width: 227px;
 	overflow: hidden;
 }
 
@@ -574,7 +574,7 @@
   overflow: hidden;
 }
 
-/*================================.UIExportNode=================================*/
+/*================================UIExportNode=================================*/
 
 .UIJCRExplorerPortlet .UIExportNode { 
 	padding: 10px;
@@ -585,7 +585,7 @@
 	margin: auto;
 }
 
-/*================================.UIImportNode=================================*/
+/*================================UIImportNode=================================*/
 
 .UIJCRExplorerPortlet .UIImportNode { 
 	padding: 10px;
@@ -599,7 +599,7 @@
 	margin: 0px;
 }
 
-/*================================.UIReferencesList=================================*/
+/*================================UIReferencesList=================================*/
 
 .UIJCRExplorerPortlet .UIReferencesList {
   padding: 10px;
@@ -789,46 +789,6 @@
 	width: 90%;
 }
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
-/*====================================UIAnyPermission==================================*/
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission {
-	margin-bottom: 2px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .HorizontalLayout {
-	padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIAnyPermission .UIFormInputSetWithAction .UIFormGrid td {
-	padding: 7px 8px 4px 0;
-}
-
-.UIJCRExplorerPortlet .UIAnyPermission .UIFormGrid td.FieldLabel {
-	vertical-align: middle;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle {
-	width: auto;
-	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormGrid {
-	width: auto;
-	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .HorizontalLayout {	
-	padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
-	vertical-align: middle;
-	padding: 2px;
-}
-
-.UIJCRExplorerPortlet .UIAnyPermission .UIFormWithTitle .HorizontalLayout .FormContainer {
-	padding: 0px;
-	width: auto;
-}
 
 /*====================================UIActionManager==================================*/
 .UIJCRExplorerPortlet .UITabContentContainer .UIActionContainer .UIFormWithoutAction {
@@ -850,5 +810,10 @@
 	margin:0 7px;
 	padding:0px 0 10px 26px;
 	width:auto;
+}
+
+/*====================================UIAnyPermission==================================*/
+.UIJCRExplorerPortlet .UIAnyPermission .HorizontalLayout {
+	padding: 0px;
 }
 

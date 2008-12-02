@@ -708,34 +708,6 @@
   border: solid 1px #cdcdcd;
 }
 
-/*############################## -- Any Permission -- ########################*/
-.UIECMAdminPortlet .UIAnyPermission {
-	border: 1px solid #B7B7B7;
-	margin-bottom: 2px;
-}
-
-.UIECMAdminPortlet .UIAnyPermission .HorizontalLayout {
-	padding: 0px;
-	border: none;
-}
-
-.UIECMAdminPortlet .UIAnyPermission .UIFormGrid td.FieldLabel {
-	vertical-align: middle;
-}
-
-.UIECMAdminPortlet .UIAnyPermission .UIFormGrid .FormContainer {
-	padding: 0px;
-}
-
-.UIECMAdminPortlet .UIAnyPermission .UIFormGrid {
-	width: auto;
-	margin: 0px;
-}
-
-.UIECMAdminPortlet .UIAnyPermission .UIFormGrid td.FieldComponent {
-	padding: 4px;
-}
-
 
 /*############################## -- Edit View -- ########################*/
 
@@ -749,4 +721,10 @@
 
 .UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a:hover {
   color: orange;
+}
+
+/*############################## -- Any Permission -- ########################*/
+.UIECMAdminPortlet .UIAnyPermission .UIForm .HorizontalLayout {
+	border: 1px solid #B7B7B7;
+	padding: 0px;
 }

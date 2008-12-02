@@ -425,8 +425,9 @@
 .UIJCRExplorerPortlet .UIUploadManager .SelectFileFrame {
 	white-space: normal;
 }
+
 .UIJCRExplorerPortlet .UIUploadManager .SelectFileFrame .FileNameLabel {
-	width: 330px;
+	width: 230px;
 	overflow: hidden;
 	margin: 0px;
 }
@@ -738,37 +739,6 @@
 
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
 
-/*====================================UIAnyPermission==================================*/
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission {
-	margin-bottom: 2px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .HorizontalLayout {
-	padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIAnyPermission .UIFormGrid td.FieldLabel {
-	vertical-align: middle;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle {
-	width: auto;
-	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormGrid {
-	width: auto;
-	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .HorizontalLayout {	
-	padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
-	vertical-align: middle;
-	padding: 2px;
-}
 
 /*====================================UIActionManager==================================*/
 .UIJCRExplorerPortlet .UITabContentContainer .UIActionContainer .UIFormWithoutAction {

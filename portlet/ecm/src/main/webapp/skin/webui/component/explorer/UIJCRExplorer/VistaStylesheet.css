@@ -664,54 +664,9 @@
 }
 /*================================UIUploadForm===================================*/
 .UIJCRExplorerPortlet .UIUploadManager .SelectFileFrame .FileNameLabel { 
-	width: 300px;
+	width: 220px;
 	overflow: hidden;
 	margin: 0px;
-}
-
-/*====================================UIAnyPermission==================================*/
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission {
-	margin-bottom: 2px;
-	border-top: 1px solid #B7B7B7;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .HorizontalLayout {
-	padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIAnyPermission .UIFormInputSetWithAction .UIFormGrid td {
-	padding: 7px 8px 4px 0;
-}
-
-.UIJCRExplorerPortlet .UIAnyPermission .UIFormGrid td.FieldLabel {
-	vertical-align: middle;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle {
-	width: auto;
-	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormGrid {
-	width: auto;
-	margin: 0px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormInputSet {
-	padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .HorizontalLayout .FormContainer {
-	padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .HorizontalLayout {	
-	padding: 0px;
-}
-
-.UIJCRExplorerPortlet .UIGroupMembershipSelector .UIAnyPermission .UIFormWithTitle .UIFormGrid td {	
-	vertical-align: middle;
-	padding: 2px;
 }
 
 /*====================================UIActionManager==================================*/
@@ -737,4 +692,9 @@
 
 .UIJCRExplorerPortlet .UIRightClickPopupMenu .UIContextMenuContainer {
 	width: 200px;
+}
+
+/*====================================UIAnyPermission==================================*/
+.UIJCRExplorerPortlet .UIAnyPermission .UIForm .HorizontalLayout {
+	padding: 0px;
 }
