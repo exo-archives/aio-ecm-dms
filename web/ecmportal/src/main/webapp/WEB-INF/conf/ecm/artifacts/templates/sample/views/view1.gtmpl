@@ -1,6 +1,8 @@
 <%
 	import java.text.SimpleDateFormat ;
 	import org.exoplatform.web.application.Parameter ;
+  import org.exoplatform.ecm.webui.utils.PermissionUtil;
+  
 	def node = uicomponent.getNode() ;
 	def originalNode = uicomponent.getOriginalNode()
 	SimpleDateFormat dateFormat = new SimpleDateFormat() ;
@@ -57,7 +59,13 @@
 		  line-height: 25px;
 		  border-bottom: solid 1px #BDBDBD;
 	  }
-		
+		.RemoveAttachments {
+		  background: url('/eXoECMResources/skin/images/article/DustBin.gif') no-repeat left top;
+		  margin: 0px 5px 0px 3px;
+		  padding-left: 18px;
+		  height: 16px;
+		  cursor: pointer;
+		}
 	</style>
 <div class="UIResizableBlock" id="$uicomponent.id">
 	<div class="WorkSample">
@@ -182,11 +190,22 @@
 						<%
 						  for(att in attachments) {
 						  String actionLink3 = uicomponent.event("ChangeNode", att.getPath(), new Parameter("workspaceName", att.getSession().getWorkspace().getName())) ;
+						  String removeLink = uicomponent.event("RemoveAttach", att.getPath(), new Parameter("workspaceName", att.getSession().getWorkspace().getName())) ;
 						%>
 							<div style="font-size: 12px; padding: 10px;">
-							 -<a href="$actionLink3">
-							 		<%=att.getName()%>
-							 	</a>
+								<div style="float:left">
+								 -<a href="$actionLink3">
+								 		<%=att.getName()%>
+								 	</a>
+								</div>
+								<div style="float:left"> 	
+							 	 <% if (PermissionUtil.canRemoveNode(att)) {%>
+	                    <a href="$removeLink" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-attachment")%>">
+	                      <div class="RemoveAttachments"><span></span></div>
+	                    </a>
+                <% } %>
+                </div>
+                <div style="clear: left;"><span></span></div>
 							</div>
 						<%}%>	  	
 					</div>		  
