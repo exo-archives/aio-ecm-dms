@@ -27,8 +27,7 @@
     <module>bp</module>
     <module>portlet/ecm</module>
     <module>portlet/workflow</module>
-    <module>web/ecmportal</module>
-    <module>server/tomcat/patch</module>
+    <module>web/ecmportal</module>
   </modules>
 
   <build>
