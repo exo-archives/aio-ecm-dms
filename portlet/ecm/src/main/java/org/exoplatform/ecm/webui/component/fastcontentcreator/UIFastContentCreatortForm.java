@@ -45,11 +45,14 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -62,8 +65,10 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
+import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
 
 /**
@@ -84,12 +89,40 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 )
 public class UIFastContentCreatortForm extends UIDialogForm implements UISelectable {
 
+  final static public String FIELD_TAXONOMY = "categories";
+  final static public String POPUP_TAXONOMY = "UIPopupTaxonomy";
   final static public String PATH_TAXONOMY = "/jcr:system/exo:ecm/exo:taxonomies/";
+  
+  private List<String> listTaxonomy = new ArrayList<String>();
+  private List<String> listTaxonomyName = new ArrayList<String>();
+  
   private String documentType_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
   public UIFastContentCreatortForm() throws Exception {
     setActions(new String[]{"Save"}) ;
+  }
+  
+  public List<String> getListTaxonomy() {
+    return listTaxonomy;
+  }
+  
+  public List<String> getlistTaxonomyName() {
+    return listTaxonomyName;
+  }
+  
+  public void setListTaxonomy(List<String> listTaxonomyNew) {
+    listTaxonomy = listTaxonomyNew;
+  }
+  
+  public void setListTaxonomyName(List<String> listTaxonomyNameNew) {
+    listTaxonomyName = listTaxonomyNameNew;
+  }
+  
+  private String cutPath(String path) {
+    String returnString = path.replaceAll(PATH_TAXONOMY, "");
+    
+    return returnString;
   }
 
   public String getTemplate() {
@@ -110,11 +143,23 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
     }
   }
   
-  public void doSelect(String selectField, Object value) {
-    this.isUpdateSelect = true ;
-    getUIStringInput(selectField).setValue(value.toString()) ;
-    UIFastContentCreatorPortlet uiContainer = getParent() ;
-    uiContainer.removeChildById("PopupComponent") ;
+  public void doSelect(String selectField, Object value) throws Exception {
+    this.isUpdateSelect = true;
+    UIFormInput formInput = getUIInput(selectField);
+    if(formInput instanceof UIFormInputBase) {
+      ((UIFormInputBase)formInput).setValue(value.toString());
+    }else if(formInput instanceof UIFormMultiValueInputSet) {
+      UIFormMultiValueInputSet  inputSet = (UIFormMultiValueInputSet) formInput;
+      UIFormInputBase input = inputSet.getChild(inputSet.getChildren().size()-1);      
+      String valueTaxonomy = String.valueOf(value).trim();
+      if (!listTaxonomy.contains(valueTaxonomy)) {
+        listTaxonomy.add(valueTaxonomy);
+        listTaxonomyName.add(cutPath(valueTaxonomy));
+      }
+      inputSet.setValue(listTaxonomyName);
+    }
+    UIFastContentCreatorPortlet uiContainer = getParent();
+    uiContainer.removeChildById("PopupComponent");    
   }
 
   public Node getCurrentNode() throws Exception {  
@@ -156,7 +201,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       boolean hasCategories = false;
-      String categoriesPath = null;
+      String categoriesPath = "";
       String[] categoriesPathList = null;
       CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);      
       PortletPreferences preferences = uiForm.getPortletPreferences() ;
@@ -172,7 +217,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       }
       List inputs = uiForm.getChildren();
       for (int i = 0; i < inputs.size(); i++) {
-        UIFormInputBase input = (UIFormInputBase) inputs.get(i);
+        UIFormInput input = (UIFormInput) inputs.get(i);
         if((input.getName() != null) && input.getName().equals("name")) {
           String[] arrFilterChar = {".", "/", ":", "[", "]", "*", "'", "|", "\""};          
           String valueName = input.getValue().toString();          
@@ -186,6 +231,54 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
           }
         }
       }
+      if(uiForm.isReference) {
+        UIFormMultiValueInputSet uiSet = uiForm.getChild(UIFormMultiValueInputSet.class);
+        if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals("categories")) {
+          hasCategories = true;
+          List<UIComponent> listChildren = uiSet.getChildren();         
+          for (UIComponent component : listChildren) {
+            UIFormStringInput uiStringInput = (UIFormStringInput)component;          
+            if(uiStringInput.getValue() != null) {
+              String value = uiStringInput.getValue().trim();            
+              categoriesPath += value + ",";
+            }
+          }
+          if (categoriesPath.endsWith(",")) categoriesPath = categoriesPath.substring(0, categoriesPath.length()-1).trim();
+          categoriesPathList = categoriesPath.split(",");
+          if ((categoriesPathList == null) || (categoriesPathList.length == 0)) {
+            uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
+          Session systemSession = categoriesService.getSession(repository);          
+          for(String categoryPath : categoriesPathList) {              
+            if((categoryPath != null) && (categoryPath.trim().length() > 0)){
+              categoryPath = PATH_TAXONOMY + categoryPath.trim();
+              try {
+                systemSession.getItem(categoryPath.trim());
+              } catch (ItemNotFoundException e) {
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING));
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                return;
+              } catch (RepositoryException re) {
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING));
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                return;
+              } catch(Exception e) {
+                e.printStackTrace();
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                    ApplicationMessage.WARNING));
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                return;
+              }
+            }
+          }
+        }
+      }
+      /*
       for (int i = 0; i < inputs.size(); i++) {        
         UIFormInputBase input = (UIFormInputBase) inputs.get(i);
         if((input.getName() != null) && input.getName().equals("categories")) {
@@ -227,6 +320,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
           }                      
         }
       }
+      */
       Map inputProperties = DialogFormUtil.prepareMap(uiForm.getChildren(), uiForm.getInputProperties()) ;
       Node homeNode = null;
       Node newNode = null ;
@@ -413,7 +507,44 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
 
   static public class AddActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
-      event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
+      UIFastContentCreatortForm uiCreatortForm = event.getSource();
+      if (uiCreatortForm.isReference) {
+        NodeHierarchyCreator nodeHierarchyCreator = uiCreatortForm.getApplicationComponent(NodeHierarchyCreator.class);
+        
+        PortletPreferences preferences = uiCreatortForm.getPortletPreferences();
+        String repository = preferences.getValue(Utils.REPOSITORY, "");
+        
+        ManageableRepository manaRepository = 
+          uiCreatortForm.getApplicationComponent(RepositoryService.class).getRepository(repository);
+        String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
+        
+        UIOneNodePathSelector uiNodePathSelector = uiCreatortForm.createUIComponent(UIOneNodePathSelector.class, null, null);
+        uiNodePathSelector.setIsDisable(workspaceName, true);
+        uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
+            nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
+        uiNodePathSelector.init(SessionProviderFactory.createSystemProvider());
+        String param = "returnField=" + FIELD_TAXONOMY;
+        UIFastContentCreatorPortlet uiContainer = uiCreatortForm.getParent();
+        uiContainer.initPopup(uiNodePathSelector) ;
+        uiNodePathSelector.setSourceComponent(uiCreatortForm, new String[]{param});        
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);        
+      } else {
+        List<String> inputNames = new ArrayList<String>();
+        for(UIComponent uiComp : uiCreatortForm.getChildren()) {
+          if(uiComp instanceof UIFormMultiValueInputSet) {
+            for(UIComponent uiInput : ((UIFormMultiValueInputSet)uiComp).getChildren()) {
+              if(uiInput instanceof UIFormUploadInput) {
+                if(inputNames.contains(((UIFormUploadInput)uiInput).getName())) {
+                  ((UIFormMultiValueInputSet)uiComp).removeChild(UIFormUploadInput.class);
+                  break;
+                }
+                inputNames.add(((UIFormUploadInput)uiInput).getName());
+              }
+            }
+          }
+        }
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiCreatortForm.getParent());
+      }
     }
   }
 

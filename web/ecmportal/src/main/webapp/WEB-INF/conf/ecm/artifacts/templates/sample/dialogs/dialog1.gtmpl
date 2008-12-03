@@ -24,8 +24,8 @@
 		      <td class="FieldLabel"><%=_ctx.appRes("Sample.dialog.label.categories")%></td>
 		      <td class="FieldComponent">
 			      <% 
-			        String[] fieldCategories = ["jcrPath=/node/exo:category", "selectorClass=org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector", "selectorIcon=AddNewNodeIcon", "validate=empty"];
-			        uicomponent.addActionField("categories", fieldCategories);
+			        String[] fieldCategories = ["jcrPath=/node/exo:category", "multiValues=true", "reference=true", "validate=empty"];
+			        uicomponent.addTextField("categories", fieldCategories);
 			      %>
 			    </td>
 			  </tr>

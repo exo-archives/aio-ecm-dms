@@ -484,7 +484,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   static  public class AddActionListener extends EventListener<UIFormMultiValueInputSet> {
     public void execute(Event<UIFormMultiValueInputSet> event) throws Exception {
       UIFormMultiValueInputSet uiSet = event.getSource();
-      UIUploadForm uiUploadForm = uiSet.getParent();
+      UIUploadForm uiUploadForm =  (UIUploadForm) uiSet.getParent();
       UIUploadManager uiUploadManager = uiUploadForm.getParent();
       UIJCRExplorer uiExplorer = uiUploadForm.getAncestorOfType(UIJCRExplorer.class);
       NodeHierarchyCreator nodeHierarchyCreator = uiUploadForm.getApplicationComponent(NodeHierarchyCreator.class);

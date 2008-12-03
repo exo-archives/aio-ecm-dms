@@ -47,6 +47,7 @@ public abstract class DialogFormField {
   protected final String SCRIPT = "script" + SEPARATOR;
   protected final String SCRIPT_PARAMS = "scriptParams" + SEPARATOR;
   protected final String MULTI_VALUES = "multiValues" + SEPARATOR;
+  protected final String REFERENCE = "reference" + SEPARATOR;
   protected final String REPOSITORY = "repository";
   protected final String DEFAULT_VALUES = "defaultValues" + SEPARATOR ;
 
@@ -58,7 +59,8 @@ public abstract class DialogFormField {
   protected String workspaceField;
   protected String selectorIcon;
   protected String multiValues;
-  protected String validateType;    
+  protected String reference;
+  protected String validateType;
   protected String selectorParams;
   protected String name;
   protected String label;
@@ -81,7 +83,8 @@ public abstract class DialogFormField {
     this.workspaceField = parsedArguments.get(WORKSPACE_FIELD);
     this.selectorIcon = parsedArguments.get(SELECTOR_ICON);
     this.multiValues = parsedArguments.get(MULTI_VALUES);
-    this.validateType = parsedArguments.get(VALIDATE) ;
+    this.reference = parsedArguments.get(REFERENCE);
+    this.validateType = parsedArguments.get(VALIDATE);    
     this.selectorParams = parsedArguments.get(SELECTOR_PARAMS) ;
     this.options = parsedArguments.get(OPTIONS);
     this.visible = parsedArguments.get(VISIBLE);
@@ -140,12 +143,17 @@ public abstract class DialogFormField {
   public void setMultiValues(String multiValues) {
     this.multiValues = multiValues;
   }
+  
+  public String getReference() { return reference; }
+  public void setReferenceType(String reference) {
+    this.reference = reference;
+  }
 
   public String getValidateType() { return validateType; }
   public void setValidateType(String validateType) {
     this.validateType = validateType;
   }
-
+  
   public String[] getSelectorParams() {
     if(selectorParams != null) {
       return selectorParams.split(",");
@@ -187,6 +195,7 @@ public abstract class DialogFormField {
   public void setType(String type) { this.type = type;}
   
   public boolean isMultiValues() { return "true".equalsIgnoreCase(multiValues); }
+  public boolean isReference() { return "true".equalsIgnoreCase(reference); }
   public boolean isEditable() { return !"false".equalsIgnoreCase(editable); }
   public boolean isEditableIfNull() { return "if-null".equalsIgnoreCase(editable); }
   public boolean isVisibleIfNotNull() { return "if-not-null".equals(visible); }
@@ -218,7 +227,9 @@ public abstract class DialogFormField {
       }else if (argument.startsWith(WORKSPACE_FIELD)) {        
         map.put(WORKSPACE_FIELD,value); continue;
       } else if (argument.startsWith(VALIDATE)) {       
-        map.put(VALIDATE,value); continue;
+        map.put(VALIDATE,value); continue;        
+      } else if (argument.startsWith(REFERENCE)) {       
+        map.put(REFERENCE, value); continue;
       } else if(argument.startsWith(DEFAULT_VALUES)) {       
         map.put(DEFAULT_VALUES,value); continue;
       } else if(argument.startsWith(OPTIONS)){        

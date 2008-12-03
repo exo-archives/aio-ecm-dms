@@ -111,7 +111,8 @@ public class UIDialogForm extends UIForm {
 
   private String storedPath = null;
 
-  private String workspaceName = null; 
+  private String workspaceName = null;
+  protected boolean isReference = false;
 
   public UIDialogForm() { }
 
@@ -133,11 +134,13 @@ public class UIDialogForm extends UIForm {
     String jcrPath = formActionField.getJcrPath();
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
-    setInputProperty(name, inputProperty);
-    if(formActionField.isMultiValues()) {
+    setInputProperty(name, inputProperty);    
+    if(formActionField.isReference()) isReference = true; 
+    else isReference = false;      
+    if(formActionField.isMultiValues()) {      
       renderMultiValuesInput(UIFormStringInput.class,name,label);      
       return;
-    }    
+    }
     UIFormStringInput uiInput = findComponentById(name);
     if(uiInput == null) {
       uiInput = formActionField.createUIFormInput();            
@@ -497,6 +500,10 @@ public class UIDialogForm extends UIForm {
     fieldNames.put(propertyName, name);
     Node node = getNode();
     Node childNode = getChildNode();
+    if(!isReference) {
+      if(formTextField.isReference()) isReference = true; 
+      else isReference = false;
+    } 
     if(formTextField.isMultiValues()) {
       UIFormMultiValueInputSet uiMulti;
       if(node == null &&childNode == null) {
@@ -890,7 +897,7 @@ public class UIDialogForm extends UIForm {
     UIFormMultiValueInputSet uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null);
     uiMulti.setId(name);
     uiMulti.setName(name);
-    uiMulti.setType(type);
+    uiMulti.setType(type);    
     addUIFormInput(uiMulti);
     if(label != null) uiMulti.setLabel(label);
     renderField(name);
