@@ -38,11 +38,13 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.organization.account.UIUserSelector;
 
 /**
  * Created by The eXo Platform SARL Author : nqhungvn
@@ -225,10 +227,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
   static public class SelectUserActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
-      UIGroupSelector uiGroupSelector = uiForm.createUIComponent(UIGroupSelector.class, null, null);
-      uiGroupSelector.setSelectUser(true);
-      uiGroupSelector.setSourceComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
-      uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(uiGroupSelector);
+      ((UIPermissionManager)uiForm.getParent()).initUserSelector();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }

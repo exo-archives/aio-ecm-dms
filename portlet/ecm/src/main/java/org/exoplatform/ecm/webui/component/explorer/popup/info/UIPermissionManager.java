@@ -18,7 +18,9 @@ package org.exoplatform.ecm.webui.component.explorer.popup.info;
 
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -28,6 +30,9 @@ import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIGrid;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
+import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.organization.account.UIUserSelector;
 
 /**
  * Created by The eXo Platform SARL
@@ -58,6 +63,19 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
     uiPopup.setShow(true) ;
     uiPopup.setResizable(true) ;
   }
+  
+  public void initUserSelector() throws Exception {
+    UIPopupWindow uiPopup = getChildById("PopupUserSelector") ;
+    if(uiPopup == null) {
+      uiPopup = addChild(UIPopupWindow.class, null, "PopupUserSelector");
+    }
+    uiPopup.setWindowSize(790, 400);
+    UIUserContainer uiUserContainer = createUIComponent(UIUserContainer.class, null, null);
+    uiPopup.setUIComponent(uiUserContainer);
+    uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
+  }
+  
   public void activate() throws Exception {
     getChild(UIPermissionInfo.class).updateGrid() ;
   }
@@ -76,5 +94,18 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
       }
     }
   }
-  public void deActivate() throws Exception {} 
+  public void deActivate() throws Exception {}
+  
+  static  public class AddUserActionListener extends EventListener<UIUserSelector> {
+    public void execute(Event<UIUserSelector> event) throws Exception {
+      UIUserSelector uiForm = event.getSource();
+      UIPermissionManager uiParent = uiForm.getAncestorOfType(UIPermissionManager.class);
+      UIPermissionForm uiPermissionForm = uiParent.getChild(UIPermissionForm.class);
+      uiPermissionForm.doSelect(UIPermissionInputSet.FIELD_USERORGROUP, uiForm.getSelectedUsers());
+      UIPopupWindow uiPopup = uiParent.getChild(UIPopupWindow.class);
+      uiPopup.setUIComponent(null);
+      uiPopup.setShow(false);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiParent);
+    }  
+  }
 }

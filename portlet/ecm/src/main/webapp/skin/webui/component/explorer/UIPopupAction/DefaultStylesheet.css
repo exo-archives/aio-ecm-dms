@@ -380,6 +380,10 @@
   height: 350px ;
 }
 
+.UIJCRExplorerPortlet .UIPopupWindow .UIWindowContent .UIUserContainer .UISearch {
+  height: 50px ;
+}
+
 /*############################## -- End UISearch   -- ##############################*/
 
 /*############################## -- Others   -- ##############################*/
