@@ -72,3 +72,13 @@
 .UIAnyPermission .UIForm .UIFormGrid .UIFormInputSet {
 	padding: 0px;
 }
+
+/**************************************UIFormInputSet*******************************/
+
+.UIFormInputSet .FormContainer {
+	padding: 5px 0px;
+}
+
+.FieldComponent .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
+	padding: 0px;
+}

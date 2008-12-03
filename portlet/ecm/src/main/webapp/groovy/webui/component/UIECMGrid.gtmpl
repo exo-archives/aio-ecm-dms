@@ -60,7 +60,7 @@
 			      } else {
 			      	fieldValue = "";
 			      }
-			      println "<td class=\""+cssClass+"\">"+fieldValue+"</td>";
+			      println "<td><div class=\""+cssClass+"\">"+fieldValue+"</div></td>";
 		    
 		      }  
 	        if(beanActions != null && beanActions.length > 0) { 

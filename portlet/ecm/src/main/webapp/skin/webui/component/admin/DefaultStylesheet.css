@@ -102,15 +102,6 @@
 	padding: 10px;
 }
 
-.UIECMAdminPortlet .UIRepositoryForm .FormContainer {
-	width: 510px;
-	margin: auto;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .UIFormGrid td.FieldLabel {
-  _width: 118px;
-}
-
 .UIECMAdminPortlet .UIFormInputSet .AddIcon16x16 {
 	margin-left: 5px;
 	float: none;
@@ -231,18 +222,12 @@
  color:#ef5604 ;
 }
 
-.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm {
+.UIRepositoryFormContainer .UIPermissionContainer .UIWorkspacePermissionForm {
   padding: 10px;
 }
 
-.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm .HorizontalLayout {
-  padding-top: 10px;
-  background: #f7f7f7;
-}
-
-.UIPopupWizard .UIPermissionContainer .UIWorkspacePermissionForm .UIFormGrid {
-  width: 500px;
-  margin: auto;
+.UIRepositoryFormContainer .UIPermissionContainer .UIWorkspacePermissionForm .UIFormGrid {
+  width: auto;
 }
 
 /*############################## --End UIRepositoryControl -- ########################*/
@@ -636,6 +621,3 @@
 }
 
 /*############################## -- Any Permission -- ########################*/
-.UIECMAdminPortlet .UIAnyPermission .UIForm .HorizontalLayout {
-	border: 1px solid #B7B7B7;
-}

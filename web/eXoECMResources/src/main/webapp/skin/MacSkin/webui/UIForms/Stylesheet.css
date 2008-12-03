@@ -67,3 +67,18 @@
 	width: auto;
 	margin: 0px;
 }
+
+/**************************************UIFormInputSet*******************************/
+
+.UIFormInputSet .FormContainer {
+	padding: 5px 0px;
+}
+
+.UIFormInputSet .UIFormInputSetWithAction .ActionField a {
+  color: blue;
+}
+
+.FieldComponent .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
+	padding: 0px;
+}
+

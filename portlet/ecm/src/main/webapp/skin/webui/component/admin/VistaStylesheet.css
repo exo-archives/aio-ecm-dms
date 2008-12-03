@@ -115,30 +115,6 @@
 	padding: 10px;
 }
 
-.UIECMAdminPortlet .UIRepositoryFormContainer .wsInputSet .UIFormInputSet {
-	padding: 0px;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .wsInputSet .FormContainer {
-	width: auto;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .wsInputSet .UIFormGrid td {
-	padding: 4px 4px 4px 0px;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .UIFormInputSet {
-	padding: 0px;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .FormContainer {
-	width: 528px;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .UIFormGrid td.FieldLabel {
-  padding: 4px 0px 4px 4px;
-}
-
 .UIECMAdminPortlet .UIRepositoryForm .authInputSet .UIFormInputSetWithAction .AddIcon16x16 {
 	margin-left: 5px;
 	float: none;
@@ -160,25 +136,8 @@
 	height: 16px;
 }
 
-.UIECMAdminPortlet .UIRepositoryFormContainer .wsInputSet .UIFormGrid td.FieldComponent {
-	padding-top: 0px; padding-left: 2px;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .FormContainer .FieldComponent a {
-	line-height: 24px;
-}
-
 .UIECMAdminPortlet .UIRepositoryFormContainer .FormContainer .FieldComponent a:hover {
 	color: #0183F1;
-}
-
-.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet {
-	padding: 10px 0px;
-}
-
-.UIWorkspaceWizard .HorizontalLayout .UITabContentContainer .UITabContent .UIFormInputSet .FormContainer {
-	width: 500px;
-	margin: auto;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UITabPane .TabPaneContent {
@@ -221,7 +180,7 @@
   float: left;
 }
 
-.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a{
+.UIWorkspaceWizard .UIWizardAction .StepNavigationBar a {
   float: left;
   width: 18px; height: 18px; 
   line-height: 18px;
@@ -254,10 +213,6 @@
 .UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane {
 	padding: 0px;
 	margin: 0px;
-}
-
-.UIWorkspaceWizardContainer .UIWorkspaceWizard .UITabPane .UITabContentContainer {
-	border: none;
 }
 
 .UIWorkspaceWizardContainer .UIWorkspaceWizard .UIFormTabPane .HorizontalLayout {

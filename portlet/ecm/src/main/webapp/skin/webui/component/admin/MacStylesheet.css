@@ -248,8 +248,8 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryForm .FormContainer {
-	width: 510px;
 	margin: auto;
+	border: 1px solid red;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid {
@@ -257,16 +257,7 @@
 	margin: 10px auto;
 }
 
-.UIECMAdminPortlet .UIRepositoryFormContainer .HorizontalLayout .UIFormInputSet {
-	width: 100%;
-	padding: 0px;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .authInputSet .UIFormGrid td.FieldLabel {
-  _width: 118px;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .SelectIcon{
+.UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid .SelectIcon {
 	background: url('MacSkin/background/SelectPage.png') no-repeat;
 	width: 16px; 
 	height: 16px;
@@ -276,8 +267,8 @@
 	width: 128px;
 }
 
-.UIRepositoryManager .UIRepositoryForm .UIFormInputSet .UIFormInputSetWithAction .FieldContainer label{
-	width: 128px;	
+.UIRepositoryFormContainer .UIWorkspaceWizard .UIFormTabPane, .UIRepositoryFormContainer .UIWorkspaceWizard .TabPaneContent {
+	padding: 0px;
 }
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIAction {
@@ -287,10 +278,6 @@
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIAction .ActionContainer {
 	margin: 0px;
-}
-
-.UIECMAdminPortlet .UIRepositoryFormContainer .FormContainer .FieldComponent a:hover {
-	color: #0585D7; 
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
@@ -314,7 +301,7 @@
 	background: #F4F4F4 none repeat scroll 0%;
 	border: 1px solid #B7B7B7 ;
 	border-top: none;
-	height: 40px;
+	height: 43px;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
@@ -706,21 +693,6 @@
 
 .UIECMAdminPortlet .UIPopupWindow .Content {
   border: solid 1px #cdcdcd;
-}
-
-
-/*############################## -- Edit View -- ########################*/
-
-.UIECMAdminPortlet .UITabPane .UIFormInputSet .FormContainer {
-	padding: 0px;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
-  color: blue;
-}
-
-.UIECMAdminPortlet .UIFormInputSet .UIFormInputSetWithAction .ActionField a:hover {
-  color: orange;
 }
 
 /*############################## -- Any Permission -- ########################*/

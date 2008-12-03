@@ -54,10 +54,15 @@
 /*====================================UIAnyPermission==================================*/
 .UIAnyPermission {
 	margin-bottom: 2px;
+	border: 1px solid white;
 }
 
 .UIAnyPermission .UIForm .HorizontalLayout {
 	padding: 0px;
+}
+
+.UITabPane .UIAnyPermission .UIForm .HorizontalLayout {
+	border:1px solid #AEAEAE;
 }
 
 .UIAnyPermission .UIForm .UIFormGrid td.FieldLabel {
@@ -72,4 +77,14 @@
 .UIAnyPermission .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {	
 	vertical-align: middle;
 	padding: 2px;
+}
+
+/**************************************UIFormInputSet*******************************/
+
+.UIFormInputSet .FormContainer {
+	padding: 5px 0px;
+}
+
+.FieldComponent .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
+	padding: 0px;
 }
