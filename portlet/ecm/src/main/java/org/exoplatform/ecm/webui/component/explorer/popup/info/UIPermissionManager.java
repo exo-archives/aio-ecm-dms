@@ -18,9 +18,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.info;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;

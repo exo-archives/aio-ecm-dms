@@ -4,7 +4,6 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.popup.info;
 
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
