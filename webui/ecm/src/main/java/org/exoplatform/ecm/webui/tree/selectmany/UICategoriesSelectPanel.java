@@ -22,9 +22,11 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -43,14 +45,25 @@ import org.exoplatform.webui.event.EventListener;
 )
 
 public class UICategoriesSelectPanel extends UIContainer{
-
   private Node parentNode;
+  private UIPageIterator uiPageIterator_;
 
   public void setParentNode(Node node) { this.parentNode = node; }
 
-  public UICategoriesSelectPanel() {}
-
-  public List<Node> getSelectableNodes() throws Exception {
+  public UICategoriesSelectPanel() throws Exception {
+    uiPageIterator_ = addChild(UIPageIterator.class, null, "UICategoriesSelect");
+  }
+  
+  public UIPageIterator getUIPageIterator() { return uiPageIterator_; }
+  
+  public List getSelectableNodes() throws Exception { return uiPageIterator_.getCurrentPageData(); }
+  
+  public void updateGrid() throws Exception {
+    ObjectPageList objPageList = new ObjectPageList(getListSelectableNodes(), 4);
+    uiPageIterator_.setPageList(objPageList);
+  }
+  
+  public List<Node> getListSelectableNodes() throws Exception {
     List<Node> list = new ArrayList<Node>();
     if(parentNode == null) return list;
     for(NodeIterator iterator = parentNode.getNodes();iterator.hasNext();) {
@@ -64,16 +77,15 @@ public class UICategoriesSelectPanel extends UIContainer{
   static public class SelectActionListener extends EventListener<UICategoriesSelectPanel> {
     public void execute(Event<UICategoriesSelectPanel> event) throws Exception {
       UICategoriesSelectPanel uiDefault = event.getSource() ;
-      UICategoriesContainer uiCategoriesContainer = uiDefault.getParent();
-      UISelectedCategoriesGrid uiSelectedCategoriesGrid = uiCategoriesContainer.getChild(UISelectedCategoriesGrid.class);
-
+      UICategoriesSelector uiCategoriesSelector = uiDefault.getParent();
+      UISelectedCategoriesGrid uiSelectedCategoriesGrid = uiCategoriesSelector.getChild(UISelectedCategoriesGrid.class);
       String value = event.getRequestContext().getRequestParameter(OBJECTID);
       if(!uiSelectedCategoriesGrid.getSelectedCategories().contains(value)) {
         uiSelectedCategoriesGrid.addCategory(value);
       }
       uiSelectedCategoriesGrid.updateGrid();
-      uiCategoriesContainer.setRenderedChild(UISelectedCategoriesGrid.class);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiCategoriesContainer) ;
+      uiSelectedCategoriesGrid.setRendered(true);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiCategoriesSelector) ;
     }
   }
 }

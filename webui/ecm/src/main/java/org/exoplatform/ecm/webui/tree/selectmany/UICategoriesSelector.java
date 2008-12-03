@@ -28,8 +28,11 @@ import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.UIPopupWindow;
+import org.exoplatform.webui.core.UIBreadcumbs.LocalPath;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -39,37 +42,31 @@ import org.exoplatform.webui.event.EventListener;
  *          dzungdev@gmail.com"
  * Aug 11, 2008  
  */
-
-@ComponentConfig(
-    template = "classpath:groovy/ecm/webui/UIContainerWithAction.gtmpl", 
-    events = @EventConfig(listeners = UICategoriesSelector.CloseActionListener.class)
-)
-
-public class UICategoriesSelector extends UIBaseNodeTreeSelector implements UIPopupComponent {
-  
-  final static public String[] ACTIONS = {"Close"};
-  private List<String> existedCategoryList = new ArrayList<String>();
-
-  public UICategoriesSelector() throws Exception {
-    addChild(UINodeTreeBuilder.class,null,null);
-    addChild(UICategoriesContainer.class,null,null);
-  }
-  
-  public String[] getActions() { return ACTIONS ; }
-
-  static public class CloseActionListener extends EventListener<UICategoriesSelector> {
-    public void execute(Event<UICategoriesSelector> event) throws Exception {      
-      UICategoriesSelector uiCategoriesSelector = event.getSource();
-      UIPopupWindow uiPopup = uiCategoriesSelector.getParent();
-      if(uiPopup != null) {
-        uiPopup.setShow(false);
-        uiPopup.setRendered(false);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup.getParent());
-        return;
-      }
-      uiCategoriesSelector.deActivate();
+@ComponentConfigs(
+    {
+      @ComponentConfig(
+          template = "classpath:groovy/ecm/webui/UIContainerWithAction.gtmpl"
+      ),
+      @ComponentConfig(
+          type = UIBreadcumbs.class, id = "BreadcumbCategories",
+          template = "system:/groovy/webui/core/UIBreadcumbs.gtmpl",
+          events = @EventConfig(listeners = UICategoriesSelector.SelectPathActionListener.class)
+      )
     }
+)
+public class UICategoriesSelector extends UIBaseNodeTreeSelector implements UIPopupComponent {
+  final static public String PATH_TAXONOMY = "/jcr:system/exo:ecm/exo:taxonomies/";
+//  final static public String[] ACTIONS = {"Close"};
+  private List<String> existedCategoryList = new ArrayList<String>();
+  
+  public UICategoriesSelector() throws Exception {
+    addChild(UIBreadcumbs.class, "BreadcumbCategories", "BreadcumbCategories");
+    addChild(UINodeTreeBuilder.class, null, null);
+    addChild(UICategoriesSelectPanel.class, null, null);
+    addChild(UISelectedCategoriesGrid.class, null, null).setRendered(false);
   }
+  
+//  public String[] getActions() { return ACTIONS ; }
 
   public void init() throws Exception{
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
@@ -80,16 +77,36 @@ public class UICategoriesSelector extends UIBaseNodeTreeSelector implements UIPo
     UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);
     builder.setRootTreeNode(rootCategoryTree);
 
-    UICategoriesContainer uiCategoriesContainer = getChild(UICategoriesContainer.class);
-    UISelectedCategoriesGrid categoriesGrid = uiCategoriesContainer.getChild(UISelectedCategoriesGrid.class);
+    UICategoriesSelectPanel uiCategoriesSelectPanel = getChild(UICategoriesSelectPanel.class);
+    uiCategoriesSelectPanel.updateGrid();
+    
+    UISelectedCategoriesGrid categoriesGrid = getChild(UISelectedCategoriesGrid.class);
     categoriesGrid.setSelectedCategories(existedCategoryList);
+    if (existedCategoryList.size() > 0) {
+      categoriesGrid.setRendered(true);
+    }
     categoriesGrid.updateGrid();
   }
 
   public void onChange(Node currentNode, Object context) throws Exception {
-    UICategoriesContainer uiCategoriesContainer = getChild(UICategoriesContainer.class);
-    UICategoriesSelectPanel uiCategoriesSelectPanel = uiCategoriesContainer.getChild(UICategoriesSelectPanel.class);
+    UICategoriesSelectPanel uiCategoriesSelectPanel = getChild(UICategoriesSelectPanel.class);
     uiCategoriesSelectPanel.setParentNode(currentNode);
+    uiCategoriesSelectPanel.updateGrid();
+    
+    UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class);
+    List<LocalPath> listLocalPath = new ArrayList<LocalPath>();
+    String path = currentNode.getPath().trim();
+    String[] arrayPath = path.split("/");
+    if (arrayPath.length > 0) {
+      for (int i = 0; i < arrayPath.length; i++) {
+        if (!arrayPath[i].trim().equals("") && !arrayPath[i].trim().equals("jcr:system") &&
+            !arrayPath[i].trim().equals("exo:ecm") && !arrayPath[i].trim().equals("exo:taxonomies")) {
+          UIBreadcumbs.LocalPath localPath1 = new UIBreadcumbs.LocalPath(arrayPath[i].trim(), arrayPath[i].trim());
+          listLocalPath.add(localPath1);
+        }
+      }
+    }
+    uiBreadcumbs.setPath(listLocalPath);
   }
 
   public List<String> getExistedCategoryList() {
@@ -104,5 +121,68 @@ public class UICategoriesSelector extends UIBaseNodeTreeSelector implements UIPo
   }
   
   public void deActivate() throws Exception {
+  }
+  
+  public void changeGroup(String groupId, Object context) throws Exception {    
+    String stringPath = PATH_TAXONOMY;    
+    UIBreadcumbs uiBreadcumb = getChild(UIBreadcumbs.class);
+    if (groupId == null) groupId = "";
+    List<LocalPath> listLocalPath = uiBreadcumb.getPath();
+    if (listLocalPath == null || listLocalPath.size() == 0) return;
+    List<String> listLocalPathString = new ArrayList<String>();
+    for (LocalPath localPath : listLocalPath) {
+      listLocalPathString.add(localPath.getId().trim());
+    }
+    if (listLocalPathString.contains(groupId)) {
+      int index = listLocalPathString.indexOf(groupId);
+      if (index == listLocalPathString.size() - 1) return;
+      for (int i = index + 1; i < listLocalPathString.size(); i++) {
+        listLocalPathString.remove(i);
+        listLocalPath.remove(i);
+      }
+      uiBreadcumb.setPath(listLocalPath);
+      for (int i = 0; i < listLocalPathString.size(); i++) {
+        String pathName = listLocalPathString.get(i);
+        if (pathName != null || !pathName.equals("")) {
+          stringPath += pathName.trim();
+          if (i < listLocalPathString.size() - 1) stringPath += "/";
+        }
+      }
+      changeNode(stringPath, context);
+    }
+  }
+  
+  private void changeNode(String stringPath, Object context) throws Exception {
+    UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);
+    builder.changeNode(stringPath, context);
+    UIBaseNodeTreeSelector nodeTreeSelector = builder.getAncestorOfType(UIBaseNodeTreeSelector.class);      
+    UICategoriesSelector uiCategoriesSelector = nodeTreeSelector.getChild(UICategoriesSelector.class);
+    if (uiCategoriesSelector != null) uiCategoriesSelector.setRenderedChild(UICategoriesSelectPanel.class);
+  }
+  
+  static public class CloseActionListener extends EventListener<UICategoriesSelector> {
+    public void execute(Event<UICategoriesSelector> event) throws Exception {      
+      UICategoriesSelector uiCategoriesSelector = event.getSource();
+      UIPopupWindow uiPopup = uiCategoriesSelector.getParent();
+      if(uiPopup != null) {
+        uiPopup.setShow(false);
+        uiPopup.setRendered(false);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup.getParent());
+        return;
+      }
+      uiCategoriesSelector.deActivate();
+    }
+  }
+  
+  static  public class SelectPathActionListener extends EventListener<UIBreadcumbs> {
+    public void execute(Event<UIBreadcumbs> event) throws Exception {
+      UIBreadcumbs uiBreadcumbs = event.getSource() ;
+      UICategoriesSelector uiCategoriesSelector = uiBreadcumbs.getParent() ;
+      String objectId =  event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiBreadcumbs.setSelectPath(objectId);    
+      String selectGroupId = uiBreadcumbs.getSelectLocalPath().getId() ;
+      uiCategoriesSelector.changeGroup(selectGroupId, event.getRequestContext()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiCategoriesSelector) ;
+    }
   }
 }

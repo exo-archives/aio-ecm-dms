@@ -28,6 +28,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIGrid;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -41,15 +42,16 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template = "classpath:groovy/ecm/webui/UIGridWithButton.gtmpl",
     events = {
-        @EventConfig(listeners = UISelectedCategoriesGrid.DeleteActionListener.class),
-        @EventConfig(listeners = UISelectedCategoriesGrid.SaveCategoriesActionListener.class)
+        @EventConfig(listeners = UISelectedCategoriesGrid.DeleteActionListener.class, confirm="UISelectedCategoriesGrid.msg.confirm-delete"),
+        @EventConfig(listeners = UISelectedCategoriesGrid.SaveCategoriesActionListener.class),
+        @EventConfig(listeners = UISelectedCategoriesGrid.CancelActionListener.class)
     }
 )
 public class UISelectedCategoriesGrid extends UIGrid {
 
   public final static String[] BEAN_FIELD = {"categoryName"} ;
   public final static String[] BEAN_ACTIONS = {"Delete"} ;
-  public final static String[] ACTIONS = {"SaveCategories"} ;
+  public final static String[] ACTIONS = {"SaveCategories", "Cancel"} ;
 
   private List<String> selectedCategories = new ArrayList<String>();
   private boolean isDeleteAllCategory;
@@ -64,12 +66,20 @@ public class UISelectedCategoriesGrid extends UIGrid {
     List<CategoryData> categoryDataList = new ArrayList<CategoryData>();
     for(String categoryPath: getSelectedCategories()) {
       CategoryData bean = new CategoryData();
-      bean.setCategoryName(categoryPath.substring(categoryPath.lastIndexOf("/")+1));
+      String[] array = categoryPath.split("/");
+      String value = "";
+      if (array.length > 4) {
+        for (int i = 4; i < array.length; i++) {
+          value += array[i]; 
+          if (i < array.length - 1) value += "/";
+        }
+      } else value = categoryPath;
+      bean.setCategoryName(value);
       bean.setCategoryPath(categoryPath);
       categoryDataList.add(bean);
     }
     Collections.sort(categoryDataList,new CategoryComparator());
-    ObjectPageList objPageList = new ObjectPageList(categoryDataList,10) ;
+    ObjectPageList objPageList = new ObjectPageList(categoryDataList, 5) ;
     getUIPageIterator().setPageList(objPageList) ;
   }
 
@@ -115,6 +125,14 @@ public class UISelectedCategoriesGrid extends UIGrid {
     }
   }
 
+  public boolean isDeleteAllCategory() {
+    return isDeleteAllCategory;
+  }
+
+  public void setDeleteAllCategory(boolean isDeleteAllCategory) {
+    this.isDeleteAllCategory = isDeleteAllCategory;
+  }
+  
   public static class DeleteActionListener extends EventListener<UISelectedCategoriesGrid> {
     public void execute(Event<UISelectedCategoriesGrid> event) throws Exception {
       UISelectedCategoriesGrid uiSelectedCategoriesGrid = event.getSource();
@@ -122,7 +140,10 @@ public class UISelectedCategoriesGrid extends UIGrid {
       uiSelectedCategoriesGrid.removeCategory(value);
       if (uiSelectedCategoriesGrid.getSelectedCategories().size() == 0) uiSelectedCategoriesGrid.setDeleteAllCategory(true);
       uiSelectedCategoriesGrid.updateGrid();
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSelectedCategoriesGrid);
+      if (uiSelectedCategoriesGrid.getSelectedCategories().size() == 0) {
+        uiSelectedCategoriesGrid.setRendered(false);
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSelectedCategoriesGrid.getParent());
     }
   }
 
@@ -153,11 +174,18 @@ public class UISelectedCategoriesGrid extends UIGrid {
     }
   }
 
-  public boolean isDeleteAllCategory() {
-    return isDeleteAllCategory;
-  }
-
-  public void setDeleteAllCategory(boolean isDeleteAllCategory) {
-    this.isDeleteAllCategory = isDeleteAllCategory;
+  static public class CancelActionListener extends EventListener<UISelectedCategoriesGrid> {
+    public void execute(Event<UISelectedCategoriesGrid> event) throws Exception {      
+      UISelectedCategoriesGrid uiSelectedCategoriesGrid = event.getSource();
+      UICategoriesSelector uiCategoriesSelector = uiSelectedCategoriesGrid.getParent();
+      UIPopupWindow uiPopup = uiCategoriesSelector.getParent();
+      if(uiPopup != null) {
+        uiPopup.setShow(false);
+        uiPopup.setRendered(false);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup.getParent());
+        return;
+      }
+      uiCategoriesSelector.deActivate();
+    }
   }
 }

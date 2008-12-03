@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.tree.selectmany;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
 /**
  * Created by The eXo Platform SAS
@@ -27,12 +28,12 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
  * Aug 11, 2008  
  */
 
-@ComponentConfig(template = "system:/groovy/webui/core/UITabPane.gtmpl")
+@ComponentConfig(lifecycle=UIContainerLifecycle.class)
 
 public class UICategoriesContainer extends UIContainer implements UIPopupComponent{
   public UICategoriesContainer() throws Exception {
-    addChild(UICategoriesSelectPanel.class,null,null);
-    addChild(UISelectedCategoriesGrid.class,null,null).setRendered(false);
+//    addChild(UICategoriesSelectPanel.class, null, null);
+//    addChild(UISelectedCategoriesGrid.class, null, null).setRendered(false);
   }
   
   public void activate() throws Exception {    

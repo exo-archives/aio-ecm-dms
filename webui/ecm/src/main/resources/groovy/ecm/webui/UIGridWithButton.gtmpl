@@ -5,7 +5,7 @@
   UIComponent uiParent = uicomponent.getParent() ;
   String name = uicomponent.getId() ;
 %>
-<div id="$uicomponent.id">
+<div id="$uicomponent.id" class="$uicomponent.id">
 	<table class="UIGrid">
 	  <thead>
 	    <tr>
@@ -82,7 +82,7 @@
 	<%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
 	<% } %>
 </div>
-<% if(uicomponent.getActions() != null) { %>
+<% if (uicomponent.getActions() != null) { %>
   <div class="$uicomponent.id">
     <div class="UIAction"> 
       <table class="ActionContainer">

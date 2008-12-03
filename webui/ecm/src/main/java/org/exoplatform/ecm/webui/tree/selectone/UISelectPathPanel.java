@@ -22,11 +22,13 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -44,14 +46,17 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 public class UISelectPathPanel extends UIContainer {
-
-
+  private UIPageIterator uiPageIterator_;
   public String[] acceptedMimeTypes = {};
   protected Node parentNode;
   private String[] acceptedNodeTypes = {};
 
 
-  public UISelectPathPanel() { }
+  public UISelectPathPanel() throws Exception { 
+    uiPageIterator_ = addChild(UIPageIterator.class, null, "UISelectPath");
+  }
+  
+  public UIPageIterator getUIPageIterator() { return uiPageIterator_; }
 
   public void setParentNode(Node node) { this.parentNode = node; }
   
@@ -66,7 +71,14 @@ public class UISelectPathPanel extends UIContainer {
   public String[] getAcceptedMimeTypes() { return acceptedMimeTypes; }
   public void setAcceptedMimeTypes(String[] acceptedMimeTypes) { this.acceptedMimeTypes = acceptedMimeTypes; }  
 
-  public List<Node> getSelectableNodes() throws Exception {
+  public List getSelectableNodes() throws Exception { return uiPageIterator_.getCurrentPageData(); }
+  
+  public void updateGrid() throws Exception {
+    ObjectPageList objPageList = new ObjectPageList(getListSelectableNodes(), 9);
+    uiPageIterator_.setPageList(objPageList);
+  }
+  
+  public List<Node> getListSelectableNodes() throws Exception {
     List<Node> list = new ArrayList<Node>();
     if(parentNode == null) return list;
     for(NodeIterator iterator = parentNode.getNodes();iterator.hasNext();) {

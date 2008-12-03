@@ -51,3 +51,21 @@
   background: #f3f3f3;
   margin:10px;
 }
+
+.UICategoriesSelector .UIBreadcumbs {
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.UICategoriesSelector .UISelectedCategoriesGrid {
+	padding-top: 10px;
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+.UICategoriesSelector .UICategoriesSelectPanel {
+	padding-top: 10px;
+	padding-right: 10px;
+	padding-left: 250px;
+}
