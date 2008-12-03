@@ -18,9 +18,12 @@ package org.exoplatform.ecm.webui.component.explorer.control;
 
 import java.util.List;
 
+import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -43,7 +46,8 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
     template =  "app:/groovy/webui/component/explorer/control/UIViewBar.gtmpl",
-    events = {
+    events = {      
+      @EventConfig(listeners = UIViewBar.ShowSideBarActionListener.class),
       @EventConfig(listeners = UIViewBar.PreferencesActionListener.class),
       @EventConfig(listeners = UIViewBar.BackActionListener.class),
       @EventConfig(listeners = UIViewBar.SaveSessionActionListener.class),
@@ -70,9 +74,14 @@ public class UIViewBar extends UIForm {
     return getAncestorOfType(UIJCRExplorer.class).getDriveData().getName() ;
   }
   
-  public boolean isShowSaveSession() throws Exception{
+  public boolean isShowSaveSession() throws Exception {
     UIJCRExplorer uiExplorer =  getAncestorOfType(UIJCRExplorer.class) ;
     return uiExplorer.getPreference().isJcrEnable() ;    
+  }
+  
+  public boolean isShowSideBar() throws Exception {
+    UIJCRExplorer uiExplorer =  getAncestorOfType(UIJCRExplorer.class);
+    return uiExplorer.getPreference().isShowSideBar();    
   }
   
   static public class BackActionListener extends EventListener<UIViewBar> {
@@ -82,7 +91,20 @@ public class UIViewBar extends UIForm {
       if(simpleSearchResult != null) simpleSearchResult.setRendered(false);
       uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class) ;
     }
-  }  
+  }
+  
+  static public class ShowSideBarActionListener extends EventListener<UIViewBar> {
+    public void execute(Event<UIViewBar> event) throws Exception {      
+      UIViewBar uiViewBar = event.getSource();
+      UIJCRExplorerPortlet explorerPorltet = uiViewBar.getAncestorOfType(UIJCRExplorerPortlet.class);   
+      UIJCRExplorer uiExplorer = explorerPorltet.getChild(UIJCRExplorer.class);
+      Preference pref = uiExplorer.getPreference();      
+      pref.setShowSideBar(true);
+      uiExplorer.refreshExplorer();
+      explorerPorltet.setRenderedChild(UIJCRExplorer.class);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiExplorer);
+    }
+  }
 
   static public class PreferencesActionListener extends EventListener<UIViewBar> {
     public void execute(Event<UIViewBar> event) throws Exception {

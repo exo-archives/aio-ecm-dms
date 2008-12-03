@@ -334,3 +334,8 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .UIFormUploadInput .SelectFileFrame {
 	width: auto;
 }
+
+.UIJCRExplorerPortlet .UIViewBar .ShowSideBarButton {
+  width: 24px;	height: 24px;
+  background: url('DefaultSkin/icons/ShowSideBarButton.gif') no-repeat bottom;
+}

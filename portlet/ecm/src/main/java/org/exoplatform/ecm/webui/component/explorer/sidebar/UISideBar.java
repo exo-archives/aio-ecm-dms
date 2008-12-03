@@ -17,7 +17,9 @@
 package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -64,8 +66,12 @@ public class UISideBar extends UIContainer {
   static public class CloseActionListener extends EventListener<UISideBar> {
     public void execute(Event<UISideBar> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent() ;
-      uiWorkingArea.setShowSideBar(false) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
+      uiWorkingArea.setShowSideBar(false);
+      UIJCRExplorerPortlet explorerPorltet = uiWorkingArea.getAncestorOfType(UIJCRExplorerPortlet.class);
+      UIJCRExplorer uiExplorer = explorerPorltet.getChild(UIJCRExplorer.class);      
+      uiExplorer.refreshExplorer();      
+      explorerPorltet.setRenderedChild(UIJCRExplorer.class);      
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiExplorer);      
     }
   }
 

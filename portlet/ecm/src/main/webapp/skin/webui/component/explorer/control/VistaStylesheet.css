@@ -324,3 +324,8 @@
   cursor: pointer;
   margin: 2px 0px;
 }
+
+.UIJCRExplorerPortlet .UIViewBar .ShowSideBarButton {
+  width: 24px;	height: 24px;
+  background: url('DefaultSkin/icons/ShowSideBarButton.gif') no-repeat bottom;
+}
