@@ -23,8 +23,6 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
-import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelectPanel;
-import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -229,8 +227,6 @@ public class UINodeTreeBuilder extends UIContainer {
       String uri = event.getRequestContext().getRequestParameter(OBJECTID);
       builder.changeNode(uri,event.getRequestContext());
       UIBaseNodeTreeSelector nodeTreeSelector = builder.getAncestorOfType(UIBaseNodeTreeSelector.class);      
-      UICategoriesSelector uiCategoriesSelector = nodeTreeSelector.getChild(UICategoriesSelector.class);
-      if (uiCategoriesSelector != null) uiCategoriesSelector.setRenderedChild(UICategoriesSelectPanel.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(nodeTreeSelector);
     }
   }  
