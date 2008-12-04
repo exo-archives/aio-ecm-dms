@@ -266,10 +266,6 @@
 	width: 128px;
 }
 
-.UIECMAdminPortlet .UIWorkspaceWizard .UITabPane .UITabContentContainer {
-	border: none;
-}
-
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIFormTabPane, .UIRepositoryFormContainer .UIWorkspaceWizard .TabPaneContent {
 	padding: 0px;
 }
@@ -470,13 +466,13 @@
 /*------------------------------UICBScripts------------------------*/
 
 .UIECMScripts .ECMScriptForm{
-  width: 95%; 
   margin: 10px auto;
 }
 
 .UIECMScripts .ECMScriptForm .HorizontalLayout {
   background:  url(MacSkin/background/Background1x4.png) repeat 0%;
   padding-top: 10px;
+  border: 1px solid #b7b7b7;
 }
 
 /*------------------------------UICBScripts------------------------*/

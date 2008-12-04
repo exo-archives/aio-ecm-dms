@@ -142,7 +142,14 @@
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UITabPane .TabPaneContent {
 	padding: 0px;
+}
+
+.UIECMAdminPortlet .UIWorkspaceWizard .UITabPane .UITabContentContainer {
 	border: none;
+}
+
+.UIECMAdminPortlet .UIRepositoryForm .UIFormInputSet {
+	padding: 0px;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
@@ -466,8 +473,8 @@
   padding: 3px;
 }
 
-.UIECMAdminPortlet .UIForm .UIViewForm .FormContainer {
-	padding: 0px;
+.UIECMAdminPortlet .UIViewContainer .UIForm .FormContainer {
+	padding: 5px 0px;
 }
 
 /*############################## -- UIActionManager -- ########################*/
