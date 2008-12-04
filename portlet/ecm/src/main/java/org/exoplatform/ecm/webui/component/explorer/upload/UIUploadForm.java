@@ -93,6 +93,7 @@ import org.exoplatform.webui.form.UIFormUploadInput;
       ),
       @ComponentConfig(
           type = UIFormMultiValueInputSet.class,
+          id="UploadMultipleInputset",
           events = {
             @EventConfig(listeners = UIUploadForm.RemoveActionListener.class, phase = Phase.DECODE),
             @EventConfig(listeners = UIUploadForm.AddActionListener.class, phase = Phase.DECODE) 
@@ -155,7 +156,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         }
       }
     }
-    UIFormMultiValueInputSet uiFormMultiValue = createUIComponent(UIFormMultiValueInputSet.class, null, null);
+    UIFormMultiValueInputSet uiFormMultiValue = createUIComponent(UIFormMultiValueInputSet.class, "UploadMultipleInputset", null);
     uiFormMultiValue.setId(FIELD_LISTTAXONOMY);
     uiFormMultiValue.setName(FIELD_LISTTAXONOMY);
     uiFormMultiValue.setType(UIFormStringInput.class);
@@ -467,18 +468,21 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   static  public class RemoveActionListener extends EventListener<UIFormMultiValueInputSet> {
     public void execute(Event<UIFormMultiValueInputSet> event) throws Exception {
       UIFormMultiValueInputSet uiSet = event.getSource();
-      UIUploadForm uiUploadForm = uiSet.getParent();
-      String id = event.getRequestContext().getRequestParameter(OBJECTID);
-      UIFormStringInput uiFormStringInput = uiSet.getChildById(id);
-      String value = uiFormStringInput.getValue().trim();
-      if (uiUploadForm.getlistTaxonomyName().contains(value)) {
-        int indexRemove = uiUploadForm.getlistTaxonomyName().indexOf(value);
-        uiUploadForm.getlistTaxonomyName().remove(indexRemove);
-        uiUploadForm.getListTaxonomy().remove(indexRemove);
+      UIComponent uiComponent = uiSet.getParent();
+      if (uiComponent instanceof UIUploadForm) {
+        UIUploadForm uiUploadForm = (UIUploadForm)uiComponent;
+        String id = event.getRequestContext().getRequestParameter(OBJECTID);
+        UIFormStringInput uiFormStringInput = uiSet.getChildById(id);
+        String value = uiFormStringInput.getValue().trim();
+        if (uiUploadForm.getlistTaxonomyName().contains(value)) {
+          int indexRemove = uiUploadForm.getlistTaxonomyName().indexOf(value);
+          uiUploadForm.getlistTaxonomyName().remove(indexRemove);
+          uiUploadForm.getListTaxonomy().remove(indexRemove);
+        }
+        uiSet.removeChildById(id);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadForm);
       }
-      uiSet.removeChildById(id);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadForm);
-    }
+    } 
   }
   
   static  public class AddActionListener extends EventListener<UIFormMultiValueInputSet> {
