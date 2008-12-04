@@ -249,7 +249,6 @@
 
 .UIECMAdminPortlet .UIRepositoryForm .FormContainer {
 	margin: auto;
-	border: 1px solid red;
 }
 
 .UIECMAdminPortlet .UIRepositoryFormContainer .UIGrid {
@@ -266,6 +265,10 @@
 .UIECMAdminPortlet .UIRepositoryForm .FormContainer .UIFormGrid .FieldLabel {
 	width: 128px;
 }
+
+.UIECMAdminPortlet .UIWorkspaceWizard .UITabPane .UITabContentContainer {
+	border: none;
+}	
 
 .UIRepositoryFormContainer .UIWorkspaceWizard .UIFormTabPane, .UIRepositoryFormContainer .UIWorkspaceWizard .TabPaneContent {
 	padding: 0px;

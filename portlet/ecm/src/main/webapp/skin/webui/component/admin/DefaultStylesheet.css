@@ -621,3 +621,6 @@
 }
 
 /*############################## -- Any Permission -- ########################*/
+.UIECMAdminPortlet .UIAnyPermission .UIForm .HorizontalLayout {
+	border: 1px solid #B7B7B7;
+}
