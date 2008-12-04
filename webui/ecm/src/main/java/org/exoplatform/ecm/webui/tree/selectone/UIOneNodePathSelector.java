@@ -58,15 +58,17 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     try {
       Session session = sessionProvider.getSession(workspaceName, manageableRepository);
       Node rootNode = (Node)session.getItem(rootTreePath);
-      UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
-      selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
-      selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
       UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
       uiWorkspaceList.setWorkspaceList(repositoryName);
       uiWorkspaceList.setIsDisable(workspaceName, isDisable) ;
       UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);    
       builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);    
       builder.setRootTreeNode(rootNode);
+      
+      UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
+      selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
+      selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
+      selectPathPanel.updateGrid();
     } finally {
       sessionProvider.close();
     }        
@@ -131,6 +133,7 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   public void onChange(final Node currentNode, Object context) throws Exception {
     UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
     selectPathPanel.setParentNode(currentNode);
+    selectPathPanel.updateGrid();
   }
   
 }

@@ -493,7 +493,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         uiUploadForm.getApplicationComponent(RepositoryService.class).getRepository(repository);
       String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
       
+      UIPopupWindow uiPopupWindow = uiUploadManager.addChild(UIPopupWindow.class, null, POPUP_TAXONOMY);
+      uiPopupWindow.setWindowSize(700, 350);
       UIOneNodePathSelector uiNodePathSelector = uiUploadManager.createUIComponent(UIOneNodePathSelector.class, null, null);
+      uiPopupWindow.setUIComponent(uiNodePathSelector);
       uiNodePathSelector.setIsDisable(workspaceName, true);
       uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
           nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
@@ -501,10 +504,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       String param = "returnField=" + FIELD_TAXONOMY ;
       uiNodePathSelector.setSourceComponent(uiUploadForm, new String[]{param}) ;
       
-      
-      UIPopupWindow uiPopupWindow = uiUploadManager.addChild(UIPopupWindow.class, null, POPUP_TAXONOMY);
-      uiPopupWindow.setWindowSize(700, 350);
-      uiPopupWindow.setUIComponent(uiNodePathSelector);
       uiPopupWindow.setRendered(true);
       uiPopupWindow.setShow(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadManager);
