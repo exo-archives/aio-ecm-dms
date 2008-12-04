@@ -105,6 +105,7 @@ public class PublicationServiceImpl implements PublicationService {
     Value value2add=systemSession.getValueFactory().createValue(string2add);
     newValues.add(value2add);
     node.setProperty(HISTORY,newValues.toArray(new Value[newValues.size()])) ; 
+    systemSession.logout();
   } 
   
   /* (non-Javadoc)
