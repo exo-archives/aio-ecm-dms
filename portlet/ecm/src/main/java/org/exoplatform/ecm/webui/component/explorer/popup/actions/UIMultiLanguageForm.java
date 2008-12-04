@@ -60,7 +60,6 @@ import org.exoplatform.webui.form.UIFormSelectBox;
     }
 )
 public class UIMultiLanguageForm extends UIForm {
-
   public UIMultiLanguageForm() throws Exception {
     List<SelectItemOption<String>> languages = new ArrayList<SelectItemOption<String>>() ;
     addUIFormInput(new UIFormSelectBox(Utils.LANGUAGES, Utils.LANGUAGES, languages)) ;
@@ -73,15 +72,30 @@ public class UIMultiLanguageForm extends UIForm {
       currentNode.save();
     }
     String defaultLang = currentNode.getProperty(Utils.EXO_LANGUAGE).getString();
-    
-    languages.add(new SelectItemOption<String>(defaultLang + "(default)", defaultLang)) ;
-    if(currentNode.hasNode(Utils.LANGUAGES)){
+    UIMultiLanguageManager uiMultiLanguageManager = getParent();
+    List<SelectItemOption<String>> listLang = uiMultiLanguageManager.languages();
+    String defaultLangName = "";
+    for (SelectItemOption<String> item : listLang) {
+      if (item.getValue().trim().equals(defaultLang)) {
+        defaultLangName = item.getLabel();
+        break;
+      }
+    }
+    languages.add(new SelectItemOption<String>(defaultLangName + "(default)", defaultLang)) ;
+    if (currentNode.hasNode(Utils.LANGUAGES)){
       Node languageNode = currentNode.getNode(Utils.LANGUAGES) ;
       NodeIterator iter  = languageNode.getNodes() ;      
       while(iter.hasNext()) {
         Node lang = iter.nextNode() ;
-        if(!lang.getName().equals(defaultLang)) {
-          languages.add(new SelectItemOption<String>(lang.getName(), lang.getName()));
+        if (!lang.getName().equals(defaultLang)) {
+          String label = lang.getName();
+          for (SelectItemOption<String> item : listLang) {
+            if (item.getValue().trim().equals(lang.getName())) {
+              label = item.getLabel();
+              break;
+            }
+          }
+          languages.add(new SelectItemOption<String>(label, lang.getName()));
         }
       }
     }

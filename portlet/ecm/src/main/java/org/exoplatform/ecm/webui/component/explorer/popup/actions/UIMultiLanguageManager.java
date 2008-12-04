@@ -16,10 +16,17 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.resources.LocaleConfig;
+import org.exoplatform.services.resources.LocaleConfigService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.model.SelectItemOption;
 
 /**
  * Created by The eXo Platform SARL
@@ -41,5 +48,16 @@ public class UIMultiLanguageManager extends UIContainer implements UIPopupCompon
     uiForm.doSelect(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
   }
   public void deActivate() throws Exception {}
-
+  
+  public List<SelectItemOption<String>> languages() throws Exception {
+    LocaleConfigService localService = getApplicationComponent(LocaleConfigService.class) ;
+    List<SelectItemOption<String>> languages = new ArrayList<SelectItemOption<String>>() ;
+    Iterator iter = localService.getLocalConfigs().iterator() ;
+    while (iter.hasNext()) {
+      LocaleConfig localConfig = (LocaleConfig)iter.next() ;
+      languages.add(new SelectItemOption<String>(localConfig.getLocale().getDisplayLanguage(), 
+                                                 localConfig.getLocale().getLanguage())) ;
+    }
+    return languages ;
+  }
 }

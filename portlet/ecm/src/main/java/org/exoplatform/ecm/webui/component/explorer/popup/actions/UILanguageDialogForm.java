@@ -158,7 +158,7 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
       }
       MultiLanguageService multiLanguageService = languageDialogForm.getApplicationComponent(MultiLanguageService.class);
       UIApplication uiApp = languageDialogForm.getAncestorOfType(UIApplication.class);
-      if(languageDialogForm.selectedLanguage_ == null) {
+      if (languageDialogForm.selectedLanguage_ == null) {
         uiApp.addMessage(new ApplicationMessage("UILanguageDialogForm.msg.select-lang", null, 
                                                 ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
