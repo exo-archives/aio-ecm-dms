@@ -470,7 +470,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         uiNodePathSelector.setSourceComponent(uiDocumentForm, new String[]{param});        
         
         UIPopupWindow uiPopupWindow = uiFormController.addChild(UIPopupWindow.class, null, POPUP_TAXONOMY);
-        uiPopupWindow.setWindowSize(700, 350);
+        uiPopupWindow.setWindowSize(700, 450);
         uiPopupWindow.setUIComponent(uiNodePathSelector);
         uiPopupWindow.setRendered(true);
         uiPopupWindow.setShow(true);
