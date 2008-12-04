@@ -241,6 +241,7 @@
 
 .UIJCRExplorerPortlet .GridTitleBar table {
 	width: auto;
+	margin: 0px;
 }
 
 .UIJCRExplorerPortlet .GridTitleBar .GridTitleLeftBar  {

@@ -142,6 +142,7 @@
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UITabPane .TabPaneContent {
 	padding: 0px;
+	border: none;
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .HiddenLabel {
