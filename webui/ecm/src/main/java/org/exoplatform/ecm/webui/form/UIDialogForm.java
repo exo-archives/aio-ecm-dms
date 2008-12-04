@@ -69,6 +69,7 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.wysiwyg.FCKEditorConfig;
 import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
 
@@ -513,14 +514,35 @@ public class UIDialogForm extends UIForm {
           uiMulti.setId(name);
           uiMulti.setName(name);
           uiMulti.setType(UIFormStringInput.class);
-          uiMulti.setValue(new ArrayList<Value>());
+          /*
+          if (formTextField.validateType != null) {
+            String validateType = formTextField.validateType;
+            String[] validatorList = null;
+            if (validateType.indexOf(',') > -1) validatorList = validateType.split(",");
+            else validatorList = new String[] {validateType};
+            for (String validator : validatorList) {
+              uiMulti.addValidator(DialogFormUtil.getValidator(validator.trim()));
+            }              
+          }
+          */
           addUIFormInput(uiMulti);
         } 
       } else {
         uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null);
         uiMulti.setId(name);
         uiMulti.setName(name);
-        uiMulti.setType(UIFormStringInput.class);
+        uiMulti.setType(UIFormStringInput.class);        
+        /*
+        if (formTextField.validateType != null) {
+          String validateType = formTextField.validateType;
+          String[] validatorList = null;
+          if (validateType.indexOf(',') > -1) validatorList = validateType.split(",");
+          else validatorList = new String[] {validateType};
+          for (String validator : validatorList) {
+            uiMulti.addValidator(DialogFormUtil.getValidator(validator.trim()));
+          }              
+        }
+        */
         addUIFormInput(uiMulti);
       }
       List<String> valueList = new ArrayList<String>();
@@ -528,7 +550,13 @@ public class UIDialogForm extends UIForm {
         if(childNode.hasProperty(propertyName)) {
           Value[] values = childNode.getProperty(propertyName).getValues();
           for(Value value : values) {
-            valueList.add(value.getString());
+            if(propertyName.equals("exo:category")){
+              String categoryPath = node.getSession().getNodeByUUID(value.getString()).getPath()
+                        .replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
+              valueList.add(categoryPath);
+            } else {
+              valueList.add(value.getString());
+            }            
           }
           uiMulti.setValue(valueList);
         }
@@ -538,7 +566,15 @@ public class UIDialogForm extends UIForm {
         if(node.hasProperty(propertyPath)) {
           Value[] values = node.getProperty(propertyPath).getValues();
           for(Value vl : values) {
-            if (vl != null) valueList.add(vl.getString());
+            if (vl != null) {
+              if(propertyPath.equals("exo:category")){
+                String categoryPath = node.getSession().getNodeByUUID(vl.getString()).getPath()
+                          .replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
+                valueList.add(categoryPath);
+              } else {
+                valueList.add(vl.getString());
+              }
+            }
           }
         }
         uiMulti.setValue(valueList);        
