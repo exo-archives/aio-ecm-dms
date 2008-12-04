@@ -25,7 +25,6 @@ import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
-import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.jcr.impl.storage.JCRInvalidItemStateException;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -175,7 +174,10 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       } catch(Exception e) {
-        JCRExceptionManager.process(uiApp, e);
+        //JCRExceptionManager.process(uiApp, e);
+        uiApp.addMessage(new ApplicationMessage("UIVersionInfo.msg.invalid-item-state", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
       }
       Node node = uiVersionInfo.getCurrentNode() ;
