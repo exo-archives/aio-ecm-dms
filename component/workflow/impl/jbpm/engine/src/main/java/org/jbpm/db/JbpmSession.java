@@ -155,6 +155,7 @@ public class JbpmSession {
       close();
     } catch(Throwable t) {
       t.printStackTrace();
+      close();
     }
   }
   
