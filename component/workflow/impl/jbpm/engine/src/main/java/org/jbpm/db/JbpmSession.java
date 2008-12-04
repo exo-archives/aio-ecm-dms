@@ -142,12 +142,20 @@ public class JbpmSession {
   }
   
   public void commitTransactionAndClose() {
-    commitTransaction();
-    close();
+    try {
+      commitTransaction();
+      close();
+    } catch(Throwable t) {
+      rollbackTransaction();
+    }
   }
   public void rollbackTransactionAndClose() {
-    rollbackTransaction();
-    close();
+    try {
+      rollbackTransaction();
+      close();
+    } catch(Throwable t) {
+      t.printStackTrace();
+    }
   }
   
   public GraphSession getGraphSession() {

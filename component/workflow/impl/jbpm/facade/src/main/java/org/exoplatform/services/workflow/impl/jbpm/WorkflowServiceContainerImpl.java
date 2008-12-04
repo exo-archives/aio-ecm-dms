@@ -188,6 +188,8 @@ public class WorkflowServiceContainerImpl implements
     try {
       session.commitTransactionAndClose();
     } catch (Throwable t) {
+      t.printStackTrace();
+      session.rollbackTransactionAndClose();
     }
     threadLocal_.set(null);
   }
