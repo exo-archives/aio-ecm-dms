@@ -131,6 +131,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       
       
       node.setProperty(CURRENT_STATE, NON_PUBLISHED);
+      systemSession.logout();
     } else if (newState.equals(PUBLISHED)) {
       String currentState = node.getProperty(CURRENT_STATE).getString();
       if (currentState.equals(NON_PUBLISHED)) {
@@ -183,10 +184,11 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           @SuppressWarnings("hiding")
           String[] log = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodePublished",version,visibility};
           publicationService.addLog(node, log);
-
+          systemSession.logout();
         } else {
           //should not appear because if currentState of the node is NON_PUBLISHED
           //no version is PUBLISHED
+          systemSession.logout();
           throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : Node Version "+nodeVersionUUID+" is already published");
         }
       } else {
@@ -220,8 +222,10 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           values[i] = value2add;
           node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
         } else {
+          systemSession.logout();
           //error : currentSate = PUBLISHED but no version PUBLISHED
           //should not appear
+          systemSession.logout();
           throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : currentState is published but no version is published");
         }
 
@@ -271,8 +275,10 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
         } else {
           //should not appear because if currentState of the node is NON_PUBLISHED
           //no version is PUBLISHED
+          systemSession.logout();
           throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : Node Version "+nodeVersionUUID+" is already published");
         }
+        systemSession.logout();
       }
     } else if (newState.equals(NON_PUBLISHED)) {
       String currentState = node.getProperty(CURRENT_STATE).getString();
@@ -343,6 +349,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
         } else {
           //error : currentSate = PUBLISHED but no version PUBLISHED
           //should not appear
+          systemSession.logout();
           throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : currentState is published but no version is published");
         }
 
@@ -351,6 +358,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       throw new IncorrectStateUpdateLifecycleException("Incorrect current State");
     }
     node.save();
+    systemSession.logout();
   }
 
   @Override
@@ -566,6 +574,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
         /* set permissions */
         setVisibility(publishedNode, visibility);
       }
+      systemSession.logout();
     }
     return publishedNode;
   }

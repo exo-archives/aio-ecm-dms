@@ -276,6 +276,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
               }
             }
           }
+          systemSession.logout();
         }
       }
       /*
