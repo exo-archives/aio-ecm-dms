@@ -59,7 +59,7 @@ public class UICategoriesSelectPanel extends UIContainer{
   public List getSelectableNodes() throws Exception { return uiPageIterator_.getCurrentPageData(); }
   
   public void updateGrid() throws Exception {
-    ObjectPageList objPageList = new ObjectPageList(getListSelectableNodes(), 4);
+    ObjectPageList objPageList = new ObjectPageList(getListSelectableNodes(), 10);
     uiPageIterator_.setPageList(objPageList);
   }
   
