@@ -33,6 +33,9 @@ import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.organization.auth.AuthenticationService;
 import org.exoplatform.services.organization.auth.Identity;
+import org.exoplatform.services.security.IdentityRegistry;
+import org.exoplatform.services.security.ConversationState;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 /**
  * Created by The eXo Platform SARL .
@@ -43,7 +46,9 @@ import org.exoplatform.services.organization.auth.Identity;
 
 public class IdentifyFilter implements Filter {
   
-  private AuthenticationService authenticationService;
+//  private AuthenticationService authenticationService;
+
+ protected SessionProvider         sessionProvide;
   
   public void init(FilterConfig config) {
   }
@@ -51,16 +56,26 @@ public class IdentifyFilter implements Filter {
     
     ExoContainer container = ExoContainerContext.getCurrentContainer();
 
-    authenticationService = (AuthenticationService) container.getComponentInstanceOfType(AuthenticationService.class);
-    if (((HttpServletRequest) request).getRemoteUser() != null) {
-      if (authenticationService.getCurrentIdentity() == null) {
-        Identity identity = null;
-        try {
-          identity = authenticationService.getIdentityBySessionId(((HttpServletRequest) request).getRemoteUser());
-        } catch (Exception e) { }
-        authenticationService.setCurrentIdentity(identity);
-      }
-    }
+//    authenticationService = (AuthenticationService) container.getComponentInstanceOfType(AuthenticationService.class);
+//    if (((HttpServletRequest) request).getRemoteUser() != null) {
+//      if (authenticationService.getCurrentIdentity() == null) {
+//        Identity identity = null;
+//        try {
+//          identity = authenticationService.getIdentityBySessionId(((HttpServletRequest) request).getRemoteUser());
+//        } catch (Exception e) { }
+//        authenticationService.setCurrentIdentity(identity);
+//      }
+//    }
+
+
+    IdentityRegistry identityRegistry = (IdentityRegistry)container.getComponentInstanceOfType(IdentityRegistry.class);
+    sessionProvide = new SessionProvider(new ConversationState(identityRegistry.getIdentity("admin")));
+
+
+
+
+
+
     chain.doFilter(request, response);
   }
   public void destroy() {
