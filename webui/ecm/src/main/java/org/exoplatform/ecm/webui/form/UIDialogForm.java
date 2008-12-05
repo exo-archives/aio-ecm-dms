@@ -160,16 +160,19 @@ public class UIDialogForm extends UIForm {
         String relPath = "";
         String itemRelPath = "";
         if(node.getProperty(propertyName).getDefinition().getRequiredType() == 
-          PropertyType.REFERENCE) {
-          // Update for many categories
+          PropertyType.REFERENCE) {          
           if(node.getProperty(propertyName).getDefinition().isMultiple()) {
             StringBuffer buffer = new StringBuffer();
             buffer.append("[");
             Value[] values = node.getProperty(propertyName).getValues();            
             for(Value value : values) {              
-              relPath = node.getSession().getNodeByUUID(value.getString()).getPath();
-              itemRelPath = relPath.replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
-              buffer.append(itemRelPath).append(",");              
+              if(propertyName.equals("exo:category")){
+                String categoryPath = node.getSession().getNodeByUUID(value.getString()).getPath()
+                          .replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
+                buffer.append(itemRelPath).append(",");
+              } else {
+                buffer.append(value).append(",");
+              }
             }
             if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);
             buffer.append("]");
@@ -185,9 +188,13 @@ public class UIDialogForm extends UIForm {
             StringBuffer buffer = new StringBuffer();
             buffer.append("[");
             for(Value value : values) {              
-              relPath = node.getSession().getNodeByUUID(value.getString()).getPath();
-              itemRelPath = relPath.replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
-              buffer.append(itemRelPath).append(",");
+              if(propertyName.equals("exo:category")){
+                String categoryPath = node.getSession().getNodeByUUID(value.getString()).getPath()
+                          .replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
+                buffer.append(itemRelPath).append(",");
+              } else {
+                buffer.append(value).append(",");
+              }
             }
             if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);
             buffer.append("]");            
@@ -513,8 +520,7 @@ public class UIDialogForm extends UIForm {
           uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null);
           uiMulti.setId(name);
           uiMulti.setName(name);
-          uiMulti.setType(UIFormStringInput.class);
-          /*
+          uiMulti.setType(UIFormStringInput.class);          
           if (formTextField.validateType != null) {
             String validateType = formTextField.validateType;
             String[] validatorList = null;
@@ -523,16 +529,14 @@ public class UIDialogForm extends UIForm {
             for (String validator : validatorList) {
               uiMulti.addValidator(DialogFormUtil.getValidator(validator.trim()));
             }              
-          }
-          */
+          }          
           addUIFormInput(uiMulti);
         } 
       } else {
         uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null);
         uiMulti.setId(name);
         uiMulti.setName(name);
-        uiMulti.setType(UIFormStringInput.class);        
-        /*
+        uiMulti.setType(UIFormStringInput.class);
         if (formTextField.validateType != null) {
           String validateType = formTextField.validateType;
           String[] validatorList = null;
@@ -541,8 +545,7 @@ public class UIDialogForm extends UIForm {
           for (String validator : validatorList) {
             uiMulti.addValidator(DialogFormUtil.getValidator(validator.trim()));
           }              
-        }
-        */
+        }        
         addUIFormInput(uiMulti);
       }
       List<String> valueList = new ArrayList<String>();
