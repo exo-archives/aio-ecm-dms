@@ -228,7 +228,7 @@ public class UIPermissionForm extends UIForm implements UISelector {
       uiUserSelector.setMulti(false);
       uiUserSelector.setComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
       uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(
-          POPUP_SELECT_USER, uiUserSelector, 650, 465);
+          POPUP_SELECT_USER, uiUserSelector, 660, 465);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }
