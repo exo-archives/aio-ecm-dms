@@ -213,7 +213,10 @@ public class UIJCRExplorer extends UIContainer {
 
   public void refreshExplorer() throws Exception { 
     try {
-      getSession().getItem(currentPath_) ;
+      Node nodeGet = (Node)getSession().getItem(currentPath_) ;
+      if(nodeGet.hasProperty(Utils.EXO_LANGUAGE)) {
+        setLanguage(nodeGet.getProperty(Utils.EXO_LANGUAGE).getValue().getString());
+      } 
     } catch(PathNotFoundException path) {
       currentPath_ = getRootNode().getPath() ;
     }
