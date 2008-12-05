@@ -173,8 +173,13 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
+      } catch(NullPointerException nuException){
+        uiApp.addMessage(new ApplicationMessage("UIVersionInfo.msg.invalid-item-state", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
       } catch(Exception e) {
-        //JCRExceptionManager.process(uiApp, e);
+        //JCRExceptionManager.process(uiApp, e);        
         uiApp.addMessage(new ApplicationMessage("UIVersionInfo.msg.invalid-item-state", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
