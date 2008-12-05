@@ -306,6 +306,10 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
               categoriesPathList[i] = PATH_TAXONOMY + categoriesPathList[i].trim();
             }
             categoriesService.addMultiCategory(newNode, categoriesPathList, repository);            
+          } else {
+            List<Value> vals = new ArrayList<Value>();
+            if (newNode.hasProperty("exo:category")) newNode.setProperty("exo:category", vals.toArray(new Value[vals.size()]));
+            newNode.save();
           }
         } catch(Exception e) {
           if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
