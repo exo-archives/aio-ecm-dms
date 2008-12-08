@@ -157,11 +157,13 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     }else if(formInput instanceof UIFormMultiValueInputSet) {
       UIFormMultiValueInputSet  inputSet = (UIFormMultiValueInputSet) formInput;            
       String valueTaxonomy = String.valueOf(value).trim();
-      if (!listTaxonomy.contains(valueTaxonomy)) {
+      List taxonomylist = inputSet.getValue();
+      if (!taxonomylist.contains(valueTaxonomy)) {
         listTaxonomy.add(valueTaxonomy);
         listTaxonomyName.add(cutPath(valueTaxonomy));
-      }
-      inputSet.setValue(listTaxonomyName);
+        taxonomylist.add(cutPath(valueTaxonomy));
+      }      
+      inputSet.setValue(taxonomylist);
     }
     UIDocumentFormController uiContainer = getParent();
     uiContainer.removeChildById(POPUP_TAXONOMY);
@@ -478,7 +480,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         uiPopupWindow.setUIComponent(uiNodePathSelector);
         uiPopupWindow.setRendered(true);
         uiPopupWindow.setShow(true);
-        uiDocumentForm.initFieldInput();
         event.getRequestContext().addUIComponentToUpdateByAjax(uiFormController);
       } else {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentForm.getParent());
@@ -488,7 +489,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   
   static public class RemoveActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
-      event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent());
+      UIDocumentForm uiDocumentForm = event.getSource();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentForm);
     }
   }  
 }
