@@ -39,6 +39,17 @@ public class UIUploadManager extends UIContainer implements UIPopupComponent {
     addChild(UIUploadContainer.class, null, null).setRendered(false);
   }
   
+  public UIPopupWindow initPopupTaxonomy(String id) throws Exception {
+    UIPopupWindow uiPopup = getChildById(id);
+    if (uiPopup == null) {
+      uiPopup = addChild(UIPopupWindow.class, null, id);
+    }
+    uiPopup.setWindowSize(700, 350);
+    uiPopup.setShow(false);
+    uiPopup.setResizable(true);
+    return uiPopup;
+  }
+  
   public void activate() throws Exception {
     UIUploadForm uiUploadForm = getChild(UIUploadForm.class);
     uiUploadForm.initFieldInput();

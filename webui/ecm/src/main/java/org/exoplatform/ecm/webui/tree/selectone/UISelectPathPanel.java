@@ -28,7 +28,9 @@ import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPageIterator;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -123,6 +125,19 @@ public class UISelectPathPanel extends UIContainer {
       } 
       String returnField = ((UIBaseNodeTreeSelector)uiTreeSelector).getReturnFieldName();
       ((UISelectable)((UIBaseNodeTreeSelector)uiTreeSelector).getSourceComponent()).doSelect(returnField, value) ;
+      
+      UIComponent uiOneNodePathSelector = uiDefault.getParent();
+      if (uiOneNodePathSelector instanceof UIOneNodePathSelector) {
+        UIComponent uiComponent = uiOneNodePathSelector.getParent();
+        if (uiComponent instanceof UIPopupWindow) {
+          ((UIPopupWindow)uiComponent).setShow(false);
+          ((UIPopupWindow)uiComponent).setRendered(false);
+        }
+        UIComponent component = ((UIOneNodePathSelector)uiOneNodePathSelector).getSourceComponent().getParent();
+        if (component != null) {
+          event.getRequestContext().addUIComponentToUpdateByAjax(component);
+        }
+      }
     }
   }
 }
