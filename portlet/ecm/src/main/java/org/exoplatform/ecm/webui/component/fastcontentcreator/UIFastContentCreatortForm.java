@@ -219,7 +219,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       for (int i = 0; i < inputs.size(); i++) {
         UIFormInput input = (UIFormInput) inputs.get(i);
         if((input.getName() != null) && input.getName().equals("name")) {
-          String[] arrFilterChar = {".", "/", ":", "[", "]", "*", "'", "|", "\""};          
+          String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{", "/", "|", "\""};          
           String valueName = input.getValue().toString();          
           for(String filterChar : arrFilterChar) {
             if(valueName.indexOf(filterChar) > -1) {
