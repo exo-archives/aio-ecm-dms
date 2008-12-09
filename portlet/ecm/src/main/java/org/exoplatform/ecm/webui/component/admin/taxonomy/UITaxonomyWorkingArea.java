@@ -23,6 +23,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.ReferentialIntegrityException;
 
+import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -30,6 +31,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -50,13 +52,23 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 public class UITaxonomyWorkingArea extends UIContainer {
-
+  private UIPageIterator uiPageIterator_;
   private List<Node> taxonomyNodes_ ;
   private ClipboardCommand clipboard_ = new ClipboardCommand() ;
   private String selectedPath_ ;
   
-  public UITaxonomyWorkingArea() {
+  public UITaxonomyWorkingArea() throws Exception {
+    uiPageIterator_ = addChild(UIPageIterator.class, null, "UICategoriesSelect");
   }
+  
+  public UIPageIterator getUIPageIterator() { return uiPageIterator_; }
+  
+  public void updateGrid() throws Exception {
+    ObjectPageList objPageList = new ObjectPageList(getNodeList(), 10);
+    uiPageIterator_.setPageList(objPageList);
+  }
+  
+  public List getListNodes() throws Exception { return uiPageIterator_.getCurrentPageData(); }
   
   public void setNodeList(List<Node> nodes) { taxonomyNodes_ = nodes ;  }
   public List<Node> getNodeList() {return taxonomyNodes_; } ;
@@ -86,6 +98,7 @@ public class UITaxonomyWorkingArea extends UIContainer {
       listNodes.add(node) ;
     }
     setNodeList(listNodes) ;
+    updateGrid();
   }
   
   static public class AddActionListener extends EventListener<UITaxonomyWorkingArea> {

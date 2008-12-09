@@ -146,6 +146,7 @@ public class UITaxonomyTree extends UIContainer {
     UITaxonomyManager uiManager = getParent() ;
     UITaxonomyWorkingArea uiWorkingArea = uiManager.getChild(UITaxonomyWorkingArea.class) ;
     uiWorkingArea.setNodeList(nodes) ;
+    uiWorkingArea.updateGrid();
   }
   
   public Node getSelectedNode() {

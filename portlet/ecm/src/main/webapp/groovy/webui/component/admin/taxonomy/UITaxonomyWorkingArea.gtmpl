@@ -19,7 +19,7 @@
 	  </thead>
 	  <tbody>
       <%
-        def nodes = uicomponent.getNodeList() ;
+        def nodes = uicomponent.getListNodes() ;
         def rowClass = "OddRow" ;
 		    boolean even = true ;
 		    if(nodes.size() > 0) {
@@ -65,5 +65,11 @@
 			%>
     </tbody>
   </table>
+  
+  <% if (uicomponent.getUIPageIterator().getAvailablePage() > 1) { %>
+  <div style="margin:1px 0px 5px 0px;">
+    <%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
+  </div>
+  <% } %>
 </div>
 <div style="clear:left"><span></span></div>

@@ -55,6 +55,8 @@ public class UITaxonomyManager extends UIContainer {
   public void update() throws Exception {
     UITaxonomyTree uiTree = getChild(UITaxonomyTree.class) ;
     uiTree.update() ;
+    UITaxonomyWorkingArea uiTaxonomyWorkingArea = getChild(UITaxonomyWorkingArea.class);
+    uiTaxonomyWorkingArea.update();
   }
   
   public void update(String parentPath) throws Exception {
