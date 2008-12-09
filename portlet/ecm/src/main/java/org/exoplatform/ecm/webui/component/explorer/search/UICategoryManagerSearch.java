@@ -7,7 +7,6 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
-import org.exoplatform.ecm.webui.tree.selectone.UISelectPathPanel;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
