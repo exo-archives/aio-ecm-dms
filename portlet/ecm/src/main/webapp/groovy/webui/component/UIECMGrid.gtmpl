@@ -33,7 +33,7 @@
 	  <tbody>
 	  <%if(uicomponent.getUIPageIterator().getAvailable() < 1) {%>
 	    <tr>
-	      <td colspan="<%=beanFields.length+1%>">
+	      <td colspan="<%=beanFields.length%>">
 	      	<div class="ActionContainer">
 	        	<%=_ctx.appRes(uicomponent.getId() + ".msg.empty")%>
 	        </div>

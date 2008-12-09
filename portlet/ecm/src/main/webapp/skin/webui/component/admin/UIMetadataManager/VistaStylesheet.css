@@ -38,4 +38,9 @@
   line-height: 21px; vertical-align: middle;
   padding: 0px 10px;
 }
+
+.UIECMAdminPortlet .UIMetadataManager textarea {
+	width: 380px;
+	height: 400px;
+}
 /*############################## -- End UIMetadataManager-- ########################*/

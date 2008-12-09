@@ -33,7 +33,7 @@
 	  <tbody>
 	  <%if(uicomponent.getUIPageIterator().getAvailable() < 1) {%>
 	    <tr>
-	      <td style="color: #EF5604; font-style: italic;text-align: center;" colspan="<%=beanFields.length+1%>">
+	      <td style="color: #EF5604; font-style: italic;text-align: center;" colspan="<%=beanFields.length%>">
 	        <%=_ctx.appRes(uicomponent.getId() + ".msg.empty")%>
 	      </td>
 	    </tr>  
