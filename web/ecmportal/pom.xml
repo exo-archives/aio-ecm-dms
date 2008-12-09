@@ -30,7 +30,8 @@
         <configuration>
          <!-- default value is ** -->
 				  <dependentWarExcludes>
-				    index.jsp,WEB-INF/web.xml,WEB-INF/conf/,WEB-INF/classes/locale/navigation/,
+				    index.jsp,WEB-INF/web.xml,WEB-INF/conf/*.xml,WEB-INF/conf/**/*.xml,
+				    WEB-INF/conf/portal/,WEB-INF/classes/locale/navigation/,
 				    WEB-INF/conf/script/groovy/SkinConfigScript.groovy, 
 				    templates/groovy/webui/component/UIHomePagePortlet.gtmpl,
 				    templates/skin/webui/component/UIHomePagePortlet/
