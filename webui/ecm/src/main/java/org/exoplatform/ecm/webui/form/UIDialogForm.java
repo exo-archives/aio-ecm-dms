@@ -537,6 +537,7 @@ public class UIDialogForm extends UIForm {
         uiMulti.setId(name);
         uiMulti.setName(name);
         uiMulti.setType(UIFormStringInput.class);
+        /*
         if (formTextField.validateType != null) {
           String validateType = formTextField.validateType;
           String[] validatorList = null;
@@ -545,7 +546,8 @@ public class UIDialogForm extends UIForm {
           for (String validator : validatorList) {
             uiMulti.addValidator(DialogFormUtil.getValidator(validator.trim()));
           }              
-        }        
+        }
+        */        
         addUIFormInput(uiMulti);
       }
       List<String> valueList = new ArrayList<String>();
