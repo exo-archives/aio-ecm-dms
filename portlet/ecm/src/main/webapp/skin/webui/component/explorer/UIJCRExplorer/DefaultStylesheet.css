@@ -141,6 +141,7 @@
 	float: left; 
 	border-right: 1px solid #b7b7b7; 
 	width: 30px; height: 19px; 
+	overflow: hidden;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RightColumn {
@@ -148,6 +149,7 @@
 	border-right: 1px solid #b7b7b7; 
 	padding-left: 3px; 
 	width: 80px;
+	overflow: hidden;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .ResizeColumn {
@@ -155,6 +157,8 @@
 	height: 19px; 
 	margin: 0px 520px 0px 30px;
 	padding-left: 5px;
+	overflow: hidden;
+	white-space: nowrap; 
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView {

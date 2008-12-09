@@ -1,0 +1,7 @@
+<div class="$uicomponent.id" id="$uicomponent.id">
+	<div style="height: 0px;"><div style="width: 880px;" ><span style="display: none;"></span></div></div>
+	<div  
+		style="!width: expression(this.previousSibling.offsetWidth - 2 + 'px'); margin: auto; !border: 1px solid white; min-width: 880px;">
+	  <%uicomponent.renderChildren();%>
+	</div>
+</div>

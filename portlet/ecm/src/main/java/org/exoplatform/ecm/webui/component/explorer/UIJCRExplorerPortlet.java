@@ -28,12 +28,12 @@ import org.exoplatform.webui.core.UIPortletApplication;
 import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 
 @ComponentConfig(
-    lifecycle = UIApplicationLifecycle.class
+    lifecycle = UIApplicationLifecycle.class,
+    template = "app:/groovy/webui/component/explorer/UIJCRExporerPortlet.gtmpl"
 )
 public class UIJCRExplorerPortlet extends UIPortletApplication {
   
   public UIJCRExplorerPortlet() throws Exception {
-    setMinWidth(585) ;
     addChild(UIDrivesBrowserContainer.class, null, null);
     addChild(UIJCRExplorer.class, null, null).setRendered(false) ;    
   }

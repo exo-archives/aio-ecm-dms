@@ -1,3 +1,0 @@
-<div class="$uicomponent.id" id="$uicomponent.id">
-  <%uicomponent.renderChildren();%>
-</div>
