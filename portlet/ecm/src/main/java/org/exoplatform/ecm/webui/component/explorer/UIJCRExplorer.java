@@ -62,7 +62,6 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.event.Event;
 
 /**
@@ -73,7 +72,7 @@ import org.exoplatform.webui.event.Event;
  * 10:07:15 AM
  */
 
-@ComponentConfig( lifecycle = UIContainerLifecycle.class )
+@ComponentConfig(template = "app:/groovy/webui/component/explorer/UIJCRExplorer.gtmpl")
 public class UIJCRExplorer extends UIContainer {
 
   private LinkedList<ClipboardCommand> clipboards_ = new LinkedList<ClipboardCommand>() ;
