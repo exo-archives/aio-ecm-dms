@@ -25,7 +25,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
+import org.exoplatform.ecm.webui.selector.UIGroupMemberSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
@@ -245,11 +245,9 @@ public class UIPermissionForm extends UIForm implements UISelectable {
   static public class SelectMemberActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
-      UIPermissionSelector uiMemberSelect = uiForm.createUIComponent(
-          UIPermissionSelector.class, null, null);
-      uiMemberSelect.setSelectedMembership(true);
-      uiMemberSelect.setSourceComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
-      uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(uiMemberSelect);
+      UIGroupMemberSelector uiGroupMemberSelector = uiForm.createUIComponent(UIGroupMemberSelector.class, null, null);
+      uiGroupMemberSelector.setSourceComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
+      uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(uiGroupMemberSelector);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }

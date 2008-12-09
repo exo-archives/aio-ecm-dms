@@ -43,7 +43,8 @@ import org.exoplatform.webui.organization.UIGroupMembershipSelector;
         events = {
           @EventConfig(listeners = UIPermissionSelector.ChangeNodeActionListener.class),
           @EventConfig(listeners = UIPermissionSelector.SelectMembershipActionListener.class),
-          @EventConfig(listeners = UIPermissionSelector.SelectPathActionListener.class) 
+          @EventConfig(listeners = UIPermissionSelector.SelectPathActionListener.class),
+          @EventConfig(listeners = UIPermissionSelector.AddAnyPermissionActionListener.class)
         }),
     @ComponentConfig(
         type = UITree.class, 
@@ -235,6 +236,27 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
         uiPopup.setShow(true);
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPermissionSelector);
+    }
+  }
+  
+  static public class AddAnyPermissionActionListener extends EventListener<UIAnyPermission> {
+    public void execute(Event<UIAnyPermission> event) throws Exception {
+      UIAnyPermission uiAnyPermission = event.getSource();
+      UIPermissionSelector uiPermissionSelector = uiAnyPermission.getParent();
+      String returnField = uiPermissionSelector.getReturnField();
+      String value = "*";
+      ((UISelectable)uiPermissionSelector.getSourceComponent()).doSelect(returnField, value);
+      if (uiPermissionSelector.isUsePopup()) {
+        UIPopupWindow uiPopup = uiPermissionSelector.getParent();
+        uiPopup.setShow(false);
+        UIComponent uicomp = uiPermissionSelector.getSourceComponent().getParent();
+        event.getRequestContext().addUIComponentToUpdateByAjax(uicomp);
+        if (!uiPopup.getId().equals("PopupComponent"))
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup);
+      } else {
+        event.getRequestContext().addUIComponentToUpdateByAjax(
+            uiPermissionSelector.getSourceComponent());
+      }
     }
   }
 

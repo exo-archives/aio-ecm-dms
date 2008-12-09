@@ -20,7 +20,6 @@ import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -56,22 +55,7 @@ public class UIAnyPermission extends UIForm {
   static public class AddAnyPermissionActionListener extends EventListener<UIAnyPermission> {
     public void execute(Event<UIAnyPermission> event) throws Exception {
       UIAnyPermission uiAnyPermission = event.getSource();
-      UIPermissionSelector uiPermissionSelector = uiAnyPermission.getParent();
-      String returnField = uiPermissionSelector.getReturnField();
-      String value = "*";
-      ((UISelectable)uiPermissionSelector.getSourceComponent()).doSelect(returnField, value);
-      
-      if (uiPermissionSelector.isUsePopup()) {
-        UIPopupWindow uiPopup = uiPermissionSelector.getParent();
-        uiPopup.setShow(false);
-        UIComponent uicomp = uiPermissionSelector.getSourceComponent().getParent();
-        event.getRequestContext().addUIComponentToUpdateByAjax(uicomp);
-        if (!uiPopup.getId().equals("PopupComponent"))
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup);
-      } else {
-        event.getRequestContext().addUIComponentToUpdateByAjax(
-            uiPermissionSelector.getSourceComponent());
-      }
+      uiAnyPermission.<UIComponent>getParent().broadcast(event, event.getExecutionPhase()) ;
     }
   }
 }
