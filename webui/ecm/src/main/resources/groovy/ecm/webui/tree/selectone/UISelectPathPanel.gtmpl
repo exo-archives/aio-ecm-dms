@@ -10,7 +10,7 @@
 <% 
 	import org.exoplatform.ecm.webui.utils.Utils;
 %>
-<div class="UITreeList">
+<div id="$uicomponent.id" class="UITreeList">
   <table class="UIGrid">
 	  <col></col>
 	  <col style="width:60px;"></col>
@@ -61,5 +61,10 @@
 			%>
     </tbody>
   </table>
+  <% if (uicomponent.getUIPageIterator().getAvailablePage() > 1) { %>
+  <div style="margin:1px 0px 5px 0px;">
+    <%_ctx.renderUIComponent(uicomponent.getUIPageIterator())%>
+  </div>
+  <% } %>
 </div>
 <div style="clear:left"><span></span></div>

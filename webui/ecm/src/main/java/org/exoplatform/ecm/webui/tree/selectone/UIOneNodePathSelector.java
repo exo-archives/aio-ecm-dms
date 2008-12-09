@@ -16,6 +16,9 @@
  */
 package org.exoplatform.ecm.webui.tree.selectone;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jcr.Node;
 import javax.jcr.Session;
 
@@ -25,7 +28,13 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.ComponentConfigs;
+import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIBreadcumbs;
+import org.exoplatform.webui.core.UIBreadcumbs.LocalPath;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
+import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
@@ -34,7 +43,19 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
  * Oct 18, 2006
  * 2:12:26 PM 
  */
-@ComponentConfig(lifecycle = UIContainerLifecycle.class)
+@ComponentConfigs(
+    {
+      @ComponentConfig(
+          template = "classpath:groovy/ecm/webui/UIContainerWithAction.gtmpl"
+      ),
+      @ComponentConfig(
+          type = UIBreadcumbs.class, id = "BreadcumbCategoriesOne",
+          template = "system:/groovy/webui/core/UIBreadcumbs.gtmpl",
+          events = @EventConfig(listeners = UIOneNodePathSelector.SelectPathActionListener.class)
+      )
+    }
+)
+
 public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   
   private String[] acceptedNodeTypesInTree = {};  
@@ -46,10 +67,13 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   private String rootTreePath = null;
   private boolean isDisable = false ;
   
+  final static public String PATH_TAXONOMY = "/jcr:system/exo:ecm/exo:taxonomies/";
+  
   public UIOneNodePathSelector() throws Exception {
+    addChild(UIBreadcumbs.class, "BreadcumbCategoriesOne", "BreadcumbCategoriesOne");
     addChild(UIWorkspaceList.class, null, null);
     addChild(UINodeTreeBuilder.class, null, UINodeTreeBuilder.class.getSimpleName()+hashCode()) ;
-    addChild(UISelectPathPanel.class,null,null);
+    addChild(UISelectPathPanel.class, null, null);
   }
   
   public void init(SessionProvider sessionProvider) throws Exception {
@@ -134,6 +158,66 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
     selectPathPanel.setParentNode(currentNode);
     selectPathPanel.updateGrid();
+    
+    UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class);
+    List<LocalPath> listLocalPath = new ArrayList<LocalPath>();
+    String path = currentNode.getPath().trim();
+    String[] arrayPath = path.split("/");
+    if (arrayPath.length > 0) {
+      for (int i = 0; i < arrayPath.length; i++) {
+        if (!arrayPath[i].trim().equals("") && !arrayPath[i].trim().equals("jcr:system") &&
+            !arrayPath[i].trim().equals("exo:ecm") && !arrayPath[i].trim().equals("exo:taxonomies")) {
+          UIBreadcumbs.LocalPath localPath1 = new UIBreadcumbs.LocalPath(arrayPath[i].trim(), arrayPath[i].trim());
+          listLocalPath.add(localPath1);
+        }
+      }
+    }
+    uiBreadcumbs.setPath(listLocalPath);
   }
   
+  private void changeNode(String stringPath, Object context) throws Exception {
+    UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);
+    builder.changeNode(stringPath, context);
+  }
+  
+  public void changeGroup(String groupId, Object context) throws Exception {    
+    String stringPath = PATH_TAXONOMY;    
+    UIBreadcumbs uiBreadcumb = getChild(UIBreadcumbs.class);
+    if (groupId == null) groupId = "";
+    List<LocalPath> listLocalPath = uiBreadcumb.getPath();
+    if (listLocalPath == null || listLocalPath.size() == 0) return;
+    List<String> listLocalPathString = new ArrayList<String>();
+    for (LocalPath localPath : listLocalPath) {
+      listLocalPathString.add(localPath.getId().trim());
+    }
+    if (listLocalPathString.contains(groupId)) {
+      int index = listLocalPathString.indexOf(groupId);
+      if (index == listLocalPathString.size() - 1) return;
+      for (int i = index + 1; i < listLocalPathString.size(); i++) {
+        listLocalPathString.remove(i);
+        listLocalPath.remove(i);
+      }
+      uiBreadcumb.setPath(listLocalPath);
+      for (int i = 0; i < listLocalPathString.size(); i++) {
+        String pathName = listLocalPathString.get(i);
+        if (pathName != null || !pathName.equals("")) {
+          stringPath += pathName.trim();
+          if (i < listLocalPathString.size() - 1) stringPath += "/";
+        }
+      }
+      changeNode(stringPath, context);
+    }
+  }
+  
+  static  public class SelectPathActionListener extends EventListener<UIBreadcumbs> {
+    public void execute(Event<UIBreadcumbs> event) throws Exception {
+      UIBreadcumbs uiBreadcumbs = event.getSource() ;
+      UIOneNodePathSelector uiOneNodePathSelector = uiBreadcumbs.getParent() ;
+      String objectId =  event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiBreadcumbs.setSelectPath(objectId);    
+      String selectGroupId = uiBreadcumbs.getSelectLocalPath().getId() ;
+      uiOneNodePathSelector.changeGroup(selectGroupId, event.getRequestContext()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiOneNodePathSelector) ;
+    }
+  }
 }

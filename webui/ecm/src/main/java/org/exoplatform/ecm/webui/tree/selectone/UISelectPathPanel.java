@@ -55,7 +55,7 @@ public class UISelectPathPanel extends UIContainer {
 
 
   public UISelectPathPanel() throws Exception { 
-    uiPageIterator_ = addChild(UIPageIterator.class, null, "UISelectPath");
+    uiPageIterator_ = addChild(UIPageIterator.class, null, "UISelectPathIterate");
   }
   
   public UIPageIterator getUIPageIterator() { return uiPageIterator_; }
@@ -76,7 +76,7 @@ public class UISelectPathPanel extends UIContainer {
   public List getSelectableNodes() throws Exception { return uiPageIterator_.getCurrentPageData(); }
   
   public void updateGrid() throws Exception {
-    ObjectPageList objPageList = new ObjectPageList(getListSelectableNodes(), 9);
+    ObjectPageList objPageList = new ObjectPageList(getListSelectableNodes(), 10);
     uiPageIterator_.setPageList(objPageList);
   }
   

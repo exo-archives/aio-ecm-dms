@@ -271,22 +271,24 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       }
       
       UIFormMultiValueInputSet uiSet = uiForm.getChild(UIFormMultiValueInputSet.class);
-      List<UIComponent> listChildren = uiSet.getChildren();
-      List<String> listTaxonomyNew = new ArrayList<String>();
-      List<String> listTaxonomyNameNew = new ArrayList<String>();
-      for (UIComponent component : listChildren) {
-        UIFormStringInput uiStringInput = (UIFormStringInput)component;
-        if(uiStringInput.getValue() != null) {
-          String value = uiStringInput.getValue().trim();
-          listTaxonomyNameNew.add(value);
-          listTaxonomyNew.add(PATH_TAXONOMY + value);
+      if (uiSet != null) {
+        List<UIComponent> listChildren = uiSet.getChildren();
+        List<String> listTaxonomyNew = new ArrayList<String>();
+        List<String> listTaxonomyNameNew = new ArrayList<String>();
+        for (UIComponent component : listChildren) {
+          UIFormStringInput uiStringInput = (UIFormStringInput)component;
+          if(uiStringInput.getValue() != null) {
+            String value = uiStringInput.getValue().trim();
+            listTaxonomyNameNew.add(value);
+            listTaxonomyNew.add(PATH_TAXONOMY + value);
+          }
         }
+        
+        uiForm.setListTaxonomy(listTaxonomyNew);
+        uiForm.setListTaxonomyName(listTaxonomyNameNew);
+        
+        uiSet.setValue(uiForm.getListTaxonomy());
       }
-      
-      uiForm.setListTaxonomy(listTaxonomyNew);
-      uiForm.setListTaxonomyName(listTaxonomyNameNew);
-      
-      uiSet.setValue(uiForm.getListTaxonomy());
       
       String[] arrayTaxonomy = new String[uiForm.getListTaxonomy().size()];
       for (int i = 0; i < arrayTaxonomy.length; i++) {
