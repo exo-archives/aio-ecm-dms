@@ -295,7 +295,7 @@ public class UIJCRExplorer extends UIContainer {
         if(primaryNode.isNodeType(nodeType)) return primaryNode ;
       }
     } catch(Exception e) { 
-      e.printStackTrace() ;
+      return getCurrentNode() ;
     }
     return getCurrentNode() ;
   }
