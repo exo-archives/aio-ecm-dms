@@ -36,6 +36,7 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
@@ -121,8 +122,11 @@ public class UIViewMetadataForm extends UIDialogForm {
               UIFormDateTimeInput cal = (UIFormDateTimeInput) uiForm.getUIInput(inputName);
               node.setProperty(name, cal.getCalendar());
             } else if(requiredType == 1){
-              String value = ((UIFormStringInput)uiForm.getUIInput(inputName)).getValue() ;
-              if(value == null) value = "" ;
+              String value = "";
+              if (uiForm.getUIInput(inputName) != null) {
+                value = ((UIFormStringInput)uiForm.getUIInput(inputName)).getValue();
+                if (value == null) value = "";
+              }
               node.setProperty(name, value);
             }
           }
