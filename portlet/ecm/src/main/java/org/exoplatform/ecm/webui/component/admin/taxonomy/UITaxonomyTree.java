@@ -43,124 +43,125 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UITaxonomyTree extends UIContainer {
 
-  private Node currentNode_ ;
-  private Node rootNode_ = null ;
-  private String rootPath_ ;
+  private Node currentNode_;
+  private Node rootNode_ = null;
+  private String rootPath_;
   
   public UITaxonomyTree() throws Exception {
-    UINodeTree tree = addChild(UINodeTree.class, null, "UITaxonomyTree") ;
-    tree.setBeanLabelField("name") ;
-    tree.setBeanIdField("path") ;
+    UINodeTree tree = addChild(UINodeTree.class, null, "UITaxonomyTree");
+    tree.setBeanLabelField("name");
+    tree.setBeanIdField("path");
   }
   
   public void update() throws Exception {
-    UITaxonomyManager uiManager = getParent() ;
-    rootNode_ = uiManager.getRootNode() ;
-    rootPath_ = rootNode_.getPath() ;
+    UITaxonomyManager uiManager = getParent();
+    rootNode_ = uiManager.getRootNode();
+    rootPath_ = rootNode_.getPath();
   }
   
-  public Node getRootNode() throws Exception { return rootNode_ ;  }
+  public Node getRootNode() throws Exception { return rootNode_;  }
   
   public void buildTree() throws Exception {
-    Iterator sibbling = null ;
-    Iterator children = null ;
-    UITaxonomyManager uiTaxonomyManager = getParent() ;
-    List<Node> taxonomyList = new ArrayList<Node>() ;
+    Iterator sibbling = null;
+    Iterator children = null;
+    UITaxonomyManager uiTaxonomyManager = getParent();
+    List<Node> taxonomyList = new ArrayList<Node>();
     if(rootNode_ == null ) {
-      update() ;
-      currentNode_ = rootNode_ ;
-      children = rootNode_.getNodes() ;
-      changeNode(rootNode_) ;
+      update();
+      currentNode_ = rootNode_;
+      children = rootNode_.getNodes();
+      changeNode(rootNode_);
     }
-    UINodeTree tree = getChildById("UITaxonomyTree") ;
-    Node nodeSelected = getSelectedNode() ;
+    UINodeTree tree = getChildById("UITaxonomyTree");
+    Node nodeSelected = getSelectedNode();
     if(nodeSelected.getPath().equals(rootPath_) || rootNode_.getParent().getPath().equals(currentNode_.getPath())) {
-      nodeSelected = rootNode_ ;
-      children = nodeSelected.getNodes() ;
+      nodeSelected = rootNode_;
+      children = nodeSelected.getNodes();
     }
-    tree.setSelected(nodeSelected) ;
+    tree.setSelected(nodeSelected);
     if(nodeSelected.getDepth() > 0) {
-      tree.setParentSelected(nodeSelected.getParent()) ;
-      sibbling = nodeSelected.getParent().getNodes() ;
-      children = nodeSelected.getNodes() ;
+      tree.setParentSelected(nodeSelected.getParent());
+      sibbling = nodeSelected.getParent().getNodes();
+      children = nodeSelected.getNodes();
     } else {
-      tree.setParentSelected(nodeSelected) ;
-      sibbling = nodeSelected.getNodes() ;
+      tree.setParentSelected(nodeSelected);
+      sibbling = nodeSelected.getNodes();
     }
-    List<Node> sibblingList = new ArrayList<Node>() ;
-    List<Node> childrenList = new ArrayList<Node>() ;
+    List<Node> sibblingList = new ArrayList<Node>();
+    List<Node> childrenList = new ArrayList<Node>();
     if(nodeSelected.getPath().equals(uiTaxonomyManager.getTaxonomyNode().getPath())) {
-      sibbling = nodeSelected.getNodes() ;
+      sibbling = nodeSelected.getNodes();
     }
     while(sibbling.hasNext()) {
       Node sibblingNode = (Node)sibbling.next();
       if(PermissionUtil.canRead(sibblingNode) && !sibblingNode.isNodeType("exo:hiddenable")) {
-        sibblingList.add(sibblingNode) ;      
+        sibblingList.add(sibblingNode);      
       }
     }    
     if(nodeSelected.getPath().equals(rootPath_) || rootNode_.getParent().getPath().equals(currentNode_.getPath())) {
-      taxonomyList.add(uiTaxonomyManager.getTaxonomyNode()) ;
-      children = taxonomyList.iterator() ;
+      taxonomyList.add(uiTaxonomyManager.getTaxonomyNode());
+      children = taxonomyList.iterator();
     }
     
     if(children != null) {
       while(children.hasNext()) {
         Node childrenNode = (Node)children.next();
         if(PermissionUtil.canRead(childrenNode) && !childrenNode.isNodeType("exo:hiddenable")) {
-          childrenList.add(childrenNode) ;        
+          childrenList.add(childrenNode);        
         }
       }
     }
-    if(nodeSelected.getPath().equals(rootPath_)) tree.setSibbling(childrenList) ; 
-    else tree.setSibbling(sibblingList) ;
-    tree.setChildren(childrenList) ;
+    if(nodeSelected.getPath().equals(rootPath_)) tree.setSibbling(childrenList); 
+    else tree.setSibbling(sibblingList);
+    tree.setChildren(childrenList);
   }
   
   public void renderChildren() throws Exception {
-    buildTree() ;
-    super.renderChildren() ;
+    buildTree();
+    super.renderChildren();
   } 
   
-  public String getRootPath() { return rootPath_ ; }
+  public String getRootPath() { return rootPath_; }
   
   public void setNodeSelect(String path) throws Exception {
-    UITaxonomyManager uiManager = getParent() ;
+    UITaxonomyManager uiManager = getParent();
     currentNode_ = uiManager.getNodeByPath(path);
-    if(rootNode_.getParent().getPath().equals(path)) currentNode_ = rootNode_ ;
-    uiManager.setSelectedPath(currentNode_.getPath()) ;
-    changeNode(currentNode_) ;
+    if(rootNode_.getParent().getPath().equals(path)) currentNode_ = rootNode_;
+    uiManager.setSelectedPath(currentNode_.getPath());
+    changeNode(currentNode_);
   }
    
   public void changeNode(Node nodeSelected) throws Exception {
-    List<Node> nodes = new ArrayList<Node>() ;
-    NodeIterator nodeIter = nodeSelected.getNodes() ;
-    List<Node> rootTaxonomyList = new ArrayList<Node>() ;
-    UITaxonomyManager uiTaxonomyManager = getParent() ;
+    List<Node> nodes = new ArrayList<Node>();
+    NodeIterator nodeIter = nodeSelected.getNodes();
+    List<Node> rootTaxonomyList = new ArrayList<Node>();
+    UITaxonomyManager uiTaxonomyManager = getParent();
     while(nodeIter.hasNext()) {
-      nodes.add(nodeIter.nextNode()) ;
+      nodes.add(nodeIter.nextNode());
     }
     if(nodeSelected.getPath().equals(rootPath_)) {
-      rootTaxonomyList.add(uiTaxonomyManager.getTaxonomyNode()) ;
-      nodes = rootTaxonomyList ;
+      rootTaxonomyList.add(uiTaxonomyManager.getTaxonomyNode());
+      nodes = rootTaxonomyList;
     }
-    UITaxonomyManager uiManager = getParent() ;
-    UITaxonomyWorkingArea uiWorkingArea = uiManager.getChild(UITaxonomyWorkingArea.class) ;
-    uiWorkingArea.setNodeList(nodes) ;
+    UITaxonomyManager uiManager = getParent();
+    UITaxonomyWorkingArea uiWorkingArea = uiManager.getChild(UITaxonomyWorkingArea.class);
+    uiWorkingArea.setNodeList(nodes);
     uiWorkingArea.updateGrid();
   }
   
   public Node getSelectedNode() {
-    if(currentNode_ == null) return rootNode_ ;
-    return currentNode_ ; 
+    if(currentNode_ == null) return rootNode_;
+    return currentNode_; 
   }
   
   static public class ChangeNodeActionListener extends EventListener<UITaxonomyTree> {
     public void execute(Event<UITaxonomyTree> event) throws Exception {
-      UITaxonomyTree uiTaxonomyTree = event.getSource() ;
-      String uri = event.getRequestContext().getRequestParameter(OBJECTID)  ;
-      uiTaxonomyTree.setNodeSelect(uri) ;
-      UITaxonomyManager uiTaxonomyManager = uiTaxonomyTree.getParent() ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManager) ;
+      UITaxonomyTree uiTaxonomyTree = event.getSource();
+      String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      uiTaxonomyTree.setNodeSelect(uri);
+      UITaxonomyManager uiTaxonomyManager = uiTaxonomyTree.getParent();
+      uiTaxonomyManager.onChange(uiTaxonomyTree.getSelectedNode());
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManager);
     }
   }
 }

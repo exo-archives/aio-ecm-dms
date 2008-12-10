@@ -136,7 +136,7 @@ public class UICategoriesSelector extends UIBaseNodeTreeSelector implements UIPo
     if (listLocalPathString.contains(groupId)) {
       int index = listLocalPathString.indexOf(groupId);
       if (index == listLocalPathString.size() - 1) return;
-      for (int i = index + 1; i < listLocalPathString.size(); i++) {
+      for (int i = listLocalPathString.size() - 1; i > index; i--) {
         listLocalPathString.remove(i);
         listLocalPath.remove(i);
       }
