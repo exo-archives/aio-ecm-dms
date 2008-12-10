@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.tree.UINodeTreeBuilder;
@@ -32,7 +31,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.UIBreadcumbs.LocalPath;
-import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -80,8 +78,8 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
     ManageableRepository manageableRepository = repositoryService.getRepository(repositoryName);
     try {
-      Session session = sessionProvider.getSession(workspaceName, manageableRepository);
-      Node rootNode = (Node)session.getItem(rootTreePath);
+//TODO: Should review this method to make sure we have no problem with permission when use system session      
+      Node rootNode = manageableRepository.getSystemSession(workspaceName).getRootNode();
       UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
       uiWorkspaceList.setWorkspaceList(repositoryName);
       uiWorkspaceList.setIsDisable(workspaceName, isDisable) ;
