@@ -30,6 +30,7 @@ import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -38,6 +39,7 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -231,7 +233,7 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
       ClassLoader cl = Thread.currentThread().getContextClassLoader();
       Class clazz = Class.forName(classPath, true, cl);
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
-      
+      String rootPath = (String)fieldPropertiesMap.get("rootPath");
       String value = uiForm.getUIStringInput(fieldName).getValue();
       String[] arrayTaxonomy = new String[1];
       if (value != null && !value.equals("")) {
@@ -243,7 +245,37 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
           }
         }
       }
-      if (uiComp instanceof UICategoriesSelector){
+      
+      if(uiComp instanceof UIOneNodePathSelector) {
+        UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+        String repositoryName = explorer.getRepositoryName();
+        SessionProvider provider = explorer.getSessionProvider();                
+        String wsFieldName = (String)fieldPropertiesMap.get("workspaceField");
+        String wsName = "";
+        if(wsFieldName != null && wsFieldName.length() > 0) {
+          wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue();
+          ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true);      
+        }
+        String selectorParams = (String)fieldPropertiesMap.get("selectorParams");
+        if(selectorParams != null) {
+          String[] arrParams = selectorParams.split(",");
+          if(arrParams.length == 4) {
+            ((UIOneNodePathSelector)uiComp).setAcceptedNodeTypesInPathPanel(new String[] {Utils.NT_FILE});
+            wsName = arrParams[1];
+            rootPath = arrParams[2];
+            ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true);
+            if(arrParams[3].indexOf(";") > -1) {
+              ((UIOneNodePathSelector)uiComp).setAcceptedMimeTypes(arrParams[3].split(";"));
+            } else {
+              ((UIOneNodePathSelector)uiComp).setAcceptedMimeTypes(new String[] {arrParams[3]});
+            }
+          }
+        }
+        if(rootPath == null) rootPath = "/";
+        ((UIOneNodePathSelector)uiComp).setRootNodeLocation(repositoryName, wsName, rootPath);
+        ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
+        ((UIOneNodePathSelector)uiComp).init(provider);
+      } else if (uiComp instanceof UICategoriesSelector){
         CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
         UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
         Node currentNode = uiExplorer.getCurrentNode();

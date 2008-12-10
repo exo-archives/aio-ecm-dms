@@ -29,7 +29,6 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
 import javax.jcr.PropertyType;
-import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.Workspace;
@@ -216,20 +215,33 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           }
         }
       }
-      break ;
+      break;
     case PropertyType.REFERENCE :
-      if (value == null) throw new RepositoryException("null value for a reference " + requiredtype);
-      if(value instanceof Value[]) {
+      if (value == null) {
+        node.setProperty(propertyName, "");
+      } else if (value instanceof Value) {
+        node.setProperty(propertyName, (Value)value);
+      } else if (value instanceof Value[]) {
         node.setProperty(propertyName, (Value[]) value);
       } else if (value instanceof String) {
         Session session = node.getSession();
-        if(session.getRootNode().hasNode((String)value)) {
-          Node catNode = session.getRootNode().getNode((String)value);
-          Value value2add = session.getValueFactory().createValue(catNode);
-          node.setProperty(propertyName, new Value[] {value2add});          
-        } else {
-          node.setProperty(propertyName, (String) value);
+        Node catNode = null;
+        try {
+          catNode = (Node)session.getItem(value.toString());
+        } catch (PathNotFoundException e) {
+          catNode = session.getRootNode().getNode(value.toString());
         }
+        if (catNode != null) {
+          Value value2add = session.getValueFactory().createValue(catNode);
+          if(isMultiple) {
+            node.setProperty(propertyName, new Value[] {value2add});          
+          } else {
+            node.setProperty(propertyName, value2add);
+          }
+        } else {
+          node.setProperty(propertyName, value.toString());
+        }
+      
       }
       break ;
     }
@@ -416,7 +428,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
               else value = node.getProperty(propertyName).getValue() ;
               setPropertyValue(propertyName, newLanguageNode, requiredType, value, isMultiple) ;
             }
-            if(property != null) {
+            if(property != null ) {
               setPropertyValue(propertyName, node, pro.getRequiredType(), property.getValue(), pro.isMultiple()) ;
             }
           } else {

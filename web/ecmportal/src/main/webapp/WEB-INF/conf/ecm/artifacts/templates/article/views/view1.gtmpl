@@ -268,7 +268,9 @@
 									  i = i + 1 ;
 									  actionChangeLang = uicomponent.event("ChangeLanguage", local) ;
 										if(i == 1) title = "DefaultLanguageTitle" ;
-										println "<a href=\"$actionChangeLang\" class=\"$title\">$local &nbsp;&nbsp;</a>" ;
+										println "<a href=\"$actionChangeLang\" class=\"$title\">" ;
+										println  _ctx.appRes("View.label.languages." + local);
+										println "&nbsp;&nbsp;</a>" ;
 									}
 									println "</div>" ;
 								}	
