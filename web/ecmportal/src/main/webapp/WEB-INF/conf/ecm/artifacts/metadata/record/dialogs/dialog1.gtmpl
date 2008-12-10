@@ -78,7 +78,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Record.dialog.label.publication-date")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldPublicationDate = ["jcrPath=/node/rma:publicationDate", "options=displaytime"] ;
+		        String[] fieldPublicationDate = ["jcrPath=/node/rma:publicationDate", "options=displaytime", "visible=true"] ;
 		        uicomponent.addCalendarField("publicationDate", fieldPublicationDate) ;        
 		      %>
 		    </td>
@@ -96,7 +96,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Record.dialog.label.date-received")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldDateReceived = ["jcrPath=/node/rma:dateReceived", "options=displaytime"] ;
+		        String[] fieldDateReceived = ["jcrPath=/node/rma:dateReceived", "options=displaytime", "visible=true"] ;
 		        uicomponent.addCalendarField("dateReceived", fieldDateReceived) ;        
 		      %>
 		    </td>
@@ -123,7 +123,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Record.dialog.label.date-field")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldDate = ["jcrPath=/node/rma:dateFiled", "options=displaytime"] ;
+		        String[] fieldDate = ["jcrPath=/node/rma:dateFiled", "options=displaytime", "visible=true"];
 		        uicomponent.addCalendarField("dateFiled", fieldDate) ;        
 		      %>
 		    </td>

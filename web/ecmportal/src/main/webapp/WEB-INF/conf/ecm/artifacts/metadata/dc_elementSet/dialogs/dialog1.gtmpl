@@ -64,7 +64,7 @@
 	      <td class="FieldLabel">Date</td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldDate = ["jcrPath=/node/metadata:dc_elementSet/dc:date", "options=displaytime"] ; 
+		        String[] fieldDate = ["jcrPath=/node/metadata:dc_elementSet/dc:date", "options=displaytime", "visible=true"]; 
 		        uicomponent.addCalendarField("date", fieldDate) ;
 		      %>
 		    </td>

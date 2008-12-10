@@ -15,7 +15,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Holdable.dialog.label.hold-until")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldHoldUntil = ["jcrPath=/node/rma:holdUntil"] ;
+		        String[] fieldHoldUntil = ["jcrPath=/node/rma:holdUntil", "visible=true"] ;
 		        uicomponent.addCalendarField("holdUntil", fieldHoldUntil) ;
 		      %>
 		    </td>

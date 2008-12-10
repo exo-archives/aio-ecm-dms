@@ -24,7 +24,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Cutoffable.dialog.label.cutoff-date-time")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldCutoffDateTime = ["jcrPath=/node/rma:cutoffDateTime", "options=displaytime"] ;
+		        String[] fieldCutoffDateTime = ["jcrPath=/node/rma:cutoffDateTime", "options=displaytime", "visible=true"] ;
 		        uicomponent.addCalendarField("cutoffDateTime", fieldCutoffDateTime) ;
 		      %>
 		    </td>

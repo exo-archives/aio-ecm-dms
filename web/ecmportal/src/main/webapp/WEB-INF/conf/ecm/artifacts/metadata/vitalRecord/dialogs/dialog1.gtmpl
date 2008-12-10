@@ -15,7 +15,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("VitalRecord.dialog.label.prev-review-date")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldPrevReviewDate = ["jcrPath=/node/rma:prevReviewDate"] ;
+		        String[] fieldPrevReviewDate = ["jcrPath=/node/rma:prevReviewDate", "visible=true"] ;
 		        uicomponent.addCalendarField("prevReviewDate", fieldPrevReviewDate) ;
 		      %>
 		    </td>
@@ -24,7 +24,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("VitalRecord.dialog.label.next-review-date")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldNextReviewDate = ["jcrPath=/node/rma:nextReviewDate"] ;
+		        String[] fieldNextReviewDate = ["jcrPath=/node/rma:nextReviewDate", "visible=true"] ;
 		        uicomponent.addCalendarField("nextReviewDate", fieldNextReviewDate) ;
 		      %>
 		    </td>

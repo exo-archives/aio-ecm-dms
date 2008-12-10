@@ -15,7 +15,7 @@
 	  		<td class="FieldLabel"><%=_ctx.appRes("Accessionable.dialog.label.accession-date")%></td>
 	  		<td class="FieldComponent">
 		      <%
-		        String[] fieldTransferDate = ["jcrPath=/node/rma:accessionDate"] ;
+		        String[] fieldTransferDate = ["jcrPath=/node/rma:accessionDate", "visible=true"] ;
 		        uicomponent.addCalendarField("accessionDate", fieldTransferDate) ;
 		      %>
 				</td>
