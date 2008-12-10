@@ -458,28 +458,35 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   static  public class AddActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {            
       UIDocumentForm uiDocumentForm = event.getSource();
+      UIDocumentFormController uiFormController = uiDocumentForm.getParent();
+      String clickedField = event.getRequestContext().getRequestParameter(OBJECTID);
       if (uiDocumentForm.isReference) {
-        UIDocumentFormController uiFormController = uiDocumentForm.getParent();
-        UIJCRExplorer uiExplorer = uiDocumentForm.getAncestorOfType(UIJCRExplorer.class);
-        NodeHierarchyCreator nodeHierarchyCreator = uiDocumentForm.getApplicationComponent(NodeHierarchyCreator.class);
-        String repository = uiExplorer.getRepositoryName();
-        ManageableRepository manaRepository = 
-          uiDocumentForm.getApplicationComponent(RepositoryService.class).getRepository(repository);
-        String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
-        
-        UIOneNodePathSelector uiNodePathSelector = uiFormController.createUIComponent(UIOneNodePathSelector.class, null, null);
-        uiNodePathSelector.setIsDisable(workspaceName, true);
-        uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
-            nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
-        uiNodePathSelector.init(uiExplorer.getSystemProvider());
-        String param = "returnField=" + FIELD_TAXONOMY;
-        uiNodePathSelector.setSourceComponent(uiDocumentForm, new String[]{param});        
-        
-        UIPopupWindow uiPopupWindow = uiFormController.addChild(UIPopupWindow.class, null, POPUP_TAXONOMY);
-        uiPopupWindow.setWindowSize(700, 450);
-        uiPopupWindow.setUIComponent(uiNodePathSelector);
-        uiPopupWindow.setRendered(true);
-        uiPopupWindow.setShow(true);
+        UIFormMultiValueInputSet uiSet = uiDocumentForm.getChildById(FIELD_TAXONOMY);
+        if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals(FIELD_TAXONOMY)) {
+          if ((clickedField != null) && (clickedField.equals(FIELD_TAXONOMY))){
+            UIJCRExplorer uiExplorer = uiDocumentForm.getAncestorOfType(UIJCRExplorer.class);
+            NodeHierarchyCreator nodeHierarchyCreator = uiDocumentForm.getApplicationComponent(NodeHierarchyCreator.class);
+            String repository = uiExplorer.getRepositoryName();
+            ManageableRepository manaRepository = 
+              uiDocumentForm.getApplicationComponent(RepositoryService.class).getRepository(repository);
+            String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
+            if(uiSet.getValue().size() == 0) uiSet.setValue(new ArrayList<Value>());
+            
+            UIOneNodePathSelector uiNodePathSelector = uiFormController.createUIComponent(UIOneNodePathSelector.class, null, null);
+            uiNodePathSelector.setIsDisable(workspaceName, true);
+            uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
+                nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
+            uiNodePathSelector.init(uiExplorer.getSystemProvider());
+            String param = "returnField=" + FIELD_TAXONOMY;
+            uiNodePathSelector.setSourceComponent(uiDocumentForm, new String[]{param});        
+            
+            UIPopupWindow uiPopupWindow = uiFormController.addChild(UIPopupWindow.class, null, POPUP_TAXONOMY);
+            uiPopupWindow.setWindowSize(700, 450);
+            uiPopupWindow.setUIComponent(uiNodePathSelector);
+            uiPopupWindow.setRendered(true);
+            uiPopupWindow.setShow(true);
+          }
+        } 
         event.getRequestContext().addUIComponentToUpdateByAjax(uiFormController);
       } else {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentForm.getParent());

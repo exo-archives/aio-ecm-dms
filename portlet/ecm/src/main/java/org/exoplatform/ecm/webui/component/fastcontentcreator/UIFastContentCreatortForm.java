@@ -509,41 +509,33 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
   static public class AddActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       UIFastContentCreatortForm uiCreatortForm = event.getSource();
+      UIFastContentCreatorPortlet uiContainer = uiCreatortForm.getParent();
+      String clickedField = event.getRequestContext().getRequestParameter(OBJECTID);
       if (uiCreatortForm.isReference) {
-        NodeHierarchyCreator nodeHierarchyCreator = uiCreatortForm.getApplicationComponent(NodeHierarchyCreator.class);
-        
-        PortletPreferences preferences = uiCreatortForm.getPortletPreferences();
-        String repository = preferences.getValue(Utils.REPOSITORY, "");
-        
-        ManageableRepository manaRepository = 
-          uiCreatortForm.getApplicationComponent(RepositoryService.class).getRepository(repository);
-        String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
-        
-        UIOneNodePathSelector uiNodePathSelector = uiCreatortForm.createUIComponent(UIOneNodePathSelector.class, null, null);
-        uiNodePathSelector.setIsDisable(workspaceName, true);
-        uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
-            nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
-        uiNodePathSelector.init(SessionProviderFactory.createSystemProvider());
-        String param = "returnField=" + FIELD_TAXONOMY;
-        UIFastContentCreatorPortlet uiContainer = uiCreatortForm.getParent();
-        uiContainer.initPopup(uiNodePathSelector) ;
-        uiNodePathSelector.setSourceComponent(uiCreatortForm, new String[]{param});        
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);        
-      } else {
-        List<String> inputNames = new ArrayList<String>();
-        for(UIComponent uiComp : uiCreatortForm.getChildren()) {
-          if(uiComp instanceof UIFormMultiValueInputSet) {
-            for(UIComponent uiInput : ((UIFormMultiValueInputSet)uiComp).getChildren()) {
-              if(uiInput instanceof UIFormUploadInput) {
-                if(inputNames.contains(((UIFormUploadInput)uiInput).getName())) {
-                  ((UIFormMultiValueInputSet)uiComp).removeChild(UIFormUploadInput.class);
-                  break;
-                }
-                inputNames.add(((UIFormUploadInput)uiInput).getName());
-              }
-            }
+        UIFormMultiValueInputSet uiSet = uiCreatortForm.getChildById(FIELD_TAXONOMY);
+        if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals(FIELD_TAXONOMY)) {
+          if ((clickedField != null) && (clickedField.equals(FIELD_TAXONOMY))){
+            NodeHierarchyCreator nodeHierarchyCreator = uiCreatortForm.getApplicationComponent(NodeHierarchyCreator.class);        
+            PortletPreferences preferences = uiCreatortForm.getPortletPreferences();
+            String repository = preferences.getValue(Utils.REPOSITORY, "");
+            
+            ManageableRepository manaRepository = 
+              uiCreatortForm.getApplicationComponent(RepositoryService.class).getRepository(repository);
+            String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
+            if(uiSet.getValue().size() == 0) uiSet.setValue(new ArrayList<Value>());
+            
+            UIOneNodePathSelector uiNodePathSelector = uiCreatortForm.createUIComponent(UIOneNodePathSelector.class, null, null);
+            uiNodePathSelector.setIsDisable(workspaceName, true);
+            uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
+                nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
+            uiNodePathSelector.init(SessionProviderFactory.createSystemProvider());
+            String param = "returnField=" + FIELD_TAXONOMY;        
+            uiContainer.initPopup(uiNodePathSelector) ;
+            uiNodePathSelector.setSourceComponent(uiCreatortForm, new String[]{param});
           }
         }
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
+      } else {        
         event.getRequestContext().addUIComponentToUpdateByAjax(uiCreatortForm.getParent());
       }
     }
