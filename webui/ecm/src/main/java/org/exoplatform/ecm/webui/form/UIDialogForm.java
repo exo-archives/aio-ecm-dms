@@ -602,7 +602,11 @@ public class UIDialogForm extends UIForm {
     }
     if(isNotEditNode && !isShowingComponent && !isRemovePreference) {
       if(childNode != null) {
-        uiInput.setValue(propertyName);
+        if(childNode.hasProperty(propertyName)) {
+          uiInput.setValue(childNode.getProperty(propertyName).getValue().getString());
+        } else {
+          uiInput.setValue(propertyName);
+        }
       } else if(childNode == null && jcrPath.equals("/node") && node != null) {
         uiInput.setValue(node.getName());
       } else {
