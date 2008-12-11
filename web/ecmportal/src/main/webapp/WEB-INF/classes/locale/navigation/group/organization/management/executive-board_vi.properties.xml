@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <group>
+    <executive-board>
+      <management>
+        Người quản lý
+        <newStaff>Nhân viên mới</newStaff>
+        <organization>Tổ chức</organization>
+        <ecmadmin>Quản trị ECM</ecmadmin>
+      </management>
+      <businessprocess>
+        Quá trình nghiệp vụ
+        <administrator>Quản trị quá trình nghiệp vụ</administrator>
+        <controller>Quản lý quá trình nghiệp vụ</controller>
+      </businessprocess>
+    </executive-board>
+  </group>
+</bundle>
+
