@@ -97,13 +97,16 @@ public class UICategoriesSelector extends UIBaseNodeTreeSelector implements UIPo
     UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class) ;
     List<LocalPath> listLocalPath = new ArrayList<LocalPath>() ;
     String path = currentNode.getPath().trim() ;
-    String[] arrayPath = path.split("/") ;
+    
+    if (path.startsWith(pathTaxonomy)) {
+      path = path.substring(pathTaxonomy.length(), path.length());
+    }    
+    String[] arrayPath = path.split("/");
     if (arrayPath.length > 0) {
-      for (int i = 0 ; i < arrayPath.length ; i++) {
-        if (!arrayPath[i].trim().equals("") && !arrayPath[i].trim().equals("jcr:system") &&
-            !arrayPath[i].trim().equals("exo:ecm") && !arrayPath[i].trim().equals("exo:taxonomies")) {
-          UIBreadcumbs.LocalPath localPath1 = new UIBreadcumbs.LocalPath(arrayPath[i].trim(), arrayPath[i].trim()) ;
-          listLocalPath.add(localPath1) ;
+      for (int i = 0; i < arrayPath.length; i++) {
+        if (!arrayPath[i].trim().equals("")) {
+          UIBreadcumbs.LocalPath localPath1 = new UIBreadcumbs.LocalPath(arrayPath[i].trim(), arrayPath[i].trim());
+          listLocalPath.add(localPath1);
         }
       }
     }

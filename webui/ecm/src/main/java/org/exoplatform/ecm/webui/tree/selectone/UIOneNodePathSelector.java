@@ -27,7 +27,6 @@ import org.exoplatform.ecm.webui.tree.UINodeTreeBuilder;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -66,9 +65,6 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   private String workspaceName = null;
   private String rootTreePath = null;
   private boolean isDisable = false;
-  private String pathTaxonomy = "";
-  
-  private static String TAXONOMIES_ALIAS = "exoTaxonomiesPath";
   
   public UIOneNodePathSelector() throws Exception {
     addChild(UIBreadcumbs.class, "BreadcumbCategoriesOne", "BreadcumbCategoriesOne");
@@ -80,18 +76,14 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   public void init(SessionProvider sessionProvider) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
     ManageableRepository manageableRepository = repositoryService.getRepository(repositoryName);
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
     try {
 //TODO: Should review this method to make sure we have no problem with permission when use system session      
       Node rootNode;
       if (rootTreePath.trim().equals("/")) {
         rootNode = manageableRepository.getSystemSession(workspaceName).getRootNode();
-        pathTaxonomy = ((Node)manageableRepository.getSystemSession(workspaceName).
-              getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS))).getPath() + "/";
       } else {
         Session session = sessionProvider.getSession(workspaceName, manageableRepository);
         rootNode = (Node)session.getItem(rootTreePath);
-        pathTaxonomy = ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS))).getPath() + "/";
       }
       
       UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
@@ -105,8 +97,6 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
       selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
       selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
       selectPathPanel.updateGrid();
-      
-      
     } finally {
       sessionProvider.close();
     }        
@@ -160,11 +150,13 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   }
 
   public String getWorkspaceName() { return workspaceName; }
+  
   public void setWorkspaceName(String workspaceName) {
     this.workspaceName = workspaceName;
   }
 
   public String getRootTreePath() { return rootTreePath; }
+  
   public void setRootTreePath(String rootTreePath) { this.rootTreePath = rootTreePath; 
   }      
   
@@ -176,11 +168,13 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class);
     List<LocalPath> listLocalPath = new ArrayList<LocalPath>();
     String path = currentNode.getPath().trim();
+    if (path.startsWith(rootTreePath)) {
+      path = path.substring(rootTreePath.length(), path.length());
+    }    
     String[] arrayPath = path.split("/");
     if (arrayPath.length > 0) {
       for (int i = 0; i < arrayPath.length; i++) {
-        if (!arrayPath[i].trim().equals("") && !arrayPath[i].trim().equals("jcr:system") &&
-            !arrayPath[i].trim().equals("exo:ecm") && !arrayPath[i].trim().equals("exo:taxonomies")) {
+        if (!arrayPath[i].trim().equals("")) {
           UIBreadcumbs.LocalPath localPath1 = new UIBreadcumbs.LocalPath(arrayPath[i].trim(), arrayPath[i].trim());
           listLocalPath.add(localPath1);
         }
@@ -194,8 +188,11 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     builder.changeNode(stringPath, context);
   }
   
-  public void changeGroup(String groupId, Object context) throws Exception {    
-    String stringPath = pathTaxonomy;    
+  public void changeGroup(String groupId, Object context) throws Exception {
+    String stringPath = rootTreePath;
+    if (!rootTreePath.equals("/")) {
+      stringPath += "/";    
+    }
     UIBreadcumbs uiBreadcumb = getChild(UIBreadcumbs.class);
     if (groupId == null) groupId = "";
     List<LocalPath> listLocalPath = uiBreadcumb.getPath();
