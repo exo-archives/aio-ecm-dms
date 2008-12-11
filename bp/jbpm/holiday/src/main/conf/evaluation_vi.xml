@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <task-name>Evaluate holidays</task-name>
+  <title>Evaluate holidays</title>
+  <approve>
+    <submit>Approve</submit>
+    <value>Approve vacations</value>
+  </approve>
+  <disapprove>
+    <submit>Disapprove</submit>
+    <value>Disapprove vacations</value>
+  </disapprove>
+  <refuse>
+    <submit>Refuse</submit>
+    <value>Refuse vacations</value>
+  </refuse>
+  <!--
+  #variable title and label
+  -->
+  <initiator>
+    <title>Who asked for vacations</title>
+    <label>Initiator :</label>
+  </initiator>
+  <start>
+    <title>Start of vacations :</title>
+    <label>Start (dd/mm/yyyy) :</label>
+  </start>
+  <end>
+    <title>End of vacations :</title>
+    <label>End (dd/mm/yyyy) :</label>
+  </end>
+</bundle>
+
