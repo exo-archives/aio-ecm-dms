@@ -95,7 +95,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   
   final static public String FIELD_TAXONOMY = "categories";
   final static public String POPUP_TAXONOMY = "PopupComponent";
-  final static public String PATH_TAXONOMY = "/jcr:system/exo:ecm/exo:taxonomies/";
+  final static public String PATH_TAXONOMY = "exoTaxonomiesPath";
   
   private List<String> listTaxonomy = new ArrayList<String>();
   private List<String> listTaxonomyName = new ArrayList<String>();
@@ -120,6 +120,12 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     listTaxonomyName = listTaxonomyNameNew;
   }
   
+  public String getPathTaxonomy() throws Exception {
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    Session session = getAncestorOfType(UIJCRExplorer.class).getSession();
+    return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(PATH_TAXONOMY))).getPath();
+  }
+  
   public void initFieldInput() throws Exception {
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
@@ -142,8 +148,9 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     addUIFormInput(uiFormMultiValue);
   }
   
-  private String cutPath(String path) {
-    String returnString = path.replaceAll(PATH_TAXONOMY, "");
+  private String cutPath(String path) throws Exception {
+    String pathTaxonomy = getPathTaxonomy();
+    String returnString = path.replaceAll(pathTaxonomy, "");
     
     return returnString;
   }
@@ -199,6 +206,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   static  public class SaveActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIDocumentForm documentForm = event.getSource();
+      String pathTaxonomy = documentForm.getPathTaxonomy();
       UIJCRExplorer uiExplorer = documentForm.getAncestorOfType(UIJCRExplorer.class);
       List inputs = documentForm.getChildren();
       UIApplication uiApp = documentForm.getAncestorOfType(UIApplication.class);
@@ -244,10 +252,10 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
             return;
           }
-          Session systemSession = categoriesService.getSession(repository);          
+          Session systemSession = categoriesService.getSession(repository);
           for(String categoryPath : categoriesPathList) {              
             if((categoryPath != null) && (categoryPath.trim().length() > 0)){
-              categoryPath = PATH_TAXONOMY + categoryPath.trim();
+              categoryPath = pathTaxonomy + categoryPath.trim();
               try {
                 systemSession.getItem(categoryPath.trim());
               } catch (ItemNotFoundException e) {
@@ -305,7 +313,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           newNode = (Node)homeNode.getSession().getItem(addedPath);          
           if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
             for(int i = 0; i < categoriesPathList.length; i ++ ){
-              categoriesPathList[i] = PATH_TAXONOMY + categoriesPathList[i].trim();
+              categoriesPathList[i] = pathTaxonomy + categoriesPathList[i].trim();
             }
             categoriesService.addMultiCategory(newNode, categoriesPathList, repository);            
           } else {

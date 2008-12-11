@@ -30,7 +30,6 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.velocity.runtime.parser.node.SetExecutor;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
@@ -55,6 +54,7 @@ import org.exoplatform.services.ecm.fckconfig.FCKConfigService;
 import org.exoplatform.services.ecm.fckconfig.FCKEditorContext;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.core.UIApplication;
@@ -69,7 +69,6 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
-import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.wysiwyg.FCKEditorConfig;
 import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
 
@@ -114,12 +113,14 @@ public class UIDialogForm extends UIForm {
 
   private String workspaceName = null;
   protected boolean isReference = false;
+  
+  final static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
 
   public UIDialogForm() { }
 
   public boolean isEditing() { return !isAddNew;}
   public boolean isAddNew() { return isAddNew;}
-  public void addNew(boolean b) { this.isAddNew = b; }
+  public void addNew(boolean b) { this.isAddNew = b; }  
 
   public void setStoredLocation(String repository, String workspace, String storedPath) {
     this.repositoryName = repository;
@@ -162,20 +163,12 @@ public class UIDialogForm extends UIForm {
         if(node.getProperty(propertyName).getDefinition().getRequiredType() == 
           PropertyType.REFERENCE) {          
           if(node.getProperty(propertyName).getDefinition().isMultiple()) {
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("[");
+            StringBuffer buffer = new StringBuffer();            
             Value[] values = node.getProperty(propertyName).getValues();            
-            for(Value value : values) {              
-              if(propertyName.equals("exo:category")){
-                String categoryPath = node.getSession().getNodeByUUID(value.getString()).getPath()
-                          .replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
-                buffer.append(itemRelPath).append(",");
-              } else {
-                buffer.append(value).append(",");
-              }
+            for(Value value : values) {
+              buffer.append(value).append(",");
             }
-            if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);
-            buffer.append("]");
+            if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);            
             uiInput.setValue(buffer.toString());
           } else{
             String path = 
@@ -185,19 +178,11 @@ public class UIDialogForm extends UIForm {
         } else {
           if(node.getProperty(propertyName).getDefinition().isMultiple()) {
             Value[] values = node.getProperty(propertyName).getValues();
-            StringBuffer buffer = new StringBuffer();
-            buffer.append("[");
-            for(Value value : values) {              
-              if(propertyName.equals("exo:category")){
-                String categoryPath = node.getSession().getNodeByUUID(value.getString()).getPath()
-                          .replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
-                buffer.append(itemRelPath).append(",");
-              } else {
-                buffer.append(value).append(",");
-              }
+            StringBuffer buffer = new StringBuffer();            
+            for(Value value : values) {
+              buffer.append(value).append(",");
             }
-            if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);
-            buffer.append("]");            
+            if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);                        
             uiInput.setValue(buffer.toString());
           } else {
             uiInput.setValue(node.getProperty(propertyName).getValue().getString());  
@@ -491,8 +476,15 @@ public class UIDialogForm extends UIForm {
   public void addTextAreaField(String name, String[] arguments) throws Exception {
     addTextAreaField(name,null,arguments);
   }
+  
+  public String getPathTaxonomy() throws Exception {
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    Session session = getSesssion();
+    return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS))).getPath();
+  }
 
   public void addTextField(String name, String label, String[] arguments) throws Exception {
+    String pathTaxonomy = getPathTaxonomy();
     UIFormTextField formTextField = new UIFormTextField(name,label,arguments);
     String jcrPath = formTextField.getJcrPath();
     String mixintype = formTextField.getMixinTypes();
@@ -536,8 +528,7 @@ public class UIDialogForm extends UIForm {
         uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null);
         uiMulti.setId(name);
         uiMulti.setName(name);
-        uiMulti.setType(UIFormStringInput.class);
-        /*
+        uiMulti.setType(UIFormStringInput.class);        
         if (formTextField.validateType != null) {
           String validateType = formTextField.validateType;
           String[] validatorList = null;
@@ -546,8 +537,7 @@ public class UIDialogForm extends UIForm {
           for (String validator : validatorList) {
             uiMulti.addValidator(DialogFormUtil.getValidator(validator.trim()));
           }              
-        }
-        */        
+        }                
         addUIFormInput(uiMulti);
       }
       List<String> valueList = new ArrayList<String>();
@@ -556,8 +546,7 @@ public class UIDialogForm extends UIForm {
           Value[] values = childNode.getProperty(propertyName).getValues();
           for(Value value : values) {
             if(propertyName.equals("exo:category")){
-              String categoryPath = node.getSession().getNodeByUUID(value.getString()).getPath()
-                        .replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
+              String categoryPath = node.getSession().getNodeByUUID(value.getString()).getPath().replaceAll(pathTaxonomy, "");
               valueList.add(categoryPath);
             } else {
               valueList.add(value.getString());
@@ -573,8 +562,7 @@ public class UIDialogForm extends UIForm {
           for(Value vl : values) {
             if (vl != null) {
               if(propertyPath.equals("exo:category")){
-                String categoryPath = node.getSession().getNodeByUUID(vl.getString()).getPath()
-                          .replaceAll("/jcr:system/exo:ecm/exo:taxonomies/", "");
+                String categoryPath = node.getSession().getNodeByUUID(vl.getString()).getPath().replaceAll(pathTaxonomy, "");
                 valueList.add(categoryPath);
               } else {
                 valueList.add(vl.getString());
