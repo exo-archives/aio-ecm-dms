@@ -67,7 +67,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
     String ntUnstructredLabel = res.getString("NodeType.label.ntUnstructed");
     String ntFolderLabel = res.getString("NodeType.label.ntFolder");
     allowCreateFolder_ = getAncestorOfType(UIJCRExplorer.class).getDriveData().getAllowCreateFolder() ;
-    if(allowCreateFolder_.equals("Both")) {
+    if(allowCreateFolder_.equalsIgnoreCase("Both")) {
       List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
       options.add(new SelectItemOption<String>(ntUnstructredLabel, Utils.NT_UNSTRUCTURED)) ;
       options.add(new SelectItemOption<String>(ntFolderLabel, Utils.NT_FOLDER)) ;
@@ -113,7 +113,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         }
       }    
       String type = null ;
-      if(uiFolderForm.allowCreateFolder_.equals("Both")) {
+      if(uiFolderForm.allowCreateFolder_.equalsIgnoreCase("Both")) {
         type = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
       } else {
         type = uiFolderForm.allowCreateFolder_ ;
