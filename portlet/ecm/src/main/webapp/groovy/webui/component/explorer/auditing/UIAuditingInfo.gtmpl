@@ -26,7 +26,7 @@
 	  	      else rowClass = "OddRow"; 
 	  	      even = !even;
 	  	      String versionName = uicomponent.getVersionName(ar);
-	  	      String labelName = "UIAuditingInfo.eventName." + ar.getEventType();
+	  	      String labelName = "UIAuditingInfo.eventName.e_" + ar.getEventType();
 	     %>
 	          <tr class="$rowClass">
 	            <td><%=_ctx.appRes(labelName)%></td>
