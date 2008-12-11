@@ -6,7 +6,10 @@
 <div class="UIGroupMembershipSelector" id="$uicomponent.id">
   <div class="Container">
 		<div class="SelectedGroupPath"><% uicomponent.renderChild(UIBreadcumbs.class); %></div>
-		<%uicomponent.renderChild(UIAnyPermission.class);%>
+		
+		<%
+		  if (uicomponent.isShowAnyPermission()) uicomponent.renderChild(UIAnyPermission.class);
+		%>
 		<div class="GroupSelector">
 			<div class="ContentContainer">
 			  <div class="MembershipTitle"><%=_ctx.appRes(uicomponent.id+".label.selectGroup")%></div>

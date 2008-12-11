@@ -73,6 +73,8 @@ public class UIGroupMemberSelector extends UIContainer implements ComponentSelec
   /** The is use popup. */
   private boolean             isUsePopup      = true;
   
+  private boolean             isShowAnyPermission = true;
+  
   private Group selectGroup_;
   
   private List<String> listMemberhip;
@@ -325,5 +327,23 @@ public class UIGroupMemberSelector extends UIContainer implements ComponentSelec
             uiGroupMemberSelector.getSourceComponent());
       }
     }
+  }
+
+  /**
+   * Check show/hide form to set any permission
+   * @return
+   */
+  public boolean isShowAnyPermission() {
+    return isShowAnyPermission;
+  }
+
+  /**
+   * Set show/hide any permission form
+   * @param isShowAnyPermission
+   * isShowAnyPermission =  true: Show form  <br>
+   * isShowAnyPermission =  false: Hide form
+   */
+  public void setShowAnyPermission(boolean isShowAnyPermission) {
+    this.isShowAnyPermission = isShowAnyPermission;
   }
 }
