@@ -60,13 +60,11 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UITaxonomyManager extends UIContainer {
   
-  static private String TAXONIMIES_ALIAS = "exoTaxonomiesPath" ;
+  static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
   static private String EXO_ECM_ALIAS = "exoECMSystemPath" ;
   
   private String selectedPath_ = null ;
 
-  final static public String PATH_TAXONOMY = "/jcr:system/exo:ecm/exo:taxonomies/";
-  
   public UITaxonomyManager() throws Exception {
     addChild(UIBreadcumbs.class, "BreadcumbTaxonomyECMAdmin", "BreadcumbTaxonomyECMAdmin");
     addChild(UITaxonomyTree.class, null, null) ;
@@ -95,7 +93,7 @@ public class UITaxonomyManager extends UIContainer {
   
   public Node getTaxonomyNode() throws Exception {
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
-    return (Node)getSession().getItem(nodeHierarchyCreator.getJcrPath(TAXONIMIES_ALIAS)) ;
+    return (Node)getSession().getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS)) ;
   }
   
   public void setSelectedPath(String selectedPath) { selectedPath_ = selectedPath ; }
@@ -138,21 +136,24 @@ public class UITaxonomyManager extends UIContainer {
     UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class);
     List<LocalPath> listLocalPath = new ArrayList<LocalPath>();
     String path = currentNode.getPath().trim();
-    String[] arrayPath = path.split("/");
-    if (arrayPath.length > 0) {
-      for (int i = 0; i < arrayPath.length; i++) {
-        if (!arrayPath[i].trim().equals("") && !arrayPath[i].trim().equals("jcr:system") &&
-            !arrayPath[i].trim().equals("exo:ecm") && !arrayPath[i].trim().equals("exo:taxonomies")) {
-          UIBreadcumbs.LocalPath localPath1 = new UIBreadcumbs.LocalPath(arrayPath[i].trim(), arrayPath[i].trim());
-          listLocalPath.add(localPath1);
+    String taxonomyPath = getTaxonomyNode().getPath();
+    if (path.startsWith(taxonomyPath)) {
+      String subTaxonomy = path.substring(taxonomyPath.length(), path.length());
+      String[] arrayPath = subTaxonomy.split("/");
+      if (arrayPath.length > 0) {
+        for (int i = 0; i < arrayPath.length; i++) {
+          if (!arrayPath[i].trim().equals("")) {
+            UIBreadcumbs.LocalPath localPath1 = new UIBreadcumbs.LocalPath(arrayPath[i].trim(), arrayPath[i].trim());
+            listLocalPath.add(localPath1);
+          }
         }
       }
-    }
+    } 
     uiBreadcumbs.setPath(listLocalPath);
   }
   
   public void changeGroup(String groupId, Object context) throws Exception {    
-    String stringPath = PATH_TAXONOMY;    
+    String stringPath = getTaxonomyNode().getPath() + "/";    
     UIBreadcumbs uiBreadcumb = getChild(UIBreadcumbs.class);
     if (groupId == null) groupId = "";
     List<LocalPath> listLocalPath = uiBreadcumb.getPath();

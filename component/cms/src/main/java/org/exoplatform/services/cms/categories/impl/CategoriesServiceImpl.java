@@ -175,6 +175,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   
   private void processCategory(Session systemSession, Node node, String categoryPath) throws Exception {
     Node catNode = (Node) systemSession.getItem(categoryPath.trim());
+    String catNodeUUID = catNode.getUUID();
     Value value2add = node.getSession().getValueFactory().createValue(catNode);      
     if (!node.isNodeType(CATEGORY_MIXIN)) {     
       node.addMixin(CATEGORY_MIXIN);    
@@ -183,9 +184,10 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
     } else {
       List<Value> vals = new ArrayList<Value>();
       Value[] values = node.getProperty(CATEGORY_PROP).getValues();
-      for (int i = 0; i < values.length; i++) {
-        Value value = values[i];                       
-        if(!vals.contains(value)) vals.add(value);
+      for (Value value: values) {
+        String uuid = value.getString();      
+        if (uuid.equals(catNodeUUID)) { continue; }
+        vals.add(value);
       }
       vals.add(value2add);
       node.setProperty(CATEGORY_PROP, vals.toArray(new Value[vals.size()]));

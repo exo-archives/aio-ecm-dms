@@ -20,12 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.tree.UINodeTreeBuilder;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -61,28 +63,40 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   private String[] acceptedMimeTypes = {};
   
   private String repositoryName = null;
-  private String workspaceName = null ;
+  private String workspaceName = null;
   private String rootTreePath = null;
-  private boolean isDisable = false ;
+  private boolean isDisable = false;
+  private String pathTaxonomy = "";
   
-  final static public String PATH_TAXONOMY = "/jcr:system/exo:ecm/exo:taxonomies/";
+  private static String TAXONOMIES_ALIAS = "exoTaxonomiesPath";
   
   public UIOneNodePathSelector() throws Exception {
     addChild(UIBreadcumbs.class, "BreadcumbCategoriesOne", "BreadcumbCategoriesOne");
     addChild(UIWorkspaceList.class, null, null);
-    addChild(UINodeTreeBuilder.class, null, UINodeTreeBuilder.class.getSimpleName()+hashCode()) ;
+    addChild(UINodeTreeBuilder.class, null, UINodeTreeBuilder.class.getSimpleName()+hashCode());
     addChild(UISelectPathPanel.class, null, null);
   }
   
   public void init(SessionProvider sessionProvider) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
     ManageableRepository manageableRepository = repositoryService.getRepository(repositoryName);
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
     try {
 //TODO: Should review this method to make sure we have no problem with permission when use system session      
-      Node rootNode = manageableRepository.getSystemSession(workspaceName).getRootNode();
+      Node rootNode;
+      if (rootTreePath.trim().equals("/")) {
+        rootNode = manageableRepository.getSystemSession(workspaceName).getRootNode();
+        pathTaxonomy = ((Node)manageableRepository.getSystemSession(workspaceName).
+              getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS))).getPath() + "/";
+      } else {
+        Session session = sessionProvider.getSession(workspaceName, manageableRepository);
+        rootNode = (Node)session.getItem(rootTreePath);
+        pathTaxonomy = ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS))).getPath() + "/";
+      }
+      
       UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
       uiWorkspaceList.setWorkspaceList(repositoryName);
-      uiWorkspaceList.setIsDisable(workspaceName, isDisable) ;
+      uiWorkspaceList.setIsDisable(workspaceName, isDisable);
       UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);    
       builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);    
       builder.setRootTreeNode(rootNode);
@@ -91,6 +105,8 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
       selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
       selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
       selectPathPanel.updateGrid();
+      
+      
     } finally {
       sessionProvider.close();
     }        
@@ -103,19 +119,19 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   }
   
   public void setIsDisable(String wsName, boolean isDisable) {
-    setWorkspaceName(wsName) ;
-    this.isDisable = isDisable ;
+    setWorkspaceName(wsName);
+    this.isDisable = isDisable;
   }
   
-  public boolean isDisable() { return isDisable ; }
+  public boolean isDisable() { return isDisable; }
   
   public void setIsShowSystem(boolean isShowSystem) {
-    getChild(UIWorkspaceList.class).setIsShowSystem(isShowSystem) ;
+    getChild(UIWorkspaceList.class).setIsShowSystem(isShowSystem);
   }
   
   public void setShowRootPathSelect(boolean isRendered) {
-    UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class) ;
-    uiWorkspaceList.setShowRootPathSelect(isRendered) ;
+    UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
+    uiWorkspaceList.setShowRootPathSelect(isRendered);
   }
   
   public String[] getAcceptedNodeTypesInTree() {
@@ -179,7 +195,7 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   }
   
   public void changeGroup(String groupId, Object context) throws Exception {    
-    String stringPath = PATH_TAXONOMY;    
+    String stringPath = pathTaxonomy;    
     UIBreadcumbs uiBreadcumb = getChild(UIBreadcumbs.class);
     if (groupId == null) groupId = "";
     List<LocalPath> listLocalPath = uiBreadcumb.getPath();
@@ -209,13 +225,13 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   
   static  public class SelectPathActionListener extends EventListener<UIBreadcumbs> {
     public void execute(Event<UIBreadcumbs> event) throws Exception {
-      UIBreadcumbs uiBreadcumbs = event.getSource() ;
-      UIOneNodePathSelector uiOneNodePathSelector = uiBreadcumbs.getParent() ;
-      String objectId =  event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIBreadcumbs uiBreadcumbs = event.getSource();
+      UIOneNodePathSelector uiOneNodePathSelector = uiBreadcumbs.getParent();
+      String objectId =  event.getRequestContext().getRequestParameter(OBJECTID);
       uiBreadcumbs.setSelectPath(objectId);    
-      String selectGroupId = uiBreadcumbs.getSelectLocalPath().getId() ;
-      uiOneNodePathSelector.changeGroup(selectGroupId, event.getRequestContext()) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiOneNodePathSelector) ;
+      String selectGroupId = uiBreadcumbs.getSelectLocalPath().getId();
+      uiOneNodePathSelector.changeGroup(selectGroupId, event.getRequestContext());
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiOneNodePathSelector);
     }
   }
 }

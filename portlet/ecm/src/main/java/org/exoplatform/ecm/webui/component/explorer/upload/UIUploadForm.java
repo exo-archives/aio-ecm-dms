@@ -102,7 +102,6 @@ import org.exoplatform.webui.form.UIFormUploadInput;
     }
 )
 
-
 public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectable {
 
   final static public String FIELD_NAME =  "name" ;
@@ -111,7 +110,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   final static public String FIELD_TAXONOMY = "fieldTaxonomy";
   final static public String FIELD_LISTTAXONOMY = "fieldListTaxonomy";
   final static public String POPUP_TAXONOMY = "UIPopupTaxonomy";
-  final static public String PATH_TAXONOMY = "/jcr:system/exo:ecm/exo:taxonomies/";
+  final static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
   
   private boolean isMultiLanguage_ = false ;
   private String language_ = null ;
@@ -140,6 +139,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   
   public void setListTaxonomyName(List<String> listTaxonomyNameNew) {
     listTaxonomyName = listTaxonomyNameNew;
+  }
+  
+  public String getPathTaxonomy() throws Exception {
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    Session session = getAncestorOfType(UIJCRExplorer.class).getSession();
+    return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS))).getPath();
   }
   
   public void initFieldInput() throws Exception {
@@ -280,10 +285,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
           if(uiStringInput.getValue() != null) {
             String value = uiStringInput.getValue().trim();
             listTaxonomyNameNew.add(value);
-            listTaxonomyNew.add(PATH_TAXONOMY + value);
+            listTaxonomyNew.add(uiForm.getPathTaxonomy() + "/" + value);
           }
         }
-        
         uiForm.setListTaxonomy(listTaxonomyNew);
         uiForm.setListTaxonomyName(listTaxonomyNameNew);
         
