@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.jcr.Item;
 import javax.jcr.ItemNotFoundException;
@@ -100,6 +101,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -168,7 +170,6 @@ public class UIActionBar extends UIForm {
   final static private String FIELD_SIMPLE_SEARCH = "simpleSearch" ;
   final static private String FIELD_ADVANCE_SEARCH = "advanceSearch" ;
   final static private String FIELD_SEARCH_TYPE = "searchType" ;
-  final static private String OPT_SEARCH = "Search" ;
   final static private String FIELD_SQL = "SQL" ;
   final static private String FIELD_XPATH = "xPath" ;
 
@@ -202,7 +203,10 @@ public class UIActionBar extends UIForm {
       tabOptions.add(new SelectItemOption<String>(tab.getName(), String.valueOf(i++)));
       setListButton(tab.getName());
     }
-    tabOptions.add(new SelectItemOption<String>(OPT_SEARCH, String.valueOf(i++)));
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    String searchLabel = res.getString("UIJCRAdvancedSearch.action.Search"); 
+    tabOptions.add(new SelectItemOption<String>(searchLabel, String.valueOf(i++)));
     getUIFormSelectBox(FIELD_SELECT_TAB).setOptions(tabOptions).setValue(tabOptions.get(0).getValue());
     String template = view_.getProperty("exo:template").getString();
     templateName_ = template.substring(template.lastIndexOf("/") + 1);
@@ -1022,16 +1026,14 @@ public class UIActionBar extends UIForm {
       UIActionBar uiForm = event.getSource();
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue();
-//    UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      //TODO need search on node name
       String queryStatement = null;
       if("/".equals(currentNode.getPath())) {
         queryStatement = ROOT_SQL_QUERY;        
       }else {
         queryStatement = StringUtils.replace(SQL_QUERY,"$0",currentNode.getPath());
       }
-      queryStatement = StringUtils.replace(queryStatement,"$1",text);            
+      queryStatement = StringUtils.replace(queryStatement,"$1", text);            
       uiExplorer.removeChildById("ViewSearch");
       UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
       getChild(UIDocumentWorkspace.class);
@@ -1128,7 +1130,6 @@ public class UIActionBar extends UIForm {
       UIViewMetadataManager uiMetadataManager = 
         UIPopupContainer.findFirstComponentOfType(UIViewMetadataManager.class);
       UIViewMetadataContainer uiMetadataContainer = uiMetadataManager.getChild(UIViewMetadataContainer.class);
-      // TODO need review 
       int i = 0;
       Enumeration enu = metaDataTemp.keys();
       while (enu.hasMoreElements()) {
