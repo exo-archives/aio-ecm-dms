@@ -50,7 +50,7 @@ public class SearchValidator implements Validator {
   
   private void checkOneChar(String s, UIFormInput uiInput) throws MessageException {
     String[] arrFilterChars = {"+", "-", "&", "|", "!", "(", ")", "{", "}", "[", "]", "^", "\"", 
-        "~", "*", "?", ":", "\\"};                                
+        "~", "*", "?", ":", "\\", "'"};                                
     if (checkArr(s, arrFilterChars)) {
       throwException("SearchValidator.msg.Invalid-char", uiInput);     
     }
@@ -64,7 +64,7 @@ public class SearchValidator implements Validator {
     } else if (s.endsWith("~") || s.endsWith("?") || s.endsWith("*")) {      
       s2 = s.substring(0, 1);
       String[] arrFilterChars1 = {"+", "-", "&", "|", "!", "(", ")", "{", "}", "[", "]", "^", "\"", 
-          ":", "\\"};
+          ":", "\\", "'"};
       if (checkArr(s2, arrFilterChars1)) { 
         throwException("SearchValidator.msg.Invalid-char", uiInput);
       }
@@ -73,7 +73,7 @@ public class SearchValidator implements Validator {
       String s4 = s.substring(1, 2);
       
       String[] arrFilterChars2 = {"+", "-", "&", "|", "!", "(", ")", "{", "}", "[", "]", "^", "\"", 
-          "~", "*", "?", ":", "\\"};     
+          "~", "*", "?", ":", "\\", "'"};     
       if (checkArr(s3, arrFilterChars2)) {
         throwException("SearchValidator.msg.Invalid-char", uiInput);       
       }      
@@ -84,12 +84,12 @@ public class SearchValidator implements Validator {
   }
   
   private void checkMoreChars(String s, UIFormInput uiInput) throws MessageException {
-    String[] arrFilterChars = {"-", "&&", "||", "!", "(", ")", "}", "]", "^", ":", "&", "|"};
+    String[] arrFilterChars = {"-", "&&", "||", "!", "(", ")", "}", "]", "^", ":", "&", "|", "'"};
     for (String filter : arrFilterChars) {
       if (s.startsWith(filter)) { throwException("SearchValidator.msg.Invalid-char", uiInput); }
     }    
     String[] arrFilterChars2 = {"+", "-", "&&", "||", "!", "(", ")", "{", "}", "[", "]", "^", "\"", 
-        "~", "*", "?", ":", "\\", "&", "|"};
+        "~", "*", "?", ":", "\\", "&", "|", "'"};
     for (String filter : arrFilterChars2) {
       int index = s.indexOf(filter);      
       if (index > -1 && !checkBackSlash(s, index)) {        
