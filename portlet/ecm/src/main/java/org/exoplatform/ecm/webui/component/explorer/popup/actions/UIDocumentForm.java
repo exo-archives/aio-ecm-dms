@@ -149,7 +149,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   }
   
   private String cutPath(String path) throws Exception {
-    String pathTaxonomy = getPathTaxonomy();
+    String pathTaxonomy = getPathTaxonomy() + "/";
     String returnString = path.replaceAll(pathTaxonomy, "");
     
     return returnString;
@@ -206,7 +206,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   static  public class SaveActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIDocumentForm documentForm = event.getSource();
-      String pathTaxonomy = documentForm.getPathTaxonomy();
+      String pathTaxonomy = documentForm.getPathTaxonomy() + "/";
       UIJCRExplorer uiExplorer = documentForm.getAncestorOfType(UIJCRExplorer.class);
       List inputs = documentForm.getChildren();
       UIApplication uiApp = documentForm.getAncestorOfType(UIApplication.class);

@@ -484,7 +484,7 @@ public class UIDialogForm extends UIForm {
   }
 
   public void addTextField(String name, String label, String[] arguments) throws Exception {
-    String pathTaxonomy = getPathTaxonomy();
+    String pathTaxonomy = getPathTaxonomy() + "/";
     UIFormTextField formTextField = new UIFormTextField(name,label,arguments);
     String jcrPath = formTextField.getJcrPath();
     String mixintype = formTextField.getMixinTypes();
