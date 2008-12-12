@@ -1,5 +1,5 @@
 ==============================================
-	eXo ECM 2.2RC1 release notes
+	eXo  ECM2.2-final release notes
 ==============================================
 
 - Introduction
@@ -15,23 +15,34 @@
    +) Application Server : Tomcat, JBoss, Jonas, Websphere
    +) Building Tools: Maven 2.0.6 and up
 
-- Complete list of issues fixed in eXo ECM 2.2RC1
+- Complete list of issues fixed in eXo ECM2.2-final
 
 ** Bug
-    * [ECM-2721] - IE6: Error in diplaying label of node
-    * [ECM-2746] - Refresh of the content view after modifying the folder path manually in the path field
-    * [ECM-2758] - Fix navigation issue on Mac
-    * [ECM-2829] - Do not thumbnail for image file in Document Folder
+    * [ECM-1659] - Can not display added records of File Plan after lock parent node
+    * [ECM-2320] - Error in showing content of document after viewing related document
+    * [ECM-2357] - bad behavior of uicomponent.addActionField() when using i18n
+    * [ECM-2504] - Loose rigth border of uploaded file when close side bar
+    * [ECM-2527] - Throw exception when restore version of  folder afer cut nt:file of this folder
+    * [ECM-2728] - Remove scrollbar in Coverflow for mac
+    * [ECM-2753] - Upload icon not visible on Firefox 3 (Ubuntu)
+    * [ECM-2770] - Error in 'Advanced search' form when select property in 'From' and 'To' field
+    * [ECM-2813] - IE6: Little error in 'Properties Management' popup in all skins
+    * [ECM-2820] - When adding a list of tag to a document, there is an error if there is a space
+    * [ECM-2821] - After versionning a document, comment it, then create a new version, the comment disappear
+    * [ECM-2855] - Avoid "text wrap" in the navigation portlet
+    * [ECM-2918] - Change all input forms in ECM Admin
+    * [ECM-2968] - Remove filtered char  "' "  in name of folder and document, Allow "both" and "Both" ... in <field  name="allowCreateFolder"><string>Both</string></field> in configuration file
 
 ** Improvement
-    * [ECM-2689] - Reuse portal maven version fashion
-    * [ECM-2759] - Refactor thumnails implementation
-    * [ECM-2833] - Add skin to use ECM banner portlet
-    * [ECM-2401] - [JAVADOC] Writing javadoc for services in component/cms
-    * [ECM-2625] - Add a taxonomy panel in last step of the upload
-    * [ECM-2626] - Create a component to select some categories in edition template when creating a new document.
-    * [ECM-2627] - Add a new parameter in advanced search to search on taxonomies
-    * [ECM-2725] - Allow Shift to select multiple items
+    * [ECM-2369] - Add an icon to show the left pannel in the ecm
+    * [ECM-2811] - Use maven-war-overlaying to make ecmportal dependent to portal war
+    * [ECM-2818] - Leverage user selector of Portal 2.5
+    * [ECM-2828] - remove attachments in article
+    * [ECM-2849] - Improve the categories selector in edit document templates
+    * [ECM-2919] - Reuse gadgets and tomcat patch package from Portal
+
+** New Feature
+    * [ECM-2851] - ECM Translations
 
 - Other resources and links
      Company site        http://www.exoplatform.com
