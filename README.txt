@@ -142,6 +142,88 @@ And:
    </field>
 </object>
 
+3. Support add references when upload file
+
+	Since ECM 2.2, in the portlet File Explorer, you can add references to the file which will be uploaded. By default this function is not mandatory. You can change the value equal true in the parameter *categoryMandatoryWhenFileUpload* to make sure every files will be added the categories when uploaded.
+	You can see and change the configuration if you want in the file exo.ecm.portlet.ecm/src/main/webapp/WEB-INF/portlet.xml
+	<preference>
+	  <name>categoryMandatoryWhenFileUpload</name>     
+	  <value>false</value>        
+	  <read-only>false</read-only>
+	</preference>
+
+4. Add filter for resouces in web\ecmportal\src\main\webapp\WEB-INF\web.xml
+
+	<filter-mapping>
+		<filter-name>ResourceRequestFilter</filter-name>
+		<url-pattern>*.css</url-pattern> 
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>ResourceRequestFilter</filter-name>
+		<url-pattern>*.gif</url-pattern> 
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>ResourceRequestFilter</filter-name>
+		<url-pattern>*.png</url-pattern> 
+	</filter-mapping>
+
+	<filter-mapping>
+		<filter-name>ResourceRequestFilter</filter-name>
+		<url-pattern>*.jpg</url-pattern> 
+	</filter-mapping>
+
+5. Add more workspace named gadgets in web\ecmportal\src\main\webapp\WEB-INF\conf\jcr\repository-configuration.xml:
+	<workspace name="gadgets">
+	  <!-- for system storage -->
+	  <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
+		<properties>
+		  <property name="source-name" value="jdbcexo"/>
+		  <property name="dialect" value="hsqldb"/>
+		  <!-- property name="db-type" value="mysql"/ -->
+		  <property name="multi-db" value="false"/>
+		  <property name="update-storage" value="true"/>
+		  <property name="max-buffer-size" value="200k"/>
+		  <property name="swap-directory" value="../temp/swap/gadgets"/>
+		</properties>
+		<value-storages>
+		  <value-storage id="gadgets" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
+			<properties>
+			  <property name="path" value="../temp/values/gadgets"/>
+			</properties>
+			<filters>
+			  <filter property-type="Binary"/>
+			</filters>
+		  </value-storage>
+		</value-storages>
+	  </container>
+	  <initializer class="org.exoplatform.services.jcr.impl.core.ScratchWorkspaceInitializer">
+		<properties>
+		  <property name="root-nodetype" value="nt:unstructured"/>
+		  <property name="root-permissions" value="any read;*:/platform/administrators read;*:/platform/administrators add_node;*:/platform/administrators set_property;*:/platform/administrators remove"/>
+		</properties>
+	  </initializer>
+	  <cache enabled="true" class="org.exoplatform.services.jcr.impl.dataflow.persistent.LinkedWorkspaceStorageCacheImpl">
+		<properties>
+		  <property name="max-size" value="20k"/>
+		  <property name="live-time" value="1h"/>
+		</properties>
+	  </cache>
+	  <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
+		<properties>
+		  <property name="index-dir" value="../temp/jcrlucenedb/gadgets"/>
+		</properties>
+	  </query-handler>
+	  <lock-manager>
+			  <time-out>15m</time-out><!-- 15min -->
+			  <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
+				<properties>
+				  <property name="path" value="../temp/lock/gadgets"/>
+				</properties>
+			  </persister>
+			</lock-manager>
+	</workspace>
 
 
 
