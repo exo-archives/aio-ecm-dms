@@ -17,6 +17,7 @@
 package org.exoplatform.services.deployment.plugins;
 
 import org.exoplatform.services.deployment.DeploymentPlugin;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 /**
  * Created by The eXo Platform SAS
@@ -26,7 +27,7 @@ import org.exoplatform.services.deployment.DeploymentPlugin;
  */
 public class FSDeploymentPlugin extends DeploymentPlugin {
 
-  public void deploy() throws Exception {    
+  public void deploy(SessionProvider sessionProvider) throws Exception {    
   }
 
 }

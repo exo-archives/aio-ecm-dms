@@ -53,9 +53,8 @@ public class XMLDeploymentPlugin extends DeploymentPlugin {
     this.repositoryService = repositoryService;
   }
 
-  public void deploy() throws Exception {
-    Iterator iterator = initParams.getObjectParamIterator();
-    SessionProvider sessionProvider = SessionProvider.createSystemProvider();
+  public void deploy(SessionProvider sessionProvider) throws Exception {
+    Iterator iterator = initParams.getObjectParamIterator();    
     while(iterator.hasNext()) {
       ObjectParameter objectParameter = (ObjectParameter)iterator.next();
       DeploymentDescriptor deploymentDescriptor = (DeploymentDescriptor)objectParameter.getObject();
@@ -69,8 +68,7 @@ public class XMLDeploymentPlugin extends DeploymentPlugin {
       if(log.isInfoEnabled()) {
         log.info(this.getName() + " is deployed succesful at " + new Date().toString());
       }
-    }
-    sessionProvider.close();
+    }   
   }
 
 }

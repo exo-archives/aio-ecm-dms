@@ -68,7 +68,7 @@ public class ContentInitializerService implements Startable{
         StringBuffer logData = new StringBuffer();      
         for (DeploymentPlugin deploymentPlugin : listDeploymentPlugin) {
           try {
-            deploymentPlugin.deploy();
+            deploymentPlugin.deploy(sessionProvider);
             logData.append("deploy " + deploymentPlugin.getName() + " deployment plugin succesful at " + date.toString() + "\n");
           } catch (Exception e) {
             log.error("deploy " + deploymentPlugin.getName() + " deployment plugin failure at " + date.toString() + " by " + e.getMessage() + "\n");

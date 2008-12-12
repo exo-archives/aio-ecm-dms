@@ -17,6 +17,7 @@
 package org.exoplatform.services.deployment;
 
 import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 /**
  * Created by The eXo Platform SAS
@@ -35,7 +36,7 @@ public abstract class DeploymentPlugin implements ComponentPlugin {
    * 
    * @throws Exception the exception
    */
-  public abstract void deploy() throws Exception;
+  public abstract void deploy(SessionProvider sessionProvider) throws Exception;
   
   /* (non-Javadoc)
    * @see org.exoplatform.container.component.ComponentPlugin#getName()
