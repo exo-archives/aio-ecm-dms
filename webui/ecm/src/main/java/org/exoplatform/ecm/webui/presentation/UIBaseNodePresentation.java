@@ -30,14 +30,18 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.comments.CommentsService;
+import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 
+//TODO: Auto-generated Javadoc
 /*
  * Created by The eXo Platform SAS
  * @author : Hoa.Pham
@@ -50,18 +54,19 @@ import org.exoplatform.webui.application.portlet.PortletRequestContext;
  */
 public abstract class UIBaseNodePresentation extends UIContainer implements NodePresentation {
 
+  /** The language_. */
   private String language_ ;
 
   /* (non-Javadoc)
    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#getNode()
    */
   public abstract Node getNode() throws Exception ;
-  
+
   /* (non-Javadoc)
    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#getTemplatePath()
    */
   public abstract String getTemplatePath() throws Exception ;
-  
+
   /* (non-Javadoc)
    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#getOriginalNode()
    */
@@ -71,6 +76,7 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
    * Gets the repository name.
    * 
    * @return the repository name
+   * 
    * @throws Exception the exception
    */
   public abstract String getRepositoryName() throws Exception ;
@@ -156,7 +162,7 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#getLanguage()
    */
   public String getLanguage() { return language_ ; }  
-  
+
   /* (non-Javadoc)
    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#setLanguage(java.lang.String)
    */
@@ -197,7 +203,7 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#getRssLink()
    */
   public String getRssLink() { return null ; }
-  
+
   /* (non-Javadoc)
    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#isRssLink()
    */
@@ -241,7 +247,9 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
    * Gets the node by uuid.
    * 
    * @param uuid the uuid
+   * 
    * @return the node by uuid
+   * 
    * @throws Exception the exception
    */
   public Node getNodeByUUID(String uuid) throws Exception{ 
@@ -256,4 +264,69 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
     }
     return null;
   }
+
+  /**
+   * Retrieve all categories of a node
+   * 
+   * @param node the node
+   * 
+   * @return the categories
+   * 
+   * @throws Exception the exception
+   */
+  public List<Node> getCategories(Node node) throws Exception {
+    CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
+    return categoriesService.getCategories(node,getRepositoryName());
+  }
+
+  /**
+   * Retrieve all tags of a node
+   * 
+   * @param node the node
+   * 
+   * @return the tags
+   * 
+   * @throws Exception the exception
+   */
+  public List<Node> getTags(Node node) throws Exception {
+    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class);
+    return folksonomyService.getLinkedTagsOfDocument(node,getRepositoryName());
+  }
+
+  /**
+   * Retrieve the voting rate
+   * 
+   * @param node the node
+   * 
+   * @return the votes
+   * 
+   * @throws Exception the exception
+   */
+  public long getVotingRate(Node node) throws Exception {
+    VotingService votingService = getApplicationComponent(VotingService.class);
+    return votingService.getVoteTotal(node);
+  }
+
+  /**
+   * Retrieve the image in property value
+   * 
+   * @param node the node
+   * @param propertyName the property name
+   * 
+   * @return the image in property
+   * 
+   * @throws Exception the exception
+   */
+  public String getImageURIInProperty(Node node, String propertyName) throws Exception {            
+    try {
+      InputStream input = node.getProperty(propertyName).getStream() ;
+      InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
+      dresource.setDownloadName(node.getName()) ;
+      DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+      return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+    } catch (Exception e) {
+    }    
+    return null;
+  }
+
 }
