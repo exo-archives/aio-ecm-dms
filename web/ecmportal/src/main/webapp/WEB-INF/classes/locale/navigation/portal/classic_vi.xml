@@ -9,7 +9,7 @@
   <sitemap>Bản đồ site</sitemap>
   <news>Tin tức</news>
   <ideas>
-    Ý kiến
+    <title>Ý kiến</title>
     <read>Đọc ý kiến</read>
     <write>Viết ý kiến</write>
   </ideas>

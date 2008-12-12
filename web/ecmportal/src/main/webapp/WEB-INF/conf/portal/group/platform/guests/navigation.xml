@@ -21,7 +21,7 @@
     <node>
       <uri>ideas</uri>
       <name>ideas</name>
-      <label>#{platform-guests.ideas}</label>
+      <label>#{platform-guests.ideas.title}</label>
       <page-reference>group::platform/guests::ideas</page-reference>
       
       <node>

@@ -3,13 +3,13 @@
   <group>
     <executive-board>
       <management>
-        Người quản lý
+        <title>Người quản lý</title>
         <newStaff>Nhân viên mới</newStaff>
         <organization>Tổ chức</organization>
         <ecmadmin>Quản trị ECM</ecmadmin>
       </management>
       <businessprocess>
-        Quá trình nghiệp vụ
+        <title>Quá trình nghiệp vụ</title>
         <administrator>Quản trị quá trình nghiệp vụ</administrator>
         <controller>Quản lý quá trình nghiệp vụ</controller>
       </businessprocess>
