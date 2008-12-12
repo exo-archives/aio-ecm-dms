@@ -39,9 +39,9 @@ import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 
-//TODO: Auto-generated Javadoc
 /*
  * Created by The eXo Platform SAS
  * @author : Hoa.Pham
@@ -266,7 +266,7 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
   }
 
   /**
-   * Retrieve all categories of a node
+   * Retrieve all categories of a node.
    * 
    * @param node the node
    * 
@@ -280,7 +280,7 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
   }
 
   /**
-   * Retrieve all tags of a node
+   * Retrieve all tags of a node.
    * 
    * @param node the node
    * 
@@ -294,7 +294,7 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
   }
 
   /**
-   * Retrieve the voting rate
+   * Retrieve the voting rate.
    * 
    * @param node the node
    * 
@@ -308,7 +308,7 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
   }
 
   /**
-   * Retrieve the image in property value
+   * Retrieve the image in property value.
    * 
    * @param node the node
    * @param propertyName the property name
@@ -328,5 +328,37 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
     }    
     return null;
   }
-
+  
+  /**
+   * Retrieve the portlet preference value.
+   * 
+   * @param preferenceName the preference name
+   * 
+   * @return the portlet preference value  
+   */
+  public String getPortletPreferenceValue(String preferenceName) {
+    WebuiRequestContext requestContext = WebuiRequestContext.getCurrentInstance();
+    if(requestContext instanceof PortletRequestContext) {
+      PortletRequestContext context = PortletRequestContext.class.cast(requestContext);
+      return context.getRequest().getPreferences().getValue(preferenceName,null); 
+    }    
+    return null;
+  }
+  
+  /**
+   * Retrieve the portlet preference values.
+   * 
+   * @param preferenceName the preference name
+   * 
+   * @return the portlet preference values
+   */
+  public String[] getPortletPreferenceValues(String preferenceName) {
+    WebuiRequestContext requestContext = WebuiRequestContext.getCurrentInstance();
+    if(requestContext instanceof PortletRequestContext) {
+      PortletRequestContext context = PortletRequestContext.class.cast(requestContext);
+      return context.getRequest().getPreferences().getValues(preferenceName,null); 
+    }    
+    return null;
+  }
+  
 }
