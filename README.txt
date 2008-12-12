@@ -114,16 +114,16 @@ Publication function: In ECM 2.1, the information in exo.ecm.component.publicati
 	   </field>
 	</object>
 
-	So, in ECM 2.2, we must changes in these file by replaces: 2.1.jar to 2.2-SNAPSHOT:
+	So, in ECM 2.2, we must changes in these file by replaces: 2.1.jar to 2.2.jar:
 
 	<object type="org.exoplatform.services.workflow.ProcessesConfig">
 	   <fieldname="processLocation"><string>war:/conf/bp</string></field>
 	   <field name="predefinedProcess">
 			<collection type="java.util.HashSet">
-				<value><string>/exo.ecm.bp.bonita.payraise-2.2-SNAPSHOT.jar</string></value>
-				<value><string>/exo.ecm.bp.bonita.holiday-2.2-SNAPSHOT.jar</string></value>
-		        <value><string>/exo.ecm.bp.bonita.content.validation-2.2-SNAPSHOT.jar</string></value>
-				<value><string>/exo.ecm.bp.bonita.content.backup-2.2-SNAPSHOT.jar</string></value>
+				<value><string>/exo.ecm.bp.bonita.payraise-2.2.jar</string></value>
+				<value><string>/exo.ecm.bp.bonita.holiday-2.2.jar</string></value>
+		        <value><string>/exo.ecm.bp.bonita.content.validation-2.2.jar</string></value>
+				<value><string>/exo.ecm.bp.bonita.content.backup-2.2.jar</string></value>
 			</collection>
 		</field>
 	</object>
@@ -134,10 +134,10 @@ And:
    <field name="processLocation"><string>war:/conf/bp</string></field>
    <field name="predefinedProcess">
 	    <collection type="java.util.HashSet">
-			<value><string>/exo.ecm.bp.jbpm.payraise-2.2-SNAPSHOT.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.holiday-2.2-SNAPSHOT.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.content.validation-2.2-SNAPSHOT.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.content.backup-2.2-SNAPSHOT.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.payraise-2.2.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.holiday-2.2.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.content.validation-2.2.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.content.backup-2.2.jar</string></value>
 		</collection>
    </field>
 </object>
