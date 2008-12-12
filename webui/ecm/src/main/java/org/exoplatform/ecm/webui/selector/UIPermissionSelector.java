@@ -79,6 +79,9 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
   /** The is use popup. */
   private boolean             isUsePopup      = true;
 
+  /** Show/hide Add AnyPermission form   */
+  private boolean             isShowAnyPermission = true;
+  
   /**
    * Instantiates a new uI permission selector.
    * 
@@ -313,5 +316,23 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
     }
     return children;
   }
+  
+ /** 
+  * Check show/hide form to set any permission
+  * @return
+  */
+ public boolean isShowAnyPermission() {
+   return isShowAnyPermission;
+ }
+
+ /**
+  * Set show/hide any permission form
+  * @param isShowAnyPermission
+  * isShowAnyPermission =  true: Show form  <br>
+  * isShowAnyPermission =  false: Hide form
+  */
+ public void setShowAnyPermission(boolean isShowAnyPermission) {
+   this.isShowAnyPermission = isShowAnyPermission;
+ }
 
 }

@@ -73,6 +73,7 @@ public class UIGroupMemberSelector extends UIContainer implements ComponentSelec
   /** The is use popup. */
   private boolean             isUsePopup      = true;
   
+  /** Show/hide Add AnyPermission form   */
   private boolean             isShowAnyPermission = true;
   
   private Group selectGroup_;
