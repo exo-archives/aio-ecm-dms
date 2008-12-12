@@ -360,8 +360,8 @@
   <UIRepositoryForm>
     <label>
       <name>Tên</name>
-      <wsInputSet>Kho dữ liệu</wsInputSet>
-      <authInputSet>Kho dữ liệu</authInputSet>
+      <wsInputSet>UIRepositoryForm</wsInputSet>
+      <authInputSet>UIRepositoryForm</authInputSet>
       <workspace>Vùng làm việc</workspace>
       <isDefault>Đặt mặc định</isDefault>
       <accessControl>Kiểm soát truy nhập</accessControl>

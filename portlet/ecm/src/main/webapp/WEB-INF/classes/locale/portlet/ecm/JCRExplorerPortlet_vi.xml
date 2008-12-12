@@ -68,10 +68,10 @@
       </workspace>
     </icon>
     <msg>
-      <no-view-found>There is not any View applies for your access permission in drive '{0}'</no-view-found>
-      <access-denied>Truy nhập bị hủy bỏ! Có thể, bạn không có quyền truy nhập trong workspace của drive '{0}'.</access-denied>
+      <no-view-found>Không có bất kỳ khung nhìn nào được gán cho bạn với quyền truy cập hiện tại tới ổ đĩa '{0}'</no-view-found>
+      <access-denied>Truy nhập bị hủy bỏ! Có thể, bạn không có quyền truy nhập trong không gian làm việc của ổ đĩa '{0}'.</access-denied>
       <empty-drives>Không có ổ đĩa trong kho dữ liệu này hoặc bạn không có quyền truy cập vào ổ đĩa nào trong kho dữ liệu này.</empty-drives>
-      <workspace-not-exist>Ổ đĩa '{0}' được lưu trữ trong một workspace không được nhận biết. Vui lòng kiểm tra lại ổ đĩa này.</workspace-not-exist>
+      <workspace-not-exist>Ổ đĩa '{0}' được lưu trữ trong một không gian làm việc không được nhận biết. Vui lòng kiểm tra lại ổ đĩa này.</workspace-not-exist>
     </msg>
   </UIDrivesBrowser>
   <!--
@@ -311,10 +311,10 @@
         Node này không được đưa vào chu trình The node was already unsubcribed lifecycle
         <not-supported-nodetype>The unsubcriber lifecycle support document node only.</not-supported-nodetype>
       </unsubcriber-lifecycle>
-      <unsubcriber-lifecycle-finish>Node đã được ngừng is unsubcribed successfully</unsubcriber-lifecycle-finish>
+      <unsubcriber-lifecycle-finish>Node đã được ngừng ghi danh thành công</unsubcriber-lifecycle-finish>
       <access-false>Node này không phải là một article hoặc chưa được check in!</access-false>
       <unsupported-action>Node này không hỗ trợ quan hệ</unsupported-action>
-      <not-relationable>This node hasn't been relationable yet</not-relationable>
+      <not-relationable>Node này chưa được gán quyền tạo quan hệ</not-relationable>
       <node-pasted>Node '{0}' được dán vào vị trí '{1}'. Thao tác này đã được lưu lại và bạn không cần phải nhấn vào biểu tượng ổ đĩa mềm.</node-pasted>
       <no-node-selected>Không có node nào được sao chép.</no-node-selected>
       <unable-edit>Node '{0}' với nodetype '{1}' không hỗ trợ hành động chỉnh sửa.</unable-edit>
@@ -478,9 +478,9 @@
         <name>Tên</name>
         <versionable>Phiên bản</versionable>
         <owner>Người tạo</owner>
-        <auditing>Đang kiểm định</auditing>
+        <auditing>Kiểm định</auditing>
         <dateCreated>Ngày tạo</dateCreated>
-        <dateModified>Ngày thay đổi</dateModified>
+        <dateModified>Ngày đổi</dateModified>
       </label>
     </view>
   </ListView>
@@ -504,14 +504,14 @@
       <CheckIn>CheckIn</CheckIn>
       <WebDAV>Xem dưới dạng WebDAV</WebDAV>
       <sendmail>Gủi thư</sendmail>
-      <transformsd>Transform</transformsd>
+      <transformsd>Biến đổi</transformsd>
       <reloadBP>Tải lại BP</reloadBP>
       <workflow>Luồng công việc</workflow>
       <createRSS>Tạo RSS</createRSS>
-      <icalendara>Generate icalendar</icalendara>
+      <icalendara>Sinh ra icalendar</icalendara>
       <getmail>Lấy thư</getmail>
       <autoversion>Tự động thay đổi phiên bạn</autoversion>
-      <Custom>Custom</Custom>
+      <Custom>Tùy biến</Custom>
       <AddFolder>Thêm thư mục</AddFolder>
       <AddDocument>Thêm tài liệu</AddDocument>
       <Upload>Tải</Upload>
@@ -617,7 +617,7 @@
       <value>Giá trị</value>
       <upload>Tải</upload>
       <namespace>Namespace</namespace>
-      <multiple>Multiple</multiple>
+      <multiple>Đa giá trị</multiple>
     </label>
     <action>
       <Save>Lưu</Save>
@@ -659,9 +659,9 @@
   #############################################################################
   -->
   <UIMetadataTab>
-    <title>Input values for metadata elements</title>
+    <title>Giá trị đầu vào cho các thành phần metadata</title>
     <label>
-      <metadataName>Metadata Name</metadataName>
+      <metadataName>Tên netadata</metadataName>
     </label>
     <action>
       <Save>Lưu</Save>
@@ -928,23 +928,23 @@
       <query-invalid>Truy vấn không hợp lệ</query-invalid>
     </msg>
     <header>
-      <name>#{word.name}</name>
+      <name>Tên</name>
       <path>Đường dẫn</path>
       <action>Thao tác</action>
       <shortcutPath>Đường dẫn</shortcutPath>
       <type>Kiểu</type>
-      <dateCreated>Ngày được tạo</dateCreated>
-      <score>Score</score>
+      <dateCreated>Ngày tạo</dateCreated>
+      <score>Điểm số</score>
     </header>
     <title>
-      <typeASC>Xắp xếp theo kiểu tài liệu theo thứ tự tăng dần.</typeASC>
-      <typeDESC>Xắp xếp theo kiểu tài liệu theo thứ tự giảm dần.</typeDESC>
-      <scoreASC>Xắp xếp theo score theo thứ tự tăng dần</scoreASC>
-      <scoreDESC>Xắp xếp theo score theo thứ tự giảm dần</scoreDESC>
-      <nameASC>Xắp xếp theo name theo thứ tự tăng dần</nameASC>
-      <nameDESC>Xắp xếp theo name theo thứ tự giảm dần</nameDESC>
-      <datecreatedASC>Xắp xếp theo ngày tạo theo thứ tự tăng dần</datecreatedASC>
-      <datecreatedDESC>Xắp xếp theo ngày tạo theo thứ tự giảm dần</datecreatedDESC>
+      <typeASC>Xắp xếp theo kiểu tài liệu với thứ tự tăng dần.</typeASC>
+      <typeDESC>Xắp xếp theo kiểu tài liệu với thứ tự giảm dần.</typeDESC>
+      <scoreASC>Xắp xếp theo điểm số với thứ tự tăng dần</scoreASC>
+      <scoreDESC>Xắp xếp theo điểm số với thứ tự giảm dần</scoreDESC>
+      <nameASC>Xắp xếp theo tên với thứ tự tăng dần</nameASC>
+      <nameDESC>Xắp xếp theo tên với thứ tự giảm dần</nameDESC>
+      <datecreatedASC>Xắp xếp theo ngày tạo với thứ tự tăng dần</datecreatedASC>
+      <datecreatedDESC>Xắp xếp theo ngày tạo với thứ tự giảm dần</datecreatedDESC>
     </title>
     <tooltip>
       <View>Hiển thị node này.</View>
@@ -971,8 +971,8 @@
       <must-choose-one>Bạn phải chọn ít nhất một loại</must-choose-one>
       <properties-null>Lựa chọn các thuộc tính ưu tiên, sau đó chọn bộ lọc</properties-null>
       <exactly-require>Bạn phải điền các giá trị chính xác trước khi lưu lại ràng buộc này.</exactly-require>
-      <fromDate-invalid>Giá trị không hợp lệ trong trường 'From date'.Vui lòng chọn hoặc nhập vào giá trị đúng.</fromDate-invalid>
-      <toDate-invalid>Giá trị không hợp lê trong trường 'To date'. Vui lòng chọn hoặc nhập vào giá trị đúng.</toDate-invalid>
+      <fromDate-invalid>Giá trị không hợp lệ trong trường 'Từ ngày'.Vui lòng chọn hoặc nhập vào giá trị đúng.</fromDate-invalid>
+      <toDate-invalid>Giá trị không hợp lê trong trường 'Đến ngày'. Vui lòng chọn hoặc nhập vào giá trị đúng.</toDate-invalid>
     </msg>
     <button>
       <label-Add>Thêm</label-Add>
@@ -1106,7 +1106,7 @@
   </UISelectPropertyForm>
   <ExactlyFormPopup>
     <title>
-      <UICompareExactlyForm>Filter form</UICompareExactlyForm>
+      <UICompareExactlyForm>Biểu mẫu lọc</UICompareExactlyForm>
     </title>
   </ExactlyFormPopup>
   <UIECMSearch>
@@ -1123,7 +1123,7 @@
       <not-found>Dữ liệu không được tìm thấy</not-found>
     </msg>
     <header>
-      <action>Action</action>
+      <action>Hành động</action>
     </header>
   </UIResult>
   <UISaveQueryForm>
@@ -1301,7 +1301,7 @@
     </action>
     <grid>
       <msg>
-        <empty>Not publication plugin found</empty>
+        <empty>Không tìm thấy công bố nào</empty>
       </msg>
     </grid>
     <msg>
@@ -1346,8 +1346,8 @@
   <UIImportNode>
     <label>
       <format>Định dạng</format>
-      <systemView>View theo hệ thống</systemView>
-      <documentView>View theo tài liệu</documentView>
+      <systemView>Xem theo hệ thống</systemView>
+      <documentView>Xem theo tài liệu</documentView>
       <upload>Tải tệp tin</upload>
     </label>
     <action>
@@ -1404,7 +1404,7 @@
   ###############################################################################
   -->
   <UIVersionTree>
-    <title>Children Tree</title>
+    <title>Cây thư mục con</title>
   </UIVersionTree>
   <UIViewVersion>
     <label>
@@ -1510,7 +1510,7 @@
       <action>Act</action>
     </header>
     <label>
-      <nocommand>Không có khoản mục nào trong clipboard !</nocommand>
+      <nocommand>Không có khoản mục nào trong sổ ghi tạm!</nocommand>
     </label>
     <action>
       <clearall>Xóa tất cả</clearall>
@@ -1611,7 +1611,7 @@
   </UIActionViewContainer>
   <UIActionList>
     <header>
-      <name>#{word.name}</name>
+      <name>Tên</name>
       <description>Mô tả</description>
       <instanceOf>Mẫu của một kiểu thao tác</instanceOf>
       <action>Thao tác</action>
@@ -1780,7 +1780,7 @@
   -->
   <UIViewMetadataContainer>
     <msg>
-      <path-not-found>Node doesn't support this view</path-not-found>
+      <path-not-found>Node không hỗ trợ kiểu hiển thị này</path-not-found>
     </msg>
   </UIViewMetadataContainer>
   <!--
