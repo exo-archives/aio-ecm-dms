@@ -12,7 +12,7 @@
   </UIWorkflowControllerPortlet>
   <ControllerPopup>
     <title>
-      <UITaskManager>UITask Manager</UITaskManager>
+      <UITaskManager>Quản lí nhiệm vụ</UITaskManager>
     </title>
   </ControllerPopup>
   <UITabPane>
