@@ -4,8 +4,8 @@
     <users>
       <iframe>IFrame</iframe>
       <content-management>Quản lý nội dung</content-management>
-      <file-explorer>Trình duyệt tệp tin</file-explorer>
-      <content-browser>Trình duyệt nội dung</content-browser>
+      <file-explorer>Quản lý tài liệu</file-explorer>
+      <content-browser>Quản lý nội dung</content-browser>
       <content-creator>Tạo nhanh nội dung</content-creator>
       <workflow-controller>Trung tâm quá trình nghiệp vụ</workflow-controller>
       <sitemap>Bản đồ site</sitemap>

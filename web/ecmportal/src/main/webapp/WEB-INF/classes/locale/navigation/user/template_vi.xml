@@ -11,9 +11,9 @@
   </ideas>
   <welcome>Chào mừng</welcome>
   <content-management>
-    <file-explorer>Trình duyệt tệp tin</file-explorer>
+    <file-explorer>Quản lý tài liệu</file-explorer>
     <content-creator>Tạo nhanh nội dung</content-creator>
-    <content-browser>Trình duyệt nội dung</content-browser>
+    <content-browser>Quản lý nội dung</content-browser>
   </content-management>
 </bundle>
 
