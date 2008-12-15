@@ -20,13 +20,12 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.services.workflow.FileDefinition;
@@ -123,7 +122,7 @@ public class SpecifiedFormImpl implements Form {
    * @return String giving the download URL of the published image
    */
   private String publishImage(byte[] image) {
-    DownloadService dS = (DownloadService) PortalContainer.getInstance().
+    DownloadService dS = (DownloadService) ExoContainerContext.getCurrentContainer().
       getComponentInstanceOfType(DownloadService.class);
     InputStream iS = new ByteArrayInputStream(image);
     String id = dS.addDownloadResource(

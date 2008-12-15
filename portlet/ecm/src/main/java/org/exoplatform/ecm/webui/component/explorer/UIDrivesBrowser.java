@@ -30,7 +30,9 @@ import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
@@ -50,15 +52,12 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.webui.form.UIFormSelectBox;
 
 /**
  * Created by The eXo Platform SARL
@@ -104,8 +103,10 @@ public class UIDrivesBrowser extends UIContainer {
   }
   
   public String getPortalName() {
-    PortalContainer pcontainer =  PortalContainer.getInstance();
-    return pcontainer.getPortalContainerInfo().getContainerName();  
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    PortalContainerInfo containerInfo = (PortalContainerInfo) container
+        .getComponentInstanceOfType(PortalContainerInfo.class);
+    return containerInfo.getContainerName(); 
   }
 
   public String getRepository() {return repoName_;}

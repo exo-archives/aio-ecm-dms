@@ -24,7 +24,10 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Value;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -172,8 +175,9 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#getPortalName()
    */
   public String getPortalName() {
-    PortalContainer pcontainer =  PortalContainer.getInstance() ;
-    return pcontainer.getPortalContainerInfo().getContainerName() ;
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    PortalContainerInfo containerInfo = (PortalContainerInfo) container.getComponentInstanceOfType(PortalContainerInfo.class);
+    return containerInfo.getContainerName(); 
   }
 
   /* (non-Javadoc)

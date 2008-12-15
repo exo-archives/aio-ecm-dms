@@ -16,8 +16,8 @@
  */
 package org.exoplatform.services.workflow.impl.jbpm;
 
-import org.exoplatform.container.PortalContainer;
-import org.exoplatform.services.workflow.WorkflowServiceContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.picocontainer.Startable;
 
 public class SchedulerService implements Startable{
@@ -28,7 +28,7 @@ public class SchedulerService implements Startable{
   }
 
   public void start() {
-   String containerName = PortalContainer.getInstance().getPortalContainerInfo().getContainerName();
+   String containerName = ((PortalContainerInfo)ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(PortalContainerInfo.class)).getContainerName(); 
    exoScheduler = new ExoScheduler(containerName);
    exoScheduler.start();
   }

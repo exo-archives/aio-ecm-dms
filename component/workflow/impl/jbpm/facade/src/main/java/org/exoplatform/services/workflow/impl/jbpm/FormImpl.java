@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
 
 import org.apache.commons.logging.Log;
 import org.dom4j.Element;
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.services.log.LogService;
@@ -56,7 +56,7 @@ public class FormImpl implements Form{
   private byte[] stateImageBytes;
 
   public FormImpl(FileDefinition fileDefinition, Element element, Locale locale) {
-    this.log = ((LogService)PortalContainer.getInstance().getComponentInstanceOfType(LogService.class)).
+    this.log = ((LogService)ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(LogService.class)).
         getLog("org.exoplatform.services.workflow");
     
     Element childElement = element.element("resource-bundle");
@@ -198,7 +198,7 @@ public class FormImpl implements Form{
   }
   
   public String getURL(byte[] bytes) {
-    DownloadService dS = (DownloadService) PortalContainer.getInstance().getComponentInstanceOfType(
+    DownloadService dS = (DownloadService)ExoContainerContext.getCurrentContainer().getComponentInstanceOfType(
         DownloadService.class);
     InputStream iS = new ByteArrayInputStream(bytes);    
     String id = dS.addDownloadResource(new InputStreamDownloadResource(iS, "image/gif"));

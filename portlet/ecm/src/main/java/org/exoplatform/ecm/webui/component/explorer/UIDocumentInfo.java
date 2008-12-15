@@ -35,7 +35,9 @@ import javax.jcr.Value;
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
@@ -353,8 +355,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
    * @author CPop
    */  
   public boolean hasAuditHistory(Node node) throws Exception{
-    PortalContainer cont = PortalContainer.getInstance();
-    AuditService auServ = (AuditService)cont.getComponentInstanceOfType(AuditService.class);
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    AuditService auServ = (AuditService)container.getComponentInstanceOfType(AuditService.class);
     return auServ.hasHistory(node);
   }
 
@@ -363,8 +365,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
    * @author CPop
    */ 
   public int getNumAuditHistory(Node node) throws Exception{
-    PortalContainer cont = PortalContainer.getInstance();
-    AuditService auServ = (AuditService)cont.getComponentInstanceOfType(AuditService.class);
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    AuditService auServ = (AuditService)container.getComponentInstanceOfType(AuditService.class);
     if (auServ.hasHistory(node)) {
       AuditHistory auHistory = auServ.getHistory(node);
       return (auHistory.getAuditRecords()).size();
@@ -378,8 +380,10 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   public String getRssLink() { return null ; }
 
   public String getPortalName() {
-    PortalContainer pcontainer =  PortalContainer.getInstance() ;
-    return pcontainer.getPortalContainerInfo().getContainerName() ;  
+    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
+    PortalContainerInfo containerInfo = 
+      (PortalContainerInfo)container.getComponentInstanceOfType(PortalContainerInfo.class) ;      
+    return containerInfo.getContainerName() ; 
   }
 
   public String getRepository() throws Exception {

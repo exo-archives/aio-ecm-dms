@@ -27,7 +27,8 @@ import hero.util.HeroHookException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.exoplatform.services.workflow.impl.bonita.WorkflowServiceContainerHelper;
 
@@ -108,7 +109,7 @@ public class ContentValidationDelegateHook implements NodeHookI {
       variables.put("actionName",    actionName);
       
       // Retrieve reference to Workflow Service Container
-      PortalContainer container = PortalContainer.getInstance();
+      ExoContainer container = ExoContainerContext.getCurrentContainer();
       WorkflowServiceContainer workflowService = (WorkflowServiceContainer)
         container.getComponentInstanceOfType(WorkflowServiceContainer.class);
 

@@ -23,7 +23,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.exoplatform.commons.utils.PageList;
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.UserHandler;
@@ -53,7 +54,7 @@ public class ExoOrganizationMapper implements RoleMapperI {
     
     try {
       // Lookup the eXo Organization service
-      PortalContainer container = PortalContainer.getInstance();
+      ExoContainer container = ExoContainerContext.getCurrentContainer();
       OrganizationService organization = (OrganizationService)
         container.getComponentInstanceOfType(OrganizationService.class);
       

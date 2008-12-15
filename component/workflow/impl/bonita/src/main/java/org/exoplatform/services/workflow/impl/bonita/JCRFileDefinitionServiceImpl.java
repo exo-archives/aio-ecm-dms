@@ -32,8 +32,9 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.container.RootContainer;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
@@ -159,19 +160,8 @@ public class JCRFileDefinitionServiceImpl
    * @return Session object to the production Workspace
    */
   private Session getSession() {
-    
-    boolean checkpoint = false;
-
     try {
-      PortalContainer container = PortalContainer.getInstance();
-
-      if (container == null) {
-        container = RootContainer.getInstance().getPortalContainer(
-          EXO_PORTALNAME);
-        PortalContainer.setInstance(container);
-        checkpoint = true;
-      }
-      
+      ExoContainer container = ExoContainerContext.getCurrentContainer();
       RepositoryService repositoryService = (RepositoryService) container
         .getComponentInstanceOfType(RepositoryService.class);
       String wsName = 
@@ -180,12 +170,6 @@ public class JCRFileDefinitionServiceImpl
     }
     catch (Exception e) {
       e.printStackTrace();
-    }
-    finally {
-      if (checkpoint) {
-        PortalContainer.setInstance(null);
-        checkpoint = false;
-      }
     }
     return null;
   }

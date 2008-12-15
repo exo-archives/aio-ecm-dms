@@ -43,12 +43,14 @@ import javax.portlet.PortletRequest;
 import javax.portlet.WindowState;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.portal.PageNodeEvent;
 import org.exoplatform.portal.webui.portal.UIPortal;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -1228,8 +1230,9 @@ public class UIBrowseContainer extends UIContainer {
   }
   
   public String getPortalName() {
-    PortalContainer pcontainer =  PortalContainer.getInstance();
-    return pcontainer.getPortalContainerInfo().getContainerName();  
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    PortalContainerInfo containerInfo = (PortalContainerInfo)container.getComponentInstanceOfType(PortalContainerInfo.class);      
+    return containerInfo.getContainerName() ; 
   }
 
   static public class BackActionListener extends EventListener<UIBrowseContainer> {

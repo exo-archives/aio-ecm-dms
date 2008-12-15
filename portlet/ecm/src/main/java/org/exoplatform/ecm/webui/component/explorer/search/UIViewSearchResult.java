@@ -29,12 +29,14 @@ import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
 import javax.portlet.PortletRequest;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -237,8 +239,9 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
   }
 
   public String getPortalName() {
-    PortalContainer pContainer = PortalContainer.getInstance() ;
-    return pContainer.getPortalContainerInfo().getContainerName() ;
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    PortalContainerInfo containerInfo = (PortalContainerInfo)container.getComponentInstanceOfType(PortalContainerInfo.class);      
+    return containerInfo.getContainerName();
   }
   
   public String getRepository() throws Exception {

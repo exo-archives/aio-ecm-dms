@@ -28,15 +28,17 @@ import javax.jcr.Value;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.ecm.webui.utils.PermissionUtil;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.popup.UIPopupComponent;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -301,8 +303,9 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
   public void deActivate() throws Exception {}
 
   public String getPortalName() {
-    PortalContainer pcontainer =  PortalContainer.getInstance() ;
-    return pcontainer.getPortalContainerInfo().getContainerName() ; 
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    PortalContainerInfo containerInfo = (PortalContainerInfo)container.getComponentInstanceOfType(PortalContainerInfo.class);      
+    return containerInfo.getContainerName(); 
   }
 
   public String getRepository() throws Exception {

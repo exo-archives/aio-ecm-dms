@@ -28,7 +28,7 @@ import java.util.jar.JarInputStream;
 import java.util.zip.ZipInputStream;
 
 import org.exoplatform.container.ExoContainer;
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.component.ComponentLifecycle;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.component.ComponentRequestLifecycle;
@@ -460,8 +460,8 @@ public class WorkflowServiceContainerImpl implements
      * Notify the Forms Service. Its reference cannot be constructor injected
      * as the Forms Service already depends on the Workflow Service Container.
      */
-    WorkflowFormsService formsService = (WorkflowFormsService) PortalContainer.
-      getInstance().getComponentInstanceOfType(WorkflowFormsService.class);
+    WorkflowFormsService formsService = (WorkflowFormsService) ExoContainerContext
+        .getCurrentContainer().getComponentInstanceOfType(WorkflowFormsService.class);
     formsService.removeForms(processId);
   }
   

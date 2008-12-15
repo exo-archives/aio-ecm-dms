@@ -31,8 +31,8 @@ import java.util.GregorianCalendar;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
-import org.exoplatform.container.PortalContainer;
-import org.exoplatform.container.RootContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -70,8 +70,6 @@ public class ContentValidationPublicationHook implements NodeHookI {
       throws HeroHookException {
     
     ProjectSessionLocal projectSession = null;
-    boolean portalContainerSet = false;
-    
     try {
       // Initialize Project Session
       ProjectSessionLocalHome projectSessionHome =
@@ -84,16 +82,6 @@ public class ContentValidationPublicationHook implements NodeHookI {
        * Deadline occured so it is needed to retrieve the Portal Container by
        * name.
        */
-      if(PortalContainer.getInstance() == null) {
-        String containerName = projectSession.getProperty(
-          ContentValidationWaitSwitchHook.CONTAINER_PROPERTY_NAME).
-          getTheValue();
-        PortalContainer container = RootContainer.getInstance().
-          getPortalContainer(containerName);
-        PortalContainer.setInstance(container);
-        portalContainerSet = true;
-      }
-      
       // Retrieve Workflow properties
       String actionName =
         projectSession.getProperty("actionName").getTheValue();
@@ -111,7 +99,7 @@ public class ContentValidationPublicationHook implements NodeHookI {
         getNodeProperty(node.getName(), "endDate").getTheValue()));
     
       // Retrieve references to Services
-      PortalContainer container = PortalContainer.getInstance();
+      ExoContainer container = ExoContainerContext.getCurrentContainer();
       RepositoryService repositoryService = (RepositoryService)
         container.getComponentInstanceOfType(RepositoryService.class);
       ActionServiceContainer actionServiceContainer = (ActionServiceContainer)
@@ -159,15 +147,6 @@ public class ContentValidationPublicationHook implements NodeHookI {
     }
     finally {
       try {
-        
-        if(portalContainerSet) {
-          /*
-           * If we are running in an EJB Thread then remove the reference to
-           * the Portal Container we have set previously
-           */
-          PortalContainer.setInstance(null);
-        }
-        
         projectSession.remove();
       }
       catch(Exception ignore) {

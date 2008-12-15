@@ -28,7 +28,9 @@ import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
@@ -321,8 +323,9 @@ public class UIDocumentContent extends UIContainer implements NodePresentation {
   }
   
   public String getPortalName() {
-    PortalContainer pcontainer =  PortalContainer.getInstance() ;
-    return pcontainer.getPortalContainerInfo().getContainerName() ; 
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    PortalContainerInfo containerInfo = (PortalContainerInfo) container.getComponentInstanceOfType(PortalContainerInfo.class);
+    return containerInfo.getContainerName(); 
   }
   
   public String getWorkspaceName() throws Exception {

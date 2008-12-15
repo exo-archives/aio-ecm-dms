@@ -17,6 +17,13 @@
 
 package hero.hook;
 
+import hero.interfaces.BnNodeLocal;
+import hero.interfaces.Constants;
+import hero.interfaces.ProjectSessionLocal;
+import hero.interfaces.ProjectSessionLocalHome;
+import hero.interfaces.ProjectSessionUtil;
+import hero.util.HeroHookException;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -24,20 +31,11 @@ import java.util.Date;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.services.jcr.RepositoryService;
-
-import hero.interfaces.BnEdge;
-import hero.interfaces.BnEdgeLocal;
-import hero.interfaces.BnNodeHome;
-import hero.interfaces.BnNodeLocal;
-import hero.interfaces.BnNodeLocalHome;
-import hero.interfaces.BnNodeUtil;
-import hero.interfaces.Constants;
-import hero.interfaces.ProjectSessionLocal;
-import hero.interfaces.ProjectSessionLocalHome;
-import hero.interfaces.ProjectSessionUtil;
-import hero.util.HeroHookException;
 
 /**
  * This Node Hook changes Instance Attributes to indicate the Workflow Engine
@@ -120,7 +118,7 @@ public class ContentBackupWaitSwitchHook implements NodeHookI {
        * Retrieve the Node from the JCR. The Portal Container Thread
        * Local is currently set as the current Thread is an eXo one.
        */
-      PortalContainer container = PortalContainer.getInstance();
+      ExoContainer container = ExoContainerContext.getCurrentContainer();
       RepositoryService repositoryService = (RepositoryService) container.
         getComponentInstanceOfType(RepositoryService.class);
       Session session = repositoryService.getRepository(repository).getSystemSession(
@@ -160,10 +158,11 @@ public class ContentBackupWaitSwitchHook implements NodeHookI {
            * have the eXo Portal Container attached to their context and this
            * forces to retrieve it by name.
            */
-          projectSession.setProperty(
-              ContentBackupWaitSwitchHook.CONTAINER_PROPERTY_NAME,
-              PortalContainer.getInstance().getPortalContainerInfo().
-                getContainerName());
+          PortalContainerInfo containerInfo = (PortalContainerInfo) container
+              .getComponentInstanceOfType(PortalContainerInfo.class);
+          String containerName = containerInfo.getContainerName();
+          projectSession.setProperty(ContentBackupWaitSwitchHook.CONTAINER_PROPERTY_NAME,
+              containerName);
         }
         else {
           // The processing should directly go to the backup Activity

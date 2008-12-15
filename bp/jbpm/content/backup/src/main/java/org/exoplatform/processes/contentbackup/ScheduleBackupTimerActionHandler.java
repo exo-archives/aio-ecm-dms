@@ -21,7 +21,8 @@ import java.util.Date;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.jbpm.graph.def.Action;
 import org.jbpm.graph.def.ActionHandler;
@@ -42,7 +43,7 @@ public class ScheduleBackupTimerActionHandler implements ActionHandler {
       String nodePath = (String) context.getVariable("nodePath");
       String srcWorkspace = (String) context.getVariable("srcWorkspace");
       String repository = (String) context.getVariable("repository");
-      PortalContainer container = PortalContainer.getInstance();
+      ExoContainer container = ExoContainerContext.getCurrentContainer() ;
       RepositoryService repositoryService = 
         (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
       session = repositoryService.getRepository(repository).getSystemSession(srcWorkspace);

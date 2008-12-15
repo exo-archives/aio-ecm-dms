@@ -19,21 +19,21 @@ package org.exoplatform.services.workflow.impl.bonita;
 import hero.user.ImmutableException;
 import hero.user.UserBase;
 import hero.user.UserBaseException;
-import hero.util.BonitaConfig;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.List;
+import java.util.Map;
 
 import org.exoplatform.commons.utils.PageList;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
-import org.exoplatform.container.RootContainer;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.Query;
 import org.exoplatform.services.organization.User;
 import org.exoplatform.services.organization.UserHandler;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Hashtable;
 
 /**
  * eXo User Management
@@ -69,19 +69,9 @@ public class ExoUserBase implements UserBase {
   public Map getUserInfos(String userId) throws UserBaseException {       
     try {    
       Hashtable uinfos=new Hashtable();
-      boolean checkpoint = false;
-      
       // Lookup the eXo Organization service  
-      PortalContainer container = PortalContainer.getInstance();
+      ExoContainer container = ExoContainerContext.getCurrentContainer() ;
       OrganizationService organization = null;      
-      
-      if (container==null) {
-        BonitaConfig instance = BonitaConfig.getInstance();
-        String portalName = instance.getProperty(EXO_PORTALNAME);     
-        container = RootContainer.getInstance().getPortalContainer(portalName);      
-        PortalContainer.setInstance(container);
-        checkpoint = true;
-      }      
       organization = (OrganizationService)
       container.getComponentInstanceOfType(OrganizationService.class);
       
@@ -96,11 +86,6 @@ public class ExoUserBase implements UserBase {
       if (user.getEmail()!=null)
         uinfos.put("email",user.getEmail());
         uinfos.put("jabber","TODO");        
-      
-      if (checkpoint){
-        PortalContainer.setInstance(null);
-        checkpoint=false;
-      }
         
       return uinfos;    
     } catch (Exception ne) {
@@ -116,19 +101,9 @@ public class ExoUserBase implements UserBase {
   public Collection getUsers() throws UserBaseException {   
     try {
       Collection allUsers = new ArrayList();
-      boolean checkpoint = false;
-      
       // Lookup the eXo Organization service  
-      PortalContainer container = PortalContainer.getInstance();
+      ExoContainer container = ExoContainerContext.getCurrentContainer();
       OrganizationService organization = null;      
-      
-      if (container==null) {
-        BonitaConfig instance = BonitaConfig.getInstance();
-        String portalName = instance.getProperty(EXO_PORTALNAME);     
-        container = RootContainer.getInstance().getPortalContainer(portalName);      
-        PortalContainer.setInstance(container);
-        checkpoint = true;
-      }      
       organization = (OrganizationService)
       container.getComponentInstanceOfType(OrganizationService.class);
       
@@ -146,16 +121,9 @@ public class ExoUserBase implements UserBase {
         allUsers.add(uinfos);
       }
       
-      if (checkpoint){
-        PortalContainer.setInstance(null);
-        checkpoint=false;
-      }
-           
       return allUsers;         
     } catch (Exception ne) {
         throw new UserBaseException(ne.getMessage());
-    } finally {
-      PortalContainer.setInstance(null);
     }
   }
   
@@ -181,19 +149,9 @@ public class ExoUserBase implements UserBase {
     String userEmail, Map userInfos) throws UserBaseException, 
     ImmutableException {
     try {   
-      boolean checkpoint = false;
-      
       // Lookup the eXo Organization service  
-      PortalContainer container = PortalContainer.getInstance();
+      ExoContainer container = ExoContainerContext.getCurrentContainer() ;
       OrganizationService organization = null;      
-      
-      if (container==null) {
-        BonitaConfig instance = BonitaConfig.getInstance();
-        String portalName = instance.getProperty(EXO_PORTALNAME);     
-        container = RootContainer.getInstance().getPortalContainer(portalName);      
-        PortalContainer.setInstance(container);
-        checkpoint = true;
-      }      
       organization = (OrganizationService)
       container.getComponentInstanceOfType(OrganizationService.class);
             
@@ -207,17 +165,10 @@ public class ExoUserBase implements UserBase {
       user.setLastName(userEmail) ;
       user.setEmail(userEmail);
       organization.getUserHandler().createUser(user, true);
-            
-      if (checkpoint){
-        PortalContainer.setInstance(null);
-        checkpoint=false;
-      }
            
     } catch (Exception ne) {
       throw new UserBaseException(ne.getMessage());
-    } finally {
-      PortalContainer.setInstance(null);
-    }
+    } 
   }
   
   /* (non-Javadoc)
@@ -228,19 +179,9 @@ public class ExoUserBase implements UserBase {
     String userEmail, Map userInfos) throws UserBaseException,
     ImmutableException {
     try {   
-      boolean checkpoint = false;
-      
       // Lookup the eXo Organization service  
-      PortalContainer container = PortalContainer.getInstance();
+      ExoContainer container = ExoContainerContext.getCurrentContainer();
       OrganizationService organization = null;      
-      
-      if (container==null) {
-        BonitaConfig instance = BonitaConfig.getInstance();
-        String portalName = instance.getProperty(EXO_PORTALNAME);     
-        container = RootContainer.getInstance().getPortalContainer(portalName);      
-        PortalContainer.setInstance(container);
-        checkpoint = true;
-      }      
       organization = (OrganizationService)
       container.getComponentInstanceOfType(OrganizationService.class);
       
@@ -254,16 +195,9 @@ public class ExoUserBase implements UserBase {
       user.setLastName(userEmail) ;
       user.setEmail(userEmail);            
       organization.getUserHandler().saveUser(user,true);
-      
-      if (checkpoint){
-        PortalContainer.setInstance(null);
-        checkpoint=false;
-      }
     } catch (Exception ne) {
       throw new UserBaseException(ne.getMessage());
-    } finally {
-      PortalContainer.setInstance(null);
-    }
+    } 
   }
   
   /* (non-Javadoc)
@@ -271,31 +205,14 @@ public class ExoUserBase implements UserBase {
    */
   public void deleteUser(String userId) throws UserBaseException, ImmutableException {
     try {     
-      boolean checkpoint = false;
-      
       // Lookup the eXo Organization service  
-      PortalContainer container = PortalContainer.getInstance();
+      ExoContainer container = ExoContainerContext.getCurrentContainer();
       OrganizationService organization = null;      
-      
-      if (container==null) {
-        BonitaConfig instance = BonitaConfig.getInstance();
-        String portalName = instance.getProperty(EXO_PORTALNAME);     
-        container = RootContainer.getInstance().getPortalContainer(portalName);      
-        PortalContainer.setInstance(container);
-        checkpoint = true;
-      }      
       organization = (OrganizationService)
       container.getComponentInstanceOfType(OrganizationService.class);      
       organization.getUserHandler().removeUser(userId, true);    
-      
-      if (checkpoint){
-        PortalContainer.setInstance(null);
-        checkpoint=false;
-      }
     } catch (Exception ne) {
       throw new UserBaseException(ne.getMessage());
-    } finally {
-      PortalContainer.setInstance(null);
-    }
+    } 
   } 
 }

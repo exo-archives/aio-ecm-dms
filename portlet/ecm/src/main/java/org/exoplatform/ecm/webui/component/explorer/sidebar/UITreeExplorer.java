@@ -25,7 +25,9 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -111,8 +113,9 @@ public class UITreeExplorer extends UIContainer {
   }
   
   public String getPortalName() {
-    PortalContainer pcontainer =  PortalContainer.getInstance() ;
-    return pcontainer.getPortalContainerInfo().getContainerName() ;  
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    PortalContainerInfo containerInfo = (PortalContainerInfo)container.getComponentInstanceOfType(PortalContainerInfo.class);      
+    return containerInfo.getContainerName(); 
   }
   
   public String getServerPath() {

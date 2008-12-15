@@ -28,7 +28,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
-import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 
 /**
  * This Node Hook changes Instance Attributes to indicate the Workflow Engine
@@ -118,10 +120,10 @@ public class ContentValidationWaitSwitchHook implements NodeHookI {
          * the eXo Portal Container attached to their context and this forces to
          * retrieve it by name.
          */
-        projectSession.setProperty(
-          ContentValidationWaitSwitchHook.CONTAINER_PROPERTY_NAME,
-          PortalContainer.getInstance().getPortalContainerInfo().
-            getContainerName());
+        ExoContainer container = ExoContainerContext.getCurrentContainer();
+        PortalContainerInfo containerInfo = (PortalContainerInfo) container.getComponentInstanceOfType(PortalContainerInfo.class);
+        String containerName = containerInfo.getContainerName();
+        projectSession.setProperty(ContentValidationWaitSwitchHook.CONTAINER_PROPERTY_NAME, containerName);
       }
       else {
         // The processing should directly go to the publication Activity
