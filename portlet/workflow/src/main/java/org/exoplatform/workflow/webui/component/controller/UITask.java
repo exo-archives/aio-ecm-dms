@@ -35,6 +35,7 @@ import javax.jcr.Session;
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.LockUtil;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
@@ -49,10 +50,12 @@ import org.exoplatform.services.workflow.Process;
 import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowFormsService;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
@@ -88,7 +91,7 @@ import org.exoplatform.workflow.webui.component.VariableMaps;
         @EventConfig(listeners = UITask.CancelActionListener.class, phase = Phase.DECODE),
         @EventConfig(listeners = UITask.StartProcessActionListener.class),
         @EventConfig(listeners = UITask.EndOfStateActionListener.class),
-        @EventConfig(listeners = UITask.TransitionActionListener.class),
+        @EventConfig(listeners = UITask.TransitionActionListener.class, phase = Phase.DECODE),
         @EventConfig(listeners = UITask.SelectUserActionListener.class, phase = Phase.DECODE)
         
     }
@@ -411,6 +414,16 @@ public class UITask extends UIForm implements UISelectable{
       String srcWorkspace = (String)variablesForService.get("srcWorkspace");
       String repository = (String)variablesForService.get("repository");
       RepositoryService repositoryService = uiTask.getApplicationComponent(RepositoryService.class);
+      if (objectId.equals("delegate")) {
+        String delegate = (String)maps.getWorkflowVariables().get(UITask.DELEGATE_FIELD);
+        if (delegate.length() == 0) {
+            UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
+            uiApp.addMessage(new ApplicationMessage("UITask.msg.has-not-got-delegate", null, 
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+        }
+      }
       for (Iterator iterator = submitButtons.iterator(); iterator.hasNext();) {
         Map attributes = (Map) iterator.next();
         String name = (String) attributes.get("name");
