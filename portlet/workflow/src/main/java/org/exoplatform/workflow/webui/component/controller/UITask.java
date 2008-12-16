@@ -33,6 +33,7 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -52,6 +53,7 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -66,6 +68,7 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
 import org.exoplatform.workflow.webui.component.BJARResourceResolver;
 import org.exoplatform.workflow.webui.component.InputInfo;
@@ -85,10 +88,12 @@ import org.exoplatform.workflow.webui.component.VariableMaps;
         @EventConfig(listeners = UITask.CancelActionListener.class, phase = Phase.DECODE),
         @EventConfig(listeners = UITask.StartProcessActionListener.class),
         @EventConfig(listeners = UITask.EndOfStateActionListener.class),
-        @EventConfig(listeners = UITask.TransitionActionListener.class)
+        @EventConfig(listeners = UITask.TransitionActionListener.class),
+        @EventConfig(listeners = UITask.SelectUserActionListener.class, phase = Phase.DECODE)
+        
     }
 )
-public class UITask extends UIForm {
+public class UITask extends UIForm implements UISelectable{
 
   public static final String MANAGE_TRANSITION = "manageTransition";
   private static final String TEXT = "text";
@@ -108,6 +113,7 @@ public class UITask extends UIForm {
   private static final String WORKSPACE_VARIABLE = "srcWorkspace";
   private static final String REPOSITORY_VARIABLE = "repository";
 
+  private static final String DELEGATE_FIELD = "delegate";
   private Form form;
   private boolean isStart_;
   private String identification_;
@@ -116,6 +122,7 @@ public class UITask extends UIForm {
   private RepositoryService jcrService;
   private List<InputInfo> inputInfo_;
 
+  
   public UITask() {
     serviceContainer = getApplicationComponent(WorkflowServiceContainer.class) ;
     formsService = getApplicationComponent(WorkflowFormsService.class) ;
@@ -154,6 +161,7 @@ public class UITask extends UIForm {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public void updateUITree() throws Exception {
     clean() ;
     UITaskManager uiTaskManager = getParent() ;
@@ -284,6 +292,9 @@ public class UITask extends UIForm {
         }
         ResourceBundle res = form.getResourceBundle();
         inputInfo_.add(new InputInfo("", "", res.getString(name + LABEL_ENCODING), input, mandatory));
+        if (mandatory) {
+          input.addValidator(MandatoryValidator.class);
+        }
         addUIFormInput(input);
       }
     }
@@ -308,7 +319,8 @@ public class UITask extends UIForm {
     VariableMaps maps = prepareWorkflowVariables(getChildren());
     return maps;
   }
-
+  
+  @SuppressWarnings("unchecked")
   public VariableMaps prepareWorkflowVariables(Collection inputs) throws Exception {
     Map<String, Object> workflowVariables = new HashMap<String, Object>();
     Map jcrVariables = new HashMap();
@@ -432,7 +444,24 @@ public class UITask extends UIForm {
           }
         }
       }
-      
     }
   }
+  
+  static  public class SelectUserActionListener extends EventListener<UITask> {
+    public void execute(Event<UITask> event) throws Exception {
+      UITask uiTask = event.getSource();
+      UITaskManager uiTaskManager = uiTask.getParent();
+      uiTaskManager.initPopupSelectUser(UITask.DELEGATE_FIELD);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaskManager);
+    }
+  }
+
+  public void doSelect(String selectField, Object value) throws Exception {
+    for (UIComponent uiInput : getChildren()) {
+      if (((UIFormInput) uiInput).getName().equals(selectField)) {
+        ((UIFormStringInput) uiInput).setValue(value.toString());
+      }
+    }
+  }
+
 }

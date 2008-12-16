@@ -23,6 +23,8 @@ import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowServiceContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupWindow;
+import org.exoplatform.workflow.webui.component.UIUserSelectContainer;
 
 /**
  * Created by The eXo Platform SARL
@@ -37,10 +39,30 @@ public class UITaskManager extends UIContainer implements UIPopupComponent {
   private String tokenId_ ;
   private boolean isStart_ = false;
   
+  public static final String UIPOPUP_DELEGATEDSELECTOR_ID = "PopupDelegatedSelectorId";
   public UITaskManager() throws Exception {
     addChild(UITask.class, null, null) ;
   }
 
+  /**
+   * Init popup window to select user
+   * @param fieldName: name of textbox to fill username
+   * @throws Exception
+   */
+  public void initPopupSelectUser(String fieldName) throws Exception {
+    UIPopupWindow uiPopup = getChildById(UIPOPUP_DELEGATEDSELECTOR_ID);
+    if (uiPopup == null) {
+      uiPopup = addChild(UIPopupWindow.class, null, UIPOPUP_DELEGATEDSELECTOR_ID);
+    } else {
+      uiPopup.setRendered(true) ;
+    }
+    UIUserSelectContainer uiUserSelectContainer = createUIComponent(UIUserSelectContainer.class, null, null);
+    uiUserSelectContainer.setFieldname(fieldName);
+    uiPopup.setWindowSize(790, 400);
+    uiPopup.setUIComponent(uiUserSelectContainer);
+    uiPopup.setShow(true);
+    uiPopup.setResizable(true);
+  }
   public void setTokenId(String tokenId) { tokenId_ = tokenId ; }
   
   public void setIsStart(boolean isStart) { isStart_ = isStart ; }

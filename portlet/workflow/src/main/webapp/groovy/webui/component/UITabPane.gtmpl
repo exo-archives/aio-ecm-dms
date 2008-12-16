@@ -1,4 +1,7 @@
 <%
+
+  import org.exoplatform.webui.core.UIPopupWindow;
+  
   def rcontext = _ctx.getRequestContext() ;
 	rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');
 	
@@ -14,10 +17,11 @@
 			        <div class="TabsContainer">
 			          <%
 			            for(uiChild in uicomponent.getChildren()) {
-			              String style = "NormalTab" ;
-			              String tabId = uiChild.getId();
-			              String paneId = uicomponent.getId();
-			              if(uiChild.isRendered()) style = "SelectedTab" ;
+			              if (!(uiChild instanceof UIPopupWindow)) {
+				              String style = "NormalTab" ;
+				              String tabId = uiChild.getId();
+				              String paneId = uicomponent.getId();
+				              if(uiChild.isRendered()) style = "SelectedTab" ;
 			          %>
 			            <div class="UITab NormalTabStyle">
 			              <div class="$style">
@@ -28,7 +32,9 @@
 			                </div>
 			              </div>
 			            </div>              
-			          <%}%>
+			          <%  }
+			            }
+			          %>
 			        </div>
 			      </div>
 			    </div>
@@ -36,7 +42,7 @@
       </div>
       <div class="UITabContentContainer">
         <%
-          for(uiChild in uicomponent.getChildren()) { 
+          for(uiChild in uicomponent.getChildren()) {
             String display = "none" ;
             if(uiChild.isRendered()) display="block" ;
             println "<div class=\"UITabContent\" style=\"display: $display;\">" ;

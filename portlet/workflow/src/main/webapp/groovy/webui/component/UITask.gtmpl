@@ -1,3 +1,7 @@
+
+<%
+  import org.exoplatform.webui.form.UIFormInput;
+%>
 <%
   public void writeAction(String label, String action, String param) {
 				if(param != null)
@@ -31,7 +35,18 @@
 					<%for(inputInfo in uicomponent.getInputInfo())  {%>
 							<tr>
 							  <td class="FieldLabel"><%=inputInfo.getLabel()%></td>
-							  <td class="FieldComponent"><% uicomponent.renderField(inputInfo.getInput()); %></td>
+							  <%
+							    UIFormInput uiInput =  inputInfo.getInput();
+							  %>
+							  <td class="FieldComponent"><% uicomponent.renderField(uiInput); %>
+							  <%
+							    if (uiInput.getName().equals("delegate")) {
+							   %>
+							   <img onclick="<%=uicomponent.event("SelectUser")%>" title = "aa" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="SelectUserIcon" />
+							   <%
+							    }
+							  %>
+							  </td>
 							</tr>
 					<%}%>
 				</table>

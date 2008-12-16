@@ -31,6 +31,16 @@
 	width: 75%;
 }
 
+.UIWorkflowPortlet .UIFormGrid td.FieldComponent .SelectUserIcon{
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/icons/SmallUserIcon.gif') no-repeat;  
+  cursor: pointer;
+}
+
+.UIWorkflowPortlet .UITask .UIForm .UIFormGrid td.FieldComponent img {
+  width: 16px;
+}
+
 .UIWorkflowPortlet .WorkflowPortletContent{
 	padding: 15px;
 }
