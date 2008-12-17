@@ -614,7 +614,7 @@
       <parentversion>Trên phiên bản cha</parentversion>
       <protected>Được bảo vệ</protected>
       <constraints>Các giá trị</constraints>
-      <UIFormTableInputSet>Bảng</UIFormTableInputSet>
+      <UIFormTableInputSet>UIFormTableInputSet</UIFormTableInputSet>
       <sameNameSiblings>Có cùng tên</sameNameSiblings>
       <childNamespace>Tên miền</childNamespace>
       <childMandatory>Có tính bắt buộc</childMandatory>
@@ -795,7 +795,7 @@
   </UUIDriveForm>
   <DriveInputSet>
     <label>
-      <both>Cả hai</both>
+      <both>Cả hai</both>      
     </label>
     <title>
       <AddPermission>Thêm quyền truy nhập</AddPermission>
@@ -1154,7 +1154,7 @@
       <confirm-delete>Bạn có thực sự muốn xóa không?</confirm-delete>
     </msg>
     <header>
-      <name>Tên</name>
+      <scriptName>Tên</scriptName>
       <path>Đường dẫn</path>
       <baseVersion>Phiên bản cơ sở</baseVersion>
       <action>Hành động</action>
@@ -1207,8 +1207,8 @@
   <CBScriptForm>
     <label>
       <selectVersion>Các phiên bản</selectVersion>
-      <scriptContent>Nội dung của script</scriptContent>
-      <scriptName>Tên script</scriptName>
+      <scriptContent>Nội dung kịch bản</scriptContent>
+      <scriptName>Tên kịch bản</scriptName>
       <enableVersion>Kích hoạt phiên bản</enableVersion>
     </label>
   </CBScriptForm>
@@ -1225,8 +1225,8 @@
   <ECMScriptForm>
     <label>
       <selectVersion>Các phiên bản</selectVersion>
-      <scriptContent>Script contents</scriptContent>
-      <scriptName>Nội dung của script</scriptName>
+      <scriptContent>Nội dung kịch bản</scriptContent>
+      <scriptName>Tên kịch bản</scriptName>
       <enableVersion>Kích hoạt phiên bản</enableVersion>
     </label>
   </ECMScriptForm>
@@ -1292,7 +1292,7 @@
   </TemplatePopup>
   <ViewForm>
     <label>
-      <UITemplateContent>Nội dung mẫu</UITemplateContent>
+      <UITemplateContent>ViewForm</UITemplateContent>
       <UIPopupWindow>Quyền truy nhập khung nhìn</UIPopupWindow>
       <selectVersion>Các phiên bản</selectVersion>
       <content>Nội dung</content>
@@ -1305,7 +1305,7 @@
   </ViewForm>
   <DialogForm>
     <label>
-      <UITemplateContent>Hộp thoại</UITemplateContent>
+      <UITemplateContent>DialogForm</UITemplateContent>
       <UIPopupWindow>Quyền truy nhập hộp thoại</UIPopupWindow>
       <selectVersion>Các phiên bản</selectVersion>
       <content>Nội dung</content>
@@ -1483,7 +1483,7 @@
       <statement>Câu lệnh</statement>
       <cache>Lưu kết quả tìm kiếm</cache>
       <permissions>Quyền truy nhập</permissions>
-      <PermissionButton>Mẫu truy vấn</PermissionButton>
+      <PermissionButton>UIQueriesForm</PermissionButton>
     </label>
     <action>
       <Save>Lưu</Save>
@@ -1667,5 +1667,14 @@
       <AddAnyPermission>Tất cả người dùng</AddAnyPermission>
     </title>
   </anyPermission>
+  <!--
+  ########Since ECM 2.3##################
+  -->
+  <DriveInputSet>
+    <label>      
+      <folderOnly>Thư mục</folderOnly>
+      <unstructuredFolder>Không cấu trúc thư mục</unstructuredFolder>
+    </label>    
+  </DriveInputSet>  
 </bundle>
 

@@ -42,76 +42,81 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
  */
 @ComponentConfig(template = "classpath:groovy/ecm/webui/form/UIFormInputSetWithAction.gtmpl")
 public class UIDriveInputSet extends UIFormInputSetWithAction {
-  final static public String FIELD_NAME = "name" ;
-  final static public String FIELD_WORKSPACE = "workspace" ;
-  final static public String FIELD_HOMEPATH = "homePath" ;
-  final static public String FIELD_WORKSPACEICON = "icon" ;
-  final static public String FIELD_PERMISSION = "permissions" ;
+  final static public String FIELD_NAME = "name";
+  final static public String FIELD_WORKSPACE = "workspace";
+  final static public String FIELD_HOMEPATH = "homePath";
+  final static public String FIELD_WORKSPACEICON = "icon";
+  final static public String FIELD_PERMISSION = "permissions";
   
-  final static public String FIELD_VIEWPREFERENCESDOC = "viewPreferences" ;
-  final static public String FIELD_VIEWNONDOC = "viewNonDocument" ;
-  final static public String FIELD_VIEWSIDEBAR = "viewSideBar" ;
-  final static public String FIELD_FOLDER_ONLY = "Folder" ;
-  final static public String FIELD_BOTH = "Both" ;
-  final static public String FIELD_UNSTRUCTURED_ONLY = "Unstructured folder" ;
-  final static public String ALLOW_CREATE_FOLDER = "allowCreateFolder" ;
-  final static public String SHOW_HIDDEN_NODE = "showHiddenNode" ;
+  final static public String FIELD_VIEWPREFERENCESDOC = "viewPreferences";
+  final static public String FIELD_VIEWNONDOC = "viewNonDocument";
+  final static public String FIELD_VIEWSIDEBAR = "viewSideBar";
+  final static public String FIELD_FOLDER_ONLY = "Folder";
+  final static public String FIELD_BOTH = "Both";
+  final static public String FIELD_UNSTRUCTURED_ONLY = "Unstructured folder";
+  final static public String ALLOW_CREATE_FOLDER = "allowCreateFolder";
+  final static public String SHOW_HIDDEN_NODE = "showHiddenNode";
   
-  public String bothLabel_ ;
+  public String bothLabel_;
+  public String folderOnlyLabel_;
+  public String unstructuredFolderLabel_;
 
   public UIDriveInputSet(String name) throws Exception {
     super(name);
-    setComponentConfig(getClass(), null) ;
+    setComponentConfig(getClass(), null);
 
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
-                       addValidator(MandatoryValidator.class)) ;
-    addUIFormInput(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, null)) ;  
-    UIFormStringInput homePathField = new UIFormStringInput(FIELD_HOMEPATH, FIELD_HOMEPATH, null) ;
-    homePathField.setValue("/") ;
-    homePathField.setEditable(false) ;
-    addUIFormInput(homePathField) ;
-    addUIFormInput(new UIFormStringInput(FIELD_WORKSPACEICON, FIELD_WORKSPACEICON, null).setEditable(false)) ;
-    UIFormStringInput permissonSelectField = new UIFormStringInput(FIELD_PERMISSION , FIELD_PERMISSION , null) ;
-    permissonSelectField.addValidator(MandatoryValidator.class) ;
-    permissonSelectField.setEditable(false) ;
-    addUIFormInput(permissonSelectField) ;
-    addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWPREFERENCESDOC, FIELD_VIEWPREFERENCESDOC, null)) ;
-    addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWNONDOC, FIELD_VIEWNONDOC, null)) ;
-    addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWSIDEBAR, FIELD_VIEWSIDEBAR, null)) ;
-    addUIFormInput(new UIFormCheckBoxInput<String>(SHOW_HIDDEN_NODE, SHOW_HIDDEN_NODE, null)) ;
-    List<SelectItemOption<String>> folderOptions = new ArrayList<SelectItemOption<String>>() ;
-    folderOptions.add(new SelectItemOption<String>(FIELD_FOLDER_ONLY, Utils.NT_FOLDER)) ;
-    RequestContext context = RequestContext.getCurrentInstance() ;
-    ResourceBundle res = context.getApplicationResourceBundle() ;
-    bothLabel_ = res.getString(getId() + ".label.both") ;
-    folderOptions.add(new SelectItemOption<String>(FIELD_UNSTRUCTURED_ONLY, Utils.NT_UNSTRUCTURED)) ;
-    folderOptions.add(new SelectItemOption<String>(bothLabel_, FIELD_BOTH)) ;
+                       addValidator(MandatoryValidator.class));
+    addUIFormInput(new UIFormSelectBox(FIELD_WORKSPACE, FIELD_WORKSPACE, null));  
+    UIFormStringInput homePathField = new UIFormStringInput(FIELD_HOMEPATH, FIELD_HOMEPATH, null);
+    homePathField.setValue("/");
+    homePathField.setEditable(false);
+    addUIFormInput(homePathField);
+    addUIFormInput(new UIFormStringInput(FIELD_WORKSPACEICON, FIELD_WORKSPACEICON, null).setEditable(false));
+    UIFormStringInput permissonSelectField = new UIFormStringInput(FIELD_PERMISSION , FIELD_PERMISSION , null);
+    permissonSelectField.addValidator(MandatoryValidator.class);
+    permissonSelectField.setEditable(false);
+    addUIFormInput(permissonSelectField);
+    addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWPREFERENCESDOC, FIELD_VIEWPREFERENCESDOC, null));
+    addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWNONDOC, FIELD_VIEWNONDOC, null));
+    addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWSIDEBAR, FIELD_VIEWSIDEBAR, null));
+    addUIFormInput(new UIFormCheckBoxInput<String>(SHOW_HIDDEN_NODE, SHOW_HIDDEN_NODE, null));
+    List<SelectItemOption<String>> folderOptions = new ArrayList<SelectItemOption<String>>();
+    
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    bothLabel_ = res.getString(getId() + ".label.both");
+    folderOnlyLabel_ = res.getString(getId() + ".label.folderOnly");
+    unstructuredFolderLabel_ = res.getString(getId() + ".label.unstructuredFolder");
+    folderOptions.add(new SelectItemOption<String>(folderOnlyLabel_, Utils.NT_FOLDER));
+    folderOptions.add(new SelectItemOption<String>(unstructuredFolderLabel_, Utils.NT_UNSTRUCTURED));
+    folderOptions.add(new SelectItemOption<String>(bothLabel_, FIELD_BOTH));
     addUIFormInput(new UIFormRadioBoxInput(ALLOW_CREATE_FOLDER, ALLOW_CREATE_FOLDER, folderOptions).
-                   setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
-    setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
-    setActionInfo(FIELD_HOMEPATH, new String[] {"AddPath"}) ;
-    setActionInfo(FIELD_WORKSPACEICON, new String[] {"AddIcon"}) ;
+                   setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN));
+    setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"});
+    setActionInfo(FIELD_HOMEPATH, new String[] {"AddPath"});
+    setActionInfo(FIELD_WORKSPACEICON, new String[] {"AddIcon"});
   }
 
   public void update(DriveData drive) throws Exception {
-    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
     String[] wsNames = getApplicationComponent(RepositoryService.class)
                       .getRepository(repository).getWorkspaceNames();
-    List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>() ;
+    List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>();
     for(String wsName : wsNames) {
-      workspace.add(new SelectItemOption<String>(wsName,  wsName)) ;
+      workspace.add(new SelectItemOption<String>(wsName,  wsName));
     }
-    getUIFormSelectBox(FIELD_WORKSPACE).setOptions(workspace) ;
+    getUIFormSelectBox(FIELD_WORKSPACE).setOptions(workspace);
     if(drive != null) {
-      invokeGetBindingField(drive) ;
-      getUIStringInput(FIELD_NAME).setEditable(false) ;
-      return ;
+      invokeGetBindingField(drive);
+      getUIStringInput(FIELD_NAME).setEditable(false);
+      return;
     }
-    getUIStringInput(FIELD_NAME).setEditable(true) ;
-    reset() ;
-    getUIFormCheckBoxInput(FIELD_VIEWPREFERENCESDOC).setChecked(false) ;
-    getUIFormCheckBoxInput(FIELD_VIEWNONDOC).setChecked(false) ;
-    getUIFormCheckBoxInput(FIELD_VIEWSIDEBAR).setChecked(false) ;
-    getUIFormCheckBoxInput(SHOW_HIDDEN_NODE).setChecked(false) ;
+    getUIStringInput(FIELD_NAME).setEditable(true);
+    reset();
+    getUIFormCheckBoxInput(FIELD_VIEWPREFERENCESDOC).setChecked(false);
+    getUIFormCheckBoxInput(FIELD_VIEWNONDOC).setChecked(false);
+    getUIFormCheckBoxInput(FIELD_VIEWSIDEBAR).setChecked(false);
+    getUIFormCheckBoxInput(SHOW_HIDDEN_NODE).setChecked(false);
   }
 }
