@@ -20,13 +20,19 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.workflow.Form;
 import org.exoplatform.services.workflow.Task;
 import org.exoplatform.services.workflow.WorkflowFormsService;
@@ -53,9 +59,21 @@ import org.exoplatform.webui.event.EventListener;
     events = {@EventConfig(listeners = UITaskList.ManageStateActionListener.class)}
 )
 public class UITaskList extends UIContainer {
+  
   private WorkflowServiceContainer workflowServiceContainer_;
+  
   private WorkflowFormsService workflowFormsService_;
-
+  
+  private static final String NODE_VIEW = "nodeview";
+  
+  private static final String NODE_EDIT = "nodeedit";
+  
+  private static final String NODE_PATH_VARIABLE = "nodePath";
+  
+  private static final String WORKSPACE_VARIABLE = "srcWorkspace";
+  
+  private static final String REPOSITORY_VARIABLE = "repository";
+  
   public UITaskList() throws Exception {
     workflowServiceContainer_ = getApplicationComponent(WorkflowServiceContainer.class);
     workflowFormsService_ = getApplicationComponent(WorkflowFormsService.class);
@@ -103,11 +121,44 @@ public class UITaskList extends UIContainer {
     for (Iterator iter = all.iterator(); iter.hasNext();) {
       Task task = (Task) iter.next();
       Form form = workflowFormsService_.getForm(task.getProcessId(), task.getTaskName(), locale);
-      if(!form.isDelegatedView()) { filtered.add(task) ; }
+      if(!form.isDelegatedView()) {
+        if (checkTaskWithNodeExist(task, form)) {
+          filtered.add(task) ; 
+        }
+      }
     }
     return filtered;
   }
   
+  private boolean checkTaskWithNodeExist(Task task, Form form) {
+      String processInstanceId = task.getProcessInstanceId();
+      String identification_ = task.getId();
+      Map variablesForService = new HashMap();
+      variablesForService = workflowServiceContainer_.getVariables(processInstanceId, identification_);
+      RepositoryService jcrService = getApplicationComponent(RepositoryService.class) ;
+      String workspaceName = (String) variablesForService.get(WORKSPACE_VARIABLE);
+      String repository = (String) variablesForService.get(REPOSITORY_VARIABLE);
+      try {
+        if(repository == null) {
+          repository = jcrService.getDefaultRepository().getConfiguration().getName() ;
+        }
+        ManageableRepository mRepository = jcrService.getRepository(repository) ;
+        SessionProvider sessionProvider = SessionProviderFactory.createSessionProvider() ;
+        List variables = form.getVariables();
+        int i = 0;
+        for (Iterator iter = variables.iterator(); iter.hasNext(); i++) {
+          Map attributes = (Map) iter.next();
+          String component = (String) attributes.get("component");
+          if (NODE_EDIT.equals(component) || NODE_VIEW.equals(component)) {
+            String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);          
+            sessionProvider.getSession(workspaceName,mRepository).getItem(nodePath);
+          }
+        }
+      } catch (Exception e) {
+        return false;
+      }
+      return true;
+  }
   /**
    * Indicates whether a Task has been processed or not.
    * This method was introduced to avoid bug described in ECM-2374, when two
