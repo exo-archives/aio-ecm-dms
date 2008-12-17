@@ -42,7 +42,7 @@
 							  <%
 							    if (uiInput.getName().equals("delegate")) {
 							   %>
-							   <img onclick="<%=uicomponent.event("SelectUser")%>" title = "aa" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="SelectUserIcon" />
+							   <img onclick="<%=uicomponent.event("SelectUser")%>" title = "<%= _ctx.appRes("UITask.title.Delegate")%>" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="SelectUserIcon" />
 							   <%
 							    }
 							  %>
