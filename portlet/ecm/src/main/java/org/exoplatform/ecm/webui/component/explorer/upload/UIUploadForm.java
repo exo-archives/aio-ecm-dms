@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.upload;
 
 import java.io.InputStream;
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
@@ -453,9 +454,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       } catch(LockException lock) {
         throw new MessageException(new ApplicationMessage("UIUploadForm.msg.lock-exception", 
             null, ApplicationMessage.WARNING)) ;        
-      } catch(AccessDeniedException ace) {
+      } catch(AccessDeniedException ade) {
         throw new MessageException(new ApplicationMessage("UIActionBar.msg.access-add-denied", 
-            null, ApplicationMessage.WARNING)) ; 
+            null, ApplicationMessage.WARNING)); 
+      } catch(AccessControlException ace) {
+        throw new MessageException(new ApplicationMessage("UIActionBar.msg.access-add-denied", 
+            null, ApplicationMessage.WARNING)); 
       } catch(Exception e) {
         e.printStackTrace() ;
         JCRExceptionManager.process(uiApp, e);
