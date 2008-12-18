@@ -61,7 +61,10 @@ public class MoveNodeActionHandler implements ActionHandler {
     String srcWorkspace = (String) context.getVariable("srcWorkspace");
     String repository = (String) context.getVariable("repository");
     Date startDate = (Date) context.getVariable("startDate");
-    Date endDate = (Date) context.getVariable("endDate");      
+    Date endDate = null;
+    if (context.getVariable("endDate") instanceof Date) {
+      endDate = (Date) context.getVariable("endDate");
+    }
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     RepositoryService repositoryService = (RepositoryService) container
         .getComponentInstanceOfType(RepositoryService.class);

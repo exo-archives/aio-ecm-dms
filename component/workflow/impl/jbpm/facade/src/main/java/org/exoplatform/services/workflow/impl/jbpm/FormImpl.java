@@ -119,6 +119,7 @@ public class FormImpl implements Form{
     return fileName + "_" + locale.getLanguage() + ".properties";
   }
 
+  @SuppressWarnings("unchecked")
   private void initializeVariables(Element element) {
     this.variables = new ArrayList();
     Map attributes = null;
@@ -133,11 +134,14 @@ public class FormImpl implements Form{
       String editable = variableElement.attributeValue("editable");
       attributes.put("editable", editable);
       String mandatory = variableElement.attributeValue("mandatory");
-      attributes.put("mandatory", mandatory);      
+      attributes.put("mandatory", mandatory); 
+      String visiable = variableElement.attributeValue("visiable");
+      attributes.put("visiable", visiable);      
       this.variables.add(attributes);      
     }
   }
-
+  
+  @SuppressWarnings("unchecked")
   private void initializeSubmitButtons(Element element) {
     this.submitButtons = new ArrayList();
     Map attributes = null;

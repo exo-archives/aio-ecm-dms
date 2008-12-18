@@ -54,30 +54,34 @@ public class ScheduleBackupTimerActionHandler implements ActionHandler {
         return;
       }
 
-      Date endDate = srcNode.getProperty("exo:endPublication").getDate().getTime();
+      //Date endDate = srcNode.getProperty("exo:endPublication").getDate().getTime();
+      Date endDate = null;
+      if (srcNode.hasProperty("exo:endPublication")) {
+        endDate = srcNode.getProperty("exo:endPublication").getDate().getTime();
+      }
       Date currentDate = new Date();
-      if (endDate.after(currentDate)) {
-        // Create and save the Action object
-        Delegation delegation = new Delegation();
-        delegation.setClassName("org.exoplatform.processes.contentbackup.BackupNodeActionHandler");
-        delegation.setProcessDefinition(context.getProcessDefinition());
-
-        Action moveAction = new Action();
-        moveAction.setName("backupAction");
-        moveAction.setActionDelegation(delegation);
-        context.getProcessDefinition().addAction(moveAction);
-
-        // create the timer
-        
-        Timer timer = new Timer(context.getToken());
-        timer.setName("backupTimer");
-        timer.setDueDate(endDate);
-        timer.setGraphElement(context.getEventSource());
-        timer.setTaskInstance(context.getTaskInstance());
-        timer.setAction(moveAction);
-        context.getSchedulerInstance().schedule(timer);
-      } else {
-        context.getToken().signal("backup-done");
+      if (endDate !=null) {
+        if (endDate.after(currentDate)) {
+          // Create and save the Action object
+          Delegation delegation = new Delegation();
+          delegation.setClassName("org.exoplatform.processes.contentbackup.BackupNodeActionHandler");
+          delegation.setProcessDefinition(context.getProcessDefinition());
+          
+          Action moveAction = new Action();
+          moveAction.setName("backupAction");
+          moveAction.setActionDelegation(delegation);
+          context.getProcessDefinition().addAction(moveAction);
+          // create the timer
+          Timer timer = new Timer(context.getToken());
+          timer.setName("backupTimer");
+          timer.setDueDate(endDate);
+          timer.setGraphElement(context.getEventSource());
+          timer.setTaskInstance(context.getTaskInstance());
+          timer.setAction(moveAction);
+          context.getSchedulerInstance().schedule(timer);
+        } else {
+          context.getToken().signal("backup-done");
+        }
       }
       session.logout() ;
     } catch (Exception ex) {

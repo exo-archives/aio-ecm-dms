@@ -70,7 +70,7 @@ import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
-import org.exoplatform.webui.form.validator.MandatoryValidator;
+import org.exoplatform.webui.form.validator.DateTimeValidator;
 import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
 import org.exoplatform.workflow.webui.component.BJARResourceResolver;
 import org.exoplatform.workflow.webui.component.InputInfo;
@@ -90,7 +90,7 @@ import org.exoplatform.workflow.webui.component.VariableMaps;
         @EventConfig(listeners = UITask.CancelActionListener.class, phase = Phase.DECODE),
         @EventConfig(listeners = UITask.StartProcessActionListener.class),
         @EventConfig(listeners = UITask.EndOfStateActionListener.class),
-        @EventConfig(listeners = UITask.TransitionActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = UITask.TransitionActionListener.class),
         @EventConfig(listeners = UITask.SelectUserActionListener.class, phase = Phase.DECODE)
         
     }
@@ -202,7 +202,13 @@ public class UITask extends UIForm implements UISelectable{
       if (mandatoryString != null && !"".equals(mandatoryString)) {
         mandatory = new Boolean(mandatoryString).booleanValue();
       }
+      boolean visiable = true;
+      String visiableString = (String) attributes.get("visiable");
+      if (visiableString != null && !"".equals(visiableString)) {
+        visiable = new Boolean(visiableString).booleanValue();
+      }
       Object value = variablesForService.get(name);
+      
       if (NODE_EDIT.equals(component)) {
         UIDocumentForm uiDocForm = createUIComponent(UIDocumentForm.class, null, null) ;
         String nodePath = (String) variablesForService.get(NODE_PATH_VARIABLE);          
@@ -236,6 +242,10 @@ public class UITask extends UIForm implements UISelectable{
         } else if (DATE.equals(component) || DATE_TIME.equals(component)) {
           input = (value == null ? new UIFormDateTimeInput(name, null, new Date(), DATE_TIME.equals(component)) : 
                                    new UIFormDateTimeInput(name, null, (Date)value, DATE_TIME.equals(component)));
+          if (!visiable && (value == null)) {
+            input.setValue("");
+          }
+          input.addValidator(DateTimeValidator.class);
         } else if (SELECT.equals(component)) {
           String baseKey = name + ".select-";
           List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
@@ -294,9 +304,6 @@ public class UITask extends UIForm implements UISelectable{
         }
         ResourceBundle res = form.getResourceBundle();
         inputInfo_.add(new InputInfo("", "", res.getString(name + LABEL_ENCODING), input, mandatory));
-        if (mandatory) {
-          input.addValidator(MandatoryValidator.class);
-        }
         addUIFormInput(input);
       }
     }
@@ -335,8 +342,9 @@ public class UITask extends UIForm implements UISelectable{
         value = ((UIFormStringInput) input).getValue();
       } else if (input instanceof UIFormDateTimeInput) {
         Calendar calendar = ((UIFormDateTimeInput) input).getCalendar();
-        if(calendar == null) calendar = new GregorianCalendar() ; 
-        value = calendar.getTime();
+        /*if (calendar == null) calendar = new GregorianCalendar();
+        value = calendar.getTime();*/
+        value = ((calendar == null) ? (name.equals("startDate") ? (new GregorianCalendar().getTime()) : ("")) : (calendar.getTime()));
       } else if (input instanceof UIFormWYSIWYGInput) {
         value = ((UIFormWYSIWYGInput)input).getValue();
       } else if (input instanceof UIFormTextAreaInput) {

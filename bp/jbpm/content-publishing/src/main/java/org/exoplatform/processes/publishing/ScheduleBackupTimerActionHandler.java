@@ -17,10 +17,8 @@
 package org.exoplatform.processes.publishing;
 
 import java.util.Date;
-import java.util.List;
 
 import org.exoplatform.services.log.ExoLogger;
-import org.exoplatform.services.workflow.ProcessInstance;
 import org.exoplatform.services.workflow.impl.jbpm.WorkflowServiceContainerImpl;
 import org.jbpm.db.JbpmSession;
 import org.jbpm.graph.def.Action;
@@ -40,39 +38,44 @@ public class ScheduleBackupTimerActionHandler extends BackupContentActionHandler
   
   public void execute(ExecutionContext context) {    
     try {              
-      Date endDate = (Date)context.getVariable("endDate");      
       Date currentDate = new Date();
-      if (endDate.after(currentDate)) {        
-        // Create and save the Action object
-        Delegation delegation = new Delegation();
-        delegation.setClassName("org.exoplatform.processes.publishing.BackupContentActionHandler");        
-        delegation.setProcessDefinition(context.getProcessDefinition());
-
-        Action backupAction = new Action();
-        backupAction.setName("backupAction");
-        backupAction.setActionDelegation(delegation);
-        backupAction.setProcessDefinition(context.getProcessDefinition());        
-        context.getProcessDefinition().addAction(backupAction);
-        // create the timer               
-        //Token token = new Token(context.getToken(),context.getNode().getName());               
-        Timer timer = new Timer(context.getToken());        
-        timer.setName("backupTimer");
-        timer.setDueDate(endDate);
-        timer.setGraphElement(context.getEventSource());
-        timer.setTaskInstance(context.getTaskInstance());
-        timer.setAction(backupAction);
-        timer.setTransitionName("end");        
-        context.getSchedulerInstance().schedule(timer);
-        //TODO we should change this code to update process by asynchronys technichque
-        WorkflowServiceContainerImpl containerImpl = ProcessUtil.getService(WorkflowServiceContainerImpl.class);
-        JbpmSession session = containerImpl.openSession();
-        session.beginTransaction();
-        session.getGraphSession().saveProcessInstance(context.getProcessInstance());        
-        session.commitTransaction();
-      } else {                
-        backupContent(context);        
-        context.getToken().signal("backup-done");
-      }      
+      Date endDate = null;
+      if (context.getVariable("endDate") instanceof Date) {
+        endDate = (Date) context.getVariable("endDate");
+      }
+      if (endDate != null) {
+        if (endDate.after(currentDate)) {        
+          // Create and save the Action object
+          Delegation delegation = new Delegation();
+          delegation.setClassName("org.exoplatform.processes.publishing.BackupContentActionHandler");        
+          delegation.setProcessDefinition(context.getProcessDefinition());
+          
+          Action backupAction = new Action();
+          backupAction.setName("backupAction");
+          backupAction.setActionDelegation(delegation);
+          backupAction.setProcessDefinition(context.getProcessDefinition());        
+          context.getProcessDefinition().addAction(backupAction);
+          // create the timer               
+          //Token token = new Token(context.getToken(),context.getNode().getName());               
+          Timer timer = new Timer(context.getToken());        
+          timer.setName("backupTimer");
+          timer.setDueDate(endDate);
+          timer.setGraphElement(context.getEventSource());
+          timer.setTaskInstance(context.getTaskInstance());
+          timer.setAction(backupAction);
+          timer.setTransitionName("end");        
+          context.getSchedulerInstance().schedule(timer);
+          //TODO we should change this code to update process by asynchronys technichque
+          WorkflowServiceContainerImpl containerImpl = ProcessUtil.getService(WorkflowServiceContainerImpl.class);
+          JbpmSession session = containerImpl.openSession();
+          session.beginTransaction();
+          session.getGraphSession().saveProcessInstance(context.getProcessInstance());        
+          session.commitTransaction();
+        } else {                
+          backupContent(context);        
+          context.getToken().signal("backup-done");
+        }      
+      }
     } catch (Exception ex) {
       ExoLogger.getLogger(this.getClass()).equals(ex);
       ex.printStackTrace();
