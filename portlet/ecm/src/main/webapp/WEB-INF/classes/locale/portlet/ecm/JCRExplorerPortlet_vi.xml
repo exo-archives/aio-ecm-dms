@@ -278,7 +278,7 @@
       <Search>Tìm kiếm</Search>
       <WatchDocument>Theo dõi/ngừng theo dõi tài liệu này</WatchDocument>
       <TaggingDocument>Gán nhãn tài liệu này</TaggingDocument>
-      <MultiLanguage>Thêm/Sửa đổi những nội dung được đánh dấu</MultiLanguage>
+      <MultiLanguage>Thêm/Sửa đổi nội dung đa ngôn ngữ</MultiLanguage>
       <Vote>Bình chọn cho tài liệu</Vote>
       <Comment>Đưa ra nhận xét cho tài liệu này.</Comment>
       <ManageVersions>Quản lý phiên bản</ManageVersions>
@@ -291,7 +291,7 @@
       <ImportNode>Nhập node</ImportNode>
       <OverloadThumbnail>Chèn ảnh</OverloadThumbnail>
       <ManageHidden>Ẩn/Hiển thị nội dung</ManageHidden>
-      <ViewReferences>Xem thuộc tính</ViewReferences>
+      <ViewReferences>Xem tham chiếu</ViewReferences>
       <ViewNodeType>Xem cấu trúc nodetype</ViewNodeType>
       <ViewPermissions>Xem quyền của node</ViewPermissions>
       <ViewProperties>Xem thuộc tính của node</ViewProperties>
@@ -412,8 +412,8 @@
       <name-not-allowed>Tên này không hợp lệ.</name-not-allowed>
       <fileName-error>Tên file không hợp lệ.</fileName-error>
       <constraint-violation>Node Hiển thị không được phép thêm kiểu node '{0}'.</constraint-violation>
-      <repository-exception>không thể lưu lại node này. Tên đưa vào phải không chứa chỉ mục trên phần tử cuối cùng của nó hoặc node này không được phép trùng tên.</repository-exception>
-      <numberformat-exception>không thể lưu lại thư mục này. Tên đưa vào phải không chứa '[' hoặc ']'</numberformat-exception>
+      <repository-exception>Truy cập bị từ chối. Bạn không có quyền thêm mới node ở đây.</repository-exception>
+      <numberformat-exception>Không thể lưu lại thư mục này. Tên đưa vào phải không chứa '[' hoặc ']'</numberformat-exception>
     </msg>
   </UIFolderForm>
   <!--
@@ -547,7 +547,7 @@
   -->
   <UITabPane>
     <title>
-      <UIPropertyTab>Các thức tính</UIPropertyTab>
+      <UIPropertyTab>Các thuộc tính</UIPropertyTab>
       <UIMetadataTab>Dữ liệu Metadata</UIMetadataTab>
       <UIPropertyForm>Thêm thuộc tính mới</UIPropertyForm>
       <UIUploadContent>Thông tin về file được tải vào.</UIUploadContent>
@@ -585,7 +585,7 @@
       <remove-property>Bạn muốn xóa thuộc tính này?</remove-property>
     </confirm>
     <header>
-      <icon>Biểu tượng</icon>
+      <icon> </icon>
       <name>Tên</name>
       <multiValue>Đa giá trị</multiValue>
       <value>Giá trị</value>
@@ -728,10 +728,10 @@
       <UIPopupWindow>Chọn</UIPopupWindow>
       <permission>UIPermissionForm</permission>
       <userOrGroup>Người dùng hoặc nhóm người dùng</userOrGroup>
-      <read>Đọc quyền</read>
-      <add_node>Thêm quyền cho node</add_node>
-      <set_property>Thiết lập quyền sở hữu</set_property>
-      <remove>Xóa bỏ quyền</remove>
+      <read>Quyền đọc</read>
+      <add_node>Quyền thêm node</add_node>
+      <set_property>Quyền thiết lập thuộc tính</set_property>
+      <remove>Quyền xóa bỏ</remove>
     </label>
     <title>Thêm quyền cho node ?</title>
     <action>
@@ -1654,7 +1654,7 @@
   </UIActionForm>
   <UIActionTypeForm>
     <label>
-      <actionType>Tạo một thao tác của Type</actionType>
+      <actionType>Tạo kiểu thao tác</actionType>
     </label>
   </UIActionTypeForm>
   <PopupComponent>
@@ -1966,8 +1966,8 @@
       <newState>Trạng thái mới</newState>
       <user>Người dùng</user>
       <description>Mô tả</description>
-      <version>Phiên bản</version>
-      <visibility>Khả năng hiển thị</visibility>
+      <version>Phiên bản: </version>
+      <visibility>Khả năng hiển thị: </visibility>
     </header>
     <action>
       <Close>Đóng</Close>
@@ -2038,5 +2038,50 @@
       <close>Đóng</close>
     </action>
   </UICategoriesSelector>
+  
+  <!--
+  ########Since ECM 2.3##################
+  -->
+  <UIUserSelector>
+    <label>
+      <option>
+        <userName>Tên đăng nhập</userName>
+        <lastName>Họ</lastName>
+        <firstName>Tên</firstName>      
+        <email>Hòm mail</email>
+      </option>
+      <group>Nhóm: </group>
+      <searchUser>Tìm kiếm</searchUser>
+      <userName>Tên đăng nhập</userName>
+      <lastName>Họ</lastName>
+      <firstName>Tên</firstName>      
+      <email>Hòm mail</email>
+      <actions>Thao tác</actions>
+      <Add>Thêm</Add>      
+      <Close>Đóng</Close>
+    </label>
+    <header>
+      <action>Thao tác</action>
+    </header>
+  </UIUserSelector>
+  
+  <UIPageIterator>
+    <label>
+      <totalPage>Tổng số trang</totalPage>
+      <backTenPages>Quay lại 10 trang</backTenPages>
+      <previous>Trang trước</previous>
+      <next>Trang tiếp theo</next>
+      <nextTenPages>Tiếp 10 trang</nextTenPages>
+    </label>
+  </UIPageIterator>
+  
+  <UIPublicationForm>
+    <label>
+      <nodeName>Tên node: </nodeName>
+      <lifecycleName>Tên vòng đời: </lifecycleName>
+      <stateName>Tên trạng thái: </stateName>
+    </label>    
+  </UIPublicationForm>
+  
 </bundle>
 

@@ -1136,7 +1136,7 @@
   -->
   <UIECMFilterForm>
     <label>
-      <selectScript>Lựa chọn phân loại</selectScript>
+      <selectScript>Chọn loại</selectScript>
     </label>
   </UIECMFilterForm>
   <!--
@@ -1675,6 +1675,13 @@
       <folderOnly>Thư mục</folderOnly>
       <unstructuredFolder>Không cấu trúc thư mục</unstructuredFolder>
     </label>    
-  </DriveInputSet>  
+  </DriveInputSet>
+  <QueriesPermissionBrowse>
+    <label>
+      <selectGroup>Chọn nhóm</selectGroup>
+      <selectUser>Chọn người dùng</selectUser>
+      <selectMembership>Chọn kiểu thành viên</selectMembership>
+    </label>
+  </QueriesPermissionBrowse>  
 </bundle>
 

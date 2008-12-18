@@ -5,7 +5,7 @@
 			<div class="FormContainer">
 			  <table class="UIFormGrid">
 					<tr>
-						<td class="FieldLabel">Visibility:</td>
+						<td class="FieldLabel"><%=_ctx.appRes("UIPublicationForm.label.visibility")%></td>
 						<td class="FieldComponent">
 							<% uiform.renderField(uicomponent.getChildById("visibility")) %>
 						</td>
@@ -13,7 +13,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="FieldLabel">State:</td>
+						<td class="FieldLabel"><%=_ctx.appRes("UIPublicationForm.label.state")%></td>
 						<td class="FieldComponent">
 						  <% uiform.renderField(uicomponent.getChildById("state")) %>
 						</td>

@@ -10,19 +10,19 @@
 			<div class="FormContainer">
 				<table class="UIFormGrid">
 					<tr>
-						<td class="FieldLabel">Node name:</td>
+						<td class="FieldLabel"><%=_ctx.appRes("UIPublicationForm.label.nodeName")%></td>
 						<td class="FieldComponent">
 							<%=uicomponent.getNodeName()%>
 						</td>
 					</tr>
 					<tr>
-						<td class="FieldLabel">Lifecycle name:</td>
+						<td class="FieldLabel"><%=_ctx.appRes("UIPublicationForm.label.lifecycleName")%></td>
 						<td class="FieldComponent">
 							<%=uicomponent.getLifeCycleName()%>
 						</td>
 					</tr>
 					<tr>
-						<td class="FieldLabel">State name:</td>
+						<td class="FieldLabel"><%=_ctx.appRes("UIPublicationForm.label.stateName")%></td>
 						<td class="FieldComponent">
 							<%=uicomponent.getStateName()%>
 						</td>
