@@ -20,9 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
-
 import javax.jcr.Session;
-
 import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
@@ -44,6 +42,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIFormInputSet;
 import org.exoplatform.webui.form.UIFormRadioBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
+import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTabPane;
 
 /**
@@ -71,6 +70,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
   private boolean isAddNew_ = true ;  
   final static public String[] ACTIONS = {"Save", "Refresh", "Cancel"} ;
   final static public String POPUP_DRIVEPERMISSION = "PopupDrivePermission" ;
+  private String membershipString = "";
 
   public UIDriveForm() throws Exception {
     super("UIDriveForm") ;
@@ -92,9 +92,22 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
       return id ;
     }    
   }
-
+  
   public void updateSelect(String selectField, String value) {
-    getUIStringInput(selectField).setValue(value) ;
+    UIFormStringInput uiStringInput = getUIStringInput(selectField);
+    if (selectField.equals(UIDriveInputSet.FIELD_PERMISSION)){
+      String membership = value.toString(); 
+      String valuePermissions = uiStringInput.getValue(); 
+      if ((membership != null) && (valuePermissions.indexOf(membership) < 0)){
+        if (valuePermissions.length() > 0)
+          valuePermissions += "," + membership;
+        else
+          valuePermissions += membership;
+      }        
+      uiStringInput.setValue(valuePermissions);
+    } else {
+      uiStringInput.setValue(value.toString());
+    }
     UIDriveManager uiContainer = getAncestorOfType(UIDriveManager.class) ;
     for(UIComponent uiChild : uiContainer.getChildren()) {
       if(uiChild.getId().equals(POPUP_DRIVEPERMISSION) || uiChild.getId().equals("JCRBrowser")
@@ -243,12 +256,20 @@ public class UIDriveForm extends UIFormTabPane implements UISelector {
   }
 
   static public class AddPermissionActionListener extends EventListener<UIDriveForm> {
-    public void execute(Event<UIDriveForm> event) throws Exception {
-      UIDriveForm uiDriveForm = event.getSource() ;
-      UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class) ;
-      String membership = uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_PERMISSION).getValue() ;
-      uiManager.initPopupPermission(membership) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+    public void execute(Event<UIDriveForm> event) throws Exception {      
+      UIDriveForm uiDriveForm = event.getSource();
+      UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class);      
+      String membership = uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_PERMISSION).getValue();      
+      if ((membership != null) && (uiDriveForm.membershipString.indexOf(membership) < 0)){
+        if (uiDriveForm.membershipString.length() > 0)
+          uiDriveForm.membershipString += "," + membership;
+        else
+          uiDriveForm.membershipString += membership;
+      }        
+      uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_PERMISSION).setValue(uiDriveForm.membershipString);
+      
+      uiManager.initPopupPermission(uiDriveForm.membershipString);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
     }
   }
 

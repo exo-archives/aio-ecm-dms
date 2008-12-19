@@ -159,6 +159,13 @@ public class UIDrivesBrowser extends UIContainer {
             break ;
           }
         }
+        for(String permission : drive.getAllPermissions()) {
+          String[] arrPer = permission.split(":/");
+          if(groups.contains("/" + arrPer[1]) && !groupDrives.contains(drive)) {
+	        groupDrives.add(drive);
+	        break;
+          }
+        }
       } 
     }
     Collections.sort(groupDrives) ;
