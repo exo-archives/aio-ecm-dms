@@ -1,9 +1,0 @@
-<forms>
-
-  <form>
-    <!-- The Start name is an empty String in the Bonita implementation -->
-    <state-name></state-name>
-    <delegated-view>true</delegated-view>
-  </form>
-
-</forms>
