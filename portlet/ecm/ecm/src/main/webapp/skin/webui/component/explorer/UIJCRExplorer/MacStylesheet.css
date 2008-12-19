@@ -1,0 +1,1032 @@
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * August 01, 2006
+ * version: $Id$
+ */
+
+/*############################## -- Begin UIJCRExplorer -- ##############################*/
+.UIJCRExplorerPortlet .UIJCRExplorer {
+  background: white;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle {
+  margin: 15px auto;
+  border: solid 1px #b7b7b7;
+  width: 95%;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UITabPane {
+	height: auto;
+}
+
+.UIJCRExplorerPortlet .WorkingAreaWithHelp .UIFormWithTitle {
+  width: 99.7%;
+  margin: 0px auto;
+  background: #efefef;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .Separator {
+  width: 2px;
+  background: url('DefaultSkin/background/LineDecorator2x1.gif') repeat-y center center;
+}
+
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+	width: 100%;
+	padding: 0px;
+}
+
+.UIJCRExplorer .UITabPane {
+	padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .HorizontalLayout {
+	padding-top: 10px;
+	background: url('MacSkin/background/Background1x4.png') repeat;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea {
+	width: 100%;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UIResizableBlock {
+	height: 320px;
+	overflow: auto;
+}
+
+.UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator {
+	width: 90%;
+}
+
+.UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator .PageIteratorContainer {
+	float: none;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .UIContextMenuContainer {
+	width: 130px;
+}
+
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .rootNodeInfo .UIFormInputSet {
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIFormWithTitle .HorizontalLayout .rootNodeInfo .FormContainer {
+	padding: 0px;
+	background: none;
+}
+
+
+/*======================== -- End UIJCRExplorer -- ==========================================*/
+
+/*======================== -- Begin UIDocumentWorkspace -- #========================*/
+.UIJCRExplorerPortlet .UIListView {
+	border: solid 1px white;
+	border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl {
+  float: left;      
+  font-size: 11px ;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl th {
+  line-height: 19px;
+  text-align: left;
+  padding: 0px 5px;
+  border: solid 1px #b7b7b7;
+  font-weight: normal;
+  background: url('DefaultSkin/background/ThGridRepeatBg1x19.gif') repeat-x;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl td {
+  line-height: 24px;
+  padding: 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .OverHeader {
+  background: url('DefaultSkin/background/OverThGridRepeatBg1x19.gif') repeat-x center;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .HeaderLabel {
+  float: left;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .SortButton {
+  float: left;
+  margin: 2px 5px 0px 2px;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .Icon16x16 {
+  float: left;
+  margin: 3px 5px 0px 2px;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel {
+  padding-left: 5px;
+  color: #058ee9;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel a {
+  color: #0766e7;
+}
+
+.UIJCRExplorerPortlet .UIListView .UIGridControl .NodeLabel a:hover{
+  color: #fb8404;
+}
+
+/*############################## -- Begin MenuPopup -- ##############################*/
+
+.UIJCRExplorerPortlet .UIMenuPopup {
+  height: 23px;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent {
+  border: solid 1px #6a6a6b;
+  background-color: white;
+  width: 150px;
+  position: absolute;
+  display: none;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .SelectContentContainer {
+  border: solid 1px #b7b7b7;
+  background-color: #f4f4f4;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .NormalItem {
+  clear: both;
+  line-height: 30px;
+  cursor: pointer;
+  margin-bottom: 2px;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .SelectedItem {
+  clear: both;
+  line-height: 30px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  background: #d6ddef;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .SelectedNav {
+  line-height: 30px;
+  cursor: pointer;
+  margin-bottom: 2px;
+  background: #d6ddef;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .ItemIcon {
+  float: left;
+  margin: 6px 6px 3px 6px;
+  width: 16px;
+  height:16px;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .ItemLabel {
+  font-size: 11px;
+  margin-left: 10px;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .SeparatorLine {
+  margin: 5px;
+  background: #919192;
+  height: 1px;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .SubMenu {
+  margin-left: 130px ;
+  background: #ffffff ;
+}
+
+.UIJCRExplorerPortlet .UIMenuPopup .MenuItemContainer {
+  padding-left: 10px ;
+}
+/*############################## -- End UIMenuPopup   -- ##############################*/
+.UIJCRExplorerPortlet .UIThumbnailsView {
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconsContainer {
+  padding-left: 10px;;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox {
+  width: 100px;
+  float: left;
+  margin: 10px 3px 5px 3px;
+  height: 110px;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer {
+  width: 80px;
+  height: 70px;
+  border: solid 1px #eeeeee;
+  background: #f8f8f8;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIcon {
+  width: 48px;
+  height: 48px;
+  margin: 9px auto 0px auto;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel {
+  text-align:center;
+  width: 100px;
+  line-height: 24px; vertical-align: middle;
+  font-size: 11px;
+  height: 30px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a {
+  color: #000000;
+  text-align:center;
+  cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a:hover {
+  color: blue;
+}
+
+/*############################## -- End UIThumbnailsView -- ##############################*/
+
+/*############################## -- BEGIN UIDocumentInfo -- ##############################*/
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
+	height: 18px;
+  background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .HeaderBG {
+  background: url('/ecm/skin/images/event/EventFrameBG.gif') repeat-x; 
+  margin-bottom: 1px;
+  padding: 0px 5px 0px 5px; 
+  height: 18px;
+  border: solid 1px #bdbdbd;
+  border-bottom: none;
+}
+
+
+/*############################## -- END UIDocumentInfo -- ##############################*/
+
+/*===========================Folder Form=====================*/
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFolderForm {
+	width: 560px;
+	margin: 10px auto;
+}
+
+/*===========================DocumentFormController=====================*/
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController {
+	padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UITabPane {
+  width: 97%;
+  margin: auto;
+  background: url('MacSkin/background/Background1x4.png');
+  border: 1px solid #e1e1e1;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UIFormWithTitle {
+  border: 1px solid #e1e1e1;
+  width: auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentFormController .UIFormGrid .FieldLabel {
+	width: auto;
+}
+
+.UIJCRExplorerPortlet .UIDocumentFormController .UISelectDocumentForm .HorizontalLayout {
+  padding: 10px 0px; 
+}
+
+.UIJCRExplorerPortlet .ProgressBarFrame { 
+	width: 310px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .SelectFileFrame { 
+	overflow: hidden;
+	margin: 0px;
+	width: auto;
+}
+
+.UIJCRExplorerPortlet  .FileNameLabel {
+	width: auto;
+	padding: 0px;	
+}
+
+.UIJCRExplorerPortlet .ProgressBar {
+	margin-left: 0px;
+}
+
+/*===========================TabContainer====================*/
+
+.UIJCRExplorerPortlet .UIPopupMessages .TabsContainer {
+  margin: auto;
+}
+
+/*===========================UIUploadForm====================*/
+
+.UIJCRExplorerPortlet .UIUploadManager {
+  width: 95%;
+  margin: 10px auto;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .WorkingAreaWithHelp .UIFormWithTitle {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .ProgressBarFrame .ProgressBar { 
+	margin-left: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .SelectFileFrame { 
+	width: 330px;
+	overflow: hidden;
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIUploadForm .FileNameLabel {
+	width: auto;
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIUploadManager .UIExternalMetadataForm {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIWatchDocumentForm {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIWatchDocumentForm .FormContainer {
+  width: 450px;
+  margin: auto;
+}
+
+/*=============================UITaggingForm=======================*/
+
+.UIJCRExplorerPortlet .UITaggingForm {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .HorizontalLayout .UIFormInputSet {
+	padding: 0px;
+	width: auto;
+}
+  
+.UIJCRExplorerPortlet .UITaggingForm .UIFormGrid td.FieldLabel {
+  width: 90px;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .UIFormGrid .Introduction {
+  padding-left: 5px;
+  color: #ef5604;
+}
+
+.UIJCRExplorerPortlet .UITaggingForm .ActionField {
+	float: left ;
+	margin-bottom: 3px;
+}
+
+/*==================================UIMultiLanguageForm==============================*/
+
+.UIJCRExplorerPortlet .UIMultiLanguageForm .FormContainer {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .WorkingAreaWithHelp .UIFormWithTitle {
+   width: auto;
+  border: solid 1px #b7b7b7;
+  border-top: none;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIFormWithTitle {
+	border: solid 1px #b7b7b7;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UILanguageTypeForm .UIFormWithTitle {
+	border: solid 1px #b7b7b7;
+	margin-bottom: 10px;
+}
+
+/*================================UIPropertyForm=================================*/
+
+.UIJCRExplorerPortlet .UIPropertyForm .HorizontalLayout .UIFormGrid {
+  width: 500px;	
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIPropertyForm .FieldComponent .MultiValueContainer  {
+	overflow: hidden;
+}
+
+/*===============================UILanguageTypeForm===================================*/
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer {
+  width: 95%;
+  margin: 10px auto;
+}
+
+.UIJCRExplorerPortlet .UIAddLanguageContainer .UIUploadManager .UIFormWithTitle {
+	border: none;
+}
+/*=============================UICommentForm=======================*/
+
+.UIJCRExplorerPortlet .UICommentForm  {
+  padding: 10px ;
+}
+
+.UIJCRExplorerPortlet .UICommentForm .UIFormGrid .FieldLabel  {
+	width: auto;
+}
+
+/*================================UISimpleSearch=================================*/
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid {
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .UIFormGrid .FieldLabel {
+  width: 135px;
+}
+
+.UIJCRExplorerPortlet .UISimpleSearch .HorizontalLayout .UIFormInputSet {
+  padding-bottom: 0px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer  .UIConstraintsForm  {
+  margin-top: 10px;
+}
+
+.UIJCRExplorerPortlet .UIConstraintsForm .UIFormWithTitle  {
+	margin-top: 10px;
+	border: solid 1px #b7b7b7;
+	width: auto;
+	padding-left: 5px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm {
+	padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UISelectPropertyForm td.FieldLabel {
+  text-transform: capitalize;
+}
+
+.UIJCRExplorerPortlet .EditQueryForm {
+  width: 97%;
+  margin: 10px auto;
+}
+
+.UIJCRExplorerPortlet .UISaveQueryForm  {
+ 	padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UISaveQueryForm .UIFormGrid .FieldLabel {
+  width: 80px;
+}
+/*================================UIJCRAdvancedSearch=================================*/
+
+.UIJCRExplorerPortlet .UIJCRAdvancedSearch .FormContainer {
+  width: 550px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIFormWithTitle .HorizontalLayout .FormContainer {
+  padding: 0px;
+  border: none;
+  width: 500px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddIcon16x16 {
+  margin-left: 5px;
+  float: none;
+}
+
+/*================================UIMetadataSelectForm=================================*/
+
+.UIJCRExplorerPortlet .UIMetadataSelectForm {
+	width: 95%;
+	margin: 10px auto;
+}
+
+.UIJCRExplorerPortlet .UIMetadataSelectForm .FormContainer {
+	width: 400px;
+	margin: auto;
+}
+
+/*================================UINodeTypeSelectForm=================================*/
+
+.UIJCRExplorerPortlet .UISearchContainer .UISearchResult {
+	margin: auto;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UISearchResult .UIGrid td {
+	padding: 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UISearchContainer .UINodeTypeSelectForm {
+	width: 95%;
+	margin: 10px auto;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIPopupWindow .UITabContent .UIArticle {
+	border: solid 1px #cdcdcd;
+	padding: 5px;
+}
+
+.UIJCRExplorerPortlet .UIRelationManager .UITabPane {
+	width: 95%;
+	margin: 10px auto;
+	padding: 0px;
+}
+
+/*================================UIActionContainer=================================*/
+
+.UIJCRExplorerPortlet .UIActionContainer .UIActionTypeForm .UIFormWithTitle {
+  border-bottom: none;
+  padding-bottom: 8px;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIJCRBrowser{
+  width: 95%;
+  margin: auto;
+}
+
+.UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList {
+	padding-bottom: 8px ;
+}
+
+.UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIFormWithTitle {
+	background: white;
+	border: solid 1px #E1E1E1;
+	width: 100%;
+	margin: 0px;
+}
+
+.UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
+	padding: 1px;
+	border: solid 1px #B1B0B0;
+}
+
+.UIJCRExplorer .UIActionContainer .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
+	background: white;
+}
+
+.UIJCRExplorer .UIPopupWindow .UIActionContainer .UIJCRBrowser .UIWorkspaceList .FieldLabel {
+	width: 100px;
+}
+
+.UIJCRExplorer .UIWorkspaceList .UIFormGrid select {
+	width: 100px;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer {
+	border: none;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle {
+	border: none;
+}
+
+.UIJCRExplorerPortlet .UIActionContainer .UIFormWithTitle a .ActionIcon {
+  cursor: pointer;
+  float: none;
+  margin-left: 5px;
+}
+
+/*================================UIActionList=================================*/
+
+/*================================UIPropertyForm=================================*/
+
+.UIJCRExplorerPortlet .UIPropertyForm .FieldComponent	.MultiValueContainer {
+  overflow: hidden;
+}
+
+/*================================.UIExportNode=================================*/
+
+.UIJCRExplorerPortlet .UIExportNode .UIFormGrid {
+  width: 400px;
+  margin: auto;
+}
+
+.UIJCRExplorerPortlet .UIExportNode .UIForm .HorizontalLayout {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIExportNode .UIFormWithTitle {
+  border: solid 1px #b7b7b7;
+}
+/*================================.UIImportNode=================================*/
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .ProgressBarFrame { 
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormUploadInput .SelectFileFrame { 
+	margin: 0px;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIForm .HorizontalLayout {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle .FileNameLabel {
+  width: auto;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIForm .HorizontalLayout {
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIImportNode .UIFormWithTitle {
+  border: solid 1px #b7b7b7;
+}
+
+/*================================.UIReferencesList=================================*/
+
+.UIJCRExplorerPortlet .UIReferencesList {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIReferencesList .UIPageIterator {
+  width: 98%;
+}
+
+/*================================UIViewMetadataManager=================================*/
+
+.UIJCRExplorerPortlet .UIViewMetadataManager .UITabPane {
+  width: 95%;
+  margin: 10px auto;
+  padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UIViewMetadataManager .UIViewMetadataForm {
+  padding: 10px;
+}
+
+/*================================UINodeTypeInfo=================================*/
+
+.UINodeTypeInfo .NavigationButtonContainer {
+	display: none;
+	float: right;
+	cursor: pointer;
+}
+
+/*================================UIGrid=================================*/
+
+.UIJCRExplorerPortlet .UIGrid td {
+  border: solid 1px #cfcfcf;
+}
+
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .FieldContainer .UIFormMultiValueInputSet  {
+	float: left ;
+	margin: 2px 10px 0px 5px ;
+}
+
+/*=================================UIActionListContainer==============================*/
+
+.UIJCRExplorerPortlet  .UIActionListContainer .UIFormWithTitle  {
+  margin: 10px auto;
+  width: 95%;
+  border: none;
+}
+
+.UIJCRExplorerPortlet .UIActionListContainer .UIFormGrid .FieldComponent a {
+  padding: 3px;
+}
+
+.UIJCRExplorerPortlet .UIActionListContainer .UIFormGrid .FieldComponent .ActionIcon {
+  float: none;
+}
+/*================================UIPermissionManager=================================*/
+.UIJCRExplorerPortlet .UIPermissionManager {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPageIterator {
+  width: 100%;
+}
+
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIPermissionInfo {
+  padding-bottom: 8px;
+}
+
+.UIJCRExplorerPortlet .UIPermissionManager .UIGroupMembershipSelector {
+	padding: 10px;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipTitle {
+	border: none;
+	border-bottom: 1px solid #b7b7b7;
+}
+
+.UIJCRExplorer .UIPermissionManager .UIGroupMembershipSelector .MembershipSelector .OverflowContainer {
+	border: none;
+}
+
+/*=================================UICategoryManager==============================*/
+
+.UIJCRExplorer .UIJCRBrowser {
+	width: 95%;
+	margin: auto;
+	padding: 10px 0px;
+}
+
+.UIJCRExplorer .UIJCRBrowser .UIWorkspaceList {
+	padding-bottom: 8px ;
+	width: 98.5%;
+}
+
+.UIJCRExplorer  .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle {
+	border: solid 1px white;
+}
+
+.UIJCRExplorer  .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .HorizontalLayout {
+	background: white;
+	padding: 5px 0px;
+}
+
+.UIJCRExplorer  .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .UIForm {
+	padding: 1px;
+	border: solid 1px #B1B0B0;
+}
+
+.UIJCRExplorer .UIPopupWindow .UITabPane .UIJCRBrowser .UIWorkspaceList .UIFormWithTitle .FieldLabel{
+	width: 100px;
+}
+
+.UIJCRExplorer .UIWorkspaceList .UIFormGrid select{
+	width: 100px;
+}
+
+.UIJCRExplorer .UIRenameForm {
+	padding: 10px;
+}
+
+.UIJCRExplorer .UIRenameForm .FormContainer {
+	width: 500px;
+	margin: auto;
+}
+
+/*================================DecoratorBoxNested=================================*/
+
+.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16 {
+  margin-right: 3px;
+}
+
+.UIJCRExplorerPortlet .UIPropertyTab .MultiValue {
+  width: 50px;
+  margin: auto;
+}
+
+.UIJCRExplorer .WorkKofax .UIGrid {
+	border-top: none;
+}
+
+.UIJCRExplorer .WorkKofax .UIGrid td{
+	border-top: solid 1px #cfcfcf;
+	line-height: 26px;
+}
+
+/*====================================UIActivateVersion==================================*/
+
+.UIJCRExplorer .UIActivateVersion {
+	border: solid 1px #b7b7b7;
+	background: url('MacSkin/background/Background1x4.png') repeat;
+	margin: 10px;
+}
+
+/*====================================UIActivePublication==================================*/
+
+.UIJCRExplorer .UIActivePublication {
+	border: solid 1px #b7b7b7;
+	background: url('MacSkin/background/Background1x4.png') repeat;
+	margin: 10px;
+}
+
+/*====================================UIActivateAuditing==================================*/
+
+.UIJCRExplorer .UIActivateAuditing {
+	border: solid 1px #b7b7b7;
+	background: url('MacSkin/background/Background1x4.png') repeat;
+	margin: 10px;
+}
+
+/*====================================UISavedQuery==================================*/
+
+.UIJCRExplorer .UISavedQuery {
+	padding: 10px;
+}
+
+.EmptyGrid {
+  width: 100px ;
+  padding-top: 10px;
+  font-style: italic;
+  margin: auto;
+}
+
+/*====================================UIPropertyTab==================================*/
+
+.UIJCRExplorer .UIPropertyTab {
+	width: 95%;
+	margin: auto;
+	padding: 10px 0px;
+}
+
+/*====================================MultiValueContainer==================================*/
+
+.UIJCRExplorer .MultiValueContainer .MultiFieldAction {
+	margin-left: 5px;
+}
+
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput {
+	margin-bottom: 5px;
+}
+
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput .MultiFieldAction {
+	margin: 4px 3px 0px 3px;
+}
+
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput .SelectFileFrame {
+	margin: 0px;
+}
+
+.UIJCRExplorer .MultiValueContainer .UIFormUploadInput .FileNameLabel {
+	width: auto;
+	padding: 0px;
+}
+
+/*############################## -- End UIDocumentWorkspace -- ##############################*/
+/*==========================UIUserSelector==============================*/
+.UIUserSelector .SelectUserContainer{
+ padding: 8px;
+}
+
+.UIUserSelector .SelectUserContainer{
+ background: #f3f3f3;
+ padding: 16px;
+ border: 1px solid #b7b7b7;
+}
+
+.UIUserSelector .InsertAddressContainer {
+	padding: 10px;
+	border: 1px solid #c0c0c0;
+}
+
+.UIUserSelector .AddressContainer {
+	padding-top: 10px;
+}
+
+.UIUserSelector .UIGrid th {
+	background: url('background/ThGridTitle1x20.gif') repeat-x;
+	line-height: 17px; height: 18px;
+	text-align: left;
+	padding: 0px 5px;
+}
+
+.UIUserSelector .UIGrid th input {
+	text-align: center;
+	margin: 2px 0px 0px 0px;
+}
+
+.UIUserSelector .UIGrid tbody {
+	background: white;	
+	padding-bottom: 10px;
+}
+
+.UIUserSelector .UIGrid td {
+	height: 23px;
+	padding: 4px 0px 0px 5px;
+}
+
+.UIUserSelector .UIGrid .BorderAddress {
+	border-right: 1px solid #e8e8e8;
+}
+
+/*********************************************UISearch*****************************************/
+
+.UIUserSelector .UIAddressSearchForm {
+	width: auto;
+	float:left;
+}
+
+.UIUserSelector .UIAddressSearchForm input {
+	float: left;
+	width: 200px;
+	height: 16px;
+	font-size: 11px;
+}
+
+.UIUserSelector .UIAddressSearchForm .SearchIcon {
+  float: left;
+  height: 20px; width: 24px;
+  margin-left: 10px;
+}
+
+.UIUserSelector .UIAddressSearchForm .SearchTitle {
+	float: left;
+	line-height: 25px;
+	margin: 5px 0px;
+	color: #555; 
+}
+.UIUserSelector .AddressesGroup {
+	width: auto;
+	float: left;
+	height: 32px;
+	text-align: right;
+}
+
+.UIUserSelector .AddressesGroup .AddressLabel {
+	float: left;
+	padding: 0px 4px;
+	text-align: right;
+}
+
+.UIUserSelector .AddressesGroup select {
+	width: 160px;
+	font-size: 11px;
+	line-height: 0px;
+}
+.UIUserSelector .GroupSelect {
+	float:left;
+	padding-top: 10px;
+	line-height: 0px;
+}
+/*********************************************ListAddress*****************************************/
+
+.UIUserSelector .ListAddress {
+	background: white;
+	overflow-y: auto;
+	overflow-x: hidden;
+	border: 1px solid #b7b7b7;
+}
+
+
+.UIUserSelector .ListAddress .UIGrid {
+	border-top: none;
+	border-left: none;
+	border-right: none;
+}
+
+.UIUserSelector .ListAddress .UIGrid .BlueDownArrowIcon{
+  padding: 0px 10px 0px 4px; 
+  width: 34px;
+  float: left;
+  cursor: pointer;
+}
+
+.UIUserSelector .ListAddress .UIGrid thead {
+	border: none;
+}
+
+.UIUserSelector .ListAddress .UIGrid th {
+	border-left: none;
+	border-top: none;
+}
+
+.UIUserSelector .ListAddress .UIGrid td {
+	border-left: none;
+}
+.UIUserSelector .QuickSet {
+	float:right;
+	padding-top: 10px;
+}
+
+.UIUserSelector .FilterSelect {
+	float:left;
+	line-height: 0px;
+	margin-left: 4px;
+}
+
+.UIUserSelector .FilterSelect select{
+	font-size: 10px;
+	height: 18px;
+}
+/*======================================================================*/

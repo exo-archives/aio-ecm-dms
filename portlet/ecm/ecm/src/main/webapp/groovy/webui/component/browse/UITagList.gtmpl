@@ -1,0 +1,26 @@
+<div class="UITagList"> 
+  <div class="TagmapHolder">
+    <div class="TagmapTitle">
+    	<div class="Icon"><span></span></div>
+      <div class="TagLabel"><%=_ctx.appRes(uicomponent.id + ".label.tagTitle")%></div>
+      <div style="clear:left;"><span></span></div>
+    </div>
+    <div class ="TagmapContent"> 
+      <%
+		    def tagStyle = uicomponent.getTagStyle() ;  
+        for(String tag : uicomponent.getTagLink()){
+          String tagLink = uicomponent.event('ViewByTag',tag.getPath()) ;
+          String tagStatus = "" ;
+          String style = "" ;
+          String tagkey = "" ; 
+          if(tag.hasProperty("exo:tagStatus")) {
+            tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
+            style = "Style = '" + tagStyle.get(tagStatus) +"'" ;
+          }
+          tagkey = tag.getName() ;                  
+          println "<a href=\"$tagLink\" $style>$tagkey</a>" ;
+        }
+      %>
+    </div>  
+  </div>  
+</div>

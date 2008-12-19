@@ -1,0 +1,67 @@
+<%
+	/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trongtt@gmail.com
+ * Sep 29, 2006
+ * 11:57:24 AM 
+ */
+%>
+<%
+  import org.exoplatform.ecm.webui.component.admin.taxonomy.TaxonomyNode ;
+  TaxonomyNode rootNode = uicomponent.getRootTaxonomyNode() ;
+  
+  public void writeNodes(List nodes, String clazz) {
+    int padding ;
+    for(node in nodes) {
+      if(clazz == "Even") clazz = "" ;
+      else clazz = "Even" ;
+      padding = (node.level * 20) ;
+	    println """
+			  <div class="Node$clazz" style="padding-left: ${padding}px;">
+				    <div class="NodeActionsContainer">
+			""";
+
+			println "<div class=\"Icon16x16 Add16x16Icon\" onclick=\"" + uicomponent.event("Add",node.getPath()) + "\" title=\"" +  <%=_ctx.appRes("UITaxonomyManager.title.add")%> + "\"></div>" ;
+			println "<div class=\"Icon16x16 Copy16x16Icon\" onclick=\"" + uicomponent.event("Copy",node.getPath()) + "\" title=\"" + <%=_ctx.appRes("UITaxonomyManager.title.copy")%> + "\"></div>" ;
+			println "<div class=\"Icon16x16 Cut16x16Icon\" onclick=\"" + uicomponent.event("Cut",node.getPath()) + "\" title=\"" + <%=_ctx.appRes("UITaxonomyManager.title.cut")%> + "\"></div>" ;
+			println "<div class=\"Icon16x16 Paste16x16Icon\" onclick=\"" + uicomponent.event("Paste",node.getPath()) + "\" title=\"" + <%=_ctx.appRes("UITaxonomyManager.title.paste")%> + "\"></div>" ;
+			println "<div class=\"Icon16x16 Delete16x16Icon\" onclick=\"" + uicomponent.event("Remove",node.getPath()) + "\" title=\"" + <%=_ctx.appRes("UITaxonomyManager.title.remove")%> + "\"></div>" ;
+			println "</div>" ;
+			if(node.getChildrenSize() > 0) {
+	      if(node.isExpanded()) {
+	  			println "<div class=\"ColapseIcon\" onclick=\"" + uicomponent.event("Select",node.getPath()) + "\"><span></span></div>" ;
+					println "<div class=\"Icon24x24 CollapseFolder24x24Icon\"><span></span></div>" ;
+	      } else {
+	  			println "<div class=\"ExpandIcon\" onclick=\"" + uicomponent.event("Select",node.getPath()) + "\"><span></span></div>" ;
+					println "<div class=\"Icon24x24 ExpandFolder24x24Icon\"><span></span></div>" ;
+	      }
+			} else {
+  			println "<div class=\"NoneIcon\"><span></span></div>" ;
+				println "<div class=\"Icon24x24 ExpandFolder24x24Icon\"><span></span></div>" ;
+			}
+			println """
+				    <div class="NodeLabel">$node.name</div>
+			  </div>
+	    """;
+	    if(node.getChildrenSize() > 0 && node.isExpanded()) writeNodes(node.getChildren(), clazz) ;
+    }
+  }
+	String clazz = "" ;
+%>
+<div class="UITaxonomyManager" id="UITaxonomyManager">
+  <div class="UITaxonomyContainer">
+  	<div class="SubTaxonomyContainer">
+		  <div class="HomeNode">
+  		  <div class="NodeActionsContainer">
+			    <div class="Icon16x16 Add16x16Icon" onclick="<%=uicomponent.event("Add",rootNode.getPath());%>" title="<%=_ctx.appRes("UITaxonomyManager.title.add")%>"><span></span></div>
+			    <div class="Icon16x16 Paste16x16Icon" onclick="<%=uicomponent.event("Paste",rootNode.getPath())%>" title="<%=_ctx.appRes("UITaxonomyManager.title.paste")%>"><span></span></div>
+	      </div>
+		    <div class="Icon24x24 UITaxonomyManagerIcon"><span></span></div>
+		    <div class="NodeLabel">$rootNode.name</div>
+		  </div>
+		  <%writeNodes(rootNode.getChildren(), clazz)%>
+	</div>
+  </div>
+	<% uicomponent.renderChildren(); %>
+</div>
