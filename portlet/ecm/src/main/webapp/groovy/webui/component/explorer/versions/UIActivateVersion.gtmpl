@@ -1,0 +1,39 @@
+<% 
+	/**
+	 * Created by The eXo Platform SARL
+	 * Author : Le bien thuy  
+	 *          lebienthuy@gmail.com
+	 * Oct 9, 2006
+	 * version: $Id$	 
+	 */
+%>
+<div class="UIActivateVersion">
+  <div style="text-align: center; margin: 10px;"><%=_ctx.appRes(uicomponent.getId() + ".label.note")%></div>
+  <div style="text-align: center; margin: 10px;"><%=_ctx.appRes(uicomponent.getId() + ".label.question")%></div>
+	<div class="UIAction">
+	  <table class="ActionContainer"> 
+	    <tr>
+	    	<td align="center">
+		      <a href="<%=uicomponent.event("EnableVersion")%>" class="ActionButton LightBlueStyle">
+		        <div class="ButtonLeft">
+		          <div class="ButtonRight">
+		            <div class="ButtonMiddle">
+		              <%= _ctx.appRes("UIActivateVersion.label.button-active") %>
+		            </div>
+		          </div>
+		        </div>
+		      </a>
+		      <a href="<%=uicomponent.event("Cancel")%>" class="ActionButton LightBlueStyle">
+		        <div class="ButtonLeft">
+		          <div class="ButtonRight">
+		            <div class="ButtonMiddle">
+		              <%= _ctx.appRes("UIActivateVersion.label.button-cancel") %>
+		            </div>
+		          </div>
+		        </div>
+		      </a>
+	  		</td>
+	  	</tr>
+	  </table>
+	</div>  
+</div>
