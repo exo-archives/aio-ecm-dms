@@ -6,7 +6,7 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>exo.ecm.portlet.ecm.dms</artifactId>
+  <artifactId>exo.ecm.dms.portlet.ecm.</artifactId>
   <packaging>war</packaging>
   <version>${org.exoplatform.ecm.dms.version}</version>
   <name>exo-portal.portlets.ecm.dms Portlet</name>
