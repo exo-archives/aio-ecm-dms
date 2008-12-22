@@ -122,7 +122,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       log.info("Add log");
       ExoContainer container = ExoContainerContext.getCurrentContainer();   
       PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
-      String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+      String date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(new Date());
       @SuppressWarnings("hiding")
       String versionName = session.getNodeByUUID(version.getUUID()).getName();
       String[] log = {date,NON_PUBLISHED,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodeCreated",versionName,visibility};
@@ -177,7 +177,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           log.info("Add log");
           ExoContainer container = ExoContainerContext.getCurrentContainer();   
           PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
-          String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+          String date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(new Date());
           String version = session.getNodeByUUID(nodeVersionUUID).getName();
           @SuppressWarnings("hiding")
           String[] log = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodePublished",version,visibility};
@@ -261,7 +261,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           log.info("Add log");
           ExoContainer container = ExoContainerContext.getCurrentContainer();   
           PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
-          String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+          String date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(new Date());
           String version = session.getNodeByUUID(nodeVersionUUID).getName();
           @SuppressWarnings("hiding")
           String[] log = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodePublished",version,visibility};
@@ -297,7 +297,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           //Add log
           ExoContainer container = ExoContainerContext.getCurrentContainer();   
           PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
-          String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+          String date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(new Date());
           String version = session.getNodeByUUID(nodeVersionUUID).getName();
           @SuppressWarnings("hiding")
           String[] log = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.changeVisibility",newVisibility};
@@ -335,7 +335,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
           log.info("Add log");
           ExoContainer container = ExoContainerContext.getCurrentContainer();   
           PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
-          String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+          String date =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS").format(new Date());
           @SuppressWarnings("hiding")
           String[] log = {date,newState,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodeUnpublished",newVisibility};
           publicationService.addLog(node, log);

@@ -17,10 +17,13 @@
 package org.exoplatform.services.ecm.publication.plugins.webui;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
@@ -65,7 +68,7 @@ public class UIPublicationLogList extends UIComponentDecorator {
     for (int i = 0; i < array.length; i++) {
       HistoryBean bean = new HistoryBean();
       String[] currentLog=array[i];
-      bean.setDate(currentLog[0]);
+      bean.setDate(bean.formatStringByDateTime(currentLog[0]));
       bean.setNewState(currentLog[1]);
       bean.setUser(currentLog[2]);
       String[] values=new String[currentLog.length-4];
@@ -101,18 +104,22 @@ public class UIPublicationLogList extends UIComponentDecorator {
   }
   
   public class HistoryBean {
-    private String date;
+    private Date date;
     private String newState;
     private String user;
     private String description;
     
-    public String getDate() { return date; }
-    public void setDate(String date) { this.date = date; }
+    public Date getDate() { return date; }
+    public void setDate(Date date) { this.date = date; }
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
     public String getNewState() { return newState; }
     public void setNewState(String newState) { this.newState = newState; }
     public String getUser() { return user; }
     public void setUser(String user) { this.user = user; }
+    
+    public Date formatStringByDateTime(String stringInput) {      
+      return ISO8601.parse(stringInput).getInstance(Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale()).getTime();
+    }
   }
 }
