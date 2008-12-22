@@ -16,30 +16,119 @@
  */
 package org.exoplatform.services.cms.actions.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
 
-import org.exoplatform.container.ExoContainer;
-import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.component.ComponentPlugin;
-import org.exoplatform.container.xml.InitParams;
-import org.exoplatform.services.cms.actions.activation.BPActionActivationJob;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.workflow.Process;
-import org.exoplatform.services.workflow.WorkflowServiceContainer;
 
 public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin {
 
   public static final String ACTION_TYPE = "exo:businessProcessAction";
 
-  private WorkflowServiceContainer workflowServiceContainer_;
+  @Override
+  protected Class createActivationJob() throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  protected ECMEventListener createEventListener(String actionName, String actionExecutable, String repository, String srcWorkspace, String srcPath, Map variables) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  protected String getActionType() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  protected List getActions() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  protected List<RepositoryEntry> getRepositories() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  protected ManageableRepository getRepository(String repositoryName) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  protected String getRepositoryName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  protected String getWorkspaceName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getDescription() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public void setDescription(String arg0) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void setName(String arg0) {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void activateAction(String userId, String executable, Map variables, String repository) throws Exception {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void executeAction(String userId, Node actionNode, Map variables, String repository) throws Exception {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void executeAction(String userId, String executable, Map variables, String repository) throws Exception {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public String getActionExecutableLabel() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public Collection<String> getActionExecutables(String repository) throws Exception {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  public String getExecutableDefinitionName() {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  /*private WorkflowServiceContainer workflowServiceContainer_;
   private ActionConfig config_;
   private RepositoryService repositoryService_;
 
@@ -122,5 +211,5 @@ public class BPActionPlugin extends BaseActionPlugin implements ComponentPlugin 
   protected Class createActivationJob() throws Exception {
     return BPActionActivationJob.class ;
   }
-  
+  */
 }
