@@ -49,12 +49,12 @@
       <scope>compile</scope>
     </dependency>
 
-    <dependency>
+    <!--dependency>
       <groupId>org.exoplatform.ecm.workflow</groupId>
       <artifactId>exo.ecm.workflow.component.workflow.api</artifactId>
       <version>${org.exoplatform.ecm.workflow.version}</version>
       <scope>compile</scope>
-    </dependency>    
+    </dependency-->    
   </dependencies>  
 
   <build>

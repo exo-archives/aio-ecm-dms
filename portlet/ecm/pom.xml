@@ -6,7 +6,7 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>exo.ecm.dms.portlet.ecm.</artifactId>
+  <artifactId>exo.ecm.dms.portlet.ecm</artifactId>
   <packaging>war</packaging>
   <version>${org.exoplatform.ecm.dms.version}</version>
   <name>exo-portal.portlets.ecm.dms Portlet</name>
@@ -63,6 +63,7 @@
       <scope>provided</scope>
     </dependency>
 
+<!--
     <dependency>
       <groupId>org.exoplatform.ecm.workflow</groupId>
       <artifactId>exo.ecm.workflow.component.workflow.impl.jbpm.engine</artifactId>
@@ -83,7 +84,7 @@
       <version>${org.exoplatform.ecm.workflow.version}</version>
       <scope>provided</scope>
     </dependency>
-
+-->
     <dependency>
       <groupId>org.exoplatform.ecm.dms</groupId>
       <artifactId>exo.ecm.dms.component.cms</artifactId>

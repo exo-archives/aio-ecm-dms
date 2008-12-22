@@ -9,7 +9,7 @@
   <artifactId>exo.ecm.dms.web.portal</artifactId>
   <packaging>war</packaging> 
   <version>${org.exoplatform.ecm.dms.version}</version>
-  <name>eXo ECM Portal web module</name>
+  <name>eXo DMS Portal web module</name>
   
   <dependencies>
     <dependency>
@@ -36,53 +36,6 @@
 				    templates/groovy/webui/component/UIHomePagePortlet.gtmpl,
 				    templates/skin/webui/component/UIHomePagePortlet/
 				  </dependentWarExcludes>
-          <webResources>
-            <resource>
-              <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/workflow/bp/exo.ecm.workflow.bp.bonita.payraise/${org.exoplatform.ecm.workflow.version}</directory>
-              <targetPath>WEB-INF/conf/bp</targetPath>
-              <includes><include>*.jar</include></includes>
-            </resource>
-            <resource>
-              <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/workflow/bp/exo.ecm.workflow.bp.bonita.holiday/${org.exoplatform.ecm.workflow.version}</directory>
-              <targetPath>WEB-INF/conf/bp</targetPath>
-              <includes><include>*.jar</include></includes>
-            </resource>
-            <resource>
-              <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/workflow/bp/exo.ecm.workflow.bp.bonita.content.validation/${org.exoplatform.ecm.workflow.version}</directory>
-              <targetPath>WEB-INF/conf/bp</targetPath>
-              <includes><include>*.jar</include></includes>
-            </resource>
-            <resource>
-              <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/workflow/bp/exo.ecm.workflow.bp.bonita.content.backup/${org.exoplatform.ecm.workflow.version}</directory>
-              <targetPath>WEB-INF/conf/bp</targetPath>
-              <includes><include>*.jar</include></includes>
-            </resource>
-            <resource>
-              <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/workflow/bp/exo.ecm.workflow.bp.jbpm.payraise/${org.exoplatform.ecm.workflow.version}</directory>
-              <targetPath>WEB-INF/conf/bp</targetPath>
-              <includes><include>*.jar</include></includes>
-            </resource>
-            <resource>
-              <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/workflow/bp/exo.ecm.workflow.bp.jbpm.holiday/${org.exoplatform.ecm.workflow.version}</directory>
-              <targetPath>WEB-INF/conf/bp</targetPath>
-              <includes><include>*.jar</include></includes>
-            </resource>
-            <resource>
-              <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/workflow/bp/exo.ecm.workflow.bp.jbpm.content.validation/${org.exoplatform.ecm.workflow.version}</directory>
-              <targetPath>WEB-INF/conf/bp</targetPath>
-              <includes><include>*.jar</include></includes>
-            </resource>
-            <resource>
-              <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/workflow/bp/exo.ecm.workflow.bp.jbpm.content.backup/${org.exoplatform.ecm.workflow.version}</directory>
-              <targetPath>WEB-INF/conf/bp</targetPath>
-              <includes><include>*.jar</include></includes>
-            </resource>
-            <resource>
-              <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/workflow/bp/exo.ecm.workflow.bp.jbpm.content.publishing/${org.exoplatform.ecm.workflow.version}</directory>
-              <targetPath>WEB-INF/conf/bp</targetPath>
-              <includes><include>*.jar</include></includes>
-            </resource>
-          </webResources>
         </configuration>
       </plugin>
     </plugins>

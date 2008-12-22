@@ -222,8 +222,7 @@
         <org.exoplatform.pc.version>2.0.4</org.exoplatform.pc.version>
         <org.exoplatform.portal.version>2.5</org.exoplatform.portal.version>
         <org.exoplatform.ecm.dms.version>2.3-SNAPSHOT</org.exoplatform.ecm.dms.version>
-		<org.exoplatform.ecm.workflow.version>2.3-SNAPSHOT</org.exoplatform.ecm.workflow.version>
-        <exo.test.classes>Test</exo.test.classes>
+		<exo.test.classes>Test</exo.test.classes>
         <exo.test.skip>true</exo.test.skip>
         <bonita.version>3.0</bonita.version>        
       </properties>
