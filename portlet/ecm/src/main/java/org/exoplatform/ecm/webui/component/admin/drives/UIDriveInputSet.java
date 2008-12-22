@@ -73,7 +73,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     addUIFormInput(new UIFormStringInput(FIELD_WORKSPACEICON, FIELD_WORKSPACEICON, null).setEditable(false)) ;
     UIFormStringInput permissonSelectField = new UIFormStringInput(FIELD_PERMISSION , FIELD_PERMISSION , null) ;
     permissonSelectField.addValidator(MandatoryValidator.class) ;
-    permissonSelectField.setEditable(false) ;
+    permissonSelectField.setEditable(true);
     addUIFormInput(permissonSelectField) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWPREFERENCESDOC, FIELD_VIEWPREFERENCESDOC, null)) ;
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWNONDOC, FIELD_VIEWNONDOC, null)) ;
@@ -88,7 +88,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     folderOptions.add(new SelectItemOption<String>(bothLabel_, FIELD_BOTH)) ;
     addUIFormInput(new UIFormRadioBoxInput(ALLOW_CREATE_FOLDER, ALLOW_CREATE_FOLDER, folderOptions).
                    setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
-    setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
+    setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"});
     setActionInfo(FIELD_HOMEPATH, new String[] {"AddPath"}) ;
     setActionInfo(FIELD_WORKSPACEICON, new String[] {"AddIcon"}) ;
   }
