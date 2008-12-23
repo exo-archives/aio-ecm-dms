@@ -61,7 +61,8 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     addChild(UIConfigTabPane.class, null, null);    
     try {
       uiBrowseContainer.loadPortletConfig(getPortletPreferences());
-    } catch (Throwable e) {      
+    } catch (Throwable e) {
+      e.printStackTrace();
       setPorletMode(PortletMode.HELP);
     }
   }

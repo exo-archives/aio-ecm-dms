@@ -25,7 +25,7 @@
 	  <access-permissions>*:/platform/users</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>    
     <application>
-      <instance-id>portal#classic:/ecm/ContentBrowserPortlet/welcome</instance-id>
+      <instance-id>portal#classic:/dms/ContentBrowserPortlet/welcome</instance-id>
       <title>For User</title>
       <show-info-bar>false</show-info-bar>      
     </application>  

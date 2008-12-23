@@ -37,7 +37,7 @@
     </application>        
         
     <application>
-      <instance-id>group#platform/guests:/ecm/ContentBrowserPortlet/webosNews</instance-id>
+      <instance-id>group#platform/guests:/dms/ContentBrowserPortlet/webosNews</instance-id>
       <title>News</title>
       <show-info-bar>true</show-info-bar>
       <show-application-state>true</show-application-state>
@@ -45,7 +45,7 @@
     </application>
     
     <application>
-      <instance-id>group#platform/guests:/ecm/ContentBrowserPortlet/webosReadIdeas</instance-id>
+      <instance-id>group#platform/guests:/dms/ContentBrowserPortlet/webosReadIdeas</instance-id>
       <title>Read Ideas</title>
       <show-info-bar>true</show-info-bar>
       <show-application-state>true</show-application-state>
@@ -53,7 +53,7 @@
     </application>       
     
     <application>
-      <instance-id>group#platform/guests:/ecm/FastContentCreatorPortlet/webosWriteYourIdeas</instance-id>
+      <instance-id>group#platform/guests:/dms/FastContentCreatorPortlet/webosWriteYourIdeas</instance-id>
       <title>Write Ideas</title>
       <show-info-bar>true</show-info-bar>
       <show-application-state>true</show-application-state>
@@ -90,7 +90,7 @@
 	  <access-permissions>*:/platform/guests</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>    
     <application>
-      <instance-id>group#platform/guests:/ecm/ContentBrowserPortlet/news</instance-id>
+      <instance-id>group#platform/guests:/dms/ContentBrowserPortlet/news</instance-id>
       <title>News</title>
       <show-info-bar>false</show-info-bar>      
     </application>  
@@ -115,7 +115,7 @@
 	  <access-permissions>*:/platform/guests</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>    
     <application>
-      <instance-id>group#platform/guests:/ecm/ContentBrowserPortlet/ideas</instance-id>
+      <instance-id>group#platform/guests:/dms/ContentBrowserPortlet/ideas</instance-id>
       <title>Read Ideas</title>
       <show-info-bar>false</show-info-bar>      
     </application>  
@@ -130,7 +130,7 @@
 	  <access-permissions>*:/platform/guests</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>    
     <application>
-      <instance-id>group#platform/guests:/ecm/FastContentCreatorPortlet/writeyourideas</instance-id>
+      <instance-id>group#platform/guests:/dms/FastContentCreatorPortlet/writeyourideas</instance-id>
       <title>Write Your Ideas</title>
       <show-info-bar>false</show-info-bar>      
     </application>  

@@ -4,7 +4,7 @@
 	<portlet-preferences>
     <owner-type>group</owner-type>
     <owner-id>platform/guests</owner-id>
-    <window-id>group#platform/guests:/ecm/FastContentCreatorPortlet/writeyourideas</window-id>
+    <window-id>group#platform/guests:/dms/FastContentCreatorPortlet/writeyourideas</window-id>
     <preference>
         <name>repository</name>
         <value>repository</value>
@@ -30,7 +30,7 @@
    <portlet-preferences>
    	<owner-type>group</owner-type>
     <owner-id>platform/guests</owner-id>
-    <window-id>group#platform/guests:/ecm/ContentBrowserPortlet/news</window-id> 
+    <window-id>group#platform/guests:/dms/ContentBrowserPortlet/news</window-id> 
     	<preference>
         <name>repository</name>
         <value>repository</value>
@@ -141,7 +141,7 @@
     <portlet-preferences>
    	<owner-type>group</owner-type>
     <owner-id>platform/guests</owner-id>
-    <window-id>group#platform/guests:/ecm/ContentBrowserPortlet/ideas</window-id> 
+    <window-id>group#platform/guests:/dms/ContentBrowserPortlet/ideas</window-id> 
     	<preference>
         <name>repository</name>
         <value>repository</value>
@@ -252,7 +252,7 @@
    <portlet-preferences>
    	<owner-type>group</owner-type>
     <owner-id>platform/guests</owner-id>
-    <window-id>group#platform/guests:/ecm/ContentBrowserPortlet/news</window-id> 
+    <window-id>group#platform/guests:/dms/ContentBrowserPortlet/news</window-id> 
     	<preference>
         <name>repository</name>
         <value>repository</value>
@@ -363,7 +363,7 @@
     <portlet-preferences>
 	   	<owner-type>group</owner-type>
 	    <owner-id>platform/guest</owner-id>
-	    <window-id>group#platform/guests:/ecm/ContentBrowserPortlet/welcome</window-id> 
+	    <window-id>group#platform/guests:/dms/ContentBrowserPortlet/welcome</window-id> 
     	<preference>
         <name>repository</name>
         <value>repository</value>
@@ -475,7 +475,7 @@
     <portlet-preferences>
     <owner-type>group</owner-type>
     <owner-id>platform/guests</owner-id>
-    <window-id>group#platform/guests:/ecm/FastContentCreatorPortlet/webosWriteYourIdeas</window-id>
+    <window-id>group#platform/guests:/dms/FastContentCreatorPortlet/webosWriteYourIdeas</window-id>
     <preference>
         <name>repository</name>
         <value>repository</value>
@@ -501,7 +501,7 @@
    <portlet-preferences>
    	<owner-type>group</owner-type>
     <owner-id>platform/guests</owner-id>
-    <window-id>group#platform/guests:/ecm/ContentBrowserPortlet/news</window-id> 
+    <window-id>group#platform/guests:/dms/ContentBrowserPortlet/news</window-id> 
     	<preference>
         <name>repository</name>
         <value>repository</value>
@@ -612,7 +612,7 @@
     <portlet-preferences>
    	<owner-type>group</owner-type>
     <owner-id>platform/guests</owner-id>
-    <window-id>group#platform/guests:/ecm/ContentBrowserPortlet/webosReadIdeas</window-id> 
+    <window-id>group#platform/guests:/dms/ContentBrowserPortlet/webosReadIdeas</window-id> 
     	<preference>
         <name>repository</name>
         <value>repository</value>
@@ -723,7 +723,7 @@
     <portlet-preferences>
    	<owner-type>group</owner-type>
     <owner-id>platform/guests</owner-id>
-    <window-id>group#platform/guests:/ecm/ContentBrowserPortlet/webosNews</window-id> 
+    <window-id>group#platform/guests:/dms/ContentBrowserPortlet/webosNews</window-id> 
     	<preference>
         <name>repository</name>
         <value>repository</value>

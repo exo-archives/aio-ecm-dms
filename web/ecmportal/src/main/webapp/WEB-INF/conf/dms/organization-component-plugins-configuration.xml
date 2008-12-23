@@ -3,7 +3,7 @@
 	<external-component-plugins>
   	<target-component>org.exoplatform.services.organization.OrganizationService</target-component>
 	  <component-plugin>
-	    <name>ecm.new.group.event.listener</name>
+	    <name>dms.new.group.event.listener</name>
 	    <set-method>addListenerPlugin</set-method>
 	    <type>org.exoplatform.services.jcr.ext.hierarchy.impl.NewGroupListener</type>
 	    <description>description</description>
@@ -86,7 +86,7 @@
 	    </init-params> 
 	  </component-plugin>
 	  <component-plugin>
-	    <name>ecm.new.user.event.listener</name>
+	    <name>dms.new.user.event.listener</name>
 	    <set-method>addListenerPlugin</set-method>
 	    <type>org.exoplatform.services.jcr.ext.hierarchy.impl.NewUserListener</type>
 	    <description>description</description>

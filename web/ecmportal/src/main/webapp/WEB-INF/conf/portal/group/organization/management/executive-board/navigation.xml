@@ -32,7 +32,7 @@
     	</node>    	    	    	    	    	  
     </node>
        
-    <node>
+    <!--node>
       <uri>businessprocess</uri>
       <name>businessprocess</name>
       <label>#{group.executive-board.businessprocess.title}</label>
@@ -50,7 +50,7 @@
 	      <label>#{group.executive-board.businessprocess.controller}</label>
 	      <page-reference>group::organization/management/executive-board::WorkflowController</page-reference>
     	</node>    	
-    </node>
+    </node-->
             
   </page-nodes>    
 </node-navigation>

@@ -50,12 +50,12 @@
 		    <page-reference>group::platform/administrators::ECMAdmin</page-reference>
 	    </node>
 	    
-	    <node>
+	    <!--node>
 		    <uri>contentAdministration/WorkflowAdministration</uri>
 		    <name>WorkflowAdministration</name>
 		    <label>#{contentAdministration.WorkflowAdministration}</label>
 		    <page-reference>group::platform/administrators::workflowAdministration</page-reference>
-	    </node>	    	    	    	  	    	   	   
+	    </node-->	    	    	    	  	    	   	   
     </node>                                                    
   </page-nodes>
 </node-navigation>
