@@ -48,7 +48,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
   private NodeHierarchyCreator nodeHierarchyCreator_ ; 
   private ConfigurationManager cservice_ ;
   private boolean autoCreateInNewRepository_ = false ;  
-  private String predefinedViewsLocation_ = "war:/conf/ecm/artifacts";
+  private String predefinedViewsLocation_ = "war:/conf/dms/artifacts";
 
   public ManageViewPlugin(RepositoryService repositoryService, InitParams params, ConfigurationManager cservice, 
       NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
