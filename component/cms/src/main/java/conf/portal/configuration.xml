@@ -6,7 +6,6 @@
     <key>org.exoplatform.services.cms.CmsService</key>
     <type>org.exoplatform.services.cms.impl.CmsServiceImpl</type>
   </component>
-  <!--  
   <component>
 	  <key>org.exoplatform.services.cms.actions.ActionServiceContainer</key>  
 	  <type>org.exoplatform.services.cms.actions.impl.ActionServiceContainerImpl</type>
@@ -21,7 +20,6 @@
       </value-param>            
     </init-params>    
   </component>  
-  -->
   <component>
 	  <key>org.exoplatform.services.cms.categories.CategoriesService</key>  
 	  <type>org.exoplatform.services.cms.categories.impl.CategoriesServiceImpl</type>  	
