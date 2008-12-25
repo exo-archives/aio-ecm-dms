@@ -9,7 +9,7 @@
 	
   <external-component-plugins>
     <target-component>org.exoplatform.services.cms.actions.ActionServiceContainer</target-component>      
-
+ <!--
       <component-plugin>
         <name>exo:businessProcessAction</name>
         <set-method>addPlugin</set-method>
@@ -78,6 +78,7 @@
           </object-param>
         </init-params>          
       </component-plugin>
+     -->
       <component-plugin>
         <name>exo:scriptAction</name>   
         <set-method>addPlugin</set-method>
