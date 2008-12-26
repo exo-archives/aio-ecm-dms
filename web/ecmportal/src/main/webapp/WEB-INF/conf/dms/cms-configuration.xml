@@ -494,7 +494,7 @@
               	</value>
               	<value>              	
 	              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-	              		<field  name="alias"><string>documentsPendingPath</string></field>
+	              		<field  name="alias"><string>documentsTrashPath</string></field>
 	                  <field  name="path"><string>/Documents/Trash</string></field>
 	                  <field name="permissions">
 			                <collection type="java.util.ArrayList">               

@@ -80,6 +80,7 @@
     </propertyDefinitions>
   </nodeType>        
   
+  <!--
   <nodeType name="exo:workflowAction" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>
       <supertype>exo:businessProcessAction</supertype>
@@ -111,7 +112,7 @@
       </propertyDefinition>
     </propertyDefinitions>
   </nodeType>
-
+-->
   <nodeType name="exo:businessProcessModel" isMixin="false" hasOrderableChildNodes="true" primaryItemName="">
     <supertypes>
       <supertype>nt:unstructured</supertype>

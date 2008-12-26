@@ -3,7 +3,7 @@
 	<portlet-preferences>
     <owner-type>group</owner-type>
     <owner-id>platform/users</owner-id>
-    <window-id>group#platform/users:/dms/FastContentCreatorPortlet/fastcontentcreator</window-id>
+    <window-id>group#platform/users:/ecm/FastContentCreatorPortlet/fastcontentcreator</window-id>
     <preference>
         <name>repository</name>
         <value>repository</value>
@@ -29,7 +29,7 @@
    <portlet-preferences>
    	<owner-type>group</owner-type>
     <owner-id>platform/users</owner-id>
-    <window-id>group#platform/users:/dms/ContentBrowserPortlet/contentbrowser</window-id> 
+    <window-id>group#platform/users:/ecm/ContentBrowserPortlet/contentbrowser</window-id> 
     	<preference>
         <name>repository</name>
         <value>repository</value>

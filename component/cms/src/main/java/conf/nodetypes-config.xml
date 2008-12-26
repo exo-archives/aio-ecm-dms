@@ -52,7 +52,7 @@
       </propertyDefinition>
     </propertyDefinitions>
   </nodeType>
-
+<!--
   <nodeType name="exo:businessProcessAction" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>
       <supertype>exo:action</supertype>
@@ -64,7 +64,7 @@
       </propertyDefinition>
     </propertyDefinitions>
   </nodeType>
-
+-->
   <nodeType name="exo:scriptAction" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>
       <supertype>exo:action</supertype>
