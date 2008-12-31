@@ -2083,5 +2083,30 @@
     </label>    
   </UIPublicationForm>
   
+  <UITabPane>
+    <title>
+      <UIWorkflowPublicationActionForm>Workflow Publication Action</UIWorkflowPublicationActionForm>
+      <UIWorkflowPublicationViewForm>Workflow Publication View</UIWorkflowPublicationViewForm>
+    </title>
+  </UITabPane>
+  
+  <UIWorkflowPublicationActionForm>
+    <label>
+      <fieldValidator>fieldValidator</fieldValidator>
+      <fieldDestPath>fieldDestPath</fieldDestPath>
+    </label>
+  </UIWorkflowPublicationActionForm>
+  
+  <workflow_validator>
+    <title>
+      <AddPermission>Thêm quyền truy nhập</AddPermission>
+    </title>
+  </workflow_validator>
+  
+  <workflow_destpath>
+    <title>
+      <AddDestPath>Thêm đường dẫn</AddDestPath>
+    </title>
+  </workflow_destpath>
 </bundle>
 
