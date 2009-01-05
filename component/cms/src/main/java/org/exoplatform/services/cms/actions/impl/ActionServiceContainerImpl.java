@@ -323,7 +323,10 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   }
 
   public Node getAction(Node node, String actionName) throws Exception {
-    return node.getNode( EXO_ACTIONS + "/"+actionName);
+    if (node.hasNode(EXO_ACTIONS + "/"+actionName)) {
+      return node.getNode(EXO_ACTIONS + "/"+ actionName);
+    } 
+    return null;
   }
 
   public boolean hasActions(Node node) throws Exception {
