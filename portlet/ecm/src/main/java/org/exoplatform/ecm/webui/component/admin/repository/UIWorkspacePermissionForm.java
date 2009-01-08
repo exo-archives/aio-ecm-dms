@@ -16,7 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.admin.repository;
 
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.services.jcr.access.PermissionType;

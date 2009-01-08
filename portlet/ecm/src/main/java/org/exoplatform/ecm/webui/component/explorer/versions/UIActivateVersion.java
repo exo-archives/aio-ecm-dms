@@ -18,11 +18,11 @@ package org.exoplatform.ecm.webui.component.explorer.versions;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

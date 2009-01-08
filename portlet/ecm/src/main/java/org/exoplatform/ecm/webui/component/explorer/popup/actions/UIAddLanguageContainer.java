@@ -19,7 +19,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;

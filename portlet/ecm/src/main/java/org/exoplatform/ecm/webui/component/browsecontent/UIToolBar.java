@@ -24,7 +24,7 @@ import javax.portlet.PortletMode;
 
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;

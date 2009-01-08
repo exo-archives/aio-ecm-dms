@@ -18,13 +18,13 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;

@@ -26,7 +26,7 @@ import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

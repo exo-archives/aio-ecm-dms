@@ -16,8 +16,8 @@
  */
 package org.exoplatform.ecm.webui.component.explorer;
 
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;

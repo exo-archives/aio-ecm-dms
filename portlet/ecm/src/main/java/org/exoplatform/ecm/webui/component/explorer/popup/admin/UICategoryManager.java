@@ -17,7 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;

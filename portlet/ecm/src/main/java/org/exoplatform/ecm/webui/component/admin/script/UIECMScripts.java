@@ -25,7 +25,7 @@ import javax.jcr.NodeIterator;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptList.ScriptData;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

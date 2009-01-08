@@ -38,7 +38,7 @@ import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;

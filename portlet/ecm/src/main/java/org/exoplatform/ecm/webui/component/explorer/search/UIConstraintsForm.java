@@ -28,7 +28,7 @@ import javax.jcr.query.QueryResult;
 
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

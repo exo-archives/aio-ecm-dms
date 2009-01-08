@@ -33,7 +33,7 @@ import javax.jcr.version.VersionException;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.DialogFormActionListeners;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector;

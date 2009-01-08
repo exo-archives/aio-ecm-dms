@@ -20,6 +20,7 @@ package org.exoplatform.ecm.webui.popup;
  * Created by The eXo Platform SARL Author : Dang Van Minh
  * minh.dang@exoplatform.com Jun 13, 2007 4:26:57 PM
  */
+@Deprecated
 public interface UIPopupComponent {  
   
   /**

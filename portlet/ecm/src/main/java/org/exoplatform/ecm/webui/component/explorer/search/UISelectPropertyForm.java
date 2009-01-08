@@ -26,10 +26,9 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
 
-import org.apache.tools.ant.types.CommandlineJava.SysProperties;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;

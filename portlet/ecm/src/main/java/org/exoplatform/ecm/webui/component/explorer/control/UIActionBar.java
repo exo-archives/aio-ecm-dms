@@ -82,7 +82,7 @@ import org.exoplatform.ecm.webui.component.explorer.thumbnail.UIThumbnailForm;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -795,7 +795,7 @@ public class UIActionBar extends UIForm {
         }
         activePublication.setRendered(true);
         activePublication.updateLifecyclesGrid();
-        UIPopupContainer.activate(activePublication, 600);
+        UIPopupContainer.activate(activePublication, 600, 300);
         event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
         return;         
       }

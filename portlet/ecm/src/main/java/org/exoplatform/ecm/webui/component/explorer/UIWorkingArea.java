@@ -51,7 +51,6 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
@@ -76,6 +75,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -1109,7 +1109,7 @@ public class UIWorkingArea extends UIContainer {
       }
       uiConfirmMessage.setNodePath(nodePath);
       uiConfirmMessage.setWorkspaceName(wsName);
-      UIPopupContainer.activate(uiConfirmMessage, 500);
+      UIPopupContainer.activate(uiConfirmMessage, 500, 180);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }

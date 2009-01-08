@@ -33,6 +33,7 @@ import org.exoplatform.webui.core.lifecycle.Lifecycle;
  * The Class UIPopupContainer.
  */
 @ComponentConfig( lifecycle = Lifecycle.class )
+@Deprecated
 public class UIPopupContainer extends UIContainer {
   
   /**

@@ -23,8 +23,8 @@ import javax.jcr.version.VersionHistory;
 
 import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.jcr.impl.storage.JCRInvalidItemStateException;
 import org.exoplatform.web.application.ApplicationMessage;

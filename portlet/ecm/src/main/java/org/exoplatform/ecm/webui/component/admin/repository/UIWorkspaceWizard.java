@@ -25,7 +25,7 @@ import org.exoplatform.container.ExoContainer;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;

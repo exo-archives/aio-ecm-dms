@@ -24,7 +24,7 @@ import javax.jcr.Node;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.web.application.ApplicationMessage;

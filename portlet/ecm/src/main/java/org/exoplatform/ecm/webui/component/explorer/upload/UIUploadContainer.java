@@ -23,7 +23,6 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UILanguageTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;

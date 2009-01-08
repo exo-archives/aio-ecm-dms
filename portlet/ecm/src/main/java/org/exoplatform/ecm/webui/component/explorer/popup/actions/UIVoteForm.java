@@ -20,8 +20,8 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.voting.VotingService;

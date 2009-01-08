@@ -22,7 +22,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.cms.watch.WatchDocumentService;
 import org.exoplatform.web.application.ApplicationMessage;

@@ -24,8 +24,8 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.ecm.publication.AlreadyInPublicationLifecycleException;
 import org.exoplatform.services.ecm.publication.PublicationPlugin;

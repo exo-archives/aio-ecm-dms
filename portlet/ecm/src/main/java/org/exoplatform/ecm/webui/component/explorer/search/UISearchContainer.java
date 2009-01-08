@@ -17,7 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.jcr.RepositoryService;

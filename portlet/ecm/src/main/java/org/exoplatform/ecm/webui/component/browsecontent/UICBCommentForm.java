@@ -21,8 +21,8 @@ import javax.jcr.version.VersionException;
 
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.ecm.webui.popup.UIPopupComponent;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;
