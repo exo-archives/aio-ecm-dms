@@ -21,6 +21,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.InvalidItemStateException;
 import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
 import javax.jcr.Node;
@@ -214,7 +215,11 @@ public class UIWorkingArea extends UIContainer {
 
   public String getActionsList(Node node) throws Exception {
     if(node == null) return "";
-    node.refresh(true);
+    try {
+      node.refresh(true);
+    } catch(InvalidItemStateException e) {
+      return "";
+    }
     StringBuilder actionsList = new StringBuilder();        
     boolean isEditable = isEditable(node);    
     boolean isLocked = node.isLocked();

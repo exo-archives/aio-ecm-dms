@@ -2108,5 +2108,11 @@
       <AddDestPath>Thêm đường dẫn</AddDestPath>
     </title>
   </workflow_destpath>
+  
+  <PublicationService>
+    <WorkflowPublicationPlugin>
+      <nodeValidationRequest>Node này đang trong trạng thái yêu cầu phê chuẩn</nodeValidationRequest>
+    </WorkflowPublicationPlugin>
+  </PublicationService>
 </bundle>
 

@@ -93,7 +93,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
   abstract protected List getActions();
   abstract protected ECMEventListener createEventListener(String actionName,
       String actionExecutable, String repository, String srcWorkspace, String srcPath,
-      Map variables) throws Exception;
+      Map variables, String actiontype) throws Exception;
 
   abstract protected Class createActivationJob() throws Exception ;  
 
@@ -112,7 +112,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     }else {
       Map<String,Object> variables = getExecutionVariables(mappings) ;
       ECMEventListener listener = createEventListener(actionName, actionExecutable, repository,
-          srcWorkspace, srcPath, variables);
+          srcWorkspace, srcPath, variables, actionType);
       Session session = getSystemSession(repository, srcWorkspace);
       ObservationManager obsManager = session.getWorkspace().getObservationManager();
     //TODO all actions are stored at srcNode/exo:actions node
@@ -159,7 +159,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     }  
     String actionExecutable = getActionExecutable(actionType); 
     ECMEventListener listener = 
-      createEventListener(actionName, actionExecutable, repository, srcWorkspace, srcPath, variables);
+      createEventListener(actionName, actionExecutable, repository, srcWorkspace, srcPath, variables, actionType);
     Session session = getSystemSession(repository, srcWorkspace);
     //TODO all actions are stored at srcNode/exo:actions node
     String listenerKey = repository + ":" + srcPath + "/exo:actions/" +actionName;

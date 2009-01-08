@@ -49,12 +49,12 @@
       <scope>compile</scope>
     </dependency>
 
-    <!--dependency>
-      <groupId>org.exoplatform.ecm.workflow</groupId>
-      <artifactId>exo.ecm.workflow.component.workflow.api</artifactId>
-      <version>${org.exoplatform.ecm.workflow.version}</version>
+    <dependency>
+      <groupId>org.exoplatform.ecm.dms</groupId>
+      <artifactId>exo.ecm.dms.component.publication</artifactId>
+      <version>${org.exoplatform.ecm.dms.version}</version>
       <scope>compile</scope>
-    </dependency-->    
+    </dependency>   
 
     <dependency>
       <groupId>org.codehaus.groovy</groupId>

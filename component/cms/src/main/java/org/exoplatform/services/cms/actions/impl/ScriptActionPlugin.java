@@ -79,7 +79,7 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
   protected List getActions() { return config_.getActions(); }
   
   protected ECMEventListener createEventListener(String actionName, String actionExecutable,
-      String repository, String srcWorkspace, String srcPath, Map variables) throws Exception {
+      String repository, String srcWorkspace, String srcPath, Map variables, String actiontype) throws Exception {
     return new ScriptActionLauncherListener(actionName, actionExecutable, repository, srcWorkspace,
         srcPath, variables);
   }
