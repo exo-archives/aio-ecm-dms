@@ -111,11 +111,13 @@ public class UIDialogForm extends UIForm {
 
   private String storedPath = null;
 
-  private String workspaceName = null;
+  protected String workspaceName = null;
   protected boolean isReference = false;
   
   final static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
 
+  private String SEPARATOR_VALUE = "::";
+  
   public UIDialogForm() { }
 
   public boolean isEditing() { return !isAddNew;}
@@ -328,7 +330,18 @@ public class UIDialogForm extends UIForm {
       } else if (options != null && options.length() >0) {
         String[] array = options.split(",");
         for(int i = 0; i < array.length; i++) {
-          optionsList.add(new SelectItemOption<String>(array[i].trim(), array[i].trim()));
+          List<String> listValue = new ArrayList<String>();
+          String[] arrayChild = array[i].trim().split(SEPARATOR_VALUE);
+          for (int j = 0; j < arrayChild.length; j++) {
+            if (!arrayChild[j].trim().equals("")) {
+              listValue.add(arrayChild[j].trim());
+            }
+          }
+          if (listValue.size() > 1) {
+            optionsList.add(new SelectItemOption<String>(listValue.get(0), listValue.get(1)));
+          } else {
+            optionsList.add(new SelectItemOption<String>(listValue.get(0), listValue.get(0)));
+          }
         }
         uiSelectBox.setOptions(optionsList);
       } else {
@@ -469,7 +482,7 @@ public class UIDialogForm extends UIForm {
         uiTextArea.setValue(formTextAreaField.getDefaultValue());
       else
         uiTextArea.setValue("");
-    }     	     
+    }            
     uiTextArea.setEditable(formTextAreaField.isEditable());
     renderField(name);
   }
