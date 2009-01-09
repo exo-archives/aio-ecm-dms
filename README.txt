@@ -1,9 +1,21 @@
+Enterprise Content Management(ECM) > Document Management System(DMS)
+Version 2.3
 
-	Check compatibility between ECM 2.1 and ECM 2.2
+You may find it helpful to see the details at wiki place of ECM
+http://wiki.exoplatform.org/xwiki/bin/view/ECM/
 
+TABLE OF CONTENTS
+-----------------
+1. Check compatibility between ECM 2.1 and ECM 2.2
+2. Migration
+	2.1 Migration for illegal char in path entry
 	
-1. Changing configuration in exo.ecm.web.portal/src/main/java/conf/configuration.xml
-Publication function: In ECM 2.1, the information in exo.ecm.component.publication/configuration.xml we can see:
+
+1. CHECK COMPATIBILITY BETWEEN ECM 2.1 AND ECM 2.2!
+---------------------------------------------------
+
+- Changing configuration in exo.ecm.web.portal/src/main/java/conf/configuration.xml
+	Publication function: In ECM 2.1, the information in exo.ecm.component.publication/configuration.xml we can see:
 
 	<component>
 		<key>org.exoplatform.services.ecm.publication.PublicationService</key>
@@ -85,7 +97,7 @@ Publication function: In ECM 2.1, the information in exo.ecm.component.publicati
     Then add the configuration information to exo.ecm.web.portal/src/main/java/conf/configuration.xml like:
 	<import>war:/conf/ecm/ecm-thumbnail-configuration.xml</import>
 
-2. Changing version in the configuration information for WorkflowServiceContainer class:
+- Changing version in the configuration information for WorkflowServiceContainer class:
 	In ECM 2.1, we can see in bonita-configuration.xml and jbpm-configuration.xml:
 
 	<object type="org.exoplatform.services.workflow.ProcessesConfig">
@@ -128,21 +140,21 @@ Publication function: In ECM 2.1, the information in exo.ecm.component.publicati
 		</field>
 	</object>
 
-And:
+	And:
 
-<object type="org.exoplatform.services.workflow.ProcessesConfig">
-   <field name="processLocation"><string>war:/conf/bp</string></field>
-   <field name="predefinedProcess">
-	    <collection type="java.util.HashSet">
-			<value><string>/exo.ecm.bp.jbpm.payraise-2.2-SNAPSHOT.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.holiday-2.2-SNAPSHOT.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.content.validation-2.2-SNAPSHOT.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.content.backup-2.2-SNAPSHOT.jar</string></value>
-		</collection>
-   </field>
-</object>
+	<object type="org.exoplatform.services.workflow.ProcessesConfig">
+	   <field name="processLocation"><string>war:/conf/bp</string></field>
+	   <field name="predefinedProcess">
+		    <collection type="java.util.HashSet">
+				<value><string>/exo.ecm.bp.jbpm.payraise-2.2-SNAPSHOT.jar</string></value>
+				<value><string>/exo.ecm.bp.jbpm.holiday-2.2-SNAPSHOT.jar</string></value>
+				<value><string>/exo.ecm.bp.jbpm.content.validation-2.2-SNAPSHOT.jar</string></value>
+				<value><string>/exo.ecm.bp.jbpm.content.backup-2.2-SNAPSHOT.jar</string></value>
+			</collection>
+	   </field>
+	</object>
 
-3. Support add references when upload file
+- Support add references when upload file
 
 	Since ECM 2.2, in the portlet File Explorer, you can add references to the file which will be uploaded. By default this function is not mandatory. You can change the value equal true in the parameter *categoryMandatoryWhenFileUpload* to make sure every files will be added the categories when uploaded.
 	You can see and change the configuration if you want in the file exo.ecm.portlet.ecm/src/main/webapp/WEB-INF/portlet.xml
@@ -152,7 +164,7 @@ And:
 	  <read-only>false</read-only>
 	</preference>
 
-4. Add filter for resouces in web\ecmportal\src\main\webapp\WEB-INF\web.xml
+- Add filter for resouces in web\ecmportal\src\main\webapp\WEB-INF\web.xml
 
 	<filter-mapping>
 		<filter-name>ResourceRequestFilter</filter-name>
@@ -174,7 +186,7 @@ And:
 		<url-pattern>*.jpg</url-pattern> 
 	</filter-mapping>
 
-5. Add more workspace named gadgets in web\ecmportal\src\main\webapp\WEB-INF\conf\jcr\repository-configuration.xml:
+- Add more workspace named gadgets in web\ecmportal\src\main\webapp\WEB-INF\conf\jcr\repository-configuration.xml:
 	<workspace name="gadgets">
 	  <!-- for system storage -->
 	  <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
@@ -225,8 +237,38 @@ And:
 			</lock-manager>
 	</workspace>
 
+2. MIGRATION
+------------
 
+	2.1 Migration for illegal char in path entry
+			Since ECM 2.3, the DriveMigrationService was avaiabled at location ecm\dms\trunk\component\migration\2.3\drives. This service use to rename the
+			old drive which contains invalid characters and prevent the WARNING messages at the console.
+			How to do it?
+			Step 1: Compile the source code to create new jar by command: mvn clean install
+			Step 2: Stop server and copy this jar to library
+			Step 3: Run server to DriveMigrationService apply the changes.
+			Step 4: After server started, stop server again and remove this jar, restart server.
 
+==========================================================================================
+DMS can be reached at:
 
+   Web site: http://www.exoplatform.com
+						 http://www.exoplatform.vn
+   	 E-mail: exoplatform@ow2.org
+						 exo-ecm@ow2.org
+						
 
+Copyright (C) 2003-2007 eXo Platform SAS.
 
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU Affero General Public License
+as published by the Free Software Foundation; either version 3
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, see<http://www.gnu.org/licenses/>.
