@@ -63,7 +63,7 @@ public class NewGroupListener extends GroupEventListener {
     String parentId = group.getParentId() ;
     if(parentId == null || parentId.length() == 0) groupId = "/" + group.getGroupName() ;
     else groupId = parentId + "/" + group.getGroupName() ;    
-    String name = groupId.replace("/", "|");
+    String name = groupId.replace("/", ".");
     String repository = initParams_.getValueParam("repository").getValue();
     String workspace = initParams_.getValueParam("workspace").getValue();
     String permissions = "*:".concat(groupId);
@@ -89,6 +89,6 @@ public class NewGroupListener extends GroupEventListener {
     if(parentId == null || parentId.length() == 0) groupId = "/" + group.getGroupName() ;
     else groupId = parentId + "/" + group.getGroupName() ;
     ManageableRepository repository = jcrService_.getCurrentRepository() ;
-    driveService_.removeDrive(groupId.replace("/", "|"), repository.getConfiguration().getName()) ;
+    driveService_.removeDrive(groupId.replace("/", "."), repository.getConfiguration().getName()) ;
   }
 }

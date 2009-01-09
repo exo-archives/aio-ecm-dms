@@ -16,7 +16,7 @@
     <%uiform.end()%>    
   </div>
   <div class="IconFrame">
-    <div class="WorkspaceName"><%=_ctx.appRes("UIViewBar.label.currentDrive")%> : <font color="#0766e7"><%=uicomponent.getDriveName()%></font></div>
+    <div class="WorkspaceName"><%=_ctx.appRes("UIViewBar.label.currentDrive")%> : <font color="#0766e7"><%=uicomponent.getDriveName().replace(".", " / ")%></font></div>
 		<div class="Separator ViewBarSeparator"><span></span></div>		
 		<%if(!uicomponent.isShowSideBar()) {%>
 		  <a class="Icon ShowSideBarButton" href="<%=uicomponent.event("ShowSideBar")%>" title="<%=_ctx.appRes("UIViewBar.label.showSideBar")%>"><span></span></a>

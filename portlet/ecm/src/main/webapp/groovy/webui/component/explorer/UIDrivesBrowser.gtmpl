@@ -115,7 +115,7 @@
 			                  <div class="LeftBar">
 			                    <div class="RightBar">
 			                      <div class="MiddleBar">
-			                        <a href="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><%=groupDrive.getName().replace("|", " / ")%></a>
+			                        <a href="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><%=groupDrive.getName().replace(".", " / ")%></a>
 			                      </div>
 			                    </div>
 			                  </div>
