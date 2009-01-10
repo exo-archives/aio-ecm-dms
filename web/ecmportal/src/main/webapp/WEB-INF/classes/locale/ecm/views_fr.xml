@@ -10,12 +10,12 @@
     <view>
       <label>
         <languages>Langues</languages>
-        <summary>R�sum�</summary>
-        <none-summary>Le r�sum� est vide</none-summary>
+        <summary>Résumé</summary>
+        <none-summary>Le résumé est vide</none-summary>
         <content>Contenu</content>
         <none-content>Le contenu est vide</none-content>
         <link>Liens</link>
-        <attachment>Pi�ces jointes</attachment>
+        <attachment>Pièces jointes</attachment>
       </label>
     </view>
   </Article>
@@ -43,7 +43,7 @@
     <view>
       <label>
         <calendar>Calendrier</calendar>
-        <shared>Partag�</shared>
+        <shared>Partagé</shared>
       </label>
     </view>
   </Calendar>
@@ -53,12 +53,12 @@
   <Comment>
     <view>
       <label>
-        <postedBy>Dernier commentaire post� par</postedBy>
-        <at>�</at>
+        <postedBy>Dernier commentaire posté par</postedBy>
+        <at>à</at>
         <comments>Commentaires</comments>
         <show-comments>Afficher les commentaires</show-comments>
         <hide-comments>Cacher les commentaires</hide-comments>
-        <comment-by>Comment� par</comment-by>
+        <comment-by>Commenté par</comment-by>
         <email>Email</email>
         <site>Site</site>
       </label>
@@ -71,17 +71,17 @@
     <view>
       <label>
         <january>Janvier</january>
-        <february>F�vrier</february>
+        <february>Février</february>
         <march>Mars</march>
         <april>Avril</april>
         <may>Mai</may>
         <june>Juin</june>
         <july>Juillet</july>
-        <august>Ao�t</august>
+        <august>Août</august>
         <september>Septembre</september>
         <october>Octobre</october>
         <november>Novembre</november>
-        <december>D�cembre</december>
+        <december>Décembre</december>
         <event>Rendez-vous</event>
         <subject>Objet</subject>
         <location>Emplacement</location>
@@ -97,10 +97,10 @@
   <File>
     <view>
       <label>
-        <not-viewable>Ce contenu n'est pas consultable. Veuillez le t�l�charger ou utiliser WebDAV pour y acc�der.</not-viewable>
-        <file-size-too-big>Le contenu de ce fichier est trop important. Veuillez le t�l�charger pour le consulter.</file-size-too-big>
+        <not-viewable>Ce contenu n'est pas consultable. Veuillez le télécharger ou utiliser WebDAV pour y accéder.</not-viewable>
+        <file-size-too-big>Le contenu de ce fichier est trop important. Veuillez le télécharger pour le consulter.</file-size-too-big>
         <webDAV>Vue WebDAV</webDAV>
-        <download>T�l�charger ce fichier</download>
+        <download>Télécharger ce fichier</download>
         <htmlview>Vue HTML</htmlview>
         <plaintextview>Vue texte brut</plaintextview>
       </label>
@@ -113,33 +113,33 @@
     <view>
       <label>
         <content>Contenu du File Plan</content>
-        <record-category-identifier>Identification de la cat�gorie du Record</record-category-identifier>
+        <record-category-identifier>Identification de la catégorie du Record</record-category-identifier>
         <disposition-author>Auteur de la disposition</disposition-author>
         <disposition-instruction>Instructions de la disposition</disposition-instruction>
         <permanent-record-indicator>Indicateur de Record permanent</permanent-record-indicator>
         <contain-record-folder>Dossier contenant le Record</contain-record-folder>
-        <default-media-type>Type de m�dia par d�faut</default-media-type>
-        <default-marking-list>Liste de marquage par d�faut</default-marking-list>
-        <default-originating-organization>Organisation �mettrice par d�faut</default-originating-organization>
+        <default-media-type>Type de média par défaut</default-media-type>
+        <default-marking-list>Liste de marquage par défaut</default-marking-list>
+        <default-originating-organization>Organisation émettrice par défaut</default-originating-organization>
         <number-of-record>Nombre de Records</number-of-record>
         <record>Records</record>
-        <obsolete-record>Records obsol�tes</obsolete-record>
-        <supreseded-record>Records remplac�s</supreseded-record>
+        <obsolete-record>Records obsolètes</obsolete-record>
+        <supreseded-record>Records remplacés</supreseded-record>
         <vital-record>Records vitaux</vital-record>
-        <cutoff-record>Records pr�lev�s</cutoff-record>
+        <cutoff-record>Records prélevés</cutoff-record>
         <holdable-record>Records suspensifs</holdable-record>
-        <transferable-record>Records transf�rables</transferable-record>
+        <transferable-record>Records transférables</transferable-record>
         <accessionable-record>Records acquis</accessionable-record>
         <destroyable-record>Records destructibles</destroyable-record>
         <record-id>Identifiant du Record</record-id>
         <record-name>Nom du Record</record-name>
         <originator>Originataire</originator>
-        <date-received>Date de r�ception</date-received>
+        <date-received>Date de réception</date-received>
         <originating-organization>Organisation originataire</originating-organization>
         <next-review-date>Date de revue suivante</next-review-date>
-        <previous-review-date>Date de revue pr�c�dente</previous-review-date>
+        <previous-review-date>Date de revue précédente</previous-review-date>
         <cutoff-date>Date d'extraction</cutoff-date>
-        <hold-until>Suspension jusqu'�</hold-until>
+        <hold-until>Suspension jusqu'à</hold-until>
         <transfer-date>Date de transfert</transfer-date>
         <transfer-location>Emplacement du transfert</transfer-location>
         <accession-date>Date d'acquisition</accession-date>
@@ -155,7 +155,7 @@
     <view>
       <label>
         <document-name>Nom du document Kofax</document-name>
-        <downloadable>Fichier t�l�chargeable</downloadable>
+        <downloadable>Fichier téléchargeable</downloadable>
       </label>
     </view>
   </Kofax>
@@ -166,11 +166,11 @@
     <view>
       <label>
         <from>De :</from>
-        <to>� :</to>
+        <to>À :</to>
         <cc>Cc :</cc>
         <date>Date :</date>
         <subject>Sujet :</subject>
-        <attachment>Pi�ces jointes :</attachment>
+        <attachment>Pièces jointes :</attachment>
       </label>
     </view>
   </Mail>
@@ -185,8 +185,8 @@
         <link>Lien</link>
         <author>Auteur</author>
         <explicit>Explicite</explicit>
-        <category>Cat�gorie</category>
-        <keyword>Mots cl�s</keyword>
+        <category>Catégorie</category>
+        <keyword>Mots clés</keyword>
         <publish-date>Date de publication</publish-date>
         <mime-type>Type Mime</mime-type>
         <length>Longueur</length>
@@ -206,10 +206,10 @@
         <date-time>Date-heure</date-time>
         <description>Description</description>
         <image>Image</image>
-        <summary>R�sum�</summary>
+        <summary>Résumé</summary>
         <content>Contenu</content>
         <relation>Relations</relation>
-        <attachment>Pi�ces jointes</attachment>
+        <attachment>Pièces jointes</attachment>
       </label>
     </view>
   </Sample>
@@ -232,10 +232,10 @@
       <label>
         <name>Nom</name>
         <versionable>Versionable</versionable>
-        <owner>Propri�taire</owner>
-        <dateCreated>Date de Cr�ation</dateCreated>
+        <owner>Propriétaire</owner>
+        <dateCreated>Date de Création</dateCreated>
         <dateModified>Date de Modification</dateModified>
-        <auditing>Tra�abilit�</auditing>
+        <auditing>Traçabilité</auditing>
       </label>
     </view>
   </ListView>
@@ -277,9 +277,9 @@
         <name>Nom de l'action</name>
         <lifecycle>Cycle de vie</lifecycle>
         <protocol>Protocole</protocol>
-        <host>Nom de l'h�te</host>
+        <host>Nom de l'hôte</host>
         <port>Port</port>
-        <folder>R�pertoire</folder>
+        <folder>Répertoire</folder>
         <username>Nom d'utilisateur</username>
         <description>Description</description>
         <stote-path>Emplacement de sauvegarde</stote-path>
@@ -296,8 +296,8 @@
         <lifecycle>Cycle de vie</lifecycle>
         <calendar-path>Emplacement du calendrier</calendar-path>
         <description>Description</description>
-        <query>Requ�te</query>
-        <repository>D�p�t de donn�es</repository>
+        <query>Requête</query>
+        <repository>Dépôt de données</repository>
       </label>
     </view>
   </Icalendar>
@@ -311,14 +311,14 @@
         <feed-name>Nom du flux</feed-name>
         <lifecycle>Cycle de vie</lifecycle>
         <schedule-type>Type de planification</schedule-type>
-        <start-time>Heure de d�but</start-time>
+        <start-time>Heure de début</start-time>
         <end-time>Heure de fin</end-time>
         <repeat-count>Nombre d'essais</repeat-count>
         <time-inteval>Intervalle entre 2 essais</time-inteval>
         <cron-expression>Commande Cron</cron-expression>
         <feed-node-name>Nom du noeud</feed-node-name>
         <feed-store-path>Emplacement de stockage</feed-store-path>
-        <query-items>El�ments de la requ�te</query-items>
+        <query-items>Eléments de la requête</query-items>
         <rss-url>URL du flux</rss-url>
         <feed-title>Titre du flux</feed-title>
         <feed-type>Type de flux</feed-type>
@@ -328,12 +328,12 @@
         <language>Langue</language>
         <copyright>Droit d'auteur</copyright>
         <publish-date>Date de publication</publish-date>
-        <owner-name>Nom du propri�taire</owner-name>
-        <owner-email>Email du propri�taire</owner-email>
+        <owner-name>Nom du propriétaire</owner-name>
+        <owner-email>Email du propriétaire</owner-email>
         <image-url>URL de l'image</image-url>
-        <category>Cat�gorie</category>
-        <keywords>Mots cl�s</keywords>
-        <query-path>Emplacement de la requ�te</query-path>
+        <category>Catégorie</category>
+        <keywords>Mots clés</keywords>
+        <query-path>Emplacement de la requête</query-path>
       </label>
     </view>
   </Rss>
@@ -345,7 +345,7 @@
       <label>
         <action-name>Nom de l'action</action-name>
         <lifecycle>Cycle de vie</lifecycle>
-        <metadata>Metadonn�e</metadata>
+        <metadata>Metadonnée</metadata>
         <description>Description</description>
       </label>
     </view>
@@ -371,7 +371,7 @@
         <action-name>Nom de l'action</action-name>
         <lifecycle>Cycle de vie</lifecycle>
         <description>Description</description>
-        <mail-to>Envoyer l'email �</mail-to>
+        <mail-to>Envoyer l'email à</mail-to>
       </label>
     </view>
   </SendMail>
@@ -419,7 +419,7 @@
       <label>
         <not-avaliable>ND</not-avaliable>
         <title>Titre</title>
-        <creator>Cr�ateur</creator>
+        <creator>Créateur</creator>
         <subject>Sujet</subject>
         <source>Source</source>
         <contributor>Contributeur</contributor>
@@ -440,7 +440,7 @@
       </action>
       <tooltip>
         <cancel>Annuler</cancel>
-        <add-edit>Ajouter/Editer les propri�t�s</add-edit>
+        <add-edit>Ajouter/Editer les propriétés</add-edit>
       </tooltip>
     </view>
   </ElementSet>
@@ -451,12 +451,12 @@
     <view>
       <label>
         <not-available>ND</not-available>
-        <cutoff-executed>Extraction ex�cut�e</cutoff-executed>
-        <cutoff-now>Extraction imm�diate</cutoff-now>
+        <cutoff-executed>Extraction exécutée</cutoff-executed>
+        <cutoff-now>Extraction immédiate</cutoff-now>
         <cutoff-date-time>Planification de l'extraction</cutoff-date-time>
-        <cutoff-event>�v�nement d'extraction</cutoff-event>
-        <cutoff-obsolete>Extraction obsol�te</cutoff-obsolete>
-        <cutoff-superseded>Extraction remplac�e</cutoff-superseded>
+        <cutoff-event>Évènement d'extraction</cutoff-event>
+        <cutoff-obsolete>Extraction obsolète</cutoff-obsolete>
+        <cutoff-superseded>Extraction remplacée</cutoff-superseded>
       </label>
       <action>
         <add-edit>Ajouter/Editer</add-edit>
@@ -464,7 +464,7 @@
       </action>
       <tooltip>
         <cancel>Annuler</cancel>
-        <add-edit>Ajouter/Editer les propri�t�s</add-edit>
+        <add-edit>Ajouter/Editer les propriétés</add-edit>
       </tooltip>
     </view>
   </Cutoffable>
@@ -483,7 +483,7 @@
       </action>
       <tooltip>
         <cancel>Annuler</cancel>
-        <add-edit>Ajouter/Editer les propri�t�s</add-edit>
+        <add-edit>Ajouter/Editer les propriétés</add-edit>
       </tooltip>
     </view>
   </Destroyable>
@@ -494,7 +494,7 @@
     <view>
       <label>
         <not-available>ND</not-available>
-        <accession-executed>Acquisition ex�cut�e</accession-executed>
+        <accession-executed>Acquisition exécutée</accession-executed>
         <accession-date>Planification de l'extraction</accession-date>
       </label>
       <action>
@@ -513,10 +513,10 @@
     <view>
       <label>
         <not-available>ND</not-available>
-        <hold-executed>Arr�t ex�cut�</hold-executed>
-        <hold-until>Arr�t jusqu'�</hold-until>
-        <holds-discretionary>Arr�t discr�tionnaire</holds-discretionary>
-        <hold-until-event>Arr�t jusqu'� �v�nement</hold-until-event>
+        <hold-executed>Arrêt exécuté</hold-executed>
+        <hold-until>Arrêt jusqu'à</hold-until>
+        <holds-discretionary>Arrêt discrétionnaire</holds-discretionary>
+        <hold-until-event>Arrêt jusqu'à évènement</hold-until-event>
         <freeze>Geler</freeze>
       </label>
       <action>
@@ -525,7 +525,7 @@
       </action>
       <tooltip>
         <cancel>Annuler</cancel>
-        <add-edit>Ajouter/Editer les propri�t�s</add-edit>
+        <add-edit>Ajouter/Editer les propriétés</add-edit>
       </tooltip>
     </view>
   </Holdable>
@@ -536,21 +536,21 @@
     <view>
       <label>
         <not-available>ND</not-available>
-        <supplemental-marking-list>Liste suppl�mentaire d'inscription</supplemental-marking-list>
+        <supplemental-marking-list>Liste supplémentaire d'inscription</supplemental-marking-list>
         <subject>Sujet</subject>
         <record-identifier>Identifiant du Record</record-identifier>
-        <originator>Cr�ateur</originator>
+        <originator>Créateur</originator>
         <format>Format</format>
         <addresses>Adresses</addresses>
         <originating-organization>Organisme d'origine</originating-organization>
         <other-addresses>Autres adresses</other-addresses>
         <publication-date>Date de publication</publication-date>
         <record-note>Note du Record</record-note>
-        <date-received>Date de r�ception</date-received>
+        <date-received>Date de réception</date-received>
         <media-format>Format du media</media-format>
-        <is-obsolete>Est obsol�te</is-obsolete>
+        <is-obsolete>Est obsolète</is-obsolete>
         <date-field>Champ date</date-field>
-        <superseded>Remplac�</superseded>
+        <superseded>Remplacé</superseded>
         <uuid>UUID</uuid>
       </label>
       <action>
@@ -559,7 +559,7 @@
       </action>
       <tooltip>
         <cancel>Annuler</cancel>
-        <add-edit>Ajouter/Editer les propri�t�s</add-edit>
+        <add-edit>Ajouter/Editer les propriétés</add-edit>
       </tooltip>
     </view>
   </Record>
@@ -570,7 +570,7 @@
     <view>
       <label>
         <not-available>ND</not-available>
-        <transfer-executed>Transfert ex�cut�</transfer-executed>
+        <transfer-executed>Transfert exécuté</transfer-executed>
         <transfer-date>Date du Transfert</transfer-date>
         <transfer-location>Emplacement du Transfert</transfer-location>
       </label>
@@ -580,7 +580,7 @@
       </action>
       <tooltip>
         <cancel>Annuler</cancel>
-        <add-edit>Ajouter/Editer les propri�t�s</add-edit>
+        <add-edit>Ajouter/Editer les propriétés</add-edit>
       </tooltip>
     </view>
   </Transferable>
@@ -592,7 +592,7 @@
       <label>
         <not-available>ND</not-available>
         <is-vital-record>Le Record est vital</is-vital-record>
-        <prev-review-date>Date de revue pr�c�dente</prev-review-date>
+        <prev-review-date>Date de revue précédente</prev-review-date>
         <next-review-date>Date de revue suivante</next-review-date>
       </label>
       <action>
@@ -601,7 +601,7 @@
       </action>
       <tooltip>
         <cancel>Annuler</cancel>
-        <add-edit>Ajouter/Editer les propri�t�s</add-edit>
+        <add-edit>Ajouter/Editer les propriétés</add-edit>
       </tooltip>
     </view>
   </VitalRecord>

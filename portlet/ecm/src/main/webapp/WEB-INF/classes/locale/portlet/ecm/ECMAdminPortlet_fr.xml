@@ -8,27 +8,27 @@
   <UIECMAdminControlPanel>
     <tab>
       <label>
-        <Ontologies>Cat\u00e9goriser</Ontologies>
+        <Ontologies>Catégoriser</Ontologies>
         <TypesOfContent>Types de Contenu</TypesOfContent>
-        <ContentPresentation>Pr\u00e9sentation des Contenus</ContentPresentation>
-        <AdvanceConfiguaration>Configuration Avanc\u00e9e</AdvanceConfiguaration>
+        <ContentPresentation>Présentation des Contenus</ContentPresentation>
+        <AdvanceConfiguaration>Configuration Avancée</AdvanceConfiguaration>
       </label>
     </tab>
     <label>
       <UIFolksonomyManager>Tags</UIFolksonomyManager>
-      <UITaxonomyManager>Cat\u00e9gories</UITaxonomyManager>
-      <UIMetadataManager>Gestion des Metadonn\u00e9es</UIMetadataManager>
+      <UITaxonomyManager>Catégories</UITaxonomyManager>
+      <UIMetadataManager>Gestion des Metadonnées</UIMetadataManager>
       <UINamespaceManager>Espaces de Nommage</UINamespaceManager>
       <UINodeTypeManager>Types de Contenu</UINodeTypeManager>
       <UITemplatesManager>Formulaires</UITemplatesManager>
       <UIViewManager>Vues</UIViewManager>
       <UIDriveManager>Lecteurs</UIDriveManager>
-      <UIQueriesManager>Requ\u00eates</UIQueriesManager>
+      <UIQueriesManager>Requêtes</UIQueriesManager>
       <UIActionManager>Types d'Actions</UIActionManager>
       <UIScriptManager>Scripts</UIScriptManager>
     </label>
     <msg>
-      <access-denied>Acc\u00e8s interdit. Vous n'avez pas les droits suffisants.</access-denied>
+      <access-denied>Accès interdit. Vous n'avez pas les droits suffisants.</access-denied>
     </msg>
   </UIECMAdminControlPanel>
   <!--
@@ -38,13 +38,13 @@
   -->
   <UITaxonomyManager>
     <msg>
-      <referential-integrity>Lecture impossible \u00e0 parti du fichier source ou la cat\u00e9gorie de destination est une sous-cat\u00e9gorie</referential-integrity>
-      <no-taxonomy-selected>Vous devez copier ou couper au moins 1 cat\u00e9gorie</no-taxonomy-selected>
+      <referential-integrity>Lecture impossible à parti du fichier source ou la catégorie de destination est une sous-catégorie</referential-integrity>
+      <no-taxonomy-selected>Vous devez copier ou couper au moins 1 catégorie</no-taxonomy-selected>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
-      <node-is-cutting>Impossible de copier ici. La cat\u00e9gorie s\u00e9lectionn\u00e9e ('{0}') a probablement \u00e9t\u00e9 d\u00e9plac\u00e9e ou supprim\u00e9e.</node-is-cutting>
-      <can-not-paste>Le presse-papier ne contient aucune donn\u00e9e \u00e0 copier.</can-not-paste>
-      <reference-exception>Impossible de supprimer cette cat\u00e9gorie car elle est actuellement r\u00e9f\u00e9renc\u00e9e ailleur.</reference-exception>
-      <path-error>Un probl\u00e8me est survenu lors de la suppression de cette cat\u00e9gorie.</path-error>
+      <node-is-cutting>Impossible de copier ici. La catégorie sélectionnée ('{0}') a probablement été déplacée ou supprimée.</node-is-cutting>
+      <can-not-paste>Le presse-papier ne contient aucune donnée à copier.</can-not-paste>
+      <reference-exception>Impossible de supprimer cette catégorie car elle est actuellement référencée ailleur.</reference-exception>
+      <path-error>Un problème est survenu lors de la suppression de cette catégorie.</path-error>
     </msg>
     <title>
       <add>Ajouter</add>
@@ -78,7 +78,7 @@
   <UINamespaceForm>
     <title>Enregistrement d'un espace de nommage</title>
     <label>
-      <namespace>Pr\u00e9fixe</namespace>
+      <namespace>Préfixe</namespace>
       <uri>Uri</uri>
     </label>
     <action>
@@ -86,8 +86,8 @@
       <Cancel>#{word.cancel}</Cancel>
     </action>
     <msg>
-      <register-unsuccessfull>Le pr\u00e9fixe ou l'uri existe d\u00e9j\u00e0 !</register-unsuccessfull>
-      <prefix-null>Veuillez saisir un pr\u00e9fixe</prefix-null>
+      <register-unsuccessfull>Le préfixe ou l'uri existe déjà !</register-unsuccessfull>
+      <prefix-null>Veuillez saisir un préfixe</prefix-null>
       <uri-null>Veuillez saisir un uri</uri-null>
     </msg>
   </UINamespaceForm>
@@ -98,7 +98,7 @@
   -->
   <UINamespaceList>
     <header>
-      <prefix>Pr\u00e9fixe</prefix>
+      <prefix>Préfixe</prefix>
       <uri>Uri de l'espace de nommage</uri>
       <action>Action</action>
     </header>
@@ -129,34 +129,34 @@
       <delete>Supprimer</delete>
     </title>
     <header>
-      <icon>Ic\u00f4ne</icon>
-      <name>Nom de la m\u00e9tadonn\u00e9e</name>
+      <icon>Icône</icon>
+      <name>Nom de la métadonnée</name>
       <type>Type de mixin</type>
       <internalUse>Usage interne</internalUse>
       <action>Actions possibles sur le formulaire</action>
     </header>
     <msg>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
-      <delete-successful>les formulaires de '{0}' ont \u00e9t\u00e9 supprim\u00e9s</delete-successful>
+      <delete-successful>les formulaires de '{0}' ont été supprimés</delete-successful>
     </msg>
     <action>
-      <Add>Ajouter une m\u00e9tadonn\u00e9e</Add>
+      <Add>Ajouter une métadonnée</Add>
       <Cancel>#{word.cancel}</Cancel>
     </action>
   </UIMetadataList>
   <MetadataPopupAddNew>
     <title>
-      <UIMetadataForm>Ajouter un nouveau formulaire de m\u00e9tadonn\u00e9e</UIMetadataForm>
+      <UIMetadataForm>Ajouter un nouveau formulaire de métadonnée</UIMetadataForm>
     </title>
   </MetadataPopupAddNew>
   <MetadataPopupEdit>
     <title>
-      <UIMetadataForm>Editer le formulaire de la m\u00e9tadonn\u00e9e</UIMetadataForm>
+      <UIMetadataForm>Editer le formulaire de la métadonnée</UIMetadataForm>
     </title>
   </MetadataPopupEdit>
   <PermissionPopup>
     <title>
-      <MetadataPermission>S\u00e9lection d'une permission</MetadataPermission>
+      <MetadataPermission>Sélection d'une permission</MetadataPermission>
       <QueriesPermissionBrowse>Ajout de permissions</QueriesPermissionBrowse>
     </title>
   </PermissionPopup>
@@ -166,27 +166,27 @@
   ################################################################################
   -->
   <UIMetadataForm>
-    <title>Mapping M\u00e9tadonn\u00e9es</title>
+    <title>Mapping Métadonnées</title>
     <action>
       <Cancel>#{word.cancel}</Cancel>
       <Save>Appliquer</Save>
     </action>
     <header>
-      <icon>Ic\u00f4ne</icon>
+      <icon>Icône</icon>
       <label>Nom du document</label>
       <input>Action</input>
     </header>
     <label>
-      <dialogTemplate>Formulaire d'\u00e9dition</dialogTemplate>
+      <dialogTemplate>Formulaire d'édition</dialogTemplate>
       <viewTemplate>Formulaire de visualisation</viewTemplate>
-      <metadataName>Nom de la m\u00e9tadonn\u00e9e</metadataName>
+      <metadataName>Nom de la métadonnée</metadataName>
       <viewPermission>Permission</viewPermission>
       <permission>UIMetadataForm</permission>
     </label>
     <tab>
       <label>
-        <metadataTypeTab>Type de m\u00e9tadonn\u00e9e</metadataTypeTab>
-        <dialogTab>Formulaire d'\u00e9dition</dialogTab>
+        <metadataTypeTab>Type de métadonnée</metadataTypeTab>
+        <dialogTab>Formulaire d'édition</dialogTab>
         <viewTab>Formulaire de visualisation</viewTab>
       </label>
     </tab>
@@ -198,18 +198,18 @@
   -->
   <UIMetadataView>
     <header>
-      <name>Nom de l'\u00e9lement</name>
+      <name>Nom de l'élement</name>
       <type>Type</type>
       <description>Description</description>
       <isMixin>Mixin</isMixin>
-      <orderable>Fils ordonn\u00e9s</orderable>
+      <orderable>Fils ordonnés</orderable>
     </header>
     <info>
       <description>Description</description>
     </info>
     <tab>
-      <element>El\u00e9ments</element>
-      <metadataView>Information M\u00e9tadonn\u00e9es</metadataView>
+      <element>Eléments</element>
+      <metadataView>Information Métadonnées</metadataView>
     </tab>
     <action>
       <Cancel>Fermer</Cancel>
@@ -218,7 +218,7 @@
   </UIMetadataView>
   <ViewMetadataPopup>
     <title>
-      <UIMetadataView>Information M\u00e9tadonn\u00e9es</UIMetadataView>
+      <UIMetadataView>Information Métadonnées</UIMetadataView>
     </title>
   </ViewMetadataPopup>
   <!--
@@ -228,10 +228,10 @@
   -->
   <UIDriveList>
     <header>
-      <icon>Ic\u00f4ne</icon>
+      <icon>Icône</icon>
       <name>Nom</name>
       <workspace>Espace de travail</workspace>
-      <homePath>R\u00e9pertoire racine</homePath>
+      <homePath>Répertoire racine</homePath>
       <permissions>Permissions</permissions>
       <views>Vue</views>
       <action>Action</action>
@@ -250,7 +250,7 @@
   <PopupDrivePermission>
     <title>
       <AddDrivePermissionSelector>Ajout d'une permission</AddDrivePermissionSelector>
-      <UIPermissionSelector>S\u00e9lection de Permissions</UIPermissionSelector>
+      <UIPermissionSelector>Sélection de Permissions</UIPermissionSelector>
     </title>
   </PopupDrivePermission>
   <UIDriveForm>
@@ -261,35 +261,35 @@
       <Refresh>#{word.refresh}</Refresh>
     </action>
     <msg>
-      <drive-exists>Lecteur d\u00e9j\u00e0 existant !</drive-exists>
+      <drive-exists>Lecteur déjà existant !</drive-exists>
       <workspace-path-invalid>Espace de travail invalide !</workspace-path-invalid>
       <drive-views-invalid>Vue invalide !</drive-views-invalid>
-      <icon-not-found>Ic\u00f4ne non trouv\u00e9 !</icon-not-found>
+      <icon-not-found>Icône non trouvé !</icon-not-found>
       <permission-null>Permissions invalides</permission-null>
       <name-null>Veuillez saisir un nom de lecteur !</name-null>
-      <fileName-invalid>Le nom du lecteur contient des caract\u00e8res invalides</fileName-invalid>
+      <fileName-invalid>Le nom du lecteur contient des caractères invalides</fileName-invalid>
     </msg>
     <tab>
       <label>
         <DriveInputSet>Lecteur</DriveInputSet>
         <ViewsInputSet>Vues</ViewsInputSet>
-        <PermissionInputSet>S\u00e9lection de permission</PermissionInputSet>
+        <PermissionInputSet>Sélection de permission</PermissionInputSet>
       </label>
     </tab>
     <label>
       <name>Nom</name>
       <workspace>Espace de travail</workspace>
-      <homePath>R\u00e9pertoire racine</homePath>
-      <icon>Ic\u00f4ne de l'espace de travail</icon>
+      <homePath>Répertoire racine</homePath>
+      <icon>Icône de l'espace de travail</icon>
       <option>
-        <icon>Choisir l'ic\u00f4ne</icon>
+        <icon>Choisir l'icône</icon>
       </option>
-      <viewPreferences>Voir les documents r\u00e9f\u00e9renc\u00e9s</viewPreferences>
-      <viewNonDocument>Voir les document cach\u00e9s</viewNonDocument>
+      <viewPreferences>Voir les documents référencés</viewPreferences>
+      <viewNonDocument>Voir les document cachés</viewNonDocument>
       <viewSideBar>Afficher la barre d'aoutils</viewSideBar>
       <permissions>Permissions</permissions>
-      <showHiddenNode>Afficher les \u00e9l\u00e9ments cach\u00e9s</showHiddenNode>
-      <allowCreateFolder>Cr\u00e9ation de r\u00e9pertoire</allowCreateFolder>
+      <showHiddenNode>Afficher les éléments cachés</showHiddenNode>
+      <allowCreateFolder>Création de répertoire</allowCreateFolder>
     </label>
   </UIDriveForm>
   <AddDriveManagerPopup>
@@ -318,22 +318,22 @@
   -->
   <UIRepositoryControl>
     <label>
-      <repoName>D\u00e9p\u00f4t de donn\u00e9es courant</repoName>
+      <repoName>Dépôt de données courant</repoName>
     </label>
     <title>
-      <repoAdd>Ajouter un D\u00e9p\u00f4t de donn\u00e9es</repoAdd>
-      <repoEdit>Editer le D\u00e9p\u00f4t de donn\u00e9es</repoEdit>
-      <repoDelete>Supprimer le D\u00e9p\u00f4t de donn\u00e9es</repoDelete>
+      <repoAdd>Ajouter un Dépôt de données</repoAdd>
+      <repoEdit>Editer le Dépôt de données</repoEdit>
+      <repoDelete>Supprimer le Dépôt de données</repoDelete>
     </title>
     <msg>
-      <cannot-deleteRepo>"{0}" est un d\u00e9p\u00f4t de donn\u00e9es par d\u00e9faut. Suppression interdite !</cannot-deleteRepo>
+      <cannot-deleteRepo>"{0}" est un dépôt de données par défaut. Suppression interdite !</cannot-deleteRepo>
     </msg>
   </UIRepositoryControl>
   <UIECMAdminUIPopupWindow>
     <title>
-      <UIRepositoryFormContainer>D\u00e9p\u00f4t de donn\u00e9es</UIRepositoryFormContainer>
+      <UIRepositoryFormContainer>Dépôt de données</UIRepositoryFormContainer>
       <Delete>Supprimer</Delete>
-      <UIRepositoryList>Liste des d\u00e9p\u00f4ts de donn\u00e9es</UIRepositoryList>
+      <UIRepositoryList>Liste des dépôts de données</UIRepositoryList>
     </title>
   </UIECMAdminUIPopupWindow>
   <UIPopupWindowControl>
@@ -344,7 +344,7 @@
   </UIPopupWindowControl>
   <UIPopupWindowInWizard>
     <title>
-      <UIPermissionSelector>S\u00e9lection d'une permission</UIPermissionSelector>
+      <UIPermissionSelector>Sélection d'une permission</UIPermissionSelector>
       <UIPermissionContainer>Choisir une permission</UIPermissionContainer>
       <UIRepositoryValueSelect>Choisir une classe</UIRepositoryValueSelect>
     </title>
@@ -352,14 +352,14 @@
   <UIRepositoryValueSelect>
     <header>
       <name>Nom complet</name>
-      <action>S\u00e9lection</action>
+      <action>Sélection</action>
     </header>
     <action>
       <Close>Fermer</Close>
     </action>
   </UIRepositoryValueSelect>
   <UIRepositorySelectForm>
-    <msg-editError>Une erreur est survenue avec l'espace de travail "{0}", veuillez v\u00e9rifier ou en cr\u00e9er un nouveau</msg-editError>
+    <msg-editError>Une erreur est survenue avec l'espace de travail "{0}", veuillez vérifier ou en créer un nouveau</msg-editError>
     <msg-accessdenied>Vous n'avez pas les droits requis pour modifier l'espace de travail "{0}"</msg-accessdenied>
   </UIRepositorySelectForm>
   <UIRepositoryForm>
@@ -368,38 +368,38 @@
       <wsInputSet>UIRepositoryForm</wsInputSet>
       <authInputSet>UIRepositoryForm</authInputSet>
       <workspace>Espace de travail</workspace>
-      <isDefault>D\u00e9finir comme d\u00e9p\u00f4t par d\u00e9faut</isDefault>
-      <accessControl>Contr\u00f4le des acc\u00e8s</accessControl>
-      <authenticationPolicy>M\u00e9thode d'authentification</authenticationPolicy>
-      <securityDomain>Domaine de Securit\u00e9</securityDomain>
+      <isDefault>Définir comme dépôt par défaut</isDefault>
+      <accessControl>Contrôle des accès</accessControl>
+      <authenticationPolicy>Méthode d'authentification</authenticationPolicy>
+      <securityDomain>Domaine de Securité</securityDomain>
       <sessionTime>Timeout de session</sessionTime>
       <channelConfig>Configuration du cannal</channelConfig>
-      <enableReplication>Activer la r\u00e9plication</enableReplication>
-      <repMode>Mode de r\u00e9plication</repMode>
-      <repTestMode>R\u00e9plication en mode test</repTestMode>
-      <directoryPath>R\u00e9pertoire</directoryPath>
+      <enableReplication>Activer la réplication</enableReplication>
+      <repMode>Mode de réplication</repMode>
+      <repTestMode>Réplication en mode test</repTestMode>
+      <directoryPath>Répertoire</directoryPath>
       <maxBufferSize>Taille Max Buffer</maxBufferSize>
     </label>
     <msg>
       <cannot-delete-default-workspace>Impossible de supprimer le workspace '{0}' car il s'agit du workspace par défaut.</cannot-delete-default-workspace>
-      <repoName-exist>Le d\u00e9p\u00f4t de donn\u00e9es '{0}' existe d\u00e9j\u00e0 !</repoName-exist>
-      <repoName-not-alow>Caract\u00e8res invalides dans le nom !</repoName-not-alow>
+      <repoName-exist>Le dépôt de données '{0}' existe déjà !</repoName-exist>
+      <repoName-not-alow>Caractères invalides dans le nom !</repoName-not-alow>
       <workspace-isrequire>Veuillez indiquer au moins un espace de travail</workspace-isrequire>
       <cannot-delete-workspace>Suppression impossible de '{0}'</cannot-delete-workspace>
-      <workspace-setdefault>Un espace de travail par d\u00e9faut doit \u00eatre d\u00e9fini</workspace-setdefault>
+      <workspace-setdefault>Un espace de travail par défaut doit être défini</workspace-setdefault>
       <workspace-bseChanel>Un canal est requis</workspace-bseChanel>
-      <workspace-bseMode>Veuillez indiquer un mode de r\u00e9plication</workspace-bseMode>
-      <workspace-bsePath>Veuillez indiquer un r\u00e9pertoire</workspace-bsePath>
+      <workspace-bseMode>Veuillez indiquer un mode de réplication</workspace-bseMode>
+      <workspace-bsePath>Veuillez indiquer un répertoire</workspace-bsePath>
       <sessionTime-invalid>Le format du timeout de session est incorrect</sessionTime-invalid>
       <sessionTime-required>Veuillez indiquer un timeout de session</sessionTime-required>
       <workspace-bseBuffer>Veuillez indiquer une taille maximum de buffer</workspace-bseBuffer>
-      <authen-isrequire>Veuillez indiquer une m\u00e9thode d'authentification</authen-isrequire>
+      <authen-isrequire>Veuillez indiquer une méthode d'authentification</authen-isrequire>
       <confirm-workspace-delete>Confirmez-vous la suppression de cette espace de travail ?</confirm-workspace-delete>
     </msg>
     <action>
       <Close>#{word.close}</Close>
       <Save>#{word.save}</Save>
-      <Reset>R\u00e9initialiser</Reset>
+      <Reset>Réinitialiser</Reset>
       <AddWorkspace>Ajouter un espace de travail</AddWorkspace>
     </action>
   </UIRepositoryForm>
@@ -410,8 +410,8 @@
     <header>
       <name>Nom</name>
       <workspaces>Espaces de travail</workspaces>
-      <isdefault>D\u00e9p\u00f4t de donn\u00e9es par d\u00e9faut</isdefault>
-      <accesscontrol>Contr\u00f4le d'acc\u00e8s</accesscontrol>
+      <isdefault>Dépôt de données par défaut</isdefault>
+      <accesscontrol>Contrôle d'accès</accesscontrol>
       <sessiontimeout>Timeout de session</sessiontimeout>
       <action>Actions</action>
     </header>
@@ -419,7 +419,7 @@
       <Close>#{word.close}</Close>
     </action>
     <msg>
-      <cannot-delete>Suppression du d\u00e9p\u00f4t '{0}' (probablement en cours d'utilisation)</cannot-delete>
+      <cannot-delete>Suppression du dépôt '{0}' (probablement en cours d'utilisation)</cannot-delete>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
     </msg>
   </UIRepositoryList>
@@ -428,7 +428,7 @@
       <permission>Permission</permission>
       <read>Droit de lecture</read>
       <add_node>Droit d'ajout de document</add_node>
-      <set_property>Droit d'ajout/modification de propri\u00e9t\u00e9</set_property>
+      <set_property>Droit d'ajout/modification de propriété</set_property>
       <remove>Droit de suppression</remove>
     </label>
     <action>
@@ -436,7 +436,7 @@
       <Cancel>#{word.cancel}</Cancel>
     </action>
     <msg>
-      <check-one>Vous devez s\u00e9lectionner au moins une permission</check-one>
+      <check-one>Vous devez sélectionner au moins une permission</check-one>
     </msg>
   </UIWorkspacePermissionForm>
   <PermissionPopupSelect>
@@ -450,10 +450,10 @@
   </PermissionPopupSelect>
   <UIWorkspaceWizard>
     <msg>
-      <wsname-exist>L'espace de travail "{0}" existe d\u00e9j\u00e0 dans cette base de donn\u00e9es !</wsname-exist>
+      <wsname-exist>L'espace de travail "{0}" existe déjà dans cette base de données !</wsname-exist>
       <name-require>Veuillez indiquer un nom d'espace de travail</name-require>
-      <permission-require>Veuillez s\u00e9lectionner une permission</permission-require>
-      <nodeType-invalid>Le nodetype d'initialisation de l'espace de travail par d\u00e9faut doit \u00eatre "nt:unstructured"</nodeType-invalid>
+      <permission-require>Veuillez sélectionner une permission</permission-require>
+      <nodeType-invalid>Le nodetype d'initialisation de l'espace de travail par défaut doit être "nt:unstructured"</nodeType-invalid>
       <lockTimeOut-required>Veuillez indiquer un timeout verrouillage</lockTimeOut-required>
       <lockTimeOut-invalid>Le format du timeout de verrouillage est incorrect</lockTimeOut-invalid>
       <buffer-invalid>Le format de la taille du buffer est invalide</buffer-invalid>
@@ -464,27 +464,27 @@
       <maxSize-require>Veuillez indiquer une taille de cache maximum</maxSize-require>
       <maxSize-invalid>Le format de la taille du cache maximum est invalide</maxSize-invalid>
       <maxSize-rezo>Veuillez indiquer une taille de cache maximum &gt; 0</maxSize-rezo>
-      <liveTime-require>Veuillez indiquer une dur\u00e9e de vie du cache</liveTime-require>
-      <liveTime-invalid>Le format de la dur\u00e9e de vie du cache est invalide</liveTime-invalid>
-      <liveTime-rezo>Veuillez indiquer une dur\u00e9e de vie du cache &gt; 0</liveTime-rezo>
+      <liveTime-require>Veuillez indiquer une durée de vie du cache</liveTime-require>
+      <liveTime-invalid>Le format de la durée de vie du cache est invalide</liveTime-invalid>
+      <liveTime-rezo>Veuillez indiquer une durée de vie du cache &gt; 0</liveTime-rezo>
       <sourceName-invalid>Veuillez indiquer une source</sourceName-invalid>
-      <storePath-invalid>Veuillez indiquer un r\u00e9pertoire de stockage</storePath-invalid>
-      <swapPath-invalid>Veuillez indiquer un r\u00e9pertoire de swap</swapPath-invalid>
-      <queryHandlerType>Veuillez indiquer un type de gestionnaire de requ\u00eate (Query handler)</queryHandlerType>
-      <indexPath-invalid>Veuillez indiquer un r\u00e9pertoire pour le stockage des index de requ\u00eates</indexPath-invalid>
+      <storePath-invalid>Veuillez indiquer un répertoire de stockage</storePath-invalid>
+      <swapPath-invalid>Veuillez indiquer un répertoire de swap</swapPath-invalid>
+      <queryHandlerType>Veuillez indiquer un type de gestionnaire de requête (Query handler)</queryHandlerType>
+      <indexPath-invalid>Veuillez indiquer un répertoire pour le stockage des index de requêtes</indexPath-invalid>
       <storeType-invalid>Veuillez indiquer un type de stockage</storeType-invalid>
-      <queryHandlerType-invalid>Veuillez indiquer un type de gestionnaire de requ\u00eate (Query handler)</queryHandlerType-invalid>
+      <queryHandlerType-invalid>Veuillez indiquer un type de gestionnaire de requête (Query handler)</queryHandlerType-invalid>
       <permission-invalid>Veuillez indiquer au moins un droit</permission-invalid>
     </msg>
     <label>
-      Assistant de cr\u00e9ation d'espace de travail
+      Assistant de création d'espace de travail
       <step>Etape</step>
       <wizardSteps>Etapes de l'assistant</wizardSteps>
       <step1>UIWorkspaceWizard</step1>
       <name>Nom</name>
       <autoInitializedRootNt>Type du noeud racine</autoInitializedRootNt>
-      <isDefault>D\u00e9finir par d\u00e9fault</isDefault>
-      <permission>Permission par d\u00e9faut</permission>
+      <isDefault>Définir par défault</isDefault>
+      <permission>Permission par défaut</permission>
       <setLockTimeOut>Timeout de verrouillage</setLockTimeOut>
       <step2>UIWorkspaceWizard</step2>
       <container>Type de container</container>
@@ -494,21 +494,21 @@
       <storeType>Type de stockage</storeType>
       <filterType>Filtres</filterType>
       <maxBuffer>Buffer max (octets)</maxBuffer>
-      <swapPath>R\u00e9pertoire fichier d'\u00e9change</swapPath>
-      <storePath>R\u00e9pertoire de stockage</storePath>
+      <swapPath>Répertoire fichier d'échange</swapPath>
+      <storePath>Répertoire de stockage</storePath>
       <externalStore>Stockage externe</externalStore>
       <step3>UIWorkspaceWizard</step3>
-      <queryHandler>Gestionnaire de requ\u00eates</queryHandler>
-      <indexPath>R\u00e9pertoire des index de requ\u00eates</indexPath>
-      <isCache>Gestion du cache activ\u00e9e</isCache>
+      <queryHandler>Gestionnaire de requêtes</queryHandler>
+      <indexPath>Répertoire des index de requêtes</indexPath>
+      <isCache>Gestion du cache activée</isCache>
       <maxSize>Taille max de cache</maxSize>
-      <liveTime>Temps de validit\u00e9 du cache</liveTime>
+      <liveTime>Temps de validité du cache</liveTime>
     </label>
     <tab>
       <info>
-        <step1>1\u00e8re \u00e9tape : choix du nom de l'espace de travail, du nodetype...</step1>
-        <step2>2\u00e8me \u00e9tape : configuration du container, stockage ...</step2>
-        <step3>3\u00e8me \u00e9tape : configuration du cache, gestionnaire de requ\u00eates .. .</step3>
+        <step1>1ère étape : choix du nom de l'espace de travail, du nodetype...</step1>
+        <step2>2ème étape : configuration du container, stockage ...</step2>
+        <step3>3ème étape : configuration du cache, gestionnaire de requêtes .. .</step3>
       </info>
     </tab>
     <action>
@@ -525,7 +525,7 @@
   -->
   <UINodeTypeManager>
     <header>
-      <icon>Ic\u00f4ne</icon>
+      <icon>Icône</icon>
       <label>Nom</label>
       <input>Action</input>
     </header>
@@ -544,10 +544,10 @@
       <false>faux</false>
     </label>
     <header>
-      <icon>Ic\u00f4ne</icon>
+      <icon>Icône</icon>
       <nodeType>Type de noeud</nodeType>
       <mixinType>Mixin</mixinType>
-      <orderable>Fils ordonn\u00e9s</orderable>
+      <orderable>Fils ordonnés</orderable>
       <description>Description</description>
       <action>Action</action>
     </header>
@@ -579,7 +579,7 @@
       <Add>Ajouter</Add>
     </action>
     <header>
-      <icon>Ic\u00f4ne</icon>
+      <icon>Icône</icon>
       <label>Nom</label>
       <input>Action</input>
     </header>
@@ -593,49 +593,49 @@
     <tab>
       <label>
         <nodeTypeDefinition>Type de noeud</nodeTypeDefinition>
-        <propertyDefinition>Propri\u00e9t\u00e9</propertyDefinition>
+        <propertyDefinition>Propriété</propertyDefinition>
         <childNodeDefinition>Fils</childNodeDefinition>
         <SuperTypeTab>Super types</SuperTypeTab>
-        <DefaultTypeTab>Type primaire par d\u00e9faut</DefaultTypeTab>
+        <DefaultTypeTab>Type primaire par défaut</DefaultTypeTab>
         <RequiredTypeTab>Type primaire obligatoire</RequiredTypeTab>
         <Contraints>Contraintes</Contraints>
       </label>
     </tab>
     <label>
-      <propertiesDefinitions>D\u00e9finitions des propri\u00e9t\u00e9s</propertiesDefinitions>
-      <childDefinitions>D\u00e9finitions des noeuds fils</childDefinitions>
+      <propertiesDefinitions>Définitions des propriétés</propertiesDefinitions>
+      <childDefinitions>Définitions des noeuds fils</childDefinitions>
       <namespace>Espace de nommage</namespace>
       <propertyNamespace>Espace de nommage</propertyNamespace>
       <nodeTypeName>Nom</nodeTypeName>
       <mixinType>Mixin</mixinType>
-      <hasOrderableChildNodes>Fils ordonn\u00e9s</hasOrderableChildNodes>
+      <hasOrderableChildNodes>Fils ordonnés</hasOrderableChildNodes>
       <primaryItemName>Nom de l'item primaire</primaryItemName>
       <superTypes>Super types</superTypes>
       <propertyname>Nom</propertyname>
       <requiredType>Type</requiredType>
       <multiple>Multi-valeurs</multiple>
       <mandatory>Obligatoire</mandatory>
-      <autoCreated>Auto-cr\u00e9\u00e9</autoCreated>
-      <parentversion>H\u00e9ritage de version</parentversion>
+      <autoCreated>Auto-créé</autoCreated>
+      <parentversion>Héritage de version</parentversion>
       <protected>Lecture seule</protected>
       <constraints>Valeurs</constraints>
       <UIFormTableInputSet>UIFormTableInputSet</UIFormTableInputSet>
       <sameNameSiblings>Nom unique pour les fils</sameNameSiblings>
       <childNamespace>Espace de nommage</childNamespace>
       <childMandatory>Obligatoire</childMandatory>
-      <childAutocreated>Auto-cr\u00e9\u00e9</childAutocreated>
-      <childParentversion>H\u00e9ritage de version</childParentversion>
+      <childAutocreated>Auto-créé</childAutocreated>
+      <childParentversion>Héritage de version</childParentversion>
       <childProtected>Lecture seule</childProtected>
       <childNodename>Nom</childNodename>
       <requiredPrimaryType>Types primaires requis</requiredPrimaryType>
-      <defaultPrimaryType>Type primaire par d\u00e9faut</defaultPrimaryType>
+      <defaultPrimaryType>Type primaire par défaut</defaultPrimaryType>
       <valueconstraints>Constraintes</valueconstraints>
     </label>
     <action>
       <Cancel>#{word.cancel}</Cancel>
       <Save>#{word.save}</Save>
       <SaveDraft>Sauver un brouillon</SaveDraft>
-      <AddProperty>Ajouter une propri\u00e9t\u00e9</AddProperty>
+      <AddProperty>Ajouter une propriété</AddProperty>
       <AddChild>Ajouter un fils</AddChild>
       <AddConstraints>Ajouter des contraintes</AddConstraints>
       <Back>#{word.back}</Back>
@@ -650,16 +650,16 @@
       <Close>#{word.close}</Close>
     </action>
     <msg>
-      <register-successfully>Type de noeud '{0}' enregistr\u00e9 avec succ\u00e8s</register-successfully>
-      <supertype-is-madatory>Le super type est obligatoire pour cr\u00e9er un nouveau type de noeud. Vous devez en s\u00e9lectionner au moins 1.</supertype-is-madatory>
-      <register-failed>Enregistrement du type de noeud impossible. Ce type de noeudexiste d\u00e9j\u00e0, ou le super type est invalide</register-failed>
+      <register-successfully>Type de noeud '{0}' enregistré avec succès</register-successfully>
+      <supertype-is-madatory>Le super type est obligatoire pour créer un nouveau type de noeud. Vous devez en sélectionner au moins 1.</supertype-is-madatory>
+      <register-failed>Enregistrement du type de noeud impossible. Ce type de noeudexiste déjà, ou le super type est invalide</register-failed>
       <nodeType-name>Nom du type de noeud requis</nodeType-name>
-      <fileName-invalid>Caract\u00e8res invalides dans le nom.</fileName-invalid>
-      <node-type-exists>Le type de noeud '{0}' existe d\u00e9j\u00e0 !</node-type-exists>
+      <fileName-invalid>Caractères invalides dans le nom.</fileName-invalid>
+      <node-type-exists>Le type de noeud '{0}' existe déjà !</node-type-exists>
       <node-type-name>Nom du type de noeud invalide !</node-type-name>
-      <values-error>Veuillez s\u00e9lectionner un seul type de noeud pour le type primaire par d\u00e9faut</values-error>
+      <values-error>Veuillez sélectionner un seul type de noeud pour le type primaire par défaut</values-error>
       <confirm-delete-child>Confirmez-vous la suppression de ce noeud fils ?</confirm-delete-child>
-      <confirm-delete-property>Confirmez-vous la suppression de cette propri\u00e9t\u00e9 ?</confirm-delete-property>
+      <confirm-delete-property>Confirmez-vous la suppression de cette propriété ?</confirm-delete-property>
     </msg>
   </UINodeTypeForm>
   <UIPropertyDefinitionForm>
@@ -670,36 +670,36 @@
       </label>
     </tab>
     <msg>
-      <property-name>Nom de la propri\u00e9t\u00e9 invalide !</property-name>
+      <property-name>Nom de la propriété invalide !</property-name>
       <not-supported-value-constraints>Ce type requis ne supporte pas les contraintes</not-supported-value-constraints>
     </msg>
   </UIPropertyDefinitionForm>
   <UIChildNodeDefinitionForm>
     <msg>
       <child-name>Nom du noeud fils manquant</child-name>
-      <default-node-type-not-found>Type de noeud par d\u00e9faut non trouv\u00e9</default-node-type-not-found>
+      <default-node-type-not-found>Type de noeud par défaut non trouvé</default-node-type-not-found>
       <requiredPrimaryType>Type primaire requis manquant</requiredPrimaryType>
-      <defaultPrimaryType>Type primaire par d\u00e9faut manquant</defaultPrimaryType>
+      <defaultPrimaryType>Type primaire par défaut manquant</defaultPrimaryType>
     </msg>
   </UIChildNodeDefinitionForm>
   <defaultPrimaryTypePopup>
     <title>
-      <FormdefaultPrimaryTypePopup>S\u00e9lection du type primaire par d\u00e9faut</FormdefaultPrimaryTypePopup>
+      <FormdefaultPrimaryTypePopup>Sélection du type primaire par défaut</FormdefaultPrimaryTypePopup>
     </title>
   </defaultPrimaryTypePopup>
   <requiredPrimaryTypePopup>
     <title>
-      <FormrequiredPrimaryTypePopup>S\u00e9lection d'un type primaire</FormrequiredPrimaryTypePopup>
+      <FormrequiredPrimaryTypePopup>Sélection d'un type primaire</FormrequiredPrimaryTypePopup>
     </title>
   </requiredPrimaryTypePopup>
   <superTypesPopup>
     <title>
-      <FormsuperTypesPopup>S\u00e9lection d'un super type</FormsuperTypesPopup>
+      <FormsuperTypesPopup>Sélection d'un super type</FormsuperTypesPopup>
     </title>
   </superTypesPopup>
   <NodeTypePopup>
     <title>
-      <UINodeTypeForm>Ajout/Edition des d\u00e9finitions de types de noeud</UINodeTypeForm>
+      <UINodeTypeForm>Ajout/Edition des définitions de types de noeud</UINodeTypeForm>
     </title>
   </NodeTypePopup>
   <ViewNodeTypePopup>
@@ -714,19 +714,19 @@
   -->
   <UINodeTypeExport>
     <header>
-      <icon>Ic\u00f4ne</icon>
+      <icon>Icône</icon>
       <label>Nom</label>
       <input>Action</input>
     </header>
     <action>
       <Cancel>#{word.cancel}</Cancel>
       <Export>Exporter</Export>
-      <UncheckAll>Tout d\u00e9cocher</UncheckAll>
+      <UncheckAll>Tout décocher</UncheckAll>
       <CheckAll>Tout cocher</CheckAll>
     </action>
     <title>Exportation des types de noeuds</title>
     <msg>
-      <item-null>Vous devez s\u00e9lectionner au moins un noeud \u00e0 exporter</item-null>
+      <item-null>Vous devez sélectionner au moins un noeud à exporter</item-null>
     </msg>
   </UINodeTypeExport>
   <NodeTypeExportPopup>
@@ -752,11 +752,11 @@
       <Cancel>#{word.cancel}</Cancel>
       <Upload>Envoyer</Upload>
     </action>
-    <title>Importation des types de noeuds \u00e0 partir d'un fichier XML</title>
+    <title>Importation des types de noeuds à partir d'un fichier XML</title>
     <msg>
       <filename-error>Parcourir les fichiers pour l'import</filename-error>
-      <data-file-error>Seuls les fichiers XML ou ZIP sont support\u00e9s pour l'import</data-file-error>
-      <data-invalid>Erreur d'importation des donn\u00e9es. Format des donn\u00e9es invalide dans le fichier \u00e0 importer!</data-invalid>
+      <data-file-error>Seuls les fichiers XML ou ZIP sont supportés pour l'import</data-file-error>
+      <data-invalid>Erreur d'importation des données. Format des données invalide dans le fichier à importer!</data-invalid>
     </msg>
   </UINodeTypeUpload>
   <!--
@@ -771,19 +771,19 @@
       <Upload>Re-envoyer</Upload>
     </action>
     <header>
-      <icon>Ic\u00f4ne</icon>
+      <icon>Icône</icon>
       <label>Nom</label>
       <input>Action</input>
     </header>
-    <title>S\u00e9lection d'un type de noeud \u00e0 importer</title>
+    <title>Sélection d'un type de noeud à importer</title>
     <msg>
-      <no-nodetype-registered>Aucun type de noeud enregistr\u00e9 !</no-nodetype-registered>
-      <nodetype-registered>Enregistrement r\u00e9ussi !</nodetype-registered>
+      <no-nodetype-registered>Aucun type de noeud enregistré !</no-nodetype-registered>
+      <nodetype-registered>Enregistrement réussi !</nodetype-registered>
     </msg>
   </UINodeTypeImport>
   <NodeTypeImportPopup>
     <title>
-      <UINodeTypeImportPopup>Importation de types de noeud \u00e0 partir d'un fichier XML</UINodeTypeImportPopup>
+      <UINodeTypeImportPopup>Importation de types de noeud à partir d'un fichier XML</UINodeTypeImportPopup>
     </title>
   </NodeTypeImportPopup>
   <!--
@@ -799,7 +799,7 @@
     </label>
     <title>
       <AddPermission>Ajouter une Permission</AddPermission>
-      <AddIcon>Ajouter une Ic\u00f4ne</AddIcon>
+      <AddIcon>Ajouter une Icône</AddIcon>
       <AddPath>Ajouter un Emplacement</AddPath>
     </title>
   </DriveInputSet>
@@ -809,10 +809,10 @@
     </title>
     <msg>
       <view-name-invalid>Nom invalide</view-name-invalid>
-      <fileName-invalid>Caract\u00e8res invalides d\u00e9tect\u00e9s dans le nom</fileName-invalid>
-      <permission-not-empty>Veuillez s\u00e9lectionner une permission</permission-not-empty>
+      <fileName-invalid>Caractères invalides détectés dans le nom</fileName-invalid>
+      <permission-not-empty>Veuillez sélectionner une permission</permission-not-empty>
       <mustbe-add-tab>Vous devez ajouter au moins une barre d'outils</mustbe-add-tab>
-      <view-exist>Ce nom de vue existe d\u00e9j\u00e0</view-exist>
+      <view-exist>Ce nom de vue existe déjà</view-exist>
     </msg>
   </UIViewForm>
   <!--
@@ -823,7 +823,7 @@
   <UIActionTypeList>
     <header>
       <name>Nom</name>
-      <extendType>Types d'action h\u00e9rit\u00e9s</extendType>
+      <extendType>Types d'action hérités</extendType>
     </header>
     <action>
       <AddAction>Ajouter</AddAction>
@@ -842,25 +842,25 @@
   <UIActionTypeForm>
     <title>Ajout/Edition d'un type d'action</title>
     <label>
-      <actionType>Types d'action h\u00e9rit\u00e9s</actionType>
-      <name>Nom (d\u00e9bute par "exo:")</name>
-      <isMove>Action avec d\u00e9placement</isMove>
+      <actionType>Types d'action hérités</actionType>
+      <name>Nom (débute par "exo:")</name>
+      <isMove>Action avec déplacement</isMove>
       <variables>Variables</variables>
-      <exo_businessProcessAction>Processus m\u00e9tiers</exo_businessProcessAction>
+      <exo_businessProcessAction>Processus métiers</exo_businessProcessAction>
       <exo_scriptAction>Scripts Groovy</exo_scriptAction>
-      <exo_ruleAction>R\u00e8gles</exo_ruleAction>
-      <executeAction>Ex\u00e9cuter</executeAction>
+      <exo_ruleAction>Règles</exo_ruleAction>
+      <executeAction>Exécuter</executeAction>
     </label>
     <action>
       <Save>#{word.save}</Save>
       <Cancel>#{word.cancel}</Cancel>
     </action>
     <msg>
-      <action-type-added>'{0}' a \u00e9t\u00e9 ajout\u00e9.</action-type-added>
-      <action-type-create-error>Cr\u00e9ation du type d'action impossible !</action-type-create-error>
-      <action-name-invalid>'{0}' invalide ! Le nom doit d\u00e9buter par 'exo:'</action-name-invalid>
-      <action-exist>Ce type d'action existe d\u00e9j\u00e0</action-exist>
-      <fileName-invalid>Le nom de l'action comporte des caract\u00e8res invalides</fileName-invalid>
+      <action-type-added>'{0}' a été ajouté.</action-type-added>
+      <action-type-create-error>Création du type d'action impossible !</action-type-create-error>
+      <action-name-invalid>'{0}' invalide ! Le nom doit débuter par 'exo:'</action-name-invalid>
+      <action-exist>Ce type d'action existe déjà</action-exist>
+      <fileName-invalid>Le nom de l'action comporte des caractères invalides</fileName-invalid>
     </msg>
   </UIActionTypeForm>
   <!--
@@ -897,7 +897,7 @@
       <AddView>Ajouter une vue</AddView>
     </action>
     <msg>
-      <access-denied>Acc\u00e8s interdit ! Vous n'avez pas les droits requis pour utiliser cette fonction.</access-denied>
+      <access-denied>Accès interdit ! Vous n'avez pas les droits requis pour utiliser cette fonction.</access-denied>
       <template-in-use>Suppression impossible de la vue '{0}' (probablement en cours d'utilisation)</template-in-use>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
     </msg>
@@ -925,9 +925,9 @@
   -->
   <UITabForm>
     <msg>
-      <button-select-error>Vous devez s\u00e9lectionner au moins une fonction</button-select-error>
+      <button-select-error>Vous devez sélectionner au moins une fonction</button-select-error>
       <tab-name-error>Veuillez saisir un nom de barre d'outils</tab-name-error>
-      <fileName-invalid>Caract\u00e8res invalides d\u00e9tect\u00e9s dans le nom</fileName-invalid>
+      <fileName-invalid>Caractères invalides détectés dans le nom</fileName-invalid>
     </msg>
   </UITabForm>
   <UIViewFormTabPane>
@@ -939,7 +939,7 @@
     </tab>
     <action>
       <Save>#{word.save}</Save>
-      <Reset>R\u00e9initialiser</Reset>
+      <Reset>Réinitialiser</Reset>
       <Cancel>#{word.cancel}</Cancel>
       <Close>#{word.close}</Close>
       <Restore>Restaurer</Restore>
@@ -952,39 +952,39 @@
       <tabs>Barres d'outils</tabs>
       <template>Formulaires</template>
       <enableVersion>Activer le versionning</enableVersion>
-      <addFolder>Ajouter un r\u00e9pertoire</addFolder>
+      <addFolder>Ajouter un répertoire</addFolder>
       <addSignature>Ajouter une signature</addSignature>
       <addDocument>Ajouter un document</addDocument>
       <editDocument>Editer un document</editDocument>
       <upload>Uploader</upload>
-      <createTicket>Cr\u00e9er un ticket</createTicket>
+      <createTicket>Créer un ticket</createTicket>
       <paste>Coller</paste>
       <search>Rechercher</search>
-      <viewReferences>Voir les r\u00e9f\u00e9rences</viewReferences>
+      <viewReferences>Voir les références</viewReferences>
       <viewNodeType>Voir les types de noeud</viewNodeType>
       <viewPermissions>Voir les permissions</viewPermissions>
-      <viewProperties>Voir les propri\u00e9t\u00e9s</viewProperties>
-      <manageVersions>G\u00e9rer les versions</manageVersions>
-      <manageAuditing>G\u00e9rer la tra\u0048abilit\u00e9</manageAuditing>
-      <ManagePublications>G\u00e9rer les publications</ManagePublications>
-      <manageCategories>G\u00e9rer les categories</manageCategories>
-      <manageRelations>G\u00e9rer les relations</manageRelations>
-      <manageActions>G\u00e9rer les actions</manageActions>
+      <viewProperties>Voir les propriétés</viewProperties>
+      <manageVersions>Gérer les versions</manageVersions>
+      <manageAuditing>Gérer la traHabilité</manageAuditing>
+      <ManagePublications>Gérer les publications</ManagePublications>
+      <manageCategories>Gérer les categories</manageCategories>
+      <manageRelations>Gérer les relations</manageRelations>
+      <manageActions>Gérer les actions</manageActions>
       <exportNode>Exporter un noeud</exportNode>
       <importNode>Importer un noeud</importNode>
       <viewRelations>Voir les relations</viewRelations>
       <showJCRStructure>Afficher la structure du JCR</showJCRStructure>
-      <watchDocument>S'abonner \u00e0 un document</watchDocument>
+      <watchDocument>S'abonner à un document</watchDocument>
       <taggingDocument>Marquer un document</taggingDocument>
       <multiLanguage>Multi Languages</multiLanguage>
-      <viewMetadatas>Voir les m\u00e9tadonn\u00e9es</viewMetadatas>
+      <viewMetadatas>Voir les métadonnées</viewMetadatas>
       <overloadThumbnail>Surcharger une vignette</overloadThumbnail>
       <manageHidden>Cacher/Montrer le contenu</manageHidden>
     </label>
   </UIViewFormTabPane>
   <PopupViewPermission>
     <title>
-      <UIPermissionSelector>S\u00e9lection d'une permission</UIPermissionSelector>
+      <UIPermissionSelector>Sélection d'une permission</UIPermissionSelector>
     </title>
   </PopupViewPermission>
   <!--
@@ -995,7 +995,7 @@
   <UIECMTemplateList>
     <header>
       <name>Nom</name>
-      <path>R\u00e9pertoire</path>
+      <path>Répertoire</path>
       <baseVersion>Version de base</baseVersion>
       <action>Action</action>
     </header>
@@ -1005,7 +1005,7 @@
     <msg>
       <template-in-use>Suppresion impossible du formulaire '{0}' (probablement en cours d'utilisation)</template-in-use>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
-      <access-denied>Acc\u00e8s interdit ! Vous n'avez pas les droits requis pour utiliser cette fonction.</access-denied>
+      <access-denied>Accès interdit ! Vous n'avez pas les droits requis pour utiliser cette fonction.</access-denied>
     </msg>
   </UIECMTemplateList>
   <!--
@@ -1016,7 +1016,7 @@
   <UICBTemplateList>
     <header>
       <name>Nom</name>
-      <path>R\u00e9pertoire</path>
+      <path>Répertoire</path>
       <baseVersion>Version de base</baseVersion>
       <action>Action</action>
     </header>
@@ -1025,7 +1025,7 @@
     </action>
     <msg>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
-      <access-denied>Acc\u00e8s interdit ! Vous n'avez pas les droits requis pour utiliser cette fonction.</access-denied>
+      <access-denied>Accès interdit ! Vous n'avez pas les droits requis pour utiliser cette fonction.</access-denied>
     </msg>
   </UICBTemplateList>
   <!--
@@ -1037,14 +1037,14 @@
     <action>
       <Save>#{word.save}</Save>
       <Cancel>#{word.cancel}</Cancel>
-      <Reset>R\u00e9initialiser</Reset>
+      <Reset>Réinitialiser</Reset>
       <Restore>Restaurer</Restore>
       <Refresh>#{word.refresh}</Refresh>
     </action>
     <msg>
-      <version-restored>La version '{0}' a \u00e9t\u00e9 restaur\u00e9 avec succ\u00e8s.</version-restored>
-      <role-require>Veuillez s\u00e9lectionner une permission</role-require>
-      <template-name-exist>Le formulaire '{0}' existe d\u00e9j\u00e0</template-name-exist>
+      <version-restored>La version '{0}' a été restauré avec succès.</version-restored>
+      <role-require>Veuillez sélectionner une permission</role-require>
+      <template-name-exist>Le formulaire '{0}' existe déjà</template-name-exist>
     </msg>
     <tab>
       <label>
@@ -1055,7 +1055,7 @@
     </tab>
     <label>
       <name>Nom</name>
-      <label>Libell\u00e9</label>
+      <label>Libellé</label>
       <isDocumentTemplate>Formulaire de document</isDocumentTemplate>
       <dialog>Code du formulaire</dialog>
       <view>Code du formulaire</view>
@@ -1070,7 +1070,7 @@
   -->
   <ECMTempForm>
     <label>
-      <version>S\u00e9lection d'une version</version>
+      <version>Sélection d'une version</version>
       <content>Code du formulaire</content>
       <name>Nom</name>
       <homeTemplate>Type de formulaire</homeTemplate>
@@ -1135,7 +1135,7 @@
   -->
   <UIECMFilterForm>
     <label>
-      <selectScript>Cat\u00e9gorie</selectScript>
+      <selectScript>Catégorie</selectScript>
     </label>
   </UIECMFilterForm>
   <!--
@@ -1154,7 +1154,7 @@
     </msg>
     <header>
       <scriptName>Nom</scriptName>
-      <path>R\u00e9pertoire</path>
+      <path>Répertoire</path>
       <baseVersion>Version de base</baseVersion>
       <action>Actions</action>
     </header>
@@ -1187,10 +1187,10 @@
       <Change>Modifier</Change>
     </action>
     <msg>
-      <version-restored>la version {0} a \u00e9t\u00e9 restaur\u00e9e avec succ\u00e8s.</version-restored>
+      <version-restored>la version {0} a été restaurée avec succès.</version-restored>
       <name-null>Veuillez saisir un nom de script</name-null>
-      <name-exist>Le script '{0}' existe d\u00e9j\u00e0</name-exist>
-      <fileName-invalid>Caract\u00e8res invalides d\u00e9tect\u00e9s dns le nom du script.</fileName-invalid>
+      <name-exist>Le script '{0}' existe déjà</name-exist>
+      <fileName-invalid>Caractères invalides détectés dns le nom du script.</fileName-invalid>
     </msg>
   </UIScriptForm>
   <!--
@@ -1239,21 +1239,21 @@
       <Save>#{word.save}</Save>
       <Cancel>#{word.cancel}</Cancel>
     </action>
-    <title>Ajout de cat\u00e9gorie</title>
+    <title>Ajout de catégorie</title>
     <label>
       <taxonomyName>Nom</taxonomyName>
-      <parentPath>R\u00e9pertoire parent</parentPath>
+      <parentPath>Répertoire parent</parentPath>
     </label>
     <msg>
-      <exist>La cat\u00e9gorie "{0}" existe d\u00e9j\u00e0</exist>
-      <name-null>Veuillez saisir un nom de cat\u00e9gorie</name-null>
-      <name-invalid>Caract\u00e8res invalides d\u00e9tect\u00e9s dns le nom de la cat\u00e9gorie</name-invalid>
-      <name-too-long>Le nom de la cat\u00e9gorie ne peut exc\u00e9der 30 caract\u00e8res</name-too-long>
+      <exist>La catégorie "{0}" existe déjà</exist>
+      <name-null>Veuillez saisir un nom de catégorie</name-null>
+      <name-invalid>Caractères invalides détectés dns le nom de la catégorie</name-invalid>
+      <name-too-long>Le nom de la catégorie ne peut excéder 30 caractères</name-too-long>
     </msg>
   </UITaxonomyForm>
   <TaxonomyPopup>
     <title>
-      <UITaxonomyForm>Ajout d'une cat\u00e9gorie</UITaxonomyForm>
+      <UITaxonomyForm>Ajout d'une catégorie</UITaxonomyForm>
     </title>
   </TaxonomyPopup>
   <!--
@@ -1271,7 +1271,7 @@
     </action>
     <msg>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
-      <access-denied>Acc\u00e8s interdit ! Vous n'avez pas les droits requis pour utiliser cette fonction.</access-denied>
+      <access-denied>Accès interdit ! Vous n'avez pas les droits requis pour utiliser cette fonction.</access-denied>
     </msg>
   </UITemplateList>
   <!--
@@ -1281,7 +1281,7 @@
   -->
   <AddNewTemplatePermission>
     <title>
-      <UIPermissionSelector>S\u00e9lection d'une Permission</UIPermissionSelector>
+      <UIPermissionSelector>Sélection d'une Permission</UIPermissionSelector>
     </title>
   </AddNewTemplatePermission>
   <TemplatePopup>
@@ -1298,36 +1298,36 @@
       <name>Nom</name>
       <isDocumentTemplate>Formulaire de document</isDocumentTemplate>
       <viewPermission>Permission</viewPermission>
-      <enableVersion>Versionning activ\u00e9</enableVersion>
+      <enableVersion>Versionning activé</enableVersion>
     </label>
     <title>Ajout/Edition d'un formulaire de visualisation</title>
   </ViewForm>
   <DialogForm>
     <label>
       <UITemplateContent>DialogForm</UITemplateContent>
-      <UIPopupWindow>Permission d'\u00e9dition</UIPopupWindow>
+      <UIPopupWindow>Permission d'édition</UIPopupWindow>
       <selectVersion>Versions</selectVersion>
       <content>Code du formulaire</content>
       <name>Nom</name>
       <isDocumentTemplate>Formulaire de document</isDocumentTemplate>
       <viewPermission>Permission</viewPermission>
-      <enableVersion>Versionning activ\u00e9</enableVersion>
+      <enableVersion>Versionning activé</enableVersion>
     </label>
-    <title>Ajout/Edition d'un formulaire d'\u00e9dition</title>
+    <title>Ajout/Edition d'un formulaire d'édition</title>
   </DialogForm>
   <DialogFormTemplatePermission>
     <title>
-      <UIPermissionSelector>S\u00e9lection d'une permission</UIPermissionSelector>
+      <UIPermissionSelector>Sélection d'une permission</UIPermissionSelector>
     </title>
   </DialogFormTemplatePermission>
   <ViewFormTemplatePermission>
     <title>
-      <UIPermissionSelector>S\u00e9lection d'une permission</UIPermissionSelector>
+      <UIPermissionSelector>Sélection d'une permission</UIPermissionSelector>
     </title>
   </ViewFormTemplatePermission>
   <EditTemplatePopup>
     <title>
-      <UIViewTemplate>Formulaires d'\u00e9dition/visualisation</UIViewTemplate>
+      <UIViewTemplate>Formulaires d'édition/visualisation</UIViewTemplate>
     </title>
   </EditTemplatePopup>
   <UITemplatesManager>
@@ -1349,7 +1349,7 @@
   <UITemplateEditForm>
     <label>
       <name>Nom</name>
-      <label>Libell\u00e9</label>
+      <label>Libellé</label>
       <isDocumentTemplate>Formulaire de document</isDocumentTemplate>
     </label>
     <action>
@@ -1366,12 +1366,12 @@
   <UIDialogTab>
     <header>
       <name>Nom</name>
-      <roles>R\u00f4les</roles>
+      <roles>Rôles</roles>
       <baseVersion>Version</baseVersion>
       <action>Actions</action>
     </header>
     <msg>
-      <undeletable>'{0}' est le formulaire par d\u00e9faut. Suppression interdite !</undeletable>
+      <undeletable>'{0}' est le formulaire par défaut. Suppression interdite !</undeletable>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
     </msg>
     <action>
@@ -1389,12 +1389,12 @@
   <UIViewTab>
     <header>
       <name>Nom</name>
-      <roles>R\u00f4les</roles>
+      <roles>Rôles</roles>
       <baseVersion>Version</baseVersion>
       <action>Actions</action>
     </header>
     <msg>
-      <undeletable>'{0}' est le formulaire par d\u00e9faut. Suppression interdite !</undeletable>
+      <undeletable>'{0}' est le formulaire par défaut. Suppression interdite !</undeletable>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
     </msg>
     <action>
@@ -1417,10 +1417,10 @@
       <Refresh>#{word.refresh}</Refresh>
     </action>
     <msg>
-      <name-invalid>Le nom contient des caract\u00e8res invalides</name-invalid>
+      <name-invalid>Le nom contient des caractères invalides</name-invalid>
       <roles-invalid>Veuillez saisir au moins une persmission.</roles-invalid>
-      <version-restored>Version {0} restaur\u00e9e avec succ\u00e8s.</version-restored>
-      <name-exist>Le formulaire '{0}' existe d\u00e9j\u00e0</name-exist>
+      <version-restored>Version {0} restaurée avec succès.</version-restored>
+      <name-exist>Le formulaire '{0}' existe déjà</name-exist>
     </msg>
     <title>
       <AddPermission>Ajouter une Permission</AddPermission>
@@ -1448,7 +1448,7 @@
   </JCRBrowser>
   <JCRBrowserAssets>
     <title>
-      <UIOneNodePathSelector>Choisir une ic\u00f4ne</UIOneNodePathSelector>
+      <UIOneNodePathSelector>Choisir une icône</UIOneNodePathSelector>
     </title>
   </JCRBrowserAssets>
   <!--
@@ -1460,16 +1460,16 @@
     <header>
       <name>Nom</name>
       <type>Type</type>
-      <statement>Requ\u00eates</statement>
+      <statement>Requêtes</statement>
       <permission>Permissions</permission>
       <action>Actions</action>
     </header>
     <action>
-      <AddQuery>Ajouter une requ\u00eate</AddQuery>
+      <AddQuery>Ajouter une requête</AddQuery>
     </action>
     <tooltip>
-      <Edit>Editer cette requ\u00eate</Edit>
-      <Delete>Supprimer cette requ\u00eate</Delete>
+      <Edit>Editer cette requête</Edit>
+      <Delete>Supprimer cette requête</Delete>
     </tooltip>
     <msg>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
@@ -1489,20 +1489,20 @@
       <Cancel>#{word.cancel}</Cancel>
     </action>
     <msg>
-      <permission-require>Vous devez s\u00e9lectionner au moins une permission</permission-require>
-      <name-invalid>Caract\u00e8res invalides d\u00e9tect\u00e9s dans le nom de la requ\u00eate</name-invalid>
-      <name-existing>Une requ\u00eate du m\u00eame nom existe d\u00e9j\u00e0</name-existing>
-      <invalid-query>Requu\u00eates invalide. Veuillez v\u00e9rifier le code de votre requ\u00eate !</invalid-query>
+      <permission-require>Vous devez sélectionner au moins une permission</permission-require>
+      <name-invalid>Caractères invalides détectés dans le nom de la requête</name-invalid>
+      <name-existing>Une requête du même nom existe déjà</name-existing>
+      <invalid-query>Requuêtes invalide. Veuillez vérifier le code de votre requête !</invalid-query>
     </msg>
   </UIQueriesForm>
   <AddQueryForm>
     <title>
-      <UIQueriesForm>Ajout d'une requ\u00eate</UIQueriesForm>
+      <UIQueriesForm>Ajout d'une requête</UIQueriesForm>
     </title>
   </AddQueryForm>
   <EditQueryForm>
     <title>
-      <UIQueriesForm>Edition d'une requ\u00eate</UIQueriesForm>
+      <UIQueriesForm>Edition d'une requête</UIQueriesForm>
     </title>
   </EditQueryForm>
   <!--
@@ -1513,7 +1513,7 @@
   <UIFolksonomyManager>
     <header>
       <name>Nom du style</name>
-      <documentRange>Nombre de r\u00e9f\u00e9rences</documentRange>
+      <documentRange>Nombre de références</documentRange>
       <tagHTML>Style du tag</tagHTML>
       <action>Action</action>
     </header>
@@ -1526,16 +1526,16 @@
   <UITagStyleForm>
     <label>
       <styleName>Nom du style</styleName>
-      <documentRange>Nombre de r\u00e9f\u00e9rences</documentRange>
+      <documentRange>Nombre de références</documentRange>
       <styleHTML>Style Html</styleHTML>
     </label>
     <action>
-      <UpdateStyle>Mettre \u00e0 jour</UpdateStyle>
+      <UpdateStyle>Mettre à jour</UpdateStyle>
       <Cancel>#{word.cancel}</Cancel>
     </action>
     <msg>
-      <range-validator>Nombre de r\u00e9f\u00e9rences invalide. Le format est le suivant : a..b (a et b entiers positifs). Utiliser '*' \u00e0 la place de b pour indiquer un nombre illimit\u00e9.</range-validator>
-      <error-update>Erreur lors de la mise \u00e0 jour.</error-update>
+      <range-validator>Nombre de références invalide. Le format est le suivant : a..b (a et b entiers positifs). Utiliser '*' à la place de b pour indiquer un nombre illimité.</range-validator>
+      <error-update>Erreur lors de la mise à jour.</error-update>
     </msg>
   </UITagStyleForm>
   <FolksonomyPopup>
@@ -1550,7 +1550,7 @@
   -->
   <ECMNameValidator>
     <msg>
-      <Invalid-char>Caract\u00e8res invalide d\u00e9tect\u00e9s dans le champ '{0}'.</Invalid-char>
+      <Invalid-char>Caractères invalide détectés dans le champ '{0}'.</Invalid-char>
       <empty-input>La valeur du champ '{0}' est nulle ou vide !</empty-input>
     </msg>
   </ECMNameValidator>
@@ -1604,7 +1604,7 @@
   <childNodeDefinition>
     <title>
       <AddRequiredType>Ajouter un Type Requis</AddRequiredType>
-      <AddDefaultType>Ajouter un Type par D\u00e9faut</AddDefaultType>
+      <AddDefaultType>Ajouter un Type par Défaut</AddDefaultType>
     </title>
   </childNodeDefinition>
   <propertyDefinition>
@@ -1614,7 +1614,7 @@
   </propertyDefinition>
   <authInputSet>
     <title>
-      <Select>S\u00e9lectionner</Select>
+      <Select>Sélectionner</Select>
     </title>
   </authInputSet>
   <!--
@@ -1640,13 +1640,13 @@
   </step1>
   <step2>
     <title>
-      <SelectContainer>S\u00e9lectionner un Conteneur</SelectContainer>
-      <SelectStore>S\u00e9lectionner le lieu de stockage</SelectStore>
+      <SelectContainer>Sélectionner un Conteneur</SelectContainer>
+      <SelectStore>Sélectionner le lieu de stockage</SelectStore>
     </title>
   </step2>
   <step3>
     <title>
-      <SelectQueryHandler>S\u00e9lectionner le gestionnaire de requ\u00eate</SelectQueryHandler>
+      <SelectQueryHandler>Sélectionner le gestionnaire de requête</SelectQueryHandler>
     </title>
   </step3>
   <UIPermissionSelector>

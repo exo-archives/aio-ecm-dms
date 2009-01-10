@@ -7,17 +7,17 @@
   -->
   <UIEditModeConfiguration>
     <label>
-      <selectTemplate>S\u00e9lection d'un mod\u00e8le</selectTemplate>
-      <select-repository>S\u00e9lection d'un d\u00e9p\u00f4t de donn\u00e9es</select-repository>
+      <selectTemplate>Sélection d'un modèle</selectTemplate>
+      <select-repository>Sélection d'un dépôt de données</select-repository>
       <actionInput>UIEditModeConfiguration</actionInput>
-      <workspaceName>S\u00e9lection d'un espace de travail</workspaceName>
+      <workspaceName>Sélection d'un espace de travail</workspaceName>
       <savedPath>Sauvegarder vers</savedPath>
-      <repositoryName>Veuillez s\u00e9lectionner un d\u00e9p\u00f4t de donn\u00e9es</repositoryName>
+      <repositoryName>Veuillez sélectionner un dépôt de données</repositoryName>
     </label>
     <msg>
-      <save-successfully>Les pr\u00e9f\u00e9rences de la portlet ont \u00e9t\u00e9 sauvegard\u00e9es</save-successfully>
-      <item-not-found>Ce r\u00e9pertoire est invalide !</item-not-found>
-      <fileType-empty>Veuillez s\u00e9lectionner un type de fichier.</fileType-empty>
+      <save-successfully>Les préférences de la portlet ont été sauvegardées</save-successfully>
+      <item-not-found>Ce répertoire est invalide !</item-not-found>
+      <fileType-empty>Veuillez sélectionner un type de fichier.</fileType-empty>
       <ws-empty>Vous devez choisir un espace de travail.</ws-empty>
     </msg>
     <action>
@@ -26,21 +26,21 @@
   </UIEditModeConfiguration>
   <UIPopupWindow>
     <title>
-      <UIOneNodePathSelector>S\u00e9lectionner un emplacement</UIOneNodePathSelector>
+      <UIOneNodePathSelector>Sélectionner un emplacement</UIOneNodePathSelector>
     </title>
   </UIPopupWindow>
   <UIFastContentCreatortForm>
     <msg>
       <name-not-allowed>Ce nom n'est pas permis.</name-not-allowed>
       <in-versioning>Veuillez d'abord effectuer un check-out avant d'ajouter un document</in-versioning>
-      <cannot-save>Sauvegarde impossible. Certaines contraintes ne sont pas respect\u00e9es</cannot-save>
-      <saved-successfully>Le document a \u00e9t\u00e9 sauvegard\u00e9 avec succ\u00e8s \u00e0 cet emplacement : '{0}'</saved-successfully>
+      <cannot-save>Sauvegarde impossible. Certaines contraintes ne sont pas respectées</cannot-save>
+      <saved-successfully>Le document a été sauvegardé avec succès à cet emplacement : '{0}'</saved-successfully>
       <not-support>Impossible de charger le formulaire de '{0}'.</not-support>
-      <not-add-folder>Seuls des documents de type 'nt:file' peuvent \u00f4tre ajout\u00e9s dans ce r\u00e9pertoire</not-add-folder>
-      <access-denied>Acc\u00e8s interdit! Vous n'avez pas les droits suffisant pour acc\u00e9der \u00e0 '{0}'</access-denied>
-      <path-not-found>Le r\u00e9pertoire '{0}' a \u00e9t\u00e9 suppim\u00e9 ou est invalide</path-not-found>
-      <node-locked>Le document '{0}' est verrouill\u00e9</node-locked>
-      <node-isExist>Ce document existe d\u00e9j\u00e0 dans '{0}'</node-isExist>
+      <not-add-folder>Seuls des documents de type 'nt:file' peuvent ôtre ajoutés dans ce répertoire</not-add-folder>
+      <access-denied>Accès interdit! Vous n'avez pas les droits suffisant pour accéder à '{0}'</access-denied>
+      <path-not-found>Le répertoire '{0}' a été suppimé ou est invalide</path-not-found>
+      <node-locked>Le document '{0}' est verrouillé</node-locked>
+      <node-isExist>Ce document existe déjà dans '{0}'</node-isExist>
     </msg>
     <action>
       <Save>Sauver</Save>
@@ -68,7 +68,7 @@
   </UIFormInputSetWithAction>
   <UIFastContentCreatorPortlet>
     <msg>
-      <re-config>Un probl\u00e8me est survenu, veuillez v\u00e9rifier votre configuration.</re-config>
+      <re-config>Un problème est survenu, veuillez vérifier votre configuration.</re-config>
     </msg>
   </UIFastContentCreatorPortlet>
   <DateTimeValidator>
@@ -83,7 +83,7 @@
   -->
   <ECMNameValidator>
     <msg>
-      <Invalid-char>Caract\u00e8res invalides d\u00e9tect\u00e9s dans le champ '{0}'.</Invalid-char>
+      <Invalid-char>Caractères invalides détectés dans le champ '{0}'.</Invalid-char>
       <empty-input>Valeur manquante dans le champ '{0}' !</empty-input>
     </msg>
   </ECMNameValidator>

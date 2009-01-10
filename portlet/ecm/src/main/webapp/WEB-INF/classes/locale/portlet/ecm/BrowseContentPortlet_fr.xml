@@ -8,7 +8,7 @@
   <UIConfigTabPane>
     <tab>
       <label>
-        <UIPathConfig>Configuration du r\u00e9pertoire</UIPathConfig>
+        <UIPathConfig>Configuration du répertoire</UIPathConfig>
         <UINewConfigForm>Nouvelle configuration</UINewConfigForm>
       </label>
     </tab>
@@ -20,21 +20,21 @@
   -->
   <UIPathConfig>
     <label>
-      <categoryPath>R\u00e9pertoire des cat\u00e9gories</categoryPath>
+      <categoryPath>Répertoire des catégories</categoryPath>
       <workspace>Espace de travail</workspace>
-      <repository>D\u00e9p\u00f4t de donn\u00e9es</repository>
+      <repository>Dépôt de données</repository>
       <path>UIPathConfig</path>
       <template>Formulaire</template>
       <itemPerPage>Nombre d'items par page</itemPerPage>
-      <detailBoxTemp>Type d'affichage d\u00e9taill\u00e9</detailBoxTemp>
+      <detailBoxTemp>Type d'affichage détaillé</detailBoxTemp>
       <enableToolBar>Afficher la barre d'outils</enableToolBar>
-      <enableRefDoc>Documents r\u00e9f\u00e9renc\u00e9s</enableRefDoc>
+      <enableRefDoc>Documents référencés</enableRefDoc>
       <enableChildDoc>Documents fils</enableChildDoc>
-      <enableTagMap>Carte des mots cl\u00e9s</enableTagMap>
+      <enableTagMap>Carte des mots clés</enableTagMap>
       <enableComment>Autoriser les commentaires</enableComment>
       <enableVote>Autoriser les votes</enableVote>
     </label>
-    <title>Configuration du r\u00e9pertoire</title>
+    <title>Configuration du répertoire</title>
     <action>
       <Add>Nouvelle configuration</Add>
       <Save>#{word.save}</Save>
@@ -43,11 +43,11 @@
       <Back>#{word.back}</Back>
     </action>
     <msg>
-      <require-path>Vous devez s\u00e9lectionner le r\u00e9pertoire des cat\u00e9gories</require-path>
-      <invalid-path>R\u00e9pertoire des cat\u00e9gories invalide</invalid-path>
-      <invalid-value>Num\u00e9ro de page invalide</invalid-value>
+      <require-path>Vous devez sélectionner le répertoire des catégories</require-path>
+      <invalid-path>Répertoire des catégories invalide</invalid-path>
+      <invalid-value>Numéro de page invalide</invalid-value>
       <invalid-number>Vous devez insérer un nombre</invalid-number>
-      <access-denied>Acc\u00e8s interdit ! Vous n'avez pas les droits requis pour acc\u00e9der \u00e0 ce r\u00e9pertoire des cat\u00e9gories.</access-denied>
+      <access-denied>Accès interdit ! Vous n'avez pas les droits requis pour accéder à ce répertoire des catégories.</access-denied>
     </msg>
   </UIPathConfig>
   <UIQueryConfig>
@@ -55,22 +55,22 @@
       <repostoryException>Peut-être avez vous un problème avcec votre requête. Vérifiez-la à nouveau.</repostoryException>
       <noSuchNodeTypeException>Peut-être avez vous un problème avcec votre requête. Vérifiez-la à nouveau.</noSuchNodeTypeException>
       <invalid-value>Nouvelle configuration</invalid-value>
-      <invalid-query>Cha\u00eene de requ\u00eate invalide</invalid-query>
-      <invalid-name>Requ\u00eate introuvable, essayez un autre type, langage ou statut</invalid-name>
+      <invalid-query>Chaîne de requête invalide</invalid-query>
+      <invalid-name>Requête introuvable, essayez un autre type, langage ou statut</invalid-name>
     </msg>
-    <title>Configuration de requ\u00eate</title>
+    <title>Configuration de requête</title>
     <label>
-      <repository>D\u00e9p\u00f4t de donn\u00e9es</repository>
+      <repository>Dépôt de données</repository>
       <workspace>Espace de travail</workspace>
-      <queryLanguage>Langage de requ\u00eate</queryLanguage>
-      <queryStatus>Statut de la requ\u00eate</queryStatus>
-      <queryType>Type de requ\u00eate</queryType>
-      <queryStore>Nom de la requ\u00eate</queryStore>
-      <query>Requ\u00eate</query>
+      <queryLanguage>Langage de requête</queryLanguage>
+      <queryStatus>Statut de la requête</queryStatus>
+      <queryType>Type de requête</queryType>
+      <queryStore>Nom de la requête</queryStore>
+      <query>Requête</query>
       <template>Formulaire</template>
       <itemPerPage>Nombre d'items par page</itemPerPage>
-      <detailBoxTemp>Type d'affichage d\u00e9taill\u00e9</detailBoxTemp>
-      <enableTagMap>Carte des mots cl\u00e9s</enableTagMap>
+      <detailBoxTemp>Type d'affichage détaillé</detailBoxTemp>
+      <enableTagMap>Carte des mots clés</enableTagMap>
       <enableComment>Autoriser les commentaires</enableComment>
       <enableVote>Autoriser les votes</enableVote>
     </label>
@@ -106,7 +106,7 @@
     <title>
       <normal>Normal/Cliquer pour voter</normal>
       <good>Bon/Cliquer pour voter</good>
-      <verygood>Tr\u00e8s Bon/Cliquer pour voter</verygood>
+      <verygood>Très Bon/Cliquer pour voter</verygood>
       <excellent>Excellent/Cliquer pour voter</excellent>
       <best>Meilleur/Cliquer pour voter</best>
     </title>
@@ -124,12 +124,12 @@
   <UIScriptConfig>
     <title>Configuration de script</title>
     <label>
-      <repository>D\u00e9p\u00f4t de donn\u00e9es</repository>
+      <repository>Dépôt de données</repository>
       <workspace>Espace de travail</workspace>
       <scriptName>Nom du script</scriptName>
       <template>Formulaire</template>
-      <detailBoxTemp>Type d'affichage d\u00e9taill\u00e9</detailBoxTemp>
-      <enableTagMap>Carte des mots cl\u00e9s</enableTagMap>
+      <detailBoxTemp>Type d'affichage détaillé</detailBoxTemp>
+      <enableTagMap>Carte des mots clés</enableTagMap>
       <enableComment>Autoriser les commentaires</enableComment>
       <enableVote>Autoriser les votes</enableVote>
     </label>
@@ -149,13 +149,13 @@
   <UIDocumentConfig>
     <title>Configuration de document</title>
     <label>
-      <repository>D\u00e9p\u00f4t de donn\u00e9es</repository>
+      <repository>Dépôt de données</repository>
       <workspace>Espace de travail</workspace>
-      <categoryPath>R\u00e9pertoire des cat\u00e9gories</categoryPath>
+      <categoryPath>Répertoire des catégories</categoryPath>
       <path>UIDocumentConfig</path>
       <doc>UIDocumentConfig</doc>
       <docName>Nom du document</docName>
-      <detailBoxTemp>Type d'affichage d\u00e9taill\u00e9</detailBoxTemp>
+      <detailBoxTemp>Type d'affichage détaillé</detailBoxTemp>
       <enableComment>Autoriser les commentaires</enableComment>
       <enableVote>Autoriser les votes</enableVote>
     </label>
@@ -167,10 +167,10 @@
       <Cancel>#{word.cancel}</Cancel>
     </action>
     <msg>
-      <require-path>Vous devez d'abord s\u00e9lectionner le r\u00e9pertoire des cat\u00e9gories</require-path>
-      <invalid-path>R\u00e9pertoire des cat\u00e9gories invalide, veuillez en s\u00e9lectionner un autre</invalid-path>
-      <require-doc>Vous devez s\u00e9lectionner un document</require-doc>
-      <invalid-doc>Nom de document invalide, veuillez en s\u00e9lectionner un autre</invalid-doc>
+      <require-path>Vous devez d'abord sélectionner le répertoire des catégories</require-path>
+      <invalid-path>Répertoire des catégories invalide, veuillez en sélectionner un autre</invalid-path>
+      <require-doc>Vous devez sélectionner un document</require-doc>
+      <invalid-doc>Nom de document invalide, veuillez en sélectionner un autre</invalid-doc>
     </msg>
   </UIDocumentConfig>
   <!--
@@ -180,7 +180,7 @@
   -->
   <UINewConfigForm>
     <label>
-      <repository>S\u00e9lection d'un d\u00e9pot de donn\u00e9es</repository>
+      <repository>Sélection d'un dépot de données</repository>
       <workspace>Espace de travail</workspace>
       <browseType>Parcourir les contenus</browseType>
     </label>
@@ -208,14 +208,14 @@
       <Comment>Commenter</Comment>
     </tooltip>
     <msg>
-      <back-view-search>Retour \u00e0 la vue pr\u00e9c\u00e9dente pour la recherche</back-view-search>
-      <select-doc>Aucun document s\u00e9lectionn\u00e9 ou le document a \u00e9t\u00e9 supprim\u00e9</select-doc>
-      <node-removed>Le document a \u00e9t\u00e9 supprim\u00e9</node-removed>
-      <readonly-doc>Ce document est versionn\u00e9. Veuillez d'abord effectuer un check out !</readonly-doc>
-      <not-support-vote>Votes non autoris\u00e9s pour ce type de document</not-support-vote>
-      <not-support-comment>Commentaires non autoris\u00e9s pour ce type de document</not-support-comment>
-      <node-is-locked>Le document est verrouill\u00e9 ! Veuillez d'abord le d\u00e9verrouiller.</node-is-locked>
-      <access-add-denied>Acc\u00e8s interdit. Vous n'avez pas les droits "d'ajout" sur ce document.</access-add-denied>
+      <back-view-search>Retour à la vue précédente pour la recherche</back-view-search>
+      <select-doc>Aucun document sélectionné ou le document a été supprimé</select-doc>
+      <node-removed>Le document a été supprimé</node-removed>
+      <readonly-doc>Ce document est versionné. Veuillez d'abord effectuer un check out !</readonly-doc>
+      <not-support-vote>Votes non autorisés pour ce type de document</not-support-vote>
+      <not-support-comment>Commentaires non autorisés pour ce type de document</not-support-comment>
+      <node-is-locked>Le document est verrouillé ! Veuillez d'abord le déverrouiller.</node-is-locked>
+      <access-add-denied>Accès interdit. Vous n'avez pas les droits "d'ajout" sur ce document.</access-add-denied>
     </msg>
   </UIToolBar>
   <!--
@@ -225,9 +225,9 @@
   -->
   <UISearchController>
     <label>
-      <nodePath>Vous \u00eates ici</nodePath>
-      <searchTime>R\u00e9sultats</searchTime>
-      <duration>Dur\u00e9e</duration>
+      <nodePath>Vous êtes ici</nodePath>
+      <searchTime>Résultats</searchTime>
+      <duration>Durée</duration>
       <nodeName>noeud(s)</nodeName>
     </label>
   </UISearchController>
@@ -241,7 +241,7 @@
       <inputValue>Rechercher</inputValue>
       <option>Aucun label</option>
       <search>Rechercher maintenant</search>
-      <referencesDoc>R\u00e9f\u00e9rences</referencesDoc>
+      <referencesDoc>Références</referencesDoc>
       <childDoc>Fils</childDoc>
     </label>
     <title>
@@ -249,7 +249,7 @@
     </title>
     <msg>
       <not-empty>Veuillez saisir au moins un mot pour la recherche</not-empty>
-      <suggestion-keyword>Aucun r\u00e9sultat trouv\u00e9 pour '{0}'.</suggestion-keyword>
+      <suggestion-keyword>Aucun résultat trouvé pour '{0}'.</suggestion-keyword>
     </msg>
   </UICBSearchForm>
   <!--
@@ -260,16 +260,16 @@
   <UICBSearchResults>
     <header>
       <name>Nom</name>
-      <path>R\u00e9pertoire</path>
+      <path>Répertoire</path>
       <action>Action</action>
     </header>
     <action>
       <Close>#{word.close}</Close>
     </action>
     <msg>
-      <node-removed>Document introuvable (probablement d\u00e9plac\u00e9 ou supprim\u00e9)</node-removed>
-      <not-support>Visualisation de ce document impossible (formulaire non support\u00e9)</not-support>
-      <empty>Aucun r\u00e9sultat trouv\u00e9 !</empty>
+      <node-removed>Document introuvable (probablement déplacé ou supprimé)</node-removed>
+      <not-support>Visualisation de ce document impossible (formulaire non supporté)</not-support>
+      <empty>Aucun résultat trouvé !</empty>
     </msg>
     <tooltip>
       <Goto>Aller au dossier</Goto>
@@ -283,24 +283,24 @@
   -->
   <UIBrowseContainer>
     <label>
-      <NoDocument>Aucun document dans cette cat\u00e9gorie</NoDocument>
+      <NoDocument>Aucun document dans cette catégorie</NoDocument>
       <author>Auteur</author>
       <summary>Sommaire</summary>
       <more>Plus de documents</more>
-      <previous>Vue pr\u00e9c\u00e9dente</previous>
-      <path-Previous>Pr\u00e9c\u00e9dent</path-Previous>
+      <previous>Vue précédente</previous>
+      <path-Previous>Précédent</path-Previous>
       <path-Root>Racine</path-Root>
       <home>Accueil</home>
       <cannot-access>Accès refusé. Peut-être n'avez-vous pas la permission suffisante dans la configuration de Portlet.</cannot-access>
     </label>
     <title>
       <home>Accueil</home>
-      <prevTabs>Onglets Pr\u00e9c\u00e9dents</prevTabs>
+      <prevTabs>Onglets Précédents</prevTabs>
       <moreTabs>Plus d'Onglets</moreTabs>
     </title>
     <msg>
-      <template-notsupported>Aucun formulaire de visualisation trouv\u00e9 pour ce document</template-notsupported>
-      <invalid-node>Document introuvable (probablement d\u00e9plac\u00e9 ou supprim\u00e9)</invalid-node>
+      <template-notsupported>Aucun formulaire de visualisation trouvé pour ce document</template-notsupported>
+      <invalid-node>Document introuvable (probablement déplacé ou supprimé)</invalid-node>
     </msg>
   </UIBrowseContainer>
   <!--
@@ -311,7 +311,7 @@
   <pathSelector>
     <title>
       <UIOneNodePathSelector>Sélectionner un chemin</UIOneNodePathSelector>
-      <pathSelector>S\u00e9lection d'un r\u00e9pertoire</pathSelector>
+      <pathSelector>Sélection d'un répertoire</pathSelector>
     </title>
   </pathSelector>
   <documentSelector>
@@ -346,16 +346,16 @@
       <Save>#{word.save}</Save>
     </action>
     <msg>
-      <locked-doc>Le document est verrouill\u00e9</locked-doc>
-      <versioning-doc>Le document est versionn\u00e9</versioning-doc>
+      <locked-doc>Le document est verrouillé</locked-doc>
+      <versioning-doc>Le document est versionné</versioning-doc>
       <error-vote>Erreur lors de l'ajout du commentaire</error-vote>
       <comment-required>Un commentaire est requis</comment-required>
     </msg>
   </UICBCommentForm>
   <UICBVoteForm>
     <msg>
-      <locked-doc>Le document est verrouill\u00e9</locked-doc>
-      <versioning-doc>Le document est versionn\u00e9</versioning-doc>
+      <locked-doc>Le document est verrouillé</locked-doc>
+      <versioning-doc>Le document est versionné</versioning-doc>
       <error-vote>Erreur lors de l'enregistrement du vote</error-vote>
     </msg>
   </UICBVoteForm>
@@ -390,15 +390,15 @@
   -->
   <UITagList>
     <label>
-      <tagTitle>Carte des mots cl\u00e9s</tagTitle>
+      <tagTitle>Carte des mots clés</tagTitle>
     </label>
   </UITagList>
   <UICategoryTree>
     <label>
-      <title>Cat\u00e9gories</title>
+      <title>Catégories</title>
     </label>
     <msg>
-      <invalid-node>Document introuvable (probablement d\u00e9plac\u00e9 ou supprim\u00e9)</invalid-node>
+      <invalid-node>Document introuvable (probablement déplacé ou supprimé)</invalid-node>
     </msg>
   </UICategoryTree>
   <!--
@@ -408,7 +408,7 @@
   -->
   <UIBrowseContentHelp>
     <label>
-      <info>Vous \u00eates dans le mode 'Aide', Vous pouvez configurer la portlet en cliquant sur le mode 'Edition'</info>
+      <info>Vous êtes dans le mode 'Aide', Vous pouvez configurer la portlet en cliquant sur le mode 'Edition'</info>
     </label>
   </UIBrowseContentHelp>
   <UIFormInputSetWithAction>
