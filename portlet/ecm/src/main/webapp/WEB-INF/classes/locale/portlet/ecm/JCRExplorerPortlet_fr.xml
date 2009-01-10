@@ -117,19 +117,19 @@
       <saveSession>Sauver la Session</saveSession>
       <currentDrive>Espace courant</currentDrive>
       <selectView>Choisir une vue</selectView>
-      <showSideBar>Afficher la barre lat�rale</showSideBar>
+      <showSideBar>Afficher la barre latérale</showSideBar>
     </label>
   </UIViewBar>
   <Views>
     <label>
       <simple-view>Vignettes</simple-view>
-      <cover-flow>D�fil�</cover-flow>
-      <admin-view>D�tails</admin-view>
-      <icon-view>Ic�nes</icon-view>
-      <system-view>D�tails</system-view>
-      <anonymous-view>Ic�nes</anonymous-view>
-      <taxonomy-list>D�tails</taxonomy-list>
-      <taxonomy-icons>Ic�nes</taxonomy-icons>
+      <cover-flow>Défilé</cover-flow>
+      <admin-view>Détails</admin-view>
+      <icon-view>Icônes</icon-view>
+      <system-view>Détails</system-view>
+      <anonymous-view>Icônes</anonymous-view>
+      <taxonomy-list>Détails</taxonomy-list>
+      <taxonomy-icons>Icônes</taxonomy-icons>
     </label>
   </Views>
   <!--
@@ -141,7 +141,7 @@
     <title>Explorateur</title>
     <label>
       <Root>Racine</Root>
-      <webDavView>T�l�charger pour permettre l'�dition</webDavView>
+      <webDavView>Télécharger pour permettre l'édition</webDavView>
     </label>
     <msg>
       <path-not-found>Ce noeud a été modifié ou supprimé, veuillez cliquer sur le bouton "Actualiser".</path-not-found>
@@ -236,7 +236,7 @@
       <UIVoteForm>Vote d'un document</UIVoteForm>
       <UICommentForm>Ajout de commentaire</UICommentForm>
       <UIPreferencesForm>Préférences</UIPreferencesForm>
-      <UIPublicationManager>G�rer la publication</UIPublicationManager>
+      <UIPublicationManager>Gérer la publication</UIPublicationManager>
       <UIConfirmMessage>Confirmer la suppression</UIConfirmMessage>
       <UIActivePublication>Inscrire dans un cycle de publication</UIActivePublication>
       <UITaggingForm>Tagguer ce document</UITaggingForm>
@@ -255,7 +255,7 @@
   <UIPopupTaxonomy>
     <title>
       <UICategoriesSelector>Add Categories</UICategoriesSelector>
-      <UIOneNodePathSelector>Ajouter des cat�gories</UIOneNodePathSelector>
+      <UIOneNodePathSelector>Ajouter des catégories</UIOneNodePathSelector>
     </title>
   </UIPopupTaxonomy>
   <!--
@@ -320,14 +320,14 @@
       <cannot-enable-version-rootnode>Versionning interdit sur le noeud racine</cannot-enable-version-rootnode>
       <cannot-enable-publication-rootnode>Le système de publication est interdit sur le noeud racine</cannot-enable-publication-rootnode>
       <manage-publication>
-        <not-supported-nodetype>Seuls les contenus de type document sont autoris�s.</not-supported-nodetype>
-        <no-publication-lifecycle>Aucun cycle de vie de publication n'a �t� sp�cifi�.</no-publication-lifecycle>
+        <not-supported-nodetype>Seuls les contenus de type document sont autorisés.</not-supported-nodetype>
+        <no-publication-lifecycle>Aucun cycle de vie de publication n'a été spécifié.</no-publication-lifecycle>
       </manage-publication>
       <unsubcriber-lifecycle>
-        Le noeud a d�j� �t� enregistr� dans un cycle de publication.
-        <not-supported-nodetype>Seuls les contenus de type document peuvent �tre supprim�s d'un cycle de publication.</not-supported-nodetype>
+        Le noeud a déjà été enregistré dans un cycle de publication.
+        <not-supported-nodetype>Seuls les contenus de type document peuvent être supprimés d'un cycle de publication.</not-supported-nodetype>
       </unsubcriber-lifecycle>
-      <unsubcriber-lifecycle-finish>Le noeud a �t� supprim� du cycle de publication avec succ�s.</unsubcriber-lifecycle-finish>
+      <unsubcriber-lifecycle-finish>Le noeud a été supprimé du cycle de publication avec succès.</unsubcriber-lifecycle-finish>
       <access-false>Ce document n'est pas un article ou vous devez d'abord effectuer un checked in !</access-false>
       <unsupported-action>Ce type noeud n'est pas compatible avec la fonctionnalité de relation</unsupported-action>
       <not-relationable>Le support des relations n'a pas encore été activé sur ce noeud</not-relationable>
@@ -342,8 +342,8 @@
       <is-not-referenable>Le noeud '{0}' ne supporte pas les références</is-not-referenable>
       <access-denied>Accès interdit. Vous n'avez pas les droits d'accès sur ce noeud.</access-denied>
       <access-add-denied>Vous n'avez pas les droits suffisants pour ajouter un document.</access-add-denied>
-      <removed-hidden-mixin>Le noeud a �t� rendu visible!</removed-hidden-mixin>
-      <added-hidden-mixin>Le noeud a �t� cach�!</added-hidden-mixin>
+      <removed-hidden-mixin>Le noeud a été rendu visible!</removed-hidden-mixin>
+      <added-hidden-mixin>Le noeud a été caché!</added-hidden-mixin>
       <not-supported>Cette fonction n'est accessible qu'au document</not-supported>
       <empty-file-type>Vous ne pouvez pas ajouter des documents à ce noeud.</empty-file-type>
       <unsupported-watch>Seuls les noeuds de type document supporte l'abonnement</unsupported-watch>
@@ -362,7 +362,7 @@
       <cannot-paste-nodetype>Impossible de coller le noeud ici</cannot-paste-nodetype>
       <has-not-permission-unlok>Vous n'avez pas les droits suffisants pour déverrouiller ce noeud</has-not-permission-unlok>
       <bound-exception>Vous ne pouvez pas couper / coller un noeud sur lui-même</bound-exception>
-      <bound-move-exception>Vous ne pouvez pas d�placer le noeud sur lui-m�me ou ses enfants.</bound-move-exception>
+      <bound-move-exception>Vous ne pouvez pas déplacer le noeud sur lui-même ou ses enfants.</bound-move-exception>
       <can-not-rename-node>Vous n'avez pas les droits suffisants pour renommer ce noeud.</can-not-rename-node>
       <can-not-cut-node>Vous n'avez pas les droits suffisants pour couper ce noeud.</can-not-cut-node>
       <can-not-remove-node>Vous n'avez pas les droits suffisants pour supprimer ce noeud.</can-not-remove-node>
@@ -375,9 +375,9 @@
       <path-not-found>Ce noeud a été modifié ou supprimé, veuillez cliquer sur le bouton "Actualiser"</path-not-found>
       <paste-lock-exception>Impossible de coller le noeud car le noeud source ou le noeud cible est verrouillé ou possède une relation avec un noeud verrouillé.</paste-lock-exception>
       <does-not-support-auditing><![CDATA[Vous ne pouvez pas activer la tra&ccedil;abilit&eacute; pour ce noeud]]></does-not-support-auditing>
-      <can-not-checkin-node>Vous ne pouvez pas faire de check-in sur ce noeud. Veuillez v�rifier vos permissions!</can-not-checkin-node>
-      <can-not-checkout-node>Vous ne pouvez pas faire de check-out sur ce noeud. Veuillez v�rifier vos permissions!</can-not-checkout-node>
-      <move-constraint-exception>Des contraintes sont viol�es si le noeud est d�plac�. Veuillez v�rifier le noeud source et le noeud destination.</move-constraint-exception>
+      <can-not-checkin-node>Vous ne pouvez pas faire de check-in sur ce noeud. Veuillez vérifier vos permissions!</can-not-checkin-node>
+      <can-not-checkout-node>Vous ne pouvez pas faire de check-out sur ce noeud. Veuillez vérifier vos permissions!</can-not-checkout-node>
+      <move-constraint-exception>Des contraintes sont violées si le noeud est déplacé. Veuillez vérifier le noeud source et le noeud destination.</move-constraint-exception>
       <not-lock-owner>Vous ne pouvez pas déverrouiller ce noeud car vous n'êtes pas le propriétaire du verrou.</not-lock-owner>
       <is-checked-in>Vous devez effectuer un check out sur ce noeud avant de pouvoir le renommer !</is-checked-in>
       <is-checked-in-lock>Vous devez effectuer un check out sur ce noeud avant de pouvoir le vérouiller !</is-checked-in-lock>
@@ -418,7 +418,7 @@
     <msg>
       <addFolder-successful>'{0}' ajouté avec succès</addFolder-successful>
       <name-invalid>Entrez un nom de répertoire !</name-invalid>
-      <name-not-allowed>Ce nom n'est pas autoris�.</name-not-allowed>
+      <name-not-allowed>Ce nom n'est pas autorisé.</name-not-allowed>
       <fileName-error>Nom de fichier invalide</fileName-error>
       <constraint-violation>Le noeud courant n'autorise pas l'ajout d'un noeud du type '{0}'</constraint-violation>
       <repository-exception>Ce répertoire ne peut être sauvegardé. Le nom fournit ne doit pas avoir d'indexe ou existe déjà.</repository-exception>
@@ -436,12 +436,12 @@
     </title>
     <msg>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
-      <confirm-delete-multi>Etes vous certains de vouloir d�placer ces {0} �l�ments vers la corbeille?</confirm-delete-multi>
+      <confirm-delete-multi>Etes vous certains de vouloir déplacer ces {0} éléments vers la corbeille?</confirm-delete-multi>
       <confirm-move>Are you sure want to move?</confirm-move>
       <node-cut>Le noeud '{0}' a été coupé.</node-cut>
       <execute-successfully>L'action '{0}' a été exécutée.</execute-successfully>
       <save-node-success>Le noeud '{0}' a été sauvegardé.</save-node-success>
-      <move-problem>Ne peut pas d�placer le noeud '{0}' vers '{1}' parce que vos permissions sont insuffisantes ou des contraintes ne sont pas respect�es.</move-problem>
+      <move-problem>Ne peut pas déplacer le noeud '{0}' vers '{1}' parce que vos permissions sont insuffisantes ou des contraintes ne sont pas respectées.</move-problem>
     </msg>
   </UIWorkingArea>
   <UIDocumentWorkspace>
@@ -476,10 +476,10 @@
       <access-denied>Accès interdit</access-denied>
       <null-exception>Elément non trouvé ! Il a été supprimé ou modifié, ou vous n'avez pas le droit d'accéder à ce noeud !</null-exception>
       <access-denied-exception>Accès interdit ! Veuillez vérifier vos droits d'accès à ce noeud</access-denied-exception>
-      <confirm-deleteattachment>Confirmez-vous la suppression du fichier attach�?</confirm-deleteattachment>
+      <confirm-deleteattachment>Confirmez-vous la suppression du fichier attaché?</confirm-deleteattachment>
     </msg>
     <tooltip>
-      <remove-attachment>Supprimer le fichier attach�</remove-attachment>
+      <remove-attachment>Supprimer le fichier attaché</remove-attachment>
     </tooltip>
   </UIDocumentInfo>
   <ListView>
@@ -525,7 +525,7 @@
       <AddFolder>Ajouter un répertoire</AddFolder>
       <AddDocument>Ajouter un document</AddDocument>
       <Upload>Uploader</Upload>
-      <MoveNode>D�placer</MoveNode>
+      <MoveNode>Déplacer</MoveNode>
       <UnLock>Déverrouiller</UnLock>
       <ViewProperties>Visualiser les propriétés du noeud</ViewProperties>
       <GetURL>Copier l'URL dans le presse-papier</GetURL>
@@ -591,7 +591,7 @@
       <AdvancedSearchResult>Résultats</AdvancedSearchResult>
       <UISimpleSearch>Recherche simple</UISimpleSearch>
       <UISearchContainer>Recherche</UISearchContainer>
-      <UICategoryManagerSearch>Ajouter une cat�gorie � la recherche</UICategoryManagerSearch>
+      <UICategoryManagerSearch>Ajouter une catégorie à la recherche</UICategoryManagerSearch>
       <UIConstraintsForm>Formulaire de filtre</UIConstraintsForm>
       <UIViewSearchResult>Visualisation des contenus</UIViewSearchResult>
       <UIContentNameSearch>Recherche par nom</UIContentNameSearch>
@@ -607,19 +607,19 @@
       <UIPublicationLogList>Historique</UIPublicationLogList>
       <UIDocumentWithTree>Vue fichier</UIDocumentWithTree>
       <UIDocumentInfo>Vue document</UIDocumentInfo>
-      <UICategoriesSelectPanel>Selectionner des cat�gories</UICategoriesSelectPanel>
-      <UISelectedCategoriesGrid>Cat�gories r�f�renc�es</UISelectedCategoriesGrid>
+      <UICategoriesSelectPanel>Selectionner des catégories</UICategoriesSelectPanel>
+      <UISelectedCategoriesGrid>Catégories référencées</UISelectedCategoriesGrid>
       <UIWorkflowPublicationActionForm>Workflow Publication Action</UIWorkflowPublicationActionForm>
       <UIWorkflowPublicationViewForm>Workflow Publication View</UIWorkflowPublicationViewForm>
     </title>
   </UITabPane>
   <UIPropertyTab>
     <title>
-      <edit>Editer cette propri�t�</edit>
-      <delete>Supprimer cette propri�t�</delete>
+      <edit>Editer cette propriété</edit>
+      <delete>Supprimer cette propriété</delete>
     </title>
     <confirm>
-      <remove-property>Voulez-vous vraiment supprimer cette propri�t�</remove-property>
+      <remove-property>Voulez-vous vraiment supprimer cette propriété</remove-property>
     </confirm>
     <header>
       <icon />
@@ -660,7 +660,7 @@
     <action>
       <Save>#{word.save}</Save>
       <Cancel>Annuler</Cancel>
-      <Reset>R�tablir</Reset>
+      <Reset>Rétablir</Reset>
     </action>
     <msg>
       <name-invalid>Vous devez entrer un nom !</name-invalid>
@@ -734,9 +734,9 @@
   </UIPermissionInfo>
   <permission>
     <title>
-      <SelectUser>S�lectionner un utilisateur</SelectUser>
-      <SelectMember>S�lectionner un membership</SelectMember>
-      <AddAny>S�lectionner l'int�gralit�</AddAny>
+      <SelectUser>Sélectionner un utilisateur</SelectUser>
+      <SelectMember>Sélectionner un membership</SelectMember>
+      <AddAny>Sélectionner l'intégralité</AddAny>
     </title>
   </permission>
   <!--
@@ -748,7 +748,7 @@
     <title>
       <UIGroupSelector>Sélectionner une permission</UIGroupSelector>
       <UIPermissionSelector>Selection d'un membre</UIPermissionSelector>
-      <UIGroupMemberSelector>S�lectionner un r�le</UIGroupMemberSelector>
+      <UIGroupMemberSelector>Sélectionner un rôle</UIGroupMemberSelector>
     </title>
   </SelectUserOrGroup>
   <UIGroupSelector>
@@ -913,7 +913,7 @@
   <UICategoryManagerSearch>
     <tab>
       <label>
-        <UIOneNodePathSelector>S�lectionner une cat�gorie</UIOneNodePathSelector>
+        <UIOneNodePathSelector>Sélectionner une catégorie</UIOneNodePathSelector>
       </label>
     </tab>
   </UICategoryManagerSearch>
@@ -972,18 +972,18 @@
       <action>Action</action>
       <shortcutPath>Répertoire</shortcutPath>
       <type>Type</type>
-      <dateCreated>Date de cr�ation</dateCreated>
+      <dateCreated>Date de création</dateCreated>
       <score>Score</score>
     </header>
     <title>
       <typeASC>Classer par type de document croissant</typeASC>
-      <typeDESC>Classer par type de document d�croissant</typeDESC>
+      <typeDESC>Classer par type de document décroissant</typeDESC>
       <scoreASC>Classer par score croissant</scoreASC>
-      <scoreDESC>Classer par score d�croissant</scoreDESC>
+      <scoreDESC>Classer par score décroissant</scoreDESC>
       <nameASC>Classer par nom croissant</nameASC>
-      <nameDESC>Classer par nom d�croissant</nameDESC>
-      <datecreatedASC>Classer par date de cr�ation croissante</datecreatedASC>
-      <datecreatedDESC>Classer par date de cr�ation d�croissante</datecreatedDESC>
+      <nameDESC>Classer par nom décroissant</nameDESC>
+      <datecreatedASC>Classer par date de création croissante</datecreatedASC>
+      <datecreatedDESC>Classer par date de création décroissante</datecreatedDESC>
     </title>
     <tooltip>
       <View>Voir ce noeud</View>
@@ -1022,7 +1022,7 @@
     <tooltip>
       <AddMetadataType>Ajouter une propriété</AddMetadataType>
       <AddNodeType>Ajouter un type de noeud</AddNodeType>
-      <AddCategory>Ajouter une cat�gorie</AddCategory>
+      <AddCategory>Ajouter une catégorie</AddCategory>
       <FindExactly>Rechercher à l'identique</FindExactly>
     </tooltip>
     <label>
@@ -1037,7 +1037,7 @@
       <ConstraintOption-From>De</ConstraintOption-From>
       <ConstraintOption-To>à</ConstraintOption-To>
       <DocumentType-label>Type de Document</DocumentType-label>
-      <Category-label>Cat�gorie</Category-label>
+      <Category-label>Catégorie</Category-label>
     </label>
   </UIConstraintForm>
   <NodeTypePopup>
@@ -1047,8 +1047,8 @@
   </NodeTypePopup>
   <CategoryPopup>
     <title>
-      <UICategoryManagerSearch>Ajouter une cat�gorie � rechercher</UICategoryManagerSearch>
-      <UIOneNodePathSelector>S�lectionner une cat�gorie</UIOneNodePathSelector>
+      <UICategoryManagerSearch>Ajouter une catégorie à rechercher</UICategoryManagerSearch>
+      <UIOneNodePathSelector>Sélectionner une catégorie</UIOneNodePathSelector>
     </title>
   </CategoryPopup>
   <SaveQueryPopup>
@@ -1233,7 +1233,7 @@
   -->
   <PopupUserSelector>
     <title>
-      <UIUserContainer>S�lectionner des permissions utilisateur</UIUserContainer>
+      <UIUserContainer>Sélectionner des permissions utilisateur</UIUserContainer>
     </title>
   </PopupUserSelector>
   <!--
@@ -1255,7 +1255,7 @@
       <cannot-remove-version>Suppression de la version de base impossible</cannot-remove-version>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
       <not-checked-out>Vous devez faire un check out du noeud avant de restorer.</not-checked-out>
-      <invalid-item-state>Vous ne pouvez pas restaurer cette version. Probablement un ou plusieurs �l�ments ont �t� d�plac�s ou supprim�s par une autre session.</invalid-item-state>
+      <invalid-item-state>Vous ne pouvez pas restaurer cette version. Probablement un ou plusieurs éléments ont été déplacés ou supprimés par une autre session.</invalid-item-state>
     </msg>
     <action>
       <close>Fermer</close>
@@ -1271,6 +1271,35 @@
     <msg>
       <noVersion>Pas de version</noVersion>
     </msg>
+    <eventName>
+      <!--
+      <1>Noeud ajouté</1>
+      <2>Noeud supprimé</2>
+      <4>Propriété ajoutée</4>
+      <16>Propriété modifiée</16>
+      <8>Propriété supprimée</8>
+      <32>Sauvegarder</32>
+      <64>Déplacer</64>
+      <128>Copier</128>
+      <256>Ajouter un mixin</256>
+      <512>Supprimer un mixin</512>
+      <1024>Cloner</1024>
+      <2048>Mettre à jour</2048>
+      <4096>Importer</4096>
+      <8192>Check in</8192>
+      <16384>Check out</16384>
+      <32768>Restaurer</32768>
+      <65536>Fusionner</65536>
+      <131072>Annuler une fusion</131072>
+      <262144>Fusion achevée</262144>
+      <524288>Ajouter une étiquette de version</524288>
+      <1048576>Supprimer une étiquette de version</1048576>
+      <2097152>Supprimer une version</2097152>
+      <4194304>Verrouiller</4194304>
+      <8388608>Déverrouiller</8388608>
+      <16777216>Lire</16777216>
+      -->
+    </eventName>
     <label>
       <operation>Opération</operation>
       <userName>Utilisateur</userName>
@@ -1278,33 +1307,6 @@
       <version>Version</version>
     </label>
   </UIAuditingInfo>
-  <!--
-  #UIAuditingInfo.eventName.1=Noeud ajouté
-  #UIAuditingInfo.eventName.2=Noeud supprimé
-  #UIAuditingInfo.eventName.4=Propriété ajoutée
-  #UIAuditingInfo.eventName.16=Propriété modifiée
-  #UIAuditingInfo.eventName.8=Propriété supprimée
-  #UIAuditingInfo.eventName.32=Sauvegarder
-  #UIAuditingInfo.eventName.64=D�placer
-  #UIAuditingInfo.eventName.128=Copier
-  #UIAuditingInfo.eventName.256=Ajouter un mixin
-  #UIAuditingInfo.eventName.512=Supprimer un mixin
-  #UIAuditingInfo.eventName.1024=Cloner
-  #UIAuditingInfo.eventName.2048=Mettre � jour
-  #UIAuditingInfo.eventName.4096=Importer
-  #UIAuditingInfo.eventName.8192=Check in
-  #UIAuditingInfo.eventName.16384=Check out
-  #UIAuditingInfo.eventName.32768=Restaurer
-  #UIAuditingInfo.eventName.65536=Fusionner
-  #UIAuditingInfo.eventName.131072=Annuler une fusion
-  #UIAuditingInfo.eventName.262144=Fusion achev�e
-  #UIAuditingInfo.eventName.524288=Ajouter une �tiquette de version
-  #UIAuditingInfo.eventName.1048576=Supprimer une �tiquette de version
-  #UIAuditingInfo.eventName.2097152=Supprimer une version
-  #UIAuditingInfo.eventName.4194304=Verrouiller
-  #UIAuditingInfo.eventName.8388608=D�verrouiller
-  #UIAuditingInfo.eventName.16777216=Lire
-  -->
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
@@ -1349,12 +1351,12 @@
     </action>
     <grid>
       <msg>
-        <empty>Aucun plugin de publication trouv�</empty>
+        <empty>Aucun plugin de publication trouvé</empty>
       </msg>
     </grid>
     <msg>
-      <node-type-invalid>Seulement les documents peuvent �tre inscrits dans un cycle de publication</node-type-invalid>
-      <already-enroled>Ce document a d�j� �t� inscrit dans un cycle de publication</already-enroled>
+      <node-type-invalid>Seulement les documents peuvent être inscrits dans un cycle de publication</node-type-invalid>
+      <already-enroled>Ce document a déjà été inscrit dans un cycle de publication</already-enroled>
     </msg>
   </UIActivePublication>
   <!--
@@ -1473,7 +1475,7 @@
     <tab>
       <label>
         <UICategoriesAddedList>Catégories référencées</UICategoriesAddedList>
-        <UIOneNodePathSelector>S�lectionner une cat�gorie</UIOneNodePathSelector>
+        <UIOneNodePathSelector>Sélectionner une catégorie</UIOneNodePathSelector>
       </label>
     </tab>
   </UICategoryManager>
@@ -1492,7 +1494,7 @@
       </title>
     </action>
     <label>
-      <category>Cat�gorie</category>
+      <category>Catégorie</category>
       <actions>Actions</actions>
       <delete>Supprimer</delete>
     </label>
@@ -1517,7 +1519,7 @@
     </action>
     <tab>
       <label>
-        <UIOneNodePathSelector>S�lectionner une relation</UIOneNodePathSelector>
+        <UIOneNodePathSelector>Sélectionner une relation</UIOneNodePathSelector>
       </label>
     </tab>
   </UIRelationManager>
@@ -1710,7 +1712,7 @@
     <title>
       <UIOneNodePathSelector>Exporateur de fichiers</UIOneNodePathSelector>
       <UIPermissionSelector>Sélecteur de permissions</UIPermissionSelector>
-      <UICategoriesSelector>Ajouter des cat�gories</UICategoriesSelector>
+      <UICategoriesSelector>Ajouter des catégories</UICategoriesSelector>
     </title>
   </PopupComponent>
   <EditFormAction>
@@ -1908,12 +1910,12 @@
   -->
   <UIPublicationForm>
     <label>
-      <published>Publi�</published>
-      <non-published>Non publi�</non-published>
+      <published>Publié</published>
+      <non-published>Non publié</non-published>
       <public>Public</public>
-      <private>Priv�</private>
+      <private>Privé</private>
       <state>Etat</state>
-      <visibility>Visibilit�</visibility>
+      <visibility>Visibilité</visibility>
       <nodeName>Node Name:</nodeName>
       <lifecycleName>Lifecycle Name</lifecycleName>
       <stateName>State Name</stateName>
@@ -1938,7 +1940,7 @@
   </UIWorkspaceList>
   <pathSelector>
     <title>
-      <UIOneNodePathSelector>S�lecteur de noeud</UIOneNodePathSelector>
+      <UIOneNodePathSelector>Sélecteur de noeud</UIOneNodePathSelector>
     </title>
   </pathSelector>
   <!--
@@ -1968,9 +1970,9 @@
   </RepeatIntervalValidator>
   <UIPermissionSelector>
     <label>
-      <selectGroup>S�lectionner un groupe</selectGroup>
-      <selectUser>S�lectionner un utilisateur</selectUser>
-      <selectMembership>S�lectionner un membership</selectMembership>
+      <selectGroup>Sélectionner un groupe</selectGroup>
+      <selectUser>Sélectionner un utilisateur</selectUser>
+      <selectMembership>Sélectionner un membership</selectMembership>
     </label>
   </UIPermissionSelector>
   <!--
@@ -1992,12 +1994,12 @@
   <SearchValidator>
     <msg>
       <empty-input>La valeur de ce champ est nulle ou vide!</empty-input>
-      <Invalid-char>Il y a des caract�res invalides dans ce champ. Ins�rez une autre valeur!</Invalid-char>
-      <Invalid-char2>un nombre doit suivre le caract�re '~'</Invalid-char2>
-      <Invalid-char1>Le nombre suivant le caract�re '~' doit �tre 0 ou 1</Invalid-char1>
-      <Invalid-char3>Un nombre doit suivre le caract�re '^'</Invalid-char3>
-      <Invalid-char4>Aucun espace n'est autoris� pr�s du caract�re '~'</Invalid-char4>
-      <Invalid-char5>Aucun espace n'est autoris� pr�s du caract�re '^'</Invalid-char5>
+      <Invalid-char>Il y a des caractères invalides dans ce champ. Insérez une autre valeur!</Invalid-char>
+      <Invalid-char2>un nombre doit suivre le caractère '~'</Invalid-char2>
+      <Invalid-char1>Le nombre suivant le caractère '~' doit être 0 ou 1</Invalid-char1>
+      <Invalid-char3>Un nombre doit suivre le caractère '^'</Invalid-char3>
+      <Invalid-char4>Aucun espace n'est autorisé près du caractère '~'</Invalid-char4>
+      <Invalid-char5>Aucun espace n'est autorisé près du caractère '^'</Invalid-char5>
     </msg>
   </SearchValidator>
   <!--
@@ -2008,11 +2010,11 @@
   <UIPublicationLogList>
     <header>
       <date>Date</date>
-      <newState>Nouvel �tat</newState>
+      <newState>Nouvel état</newState>
       <user>Utilisateur</user>
       <description>Description</description>
       <version>Version</version>
-      <visibility>Visibilit�</visibility>
+      <visibility>Visibilité</visibility>
     </header>
     <action>
       <Close>Fermer</Close>
@@ -2036,8 +2038,8 @@
   -->
   <NodeType>
     <label>
-      <ntUnstructed>R�pertoire de contenu</ntUnstructed>
-      <ntFolder>R�pertoire de documents</ntFolder>
+      <ntUnstructed>Répertoire de contenu</ntUnstructed>
+      <ntFolder>Répertoire de documents</ntFolder>
     </label>
   </NodeType>
   <!--
@@ -2054,10 +2056,10 @@
       <mediumSize>Vignette</mediumSize>
     </label>
     <msg>
-      <mimetype-incorrect>Type de fichier incorrect. S�lectionner une image de type JPG, PNG ou GIF.</mimetype-incorrect>
-      <access-denied>Acc�s refus�. Vous n'avez pas la permission d'ajouter une vignette pour ce noeud.</access-denied>
+      <mimetype-incorrect>Type de fichier incorrect. Sélectionner une image de type JPG, PNG ou GIF.</mimetype-incorrect>
+      <access-denied>Accès refusé. Vous n'avez pas la permission d'ajouter une vignette pour ce noeud.</access-denied>
       <confirm-delete>Voulez-vous supprimer cette vignette ?</confirm-delete>
-      <is-checked-in>L'�tat de ce noeud est checked-in. Veuillez faire un check-out avant de faire toute action.</is-checked-in>
+      <is-checked-in>L'état de ce noeud est checked-in. Veuillez faire un check-out avant de faire toute action.</is-checked-in>
     </msg>
     <title>
       <remove-thumbnail>Supprimer cette vignette</remove-thumbnail>
@@ -2090,9 +2092,9 @@
   -->
   <UIGroupMemberSelector>
     <label>
-      <selectGroup>S�lectionner un groupe</selectGroup>
-      <selectUser>S�lectionner un utilisateur</selectUser>
-      <selectMembership>S�lectionner un r�le</selectMembership>
+      <selectGroup>Sélectionner un groupe</selectGroup>
+      <selectUser>Sélectionner un utilisateur</selectUser>
+      <selectMembership>Sélectionner un rôle</selectMembership>
     </label>
   </UIGroupMemberSelector>
   <!--
