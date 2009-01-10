@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <group>
+    <executive-board>
+      <management>
+        Управление
+        <newStaff>Новый работник</newStaff>
+        <organization>Организация</organization>
+        <ecmadmin>ECMАдминистрация</ecmadmin>
+      </management>
+      <businessprocess>
+        Бизнесс процесс
+        <administrator>Администратор бизнесс процесса</administrator>
+        <controller>Контроллер бизнесс процесса</controller>
+      </businessprocess>
+    </executive-board>
+  </group>
+</bundle>
+
