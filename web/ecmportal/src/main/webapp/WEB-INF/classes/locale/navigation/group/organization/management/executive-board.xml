@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <group>
+    <executive-board>
+      <management>
+        Managenent
+        <newStaff>New Staff</newStaff>
+        <organization>Organization</organization>
+        <ecmadmin>ECMAdministration</ecmadmin>
+      </management>
+      <businessprocess>
+        Business Process
+        <administrator>Business Process Administration</administrator>
+        <controller>Business Process Controller</controller>
+      </businessprocess>
+    </executive-board>
+  </group>
+</bundle>
+
