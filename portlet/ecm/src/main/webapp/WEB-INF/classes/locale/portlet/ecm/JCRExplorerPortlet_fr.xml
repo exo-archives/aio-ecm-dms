@@ -1271,34 +1271,32 @@
     <msg>
       <noVersion>Pas de version</noVersion>
     </msg>
-    <eventName>
-      <!--
-      <1>Noeud ajouté</1>
-      <2>Noeud supprimé</2>
-      <4>Propriété ajoutée</4>
-      <16>Propriété modifiée</16>
-      <8>Propriété supprimée</8>
-      <32>Sauvegarder</32>
-      <64>Déplacer</64>
-      <128>Copier</128>
-      <256>Ajouter un mixin</256>
-      <512>Supprimer un mixin</512>
-      <1024>Cloner</1024>
-      <2048>Mettre à jour</2048>
-      <4096>Importer</4096>
-      <8192>Check in</8192>
-      <16384>Check out</16384>
-      <32768>Restaurer</32768>
-      <65536>Fusionner</65536>
-      <131072>Annuler une fusion</131072>
-      <262144>Fusion achevée</262144>
-      <524288>Ajouter une étiquette de version</524288>
-      <1048576>Supprimer une étiquette de version</1048576>
-      <2097152>Supprimer une version</2097152>
-      <4194304>Verrouiller</4194304>
-      <8388608>Déverrouiller</8388608>
-      <16777216>Lire</16777216>
-      -->
+    <eventName>      
+      <e_1>Noeud ajouté</e_1>
+      <e_2>Noeud supprimé</e_2>
+      <e_4>Propriété ajoutée</e_4>
+      <e_16>Propriété modifiée</e_16>
+      <e_8>Propriété supprimée</e_8>
+      <e_32>Sauvegarder</e_32>
+      <e_64>Déplacer</e_64>
+      <e_128>Copier</e_128>
+      <e_256>Ajouter un mixin</e_256>
+      <e_512>Supprimer un mixin</e_512>
+      <e_1024>Cloner</e_1024>
+      <e_2048>Mettre à jour</e_2048>
+      <e_4096>Importer</e_4096>
+      <e_8192>Check in</e_8192>
+      <e_16384>Check out</e_16384>
+      <e_32768>Restaurer</e_32768>
+      <e_65536>Fusionner</e_65536>
+      <e_131072>Annuler une fusion</e_131072>
+      <e_262144>Fusion achevée</e_262144>
+      <e_524288>Ajouter une étiquette de version</e_524288>
+      <e_1048576>Supprimer une étiquette de version</e_1048576>
+      <e_2097152>Supprimer une version</e_2097152>
+      <e_4194304>Verrouiller</e_4194304>
+      <e_8388608>Déverrouiller</e_8388608>
+      <e_16777216>Lire</e_16777216>      
     </eventName>
     <label>
       <operation>Opération</operation>

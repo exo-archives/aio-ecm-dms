@@ -1263,45 +1263,48 @@
   ################################################################################
   #  org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo
   ################################################################################
+  e_
+  
   -->
   <UIAuditingInfo>
     <msg>
       <noVersion>No version</noVersion>
     </msg>
+    <eventName>      
+      <e_1>Node added</e_1>
+      <e_2>Node removed</e_2>
+      <e_4>Property added</e_4>
+      <e_16>Property changed</e_16>
+      <e_8>Property removed</e_8>
+      <e_32>Save</e_32>
+      <e_64>Move</e_64>
+      <e_128>Copy</e_128>
+      <e_256>Add mixin</e_256>
+      <e_512>Remove mixin</e_512>
+      <e_1024>Clone</e_1024>
+      <e_2048>Update</e_2048>
+      <e_4096>Import</e_4096>
+      <e_8192>Check in</e_8192>
+      <e_16384>Check out</e_16384>
+      <e_32768>Restore</e_32768>
+      <e_65536>Merge</e_65536>
+      <e_131072>Cancel merge</e_131072>
+      <e_262144>Done merge</e_262144>
+      <e_524288>Add version label</e_524288>
+      <e_1048576>Remove version label</e_1048576>
+      <e_2097152>Remove version</e_2097152>
+      <e_4194304>Lock</e_4194304>
+      <e_8388608>Unlock</e_8388608>
+      <e_16777216>Read</e_16777216>      
+    </eventName>
     <label>
       <operation>Operation</operation>
       <userName>User name</userName>
       <date>Date</date>
       <version>Version</version>
-    </label>
+    </label>              
   </UIAuditingInfo>
-  <!--
-  #UIAuditingInfo.eventName.1=Node added
-  #UIAuditingInfo.eventName.2=Node removed
-  #UIAuditingInfo.eventName.4=Property added
-  #UIAuditingInfo.eventName.16=Property changed
-  #UIAuditingInfo.eventName.8=Property removed
-  #UIAuditingInfo.eventName.32=Save
-  #UIAuditingInfo.eventName.64=Move
-  #UIAuditingInfo.eventName.128=Copy
-  #UIAuditingInfo.eventName.256=Add mixin
-  #UIAuditingInfo.eventName.512=Remove mixin
-  #UIAuditingInfo.eventName.1024=Clone
-  #UIAuditingInfo.eventName.2048=Update
-  #UIAuditingInfo.eventName.4096=Import
-  #UIAuditingInfo.eventName.8192=Check in
-  #UIAuditingInfo.eventName.16384=Check out
-  #UIAuditingInfo.eventName.32768=Restore
-  #UIAuditingInfo.eventName.65536=Merge
-  #UIAuditingInfo.eventName.131072=Cancel merge
-  #UIAuditingInfo.eventName.262144=Done merge
-  #UIAuditingInfo.eventName.524288=Add version label
-  #UIAuditingInfo.eventName.1048576=Remove version label
-  #UIAuditingInfo.eventName.2097152=Remove version
-  #UIAuditingInfo.eventName.4194304=Lock
-  #UIAuditingInfo.eventName.8388608=Unlock
-  #UIAuditingInfo.eventName.16777216=Read
-  -->
+  
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
