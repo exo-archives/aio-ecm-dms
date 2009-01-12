@@ -2,7 +2,7 @@
   import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminControlPanel ;
   import org.exoplatform.ecm.webui.component.admin.UIECMAdminWorkingArea ;
-  import org.exoplatform.ecm.webui.popup.UIPopupContainer;
+  import org.exoplatform.webui.core.UIPopupContainer;
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.webui.UIVerticalSlideTabs') ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/') ;
