@@ -244,8 +244,10 @@ public class Utils {
     str.append(nodeType);
     if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType);
     if(node.isNodeType(NT_FILE)) {
-      Node jcrContentNode = node.getNode(JCR_CONTENT);
-      str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETYPE).getString().replaceAll("/|\\.","_")).append(appended);      
+      if (node.hasNode(JCR_CONTENT)) {
+        Node jcrContentNode = node.getNode(JCR_CONTENT);
+        str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETYPE).getString().replaceAll("/|\\.","_")).append(appended);
+      }
     }
     return str.toString();
   }
