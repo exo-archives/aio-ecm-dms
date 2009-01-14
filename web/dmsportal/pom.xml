@@ -1,0 +1,43 @@
+<project>
+  <parent>
+    <groupId>org.exoplatform.ecm.dms</groupId>
+    <artifactId>config</artifactId>
+    <version>2.3-SNAPSHOT</version>
+  </parent> 
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>exo.ecm.dms.web.portal</artifactId>
+  <packaging>war</packaging> 
+  <version>${org.exoplatform.ecm.dms.version}</version>
+  <name>eXo DMS Portal web module</name>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.web.portal</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <type>war</type>
+      <scope>runtime</scope>
+    </dependency>
+  </dependencies> 
+  
+  <build>    
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.0.2</version>
+        <configuration>
+         <!-- default value is ** -->
+				  <dependentWarExcludes>
+				    index.jsp,WEB-INF/web.xml,WEB-INF/conf/*.xml,WEB-INF/conf/**/*.xml,
+				    WEB-INF/conf/portal/,WEB-INF/classes/locale/navigation/,
+				    WEB-INF/conf/script/groovy/SkinConfigScript.groovy, 
+				    templates/groovy/webui/component/UIHomePagePortlet.gtmpl,
+				    templates/skin/webui/component/UIHomePagePortlet/
+				  </dependentWarExcludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

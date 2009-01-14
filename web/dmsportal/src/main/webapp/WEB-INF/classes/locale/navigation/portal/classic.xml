@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <portal>
+    <classic>
+      <home>Home</home>
+    </classic>
+  </portal>
+  <news>News</news>
+  <ideas>
+    <title>Ideas</title>
+    <read>Read Ideas</read>
+    <write>Write Ideas</write>
+  </ideas>
+  <welcome>Welcome Center</welcome>
+  <content-management>
+    <file-explorer>File Explorer</file-explorer>
+    <content-creator>Fast Content Creator</content-creator>
+    <content-browser>Content Browser</content-browser>
+  </content-management>
+</bundle>
+

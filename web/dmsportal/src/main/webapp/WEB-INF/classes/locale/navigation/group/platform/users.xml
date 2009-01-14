@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <platform>
+    <users>
+      <content-management>Content Management</content-management>
+      <file-explorer>File Explorer</file-explorer>
+      <content-browser>Content Browser</content-browser>
+      <content-creator>Fast Content Creator</content-creator>
+      <workflow-controller>Business Process Center</workflow-controller>
+      <sitemap>SiteMap</sitemap>
+    </users>
+  </platform>
+</bundle>
+
