@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms</groupId>
   <artifactId>config</artifactId>
-  <name>eXo ECM Config</name>
+  <name>eXo DMS Config</name>
   <version>2.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
@@ -18,10 +18,10 @@
 	<module>component/deployment</module>
 	<module>component/publication</module>
 	<module>connectors/fckeditor</module>
-	<module>webui/ecm</module>
-	<module>web/eXoECMResources</module>	
+	<module>webui/dms</module>
+	<module>web/eXoDMSResources</module>	
     <module>portlet/ecm</module>
-    <module>web/ecmportal</module>
+    <module>web/dmsportal</module>
   </modules>
 
   <build>

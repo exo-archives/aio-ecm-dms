@@ -47,7 +47,7 @@
         onParentVersion="COPY" protected="false" multiple="true">
         <valueConstraints/>
         <defaultValues>
-          <defaultValue>*</defaultValue>
+          <defaultValue>*:/platform/users</defaultValue>
         </defaultValues>
       </propertyDefinition>
     </propertyDefinitions>
