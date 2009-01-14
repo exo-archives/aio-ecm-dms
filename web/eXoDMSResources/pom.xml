@@ -6,10 +6,10 @@
   </parent> 
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>exo.ecm.dms.web.eXoECMResources</artifactId>
+  <artifactId>exo.ecm.dms.web.eXoDMSResources</artifactId>
   <packaging>war</packaging> 
   <version>${org.exoplatform.ecm.dms.version}</version>
-  <name>eXo ECM Resources</name>
+  <name>eXo DMS Resources</name>
 
   <build>
     <finalName>eXoECMResources</finalName>
