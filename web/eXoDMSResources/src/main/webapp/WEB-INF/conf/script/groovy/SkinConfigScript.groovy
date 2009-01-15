@@ -1,3 +1,3 @@
-SkinService.addPortalSkin("ECMSkin","Default", "/eXoECMResources/skin/DefaultSkin/Stylesheet.css", ServletContext);
-SkinService.addPortalSkin("ECMSkin","Mac", "/eXoECMResources/skin/MacSkin/Stylesheet.css", ServletContext);
-SkinService.addPortalSkin("ECMSkin","Vista", "/eXoECMResources/skin/VistaSkin/Stylesheet.css", ServletContext);
+SkinService.addPortalSkin("DMSSkin","Default", "/eXoDMSResources/skin/DefaultSkin/Stylesheet.css", ServletContext);
+SkinService.addPortalSkin("DMSSkin","Mac", "/eXoDMSResources/skin/MacSkin/Stylesheet.css", ServletContext);
+SkinService.addPortalSkin("DMSSkin","Vista", "/eXoDMSResources/skin/VistaSkin/Stylesheet.css", ServletContext);

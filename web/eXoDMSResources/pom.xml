@@ -12,6 +12,6 @@
   <name>eXo DMS Resources</name>
 
   <build>
-    <finalName>eXoECMResources</finalName>
+    <finalName>eXoDMSResources</finalName>
   </build>
 </project>

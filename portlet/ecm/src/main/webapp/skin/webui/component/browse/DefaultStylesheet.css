@@ -358,21 +358,21 @@
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
-	background: url('/eXoECMResources/skin/images/vote/ImageVote.gif') left -16px;
+	background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') left -16px;
 }
 
 .UIBrowseContentPortlet .UIVoteForm .OptionsContainer .RatedVote {
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
-	background: url('/eXoECMResources/skin/images/vote/ImageVote.gif') left -16px;
+	background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') left -16px;
 }
 
 .UIBrowseContentPortlet .UIVoteForm .OptionsContainer .OverVote {
 	float: left;
 	margin: 2px 3px 0px 3px;
 	width: 16px; height: 16px;
-	background: url('/eXoECMResources/skin/images/vote/ImageVote.gif') left top;
+	background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') left top;
 }
 
 /*############################## -- End UIVoteForm	 -- ##############################*/

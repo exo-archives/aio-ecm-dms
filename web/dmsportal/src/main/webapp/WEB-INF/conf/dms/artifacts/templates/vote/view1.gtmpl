@@ -11,20 +11,20 @@
 	}
 	
   .UIVote .LeftVoteBar {
-    background: url('/eXoECMResources/skin/images/vote/ImageVote.gif') no-repeat left -32px;
+    background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat left -32px;
     padding-left: 5px;
     height: 26px;
 	}
 	
 	.UIVote .RightVoteBar {
-	  background: url('/eXoECMResources/skin/images/vote/ImageVote.gif') no-repeat right -32px;
+	  background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat right -32px;
     padding-right: 5px;
     height: 26px;
 	}
 	
 	.UIVote .CenterVoteBar {
 	  height: 26px; line-height: 26px;
-	  background: url('/eXoECMResources/skin/images/vote/ImageVote.gif') repeat-x left -58px;
+	  background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') repeat-x left -58px;
 	}
 
    .UIVote .VoteResultContainer .RatingInfoContainer {
@@ -41,7 +41,7 @@
 		float: left;
 		width: 16px;
 		height: 16px;
-		background: url('/eXoECMResources/skin/images/vote/ImageVote.gif') no-repeat left top;
+		background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat left top;
 		margin: 5px 1px;
 	}
 	
@@ -49,7 +49,7 @@
 		float: left;
 		width: 16px;
 		height: 16px;
-		background: url('/eXoECMResources/skin/images/vote/ImageVote.gif') no-repeat left -16px;
+		background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat left -16px;
 		margin: 5px 1px;
 	}
 	

@@ -290,11 +290,11 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .TitleBG {
 	height: 18px;
-  background: url('/eXoECMResources/skin/images/event/EventFrameBG.gif') repeat-x;
+  background: url('/eXoDMSResources/skin/images/event/EventFrameBG.gif') repeat-x;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .HeaderBG {
-  background: url('/eXoECMResources/skin/images/event/EventFrameBG.gif') repeat-x; 
+  background: url('/eXoDMSResources/skin/images/event/EventFrameBG.gif') repeat-x; 
   margin-bottom: 1px;
   padding: 0px 5px 0px 5px; 
   height: 18px;
