@@ -7,23 +7,32 @@
 }
 
 .UIBannerPortlet .RightBanner {
-  background: url('DefaultSkin/background/Logo.jpg') no-repeat left top;
+  background: url('DefaultSkin/background/Logo.jpg') no-repeat left top; /* orientation=lt */
+  background: url('DefaultSkin/background/Logo.jpg') no-repeat right top; /* orientation=rt */
 }
 
 .UIBannerPortlet .MiddleBanner {
   height: 74px ;
 }
 
+
+.UIBannerPortlet .MiddleBannerSignin {
+	_width: 50%; /* orientation=rt */
+}
+
 .UIBannerPortlet .LeftLoginContainer {
   background: url('DefaultSkin/background/Container.gif') no-repeat top left;
   padding-left: 10px;
-  float: right;
-  margin-right: 5px;
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
+  margin-right: 5px; /* orientation=lt */
+  margin-left: 5px; /* orientation=rt */
 }
 
 .UIBannerPortlet .RightLoginContainer {
   background: url('DefaultSkin/background/Container.gif') no-repeat top right;
   padding-right: 5px;
+  
 }
 
 .UIBannerPortlet .MiddleLoginContainer {
