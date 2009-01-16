@@ -24,7 +24,7 @@
     
     .Comments .CommentBar .MiddleCommentBar {    	
     	height: 54px;
-      background: url('/eXoECMResources/skin/images/article//CommentBar.gif') repeat-x left -54px ;
+      background: url('/eXoDMSResources/skin/images/article//CommentBar.gif') repeat-x left -54px ;
       padding: 0px 3px;
     }
     
