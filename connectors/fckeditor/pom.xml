@@ -9,7 +9,7 @@
   <artifactId>exo.ecm.dms.connector.fckeditor</artifactId>
   <version>${org.exoplatform.ecm.dms.version}</version>
   <packaging>jar</packaging>
-  <name>eXo ECM FCKEditor Connector</name>
+  <name>eXo DMS FCKEditor Connector</name>
   <url>http://www.exoplatform.org</url>
   <description>eXo FCKConnector Service</description>
 

@@ -9,9 +9,9 @@
   <artifactId>exo.ecm.dms.component.deployment</artifactId>
   <version>${org.exoplatform.ecm.dms.version}</version>
   <packaging>jar</packaging>
-  <name>eXo ECM Deployment Services</name>
+  <name>eXo DMS Deployment Services</name>
   <url>http://www.exoplatform.org</url>
-  <description>eXo ECM Deployment Services</description>
+  <description>eXo DMS Deployment Services</description>
 
   <dependencies>
     <dependency>
