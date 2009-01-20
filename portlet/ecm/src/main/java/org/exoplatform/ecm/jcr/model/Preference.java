@@ -23,10 +23,16 @@ public class Preference {
   public static final String SORT_BY_CREATED_DATE= "CreatedDate" ;
   public static final String SORT_BY_MODIFIED_DATE= "ModifiedDate" ;
   public static final String PROPERTY_SORT = "Property" ;
+  public static final String SORT_BY_OWNER = "Owner";
+  public static final String SORT_BY_VERSIONABLE = "Versionable";
+  public static final String SORT_BY_AUDITING = "Auditing";
   
   public static final String SHOW_NON_DOCUMENTTYPE = "showNonDocumentType" ;
   public static final String ASCENDING_ORDER = "Ascending" ;
   public static final String DESCENDING_ORDER = "Descending" ;
+  
+  public static final String BLUE_DOWN_ARROW = "BlueDownArrow" ;
+  public static final String BLUE_UP_ARROW = "BlueUpArrow" ;
     
   private String sortType = SORT_BY_NODENAME ;
   private String order = ASCENDING_ORDER ;  

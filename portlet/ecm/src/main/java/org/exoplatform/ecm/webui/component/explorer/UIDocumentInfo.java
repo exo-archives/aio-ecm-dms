@@ -100,8 +100,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 
   final private static String CONTENT_PAGE_ITERATOR_ID = "ContentPageIterator".intern();
   private String typeSort_ = Preference.SORT_BY_NODETYPE;
-  private String typeSortOrder_ = Preference.ASCENDING_ORDER;
-  private String nameSortOrder_ = Preference.ASCENDING_ORDER;
+  private String sortOrder_ = Preference.BLUE_DOWN_ARROW;
   private Node currentNode_ ;    
 
   private UIPageIterator pageIterator_ ;  
@@ -459,10 +458,18 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return pageIterator_.getCurrentPageData();    
   }
 
-  public String getTypeSort() { return typeSort_ ; }
-  public String getTypeSortOrder() { return typeSortOrder_ ; }
-  public String getNameSortOrder() { return nameSortOrder_ ; }
-
+  public String getTypeSort() { return typeSort_; }
+  
+  public void setTypeSort(String typeSort) {
+    typeSort_ = typeSort;
+  }
+  
+  public String getSortOrder() { return sortOrder_; }
+  
+  public void setSortOrder(String sortOrder) {
+    sortOrder_ = sortOrder;
+  }
+  
   public String encodeHTML(String text) { return Utils.encodeHTML(text) ; }
 
   private Node getFileLangNode(Node currentNode) throws Exception {
@@ -590,35 +597,43 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     }
   }
 
+//  private static class ArrangeComparator implements Comparator<Object> {
+//    public int compare(Row row1, Row row2) {
+//      try {
+//        if (iconType.equals("BlueUpArrow") || iconType.equals("BlueDownArrow")) {
+//          String s1 = row1.getValue("jcr:primaryType").getString();
+//          String s2 = row2.getValue("jcr:primaryType").getString();
+//          if (iconType.trim().equals("BlueUpArrow")) { return s2.compareTo(s1); }        
+//          return s1.compareTo(s2);
+//        } else if (iconScore.equals("BlueUpArrow") || iconScore.equals("BlueDownArrow")) {
+//          Long l1 = row1.getValue("jcr:score").getLong();
+//          Long l2 = row2.getValue("jcr:score").getLong();
+//          if (iconScore.trim().equals("BlueUpArrow")) { return l2.compareTo(l1); }        
+//          return l1.compareTo(l2);
+//        }
+//      } catch (Exception e) {  
+//        e.printStackTrace();
+//      }            
+//      return 0;
+//    }        
+//  }
+  
   static  public class SortActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uicomp = event.getSource() ;
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
       String sortParam = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String[] array = sortParam.split(";") ;
-      Preference pref = uiExplorer.getPreference() ;
-      if(array[0].trim().equals(Preference.SORT_BY_NODETYPE)) {
-        if(array[1].trim().equals(Preference.ASCENDING_ORDER)) {
-          uicomp.typeSortOrder_ = Preference.ASCENDING_ORDER ;
-        } else if(array[1].trim().equals(Preference.DESCENDING_ORDER)) {
-          uicomp.typeSortOrder_ = Preference.DESCENDING_ORDER ;
-        }
-        uicomp.typeSort_ = Preference.SORT_BY_NODETYPE ;
-      } else if(array[0].trim().equals(Preference.SORT_BY_NODENAME)) {
-        if(array[1].trim().equals(Preference.ASCENDING_ORDER)) {
-          uicomp.nameSortOrder_ = Preference.ASCENDING_ORDER ;
-        } else if(array[1].trim().equals(Preference.DESCENDING_ORDER)) {
-          uicomp.nameSortOrder_ = Preference.DESCENDING_ORDER ;
-        }
-        uicomp.typeSort_ = Preference.SORT_BY_NODENAME ;
-      }
-      if(array.length == 2) {
-        pref.setSortType(array[0].trim()) ;
-        pref.setOrder(array[1].trim()) ; 
-      } else if(array.length == 3) {
-        pref.setSortType(array[0].trim()) ;
-        //pref.setProperty(array[1].trim()) ;
-        pref.setOrder(array[2].trim()) ;
+      String[] array = sortParam.split(";");
+      String order = "";
+      if (array[0].trim().equals(Preference.ASCENDING_ORDER)) order = Preference.BLUE_DOWN_ARROW;
+      else order = Preference.BLUE_UP_ARROW;
+      uicomp.setSortOrder(order);
+      uicomp.setTypeSort(array[1]);
+      
+      Preference pref = uiExplorer.getPreference();
+      if (array.length == 2) {
+        pref.setSortType(array[1].trim());
+        pref.setOrder(array[0].trim()); 
       } else {
         return ;
       }       
