@@ -102,7 +102,7 @@
 			    %>
 			    <% String actionURL = uicomponent.event("Sort", typeActionLink + "Type"); %>
 			    
-			    <div class="LeftColumn" onclick="$actionURL" style="float: left; border-right: 1px solid #b7b7b7; width: 35px; height: 19px; ">
+			    <div class="LeftColumn" onclick="$actionURL" style="float: left; border-right: 1px solid #b7b7b7; width: 30px; height: 19px; cursor:pointer;">
 		        <%
 		          if (typeSort.equals("Type")) {
 		        %>
@@ -168,7 +168,7 @@
 			      </a>
 			    </div>
 			    
-			    <div class="RightColumn" style="width: 110px;">
+			    <div class="RightColumn" style="width: 105px;">
 			      <a href="<%=uicomponent.event("Sort", typeActionLink + "CreatedDate")%>">
 			        <%
 			          if (typeSort.equals("CreatedDate")) {
@@ -250,7 +250,7 @@
 	      %>
 	      <div <%=rightClickMenu%> class="RowView Normal" locked="$isLocked" workspacename="$preferenceWS" objectId="$nodePath" ondblclick="$actionLink">
 		      $strActs
-	        <div class="LeftColumn" style="float: left; width: 35px; height: 19px; padding: 2px 0px; 	border-right: none;">
+	        <div class="LeftColumn" style="float: left; width: 30px; height: 19px; padding: 2px 0px; 	border-right: none;">
 					  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div>
 	        </div>
 	        <%
@@ -280,7 +280,7 @@
 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
 	 				</div>
 	       
-	        <div class="RightColumn" style="width: 110px;">
+	        <div class="RightColumn" style="width: 105px;">
 	        		<%=dateFormat.format(uicomponent.getDateCreated(data))%>
 	        </div>
 	        <div class="ResizeColumn">
