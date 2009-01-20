@@ -168,7 +168,7 @@
 			      </a>
 			    </div>
 			    
-			    <div class="RightColumn" style="width: 115px;">
+			    <div class="RightColumn" style="width: 110px;">
 			      <a href="<%=uicomponent.event("Sort", typeActionLink + "CreatedDate")%>">
 			        <%
 			          if (typeSort.equals("CreatedDate")) {
@@ -280,7 +280,7 @@
 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
 	 				</div>
 	       
-	        <div class="RightColumn" style="width: 115px;">
+	        <div class="RightColumn" style="width: 110px;">
 	        		<%=dateFormat.format(uicomponent.getDateCreated(data))%>
 	        </div>
 	        <div class="ResizeColumn">
