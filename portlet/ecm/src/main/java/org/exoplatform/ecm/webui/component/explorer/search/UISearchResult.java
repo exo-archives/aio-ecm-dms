@@ -16,12 +16,15 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.search;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
@@ -32,6 +35,8 @@ import javax.jcr.query.RowIterator;
 
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.impl.core.JCRPath;
 import org.exoplatform.services.jcr.impl.core.SessionImpl;
@@ -96,6 +101,11 @@ public class UISearchResult extends UIContainer {
     return uiPageIterator_.getCurrentPageData();    
   }
 
+  public DateFormat getSimpleDateFormat() {
+    Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale();
+    return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT, locale);
+  }
+  
   private void addNode(List<Node> listNodes, Node node, List<Row> listRows, Row r) throws Exception {
     List<Node> checkList = new ArrayList<Node>();
     if (flag_) checkList = currentListNodes_; 

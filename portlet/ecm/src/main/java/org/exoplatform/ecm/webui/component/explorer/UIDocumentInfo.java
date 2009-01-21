@@ -18,10 +18,13 @@ package org.exoplatform.ecm.webui.component.explorer;
 
 import java.awt.Image;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 
 import javax.imageio.ImageIO;
 import javax.jcr.AccessDeniedException;
@@ -48,6 +51,7 @@ import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
@@ -503,6 +507,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         Integer.toString(image.getWidth(null)) + "x" + Integer.toString(image.getHeight(null));
     }
     return imageSize;
+  }
+  
+  public DateFormat getSimpleDateFormat() {
+    Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale();
+    return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT, locale);
   }
   
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {

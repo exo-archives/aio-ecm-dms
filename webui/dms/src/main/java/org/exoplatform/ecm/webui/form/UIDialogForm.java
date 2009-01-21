@@ -105,7 +105,7 @@ public class UIDialogForm extends UIForm {
   private boolean isOnchange = false;
   private boolean isResetForm = false;
   private boolean isResetMultiField = false;
-  private String nodePath;
+  protected String nodePath;
   private List<String> postScriptInterceptor = new ArrayList<String>();  
   private List<String> prevScriptInterceptor = new ArrayList<String>();
 

@@ -8,7 +8,6 @@
 %>
 <% 
   import org.exoplatform.ecm.webui.utils.Utils;
-  import java.text.SimpleDateFormat;
   import org.exoplatform.services.jcr.impl.core.JCRPath;
 	import org.exoplatform.services.jcr.impl.core.SessionImpl;
 	import javax.jcr.Node;
@@ -22,8 +21,7 @@
   def rcontext = _ctx.getRequestContext();
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/');
-  SimpleDateFormat dateFormat = new SimpleDateFormat();
-	dateFormat.applyPattern("MM/dd/yyyy HH:mm:ss");
+  java.text.DateFormat dateFormat = uicomponent.getSimpleDateFormat();
 %>
 <div class="UISearchResult" id="$uicomponent.id">
   <table class="UIGrid" style="width: 97%">
