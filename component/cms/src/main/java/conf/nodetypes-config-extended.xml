@@ -50,6 +50,7 @@
     </propertyDefinitions>
   </nodeType>
 
+  <!--
   <nodeType name="exo:ReloadBPAction" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>
       <supertype>exo:scriptAction</supertype>
@@ -64,6 +65,7 @@
       </propertyDefinition>
     </propertyDefinitions>
   </nodeType>
+  -->
   
   <nodeType name="exo:processRecordAction" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>
