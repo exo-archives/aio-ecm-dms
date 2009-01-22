@@ -95,7 +95,7 @@
     </application>  
   </page>
   
-  <!--
+  <!-- Add for Test bonita content publishing Start-->
   <page>
   	<page-id>group::organization/management/executive-board::BusinessProcess</page-id>
  		<owner-type>group</owner-type>
@@ -156,5 +156,5 @@
       <show-application-mode>true</show-application-mode>
     </application>             
   </page>       
-  -->  
+  <!-- Add for Test bonita content publishing End-->
 </page-set>

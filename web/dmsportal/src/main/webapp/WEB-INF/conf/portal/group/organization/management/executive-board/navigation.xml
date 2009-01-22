@@ -31,8 +31,9 @@
 	      <page-reference>group::organization/management/executive-board::ECMAdmin</page-reference>
     	</node>    	    	    	    	    	  
     </node>
-       
-    <!--node>
+    
+    <!-- Add for Test bonita content publishing Start-->
+    <node>
       <uri>businessprocess</uri>
       <name>businessprocess</name>
       <label>#{group.executive-board.businessprocess.title}</label>
@@ -50,7 +51,7 @@
 	      <label>#{group.executive-board.businessprocess.controller}</label>
 	      <page-reference>group::organization/management/executive-board::WorkflowController</page-reference>
     	</node>    	
-    </node-->
-            
+    </node>
+      <!-- Add for Test bonita content publishing End-->  
   </page-nodes>    
 </node-navigation>
