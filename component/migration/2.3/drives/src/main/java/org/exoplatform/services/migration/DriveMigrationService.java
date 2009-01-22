@@ -56,7 +56,6 @@ public class DriveMigrationService implements Startable {
   }
   
   public void start() {
-    // TODO Auto-generated method stub
     log.info("PROCESSING MIGRATE DRIVES NAME");
     try {
       migrateProcess();
