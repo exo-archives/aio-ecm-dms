@@ -207,7 +207,7 @@
                       </field>                                    
                     </object>
                   </value>                        
-                  <!--value>
+                  <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
                       <field  name="nodetypeName"><string>exo:publishingProcess</string></field>
                       <field  name="documentTemplate"><boolean>false</boolean></field>
@@ -233,7 +233,7 @@
                         </collection>
                       </field>                                    
                     </object>
-                  </value-->
+                  </value>
                                                                           
                   <value>
                     <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
