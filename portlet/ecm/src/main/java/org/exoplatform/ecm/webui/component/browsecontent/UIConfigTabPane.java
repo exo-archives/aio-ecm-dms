@@ -146,14 +146,15 @@ public class UIConfigTabPane extends UIContainer {
     uiConfigContainer.setRendered(true) ;
   }
 
-  public void initPopupPathSelect(UIForm uiForm, String repo, String workSpace) throws Exception {
+  public void initPopupPathSelect(UIForm uiForm, String repo, String workSpace, String fieldName, 
+      boolean isDisable) throws Exception {
     removeChildById(PATH_SELECTOR) ;
     removeChildById(DOCUMENT_SELECTOR) ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, PATH_SELECTOR);
     uiPopup.setWindowSize(610, 300);    
     UIOneNodePathSelector uiOneNodePathSelector = 
       createUIComponent(UIOneNodePathSelector.class, null, null);
-    uiOneNodePathSelector.setIsDisable(workSpace, true) ;
+    if(isDisable) uiOneNodePathSelector.setIsDisable(workSpace, true) ;
     String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED, "exo:taxonomy"} ;
     uiOneNodePathSelector.setAcceptedNodeTypesInPathPanel(filterType) ;
     uiOneNodePathSelector.setShowRootPathSelect(true) ;
@@ -164,7 +165,7 @@ public class UIConfigTabPane extends UIContainer {
       uiOneNodePathSelector.init(SessionProviderFactory.createSessionProvider()) ;
     }
     uiPopup.setUIComponent(uiOneNodePathSelector) ;
-    uiOneNodePathSelector.setSourceComponent(uiForm, new String[] {UINewConfigForm.FIELD_CATEGORYPATH}) ;
+    uiOneNodePathSelector.setSourceComponent(uiForm, new String[] {fieldName}) ;
     uiPopup.setShow(true) ;
   }
 

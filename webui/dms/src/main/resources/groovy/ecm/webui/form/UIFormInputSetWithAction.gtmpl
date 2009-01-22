@@ -17,8 +17,8 @@
       def formName = uicomponent.getFormName() ;
       def actions = uicomponent.getInputSetActions() ;
       def actionValues = uicomponent.getActionValues() ;
-      def isShowAction = uicomponent.isShowActionInfo()
-        String confirm = _ctx.appRes("UIFormInputSetWithAction.msg.confirm-delete") ;
+      def isShowAction = uicomponent.isShowActionInfo();
+      String confirm = _ctx.appRes("UIFormInputSetWithAction.msg.confirm-delete") ;
       for(inputEntry in uicomponent.getChildren()) {
         if(inputEntry.isRendered()) {
     %>

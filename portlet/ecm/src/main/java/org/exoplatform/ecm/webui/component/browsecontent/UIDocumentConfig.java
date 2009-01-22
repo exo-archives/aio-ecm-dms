@@ -275,7 +275,7 @@ public class UIDocumentConfig extends UIForm implements UISelectable{
       UIConfigTabPane uiConfig = uiForm.getAncestorOfType(UIConfigTabPane.class) ;
       String workSpace = uiForm.getUIStringInput(UINewConfigForm.FIELD_WORKSPACE).getValue() ;
       String repo = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue() ;
-      uiConfig.initPopupPathSelect(uiForm, repo, workSpace) ;
+      uiConfig.initPopupPathSelect(uiForm, repo, workSpace, UINewConfigForm.FIELD_CATEGORYPATH, true) ;
       uiForm.isEdit_ = true ;
       uiConfig.setNewConfig(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIConfigTabPane.class)) ;

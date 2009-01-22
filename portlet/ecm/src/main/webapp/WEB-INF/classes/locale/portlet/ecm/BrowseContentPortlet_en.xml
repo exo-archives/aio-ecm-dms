@@ -437,5 +437,22 @@
       <Invalid-char5>No space is allowed near the char '^'</Invalid-char5>
     </msg>
   </SearchValidator>
+  <!--
+  ######################################################################################
+  # Since ECM 2.3
+  ######################################################################################
+  -->
+  <UIPathConfig>
+    <label>
+      <searchEnable>Enable search location</searchEnable>
+      <searchLocation>Search location</searchLocation>
+      <searchPath>UIPathConfig</searchPath>
+      <explain></explain>
+    </label>
+    <msg>
+      <enter-search-location>You have to specify the search location</enter-search-location>
+      <explain>When the path shown in Browse Content corresponds to a hiearchy of categories, it is needed to specify the path where documents are actually stored, so that they can be found by the search feature of the Portlet.</explain>
+    </msg>
+  </UIPathConfig>
 </bundle>
 

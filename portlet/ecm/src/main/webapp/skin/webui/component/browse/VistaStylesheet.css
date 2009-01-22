@@ -410,3 +410,8 @@
 .UIBrowseContentPortlet .UITrees .Node .NodeIcon {
 	line-height: 24px;
 }
+
+/*###################################################*/
+.UIFormInputSetWithAction .UIFormGrid td.FieldComponent {
+  white-space: normal;
+}

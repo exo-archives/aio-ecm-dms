@@ -420,4 +420,10 @@
 .UIJCRExplorer .UITrees .Node .NodeIcon {
 	padding-left: 25px;
 }
+
+/*###################################################*/
+.UIFormInputSetWithAction .UIFormGrid td.FieldComponent {
+  white-space: normal;
+}
+
 	

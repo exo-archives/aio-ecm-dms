@@ -353,7 +353,24 @@
         <value>Using a script</value>
          -->
         <read-only>false</read-only>
-      </preference>            
+      </preference>
+      <!--
+        Enable search root location
+      -->
+      <preference>
+        <name>enableSearch</name>
+        <value>false</value>
+        <read-only>false</read-only>
+      </preference>
+      <!--
+        Specify the search root location. This preference affect only when enableSearch is true
+        Notice: Have to specify the workspace name
+      -->
+      <preference>
+        <name>searchLocation</name>
+        <value>collaboration:/Documents/Live</value>
+        <read-only>false</read-only>
+      </preference>                  
     </portlet-preferences>    
   </portlet>
       

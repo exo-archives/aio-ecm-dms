@@ -393,4 +393,10 @@
 	padding: 0px;
 }
 
+/*###################################################*/
+.UIFormInputSetWithAction .UIFormGrid td.FieldComponent {
+  white-space: normal;
+}
+
+
 /*********************************Template Style - Fix for IE*************************************/

@@ -23,14 +23,16 @@ import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.Session;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
+import javax.portlet.PortletPreferences;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.SearchValidator;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.browsecontent.UICBSearchResults.ResultData;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -138,9 +140,25 @@ public class UICBSearchForm extends UIForm {
     String nodePath = currentNode.getPath();
     List<ResultData> resultList = new ArrayList<ResultData>();
     Map<String, ResultData> temp = new HashMap<String, ResultData>();
+    String workspaceName = null;
+    PortletPreferences preference = getAncestorOfType(UIBrowseContentPortlet.class).getPortletPreferences() ;
+    String hasSearchLocation = preference.getValue(Utils.CB_ENABLE_SEARCH_LOCATION, "");
+    String searchLocation = preference.getValue(Utils.CB_SEARCH_LOCATION, "");
+    if(hasSearchLocation != null && Boolean.parseBoolean(hasSearchLocation) && searchLocation.length() > 0) {
+      workspaceName = searchLocation.split(":/")[0];
+      nodePath = "/" + searchLocation.split(":/")[1];
+    }
+    Session session = null;
+    UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class);
+    String repository = uiContainer.getRepository();
     QueryManager queryManager = null;
+    if(workspaceName != null) {
+      session = uiContainer.getSession(repository, workspaceName);
+    } else {
+      session = currentNode.getSession();
+    }
     try{
-      queryManager = currentNode.getSession().getWorkspace().getQueryManager();
+      queryManager = session.getWorkspace().getQueryManager();
     }catch (Exception e) {
       e.printStackTrace();
       return resultList;
@@ -152,13 +170,13 @@ public class UICBSearchForm extends UIForm {
     } else {
       statement = StringUtils.replace(statement, "$2", nodePath) ;    
     }    
-    UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class);           
     duration_ = 0;
     TemplateService templateService = getApplicationComponent(TemplateService.class);
-    String repository = uiContainer.getRepository();
     List<String> documentNodeTypes = templateService.getDocumentTemplates(repository);
+    //TODO Why we have to add nt:resource, need to check again
     documentNodeTypes.add("nt:resource");
     //TODO need review this code to improve performance
+    //TODO need define one nodetype as a super type of all documents node type
     for(String ntDocument : documentNodeTypes) {            
       String queryStatement = StringUtils.replace(statement, "$0", ntDocument);      
       long beforeTime = System.currentTimeMillis();
@@ -177,17 +195,16 @@ public class UICBSearchForm extends UIForm {
               String name = path.substring(path.lastIndexOf("/") + 1); 
               result = new ResultData(name, path);
               temp.put(path, result);
-              //resultList.add(result);
             }
           } else {
             String path = node.getPath();
             String name = path.substring(path.lastIndexOf("/") + 1);
             result = new ResultData(name, path);
             temp.put(path, result);
-            //resultList.add(result);
           }
         }
       } catch(Exception e) {
+        e.printStackTrace();
         return resultList;
       }
     }

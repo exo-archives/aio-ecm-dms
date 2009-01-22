@@ -69,6 +69,8 @@ public class UINewConfigForm extends UIForm {
   final static public String FIELD_ENABLECOMMENT = "enableComment" ;
   final static public String FIELD_ENABLEVOTE = "enableVote" ;
   final static public String FIELD_QUERY = "query" ;
+  final static public String FIELD_SEARCH_LOCATION = "searchLocation";
+  final static public String FIELD_SEARCH_PATH_ENABLE = "searchEnable";
   final static public String[] DEFAULT_ACTION = new String[]{"Edit", "Add"} ;
   final static public String[] NORMAL_ACTION = new String[]{"Save", "Cancel"} ;
   final static public String[] ADD_NEW_ACTION = new String[]{"Back", "Save"} ;
