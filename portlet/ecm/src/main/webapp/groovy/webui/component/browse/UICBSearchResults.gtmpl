@@ -8,6 +8,7 @@
 %>
 <% 
   import org.exoplatform.ecm.webui.utils.Utils ;
+  import org.exoplatform.web.application.Parameter ;
 %>
 <% 
   def resultList = uicomponent.getCurrentList() ; 
@@ -41,13 +42,14 @@
             <td><div class="Text"><%=node.getName()%></div></td>
 	          <%
 	            String nodePath = node.getPath() ;
+	            String wsName = node.getWorkspaceName();
 	            if(nodePath.length() > 40 && nodePath.length() < 50) nodePath = "..." + nodePath.substring(20, nodePath.length()) ;
 	            else if(nodePath.length() > 40) nodePath = "..." + nodePath.substring(30, nodePath.length()) ;
 	          %>
 	          <td><div class="Text" title="<%=node.getPath()%>"><%=nodePath%></div></td>
 	          <td>
 	          	<div class="ActionContainer">
-	            	<img class="View16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" onclick="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UICBSearchResults.tooltip.View")%>"/>
+	            	<img class="View16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" onclick="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()), new Parameter("workspaceName", wsName))%>" title="<%=_ctx.appRes("UICBSearchResults.tooltip.View")%>"/>
 	            	<img class="OpenFolder16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" onclick="<%=uicomponent.event("Goto", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UICBSearchResults.tooltip.Goto")%>"/>
 	           	</div>
 	          </td>	                    

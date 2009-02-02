@@ -53,128 +53,139 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 public class UICBSearchResults extends UIContainer {
-  protected Map<String, Node> resultMap_ = new HashMap<String, Node>() ;
-  private UIPageIterator uiPageIterator_ ;
+  protected Map<String, Node> resultMap_ = new HashMap<String, Node>();
+  private UIPageIterator uiPageIterator_;
 
   public UICBSearchResults() throws Exception { 
-    uiPageIterator_ = addChild(UIPageIterator.class, null, null) ;
+    uiPageIterator_ = addChild(UIPageIterator.class, null, null);
   }
   
   public List getCurrentList() throws Exception { 
-    return uiPageIterator_.getCurrentPageData() ;    
+    return uiPageIterator_.getCurrentPageData();    
   }
   
-  public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
+  public UIPageIterator getUIPageIterator() { return uiPageIterator_; }
   
   private boolean isDocumentTemplate(String nodeType)throws Exception {
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
-    return templateService.getDocumentTemplates(repository).contains(nodeType) ;
+    TemplateService templateService = getApplicationComponent(TemplateService.class);
+    String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository();
+    return templateService.getDocumentTemplates(repository).contains(nodeType);
   }
   static public class CloseActionListener extends EventListener<UICBSearchResults> {
     public void execute(Event<UICBSearchResults> event) throws Exception {
-      UICBSearchResults uiResults = event.getSource() ;
-      UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
-      uiSearchController.setShowHiddenSearch() ;
+      UICBSearchResults uiResults = event.getSource();
+      UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class);
+      uiSearchController.setShowHiddenSearch();
     }
   }
   protected void getResultData() throws Exception {
-    List<ResultData> results = new ArrayList<ResultData>() ;
+    List<ResultData> results = new ArrayList<ResultData>();
     for(String nodeName : resultMap_.keySet()) {
-      results.add(new ResultData(Utils.formatNodeName(nodeName), Utils.formatNodeName(resultMap_.get(nodeName).getPath()))) ;
+      results.add(new ResultData(Utils.formatNodeName(nodeName), 
+          Utils.formatNodeName(resultMap_.get(nodeName).getPath()), 
+          resultMap_.get(nodeName).getSession().getWorkspace().getName()));
     }
   }
   static public class ViewActionListener extends EventListener<UICBSearchResults> {
     public void execute(Event<UICBSearchResults> event) throws Exception {
-      UICBSearchResults uiResults = event.getSource() ;
+      UICBSearchResults uiResults = event.getSource();
       String itemPath = event.getRequestContext().getRequestParameter(OBJECTID);
-      UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class) ;
-      Node node = container.getNodeByPath(itemPath) ;
-      UIApplication uiApp = uiResults.getAncestorOfType(UIApplication.class) ;
-      if(node == null) {
-        uiApp.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return ;
+      String wsName = event.getRequestContext().getRequestParameter("workspaceName");
+      UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class);
+      Node node = null;
+      if(wsName != null) {
+        node = container.getNodeByPath(itemPath, wsName);
+      } else {
+        node = container.getNodeByPath(itemPath);
       }
-      NodeType nodeType = node.getPrimaryNodeType() ;
-      UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
+      UIApplication uiApp = uiResults.getAncestorOfType(UIApplication.class);
+      if(node == null) {
+        uiApp.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      NodeType nodeType = node.getPrimaryNodeType();
+      UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class);
       if(uiResults.isDocumentTemplate(nodeType.getName())) {
-        UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
-        UIDocumentDetail uiDocument =  uiPopupAction.activate(UIDocumentDetail.class, 600) ;// cbPortlet.createUIComponent(UIDocumentDetail.class, null, null) ;
-        uiDocument.setNode(node) ;
-        UIPopupWindow uiPopup  = uiPopupAction.getChildById("UICBPopupWindow") ;
-        uiPopup.setResizable(true) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-        return ;
+        UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class);
+        UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction");
+        UIDocumentDetail uiDocument =  uiPopupAction.activate(UIDocumentDetail.class, 600);// cbPortlet.createUIComponent(UIDocumentDetail.class, null, null);
+        uiDocument.setNode(node);
+        UIPopupWindow uiPopup  = uiPopupAction.getChildById("UICBPopupWindow");
+        uiPopup.setResizable(true);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        return;
       }
       if(container.isCategories(nodeType)) {
-        uiSearchController.setShowHiddenSearch() ;
+        uiSearchController.setShowHiddenSearch();
         if(container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
-          container.getChild(UICategoryTree.class).buildTree(itemPath) ;
-          container.setCurrentNodePath(itemPath) ;
+          container.getChild(UICategoryTree.class).buildTree(itemPath);
+          container.setCurrentNodePath(itemPath);
         }
-        container.changeNode(node) ;
-        return ;
+        container.changeNode(node);
+        return;
       }
     }
   }
   
   static public class GotoActionListener extends EventListener<UICBSearchResults> {
     public void execute(Event<UICBSearchResults> event) throws Exception {
-      UICBSearchResults uiResults = event.getSource() ;
+      UICBSearchResults uiResults = event.getSource();
       String itemPath = event.getRequestContext().getRequestParameter(OBJECTID);
-      UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class) ;
-      Node node = container.getNodeByPath(itemPath) ;  
-      UIApplication uiApp = uiResults.getAncestorOfType(UIApplication.class) ;
+      UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class);
+      Node node = container.getNodeByPath(itemPath);  
+      UIApplication uiApp = uiResults.getAncestorOfType(UIApplication.class);
       if(node == null) {
-        uiApp.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return ;
+        return;
       }
-      Node parentNode = null ;
-      if(node.getPath().equals(container.getRootNode().getPath())) parentNode = node ;
-      else parentNode = node.getParent() ;
-      NodeType nodeType = parentNode.getPrimaryNodeType() ;
-      UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class) ;
+      Node parentNode = null;
+      if(node.getPath().equals(container.getRootNode().getPath())) parentNode = node;
+      else parentNode = node.getParent();
+      NodeType nodeType = parentNode.getPrimaryNodeType();
+      UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class);
       if(container.isCategories(nodeType)) {
-        uiSearchController.setShowHiddenSearch() ;
+        uiSearchController.setShowHiddenSearch();
         if(container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
-          container.getChild(UICategoryTree.class).buildTree(parentNode.getPath()) ;
-          container.setCurrentNodePath(parentNode.getPath()) ;
+          container.getChild(UICategoryTree.class).buildTree(parentNode.getPath());
+          container.setCurrentNodePath(parentNode.getPath());
         }
-        container.changeNode(parentNode) ;
-        return ;
+        container.changeNode(parentNode);
+        return;
       }
       if(uiResults.isDocumentTemplate(parentNode.getPrimaryNodeType().getName())) {
-        UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
-        UIDocumentDetail uiDocument =  uiPopupAction.activate(UIDocumentDetail.class, 600) ;// cbPortlet.createUIComponent(UIDocumentDetail.class, null, null) ;
-        uiDocument.setNode(parentNode) ;
-        UIPopupWindow uiPopup  = uiPopupAction.getChildById("UICBPopupWindow") ;
-        uiPopup.setResizable(true) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-        return ;
+        UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class);
+        UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction");
+        UIDocumentDetail uiDocument =  uiPopupAction.activate(UIDocumentDetail.class, 600);// cbPortlet.createUIComponent(UIDocumentDetail.class, null, null);
+        uiDocument.setNode(parentNode);
+        UIPopupWindow uiPopup  = uiPopupAction.getChildById("UICBPopupWindow");
+        uiPopup.setResizable(true);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+        return;
       }
     }
   }
   
-  public String[] getActions() { return new String[] {"Close"} ;}
+  public String[] getActions() { return new String[] {"Close"};}
 
   public void updateGrid(List<ResultData> result) throws Exception {
-    ObjectPageList objPageList = new ObjectPageList(result, 10) ;
-    uiPageIterator_.setPageList(objPageList) ;
+    ObjectPageList objPageList = new ObjectPageList(result, 10);
+    uiPageIterator_.setPageList(objPageList);
   } 
 
   public static class ResultData {
-    private String name ;
-    private String path ;
-    public ResultData(String rName, String rpath) {
-      name = rName ;
-      path = rpath ;
+    private String name;
+    private String path;
+    private String wsName;
+    public ResultData(String rName, String rpath, String wsName) {
+      this.name = rName;
+      this.path = rpath;
+      this.wsName = wsName;
     }
 
-    public String getName() { return name ; }
-    public String getPath() { return path ; }
+    public String getName() { return name; }
+    public String getPath() { return path; }
+    public String getWorkspaceName() { return wsName; }
   }
 }

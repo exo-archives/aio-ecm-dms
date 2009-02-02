@@ -486,7 +486,8 @@ public class UIPathConfig extends UIForm implements UISelectable{
       UIConfigTabPane uiConfigTabPane = uiForm.getAncestorOfType(UIConfigTabPane.class);
       uiConfigTabPane.setIsChangeValue(true);
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT);
-      UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH);
+      UIFormStringInput categoryPathField = 
+        categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH);
       categoryPathField.setValue("/");      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
@@ -499,6 +500,12 @@ public class UIPathConfig extends UIForm implements UISelectable{
         uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_SEARCH_PATH_ENABLE);
       UIFormInputSetWithAction uiSearchLocation = uiForm.getChildById(FIELD_SEARCH_PATHSELECT);
       uiSearchLocation.setRendered(uiEnableSearch.isChecked());
+      if(uiEnableSearch.isChecked()) {
+        uiSearchLocation.setActionInfo(UINewConfigForm.FIELD_SEARCH_LOCATION, 
+            new String[] {"AddSearchLocation"});
+      } else {
+        uiSearchLocation.setActionInfo(UINewConfigForm.FIELD_SEARCH_LOCATION, null);
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
   }

@@ -120,7 +120,8 @@ public class UICBSearchForm extends UIForm {
         while(iter.hasNext()) {
           Node node = iter.nextNode();
           if(node.getPath().startsWith(currentNode.getPath())) {                    
-            result = new ResultData(node.getName(), node.getPath());
+            result = new ResultData(node.getName(), node.getPath(), 
+                node.getSession().getWorkspace().getName());
             resultList.add(result); 
           }
         }
@@ -192,14 +193,15 @@ public class UICBSearchForm extends UIForm {
             Node paNode = node.getParent();
             if(documentNodeTypes.contains(paNode.getPrimaryNodeType().getName())) {
               String path = paNode.getPath();
-              String name = path.substring(path.lastIndexOf("/") + 1); 
-              result = new ResultData(name, path);
+              String name = path.substring(path.lastIndexOf("/") + 1);
+              String wsName = paNode.getSession().getWorkspace().getName();
+              result = new ResultData(name, path, wsName);
               temp.put(path, result);
             }
           } else {
             String path = node.getPath();
             String name = path.substring(path.lastIndexOf("/") + 1);
-            result = new ResultData(name, path);
+            result = new ResultData(name, path, node.getSession().getWorkspace().getName());
             temp.put(path, result);
           }
         }
