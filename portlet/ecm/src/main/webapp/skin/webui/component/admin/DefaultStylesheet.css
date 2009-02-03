@@ -33,6 +33,7 @@
 .UIECMAdminPortlet .UIForm td.FieldComponent .textarea {
 	height: 300px ;
 	width: 400px;
+	vertical-align: top;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl {
@@ -46,7 +47,8 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   margin: auto ;
   height: 34px;
 	line-height: 34px;
@@ -55,13 +57,13 @@
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .RepoNameLabel {
 	font-weight: bold ;
 	float: left;
-	padding: 0px 7px 0px 20px;
+	padding: 0px 7px 0px 20px; 
 	line-height: 30px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect {
 	 width: 190px;
-	 float: left;	
+	 float: left;
 	 height: 34px; 
 }
 
@@ -73,27 +75,30 @@
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .UISelect .selectbox {
 	 width: 180px;
-	 float:left;
+	 float: left; 
 	 margin-top: 2px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
-  float: left; 
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   height: 34px;
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .ActionButton {
 	width: 24px ; height: 24px;
-	float: left ;
-	margin: 5px 0px 0px 5px;		
+	float: left ; 	
+	margin: 5px 0px 0px 5px;	
+
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SeparatorLine {
   width: 2px;
   height: 30px;
-  margin: 2px 2px 0px 8px;		
+  margin: 2px 2px 0px 8px;	
   background: url('DefaultSkin/background/SeparatorLine2x1.gif') repeat-y;
   float: left;
+ 
 }
 
 /*############################## --Begin UIRepositoryManager -- ########################*/
@@ -157,22 +162,26 @@
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   font-weight: bold;
-  margin: 0px 10px 0px 15px;
+  margin: 0px 10px 0px 15px; /* orientation=lt */
+  margin: 0px 15px 0px 10px; /* orientation=rt */
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationBar {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   line-height: 38px;
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationBar a{
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   width: 18px; line-height: 18px;
   font-weight: bold;
   text-align: center;
-  margin: 9px 3px 0px 3px;
+  margin: 9px 3px 0px 3px; 
   border: solid 1px gray;
 }
 
@@ -187,8 +196,10 @@
 }
 
 .UIWorkspaceWizard .UIWizardAction .UIAction {
-	float: right;
-	padding-right: 10px;
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
+	padding-right: 10px; /* orientation=lt */
+	padding-left: 10px; /* orientation=rt */
 }
 
 .UIWorkspaceWizard .UIWizardAction .UIAction .ActionContainer {
@@ -251,7 +262,9 @@
 }
 
 .UIECMAdminPortlet .UIFormGrid input {
-  padding-left: 3px;
+  padding-left: 3px; /* orientation=lt */ 
+  padding-right: 3px; /* orientation=rt */
+ 
 }
 
 .UIECMAdminPortlet .UIFormGrid .FieldComponent .ActionIcon {
@@ -269,7 +282,8 @@
 
 .UIECMAdminPortlet .CollapseSideBar {
 	width: 6px; height: 100%;
-	background: url('DefaultSkin/background/SideBar.gif') no-repeat left center;
+	background: url('DefaultSkin/background/SideBar.gif') no-repeat left center; /* orientation=lt */
+		background: url('DefaultSkin/background/SideBar-rt.gif') no-repeat right center; /* orientation=rt */
 	cursor: pointer;
 }
 
@@ -280,7 +294,8 @@
 
 .UIECMAdminPortlet .ExpandSideBar {
 	width: 6px; height: 100%;
-	background: url('DefaultSkin/background/SideBar.gif') no-repeat right center;
+	background: url('DefaultSkin/background/SideBar.gif') no-repeat right center; /* orientation=lt */
+	background: url('DefaultSkin/background/SideBar-rt.gif') no-repeat left center; /* orientation=rt */
 	cursor: pointer;
 }
 
@@ -314,7 +329,8 @@
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVTab .TabIcon {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
   margin: 1px 5px 0px 5px;
 }
 
@@ -341,8 +357,10 @@
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .FunctionItem .ItemIcon {
-  float: left;
-  margin-right: 6px;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  margin-right: 6px; /* orientation=lt */
+  margin-left: 6px; /* orientation=rt */
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .FunctionItem .ItemLabel {
@@ -522,7 +540,8 @@
 .UIECMScripts .HorizontalLayout .FormContainer .FieldComponent textarea {
   height: 350px;
   width: 90%;
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 /*------------------------------UICBScripts------------------------*/
@@ -545,7 +564,8 @@
 .UICBScripts .HorizontalLayout .FormContainer .FieldComponent .textarea {
   width: 90%;
   height: 350px;
-  float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 }
 
 /*############################## -- UIQueriesManager  -- ########################*/
@@ -623,4 +643,42 @@
 /*############################## -- Any Permission -- ########################*/
 .UIECMAdminPortlet .UIAnyPermission .UIForm .HorizontalLayout {
 	border: 1px solid #B7B7B7;
+}
+
+.UIECMAdminPortlet .ECMAdminPanel {
+  height: 100%; width: 250px;
+  overflow: auto; 
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+}
+.UIECMAdminPortlet .UIResizableBlock .ECMLayoutFloat{
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	height: 100%;
+}
+
+.UIECMAdminWorkingArea .RightFunctionTitle .IconTitle{
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	margin: 0px 5px;
+}
+
+.UIECMAdminPortlet .UIResizableBlock .NotShowSideBar {
+  margin-left: 6px; /* orientation=lt */
+  margin-left: 6px; /* orientation=rt */
+  height: 100%;
+}
+
+.UIECMAdminPortlet .UIResizableBlock .ShowSideBar {
+  margin-left: 256px; /* orientation=lt */
+  margin-right: 256px; /* orientation=rt */
+  height: 100%;
+}
+
+.UIPageIterator .PageIteratorContainer .RightPageIteratorBlock{
+margin:5px 0px;
+}
+
+..UINamespaceManager UINamespaceList .UIPageIterator .PageIteratorContainer{
+float: left;
 }

@@ -75,6 +75,11 @@
 .UIECMAdminPortlet .UINodeTypeManager {
   width: 97.5%;
 }
+.UINodeTypeManager .UINodeTypeList .IconNodeType{
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	padding-left: 20px; /* orientation=rt */
+}
 
 .UIECMAdminPortlet .UINodeTypeManager .nodeTypeDefinition .FormContainer {
   width: 500px ;

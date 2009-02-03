@@ -75,7 +75,7 @@
 	                        <div class="DeleteIconInfo"><span></span></div>                    
 	                      </a>
                      <%} else { %>
-                          <div class="ActionField" style="float:left;">
+                          <div class="ActionField FloatLeft">
                           [ <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[0]%>', '&objectId=<%=arrInfor[i]%>');">
                               <%=arrInfor[i]%>
                           </a> ]
@@ -83,7 +83,7 @@
                        <a href="javascript:eXo.webui.UIForm.submitEvent('<%=formName%>', '<%=actionInfo[1]%>', '&objectId=<%=arrInfor[i]%>');" onclick="return confirm('<%=confirm%>');">
                          <img class="DeleteIconInfo" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt=""/>                
                        </a>
-                       <div style="clear:left"><span></span></div>
+                       <div class="ClearLeft"><span></span></div>
                      <%
                        }
                       } else {

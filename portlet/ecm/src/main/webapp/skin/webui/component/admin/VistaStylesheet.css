@@ -30,6 +30,10 @@
   line-height: 24px;
 }
 
+.UIECMAdminPortlet .UITaxonomyWorkingArea .UIGrid {
+  width: 98%;
+}
+
 .UIECMAdminPortlet .UITaxonomyManager .UITaxonomyForm {
 	padding: 10px;
 }
@@ -41,7 +45,8 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   margin: auto ;
   height: 34px;
 }
@@ -70,7 +75,8 @@
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .ActionsArea {
-  float: left; 
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   height: 34px;
 }
 
@@ -179,17 +185,21 @@
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationTitle {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   font-weight: bold;
-  margin: 0px 10px 0px 15px;
+  margin: 0px 10px 0px 15px; /* orientation=lt */
+  margin: 0px 15px 0px 10px; /* orientation=rt */
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationBar {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 .UIWorkspaceWizard .UIWizardAction .StepNavigationBar a {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   width: 18px; height: 18px; 
   line-height: 18px;
   font-weight: bold;
@@ -210,7 +220,8 @@
 }
 
 .UIECMAdminPortlet .UIWorkspaceWizard .UIWizardAction .UIAction {
-	float: right;
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
 	padding-right: 5px;
 }
 
@@ -266,13 +277,15 @@
 
 .UIECMAdminPortlet .CollapseSideBar {
 	width: 8px; height: 100%;
-	background: url('VistaSkin/background/SideBar.gif') no-repeat left center;
+	background: url('VistaSkin/background/SideBar.gif') no-repeat left center; /* orientation=lt */
+	background: url('VistaSkin/background/SideBar-rt.gif') no-repeat right center; /* orientation=rt */
 	cursor: pointer;
 }
 
 .UIECMAdminPortlet .ExpandSideBar {
 	width: 8px; height: 100%;
-	background: url('VistaSkin/background/SideBar.gif') no-repeat right center;
+	background: url('VistaSkin/background/SideBar.gif') no-repeat right center; /* orientation=lt */
+	background: url('VistaSkin/background/SideBar-rt.gif') no-repeat left center; /* orientation=rt */
 	cursor: pointer;
 }
 
@@ -309,7 +322,8 @@
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .UIVTab .TabIcon {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
   margin: 1px 5px;
 }
 
@@ -336,8 +350,10 @@
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .FunctionItem .ItemIcon {
-  float: left;
-  margin-right: 6px;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  margin-right: 6px; /* orientation=lt */
+  margin-left: 6px; /* orientation=rt */
 }
 
 .UIECMAdminPortlet .UIECMAdminControlPanel .FunctionItem .ItemLabel {
@@ -429,7 +445,8 @@
 }
 
 .UIECMAdminPortlet .MultiRadioInput {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 }
 
 .UIECMAdminPortlet .UIDriveManager .UIFormInputSet .AddIcon16x16 {
@@ -525,9 +542,10 @@
 }
 
 .UIECMScripts .UIForm textarea {
-  width: 350px;
+  width: 348px;
   height: 300px;
   padding: 3px;
+  vertical-align:top;
 }
 
 /*############################## -- UIScriptManager UIScriptForm  -- ########################*/
@@ -611,6 +629,7 @@
 	width: 350px; 
 	height: 320px ;
 	padding: 3px;
+	vertical-align:top;
 }
 
 .UIQueriesManager .UIQueriesForm {
@@ -631,6 +650,7 @@
 	height: 320px;
 	padding: 3px;
 	width: 95%;
+	vertical-align:top;
 }
 
 .UIFolksonomyManager .UITagStyleForm .UIForm .HorizontalLayout {
@@ -681,3 +701,37 @@
 }
 /*############################## -- Edit View -- ########################*/
 
+
+.UIECMAdminPortlet .UIAnyPermission .UIForm .HorizontalLayout {
+	border: 1px solid #B7B7B7;
+}
+
+.UIECMAdminPortlet .ECMAdminPanel {
+  height: 100%; width: 250px;
+  overflow: auto; 
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+}
+.UIECMAdminPortlet .UIResizableBlock .ECMLayoutFloat{
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	height: 100%;
+}
+
+.UIECMAdminWorkingArea .RightFunctionTitle .IconTitle{
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	margin: 0px 5px;
+}
+
+.UIECMAdminPortlet .UIResizableBlock .NotShowSideBar {
+  margin-left: 6px; /* orientation=lt */
+  margin-left: 6px; /* orientation=rt */
+  height: 100%;
+}
+
+.UIECMAdminPortlet .UIResizableBlock .ShowSideBar {
+  margin-left: 256px; /* orientation=lt */
+  margin-right: 256px; /* orientation=rt */
+  height: 100%;
+}

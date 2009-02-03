@@ -72,6 +72,7 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIGrid .text{
   width: 100% ;
+  
 }
 
 .UIECMAdminPortlet .UINodeTypeManager .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {	
@@ -80,6 +81,12 @@
 
 .UIECMAdminPortlet .UINodeTypeManager .FormContainer .UIFormGrid .FieldComponent a:hover {
 	color: #058EE6;
+}
+
+.UINodeTypeManager .UINodeTypeList .IconNodeType{
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	padding-left: 20px; /* orientation=rt */
 }
 
 /*############################## -- End UINodeTypeManager-- ########################*/
