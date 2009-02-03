@@ -31,27 +31,5 @@
 	      <page-reference>group::organization/management/executive-board::ECMAdmin</page-reference>
     	</node>    	    	    	    	    	  
     </node>
-    
-    <!-- Add for Test bonita content publishing Start-->
-    <node>
-      <uri>businessprocess</uri>
-      <name>businessprocess</name>
-      <label>#{group.executive-board.businessprocess.title}</label>
-      
-      <node>
-	      <uri>businessprocess/workflowadministrator</uri>
-	      <name>workflowadministrator</name>
-	      <label>#{group.executive-board.businessprocess.administrator}</label>
-	      <page-reference>group::organization/management/executive-board::WorkflowAdministrator</page-reference>
-    	</node>
-    	
-    	<node>
-	      <uri>businessprocess/controller</uri>
-	      <name>controller</name>
-	      <label>#{group.executive-board.businessprocess.controller}</label>
-	      <page-reference>group::organization/management/executive-board::WorkflowController</page-reference>
-    	</node>    	
-    </node>
-      <!-- Add for Test bonita content publishing End-->  
   </page-nodes>    
 </node-navigation>
