@@ -146,8 +146,13 @@ public class UICBSearchForm extends UIForm {
     String hasSearchLocation = preference.getValue(Utils.CB_ENABLE_SEARCH_LOCATION, "");
     String searchLocation = preference.getValue(Utils.CB_SEARCH_LOCATION, "");
     if(hasSearchLocation != null && Boolean.parseBoolean(hasSearchLocation) && searchLocation.length() > 0) {
-      workspaceName = searchLocation.split(":/")[0];
-      nodePath = "/" + searchLocation.split(":/")[1];
+      if(searchLocation.split(":/").length == 1) {
+        workspaceName = searchLocation.split(":/")[0];
+        nodePath = "/";
+      } else {
+        workspaceName = searchLocation.split(":/")[0];
+        nodePath = "/" + searchLocation.split(":/")[1];
+      }
     }
     Session session = null;
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class);
