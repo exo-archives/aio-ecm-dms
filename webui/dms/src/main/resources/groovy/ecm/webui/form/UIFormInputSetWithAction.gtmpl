@@ -25,7 +25,7 @@
         <div class="FormContainer">
           <table class="UIFormGrid">
             <tbody>
-              <tr>
+              <tr >
                <%
                 String label = _ctx.appRes(formName + ".label." + inputEntry.getId()) ;
                 if(!label.equals(inputEntry.getId())) {

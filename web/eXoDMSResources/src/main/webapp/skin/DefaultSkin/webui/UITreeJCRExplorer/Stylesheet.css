@@ -3,7 +3,8 @@
 }
 
 .ExplorerTree {
-  float: left ;
+  float: left ; /* orientation=lt */
+  float: right ; /* orientation=rt */
   width: 230px ;
   background: #f3f3f3;
 }
@@ -14,7 +15,8 @@
 }
 
 .UITreeList {
-  margin-left: 240px;
+  margin-left: 240px; /* orientation=lt */
+  margin-right: 240px; /* orientation=rt */
 }
 
 .UITreeList table {

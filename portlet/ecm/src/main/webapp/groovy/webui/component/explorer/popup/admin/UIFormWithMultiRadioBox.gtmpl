@@ -26,7 +26,7 @@
 							</td>
 							<td class="FieldComponent">
 								<%if(field instanceof UIFormRadioBoxInput) {
-										println "<div class=\"MultiRadioInput\">" ;
+										println "<div class=\"MultiRadioInput\" >" ;
 											uiform.renderField(field) ;
 										println "</div>" ;
 									} else { 

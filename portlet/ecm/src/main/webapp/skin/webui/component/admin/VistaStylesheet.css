@@ -53,8 +53,10 @@
 
 .UIECMAdminPortlet .UIRepositoryControl .SelectorArea .RepoNameLabel {
 	font-weight: bold ;
-	float: left;
-	padding: 0px 7px 0px 20px;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	padding: 0px 7px 0px 20px; /* orientation=lt */
+	padding: 0px 20px 0px 7px; /* orientation=rt */
 	line-height: 34px;
 }
 
@@ -82,16 +84,20 @@
 
 .UIECMAdminPortlet .UIRepositoryControl .ActionButton {
   height: 24px;
-	float: left ;
-	margin: 5px 0px 0px 5px;		
+	float: left ; /* orientation=lt */
+	float: right ; /* orientation=rt */
+	margin: 5px 0px 0px 5px;	/* orientation=lt */
+	margin: 5px 5px 0px 0px;	/* orientation=rt */
 }
 
 .UIECMAdminPortlet .UIRepositoryControl .SeparatorLine {
   width: 2px;
   height: 25px;
-  margin: 2px 2px 0px 8px;		
+  margin: 2px 2px 0px 8px;	/* orientation=lt */
+  margin: 2px 8px 0px 2px;	/* orientation=rt */
   background: url('VistaSkin/background/SeparatorLine2x1.png') repeat-y;
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 /********************************** End UIRepositoryControl************************/
