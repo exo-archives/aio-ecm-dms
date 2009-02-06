@@ -18,12 +18,16 @@ package org.exoplatform.ecm.webui.component.explorer.control;
 
 import java.util.List;
 
+import javax.portlet.PortletPreferences;
+
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -63,7 +67,16 @@ public class UIViewBar extends UIForm {
     selectView.setOnChange("ChangeView") ;
     addChild(selectView) ;    
   }
-
+  
+  public boolean isDirectlyDrive() {
+    boolean returnboolean = false;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+    String isDirectlyDrive =  portletPref.getValue("isDirectlyDrive", "").trim();
+    if (isDirectlyDrive.equals("true")) returnboolean = true;
+    return returnboolean;
+  }
+  
   public void setViewOptions(List<SelectItemOption<String>> viewOptions) {
     getUIFormSelectBox(FIELD_SELECT_VIEW).setOptions(viewOptions) ;
     getUIFormSelectBox(FIELD_SELECT_VIEW).setValue(viewOptions.get(0).getValue()) ;

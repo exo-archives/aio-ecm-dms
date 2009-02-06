@@ -511,6 +511,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   
   public DateFormat getSimpleDateFormat() {
     Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale();
+    System.out.println("\n\n====Locale: " + locale.getDisplayName() + "\n");
+    System.out.println("\n\n====   " + SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT, locale) + "\n");
     return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT, locale);
   }
   

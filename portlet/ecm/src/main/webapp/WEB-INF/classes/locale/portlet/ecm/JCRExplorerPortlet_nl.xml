@@ -2073,5 +2073,28 @@
       <nodeValidationRequest>The node has been validation requested</nodeValidationRequest>
     </WorkflowPublicationPlugin>
   </PublicationService>
+  
+  <!--
+  ### Since ECM version 2.3 Alpha##############
+  Access directly a JCR FE drive
+  -->
+  <UIJCRExporerPortlet>
+    <nopermission>There has no drive or you don't have permission to access this drive</nopermission>
+  </UIJCRExporerPortlet>
+  
+  <UIJcrExplorerEditForm>
+    <title>File Explorer Edit Form</title>
+    <action>
+      <Edit>Edit</Edit>
+      <Save>Save</Save>
+      <Cancel>Cancel</Cancel>
+    </action>
+    <label>
+      <repository>Repository</repository>
+      <categoryMandatoryWhenFileUpload>Category Mandatory</categoryMandatoryWhenFileUpload>
+      <isDirectlyDrive>Directly Drive</isDirectlyDrive>
+      <driveName>Drive Name</driveName>
+    </label>
+  </UIJcrExplorerEditForm>
 </bundle>
 

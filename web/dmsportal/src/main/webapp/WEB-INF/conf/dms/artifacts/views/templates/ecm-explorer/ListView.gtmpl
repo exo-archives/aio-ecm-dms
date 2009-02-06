@@ -14,7 +14,7 @@
   
   UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
   String componentId = uicomponent.getId();
-  java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm"); 
+  java.text.DateFormat dateFormat = uicomponent.getSimpleDateFormat();
   
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;

@@ -277,8 +277,10 @@ public class UIDrivesBrowser extends UIContainer {
       drive.setViews(viewListStr);
       String homePath = drive.getHomePath();
       if(homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId);
-      UIJCRExplorerPortlet uiParent = uiDrive.getAncestorOfType(UIJCRExplorerPortlet.class);      
-      UIJCRExplorer uiJCRExplorer = uiParent.getChild(UIJCRExplorer.class);
+      UIJCRExplorerPortlet uiParent = uiDrive.getAncestorOfType(UIJCRExplorerPortlet.class);  
+      uiParent.setFlagSelect(true);
+      UIJcrExplorerContainer explorerContainer = uiParent.getChild(UIJcrExplorerContainer.class);
+      UIJCRExplorer uiJCRExplorer = explorerContainer.getChild(UIJCRExplorer.class);
 
       Preference pref = new Preference();
       pref.setShowSideBar(drive.getViewSideBar());
@@ -323,7 +325,8 @@ public class UIDrivesBrowser extends UIContainer {
       UIViewBar uiViewBar = uiControl.getChild(UIViewBar.class);
       uiViewBar.setViewOptions(viewOptions);
       uiActionbar.setTabOptions(viewLists.get(0));
-      uiParent.setRenderedChild(UIJCRExplorer.class);
+      explorerContainer.setRenderedChild(UIJCRExplorer.class);
+      uiParent.setRenderedChild(UIJcrExplorerContainer.class);
     }
   }
 }
