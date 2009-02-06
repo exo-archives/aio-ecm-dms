@@ -94,7 +94,7 @@
     </application>
   </page>
     
-  <!--page>
+  <page>
   	<page-id>group::platform/administrators::workflowAdministration</page-id>
   	<owner-type>group</owner-type>
     <owner-id>platform/administrators</owner-id>
@@ -107,6 +107,5 @@
       <title>Workflow Administration</title>
       <show-info-bar>false</show-info-bar>      
     </application>  
-  </page-->
-  
+  </page>
 </page-set>
