@@ -27,55 +27,108 @@
 				<div class="TitleTable">
 				  
 			    <%
-			      String typeSort = uicomponent.getTypeSort() ;
-			      String typeSortOrder = uicomponent.getTypeSortOrder() ;
-			      String nameSortOrder = uicomponent.getNameSortOrder() ;
-			      String typeClass = "" ;
-			      String nameClass = "" ;
-			      String typeBgColor = "" ;
-			      String nameBgColor = "" ;
-			      String classSortTypeIcon = "BlueDownArrow";
-			      String classSortNameIcon = "BlueDownArrow";
-			      String typeActionLink  = uicomponent.event("Sort","Type;Descending") ;
-			      String nameActionLink = uicomponent.event("Sort","Alphabetic;Descending") ;
-			      if(typeSort.equals("Type")) { 
-			        typeClass = "OverHeader" ;
-			        //typeBgColor = "background: #f1f2f5" ;
-			        if(typeSortOrder.equals("Ascending")) {
-			          classSortTypeIcon = "BlueDownArrow" ;
-			          typeActionLink = uicomponent.event("Sort","Type;Descending") ;
-			        } else if(typeSortOrder.equals("Descending")) {
-			          classSortTypeIcon = "BlueUpArrow" ;
-			          typeActionLink = uicomponent.event("Sort","Type;Ascending") ;
-			        }
-			      } else if(typeSort.equals("Alphabetic")) {
-			        nameClass = "OverHeader" ;
-			        nameBgColor = "background: #f1f2f5" ;
-			        if(nameSortOrder.equals("Ascending")) {
-			          classSortNameIcon = "BlueDownArrow" ;
-			          nameActionLink = uicomponent.event("Sort","Alphabetic;Descending") ;
-			        } else if(nameSortOrder.equals("Descending")) {
-			          classSortNameIcon = "BlueUpArrow" ;
-			          nameActionLink = uicomponent.event("Sort","Alphabetic;Ascending") ;
-			        }
-			      }
+			      String typeSort = uicomponent.getTypeSort();
+			      String sortOrder = uicomponent.getSortOrder();
+			      String typeActionLink = "";
+			      if (sortOrder.equals("BlueDownArrow")) {
+			        typeActionLink = "Descending;";
+		        } else {
+		          typeActionLink = "Ascending;";
+		        }
 			    %>
-			    <div class="LeftColumn $typeClass" style="float: left; border-right: 1px solid #b7b7b7; width: 30px; height: 19px; ">
-			      <a href="$typeActionLink" style="display: block">
-			        <div style="margin: auto" class="SortButton ${classSortTypeIcon}16x16Icon"><span></span></div>          
+			    <% String actionURL = uicomponent.event("Sort", typeActionLink + "Type"); %>
+			    
+			    <div class="LeftColumn" onclick="$actionURL" style="float: left; border-right: 1px solid #b7b7b7; width: 30px; height: 19px; cursor:pointer;">
+		        <%
+		          if (typeSort.equals("Type")) {
+		        %>
+			        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
+			          <span></span>
+			        </div>
+			      <%}%>
+			    </div>
+			    
+			    <div class="RightColumn" style="border: none">
+			      <a href="<%=uicomponent.event("Sort", typeActionLink + "Auditing")%>">
+			        <%
+			          if (typeSort.equals("Auditing")) {
+			        %>
+				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
+				        	<%=_ctx.appRes("ListView.view.label.auditing")%>
+				        </div>
+				      <%} else { %>
+				        <%=_ctx.appRes("ListView.view.label.auditing")%>
+				      <%} %>
 			      </a>
 			    </div>
 			    
-			    <div class="RightColumn" style="border: none"><%=_ctx.appRes("ListView.view.label.auditing")%></div>
-			    <div class="RightColumn"><%=_ctx.appRes("ListView.view.label.versionable")%></div>
-			    <div class="RightColumn" style="width: 100px;"><%=_ctx.appRes("ListView.view.label.owner")%></div>
-			    <div class="RightColumn" style="width: 125px;"><%=_ctx.appRes("ListView.view.label.dateModified")%></div>
-			    <div class="RightColumn" style="width: 115px;"><%=_ctx.appRes("ListView.view.label.dateCreated")%></div>
-			    <div class="ResizeColumn $nameClass">
-			      <a href="$nameActionLink">
-			        <div class="SortButton ${classSortNameIcon}16x16Icon" style="width: auto; padding-left: 20px;">
-			        	<%=_ctx.appRes("ListView.view.label.name")%>
-			        </div>
+			    <div class="RightColumn">
+			      <a href="<%=uicomponent.event("Sort", typeActionLink + "Versionable")%>">
+			        <%
+			          if (typeSort.equals("Versionable")) {
+			        %>
+				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
+				        	<%=_ctx.appRes("ListView.view.label.versionable")%>
+				        </div>
+				      <%} else { %>
+				        <%=_ctx.appRes("ListView.view.label.versionable")%>
+				      <%} %>
+			      </a>
+			    </div>
+			    
+			    <div class="RightColumn" style="width: 90px;">
+			      <a href="<%=uicomponent.event("Sort", typeActionLink + "Owner")%>">
+			        <%
+			          if (typeSort.equals("Owner")) {
+			        %>
+				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
+				        	<%=_ctx.appRes("ListView.view.label.owner")%>
+				        </div>
+				      <%} else { %>
+				        <%=_ctx.appRes("ListView.view.label.owner")%>
+				      <%} %>
+			      </a>
+			    </div>
+			    
+			    <div class="RightColumn" style="width: 125px;">
+			      <a href="<%=uicomponent.event("Sort", typeActionLink + "ModifiedDate")%>">
+			        <%
+			          if (typeSort.equals("ModifiedDate")) {
+			        %>
+				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
+				        	<%=_ctx.appRes("ListView.view.label.dateModified")%>
+				        </div>
+				      <%} else { %>
+				        <%=_ctx.appRes("ListView.view.label.dateModified")%>
+				      <%} %>
+			      </a>
+			    </div>
+			    
+			    <div class="RightColumn" style="width: 105px;">
+			      <a href="<%=uicomponent.event("Sort", typeActionLink + "CreatedDate")%>">
+			        <%
+			          if (typeSort.equals("CreatedDate")) {
+			        %>
+				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
+				        	<%=_ctx.appRes("ListView.view.label.dateCreated")%>
+				        </div>
+				      <%} else { %>
+				        	<%=_ctx.appRes("ListView.view.label.dateCreated")%>
+				      <%} %>
+			      </a>
+			    </div>
+			    
+			    <div class="ResizeColumn">
+			      <a href="<%=uicomponent.event("Sort", typeActionLink + "Alphabetic")%>">
+			        <%
+			          if (typeSort.equals("Alphabetic")) {
+			        %>
+				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
+				        	<%=_ctx.appRes("ListView.view.label.name")%>
+				        </div>
+				      <%} else { %>
+				        <%=_ctx.appRes("ListView.view.label.name")%>
+				      <%} %>
 			      </a>
 			    </div>
 			    <div style="clear: both"><span></span></div>
@@ -98,15 +151,15 @@
 					  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div>
 	        </div>
 	        <%
-	  	        if(name.length() < 50) subName = name ;
+	  	        if (name.length() < 50) subName = name ;
 			        else subName = name.substring(0,50) + "..." ;
 		        %>
 	        <div class="RightColumn" style="border: none"><!--added CPop Bull SA -->
-	           <%=Utils.isAuditable(data)%>
+	           <%= Utils.isAuditable(data)%>
 	           <% if (Utils.isAuditable(data)&& uicomponent.hasAuditHistory(data)) 
-	               println "("+ uicomponent.getNumAuditHistory(data)+")";
+	                println "("+ uicomponent.getNumAuditHistory(data)+")";
 	              else
-	               println ""; 
+	                println ""; 
 	            %>
 	        </div>
 	        <div class="RightColumn">
@@ -117,15 +170,15 @@
 		            }
 		          %>
 	        </div>
-	        <div class="RightColumn" style="width: 100px">
-		        	<%=uicomponent.getNodeOwner(data)%>
+	        <div class="RightColumn" style="width: 90px">
+		        <%=uicomponent.getNodeOwner(data)%>
 	        </div>
 	        <div class="RightColumn" style="width: 125px">
 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
 	 				</div>
 	       
-	        <div class="RightColumn" style="width: 115px;">
-	        		<%=dateFormat.format(uicomponent.getDateCreated(data))%>
+	        <div class="RightColumn" style="width: 105px;">
+	        	<%=dateFormat.format(uicomponent.getDateCreated(data))%>
 	        </div>
 	        <div class="ResizeColumn">
 							<div class="NodeLabel">

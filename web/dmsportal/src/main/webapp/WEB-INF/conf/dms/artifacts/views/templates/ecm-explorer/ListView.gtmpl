@@ -258,11 +258,11 @@
 			        else subName = name.substring(0,50) + "..." ;
 		        %>
 	        <div class="RightColumn" style="border: none"><!--added CPop Bull SA -->
-	           <%=Utils.isAuditable(data)%>
+	           <%= Utils.isAuditable(data)%>
 	           <% if (Utils.isAuditable(data)&& uicomponent.hasAuditHistory(data)) 
-	               println "("+ uicomponent.getNumAuditHistory(data)+")";
+	                println "("+ uicomponent.getNumAuditHistory(data)+")";
 	              else
-	               println ""; 
+	                println ""; 
 	            %>
 	        </div>
 	        <div class="RightColumn">
@@ -274,14 +274,14 @@
 		          %>
 	        </div>
 	        <div class="RightColumn" style="width: 90px">
-		        	<%=uicomponent.getNodeOwner(data)%>
+		        <%=uicomponent.getNodeOwner(data)%>
 	        </div>
 	        <div class="RightColumn" style="width: 125px">
 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
 	 				</div>
 	       
 	        <div class="RightColumn" style="width: 105px;">
-	        		<%=dateFormat.format(uicomponent.getDateCreated(data))%>
+	        	<%=dateFormat.format(uicomponent.getDateCreated(data))%>
 	        </div>
 	        <div class="ResizeColumn">
 							<div class="NodeLabel">
