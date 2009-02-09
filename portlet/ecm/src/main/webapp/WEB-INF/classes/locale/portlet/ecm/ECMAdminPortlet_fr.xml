@@ -1291,7 +1291,7 @@
   </TemplatePopup>
   <ViewForm>
     <label>
-      <UITemplateContent>Code</UITemplateContent>
+      <UITemplateContent>ViewForm</UITemplateContent>
       <UIPopupWindow>Permission de visualisation</UIPopupWindow>
       <selectVersion>Versions</selectVersion>
       <content>Code</content>

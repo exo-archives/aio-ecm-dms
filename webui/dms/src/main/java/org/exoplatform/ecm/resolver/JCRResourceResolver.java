@@ -28,7 +28,10 @@ import javax.jcr.Session;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
+import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -41,7 +44,7 @@ public class JCRResourceResolver extends ResourceResolver {
   protected String repository ; 
   protected String workspace ;      
   protected String propertyName ;
-
+  
   /**
    * Instantiates a new jCR resource resolver 
    * to load template that stored as a property of node in jcr
@@ -73,10 +76,17 @@ public class JCRResourceResolver extends ResourceResolver {
     RepositoryService repositoryService = 
       (RepositoryService)container.getComponentInstanceOfType(RepositoryService.class) ;
     ManageableRepository manageableRepository = repositoryService.getRepository(repository) ;
+    TemplateService templateService = 
+      (TemplateService) container.getComponentInstanceOfType(TemplateService.class);
     //Use system session to access jcr resource
     SessionProvider provider = SessionProviderFactory.createSystemProvider();
     Session session = provider.getSession(workspace,manageableRepository);
     Node node = (Node)session.getItem(removeScheme(url)) ;
+    String locale = 
+      Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();
+    if(node.isNodeType(TemplateService.EXO_TEMPLATE_RTL)) {
+      return new ByteArrayInputStream(templateService.getTemplateData(node, locale).getBytes()) ;
+    }
     return new ByteArrayInputStream(node.getProperty(propertyName).getString().getBytes()) ;
   }
 

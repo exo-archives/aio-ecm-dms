@@ -16,11 +16,16 @@
  */
 package org.exoplatform.services.cms.templates.impl;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.StringReader;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
@@ -30,6 +35,8 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.services.cache.CacheService;
+import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.cms.templates.ContentTypeFilterPlugin;
@@ -42,6 +49,8 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.resources.LocaleConfigService;
+import org.exoplatform.services.resources.Orientation;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.IdentityRegistry;
 import org.exoplatform.services.security.MembershipEntry;
@@ -53,17 +62,29 @@ import org.picocontainer.Startable;
 public class TemplateServiceImpl implements TemplateService, Startable {
   private RepositoryService    repositoryService_;
   private IdentityRegistry identityRegistry_;
+  private LocaleConfigService localeConfigService_;
   private String               cmsTemplatesBasePath_;
   private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
 
   private Map<String,HashMap<String,List<String>>> foldersFilterMap = new HashMap<String,HashMap<String,List<String>>> ();  
   private Map<String,List<String>> managedDocumentTypesMap = new HashMap<String,List<String>>();
+  
+  /** Immutable and therefore thread safe. */
+  private static final Pattern LT = Pattern.compile("/\\*\\s*orientation=lt\\s*\\*/");
 
+  /** Immutable and therefore thread safe. */
+  private static final Pattern RT = Pattern.compile("/\\*\\s*orientation=rt\\s*\\*/");
+
+  private ExoCache templatesCache_ ;
+  
   public TemplateServiceImpl(RepositoryService jcrService,
-      NodeHierarchyCreator nodeHierarchyCreator, IdentityRegistry identityRegistry) throws Exception {
+      NodeHierarchyCreator nodeHierarchyCreator, IdentityRegistry identityRegistry,
+      LocaleConfigService localeConfigService, CacheService caService) throws Exception {
     identityRegistry_ = identityRegistry;
     repositoryService_ = jcrService;
+    localeConfigService_ = localeConfigService;
     cmsTemplatesBasePath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_TEMPLATES_PATH);
+    templatesCache_ = caService.getCacheInstance(org.exoplatform.groovyscript.text.TemplateService.class.getName()) ;
   }
 
   public void start() {
@@ -198,6 +219,24 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       return getTemplatePathByUser(isDialog, templateType, userId, repository);
     throw new Exception("The content type: " + templateType + " doesn't be supported by any template");
   }
+  
+  public String getTemplatePathByLocale(Node node, boolean isDialog, String locale, 
+      String repository) throws Exception {
+    String templatePath = getTemplatePath(node, isDialog);
+    Session session = getSession(repository);
+    Node templateNode = (Node) session.getItem(templatePath);
+    if(!templateNode.isNodeType(EXO_TEMPLATE_RTL) && templateNode.canAddMixin(EXO_TEMPLATE_RTL)) {
+      templateNode.addMixin(EXO_TEMPLATE_RTL);
+      templateNode.save();
+      templateNode.setProperty(EXO_TEMPLATE_DATA, 
+          templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString());
+      setTemplateData(locale, templateNode, LT, EXO_TEMPLATE_RT_DATA);
+      setTemplateData(locale, templateNode, RT, EXO_TEMPLATE_LT_DATA);
+      templateNode.save();
+      session.logout();
+    }
+    return templatePath;
+  }
 
   public NodeIterator getAllTemplatesOfNodeType(boolean isDialog, String nodeTypeName,
       String repository, SessionProvider provider) throws Exception {
@@ -272,7 +311,13 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       String repository) throws Exception {
     Session session = getSession(repository);
     Node templateNode = getTemplateNode(session, isDialog, nodeTypeName, templateName, repository);
-    String template = templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
+    String template = "";
+    if(templateNode.isNodeType(EXO_TEMPLATE_RTL) && 
+        templateNode.getProperty(EXO_TEMPLATE_DATA).getString().length() > 0) {
+      template = templateNode.getProperty(EXO_TEMPLATE_DATA).getString();
+    } else {
+      template = templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
+    }
     session.logout();
     return template;
   }
@@ -292,16 +337,6 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return roles.toString();
   }
 
-  @SuppressWarnings("unused")
-  private Node getTemplateNode(Session session, boolean isDialog, String nodeTypeName,
-      String templateName, String repository) throws Exception {
-    String type = DIALOGS;
-    if (!isDialog)
-      type = VIEWS;
-    Node homeNode = (Node) session.getItem(cmsTemplatesBasePath_);
-    Node nodeTypeNode = homeNode.getNode(nodeTypeName);
-    return nodeTypeNode.getNode(type).getNode(templateName);
-  }
 
   public void removeTemplate(boolean isDialog, String nodeTypeName, String templateName,
       String repository) throws Exception {
@@ -338,6 +373,107 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       String repository) throws Exception {
     Session session = getSession(repository);
     Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node contentNode = getContentNode(isDialog, templatesHome, nodeTypeName, label, 
+        isDocumentTemplate, templateName);
+    contentNode.setProperty(EXO_ROLES_PROP, roles);
+    contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
+    templatesHome.save();
+    session.save();
+    session.logout();
+    //Update managedDocumentTypesMap
+    updateDocumentsTemplate(isDocumentTemplate, repository, nodeTypeName);
+    return contentNode.getPath();
+  }
+  
+  public String addTemplateWithLocale(boolean isDialog, String nodeTypeName, String label,
+      boolean isDocumentTemplate, String templateName, String[] roles, String templateFile,
+      String repository, String locale) throws Exception {
+    Session session = getSession(repository);
+    Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node contentNode = getContentNode(isDialog, templatesHome, nodeTypeName, label, 
+        isDocumentTemplate, templateName);
+    contentNode.setProperty(EXO_ROLES_PROP, roles);
+    contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
+    if(!contentNode.isNodeType(EXO_TEMPLATE_RTL) && contentNode.canAddMixin(EXO_TEMPLATE_RTL)) {
+      contentNode.addMixin(EXO_TEMPLATE_RTL);
+      contentNode.save();
+    } else {
+      contentNode.setProperty(EXO_TEMPLATE_DATA, templateFile);
+    }
+    contentNode.setProperty(EXO_TEMPLATE_DATA, templateFile);
+    setTemplateData(locale, contentNode, LT, EXO_TEMPLATE_RT_DATA);
+    setTemplateData(locale, contentNode, RT, EXO_TEMPLATE_LT_DATA);
+    contentNode.save();
+    templatesHome.save();
+    session.save();
+    session.logout();
+    //Update managedDocumentTypesMap
+    updateDocumentsTemplate(isDocumentTemplate, repository, nodeTypeName);
+    return contentNode.getPath();
+  }
+
+  public List<String> getDocumentTemplates(String repository) throws Exception {    
+    List<String> templates = managedDocumentTypesMap.get(repository);
+    if(templates != null) 
+      return templates;
+    templates = getAllDocumentNodeTypes(repository);
+    managedDocumentTypesMap.put(repository,templates);
+    return templates;    
+  }
+
+  public String getTemplatePathByAnonymous(boolean isDialog, String nodeTypeName, String repository) throws Exception {
+    Session session = getSession(repository);
+    String type = DIALOGS;
+    if (!isDialog)
+      type = VIEWS;
+    Node homeNode = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node nodeTypeNode = homeNode.getNode(nodeTypeName);
+    NodeIterator templateIter = nodeTypeNode.getNode(type).getNodes();
+    while (templateIter.hasNext()) {
+      Node node = templateIter.nextNode();
+      Value[] roles = node.getProperty(EXO_ROLES_PROP).getValues();
+      if(hasPublicTemplate(roles)) {
+        String templatePath = node.getPath() ;
+        session.logout();
+        return templatePath ;
+      }
+    }
+    session.logout();
+    return null;
+  }
+  
+  public String getTemplateData(Node templateNode, String locale) throws Exception {
+    Orientation orientation = getOrientation(locale);
+    if(orientation.isLT()) {
+      return templateNode.getProperty(EXO_TEMPLATE_LT_DATA).getString();
+    } else if(orientation.isRT()) {
+      return templateNode.getProperty(EXO_TEMPLATE_RT_DATA).getString();
+    }
+    return templateNode.getProperty(EXO_TEMPLATE_DATA).getString();
+  }
+  
+  public void removeCacheTemplate(String templatePath, String resourceId, String repository) throws Exception {
+    Session session = getSession(repository);
+    Node templateNode = (Node)session.getItem(templatePath);
+    if(templateNode.isNodeType(EXO_TEMPLATE_RTL)) {
+      templatesCache_.remove(resourceId);
+    }
+    session.logout();
+  }
+  
+  @SuppressWarnings("unused")
+  private Node getTemplateNode(Session session, boolean isDialog, String nodeTypeName,
+      String templateName, String repository) throws Exception {
+    String type = DIALOGS;
+    if (!isDialog)
+      type = VIEWS;
+    Node homeNode = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node nodeTypeNode = homeNode.getNode(nodeTypeName);
+    return nodeTypeNode.getNode(type).getNode(templateName);
+  }
+
+  private Node getContentNode(boolean isDialog, Node templatesHome, String nodeTypeName, 
+      String label, boolean isDocumentTemplate, String templateName) throws Exception {
     Node nodeTypeHome = null;
     if (!templatesHome.hasNode(nodeTypeName)) {
       nodeTypeHome = Utils.makePath(templatesHome, nodeTypeName, NT_UNSTRUCTURED);
@@ -370,58 +506,50 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     } else {
       contentNode = specifiedTemplatesHome.addNode(templateName, EXO_TEMPLATE);
     }
-    contentNode.setProperty(EXO_ROLES_PROP, roles);
-    contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
-
-    templatesHome.save();
-    session.save();
-    session.logout();
-    //Update managedDocumentTypesMap
+    return contentNode;
+  }
+  
+  private void updateDocumentsTemplate(boolean isDocumentTemplate, String repository, 
+      String nodeTypeName) {
     if(isDocumentTemplate) {
       List<String> documentList = managedDocumentTypesMap.get(repository);
       if(documentList == null) {
         documentList = new ArrayList<String>();
         documentList.add(nodeTypeName);
         managedDocumentTypesMap.put(repository,documentList);
-      }else {
+      } else {
         if(!documentList.contains(nodeTypeName)) {
           documentList.add(nodeTypeName);
           managedDocumentTypesMap.put(repository,documentList);
         } 
       }
-    }
-    return contentNode.getPath();
+    }    
   }
-
-  public List<String> getDocumentTemplates(String repository) throws Exception {    
-    List<String> templates = managedDocumentTypesMap.get(repository);
-    if(templates != null) 
-      return templates;
-    templates = getAllDocumentNodeTypes(repository);
-    managedDocumentTypesMap.put(repository,templates);
-    return templates;    
-  }
-
-  public String getTemplatePathByAnonymous(boolean isDialog, String nodeTypeName, String repository) throws Exception {
-    Session session = getSession(repository);
-    String type = DIALOGS;
-    if (!isDialog)
-      type = VIEWS;
-    Node homeNode = (Node) session.getItem(cmsTemplatesBasePath_);
-    Node nodeTypeNode = homeNode.getNode(nodeTypeName);
-    NodeIterator templateIter = nodeTypeNode.getNode(type).getNodes();
-    while (templateIter.hasNext()) {
-      Node node = templateIter.nextNode();
-      Value[] roles = node.getProperty(EXO_ROLES_PROP).getValues();
-      if(hasPublicTemplate(roles)) {
-        String templatePath = node.getPath() ;
-        session.logout();
-        return templatePath ;
-      }
+  
+  private void setTemplateData(String locale, Node templateNode, Pattern pattern, 
+      String propertyName) throws Exception {
+    String templateData = templateNode.getProperty(EXO_TEMPLATE_DATA).getString();
+    if(locale != null) {
+      String str = "";
+      BufferedReader reader = new BufferedReader(new StringReader(templateData));
+      StringBuilder ltsb = new StringBuilder();
+      try {
+        while ((str = reader.readLine()) != null) {
+          if (str.length() > 0) {
+            Matcher matcher = pattern.matcher(str);
+            if(matcher.find()) {
+              continue;
+            }
+            ltsb.append(str).append('\n');
+          }
+        }
+        templateNode.setProperty(propertyName, ltsb.toString());
+        templateNode.save();
+      } catch(IOException e) {
+        e.printStackTrace();
+      } 
     }
-    session.logout();
-    return null;
-  }  
+  }
 
   private Session getSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
@@ -473,5 +601,9 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       if("*".equalsIgnoreCase(role)) return true ;
     }
     return false ;
+  }
+  
+  private Orientation getOrientation(String locale) throws Exception {
+    return localeConfigService_.getLocaleConfig(locale).getOrientation();
   }
 }

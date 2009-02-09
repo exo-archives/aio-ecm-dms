@@ -105,7 +105,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   final private static String CONTENT_PAGE_ITERATOR_ID = "ContentPageIterator".intern();
   private String typeSort_ = Preference.SORT_BY_NODETYPE;
   private String sortOrder_ = Preference.BLUE_DOWN_ARROW;
-  private Node currentNode_ ;    
+  private Node currentNode_ ;
 
   private UIPageIterator pageIterator_ ;  
 
@@ -117,21 +117,25 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 
   public String getTemplate() {    
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    String localeName = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();
     if(uiExplorer.getPreference().isJcrEnable()) 
       return uiExplorer.getDocumentInfoTemplate();
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     try {
-      Node node = uiExplorer.getCurrentNode();                   
-      String template = templateService.getTemplatePath(node,false) ;
+      Node node = uiExplorer.getCurrentNode();
+      String template = templateService.getTemplatePathByLocale(node,false, localeName, 
+          uiExplorer.getRepositoryName()) ;
+      templateService.removeCacheTemplate(template, 
+          uiExplorer.getJCRTemplateResourceResolver().createResourceId(template), uiExplorer.getRepositoryName());
       if(template != null) return template ;
     } catch(AccessDeniedException ace) {
       try {
         uiExplorer.setSelectNode(uiExplorer.getRootNode()) ;
         Object[] args = { uiExplorer.getCurrentNode().getName() } ;
         throw new MessageException(new ApplicationMessage("UIDocumentInfo.msg.access-denied", args, ApplicationMessage.WARNING)) ;
-      } catch(Exception exc) {        
+      } catch(Exception exc) {
       }
-    } catch(Exception e) {      
+    } catch(Exception e) {    
     }
     return uiExplorer.getDocumentInfoTemplate(); 
   }

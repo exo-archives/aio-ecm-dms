@@ -101,7 +101,8 @@
 		}
 		
 		.UIArticle  .FieldIcon {
-	    float: left; 
+	    float: left; /* orientation=lt */
+	    float: right; /* orientation=rt */
 	    margin-right: 5px;
 	    width: 16px; height: 16px;
 		}
@@ -170,7 +171,8 @@
 		}
 		
 		.UIArticle .ContentLinks {
-		  float: left;
+		  float: left; /* orientation=lt */
+		  float: right; /* orientation=rt */
 		  width: 75px;
 		}
 		
@@ -194,7 +196,8 @@
 		}
 		
 		.UIArticle .ArticleTCDecorator .Language {
-	    text-align: left;
+	    text-align: left; /* orientation=lt */
+	    text-align: right; /* orientation=rt */
 	    color: #7d7d7d;
 	    padding: 12px 0px 0px 10px;
 	    font-weight: bold;

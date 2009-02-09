@@ -30,6 +30,8 @@ import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -238,6 +240,8 @@ public class UITemplateContent extends UIForm implements UISelectable {
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       String workspaceName = 
         uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceWorkspace();
+      String localeName = 
+        Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
       if(name == null || name.trim().length() == 0) {
         Object[] args = { FIELD_NAME } ;
@@ -287,8 +291,8 @@ public class UITemplateContent extends UIForm implements UISelectable {
         uiForm.getUIFormCheckBoxInput(FIELD_ENABLE_VERSION).isChecked() ;
       String path = null ;
       if(uiForm.isAddNew_ || !isEnableVersioning){
-        path = templateService.addTemplate(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
-            new String[] {role},  content, repository) ;
+        path = templateService.addTemplateWithLocale(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
+            new String[] {role},  content, repository, localeName) ;
       } else {
         Node node = 
           templateService.getTemplateNode(uiForm.isDialog_, uiForm.nodeTypeName_, name, 
@@ -299,8 +303,8 @@ public class UITemplateContent extends UIForm implements UISelectable {
         } else {
           node.checkout() ;            
         }
-        path = templateService.addTemplate(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
-            new String[] {role},  content, repository) ;
+        path = templateService.addTemplateWithLocale(uiForm.isDialog_, uiForm.nodeTypeName_, null, false, name, 
+            new String[] {role},  content, repository, localeName) ;
         node.save() ;
         node.checkin() ;
       }

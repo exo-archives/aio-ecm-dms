@@ -47,6 +47,13 @@ public interface TemplateService {
   static final public String DOCUMENT_TEMPLATE_PROP = "isDocumentTemplate".intern() ;  
   static final public String TEMPLATE_LABEL = "label".intern() ;
   
+  final static public String EXO_TEMPLATE_RTL = "exo:templateRTL";
+  final static public String EXO_TEMPLATE_DATA = "exo:templateData";
+  final static public String EXO_TEMPLATE_LT_DATA = "exo:templateLTData";
+  final static public String EXO_TEMPLATE_RT_DATA = "exo:templateRTData";
+  final static public String EXO_TEMPLATE_TL_DATA = "exo:templateTLData";
+  final static public String EXO_TEMPLATE_TR_DATA = "exo:templateTRData";
+  
   /**
    * Return path of default template by giving the following params
    * @param isDialog        boolean
@@ -77,6 +84,21 @@ public interface TemplateService {
    * @throws Exception
    */
   public String getTemplatePath(Node node, boolean isDialog) throws Exception ;
+  
+  /**
+   * Return path template of the specified node with locale name
+   * @param node            Node
+   *                        The specified node
+   * @param isDialog        boolean
+   *                        The boolean value which specify the type of template
+   * @param locale          String
+   *                        The locale name
+   * @param repository      String
+   *                        The repository name                       
+   * @see                   Node                       
+   * @throws Exception
+   */
+  public String getTemplatePathByLocale(Node node, boolean isDialog, String locale, String repository) throws Exception;
   
   /**
    * Return the path public template
@@ -162,6 +184,33 @@ public interface TemplateService {
    */
   public String addTemplate(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, String templateName, 
       String[] roles, String templateFile, String repository) throws Exception;
+
+  /**
+   * Insert a new template into NodeType by giving the following params
+   * @param isDialog            boolean
+   *                            The boolean value which specify the type of template
+   * @param nodeTypeName        String
+   *                            The specify name of NodType
+   * @param label               String
+   *                            The label of the specified template
+   * @param isDocumentTemplate  boolean
+   *                            The boolean value which yes or no is DocumentTemplate
+   * @param templateName        String
+   *                            The name of template
+   * @param roles               String[]
+   *                            The roles of template
+   * @param templateFile        String
+   *                            The file of template
+   * @param repository          String
+   *                            The name of repository
+   * @param locale              String
+   *                            The locale name
+   * @see                       Session
+   * @see                       Node                            
+   * @throws Exception
+   */
+  public String addTemplateWithLocale(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, String templateName, 
+      String[] roles, String templateFile, String repository, String locale) throws Exception;
   
   /**
    * Insert a template of NodeType by giving the following params
@@ -292,4 +341,18 @@ public interface TemplateService {
    * @throws Exception
    */
   public void init(String repository) throws Exception ;
+
+  public String getTemplateData(Node templateNode, String locale) throws Exception; 
+  
+  /**
+   * Remove cache of RTL template
+   * @param templatePath String 
+   *                     jcr path of template
+   * @param resourceId   String
+   *                     Resource Id
+   * @param repository   String
+   *                     Repository name
+   * @throws Exception
+   */
+  public void removeCacheTemplate(String templatePath, String resourceId, String repository) throws Exception;
 }

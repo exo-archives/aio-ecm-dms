@@ -1293,7 +1293,7 @@
   </TemplatePopup>
   <ViewForm>
     <label>
-      <UITemplateContent>Template Content</UITemplateContent>
+      <UITemplateContent>ViewForm</UITemplateContent>
       <UIPopupWindow>View Permission</UIPopupWindow>
       <selectVersion>Versions</selectVersion>
       <content>Content</content>
