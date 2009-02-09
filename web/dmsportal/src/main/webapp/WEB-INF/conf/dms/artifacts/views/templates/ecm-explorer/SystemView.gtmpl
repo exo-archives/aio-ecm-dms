@@ -8,16 +8,16 @@
    */
 %>
 <%
-  import org.exoplatform.ecm.webui.utils.Utils ;
-  import org.exoplatform.web.application.Parameter ;
-  import org.exoplatform.webui.core.UIRightClickPopupMenu ;
+  import org.exoplatform.ecm.webui.utils.Utils;
+  import org.exoplatform.web.application.Parameter;
+  import org.exoplatform.webui.core.UIRightClickPopupMenu;
   
-  UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
+  UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu();
   String componentId = uicomponent.getId();
-  java.text.DateFormat dateFormat = new java.text.SimpleDateFormat("MM/dd/yyyy HH:mm"); 
+  java.text.DateFormat dateFormat = uicomponent.getSimpleDateFormat();
   
   def viewComponentId  = new Date().getTime();
-  def rcontext = _ctx.getRequestContext() ;
+  def rcontext = _ctx.getRequestContext();
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIListView','/ecm/javascript/'); 
   rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UIListView.initAllEvent('${componentId}-$viewComponentId');}");
 %>
@@ -135,24 +135,24 @@
 				</div>
 	      <%
 	      	String serverUrl = uicomponent.getWebDAVServerPrefix();
-	      	String portalName = uicomponent.getPortalName() ;
+	      	String portalName = uicomponent.getPortalName();
 	      	String repository = uicomponent.getRepository();
 	        for(data in uicomponent.getChildrenList()) {
-	          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
-	          def preferenceWS = data.getSession().getWorkspace().getName() ;
-	          String nodePath = data.getPath() ;
-	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;   
-	          String subName ;
-	          //nodePath = nodePath + "&workspaceName=" + preferenceWS ;
-	          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
+	          def isPreferenceNode = uicomponent.isPreferenceNode(data);
+	          def preferenceWS = data.getSession().getWorkspace().getName();
+	          String nodePath = data.getPath();
+	          String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length());   
+	          String subName;
+	          //nodePath = nodePath + "&workspaceName=" + preferenceWS;
+	          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS));
 	      %>
 	      <div class="RowView Normal" ondblclick="$actionLink">
 	        <div class="LeftColumn" style="float: left; width: 30px; height: 19px; padding: 2px 0px; 	border-right: none;">
 					  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div>
 	        </div>
 	        <%
-	  	        if (name.length() < 50) subName = name ;
-			        else subName = name.substring(0,50) + "..." ;
+	  	        if (name.length() < 50) subName = name;
+			        else subName = name.substring(0,50) + "...";
 		        %>
 	        <div class="RightColumn" style="border: none"><!--added CPop Bull SA -->
 	           <%= Utils.isAuditable(data)%>
@@ -166,7 +166,7 @@
 		         	<%=Utils.isVersionable(data)%>
 		          <%
 		            if(Utils.isVersionable(data) && !uicomponent.getVersionName(data).equals("jcr:rootVersion")) {
-		              println "(" + uicomponent.getVersionName(data) + ")" ;
+		              println "(" + uicomponent.getVersionName(data) + ")";
 		            }
 		          %>
 	        </div>
