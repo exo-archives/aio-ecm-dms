@@ -66,6 +66,10 @@
         <read-only>false</read-only>
       </preference> 
       <preference>
+        <name>usecase</name>
+        <value>selection</value>  
+      </preference>
+      <preference>
         <name>isDirectlyDrive</name>     
         <value>false</value>        
         <read-only>false</read-only>

@@ -2144,6 +2144,7 @@
       <categoryMandatoryWhenFileUpload>Category Mandatory</categoryMandatoryWhenFileUpload>
       <isDirectlyDrive>Directly Drive</isDirectlyDrive>
       <driveName>Drive Name</driveName>
+      <usecase>Select Type</usecase>
     </label>
   </UIJcrExplorerEditForm>
 </bundle>

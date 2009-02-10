@@ -2120,21 +2120,22 @@
   Access directly a JCR FE drive
   -->
   <UIJCRExporerPortlet>
-    <nopermission>There has no drive or you don't have permission to access this drive</nopermission>
+    <nopermission>Không có drive này hoặc bạn không có quyền để truy cập</nopermission>
   </UIJCRExporerPortlet>
   
   <UIJcrExplorerEditForm>
-    <title>File Explorer Edit Form</title>
+    <title>Sửa form File Explorer</title>
     <action>
-      <Edit>Edit</Edit>
-      <Save>Save</Save>
-      <Cancel>Cancel</Cancel>
+      <Edit>Sửa</Edit>
+      <Save>Lưu</Save>
+      <Cancel>Hủy bỏ</Cancel>
     </action>
     <label>
-      <repository>Repository</repository>
-      <categoryMandatoryWhenFileUpload>Category Mandatory</categoryMandatoryWhenFileUpload>
-      <isDirectlyDrive>Directly Drive</isDirectlyDrive>
-      <driveName>Drive Name</driveName>
+      <repository>Kho dữ liệu</repository>
+      <categoryMandatoryWhenFileUpload>Bắt buộc chọn danh mục</categoryMandatoryWhenFileUpload>
+      <isDirectlyDrive>Truy cập trực tiếp</isDirectlyDrive>
+      <driveName>Tên drive</driveName>
+      <usecase>Loại</usecase>
     </label>
   </UIJcrExplorerEditForm>
 </bundle>

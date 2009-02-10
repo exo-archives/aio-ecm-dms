@@ -68,7 +68,6 @@ public class UIJcrExplorerContainer extends UIContainer {
   private boolean flag = false;
   
   public UIJcrExplorerContainer() throws Exception {
-    init();
   }
   
   public boolean isFlag() {
@@ -83,8 +82,8 @@ public class UIJcrExplorerContainer extends UIContainer {
     PortletPreferences portletPref = getPreference();
     String isDirectlyDrive =  portletPref.getValue("isDirectlyDrive", "").trim();
     if (isDirectlyDrive.equals("true")) {
-      addChild(UIJCRExplorer.class, null, null);
-      addChild(UIDrivesBrowserContainer.class, null, null).setRendered(false);
+      if (getChild(UIJCRExplorer.class) == null) addChild(UIJCRExplorer.class, null, null);
+      if (getChild(UIDrivesBrowserContainer.class) == null) addChild(UIDrivesBrowserContainer.class, null, null).setRendered(false);
       String driveName = portletPref.getValue("driveName", "").trim();
       List<DriveData> listDriver = getDrives(portletPref);
       for (DriveData driveData : listDriver) {
@@ -98,14 +97,9 @@ public class UIJcrExplorerContainer extends UIContainer {
       }
     } else {
       flag = true;
-      addChild(UIDrivesBrowserContainer.class, null, null);
-      addChild(UIJCRExplorer.class, null, null).setRendered(false);    
+      if (getChild(UIDrivesBrowserContainer.class) == null) addChild(UIDrivesBrowserContainer.class, null, null);
+      if (getChild(UIJCRExplorer.class) == null) addChild(UIJCRExplorer.class, null, null).setRendered(false);    
     }
-  }
-  
-  public void resert() {
-    if (getChild(UIDrivesBrowserContainer.class) != null) removeChild(UIDrivesBrowserContainer.class);
-    if (getChild(UIJCRExplorer.class) != null) removeChild(UIJCRExplorer.class);
   }
   
   private PortletPreferences getPreference() {
@@ -113,7 +107,7 @@ public class UIJcrExplorerContainer extends UIContainer {
     return pcontext.getRequest().getPreferences();
   }
   
-  private List<DriveData> getDrives(PortletPreferences portletPref) throws Exception {
+  public List<DriveData> getDrives(PortletPreferences portletPref) throws Exception {
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class);      
     List<DriveData> driveList = new ArrayList<DriveData>();    
     List<String> userRoles = Utils.getMemberships();    
@@ -165,7 +159,7 @@ public class UIJcrExplorerContainer extends UIContainer {
     return driveList; 
   }
 
-  private void initExplorer(String driveName, PortletPreferences portletPref) throws Exception {
+  public void initExplorer(String driveName, PortletPreferences portletPref) throws Exception {
     try {
       WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
       RepositoryService rservice = getApplicationComponent(RepositoryService.class);
