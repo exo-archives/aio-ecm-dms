@@ -112,8 +112,8 @@
 			      <%}%>
 			    </div>
 			    
-			    <div class="RightColumn" style="border: none">
-			      <a href="<%=uicomponent.event("Sort", typeActionLink + "Auditing")%>">
+		      <a href="<%=uicomponent.event("Sort", typeActionLink + "Auditing")%>">
+				    <div class="RightColumn" style="border: none">
 			        <%
 			          if (typeSort.equals("Auditing")) {
 			        %>
@@ -123,11 +123,11 @@
 				      <%} else { %>
 				        <%=_ctx.appRes("ListView.view.label.auditing")%>
 				      <%} %>
-			      </a>
-			    </div>
+				    </div>
+		      </a>
 			    
-			    <div class="RightColumn">
-			      <a href="<%=uicomponent.event("Sort", typeActionLink + "Versionable")%>">
+		      <a href="<%=uicomponent.event("Sort", typeActionLink + "Versionable")%>">
+				    <div class="RightColumn">
 			        <%
 			          if (typeSort.equals("Versionable")) {
 			        %>
@@ -137,11 +137,11 @@
 				      <%} else { %>
 				        <%=_ctx.appRes("ListView.view.label.versionable")%>
 				      <%} %>
-			      </a>
-			    </div>
+				    </div>
+		      </a>
 			    
-			    <div class="RightColumn" style="width: 90px;">
-			      <a href="<%=uicomponent.event("Sort", typeActionLink + "Owner")%>">
+		      <a href="<%=uicomponent.event("Sort", typeActionLink + "Owner")%>">
+				    <div class="RightColumn" style="width: 90px;">
 			        <%
 			          if (typeSort.equals("Owner")) {
 			        %>
@@ -151,11 +151,11 @@
 				      <%} else { %>
 				        <%=_ctx.appRes("ListView.view.label.owner")%>
 				      <%} %>
-			      </a>
-			    </div>
+				    </div>
+		      </a>
 			    
-			    <div class="RightColumn" style="width: 125px;">
-			      <a href="<%=uicomponent.event("Sort", typeActionLink + "ModifiedDate")%>">
+		      <a href="<%=uicomponent.event("Sort", typeActionLink + "ModifiedDate")%>">
+				    <div class="RightColumn" style="width: 125px;">
 			        <%
 			          if (typeSort.equals("ModifiedDate")) {
 			        %>
@@ -165,11 +165,11 @@
 				      <%} else { %>
 				        <%=_ctx.appRes("ListView.view.label.dateModified")%>
 				      <%} %>
-			      </a>
-			    </div>
+				    </div>
+		      </a>
 			    
-			    <div class="RightColumn" style="width: 105px;">
-			      <a href="<%=uicomponent.event("Sort", typeActionLink + "CreatedDate")%>">
+		      <a href="<%=uicomponent.event("Sort", typeActionLink + "CreatedDate")%>">
+				    <div class="RightColumn" style="width: 105px;">
 			        <%
 			          if (typeSort.equals("CreatedDate")) {
 			        %>
@@ -179,11 +179,11 @@
 				      <%} else { %>
 				        	<%=_ctx.appRes("ListView.view.label.dateCreated")%>
 				      <%} %>
-			      </a>
-			    </div>
+				    </div>
+		      </a>
 			    
-			    <div class="ResizeColumn">
-			      <a href="<%=uicomponent.event("Sort", typeActionLink + "Alphabetic")%>">
+		      <a href="<%=uicomponent.event("Sort", typeActionLink + "Alphabetic")%>">
+				    <div class="ResizeColumn">
 			        <%
 			          if (typeSort.equals("Alphabetic")) {
 			        %>
@@ -193,8 +193,8 @@
 				      <%} else { %>
 				        <%=_ctx.appRes("ListView.view.label.name")%>
 				      <%} %>
-			      </a>
-			    </div>
+				    </div>
+		      </a>
 			    <div style="clear: both"><span></span></div>
 				</div>
 	      <%
