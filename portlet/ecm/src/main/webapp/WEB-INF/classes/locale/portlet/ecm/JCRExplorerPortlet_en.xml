@@ -2112,7 +2112,7 @@
   Access directly a JCR FE drive
   -->
   <UIJCRExporerPortlet>
-    <nopermission>There has no drive or you don't have permission to access this drive</nopermission>
+    <nopermission>There is no drive or you don't have permission to access this drive</nopermission>
   </UIJCRExporerPortlet>
   
   <UIJcrExplorerEditForm>
@@ -2124,7 +2124,7 @@
     </action>
     <label>
       <repository>Repository</repository>
-      <categoryMandatoryWhenFileUpload>Category Mandatory</categoryMandatoryWhenFileUpload>
+      <categoryMandatoryWhenFileUpload>Specify a category when uploading a file</categoryMandatoryWhenFileUpload>
       <isDirectlyDrive>Directly Drive</isDirectlyDrive>
       <driveName>Drive Name</driveName>
       <usecase>Select Type</usecase>

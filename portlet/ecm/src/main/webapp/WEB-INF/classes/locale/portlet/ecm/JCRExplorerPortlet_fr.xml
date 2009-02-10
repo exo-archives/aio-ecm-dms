@@ -2103,24 +2103,24 @@
   -->
   <UIWorkflowPublicationActionForm>
     <label>
-      <fieldValidator>fieldValidator</fieldValidator>
-      <fieldDestPath>fieldDestPath</fieldDestPath>
-      <fieldBackup>fieldBackup</fieldBackup>
+      <fieldValidator>Validateur</fieldValidator>
+      <fieldDestPath>Chemin de destination</fieldDestPath>
+      <fieldBackup>Chemin d'archivage</fieldBackup>
     </label>
   </UIWorkflowPublicationActionForm>
   <workflow_validator>
     <title>
-      <AddPermission>Add Permission</AddPermission>
+      <AddPermission>Ajouter une permission</AddPermission>
     </title>
   </workflow_validator>
   <workflow_destpath>
     <title>
-      <AddDestPath>Add Path</AddDestPath>
+      <AddDestPath>Ajouter un chemin</AddDestPath>
     </title>
   </workflow_destpath>
   <PublicationService>
     <WorkflowPublicationPlugin>
-      <nodeValidationRequest>The node has been validation requested</nodeValidationRequest>
+      <nodeValidationRequest>Ce noeud a été soumis à une validation</nodeValidationRequest>
     </WorkflowPublicationPlugin>
   </PublicationService>
   
@@ -2129,22 +2129,22 @@
   Access directly a JCR FE drive
   -->
   <UIJCRExporerPortlet>
-    <nopermission>There has no drive or you don't have permission to access this drive</nopermission>
+    <nopermission>Impossible d'accéder au lecteur. Peut-être a-t-il été supprimé ou vous n'avez pas les permissions suffisantes.</nopermission>
   </UIJCRExporerPortlet>
   
   <UIJcrExplorerEditForm>
-    <title>File Explorer Edit Form</title>
+    <title>Panneau de personnalisation de l'explorateur de fichiers</title>
     <action>
-      <Edit>Edit</Edit>
-      <Save>Save</Save>
-      <Cancel>Cancel</Cancel>
+      <Edit>Editer</Edit>
+      <Save>Sauver</Save>
+      <Cancel>Annuler</Cancel>
     </action>
     <label>
-      <repository>Repository</repository>
-      <categoryMandatoryWhenFileUpload>Category Mandatory</categoryMandatoryWhenFileUpload>
-      <isDirectlyDrive>Directly Drive</isDirectlyDrive>
-      <driveName>Drive Name</driveName>
-      <usecase>Select Type</usecase>
+      <repository>Dépôt de données</repository>
+      <categoryMandatoryWhenFileUpload>Nécessité de spécifier une catégorie quand un fichier est uploadé dans la base</categoryMandatoryWhenFileUpload>
+      <isDirectlyDrive>Accès direct aux lecteurs</isDirectlyDrive>
+      <driveName>Nom du lecteur</driveName>
+      <usecase>Type d'accès</usecase>
     </label>
   </UIJcrExplorerEditForm>
 </bundle>

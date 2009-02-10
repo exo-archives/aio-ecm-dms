@@ -2132,9 +2132,9 @@
     </action>
     <label>
       <repository>Kho dữ liệu</repository>
-      <categoryMandatoryWhenFileUpload>Bắt buộc chọn danh mục</categoryMandatoryWhenFileUpload>
+      <categoryMandatoryWhenFileUpload>Bắt buộc chọn danh mục khi tải lên</categoryMandatoryWhenFileUpload>
       <isDirectlyDrive>Truy cập trực tiếp</isDirectlyDrive>
-      <driveName>Tên drive</driveName>
+      <driveName>Tên ổ đĩa</driveName>
       <usecase>Loại</usecase>
     </label>
   </UIJcrExplorerEditForm>

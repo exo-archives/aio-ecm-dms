@@ -437,5 +437,23 @@
       <Invalid-char5>Gần kí tự '~' không được phép có khoảng trống</Invalid-char5>
     </msg>
   </SearchValidator>
+  
+  <!--
+  ######################################################################################
+  # Since ECM 2.3
+  ######################################################################################
+  -->
+  <UIPathConfig>
+    <label>
+      <searchEnable>Cho phép chọn vị trí tìm kiếm</searchEnable>
+      <searchLocation>Vị trí tìm kiếm</searchLocation>
+      <searchPath>UIPathConfig</searchPath>
+      <explain></explain>
+    </label>
+    <msg>
+      <enter-search-location>Bạn phải chỉ ra vị trí tìm kiếm</enter-search-location>
+      <explain>Khi các tài liệu được hiển thị tương ứng với với cấp bậc các danh mục. Đường dẫn nơi chứa các tài liệu cần phải được chỉ rõ, có như vậy thì những tài liệu mới có thể được tìm thấy dựa vào chức năng tìm kiếm ở trong portlet này.</explain> 
+    </msg>
+  </UIPathConfig>
 </bundle>
 
