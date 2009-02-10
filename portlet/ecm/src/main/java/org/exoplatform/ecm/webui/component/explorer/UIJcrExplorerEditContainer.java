@@ -34,6 +34,6 @@ public class UIJcrExplorerEditContainer extends UIContainer {
   
   public UIJcrExplorerEditContainer() throws Exception {
     UIJcrExplorerEditForm uiJcrExEditForm = addChild(UIJcrExplorerEditForm.class, null, null);
-    uiJcrExEditForm.setEditable(false);
+//    uiJcrExEditForm.setEditable(false);
   }
 }

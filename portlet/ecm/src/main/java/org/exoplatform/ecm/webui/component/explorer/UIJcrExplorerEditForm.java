@@ -60,10 +60,12 @@ public class UIJcrExplorerEditForm extends UIForm {
     UIFormSelectBox repository = new UIFormSelectBox(UIJCRExplorerPortlet.REPOSITORY, UIJCRExplorerPortlet.REPOSITORY, getRepoOption());
     String repositoryValue = getPreference().getValue(UIJCRExplorerPortlet.REPOSITORY, "");
     repository.setDefaultValue(repositoryValue);
+    repository.setEnable(false);
     addChild(repository);
     
     UIFormCheckBoxInput<Boolean> checkBoxCategory = new UIFormCheckBoxInput<Boolean>(UIJCRExplorerPortlet.CATEGORY_MANDATORY, null, null);
     checkBoxCategory.setChecked(Boolean.parseBoolean(getPreference().getValue(UIJCRExplorerPortlet.CATEGORY_MANDATORY, "")));
+    checkBoxCategory.setEnable(false);
     addChild(checkBoxCategory);
     
     List<SelectItemOption<String>> listType = new ArrayList<SelectItemOption<String>>();
@@ -74,18 +76,25 @@ public class UIJcrExplorerEditForm extends UIForm {
     listType.add(new SelectItemOption<String>("Social", "Social"));
     UIFormSelectBox typeSelectBox = new UIFormSelectBox(UIJCRExplorerPortlet.TYPE, UIJCRExplorerPortlet.TYPE, listType);
     typeSelectBox.setDefaultValue(usecase);
+    typeSelectBox.setEnable(false);
     typeSelectBox.setOnChange("SelectType");
     addChild(typeSelectBox);
     
     UIFormCheckBoxInput<Boolean> checkBoxDirectlyDrive = new UIFormCheckBoxInput<Boolean>(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE, null, null);
+    checkBoxDirectlyDrive.setEnable(false);
     checkBoxDirectlyDrive.setOnChange("Change");
     checkBoxDirectlyDrive.setChecked(Boolean.parseBoolean(getPreference().getValue(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE, "")));
-    
     addChild(checkBoxDirectlyDrive);
     
     UIFormStringInput stringInputDrive = new UIFormStringInput(UIJCRExplorerPortlet.DRIVE_NAME, UIJCRExplorerPortlet.DRIVE_NAME, null);
     stringInputDrive.setValue(getPreference().getValue(UIJCRExplorerPortlet.DRIVE_NAME, ""));
+    stringInputDrive.setEnable(false);
     addUIFormInput(stringInputDrive);
+    
+    if (usecase.equals("selection")) {
+      checkBoxDirectlyDrive.setRendered(false);
+      stringInputDrive.setRendered(false);
+    }
     setActions(new String[] {"Edit"});
   }
   
@@ -151,21 +160,17 @@ public class UIJcrExplorerEditForm extends UIForm {
   public static class SelectTypeActionListener extends EventListener<UIJcrExplorerEditForm>{
     public void execute(Event<UIJcrExplorerEditForm> event) throws Exception {
       UIJcrExplorerEditForm uiForm = event.getSource();
-      uiForm.setEditable(false);
+      uiForm.setEditable(true);
       UIFormSelectBox typeSelectBox = uiForm.getChildById(UIJCRExplorerPortlet.TYPE);
       UIFormStringInput stringInputDrive = uiForm.getChildById(UIJCRExplorerPortlet.DRIVE_NAME);
       UIFormCheckBoxInput<Boolean> checkBoxDirectlyDrive = uiForm.getChildById(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE);
-      if (!typeSelectBox.getValue().equals("selection")) {
-        stringInputDrive.setRendered(false);
-        checkBoxDirectlyDrive.setRendered(false);
-      } else {
-        if (typeSelectBox.getValue().equals("jailed")) {
-          checkBoxDirectlyDrive.setChecked(false);
-        }
+      if (typeSelectBox.getValue().equals("jailed")) {
         stringInputDrive.setRendered(true);
         checkBoxDirectlyDrive.setRendered(true);
+      } else {
+        stringInputDrive.setRendered(false);
+        checkBoxDirectlyDrive.setRendered(false);
       }
-//      uiForm.setActions(new String[] {"Edit"});
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
   }
@@ -183,7 +188,7 @@ public class UIJcrExplorerEditForm extends UIForm {
       UIFormStringInput stringInputDrive = uiForm.getChildById(UIJCRExplorerPortlet.DRIVE_NAME);
       pref.setValue(UIJCRExplorerPortlet.REPOSITORY, repository.getValue());
       pref.setValue(UIJCRExplorerPortlet.CATEGORY_MANDATORY, String.valueOf(checkBoxCategory.isChecked()));
-      if (typeSelectBox.getValue().equals("jailed")) {
+      if (!typeSelectBox.getValue().equals("jailed")) {
         pref.setValue(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE, String.valueOf(false));
       } else {
         pref.setValue(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE, String.valueOf(checkBoxDirectlyDrive.isChecked()));
@@ -198,5 +203,4 @@ public class UIJcrExplorerEditForm extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
   }
-
 }
