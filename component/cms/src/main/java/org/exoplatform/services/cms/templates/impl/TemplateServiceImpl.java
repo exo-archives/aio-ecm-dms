@@ -76,6 +76,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   private static final Pattern RT = Pattern.compile("/\\*\\s*orientation=rt\\s*\\*/");
 
   private ExoCache templatesCache_ ;
+  private ExoCache rtlTemplateCache_;
   
   public TemplateServiceImpl(RepositoryService jcrService,
       NodeHierarchyCreator nodeHierarchyCreator, IdentityRegistry identityRegistry,
@@ -85,6 +86,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     localeConfigService_ = localeConfigService;
     cmsTemplatesBasePath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_TEMPLATES_PATH);
     templatesCache_ = caService.getCacheInstance(org.exoplatform.groovyscript.text.TemplateService.class.getName()) ;
+    rtlTemplateCache_ = caService.getCacheInstance("RTLTemplateCache");
   }
 
   public void start() {
@@ -220,24 +222,6 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     throw new Exception("The content type: " + templateType + " doesn't be supported by any template");
   }
   
-  public String getTemplatePathByLocale(Node node, boolean isDialog, String locale, 
-      String repository) throws Exception {
-    String templatePath = getTemplatePath(node, isDialog);
-    Session session = getSession(repository);
-    Node templateNode = (Node) session.getItem(templatePath);
-    if(!templateNode.isNodeType(EXO_TEMPLATE_RTL) && templateNode.canAddMixin(EXO_TEMPLATE_RTL)) {
-      templateNode.addMixin(EXO_TEMPLATE_RTL);
-      templateNode.save();
-      templateNode.setProperty(EXO_TEMPLATE_DATA, 
-          templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString());
-      setTemplateData(locale, templateNode, LT, EXO_TEMPLATE_RT_DATA);
-      setTemplateData(locale, templateNode, RT, EXO_TEMPLATE_LT_DATA);
-      templateNode.save();
-      session.logout();
-    }
-    return templatePath;
-  }
-
   public NodeIterator getAllTemplatesOfNodeType(boolean isDialog, String nodeTypeName,
       String repository, SessionProvider provider) throws Exception {
     Node nodeTypeHome = getTemplatesHome(repository, provider).getNode(nodeTypeName);
@@ -311,13 +295,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       String repository) throws Exception {
     Session session = getSession(repository);
     Node templateNode = getTemplateNode(session, isDialog, nodeTypeName, templateName, repository);
-    String template = "";
-    if(templateNode.isNodeType(EXO_TEMPLATE_RTL) && 
-        templateNode.getProperty(EXO_TEMPLATE_DATA).getString().length() > 0) {
-      template = templateNode.getProperty(EXO_TEMPLATE_DATA).getString();
-    } else {
-      template = templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
-    }
+    String template = templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
     session.logout();
     return template;
   }
@@ -394,15 +372,9 @@ public class TemplateServiceImpl implements TemplateService, Startable {
         isDocumentTemplate, templateName);
     contentNode.setProperty(EXO_ROLES_PROP, roles);
     contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
-    if(!contentNode.isNodeType(EXO_TEMPLATE_RTL) && contentNode.canAddMixin(EXO_TEMPLATE_RTL)) {
-      contentNode.addMixin(EXO_TEMPLATE_RTL);
-      contentNode.save();
-    } else {
-      contentNode.setProperty(EXO_TEMPLATE_DATA, templateFile);
-    }
-    contentNode.setProperty(EXO_TEMPLATE_DATA, templateFile);
-    setTemplateData(locale, contentNode, LT, EXO_TEMPLATE_RT_DATA);
-    setTemplateData(locale, contentNode, RT, EXO_TEMPLATE_LT_DATA);
+    rtlTemplateCache_.clearCache();
+    setTemplateData(locale, contentNode, nodeTypeName, RT, LTR);
+    setTemplateData(locale, contentNode, nodeTypeName, LT, RTL);
     contentNode.save();
     templatesHome.save();
     session.save();
@@ -442,23 +414,30 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return null;
   }
   
-  public String getTemplateData(Node templateNode, String locale) throws Exception {
+  public String getTemplateData(Node templateNode, String locale, String propertyName, 
+      String repository) throws Exception {
     Orientation orientation = getOrientation(locale);
-    if(orientation.isLT()) {
-      return templateNode.getProperty(EXO_TEMPLATE_LT_DATA).getString();
-    } else if(orientation.isRT()) {
-      return templateNode.getProperty(EXO_TEMPLATE_RT_DATA).getString();
+    Node nodeType = templateNode.getParent().getParent();
+    List<String> documentTemplates = managedDocumentTypesMap.get(repository);
+    if(documentTemplates.contains(nodeType.getName())) {
+      if(rtlTemplateCache_.get(nodeType.getName() + LTR) == null || 
+          rtlTemplateCache_.get(nodeType.getName() + RTL) == null) {
+        setTemplateData(locale, templateNode, nodeType.getName(), RT, LTR);
+        setTemplateData(locale, templateNode, nodeType.getName(), LT, RTL);
+      }
+      if(orientation.isLT() && 
+          rtlTemplateCache_.get(nodeType.getName() + LTR) != null) {
+        return rtlTemplateCache_.get(nodeType.getName() + LTR).toString();
+      } else if(orientation.isRT() && 
+          rtlTemplateCache_.get(nodeType.getName() + RTL) != null) {
+        return rtlTemplateCache_.get(nodeType.getName() + RTL).toString();
+      }
     }
-    return templateNode.getProperty(EXO_TEMPLATE_DATA).getString();
+    return templateNode.getProperty(propertyName).getString();
   }
   
-  public void removeCacheTemplate(String templatePath, String resourceId, String repository) throws Exception {
-    Session session = getSession(repository);
-    Node templateNode = (Node)session.getItem(templatePath);
-    if(templateNode.isNodeType(EXO_TEMPLATE_RTL)) {
-      templatesCache_.remove(resourceId);
-    }
-    session.logout();
+  public void removeCacheTemplate(String resourceId) throws Exception {
+    templatesCache_.remove(resourceId);
   }
   
   @SuppressWarnings("unused")
@@ -526,11 +505,11 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     }    
   }
   
-  private void setTemplateData(String locale, Node templateNode, Pattern pattern, 
-      String propertyName) throws Exception {
-    String templateData = templateNode.getProperty(EXO_TEMPLATE_DATA).getString();
+  private void setTemplateData(String locale, Node templateNode, String nodeTypeName, 
+      Pattern pattern, String type) throws Exception {
     if(locale != null) {
       String str = "";
+      String templateData = templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
       BufferedReader reader = new BufferedReader(new StringReader(templateData));
       StringBuilder ltsb = new StringBuilder();
       try {
@@ -543,8 +522,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
             ltsb.append(str).append('\n');
           }
         }
-        templateNode.setProperty(propertyName, ltsb.toString());
-        templateNode.save();
+        rtlTemplateCache_.put(nodeTypeName + type, ltsb.toString());
       } catch(IOException e) {
         e.printStackTrace();
       } 

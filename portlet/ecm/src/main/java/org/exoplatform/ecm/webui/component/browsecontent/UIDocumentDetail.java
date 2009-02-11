@@ -102,10 +102,15 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     try{
+      String template = null;
       if(SessionProviderFactory.isAnonim()) {
-        return templateService.getTemplatePathByAnonymous(false, getNodeType(), repository);
+        template = templateService.getTemplatePathByAnonymous(false, getNodeType(), repository);
+      } else {
+        template = templateService.getTemplatePathByUser(false, getNodeType(), userName, repository) ;
       }
-      return templateService.getTemplatePathByUser(false, getNodeType(), userName, repository) ;
+      if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver();
+      templateService.removeCacheTemplate(jcrTemplateResourceResolver_.createResourceId(template));
+      return template;
     }catch(Exception e) {
       e.printStackTrace() ;
     }    

@@ -47,13 +47,8 @@ public interface TemplateService {
   static final public String DOCUMENT_TEMPLATE_PROP = "isDocumentTemplate".intern() ;  
   static final public String TEMPLATE_LABEL = "label".intern() ;
   
-  final static public String EXO_TEMPLATE_RTL = "exo:templateRTL";
-  final static public String EXO_TEMPLATE_DATA = "exo:templateData";
-  final static public String EXO_TEMPLATE_LT_DATA = "exo:templateLTData";
-  final static public String EXO_TEMPLATE_RT_DATA = "exo:templateRTData";
-  final static public String EXO_TEMPLATE_TL_DATA = "exo:templateTLData";
-  final static public String EXO_TEMPLATE_TR_DATA = "exo:templateTRData";
-  
+  static final public String RTL = "rtl";
+  static final public String LTR = "ltr";
   /**
    * Return path of default template by giving the following params
    * @param isDialog        boolean
@@ -85,21 +80,7 @@ public interface TemplateService {
    */
   public String getTemplatePath(Node node, boolean isDialog) throws Exception ;
   
-  /**
-   * Return path template of the specified node with locale name
-   * @param node            Node
-   *                        The specified node
-   * @param isDialog        boolean
-   *                        The boolean value which specify the type of template
-   * @param locale          String
-   *                        The locale name
-   * @param repository      String
-   *                        The repository name                       
-   * @see                   Node                       
-   * @throws Exception
-   */
-  public String getTemplatePathByLocale(Node node, boolean isDialog, String locale, String repository) throws Exception;
-  
+   
   /**
    * Return the path public template
    * @param isDialog        boolean
@@ -342,7 +323,7 @@ public interface TemplateService {
    */
   public void init(String repository) throws Exception ;
 
-  public String getTemplateData(Node templateNode, String locale) throws Exception; 
+  public String getTemplateData(Node templateNode, String locale, String propertyName, String repository) throws Exception; 
   
   /**
    * Remove cache of RTL template
@@ -354,5 +335,5 @@ public interface TemplateService {
    *                     Repository name
    * @throws Exception
    */
-  public void removeCacheTemplate(String templatePath, String resourceId, String repository) throws Exception;
+  public void removeCacheTemplate(String resourceId) throws Exception;
 }

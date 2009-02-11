@@ -117,16 +117,13 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 
   public String getTemplate() {    
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    String localeName = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();
     if(uiExplorer.getPreference().isJcrEnable()) 
       return uiExplorer.getDocumentInfoTemplate();
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     try {
       Node node = uiExplorer.getCurrentNode();
-      String template = templateService.getTemplatePathByLocale(node,false, localeName, 
-          uiExplorer.getRepositoryName()) ;
-      templateService.removeCacheTemplate(template, 
-          uiExplorer.getJCRTemplateResourceResolver().createResourceId(template), uiExplorer.getRepositoryName());
+      String template = templateService.getTemplatePath(node,false) ;
+      templateService.removeCacheTemplate(uiExplorer.getJCRTemplateResourceResolver().createResourceId(template));
       if(template != null) return template ;
     } catch(AccessDeniedException ace) {
       try {

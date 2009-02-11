@@ -78,9 +78,12 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     try {
       String nodeType = node_.getPrimaryNodeType().getName() ;
-      return templateService.getTemplatePathByUser(false, nodeType, userName, repository) ;
+      String template = templateService.getTemplatePathByUser(false, nodeType, userName, repository) ; 
+      templateService.removeCacheTemplate(uiExplorer.getJCRTemplateResourceResolver().createResourceId(template));
+      return template;
     } catch(Exception e) {
       e.printStackTrace() ;
     }

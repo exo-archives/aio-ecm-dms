@@ -127,29 +127,4 @@
     </propertyDefinitions>
   </nodeType>    
   
-  <nodeType name="exo:templateRTL" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
-    <propertyDefinitions>
-    	<propertyDefinition name="exo:templateData" requiredType="String" autoCreated="false" mandatory="true"
-        onParentVersion="COPY" protected="false" multiple="false">
-        <valueConstraints/>
-      </propertyDefinition>
-      <propertyDefinition name="exo:templateLTData" requiredType="String" autoCreated="false" mandatory="true"
-        onParentVersion="COPY" protected="false" multiple="false">
-        <valueConstraints/>
-      </propertyDefinition>
-      <propertyDefinition name="exo:templateRTData" requiredType="String" autoCreated="false" mandatory="true"
-        onParentVersion="COPY" protected="false" multiple="false">
-        <valueConstraints/>
-      </propertyDefinition>
-      <propertyDefinition name="exo:templateTLData" requiredType="String" autoCreated="false" mandatory="true"
-        onParentVersion="COPY" protected="false" multiple="false">
-        <valueConstraints/>
-      </propertyDefinition>
-      <propertyDefinition name="exo:templateTRData" requiredType="String" autoCreated="false" mandatory="true"
-        onParentVersion="COPY" protected="false" multiple="false">
-        <valueConstraints/>
-      </propertyDefinition>      
-    </propertyDefinitions>
-  </nodeType>  
-  
 </nodeTypes>

@@ -83,11 +83,8 @@ public class JCRResourceResolver extends ResourceResolver {
     Session session = provider.getSession(workspace,manageableRepository);
     Node node = (Node)session.getItem(removeScheme(url)) ;
     String locale = 
-      Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();
-    if(node.isNodeType(TemplateService.EXO_TEMPLATE_RTL)) {
-      return new ByteArrayInputStream(templateService.getTemplateData(node, locale).getBytes()) ;
-    }
-    return new ByteArrayInputStream(node.getProperty(propertyName).getString().getBytes()) ;
+    Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();
+    return new ByteArrayInputStream(templateService.getTemplateData(node, locale, propertyName, repository).getBytes()) ;
   }
 
   /* (non-Javadoc)
