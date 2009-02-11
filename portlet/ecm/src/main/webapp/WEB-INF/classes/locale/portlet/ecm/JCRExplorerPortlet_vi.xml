@@ -2158,5 +2158,11 @@
       <UIDriveSelector>Lựa chọn drive</UIDriveSelector>
     </title>
   </PopUpSelectDrive>
+  
+  <DriveNameInput>
+    <title>
+      <SelectDrive>Lựa chọn drive</SelectDrive>
+    </title>
+  </DriveNameInput>
 </bundle>
 

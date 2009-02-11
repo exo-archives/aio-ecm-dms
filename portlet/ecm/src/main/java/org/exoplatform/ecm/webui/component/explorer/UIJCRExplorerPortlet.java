@@ -22,7 +22,6 @@ import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -40,6 +39,9 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
   final static public String DRIVE_NAME =  "driveName";
   final static public String USECASE = "usecase";
   final static public String JAILED = "jailed";
+  final static public String SOCIAL = "social";
+  final static public String SELECTION = "selection";
+  final static public String PERSONAL = "personal";
   
   private boolean flagSelect = false;
   
@@ -68,38 +70,12 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
       PortletPreferences portletPref = pcontext.getRequest().getPreferences();
       String usecase =  portletPref.getValue("usecase", "").trim();
-      if (!usecase.equals(JAILED)) {
-        explorerContainer.setFlag(true);
-        if (!isFlagSelect()) {
-          UIDrivesBrowserContainer browserContainer = explorerContainer.getChild(UIDrivesBrowserContainer.class); 
-          if (browserContainer != null) {
-            browserContainer.setRendered(true);
-          } else explorerContainer.addChild(UIDrivesBrowserContainer.class, null, null).setRendered(true);
-          explorerContainer.getChild(UIJCRExplorer.class).setRendered(false);   
-        } else {
-          UIDrivesBrowserContainer driveBrowserContainer = explorerContainer.getChild(UIDrivesBrowserContainer.class);
-          if (driveBrowserContainer == null) {
-            explorerContainer.setFlag(false);
-            explorerContainer.getChild(UIDrivesBrowserContainer.class).setRendered(false);
-            explorerContainer.getChild(UIJCRExplorer.class).setRendered(true);    
-          }
-        }
+      if (usecase.equals(JAILED)) {
+        initwhenDirect(explorerContainer, editContainer, portletPref);
+      } else if (usecase.equals(SOCIAL)) {
+        initwhenDirect(explorerContainer, editContainer, portletPref);
       } else {
-        explorerContainer.setFlag(false);
-        String driveName = portletPref.getValue("driveName", "").trim();
-        List<DriveData> listDriver = explorerContainer.getDrives(portletPref);
-        for (DriveData driveData : listDriver) {
-          if (driveData.getName().trim().equals(driveName)) {
-            explorerContainer.setFlag(true);
-            break;
-          }
-        }
-        if (editContainer.getChild(UIJcrExplorerEditForm.class).isFlagSelectRender()) {
-          explorerContainer.initExplorer(driveName, portletPref);
-          editContainer.getChild(UIJcrExplorerEditForm.class).setFlagSelectRender(false);
-        } 
-        explorerContainer.getChild(UIJCRExplorer.class).setRendered(true);
-        explorerContainer.getChild(UIDrivesBrowserContainer.class).setRendered(false);
+        initwhenSelect(explorerContainer);
       }
       explorerContainer.setRendered(true);
       getChild(UIJcrExplorerEditContainer.class).setRendered(false);
@@ -110,6 +86,42 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       getChild(UIJcrExplorerEditContainer.class).setRendered(true);
     }
     super.processRender(app, context) ;
+  }
+  
+  public void initwhenSelect(UIJcrExplorerContainer explorerContainer) throws Exception {
+    explorerContainer.setFlag(true);
+    if (!isFlagSelect()) {
+      UIDrivesBrowserContainer browserContainer = explorerContainer.getChild(UIDrivesBrowserContainer.class); 
+      if (browserContainer != null) {
+        browserContainer.setRendered(true);
+      } else explorerContainer.addChild(UIDrivesBrowserContainer.class, null, null).setRendered(true);
+      explorerContainer.getChild(UIJCRExplorer.class).setRendered(false);   
+    } else {
+      UIDrivesBrowserContainer driveBrowserContainer = explorerContainer.getChild(UIDrivesBrowserContainer.class);
+      if (driveBrowserContainer == null) {
+        explorerContainer.setFlag(false);
+        explorerContainer.getChild(UIDrivesBrowserContainer.class).setRendered(false);
+        explorerContainer.getChild(UIJCRExplorer.class).setRendered(true);    
+      }
+    }
+  }
+  
+  public void initwhenDirect(UIJcrExplorerContainer explorerContainer, UIJcrExplorerEditContainer editContainer, PortletPreferences portletPref) throws Exception {
+    explorerContainer.setFlag(false);
+    String driveName = portletPref.getValue("driveName", "").trim();
+    List<String> listDriveName = explorerContainer.getDrives();
+    for (String driveDataName : listDriveName) {
+      if (driveDataName.trim().equals(driveName)) {
+        explorerContainer.setFlag(true);
+        break;
+      }
+    }
+    if (editContainer.getChild(UIJcrExplorerEditForm.class).isFlagSelectRender()) {
+      explorerContainer.initExplorer(driveName, portletPref);
+      editContainer.getChild(UIJcrExplorerEditForm.class).setFlagSelectRender(false);
+    } 
+    explorerContainer.getChild(UIJCRExplorer.class).setRendered(true);
+    explorerContainer.getChild(UIDrivesBrowserContainer.class).setRendered(false);
   }
   
   public String getPreferenceRepository() {

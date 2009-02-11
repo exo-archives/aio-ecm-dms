@@ -81,9 +81,9 @@
  	padding: 4px 8px 4px 0px;
 }
 
-.UIJCRExplorerPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
+.UIJCRExplorerPortlet .DriveNameInput .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
  	padding: 0px 8px 4px 0px;
- 	width: 95px;
+ 	width: 184px;
 }
 
 .UIJCRExplorerPortlet .UIForm .HorizontalLayout .UIFormInputSet {

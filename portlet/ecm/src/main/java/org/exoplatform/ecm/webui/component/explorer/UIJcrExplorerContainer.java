@@ -39,12 +39,14 @@ import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -107,6 +109,23 @@ public class UIJcrExplorerContainer extends UIContainer {
     return pcontext.getRequest().getPreferences();
   }
   
+  public List<String> getDrives() throws Exception {
+    List<DriveData> driveList = new ArrayList<DriveData>();
+    driveList = getDrives(getPreference());
+    List<DriveData> listDriveAll = new ArrayList<DriveData>();
+    List<String> listDriveNameAll = new ArrayList<String>();
+    List<DriveData> generalDrives = generalDrives(driveList);
+    List<DriveData> groupDrives = groupDrives(driveList);
+    List<DriveData> personalDrives = personalDrives(driveList);
+    listDriveAll.addAll(generalDrives);
+    listDriveAll.addAll(groupDrives);
+    listDriveAll.addAll(personalDrives);
+    for (DriveData driveData : listDriveAll) {
+      listDriveNameAll.add(driveData.getName());
+    }
+    return listDriveNameAll;
+  }
+  
   public List<DriveData> getDrives(PortletPreferences portletPref) throws Exception {
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class);      
     List<DriveData> driveList = new ArrayList<DriveData>();    
@@ -159,6 +178,52 @@ public class UIJcrExplorerContainer extends UIContainer {
     return driveList; 
   }
 
+  public List<DriveData> generalDrives(List<DriveData> driveList) throws Exception {
+    List<DriveData> generalDrives = new ArrayList<DriveData>();
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
+    String groupPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_GROUPS_PATH);
+    for(DriveData drive : driveList) {
+      if((!drive.getHomePath().startsWith(userPath) && !drive.getHomePath().startsWith(groupPath)) 
+          || drive.getHomePath().equals(userPath)) {
+        generalDrives.add(drive);
+      }
+    }
+    return generalDrives;
+  }
+  
+  public List<DriveData> groupDrives(List<DriveData> driveList) throws Exception {
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    List<DriveData> groupDrives = new ArrayList<DriveData>();
+    String groupPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_GROUPS_PATH);
+    List<String> groups = Utils.getGroups();
+    for(DriveData drive : driveList) {
+      if(drive.getHomePath().startsWith(groupPath)) {
+        for(String group : groups) {
+          if(drive.getHomePath().equals(groupPath + group)) {
+            groupDrives.add(drive);
+            break;
+          }
+        }
+      } 
+    }
+    Collections.sort(groupDrives);
+    return groupDrives;
+  }
+  
+  public List<DriveData> personalDrives(List<DriveData> driveList) {
+    List<DriveData> personalDrives = new ArrayList<DriveData>();
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
+    for(DriveData drive : driveList) {
+      if(drive.getHomePath().startsWith(userPath + "/${userId}/")) {
+        personalDrives.add(drive);
+      }
+    }
+    Collections.sort(personalDrives);
+    return personalDrives;
+  }
+  
   public void initExplorer(String driveName, PortletPreferences portletPref) throws Exception {
     try {
       WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();

@@ -16,12 +16,16 @@
  */
 package org.exoplatform.ecm.webui.component.explorer;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.portal.application.PortalRequestContext;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -76,33 +80,73 @@ public class UIJcrExplorerEditForm extends UIForm {
     String usecase = getPreference().getValue(UIJCRExplorerPortlet.USECASE, "");
     listType.add(new SelectItemOption<String>("Selection", "selection"));
     listType.add(new SelectItemOption<String>("Jailed", "jailed"));
-    listType.add(new SelectItemOption<String>("Personal", "Personal"));
-    listType.add(new SelectItemOption<String>("Social", "Social"));
+    listType.add(new SelectItemOption<String>("Personal", "personal"));
+    listType.add(new SelectItemOption<String>("Social", "social"));
     UIFormSelectBox typeSelectBox = new UIFormSelectBox(UIJCRExplorerPortlet.USECASE, UIJCRExplorerPortlet.USECASE, listType);
     typeSelectBox.setValue(usecase);
     typeSelectBox.setEnable(false);
     typeSelectBox.setOnChange("SelectType");
     addChild(typeSelectBox);
     
-    UIFormInputSetWithAction driveNameInput = new UIFormInputSetWithAction("DriveNameInput") ;
+    UIFormInputSetWithAction driveNameInput = new UIFormInputSetWithAction("DriveNameInput");
     UIFormStringInput stringInputDrive = new UIFormStringInput(UIJCRExplorerPortlet.DRIVE_NAME, UIJCRExplorerPortlet.DRIVE_NAME, null);
     stringInputDrive.setValue(getPreference().getValue(UIJCRExplorerPortlet.DRIVE_NAME, ""));
     stringInputDrive.setEnable(false);
     driveNameInput.addUIFormInput(stringInputDrive);
-    if (usecase.equals("jailed")) {
-      driveNameInput.setActionInfo(UIJCRExplorerPortlet.DRIVE_NAME, null) ;
-    } else {
-      driveNameInput.setActionInfo(UIJCRExplorerPortlet.DRIVE_NAME, new String[] {"SelectDrive"}) ;
-    }
+    driveNameInput.setActionInfo(UIJCRExplorerPortlet.DRIVE_NAME, new String[] {"SelectDrive"});
     addUIComponentInput(driveNameInput);
     
-    if (usecase.equals("jailed")) {
+    if (usecase.equals(UIJCRExplorerPortlet.JAILED)) {
       driveNameInput.setRendered(true);
       setFlagSelectRender(true);
+    } else if (usecase.equals(UIJCRExplorerPortlet.SOCIAL)) {
+      String groupId = getGroupId();
+      if (groupId == null || groupId.equals("")) {
+        driveNameInput.setRendered(false);
+      }
+    } else if (usecase.equals(UIJCRExplorerPortlet.SELECTION)) {
+      driveNameInput.setRendered(false);
     } else {
       driveNameInput.setRendered(false);
     }
     setActions(new String[] {"Edit"});
+  }
+  
+  public String getGroupId() {
+    try {
+      PortalRequestContext pcontext = Util.getPortalRequestContext();
+      String requestUrl = pcontext.getRequestURI();
+      String portalUrl = pcontext.getPortalURI();
+      String spaceUrl = requestUrl.replace(portalUrl,"");
+      if (spaceUrl.contains("/")) spaceUrl = spaceUrl.split("/")[0];
+      Object space = getSpaceByUrl(spaceUrl);
+      Class clazzSpace = Class.forName("org.exoplatform.social.space.Space");
+      Method[] methods = clazzSpace.getDeclaredMethods();
+      for (Method m : methods) {
+        if (m.getName().trim().equals("getGroupId")) {
+          return (String) m.invoke(space);
+        }
+      }
+    } catch (Exception e) {
+      UIFormSelectBox typeSelectBox = getChildById(UIJCRExplorerPortlet.USECASE);
+      typeSelectBox.setValue(UIJCRExplorerPortlet.SELECTION);
+      UIFormInputSetWithAction driveNameInput = getChildById("DriveNameInput");
+      UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
+      stringInputDrive.setValue("");
+    }
+    return null;
+  }
+  
+  public Object getSpaceByUrl(String url) throws Exception {
+    Class clazz = Class.forName("org.exoplatform.social.space.SpaceService");
+    Object obj = PortalContainer.getInstance().getComponentInstanceOfType(clazz);
+    Method[] methods = clazz.getDeclaredMethods();
+    for (Method m : methods) {
+      if (m.getName().trim().equals("getSpaceByUrl")) {
+        return m.invoke(obj, url);
+      }
+    }
+    return null;
   }
   
   public boolean isFlagSelectRender() {
@@ -113,14 +157,6 @@ public class UIJcrExplorerEditForm extends UIForm {
     this.flagSelectRender = flagSelectRender;
   }
   
-//  public void checkInitFirst_JAILED() {
-//    UIJcrExplorerEditContainer editContainer = getParent();
-//    UIJCRExplorerPortlet explorerPortlet = editContainer.getParent();
-//    if (getPreference().getValue(UIJCRExplorerPortlet.USECASE, "").equals(UIJCRExplorerPortlet.JAILED)) {
-//      explorerPortlet.setFlagSelectRender(true);
-//    }
-//  }
-  
   public void setEditable(boolean isEditable) {
     UIFormSelectBox repository = getChild(UIFormSelectBox.class);
     repository.setEnable(isEditable);
@@ -128,13 +164,6 @@ public class UIJcrExplorerEditForm extends UIForm {
     checkBoxCategory.setEnable(isEditable);
     UIFormSelectBox typeSelectBox = getChildById(UIJCRExplorerPortlet.USECASE);
     typeSelectBox.setEnable(isEditable);
-    UIFormInputSetWithAction driveNameInput = getChildById("DriveNameInput");
-//    UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME); 
-//    if (isEditable && getPreference().getValue(UIJCRExplorerPortlet.USECASE, "").equals("jailed")) {
-//      stringInputDrive.setEnable(true);
-//    } else {
-//      stringInputDrive.setEnable(false);
-//    }
   } 
   
   private PortletPreferences getPreference() {
@@ -158,7 +187,6 @@ public class UIJcrExplorerEditForm extends UIForm {
       driveNameInput.setActionInfo(UIJCRExplorerPortlet.DRIVE_NAME, new String[] {"SelectDrive"});
       uiForm.setEditable(true);
       uiForm.setActions(new String[] {"Save", "Cancel"});
-      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
   }  
@@ -179,7 +207,6 @@ public class UIJcrExplorerEditForm extends UIForm {
       if (pref.getValue(UIJCRExplorerPortlet.USECASE, "").equals(UIJCRExplorerPortlet.JAILED)) {
         driveNameInput.setRendered(true);
       } else {
-        driveNameInput.setActionInfo(UIJCRExplorerPortlet.DRIVE_NAME, null);
         driveNameInput.setRendered(false);
       }
       uiForm.setEditable(false);
@@ -194,8 +221,21 @@ public class UIJcrExplorerEditForm extends UIForm {
       uiForm.setEditable(true);
       UIFormSelectBox typeSelectBox = uiForm.getChildById(UIJCRExplorerPortlet.USECASE);
       UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
-      if (typeSelectBox.getValue().equals("jailed")) {
+      
+      if (typeSelectBox.getValue().equals(UIJCRExplorerPortlet.JAILED)) {
         driveNameInput.setRendered(true);
+      } else if (typeSelectBox.getValue().equals(UIJCRExplorerPortlet.SOCIAL)) {
+        String groupId = uiForm.getGroupId();
+        if (groupId == null || groupId.equals("")) {
+          driveNameInput.setRendered(false);
+          UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
+          stringInputDrive.setValue("");
+        } else {
+          groupId = groupId.replaceAll("/",".");
+          driveNameInput.setRendered(true);
+          UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
+          stringInputDrive.setValue(groupId);
+        }
       } else {
         driveNameInput.setRendered(false);
       }
@@ -206,23 +246,25 @@ public class UIJcrExplorerEditForm extends UIForm {
   public static class SaveActionListener extends EventListener<UIJcrExplorerEditForm>{
     public void execute(Event<UIJcrExplorerEditForm> event) throws Exception {
       UIJcrExplorerEditForm uiForm = event.getSource();
-      UIJcrExplorerEditContainer editContainer = uiForm.getParent();
-      UIJCRExplorerPortlet explorerPortet = editContainer.getParent();
       PortletPreferences pref = uiForm.getPreference();
       UIFormSelectBox repository = uiForm.getChildById(UIJCRExplorerPortlet.REPOSITORY);
       UIFormCheckBoxInput<Boolean> checkBoxCategory = uiForm.getChildById(UIJCRExplorerPortlet.CATEGORY_MANDATORY);
       UIFormSelectBox typeSelectBox = uiForm.getChildById(UIJCRExplorerPortlet.USECASE);
       UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
-      UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME); 
+      UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
+      String driveName = stringInputDrive.getValue();
+      if (typeSelectBox.getValue().equals(UIJCRExplorerPortlet.SELECTION)) {
+        driveName = "";
+      }
       pref.setValue(UIJCRExplorerPortlet.REPOSITORY, repository.getValue());
       pref.setValue(UIJCRExplorerPortlet.CATEGORY_MANDATORY, String.valueOf(checkBoxCategory.isChecked()));
       pref.setValue(UIJCRExplorerPortlet.USECASE, typeSelectBox.getValue());
-      pref.setValue(UIJCRExplorerPortlet.DRIVE_NAME, stringInputDrive.getValue());
+      pref.setValue(UIJCRExplorerPortlet.DRIVE_NAME, driveName);
       pref.store();
-      if (typeSelectBox.getValue().equals(UIJCRExplorerPortlet.JAILED)) {
+      if (typeSelectBox.getValue().equals(UIJCRExplorerPortlet.JAILED) || 
+          typeSelectBox.getValue().equals(UIJCRExplorerPortlet.SOCIAL)) {
         uiForm.setFlagSelectRender(true);
       }
-      driveNameInput.setActionInfo(UIJCRExplorerPortlet.DRIVE_NAME, null) ;
       uiForm.setEditable(false);
       uiForm.setActions(new String[] {"Edit"});
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);

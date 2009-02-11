@@ -16,23 +16,24 @@
  */
 package org.exoplatform.ecm.webui.component.explorer;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
+
+import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.download.DownloadService;
+import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
-import org.exoplatform.ecm.webui.selector.ComponentSelector;
-import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.portal.webui.util.Util;
-import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
-import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -68,146 +69,53 @@ public class UIDriveSelector extends UIContainer {
   public List getListDrive() throws Exception { return uiPageIterator_.getCurrentPageData(); }
   
   public void updateGrid() throws Exception {
-    ObjectPageList objPageList = new ObjectPageList(getDrives(), 10);
+    ObjectPageList objPageList = new ObjectPageList(getDrives("repository"), 10);
     uiPageIterator_.setPageList(objPageList);
   }
   
-  public List<String> getDrives() throws Exception {
-    List<DriveData> driveList = new ArrayList<DriveData>();
-    driveList = getDrives("repository");
-    List<DriveData> listDriveAll = new ArrayList<DriveData>();
-    List<String> listDriveNameAll = new ArrayList<String>();
-    List<DriveData> generalDrives = generalDrives(driveList);
-    List<DriveData> groupDrives = groupDrives(driveList);
-    List<DriveData> personalDrives = personalDrives(driveList);
-    listDriveAll.addAll(generalDrives);
-    listDriveAll.addAll(groupDrives);
-    listDriveAll.addAll(personalDrives);
-    for (DriveData driveData : listDriveAll) {
-      listDriveNameAll.add(driveData.getName());
-    }
-    return listDriveNameAll;
-  }
-  
-  @SuppressWarnings("unused")
-  public void doSelect(String selectField, Object value) throws Exception {
-    System.out.println("\n\n===do select");
-//    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-//    CategoriesService categoriesService = getApplicationComponent(CategoriesService.class) ;
-//    try {
-//      Node currentNode = uiJCRExplorer.getCurrentNode();
-//      if(currentNode.isLocked()) {
-//        String lockToken = LockUtil.getLockToken(currentNode);
-//        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
-//      }
-//      categoriesService.addCategory(currentNode, value.toString(), uiJCRExplorer.getRepositoryName()) ;
-//      uiJCRExplorer.getCurrentNode().save() ;
-//      uiJCRExplorer.getSession().save() ;
-//      updateGrid() ;
-//      setRenderSibbling(UICategoriesAddedList.class) ;
-//    } catch(Exception e) {
-//      e.printStackTrace() ;
-//    }
-  }
-  
-  public List<DriveData> getDrives(String repoName) throws Exception {    
-    ManageDriveService driveService = getApplicationComponent(ManageDriveService.class);      
-    List<DriveData> driveList = new ArrayList<DriveData>();    
-    List<String> userRoles = Utils.getMemberships();    
-    List<DriveData> allDrives = driveService.getAllDrives(repoName);
-    Set<DriveData> temp = new HashSet<DriveData>();
-    String userId = Util.getPortalRequestContext().getRemoteUser();
-    if (userId != null) {
-      // We will improve ManageDrive service to allow getAllDriveByUser
-      for (DriveData driveData : allDrives) {
-        String[] allPermission = driveData.getAllPermissions();
-        boolean flag = false;
-        for (String permission : allPermission) {
-          if (permission.equalsIgnoreCase("${userId}")) {
-            temp.add(driveData);
-            flag = true;
-            break;
-          }
-          if (permission.equalsIgnoreCase("*")) {
-            temp.add(driveData);
-            flag = true;
-            break;
-          }
-          if (flag)
-            continue;
-          for (String rolse : userRoles) {
-            if (driveData.hasPermission(allPermission, rolse)) {
-              temp.add(driveData);
-              break;
-            }
+  public List<String> getDrives(String repoName) throws Exception {
+    RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
+    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
+    ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
+    ManageableRepository repository = rservice.getRepository(repoName) ;  
+    List<DriveData> driveList = new ArrayList<DriveData>() ;
+    Session session = null ;
+    List<DriveData> drives = driveService.getAllDrives(repoName) ;
+    if(drives != null && drives.size() > 0) {
+      for(DriveData drive : drives) {
+        if(drive.getIcon() != null && drive.getIcon().length() > 0) {
+          try {
+            String[] iconPath = drive.getIcon().split(":/") ;   
+            session = repository.getSystemSession(iconPath[0]) ;
+            Node node = (Node) session.getItem("/" + iconPath[1]) ;
+            Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
+            InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
+            InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
+            dresource.setDownloadName(node.getName()) ;
+            drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
+            session.logout() ;
+          } catch(PathNotFoundException pnf) {
+            drive.setIcon("") ;
           }
         }
-      }
-    } else {
-      for (DriveData driveData : allDrives) {
-        String[] allPermission = driveData.getAllPermissions();
-        for (String permission : allPermission) {
-          if (permission.equalsIgnoreCase("*")) {
-            temp.add(driveData);
-            break;
-          }
-        }
+        if(isExistWorspace(repository, drive)) driveList.add(drive) ;
       }
     }
-    
-    for(Iterator<DriveData> iterator = temp.iterator();iterator.hasNext();) {
-      driveList.add(iterator.next());
+    List<String> driveListName = new ArrayList<String>();
+    for (DriveData driveData : driveList) {
+      driveListName.add(driveData.getName());
     }
-    Collections.sort(driveList);
-    return driveList; 
+    Collections.sort(driveListName) ;
+    return driveListName ; 
   }
   
-  public List<DriveData> generalDrives(List<DriveData> driveList) throws Exception {
-    List<DriveData> generalDrives = new ArrayList<DriveData>();
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
-    String groupPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_GROUPS_PATH);
-    for(DriveData drive : driveList) {
-      if((!drive.getHomePath().startsWith(userPath) && !drive.getHomePath().startsWith(groupPath)) 
-          || drive.getHomePath().equals(userPath)) {
-        generalDrives.add(drive);
-      }
+  private boolean isExistWorspace(ManageableRepository repository, DriveData drive) {
+    for (String ws:  repository.getWorkspaceNames()) {
+      if (ws.equals(drive.getWorkspace())) return true;
     }
-    return generalDrives;
+    return false;
   }
   
-  public List<DriveData> groupDrives(List<DriveData> driveList) throws Exception {
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    List<DriveData> groupDrives = new ArrayList<DriveData>();
-    String groupPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_GROUPS_PATH);
-    List<String> groups = Utils.getGroups();
-    for(DriveData drive : driveList) {
-      if(drive.getHomePath().startsWith(groupPath)) {
-        for(String group : groups) {
-          if(drive.getHomePath().equals(groupPath + group)) {
-            groupDrives.add(drive);
-            break;
-          }
-        }
-      } 
-    }
-    Collections.sort(groupDrives);
-    return groupDrives;
-  }
-  
-  public List<DriveData> personalDrives(List<DriveData> driveList) {
-    List<DriveData> personalDrives = new ArrayList<DriveData>();
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
-    for(DriveData drive : driveList) {
-      if(drive.getHomePath().startsWith(userPath + "/${userId}/")) {
-        personalDrives.add(drive);
-      }
-    }
-    Collections.sort(personalDrives);
-    return personalDrives;
-  }
-
   static public class CancelActionListener extends EventListener<UIDriveSelector> {
     public void execute(Event<UIDriveSelector> event) throws Exception { 
       UIDriveSelector driveSelector = event.getSource();
