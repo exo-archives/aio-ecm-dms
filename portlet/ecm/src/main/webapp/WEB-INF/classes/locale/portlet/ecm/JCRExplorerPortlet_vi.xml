@@ -2138,5 +2138,25 @@
       <usecase>Loại</usecase>
     </label>
   </UIJcrExplorerEditForm>
+  
+  <UIDriveSelector>
+    <label>
+      <driveName>Tên drive</driveName>
+      <action>Hành động</action>
+      <adddrives>Tạo drive mới</adddrives>
+    </label>
+  </UIDriveSelector>
+  <UIJcrExplorerEditForm>
+    <label>
+      <driveName>Tên drive</driveName>
+      <DriveNameInput>UIJcrExplorerEditForm</DriveNameInput>
+    </label>
+  </UIJcrExplorerEditForm>
+  
+  <PopUpSelectDrive>
+    <title>
+      <UIDriveSelector>Lựa chọn drive</UIDriveSelector>
+    </title>
+  </PopUpSelectDrive>
 </bundle>
 

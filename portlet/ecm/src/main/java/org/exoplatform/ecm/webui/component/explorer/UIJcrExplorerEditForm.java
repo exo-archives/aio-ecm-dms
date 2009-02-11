@@ -21,12 +21,14 @@ import java.util.List;
 
 import javax.portlet.PortletPreferences;
 
+import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -49,17 +51,19 @@ import org.exoplatform.webui.form.UIFormStringInput;
     template =  "system:/groovy/webui/form/UIFormWithTitle.gtmpl",
     events = {
       @EventConfig(phase = Phase.DECODE, listeners = UIJcrExplorerEditForm.SaveActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIJcrExplorerEditForm.ChangeActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIJcrExplorerEditForm.EditActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIJcrExplorerEditForm.CancelActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIJcrExplorerEditForm.SelectTypeActionListener.class)
+      @EventConfig(phase = Phase.DECODE, listeners = UIJcrExplorerEditForm.SelectTypeActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIJcrExplorerEditForm.SelectDriveActionListener.class)
     }
 )
 public class UIJcrExplorerEditForm extends UIForm {
+  private boolean flagSelectRender = false;
+  
   public UIJcrExplorerEditForm() throws Exception {
     UIFormSelectBox repository = new UIFormSelectBox(UIJCRExplorerPortlet.REPOSITORY, UIJCRExplorerPortlet.REPOSITORY, getRepoOption());
     String repositoryValue = getPreference().getValue(UIJCRExplorerPortlet.REPOSITORY, "");
-    repository.setDefaultValue(repositoryValue);
+    repository.setValue(repositoryValue);
     repository.setEnable(false);
     addChild(repository);
     
@@ -69,50 +73,68 @@ public class UIJcrExplorerEditForm extends UIForm {
     addChild(checkBoxCategory);
     
     List<SelectItemOption<String>> listType = new ArrayList<SelectItemOption<String>>();
-    String usecase = getPreference().getValue(UIJCRExplorerPortlet.TYPE, "");
+    String usecase = getPreference().getValue(UIJCRExplorerPortlet.USECASE, "");
     listType.add(new SelectItemOption<String>("Selection", "selection"));
     listType.add(new SelectItemOption<String>("Jailed", "jailed"));
     listType.add(new SelectItemOption<String>("Personal", "Personal"));
     listType.add(new SelectItemOption<String>("Social", "Social"));
-    UIFormSelectBox typeSelectBox = new UIFormSelectBox(UIJCRExplorerPortlet.TYPE, UIJCRExplorerPortlet.TYPE, listType);
-    typeSelectBox.setDefaultValue(usecase);
+    UIFormSelectBox typeSelectBox = new UIFormSelectBox(UIJCRExplorerPortlet.USECASE, UIJCRExplorerPortlet.USECASE, listType);
+    typeSelectBox.setValue(usecase);
     typeSelectBox.setEnable(false);
     typeSelectBox.setOnChange("SelectType");
     addChild(typeSelectBox);
     
-    UIFormCheckBoxInput<Boolean> checkBoxDirectlyDrive = new UIFormCheckBoxInput<Boolean>(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE, null, null);
-    checkBoxDirectlyDrive.setEnable(false);
-    checkBoxDirectlyDrive.setOnChange("Change");
-    checkBoxDirectlyDrive.setChecked(Boolean.parseBoolean(getPreference().getValue(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE, "")));
-    addChild(checkBoxDirectlyDrive);
-    
+    UIFormInputSetWithAction driveNameInput = new UIFormInputSetWithAction("DriveNameInput") ;
     UIFormStringInput stringInputDrive = new UIFormStringInput(UIJCRExplorerPortlet.DRIVE_NAME, UIJCRExplorerPortlet.DRIVE_NAME, null);
     stringInputDrive.setValue(getPreference().getValue(UIJCRExplorerPortlet.DRIVE_NAME, ""));
     stringInputDrive.setEnable(false);
-    addUIFormInput(stringInputDrive);
+    driveNameInput.addUIFormInput(stringInputDrive);
+    if (usecase.equals("jailed")) {
+      driveNameInput.setActionInfo(UIJCRExplorerPortlet.DRIVE_NAME, null) ;
+    } else {
+      driveNameInput.setActionInfo(UIJCRExplorerPortlet.DRIVE_NAME, new String[] {"SelectDrive"}) ;
+    }
+    addUIComponentInput(driveNameInput);
     
-    if (usecase.equals("selection")) {
-      checkBoxDirectlyDrive.setRendered(false);
-      stringInputDrive.setRendered(false);
+    if (usecase.equals("jailed")) {
+      driveNameInput.setRendered(true);
+      setFlagSelectRender(true);
+    } else {
+      driveNameInput.setRendered(false);
     }
     setActions(new String[] {"Edit"});
   }
+  
+  public boolean isFlagSelectRender() {
+    return flagSelectRender;
+  }
+
+  public void setFlagSelectRender(boolean flagSelectRender) {
+    this.flagSelectRender = flagSelectRender;
+  }
+  
+//  public void checkInitFirst_JAILED() {
+//    UIJcrExplorerEditContainer editContainer = getParent();
+//    UIJCRExplorerPortlet explorerPortlet = editContainer.getParent();
+//    if (getPreference().getValue(UIJCRExplorerPortlet.USECASE, "").equals(UIJCRExplorerPortlet.JAILED)) {
+//      explorerPortlet.setFlagSelectRender(true);
+//    }
+//  }
   
   public void setEditable(boolean isEditable) {
     UIFormSelectBox repository = getChild(UIFormSelectBox.class);
     repository.setEnable(isEditable);
     UIFormCheckBoxInput<Boolean> checkBoxCategory = getChildById(UIJCRExplorerPortlet.CATEGORY_MANDATORY);
     checkBoxCategory.setEnable(isEditable);
-    UIFormSelectBox typeSelectBox = getChildById(UIJCRExplorerPortlet.TYPE);
+    UIFormSelectBox typeSelectBox = getChildById(UIJCRExplorerPortlet.USECASE);
     typeSelectBox.setEnable(isEditable);
-    UIFormCheckBoxInput<Boolean> checkBoxDirectlyDrive = getChildById(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE);
-    checkBoxDirectlyDrive.setEnable(isEditable);
-    UIFormStringInput stringInputDrive = getChildById(UIJCRExplorerPortlet.DRIVE_NAME);
-    if (isEditable && Boolean.parseBoolean(getPreference().getValue(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE, ""))) {
-      stringInputDrive.setEnable(true);
-    } else {
-      stringInputDrive.setEnable(false);
-    }
+    UIFormInputSetWithAction driveNameInput = getChildById("DriveNameInput");
+//    UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME); 
+//    if (isEditable && getPreference().getValue(UIJCRExplorerPortlet.USECASE, "").equals("jailed")) {
+//      stringInputDrive.setEnable(true);
+//    } else {
+//      stringInputDrive.setEnable(false);
+//    }
   } 
   
   private PortletPreferences getPreference() {
@@ -129,21 +151,14 @@ public class UIJcrExplorerEditForm extends UIForm {
     return options;
   }
   
-  public static class ChangeActionListener extends EventListener<UIJcrExplorerEditForm>{
-    public void execute(Event<UIJcrExplorerEditForm> event) throws Exception {
-      UIJcrExplorerEditForm uiForm = event.getSource();
-      boolean value = uiForm.getUIFormCheckBoxInput(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE).isChecked();
-      UIFormStringInput stringInputDrive = uiForm.getChildById(UIJCRExplorerPortlet.DRIVE_NAME);
-      stringInputDrive.setEnable(value);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
-    }
-  }  
-  
   public static class EditActionListener extends EventListener<UIJcrExplorerEditForm>{
     public void execute(Event<UIJcrExplorerEditForm> event) throws Exception {
       UIJcrExplorerEditForm uiForm = event.getSource();
+      UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
+      driveNameInput.setActionInfo(UIJCRExplorerPortlet.DRIVE_NAME, new String[] {"SelectDrive"});
       uiForm.setEditable(true);
       uiForm.setActions(new String[] {"Save", "Cancel"});
+      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
   }  
@@ -151,6 +166,22 @@ public class UIJcrExplorerEditForm extends UIForm {
   public static class CancelActionListener extends EventListener<UIJcrExplorerEditForm>{
     public void execute(Event<UIJcrExplorerEditForm> event) throws Exception {
       UIJcrExplorerEditForm uiForm = event.getSource();
+      PortletPreferences pref = uiForm.getPreference();
+      UIFormSelectBox repository = uiForm.getChildById(UIJCRExplorerPortlet.REPOSITORY);
+      repository.setValue(pref.getValue(UIJCRExplorerPortlet.REPOSITORY, ""));
+      UIFormCheckBoxInput<Boolean> checkBoxCategory = uiForm.getChildById(UIJCRExplorerPortlet.CATEGORY_MANDATORY);
+      checkBoxCategory.setChecked(Boolean.parseBoolean(pref.getValue(UIJCRExplorerPortlet.CATEGORY_MANDATORY, "")));
+      UIFormSelectBox typeSelectBox = uiForm.getChildById(UIJCRExplorerPortlet.USECASE);
+      typeSelectBox.setValue(pref.getValue(UIJCRExplorerPortlet.USECASE, ""));
+      UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
+      UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
+      stringInputDrive.setValue(pref.getValue(UIJCRExplorerPortlet.DRIVE_NAME, ""));
+      if (pref.getValue(UIJCRExplorerPortlet.USECASE, "").equals(UIJCRExplorerPortlet.JAILED)) {
+        driveNameInput.setRendered(true);
+      } else {
+        driveNameInput.setActionInfo(UIJCRExplorerPortlet.DRIVE_NAME, null);
+        driveNameInput.setRendered(false);
+      }
       uiForm.setEditable(false);
       uiForm.setActions(new String[] {"Edit"});
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
@@ -161,15 +192,12 @@ public class UIJcrExplorerEditForm extends UIForm {
     public void execute(Event<UIJcrExplorerEditForm> event) throws Exception {
       UIJcrExplorerEditForm uiForm = event.getSource();
       uiForm.setEditable(true);
-      UIFormSelectBox typeSelectBox = uiForm.getChildById(UIJCRExplorerPortlet.TYPE);
-      UIFormStringInput stringInputDrive = uiForm.getChildById(UIJCRExplorerPortlet.DRIVE_NAME);
-      UIFormCheckBoxInput<Boolean> checkBoxDirectlyDrive = uiForm.getChildById(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE);
+      UIFormSelectBox typeSelectBox = uiForm.getChildById(UIJCRExplorerPortlet.USECASE);
+      UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
       if (typeSelectBox.getValue().equals("jailed")) {
-        stringInputDrive.setRendered(true);
-        checkBoxDirectlyDrive.setRendered(true);
+        driveNameInput.setRendered(true);
       } else {
-        stringInputDrive.setRendered(false);
-        checkBoxDirectlyDrive.setRendered(false);
+        driveNameInput.setRendered(false);
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
@@ -183,24 +211,34 @@ public class UIJcrExplorerEditForm extends UIForm {
       PortletPreferences pref = uiForm.getPreference();
       UIFormSelectBox repository = uiForm.getChildById(UIJCRExplorerPortlet.REPOSITORY);
       UIFormCheckBoxInput<Boolean> checkBoxCategory = uiForm.getChildById(UIJCRExplorerPortlet.CATEGORY_MANDATORY);
-      UIFormSelectBox typeSelectBox = uiForm.getChildById(UIJCRExplorerPortlet.TYPE);
-      UIFormCheckBoxInput<Boolean> checkBoxDirectlyDrive = uiForm.getChildById(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE);
-      UIFormStringInput stringInputDrive = uiForm.getChildById(UIJCRExplorerPortlet.DRIVE_NAME);
+      UIFormSelectBox typeSelectBox = uiForm.getChildById(UIJCRExplorerPortlet.USECASE);
+      UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
+      UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME); 
       pref.setValue(UIJCRExplorerPortlet.REPOSITORY, repository.getValue());
       pref.setValue(UIJCRExplorerPortlet.CATEGORY_MANDATORY, String.valueOf(checkBoxCategory.isChecked()));
-      if (!typeSelectBox.getValue().equals("jailed")) {
-        pref.setValue(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE, String.valueOf(false));
-      } else {
-        pref.setValue(UIJCRExplorerPortlet.ISDIRECTLY_DRIVE, String.valueOf(checkBoxDirectlyDrive.isChecked()));
-      }
+      pref.setValue(UIJCRExplorerPortlet.USECASE, typeSelectBox.getValue());
       pref.setValue(UIJCRExplorerPortlet.DRIVE_NAME, stringInputDrive.getValue());
       pref.store();
-      if (checkBoxDirectlyDrive.isChecked()) {
-        explorerPortet.setFlagSelectRender(true);
+      if (typeSelectBox.getValue().equals(UIJCRExplorerPortlet.JAILED)) {
+        uiForm.setFlagSelectRender(true);
       }
+      driveNameInput.setActionInfo(UIJCRExplorerPortlet.DRIVE_NAME, null) ;
       uiForm.setEditable(false);
       uiForm.setActions(new String[] {"Edit"});
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
+    }
+  }
+  
+  public static class SelectDriveActionListener extends EventListener<UIJcrExplorerEditForm>{
+    public void execute(Event<UIJcrExplorerEditForm> event) throws Exception {
+      UIJcrExplorerEditForm uiForm = event.getSource();
+      UIJcrExplorerEditContainer editContainer = uiForm.getParent();
+      UIPopupWindow popupWindow = editContainer.initPopup("PopUpSelectDrive");
+      
+      UIDriveSelector driveSelector = editContainer.createUIComponent(UIDriveSelector.class, null, null);
+      driveSelector.updateGrid();
+      popupWindow.setUIComponent(driveSelector);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }
 }

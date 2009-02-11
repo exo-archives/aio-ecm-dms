@@ -50,7 +50,7 @@ import org.exoplatform.webui.exception.MessageException;
       @EventConfig(listeners = UICategoriesAddedList.DeleteActionListener.class, confirm="UICategoriesAddedList.msg.confirm-delete")
     }
 )
-public class UICategoriesAddedList extends UIContainer implements UISelectable{
+public class UICategoriesAddedList extends UIContainer implements UISelectable {
   private UIPageIterator uiPageIterator_;
 
   public UICategoriesAddedList() throws Exception {

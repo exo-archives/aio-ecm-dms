@@ -72,8 +72,8 @@ public class UIViewBar extends UIForm {
     boolean returnboolean = false;
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
     PortletPreferences portletPref = pcontext.getRequest().getPreferences();
-    String isDirectlyDrive =  portletPref.getValue("isDirectlyDrive", "").trim();
-    if (isDirectlyDrive.equals("true")) returnboolean = true;
+    String usecase =  portletPref.getValue("usecase", "").trim();
+    if (usecase.equals("jailed")) returnboolean = true;
     return returnboolean;
   }
   

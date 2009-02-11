@@ -18,6 +18,7 @@ package org.exoplatform.ecm.webui.component.explorer;
 
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
 /**
@@ -33,7 +34,15 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 public class UIJcrExplorerEditContainer extends UIContainer {
   
   public UIJcrExplorerEditContainer() throws Exception {
-    UIJcrExplorerEditForm uiJcrExEditForm = addChild(UIJcrExplorerEditForm.class, null, null);
-//    uiJcrExEditForm.setEditable(false);
+    UIJcrExplorerEditForm explorerEditForm = addChild(UIJcrExplorerEditForm.class, null, null);
+  }
+  
+  public UIPopupWindow initPopup(String id) throws Exception {
+    removeChildById(id);
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, id);
+    uiPopup.setWindowSize(700, 350);
+    uiPopup.setShow(true);
+    uiPopup.setResizable(true);
+    return uiPopup;
   }
 }

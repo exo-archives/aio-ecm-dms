@@ -67,13 +67,9 @@
       </preference> 
       <preference>
         <name>usecase</name>
-        <value>selection</value>  
+        <value>selection</value> 
+        <read-only>false</read-only> 
       </preference>
-      <preference>
-        <name>isDirectlyDrive</name>     
-        <value>false</value>        
-        <read-only>false</read-only>
-      </preference>  
       <preference>
         <name>driveName</name>     
         <value>Collaboration Center</value>        

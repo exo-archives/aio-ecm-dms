@@ -2147,5 +2147,25 @@
       <usecase>Type d'accès</usecase>
     </label>
   </UIJcrExplorerEditForm>
+  
+  <UIDriveSelector>
+    <label>
+      <driveName>Drive Name</driveName>
+      <action>Action</action>
+      <adddrives>Add Drives</adddrives>
+    </label>
+  </UIDriveSelector>
+  <UIJcrExplorerEditForm>
+    <label>
+      <driveName>Drive Name</driveName>
+      <DriveNameInput>UIJcrExplorerEditForm</DriveNameInput>
+    </label>
+  </UIJcrExplorerEditForm>
+  
+  <PopUpSelectDrive>
+    <title>
+      <UIDriveSelector>Select Drive</UIDriveSelector>
+    </title>
+  </PopUpSelectDrive>
 </bundle>
 
