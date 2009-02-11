@@ -10,17 +10,22 @@
 		}
 			
 		.UIArticle .ArticleTLDecorator {
-		  background: url('/eXoDMSResources/skin/images/article/BackgroundArticle.gif') no-repeat left top;
-		  padding-left: 51px;
+		  background: url('/eXoDMSResources/skin/images/article/BackgroundArticle.gif') no-repeat left top; /* orientation=lt */
+			background: url('/eXoDMSResources/skin/images/article/BackgroundArticle-rt.gif') no-repeat right top; /* orientation=rt */
+		  padding-left: 51px; /* orientation=lt */
+		  padding-right: 51px; /* orientation=rt */
 		}
 		
 		.UIArticle .ArticleTRDecorator {
-		  background: url('/eXoDMSResources/skin/images/article/BackgroundArticle.gif') no-repeat right top;
-		  padding-right:154px;
+		  background: url('/eXoDMSResources/skin/images/article/BackgroundArticle.gif') no-repeat right top; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/BackgroundArticle-rt.gif') no-repeat left top; /* orientation=rt */	
+		  padding-right:154px; /* orientation=lt */
+		  padding-left:154px; /* orientation=rt */
 		}
 		
 		.UIArticle .ArticleTCDecorator {
-		  background: url('/eXoDMSResources/skin/images/article/BackgroundArticle.gif') repeat-x left -100px;
+		  background: url('/eXoDMSResources/skin/images/article/BackgroundArticle.gif') repeat-x left -100px;  /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/BackgroundArticle.gif') repeat-x right -100px;  /* orientation=rt */		 
 		  height: 100px;
 		}
 		
@@ -31,8 +36,10 @@
 		}
 		
 		.UIArticle .ArticleMLDecorator {
-		  background: url('/eXoDMSResources/skin/images/article/MiddleLeftArticle3x1.gif') repeat-y left;
-		  padding-left: 3px ;  
+		  background: url('/eXoDMSResources/skin/images/article/MiddleLeftArticle3x1.gif') repeat-y left; /* orientation=lt */
+			background: url('/eXoDMSResources/skin/images/article/MiddleLeftArticle3x1-rt.gif') repeat-y right; /* orientation=rt */
+		  padding-left: 3px ; /* orientation=lt */
+		 	padding-right: 3px ; /* orientation=rt */
 		}
 		
 		.UIArticle .ArticleMCDecorator {
@@ -40,44 +47,58 @@
 		}
 		
 		.UIArticle .ArticleMRDecorator {
-		  background: url('/eXoDMSResources/skin/images/article/MiddleRightArticle10x1.gif') repeat-y right;
-		  padding-right: 10px ;  
+		  background: url('/eXoDMSResources/skin/images/article/MiddleRightArticle10x1.gif') repeat-y right; /* orientation=lt */
+			background: url('/eXoDMSResources/skin/images/article/MiddleRightArticle10x1-rt.gif') repeat-y left; /* orientation=rt */
+		  padding: 0px 10px 0px 3px; /* orientation=lt */
+			padding: 0px 3px 0px 10px; /* orientation=rt */
 		}
 		
 		.UIArticle .ArticleBLDecorator {
-		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left top;
-		  padding-left: 3px;
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left top; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle-rt.gif') no-repeat right top; /* orientation=rt */
+		  padding-left: 3px; /* orientation=lt */
+		  padding-right: 3px; /* orientation=rt */
 		}
 		
 		.UIArticle .ArticleBCDecorator {
-		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') repeat-x left -8px;
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') repeat-x left -8px; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') repeat-x right -8px; /* orientation=rt */
 		  height: 8px;
 		  line-height: 8px;
 		}
 		
 		.UIArticle .ArticleBRDecorator {
-		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat right top;
-		  padding-right: 10px ;  
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat right top; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle-rt.gif') no-repeat left top; /* orientation=rt */
+		  padding-right: 10px ; /* orientation=lt */
+		  padding-left: 10px ; /* orientation=rt */ 
 		}
 		
 		.UIArticle .ArticleFrame {
 		  background: white;
 		  padding: 0px 10px;
+		  
 		}
 			
 		.UIArticle .ArticleFrame .TopLeftArticleFrame {
-		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left -16px;
-		  padding-left: 9px;
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left -16px; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle-rt.gif') no-repeat right -16px; /* orientation=rt */
+		  padding-left: 9px; /* orientation=lt */
+		  padding-right: 9px; /* orientation=rt */
 		}
 		
 		.UIArticle .ArticleFrame .TopRightArtictleFrame {
-		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat right -16px;
-		  padding-right: 2px;
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat right -16px; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left -16px; /* orientation=rt */
+		  padding-right: 2px; /* orientation=lt */
+		  padding-left: 2px; /* orientation=rt */
 		}
 		
 		.UIArticle .ArticleFrame .TopCenterArticleFrame {
-		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') repeat-x right -32px;
-		  height: 16px;
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') repeat-x right -32px; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') repeat-x left -32px; /* orientation=rt */
+		  
+		  height: 16px; 
 		}
 		
 		.UIArticle .ArticleFrame .ArticleFrameContainer {
@@ -86,9 +107,11 @@
 		}
 		
 		.UIArticle .TopCenterArticleFrame .ArticleField {
-		  padding: 0px 0px 0px 5px;
+		  padding: 0px 0px 0px 5px; /* orientation=lt */
+		  padding: 0px 5px 0px 0px; /* orientation=rt */
 		  width: 120px;
-		  background: white;
+		  background: #fff;
+		  height: 16px;
 		}
 		
 		.UIArticle .MidlleLeftArticleFrame  {
@@ -96,77 +119,97 @@
 		}
 		
 		.UIArticle .FieldLabel {
-		  float: left;
+		  float: left; /* orientation=lt */
+		  float: right; /* orientation=rt */
       font-weight: bold;
 		}
 		
 		.UIArticle  .FieldIcon {
 	    float: left; /* orientation=lt */
 	    float: right; /* orientation=rt */
-	    margin-right: 5px;
-	    width: 16px; height: 16px;
+	    margin-right: 5px; /* orientation=lt */
+	    margin-left: 5px; /* orientation=rt */
+	    width: 16px; 
+	    height: 16px;
 		}
 		
 		.UIArticle .SummaryIcon {
-		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left -48px;
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left -48px; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat right -48px; /* orientation=rt */
 		}
 		
 		.UIArticle .AttachmentsIcon {
-		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left -64px;
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left -64px; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat right -64px; /* orientation=rt */
 		}
 		
 		.UIArticle .RatingIcon {
-		  background: url('/eXoDMSResources/skin/images/article/Artitcle.gif') no-repeat left -64px;
+		  background: url('/eXoDMSResources/skin/images/article/Artitcle.gif') no-repeat left -64px; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/Artitcle.gif') no-repeat right -64px; /* orientation=rt */
 		}
 		
 		.UIArticle .AttachmentsContainer .AttachmentsContentIcon {
-		  background: url('/eXoDMSResources/skin/images/article/AttachmentsIcon.gif') no-repeat left top;
-		  margin: 0px 5px 0px 3px;
-		  padding-left: 18px;
+		  background: url('/eXoDMSResources/skin/images/article/AttachmentsIcon.gif') no-repeat left top; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/AttachmentsIcon.gif') no-repeat left top; /* orientation=rt */
+		  margin: 0px 5px 0px 3px; /* orientation=lt */
+		  margin: 0px 3px 0px 5px; /* orientation=rt */
+		  padding-left: 18px; /* orientation=lt */
+		  padding-right: 18px; /* orientation=rt */
 		  height: 15px;
-		  float: left;
+		  float: left; /* orientation=lt */
+		  float: right; /* orientation=rt */
 		}
 		
 		.UIArticle .AttachmentsContainer .RemoveAttachments {
-		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top;
-		  margin: 0px 5px 0px 3px;
-		  padding-left: 18px;
+		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat right top; /* orientation=rt */
+		  margin: 0px 5px 0px 3px; /* orientation=lt */
+		  margin: 0px 3px 0px 5px; /* orientation=rt */
+		  padding-left: 18px; /* orientation=lt */
+		  padding-right: 18px; /* orientation=rt */
 		  height: 16px;
 		  cursor: pointer;
 		}
 		
 		.UIArticle .ContentIcon {
-		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left -96px;
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left -96px; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat right -96px; /* orientation=rt */
 		}
 		
 		.UIArticle .LinksIcon {
-		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left -80px;
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat left -80px; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/ImageArticle.gif') no-repeat right -80px; /* orientation=rt */
 		}
 		
 		.UIArticle .FieldContent {
-		  padding: 1px 8px 5px 0px;
+		  padding: 1px 8px 5px 0px; /* orientation=lt */
+		  padding: 1px 0px 5px 8px; /* orientation=rt */
 		  width: 90%;
 		}
 		
 		.UIArticle .FieldContent .FieldContainerContent {
 			font: normal 11px Verdana;
 		  background: white;
-		  margin: 5px 2px 3px 5px;
+		  margin: 5px 2px 3px 5px; /* orientation=lt */
+		  margin: 5px 5px 3px 2px; /* orientation=rt */
 		}
 		
 		.UIArticle .FieldContent .LabelContent{
-		 	padding: 5px 0px 0px 5px;
+		 	padding: 5px 0px 0px 5px; /* orientation=lt */
+		 	padding: 5px 5px 0px 0px; /* orientation=rt */
 		 	overflow: auto;
 		}
 		
     .UIArticle .DocumentRating {
-  		margin-left: 150px;
+  		margin-left: 150px; /* orientation=lt */
+  		margin-right: 150px; /* orientation=rt */
   		width: 300px;
 		} 
 		
     .UIArticle .ContainerLinks {
 		 	border-top: dotted 1px #dcdcdc;
-		 	margin: 12px  10px 0px 10px;
+		 	margin: 12px  10px 0px 10px; /* orientation=lt */
+		 	margin: 12px  10px 12px 10px; /* orientation=rt */
 		 	padding: 5px;
 		}
 		
@@ -177,8 +220,10 @@
 		}
 		
 		.UIArticle .WorkContentLinks {
-		  float: left;
-		  padding-left: 5px;
+		  float: left; /* orientation=lt */
+		  float: right; /* orientation=rt */
+		  padding-left: 5px; /* orientation=lt */
+		  padding-right: 5px; /* orientation=rt */
 		}
 
 	 .UIArticle .Links div {
@@ -199,24 +244,28 @@
 	    text-align: left; /* orientation=lt */
 	    text-align: right; /* orientation=rt */
 	    color: #7d7d7d;
-	    padding: 12px 0px 0px 10px;
+	    padding: 12px 0px 0px 10px; /* orientation=lt */
+	    padding: 12px 10px 0px 0px; /* orientation=rt */
 	    font-weight: bold;
 	  }
 	  
 	  .UIArticle  .Language a.LanguageTitle {
-	    text-align: left;
+	    text-align: left; /* orientation=lt */
+	    text-align: right; /* orientation=rt */
 	    color: #058ee6;
 	    font-weight: normal;
 	  }
 	  
 	  .UIArticle  .Language a:hover.LanguageTitle {
-	    text-align: left;
+	    text-align: left; /* orientation=lt */
+	    text-align: right; /* orientation=rt */
 	    color: #ffa21d;
 	    font-weight: normal;
 	  }
 	  
 	  .UIArticle  .Language a:hover.DefaultLanguageTitle {
-	    text-align: left;
+	    text-align: left; /* orientation=lt */
+	    text-align: right; /* orientation=rt */
 	    color: #ffa21d;
 	    font-weight: bold;
 	  }	  
@@ -230,14 +279,16 @@
 		}
 		
 		.UIArticle .FieldContent .AttachmentsContainer {
-		  margin: 0px 6px 1px 0px;
+		  margin: 0px 6px 1px 0px; /* orientation=lt */
+		  margin: 0px 0px 1px 6px; /* orientation=rt */
 		  overflow-x: hidden;
 		}
 		
 		.UIArticle .AttachmentsContainer a {
 		  text-decortaion: none;
 		  color: #058ee6;
-		  float: left;
+		  float: left; /* orientation=lt */
+		  float: right; /* orientation=rt */
 		}
 		
 		.UIArticle .AttachmentsContainer a:hover {

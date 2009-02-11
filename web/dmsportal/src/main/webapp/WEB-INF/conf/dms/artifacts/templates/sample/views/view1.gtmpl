@@ -28,7 +28,8 @@
 			width: 96%; 
 			height: 160px ; 
 			font-size: 11px; 
-			padding: 5px 5px 5px 10px; 
+			padding: 5px 5px 5px 10px;  /* orientation=lt */
+			padding: 5px 10px 5px 5px;  /* orientation=rt */
 			color: black ; 
 			font-weight: normal;
 			overflow: auto;
@@ -38,14 +39,16 @@
 			width: 96%; 
 			height: 160px ; 
 			font-size: 11px; 
-			padding: 5px 5px 5px 10px; 
+			padding: 5px 5px 5px 10px;  /* orientation=lt */
+			padding: 5px 10px 5px 5px;  /* orientation=rt */
 			color: black ; 
 			font-weight: normal;
 			overflow: auto;
 		}
 		
 		.HeaderSampleBG {
-			background: url('/eXoDMSResources/skin/images/event/EventFrameBG.gif') repeat-x; 
+			background: url('/eXoDMSResources/skin/images/event/EventFrameBG.gif') repeat-x;  /* orientation=lt */
+						
 		  margin-bottom: 2px;
 		  padding: 0px 5px 0px 5px; 
 		  height: 18px;
@@ -60,11 +63,32 @@
 		  border-bottom: solid 1px #BDBDBD;
 	  }
 		.RemoveAttachments {
-		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top;
-		  margin: 0px 5px 0px 3px;
-		  padding-left: 18px;
+		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top;  /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat right top;  /* orientation=rt */
+		  margin: 0px 5px 0px 3px; /* orientation=lt */
+		  margin: 0px 3px 0px 2px; /* orientation=rt */
+		  padding-left: 18px; /* orientation=lt */
+		  padding-right: 18px; /* orientation=rt */
 		  height: 16px;
 		  cursor: pointer;
+		}
+		.WorkSample .RemoveNodeFloat{
+		float: left; /* orientation=lt */
+		float: right; /* orientation=rt */
+		}
+		.WorkSample .LableLeftDescription{
+		width: 47.5%; 
+		float: left; /* orientation=lt */
+		float: right; /* orientation=rt */
+		margin-top: 5px; 
+		border: 1px solid #bdbdbd
+		}
+		.WorkSample .LableRightDescription{
+		width: 47.5%; 
+		float: right; /* orientation=lt */
+		float: left; /* orientation=rt */
+		margin-top: 5px; 
+		border: 1px solid #bdbdbd
 		}
 	</style>
 <div class="UIResizableBlock" id="$uicomponent.id">
@@ -102,7 +126,7 @@
 			</span>
 		</div>
 		<div style="overflow: hidden">
-			<div style="width: 47.5%; float: left; margin-top: 5px; border: 1px solid #bdbdbd">
+			<div class="LableLeftDescription" >
 				<div class="TitleBG">
 					<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.description")%>:</label>
 				</div>
@@ -115,19 +139,19 @@
 			<% if(node.hasNode("exo:image")) {
 				 imgSrc = uicomponent.getImage(node) ;
 			%>
-					<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd;">
+					<div class="LableRightDescription">
 						<div class="TitleBG" >
 							<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.image")%>: </label>
 						</div>
 						<div style= "width: 95%; height: 160px ; text-align: center; padding: 5px;">
-			      	<image src="$imgSrc" width="250" height="150"/> 
+			      	<image src="$imgSrc" width="250" height="150" alt=""/> 
 						</div>
 					</div>
 			<% } %>
 		</div>
 		<!-- div for  Summary and Image -->
 		<div style="overflow: hidden;">
-			<div style="width: 47.5%; float: left; margin-top: 5px; border: 1px solid #bdbdbd;">
+			<div class="LableLeftDescription">
 				<div class="TitleBG">
 					<label class="text" style="padding-left: 5px"><%=_ctx.appRes("Sample.view.label.summary")%>:</label>
 				</div>
@@ -137,7 +161,7 @@
 					<%}%>
 				</div>
 			</div>
-			<div style="width: 47.5%; float: right; margin-top: 5px; border: 1px solid #bdbdbd;">
+			<div class="LableRightDescription">
 				<div class="TitleBG" >
 					<label class="text" style="padding: 5px;"><%=_ctx.appRes("Sample.view.label.content")%>:</label>
 				</div>
@@ -151,7 +175,7 @@
 		<!-- div for Content -->
 		<!-- div for  relation and attackments -->
 		<div style="overflow: hidden;">
-			<div style="width: 47.5%; border: 1px solid #bdbdbd; float: left; margin-top: 5px;">
+			<div class="LableLeftDescription">
 				<div class="TitleBG" >
 					<label class="text" style="padding-left: 5px;"><%=_ctx.appRes("Sample.view.label.relation")%>: </label>
 				</div>
@@ -178,7 +202,7 @@
 					<div style="width: 100%; height: 20px;"> </div>
 			  <%}%>
 			</div>
-			<div style="width: 47.5%; border: 1px solid #bdbdbd; float: right; margin-top: 5px;">
+			<div class="LableRightDescription">
 				<div class="TitleBG" >
 					<label class="text" style="padding-left: 5px;"><%=_ctx.appRes("Sample.view.label.attachment")%>: </label>
 				</div>
@@ -193,12 +217,12 @@
 						  String removeLink = uicomponent.event("RemoveAttach", att.getPath(), new Parameter("workspaceName", att.getSession().getWorkspace().getName())) ;
 						%>
 							<div style="font-size: 12px; padding: 10px;">
-								<div style="float:left">
+								<div class="RemoveNodeFloat">
 								 -<a href="$actionLink3">
 								 		<%=att.getName()%>
 								 	</a>
 								</div>
-								<div style="float:left"> 	
+								<div class="RemoveNodeFloat"> 	
 							 	 <% if (PermissionUtil.canRemoveNode(att)) {%>
 	                    <a href="$removeLink" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-attachment")%>">
 	                      <div class="RemoveAttachments"><span></span></div>

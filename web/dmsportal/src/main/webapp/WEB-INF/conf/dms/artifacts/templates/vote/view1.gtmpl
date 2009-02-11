@@ -4,58 +4,73 @@
 	}
 	
   .UIVote .VoteResultContainer {
-    margin-left: auto;
-    padding-right: 8px;
+    margin-right: auto; /* orientation=lt */
+    margin-left: auto;  /* orientation=rt */
+    padding-right: 8px; /* orientation=lt */
+    padding-left: 8px;  /* orientation=rt */
     width: 370px;
     height: 26px;
 	}
 	
   .UIVote .LeftVoteBar {
-    background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat left -32px;
-    padding-left: 5px;
+    background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat left -32px; /* orientation=lt */
+    background: url('/eXoDMSResources/skin/images/vote/ImageVote-rt.gif') no-repeat right -32px; /* orientation=rt */
+    padding-left: 5px;  /* orientation=lt */
+    padding-right: 5px; /* orientation=rt */
     height: 26px;
 	}
 	
 	.UIVote .RightVoteBar {
-	  background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat right -32px;
-    padding-right: 5px;
+	  background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat right -32px; /* orientation=lt */
+	  background: url('/eXoDMSResources/skin/images/vote/ImageVote-rt.gif') no-repeat left -32px; /* orientation=rt */
+    padding-right: 5px; /* orientation=lt */
+    padding-left: 5px;  /* orientation=rt */
     height: 26px;
 	}
 	
 	.UIVote .CenterVoteBar {
-	  height: 26px; line-height: 26px;
-	  background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') repeat-x left -58px;
+	  height: 26px; 
+	  line-height: 26px;
+	  background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') repeat-x left -58px; /* orientation=lt */
+	  background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') repeat-x right -58px; /* orientation=rt */
 	}
 
    .UIVote .VoteResultContainer .RatingInfoContainer {
-		float: left;
+		float: right; /* orientation=lt */
+		float: left;  /* orientation=rt */
 	}
 	
 	.UIVote .VoteResultContainer .AvgRatingImages {
 		width: 100px; 
 		overflow: hidden;
-		margin-left: 15px;
+		margin-left: 15px;  /* orientation=lt */
+		margin-right: 15px; /* orientation=rt */
 	}
 	
 	.UIVote .AvgRatingImages .Voted {
-		float: left;
+		float: left; /* orientation=lt */
+		float: right; /* orientation=rt */
 		width: 16px;
 		height: 16px;
-		background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat left top;
+		background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat left top; /* orientation=lt */
+		background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat right top; /* orientation=rt */
 		margin: 5px 1px;
 	}
 	
 	.UIVote .AvgRatingImages .Unvoted {
-		float: left;
+		float: left; /* orientation=lt */
+		float: right; /* orientation=rt */
 		width: 16px;
 		height: 16px;
-		background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat left -16px;
+		background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat left -16px; /* orientation=lt */
+		background: url('/eXoDMSResources/skin/images/vote/ImageVote.gif') no-repeat right -16px; /* orientation=rt */
 		margin: 5px 1px;
 	}
 	
 	.UIVote .VoteRatingInfo {
 		font: normal normal 11px verdana;
-		float: left;
+		float: left; /* orientation=lt */
+		float: right; /* orientation=rt */
 	  vertical-align: middle;
 		padding: 0px 5px;
 		margin-top: 5px;
@@ -67,6 +82,7 @@
 	
 	.UIVote .VoteRatingInfo .VotedInfo {
 		color: #058ee6;
+	
 	}
 </style>
 

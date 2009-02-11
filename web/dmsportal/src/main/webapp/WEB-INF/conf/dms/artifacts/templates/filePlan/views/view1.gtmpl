@@ -43,7 +43,8 @@
 		border: 1px solid #dbdbdb;
 		border-top: none;
 		height: 25px;
-		padding-left: 7px;
+		padding-left: 7px; /* orientation=lt */
+		padding-right: 7px; /* orientation=rt */
 		background: white;
 		line-height: 25px;
 	}
@@ -55,27 +56,39 @@
   .UIDivInfo .NavigationButtonContainer {
     cursor: pointer;  	
     display: none;
-    float: right;
+    float: right; /* orientation=lt */
+    float: left; /* orientation=rt */
 		height: 20px;
 		padding-top: 4px;
 		z-index: 1;
   }
   
   .LabelFielPlan {
-  	padding-left: 5px;
+  	padding-left: 5px; /* orientation=lt */
+  	padding-right: 5px; /* orientation=rt */
   	font-weight: normal;
   }
       	
   .UIDivInfo a:hover {		 
 		color: blue;
 	}  
+	.UIDivInfo .ColIcon{
+		padding: 5px 5px 5px 2px; /* orientation=lt */
+		padding: 5px 2px 5px 5px; /* orientation=rt */
+	}
+	.UIDivInfo .Icon{
+		float:left; /* orientation=lt */ 
+		float:right; /* orientation=rt */
+		margin: 0px 5px 0px 0px; /* orientation=lt */
+		margin: 0px 2px 0px 5px; /* orientation=rt */
+	}
 		
 </style>		
 
 <div class="UIDivInfo" id="UIFilePlanView">
 	<div>
-		<div style="padding: 5px 5px 5px 2px;">
-			<div class="$iconName" style="float:left; margin: 0px 5px 0px 0px;"><span></span></div>
+		<div class="ColIcon">
+			<div class="$iconName Icon"><span></span></div>
 			<div class="Title"><%=_ctx.appRes("FilePlan.view.label.content")%>:<label class="LabelFielPlan"><%=originalNode.getName()%></label></div>
 			<div style="clear:left;"><span></span></div>
 		</div>

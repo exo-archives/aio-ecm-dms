@@ -11,16 +11,25 @@
 			border-bottom: 1px solid #bdbdbd; 
 			height: 25px;
 			line-height: 25px;
+			
 		}
 		
 		.TitleBG span.text { 
 			line-height: 20px;
+			padding-left: 5px; /* orientation=lt */
+			padding-right: 5px; /* orientation=rt */
 		}
 		
 		.ContentPodcast .text  { 
 			vertical-align:bottom; 
-			text-align: left ;
+			text-align: left ; /* orientation=lt */
+			text-align: right ; /* orientation=rt */
 			font-weight: bold;
+		}
+		.ContentPodcast .TextDetail{
+			text-align: left ; /* orientation=lt */
+			text-align: right ; /* orientation=rt */
+			vertical-align:bottom;
 		}
 		
 		.ContentPodcast .text span  { 
@@ -29,7 +38,8 @@
 		
 		div.summary { 
 			height: 160px ; 
-			padding: 5px 5px 5px 10px; 
+			padding: 5px 5px 5px 10px; /* orientation=lt */
+			padding: 5px 10px 5px 5px; /* orientation=rt */
 			font-weight: normal;
 			overflow: auto;
 		} 
@@ -46,11 +56,11 @@
 		<div class="ContentPodcast">
 			<% def originalNode = uicomponent.getOriginalNode(); %>
 			<span class="text"><%=_ctx.appRes("Podcast.view.label.podcast")%>: <span>
-			<span><%=originalNode.getName()%></span>
+			<span class="TextDetail"><%=originalNode.getName()%></span>
 		</div>
 		<div class="ContentPodcast">
 			<span class="text"><%=_ctx.appRes("Podcast.view.label.title")%>: </span>
-			<span>
+			<span class="TextDetail">
 				<%if(node.hasProperty("exo:title")) {%>
 					<%=node.getProperty("exo:title").getString()%>
 				<%}%>
@@ -58,7 +68,7 @@
 		</div>
 		<div class="ContentPodcast">
 			<span class="text"><%=_ctx.appRes("Podcast.view.label.link")%>: <span>
-			<span>
+			<span class="TextDetail">
 				<%if(node.hasProperty("exo:link")) {%>
 					<%=node.getProperty("exo:link").getString()%>
 				<%}%>
@@ -66,7 +76,7 @@
 		</div>
 		<div class="ContentPodcast">
 			<span class="text"><%=_ctx.appRes("Podcast.view.label.author")%>:</span>
-			<span>
+			<span class="TextDetail">
 				<%if(node.hasProperty("exo:author")) {%>
 					<%=node.getProperty("exo:author").getString()%>
 				<%}%>
@@ -74,7 +84,7 @@
 		</div>
 		<div class="ContentPodcast">
 			<span class="text"><%=_ctx.appRes("Podcast.view.label.explicit")%>:</span>
-			<span>
+			<span class="TextDetail">
 				<%if(node.hasProperty("exo:explicit")) {%>
 					<%=node.getProperty("exo:explicit").getString()%>
 				<%}%>
@@ -82,7 +92,7 @@
 		</div>	
 		<div class="ContentPodcast">
 			<span class="text"><%=_ctx.appRes("Podcast.view.label.category")%>:</span>
-			<span>
+			<span class="TextDetail">
 				<%if(node.hasProperty("exo:podcastCategory")) {%>
 					<%=node.getProperty("exo:podcastCategory").getString()%>
 				<%}%>
@@ -90,7 +100,7 @@
 		</div>		
 		<div class="ContentPodcast">
 			<span class="text"><%=_ctx.appRes("Podcast.view.label.keyword")%>:</span>
-			<span>
+			<span class="TextDetail">
 				<%if(node.hasProperty("exo:keywords")) {%>
 					<%=node.getProperty("exo:keywords").getString()%>
 				<%}%>
@@ -98,7 +108,7 @@
 		</div>
 		<div class="ContentPodcast">
 			<span class="text"><%=_ctx.appRes("Podcast.view.label.publish-date")%>:</span>
-			<span>
+			<span class="TextDetail">
 				<%if(node.hasProperty("exo:publishedDate")) {%>
 					<%=dateFormat.format(node.getProperty("exo:publishedDate").getDate().getTime())%>
 				<%}%>
@@ -106,7 +116,7 @@
 		</div>		
 		<div class="ContentPodcast">
 			<span class="text"><%=_ctx.appRes("Podcast.view.label.mime-type")%>:</span>
-			<span>
+			<span class="TextDetail">
 			<%if(node.hasNode("jcr:content")) {
 					def contentNode = node.getNode("jcr:content") ;
 					if(contentNode.hasProperty("jcr:mimeType")) {%>				
@@ -117,7 +127,7 @@
 		</div>		
 		<div class="ContentPodcast">
 			<span class="text"><%=_ctx.appRes("Podcast.view.label.length")%>:</span>
-			<span>
+			<span class="TextDetail">
 				<%if(node.hasProperty("exo:length")) {%>
 					<%=node.getProperty("exo:length").getString()%>
 				<%}%>
@@ -126,7 +136,7 @@
 		<!-- div for  Description -->
 		<div style="margin-top: 10px; border: 1px solid #bdbdbd;">
 			<div class="TitleBG">
-				<span class="text" style="padding-left: 5px"><%=_ctx.appRes("Podcast.view.label.description")%>:</span>
+				<span class="text"><%=_ctx.appRes("Podcast.view.label.description")%>:</span>
 			</div>
 			<div class="summary" >
 				<%if(node.hasProperty("exo:description")) {%>
