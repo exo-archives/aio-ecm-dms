@@ -419,7 +419,8 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     Orientation orientation = getOrientation(locale);
     Node nodeType = templateNode.getParent().getParent();
     List<String> documentTemplates = managedDocumentTypesMap.get(repository);
-    if(documentTemplates.contains(nodeType.getName())) {
+    Node parentNode = templateNode.getParent();
+    if(documentTemplates.contains(nodeType.getName()) && parentNode.getName().equals(VIEWS)) {
       if(rtlTemplateCache_.get(nodeType.getName() + LTR) == null || 
           rtlTemplateCache_.get(nodeType.getName() + RTL) == null) {
         setTemplateData(locale, templateNode, nodeType.getName(), RT, LTR);
