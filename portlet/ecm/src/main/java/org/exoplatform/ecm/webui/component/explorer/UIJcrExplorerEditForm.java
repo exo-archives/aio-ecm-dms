@@ -100,10 +100,9 @@ public class UIJcrExplorerEditForm extends UIForm {
       driveNameInput.setRendered(true);
       setFlagSelectRender(true);
     } else if (usecase.equals(UIJCRExplorerPortlet.SOCIAL)) {
-      String groupId = getGroupId();
-      if (groupId == null || groupId.equals("")) {
-        driveNameInput.setRendered(false);
-      }
+      getGroupId();
+      setFlagSelectRender(true);
+      driveNameInput.setRendered(false);
     } else if (usecase.equals(UIJCRExplorerPortlet.SELECTION)) {
       driveNameInput.setRendered(false);
     } else {
@@ -226,13 +225,13 @@ public class UIJcrExplorerEditForm extends UIForm {
         driveNameInput.setRendered(true);
       } else if (typeSelectBox.getValue().equals(UIJCRExplorerPortlet.SOCIAL)) {
         String groupId = uiForm.getGroupId();
+        driveNameInput.setRendered(false);
         if (groupId == null || groupId.equals("")) {
-          driveNameInput.setRendered(false);
           UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
           stringInputDrive.setValue("");
         } else {
           groupId = groupId.replaceAll("/",".");
-          driveNameInput.setRendered(true);
+//          driveNameInput.setRendered(true);
           UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
           stringInputDrive.setValue(groupId);
         }
