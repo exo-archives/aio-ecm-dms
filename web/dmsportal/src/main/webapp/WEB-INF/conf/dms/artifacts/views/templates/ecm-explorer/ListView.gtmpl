@@ -102,7 +102,7 @@
 			    %>
 			    <% String actionURL = uicomponent.event("Sort", typeActionLink + "Type"); %>
 			    
-			    <div class="LeftColumn" onclick="$actionURL" style="float: left; border-right: 1px solid #b7b7b7; width: 30px; height: 19px; cursor:pointer;">
+			    <div class="LeftColumn" onclick="$actionURL" >
 		        <%
 		          if (typeSort.equals("Type")) {
 		        %>
@@ -250,7 +250,7 @@
 	      %>
 	      <div <%=rightClickMenu%> class="RowView Normal" locked="$isLocked" workspacename="$preferenceWS" objectId="$nodePath" ondblclick="$actionLink">
 		      $strActs
-	        <div class="LeftColumn" style="float: left; width: 30px; height: 19px; padding: 2px 0px; 	border-right: none;">
+	        <div class="LeftColumn" style="padding: 2px 0px; 	border-right: none;">
 					  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div>
 	        </div>
 	        <%
