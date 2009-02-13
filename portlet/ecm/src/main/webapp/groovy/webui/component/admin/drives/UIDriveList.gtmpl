@@ -48,7 +48,7 @@
 	          <td>
 	          	<div class="ActionContainer">
 	              <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("EditInfo", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.EditInfo")%>" alt="" class="Edit16x16Icon">
-	              <img src="/eXoResources/skin/sharedImages/Blank.gif" href="<%=uicomponent.event("Delete", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.Delete")%>" alt="" class="Delete16x16Icon">
+	              <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("Delete", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveList.tooltip.Delete")%>" alt="" class="Delete16x16Icon">
 			        </div>
 	          </td>	                    
           </tr>
