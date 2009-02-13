@@ -36,15 +36,19 @@
   #             org.exoplatform.ecm.webui.component.admin.UITaxonomy		 #
   ################################################################################
   -->
-  <UITaxonomyManager>
+  <UITaxonomyWorkingArea>
     <msg>
       <referential-integrity>Lecture impossible à parti du fichier source ou la catégorie de destination est une sous-catégorie</referential-integrity>
       <no-taxonomy-selected>Vous devez copier ou couper au moins 1 catégorie</no-taxonomy-selected>
-      <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
       <node-is-cutting>Impossible de copier ici. La catégorie sélectionnée ('{0}') a probablement été déplacée ou supprimée.</node-is-cutting>
       <can-not-paste>Le presse-papier ne contient aucune donnée à copier.</can-not-paste>
       <reference-exception>Impossible de supprimer cette catégorie car elle est actuellement référencée ailleur.</reference-exception>
       <path-error>Un problème est survenu lors de la suppression de cette catégorie.</path-error>
+    </msg>
+  </UITaxonomyWorkingArea>
+  <UITaxonomyManager>
+    <msg>
+      <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
     </msg>
     <title>
       <add>Ajouter</add>
@@ -803,18 +807,6 @@
       <AddPath>Ajouter un Emplacement</AddPath>
     </title>
   </DriveInputSet>
-  <UIViewForm>
-    <title>
-      <AddPermission>Ajouter une Permission</AddPermission>
-    </title>
-    <msg>
-      <view-name-invalid>Nom invalide</view-name-invalid>
-      <fileName-invalid>Caractères invalides détectés dans le nom</fileName-invalid>
-      <permission-not-empty>Veuillez sélectionner une permission</permission-not-empty>
-      <mustbe-add-tab>Vous devez ajouter au moins une barre d'outils</mustbe-add-tab>
-      <view-exist>Ce nom de vue existe déjà</view-exist>
-    </msg>
-  </UIViewForm>
   <!--
   ###################################################################################
   #             org.exoplatform.ecm.webui.component.admin.action.UIActionTypeList	#
@@ -923,6 +915,18 @@
   #             org.exoplatform.ecm.webui.component.admin.view.UIViewFormTabPane	   #
   ######################################################################################
   -->
+  <UIViewForm>
+    <title>
+      <AddPermission>Ajouter une Permission</AddPermission>
+    </title>
+    <msg>
+      <view-name-invalid>Nom invalide</view-name-invalid>
+      <fileName-invalid>Caractères invalides détectés dans le nom</fileName-invalid>
+      <permission-not-empty>Veuillez sélectionner une permission</permission-not-empty>
+      <mustbe-add-tab>Vous devez ajouter au moins une barre d'outils</mustbe-add-tab>
+      <view-exist>Ce nom de vue existe déjà</view-exist>
+    </msg>
+  </UIViewForm>
   <UITabForm>
     <msg>
       <button-select-error>Vous devez sélectionner au moins une fonction</button-select-error>
@@ -965,8 +969,8 @@
       <viewPermissions>Voir les permissions</viewPermissions>
       <viewProperties>Voir les propriétés</viewProperties>
       <manageVersions>Gérer les versions</manageVersions>
-      <manageAuditing>Gérer la traHabilité</manageAuditing>
-      <ManagePublications>Gérer les publications</ManagePublications>
+      <manageAuditing>Gérer la traçabilité</manageAuditing>
+      <managePublications>Gérer les publications</managePublications>
       <manageCategories>Gérer les categories</manageCategories>
       <manageRelations>Gérer les relations</manageRelations>
       <manageActions>Gérer les actions</manageActions>
@@ -1666,14 +1670,11 @@
       <AddAnyPermission>Ajouter une permission quelconque</AddAnyPermission>
     </title>
   </anyPermission>
-  <!--
-  #########Since ECM 2.3 to be translated##################
-  -->
   <QueriesPermissionBrowse>
     <label>
-      <selectGroup>Select group</selectGroup>
-      <selectUser>Select user</selectUser>
-      <selectMembership>Select membership</selectMembership>
+      <selectGroup>Sélectionner un groupe</selectGroup>
+      <selectUser>Sélectionner un utilisateur</selectUser>
+      <selectMembership>Sélectionner un membership</selectMembership>
     </label>
   </QueriesPermissionBrowse>
 </bundle>
