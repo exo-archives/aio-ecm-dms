@@ -93,6 +93,7 @@ public class UIGroupMemberSelector extends UIContainer implements ComponentSelec
     for(Object obj : collection){
       listMemberhip.add(((MembershipType)obj).getName());
     }
+    if (!listMemberhip.contains("*")) listMemberhip.add("*");
     
     tree.setSibbling((List)sibblingsGroup);
     tree.setIcon("GroupAdminIcon");
