@@ -241,7 +241,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Rss.dialog.label.publish-date")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldPubDate = ["jcrPath=/node/exo:pubDate"] ; 
+		        String[] fieldPubDate = ["jcrPath=/node/exo:pubDate", "options=displaytime", "validate=datetime", "visible=true"];
 		        uicomponent.addCalendarField("pubDate", fieldPubDate) ;
 		      %>
 		    </td>
