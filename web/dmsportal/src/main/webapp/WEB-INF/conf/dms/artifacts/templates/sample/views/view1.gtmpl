@@ -90,6 +90,14 @@
 		margin-top: 5px; 
 		border: 1px solid #bdbdbd
 		}
+		.WorkSample .LableLeftDescription p a {
+		  color: #058EE6;
+      text-decoration: underline;
+		}
+		.WorkSample .LableRightDescription p a {
+		  color: #058EE6;
+      text-decoration: underline;
+		}
 	</style>
 <div class="UIResizableBlock" id="$uicomponent.id">
 	<div class="WorkSample">
