@@ -22,22 +22,31 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 
+import org.exoplatform.ecm.jcr.ComponentSelector;
+import org.exoplatform.ecm.jcr.UIPopupComponent;
+import org.exoplatform.ecm.jcr.UISelector;
 import org.exoplatform.ecm.utils.Utils;
 import org.exoplatform.ecm.webui.component.DialogFormFields;
+import org.exoplatform.ecm.webui.component.UIJCRBrowser;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIFormInput;
+import org.exoplatform.webui.form.UIFormInputBase;
+import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 
 /**
  * Created by The eXo Platform SARL
@@ -50,11 +59,12 @@ import org.exoplatform.webui.event.Event.Phase;
     events = {
       @EventConfig(listeners = DialogFormFields.SaveActionListener.class),
       @EventConfig(listeners = UILanguageDialogForm.CancelActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UILanguageDialogForm.ShowComponentActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UILanguageDialogForm.AddActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UILanguageDialogForm.RemoveActionListener.class, phase = Phase.DECODE)
     }
 )
-public class UILanguageDialogForm extends DialogFormFields {
+public class UILanguageDialogForm extends DialogFormFields implements UIPopupComponent, UISelector {
 
   private boolean isAddNew_ = false ; 
   private String selectedLanguage_ = null;
@@ -200,9 +210,89 @@ public class UILanguageDialogForm extends DialogFormFields {
     }
   }
 
+  @SuppressWarnings("unchecked")
+  static public class ShowComponentActionListener extends EventListener<UILanguageDialogForm> {
+    public void execute(Event<UILanguageDialogForm> event) throws Exception {
+        UILanguageDialogForm uiForm = event.getSource();
+        UIAddLanguageContainer uiContainer = uiForm.getParent();
+        uiForm.isShowingComponent_ = true;
+        String fieldName = event.getRequestContext().getRequestParameter(OBJECTID);
+        Map fieldPropertiesMap = uiForm.components.get(fieldName);
+        String classPath = (String)fieldPropertiesMap.get("selectorClass");
+        ClassLoader cl = Thread.currentThread().getContextClassLoader();
+        Class clazz = Class.forName(classPath, true, cl);
+        String rootPath = (String)fieldPropertiesMap.get("rootPath");
+        UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
+        if(uiComp instanceof UIJCRBrowser) {
+          UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+          String repositoryName = explorer.getRepositoryName();
+          SessionProvider provider = explorer.getSessionProvider();                
+          ((UIJCRBrowser)uiComp).setRepository(repositoryName);
+          ((UIJCRBrowser)uiComp).setSessionProvider(provider);
+          String wsFieldName = (String)fieldPropertiesMap.get("workspaceField");
+          String wsName = "";
+          if(wsFieldName != null && wsFieldName.length() > 0) {
+            wsName = (String)uiForm.<UIFormInputBase>getUIInput(wsFieldName).getValue();
+            ((UIJCRBrowser)uiComp).setIsDisable(wsName, true);      
+          } else {
+            wsName = uiForm.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();
+            ((UIJCRBrowser)uiComp).setIsDisable(wsName, true);
+          }
+          if(wsFieldName != null && rootPath != null) ((UIJCRBrowser)uiComp).setRootPath(rootPath);
+          String selectorParams = (String)fieldPropertiesMap.get("selectorParams");
+          if(selectorParams != null) {
+            String[] arrParams = selectorParams.split(",");
+            if(arrParams.length == 4) {
+              ((UIJCRBrowser)uiComp).setFilterType(new String[] {Utils.NT_FILE});
+              ((UIJCRBrowser)uiComp).setRootPath(arrParams[2]);
+              if(arrParams[3].indexOf(";") > -1) {
+                ((UIJCRBrowser)uiComp).setMimeTypes(arrParams[3].split(";"));
+              } else {
+                ((UIJCRBrowser)uiComp).setMimeTypes(new String[] {arrParams[3]});
+              }
+            }
+          }
+        }
+        uiContainer.initPopup(uiComp);
+        String param = "returnField=" + fieldName;
+        ((ComponentSelector)uiComp).setComponent(uiForm, new String[]{param});
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
+      }
+  }
+  
   static public class RemoveActionListener extends EventListener<UILanguageDialogForm> {
     public void execute(Event<UILanguageDialogForm> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
     }
+  }
+
+  public void activate() throws Exception {
+    // TODO Auto-generated method stub
+    
+  }
+
+  public void deActivate() throws Exception {
+    // TODO Auto-generated method stub
+    
+  }
+    
+  public void updateSelect(String selectField, String value) {
+    isUpdateSelect_ = true;    
+    UIFormInput formInput = getUIInput(selectField);
+    if (value != null && value.indexOf(":/") > 0) {
+      value = value.substring(value.indexOf(":/"));
+    }
+    if(formInput instanceof UIFormInputBase) {
+      ((UIFormInputBase)formInput).setValue(value);
+    }else if(formInput instanceof UIFormMultiValueInputSet) {
+      UIFormMultiValueInputSet  inputSet = (UIFormMultiValueInputSet) formInput;
+      UIFormInputBase input = inputSet.getChild(inputSet.getChildren().size()-1);
+      input.setValue(value);
+    }
+    UIMultiLanguageManager uiMultiLanguageManager = getAncestorOfType(UIMultiLanguageManager.class);
+    UIAddLanguageContainer uiContainer = uiMultiLanguageManager.getChild(UIAddLanguageContainer.class);
+    uiMultiLanguageManager.getChild(UIMultiLanguageForm.class).setRendered(false);
+    uiMultiLanguageManager.getChild(UIAddLanguageContainer.class).setRendered(true);
+    uiContainer.removeChildById("PopupLanguageComponent");
   }
 }

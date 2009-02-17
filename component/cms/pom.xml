@@ -7,7 +7,7 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.component.cms</artifactId>
-  <version>${org.exoplatform.ecm.version}</version>
+  <version>2.1.2.1</version>
   <packaging>jar</packaging>
   <name>eXo CMS Service</name>
   <url>http://www.exoplatform.org</url>

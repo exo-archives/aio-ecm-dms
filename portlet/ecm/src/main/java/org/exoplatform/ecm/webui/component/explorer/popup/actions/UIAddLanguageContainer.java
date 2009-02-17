@@ -18,7 +18,9 @@ package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
 /**
@@ -35,6 +37,15 @@ public class UIAddLanguageContainer extends UIContainer {
   
   public UIAddLanguageContainer() throws Exception {
     addChild(UILanguageTypeForm.class, null, null) ;
+  }
+  
+  public void initPopup(UIComponent uiComp) throws Exception {
+    removeChildById("PopupLanguageComponent") ;
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "PopupLanguageComponent") ;
+    uiPopup.setUIComponent(uiComp) ;
+    uiPopup.setWindowSize(640, 300) ;
+    uiPopup.setShow(true) ;
+    uiPopup.setResizable(true) ;
   }
   
   public void setComponentDisplay(String nodeTypeName) throws Exception {
