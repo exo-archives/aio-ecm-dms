@@ -88,4 +88,8 @@ public class UICategoriesSelectPanel extends UIContainer{
       event.getRequestContext().addUIComponentToUpdateByAjax(uiCategoriesSelector) ;
     }
   }
+
+  public Node getParentNode() {
+    return parentNode;
+  }
 }
