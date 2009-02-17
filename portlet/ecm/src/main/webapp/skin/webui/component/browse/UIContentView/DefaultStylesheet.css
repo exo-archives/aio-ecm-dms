@@ -17,13 +17,16 @@
 }
 
 .UIContentView .TiteContentIcon {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	margin: 0px 5px;
 }
 
 .UIContentView .TiteContentView a {
-	float: left;
-	margin-left: 6px;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	margin-left: 6px; /* orientation=lt */
+	margin-right: 6px; /* orientation=rt */
 	line-height: 18px; vertical-align: middle;
 	font-size: 11px; font-weight: bold;
 	color: #058ee6;
@@ -35,7 +38,8 @@
 }
 
 .UIContentView .FormContentView {
-  margin-left: 0px;
+  margin-left: 0px; /* orientation=lt */
+  margin-right: 0px; /* orientation=rt */
 	border: 1px solid #dee7ef;
 	overflow: auto;
 }
@@ -65,7 +69,8 @@
 }
 
 .UIContentView .SubFormContent .ChildrenContentHolderLeft{
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 46%;
 	margin: 5px 0px;
 	padding: 1px;
@@ -74,7 +79,8 @@
 } 
 
 .UIContentView .SubFormContent .ChildrenContentHolderRight{
-	float: right;
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
 	width: 46%;
 	margin: 5px 0px;
 	padding: 1px;
@@ -83,14 +89,17 @@
 } 
 
 .UIContentView .SubFormContent .ImageNote {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	height: 34px;
   width: 28px;
-	background: url('DefaultSkin/background/Note28x34.gif');
+	background: url('DefaultSkin/background/Note28x34.gif') no-repeat left top; /* orientation=lt */
+	background: url('DefaultSkin/background/Note28x34-rt.gif') no-repeat right top; /* orientation=rt */
 }
 
 .UIContentView .SubFormContent .ContentLabel {
-	margin-left: 30px;
+	margin-left: 30px; /* orientation=lt */
+	margin-right: 30px; /* orientation=rt */
 }
 
 .UIContentView .SubFormContent .UserName {

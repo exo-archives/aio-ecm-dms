@@ -27,24 +27,24 @@
 	   uicomponent.renderChild(UISearchController.class); 
 	 } else {	 
 	  /*Begin TagMap*/   
-			 	String styleWithTag = "margin-right: 0px" ;
+			 	String className = "" ;
 			 	if(isShowTagmap) {	
-			 		styleWithTag = "margin-right: 210px;"	 ;  
+			 		className = "RightColumn"	 ;  
 			 	 	uicomponent.renderChild(UITagList.class);
 		 		} 
 		 	/*End TagMap*/%>
-		<div style="$styleWithTag">
+		<div class="$className">
 		<% /*Begin CategoryTree*/
-			String style = "margin-left: 0px;" ;
+			String style = "" ;
 	 		if(uicomponent.isShowCategoryTree()){
-	   		style = "margin-left: 210px;" ;
+	   		style = "CenterColumn" ;
 	   		String rootNode = uicomponent.getRootNode().getPath() ;
 	   		if (rootNode.equals("/"))  rootNode = "Root" ;
 	   		else  rootNode =  uicomponent.getRootNode().getName() ;
 				uicomponent.renderChild(UICategoryTree.class);	
    		}
    		/*End CategoryTree*/ %>
-	  	<div style="$style">
+	  	<div class="$style">
 			<%/*Begin UIEventViewer*/%>
 					<div class="UIEventViewer">
 				 	<%if(hasNoDocument){%>

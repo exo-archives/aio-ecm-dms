@@ -42,13 +42,13 @@
 	 %>
 	 <div class="ContentHolder">
 	  <%/*Begin TagMap*/ 
-	  String styleWithTag = "margin-right: 0px" ;
+	  String classN = "" ;
 		if(isShowTagmap) {	
-			styleWithTag = "margin-right: 210px;"	 ;  
+			classN = "RightColumn"	 ;  
 		 	uicomponent.renderChild(UITagList.class);
 		} 
 	  /*End TagMap*/%>  
-	  <div style="$styleWithTag">
+	  <div class="$classN">
 	  <%/*Begin UICBNavigation*/%>
 	  <div class="UICBNavigation">
 	    <div class="CBLeftNavigation">

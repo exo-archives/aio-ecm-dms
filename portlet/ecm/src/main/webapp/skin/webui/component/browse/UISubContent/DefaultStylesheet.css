@@ -23,7 +23,8 @@
 }
 
 .UISubContent .TopSubContent a{
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	height: 16px;
 	padding: 1px 5px 0px 7px;
 	color: #058ee6;
@@ -57,28 +58,34 @@
 }
 
 .UISubContent .SubContentTitle .ChildContainer{
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 }
 .UISubContent .SubContentTitle .LeftIcon {
-	float: left; 
+	float: left;  /* orientation=lt */
+	float: right;  /* orientation=rt */
 	height: 20px;
-	margin-left: 3px;
+	margin-left: 3px; /* orientation=lt */
+	margin-right: 3px; /* orientation=rt */
 }
 
 .UISubContent .NavigationButtonContainer {
-	float: right;
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
 	height: 16px;
 	margin-top: 4px;
 }
 
 .UISubContent .NavigationButtonContainer .NavigationIcon {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	cursor: pointer;
 	/*margin-top: 4px;*/
 }
 
 .UISubContent .SubContentTitle .ChildNode { 
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	height: 18px;
 	padding: 1px 5px 0px 5px;
 }
@@ -95,13 +102,15 @@
 }
 
 .UISubContent .SubContentTitle .NodeLabel { 
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	padding: 0px 8px;
 	line-height: 19px;
 }
 
 .UISubContent .SubContentTitle .RightIcon { 
-	float: right;
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
 	height: 20px;
 	margin-right: 3px;
 }
@@ -109,7 +118,7 @@
 /*###########################-- End Title --############################*/
 
 .UISubContent .UIDocumentContentInfo {
-	border: solid 1px #e1e1e1 ;
+	border: solid 1px #e1e1e1;
 	padding: 5px 0px;
 	margin: 0px 7px;
 }
@@ -124,20 +133,24 @@
 }
 
 .UISubContent .ItemIcon { 
- 	float:left;
+ 	float: left; /* orientation=lt */
+ 	float: right; /* orientation=rt */
  	margin-top: 0px;
- 	margin-left: 4px;
+ 	margin-left: 4px; /* orientation=lt */
+ 	margin-right: 4px; /* orientation=rt */
 }
 
 .UISubContent .UIDocumentContentInfo .DocumentInfo {
 	height: 20px;
 	line-height: 20px;
-	padding: 2px 0px 2px 10px;
+	padding: 2px 0px 2px 10px; /* orientation=lt */
+	padding: 2px 10px 2px 0px; /* orientation=rt */
 }
 
 .UISubContent .UIDocumentContentInfo .DocumentLabel {
 	font-size: 11px;
-	margin-left: 20px;
+	margin-left: 20px; /* orientation=lt */
+	margin-right: 20px; /* orientation=rt */
   line-height: 16px;
 }
 
@@ -153,8 +166,10 @@
 	font-size: 11px;
   line-height: 20px;
   color: gray;
-  text-align: right;
-  padding-right: 10px;
+  text-align: right; /* orientation=lt */
+  text-align: left; /* orientation=rt */
+  padding-right: 10px; /* orientation=lt */
+  padding-left: 10px; /* orientation=rt */
 }
 
 .UISubContent .UIDocumentContentInfo .DateTimeLabel {
@@ -164,18 +179,23 @@
 }
 
 .ViewMoreDocument{
-	float: right;
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
 	height: 16px; line-height: 16px; vertical-align: middle;
 	border: 1px solid #e1e1e1;
-	margin: 3px 12px 0px 0px;
+	margin: 3px 12px 0px 0px; /* orientation=lt */
+	margin: 3px 0px 0px 12px; /* orientation=rt */
 }
 
 .ViewMoreDocument a{
-  margin-right: 10px;
+  margin-right: 10px; /* orientation=lt */
+  margin-left: 10px; /* orientation=rt */
   font-size: 11px;
   color: #058ee6;
-  float: left;
-  padding-left: 3px;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=lrt */
+  padding-left: 3px; /* orientation=lt */
+  padding-right: 3px; /* orientation=rt */
 }
 
 .ViewMoreDocument a:hover{
@@ -183,9 +203,11 @@
 }
 
 .ViewMoreDocument .NextIcon{
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 16px; height: 16px;
-  background: url('DefaultSkin/background/BlackDotNextArrow.gif');
+  background: url('DefaultSkin/background/BlackDotNextArrow.gif') no-repeat left top; /* orientation=lt */
+  background: url('DefaultSkin/background/BlackDotNextArrow-rt.gif') no-repeat right top; /* orientation=rt */
 }
 
 .UISubContent .UIDocumentContentInfo .NoneDocumentMessage {
@@ -194,14 +216,18 @@
 }
 
 .UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Info16x16Icon {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 16px; height: 16px;
-	margin: 3px 5px 0px 0px;
-	background: url('DefaultSkin/background/InfoIcon.gif') no-repeat; 
+	margin: 3px 5px 0px 0px; /* orientation=lt */
+	margin: 3px 0px 0px 5px; /* orientation=rt */
+	background: url('DefaultSkin/background/InfoIcon.gif') no-repeat left top;  /* orientation=lt */
+	background: url('DefaultSkin/background/InfoIcon-rt.gif') no-repeat right top; /* orientation=rt */
 }
 
 .UISubContent .UIDocumentContentInfo .NoneDocumentMessage .Message {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	color: #b7b7b7;
 	font-size: 11px;
   line-height: 20px;

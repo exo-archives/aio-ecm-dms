@@ -7,7 +7,8 @@
  */
 
 .Icon16x16 {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 }
 
 .AddIcon16x16 {

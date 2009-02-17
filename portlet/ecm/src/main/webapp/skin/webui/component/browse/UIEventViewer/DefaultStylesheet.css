@@ -1,13 +1,13 @@
 .UIEventViewer {  
   margin: 0px;
-  border: solid 1px #c0c0c0 ;
+  border: solid 1px #c0c0c0;
   padding: 8px 0px;
   height: 100%;
 }
 
 .UIEventViewer .DocumentsPageIterator {
 }
-
+  
 .UIEventViewer .DocumentsPageIterator .UIPageIterator {
 	margin-right: 0px;
 }
@@ -20,17 +20,21 @@
 }
 
 .UIEventViewer .ViewPreviousDocument {
-  margin: 4px 0px 5px 8px;
+  margin: 4px 0px 5px 8px; /* orientation=lt */
+  margin: 4px 8px 5px 0px; /* orientation=rt */
   height: 19px; vertical-align: middle;
   border: 1px #e1e1e1 solid; background: #f3f3f3;
   width: 115px;
 }
 
 .UIEventViewer .ViewPreviousDocument .BackIcon {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
   width: 16px; height: 16px;
-  margin: 3px 0px 0px 2px;
-  background: url('DefaultSkin/background/BlackDotBackArrow.gif') no-repeat;
+  margin: 3px 0px 0px 2px; /* orientation=lt */
+  margin: 3px 2px 0px 0px; /* orientation=rt */
+  background: url('DefaultSkin/background/BlackDotBackArrow.gif') no-repeat left top; /* orientation=lt */
+  background: url('DefaultSkin/background/BlackDotBackArrow-rt.gif') no-repeat right top; /* orientation=rt */
 }
 
 .UIEventViewer .ViewPreviousDocument a{
@@ -49,9 +53,11 @@
 }
 
 .UIEventViewer .EventContent .EventDocumentLabel {
-	margin-left: 5px;
+	margin-left: 5px; /* orientation=lt */
+	margin-right: 5px; /* orientation=rt */
   line-height: 18px; 
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 .UIEventViewer .EventContent .EventDocumentLabel a{
@@ -67,15 +73,18 @@
 	width: 45%;
 	color: gray;
   line-height: 16px;
-  padding-right: 10px;
+  padding-right: 10px; /* orientation=lt */
+  padding-left: 10px; /* orientation=rt */
 }
 
 .UIEventViewer .EventContent .DateAndTimeLabel {
-	text-align: left;
+	text-align: left; /* orientation=lt */
+	text-align: right; /* orientation=rt */
 	width: 180px;
 	color: gray;
   vertical-align: middle;
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 .UIEventViewer .EventContent .SummaryTitleLabel {
@@ -89,13 +98,15 @@
 }
 
 .UIEventViewer .EventContent .MainEventContent {
-  padding: 3px 0px 5px 20px; 
+  padding: 3px 0px 5px 20px; /* orientation=lt */
+  padding: 3px 20px 5px 0px; /* orientation=rt */
 }
 
 .UIEventViewer .EventContent .TitleEventContent {
 	height: 17px;
   background: url('DefaultSkin/background/TitleEventViewrBG1x17.gif') repeat-x;
-  padding-left: 10px;
+  padding-left: 10px; /* orientation=lt */
+  padding-right: 10px; /* orientation=rt */
 }
 
 .UIEventViewer .EventContent .PanelEventContent {

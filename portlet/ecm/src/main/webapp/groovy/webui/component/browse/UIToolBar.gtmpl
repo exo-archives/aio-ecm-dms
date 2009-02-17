@@ -46,11 +46,10 @@
 	    <%	}
 	      }
 	    %>
-      <div style="clear:left"></div>
+      <div class="ClearLeft"></div>
     <%}%> 
 	</div>
 	<div class="CBActionContainer">
-	 	<div class="SeparatorLine"><span></span></div>
     <%
       String actionLabel = "" ;
       String link = "" ;
@@ -85,7 +84,8 @@
       %>
 	    	<a class="Icon Style1BackArrow24x24Icon" href="$link" title="$actionLabel"><span></span></a>   
 	    <%}%>   
-    <div style="clear: left;"><span></span></div>
+ 	 	<div class="SeparatorLine"><span></span></div>
+    <div class="ClearLeft"><span></span></div>
   </div>
-  <div style="clear:both"><span></span></div>
+  <div class="ClearBoth"><span></span></div>
 </div>
