@@ -310,7 +310,7 @@ public class PublicationServiceImpl implements PublicationService {
     if (node.isNodeType(PUBLICATION)) {
       String lifecycleName = node.getProperty(LIFECYCLE_NAME).getString();
       PublicationPlugin publicationPlugin = publicationPlugins_.get(lifecycleName);
-      return publicationPlugin.getNodePublish(node);
+      return publicationPlugin.getNodeView(node, null);
     }
     return null;
   }

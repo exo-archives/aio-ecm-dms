@@ -539,46 +539,6 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     return newarray; 
   }
   
-  @SuppressWarnings("unused")
-  public Node getNodeView(Node node, Map<String, Object> context) throws Exception {
-    Value[] values = node.getProperty(VERSIONS_PUBLICATION_STATES).getValues();
-    String versionUUID = "";
-    /*
-     * find which version is published
-     */
-    if (values == null) return null;
-    for(Value value : values) {
-      if(value.equals(PUBLISHED)) {
-        versionUUID = value.getString().split(",")[0];
-        break;
-      }
-    }
-    Node publishedNode = null;
-    if (versionUUID.length() > 0) {
-      /*
-       * Check and published it
-       */
-      publishedNode = node.getVersionHistory().getBaseVersion().getNode(versionUUID);
-      Session session = node.getSession();
-      ManageableRepository repository = (ManageableRepository) session.getRepository();
-      Session systemSession = repository.getSystemSession(session.getWorkspace().getName());
-      String userId = session.getUserID();
-      /*
-       * When current session has the anonymous credentials then turn on
-       * visibility flag
-       */
-      if (userId == null) {
-        String visibility = PUBLIC;
-        Value newValueVisibility = systemSession.getValueFactory().createValue(visibility);
-        publishedNode.setProperty(VISIBILITY, newValueVisibility);
-        /* set permissions */
-        setVisibility(publishedNode, visibility);
-      }
-      systemSession.logout();
-    }
-    return publishedNode;
-  }
-  
   public String getLocalizedAndSubstituteMessage(Locale locale, String key, String[] values) throws Exception{
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     ResourceBundleService resourceBundleService = (ResourceBundleService) container.getComponentInstanceOfType(ResourceBundleService.class);
@@ -588,12 +548,10 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     return String.format(result,values);
   }
 
-  @Override
-  public Node getNodePublish(Node currentNode) throws Exception {
+  @SuppressWarnings("unused")
+  public Node getNodeView(Node currentNode, Map<String, Object> context) throws Exception {
     VersionNode rootVersion = new VersionNode(currentNode.getVersionHistory().getRootVersion());
     return getVerionNodePublish(rootVersion.getChildren(), currentNode);
-//    if (currentNode.getProperty(CURRENT_STATE).getString().equals(PUBLISHED)) return currentNode; 
-//    return null;
   }
   
   private Node getVerionNodePublish(List<VersionNode> list, Node currentNode) throws Exception {
@@ -623,4 +581,44 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     }
     return StaticAndDirectPublicationPlugin.DEFAULT_STATE;
   }
+  
+//  @SuppressWarnings("unused")
+//  public Node getNodeView(Node node, Map<String, Object> context) throws Exception {
+//    Value[] values = node.getProperty(VERSIONS_PUBLICATION_STATES).getValues();
+//    String versionUUID = "";
+//    /*
+//     * find which version is published
+//     */
+//    if (values == null) return null;
+//    for(Value value : values) {
+//      if(value.equals(PUBLISHED)) {
+//        versionUUID = value.getString().split(",")[0];
+//        break;
+//      }
+//    }
+//    Node publishedNode = null;
+//    if (versionUUID.length() > 0) {
+//      /*
+//       * Check and published it
+//       */
+//      publishedNode = node.getVersionHistory().getBaseVersion().getNode(versionUUID);
+//      Session session = node.getSession();
+//      ManageableRepository repository = (ManageableRepository) session.getRepository();
+//      Session systemSession = repository.getSystemSession(session.getWorkspace().getName());
+//      String userId = session.getUserID();
+//      /*
+//       * When current session has the anonymous credentials then turn on
+//       * visibility flag
+//       */
+//      if (userId == null) {
+//        String visibility = PUBLIC;
+//        Value newValueVisibility = systemSession.getValueFactory().createValue(visibility);
+//        publishedNode.setProperty(VISIBILITY, newValueVisibility);
+//        /* set permissions */
+//        setVisibility(publishedNode, visibility);
+//      }
+//      systemSession.logout();
+//    }
+//    return publishedNode;
+//  }
 }
