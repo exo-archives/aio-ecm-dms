@@ -378,7 +378,6 @@ public class UIWorkingArea extends UIContainer {
     String srcPath = currentClipboard.getSrcPath();
     String type = currentClipboard.getType();
     String srcWorkspace = currentClipboard.getWorkspace();
-    if(srcWorkspace == null) srcWorkspace = uiExplorer.getCurrentWorkspace();
     Session session = uiExplorer.getSession();
     if(ClipboardCommand.CUT.equals(type) && srcPath.equals(destPath)) { 
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-cutting", null, 
@@ -394,13 +393,11 @@ public class UIWorkingArea extends UIContainer {
     ActionServiceContainer actionContainer = getApplicationComponent(ActionServiceContainer.class);
     try {
       if(ClipboardCommand.COPY.equals(type)) {
-        pasteByCopy(session, srcPath, destPath);
+        pasteByCopy(session, srcWorkspace, srcPath, destPath);
         Node selectedNode = (Node)session.getItem(destPath);
         actionContainer.initiateObservation(selectedNode, uiExplorer.getRepositoryName());
       } else {
-        if(!srcPath.equals(destPath)) {
-          pasteByCut(uiExplorer, session, srcPath, destPath, actionContainer, uiExplorer.getRepositoryName());
-        }
+          pasteByCut(uiExplorer, session, srcWorkspace, srcPath, destPath, actionContainer, uiExplorer.getRepositoryName());
       }
     } catch(ConstraintViolationException ce) {       
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
@@ -451,21 +448,42 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
-  private void pasteByCopy(Session session, String srcPath, String destPath) throws Exception {
-    Workspace workspace = session.getWorkspace();           
-    workspace.copy(srcPath, destPath);
-    Node destNode = (Node) session.getItem(destPath);
-    removeReferences(destNode);
+  private void pasteByCopy(Session session, String srcWorkspaceName, String srcPath, String destPath) throws Exception {
+    Workspace workspace = session.getWorkspace();
+    if (workspace.getName().equals(srcWorkspaceName)) {
+      workspace.copy(srcPath, destPath);
+      Node destNode = (Node) session.getItem(destPath);
+      removeReferences(destNode);
+    } else {
+      try {
+        System.out.println("Copy to another workspace");
+        workspace.copy(srcWorkspaceName, srcPath, destPath);
+        //workspace.clone(srcWorkspaceName, srcPath, destPath, true);
+      } catch (Exception e) {
+        System.out.println("Copy to other workspace by clone");
+        e.printStackTrace();
+        try {
+          workspace.clone(srcWorkspaceName, srcPath, destPath, false);  
+        } catch (Exception f) {
+          f.printStackTrace();
+        }
+        
+      }
+    }
   }
 
-  private void pasteByCut(UIJCRExplorer uiExplorer, Session session, String srcPath, 
+  private void pasteByCut(UIJCRExplorer uiExplorer, Session session, String srcWorkspace, String srcPath, 
       String destPath, ActionServiceContainer actionContainer, String repository) throws Exception {
+    Workspace workspace = session.getWorkspace();
+    if (workspace.getName().equals(srcWorkspace)) {
+      if (srcPath.equals(destPath)) return;
+    }
     RelationsService relationsService = 
       uiExplorer.getApplicationComponent(RelationsService.class);
     List<Node> refList = new ArrayList<Node>();
     boolean isReference = false;
     PropertyIterator references = null;
-    Node srcNode = (Node)uiExplorer.getSession().getItem(srcPath);
+    Node srcNode = (Node)uiExplorer.getSessionByWorkspace(srcWorkspace).getItem(srcPath);
     try {
       references = srcNode.getReferences();
       isReference = true;
@@ -485,27 +503,35 @@ public class UIWorkingArea extends UIContainer {
         }
       }
     }
-    Workspace workspace = session.getWorkspace();
-    try {
-      workspace.move(srcPath, destPath);
-    } catch(ArrayIndexOutOfBoundsException e) {
-      throw new MessageException(new ApplicationMessage("UIPopupMenu.msg.bound-exception", null, 
-          ApplicationMessage.WARNING));
-    }
-    session.save();
-    if(!isMultiSelect_ || (isMultiSelect_ && isLastPaste_)) {
-      Node desNode = (Node)session.getItem(destPath);
-      actionContainer.initiateObservation(desNode, repository);
-      for(int i = 0; i < refList.size(); i ++) {
-        Node addRef = refList.get(i);
-        relationsService.addRelation(addRef, destPath,session.getWorkspace().getName(),uiExplorer.getRepositoryName());
-        addRef.save();
-      }      
-      uiExplorer.getAllClipBoard().clear();
-      virtualClipboards_.clear();
-      String currentPath = uiExplorer.getCurrentPath();
-      if(srcPath.equals(currentPath) || currentPath.startsWith(srcPath)) {
-        uiExplorer.setCurrentPath(srcNode.getParent().getPath());
+    
+    if (workspace.getName().equals(srcWorkspace)) {
+      try {
+        workspace.move(srcPath, destPath);
+      } catch(ArrayIndexOutOfBoundsException e) {
+        throw new MessageException(new ApplicationMessage("UIPopupMenu.msg.bound-exception", null, 
+            ApplicationMessage.WARNING));
+      }
+      session.save();
+      if(!isMultiSelect_ || (isMultiSelect_ && isLastPaste_)) {
+        Node desNode = (Node)session.getItem(destPath);
+        actionContainer.initiateObservation(desNode, repository);
+        for(int i = 0; i < refList.size(); i ++) {
+          Node addRef = refList.get(i);
+          relationsService.addRelation(addRef, destPath,session.getWorkspace().getName(),uiExplorer.getRepositoryName());
+          addRef.save();
+        }
+        uiExplorer.getAllClipBoard().clear();
+        virtualClipboards_.clear();
+        String currentPath = uiExplorer.getCurrentPath();
+        if(srcPath.equals(currentPath) || currentPath.startsWith(srcPath)) {
+          uiExplorer.setCurrentPath(srcNode.getParent().getPath());
+        }
+      }
+    } else {
+      workspace.clone(srcWorkspace, srcPath, destPath, false);
+      if(!isMultiSelect_ || (isMultiSelect_ && isLastPaste_)) {
+        uiExplorer.getAllClipBoard().clear();
+        virtualClipboards_.clear();
       }
     }
   }
@@ -1028,7 +1054,10 @@ public class UIWorkingArea extends UIContainer {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);      
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
+      if (wsName == null || wsName.length() == 0) {
+        wsName = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();
+      }
       if(srcPath.indexOf(";") > -1) {
         uiWorkingArea.isMultiSelect_ = true;
         uiWorkingArea.virtualClipboards_.clear();
@@ -1045,6 +1074,9 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
+      if (wsName == null || wsName.length() == 0) {
+        wsName = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();
+      }
       if(nodePath.indexOf(";") > -1) {
         uiWorkingArea.isMultiSelect_ = true;
         uiWorkingArea.virtualClipboards_.clear();

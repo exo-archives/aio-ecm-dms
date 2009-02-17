@@ -101,11 +101,11 @@ public class UIJCRExplorer extends UIContainer {
   private DriveData driveData_ ;
   
   public UIJCRExplorer() throws Exception {
-    addChild(UIControl.class, null, null) ;
-    addChild(UIWorkingArea.class, null, null) ;
+    addChild(UIControl.class, null, null);
+    addChild(UIWorkingArea.class, null, null);
     addChild(UIPopupContainer.class, null, null);
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    pref_ = pcontext.getRequest().getPreferences() ;
+    pref_ = pcontext.getRequest().getPreferences();
   }
 
   private String filterPath(String currentPath) throws Exception {
