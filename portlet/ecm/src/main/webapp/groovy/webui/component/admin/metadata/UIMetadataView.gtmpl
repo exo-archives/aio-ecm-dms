@@ -1,0 +1,142 @@
+<%
+	/**
+ * Created by The eXo Platform SARL
+ * Author : Dang Van Minh
+ *          minhdv@exoplatform.com
+ * Sep 19, 2006
+ * 11:57:24 AM 
+ */
+%>
+<% def metadataType = uicomponent.getMetadata() %>
+<div class="UIMetadataManager">
+  <div class="MetadataInfo">
+    <div class="GridTitleBar">
+      <div class="GridTitleLeftBar">
+        <div class="GridTitleRightBar">
+          <div class="GridTitleMiddleBar"><%=_ctx.appRes("UIMetadataView.tab.metadataView")%></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="MetadataInfoDetails">
+	  <table class="UIGrid">
+		  <thead>
+		    <tr>
+			    <th><%=_ctx.appRes("UIMetadataList.header.name")%></th>
+			    <th><%=_ctx.appRes("UIMetadataView.header.isMixin")%></th>
+			    <th><%=_ctx.appRes("UIMetadataView.header.orderable")%></th>
+		    </tr>
+		  </thead>
+		  <tbody>
+	      <tr class="EvenRow">
+	        <%
+	          String metaType = metadataType.getName() ;
+	          metaType = metaType.replace(":", "_") ;
+	        %>
+	        <td>
+	          <div style="float:left">
+  	          <div class="default16x16Icon ${metaType}16x16Icon" style="float:left;margin:0px 5px 0px 3px;"><span></span></div>
+	            <div class="Text">$metadataType.name</div>
+	          </div>
+	        </td>
+	        <td>
+	          <%
+	            String booleanText ;
+	            String iconType ;
+	            if(metadataType.isMixin()) {
+	              booleanText = _ctx.appRes("UIMetadataList.label.true") ;
+	              iconType = "True" ;
+	            } else {
+	              booleanText = _ctx.appRes("UIMetadataList.label.false") ;
+	              iconType = "False" ;
+	            }
+	          %>
+	          <div style="width: 65px; margin: auto;">
+		          <div class="${iconType}16x16Icon" style="float: left; margin-right: 4px;"><span></span></div>
+		          <div class="Text" style="float: left">$booleanText</div>
+		          <div style="clear: left"><span></span></div>
+		        </div>
+	        </td>
+	        <td>
+	          <%
+	            if(metadataType.hasOrderableChildNodes()) {
+	              booleanText = _ctx.appRes("UIMetadataList.label.true") ;
+	              iconType = "True" ;
+	            } else {
+	              booleanText = _ctx.appRes("UIMetadataList.label.false") ;
+	              iconType = "False" ;
+	            }
+	          %>
+	          <div style="width: 65px; margin: auto;">
+		          <div class="Icon16x16 ${iconType}16x16Icon"><span></span></div>
+		          <div class="Text">$booleanText</div>
+		        </div>
+	        </td>
+	      </tr>
+		  </tbody>
+	  </table>
+	</div>
+  <div class="MetadataInfo">
+    <div class="GridTitleBar">
+      <div class="GridTitleLeftBar">
+        <div class="GridTitleRightBar">
+          <div class="GridTitleMiddleBar"><%=_ctx.appRes("UIMetadataView.tab.element")%></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="MetadataInfoDetails">
+	  <table class="UIGrid">
+		  <thead>
+		    <tr>
+		      <th></th>
+			    <th><%=_ctx.appRes("UIMetadataView.header.name")%></th>
+			    <th><%=_ctx.appRes("UIMetadataView.header.type")%></th>
+			    <th><%=_ctx.appRes("UIMetadataView.header.description")%></th>
+		    </tr>
+		  </thead>
+		  <tbody>
+	      <%
+	        def rowClass = null ;
+			    boolean even = true ;
+			    boolean found = false ;
+			    for (meta in metadataType.getPropertyDefinitions()) {
+			      found = true  ;
+			      if(even) rowClass = "EvenRow" ;  
+			      else rowClass =  "OddRow" ; 
+			      even = !even ;
+	      %>
+	        <tr class="$rowClass">
+	          <%
+	            String nodeType = meta.getName() ;
+	            nodeType = nodeType.replace(":", "_") ;
+	          %>
+	          <td width="36px">
+	            <div class="default16x16Icon ${nodeType}16x16Icon" style="margin:auto"></div>                      
+	          </td>
+	          <td><div class="Text">$meta.name</div></td>
+	          <td align="center"><%=uicomponent.resolveType(meta.getRequiredType())%></td>
+	          <td align="center"><%=_ctx.appRes("UIMetadataView.info.description")%></td>
+	        </tr>
+	      <%}%>  
+		  </tbody>
+	  </table>
+	</div>
+	<div class="UIAction">
+    <table align="center" class="ActionContainer">
+    	<tr>
+    		<td align="center">
+	        <a href="<%=uicomponent.event("Cancel")%>" class="ActionButton LightBlueStyle" >
+						<div class="ButtonLeft">
+						  <div class="ButtonRight">
+							  <div class="ButtonMiddle">
+								  <%=_ctx.appRes("UIMetadataView.action.Cancel")%>
+					      </div>
+					    </div>
+				    </div>
+					</a>
+    		</td>
+    	</tr>
+    </table>
+  </div>			  
+</div>
