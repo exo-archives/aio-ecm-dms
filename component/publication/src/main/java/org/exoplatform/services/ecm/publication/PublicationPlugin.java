@@ -200,5 +200,7 @@ public abstract class PublicationPlugin extends BaseComponentPlugin {
    * 
    * @result a string localized and where values are substitute
    */
-  public abstract String getLocalizedAndSubstituteMessage(Locale locale, String key, String[] values) throws Exception;   
+  public abstract String getLocalizedAndSubstituteMessage(Locale locale, String key, String[] values) throws Exception;
+  
+  public abstract Node getNodePublish(Node currentNode) throws Exception;
 }

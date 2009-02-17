@@ -33,6 +33,11 @@
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Kommentierbar</enableComment>
       <enableVote>Abstimmbar</enableVote>
+      <!--
+			  ### Since ECM version 2.3 Alpha##############
+			  Make sure BC is publication aware
+			-->
+      <isAllowPublish>Allow Publish</isAllowPublish>
     </label>
     <title>Pfad Config</title>
     <action>

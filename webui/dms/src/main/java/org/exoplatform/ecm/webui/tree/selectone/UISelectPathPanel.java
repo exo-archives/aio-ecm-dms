@@ -21,11 +21,13 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.portal.webui.container.UIContainer;
+import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -52,14 +54,42 @@ public class UISelectPathPanel extends UIContainer {
   public String[] acceptedMimeTypes = {};
   protected Node parentNode;
   private String[] acceptedNodeTypes = {};
-
-
+  private boolean allowPublish = false;
+  private PublicationService publicationService_ = null;
+  private List<String> templates_ = null;
+  
   public UISelectPathPanel() throws Exception { 
     uiPageIterator_ = addChild(UIPageIterator.class, null, "UISelectPathIterate");
   }
   
   public UIPageIterator getUIPageIterator() { return uiPageIterator_; }
+  
+  public boolean isAllowPublish() {
+    return allowPublish;
+  }
 
+  public void setAllowPublish(boolean allowPublish, PublicationService publicationService, List<String> templates) {
+    this.allowPublish = allowPublish;
+    publicationService_ = publicationService;
+    templates_ = templates;
+  }
+  
+  private void addNodePublish(List<Node> listNode, Node node, PublicationService publicationService) throws Exception {
+    if (isAllowPublish()) {
+      NodeType nt = node.getPrimaryNodeType();
+      if (templates_.contains(nt.getName())) { 
+        Node nodecheck = publicationService.getNodePublish(node);
+        if (nodecheck != null) {
+          listNode.add(nodecheck); 
+        }
+      } else {
+        listNode.add(node);
+      }
+    } else {
+      listNode.add(node);
+    }
+  }
+  
   public void setParentNode(Node node) { this.parentNode = node; }
   
   public Node getParentNode() { return parentNode; }
@@ -82,15 +112,19 @@ public class UISelectPathPanel extends UIContainer {
   
   public List<Node> getListSelectableNodes() throws Exception {
     List<Node> list = new ArrayList<Node>();
-    if(parentNode == null) return list;
-    for(NodeIterator iterator = parentNode.getNodes();iterator.hasNext();) {
+    if (parentNode == null) return list;
+    for (NodeIterator iterator = parentNode.getNodes();iterator.hasNext();) {
       Node child = iterator.nextNode();
       if(child.isNodeType("exo:hiddenable")) continue;
       if(matchMimeType(child) && matchNodeType(child)) {
         list.add(child);
       }
     }
-    return list;
+    List<Node> listNodeCheck = new ArrayList<Node>();
+    for (Node node : list) {
+      addNodePublish(listNodeCheck, node, publicationService_);
+    }
+    return listNodeCheck;
   }      
 
   protected boolean matchNodeType(Node node) throws Exception {

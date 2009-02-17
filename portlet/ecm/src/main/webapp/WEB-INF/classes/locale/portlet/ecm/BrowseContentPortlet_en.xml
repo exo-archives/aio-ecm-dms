@@ -28,11 +28,13 @@
       <itemPerPage>Items Per Page</itemPerPage>
       <detailBoxTemp>Detail Box Template</detailBoxTemp>
       <enableToolBar>View Toolbar</enableToolBar>
+      <isAllowPublish>Allow Publish Document</isAllowPublish>
       <enableRefDoc>Reference Document</enableRefDoc>
       <enableChildDoc>Children Document</enableChildDoc>
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Commentable</enableComment>
       <enableVote>Voteable</enableVote>
+      <isAllowPublish>Allow Publish</isAllowPublish>
     </label>
     <title>Path Config</title>
     <action>
@@ -73,6 +75,7 @@
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Commentable</enableComment>
       <enableVote>Voteable</enableVote>
+      <isAllowPublish>Allow Publish</isAllowPublish>
     </label>
     <action>
       <Add>New config</Add>
@@ -132,6 +135,7 @@
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Commentable</enableComment>
       <enableVote>Voteable</enableVote>
+      <isAllowPublish>Allow Publish</isAllowPublish>
     </label>
     <action>
       <Add>New config</Add>
@@ -158,6 +162,7 @@
       <detailBoxTemp>Detail Box Template</detailBoxTemp>
       <enableComment>Commentable</enableComment>
       <enableVote>Voteable</enableVote>
+      <isAllowPublish>Allow Publish</isAllowPublish>
     </label>
     <action>
       <Add>New config</Add>

@@ -302,7 +302,16 @@ public class PublicationServiceImpl implements PublicationService {
 
   public boolean isUnsubcribeLifecycle(Node node) throws Exception {
     /* Check lifecycle of node */
-    if(isNodeEnrolledInLifecycle(node)) return false;
+    if (isNodeEnrolledInLifecycle(node)) return false;
     return true;
-  }   
+  }
+
+  public Node getNodePublish(Node node) throws Exception {
+    if (node.isNodeType(PUBLICATION)) {
+      String lifecycleName = node.getProperty(LIFECYCLE_NAME).getString();
+      PublicationPlugin publicationPlugin = publicationPlugins_.get(lifecycleName);
+      return publicationPlugin.getNodePublish(node);
+    }
+    return null;
+  }
 }

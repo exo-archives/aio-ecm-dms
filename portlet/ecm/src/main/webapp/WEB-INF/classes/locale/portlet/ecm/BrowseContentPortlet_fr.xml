@@ -33,6 +33,11 @@
       <enableTagMap>Carte des mots clés</enableTagMap>
       <enableComment>Autoriser les commentaires</enableComment>
       <enableVote>Autoriser les votes</enableVote>
+      <!--
+			  ### Since ECM version 2.3 Alpha##############
+			  Make sure BC is publication aware
+			-->
+      <isAllowPublish>Allow Publish</isAllowPublish>
     </label>
     <title>Configuration du répertoire</title>
     <action>

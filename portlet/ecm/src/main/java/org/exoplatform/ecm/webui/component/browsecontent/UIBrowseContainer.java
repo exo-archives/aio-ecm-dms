@@ -64,6 +64,7 @@ import org.exoplatform.services.cms.scripts.DataTransfer;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
@@ -308,6 +309,18 @@ public class UIBrowseContainer extends UIContainer {
     return strCapacity;
   }
   
+  private void addNodePublish(List<Node> listNode, Node node) throws Exception {
+    if (isAllowPublish()) {
+      PublicationService publicationService = getApplicationComponent(PublicationService.class);
+      Node nodecheck = publicationService.getNodePublish(node);
+      if (nodecheck != null) {
+        listNode.add(nodecheck); 
+      }
+    } else {
+      listNode.add(node);
+    }
+  }
+  
   /**
    * Return a list of Node in the Query use case
    * 
@@ -316,14 +329,13 @@ public class UIBrowseContainer extends UIContainer {
    * @throws Exception if there was a problem while issuing the query
    */
   public List<Node> getNodeByQuery(int recordNumber) throws Exception {
-    
     // Returned list of documents
     List<Node> queryDocuments = new ArrayList<Node>();
     
     try {
       QueryResult queryResult = null;
       
-      if(Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_QUERY_ISNEW,""))) {
+      if (Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_QUERY_ISNEW,""))) {
         // New query
         queryResult = getQueryResultNew();
       } else {
@@ -335,7 +347,8 @@ public class UIBrowseContainer extends UIContainer {
       NodeIterator iter = queryResult.getNodes();
       int count = 0; 
       while (iter.hasNext() && (count++ != recordNumber)) {
-        queryDocuments.add(iter.nextNode());
+        Node node = iter.nextNode();
+        addNodePublish(queryDocuments, node);
       }
     } catch(Exception e) {
       // Display the stack trace
@@ -352,7 +365,6 @@ public class UIBrowseContainer extends UIContainer {
    * @return query results
    */
   public QueryResult getQueryResultNew() throws Exception {
-    
     // Retrieve the query statement
     String queryStatement = getQueryStatement();
     
@@ -411,7 +423,7 @@ public class UIBrowseContainer extends UIContainer {
     return null;
   }  
   
-  public  List<Node> getNodeByQuery(int recoderNumber,Session session) throws Exception{
+  public  List<Node> getNodeByQuery(int recoderNumber,Session session) throws Exception {
     List<Node> queryDocuments = new ArrayList<Node>();
     QueryManager queryManager = null;
     try{
@@ -431,11 +443,13 @@ public class UIBrowseContainer extends UIContainer {
     NodeIterator iter = queryResult.getNodes();
     int count = 0; 
     while (iter.hasNext() && (count++ != recoderNumber)) {
-      queryDocuments.add(iter.nextNode());
+      Node node = iter.nextNode();
+      addNodePublish(queryDocuments, node);
     }
     return queryDocuments;
   }
-  public List<Node> getNodeByQuery(String queryType, String queryString) throws Exception{
+  
+  public List<Node> getNodeByQuery(String queryType, String queryString) throws Exception {
     List<Node> queryDocuments = new ArrayList<Node>();
     try {
       ManageableRepository repository = getRepositoryService().getRepository(getRepository());
@@ -447,7 +461,8 @@ public class UIBrowseContainer extends UIContainer {
       QueryResult queryResult = query.execute();
       NodeIterator iter = queryResult.getNodes();
       while (iter.hasNext()) {
-        queryDocuments.add(iter.nextNode());
+        Node node = iter.nextNode();
+        addNodePublish(queryDocuments, node);
       }
     } catch(Exception e) {
       e.printStackTrace();
@@ -480,31 +495,51 @@ public class UIBrowseContainer extends UIContainer {
     boolean isShowDocument = isEnableChildDocument();
     boolean isShowReferenced = isEnableRefDocument();
     int itemCounter = getRowPerBlock();
-    if(isShowAllDocument()) itemCounter = getItemPerPage();
-    if(selectedTabPath_.equals(currentPath_)) {
+    if (isShowAllDocument()) itemCounter = getItemPerPage();
+    if (selectedTabPath_.equals(currentPath_)) {
       NodeIterator tabIter = getCurrentNode().getNodes();
       while(tabIter.hasNext()) {
         Node childNode = tabIter.nextNode();
         if(canRead(childNode)) {
           NodeType nt = childNode.getPrimaryNodeType();
-          if(templates.contains(nt.getName())&&(isShowDocument)) { 
+          if (templates.contains(nt.getName())&&(isShowDocument)) { 
             subDocumentList.add(childNode);
           }
-          if(isShowReferenced) subDocumentList.addAll(getReferences(repositoryService,
+          if (isShowReferenced) subDocumentList.addAll(getReferences(repositoryService,
               childNode, isShowAllDocument(), subDocumentList.size(), templates));        
-          if(isCategories(nt)&&(!templates.contains(nt.getName()))) {
+          if (isCategories(nt) && (!templates.contains(nt.getName()))) {
             Map childOfSubCategory = new HashMap();
             List<Node> subCategoryDoc = new ArrayList<Node>();
             List<String> subCategoryCat = new ArrayList<String>();
             NodeIterator item = childNode.getNodes();
-            while(item.hasNext()) {
+            while (item.hasNext()) {
               Node node = item.nextNode();
-              if(canRead(node)){
+              if (canRead(node)){
                 NodeType nodeType = node.getPrimaryNodeType();
-                if(templates.contains(nodeType.getName())&&(isShowDocument)) { 
-                  if(subCategoryDoc.size() < getRowPerBlock()) subCategoryDoc.add(node);
+                if (templates.contains(nodeType.getName())&&(isShowDocument)) { 
+                  if (subCategoryDoc.size() < getRowPerBlock()) {
+                    if (isAllowPublish()) {
+                      PublicationService publicationService = getApplicationComponent(PublicationService.class);
+                      Node nodecheck = publicationService.getNodePublish(node);
+                      if (nodecheck != null) {
+                        subCategoryDoc.add(nodecheck); 
+                      }
+                    } else {
+                      subCategoryDoc.add(node);
+                    }
+                  }
                 }
-                if(isCategories(nodeType)&&(!templates.contains(nodeType.getName()))) subCategoryCat.add(node.getPath());
+                if (isCategories(nodeType)&&(!templates.contains(nodeType.getName()))) {
+                  if (isAllowPublish()) {
+                    PublicationService publicationService = getApplicationComponent(PublicationService.class);
+                    Node nodecheck = publicationService.getNodePublish(node);
+                    if (nodecheck != null) {
+                      subCategoryCat.add(nodecheck.getPath()); 
+                    }
+                  } else {
+                    subCategoryCat.add(node.getPath());
+                  }
+                }
               }
             }
             if(isShowReferenced) subCategoryDoc.addAll(getReferences(repositoryService, childNode,
@@ -644,16 +679,26 @@ public class UIBrowseContainer extends UIContainer {
   @SuppressWarnings("unchecked")
   public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
     List<Node> subDocumentList = new ArrayList<Node>();
-    if(selectedNode == null) return subDocumentList;
+    if (selectedNode == null) return subDocumentList;
     TemplateService templateService  = getApplicationComponent(TemplateService.class);
     List<String> templates = templateService.getDocumentTemplates(getRepository());
     try {
       NodeIterator item = selectedNode.getNodes();
-      if(isEnableChildDocument()) {
+      if (isEnableChildDocument()) {
         while (item.hasNext()) {
           Node node = item.nextNode();
-          if(templates.contains(node.getPrimaryNodeType().getName())) {
-            if(canRead(node)) subDocumentList.add(node); 
+          if (templates.contains(node.getPrimaryNodeType().getName())) {
+            if (canRead(node)) {
+              if (isAllowPublish()) {
+                PublicationService publicationService = getApplicationComponent(PublicationService.class);
+                Node nodecheck = publicationService.getNodePublish(node);
+                if (nodecheck != null) {
+                  subDocumentList.add(nodecheck); 
+                }
+              } else {
+                subDocumentList.add(node);
+              }
+            }
           }
         }
       }
@@ -858,6 +903,11 @@ public class UIBrowseContainer extends UIContainer {
   public boolean isEnableChildDocument() {
     return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_CHILD_DOCUMENT, ""));
   }
+  
+  public boolean isAllowPublish() {
+    return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_ALLOW_PUBLISH, ""));
+  }
+  
   public boolean isEnableRefDocument() {
     return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_REF_DOCUMENT, ""));
   }
@@ -903,9 +953,9 @@ public class UIBrowseContainer extends UIContainer {
     if(getUseCase().equals(Utils.CB_USE_SCRIPT)) { 
       setTemplate(viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName,
           SessionProviderFactory.createSystemProvider()).getNode(tempName).getPath());
-      if(isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false);
+      if (isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false);
       String scriptName = preferences.getValue(Utils.CB_SCRIPT_NAME, "");
-      if(!isShowDocumentByTag()) setPageIterator(getNodeByScript(repoName, scriptName));
+      if (!isShowDocumentByTag()) setPageIterator(getNodeByScript(repoName, scriptName));
       return;
     }    
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "");
@@ -925,7 +975,7 @@ public class UIBrowseContainer extends UIContainer {
       if(!isShowDocumentByTag()) setPageIterator(getSubDocumentList(getSelectedTab()));
       return;
     } 
-    if(getUseCase().equals(Utils.CB_USE_DOCUMENT)) {
+    if (getUseCase().equals(Utils.CB_USE_DOCUMENT)) {
       setTemplateDetail(viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName, 
           SessionProviderFactory.createSystemProvider()).getNode(tempName).getPath());      
       String documentPath = categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "");
@@ -983,7 +1033,7 @@ public class UIBrowseContainer extends UIContainer {
         } else if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
           setPageIterator(getNodeByQuery(-1));
         } else if(getUseCase().equals(Utils.USE_DOCUMENT)) {
-          if(getChild(UIDocumentDetail.class).isValidNode()) {
+          if (getChild(UIDocumentDetail.class).isValidNode()) {
             getChild(UIDocumentDetail.class).setRendered(true);         
           } else {
             getChild(UIDocumentDetail.class).setRendered(false);
@@ -991,19 +1041,19 @@ public class UIBrowseContainer extends UIContainer {
             uiPortlet.getChild(UIPopupContainer.class).deActivate();
           } 
         }
-        if(isShowDocumentDetail()) {
+        if (isShowDocumentDetail()) {
           UIDocumentDetail uiDocumentDetail = getChild(UIDocumentDetail.class);      
-          if(getChild(UIDocumentDetail.class).isValidNode()) {
+          if (getChild(UIDocumentDetail.class).isValidNode()) {
             getChild(UIDocumentDetail.class).setRendered(true);         
           } else {
-            if(isShowDocumentByTag() && isShowDocumentDetail()) {
+            if (isShowDocumentByTag() && isShowDocumentDetail()) {
               setShowDocumentDetail(false);
               uiDocumentDetail.setRendered(false);
             } else {
               setShowDocumentByTag(false);
               setShowDocumentDetail(false);
               uiDocumentDetail.setRendered(false);
-              if(getUseCase().equals(Utils.CB_USE_FROM_PATH) && getHistory() != null) {
+              if (getUseCase().equals(Utils.CB_USE_FROM_PATH) && getHistory() != null) {
                 setCurrentNodePath(getHistory().get(UIBrowseContainer.KEY_CURRENT).getPath());
                 setSelectedTabPath(getHistory().get(UIBrowseContainer.KEY_SELECTED).getPath());
                 getHistory().clear();
@@ -1098,7 +1148,12 @@ public class UIBrowseContainer extends UIContainer {
     } catch (Exception e) {
       return new ArrayList<Node>();
     }
-    return data.getContentList();
+    List<Node> listNode = data.getContentList();
+    List<Node> listNodeAfterCheck = new ArrayList<Node>();
+    for (Node node : listNode) {
+      addNodePublish(listNodeAfterCheck, node);
+    }
+    return listNodeAfterCheck;
   }
 
   protected String getTemlateDetail() { return detailTemplate_; }
@@ -1152,16 +1207,16 @@ public class UIBrowseContainer extends UIContainer {
     boolean isShowReferenced = isEnableRefDocument();
     while (items.hasNext()) {
       Node item = items.nextNode();
-      if(canRead(item)){
+      if (canRead(item)) {
         NodeType nt = item.getPrimaryNodeType();
-        if(documentTemplates.contains(nt.getName())&&(isShowDocument)){
-          if(childDocOrReferencedDoc.size() < getRowPerBlock()) childDocOrReferencedDoc.add(item);
+        if (documentTemplates.contains(nt.getName()) && isShowDocument){
+          if (childDocOrReferencedDoc.size() < getRowPerBlock()) childDocOrReferencedDoc.add(item);
         } else {
-          if(isCategories(item.getPrimaryNodeType())) subCategories.add(item.getPath());          
+          if (isCategories(item.getPrimaryNodeType())) subCategories.add(item.getPath());          
         }
       }
     }
-    if(isShowReferenced) childDocOrReferencedDoc.addAll(getReferences(repositoryService, subCat,
+    if (isShowReferenced) childDocOrReferencedDoc.addAll(getReferences(repositoryService, subCat,
         false, childDocOrReferencedDoc.size(), documentTemplates));
     childMap.put("sub", subCategories);
     childMap.put("doc", childDocOrReferencedDoc);
@@ -1184,17 +1239,17 @@ public class UIBrowseContainer extends UIContainer {
     String repository = getRepository();
     ManageableRepository manageableRepository = repositoryService.getRepository(repository);
     SessionProvider provider = null;
-    if(SessionProviderFactory.isAnonim()) {
+    if (SessionProviderFactory.isAnonim()) {
       provider = getSystemProvider();
-    }else {
+    } else {
       provider = getSessionProvider();
     }
-    if(isEnableRefDocument() && isReferenceableNode(node)) {
+    if (isEnableRefDocument() && isReferenceableNode(node)) {
       String uuid = node.getUUID();
       String[] workspaces = manageableRepository.getWorkspaceNames();
       int itemCounter = getRowPerBlock() - size;
-      if(isShowAll) itemCounter = getItemPerPage() - size;
-      for(String workspace : workspaces) {
+      if (isShowAll) itemCounter = getItemPerPage() - size;
+      for (String workspace : workspaces) {
         Session session = provider.getSession(workspace,manageableRepository);
         try {
           Node taxonomyNode = session.getNodeByUUID(uuid);
@@ -1203,7 +1258,7 @@ public class UIBrowseContainer extends UIContainer {
             Node refNode = iter.nextProperty().getParent();
             if (templates.contains(refNode.getPrimaryNodeType().getName())) refDocuments.add(refNode);
           }
-        }catch (Exception e) {}
+        } catch (Exception e) {}
       }
     }
     return refDocuments;

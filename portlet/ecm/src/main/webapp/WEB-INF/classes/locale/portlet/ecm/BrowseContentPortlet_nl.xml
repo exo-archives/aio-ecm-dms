@@ -33,6 +33,11 @@
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Commentaar</enableComment>
       <enableVote>stembaar</enableVote>
+      <!--
+			  ### Since ECM version 2.3 Alpha##############
+			  Make sure BC is publication aware
+			-->
+      <isAllowPublish>Allow Publish</isAllowPublish>
     </label>
     <title>Configuratie pad</title>
     <action>

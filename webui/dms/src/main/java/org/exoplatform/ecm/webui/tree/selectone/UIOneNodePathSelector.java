@@ -24,6 +24,8 @@ import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.tree.UINodeTreeBuilder;
+import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -65,6 +67,8 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   private String workspaceName = null;
   private String rootTreePath = null;
   private boolean isDisable = false;
+  private boolean allowPublish = false;
+  
   
   public UIOneNodePathSelector() throws Exception {
     addChild(UIBreadcumbs.class, "BreadcumbCategoriesOne", "BreadcumbCategoriesOne");
@@ -76,6 +80,9 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   public void init(SessionProvider sessionProvider) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
     ManageableRepository manageableRepository = repositoryService.getRepository(repositoryName);
+    PublicationService publicationService = getApplicationComponent(PublicationService.class);
+    TemplateService templateService  = getApplicationComponent(TemplateService.class);
+    List<String> templates = templateService.getDocumentTemplates(repositoryName);
     try {
 //TODO: Should review this method to make sure we have no problem with permission when use system session      
       Node rootNode;
@@ -89,17 +96,27 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
       UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
       uiWorkspaceList.setWorkspaceList(repositoryName);
       uiWorkspaceList.setIsDisable(workspaceName, isDisable);
-      UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);    
+      UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);
+      builder.setAllowPublish(allowPublish, publicationService, templates);
       builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);    
       builder.setRootTreeNode(rootNode);
       
       UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
+      selectPathPanel.setAllowPublish(allowPublish, publicationService, templates);
       selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
       selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
       selectPathPanel.updateGrid();
     } finally {
       sessionProvider.close();
     }        
+  }
+  
+  public boolean isAllowPublish() {
+    return allowPublish;
+  }
+
+  public void setAllowPublish(boolean allowPublish) {
+    this.allowPublish = allowPublish;
   }
   
   public void setRootNodeLocation(String repository, String workspace, String rootPath) throws Exception {

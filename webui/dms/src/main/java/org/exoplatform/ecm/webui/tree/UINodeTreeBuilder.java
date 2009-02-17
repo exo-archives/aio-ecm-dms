@@ -22,8 +22,10 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.portal.webui.container.UIContainer;
+import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -41,7 +43,10 @@ import org.exoplatform.webui.event.EventListener;
     events = @EventConfig(listeners = UINodeTreeBuilder.ChangeNodeActionListener.class)
 )
 public class UINodeTreeBuilder extends UIContainer {
-
+  private boolean allowPublish = false;
+  private PublicationService publicationService_ = null;
+  private List<String> templates_ = null;
+  
   private String[] acceptedNodeTypes = {};
   
   /** The root tree node. */
@@ -50,7 +55,16 @@ public class UINodeTreeBuilder extends UIContainer {
   /** The current node. */
   protected Node currentNode;
 
+  public boolean isAllowPublish() {
+    return allowPublish;
+  }
 
+  public void setAllowPublish(boolean allowPublish, PublicationService publicationService, List<String> templates) {
+    this.allowPublish = allowPublish;
+    publicationService_ = publicationService;
+    templates_ = templates;
+  }  
+  
   /**
    * Instantiates a new uI node tree builder.
    * 
@@ -116,12 +130,12 @@ public class UINodeTreeBuilder extends UIContainer {
    * 
    * @throws Exception the exception
    */
-  public void buildTree() throws Exception {    
+  public void buildTree() throws Exception {  
     NodeIterator sibbling = null ;
     NodeIterator children = null ;    
     UINodeTree tree = getChild(UINodeTree.class) ;
     tree.setSelected(currentNode);    
-    if(currentNode.getDepth() > 0) {
+    if (currentNode.getDepth() > 0) {
       tree.setParentSelected(currentNode.getParent()) ;
       sibbling = currentNode.getNodes() ;
       children = currentNode.getNodes() ;
@@ -130,17 +144,33 @@ public class UINodeTreeBuilder extends UIContainer {
       sibbling = currentNode.getNodes() ;
       children = null;
     }
-    if(sibbling != null) {
+    if (sibbling != null) {
       tree.setSibbling(filfer(sibbling));
     }
-    if(children != null) {
+    if (children != null) {
       tree.setChildren(filfer(children));
     }
   }
 
+  private void addNodePublish(List<Node> listNode, Node node, PublicationService publicationService) throws Exception {
+    if (isAllowPublish()) {
+      NodeType nt = node.getPrimaryNodeType();
+      if (templates_.contains(nt.getName())) { 
+        Node nodecheck = publicationService.getNodePublish(node);
+        if (nodecheck != null) {
+          listNode.add(nodecheck); 
+        }
+      } else {
+        listNode.add(node);
+      }
+    } else {
+      listNode.add(node);
+    }
+  }
+  
   private List<Node> filfer(final NodeIterator iterator) throws Exception{
     List<Node> list = new ArrayList<Node>();
-    if(acceptedNodeTypes.length > 0) {
+    if (acceptedNodeTypes.length > 0) {
       for(;iterator.hasNext();) {
         Node sibbling = iterator.nextNode();
         if(sibbling.isNodeType("exo:hiddenable")) continue;      
@@ -151,14 +181,20 @@ public class UINodeTreeBuilder extends UIContainer {
           }
         }      
       }
-      return list;
+      List<Node> listNodeCheck = new ArrayList<Node>();
+      for (Node node : list) {
+        addNodePublish(listNodeCheck, node, publicationService_);
+      }
+      return listNodeCheck;
     }        
     for(;iterator.hasNext();) {
       Node sibbling = iterator.nextNode();
       if(sibbling.isNodeType("exo:hiddenable")) continue;            
       list.add(sibbling);                  
     }            
-    return list;
+    List<Node> listNodeCheck = new ArrayList<Node>();
+    for (Node node : list) addNodePublish(listNodeCheck, node, publicationService_);
+    return listNodeCheck;
   }
   
   /* (non-Javadoc)
@@ -229,5 +265,5 @@ public class UINodeTreeBuilder extends UIContainer {
       UIBaseNodeTreeSelector nodeTreeSelector = builder.getAncestorOfType(UIBaseNodeTreeSelector.class);      
       event.getRequestContext().addUIComponentToUpdateByAjax(nodeTreeSelector);
     }
-  }  
+  }
 }

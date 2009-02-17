@@ -42,6 +42,7 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.ecm.publication.IncorrectStateUpdateLifecycleException;
 import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationService;
+import org.exoplatform.services.ecm.publication.plugins.webui.VersionNode;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
@@ -586,6 +587,40 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     String result = resourceBundle.getString(key);
     return String.format(result,values);
   }
-  
 
+  @Override
+  public Node getNodePublish(Node currentNode) throws Exception {
+    VersionNode rootVersion = new VersionNode(currentNode.getVersionHistory().getRootVersion());
+    return getVerionNodePublish(rootVersion.getChildren(), currentNode);
+//    if (currentNode.getProperty(CURRENT_STATE).getString().equals(PUBLISHED)) return currentNode; 
+//    return null;
+  }
+  
+  private Node getVerionNodePublish(List<VersionNode> list, Node currentNode) throws Exception {
+    for (VersionNode version : list) {
+      String state = getStateByVersion(version, currentNode);
+      if (state.equals(PUBLISHED)) {
+        currentNode.restore(version.getVersion(), true);
+        return currentNode;
+      }
+      if (version.getChildren().size() > 0) {
+        Node node = getVerionNodePublish(version.getChildren(), currentNode);
+        if (node != null) return node;
+      }
+    }
+    return null;
+  }
+  
+  private String getStateByVersion(VersionNode versionNode, Node currentNode_) throws Exception {
+    Value[] publicationStates =  currentNode_.getProperty(StaticAndDirectPublicationPlugin.VERSIONS_PUBLICATION_STATES).getValues();
+    for (Value value : publicationStates) {
+      String[] arrPublicationState = value.getString().split(",");
+      for (int i=0; i < arrPublicationState.length; i++) {
+        if (arrPublicationState[0].equals(versionNode.getVersion().getUUID())) {
+          return arrPublicationState[1];
+        }
+      }
+    }
+    return StaticAndDirectPublicationPlugin.DEFAULT_STATE;
+  }
 }

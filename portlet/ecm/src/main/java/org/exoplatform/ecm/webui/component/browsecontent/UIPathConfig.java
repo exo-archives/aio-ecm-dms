@@ -113,6 +113,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
     uiSearchPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_SEARCH_LOCATION, 
         null, null).setEditable(false));
     addUIComponentInput(uiSearchPathSelect);
+    addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ALLOW_PUBLISH, null, null));
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEREFDOC, null, null));
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECHILDDOC, null, null));
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLETAGMAP, null, null));
@@ -172,8 +173,9 @@ public class UIPathConfig extends UIForm implements UISelectable{
   public void initForm(PortletPreferences preference, String repository, 
       String workSpace, boolean isAddNew) throws Exception {
     String path = preference.getValue(Utils.JCR_PATH, "");
+    boolean isAllowPublish = Boolean.parseBoolean(preference.getValue(Utils.CB_ALLOW_PUBLISH, ""));
     String hasSearchLocation = preference.getValue(Utils.CB_ENABLE_SEARCH_LOCATION, "");
-    if(hasSearchLocation == null || hasSearchLocation.length() < 1) hasSearchLocation = "false";
+    if (hasSearchLocation == null || hasSearchLocation.length() < 1) hasSearchLocation = "false";
     String hasToolBar = "true";
     String hasRefDoc ="true"; 
     String hasChildDoc = "true";
@@ -185,7 +187,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
     String detailTemp = "";
     UIFormInputSetWithAction searchPathSelect = getChildById(FIELD_SEARCH_PATHSELECT);
     UIFormStringInput searchLocationInput = findComponentById(UINewConfigForm.FIELD_SEARCH_LOCATION);
-    if(Boolean.parseBoolean(hasSearchLocation)) {
+    if (Boolean.parseBoolean(hasSearchLocation)) {
       String searchLocationValue = preference.getValue(Utils.CB_SEARCH_LOCATION, "");
       if(searchLocationValue != null && searchLocationValue.length() > 0) {
         searchLocationInput.setValue(searchLocationValue);
@@ -195,11 +197,11 @@ public class UIPathConfig extends UIForm implements UISelectable{
     String currentRepositoryName = repositoryService.getCurrentRepository().getConfiguration().getName();
     UIFormSelectBox repositoryField = getChildById(UINewConfigForm.FIELD_REPOSITORY);
     repositoryField.setOptions(getRepoOption());
-    if(!repoNames_.contains(repository)) repository = getRepoOption().get(0).getValue();
+    if (!repoNames_.contains(repository)) repository = getRepoOption().get(0).getValue();
     repositoryField.setValue(repository);
     UIFormSelectBox workSpaceField = getChildById(UINewConfigForm.FIELD_WORKSPACE);
     workSpaceField.setOptions(getWorkSpaceOption(repository));
-    if(!wsNames_.contains(workSpace)) {
+    if (!wsNames_.contains(workSpace)) {
       workSpace = repositoryService.getCurrentRepository().getConfiguration().getDefaultWorkspaceName();
     }
     workSpaceField.setValue(workSpace);
@@ -212,25 +214,27 @@ public class UIPathConfig extends UIForm implements UISelectable{
     UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE);
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP);
     UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class);
-    UIFormCheckBoxInput enableToolBarField = getChildById(UINewConfigForm.FIELD_ENABLETOOLBAR) ;
-    UIFormCheckBoxInput enableRefDocField = getChildById(UINewConfigForm.FIELD_ENABLEREFDOC) ;
-    UIFormCheckBoxInput enableChildDocField = getChildById(UINewConfigForm.FIELD_ENABLECHILDDOC) ;
+    UIFormCheckBoxInput enableToolBarField = getChildById(UINewConfigForm.FIELD_ENABLETOOLBAR);
+    UIFormCheckBoxInput enablePublishField = getChildById(UINewConfigForm.FIELD_ALLOW_PUBLISH);
+    UIFormCheckBoxInput enableRefDocField = getChildById(UINewConfigForm.FIELD_ENABLEREFDOC);
+    UIFormCheckBoxInput enableChildDocField = getChildById(UINewConfigForm.FIELD_ENABLECHILDDOC);
     UIFormCheckBoxInput enableTagMapField = getChildById(UINewConfigForm.FIELD_ENABLETAGMAP);
     UIFormCheckBoxInput enableCommentField = getChildById(UINewConfigForm.FIELD_ENABLECOMMENT);
     UIFormCheckBoxInput enableVoteField = getChildById(UINewConfigForm.FIELD_ENABLEVOTE);
     UIFormCheckBoxInput enableSearchLocation = getChildById(UINewConfigForm.FIELD_SEARCH_PATH_ENABLE);
-    if(isEdit_) {
+    if (isEdit_) {
       categoryPathSelect.setActionInfo(UINewConfigForm.FIELD_CATEGORYPATH, new String[] {"AddPath"});
-      if(enableSearchLocation.isChecked()) {
+      if (enableSearchLocation.isChecked()) {
         searchPathSelect.setActionInfo(UINewConfigForm.FIELD_SEARCH_LOCATION, new String[] {"AddSearchLocation"});
       } else {
         searchPathSelect.setActionInfo(UINewConfigForm.FIELD_SEARCH_LOCATION, null);
       }
-      if(isAddNew) {
+      if (isAddNew) {
         templateField.setOptions(getTemplateOption(repository));
         detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository));
-        enableToolBarField.setChecked( Boolean.parseBoolean(hasToolBar));
-        enableRefDocField.setChecked( Boolean.parseBoolean(hasRefDoc));
+        enableToolBarField.setChecked(Boolean.parseBoolean(hasToolBar));
+        enablePublishField.setChecked(isAllowPublish);
+        enableRefDocField.setChecked(Boolean.parseBoolean(hasRefDoc));
         enableChildDocField.setChecked(Boolean.parseBoolean(hasChildDoc));
         enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap));
         enableCommentField.setChecked(Boolean.parseBoolean(hasComment));
@@ -238,7 +242,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
         enableSearchLocation.setChecked(Boolean.parseBoolean(hasSearchLocation));
         numbPerPageField.setValue(itemPerPage);
         setActions(UINewConfigForm.ADD_NEW_ACTION);        
-      }else {
+      } else {
         setActions(UINewConfigForm.NORMAL_ACTION);
       }
     } else {
@@ -257,7 +261,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
       hasSearchLocation = preference.getValue(Utils.CB_ENABLE_SEARCH_LOCATION, "");
       itemPerPage = (preference.getValue(Utils.CB_NB_PER_PAGE, ""));
       detailTemp = (preference.getValue(Utils.CB_BOX_TEMPLATE, ""));
-      if(!repoNames_.contains(repository)) repository = currentRepositoryName;
+      if (!repoNames_.contains(repository)) repository = currentRepositoryName;
       templateField.setOptions(getTemplateOption(repository));
       templateField.setValue(template);
       detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository));
@@ -265,6 +269,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
       repositoryField.setValue(repository);
       workSpaceField.setValue(workSpace);
       enableToolBarField.setChecked( Boolean.parseBoolean(hasToolBar));
+      enablePublishField.setChecked(isAllowPublish);
       enableRefDocField.setChecked( Boolean.parseBoolean(hasRefDoc));
       enableChildDocField.setChecked(Boolean.parseBoolean(hasChildDoc));
       enableTagMapField.setChecked(Boolean.parseBoolean(hasTagMap));
@@ -277,6 +282,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
     templateField.setEnable(isEdit_);
     detailtemField.setEnable(isEdit_);
     enableToolBarField.setEnable(isEdit_);
+    enablePublishField.setEnable(isEdit_);
     enableRefDocField.setEnable(isEdit_);
     enableCommentField.setEnable(isEdit_);
     enableVoteField.setEnable(isEdit_);
@@ -364,6 +370,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
       }
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue();
       boolean hasChildDoc = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECHILDDOC).isChecked();
+      boolean isAllowPublish = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ALLOW_PUBLISH).isChecked();
       boolean hasRefDoc = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEREFDOC).isChecked();
       boolean hasToolBar = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLETOOLBAR).isChecked();
       boolean hasTagMap = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLETAGMAP).isChecked();
@@ -388,7 +395,8 @@ public class UIPathConfig extends UIForm implements UISelectable{
       prefs.setValue(Utils.JCR_PATH, jcrPath);
       prefs.setValue(Utils.CB_NB_PER_PAGE, itemPerPage);
       prefs.setValue(Utils.CB_TEMPLATE, template);
-      prefs.setValue(Utils.CB_BOX_TEMPLATE, boxTemplate);    
+      prefs.setValue(Utils.CB_BOX_TEMPLATE, boxTemplate);   
+      prefs.setValue(Utils.CB_ALLOW_PUBLISH, String.valueOf(isAllowPublish));
       prefs.setValue(Utils.CB_REF_DOCUMENT, String.valueOf(hasRefDoc));
       prefs.setValue(Utils.CB_CHILD_DOCUMENT, String.valueOf(hasChildDoc));    
       prefs.setValue(Utils.CB_VIEW_TOOLBAR, String.valueOf(hasToolBar));    
@@ -396,7 +404,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
       prefs.setValue(Utils.CB_VIEW_COMMENT, String.valueOf(hasComment)); 
       prefs.setValue(Utils.CB_VIEW_VOTE, String.valueOf(hasVote)); 
       prefs.setValue(Utils.CB_ENABLE_SEARCH_LOCATION, String.valueOf(hasEnableSearch));
-      if(hasEnableSearch) {
+      if (hasEnableSearch) {
         prefs.setValue(Utils.CB_SEARCH_LOCATION, searchLocation);
       }
       prefs.store();

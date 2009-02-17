@@ -296,4 +296,6 @@ public interface PublicationService {
    * @throws Exception the exception
    */
   public String getLocalizedAndSubstituteLog(Node node, Locale locale, String key, String[] values) throws NotInPublicationLifecycleException, Exception;
+  
+  public Node getNodePublish(Node node) throws Exception;
 }

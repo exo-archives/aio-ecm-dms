@@ -76,7 +76,8 @@ public class Utils {
   final public static String CB_BOX_TEMPLATE = "boxTemplate".intern();   
   final public static String CB_TEMPLATE = "template";
   final public static String CB_USECASE = "usecase".intern();
-
+  final public static String CB_ALLOW_PUBLISH = "isAllowPublish".intern();
+  
   final public static String FROM_PATH = "From Path".intern();
   final public static String USE_DOCUMENT = "Document".intern();
   final public static String USE_JCR_QUERY = "Using a JCR query".intern();
