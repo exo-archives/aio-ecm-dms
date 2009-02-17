@@ -103,4 +103,10 @@
   background: #ffffff;
 }
 
+.UIEventViewer .EventContent .SummaryTitleLabel p a {
+  color: #058EE6;
+  text-decoration: underline;
+}
+
+
 

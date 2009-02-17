@@ -138,6 +138,11 @@
     	height: 3px;
       background: url('/eXoDMSResources/skin/images/article/CommentBox.gif') repeat-x left -27px;
     }
+    
+    .Comments p a {
+		  color: #058EE6;
+      text-decoration: underline;
+		}
 	</style>
   <div class="Comments ShowHideContainer">
 		<div class="CommentBar" style="width: 400px;">
