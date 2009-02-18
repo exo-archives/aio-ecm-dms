@@ -20,7 +20,8 @@
 	<module>connectors/fckeditor</module>
 	<module>webui/dms</module>
 	<module>web/eXoDMSResources</module>	
-    <module>portlet/ecm</module>
+  <module>portlet/ecm</module>
+  <module>portlet/jcr-console</module>
     <module>web/dmsportal</module>
   </modules>
 
