@@ -1,0 +1,73 @@
+<%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Tran The Trong
+ *          trong.tran@exoplatform.com
+ * @version: $Id$
+ * Oct 6, 2006  
+ */
+%>
+<div class="$uicomponent.id">
+	<% uiform.begin() %>
+	  <div class="ConstraintOption">Operator : <%uiform.renderField(uicomponent.getChildById("operator"))%></div>
+	  <div class="ConstraintOption">
+	    <%uiform.renderField(uicomponent.getChildById("exactlyPro"))%>
+	    
+	    <label class="Label"><%=_ctx.appRes("UIConstraintForm.label.exactlyPro-properties")%></label> : <%uiform.renderField(uicomponent.getChildById("property1"))%> 
+	    <img class="IconConstraint AddMetadataTypeIcon" onclick="<%=uicomponent.event("AddMetadataType", "0")%>" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt="" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>">
+	    <%=_ctx.appRes("UIConstraintForm.label.exactlyPro-ContainExactly")%> : <%uiform.renderField(uicomponent.getChildById("containExactly"))%>  
+	    <img class="IconConstraint AddMetadataTypeIcon" onclick="<%=uicomponent.event("CompareExactly")%>" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt="" title="<%=_ctx.appRes("UIConstraintForm.tooltip.FindExactly")%>">
+	  </div>
+	  <div class="ConstraintOption">
+	    <%uiform.renderField(uicomponent.getChildById("containPro"))%>
+	    <label class="Label"><%=_ctx.appRes("UIConstraintForm.label.exactlyPro-properties")%></label> : <%uiform.renderField(uicomponent.getChildById("property2"))%> 
+	    <img class="IconConstraint AddMetadataTypeIcon" onclick="<%=uicomponent.event("AddMetadataType", "1")%>" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt="" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>">
+	    <%=_ctx.appRes("UIConstraintForm.label.Contain")%> : <%uiform.renderField(uicomponent.getChildById("contain"))%>
+	  </div>
+	  <div class="ConstraintOption">
+	    <%uiform.renderField(uicomponent.getChildById("notContainPro"))%>
+	    <label class="Label"><%=_ctx.appRes("UIConstraintForm.label.exactlyPro-properties")%></label> : <%uiform.renderField(uicomponent.getChildById("property3"))%> 
+	    <img class="IconConstraint AddMetadataTypeIcon" onclick="<%=uicomponent.event("AddMetadataType", "2")%>" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt="" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddMetadataType")%>">
+	    <%=_ctx.appRes("UIConstraintForm.label.notContainPro-notContain")%>: <%uiform.renderField(uicomponent.getChildById("notContain"))%>
+	  </div>
+	  <div class="ConstraintOption">
+	    <div style="float: left;"><%uiform.renderField(uicomponent.getChildById("datePro"))%><%uiform.renderField(uicomponent.getChildById("timeOpt"))%></div>
+	    <div style="margin-left: 130px;">
+	      <div class="ConstraintOption"><%=_ctx.appRes("UIConstraintForm.label.ConstraintOption-From")%> <%uiform.renderField(uicomponent.getChildById("startTime"))%>   <%=_ctx.appRes("UIConstraintForm.label.ConstraintOption-To")%> <%uiform.renderField(uicomponent.getChildById("endTime"))%></div>
+	    </div>
+	  </div>
+	  <div class="ConstraintOption">
+	    <%uiform.renderField(uicomponent.getChildById("nodetypePro"))%>
+	    <label class="Label"><%=_ctx.appRes("UIConstraintForm.label.DocumentType-label")%></label> : <%uiform.renderField(uicomponent.getChildById("docType"))%> 
+	    <img class="IconConstraint AddNodeTypeIcon" onclick="<%=uicomponent.event("AddNodeType")%>" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt="" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddNodeType")%>">
+	  </div>
+	  <div class="ConstraintOption">
+	    <%uiform.renderField(uicomponent.getChildById("categoryPro"))%>
+	    <label class="Label"><%=_ctx.appRes("UIConstraintForm.label.Category-label")%></label> : <%uiform.renderField(uicomponent.getChildById("categoryType"))%> 
+	    <img class="IconConstraint AddCategoryIcon" onclick="<%=uicomponent.event("AddCategory")%>" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt="" title="<%=_ctx.appRes("UIConstraintForm.tooltip.AddCategory")%>">
+	  </div>
+	  <div class="UIAction"> 
+	    <table class="ActionContainer">
+	    	<tr>
+	    		<td>
+		          <% for(action in uicomponent.getActions()) { 
+		          		 String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) 
+		               String link = uicomponent.event(action) ;
+		          %>
+	              <div onclick="$link" class="ActionButton LightBlueStyle" >
+	                <div class="ButtonLeft">
+	                  <div class="ButtonRight">
+	                    <div class="ButtonMiddle">
+	                      <a href="javascript:void(0);">$actionLabel</a>
+	                    </div>
+	                  </div>
+	                </div>
+	              </div>
+	      		<%}%>
+	      	</td>
+	      </tr>          
+	    </table>
+	  </div>
+	  <%/* end render action */%>
+	<%uiform.end()%>
+</div>
