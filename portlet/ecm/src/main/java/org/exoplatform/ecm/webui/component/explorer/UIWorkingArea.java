@@ -372,7 +372,7 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
-  private void processPaste(ClipboardCommand currentClipboard, String destPath, Event event) throws Exception {
+  public void processPaste(ClipboardCommand currentClipboard, String destPath, Event event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
     String srcPath = currentClipboard.getSrcPath();

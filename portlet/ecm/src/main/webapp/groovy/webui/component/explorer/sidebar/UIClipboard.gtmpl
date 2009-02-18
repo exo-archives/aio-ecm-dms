@@ -43,10 +43,10 @@
 		    String path, fullPath ;
 		    int index = 1 ;
 		    for(item in uicomponent.getClipboardData()) {
-		      if(even) rowClass = "EvenRow" ;  
-		      else rowClass =  "OddRow" ; 
+		      if(even) rowClass = "EvenRow";  
+		      else rowClass =  "OddRow"; 
 		      even = !even ;
-		      path = fullPath = item.getSrcPath() ;
+		      path = fullPath = (item.getWorkspace()+ ":/" + item.getSrcPath());
 		      if (path.length() > 20 ) path = "..." + path.substring(path.length() - 20, path.length());
 		%>
 		    <tr class="$rowClass">

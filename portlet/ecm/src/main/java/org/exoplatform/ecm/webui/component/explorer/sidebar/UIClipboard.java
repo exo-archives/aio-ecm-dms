@@ -25,6 +25,8 @@ import javax.jcr.Workspace;
 
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -73,27 +75,21 @@ public class UIClipboard extends UIComponent {
   static public class PasteActionListener extends EventListener<UIClipboard> {
     public void execute(Event<UIClipboard> event) throws Exception {
       UIClipboard uiClipboard = event.getSource() ;
-      UIJCRExplorer uiExplorer = uiClipboard.getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = uiClipboard.getAncestorOfType(UIJCRExplorer.class);
+      UIWorkingArea uiWorkingArea = uiExplorer.findFirstComponentOfType(UIWorkingArea.class);
       String id = event.getRequestContext().getRequestParameter(OBJECTID) ;
       int index = Integer.parseInt(id) ;
-      ClipboardCommand selectedClipboard = uiClipboard.clipboard_.get(index-1) ;      
+      ClipboardCommand selectedClipboard = uiClipboard.clipboard_.get(index-1);      
       Node node = uiExplorer.getCurrentNode() ;
       String type = selectedClipboard.getType();
-      String srcPath = selectedClipboard.getSrcPath();      
       String nodePath = node.getPath();
-      String destPath = nodePath + srcPath.substring(srcPath.lastIndexOf("/"));
-      if(nodePath.equals("/")) destPath = srcPath.substring(srcPath.lastIndexOf("/"));
-      UIApplication app = uiClipboard.getAncestorOfType(UIApplication.class) ;
+      UIApplication app = uiClipboard.getAncestorOfType(UIApplication.class);
       try {
-        Session session = uiExplorer.getSession() ;
-        Workspace workspace = session.getWorkspace();
-        if(ClipboardCommand.COPY.equals(type)) {
-          workspace.copy(srcPath, destPath);
-        } else {
-          workspace.move(srcPath, destPath);
-          session.save();
-          uiClipboard.clipboard_.remove(index-1) ;
-        }
+        uiWorkingArea.processPaste(selectedClipboard, nodePath, event);
+          if(ClipboardCommand.CUT.equals(type)) {
+            uiClipboard.clipboard_.remove(index-1) ;
+          } else {
+          }
         uiExplorer.updateAjax(event);
       } catch(PathNotFoundException path) {
         app.addMessage(new ApplicationMessage("PathNotFoundException.msg", null, ApplicationMessage.WARNING)) ;
