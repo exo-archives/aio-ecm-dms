@@ -22,7 +22,7 @@
   height: 19px;
 }
 
-.UISubContent .TopSubContent a{
+.UISubContent .TopSubContent a {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	height: 16px;
@@ -57,10 +57,6 @@
 	background: url('DefaultSkin/background/CenterHorizontalTabBG1x26.gif') repeat-x;
 }
 
-.UISubContent .SubContentTitle .ChildContainer{
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
-}
 .UISubContent .SubContentTitle .LeftIcon {
 	float: left;  /* orientation=lt */
 	float: right;  /* orientation=rt */
@@ -83,20 +79,13 @@
 	/*margin-top: 4px;*/
 }
 
-.UISubContent .SubContentTitle .ChildNode { 
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
-	height: 18px;
-	padding: 1px 5px 0px 5px;
-}
-
-.UISubContent .SubContentTitle .ChildNode a { 
+.UISubContent .SubContentTitle a { 
 	text-decoration: none;
 	color: #515151;
 	font-size: 11px; font-weight: bold;
 }
 
-.UISubContent .SubContentTitle .ChildNode a:hover { 
+.UISubContent .SubContentTitle a:hover { 
 	text-decoration: none;
 	color: #058ee6;
 }
@@ -106,6 +95,7 @@
 	float: right; /* orientation=rt */
 	padding: 0px 8px;
 	line-height: 19px;
+	padding: 1px 5px 0px 5px;
 }
 
 .UISubContent .SubContentTitle .RightIcon { 
@@ -188,14 +178,12 @@
 }
 
 .ViewMoreDocument a{
-  margin-right: 10px; /* orientation=lt */
-  margin-left: 10px; /* orientation=rt */
+  margin: 0px 10px 0px 3px; /* orientation=lt */
+  margin: 0px 3px 0px 10px; /* orientation=rt */
   font-size: 11px;
   color: #058ee6;
   float: left; /* orientation=lt */
   float: right; /* orientation=lrt */
-  padding-left: 3px; /* orientation=lt */
-  padding-right: 3px; /* orientation=rt */
 }
 
 .ViewMoreDocument a:hover{

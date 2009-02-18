@@ -15,19 +15,25 @@
 }
 
 .UICBTemplateV1 .Path .HomeIcon {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	margin: 3px; 
 }
 
 .UICBTemplateV1 .Path .ArrowTiny {
-	float:left;	width: 16px; height: 16px;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */	
+	width: 16px; height: 16px;
 	margin: 3px 0px;
-	background: url('DefaultSkin/background/ArrowTiny.gif') no-repeat ;
+	background: url('DefaultSkin/background/ArrowTiny.gif') no-repeat left; /* orientation=lt */
+	background: url('DefaultSkin/background/ArrowTiny-rt.gif') no-repeat right; /* orientation=rt */
 }
 
 .UICBTemplateV1 .Path .HomeLabel {
-	float: left;
-	margin-left: 7px;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	margin-left: 7px; /* orientation=lt */
+	margin-right: 7px; /* orientation=rt */
 	line-height: 20px;
 	font-size: 11px;
 	color: red;
@@ -40,33 +46,36 @@
 }
 
 .UICBTemplateV1 .TempDecorator .Title {
-  border-bottom: solid 1px #bfbfbf ; 
+  border-bottom: solid 1px #bfbfbf; 
   height: 24px;
   margin-bottom: 10px;
 }
 
 .UICBTemplateV1 .TempDecorator .Title .TitleIcon {
 	margin-top: 2px;
-	padding-left: 26px; 
+	padding-left: 26px; /* orientation=lt */
+	padding-right: 26px; /* orientation=rt */
 	font-weight: bold;
 	line-height: 24px;
 }
 
 .UICBTemplateV1 .TempDecorator .SubDecorator {
-  border: solid 1px #a3abb6 ; 
+  border: solid 1px #a3abb6; 
   margin-top: 1px;
   background: #f8f8f8;
 }
 
 .UICBTemplateV1 .SubDecorator .List {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
   width: 24%;
   padding: 7px 0px;
 }
 
 .UICBTemplateV1   .SubDecorator .IconEmpty{
  	width: 16px;	height: 16px;
- 	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 }
 
 .UICBTemplateV1 .SubDecorator .NodeIcon {
@@ -76,7 +85,8 @@
 }
 
 .UICBTemplateV1 .SubDecorator .CategoryIcon {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 }
 
 .UICBTemplateV1 .SubDecorator .NodeLabel {
@@ -105,8 +115,10 @@
 }
 
 .UICBTemplateV1 .SubDecorator .EmptyIcon {
-	float: left;
-	padding-left: 4px;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	padding-left: 4px; /* orientation=lt */
+	padding-right: 4px; /* orientation=rt */
 }
 
 .UICBTemplateV1 .ContainerButton {
@@ -118,25 +130,33 @@
 }
 
 .UICBTemplateV1 .NodeButtonIcon .ButtonIcon {
-	float: left;
-	margin-left: 5px;
-	padding-left: 8px;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	margin-left: 5px; /* orientation=lt */
+	margin-right: 5px; /* orientation=rt */
+	padding-left: 8px; /* orientation=lt */
+	padding-right: 8px; /* orientation=rt */
 }
 
 .UICBTemplateV1 .NodeButtonIcon .LeftButtonCategory {
 	margin-top: 5px;
-	float: left;
-	background: url('DefaultSkin/background/ButtonLeft5x19.gif') no-repeat left;
-	padding-left: 4px;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	background: url('DefaultSkin/background/ButtonLeft5x19.gif') no-repeat left; /* orientation=lt */
+	background: url('DefaultSkin/background/ButtonLeft5x19-rt.gif') no-repeat right; /* orientation=rt */
+	padding-left: 4px; /* orientation=lt */
+	padding-right: 4px; /* orientation=rt */
 }
 
 .UICBTemplateV1 .NodeButtonIcon .RightButtonCategory {
-	background: url('DefaultSkin/background/ButtonRight17x19.gif') no-repeat right;
-	padding-right: 17px;
+	background: url('DefaultSkin/background/ButtonRight17x19.gif') no-repeat right; /* orientation=lt */
+	background: url('DefaultSkin/background/ButtonRight17x19-rt.gif') no-repeat left; /* orientation=rt */
+	padding-right: 17px; /* orientation=lt */
+	padding-left: 17px; /* orientation=rt */
 }
 
 .UICBTemplateV1 .NodeButtonIcon .MiddleButtonCategory {
-	background: url('DefaultSkin/background/MiddleButton1x19.gif') repeat-x ;
+	background: url('DefaultSkin/background/MiddleButton1x19.gif') repeat-x;
 }
 
 .UICBTemplateV1 .NodeButtonIcon .ButtonCategoryLabel {
@@ -159,11 +179,12 @@
 
 .UICBTemplateV1 .ContainerButton .MiddleSubMenu {
 	height: 23px;
-	background: url('DefaultSkin/background/MiddleMenu1x23.gif') repeat-x ;
+	background: url('DefaultSkin/background/MiddleMenu1x23.gif') repeat-x;
 }
 
 .UICBTemplateV1 .ContainerButton .MiddleSubMenu .Label {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	line-height: 23px;
 	font-size: 11px;
 	color: #1d75ca;	

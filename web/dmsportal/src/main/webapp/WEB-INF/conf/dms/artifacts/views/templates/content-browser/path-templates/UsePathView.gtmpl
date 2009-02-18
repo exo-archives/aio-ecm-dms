@@ -51,11 +51,8 @@
 	  <div class="$classN">
 	  <%/*Begin UICBNavigation*/%>
 	  <div class="UICBNavigation">
-	    <div class="CBLeftNavigation">
-	      <div class="CBRightNavigation">
-	        <div class="CBMiddleNavigation">
+
 	          <div class="UICBMainNavigation">
-	            
 	            <div class="HomeTab UIPopupSelector">
 	              <div style="position: relative;">            
 		              <div class="UIContextMenu UISelectContent">
@@ -97,6 +94,7 @@
 	                  	<div class="LeftIcon CBHome16x16Icon" title="<%= _ctx.appRes( componentName  +".title.home") %>"><span></span></div>
 	                    <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()))%>" ><%= _ctx.appRes(componentName + ".label.home") %></a>
 	                    <div class="RightIcon CBDropDownArrow16x16Icon" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)"><span></span></div>
+	                    <div class="ClearBoth"><span></span></span></div>
 	                  </div>
 	                </div>
 	              </div>
@@ -135,28 +133,30 @@
 							</div>                  
 	          </div>
 	          <div class="UICBSubNavigation">
-	            <div class="ItemContainer">
-	              <%
-	                for(String subCat in subCategoryList) {
-	                  String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
-	                  String actionLinkSub = uicomponent.event("ChangeNode", Utils.formatNodeName(subCat)) ; 
-	              %>
-	                  <div class="ChildNodeItem">
-	                    <a class="NodeLabel" href="$actionLinkSub">$catName</a>  
-	                  </div>
-	                  <div class="SeparatorLine"><span></span></div>
-	              <%}%>
-	            </div>
-	            <div class="NavigationButtonContainer">
-								<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
-									<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
-								</div>
-	              <!--<div style="clear:both"><span></span></div>-->
-	            </div>
+		          <div class="CBLeftNavigation">
+			          <div class="CBRightNavigation">
+				          <div class="CBMiddleNavigation">
+				            <div class="FixHeight"> 
+					              <%
+					                for(String subCat in subCategoryList) {
+					                  String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
+					                  String actionLinkSub = uicomponent.event("ChangeNode", Utils.formatNodeName(subCat)) ; 
+					              %>
+				                    <a class="NodeLabel" href="$actionLinkSub">$catName</a>
+					                  <div class="SeparatorLine"><span></span></div>
+					              <%}%>
+					            <div class="NavigationButtonContainer">
+												<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
+													<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
+												</div>
+					              <!--<div style="clear:both"><span></span></div>-->
+					            </div>
+					          </div>
+				          </div> 
+			          </div>
+		          </div>
 	          </div>
-	        </div>
-	      </div>
-	    </div>
+
 	  </div>
 	  <%/*End UICBNavigation*/%>
 	  
@@ -230,7 +230,7 @@
 	    <% if(totalPages>1){ %>
 	    <div class="DocumentsPageIterator"><%_ctx.renderUIComponent(uicomponent.getUIPageIterator());%></div>
 	    <% } %>
-	    <div style="clear:left"><span></span></div>
+	    <div class="clearLeft"><span></span></div>
 	    <%}%>
 	    <%if(!isShowAllDoc) {/*Begin UISubContent*/%>
 	        <div class="UISubContent" >
@@ -255,19 +255,15 @@
 	                  	<div class="SubContentTitle">
 		                   	<div class="LeftBar">
 		                   		<div class="RightBar">
-		                   			<div class="MiddleBar">
-		                   					<div class="ChildContainer" > 
+		                   			<div class="MiddleBar"> 
 		                   					<% 
 							                    for(String subChild in subChilds) {
 							                      String subChildName = subChild.substring(subChild.lastIndexOf("/") + 1) ;
 							                      String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild));
-							                  %>
-							                      <div class="ChildNode">						                      	
-							                        <a class="NodeLabel" href="$subChildLink">$subChildName</a>
-							                      </div>
-							                      <div class="SeparatorLine"><span></span></div>
+							                  %>					                      	
+				                        <a class="NodeLabel" href="$subChildLink">$subChildName</a>
+					                      <div class="SeparatorLine"><span></span></div>
 							                  <%}%>
-							                  </div>
 							                  <div class="NavigationButtonContainer">
 																	<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs")%>"><!--<span></span>-->
 																		<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>

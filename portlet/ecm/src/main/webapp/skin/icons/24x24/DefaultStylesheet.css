@@ -243,13 +243,15 @@ a:hover .ShowHideBoxContainer {
 }
 
 .Permission24x24Icon {
-  float: left;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/PermissionSetting.gif') no-repeat;
 }
 
 .SelectPath24x24Icon {
-  float: left;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 16px;	height: 16px;
   background: url('DefaultSkin/MagnifierIconNews.png') no-repeat;
 }

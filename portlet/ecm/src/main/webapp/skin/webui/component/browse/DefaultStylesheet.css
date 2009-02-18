@@ -50,10 +50,6 @@
 	margin: 9px 10px 0px 0px; /* orientation=lt */
 	margin: 9px 0px 0px 10px; /* orientation=rt */
 }
-.UIBrowseContentPortlet .BoxContent {
-  margin-right: 210px; /* orientation=lt */
-  margin-left: 210px; /* orientation=rt */
-}
 
 .UIBrowseContentPortlet .TagmapHolder {
 	float: right; /* orientation=lt */
@@ -107,8 +103,9 @@
 	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 
 }
 
-.UIBrowseContentPortlet .UIFormGrid .FieldLabel {
-	width: 128px;
+.UIBrowseContentPortlet .UIFormGrid td.FieldLabel {
+	width: 25%;
+	vertical-align: middle;
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel:first-letter {
@@ -133,14 +130,13 @@
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .path .UIFormInputSet .AddIcon16x16 {
-	float:none;
+	float: none;
 	margin-left: 5px; /* orientation=lt */
 	margin-right: 5px; /* orientation=rt */
 }
 
 .UIBrowseContentPortlet .UIFormInputSet .UIFormInputSetWithAction td.FieldLabel {
 	padding: 0px 4px;
-	vertical-align: middle;
 }
 
 .UIBrowseContentPortlet .UIConfigContainer .HorizontalLayout .FormContainer {
@@ -178,13 +174,8 @@
 	float: left; /* orientation=rt */
 }
 
-.UIBrowseContentPortlet .UIToolBar .LeftToolBar {
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
-	height: 27px;
-}
 
-.UIBrowseContentPortlet .UIToolBar .LeftToolBar .ShowHiddenIcon {
+.UIBrowseContentPortlet .UIToolBar .ShowHiddenIcon {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	height: 24px;
@@ -202,7 +193,7 @@
 	margin: 6px 8px 0px 5px; /* orientation=rt */
 }
 
-.UIBrowseContentPortlet .UIToolBar .LeftToolBar .PathLabel {
+.UIBrowseContentPortlet .UIToolBar .PathLabel {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	height: 27px;
@@ -210,7 +201,7 @@
 	line-height: 27px; vertical-align: middle;
 }
 
-.UIBrowseContentPortlet .UIToolBar .LeftToolBar .PathChildLabel {
+.UIBrowseContentPortlet .UIToolBar .PathChildLabel {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	height: 27px;
@@ -218,17 +209,18 @@
 	line-height: 27px; vertical-align: middle;
 }
 
-.UIBrowseContentPortlet .UIToolBar .LeftToolBar a:hover {
+.UIBrowseContentPortlet .UIToolBar a:hover {
 	color: #f97c01;
 }
 
-.UIBrowseContentPortlet .UIToolBar .LeftToolBar .PathIcon {
+.UIBrowseContentPortlet .UIToolBar .PathIcon {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	height: 16px; width: 16px;
 	margin: 11px 0px 0px 5px; /* orientation=lt */
 	margin: 11px 5px 0px 0px; /* orientation=rt */
-	background: url('DefaultSkin/background/CBPathArrow8x7.gif') no-repeat;
+	background: url('DefaultSkin/background/CBPathArrow8x7.gif') no-repeat left top; /* orientation=lt */
+	background: url('DefaultSkin/background/CBPathArrow8x7-rt.gif') no-repeat right top; /* orientation=rt */
 }
 
 .UIBrowseContentPortlet .UIToolBar .SelectViewLabel {

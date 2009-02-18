@@ -7,16 +7,17 @@
  */
 
 .SavedQueries {
-  float: left;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
   width: 24px; height: 24px;
-  background: url('MacSkin/SavedQueries.gif') no-repeat ;
+  background: url('MacSkin/SavedQueries.gif') no-repeat;
   cursor: pointer;
   margin: 2px 0px 0px 5px;
 }
 
 .SwitchSearch  {
   width: 24px; height: 24px;
-  background: url('MacSkin/AdvancedSearch.gif') no-repeat ;
+  background: url('MacSkin/AdvancedSearch.gif') no-repeat;
   cursor: pointer;
 }
 
@@ -37,122 +38,122 @@
 
 .AddNodeTypeIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageNodeTypeIcon.gif') no-repeat ;
+  background: url('MacSkin/ManageNodeTypeIcon.gif') no-repeat;
 }
 
 .AddCategoryIcon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat ;
+  background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat;
 }
 
 .SearchIcon {
 	width: 24px; height: 24px;
-  background: url('MacSkin/IconSearch.gif') no-repeat ;
+  background: url('MacSkin/IconSearch.gif') no-repeat;
 }
 
 .UIFolksonomyManagerIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/ManageFolksonomyIcon.gif') no-repeat ;
+  background: url('MacSkin/ManageFolksonomyIcon.gif') no-repeat;
 }
 
 .UITaxonomyManagerIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/ManageTaxonomyIcon.gif') no-repeat ;
+  background: url('MacSkin/ManageTaxonomyIcon.gif') no-repeat;
 }
 
 .UIMetadataManagerIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/ManageMetadataIcon.gif') no-repeat ;
+  background: url('MacSkin/ManageMetadataIcon.gif') no-repeat;
 }
 
 .AddMetadataTypeIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageMetadataIcon.gif') no-repeat ;
+  background: url('MacSkin/ManageMetadataIcon.gif') no-repeat;
 }
 
 .UINamespaceManagerIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/NameSpaceRegistryIcon.gif') no-repeat ;
+  background: url('MacSkin/NameSpaceRegistryIcon.gif') no-repeat;
 }
 
 .UINodeTypeManagerIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/ManageNodeTypeIcon.gif') no-repeat ;
+  background: url('MacSkin/ManageNodeTypeIcon.gif') no-repeat;
 }
 
 .UIActionManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/CreateActionTypeIcon.gif') no-repeat ;
+  background: url('MacSkin/CreateActionTypeIcon.gif') no-repeat;
 }
 
 .UITemplatesManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageTemplateIcon.gif') no-repeat ;
+  background: url('MacSkin/ManageTemplateIcon.gif') no-repeat;
 }
 
 .UIScriptManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageScriptIcon.gif') no-repeat ;
+  background: url('MacSkin/ManageScriptIcon.gif') no-repeat;
 }
 
 .OntologiesIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageOntologies.png') no-repeat ;
+  background: url('MacSkin/ManageOntologies.png') no-repeat;
 }
 
 .ContentPresentationIcon {
 	width: 24px;	height:24px;
-  background: url('MacSkin/DisplayDocuments.png') no-repeat ;
+  background: url('MacSkin/DisplayDocuments.png') no-repeat;
 }
 
 .AdvanceConfiguarationIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageDynamicContent.png') no-repeat ;
+  background: url('MacSkin/ManageDynamicContent.png') no-repeat;
 }
 
 .TypesOfContentIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/CreateDocumentTypes.png') no-repeat ;
+  background: url('MacSkin/CreateDocumentTypes.png') no-repeat;
 }
 
 .UIRuleManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/RuleManager.gif') no-repeat ;
+  background: url('MacSkin/RuleManager.gif') no-repeat;
 }
 
 .UIViewManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageViewIcon.gif') no-repeat ;
+  background: url('MacSkin/ManageViewIcon.gif') no-repeat;
 }
 
 .UIDriveManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageDriveIcon.gif') no-repeat ;
+  background: url('MacSkin/ManageDriveIcon.gif') no-repeat;
 }
 
 .UIQueriesManagerIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageQueriesIcon.gif') no-repeat ;
+  background: url('MacSkin/ManageQueriesIcon.gif') no-repeat;
 }
 
 .ManageOntologiesIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageOntologies.png') no-repeat ;
+  background: url('MacSkin/ManageOntologies.png') no-repeat;
 }
 
 .CreateDocumentTypesIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/CreateDocumentTypes.png') no-repeat ;
+  background: url('MacSkin/CreateDocumentTypes.png') no-repeat;
 }
 
 .DisplayDocumentsIcon {
 	width: 24px;	height: 22px;
-  background: url('MacSkin/DisplayDocuments.png') no-repeat ;
+  background: url('MacSkin/DisplayDocuments.png') no-repeat;
 }
 
 .ManageDynamicContentIcon {
 	width: 24px;	height: 24px;
-  background: url('MacSkin/ManageDynamicContent.png') no-repeat ;
+  background: url('MacSkin/ManageDynamicContent.png') no-repeat;
 }
 
 .Relations24x24Icon {
@@ -226,112 +227,112 @@ a:hover .ShowHideBoxContainer {
 
 .TaggingDocumentIcon {
 	width: 26px; height: 24px;
-  background: url('DefaultSkin/Tagging.gif') no-repeat ;
+  background: url('DefaultSkin/Tagging.gif') no-repeat;
 }
 
 .MultiLanguageIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/MultiLanguages.gif') no-repeat ;
+  background: url('DefaultSkin/MultiLanguages.gif') no-repeat;
 }
 
 .ManageVersionsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageVersions.gif') no-repeat ;
+  background: url('DefaultSkin/ManageVersions.gif') no-repeat;
 }
 
 .ManageAuditingIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageAuditing.gif') no-repeat ;
+  background: url('DefaultSkin/ManageAuditing.gif') no-repeat;
 }
 
 .ManagePublicationsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManagerPuplication.gif') no-repeat ;
+  background: url('DefaultSkin/ManagerPuplication.gif') no-repeat;
 }
 
 .ManageActionsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageActions.gif') no-repeat ;
+  background: url('DefaultSkin/ManageActions.gif') no-repeat;
 }
 
 .ManageCategoriesIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageCategories.gif') no-repeat ;
+  background: url('DefaultSkin/ManageCategories.gif') no-repeat;
 }
 
 .ManageRelationsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageRelations.gif') no-repeat ;
+  background: url('DefaultSkin/ManageRelations.gif') no-repeat;
 }
 
 .ImportNodeIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ImportNode.gif') no-repeat ;
+  background: url('DefaultSkin/ImportNode.gif') no-repeat;
 }
 
 .ManageHiddenIcon {
   width: 24px; height: 24px;
-  background: url('DefaultSkin/AddRemoveHidden.gif') no-repeat ;
+  background: url('DefaultSkin/AddRemoveHidden.gif') no-repeat;
 }
 
 .ExportNodeIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ExportNode.gif') no-repeat ;
+  background: url('DefaultSkin/ExportNode.gif') no-repeat;
 }
 
 .AddDocumentIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/AddDocument.gif') no-repeat ;
+  background: url('DefaultSkin/AddDocument.gif') no-repeat;
 }
 
 .CreateTicketIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/AddTicket.gif') no-repeat ;
+  background: url('DefaultSkin/AddTicket.gif') no-repeat;
 }
 
 .AddFolderIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/AddFolder.gif') no-repeat ;
+  background: url('DefaultSkin/AddFolder.gif') no-repeat;
 }
 
 .UploadIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/UploadFile.gif') no-repeat ;
+  background: url('DefaultSkin/UploadFile.gif') no-repeat;
 }
 
 .ViewReferencesIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewReferences.gif') no-repeat ;
+  background: url('DefaultSkin/ViewReferences.gif') no-repeat;
 }
 
 .OverloadThumbnailIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/OverloadThumbnailIcon.gif') no-repeat ;
+  background: url('DefaultSkin/OverloadThumbnailIcon.gif') no-repeat;
 }
 
 .ShowJCRStructureIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ShowJCRStructure.gif') no-repeat ;
+  background: url('DefaultSkin/ShowJCRStructure.gif') no-repeat;
 }
 
 .ViewNodeTypeIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewNodeType.gif') no-repeat ;
+  background: url('DefaultSkin/ViewNodeType.gif') no-repeat;
 }
 
 .ViewPropertiesIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewProperties.gif') no-repeat ;
+  background: url('DefaultSkin/ViewProperties.gif') no-repeat;
 }
 
 .ViewRelationsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewRelations.gif') no-repeat ;
+  background: url('DefaultSkin/ViewRelations.gif') no-repeat;
 }
 
 .ViewPermissionsIcon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewPermission.gif') no-repeat ;
+  background: url('DefaultSkin/ViewPermission.gif') no-repeat;
 }
 
 .Clipboard24x24Icon {
@@ -341,111 +342,113 @@ a:hover .ShowHideBoxContainer {
 
 .HardDisk24x24Icon {
 	width: 24px; height: 24px;
-  background: url('DefaultSkin/HardDisk.gif') no-repeat ;
+  background: url('DefaultSkin/HardDisk.gif') no-repeat;
 }
 
 .BlueDiamond24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/BlueDiamond.gif') no-repeat ;
+  background: url('DefaultSkin/BlueDiamond.gif') no-repeat;
 }
 
 .PermissionIcon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/PermissionIcon.gif') no-repeat ;
+  background: url('DefaultSkin/PermissionIcon.gif') no-repeat;
 }
 
 .Permission24x24Icon {
-  float: left;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/PermissionSetting.gif') no-repeat ;
+  background: url('DefaultSkin/PermissionSetting.gif') no-repeat;
 }
 
 .SelectPath24x24Icon {
-  float: left;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/MagnifierIconNews.png') no-repeat ;
+  background: url('DefaultSkin/MagnifierIconNews.png') no-repeat;
 }
 
 .AddRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/AddRepositoryIcon.gif') no-repeat ;
+  background: url('DefaultSkin/AddRepositoryIcon.gif') no-repeat;
 }
 
 .EditRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/EditRepositoryIcon.gif') no-repeat ;
+  background: url('DefaultSkin/EditRepositoryIcon.gif') no-repeat;
 }
 
 .RemoveRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/RemoveRepositoryIcon.gif') no-repeat ;
+  background: url('DefaultSkin/RemoveRepositoryIcon.gif') no-repeat;
 }
 
 /*=================================================================*/
 
 .RefreshSession24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/MetalSync.gif') no-repeat ;
+  background: url('DefaultSkin/MetalSync.gif') no-repeat;
 }
 
 .HomeIcon {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/HardDisk.gif') no-repeat ;
+  background: url('DefaultSkin/HardDisk.gif') no-repeat;
 }
 
 .ViewPortlet24x24Icon {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/DisplayDocuments.gif') no-repeat ;
+  background: url('DefaultSkin/DisplayDocuments.gif') no-repeat;
 }
 
 .Switch24x24Icon {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/DisplayDocuments.gif') no-repeat ;
+  background: url('DefaultSkin/DisplayDocuments.gif') no-repeat;
 }
 
 .ConfigPortlet24x24Icon {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageActions.gif') no-repeat ;
+  background: url('DefaultSkin/ManageActions.gif') no-repeat;
 }
 
 .AddNewConfig24x24Icon {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/AddDocument.gif') no-repeat ;
+  background: url('DefaultSkin/AddDocument.gif') no-repeat;
 }
 
 .SmallNote24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/SmallNote.gif') no-repeat ;
+  background: url('DefaultSkin/SmallNote.gif') no-repeat;
 }
 
 .GreenLeftArrowFolder24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/GreenLeftArrowFolder.gif') no-repeat ;
+  background: url('DefaultSkin/GreenLeftArrowFolder.gif') no-repeat;
 }
 
 .GreenUpArrowFolder24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/GreenUpArrowFolder.gif') no-repeat ;
+  background: url('DefaultSkin/GreenUpArrowFolder.gif') no-repeat;
 }
 
 .GreenLeftArrow24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/GreenLeftArrow.gif') no-repeat ;
+  background: url('DefaultSkin/GreenLeftArrow.gif') no-repeat;
 }
 
 .GreenRightArrow24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/GreenRightArrow.gif') no-repeat ;
+  background: url('DefaultSkin/GreenRightArrow.gif') no-repeat;
 }
 
 .Categories24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/Categories.gif') no-repeat ;
+  background: url('DefaultSkin/Categories.gif') no-repeat;
 }
 
 .BlackMonitor24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/BlackMonitor.gif') no-repeat ;
+  background: url('DefaultSkin/BlackMonitor.gif') no-repeat;
 }
 
 /*############################## -- Begin NodeType Icon -- ########################*/
@@ -692,5 +695,5 @@ a:hover .ShowHideBoxContainer {
 
 .TagExplorer24x24Icon {
 	width: 26px; height: 24px;
-  background: url('DefaultSkin/Tagging.gif') no-repeat ;
+  background: url('DefaultSkin/Tagging.gif') no-repeat;
 }

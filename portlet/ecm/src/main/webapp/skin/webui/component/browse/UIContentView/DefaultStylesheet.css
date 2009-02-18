@@ -12,7 +12,6 @@
 
 .UIContentView .TiteContentView {
   margin: 8px 0px 3px 0px;
-  vertical-align: middle;
   height: 18px;
 }
 
@@ -27,7 +26,7 @@
 	float: right; /* orientation=rt */
 	margin-left: 6px; /* orientation=lt */
 	margin-right: 6px; /* orientation=rt */
-	line-height: 18px; vertical-align: middle;
+	line-height: 18px;
 	font-size: 11px; font-weight: bold;
 	color: #058ee6;
 }

@@ -7,7 +7,8 @@
  */
 
 .UICategoryTree {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   padding: 1px;
   width: 200px;
 }
@@ -27,14 +28,17 @@
 }
 
 .UICategoryTree .TitleCategoryTree .CategoryTreeIcon {
-	float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   margin-top: 2px;
 }
 
 .UICategoryTree .TiteLabel {
-	float: left;	
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */	
 	font-weight: bold;
-	padding-left: 5px;
+	padding-left: 5px; /* orientation=lt */
+	padding-right: 5px; /* orientation=rt */
 }
 
 .UICategoryTree .MiddleCategoryTree {
@@ -48,13 +52,16 @@
 }
 
 .UICategoryTree .MiddleCategoryTree .TreeRootIcon{
-  float: left;
-  margin: 2px 3px 0px 5px;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  margin: 2px 3px 0px 5px; /* orientation=lt */
+  margin: 2px 5px 0px 3px; /* orientation=rt */
   width: 16px; height: 16px;
 }
 
 .UICategoryTree .MiddleCategoryTree .RootTreeNode{
-	float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 	font-weight:  bold;
 	font-size: 11px;
 	line-height: 20px; height: 20px;		
@@ -64,23 +71,27 @@
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .ParentSupMenu {
-	margin: 5px 0px 0px 18px;
+	margin: 5px 0px 0px 18px; /* orientation=lt */
+	margin: 5px 18px 0px 0px; /* orientation=rt */
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .SelectIcon {
-	float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 	margin-top: 2px;
 	width: 16px; height: 16px;
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .CategoryTreeLabel {
-	margin-left: 20px;
+	margin-left: 20px; /* orientation=lt */
+	margin-right: 20px; /* orientation=rt */
 	line-height: 20px;
 	font-size: 11px;
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .CategorySelectLabel {
-	margin-left: 20px;
+	margin-left: 20px; /* orientation=lt */
+	margin-right: 20px; /* orientation=rt */
 	line-height: 20px;
 	font-weight:  bold;
 	font-size: 11px;

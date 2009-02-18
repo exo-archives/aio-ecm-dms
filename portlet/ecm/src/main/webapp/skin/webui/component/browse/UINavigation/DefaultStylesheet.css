@@ -81,20 +81,22 @@
 }
 
 .UICBNavigation .CBLeftNavigation {
-	height: 49px;
-  background: url('DefaultSkin/background/LeftHorizontalTabBG4x26.gif') no-repeat left bottom;
+  background: url('DefaultSkin/background/LeftHorizontalTabBG4x26.gif') no-repeat left;
   padding-left: 4px;
 }
 
 .UICBNavigation .CBRightNavigation {
-	height: 49px;
-  background: url('DefaultSkin/background/RightHorizontalTabBG4x26.gif') no-repeat right bottom;
+  background: url('DefaultSkin/background/RightHorizontalTabBG4x26.gif') no-repeat right;
   padding-right: 4px;
 }
 
 .UICBNavigation .CBMiddleNavigation {
-	height: 49px;
-  background: url('DefaultSkin/background/CenterHorizontalTabBG1x26.gif') repeat-x bottom;
+	line-height: 26px;
+  background: url('DefaultSkin/background/CenterHorizontalTabBG1x26.gif') repeat-x ;
+}
+
+.UICBNavigation .CBMiddleNavigation .FixHeight {
+	height: 26px;
 }
 
 .UICBNavigation .UICBMainNavigation {
@@ -110,20 +112,20 @@
 }
 
 .UICBNavigation .HomeTab .LeftHomeTab {
-	height: 21px; line-height: 21px;
+  background: url('DefaultSkin/background/LeftCBHomeTab10x21.gif') no-repeat left top;
 	padding-left: 10px;
-  background: url('DefaultSkin/background/LeftCBHomeTab10x21.gif') no-repeat left;
+	height: 21px;
 }
 
-.UICBNavigation .HomeTab .RightHomeTab{
-	height: 21px; line-height: 21px;
+.UICBNavigation .HomeTab .RightHomeTab {
+  background: url('DefaultSkin/background/RightCBHomeTab10x21.gif') no-repeat right top;
   padding-right: 10px;
-  background: url('DefaultSkin/background/RightCBHomeTab10x21.gif') no-repeat right;
+  height: 21px;
 }
 
 .UICBNavigation .HomeTab .MiddleHomeTab {
 	height: 21px; line-height: 21px;
-  background: url('DefaultSkin/background/CenterCBHomeTab1x21.gif') repeat-x;
+  background: url('DefaultSkin/background/CenterCBHomeTab1x21.gif') repeat-x left top;
 }
 
 .UICBNavigation .HomeTab a {
@@ -295,25 +297,18 @@
 	float: right; /* orientation=rt */
 }
 
-.UICBNavigation .UICBSubNavigation .ChildNodeItem { 
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
-	height: 18px;
-	padding: 1px 4px 0px 4px;
-}
-
-.UICBNavigation .UICBSubNavigation .ChildNodeItem .ItemIcon {
+.UICBNavigation .UICBSubNavigation .ItemIcon {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
   margin-top: 2px;
 }
 
-.UICBNavigation .UICBSubNavigation .ChildNodeItem a { 
+.UICBNavigation .UICBSubNavigation a { 
 	text-decoration: none;
 	color: #515151; font-size: 11px; font-weight: bold;
 }
 
-.UICBNavigation .UICBSubNavigation .ChildNodeItem a:hover { 
+.UICBNavigation .UICBSubNavigation a:hover { 
 	text-decoration: none;
 	color: #058ee6;
 }
@@ -323,13 +318,14 @@
 	float: right; /* orientation=rt */
 	line-height: 18px;
 	text-decoration: none;
+	padding: 1px 5px 0px 5px;
 }
 
 .SeparatorLine { 
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	background: url('DefaultSkin/background/SeparatorLine1x2.gif') repeat-y;  
-	margin: 2px 3px;
+	margin: 3px 3px;
 	height: 18px; width: 1px;
 }
 
@@ -337,8 +333,8 @@
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
 	cursor: pointer;
-	margin: 2px 3px 0px 0px;
-	margin: 2px 0px 0px 3px;
+	margin: 2px 3px 0px 0px; /* orientation=lt */
+	margin: 2px 0px 0px 3px; /* orientation=rt */
 }
 
 /*###########################-- End UITabs --############################*/

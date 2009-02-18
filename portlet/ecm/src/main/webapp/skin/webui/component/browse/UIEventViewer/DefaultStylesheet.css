@@ -9,7 +9,8 @@
 }
   
 .UIEventViewer .DocumentsPageIterator .UIPageIterator {
-	margin-right: 0px;
+	margin-right: 0px; /* orientation=lt */
+	margin-left: 0px; /* orientation=rt */
 }
 
 .UIEventViewer .EventContent {
@@ -22,8 +23,9 @@
 .UIEventViewer .ViewPreviousDocument {
   margin: 4px 0px 5px 8px; /* orientation=lt */
   margin: 4px 8px 5px 0px; /* orientation=rt */
-  height: 19px; vertical-align: middle;
-  border: 1px #e1e1e1 solid; background: #f3f3f3;
+  height: 19px;
+  border: 1px #e1e1e1 solid; 
+  background: #f3f3f3;
   width: 115px;
 }
 
@@ -37,7 +39,7 @@
   background: url('DefaultSkin/background/BlackDotBackArrow-rt.gif') no-repeat right top; /* orientation=rt */
 }
 
-.UIEventViewer .ViewPreviousDocument a{
+.UIEventViewer .ViewPreviousDocument a {
 	color: #333333;
 	line-height: 19px; 
 	font-weight: normal;
@@ -60,16 +62,17 @@
   float: right; /* orientation=rt */
 }
 
-.UIEventViewer .EventContent .EventDocumentLabel a{
+.UIEventViewer .EventContent .EventDocumentLabel a {
 	color: #058ee6;
 }
 
-.UIEventViewer .EventContent .EventDocumentLabel a:hover{
+.UIEventViewer .EventContent .EventDocumentLabel a:hover {
 	color: orange;
 }
 
 .UIEventViewer .EventContent .EventAuthorNameLabel {
-	text-align: right;
+	text-align: right; /* orientation=lt */
+	text-align: left; /* orientation=rt */
 	width: 45%;
 	color: gray;
   line-height: 16px;
@@ -82,13 +85,12 @@
 	text-align: right; /* orientation=rt */
 	width: 180px;
 	color: gray;
-  vertical-align: middle;
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
 }
 
 .UIEventViewer .EventContent .SummaryTitleLabel {
-  line-height: 16px; vertical-align: middle;
+  line-height: 16px;
   overflow: auto;
 }
 

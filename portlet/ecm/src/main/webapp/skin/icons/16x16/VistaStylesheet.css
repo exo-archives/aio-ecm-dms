@@ -7,11 +7,13 @@
  */
 
 .Icon16x16 {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 }
 
 .AddIcon16x16 {
-  float: left;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
   width: 16px; height: 16px;
   background: url('VistaSkin/AddNodeIcon.gif') no-repeat;
   cursor: pointer;
@@ -20,7 +22,8 @@
 .UIGrid .ViewIcon {
 	width:16px; height: 16px;
 	background: url('VistaSkin/YellowLight.png') no-repeat center;
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 }
 
 .UIGrid .DeleteIcon {
@@ -34,21 +37,24 @@
 }
 
 .AddPathIcon {
-  float: left ;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 17px;	height: 19px;
-  background: url('VistaSkin/AddPath.png') no-repeat ;
+  background: url('VistaSkin/AddPath.png') no-repeat;
   cursor: pointer;
 }
 
 .AddIconIcon {
-  float: left ;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 17px;	height: 18px;
   background:transparent url('VistaSkin/AddNodeIcon.png') no-repeat left center;
   cursor: pointer;
 } 
 
 .AddPermissionIcon {
-  float: left;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 16px; height: 17px;
   background: url('VistaSkin/SelectPermissionIcon.png') no-repeat; 
   cursor: pointer;
@@ -70,35 +76,36 @@
 }
 
 .RemoveReference16x16Icon {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 16px;	height: 16px;
-  background: url('VistaSkin/DustBin.gif') no-repeat ;
+  background: url('VistaSkin/DustBin.gif') no-repeat;
   cursor: pointer;
 }
 
 .Upload16x16Icon {
 	width: 16px; height: 16px;
-  background: url('VistaSkin/UploadFile.png') no-repeat ;
+  background: url('VistaSkin/UploadFile.png') no-repeat;
 }
 
 .AddFolder16x16Icon {
 	width: 16px; height: 16px;
-  background: url('VistaSkin/AddFolder.png') no-repeat ;
+  background: url('VistaSkin/AddFolder.png') no-repeat;
 }
 
 .AddDocument16x16Icon {
 	width: 16px; height: 16px;
-  background: url('VistaSkin/AddDocument.png') no-repeat ;
+  background: url('VistaSkin/AddDocument.png') no-repeat;
 }
 
 .GetURL16x16Icon {
   height: 16px;
-  background: url('DefaultSkin/Documents.gif') no-repeat ;  
+  background: url('DefaultSkin/Documents.gif') no-repeat;  
 }
 
 .AddThumbnail16x16Icon {
   height: 16px;
-  background: url('VistaSkin/AddThumbnails.gif') no-repeat ;  
+  background: url('VistaSkin/AddThumbnails.gif') no-repeat;  
 }
 
 .SelectMemberIcon {
@@ -151,24 +158,24 @@
 
 .RestoreVersion16x16Icon {
   width: 19px; height: 18px;
-  background: url('VistaSkin/RestoreVersion.png') no-repeat ;
+  background: url('VistaSkin/RestoreVersion.png') no-repeat;
   cursor: pointer;
 }
 
 .UIGrid .PasteIcon {
-  width: 16px ;  height: 16px ;
-  background: url('VistaSkin/PasteIcon.png') no-repeat ;
+  width: 16px;  height: 16px;
+  background: url('VistaSkin/PasteIcon.png') no-repeat;
 }
 
 .BlueRoundedPlusPage16x16Icon {
   width: 19px; height: 18px;
-  background: url('VistaSkin/BlueRoundedPlusPage.png') no-repeat ;
+  background: url('VistaSkin/BlueRoundedPlusPage.png') no-repeat;
   cursor: pointer;
 }
 
 .RedRoundedPlusPage16x16Icon {
   width: 19px; height: 18px;
-  background: url('VistaSkin/RedRoundedPlusPage.png') no-repeat ;
+  background: url('VistaSkin/RedRoundedPlusPage.png') no-repeat;
   cursor: pointer;
 }
 
@@ -215,30 +222,30 @@
 
 .DeleteIconInfo {
   width: 24px; height: 24px;
-  background: url('VistaSkin/Delete.png') no-repeat ; 
+  background: url('VistaSkin/Delete.png') no-repeat; 
   cursor: pointer;
   margin-left: 3px;
 }
 
 .EditStyleIcon {
-  width: 24px ;  height: 24px ;
-  background: url('VistaSkin/Edit.png') no-repeat ;
+  width: 24px;  height: 24px;
+  background: url('VistaSkin/Edit.png') no-repeat;
   cursor: pointer;
 }
 
 .EditIcon {
-  width: 24px ;  height: 24px ;
-  background: url('VistaSkin/Edit.png') no-repeat ;
+  width: 24px;  height: 24px;
+  background: url('VistaSkin/Edit.png') no-repeat;
   cursor: pointer;
 }
 
 .False16x16Icon {
-  width: 16px ;  height: 16px ;
+  width: 16px;  height: 16px;
   background: url('VistaSkin/False.png') no-repeat;  
 }
 
 .True16x16Icon {
-  width: 16px ;  height: 16px ;
+  width: 16px;  height: 16px;
   background: url('VistaSkin/True.png') no-repeat;  
 }
 
@@ -357,14 +364,16 @@
 }
 
 .SelectPath16x16Icon {
-  float: left;
-  width: 16px ;  height: 16px ;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+  width: 16px;  height: 16px;
   background: url('DefaultSkin/SearchPage.gif') no-repeat;  
 }
 
 .SelectPermission16x16Icon {
-  float: left;
-  width: 16px ;  height: 16px ;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+  width: 16px;  height: 16px;
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
 }
 
@@ -379,25 +388,26 @@
 }
 
 .AddRootNodeIcon {
-	width: 16px ;  height: 16px ;
+	width: 16px;  height: 16px;
   background: url('VistaSkin/SelectIcon.gif') no-repeat;  
 }
 
 /*############################## -- Action Icon  -- ##############################*/
 .Add16x16Icon {
-  float: left;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
   width: 24px; height: 24px;
   background: url('VistaSkin/BlueCirclePlus.png') no-repeat;  
 }
 
 .Delete16x16Icon {
   width: 24px; height: 24px;
-  background: url('VistaSkin/Delete.png') no-repeat ;   
+  background: url('VistaSkin/Delete.png') no-repeat;   
 }
 
 .Locked16x16Icon {
   width: 16px; height: 16px;
-  background: url('VistaSkin/Lock.gif') no-repeat ;
+  background: url('VistaSkin/Lock.gif') no-repeat;
 }
 
 .Lock16x16Icon {
@@ -407,124 +417,125 @@
 
 .Unlock16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/UnLock.gif') no-repeat ;   
+  background: url('DefaultSkin/UnLock.gif') no-repeat;   
 }
 
 .DownLoad16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/DownLoadIcon.gif') no-repeat ;   
+  background: url('DefaultSkin/DownLoadIcon.gif') no-repeat;   
 }
 
 .CheckIn16x16Icon {
   width: 24px; height: 20px;
-  background: url('VistaSkin/CheckIn.png') no-repeat ;   
+  background: url('VistaSkin/CheckIn.png') no-repeat;   
 }
 
 .CheckOut16x16Icon {
   width: 24px; height: 20px;
-  background: url('VistaSkin/CheckOut.png') no-repeat ;   
+  background: url('VistaSkin/CheckOut.png') no-repeat;   
 }
 
 .WebDAV16x16Icon {
   height: 24px;
-  background: url('VistaSkin/Webdav.png') no-repeat left center ; 
+  background: url('VistaSkin/Webdav.png') no-repeat left center; 
 }
 
 .Copy16x16Icon {
   width: 24px; height: 24px;
-  background: url('VistaSkin/Copy.png') no-repeat left center ; 
+  background: url('VistaSkin/Copy.png') no-repeat left center; 
 }
 
 .Cut16x16Icon {
   width: 24px; height: 24px;
-  background: url('VistaSkin/Cut.png') no-repeat left center ; 
+  background: url('VistaSkin/Cut.png') no-repeat left center; 
 }
 
 .Rename16x16Icon {
   height: 24px;
-  background: url('VistaSkin/Rename.gif') no-repeat left center ; 
+  background: url('VistaSkin/Rename.gif') no-repeat left center; 
 }
 
 .Edit16x16Icon {
-  float: left;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
   width: 24px; height: 24px;
-  background: url('VistaSkin/Edit.png') no-repeat left center ; 
+  background: url('VistaSkin/Edit.png') no-repeat left center; 
   cursor: pointer;   
 }
 
 .EditDocument16x16Icon {
   width:24px; height:20px;
-  background: url('VistaSkin/Edit.png') no-repeat left center ; 
+  background: url('VistaSkin/Edit.png') no-repeat left center; 
   cursor: pointer;   
 }
 
 .Save16x16Icon {
   width: 24px; height: 20px;
-  background: url('VistaSkin/Save.png') no-repeat left center ; 
+  background: url('VistaSkin/Save.png') no-repeat left center; 
 }
 
 .Search16x16Icon { 
-  width: 16px ;  height: 16px ;
-  background: url('DefaultSkin/SearchPage.gif') no-repeat left center ; 
+  width: 16px;  height: 16px;
+  background: url('DefaultSkin/SearchPage.gif') no-repeat left center; 
 }
 
 .AddRule16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center; 
 }
 
 .AddAction16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center; 
 }
 
 .AddNameSpace16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center; 
 }
 
 .AddNew16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center; 
 }
 
 .AddDrive16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center; 
 }
 
 .AddView16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center ; 
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat left center; 
 }
 
 .Custom16x16Icon {
   width: 24px; height: 24px;
-  background: url('VistaSkin/AddNodeIcon.png') no-repeat left center ; 
+  background: url('VistaSkin/AddNodeIcon.png') no-repeat left center; 
 }
 
 .Paste16x16Icon {
   width: 24px; height: 24px;
-  background: url('VistaSkin/Paste.png') no-repeat left center ; 
+  background: url('VistaSkin/Paste.png') no-repeat left center; 
 }
 
 .Select16x16Icon {
   width: 16px; height: 16px;
-  background: url('VistaSkin/SelectIcon.gif') no-repeat ; 
+  background: url('VistaSkin/SelectIcon.gif') no-repeat; 
   cursor: pointer;
 }
 
 .Export16x16Icon {
-  background-image: url('DefaultSkin/Export.gif') no-repeat left center ; 
+  background-image: url('DefaultSkin/Export.gif') no-repeat left center; 
 }
 
 .Import16x16Icon {
-  background-image: url('DefaultSkin/Import.gif') no-repeat left center ; 
+  background-image: url('DefaultSkin/Import.gif') no-repeat left center; 
 }
 
 .Active16x16Icon {
   width: 16px; height: 16px;
-  background-image: url('DefaultSkin/SelectPage.gif') no-repeat left center ; 
+  background-image: url('DefaultSkin/SelectPage.gif') no-repeat left center; 
 }
 
 .RemoveFile {

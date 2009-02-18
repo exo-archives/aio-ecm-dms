@@ -9,7 +9,7 @@
  
 .UICBSearchForm {
   
-  border: solid 1px #b7b7b7 ;
+  border: solid 1px #b7b7b7;
   background: #efefef;
   margin: 2px 0px 5px 0px;  
 }
@@ -29,7 +29,7 @@
  width: 24px; height: 24px;
  margin-left: 10px; /* orientation=lt */
  margin-right: 10px; /* orientation=rt */
- background: url('../DefaultSkin/background/CBSearchButton.gif') no-repeat left top ; /* orientation=lt */
+ background: url('../DefaultSkin/background/CBSearchButton.gif') no-repeat left top; /* orientation=lt */
  background: url('../DefaultSkin/background/CBSearchButton-rt.gif') no-repeat right top; /* orientation=rt */
 }
 
@@ -39,7 +39,7 @@
 }
 
 .UICBSearchForm .HorizontalLayout {
-  border: solid 2px #ffffff ;
+  border: solid 2px #ffffff;
   padding: 3px 0px 2px 0px;
   line-height: 20px;
   height: 25px;
@@ -71,10 +71,10 @@
 .UICBSearchForm .HorizontalLayout .Nolabel {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
-  width: 0px ;
+  width: 0px;
 	text-align: left; /* orientation=lt */
 	text-align: right; /* orientation=rt */
-	margin: 0px ;
+	margin: 0px;
 }
 
 .UICBSearchForm select {

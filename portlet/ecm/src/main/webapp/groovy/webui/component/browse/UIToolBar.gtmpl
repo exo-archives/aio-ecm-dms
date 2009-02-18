@@ -10,7 +10,7 @@
   Node root = uicomponent.getRootNode() ;
 %>
 <div class="UIToolBar" id="$uicomponent.id">
-  <div class="LeftToolBar">
+
     <div class="SeparatorBarLeft Separator"><span></span></div>      
 	<%
 	  if(isEnableTree) {
@@ -46,9 +46,9 @@
 	    <%	}
 	      }
 	    %>
-      <div class="ClearLeft"></div>
+
     <%}%> 
-	</div>
+
 	<div class="CBActionContainer">
     <%
       String actionLabel = "" ;

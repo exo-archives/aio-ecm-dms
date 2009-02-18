@@ -7,7 +7,8 @@
  */
 
 .Icon16x16 {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 }
 
 .UIGrid .ViewIcon {
@@ -16,13 +17,13 @@
 }
 
 .UIGrid .DeleteIcon {
-  width: 16px ;  height: 16px ;
-  background: url('MacSkin/Delete.gif') no-repeat ;
+  width: 16px;  height: 16px;
+  background: url('MacSkin/Delete.gif') no-repeat;
 }
 
 .UIGrid .EditInfoIcon {
-  width: 16px ;  height: 16px ;
-  background: url('MacSkin/EditIcon.png') no-repeat ;
+  width: 16px;  height: 16px;
+  background: url('MacSkin/EditIcon.png') no-repeat;
 }
 
 .AddIcon16x16 {
@@ -33,13 +34,13 @@
 
 .AddPathIcon {
 	width: 16px;	height: 16px;
-  background: url('MacSkin/AddPath.gif') no-repeat ;
+  background: url('MacSkin/AddPath.gif') no-repeat;
   cursor: pointer;
 }
 
 .AddIconIcon {
 	width: 16px;	height: 16px;
-  background: url('MacSkin/BlueCirclePlus.gif') no-repeat ;
+  background: url('MacSkin/BlueCirclePlus.gif') no-repeat;
   cursor: pointer;
 } 
 
@@ -63,35 +64,36 @@
 }
 
 .RemoveReference16x16Icon {
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 16px;	height: 16px;
-  background: url('MacSkin/DustBin.gif') no-repeat ;
+  background: url('MacSkin/DustBin.gif') no-repeat;
   cursor: pointer;
 }
 
 .Upload16x16Icon {
 	width: 16px; height: 16px;
-  background: url('DefaultSkin/UploadFile.gif') no-repeat ;
+  background: url('DefaultSkin/UploadFile.gif') no-repeat;
 }
 
 .AddFolder16x16Icon {
 	width: 16px; height: 16px;
-  background: url('DefaultSkin/AddFolder.gif') no-repeat ;
+  background: url('DefaultSkin/AddFolder.gif') no-repeat;
 }
 
 .AddDocument16x16Icon {
 	width: 16px; height: 16px;
-  background: url('DefaultSkin/AddDocument.gif') no-repeat ;
+  background: url('DefaultSkin/AddDocument.gif') no-repeat;
 }
 
 .GetURL16x16Icon {
   height: 16px;
-  background: url('DefaultSkin/Documents.gif') no-repeat ;  
+  background: url('DefaultSkin/Documents.gif') no-repeat;  
 }
 
 .AddThumbnail16x16Icon {
   height: 16px;
-  background: url('DefaultSkin/AddThumbnails.gif') no-repeat ;  
+  background: url('DefaultSkin/AddThumbnails.gif') no-repeat;  
 }
 
 .RemoveFile {
@@ -337,44 +339,48 @@
 
 .DeleteIconInfo {
   width: 17px; height: 18px;
-  background: url('MacSkin/DustBin.gif') no-repeat ; 
+  background: url('MacSkin/DustBin.gif') no-repeat; 
   cursor: pointer;
   margin-left: 3px;
 }
 
 .EditStyleIcon {
-  width: 16px ;  height: 16px ;
-  background: url('MacSkin/EditIcon.png') no-repeat ;
+  width: 16px;  height: 16px;
+  background: url('MacSkin/EditIcon.png') no-repeat;
   cursor: pointer;
 }
 
 .EditIcon {
-  width: 16px ;  height: 16px ;
-  background: url('MacSkin/EditIcon.png') no-repeat ;
+  width: 16px;  height: 16px;
+  background: url('MacSkin/EditIcon.png') no-repeat;
   cursor: pointer;
 }
 
 .False16x16Icon {
-	float: left;
-  width: 16px ;  height: 16px ;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+  width: 16px;  height: 16px;
   background: url('DefaultSkin/False.gif') no-repeat;  
 }
 
 .True16x16Icon {
-	float: left;
-  width: 16px ;  height: 16px ;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+  width: 16px;  height: 16px;
   background: url('MacSkin/True.gif') no-repeat;  
 }
 
 .SelectPath16x16Icon {
-  float: left;
-  width: 16px ;  height: 16px ;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+  width: 16px;  height: 16px;
   background: url('DefaultSkin/SearchPage.gif') no-repeat;  
 }
 
 .SelectPermission16x16Icon {
-  float: left;
-  width: 16px ;  height: 16px ;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+  width: 16px;  height: 16px;
   background: url('DefaultSkin/SmallGroup.gif') no-repeat;  
 }
 
@@ -389,133 +395,135 @@
 }
 
 .AddRootNodeIcon {
-	width: 16px ;  height: 16px ;
+	width: 16px;  height: 16px;
   background: url('MacSkin/SelectPage.png') no-repeat;  
 }
 
 .UIGrid .PasteIcon {
-  width: 16px ;  height: 16px ;
-  background: url('MacSkin/PasteIcon.gif') no-repeat ;
+  width: 16px;  height: 16px;
+  background: url('MacSkin/PasteIcon.gif') no-repeat;
 }
 
 /*############################## -- Action Icon  -- ##############################*/
 .Add16x16Icon {
-  float: left;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
   width: 16px; height: 16px;
   background: url('MacSkin/AquaBlueAddSign.gif') no-repeat; 
 }
 
 .Delete16x16Icon {
   width: 16px; height: 16px;
-  background: url('MacSkin/DustBin.gif') no-repeat ;   
+  background: url('MacSkin/DustBin.gif') no-repeat;   
 }
 
 .Lock16x16Icon {
 	width: 16px; height: 16px;
-  background: url('DefaultSkin/Lock.gif') no-repeat ; 
+  background: url('DefaultSkin/Lock.gif') no-repeat; 
 }
 
 .Unlock16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/UnLock.gif') no-repeat ;   
+  background: url('DefaultSkin/UnLock.gif') no-repeat;   
 }
 
 .CheckIn16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/CheckIn.gif') no-repeat ;   
+  background: url('DefaultSkin/CheckIn.gif') no-repeat;   
 }
 
 .WebDAV16x16Icon {
   height: 16px;
-  background: url('MacSkin/Webdav.gif') no-repeat ;   
+  background: url('MacSkin/Webdav.gif') no-repeat;   
 }
 
 .DownLoad16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/DownLoadIcon.gif') no-repeat ;   
+  background: url('DefaultSkin/DownLoadIcon.gif') no-repeat;   
 }
 
 .CheckOut16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/CheckOut.gif') no-repeat ;   
+  background: url('DefaultSkin/CheckOut.gif') no-repeat;   
 }
 
 .Copy16x16Icon {
   width: 16px; height: 16px;
-  background: url('MacSkin/Copy.gif') no-repeat ;   
+  background: url('MacSkin/Copy.gif') no-repeat;   
 }
 
 .Cut16x16Icon {
   width: 16px; height: 16px;
-  background: url('MacSkin/Cut.gif') no-repeat ;   
+  background: url('MacSkin/Cut.gif') no-repeat;   
 }
 
 .Custom16x16Icon {
   width: 16px; height: 16px;
-  background: url('MacSkin/AquaBlueAddSign.gif') no-repeat ;   
+  background: url('MacSkin/AquaBlueAddSign.gif') no-repeat;   
 }
 
 .Rename16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/Rename.gif') no-repeat ;   
+  background: url('DefaultSkin/Rename.gif') no-repeat;   
 }
 
 .Edit16x16Icon {
-  float: left;
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
   width: 16px; height: 16px;
-  background: url('MacSkin/EditIcon.png') no-repeat ;
+  background: url('MacSkin/EditIcon.png') no-repeat;
   cursor: pointer; 
 }
 
 .EditDocument16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/EditDocument.gif') no-repeat ;
+  background: url('DefaultSkin/EditDocument.gif') no-repeat;
   cursor: pointer;   
 }
 
 .Save16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/Save.gif') no-repeat ;   
+  background: url('DefaultSkin/Save.gif') no-repeat;   
 }
 
 .Search16x16Icon { 
-  width: 16px ;  height: 16px ;
+  width: 16px;  height: 16px;
   background: url('DefaultSkin/SearchPage.gif') no-repeat;  
 }
 
 .AddRule16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;   
 }
 
 .AddAction16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;   
 }
 
 .AddNameSpace16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;   
 }
 
 .AddNew16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;   
 }
 
 .AddDrive16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;   
 }
 
 .AddView16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat ;   
+  background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat;   
 }
 
 .Paste16x16Icon {
   width: 16px; height: 16px;
-  background: url('MacSkin/OrangeNote.gif') no-repeat ;
+  background: url('MacSkin/OrangeNote.gif') no-repeat;
 }
 .Select16x16Icon {
   width: 16px; height: 16px;
@@ -610,17 +618,17 @@
 
 .Documents16x16Icon {
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/Documents.gif') no-repeat ;
+  background: url('DefaultSkin/Documents.gif') no-repeat;
 }
 
 .CategoryArrow16x16Icon {
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/CategoryArrow.gif') no-repeat ;
+  background: url('DefaultSkin/CategoryArrow.gif') no-repeat;
 }
 
 .RedEmpty16x16Icon {
 	width: 16px;	height: 16px;
-  background: url('DefaultSkin/Empty.gif') no-repeat ;
+  background: url('DefaultSkin/Empty.gif') no-repeat;
 }
 
 .CBDropDownArrow16x16Icon {
