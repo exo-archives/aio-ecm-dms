@@ -559,6 +559,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       String state = getStateByVersion(version, currentNode);
       if (state.equals(PUBLISHED)) {
         currentNode.restore(version.getVersion(), true);
+        currentNode.checkout();
         return currentNode;
       }
       if (version.getChildren().size() > 0) {
