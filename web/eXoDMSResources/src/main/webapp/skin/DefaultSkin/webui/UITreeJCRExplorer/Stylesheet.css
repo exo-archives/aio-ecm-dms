@@ -35,7 +35,8 @@
 }
 
 .UITreeList .Text {
-	padding-left: 24px;
+	padding-left: 24px; /* orientation=lt */
+	padding-right: 24px; /* orientation=rt */
 }
 
 .UIOneNodePathSelector {
@@ -48,28 +49,24 @@
 }
 
 .UICategoriesSelector .ExplorerTree {
-  float: left ;
+  float: left ; /* orientation=lt */
+  float: right ; /* orientation=rt */
   width: 230px ;
   background: #f3f3f3;
-  margin:10px;
+  margin: 10px;
 }
 
 .UICategoriesSelector .UIBreadcumbs {
-	padding-top: 10px;
-	padding-left: 10px;
-	padding-right: 10px;
+	padding: 10px 10px 0px 10px;
 }
 
 .UICategoriesSelector .UISelectedCategoriesGrid {
-	padding-top: 10px;
-	padding-left: 10px;
-	padding-right: 10px;
+	padding: 10px 10px 0px 10px;
 }
 
 .UICategoriesSelector .UICategoriesSelectPanel {
-	padding-top: 10px;
-	padding-right: 10px;
-	padding-left: 250px;
+	padding: 10px 10px 0px 250px; /* orientation=lt */
+	padding: 10px 250px 0px 10px; /* orientation=rt */
 }
 
 .UIOneNodePathSelector .UIBreadcumbs {
