@@ -362,39 +362,48 @@
 }
 
 .UIRightClickPopupMenu .exo_createRSSFeedAction16x16Icon {
-  background: url('icons/NodeTypes/exo-createRSSFeedAction.gif') no-repeat left center;
+  background: url('icons/NodeTypes/exo-createRSSFeedAction.gif') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/exo-createRSSFeedAction.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .exo_createRSSFeedAction16x16Icon {
-  background: url('icons/NodeTypes/exo-createRSSFeedAction.gif') no-repeat left center;
+  background: url('icons/NodeTypes/exo-createRSSFeedAction.gif') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/exo-createRSSFeedAction.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .exo_transformBinaryToTextAction16x16Icon {
-  background: url('icons/NodeTypes/exo-transformBinaryToTextAction.gif') no-repeat left center;
+  background: url('icons/NodeTypes/exo-transformBinaryToTextAction.gif') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/exo-transformBinaryToTextAction.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .exo_ReloadBPAction16x16Icon {
-  background: url('icons/NodeTypes/DefaultDocumentIcon.gif') no-repeat left center;
+  background: url('icons/NodeTypes/DefaultDocumentIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/DefaultDocumentIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .exo_workflowAction16x16Icon {
-  background: url('icons/NodeTypes/exo-workflowAction.gif') no-repeat left center;
+  background: url('icons/NodeTypes/exo-workflowAction.gif') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/exo-workflowAction.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .exo_iCalendarGenerateAction16x16Icon {
-  background: url('icons/NodeTypes/DefaultDocumentIcon.gif') no-repeat left center;
+  background: url('icons/NodeTypes/DefaultDocumentIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/DefaultDocumentIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .exo_getMailAction16x16Icon {
-  background: url('icons/NodeTypes/exo-sendMailAction.gif') no-repeat left center;
+  background: url('icons/NodeTypes/exo-sendMailAction.gif') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/exo-sendMailAction.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .exo_autoVersioning16x16Icon {
-  background: url('icons/NodeTypes/exo-versionStorage.gif') no-repeat left center;
+  background: url('icons/NodeTypes/exo-versionStorage.gif') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/exo-versionStorage.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .exo_publishingRequest16x16Icon {
-  background: url('icons/NodeTypes/exo-publishingRequest.gif') no-repeat left center;
+  background: url('icons/NodeTypes/exo-publishingRequest.gif') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/exo-publishingRequest.gif') no-repeat right center; /* orientation=rt */
 }
 
 /*############################## -- Begin Properties Icon -- ########################*/
