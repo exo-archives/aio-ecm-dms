@@ -17,27 +17,24 @@
 package org.exoplatform.portlets.jcrconsole;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 
 import javax.portlet.ActionRequest;
 import javax.portlet.ActionResponse;
 import javax.portlet.GenericPortlet;
 import javax.portlet.PortletContext;
 import javax.portlet.PortletException;
-import javax.portlet.PortletRequestDispatcher;
 import javax.portlet.RenderRequest;
 import javax.portlet.RenderResponse;
 import javax.portlet.ResourceRequest;
 import javax.portlet.ResourceResponse;
 import javax.portlet.ResourceURL;
 
-import org.exoplatform.container.ExoContainer;
-import org.exoplatform.container.ExoContainerContext;
-
 import org.apache.commons.chain.Catalog;
 import org.apache.commons.chain.Command;
-
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.frameworks.jcr.cli.CliAppContext;
 import org.exoplatform.services.command.impl.CommandService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -79,9 +76,7 @@ public class JcrConsole extends GenericPortlet {
     w.println("var action =\"" + resourceString + "\";");
     w.println("termOpen();");
     w.println("</SCRIPT>");
-    
   }
-  
   
   private void parseQuery(String query, ArrayList params) {
     try {
@@ -122,14 +117,9 @@ public class JcrConsole extends GenericPortlet {
     }
   }
 
-  
-
   public void processAction(ActionRequest actionRequest,
       ActionResponse actionResponse) throws PortletException, IOException {
-
   }
-  
-  
   
   public void serveResource (ResourceRequest resourceRequest, ResourceResponse resourceResponse)
   throws PortletException, IOException {
@@ -184,7 +174,5 @@ public class JcrConsole extends GenericPortlet {
     finally {
       resourceRequest.getPortletSession().setAttribute("context", context);
     }
-
   }
-  
 }

@@ -17,25 +17,19 @@
 package org.exoplatform.portlets.jcrconsole;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.io.PrintWriter;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
-import org.exoplatform.services.organization.auth.AuthenticationService;
-import org.exoplatform.services.organization.auth.Identity;
-import org.exoplatform.services.security.IdentityRegistry;
-import org.exoplatform.services.security.ConversationState;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.security.ConversationState;
+import org.exoplatform.services.security.IdentityRegistry;
 
 /**
  * Created by The eXo Platform SARL .
@@ -70,10 +64,6 @@ public class IdentifyFilter implements Filter {
 
     IdentityRegistry identityRegistry = (IdentityRegistry)container.getComponentInstanceOfType(IdentityRegistry.class);
     sessionProvide = new SessionProvider(new ConversationState(identityRegistry.getIdentity("admin")));
-
-
-
-
 
 
     chain.doFilter(request, response);
