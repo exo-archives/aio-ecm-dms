@@ -330,7 +330,7 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(VALIDATE)) {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if(argument.startsWith(ROOTPATH)){
-    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
       }else {
         defaultValue = argument;
       }
@@ -407,7 +407,12 @@ public class DialogFormFields extends UIForm {
       } else if(getChildNode() == null && jcrPath.equals("/node") && getNode() != null) {
         uiInput.setValue(getNode().getName()) ;
       } else {
-        uiInput.setValue(null) ;
+        if (!isUpdateSelect_) {
+          uiInput.setValue(null);
+        } else {
+          isUpdateSelect_ =  false;
+        }
+        
       }
     }
     renderField(name) ;
@@ -443,8 +448,8 @@ public class DialogFormFields extends UIForm {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if(argument.startsWith(NODETYPE)){
         nodetype = argument.substring(argument.indexOf(SEPARATOR) + 1) ;
-      }	else if(argument.startsWith(ROOTPATH)){
-    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      } else if(argument.startsWith(ROOTPATH)){
+      rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else {
             defaultValue = argument;
       }
@@ -597,7 +602,7 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(VALIDATE)) {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if(argument.startsWith(ROOTPATH)){
-    	  rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+        rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
       }else {
         defaultValue = argument;
       }
@@ -690,7 +695,7 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(VALIDATE)) {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if(argument.startsWith(ROOTPATH)){
-    	  rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+        rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
       }else {
         defaultValue = argument;
       }
@@ -779,7 +784,7 @@ public class DialogFormFields extends UIForm {
       } else if(argument.startsWith(ONCHANGE)) {
         onchange = argument.substring(argument.indexOf(SEPARATOR) + 1) ;
       }else if(argument.startsWith(ROOTPATH)){
-    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
       }else {
         defaultValue = argument;
       } 
@@ -907,7 +912,7 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(EDITABLE)) {
         editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if(argument.startsWith(ROOTPATH)){
-    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else {      
         defaultValue = argument;
       }
@@ -955,7 +960,7 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(VALIDATE)) {
         validateType = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if(argument.startsWith(ROOTPATH)){
-    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
+      rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);
       }  else {
         defaultValue = argument ;
       }
@@ -1049,7 +1054,7 @@ public class DialogFormFields extends UIForm {
       } else if (argument.startsWith(EDITABLE)) {
         editable = argument.substring(argument.indexOf(SEPARATOR) + 1);
       } else if(argument.startsWith(ROOTPATH)){
-    	rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);    	
+      rootPath = argument.substring(argument.indexOf(SEPARATOR) + 1);     
       } else {
         defaultValue = argument;
       }
@@ -1154,13 +1159,13 @@ public class DialogFormFields extends UIForm {
   
   //update by quangld
   public void removeComponent(String name) {
-	  if (!properties.isEmpty() && properties.containsKey(name)) {
-		  properties.remove(name);
-		  String jcrPath = propertiesName_.get(name);
-		  propertiesName_.remove(name);
-		  fieldNames_.remove(jcrPath);
-		  removeChildById(name);
-	  }
-  }		
+    if (!properties.isEmpty() && properties.containsKey(name)) {
+      properties.remove(name);
+      String jcrPath = propertiesName_.get(name);
+      propertiesName_.remove(name);
+      fieldNames_.remove(jcrPath);
+      removeChildById(name);
+    }
+  }   
   
 }
