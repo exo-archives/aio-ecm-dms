@@ -30,8 +30,12 @@
 			<div class="FloatLeft"><%=_ctx.appRes("UIConstraintForm.label.notContainPro-notContain")%>: <%uiform.renderField(uicomponent.getChildById("notContain"))%></div>
 	  </div>
 	  <div class="ConstraintOption">
-	    <%uiform.renderField(uicomponent.getChildById("datePro"))%><%uiform.renderField(uicomponent.getChildById("timeOpt"))%>
-      <%=_ctx.appRes("UIConstraintForm.label.ConstraintOption-From")%> <%uiform.renderField(uicomponent.getChildById("startTime"))%>   <%=_ctx.appRes("UIConstraintForm.label.ConstraintOption-To")%> <%uiform.renderField(uicomponent.getChildById("endTime"))%>
+	    <div class="FloatLeft"><%uiform.renderField(uicomponent.getChildById("datePro"))%></div>
+	    <div class="FloatLeft"><%uiform.renderField(uicomponent.getChildById("timeOpt"))%></div>
+      <label class="Label FloatLeft"><%=_ctx.appRes("UIConstraintForm.label.ConstraintOption-From")%></label>
+      <div class="FloatLeft"><%uiform.renderField(uicomponent.getChildById("startTime"))%></div>
+      <label class="Label FloatLeft"><%=_ctx.appRes("UIConstraintForm.label.ConstraintOption-To")%></label>
+      <div class="FloatLeft"><%uiform.renderField(uicomponent.getChildById("endTime"))%></div>
 	  </div>
 	  <div class="ConstraintOption">
 	    <div class="FloatLeft"><%uiform.renderField(uicomponent.getChildById("nodetypePro"))%></div>

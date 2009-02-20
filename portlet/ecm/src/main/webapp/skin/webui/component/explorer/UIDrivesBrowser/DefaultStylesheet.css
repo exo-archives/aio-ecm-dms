@@ -177,6 +177,7 @@
   float: right; /* orientation=rt */
   border: solid 1px #ffffff;
   margin: 6px;
+  width: 160px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveContainer {

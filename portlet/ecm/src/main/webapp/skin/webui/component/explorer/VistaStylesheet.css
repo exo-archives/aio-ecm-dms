@@ -139,18 +139,3 @@
 .UIFolderForm {
 	padding: 10px;
 }
-
-/*******************************Properties Management****************************************/
-
-.UIJCRExplorerPortlet .UITabPane .UIPropertyTab .UIGrid th {
-  padding: 0px;
-  white-space: nowrap;
-  width: auto;
-}
-
-.UIJCRExplorerPortlet .UIPropertyTab .UIGrid .Icon16x16  {
-  float: none;
-  vertical-align: middle;
-  margin: auto;
-  width: 16px;
-}

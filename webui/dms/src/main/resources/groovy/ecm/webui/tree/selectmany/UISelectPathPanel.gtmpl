@@ -37,7 +37,7 @@
 				        <td class="Text">$nodeName</td>
 				        <td>
 			              <a href="<%=uicomponent.event("Select", node.getPath())%>">
-			                <div class="Select16x16Icon" style="margin-left:15px; line-height: 24px;"><%=_ctx.appRes("UITreeList.action")%></div>
+			                <div class="Select16x16Icon" style="margin:auto"><%=_ctx.appRes("UITreeList.action")%></div>
 			              </a>
 				        </td>
 				      </tr>
@@ -60,4 +60,4 @@
   </div>
   <% } %>
 </div>
-<div style="clear:left"><span></span></div>
+<div class="ClearLeft"><span></span></div>

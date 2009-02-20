@@ -437,12 +437,14 @@
 
 .CheckIn16x16Icon {
   width: 24px; height: 20px;
-  background: url('VistaSkin/CheckIn.png') no-repeat;   
+  background: url('VistaSkin/CheckIn.png') no-repeat left center; /* orientation=lt */  
+  background: url('VistaSkin/CheckIn.png') no-repeat right center; /* orientation=rt */  
 }
 
 .CheckOut16x16Icon {
   width: 24px; height: 20px;
-  background: url('VistaSkin/CheckOut.png') no-repeat;   
+  background: url('VistaSkin/CheckOut.png') no-repeat left center; /* orientation=lt */  
+  background: url('VistaSkin/CheckOut.png') no-repeat right center; /* orientation=rt */  
 }
 
 .WebDAV16x16Icon {

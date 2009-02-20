@@ -157,7 +157,7 @@
   border: solid 0px white;
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
-  width: 100%;
+  width: 99%;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DropDownButtonBox {

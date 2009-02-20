@@ -96,7 +96,8 @@
 }
 
 .exo_sendMailAction16x16Icon {
-  background: url('icons/NodeTypes/exo-sendMailAction.png') no-repeat;  
+  background: url('icons/NodeTypes/exo-sendMailAction.png') no-repeat left center; /* orientation=lt */   
+  background: url('icons/NodeTypes/exo-sendMailAction.png') no-repeat right center; /* orientation=rt */   
 }
 
 .exo_tab16x16Icon {

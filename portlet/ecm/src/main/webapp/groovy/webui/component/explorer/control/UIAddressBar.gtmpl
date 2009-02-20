@@ -16,11 +16,11 @@
 %>
 <div class="UIAddressBar" id="UIAddressBarControl">
   <div class="BlockRight">
-    <a href ="<%=uicomponent.event("ChangeNode")%>" id="UIAddressBarAction">
-  	  <div class="GoButton Style1NextArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.exeButton")%>"><span></span></div>
+    <a href ="<%=uicomponent.event("ChangeNode")%>" class="GoButton Style1NextArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.exeButton")%>" id="UIAddressBarAction">
+		  <div class="Separator AddressBarSeparator">
+		  	<%=_ctx.appRes("UIAddressBar.label.exeButton")%>
+		  </div>
     </a>	  
-	  <div class="GoText"><%=_ctx.appRes("UIAddressBar.label.exeButton")%></div>
-	  <div class="Separator AddressBarSeparator"><span></span></div>
   </div>
   <div class="BlockLeft">
 	  <div class="Separator AddressBarSeparator"><span></span></div>    

@@ -177,6 +177,7 @@
   float: right; /* orientation=rt */
   margin: 7px ;
   padding: 0px 10px;
+  width: 162px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DecoratorMiddle {

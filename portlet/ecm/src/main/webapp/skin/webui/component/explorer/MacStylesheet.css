@@ -119,19 +119,3 @@
   text-align: left; /* orientation=lt */
   text-align: right; /* orientation=rt */
 }
-
-.UIJCRExplorerPortlet .UITabContent .UIPropertyTab .UIGrid th {
-  padding: 0px;
-  white-space: nowrap;
-}
-
-.UIJCRExplorerPortlet .UITabContent .UIPropertyTab .UIGrid .Icon16x16  {
-  float: none;
-  vertical-align: middle;
-  margin: auto;
-}
-
-.UIJCRExplorerPortlet .UIPropertyTab .UIGrid td  {
-  height: 20px;
-  vertical-align: middle;
-}

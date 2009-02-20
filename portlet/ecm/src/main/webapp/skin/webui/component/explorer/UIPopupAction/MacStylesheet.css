@@ -399,6 +399,7 @@
 
 .UIJCRExplorerPortlet .UISearchContainer .ConstraintOption {
   margin: 10px 0px;
+  overflow: hidden;
 }
 
 .UIJCRExplorerPortlet .UISearchContainer .ConstraintOption .Label {

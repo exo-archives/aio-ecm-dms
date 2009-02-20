@@ -38,23 +38,23 @@
   padding-left: 10px; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .IconFrame .WorkspaceName {
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
+.UIJCRExplorerPortlet .UIJCRExplorer .WorkspaceName {
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
 	padding-right: 5px; /* orientation=lt */
 	padding-left: 5px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .ViewBarSeparator {
-  float: left; /* orientation=lt */
-  float: right; /* orientation=rt */
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
   height: 27px;
   margin: 0px 4px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .Icon {
-  float: left; /* orientation=lt */
-  float: right; /* orientation=rt */
+.UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .Icon {
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
   margin: 2px 7px;
   cursor: pointer;
 }
@@ -159,7 +159,7 @@
   border: solid 0px white;
   float: left; /* orientation=lt */
   float: left; /* orientation=lt */
-  width: 100%;
+  width: 99%;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DropDownButtonBox {

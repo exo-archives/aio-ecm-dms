@@ -154,7 +154,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar input {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
-  width: 100%;
+  width: 99%;
   border: solid 1px white;
 }
 
