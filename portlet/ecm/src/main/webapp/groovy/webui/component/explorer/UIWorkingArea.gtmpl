@@ -16,17 +16,17 @@
 <div class="UIWorkingArea" id="UIWorkingArea">
   <%
 	  uicomponent.renderChild(UIRightClickPopupMenu.class) ;
-	  String style = "" ;
+	  String className = "" ;
 
 	  if( uicomponent.isShowSideBar() ) {
-	    style = "margin-left: 224px;"
-	    println "<div style=\"float: left; width: 224px;\">" ;
+	    className = "RightContainer"
+	    println "<div class=\"LeftCotainer\">" ;
 	  	uicomponent.renderChild(UISideBar.class) ; 
 	  	println "</div>" ;
 	  }
 	%>
-  <div style="$style">
+  <div class="$className">
 		<% uicomponent.renderChild(UIDocumentWorkspace.class) ;%>
 	</div>
-	<div style="clear: left; height: 0px;"><span></span></div>
+	<div style="height: 0px;" class="ClearLeft"><span></span></div>
 </div>

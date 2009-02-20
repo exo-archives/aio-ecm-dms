@@ -10,7 +10,7 @@ SkinService.addSkin(
 SkinService.addSkin(
     "web/BannerPortlet",
     "Vista",
-    "/portal/templates/skin/webui/component/UIBannerPortlet/MacStylesheet.css",
+    "/portal/templates/skin/webui/component/UIBannerPortlet/VistaStylesheet.css",
     ServletContext,
     true
 ) ;
@@ -18,7 +18,7 @@ SkinService.addSkin(
 SkinService.addSkin(
     "web/BannerPortlet",
     "Mac",
-    "/portal/templates/skin/webui/component/UIBannerPortlet/VistaStylesheet.css",
+    "/portal/templates/skin/webui/component/UIBannerPortlet/MacStylesheet.css",
     ServletContext,
     true
 ) ;

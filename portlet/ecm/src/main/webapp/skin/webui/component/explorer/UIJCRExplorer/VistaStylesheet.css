@@ -33,7 +33,8 @@
 }
 
 .UIJCRExplorerPortlet .UIFormWithTitle .FieldContainer input {
-  padding-left: 3px;
+  padding-left: 3px; /* orientation=lt */
+  padding-right: 3px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .Separator {
@@ -97,23 +98,31 @@
 }
 
 .UIJCRExplorerPortlet .UIListGrid .LeftColumn {
-	float: left; 
-	border-right: 1px solid #b7b7b7; 
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	border-right: 1px solid #b7b7b7; /* orientation=lt */
+	border-left: 1px solid #b7b7b7; /* orientation=rt */
 	width: 30px; height: 19px; 
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RightColumn {
-	float: right; 
-	border-right: 1px solid #b7b7b7; 
-	padding-left: 3px; 
+	float: right;  /* orientation=lt */
+	float: left;  /* orientation=rt */
+	border-right: 1px solid #b7b7b7; /* orientation=lt */
+	border-left: 1px solid #b7b7b7; /* orientation=rt */
+	padding-left: 3px; /* orientation=lt */
+	padding-right: 3px; /* orientation=rt */
 	width: 90px;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .ResizeColumn {
-	border-right: 1px solid #b7b7b7; 
+	border-right: 1px solid #b7b7b7; /* orientation=lt */
+	border-left: 1px solid #b7b7b7; /* orientation=rt */
 	height: 19px; 
-	margin: 0px 520px 0px 30px;
-	padding-left: 5px;
+	margin: 0px 520px 0px 30px; /* orientation=lt */
+	margin: 0px 30px 0px 520px; /* orientation=rt */
+	padding-left: 5px; /* orientation=lt */
+	padding-right: 5px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView {
@@ -121,13 +130,16 @@
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .RightColumn {
-	padding: 2px 0px 2px 3px;
- 	border-right: none;
+	padding: 2px 0px 2px 3px; /* orientation=lt */
+	padding: 2px 3px 2px 0px; /* orientation=rt */
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .LeftColumn {
 	padding: 2px 0px;
- 	border-right: none;
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .LeftColumn .Icon16x16 {
@@ -137,7 +149,8 @@
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn {
- 	border-right: none;
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
 	padding: 2px 0px 2px 3px;
 } 
 
@@ -146,86 +159,36 @@
 	overflow: hidden;
 } 
 
-/*############################## -- Begin MenuPopup -- ##############################*/
+/*############################## -- Begin UIThumbnailsView -- ##############################*/
 
-.UIJCRExplorerPortlet .UIMenuPopup {
-  height: 23px;
-}
-
-.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent {
-  width: 150px;
-  background-color: white;
-  border: solid 1px #6a6a6b;
-  padding: 1px;
-  position: absolute;
-  display: none;
-}
-
-.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .NormalItem {
-  line-height: 30px;
-  cursor: pointer;
-  clear: both;
-  margin-bottom: 2px;
-}
-
-.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .SelectedItem {
-  line-height: 30px;
-  background: #d6ddef;
-  clear: both;
-  cursor: pointer;
-  margin-bottom: 2px;
-}
-
-.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .SelectedNav {
-  line-height: 30px;
-  background: #d6ddef;
-  cursor: pointer;
-  margin-bottom: 2px;
-}
-
-.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .ItemIcon {
-  float: left;
-  width: 16px; height: 16px;
-  margin: 6px 3px 3px 3px;
-}
-
-.UIJCRExplorerPortlet .UIMenuPopup .UISelectContent .SeparatorLine {
-  height: 1px;
-  margin: 5px;
-  background: #919192;
-}
-
-.UIJCRExplorerPortlet .UIMenuPopup .SubMenu {
-  background: #ffffff ;
-  margin-left: 130px ;
-}
-
-.UIJCRExplorerPortlet .UIMenuPopup .MenuItemContainer {
-  padding-left: 10px ;
-}
-/*############################## -- End UIMenuPopup   -- ##############################*/
 .UIJCRExplorerPortlet .UIThumbnailsView {
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconsContainer {
-  padding-left: 10px;
+  padding-left: 10px; /* orientation=lt */
+  padding-right: 10px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox {
   width: 130px;
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   height: 130px;
   margin: 5px;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconBox .LeftActionIconContainer{
-  background: url('VistaSkin/background/FolderLeft12x96.png') no-repeat top left;
-  padding-left: 12px;
+  background: url('VistaSkin/background/FolderLeft12x96.png') no-repeat top left; /* orientation=lt */
+  background: url('VistaSkin/background/FolderLeft12x96-rt.png') no-repeat top right; /* orientation=rt */
+  padding-left: 12px; /* orientation=lt */
+  padding-right: 12px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer .RightActionIconContainer{
-  background: url('VistaSkin/background/FolderRight12x96.png') no-repeat top right;
-  padding: 0px 12px 0px 0px ;
+  background: url('VistaSkin/background/FolderRight12x96.png') no-repeat top right; /* orientation=lt */
+  background: url('VistaSkin/background/FolderRight12x96-rt.png') no-repeat top left; /* orientation=rt */
+  padding: 0px 12px 0px 0px; /* orientation=lt */
+  padding: 0px 0px 0px 12px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconContainer .MiddleActionIconContainer {
@@ -252,26 +215,26 @@
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel {
   width: 100px; 
   height: 30px; 
-  line-height: 24px; vertical-align: middle;
-  text-align:center;
+  line-height: 24px;
+  text-align: center;
   margin: auto;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionLabel {
-  text-align:center;
+  text-align: center;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a {
-  width:100px;
-  color: #000000; text-align:center;
-  margin:auto;
+  width: 100px;
+  color: #000000; text-align: center;
+  margin: auto;
   cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel a:hover {
-  width:100px;
-  color: blue; text-align:center;
-  margin:auto;
+  width: 100px;
+  color: blue; text-align: center;
+  margin: auto;
   cursor: pointer;
 }
 
@@ -394,7 +357,8 @@
 }
 
 .UIJCRExplorerPortlet .UIUploadForm .UIFormWithTitle .UploadIframe {
-  margin-left: 6px;
+  margin-left: 6px; /* orientation=lt */
+  margin-right: 6px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .SelectFileFrame {
@@ -538,7 +502,8 @@
 }
 
 .UIJCRExplorerPortlet .UIPermissionManager .UIPermissionForm .UIFormInputSet .AddIcon16x16 {
-  margin-left: 5px;
+  margin-left: 5px; /* orientation=lt */
+  margin-right: 5px; /* orientation=rt */
   float: none;
 }
 
@@ -550,7 +515,8 @@
 
 .UINodeTypeInfo .NavigationButtonContainer {
 	display: none;
-	float: right;
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
 	cursor: pointer;
 }
 /*================================UIPropertyTab=================================*/
@@ -561,7 +527,8 @@
 
 .UIJCRExplorerPortlet .UIPropertyTab .UIGrid .MultiValue .Icon16x16 {
 	width: auto;
-	padding-left: 20px;
+	padding-left: 20px; /* orientation=lt */
+	padding-right: 20px; /* orientation=rt */
 	float: none;
 }
 
@@ -629,12 +596,14 @@
 /*====================================MultiValueContainer==================================*/
 
 .UIJCRExplorer .MultiValueContainer .MultiFieldAction {
-	margin-left: 5px;
+	margin-left: 5px; /* orientation=lt */
+	margin-right: 5px; /* orientation=rt */
 }
 
 .UIJCRExplorer .MultiValueContainer .UIFormUploadInput {
 	margin-bottom: 5px;
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 }
 
 .UIJCRExplorer .MultiValueContainer .UIFormUploadInput .MultiFieldAction {
@@ -654,12 +623,15 @@
 .UIJCRExplorer .UIConfirmMessage .RecycleBinFull {
   background: url('DefaultSkin/background/Recycle_Bin_Full.gif') no-repeat left top ;
 	width: 29px; height: 33px;
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 .UIJCRExplorer .UIConfirmMessage .Text {
-	padding-left: 10px;
-	float: left;
+	padding-left: 10px; /* orientation=lt */
+	padding-right: 10px; /* orientation=rt */
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 90%;
 }
 /*================================UIUploadForm===================================*/
@@ -684,26 +656,35 @@
 
 /*============================================UIRightClickPopupMenu=========================================*/
 .UIRightClickPopupMenu .MenuIcon {
-	line-height:16px;
-	margin:0 7px;
-	padding:0px 0 10px 26px;
-	width:auto;
+	line-height: 16px;
+	margin: 0 7px;
+	padding: 0px 0 10px 26px; /* orientation=lt */
+	padding: 0px 26px 10px 0px; /* orientation=rt */
+	width: auto;
+	background-position: right center; /* orientation=rt */
+	white-space: nowrap;
 }
 
+.UIRightClickPopupMenu .MenuURLIcon  {
+	line-height: 16px;
+	margin: 0 7px;
+	padding: 0px 0 10px 26px; /* orientation=lt */
+	padding: 0px 26px 0px 0px; /* orientation=rt */
+	width: auto;
+	background-position: right center; /* orientation=rt */
+	white-space: nowrap;
+}
 .UIJCRExplorerPortlet .UIRightClickPopupMenu .UIContextMenuContainer {
 	width: 200px;
 }
 
-/*====================================UIAnyPermission==================================*/
-.UIJCRExplorerPortlet .UIAnyPermission .UIForm .HorizontalLayout {
-	padding: 0px;
-}
-
 .UIJCRExplorerPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
- 	padding: 4px 8px 4px 0px;
+ 	padding: 4px 8px 4px 0px; /* orientation=lt */
+ 	padding: 4px 0px 4px 8px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .DriveNameInput .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {
- 	padding: 0px 8px 4px 0px;
+ 	padding: 0px 8px 4px 0px; /* orientation=lt */
+ 	padding: 0px 0px 4px 8px; /* orientation=rt */
  	width: 184px;
 }

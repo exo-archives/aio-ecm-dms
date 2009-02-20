@@ -28,6 +28,17 @@
 	background: white;
 }
 
+.UIJCRExplorerPortlet .LeftCotainer {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	width: 240px;
+}
+
+.UIJCRExplorerPortlet .RightCotainer {
+	margin-left: 224px; /* orientation=lt */
+	margin-right: 224px; /* orientation=rt */
+}
+
 .UIJCRExplorerPortlet .UIFormGrid {
 	width: 100%;
 }
@@ -89,13 +100,15 @@
 
 .UIVersionTreeList .UITrees .Node .ExpandIcon {
   height: 20px;
-  background-position: left bottom;
+  background-position: left bottom; /* orientation=lt */
+  background-position: right bottom; /* orientation=rt */
   line-height: 24px;
 }
 
 .UIVersionTreeList .UITrees .Node .CollapseIcon {
   height: 20px;
-  background-position: left bottom;
+  background-position: left bottom; /* orientation=lt */
+  background-position: right bottom; /* orientation=rt */
   line-height: 24px;
 }
 
@@ -106,7 +119,8 @@
 .UIPublicationContainer .UIFormGrid .FieldLabel {
   width: 100px;
   padding: 6px 6px 6px 16px;
-  text-align: left;
+  text-align: left; /* orientation=lt */
+  text-align: right; /* orientation=rt */
 }
 
 /*******************************UIDocumentFormController****************************************/

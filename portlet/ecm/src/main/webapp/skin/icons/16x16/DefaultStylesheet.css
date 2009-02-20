@@ -126,13 +126,15 @@
  
 .ExpandIcon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGray.gif') no-repeat left -16px;
+  background: url('DefaultSkin/SmallGray.gif') no-repeat left -16px; /* orientation=lt */
+  background: url('DefaultSkin/SmallGray-rt.gif') no-repeat right -16px; /* orientation=rt */
   cursor: pointer;
 }
 
 .CollapseIcon  {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGray.gif') no-repeat left top;
+  background: url('DefaultSkin/SmallGray.gif') no-repeat left top; /* orientation=lt */
+  background: url('DefaultSkin/SmallGray-rt.gif') no-repeat right top; /* orientation=rt */
   cursor: pointer;
 }
 
@@ -686,59 +688,73 @@
 /*====================================UIRightClickPopupMenu==================================*/
 
 .UIRightClickPopupMenu .Copy16x16Icon {
-  background: url('DefaultSkin/Copy.gif') no-repeat left center;
+  background: url('DefaultSkin/Copy.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Copy.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .EditDocument16x16Icon {
-  background: url('DefaultSkin/EditDocument.gif') no-repeat left center;
+  background: url('DefaultSkin/EditDocument.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/EditDocument.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .Cut16x16Icon {
-  background: url('DefaultSkin/Cut.gif') no-repeat left center;
+  background: url('DefaultSkin/Cut.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Cut.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .Delete16x16Icon {
-  background: url('DefaultSkin/DustBin.gif') no-repeat left center;
+  background: url('DefaultSkin/DustBin.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/DustBin.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .Lock16x16Icon {
-  background: url('DefaultSkin/Lock.gif') no-repeat left center;
+  background: url('DefaultSkin/Lock.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Lock.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .Rename16x16Icon {
-  background: url('DefaultSkin/Rename.gif') no-repeat left center;
+  background: url('DefaultSkin/Rename.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Rename.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .Paste16x16Icon {
-  background: url('DefaultSkin/OrangeNote.gif') no-repeat left center;
+  background: url('DefaultSkin/OrangeNote.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/OrangeNote.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .WebDAV16x16Icon {
-  background: url('DefaultSkin/Webdav.gif') no-repeat left center;
+  background: url('DefaultSkin/Webdav.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Webdav.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .exo_sendMailAction16x16Icon {
-  background: url('DefaultSkin/exo-sendMailAction.gif') no-repeat left center;
+  background: url('DefaultSkin/exo-sendMailAction.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/exo-sendMailAction.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .Unlock16x16Icon {
-  background: url('DefaultSkin/UnLock.gif') no-repeat left center;
+  background: url('DefaultSkin/UnLock.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/UnLock.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .CheckIn16x16Icon {
-  background: url('DefaultSkin/CheckIn.gif') no-repeat left center;
+  background: url('DefaultSkin/CheckIn.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/CheckIn.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .CheckOut16x16Icon {
-  background: url('DefaultSkin/CheckOut.gif') no-repeat left center;
+  background: url('DefaultSkin/CheckOut.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/CheckOut.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .CheckOut16x16Icon {
-  background: url('DefaultSkin/CheckOut.gif') no-repeat left center;
+  background: url('DefaultSkin/CheckOut.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/CheckOut.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .Save16x16Icon {
-  background: url('DefaultSkin/Save.gif') no-repeat left center;
+  background: url('DefaultSkin/Save.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Save.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ScissorsEraserWarning16x16Icon {
@@ -748,17 +764,21 @@
 /*############################## -- End BC Portlet Icon -- ########################*/
 
 .UIVersionTreeList .TrueIcon {
-  background: url('DefaultSkin/DisabelCheck.gif') no-repeat left center;
+  background: url('DefaultSkin/DisabelCheck.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/DisabelCheck.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIVersionTreeList .TrueSelectIcon {
-  background: url('DefaultSkin/SelectCheck.gif') no-repeat left center;
+  background: url('DefaultSkin/SelectCheck.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/SelectCheck.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIVersionTreeList .Publishedicon {
-  background: url('DefaultSkin/PublishedIcon.gif') no-repeat left center;
+  background: url('DefaultSkin/PublishedIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/PublishedIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIVersionTreeList .UnPublishedicon {
-  background: url('DefaultSkin/UnPublished.gif') no-repeat left center;
+  background: url('DefaultSkin/UnPublished.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/UnPublished.gif') no-repeat right center; /* orientation=rt */
 }

@@ -20,32 +20,40 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectViewBox {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .SelectBox {
-  padding-left: 6px;
+  padding-left: 6px; /* orientation=lt */
+  padding-right: 6px; /* orientation=rt */
   margin-top: 2px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame {
-  float: right;
-  padding-right: 10px;
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
+  padding-right: 10px; /* orientation=lt */
+  padding-left: 10px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .IconFrame .WorkspaceName {
-	float: left;
-	padding-right: 5px;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	padding-right: 5px; /* orientation=lt */
+	padding-left: 5px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .ViewBarSeparator {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   height: 27px;
   margin: 0px 4px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .Icon {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   margin: 2px 7px;
   cursor: pointer;
 }
@@ -77,53 +85,64 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .AddressBarSeparator {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   height: 26px;
   padding: 2px 4px 0px 4px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockLeft {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .AddressLabel {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   line-height: 28px;
-  padding-left: 2px;
+  padding-left: 2px; /* orientation=lt */
+  padding-right: 2px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockRight {
-  float: right;
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BackButton {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   margin: 3px 3px 0px 3px;
   cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .GoButton {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   margin: 8px 3px 0px 3px;
   cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .GoText {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   height: 16px;
 }
  
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
-  margin: 4px 50px 0px 93px;
+  margin: 4px 50px 0px 93px; /* orientation=lt */
+  margin: 4px 93px 0px 50px; /* orientation=rt */
   height: 20px; line-height: 20px;
   background: white;
   border: solid 1px #d8d8d8;
-  border-right: solid 1px #cdcdcd;
+  border-right: solid 1px #cdcdcd; /* orientation=lt */
+  border-left: solid 1px #cdcdcd; /* orientation=rt */
   border-bottom: solid 1px #cdcdcd;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   margin: 4px 0px 0px 4px;
   width: 20px;
   height: 13px;
@@ -136,12 +155,14 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar input {
   border: solid 0px white;
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   width: 100%;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DropDownButtonBox {
-  float: right;
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
   width: 18px;  height: 18px;
   background-color: white;
   border: solid 1px white;
@@ -160,7 +181,8 @@
   width: 100%;
   overflow: auto;
   background: white;
-  left: -1px;
+  left: -1px; /* orientation=lt */
+  right: -1px; /* orientation=rt */
   display: none;
 }
 
@@ -189,7 +211,8 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionLabel {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   line-height: 32px;
   text-align: center;
   font-size: 11px; color: #058ee6;
@@ -197,13 +220,15 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBarSeparator {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   height: 31px;
   padding: 0px 4px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionComboBox {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   padding: 6px 4px 0px 4px;
 }
 
@@ -211,11 +236,13 @@
   font-size: 11px;
   width: 97px;
   height: 19px;
-  padding-left: 5px;
+  padding-left: 5px; /* orientation=lt */
+  padding-right: 5px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionBg {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   margin: 0px 5px;
 }
 
@@ -225,9 +252,11 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SwitchSearch {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   cursor: pointer;
-  margin: 2px 0px 0px 5px;
+  margin: 2px 0px 0px 5px; /* orientation=lt */
+  margin: 2px 5px 0px 0px; /* orientation=rt */
 }
 
 /* <ECM-1543>
@@ -237,7 +266,8 @@
 	
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .StoreBoxContentContainer {
   position: relative;
-  float: right;
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
   width: 24px;
   margin: 3px;
   height: 28px;
@@ -249,48 +279,59 @@
 	background: #f7f7f7;
 	border: 1px solid #b7b7b7;
 	width: 81px;
-	right: 0px;
+	right: 0px; /* orientation=lt */
+	left: 0px; /* orientation=rt */
 	padding-bottom: 6px;
 }
 
 /* </ECM-1543> */
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SearchIcon {
-  float: left;
-  margin-left: 0px 5px;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  margin: 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .SavedQueries {
-  float: left;
-  margin: 2px 0px 0px 5px;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  margin: 2px 0px 0px 5px; /* orientation=lt */
+  margin: 2px 5px 0px 0px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch {
-  padding: 4px 5px 0px 0px;
+  padding: 4px 5px 0px 0px; /* orientation=lt */
+  padding: 4px 0px 0px 5px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch  .SeparatorLine{
   height: 25px;
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   padding: 0px 10px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UISimpleSearch input {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   width: 270px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch select {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch {
-  padding: 4px 5px 0px 0px;
+  padding: 4px 5px 0px 0px; /* orientation=lt */
+  padding: 4px 0px 0px 5px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch .AdvanceSearchContainer {
-  float: left;
-  margin-left: 5px;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  margin-left: 5px; /* orientation=lt */
+  margin-right: 5px; /* orientation=rt */
   width: 300px; height: 20px;
   background: white;
 }
@@ -301,7 +342,8 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .UIAdvanceSearch .DropDownButtonBox {
-  float: right;
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
   width: 18px;  height: 18px;
   background-color: white;
   border: solid 1px white;

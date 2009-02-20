@@ -25,7 +25,8 @@
 }
 
 .UIJCRExplorerPortlet .UIRepository {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   width: 217px;
   border: solid 1px #b7b7b7;
 }
@@ -35,9 +36,10 @@
   height: 26px;
   line-height: 26px;
   font-weight: bold;
-  padding-left: 10px;
+  padding-left: 10px; /* orientation=lt */
+  padding-right: 10px; /* orientation=rt */
   font-family: Verdana;
-  font-size:11px;
+  font-size: 11px;
 }
 
 .UIJCRExplorerPortlet .UIRepository .RepositoryList {
@@ -61,11 +63,11 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList .EmptyDrives {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   width: 95%;
   margin: auto;
   text-align: center;
-  vertical-align: middle;
   padding: 8px 0px;
   color: #ef5604;
 }
@@ -92,18 +94,21 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitleBGRight {
-  background: url('VistaSkin/background/DrivesListTitleBGRight31x26.gif') no-repeat right;
+  background: url('VistaSkin/background/DrivesListTitleBGRight31x26.gif') no-repeat right; /* orientation=lt */
+  background: url('VistaSkin/background/DrivesListTitleBGRight31x26-rt.gif') no-repeat left; /* orientation=rt */
   line-height: 26px; height: 26px;
-  padding-right: 31px;
+  padding-right: 31px; /* orientation=lt */
+  padding-left: 31px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle {
-  background: url('VistaSkin/background/DrivesListTitle161x26.gif') no-repeat left;
+  background: url('VistaSkin/background/DrivesListTitle161x26.gif') no-repeat left; /* orientation=lt */
+  background: url('VistaSkin/background/DrivesListTitle161x26-rt.gif') no-repeat right; /* orientation=rt */
   line-height: 26px; height: 26px;
   font-weight: bold;
-  padding-left: 10px;
+  padding-left: 10px; /* orientation=lt */
+  padding-right: 10px; /* orientation=rt */
   font-family: Verdana;
-  font-size:11px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListContainer {
@@ -132,27 +137,34 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DropDownArrow16x16Icon {
-	padding-right: 20px;
-	width: auto; height: 21px;
-	background-position: right center;
+	padding-right: 20px; /* orientation=lt */
+	padding-left: 20px; /* orientation=rt */
+	width: auto; height: 26px;
+	background-position: right center; /* orientation=lt */
+	background-position: left center; /* orientation=rt */
+	line-height: 25px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .Icon {
-	padding-left: 20px;
+	padding-left: 20px; /* orientation=lt */
+	padding-right: 20px; /* orientation=rt */
 	width: auto; height: auto;
 	margin: 0px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .PersonalDrivesIcon {
-	background: url('VistaSkin/background/Personal.png') no-repeat left center;
+	background: url('VistaSkin/background/Personal.png') no-repeat left center; /* orientation=lt */
+	background: url('VistaSkin/background/Personal.png') no-repeat right center; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GroupDrivesIcon {
-	background: url('VistaSkin/background/Group.png') no-repeat left center;
+	background: url('VistaSkin/background/Group.png') no-repeat left center; /* orientation=lt */
+	background: url('VistaSkin/background/Group.png') no-repeat right center; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GeneralDriveIcon {
-	background: url('VistaSkin/background/Earth.gif') no-repeat left center;
+	background: url('VistaSkin/background/Earth.gif') no-repeat left center; /* orientation=lt */
+	background: url('VistaSkin/background/Earth.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator {
@@ -161,7 +173,8 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Drive {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   margin: 7px ;
   padding: 0px 10px;
 }
@@ -171,7 +184,8 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveContainer {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   width: 160px; height:83px;
   border: solid 1px #e4e4e4;
   background: white url('VistaSkin/background/DriverContainerBG1x20.gif') repeat-x bottom;

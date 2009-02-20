@@ -8,8 +8,10 @@
  
 /*############################## -- Begin UISideBar   -- ##############################*/
 .UIJCRExplorerPortlet .UISideBar {
-	padding-right: 4px;
-  background: url('DefaultSkin/background/LineDecorator4x1.gif') repeat-y top right;
+	padding-right: 4px; /* orientation=lt */
+	padding-left: 4px; /* orientation=rt */
+  background: url('DefaultSkin/background/LineDecorator4x1.gif') repeat-y top right; /* orientation=lt */
+  background: url('DefaultSkin/background/LineDecorator4x1.gif') repeat-y top left; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl {
@@ -18,7 +20,8 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .DropSelectButton {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   width: 36px;
 }
 
@@ -33,17 +36,20 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .Icon24x24 {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   margin: 0px 5px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .Label {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   font-weight: bold;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarControl .CloseButton {
-  float: right;
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
   margin: 2px 7px 0px 7px;
   cursor: pointer;
 }
@@ -77,12 +83,14 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemIcon {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   margin: 3px 3px 0px 3px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .SeparatorLine {
-  margin: 0px auto 0px 4px;
+  margin: 0px auto 0px 4px; /* orientation=lt */
+  margin: 0px 4px 0px auto; /* orientation=rt */
   background: url('DefaultSkin/background/SidebarSeparatorLine.gif') repeat-x;
   height: 2px;
   width: 90%;
@@ -98,18 +106,20 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .FrameContent {
-  padding: 5px 3px 5px 15px;
+  padding: 5px 3px 5px 15px; /* orientation=lt */
+  padding: 5px 15px 5px 3px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .TitleLabel {
-  padding: 5px 0px 5px 8px;
+  padding: 5px 0px 5px 8px; /* orientation=lt */
+  padding: 5px 8px 5px 0px; /* orientation=rt */
   font: normal bold 11px Verdana;
 }
 
 /*############################## -- UIViewRelationList   -- ##############################*/
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList {
- width:auto;
+	width:auto;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame {
@@ -119,7 +129,8 @@
 
 .UIJCRExplorerPortlet .UISideBar .UIViewRelationList .RelationFrame .TitleLabel {
   height: 18px;
-  padding: 2px 0px 0px 15px;
+  padding: 2px 0px 0px 15px; /* orientation=lt */
+  padding: 2px 15px 0px 0px; /* orientation=rt */
   font: normal bold 11px Verdana;
   background: url('/eXoDMSResources/skin/images/article/EventFrameBG.gif') repeat-x;
 }
@@ -138,17 +149,22 @@
   float: none;
   width: auto;
   cursor: pointer;
-	padding-left: 22px;
+	padding-left: 22px; /* orientation=lt */
+	padding-right: 22px; /* orientation=rt */
+	background-position: left center; /* orientation=lt */
+	background-position: right center; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
   background: url('DefaultSkin/background/HardDisk.gif') no-repeat center bottom;
   height: 15px;
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode {
-	padding-left: 10px;
+	padding-left: 10px; /* orientation=lt */
+	padding-right: 10px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HomeNode .NodeLabel {
@@ -160,9 +176,11 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .Node {
-  background: url('DefaultSkin/background/Dotted.gif') repeat-y left ;
+  background: url('DefaultSkin/background/Dotted.gif') repeat-y left; /* orientation=lt */
+  background: url('DefaultSkin/background/Dotted-rt.gif') repeat-y right; /* orientation=rt */
   clear: both; 
-  margin-left: 14px;
+  margin-left: 14px; /* orientation=lt */
+  margin-right: 14px; /* orientation=rt */
   padding: 8px 0px 0px 0px;
 }
 
@@ -172,7 +190,8 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .LastNode {
-  background: url('DefaultSkin/background/Dotted.gif') no-repeat left 1px ;
+  background: url('DefaultSkin/background/Dotted.gif') no-repeat left 1px ; /* orientation=lt */
+  background: url('DefaultSkin/background/Dotted-rt.gif') no-repeat right 1px ; /* orientation=rt */
 }
   
 .UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
@@ -183,13 +202,15 @@
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
   cursor: pointer;
   width: auto;
-  padding-left: 19px;
+  padding-left: 19px; /* orientation=lt */
+  padding-right: 19px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .CollapseIcon {
   width: auto;
   cursor: pointer;
-  padding-left: 19px;
+  padding-left: 19px; /* orientation=lt */
+  padding-right: 19px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {
@@ -201,15 +222,18 @@
 /*############################## -- UITreeNodePageIterator   -- ##############################*/
 
 .UITreeNodePageIterator {
-	margin: 0px 0px 0px 9px;
+	margin: 0px 0px 0px 9px; /* orientation=lt */
+	margin: 0px 9px 0px 0px; /* orientation=rt */
 	padding: 9px 0px 0px 0px;
 }
 
 .UITreeNodePageIterator .NodePageIterator {
 	background: #ededed;
-	border-right: 1px solid #d7d7d7;
+	border-right: 1px solid #d7d7d7; /* orientation=lt */
+	border-left: 1px solid #d7d7d7; /* orientation=rt */
 	border-bottom: 1px solid #d7d7d7;
-	padding-left: 1px;
+	padding-left: 1px; /* orientation=lt */
+	padding-right: 1px; /* orientation=rt */
 	width: auto;
 }
 
@@ -221,7 +245,8 @@
 .UITreeNodePageIterator .Icon {
 	margin: 0px 4px;
 	padding: 0px;
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 }
 
 .UITreeNodePageIterator a {
@@ -254,22 +279,25 @@
 .UISideBar .UITagExplorer .TagmapHolder .TagmapContent {
    background: #ffffff;
    padding: 5px;
-   text-align: left ;
+   text-align: left; /* orientation=lt */
+   text-align: right; /* orientation=rt */
    line-height: 22px;
 }
 
 .UISideBar .UITagExplorer .TagmapHolder .TagmapContent a{
    color: red;
-   padding: 3px 7px 3px 0px;
+   padding: 3px 7px 3px 0px; /* orientation=lt */
+   padding: 3px 0px 3px 7px; /* orientation=rt */
 }
 
 .UISideBar .UITagExplorer .TagmapHolder .TagmapContent a:hover {
    color: yellow;
-   padding: 3px 7px 3px 0px;
+   padding: 3px 7px 3px 0px; /* orientation=lt */
+   padding: 3px 0px 3px 7px; /* orientation=rt */
 }
 
-.UIBrowseContentPortlet .TagmapHolder .Icon{
-	float: left;
+.UIBrowseContentPortlet .TagmapHolder .Icon {
+	float: left; /* orientation=lt */
 	width: 19px; height: 16px; 
 	margin: 2px 5px 0px 5px;
 	background: url('DefaultSkin/background/TagMapIcon19x16.gif') no-repeat; 

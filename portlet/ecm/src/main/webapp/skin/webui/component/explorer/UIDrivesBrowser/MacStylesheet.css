@@ -27,7 +27,8 @@
 }
 
 .UIJCRExplorerPortlet .UIRepository {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   width: 234px;
   border: solid 1px #d7d7d7;
 }
@@ -36,16 +37,6 @@
   border: solid 1px #ffffff;
   background: url('MacSkin/background/BGRepositoryList1x3.gif') repeat;
   width: 232px;
-}
-
-.UIJCRExplorerPortlet .UIRepository .RepositoryTitle {
-  background: url('MacSkin/background/RepositoryTitle232x31.gif') no-repeat ;
-  height: 31px;
-  line-height: 31px;
-  color: #333333;
-  font-weight: bold;
-  padding-left: 10px;
-  font-size: 12px;
 }
 
 .UIJCRExplorerPortlet .UIRepository .RepositoryList {
@@ -87,7 +78,8 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .UIDrivesList .EmptyDrives {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   width: 95%;
   margin: auto;
   text-align: center;
@@ -97,11 +89,13 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle {
-  background: #c8e0f2 url('MacSkin/background/DrivesListTitle195x28.gif') no-repeat left center;
+  background: #c8e0f2 url('MacSkin/background/DrivesListTitle195x28.gif') no-repeat left center; /* orientation=lt */
+  background: #c8e0f2 url('MacSkin/background/DrivesListTitle195x28-rt.gif') no-repeat right center; /* orientation=rt */
   line-height: 28px;
   color: #333333;
   font-weight: bold;
-  padding-left: 10px;
+  padding-left: 10px; /* orientation=lt */
+  padding-right: 10px; /* orientation=rt */
   font-size: 12px;
   white-space: nowrap;
 }
@@ -122,31 +116,38 @@
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DrivesListTitle {
 	height: 21px;
 	line-height: 21px;
-	padding-right: 5px;
+	padding-right: 5px; /* orientation=lt */
+	padding-left: 5px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .DropDownArrow16x16Icon {
-	padding-right: 20px;
+	padding-right: 20px; /* orientation=lt */
+	padding-left: 20px; /* orientation=rt */
 	width: auto; height: 21px;
-	background-position: right center;
+	background-position: right center; /* orientation=lt */
+	background-position: left center; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .Icon {
-	padding-left: 20px;
+	padding-left: 20px; /* orientation=lt */
+	padding-right: 20px; /* orientation=rt */
 	width: auto; height: auto;
 	margin: 0px;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .PersonalDrivesIcon {
-	background: url('MacSkin/background/Personal.png') no-repeat left center;
+	background: url('MacSkin/background/Personal.png') no-repeat left center; /* orientation=lt */
+	background: url('MacSkin/background/Personal.png') no-repeat right center; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GroupDrivesIcon {
-	background: url('MacSkin/background/Group.png') no-repeat left center;
+	background: url('MacSkin/background/Group.png') no-repeat left center; /* orientation=lt */
+	background: url('MacSkin/background/Group.png') no-repeat right center; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesListTitle .GeneralDriveIcon {
-	background: url('MacSkin/background/Earth.gif') no-repeat left center;
+	background: url('MacSkin/background/Earth.gif') no-repeat left center; /* orientation=lt */
+	background: url('MacSkin/background/Earth.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator {
@@ -155,7 +156,8 @@
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Drive {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
   border: solid 1px #ffffff;
   margin: 5px;
 }
@@ -182,12 +184,10 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel a {
   color: #116eaa;
-  text-decoration: none;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DriveLabel a:hover {
   color: orange;
-  text-decoration: none;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .GroupDriveIcon {
