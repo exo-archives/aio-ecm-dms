@@ -1258,6 +1258,110 @@
       <UITaxonomyForm><![CDATA[Taxonomie hinzuf&uuml;gen]]></UITaxonomyForm>
     </title>
   </TaxonomyPopup>
+  
+   <!--
+  ######################################################################################
+  #             SINCE DMS version 2.3-SNAPSHOT                              			           #
+  #             Add permission for taxonomy			                                       #
+  ######################################################################################
+  -->
+  <UIPopupWindow>
+    <title>
+      <UIPermissionManager>Permission Management</UIPermissionManager>
+    </title>
+   </UIPopupWindow>
+
+  <PopupUserSelector>
+    <title>
+      <UIUserContainer>Permission Management</UIUserContainer>
+    </title>
+   </PopupUserSelector>
+   
+  <UIPermissionInfo>
+    <action>
+      <title>
+        <Edit>Edit</Edit>
+        <Delete>Remove permission</Delete>
+      </title>
+    </action>
+    <header>
+      <usersOrGroups>User Or Group</usersOrGroups>
+      <read>Read</read>
+      <addNode>Add Node</addNode>
+      <setProperty>Set Property</setProperty>
+      <remove>Remove</remove>
+      <action>Action</action>
+    </header>
+    <msg>
+      <confirm-delete-permission>Do you want to remove this permission?</confirm-delete-permission>
+      <no-permission-tochange>You have no right to remove permission</no-permission-tochange>
+      <no-permission-remove>You can not remove the owner</no-permission-remove>
+      <access-denied>Access denied! You can not remove this permission.</access-denied>
+    </msg>
+  </UIPermissionInfo>
+  <permission>
+    <title>
+      <SelectUser>Select user</SelectUser>
+      <SelectMember>Select membership</SelectMember>
+      <AddAny>Select everyone</AddAny>
+    </title>
+  </permission>
+  <!--
+  #############################################################################
+  #             org.exoplatform.ecm.webui.component.explorer.UIPermissionForm #
+  #############################################################################
+  -->
+  <SelectUserOrGroup>
+    <title>
+      <UIGroupSelector>Select user</UIGroupSelector>
+      <UIPermissionSelector>Select member</UIPermissionSelector>
+      <UIGroupMemberSelector>Select membership</UIGroupMemberSelector>
+    </title>
+  </SelectUserOrGroup>
+  <UIGroupSelector>
+    <label>
+      <selectGroup>Browse and select a group</selectGroup>
+      <selectUser>Select user</selectUser>
+    </label>
+    <msg>
+      <not-change-owner>'{0}' is owner of this node and have full control permission</not-change-owner>
+    </msg>
+  </UIGroupSelector>
+  <UIPermissionForm>
+    <label>
+      <UIPopupWindow>Select</UIPopupWindow>
+      <permission>UIPermissionForm</permission>
+      <userOrGroup>User Or Group</userOrGroup>
+      <read>Read Right</read>
+      <add_node>Add Node Right</add_node>
+      <set_property>Set Property Right</set_property>
+      <remove>Remove Right</remove>
+    </label>
+    <title>Add a permission to that node</title>
+    <action>
+      <Close>#{word.close}</Close>
+      <Save>#{word.save}</Save>
+      <Reset>Reset</Reset>
+    </action>
+    <msg>
+      <checkbox-require>You must select at least one permission</checkbox-require>
+      <userOrGroup-required>You must select user or group before save this permission</userOrGroup-required>
+      <not-change-permission>You have no right to add permission</not-change-permission>
+      <access-denied>Access denied! You can not remove this right permission.</access-denied>
+    </msg>
+  </UIPermissionForm>
+  
+  <TaxonomyPopup>
+    <title>
+      <UITaxonomyForm>Add Taxonomy</UITaxonomyForm>
+    </title>
+  </TaxonomyPopup>
+  
+  <UITaxonomyManager>
+    <title>
+      <permission>Permission Management</permission>
+    </title>
+  </UITaxonomyManager>
   <!--
   ######################################################################################
   #             org.exoplatform.ecm.webui.component.admin.templates.UITemplateList		 #

@@ -35,9 +35,11 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -63,8 +65,13 @@ import org.exoplatform.webui.form.UIForm;
 )
 
 public class UIPermissionForm extends UIForm implements UISelectable {
+  
   final static public String PERMISSION   = "permission";
+
   final static public String POPUP_SELECT = "SelectUserOrGroup";
+
+  private Node               currentNode;
+  
   public UIPermissionForm() throws Exception {
     addChild(new UIPermissionInputSet(PERMISSION));
     setActions(new String[] { "Save", "Reset", "Close" });
@@ -139,17 +146,20 @@ public class UIPermissionForm extends UIForm implements UISelectable {
   static public class SaveActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
+      UIJCRExplorer uiJcrExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+      Node currentNode;
+      if (uiJcrExplorer != null) {
+        currentNode = uiJcrExplorer.getCurrentNode();
+      } else currentNode = uiForm.getCurrentNode();
       UIPermissionManager uiParent = uiForm.getParent();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       String userOrGroup = uiForm.getChild(UIPermissionInputSet.class).getUIStringInput(
           UIPermissionInputSet.FIELD_USERORGROUP).getValue();
       List<String> permsList = new ArrayList<String>();
       List<String> permsRemoveList = new ArrayList<String>();
-      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getCurrentNode() ;
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+        if(lockToken != null) currentNode.getSession().addLockToken(lockToken);
       }
       if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
@@ -182,8 +192,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
         return;
       }
       String[] permsArray = permsList.toArray(new String[permsList.size()]);
-      UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
-      ExtendedNode node = (ExtendedNode) uiJCRExplorer.getCurrentNode();
+      ExtendedNode node = (ExtendedNode) currentNode;
       if (PermissionUtil.canChangePermission(node)) {
         if (node.canAddMixin("exo:privilegeable")){
           node.addMixin("exo:privilegeable");
@@ -202,9 +211,9 @@ public class UIPermissionForm extends UIForm implements UISelectable {
         if(PermissionUtil.canChangePermission(node)) node.setPermission(userOrGroup, permsArray);
         uiParent.getChild(UIPermissionInfo.class).updateGrid();
         node.save();
-        if(uiJCRExplorer.getRootNode().equals(node)) {
-          if(!PermissionUtil.canRead(uiJCRExplorer.getCurrentNode())) {
-            uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class) ;
+        if(uiJcrExplorer != null && uiJcrExplorer.getRootNode().equals(node)) {
+          if(!PermissionUtil.canRead(uiJcrExplorer.getCurrentNode())) {
+            uiJcrExplorer.setRenderSibbling(UIDrivesBrowserContainer.class) ;
             return ;
           }
         }
@@ -214,11 +223,13 @@ public class UIPermissionForm extends UIForm implements UISelectable {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      uiJCRExplorer.getSession().save() ;
+      currentNode.getSession().save();
       uiForm.refresh();
-      uiJCRExplorer.setIsHidePopup(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiParent);
-      uiJCRExplorer.updateAjax(event);
+      if (uiJcrExplorer != null) {
+        uiJcrExplorer.setIsHidePopup(true);
+        uiJcrExplorer.updateAjax(event);
+      }
     }
   }
 
@@ -254,8 +265,17 @@ public class UIPermissionForm extends UIForm implements UISelectable {
 
   static public class CloseActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-      uiExplorer.cancelAction();
+      UIPopupContainer uiPopupContainer = event.getSource().getAncestorOfType(UIPopupContainer.class);
+      uiPopupContainer.deActivate() ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupContainer) ;
     }
+  }
+
+  public Node getCurrentNode() {
+    return currentNode;
+  }
+
+  public void setCurrentNode(Node currentNode) {
+    this.currentNode = currentNode;
   }
 }

@@ -261,6 +261,17 @@
   margin: 0px auto;
 }
 
+.UIECMAdminPortlet .UIPermissionManager .UIFormWithTitle {
+  margin: 15px auto;
+  width: 95%;
+}
+
+.UIECMAdminPortlet .UIPermissionManager { 
+	margin: auto;
+	padding-top: 10px;
+  width: 95%;
+}
+
 .UIECMAdminPortlet .UIOneNodePathSelector .UIFormWithTitle {
 	margin: 10px auto;
 	width: 580px;

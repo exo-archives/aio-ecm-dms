@@ -414,8 +414,6 @@ public class UIJCRExplorer extends UIContainer {
       if(isReferenceNode_) record(previousNode.getPath(), referenceWorkspace_);
       else record(previousNode.getPath(), currentWorkspaceName_);
     }
-    
-    System.out.println("\n\n===La nodetype cua thang publication hay ko" + currentNode.isNodeType("publication:publication"));
   }
 
   public List<Node> getChildrenList(Node node, boolean isReferences) throws Exception {

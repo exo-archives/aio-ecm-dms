@@ -75,6 +75,12 @@
   cursor: pointer;
 }
 
+.Permission16x16Icon {
+	width: 19px; height: 18px;
+  background: url('VistaSkin/ViewPermission.gif') no-repeat center; 
+  cursor: pointer;
+}
+
 .RemoveReference16x16Icon {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */

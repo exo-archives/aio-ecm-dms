@@ -25,6 +25,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
+import org.exoplatform.ecm.webui.component.explorer.UIJcrExplorerContainer;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -109,11 +110,12 @@ public class UIViewBar extends UIForm {
     public void execute(Event<UIViewBar> event) throws Exception {      
       UIViewBar uiViewBar = event.getSource();
       UIJCRExplorerPortlet explorerPorltet = uiViewBar.getAncestorOfType(UIJCRExplorerPortlet.class);   
-      UIJCRExplorer uiExplorer = explorerPorltet.getChild(UIJCRExplorer.class);
+      UIJCRExplorer uiExplorer = explorerPorltet.findFirstComponentOfType(UIJCRExplorer.class);
+      UIJcrExplorerContainer uiJcrExplorerContainer= explorerPorltet.getChild(UIJcrExplorerContainer.class);
       Preference pref = uiExplorer.getPreference();      
       pref.setShowSideBar(true);
       uiExplorer.refreshExplorer();
-      explorerPorltet.setRenderedChild(UIJCRExplorer.class);
+      uiJcrExplorerContainer.setRenderedChild(UIJCRExplorer.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiExplorer);
     }
   }

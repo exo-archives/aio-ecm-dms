@@ -224,6 +224,12 @@
   margin: 0px auto;
 }
 
+.UIECMAdminPortlet .UIPermissionManager { 
+	margin: auto;
+	padding-top: 10px;
+  width: 95%;
+}
+
 .UIECMAdminPortlet .UIFormGrid input {
   padding-left: 3px;
 }

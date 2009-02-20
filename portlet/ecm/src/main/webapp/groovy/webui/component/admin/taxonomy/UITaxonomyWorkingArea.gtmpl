@@ -10,7 +10,7 @@
 <div class="$uicomponent.id UITreeList" id="$uicomponent.id">
   <table class="UIGrid">
 	  <col></col>
-	  <col style="width:190px;"></col>
+	  <col style="width:200px;"></col>
 	  <thead>
 	    <tr>
 	      <th><%=_ctx.appRes("UITreeList.header.name")%></th>
@@ -48,6 +48,7 @@
 		                <img onclick="<%=uicomponent.event("Copy", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Copy16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.copy")%>">
 			              <img onclick="<%=uicomponent.event("Cut", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Cut16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.cut")%>">
 		                <img onclick="<%=uicomponent.event("Paste", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Paste16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.paste")%>">
+		                <img onclick="<%=uicomponent.event("ViewPermission", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Permission16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.permission")%>">
 		                <img onclick="<%=uicomponent.event("Remove", node.getPath())%>" alt="" src="/eXoResources/skin/sharedImages/Blank.gif" class="Icon16x16 Remove16x16Icon" title="<%=_ctx.appRes("UITaxonomyManager.title.remove")%>">
 		              <%}%>
 		            </div>

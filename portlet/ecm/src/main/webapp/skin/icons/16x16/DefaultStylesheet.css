@@ -29,6 +29,12 @@
   cursor: pointer;
 }
 
+.Permission16x16Icon {
+	width: 16px; height: 16px;
+  background: url('DefaultSkin/ViewPermission.gif') no-repeat;  
+  cursor: pointer;
+}
+
 .AddNewNodeIcon {
 	width: 16px; height: 20px;
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat center;  

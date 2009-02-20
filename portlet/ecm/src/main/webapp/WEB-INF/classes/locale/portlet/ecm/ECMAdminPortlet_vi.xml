@@ -1257,6 +1257,109 @@
       <UITaxonomyForm>Thêm Taxonomy</UITaxonomyForm>
     </title>
   </TaxonomyPopup>
+   <!--
+  ######################################################################################
+  #             SINCE DMS version 2.3-SNAPSHOT                              			           #
+  #             Add permission for taxonomy			                                       #
+  ######################################################################################
+  -->
+  <UIPopupWindow>
+    <title>
+      <UIPermissionManager>Quản lí phân quyền</UIPermissionManager>
+    </title>
+   </UIPopupWindow>
+
+  <PopupUserSelector>
+    <title>
+      <UIUserContainer>Quản lí phân quyền</UIUserContainer>
+    </title>
+   </PopupUserSelector>
+   
+  <UIPermissionInfo>
+    <action>
+      <title>
+        <Edit>Chỉnh sửa</Edit>
+        <Delete>Xóa quyền</Delete>
+      </title>
+    </action>
+    <header>
+      <usersOrGroups>Người dùng hoặc nhóm người dùng</usersOrGroups>
+      <read>Đọc</read>
+      <addNode>Thêm nút</addNode>
+      <setProperty>Thiết lập thuộc tính</setProperty>
+      <remove>Loại bỏ</remove>
+      <action>Hành động</action>
+    </header>
+    <msg>
+      <confirm-delete-permission>Bạn có muốn xóa quyền này?</confirm-delete-permission>
+      <no-permission-tochange>Bạn không có quyền xóa</no-permission-tochange>
+      <no-permission-remove>Bạn không thể loại bỏ chính mình</no-permission-remove>
+      <access-denied>Không thể truy nhập! Bạn không có quyền xóa</access-denied>
+    </msg>
+  </UIPermissionInfo>
+  <permission>
+    <title>
+      <SelectUser>Lựa chọn người dùng</SelectUser>
+      <SelectMember>Lựa chọn kiểu thành viên</SelectMember>
+      <AddAny>Lựa chọn tất cả mọi người</AddAny>
+    </title>
+  </permission>
+  <!--
+  #############################################################################
+  #             org.exoplatform.ecm.webui.component.explorer.UIPermissionForm #
+  #############################################################################
+  -->
+  <SelectUserOrGroup>
+    <title>
+      <UIGroupSelector>Lựa chọn người dùng</UIGroupSelector>
+      <UIPermissionSelector>Lựa chọn thành viên</UIPermissionSelector>
+      <UIGroupMemberSelector>Lựa chọn kiểu thành viên</UIGroupMemberSelector>
+    </title>
+  </SelectUserOrGroup>
+  <UIGroupSelector>
+    <label>
+      <selectGroup>Duyệt và lựa chọn nhóm</selectGroup>
+      <selectUser>Lựa chọn thành viên</selectUser>
+    </label>
+    <msg>
+      <not-change-owner>'{0}' Là chủ nhân của nút này và có mọi quyền</not-change-owner>
+    </msg>
+  </UIGroupSelector>
+  <UIPermissionForm>
+    <label>
+      <UIPopupWindow>Lựa chọn</UIPopupWindow>
+      <permission>Xem quyền</permission>
+      <userOrGroup>Người dùng hay nhóm</userOrGroup>
+      <read>Quyền đọc</read>
+      <add_node>Thêm nút</add_node>
+      <set_property>Thiết lập thuộc tính</set_property>
+      <remove>Quyền xóa</remove>
+    </label>
+    <title>Thêm quyền cho nút</title>
+    <action>
+      <Close>#{word.close}</Close>
+      <Save>#{word.save}</Save>
+      <Reset>Xóa</Reset>
+    </action>
+    <msg>
+      <checkbox-require>Bạn phải lựa chọn ít nhất một quyền</checkbox-require>
+      <userOrGroup-required>Bạn phải lựa chọn người dùng hoặc nhóm trước khi lưu dữ liệu</userOrGroup-required>
+      <not-change-permission>Bạn không thể thêm quyền</not-change-permission>
+      <access-denied>Truy nhập bị từ chối!  Bạn không có quyền xóa</access-denied>
+    </msg>
+  </UIPermissionForm>
+  
+  <TaxonomyPopup>
+    <title>
+      <UITaxonomyForm>Add Taxonomy</UITaxonomyForm>
+    </title>
+  </TaxonomyPopup>
+  
+  <UITaxonomyManager>
+    <title>
+      <permission>Permission Management</permission>
+    </title>
+  </UITaxonomyManager>
   <!--
   ######################################################################################
   #             org.exoplatform.ecm.webui.component.admin.templates.UITemplateList		 #

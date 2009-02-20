@@ -70,8 +70,11 @@ public class UIPermissionInfo extends UIContainer {
 
   public static String[] PERMISSION_BEAN_FIELD = {"usersOrGroups", "read", "addNode", 
     "setProperty", "remove"} ;
+  
   private static String[] PERMISSION_ACTION = {"Edit", "Delete"} ;
 
+  private Node currentNode;
+  
   public UIPermissionInfo() throws Exception {
     UIGrid uiGrid = createUIComponent(UIGrid.class, null, "PermissionInfo") ;
     addChild(uiGrid) ;
@@ -82,8 +85,10 @@ public class UIPermissionInfo extends UIContainer {
     return Utils.getNodeOwner(node) ;
   }
   public void updateGrid() throws Exception {
-    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Node currentNode = uiJCRExplorer.getCurrentNode() ;
+    if (currentNode == null) {
+      UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+      currentNode = uiJCRExplorer.getCurrentNode() ;
+    }
     List<PermissionBean> permBeans = new ArrayList<PermissionBean>(); 
     ExtendedNode node = (ExtendedNode) currentNode ;
 
@@ -240,6 +245,19 @@ public class UIPermissionInfo extends UIContainer {
 
     public boolean isSetProperty() { return setProperty ; }
     public void setSetProperty(boolean b) { setProperty = b ; }
+  }
+
+  public static String[] getPERMISSION_ACTION() {
+    return PERMISSION_ACTION;
+  }
+  public static void setPERMISSION_ACTION(String[] permission_action) {
+    PERMISSION_ACTION = permission_action;
+  }
+  public Node getCurrentNode() {
+    return currentNode;
+  }
+  public void setCurrentNode(Node currentNode) {
+    this.currentNode = currentNode;
   }
 }
 

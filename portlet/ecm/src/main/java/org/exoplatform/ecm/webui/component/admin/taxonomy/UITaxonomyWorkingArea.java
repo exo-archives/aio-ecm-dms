@@ -25,6 +25,9 @@ import javax.jcr.ReferentialIntegrityException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
+import org.exoplatform.ecm.webui.component.explorer.popup.info.UIPermissionForm;
+import org.exoplatform.ecm.webui.component.explorer.popup.info.UIPermissionInfo;
+import org.exoplatform.ecm.webui.component.explorer.popup.info.UIPermissionManager;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -32,6 +35,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -48,7 +52,8 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UITaxonomyWorkingArea.RemoveActionListener.class, confirm = "UITaxonomyManager.msg.confirm-delete"),
         @EventConfig(listeners = UITaxonomyWorkingArea.CopyActionListener.class),
         @EventConfig(listeners = UITaxonomyWorkingArea.PasteActionListener.class),
-        @EventConfig(listeners = UITaxonomyWorkingArea.CutActionListener.class)
+        @EventConfig(listeners = UITaxonomyWorkingArea.CutActionListener.class),
+        @EventConfig(listeners = UITaxonomyWorkingArea.ViewPermissionActionListener.class)
     }
 )
 public class UITaxonomyWorkingArea extends UIContainer {
@@ -213,6 +218,22 @@ public class UITaxonomyWorkingArea extends UIContainer {
       uiManager.clipboard_.setType(ClipboardCommand.CUT) ;
       uiManager.clipboard_.setSrcPath(realPath);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
+    }
+  }
+  
+  static public class ViewPermissionActionListener extends EventListener<UITaxonomyWorkingArea> {
+    public void execute(Event<UITaxonomyWorkingArea> event) throws Exception {
+      UITaxonomyWorkingArea uiManager = event.getSource();
+      UITaxonomyManager uiTaxoManager = uiManager.getParent();
+      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;  
+      UIPopupContainer uiPopupContainer = uiTaxoManager.initPopupPermission(UITaxonomyManager.PERMISSION_ID_POPUP);
+      UIPermissionManager uiPerMan = uiPopupContainer.createUIComponent(UIPermissionManager.class, null, null);
+      uiPerMan.getChild(UIPermissionInfo.class).setCurrentNode(uiTaxoManager.getNodeByPath(path));
+      uiPerMan.getChild(UIPermissionForm.class).setCurrentNode(uiTaxoManager.getNodeByPath(path));
+      uiPopupContainer.activate(uiPerMan, 700,600);
+      uiPopupContainer.setRendered(true);
+      uiPerMan.checkPermissonInfo(uiTaxoManager.getNodeByPath(path));
+      //event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
     }
   }
 

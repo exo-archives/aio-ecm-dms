@@ -24,6 +24,7 @@ import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.drives.UIDriveForm;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -36,6 +37,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.UIBreadcumbs.LocalPath;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
@@ -62,6 +64,8 @@ public class UITaxonomyManager extends UIContainer {
   
   static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
   static private String EXO_ECM_ALIAS = "exoECMSystemPath" ;
+  
+  public static final String PERMISSION_ID_POPUP = "TaxonomyViewPermissionPopup";
   
   private String selectedPath_ = null ;
 
@@ -130,6 +134,11 @@ public class UITaxonomyManager extends UIContainer {
     uiPopup.setUIComponent(uiTaxoForm) ;
     uiPopup.setRendered(true) ;
     uiPopup.setShow(true) ;
+  }
+
+  public UIPopupContainer initPopupPermission(String id) throws Exception {
+    removeChildById(id) ;
+    return addChild(UIPopupContainer.class, null, id) ;
   }
   
   public void onChange(Node currentNode) throws Exception {
