@@ -34,7 +34,7 @@
 	<div class="TitleCategoryTree">
 		<div class="CategoryTreeIcon CategoryListIcon"><span></span></div>
 		<div class="TiteLabel"><%=_ctx.appRes(uicomponent.id  + ".label.title")%></div>
-		<div style="clear:left"><span></span></div>
+		<div class="ClearLeft"><span></span></div>
 	</div>
 	<div class="MiddleCategoryTree">
 		<a href="<%=uicomponent.event('Select',uicomponent.getRootNode().getPath());%>"><div class="TreeRootIcon NormalFolder16x16Icon"><span></span></div></a>
@@ -42,7 +42,7 @@
 		<a class="RootTreeNode" href="<%=uicomponent.event('Select',uicomponent.getRootNode().getPath());%>">
 		    <%=rootNode%>
 		</a>
-		<div style="clear:left"><span></span></div>
+		<div class="ClearLeft"><span></span></div>
 		
 		<div class="ListMenu">
 			<div class="SupMenu">

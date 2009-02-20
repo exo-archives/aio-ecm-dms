@@ -35,6 +35,8 @@
 }
 
 .UITreeList .Text {
+  background-position: left top; /* orientation=lt */
+  background-position: right top; /* orientation=rt */
 	padding-left: 24px; /* orientation=lt */
 	padding-right: 24px; /* orientation=rt */
 }

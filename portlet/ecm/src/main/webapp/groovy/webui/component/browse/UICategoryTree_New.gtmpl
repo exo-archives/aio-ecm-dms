@@ -14,7 +14,7 @@
 				<div class="TitleCategoryTree">
 					<div class="CategoryTreeIcon CategoryListIcon"><span></span></div>
 					<div class="TiteLabel"><%=_ctx.appRes(uicomponent.id  + ".label.title")%></div>
-					<div style="clear:left"><span></span></div>
+					<div class="ClearLeft"><span></span></div>
 				</div>
 				<div class="MiddleCategoryTree">
 					<div class="HomeNode">
@@ -27,24 +27,24 @@
 			      <div class="Node">
 						  <div class="ExpandIcon"><span></span></div>
 						  <a href="#" class="Icon CBDefaultFolder16x16Icon"><%=_ctx.appRes("UICategoryTree_new.label.test")%></a>
-						  <div style="clear: left"><span style="display: none"></span></div>
+						  <div class="ClearLeft"><span style="display: none"></span></div>
 						</div>
 			      
 			      <div class="Node">
 						  <div class="CollapseIcon"><span></span></div>
 						  <a href="#" class="Icon CBDefaultFolder16x16Icon"><%=_ctx.appRes("UICategoryTree_new.label.test")%></a>
-						  <div style="clear: left"><span style="display: none"></span></div>
+						  <div class="ClearLeft"><span style="display: none"></span></div>
 						
 						  <div class="NodeGroup">
 					      <div class="Node">
 								  <div class="ExpandIcon"><span></span></div>
 								  <a href="#" class="Icon CBDefaultFolder16x16Icon"><%=_ctx.appRes("UICategoryTree_new.label.test")%></a>
-								  <div style="clear: left"><span style="display: none"></span></div>
+								  <div class="ClearLeft"><span style="display: none"></span></div>
 								</div>
 					      <div class="LastNode Node">
 								  <div class="ExpandIcon"><span></span></div>
 								  <a href="#" class="Icon CBDefaultFolder16x16Icon"><%=_ctx.appRes("UICategoryTree_new.label.test")%></a>
-								  <div style="clear: left"><span style="display: none"></span></div>
+								  <div class="ClearLeft"><span style="display: none"></span></div>
 								</div>
 							</div>
 						
@@ -53,13 +53,13 @@
 			      <div class="Node">
 						  <div class="ExpandIcon"><span></span></div>
 						  <a href="#" class="Icon CBDefaultFolder16x16Icon"><%=_ctx.appRes("UICategoryTree_new.label.test")%></a>
-						  <div style="clear: left"><span style="display: none"></span></div>
+						  <div class="ClearLeft"><span style="display: none"></span></div>
 						</div>
 			      
 			      <div class="LastNode Node">
 						  <div class="ExpandIcon"><span></span></div>
 						  <a href="#" class="Icon CBDefaultFolder16x16Icon"><%=_ctx.appRes("UICategoryTree_new.label.test")%></a>
-						  <div style="clear: left"><span style="display: none"></span></div>
+						  <div class="ClearLeft"><span style="display: none"></span></div>
 						</div>
 						
 					</div>
