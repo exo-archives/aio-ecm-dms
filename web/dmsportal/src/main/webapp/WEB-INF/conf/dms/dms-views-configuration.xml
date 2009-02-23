@@ -245,7 +245,7 @@
                     <object type="org.exoplatform.services.cms.views.ViewConfig$Tab">
                       <field name="tabName"><string>Info</string></field>
                       <field name="buttons">
-                      	<string>viewReferences</string>
+                      	<string>viewReferences; viewPermissions</string>
                       </field>
                     </object>
                   </value>

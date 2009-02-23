@@ -24,6 +24,7 @@ public class TaxonomyConfig {
 	private List<Taxonomy> taxonomies = new ArrayList<Taxonomy>() ;
   
 	public List<Taxonomy> getTaxonomies() { return this.taxonomies ; }	
+
 	public void setTaxonomies(List<Taxonomy> taxonomies) { this.taxonomies = taxonomies ;}
 	
 	static public class Taxonomy {
@@ -31,7 +32,7 @@ public class TaxonomyConfig {
 		private String path ;
 		private String name ;
 		private String description ;
-		
+    private List<Permission> permissions = new ArrayList<Permission>(4);
 		public String getPath() { return this.path ; }
 		public void setPath(String path) { this.path = path ;}
 		
@@ -40,5 +41,65 @@ public class TaxonomyConfig {
 		
 		public String getDescription()  { return this.description ; }
 		public void setDescription(String description) { this.description = description ; }
+    
+    public List<Permission> getPermissions() {
+      return this.permissions;
+    }
+
+    public void setPermissions(List<Permission> list) {
+      this.permissions = list;
+    }
 	}
+  
+  static public class Permission {
+    private String identity;
+
+    private String read;
+
+    private String addNode;
+
+    private String setProperty;
+
+    private String remove;
+
+    public String getIdentity() {
+      return identity;
+    }
+
+    public void setIdentity(String identity) {
+      this.identity = identity;
+    }
+
+    public String getAddNode() {
+      return addNode;
+    }
+
+    public void setAddNode(String addNode) {
+      this.addNode = addNode;
+    }
+
+    public String getRead() {
+      return read;
+    }
+
+    public void setRead(String read) {
+      this.read = read;
+    }
+
+    public String getRemove() {
+      return remove;
+    }
+
+    public void setRemove(String remove) {
+      this.remove = remove;
+    }
+
+    public String getSetProperty() {
+      return setProperty;
+    }
+
+    public void setSetProperty(String setProperty) {
+      this.setProperty = setProperty;
+    }
+  }
 }

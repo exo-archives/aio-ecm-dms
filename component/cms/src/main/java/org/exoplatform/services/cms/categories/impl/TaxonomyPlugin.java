@@ -16,7 +16,10 @@
  */
 package org.exoplatform.services.cms.categories.impl;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
@@ -26,9 +29,11 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.categories.impl.TaxonomyConfig.Permission;
 import org.exoplatform.services.cms.categories.impl.TaxonomyConfig.Taxonomy;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -89,7 +94,7 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
     while(it.hasNext()) {
       TaxonomyConfig config = (TaxonomyConfig)it.next().getObject() ;
       for(Taxonomy taxonomy : config.getTaxonomies()) {
-        Node taxonomyNode = Utils.makePath(taxonomyHomeNode, taxonomy.getPath(), "exo:taxonomy") ;
+        Node taxonomyNode = Utils.makePath(taxonomyHomeNode, taxonomy.getPath(), "exo:taxonomy", getPermissions(taxonomy.getPermissions())) ;
         if(taxonomyNode.canAddMixin("mix:referenceable")) {
           taxonomyNode.addMixin("mix:referenceable") ;
         }
@@ -98,5 +103,22 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
     taxonomyHomeNode.save();
     session.save();
     session.logout();
-  } 
+  }
+  
+  public Map getPermissions(List<Permission> permissions) {
+    Map<String, String[]> permissionsMap = new HashMap<String, String[]>();
+    for (Permission permission : permissions) {
+      StringBuilder strPer = new StringBuilder();
+      if ("true".equals(permission.getRead()))
+        strPer.append(PermissionType.READ);
+      if ("true".equals(permission.getAddNode()))
+        strPer.append(",").append(PermissionType.ADD_NODE);
+      if ("true".equals(permission.getSetProperty()))
+        strPer.append(",").append(PermissionType.SET_PROPERTY);
+      if ("true".equals(permission.getRemove()))
+        strPer.append(",").append(PermissionType.REMOVE);
+      permissionsMap.put(permission.getIdentity(), strPer.toString().split(","));
+    }
+    return permissionsMap;
+  }
 }

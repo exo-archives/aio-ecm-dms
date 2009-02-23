@@ -223,12 +223,16 @@ public class UIPermissionForm extends UIForm implements UISelectable {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      currentNode.getSession().save();
+      
       uiForm.refresh();
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiParent);
       if (uiJcrExplorer != null) {
+        uiJcrExplorer.getSession().save() ;
         uiJcrExplorer.setIsHidePopup(true);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiParent);
         uiJcrExplorer.updateAjax(event);
+      } else {
+        currentNode.getSession().save();
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiParent);
       }
     }
   }
