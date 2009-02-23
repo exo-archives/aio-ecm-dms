@@ -312,7 +312,7 @@ public class UIBrowseContainer extends UIContainer {
   private void addNodePublish(List<Node> listNode, Node node) throws Exception {
     if (isAllowPublish()) {
       PublicationService publicationService = getApplicationComponent(PublicationService.class);
-      Node nodecheck = publicationService.getNodePublish(node);
+      Node nodecheck = publicationService.getNodePublish(node, null);
       if (nodecheck != null) {
         listNode.add(nodecheck); 
       }
@@ -520,7 +520,7 @@ public class UIBrowseContainer extends UIContainer {
                   if (subCategoryDoc.size() < getRowPerBlock()) {
                     if (isAllowPublish()) {
                       PublicationService publicationService = getApplicationComponent(PublicationService.class);
-                      Node nodecheck = publicationService.getNodePublish(node);
+                      Node nodecheck = publicationService.getNodePublish(node, null);
                       if (nodecheck != null) {
                         subCategoryDoc.add(nodecheck); 
                       }
@@ -532,7 +532,7 @@ public class UIBrowseContainer extends UIContainer {
                 if (isCategories(nodeType)&&(!templates.contains(nodeType.getName()))) {
                   if (isAllowPublish()) {
                     PublicationService publicationService = getApplicationComponent(PublicationService.class);
-                    Node nodecheck = publicationService.getNodePublish(node);
+                    Node nodecheck = publicationService.getNodePublish(node, null);
                     if (nodecheck != null) {
                       subCategoryCat.add(nodecheck.getPath()); 
                     }
@@ -691,7 +691,7 @@ public class UIBrowseContainer extends UIContainer {
             if (canRead(node)) {
               if (isAllowPublish()) {
                 PublicationService publicationService = getApplicationComponent(PublicationService.class);
-                Node nodecheck = publicationService.getNodePublish(node);
+                Node nodecheck = publicationService.getNodePublish(node, null);
                 if (nodecheck != null) {
                   subDocumentList.add(nodecheck); 
                 }

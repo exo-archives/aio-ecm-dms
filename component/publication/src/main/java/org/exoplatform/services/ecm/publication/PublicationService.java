@@ -297,5 +297,5 @@ public interface PublicationService {
    */
   public String getLocalizedAndSubstituteLog(Node node, Locale locale, String key, String[] values) throws NotInPublicationLifecycleException, Exception;
   
-  public Node getNodePublish(Node node) throws Exception;
+  public Node getNodePublish(Node node, String pluginName) throws Exception;
 }

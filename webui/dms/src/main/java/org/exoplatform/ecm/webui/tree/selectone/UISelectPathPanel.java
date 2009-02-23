@@ -78,7 +78,7 @@ public class UISelectPathPanel extends UIContainer {
     if (isAllowPublish()) {
       NodeType nt = node.getPrimaryNodeType();
       if (templates_.contains(nt.getName())) { 
-        Node nodecheck = publicationService.getNodePublish(node);
+        Node nodecheck = publicationService.getNodePublish(node, null);
         if (nodecheck != null) {
           listNode.add(nodecheck); 
         }

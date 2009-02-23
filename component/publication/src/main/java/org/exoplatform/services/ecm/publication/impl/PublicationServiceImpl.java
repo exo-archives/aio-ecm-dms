@@ -306,10 +306,15 @@ public class PublicationServiceImpl implements PublicationService {
     return true;
   }
 
-  public Node getNodePublish(Node node) throws Exception {
+  public Node getNodePublish(Node node, String pluginName) throws Exception {
     if (node.isNodeType(PUBLICATION)) {
-      String lifecycleName = node.getProperty(LIFECYCLE_NAME).getString();
-      PublicationPlugin publicationPlugin = publicationPlugins_.get(lifecycleName);
+      PublicationPlugin publicationPlugin;
+      if (pluginName == null || pluginName.trim().equals("")) {
+        String lifecycleName = node.getProperty(LIFECYCLE_NAME).getString();
+        publicationPlugin = publicationPlugins_.get(lifecycleName);
+      } else {
+        publicationPlugin = publicationPlugins_.get(pluginName);
+      }
       return publicationPlugin.getNodeView(node, null);
     }
     return null;
