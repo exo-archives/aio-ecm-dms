@@ -77,6 +77,11 @@
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Kommentierbar</enableComment>
       <enableVote>Abstimmbar</enableVote>
+      <!--
+			  ### Since ECM version 2.3 Alpha##############
+			  Make sure BC is publication aware
+			-->
+      <isAllowPublish>Show only documents in "published" state</isAllowPublish>
     </label>
     <action>
       <Add>Neue config</Add>
@@ -126,6 +131,11 @@
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Kommentierbar</enableComment>
       <enableVote>Abstimmbar</enableVote>
+      <!--
+			  ### Since ECM version 2.3 Alpha##############
+			  Make sure BC is publication aware
+			-->
+      <isAllowPublish>Show only documents in "published" state</isAllowPublish>
     </label>
     <action>
       <Add>Neue config</Add>
@@ -152,6 +162,11 @@
       <detailBoxTemp>Detail Box Vorlage</detailBoxTemp>
       <enableComment>Kommentierbar</enableComment>
       <enableVote>Abstimmbar</enableVote>
+      <!--
+			  ### Since ECM version 2.3 Alpha##############
+			  Make sure BC is publication aware
+			-->
+      <isAllowPublish>Show only documents in "published" state</isAllowPublish>
     </label>
     <action>
       <Add>Neue config</Add>

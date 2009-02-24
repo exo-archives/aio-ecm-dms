@@ -74,6 +74,7 @@
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Có thể nhận xét</enableComment>
       <enableVote>Có thể bình chọn</enableVote>
+      <isAllowPublish>Chỉ cho phép tài liệu được publish</isAllowPublish>
     </label>
     <action>
       <Add>Cấu hình mới</Add>
@@ -133,6 +134,7 @@
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Có thể nhận xét</enableComment>
       <enableVote>Có thể bình chọn</enableVote>
+      <isAllowPublish>Chỉ cho phép tài liệu được publish</isAllowPublish>
     </label>
     <action>
       <Add>Cấu hình mới</Add>
@@ -159,6 +161,7 @@
       <detailBoxTemp>Chi tiết hộp mẫu</detailBoxTemp>
       <enableComment>Có thể nhận xét</enableComment>
       <enableVote>Có thể bình chọn</enableVote>
+      <isAllowPublish>Chỉ cho phép tài liệu được publish</isAllowPublish>
     </label>
     <action>
       <Add>Cấu hình mới</Add>

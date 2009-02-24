@@ -33,10 +33,6 @@
       <enableTagMap>Carte des mots clés</enableTagMap>
       <enableComment>Autoriser les commentaires</enableComment>
       <enableVote>Autoriser les votes</enableVote>
-      <!--
-			  ### Since ECM version 2.3 Alpha##############
-			  Make sure BC is publication aware
-			-->
       <isAllowPublish>Afficher uniquement les documents "publiés"</isAllowPublish>
     </label>
     <title>Configuration du répertoire</title>
@@ -78,6 +74,7 @@
       <enableTagMap>Carte des mots clés</enableTagMap>
       <enableComment>Autoriser les commentaires</enableComment>
       <enableVote>Autoriser les votes</enableVote>
+      <isAllowPublish>Afficher uniquement les documents "publiés"</isAllowPublish>
     </label>
     <action>
       <Add>Nouvelle configuration</Add>
@@ -137,6 +134,7 @@
       <enableTagMap>Carte des mots clés</enableTagMap>
       <enableComment>Autoriser les commentaires</enableComment>
       <enableVote>Autoriser les votes</enableVote>
+      <isAllowPublish>Afficher uniquement les documents "publiés"</isAllowPublish>
     </label>
     <action>
       <Add>Nouvelle configuration</Add>
@@ -163,6 +161,7 @@
       <detailBoxTemp>Type d'affichage détaillé</detailBoxTemp>
       <enableComment>Autoriser les commentaires</enableComment>
       <enableVote>Autoriser les votes</enableVote>
+      <isAllowPublish>Afficher uniquement les documents "publiés"</isAllowPublish>
     </label>
     <action>
       <Add>Nouvelle configuration</Add>
