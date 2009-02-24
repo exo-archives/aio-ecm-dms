@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <portal>
+    <classic>
+      <home>استقبال</home>
+    </classic>
+  </portal>
+  <register>تسجيل</register>
+  <sitemap>خريطه الموقع</sitemap>
+  <news>أخبار</news>
+  <ideas>
+    <title>أفكار</title>
+    <read>قراءة الأفكار</read>
+    <write>كتابة الأفكار</write>
+  </ideas>
+  <welcome>مركز استقبال</welcome>
+  <content-management>
+    <file-explorer>مستكشف الملفات</file-explorer>
+    <content-creator>خالق سريع للمحتوى</content-creator>
+    <content-browser>مستعرض المحتوى</content-browser>
+  </content-management>
+</bundle>
