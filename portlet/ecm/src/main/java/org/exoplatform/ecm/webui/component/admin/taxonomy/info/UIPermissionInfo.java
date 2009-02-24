@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.ecm.webui.component.explorer.popup.info;
+package org.exoplatform.ecm.webui.component.admin.taxonomy.info;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,25 +25,28 @@ import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIGrid;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -71,13 +74,10 @@ public class UIPermissionInfo extends UIContainer {
 
   public static String[] PERMISSION_BEAN_FIELD = {"usersOrGroups", "read", "addNode", 
     "setProperty", "remove"} ;
-  
   private static String[] PERMISSION_ACTION = {"Edit", "Delete"} ;
 
+  private Node currentNode = null;
   private int sizeOfListPermission = 0;
-  
-  private Node currentNode;
-  
   public UIPermissionInfo() throws Exception {
     UIGrid uiGrid = createUIComponent(UIGrid.class, null, "PermissionInfo") ;
     addChild(uiGrid) ;
@@ -88,11 +88,8 @@ public class UIPermissionInfo extends UIContainer {
     return Utils.getNodeOwner(node) ;
   }
   public void updateGrid() throws Exception {
-    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Node currentNode = uiJCRExplorer.getCurrentNode() ;
     List<PermissionBean> permBeans = new ArrayList<PermissionBean>(); 
-    ExtendedNode node = (ExtendedNode) currentNode ;
-
+    ExtendedNode node = (ExtendedNode) currentNode;
     List permsList = node.getACL().getPermissionEntries() ;
     Map<String, List<String>> permsMap = new HashMap<String, List<String>>() ;
     Iterator perIter = permsList.iterator() ;
@@ -137,18 +134,25 @@ public class UIPermissionInfo extends UIContainer {
         else if(PermissionType.REMOVE.equals(perm)) permBean.setRemove(true);
       }
       permBeans.add(permBean);
-      sizeOfListPermission = permBeans.size();
     }
+    sizeOfListPermission = permBeans.size();
     UIGrid uiGrid = findFirstComponentOfType(UIGrid.class) ; 
     ObjectPageList objPageList = new ObjectPageList(permBeans, 10) ;
     uiGrid.getUIPageIterator().setPageList(objPageList) ;    
+  }
+  private Session getSession() throws Exception {
+    RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class) ;
+    String systemWorkspace = repositoryService.getCurrentRepository().getConfiguration().getSystemWorkspaceName();
+    ManageableRepository manageableRepository = repositoryService.getCurrentRepository(); 
+    Session session = SessionProviderFactory.createSystemProvider().getSession(systemWorkspace, manageableRepository);
+    return session;
   }
   static public class EditActionListener extends EventListener<UIPermissionInfo> {
     public void execute(Event<UIPermissionInfo> event) throws Exception {
       UIPermissionInfo uicomp = event.getSource() ;
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiJCRExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
-      ExtendedNode node = (ExtendedNode)uiJCRExplorer.getCurrentNode() ; 
+      Node updateNode = uicomp.getCurrentNode();
+      ExtendedNode node = (ExtendedNode)updateNode; 
       UIPermissionForm uiForm = uicomp.getAncestorOfType(UIPermissionManager.class).getChild(UIPermissionForm.class) ;
       uiForm.fillForm(name, node) ;
       uiForm.lockForm(name.equals(uicomp.getExoOwner(node)));
@@ -157,21 +161,17 @@ public class UIPermissionInfo extends UIContainer {
   static public class DeleteActionListener extends EventListener<UIPermissionInfo> {
     public void execute(Event<UIPermissionInfo> event) throws Exception {
       UIPermissionInfo uicomp = event.getSource() ;
-      UIJCRExplorer uiJCRExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiJCRExplorer.getCurrentNode() ;
-      if(currentNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(currentNode);
-        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
-      }
+      Node currentNode = uicomp.getCurrentNode();
       ExtendedNode node = (ExtendedNode)currentNode;
-      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      if (uicomp.getSizeOfListPermission() < 3) {
-        uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove",
-            null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
+      List permsList = node.getACL().getPermissionEntries();
+      if (uicomp.getSizeOfListPermission() < 3) {
+          uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove",
+              null, ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+      }
       if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
             ApplicationMessage.WARNING)) ;
@@ -189,27 +189,22 @@ public class UIPermissionInfo extends UIContainer {
         if(node.canAddMixin("exo:privilegeable"))  {
           node.addMixin("exo:privilegeable");
           node.setPermission(nodeOwner,PermissionType.ALL);
+          System.out.println("\n\n can add Mixin permission");
+          node.save();
         }
         try {
-          node.removePermission(name) ;        
-          node.save() ;
+          node.removePermission(name);
+          node.save();
         } catch(AccessDeniedException ace) {
-          uiJCRExplorer.getSession().refresh(false) ;
+          uicomp.getSession().refresh(false) ;
           uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.access-denied", null, 
                                                   ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;          
         }
-        if(uiJCRExplorer.getRootNode().equals(node)) {
-          if(!PermissionUtil.canRead(currentNode)) {
-            uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class) ;
-            return ;
-          }
-        }
-        if(!uiJCRExplorer.getPreference().isJcrEnable()) {
-          uiJCRExplorer.getSession().save() ;
-          uiJCRExplorer.getSession().refresh(false) ;
-        }
+        Session session = uicomp.getSession();
+        session.save();
+        session.refresh(false);
       } else {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-tochange", null, 
             ApplicationMessage.WARNING)) ;
@@ -218,16 +213,12 @@ public class UIPermissionInfo extends UIContainer {
       }
       UIPopupContainer uiPopup = uicomp.getAncestorOfType(UIPopupContainer.class) ;
       if(!PermissionUtil.canRead(node)) {
-        uiJCRExplorer.setCurrentPath(node.getParent().getPath());
-        uiJCRExplorer.setSelectNode(node.getParent().getPath(), uiJCRExplorer.getSession());
         uiPopup.deActivate() ;
       } else {
         uicomp.updateGrid() ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
       }
-      uiJCRExplorer.setIsHidePopup(true) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
-      uiJCRExplorer.updateAjax(event) ;
     }
   }
 
@@ -255,12 +246,6 @@ public class UIPermissionInfo extends UIContainer {
     public void setSetProperty(boolean b) { setProperty = b ; }
   }
 
-  public static String[] getPERMISSION_ACTION() {
-    return PERMISSION_ACTION;
-  }
-  public static void setPERMISSION_ACTION(String[] permission_action) {
-    PERMISSION_ACTION = permission_action;
-  }
   public Node getCurrentNode() {
     return currentNode;
   }

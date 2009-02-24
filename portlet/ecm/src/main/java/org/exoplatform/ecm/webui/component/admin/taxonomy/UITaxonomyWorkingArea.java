@@ -25,9 +25,9 @@ import javax.jcr.ReferentialIntegrityException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
-import org.exoplatform.ecm.webui.component.explorer.popup.info.UIPermissionForm;
-import org.exoplatform.ecm.webui.component.explorer.popup.info.UIPermissionInfo;
-import org.exoplatform.ecm.webui.component.explorer.popup.info.UIPermissionManager;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionForm;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionInfo;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionManager;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -230,10 +230,9 @@ public class UITaxonomyWorkingArea extends UIContainer {
       UIPermissionManager uiPerMan = uiPopupContainer.createUIComponent(UIPermissionManager.class, null, null);
       uiPerMan.getChild(UIPermissionInfo.class).setCurrentNode(uiTaxoManager.getNodeByPath(path));
       uiPerMan.getChild(UIPermissionForm.class).setCurrentNode(uiTaxoManager.getNodeByPath(path));
-      uiPopupContainer.activate(uiPerMan, 700,600);
+      uiPopupContainer.activate(uiPerMan, 650,550);
       uiPopupContainer.setRendered(true);
       uiPerMan.checkPermissonInfo(uiTaxoManager.getNodeByPath(path));
-      //event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
     }
   }
 
