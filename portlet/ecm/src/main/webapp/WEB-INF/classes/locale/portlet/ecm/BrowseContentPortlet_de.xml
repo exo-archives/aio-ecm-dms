@@ -37,7 +37,7 @@
 			  ### Since ECM version 2.3 Alpha##############
 			  Make sure BC is publication aware
 			-->
-      <isAllowPublish>Allow Publish</isAllowPublish>
+      <isAllowPublish>Show only documents in "published" state</isAllowPublish>
     </label>
     <title>Pfad Config</title>
     <action>

@@ -28,7 +28,7 @@
       <itemPerPage>Items Per Page</itemPerPage>
       <detailBoxTemp>Detail Box Template</detailBoxTemp>
       <enableToolBar>View Toolbar</enableToolBar>
-      <isAllowPublish>Allow Publish Document</isAllowPublish>
+      <isAllowPublish>Show only documents in "published" state</isAllowPublish>
       <enableRefDoc>Reference Document</enableRefDoc>
       <enableChildDoc>Children Document</enableChildDoc>
       <enableTagMap>Tagmap</enableTagMap>

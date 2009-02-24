@@ -39,6 +39,7 @@ import javax.jcr.version.Version;
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.services.ecm.publication.IncorrectStateUpdateLifecycleException;
 import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationService;
@@ -550,6 +551,8 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
 
   @SuppressWarnings("unused")
   public Node getNodeView(Node currentNode, Map<String, Object> context) throws Exception {
+    String visibility = currentNode.getProperty(VISIBILITY).getString();
+    if (visibility.equals(PRIVATE) && !PermissionUtil.canRead(currentNode)) return null;
     VersionNode rootVersion = new VersionNode(currentNode.getVersionHistory().getRootVersion());
     return getVerionNodePublish(rootVersion.getChildren(), currentNode);
   }

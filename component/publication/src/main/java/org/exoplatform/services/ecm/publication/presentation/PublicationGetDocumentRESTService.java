@@ -123,7 +123,6 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
     for (Node node : listDocumentPublish) {
       System.out.println("\n" + node.getPath() + "\n");
     }
-
     return Response.Builder.ok().build();
   }
 

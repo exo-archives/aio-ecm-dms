@@ -33,7 +33,7 @@
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Có thể nhận xét</enableComment>
       <enableVote>Có thể bình chọn</enableVote>
-      <isAllowPublish>Chi cho phep tai lieu publish</isAllowPublish>
+      <isAllowPublish>Chỉ cho phép tài liệu được publish</isAllowPublish>
     </label>
     <title>Cấu hình đường dẫn</title>
     <action>
