@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.security.AccessControlException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -32,6 +33,7 @@ import java.util.ResourceBundle;
 import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyIterator;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.version.Version;
@@ -39,7 +41,6 @@ import javax.jcr.version.Version;
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
-import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.services.ecm.publication.IncorrectStateUpdateLifecycleException;
 import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationService;
@@ -552,9 +553,22 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   @SuppressWarnings("unused")
   public Node getNodeView(Node currentNode, Map<String, Object> context) throws Exception {
     String visibility = currentNode.getProperty(VISIBILITY).getString();
-    if (visibility.equals(PRIVATE) && !PermissionUtil.canRead(currentNode)) return null;
+    if (visibility.equals(PRIVATE) && !canRead(currentNode)) return null;
     VersionNode rootVersion = new VersionNode(currentNode.getVersionHistory().getRootVersion());
     return getVerionNodePublish(rootVersion.getChildren(), currentNode);
+  }
+  
+  private boolean canRead(Node node) throws RepositoryException {
+    return checkPermission(node,PermissionType.READ);        
+  }
+  
+  private boolean checkPermission(Node node,String permissionType) throws RepositoryException {
+    try {
+      ((ExtendedNode)node).checkPermission(permissionType);
+      return true;
+    } catch(AccessControlException e) {
+      return false;
+    }
   }
   
   private Node getVerionNodePublish(List<VersionNode> list, Node currentNode) throws Exception {
