@@ -1,5 +1,5 @@
 ==============================================
-	eXo  ECM2.2-final release notes
+	eXo  DMS-2.3RC1 release notes
 ==============================================
 
 - Introduction
@@ -15,34 +15,42 @@
    +) Application Server : Tomcat, JBoss, Jonas, Websphere
    +) Building Tools: Maven 2.0.6 and up
 
-- Complete list of issues fixed in eXo ECM2.2-final
+Release Notes - exo-ecm-dms - Version eXo DMS-2.3RC1
 
 ** Bug
-    * [ECM-1659] - Can not display added records of File Plan after lock parent node
-    * [ECM-2320] - Error in showing content of document after viewing related document
-    * [ECM-2357] - bad behavior of uicomponent.addActionField() when using i18n
-    * [ECM-2504] - Loose rigth border of uploaded file when close side bar
-    * [ECM-2527] - Throw exception when restore version of  folder afer cut nt:file of this folder
-    * [ECM-2728] - Remove scrollbar in Coverflow for mac
-    * [ECM-2753] - Upload icon not visible on Firefox 3 (Ubuntu)
-    * [ECM-2770] - Error in 'Advanced search' form when select property in 'From' and 'To' field
-    * [ECM-2813] - IE6: Little error in 'Properties Management' popup in all skins
-    * [ECM-2820] - When adding a list of tag to a document, there is an error if there is a space
-    * [ECM-2821] - After versionning a document, comment it, then create a new version, the comment disappear
-    * [ECM-2855] - Avoid "text wrap" in the navigation portlet
-    * [ECM-2918] - Change all input forms in ECM Admin
-    * [ECM-2968] - Remove filtered char  "' "  in name of folder and document, Allow "both" and "Both" ... in <field  name="allowCreateFolder"><string>Both</string></field> in configuration file
+    * [ECM-3159] - In FE cannot select the "*:" role when assigning permission to a group
+    * [ECM-3220] - Change style of <A> tag to be sure that it is "visible" by default
+    * [ECM-3242] - Unexpected customer work
+    * [ECM-3324] - Dependency on pc 2.0 hardcoded in 
+
+
+** Doc
+    * [ECM-3245] - Document how to create an RSS feed in eXo DMS
+    * [ECM-3246] - Document the research features in eXo DMS
+    * [ECM-3248] - Complete the wiki page that describes how to directly access a JCR FE drive
+
 
 ** Improvement
-    * [ECM-2369] - Add an icon to show the left pannel in the ecm
-    * [ECM-2811] - Use maven-war-overlaying to make ecmportal dependent to portal war
-    * [ECM-2818] - Leverage user selector of Portal 2.5
-    * [ECM-2828] - remove attachments in article
-    * [ECM-2849] - Improve the categories selector in edit document templates
-    * [ECM-2919] - Reuse gadgets and tomcat patch package from Portal
+    * [ECM-3208] - Include the JCR console into the Maven build
+    * [ECM-3211] - Allow XML files to be used at the same time as properties files in business process archives
+    * [ECM-3213] - Allow to apply permissions on taxonomies and filter them
 
 ** New Feature
-    * [ECM-2851] - ECM Translations
+    * [ECM-2127] - Clipboard improvement
+    * [ECM-3223] - Make sure BC is publication aware
+    * [ECM-3239] - RTLize JCR FE
+    * [ECM-3240] - RTLize BC
+
+** Task
+    * [ECM-3243] - Make sure the fix for triggering actions while FTP is used can be available in DMS 2.2.x
+    * [ECM-3247] - RTLize the edit panel of the FCC
+    * [ECM-3277] - Release DMS 2.3-RC1
+
+** Sub-task
+    * [ECM-3258] - [DEV] Add read xml framework
+    * [ECM-3259] - [DEV] Refactor all file in jar and Bpar to support XML file
+    * [ECM-3260] - [DEV] Convert all properties file to xml
+    * [ECM-3274] - [DEV] Change style of <A> tag to be sure that it is "visible" by default
 
 - Other resources and links
      Company site        http://www.exoplatform.com

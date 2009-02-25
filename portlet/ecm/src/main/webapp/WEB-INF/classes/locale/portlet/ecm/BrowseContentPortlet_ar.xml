@@ -20,7 +20,7 @@
   -->
   <!--
     ###################################################################
-		#	    FROM VERSION DMS 2.3-SNAPSHOT, we add filterCategory        #
+		#	    FROM VERSION DMS 2.3RC1, we add filterCategory        #
 		#	    to display checkbox for filtering category tree             #
 		#	    base on permission of user                                  #
     ###################################################################

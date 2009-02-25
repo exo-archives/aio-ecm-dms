@@ -1259,8 +1259,8 @@
   </TaxonomyPopup>
    <!--
   ######################################################################################
-  #             SINCE DMS version 2.3-SNAPSHOT                              			           #
-  #             Add permission for taxonomy			                                       #
+  #             SINCE DMS version 2.3RC1                              			       #
+  #             Add permission for taxonomy			                                   #
   ######################################################################################
   -->
   <UIPopupWindow>
