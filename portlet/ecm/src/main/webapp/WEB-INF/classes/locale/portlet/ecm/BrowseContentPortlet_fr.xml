@@ -36,7 +36,7 @@
       <detailBoxTemp>Type d'affichage détaillé</detailBoxTemp>
       <enableToolBar>Afficher la barre d'outils</enableToolBar>
       <enableRefDoc>Documents référencés</enableRefDoc>
-      <filterCategory>Filters out categories based on current user permissions</filterCategory>
+      <filterCategory>Filtre les catégories selon les droits de l'utilisateur</filterCategory>
       <enableChildDoc>Documents fils</enableChildDoc>
       <enableTagMap>Carte des mots clés</enableTagMap>
       <enableComment>Autoriser les commentaires</enableComment>
