@@ -72,7 +72,7 @@ public class UICategoriesSelector extends UIBaseNodeTreeSelector implements UIPo
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class) ;
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     String repositoryName = repositoryService.getCurrentRepository().getConfiguration().getName() ;
-    Node rootCategories = categoriesService.getTaxonomyHomeNode(repositoryName, SessionProviderFactory.createSystemProvider()) ;
+    Node rootCategories = categoriesService.getTaxonomyHomeNode(repositoryName, SessionProviderFactory.createSessionProvider()) ;
     Node rootCategoryTree = rootCategories ;
     if (rootCategories != null) pathTaxonomy = rootCategories.getPath() + "/" ;
     UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class) ;

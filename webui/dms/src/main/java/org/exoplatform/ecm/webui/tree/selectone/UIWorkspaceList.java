@@ -125,7 +125,6 @@ public class UIWorkspaceList extends UIForm {
     ManageableRepository manageableRepository = repositoryService.getRepository(repositoryName);
     SessionProvider sessionProvider =  SessionProviderFactory.createSessionProvider();
     return sessionProvider.getSession(workspaceName, manageableRepository).getRootNode(); 
-    //    return manageableRepository.getSystemSession(workspaceName).getRootNode();
   }
   
   static public class ChangeWorkspaceActionListener extends EventListener<UIWorkspaceList> {

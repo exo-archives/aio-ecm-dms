@@ -84,10 +84,8 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     TemplateService templateService  = getApplicationComponent(TemplateService.class);
     List<String> templates = templateService.getDocumentTemplates(repositoryName);
     try {
-//TODO: Should review this method to make sure we have no problem with permission when use system session      
+      //TODO: Should review this method to make sure we have no problem with permission when use system session      
       Node rootNode;
-      /*Session session = sessionProvider.getSession(workspaceName, manageableRepository);
-      rootNode = session.getRootNode();*/
       if (rootTreePath.trim().equals("/")) {
         rootNode = sessionProvider.getSession(workspaceName, manageableRepository).getRootNode();
       } else {

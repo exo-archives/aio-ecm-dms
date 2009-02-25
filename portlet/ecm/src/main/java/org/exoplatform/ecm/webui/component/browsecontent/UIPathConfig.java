@@ -113,6 +113,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
     uiSearchPathSelect.addUIFormInput(new UIFormStringInput(UINewConfigForm.FIELD_SEARCH_LOCATION, 
         null, null).setEditable(false));
     addUIComponentInput(uiSearchPathSelect);
+    addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_FILTER_CATEGORY, null, null));
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ALLOW_PUBLISH, null, null));
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLEREFDOC, null, null));
     addChild(new UIFormCheckBoxInput<Boolean>(UINewConfigForm.FIELD_ENABLECHILDDOC, null, null));
@@ -177,6 +178,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
     String hasSearchLocation = preference.getValue(Utils.CB_ENABLE_SEARCH_LOCATION, "");
     if (hasSearchLocation == null || hasSearchLocation.length() < 1) hasSearchLocation = "false";
     String hasToolBar = "true";
+    String filterCategory = "true";
     String hasRefDoc ="true"; 
     String hasChildDoc = "true";
     String hasTagMap = "true";
@@ -214,6 +216,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
     UIFormStringInput numbPerPageField = getChildById(UINewConfigForm.FIELD_ITEMPERPAGE);
     UIFormSelectBox detailtemField = getChildById(UINewConfigForm.FIELD_DETAILBOXTEMP);
     UIConfigTabPane uiConfigTabPane = getAncestorOfType(UIConfigTabPane.class);
+    UIFormCheckBoxInput enableFilterCategory = getChildById(UINewConfigForm.FIELD_FILTER_CATEGORY);
     UIFormCheckBoxInput enableToolBarField = getChildById(UINewConfigForm.FIELD_ENABLETOOLBAR);
     UIFormCheckBoxInput enablePublishField = getChildById(UINewConfigForm.FIELD_ALLOW_PUBLISH);
     UIFormCheckBoxInput enableRefDocField = getChildById(UINewConfigForm.FIELD_ENABLEREFDOC);
@@ -232,6 +235,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
       if (isAddNew) {
         templateField.setOptions(getTemplateOption(repository));
         detailtemField.setOptions(uiConfigTabPane.getBoxTemplateOption(repository));
+        enableFilterCategory.setChecked(Boolean.parseBoolean(filterCategory));
         enableToolBarField.setChecked(Boolean.parseBoolean(hasToolBar));
         enablePublishField.setChecked(isAllowPublish);
         enableRefDocField.setChecked(Boolean.parseBoolean(hasRefDoc));
@@ -252,6 +256,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
       repository = preference.getValue(Utils.REPOSITORY, "");
       workSpace = preference.getValue(Utils.WORKSPACE_NAME, "");
       template = preference.getValue(Utils.CB_TEMPLATE, "");
+      filterCategory = preference.getValue(Utils.CB_FILTER_CATEGORY, "");
       hasToolBar = preference.getValue(Utils.CB_VIEW_TOOLBAR, "");
       hasRefDoc = preference.getValue(Utils.CB_REF_DOCUMENT, "");
       hasChildDoc = preference.getValue(Utils.CB_CHILD_DOCUMENT, "");
@@ -268,7 +273,8 @@ public class UIPathConfig extends UIForm implements UISelectable{
       detailtemField.setValue(detailTemp);
       repositoryField.setValue(repository);
       workSpaceField.setValue(workSpace);
-      enableToolBarField.setChecked( Boolean.parseBoolean(hasToolBar));
+      enableFilterCategory.setChecked(Boolean.parseBoolean(filterCategory));
+      enableToolBarField.setChecked(Boolean.parseBoolean(hasToolBar));
       enablePublishField.setChecked(isAllowPublish);
       enableRefDocField.setChecked( Boolean.parseBoolean(hasRefDoc));
       enableChildDocField.setChecked(Boolean.parseBoolean(hasChildDoc));
@@ -280,6 +286,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
       numbPerPageField.setValue(itemPerPage);
     }
     templateField.setEnable(isEdit_);
+    enableFilterCategory.setEnable(isEdit_);
     detailtemField.setEnable(isEdit_);
     enableToolBarField.setEnable(isEdit_);
     enablePublishField.setEnable(isEdit_);
@@ -370,6 +377,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
       }
       String boxTemplate = uiForm.getUIStringInput(UINewConfigForm.FIELD_DETAILBOXTEMP).getValue();
       boolean hasChildDoc = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLECHILDDOC).isChecked();
+      boolean filterCategory = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_FILTER_CATEGORY).isChecked();
       boolean isAllowPublish = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ALLOW_PUBLISH).isChecked();
       boolean hasRefDoc = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLEREFDOC).isChecked();
       boolean hasToolBar = uiForm.getUIFormCheckBoxInput(UINewConfigForm.FIELD_ENABLETOOLBAR).isChecked();
@@ -393,6 +401,7 @@ public class UIPathConfig extends UIForm implements UISelectable{
       prefs.setValue(Utils.REPOSITORY, repository);
       prefs.setValue(Utils.WORKSPACE_NAME, workSpace);
       prefs.setValue(Utils.JCR_PATH, jcrPath);
+      prefs.setValue(Utils.CB_FILTER_CATEGORY, String.valueOf(filterCategory));
       prefs.setValue(Utils.CB_NB_PER_PAGE, itemPerPage);
       prefs.setValue(Utils.CB_TEMPLATE, template);
       prefs.setValue(Utils.CB_BOX_TEMPLATE, boxTemplate);   
