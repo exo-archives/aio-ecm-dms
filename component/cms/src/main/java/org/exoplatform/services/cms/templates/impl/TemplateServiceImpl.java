@@ -375,7 +375,6 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     rtlTemplateCache_.clearCache();
     setTemplateData(locale, contentNode, nodeTypeName, RT, LTR);
     setTemplateData(locale, contentNode, nodeTypeName, LT, RTL);
-    contentNode.save();
     templatesHome.save();
     session.save();
     session.logout();
