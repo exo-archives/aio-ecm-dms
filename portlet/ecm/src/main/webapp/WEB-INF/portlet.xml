@@ -387,6 +387,14 @@
         <name>isAllowPublish</name>
         <value>false</value>
         <read-only>false</read-only>
+      </preference> 
+      <!-- 
+        When filterCategory is true, then we need check permission in the taxonomy tree
+      -->             
+      <preference>
+        <name>filterCategory</name>
+        <value>false</value>
+        <read-only>false</read-only>
       </preference>              
     </portlet-preferences>    
   </portlet>

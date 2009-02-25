@@ -26,11 +26,8 @@ import java.util.Set;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.Session;
-import javax.jcr.Value;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;

@@ -86,8 +86,10 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     try {
 //TODO: Should review this method to make sure we have no problem with permission when use system session      
       Node rootNode;
+      /*Session session = sessionProvider.getSession(workspaceName, manageableRepository);
+      rootNode = session.getRootNode();*/
       if (rootTreePath.trim().equals("/")) {
-        rootNode = manageableRepository.getSystemSession(workspaceName).getRootNode();
+        rootNode = sessionProvider.getSession(workspaceName, manageableRepository).getRootNode();
       } else {
         Session session = sessionProvider.getSession(workspaceName, manageableRepository);
         rootNode = (Node)session.getItem(rootTreePath);

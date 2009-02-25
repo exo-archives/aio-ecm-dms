@@ -65,6 +65,7 @@ public class UINewConfigForm extends UIForm {
   final static public String FIELD_ENABLETOOLBAR = "enableToolBar";
   final public static String FIELD_ALLOW_PUBLISH = "isAllowPublish".intern();
   final static public String FIELD_ENABLEREFDOC = "enableRefDoc";
+  final public static String FIELD_FILTER_CATEGORY = "filterCategory";
   final static public String FIELD_ENABLECHILDDOC = "enableChildDoc";
   final static public String FIELD_ENABLETAGMAP = "enableTagMap";
   final static public String FIELD_ENABLECOMMENT = "enableComment";

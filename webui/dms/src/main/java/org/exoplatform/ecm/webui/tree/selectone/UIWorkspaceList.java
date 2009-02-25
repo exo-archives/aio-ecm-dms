@@ -30,6 +30,7 @@ import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -122,7 +123,9 @@ public class UIWorkspaceList extends UIForm {
   private Node getRootNode(String repositoryName, String workspaceName) throws RepositoryException, RepositoryConfigurationException {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
     ManageableRepository manageableRepository = repositoryService.getRepository(repositoryName);
-    return manageableRepository.getSystemSession(workspaceName).getRootNode();
+    SessionProvider sessionProvider =  SessionProviderFactory.createSessionProvider();
+    return sessionProvider.getSession(workspaceName, manageableRepository).getRootNode(); 
+    //    return manageableRepository.getSystemSession(workspaceName).getRootNode();
   }
   
   static public class ChangeWorkspaceActionListener extends EventListener<UIWorkspaceList> {

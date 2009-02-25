@@ -415,6 +415,9 @@ public class UIBrowseContainer extends UIContainer {
     String[] workspaces = manageRepo.getWorkspaceNames();
     for(String ws : workspaces) {
       try{
+        if(Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_FILTER_CATEGORY, ""))){
+          return SessionProviderFactory.createSessionProvider().getSession(ws, manageRepo).getNodeByUUID(uuid);
+        }
         return SessionProviderFactory.createSystemProvider().getSession(ws, manageRepo).getNodeByUUID(uuid);
       } catch(Exception e) {
         continue;
@@ -647,8 +650,12 @@ public class UIBrowseContainer extends UIContainer {
     Session session = null;
     String workspace = getWorkSpace();
     ManageableRepository manageableRepository = getRepositoryService().getRepository(getRepository());
-    if(categoryPath_ != null && categoryPath_.startsWith("/jcr:system")) {         
-      session = getSystemProvider().getSession(workspace,manageableRepository);
+    if(categoryPath_ != null && categoryPath_.startsWith("/jcr:system")) { 
+      if(!Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_FILTER_CATEGORY, ""))){
+        session = getSystemProvider().getSession(workspace,manageableRepository);
+      } else {
+        session = getSessionProvider().getSession(workspace,manageableRepository);
+      }
     } else {
       if(SessionProviderFactory.isAnonim()) {
         session = getAnonimProvider().getSession(workspace,manageableRepository);
@@ -662,8 +669,12 @@ public class UIBrowseContainer extends UIContainer {
   public Session getSession(String repository, String workspace) throws Exception{
     Session session = null;
     ManageableRepository manageableRepository = getRepositoryService().getRepository(repository);
-    if(categoryPath_ != null && categoryPath_.startsWith("/jcr:system")) {       
-      session = getSystemProvider().getSession(workspace,manageableRepository);
+    if(categoryPath_ != null && categoryPath_.startsWith("/jcr:system")) {
+      if(!Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_FILTER_CATEGORY, ""))){
+        session = getSystemProvider().getSession(workspace,manageableRepository);
+      } else {
+        session = getSessionProvider().getSession(workspace,manageableRepository);
+      }
     } else {
       if(SessionProviderFactory.isAnonim()) {
         session = getAnonimProvider().getSession(workspace,manageableRepository);

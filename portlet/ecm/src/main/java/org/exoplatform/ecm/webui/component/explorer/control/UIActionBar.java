@@ -883,7 +883,7 @@ public class UIActionBar extends UIForm {
       uiNodePathSelector.setIsDisable(workspaceName, true);
       uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
           nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
-      uiNodePathSelector.init(uiExplorer.getSystemProvider());
+      uiNodePathSelector.init(uiExplorer.getSessionProvider());
       UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
       uiNodePathSelector.setSourceComponent(uiCateAddedList, null);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
