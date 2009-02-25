@@ -94,7 +94,7 @@
 	                  	<div class="LeftIcon CBHome16x16Icon" title="<%= _ctx.appRes( componentName  +".title.home") %>"><span></span></div>
 	                    <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()))%>" ><%= _ctx.appRes(componentName + ".label.home") %></a>
 	                    <div class="RightIcon CBDropDownArrow16x16Icon" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)"><span></span></div>
-	                    <div class="ClearBoth"><span></span></span></div>
+	                    <div class="ClearBoth"><span></span></div>
 	                  </div>
 	                </div>
 	              </div>

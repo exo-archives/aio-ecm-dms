@@ -15,7 +15,7 @@
           String tagkey = "" ; 
           if(tag.hasProperty("exo:tagStatus")) {
             tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
-            style = "Style = '" + tagStyle.get(tagStatus) +"'" ;
+            style = "style=\""+ tagStyle.get(tagStatus)+"\"" ;
           }
           tagkey = tag.getName() ;                  
           println "<a href=\"$tagLink\" $style>$tagkey</a>" ;

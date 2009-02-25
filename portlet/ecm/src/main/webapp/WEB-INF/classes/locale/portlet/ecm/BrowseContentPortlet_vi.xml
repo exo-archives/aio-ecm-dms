@@ -18,6 +18,13 @@
   #      org.exoplatform.ecm.webui.component.browse.UIPathConfig #
   ###################################################################
   -->
+  <!--
+    ###################################################################
+		#	    FROM VERSION DMS 2.3-SNAPSHOT, we add filterCategory        #
+		#	    to display checkbox for filtering category tree             #
+		#	    base on permission of user                                  #
+    ###################################################################
+   -->
   <UIPathConfig>
     <label>
       <categoryPath>Đường dẫn các danh mục</categoryPath>
@@ -29,6 +36,7 @@
       <detailBoxTemp>Chi tiết hộp mẫu</detailBoxTemp>
       <enableToolBar>Xem thanh công cụ</enableToolBar>
       <enableRefDoc>Tài liệu tham khảo</enableRefDoc>
+      <filterCategory>Lọc các danh mục dựa trên thuộc tính phân quyền</filterCategory>
       <enableChildDoc>Tài liệu con</enableChildDoc>
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Có thể nhận xét</enableComment>

@@ -18,6 +18,13 @@
   #      org.exoplatform.ecm.webui.component.browse.UIPathConfig #
   ###################################################################
   -->
+  <!--
+    ###################################################################
+		#	    FROM VERSION DMS 2.3-SNAPSHOT, we add filterCategory        #
+		#	    to display checkbox for filtering category tree             #
+		#	    base on permission of user                                  #
+    ###################################################################
+   -->
   <UIPathConfig>
     <label>
       <categoryPath>Kategorie Pfad</categoryPath>
@@ -29,6 +36,7 @@
       <detailBoxTemp>Detail Box Vorlage</detailBoxTemp>
       <enableToolBar>Werkzeugsleiste sehen</enableToolBar>
       <enableRefDoc>Referenz Dokument</enableRefDoc>
+      <filterCategory>Filters out categories based on current user permissions</filterCategory>
       <enableChildDoc>Kinder Dokument</enableChildDoc>
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Kommentierbar</enableComment>
