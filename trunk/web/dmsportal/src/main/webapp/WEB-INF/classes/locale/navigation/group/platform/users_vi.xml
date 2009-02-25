@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <platform>
+    <users>
+      <iframe>IFrame</iframe>
+      <content-management>Quản lý nội dung</content-management>
+      <file-explorer>Quản lý tài liệu</file-explorer>
+      <content-browser>Quản lý nội dung</content-browser>
+      <content-creator>Tạo nhanh nội dung</content-creator>
+      <workflow-controller>Trung tâm quá trình nghiệp vụ</workflow-controller>
+      <sitemap>Bản đồ site</sitemap>
+    </users>
+  </platform>
+</bundle>
+
