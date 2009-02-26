@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<node-navigation>
+  <owner-type>group</owner-type>  
+	<owner-id>platform/guests</owner-id>
+	<priority>9</priority>
+  <description>description for node navigation </description>
+  
+  <page-nodes>  		  	  
+	  <node>
+      <uri>register</uri>
+      <name>register</name>
+      <label>#{platform-guests.register}</label>
+      <page-reference>group::platform/guests::register</page-reference>
+    </node>
+    <node>
+      <uri>news</uri>
+      <name>news</name>
+      <label>#{platform-guests.news}</label>
+      <page-reference>group::platform/guests::news</page-reference>
+    </node>
+    <node>
+      <uri>ideas</uri>
+      <name>ideas</name>
+      <label>#{platform-guests.ideas.title}</label>
+      <page-reference>group::platform/guests::ideas</page-reference>
+      
+      <node>
+	      <uri>ideas/read</uri>
+	      <name>read</name>
+	      <label>#{platform-guests.ideas.read}</label>
+	      <page-reference>group::platform/guests::read-ideas</page-reference>
+    	</node>
+    	
+	    <node>
+	      <uri>ideas/write</uri>
+	      <name>write</name>
+	      <label>#{platform-guests.ideas.write}</label>
+	      <page-reference>group::platform/guests::write-ideas</page-reference>
+	    </node>    
+    </node>
+    
+    <node>
+	    <uri>sitemap</uri>
+	    <name>sitemap</name>
+	    <label>#{platform-guests.sitemap}</label>
+	    <page-reference>group::platform/guests::sitemap</page-reference>	    
+	  </node>
+	  	  
+   </page-nodes>
+  
+</node-navigation>

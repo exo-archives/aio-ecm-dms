@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<node-navigation>
+	<owner-type>group</owner-type>
+  <owner-id>platform/administrators</owner-id>
+  <priority>2</priority>
+  
+  <page-nodes>   
+    <node>
+      <uri>administration</uri>
+      <name>administration</name>
+      <label>#{administration.title}</label>
+      
+      <node>
+		    <uri>administration/applicationregistry</uri>
+		    <name>applicationregistry</name>
+		    <label>#{administration.application-registry}</label>
+		    <page-reference>group::platform/administrators::applicationRegistry</page-reference>
+	    </node>
+	    
+	    <node>
+		    <uri>administration/newAccount</uri>
+		    <name>newAccount</name>
+		    <label>#{administration.newAccount}</label>
+		    <page-reference>group::platform/administrators::newAccount</page-reference>
+	    </node>
+	    
+	    <node>
+		    <uri>administration/comunityManagement</uri>
+		    <name>comunityManagement</name>
+		    <label>#{administration.comunity-management}</label>
+		    <page-reference>group::platform/administrators::communityManagement</page-reference>
+	    </node>
+	    
+	    <node>
+		    <uri>administration/i18n</uri>
+		    <name>i18n</name>
+		    <label>#{administration.i18n}</label>
+		    <page-reference>group::platform/administrators::i18n</page-reference>
+	    </node>	    	    	    	   	    	   	   
+    </node>
+    <node>
+      <uri>contentAdministration</uri>
+      <name>contentAdministration</name>
+      <label>#{administration.contentAdministration}</label>     
+      
+      <node>
+		    <uri>contentAdministration/ECMAdmin</uri>
+		    <name>ECMAdmin</name>
+		    <label>#{contentAdministration.ECMAdmin}</label>
+		    <page-reference>group::platform/administrators::ECMAdmin</page-reference>
+	    </node>
+	    
+	    <!--node>
+		    <uri>contentAdministration/WorkflowAdministration</uri>
+		    <name>WorkflowAdministration</name>
+		    <label>#{contentAdministration.WorkflowAdministration}</label>
+		    <page-reference>group::platform/administrators::workflowAdministration</page-reference>
+	    </node-->	    	    	    	  	    	   	   
+    </node>                                                    
+  </page-nodes>
+</node-navigation>

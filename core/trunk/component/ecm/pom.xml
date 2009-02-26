@@ -1,0 +1,128 @@
+<project>
+  <parent>
+    <groupId>org.exoplatform.ecm</groupId>
+    <artifactId>config</artifactId>
+    <version>trunk</version>
+  </parent> 
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>exo.ecm.component.ecm</artifactId>
+  <version>${org.exoplatform.ecm.version}</version>
+  <packaging>jar</packaging>
+  <name>ECM Federation Service</name>
+  <url>http://www.exoplatform.org</url>
+  <description>eXo ECM Federation Service</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.exoplatform.kernel</groupId>
+      <artifactId>exo.kernel.container</artifactId>
+      <version>${org.exoplatform.kernel.version}</version>
+      <scope>provided</scope>
+    </dependency>                      
+
+    <dependency>
+      <groupId>org.exoplatform.core</groupId>
+      <artifactId>exo.core.component.security.core</artifactId>
+      <version>${org.exoplatform.core.version}</version>
+      <scope>compile</scope>
+    </dependency>    
+    
+    <dependency>
+      <groupId>org.exoplatform.core</groupId>
+      <artifactId>exo.core.component.resources.api</artifactId>
+      <version>${org.exoplatform.core.version}</version>
+      <scope>compile</scope>
+    </dependency>    
+
+    <dependency>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.core</artifactId>
+      <version>${org.exoplatform.jcr.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.ext</artifactId>
+      <version>${org.exoplatform.jcr.version}</version>
+      <scope>provided</scope>
+    </dependency>
+                        
+    <dependency>
+      <groupId>rome</groupId>
+      <artifactId>rome</artifactId>
+      <version>0.8</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>com.totsp.feedpod</groupId>
+      <artifactId>itunes-com-podcast</artifactId>
+      <version>0.2</version>
+      <scope>provided</scope>
+    </dependency>
+    
+  </dependencies>
+  
+  <build>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <outputDirectory>target/classes</outputDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <testOutputDirectory>target/test-classes</testOutputDirectory>
+
+    <resources>
+      <resource>
+        <directory>src/main/java</directory>
+        <includes>
+          <include>**/*.xml</include>          
+        </includes>
+      </resource>
+    </resources>
+
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+        <includes>
+          <include>**/*.properties</include>
+          <include>**/*.xml</include>
+          <include>**/*.drl</include>
+          <include>**/*.vm</include>
+          <include>**/*.doc</include>
+          <include>**/*.xls</include>
+          <include>**/*.ppt</include>
+          <include>**/*.txt</include>
+          <include>**/*.jar</include>
+          <include>**/*.pom</include>
+          <include>**/*.sha1</include>
+          <include>**/*.conf</include>
+          <include>**/*.gtmpl</include>
+        </includes>
+      </testResource>
+      <testResource>
+        <directory>src/test/java</directory>
+        <includes>
+          <include>**/*.xml</include>
+        </includes>
+      </testResource>
+    </testResources>
+
+    <plugins>      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <testFailureIgnore>${exo.test.failure.ignore}</testFailureIgnore>
+          <forkMode>${exo.test.forkmode}</forkMode>
+          <includes>
+            <include>org/exoplatform/services/ecm/core/TestNodeService.java</include>    						
+          </includes>
+          <excludes>
+            <exclude>**/*$*</exclude><!--nested classes prb, http://jira.codehaus.org/browse/SUREFIRE-288-->
+            <exclude>**/BaseECMTestCase.java</exclude>            
+          </excludes>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

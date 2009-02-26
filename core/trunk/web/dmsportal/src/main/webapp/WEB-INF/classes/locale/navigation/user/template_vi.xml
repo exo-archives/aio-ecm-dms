@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <home>Trang chủ</home>
+  <register>Đăng kí</register>
+  <sitemap>Bản đồ site</sitemap>
+  <news>Tin tức</news>
+  <ideas>
+    <title>Ý kiến</title>
+    <read>Đọc ý kiến</read>
+    <write>Viết ý kiến</write>
+  </ideas>
+  <welcome>Chào mừng</welcome>
+  <content-management>
+    <file-explorer>Quản lý tài liệu</file-explorer>
+    <content-creator>Tạo nhanh nội dung</content-creator>
+    <content-browser>Quản lý nội dung</content-browser>
+  </content-management>
+</bundle>
+

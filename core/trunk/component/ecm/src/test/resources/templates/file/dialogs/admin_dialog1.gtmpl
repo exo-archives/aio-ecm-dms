@@ -1,0 +1,7 @@
+<%
+	String[] hiddenField1 = ["jcrPath=/node/jcr:content"] ;
+%>
+
+<%
+	String[] hiddenField1 = ["jcrPath=/node/jcr:content"];
+%> 
