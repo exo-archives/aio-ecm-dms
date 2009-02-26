@@ -1,0 +1,124 @@
+<project>
+  <parent>
+    <groupId>org.exoplatform.ecm.contentvalidation</groupId>
+    <artifactId>config</artifactId>
+    <version>1.0rc1</version>
+  </parent> 
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>exo.ecm.contentvalidation.component.workflowPublication</artifactId>
+  <version>1.0rc1</version>
+  <packaging>jar</packaging>
+  <name>eXo workflow publication</name>
+  <url>http://www.exoplatform.org</url>
+  <description>eXo workflow Publication</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.exoplatform.kernel</groupId>
+      <artifactId>exo.kernel.container</artifactId>
+      <version>${org.exoplatform.kernel.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.core</groupId>
+      <artifactId>exo.core.component.security.core</artifactId>
+      <version>${org.exoplatform.core.version}</version>
+      <scope>compile</scope>
+    </dependency>    
+    
+    <dependency>
+      <groupId>org.exoplatform.core</groupId>
+      <artifactId>exo.core.component.resources.api</artifactId>
+      <version>${org.exoplatform.core.version}</version>
+      <scope>compile</scope>
+    </dependency>    
+
+    <dependency>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.core</artifactId>
+      <version>${org.exoplatform.jcr.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.jcr</groupId>
+      <artifactId>exo.jcr.component.ext</artifactId>
+      <version>${org.exoplatform.jcr.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.component.resources</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.core</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.portal</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.exoplatform.ecm.dms</groupId>
+      <artifactId>exo.ecm.dms.component.publication</artifactId>
+      <version>${org.exoplatform.ecm.dms.version}</version>
+      <scope>compile</scope>
+    </dependency> 
+    
+    <dependency>
+      <groupId>org.exoplatform.ecm.workflow</groupId>
+      <artifactId>exo.ecm.workflow.component.workflow.api</artifactId>
+      <version>${org.exoplatform.ecm.workflow.version}</version>
+      <scope>compile</scope>
+    </dependency>    
+    
+    <dependency>
+      <groupId>org.exoplatform.ecm.dms</groupId>
+      <artifactId>exo.ecm.dms.webui.dms</artifactId>
+      <version>${org.exoplatform.ecm.dms.version}</version>
+      <scope>compile</scope>
+    </dependency> 
+    
+    <dependency>
+      <groupId>org.exoplatform.ecm.dms</groupId>
+      <artifactId>exo.ecm.dms.component.cms</artifactId>
+      <version>${org.exoplatform.ecm.dms.version}</version>
+      <scope>compile</scope>
+    </dependency> 
+    
+    <dependency>
+      <groupId>org.exoplatform.ecm.contentvalidation</groupId>
+      <artifactId>exo.ecm.contentvalidation.component.plugin</artifactId>
+      <version>${org.exoplatform.ecm.contentvalidation.version}</version>
+      <scope>compile</scope>
+    </dependency> 
+    
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all-minimal</artifactId>
+      <version>1.5.4</version>
+      <scope>compile</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>rome</groupId>
+      <artifactId>rome</artifactId>
+      <version>0.8</version>
+      <scope>compile</scope>
+    </dependency>
+
+  </dependencies>
+  
+</project>
