@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <!--
+  #######################################################
+  #   WARNING THIS FILE MUST BE ENCODED IN UTF-8 FORMAT #
+  #######################################################
+  -->
+  <platform>
+    <users>
+      <iframe>IFrame</iframe>
+      <content-management>Gestion de Contenu</content-management>
+      <file-explorer>Explorateur de Fichiers</file-explorer>
+      <content-browser>Explorateur de Contenu</content-browser>
+      <content-creator>Création Rapide de Contenu</content-creator>
+      <workflow-controller>Processus Métiers</workflow-controller>
+      <sitemap>Plan du Site</sitemap>
+    </users>
+  </platform>
+</bundle>
+

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<page-set>
+  <page>
+  	<page-id>group::organization/management/executive-board::Management</page-id>
+  	<owner-type>group</owner-type>
+    <owner-id>organization/management/executive-board</owner-id>
+    <name>management</name>
+    <factory-id>Desktop</factory-id>
+    <access-permissions>*:/organization/management/executive-board</access-permissions>   
+    <edit-permission>manager:/organization/management/executive-board</edit-permission>
+    <show-max-window>true</show-max-window>
+           
+    <application>
+    	<instance-id>group#organization/management/executive-board:/exoadmin/AccountPortlet/Account</instance-id>        
+      <title>New Staff</title>
+	  	<show-info-bar>true</show-info-bar>
+	  	<show-application-state>true</show-application-state>
+		</application>	
+		
+		<application>
+      <instance-id>group#organization/management/executive-board:/exoadmin/OrganizationPortlet/Organization</instance-id>
+      <title>Organization Management</title>
+      <show-info-bar>false</show-info-bar>
+    </application>
+    
+    <application>
+      <instance-id>group#platform/administrators:/ecm/ECMAdminPortlet/ECMAdministration</instance-id>
+      <title>ECMAdmin</title>
+      <show-info-bar>true</show-info-bar>
+      <show-application-mode>true</show-application-mode>
+    </application>
+                   		       
+  </page>  
+  
+  <page>
+  	<page-id>group::organization/management/executive-board::NewStaff</page-id>
+ 		<owner-type>group</owner-type>
+    <owner-id>organization/management/executive-board</owner-id>
+    <name>NewStaff</name>
+    <access-permissions>*:/organization/management/executive-board</access-permissions>
+    <edit-permission>manager:/organization/management/executive-board</edit-permission>
+    
+    <application>
+    	<instance-id>group#organization/management/executive-board:/exoadmin/AccountPortlet/Account</instance-id>        
+      <title>New Staff</title>
+	  	<show-info-bar>false</show-info-bar>
+	  	<show-application-state>true</show-application-state>
+		</application>	
+  </page>
+  
+  <page>
+  	<page-id>group::organization/management/executive-board::Oganization</page-id>
+ 		<owner-type>group</owner-type>
+    <owner-id>organization/management/executive-board</owner-id>
+    <name>organization</name>
+    <access-permissions>*:/organization/management/executive-board</access-permissions>
+    <edit-permission>manager:/organization/management/executive-board</edit-permission>
+    
+    <application>
+      <instance-id>group#organization/managerment/executive-board:/exoadmin/OrganizationPortlet/Organization</instance-id>
+      <title>Organization Management</title>
+      <show-info-bar>false</show-info-bar>
+    </application>  
+  </page>
+  
+  <page>
+  	<page-id>group::organization/management/executive-board::ECMAdmin</page-id>
+ 		<owner-type>group</owner-type>
+    <owner-id>organization/management/executive-board</owner-id>
+    <name>ECMAdmin</name>
+    <access-permissions>*:/organization/management/executive-board</access-permissions>
+    <edit-permission>manager:/organization/management/executive-board</edit-permission>
+    
+    <application>
+      <instance-id>group#platform/administrators:/ecm/ECMAdminPortlet/ECMAdministration</instance-id>
+      <title>ECMAdmin</title>
+      <show-info-bar>true</show-info-bar>
+      <show-application-mode>true</show-application-mode>
+    </application>  
+  </page>
+</page-set>

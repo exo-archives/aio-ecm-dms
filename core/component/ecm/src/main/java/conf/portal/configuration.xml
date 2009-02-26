@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<configuration>  
+	
+	<component>
+		<key>org.exoplatform.services.ecm.core.NodeService</key>
+		<type>org.exoplatform.services.ecm.core.impl.NodeServiceImpl</type>
+		<init-params>
+			<value-param>
+				<name>repository</name>
+				<value>repository</value>				
+			</value-param>
+			<value-param>
+				<name>workspace</name>
+				<value>system</value>
+			</value-param>
+		</init-params>
+	</component>		
+	
+	<component>    
+    <type>org.exoplatform.services.ecm.access.PermissionManagerService</type>
+  </component>
+  					
+  <component>    
+    <type>org.exoplatform.services.ecm.vote.VoteService</type>
+  </component>
+
+	<component> 
+    <type>org.exoplatform.services.ecm.comment.CommentService</type>
+  </component>
+
+	<component>
+    <key>org.exoplatform.services.ecm.i18n.MultiLanguageService</key>
+    <type>org.exoplatform.services.ecm.i18n.impl.MultiLanguageServiceImpl</type>
+  </component>
+  
+	<component>
+		<key>org.exoplatform.services.ecm.drive.DriveManagerService</key>
+		<type>org.exoplatform.services.ecm.drive.impl.DriveManagerServiceImpl</type>
+	</component>
+	
+	<component>
+		<key>org.exoplatform.services.ecm.template.NodeTemplateService</key>
+		<type>org.exoplatform.services.ecm.template.impl.NodeTemplateServiceImpl</type>
+	</component>
+	
+	<component>
+		<key>org.exoplatform.services.ecm.taxonomy.TaxonomyManagerService</key>
+		<type>org.exoplatform.services.ecm.taxonomy.impl.TaxonomyManagerServiceImpl</type>			
+	</component>
+	
+	<component>
+		<key>org.exoplatform.services.ecm.metadata.MetadataManagerService</key>
+		<type>org.exoplatform.services.ecm.metadata.impl.MetadataManagerServiceImpl</type>
+	</component>
+
+	<component>
+		<key>org.exoplatform.services.ecm.watch.WatchDocumentService</key>
+		<type>org.exoplatform.services.ecm.watch.impl.WatchDocumentServiceImpl</type>		
+		<init-params>
+      <object-param>
+        <name>messageConfig</name>
+        <description>description</description>
+        <object type="org.exoplatform.services.ecm.watch.impl.MessageConfig">
+          <field  name="sender"><string>support@exoplatform.com</string></field>
+          <field  name="subject"><string>Your watching document is changed</string></field>
+          <field  name="mimeType"><string>text/plain</string></field>
+          <field  name="content">
+          	<string>The document that you are watching is changed. 
+                    Please go to ecm to see this change
+            </string>
+          </field>          
+        </object>
+      </object-param>
+    </init-params>     
+	</component>
+</configuration>
