@@ -6,248 +6,259 @@ http://wiki.exoplatform.org/xwiki/bin/view/ECM/
 
 TABLE OF CONTENTS
 -----------------
-1. Check compatibility between ECM 2.1 and ECM 2.2
-2. Migration
-	2.1 Migration for illegal char in path entry
-	
+1 Check compatibility between ECM 2.2 and ECM 2.3
 
-1. CHECK COMPATIBILITY BETWEEN ECM 2.1 AND ECM 2.2!
----------------------------------------------------
 
-- Changing configuration in exo.ecm.web.portal/src/main/java/conf/configuration.xml
-	Publication function: In ECM 2.1, the information in exo.ecm.component.publication/configuration.xml we can see:
+Since ECM 2.3, we split ECM to 3 products as [DMS], [Workflow>Workflows] and [WCM>http://wiki.exoplatform.org/xwiki/bin/view/WCM].
+So, how can we upgrade from 2.2 to 2.3 ? You can follow these steps to get successful upgrade.
+For now, we have the ECM suite which contains 3 products as 
 
-	<component>
-		<key>org.exoplatform.services.ecm.publication.PublicationService</key>
-		<type>org.exoplatform.services.ecm.publication.impl.PublicationServiceImpl</type>
-		<component-plugins>
-			<component-plugin>
-				<name>StaticAndDirect</name>
-				<set-method>addPublicationPlugin</set-method>
-				<type>org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin</type>
-				<init-params>
-					<values-param>
-						<name>StaticAndDirect</name>
-						<description>This publication lifecycle keeps the content at their original place. Any version of the Node can be published.</description>
-					</values-param>
-				</init-params>
-			</component-plugin>
-		</component-plugins>
+ECM(Enterprise Content Management)
+ |
+ |__DMS(Document Management System)
+ |
+ |__Workflow
+ |
+ |__WCM(Web Content Management)
+
+1.1 Migration for drives path
+
+Since ECM 2.3, the DriveMigrationService was available at the location *ecm/dms/trunk/component/migration/2.3/drives*. This service is used to rename the old drive which contains invalid characters and prevent the WARNING messages at the console.\\
+
+			How to do it?\\
+* Compile the source code to create new jar *(exo.ecm.dms.component.migration.2.3.drives-2.3.jar)* by command: 
+
+mvn clean install
+
+   * Stop server and copy this jar to library.<br>
+   * Run server DriveMigrationService to apply changes.<br>
+   * After server has started, stop server again and remove this jar, restart server.
+
+1.1 How to use for Workflow Publication Plugin ?
+
+Since ECM 2.3, the Workflow Publication Plugin was availabled at the location *ecm/contentvalidation/trunk/component/workflowPublication/*. This plugin is used to publish a content of documents. It breaks a work process down into tasks. See more details about [Workflow Publication Plugin].
+
+How to do it?
+* Compile the source code to create new jar *(exo.ecm.contentvalidation.component.workflowPublication-1.0-SNAPSHOT.jar)* by command: 
+
+mvn clean install
+
+   * Stop server and copy this jar to server library (for example: \tomcat\lib)<br>
+   * Run server to apply the changes.<br>
+
+Here are the structure of this jar
+
+exo.ecm.contentvalidation.component.workflowPublication-1.0-SNAPSHOT.jar
+ |
+ |__conf
+ |  |
+ |  |__nodetypes-workflow-publication-config.xml
+ |  | 
+ |  |__workflow-templates-configuration.xml
+ |  |
+ |  |__conf.portal
+ |     |
+ |     |__configuration.xml
+ |
+ |__...
+ |
+ |__...
+
+   
+* *configuration.xml*: This file is used to plug a new plugin (Workflow Publication Plugin). It will specify to two files: ~~nodetypes-workflow-publication-config.xml~~, ~~workflow-templates-configuration.xml~~ to configure for this plugin
+
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<configuration>		       
+  
+  <component>
+    <key>org.exoplatform.services.ecm.publication.PublicationService</key>
+    <type>org.exoplatform.services.ecm.publication.impl.PublicationServiceImpl</type>    
   </component>
 
-     And
+  <component>
+    <key>org.exoplatform.services.ecm.publication.PublicationPresentationService</key>
+    <type>org.exoplatform.services.ecm.publication.impl.PublicationPresentationServiceImpl</type>
+  </component> 
+  	
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.jcr.RepositoryService</target-component>
+    <component-plugin>
+      <name>add.nodeType</name>
+      <set-method>addPlugin</set-method>
+      <type>org.exoplatform.services.jcr.impl.AddNodeTypePlugin</type>
+      <priority>122</priority>
+      <init-params>
+        <values-param>
+          <name>autoCreatedInNewRepository</name>
+          <description>Node types configuration file</description>
+          <value>jar:/conf/nodetypes-workflow-publication-config.xml</value>
+        </values-param>
+       </init-params>
+     </component-plugin>
+  </external-component-plugins>
+  
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.ecm.publication.PublicationService</target-component>      
+    <component-plugin>
+      <name>Workflow</name>
+      <set-method>addPublicationPlugin</set-method>
+      <type>org.exoplatform.services.ecm.publication.plugins.workflow.WorkflowPublicationPlugin</type>
+      <description>Workflow Publication</description>	    	    	   
+      <init-params>
+        <value-param>
+	  <name>validator</name>
+	  <value>*:/platform/administrators</value>
+        </value-param>
+        <value-param>
+	  <name>to_workspace</name>
+          <value>collaboration</value>
+        </value-param>
+        <value-param>
+          <name>destPath</name>
+          <value>/Documents/Live</value>
+        </value-param>
+        <value-param>
+	  <name>destPath_currentFolder</name>
+	  <value>true</value>
+        </value-param>
+        <value-param>
+	  <name>isEditable</name>
+	  <value>false</value>
+        </value-param>
+        <value-param>
+	  <name>backupWorkspace</name>
+	  <value>backup</value>
+	</value-param>
+      </init-params>
+    </component-plugin>
+  </external-component-plugins>	
+  <import>jar:/conf/workflow-templates-configuration.xml</import>
+</configuration>
 
-	<external-component-plugins>
-		<target-component>org.exoplatform.services.ecm.publication.PublicationService</target-component>      
-	    <component-plugin>
-			<name>addPublication</name>
-			<set-method>addPublicationPlugin</set-method>
-			<type>org.exoplatform.services.ecm.publication.plugins.staticdirect.StaticAndDirectPublicationPlugin</type>
-			<init-params>
-				<values-param>
-					<name>StaticAndDirect</name>
-					<description>StaticAndDirect Publication Plugin</description>
-				</values-param>
-			</init-params>
-	    </component-plugin>
-	</external-component-plugins>
 
-	These above information is not exist any longer in this file in ECM 2.2. 
-	They are moved and changed in a new file exo.ecm.web.portal/src/main/java/conf/portal/publication-configuration.xml. 
-	So we must refer to this file by add code in exo.ecm.web.portal/src/main/java/conf/configuration.xml like:
-	   <import>war:/conf/ecm/publication-configuration.xml</import>
+* *nodetypes-workflow-publication-config.xml*: This file is used to configure a new nodetype
 
-	Coverflow and Thumbnail view mode:
-	In ECM 2.2, We add new service ThumbnailRESTService in exo.ecm.component.cms for 
-	Coverflow and Thumbnail view mode. To use this service, we declare for this class 
-	by using new file: ecm-thumbnail-configuration.xml:
+<nodeTypes xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0"
+  xmlns:jcr="http://www.jcp.org/jcr/1.0">
+  
+  <nodeType name="publication:workflowPublication" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+    <supertypes>
+      <supertype>publication:publication</supertype>
+    </supertypes>
+    <propertyDefinitions>
+      <propertyDefinition name="publication:validator" requiredType="String" autoCreated="true" mandatory="true"
+        onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>
+        <defaultValues>
+          <defaultValue>*</defaultValue>
+        </defaultValues>
+      </propertyDefinition>
+      <propertyDefinition name="publication:businessProcess" requiredType="String" autoCreated="true" mandatory="true"
+        onParentVersion="COPY" protected="true" multiple="false">
+        <valueConstraints/>
+        <defaultValues>
+          <defaultValue>content-publishing</defaultValue>
+        </defaultValues>
+      </propertyDefinition>
+      <propertyDefinition name="publication:backupPath" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY" protected="false" multiple="false">
+        <valueConstraints/>
+      </propertyDefinition>
+    </propertyDefinitions>
+  </nodeType>
+  
+  <nodeType name="publication:workflowAction" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
+    <supertypes>
+      <supertype>exo:businessProcessAction</supertype>
+    </supertypes>
+    <propertyDefinitions>
+      <propertyDefinition name="exo:validator" requiredType="String" autoCreated="false" mandatory="true"
+        onParentVersion="COPY" protected="false" multiple="false"/>
+      <propertyDefinition name="exo:businessProcess" requiredType="String" autoCreated="true" mandatory="true"
+        onParentVersion="COPY" protected="true" multiple="false">
+        <valueConstraints/>
+        <defaultValues>
+          <defaultValue>content-publishing</defaultValue>
+        </defaultValues>
+      </propertyDefinition>
+    </propertyDefinitions>
+  </nodeType>
+  
+</nodeTypes>
 
-	<configuration>  
-  		<component>
-	 	 <key>org.exoplatform.services.cms.thumbnail.ThumbnailService</key>  
-	 	 <type>org.exoplatform.services.cms.thumbnail.impl.ThumbnailServiceImpl</type>      
-	 	 <init-params>
-			<value-param>
-				<name>smallSize</name>
-				<value>32x32</value>
-     		</value-param>
-			<value-param>
-				<name>mediumSize</name>
-				<value>64x64</value>
-            </value-param> 
-			<value-param>
-				<name>bigSize</name>
-	     		<value>300x300</value>
-     		</value-param>
-			<value-param>
-				<name>enable</name>
-				<value>true</value>
-    		</value-param>
-			<value-param>
-				<name>mimetypes</name>
-				<value>image/jpeg;image/png;image/gif;image/bmp</value>
-			</value-param>      
-   		 </init-params>
-		</component>
-		<component>    
-    		 <type>org.exoplatform.services.cms.thumbnail.impl.ThumbnailRESTService</type>    
- 		</component>	
-    </configuration>
 
-    Then add the configuration information to exo.ecm.web.portal/src/main/java/conf/configuration.xml like:
-	<import>war:/conf/ecm/ecm-thumbnail-configuration.xml</import>
+* *workflow-templates-configuration.xml*: This file is used to decide the template of publication : workflowAction. It will specify the dialog as well as view for that template.
 
-- Changing version in the configuration information for WorkflowServiceContainer class:
-	In ECM 2.1, we can see in bonita-configuration.xml and jbpm-configuration.xml:
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
 
-	<object type="org.exoplatform.services.workflow.ProcessesConfig">
-		<fieldname="processLocation"><string>war:/conf/bp</string></field>
-		<field name="predefinedProcess">
-			<collection type="java.util.HashSet">
-			<value><string>/exo.ecm.bp.bonita.payraise-2.1.jar</string></value>
-			<value><string>/exo.ecm.bp.bonita.holiday-2.1.jar</string></value>
-	        <value><string>/exo.ecm.bp.bonita.content.validation-2.1.jar</string></value>
-			<value><string>/exo.ecm.bp.bonita.content.backup-2.1.jar</string></value>
-	    </collection>
-   </field>
-   </object>
+  <component>
+    <key>org.exoplatform.services.cms.templates.TemplateService</key>
+    <type>org.exoplatform.services.cms.templates.impl.TemplateServiceImpl</type>    
+  </component>
+    
+  <external-component-plugins>
+    <target-component>org.exoplatform.services.cms.templates.TemplateService</target-component>
+    <component-plugin>
+      <name>addTemplates</name>
+      <set-method>addTemplates</set-method>
+      <type>org.exoplatform.services.cms.templates.impl.TemplatePlugin</type>    
+      <init-params>
+        <value-param>
+          <name>autoCreateInNewRepository</name>
+	  <value>true</value>
+        </value-param>
+        <value-param>
+          <name>storedLocation</name>
+	  <value>jar:/resources/templates/workflowAction</value>
+	</value-param>
+	<value-param>
+	  <name>repository</name>
+	  <value>repository</value>
+	</value-param>	        
+	<object-param>
+	  <name>template.configuration</name>
+	  <description>configuration for the localtion of templates to inject in jcr</description>
+	  <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig">            	
+	    <field name="nodeTypes">
+	      <collection type="java.util.ArrayList">               
+	        <value>
+	          <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$NodeType">
+	            <field name="nodetypeName"><string>publication:workflowAction</string></field>
+	            <field name="documentTemplate"><boolean>false</boolean></field>
+                    <field name="label"><string>Workflow Publication Action</string></field>
+	            <field name="referencedView">
+	              <collection type="java.util.ArrayList">
+	                <value>
+	                  <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">             
+	                    <field name="templateFile"><string>/workflowActionView.gtmpl</string></field>
+	                    <field name="roles"><string>*</string></field>                
+	                  </object>                           
+	                </value>  
+	              </collection>
+	            </field>                  
+	            <field name="referencedDialog">
+	              <collection type="java.util.ArrayList">
+	                <value>
+	                  <object type="org.exoplatform.services.cms.templates.impl.TemplateConfig$Template">             
+	                    <field name="templateFile"><string>/workflowActionDialog.gtmpl</string></field>
+	                    <field name="roles"><string>*</string></field>                
+	                  </object>                           
+	                </value>                      
+	              </collection>
+	            </field>                                    
+	          </object>
+	        </value> 
+	      </collection>
+	    </field>
+	  </object>
+	</object-param>
+      </init-params>       
+    </component-plugin>
+  </external-component-plugins>
+  
+</configuration>
 
-	And:
-
-	<object type="org.exoplatform.services.workflow.ProcessesConfig">
-	   <field name="processLocation"><string>war:/conf/bp</string></field>
-	   <field name="predefinedProcess">
-		<collection type="java.util.HashSet">
-			<value><string>/exo.ecm.bp.jbpm.payraise-2.1.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.holiday-2.1.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.content.validation-2.1.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.content.backup-2.1.jar</string></value>
-		</collection>
-	   </field>
-	</object>
-
-	So, in ECM 2.2, we must changes in these file by replaces: 2.1.jar to 2.2-SNAPSHOT:
-
-	<object type="org.exoplatform.services.workflow.ProcessesConfig">
-	   <fieldname="processLocation"><string>war:/conf/bp</string></field>
-	   <field name="predefinedProcess">
-			<collection type="java.util.HashSet">
-				<value><string>/exo.ecm.bp.bonita.payraise-2.2-SNAPSHOT.jar</string></value>
-				<value><string>/exo.ecm.bp.bonita.holiday-2.2-SNAPSHOT.jar</string></value>
-		        <value><string>/exo.ecm.bp.bonita.content.validation-2.2-SNAPSHOT.jar</string></value>
-				<value><string>/exo.ecm.bp.bonita.content.backup-2.2-SNAPSHOT.jar</string></value>
-			</collection>
-		</field>
-	</object>
-
-	And:
-
-	<object type="org.exoplatform.services.workflow.ProcessesConfig">
-	   <field name="processLocation"><string>war:/conf/bp</string></field>
-	   <field name="predefinedProcess">
-		    <collection type="java.util.HashSet">
-				<value><string>/exo.ecm.bp.jbpm.payraise-2.2-SNAPSHOT.jar</string></value>
-				<value><string>/exo.ecm.bp.jbpm.holiday-2.2-SNAPSHOT.jar</string></value>
-				<value><string>/exo.ecm.bp.jbpm.content.validation-2.2-SNAPSHOT.jar</string></value>
-				<value><string>/exo.ecm.bp.jbpm.content.backup-2.2-SNAPSHOT.jar</string></value>
-			</collection>
-	   </field>
-	</object>
-
-- Support add references when upload file
-
-	Since ECM 2.2, in the portlet File Explorer, you can add references to the file which will be uploaded. By default this function is not mandatory. You can change the value equal true in the parameter *categoryMandatoryWhenFileUpload* to make sure every files will be added the categories when uploaded.
-	You can see and change the configuration if you want in the file exo.ecm.portlet.ecm/src/main/webapp/WEB-INF/portlet.xml
-	<preference>
-	  <name>categoryMandatoryWhenFileUpload</name>     
-	  <value>false</value>        
-	  <read-only>false</read-only>
-	</preference>
-
-- Add filter for resouces in web\ecmportal\src\main\webapp\WEB-INF\web.xml
-
-	<filter-mapping>
-		<filter-name>ResourceRequestFilter</filter-name>
-		<url-pattern>*.css</url-pattern> 
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>ResourceRequestFilter</filter-name>
-		<url-pattern>*.gif</url-pattern> 
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>ResourceRequestFilter</filter-name>
-		<url-pattern>*.png</url-pattern> 
-	</filter-mapping>
-
-	<filter-mapping>
-		<filter-name>ResourceRequestFilter</filter-name>
-		<url-pattern>*.jpg</url-pattern> 
-	</filter-mapping>
-
-- Add more workspace named gadgets in web\ecmportal\src\main\webapp\WEB-INF\conf\jcr\repository-configuration.xml:
-	<workspace name="gadgets">
-	  <!-- for system storage -->
-	  <container class="org.exoplatform.services.jcr.impl.storage.jdbc.JDBCWorkspaceDataContainer">
-		<properties>
-		  <property name="source-name" value="jdbcexo"/>
-		  <property name="dialect" value="hsqldb"/>
-		  <!-- property name="db-type" value="mysql"/ -->
-		  <property name="multi-db" value="false"/>
-		  <property name="update-storage" value="true"/>
-		  <property name="max-buffer-size" value="200k"/>
-		  <property name="swap-directory" value="../temp/swap/gadgets"/>
-		</properties>
-		<value-storages>
-		  <value-storage id="gadgets" class="org.exoplatform.services.jcr.impl.storage.value.fs.TreeFileValueStorage">
-			<properties>
-			  <property name="path" value="../temp/values/gadgets"/>
-			</properties>
-			<filters>
-			  <filter property-type="Binary"/>
-			</filters>
-		  </value-storage>
-		</value-storages>
-	  </container>
-	  <initializer class="org.exoplatform.services.jcr.impl.core.ScratchWorkspaceInitializer">
-		<properties>
-		  <property name="root-nodetype" value="nt:unstructured"/>
-		  <property name="root-permissions" value="any read;*:/platform/administrators read;*:/platform/administrators add_node;*:/platform/administrators set_property;*:/platform/administrators remove"/>
-		</properties>
-	  </initializer>
-	  <cache enabled="true" class="org.exoplatform.services.jcr.impl.dataflow.persistent.LinkedWorkspaceStorageCacheImpl">
-		<properties>
-		  <property name="max-size" value="20k"/>
-		  <property name="live-time" value="1h"/>
-		</properties>
-	  </cache>
-	  <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
-		<properties>
-		  <property name="index-dir" value="../temp/jcrlucenedb/gadgets"/>
-		</properties>
-	  </query-handler>
-	  <lock-manager>
-			  <time-out>15m</time-out><!-- 15min -->
-			  <persister class="org.exoplatform.services.jcr.impl.core.lock.FileSystemLockPersister">
-				<properties>
-				  <property name="path" value="../temp/lock/gadgets"/>
-				</properties>
-			  </persister>
-			</lock-manager>
-	</workspace>
-
-2. MIGRATION
-------------
-
-	2.1 Migration for illegal char in path entry
-			Since ECM 2.3, the DriveMigrationService was avaiabled at location ecm\dms\trunk\component\migration\2.3\drives. This service use to rename the
-			old drive which contains invalid characters and prevent the WARNING messages at the console.
-			How to do it?
-			Step 1: Compile the source code to create new jar by command: mvn clean install
-			Step 2: Stop server and copy this jar to library
-			Step 3: Run server to DriveMigrationService apply the changes.
-			Step 4: After server started, stop server again and remove this jar, restart server.
 
 ==========================================================================================
 DMS can be reached at:
