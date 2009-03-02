@@ -511,15 +511,44 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       String str = "";
       String templateData = templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
       BufferedReader reader = new BufferedReader(new StringReader(templateData));
-      StringBuilder ltsb = new StringBuilder();
+      Node homeNode = (Node) templateNode.getSession().getItem(cmsTemplatesBasePath_);
+      Node includedTemplateNode = null;
+      StringBuilder fullData = new StringBuilder();
       try {
         while ((str = reader.readLine()) != null) {
           if (str.length() > 0) {
-            Matcher matcher = pattern.matcher(str);
+            if(str.indexOf("_ctx.include") > -1) {
+              String[] arrTemplate = str.split("\"");
+              includedTemplateNode = homeNode.getNode(arrTemplate[1]);
+              Node specifiedTemplatesHome = includedTemplateNode.getNode(VIEWS);
+              Node viewNode = specifiedTemplatesHome.getNode(arrTemplate[3]);
+              String templateIncludedData = viewNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
+              BufferedReader viewReader = new BufferedReader(new StringReader(templateIncludedData));
+              String includedStr = "";
+              while ((includedStr = viewReader.readLine()) != null) {
+                if (includedStr.length() > 0) {
+                  fullData.append(includedStr).append('\n');
+                }
+              }
+            } else {
+              fullData.append(str).append('\n');
+            }
+          }
+        }
+      } catch(IOException e) {
+        e.printStackTrace();
+      }
+      String realStr = "";
+      StringBuilder ltsb = new StringBuilder();
+      BufferedReader realReader = new BufferedReader(new StringReader(fullData.toString()));
+      try {
+        while ((realStr = realReader.readLine()) != null) {
+          if (realStr.length() > 0) {
+            Matcher matcher = pattern.matcher(realStr);
             if(matcher.find()) {
               continue;
             }
-            ltsb.append(str).append('\n');
+            ltsb.append(realStr).append('\n');
           }
         }
         rtlTemplateCache_.put(nodeTypeName + type, ltsb.toString());

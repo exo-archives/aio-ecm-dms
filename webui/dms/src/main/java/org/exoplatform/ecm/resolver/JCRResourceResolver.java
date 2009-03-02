@@ -44,6 +44,8 @@ public class JCRResourceResolver extends ResourceResolver {
   protected String repository ; 
   protected String workspace ;      
   protected String propertyName ;
+  protected String selectedLang;
+  protected boolean isDocumentTemplate = false;
   
   /**
    * Instantiates a new jCR resource resolver 
@@ -58,7 +60,15 @@ public class JCRResourceResolver extends ResourceResolver {
     this.workspace = workspace;    
     this.propertyName = propertyName ;
   }
-
+  
+  public JCRResourceResolver(String repository,String workspace,String propertyName, String selectedLang) {
+    this.repository = repository ;
+    this.workspace = workspace;    
+    this.propertyName = propertyName ;
+    this.selectedLang = selectedLang;
+    this.isDocumentTemplate = true;
+  }
+  
   /* (non-Javadoc)
    * @see org.exoplatform.resolver.ResourceResolver#getResource(java.lang.String)
    */
@@ -84,7 +94,12 @@ public class JCRResourceResolver extends ResourceResolver {
     Node node = (Node)session.getItem(removeScheme(url)) ;
     String locale = 
     Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();
-    return new ByteArrayInputStream(templateService.getTemplateData(node, locale, propertyName, repository).getBytes()) ;
+    if(isDocumentTemplate && selectedLang != null) {
+      return new ByteArrayInputStream(templateService.getTemplateData(node, selectedLang, 
+          propertyName, repository).getBytes()) ;
+    } 
+    return new ByteArrayInputStream(templateService.getTemplateData(node, locale, 
+        propertyName, repository).getBytes()) ;
   }
 
   /* (non-Javadoc)

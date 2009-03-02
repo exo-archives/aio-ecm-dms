@@ -1,8 +1,7 @@
 <%
-  import java.text.SimpleDateFormat ;
   def commentsList = uicomponent.getComments() ;
   if(commentsList.size() > 0) {
-    SimpleDateFormat dateFormat = new SimpleDateFormat("h:mm a. EEE, MMM d, yyyy") ;
+    java.text.SimpleDateFormat commentDateFormat = new java.text.SimpleDateFormat("h:mm a. EEE, MMM d, yyyy") ;
     def lastComment = commentsList.get(0) ;
 %>
   <style>
@@ -156,7 +155,7 @@
 		  			  <%}%>
 		  			  <%=_ctx.appRes("Comment.view.label.at")%> 
 		  			  <%if(lastComment.hasProperty("exo:commentDate")){%>
-			  			  <%=dateFormat.format(lastComment.getProperty("exo:commentDate").getDate().getTime())%>
+			  			  <%=commentDateFormat.format(lastComment.getProperty("exo:commentDate").getDate().getTime())%>
 			  			<%}%>  
 		  			</div>
 		  			<div class="ShowComment">
@@ -190,7 +189,7 @@
 		  			  (<%=_ctx.appRes("Comment.view.label.site")%>: <a href="$site" target="_blank">$site</a>) - <%=_ctx.appRes("Comment.view.label.at")%>
 		  		<%}%>
 		  		<%if(comment.hasProperty("exo:commentDate")){%>
-		  			<%=dateFormat.format(comment.getProperty("exo:commentDate").getDate().getTime())%>
+		  			<%=commentDateFormat.format(comment.getProperty("exo:commentDate").getDate().getTime())%>
 		  		<%}%>
 		  	</div>
 		  	<div class="CommentBox">  		

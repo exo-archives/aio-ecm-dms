@@ -125,7 +125,7 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
 
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
+    newJCRTemplateResourceResolver() ;
     return jcrTemplateResourceResolver_ ;
   }
 
@@ -135,7 +135,9 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
       ManageableRepository mRepository = 
         getApplicationComponent(RepositoryService.class).getRepository(repository) ;
       String systemWorkspace = mRepository.getConfiguration().getSystemWorkspaceName() ;
-      jcrTemplateResourceResolver_ = new JCRResourceResolver(repository, systemWorkspace, Utils.EXO_TEMPLATEFILE) ;
+      if(language_ == null) language_ = node_.getProperty(Utils.EXO_LANGUAGE).getString();
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(repository, systemWorkspace, 
+          Utils.EXO_TEMPLATEFILE, language_) ;
     }catch(Exception e) {
       e.printStackTrace() ;
     }     
