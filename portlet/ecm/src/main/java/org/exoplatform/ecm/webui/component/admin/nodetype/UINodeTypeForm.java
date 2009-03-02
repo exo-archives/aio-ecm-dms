@@ -542,15 +542,27 @@ public class UINodeTypeForm extends UIFormTabPane {
         uiForm.setTabRender(NODETYPE_DEFINITION) ;
         return ;
       }
-      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
-      for(String filterChar : arrFilterChar) {
-        if(nodeTypeName.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
+      if((prefix != null) && (prefix.length() == 0)){
+        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "%", "!"};
+        for(String filterChar : arrFilterChar) {
+          if(nodeTypeName.indexOf(filterChar) > -1) {
+            uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
         }
-      }
+      } else{
+        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"};
+        for(String filterChar : arrFilterChar) {
+          if(nodeTypeName.indexOf(filterChar) > -1) {
+            uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+        }
+      }      
       if(prefix != null && prefix.length() > 0 ) nodeTypeName = prefix + ":" + nodeTypeName ;
       String superTypes = uiForm.getUIStringInput(SUPER_TYPE).getValue() ;
       if(uiForm.getUIFormSelectBox(MIXIN_TYPE).getValue().equals("false")) {
@@ -632,14 +644,25 @@ public class UINodeTypeForm extends UIFormTabPane {
         session.logout();
         return ;
       }
-      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"} ;
-      for(String filterChar : arrFilterChar) {
-        if(nodeTypeName.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          session.logout();
-          return ;
+      if((prefix != null) && (prefix.length() == 0)){
+        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "%", "!"};
+        for(String filterChar : arrFilterChar) {
+          if(nodeTypeName.indexOf(filterChar) > -1) {
+            uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
+        }
+      } else{
+        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"};
+        for(String filterChar : arrFilterChar) {
+          if(nodeTypeName.indexOf(filterChar) > -1) {
+            uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
+                                                    ApplicationMessage.WARNING)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+            return ;
+          }
         }
       }
       if(prefix != null && prefix.length() > 0 ) nodeTypeName = prefix + ":" + nodeTypeName ;
