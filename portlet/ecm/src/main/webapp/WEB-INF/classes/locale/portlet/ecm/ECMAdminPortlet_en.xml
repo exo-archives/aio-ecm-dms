@@ -285,11 +285,11 @@
       <workspace>Workspace</workspace>
       <homePath>Home path</homePath>
       <icon>Workspace icon</icon>
-      <viewPreferences>View referenced documents</viewPreferences>
-      <viewNonDocument>View non document</viewNonDocument>
+      <viewPreferences>Show referenced documents</viewPreferences>
+      <viewNonDocument>Show "non document" nodes</viewNonDocument>
       <viewSideBar>Show sidebar</viewSideBar>
       <permissions>Permissions</permissions>
-      <showHiddenNode>Show hidden node</showHiddenNode>
+      <showHiddenNode>Show hidden nodes</showHiddenNode>
       <allowCreateFolder>Allow Create Folder</allowCreateFolder>
     </label>
   </UIDriveForm>

@@ -288,9 +288,9 @@
       <option>
         <icon>Choisir l'icône</icon>
       </option>
-      <viewPreferences>Voir les documents référencés</viewPreferences>
-      <viewNonDocument>Voir les document cachés</viewNonDocument>
-      <viewSideBar>Afficher la barre d'aoutils</viewSideBar>
+      <viewPreferences>Afficher les documents référencés</viewPreferences>
+      <viewNonDocument>Afficher les "non documents"</viewNonDocument>
+      <viewSideBar>Afficher le panneau latéral</viewSideBar>
       <permissions>Permissions</permissions>
       <showHiddenNode>Afficher les éléments cachés</showHiddenNode>
       <allowCreateFolder>Création de répertoire</allowCreateFolder>
@@ -797,9 +797,9 @@
   -->
   <DriveInputSet>
     <label>
-      <both>les deux</both>
-      <folderOnly>Folder</folderOnly>
-      <unstructuredFolder>Unstructured folder</unstructuredFolder>
+      <both>Les deux</both>
+      <folderOnly>Dossier de documents</folderOnly>
+      <unstructuredFolder>Dossier de contenus</unstructuredFolder>
     </label>
     <title>
       <AddPermission>Ajouter une Permission</AddPermission>
@@ -917,6 +917,7 @@
   -->
   <UIViewForm>
     <title>
+      Ajouter/Editer la Vue
       <AddPermission>Ajouter une Permission</AddPermission>
     </title>
     <msg>
@@ -1773,6 +1774,9 @@
       <AddAnyPermission>Ajouter une permission quelconque</AddAnyPermission>
     </title>
   </anyPermission>
+  <!--
+  #########Since ECM 2.3##################
+  -->
   <QueriesPermissionBrowse>
     <label>
       <selectGroup>Sélectionner un groupe</selectGroup>
