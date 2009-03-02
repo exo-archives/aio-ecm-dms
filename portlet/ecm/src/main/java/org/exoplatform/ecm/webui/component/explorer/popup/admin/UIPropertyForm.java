@@ -194,7 +194,9 @@ public class UIPropertyForm extends UIForm {
     isAddNew_ = false;
     String[] propertyInfo = propertyName.split(":");
     getUIFormSelectBox(FIELD_NAMESPACE).setDisabled(true).setValue(propertyInfo[0]);
-    getUIStringInput(FIELD_PROPERTY).setEditable(false).setValue(propertyInfo[1]);
+    if(propertyInfo.length > 1){
+      getUIStringInput(FIELD_PROPERTY).setEditable(false).setValue(propertyInfo[1]);
+    }
     Property property = currentNode.getProperty(propertyName);
     isMultiple_ = property.getDefinition().isMultiple();
     if (property.getType() == 0){ 
