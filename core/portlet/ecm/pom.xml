@@ -1,17 +1,17 @@
 <project>
   <parent>
-    <groupId>org.exoplatform.ecm.dms</groupId>
+    <groupId>org.exoplatform.ecm.dms.core</groupId>
     <artifactId>config</artifactId>
     <version>2.3-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>exo.ecm.dms.portlet.ecm</artifactId>
+  <artifactId>exo.ecm.dms.core.portlet.ecm</artifactId>
   <packaging>war</packaging>
   <version>${org.exoplatform.ecm.dms.version}</version>
-  <name>exo-portal.portlets.ecm.dms Portlet</name>
+  <name>eXo DMS Portlet</name>
   <url>http://www.exoplatform.org</url>
-  <description>exo-portal.portlets.ecm.dms Portlet</description>
+  <description>eXo DMS Portlet: File Explorer, Browser Content, ECM Admin</description>
 
   <dependencies>
     <dependency>
@@ -63,52 +63,30 @@
       <scope>provided</scope>
     </dependency>
 
-<!--
     <dependency>
-      <groupId>org.exoplatform.ecm.workflow</groupId>
-      <artifactId>exo.ecm.workflow.component.workflow.impl.jbpm.engine</artifactId>
-      <version>${org.exoplatform.ecm.workflow.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.exoplatform.ecm.workflow</groupId>
-      <artifactId>exo.ecm.workflow.component.workflow.impl.jbpm.facade</artifactId>
-      <version>${org.exoplatform.ecm.workflow.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.exoplatform.ecm.workflow</groupId>
-      <artifactId>exo.ecm.workflow.component.workflow.impl.bonita</artifactId>
-      <version>${org.exoplatform.ecm.workflow.version}</version>
-      <scope>provided</scope>
-    </dependency>
--->
-    <dependency>
-      <groupId>org.exoplatform.ecm.dms</groupId>
-      <artifactId>exo.ecm.dms.component.cms</artifactId>
+      <groupId>org.exoplatform.ecm.dms.core</groupId>
+      <artifactId>exo.ecm.dms.core.component.cms</artifactId>
       <version>${org.exoplatform.ecm.dms.version}</version>
       <scope>provided</scope>
     </dependency>
     
     <dependency>
-      <groupId>org.exoplatform.ecm.dms</groupId>
-      <artifactId>exo.ecm.dms.component.publication</artifactId>
+      <groupId>org.exoplatform.ecm.dms.core</groupId>
+      <artifactId>exo.ecm.dms.core.component.publication</artifactId>
       <version>${org.exoplatform.ecm.dms.version}</version>
       <scope>provided</scope>
     </dependency>
     
     <dependency>
-      <groupId>org.exoplatform.ecm.dms</groupId>
-      <artifactId>exo.ecm.dms.connector.fckeditor</artifactId>
+      <groupId>org.exoplatform.ecm.dms.core</groupId>
+      <artifactId>exo.ecm.dms.core.connector.fckeditor</artifactId>
       <version>${org.exoplatform.ecm.dms.version}</version>
       <scope>provided</scope>
     </dependency>    
     
     <dependency>
-      <groupId>org.exoplatform.ecm.dms</groupId>
-      <artifactId>exo.ecm.dms.webui.dms</artifactId>
+      <groupId>org.exoplatform.ecm.dms.core</groupId>
+      <artifactId>exo.ecm.dms.core.webui.dms</artifactId>
       <version>${org.exoplatform.ecm.dms.version}</version>
       <scope>provided</scope>
     </dependency>    

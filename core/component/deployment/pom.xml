@@ -1,12 +1,12 @@
 <project>
   <parent>
-    <groupId>org.exoplatform.ecm.dms</groupId>
+    <groupId>org.exoplatform.ecm.dms.core</groupId>
     <artifactId>config</artifactId>
     <version>2.3-SNAPSHOT</version>
   </parent> 
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>exo.ecm.dms.component.deployment</artifactId>
+  <artifactId>exo.ecm.dms.core.component.deployment</artifactId>
   <version>${org.exoplatform.ecm.dms.version}</version>
   <packaging>jar</packaging>
   <name>eXo DMS Deployment Services</name>
@@ -48,13 +48,6 @@
       <version>${org.exoplatform.jcr.version}</version>
       <scope>compile</scope>
     </dependency>
-
-    <!--dependency>
-      <groupId>org.exoplatform.ecm.workflow</groupId>
-      <artifactId>exo.ecm.workflow.component.workflow.api</artifactId>
-      <version>${org.exoplatform.ecm.workflow.version}</version>
-      <scope>compile</scope>
-    </dependency-->    
   </dependencies>  
 
   <build>

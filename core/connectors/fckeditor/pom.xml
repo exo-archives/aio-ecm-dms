@@ -1,12 +1,12 @@
 <project>
   <parent>
-    <groupId>org.exoplatform.ecm.dms</groupId>
+    <groupId>org.exoplatform.ecm.dms.core</groupId>
     <artifactId>config</artifactId>
     <version>2.3-SNAPSHOT</version>
   </parent> 
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>exo.ecm.dms.connector.fckeditor</artifactId>
+  <artifactId>exo.ecm.dms.core.connector.fckeditor</artifactId>
   <version>${org.exoplatform.ecm.dms.version}</version>
   <packaging>jar</packaging>
   <name>eXo DMS FCKEditor Connector</name>
@@ -56,8 +56,8 @@
     </dependency>  
         
     <dependency>
-      <groupId>org.exoplatform.ecm.dms</groupId>
-      <artifactId>exo.ecm.dms.component.cms</artifactId>
+      <groupId>org.exoplatform.ecm.dms.core</groupId>
+      <artifactId>exo.ecm.dms.core.component.cms</artifactId>
       <version>${org.exoplatform.ecm.dms.version}</version>
       <scope>provided</scope>
     </dependency>
