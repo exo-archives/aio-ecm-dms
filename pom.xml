@@ -8,21 +8,13 @@
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms</groupId>
-  <artifactId>config</artifactId>
+  <artifactId>core</artifactId>
   <name>eXo DMS Config</name>
   <version>2.3-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
-    <module>component/cms</module>
-	<module>component/deployment</module>
-	<module>component/publication</module>
-	<module>connectors/fckeditor</module>
-	<module>webui/dms</module>
-	<module>web/eXoDMSResources</module>	
-  <module>portlet/ecm</module>
-  <module>portlet/jcr-console</module>
-    <module>web/dmsportal</module>
+    <module>core</module>
   </modules>
 
   <build>
@@ -227,6 +219,18 @@
         <exo.test.skip>true</exo.test.skip>
         <bonita.version>3.0</bonita.version>        
       </properties>
+    </profile>
+	<profile>
+            <id>ext</id>
+			<activation>
+	        <property>
+				<name>ext</name>
+			</property>
+	        <activeByDefault>false</activeByDefault>
+			</activation>
+            <modules>
+                <module>/ext</module>
+            </modules>
     </profile>
   </profiles>
 </project>
