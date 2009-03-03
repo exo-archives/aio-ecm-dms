@@ -966,6 +966,8 @@
       <viewPermissions>toon rechten</viewPermissions>
       <viewProperties>toon Properties</viewProperties>
       <manageVersions>Manage versies</manageVersions>
+      <manageAuditing>Manage Auditing</manageAuditing>
+      <managePublications>Manage Publication</managePublications>
       <manageCategories>Manage Categories</manageCategories>
       <manageRelations>Manage Relations</manageRelations>
       <manageActions>Manage acties</manageActions>
