@@ -290,7 +290,7 @@ public class CmsServiceImpl implements CmsService {
             }
           }
         } else {                                                                        
-          if (!propertyDef.isAutoCreated() && !propertyDef.isProtected()) {        
+          if (!propertyDef.isProtected()) {
             int requiredtype = propertyDef.getRequiredType();
             if(value != null || propertyDef.isMandatory()) {
               processProperty(propertyName, currentNode, requiredtype, value, propertyDef.isMultiple()) ;
