@@ -72,9 +72,11 @@ public class UIAuditingInfo extends UIContainer implements UIPopupComponent {
       if (auditService.hasHistory(currentNode)){
         if (Utils.NT_FILE.equals(currentNode.getProperty(Utils.JCR_PRIMARYTYPE).getString())) { 
           currentNode = currentNode.getNode(Utils.JCR_CONTENT);
-        } 
-        AuditHistory auHistory = auditService.getHistory(currentNode);
-        listRec = auHistory.getAuditRecords();     
+        }
+        if(Utils.isAuditable(currentNode)){
+          AuditHistory auHistory = auditService.getHistory(currentNode);
+          listRec = auHistory.getAuditRecords();
+        }    
       }
     } catch(Exception e){
       e.printStackTrace();

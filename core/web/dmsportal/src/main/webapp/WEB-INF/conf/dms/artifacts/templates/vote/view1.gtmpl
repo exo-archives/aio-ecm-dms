@@ -73,36 +73,29 @@
 	
 	.UIVote .VoteRatingInfo .VoteRatingLabel {
 		margin: 0px 5px;
+		float: left; /* orientation=lt */
+		float: right; /* orientation=rt */
 	}
 	
 	.UIVote .VoteRatingInfo .VotedInfo {
 		color: #058ee6;
-	
+		float: left; /* orientation=lt */
+		float: right; /* orientation=rt */	
 	}
 </style>
 
 <%
-  import javax.jcr.Node;
-	import javax.jcr.NodeIterator;
-	
-  public Node getFileLangNode(Node currentNode) throws Exception {
-    if(currentNode.getNodes().getSize() > 0) {
-      NodeIterator nodeIter = currentNode.getNodes() ;
+  def voteNode = uicomponent.getNode() ;
+  if(uicomponent.getOriginalNode().getPrimaryNodeType().getName().equals("nt:file")) {
+    if(voteNode.getNodes().getSize() > 0) {
+      def nodeIter = voteNode.getNodes() ;
       while(nodeIter.hasNext()) {
-        Node ntFile = nodeIter.nextNode() ;
+        def ntFile = nodeIter.nextNode() ;
         if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
-          return ntFile ;
+          voteNode = ntFile ;
         }
       }
-      return currentNode ;
     }
-    return currentNode ;
-  }
-  
-  def originalNode = uicomponent.getOriginalNode() ;
-  def voteNode = uicomponent.getNode() ;
-  if(originalNode.getPrimaryNodeType().getName().equals("nt:file")) {
-    voteNode = getFileLangNode(voteNode) ;
   } 
   double voteRating = 0 ;
   if(voteNode.hasProperty("exo:votingRate")) voteRating = voteNode.getProperty("exo:votingRate").getDouble() ;
@@ -130,8 +123,8 @@
 						</div>
 					</div>
 					<div class="VoteRatingInfo">
-				    <span class="VoteRatingLabel"><%=_ctx.appRes("Vote.view.label.avg-rating")%>: <span class="VotedInfo">$voteRating</span></span>
-				    <span class="VoteRatingLabel"><%=_ctx.appRes("Vote.view.label.subscription")%>: <span class="VotedInfo">$voteTotal</span></span>
+				    <div class="VoteRatingLabel"><%=_ctx.appRes("Vote.view.label.avg-rating")%>: </div><div class="VotedInfo">$voteRating</div>
+				    <div class="VoteRatingLabel"><%=_ctx.appRes("Vote.view.label.subscription")%>: </div><div class="VotedInfo">$voteTotal</div>
 					</div>
 					<div style="clear: left;"><span></span></div>
 				</div>

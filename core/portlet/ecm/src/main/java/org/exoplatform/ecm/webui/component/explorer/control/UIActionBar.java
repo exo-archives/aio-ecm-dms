@@ -640,12 +640,14 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource();
       UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       Node node = uiJCRExplorer.getCurrentNode();
+      /*
       if(uiActionBar.isRootNode(node)) {
         UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      */
       UIPropertiesManager uiPropertiesManager = 
         uiJCRExplorer.createUIComponent(UIPropertiesManager.class, null, null);
       UIPropertyForm uiForm = uiPropertiesManager.getChild(UIPropertyForm.class);

@@ -168,8 +168,8 @@
     <label>
       <enableStructure>Activer l'affichage JCR brut</enableStructure>
       <showSideBar>Afficher le panneau latéral</showSideBar>
-      <showHiddenNode>Afficher les noeuds cachés</showHiddenNode>
-      <showNonDocument>Afficher les noeuds qui ne sont pas de type document</showNonDocument>
+      <showHiddenNode>Afficher les éléments cachés</showHiddenNode>
+      <showNonDocument>Afficher les "non documents"</showNonDocument>
       <showRefDocuments>Afficher les documents référencés</showRefDocuments>
       <sortBy>Trier par</sortBy>
       <order>Trier</order>

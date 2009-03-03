@@ -169,8 +169,8 @@
     <label>
       <enableStructure>Enable JCR like structure</enableStructure>
       <showSideBar>Show sidebar</showSideBar>
-      <showHiddenNode>Show hidden node</showHiddenNode>
-      <showNonDocument>Show non document type</showNonDocument>
+      <showHiddenNode>Show hidden nodes</showHiddenNode>
+      <showNonDocument>Show "non document" nodes</showNonDocument>
       <showRefDocuments>Show referenced documents</showRefDocuments>
       <sortBy>Sort by</sortBy>
       <order>Order</order>
