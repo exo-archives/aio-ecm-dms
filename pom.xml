@@ -7,8 +7,8 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.exoplatform.ecm.dms</groupId>
-  <artifactId>core</artifactId>
+  <groupId>org.exoplatform.ecm</groupId>
+  <artifactId>dms</artifactId>
   <name>eXo DMS Config</name>
   <version>2.3-SNAPSHOT</version>
   <packaging>pom</packaging>
