@@ -367,13 +367,25 @@ public class UIPropertyDefinitionForm extends UIFormInputSetWithAction {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"};
-      for(String filterChar : arrFilterChar) {
-        if(propertyName.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
-                                                  ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
+      if((prefix != null) && (prefix.trim().length() == 0) && (propertyName.trim().length()==1)){
+        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "%", "!"};
+        for(String filterChar : arrFilterChar) {
+          if(propertyName.indexOf(filterChar) > -1) {
+            uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
+                                                    ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
+        }
+      } else{
+        String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"};
+        for(String filterChar : arrFilterChar) {
+          if(propertyName.indexOf(filterChar) > -1) {
+            uiApp.addMessage(new ApplicationMessage("UINodeTypeForm.msg.fileName-invalid", null, 
+                                                    ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
         }
       }
       if(prefix != null && prefix.length() > 0 ) propertyName = prefix + ":" + propertyName;
