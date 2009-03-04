@@ -35,6 +35,8 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.resources.LocaleConfigService;
+import org.exoplatform.services.resources.Orientation;
 
 /**
  * Created by The eXo Platform SARL Author : Dang Van Minh
@@ -94,6 +96,13 @@ public class JCRResourceResolver extends ResourceResolver {
     Node node = (Node)session.getItem(removeScheme(url)) ;
     String locale = 
     Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();
+    LocaleConfigService localeConfigService = 
+      (LocaleConfigService) container.getComponentInstanceOfType(LocaleConfigService.class);
+    Orientation orientation = localeConfigService.getLocaleConfig(locale).getOrientation();
+    if(orientation.isRT()) {
+      return new ByteArrayInputStream(templateService.getTemplateData(node, locale, 
+          propertyName, repository).getBytes()) ;
+    }
     if(isDocumentTemplate && selectedLang != null) {
       return new ByteArrayInputStream(templateService.getTemplateData(node, selectedLang, 
           propertyName, repository).getBytes()) ;

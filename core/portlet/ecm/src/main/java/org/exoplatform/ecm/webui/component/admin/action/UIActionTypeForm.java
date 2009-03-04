@@ -91,8 +91,12 @@ public class UIActionTypeForm extends UIForm {
       getApplicationComponent(ActionServiceContainer.class) ;
     List <String> actionsTypes= (List <String>) actionServiceContainer.getActionPluginNames();
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-    for(int i =0 ; i< actionsTypes.size() ; i++){     
-      options.add(new SelectItemOption<String>(actionsTypes.get(i),actionsTypes.get(i))) ;
+    List<String> lstOpt = new ArrayList<String>();
+    for(int i =0 ; i< actionsTypes.size() ; i++){
+      if(!lstOpt.contains(actionsTypes.get(i))) {
+        options.add(new SelectItemOption<String>(actionsTypes.get(i),actionsTypes.get(i))) ;
+        lstOpt.add(actionsTypes.get(i));
+      }
     }
     return options ;
   }
