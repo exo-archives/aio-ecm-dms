@@ -25,12 +25,10 @@ import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
-import javax.jcr.Value;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -44,6 +42,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIGrid;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -84,9 +83,11 @@ public class UIPermissionInfo extends UIContainer {
     uiGrid.getUIPageIterator().setId("PermissionInfoIterator");
     uiGrid.configure("usersOrGroups", PERMISSION_BEAN_FIELD, PERMISSION_ACTION) ;
   }
+
   private String  getExoOwner(Node node) throws Exception {
     return Utils.getNodeOwner(node) ;
   }
+  
   public void updateGrid() throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Node currentNode = uiJCRExplorer.getCurrentNode() ;

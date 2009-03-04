@@ -129,10 +129,22 @@ public class UIPermissionForm extends UIForm implements UISelectable {
     }
   }
 
-  public void doSelect(String selectField, Object value) {
-    getUIStringInput(selectField).setValue(value.toString());
-    checkAll(false);
+  private String  getExoOwner(Node node) throws Exception {
+    return Utils.getNodeOwner(node) ;
   }
+  
+  public void doSelect(String selectField, Object value) {
+    try {
+      ExtendedNode node = (ExtendedNode)getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
+      checkAll(false);
+      fillForm(value.toString(), node) ;
+      lockForm(value.toString().equals(getExoOwner(node)));
+      getUIStringInput(selectField).setValue(value.toString());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+  
   static public class ResetActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
