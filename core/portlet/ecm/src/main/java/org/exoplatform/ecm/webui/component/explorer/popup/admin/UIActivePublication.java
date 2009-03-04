@@ -110,7 +110,7 @@ import org.exoplatform.webui.form.UIForm;
     ObjectPageList objectPageList = new ObjectPageList(publicationLifecycleBeans, 5);
     getUIPageIterator().setPageList(objectPageList);
   } 
-  
+
   public void enrolNodeInLifecycle(Node currentNode, String lifecycleName, WebuiRequestContext requestContext) throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);    
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
@@ -150,13 +150,20 @@ import org.exoplatform.webui.form.UIForm;
     }
     UIContainer container = createUIComponent(UIContainer.class, null, null);
     UIForm uiFormPublicationManager = publicationPresentationService.getStateUI(currentNode, container);
-    uiPublicationManager.addChild(uiFormPublicationManager);
-    uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false);
-    UIPublicationLogList uiPublicationLogList = uiPublicationManager.getChild(UIPublicationLogList.class);
     UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
-    UIPopupContainer.activate(uiPublicationManager, 700, 500);
-    uiPublicationLogList.setNode(uiJCRExplorer.getCurrentNode());
-    uiPublicationLogList.updateGrid();
+    if(uiFormPublicationManager instanceof UIPopupComponent) {
+      //TODO for future version, we need remove this code
+      //This is special case for wcm which wants to more than 2 tabs in PublicationManager
+      //The uiForm in this case should be a UITabPane or UIFormTabPane and need be an UIPopupComponent      
+      UIPopupContainer.activate(uiFormPublicationManager,700,500);
+    }else {
+      uiPublicationManager.addChild(uiFormPublicationManager);
+      uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false);
+      UIPublicationLogList uiPublicationLogList = uiPublicationManager.getChild(UIPublicationLogList.class);    
+      UIPopupContainer.activate(uiPublicationManager, 700, 500);
+      uiPublicationLogList.setNode(uiJCRExplorer.getCurrentNode());
+      uiPublicationLogList.updateGrid(); 
+    }    
   }
   /*
    * (non-Javadoc)

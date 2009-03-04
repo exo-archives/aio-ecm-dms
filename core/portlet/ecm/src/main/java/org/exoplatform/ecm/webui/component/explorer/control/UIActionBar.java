@@ -106,6 +106,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -647,7 +648,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      */
+       */
       UIPropertiesManager uiPropertiesManager = 
         uiJCRExplorer.createUIComponent(UIPropertiesManager.class, null, null);
       UIPropertyForm uiForm = uiPropertiesManager.getChild(UIPropertyForm.class);
@@ -803,15 +804,21 @@ public class UIActionBar extends UIForm {
       }
       UIContainer cont = uiActionBar.createUIComponent(UIContainer.class, null, null);
       UIForm uiForm = publicationPresentationService.getStateUI(currentNode, cont);
-      UIPublicationManager uiPublicationManager = 
-        uiExplorer.createUIComponent(UIPublicationManager.class, null, null);
-      uiPublicationManager.addChild(uiForm);
-      uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false);
-      UIPublicationLogList uiPublicationLogList = 
-        uiPublicationManager.getChild(UIPublicationLogList.class);      
-      UIPopupContainer.activate(uiPublicationManager, 700, 500);
-      uiPublicationLogList.setNode(uiExplorer.getCurrentNode());
-      uiPublicationLogList.updateGrid();      
+      if(uiForm instanceof UIPopupComponent) {
+        //This is special case for wcm want to more than 2 tabs in PublicationManager
+        //The uiForm in this case should be a UITabPane or UIFormTabPane and need be a UIPopupComponent        
+        UIPopupContainer.activate(uiForm, 700, 500);
+      }else {
+        UIPublicationManager uiPublicationManager = 
+          uiExplorer.createUIComponent(UIPublicationManager.class, null, null);
+        uiPublicationManager.addChild(uiForm);
+        uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false);
+        UIPublicationLogList uiPublicationLogList = 
+          uiPublicationManager.getChild(UIPublicationLogList.class);      
+        UIPopupContainer.activate(uiPublicationManager, 700, 500);
+        uiPublicationLogList.setNode(uiExplorer.getCurrentNode());
+        uiPublicationLogList.updateGrid(); 
+      }            
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
@@ -822,7 +829,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      
+
       if (!currentNode.isNodeType(Utils.EXO_AUDITABLE)) {
         UIPopupContainer.activate(UIActivateAuditing.class, 400);
         event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
@@ -835,7 +842,7 @@ public class UIActionBar extends UIForm {
       return;
     }
   }
-  
+
   static public class ManageCategoriesActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource();
@@ -1182,7 +1189,7 @@ public class UIActionBar extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
-  
+
   static public class OverloadThumbnailActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {      
       UIActionBar uiActionBar = event.getSource();
@@ -1202,7 +1209,7 @@ public class UIActionBar extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
-  
+
   static public class ManageHiddenActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {      
       UIActionBar uiActionBar = event.getSource();
