@@ -16,11 +16,9 @@
 %>
 <div class="UIAddressBar" id="UIAddressBarControl">
   <div class="BlockRight">
-    <a href ="<%=uicomponent.event("ChangeNode")%>" class="GoButton Style1NextArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.exeButton")%>" id="UIAddressBarAction">
-		  <div class="Separator AddressBarSeparator">
-		  	<%=_ctx.appRes("UIAddressBar.label.exeButton")%>
-		  </div>
-    </a>	  
+  	<div class="Separator AddressBarSeparator"><span></span></div>
+  	<div class="AddressLabel"><%=_ctx.appRes("UIAddressBar.label.exeButton")%></div>
+    <div onclick="<%=uicomponent.event("ChangeNode")%>" class="GoButton Style1NextArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.exeButton")%>" id="UIAddressBarAction"><span></span></div>
   </div>
   <div class="BlockLeft">
 	  <div class="Separator AddressBarSeparator"><span></span></div>    
