@@ -33,18 +33,30 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 )
 public class UIJCRExplorerPortlet extends UIPortletApplication {
   
+  public static final String CATEGORY_MANDATORY =  "categoryMandatoryWhenFileUpload";
+  
+  private boolean flagSelect = false;
+  
   public UIJCRExplorerPortlet() throws Exception {
     addChild(UIDrivesBrowserContainer.class, null, null);
     addChild(UIJCRExplorer.class, null, null).setRendered(false) ;    
+    addChild(UIJcrExplorerEditContainer.class, null, null).setRendered(false);
   }
-  
+
   public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIJCRExplorerPortlet') ;");
     PortletRequestContext portletReqContext = (PortletRequestContext)  context ;
     if (portletReqContext.getApplicationMode() == PortletMode.VIEW) {
+      getChild(UIDrivesBrowserContainer.class).setRendered(!isFlagSelect());
+      getChild(UIJCRExplorer.class).setRendered(isFlagSelect());
+      getChild(UIJcrExplorerEditContainer.class).setRendered(false);
     } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {
       System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
+    } else if (portletReqContext.getApplicationMode() == PortletMode.EDIT) {
+      getChild(UIDrivesBrowserContainer.class).setRendered(false);
+      getChild(UIJCRExplorer.class).setRendered(false);
+      getChild(UIJcrExplorerEditContainer.class).setRendered(true);
     }
     super.processRender(app, context) ;
   }
@@ -54,5 +66,13 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
     return repository ;
+  }
+
+  public boolean isFlagSelect() {
+    return flagSelect;
+  }
+
+  public void setFlagSelect(boolean flagSelect) {
+    this.flagSelect = flagSelect;
   }
 }

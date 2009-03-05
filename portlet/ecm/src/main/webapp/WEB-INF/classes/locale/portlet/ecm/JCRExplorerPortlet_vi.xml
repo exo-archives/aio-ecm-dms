@@ -1955,6 +1955,20 @@
       <Invalid-char5>Dấu cách được phép gán ký tự '^'</Invalid-char5>
     </msg>
   </SearchValidator>
+  
+  
+    <UIJcrExplorerEditForm>
+    <title>Sửa form File Explorer</title>
+    <action>
+      <Edit>Sửa</Edit>
+      <Save>Lưu</Save>
+      <Cancel>Hủy bỏ</Cancel>
+    </action>
+    <label>
+      <categoryMandatoryWhenFileUpload>Bắt buộc chọn danh mục khi tải lên</categoryMandatoryWhenFileUpload>
+    </label>
+  </UIJcrExplorerEditForm>
+  
   <!--
   ###################################################################################
   # PublicationService						                                        					#

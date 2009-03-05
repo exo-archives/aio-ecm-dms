@@ -278,7 +278,7 @@ public class UIDrivesBrowser extends UIContainer {
       if(homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId);
       UIJCRExplorerPortlet uiParent = uiDrive.getAncestorOfType(UIJCRExplorerPortlet.class);      
       UIJCRExplorer uiJCRExplorer = uiParent.getChild(UIJCRExplorer.class);
-
+      uiParent.setFlagSelect(true);
       Preference pref = new Preference();
       pref.setShowSideBar(drive.getViewSideBar());
       pref.setShowNonDocumentType(drive.getViewNonDocument());

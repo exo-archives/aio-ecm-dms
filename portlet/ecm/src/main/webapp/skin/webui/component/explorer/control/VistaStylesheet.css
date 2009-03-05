@@ -329,3 +329,7 @@
   width: 24px;	height: 24px;
   background: url('DefaultSkin/icons/ShowSideBarButton.gif') no-repeat bottom;
 }
+
+.UIJCRExplorerPortlet .UIJcrExplorerEditForm .UIForm .UIFormGrid td.FieldLabel{
+  width: 50%;
+}
