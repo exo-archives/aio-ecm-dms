@@ -84,6 +84,7 @@ public class UIContentNameSearch extends UIForm {
 //          return;
 //        }
 //      }
+      keyword = keyword.trim();
       UIJCRExplorer explorer = contentNameSearch.getAncestorOfType(UIJCRExplorer.class);
       String currentNodePath = explorer.getCurrentNode().getPath();
       String statement = null;
