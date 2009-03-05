@@ -34,8 +34,7 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 public class UIJcrExplorerEditContainer extends UIContainer {
   
   public UIJcrExplorerEditContainer() throws Exception {
-    UIJcrExplorerEditForm editForm = addChild(UIJcrExplorerEditForm.class, null, null);
-//    editForm.checkSocial();
+    addChild(UIJcrExplorerEditForm.class, null, null);
   }
   
   public UIPopupWindow initPopup(String id) throws Exception {

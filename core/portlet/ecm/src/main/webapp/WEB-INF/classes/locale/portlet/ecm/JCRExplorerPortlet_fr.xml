@@ -2160,6 +2160,10 @@
       <driveName>Drive Name</driveName>
       <DriveNameInput>UIJcrExplorerEditForm</DriveNameInput>
     </label>
+    <msg>
+      <not-have-social>Le type Social n'est pas disponible, le type Sélection sera utilisé.</not-have-social>
+      <personal-usecase>Le lecteur public de l'utilisateur courant sera utilisé quand vous choisissez le cas d'utilisation Personnel.</personal-usecase>
+    </msg>
   </UIJcrExplorerEditForm>
   
   <PopUpSelectDrive>

@@ -2143,6 +2143,10 @@
       <driveName>Drive Name</driveName>
       <DriveNameInput>UIJcrExplorerEditForm</DriveNameInput>
     </label>
+    <msg>
+      <not-have-social>The Social usecase is not available, the Selection one will be used instead.</not-have-social>
+      <personal-usecase>The public drive of current user will be used when you choose Personal usecase.</personal-usecase>
+    </msg>
   </UIJcrExplorerEditForm>
   
   <PopUpSelectDrive>

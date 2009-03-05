@@ -70,12 +70,10 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
       PortletPreferences portletPref = pcontext.getRequest().getPreferences();
       String usecase =  portletPref.getValue("usecase", "").trim();
-      if (usecase.equals(JAILED)) {
-        initwhenDirect(explorerContainer, editContainer, portletPref);
-      } else if (usecase.equals(SOCIAL)) {
-        initwhenDirect(explorerContainer, editContainer, portletPref);
-      } else {
+      if (usecase.equals(SELECTION)) {
         initwhenSelect(explorerContainer);
+      } else {
+        initwhenDirect(explorerContainer, editContainer, portletPref);
       }
       explorerContainer.setRendered(true);
       getChild(UIJcrExplorerEditContainer.class).setRendered(false);

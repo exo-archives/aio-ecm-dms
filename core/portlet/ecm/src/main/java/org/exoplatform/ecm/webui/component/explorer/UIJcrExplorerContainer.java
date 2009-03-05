@@ -126,6 +126,7 @@ public class UIJcrExplorerContainer extends UIContainer {
     return listDriveNameAll;
   }
   
+  @SuppressWarnings("unchecked")
   public List<DriveData> getDrives(PortletPreferences portletPref) throws Exception {
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class);      
     List<DriveData> driveList = new ArrayList<DriveData>();    
@@ -149,8 +150,7 @@ public class UIJcrExplorerContainer extends UIContainer {
             flag = true;
             break;
           }
-          if (flag)
-            continue;
+          if(flag) continue;
           for (String rolse : userRoles) {
             if (driveData.hasPermission(allPermission, rolse)) {
               temp.add(driveData);
@@ -316,7 +316,7 @@ public class UIJcrExplorerContainer extends UIContainer {
       uiViewBar.setViewOptions(viewOptions);
       uiActionbar.setTabOptions(viewLists.get(0));
     } catch (Exception e) {
-//      setPorletMode(PortletMode.HELP);
+      e.printStackTrace();
     }
   }
 } 

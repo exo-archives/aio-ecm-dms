@@ -74,7 +74,9 @@ public class UIViewBar extends UIForm {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
     PortletPreferences portletPref = pcontext.getRequest().getPreferences();
     String usecase =  portletPref.getValue("usecase", "").trim();
-    if (usecase.equals("jailed")) returnboolean = true;
+    if (usecase.equals("jailed") || usecase.equals("personal") || usecase.equals("social")) {
+      returnboolean = true;
+    }
     return returnboolean;
   }
   

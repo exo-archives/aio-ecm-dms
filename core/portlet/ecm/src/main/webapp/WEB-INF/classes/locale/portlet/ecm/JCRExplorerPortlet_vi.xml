@@ -2151,6 +2151,10 @@
       <driveName>Tên drive</driveName>
       <DriveNameInput>UIJcrExplorerEditForm</DriveNameInput>
     </label>
+    <msg>
+      <not-have-social>Kiểu lựa chọn Social không có hiệu lực, kiểu Selection sẽ được dùng để thay thế.</not-have-social>
+      <personal-usecase>Ổ đĩa công khai của người dùng hiện tại sẽ được sử dụng khi bạn chọn kiểu truy xuất là Personal.</personal-usecase>
+    </msg>
   </UIJcrExplorerEditForm>
   
   <PopUpSelectDrive>

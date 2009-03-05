@@ -83,17 +83,8 @@ public class UIDrivesBrowser extends UIContainer {
   public UIDrivesBrowser() throws Exception {
     rService = getApplicationComponent(RepositoryService.class);
     repoName_ = rService.getDefaultRepository().getConfiguration().getName();
-    initRepoList(repoName_);
   }
   
-  private void initRepoList(String defaultRepo) throws Exception {
-    /*UIFormSelectBox uiFormSelectBox = new UIFormSelectBox(FIELD_SELECTREPO, FIELD_SELECTREPO, null);
-    uiFormSelectBox.setOptions(getRepoItem());
-    uiFormSelectBox.setOnChange("ChangeRepo");
-    uiFormSelectBox.setDefaultValue(defaultRepo);
-    addChild(uiFormSelectBox);*/
-  }
-
   public List<String> getRepositoryList() {
     List<String> repositories = new ArrayList<String>();    
     for(RepositoryEntry re : rService.getConfig().getRepositoryConfigurations()) {
@@ -111,16 +102,7 @@ public class UIDrivesBrowser extends UIContainer {
 
   public String getRepository() {return repoName_;}
   
-  public void setRepository(String repoName) {repoName_ = repoName;}
-  
-  private List<SelectItemOption<String>> getRepoItem() {
-    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
-    for(Object obj : rService.getConfig().getRepositoryConfigurations()) { 
-      RepositoryEntry repo  = (RepositoryEntry)obj;
-      options.add(new SelectItemOption<String>(repo.getName(), repo.getName()));
-    }
-    return options;
-  }
+  public void setRepository(String repoName) {repoName_ = repoName; }  
   
   @SuppressWarnings("unchecked")
   public List<DriveData> getDrives(String repoName) throws Exception {    
