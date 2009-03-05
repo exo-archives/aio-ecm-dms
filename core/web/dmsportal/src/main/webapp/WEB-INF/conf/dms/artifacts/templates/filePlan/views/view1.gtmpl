@@ -300,7 +300,6 @@
 	      </div>
 	      <%/*End UIHorizontalTabs*/%>
 	      <%/*Start UITabContentContainer*/%>
-	      <div style="clear:left;"><span></span></div>
 	      <div class="UITabContentContainer">
 	        <div class="UITabContent" style="display: block;"> 
 	        	<table class="UIGrid" style="padding:0px; width: 95%; margin: auto; border:solid 1px #7EAAD0;">
