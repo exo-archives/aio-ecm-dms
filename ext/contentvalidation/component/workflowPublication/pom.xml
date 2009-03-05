@@ -2,13 +2,13 @@
   <parent>
     <groupId>org.exoplatform.ecm.dms.ext</groupId>
     <artifactId>contentvalidation</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>2.3-SNAPSHOT</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
   <artifactId>exo.ecm.dms.ext.contentvalidation.component.workflowPublication</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>${org.exoplatform.ecm.dms.version}</version>
   <packaging>jar</packaging>
   <name>eXo workflow publication</name>
   <url>http://www.exoplatform.org</url>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
       <artifactId>exo.ecm.dms.ext.contentvalidation.component.plugin</artifactId>
-      <version>${org.exoplatform.ecm.dms.ext.contentvalidation.version}</version>
+      <version>${org.exoplatform.ecm.dms.version}</version>
       <scope>compile</scope>
     </dependency> 
     
