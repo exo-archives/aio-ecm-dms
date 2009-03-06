@@ -26,6 +26,12 @@ import javax.jcr.Node;
  */
 public interface CmsService {
   
+  
+  public final static String POST_CREATE_CONTENT_EVENT = "CmsService.event.postCreate".intern();
+  public final static String POST_EDIT_CONTENT_EVENT = "CmsService.event.postEdit".intern();
+  public final static String PRE_CREATE_CONTENT_VENT = "CmsService.event.preCreate".intern();
+  public final static String PRE_EDIT_CONTENT_EVENT = "CmsService.event.preEdit".intern();
+  
   /**
    * Constant string to refer property of node in Map
    * For getting propreties of specific node in Map, 

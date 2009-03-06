@@ -48,20 +48,24 @@ import org.exoplatform.services.idgenerator.IDGeneratorService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedItemDefinition;
+import org.exoplatform.services.listener.ListenerService;
 
 
 /**
  * @author benjaminmestrallet
  */
 public class CmsServiceImpl implements CmsService {
-
+  
   private RepositoryService jcrService;  
   private IDGeneratorService idGeneratorService;  
   private static final String MIX_REFERENCEABLE = "mix:referenceable" ;
+  private ListenerService listenerService;
   
-  public CmsServiceImpl(RepositoryService jcrService, IDGeneratorService idGeneratorService) {
+  
+  public CmsServiceImpl(RepositoryService jcrService, IDGeneratorService idGeneratorService, ListenerService listenerService) {
     this.idGeneratorService = idGeneratorService;
-    this.jcrService = jcrService;      
+    this.jcrService = jcrService;
+    this.listenerService = listenerService;
   }
   
   public String storeNode(String workspace, String nodeTypeName, String storePath, 
@@ -103,6 +107,8 @@ public class CmsServiceImpl implements CmsService {
       }
     }
     if (isAddNew) {
+      //Broadcast CmsService.event.preCreate event
+      listenerService.broadcast(PRE_CREATE_CONTENT_VENT,storeHomeNode,mappings);
       currentNode = storeHomeNode.addNode(nodeName, primaryType);
       createNodeRecursively(NODE, currentNode, nodeType, mappings);
       if(mixinTypes != null){
@@ -118,12 +124,17 @@ public class CmsServiceImpl implements CmsService {
       if(!currentNode.isNodeType("mix:referenceable")) {
     	  currentNode.addMixin("mix:referenceable");
       }
+    //Broadcast CmsService.event.postCreate event
+      listenerService.broadcast(POST_CREATE_CONTENT_EVENT,this,currentNode);
     } else {
+    //Broadcast CmsService.event.preEdit event
+      listenerService.broadcast(PRE_EDIT_CONTENT_EVENT,storeHomeNode,mappings);
       currentNode = storeHomeNode.getNode(nodeName);      
       updateNodeRecursively(NODE, currentNode, nodeType, mappings);
       if(currentNode.isNodeType("exo:datetime")) {
         currentNode.setProperty("exo:dateModified",new GregorianCalendar()) ;
       }
+      listenerService.broadcast(POST_EDIT_CONTENT_EVENT,this,currentNode);
     }
     return currentNode.getPath();
   }
