@@ -158,7 +158,7 @@ public class UIViewFormTabPane extends UIFormTabPane {
       uiViewTabPane.uiViewForm.changeVersion() ;
       UIViewContainer uiContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class) ;
       UIViewList uiViewList = uiContainer.findFirstComponentOfType(UIViewList.class) ;
-      uiViewList.updateViewListGrid() ;
+      uiViewList.updateViewListGrid(uiViewList.getUIPageIterator().getCurrentPage());
       uiViewTabPane.uiTabForm.refresh(true) ;
       uiViewTabPane.uiViewForm.refresh(true) ;
       uiViewTabPane.removeChildById(POPUP_PERMISSION) ;

@@ -50,7 +50,7 @@ public class UIECMSearch extends UIContainer implements UIPopupComponent {
     advanceSearch.update(null);
     UISavedQuery uiQuery = getChild(UISavedQuery.class);
     uiQuery.setRepositoryName(getAncestorOfType(UIJCRExplorer.class).getRepositoryName()) ;
-    uiQuery.updateGrid();
+    uiQuery.updateGrid(1);
   }
 
   public void deActivate() throws Exception {

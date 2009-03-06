@@ -69,7 +69,7 @@ public class UIECMScripts extends UIContainer {
     return ecmOptions ;
   }
 
-  public void refresh() throws Exception {
+  public void refresh(int currentPage) throws Exception {
     UIECMFilterForm ecmFilterForm = getChild(UIECMFilterForm.class) ;
     String categoryName = 
       ecmFilterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;  
@@ -77,8 +77,8 @@ public class UIECMScripts extends UIContainer {
       ecmFilterForm.setOptions(getECMCategoryOptions()) ; 
       categoryName = ecmFilterForm.getUIFormSelectBox(UIECMFilterForm.FIELD_SELECT_SCRIPT).getValue() ;  
     }
-    UIScriptList uiScriptList = getChildById(SCRIPTLIST_NAME) ;
-    uiScriptList.updateGrid(getECMScript(categoryName)) ;
+    UIScriptList uiScriptList = getChildById(SCRIPTLIST_NAME);
+    uiScriptList.updateGrid(getECMScript(categoryName), currentPage);
   }
   
   public List<ScriptData> getECMScript(String name) throws Exception {

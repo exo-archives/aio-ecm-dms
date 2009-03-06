@@ -75,7 +75,7 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
   }
   
   public void activate() throws Exception {
-    getChild(UIPermissionInfo.class).updateGrid() ;
+    getChild(UIPermissionInfo.class).updateGrid(1);
   }
   public void checkPermissonInfo(Node node) throws Exception {
     if(node.isLocked()){

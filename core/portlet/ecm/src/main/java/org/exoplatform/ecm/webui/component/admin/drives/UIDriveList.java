@@ -72,10 +72,14 @@ public class UIDriveList extends UIComponentDecorator {
   public String[] getActions() { return ACTIONS ; }
 
   @SuppressWarnings("unchecked")
-  public void updateDriveListGrid() throws Exception {
+  public void updateDriveListGrid(int currentPage) throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     ObjectPageList objPageList = new ObjectPageList(getDrives(repository), 10) ;
-    uiPageIterator_.setPageList(objPageList) ;    
+    uiPageIterator_.setPageList(objPageList) ;
+    if(currentPage > getUIPageIterator().getAvailablePage())
+      uiPageIterator_.setCurrentPage(currentPage-1);
+    else
+      uiPageIterator_.setCurrentPage(currentPage);
   }
   
   public UIPageIterator  getUIPageIterator() {  return uiPageIterator_ ; }
@@ -147,7 +151,7 @@ public class UIDriveList extends UIComponentDecorator {
       ManageDriveService driveService = uiDriveList.getApplicationComponent(ManageDriveService.class) ;
       String repository = uiDriveList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       driveService.removeDrive(name, repository) ;
-      uiDriveList.updateDriveListGrid() ;
+      uiDriveList.updateDriveListGrid(uiDriveList.getUIPageIterator().getCurrentPage()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDriveList.getParent()) ;
     }
   }

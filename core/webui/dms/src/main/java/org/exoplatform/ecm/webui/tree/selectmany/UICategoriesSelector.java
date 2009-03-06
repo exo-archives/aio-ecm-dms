@@ -86,7 +86,7 @@ public class UICategoriesSelector extends UIBaseNodeTreeSelector implements UIPo
     if (existedCategoryList.size() > 0) {
       categoriesGrid.setRendered(true) ;
     }
-    categoriesGrid.updateGrid() ;
+    categoriesGrid.updateGrid(categoriesGrid.getUIPageIterator().getCurrentPage());
   }
 
   public void onChange(Node currentNode, Object context) throws Exception {

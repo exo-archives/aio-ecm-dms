@@ -247,7 +247,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
       UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class) ;
       uiPopupAction.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
-      curentList.refresh() ;
+      curentList.refresh(1) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(curentList.getParent()) ;
     }
   }
@@ -269,7 +269,7 @@ public class UIScriptForm extends UIForm implements UIPopupComponent {
       if(!vesion.equals(baseVesion)) { 
         node.checkout() ;
         node.restore(vesion, true) ;
-        uiScriptList.refresh() ;
+        uiScriptList.refresh(1) ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiScriptList) ;
       UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class) ;

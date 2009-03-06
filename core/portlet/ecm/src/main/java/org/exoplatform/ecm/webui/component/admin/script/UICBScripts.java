@@ -57,9 +57,9 @@ public class UICBScripts extends UIContainer {
     uiPopupAction.getChild(UIPopupWindow.class).setId("BCScriptPopupWindow") ;
   }
 
-  public void refresh () throws Exception {
+  public void refresh (int currentPage) throws Exception {
     UIScriptList uiScriptList = getChildById(SCRIPTLIST_NAME) ;
-    uiScriptList.updateGrid(getCBScript()) ;
+    uiScriptList.updateGrid(getCBScript(), currentPage);
   }
 
   public List<ScriptData> getCBScript() throws Exception {

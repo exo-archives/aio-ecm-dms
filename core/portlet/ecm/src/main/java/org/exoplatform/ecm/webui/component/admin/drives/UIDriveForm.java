@@ -212,7 +212,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
           viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder);
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class);
       UIDriveList uiDriveList = uiManager.getChild(UIDriveList.class);
-      uiDriveList.updateDriveListGrid();
+      uiDriveList.updateDriveListGrid(uiDriveList.getUIPageIterator().getCurrentPage());
       uiDriveForm.refresh(null);
       UIDriveManager uiDriveManager = uiDriveForm.getAncestorOfType(UIDriveManager.class);
       uiDriveManager.removeChildById(UIDriveForm.POPUP_DRIVEPERMISSION);

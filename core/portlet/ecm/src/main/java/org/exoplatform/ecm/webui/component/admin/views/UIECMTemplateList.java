@@ -73,7 +73,7 @@ public class UIECMTemplateList extends UIGrid {
   }
 
   @SuppressWarnings("unchecked")
-  public void updateTempListGrid() throws Exception {
+  public void updateTempListGrid(int currentPage) throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     List<Node> nodes = getApplicationComponent(ManageViewService.class).
       getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES, repository, SessionProviderFactory.createSessionProvider()) ;
@@ -83,6 +83,10 @@ public class UIECMTemplateList extends UIGrid {
     }
     Collections.sort(tempBeans, new ECMViewComparator()) ;
     getUIPageIterator().setPageList(new ObjectPageList(tempBeans, 10)) ;
+    if(currentPage > getUIPageIterator().getAvailablePage())
+      getUIPageIterator().setCurrentPage(currentPage-1);
+    else
+      getUIPageIterator().setCurrentPage(currentPage);
   }
 
   static public class ECMViewComparator implements Comparator {
@@ -134,7 +138,7 @@ public class UIECMTemplateList extends UIGrid {
         return ;
       }
       vservice.removeTemplate(templatePath, repository) ;
-      uiECMTemp.updateTempListGrid() ;
+      uiECMTemp.updateTempListGrid(uiECMTemp.getUIPageIterator().getCurrentPage()) ;
       UITemplateContainer uiTempContainer = uiECMTemp.getParent() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTempContainer) ;
     }

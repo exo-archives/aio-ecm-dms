@@ -40,8 +40,10 @@ public class UIViewManager extends UIContainer {
   }
   public void update() throws Exception {
     getChild(UIViewContainer.class).update() ;
-    ((UITemplateContainer)getChildById("ECMTemplate")).getChild(UIECMTemplateList.class).updateTempListGrid() ;
-    ((UITemplateContainer)getChildById("CBTemplate")).getChild(UICBTemplateList.class).updateCBTempListGrid() ;
+    UIECMTemplateList uiECMTemplateList = ((UITemplateContainer)getChildById("ECMTemplate")).getChild(UIECMTemplateList.class);
+    uiECMTemplateList.updateTempListGrid(uiECMTemplateList.getUIPageIterator().getCurrentPage());
+    UICBTemplateList uiCBTemplateList = ((UITemplateContainer)getChildById("CBTemplate")).getChild(UICBTemplateList.class);
+    uiCBTemplateList.updateCBTempListGrid(uiCBTemplateList.getUIPageIterator().getCurrentPage());
   }
 }
 

@@ -60,7 +60,7 @@ public class UIECMFilterForm extends UIForm {
       UIECMScripts uiECMScripts = uiForm.getParent() ;
       UIScriptList uiScriptList = uiECMScripts.getChildById(UIECMScripts.SCRIPTLIST_NAME) ;
       String categoryName = uiForm.getUIFormSelectBox(FIELD_SELECT_SCRIPT).getValue() ;
-      uiScriptList.updateGrid(uiECMScripts.getECMScript(categoryName)) ;
+      uiScriptList.updateGrid(uiECMScripts.getECMScript(categoryName), 1);
       UIScriptManager sManager = uiForm.getAncestorOfType(UIScriptManager.class) ;
       sManager.setRenderedChild(UIECMScripts.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiECMScripts) ;

@@ -64,10 +64,14 @@ public class UIScriptList extends UIComponentDecorator {
   }
 
   @SuppressWarnings("unchecked")
-  public void updateGrid(List<ScriptData> scriptData) throws Exception {
-    Collections.sort(scriptData, new ScriptComparator()) ;
-    ObjectPageList objPageList = new ObjectPageList(scriptData, 10) ;
-    uiPageIterator_.setPageList(objPageList) ;
+  public void updateGrid(List<ScriptData> scriptData, int currentPage) throws Exception {
+    Collections.sort(scriptData, new ScriptComparator());
+    ObjectPageList objPageList = new ObjectPageList(scriptData, 10);
+    uiPageIterator_.setPageList(objPageList);
+    if(currentPage > uiPageIterator_.getAvailablePage())
+      uiPageIterator_.setCurrentPage(currentPage-1);
+    else
+      uiPageIterator_.setCurrentPage(currentPage);
   }
   
   public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
@@ -92,13 +96,13 @@ public class UIScriptList extends UIComponentDecorator {
     return script.getPath().substring(basePath.length()) ;
   }
 
-  public void refresh() throws Exception {
-    UIScriptManager sManager = getAncestorOfType(UIScriptManager.class) ;
-    UIComponent parent = getParent() ;
+  public void refresh(int currentPage) throws Exception {
+    UIScriptManager sManager = getAncestorOfType(UIScriptManager.class);
+    UIComponent parent = getParent();
     if(parent instanceof UICBScripts) {
-      sManager.getChild(UICBScripts.class).refresh() ;
+      sManager.getChild(UICBScripts.class).refresh(currentPage);
     } else {
-      sManager.getChild(UIECMScripts.class).refresh() ;
+      sManager.getChild(UIECMScripts.class).refresh(currentPage);
     }
   }
   
@@ -195,7 +199,7 @@ public class UIScriptList extends UIComponentDecorator {
         throw new MessageException(new ApplicationMessage("UIECMAdminControlPanel.msg.access-denied", 
                                                           null, ApplicationMessage.WARNING)) ;
       }
-      uiScriptList.refresh() ;
+      uiScriptList.refresh(uiScriptList.uiPageIterator_.getCurrentPage());
       UIScriptManager uiManager = uiScriptList.getAncestorOfType(UIScriptManager.class) ;
       if((UIComponent)uiScriptList.getParent() instanceof UIECMScripts) {
         uiManager.setRenderedChild(UIECMScripts.class) ;

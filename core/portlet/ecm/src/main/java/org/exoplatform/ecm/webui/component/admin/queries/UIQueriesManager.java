@@ -37,7 +37,7 @@ public class UIQueriesManager extends UIContainer {
   }
   
   public void update() throws Exception {
-    getChild(UIQueriesList.class).updateQueriesGrid() ;
+    getChild(UIQueriesList.class).updateQueriesGrid(1) ;
   }
   public void initFormPopup(String id) throws Exception {
     removeChildById(id) ;

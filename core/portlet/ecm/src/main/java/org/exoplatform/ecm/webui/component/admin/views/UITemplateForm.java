@@ -310,12 +310,12 @@ public class UITemplateForm extends UIForm {
       uiForm.refresh();
       if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
         UIECMTemplateList uiECMTempList = uiTempContainer.getChild(UIECMTemplateList.class);
-        uiECMTempList.updateTempListGrid();
+        uiECMTempList.updateTempListGrid(uiECMTempList.getUIPageIterator().getCurrentPage());
         uiECMTempList.setRenderSibbling(UIECMTemplateList.class);
       } 
       if(uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
         UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class);
-        uiCBTempList.updateCBTempListGrid();
+        uiCBTempList.updateCBTempListGrid(uiCBTempList.getUIPageIterator().getCurrentPage());
         uiCBTempList.setRenderSibbling(UICBTemplateList.class);
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTempContainer);
@@ -351,11 +351,11 @@ public class UITemplateForm extends UIForm {
       uiForm.refresh();
       if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
         UIECMTemplateList uiECMTempList = uiTempContainer.getChild(UIECMTemplateList.class);
-        uiECMTempList.updateTempListGrid();
+        uiECMTempList.updateTempListGrid(uiECMTempList.getUIPageIterator().getCurrentPage());
       } 
       if(uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
         UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class);
-        uiCBTempList.updateCBTempListGrid();
+        uiCBTempList.updateCBTempListGrid(uiCBTempList.getUIPageIterator().getCurrentPage());
       }
     }
   }
@@ -372,11 +372,11 @@ public class UITemplateForm extends UIForm {
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class);
       if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
         UIECMTemplateList uiECMTempList = uiTempContainer.getChild(UIECMTemplateList.class);
-        uiECMTempList.updateTempListGrid();
+        uiECMTempList.updateTempListGrid(uiECMTempList.getUIPageIterator().getCurrentPage());
       } 
       if(uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
         UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class);
-        uiCBTempList.updateCBTempListGrid();
+        uiCBTempList.updateCBTempListGrid(uiCBTempList.getUIPageIterator().getCurrentPage());
       }
     }
   }
@@ -392,11 +392,11 @@ public class UITemplateForm extends UIForm {
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class);
       if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
         UIECMTemplateList uiECMTempList = uiTempContainer.getChild(UIECMTemplateList.class);
-        uiECMTempList.updateTempListGrid();
+        uiECMTempList.updateTempListGrid(uiECMTempList.getUIPageIterator().getCurrentPage());
       } 
       if(uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
         UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class);
-        uiCBTempList.updateCBTempListGrid();
+        uiCBTempList.updateCBTempListGrid(uiCBTempList.getUIPageIterator().getCurrentPage());
       }
 
       uiForm.refresh();

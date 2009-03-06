@@ -212,7 +212,7 @@ public class UIPermissionInfo extends UIContainer {
       if(!PermissionUtil.canRead(node)) {
         uiPopup.deActivate() ;
       } else {
-        uicomp.updateGrid() ;
+        uicomp.updateGrid();
         event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;

@@ -87,7 +87,7 @@ public class UICBTemplateList extends UIGrid {
   }
   
   @SuppressWarnings("unchecked")
-  public void updateCBTempListGrid() throws Exception {
+  public void updateCBTempListGrid(int currentPage) throws Exception {
     List<Node> nodes = getAllTemplates() ;
     List<TemplateBean> tempBeans = new ArrayList<TemplateBean>() ;
     for(Node node : nodes) {
@@ -95,6 +95,10 @@ public class UICBTemplateList extends UIGrid {
     }
     Collections.sort(tempBeans, new CBViewComparator()) ;
     getUIPageIterator().setPageList(new ObjectPageList(tempBeans, 10)) ;
+    if(currentPage > getUIPageIterator().getAvailablePage())
+      getUIPageIterator().setCurrentPage(currentPage-1);
+    else
+      getUIPageIterator().setCurrentPage(currentPage);
   }
   
   static public class CBViewComparator implements Comparator {
@@ -132,7 +136,7 @@ public class UICBTemplateList extends UIGrid {
       String repository = uiCBTemp.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       String templatePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiCBTemp.getApplicationComponent(ManageViewService.class).removeTemplate(templatePath, repository) ;
-      uiCBTemp.updateCBTempListGrid() ;
+      uiCBTemp.updateCBTempListGrid(uiCBTemp.getUIPageIterator().getCurrentPage());
       uiCBTemp.setRenderSibbling(UICBTemplateList.class);
       UIViewManager uiViewManager = uiCBTemp.getAncestorOfType(UIViewManager.class) ;
       uiViewManager.setRenderedChild(UICBTemplateList.ST_CBTemp) ;

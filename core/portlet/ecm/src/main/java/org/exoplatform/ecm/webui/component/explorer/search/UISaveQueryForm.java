@@ -97,7 +97,7 @@ public class UISaveQueryForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      uiECMSearch.getChild(UISavedQuery.class).updateGrid() ;
+      uiECMSearch.getChild(UISavedQuery.class).updateGrid(1);
       if(uiSaveQueryForm.isSimpleSearch_) {
         UISearchContainer uiSearchContainer = uiSaveQueryForm.getAncestorOfType(UISearchContainer.class) ;
         UIPopupContainer uiPopup = uiSearchContainer.getChild(UIPopupContainer.class) ;

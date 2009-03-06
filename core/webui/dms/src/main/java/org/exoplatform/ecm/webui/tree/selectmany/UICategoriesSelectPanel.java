@@ -83,7 +83,7 @@ public class UICategoriesSelectPanel extends UIContainer{
       if(!uiSelectedCategoriesGrid.getSelectedCategories().contains(value)) {
         uiSelectedCategoriesGrid.addCategory(value);
       }
-      uiSelectedCategoriesGrid.updateGrid();
+      uiSelectedCategoriesGrid.updateGrid(uiSelectedCategoriesGrid.getUIPageIterator().getCurrentPage());
       uiSelectedCategoriesGrid.setRendered(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiCategoriesSelector) ;
     }

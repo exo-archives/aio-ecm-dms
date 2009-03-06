@@ -242,7 +242,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
           return ;
         }
         UIECMSearch uiSearch = uiForm.getParent() ;
-        uiSearch.getChild(UISavedQuery.class).updateGrid() ;
+        uiSearch.getChild(UISavedQuery.class).updateGrid(1);
         uiForm.update(null) ;
         uiSearch.setRenderedChild(UISavedQuery.class) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiSearch) ;
@@ -267,7 +267,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         session.logout() ;
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         UISavedQuery uiSavedQuery = uiForm.getAncestorOfType(UISavedQuery.class) ; 
-        uiSavedQuery.updateGrid() ;
+        uiSavedQuery.updateGrid(1);
         uiSavedQuery.removeChildById(UISavedQuery.EDIT_FORM) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiSavedQuery.getParent()) ;
       }

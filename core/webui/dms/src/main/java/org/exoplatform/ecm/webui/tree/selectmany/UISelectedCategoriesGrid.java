@@ -63,7 +63,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
     configure("categoryPath", BEAN_FIELD, BEAN_ACTIONS);
   }
 
-  public void updateGrid () throws Exception {
+  public void updateGrid (int currentPage) throws Exception {
     List<CategoryData> categoryDataList = new ArrayList<CategoryData>();
     for(String categoryPath: getSelectedCategories()) {
       CategoryData bean = new CategoryData();
@@ -82,6 +82,10 @@ public class UISelectedCategoriesGrid extends UIGrid {
     Collections.sort(categoryDataList,new CategoryComparator());
     ObjectPageList objPageList = new ObjectPageList(categoryDataList, 5) ;
     getUIPageIterator().setPageList(objPageList) ;
+    if(currentPage > getUIPageIterator().getAvailablePage())
+      getUIPageIterator().setCurrentPage(currentPage-1);
+    else
+      getUIPageIterator().setCurrentPage(currentPage);
   }
 
   public String[] getActions() {return ACTIONS ;}
@@ -140,7 +144,7 @@ public class UISelectedCategoriesGrid extends UIGrid {
       String value = event.getRequestContext().getRequestParameter(OBJECTID);
       uiSelectedCategoriesGrid.removeCategory(value);
       if (uiSelectedCategoriesGrid.getSelectedCategories().size() == 0) uiSelectedCategoriesGrid.setDeleteAllCategory(true);
-      uiSelectedCategoriesGrid.updateGrid();
+      uiSelectedCategoriesGrid.updateGrid(uiSelectedCategoriesGrid.getUIPageIterator().getCurrentPage());
       if (uiSelectedCategoriesGrid.getSelectedCategories().size() == 0) {
         uiSelectedCategoriesGrid.setRendered(false);
       }

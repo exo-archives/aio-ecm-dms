@@ -45,7 +45,8 @@ public class UIDriveManager extends UIContainer {
     addChild(UIDriveList.class, null, null) ;
   }
   public void update()throws Exception  {
-    getChild(UIDriveList.class).updateDriveListGrid() ;
+    UIDriveList uiDriveList = getChild(UIDriveList.class); 
+    uiDriveList.updateDriveListGrid(uiDriveList.getUIPageIterator().getCurrentPage());
   }
   public void initPopup(String id) throws Exception {
     UIDriveForm uiDriveForm ;

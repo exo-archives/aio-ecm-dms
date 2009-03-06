@@ -70,7 +70,7 @@ public class UITemplateList extends UIGrid {
   }
   
   @SuppressWarnings("unchecked")
-  public void updateGrid() throws Exception {
+  public void updateGrid(int currentPage) throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     Node templatesHome = templateService.getTemplatesHome(repository, 
@@ -88,13 +88,17 @@ public class UITemplateList extends UIGrid {
       while (nodes.hasNext()) {
         Node node  = nodes.nextNode();
         if (listNodeTypeName.contains(node.getName())) {
-          templateData.add(new TemplateData(node.getName())) ;
+          templateData.add(new TemplateData(node.getName()));
         }
       }
       Collections.sort(templateData, new TemplateComparator()) ;
     } 
     ObjectPageList objPageList = new ObjectPageList(templateData, 10) ;
     getUIPageIterator().setPageList(objPageList) ;
+    if(currentPage > getUIPageIterator().getAvailablePage())
+      getUIPageIterator().setCurrentPage(currentPage-1);
+    else
+      getUIPageIterator().setCurrentPage(currentPage);
   }
   
   static public class TemplateComparator implements Comparator {
@@ -137,7 +141,7 @@ public class UITemplateList extends UIGrid {
       TemplateService templateService = nodeTypeList.getApplicationComponent(TemplateService.class) ;
       String repository = nodeTypeList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       templateService.removeManagedNodeType(nodeType, repository) ;
-      nodeTypeList.updateGrid() ;
+      nodeTypeList.updateGrid(nodeTypeList.getUIPageIterator().getCurrentPage()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(nodeTypeList.getParent()) ;
     }
   }

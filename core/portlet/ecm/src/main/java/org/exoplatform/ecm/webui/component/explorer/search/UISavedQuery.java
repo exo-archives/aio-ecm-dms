@@ -78,9 +78,13 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
     uiPageIterator_ = addChild(UIPageIterator.class, null, "SavedQueryIterator");
   }  
 
-  public void updateGrid() throws Exception {
+  public void updateGrid(int currentPage) throws Exception {
     PageList pageList = new ObjectPageList(queryList(), 10);
-    uiPageIterator_.setPageList(pageList);  
+    uiPageIterator_.setPageList(pageList);
+    if(currentPage > uiPageIterator_.getAvailablePage())
+      uiPageIterator_.setCurrentPage(currentPage-1);
+    else
+      uiPageIterator_.setCurrentPage(currentPage);
   }
   
   public List<Object> queryList() throws Exception {
@@ -225,7 +229,7 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       QueryService queryService = uiQuery.getApplicationComponent(QueryService.class);      
       String path = event.getRequestContext().getRequestParameter(OBJECTID);
       queryService.removeQuery(path, userName, uiQuery.repositoryName_);
-      uiQuery.updateGrid();
+      uiQuery.updateGrid(uiQuery.getUIPageIterator().getCurrentPage());
       event.getRequestContext().addUIComponentToUpdateByAjax(uiQuery);
     }
   }

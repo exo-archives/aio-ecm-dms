@@ -66,10 +66,14 @@ public class UIActionList extends UIContainer {
     addChild(UIPageIterator.class, null, "ActionListIterator");
   }
 
-  public void updateGrid(Node node) throws Exception {
+  public void updateGrid(Node node, int currentPage) throws Exception {
     UIPageIterator uiIterator = getChild(UIPageIterator.class) ;
     ObjectPageList objPageList = new ObjectPageList(getAllActions(node), 10) ;
-    uiIterator.setPageList(objPageList) ;
+    uiIterator.setPageList(objPageList);
+    if(currentPage > uiIterator.getAvailablePage())
+      uiIterator.setCurrentPage(currentPage-1);
+    else
+      uiIterator.setCurrentPage(currentPage);
   }
 
   public String[] getActions() { return ACTIONS ; }
@@ -230,7 +234,7 @@ public class UIActionList extends UIContainer {
       }
       UIActionManager uiActionManager = uiExplorer.findFirstComponentOfType(UIActionManager.class) ;
       uiActionManager.removeChild(UIActionViewContainer.class) ;
-      uiActionList.updateGrid(uiExplorer.getCurrentNode()) ;
+      uiActionList.updateGrid(uiExplorer.getCurrentNode(), uiActionList.getChild(UIPageIterator.class).getCurrentPage());
       uiActionManager.setRenderedChild(UIActionListContainer.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionManager) ;
     }

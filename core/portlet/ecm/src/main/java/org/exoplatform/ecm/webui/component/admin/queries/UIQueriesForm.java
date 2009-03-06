@@ -206,7 +206,7 @@ public class UIQueriesForm extends UIForm implements UISelectable {
         return ;
       }
       UIQueriesManager uiManager = uiForm.getAncestorOfType(UIQueriesManager.class) ;
-      uiManager.getChild(UIQueriesList.class).updateQueriesGrid() ;
+      uiManager.getChild(UIQueriesList.class).updateQueriesGrid(1);
       uiManager.removeChildById(UIQueriesList.ST_ADD) ;
       uiManager.removeChildById(UIQueriesList.ST_EDIT) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;

@@ -150,7 +150,7 @@ public class UINodeTypeImport extends UIForm {
       if(counter > 0) {
         String[] count = {String.valueOf(counter)} ;
         UINodeTypeList uiNodeTypeList = uiManager.getChild(UINodeTypeList.class) ;
-        uiNodeTypeList.refresh(null) ;
+        uiNodeTypeList.refresh(null, uiNodeTypeList.getUIPageIterator().getCurrentPage());
         UIPopupWindow uiPopup = uiManager.findComponentById(UINodeTypeManager.IMPORT_POPUP) ;
         uiPopup.setRendered(false) ;
         uiApp.addMessage(new ApplicationMessage("UINodeTypeImport.msg.nodetype-registered", count)) ;

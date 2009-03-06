@@ -80,9 +80,13 @@ public class UIViewList extends UIGrid {
   public String[] getActions() { return ACTIONS ; }
   
   @SuppressWarnings("unchecked")
-  public void updateViewListGrid() throws Exception {
+  public void updateViewListGrid(int currentPage) throws Exception {
     Collections.sort(getViewsBean(), new ViewComparator()) ;
-    getUIPageIterator().setPageList(new ObjectPageList(getViewsBean(), 10)) ;    
+    getUIPageIterator().setPageList(new ObjectPageList(getViewsBean(), 10)) ;
+    if(currentPage > getUIPageIterator().getAvailablePage())
+      getUIPageIterator().setCurrentPage(currentPage-1);
+    else
+      getUIPageIterator().setCurrentPage(currentPage);
   }
   
   private List<ViewBean> getViewsBean() throws Exception {
@@ -161,7 +165,7 @@ public class UIViewList extends UIGrid {
         return ;
       }
       viewList.getApplicationComponent(ManageViewService.class).removeView(viewName, repository) ;
-      viewList.updateViewListGrid() ;
+      viewList.updateViewListGrid(viewList.getUIPageIterator().getCurrentPage()) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(viewList.getParent()) ;
     }
   }

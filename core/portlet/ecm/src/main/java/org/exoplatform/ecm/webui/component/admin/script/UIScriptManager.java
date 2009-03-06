@@ -37,8 +37,8 @@ public class UIScriptManager extends UIContainer {
   }
 
   public void refresh()throws Exception {
-    getChild(UIECMScripts.class).refresh() ;
-    getChild(UICBScripts.class).refresh() ;
+    getChild(UIECMScripts.class).refresh(1);
+    getChild(UICBScripts.class).refresh(1);
   }
   
   public void removeECMScripForm() {

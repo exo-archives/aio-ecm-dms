@@ -64,11 +64,15 @@ public class UIRelationsAddedList extends UIContainer implements UISelectable {
     uiGrid.configure("path", RELATE_BEAN_FIELD, ACTION) ;
   }
   
-  public void updateGrid (List<Node> nodes) throws Exception {
+  public void updateGrid (List<Node> nodes, int currentPage) throws Exception {
     UIGrid uiGrid = getChildById("RelateAddedList") ;   
     if(nodes == null) nodes = new ArrayList<Node>() ;
-    ObjectPageList objPageList = new ObjectPageList(nodes, 10) ;
-    uiGrid.getUIPageIterator().setPageList(objPageList) ;
+    ObjectPageList objPageList = new ObjectPageList(nodes, 10);
+    uiGrid.getUIPageIterator().setPageList(objPageList);
+    if(currentPage > uiGrid.getUIPageIterator().getAvailablePage())
+      uiGrid.getUIPageIterator().setCurrentPage(currentPage-1);
+    else
+      uiGrid.getUIPageIterator().setCurrentPage(currentPage);
   }
   
   @SuppressWarnings("unused")
@@ -90,7 +94,7 @@ public class UIRelationsAddedList extends UIContainer implements UISelectable {
       }
       relateService.addRelation(uiJCRExplorer.getCurrentNode(), path, wsName,repository) ;
       updateGrid(relateService.getRelations(uiJCRExplorer.getCurrentNode(), 
-          uiJCRExplorer.getRepositoryName(), SessionProviderFactory.createSessionProvider())) ;      
+          uiJCRExplorer.getRepositoryName(), SessionProviderFactory.createSessionProvider()), 1);      
       setRenderSibbling(UIRelationsAddedList.class) ;
     } catch(Exception e) {
       e.printStackTrace() ;
@@ -107,9 +111,11 @@ public class UIRelationsAddedList extends UIContainer implements UISelectable {
         uiAddedList.getApplicationComponent(RelationsService.class) ;
       UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
       try {
-        relationService.removeRelation(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName()) ;
+        relationService.removeRelation(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName());
+        UIGrid uiGrid = uiAddedList.getChildById("RelateAddedList");
         uiAddedList.updateGrid(relationService.getRelations(uiExplorer.getCurrentNode(),
-            uiExplorer.getRepositoryName(), SessionProviderFactory.createSessionProvider())) ;
+            uiExplorer.getRepositoryName(), SessionProviderFactory.createSessionProvider()),
+            uiGrid.getUIPageIterator().getCurrentPage());
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
       }

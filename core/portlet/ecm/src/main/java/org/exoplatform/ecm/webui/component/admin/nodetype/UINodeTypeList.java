@@ -105,7 +105,7 @@ public class UINodeTypeList extends UIComponentDecorator {
   
   public String[] getActions() { return ACTIONS ; }
   
-  public void refresh(String name) throws Exception {
+  public void refresh(String name, int currentPage) throws Exception {
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
     ManageableRepository manaRepository = 
       getApplicationComponent(RepositoryService.class).getRepository(repository) ;
@@ -126,7 +126,11 @@ public class UINodeTypeList extends UIComponentDecorator {
     }
     session.logout();
     PageList pageList = new ObjectPageList(getAllNodeTypes(), 10) ;
-    uiPageIterator_.setPageList(pageList);        
+    uiPageIterator_.setPageList(pageList);
+    if(currentPage > uiPageIterator_.getAvailablePage())
+      uiPageIterator_.setCurrentPage(currentPage-1);
+    else
+      uiPageIterator_.setCurrentPage(currentPage);
   }
   
   static public class AddActionListener extends EventListener<UINodeTypeList> {
@@ -229,7 +233,7 @@ public class UINodeTypeList extends UIComponentDecorator {
         draftNode.save() ;
         if(!draftNode.hasNodes()) draftNode.remove() ;
         session.save() ;
-        uiNodeList.refresh(null);
+        uiNodeList.refresh(null, uiNodeList.getUIPageIterator().getCurrentPage());
         event.getRequestContext().addUIComponentToUpdateByAjax(uiNodeList.getParent()) ;
       }
       session.logout() ;

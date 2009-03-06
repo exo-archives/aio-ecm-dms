@@ -88,7 +88,7 @@ public class UIPermissionInfo extends UIContainer {
     return Utils.getNodeOwner(node) ;
   }
   
-  public void updateGrid() throws Exception {
+  public void updateGrid(int currentPage) throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Node currentNode = uiJCRExplorer.getCurrentNode() ;
     List<PermissionBean> permBeans = new ArrayList<PermissionBean>(); 
@@ -142,7 +142,11 @@ public class UIPermissionInfo extends UIContainer {
     }
     UIGrid uiGrid = findFirstComponentOfType(UIGrid.class) ; 
     ObjectPageList objPageList = new ObjectPageList(permBeans, 10) ;
-    uiGrid.getUIPageIterator().setPageList(objPageList) ;    
+    uiGrid.getUIPageIterator().setPageList(objPageList);
+    if(currentPage > uiGrid.getUIPageIterator().getAvailablePage())
+      uiGrid.getUIPageIterator().setCurrentPage(currentPage-1);
+    else
+      uiGrid.getUIPageIterator().setCurrentPage(currentPage);
   }
   static public class EditActionListener extends EventListener<UIPermissionInfo> {
     public void execute(Event<UIPermissionInfo> event) throws Exception {
@@ -223,7 +227,7 @@ public class UIPermissionInfo extends UIContainer {
         uiJCRExplorer.setSelectNode(node.getParent().getPath(), uiJCRExplorer.getSession());
         uiPopup.deActivate() ;
       } else {
-        uicomp.updateGrid() ;
+        uicomp.updateGrid(uicomp.getChild(UIGrid.class).getUIPageIterator().getCurrentPage());
         event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
       }
       uiJCRExplorer.setIsHidePopup(true) ;

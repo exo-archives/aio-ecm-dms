@@ -610,9 +610,9 @@ public class UINodeTypeForm extends UIFormTabPane {
       UINodeTypeList nodeTypeList = uiManager.getChild(UINodeTypeList.class) ;
       if(uiForm.isDraft_){
         uiForm.isDraft_ = false ;
-        nodeTypeList.refresh(nodeTypeName) ;
+        nodeTypeList.refresh(nodeTypeName, nodeTypeList.getUIPageIterator().getCurrentPage());
       } else {
-        nodeTypeList.refresh(null) ; 
+        nodeTypeList.refresh(null, nodeTypeList.getUIPageIterator().getCurrentPage()); 
       }
       uiForm.refresh() ;
       uiForm.setTabRender(NODETYPE_DEFINITION) ;
@@ -774,7 +774,7 @@ public class UINodeTypeForm extends UIFormTabPane {
       session.logout();
       UINodeTypeManager uiManager = uiForm.getAncestorOfType(UINodeTypeManager.class) ;
       UINodeTypeList nodeTypeList = uiManager.getChild(UINodeTypeList.class) ;
-      nodeTypeList.refresh(null);
+      nodeTypeList.refresh(null, nodeTypeList.getUIPageIterator().getCurrentPage());
       uiForm.refresh() ;
       uiForm.setTabRender(NODETYPE_DEFINITION) ;
       UIPopupWindow uiPopup = uiForm.getParent() ;

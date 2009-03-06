@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -42,7 +43,7 @@ public class UIActionManager extends UIContainer implements UIPopupComponent {
     UIActionTypeForm uiActionTypeForm = findFirstComponentOfType(UIActionTypeForm.class) ;
     uiActionTypeForm.update() ;
     UIActionList uiActionList = findFirstComponentOfType(UIActionList.class) ;
-    uiActionList.updateGrid(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
+    uiActionList.updateGrid(getAncestorOfType(UIJCRExplorer.class).getCurrentNode(), uiActionList.getChild(UIPageIterator.class).getCurrentPage());
   }
   
   public void deActivate() throws Exception {

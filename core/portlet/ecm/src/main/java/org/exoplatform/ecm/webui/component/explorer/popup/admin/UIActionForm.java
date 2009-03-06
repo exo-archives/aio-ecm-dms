@@ -44,6 +44,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
@@ -235,7 +236,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         UIActionManager uiActionManager = actionForm.getAncestorOfType(UIActionManager.class) ;
         actionForm.createNewAction(uiExplorer.getCurrentNode(), actionForm.nodeTypeName_, true) ;
         UIActionList uiActionList = uiActionManager.findFirstComponentOfType(UIActionList.class) ;  
-        uiActionList.updateGrid(parentNode) ;
+        uiActionList.updateGrid(parentNode, uiActionList.getChild(UIPageIterator.class).getCurrentPage());
         uiActionManager.setRenderedChild(UIActionListContainer.class) ;
         actionForm.reset() ;
         actionForm.isEditInList_ = false ;

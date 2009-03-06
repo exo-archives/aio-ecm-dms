@@ -61,9 +61,13 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
   
   public List getListCategories() throws Exception { return uiPageIterator_.getCurrentPageData(); }
   
-  public void updateGrid() throws Exception {
+  public void updateGrid(int currentPage) throws Exception {
     ObjectPageList objPageList = new ObjectPageList(getCategories(), 10);
     uiPageIterator_.setPageList(objPageList);
+    if(currentPage > getUIPageIterator().getAvailablePage())
+      getUIPageIterator().setCurrentPage(currentPage-1);
+    else
+      getUIPageIterator().setCurrentPage(currentPage);
   }
   
   public List<Node> getCategories() throws Exception {
@@ -85,7 +89,7 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
       categoriesService.addCategory(currentNode, value.toString(), uiJCRExplorer.getRepositoryName()) ;
       uiJCRExplorer.getCurrentNode().save() ;
       uiJCRExplorer.getSession().save() ;
-      updateGrid() ;
+      updateGrid(1) ;
       setRenderSibbling(UICategoriesAddedList.class) ;
     } catch(Exception e) {
       e.printStackTrace() ;
@@ -104,7 +108,7 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
       try {
         categoriesService.removeCategory(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName()) ;
 //        uiAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName())) ;
-        uiAddedList.updateGrid();
+        uiAddedList.updateGrid(uiAddedList.getUIPageIterator().getCurrentPage());
       } catch(AccessDeniedException ace) {
         throw new MessageException(new ApplicationMessage("UICategoriesAddedList.msg.access-denied",
                                    null, ApplicationMessage.WARNING)) ;

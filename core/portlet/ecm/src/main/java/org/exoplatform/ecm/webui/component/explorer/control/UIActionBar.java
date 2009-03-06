@@ -941,7 +941,7 @@ public class UIActionBar extends UIForm {
       List<Node> relations = 
         relateService.getRelations(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName(), 
             SessionProviderFactory.createSessionProvider());
-      uiRelateAddedList.updateGrid(relations);
+      uiRelateAddedList.updateGrid(relations, 1);
       String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
       String defaultWsName = 
         repoService.getRepository(repository).getConfiguration().getDefaultWorkspaceName();
@@ -1083,7 +1083,7 @@ public class UIActionBar extends UIForm {
       UISavedQuery uiSavedQuery = event.getSource().createUIComponent(UISavedQuery.class, null, null);
       uiSavedQuery.setIsQuickSearch(true);
       uiSavedQuery.setRepositoryName(uiJCRExplorer.getRepositoryName());
-      uiSavedQuery.updateGrid();
+      uiSavedQuery.updateGrid(1);
       UIPopupContainer.activate(uiSavedQuery, 700, 400);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }

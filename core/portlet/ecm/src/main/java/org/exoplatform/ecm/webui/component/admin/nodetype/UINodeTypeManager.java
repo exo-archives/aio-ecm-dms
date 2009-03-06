@@ -41,7 +41,8 @@ public class UINodeTypeManager extends UIContainer {
   }
   
   public void update() throws Exception {
-    getChild(UINodeTypeList.class).refresh(null) ;
+    UINodeTypeList uiNodeTypeList = getChild(UINodeTypeList.class); 
+    uiNodeTypeList.refresh(null, uiNodeTypeList.getUIPageIterator().getCurrentPage());
   }
   public void setExportPopup() throws Exception {
     removeChildById(EXPORT_POPUP) ;

@@ -64,9 +64,13 @@ public class UIQueriesList extends UIComponentDecorator {
 
   public String[] getActions() { return ACTIONS ; }
   
-  public void updateQueriesGrid() throws Exception {
+  public void updateQueriesGrid(int currentPage) throws Exception {
     PageList pageList = new ObjectPageList(getAllSharedQueries(), 10) ;
-    uiPageIterator_.setPageList(pageList) ;    
+    uiPageIterator_.setPageList(pageList) ;
+    if(currentPage > getUIPageIterator().getAvailablePage())
+      uiPageIterator_.setCurrentPage(currentPage-1);
+    else
+      uiPageIterator_.setCurrentPage(currentPage);
   }
   
   public UIPageIterator getUIPageIterator() { return uiPageIterator_ ; }
@@ -119,13 +123,14 @@ public class UIQueriesList extends UIComponentDecorator {
   
   static public class DeleteActionListener extends EventListener<UIQueriesList> {
     public void execute(Event<UIQueriesList> event) throws Exception {
+      UIQueriesList uiQueriesList = event.getSource();
       UIQueriesManager uiQueriesMan = event.getSource().getParent() ;
       String repository = uiQueriesMan.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       String queryName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       QueryService queryService = event.getSource().getApplicationComponent(QueryService.class) ;
       queryService.removeQuery(queryName, userName, repository) ;
-      event.getSource().updateQueriesGrid() ;
+      event.getSource().updateQueriesGrid(uiQueriesList.getUIPageIterator().getCurrentPage());
       event.getRequestContext().addUIComponentToUpdateByAjax(uiQueriesMan) ;
     }
   }
