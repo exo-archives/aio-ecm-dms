@@ -36,6 +36,9 @@
 				    templates/groovy/webui/component/UIHomePagePortlet.gtmpl,
 				    templates/skin/webui/component/UIHomePagePortlet/
 				  </dependentWarExcludes>
+				  <dependentWarExcludes>
+				  	WEB-INF/conf/portal/template
+				  </dependentWarExcludes>
           <webResources>
             <resource>
               <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/bp/exo.ecm.bp.bonita.payraise/${org.exoplatform.ecm.version}</directory>
