@@ -126,10 +126,10 @@ public class CmsServiceImpl implements CmsService {
       }
     //Broadcast CmsService.event.postCreate event
       listenerService.broadcast(POST_CREATE_CONTENT_EVENT,this,currentNode);
-    } else {
+    } else {          
+      currentNode = storeHomeNode.getNode(nodeName);
     //Broadcast CmsService.event.preEdit event
-      listenerService.broadcast(PRE_EDIT_CONTENT_EVENT,storeHomeNode,mappings);
-      currentNode = storeHomeNode.getNode(nodeName);      
+      listenerService.broadcast(PRE_EDIT_CONTENT_EVENT,currentNode,mappings);
       updateNodeRecursively(NODE, currentNode, nodeType, mappings);
       if(currentNode.isNodeType("exo:datetime")) {
         currentNode.setProperty("exo:dateModified",new GregorianCalendar()) ;
