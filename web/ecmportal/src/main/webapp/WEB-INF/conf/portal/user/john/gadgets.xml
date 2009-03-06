@@ -4,12 +4,8 @@
 	<owner-id>john</owner-id>
 	
 	<container id="Sample">
-		<name>Sample</name>
+		<name>My Gadgets</name>
 		<description>Sample's Description</description>
-  	<application>
-  		<instance-id>user#demo:/eXoGadgets/Todo/Todo1</instance-id>
-      <application-type>eXoGadget</application-type>
-    </application>
-  </container>	
+  </container>
   	
 </gadgets>
