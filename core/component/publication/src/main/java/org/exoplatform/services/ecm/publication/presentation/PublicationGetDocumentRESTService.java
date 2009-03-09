@@ -31,16 +31,19 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
+import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.rest.HTTPMethod;
+import org.exoplatform.services.rest.OutputTransformer;
 import org.exoplatform.services.rest.QueryParam;
 import org.exoplatform.services.rest.Response;
 import org.exoplatform.services.rest.URIParam;
 import org.exoplatform.services.rest.URITemplate;
 import org.exoplatform.services.rest.container.ResourceContainer;
+import org.exoplatform.ws.frameworks.json.transformer.Bean2JsonOutputTransformer;
 
 /**
  * Created by The eXo Platform SARL Author : Ly Dinh Quang
@@ -52,6 +55,8 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
   private RepositoryService  repositoryService_;
 
   private PublicationService publicationService_;
+  
+  final static public String DEFAULT_ITEM = "5";
 
   public PublicationGetDocumentRESTService(RepositoryService repositoryService,
       PublicationService publicationService) {
@@ -72,6 +77,7 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
    */
   @URITemplate("/{repository}/{workspace}/{state}/")
   @HTTPMethod("GET")
+  @OutputTransformer(Bean2JsonOutputTransformer.class)
   public Response getPublishDocument(@URIParam("repository") String repoName, @URIParam("workspace")
   String wsName, @URIParam("state") String state, @QueryParam("showItems")
   String showItems) throws Exception {
@@ -92,19 +98,23 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
    */
   @URITemplate("/{repository}/{workspace}/{publicationPluginName}/{state}/")
   @HTTPMethod("GET")
-  // @OutputTransformer(Bean2JsonOutputTransformer.class)
-  public Response getPublishDocument1(@URIParam("repository") String repoName, @URIParam("workspace")
+  @OutputTransformer(Bean2JsonOutputTransformer.class)
+  public Response getPublishedListDocument(@URIParam("repository") String repoName, @URIParam("workspace")
   String wsName, @URIParam("publicationPluginName") String pluginName, @URIParam("state")
   String state, @QueryParam("showItems")
   String showItems) throws Exception {
     return getPublishDocument(repoName, wsName, state, pluginName, showItems);
   }
 
+  @SuppressWarnings("unused")
   private Response getPublishDocument(String repoName, String wsName, String state,
       String pluginName, String itemPage) throws Exception {
+    List<PublishedNode> publishedNodes = new ArrayList<PublishedNode>();
+    PublishedListNode publishedListNode = new PublishedListNode();
+    if(itemPage == null) itemPage = DEFAULT_ITEM;
     int item = Integer.parseInt(itemPage);
-    String queryStatement = "select * from publication:publication";
-    SessionProvider provider = SessionProviderFactory.createSessionProvider();
+    String queryStatement = "select * from publication:publication order by exo:dateModified ASC";
+    SessionProvider provider = SessionProviderFactory.createAnonimProvider();
     Session session = provider.getSession(wsName, repositoryService_.getRepository(repoName));
     QueryManager queryManager = session.getWorkspace().getQueryManager();
     Query query = queryManager.createQuery(queryStatement, Query.SQL);
@@ -112,18 +122,20 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
     NodeIterator iter = queryResult.getNodes();
     List<Node> listNode = getNodePublish(iter, pluginName);
     Collections.sort(listNode, new DateComparator());
-    List<Node> listDocumentPublish = new ArrayList<Node>();
-    if (item < listNode.size()) {
-      for (int i = 0; i < item; i++) {
-        listDocumentPublish.add(listNode.get(i));
-      }
-    } else {
-      listDocumentPublish = listNode;
+    if(listNode.size() < item) item = listNode.size();
+    for (int i = 0; i < item; i++) {
+      PublishedNode publishedNode = new PublishedNode();
+      Node node = listNode.get(i);
+      publishedNode.setName(node.getName());
+      publishedNode.setPath(node.getPath());
+      publishedNode.setDatePublished(ISO8601.parse(getPublishedDateTime(node)).getTime().toString());
+      //TODO: How can I get the drive name from path?
+      publishedNode.setDriveName("Collaboration center");
+      publishedNodes.add(publishedNode);
     }
-    for (Node node : listDocumentPublish) {
-      System.out.println("\n" + node.getPath() + "\n");
-    }
-    return Response.Builder.ok().build();
+    publishedListNode.setPublishedListNode(publishedNodes);
+    session.logout();
+    return Response.Builder.ok(publishedListNode).mediaType("application/json").build();
   }
 
   private List<Node> getNodePublish(NodeIterator iter, String pluginName) throws Exception {
@@ -136,6 +148,15 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
       }
     }
     return listNode;
+  }
+  
+  private String getPublishedDateTime(Node currentNode) throws Exception {
+    Value[] history = currentNode.getProperty("publication:history").getValues();
+    for (Value value : history) {
+      String[] arrHistory = value.getString().split(",");
+      return arrHistory[0];
+    }
+    return "";
   }
 
   private static class DateComparator implements Comparator<Node> {
@@ -159,5 +180,37 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
       }
       return "";
     }
+  }
+  
+  public class PublishedNode {
+    
+    private String nodeName_;
+    private String nodePath_;
+    private String driveName_;
+    private String datePublished_;
+    
+    public void setName(String nodeName) { nodeName_ = nodeName; }
+    public String getName() { return nodeName_; }
+    
+    public void setPath(String nodePath) { nodePath_ = nodePath; }
+    public String getPath() { return nodePath_; }
+    
+    public void setDriveName(String driveName) { driveName_ = driveName; }
+    public String getDriveName() { return driveName_; } 
+    
+    public void setDatePublished(String datePublished) { datePublished_ = datePublished; }
+    public String getDatePublished() { return datePublished_; }
+    
+  }
+  
+  public class PublishedListNode {
+    
+    private List<PublishedNode> publishedListNode_;
+    
+    public void setPublishedListNode(List<PublishedNode> publishedListNode) { 
+      publishedListNode_ = publishedListNode; 
+    }
+    public List<PublishedNode> getPublishedListNode() { return publishedListNode_; }
+    
   }
 }

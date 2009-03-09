@@ -1,0 +1,39 @@
+<project>
+  <parent>
+    <groupId>org.exoplatform.ecm.dms.core</groupId>
+    <artifactId>config</artifactId>
+    <version>2.3-SNAPSHOT</version>
+  </parent> 
+
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>exo.ecm.dms.core.eXoDMSGadgets</artifactId>
+  <packaging>war</packaging> 
+  <version>${org.exoplatform.ecm.dms.version}</version>
+  <name>eXo DMS Gadgets</name>
+
+  <build>
+    <finalName>eXoDMSGadgets</finalName>
+  </build>
+  
+  <dependencies>
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.component.web</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>provided</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.portal</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shindig</groupId>
+      <version>${org.shindig.version}</version>
+      <artifactId>shindig-common</artifactId>
+	    <scope>provided</scope>
+    </dependency>
+  </dependencies>
+</project>

@@ -20,9 +20,10 @@
 	<module>connectors/fckeditor</module>
 	<module>webui/dms</module>
 	<module>web/eXoDMSResources</module>	
-  <module>portlet/ecm</module>
-  <module>portlet/jcr-console</module>
+    <module>portlet/ecm</module>
+    <module>portlet/jcr-console</module>
     <module>web/dmsportal</module>
+	<module>gadgets</module>
   </modules>
 
   <build>
@@ -223,6 +224,7 @@
         <org.exoplatform.pc.version>2.0.4</org.exoplatform.pc.version>
         <org.exoplatform.portal.version>2.5.2</org.exoplatform.portal.version>
         <org.exoplatform.ecm.dms.version>2.3-SNAPSHOT</org.exoplatform.ecm.dms.version>
+		<org.shindig.version>0.8.1-1-r719456</org.shindig.version>
 		<exo.test.classes>Test</exo.test.classes>
         <exo.test.skip>true</exo.test.skip>
         <bonita.version>3.0</bonita.version>        
