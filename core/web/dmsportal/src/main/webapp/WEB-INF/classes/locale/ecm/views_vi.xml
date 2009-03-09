@@ -213,9 +213,9 @@
       <label>
         <name>Tên</name>
         <versionable>Phiên bản</versionable>
-        <owner>Người sở hữu</owner>
-        <dateCreated>Ngày tạo</dateCreated>
-        <dateModified>Ngày sửa đổi</dateModified>
+        <exo:owner>Người sở hữu</owner>
+        <exo:dateCreated>Ngày tạo</exo:dateCreated>
+        <exo:dateModified>Ngày sửa đổi</exo:dateModified>
       </label>
     </view>
   </ListView>

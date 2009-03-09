@@ -40,13 +40,12 @@ import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.ecm.webui.comparator.DateTimeComparator;
 import org.exoplatform.ecm.webui.comparator.NodeNameComparator;
+import org.exoplatform.ecm.webui.comparator.PropertyValueComparator;
 import org.exoplatform.ecm.webui.comparator.StringComparator;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -63,6 +62,7 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.event.Event;
 
@@ -488,16 +488,12 @@ public class UIJCRExplorer extends UIContainer {
       Collections.sort(childrenList, new NodeNameComparator(preferences_.getOrder())) ;
     } else if (Preference.SORT_BY_NODETYPE.equals(preferences_.getSortType())) {
       Collections.sort(childrenList, new TypeNodeComparator(preferences_.getOrder())) ;
-    } else if (Preference.SORT_BY_CREATED_DATE.equals(preferences_.getSortType())) {
-      Collections.sort(childrenList, new DateTimeComparator("exo:dateCreated", preferences_.getOrder()));
-    } else if (Preference.SORT_BY_MODIFIED_DATE.equals(preferences_.getSortType())) {
-      Collections.sort(childrenList, new DateTimeComparator("exo:dateModified", preferences_.getOrder()));
-    } else if (Preference.SORT_BY_OWNER.equals(preferences_.getSortType())) {
-      Collections.sort(childrenList, new StringComparator(preferences_.getOrder(), Preference.SORT_BY_OWNER));
     } else if (Preference.SORT_BY_VERSIONABLE.equals(preferences_.getSortType())) {
       Collections.sort(childrenList, new StringComparator(preferences_.getOrder(), Preference.SORT_BY_VERSIONABLE));
     } else if (Preference.SORT_BY_AUDITING.equals(preferences_.getSortType())) {
       Collections.sort(childrenList, new StringComparator(preferences_.getOrder(), Preference.SORT_BY_AUDITING));
+    } else {
+      Collections.sort(childrenList, new PropertyValueComparator(preferences_.getSortType(), preferences_.getOrder()));
     }
   }
   
@@ -573,5 +569,14 @@ public class UIJCRExplorer extends UIContainer {
     String workspaceName = driveData_.getWorkspace() ;
     if(workspaceName == null || workspaceName.length() == 0) return "" ;
     return workspaceName ;
+  }
+  
+  public static void main(String[] args) {
+    String sp = "Ascending/Alphabetic";
+    String[] arrSortType = sp.split("/");
+    for(String sortType: arrSortType){
+      System.out.println(sortType);
+    }
+      
   }
 }

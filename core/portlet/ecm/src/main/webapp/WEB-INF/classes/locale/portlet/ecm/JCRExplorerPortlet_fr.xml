@@ -487,10 +487,10 @@
       <label>
         <name>Nom</name>
         <versionable>Versionnable</versionable>
-        <owner>Propriétaire</owner>
+        <exo:owner>Propriétaire</exo:owner>
         <auditing><![CDATA[Tra&ccedil;abilit&eacute;]]></auditing>
-        <dateCreated>Date de création</dateCreated>
-        <dateModified>Date de modification</dateModified>
+        <exo:dateCreated>Date de création</exo:dateCreated>
+        <exo:dateModified>Date de modification</exo:dateModified>
       </label>
     </view>
   </ListView>

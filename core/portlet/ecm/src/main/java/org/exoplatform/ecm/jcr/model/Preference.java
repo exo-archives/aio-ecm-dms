@@ -26,6 +26,8 @@ public class Preference {
   public static final String SORT_BY_OWNER = "Owner";
   public static final String SORT_BY_VERSIONABLE = "Versionable";
   public static final String SORT_BY_AUDITING = "Auditing";
+
+  public static final String[] SORT_BY_SINGLEVALUE_PROPERTY = {"SingleValueProperty"};
   
   public static final String SHOW_NON_DOCUMENTTYPE = "showNonDocumentType" ;
   public static final String ASCENDING_ORDER = "Ascending" ;

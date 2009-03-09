@@ -233,9 +233,9 @@
       <label>
         <name>Nom</name>
         <versionable>Versionable</versionable>
-        <owner>Propriétaire</owner>
-        <dateCreated>Date de Création</dateCreated>
-        <dateModified>Date de Modification</dateModified>
+        <exo:owner>Propriétaire</exo:owner>
+        <exo:dateCreated>Date de Création</exo:dateCreated>
+        <exo:dateModified>Date de Modification</exo:dateModified>
         <auditing>Traçabilité</auditing>
       </label>
     </view>

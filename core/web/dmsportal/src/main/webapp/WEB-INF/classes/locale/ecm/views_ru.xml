@@ -196,9 +196,9 @@
       <label>
         <name>Имя</name>
         <versionable>Версионный</versionable>
-        <owner>Владелец</owner>
-        <dateCreated>Дата создания</dateCreated>
-        <dateModified>Дата изменения</dateModified>
+        <exo:owner>Владелец</exo:owner>
+        <exo:dateCreated>Дата создания</exo:dateCreated>
+        <exo:dateModified>Дата изменения</exo:dateModified>
       </label>
     </view>
   </ListView>
