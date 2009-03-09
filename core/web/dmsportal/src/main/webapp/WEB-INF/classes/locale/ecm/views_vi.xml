@@ -213,7 +213,7 @@
       <label>
         <name>Tên</name>
         <versionable>Phiên bản</versionable>
-        <exo:owner>Người sở hữu</owner>
+        <exo:owner>Người sở hữu</exo:owner>
         <exo:dateCreated>Ngày tạo</exo:dateCreated>
         <exo:dateModified>Ngày sửa đổi</exo:dateModified>
       </label>

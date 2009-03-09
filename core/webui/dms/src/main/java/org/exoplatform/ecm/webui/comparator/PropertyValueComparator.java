@@ -83,8 +83,8 @@ public class PropertyValueComparator implements Comparator<Node> {
   
   private int compareString(Node node0, Node node1) {
     try {
-      String propertyValue0 = node0.getProperty(propertyName) == null ? "" : String.valueOf(node0.getProperty(propertyName).getValue());
-      String propertyValue1 = node1.getProperty(propertyName) == null ? "" : String.valueOf(node1.getProperty(propertyName).getValue());
+      String propertyValue0 = node0.getProperty(propertyName) == null ? "" : String.valueOf(node0.getProperty(propertyName).getString());
+      String propertyValue1 = node1.getProperty(propertyName) == null ? "" : String.valueOf(node1.getProperty(propertyName).getString());
       if(ASCENDING_ORDER.equals(orderType)) {
         return propertyValue0.compareToIgnoreCase(propertyValue1);
       }
