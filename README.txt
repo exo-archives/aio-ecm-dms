@@ -1,5 +1,5 @@
 Enterprise Content Management(ECM) > Document Management System(DMS)
-Version 2.3
+Version 2.2.1
 
 You may find it helpful to see the details at wiki place of ECM
 http://wiki.exoplatform.org/xwiki/bin/view/ECM/
@@ -57,10 +57,10 @@ and navigate to URL: http://localhost:8080/portal
 
 2.7. When the page has been loaded, click "Login" on the top right corner. Specify the username "root" and the password "exo".
 
-Check compatibility between ECM 2.1 and ECM 2.2
+Check compatibility between ECM 2.2.1 and ECM 2.2
 	
 1. Changing configuration in exo.ecm.web.portal/src/main/java/conf/configuration.xml
-Publication function: In ECM 2.1, the information in exo.ecm.component.publication/configuration.xml we can see:
+Publication function: In ECM 2.2.1, the information in exo.ecm.component.publication/configuration.xml we can see:
 
 	<component>
 		<key>org.exoplatform.services.ecm.publication.PublicationService</key>
@@ -143,16 +143,16 @@ Publication function: In ECM 2.1, the information in exo.ecm.component.publicati
 	<import>war:/conf/ecm/ecm-thumbnail-configuration.xml</import>
 
 2. Changing version in the configuration information for WorkflowServiceContainer class:
-	In ECM 2.1, we can see in bonita-configuration.xml and jbpm-configuration.xml:
+	In ECM 2.2.1, we can see in bonita-configuration.xml and jbpm-configuration.xml:
 
 	<object type="org.exoplatform.services.workflow.ProcessesConfig">
 		<fieldname="processLocation"><string>war:/conf/bp</string></field>
 		<field name="predefinedProcess">
 			<collection type="java.util.HashSet">
-			<value><string>/exo.ecm.bp.bonita.payraise-2.1.jar</string></value>
-			<value><string>/exo.ecm.bp.bonita.holiday-2.1.jar</string></value>
-	        <value><string>/exo.ecm.bp.bonita.content.validation-2.1.jar</string></value>
-			<value><string>/exo.ecm.bp.bonita.content.backup-2.1.jar</string></value>
+			<value><string>/exo.ecm.bp.bonita.payraise-2.2.1.jar</string></value>
+			<value><string>/exo.ecm.bp.bonita.holiday-2.2.1.jar</string></value>
+	        <value><string>/exo.ecm.bp.bonita.content.validation-2.2.1.jar</string></value>
+			<value><string>/exo.ecm.bp.bonita.content.backup-2.2.1.jar</string></value>
 	    </collection>
    </field>
    </object>
@@ -163,24 +163,24 @@ Publication function: In ECM 2.1, the information in exo.ecm.component.publicati
 	   <field name="processLocation"><string>war:/conf/bp</string></field>
 	   <field name="predefinedProcess">
 		<collection type="java.util.HashSet">
-			<value><string>/exo.ecm.bp.jbpm.payraise-2.1.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.holiday-2.1.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.content.validation-2.1.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.content.backup-2.1.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.payraise-2.2.1.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.holiday-2.2.1.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.content.validation-2.2.1.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.content.backup-2.2.1.jar</string></value>
 		</collection>
 	   </field>
 	</object>
 
-	So, in ECM 2.2, we must changes in these file by replaces: 2.1.jar to 2.2.jar:
+	So, in ECM 2.2, we must changes in these file by replaces: 2.2.1.jar to 2.2.jar:
 
 	<object type="org.exoplatform.services.workflow.ProcessesConfig">
 	   <fieldname="processLocation"><string>war:/conf/bp</string></field>
 	   <field name="predefinedProcess">
 			<collection type="java.util.HashSet">
-				<value><string>/exo.ecm.bp.bonita.payraise-2.2.jar</string></value>
-				<value><string>/exo.ecm.bp.bonita.holiday-2.2.jar</string></value>
-		        <value><string>/exo.ecm.bp.bonita.content.validation-2.2.jar</string></value>
-				<value><string>/exo.ecm.bp.bonita.content.backup-2.2.jar</string></value>
+				<value><string>/exo.ecm.bp.bonita.payraise-2.2.1.jar</string></value>
+				<value><string>/exo.ecm.bp.bonita.holiday-2.2.1.jar</string></value>
+		        <value><string>/exo.ecm.bp.bonita.content.validation-2.2.1.jar</string></value>
+				<value><string>/exo.ecm.bp.bonita.content.backup-2.2.1.jar</string></value>
 			</collection>
 		</field>
 	</object>
@@ -191,17 +191,17 @@ And:
    <field name="processLocation"><string>war:/conf/bp</string></field>
    <field name="predefinedProcess">
 	    <collection type="java.util.HashSet">
-			<value><string>/exo.ecm.bp.jbpm.payraise-2.2.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.holiday-2.2.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.content.validation-2.2.jar</string></value>
-			<value><string>/exo.ecm.bp.jbpm.content.backup-2.2.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.payraise-2.2.1.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.holiday-2.2.1.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.content.validation-2.2.1.jar</string></value>
+			<value><string>/exo.ecm.bp.jbpm.content.backup-2.2.1.jar</string></value>
 		</collection>
    </field>
 </object>
 
 3. Support add references when upload file
 
-	Since ECM 2.2, in the portlet File Explorer, you can add references to the file which will be uploaded. By default this function is not mandatory. You can change the value equal true in the parameter *categoryMandatoryWhenFileUpload* to make sure every files will be added the categories when uploaded.
+	Since ECM 2.2.1, in the portlet File Explorer, you can add references to the file which will be uploaded. By default this function is not mandatory. You can change the value equal true in the parameter *categoryMandatoryWhenFileUpload* to make sure every files will be added the categories when uploaded.
 	You can see and change the configuration if you want in the file exo.ecm.portlet.ecm/src/main/webapp/WEB-INF/portlet.xml
 	<preference>
 	  <name>categoryMandatoryWhenFileUpload</name>     
