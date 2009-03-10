@@ -8,8 +8,8 @@ TABLE OF CONTENTS
 ---------------------------------------------------
 1. What is eXo ECM
 2. How to set up eXo ECM
-3. Release notes
-4. Migration guide
+3. Migration guide
+4. Release notes
 
 
 1. WHAT IS EXO ECM
@@ -57,6 +57,9 @@ and navigate to URL: http://localhost:8080/portal
 
 2.7. When the page has been loaded, click "Login" on the top right corner. Specify the username "root" and the password "exo".
 
+
+3. MIGRATION GUIDE
+---------------------------------------------------
 Check compatibility between ECM 2.2.1 and ECM 2.2
 	
 1. Changing configuration in exo.ecm.web.portal/src/main/java/conf/configuration.xml
@@ -171,7 +174,7 @@ Publication function: In ECM 2.2.1, the information in exo.ecm.component.publica
 	   </field>
 	</object>
 
-	So, in ECM 2.2, we must changes in these file by replaces: 2.2.1.jar to 2.2.jar:
+	So, in ECM 2.2.1, we must changes in these file by replaces: 2.2.1.jar to 2.2.jar:
 
 	<object type="org.exoplatform.services.workflow.ProcessesConfig">
 	   <fieldname="processLocation"><string>war:/conf/bp</string></field>
@@ -281,6 +284,27 @@ And:
 			  </persister>
 			</lock-manager>
 	</workspace>
+
+
+4. RELEASE NOTES
+---------------------------------------------------
+- Complete list of issues fixed in eXo ECM 2.2.1
+** Bug
+	* [ECM-3057] - Throw exception when select new repository
+	* [ECM-3058] - In File Explorer, parameter categoryMandatoryWhenFileUpload 
+			in portlet preferences is not read if changed in UI
+	* [ECM-3081] - Exception when open form 'Information Auditing' with node is nt:file
+** Improvement
+** New Feature
+	* [ECM-3153] - Leverage sub components updates from ECM 2.2.x
+	* [ECM-3069] - Update the readme
+
+- Other resources and links
+     Company site        http://www.exoplatform.com
+     Community JIRA      http://jira.exoplatform.org
+     Comminity site      http://www.exoplatform.org
+     Developers wiki     http://wiki.exoplatform.org
+     Documentation       http://docs.exoplatform.org 
 
 DMS can be reached at:
 
