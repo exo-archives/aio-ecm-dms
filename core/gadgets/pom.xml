@@ -6,7 +6,7 @@
   </parent> 
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>exo.ecm.dms.core.eXoDMSGadgets</artifactId>
+  <artifactId>exo.ecm.dms.core.gadgets</artifactId>
   <packaging>war</packaging> 
   <version>${org.exoplatform.ecm.dms.version}</version>
   <name>eXo DMS Gadgets</name>
