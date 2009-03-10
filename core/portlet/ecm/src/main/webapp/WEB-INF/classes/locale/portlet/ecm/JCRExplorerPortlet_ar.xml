@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8"?>
 <bundle>
   <!--
   #############################################################################
@@ -272,7 +272,7 @@ Nouvelle configuration
   -->
   <UIActionBar>
     <tooltip>
-      <AddFolder>إضافة ملف</AddFolder>
+      <AddFolder>إضافة مجلد</AddFolder>
       <AddDocument>إضافة وثيقة</AddDocument>
       <EditDocument>تغيير محتوى الوثيقة</EditDocument>
       <Upload>تحميل</Upload>
