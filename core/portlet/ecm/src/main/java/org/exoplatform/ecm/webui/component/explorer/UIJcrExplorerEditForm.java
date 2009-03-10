@@ -190,9 +190,9 @@ public class UIJcrExplorerEditForm extends UIForm {
     return options;
   }
 
-  private String getPublicUserDrive(List<DriveData> personalDrives) {
+  private String getUserDrive(List<DriveData> personalDrives, String userType) {
     for(DriveData userDrive : personalDrives) {
-      if(userDrive.getName().equalsIgnoreCase("public")) {
+      if(userDrive.getName().equalsIgnoreCase(userType)) {
         return userDrive.getName();
       }
     }
@@ -260,7 +260,7 @@ public class UIJcrExplorerEditForm extends UIForm {
         driveNameInput.setRendered(false);
         List<DriveData> personalDrives = 
           uiContainer.personalDrives(uiContainer.getDrives(uiForm.getPreference())); 
-        String personalPublicDrive = uiForm.getPublicUserDrive(personalDrives);
+        String personalPublicDrive = uiForm.getUserDrive(personalDrives, "private");
         UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
         stringInputDrive.setValue(personalPublicDrive);
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);

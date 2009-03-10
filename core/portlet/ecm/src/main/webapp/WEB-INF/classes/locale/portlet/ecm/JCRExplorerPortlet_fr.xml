@@ -2150,31 +2150,31 @@
   
   <UIDriveSelector>
     <label>
-      <driveName>Drive Name</driveName>
+      <driveName>Conduire Nom</driveName>
       <action>Action</action>
-      <adddrives>Add Drives</adddrives>
+      <adddrives>Ajouter lecteurs</adddrives>
     </label>
   </UIDriveSelector>
   <UIJcrExplorerEditForm>
     <label>
-      <driveName>Drive Name</driveName>
+      <driveName>Conduire Nom</driveName>
       <DriveNameInput>UIJcrExplorerEditForm</DriveNameInput>
     </label>
     <msg>
       <not-have-social>Le type Social n'est pas disponible, le type Sélection sera utilisé.</not-have-social>
-      <personal-usecase>Le lecteur public de l'utilisateur courant sera utilisé quand vous choisissez le cas d'utilisation Personnel.</personal-usecase>
+      <personal-usecase>Le lecteur privé de l'utilisateur courant sera utilisé quand vous choisissez le cas d'utilisation Personnel.</personal-usecase>
     </msg>
   </UIJcrExplorerEditForm>
   
   <PopUpSelectDrive>
     <title>
-      <UIDriveSelector>Select Drive</UIDriveSelector>
+      <UIDriveSelector>Sélectionner Conduire</UIDriveSelector>
     </title>
   </PopUpSelectDrive>
   
   <DriveNameInput>
     <title>
-      <SelectDrive>Select Drive</SelectDrive>
+      <SelectDrive>Sélectionner Conduire</SelectDrive>
     </title>
   </DriveNameInput>
 </bundle>
