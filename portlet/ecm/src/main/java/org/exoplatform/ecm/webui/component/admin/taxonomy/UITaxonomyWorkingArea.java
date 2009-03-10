@@ -89,15 +89,17 @@ public class UITaxonomyWorkingArea extends UIContainer {
   public void setSelectedPath(String selectedPath) { selectedPath_ = selectedPath ; }
   
   public void update() throws Exception {
-    UITaxonomyManager uiManager = getParent() ;
-    Node selectedTaxonomy = uiManager.getNodeByPath(selectedPath_) ;
-    NodeIterator nodeIter = selectedTaxonomy.getNodes() ;
-    List<Node> listNodes = new ArrayList<Node>() ;
-    while(nodeIter.hasNext()) {
-      Node node = nodeIter.nextNode() ;
-      listNodes.add(node) ;
+    UITaxonomyManager uiManager = getParent();
+    if(selectedPath_ != null) {
+      Node selectedTaxonomy = uiManager.getNodeByPath(selectedPath_) ;
+      NodeIterator nodeIter = selectedTaxonomy.getNodes() ;
+      List<Node> listNodes = new ArrayList<Node>() ;
+      while(nodeIter.hasNext()) {
+        Node node = nodeIter.nextNode() ;
+        listNodes.add(node) ;
+      }
+      setNodeList(listNodes);
     }
-    setNodeList(listNodes) ;
     updateGrid();
   }
   
