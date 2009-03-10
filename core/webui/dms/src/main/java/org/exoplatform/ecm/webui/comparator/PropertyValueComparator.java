@@ -48,11 +48,13 @@ public class PropertyValueComparator implements Comparator<Node> {
     try {
       int requireType = getRequireType(node0);
       switch (requireType) {
-      case PropertyType.STRING:
-        return compareString(node0, node1);
       case PropertyType.BINARY:
         return compareString(node0, node1);
       case PropertyType.BOOLEAN:
+        return compareString(node0, node1);
+      case PropertyType.NAME:
+        return compareString(node0, node1);
+      case PropertyType.STRING:
         return compareString(node0, node1);
       case PropertyType.LONG:
         return compareString(node0, node1);
