@@ -105,7 +105,7 @@
 			        <%
 			          if (selectedSortType.equals("Type")) {
 			        %>
-				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
+				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px; cursor:pointer;">
 				          <span></span>
 				        </div>
 				      <%}%>

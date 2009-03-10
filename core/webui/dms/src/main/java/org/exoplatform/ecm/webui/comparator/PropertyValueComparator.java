@@ -54,6 +54,8 @@ public class PropertyValueComparator implements Comparator<Node> {
         return compareString(node0, node1);
       case PropertyType.NAME:
         return compareString(node0, node1);
+      case PropertyType.PATH:
+        return compareString(node0, node1);
       case PropertyType.STRING:
         return compareString(node0, node1);
       case PropertyType.LONG:
@@ -62,6 +64,8 @@ public class PropertyValueComparator implements Comparator<Node> {
         return compareString(node0, node1);
       case PropertyType.DATE:
         return compareDate(node0, node1);
+      case PropertyType.REFERENCE:
+        return compareString(node0, node1);
       default:
         throw new RepositoryException("Unknown type " + requireType);
       }
