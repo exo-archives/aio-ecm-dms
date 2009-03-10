@@ -15,8 +15,7 @@
     <contentAdministration>إدارة المحتوى</contentAdministration>
   </administration>
   <contentAdministration>
-    <ECMAdmin>ECM إدارة</ECMAdmin>
-    <WorkflowAdministration>إدارة عمليات العمل</WorkflowAdministration>
+    <ECMAdmin>إدارة ECM</ECMAdmin>
+    <WorkflowAdministration>إدارة تدفق العمل</WorkflowAdministration>
   </contentAdministration>
 </bundle>
-

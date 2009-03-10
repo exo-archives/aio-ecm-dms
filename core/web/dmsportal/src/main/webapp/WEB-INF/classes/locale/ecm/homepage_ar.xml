@@ -3,14 +3,15 @@
   <Homepage>
     <ecm>
       <label>
-        <slogan>"Make your documents alive !</slogan>
-        <productIntro>Through collaborative and other advanced features."</productIntro>
-        <instructionTitle> المتاحة مع حسابات المستخدمين التالية eXo ECM حاول</instructionTitle>
+        <slogan>"بث الحياة في مستنداتك!</slogan>
+        <productIntro>استخدام أدوات متقدمة للتعاون الجماعي."</productIntro>
+        <instructionTitle>حاول eXo ECM مع حسابات المستخدمين التالية</instructionTitle>
+
         <admin>مخطط النظام</admin>
         <userName>اسم المستخدم</userName>
         <password>كلمة السر</password>
         <manager>مدير</manager>
-        <hr-manager>HRمدير</hr-manager>
+        <hr-manager>إدارة الموارد البشرية</hr-manager>
         <user>مستخدم</user>
         <demo>تجربة</demo>
       </label>

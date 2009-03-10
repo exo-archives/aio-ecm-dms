@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bundle>
+  <!--
+  ################################################################################
+  #             org.exoplatform.services.cms.publication.PublicationService			 #
+  ################################################################################
+  -->
+  <PublicationService>
+    <test>
+      <test>اختبار عربي</test>
+    </test>
+    <StaticAndDirectPublicationPlugin>
+      <nodePublished>   العقدة التي تحتوي على الاصدار  %s نشرت بالرؤية  %s</nodePublished>
+      <nodeUnpublished>العقدة كانت غير منشورة</nodeUnpublished>
+      <nodeNotPublished>هذا الملف لم ينشر</nodeNotPublished>
+      <versionPublishedWithLabel>الإصدار %s (يرمز له ب %s) ينشر حاليا   </versionPublishedWithLabel>
+      <versionPublishedWithoutLabel>الإصدار %s ينشر حاليا</versionPublishedWithoutLabel>
+      <visibilityPublic>الرؤية للعموم. وهذا يعني أنه يمكن لجميع المستخدمين مشاهدة المحتوى.</visibilityPublic>
+      <visibilityPrivate>الرؤية للخواص. وهذا يعني أنه لا يمكن الا للمستخدمين اللذين لهم الصلاحية مشاهدة المحتوى.</visibilityPrivate>
+    </StaticAndDirectPublicationPlugin>
+  </PublicationService>
+</bundle>
