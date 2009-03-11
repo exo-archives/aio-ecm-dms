@@ -101,7 +101,7 @@
 		        }
 			    %>
 			    
-				    <div class="LeftColumn" onclick="<%= uicomponent.event("Sort", typeActionLink + "Type")%>" >
+				    <div class="LeftColumn" onclick="<%= uicomponent.event("Sort", typeActionLink + "Type")%>" style="cursor:pointer;" >
 			        <%
 			          if (selectedSortType.equals("Type")) {
 			        %>
