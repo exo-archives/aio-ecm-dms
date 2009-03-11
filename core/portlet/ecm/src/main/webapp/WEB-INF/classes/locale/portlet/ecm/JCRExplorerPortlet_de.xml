@@ -484,9 +484,9 @@
       <label>
         <name>Name</name>
         <versionable>Versionierbar</versionable>
-        <owner>Besitzer</owner>
-        <dateCreated>Datum erstellt</dateCreated>
-        <dateModified><![CDATA[Datum ge&auml;ndert]]></dateModified>
+        <exo_owner>Besitzer</exo_owner>
+        <exo_dateCreated>Datum erstellt</exo_dateCreated>
+        <exo_dateModified><![CDATA[Datum ge&auml;ndert]]></exo_dateModified>
       </label>
     </view>
   </ListView>

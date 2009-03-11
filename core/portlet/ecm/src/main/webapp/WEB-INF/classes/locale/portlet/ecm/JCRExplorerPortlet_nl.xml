@@ -484,9 +484,9 @@
       <label>
         <name>naam</name>
         <versionable>Versionable</versionable>
-        <exo:owner>Eigenaar</exo:owner>
-        <exo:dateCreated>Datum aangemaakt</exo:dateCreated>
-        <exo:dateModified>Datum gewijzigd</exo:dateModified>
+        <exo_owner>Eigenaar</exo_owner>
+        <exo_dateCreated>Datum aangemaakt</exo_dateCreated>
+        <exo_dateModified>Datum gewijzigd</exo_dateModified>
       </label>
     </view>
   </ListView>

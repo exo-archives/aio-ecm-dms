@@ -478,10 +478,10 @@
       <label>
         <name>Tên</name>
         <versionable>Phiên bản</versionable>
-        <exo:owner>Người tạo</exo:owner>
+        <exo_owner>Người tạo</exo_owner>
         <auditing>Kiểm định</auditing>
-        <exo:dateCreated>Ngày tạo</exo:dateCreated>
-        <exo:dateModified>Ngày đổi</exo:dateModified>
+        <exo_dateCreated>Ngày tạo</exo_dateCreated>
+        <exo_dateModified>Ngày đổi</exo_dateModified>
       </label>
     </view>
   </ListView>
