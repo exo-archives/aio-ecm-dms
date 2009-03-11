@@ -12,7 +12,6 @@
 		directory_title="Published documents"
 		title_url="http://www.exoplatform.org"
 		description="The last published documents"
-		thumbnail="http://localhost:8080/eXoDMSGadgets/skin/DefaultSkin/gadgetIcons/PublishedDocument.png"
 		height="227">
 	</ModulePrefs>
 	<Content type="html">
@@ -23,7 +22,6 @@
 				height:100%;
 				margin:0 auto;
 				padding:0;
-				width:315px;
 			}
 			
 			a {
@@ -132,41 +130,41 @@
 			}
 			
 			.ContentGadGet .BgRightFooterContent{
-				background: url("/gadgets/skin/images/ImageGadGets.gif") no-repeat right -122px;	
+				background: url("/eXoDMSGadgets/skin/images/ImageGadGets.gif") no-repeat right -122px;	
 				padding-right: 8px;
 			}
 			
 			.ContentGadGet .BgCenterContent{
-				background: url("/gadgets/skin/images/BgBottomConten.gif") repeat-x left bottom;
+				background: url("/eXoDMSGadgets/skin/images/BgBottomConten.gif") repeat-x left bottom;
 			}
 			.ContentGadGet .BgLeftContent{
 				border-left: solid 1px #9c9c9c;
 			}
 			
 			.ContentGadGet .BgRightContent{
-				background: url("/gadgets/skin/images/GagetBorRight.gif") repeat-y right top;
+				background: url("/eXoDMSGadgets/skin/images/GagetBorRight.gif") repeat-y right top;
 				padding-right: 3px;
 			}
 			
 			.ContentGadGet .BgRightContent .IconDriver {
-				background: url("/gadgets/skin/images/ImageGadGets.gif") no-repeat left -281px;
+				background: url("/eXoDMSGadgets/skin/images/ImageGadGets.gif") no-repeat left -281px;
 			
 			}
 			
 			.ContentGadGet .BgRightContent .IconPdf {
-				background: url("/gadgets/skin/images/ImageGadGets.gif") no-repeat left -352px;
+				background: url("/eXoDMSGadgets/skin/images/ImageGadGets.gif") no-repeat left -352px;
 			}
 			
 			.ContentGadGet .BgRightContent .IconDoc {
-				background: url("/gadgets/skin/images/ImageGadGets.gif") no-repeat left -396px;
+				background: url("/eXoDMSGadgets/skin/images/ImageGadGets.gif") no-repeat left -396px;
 			}
 			
 			.ContentGadGet .BgRightContent .IconJpg {
-				background: url("/gadgets/skin/images/ImageGadGets.gif") no-repeat left -440px;
+				background: url("/eXoDMSGadgets/skin/images/ImageGadGets.gif") no-repeat left -440px;
 			}
 			
 			.ContentGadGet .BgRightContent .IconNote {
-				background:transparent url("/gadgets/skin/images/ImageGadGets.gif") no-repeat left -308px;
+				background:transparent url("/eXoDMSGadgets/skin/images/ImageGadGets.gif") no-repeat left -308px;
 			}
 			
 			.ContentGadGet .BgRightContent .BgTitle{

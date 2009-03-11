@@ -482,10 +482,10 @@ Nouvelle configuration
       <label>
         <name>الاسم</name>
         <versionable>قابل للإصدار</versionable>
-        <owner>الصاحب</owner>
+        <exo_owner>الصاحب</exo_owner>
         <auditing>الفحص</auditing>
-        <dateCreated>تاريخ الإضافة</dateCreated>
-        <dateModified>تاريخ التغيير</dateModified>
+        <exo_dateCreated>تاريخ الإضافة</exo_dateCreated>
+        <exo_dateModified>تاريخ التغيير</exo_dateModified>
       </label>
     </view>
   </ListView>
