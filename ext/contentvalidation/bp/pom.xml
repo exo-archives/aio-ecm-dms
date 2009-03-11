@@ -55,8 +55,8 @@
         <activeByDefault>true</activeByDefault>
       </activation>
       <properties>
-        <org.exoplatform.ecm.dms.version>2.3-SNAPSHOT</org.exoplatform.ecm.dms.version>
-		<org.exoplatform.ecm.workflow.version>1.0-SNAPSHOT</org.exoplatform.ecm.workflow.version>
+        <org.exoplatform.ecm.dms.version>2.3</org.exoplatform.ecm.dms.version>
+		<org.exoplatform.ecm.workflow.version>1.0</org.exoplatform.ecm.workflow.version>
 		<exo.test.classes>Test</exo.test.classes>
         <exo.test.skip>true</exo.test.skip>
         <bonita.version>3.0</bonita.version>        
