@@ -89,16 +89,16 @@ public class UIPermissionInfo extends UIContainer {
   }
   
   public void updateGrid(int currentPage) throws Exception {
-    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Node currentNode = uiJCRExplorer.getCurrentNode() ;
+    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
+    Node currentNode = uiJCRExplorer.getCurrentNode();
     List<PermissionBean> permBeans = new ArrayList<PermissionBean>(); 
-    ExtendedNode node = (ExtendedNode) currentNode ;
+    ExtendedNode node = (ExtendedNode) currentNode;
 
     List permsList = node.getACL().getPermissionEntries() ;
-    Map<String, List<String>> permsMap = new HashMap<String, List<String>>() ;
+    Map<String, List<String>> permsMap = new HashMap<String, List<String>>();
     Iterator perIter = permsList.iterator() ;
     while(perIter.hasNext()) {
-      AccessControlEntry accessControlEntry = (AccessControlEntry)perIter.next() ;
+      AccessControlEntry accessControlEntry = (AccessControlEntry)perIter.next();
       String currentIdentity = accessControlEntry.getIdentity();
       String currentPermission = accessControlEntry.getPermission();
       List<String> currentPermissionsList = permsMap.get(currentIdentity);
@@ -113,9 +113,11 @@ public class UIPermissionInfo extends UIContainer {
     }
     Set keys = permsMap.keySet(); 
     Iterator keysIter = keys.iterator() ;
+    int iSystemOwner = 0;
     //TODO Utils.getExoOwner(node) has exception return SystemIdentity.SYSTEM
     String owner = SystemIdentity.SYSTEM ;
-    if(getExoOwner(node) != null) owner = getExoOwner(node) ;
+    if(getExoOwner(node) != null) owner = getExoOwner(node);
+    if (owner.equals(SystemIdentity.SYSTEM)) iSystemOwner = -1;
     PermissionBean permOwnerBean = new PermissionBean();
     if(!permsMap.containsKey(owner)) {
       permOwnerBean.setUsersOrGroups(owner);
@@ -138,7 +140,7 @@ public class UIPermissionInfo extends UIContainer {
         else if(PermissionType.REMOVE.equals(perm)) permBean.setRemove(true);
       }
       permBeans.add(permBean);
-      sizeOfListPermission = permBeans.size();
+      sizeOfListPermission = permBeans.size() + iSystemOwner;
     }
     UIGrid uiGrid = findFirstComponentOfType(UIGrid.class) ; 
     ObjectPageList objPageList = new ObjectPageList(permBeans, 10) ;
@@ -170,7 +172,7 @@ public class UIPermissionInfo extends UIContainer {
       }
       ExtendedNode node = (ExtendedNode)currentNode;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      if (uicomp.getSizeOfListPermission() < 3) {
+      if (uicomp.getSizeOfListPermission() < 2) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove",
             null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());

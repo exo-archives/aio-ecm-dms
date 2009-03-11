@@ -108,7 +108,9 @@ public class UIPermissionInfo extends UIContainer {
     Iterator keysIter = keys.iterator() ;
     //TODO Utils.getExoOwner(node) has exception return SystemIdentity.SYSTEM
     String owner = SystemIdentity.SYSTEM ;
-    if(getExoOwner(node) != null) owner = getExoOwner(node) ;
+    int iSystemOwner = 0;
+    if (getExoOwner(node) != null) owner = getExoOwner(node);
+    if (owner.equals(SystemIdentity.SYSTEM)) iSystemOwner = -1;
     PermissionBean permOwnerBean = new PermissionBean();
     if(!permsMap.containsKey(owner)) {
       permOwnerBean.setUsersOrGroups(owner);
@@ -118,7 +120,6 @@ public class UIPermissionInfo extends UIContainer {
       permOwnerBean.setRemove(true) ;
       permBeans.add(permOwnerBean);
     }
-
     while(keysIter.hasNext()) {
       String userOrGroup = (String) keysIter.next();            
       List<String> permissions = permsMap.get(userOrGroup);      
@@ -132,7 +133,7 @@ public class UIPermissionInfo extends UIContainer {
       }
       permBeans.add(permBean);
     }
-    sizeOfListPermission = permBeans.size();
+    sizeOfListPermission = permBeans.size() + iSystemOwner;
     UIGrid uiGrid = findFirstComponentOfType(UIGrid.class) ; 
     ObjectPageList objPageList = new ObjectPageList(permBeans, 10) ;
     uiGrid.getUIPageIterator().setPageList(objPageList) ;    
@@ -162,8 +163,7 @@ public class UIPermissionInfo extends UIContainer {
       ExtendedNode node = (ExtendedNode)currentNode;
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      List permsList = node.getACL().getPermissionEntries();
-      if (uicomp.getSizeOfListPermission() < 3) {
+      if (uicomp.getSizeOfListPermission() < 2) {
           uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove",
               null, ApplicationMessage.WARNING));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
