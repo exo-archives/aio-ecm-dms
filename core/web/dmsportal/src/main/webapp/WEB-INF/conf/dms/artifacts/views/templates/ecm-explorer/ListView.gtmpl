@@ -142,10 +142,10 @@
 			       if (sortType.equals(selectedSortType)) {
              %>
 				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
-				        	<%=_ctx.appRes("ListView.view.label." + sortType)%>
+				        	<%=_ctx.appRes("ListView.view.label." + sortType..replace(":","_"))%>
 				        </div>
 			       <%} else { %>
-			         <%=_ctx.appRes("ListView.view.label." + sortType)%>
+			         <%=_ctx.appRes("ListView.view.label." + sortType.replace(":","_"))%>
 			       <%} %>
 				    </div>
 			    <%
