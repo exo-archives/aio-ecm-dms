@@ -1,8 +1,8 @@
 <project>
 
   <parent>
-    <groupId>org.exoplatform.ecm.dms</groupId>
-    <artifactId>config</artifactId>
+    <groupId>org.exoplatform.ecm</groupId>
+    <artifactId>dms</artifactId>
     <version>2.3-SNAPSHOT</version>
   </parent>
 
