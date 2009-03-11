@@ -96,11 +96,19 @@ and navigate to URL: http://localhost:8080/portal
 	* [ECM-3151] - Cannot set value for auto created property(but is not protected)
 	* [ECM-3306] - No label appears when the label has not been translated
 
+	* [ECM-3159] - In FE cannot select the "*:" role when assigning permission to a group
+	* [ECM-3242] - Unexpected customer work
+	* [ECM-3220] - Change style of <A> tag to be sure that it is "visible" by default
+
 ** Improvement
 	* [ECM-3300] - Automaticaly redirected to the 1st page after removing an element not located on the 1st page	
 	* [ECM-3344] - Change the way content-validation is stored in DMS
 	* [ECM-3346] - Finish the code to sort any column in JCR FE
 	* [ECM-2981] - Show allow user view property of root drive node if the node is not real root node
+	
+	* [ECM-3213] - Allow to apply permissions on taxonomies and filter them
+	* [ECM-3211] - Allow XML files to be used at the same time as properties files in business process archives
+	* [ECM-3208] - Include the JCR console into the Maven build
 
 ** New Feature
 	* [ECM-3149] - Create gadgets for delivering information on documents
@@ -110,6 +118,14 @@ and navigate to URL: http://localhost:8080/portal
 	* [ECM-3334] - Add a Fast Content Creator section in practical how-tos
 	* [ECM-3332] - Document in the wiki the tags (aka folksonomy) feature
 	* [ECM-3069] - Update the readme
+
+	* [ECM-2127] - Clipboard improvement
+	* [ECM-3239] - RTLize JCR FE
+	* [ECM-3240] - RTLize BC
+	* [ECM-3223] - Make sure BC is publication aware
+	* [ECM-3248] - Complete the wiki page that describes how to directly access a JCR FE drive
+	* [ECM-3245] - Document how to create an RSS feed in eXo DMS
+	* [ECM-3246] - Document the research features in eXo DMS
 
 ** Other resources and links
 	Company site        http://www.exoplatform.com
