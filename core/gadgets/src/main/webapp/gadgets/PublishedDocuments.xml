@@ -211,6 +211,16 @@
 				var params = {};
 				params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 				params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
+				var ts = new Date().getTime();
+			  var sep = "?";
+			  var refreshInterval = 60;
+			  if (refreshInterval && refreshInterval > 0) {
+			    ts = Math.floor(ts / (refreshInterval * 1000));
+			  }
+			  if (url.indexOf("?") > -1) {
+			    sep = "&";
+			  }
+			  url = [ url, sep, "nocache=", ts ].join("");
 				gadgets.io.makeRequest(url, callback, params);
 			}
 			
