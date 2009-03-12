@@ -50,9 +50,9 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .ViewBarSeparator {
-  float: left; /* orientation=lt */
-  float: right; /* orientation=rt */
-  height: 29px;
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
+  height: 30px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIViewBar .IconFrame .Icon {
@@ -73,8 +73,23 @@
 }
 
 .UIJCRExplorerPortlet .UIViewBar .RefreshSessionButton  {
-  width: 30px;	height: 26px;
+  width: 30px;
+  height: 26px;
   background: url('VistaSkin/background/RefreshSessionButton.png') no-repeat bottom;
+}
+
+.UIJCRExplorerPortlet .UIViewBar .Icon {
+	cursor:pointer;
+	float:right; /* orientation=lt */
+	float:left; /* orientation=rt */
+	margin:2px 7px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .WorkspaceName {
+	float:right; /* orientation=lt */
+	float:left; /* orientation=rt */
+	padding-right:5px; /* orientation=lt */
+	padding-left:5px; /* orientation=rt */
 }
 
 /*############################## -- End UIViewBar -- ##############################*/
