@@ -63,7 +63,7 @@
             <field name="processLocation"><string>classpath:</string></field>
             <field name="predefinedProcess">
               <collection type="java.util.HashSet">
-                <value><string>/exo.ecm.dms.ext.contentvalidation.bp.jbpm.content.publishing-2.3-SNAPSHOT.jar</string></value>     
+                <value><string>/exo.ecm.dms.ext.contentvalidation.bp.jbpm.content.publishing-2.3.x.jar</string></value>     
                 <value><string>/exo.ecm.workflow.bp.jbpm.holiday-1.0-SNAPSHOT.jar</string></value>     
                 <value><string>/exo.ecm.workflow.bp.jbpm.payraise-1.0-SNAPSHOT.jar</string></value>     
               </collection>
