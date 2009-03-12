@@ -110,13 +110,13 @@
 					<div class="RatingInfoContainer">
 					  <div class="AvgRatingImages">
 					    <%
-					      int i = 0;
-					      while(++i <= voteRating) {
+					      int iVote = 0;
+					      while(++iVote <= voteRating) {
 					    %>
 					          <div class="Voted"><span></span></div>
 					      <%
 					        }
-					        while(i++ <= 5) {
+					        while(iVote++ <= 5) {
 					      %>
 					        <div class="Unvoted"><span></span></div>
 					      <%}%>

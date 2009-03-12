@@ -80,7 +80,7 @@ and navigate to URL: http://localhost:8080/portal
  	- Complete the translation for Arabic
 
 ** Bug
-    	* [ECM-3329] - Make language selection work for RTL when choosing another language from a document
+    * [ECM-3329] - Make language selection work for RTL when choosing another language from a document
 	* [ECM-2979] - Bug when edit property without name space
 	* [ECM-3057] - Throw exception when select new repository
 	* [ECM-3045] - Throw exception when view webDAV
@@ -218,7 +218,7 @@ You can follow these steps to get successful upgrade.
 	Since ECM 2.3, the DriveMigrationService was available at the location ecm/dms/trunk/component/migration/2.3/drives. 
 This service is used to rename the old drive which contains invalid characters and prevent the WARNING messages at the console.
 
-4.2. How to use for Workflow Publication Plugin?
+4.2. How to use for Workflow Publication Plugin and Workflow?
 	Since ECM 2.3, the Workflow Publication Plugin was availabled at the location 
 ecm/contentvalidation/trunk/component/workflowPublication/. This plugin is used to publish a content of documents. 
 It breaks a work process down into tasks. 
