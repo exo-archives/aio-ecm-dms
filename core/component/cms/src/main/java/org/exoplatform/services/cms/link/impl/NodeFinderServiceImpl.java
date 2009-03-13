@@ -26,19 +26,19 @@ import org.exoplatform.services.cms.link.NodeFinderService;
 import org.picocontainer.Startable;
 
 /**
- * Created by The eXo Platform SARL
- * Author : Hoang Van Hung
- *          hunghvit@gmail.com
- * Mar 14, 2009  
+ * Created by The eXo Platform SARL Author : Hoang Van Hung hunghvit@gmail.com
+ * Mar 14, 2009
  */
-public class NodeFinderServiceImpl implements NodeFinderService, Startable{
+public class NodeFinderServiceImpl implements NodeFinderService, Startable {
 
-  public Item getItem(String repository, String workspace, String absPath) throws PathNotFoundException, RepositoryException {
-    // TODO Auto-generated method stub
+  public Item getItem(String repository, String workspace, String absPath)
+      throws PathNotFoundException, RepositoryException {
+
     return null;
   }
 
-  public Node getNode(Node ancestorNode, String relativePath) throws PathNotFoundException, RepositoryException {
+  public Node getNode(Node ancestorNode, String relativePath) throws PathNotFoundException,
+      RepositoryException {
     // TODO Auto-generated method stub
     return null;
   }
@@ -49,7 +49,56 @@ public class NodeFinderServiceImpl implements NodeFinderService, Startable{
 
   public void stop() {
     // TODO Auto-generated method stub
-    
+
   }
 
+  private String getPath(String fromPath, String destPath) {
+    String midPath = destPath.substring(0, fromPath.length() + (destPath.length() - fromPath.length())
+        / 2);
+    midPath = midPath.substring(0, midPath.lastIndexOf("/"));
+    if (checkLink(midPath)) {
+      int midPathLen = fromPath.length();
+      fromPath = getLink(midPath);
+      destPath = fromPath + destPath.substring(midPathLen);
+    } else {
+      destPath = midPath;
+    }
+    if (destPath.equals(fromPath))
+      return midPath;
+    midPath = getPath(fromPath, destPath);
+    return midPath;
+  }
+
+  /**
+   * Check the node corresponding to the absolute path could be a link or not
+   * 
+   * @param absPath path to node
+   * @return true if corresponding node could be a link false if corresponding
+   *         node could'n be a link
+   * @throws ItemNotFoundException if the target node cannot be found
+   * @throws RepositoryException if an unexpected error occurs while retrieving
+   *           the target node
+   */
+  private boolean checkLink(String absPath) {
+    // / for testing
+    if (!absPath.contains("link") || (absPath.contains("link") && absPath.indexOf("link/") == absPath.length() - 4))
+      return true;
+    return false;
+  }
+
+  private String getLink(String path) {
+    // for testing
+    return path.replace("link", "REALLink");
+  }
+
+  private int getMidSlash(String path) {
+    
+  }
+  public static void main(String[] args) {
+    NodeFinderServiceImpl nodeFinder = new NodeFinderServiceImpl();
+    
+    //String path = "/aaa/1link/bb/cc/2link/eee/3link/4link/ffff/5link/g";
+    String path = "/aaa/link1/bb/cc";
+    System.out.println(nodeFinder.getPath("",path));
+  }
 }
