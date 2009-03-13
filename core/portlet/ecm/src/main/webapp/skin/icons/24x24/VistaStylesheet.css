@@ -181,6 +181,11 @@
   background: url('VistaSkin/UploadFile.png') no-repeat;
 }
 
+.AddSymLinkIcon {
+  width: 26px; height: 26px;
+  background: url('VistaSkin/AddSymLink.png') no-repeat;
+}
+
 .ViewReferencesIcon {
 	width: 32px; height: 30px;
   background: url('VistaSkin/ViewReferencesIcon.png') no-repeat;

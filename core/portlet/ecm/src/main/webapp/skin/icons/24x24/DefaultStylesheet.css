@@ -168,6 +168,11 @@
   background: url('DefaultSkin/UploadFile.gif') no-repeat;
 }
 
+.AddSymLinkIcon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/AddSymLink.gif') no-repeat;
+}
+
 .OverloadThumbnailIcon {
 	width: 24px; height: 24px;
   background: url('DefaultSkin/OverloadThumbnailIcon.gif') no-repeat;

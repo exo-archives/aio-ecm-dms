@@ -78,11 +78,11 @@ import org.exoplatform.ecm.webui.component.explorer.search.UISimpleSearch;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UIViewRelationList;
+import org.exoplatform.ecm.webui.component.explorer.symlink.UISymLinkManager;
 import org.exoplatform.ecm.webui.component.explorer.thumbnail.UIThumbnailForm;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -107,6 +107,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -156,7 +157,8 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.VoteActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.CommentActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.OverloadThumbnailActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIActionBar.ManageHiddenActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIActionBar.ManageHiddenActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.AddSymLinkActionListener.class, phase = Phase.DECODE)
     }
 )
 
@@ -1243,6 +1245,35 @@ public class UIActionBar extends UIForm {
   static public class ChangeTabActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource());
+    }
+  }
+  
+  static public class AddSymLinkActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(!PermissionUtil.canRead(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if( uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(!currentNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }      
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UISymLinkManager uiSymLinkManager = event.getSource().createUIComponent(UISymLinkManager.class, null, null);
+      UIPopupContainer.activate(uiSymLinkManager, 600, 500);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 }

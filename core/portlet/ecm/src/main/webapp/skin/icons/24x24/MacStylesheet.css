@@ -300,6 +300,11 @@ a:hover .ShowHideBoxContainer {
   background: url('DefaultSkin/UploadFile.gif') no-repeat;
 }
 
+.AddSymLinkIcon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/AddSymLink.gif') no-repeat;
+}
+
 .ViewReferencesIcon {
 	width: 24px; height: 24px;
   background: url('DefaultSkin/ViewReferences.gif') no-repeat;
