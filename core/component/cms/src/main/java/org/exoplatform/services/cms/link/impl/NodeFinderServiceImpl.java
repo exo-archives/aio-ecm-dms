@@ -91,9 +91,9 @@ public class NodeFinderServiceImpl implements NodeFinderService, Startable {
     return path.replace("link", "REALLink");
   }
 
-  private int getMidSlash(String path) {
-    
-  }
+  /*private int getMidSlash(String path) {
+    //path.in
+  }*/
   public static void main(String[] args) {
     NodeFinderServiceImpl nodeFinder = new NodeFinderServiceImpl();
     
