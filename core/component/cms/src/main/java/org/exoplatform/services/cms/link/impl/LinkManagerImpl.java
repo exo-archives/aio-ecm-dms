@@ -50,14 +50,13 @@ public class LinkManagerImpl implements LinkManager {
         target.addMixin("mix:referenceable");
         target.getSession().save();
       }
-      if (linkType == null)
-        linkType = SYMLINK;
-      Node childNode = parent.addNode(SYMLINK, linkType);
-      childNode.setProperty(WORKSPACE, target.getSession().getWorkspace().getName());
-      childNode.setProperty(UUID, target.getUUID());
-      childNode.setProperty(PRIMARY_TYPE, target.getPrimaryNodeType().getName());
-      childNode.getSession().save();
-      return childNode;
+      if (linkType == null) linkType = SYMLINK;
+      Node nodeLink = parent.addNode(SYMLINK, linkType);
+      nodeLink.setProperty(WORKSPACE, target.getSession().getWorkspace().getName());
+      nodeLink.setProperty(UUID, target.getUUID());
+      nodeLink.setProperty(PRIMARY_TYPE, target.getPrimaryNodeType().getName());
+      nodeLink.getSession().save();
+      return nodeLink;
     }
     return null;
   }
@@ -97,13 +96,18 @@ public class LinkManagerImpl implements LinkManager {
   }
 
   public boolean isTargetReachable(Node link) throws RepositoryException {
-    // TODO Auto-generated method stub
-    return false;
+    try {
+      link.getSession().getNodeByUUID(link.getProperty(UUID).getString());
+    } catch (ItemNotFoundException e) {
+      return false;
+    }
+    return true;
   }
 
   public Node updateLink(Node link, Node target) throws RepositoryException {
-    // TODO Auto-generated method stub
-    return null;
+    link.setProperty(UUID, target.getUUID());
+    link.getSession().save();
+    return link;
   }
 
   private Session getSystemSession() throws Exception {
