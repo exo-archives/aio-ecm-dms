@@ -535,6 +535,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return SimpleDateFormat.getDateTimeInstance(SimpleDateFormat.SHORT, SimpleDateFormat.SHORT, locale);
   }
   
+  public boolean isSymLink(Node node) throws RepositoryException {
+    if(node.isNodeType("exo:symlink")) return true;
+    return false;
+  }
+  
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {      
       UIDocumentInfo uicomp = event.getSource() ;

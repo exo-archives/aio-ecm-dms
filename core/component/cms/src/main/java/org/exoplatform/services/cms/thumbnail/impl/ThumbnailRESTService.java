@@ -130,6 +130,11 @@ public class ThumbnailRESTService implements ResourceContainer {
     Node showingNode = getShowingNode(repoName, wsName, nodePath);
     Node parentNode = showingNode.getParent();
     String identifier = ((NodeImpl) showingNode).getInternalIdentifier();
+    if(showingNode.isNodeType("exo:symlink")) {
+      Node targetNode = 
+        showingNode.getSession().getNodeByUUID(showingNode.getProperty("exo:uuid").getString()); 
+      showingNode = targetNode;
+    }
     if(showingNode.getPrimaryNodeType().getName().equals("nt:file")) {
       Node content = showingNode.getNode("jcr:content");
       if(content.getProperty("jcr:mimeType").getString().startsWith("image")) {
@@ -180,9 +185,7 @@ public class ThumbnailRESTService implements ResourceContainer {
         Node thumbnailNode = thumbnailFolder.getNode(identifier);
         if(thumbnailNode.hasProperty(propertyName)) {
           InputStream inputStream = thumbnailNode.getProperty(propertyName).getStream();
-          return Response.Builder.ok()
-          .entity(inputStream, "image")
-          .build();
+          return Response.Builder.ok().entity(inputStream, "image").build();
         }
       }
     }
