@@ -383,3 +383,8 @@
 	float: right; /* orientation=rt */
 }
 /*############################## -- End UIActionManager   -- ##############################*/
+
+.UIJCRExplorerPortlet .UISymLinkForm {
+  padding: 10px;
+}
+

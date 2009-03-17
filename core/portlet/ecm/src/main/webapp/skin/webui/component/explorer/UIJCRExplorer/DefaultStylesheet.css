@@ -736,3 +736,20 @@
 	background-position: right center; /* orientation=rt */
 }
 
+.UIJCRExplorerPortlet .UISymLinkManager {
+  padding: 10px;
+}
+
+.UIJCRExplorerPortlet .UISymLinkManager .SelectFileFrame {
+  white-space: normal;
+}
+
+.UIJCRExplorerPortlet .UISymLinkManager .SelectFileFrame .FileNameLabel {
+  width: 230px;
+  overflow: hidden;
+  margin: 0px;
+}
+
+
+
+

@@ -1272,7 +1272,7 @@ public class UIActionBar extends UIForm {
       }      
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UISymLinkManager uiSymLinkManager = event.getSource().createUIComponent(UISymLinkManager.class, null, null);
-      UIPopupContainer.activate(uiSymLinkManager, 600, 500);
+      UIPopupContainer.activate(uiSymLinkManager, 600, 300);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }

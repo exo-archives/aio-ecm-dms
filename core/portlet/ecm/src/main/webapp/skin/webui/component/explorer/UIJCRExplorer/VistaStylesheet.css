@@ -697,3 +697,7 @@
  	width: 119px;
  	_width: 140px;
 }
+
+.UIJCRExplorerPortlet .UISymLinkManager {
+  padding: 10px;
+}

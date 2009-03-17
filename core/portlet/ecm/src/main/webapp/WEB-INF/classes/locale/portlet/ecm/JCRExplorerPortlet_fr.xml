@@ -2177,5 +2177,38 @@
       <SelectDrive>Sélectionner Conduire</SelectDrive>
     </title>
   </DriveNameInput>
+  
+  <!--
+	### Since ECM version 2.4.x ##############
+	### To be translated ####
+  -->
+  <UIActionBar>
+    <tooltip>
+      <AddSymLink>Add Sym Link</AddSymLink>
+		</tooltip>
+	</UIActionBar>
+	
+	<UIPopupWindow>
+		<title>
+			<UISymLinkManager>Sym Link Manager</UISymLinkManager>
+		</title>
+	</UIPopupWindow>
+	
+	<UISymLinkForm>
+		<label>
+      <symLinkName>Sym Link Name</symLinkName>
+			<pathNode>Path Node</pathNode>
+		</label>
+		<action>
+			<Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>
+		</action>
+	</UISymLinkForm>
+	
+	<UIPopupSymLink>
+		<title>
+			<UIOneNodePathSelector>Selected One Node</UIOneNodePathSelector>
+		</title>
+	</UIPopupSymLink>
 </bundle>
 
