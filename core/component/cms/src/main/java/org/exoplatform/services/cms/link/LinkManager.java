@@ -21,14 +21,11 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 /**
- * Created by The eXo Platform SARL
- * Author : Ly Dinh Quang
- *          quang.ly@exoplatform.com
- *          xxx5669@gmail.com
- * Mar 13, 2009  
+ * Created by The eXo Platform SARL Author : Ly Dinh Quang
+ * quang.ly@exoplatform.com xxx5669@gmail.com Mar 13, 2009
  */
 public interface LinkManager {
-  
+
   /**
    * Creates a new link, add it to the parent node and returns the link
    * 
@@ -49,6 +46,20 @@ public interface LinkManager {
    * @throws RepositoryException if the link cannot be created for any reason
    */
   public Node createLink(Node parent, Node target) throws RepositoryException;
+
+  /**
+   * Creates a new link, add it to the parent node and returns the link
+   * 
+   * @param parent The parent node of the link
+   * @param linkType The primary node type of the link must be a sub-type of
+   *          exo:symlink, the default value is "exo:symlink"
+   * @param target The target of the link
+   * @param linkName The name of the link
+   * @return
+   * @throws RepositoryException if the link cannot be created for any reason
+   */
+  public Node createLink(Node parent, String linkType, Node target, String linkName)
+      throws RepositoryException;
 
   /**
    * Updates the target node of the given link
@@ -92,5 +103,5 @@ public interface LinkManager {
    * @throws RepositoryException if an unexpected error occurs
    */
   public boolean isTargetReachable(Node link) throws RepositoryException;
-  
+
 }
