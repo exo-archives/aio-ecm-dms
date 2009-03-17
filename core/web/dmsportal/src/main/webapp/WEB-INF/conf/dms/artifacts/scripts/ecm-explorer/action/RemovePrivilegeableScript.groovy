@@ -46,11 +46,14 @@ public class RemovePrivilegeableScript implements CmsScript {
       session = repositoryService_.getRepository().login(srcWorkspace);
       Node node = (Node) session.getItem(nodePath);
       processRemovePrivilegeableMixin(node);
+      node.save();
+      session.save();
     } catch(Exception e) {
-      if(session != null) {
-        session.logout();        
-      }
       e.printStackTrace() ;
+    } finally {
+      if(session != null) {
+        session.logout();
+      }
     }
   }
   
@@ -61,10 +64,15 @@ public class RemovePrivilegeableScript implements CmsScript {
       while(nodeIter.hasNext()) {
         child = nodeIter.nextNode();
         if(child.isNodeType("exo:privilegeable")) {
-          child.removeMixin("exo:privilegeable");
+          try {
+            child.removeMixin("exo:privilegeable");
+            child.save();
+          } catch(Exception e) {
+            continue;
+            e.printStackTrace();
+          }
         }
         if(child.hasNodes()) processRemovePrivilegeableMixin(child);
-        child.save();
       }
     }
   }
