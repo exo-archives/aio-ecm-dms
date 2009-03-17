@@ -247,16 +247,13 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
       UISymLinkForm uiSymLinkForm =  (UISymLinkForm) uiSet.getParent();
       UISymLinkManager uiSymLinkManager = uiSymLinkForm.getParent();
       UIJCRExplorer uiExplorer = uiSymLinkForm.getAncestorOfType(UIJCRExplorer.class);
-      NodeHierarchyCreator nodeHierarchyCreator = uiSymLinkForm.getApplicationComponent(NodeHierarchyCreator.class);
-      String repository = uiExplorer.getRepositoryName();
       String workspaceName = uiExplorer.getCurrentWorkspace();
       
       UIPopupWindow uiPopupWindow = uiSymLinkManager.initPopupTaxonomy(POPUP_SYMLINK);
       UIOneNodePathSelector uiNodePathSelector = uiSymLinkManager.createUIComponent(UIOneNodePathSelector.class, null, null);
       uiPopupWindow.setUIComponent(uiNodePathSelector);
       uiNodePathSelector.setIsDisable(workspaceName, true);
-      uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
-          nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
+      uiNodePathSelector.setRootNodeLocation(uiExplorer.getRepositoryName(), workspaceName, "/");
       uiNodePathSelector.init(uiExplorer.getSystemProvider());
       String param = "returnField=" + FIELD_SYMLINK;
       uiNodePathSelector.setSourceComponent(uiSymLinkForm, new String[]{param});
