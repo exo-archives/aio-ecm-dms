@@ -12,8 +12,6 @@
 }
 
 .AddIcon16x16 {
-  float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
   width: 16px; height: 16px;
   background: url('VistaSkin/AddNodeIcon.gif') no-repeat;
   cursor: pointer;
