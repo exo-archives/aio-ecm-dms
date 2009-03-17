@@ -194,8 +194,8 @@
   </component>
   
 	<component>
-    <key>org.exoplatform.services.cms.link.NodeFinderService</key>
-    <type>org.exoplatform.services.cms.link.NodeFinderServiceImpl</type>
+    <key>org.exoplatform.services.cms.link.NodeFinder</key>
+    <type>org.exoplatform.services.cms.link.impl.NodeFinderImpl</type>
   </component>
   
   <external-component-plugins>
