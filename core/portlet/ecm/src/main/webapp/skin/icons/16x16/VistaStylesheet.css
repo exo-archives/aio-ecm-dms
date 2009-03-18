@@ -12,13 +12,15 @@
 }
 
 .AddIcon16x16 {
-  width: 16px; height: 16px;
+  width: 16px; 
+  height: 16px;
   background: url('VistaSkin/AddNodeIcon.gif') no-repeat;
   cursor: pointer;
 }
 
 .UIGrid .ViewIcon {
-	width:16px; height: 16px;
+	width:16px; 
+	height: 16px;
 	background: url('VistaSkin/YellowLight.png') no-repeat center;
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */

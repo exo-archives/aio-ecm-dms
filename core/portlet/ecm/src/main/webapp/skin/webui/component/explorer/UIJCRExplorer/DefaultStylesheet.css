@@ -314,6 +314,7 @@
   height: 48px;
   margin: auto;
   cursor: pointer;
+  position: relative;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel {
@@ -714,6 +715,16 @@
   width: 64px;
   height: 64px;
   background: url('DefaultSkin/background/LoadingProgress.gif') no-repeat center center;
+  position: relative;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .Link {
+  background: url('DefaultSkin/background/Link.gif') no-repeat right bottom;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: 0;
+  bottom: 0;
 }
 
 /*===========================================UIRightClickPopupMenu===========================================*/

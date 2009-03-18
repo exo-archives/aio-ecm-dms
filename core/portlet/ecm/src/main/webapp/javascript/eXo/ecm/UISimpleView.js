@@ -670,7 +670,7 @@ var SimpleView = function() {
 		}
 	};
 	SimpleView.prototype.errorCallback = function(obj){
-	  var img = eXo.core.DOMUtil.findNextElementByTagName(obj.parentNode,"span");
+	  var img = eXo.core.DOMUtil.findNextElementByTagName(obj.parentNode,"div");
 	  img.style.display = "block";
 	  obj.parentNode.style.display = "none";
 	};
