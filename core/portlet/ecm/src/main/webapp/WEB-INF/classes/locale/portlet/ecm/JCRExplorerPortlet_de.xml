@@ -2177,5 +2177,11 @@
 			<UIOneNodePathSelector>Trust Target Node</UIOneNodePathSelector>
 		</title>
 	</UIPopupSymLink>
+	
+	<ECMContextMenu>
+		<event>
+			<AddSymLink>Add Sym Link</AddSymLink>
+    </event>
+  </ECMContextMenu>
 </bundle>
 

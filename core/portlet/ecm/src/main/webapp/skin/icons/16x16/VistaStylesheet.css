@@ -94,6 +94,11 @@
   background: url('VistaSkin/UploadFile.png') no-repeat;
 }
 
+.AddSymLink16x16Icon {
+  width: 16px; height: 16px;
+  background: url('VistaSkin/AddSymLink.png') no-repeat;
+}
+
 .AddFolder16x16Icon {
 	width: 16px; height: 16px;
   background: url('VistaSkin/AddFolder.png') no-repeat;

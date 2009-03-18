@@ -50,6 +50,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContaine
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
+import org.exoplatform.ecm.webui.component.explorer.symlink.UISymLinkManager;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
@@ -112,6 +113,7 @@ import org.exoplatform.webui.exception.MessageException;
         @EventConfig(listeners = UIWorkingArea.AddFolderActionListener.class),
         @EventConfig(listeners = UIWorkingArea.AddDocumentActionListener.class),
         @EventConfig(listeners = UIWorkingArea.UploadActionListener.class),
+        @EventConfig(listeners = UIWorkingArea.AddSymLinkActionListener.class),
         @EventConfig(listeners = UIWorkingArea.MoveNodeActionListener.class, confirm="UIWorkingArea.msg.confirm-move")
       }
   )
@@ -252,6 +254,7 @@ public class UIWorkingArea extends UIContainer {
         if(!isSameNameSibling) actionsList.append(",Copy");
         actionsList.append(",Rename");
       }
+      actionsList.append(",AddSymLink");
     } else {
       if(isEditable) actionsList.append(",EditDocument");
       if(!isSameNameSibling) {
@@ -268,6 +271,7 @@ public class UIWorkingArea extends UIContainer {
       actionsList.append(",Rename");
       if(isJcrViewEnable()) actionsList.append(",Save");
       actionsList.append(",Delete");
+      actionsList.append(",AddSymLink");
     }
     if(uiExplorer.getAllClipBoard().size() > 0) actionsList.append(",Paste");
     return actionsList.toString();
@@ -1509,6 +1513,36 @@ public class UIWorkingArea extends UIContainer {
         JCRExceptionManager.process(uiApp, e);
         return;
       }
+    }
+  }
+  
+  static public class AddSymLinkActionListener extends EventListener<UIRightClickPopupMenu> {
+    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
+      UIWorkingArea uiWorkingArea = event.getSource().getParent();
+      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(!PermissionUtil.canRead(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(!currentNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }      
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UISymLinkManager uiSymLinkManager = event.getSource().createUIComponent(UISymLinkManager.class, null, null);
+      UIPopupContainer.activate(uiSymLinkManager, 600, 300);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 }

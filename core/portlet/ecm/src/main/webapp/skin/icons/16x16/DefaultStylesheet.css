@@ -542,6 +542,11 @@
   background: url('DefaultSkin/UploadFile.gif') no-repeat ;
 }
 
+.AddSymLink16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/AddSymLink.gif') no-repeat ;
+}
+
 .AddFolder16x16Icon {
 	width: 16px; height: 16px;
   background: url('DefaultSkin/AddFolder.gif') no-repeat ;

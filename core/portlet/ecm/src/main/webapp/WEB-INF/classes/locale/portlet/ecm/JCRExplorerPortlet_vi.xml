@@ -2213,5 +2213,11 @@
 			<UIOneNodePathSelector>Một node được lựa chọn</UIOneNodePathSelector>
 		</title>
 	</UIPopupSymLink>
+	
+	<ECMContextMenu>
+		<event>
+			<AddSymLink>Thêm mới Sym Link</AddSymLink>
+    </event>
+  </ECMContextMenu>
 </bundle>
 

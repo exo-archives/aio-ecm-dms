@@ -155,9 +155,9 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         }
       }
       
-      Session systemSession = node.getSession();
+      Session userSession = node.getSession();
       try {
-        systemSession.getItem(pathNode);
+        userSession.getItem(pathNode);
       } catch (ItemNotFoundException e) {
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.non-node", null, 
             ApplicationMessage.WARNING));
@@ -176,7 +176,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         return;
       }
       try {        
-        Node targetNode = (Node) systemSession.getItem(pathNode);
+        Node targetNode = (Node) userSession.getItem(pathNode);
         LinkManager linkManager = uiSymLinkForm.getApplicationComponent(LinkManager.class);
         linkManager.createLink(node, SYMLINK, targetNode, symLinkName);
         uiExplorer.updateAjax(event);
@@ -188,6 +188,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(Exception e) {
+        e.printStackTrace();
         String key = "UISymLinkForm.msg.cannot-save";
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
