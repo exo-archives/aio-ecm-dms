@@ -178,7 +178,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
       try {        
         Node targetNode = (Node) systemSession.getItem(pathNode);
         LinkManager linkManager = uiSymLinkForm.getApplicationComponent(LinkManager.class);
-        linkManager.createLink(node, SYMLINK, targetNode);
+        linkManager.createLink(node, SYMLINK, targetNode, symLinkName);
         uiExplorer.updateAjax(event);
       } catch (AccessControlException ace) {
         throw new AccessDeniedException(ace.getMessage());
