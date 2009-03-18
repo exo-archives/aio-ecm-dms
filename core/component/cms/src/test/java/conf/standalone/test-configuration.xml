@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <configuration>
-	<component>
-    <key>org.exoplatform.services.cms.publication.PublicationPresentationService</key>
-    <type>org.exoplatform.services.cms.publication.impl.PublicationPresentationServiceImpl</type>
-  </component>
-  
+ 
   <component>
       <type>org.exoplatform.services.jcr.ext.registry.RegistryService</type>
       <init-params>
@@ -27,56 +23,9 @@
   </component>    
   
   <component>
-    <key>org.exoplatform.services.resources.ResourceBundleService</key>
-    <type>org.exoplatform.services.resources.jcr.ResourceBundleServiceImpl</type>
-    <init-params>
-      <values-param>
-        <name>classpath.resources</name>
-        <description>The resources  that start with the following package name should be load from file system</description>
-        <value>locale.ecm.cms.publication.PublicationService</value>
-      </values-param>
-
-      <values-param>
-        <name>init.resources</name>
-        <description>Store the following resources into the db for  the first launch </description>
-        <value>locale.ecm.cms.publication.PublicationService</value>
-      </values-param>
-
-      <values-param>
-        <name>portal.resource.names</name>
-        <description>The properties files of  the portal ,  those file will be merged
-          into one ResoruceBundle properties </description>
-        <value>local.portal.portal</value>
-        <value>local.portal.custom</value>
-        <value></value>
-      </values-param>
-    </init-params>
-  </component>
-  
-  
-  <component>
-    <key>org.exoplatform.services.cms.publication.PublicationService</key>
-    <type>org.exoplatform.services.cms.publication.impl.PublicationServiceImpl</type>
-    <component-plugins>
-    	<component-plugin>
-	    <name>StaticAndDirect</name>
-	    <set-method>addPublicationPlugin</set-method>
-	    <type>org.exoplatform.services.cms.publication.impl.StaticAndDirectPublicationPlugin</type>
-	    <init-params>
-	      <values-param>
-	    		<name>StaticAndDirect</name>
-	    		<description>This publication lifecycle keeps the content at their original place. Any version of the Node can be published.</description>
-	      </values-param>
-	    </init-params>
-	  </component-plugin>
-    </component-plugins>
-  </component>
-	  
-  <component>
     <type>org.exoplatform.container.xml.PortalContainerInfo</type>
   </component>
    <import>classpath:/conf/standalone/test-jcr-configuration.xml</import> 
-  
-  
+   <import>classpath:/conf/standalone/system-configuration.xml</import> 
   
 </configuration>
