@@ -60,8 +60,8 @@ public class LinkManagerImpl implements LinkManager, Startable {
         target.addMixin("mix:referenceable");
         target.getSession().save();
       }
-      if (linkType == null || linkType.trim().equals("")) linkType = SYMLINK;
-      if (linkName == null || linkName.trim().equals("")) linkName = target.getName();
+      if (linkType == null || linkType.trim().length() == 0) linkType = SYMLINK;
+      if (linkName == null || linkName.trim().length() == 0) linkName = target.getName();
       Node nodeLink = parent.addNode(linkName, linkType);
       nodeLink.setProperty(WORKSPACE, target.getSession().getWorkspace().getName());
       nodeLink.setProperty(UUID, target.getUUID());
@@ -81,19 +81,19 @@ public class LinkManagerImpl implements LinkManager, Startable {
     try {
       return session.getNodeByUUID(uuid);
     } catch (ItemNotFoundException e) {
-      e.printStackTrace();
+//      e.printStackTrace();
       try {
         session = getSystemSession();
         return session.getNodeByUUID(uuid);
       } catch (ItemNotFoundException e1) {
-        e1.printStackTrace();
+//        e1.printStackTrace();
         link.remove();
         link.getSession().save();
       } finally {
         session.logout();
       }
     } finally {
-      if (system) session.logout();
+      if (session != null) session.logout();
     }
     return null;
   }
@@ -130,6 +130,5 @@ public class LinkManagerImpl implements LinkManager, Startable {
 
   public void stop() {
     // TODO Auto-generated method stub
-    
   }
 }

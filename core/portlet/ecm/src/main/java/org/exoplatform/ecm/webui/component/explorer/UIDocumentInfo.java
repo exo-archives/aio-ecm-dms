@@ -56,6 +56,7 @@ import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.cms.voting.VotingService;
@@ -562,25 +563,30 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   static  public class ChangeNodeActionListener extends EventListener<UIDocumentInfo> {
-    public void execute(Event<UIDocumentInfo> event) throws Exception {      
-      UIDocumentInfo uicomp =  event.getSource() ;
-      UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ; 
-      String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;
-      Session session = uiExplorer.getSessionByWorkspace(workspaceName) ;
-      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
-      String prefPath = uiExplorer.getPreferencesPath() ;
-      String prefWorkspace = uiExplorer.getPreferencesWorkspace() ;
+    public void execute(Event<UIDocumentInfo> event) throws Exception {     
+      UIDocumentInfo uicomp =  event.getSource();
+      NodeFinder nodeFinder = uicomp.getApplicationComponent(NodeFinder.class);
+      UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class); 
+      Node selectedNode = null;
+      String uri = event.getRequestContext().getRequestParameter(OBJECTID);
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
+      Session session = uiExplorer.getSessionByWorkspace(workspaceName);
+      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
+      String prefPath = uiExplorer.getPreferencesPath();
+      String prefWorkspace = uiExplorer.getPreferencesWorkspace();
       if((prefPath.length() > 0) && (uiExplorer.getCurrentWorkspace().equals(prefWorkspace))) {
         try {
           if ((".." + prefPath).equals(uri)) {
             if (prefPath.equals(uiExplorer.getCurrentNode().getPath())) {
-              uiExplorer.setSelectNode(uiExplorer.getCurrentNode().getParent());
+              selectedNode = (Node)nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uiExplorer.getCurrentNode().getParent().getPath());
+              uiExplorer.setSelectNode(selectedNode.getPath(), session);
+//              uiExplorer.setSelectNode(uiExplorer.getCurrentNode().getParent());
               uiExplorer.updateAjax(event) ;
             }
           } else {
-            uiExplorer.setSelectNode(uri, session);
-            if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {
+            selectedNode = (Node)nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uri);
+            uiExplorer.setSelectNode(selectedNode.getPath(), session); 
+            if (!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {
               uiExplorer.setIsReferenceNode(true) ;
               uiExplorer.setReferenceWorkspace(workspaceName) ;
             } else {

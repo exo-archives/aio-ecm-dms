@@ -30,7 +30,9 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.command.handler.GetApplicationHandler;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -208,7 +210,8 @@ public class UITreeExplorer extends UIContainer {
         }
       }
       try {
-        selectedNode = (Node) uiExplorer.getSession().getItem(path) ;
+        NodeFinder nodeFinder = uiTreeExplorer.getApplicationComponent(NodeFinder.class);
+        selectedNode = (Node)nodeFinder.getItem(uiExplorer.getRepositoryName(), uiExplorer.getCurrentWorkspace(), path);
       } catch(PathNotFoundException pa) {
         uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
             ApplicationMessage.WARNING)) ;
