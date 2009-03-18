@@ -17,12 +17,23 @@
  **************************************************************************/
 package org.exoplatform.services.cms.link.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jcr.Item;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.link.NodeFinder;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.picocontainer.Startable;
 
 /**
@@ -30,17 +41,37 @@ import org.picocontainer.Startable;
  * Mar 14, 2009
  */
 public class NodeFinderImpl implements NodeFinder, Startable {
+  
+  public static final String NODETYPE_SYMLINK = "exo:symlink";
+  
+  public static final String EXO_UUID         = "exo:uuid";
+  public static final String EXO_WORKSPACE    = "exo:workspace";
+  public static final String EXO_PRIMARY      = "exo:primaryType";
+  
+  private RepositoryService repositoryService_;
+  
+  public NodeFinderImpl(RepositoryService repositoryService){
+    this.repositoryService_ = repositoryService;
+  }
 
   public Item getItem(String repository, String workspace, String absPath)
       throws PathNotFoundException, RepositoryException {
-
+    try {
+      Session session = getSession(repository, workspace);
+      return session.getItem(getPath(session, absPath));
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    
     return null;
   }
 
   public Node getNode(Node ancestorNode, String relativePath) throws PathNotFoundException,
       RepositoryException {
-    // TODO Auto-generated method stub
-    return null;
+    Session session = ancestorNode.getSession();
+    String path = ancestorNode.getPath() + "/" + relativePath; 
+    String absPath = getPath(session, path);
+    return (Node)session.getItem(absPath);
   }
 
   public void start() {
@@ -52,7 +83,88 @@ public class NodeFinderImpl implements NodeFinder, Startable {
 
   }
 
-  private String getPath(String fromPath, String destPath) {
+  public String getPath(Session session, String absPath) {
+    try {
+      int idxSlash = absPath.substring(1).indexOf("/");
+      String path = absPath.substring(0, idxSlash + 2);
+      List<String> listPath = this.queryPath(session, path);
+      String partPath = "";
+      if (!listPath.isEmpty()) {
+        for(String tempPath : listPath) {
+          if (absPath.indexOf(tempPath) != -1) {
+            partPath = tempPath;
+             break;
+          }
+        }
+      }
+      if (partPath.length() != 0) {
+        String realPath = getRealPath(session, partPath);
+        absPath = realPath + absPath.substring(partPath.length());
+       // absPath.replace(partPath, realPath);
+        realPath = getRealPath(session, absPath);
+        if (realPath!= null && realPath.length() > 0)
+          return realPath;
+        return getPath(session, absPath);
+      } 
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return "";
+  }
+
+
+  /**
+   * Get path to exo:symlink node
+   * @param session
+   * @param statement
+   * @return
+   * @throws RepositoryException
+   */
+  public List<String> queryPath(Session session, String path) throws RepositoryException {
+    String statement = "SELECT * FROM exo:symlink WHERE jcr:path LIKE '" + path + "%'";
+    List<String> listPath = new ArrayList<String>(); 
+    System.out.println("Query node");
+    QueryManager queryManager = session.getWorkspace().getQueryManager();
+    Query query = queryManager.createQuery(statement, Query.SQL);
+    QueryResult result = query.execute();
+    NodeIterator iterNode = result.getNodes();
+    if (iterNode.hasNext()) {
+      while (iterNode.hasNext()) {
+        Node nodeResult = iterNode.nextNode();
+        listPath.add(nodeResult.getPath());
+      }
+    } else {
+      System.out.println("\n\n khong co data");
+    }
+    return listPath;
+  }
+  
+  private Session getSession(String repository, String workspace) throws Exception{
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
+    return SessionProviderFactory.createSessionProvider().getSession(workspace, manageableRepository);
+  }
+  
+  /**
+   * Get absolute path base on given symlinkPath
+   * if path could be a link then 
+   * @param session
+   * @param symlinkPath
+   * @return absolute path
+   * @throws RepositoryException
+   */
+  private String getRealPath(Session session, String symlinkPath) throws RepositoryException {
+    if (session.itemExists(symlinkPath)) {
+      Node node = (Node) session.getItem(symlinkPath);
+      if (node.isNodeType(NODETYPE_SYMLINK)) {
+        String uuid = node.getProperty(EXO_UUID).getString();
+        return session.getNodeByUUID(uuid).getPath();
+      }
+      return symlinkPath;
+    }
+    return "";
+  }
+  
+  /*private String getPath(String fromPath, String destPath) {
     String midPath = destPath.substring(0, fromPath.length() + (destPath.length() - fromPath.length())
         / 2);
     midPath = midPath.substring(0, midPath.lastIndexOf("/"));
@@ -67,38 +179,5 @@ public class NodeFinderImpl implements NodeFinder, Startable {
       return midPath;
     midPath = getPath(fromPath, destPath);
     return midPath;
-  }
-
-  /**
-   * Check the node corresponding to the absolute path could be a link or not
-   * 
-   * @param absPath path to node
-   * @return true if corresponding node could be a link false if corresponding
-   *         node could'n be a link
-   * @throws ItemNotFoundException if the target node cannot be found
-   * @throws RepositoryException if an unexpected error occurs while retrieving
-   *           the target node
-   */
-  private boolean checkLink(String absPath) {
-    // / for testing
-    if (!absPath.contains("link") || (absPath.contains("link") && absPath.indexOf("link/") == absPath.length() - 4))
-      return true;
-    return false;
-  }
-
-  private String getLink(String path) {
-    // for testing
-    return path.replace("link", "REALLink");
-  }
-
-  /*private int getMidSlash(String path) {
-    //path.in
   }*/
-  public static void main(String[] args) {
-    NodeFinderImpl nodeFinder = new NodeFinderImpl();
-    
-    //String path = "/aaa/1link/bb/cc/2link/eee/3link/4link/ffff/5link/g";
-    String path = "/aaa/link1/bb/cc";
-    System.out.println(nodeFinder.getPath("",path));
-  }
 }
