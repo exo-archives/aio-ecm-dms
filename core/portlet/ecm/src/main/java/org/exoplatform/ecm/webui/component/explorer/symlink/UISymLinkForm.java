@@ -29,7 +29,10 @@ import javax.jcr.Session;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
@@ -128,6 +131,8 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
           pathNode = uiStringInput.getValue().trim();
         }
       }
+      String workspaceName = pathNode.substring(0, pathNode.lastIndexOf(":/"));
+      pathNode = pathNode.substring(pathNode.lastIndexOf(":/") + 1);
       
       Node node = uiExplorer.getCurrentNode() ;                  
       if(uiExplorer.nodeIsLocked(node)) {
@@ -145,7 +150,8 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return ;
       }
-      String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{", "/", "|", "\""};
+      String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", 
+          "'", "#", ";", "}", "{", "/", "|", "\""};
       for(String filterChar : arrFilterChar) {
         if(symLinkName.indexOf(filterChar) > -1) {
           uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.name-not-allowed", null, 
@@ -155,7 +161,11 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         }
       }
       
-      Session userSession = node.getSession();
+      RepositoryService repositoryService = uiSymLinkForm.getApplicationComponent(RepositoryService.class) ;
+      ManageableRepository repository = repositoryService.getRepository(uiExplorer.getRepositoryName());
+      Session userSession = 
+        SessionProviderFactory.createSessionProvider().getSession(workspaceName, repository);
+      
       try {
         userSession.getItem(pathNode);
       } catch (ItemNotFoundException e) {
@@ -180,17 +190,21 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         LinkManager linkManager = uiSymLinkForm.getApplicationComponent(LinkManager.class);
         linkManager.createLink(node, SYMLINK, targetNode, symLinkName);
         uiExplorer.updateAjax(event);
-      } catch (AccessControlException ace) {
-        throw new AccessDeniedException(ace.getMessage());
+      } catch (AccessControlException ace) {        
+        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.repository-exception", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch (AccessDeniedException ade) {        
+        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.repository-exception", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       } catch(NumberFormatException nume) {
-        String key = "UISymLinkForm.msg.numberformat-exception";
-        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
+        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.numberformat-exception", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(Exception e) {
         e.printStackTrace();
-        String key = "UISymLinkForm.msg.cannot-save";
-        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
+        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.cannot-save", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }

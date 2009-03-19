@@ -2205,6 +2205,7 @@
 			<path-node-invalid>Please enter Path Node!</path-node-invalid>
 			<path-node-not-allowed>This name is not allowed.</path-node-not-allowed>
 			<non-node>Please choose trust target node</non-node>
+			<cannot-save>Some constraints were violated during that action.</cannot-save>
     </msg>
 	</UISymLinkForm>
 	
