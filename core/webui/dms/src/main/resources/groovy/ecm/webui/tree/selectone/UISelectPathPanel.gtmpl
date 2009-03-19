@@ -44,9 +44,11 @@
 				          <div class="Text <%=nodeTypeIcon%>">$nodeName</div>
 				        </td>
 				        <td>
+				          <%if(!uicomponent.isExceptedNodeType(node)) {%>
 			              <a href="<%=uicomponent.event("Select", node.getPath())%>">
 			                <div class="Select16x16Icon" style="margin-left:15px;"></div>
 			              </a>
+				          <%}%>
 				        </td>
 				      </tr>
 			<%

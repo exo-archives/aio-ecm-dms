@@ -29,6 +29,7 @@ import javax.jcr.Session;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -243,6 +244,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
       UIOneNodePathSelector uiNodePathSelector = uiSymLinkManager.createUIComponent(UIOneNodePathSelector.class, null, null);
       uiPopupWindow.setUIComponent(uiNodePathSelector);
       uiNodePathSelector.setIsDisable(workspaceName, false);
+      uiNodePathSelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
       uiNodePathSelector.setRootNodeLocation(uiExplorer.getRepositoryName(), workspaceName, "/");
       uiNodePathSelector.setIsShowSystem(false);
       uiNodePathSelector.init(uiExplorer.getSystemProvider());

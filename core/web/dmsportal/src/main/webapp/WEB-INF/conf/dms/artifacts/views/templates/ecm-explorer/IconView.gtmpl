@@ -137,7 +137,9 @@
 							<div class="NodeLabel">
 								<div class="ActionIcon">
 									<div style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>">
-									  <div class="Link"></div>
+									  <%if(uicomponent.isSymLink(data)) {%>
+  									  <div class="Link"></div>
+									  <%}%>
 									</div>
 								</div>
 							</div>

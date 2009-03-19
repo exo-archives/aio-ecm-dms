@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.ObjectPageList;
@@ -54,6 +55,7 @@ public class UISelectPathPanel extends UIContainer {
   public String[] acceptedMimeTypes = {};
   protected Node parentNode;
   private String[] acceptedNodeTypes = {};
+  private String[] exceptedNodeTypes = {};
   private boolean allowPublish = false;
   private PublicationService publicationService_ = null;
   private List<String> templates_ = null;
@@ -99,6 +101,12 @@ public class UISelectPathPanel extends UIContainer {
   public void setAcceptedNodeTypes(String[] acceptedNodeTypes) { 
     this.acceptedNodeTypes = acceptedNodeTypes;
   }
+  
+  public String[] getExceptedNodeTypes() { return exceptedNodeTypes; }
+
+  public void setExceptedNodeTypes(String[] exceptedNodeTypes) { 
+    this.exceptedNodeTypes = exceptedNodeTypes;
+  }
 
   public String[] getAcceptedMimeTypes() { return acceptedMimeTypes; }
   public void setAcceptedMimeTypes(String[] acceptedMimeTypes) { this.acceptedMimeTypes = acceptedMimeTypes; }  
@@ -130,8 +138,15 @@ public class UISelectPathPanel extends UIContainer {
   protected boolean matchNodeType(Node node) throws Exception {
     if(acceptedNodeTypes == null || acceptedNodeTypes.length == 0) return true;
     for(String nodeType: acceptedNodeTypes) {
-      if(node.isNodeType(nodeType)) 
-        return true;
+      if(node.isNodeType(nodeType)) return true;
+    }
+    return false;
+  }
+  
+  protected boolean isExceptedNodeType(Node node) throws RepositoryException {
+    if(exceptedNodeTypes == null || exceptedNodeTypes.length == 0) return true;
+    for(String nodeType: exceptedNodeTypes) {
+      if(node.isNodeType(nodeType)) return true;
     }
     return false;
   }

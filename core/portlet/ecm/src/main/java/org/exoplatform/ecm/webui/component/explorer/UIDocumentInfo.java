@@ -303,22 +303,22 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   public String getNodeOwner(Node node) throws RepositoryException {
-    if(node.hasProperty("exo:owner")) {
-      return node.getProperty("exo:owner").getString();
+    if(node.hasProperty(Utils.EXO_OWNER)) {
+      return node.getProperty(Utils.EXO_OWNER).getString();
     }
     return SystemIdentity.ANONIM ;
   }
 
   public Date getDateCreated(Node node) throws Exception{
-    if(node.hasProperty("exo:dateCreated")) {
-      return node.getProperty("exo:dateCreated").getDate().getTime();
+    if(node.hasProperty(Utils.EXO_CREATED_DATE)) {
+      return node.getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
     }
     return new GregorianCalendar().getTime();
   }
 
   public Date getDateModified(Node node) throws Exception {
-    if(node.hasProperty("exo:dateModified")) {
-      return node.getProperty("exo:dateModified").getDate().getTime();
+    if(node.hasProperty(Utils.EXO_MODIFIED_DATE)) {
+      return node.getProperty(Utils.EXO_MODIFIED_DATE).getDate().getTime();
     }
     return new GregorianCalendar().getTime();
   }
@@ -503,7 +503,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       NodeIterator nodeIter = currentNode.getNodes() ;
       while(nodeIter.hasNext()) {
         Node ntFile = nodeIter.nextNode() ;
-        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+        if(ntFile.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) {
           return ntFile ;
         }
       }
@@ -537,7 +537,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   public boolean isSymLink(Node node) throws RepositoryException {
-    if(node.isNodeType("exo:symlink")) return true;
+    if(node.isNodeType(Utils.EXO_SYMLINK)) return true;
     return false;
   }
   
@@ -638,27 +638,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     }
   }
 
-//  private static class ArrangeComparator implements Comparator<Object> {
-//    public int compare(Row row1, Row row2) {
-//      try {
-//        if (iconType.equals("BlueUpArrow") || iconType.equals("BlueDownArrow")) {
-//          String s1 = row1.getValue("jcr:primaryType").getString();
-//          String s2 = row2.getValue("jcr:primaryType").getString();
-//          if (iconType.trim().equals("BlueUpArrow")) { return s2.compareTo(s1); }        
-//          return s1.compareTo(s2);
-//        } else if (iconScore.equals("BlueUpArrow") || iconScore.equals("BlueDownArrow")) {
-//          Long l1 = row1.getValue("jcr:score").getLong();
-//          Long l2 = row2.getValue("jcr:score").getLong();
-//          if (iconScore.trim().equals("BlueUpArrow")) { return l2.compareTo(l1); }        
-//          return l1.compareTo(l2);
-//        }
-//      } catch (Exception e) {  
-//        e.printStackTrace();
-//      }            
-//      return 0;
-//    }        
-//  }
-  
   static  public class SortActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uicomp = event.getSource() ;

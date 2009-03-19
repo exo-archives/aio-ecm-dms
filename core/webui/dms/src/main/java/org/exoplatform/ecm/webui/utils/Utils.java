@@ -95,7 +95,7 @@ public class Utils {
   final public static String BACKSLASH = "\\".intern();
   final public static String EXO_CREATED_DATE = "exo:dateCreated";
   final public static String EXO_MODIFIED_DATE = "exo:dateModified";
-
+  final public static String EXO_OWNER = "exo:owner";
 
   final public static String SPECIALCHARACTER[] = {SEMI_COLON,COLON,SLASH,BACKSLASH,"'","|",">","<",
                                                    "\"", "?", "!", "@", "#", "$", "%","^","&","*",
@@ -324,8 +324,8 @@ public class Utils {
 
   public static String getNodeOwner(Node node) throws Exception {
     try {
-      if(node.hasProperty("exo:owner")) {
-        return node.getProperty("exo:owner").getString();
+      if(node.hasProperty(EXO_OWNER)) {
+        return node.getProperty(EXO_OWNER).getString();
       }
     } catch (Exception e) {
       //e.printStackTrace();

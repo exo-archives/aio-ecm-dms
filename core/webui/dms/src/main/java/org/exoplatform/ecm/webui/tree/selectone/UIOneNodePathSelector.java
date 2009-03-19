@@ -63,6 +63,8 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   private String[] acceptedNodeTypesInPathPanel = {};
   private String[] acceptedMimeTypes = {};
   
+  private String[] exceptedNodeTypesInPathPanel = {};
+
   private String repositoryName = null;
   private String workspaceName = null;
   private String rootTreePath = null;
@@ -105,6 +107,7 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
       selectPathPanel.setAllowPublish(allowPublish, publicationService, templates);
       selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
       selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
+      selectPathPanel.setExceptedNodeTypes(exceptedNodeTypesInPathPanel);
       selectPathPanel.updateGrid();
     } finally {
       sessionProvider.close();
@@ -155,6 +158,14 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
 
   public void setAcceptedNodeTypesInPathPanel(String[] acceptedNodeTypesInPathPanel) {
     this.acceptedNodeTypesInPathPanel = acceptedNodeTypesInPathPanel;
+  }
+  
+  public String[] getExceptedNodeTypesInPathPanel() {
+    return exceptedNodeTypesInPathPanel;
+  }
+
+  public void setExceptedNodeTypesInPathPanel(String[] exceptedNodeTypesInPathPanel) {
+    this.exceptedNodeTypesInPathPanel = exceptedNodeTypesInPathPanel;
   }  
   
   public String[] getAcceptedMimeTypes() { return acceptedMimeTypes; }
