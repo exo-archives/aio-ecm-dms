@@ -728,6 +728,11 @@
   background: url('DefaultSkin/Rename.gif') no-repeat right center; /* orientation=rt */
 }
 
+.UIRightClickPopupMenu .AddSymLink16x16Icon {
+  background: url('DefaultSkin/AddSymLink.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/AddSymLink.gif') no-repeat right center; /* orientation=rt */
+}
+
 .UIRightClickPopupMenu .Paste16x16Icon {
   background: url('DefaultSkin/OrangeNote.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/OrangeNote.gif') no-repeat right center; /* orientation=rt */

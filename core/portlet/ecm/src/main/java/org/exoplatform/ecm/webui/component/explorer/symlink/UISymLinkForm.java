@@ -107,7 +107,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
     listNodeName.add(valueNodeName);
     UIFormMultiValueInputSet uiFormMultiValueInputSet = getChild(UIFormMultiValueInputSet.class);
     uiFormMultiValueInputSet.setValue(listNodeName);
-    
+    getUIStringInput(FIELD_NAME).setValue(valueNodeName.substring(valueNodeName.lastIndexOf("/") + 1));
     UISymLinkManager uiSymLinkManager = getParent();
     uiSymLinkManager.removeChildById(POPUP_SYMLINK);
   }
@@ -228,8 +228,9 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
       UIPopupWindow uiPopupWindow = uiSymLinkManager.initPopupTaxonomy(POPUP_SYMLINK);
       UIOneNodePathSelector uiNodePathSelector = uiSymLinkManager.createUIComponent(UIOneNodePathSelector.class, null, null);
       uiPopupWindow.setUIComponent(uiNodePathSelector);
-      uiNodePathSelector.setIsDisable(workspaceName, true);
+      uiNodePathSelector.setIsDisable(workspaceName, false);
       uiNodePathSelector.setRootNodeLocation(uiExplorer.getRepositoryName(), workspaceName, "/");
+      uiNodePathSelector.setIsShowSystem(false);
       uiNodePathSelector.init(uiExplorer.getSystemProvider());
       String param = "returnField=" + FIELD_SYMLINK;
       uiNodePathSelector.setSourceComponent(uiSymLinkForm, new String[]{param});
