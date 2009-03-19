@@ -31,6 +31,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.PropertyIterator;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
@@ -519,7 +520,11 @@ public class UIBrowseContainer extends UIContainer {
               Node node = item.nextNode();
               if (canRead(node)){
                 NodeType nodeType = node.getPrimaryNodeType();
-                if (templates.contains(nodeType.getName())&&(isShowDocument)) { 
+                String typeName = nodeType.getName();
+                if(node.isNodeType(Utils.EXO_SYMLINK)) {
+                  typeName = node.getProperty(Utils.EXO_PRIMARYTYPE).getString();
+                }
+                if (templates.contains(typeName)&&(isShowDocument)) { 
                   if (subCategoryDoc.size() < getRowPerBlock()) {
                     if (isAllowPublish()) {
                       PublicationService publicationService = getApplicationComponent(PublicationService.class);
@@ -532,7 +537,7 @@ public class UIBrowseContainer extends UIContainer {
                     }
                   }
                 }
-                if (isCategories(nodeType)&&(!templates.contains(nodeType.getName()))) {
+                if (isCategories(node)&&(!templates.contains(nodeType.getName()))) {
                   if (isAllowPublish()) {
                     PublicationService publicationService = getApplicationComponent(PublicationService.class);
                     Node nodecheck = publicationService.getNodePublish(node, null);
@@ -698,7 +703,11 @@ public class UIBrowseContainer extends UIContainer {
       if (isEnableChildDocument()) {
         while (item.hasNext()) {
           Node node = item.nextNode();
-          if (templates.contains(node.getPrimaryNodeType().getName())) {
+          String typeName = node.getPrimaryNodeType().getName();
+          if(node.isNodeType(Utils.EXO_SYMLINK)) {
+            typeName = node.getProperty(Utils.EXO_PRIMARYTYPE).getString();
+          }
+          if (templates.contains(typeName)) {
             if (canRead(node)) {
               if (isAllowPublish()) {
                 PublicationService publicationService = getApplicationComponent(PublicationService.class);
@@ -867,10 +876,14 @@ public class UIBrowseContainer extends UIContainer {
     while(childIter.hasNext()) {
       Node child = childIter.nextNode();
       if(canRead(child)) {
-        if(templates.contains(child.getPrimaryNodeType().getName())&&(isShowDocument)) {       
+        String typeName = child.getPrimaryNodeType().getName();
+        if(child.isNodeType(Utils.EXO_SYMLINK)) {
+          typeName = child.getProperty(Utils.EXO_PRIMARYTYPE).getString();
+        }
+        if(templates.contains(typeName)&&(isShowDocument)) {       
           if(canRead(child)) subDocumentList.add(child);
         } else {
-          if(isCategories(child.getPrimaryNodeType())) {
+          if(isCategories(child)) {
             Map childOfSubCategory = getChildOfSubCategory(repositoryService, child, templates);
             String path = child.getPath();
             String keyPath = path.substring(path.lastIndexOf("/") + 1);
@@ -1183,6 +1196,18 @@ public class UIBrowseContainer extends UIContainer {
 
   protected void historyNext() {}
 
+  protected boolean isCategories(Node node) throws RepositoryException {
+    NodeType nodeType = node.getPrimaryNodeType();
+    String primaryTypeName = nodeType.getName(); 
+    if(node.isNodeType(Utils.EXO_SYMLINK)) {
+      primaryTypeName = node.getProperty(Utils.EXO_PRIMARYTYPE).getString();
+    }
+    for(String type : Utils.CATEGORY_NODE_TYPES) {
+      if(primaryTypeName.equals(type)) return true;
+    }
+    return false;
+  }
+  
   protected boolean isCategories(NodeType nodeType) {
     for(String type : Utils.CATEGORY_NODE_TYPES) {
       if(nodeType.getName().equals(type)) return true;
@@ -1220,10 +1245,14 @@ public class UIBrowseContainer extends UIContainer {
       Node item = items.nextNode();
       if (canRead(item)) {
         NodeType nt = item.getPrimaryNodeType();
-        if (documentTemplates.contains(nt.getName()) && isShowDocument){
+        String typeName = nt.getName();
+        if(item.isNodeType(Utils.EXO_SYMLINK)) {
+          typeName = item.getProperty(Utils.EXO_PRIMARYTYPE).getString();
+        }
+        if (documentTemplates.contains(typeName) && isShowDocument){
           if (childDocOrReferencedDoc.size() < getRowPerBlock()) childDocOrReferencedDoc.add(item);
         } else {
-          if (isCategories(item.getPrimaryNodeType())) subCategories.add(item.getPath());          
+          if (isCategories(item)) subCategories.add(item.getPath());          
         }
       }
     }
