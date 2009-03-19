@@ -141,6 +141,8 @@ public class Utils {
   final static public String EXO_DOCUMENTFOLDER = "exo:documentFolder";
   final static public String EXO_SEARCHFOLDER = "exo:searchFolder";
   final static public String RMA_RECORD = "rma:record";
+  final static public String EXO_SYMLINK = "exo:symlink";
+  final static public String EXO_PRIMARYTYPE = "exo:primaryType";
   final static public String[] SPECIFIC_FOLDERS = {EXO_MUSICFOLDER,EXO_VIDEOFOLDER,EXO_PICTUREFOLDER,EXO_DOCUMENTFOLDER,EXO_SEARCHFOLDER };
 
   final static public String[] FOLDERS = {NT_UNSTRUCTURED, NT_FOLDER};
@@ -243,6 +245,9 @@ public class Utils {
           break;
         }
       }
+    }
+    if(node.isNodeType(EXO_SYMLINK) && node.hasProperty(EXO_PRIMARYTYPE)) {
+      nodeType = node.getProperty(EXO_PRIMARYTYPE).getString();
     }
     nodeType = nodeType.replaceAll(":","_") + appended;    
     str.append(nodeType);

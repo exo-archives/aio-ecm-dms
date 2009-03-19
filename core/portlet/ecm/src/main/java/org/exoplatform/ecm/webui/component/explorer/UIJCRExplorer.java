@@ -429,7 +429,8 @@ public class UIJCRExplorer extends UIContainer {
         isFolder = true ;
       }
     }
-    if(!preferences_.isJcrEnable() && templateService.isManagedNodeType(nodeType.getName(), currentRepositoryName_) && !isFolder) {
+    if(!preferences_.isJcrEnable() && 
+        templateService.isManagedNodeType(nodeType.getName(), currentRepositoryName_) && !isFolder) {
       return childrenList ;
     } 
     if(isReferenceableNode(getCurrentNode()) && isReferences) {
@@ -456,9 +457,17 @@ public class UIJCRExplorer extends UIContainer {
         Node child = (Node)childrenIterator.next() ;
         if(PermissionUtil.canRead(child)) {
           NodeType type = child.getPrimaryNodeType() ;
-          if(Utils.NT_UNSTRUCTURED.equals(type.getName()) || Utils.NT_FOLDER.equals(type.getName())) {
+          String typeName = type.getName();
+          String primaryTypeName = typeName;
+          if(typeName.equals(Utils.EXO_SYMLINK)) { 
+            primaryTypeName = child.getProperty(Utils.EXO_PRIMARYTYPE).getString();
+          }
+          if(Utils.NT_UNSTRUCTURED.equals(primaryTypeName) || Utils.NT_FOLDER.equals(primaryTypeName)) {
             childrenList.add(child) ;
-          } else if(documentTypes.contains(type.getName())) {
+          } else if(typeName.equals(Utils.EXO_SYMLINK) && 
+              documentTypes.contains(primaryTypeName)) {
+              childrenList.add(child);
+          } else if(documentTypes.contains(typeName)) {
             childrenList.add(child) ;
           }
         }

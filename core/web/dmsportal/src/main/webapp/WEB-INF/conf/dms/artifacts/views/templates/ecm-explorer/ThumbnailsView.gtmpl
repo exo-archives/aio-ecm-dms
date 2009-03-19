@@ -139,11 +139,15 @@
 									  String thumbnailImage = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + data.getPath() + "/?size=medium&reloadnum=" + Math.random();
 									%>
 								    <div style="display: block;" class="LoadingProgressIcon">
-								        <div class="Link"></div>
+								        <%if(uicomponent.isSymLink(data)) {%>
+								          <div class="Link"></div>
+								        <%}%>
 								        <img src="$thumbnailImage" onerror='eXo.ecm.UISimpleView.errorCallback(this);' onload="this.parentNode.style.backgroundImage='none'" />
 								    </div>
 								    <div style="display: none;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>">
-								      <div class="Link"></div>
+								      	<%if(uicomponent.isSymLink(data)) {%>
+								          <div class="Link"></div>
+								        <%}%>
 								    </div>
 								</div>
 							</div>
