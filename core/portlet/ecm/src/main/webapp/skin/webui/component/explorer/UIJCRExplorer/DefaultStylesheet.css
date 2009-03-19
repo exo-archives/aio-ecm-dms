@@ -204,6 +204,16 @@
 	float: none;
 	margin: auto;
 	width: 20px;
+	position: relative;
+}
+
+.UIJCRExplorerPortlet .UIListGrid .LeftColumn .LinkSmall {
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
+  position: absolute;
+  width: 9px;
+  height: 5px;
+  right: 0;
+  bottom: 0;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn {

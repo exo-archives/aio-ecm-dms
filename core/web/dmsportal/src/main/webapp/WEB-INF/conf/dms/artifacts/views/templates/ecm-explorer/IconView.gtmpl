@@ -136,7 +136,9 @@
 		        <div style="height: auto; width: auto; border: none; -moz-user-select: none;" unselectable="on">
 							<div class="NodeLabel">
 								<div class="ActionIcon">
-									<span style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></span>
+									<div style="display: block;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>">
+									  <div class="Link"></div>
+									</div>
 								</div>
 							</div>
 			        <%

@@ -219,7 +219,9 @@
 	      <div <%=rightClickMenu%> class="RowView Normal" locked="$isLocked" workspacename="$preferenceWS" objectId="$nodePath" ondblclick="$actionLink">
 		      $strActs
 	        <div class="LeftColumn" style="padding: 2px 0px; 	border-right: none;">
-					  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div>
+					  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>">
+					    <div class="LinkSmall"></div>
+					  </div>
 	        </div>
 	        <%
 	  	        if (name.length() < 50) subName = name ;
