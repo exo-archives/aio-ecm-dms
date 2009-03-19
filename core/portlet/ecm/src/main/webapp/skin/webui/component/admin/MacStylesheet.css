@@ -219,15 +219,15 @@
 
 /*--------------------------.UIFormWithTitle----------------------*/
 
-.UIECMAdminPortlet .UIFormWithTitle {
-  width: 95%;
-  margin: 0px auto;
+.UIECMAdminPortlet .UIPermissionManager .UIFormWithTitle {
+  margin: 3px auto;
+  width: auto;
 }
 
 .UIECMAdminPortlet .UIPermissionManager { 
 	margin: auto;
 	padding-top: 10px;
-  width: 95%;
+	width: 95%;
 }
 
 .UIECMAdminPortlet .UIFormGrid input {

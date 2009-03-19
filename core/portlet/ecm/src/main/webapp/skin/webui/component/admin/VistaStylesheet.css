@@ -695,7 +695,7 @@
 
 /*############################## -- Any Permission -- ########################*/
 .UIECMAdminPortlet .UIAnyPermission {
-	border: 1px solid #B7B7B7;
+	border: none;
 }
 
 .UIECMAdminPortlet .UIAnyPermission .HorizontalLayout {
@@ -740,4 +740,15 @@
   margin-left: 256px; /* orientation=lt */
   margin-right: 256px; /* orientation=rt */
   height: 100%;
+}
+
+.UIECMAdminPortlet .UIPermissionManager { 
+	margin: auto;
+	padding-top: 10px;
+	width: 95%;
+}
+
+.UIECMAdminPortlet .UIPermissionManager .UIFormWithTitle {
+  margin: 3px auto;
+  width: auto;
 }

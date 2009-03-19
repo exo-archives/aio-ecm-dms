@@ -262,8 +262,8 @@
 }
 
 .UIECMAdminPortlet .UIPermissionManager .UIFormWithTitle {
-  margin: 15px auto;
-  width: 95%;
+  margin: 3px auto;
+  width: auto;
 }
 
 .UIECMAdminPortlet .UIPermissionManager { 

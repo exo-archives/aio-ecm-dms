@@ -63,7 +63,7 @@
   cursor: pointer;
 }
 
-.ViewPermission16x16Icon {
+.Permission16x16Icon {
 	width: 16px; height: 16px;
   background: url('MacSkin/ViewPermission.gif') no-repeat; 
   cursor: pointer;
