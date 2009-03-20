@@ -83,7 +83,7 @@ public interface LinkManager {
    *           the target node
    */
   public Node getTarget(Node link, boolean system) throws ItemNotFoundException,
-      RepositoryException, Exception;
+      RepositoryException;
 
   /**
    * Gets the target node of the given link using the user session
@@ -93,7 +93,7 @@ public interface LinkManager {
    * @throws RepositoryException if an unexpected error occurs while retrieving
    *           the target node
    */
-  public Node getTarget(Node link) throws ItemNotFoundException, RepositoryException, Exception;
+  public Node getTarget(Node link) throws ItemNotFoundException, RepositoryException;
 
   /**
    * Checks if the target node of the given link can be reached using the user
