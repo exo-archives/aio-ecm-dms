@@ -1565,10 +1565,7 @@ public class UIWorkingArea extends UIContainer {
       }
       List<ClipboardCommand> clipboards = uiExplorer.getAllClipBoard();
       if (clipboards.size() > 0) {
-        RepositoryService repositoryService = uiWorkingArea.getApplicationComponent(RepositoryService.class);
-        ManageableRepository repository = repositoryService.getRepository(uiExplorer.getRepositoryName());
-        Session userSession = 
-          SessionProviderFactory.createSessionProvider().getSession(wsName, repository);
+        Session userSession = currentNode.getSession();
         Node sourceNode;
         int countSymLink = 0;
         for(ClipboardCommand command:clipboards) {
