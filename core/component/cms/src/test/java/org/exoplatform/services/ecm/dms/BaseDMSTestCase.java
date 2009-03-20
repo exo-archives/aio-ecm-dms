@@ -23,6 +23,8 @@ import org.exoplatform.container.StandaloneContainer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.CredentialsImpl;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
+import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
+import org.exoplatform.services.jcr.impl.core.SessionImpl;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.test.BasicTestCase;
 
@@ -43,23 +45,31 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
 
   protected StandaloneContainer container;
   
+  protected SessionImpl         session;
+
+  protected RepositoryImpl      repository;
+  
   protected final String REPO_NAME = "repository".intern();
   protected final String SYSTEM_WS = "system".intern();
   protected final String COLLABORATION_WS = "collaboration".intern();
 
   public void setUp() throws Exception {
-    String containerConf = getClass().getResource("/conf/standalone/test-configuration.xml").toString();
-//    String loginConf = Thread.currentThread().getContextClassLoader().getResource("login.conf").toString();
+    String containerConf = 
+      getClass().getResource("/conf/standalone/test-configuration.xml").toString();
+    String loginConf = 
+      Thread.currentThread().getContextClassLoader().getResource("login.conf").toString();
 
     StandaloneContainer.addConfigurationURL(containerConf);
     container = StandaloneContainer.getInstance();
     
-//    if (System.getProperty("java.security.auth.login.config") == null)
-//      System.setProperty("java.security.auth.login.config", loginConf);
+    if (System.getProperty("java.security.auth.login.config") == null)
+      System.setProperty("java.security.auth.login.config", loginConf);
 
-    credentials = new CredentialsImpl("exo", "exo".toCharArray());
+    credentials = new CredentialsImpl("root", "exo".toCharArray());
     repositoryService = (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
-    
+    repository = (RepositoryImpl) repositoryService.getDefaultRepository();
+
+    session = (SessionImpl) repository.login(credentials, COLLABORATION_WS);  
   }
 
   protected void checkMixins(String[] mixins, NodeImpl node) {
