@@ -320,6 +320,17 @@
 	line-height: 25px;
 	text-decoration: none;
 	padding: 1px 5px 0px 5px;
+  position: relative;
+}
+
+.UICBNavigation .UICBSubNavigation .LinkSmall {
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
+  position: absolute;
+  width: 9px;
+  height: 5px;
+  right: 0; /* orientation=lt */
+  left: 0; /* orientation=rt */
+  bottom: 3px;
 }
 
 .SeparatorLine { 
