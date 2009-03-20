@@ -132,6 +132,8 @@ public class LinkManagerImpl implements LinkManager {
 
   public Node updateLink(Node link, Node target) throws RepositoryException {
     link.setProperty(UUID, target.getUUID());
+    link.setProperty(PRIMARY_TYPE, target.getPrimaryNodeType().getName());
+    link.setProperty(WORKSPACE, target.getSession().getWorkspace().getName());
     link.getSession().save();
     return link;
   }
