@@ -39,6 +39,7 @@ import javax.jcr.nodetype.NodeTypeManager;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.organization.Group;
@@ -238,6 +239,15 @@ public class Utils {
     StringBuilder str = new StringBuilder();
     String nodeType = node.getPrimaryNodeType().getName();
     //String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended;
+    if(node.isNodeType(EXO_SYMLINK)) {
+      LinkManager linkManager = Util.getUIPortal().getApplicationComponent(LinkManager.class);
+      try {
+        nodeType = node.getProperty(EXO_PRIMARYTYPE).getString();
+        node = linkManager.getTarget(node);
+      } catch(Exception e) {
+        e.printStackTrace();
+      }
+    }
     if(nodeType.equals(NT_UNSTRUCTURED) || nodeType.equals(NT_FOLDER)) {
       for(String specificFolder:SPECIFIC_FOLDERS) {
         if(node.isNodeType(specificFolder)) {
@@ -245,9 +255,6 @@ public class Utils {
           break;
         }
       }
-    }
-    if(node.isNodeType(EXO_SYMLINK) && node.hasProperty(EXO_PRIMARYTYPE)) {
-      nodeType = node.getProperty(EXO_PRIMARYTYPE).getString();
     }
     nodeType = nodeType.replaceAll(":","_") + appended;    
     str.append(nodeType);
@@ -331,6 +338,11 @@ public class Utils {
       //e.printStackTrace();
     } 
     return null;
+  }
+  
+  public static boolean isSymLink(Node node) throws RepositoryException {
+    if(node.isNodeType(Utils.EXO_SYMLINK)) return true;
+    return false;
   }
 
   public static ByteArrayInputStream extractFromZipFile(ZipInputStream zipStream) throws Exception {

@@ -30,9 +30,9 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.web.command.handler.GetApplicationHandler;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -106,6 +106,10 @@ public class UITreeExplorer extends UIContainer {
   
   public UITreeNodePageIterator getUIPageIterator(String id) throws Exception {    
     return findComponentById(id);
+  }
+  
+  public boolean isSymLink(Node node) throws RepositoryException {
+    return Utils.isSymLink(node);
   }
   
   public boolean isPaginated(TreeNode treeNode) {

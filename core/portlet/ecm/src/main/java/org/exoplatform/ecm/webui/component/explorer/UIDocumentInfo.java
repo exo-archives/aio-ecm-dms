@@ -537,8 +537,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   public boolean isSymLink(Node node) throws RepositoryException {
-    if(node.isNodeType(Utils.EXO_SYMLINK)) return true;
-    return false;
+    return Utils.isSymLink(node);
   }
   
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {

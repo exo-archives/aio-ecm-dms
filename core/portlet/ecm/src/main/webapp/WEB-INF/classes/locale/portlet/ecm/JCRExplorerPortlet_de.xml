@@ -2175,7 +2175,7 @@
 	
 	<UIPopupSymLink>
 		<title>
-			<UIOneNodePathSelector>Choose Target Node</UIOneNodePathSelector>
+			<UIOneNodePathSelector>Choose the target node</UIOneNodePathSelector>
 		</title>
 	</UIPopupSymLink>
 	
