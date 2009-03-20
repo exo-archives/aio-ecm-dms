@@ -45,6 +45,11 @@
 								<%=_ctx.appRes("ECMContextMenu.event.Delete")%>
 							</div>
 					 	</a>
+					 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UIListView.postGroupAction("<%=contextMenu.event('AddSymLink', 'MultiSelection')%>")>   
+  					 	<div class="ItemIcon AddSymLink16x16Icon">
+  					 	  <%=_ctx.appRes("ECMContextMenu.event.AddSymLink")%>
+  					 	</div>
+					 	</a>
 					 	<a class="MenuItem" style="display: none;" onclick=eXo.ecm.UIListView.postGroupAction("<%=contextMenu.event('Lock', 'MultiSelection')%>")> 	
 							<div class="ItemIcon Lock16x16Icon">
 								<%=_ctx.appRes("ECMContextMenu.event.Lock")%>
@@ -54,7 +59,7 @@
 							<div class="ItemIcon Unlock16x16Icon">
 								<%=_ctx.appRes("ECMContextMenu.event.UnLock")%>
 							</div>
-					 	</a>				 					 	
+					 	</a>
 					 </div>	
 				 </div> 
 			</div>
@@ -77,6 +82,11 @@
 								<%=_ctx.appRes("ECMContextMenu.event.Upload")%>
 							</div>
 					 	</a>
+					 	<a class="MenuItem" href="<%=contextMenu.event("AddSymLink")%>" style="display: block;">   
+              <div class="MenuIcon AddSymLink16x16Icon">
+                <%=_ctx.appRes("ECMContextMenu.event.AddSymLink")%>
+              </div>
+            </a>
 					 	<%if(uicomponent.isCanPaste()) {%>
 						 	<a class="MenuItem" href="<%=contextMenu.event("Paste")%>" style="display: block;"> 	
 								<div class="MenuIcon Paste16x16Icon">

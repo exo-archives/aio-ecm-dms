@@ -2220,5 +2220,11 @@
 			<AddSymLink>Thêm mới Sym Link</AddSymLink>
     </event>
   </ECMContextMenu>
+  
+  <UIActionBar>  
+	  <msg>
+			<all-node-symlink>Tất cả những node được chọn đều là Sym Link</all-node-symlink>  	
+	  </msg>
+  </UIActionBar>
 </bundle>
 

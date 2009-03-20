@@ -254,7 +254,7 @@ public class UIWorkingArea extends UIContainer {
         if(!isSameNameSibling) actionsList.append(",Copy");
         actionsList.append(",Rename");
       }
-      actionsList.append(",AddSymLink");
+      if (!node.isNodeType(Utils.EXO_SYMLINK)) actionsList.append(",AddSymLink");
     } else {
       if(isEditable) actionsList.append(",EditDocument");
       if(!isSameNameSibling) {
@@ -271,7 +271,7 @@ public class UIWorkingArea extends UIContainer {
       actionsList.append(",Rename");
       if(isJcrViewEnable()) actionsList.append(",Save");
       actionsList.append(",Delete");
-      actionsList.append(",AddSymLink");
+      if (!node.isNodeType(Utils.EXO_SYMLINK)) actionsList.append(",AddSymLink");
     }
     if(uiExplorer.getAllClipBoard().size() > 0) actionsList.append(",Paste");
     return actionsList.toString();
@@ -1521,6 +1521,30 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
+      if (wsName == null || wsName.length() == 0) {
+        wsName = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();
+      }
+      if(nodePath != null) {
+        if(nodePath.indexOf(";") > -1) {
+          uiWorkingArea.isMultiSelect_ = true;
+          uiWorkingArea.virtualClipboards_.clear();
+          uiExplorer.getAllClipBoard().clear();
+          String[] nodePaths = nodePath.split(";");
+          for(int i=0; i< nodePaths.length; i++) {
+            ClipboardCommand clipboard = new ClipboardCommand();
+            clipboard.setType(ClipboardCommand.ADDSYMLINK);
+            clipboard.setSrcPath(nodePaths[i]);
+            clipboard.setWorkspace(wsName);
+            uiExplorer.getAllClipBoard().add(clipboard);
+          }
+          uiExplorer.getSession().save();
+        } else {
+          uiExplorer.setCurrentPath(nodePath);
+        }
+      }
+      
       Node currentNode = uiExplorer.getCurrentNode();
       if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
@@ -1538,7 +1562,25 @@ public class UIWorkingArea extends UIContainer {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
-      }      
+      }
+      List<ClipboardCommand> clipboards = uiExplorer.getAllClipBoard();
+      if (clipboards.size() > 0) {
+        RepositoryService repositoryService = uiWorkingArea.getApplicationComponent(RepositoryService.class);
+        ManageableRepository repository = repositoryService.getRepository(uiExplorer.getRepositoryName());
+        Session userSession = 
+          SessionProviderFactory.createSessionProvider().getSession(wsName, repository);
+        Node sourceNode;
+        int countSymLink = 0;
+        for(ClipboardCommand command:clipboards) {
+          sourceNode = (Node) userSession.getItem(command.getSrcPath());
+          if (!sourceNode.isNodeType(Utils.EXO_SYMLINK)) countSymLink++; 
+        }
+        if(countSymLink == 0){
+          uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.all-node-symlink", null));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+      }
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UISymLinkManager uiSymLinkManager = event.getSource().createUIComponent(UISymLinkManager.class, null, null);
       UIPopupContainer.activate(uiSymLinkManager, 600, 300);

@@ -2166,7 +2166,7 @@
 	
 	<UIPopupSymLink>
 		<title>
-			<UIOneNodePathSelector>Trust Target Node</UIOneNodePathSelector>
+			<UIOneNodePathSelector>Choose Target Node</UIOneNodePathSelector>
 		</title>
 	</UIPopupSymLink>
 	
@@ -2175,5 +2175,11 @@
 			<AddSymLink>Add Sym Link</AddSymLink>
     </event>
   </ECMContextMenu>
+  
+  <UIActionBar>  
+	  <msg>
+			<all-node-symlink>All selected nodes are Sym Link</all-node-symlink>  	
+	  </msg>
+  </UIActionBar>
 </bundle>
 

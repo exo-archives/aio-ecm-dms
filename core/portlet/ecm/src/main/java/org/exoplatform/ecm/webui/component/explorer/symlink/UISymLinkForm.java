@@ -26,6 +26,7 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
@@ -188,8 +189,19 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
       }
       try {        
         Node targetNode = (Node) userSession.getItem(pathNode);
-        LinkManager linkManager = uiSymLinkForm.getApplicationComponent(LinkManager.class);
-        linkManager.createLink(node, SYMLINK, targetNode, symLinkName);
+        LinkManager linkManager = uiSymLinkForm.getApplicationComponent(LinkManager.class);        
+        List<ClipboardCommand> clipboards = uiExplorer.getAllClipBoard();
+        if (clipboards.size() > 0) {
+          Node sourceNode;
+          for(ClipboardCommand command:clipboards) {
+            sourceNode = (Node) userSession.getItem(command.getSrcPath());
+            if (!sourceNode.isNodeType(Utils.EXO_SYMLINK)) linkManager.createLink(sourceNode, SYMLINK, targetNode, symLinkName);
+          }
+          uiExplorer.getAllClipBoard().clear();
+          uiExplorer.getSession().save();
+        } else{
+          linkManager.createLink(node, SYMLINK, targetNode, symLinkName);
+        }
         uiExplorer.updateAjax(event);
       } catch (AccessControlException ace) {        
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.repository-exception", null, ApplicationMessage.WARNING));
