@@ -80,6 +80,7 @@
 	    println "<div  class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
 	    println "  <div class=\"${iconType}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
 	    println "    <div onclick=\"" + expandLink + "\" objectId=\"" + treeNode.getPath() + "\" workspacename=\"" + preferenceWS + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", iconType) + "\" " + ctMenu + ">" + strActs ;
+	    println "      <div class='LinkSmall'><span></span></div>" ;
 	    println "      <div class='NodeLabel'>" ;
 	    println "			   <a onclick=\"" + expandLink + "\" style='cursor: pointer;' title=\"$treeNodeName\">$treeNodeName</a>" ;
 	    println "      </div>" ; 

@@ -212,7 +212,8 @@
   position: absolute;
   width: 9px;
   height: 5px;
-  right: 0;
+  right: 0; /* orientation=lt */
+  left: 0; /* orientation=rt */
   bottom: 0;
 }
 
@@ -733,7 +734,8 @@
   position: absolute;
   width: 16px;
   height: 16px;
-  right: 0;
+  right: 0; /* orientation=lt */
+  left: 0; /* orientation=rt */
   bottom: 0;
 }
 

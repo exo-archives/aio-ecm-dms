@@ -156,6 +156,17 @@
   background-position: right center; /* orientation=rt */
   padding-left: 24px; /* orientation=lt */
   padding-right: 24px; /* orientation=rt */
+  position: relative;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .LinkSmall {
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
+  position: absolute;
+  width: 9px;
+  height: 5px;
+  left: 13px; /* orientation=lt */
+  right: 13px; /* orientation=rt */
+  bottom: 6px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {

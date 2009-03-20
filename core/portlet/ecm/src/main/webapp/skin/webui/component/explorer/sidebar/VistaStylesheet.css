@@ -152,6 +152,17 @@
   background-position: right center; /* orientation=rt */
   padding-left: 24px; /* orientation=lt */
   padding-right: 24px; /* orientation=rt */
+  position: relative;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .LinkSmall {
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
+  position: absolute;
+  width: 9px;
+  height: 5px;
+  left: 9px; /* orientation=lt */
+  right: 9px; /* orientation=rt */
+  bottom: 2px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .Icon24x24 {

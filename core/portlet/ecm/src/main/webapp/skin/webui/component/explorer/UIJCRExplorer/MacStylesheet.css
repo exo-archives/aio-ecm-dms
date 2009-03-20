@@ -156,7 +156,19 @@
 .UIJCRExplorerPortlet .UIListGrid .RowView .LeftColumn .Icon16x16 {
 	float: none;
 	margin: auto;
-	width: auto; height: 24px;
+	width: auto; 
+	height: 24px;
+	position: relative;
+}
+
+.UIJCRExplorerPortlet .UIListGrid .RowView .LeftColumn .LinkSmall {
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
+  position: absolute;
+  width: 9px;
+  height: 5px;
+  right: 0; /* orientation=lt */
+  left: 0; /* orientation=rt */
+  bottom: 6px;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn {
@@ -213,6 +225,17 @@
   height: 48px;
   margin: auto;
   cursor: pointer;
+  position: relative;
+}
+
+.UIJCRExplorerPortlet .UIThumbnailsView .Link {
+  background: url('DefaultSkin/background/Link.gif') no-repeat right bottom;
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  right: 0; /* orientation=lt */
+  left: 0; /* orientation=rt */
+  bottom: 0;
 }
 
 .UIJCRExplorerPortlet .UIThumbnailsView .ActionIconLabel {
@@ -766,6 +789,7 @@
   width: 64px;
   height: 64px;
   background: url('DefaultSkin/background/LoadingProgress.gif') no-repeat center center;
+  position: relative;
 }
 
 /*===========================================UIRightClickPopupMenu===========================================*/
