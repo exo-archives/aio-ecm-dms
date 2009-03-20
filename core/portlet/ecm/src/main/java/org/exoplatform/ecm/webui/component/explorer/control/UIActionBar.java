@@ -1269,7 +1269,13 @@ public class UIActionBar extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
-      }      
+      }
+      if (currentNode.isNodeType(Utils.EXO_SYMLINK)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.all-node-symlink", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UISymLinkManager uiSymLinkManager = event.getSource().createUIComponent(UISymLinkManager.class, null, null);
       UIPopupContainer.activate(uiSymLinkManager, 600, 300);
