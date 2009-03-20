@@ -133,8 +133,6 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
           pathNode = uiStringInput.getValue().trim();
         }
       }
-      String workspaceName = pathNode.substring(0, pathNode.lastIndexOf(":/"));
-      pathNode = pathNode.substring(pathNode.lastIndexOf(":/") + 1);
       
       Node node = uiExplorer.getCurrentNode() ;                  
       if(uiExplorer.nodeIsLocked(node)) {
@@ -152,6 +150,9 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return ;
       }
+      String workspaceName = pathNode.substring(0, pathNode.lastIndexOf(":/"));
+      pathNode = pathNode.substring(pathNode.lastIndexOf(":/") + 1);
+      
       String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", 
           "'", "#", ";", "}", "{", "/", "|", "\""};
       for(String filterChar : arrFilterChar) {
