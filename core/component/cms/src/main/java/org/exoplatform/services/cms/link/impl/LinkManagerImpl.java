@@ -84,7 +84,7 @@ public class LinkManagerImpl implements LinkManager {
       Session systemSession = null;
       try {
         systemSession = getSession((ManageableRepository) link.getSession().getRepository(), link
-            .getProperty(WORKSPACE).getString(), true, providerService_);
+            .getProperty(WORKSPACE).getString(), true);
         return systemSession.getNodeByUUID(uuid);
       } catch (ItemNotFoundException e1) {
         // e1.printStackTrace();
@@ -106,14 +106,14 @@ public class LinkManagerImpl implements LinkManager {
     if (workspaceLink.equals(workspaceTarget))
       return link.getSession();
     return getSession((ManageableRepository) link.getSession().getRepository(), workspaceTarget,
-        system, providerService_);
+        system);
   }
 
   private Session getSession(ManageableRepository manageRepository, String workspaceName,
-      boolean system, SessionProviderService service) throws RepositoryException {
+      boolean system) throws RepositoryException {
     if (system)
-      return service.getSystemSessionProvider(null).getSession(workspaceName, manageRepository);
-    return service.getSessionProvider(null).getSession(workspaceName, manageRepository);
+      return providerService_.getSystemSessionProvider(null).getSession(workspaceName, manageRepository);
+    return providerService_.getSessionProvider(null).getSession(workspaceName, manageRepository);
   }
 
   public Node getTarget(Node link) throws ItemNotFoundException, RepositoryException {
