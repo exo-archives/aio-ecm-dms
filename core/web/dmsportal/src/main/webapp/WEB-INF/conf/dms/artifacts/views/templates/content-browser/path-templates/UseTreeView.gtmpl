@@ -73,7 +73,11 @@
 			              <table>  
 			                 <tr>
 			                  <td>
-			                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName"><span></span></div>
+			                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName">
+	                        <%if(uicomponent.isSymLink(doc)) {%>
+	                          <div class="LinkSmall"></div>
+	                        <%}%>			                      
+			                    </div>
 			                    <div class="EventDocumentLabel">
 			                      <a href="$viewAction"><%=docName%></a>
 			                    </div>  
@@ -158,7 +162,11 @@
 			                      String subChildLink = uicomponent.event("ChangeNode", docId);                       
 											 %>
 														<div class="$cssStyle">
-															<div class="ImageNote"><span></span></div>
+															<div class="Icon48x48 DefaultIconImage <%=Utils.getNodeTypeIcon(subChild, "48x48Icon")%>">
+															<%if(uicomponent.isSymLink(subChild)) {%>
+	                               <div class="Link"></div>
+	                            <%}%>
+															</div>
 															<div class="ContentLabel">
 																<div class="UserName"><a href="$subChildLink"><%=subChild.getName()%></a></div>
 																<div class="Author">

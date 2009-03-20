@@ -142,7 +142,11 @@
 					                  String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
 					                  String actionLinkSub = uicomponent.event("ChangeNode", Utils.formatNodeName(subCat)) ; 
 					              %>
-				                    <a class="NodeLabel" href="$actionLinkSub"><img class="LinkSmall" />$catName</a>
+				                    <a class="NodeLabel" href="$actionLinkSub">
+				                     <%if(uicomponent.isSymLink(subCat)) {%> 
+				                       <img class="LinkSmall" />
+				                     <%}%> 
+				                    $catName</a>
 					                  <div class="SeparatorLine"><span></span></div>
 					              <%}%>
 					            <div class="NavigationButtonContainer">
@@ -193,7 +197,11 @@
 	              <table>  
 	                 <tr>
 	                  <td>
-	                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName"><span></span></div>
+	                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName">
+	                    <%if(uicomponent.isSymLink(doc)) {%>
+	                       <div class="LinkSmall"></div>
+	                    <%}%>
+	                    </div>
 	                    <div class="EventDocumentLabel">
 	                      <a href="$viewAction"><%=docName%></a>
 	                    </div>  
@@ -242,8 +250,13 @@
 	          %>
 	              <div class="SubContentHolder">
 	                <div class="TopSubContent">
-	                  <div class="ItemIcon CBDefaultFolder16x16Icon"><span></span></div>
-	                  <a class="NodeLabel" href="$subCatLink">$catName</a>
+	                  <div class="ItemIcon CBDefaultFolder16x16Icon">
+	                  </div>
+	                  <a class="NodeLabel" href="$subCatLink">
+	                  <%if(uicomponent.isSymLink(subCat)) {%> 
+				              <img class="LinkSmall" />
+				            <%}%>
+				            $catName</a>
 	                </div>
 	                
 	                  <%
@@ -300,8 +313,12 @@
 	                      %>
 	                            <tr>
 	                              <td>
-	                                 <div class="DocumentInfo">
-	                                  <div class="DocNodeIcon CBDefaultDocument16x16Icon $icon"><span></span></div>
+	                                <div class="DocumentInfo">
+	                                  <div class="DocNodeIcon CBDefaultDocument16x16Icon $icon">
+	                                    <%if(uicomponent.isSymLink(doc)) {%>
+	                                      <div class="LinkSmall"></div>
+	                                    <%}%>
+	                                  </div>
 	                                  <div class="DocumentLabel">
 	                                    <a href="$docActionLink"><%=docName%></a>
 	                                  </div>

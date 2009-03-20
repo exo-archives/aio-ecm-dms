@@ -511,7 +511,7 @@ public class UIBrowseContainer extends UIContainer {
           }
           if (isShowReferenced) subDocumentList.addAll(getReferences(repositoryService,
               childNode, isShowAllDocument(), subDocumentList.size(), templates));        
-          if (isCategories(nt) && (!templates.contains(nt.getName()))) {
+          if (isCategories(childNode) && (!templates.contains(nt.getName()))) {
             Map childOfSubCategory = new HashMap();
             List<Node> subCategoryDoc = new ArrayList<Node>();
             List<String> subCategoryCat = new ArrayList<String>();
@@ -576,16 +576,17 @@ public class UIBrowseContainer extends UIContainer {
       Node tab = tabIter.nextNode();
       if(canRead(tab)) {
         if(!templates.contains(tab.getPrimaryNodeType().getName())){
-          if(isCategories(tab.getPrimaryNodeType()))tabList.add(tab.getPath());
+          if(isCategories(tab)) tabList.add(tab.getPath());
           if(tab.getPath().equals(getSelectedTab().getPath())) {
             NodeIterator childs = tab.getNodes();
             while(childs.hasNext()) {
               Node child = childs.nextNode();
               String nt = child.getPrimaryNodeType().getName();
+              if(Utils.isSymLink(child)) nt = child.getProperty(Utils.EXO_PRIMARYTYPE).getString();
               if(templates.contains(nt) && (isShowDocument)) {
                 if(subDocumentList.size() < itemCounter) subDocumentList.add(child);
               }
-              if(isCategories(child.getPrimaryNodeType()) && !templates.contains(nt)){
+              if(isCategories(child) && !templates.contains(nt)){
                 Map childOfSubCategory = getChildOfSubCategory(repositoryService, child, templates);
                 content.put(child.getName(), childOfSubCategory);
                 subCategoryList.add(child.getPath());
@@ -812,6 +813,16 @@ public class UIBrowseContainer extends UIContainer {
     if(isASC) Collections.sort(nodes, new DateASCComparator());
     else Collections.sort(nodes, new DateDESCComparator());
     return nodes;
+  }
+  
+  public boolean isSymLink(Node node) throws RepositoryException {
+    return Utils.isSymLink(node);
+  }
+  
+  public boolean isSymLink(String nodePath) throws Exception {
+    Node node = (Node)getSession().getItem(nodePath);
+    if(isSymLink(node)) return true;
+    return false;
   }
   
   static public class NodeNameDESCComparator implements Comparator {

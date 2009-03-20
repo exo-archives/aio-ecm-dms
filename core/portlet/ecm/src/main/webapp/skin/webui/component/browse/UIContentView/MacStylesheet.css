@@ -89,6 +89,11 @@
 	background: url('DefaultSkin/background/Note28x34.gif');
 }
 
+.UIContentView .SubFormContent .DefaultIconImage {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+}
+
 .UIContentView .SubFormContent .ContentLabel {
 	margin-left: 30px; /* orientation=lt */
 	margin-right: 30px; /* orientation=rt */

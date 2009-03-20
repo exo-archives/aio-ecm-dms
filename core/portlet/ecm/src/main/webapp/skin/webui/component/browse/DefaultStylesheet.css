@@ -174,7 +174,6 @@
 	float: left; /* orientation=rt */
 }
 
-
 .UIBrowseContentPortlet .UIToolBar .ShowHiddenIcon {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
@@ -442,5 +441,20 @@
   white-space: normal;
 }
 
+.UIBrowseContentPortlet .LinkSmall {
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
+  width: 20px;
+  height: 15px;
+  right: 0;
+  bottom: 0;
+}
+
+.UIBrowseContentPortlet .Link {
+  background: url('DefaultSkin/background/Link.gif') no-repeat right bottom;
+  width: 48px;
+  height: 48px;
+  right: 0;
+  bottom: 0;
+}
 
 /*********************************Template Style - Fix for IE*************************************/
