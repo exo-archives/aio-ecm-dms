@@ -618,7 +618,7 @@ var ListView = function() {
 			}
 			//Dunghm: Check Shift key
 			if(islink && islink != "") ext += "&isLink="+true;
-			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + islink + ext);
+			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + ext);
 			eval(url); 
 		}
 	};
