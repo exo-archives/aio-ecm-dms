@@ -690,7 +690,10 @@ var SimpleView = function() {
 				else objectId.push("");
 			}
 			//Dunghm: Check Shift key
-			if(islink && islink != "") ext += "&isLink="+true;
+			if(islink && islink != "") {
+				ext += "&isLink="+true;
+				url = url.replace("op=MoveNode","op=CreateLink");
+			}
 			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + ext);
 			eval(url);
 		}
