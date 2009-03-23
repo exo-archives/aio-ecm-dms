@@ -170,7 +170,6 @@ var ListView = function() {
 		Self.hideContextMenu();
 		Self.enableDragDrop = true;
 		document.onselectstart = function(){return false};
-		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		if (!rightClick) {
 			
@@ -241,6 +240,9 @@ var ListView = function() {
 		var event = event || window.event;
 		resetArrayItemsSelected();
 		element.selected = true;
+		//Dunghm: Check Shift key
+		if(event.shiftKey) element.setAttribute("isLink",true);
+		else element.setAttribute("isLink",null);
 		//for select use shilf key;
 		Self.temporaryItem = element;
 		Self.itemsSelected = new Array(element);
@@ -254,7 +256,6 @@ var ListView = function() {
 		Self.enableDragDrop = null;
 		document.onmousemove = null;
 		revertResizableBlock();
-		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		var leftClick = !rightClick;
 		if (leftClick) {
@@ -272,8 +273,12 @@ var ListView = function() {
 					//for select use shilf key;
 					Self.temporaryItem = element;
 					Self.itemsSelected.push(element);
+					//Dunghm: Check Shift key
+					element.setAttribute("isLink",null);
+					if(event.shiftKey) element.setAttribute("isLink",true);
 				} else if(event.ctrlKey && element.selected) {
 					element.selected = null;
+					element.setAttribute("isLink",null);
 					element.style.background = "none";
 					removeItem(Self.itemsSelected, element);
 				} else if (event.shiftKey) {
@@ -288,6 +293,9 @@ var ListView = function() {
 					resetArrayItemsSelected();
 					for (var i = lowIndex; i <= heightIndex; i++) {
 						Self.allItems[i].selected = true;
+						//Dunghm: Check Shift key
+						element.setAttribute("isLink",null);
+						if(event.ctrlKey) element.setAttribute("isLink",true);
 						Self.itemsSelected.push(Self.allItems[i]);
 					}
 				} else {
@@ -400,10 +408,14 @@ var ListView = function() {
 						var posY = itemBox.posY + itemBox.offsetHeight/2;
 						if (mask.Y < posY && posY < mask.storeY) {
 							itemBox.selected = true;
+							//Dunghm: Check Shift key
+							itemBox.setAttribute("isLink",null);
+							if(event.ctrlKey && event.shiftKey) itemBox.setAttribute("isLink",true);
 							itemBox.style.background = Self.colorSelected;
 							//eXo.core.Browser.setOpacity(itemBox, 100);
 						} else {
 							itemBox.selected = null;
+							itemBox.setAttribute("isLink",null);
 							itemBox.style.background = "none";
 							//eXo.core.Browser.setOpacity(itemBox, 85);
 						}
@@ -428,10 +440,14 @@ var ListView = function() {
 						var posY = itemBox.posY + itemBox.offsetHeight/2;
 						if (mask.Y < posY && posY < mask.storeY ) {
 							itemBox.selected = true;
+							//Dunghm: Check Shift key
+							itemBox.setAttribute("isLink",null);
+							if(event.ctrlKey && event.shiftKey) itemBox.setAttribute("isLink",true);
 							itemBox.style.background = Self.colorSelected;
 							//eXo.core.Browser.setOpacity(itemBox, 100);
 						} else {
 							itemBox.selected = null;
+							itemBox.setAttribute("isLink",null);
 							itemBox.style.background = "none";
 							//eXo.core.Browser.setOpacity(itemBox, 85);
 						}
@@ -582,6 +598,7 @@ var ListView = function() {
 	ListView.prototype.postGroupAction = function(url, ext) {
 		var objectId = [];
 		var workspaceName = [];
+		var islink = "";
 		var ext = ext? ext : "";
 		if(Self.itemsSelected.length) {
 			for(var i in Self.itemsSelected) {
@@ -591,12 +608,18 @@ var ListView = function() {
 				var wsname = currentNode.getAttribute("workspaceName");
 				if (wsname) workspaceName.push(wsname);
 				else workspaceName.push("");
+				//Dunghm: Check Shift key
+				var islinkValue = currentNode.getAttribute("isLink");
+				if (islinkValue && (islinkValue != "") && (islinkValue != "null")) islink += islinkValue ;
+
 				var oid = currentNode.getAttribute("objectId");
 				if (oid) objectId.push(oid);
 				else objectId.push("");
 			}
-			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + ext);
-			eval(url);
+			//Dunghm: Check Shift key
+			if(islink && islink != "") ext += "&isLink="+true;
+			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + islink + ext);
+			eval(url); 
 		}
 	};
 	

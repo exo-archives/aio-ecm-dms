@@ -244,6 +244,9 @@ var SimpleView = function() {
 		var event = event || window.event;
 		resetArrayItemsSelected();
 		element.selected = true;
+		//Dunghm: Check Shift key
+		if(event.shiftKey) element.setAttribute("isLink",true);
+		else element.setAttribute("isLink",null);
 		//for select use shilf key;
 		Self.temporaryItem = element;
 		Self.itemsSelected = new Array(element);
@@ -275,9 +278,13 @@ var SimpleView = function() {
 					//for select use shilf key;
 					Self.temporaryItem = element;
 					Self.itemsSelected.push(element);
+					//Dunghm: Check Shift key
+					element.setAttribute("isLink",null);
+					if(event.shiftKey) element.setAttribute("isLink",true);
 				} else if(event.ctrlKey && element.selected) {
 					element.selected = null;
 					element.style.background = "none";
+					element.setAttribute("isLink",null);
 					removeItem(Self.itemsSelected, element);
 				} else if (event.shiftKey) {
 					//use shift key to select;
@@ -291,6 +298,9 @@ var SimpleView = function() {
 					resetArrayItemsSelected();
 					for (var i = lowIndex; i <= heightIndex; i++) {
 						Self.allItems[i].selected = true;
+						//Dunghm: Check Shift key
+						element.setAttribute("isLink",null);
+						if(event.ctrlKey) element.setAttribute("isLink",true);
 						Self.itemsSelected.push(Self.allItems[i]);
 					}
 				} else {
@@ -422,10 +432,14 @@ var SimpleView = function() {
 					if (mask.X < posX && posX < mask.storeX &&
 							posY < mask.Y && mask.storeY < posY) {
 						itemBox.selected = true;
+						//Dunghm: Check Shift key
+						itemBox.setAttribute("isLink",null);
+						if(event.ctrlKey && event.shiftKey) itemBox.setAttribute("isLink",true);
 						itemBox.style.background = Self.colorSelected;
 						//eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
+						itemBox.setAttribute("isLink",null);
 						itemBox.style.background = "none";
 						//eXo.core.Browser.setOpacity(itemBox, 85);
 					}
@@ -453,10 +467,14 @@ var SimpleView = function() {
 					if (mask.X < posX && posX < mask.storeX &&
 							mask.Y < posY && posY < mask.storeY) {
 						itemBox.selected = true;
+						//Dunghm: Check Shift key
+						itemBox.setAttribute("isLink",null);
+						if(event.ctrlKey && event.shiftKey) itemBox.setAttribute("isLink",true);
 						itemBox.style.background = Self.colorSelected;
 						//eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
+						itemBox.setAttribute("isLink",null);
 						itemBox.style.background = "none";
 						//eXo.core.Browser.setOpacity(itemBox, 85);
 					}
@@ -652,6 +670,7 @@ var SimpleView = function() {
 	SimpleView.prototype.postGroupAction = function(url, ext) {
 		var objectId = [];
 		var workspaceName = [];
+		var islink = "";
 		var ext = ext? ext : "";
 		if(Self.itemsSelected.length) {
 			for(var i in Self.itemsSelected) {
@@ -661,10 +680,17 @@ var SimpleView = function() {
 				var wsname = currentNode.getAttribute("workspaceName");
 				if (wsname) workspaceName.push(wsname);
 				else workspaceName.push("");
+				
+				//Dunghm: Check Shift key
+				var islinkValue = currentNode.getAttribute("isLink");
+				if (islinkValue && (islinkValue != "") && (islinkValue != "null")) islink += islinkValue ;
+
 				var oid = currentNode.getAttribute("objectId");
 				if (oid) objectId.push(oid);
 				else objectId.push("");
 			}
+			//Dunghm: Check Shift key
+			if(islink && islink != "") ext += "&isLink="+true;
 			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + ext);
 			eval(url);
 		}
