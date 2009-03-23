@@ -177,17 +177,20 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.non-node", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        userSession.logout();
         return;
       } catch (RepositoryException re) {
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.non-node", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        userSession.logout();
         return;
       } catch(Exception e) {
         e.printStackTrace();
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.non-node", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        userSession.logout();
         return;
       }
       try {        
@@ -228,6 +231,10 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.cannot-save", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
+      } finally {
+        if(userSession != null) {
+          userSession.logout();
+        }
       }
     }
   }

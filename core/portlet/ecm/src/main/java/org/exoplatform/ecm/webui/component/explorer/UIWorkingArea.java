@@ -115,7 +115,8 @@ import org.exoplatform.webui.exception.MessageException;
         @EventConfig(listeners = UIWorkingArea.AddDocumentActionListener.class),
         @EventConfig(listeners = UIWorkingArea.UploadActionListener.class),
         @EventConfig(listeners = UIWorkingArea.AddSymLinkActionListener.class),
-        @EventConfig(listeners = UIWorkingArea.MoveNodeActionListener.class, confirm="UIWorkingArea.msg.confirm-move")
+        @EventConfig(listeners = UIWorkingArea.MoveNodeActionListener.class, confirm="UIWorkingArea.msg.confirm-move"),
+        @EventConfig(listeners = UIWorkingArea.CreateLinkActionListener.class)
       }
   )
 })
@@ -905,6 +906,116 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
+  private void createMultiLink(String[] srcPaths, String[] wsNames, Node destNode, 
+      Event event) throws Exception {
+    for(int i=0; i< srcPaths.length; i++) {
+      createLink(srcPaths[i], wsNames[i], destNode, event);
+    }    
+  }
+  
+  private void createLink(String srcPath, String wsName, Node destNode, Event event) throws Exception {
+    UIJCRExplorer uiExplorer = getParent();
+    Node selectedNode = uiExplorer.getNodeByPath(srcPath, uiExplorer.getSessionByWorkspace(wsName));
+    UIApplication uiApp = getAncestorOfType(UIApplication.class);
+    LinkManager linkManager = getApplicationComponent(LinkManager.class);
+    if(Utils.isSymLink(destNode)) {
+      Object[] args = { destNode.getPath() };
+      uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.dest-node-is-link", args, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+    if(Utils.isSymLink(selectedNode)) {
+      Object[] args = { srcPath };
+      uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.selected-is-link", args, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+    try {
+      linkManager.createLink(destNode, Utils.EXO_SYMLINK, selectedNode, 
+          selectedNode.getName() + ".lnk");
+    } catch(Exception e) {
+      Object[] args = { srcPath, destNode.getPath() };
+      uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.create-link-problem", args, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+  }
+  
+  private void processMultipleSelection(String nodePath, String wsName, boolean isLink, 
+      String[] destInfo, Event event) throws Exception {
+    UIJCRExplorer uiExplorer = getParent();
+    UIApplication uiApp = getAncestorOfType(UIApplication.class);
+    Node destNode = null;
+    if(destInfo[0].startsWith(nodePath)) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.bound-move-exception", 
+          null,ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+    try {
+      destNode = (Node)uiExplorer.getSession().getItem(destInfo[0]);
+    } catch(PathNotFoundException path) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+          null,ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    } catch (Exception e) {
+      JCRExceptionManager.process(uiApp, e);
+      return;
+    }
+    if(!PermissionUtil.canRead(destNode)) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-move-node", null, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+    }
+    if(uiExplorer.nodeIsLocked(destNode)) {
+      Object[] arg = { destInfo[0] };
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
+      return;
+    }
+    try {
+      if(nodePath.indexOf(";") > -1) {
+        isMultiSelect_ = true;
+        if(isLink) createMultiLink(nodePath.split(";"), wsName.split(";"), destNode, event);
+        else moveMultiNode(nodePath.split(";"), wsName.split(";"), destInfo[0], event);
+      } else {
+        isMultiSelect_ = false;
+        if(isLink) createLink(nodePath, wsName, destNode, event);
+        else moveNode(nodePath, wsName, destInfo[0], event);
+      }
+      uiExplorer.getSession().save();
+      uiExplorer.updateAjax(event);
+    } catch(AccessDeniedException ace) {
+      Object[] arg = { destInfo[0] };
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", arg, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
+      return;        
+    } catch(LockException lock) {
+      Object[] arg = { nodePath };
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
+      return;
+    } catch(ConstraintViolationException constraint) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.move-constraint-exception", null, 
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
+      return;       
+    } catch(Exception e) {
+      e.printStackTrace();
+      JCRExceptionManager.process(uiApp, e);
+      return;
+    }
+  }
+  
   @SuppressWarnings("unused")
   static  public class EditDocumentActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
@@ -1448,74 +1559,19 @@ public class UIWorkingArea extends UIContainer {
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
       String[] destInfo = event.getRequestContext().getRequestParameter("destInfo").split(";");
-      UIJCRExplorer uiExplorer = uiWorkingArea.getParent();
-      UIApplication uiApp = uiWorkingArea.getAncestorOfType(UIApplication.class);
-      Node destNode = null;
-      if(destInfo[0].startsWith(nodePath)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.bound-move-exception", 
-            null,ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-      try {
-        destNode = (Node)uiExplorer.getSession().getItem(destInfo[0]);
-      } catch(PathNotFoundException path) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
-            null,ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch (Exception e) {
-        JCRExceptionManager.process(uiApp, e);
-        return;
-      }
-      if(!PermissionUtil.canRead(destNode)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-move-node", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        uiExplorer.updateAjax(event);
-        return;
-      }
-      if(uiExplorer.nodeIsLocked(destNode)) {
-        Object[] arg = { destInfo[0] };
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
-        return;
-      }
-      try {
-        if(nodePath.indexOf(";") > -1) {
-          uiWorkingArea.isMultiSelect_ = true;
-          uiWorkingArea.moveMultiNode(nodePath.split(";"), wsName.split(";"), destInfo[0], event);
-        } else {
-          uiWorkingArea.isMultiSelect_ = false;
-          uiWorkingArea.moveNode(nodePath, wsName, destInfo[0], event);
-        }
-        uiExplorer.getSession().save();
-        uiExplorer.updateAjax(event);
-      } catch(AccessDeniedException ace) {
-        Object[] arg = { destInfo[0] };
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", arg, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
-        return;        
-      } catch(LockException lock) {
-        Object[] arg = { nodePath };
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
-        return;
-      } catch(ConstraintViolationException constraint) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.move-constraint-exception", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
-        return;       
-      } catch(Exception e) {
-        e.printStackTrace();
-        JCRExceptionManager.process(uiApp, e);
-        return;
-      }
+      uiWorkingArea.processMultipleSelection(nodePath, wsName, false, destInfo, event);
     }
   }
+  
+  static public class CreateLinkActionListener extends EventListener<UIRightClickPopupMenu> {
+    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
+      UIWorkingArea uiWorkingArea = event.getSource().getParent();
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
+      String[] destInfo = event.getRequestContext().getRequestParameter("destInfo").split(";");
+      uiWorkingArea.processMultipleSelection(nodePath, wsName, true, destInfo, event);
+    }
+  }  
   
   static public class AddSymLinkActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {

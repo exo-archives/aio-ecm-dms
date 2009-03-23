@@ -2190,5 +2190,14 @@
 			<all-node-symlink>All selected nodes are Sym Link</all-node-symlink>  	
 	  </msg>
   </UIActionBar>
+  
+  <UIWorkingArea>
+    <msg>
+      <create-link-problem>You can not create a link for node '{0}' at '{1}'</create-link-problem>
+      <dest-node-is-link>The destination node '{0}' is already a symlink. So you can not create a symlink inside it</dest-node-is-link>
+      <selected-is-link>The selected node '{0}' is a instance of a link, so you can not create a link point to another link</selected-is-link>
+      <confirm-create-link>Are you sure want to create link in this location?</confirm-create-link>
+    </msg>
+  </UIWorkingArea>
+  
 </bundle>
-

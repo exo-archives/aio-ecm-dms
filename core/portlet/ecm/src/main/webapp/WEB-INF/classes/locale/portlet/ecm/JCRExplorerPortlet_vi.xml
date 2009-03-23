@@ -2226,5 +2226,14 @@
 			<all-node-symlink>Tất cả những node được chọn đều là liên kết</all-node-symlink>  	
 	  </msg>
   </UIActionBar>
+  
+  <UIWorkingArea>
+    <msg>
+      <create-link-problem>Bạn không thể tạo liên kết từ vị trí '{0}' tới '{1}'</create-link-problem>
+      <dest-node-is-link>Node nguồn '{0}' đã là một symlink. Vì vậy, bạn không thể tạo thêm symlink bên trong nó. Bạn vui lòng chọn node khác!</dest-node-is-link>
+      <selected-is-link>Node được chọn '{0}' là một symlink, vì vậy bạn không thể tạo một liên kết trỏ tới một liên kết khác. Bạn vui lòng chọn liên kết khác</selected-is-link>     
+      <confirm-create-link>Bạn có thực sự muốn tạo liên kết tại vị trí này không?</confirm-create-link> 
+    </msg>
+  </UIWorkingArea>
 </bundle>
 
