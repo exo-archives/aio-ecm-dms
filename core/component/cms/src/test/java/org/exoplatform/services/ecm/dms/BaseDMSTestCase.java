@@ -22,6 +22,8 @@ import org.apache.commons.logging.Log;
 import org.exoplatform.container.StandaloneContainer;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.CredentialsImpl;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.jcr.impl.core.RepositoryImpl;
 import org.exoplatform.services.jcr.impl.core.SessionImpl;
@@ -49,15 +51,15 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
 
   protected RepositoryImpl      repository;
   
+  private SessionProviderService   sessionProviderService_;
+  
   protected final String REPO_NAME = "repository".intern();
   protected final String SYSTEM_WS = "system".intern();
   protected final String COLLABORATION_WS = "collaboration".intern();
 
   public void setUp() throws Exception {
-    String containerConf = 
-      getClass().getResource("/conf/standalone/test-configuration.xml").toString();
-    String loginConf = 
-      Thread.currentThread().getContextClassLoader().getResource("login.conf").toString();
+    String containerConf = getClass().getResource("/conf/standalone/test-configuration.xml").toString();
+    String loginConf = Thread.currentThread().getContextClassLoader().getResource("login.conf").toString();
 
     StandaloneContainer.addConfigurationURL(containerConf);
     container = StandaloneContainer.getInstance();
@@ -67,9 +69,11 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
 
     credentials = new CredentialsImpl("root", "exo".toCharArray());
     repositoryService = (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
+    sessionProviderService_ = (SessionProviderService) container.getComponentInstanceOfType(SessionProviderService.class);
     repository = (RepositoryImpl) repositoryService.getDefaultRepository();
-
-    session = (SessionImpl) repository.login(credentials, COLLABORATION_WS);  
+    
+    session = (SessionImpl) repository.login(credentials, COLLABORATION_WS);
+    sessionProviderService_.setSessionProvider(null, new SessionProvider(((SessionImpl)session).getUserState()));
   }
 
   protected void checkMixins(String[] mixins, NodeImpl node) {
