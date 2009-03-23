@@ -1776,5 +1776,13 @@
       <selectUser>إختيار مستخدم</selectUser>
       <selectMembership>إختيار العضوية</selectMembership>
     </label>
+  <!--
+  #########Since ECM 2.4##################
+  -->  
+  <UIViewFormTabPane>
+    <label>
+      <addSymLink>Add Sym Link</addSymLink>
+    </label>
+  </UIViewFormTabPane>    
   </QueriesPermissionBrowse>
 </bundle>

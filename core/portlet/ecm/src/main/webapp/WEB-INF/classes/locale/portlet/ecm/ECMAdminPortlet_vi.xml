@@ -1786,5 +1786,13 @@
       <selectMembership>Chọn kiểu thành viên</selectMembership>
     </label>
   </QueriesPermissionBrowse>  
+  <!--
+  #########Since ECM 2.4##################
+  -->  
+  <UIViewFormTabPane>
+    <label>
+      <addSymLink>Thêm liên kết</addSymLink>
+    </label>
+  </UIViewFormTabPane>  
 </bundle>
 

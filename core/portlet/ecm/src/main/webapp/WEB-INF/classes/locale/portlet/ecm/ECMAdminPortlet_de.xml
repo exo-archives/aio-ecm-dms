@@ -1782,5 +1782,13 @@
       <selectMembership>Select membership</selectMembership>
     </label>
   </QueriesPermissionBrowse>
+    <!--
+  #########Since ECM 2.4##################
+  -->  
+  <UIViewFormTabPane>
+    <label>
+      <addSymLink>Add Sym Link</addSymLink>
+    </label>
+  </UIViewFormTabPane>
 </bundle>
 
