@@ -88,7 +88,6 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
   final static public String FIELD_PATH = "pathNode";
   final static public String FIELD_SYMLINK = "fieldPathNode";
   final static public String POPUP_SYMLINK = "UIPopupSymLink";
-  final static private String SYMLINK = "exo:symlink";
   
   public UISymLinkForm() throws Exception {
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(MandatoryValidator.class));
@@ -113,7 +112,9 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
     listNodeName.add(valueNodeName);
     UIFormMultiValueInputSet uiFormMultiValueInputSet = getChild(UIFormMultiValueInputSet.class);
     uiFormMultiValueInputSet.setValue(listNodeName);
-    getUIStringInput(FIELD_NAME).setValue(valueNodeName.substring(valueNodeName.lastIndexOf("/") + 1));
+    String symLinkName = valueNodeName.substring(valueNodeName.lastIndexOf("/") + 1);
+    if (!(symLinkName.indexOf(".lnk") > -1)) symLinkName += ".lnk";
+    getUIStringInput(FIELD_NAME).setValue(symLinkName);
     UISymLinkManager uiSymLinkManager = getParent();
     uiSymLinkManager.removeChildById(POPUP_SYMLINK);
   }
@@ -197,12 +198,13 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
           Node sourceNode;
           for(ClipboardCommand command:clipboards) {
             sourceNode = (Node) userSession.getItem(command.getSrcPath());
-            if (!sourceNode.isNodeType(Utils.EXO_SYMLINK)) linkManager.createLink(sourceNode, SYMLINK, targetNode, symLinkName);
+            if (!sourceNode.isNodeType(Utils.EXO_SYMLINK)) 
+              linkManager.createLink(sourceNode, Utils.EXO_SYMLINK, targetNode, symLinkName);
           }
           uiExplorer.getAllClipBoard().clear();
           uiExplorer.getSession().save();
         } else{
-          linkManager.createLink(node, SYMLINK, targetNode, symLinkName);
+          linkManager.createLink(node, Utils.EXO_SYMLINK, targetNode, symLinkName);
         }
         uiExplorer.updateAjax(event);
       } catch (AccessControlException ace) {        

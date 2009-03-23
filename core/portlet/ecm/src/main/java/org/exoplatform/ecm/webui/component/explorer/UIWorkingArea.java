@@ -58,6 +58,7 @@ import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
@@ -1521,33 +1522,9 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      if (wsName == null || wsName.length() == 0) {
-        wsName = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();
-      }
-      uiWorkingArea.isMultiSelect_ = false;
-      if(nodePath != null) {
-        if(nodePath.indexOf(";") > -1) {
-          uiWorkingArea.isMultiSelect_ = true;
-          uiWorkingArea.virtualClipboards_.clear();
-          uiExplorer.getAllClipBoard().clear();
-          String[] nodePaths = nodePath.split(";");
-          for(int i=0; i< nodePaths.length; i++) {
-            ClipboardCommand clipboard = new ClipboardCommand();
-            clipboard.setType(ClipboardCommand.ADDSYMLINK);
-            clipboard.setSrcPath(nodePaths[i]);
-            clipboard.setWorkspace(wsName);
-            uiExplorer.getAllClipBoard().add(clipboard);
-          }
-          uiExplorer.getSession().save();
-        } else {
-          uiWorkingArea.isMultiSelect_ = false;
-          uiExplorer.setCurrentPath(nodePath);
-        }
-      }
-      
+      String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
       Node currentNode = uiExplorer.getCurrentNode();
+      
       if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
@@ -1565,29 +1542,53 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      List<ClipboardCommand> clipboards = uiExplorer.getAllClipBoard();
-      if (uiWorkingArea.isMultiSelect_) {
-        Session userSession = currentNode.getSession();
-        Node sourceNode;
+      
+      LinkManager linkManager = uiWorkingArea.getApplicationComponent(LinkManager.class);
+      Session userSession = currentNode.getSession();
+      Node targetNode;
+      String symLinkName;
+      if((srcPath != null) && (srcPath.indexOf(";") > -1)) {
+        uiWorkingArea.isMultiSelect_ = true;
+        uiWorkingArea.virtualClipboards_.clear();
+        uiExplorer.getAllClipBoard().clear();
+        String[] nodePaths = srcPath.split(";");
         int countSymLink = 0;
-        for(ClipboardCommand command:clipboards) {
-          sourceNode = (Node) userSession.getItem(command.getSrcPath());
-          if (!sourceNode.isNodeType(Utils.EXO_SYMLINK)) countSymLink++; 
+        for(int i=0; i< nodePaths.length; i++) {
+          targetNode = (Node) userSession.getItem(nodePaths[i]);
+          if (!targetNode.isNodeType(Utils.EXO_SYMLINK)) {
+            if (targetNode.getName().indexOf(".lnk") > -1)
+              symLinkName = targetNode.getName(); 
+            else
+              symLinkName = targetNode.getName() + ".lnk";
+            linkManager.createLink(currentNode, Utils.EXO_SYMLINK, targetNode, symLinkName);
+            countSymLink++;
+          }
         }
         if(countSymLink == 0){
           uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.all-node-symlink", null));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         }
-      } else if (currentNode.isNodeType(Utils.EXO_SYMLINK)) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.all-node-symlink", null));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
+        uiExplorer.updateAjax(event);
+      } else {
+        if(srcPath != null) {
+          uiWorkingArea.isMultiSelect_ = false;
+          targetNode = (Node) userSession.getItem(srcPath);
+          if (!targetNode.isNodeType(Utils.EXO_SYMLINK)) {
+            if (targetNode.getName().indexOf(".lnk") > -1)
+              symLinkName = targetNode.getName(); 
+            else
+              symLinkName = targetNode.getName() + ".lnk";
+            linkManager.createLink(currentNode, Utils.EXO_SYMLINK, targetNode, symLinkName);
+          }
+          uiExplorer.updateAjax(event);
+        } else {
+          UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+          UISymLinkManager uiSymLinkManager = event.getSource().createUIComponent(UISymLinkManager.class, null, null);
+          UIPopupContainer.activate(uiSymLinkManager, 600, 300);
+          event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+        }
       }
-      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
-      UISymLinkManager uiSymLinkManager = event.getSource().createUIComponent(UISymLinkManager.class, null, null);
-      UIPopupContainer.activate(uiSymLinkManager, 600, 300);
-      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
-  }
+  }  
 }
