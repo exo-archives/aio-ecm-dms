@@ -2206,6 +2206,7 @@
 			<path-node-not-allowed>Tên này không được cho phép sử dụng.</path-node-not-allowed>
 			<non-node>Vui lòng chọn vị trí của liên kết</non-node>
 			<cannot-save>Thông tin không được lưu do một số điều kiện rằng buộc trong quá trình thực hiện.</cannot-save>
+			<item-exists-exception>Kiểu node này không cho phép trùng tên</item-exists-exception>
     </msg>
 	</UISymLinkForm>
 	

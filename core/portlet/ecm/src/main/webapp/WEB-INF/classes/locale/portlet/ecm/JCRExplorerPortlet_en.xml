@@ -2197,6 +2197,7 @@
 			<path-node-not-allowed>This name is not allowed.</path-node-not-allowed>
 			<non-node>Please choose trust target node</non-node>
 			<cannot-save>Some constraints were violated during that action.</cannot-save>
+			<item-exists-exception>The same name node sibling is not allowed</item-exists-exception>
     </msg>
 	</UISymLinkForm>
 	
