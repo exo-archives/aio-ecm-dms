@@ -59,6 +59,7 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.DataTransfer;
@@ -1447,6 +1448,10 @@ public class UIBrowseContainer extends UIContainer {
         if (uiContainer.wsName_ == null) uiContainer.wsName_ = wsName;
       } else {
         selectNode = uiContainer.getNodeByPath(objectId);   
+      }
+      if (selectNode.isNodeType(Utils.EXO_SYMLINK)){
+        NodeFinder nodeFinder = uiContainer.getApplicationComponent(NodeFinder.class);
+        if (wsName != null) selectNode = (Node)nodeFinder.getItem(uiContainer.getRepository(), wsName, objectId);
       }
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class);
