@@ -1451,7 +1451,21 @@ public class UIBrowseContainer extends UIContainer {
       }
       if (selectNode.isNodeType(Utils.EXO_SYMLINK)){
         NodeFinder nodeFinder = uiContainer.getApplicationComponent(NodeFinder.class);
-        if (wsName != null) selectNode = (Node)nodeFinder.getItem(uiContainer.getRepository(), wsName, objectId);
+        if (wsName != null) {
+          selectNode = (Node)nodeFinder.getItem(uiContainer.getRepository(), wsName, objectId);
+        } else {
+          RepositoryService repositoryService = uiContainer.getApplicationComponent(RepositoryService.class);
+          String repository = uiContainer.getRepository();
+          String[] wsNames = repositoryService.getRepository(repository).getWorkspaceNames();
+          String systemWsName = 
+            repositoryService.getRepository(repository).getConfiguration().getSystemWorkspaceName();
+          for(String wsItemName : wsNames) {
+            if(!wsItemName.equals(systemWsName)) {
+              selectNode = (Node)nodeFinder.getItem(repository, wsItemName, objectId);
+              break;
+            }
+          }
+        }
       }
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class);

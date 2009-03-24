@@ -28,8 +28,10 @@ import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -124,7 +126,21 @@ public class UIToolBar extends UIContainer {
       String nodePath =  event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIBrowseContainer uiContainer = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIBrowseContentPortlet uiBCPortlet =  uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
-      Node selectNode = uiContainer.getNodeByPath(nodePath) ;
+      Node selectNode = uiContainer.getNodeByPath(nodePath);
+      if (selectNode.isNodeType(Utils.EXO_SYMLINK)) {
+        NodeFinder nodeFinder = uiContainer.getApplicationComponent(NodeFinder.class);
+        RepositoryService repositoryService = uiContainer.getApplicationComponent(RepositoryService.class);
+        String repository = uiContainer.getRepository();
+        String[] wsNames = repositoryService.getRepository(repository).getWorkspaceNames();
+        String systemWsName = 
+          repositoryService.getRepository(repository).getConfiguration().getSystemWorkspaceName();
+        for(String wsItemName : wsNames) {
+          if(!wsItemName.equals(systemWsName)) {
+            selectNode = (Node)nodeFinder.getItem(repository, wsItemName, nodePath);
+            break;
+          }
+        }
+      }
       if(selectNode == null) {
         if(uiContainer.getNodeByPath(uiContainer.getCategoryPath()) == null) {
           uiBCPortlet.setPorletMode(PortletMode.HELP);
