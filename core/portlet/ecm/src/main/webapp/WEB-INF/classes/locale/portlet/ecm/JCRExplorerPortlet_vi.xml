@@ -2204,9 +2204,10 @@
       <numberformat-exception>Thông tin không được lưu. Tên phải không bao gồm các ký tự '[' hay ']'</numberformat-exception>      
 			<path-node-invalid>Vui lòng nhập đường dẫn đến node!</path-node-invalid>
 			<path-node-not-allowed>Tên này không được cho phép sử dụng.</path-node-not-allowed>
-			<non-node>Vui lòng chọn vị trí của liên kết</non-node>
+			<non-node>Vui lòng chọn vị trí của liên kết. Bạn đã chọn một node mà bạn không có quyền đọc</non-node>
 			<cannot-save>Thông tin không được lưu do một số điều kiện rằng buộc trong quá trình thực hiện.</cannot-save>
 			<item-exists-exception>Kiểu node này không cho phép trùng tên</item-exists-exception>
+			<UnsupportedRepositoryOperationException>Node được liên kết không được thể tham chiếu đến (có thể do bị khóa)</UnsupportedRepositoryOperationException>
     </msg>
 	</UISymLinkForm>
 	
@@ -2243,4 +2244,9 @@
     </event>
   </ECMContextMenu>  
   
+  <UIWorkspaceList>
+  	<msg>
+  		<AccessDeniedException>Truy cập không được phép! Bạn không có quyền đọc node với không gian làm việc hiện tại</AccessDeniedException>
+  	</msg>
+  </UIWorkspaceList>
 </bundle>

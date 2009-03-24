@@ -2213,9 +2213,10 @@
       <numberformat-exception>Can not save this folder. The name provided must not have '[' or ']'</numberformat-exception>      
 			<path-node-invalid>Please enter Path Node!</path-node-invalid>
 			<path-node-not-allowed>This name is not allowed.</path-node-not-allowed>
-			<non-node>Please choose trust target node</non-node>
+			<non-node>Please choose trust target node Or you don't have enough rights to read this node</non-node>
 			<cannot-save>Some constraints were violated during that action.</cannot-save>
 			<item-exists-exception>The same name node sibling is not allowed</item-exists-exception>
+			<UnsupportedRepositoryOperationException>This target node is not referenceable</UnsupportedRepositoryOperationException>
     </msg>
 	</UISymLinkForm>
 	
@@ -2252,4 +2253,9 @@
     </event>
   </ECMContextMenu>  
   
+  <UIWorkspaceList>
+  	<msg>
+  		<AccessDeniedException>Access deny! You don't have read permission in this workspace</AccessDeniedException>
+  	</msg>
+  </UIWorkspaceList>
 </bundle>

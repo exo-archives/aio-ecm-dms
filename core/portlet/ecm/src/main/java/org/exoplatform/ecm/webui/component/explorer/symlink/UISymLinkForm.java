@@ -26,6 +26,7 @@ import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.UnsupportedRepositoryOperationException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
@@ -231,6 +232,11 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.item-exists-exception", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
+      } catch(UnsupportedRepositoryOperationException unOperationException) {
+        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.UnsupportedRepositoryOperationException", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       } catch(Exception e) {
         e.printStackTrace();
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.cannot-save", null, ApplicationMessage.WARNING));
@@ -258,6 +264,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
       if (uiComponent instanceof UISymLinkForm) {
         UISymLinkForm uiSymLinkForm = (UISymLinkForm)uiComponent;
         String id = event.getRequestContext().getRequestParameter(OBJECTID);
+        uiSymLinkForm.getUIStringInput(FIELD_NAME).setValue("");
         uiSet.removeChildById(id);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiSymLinkForm);
       }
