@@ -144,7 +144,7 @@ public class UISelectPathPanel extends UIContainer {
   }
   
   protected boolean isExceptedNodeType(Node node) throws RepositoryException {
-    if(exceptedNodeTypes == null || exceptedNodeTypes.length == 0) return true;
+    if(exceptedNodeTypes == null || exceptedNodeTypes.length == 0) return false;
     for(String nodeType: exceptedNodeTypes) {
       if(node.isNodeType(nodeType)) return true;
     }
