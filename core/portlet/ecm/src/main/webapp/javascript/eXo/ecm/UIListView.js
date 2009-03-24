@@ -617,7 +617,7 @@ var ListView = function() {
 				else objectId.push("");
 			}
 			//Dunghm: Check Shift key
-			var url = moveActionNode.getAttribute("request");
+			var url = (typeof(moveActionNode) == "string")?moveActionNode:moveActionNode.getAttribute("request");
 			if(islink && islink != "") {
 			  url = moveActionNode.getAttribute("symlink");
 				ext += "&isLink="+true;
