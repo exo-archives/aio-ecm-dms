@@ -69,7 +69,6 @@ public class NodeFinderImpl implements NodeFinder {
   throws PathNotFoundException, RepositoryException{
     if (!absPath.startsWith("/")) throw new PathNotFoundException(absPath + " isn't absolute path");
     Session session = getSession(manageableRepository, workspace);
-    if (absPath.length() == 1) return session.getRootNode();
     return getItem(session, absPath, 0);
   }
 
