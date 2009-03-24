@@ -137,7 +137,12 @@ var ListView = function() {
 			var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 			var wsTarget = element.getAttribute('workspacename');
 			var idTarget = element.getAttribute('objectId');
-			Self.postGroupAction(moveAction, "&destInfo="+idTarget+";"+wsTarget);
+			//Dunghm : check symlink
+			if(event.ctrlKey && event.shiftKey)
+			  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo="+idTarget+";"+wsTarget);
+			else
+			  Self.postGroupAction(moveAction, "&destInfo="+idTarget+";"+wsTarget);
+			
 		}
 	};
 	
@@ -212,7 +217,7 @@ var ListView = function() {
 			var event = event || window.event;
 			document.onselectstart = function(){return false;}
 			var mobileElement = document.getElementById(Self.mobileId);
-			if (Self.enableDragDrop && mobileElement && !event.ctrlKey) {
+			if (Self.enableDragDrop && mobileElement && (!event.ctrlKey || (event.shiftKey && event.ctrlKey))) {
 				mobileElement.style.display = "block";
 				var X = eXo.core.Browser.findMouseXInPage(event);
 				var Y = eXo.core.Browser.findMouseYInPage(event);
@@ -266,7 +271,11 @@ var ListView = function() {
 				var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 				var wsTarget = element.getAttribute('workspacename');
 				var idTarget = element.getAttribute('objectId');
-				Self.postGroupAction(moveAction, "&destInfo="+idTarget+";"+wsTarget);
+				//Dunghm: check symlink
+				if(event.ctrlKey && event.shiftKey)
+				  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo="+idTarget+";"+wsTarget);
+				else
+				  Self.postGroupAction(moveAction, "&destInfo="+idTarget+";"+wsTarget);
 			} else {
 				if (event.ctrlKey && !element.selected) {
 					element.selected = true;
