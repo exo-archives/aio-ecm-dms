@@ -76,38 +76,12 @@ public class NodeFinderImpl implements NodeFinder {
   }
 
   /**
-   * Get actual absolute path to Node
+   * Get item by  absolute path
    * @param session       Session of user
    * @param absPath       input absolute path to node
    * @param partPath      Absolute path to ancestor node of finding node
    * @return              absolute path to non-symlink node
    */
-  /*
-  private String getPath(Session session, String absPath, int fromIdx, int toIdx) throws PathNotFoundException, RepositoryException {
-    if (fromIdx > toIdx) return "/" + absPath;
-    String[] splitPath = absPath.split("/");
-    int middIdx = (fromIdx + toIdx) >>> 1;
-    String partPath = this.makePath(splitPath, middIdx);
-    Node realNodeLink = getNodeLink(session, partPath);
-    String realPath = "";
-    int variantIdx = 0;
-    if (realNodeLink != null) {
-      realPath = realNodeLink.getPath();
-      absPath = realPath + absPath.substring(partPath.length() - 1);
-      variantIdx = realPath.split("/").length - partPath.split("/").length;
-      toIdx += variantIdx;
-      middIdx += (variantIdx+1);
-      this.targetSession = realNodeLink.getSession();
-      return getPath(this.targetSession, absPath.substring(1), middIdx, toIdx);
-    }
-    if (this.targetSession != null) session = this.targetSession;
-    realPath = getPath(session, absPath, fromIdx, middIdx-1);
-    middIdx += (realPath.split("/").length - toIdx);
-    toIdx = realPath.split("/").length - 1;
-    absPath = realPath;
-    return getPath(session, absPath.substring(1), middIdx, toIdx);
-  }
-  */
   
   private Item getItem(Session session, String absPath, int fromIdx, int toIdx) throws PathNotFoundException, RepositoryException {
     /* if node corresponding to absPath could be a link */
