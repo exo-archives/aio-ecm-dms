@@ -16,6 +16,7 @@
  */
 package org.exoplatform.services.cms.link;
 
+import javax.jcr.Item;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -104,4 +105,12 @@ public interface LinkManager {
    */
   public boolean isTargetReachable(Node link) throws RepositoryException;
 
+  /**
+   * Indicates whether the given item is a link
+   * 
+   * @param item the item to test
+   * @return <code>true</code> if the node is a link, <code>false</code> otherwise
+   * @throws RepositoryException if an unexpected error occurs
+   */
+  public boolean isLink(Item item) throws RepositoryException;
 }

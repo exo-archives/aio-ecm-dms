@@ -16,6 +16,7 @@
  */
 package org.exoplatform.services.cms.link.impl;
 
+import javax.jcr.Item;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
@@ -137,4 +138,8 @@ public class LinkManagerImpl implements LinkManager {
     link.getSession().save();
     return link;
   }
+
+  public boolean isLink(Item item) throws RepositoryException {
+	  return (item instanceof Node) && (((Node)item).isNodeType(SYMLINK));
+  }    
 }
