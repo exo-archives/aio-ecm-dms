@@ -22,8 +22,6 @@ import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 
-import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
-
 /**
  * Created by The eXo Platform SARL
  * Author : Hoang Van Hung
@@ -39,7 +37,7 @@ public interface NodeFinder {
    * @throws PathNotFoundException If no node exists at the specified path.
    * @throws RepositoryException   if another error occurs.
    */
-   public Node getNode(Node ancestorNode, String relativePath) throws PathNotFoundException, RepositoryException, RepositoryConfigurationException;
+   public Node getNode(Node ancestorNode, String relativePath) throws PathNotFoundException, RepositoryException;
    
    /**
    * Returns the item at the specified absolute path.
@@ -50,5 +48,5 @@ public interface NodeFinder {
    * @throws PathNotFoundException if the specified path cannot be found.
    * @throws RepositoryException   if another error occurs.
    */
-   public Item getItem(String repository, String workspace, String absPath) throws PathNotFoundException, RepositoryException, RepositoryConfigurationException;
+   public Item getItem(String repository, String workspace, String absPath) throws PathNotFoundException, RepositoryException;
 }

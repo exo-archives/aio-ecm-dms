@@ -16,20 +16,17 @@
  */
 package org.exoplatform.services.ecm.dms.test;
 
-import javax.jcr.NoSuchWorkspaceException;
+import javax.jcr.Item;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import javax.security.auth.login.LoginException;
 
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.CredentialsImpl;
-import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 /**
  * Created by The eXo Platform SARL
@@ -39,21 +36,18 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public class TestSymLink extends BaseDMSTestCase {
   
-  /**
-   * Session works with workspace
-   */
-  Session         session = null;
-
-  SessionProvider sessionProvider;
-
+  NodeFinder nodeFinder;
+  
   /**
    * Set up for testing
+   * 
+   * In Collaboration workspace
    * 
    *  /---TestTreeNode
    *        |
    *        |_____A1
-   *        |     |___C1___C1-1___C1-2___C1-3(exo:symlink -->C2)
-   *        |     |___C2___C2-2___D(exo:symlink -->C3) 
+   *        |     |___C1___C1_1___C1_2___C1_3(exo:symlink -->C2)
+   *        |     |___C2___C2_2___D(exo:symlink -->C3) 
    *        |     |___C3___C4
    *        | 
    *        |_____A2
@@ -61,71 +55,67 @@ public class TestSymLink extends BaseDMSTestCase {
    *        | 
    *        |_____A3(exo:symlink --> C2) 
    * 
+   * In System workspace
+   *        /------TestTreeNode2
+   *                    |
+   *                    |_____M1___M2(exo:symlink --> C1)
+   *                    |
+   *                    |_____N1___N2(exo:symlink --> C2)
+   *                    |
+   *                    |_____O1(exo:symlink --> no node)
+   *                    |
+   *                    |_____P1
+   *                    
    */
-  public void setUp() {
+  public void setUp() throws Exception {
     System.out.println("========== Create root node  ========");
-    try {
-      super.setUp();
-      credentials = new CredentialsImpl("root", "exo".toCharArray());
-      repositoryService = (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
-      session = repository.login(credentials, COLLABORATION_WS);
-      createTreeInCollaboration();
-    } catch (LoginException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (NoSuchWorkspaceException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (RepositoryException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (RepositoryConfigurationException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (Exception e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    super.setUp();
+    credentials = new CredentialsImpl("root", "exo".toCharArray());
+    repositoryService = (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
+    nodeFinder = (NodeFinder) container.getComponentInstanceOfType(NodeFinder.class);
+    createTreeInCollaboration();
+    createTreeInSystem();
   }
 
   /**
    * Create tree in System workspace
-   *        /------TestTreeNode2
-   *                    |
-   *                    |_____M1
-   *                    |
-   *                    |_____N1
-   *                    |
-   *                    |_____P1
    * 
    * @throws Exception
    */
   public void createTreeInSystem() throws Exception {
-    session = repository.login(credentials, SYSTEM_WS);
+    Session session = repository.login(credentials, SYSTEM_WS);
     Node rootNode = session.getRootNode();
     Node testNode = rootNode.addNode("TestTreeNode2");
     Node nodeM1 = testNode.addNode("M1");
     Node nodeN1 = testNode.addNode("N1");
-    Node nodeP1 = testNode.addNode("p1");
+    testNode.addNode("p1");
+    Session collaboSession = repository.login(credentials, COLLABORATION_WS);
+    Node nodeC1 = (Node) collaboSession.getItem("/TestTreeNode/A1/C1");
+    addSymlink("M2", nodeM1, nodeC1);
+    Node nodeC2 = (Node) collaboSession.getItem("/TestTreeNode/A1/C2");
+    addSymlink("N2", nodeN1, nodeC2);
+    Node nodeO1 = testNode.addNode("O1","exo:symlink");
+    nodeO1.setProperty("exo:workspace",COLLABORATION_WS);
+    nodeO1.setProperty("exo:uuid", "12");
+    nodeO1.setProperty("exo:primaryType", "nt:folder");        
     /* Set node and properties for Node B1 */
     session.save();
   }
   
-  public void addSymlink(Node src, Node target) throws Exception {
-    Node nodeM2 = src.addNode("M2","exo:symlink");
+  public void addSymlink(String name, Node src, Node target) throws Exception {
+    Node node = src.addNode(name,"exo:symlink");
     if (target.hasProperty("jcr:uuid")) {
       System.out.println("\n\n jcr uuid = " + target.getProperty("jcr:uuid").getValue());
     } else {
       target.addMixin("mix:referenceable");
     }
-    nodeM2.setProperty("exo:workspace",COLLABORATION_WS);
-    nodeM2.setProperty("exo:uuid",target.getProperty("jcr:uuid").getString());
-    nodeM2.setProperty("exo:primaryType",target.getPrimaryNodeType().getName());    
-    target.getSession().save();
-    src.getSession().save();
+    node.setProperty("exo:workspace",COLLABORATION_WS);
+    node.setProperty("exo:uuid",target.getProperty("jcr:uuid").getString());
+    node.setProperty("exo:primaryType",target.getPrimaryNodeType().getName());    
     
   }
   public void createTreeInCollaboration() throws Exception {
+	Session session = repository.login(credentials, COLLABORATION_WS);
     Node rootNode = session.getRootNode();
     Node testNode = rootNode.addNode("TestTreeNode");
     Node nodeA1 = testNode.addNode("A1");
@@ -138,7 +128,7 @@ public class TestSymLink extends BaseDMSTestCase {
     Node nodeC1_3 = nodeC1_2.addNode("C1_3","exo:symlink");
     Node nodeC2 = nodeA1.addNode("C2");
     Node nodeC3 = nodeA1.addNode("C3");
-    Node nodeC4 = nodeC3.addNode("C4");
+    nodeC3.addNode("C4");
     Node nodeC2_2 = nodeC2.addNode("C2_2");
     Node nodeD = nodeC2_2.addNode("D", "exo:symlink");
     if (nodeC1.hasProperty("jcr:uuid")) {
@@ -228,18 +218,9 @@ public class TestSymLink extends BaseDMSTestCase {
     String expectedPath = "/";
     System.out.println("\n\n Path input : " + path);
     System.out.println("\n\n expected Path : " + expectedPath);
-    NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-    Node node;
-    if (path.length() == 0) return;
-    try {
-      node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
-      System.out.println("Path out put: "+ node.getPath());
-      assertEquals(expectedPath,node.getPath());
-    } catch (PathNotFoundException e) {
-      assertTrue(false);
-    } catch (RepositoryException e) {
-      assertTrue(false);
-    }
+    Node node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
+    System.out.println("Path out put: "+ node.getPath());
+    assertEquals(expectedPath,node.getPath());
   }
   
   public void testGetPath1() throws Exception {
@@ -247,37 +228,19 @@ public class TestSymLink extends BaseDMSTestCase {
     String expectedPath = "/TestTreeNode";
     System.out.println("\n\n Path input : " + path);
     System.out.println("\n\n expected Path : " + expectedPath);
-    NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-    Node node;
-    if (path.length() == 0) return;
-    try {
-      node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
-      System.out.println("Path out put: "+ node.getPath());
-      assertEquals(expectedPath,node.getPath());
-    } catch (PathNotFoundException e) {
-      assertTrue(false);
-    } catch (RepositoryException e) {
-      assertTrue(false);
-    }
+    Node node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
+    System.out.println("Path out put: "+ node.getPath());
+    assertEquals(expectedPath,node.getPath());
   }
   
   public void testGetPath2() throws Exception {
     String path = "/TestTreeNode/A2/B2";
-    String expectedPath = "/TestTreeNode/A1/C1";
+    String expectedPath = "/TestTreeNode/A2/B2";
     System.out.println("\n\n Path input : " + path);
     System.out.println("\n\n expected Path : " + expectedPath);
-    NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-    Node node;
-    if (path.length() == 0) return;
-    try {
-      node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
-      System.out.println("Path output: "+ node.getPath());
-      assertEquals(expectedPath,node.getPath());
-    } catch (PathNotFoundException e) {
-      assertTrue(false);
-    } catch (RepositoryException e) {
-      assertTrue(false);
-    }
+    Item item = nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
+    System.out.println("Path output: "+ item.getPath());
+    assertEquals(expectedPath,item.getPath());
   }
   
   public void testGetPath3() throws Exception {
@@ -285,37 +248,19 @@ public class TestSymLink extends BaseDMSTestCase {
     String expectedPath = "/TestTreeNode/A1/C3/C4";
     System.out.println("\n\n Path input : " + path);
     System.out.println("\n\n expected Path : " + expectedPath);
-    NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-    Node node;
-    if (path.length() == 0) return;
-    try {
-      node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
-      System.out.println("Path output: "+ node.getPath());
-      assertEquals(expectedPath,node.getPath());
-    } catch (PathNotFoundException e) {
-      assertTrue(false);
-    } catch (RepositoryException e) {
-      assertTrue(false);
-    }
+    Node node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
+    System.out.println("Path output: "+ node.getPath());
+    assertEquals(expectedPath,node.getPath());
   }
   
   public void testGetPath4() throws Exception {
     String path = "/TestTreeNode/A2/B2/C1_1/C1_2/C1_3/C2_2/D";
-    String expectedPath = "/TestTreeNode/A1/C3";
+    String expectedPath = "/TestTreeNode/A1/C2/C2_2/D";
     System.out.println("\n\n Path input : " + path);
     System.out.println("\n\n expected Path : " + expectedPath);
-    NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-    Node node;
-    if (path.length() == 0) return;
-    try {
-      node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
-      System.out.println("Path output: "+ node.getPath());
-      assertEquals(expectedPath,node.getPath());
-    } catch (PathNotFoundException e) {
-      assertTrue(false);
-    } catch (RepositoryException e) {
-      assertTrue(false);
-    }
+    Node node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
+    System.out.println("Path output: "+ node.getPath());
+    assertEquals(expectedPath,node.getPath());
   }
  
   public void testGetPath5() throws Exception {
@@ -323,71 +268,30 @@ public class TestSymLink extends BaseDMSTestCase {
     String expectedPath = "/TestTreeNode/A1/C3/C4";
     System.out.println("\n\n Path input : " + path);
     System.out.println("\n\n expected Path : " + expectedPath);
-    NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-    Node node;
-    if (path.length() == 0) return;
-    try {
-      node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
-      System.out.println("Path output: "+ node.getPath());
-      assertEquals(expectedPath,node.getPath());
-    } catch (PathNotFoundException e) {
-      assertTrue(false);
-    } catch (RepositoryException e) {
-      assertTrue(false);
-    }
+    Node node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
+    System.out.println("Path output: "+ node.getPath());
+    assertEquals(expectedPath,node.getPath());
   }
   
   
-  public void testGetPathInOtherWorkspace1() {
-    try {
-      Node nodeC1 = (Node)session.getItem("/TestTreeNode/A1/C1");
-      createTreeInSystem();
-      Session systemSession = repository.login(credentials, SYSTEM_WS);
-      Node nodeM1 = (Node)systemSession.getItem("/TestTreeNode2/M1");
-      addSymlink(nodeM1, nodeC1);
-      String path = "/TestTreeNode2/M1/M2";
-      String expectedPath = "/TestTreeNode/A1/C1";
+  public void testGetPathInOtherWorkspace1() throws Exception {
+      String path = "/TestTreeNode2/M1/M2/jcr:uuid";
+      String expectedPath = "/TestTreeNode/A1/C1/jcr:uuid";
       System.out.println("\n\n Path input : " + path);
       System.out.println("\n\n expected Path : " + expectedPath);
-      NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-      Node node;
-      if (path.length() == 0) return;
-      node = (Node)nodeFinder.getItem(REPO_NAME, SYSTEM_WS, path);
-      System.out.println("Path output: "+ node.getPath());
-      assertEquals(expectedPath,node.getPath());
-    } catch (PathNotFoundException e) {
-      assertTrue(false);
-    } catch (RepositoryException e) {
-      assertTrue(false);
-    } catch (Exception e) {
-      assertTrue(false);
-    }
+      Item item = nodeFinder.getItem(REPO_NAME, SYSTEM_WS, path);
+      System.out.println("Path output: "+ item.getPath());
+      assertEquals(expectedPath, item.getPath());
   }
   
-  public void testGetPathInOtherWorkspace2() {
-    try {
-      Node nodeC2 = (Node)session.getItem("/TestTreeNode/A1/C2");
-      createTreeInSystem();
-      Session systemSession = repository.login(credentials, SYSTEM_WS);
-      Node nodeM1 = (Node)systemSession.getItem("/TestTreeNode2/M1");
-      addSymlink(nodeM1, nodeC2);
-      String path = "/TestTreeNode2/M1/M2/C2_2/D/C4";
+  public void testGetPathInOtherWorkspace2() throws Exception {
+      String path = "/TestTreeNode2/N1/N2/C2_2/D/C4";
       String expectedPath = "/TestTreeNode/A1/C3/C4";
       System.out.println("\n\n Path input : " + path);
       System.out.println("\n\n expected Path : " + expectedPath);
-      NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-      Node node;
-      if (path.length() == 0) return;
-      node = (Node)nodeFinder.getItem(REPO_NAME, SYSTEM_WS, path);
+      Node node = (Node)nodeFinder.getItem(REPO_NAME, SYSTEM_WS, path);
       System.out.println("Path output: "+ node.getPath());
       assertEquals(expectedPath,node.getPath());
-    } catch (PathNotFoundException e) {
-      assertTrue(false);
-    } catch (RepositoryException e) {
-      assertTrue(false);
-    } catch (Exception e) {
-      assertTrue(false);
-    }
   }
   
   /**
@@ -395,71 +299,33 @@ public class TestSymLink extends BaseDMSTestCase {
    *
    */
   
-  public void testGetPathInOtherWorkspace3() {
-    try {
-      Node nodeC1 = (Node)session.getItem("/TestTreeNode/A1/C1");
-      createTreeInSystem();
-      Session systemSession = repository.login(credentials, SYSTEM_WS);
-      Node nodeM1 = (Node)systemSession.getItem("/TestTreeNode2/M1");
-      addSymlink(nodeM1, nodeC1);
+  public void testGetPathInOtherWorkspace3() throws Exception {
       String path = "/TestTreeNode2/M1/M2/C1_1/C1_2/C1_3/C2_2/D/C4";
       String expectedPath = "/TestTreeNode/A1/C3/C4";
       System.out.println("\n\n Path input : " + path);
       System.out.println("\n\n expected Path : " + expectedPath);
-      NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-      Node node;
-      if (path.length() == 0) return;
-      node = (Node)nodeFinder.getItem(REPO_NAME, SYSTEM_WS, path);
+      Node node = (Node)nodeFinder.getItem(REPO_NAME, SYSTEM_WS, path);
       System.out.println("Path output: "+ node.getPath());
       assertEquals(expectedPath,node.getPath());
-    } catch (PathNotFoundException e) {
-      assertTrue(false);
-    } catch (RepositoryException e) {
-      assertTrue(false);
-    } catch (Exception e) {
-      assertTrue(false);
-    }
   }
   
   public void testGetInvalidPath1() throws Exception {
     String path = "/TestTreeNode/A2/D";
-    String expectedPath = "";
     System.out.println("\n\n Path input : " + path);
-    System.out.println("\n\n expected Path : " + expectedPath);
-    NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-    Node node;
-    if (path.length() == 0) return;
-    boolean flag = false;
     try {
-      node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
-      System.out.println("Path output: "+ node.getPath());
-    } catch (PathNotFoundException e) {
-      flag = true;
-    } catch (RepositoryException e) {
-      flag = true;
-    }
-    assertTrue(flag);
+        Node node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
+        System.out.println("Path output: "+ node.getPath());    	
+    } catch (PathNotFoundException e) {}
   }
   
   
   public void testGetInvalidPath2() throws Exception {
     String path = "/TestTreeNode/A2/B2/C2";
-    String expectedPath = "";
     System.out.println("\n\n Path input : " + path);
-    System.out.println("\n\n expected Path : " + expectedPath);
-    NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-    Node node;
-    if (path.length() == 0) return;
-    boolean flag = false;
     try {
-      node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
-      System.out.println("Path output: "+ node.getPath());
-    } catch (PathNotFoundException e) {
-      flag = true;
-    } catch (RepositoryException e) {
-      flag = true;
-    }
-    assertTrue(flag);
+        Node node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
+        System.out.println("Path output: "+ node.getPath());
+    } catch (PathNotFoundException e) {}
   }
   
   /**
@@ -467,63 +333,42 @@ public class TestSymLink extends BaseDMSTestCase {
    */
   
   public void testGetInvalidPath3() throws Exception {
-    String path = "/TestTreeNode/A3/C2_2";
-    String expectedPath = "";
-    Node nodeC2 = (Node)session.getItem("/TestTreeNode/A1/C2"); 
-    Node nodeA1 = nodeC2.getParent();
-    nodeC2.remove();
-    nodeA1.save();
-    browserTree(nodeA1.getParent(),0);
+    String path = "/TestTreeNode2/O1";
     System.out.println("\n\n Path input : " + path);
-    System.out.println("\n\n expected Path : " + expectedPath);
-    NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-    Node node;
-    if (path.length() == 0) return;
-    boolean flag = false;
     try {
-      node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
-      System.out.println("Path output: "+ node.getPath());
-    } catch (PathNotFoundException e) {
-      flag = true;
-    } catch (RepositoryException e) {
-      flag = true;
-    }
-    assertTrue(flag);
+        Node node = (Node) nodeFinder.getItem(REPO_NAME, SYSTEM_WS, path);
+        System.out.println("Path output: "+ node.getPath());
+    } catch (PathNotFoundException e) {}
   }
 
-  
   public void testGetInvalidPath4() throws Exception {
-    Node nodeC1 = (Node)session.getItem("/TestTreeNode/A1/C1");
-    createTreeInSystem();
-    Session systemSession = repository.login(credentials, SYSTEM_WS);
-    Node nodeM1 = (Node)systemSession.getItem("/TestTreeNode2/M1");
-    addSymlink(nodeM1, nodeC1);
-    Node nodeA1 = nodeC1.getParent();
-    nodeC1.remove();
-    nodeA1.save();
-    String path = "/TestTreeNode2/M1/M2";
-    System.out.println("\n\n Path input : " + path);
-    System.out.println("\n\n expected Path : Not found");
-    NodeFinder nodeFinder = (NodeFinder)container.getComponentInstanceOfType(NodeFinder.class);
-    Node node;
-    if (path.length() == 0) return;
-    boolean flag = false;
+	String path = "/TestTreeNode2/O1/C2_2";
+	System.out.println("\n\n Path input : " + path);
     try {
-      node = (Node)nodeFinder.getItem(REPO_NAME, COLLABORATION_WS, path);
-      System.out.println("Path output: "+ node.getPath());
-    } catch (PathNotFoundException e) {
-      flag = true;
-    } catch (RepositoryException e) {
-      flag = true;
-    }
-    assertTrue(flag);
+    	Node node = (Node) nodeFinder.getItem(REPO_NAME, SYSTEM_WS, path);
+    	System.out.println("Path output: " + node.getPath());
+    } catch (PathNotFoundException e) {}
   }
   
+  public void testGetInvalidWorkspace() throws Exception {
+    try {
+    	Node node = (Node) nodeFinder.getItem(REPO_NAME, SYSTEM_WS + "12", "/");
+    	System.out.println("Path output: " + node.getPath());
+    } catch (RepositoryException e) {}
+  }
+  
+  public void testGetInvalidRepository() throws Exception {
+    try {
+    	Node node = (Node) nodeFinder.getItem(REPO_NAME + "12", SYSTEM_WS, "/");
+    	System.out.println("Path output: " + node.getPath());
+    } catch (RepositoryException e) {}
+  }
+	  
   public void tearDown() throws Exception {
     Node root;
     try {
       System.out.println("\n\n -----------Teadown-----------------");
-      session = repository.login(credentials, COLLABORATION_WS);
+      Session session = repository.login(credentials, COLLABORATION_WS);
       root = session.getRootNode();
       root.getNode("TestTreeNode").remove();
       root.save();
@@ -533,7 +378,6 @@ public class TestSymLink extends BaseDMSTestCase {
       root.save();
     } catch (PathNotFoundException e) {
     }
-    session = null;
     super.tearDown();
   }
 
