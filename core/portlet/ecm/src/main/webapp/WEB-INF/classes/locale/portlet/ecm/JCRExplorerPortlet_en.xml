@@ -2226,6 +2226,12 @@
       <confirm-create-link>Are you sure want to create link in this location?</confirm-create-link>    
     </msg>
   </UIWorkingArea>
+  
+  <ECMContextMenu>
+    <event>
+      <CreateLink>Create link</CreateLink>
+    </event>
+  </ECMContextMenu>
 
 </bundle>
 

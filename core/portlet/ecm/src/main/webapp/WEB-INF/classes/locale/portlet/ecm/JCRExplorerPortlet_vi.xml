@@ -2235,5 +2235,11 @@
       <confirm-create-link>Bạn có thực sự muốn tạo liên kết tại vị trí này không?</confirm-create-link> 
     </msg>
   </UIWorkingArea>
+ 
+  <ECMContextMenu>
+    <event>
+      <CreateLink>Tạo liên kết</CreateLink>
+    </event>
+  </ECMContextMenu>  
+  
 </bundle>
-

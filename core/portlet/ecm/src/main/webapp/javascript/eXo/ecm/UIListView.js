@@ -137,7 +137,7 @@ var ListView = function() {
 			var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 			var wsTarget = element.getAttribute('workspacename');
 			var idTarget = element.getAttribute('objectId');
-			Self.postGroupAction(moveAction.getAttribute('request'), "&destInfo="+idTarget+";"+wsTarget);
+			Self.postGroupAction(moveAction, "&destInfo="+idTarget+";"+wsTarget);
 		}
 	};
 	
@@ -266,7 +266,7 @@ var ListView = function() {
 				var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 				var wsTarget = element.getAttribute('workspacename');
 				var idTarget = element.getAttribute('objectId');
-				Self.postGroupAction(moveAction.getAttribute('request'), "&destInfo="+idTarget+";"+wsTarget);
+				Self.postGroupAction(moveAction, "&destInfo="+idTarget+";"+wsTarget);
 			} else {
 				if (event.ctrlKey && !element.selected) {
 					element.selected = true;
@@ -595,7 +595,7 @@ var ListView = function() {
 		eXo.core.MouseEventManager.onMouseDownHandlers = null;
 	};
 	
-	ListView.prototype.postGroupAction = function(url, ext) {
+	ListView.prototype.postGroupAction = function(moveActionNode, ext) {
 		var objectId = [];
 		var workspaceName = [];
 		var islink = "";
@@ -617,9 +617,10 @@ var ListView = function() {
 				else objectId.push("");
 			}
 			//Dunghm: Check Shift key
+			var url = moveActionNode.getAttribute("request");
 			if(islink && islink != "") {
+			  url = moveActionNode.getAttribute("symlink");
 				ext += "&isLink="+true;
-				url = url.replace("op=MoveNode","op=CreateLink");
 			}
 			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + ext);
 			eval(url); 

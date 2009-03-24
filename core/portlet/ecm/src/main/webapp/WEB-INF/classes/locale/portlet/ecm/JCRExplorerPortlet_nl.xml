@@ -2191,4 +2191,10 @@
     </msg>
   </UIWorkingArea>
   
+  <ECMContextMenu>
+    <event>
+      <CreateLink>Create link</CreateLink>
+    </event>
+  </ECMContextMenu>  
+  
 </bundle>
