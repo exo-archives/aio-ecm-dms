@@ -2165,12 +2165,6 @@ Nouvelle configuration
     </event>
   </ECMContextMenu>
   
-  <UIActionBar>  
-	  <msg>
-			<all-node-symlink>All selected nodes are Sym Link</all-node-symlink>  	
-	  </msg>
-  </UIActionBar>
-  
   <UIWorkingArea>
     <msg>
       <create-link-problem>You can not create a link for node '{0}' at '{1}'</create-link-problem>

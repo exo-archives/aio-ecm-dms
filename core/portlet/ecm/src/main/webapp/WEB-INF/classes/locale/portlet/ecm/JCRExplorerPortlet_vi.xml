@@ -2223,12 +2223,6 @@
     </event>
   </ECMContextMenu>
   
-  <UIActionBar>  
-	  <msg>
-			<all-node-symlink>Tất cả những node được chọn đều là liên kết</all-node-symlink>  	
-	  </msg>
-  </UIActionBar>
-  
   <UIWorkingArea>
     <msg>
       <create-link-problem>Bạn không thể tạo liên kết từ vị trí '{0}' tới '{1}'</create-link-problem>

@@ -1261,17 +1261,21 @@ public class UIActionBar extends UIForm {
       }
       if( uiExplorer.nodeIsLocked(currentNode)) {
         Object[] arg = { currentNode.getPath() };
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
       if(!currentNode.isCheckedOut()) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
       if (currentNode.isNodeType(Utils.EXO_SYMLINK)) {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.all-node-symlink", null));
+        Object[] arg = {currentNode.getPath()};
+        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.selected-is-link", arg, 
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }

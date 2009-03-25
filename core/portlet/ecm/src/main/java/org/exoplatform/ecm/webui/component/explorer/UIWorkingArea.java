@@ -1580,31 +1580,7 @@ public class UIWorkingArea extends UIContainer {
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node currentNode;
-      try {
-        currentNode = uiExplorer.getCurrentNode();
-      } catch (AccessControlException ace) {        
-        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.repository-exception", null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch (AccessDeniedException ade) {        
-        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.repository-exception", null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch(NumberFormatException nume) {
-        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.numberformat-exception", null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch(ConstraintViolationException cve) {
-        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.cannot-save", null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;        
-      } catch(Exception e) {
-        e.printStackTrace();
-        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.cannot-save", null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } 
+      Node currentNode = uiExplorer.getCurrentNode();
       
       if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
@@ -1626,42 +1602,54 @@ public class UIWorkingArea extends UIContainer {
       
       LinkManager linkManager = uiWorkingArea.getApplicationComponent(LinkManager.class);
       Session userSession = currentNode.getSession();
-      Node targetNode;
       String symLinkName;
       try {
         if((srcPath != null) && (srcPath.indexOf(";") > -1)) {
           uiWorkingArea.isMultiSelect_ = true;
-          uiWorkingArea.virtualClipboards_.clear();
-          uiExplorer.getAllClipBoard().clear();
           String[] nodePaths = srcPath.split(";");
-          int countSymLink = 0;
           for(int i=0; i< nodePaths.length; i++) {
-            targetNode = (Node) userSession.getItem(nodePaths[i]);
-            if (!targetNode.isNodeType(Utils.EXO_SYMLINK)) {
-              if (targetNode.getName().indexOf(".lnk") > -1)
-                symLinkName = targetNode.getName(); 
-              else
-                symLinkName = targetNode.getName() + ".lnk";
-              linkManager.createLink(currentNode, Utils.EXO_SYMLINK, targetNode, symLinkName);
-              countSymLink++;
+            Node selectedNode = (Node) userSession.getItem(nodePaths[i]);
+            if(Utils.isSymLink(selectedNode)) {
+              Object[] args = { selectedNode.getPath() };
+              uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.selected-is-link", args, 
+                  ApplicationMessage.WARNING));
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              continue;
             }
-          }
-          if(countSymLink == 0){
-            uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.all-node-symlink", null));
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-            return;
+            try {
+              if (selectedNode.getName().indexOf(".lnk") > -1) symLinkName = selectedNode.getName(); 
+              else symLinkName = selectedNode.getName() + ".lnk";
+              linkManager.createLink(currentNode, Utils.EXO_SYMLINK, selectedNode, symLinkName);
+            } catch(Exception e) {
+              Object[] arg = {selectedNode.getPath(), currentNode.getPath()};
+              uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.create-link-problem", arg, 
+                  ApplicationMessage.WARNING));
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
+            }
           }
           uiExplorer.updateAjax(event);
         } else {
           if(srcPath != null) {
             uiWorkingArea.isMultiSelect_ = false;
-            targetNode = (Node) userSession.getItem(srcPath);
-            if (!targetNode.isNodeType(Utils.EXO_SYMLINK)) {
-              if (targetNode.getName().indexOf(".lnk") > -1)
-                symLinkName = targetNode.getName(); 
-              else
-                symLinkName = targetNode.getName() + ".lnk";
-              linkManager.createLink(currentNode, Utils.EXO_SYMLINK, targetNode, symLinkName);
+            Node selectedNode = (Node) userSession.getItem(srcPath);
+            if(Utils.isSymLink(selectedNode)) {
+              Object[] args = { selectedNode.getPath() };
+              uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.selected-is-link", args, 
+                  ApplicationMessage.WARNING));
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
+            }
+            if (selectedNode.getName().indexOf(".lnk") > -1) symLinkName = selectedNode.getName(); 
+            else symLinkName = selectedNode.getName() + ".lnk";
+            try {
+              linkManager.createLink(currentNode, Utils.EXO_SYMLINK, selectedNode, symLinkName);
+            } catch(Exception e) {
+              Object[] arg = {selectedNode.getPath(), currentNode.getPath()};
+              uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.create-link-problem", arg, 
+                  ApplicationMessage.WARNING));
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
             }
             uiExplorer.updateAjax(event);
           } else {
