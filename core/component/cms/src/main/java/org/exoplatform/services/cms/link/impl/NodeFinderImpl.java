@@ -68,7 +68,9 @@ public class NodeFinderImpl implements NodeFinder {
   public Node getNode(Node ancestorNode, String relativePath) throws PathNotFoundException,
       RepositoryException {
     if (relativePath.startsWith("/")) throw new PathNotFoundException("Invalid relative path: " + relativePath);
-    String absPath = ancestorNode.getPath() + "/" + relativePath;
+    String absPath = "";
+    if (ancestorNode.getPath().equals("/")) absPath = "/" + relativePath;
+    else absPath = ancestorNode.getPath() + "/" + relativePath;
     Session session = ancestorNode.getSession();
     return (Node) getItem(session, absPath);
   }
