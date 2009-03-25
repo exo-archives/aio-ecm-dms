@@ -50,7 +50,6 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.portal.PageNodeEvent;
 import org.exoplatform.portal.webui.portal.UIPortal;
@@ -59,7 +58,7 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
-import org.exoplatform.services.cms.link.NodeFinder;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.DataTransfer;
@@ -82,6 +81,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -1450,22 +1450,8 @@ public class UIBrowseContainer extends UIContainer {
         selectNode = uiContainer.getNodeByPath(objectId);   
       }
       if (selectNode.isNodeType(Utils.EXO_SYMLINK)){
-        NodeFinder nodeFinder = uiContainer.getApplicationComponent(NodeFinder.class);
-        if (wsName != null) {
-          selectNode = (Node)nodeFinder.getItem(uiContainer.getRepository(), wsName, objectId);
-        } else {
-          RepositoryService repositoryService = uiContainer.getApplicationComponent(RepositoryService.class);
-          String repository = uiContainer.getRepository();
-          String[] wsNames = repositoryService.getRepository(repository).getWorkspaceNames();
-          String systemWsName = 
-            repositoryService.getRepository(repository).getConfiguration().getSystemWorkspaceName();
-          for(String wsItemName : wsNames) {
-            if(!wsItemName.equals(systemWsName)) {
-              selectNode = (Node)nodeFinder.getItem(repository, wsItemName, objectId);
-              break;
-            }
-          }
-        }
+        LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
+        selectNode = linkManager.getTarget(selectNode);
       }
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class);

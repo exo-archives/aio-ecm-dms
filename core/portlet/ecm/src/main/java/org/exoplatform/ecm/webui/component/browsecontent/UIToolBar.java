@@ -24,19 +24,18 @@ import javax.portlet.PortletMode;
 
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.link.NodeFinder;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -77,7 +76,7 @@ public class UIToolBar extends UIContainer {
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class);
     Node rootNode = getRootNode() ;
     if(!uiContainer.getWorkSpace().equals(node.getSession().getWorkspace().getName())) {
-//      rootNode = node.getSession().getRootNode() ;
+      // rootNode = node.getSession().getRootNode();
       return new ArrayList<Node>() ;
     }
     List<Node> list = new ArrayList<Node>() ;
@@ -128,18 +127,8 @@ public class UIToolBar extends UIContainer {
       UIBrowseContentPortlet uiBCPortlet =  uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
       Node selectNode = uiContainer.getNodeByPath(nodePath);
       if (selectNode.isNodeType(Utils.EXO_SYMLINK)) {
-        NodeFinder nodeFinder = uiContainer.getApplicationComponent(NodeFinder.class);
-        RepositoryService repositoryService = uiContainer.getApplicationComponent(RepositoryService.class);
-        String repository = uiContainer.getRepository();
-        String[] wsNames = repositoryService.getRepository(repository).getWorkspaceNames();
-        String systemWsName = 
-          repositoryService.getRepository(repository).getConfiguration().getSystemWorkspaceName();
-        for(String wsItemName : wsNames) {
-          if(!wsItemName.equals(systemWsName)) {
-            selectNode = (Node)nodeFinder.getItem(repository, wsItemName, nodePath);
-            break;
-          }
-        }
+        LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
+        selectNode = linkManager.getTarget(selectNode); 
       }
       if(selectNode == null) {
         if(uiContainer.getNodeByPath(uiContainer.getCategoryPath()) == null) {
@@ -160,8 +149,8 @@ public class UIToolBar extends UIContainer {
           String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "") ;
           String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "") ;
           uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName,SessionProviderFactory.createSystemProvider())
-              .getNode(detailTemplateName).getPath())  ;
-          uiContainer.viewDocument(selectNode, true) ;
+              .getNode(detailTemplateName).getPath());
+          uiContainer.viewDocument(selectNode, true);
         } else {
           String templateType = uiContainer.getPortletPreferences().getValue(Utils.CB_USECASE, "") ;
           if((templateType.equals(Utils.CB_USE_JCR_QUERY)) || (templateType.equals(Utils.CB_SCRIPT_NAME))) {
@@ -175,7 +164,6 @@ public class UIToolBar extends UIContainer {
         }
         uiContainer.setCurrentNodePath(nodePath) ;
         uiContainer.setSelectedTabPath(nodePath) ;
-        //        uiContainer.changeNode(selectNode) ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiBCPortlet) ;
     }
