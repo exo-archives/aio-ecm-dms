@@ -583,7 +583,7 @@ public class UIBrowseContainer extends UIContainer {
             while(childs.hasNext()) {
               Node child = childs.nextNode();
               String nt = child.getPrimaryNodeType().getName();
-              if(Utils.isSymLink(child)) nt = child.getProperty(Utils.EXO_PRIMARYTYPE).getString();
+              if(isSymLink(child)) nt = child.getProperty(Utils.EXO_PRIMARYTYPE).getString();
               if(templates.contains(nt) && (isShowDocument)) {
                 if(subDocumentList.size() < itemCounter) subDocumentList.add(child);
               }
@@ -817,7 +817,8 @@ public class UIBrowseContainer extends UIContainer {
   }
   
   public boolean isSymLink(Node node) throws RepositoryException {
-    return Utils.isSymLink(node);
+    LinkManager linkManager = getApplicationComponent(LinkManager.class);
+    return linkManager.isLink(node);
   }
   
   public boolean isSymLink(String nodePath) throws Exception {

@@ -919,14 +919,14 @@ public class UIWorkingArea extends UIContainer {
     Node selectedNode = uiExplorer.getNodeByPath(srcPath, uiExplorer.getSessionByWorkspace(wsName));
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
     LinkManager linkManager = getApplicationComponent(LinkManager.class);
-    if(Utils.isSymLink(destNode)) {
+    if(linkManager.isLink(destNode)) {
       Object[] args = { destNode.getPath() };
       uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.dest-node-is-link", args, 
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
-    if(Utils.isSymLink(selectedNode)) {
+    if(linkManager.isLink(selectedNode)) {
       Object[] args = { srcPath };
       uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.selected-is-link", args, 
           ApplicationMessage.WARNING));
@@ -1609,7 +1609,7 @@ public class UIWorkingArea extends UIContainer {
           String[] nodePaths = srcPath.split(";");
           for(int i=0; i< nodePaths.length; i++) {
             Node selectedNode = (Node) userSession.getItem(nodePaths[i]);
-            if(Utils.isSymLink(selectedNode)) {
+            if(linkManager.isLink(selectedNode)) {
               Object[] args = { selectedNode.getPath() };
               uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.selected-is-link", args, 
                   ApplicationMessage.WARNING));
@@ -1633,7 +1633,7 @@ public class UIWorkingArea extends UIContainer {
           if(srcPath != null) {
             uiWorkingArea.isMultiSelect_ = false;
             Node selectedNode = (Node) userSession.getItem(srcPath);
-            if(Utils.isSymLink(selectedNode)) {
+            if(linkManager.isLink(selectedNode)) {
               Object[] args = { selectedNode.getPath() };
               uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.selected-is-link", args, 
                   ApplicationMessage.WARNING));

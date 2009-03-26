@@ -340,6 +340,8 @@ public class Utils {
     return null;
   }
   
+  @Deprecated
+  //Use the method isLink in LinkManager service instead of this one
   public static boolean isSymLink(Node node) throws RepositoryException {
     if(node.isNodeType(Utils.EXO_SYMLINK)) return true;
     return false;

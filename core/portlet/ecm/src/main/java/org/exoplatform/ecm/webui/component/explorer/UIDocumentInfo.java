@@ -56,6 +56,7 @@ import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
@@ -537,7 +538,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   public boolean isSymLink(Node node) throws RepositoryException {
-    return Utils.isSymLink(node);
+    LinkManager linkManager = getApplicationComponent(LinkManager.class);
+    return linkManager.isLink(node);
   }
   
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
