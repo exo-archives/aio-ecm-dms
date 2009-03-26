@@ -36,14 +36,27 @@
 	    </a>
 	    <%
 	      if(!uicomponent.getCurrentNode().getPath().trim().equals(root.getPath())) {
-	      		
+	        def numBreadCumb = uicomponent.getNodePaths(uicomponent.getCurrentNode()).size();
+	        int index = 1;
 		      for(node in uicomponent.getNodePaths(uicomponent.getCurrentNode())) { 
 		        String actionLink = uicomponent.event("SelectPath", node.getPath());		        
-		        String name = node.getPath().substring(node.getPath().lastIndexOf("/") + 1) ;		                
+		        String name = node.getPath().substring(node.getPath().lastIndexOf("/") + 1);		                
 		    %>
 		        <div class="PathIcon"><span></span></div>
+		        <%
+		        if (index == numBreadCumb) {
+		        %>
+		        <a class="PathChildLabel"><%=name%></a>
+		        <%
+		        } else {
+		        %>
 		        <a class="PathChildLabel" href="$actionLink"><%=name%></a>
-	    <%	}
+		        <%
+		        }
+		        %>
+	    <%	
+		      index++;
+		      }
 	      }
 	    %>
 

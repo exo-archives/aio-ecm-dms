@@ -27,7 +27,6 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -75,17 +74,24 @@ public class UIToolBar extends UIContainer {
   public List<Node> getNodePaths(Node node) throws Exception {
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class);
     Node rootNode = getRootNode() ;
+    Node historyNode = getHistoryNode();
     if(!uiContainer.getWorkSpace().equals(node.getSession().getWorkspace().getName())) {
-      // rootNode = node.getSession().getRootNode();
-      return new ArrayList<Node>() ;
+      return new ArrayList<Node>();
     }
-    List<Node> list = new ArrayList<Node>() ;
+    List<Node> list = new ArrayList<Node>();
     if(node != null) {
       Node temp = node ;
       if(!temp.getPath().equals("/") && temp.getPath().startsWith(rootNode.getPath())) {
+        boolean readyHistoryNode = true;
         while(!temp.getPath().equals(rootNode.getPath())) {
-          list.add(0, temp) ;
-          temp = temp.getParent() ;
+          if (!list.contains(temp)) list.add(0, temp);
+          if ((readyHistoryNode) && (temp != historyNode) && (historyNode != null) && 
+              (historyNode.isNodeType(Utils.EXO_SYMLINK))) {
+            temp = historyNode;
+            readyHistoryNode = false;
+          } else {
+            temp = temp.getParent();
+          }
         }
       }
     }
@@ -109,7 +115,13 @@ public class UIToolBar extends UIContainer {
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
     return uiContainer.getCurrentNode();
   }
-
+  
+  public Node getHistoryNode() throws Exception {
+    UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class) ;
+    Node historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT);
+    return historyNode;
+  }
+  
   public boolean isShowCategoryTree() {
     UIBrowseContainer uiBrowseContainer = getAncestorOfType(UIBrowseContainer.class) ;
     return  uiBrowseContainer.isShowCategoryTree() ;
@@ -126,10 +138,7 @@ public class UIToolBar extends UIContainer {
       UIBrowseContainer uiContainer = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
       UIBrowseContentPortlet uiBCPortlet =  uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
       Node selectNode = uiContainer.getNodeByPath(nodePath);
-      if (selectNode.isNodeType(Utils.EXO_SYMLINK)) {
-        LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
-        selectNode = linkManager.getTarget(selectNode); 
-      }
+      uiContainer.getHistory().clear();
       if(selectNode == null) {
         if(uiContainer.getNodeByPath(uiContainer.getCategoryPath()) == null) {
           uiBCPortlet.setPorletMode(PortletMode.HELP);

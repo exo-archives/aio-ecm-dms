@@ -207,7 +207,7 @@ public class UIBrowseContainer extends UIContainer {
   public List getCurrentList() throws Exception {
     return uiPageIterator_.getCurrentPageData();
   }
-  public Node getCurrentNode() throws Exception { 
+  public Node getCurrentNode() throws Exception {
     if(getNodeByPath(currentPath_) == null) return getNodeByPath(rootPath_);
     return getNodeByPath(currentPath_); 
   }
@@ -502,7 +502,12 @@ public class UIBrowseContainer extends UIContainer {
     int itemCounter = getRowPerBlock();
     if (isShowAllDocument()) itemCounter = getItemPerPage();
     if (selectedTabPath_.equals(currentPath_)) {
-      NodeIterator tabIter = getCurrentNode().getNodes();
+      Node currentNode = getCurrentNode();
+      if (currentNode.isNodeType(Utils.EXO_SYMLINK)) {
+        LinkManager linkManager = getApplicationComponent(LinkManager.class);
+        currentNode = linkManager.getTarget(currentNode);
+      }
+      NodeIterator tabIter = currentNode.getNodes();
       while(tabIter.hasNext()) {
         Node childNode = tabIter.nextNode();
         if(canRead(childNode)) {
@@ -696,6 +701,11 @@ public class UIBrowseContainer extends UIContainer {
   
   @SuppressWarnings("unchecked")
   public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
+    Node tempNode = selectedNode;
+    if (selectedNode.isNodeType(Utils.EXO_SYMLINK)) {
+      LinkManager linkManager = getApplicationComponent(LinkManager.class);
+      selectedNode = linkManager.getTarget(selectedNode);
+    }
     List<Node> subDocumentList = new ArrayList<Node>();
     if (selectedNode == null) return subDocumentList;
     TemplateService templateService  = getApplicationComponent(TemplateService.class);
@@ -730,6 +740,8 @@ public class UIBrowseContainer extends UIContainer {
     }
     if(isEnableRefDocument()) subDocumentList.addAll(getReferences(getRepositoryService(),
         selectedNode, isShowAllDocument(), subDocumentList.size(), templates));
+    selectedNode = tempNode;
+    
     return subDocumentList;
   }
 
@@ -1349,6 +1361,10 @@ public class UIBrowseContainer extends UIContainer {
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class);
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository());
       Node historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT);
+      if (historyNode.isNodeType(Utils.EXO_SYMLINK)) {
+        LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
+        historyNode = linkManager.getTarget(historyNode);
+      }
       ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class);
       if(uiContainer.isShowDocumentByTag() && uiContainer.isShowDocumentDetail()) {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class);      
@@ -1398,7 +1414,7 @@ public class UIBrowseContainer extends UIContainer {
           uiContainer.setCurrentNodePath(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT).getPath());
           uiContainer.setSelectedTabPath(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED).getPath());
           if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
-            uiContainer.setPageIterator(uiContainer.getSubDocumentList(uiContainer.getSelectedTab()));
+            uiContainer.setPageIterator(uiContainer.getSubDocumentList(historyNode));
           }
           uiContainer.getHistory().clear();
         }
@@ -1449,10 +1465,6 @@ public class UIBrowseContainer extends UIContainer {
         if (uiContainer.wsName_ == null) uiContainer.wsName_ = wsName;
       } else {
         selectNode = uiContainer.getNodeByPath(objectId);   
-      }
-      if (selectNode.isNodeType(Utils.EXO_SYMLINK)){
-        LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
-        selectNode = linkManager.getTarget(selectNode);
       }
       if(selectNode == null) {
         UIApplication app = uiContainer.getAncestorOfType(UIApplication.class);
