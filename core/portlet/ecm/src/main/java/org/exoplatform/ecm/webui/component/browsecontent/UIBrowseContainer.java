@@ -1184,7 +1184,9 @@ public class UIBrowseContainer extends UIContainer {
     Node rootNode = getRootNode();
     Node parentNode = null;
     int countHistoryNode = listHistoryNode.size();
-    if (selectedNode != rootNode) {
+    if(selectedNode.getPath().equals(rootNode.getPath())) {
+      listHistoryNode.clear();
+    } else {
       parentNode = selectedNode.getParent();
       if ((parentNode != null) && (countHistoryNode > 0)) {
         Node tempNode = listHistoryNode.get(countHistoryNode - 1);
@@ -1228,6 +1230,8 @@ public class UIBrowseContainer extends UIContainer {
         }
       }
     }
+    if (listHistoryNode.contains(rootNode)) listHistoryNode.remove(rootNode);
+    
     return getListHistoryNode();
   }
   
