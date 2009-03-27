@@ -27,6 +27,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -157,6 +158,10 @@ public class UIToolBar extends UIContainer {
         }
       } else {
         uiContainer.storeListHistory(selectNode);
+        if (selectNode.isNodeType(Utils.EXO_SYMLINK)) {
+          LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
+          selectNode = linkManager.getTarget(selectNode);
+        }
         
         TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
         List templates = templateService.getDocumentTemplates(uiContainer.getRepository()) ;

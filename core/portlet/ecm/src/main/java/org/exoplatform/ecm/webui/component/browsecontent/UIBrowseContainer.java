@@ -704,7 +704,6 @@ public class UIBrowseContainer extends UIContainer {
   
   @SuppressWarnings("unchecked")
   public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
-    Node tempNode = selectedNode;
     if (selectedNode.isNodeType(Utils.EXO_SYMLINK)) {
       LinkManager linkManager = getApplicationComponent(LinkManager.class);
       selectedNode = linkManager.getTarget(selectedNode);
@@ -743,7 +742,6 @@ public class UIBrowseContainer extends UIContainer {
     }
     if(isEnableRefDocument()) subDocumentList.addAll(getReferences(getRepositoryService(),
         selectedNode, isShowAllDocument(), subDocumentList.size(), templates));
-    selectedNode = tempNode;
     
     return subDocumentList;
   }
@@ -1540,6 +1538,10 @@ public class UIBrowseContainer extends UIContainer {
         return;
       }
       uiContainer.storeListHistory(selectNode);
+      if (selectNode.isNodeType(Utils.EXO_SYMLINK)) {
+        LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
+        selectNode = linkManager.getTarget(selectNode);
+      }
       
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class);
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository());
