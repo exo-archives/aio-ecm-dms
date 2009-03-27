@@ -157,6 +157,7 @@ public class UIConfigTabPane extends UIContainer {
     if(isDisable) uiOneNodePathSelector.setIsDisable(workSpace, true);
     String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED, "exo:taxonomy"};
     uiOneNodePathSelector.setAcceptedNodeTypesInPathPanel(filterType);
+    uiOneNodePathSelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
     uiOneNodePathSelector.setShowRootPathSelect(true);
     uiOneNodePathSelector.setRootNodeLocation(repo, workSpace, "/");
     if(SessionProviderFactory.isAnonim()) {

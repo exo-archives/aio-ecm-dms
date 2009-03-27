@@ -27,13 +27,17 @@ import javax.jcr.nodetype.NodeType;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.container.UIContainer;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
+import org.exoplatform.webui.core.UIBreadcumbs.LocalPath;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -121,10 +125,11 @@ public class UISelectPathPanel extends UIContainer {
   public List<Node> getListSelectableNodes() throws Exception {
     List<Node> list = new ArrayList<Node>();
     if (parentNode == null) return list;
-    for (NodeIterator iterator = parentNode.getNodes();iterator.hasNext();) {
+    Node realNode = Utils.getNodeSymLink(parentNode);
+    for (NodeIterator iterator = realNode.getNodes();iterator.hasNext();) {
       Node child = iterator.nextNode();
       if(child.isNodeType("exo:hiddenable")) continue;
-      if(matchMimeType(child) && matchNodeType(child)) {
+      if(matchMimeType(Utils.getNodeSymLink(child)) && matchNodeType(Utils.getNodeSymLink(child))) {
         list.add(child);
       }
     }

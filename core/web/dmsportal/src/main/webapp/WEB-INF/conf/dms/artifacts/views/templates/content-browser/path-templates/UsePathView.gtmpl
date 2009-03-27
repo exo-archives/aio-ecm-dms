@@ -198,7 +198,7 @@
 	                 <tr>
 	                  <td>
 	                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName">
-	                    <%if(uicomponent.isSymLink(doc)) {%>
+	                    <%if(Utils.isSymLink(doc)) {%>
 	                       <div class="LinkSmall"></div>
 	                    <%}%>
 	                    </div>
@@ -315,7 +315,7 @@
 	                              <td>
 	                                <div class="DocumentInfo">
 	                                  <div class="DocNodeIcon CBDefaultDocument16x16Icon $icon">
-	                                    <%if(uicomponent.isSymLink(doc)) {%>
+	                                    <%if(Utils.isSymLink(doc)) {%>
 	                                      <div class="LinkSmall"></div>
 	                                    <%}%>
 	                                  </div>

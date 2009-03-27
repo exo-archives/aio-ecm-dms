@@ -588,8 +588,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
             selectedNode = (Node)nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uri);
             uiExplorer.setSelectNode(selectedNode.getPath(), session); 
             if (!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {
-              uiExplorer.setIsReferenceNode(true) ;
-              uiExplorer.setReferenceWorkspace(workspaceName) ;
+              uiExplorer.setIsReferenceNode(true);
+              uiExplorer.setReferenceWorkspace(workspaceName);
             } else {
               uiExplorer.setIsReferenceNode(false) ;
             }

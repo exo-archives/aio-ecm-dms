@@ -22,14 +22,21 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.NodeType;
 
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.container.UIContainer;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.UITree;
+import org.exoplatform.webui.core.UIBreadcumbs.LocalPath;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -130,18 +137,24 @@ public class UINodeTreeBuilder extends UIContainer {
    * 
    * @throws Exception the exception
    */
+  /*private Node getNodeSymLink(Node node) throws Exception{
+    LinkManager linkManager_ = getApplicationComponent(LinkManager.class);
+    return Utils.getNodeSymLink(node, linkManager_);
+  }*/
+  
   public void buildTree() throws Exception {  
     NodeIterator sibbling = null ;
     NodeIterator children = null ;    
     UINodeTree tree = getChild(UINodeTree.class) ;
-    tree.setSelected(currentNode);    
-    if (currentNode.getDepth() > 0) {
-      tree.setParentSelected(currentNode.getParent()) ;
-      sibbling = currentNode.getNodes() ;
-      children = currentNode.getNodes() ;
+    Node selectedNode = getNodeByPathBreadcumbs();
+    tree.setSelected(selectedNode);
+    if (Utils.getNodeSymLink(selectedNode).getDepth() > 0) {
+      tree.setParentSelected(selectedNode.getParent()) ;
+      sibbling = Utils.getNodeSymLink(selectedNode).getNodes() ;
+      children = Utils.getNodeSymLink(selectedNode).getNodes() ;
     } else {
-      tree.setParentSelected(currentNode) ;
-      sibbling = currentNode.getNodes() ;
+      tree.setParentSelected(selectedNode) ;
+      sibbling = Utils.getNodeSymLink(selectedNode).getNodes() ;
       children = null;
     }
     if (sibbling != null) {
@@ -152,6 +165,43 @@ public class UINodeTreeBuilder extends UIContainer {
     }
   }
 
+  private Node getNodeByPathBreadcumbs() throws PathNotFoundException, RepositoryException {
+    UIOneNodePathSelector uiOneNodePathSelector = (UIOneNodePathSelector) getParent();
+    UIBreadcumbs uiBreadcumbs = uiOneNodePathSelector.getChildById("BreadcumbCategoriesOne");
+    List<LocalPath> listLocalPath = uiBreadcumbs.getPath();
+    StringBuilder buffer = new StringBuilder(1024);
+    String rootPath = rootTreeNode.getPath();
+    /*if (rootTreeNode != null) {
+      rootPath = rootTreeNode.getPath();
+      System.out.println("\n\nrootPath = " + rootPath);
+      rootPath = rootPath.substring(0, rootPath.lastIndexOf("/"));
+    }*/
+    for (LocalPath iterLocalPath : listLocalPath) {
+      buffer.append("/").append(iterLocalPath.getId());
+    }
+    String path = buffer.toString();
+    if (path.startsWith("//")) path = path.substring(1);
+    if (!path.startsWith(rootPath)) {
+      path = rootPath + path;
+      /*if (path.length() > 0 && path.substring(1).indexOf("/") > -1) {
+        int idx = path.substring(1).indexOf("/");
+        if (rootPath.contains(path.substring(0, idx)))
+        path = rootPath.substring(0, rootPath.indexOf(path.substring(0, idx))) + path ;
+      } else {
+        if ((path.length() > 0) && rootPath.contains(path)) {
+          path = rootPath.substring(0, rootPath.indexOf(path))  + path;
+        } else {
+          path = rootPath + path;
+        }
+        
+      }*/
+    }
+    if (path.endsWith("/")) path = path.substring(0, path.length() - 1);
+    if (path.length() == 0) path = "/";
+    if (buffer.length() == 0) return currentNode;
+    NodeFinder nodeFinder_ = getApplicationComponent(NodeFinder.class);
+    return (Node)nodeFinder_.getItem(uiOneNodePathSelector.getRepositoryName(), uiOneNodePathSelector.getWorkspaceName(), path);
+  }
   private void addNodePublish(List<Node> listNode, Node node, PublicationService publicationService) throws Exception {
     if (isAllowPublish()) {
       NodeType nt = node.getPrimaryNodeType();
@@ -221,11 +271,14 @@ public class UINodeTreeBuilder extends UIContainer {
    * @throws Exception the exception
    */
   public void changeNode(String path, Object context) throws Exception {
+    NodeFinder nodeFinder_ = getApplicationComponent(NodeFinder.class);
     String rootPath = rootTreeNode.getPath();
     if(rootPath.equals(path) || !path.startsWith(rootPath)) {
       currentNode = rootTreeNode;
     }else {
-      currentNode = (Node)rootTreeNode.getSession().getItem(path);
+      if (path.startsWith(rootPath)) path = path.substring(rootPath.length());
+      if (path.startsWith("/")) path = path.substring(1);
+      currentNode = nodeFinder_.getNode(rootTreeNode, path);
     }    
     broadcastOnChange(currentNode,context);
   }

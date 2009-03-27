@@ -19,11 +19,13 @@ package org.exoplatform.ecm.webui.tree.selectone;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.Item;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.tree.UINodeTreeBuilder;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -71,6 +73,7 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   private boolean isDisable = false;
   private boolean allowPublish = false;
   
+  private boolean alreadyChangePath = false;
   
   public UIOneNodePathSelector() throws Exception {
     addChild(UIBreadcumbs.class, "BreadcumbCategoriesOne", "BreadcumbCategoriesOne");
@@ -192,23 +195,59 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
     selectPathPanel.setParentNode(currentNode);
     selectPathPanel.updateGrid();
-    
     UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class);
-    List<LocalPath> listLocalPath = new ArrayList<LocalPath>();
-    String path = currentNode.getPath().trim();
-    if (path.startsWith(rootTreePath)) {
-      path = path.substring(rootTreePath.length(), path.length());
-    }    
-    String[] arrayPath = path.split("/");
-    if (arrayPath.length > 0) {
-      for (int i = 0; i < arrayPath.length; i++) {
-        if (!arrayPath[i].trim().equals("")) {
-          UIBreadcumbs.LocalPath localPath1 = new UIBreadcumbs.LocalPath(arrayPath[i].trim(), arrayPath[i].trim());
-          listLocalPath.add(localPath1);
-        }
-      }
+    String pathName = currentNode.getName();
+    if (currentNode.equals(currentNode.getSession().getItem(rootTreePath))) {
+      pathName = "";
     }
+    UIBreadcumbs.LocalPath localPath = new UIBreadcumbs.LocalPath(pathName, pathName);
+    List<LocalPath> listLocalPath = uiBreadcumbs.getPath();
+    StringBuilder buffer = new StringBuilder(1024);
+    for(LocalPath iterLocalPath: listLocalPath) {
+      buffer.append("/").append(iterLocalPath.getId());
+    }
+    Node rootNode = (Node)currentNode.getSession().getItem(rootTreePath);
+    if (!alreadyChangePath) {
+        String path = buffer.toString();
+        if (path.startsWith("//")) path = path.substring(1);
+        if (!path.startsWith(rootTreePath)) {
+          path = rootTreePath + path;
+        /*  if (path.length() > 0 && path.substring(1).indexOf("/") > -1) {
+            if (rootTreePath.contains(path.substring(0, path.substring(1).indexOf("/")))){
+              int idx = path.substring(1).indexOf("/");
+              if (rootTreePath.contains(path.substring(0, idx)))
+              path = rootTreePath;
+            }
+          } else {
+            if ((path.length() > 0) && rootTreePath.contains(path)) {
+              path = rootTreePath.substring(0, rootTreePath.indexOf(path))  + path;
+            } else {
+              path = rootTreePath + path;
+            }
+            
+          }*/
+        }
+        if (path.startsWith("//")) path = path.substring(1);
+        if (path.endsWith("/")) path = path.substring(0, path.length() - 1);
+        if (path.length() == 0) path = "/";
+        Node currentBreadcumbsNode = getNodeByVirtualPath(path);
+        if (currentNode.equals(rootNode)
+            ||((!currentBreadcumbsNode.equals(rootNode) && currentBreadcumbsNode.getParent().equals(currentNode)))){
+          if (listLocalPath != null && listLocalPath.size() > 0) {  
+            listLocalPath.remove(listLocalPath.size() - 1);
+          }
+        } else {
+            listLocalPath.add(localPath);
+        }
+    }
+    alreadyChangePath = false;
     uiBreadcumbs.setPath(listLocalPath);
+  }
+  
+  private Node getNodeByVirtualPath(String pathLinkNode) throws Exception{
+    NodeFinder nodeFinder_ = getApplicationComponent(NodeFinder.class);
+    Item item = nodeFinder_.getItem(repositoryName, workspaceName, pathLinkNode);
+    return (Node)item;
   }
   
   private void changeNode(String stringPath, Object context) throws Exception {
@@ -231,11 +270,13 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     }
     if (listLocalPathString.contains(groupId)) {
       int index = listLocalPathString.indexOf(groupId);
+      alreadyChangePath = false;
       if (index == listLocalPathString.size() - 1) return;
       for (int i = listLocalPathString.size() - 1; i > index; i--) {
         listLocalPathString.remove(i);
         listLocalPath.remove(i);
       }
+      alreadyChangePath = true;
       uiBreadcumb.setPath(listLocalPath);
       for (int i = 0; i < listLocalPathString.size(); i++) {
         String pathName = listLocalPathString.get(i);

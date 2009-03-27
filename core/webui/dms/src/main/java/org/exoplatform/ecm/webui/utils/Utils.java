@@ -36,6 +36,7 @@ import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 
+import org.exoplatform.container.ExoContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.portal.webui.util.Util;
@@ -45,6 +46,7 @@ import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.webui.application.WebuiRequestContext;
 
 /**
  * Created by The eXo Platform SARL
@@ -340,13 +342,28 @@ public class Utils {
     return null;
   }
   
-  @Deprecated
   //Use the method isLink in LinkManager service instead of this one
   public static boolean isSymLink(Node node) throws RepositoryException {
-    if(node.isNodeType(Utils.EXO_SYMLINK)) return true;
+    LinkManager linkManager = Util.getUIPortal().getApplicationComponent(LinkManager.class);
+    if (linkManager.isLink(node)) return true;
     return false;
   }
 
+  public static Node getNodeSymLink(Node node) throws Exception {
+    LinkManager linkManager = Util.getUIPortal().getApplicationComponent(LinkManager.class);
+    Node realNode = null;
+    if (linkManager.isLink(node)) {
+      if (linkManager.isTargetReachable(node)) {
+        realNode = linkManager.getTarget(node);
+      }
+    } else {
+      realNode = node;
+    }
+    return realNode;
+  }
+  
+  
+  
   public static ByteArrayInputStream extractFromZipFile(ZipInputStream zipStream) throws Exception {
     ByteArrayOutputStream out= new ByteArrayOutputStream();
     byte[] data  = new byte[1024];   

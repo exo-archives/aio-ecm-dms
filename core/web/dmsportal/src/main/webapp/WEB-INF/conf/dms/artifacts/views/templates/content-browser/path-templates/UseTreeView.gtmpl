@@ -74,7 +74,7 @@
 			                 <tr>
 			                  <td>
 			                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName">
-	                        <%if(uicomponent.isSymLink(doc)) {%>
+	                        <%if(Utils.isSymLink(doc)) {%>
 	                          <div class="LinkSmall"></div>
 	                        <%}%>			                      
 			                    </div>
@@ -163,7 +163,7 @@
 											 %>
 														<div class="$cssStyle">
 															<div class="Icon48x48 DefaultIconImage <%=Utils.getNodeTypeIcon(subChild, "48x48Icon")%>">
-															<%if(uicomponent.isSymLink(subChild)) {%>
+															<%if(Utils.isSymLink(subChild)) {%>
 	                               <div class="Link"></div>
 	                            <%}%>
 															</div>

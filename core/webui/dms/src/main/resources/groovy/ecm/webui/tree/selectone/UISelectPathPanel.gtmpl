@@ -37,8 +37,7 @@
 				      <tr class="$rowClass">
 				        <td>
 				          <%
-				            String path = node.getPath() ;
-				            String nodeName = path.substring(path.lastIndexOf("/") + 1, path.length()) ;
+				            String nodeName = node.getName();
 										String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");
 				           %>
 				          <div class="Text <%=nodeTypeIcon%>">$nodeName</div>
