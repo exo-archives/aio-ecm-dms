@@ -59,6 +59,7 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.DataTransfer;
@@ -590,7 +591,7 @@ public class UIBrowseContainer extends UIContainer {
             while(childs.hasNext()) {
               Node child = childs.nextNode();
               String nt = child.getPrimaryNodeType().getName();
-              if(isSymLink(child)) nt = child.getProperty(Utils.EXO_PRIMARYTYPE).getString();
+              if(Utils.isSymLink(child)) nt = child.getProperty(Utils.EXO_PRIMARYTYPE).getString();
               if(templates.contains(nt) && (isShowDocument)) {
                 if(subDocumentList.size() < itemCounter) subDocumentList.add(child);
               }
@@ -830,14 +831,9 @@ public class UIBrowseContainer extends UIContainer {
     return nodes;
   }
   
-  public boolean isSymLink(Node node) throws RepositoryException {
-    LinkManager linkManager = getApplicationComponent(LinkManager.class);
-    return linkManager.isLink(node);
-  }
-  
   public boolean isSymLink(String nodePath) throws Exception {
     Node node = (Node)getSession().getItem(nodePath);
-    if(isSymLink(node)) return true;
+    if(Utils.isSymLink(node)) return true;
     return false;
   }
   
@@ -1010,6 +1006,15 @@ public class UIBrowseContainer extends UIContainer {
       return;
     }    
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "");
+    NodeFinder nodeFinder_ =  getApplicationComponent(NodeFinder.class);
+    LinkManager linkManager_ = getApplicationComponent(LinkManager.class);
+    Node categoryNode = (Node)nodeFinder_.getItem(repoName, getWorkSpace(), categoryPath);
+    if (linkManager_.isLink(categoryNode)) {
+      if (linkManager_.isTargetReachable(categoryNode)) {
+        categoryNode = linkManager_.getTarget(categoryNode);
+      }
+    }
+    categoryPath = categoryNode != null ? categoryNode.getPath() : "";
     if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
       setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, 
           repoName, SessionProviderFactory.createSystemProvider()).getNode(tempName).getPath());
