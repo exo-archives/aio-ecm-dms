@@ -169,7 +169,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       UIJCRExplorer uiExplorer = actionForm.getAncestorOfType(UIJCRExplorer.class) ;   
       String repository = actionForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       Map<String, JcrInputProperty> sortedInputs = DialogFormUtil.prepareMap(actionForm.getChildren(), actionForm.getInputProperties());
-      Node currentNode = uiExplorer.getCurrentNode();
+      Node currentNode = uiExplorer.getRealCurrentNode();
       if(!PermissionUtil.canAddNode(currentNode) || !PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -234,7 +234,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         actionForm.setIsOnchange(false) ;
         if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         UIActionManager uiActionManager = actionForm.getAncestorOfType(UIActionManager.class) ;
-        actionForm.createNewAction(uiExplorer.getCurrentNode(), actionForm.nodeTypeName_, true) ;
+        actionForm.createNewAction(uiExplorer.getRealCurrentNode(), actionForm.nodeTypeName_, true) ;
         UIActionList uiActionList = uiActionManager.findFirstComponentOfType(UIActionList.class) ;  
         uiActionList.updateGrid(parentNode, uiActionList.getChild(UIPageIterator.class).getCurrentPage());
         uiActionManager.setRenderedChild(UIActionListContainer.class) ;

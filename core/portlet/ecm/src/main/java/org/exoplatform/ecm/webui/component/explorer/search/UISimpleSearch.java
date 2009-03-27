@@ -110,7 +110,7 @@ public class UISimpleSearch extends UIForm {
   }
   
   private String getQueryStatement() throws Exception {
-    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
+    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode();
     String statement = "";
     String text = getUIStringInput(INPUT_SEARCH).getValue();
     if(text != null && constraints_.size() == 0) {
@@ -196,7 +196,7 @@ public class UISimpleSearch extends UIForm {
       UISimpleSearch uiSimpleSearch = event.getSource();
       String text = uiSimpleSearch.getUIStringInput(INPUT_SEARCH).getValue();
       UIJCRExplorer uiExplorer = uiSimpleSearch.getAncestorOfType(UIJCRExplorer.class);
-      Node currentNode = uiExplorer.getCurrentNode();
+      Node currentNode = uiExplorer.getRealCurrentNode();
       QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager();
       UIECMSearch uiECMSearch = uiSimpleSearch.getAncestorOfType(UIECMSearch.class); 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class);

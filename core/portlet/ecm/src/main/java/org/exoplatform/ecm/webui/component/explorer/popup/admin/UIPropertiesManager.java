@@ -55,7 +55,7 @@ public class UIPropertiesManager extends UIContainer implements UIPopupComponent
     if(selectedPath_ != null) {
       return uiExplorer.getNodeByPath(selectedPath_, uiExplorer.getSessionByWorkspace(wsName_));
     }
-    return uiExplorer.getCurrentNode();
+    return uiExplorer.getRealCurrentNode();
   }
   
   public void setSelectedPath(String selectedPath, String wsName) { 

@@ -53,96 +53,96 @@ import org.exoplatform.webui.form.UIFormStringInput;
 )
 
 public class UIAddressBar extends UIForm {
-  final static public String FIELD_ADDRESS = "address" ; 
+  final static public String FIELD_ADDRESS = "address"; 
   
   public UIAddressBar() throws Exception {
-    addUIFormInput(new UIFormStringInput(FIELD_ADDRESS, FIELD_ADDRESS, null)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_ADDRESS, FIELD_ADDRESS, null));
   }
 
   public Set<String> getHistory() {
-    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    return uiJCRExplorer.getAddressPath() ;
+    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
+    return uiJCRExplorer.getAddressPath();
   }
 
   static public class BackActionListener extends EventListener<UIAddressBar> {
     public void execute(Event<UIAddressBar> event) throws Exception {
-      UIAddressBar uiAddressBar = event.getSource() ;
-      UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class) ;
-      UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
+      UIAddressBar uiAddressBar = event.getSource();
+      UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
       try {        
         uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
-        setRenderedChild(UIDocumentContainer.class) ;
-        if(uiExplorer.isViewTag() && !uiExplorer.getCurrentNode().equals(uiExplorer.getRootNode())) {
-          uiExplorer.setSelectNode(uiExplorer.getRootNode()) ;
-          uiExplorer.setIsViewTag(true) ;
+        setRenderedChild(UIDocumentContainer.class);
+        if(uiExplorer.isViewTag() && !uiExplorer.getRealCurrentNode().equals(uiExplorer.getRootNode())) {
+          uiExplorer.setSelectNode(uiExplorer.getRootNode());
+          uiExplorer.setIsViewTag(true);
         } else if(uiExplorer.isViewTag() && uiExplorer.getCurrentStateNode() != null) {
-          uiExplorer.setIsViewTag(false) ;
-          uiExplorer.setSelectNode(uiExplorer.getCurrentStateNode()) ;
+          uiExplorer.setIsViewTag(false);
+          uiExplorer.setSelectNode(uiExplorer.getCurrentStateNode());
         } else {
-          String previousNodePath = uiExplorer.rewind() ;
+          String previousNodePath = uiExplorer.rewind();
           String previousWs = uiExplorer.previousWsName();
           if(previousWs != null && previousWs.length() > 0) {
             if(!previousWs.equals(uiExplorer.getCurrentWorkspace())) {              
-              uiExplorer.setIsReferenceNode(true) ;
-              uiExplorer.setReferenceWorkspace(previousWs) ;
+              uiExplorer.setIsReferenceNode(true);
+              uiExplorer.setReferenceWorkspace(previousWs);
             } else {              
-              uiExplorer.setIsReferenceNode(false) ;
+              uiExplorer.setIsReferenceNode(false);
             }
           }
-          uiExplorer.setBackNodePath(previousNodePath) ;
+          uiExplorer.setBackNodePath(previousNodePath);
         }
-        uiExplorer.updateAjax(event) ;
+        uiExplorer.updateAjax(event);
       } catch (AccessDeniedException ade) {
         uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.access-denied", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       } catch (Exception e) {
         uiApp.addMessage(new ApplicationMessage("UIJCRExplorer.msg.no-node-history",
-                                                null, ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+                                                null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
     }
   }
   
   static public class ChangeNodeActionListener extends EventListener<UIAddressBar> {
     public void execute(Event<UIAddressBar> event) throws Exception {
-      UIAddressBar uiAddress = event.getSource() ;
-      String path = uiAddress.getUIStringInput(FIELD_ADDRESS).getValue() ;
+      UIAddressBar uiAddress = event.getSource();
+      String path = uiAddress.getUIStringInput(FIELD_ADDRESS).getValue();
       if (path == null || path.trim().length() == 0) path = "/";
-      UIJCRExplorer uiExplorer = uiAddress.getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.setIsViewTag(false) ;
+      UIJCRExplorer uiExplorer = uiAddress.getAncestorOfType(UIJCRExplorer.class);
+      uiExplorer.setIsViewTag(false);
       try {
 //TODO: need check again after refactor
-        Node node = uiExplorer.getRootNode().getNode(path.substring(1)) ;
-        uiExplorer.setSelectNode(node) ;
-        uiExplorer.setCurrentStatePath(node.getPath()) ;
+        Node node = uiExplorer.getRootNode().getNode(path.substring(1));
+        uiExplorer.setSelectNode(node);
+        uiExplorer.setCurrentStatePath(node.getPath());
       } catch(Exception e) {
-        UIApplication uiApp = uiAddress.getAncestorOfType(UIApplication.class) ;
+        UIApplication uiApp = uiAddress.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.path-not-found", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      uiExplorer.updateAjax(event) ;
+      uiExplorer.updateAjax(event);
     }
   }
   
   static public class HistoryActionListener extends EventListener<UIAddressBar> {
     public void execute(Event<UIAddressBar> event) throws Exception {
-      UIAddressBar uiAddressBar = event.getSource() ;
-      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class) ;
+      UIAddressBar uiAddressBar = event.getSource();
+      String path = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class);
       try{
-        uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
-        uiExplorer.refreshExplorer() ;
+        uiExplorer.setSelectNode(path, uiExplorer.getSession());
+        uiExplorer.refreshExplorer();
       } catch (AccessDeniedException ade) {
-        UIApplication uiApp = uiAddressBar.getAncestorOfType(UIApplication.class) ;
+        UIApplication uiApp = uiAddressBar.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UIAddressBar.msg.access-denied", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
     }
   }

@@ -42,7 +42,7 @@ public class UIActionListContainer extends UIContainer {
     removeChildById("editActionPopup") ;
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "editActionPopup") ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Node currentNode = uiExplorer.getCurrentNode() ;    
+    Node currentNode = uiExplorer.getRealCurrentNode() ;    
     UIActionForm uiActionForm = createUIComponent(UIActionForm.class, null, "EditFormAction") ;
     uiActionForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
     uiActionForm.createNewAction(currentNode, actionNode.getPrimaryNodeType().getName(), false) ;

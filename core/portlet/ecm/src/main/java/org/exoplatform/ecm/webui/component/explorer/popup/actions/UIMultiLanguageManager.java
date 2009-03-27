@@ -45,7 +45,7 @@ public class UIMultiLanguageManager extends UIContainer implements UIPopupCompon
 
   public void activate() throws Exception {
     UIMultiLanguageForm uiForm = getChild(UIMultiLanguageForm.class) ;
-    uiForm.doSelect(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
+    uiForm.doSelect(getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode()) ;
   }
   public void deActivate() throws Exception {}
   

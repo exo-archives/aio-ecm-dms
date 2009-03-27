@@ -65,7 +65,7 @@ public class UITreeNodePageIterator extends UIPageIterator {
         uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
       }
       if(uiDocumentInfo == null || !uiDocumentInfo.isRendered()) return ;
-      String currentPath = uiExplorer.getCurrentNode().getPath();
+      String currentPath = uiExplorer.getRealCurrentNode().getPath();
       if(!currentPath.equalsIgnoreCase(uiPageIterator.getSelectedPath())) return ;      
       
       UIPageIterator iterator = uiDocumentInfo.getContentPageIterator();

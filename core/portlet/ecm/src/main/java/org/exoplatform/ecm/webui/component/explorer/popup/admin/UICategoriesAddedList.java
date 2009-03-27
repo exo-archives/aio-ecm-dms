@@ -73,7 +73,7 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
   public List<Node> getCategories() throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
-    return categoriesService.getCategories(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName());
+    return categoriesService.getCategories(uiJCRExplorer.getRealCurrentNode(), uiJCRExplorer.getRepositoryName());
   }
   
   @SuppressWarnings("unused")
@@ -81,13 +81,13 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class) ;
     try {
-      Node currentNode = uiJCRExplorer.getCurrentNode();
+      Node currentNode = uiJCRExplorer.getRealCurrentNode();
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
         if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
       }
       categoriesService.addCategory(currentNode, value.toString(), uiJCRExplorer.getRepositoryName()) ;
-      uiJCRExplorer.getCurrentNode().save() ;
+      uiJCRExplorer.getRealCurrentNode().save() ;
       uiJCRExplorer.getSession().save() ;
       updateGrid(1) ;
       setRenderSibbling(UICategoriesAddedList.class) ;
@@ -106,7 +106,7 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
       CategoriesService categoriesService = 
         uiAddedList.getApplicationComponent(CategoriesService.class) ;
       try {
-        categoriesService.removeCategory(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName()) ;
+        categoriesService.removeCategory(uiExplorer.getRealCurrentNode(), nodePath, uiExplorer.getRepositoryName()) ;
 //        uiAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName())) ;
         uiAddedList.updateGrid(uiAddedList.getUIPageIterator().getCurrentPage());
       } catch(AccessDeniedException ace) {

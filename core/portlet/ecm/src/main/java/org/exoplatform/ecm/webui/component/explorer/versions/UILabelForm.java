@@ -70,7 +70,7 @@ public class UILabelForm extends UIForm {
       VersionNode currentVersion = uiVersionInfo.getCurrentVersionNode();
       UIJCRExplorer uiExplorer = uiLabelForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiLabelForm.getAncestorOfType(UIApplication.class) ;
-      Node currentNode = uiExplorer.getCurrentNode() ;   
+      Node currentNode = uiExplorer.getRealCurrentNode() ;   
       if(!Utils.isNameValid(label, Utils.SPECIALCHARACTER)) {
         uiApp.addMessage(new ApplicationMessage("UILabelForm.msg.label-invalid", 
             null, ApplicationMessage.WARNING)) ;

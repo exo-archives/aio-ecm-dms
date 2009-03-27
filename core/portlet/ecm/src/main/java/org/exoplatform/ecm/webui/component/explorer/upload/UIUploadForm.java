@@ -151,7 +151,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   public void initFieldInput() throws Exception {
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    Node currentNode = uiExplorer.getCurrentNode();
+    Node currentNode = uiExplorer.getRealCurrentNode();
     if (categoriesService.hasCategories(currentNode)) {
       Value[] values = currentNode.getProperty("exo:category").getValues();
       for (int i = 0; i < values.length; i++) {
@@ -234,14 +234,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.getCurrentNode().isLocked()) {
-        String lockToken = LockUtil.getLockToken(uiExplorer.getCurrentNode());
+      if(uiExplorer.getRealCurrentNode().isLocked()) {
+        String lockToken = LockUtil.getLockToken(uiExplorer.getRealCurrentNode());
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
       }
       PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
       PortletPreferences portletPref = pcontext.getRequest().getPreferences();
       String categoryMandatoryWhenFileUpload =  portletPref.getValue(Utils.CATEGORY_MANDATORY, "").trim();    
-      if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true") && uiForm.getListTaxonomy().size() == 0 && !uiExplorer.getCurrentNode().hasNode(JCRCONTENT)) {
+      if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true") && uiForm.getListTaxonomy().size() == 0 && !uiExplorer.getRealCurrentNode().hasNode(JCRCONTENT)) {
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.taxonomyPath-error", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -327,21 +327,21 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       
       MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
       String mimeType = mimeTypeSolver.getMimeType(fileName) ;
-      Node selectedNode = uiExplorer.getCurrentNode();      
+      Node selectedNode = uiExplorer.getRealCurrentNode();      
       boolean isExist = selectedNode.hasNode(name) ;
       String newNodeUUID = null;
       try {
         String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
         selectedNode.getSession().checkPermission(selectedNode.getPath(), pers);
         
-        if(uiForm.isMultiLanguage()) {
+        if (uiForm.isMultiLanguage()) {
           ValueFactoryImpl valueFactory = (ValueFactoryImpl) uiExplorer.getSession().getValueFactory() ;
           Value contentValue = valueFactory.createValue(inputStream) ;
           multiLangService.addFileLanguage(selectedNode, name, contentValue, mimeType, uiForm.getLanguageSelected(), uiExplorer.getRepositoryName(), uiForm.isDefault_) ;
           uiExplorer.setIsHidePopup(true) ;
           UIMultiLanguageManager uiManager = uiForm.getAncestorOfType(UIMultiLanguageManager.class) ;
           UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
-          uiMultiForm.doSelect(uiExplorer.getCurrentNode()) ;
+          uiMultiForm.doSelect(uiExplorer.getRealCurrentNode()) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
         } else {
           if(!isExist) {            

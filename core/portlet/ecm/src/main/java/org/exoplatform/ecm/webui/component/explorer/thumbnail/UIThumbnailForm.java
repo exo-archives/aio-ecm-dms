@@ -76,7 +76,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
   }
   
   public Node getSelectedNode() throws Exception {
-    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
+    return getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode();
   }
   
   public Node getThumbnailNode(Node node) throws Exception {
@@ -100,7 +100,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      Node selectedNode = uiExplorer.getCurrentNode();
+      Node selectedNode = uiExplorer.getRealCurrentNode();
       if(selectedNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(selectedNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
@@ -156,7 +156,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
       UIThumbnailForm uiForm = event.getSource();
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       uiForm.thumbnailRemoved_ = true;
-      Node selectedNode = uiExplorer.getCurrentNode();
+      Node selectedNode = uiExplorer.getRealCurrentNode();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       if(selectedNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(selectedNode);

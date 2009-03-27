@@ -110,7 +110,7 @@ public class UILanguageTypeForm extends UIForm {
         UILanguageDialogForm uiDialogForm = uiContainer.getChild(UILanguageDialogForm.class) ;
         uiDialogForm.getChildren().clear() ;
         uiDialogForm.setTemplateNode(uiContainer.nodeTypeName_) ;
-        Node node = uiExplorer.getCurrentNode() ;        
+        Node node = uiExplorer.getRealCurrentNode() ;        
         String currentPath = uiExplorer.getCurrentPath() ;
         if(selectedLang.equals(multiLanguageService.getDefault(node))) {
           uiTypeForm.getUIFormCheckBoxInput(DEFAULT_TYPE).setChecked(true) ;

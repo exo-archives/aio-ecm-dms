@@ -93,7 +93,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
   public void update(Query query) throws Exception {
     if(query == null) {
       UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-      Node selectedNode = uiExplorer.getCurrentNode() ;
+      Node selectedNode = uiExplorer.getRealCurrentNode() ;
       String path = selectedNode.getPath() ;
       String queryText = StringUtils.replace(SQL_QUERY, "$0", path) ;
       if ("/".equals(path)) queryText = ROOT_SQL_QUERY  ; 
@@ -179,7 +179,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
     public void execute(Event<UIJCRAdvancedSearch> event) throws Exception {
       UIJCRAdvancedSearch uiForm = event.getSource() ;     
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      String  currentPath = uiExplorer.getCurrentNode().getPath() ;
+      String  currentPath = uiExplorer.getRealCurrentNode().getPath() ;
       String queryText = "" ;      
       String searchType = uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue() ;
       if(searchType.equals(Query.SQL)){

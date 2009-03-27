@@ -90,7 +90,7 @@ public class UIPermissionInfo extends UIContainer {
   
   public void updateGrid(int currentPage) throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
-    Node currentNode = uiJCRExplorer.getCurrentNode();
+    Node currentNode = uiJCRExplorer.getRealCurrentNode();
     List<PermissionBean> permBeans = new ArrayList<PermissionBean>(); 
     ExtendedNode node = (ExtendedNode) currentNode;
 
@@ -155,7 +155,7 @@ public class UIPermissionInfo extends UIContainer {
       UIPermissionInfo uicomp = event.getSource() ;
       String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiJCRExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
-      ExtendedNode node = (ExtendedNode)uiJCRExplorer.getCurrentNode() ; 
+      ExtendedNode node = (ExtendedNode)uiJCRExplorer.getRealCurrentNode() ; 
       UIPermissionForm uiForm = uicomp.getAncestorOfType(UIPermissionManager.class).getChild(UIPermissionForm.class) ;
       uiForm.fillForm(name, node) ;
       uiForm.lockForm(name.equals(uicomp.getExoOwner(node)));
@@ -165,7 +165,7 @@ public class UIPermissionInfo extends UIContainer {
     public void execute(Event<UIPermissionInfo> event) throws Exception {
       UIPermissionInfo uicomp = event.getSource() ;
       UIJCRExplorer uiJCRExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiJCRExplorer.getCurrentNode() ;
+      Node currentNode = uiJCRExplorer.getRealCurrentNode() ;
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
         if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);

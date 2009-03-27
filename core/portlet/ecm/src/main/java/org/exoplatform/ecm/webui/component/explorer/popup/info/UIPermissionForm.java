@@ -135,7 +135,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
   
   public void doSelect(String selectField, Object value) {
     try {
-      ExtendedNode node = (ExtendedNode)getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
+      ExtendedNode node = (ExtendedNode)getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode();
       checkAll(false);
       fillForm(value.toString(), node) ;
       lockForm(value.toString().equals(getExoOwner(node)));
@@ -157,7 +157,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getCurrentNode() ;
+      Node currentNode = uiExplorer.getRealCurrentNode() ;
       UIPermissionManager uiParent = uiForm.getParent();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       String userOrGroup = uiForm.getChild(UIPermissionInputSet.class).getUIStringInput(
@@ -200,7 +200,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
       }
       String[] permsArray = permsList.toArray(new String[permsList.size()]);
       UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
-      ExtendedNode node = (ExtendedNode) uiJCRExplorer.getCurrentNode();
+      ExtendedNode node = (ExtendedNode) uiJCRExplorer.getRealCurrentNode();
       if (PermissionUtil.canChangePermission(node)) {
         if (node.canAddMixin("exo:privilegeable")){
           node.addMixin("exo:privilegeable");
@@ -220,7 +220,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
         uiParent.getChild(UIPermissionInfo.class).updateGrid(1);
         node.save();
         if(uiJCRExplorer.getRootNode().equals(node)) {
-          if(!PermissionUtil.canRead(uiJCRExplorer.getCurrentNode())) {
+          if(!PermissionUtil.canRead(uiJCRExplorer.getRealCurrentNode())) {
             uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class) ;
             return ;
           }

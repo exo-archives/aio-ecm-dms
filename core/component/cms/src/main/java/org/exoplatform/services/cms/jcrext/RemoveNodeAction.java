@@ -37,7 +37,11 @@ public class RemoveNodeAction implements Action {
       (ThumbnailService)container.getComponentInstanceOfType(ThumbnailService.class);
     if(thumbnailService.isEnableThumbnail()) {
       Node node = (Node)context.get("currentItem");
-      thumbnailService.processRemoveThumbnail(node);
+      try {
+        thumbnailService.processRemoveThumbnail(node);
+      } catch(Exception e) {
+        return false;
+      }
     }
     return false;
   }

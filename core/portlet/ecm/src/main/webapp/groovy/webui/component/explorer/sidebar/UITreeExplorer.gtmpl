@@ -18,7 +18,12 @@
     boolean isPaginated=uicomponent.isPaginated(rootTree);
     int childrenSize = childrenNodes.size() ;                 
     for(treeNode in childrenNodes) {	    
-    	Node node = treeNode.getNode() ;	      	    
+    	Node node = treeNode.getNode() ;
+    	try {
+    	  def primaryName = node.getPrimaryNodeType().getName();
+    	} catch(Exception e) {
+    	  continue;
+    	}
 	    String path = node.getPath() ;
 	    String treeNodeName = treeNode.getName();
 	    def isPreferenceNode = uicomponent.isPreferenceNode(node) ;

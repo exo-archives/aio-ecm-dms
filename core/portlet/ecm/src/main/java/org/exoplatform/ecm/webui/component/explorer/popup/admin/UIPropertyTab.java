@@ -164,7 +164,7 @@ public class UIPropertyTab extends UIContainer {
       UIPropertiesManager uiManager = uiPropertyTab.getParent();
       UIApplication uiApp = uiManager.getAncestorOfType(UIApplication.class);
       UIJCRExplorer uiExplorer = uiManager.getAncestorOfType(UIJCRExplorer.class);
-      Node currentNode = uiExplorer.getCurrentNode();
+      Node currentNode = uiExplorer.getRealCurrentNode();
       if(!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));

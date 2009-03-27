@@ -57,7 +57,6 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.link.LinkManager;
-import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.cms.voting.VotingService;
@@ -128,23 +127,23 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       return uiExplorer.getDocumentInfoTemplate();
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     try {
-      Node node = uiExplorer.getCurrentNode();
+      Node node = uiExplorer.getRealCurrentNode();
       String nodeTypeName = node.getPrimaryNodeType().getName();
       currentRepository_ = uiExplorer.getRepositoryName();
       currentWorkspaceName_ = uiExplorer.getCurrentWorkspace();
       selectedLang_ = uiExplorer.getLanguage();
-      if(templateService.getDocumentTemplates(currentRepository_).contains(nodeTypeName)) {
+      if (templateService.getDocumentTemplates(currentRepository_).contains(nodeTypeName)) {
         isDocumentTemplate_ = true;
       } else {
         isDocumentTemplate_ = false;
       }
       String template = templateService.getTemplatePath(node,false) ;
       templateService.removeCacheTemplate(uiExplorer.getJCRTemplateResourceResolver().createResourceId(template));
-      if(template != null) return template ;
+      if (template != null) return template ;
     } catch(AccessDeniedException ace) {
       try {
         uiExplorer.setSelectNode(uiExplorer.getRootNode()) ;
-        Object[] args = { uiExplorer.getCurrentNode().getName() } ;
+        Object[] args = { uiExplorer.getRealCurrentNode().getName() } ;
         throw new MessageException(new ApplicationMessage("UIDocumentInfo.msg.access-denied", args, 
             ApplicationMessage.WARNING)) ;
       } catch(Exception exc) {
@@ -424,7 +423,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   public Node getNode() throws Exception { 
-    currentNode_ = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
+    currentNode_ = getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode();
     if(currentNode_.hasProperty(Utils.EXO_LANGUAGE)) {
       String defaultLang = currentNode_.getProperty(Utils.EXO_LANGUAGE).getString() ;
       if(getLanguage() == null) setLanguage(defaultLang) ;
@@ -538,8 +537,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   public boolean isSymLink(Node node) throws RepositoryException {
-    LinkManager linkManager = getApplicationComponent(LinkManager.class);
-    return linkManager.isLink(node);
+    return Utils.isSymLink(node);
   }
   
   static  public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
@@ -566,27 +564,25 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   static  public class ChangeNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {     
       UIDocumentInfo uicomp =  event.getSource();
-      NodeFinder nodeFinder = uicomp.getApplicationComponent(NodeFinder.class);
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class); 
-      Node selectedNode = null;
       String uri = event.getRequestContext().getRequestParameter(OBJECTID);
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
       Session session = uiExplorer.getSessionByWorkspace(workspaceName);
+      Node node = (Node) session.getItem(uri);
+      String path = uiExplorer.processRealNode(node);
+      if (path != null) uri = path;
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
       String prefPath = uiExplorer.getPreferencesPath();
       String prefWorkspace = uiExplorer.getPreferencesWorkspace();
-      if((prefPath.length() > 0) && (uiExplorer.getCurrentWorkspace().equals(prefWorkspace))) {
+      if ((prefPath.length() > 0) && (uiExplorer.getCurrentWorkspace().equals(prefWorkspace))) {
         try {
           if ((".." + prefPath).equals(uri)) {
             if (prefPath.equals(uiExplorer.getCurrentNode().getPath())) {
-              selectedNode = (Node)nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uiExplorer.getCurrentNode().getParent().getPath());
-              uiExplorer.setSelectNode(selectedNode.getPath(), session);
-//              uiExplorer.setSelectNode(uiExplorer.getCurrentNode().getParent());
+              uiExplorer.setSelectNode(uiExplorer.getCurrentNode().getParent());
               uiExplorer.updateAjax(event) ;
             }
           } else {
-            selectedNode = (Node)nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uri);
-            uiExplorer.setSelectNode(selectedNode.getPath(), session); 
+            uiExplorer.setSelectNode(uri, session);
             if (!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {
               uiExplorer.setIsReferenceNode(true);
               uiExplorer.setReferenceWorkspace(workspaceName);

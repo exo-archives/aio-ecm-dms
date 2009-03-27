@@ -80,7 +80,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
   }
 
   public void activate() throws Exception {
-    update(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
+    update(getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode()) ;
   }
 
   public void deActivate() throws Exception { }
@@ -96,11 +96,11 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       String format = uiExport.<UIFormRadioBoxInput>getUIInput(FORMAT).getValue() ;
       boolean isZip = uiExport.getUIFormCheckBoxInput(ZIP).isChecked() ;
       ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
-      String nodePath = uiExplorer.getCurrentNode().getPath() ;
+      String nodePath = uiExplorer.getRealCurrentNode().getPath() ;
       try {
         session.getItem(nodePath) ;
       } catch(PathNotFoundException path) {
-        session = uiExplorer.getCurrentNode().getSession() ;
+        session = uiExplorer.getRealCurrentNode().getSession() ;
       }
       if(isZip) {
         if(format.equals(DOC_VIEW)) session.exportDocumentView(nodePath, bos, false, false ) ;

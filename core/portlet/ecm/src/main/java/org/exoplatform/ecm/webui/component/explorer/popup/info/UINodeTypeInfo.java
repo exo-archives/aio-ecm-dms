@@ -60,7 +60,7 @@ public class UINodeTypeInfo extends UIContainer implements UIPopupComponent {
   
   public void activate() throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Node node = uiJCRExplorer.getCurrentNode() ;
+    Node node = uiJCRExplorer.getRealCurrentNode() ;
     try {
       NodeType nodetype = node.getPrimaryNodeType() ;
       Collection<NodeType> types = new ArrayList<NodeType>() ;

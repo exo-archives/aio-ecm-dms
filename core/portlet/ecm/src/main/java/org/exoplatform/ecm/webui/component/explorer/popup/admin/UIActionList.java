@@ -81,7 +81,7 @@ public class UIActionList extends UIContainer {
   public boolean hasActions() throws Exception{
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class) ;
-    return actionService.hasActions(uiExplorer.getCurrentNode());
+    return actionService.hasActions(uiExplorer.getRealCurrentNode());
   }
 
   public List<Node> getAllActions(Node node) {
@@ -106,7 +106,7 @@ public class UIActionList extends UIContainer {
       UIActionManager uiActionManager = uiExplorer.findFirstComponentOfType(UIActionManager.class) ;
       ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class);      
       
-      Node node = actionService.getAction(uiExplorer.getCurrentNode(),actionName);
+      Node node = actionService.getAction(uiExplorer.getRealCurrentNode(),actionName);
       String nodeTypeName = node.getPrimaryNodeType().getName() ;
       String userName = event.getRequestContext().getRemoteUser() ;
       TemplateService templateService = uiActionList.getApplicationComponent(TemplateService.class) ;
@@ -162,7 +162,7 @@ public class UIActionList extends UIContainer {
       String userName = event.getRequestContext().getRemoteUser() ;
       String repository = 
         uiActionList.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-      Node currentNode = uiExplorer.getCurrentNode() ;
+      Node currentNode = uiExplorer.getRealCurrentNode() ;
       ActionServiceContainer actionService = uiActionList.getApplicationComponent(ActionServiceContainer.class);
       Node selectedAction = null ;
       try {
@@ -225,7 +225,7 @@ public class UIActionList extends UIContainer {
       }
       if(uiPopup != null && uiPopup.isRendered()) uiActionListContainer.removeChildById("editActionPopup") ;
       try {
-        actionService.removeAction(uiExplorer.getCurrentNode(), actionName, uiExplorer.getRepositoryName()) ;
+        actionService.removeAction(uiExplorer.getRealCurrentNode(), actionName, uiExplorer.getRepositoryName()) ;
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UIActionList.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;
@@ -234,7 +234,7 @@ public class UIActionList extends UIContainer {
       }
       UIActionManager uiActionManager = uiExplorer.findFirstComponentOfType(UIActionManager.class) ;
       uiActionManager.removeChild(UIActionViewContainer.class) ;
-      uiActionList.updateGrid(uiExplorer.getCurrentNode(), uiActionList.getChild(UIPageIterator.class).getCurrentPage());
+      uiActionList.updateGrid(uiExplorer.getRealCurrentNode(), uiActionList.getChild(UIPageIterator.class).getCurrentPage());
       uiActionManager.setRenderedChild(UIActionListContainer.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionManager) ;
     }

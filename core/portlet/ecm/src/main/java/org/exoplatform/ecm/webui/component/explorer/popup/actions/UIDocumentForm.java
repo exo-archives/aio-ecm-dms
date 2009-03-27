@@ -129,7 +129,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   public void initFieldInput() throws Exception {
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    Node currentNode = uiExplorer.getCurrentNode();
+    Node currentNode = uiExplorer.getRealCurrentNode();
     if (categoriesService.hasCategories(currentNode)) {
       Value[] values = currentNode.getProperty("exo:category").getValues();
       for (int i = 0; i < values.length; i++) {
@@ -200,7 +200,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   public void deActivate() throws Exception {}
 
   public Node getCurrentNode() throws Exception { 
-    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode(); 
+    return getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode();
   }
   
   static  public class SaveActionListener extends EventListener<UIDocumentForm> {
@@ -232,7 +232,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           }          
         }
       }
-      if(documentForm.isReference) {
+      if (documentForm.isReference) {
         UIFormMultiValueInputSet uiSet = documentForm.getChild(UIFormMultiValueInputSet.class);
         if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals("categories")) {
           hasCategories = true;
@@ -284,7 +284,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       Node newNode = null;
       String nodeType;
       Node homeNode;
-      Node currentNode = uiExplorer.getCurrentNode();      
+      Node currentNode = uiExplorer.getRealCurrentNode();
       if(documentForm.isAddNew()) {
         UIDocumentFormController uiDFController = documentForm.getParent();
         homeNode = currentNode;
@@ -419,7 +419,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       } else if (uiComp instanceof UICategoriesSelector){
         CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
         UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
-        Node currentNode = uiExplorer.getCurrentNode();
+        Node currentNode = uiExplorer.getRealCurrentNode();
         String repository = uiExplorer.getRepositoryName();
         List<Node> cats = categoriesService.getCategories(currentNode, repository);
         List<String> arrCategoriesList = new ArrayList<String>();        

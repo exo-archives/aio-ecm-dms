@@ -86,7 +86,7 @@ public class UIContentNameSearch extends UIForm {
 //      }
       keyword = keyword.trim();
       UIJCRExplorer explorer = contentNameSearch.getAncestorOfType(UIJCRExplorer.class);
-      String currentNodePath = explorer.getCurrentNode().getPath();
+      String currentNodePath = explorer.getRealCurrentNode().getPath();
       String statement = null;
       if("/".equalsIgnoreCase(currentNodePath)) {
         statement = StringUtils.replace(ROOT_PATH_SQL_QUERY,"$1",keyword);
@@ -94,7 +94,7 @@ public class UIContentNameSearch extends UIForm {
         statement = StringUtils.replace(PATH_SQL_QUERY,"$0",currentNodePath);
         statement = StringUtils.replace(statement,"$1",keyword);
       }
-      QueryManager queryManager = explorer.getCurrentNode().getSession().getWorkspace().getQueryManager();
+      QueryManager queryManager = explorer.getRealCurrentNode().getSession().getWorkspace().getQueryManager();
       UIECMSearch uiECMSearch = contentNameSearch.getAncestorOfType(UIECMSearch.class); 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class);      
       Query query = queryManager.createQuery(statement,Query.SQL);

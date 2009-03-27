@@ -81,7 +81,7 @@ public class UISideBar extends UIContainer {
       UISideBar uiSideBar = event.getSource() ;
       uiSideBar.currentComp = "Explorer" ;
       UIJCRExplorer uiExplorer = uiSideBar.getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.setSelectNode(uiExplorer.getCurrentNode()) ;
+      uiExplorer.setSelectNode(uiExplorer.getRealCurrentNode()) ;
       uiExplorer.setIsViewTag(false) ;
       uiSideBar.setRenderedChild(UITreeExplorer.class) ;
       uiExplorer.updateAjax(event) ;
@@ -102,7 +102,7 @@ public class UISideBar extends UIContainer {
       UISideBar uiSideBar = event.getSource() ;
       UIJCRExplorer uiExplorer = uiSideBar.getAncestorOfType(UIJCRExplorer.class) ;
       uiSideBar.currentComp = "TagExplorer" ;
-      uiExplorer.setCurrentStatePath(uiExplorer.getCurrentNode().getPath()) ;
+      uiExplorer.setCurrentStatePath(uiExplorer.getRealCurrentNode().getPath()) ;
       uiSideBar.setRenderedChild(UITagExplorer.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar.getParent()) ;
     }

@@ -86,7 +86,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
 
   public void activate() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    node_ = uiExplorer.getCurrentNode() ;   
+    node_ = uiExplorer.getRealCurrentNode() ;   
     rootVersion_ = new VersionNode(node_.getVersionHistory().getRootVersion(), uiExplorer.getSession()) ;
     curentVersion_ = rootVersion_ ;
     getChild(UIViewVersion.class).update() ;  

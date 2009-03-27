@@ -23,6 +23,7 @@ import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.InvalidItemStateException;
+import javax.jcr.Item;
 import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
 import javax.jcr.Node;
@@ -60,6 +61,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
@@ -219,7 +221,7 @@ public class UIWorkingArea extends UIContainer {
   }
 
   public String getActionsList(Node node) throws Exception {
-    if(node == null) return "";
+    if (node == null) return "";
     try {
       node.refresh(true);
     } catch(InvalidItemStateException e) {
@@ -233,8 +235,8 @@ public class UIWorkingArea extends UIContainer {
     boolean isJcrEnable = isJcrViewEnable();
     boolean isVersionable = Utils.isVersionable(node);
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    if(isVersionableOrAncestor(node)) {
-      if(node.isCheckedOut()) {
+    if (isVersionableOrAncestor(node)) {
+      if (node.isCheckedOut()) {
         if(isVersionable) actionsList.append("CheckIn");
         if(isEditable) actionsList.append(",EditDocument");
         if(!isSameNameSibling) {
@@ -259,15 +261,15 @@ public class UIWorkingArea extends UIContainer {
       }
       if (!node.isNodeType(Utils.EXO_SYMLINK)) actionsList.append(",AddSymLink");
     } else {
-      if(isEditable) actionsList.append(",EditDocument");
-      if(!isSameNameSibling) {
-        if(holdsLock) {
+      if (isEditable) actionsList.append(",EditDocument");
+      if (!isSameNameSibling) {
+        if (holdsLock) {
           actionsList.append(",Unlock");
         } else if(!isLocked) {
           actionsList.append(",Lock");
         }
       }
-      if(!isSameNameSibling) {
+      if (!isSameNameSibling) {
         actionsList.append(",Copy");
         actionsList.append(",Cut");
       }
@@ -386,7 +388,7 @@ public class UIWorkingArea extends UIContainer {
     String type = currentClipboard.getType();
     String srcWorkspace = currentClipboard.getWorkspace();
     Session session = uiExplorer.getSession();
-    if(ClipboardCommand.CUT.equals(type) && srcPath.equals(destPath)) { 
+    if (ClipboardCommand.CUT.equals(type) && srcPath.equals(destPath)) { 
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-cutting", null, 
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
@@ -1017,6 +1019,21 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
+  private Node getRealNode(String path, UIJCRExplorer uiExplorer, String wsName) throws Exception {
+    LinkManager linkManager = getApplicationComponent(LinkManager.class);
+    NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
+    Item item = nodeFinder.getItem(uiExplorer.getRepositoryName(), wsName, path);
+    Node node = (Node) item;
+    if (linkManager.isLink(item)) {
+      if (linkManager.isTargetReachable(node)) {
+        // The target can be reached
+        Node target = linkManager.getTarget(node);
+        return target;
+      }
+    }
+    return node;
+  }
+  
   @SuppressWarnings("unused")
   static  public class EditDocumentActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
@@ -1024,12 +1041,13 @@ public class UIWorkingArea extends UIContainer {
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      if(wsName == null) wsName = uiExplorer.getCurrentWorkspace();
+      if (wsName == null) wsName = uiExplorer.getCurrentWorkspace();
       Session session = uiExplorer.getSessionByWorkspace(wsName);
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
       Node selectedNode = null;
       try {
-        selectedNode = uiExplorer.getNodeByPath(nodePath, session);
+        selectedNode = uicomp.getRealNode(nodePath, uiExplorer, wsName);
+//        selectedNode = uiExplorer.getNodeByPath(nodePath, session);
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
             null,ApplicationMessage.WARNING));
@@ -1047,48 +1065,48 @@ public class UIWorkingArea extends UIContainer {
       Object[] arg = { nodePath };
       try{
         ((ExtendedNode) selectedNode).checkPermission(PermissionType.SET_PROPERTY);        
-      }catch (Exception e) {
+      } catch (Exception e) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-edit-permission",null,ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
       boolean isReferenced = false;
-      if(uiExplorer.nodeIsLocked(selectedNode)) {        
+      if (uiExplorer.nodeIsLocked(selectedNode)) {        
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         uiExplorer.updateAjax(event);
         return;
       }      
-      if(selectedNode.isNodeType(Utils.EXO_ACTION)) {
+      if (selectedNode.isNodeType(Utils.EXO_ACTION)) {
         UIActionContainer uiContainer = uiExplorer.createUIComponent(UIActionContainer.class, null, null);
         uiExplorer.setIsHidePopup(true);
         uiContainer.getChild(UIActionTypeForm.class).setRendered(false);
         UIActionForm uiActionForm = uiContainer.getChild(UIActionForm.class);
-        uiActionForm.createNewAction(uiExplorer.getCurrentNode(), 
+        uiActionForm.createNewAction(uiExplorer.getRealCurrentNode(), 
             selectedNode.getPrimaryNodeType().getName(), false);
-        uiActionForm.setWorkspace(wsName);
+        uiActionForm.setWorkspace(selectedNode.getSession().getWorkspace().getName());
         uiActionForm.setNodePath(nodePath);
         UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
         UIPopupContainer.activate(uiContainer, 600, 550);
       } else {
         TemplateService tservice = uicomp.getApplicationComponent(TemplateService.class);
-        String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+        String repository = ((ManageableRepository) selectedNode.getSession().getRepository()).getConfiguration().getName();
         List documentNodeType = tservice.getDocumentTemplates(repository);
         String nodeType = null;
-        if(selectedNode.hasProperty("exo:presentationType")) {
+        if (selectedNode.hasProperty("exo:presentationType")) {
           nodeType = selectedNode.getProperty("exo:presentationType").getString();
-        }else {
+        } else {
           nodeType = selectedNode.getPrimaryNodeType().getName();
         }
-        if(documentNodeType.contains(nodeType)){
+        if (documentNodeType.contains(nodeType)){
           UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
           UIDocumentFormController uiController = 
             event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController");
           UIDocumentForm uiDocumentForm = uiController.getChild(UIDocumentForm.class);
           uiDocumentForm.setContentType(nodeType);
           uiDocumentForm.setRepositoryName(repository);
-          uiDocumentForm.setWorkspace(wsName);
+          uiDocumentForm.setWorkspace(selectedNode.getSession().getWorkspace().getName());
           uiDocumentForm.setNodePath(nodePath);
           uiDocumentForm.addNew(false);
           uiController.setRenderedChild(UIDocumentForm.class);
@@ -1170,6 +1188,7 @@ public class UIWorkingArea extends UIContainer {
   static  public class CopyActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
+      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
       if (wsName == null || wsName.length() == 0) {
@@ -1266,9 +1285,11 @@ public class UIWorkingArea extends UIContainer {
   static  public class LockActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
+      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      if(nodePath.indexOf(";") > -1) {
+      nodePath = uiWorkingArea.getRealNode(nodePath, uiExplorer, wsName).getPath();
+      if (nodePath.indexOf(";") > -1) {
         uiWorkingArea.isMultiSelect_ = true;
         uiWorkingArea.processMultiLock(nodePath.split(";"), wsName.split(";"), event);
       } else {
@@ -1281,8 +1302,10 @@ public class UIWorkingArea extends UIContainer {
   static  public class UnlockActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
+      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);      
+      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);  
+      nodePath = uiWorkingArea.getRealNode(nodePath, uiExplorer, wsName).getPath();
       if(nodePath.indexOf(";") > -1) {
         uiWorkingArea.isMultiSelect_ = true;
         uiWorkingArea.processMultiUnlock(nodePath.split(";"), wsName.split(";"), event);
@@ -1460,20 +1483,20 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
-      Node currentNode = uiExplorer.getCurrentNode();      
-      if(!PermissionUtil.canRead(currentNode)) {
+      Node currentNode = uiExplorer.getRealCurrentNode();      
+      if (!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if(uiExplorer.nodeIsLocked(currentNode)) {
-        Object[] arg = { uiExplorer.getCurrentNode().getPath() };
+      if (uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() };
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } 
-      if(!currentNode.isCheckedOut()) {
+      if (!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -1489,20 +1512,20 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
-      Node currentNode = uiExplorer.getCurrentNode();      
-      if(!PermissionUtil.canRead(currentNode)) {
+      Node currentNode = uiExplorer.getRealCurrentNode();
+      if (!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if(uiExplorer.nodeIsLocked(currentNode)){
+      if (uiExplorer.nodeIsLocked(currentNode)){
         Object[] arg = { currentNode.getPath() };
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if(!currentNode.isCheckedOut()) {
+      if (!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -1510,9 +1533,9 @@ public class UIWorkingArea extends UIContainer {
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIDocumentFormController uiController = 
         event.getSource().createUIComponent(UIDocumentFormController.class, null, null);
-      uiController.setCurrentNode(uiExplorer.getCurrentNode());
-      uiController.setRepository(uiExplorer.getRepositoryName());
-      if(uiController.getListFileType().size() == 0) {
+      uiController.setCurrentNode(uiExplorer.getRealCurrentNode());
+      uiController.setRepository(((ManageableRepository) currentNode.getSession().getRepository()).getConfiguration().getName());
+      if (uiController.getListFileType().size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.empty-file-type", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -1529,20 +1552,20 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
-      Node currentNode = uiExplorer.getCurrentNode();
-      if(!PermissionUtil.canRead(currentNode)) {
+      Node currentNode = uiExplorer.getRealCurrentNode();
+      if (!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if(uiExplorer.nodeIsLocked(currentNode)) {
+      if (uiExplorer.nodeIsLocked(currentNode)) {
         Object[] arg = { currentNode.getPath() };
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if(!currentNode.isCheckedOut()) {
+      if (!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -1580,8 +1603,31 @@ public class UIWorkingArea extends UIContainer {
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node currentNode = uiExplorer.getCurrentNode();
-      
+      Node currentNode = null;
+      try {
+        currentNode = uiExplorer.getRealCurrentNode();
+      } catch (AccessControlException ace) {        
+        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.repository-exception", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch (AccessDeniedException ade) {        
+        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.repository-exception", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch(NumberFormatException nume) {
+        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.numberformat-exception", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch(ConstraintViolationException cve) {
+        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.cannot-save", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;        
+      } catch(Exception e) {
+        e.printStackTrace();
+        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.cannot-save", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } 
       if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));

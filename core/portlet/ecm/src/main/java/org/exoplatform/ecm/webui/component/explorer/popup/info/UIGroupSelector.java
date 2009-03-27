@@ -135,7 +135,7 @@ public class UIGroupSelector extends UIGroupMembershipSelector implements Compon
       UIGroupSelector uiGroupSelector = event.getSource();
       String user = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = uiGroupSelector.getAncestorOfType(UIJCRExplorer.class) ;
-      Node node = uiExplorer.getCurrentNode() ;
+      Node node = uiExplorer.getRealCurrentNode() ;
       if(user.equals(Utils.getNodeOwner(node))) {
         UIApplication uiApp = uiGroupSelector.getAncestorOfType(UIApplication.class) ;
         uiApp.addMessage(new ApplicationMessage("UIGroupSelector.msg.not-change-owner", new Object[]{user})) ;

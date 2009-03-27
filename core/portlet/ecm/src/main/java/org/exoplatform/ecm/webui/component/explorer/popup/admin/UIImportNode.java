@@ -92,7 +92,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       Session session = uiExplorer.getSession();
       UIApplication uiApp = uiImport.getAncestorOfType(UIApplication.class);
       UIFormUploadInput input = uiImport.getUIInput(FILE_UPLOAD);
-      Node currentNode = uiExplorer.getCurrentNode();
+      Node currentNode = uiExplorer.getRealCurrentNode();
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
@@ -117,12 +117,12 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
         return;
       }
       try {
-        session.getItem(uiExplorer.getCurrentNode().getPath());
+        session.getItem(uiExplorer.getRealCurrentNode().getPath());
       } catch (PathNotFoundException path) {
-        session = uiExplorer.getCurrentNode().getSession();
+        session = uiExplorer.getRealCurrentNode().getSession();
       }
       try {
-        session.importXML(uiExplorer.getCurrentNode().getPath(), xmlInputStream, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
+        session.importXML(uiExplorer.getRealCurrentNode().getPath(), xmlInputStream, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
 
         if (!uiExplorer.getPreference().isJcrEnable())
           // TODO
@@ -147,7 +147,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       } catch (ConstraintViolationException con) {
         log.error("XML Import error " + con, con);
         // TODO does rollback will be performed?
-        Object[] args = { uiExplorer.getCurrentNode().getPrimaryNodeType().getName() };
+        Object[] args = { uiExplorer.getRealCurrentNode().getPrimaryNodeType().getName() };
         uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.constraint-violation-exception",
                                                 args,
                                                 ApplicationMessage.WARNING));

@@ -77,7 +77,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
     setActions(new String[]{"Save", "Cancel"}) ;
     getUIStringInput(FIELD_NAME).setValue(null) ;
     if(getUIFormSelectBox(FIELD_TYPE) != null) {
-      if(getAncestorOfType(UIJCRExplorer.class).getCurrentNode().isNodeType(Utils.NT_FOLDER)) {
+      if(getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode().isNodeType(Utils.NT_FOLDER)) {
         List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
         options.add(new SelectItemOption<String>(ntFolderLabel, Utils.NT_FOLDER)) ;
         getUIFormSelectBox(FIELD_TYPE).setOptions(options) ;
@@ -92,8 +92,8 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
       UIJCRExplorer uiExplorer = uiFolderForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiFolderForm.getAncestorOfType(UIApplication.class);
       String name = uiFolderForm.getUIStringInput(FIELD_NAME).getValue() ;
-      Node node = uiExplorer.getCurrentNode() ;                  
-      if(uiExplorer.nodeIsLocked(node)) {
+      Node node = uiExplorer.getRealCurrentNode();           
+      if (uiExplorer.nodeIsLocked(node)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;

@@ -55,10 +55,10 @@ public class UIUploadContainer extends UIContainer {
   public Node getEditNode(String nodeType) throws Exception { 
     try {
       Item primaryItem = uploadedNode_.getPrimaryItem() ;
-      if(primaryItem == null || !primaryItem.isNode()) return uploadedNode_ ;
-      if(primaryItem != null && primaryItem.isNode()) {
+      if (primaryItem == null || !primaryItem.isNode()) return uploadedNode_ ;
+      if (primaryItem != null && primaryItem.isNode()) {
         Node primaryNode = (Node) primaryItem ;
-        if(primaryNode.isNodeType(nodeType)) return primaryNode ;
+        if (primaryNode.isNodeType(nodeType)) return primaryNode ;
       }
     } catch(Exception e) { }
     return uploadedNode_ ;
@@ -71,7 +71,7 @@ public class UIUploadContainer extends UIContainer {
     public void execute(Event<UIUploadContainer> event) throws Exception {
       UIUploadManager uiUploadManager = event.getSource().getParent() ;
       UIUploadForm uiUploadForm = uiUploadManager.getChild(UIUploadForm.class) ;
-      if(uiUploadForm.isMultiLanguage()) {
+      if (uiUploadForm.isMultiLanguage()) {
         UIMultiLanguageManager uiLanguageManager = uiUploadManager.getAncestorOfType(UIMultiLanguageManager.class) ;
         uiLanguageManager.setRenderedChild(UIMultiLanguageForm.class) ;
         uiLanguageManager.findFirstComponentOfType(UILanguageTypeForm.class).resetLanguage();

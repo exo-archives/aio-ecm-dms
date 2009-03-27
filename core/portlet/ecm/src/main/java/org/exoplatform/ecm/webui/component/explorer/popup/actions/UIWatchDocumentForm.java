@@ -67,7 +67,7 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
   }
   
   public Node getWatchNode() throws Exception{ 
-    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; }
+    return getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode() ; }
   
   public String getUserName() { 
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
@@ -120,7 +120,7 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
       WatchDocumentService watchService = uiForm.getApplicationComponent(WatchDocumentService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getCurrentNode();
+      Node currentNode = uiExplorer.getRealCurrentNode();
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
@@ -147,7 +147,7 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
       WatchDocumentService watchService = uiForm.getApplicationComponent(WatchDocumentService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getCurrentNode();
+      Node currentNode = uiExplorer.getRealCurrentNode();
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);

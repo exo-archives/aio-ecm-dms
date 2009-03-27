@@ -423,7 +423,7 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String currentPath = uiExplorer.getCurrentNode().getPath() ;
+      String currentPath = uiExplorer.getRealCurrentNode().getPath() ;
       String statement = "select * from nt:base where " ;
       if(!currentPath.equals("/")) statement = statement + "jcr:path like '"+ currentPath +"/%' AND " ;
       statement = statement + ""+property+" is not null" ;

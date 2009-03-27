@@ -42,7 +42,7 @@ public class UIAuditingInfo extends UIContainer implements UIPopupComponent {
   public void deActivate() throws Exception { }
 
   public Node getCurrentNode() throws Exception { 
-    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode(); 
+    return getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode(); 
   }
   
   public UIPageIterator getUIPageIterator() { return uiPageIterator_; }

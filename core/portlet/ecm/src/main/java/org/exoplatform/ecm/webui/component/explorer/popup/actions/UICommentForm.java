@@ -84,7 +84,7 @@ public class UICommentForm extends UIForm implements UIPopupComponent {
   }
  
   public void activate() throws Exception {
-    document_ = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
+    document_ = getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode() ;
     prepareFields();
   }
   

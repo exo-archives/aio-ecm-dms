@@ -51,7 +51,7 @@ public class UIViewRelationList extends UIContainer{
     List<Node> relations = new ArrayList<Node>() ;
     Value[] vals = null ;
     try {
-     vals = uiExplorer.getCurrentNode().getProperty("exo:relation").getValues() ;    
+     vals = uiExplorer.getRealCurrentNode().getProperty("exo:relation").getValues() ;    
     }catch (Exception e) { return relations ;}
     for(Value val : vals) {
       String uuid = val.getString();

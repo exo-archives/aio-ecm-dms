@@ -58,7 +58,7 @@ public class UIViewRelationList extends UIContainer{
     List<Node> relations = new ArrayList<Node>() ;
     Value[] vals = null ;
     try {
-      vals = uiExplorer.getCurrentNode().getProperty("exo:relation").getValues() ;    
+      vals = uiExplorer.getRealCurrentNode().getProperty("exo:relation").getValues() ;    
     }catch (Exception e) { return relations ;}
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     ManageableRepository repository = repositoryService.getRepository(uiExplorer.getRepositoryName()) ;

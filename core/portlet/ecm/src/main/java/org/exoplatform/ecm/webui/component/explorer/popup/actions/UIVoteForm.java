@@ -52,7 +52,7 @@ public class UIVoteForm extends UIComponent implements UIPopupComponent {
   public void deActivate() throws Exception {}
   
   public double getRating() throws Exception { 
-    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode().
+    return getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode().
                                                   getProperty("exo:votingRate").getDouble() ;
   }
   
@@ -61,7 +61,7 @@ public class UIVoteForm extends UIComponent implements UIPopupComponent {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       UIDocumentInfo uiDocumentInfo = uiExplorer.findFirstComponentOfType(UIDocumentInfo.class) ;
-      Node currentNode = uiExplorer.getCurrentNode();
+      Node currentNode = uiExplorer.getRealCurrentNode();
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
@@ -69,7 +69,7 @@ public class UIVoteForm extends UIComponent implements UIPopupComponent {
       String language = uiDocumentInfo.getLanguage() ;
       double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiExplorer.getApplicationComponent(VotingService.class) ;
-      votingService.vote(uiExplorer.getCurrentNode(), objId, userName, language) ;
+      votingService.vote(uiExplorer.getRealCurrentNode(), objId, userName, language) ;
       event.getSource().getAncestorOfType(UIPopupContainer.class).cancelPopupAction() ;
       uiExplorer.updateAjax(event) ;
     }

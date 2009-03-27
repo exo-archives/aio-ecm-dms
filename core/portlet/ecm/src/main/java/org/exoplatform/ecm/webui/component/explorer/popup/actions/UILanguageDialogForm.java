@@ -129,7 +129,7 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
   public boolean isEditing() { return !isAddNew_; }
   
   public Node getCurrentNode() throws Exception { 
-    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode(); 
+    return getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode(); 
   }
   
   public void setSelectedLanguage(String selectedLanguage) { selectedLanguage_ = selectedLanguage; }
@@ -153,7 +153,7 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
     public void execute(Event<UILanguageDialogForm> event) throws Exception {
       UILanguageDialogForm languageDialogForm = event.getSource();
       UIJCRExplorer uiExplorer = languageDialogForm.getAncestorOfType(UIJCRExplorer.class);
-      Node node = uiExplorer.getCurrentNode();
+      Node node = uiExplorer.getRealCurrentNode();
       if(node.isLocked()) {
         String lockToken = LockUtil.getLockToken(node);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
@@ -278,7 +278,7 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
       } else if (uiComp instanceof UICategoriesSelector){
         CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
         UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
-        Node currentNode = uiExplorer.getCurrentNode();
+        Node currentNode = uiExplorer.getRealCurrentNode();
         String repository = uiExplorer.getRepositoryName();
         List<Node> cats = categoriesService.getCategories(currentNode, repository);
         List<String> arrCategoriesList = new ArrayList<String>();        

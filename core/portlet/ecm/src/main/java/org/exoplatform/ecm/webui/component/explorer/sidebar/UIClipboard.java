@@ -80,7 +80,7 @@ public class UIClipboard extends UIComponent {
       String id = event.getRequestContext().getRequestParameter(OBJECTID) ;
       int index = Integer.parseInt(id) ;
       ClipboardCommand selectedClipboard = uiClipboard.clipboard_.get(index-1);      
-      Node node = uiExplorer.getCurrentNode() ;
+      Node node = uiExplorer.getRealCurrentNode() ;
       String type = selectedClipboard.getType();
       String nodePath = node.getPath();
       UIApplication app = uiClipboard.getAncestorOfType(UIApplication.class);

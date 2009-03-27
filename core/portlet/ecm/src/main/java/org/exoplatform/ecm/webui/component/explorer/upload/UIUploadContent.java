@@ -26,6 +26,7 @@ import javax.jcr.nodetype.PropertyDefinition;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.metadata.MetadataService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeType;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -93,7 +94,7 @@ public class UIUploadContent extends UIContainer {
       UIUploadContainer uiUploadContainer = uiUploadContent.getParent() ;
       MetadataService metadataService = uiUploadContent.getApplicationComponent(MetadataService.class) ;
       UIJCRExplorer uiExplorer = uiUploadContent.getAncestorOfType(UIJCRExplorer.class) ;
-      String repository = uiExplorer.getRepositoryName() ;
+      String repository = ((ManageableRepository) uiExplorer.getRealCurrentNode().getSession().getRepository()).getConfiguration().getName();
       String nodeType = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String template = metadataService.getMetadataTemplate(nodeType, true, repository) ;
       if(template == null || template.trim().length() == 0) {
@@ -110,8 +111,8 @@ public class UIUploadContent extends UIContainer {
       uiAddMetadataForm.getChildren().clear() ;
       uiAddMetadataForm.setNodeType(nodeType) ;
       uiAddMetadataForm.setIsNotEditNode(true) ;
-      uiAddMetadataForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
-      uiAddMetadataForm.setStoredPath(uiExplorer.getCurrentNode().getPath()) ;
+      uiAddMetadataForm.setWorkspace(uiExplorer.getRealCurrentNode().getSession().getWorkspace().getName()) ;
+      uiAddMetadataForm.setStoredPath(uiExplorer.getRealCurrentNode().getPath()) ;
       uiAddMetadataForm.setChildPath(uiUploadContainer.getEditNode(nodeType).getPath()) ;
       uiUploadContainer.addChild(uiAddMetadataForm) ;
       uiUploadContainer.setRenderedChild(UIAddMetadataForm.class) ;

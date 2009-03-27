@@ -138,7 +138,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         }
       }
       
-      Node node = uiExplorer.getCurrentNode() ;                  
+      Node node = uiExplorer.getRealCurrentNode() ;                  
       if(uiExplorer.nodeIsLocked(node)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

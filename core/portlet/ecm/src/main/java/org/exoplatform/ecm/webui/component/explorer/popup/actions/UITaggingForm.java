@@ -76,7 +76,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
     String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
     StringBuilder linkedTags = new StringBuilder() ;
-    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
+    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode() ;
     for(Node tag : folksonomyService.getLinkedTagsOfDocument(currentNode, repository)) {
       if(linkedTags.length() > 0) linkedTags = linkedTags.append(",") ;
       linkedTags.append(tag.getName()) ;
@@ -96,7 +96,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
       String tagName = uiForm.getUIStringInput(TAG_NAMES).getValue() ;
       FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getCurrentNode();
+      Node currentNode = uiExplorer.getRealCurrentNode();
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
@@ -156,7 +156,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
           }
         }
       }
-      for(Node tag : folksonomyService.getLinkedTagsOfDocument(uiExplorer.getCurrentNode(), repository)) {
+      for(Node tag : folksonomyService.getLinkedTagsOfDocument(uiExplorer.getRealCurrentNode(), repository)) {
         for(String t : fitlerTagNames) {
           if(t.equals(tag.getName())) {
             Object[] args = {t} ;

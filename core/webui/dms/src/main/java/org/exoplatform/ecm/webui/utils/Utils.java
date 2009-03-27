@@ -36,7 +36,6 @@ import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 
-import org.exoplatform.container.ExoContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.portal.webui.util.Util;
@@ -46,7 +45,6 @@ import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
-import org.exoplatform.webui.application.WebuiRequestContext;
 
 /**
  * Created by The eXo Platform SARL
@@ -239,6 +237,7 @@ public class Utils {
 
   public static String getNodeTypeIcon(Node node, String appended, String mode) throws RepositoryException {
     StringBuilder str = new StringBuilder();
+    if (node == null) return "";
     String nodeType = node.getPrimaryNodeType().getName();
     //String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended;
     if(node.isNodeType(EXO_SYMLINK)) {
@@ -246,8 +245,9 @@ public class Utils {
       try {
         nodeType = node.getProperty(EXO_PRIMARYTYPE).getString();
         node = linkManager.getTarget(node);
+        if (node == null) return "";
       } catch(Exception e) {
-        e.printStackTrace();
+        return "";
       }
     }
     if(nodeType.equals(NT_UNSTRUCTURED) || nodeType.equals(NT_FOLDER)) {
@@ -261,7 +261,7 @@ public class Utils {
     nodeType = nodeType.replaceAll(":","_") + appended;    
     str.append(nodeType);
     if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType);
-    if(node.isNodeType(NT_FILE)) {
+    if (node.isNodeType(NT_FILE)) {
       if (node.hasNode(JCR_CONTENT)) {
         Node jcrContentNode = node.getNode(JCR_CONTENT);
         str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETYPE).getString().replaceAll("/|\\.","_")).append(appended);
@@ -342,10 +342,9 @@ public class Utils {
     return null;
   }
   
-  //Use the method isLink in LinkManager service instead of this one
   public static boolean isSymLink(Node node) throws RepositoryException {
     LinkManager linkManager = Util.getUIPortal().getApplicationComponent(LinkManager.class);
-    if (linkManager.isLink(node)) return true;
+    if (node != null && linkManager.isLink(node)) return true;
     return false;
   }
 

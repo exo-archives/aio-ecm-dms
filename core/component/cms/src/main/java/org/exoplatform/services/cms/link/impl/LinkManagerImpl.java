@@ -89,8 +89,9 @@ public class LinkManagerImpl implements LinkManager {
         return systemSession.getNodeByUUID(uuid);
       } catch (ItemNotFoundException e1) {
         // e1.printStackTrace();
+        Node parentNode = link.getParent();
         link.remove();
-        link.getSession().save();
+        parentNode.save();
       } finally {
         systemSession.logout();
       }
@@ -140,6 +141,12 @@ public class LinkManagerImpl implements LinkManager {
   }
 
   public boolean isLink(Item item) throws RepositoryException {
-	  return (item instanceof Node) && (((Node)item).isNodeType(SYMLINK));
-  }    
+    if (item instanceof Node) {
+      Node node = (Node) item;
+      if (node.getSession().itemExists(node.getPath())) {
+        return node.isNodeType(SYMLINK);
+      }
+    }
+    return false;
+  }
 }

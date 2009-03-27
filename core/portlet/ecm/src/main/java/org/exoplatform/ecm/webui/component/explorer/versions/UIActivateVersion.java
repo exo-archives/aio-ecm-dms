@@ -60,7 +60,7 @@ public class UIActivateVersion extends UIContainer implements UIPopupComponent {
     public void execute(Event<UIActivateVersion> event) throws Exception {
       UIActivateVersion uiActivateVersion = event.getSource();
       UIJCRExplorer uiExplorer = uiActivateVersion.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getCurrentNode() ;
+      Node currentNode = uiExplorer.getRealCurrentNode() ;
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);

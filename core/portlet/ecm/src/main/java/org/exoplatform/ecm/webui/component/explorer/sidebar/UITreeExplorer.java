@@ -30,6 +30,7 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -109,8 +110,7 @@ public class UITreeExplorer extends UIContainer {
   }
   
   public boolean isSymLink(Node node) throws RepositoryException {
-    LinkManager linkManager = getApplicationComponent(LinkManager.class);
-    return linkManager.isLink(node);
+    return Utils.isSymLink(node); 
   }
   
   public boolean isPaginated(TreeNode treeNode) {
@@ -183,7 +183,7 @@ public class UITreeExplorer extends UIContainer {
       temp = temp.getChild(subPath) ;            
       if(temp == null)  {
         treeRoot_ = treeRoot;
-        return ;
+        return;
       }
     }
     temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;        
@@ -198,34 +198,43 @@ public class UITreeExplorer extends UIContainer {
     buildTree(null);
   }
   
+  public Node getRealNode(Node node) throws Exception {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class); 
+    return uiExplorer.getRealNode(node.getPath());
+  }
+  
   static public class ExpandActionListener extends EventListener<UITreeExplorer> {
     public void execute(Event<UITreeExplorer> event) throws Exception {
       UITreeExplorer uiTreeExplorer = event.getSource();
-      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
-      UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class) ;
-      Node selectedNode = null ;
+      String path = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class);      
+      UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class);
+      Node selectedNode = null;
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
-      if(workspaceName != null && workspaceName.length() > 0) {
+      if (workspaceName != null && workspaceName.length() > 0) {
         if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {              
           uiExplorer.setIsReferenceNode(true) ;
           uiExplorer.setReferenceWorkspace(workspaceName) ;
         } else {              
           uiExplorer.setIsReferenceNode(false) ;
         }
-      }
-      try {
-        NodeFinder nodeFinder = uiTreeExplorer.getApplicationComponent(NodeFinder.class);
-        selectedNode = (Node)nodeFinder.getItem(uiExplorer.getRepositoryName(), uiExplorer.getCurrentWorkspace(), path);
-      } catch(PathNotFoundException pa) {
-        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      } catch(AccessDeniedException ace) {
-        selectedNode = uiExplorer.getSession().getRootNode() ;
-      }
-      uiExplorer.setSelectNode(selectedNode.getPath(), uiExplorer.getSession()) ; 
+      } else workspaceName = uiExplorer.getCurrentWorkspace();
+      Session session = uiExplorer.getSessionByWorkspace(workspaceName);
+      String realpath = uiExplorer.processRealNode((Node) session.getItem(path));
+      if (realpath != null) path = realpath;
+//      try {
+////        selectedNode = uiExplorer.getRealNode(path);
+//        selectedNode = (Node) uiExplorer.getSession().getItem(path);
+//      } catch(PathNotFoundException pa) {
+//        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
+//            ApplicationMessage.WARNING)) ;
+//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+//        return ;
+//      } catch(AccessDeniedException ace) {
+//        selectedNode = uiExplorer.getSession().getRootNode();
+//      }
+//      uiExplorer.setSelectNode(selectedNode.getPath(), uiExplorer.getSession()) ; 
+      uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
       uiExplorer.updateAjax(event) ;      
     }
   }
@@ -237,25 +246,29 @@ public class UITreeExplorer extends UIContainer {
       UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
       UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class) ;
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
-      if(workspaceName != null && workspaceName.length() > 0) {
-        if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {              
+      if (workspaceName != null && workspaceName.length() > 0) {
+        if (!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {              
           uiExplorer.setIsReferenceNode(true) ;
           uiExplorer.setReferenceWorkspace(workspaceName) ;
         } else {              
           uiExplorer.setIsReferenceNode(false) ;
         }
-      }
-      try {
-        uiExplorer.getSession().getItem(path) ;
-      } catch(PathNotFoundException pa) {
-        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      } catch(AccessDeniedException ace) {
-        path = uiExplorer.getSession().getRootNode().getPath();
-      }
-      if(uiExplorer.getPreference().isShowSideBar()) {
+      } else workspaceName = uiExplorer.getCurrentWorkspace();
+      Session session = uiExplorer.getSessionByWorkspace(workspaceName);
+      String realpath = uiExplorer.processRealNode((Node) session.getItem(path));
+      if (realpath != null) path = realpath;
+//      try {
+////        uiExplorer.getSession().getItem(path);
+//        uiExplorer.getRealNode(path);
+//      } catch(PathNotFoundException pa) {
+//        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
+//            ApplicationMessage.WARNING)) ;
+//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+//        return ;
+//      } catch(AccessDeniedException ace) {
+//        path = uiExplorer.getSession().getRootNode().getPath();
+//      }
+      if (uiExplorer.getPreference().isShowSideBar()) {
         uiTreeExplorer.buildTree(path);
       }
     }

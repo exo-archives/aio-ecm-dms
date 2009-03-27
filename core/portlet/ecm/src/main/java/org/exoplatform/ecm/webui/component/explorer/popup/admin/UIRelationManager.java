@@ -50,7 +50,7 @@ public class UIRelationManager extends UIContainer implements UIPopupComponent {
   static public class CloseActionListener extends EventListener<UIRelationManager> {
     public void execute(Event<UIRelationManager> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.getCurrentNode().save() ;
+      uiExplorer.getRealCurrentNode().save() ;
       uiExplorer.setIsHidePopup(false) ;
       uiExplorer.cancelAction() ;
     }

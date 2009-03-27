@@ -161,7 +161,7 @@ import org.exoplatform.webui.form.UIForm;
       uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false);
       UIPublicationLogList uiPublicationLogList = uiPublicationManager.getChild(UIPublicationLogList.class);    
       UIPopupContainer.activate(uiPublicationManager, 700, 500);
-      uiPublicationLogList.setNode(uiJCRExplorer.getCurrentNode());
+      uiPublicationLogList.setNode(uiJCRExplorer.getRealCurrentNode());
       uiPublicationLogList.updateGrid(); 
     }    
   }
@@ -269,7 +269,7 @@ import org.exoplatform.webui.form.UIForm;
       UIActivePublication uiActivePub = event.getSource();
       UIJCRExplorer uiJCRExplorer = uiActivePub.getAncestorOfType(UIJCRExplorer.class);
       String selectedLifecycle = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node currentNode = uiJCRExplorer.getCurrentNode();
+      Node currentNode = uiJCRExplorer.getRealCurrentNode();
       uiActivePub.enrolNodeInLifecycle(currentNode,selectedLifecycle,event.getRequestContext());
     }
   }
