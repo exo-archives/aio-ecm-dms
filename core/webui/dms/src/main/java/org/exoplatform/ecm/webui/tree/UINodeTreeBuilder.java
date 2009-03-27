@@ -171,31 +171,12 @@ public class UINodeTreeBuilder extends UIContainer {
     List<LocalPath> listLocalPath = uiBreadcumbs.getPath();
     StringBuilder buffer = new StringBuilder(1024);
     String rootPath = rootTreeNode.getPath();
-    /*if (rootTreeNode != null) {
-      rootPath = rootTreeNode.getPath();
-      System.out.println("\n\nrootPath = " + rootPath);
-      rootPath = rootPath.substring(0, rootPath.lastIndexOf("/"));
-    }*/
     for (LocalPath iterLocalPath : listLocalPath) {
       buffer.append("/").append(iterLocalPath.getId());
     }
     String path = buffer.toString();
     if (path.startsWith("//")) path = path.substring(1);
-    if (!path.startsWith(rootPath)) {
-      path = rootPath + path;
-      /*if (path.length() > 0 && path.substring(1).indexOf("/") > -1) {
-        int idx = path.substring(1).indexOf("/");
-        if (rootPath.contains(path.substring(0, idx)))
-        path = rootPath.substring(0, rootPath.indexOf(path.substring(0, idx))) + path ;
-      } else {
-        if ((path.length() > 0) && rootPath.contains(path)) {
-          path = rootPath.substring(0, rootPath.indexOf(path))  + path;
-        } else {
-          path = rootPath + path;
-        }
-        
-      }*/
-    }
+    if (!path.startsWith(rootPath)) path = rootPath + path;
     if (path.endsWith("/")) path = path.substring(0, path.length() - 1);
     if (path.length() == 0) path = "/";
     if (buffer.length() == 0) return currentNode;

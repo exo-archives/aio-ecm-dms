@@ -210,24 +210,7 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     if (!alreadyChangePath) {
         String path = buffer.toString();
         if (path.startsWith("//")) path = path.substring(1);
-        if (!path.startsWith(rootTreePath)) {
-          path = rootTreePath + path;
-        /*  if (path.length() > 0 && path.substring(1).indexOf("/") > -1) {
-            if (rootTreePath.contains(path.substring(0, path.substring(1).indexOf("/")))){
-              int idx = path.substring(1).indexOf("/");
-              if (rootTreePath.contains(path.substring(0, idx)))
-              path = rootTreePath;
-            }
-          } else {
-            if ((path.length() > 0) && rootTreePath.contains(path)) {
-              path = rootTreePath.substring(0, rootTreePath.indexOf(path))  + path;
-            } else {
-              path = rootTreePath + path;
-            }
-            
-          }*/
-        }
-        if (path.startsWith("//")) path = path.substring(1);
+        if (!path.startsWith(rootTreePath)) path = rootTreePath + path;
         if (path.endsWith("/")) path = path.substring(0, path.length() - 1);
         if (path.length() == 0) path = "/";
         Node currentBreadcumbsNode = getNodeByVirtualPath(path);
