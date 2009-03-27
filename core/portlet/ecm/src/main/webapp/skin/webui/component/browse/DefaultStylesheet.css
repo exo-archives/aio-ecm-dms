@@ -105,7 +105,6 @@
 
 .UIBrowseContentPortlet .UIFormGrid td.FieldLabel {
 	width: 25%;
-	vertical-align: middle;
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel:first-letter {

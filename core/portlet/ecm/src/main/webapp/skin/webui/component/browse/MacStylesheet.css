@@ -97,11 +97,10 @@
 
 .UIBrowseContentPortlet .UIFormGrid td.FieldLabel {
 	width: 200px;
-	vertical-align: middle;
 }
 
 .UIBrowseContentPortlet .UIFormGrid .FieldLabel:first-letter {
-		text-transform: capitalize;
+	text-transform: capitalize;
 }
 
 .UIBrowseContentPortlet .UICBCommentForm .UIFormGrid .FieldLabel {
