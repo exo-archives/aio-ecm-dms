@@ -173,6 +173,8 @@ public class UIBrowseContainer extends UIContainer {
   private HashMap<String, WindowState> windowState_ = new HashMap<String, WindowState>();
   private String windowId_;
   
+  private List<Node> listHistoryNode = new ArrayList<Node>();
+  
   @SuppressWarnings("unused")
   public UIBrowseContainer() throws Exception {
     ManageViewService vservice = getApplicationComponent(ManageViewService.class);
@@ -1173,7 +1175,62 @@ public class UIBrowseContainer extends UIContainer {
     getHistory().put(KEY_CURRENT, getCurrentNode());
     getHistory().put(KEY_SELECTED, getSelectedTab());    
   }
-
+  
+  public List<Node> getListHistoryNode() {
+    return listHistoryNode; 
+  }
+  
+  public List<Node> storeListHistory(Node selectedNode) throws Exception {
+    Node rootNode = getRootNode();
+    Node parentNode = null;
+    int countHistoryNode = listHistoryNode.size();
+    if (selectedNode != rootNode) {
+      parentNode = selectedNode.getParent();
+      if ((parentNode != null) && (countHistoryNode > 0)) {
+        Node tempNode = listHistoryNode.get(countHistoryNode - 1);
+        if (tempNode.isNodeType(Utils.EXO_SYMLINK)) {
+          LinkManager linkManager = getApplicationComponent(LinkManager.class);
+          tempNode = linkManager.getTarget(tempNode);
+          if (tempNode.getPath().equals(parentNode.getPath())) parentNode = null;
+        }
+      }
+    }
+    if (listHistoryNode.size() == 0) {
+      if ((parentNode != null) && (!listHistoryNode.contains(parentNode))) listHistoryNode.add(parentNode);  
+      if (!listHistoryNode.contains(selectedNode)) listHistoryNode.add(selectedNode);
+    } else {
+      if (listHistoryNode.contains(selectedNode)) {
+        List<Node> listHistoryTmp = new ArrayList<Node>();
+        boolean addOk = true;
+        for (int i=0; i<countHistoryNode; i++) {
+          if (listHistoryNode.get(i).getPath().equals(selectedNode.getPath())) { 
+            listHistoryTmp.add(listHistoryNode.get(i));
+            addOk = false;
+          }
+          if (addOk) listHistoryTmp.add(listHistoryNode.get(i));   
+        }
+        listHistoryNode.clear();
+        listHistoryNode.addAll(listHistoryTmp);
+      } else {
+        for (int i=0; i<countHistoryNode; i++) {
+          if ((parentNode != null) && (listHistoryNode.get(i) == parentNode)) {
+            if (!listHistoryNode.contains(parentNode)) {
+              listHistoryNode.add(i+1, parentNode);
+              if (!listHistoryNode.contains(selectedNode)) listHistoryNode.add(i+2, selectedNode);
+            } else {
+              if (!listHistoryNode.contains(selectedNode)) listHistoryNode.add(i+1, selectedNode);
+            }          
+          } else {
+            if (!listHistoryNode.contains(parentNode) && (i == countHistoryNode-1) && (parentNode != null)) 
+              listHistoryNode.add(parentNode);
+            if (!listHistoryNode.contains(selectedNode) && (i == countHistoryNode-1)) listHistoryNode.add(selectedNode);
+          }
+        }
+      }
+    }
+    return getListHistoryNode();
+  }
+  
   public void viewDocument(Node docNode ,boolean hasDocList) throws Exception {
     setShowDocumentDetail(true);
     setShowDocumentList(hasDocList);
@@ -1473,6 +1530,8 @@ public class UIBrowseContainer extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
         return;
       }
+      uiContainer.storeListHistory(selectNode);
+      
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class);
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository());
       if(templates.contains(selectNode.getPrimaryNodeType().getName())) {

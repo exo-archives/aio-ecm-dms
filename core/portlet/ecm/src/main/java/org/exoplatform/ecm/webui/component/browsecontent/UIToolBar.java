@@ -73,6 +73,10 @@ public class UIToolBar extends UIContainer {
 
   public List<Node> getNodePaths(Node node) throws Exception {
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class);
+    return uiContainer.getListHistoryNode();
+    
+    /*
+    UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class);
     Node rootNode = getRootNode() ;
     Node historyNode = getHistoryNode();
     if(!uiContainer.getWorkSpace().equals(node.getSession().getWorkspace().getName())) {
@@ -96,6 +100,7 @@ public class UIToolBar extends UIContainer {
       }
     }
     return list;
+    */
   }
   public boolean enableComment() {
     UIBrowseContainer uiContainer = getAncestorOfType(UIBrowseContainer.class);
@@ -151,6 +156,8 @@ public class UIToolBar extends UIContainer {
           uiContainer.changeNode(selectNode) ;
         }
       } else {
+        uiContainer.storeListHistory(selectNode);
+        
         TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class) ;
         List templates = templateService.getDocumentTemplates(uiContainer.getRepository()) ;
         if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
