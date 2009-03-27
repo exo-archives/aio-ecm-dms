@@ -9,28 +9,26 @@
 %>
 <div class="UIForm $uicomponent.id">
 <% uiform.begin() %>
-	<div class="ConstraintOption"> 
-    	<div class="HorizontalLayout">
-    		<div class="FormContainer">
-      		<table class="UIFormGrid">
-            <tbody>
-            	<tr>
-	  	          <td class="FieldLabel"> <%=_ctx.appRes("UICompareExactlyForm.label.filter")%></td>
-	  	          <td class="FieldComponent"><%uiform.renderField(uicomponent.getChild(0))%>
-	              	<img class="AddMetadataTypeIcon" onclick="javascript:eXo.ecm.ECMUtils.filterValue('$uicomponent.id')" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt="" title="<%=_ctx.appRes("UICompareExactlyForm.title.result")%>">
-	              </td>
-		          </tr>
-	            <tr>
-	  	          <td class="FieldLabel"><%=_ctx.appRes("UICompareExactlyForm.label.result")%></td>
-	  	          <td class="FieldComponent"><%uiform.renderField(uicomponent.getChild(1))%>
-              		<span style="display: none;"><%uiform.renderField(uicomponent.getChild(2))%></span>
-              	</td>
-		          </tr>
-	           </tbody>
-	         </table>
-	      </div>
-	    </div>
+	<div class="HorizontalLayout">
+		<div class="FormContainer">
+  		<table class="UIFormGrid">
+        <tbody>
+        	<tr>
+	  	      <td class="FieldLabel"> <%=_ctx.appRes("UICompareExactlyForm.label.filter")%></td>
+	  	      <td class="FieldComponent"><%uiform.renderField(uicomponent.getChild(0))%>
+	          	<img class="AddMetadataTypeIcon" onclick="javascript:eXo.ecm.ECMUtils.filterValue('$uicomponent.id')" src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt="" title="<%=_ctx.appRes("UICompareExactlyForm.title.result")%>">
+	          </td>
+	        </tr>
+	        <tr>
+	  	      <td class="FieldLabel"><%=_ctx.appRes("UICompareExactlyForm.label.result")%></td>
+	  	      <td class="FieldComponent"><%uiform.renderField(uicomponent.getChild(1))%>
+	      			<span style="display: none;"><%uiform.renderField(uicomponent.getChild(2))%></span>
+	      		</td>
+	        </tr>
+	      </tbody>
+	    </table>
 	  </div>
+	</div>
   <div class="UIAction"> 
     <table class="ActionContainer">
     	<tr>

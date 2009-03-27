@@ -103,6 +103,7 @@
 	border-right: 1px solid #b7b7b7; /* orientation=lt */
 	border-left: 1px solid #b7b7b7; /* orientation=rt */
 	width: 30px; height: 19px; 
+	white-space: nowrap;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RightColumn {
@@ -114,6 +115,7 @@
 	padding-right: 3px; /* orientation=rt */
 	width: 105px;
 	cursor: pointer;
+	white-space: nowrap;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .ResizeColumn {
