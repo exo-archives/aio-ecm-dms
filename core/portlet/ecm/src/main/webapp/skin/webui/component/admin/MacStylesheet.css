@@ -230,10 +230,6 @@
 	width: 95%;
 }
 
-.UIECMAdminPortlet .UIFormGrid input {
-  padding-left: 3px;
-}
-
 .UIECMAdminPortlet .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px;
 }
@@ -489,14 +485,19 @@
 
 /*------------------------------UICBScripts------------------------*/
 
-.UIECMScripts .ECMScriptForm{
-  margin: 10px auto;
+.UIECMScripts .ECMScriptForm {
+  margin: 10px;
 }
 
 .UIECMScripts .ECMScriptForm .HorizontalLayout {
   background:  url(MacSkin/background/Background1x4.png) repeat 0%;
   padding-top: 10px;
   border: 1px solid #b7b7b7;
+}
+
+.UIECMScripts .ECMScriptForm .HorizontalLayout textarea {
+	width: 370px;
+	height: 300px;
 }
 
 /*------------------------------UICBScripts------------------------*/
@@ -509,6 +510,7 @@
 .UICBScripts .CBScriptForm .HorizontalLayout {
   background:  url(MacSkin/background/Background1x4.png) repeat 0%;
   padding-top: 10px;
+  border: 1px solid #b7b7b7;
 }
 
 .UICBScripts .HorizontalLayout .FormContainer textarea {
