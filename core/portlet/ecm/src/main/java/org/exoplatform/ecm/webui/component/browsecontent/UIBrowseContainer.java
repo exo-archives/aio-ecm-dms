@@ -1192,9 +1192,9 @@ public class UIBrowseContainer extends UIContainer {
     } else {
       parentNode = selectedNode.getParent();
       if ((parentNode != null) && (countHistoryNode > 0)) {
+        LinkManager linkManager = getApplicationComponent(LinkManager.class);
         Node tempNode = listHistoryNode.get(countHistoryNode - 1);
         if (tempNode.isNodeType(Utils.EXO_SYMLINK)) {
-          LinkManager linkManager = getApplicationComponent(LinkManager.class);
           tempNode = linkManager.getTarget(tempNode);
           if (tempNode.getPath().equals(parentNode.getPath())) parentNode = null;
         }
@@ -1207,6 +1207,7 @@ public class UIBrowseContainer extends UIContainer {
       if (listHistoryNode.contains(selectedNode)) {
         List<Node> listHistoryTmp = new ArrayList<Node>();
         boolean addOk = true;
+        countHistoryNode = listHistoryNode.size();
         for (int i=0; i<countHistoryNode; i++) {
           if (listHistoryNode.get(i).getPath().equals(selectedNode.getPath())) { 
             listHistoryTmp.add(listHistoryNode.get(i));
@@ -1217,8 +1218,9 @@ public class UIBrowseContainer extends UIContainer {
         listHistoryNode.clear();
         listHistoryNode.addAll(listHistoryTmp);
       } else {
+        countHistoryNode = listHistoryNode.size();
         for (int i=0; i<countHistoryNode; i++) {
-          if ((parentNode != null) && (listHistoryNode.get(i) == parentNode)) {
+          if ((parentNode != null) && (listHistoryNode.get(i) != null) && (listHistoryNode.get(i) == parentNode)) {
             if (!listHistoryNode.contains(parentNode)) {
               listHistoryNode.add(i+1, parentNode);
               if (!listHistoryNode.contains(selectedNode)) listHistoryNode.add(i+2, selectedNode);
@@ -1226,10 +1228,29 @@ public class UIBrowseContainer extends UIContainer {
               if (!listHistoryNode.contains(selectedNode)) listHistoryNode.add(i+1, selectedNode);
             }          
           } else {
-            if (!listHistoryNode.contains(parentNode) && (i == countHistoryNode-1) && (parentNode != null)) 
-              listHistoryNode.add(parentNode);
-            if (!listHistoryNode.contains(selectedNode) && (i == countHistoryNode-1)) listHistoryNode.add(selectedNode);
+            if (!listHistoryNode.contains(parentNode) && (parentNode != null) && (i == countHistoryNode-1)) {
+              if ((parentNode != null) && (countHistoryNode > 1)) {
+                Node tempNode = listHistoryNode.get(countHistoryNode - 2);
+                if (tempNode.isNodeType(Utils.EXO_SYMLINK)) {
+                  LinkManager linkManager = getApplicationComponent(LinkManager.class);
+                  tempNode = linkManager.getTarget(tempNode);
+                  if (tempNode.getPath().equals(parentNode.getPath())) parentNode = null;
+                }
+              }
+              if (parentNode != null) listHistoryNode.add(parentNode);
+            } 
+            if (parentNode != null) {
+              if(parentNode.hasNodes()) {
+                NodeIterator nodeIter = parentNode.getNodes();
+                while(nodeIter.hasNext()) {
+                  Node child = nodeIter.nextNode();
+                  listHistoryNode.remove(child);
+                }
+              }
+            }
+            if (!listHistoryNode.contains(selectedNode)) listHistoryNode.add(selectedNode);
           }
+          countHistoryNode = listHistoryNode.size();
         }
       }
     }
@@ -1425,7 +1446,7 @@ public class UIBrowseContainer extends UIContainer {
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class);
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository());
       Node historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT);
-      if (historyNode.isNodeType(Utils.EXO_SYMLINK)) {
+      if ((historyNode != null) && historyNode.isNodeType(Utils.EXO_SYMLINK)) {
         LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
         historyNode = linkManager.getTarget(historyNode);
       }
