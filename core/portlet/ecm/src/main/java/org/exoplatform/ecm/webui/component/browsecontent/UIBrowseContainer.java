@@ -506,8 +506,8 @@ public class UIBrowseContainer extends UIContainer {
     if (isShowAllDocument()) itemCounter = getItemPerPage();
     if (selectedTabPath_.equals(currentPath_)) {
       Node currentNode = getCurrentNode();
-      if (currentNode.isNodeType(Utils.EXO_SYMLINK)) {
-        LinkManager linkManager = getApplicationComponent(LinkManager.class);
+      LinkManager linkManager = getApplicationComponent(LinkManager.class);
+      if (currentNode.isNodeType(Utils.EXO_SYMLINK)) {        
         currentNode = linkManager.getTarget(currentNode);
       }
       NodeIterator tabIter = currentNode.getNodes();
@@ -524,6 +524,10 @@ public class UIBrowseContainer extends UIContainer {
             Map childOfSubCategory = new HashMap();
             List<Node> subCategoryDoc = new ArrayList<Node>();
             List<String> subCategoryCat = new ArrayList<String>();
+            Node tempChildNode = childNode; 
+            if (childNode.isNodeType(Utils.EXO_SYMLINK)) {
+              childNode = linkManager.getTarget(childNode);
+            }
             NodeIterator item = childNode.getNodes();
             while (item.hasNext()) {
               Node node = item.nextNode();
@@ -563,6 +567,7 @@ public class UIBrowseContainer extends UIContainer {
                 false, subCategoryDoc.size(), templates));
             childOfSubCategory.put("doc", subCategoryDoc);
             childOfSubCategory.put("sub", subCategoryCat);
+            childNode = tempChildNode;
             String path = childNode.getPath();
             String keyPath = path.substring(path.lastIndexOf("/") + 1);
             content.put(keyPath, childOfSubCategory);
