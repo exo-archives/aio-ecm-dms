@@ -17,7 +17,11 @@
 	    }
 	    println "<div class=\"ParentSupMenu\" style=\"margin-left: ${level * 15}px;\">" ;
 	    println "<a href=\"" + actionTreeLink + "\"><div class=\"SelectIcon ${expandIcon}16x16Icon\"><span></span></div></a>" ;
-	    println "<a href=\"" + actionTreeLink + "\"><div class=\"TreeRootIcon CBDefaultFolder16x16Icon\"><span></span></div></a>" ;
+	    println "<a href=\"" + actionTreeLink + "\"><div class=\"TreeRootIcon CBDefaultFolder16x16Icon $icon\">";
+	    if(uicomponent.isSymLink(node.getNode())) {
+	      println "<div class=\"LinkSmall\"></div>";
+	    }
+	    println "</div></a>" ;
       println "<div class=\""+styleTree+"\"> <a href=\"" + actionTreeLink + "\">"+ name + " </a></div>" ;
       println "</div>" ;
       if(node.getChildrenSize() > 0) writeNodes(node.getChildren(), level + 1) ;

@@ -895,8 +895,13 @@ public class UIBrowseContainer extends UIContainer {
     List templates = templateService.getDocumentTemplates(getRepository());
     List<String> subCategoryList = new ArrayList<String>();
     List<Node> subDocumentList = new ArrayList<Node>();
+    Node currentNode = getCurrentNode();
     Map content = new HashMap();
-    NodeIterator childIter = getCurrentNode().getNodes();
+    if (currentNode.isNodeType(Utils.EXO_SYMLINK)) {
+      LinkManager linkManager = getApplicationComponent(LinkManager.class);
+      currentNode = linkManager.getTarget(currentNode);
+    }
+    NodeIterator childIter = currentNode.getNodes();
     boolean isShowDocument = isEnableChildDocument();
     boolean isShowReferenced = isEnableRefDocument();
     while(childIter.hasNext()) {
@@ -921,7 +926,7 @@ public class UIBrowseContainer extends UIContainer {
     }
 
     if(isShowReferenced) subDocumentList.addAll(getReferences(repositoryService,
-        getCurrentNode(), isShowAllDocument(), subDocumentList.size(), templates));
+        currentNode, isShowAllDocument(), subDocumentList.size(), templates));
     content.put("subCategoryList", subCategoryList);
     content.put("subDocumentList", subDocumentList);
     return content;
