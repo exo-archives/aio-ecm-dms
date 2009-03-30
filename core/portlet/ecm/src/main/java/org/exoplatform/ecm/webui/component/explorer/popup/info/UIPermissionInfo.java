@@ -32,6 +32,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
@@ -69,23 +70,23 @@ import org.exoplatform.webui.event.EventListener;
 public class UIPermissionInfo extends UIContainer {
 
   public static String[] PERMISSION_BEAN_FIELD = {"usersOrGroups", "read", "addNode", 
-    "setProperty", "remove"} ;
+    "setProperty", "remove"};
   
-  private static String[] PERMISSION_ACTION = {"Edit", "Delete"} ;
+  private static String[] PERMISSION_ACTION = {"Edit", "Delete"};
 
   private int sizeOfListPermission = 0;
   
   private Node currentNode;
   
   public UIPermissionInfo() throws Exception {
-    UIGrid uiGrid = createUIComponent(UIGrid.class, null, "PermissionInfo") ;
-    addChild(uiGrid) ;
+    UIGrid uiGrid = createUIComponent(UIGrid.class, null, "PermissionInfo");
+    addChild(uiGrid);
     uiGrid.getUIPageIterator().setId("PermissionInfoIterator");
-    uiGrid.configure("usersOrGroups", PERMISSION_BEAN_FIELD, PERMISSION_ACTION) ;
+    uiGrid.configure("usersOrGroups", PERMISSION_BEAN_FIELD, PERMISSION_ACTION);
   }
 
   private String  getExoOwner(Node node) throws Exception {
-    return Utils.getNodeOwner(node) ;
+    return Utils.getNodeOwner(node);
   }
   
   public void updateGrid(int currentPage) throws Exception {
@@ -94,37 +95,37 @@ public class UIPermissionInfo extends UIContainer {
     List<PermissionBean> permBeans = new ArrayList<PermissionBean>(); 
     ExtendedNode node = (ExtendedNode) currentNode;
 
-    List permsList = node.getACL().getPermissionEntries() ;
+    List permsList = node.getACL().getPermissionEntries();
     Map<String, List<String>> permsMap = new HashMap<String, List<String>>();
-    Iterator perIter = permsList.iterator() ;
+    Iterator perIter = permsList.iterator();
     while(perIter.hasNext()) {
       AccessControlEntry accessControlEntry = (AccessControlEntry)perIter.next();
       String currentIdentity = accessControlEntry.getIdentity();
       String currentPermission = accessControlEntry.getPermission();
       List<String> currentPermissionsList = permsMap.get(currentIdentity);
       if(!permsMap.containsKey(currentIdentity)) {
-        permsMap.put(currentIdentity, null) ;
+        permsMap.put(currentIdentity, null);
       }
-      if(currentPermissionsList == null) currentPermissionsList = new ArrayList<String>() ;
+      if(currentPermissionsList == null) currentPermissionsList = new ArrayList<String>();
       if(!currentPermissionsList.contains(currentPermission)) {
-        currentPermissionsList.add(currentPermission) ;
+        currentPermissionsList.add(currentPermission);
       }
-      permsMap.put(currentIdentity, currentPermissionsList) ;
+      permsMap.put(currentIdentity, currentPermissionsList);
     }
     Set keys = permsMap.keySet(); 
-    Iterator keysIter = keys.iterator() ;
+    Iterator keysIter = keys.iterator();
     int iSystemOwner = 0;
     //TODO Utils.getExoOwner(node) has exception return SystemIdentity.SYSTEM
-    String owner = SystemIdentity.SYSTEM ;
+    String owner = SystemIdentity.SYSTEM;
     if(getExoOwner(node) != null) owner = getExoOwner(node);
     if (owner.equals(SystemIdentity.SYSTEM)) iSystemOwner = -1;
     PermissionBean permOwnerBean = new PermissionBean();
     if(!permsMap.containsKey(owner)) {
       permOwnerBean.setUsersOrGroups(owner);
-      permOwnerBean.setRead(true) ;
-      permOwnerBean.setAddNode(true) ;
-      permOwnerBean.setSetProperty(true) ;
-      permOwnerBean.setRemove(true) ;
+      permOwnerBean.setRead(true);
+      permOwnerBean.setAddNode(true);
+      permOwnerBean.setSetProperty(true);
+      permOwnerBean.setRemove(true);
       permBeans.add(permOwnerBean);
     }
 
@@ -142,8 +143,8 @@ public class UIPermissionInfo extends UIContainer {
       permBeans.add(permBean);
       sizeOfListPermission = permBeans.size() + iSystemOwner;
     }
-    UIGrid uiGrid = findFirstComponentOfType(UIGrid.class) ; 
-    ObjectPageList objPageList = new ObjectPageList(permBeans, 10) ;
+    UIGrid uiGrid = findFirstComponentOfType(UIGrid.class); 
+    ObjectPageList objPageList = new ObjectPageList(permBeans, 10);
     uiGrid.getUIPageIterator().setPageList(objPageList);
     if(currentPage > uiGrid.getUIPageIterator().getAvailablePage())
       uiGrid.getUIPageIterator().setCurrentPage(currentPage-1);
@@ -152,45 +153,46 @@ public class UIPermissionInfo extends UIContainer {
   }
   static public class EditActionListener extends EventListener<UIPermissionInfo> {
     public void execute(Event<UIPermissionInfo> event) throws Exception {
-      UIPermissionInfo uicomp = event.getSource() ;
-      String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiJCRExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
-      ExtendedNode node = (ExtendedNode)uiJCRExplorer.getRealCurrentNode() ; 
-      UIPermissionForm uiForm = uicomp.getAncestorOfType(UIPermissionManager.class).getChild(UIPermissionForm.class) ;
-      uiForm.fillForm(name, node) ;
+      UIPermissionInfo uicomp = event.getSource();
+      String name = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIJCRExplorer uiJCRExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
+      ExtendedNode node = (ExtendedNode)uiJCRExplorer.getRealCurrentNode(); 
+      UIPermissionForm uiForm = uicomp.getAncestorOfType(UIPermissionManager.class).getChild(UIPermissionForm.class);
+      uiForm.fillForm(name, node);
       uiForm.lockForm(name.equals(uicomp.getExoOwner(node)));
     }
   }
   static public class DeleteActionListener extends EventListener<UIPermissionInfo> {
     public void execute(Event<UIPermissionInfo> event) throws Exception {
-      UIPermissionInfo uicomp = event.getSource() ;
-      UIJCRExplorer uiJCRExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiJCRExplorer.getRealCurrentNode() ;
-      if(currentNode.isLocked()) {
+      UIPermissionInfo uicomp = event.getSource();
+      UIJCRExplorer uiJCRExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
+      LinkManager linkManager = uiJCRExplorer.getApplicationComponent(LinkManager.class);
+      Node currentNode = uiJCRExplorer.getRealCurrentNode();
+      if (currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
-        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
+        if (lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
       }
       ExtendedNode node = (ExtendedNode)currentNode;
-      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class) ;
+      UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
       if (uicomp.getSizeOfListPermission() < 2) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove",
             null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      String name = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      String name = event.getRequestContext().getRequestParameter(OBJECTID);
       if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;        
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;        
       }
       String nodeOwner = Utils.getNodeOwner(node);
       if(name.equals(nodeOwner)) {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-remove", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
       if(PermissionUtil.canChangePermission(node)) {
         if(node.canAddMixin("exo:privilegeable"))  {
@@ -198,68 +200,69 @@ public class UIPermissionInfo extends UIContainer {
           node.setPermission(nodeOwner,PermissionType.ALL);
         }
         try {
-          node.removePermission(name) ;        
-          node.save() ;
+          node.removePermission(name);        
+          node.save();
+          linkManager.updateLink(uiJCRExplorer.getCurrentNode(), node);
         } catch(AccessDeniedException ace) {
-          uiJCRExplorer.getSession().refresh(false) ;
+          uiJCRExplorer.getSession().refresh(false);
           uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.access-denied", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;          
+                                                  ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;          
         }
-        if(uiJCRExplorer.getRootNode().equals(node)) {
-          if(!PermissionUtil.canRead(currentNode)) {
-            uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class) ;
-            return ;
+        if (uiJCRExplorer.getRootNode().equals(node)) {
+          if (!PermissionUtil.canRead(currentNode)) {
+            uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class);
+            return;
           }
         }
         if(!uiJCRExplorer.getPreference().isJcrEnable()) {
-          uiJCRExplorer.getSession().save() ;
-          uiJCRExplorer.getSession().refresh(false) ;
+          uiJCRExplorer.getSession().save();
+          uiJCRExplorer.getSession().refresh(false);
         }
       } else {
         uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-tochange", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      UIPopupContainer uiPopup = uicomp.getAncestorOfType(UIPopupContainer.class) ;
+      UIPopupContainer uiPopup = uicomp.getAncestorOfType(UIPopupContainer.class);
       if(!PermissionUtil.canRead(node)) {
         uiJCRExplorer.setCurrentPath(node.getParent().getPath());
         uiJCRExplorer.setSelectNode(node.getParent().getPath(), uiJCRExplorer.getSession());
-        uiPopup.deActivate() ;
+        uiPopup.deActivate();
       } else {
         uicomp.updateGrid(uicomp.getChild(UIGrid.class).getUIPageIterator().getCurrentPage());
-        event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent());
       }
-      uiJCRExplorer.setIsHidePopup(true) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
-      uiJCRExplorer.updateAjax(event) ;
+      uiJCRExplorer.setIsHidePopup(true);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup);
+      uiJCRExplorer.updateAjax(event);
     }
   }
 
   public class PermissionBean {    
 
-    private String usersOrGroups ;
-    private boolean read ;
-    private boolean addNode ;
-    private boolean setProperty ;
-    private boolean remove ;    
+    private String usersOrGroups;
+    private boolean read;
+    private boolean addNode;
+    private boolean setProperty;
+    private boolean remove;    
 
-    public String getUsersOrGroups() { return usersOrGroups ; }
-    public void setUsersOrGroups(String s) { usersOrGroups = s ; }
+    public String getUsersOrGroups() { return usersOrGroups; }
+    public void setUsersOrGroups(String s) { usersOrGroups = s; }
 
-    public boolean isAddNode() { return addNode ; }
-    public void setAddNode(boolean b) { addNode = b ; }
+    public boolean isAddNode() { return addNode; }
+    public void setAddNode(boolean b) { addNode = b; }
 
-    public boolean isRead() { return read ; }
-    public void setRead(boolean b) { read = b ; }
+    public boolean isRead() { return read; }
+    public void setRead(boolean b) { read = b; }
 
-    public boolean isRemove() { return remove ; }
-    public void setRemove(boolean b) { remove = b ; }
+    public boolean isRemove() { return remove; }
+    public void setRemove(boolean b) { remove = b; }
 
-    public boolean isSetProperty() { return setProperty ; }
-    public void setSetProperty(boolean b) { setProperty = b ; }
+    public boolean isSetProperty() { return setProperty; }
+    public void setSetProperty(boolean b) { setProperty = b; }
   }
 
   public static String[] getPERMISSION_ACTION() {

@@ -50,28 +50,28 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
     addChild(UIPermissionForm.class, null, null);    
   }
   public void initPopupPermission(UIComponent uiSelector) throws Exception {
-    UIPopupWindow uiPopup = getChildById(UIPermissionForm.POPUP_SELECT) ;
+    UIPopupWindow uiPopup = getChildById(UIPermissionForm.POPUP_SELECT);
     if(uiPopup == null) {
       uiPopup = addChild(UIPopupWindow.class, null, UIPermissionForm.POPUP_SELECT);
       uiPopup.setWindowSize(560, 300);
     } else {
-      uiPopup.setRendered(true) ;
+      uiPopup.setRendered(true);
     }
     uiPopup.setUIComponent(uiSelector);
-    uiPopup.setShow(true) ;
-    uiPopup.setResizable(true) ;
+    uiPopup.setShow(true);
+    uiPopup.setResizable(true);
   }
   
   public void initUserSelector() throws Exception {
-    UIPopupWindow uiPopup = getChildById("PopupUserSelector") ;
+    UIPopupWindow uiPopup = getChildById("PopupUserSelector");
     if(uiPopup == null) {
       uiPopup = addChild(UIPopupWindow.class, null, "PopupUserSelector");
     }
     uiPopup.setWindowSize(790, 400);
     UIUserContainer uiUserContainer = createUIComponent(UIUserContainer.class, null, null);
     uiPopup.setUIComponent(uiUserContainer);
-    uiPopup.setShow(true) ;
-    uiPopup.setResizable(true) ;
+    uiPopup.setShow(true);
+    uiPopup.setResizable(true);
   }
   
   public void activate() throws Exception {
@@ -82,13 +82,13 @@ public class UIPermissionManager extends UIContainer implements UIPopupComponent
       String lockToken = LockUtil.getLockToken(node);
       if(lockToken != null) node.getSession().addLockToken(lockToken);
       if(!Utils.isLockTokenHolder(node)) {
-        getChild(UIPermissionInfo.class).getChild(UIGrid.class).configure("usersOrGroups", UIPermissionInfo.PERMISSION_BEAN_FIELD, new String[]{}) ;
-        getChild(UIPermissionForm.class).setRendered(false) ;
+        getChild(UIPermissionInfo.class).getChild(UIGrid.class).configure("usersOrGroups", UIPermissionInfo.PERMISSION_BEAN_FIELD, new String[]{});
+        getChild(UIPermissionForm.class).setRendered(false);
       }
     } else {
       if(!PermissionUtil.canChangePermission(node)) {
-        getChild(UIPermissionInfo.class).getChild(UIGrid.class).configure("usersOrGroups", UIPermissionInfo.PERMISSION_BEAN_FIELD, new String[]{}) ;
-        getChild(UIPermissionForm.class).setRendered(false) ;
+        getChild(UIPermissionInfo.class).getChild(UIGrid.class).configure("usersOrGroups", UIPermissionInfo.PERMISSION_BEAN_FIELD, new String[]{});
+        getChild(UIPermissionForm.class).setRendered(false);
       }
     }
   }

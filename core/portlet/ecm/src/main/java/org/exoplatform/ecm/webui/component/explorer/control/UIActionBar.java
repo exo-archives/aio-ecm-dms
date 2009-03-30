@@ -751,7 +751,7 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource();
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
-      Node currentNode = uiExplorer.getRealCurrentNode();
+      Node currentNode = uiExplorer.getCurrentNode();
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       uiExplorer.setIsHidePopup(false);
       PublicationService publicationService = uiActionBar.getApplicationComponent(PublicationService.class);
@@ -810,7 +810,7 @@ public class UIActionBar extends UIForm {
         //This is special case for wcm want to more than 2 tabs in PublicationManager
         //The uiForm in this case should be a UITabPane or UIFormTabPane and need be a UIPopupComponent        
         UIPopupContainer.activate(uiForm, 700, 500);
-      }else {
+      } else {
         UIPublicationManager uiPublicationManager = 
           uiExplorer.createUIComponent(UIPublicationManager.class, null, null);
         uiPublicationManager.addChild(uiForm);
