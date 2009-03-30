@@ -67,21 +67,43 @@ public class UINodeTree extends UITree {
     StringBuilder builder = new StringBuilder();
     if(nodeIcon.equals(getExpandIcon())) {
       builder.append(" <a class=\"").append(nodeIcon).append(" ").append(nodeTypeIcon).append("\" href=\"").append(actionLink).append("\">") ;
-      
-    }
-    else {
+    } else {
       builder.append(" <a class=\"").append(nodeIcon).append(" ").append(nodeTypeIcon).append("\" onclick=\"eXo.portal.UIPortalControl.collapseTree(this)").append("\">") ;
     }
     UIRightClickPopupMenu popupMenu = getUiPopupMenu();
     String beanLabelField = getBeanLabelField();
+    String className="NodeIcon";
+    boolean flgSymlink = false;
+    if (Utils.isSymLink(node)) {
+      flgSymlink = true;
+      className = "NodeIconLink";
+    }
     if(popupMenu == null) {
-      builder.append(" <div class=\"NodeIcon ").append(iconGroup).append(" ").append(nodeTypeIcon).append(note).append("\"").append(" title=\"").append(getFieldValue(obj, beanLabelField)).append("\"").append(">").append(getFieldValue(obj, beanLabelField)).append("</div>") ;
+      builder.append(" <div class=\"").append(className).append(" ").append(iconGroup).append(" ").append(nodeTypeIcon)
+          .append(note).append("\"").append(" title=\"").append(getFieldValue(obj, beanLabelField))
+          .append("\"").append(">");
+      if (flgSymlink) {
+        builder.append("  <div class=\"LinkSmall\">")
+          .append(getFieldValue(obj, beanLabelField))
+          .append("</div>");
+      } else {
+        builder.append(getFieldValue(obj, beanLabelField));
+      }
+      builder.append("</div>");
+    } else {
+      builder.append(" <div class=\"").append(className).append(" ").append(iconGroup).append(" ").append(nodeTypeIcon)
+          .append(note).append("\" ").append(popupMenu.getJSOnclickShowPopup(objId, null)).append(
+              " title=\"").append(getFieldValue(obj, beanLabelField)).append("\"").append(">");
+      if (flgSymlink) {
+        builder.append("  <div class=\"LinkSmall\">")
+          .append(getFieldValue(obj, beanLabelField))
+          .append("</div>");
+      } else {
+        builder.append(getFieldValue(obj, beanLabelField));
+      }
+      builder.append("</div>");
     }
-    else {
-      builder.append("<div class=\"NodeIcon ").append(iconGroup).append(" ").append(nodeTypeIcon).append(note).append("\" ").append(popupMenu.getJSOnclickShowPopup(objId, null)).append(" title=\"").append(getFieldValue(obj, beanLabelField)).append("\"").append(">")
-      .append(getFieldValue(obj, getBeanLabelField())).append("</div>") ;
-    }
-    builder.append(" </a>") ;
+    builder.append(" </a>");
     return builder.toString();
   }
 
