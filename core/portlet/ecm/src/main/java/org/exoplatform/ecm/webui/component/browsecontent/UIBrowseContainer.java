@@ -1456,6 +1456,15 @@ public class UIBrowseContainer extends UIContainer {
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class);
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository());
       Node historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT);
+      if (historyNode != null) {
+        if(historyNode.hasNodes()) {
+          NodeIterator nodeIter = historyNode.getNodes();
+          while(nodeIter.hasNext()) {
+            Node child = nodeIter.nextNode();
+            uiContainer.listHistoryNode.remove(child);
+          }
+        }
+      }
       if ((historyNode != null) && historyNode.isNodeType(Utils.EXO_SYMLINK)) {
         LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
         historyNode = linkManager.getTarget(historyNode);
@@ -1569,16 +1578,15 @@ public class UIBrowseContainer extends UIContainer {
         return;
       }
       uiContainer.storeListHistory(selectNode);
+      uiContainer.storeHistory();
       if (selectNode.isNodeType(Utils.EXO_SYMLINK)) {
         LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
         selectNode = linkManager.getTarget(selectNode);
       }
-      
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class);
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository());
       if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
         if(catPath != null) {
-          uiContainer.storeHistory();
           if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
             uiContainer.setCategoryPath(catPath);
             Node currentCat  = uiContainer.getNodeByPath(catPath);
