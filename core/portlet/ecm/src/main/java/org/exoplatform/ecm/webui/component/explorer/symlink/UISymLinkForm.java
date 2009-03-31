@@ -36,6 +36,7 @@ import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -172,9 +173,9 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
       ManageableRepository repository = repositoryService.getRepository(uiExplorer.getRepositoryName());
       Session userSession = 
         SessionProviderFactory.createSessionProvider().getSession(workspaceName, repository);
-      
+      NodeFinder nodeFinder = uiSymLinkForm.getApplicationComponent(NodeFinder.class);      
       try {
-        userSession.getItem(pathNode);
+        nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, pathNode);
       } catch (ItemNotFoundException e) {
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.non-node", null, 
             ApplicationMessage.WARNING));
@@ -196,7 +197,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         return;
       }
       try {        
-        Node targetNode = (Node) userSession.getItem(pathNode);
+        Node targetNode = (Node) nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, pathNode);
         LinkManager linkManager = uiSymLinkForm.getApplicationComponent(LinkManager.class);        
         List<ClipboardCommand> clipboards = uiExplorer.getAllClipBoard();
         if (clipboards.size() > 0) {

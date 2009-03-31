@@ -34,6 +34,7 @@ import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
@@ -348,8 +349,8 @@ public class UIPathConfig extends UIForm implements UISelectable{
         return;
       } 
       try {
-        Session session = uiBCContainer.getSession(repository, workSpace);
-        Node node = (Node) session.getItem(jcrPath);
+        NodeFinder nodeFinder = uiForm.getApplicationComponent(NodeFinder.class);        
+        Node nodePath = (Node) nodeFinder.getItem(repository, workSpace, jcrPath);
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPathConfig.msg.invalid-path", null, 
                                               ApplicationMessage.WARNING));

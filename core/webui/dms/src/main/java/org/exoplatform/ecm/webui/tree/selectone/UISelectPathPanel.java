@@ -32,9 +32,11 @@ import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
+import org.exoplatform.webui.core.UIBreadcumbs.LocalPath;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -166,14 +168,20 @@ public class UISelectPathPanel extends UIContainer {
 
   static public class SelectActionListener extends EventListener<UISelectPathPanel> {
     public void execute(Event<UISelectPathPanel> event) throws Exception {
-      UISelectPathPanel uiDefault = event.getSource() ;
-      String value = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UISelectPathPanel uiDefault = event.getSource();      
       UIContainer uiTreeSelector = uiDefault.getParent();
+      UIBreadcumbs uiBreadcumbs = uiTreeSelector.getChild(UIBreadcumbs.class);
+      String breadcumbsPaths = "";
+      for(LocalPath iterLocalPath: uiBreadcumbs.getPath()) {
+        breadcumbsPaths += "/" + iterLocalPath.getId();
+      }
+      String value = event.getRequestContext().getRequestParameter(OBJECTID);
+      value = breadcumbsPaths + value.substring(value.lastIndexOf("/"));
       if(uiTreeSelector instanceof UIOneNodePathSelector) {
         if(!((UIOneNodePathSelector)uiTreeSelector).isDisable()) {
           value = ((UIOneNodePathSelector)uiTreeSelector).getWorkspaceName() + ":" + value ;
         }
-      } 
+      }      
       String returnField = ((UIBaseNodeTreeSelector)uiTreeSelector).getReturnFieldName();
       ((UISelectable)((UIBaseNodeTreeSelector)uiTreeSelector).getSourceComponent()).doSelect(returnField, value) ;
       
