@@ -8,6 +8,16 @@
  
 /*************************** NodeType Icon ***********************/
 
+.ItemIcon16x16 { 
+ 	float: left; /* orientation=lt */
+ 	float: right; /* orientation=rt */
+ 	margin-top: 0px;
+ 	margin-left: 4px; /* orientation=lt */
+ 	margin-right: 4px; /* orientation=rt */
+ 	width: 16px;
+ 	height: 16px;
+}
+
 .CBDefaultFolder16x16Icon {
   background: url('icons/NodeTypes/DefaultFolderIcon.gif') no-repeat;
 }

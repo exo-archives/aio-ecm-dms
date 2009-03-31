@@ -2,6 +2,7 @@
   import org.exoplatform.ecm.webui.component.browsecontent.UIToolBar ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ; 	
 	import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
+	import org.exoplatform.ecm.webui.utils.Utils ;
 	
 	def subDocumentList =  uicomponent.getCurrentList() ;
 	boolean hasNoDocument = subDocumentList.isEmpty() ;
@@ -32,7 +33,11 @@
 		              <table>  
 		                 <tr>
 		                  <td>
-		                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName"><span></span></div>
+		                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName">
+			                    <%if(Utils.isSymLink(doc)) {%>
+		                       <div class="LinkSmall"></div>
+		                      <%}%>
+		                    </div>
 		                    <div class="EventDocumentLabel">
 		                      <a href="$viewAction"><%=docName%></a>
 		                    </div>  

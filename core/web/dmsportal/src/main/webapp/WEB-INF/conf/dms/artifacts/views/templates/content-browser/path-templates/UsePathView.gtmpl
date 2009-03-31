@@ -79,7 +79,7 @@
 		                      String classStyleName = "NodeLabel" ;
 		                      String nodeName =  nodePath.substring(nodePath.lastIndexOf("/") + 1);                  
 		                      String nodeLink = uicomponent.event('ChangeNode',Utils.formatNodeName(nodePath)) ;
-		                       if(nodeName.equals(currentNode.getName())) classStyleName = "NodeLabelSelected";
+		                      if(nodeName.equals(currentNode.getName())) classStyleName = "NodeLabelSelected";
 		                  %>
 		                      <div class="NodeHistoryContainer">
 		                        <a class="NodeItemIcon $classStyleName" href="$nodeLink">$nodeName</a>
@@ -247,15 +247,17 @@
 	            for(String subCat in subCategoryList) {
 	              String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
 	              String subCatLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subCat));
+	              def subCatNode = uicomponent.getNodeByPath(subCat);
+	              def subCatIcon = Utils.getNodeTypeIcon(subCatNode, "16x16Icon");
 	          %>
 	              <div class="SubContentHolder">
 	                <div class="TopSubContent">
-	                  <div class="ItemIcon CBDefaultFolder16x16Icon">
+	                  <div class="ItemIcon CBDefaultFolder16x16Icon $subCatIcon">
+		                  <%if(uicomponent.isSymLink(subCat)) {%> 
+					              <div class="LinkSmall"><span></span></div>
+					            <%}%>
 	                  </div>
 	                  <a class="NodeLabel" href="$subCatLink">
-	                  <%if(uicomponent.isSymLink(subCat)) {%> 
-				              <img class="LinkSmall" />
-				            <%}%>
 				            $catName</a>
 	                </div>
 	                
@@ -274,7 +276,12 @@
 							                      String subChildName = subChild.substring(subChild.lastIndexOf("/") + 1) ;
 							                      String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild));
 							                  %>					                      	
-				                        <a class="NodeLabel" href="$subChildLink">$subChildName</a>
+				                        <a class="NodeLabel" href="$subChildLink">
+				                        <%if(uicomponent.isSymLink(subChild)) {%> 
+						                      <img class="LinkSmall" />
+						                    <%}%> 
+				                        $subChildName
+				                        </a>
 					                      <div class="SeparatorLine"><span></span></div>
 							                  <%}%>
 							                  <div class="NavigationButtonContainer">

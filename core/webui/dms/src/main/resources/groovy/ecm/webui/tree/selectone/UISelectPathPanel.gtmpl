@@ -36,11 +36,18 @@
 	      %>
 				      <tr class="$rowClass">
 				        <td>
-				          <%
-				            String nodeName = node.getName();
-										String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");
-				           %>
-				          <div class="Text <%=nodeTypeIcon%>">$nodeName</div>
+				        <%
+				          String nodeName = node.getName();
+								  String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");
+				          def clazz = "Text"
+				          if(Utils.isSymLink(node)) clazz = "TextSymLink";
+				        %>
+				          
+				          <div class="$clazz <%=nodeTypeIcon%>">
+				          <%if(Utils.isSymLink(node)) {%>
+	                  <image class="LinkSmall" />
+	                <%}%>
+				          $nodeName</div>
 				        </td>
 				        <td>
 				          <%if(!uicomponent.isExceptedNodeType(node)) {%>

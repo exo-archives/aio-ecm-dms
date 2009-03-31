@@ -53,7 +53,11 @@
               <table>  
                  <tr>
                   <td>
-                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $icon"><span></span></div>
+                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $icon">
+                    <%if(Utils.isSymLink(doc)) {%>
+	                    <div class="LinkSmall"></div>
+	                  <%}%>
+                    </div>
                     <div class="EventDocumentLabel">
                       <a href="$viewAction"><%=doc.getName()%></a>
                     </div>  

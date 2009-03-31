@@ -21,6 +21,8 @@
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	margin: 0px 5px;
+	width: 16px;
+	height: 16px;
 }
 
 .UIContentView .TiteContentView a {

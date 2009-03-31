@@ -513,7 +513,7 @@ public class UIBrowseContainer extends UIContainer {
       NodeIterator tabIter = currentNode.getNodes();
       while(tabIter.hasNext()) {
         Node childNode = tabIter.nextNode();
-        if(canRead(childNode)) {
+        if(canRead(childNode) && !childNode.isNodeType(Utils.EXO_HIDDENABLE)) {
           NodeType nt = childNode.getPrimaryNodeType();
           if (templates.contains(nt.getName())&&(isShowDocument)) { 
             subDocumentList.add(childNode);
@@ -531,7 +531,7 @@ public class UIBrowseContainer extends UIContainer {
             NodeIterator item = childNode.getNodes();
             while (item.hasNext()) {
               Node node = item.nextNode();
-              if (canRead(node)){
+              if (canRead(node) && !node.isNodeType(Utils.EXO_HIDDENABLE)) {
                 NodeType nodeType = node.getPrimaryNodeType();
                 String typeName = nodeType.getName();
                 if(node.isNodeType(Utils.EXO_SYMLINK)) {
@@ -588,7 +588,7 @@ public class UIBrowseContainer extends UIContainer {
     }
     while(tabIter.hasNext()) {
       Node tab = tabIter.nextNode();
-      if(canRead(tab)) {
+      if(canRead(tab) && !tab.isNodeType(Utils.EXO_HIDDENABLE)) {
         if(!templates.contains(tab.getPrimaryNodeType().getName())){
           if(isCategories(tab)) tabList.add(tab.getPath());
           if(tab.getPath().equals(getSelectedTab().getPath())) {
@@ -906,7 +906,7 @@ public class UIBrowseContainer extends UIContainer {
     boolean isShowReferenced = isEnableRefDocument();
     while(childIter.hasNext()) {
       Node child = childIter.nextNode();
-      if(canRead(child)) {
+      if(canRead(child) && !child.isNodeType(Utils.EXO_HIDDENABLE)) {
         String typeName = child.getPrimaryNodeType().getName();
         if(child.isNodeType(Utils.EXO_SYMLINK)) {
           typeName = child.getProperty(Utils.EXO_PRIMARYTYPE).getString();

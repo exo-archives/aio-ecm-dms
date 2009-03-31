@@ -99,6 +99,16 @@
 	padding: 1px 5px 0px 5px;
 }
 
+.UISubContent .SubContentTitle .LinkSmall {
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
+  position: absolute;
+  width: 9px;
+  height: 5px;
+  right: 0; /* orientation=lt */
+  left: 0; /* orientation=rt */
+  bottom: 0px;
+}
+
 .UISubContent .SubContentTitle .RightIcon { 
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
@@ -129,6 +139,8 @@
 	float: right; /* orientation=rt */
  	margin-top: 0px;
  	margin-left: 4px;
+ 	width: 16px;
+ 	height: 16px;
 }
 
 .UISubContent .UIDocumentContentInfo .DocumentInfo {

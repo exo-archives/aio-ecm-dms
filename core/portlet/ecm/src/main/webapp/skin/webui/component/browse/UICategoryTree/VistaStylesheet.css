@@ -53,7 +53,7 @@
   float: right; /* orientation=rt */
   margin: 2px 3px 0px 5px; /* orientation=lt */
   margin: 2px 5px 0px 3px; /* orientation=rt */
-  width: 16px; height: 16px;
+  width: 16px; height: 24px;
 }
 
 .UICategoryTree .MiddleCategoryTree .RootTreeNode{
@@ -61,7 +61,7 @@
   float: right; /* orientation=rt */
 	font-weight:  bold;
 	font-size: 11px;
-	line-height: 20px; height: 20px;		
+	line-height: 24px; height: 24px;		
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu {
@@ -76,7 +76,7 @@
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
 	margin-top: 2px;
-	width: 16px; height: 16px;
+	width: 16px; height: 24px;
 }
 
 .UICategoryTree .MiddleCategoryTree .ListMenu .CategoryTreeLabel {

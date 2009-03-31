@@ -126,13 +126,19 @@
 							  for (String subCat : subCategoryList) { 
 							     String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
 	                 String actionLinkSub = uicomponent.event("Select", Utils.formatNodeName(subCat)) ; 
-	                  def child = content.get(catName) ;
-								   	def docChilds = child.get("doc") ;
-								   	int numbDocument = docChilds.size() ;
+	                 def child = content.get(catName) ;
+								   def docChilds = child.get("doc") ;
+								   def subCatNode = uicomponent.getNodeByPath(subCat);
+								   def iconSubCat = Utils.getNodeTypeIcon(subCatNode, "16x16Icon");
+								   int numbDocument = docChilds.size() ;
 							%>
 										<div class="TiteContentView">										  
 										  <a class="TiteLabel" href="$actionLinkSub">
-										  	<div class="TiteContentIcon CBDefaultFolder16x16Icon"><span></span></div>
+										  	<div class="TiteContentIcon CBDefaultFolder16x16Icon $iconSubCat">
+										  	<%if(Utils.isSymLink(subCatNode)) {%>
+		                      <div class="LinkSmall"></div>
+		                    <%}%>
+										  	</div>
 										  	<%=catName%>
 										  </a>
 										  <div style="clear:left"><span></span></div>
