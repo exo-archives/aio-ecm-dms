@@ -32,7 +32,9 @@ public interface BasePath {
   public static final String EXO_ECM_SYSTEM_PATH = "exoECMSystemPath" ;
   public static final String EXO_TAXONOMIES_PATH = "exoTaxonomiesPath" ;
   public static final String CALENDAR_CATEGORIES_PATH = "calendarPath" ;
-  public static final String EXO_FOLKSONOMY_PATH = "exoFolksonomiesPath" ;
+  public static final String TAXONOMIES_TREE_DEFINITION_PATH = "exoTaxoTreesDefinitionPath";
+  public static final String TAXONOMIES_TREE_STORAGE_PATH = "exoTaxoTreesStoragePath";
+  public static final String EXO_FOLKSONOMY_PATH = "exoFolksonomiesPath";
   public static final String EXO_TAGS_PATH = "exoTagsPath" ;
   public static final String EXO_TAG_STYLE_PATH = "exoTagStylePath" ;
   public static final String METADATA_PATH = "metadataPath" ;
