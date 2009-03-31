@@ -843,5 +843,11 @@
 			</propertyDefinition>
 		</propertyDefinitions>
 	</nodeType>
-		 	       	             
+		 
+	<nodeType name="exo:taxonomyLink" isMixin="false" hasOrderableChildNodes="false" primaryItemName="exo:primaryType">
+		<supertypes>
+		<supertype>exo:symlink</supertype>
+		</supertypes>
+	</nodeType>
+		       	             
 </nodeTypes>
