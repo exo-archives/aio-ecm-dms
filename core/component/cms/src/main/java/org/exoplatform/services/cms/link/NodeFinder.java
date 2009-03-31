@@ -21,6 +21,7 @@ import javax.jcr.Item;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 
 /**
  * Created by The eXo Platform SARL
@@ -49,4 +50,14 @@ public interface NodeFinder {
    * @throws RepositoryException   if another error occurs.
    */
    public Item getItem(String repository, String workspace, String absPath) throws PathNotFoundException, RepositoryException;
+   
+   /**
+   * Returns the item at the specified absolute path.
+   * @param session                The session to use in order to get the item
+   * @param absPath                An absolute path.
+   *
+   * @throws PathNotFoundException if the specified path cannot be found.
+   * @throws RepositoryException   if another error occurs.
+   */
+   public Item getItem(Session session, String absPath) throws PathNotFoundException, RepositoryException;
 }

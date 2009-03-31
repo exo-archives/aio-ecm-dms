@@ -53,7 +53,7 @@ public class NodeFinderImpl implements NodeFinder {
    */
   public Item getItem(String repository, String workspace, String absPath)
       throws PathNotFoundException, RepositoryException {
-    if (!absPath.startsWith("/")) throw new PathNotFoundException(absPath + " isn't absolute path");
+    if (!absPath.startsWith("/")) throw new IllegalArgumentException(absPath + " isn't absolute path");
 	try {
 	    Session session = getSession(repositoryService_.getRepository(repository), workspace);
 	    return getItem(session, absPath);
@@ -67,7 +67,7 @@ public class NodeFinderImpl implements NodeFinder {
    */
   public Node getNode(Node ancestorNode, String relativePath) throws PathNotFoundException,
       RepositoryException {
-    if (relativePath.startsWith("/")) throw new PathNotFoundException("Invalid relative path: " + relativePath);
+    if (relativePath.startsWith("/")) throw new IllegalArgumentException("Invalid relative path: " + relativePath);
     String absPath = "";
     if (ancestorNode.getPath().equals("/")) absPath = "/" + relativePath;
     else absPath = ancestorNode.getPath() + "/" + relativePath;
@@ -81,7 +81,7 @@ public class NodeFinderImpl implements NodeFinder {
    * @param absPath The absolute path to node
    * @return the item corresponding to the path
    */
-  private Item getItem(Session session, String absPath) throws PathNotFoundException, RepositoryException {
+  public Item getItem(Session session, String absPath) throws PathNotFoundException, RepositoryException {
 	  return getItem(session, absPath, 0);
   }
 	  
