@@ -16,6 +16,16 @@
  */
 package org.exoplatform.services.cms.taxonomy.impl;
 
+import java.util.List;
+
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+
 /**
  * Created by The eXo Platform SARL
  * Author : Ly Dinh Quang
@@ -23,6 +33,91 @@ package org.exoplatform.services.cms.taxonomy.impl;
  *          xxx5669@gmail.com
  * Mar 31, 2009  
  */
-public class TaxonomyServiceImpl {
+public class TaxonomyServiceImpl implements TaxonomyService {
+  private SessionProviderService providerService_;
+  
+  public TaxonomyServiceImpl(SessionProviderService providerService) throws Exception {
+    providerService_ = providerService;
+  }
+  
+  public void addCategories(Node node, String taxonomyName, String[] categoryPaths) throws RepositoryException {
+    
+  }
 
+  public void addCategory(Node node, String taxonomyName, String categoryPath) throws RepositoryException {
+    
+  }
+
+  public void addTaxonomyNode(String repository, String workspace, String parentPath, String taxoNodeName) throws RepositoryException {
+    
+  }
+
+  public void addTaxonomyPlugin(TaxonomyPlugin plugin) {
+    
+  }
+
+  public List<Node> getAllTaxonomyTrees(String repository, boolean system) throws RepositoryException {
+    return null;
+  }
+
+  public List<Node> getAllTaxonomyTrees(String repository) throws RepositoryException {
+    return null;
+  }
+
+  public List<String> getCategories(Node node, String taxonomyName) throws RepositoryException {
+    return null;
+  }
+
+//  The method getTaxonomyTree will try to find an exo:symlink at ${exoTaxoTreesDefinitionPath}/${taxonomyName} 
+//  if the link exists, the method will return the target node thanks to the method LinkManager.getTarget(..). 
+//  The system session will be used.
+  
+  public Node getTaxonomyTree(String repository, String taxonomyName) throws RepositoryException {
+    
+    return null;
+  }
+
+  public boolean hasCategories(Node node, String taxonomyName) throws RepositoryException {
+    return false;
+  }
+
+  public boolean hasTaxonomyTree(String repository, String taxonomyName) throws RepositoryException {
+    return false;
+  }
+
+  public void init(String repository) throws Exception {
+    
+  }
+
+  public void moveTaxonomyNode(String repository, String workspace, String srcPath, String destPath, String type) throws RepositoryException {
+    
+  }
+
+  public void removeCategory(Node node, String taxonomyName, String categoryPath) throws RepositoryException {
+    
+  }
+
+  public void removeTaxonomyNode(String repository, String workspace, String absPath) throws RepositoryException {
+    
+  }
+
+  public void removeTaxonomyTree(String taxonomyName) throws RepositoryException {
+    
+  }
+
+  public void updateTaxonomyTree(String taxonomyName, Node taxonomyTree) throws RepositoryException {
+    
+  }
+  
+  public void addTaxonomyTree(Node taxonomyTree) throws RepositoryException, TaxonomyAlreadyExistsException {
+    // TODO Auto-generated method stub
+    
+  }
+  
+  private Session getSession(ManageableRepository manageRepository, String workspaceName,
+      boolean system) throws RepositoryException {
+    if (system)
+      return providerService_.getSystemSessionProvider(null).getSession(workspaceName, manageRepository);
+    return providerService_.getSessionProvider(null).getSession(workspaceName, manageRepository);
+  }
 }
