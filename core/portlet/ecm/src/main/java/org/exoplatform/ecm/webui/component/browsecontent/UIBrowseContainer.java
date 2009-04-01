@@ -278,7 +278,7 @@ public class UIBrowseContainer extends UIContainer {
     return Integer.parseInt(getPortletPreferences().getValue(Utils.CB_NB_PER_PAGE, ""));
   }
 
-  public Node getNodeByPath(String nodePath) throws Exception{
+  public Node getNodeByPath(String nodePath) throws Exception {
     try{
       if(wsName_ == null) {
         wsName_ = getWorkSpace();
@@ -653,7 +653,9 @@ public class UIBrowseContainer extends UIContainer {
   
   public String getRootPath() { return rootPath_; }
   
-  public Node getRootNode() throws Exception { return getNodeByPath(rootPath_); }
+  public Node getRootNode() throws Exception { 
+    return getNodeByPath(rootPath_); 
+  }
   
   public int getRowPerBlock() { return rowPerBlock_; }
   
@@ -1022,7 +1024,6 @@ public class UIBrowseContainer extends UIContainer {
         categoryNode = linkManager_.getTarget(categoryNode);
       }
     }
-    categoryPath = categoryNode != null ? categoryNode.getPath() : "";
     if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
       setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, 
           repoName, SessionProviderFactory.createSystemProvider()).getNode(tempName).getPath());
@@ -1194,6 +1195,7 @@ public class UIBrowseContainer extends UIContainer {
   }
   
   public List<Node> storeListHistory(Node selectedNode) throws Exception {
+    LinkManager linkManager = getApplicationComponent(LinkManager.class);
     Node rootNode = getRootNode();
     Node parentNode = null;
     int countHistoryNode = listHistoryNode.size();
@@ -1202,7 +1204,7 @@ public class UIBrowseContainer extends UIContainer {
     } else {
       parentNode = selectedNode.getParent();
       if ((parentNode != null) && (countHistoryNode > 0)) {
-        LinkManager linkManager = getApplicationComponent(LinkManager.class);
+        //LinkManager linkManager = getApplicationComponent(LinkManager.class);
         Node tempNode = listHistoryNode.get(countHistoryNode - 1);
         if (tempNode.isNodeType(Utils.EXO_SYMLINK)) {
           tempNode = linkManager.getTarget(tempNode);
@@ -1242,7 +1244,7 @@ public class UIBrowseContainer extends UIContainer {
               if ((parentNode != null) && (countHistoryNode > 1)) {
                 Node tempNode = listHistoryNode.get(countHistoryNode - 2);
                 if (tempNode.isNodeType(Utils.EXO_SYMLINK)) {
-                  LinkManager linkManager = getApplicationComponent(LinkManager.class);
+                  //LinkManager linkManager = getApplicationComponent(LinkManager.class);
                   tempNode = linkManager.getTarget(tempNode);
                   if (tempNode.getPath().equals(parentNode.getPath())) parentNode = null;
                 }
@@ -1265,6 +1267,11 @@ public class UIBrowseContainer extends UIContainer {
       }
     }
     if (listHistoryNode.contains(rootNode)) listHistoryNode.remove(rootNode);
+    if (rootNode.isNodeType(Utils.EXO_SYMLINK) && (listHistoryNode.size() > 0)) {
+      Node historyNode1 = listHistoryNode.get(0);
+      Node targetRootNode = linkManager.getTarget(rootNode);
+      if (historyNode1.getPath().equals(targetRootNode.getPath())) listHistoryNode.remove(historyNode1);
+    }
     
     return getListHistoryNode();
   }
