@@ -186,7 +186,6 @@ public class UIPermissionInfo extends UIContainer {
         if(node.canAddMixin("exo:privilegeable"))  {
           node.addMixin("exo:privilegeable");
           node.setPermission(nodeOwner,PermissionType.ALL);
-          System.out.println("\n\n can add Mixin permission");
           node.save();
         }
         try {

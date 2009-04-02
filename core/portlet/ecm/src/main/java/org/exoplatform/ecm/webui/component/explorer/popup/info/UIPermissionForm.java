@@ -30,7 +30,6 @@ import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
@@ -158,7 +157,6 @@ public class UIPermissionForm extends UIForm implements UISelectable {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
-      LinkManager linkManager = uiExplorer.getApplicationComponent(LinkManager.class);
       Node currentNode = uiExplorer.getRealCurrentNode();
       UIPermissionManager uiParent = uiForm.getParent();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
@@ -221,8 +219,6 @@ public class UIPermissionForm extends UIForm implements UISelectable {
         if(PermissionUtil.canChangePermission(node)) node.setPermission(userOrGroup, permsArray);
         uiParent.getChild(UIPermissionInfo.class).updateGrid(1);
         node.save();
-        linkManager.updateLink(uiExplorer.getCurrentNode(), node);
-        
         if (uiJCRExplorer.getRootNode().equals(node)) {
           if (!PermissionUtil.canRead(uiJCRExplorer.getRealCurrentNode())) {
             uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class);
