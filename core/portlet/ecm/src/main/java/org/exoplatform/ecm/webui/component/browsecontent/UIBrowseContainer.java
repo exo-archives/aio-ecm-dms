@@ -279,14 +279,14 @@ public class UIBrowseContainer extends UIContainer {
   }
 
   public Node getNodeByPath(String nodePath) throws Exception {
+    NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
     try{
       if(wsName_ == null) {
         wsName_ = getWorkSpace();
-        return (Node)getSession().getItem(nodePath);
       }
-      return (Node)getSession(getRepository(), wsName_).getItem(nodePath);
+      return (Node) nodeFinder.getItem(getRepository(), wsName_, nodePath);
     } catch(PathNotFoundException path) {
-      return (Node)getSession(getRepository(), wsName_).getItem(rootPath_);
+      return (Node) nodeFinder.getItem(getRepository(), wsName_, rootPath_);
     } catch(AccessDeniedException ace) {
       return null;
     } catch(Exception e){
