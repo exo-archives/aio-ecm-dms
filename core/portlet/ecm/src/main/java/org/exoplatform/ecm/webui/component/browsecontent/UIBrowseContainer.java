@@ -1464,6 +1464,10 @@ public class UIBrowseContainer extends UIContainer {
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository());
       Node historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT);
       if (historyNode != null) {
+        if (historyNode.isNodeType(Utils.EXO_SYMLINK)) {
+          LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
+          historyNode = linkManager.getTarget(historyNode);
+        }
         if(historyNode.hasNodes()) {
           NodeIterator nodeIter = historyNode.getNodes();
           while(nodeIter.hasNext()) {

@@ -78,7 +78,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
       uiTabPane.setRendered(false);
       uiBCHelp.setRendered(false);
       uiContainer.setRendered(true);
-      if(!isViewModing_) uiContainer.refreshContent(); 
+      if(isViewModing_) uiContainer.refreshContent();
       isViewModing_ = true;
     } else if(portletReqContext.getApplicationMode() == PortletMode.EDIT) {      
       if(!SessionProviderFactory.isAnonim()) {
