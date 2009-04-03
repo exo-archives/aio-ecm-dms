@@ -688,6 +688,7 @@
 	margin:0 7px;
 	padding:0px 0 10px 26px;
 	width:auto;
+	white-space:nowrap;
 }
 
 .UIJCRExplorerPortlet .UIRightClickPopupMenu .UIContextMenuContainer {
