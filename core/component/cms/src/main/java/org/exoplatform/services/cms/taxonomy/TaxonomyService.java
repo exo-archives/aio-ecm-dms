@@ -22,6 +22,7 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyAlreadyExistsException;
+import org.exoplatform.services.cms.taxonomy.impl.TaxonomyNodeAlreadyExistsException;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyPlugin;
 
 /**
@@ -31,6 +32,18 @@ import org.exoplatform.services.cms.taxonomy.impl.TaxonomyPlugin;
 public interface TaxonomyService {
   /**
    * Returns the root node of the given taxonomy tree
+   * 
+   * @param repository The name of repository
+   * @param taxonomyName The name of the taxonomy
+   * @param system Indicates whether the nodes must be retrieved using a session
+   *          system or user session
+   * @throws RepositoryException if the taxonomy tree could not be found
+   */
+  public Node getTaxonomyTree(String repository, String taxonomyName, boolean system)
+      throws RepositoryException;
+
+  /**
+   * Returns the root node of the given taxonomy tree with the user session
    * 
    * @param repository The name of repository
    * @param taxonomyName The name of the taxonomy
@@ -50,8 +63,8 @@ public interface TaxonomyService {
       throws RepositoryException;
 
   /**
-   * Returns the list of all the root nodes of the taxonomy tree available for a
-   * given user
+   * Returns the list of all the root nodes of the taxonomy tree available with
+   * the user session
    * 
    * @param repository The name of repository
    * @throws RepositoryException if the taxonomies could not be found
@@ -107,7 +120,7 @@ public interface TaxonomyService {
    * @throws RepositoryException if the taxonomy node could not be added
    */
   public void addTaxonomyNode(String repository, String workspace, String parentPath,
-      String taxoNodeName) throws RepositoryException;
+      String taxoNodeName) throws RepositoryException, TaxonomyNodeAlreadyExistsException;
 
   /**
    * Removes the taxonomy node located at the given absolute path
