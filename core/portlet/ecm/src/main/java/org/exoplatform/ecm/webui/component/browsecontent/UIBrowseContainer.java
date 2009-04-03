@@ -1210,6 +1210,29 @@ public class UIBrowseContainer extends UIContainer {
           if (tempNode.getPath().equals(parentNode.getPath())) parentNode = null;
         }
       }
+      Node grandParentNode = null;
+      if (listHistoryNode.size() == 0) {
+        grandParentNode = rootNode;
+      } else {
+        if (listHistoryNode.get(listHistoryNode.size() - 1) != null) {
+          grandParentNode = listHistoryNode.get(listHistoryNode.size() - 1);
+        }
+      }
+      // If symlink1/symlink2
+      if ((grandParentNode != null) && (grandParentNode.hasNodes())) {
+        NodeIterator nodeIter = grandParentNode.getNodes();
+        while(nodeIter.hasNext()) {
+          Node child = nodeIter.nextNode();
+          Node tempChild = child;
+          if (child.isNodeType(Utils.EXO_SYMLINK)) {
+            child = linkManager.getTarget(child);
+          }
+          if ((parentNode != null) && (child.getPath().equals(parentNode.getPath()))) {
+            parentNode = tempChild;
+            break;
+          }
+        }
+      }
     }
     if (listHistoryNode.size() == 0) {
       if ((parentNode != null) && (!listHistoryNode.contains(parentNode))) listHistoryNode.add(parentNode);  
@@ -1229,7 +1252,7 @@ public class UIBrowseContainer extends UIContainer {
         listHistoryNode.clear();
         listHistoryNode.addAll(listHistoryTmp);
       } else {
-        countHistoryNode = listHistoryNode.size();
+        countHistoryNode = listHistoryNode.size();        
         for (int i=0; i<countHistoryNode; i++) {
           if ((parentNode != null) && (listHistoryNode.get(i) != null) && (listHistoryNode.get(i) == parentNode)) {
             if (!listHistoryNode.contains(parentNode)) {
@@ -1239,7 +1262,7 @@ public class UIBrowseContainer extends UIContainer {
               if (!listHistoryNode.contains(selectedNode)) listHistoryNode.add(i+1, selectedNode);
             }          
           } else {
-            if (!listHistoryNode.contains(parentNode) && (parentNode != null) && (i == countHistoryNode-1)) {
+            if (!listHistoryNode.contains(parentNode) && (parentNode != null)) {
               if ((parentNode != null) && (countHistoryNode > 1)) {
                 Node tempNode = listHistoryNode.get(countHistoryNode - 2);
                 if (tempNode.isNodeType(Utils.EXO_SYMLINK)) {
@@ -1461,6 +1484,9 @@ public class UIBrowseContainer extends UIContainer {
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class);
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository());
       Node historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT);
+      if (historyNode.getName() != "") {
+        uiContainer.listHistoryNode.clear();
+      }
       if (historyNode != null) {
         if (historyNode.isNodeType(Utils.EXO_SYMLINK)) {
           LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);

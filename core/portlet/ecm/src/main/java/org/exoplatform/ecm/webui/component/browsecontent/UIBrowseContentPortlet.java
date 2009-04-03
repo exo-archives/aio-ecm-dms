@@ -86,6 +86,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
         uiTabPane.setRendered(true);
         uiBCHelp.setRendered(false);
         uiContainer.setRendered(false);
+        uiContainer.getListHistoryNode().clear();
         isViewModing_ = false;
       }
     } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {      
