@@ -29,16 +29,22 @@
         <version>2.0.2</version>
         <configuration>
          <!-- default value is ** -->
-				  <dependentWarExcludes>
-				    index.jsp,WEB-INF/web.xml,WEB-INF/conf/*.xml,WEB-INF/conf/**/*.xml,
-				    WEB-INF/conf/portal/,WEB-INF/classes/locale/navigation/,
-				    WEB-INF/conf/script/groovy/SkinConfigScript.groovy, 
-				    templates/groovy/webui/component/UIHomePagePortlet.gtmpl,
-				    templates/skin/webui/component/UIHomePagePortlet/
-				  </dependentWarExcludes>
-				  <dependentWarExcludes>
-				  	WEB-INF/conf/portal/template
-				  </dependentWarExcludes>
+		  <dependentWarExcludes>
+		    index.jsp,WEB-INF/web.xml,WEB-INF/conf/*.xml,
+		    WEB-INF/conf/common/*.xml,
+		    WEB-INF/conf/database/*.xml,
+		    WEB-INF/conf/database/*.xml,
+		    WEB-INF/conf/jcr/*.xml,
+		    WEB-INF/conf/organization/*.xml,
+		    WEB-INF/conf/portal/*.xml,
+		    WEB-INF/conf/portal/group/,
+		    WEB-INF/conf/portal/portal/,
+		    WEB-INF/conf/portal/user/,
+		    WEB-INF/classes/locale/navigation/,
+		    WEB-INF/conf/script/groovy/SkinConfigScript.groovy, 
+		    templates/groovy/webui/component/UIHomePagePortlet.gtmpl,
+		    templates/skin/webui/component/UIHomePagePortlet/
+		  </dependentWarExcludes>
           <webResources>
             <resource>
               <directory>${exo.projects.app.mvn.repo}/org/exoplatform/ecm/bp/exo.ecm.bp.bonita.payraise/${org.exoplatform.ecm.version}</directory>
