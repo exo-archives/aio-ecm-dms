@@ -1204,7 +1204,6 @@ public class UIBrowseContainer extends UIContainer {
     } else {
       parentNode = selectedNode.getParent();
       if ((parentNode != null) && (countHistoryNode > 0)) {
-        //LinkManager linkManager = getApplicationComponent(LinkManager.class);
         Node tempNode = listHistoryNode.get(countHistoryNode - 1);
         if (tempNode.isNodeType(Utils.EXO_SYMLINK)) {
           tempNode = linkManager.getTarget(tempNode);
@@ -1244,7 +1243,6 @@ public class UIBrowseContainer extends UIContainer {
               if ((parentNode != null) && (countHistoryNode > 1)) {
                 Node tempNode = listHistoryNode.get(countHistoryNode - 2);
                 if (tempNode.isNodeType(Utils.EXO_SYMLINK)) {
-                  //LinkManager linkManager = getApplicationComponent(LinkManager.class);
                   tempNode = linkManager.getTarget(tempNode);
                   if (tempNode.getPath().equals(parentNode.getPath())) parentNode = null;
                 }
