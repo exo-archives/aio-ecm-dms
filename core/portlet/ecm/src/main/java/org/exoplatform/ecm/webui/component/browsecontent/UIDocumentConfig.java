@@ -162,7 +162,7 @@ public class UIDocumentConfig extends UIForm implements UISelectable{
       UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT);
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH);  
       String path = categoryPathField.getValue();
-      value = value.toString().substring(path.length());
+      if (value.toString().length() > path.length()) value = value.toString().substring(path.length());
       UIFormInputSetWithAction documentSelect = getChildById(FIELD_DOCSELECT);
       UIFormStringInput documentNameField = documentSelect.getChildById(UINewConfigForm.FIELD_DOCNAME);
       documentNameField.setValue(value.toString());

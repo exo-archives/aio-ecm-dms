@@ -21,7 +21,6 @@ import java.util.List;
 
 import javax.jcr.Item;
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.tree.UINodeTreeBuilder;
@@ -94,8 +93,10 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
       if (rootTreePath.trim().equals("/")) {
         rootNode = sessionProvider.getSession(workspaceName, manageableRepository).getRootNode();
       } else {
-        Session session = sessionProvider.getSession(workspaceName, manageableRepository);
-        rootNode = (Node)session.getItem(rootTreePath);
+        NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
+        rootNode = (Node) nodeFinder.getItem(repositoryName, workspaceName, rootTreePath);
+        //Session session = sessionProvider.getSession(workspaceName, manageableRepository);
+        //rootNode = (Node)session.getItem(rootTreePath);
       }
       
       UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
@@ -197,7 +198,11 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     selectPathPanel.updateGrid();
     UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class);
     String pathName = currentNode.getName();
-    if (currentNode.equals(currentNode.getSession().getItem(rootTreePath))) {
+    //Node rootNode = (Node)currentNode.getSession().getItem(rootTreePath);    
+    NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
+    Node rootNode = (Node) nodeFinder.getItem(repositoryName, workspaceName, rootTreePath);
+    
+    if (currentNode.equals(rootNode)) {
       pathName = "";
     }
     UIBreadcumbs.LocalPath localPath = new UIBreadcumbs.LocalPath(pathName, pathName);
@@ -206,7 +211,6 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     for(LocalPath iterLocalPath: listLocalPath) {
       buffer.append("/").append(iterLocalPath.getId());
     }
-    Node rootNode = (Node)currentNode.getSession().getItem(rootTreePath);
     if (!alreadyChangePath) {
         String path = buffer.toString();
         if (path.startsWith("//")) path = path.substring(1);

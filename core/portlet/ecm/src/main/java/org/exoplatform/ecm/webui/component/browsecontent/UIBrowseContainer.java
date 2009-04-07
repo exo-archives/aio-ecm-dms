@@ -295,12 +295,16 @@ public class UIBrowseContainer extends UIContainer {
     }
   }
   
-  public Node getNodeByPath(String nodePath, String workspace) throws Exception{
+  public Node getNodeByPath(String nodePath, String workspace) throws Exception {
+    NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
     try{
-      return (Node)getSession(getRepository(), workspace).getItem(nodePath);
-    } catch(NullPointerException en) {
-      return (Node)getSession(getRepository(), workspace).getItem(rootPath_);
+      return (Node) nodeFinder.getItem(getRepository(), workspace, nodePath);
+    } catch(PathNotFoundException path) {
+      return (Node) nodeFinder.getItem(getRepository(), workspace, rootPath_);
+    } catch(AccessDeniedException ace) {
+      return null;
     } catch(Exception e){
+      e.printStackTrace();
       return null;
     }
   }
@@ -1046,7 +1050,12 @@ public class UIBrowseContainer extends UIContainer {
       String documentPath = categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "");
       Node documentNode = null;      
       try{
-        documentNode = (Node)getSession().getItem(documentPath);
+        documentNode = (Node)nodeFinder_.getItem(repoName, getWorkSpace(), documentPath);
+        if (linkManager_.isLink(documentNode)) {
+          if (linkManager_.isTargetReachable(documentNode)) {
+            documentNode = linkManager_.getTarget(documentNode);
+          }
+        }
       }catch (Exception e) { 
         return;
         //e.printStackTrace();
