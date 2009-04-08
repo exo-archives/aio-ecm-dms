@@ -31,6 +31,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
@@ -39,7 +40,6 @@ import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
-import org.hibernate.hql.ast.tree.PathNode;
 
 /**
  * Created by The eXo Platform SARL Author : Ly Dinh Quang
@@ -60,6 +60,8 @@ public class TaxonomyServiceImpl implements TaxonomyService {
 
   private final String           SQL_QUERY       = "Select * from exo:taxonomyLink where jcr:path like '$0/%' and exo:uuid = '$1'";
 
+  List<TaxonomyPlugin>           plugins_        = new ArrayList<TaxonomyPlugin>();
+
   public TaxonomyServiceImpl(SessionProviderService providerService,
       NodeHierarchyCreator nodeHierarchyCreator, RepositoryService repoService,
       LinkManager linkManager) throws Exception {
@@ -69,15 +71,16 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     linkManager_ = linkManager;
   }
 
-  // The method init will create all the taxonomies corresponding to the list of
-  // TaxonomyPlugins that have been added
   public void init(String repository) throws Exception {
-
+    for (TaxonomyPlugin plugin : plugins_) {
+      plugin.init(repository);
+    }
   }
 
-  //The method addTaxonomyPlugin will add a new TaxonomyPlugin to a list of plugins
-  public void addTaxonomyPlugin(TaxonomyPlugin plugin) {
-
+  public void addTaxonomyPlugin(ComponentPlugin plugin) {
+    if (plugin instanceof TaxonomyPlugin) {
+      plugins_.add((TaxonomyPlugin) plugin);
+    }
   }
 
   public List<Node> getAllTaxonomyTrees(String repository) throws RepositoryException {
@@ -130,8 +133,9 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     } catch (RepositoryConfigurationException e1) {
       throw new RepositoryException(e1);
     } catch (PathNotFoundException e2) {
-      throw new RepositoryException(e2);
+      // throw new RepositoryException(e2);
     }
+    return false;
   }
 
   public void addTaxonomyTree(Node taxonomyTree) throws RepositoryException,

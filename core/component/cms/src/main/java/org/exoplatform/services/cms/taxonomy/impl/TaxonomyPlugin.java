@@ -16,7 +16,25 @@
  */
 package org.exoplatform.services.cms.taxonomy.impl;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.jcr.Node;
+import javax.jcr.Session;
+
 import org.exoplatform.container.component.BaseComponentPlugin;
+import org.exoplatform.container.xml.InitParams;
+import org.exoplatform.container.xml.ObjectParameter;
+import org.exoplatform.container.xml.ValueParam;
+import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.categories.impl.TaxonomyConfig;
+import org.exoplatform.services.cms.categories.impl.TaxonomyConfig.Taxonomy;
+import org.exoplatform.services.cms.impl.Utils;
+import org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig.Permission;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 /**
  * Created by The eXo Platform SARL
@@ -26,5 +44,86 @@ import org.exoplatform.container.component.BaseComponentPlugin;
  * Mar 31, 2009  
  */
 public class TaxonomyPlugin extends BaseComponentPlugin {
+  private String workspace;
+  private String path;
+  private String name;
+  private List<Permission> permissions = new ArrayList<Permission>(4);
+  
+  private boolean autoCreateInNewRepository_ = true;
+  private RepositoryService repositoryService_;  
+  private String baseTaxonomiesStorage_;  
+  private InitParams params_;  
+  
+  public TaxonomyPlugin(InitParams params, RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
+    repositoryService_ = repositoryService;
+    baseTaxonomiesStorage_ = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);    
+    params_ = params;
+    ValueParam valueParam = params_.getValueParam("autoCreateInNewRepository");
+    if (valueParam !=null) {
+      autoCreateInNewRepository_ = Boolean.parseBoolean(valueParam.getValue());
+    }   
+  }
+  
+  public void init(String repository) throws Exception {
+  if (!autoCreateInNewRepository_) return;
+    importPredefineTaxonomies(repository);
+  }
+  
+  public String getName() {
+    return name;
+  }
 
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getPath() {
+    return path;
+  }
+
+  public void setPath(String path) {
+    this.path = path;
+  }
+
+  public List<Permission> getPermissions() {
+    return permissions;
+  }
+
+  public void setPermissions(List<Permission> permissions) {
+    this.permissions = permissions;
+  }
+
+  public String getWorkspace() {
+    return workspace;
+  }
+
+  public void setWorkspace(String workspace) {
+    this.workspace = workspace;
+  }
+  
+  private void importPredefineTaxonomies(String repository) throws Exception {    
+//    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
+//    String workspace = manageableRepository.getConfiguration().getSystemWorkspaceName();    
+//    Session session = manageableRepository.getSystemSession(workspace);    
+//    Node taxonomyHomeNode = (Node)session.getItem(baseTaxonomiesPath_);
+//    //TODO Need remove this code
+//    if(taxonomyHomeNode.hasProperty("exo:isImportedChildren"))  { 
+//      session.logout();
+//      return; 
+//    }
+//    taxonomyHomeNode.setProperty("exo:isImportedChildren",true);
+//    Iterator<ObjectParameter> it = params_.getObjectParamIterator();
+//    while(it.hasNext()) {
+//      TaxonomyConfig config = (TaxonomyConfig)it.next().getObject();
+//      for(Taxonomy taxonomy : config.getTaxonomies()) {
+//        Node taxonomyNode = Utils.makePath(taxonomyHomeNode, taxonomy.getPath(), "exo:taxonomy", getPermissions(taxonomy.getPermissions()));
+//        if(taxonomyNode.canAddMixin("mix:referenceable")) {
+//          taxonomyNode.addMixin("mix:referenceable");
+//        }
+//      }
+//    }
+//    taxonomyHomeNode.save();
+//    session.save();
+//    session.logout();
+  }
 }

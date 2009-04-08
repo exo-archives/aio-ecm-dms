@@ -21,6 +21,7 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyAlreadyExistsException;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyNodeAlreadyExistsException;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyPlugin;
@@ -209,7 +210,7 @@ public interface TaxonomyService {
    * 
    * @param plugin The plugin to add
    */
-  public void addTaxonomyPlugin(TaxonomyPlugin plugin);
+  public void addTaxonomyPlugin(ComponentPlugin plugin);
 
   /**
    * Initial all taxonomy plugins that have been already configured in xml files
