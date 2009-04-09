@@ -600,5 +600,23 @@
       </label>
     </dialog>
   </ContentPublishing>
+
+  <!--
+  #####Since version 2.4#######
+    
+  ###################### resoucebundle exo:taxonomyAction dialogs template ####
+  -->
+  <ScriptAction>
+    <dialog>
+      <label>
+        <id>Id</id>
+        <name>Tên</name>
+        <lifecycle>Vòng đời</lifecycle>
+        <homePath>Đường dẫn nguồn</homePath>
+        <targetWorkspace>Vùng đích</targetWorkspace>
+        <targetPath>Đường dẫn đích</targetPath>
+      </label>
+    </dialog>
+  </ScriptAction>  
 </bundle>
 

@@ -29,6 +29,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import javax.imageio.ImageIO;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -42,6 +43,10 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
@@ -341,6 +346,24 @@ public class Utils {
       //e.printStackTrace();
     } 
     return null;
+  }
+  
+  public static Node findNodeByUUID(String repository, String uuid) throws Exception {
+    RepositoryService repositoryService = 
+      Util.getUIPortal().getApplicationComponent(RepositoryService.class);
+    SessionProviderService sessionProviderService = 
+      Util.getUIPortal().getApplicationComponent(SessionProviderService.class);
+    SessionProvider sessionProvider = sessionProviderService.getSessionProvider(null);
+    ManageableRepository manageableRepository = repositoryService.getRepository(repository);
+    Node node = null;
+    for(String wsName : manageableRepository.getWorkspaceNames()) {
+      try {
+        node = sessionProvider.getSession(wsName, manageableRepository).getNodeByUUID(uuid);
+      } catch(ItemNotFoundException e) {
+        continue;
+      }
+    }
+    return node;
   }
   
   public static boolean isSymLink(Node node) throws RepositoryException {

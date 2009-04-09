@@ -329,6 +329,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       String mimeType = mimeTypeSolver.getMimeType(fileName) ;
       Node selectedNode = uiExplorer.getRealCurrentNode();      
       boolean isExist = selectedNode.hasNode(name) ;
+      String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       String newNodeUUID = null;
       try {
         String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
@@ -380,14 +381,20 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
             jcrEncoding.setJcrPath("/node/jcr:content/jcr:encoding") ;
             jcrEncoding.setValue("UTF-8") ;
             inputProperties.put("/node/jcr:content/jcr:encoding",jcrEncoding) ;          
-            String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
             newNodeUUID = cmsService.storeNodeByUUID(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
             
             selectedNode.save() ;
             if(arrayTaxonomy.length > 0) {
-              Node newNode = selectedNode.getSession().getNodeByUUID(newNodeUUID);
-              categoriesService.addMultiCategory(newNode, arrayTaxonomy, uiExplorer.getRepositoryName());
-              selectedNode.getSession().save() ;                        
+              Node newNode = null;
+              try {
+                newNode = selectedNode.getSession().getNodeByUUID(newNodeUUID);
+              } catch(ItemNotFoundException e) {
+                newNode = Utils.findNodeByUUID(repository, newNodeUUID);
+              }
+              if(newNode != null) {
+                categoriesService.addMultiCategory(newNode, arrayTaxonomy, uiExplorer.getRepositoryName());
+                selectedNode.getSession().save() ;                        
+              }
             }
           } else {
             Node node = selectedNode.getNode(name) ;
@@ -429,11 +436,15 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         } else {
           Node newNode = null ;
           if(!isExist) {
-            newNode = uiExplorer.getSession().getNodeByUUID(newNodeUUID) ;
+            try {
+              newNode = selectedNode.getSession().getNodeByUUID(newNodeUUID);
+            } catch(ItemNotFoundException e) {
+              newNode = Utils.findNodeByUUID(repository, newNodeUUID);
+            }
           } else {
             newNode = selectedNode.getNode(name) ;
           }
-          uiUploadContainer.setUploadedNode(newNode) ;
+          if(newNode != null) uiUploadContainer.setUploadedNode(newNode) ;
         }
         UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
         double size = uploadService.getUploadResource(uiChild.getUploadId()).getEstimatedSize()/1024;

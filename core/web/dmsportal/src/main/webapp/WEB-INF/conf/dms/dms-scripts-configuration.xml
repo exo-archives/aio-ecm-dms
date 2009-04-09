@@ -77,7 +77,12 @@
 		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
 		                  <field  name="name"><string>ecm-explorer/action/PublishingRequestScript.groovy</string></field>
 		                </object>  
-		              </value> 		              
+		              </value>
+		              <value>
+		                <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
+		                  <field  name="name"><string>ecm-explorer/action/AddTaxonomyActionScript.groovy</string></field>
+		                </object>  
+		              </value>		               		              
 		              <!-- ecm-explorer/widget -->
 	                <value>
 	                  <object type="org.exoplatform.services.cms.impl.ResourceConfig$Resource">
