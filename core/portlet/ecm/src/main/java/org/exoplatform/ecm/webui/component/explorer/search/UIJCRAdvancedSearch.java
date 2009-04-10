@@ -93,7 +93,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
   public void update(Query query) throws Exception {
     if(query == null) {
       UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-      Node selectedNode = uiExplorer.getRealCurrentNode() ;
+      Node selectedNode = uiExplorer.getCurrentNode() ;
       String path = selectedNode.getPath() ;
       String queryText = StringUtils.replace(SQL_QUERY, "$0", path) ;
       if ("/".equals(path)) queryText = ROOT_SQL_QUERY  ; 
@@ -145,7 +145,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
       String queryS = uiForm.getUIFormTextAreaInput(FIELD_QUERY).getValue() ;
       String searchType = uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue() ;
       UIECMSearch uiSearch = uiForm.getParent() ;
-      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
+      QueryManager queryManager = uiExplorer.getTargetSession().getWorkspace().getQueryManager() ;
       long startTime = System.currentTimeMillis();
       try {
         if(queryS.toLowerCase().indexOf("order by") < 0) {
@@ -179,7 +179,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
     public void execute(Event<UIJCRAdvancedSearch> event) throws Exception {
       UIJCRAdvancedSearch uiForm = event.getSource() ;     
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      String  currentPath = uiExplorer.getRealCurrentNode().getPath() ;
+      String  currentPath = uiExplorer.getCurrentNode().getPath() ;
       String queryText = "" ;      
       String searchType = uiForm.getUIFormSelectBox(FIELD_SELECT_BOX).getValue() ;
       if(searchType.equals(Query.SQL)){
@@ -248,7 +248,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiSearch) ;
       } else {
         UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-        QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
+        QueryManager queryManager = uiExplorer.getTargetSession().getWorkspace().getQueryManager() ;
         try {
           queryManager.createQuery(statement, queryLang) ;
         } catch(Exception e) {
@@ -264,8 +264,8 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
         queryNode.setProperty("jcr:language", queryLang) ;
         queryNode.setProperty("jcr:statement", statement) ;
         queryNode.save() ;
+        if(!uiExplorer.getPreference().isJcrEnable()) session.save() ;
         session.logout() ;
-        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
         UISavedQuery uiSavedQuery = uiForm.getAncestorOfType(UISavedQuery.class) ; 
         uiSavedQuery.updateGrid(1);
         uiSavedQuery.removeChildById(UISavedQuery.EDIT_FORM) ;

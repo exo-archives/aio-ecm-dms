@@ -36,13 +36,13 @@ public class DialogFormActionListeners {
       uiForm.isRemovePreference = true;
       String referenceNodePath = event.getRequestContext().getRequestParameter(UIDialogForm.OBJECTID);
       if (referenceNodePath.startsWith("/")) {
-        Node referenceNode = (Node)uiForm.getSesssion().getItem(uiForm.getNodePath() + referenceNodePath);
+        Node referenceNode = (Node)uiForm.getSession().getItem(uiForm.getNodePath() + referenceNodePath);
         if(referenceNode.hasProperty(Utils.JCR_DATA)) {
           referenceNode.setProperty(Utils.JCR_DATA, "");
           uiForm.setDataRemoved(true);
         }
       } else {
-        Node currentNode = (Node) uiForm.getSesssion().getItem(uiForm.getNodePath());
+        Node currentNode = (Node) uiForm.getSession().getItem(uiForm.getNodePath());
         if (currentNode.hasProperty(referenceNodePath)) {
           currentNode.setProperty(referenceNodePath, "");
           uiForm.setDataRemoved(true);

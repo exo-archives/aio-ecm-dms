@@ -28,7 +28,6 @@ import javax.jcr.Value;
 import javax.jcr.ValueFactory;
 import javax.jcr.nodetype.NodeType;
 
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
@@ -374,12 +373,11 @@ public class UIPropertyForm extends UIForm {
   static public class SaveActionListener extends EventListener<UIPropertyForm> {
     public void execute(Event<UIPropertyForm> event) throws Exception {
       UIPropertyForm uiForm = event.getSource();
-      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       Node currentNode = uiForm.getCurrentNode();
       if(currentNode.isLocked()) {
         String lockToken = LockUtil.getLockToken(currentNode);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+        if(lockToken != null) currentNode.getSession().addLockToken(lockToken);
       }
       if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.node-checkedin", null));
@@ -434,7 +432,7 @@ public class UIPropertyForm extends UIForm {
           }
         }
         currentNode.save();
-        uiExplorer.getSession().save();
+        currentNode.getSession().save();
       } catch(NullPointerException ne) {
         ne.printStackTrace();
         uiApp.addMessage(new ApplicationMessage("UIPropertyForm.msg.propertyValu-null", null, 

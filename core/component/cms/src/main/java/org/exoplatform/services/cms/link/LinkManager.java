@@ -113,4 +113,13 @@ public interface LinkManager {
    * @throws RepositoryException if an unexpected error occurs
    */
   public boolean isLink(Item item) throws RepositoryException;
+  
+  /**
+   * Gives the primary node type of the target
+   * 
+   * @param link The node of type exo:symlink
+   * @return the primary node type of the target
+   * @throws RepositoryException if an unexpected error occurs
+   */
+  public String getTargetPrimaryNodeType(Node link) throws RepositoryException;
 }

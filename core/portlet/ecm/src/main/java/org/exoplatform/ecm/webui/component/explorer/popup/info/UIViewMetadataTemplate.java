@@ -89,7 +89,7 @@ public class UIViewMetadataTemplate extends UIContainer {
       String nodeType = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIViewMetadataManager uiMetaManager = uiViewTemplate.getAncestorOfType(UIViewMetadataManager.class) ;
       UIJCRExplorer uiExplorer = uiViewTemplate.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getRealCurrentNode() ;
+      Node currentNode = uiExplorer.getCurrentNode() ;
       if(!PermissionUtil.canSetProperty(currentNode)) {
         throw new MessageException(new ApplicationMessage("UIViewMetadataTemplate.msg.access-denied",
                                                           null, ApplicationMessage.WARNING)) ;

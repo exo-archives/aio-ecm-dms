@@ -34,6 +34,7 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.portlet.PortletPreferences;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
@@ -54,6 +55,7 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -105,6 +107,11 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 
 public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectable {
 
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("explorer.upload.UIUploadForm");
+
   final static public String FIELD_NAME =  "name" ;
   final static public String FIELD_UPLOAD = "upload" ;  
   final static public String JCRCONTENT = "jcr:content";
@@ -113,9 +120,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   final static public String POPUP_TAXONOMY = "UIPopupTaxonomy";
   final static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
   
-  private boolean isMultiLanguage_ = false ;
-  private String language_ = null ;
-  private boolean isDefault_ = false ;
+  private boolean isMultiLanguage_;
+  private String language_;
+  private boolean isDefault_;
   private List<String> listTaxonomy = new ArrayList<String>();
   private List<String> listTaxonomyName = new ArrayList<String>();
   
@@ -151,7 +158,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   public void initFieldInput() throws Exception {
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    Node currentNode = uiExplorer.getRealCurrentNode();
+    Node currentNode = uiExplorer.getCurrentNode();
     if (categoriesService.hasCategories(currentNode)) {
       Value[] values = currentNode.getProperty("exo:category").getValues();
       for (int i = 0; i < values.length; i++) {
@@ -203,7 +210,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   public void activate() throws Exception {}
   public void deActivate() throws Exception {}
 
-  @SuppressWarnings("unused")
   public void doSelect(String selectField, Object value) throws Exception {
     String valueTaxonomy = String.valueOf(value).trim();
     if (!listTaxonomy.contains(valueTaxonomy)) {
@@ -234,14 +240,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(uiExplorer.getRealCurrentNode().isLocked()) {
-        String lockToken = LockUtil.getLockToken(uiExplorer.getRealCurrentNode());
+      if(uiExplorer.getCurrentNode().isLocked()) {
+        String lockToken = LockUtil.getLockToken(uiExplorer.getCurrentNode());
         if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
       }
       PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
       PortletPreferences portletPref = pcontext.getRequest().getPreferences();
       String categoryMandatoryWhenFileUpload =  portletPref.getValue(Utils.CATEGORY_MANDATORY, "").trim();    
-      if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true") && uiForm.getListTaxonomy().size() == 0 && !uiExplorer.getRealCurrentNode().hasNode(JCRCONTENT)) {
+      if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true") && uiForm.getListTaxonomy().size() == 0 && !uiExplorer.getCurrentNode().hasNode(JCRCONTENT)) {
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.taxonomyPath-error", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -316,7 +322,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
             return;
           } catch(Exception e) {
-            e.printStackTrace();
+            LOG.error("An unexpected error occurs", e);
             uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
                 ApplicationMessage.WARNING)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -327,22 +333,22 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       
       MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
       String mimeType = mimeTypeSolver.getMimeType(fileName) ;
-      Node selectedNode = uiExplorer.getRealCurrentNode();      
+      Node selectedNode = uiExplorer.getCurrentNode();      
       boolean isExist = selectedNode.hasNode(name) ;
-      String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+      String repository = uiExplorer.getRepositoryName() ;
       String newNodeUUID = null;
       try {
         String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
         selectedNode.getSession().checkPermission(selectedNode.getPath(), pers);
         
-        if (uiForm.isMultiLanguage()) {
+        if(uiForm.isMultiLanguage()) {
           ValueFactoryImpl valueFactory = (ValueFactoryImpl) uiExplorer.getSession().getValueFactory() ;
           Value contentValue = valueFactory.createValue(inputStream) ;
           multiLangService.addFileLanguage(selectedNode, name, contentValue, mimeType, uiForm.getLanguageSelected(), uiExplorer.getRepositoryName(), uiForm.isDefault_) ;
           uiExplorer.setIsHidePopup(true) ;
           UIMultiLanguageManager uiManager = uiForm.getAncestorOfType(UIMultiLanguageManager.class) ;
           UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
-          uiMultiForm.doSelect(uiExplorer.getRealCurrentNode()) ;
+          uiMultiForm.doSelect(uiExplorer.getCurrentNode()) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
         } else {
           if(!isExist) {            
@@ -392,9 +398,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
                 newNode = Utils.findNodeByUUID(repository, newNodeUUID);
               }
               if(newNode != null) {
-                categoriesService.addMultiCategory(newNode, arrayTaxonomy, uiExplorer.getRepositoryName());
-                selectedNode.getSession().save() ;                        
-              }
+              categoriesService.addMultiCategory(newNode, arrayTaxonomy, uiExplorer.getRepositoryName());
+              selectedNode.getSession().save() ;                        
+            }
             }
           } else {
             Node node = selectedNode.getNode(name) ;
@@ -472,7 +478,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         throw new MessageException(new ApplicationMessage("UIActionBar.msg.access-add-denied", 
             null, ApplicationMessage.WARNING)); 
       } catch(Exception e) {
-        e.printStackTrace() ;
+        LOG.error("An unexpected error occurs", e);
         JCRExceptionManager.process(uiApp, e);
         return ;
       }

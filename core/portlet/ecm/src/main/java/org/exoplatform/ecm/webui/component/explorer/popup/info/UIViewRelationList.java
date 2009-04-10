@@ -51,7 +51,7 @@ public class UIViewRelationList extends UIContainer{
     List<Node> relations = new ArrayList<Node>() ;
     Value[] vals = null ;
     try {
-     vals = uiExplorer.getRealCurrentNode().getProperty("exo:relation").getValues() ;    
+     vals = uiExplorer.getCurrentNode().getProperty("exo:relation").getValues() ;    
     }catch (Exception e) { return relations ;}
     for(Value val : vals) {
       String uuid = val.getString();
@@ -61,7 +61,6 @@ public class UIViewRelationList extends UIContainer{
     return relations ;
   }  
   
-  @SuppressWarnings("unused")
   static public class CloseActionListener extends EventListener<UIViewRelationList> {
     public void execute(Event<UIViewRelationList> event) throws Exception {
     }

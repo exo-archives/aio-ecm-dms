@@ -53,12 +53,12 @@ public class UIAddLanguageContainer extends UIContainer implements UIPopupCompon
   
   public void setComponentDisplay(String nodeTypeName) throws Exception {
     nodeTypeName_ = nodeTypeName ;
-    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode() ;
+    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
     UILanguageDialogForm uiDialogForm = createUIComponent(UILanguageDialogForm.class, null, null) ;
     uiDialogForm.setTemplateNode(nodeTypeName) ;
     //  uiDialogForm.setNode(currentNode);
     uiDialogForm.setNodePath(currentNode.getPath()) ;
-    uiDialogForm.setWorkspace(getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace()) ;
+    uiDialogForm.setWorkspace(currentNode.getSession().getWorkspace().getName()) ;
     uiDialogForm.setStoredPath(currentNode.getPath()) ;
     addChild(uiDialogForm) ;
   }

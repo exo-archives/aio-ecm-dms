@@ -143,7 +143,7 @@ public class UIExternalMetadataForm extends UIForm {
           uiUploadContent.externalList_.add(metadataName) ;
         }
       }
-      uiExternalMetadataForm.getAncestorOfType(UIJCRExplorer.class).getSession().save() ;
+      uploadedNode.getSession().save() ;
       UIPopupWindow uiPopup = uiUploadManager.getChildById(UIUploadManager.EXTARNAL_METADATA_POPUP) ;
       uiPopup.setShow(false) ;
       uiPopup.setRendered(false) ;

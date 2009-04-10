@@ -30,8 +30,9 @@
     <div style="position: relative;">
 	    <div class="UISelectContent">
 	      <%
-	      for(node in uicomponent.getHistory()) {
-	        println "<div class=\"AddressItem\" onmouseout=\"this.className = 'AddressItem'\" onmouseover=\"this.className = 'SelectedAddressItem'\" onclick=\""  + uicomponent.event("History", node) + "\">$node</div>" ;
+	      for(entry in uicomponent.getFullHistory()) {
+			String actionLink = uicomponent.event("History", entry.workspace + ":" + entry.path);
+	        println "<div class=\"AddressItem\" onmouseout=\"this.className = 'AddressItem'\" onmouseover=\"this.className = 'SelectedAddressItem'\" onclick=\"$actionLink\">$entry.path</div>" ;
 	      }
 	      %>
 	    </div>

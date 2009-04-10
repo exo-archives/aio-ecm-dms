@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 
 import org.exoplatform.download.DownloadService;
@@ -80,7 +79,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
   }
 
   public void activate() throws Exception {
-    update(getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode()) ;
+    update(getAncestorOfType(UIJCRExplorer.class).getCurrentNode()) ;
   }
 
   public void deActivate() throws Exception { }
@@ -89,19 +88,15 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
     public void execute(Event<UIExportNode> event) throws Exception {
       UIExportNode uiExport = event.getSource() ;
       UIJCRExplorer uiExplorer = uiExport.getAncestorOfType(UIJCRExplorer.class) ;
-      Session session = uiExplorer.getSession() ;
       CompressData zipService = new CompressData();
       DownloadService dservice = uiExport.getApplicationComponent(DownloadService.class) ;
       InputStreamDownloadResource dresource ;
       String format = uiExport.<UIFormRadioBoxInput>getUIInput(FORMAT).getValue() ;
       boolean isZip = uiExport.getUIFormCheckBoxInput(ZIP).isChecked() ;
       ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
-      String nodePath = uiExplorer.getRealCurrentNode().getPath() ;
-      try {
-        session.getItem(nodePath) ;
-      } catch(PathNotFoundException path) {
-        session = uiExplorer.getRealCurrentNode().getSession() ;
-      }
+      Node currentNode = uiExplorer.getCurrentNode();
+      Session session = currentNode.getSession() ;
+      String nodePath = currentNode.getPath();
       if(isZip) {
         if(format.equals(DOC_VIEW)) session.exportDocumentView(nodePath, bos, false, false ) ;
         else session.exportSystemView(nodePath, bos, false, false ) ;

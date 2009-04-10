@@ -115,7 +115,7 @@ public class UIMultiLanguageForm extends UIForm {
       UIMultiLanguageForm uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      if(!PermissionUtil.canAddNode(uiExplorer.getRealCurrentNode())) { 
+      if(!PermissionUtil.canAddNode(uiExplorer.getCurrentNode())) { 
         throw new MessageException(new ApplicationMessage("UIMultiLanguageForm.msg.access-denied", 
                                                           null, ApplicationMessage.WARNING)) ;
       }
@@ -123,7 +123,7 @@ public class UIMultiLanguageForm extends UIForm {
         uiForm.getApplicationComponent(MultiLanguageService.class) ;
       String selectedLanguage = uiForm.getUIFormSelectBox(Utils.LANGUAGES).getValue() ;
       try {
-        multiLanguageService.setDefault(uiExplorer.getRealCurrentNode(), selectedLanguage, uiExplorer.getRepositoryName()) ;
+        multiLanguageService.setDefault(uiExplorer.getCurrentNode(), selectedLanguage, uiExplorer.getRepositoryName()) ;
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UIMultiLanguageForm.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING)) ;

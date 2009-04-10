@@ -47,13 +47,13 @@ public class UIActivateAuditing extends UIContainer implements UIPopupComponent 
       try {
         UIActivateAuditing uiActivateAuditing = event.getSource();
         UIJCRExplorer uiExplorer = uiActivateAuditing.getAncestorOfType(UIJCRExplorer.class) ;
-        Node currentNode = uiExplorer.getRealCurrentNode() ;
+        Node currentNode = uiExplorer.getCurrentNode() ;
       
         currentNode.addMixin(Utils.EXO_AUDITABLE);
         currentNode.save() ;
 
-        uiExplorer.getSession().save();   
-        uiExplorer.getSession().refresh(true) ;      
+        currentNode.getSession().save();   
+        currentNode.getSession().refresh(true) ;      
         uiExplorer.updateAjax(event) ;  
       }catch(Exception e){
         e.printStackTrace();

@@ -33,13 +33,16 @@ import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
+import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.impl.core.JCRPath;
 import org.exoplatform.services.jcr.impl.core.SessionImpl;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -71,6 +74,11 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UISearchResult extends UIContainer {
 
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("explorer.search.UISearchResult");
+  
   private QueryResult queryResult_;
   private long searchTime_ = 0; 
   private boolean flag_ = false;
@@ -122,7 +130,7 @@ public class UISearchResult extends UIContainer {
   }
   
   public Session getSession() throws Exception {
-    return getAncestorOfType(UIJCRExplorer.class).getSession();
+    return getAncestorOfType(UIJCRExplorer.class).getTargetSession();
   }
     
   public Date getDateCreated(Node node) throws Exception{
@@ -207,8 +215,8 @@ public class UISearchResult extends UIContainer {
           if (iconScore.trim().equals("BlueUpArrow")) { return l2.compareTo(l1); }        
           return l1.compareTo(l2);
         }
-      } catch (Exception e) {  
-        e.printStackTrace();
+      } catch (Exception e) {
+        LOG.error("Cannot compare rows", e);
       }            
       return 0;
     }        
@@ -229,9 +237,9 @@ public class UISearchResult extends UIContainer {
       String repository = uiExplorer.getRepositoryName();
       String path = event.getRequestContext().getRequestParameter(OBJECTID);
       UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class);
-      Node node = null;
+      Node node;
       try {
-        node = (Node)uiExplorer.getSession().getItem(path);
+        node = (Node) uiExplorer.getNodeByPath(path, uiExplorer.getTargetSession());
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING));
@@ -269,14 +277,15 @@ public class UISearchResult extends UIContainer {
     }
   }
 
-  static  public class OpenFolderActionListener extends EventListener<UISearchResult> {
+  static public class OpenFolderActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource();
       UIJCRExplorer uiExplorer = uiSearchResult.getAncestorOfType(UIJCRExplorer.class);
       String path = event.getRequestContext().getRequestParameter(OBJECTID);
-      String folderPath = path.substring(0, path.lastIndexOf("/"));
+      String folderPath = LinkUtils.getParentPath(path);
+      Node node = null;
       try {
-        uiExplorer.getSession().getItem(folderPath);
+        node = (Node) uiExplorer.getNodeByPath(folderPath, uiExplorer.getTargetSession());
       } catch(AccessDeniedException ace) {
         UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.access-denied", null, 
@@ -284,14 +293,14 @@ public class UISearchResult extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("Cannot access the node at " + folderPath, e);        
       }      
-      uiExplorer.setSelectNode(folderPath, uiExplorer.getSession());
+      uiExplorer.setSelectNode(node.getSession().getWorkspace().getName(), folderPath);
       uiExplorer.updateAjax(event);
     }
   }
   
-  static  public class SortASCActionListener extends EventListener<UISearchResult> {
+  static public class SortASCActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource();     
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
@@ -312,7 +321,7 @@ public class UISearchResult extends UIContainer {
     }
   } 
   
-  static  public class SortDESCActionListener extends EventListener<UISearchResult> {
+  static public class SortDESCActionListener extends EventListener<UISearchResult> {
     public void execute(Event<UISearchResult> event) throws Exception {
       UISearchResult uiSearchResult = event.getSource() ;     
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID);

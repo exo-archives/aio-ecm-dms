@@ -32,6 +32,7 @@ import javax.jcr.ValueFormatException;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.services.cms.link.NodeLinkAware;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
@@ -45,15 +46,16 @@ import org.exoplatform.services.log.ExoLogger;
  * quang.ly@exoplatform.com xxx5669@gmail.com Mar 13, 2009
  */
 public class LinkManagerImpl implements LinkManager {
-  final static private String    SYMLINK      = "exo:symlink";
 
-  final static private String    WORKSPACE    = "exo:workspace";
+  private final static String    SYMLINK      = "exo:symlink";
 
-  final static private String    UUID         = "exo:uuid";
+  private final static String    WORKSPACE    = "exo:workspace";
 
-  final static private String    PRIMARY_TYPE = "exo:primaryType";
+  private final static String    UUID         = "exo:uuid";
 
-  private SessionProviderService providerService_;
+  private final static String    PRIMARY_TYPE = "exo:primaryType";
+
+  private static SessionProviderService providerService_;
   
   private static final Log       LOG  = ExoLogger.getLogger("job.RecordsJob");
 
@@ -61,14 +63,23 @@ public class LinkManagerImpl implements LinkManager {
     providerService_ = providerService;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node createLink(Node parent, String linkType, Node target) throws RepositoryException {
     return createLink(parent, linkType, target, null);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node createLink(Node parent, Node target) throws RepositoryException {
     return createLink(parent, null, target, null);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node createLink(Node parent, String linkType, Node target, String linkName)
       throws RepositoryException {
     if (!target.isNodeType(SYMLINK)) {
@@ -95,30 +106,14 @@ public class LinkManagerImpl implements LinkManager {
     return null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node getTarget(Node link, boolean system) throws ItemNotFoundException,
       RepositoryException {
-    Session session = getSession(link, system);
     String uuid = link.getProperty(UUID).getString();
-    try {
-      return session.getNodeByUUID(uuid);
-    } catch (ItemNotFoundException e) {
-      Session systemSession = null;
-      try {
-        systemSession = getSession((ManageableRepository) link.getSession().getRepository(), link
-            .getProperty(WORKSPACE).getString(), true);
-        return systemSession.getNodeByUUID(uuid);
-      } catch (ItemNotFoundException e1) {
-        Node parentNode = link.getParent();
-        link.remove();
-        parentNode.save();
-      } finally {
-        systemSession.logout();
-      }
-    } finally {
-      if (session != null)
-        session.logout();
-    }
-    return null;
+    Session session = getSession(link, system);
+    return session.getNodeByUUID(uuid);
   }
 
   private Session getSession(Node link, boolean system) throws RepositoryException {
@@ -137,13 +132,20 @@ public class LinkManagerImpl implements LinkManager {
     return providerService_.getSessionProvider(null).getSession(workspaceName, manageRepository);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node getTarget(Node link) throws ItemNotFoundException, RepositoryException {
     return getTarget(link, false);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public boolean isTargetReachable(Node link) throws RepositoryException {
-    Session session = getSession(link, false);
+    Session session = null;
     try {
+      session = getSession(link, false);
       session.getNodeByUUID(link.getProperty(UUID).getString());
     } catch (ItemNotFoundException e) {
       return false;
@@ -151,6 +153,9 @@ public class LinkManagerImpl implements LinkManager {
     return true;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node updateLink(Node linkNode, Node targetNode) throws RepositoryException {
     try {
       updateAccessPermissionToLink(linkNode, targetNode);
@@ -164,14 +169,25 @@ public class LinkManagerImpl implements LinkManager {
     return linkNode;
   }
 
+  /**
+   * {@inheritDoc}
+   */  
   public boolean isLink(Item item) throws RepositoryException {
     if (item instanceof Node) {
       Node node = (Node) item;
-      if (node.getSession().itemExists(node.getPath())) {
-        return node.isNodeType(SYMLINK);
+      if (node instanceof NodeLinkAware) {
+        node = ((NodeLinkAware) node).getRealNode();
       }
+      return node.isNodeType(SYMLINK);
     }
     return false;
+  }
+  
+  /**
+   * {@inheritDoc}
+   */  
+  public String getTargetPrimaryNodeType(Node link) throws RepositoryException {
+    return link.getProperty(PRIMARY_TYPE).getString();
   }
   
   private void updateAccessPermissionToLink(Node linkNode, Node targetNode) throws Exception {
@@ -225,6 +241,5 @@ public class LinkManagerImpl implements LinkManager {
     } catch(AccessControlException e) {
       return false;
     }
-  }
-  
+  }  
 }

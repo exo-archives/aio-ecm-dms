@@ -223,7 +223,7 @@
 	          def rightClickMenu = "" ;
 	          String isLocked = "false";
 	          if (data.isLocked()) isLocked = "true";    
-	          if (!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;	          
+	          if (!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;	          
 	      
 	      %>
 	      <div <%=rightClickMenu%> class="RowView Normal" locked="$isLocked" workspacename="$preferenceWS" objectId="$nodePath" ondblclick="$actionLink">

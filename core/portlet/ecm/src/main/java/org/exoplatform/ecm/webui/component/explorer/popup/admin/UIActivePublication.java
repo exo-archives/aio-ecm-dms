@@ -26,7 +26,6 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.ecm.publication.AlreadyInPublicationLifecycleException;
 import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
@@ -116,16 +115,9 @@ import org.exoplatform.webui.form.UIForm;
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
     UIPublicationManager uiPublicationManager = uiJCRExplorer.createUIComponent(
         UIPublicationManager.class, null, null);       
-    if (currentNode.isLocked()) {
-      String lockToken = LockUtil.getLockToken(currentNode);
-      if (lockToken != null)
-        uiJCRExplorer.getSession().addLockToken(lockToken);
-    }       
+    uiJCRExplorer.addLockToken(currentNode);
     Node parentNode = currentNode.getParent();
-    if (parentNode.isLocked()) {
-      String lockToken1 = LockUtil.getLockToken(parentNode);
-      uiJCRExplorer.getSession().addLockToken(lockToken1);
-    }    
+    uiJCRExplorer.addLockToken(parentNode);
     PublicationService publicationService = getApplicationComponent(PublicationService.class);
     PublicationPresentationService publicationPresentationService = getApplicationComponent(PublicationPresentationService.class);
     try {            
@@ -161,7 +153,7 @@ import org.exoplatform.webui.form.UIForm;
       uiPublicationManager.addChild(UIPublicationLogList.class, null, null).setRendered(false);
       UIPublicationLogList uiPublicationLogList = uiPublicationManager.getChild(UIPublicationLogList.class);    
       UIPopupContainer.activate(uiPublicationManager, 700, 500);
-      uiPublicationLogList.setNode(uiJCRExplorer.getRealCurrentNode());
+      uiPublicationLogList.setNode(uiJCRExplorer.getCurrentNode());
       uiPublicationLogList.updateGrid(); 
     }    
   }
@@ -269,7 +261,7 @@ import org.exoplatform.webui.form.UIForm;
       UIActivePublication uiActivePub = event.getSource();
       UIJCRExplorer uiJCRExplorer = uiActivePub.getAncestorOfType(UIJCRExplorer.class);
       String selectedLifecycle = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node currentNode = uiJCRExplorer.getRealCurrentNode();
+      Node currentNode = uiJCRExplorer.getCurrentNode();
       uiActivePub.enrolNodeInLifecycle(currentNode,selectedLifecycle,event.getRequestContext());
     }
   }

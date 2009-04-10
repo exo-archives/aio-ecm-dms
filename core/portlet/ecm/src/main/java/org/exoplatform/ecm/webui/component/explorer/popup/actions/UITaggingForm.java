@@ -25,7 +25,6 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.webui.core.UIPopupComponent;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -76,7 +75,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
     String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
     StringBuilder linkedTags = new StringBuilder() ;
-    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode() ;
+    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
     for(Node tag : folksonomyService.getLinkedTagsOfDocument(currentNode, repository)) {
       if(linkedTags.length() > 0) linkedTags = linkedTags.append(",") ;
       linkedTags.append(tag.getName()) ;
@@ -96,11 +95,8 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
       String tagName = uiForm.getUIStringInput(TAG_NAMES).getValue() ;
       FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getRealCurrentNode();
-      if(currentNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(currentNode);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-      }      
+      Node currentNode = uiExplorer.getCurrentNode();
+      uiExplorer.addLockToken(currentNode);
       if(tagName == null || tagName.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tag-name-empty", null, 
             ApplicationMessage.WARNING)) ;
@@ -156,7 +152,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
           }
         }
       }
-      for(Node tag : folksonomyService.getLinkedTagsOfDocument(uiExplorer.getRealCurrentNode(), repository)) {
+      for(Node tag : folksonomyService.getLinkedTagsOfDocument(uiExplorer.getCurrentNode(), repository)) {
         for(String t : fitlerTagNames) {
           if(t.equals(tag.getName())) {
             Object[] args = {t} ;

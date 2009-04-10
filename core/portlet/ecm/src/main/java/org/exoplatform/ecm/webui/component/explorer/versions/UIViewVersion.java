@@ -83,7 +83,7 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
     TemplateService templateService = getApplicationComponent(TemplateService.class);
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     try {
-      Node node = getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode() ;
+      Node node = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
       originalNode_ = node ;
       String nodeType = node.getPrimaryNodeType().getName();
       if(isNodeTypeSupported(node)) return templateService.getTemplatePathByUser(false, nodeType, userName, getRepository()) ;

@@ -25,7 +25,6 @@ import org.exoplatform.ecm.jcr.model.VersionNode;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.jcr.impl.storage.JCRInvalidItemStateException;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -86,7 +85,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
 
   public void activate() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    node_ = uiExplorer.getRealCurrentNode() ;   
+    node_ = uiExplorer.getCurrentNode() ;   
     rootVersion_ = new VersionNode(node_.getVersionHistory().getRootVersion(), uiExplorer.getSession()) ;
     curentVersion_ = rootVersion_ ;
     getChild(UIViewVersion.class).update() ;  
@@ -162,10 +161,7 @@ public class UIVersionInfo extends UIContainer implements UIPopupComponent {
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiVersionInfo.curentVersion_  = uiVersionInfo.rootVersion_.findVersionNode(objectId) ;
       UIApplication uiApp = uiVersionInfo.getAncestorOfType(UIApplication.class) ;
-      if(uiVersionInfo.node_.isLocked()) {
-        String lockToken = LockUtil.getLockToken(uiVersionInfo.node_);
-        uiVersionInfo.node_.getSession().addLockToken(lockToken) ;
-      }
+      uiExplorer.addLockToken(uiVersionInfo.node_);
       try {
         uiVersionInfo.node_.restore(uiVersionInfo.curentVersion_.getVersion(), true);
       } catch(JCRInvalidItemStateException invalid) {

@@ -174,10 +174,10 @@ public class Utils {
     return node.isNodeType(MIX_VERSIONABLE);
   }  
   
-  static public class NodeTypeNameComparator implements Comparator {
-    public int compare(Object o1, Object o2) throws ClassCastException {
-      String name1 = ((NodeType) o1).getName();
-      String name2 = ((NodeType) o2).getName();
+  static public class NodeTypeNameComparator implements Comparator<NodeType> {
+    public int compare(NodeType n1, NodeType n2) throws ClassCastException {
+      String name1 = n1.getName();
+      String name2 = n2.getName();
       return name1.compareToIgnoreCase(name2);
     }
   }
@@ -200,7 +200,7 @@ public class Utils {
     NodeTypeManager ntManager = currentNode.getSession().getWorkspace().getNodeTypeManager(); 
     NodeType currentNodeType = currentNode.getPrimaryNodeType(); 
     NodeDefinition[] childDefs = currentNodeType.getChildNodeDefinitions();
-    List templates = templateService.getDocumentTemplates(repository);
+    List<String> templates = templateService.getDocumentTemplates(repository);
     try {
       for(int i = 0; i < templates.size(); i ++){
         String nodeTypeName = templates.get(i).toString(); 
@@ -246,7 +246,6 @@ public class Utils {
     StringBuilder str = new StringBuilder();
     if (node == null) return "";
     String nodeType = node.getPrimaryNodeType().getName();
-    //String nodeType = node.getPrimaryNodeType().getName().replaceAll(":", "_") + appended;
     if(node.isNodeType(EXO_SYMLINK)) {
       LinkManager linkManager = Util.getUIPortal().getApplicationComponent(LinkManager.class);
       try {
@@ -265,13 +264,13 @@ public class Utils {
         }
       }
     }
-    nodeType = nodeType.replaceAll(":","_") + appended;    
+    nodeType = nodeType.replace(':','_') + appended;    
     str.append(nodeType);
-    if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(" ").append(mode).append(nodeType);
+    if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(' ').append(mode).append(nodeType);
     if (node.isNodeType(NT_FILE)) {
       if (node.hasNode(JCR_CONTENT)) {
         Node jcrContentNode = node.getNode(JCR_CONTENT);
-        str.append(" ").append(jcrContentNode.getProperty(JCR_MIMETYPE).getString().replaceAll("/|\\.","_")).append(appended);
+        str.append(' ').append(jcrContentNode.getProperty(JCR_MIMETYPE).getString().replaceAll("/|\\.","_")).append(appended);
       }
     }
     return str.toString();
@@ -311,7 +310,7 @@ public class Utils {
     OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class);
     List<String> userMemberships = new ArrayList<String> ();
     userMemberships.add(userId);
-    Collection memberships = oservice.getMembershipHandler().findMembershipsByUser(userId);
+    Collection<?> memberships = oservice.getMembershipHandler().findMembershipsByUser(userId);
     if(memberships == null || memberships.size() < 0) return userMemberships;
     Object[] objects = memberships.toArray();
     for(int i = 0; i < objects.length; i ++ ){
@@ -326,7 +325,7 @@ public class Utils {
     String userId = Util.getPortalRequestContext().getRemoteUser();
     OrganizationService oservice = Util.getUIPortal().getApplicationComponent(OrganizationService.class);
     List<String> groupList = new ArrayList<String> ();
-    Collection groups = oservice.getGroupHandler().findGroupsOfUser(userId);
+    Collection<?> groups = oservice.getGroupHandler().findGroupsOfUser(userId);
     Object[] objects = groups.toArray();
     for(int i = 0; i < objects.length; i ++ ){
       Group group = (Group)objects[i];
@@ -369,8 +368,7 @@ public class Utils {
   
   public static boolean isSymLink(Node node) throws RepositoryException {
     LinkManager linkManager = Util.getUIPortal().getApplicationComponent(LinkManager.class);
-    if (node != null && linkManager.isLink(node)) return true;
-    return false;
+    return linkManager.isLink(node);
   }
 
   public static Node getNodeSymLink(Node node) throws Exception {

@@ -58,7 +58,7 @@ public class UIViewRelationList extends UIContainer{
     List<Node> relations = new ArrayList<Node>() ;
     Value[] vals = null ;
     try {
-      vals = uiExplorer.getRealCurrentNode().getProperty("exo:relation").getValues() ;    
+      vals = uiExplorer.getCurrentNode().getProperty("exo:relation").getValues() ;    
     }catch (Exception e) { return relations ;}
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     ManageableRepository repository = repositoryService.getRepository(uiExplorer.getRepositoryName()) ;
@@ -104,13 +104,7 @@ public class UIViewRelationList extends UIContainer{
         JCRExceptionManager.process(uiApp, e);
         return ;
       }
-      uiExplorer.setSelectNode(uri, session);
-      if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {              
-        uiExplorer.setIsReferenceNode(true) ;
-        uiExplorer.setReferenceWorkspace(workspaceName) ;
-      } else {              
-        uiExplorer.setIsReferenceNode(false) ;
-      }
+      uiExplorer.setSelectNode(workspaceName, uri);
       uiExplorer.updateAjax(event) ;
     }
   }

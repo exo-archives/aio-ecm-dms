@@ -51,87 +51,130 @@ public class NodeFinderImpl implements NodeFinder {
   /**
    * {@inheritDoc}
    */
-  public Item getItem(String repository, String workspace, String absPath)
-      throws PathNotFoundException, RepositoryException {
-    if (!absPath.startsWith("/")) throw new IllegalArgumentException(absPath + " isn't absolute path");
-	try {
-	    Session session = getSession(repositoryService_.getRepository(repository), workspace);
-	    return getItem(session, absPath);
-	} catch (RepositoryConfigurationException e) {
-	    throw new RepositoryException(e);
-	}
+  public Item getItem(String repository, String workspace, String absPath, boolean giveTarget) throws PathNotFoundException,
+                                                                          RepositoryException {
+    if (!absPath.startsWith("/"))
+      throw new IllegalArgumentException(absPath + " isn't absolute path");
+    try {
+      Session session = getSession(repositoryService_.getRepository(repository), workspace);
+      return getItem(session, absPath, giveTarget);
+    } catch (RepositoryConfigurationException e) {
+      throw new RepositoryException(e);
+    }
   }
 
   /**
    * {@inheritDoc}
    */
-  public Node getNode(Node ancestorNode, String relativePath) throws PathNotFoundException,
-      RepositoryException {
-    if (relativePath.startsWith("/")) throw new IllegalArgumentException("Invalid relative path: " + relativePath);
+  public Item getItem(String repository, String workspace, String absPath) throws PathNotFoundException,
+                                                                          RepositoryException {
+    return getItem(repository, workspace, absPath, false);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public Node getNode(Node ancestorNode, String relativePath, boolean giveTarget) throws PathNotFoundException,
+                                                             RepositoryException {
+    if (relativePath.startsWith("/"))
+      throw new IllegalArgumentException("Invalid relative path: " + relativePath);
     String absPath = "";
-    if (ancestorNode.getPath().equals("/")) absPath = "/" + relativePath;
-    else absPath = ancestorNode.getPath() + "/" + relativePath;
+    if (ancestorNode.getPath().equals("/"))
+      absPath = "/" + relativePath;
+    else
+      absPath = ancestorNode.getPath() + "/" + relativePath;
     Session session = ancestorNode.getSession();
-    return (Node) getItem(session, absPath);
+    return (Node) getItem(session, absPath, giveTarget);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public Node getNode(Node ancestorNode, String relativePath) throws PathNotFoundException,
+                                                             RepositoryException {
+    return getNode(ancestorNode, relativePath, false);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public Item getItem(Session session, String absPath, boolean giveTarget) throws PathNotFoundException, RepositoryException {
+    return getItem(session, absPath, giveTarget, 0);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public Item getItem(Session session, String absPath) throws PathNotFoundException, RepositoryException {
+	  return getItem(session, absPath, false);
+  }
+	
+  /**
+   * {@inheritDoc}
+   */
+  public boolean itemExists(Session session, String absPath) throws RepositoryException {
+    try {
+      return getItem(session, absPath) != null;
+    } catch (PathNotFoundException e) {
+      return false;
+    }
   }
   
   /**
    * Get item by absolute path
-   * @param session The user session
-   * @param absPath The absolute path to node
+   * @param session    The user session
+   * @param absPath    The absolute path to node
+   * @param fromIdx    The start index used to find the link
+   * @param giveTarget Indicates if the target must be returned in case the item is a link
    * @return the item corresponding to the path
    */
-  public Item getItem(Session session, String absPath) throws PathNotFoundException, RepositoryException {
-	  return getItem(session, absPath, 0);
-  }
-	  
-  /**
-   * Get item by absolute path
-   * @param session The user session
-   * @param absPath The absolute path to node
-   * @param fromIdx The start index used to find the link
-   * @return the item corresponding to the path
-   */
-  private Item getItem(Session session, String absPath, int fromIdx) throws PathNotFoundException, RepositoryException {
+  private Item getItem(Session session, String absPath, boolean giveTarget, int fromIdx) throws PathNotFoundException, RepositoryException {
     if (session.itemExists(absPath)) {
-        // The item corresponding to absPath can be found 
-    	return session.getItem(absPath);
+      // The item corresponding to absPath can be found
+      Item item = session.getItem(absPath);
+      if (giveTarget && linkManager_.isLink(item)) {
+        return linkManager_.getTarget((Node) item);
+      }
+      return item;
     }
-    // The item corresponding to absPath can not be found so we split absPath and check
+    // The item corresponding to absPath can not be found so we split absPath
+    // and check
     String[] splitPath = absPath.substring(1).split("/");
-	int low = fromIdx;
-	int high = splitPath.length - 1;    
+    int low = fromIdx;
+    int high = splitPath.length - 1;
     while (low <= high) {
-        int mid = (low + high) >>> 1;
-        String partPath = makePath(splitPath, mid);
+      int mid = (low + high) >>> 1;
+      String partPath = makePath(splitPath, mid);
 
-        if (session.itemExists(partPath)) {
-        	// The item can be found
-        	Item item = session.getItem(partPath);
-        	if (linkManager_.isLink(item)) {
-        		// The item is a link
-        		Node link = (Node) item;
-        		if (linkManager_.isTargetReachable(link)) {
-        			// The target can be reached
-            		Node target = linkManager_.getTarget(link);
-            		String targetPath = target.getPath();
-            		return getItem(target.getSession(), targetPath + absPath.substring(partPath.length()), targetPath.substring(1).split("/").length);        			
-        		} else {
-        			// The target cannot be found
-        			throw new PathNotFoundException("Can't reach the target of the link: " + link.getPath());
-        		}
-        	} else {
-        		// The item is not a link so we need
-            	low = mid + 1;        		
-        	}
+      if (session.itemExists(partPath)) {
+        // The item can be found
+        Item item = session.getItem(partPath);
+        if (linkManager_.isLink(item)) {
+          // The item is a link
+          Node link = (Node) item;
+          if (linkManager_.isTargetReachable(link)) {
+            // The target can be reached
+            Node target = linkManager_.getTarget(link);
+            String targetPath = target.getPath();
+            return getItem(target.getSession(),
+                           targetPath + absPath.substring(partPath.length()),
+                           giveTarget,
+                           targetPath.substring(1).split("/").length);
+          } else {
+            // The target cannot be found
+            throw new PathNotFoundException("Can't reach the target of the link: " + link.getPath());
+          }
         } else {
-        	// The item doesn't exist
-        	high = mid - 1;
+          // The item is not a link so we need
+          low = mid + 1;
         }
+      } else {
+        // The item doesn't exist
+        high = mid - 1;
+      }
     }
     throw new PathNotFoundException("Can't find path: " + absPath);
   }
-
 
   /**
    * Get session of user in given workspace and repository

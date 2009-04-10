@@ -19,7 +19,6 @@ package org.exoplatform.ecm.webui.component.explorer.versions;
 import javax.jcr.Node;
 
 import org.exoplatform.webui.core.UIPopupComponent;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.core.UIPopupContainer;
@@ -60,11 +59,8 @@ public class UIActivateVersion extends UIContainer implements UIPopupComponent {
     public void execute(Event<UIActivateVersion> event) throws Exception {
       UIActivateVersion uiActivateVersion = event.getSource();
       UIJCRExplorer uiExplorer = uiActivateVersion.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getRealCurrentNode() ;
-      if(currentNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(currentNode);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-      }
+      Node currentNode = uiExplorer.getCurrentNode() ;
+      uiExplorer.addLockToken(currentNode);
       if(currentNode.isNodeType("rma:filePlan")){
         WebuiRequestContext contx = event.getRequestContext();
         UIPopupContainer popupAction = uiExplorer.getChild(UIPopupContainer.class) ;
@@ -79,8 +75,8 @@ public class UIActivateVersion extends UIContainer implements UIPopupComponent {
       }
       currentNode.addMixin(Utils.MIX_VERSIONABLE);
       currentNode.save() ;
-      uiExplorer.getSession().save();   
-      uiExplorer.getSession().refresh(true) ;      
+      currentNode.getSession().save();   
+      currentNode.getSession().refresh(true) ;      
       uiExplorer.updateAjax(event) ;
     }
   }

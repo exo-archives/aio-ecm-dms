@@ -121,7 +121,7 @@
 	  					    } else {
 	  					      isShowCoverFlow = false;
 	  					    }
-	                imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + image.getPath() + "/?size=big";
+	                imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + wsName + image.getPath() + "/?size=big";
 	  					    if(uicomponent.isImageType(image)) {
 								    if(isShowCoverFlow) {
 	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+image.getName()+"\"/>";

@@ -32,7 +32,6 @@ import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -129,7 +128,7 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
   public boolean isEditing() { return !isAddNew_; }
   
   public Node getCurrentNode() throws Exception { 
-    return getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode(); 
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode(); 
   }
   
   public void setSelectedLanguage(String selectedLanguage) { selectedLanguage_ = selectedLanguage; }
@@ -153,11 +152,8 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
     public void execute(Event<UILanguageDialogForm> event) throws Exception {
       UILanguageDialogForm languageDialogForm = event.getSource();
       UIJCRExplorer uiExplorer = languageDialogForm.getAncestorOfType(UIJCRExplorer.class);
-      Node node = uiExplorer.getRealCurrentNode();
-      if(node.isLocked()) {
-        String lockToken = LockUtil.getLockToken(node);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-      }
+      Node node = uiExplorer.getCurrentNode();
+      uiExplorer.addLockToken(node);
       MultiLanguageService multiLanguageService = languageDialogForm.getApplicationComponent(MultiLanguageService.class);
       UIApplication uiApp = languageDialogForm.getAncestorOfType(UIApplication.class);
       if (languageDialogForm.selectedLanguage_ == null) {
@@ -278,7 +274,7 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
       } else if (uiComp instanceof UICategoriesSelector){
         CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
         UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
-        Node currentNode = uiExplorer.getRealCurrentNode();
+        Node currentNode = uiExplorer.getCurrentNode();
         String repository = uiExplorer.getRepositoryName();
         List<Node> cats = categoriesService.getCategories(currentNode, repository);
         List<String> arrCategoriesList = new ArrayList<String>();        

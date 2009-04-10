@@ -148,7 +148,12 @@
 	      %>
 	      <div class="RowView Normal" ondblclick="$actionLink">
 	        <div class="LeftColumn" style="float: left; width: 30px; height: 19px; padding: 2px 0px; 	border-right: none;">
-					  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div>
+					  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>">					    
+						<%if(uicomponent.isSymLink(data)) {%>
+					      <div class="LinkSmall"></div>
+					    <%}%>
+					  </div>
+
 	        </div>
 	        <%
 	  	        if (name.length() < 50) subName = name;

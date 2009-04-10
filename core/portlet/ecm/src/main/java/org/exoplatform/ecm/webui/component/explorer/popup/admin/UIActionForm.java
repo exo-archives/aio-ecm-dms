@@ -23,7 +23,6 @@ import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -92,7 +91,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     getChildren().clear() ;
   }
   
-  private Node getParentNode() throws Exception{ return (Node) getSesssion().getItem(parentPath_) ; }
+  private Node getParentNode() throws Exception{ return (Node) getSession().getItem(parentPath_) ; }
   
   public void doSelect(String selectField, Object value) {
     isUpdateSelect = true ;
@@ -108,10 +107,9 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   }
   
   public String getCurrentPath() throws Exception { 
-    return getAncestorOfType(UIJCRExplorer.class).getCurrentPath();
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode().getPath();
   }
   
-  @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
   }
@@ -134,9 +132,12 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   }
   
   public String getRepositoryName() { return repositoryName; }
-  
-  public String getTenmplateNodeType() { return nodeTypeName_ ; }
-  
+
+  @Deprecated
+  public String getTenmplateNodeType() { return getTemplateNodeType() ; }
+
+  public String getTemplateNodeType() { return nodeTypeName_ ; }
+
   private void setPath(String scriptPath) {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     if(scriptPath.indexOf(":") < 0) {
@@ -151,7 +152,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   public String getRootPath(){return rootPath_;}
   public void setIsEditInList(boolean isEditInList) { isEditInList_ = isEditInList; }
   
-  public void onchange(Event event) throws Exception {
+  public void onchange(Event<?> event) throws Exception {
     if(isEditInList_ || !isAddNew_) {
       event.getRequestContext().addUIComponentToUpdateByAjax(getParent()) ;
       return ;
@@ -169,21 +170,18 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       UIJCRExplorer uiExplorer = actionForm.getAncestorOfType(UIJCRExplorer.class) ;   
       String repository = actionForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       Map<String, JcrInputProperty> sortedInputs = DialogFormUtil.prepareMap(actionForm.getChildren(), actionForm.getInputProperties());
-      Node currentNode = uiExplorer.getRealCurrentNode();
+      Node currentNode = uiExplorer.getCurrentNode();
       if(!PermissionUtil.canAddNode(currentNode) || !PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
       }
-      if(currentNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(currentNode);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-      }
+      uiExplorer.addLockToken(currentNode);
       if(!actionForm.isAddNew_) {
         CmsService cmsService = actionForm.getApplicationComponent(CmsService.class) ;      
         Node storedHomeNode = actionForm.getNode().getParent() ;
         cmsService.storeNode(actionForm.nodeTypeName_, storedHomeNode, sortedInputs, false,repository) ;
-        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+        if(!uiExplorer.getPreference().isJcrEnable()) currentNode.getSession().save() ;
         if(actionForm.isEditInList_) {
           UIActionManager uiManager = actionForm.getAncestorOfType(UIActionManager.class) ;
           UIPopupWindow uiPopup = uiManager.findComponentById("editActionPopup") ;
@@ -232,9 +230,9 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         }
         actionServiceContainer.addAction(parentNode, repository, actionForm.nodeTypeName_, sortedInputs);
         actionForm.setIsOnchange(false) ;
-        if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save() ;
+        if(!uiExplorer.getPreference().isJcrEnable()) parentNode.getSession().save() ;
         UIActionManager uiActionManager = actionForm.getAncestorOfType(UIActionManager.class) ;
-        actionForm.createNewAction(uiExplorer.getRealCurrentNode(), actionForm.nodeTypeName_, true) ;
+        actionForm.createNewAction(uiExplorer.getCurrentNode(), actionForm.nodeTypeName_, true) ;
         UIActionList uiActionList = uiActionManager.findFirstComponentOfType(UIActionList.class) ;  
         uiActionList.updateGrid(parentNode, uiActionList.getChild(UIPageIterator.class).getCurrentPage());
         uiActionManager.setRenderedChild(UIActionListContainer.class) ;

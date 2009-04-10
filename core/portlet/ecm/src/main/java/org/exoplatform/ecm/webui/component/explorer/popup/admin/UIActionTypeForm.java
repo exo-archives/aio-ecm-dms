@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.nodetype.NodeType;
 
@@ -66,7 +67,7 @@ public class UIActionTypeForm extends UIForm {
     addUIFormInput(uiSelectBox) ;
   }
 
-  private Iterator getCreatedActionTypes() throws Exception {
+  private Iterator<NodeType> getCreatedActionTypes() throws Exception {
     ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class) ;
     String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     return actionService.getCreatedActionTypes(repository).iterator();
@@ -77,19 +78,20 @@ public class UIActionTypeForm extends UIForm {
       defaultActionType_ = "exo:sendMailAction" ;
       UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
       UIActionContainer uiActionContainer = getParent() ;
+      Node currentNode = uiExplorer.getCurrentNode() ;
       UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
-      uiActionForm.createNewAction(uiExplorer.getRealCurrentNode(), defaultActionType_, true) ;
+      uiActionForm.createNewAction(currentNode, defaultActionType_, true) ;
       uiActionForm.setNodePath(null) ;
-      uiActionForm.setWorkspace(uiExplorer.getCurrentWorkspace()) ;
-      uiActionForm.setStoredPath(uiExplorer.getRealCurrentNode().getPath()) ;
+      uiActionForm.setWorkspace(currentNode.getSession().getWorkspace().getName()) ;
+      uiActionForm.setStoredPath(currentNode.getPath()) ;
       getUIFormSelectBox(ACTION_TYPE).setValue(defaultActionType_) ;
     }
   }  
 
   public void update() throws Exception {
-    Iterator actions = getCreatedActionTypes(); 
+    Iterator<NodeType> actions = getCreatedActionTypes(); 
     while(actions.hasNext()){
-      String action = ((NodeType) actions.next()).getName();
+      String action =  actions.next().getName();
       typeList_.add(new SelectItemOption<String>(action, action));
     }    
     getUIFormSelectBox(ACTION_TYPE).setOptions(typeList_) ;
@@ -100,9 +102,10 @@ public class UIActionTypeForm extends UIForm {
     public void execute(Event<UIActionTypeForm> event) throws Exception {
       UIActionTypeForm uiActionType = event.getSource() ;
       UIJCRExplorer uiExplorer = uiActionType.getAncestorOfType(UIJCRExplorer.class) ;
+      Node currentNode = uiExplorer.getCurrentNode() ;
       String actionType = uiActionType.getUIFormSelectBox(ACTION_TYPE).getValue() ;
       TemplateService templateService = uiActionType.getApplicationComponent(TemplateService.class) ;
-      String repository = uiActionType.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+      String repository = uiExplorer.getRepositoryName() ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       UIApplication uiApp = uiActionType.getAncestorOfType(UIApplication.class) ;
       try {
@@ -116,7 +119,7 @@ public class UIActionTypeForm extends UIForm {
           uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType) ;
           UIActionContainer uiActionContainer = uiActionType.getAncestorOfType(UIActionContainer.class) ;
           UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
-          uiActionForm.createNewAction(uiExplorer.getRealCurrentNode(), actionType, true) ;
+          uiActionForm.createNewAction(currentNode, actionType, true) ;
           uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
           return ;
@@ -130,13 +133,13 @@ public class UIActionTypeForm extends UIForm {
         uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType) ;
         UIActionContainer uiActionContainer = uiActionType.getAncestorOfType(UIActionContainer.class) ;
         UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
-        uiActionForm.createNewAction(uiExplorer.getRealCurrentNode(), actionType, true) ;
+        uiActionForm.createNewAction(currentNode, actionType, true) ;
         uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
       } 
       UIActionContainer uiActionContainer = uiActionType.getParent() ;
       UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
-      uiActionForm.createNewAction(uiExplorer.getRealCurrentNode(), actionType, true) ;
+      uiActionForm.createNewAction(currentNode, actionType, true) ;
       uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
     }

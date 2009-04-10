@@ -24,6 +24,7 @@ import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.jcr.ItemExistsException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
@@ -33,7 +34,6 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.impl.ImageUtils;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
-import org.picocontainer.Startable;
 
 /**
  * Created by The eXo Platform SARL
@@ -41,7 +41,7 @@ import org.picocontainer.Startable;
  *          minh.dang@exoplatform.com
  * Oct 10, 2008 1:58:10 PM
  */
-public class ThumbnailServiceImpl implements ThumbnailService, Startable {
+public class ThumbnailServiceImpl implements ThumbnailService {
 
   final private static String JCR_CONTENT = "jcr:content".intern();
   final private static String JCR_MIMETYPE = "jcr:mimeType".intern();
@@ -134,7 +134,7 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
     if(thumbnailNode != null) {
       if(mimeType.startsWith("image")) processImage2Image(thumbnailNode, image);
       thumbnailNode.setProperty(THUMBNAIL_LAST_MODIFIED, new GregorianCalendar());
-      thumbnailNode.save();
+      thumbnailNode.getSession().save();
     }
   }
   
@@ -156,30 +156,11 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
     return Arrays.asList(mimeTypes_.split(";"));
   }
   
-  public void start() { }
-  
-  public void stop() { }
-  
   public Node addThumbnailNode(Node node) throws Exception {
     Node parentNode = node.getParent();
-    Node thumbnailFolder = null;
-    try {
-      thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
-    } catch(PathNotFoundException e) {
-      thumbnailFolder = parentNode.addNode(EXO_THUMBNAILS_FOLDER, EXO_THUNBNAILS);
-      if(thumbnailFolder.canAddMixin(ThumbnailService.HIDDENABLE_NODETYPE)) {
-        thumbnailFolder.addMixin(ThumbnailService.HIDDENABLE_NODETYPE);
-      }
-    }
-    parentNode.save();
+    Node thumbnailFolder = ThumbnailUtils.getThumbnailFolder(parentNode);
     String identifier = ((NodeImpl) node).getInternalIdentifier();
-    Node thumbnailNode = null;
-    try {
-      thumbnailNode = thumbnailFolder.getNode(identifier);
-    } catch(PathNotFoundException path) {
-      thumbnailNode = thumbnailFolder.addNode(identifier, EXO_THUMBNAIL);
-    }
-    thumbnailFolder.save();
+    Node thumbnailNode = ThumbnailUtils.getThumbnailNode(thumbnailFolder, identifier);
     return thumbnailNode;
   }
   
@@ -199,7 +180,7 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
       Node thumbnailFolder = parentNode.getNode(EXO_THUMBNAILS_FOLDER);
       try {
         thumbnailFolder.getNode(((NodeImpl) showingNode).getInternalIdentifier()).remove();
-        thumbnailFolder.save();
+        thumbnailFolder.getSession().save();
       } catch(PathNotFoundException path) {
         return;
       }
@@ -215,10 +196,16 @@ public class ThumbnailServiceImpl implements ThumbnailService, Startable {
   private void createThumbnailImage(Node thumbnailNode, BufferedImage image, int width, int height, 
       String propertyName) throws Exception {
     InputStream thumbnailStream = ImageUtils.scaleImage(image, width, height);
-    thumbnailNode.setProperty(propertyName, thumbnailStream);
-    thumbnailNode.setProperty(THUMBNAIL_LAST_MODIFIED, new GregorianCalendar());
-    thumbnailNode.save();
-    thumbnailStream.close();
+    try {
+      thumbnailNode.setProperty(propertyName, thumbnailStream);
+      thumbnailNode.getSession().save();
+      thumbnailNode.setProperty(THUMBNAIL_LAST_MODIFIED, new GregorianCalendar());
+      thumbnailNode.getSession().save();      
+    } catch (ItemExistsException e) {
+      // The folder could already be created due to potential concurrent access
+    } finally {
+      thumbnailStream.close();      
+    }
   }
   
   private void parseImageSize(Node node, BufferedImage image, String size, String propertyName) throws Exception {

@@ -37,6 +37,7 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 import javax.jcr.version.OnParentVersionAction;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.CmsService;
@@ -49,6 +50,7 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.services.jcr.core.nodetype.NodeTypeValue;
 import org.exoplatform.services.jcr.core.nodetype.PropertyDefinitionValue;
+import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
 /**
@@ -58,6 +60,11 @@ import org.picocontainer.Startable;
  */
 public class ActionServiceContainerImpl implements ActionServiceContainer, Startable {
 
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("cms.action.ActionServiceContainerImpl");
+  
   /**
    * Define nodetype ACTIONABLE
    */
@@ -147,13 +154,13 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
    */
   public void start() {
     try {
-      for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
-        BaseActionPlugin plugin = (BaseActionPlugin) iter.next();
+      for (ComponentPlugin cPlungin : actionPlugins) {
+        BaseActionPlugin plugin = (BaseActionPlugin) cPlungin;
         plugin.importPredefinedActionsInJcr();
       }
       initiateActionConfiguration();
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Cannot start ActionServiceContainerImpl", e);
     }
   }
   
@@ -170,28 +177,26 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
    */
   public void init(String repository) {
     try {
-      for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
-        BaseActionPlugin plugin = (BaseActionPlugin) iter.next();
+      for (ComponentPlugin cPlungin : actionPlugins) {
+        BaseActionPlugin plugin = (BaseActionPlugin) cPlungin;
         plugin.reImportPredefinedActionsInJcr(repository);
       }
       reInitiateActionConfiguration(repository);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Cannot initialize the ActionServiceContainerImpl", e);
     }
   }
   
   public Collection<String> getActionPluginNames() {
-    Collection<String> actionPluginNames = new ArrayList<String>();
-    for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
-      ComponentPlugin plugin = (ComponentPlugin) iter.next();
+    Collection<String> actionPluginNames = new ArrayList<String>(actionPlugins.size());
+    for (ComponentPlugin plugin : actionPlugins) {
       actionPluginNames.add(plugin.getName());
     }
     return actionPluginNames;
   }
   
   public ActionPlugin getActionPlugin(String actionsServiceName) {
-    for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
-      ComponentPlugin plugin = (ComponentPlugin) iter.next();
+    for (ComponentPlugin plugin : actionPlugins) {
       if (plugin.getName().equals(actionsServiceName))
         return (ActionPlugin) plugin;
     }
@@ -202,7 +207,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
    * Create NodeTypeValue is in kind of ActionType following action type name
    * @param actionTypeName        name of action type
    * @param parentActionTypeName  name of parent action
-   * @param executable            String value of execuable
+   * @param executable            String value of executable
    * @param variableNames         List name of variable
    * @param isMoveType            is moved or not
    * @param repository            repository name
@@ -241,7 +246,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   }
 
   /**
-   * Definite new property with propertyname = name
+   * Definite new property with property name = name
    * mandatory = false, multiple = false, readonly = false, autocreate = false, onversion = 1
    * type = STRING, default value = new ArrayList(), Value constraints = new ArrayList()
    * @param name name of property
@@ -288,8 +293,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
    *         false: ComponentPlugin with name is not abstract type
    */
   private boolean isAbstractType(String name) {
-    for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
-      ComponentPlugin plugin = (ComponentPlugin) iter.next();
+    for (ComponentPlugin plugin : actionPlugins) {
       if (plugin.getName().equals(name))
         return true;
     }
@@ -311,8 +315,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   }
 
   public ActionPlugin getActionPluginForActionType(String actionTypeName) {
-    for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
-      ComponentPlugin plugin = (ComponentPlugin) iter.next();
+    for (ComponentPlugin plugin : actionPlugins) {
       String actionServiceName = plugin.getName();
       ActionPlugin actionService = getActionPlugin(actionServiceName);
       if (actionService.isActionTypeSupported(actionTypeName)
@@ -377,8 +380,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     }
     String actionTypeName = action2Remove.getPrimaryNodeType().getName();
     String actionPath = action2Remove.getPath();
-    for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
-      ComponentPlugin plugin = (ComponentPlugin) iter.next();
+    for (ComponentPlugin plugin : actionPlugins) {
       String actionServiceName = plugin.getName();
       ActionPlugin actionService = getActionPlugin(actionServiceName);
       if (actionService.isActionTypeSupported(actionTypeName)) {
@@ -463,7 +465,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
 
   
   /**
-   * Put to Map with key = propery name and value = value of property in actionNode
+   * Put to Map with key = property name and value = value of property in actionNode
    * @param actionNode  get value of property in this node
    * @param nodeType    get property definition from this object
    * @param variables   Map to keep (key, value) of all property
@@ -493,8 +495,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     if (!parentNode.isNodeType(ACTIONABLE)) return ;
     Node actionNode = parentNode.getNode(EXO_ACTIONS + "/" +actionName);
     String actionTypeName = actionNode.getPrimaryNodeType().getName();
-    for (Iterator iter = actionPlugins.iterator(); iter.hasNext();) {
-      ComponentPlugin plugin = (ComponentPlugin) iter.next();
+    for (ComponentPlugin plugin : actionPlugins) {
       String actionServiceName = plugin.getName();
       ActionPlugin actionPlugin = getActionPlugin(actionServiceName);
       if (actionPlugin.isActionTypeSupported(actionTypeName)) {
@@ -522,11 +523,11 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
    * Get all ComponentPlugin
    * @return  Collection of ComponentPlugins
    */
-  public Collection getPlugins() { return actionPlugins; }
+  public Collection<ComponentPlugin> getPlugins() { return actionPlugins; }
 
   /**
    * Get QueryManager, call initAction(QueryManager queryManager, String repository, String workspace)
-   * to init action listener for all available repositories and workspaces
+   * to initialize action listener for all available repositories and workspaces
    * @param repository  repository name
    * @throws Exception
    * @see {@link #initAction(QueryManager, String, String)}
@@ -543,8 +544,8 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
         try {
           queryManager = session.getWorkspace().getQueryManager();
         } catch (RepositoryException e) {
-          System.out.println("[WARN] ActionServiceContainer - Query Manager Factory of workspace "
-              + workspace + " not found. Check configuration.");
+          LOG.warn("ActionServiceContainer - Query Manager Factory of workspace "
+              + workspace + " not found. Check configuration.", e);
         }
         if (queryManager == null) {
           session.logout();
@@ -558,7 +559,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
 
   /**
    * Get QueryManager, call initAction(QueryManager queryManager, String repository, String workspace)
-   * to init action listener
+   * to initialize action listener
    * @param repository  repository name
    * @throws Exception
    * @see {@link #initAction(QueryManager, String, String)}
@@ -571,8 +572,8 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       try {
         queryManager = session.getWorkspace().getQueryManager();
       } catch (RepositoryException e) {
-        System.out.println("[WARN] ActionServiceContainer - Query Manager Factory of workspace "
-            + workspace + " not found. Check configuration.");
+        LOG.warn("ActionServiceContainer - Query Manager Factory of workspace "
+            + workspace + " not found. Check configuration.", e);
       }
       if (queryManager == null)  {
         session.logout();
@@ -584,7 +585,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   }
 
   /**
-   * Init action listener for all node in repository 
+   * Initialize the action listener for all node in repository 
    * All node is got by query following ACTION_QUERY
    * @param queryManager QueryManager
    * @param repository   repository name 
@@ -599,8 +600,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
         Node actionNode = iter.nextNode();
         String lifecyclePhase = actionNode.getProperty(LIFECYCLE_PHASE_PROP).getString();
         String actionType = actionNode.getPrimaryNodeType().getName();
-        for (Iterator pluginIter = actionPlugins.iterator(); pluginIter.hasNext();) {
-          ComponentPlugin plugin = (ComponentPlugin) pluginIter.next();
+        for (ComponentPlugin plugin : actionPlugins) {
           String actionServiceName = plugin.getName();
           ActionPlugin actionService = getActionPlugin(actionServiceName);
           if (actionService.isActionTypeSupported(actionType)) {
@@ -613,9 +613,8 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
         }
       }
     } catch (Exception e) {
-      System.out.println(">>>> Can not launch action listeners for wokrpsace: " 
-          + workspace + " in '" + repository + "' repository");
-      // e.printStackTrace() ;
+      LOG.error(">>>> Can not launch action listeners for workspace: " 
+          + workspace + " in '" + repository + "' repository", e);
     }
   }
 
@@ -635,8 +634,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
         Node actionNode = iter.nextNode();
         try {
           String actionType = actionNode.getPrimaryNodeType().getName();
-          for (Iterator pluginIter = actionPlugins.iterator(); pluginIter.hasNext();) {
-            ComponentPlugin plugin = (ComponentPlugin) pluginIter.next();
+          for (ComponentPlugin plugin : actionPlugins) {
             String actionServiceName = plugin.getName();
             ActionPlugin actionService = getActionPlugin(actionServiceName);
             if (actionService.isActionTypeSupported(actionType)) {
@@ -644,13 +642,11 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
             }
           }
         } catch (Exception e) {
-          System.out.println("Can not launch action listeners named is " + actionNode.getPath());
-          // e.printStackTrace();
+          LOG.error("Can not launch action listeners named is " + actionNode.getPath(), e);
         }
       }
     } catch (Exception ex) {
-      System.out.println("Can not launch action listeners inside " + node.getPath() + " node.");
-      // ex.printStackTrace() ;
+      LOG.error("Can not launch action listeners inside " + node.getPath() + " node.", ex);
     }
   }
 }

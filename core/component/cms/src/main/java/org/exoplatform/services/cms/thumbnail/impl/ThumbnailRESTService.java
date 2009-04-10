@@ -20,12 +20,14 @@ import java.awt.image.BufferedImage;
 import java.io.InputStream;
 
 import javax.imageio.ImageIO;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -62,12 +64,16 @@ public class ThumbnailRESTService implements ResourceContainer {
   
   private static final String LASTMODIFIED = "Last-Modified";
   
-  private RepositoryService repositoryService_;
-  private ThumbnailService thumbnailService_;
+  private final RepositoryService repositoryService_;
+  private final ThumbnailService thumbnailService_;
+  private final NodeFinder nodeFinder_;
+  private final LinkManager linkManager_;
   
-  public ThumbnailRESTService(RepositoryService repositoryService, ThumbnailService thumbnailService) {
+  public ThumbnailRESTService(RepositoryService repositoryService, ThumbnailService thumbnailService, NodeFinder nodeFinder, LinkManager linkManager) {
     repositoryService_ = repositoryService;
     thumbnailService_ = thumbnailService;
+    nodeFinder_ = nodeFinder;
+    linkManager_ = linkManager;
   }
 /**
  * Get the image with medium size
@@ -130,33 +136,23 @@ public class ThumbnailRESTService implements ResourceContainer {
     Node showingNode = getShowingNode(repoName, wsName, nodePath);
     Node parentNode = showingNode.getParent();
     String identifier = ((NodeImpl) showingNode).getInternalIdentifier();
-    if(showingNode.isNodeType("exo:symlink")) {
-      Node targetNode = 
-        showingNode.getSession().getNodeByUUID(showingNode.getProperty("exo:uuid").getString()); 
-      showingNode = targetNode;
+    Node targetNode;
+    if (linkManager_.isLink(showingNode)) {
+      try {
+        targetNode = linkManager_.getTarget(showingNode);
+      } catch (ItemNotFoundException e) {
+        targetNode = showingNode;
+      }
+    } else {
+      targetNode = showingNode;
     }
-    if(showingNode.getPrimaryNodeType().getName().equals("nt:file")) {
-      Node content = showingNode.getNode("jcr:content");
+    if(targetNode.getPrimaryNodeType().getName().equals("nt:file")) {
+      Node content = targetNode.getNode("jcr:content");
       if(content.getProperty("jcr:mimeType").getString().startsWith("image")) {
-        Node thumbnailFolder = null;
-        try {
-          thumbnailFolder = parentNode.getNode(ThumbnailService.EXO_THUMBNAILS_FOLDER);
-        } catch(PathNotFoundException e) {
-          thumbnailFolder = 
-            parentNode.addNode(ThumbnailService.EXO_THUMBNAILS_FOLDER, ThumbnailService.EXO_THUNBNAILS);
-          parentNode.save();
-          if(thumbnailFolder.canAddMixin(ThumbnailService.HIDDENABLE_NODETYPE)) {
-            thumbnailFolder.addMixin(ThumbnailService.HIDDENABLE_NODETYPE);
-          }
-          thumbnailFolder.save();
-        }
-        Node thumbnailNode = null;
-        try {
-          thumbnailNode = thumbnailFolder.getNode(identifier);
-        } catch(PathNotFoundException path) {
-          thumbnailNode = thumbnailFolder.addNode(identifier, ThumbnailService.EXO_THUMBNAIL);
-          thumbnailFolder.save();
-        }
+        Node thumbnailFolder = ThumbnailUtils.getThumbnailFolder(parentNode);
+        
+        Node thumbnailNode = ThumbnailUtils.getThumbnailNode(thumbnailFolder, identifier);
+        
         if(!thumbnailNode.hasProperty(propertyName)) {
           BufferedImage image = ImageIO.read(content.getProperty("jcr:data").getStream());
           thumbnailService_.addThumbnailImage(thumbnailNode, image, propertyName);
@@ -169,7 +165,6 @@ public class ThumbnailRESTService implements ResourceContainer {
         if(thumbnailNode.hasProperty(propertyName)) {
           inputStream = thumbnailNode.getProperty(propertyName).getStream();
         }
-        showingNode.getSession().save();
         return Response.Builder.ok().header(LASTMODIFIED, lastModified)
                                     .entity(inputStream, "image")
                                     .build();
@@ -193,11 +188,13 @@ public class ThumbnailRESTService implements ResourceContainer {
   }
   
   private Node getShowingNode(String repoName, String wsName, String nodePath) throws Exception {
-    ManageableRepository reposiotry = repositoryService_.getRepository(repoName);
-    Session session = getSystemProvider().getSession(wsName, reposiotry);
+    ManageableRepository repository = repositoryService_.getRepository(repoName);
+    Session session = getSystemProvider().getSession(wsName, repository);
     Node showingNode = null;
     if(nodePath.equals("/")) showingNode = session.getRootNode();
-    else showingNode = (Node)session.getItem("/" + nodePath);
+    else {
+      showingNode = (Node) nodeFinder_.getItem(session, "/" + nodePath);
+    }
     return showingNode;
   }
 

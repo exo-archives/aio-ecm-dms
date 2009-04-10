@@ -276,10 +276,11 @@ public class UIDrivesBrowser extends UIContainer {
       
       SessionProvider provider = SessionProviderFactory.createSessionProvider();                  
       ManageableRepository repository = rservice.getRepository(uiDrive.repoName_);
-      Node node = null;
       try {
-        Session session = provider.getSession(drive.getWorkspace(),repository);      
-        node = (Node) session.getItem(homePath);        
+        Session session = provider.getSession(drive.getWorkspace(),repository);
+        // check if it exists
+        // we assume that the path is a real path
+        session.getItem(homePath);        
       } catch(AccessDeniedException ace) {
         Object[] args = { driveName };
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args, 
@@ -300,7 +301,7 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.setRepositoryName(uiDrive.repoName_);
       uiJCRExplorer.setWorkspaceName(drive.getWorkspace());
       uiJCRExplorer.setRootPath(homePath);
-      uiJCRExplorer.setSelectNode(node);
+      uiJCRExplorer.setSelectNode(homePath);
       uiJCRExplorer.refreshExplorer();      
       UIControl uiControl = uiJCRExplorer.getChild(UIControl.class);
       UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);

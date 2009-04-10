@@ -25,7 +25,6 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -79,7 +78,7 @@ public class UIRelationsAddedList extends UIContainer implements UISelectable {
   public void doSelect(String selectField, Object value) throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     RelationsService relateService = getApplicationComponent(RelationsService.class) ;
-    String currentFullPath = uiJCRExplorer.getCurrentWorkspace() + ":" + uiJCRExplorer.getRealCurrentNode().getPath() ;
+    String currentFullPath = uiJCRExplorer.getCurrentWorkspace() + ":" + uiJCRExplorer.getCurrentNode().getPath() ;
     if(value.equals(currentFullPath)) {
       throw new MessageException(new ApplicationMessage("UIRelationsAddedList.msg.can-not-add-itself",
                                                         null, ApplicationMessage.WARNING)) ;
@@ -88,12 +87,10 @@ public class UIRelationsAddedList extends UIContainer implements UISelectable {
       String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
       String wsName = value.toString().substring(0, value.toString().indexOf(":")) ;
       String path = value.toString().substring(value.toString().indexOf(":") + 1) ;           
-      if(uiJCRExplorer.getRealCurrentNode().isLocked()) {
-        String lockToken = LockUtil.getLockToken(uiJCRExplorer.getRealCurrentNode());
-        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
-      }
-      relateService.addRelation(uiJCRExplorer.getRealCurrentNode(), path, wsName,repository) ;
-      updateGrid(relateService.getRelations(uiJCRExplorer.getRealCurrentNode(), 
+      Node currentNode = uiJCRExplorer.getCurrentNode();
+      uiJCRExplorer.addLockToken(currentNode);
+      relateService.addRelation(currentNode, path, wsName,repository) ;
+      updateGrid(relateService.getRelations(currentNode, 
           uiJCRExplorer.getRepositoryName(), SessionProviderFactory.createSessionProvider()), 1);      
       setRenderSibbling(UIRelationsAddedList.class) ;
     } catch(Exception e) {
@@ -111,9 +108,9 @@ public class UIRelationsAddedList extends UIContainer implements UISelectable {
         uiAddedList.getApplicationComponent(RelationsService.class) ;
       UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
       try {
-        relationService.removeRelation(uiExplorer.getRealCurrentNode(), nodePath, uiExplorer.getRepositoryName());
+        relationService.removeRelation(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName());
         UIGrid uiGrid = uiAddedList.getChildById("RelateAddedList");
-        uiAddedList.updateGrid(relationService.getRelations(uiExplorer.getRealCurrentNode(),
+        uiAddedList.updateGrid(relationService.getRelations(uiExplorer.getCurrentNode(),
             uiExplorer.getRepositoryName(), SessionProviderFactory.createSessionProvider()),
             uiGrid.getUIPageIterator().getCurrentPage());
       } catch(Exception e) {

@@ -23,10 +23,8 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -86,7 +84,7 @@ public class UIContentNameSearch extends UIForm {
 //      }
       keyword = keyword.trim();
       UIJCRExplorer explorer = contentNameSearch.getAncestorOfType(UIJCRExplorer.class);
-      String currentNodePath = explorer.getRealCurrentNode().getPath();
+      String currentNodePath = explorer.getCurrentNode().getPath();
       String statement = null;
       if("/".equalsIgnoreCase(currentNodePath)) {
         statement = StringUtils.replace(ROOT_PATH_SQL_QUERY,"$1",keyword);
@@ -94,7 +92,7 @@ public class UIContentNameSearch extends UIForm {
         statement = StringUtils.replace(PATH_SQL_QUERY,"$0",currentNodePath);
         statement = StringUtils.replace(statement,"$1",keyword);
       }
-      QueryManager queryManager = explorer.getRealCurrentNode().getSession().getWorkspace().getQueryManager();
+      QueryManager queryManager = explorer.getTargetSession().getWorkspace().getQueryManager();
       UIECMSearch uiECMSearch = contentNameSearch.getAncestorOfType(UIECMSearch.class); 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class);      
       Query query = queryManager.createQuery(statement,Query.SQL);

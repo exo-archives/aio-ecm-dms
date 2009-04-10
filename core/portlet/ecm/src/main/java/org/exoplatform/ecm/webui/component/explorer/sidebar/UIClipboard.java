@@ -20,13 +20,10 @@ import java.util.LinkedList;
 
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
-import javax.jcr.Session;
-import javax.jcr.Workspace;
 
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
-import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -80,16 +77,12 @@ public class UIClipboard extends UIComponent {
       String id = event.getRequestContext().getRequestParameter(OBJECTID) ;
       int index = Integer.parseInt(id) ;
       ClipboardCommand selectedClipboard = uiClipboard.clipboard_.get(index-1);      
-      Node node = uiExplorer.getRealCurrentNode() ;
-      String type = selectedClipboard.getType();
+      Node node = uiExplorer.getCurrentNode() ;
       String nodePath = node.getPath();
+      String wsName = node.getSession().getWorkspace().getName();
       UIApplication app = uiClipboard.getAncestorOfType(UIApplication.class);
       try {
-        uiWorkingArea.processPaste(selectedClipboard, nodePath, event);
-          if(ClipboardCommand.CUT.equals(type)) {
-            uiClipboard.clipboard_.remove(index-1) ;
-          } else {
-          }
+        uiWorkingArea.processPaste(selectedClipboard, wsName + ":" + nodePath, event);
         uiExplorer.updateAjax(event);
       } catch(PathNotFoundException path) {
         app.addMessage(new ApplicationMessage("PathNotFoundException.msg", null, ApplicationMessage.WARNING)) ;

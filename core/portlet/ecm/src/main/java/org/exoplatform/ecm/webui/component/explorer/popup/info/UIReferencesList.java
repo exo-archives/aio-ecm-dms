@@ -71,7 +71,7 @@ public class UIReferencesList extends UIGrid implements UIPopupComponent{
     List<ReferenceBean> referBeans = new ArrayList<ReferenceBean>() ; 
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Node currentNode = uiJCRExplorer.getRealCurrentNode() ;
+    Node currentNode = uiJCRExplorer.getCurrentNode() ;
     String uuid = currentNode.getUUID() ;        
     String repositoryName = uiJCRExplorer.getRepositoryName() ;
     ManageableRepository repository = repositoryService.getRepository(repositoryName) ;

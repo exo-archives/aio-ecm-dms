@@ -23,7 +23,6 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.core.UIPopupComponent;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.cms.watch.WatchDocumentService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -67,7 +66,7 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
   }
   
   public Node getWatchNode() throws Exception{ 
-    return getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode() ; }
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ; }
   
   public String getUserName() { 
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
@@ -120,11 +119,8 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
       WatchDocumentService watchService = uiForm.getApplicationComponent(WatchDocumentService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getRealCurrentNode();
-      if(currentNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(currentNode);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-      }
+      Node currentNode = uiExplorer.getCurrentNode();
+      uiExplorer.addLockToken(currentNode);
       if(notifyType.equalsIgnoreCase(NOTIFICATION_BY_EMAIL)) {
         watchService.watchDocument(uiForm.getWatchNode(), uiForm.getUserName(), WatchDocumentService.NOTIFICATION_BY_EMAIL) ;
         uiForm.isWatching() ;
@@ -147,11 +143,8 @@ public class UIWatchDocumentForm extends UIForm implements UIPopupComponent {
       WatchDocumentService watchService = uiForm.getApplicationComponent(WatchDocumentService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getRealCurrentNode();
-      if(currentNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(currentNode);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-      }
+      Node currentNode = uiExplorer.getCurrentNode();
+      uiExplorer.addLockToken(currentNode);
       if(notifyType.equalsIgnoreCase(NOTIFICATION_BY_EMAIL)) {
         watchService.unwatchDocument(uiForm.getWatchNode(), uiForm.getUserName(), WatchDocumentService.NOTIFICATION_BY_EMAIL) ;
       } else {

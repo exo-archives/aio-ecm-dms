@@ -25,7 +25,6 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -110,38 +109,38 @@ public class UISimpleSearch extends UIForm {
   }
   
   private String getQueryStatement() throws Exception {
-    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode();
-    String statement = "";
+    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
+    StringBuilder statement = new StringBuilder(1024);
     String text = getUIStringInput(INPUT_SEARCH).getValue();
     if(text != null && constraints_.size() == 0) {
       if ("/".equals(currentNode.getPath())) {
-        statement = ROOT_XPATH_QUERY + "[(jcr:contains(.,'"+text+"'))";
+        statement.append(ROOT_XPATH_QUERY);
       } else {
-        statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(jcr:contains(.,'"+text+"'))";
+        statement.append(StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()));
       }
-      statement = statement + "]";
+      statement.append("([jcr:contains(.,'").append(text.replaceAll("'", "''")).append("'))]");
     } else if(constraints_.size() > 0) {
       if(text == null) {
         if ("/".equals(currentNode.getPath())) {
-          statement = ROOT_XPATH_QUERY + "[(";
+          statement.append(ROOT_XPATH_QUERY).append("[(");
         } else {
-          statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(";
+          statement.append(StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath())).append("[(");
         } 
       } else {
         String operator = getUIFormSelectBox(FIRST_OPERATOR).getValue();
         if ("/".equals(currentNode.getPath())) {
-          statement = ROOT_XPATH_QUERY + "[(jcr:contains(.,'"+text+"'))";
+          statement.append(ROOT_XPATH_QUERY);
         } else {
-          statement = StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()) + "[(jcr:contains(.,'"+text+"'))";
+          statement.append(StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()));
         } 
-        statement = statement + " " + operator + " (";
+        statement.append("[(jcr:contains(.,'").append(text.replaceAll("'", "''")).append("')) ").append(operator).append(" (");
       }
       for(String constraint : constraints_) {
-        statement = statement + constraint;
+        statement.append(constraint);
       }
-      statement = statement + ")]";
+      statement.append(")]");
     }
-    return statement;
+    return statement.toString();
   }
   
   static  public class SaveActionListener extends EventListener<UISimpleSearch> {
@@ -196,8 +195,8 @@ public class UISimpleSearch extends UIForm {
       UISimpleSearch uiSimpleSearch = event.getSource();
       String text = uiSimpleSearch.getUIStringInput(INPUT_SEARCH).getValue();
       UIJCRExplorer uiExplorer = uiSimpleSearch.getAncestorOfType(UIJCRExplorer.class);
-      Node currentNode = uiExplorer.getRealCurrentNode();
-      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager();
+      Node currentNode = uiExplorer.getCurrentNode();
+      QueryManager queryManager = currentNode.getSession().getWorkspace().getQueryManager();
       UIECMSearch uiECMSearch = uiSimpleSearch.getAncestorOfType(UIECMSearch.class); 
       UISearchResult uiSearchResult = uiECMSearch.getChild(UISearchResult.class);
       UIApplication uiApp = uiSimpleSearch.getAncestorOfType(UIApplication.class);

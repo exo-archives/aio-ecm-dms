@@ -284,10 +284,11 @@ public class UIJcrExplorerContainer extends UIContainer {
       
       SessionProvider provider = SessionProviderFactory.createSessionProvider();                  
       ManageableRepository repository = rservice.getRepository(portletPref.getValue(Utils.REPOSITORY, ""));
-      Node node = null;
       try {
         Session session = provider.getSession(drive.getWorkspace(),repository);      
-        node = (Node) session.getItem(homePath);        
+        // check if it exists
+        // we assume that the path is a real path
+        session.getItem(homePath);        
       } catch(AccessDeniedException ace) {
         Object[] args = { driveName };
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args, 
@@ -308,7 +309,7 @@ public class UIJcrExplorerContainer extends UIContainer {
       uiJCRExplorer.setRepositoryName(portletPref.getValue(Utils.REPOSITORY, ""));
       uiJCRExplorer.setWorkspaceName(drive.getWorkspace());
       uiJCRExplorer.setRootPath(homePath);
-      uiJCRExplorer.setSelectNode(node);
+      uiJCRExplorer.setSelectNode(homePath);
       uiJCRExplorer.refreshExplorer();      
       UIControl uiControl = uiJCRExplorer.getChild(UIControl.class);
       UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);

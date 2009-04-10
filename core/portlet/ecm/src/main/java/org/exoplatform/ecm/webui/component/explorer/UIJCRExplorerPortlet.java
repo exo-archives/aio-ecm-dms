@@ -21,7 +21,9 @@ import java.util.List;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -33,6 +35,12 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
   lifecycle = UIApplicationLifecycle.class
 )
 public class UIJCRExplorerPortlet extends UIPortletApplication {
+  
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIJCRExplorerPortlet");
+  
   final static public String REPOSITORY =  "repository";
   final static public String CATEGORY_MANDATORY =  "categoryMandatoryWhenFileUpload";
   final static public String ISDIRECTLY_DRIVE =  "isDirectlyDrive";
@@ -78,12 +86,12 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       explorerContainer.setRendered(true);
       getChild(UIJcrExplorerEditContainer.class).setRendered(false);
     } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {
-      System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
+      if (LOG.isDebugEnabled()) LOG.debug("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
     } else if(portletReqContext.getApplicationMode() == PortletMode.EDIT) {
       explorerContainer.setRendered(false);
       getChild(UIJcrExplorerEditContainer.class).setRendered(true);
     }
-    super.processRender(app, context) ;
+    super.processRender(app, context);
   }
   
   public void initwhenSelect(UIJcrExplorerContainer explorerContainer) throws Exception {

@@ -143,9 +143,9 @@ var SimpleView = function() {
 			var idTarget = element.getAttribute('objectId');
 			//Dunghm : check symlink
 			if(event.ctrlKey && event.shiftKey)
-			  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo="+idTarget+";"+wsTarget);
+			  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
 			else
-			  Self.postGroupAction(moveAction, "&destInfo="+idTarget+";"+wsTarget);
+			  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
 		}
 	};
 	
@@ -277,9 +277,9 @@ var SimpleView = function() {
 				var idTarget = element.getAttribute('objectId');
 				//Dunghm: check symlink
 				if(event.ctrlKey && event.shiftKey)
-				  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo="+idTarget+";"+wsTarget);
+				  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
 				else
-				  Self.postGroupAction(moveAction, "&destInfo="+idTarget+";"+wsTarget);
+				  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
 			} else {
 				if (event.ctrlKey && !element.selected) {
 					element.selected = true;
@@ -685,16 +685,14 @@ var SimpleView = function() {
 				if (Array.prototype[i]) continue;
 				var currentNode = Self.itemsSelected[i];
 				currentNode.isSelect = false;
-				var wsname = currentNode.getAttribute("workspaceName");
-				if (wsname) workspaceName.push(wsname);
-				else workspaceName.push("");
 				
 				//Dunghm: Check Shift key
 				var islinkValue = currentNode.getAttribute("isLink");
 				if (islinkValue && (islinkValue != "") && (islinkValue != "null")) islink += islinkValue ;
 
 				var oid = currentNode.getAttribute("objectId");
-				if (oid) objectId.push(oid);
+				var wsname = currentNode.getAttribute("workspaceName");
+				if (oid) objectId.push(wsname + ":" + oid);
 				else objectId.push("");
 			}
 			//Dunghm: Check Shift key
@@ -703,7 +701,7 @@ var SimpleView = function() {
 				url = moveActionNode.getAttribute("symlink");
 				ext += "&isLink="+true;
 			}
-			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + ext);
+			url = url.replace("MultiSelection", objectId.join(";") + ext);
 			eval(url);
 		}
 	};

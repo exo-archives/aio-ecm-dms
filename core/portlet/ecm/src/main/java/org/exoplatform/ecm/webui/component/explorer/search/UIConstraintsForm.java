@@ -195,7 +195,7 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     String uuid = null;
     try {
-      uuid = ((Node)(uiExplorer.getSession().getItem(categoryPath))).getUUID(); 
+      uuid = ((Node)(uiExplorer.getTargetSession().getItem(categoryPath))).getUUID(); 
     } catch (Exception e) {
       return "";
     }
@@ -423,11 +423,11 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String currentPath = uiExplorer.getRealCurrentNode().getPath() ;
+      String currentPath = uiExplorer.getCurrentNode().getPath() ;
       String statement = "select * from nt:base where " ;
       if(!currentPath.equals("/")) statement = statement + "jcr:path like '"+ currentPath +"/%' AND " ;
       statement = statement + ""+property+" is not null" ;
-      QueryManager queryManager = uiExplorer.getSession().getWorkspace().getQueryManager() ;
+      QueryManager queryManager = uiExplorer.getTargetSession().getWorkspace().getQueryManager() ;
       Query query = queryManager.createQuery(statement, Query.SQL) ;
       QueryResult result = query.execute() ;
       if(result == null || result.getNodes().getSize() == 0) {

@@ -20,10 +20,11 @@ import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.InvalidItemStateException;
-import javax.jcr.Item;
 import javax.jcr.ItemExistsException;
 import javax.jcr.LoginException;
 import javax.jcr.Node;
@@ -41,6 +42,7 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.version.VersionException;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
@@ -61,7 +63,8 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.link.LinkManager;
-import org.exoplatform.services.cms.link.NodeFinder;
+import org.exoplatform.services.cms.link.LinkUtils;
+import org.exoplatform.services.cms.link.NodeLinkAware;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
@@ -70,6 +73,7 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.IdentityRegistry;
 import org.exoplatform.services.security.MembershipEntry;
@@ -126,6 +130,12 @@ import org.exoplatform.webui.exception.MessageException;
 
 public class UIWorkingArea extends UIContainer {
 
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("dms.UIJcrExplorerContainer");
+  public static final Pattern FILE_EXPLORER_URL_SYNTAX = Pattern.compile("([^:/]+):(/.*)");
+	  
   final static private String RELATION_PROP = "exo:relation";
   final static public String WS_NAME = "workspaceName";
   
@@ -171,7 +181,7 @@ public class UIWorkingArea extends UIContainer {
   }
 
   public boolean isSameNameSibling(Node node) throws Exception {
-    return (node.getPath().endsWith("]")) ? true : false;
+    return node.getIndex() > 1;
   }
 
   public boolean isEditable(String nodePath, Session session) throws Exception {
@@ -221,13 +231,14 @@ public class UIWorkingArea extends UIContainer {
   }
 
   public String getActionsList(Node node) throws Exception {
-    if (node == null) return "";
+    if(node == null) return "";
     try {
       node.refresh(true);
     } catch(InvalidItemStateException e) {
       return "";
     }
     StringBuilder actionsList = new StringBuilder();        
+    Node realNode = (node instanceof NodeLinkAware) ? ((NodeLinkAware) node).getRealNode() : node;
     boolean isEditable = isEditable(node);    
     boolean isLocked = node.isLocked();
     boolean holdsLock = node.holdsLock();    
@@ -235,8 +246,8 @@ public class UIWorkingArea extends UIContainer {
     boolean isJcrEnable = isJcrViewEnable();
     boolean isVersionable = Utils.isVersionable(node);
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    if (isVersionableOrAncestor(node)) {
-      if (node.isCheckedOut()) {
+    if(isVersionableOrAncestor(node)) {
+      if(node.isCheckedOut()) {
         if(isVersionable) actionsList.append("CheckIn");
         if(isEditable) actionsList.append(",EditDocument");
         if(!isSameNameSibling) {
@@ -259,24 +270,24 @@ public class UIWorkingArea extends UIContainer {
         if(!isSameNameSibling) actionsList.append(",Copy");
         actionsList.append(",Rename");
       }
-      if (!node.isNodeType(Utils.EXO_SYMLINK)) actionsList.append(",AddSymLink");
+      if (!realNode.isNodeType(Utils.EXO_SYMLINK)) actionsList.append(",AddSymLink");
     } else {
-      if (isEditable) actionsList.append(",EditDocument");
-      if (!isSameNameSibling) {
-        if (holdsLock) {
+      if(isEditable) actionsList.append(",EditDocument");
+      if(!isSameNameSibling) {
+        if(holdsLock) {
           actionsList.append(",Unlock");
         } else if(!isLocked) {
           actionsList.append(",Lock");
         }
       }
-      if (!isSameNameSibling) {
+      if(!isSameNameSibling) {
         actionsList.append(",Copy");
         actionsList.append(",Cut");
       }
       actionsList.append(",Rename");
       if(isJcrViewEnable()) actionsList.append(",Save");
       actionsList.append(",Delete");
-      if (!node.isNodeType(Utils.EXO_SYMLINK)) actionsList.append(",AddSymLink");
+      if (!realNode.isNodeType(Utils.EXO_SYMLINK)) actionsList.append(",AddSymLink");
     }
     if(uiExplorer.getAllClipBoard().size() > 0) actionsList.append(",Paste");
     return actionsList.toString();
@@ -317,18 +328,38 @@ public class UIWorkingArea extends UIContainer {
     return safeActions;
   }
   
-  private void multipleCopy(String[] srcPaths, String[] wsNames, Event event) throws Exception {
+  private void multipleCopy(String[] srcPaths, Event<?> event) throws Exception {
     for(int i=0; i< srcPaths.length; i++) {
-      processCopy(srcPaths[i], wsNames[i], event);
+      processCopy(srcPaths[i], event);
     }
   }
   
-  private void processCopy(String srcPath, String wsName, Event event) throws Exception {
+  private String getDefaultWorkspace() {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    return uiExplorer.getCurrentDriveWorkspace();            
+  }
+  
+  private void processCopy(String srcPath, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
+    Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
+    String wsName = null;
+    if (matcher.find()) {
+      wsName = matcher.group(1);
+      srcPath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '"+ srcPath + "'");
+    }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
     try {
-      session.getItem(srcPath);
+      // Use the method getNodeByPath because it is link aware
+      Node node = uiExplorer.getNodeByPath(srcPath, session, false);
+      // Reset the path to manage the links that potentially create virtual path
+      srcPath = node.getPath();
+      // Reset the session to manage the links that potentially change of workspace
+      session = node.getSession();
+      // Reset the workspace name to manage the links that potentially change of workspace 
+      wsName = session.getWorkspace().getName();
     } catch(PathNotFoundException path) {
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
           null,ApplicationMessage.WARNING));
@@ -360,14 +391,14 @@ public class UIWorkingArea extends UIContainer {
       uiExplorer.updateAjax(event);
       return;              
     } catch(Exception e) {
-      e.printStackTrace();
+      LOG.error("an unexpected error occurs", e);
       JCRExceptionManager.process(uiApp, e);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
     }
   }
   
-  private void processPasteMultiple(String destPath, Event event) throws Exception {
+  private void processPasteMultiple(String destPath, Event<?> event) throws Exception {
     pasteNum_ = 0;
     isLastPaste_ = false;
     for(ClipboardCommand clipboard : virtualClipboards_) {
@@ -381,14 +412,38 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
-  public void processPaste(ClipboardCommand currentClipboard, String destPath, Event event) throws Exception {
+  public void processPaste(ClipboardCommand currentClipboard, String destPath, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
     String srcPath = currentClipboard.getSrcPath();
     String type = currentClipboard.getType();
     String srcWorkspace = currentClipboard.getWorkspace();
-    Session session = uiExplorer.getSession();
-    if (ClipboardCommand.CUT.equals(type) && srcPath.equals(destPath)) { 
+    Session srcSession = uiExplorer.getSessionByWorkspace(srcWorkspace);
+    // Use the method getNodeByPath because it is link aware
+    Node srcNode = uiExplorer.getNodeByPath(srcPath, srcSession, false);
+    // Reset the path to manage the links that potentially create virtual path
+    srcPath = srcNode.getPath();
+    // Reset the session to manage the links that potentially change of workspace
+    srcSession = srcNode.getSession();
+    // Reset the workspace name to manage the links that potentially change of workspace 
+    srcWorkspace = srcSession.getWorkspace().getName();
+    Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(destPath);
+    String destWorkspace = null;
+    if (matcher.find()) {
+      destWorkspace = matcher.group(1);
+      destPath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '"+ destPath + "'");
+    }
+    Session destSession = uiExplorer.getSessionByWorkspace(destWorkspace);
+    
+    // Use the method getNodeByPath because it is link aware
+    Node destNode = uiExplorer.getNodeByPath(destPath, destSession);
+    // Reset the path to manage the links that potentially create virtual path
+    destPath = destNode.getPath();
+    // Reset the session to manage the links that potentially change of workspace
+    destSession = destNode.getSession();    
+    if(ClipboardCommand.CUT.equals(type) && srcPath.equals(destPath)) { 
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-cutting", null, 
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
@@ -402,11 +457,11 @@ public class UIWorkingArea extends UIContainer {
     ActionServiceContainer actionContainer = getApplicationComponent(ActionServiceContainer.class);
     try {
       if(ClipboardCommand.COPY.equals(type)) {
-        pasteByCopy(session, srcWorkspace, srcPath, destPath);
-        Node selectedNode = (Node)session.getItem(destPath);
+        pasteByCopy(destSession, srcWorkspace, srcPath, destPath);
+        Node selectedNode = (Node) destSession.getItem(destPath);
         actionContainer.initiateObservation(selectedNode, uiExplorer.getRepositoryName());
       } else {
-          pasteByCut(uiExplorer, session, srcWorkspace, srcPath, destPath, actionContainer, uiExplorer.getRepositoryName());
+        pasteByCut(currentClipboard, uiExplorer, destSession, srcWorkspace, srcPath, destPath, actionContainer, uiExplorer.getRepositoryName());
       }
     } catch(ConstraintViolationException ce) {       
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.current-node-not-allow-paste", null, 
@@ -465,23 +520,22 @@ public class UIWorkingArea extends UIContainer {
       removeReferences(destNode);
     } else {
       try {
-        System.out.println("Copy to another workspace");
+        if (LOG.isDebugEnabled()) LOG.debug("Copy to another workspace");
         workspace.copy(srcWorkspaceName, srcPath, destPath);
         //workspace.clone(srcWorkspaceName, srcPath, destPath, true);
       } catch (Exception e) {
-        System.out.println("Copy to other workspace by clone");
-        e.printStackTrace();
+        LOG.error("an unexpected error occurs while pasting the node", e);
+        if (LOG.isDebugEnabled()) LOG.debug("Copy to other workspace by clone");
         try {
           workspace.clone(srcWorkspaceName, srcPath, destPath, false);  
         } catch (Exception f) {
-          f.printStackTrace();
+          LOG.error("an unexpected error occurs while pasting the node", f);
         }
-        
       }
     }
   }
 
-  private void pasteByCut(UIJCRExplorer uiExplorer, Session session, String srcWorkspace, String srcPath, 
+  private void pasteByCut(ClipboardCommand currentClipboard, UIJCRExplorer uiExplorer, Session session, String srcWorkspace, String srcPath, 
       String destPath, ActionServiceContainer actionContainer, String repository) throws Exception {
     Workspace workspace = session.getWorkspace();
     if (workspace.getName().equals(srcWorkspace)) {
@@ -529,20 +583,21 @@ public class UIWorkingArea extends UIContainer {
           relationsService.addRelation(addRef, destPath,session.getWorkspace().getName(),uiExplorer.getRepositoryName());
           addRef.save();
         }
-        uiExplorer.getAllClipBoard().clear();
         virtualClipboards_.clear();
         String currentPath = uiExplorer.getCurrentPath();
-        if(srcPath.equals(currentPath) || currentPath.startsWith(srcPath)) {
-          uiExplorer.setCurrentPath(srcNode.getParent().getPath());
+        Node currentNode = uiExplorer.getCurrentNode();
+        String realCurrentPath = currentNode.getPath(); 
+        if(srcWorkspace.equals(currentNode.getSession().getWorkspace().getName()) && (srcPath.equals(realCurrentPath) || realCurrentPath.startsWith(srcPath))) {
+          uiExplorer.setCurrentPath(LinkUtils.getParentPath(currentPath));
         }
       }
     } else {
       workspace.clone(srcWorkspace, srcPath, destPath, false);
       if(!isMultiSelect_ || (isMultiSelect_ && isLastPaste_)) {
-        uiExplorer.getAllClipBoard().clear();
         virtualClipboards_.clear();
       }
     }
+    uiExplorer.getAllClipBoard().remove(currentClipboard);
   }
   
   private void removeReferences(Node destNode) throws Exception {
@@ -558,21 +613,49 @@ public class UIWorkingArea extends UIContainer {
     destNode.save();      
   }
   
-  private void processRemoveMultiple(String[] nodePaths, String[] wsNames, Event event) throws Exception {
+  private void processRemoveMultiple(String[] nodePaths, Event<?> event) throws Exception {
+    for(int i=0; i< nodePaths.length; i++) {
+      processRemove(nodePaths[i], event);
+    }
+  }
+  
+  private void processRemoveMultiple(String[] nodePaths, String[] wsNames, Event<?> event) throws Exception {
     for(int i=0; i< nodePaths.length; i++) {
       processRemove(nodePaths[i], wsNames[i], event);
     }
   }
   
-  private void processRemove(String nodePath, String wsName, Event event) throws Exception {
+  private void processRemove(String nodePath, String wsName, Event<?> event) throws Exception {
+    if (wsName == null) {
+      wsName = getDefaultWorkspace();        
+    }
+    processCopy(wsName + ":" + nodePath, event);    
+  }
+  
+  private void processRemove(String nodePath, Event<?> event) throws Exception {
+    Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+    String wsName = null;
+    if (matcher.find()) {
+      wsName = matcher.group(1);
+      nodePath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
+    }    
+    final String virtualNodePath = nodePath;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     Session session = uiExplorer.getSessionByWorkspace(wsName);
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
-    Node node = null;
+    Node node;
     try {
-      node = (Node)session.getItem(nodePath);
-      String lockToken = LockUtil.getLockToken(node);
-      if(lockToken != null) session.addLockToken(lockToken);
+      // Use the method getNodeByPath because it is link aware
+      node = uiExplorer.getNodeByPath(nodePath, session, false);
+      // Reset the path to manage the links that potentially create virtual path
+      nodePath = node.getPath();
+      // Reset the session to manage the links that potentially change of workspace
+      session = node.getSession();
+      // Reset the workspace name to manage the links that potentially change of workspace 
+      wsName = session.getWorkspace().getName();
+      uiExplorer.addLockToken(node);
     } catch(PathNotFoundException path) {
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
           null,ApplicationMessage.WARNING));
@@ -598,10 +681,7 @@ public class UIWorkingArea extends UIContainer {
       return;
     }      
     Node parentNode = node.getParent();
-    if(parentNode.isLocked()) {
-      String lockToken1 = LockUtil.getLockToken(parentNode);
-      session.addLockToken(lockToken1);
-    }
+    uiExplorer.addLockToken(parentNode);
     try {
       if(node.isNodeType(Utils.RMA_RECORD)) removeMixins(node);      
       ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
@@ -615,41 +695,15 @@ public class UIWorkingArea extends UIContainer {
       uiExplorer.updateAjax(event);
       return;    
     } catch(ReferentialIntegrityException ref) {
-      uiExplorer.getSession().refresh(false);
+      session.refresh(false);
       uiExplorer.refreshExplorer();
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-referentialIntegrityException", 
           null,ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
       return;
-      /*
-      uiExplorer.getSession().refresh(false);
-      uiExplorer.refreshExplorer();
-      removeMixins(node);
-      if(node.hasNodes()) {
-        NodeIterator nodeIter = node.getNodes();
-        while(nodeIter.hasNext()) {
-          Node child = nodeIter.nextNode();
-          removeMixins(child);
-        }
-      }
-      try {
-        node.remove();
-        parentNode.save();
-      } catch(Exception eee) {
-        uiExplorer.getSession().refresh(false);
-        uiExplorer.refreshExplorer();
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-referentialIntegrityException", 
-            null,ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        uiExplorer.updateAjax(event);
-        return; 
-      }
-      uiExplorer.setSelectNode(parentNode);
-      uiExplorer.updateAjax(event);
-      */
     } catch(ConstraintViolationException cons) {
-      uiExplorer.getSession().refresh(false);
+      session.refresh(false);
       uiExplorer.refreshExplorer();
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.constraintviolation-exception", 
           null,ApplicationMessage.WARNING));
@@ -657,21 +711,36 @@ public class UIWorkingArea extends UIContainer {
       uiExplorer.updateAjax(event);
       return;        
     } catch(Exception e) {  
-      e.printStackTrace();
+      LOG.error("an unexpected error occurs while removing the node", e);
       JCRExceptionManager.process(uiApp, e);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
-    if(!isMultiSelect_) uiExplorer.setSelectNode(parentNode);
+    if(!isMultiSelect_) uiExplorer.setSelectNode(LinkUtils.getParentPath(virtualNodePath));
   }
   
-  private void processCut(String nodePath, String wsName, Event event) throws Exception {
+  private void processCut(String nodePath, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+    Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+    String wsName = null;
+    if (matcher.find()) {
+      wsName = matcher.group(1);
+      nodePath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
+    }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
-    Node selectedNode = null;
+    Node selectedNode;
     try {
-      selectedNode = (Node)session.getItem(nodePath);
+      // Use the method getNodeByPath because it is link aware
+      selectedNode = uiExplorer.getNodeByPath(nodePath, session, false);
+      // Reset the path to manage the links that potentially create virtual path
+      nodePath = selectedNode.getPath();
+      // Reset the session to manage the links that potentially change of workspace
+      session = selectedNode.getSession();
+      // Reset the workspace name to manage the links that potentially change of workspace 
+      wsName = session.getWorkspace().getName();
     } catch(ConstraintViolationException cons) {
       uiExplorer.getSession().refresh(false);
       uiExplorer.refreshExplorer();
@@ -686,7 +755,7 @@ public class UIWorkingArea extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("an unexpected error occurs while cuting the node", e);
       JCRExceptionManager.process(uiApp, e);
       return;
     }
@@ -731,16 +800,38 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
-  private void processMultipleCut(String[] nodePaths, String[] wsNames, Event event) throws Exception {
+  private void processMultipleCut(String[] nodePaths, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
     for(int i=0; i< nodePaths.length; i++) {
-      processCut(nodePaths[i], wsNames[i], event);
+      processCut(nodePaths[i], event);
     }
     if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
     uiExplorer.updateAjax(event);
   }
   
-  public void doDelete(String nodePath, String wsName, Event event) throws Exception {
+  public void doDelete(String nodePath, Event<?> event) throws Exception {
+    UIJCRExplorer uiExplorer = getParent();
+    if(nodePath.indexOf(";") > -1) {
+      isMultiSelect_ = true;
+      processRemoveMultiple(nodePath.split(";"), event);
+    } else {
+      isMultiSelect_ = false;
+      processRemove(nodePath, event);
+    }
+    uiExplorer.updateAjax(event);
+    if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save(); 
+  }
+  
+  private void processMultiLock(String[] nodePaths, Event<?> event) throws Exception {
+    UIJCRExplorer uiExplorer = getParent();
+    for(int i=0; i< nodePaths.length; i++) {
+      processLock(nodePaths[i], event);
+    }
+    if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
+    uiExplorer.updateAjax(event);
+  }
+  
+  public void doDelete(String nodePath, String wsName, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
     if(nodePath.indexOf(";") > -1) {
       isMultiSelect_ = true;
@@ -753,22 +844,28 @@ public class UIWorkingArea extends UIContainer {
     if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save(); 
   }
   
-  private void processMultiLock(String[] nodePaths, String[] wsNames, Event event) throws Exception {
-    UIJCRExplorer uiExplorer = getParent();
-    for(int i=0; i< nodePaths.length; i++) {
-      processLock(nodePaths[i], wsNames[i], event);
-    }
-    if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
-    uiExplorer.updateAjax(event);
-  }
-  
-  private void processLock(String nodePath, String wsName, Event event) throws Exception {
+  private void processLock(String nodePath, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+    Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+    String wsName = null;
+    if (matcher.find()) {
+      wsName = matcher.group(1);
+      nodePath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
+    }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
-    Node node = null;
+    Node node;
     try {
-      node = (Node)session.getItem(nodePath);
+      // Use the method getNodeByPath because it is link aware
+      node = uiExplorer.getNodeByPath(nodePath, session);
+      // Reset the path to manage the links that potentially create virtual path
+      nodePath = node.getPath();
+      // Reset the session to manage the links that potentially change of workspace
+      session = node.getSession();
+      // Reset the workspace name to manage the links that potentially change of workspace 
+      wsName = session.getWorkspace().getName();
     } catch(PathNotFoundException path) {
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
           null,ApplicationMessage.WARNING));
@@ -808,29 +905,44 @@ public class UIWorkingArea extends UIContainer {
       uiExplorer.updateAjax(event);
       return;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("an unexpected error occurs while locking the node", e);
       JCRExceptionManager.process(uiApp, e);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);        
     }
   }
   
-  private void processMultiUnlock(String[] nodePaths, String[] wsNames, Event event) throws Exception {
+  private void processMultiUnlock(String[] nodePaths, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
     for(int i=0; i< nodePaths.length; i++) {
-      processUnlock(nodePaths[i], wsNames[i], event);
+      processUnlock(nodePaths[i], event);
     }
     if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
     uiExplorer.updateAjax(event);
   }
   
-  private void processUnlock(String nodePath, String wsName, Event event) throws Exception {
+  private void processUnlock(String nodePath, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+    Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+    String wsName = null;
+    if (matcher.find()) {
+      wsName = matcher.group(1);
+      nodePath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
+    }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
-    Node node = null;
+    Node node;
     try {
-      node = (Node)session.getItem(nodePath);
+      // Use the method getNodeByPath because it is link aware
+      node = uiExplorer.getNodeByPath(nodePath, session);
+      // Reset the path to manage the links that potentially create virtual path
+      nodePath = node.getPath();
+      // Reset the session to manage the links that potentially change of workspace
+      session = node.getSession();
+      // Reset the workspace name to manage the links that potentially change of workspace 
+      wsName = session.getWorkspace().getName();
     } catch(PathNotFoundException path) {
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
           null,ApplicationMessage.WARNING));
@@ -864,17 +976,31 @@ public class UIWorkingArea extends UIContainer {
       uiExplorer.updateAjax(event);
       return;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("an unexpected error occurs while unloking the node", e);
       JCRExceptionManager.process(uiApp, e);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
     }    
   }
   
-  private void moveNode(String srcPath, String wsName, String destPath, Event event) throws Exception {
+  private void moveNode(String srcPath, Node destNode, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
-    Workspace workspace = uiExplorer.getSession().getWorkspace();
-    Node selectedNode = uiExplorer.getNodeByPath(srcPath, uiExplorer.getSessionByWorkspace(wsName));
+    Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
+    String wsName = null;
+    if (matcher.find()) {
+      wsName = matcher.group(1);
+      srcPath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '"+ srcPath + "'");
+    }    
+    Session srcSession = uiExplorer.getSessionByWorkspace(wsName);
+    // Use the method getNodeByPath because it is link aware
+    Node selectedNode = uiExplorer.getNodeByPath(srcPath, srcSession, false);
+    // Reset the path to manage the links that potentially create virtual path
+    srcPath = selectedNode.getPath();
+    // Reset the session to manage the links that potentially change of workspace
+    srcSession = selectedNode.getSession();
+    
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
     if(!selectedNode.isCheckedOut()) {
       uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
@@ -882,17 +1008,21 @@ public class UIWorkingArea extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
-    if(selectedNode.isLocked()) {
-      String lockToken = LockUtil.getLockToken(selectedNode);
-      if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-    }
+    uiExplorer.addLockToken(selectedNode);
+    String destPath = destNode.getPath();
     if(destPath.endsWith("/")) {
       destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/") + 1);
     } else {
       destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/"));
     }
+    Workspace srcWorkspace = srcSession.getWorkspace();
+    Workspace destWorkspace = destNode.getSession().getWorkspace();
     try {
-      workspace.move(srcPath, destPath);
+      if (srcWorkspace.equals(destWorkspace)) {
+        srcWorkspace.move(srcPath, destPath);        
+      } else {
+        destWorkspace.clone(srcWorkspace.getName(), srcPath, destPath, false);
+      }
     } catch(Exception e) {
       Object[] args = { srcPath, destPath };
       uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.move-problem", args, 
@@ -902,23 +1032,32 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
-  private void moveMultiNode(String[] srcPaths, String[] wsNames, String destPath, 
-      Event event) throws Exception {
+  private void moveMultiNode(String[] srcPaths, Node destNode, 
+      Event<?> event) throws Exception {
     for(int i=0; i< srcPaths.length; i++) {
-      moveNode(srcPaths[i], wsNames[i], destPath, event);
+      moveNode(srcPaths[i], destNode, event);
     }
   }
   
-  private void createMultiLink(String[] srcPaths, String[] wsNames, Node destNode, 
-      Event event) throws Exception {
+  private void createMultiLink(String[] srcPaths, Node destNode, 
+      Event<?> event) throws Exception {
     for(int i=0; i< srcPaths.length; i++) {
-      createLink(srcPaths[i], wsNames[i], destNode, event);
+      createLink(srcPaths[i], destNode, event);
     }    
   }
   
-  private void createLink(String srcPath, String wsName, Node destNode, Event event) throws Exception {
+  private void createLink(String srcPath, Node destNode, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
-    Node selectedNode = uiExplorer.getNodeByPath(srcPath, uiExplorer.getSessionByWorkspace(wsName));
+    Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
+    String wsName = null;
+    if (matcher.find()) {
+      wsName = matcher.group(1);
+      srcPath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '"+ srcPath + "'");
+    }    
+    Session session = uiExplorer.getSessionByWorkspace(wsName);
+    Node selectedNode = uiExplorer.getNodeByPath(srcPath, session, false);
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
     LinkManager linkManager = getApplicationComponent(LinkManager.class);
     if(linkManager.isLink(destNode)) {
@@ -947,19 +1086,33 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
-  private void processMultipleSelection(String nodePath, String wsName, boolean isLink, 
-      String[] destInfo, Event event) throws Exception {
+  private void processMultipleSelection(String nodePath, boolean isLink, 
+      String destPath, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
+    Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(destPath);
+    String wsName = null;
+    if (matcher.find()) {
+      wsName = matcher.group(1);
+      destPath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '"+ destPath + "'");
+    }    
+    Session session = uiExplorer.getSessionByWorkspace(wsName);    
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
-    Node destNode = null;
-    if(destInfo[0].startsWith(nodePath)) {
+    if(destPath.startsWith(nodePath)) {
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.bound-move-exception", 
           null,ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
+    Node destNode;
     try {
-      destNode = (Node)uiExplorer.getSession().getItem(destInfo[0]);
+      // Use the method getNodeByPath because it is link aware
+      destNode = uiExplorer.getNodeByPath(destPath, session);
+      // Reset the path to manage the links that potentially create virtual path
+      destPath = destNode.getPath();
+      // Reset the session to manage the links that potentially change of workspace
+      session = destNode.getSession();
     } catch(PathNotFoundException path) {
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
           null,ApplicationMessage.WARNING));
@@ -977,7 +1130,7 @@ public class UIWorkingArea extends UIContainer {
       return;
     }
     if(uiExplorer.nodeIsLocked(destNode)) {
-      Object[] arg = { destInfo[0] };
+      Object[] arg = { destPath };
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
@@ -986,17 +1139,17 @@ public class UIWorkingArea extends UIContainer {
     try {
       if(nodePath.indexOf(";") > -1) {
         isMultiSelect_ = true;
-        if(isLink) createMultiLink(nodePath.split(";"), wsName.split(";"), destNode, event);
-        else moveMultiNode(nodePath.split(";"), wsName.split(";"), destInfo[0], event);
+        if(isLink) createMultiLink(nodePath.split(";"), destNode, event);
+        else moveMultiNode(nodePath.split(";"), destNode, event);
       } else {
         isMultiSelect_ = false;
-        if(isLink) createLink(nodePath, wsName, destNode, event);
-        else moveNode(nodePath, wsName, destInfo[0], event);
+        if(isLink) createLink(nodePath, destNode, event);
+        else moveNode(nodePath, destNode, event);
       }
-      uiExplorer.getSession().save();
+      session.save();
       uiExplorer.updateAjax(event);
     } catch(AccessDeniedException ace) {
-      Object[] arg = { destInfo[0] };
+      Object[] arg = { destPath };
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", arg, 
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
@@ -1013,41 +1166,37 @@ public class UIWorkingArea extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
       return;       
     } catch(Exception e) {
-      e.printStackTrace();
+      LOG.error("an unexpected error occurs while selecting the node", e);
       JCRExceptionManager.process(uiApp, e);
       return;
     }
   }
   
-  private Node getRealNode(String path, UIJCRExplorer uiExplorer, String wsName) throws Exception {
-    LinkManager linkManager = getApplicationComponent(LinkManager.class);
-    NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
-    Item item = nodeFinder.getItem(uiExplorer.getRepositoryName(), wsName, path);
-    Node node = (Node) item;
-    if (linkManager.isLink(item)) {
-      if (linkManager.isTargetReachable(node)) {
-        // The target can be reached
-        Node target = linkManager.getTarget(node);
-        return target;
-      }
-    }
-    return node;
-  }
-  
-  @SuppressWarnings("unused")
-  static  public class EditDocumentActionListener extends EventListener<UIRightClickPopupMenu> {
+  static public class EditDocumentActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent();
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      if (wsName == null) wsName = uiExplorer.getCurrentWorkspace();
+      Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+      String wsName = null;
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        nodePath = matcher.group(2);
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
+      }
       Session session = uiExplorer.getSessionByWorkspace(wsName);
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
       Node selectedNode = null;
       try {
-        selectedNode = uicomp.getRealNode(nodePath, uiExplorer, wsName);
-//        selectedNode = uiExplorer.getNodeByPath(nodePath, session);
+        // Use the method getNodeByPath because it is link aware
+        selectedNode = uiExplorer.getNodeByPath(nodePath, session);
+        // Reset the path to manage the links that potentially create virtual path
+        nodePath = selectedNode.getPath();
+        // Reset the session to manage the links that potentially change of workspace
+        session = selectedNode.getSession();
+        // Reset the workspace name to manage the links that potentially change of workspace 
+        wsName = session.getWorkspace().getName();
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
             null,ApplicationMessage.WARNING));
@@ -1065,48 +1214,47 @@ public class UIWorkingArea extends UIContainer {
       Object[] arg = { nodePath };
       try{
         ((ExtendedNode) selectedNode).checkPermission(PermissionType.SET_PROPERTY);        
-      } catch (Exception e) {
+      }catch (Exception e) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-edit-permission",null,ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      boolean isReferenced = false;
-      if (uiExplorer.nodeIsLocked(selectedNode)) {        
+      if(uiExplorer.nodeIsLocked(selectedNode)) {        
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         uiExplorer.updateAjax(event);
         return;
       }      
-      if (selectedNode.isNodeType(Utils.EXO_ACTION)) {
+      if(selectedNode.isNodeType(Utils.EXO_ACTION)) {
         UIActionContainer uiContainer = uiExplorer.createUIComponent(UIActionContainer.class, null, null);
         uiExplorer.setIsHidePopup(true);
         uiContainer.getChild(UIActionTypeForm.class).setRendered(false);
         UIActionForm uiActionForm = uiContainer.getChild(UIActionForm.class);
-        uiActionForm.createNewAction(uiExplorer.getRealCurrentNode(), 
+        uiActionForm.createNewAction(uiExplorer.getCurrentNode(), 
             selectedNode.getPrimaryNodeType().getName(), false);
-        uiActionForm.setWorkspace(selectedNode.getSession().getWorkspace().getName());
+        uiActionForm.setWorkspace(wsName);
         uiActionForm.setNodePath(nodePath);
         UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
         UIPopupContainer.activate(uiContainer, 600, 550);
       } else {
         TemplateService tservice = uicomp.getApplicationComponent(TemplateService.class);
-        String repository = ((ManageableRepository) selectedNode.getSession().getRepository()).getConfiguration().getName();
-        List documentNodeType = tservice.getDocumentTemplates(repository);
+        String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+        List<String> documentNodeType = tservice.getDocumentTemplates(repository);
         String nodeType = null;
-        if (selectedNode.hasProperty("exo:presentationType")) {
+        if(selectedNode.hasProperty("exo:presentationType")) {
           nodeType = selectedNode.getProperty("exo:presentationType").getString();
-        } else {
+        }else {
           nodeType = selectedNode.getPrimaryNodeType().getName();
         }
-        if (documentNodeType.contains(nodeType)){
+        if(documentNodeType.contains(nodeType)){
           UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
           UIDocumentFormController uiController = 
             event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController");
           UIDocumentForm uiDocumentForm = uiController.getChild(UIDocumentForm.class);
           uiDocumentForm.setContentType(nodeType);
           uiDocumentForm.setRepositoryName(repository);
-          uiDocumentForm.setWorkspace(selectedNode.getSession().getWorkspace().getName());
+          uiDocumentForm.setWorkspace(wsName);
           uiDocumentForm.setNodePath(nodePath);
           uiDocumentForm.addNew(false);
           uiController.setRenderedChild(UIDocumentForm.class);
@@ -1122,18 +1270,30 @@ public class UIWorkingArea extends UIContainer {
     }
   }
 
-  static  public class RenameActionListener extends EventListener<UIRightClickPopupMenu> {
+  static public class RenameActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent();
       String renameNodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
+      Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(renameNodePath);
+      String wsName = null;
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        renameNodePath = matcher.group(2);
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '"+ renameNodePath + "'");
+      }
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
       uiExplorer.setIsHidePopup(false);
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
       Session session = uiExplorer.getSessionByWorkspace(wsName);
       Node renameNode = null;
       try {
-        renameNode = (Node)session.getItem(renameNodePath);
+        // Use the method getNodeByPath because it is link aware
+        renameNode = uiExplorer.getNodeByPath(renameNodePath, session, false);
+        // Reset the session to manage the links that potentially change of workspace
+        session = renameNode.getSession();
+        // Reset the workspace name to manage the links that potentially change of workspace 
+        wsName = renameNode.getSession().getWorkspace().getName();
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
             null,ApplicationMessage.WARNING));
@@ -1167,9 +1327,8 @@ public class UIWorkingArea extends UIContainer {
           return;
         }
       }
-      boolean isReferencedNode = false;
       try {
-        if(wsName != null) isReferencedNode = true;
+        boolean isReferencedNode = !wsName.equals(uiExplorer.getCurrentDriveWorkspace());
         UIControl uiControl = uiExplorer.getChild(UIControl.class);
         UIActionBar uiActionBar = uiControl.getChild(UIActionBar.class);
         UIRenameForm uiRenameForm = uiActionBar.createUIComponent(UIRenameForm.class, null, null);
@@ -1185,51 +1344,49 @@ public class UIWorkingArea extends UIContainer {
     }
   }
 
-  static  public class CopyActionListener extends EventListener<UIRightClickPopupMenu> {
+  static public class CopyActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
-      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      if (wsName == null || wsName.length() == 0) {
-        wsName = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();
-      }
       if(srcPath.indexOf(";") > -1) {
         uiWorkingArea.isMultiSelect_ = true;
         uiWorkingArea.virtualClipboards_.clear();
-        uiWorkingArea.multipleCopy(srcPath.split(";"), wsName.split(";"), event);
+        uiWorkingArea.multipleCopy(srcPath.split(";"), event);
       } else {
         uiWorkingArea.isMultiSelect_ = false;
-        uiWorkingArea.processCopy(srcPath, wsName, event);
+        uiWorkingArea.processCopy(srcPath, event);
       }
     }
   }
 
-  static  public class CutActionListener extends EventListener<UIRightClickPopupMenu> {
+  static public class CutActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      if (wsName == null || wsName.length() == 0) {
-        wsName = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();
-      }
       if(nodePath.indexOf(";") > -1) {
         uiWorkingArea.isMultiSelect_ = true;
         uiWorkingArea.virtualClipboards_.clear();
-        uiWorkingArea.processMultipleCut(nodePath.split(";"), wsName.split(";"), event);
+        uiWorkingArea.processMultipleCut(nodePath.split(";"), event);
       } else {
         uiWorkingArea.isMultiSelect_ = false;
-        uiWorkingArea.processCut(nodePath, wsName, event);
+        uiWorkingArea.processCut(nodePath, event);
       }
     }
   }
 
-  static  public class SaveActionListener extends EventListener<UIRightClickPopupMenu> {
+  static public class SaveActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
+      Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+      String wsName = null;
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        nodePath = matcher.group(2);
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
+      }
       Session session = uiExplorer.getSessionByWorkspace(wsName);
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
       try {
@@ -1243,7 +1400,7 @@ public class UIWorkingArea extends UIContainer {
           return;
         }
         node.save(); 
-        session.save();
+        node.getSession().save();
         uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.save-node-success", args));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       } catch(PathNotFoundException path) {
@@ -1259,12 +1416,11 @@ public class UIWorkingArea extends UIContainer {
     }
   }
 
-  static  public class DeleteActionListener extends EventListener<UIRightClickPopupMenu> {
+  static public class DeleteActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIConfirmMessage uiConfirmMessage = 
         uiWorkingArea.createUIComponent(UIConfirmMessage.class, null, null);
@@ -1276,55 +1432,62 @@ public class UIWorkingArea extends UIContainer {
         uiConfirmMessage.setArguments(new String[] {nodePath});
       }
       uiConfirmMessage.setNodePath(nodePath);
-      uiConfirmMessage.setWorkspaceName(wsName);
       UIPopupContainer.activate(uiConfirmMessage, 500, 180);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 
-  static  public class LockActionListener extends EventListener<UIRightClickPopupMenu> {
+  static public class LockActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
-      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      nodePath = uiWorkingArea.getRealNode(nodePath, uiExplorer, wsName).getPath();
-      if (nodePath.indexOf(";") > -1) {
-        uiWorkingArea.isMultiSelect_ = true;
-        uiWorkingArea.processMultiLock(nodePath.split(";"), wsName.split(";"), event);
-      } else {
-        uiWorkingArea.isMultiSelect_ = false;
-        uiWorkingArea.processLock(nodePath, wsName, event);
-      }
-    }
-  }
-
-  static  public class UnlockActionListener extends EventListener<UIRightClickPopupMenu> {
-    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
-      UIWorkingArea uiWorkingArea = event.getSource().getParent();
-      UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);  
-      nodePath = uiWorkingArea.getRealNode(nodePath, uiExplorer, wsName).getPath();
       if(nodePath.indexOf(";") > -1) {
         uiWorkingArea.isMultiSelect_ = true;
-        uiWorkingArea.processMultiUnlock(nodePath.split(";"), wsName.split(";"), event);
+        uiWorkingArea.processMultiLock(nodePath.split(";"), event);
       } else {
         uiWorkingArea.isMultiSelect_ = false;
-        uiWorkingArea.processUnlock(nodePath, wsName, event);
+        uiWorkingArea.processLock(nodePath, event);
       }
     }
   }
 
-  static  public class CheckInActionListener extends EventListener<UIRightClickPopupMenu> {
+  static public class UnlockActionListener extends EventListener<UIRightClickPopupMenu> {
+    public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
+      UIWorkingArea uiWorkingArea = event.getSource().getParent();
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      if(nodePath.indexOf(";") > -1) {
+        uiWorkingArea.isMultiSelect_ = true;
+        uiWorkingArea.processMultiUnlock(nodePath.split(";"), event);
+      } else {
+        uiWorkingArea.isMultiSelect_ = false;
+        uiWorkingArea.processUnlock(nodePath, event);
+      }
+    }
+  }
+
+  static public class CheckInActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
+      Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+      String wsName = null;
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        nodePath = matcher.group(2);
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
+      }
       Session session = uiExplorer.getSessionByWorkspace(wsName);
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);         
+      // Use the method getNodeByPath because it is link aware
       Node node = uiExplorer.getNodeByPath(nodePath, session);
+      // Reset the path to manage the links that potentially create virtual path
+      nodePath = node.getPath();
+      // Reset the session to manage the links that potentially change of workspace
+      session = node.getSession();
+      // Reset the workspace name to manage the links that potentially change of workspace 
+      wsName = session.getWorkspace().getName();      
       try{
         ((ExtendedNode) node).checkPermission(PermissionType.SET_PROPERTY);        
       } catch (Exception e) {        
@@ -1342,10 +1505,7 @@ public class UIWorkingArea extends UIContainer {
           return;
         }
         Node parentNode = node.getParent();
-        if(parentNode.isLocked()) {
-          String lockToken = LockUtil.getLockToken(parentNode);
-          session.addLockToken(lockToken);
-        }
+        uiExplorer.addLockToken(parentNode);
         node.checkin();
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
@@ -1360,15 +1520,29 @@ public class UIWorkingArea extends UIContainer {
     }
   }
 
-  static  public class CheckOutActionListener extends EventListener<UIRightClickPopupMenu> {
+  static public class CheckOutActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
+      Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+      String wsName = null;
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        nodePath = matcher.group(2);
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
+      }
       Session session = uiExplorer.getSessionByWorkspace(wsName);      
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);       
+      // Use the method getNodeByPath because it is link aware
       Node node = uiExplorer.getNodeByPath(nodePath, session);
+      // Reset the path to manage the links that potentially create virtual path
+      nodePath = node.getPath();
+      // Reset the session to manage the links that potentially change of workspace
+      session = node.getSession();
+      // Reset the workspace name to manage the links that potentially change of workspace 
+      wsName = session.getWorkspace().getName();      
       try{
         ((ExtendedNode) node).checkPermission(PermissionType.SET_PROPERTY);        
       } catch (Exception e) {        
@@ -1399,28 +1573,28 @@ public class UIWorkingArea extends UIContainer {
     }
   }
 
-  static  public class CustomActionListener extends EventListener<UIRightClickPopupMenu> {
+  static public class CustomActionListener extends EventListener<UIRightClickPopupMenu> {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uicomp = event.getSource().getParent();
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       String actionName = event.getRequestContext().getRequestParameter("actionName");
-      String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
+      String repository = uiExplorer.getRepositoryName();
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
       Session session = uiExplorer.getSessionByWorkspace(wsName);
       ActionServiceContainer actionService = 
         uicomp.getApplicationComponent(ActionServiceContainer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       try {
-        Node node = uicomp.getAncestorOfType(UIJCRExplorer.class).getNodeByPath(nodePath, session);
+        Node node = uiExplorer.getNodeByPath(nodePath, session);
         String userId = event.getRequestContext().getRemoteUser();
-        actionService.executeAction(userId, node, actionName,repository);
+        actionService.executeAction(userId, node, actionName, repository);
         Object[] arg = { actionName };
         uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.execute-successfully", arg));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         uiExplorer.updateAjax(event);
       } catch (Exception e) {
-        e.printStackTrace();
+        LOG.error("an unexpected error occurs while calling custom action on the node", e);;
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         uiExplorer.updateAjax(event);
@@ -1433,8 +1607,19 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       String destPath = event.getRequestContext().getRequestParameter(OBJECTID);
-      if(destPath == null) destPath = uiExplorer.getCurrentPath();
-      Session session = uiExplorer.getSession();
+      String nodePath = null;
+      Session session = null;
+      if (destPath != null) {
+        Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(destPath);
+        String wsName = null;
+        if (matcher.find()) {
+          wsName = matcher.group(1);
+          nodePath = matcher.group(2);
+          session = uiExplorer.getSessionByWorkspace(wsName);
+        } else {
+          throw new IllegalArgumentException("The ObjectId is invalid '"+ destPath + "'");
+        }        
+      }
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
       if(uiExplorer.getAllClipBoard().size()<1) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.no-node", null, 
@@ -1442,9 +1627,15 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      Node destNode = null;
+      Node destNode;
       try {
-        destNode = (Node)session.getItem(destPath);
+        // Use the method getNodeByPath because it is link aware
+        destNode = destPath == null ? uiExplorer.getCurrentNode() : uiExplorer.getNodeByPath(nodePath, session);
+        // Reset the session to manage the links that potentially change of workspace
+        session = destNode.getSession();
+        if (destPath == null) {
+          destPath = session.getWorkspace().getName() + ":" + destNode.getPath();
+        }
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
             null,ApplicationMessage.WARNING));
@@ -1473,7 +1664,7 @@ public class UIWorkingArea extends UIContainer {
       } else {
         uiWorkingArea.processPaste(uiExplorer.getAllClipBoard().getLast(), destPath, event);
       }
-      if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
+      if(!uiExplorer.getPreference().isJcrEnable()) session.save();
       uiExplorer.updateAjax(event);
     }
   }
@@ -1483,20 +1674,20 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
-      Node currentNode = uiExplorer.getRealCurrentNode();      
-      if (!PermissionUtil.canRead(currentNode)) {
+      Node currentNode = uiExplorer.getCurrentNode();      
+      if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if (uiExplorer.nodeIsLocked(currentNode)) {
-        Object[] arg = { currentNode.getPath() };
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { uiExplorer.getCurrentNode().getPath() };
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } 
-      if (!currentNode.isCheckedOut()) {
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -1512,20 +1703,20 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
-      Node currentNode = uiExplorer.getRealCurrentNode();
-      if (!PermissionUtil.canRead(currentNode)) {
+      Node currentNode = uiExplorer.getCurrentNode();      
+      if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if (uiExplorer.nodeIsLocked(currentNode)){
+      if(uiExplorer.nodeIsLocked(currentNode)){
         Object[] arg = { currentNode.getPath() };
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if (!currentNode.isCheckedOut()) {
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -1533,9 +1724,9 @@ public class UIWorkingArea extends UIContainer {
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIDocumentFormController uiController = 
         event.getSource().createUIComponent(UIDocumentFormController.class, null, null);
-      uiController.setCurrentNode(uiExplorer.getRealCurrentNode());
-      uiController.setRepository(((ManageableRepository) currentNode.getSession().getRepository()).getConfiguration().getName());
-      if (uiController.getListFileType().size() == 0) {
+      uiController.setCurrentNode(uiExplorer.getCurrentNode());
+      uiController.setRepository(uiExplorer.getRepositoryName());
+      if(uiController.getListFileType().size() == 0) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.empty-file-type", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -1552,20 +1743,20 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
-      Node currentNode = uiExplorer.getRealCurrentNode();
-      if (!PermissionUtil.canRead(currentNode)) {
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if (uiExplorer.nodeIsLocked(currentNode)) {
+      if(uiExplorer.nodeIsLocked(currentNode)) {
         Object[] arg = { currentNode.getPath() };
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if (!currentNode.isCheckedOut()) {
+      if(!currentNode.isCheckedOut()) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -1581,9 +1772,8 @@ public class UIWorkingArea extends UIContainer {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      String[] destInfo = event.getRequestContext().getRequestParameter("destInfo").split(";");
-      uiWorkingArea.processMultipleSelection(nodePath, wsName, false, destInfo, event);
+      String destPath = event.getRequestContext().getRequestParameter("destInfo");
+      uiWorkingArea.processMultipleSelection(nodePath, false, destPath, event);
     }
   }
   
@@ -1591,9 +1781,8 @@ public class UIWorkingArea extends UIContainer {
     public void execute(Event<UIRightClickPopupMenu> event) throws Exception {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      String[] destInfo = event.getRequestContext().getRequestParameter("destInfo").split(";");
-      uiWorkingArea.processMultipleSelection(nodePath, wsName, true, destInfo, event);
+      String destPath = event.getRequestContext().getRequestParameter("destInfo");
+      uiWorkingArea.processMultipleSelection(nodePath, true, destPath, event);
     }
   }  
   
@@ -1603,31 +1792,8 @@ public class UIWorkingArea extends UIContainer {
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node currentNode = null;
-      try {
-        currentNode = uiExplorer.getRealCurrentNode();
-      } catch (AccessControlException ace) {        
-        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.repository-exception", null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch (AccessDeniedException ade) {        
-        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.repository-exception", null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch(NumberFormatException nume) {
-        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.numberformat-exception", null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch(ConstraintViolationException cve) {
-        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.cannot-save", null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;        
-      } catch(Exception e) {
-        e.printStackTrace();
-        uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.cannot-save", null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } 
+      Node currentNode = uiExplorer.getCurrentNode();
+      
       if(!PermissionUtil.canRead(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
@@ -1647,14 +1813,25 @@ public class UIWorkingArea extends UIContainer {
       }
       
       LinkManager linkManager = uiWorkingArea.getApplicationComponent(LinkManager.class);
-      Session userSession = currentNode.getSession();
       String symLinkName;
       try {
         if((srcPath != null) && (srcPath.indexOf(";") > -1)) {
           uiWorkingArea.isMultiSelect_ = true;
           String[] nodePaths = srcPath.split(";");
           for(int i=0; i< nodePaths.length; i++) {
-            Node selectedNode = (Node) userSession.getItem(nodePaths[i]);
+            Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePaths[i]);
+            String wsName = null;
+            if (matcher.find()) {
+              wsName = matcher.group(1);
+              nodePaths[i] = matcher.group(2);
+            } else {
+              throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePaths[i] + "'");
+            }            
+            Session userSession = uiExplorer.getSessionByWorkspace(wsName);
+            // Use the method getNodeByPath because it is link aware
+            Node selectedNode = uiExplorer.getNodeByPath(nodePaths[i], userSession, false);
+            // Reset the path to manage the links that potentially create virtual path
+            nodePaths[i] = selectedNode.getPath();
             if(linkManager.isLink(selectedNode)) {
               Object[] args = { selectedNode.getPath() };
               uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.selected-is-link", args, 
@@ -1678,7 +1855,21 @@ public class UIWorkingArea extends UIContainer {
         } else {
           if(srcPath != null) {
             uiWorkingArea.isMultiSelect_ = false;
-            Node selectedNode = (Node) userSession.getItem(srcPath);
+            Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
+            String wsName = null;
+            if (matcher.find()) {
+              wsName = matcher.group(1);
+              srcPath = matcher.group(2);
+            } else {
+              throw new IllegalArgumentException("The ObjectId is invalid '"+ srcPath + "'");
+            }
+            Session userSession = uiExplorer.getSessionByWorkspace(wsName);            
+            // Use the method getNodeByPath because it is link aware
+            Node selectedNode = uiExplorer.getNodeByPath(srcPath, userSession, false);
+            // Reset the path to manage the links that potentially create virtual path
+            srcPath = selectedNode.getPath();
+            // Reset the session to manage the links that potentially change of workspace
+            userSession = selectedNode.getSession();
             if(linkManager.isLink(selectedNode)) {
               Object[] args = { selectedNode.getPath() };
               uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.selected-is-link", args, 
@@ -1726,7 +1917,7 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("an unexpected error occurs while adding a symlink to the node", e);
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.cannot-save", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;

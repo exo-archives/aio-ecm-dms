@@ -29,7 +29,7 @@ import javax.jcr.Session;
 import javax.jcr.UnsupportedRepositoryOperationException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
-import org.exoplatform.ecm.jcr.model.ClipboardCommand;
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
@@ -39,6 +39,7 @@ import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
@@ -83,10 +84,13 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
     }
 )
 
-    
-
 public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelectable {
 
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("explorer.symlink.UISymLinkForm");
+  
   final static public String FIELD_NAME = "symLinkName";
   final static public String FIELD_PATH = "pathNode";
   final static public String FIELD_SYMLINK = "fieldPathNode";
@@ -108,7 +112,6 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
     addUIFormInput(uiFormMultiValue);
   }
     
-  @SuppressWarnings("unused")
   public void doSelect(String selectField, Object value) throws Exception {
     String valueNodeName = String.valueOf(value).trim();
     List<String> listNodeName = new ArrayList<String>();
@@ -139,7 +142,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         }
       }
       
-      Node node = uiExplorer.getRealCurrentNode() ;                  
+      Node node = uiExplorer.getCurrentNode() ;                  
       if(uiExplorer.nodeIsLocked(node)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -189,7 +192,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
         userSession.logout();
         return;
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("An unexpected error occurs", e);
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.non-node", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -199,19 +202,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
       try {        
         Node targetNode = (Node) nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, pathNode);
         LinkManager linkManager = uiSymLinkForm.getApplicationComponent(LinkManager.class);        
-        List<ClipboardCommand> clipboards = uiExplorer.getAllClipBoard();
-        if (clipboards.size() > 0) {
-          Node sourceNode;
-          for(ClipboardCommand command:clipboards) {
-            sourceNode = (Node) userSession.getItem(command.getSrcPath());
-            if (!sourceNode.isNodeType(Utils.EXO_SYMLINK)) 
-              linkManager.createLink(sourceNode, Utils.EXO_SYMLINK, targetNode, symLinkName);
-          }
-          uiExplorer.getAllClipBoard().clear();
-          uiExplorer.getSession().save();
-        } else{
-          linkManager.createLink(node, Utils.EXO_SYMLINK, targetNode, symLinkName);
-        }
+        linkManager.createLink(node, Utils.EXO_SYMLINK, targetNode, symLinkName);
         uiExplorer.updateAjax(event);
       } catch (AccessControlException ace) {        
         uiApp.addMessage(new ApplicationMessage("UISymLinkForm.msg.repository-exception", null, ApplicationMessage.WARNING));

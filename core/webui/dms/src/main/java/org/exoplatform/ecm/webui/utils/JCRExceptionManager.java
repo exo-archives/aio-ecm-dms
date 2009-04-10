@@ -35,6 +35,8 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NoSuchNodeTypeException;
 import javax.jcr.version.VersionException;
 
+import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.core.UIApplication;
 
@@ -45,6 +47,11 @@ import org.exoplatform.webui.core.UIApplication;
 public class JCRExceptionManager {
 
   /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("ecm.webui.utils.JCRExceptionManager");
+  
+  /**
    * Process.
    * 
    * @param uiApp the ui app
@@ -53,6 +60,7 @@ public class JCRExceptionManager {
    * @throws Exception the exception
    */
   public static void process(UIApplication uiApp,Exception e,String messageKey) throws Exception{
+    LOG.error("The following error occurs : " + e);
     if(e instanceof LoginException) {
       if(messageKey == null) messageKey = "LoginException.msg";      
     } else if(e instanceof AccessDeniedException) {

@@ -22,7 +22,6 @@ import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -52,7 +51,7 @@ public class UIVoteForm extends UIComponent implements UIPopupComponent {
   public void deActivate() throws Exception {}
   
   public double getRating() throws Exception { 
-    return getAncestorOfType(UIJCRExplorer.class).getRealCurrentNode().
+    return getAncestorOfType(UIJCRExplorer.class).getCurrentNode().
                                                   getProperty("exo:votingRate").getDouble() ;
   }
   
@@ -61,15 +60,12 @@ public class UIVoteForm extends UIComponent implements UIPopupComponent {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       UIDocumentInfo uiDocumentInfo = uiExplorer.findFirstComponentOfType(UIDocumentInfo.class) ;
-      Node currentNode = uiExplorer.getRealCurrentNode();
-      if(currentNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(currentNode);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-      }
+      Node currentNode = uiExplorer.getCurrentNode();
+      uiExplorer.addLockToken(currentNode);
       String language = uiDocumentInfo.getLanguage() ;
       double objId = Double.parseDouble(event.getRequestContext().getRequestParameter(OBJECTID)) ;
       VotingService votingService = uiExplorer.getApplicationComponent(VotingService.class) ;
-      votingService.vote(uiExplorer.getRealCurrentNode(), objId, userName, language) ;
+      votingService.vote(uiExplorer.getCurrentNode(), objId, userName, language) ;
       event.getSource().getAncestorOfType(UIPopupContainer.class).cancelPopupAction() ;
       uiExplorer.updateAjax(event) ;
     }

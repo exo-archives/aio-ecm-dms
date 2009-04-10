@@ -25,7 +25,6 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -73,7 +72,7 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
   public List<Node> getCategories() throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
-    return categoriesService.getCategories(uiJCRExplorer.getRealCurrentNode(), uiJCRExplorer.getRepositoryName());
+    return categoriesService.getCategories(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName());
   }
   
   @SuppressWarnings("unused")
@@ -81,13 +80,10 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     CategoriesService categoriesService = getApplicationComponent(CategoriesService.class) ;
     try {
-      Node currentNode = uiJCRExplorer.getRealCurrentNode();
-      if(currentNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(currentNode);
-        if(lockToken != null) uiJCRExplorer.getSession().addLockToken(lockToken);
-      }
+      Node currentNode = uiJCRExplorer.getCurrentNode();
+      uiJCRExplorer.addLockToken(currentNode);
       categoriesService.addCategory(currentNode, value.toString(), uiJCRExplorer.getRepositoryName()) ;
-      uiJCRExplorer.getRealCurrentNode().save() ;
+      uiJCRExplorer.getCurrentNode().save() ;
       uiJCRExplorer.getSession().save() ;
       updateGrid(1) ;
       setRenderSibbling(UICategoriesAddedList.class) ;
@@ -106,7 +102,7 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
       CategoriesService categoriesService = 
         uiAddedList.getApplicationComponent(CategoriesService.class) ;
       try {
-        categoriesService.removeCategory(uiExplorer.getRealCurrentNode(), nodePath, uiExplorer.getRepositoryName()) ;
+        categoriesService.removeCategory(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName()) ;
 //        uiAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName())) ;
         uiAddedList.updateGrid(uiAddedList.getUIPageIterator().getCurrentPage());
       } catch(AccessDeniedException ace) {

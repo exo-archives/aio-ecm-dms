@@ -44,7 +44,6 @@ public class UIConfirmMessage extends UIComponent implements UIPopupComponent {
   private String[] args_ = {};
   private boolean isOK_ = false;
   private String nodePath_;
-  private String wsName_;
   
   public UIConfirmMessage() throws Exception {
   }
@@ -61,14 +60,12 @@ public class UIConfirmMessage extends UIComponent implements UIPopupComponent {
   
   public void setNodePath(String nodePath) { nodePath_ = nodePath; }
   
-  public void setWorkspaceName(String wsName) { wsName_ = wsName; }
-  
   static  public class OKActionListener extends EventListener<UIConfirmMessage> {
     public void execute(Event<UIConfirmMessage> event) throws Exception {
       UIConfirmMessage uiConfirm = event.getSource();
       UIJCRExplorer uiExplorer = uiConfirm.getAncestorOfType(UIJCRExplorer.class);
       UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
-      uiWorkingArea.doDelete(uiConfirm.nodePath_, uiConfirm.wsName_, event);
+      uiWorkingArea.doDelete(uiConfirm.nodePath_, event);
       uiConfirm.isOK_ = true;
       UIPopupContainer popupAction = uiConfirm.getAncestorOfType(UIPopupContainer.class);
       popupAction.deActivate() ;

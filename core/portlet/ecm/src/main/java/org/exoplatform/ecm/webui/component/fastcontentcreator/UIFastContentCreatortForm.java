@@ -311,7 +311,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
         return;
       }
       String lockToken = LockUtil.getLockToken(homeNode);
-      if(lockToken != null) session.addLockToken(lockToken);
+      if(lockToken != null) homeNode.getSession().addLockToken(lockToken);
       try {
         String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
         homeNode.getSession().save() ;

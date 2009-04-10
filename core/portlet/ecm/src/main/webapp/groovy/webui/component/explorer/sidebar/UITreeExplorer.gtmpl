@@ -81,7 +81,7 @@
 	    	lastNodeClass = "LastNode " ;
 	    }
 	    def ctMenu = "" ;
-	    if(!uicomponent.isSystemWorkspace()) ctMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) ;
+	    if(!uicomponent.isSystemWorkspace()) ctMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(path), uicomponent.getActionsList(node)) ;
 	    println "<div  class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
 	    println "  <div class=\"${iconType}Icon\" onclick=\"if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
 	    println "    <div onclick=\"" + expandLink + "\" objectId=\"" + treeNode.getPath() + "\" workspacename=\"" + preferenceWS + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", iconType) + "\" " + ctMenu + ">" + strActs ;

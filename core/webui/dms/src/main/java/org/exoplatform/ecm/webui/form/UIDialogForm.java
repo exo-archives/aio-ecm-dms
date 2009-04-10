@@ -24,12 +24,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.PropertyType;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
@@ -55,6 +57,7 @@ import org.exoplatform.services.ecm.fckconfig.FCKEditorContext;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.core.UIApplication;
@@ -81,6 +84,11 @@ import org.exoplatform.webui.form.wysiwyg.UIFormWYSIWYGInput;
 @SuppressWarnings("unused")
 public class UIDialogForm extends UIForm {
 
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("webui.form.UIDialogForm");
+  
   private final String REPOSITORY = "repository";
   protected final static String CANCEL_ACTION = "Cancel".intern();
   protected final static String SAVE_ACTION = "Save".intern();
@@ -91,28 +99,28 @@ public class UIDialogForm extends UIForm {
   protected Map<String, String> propertiesName = new HashMap<String, String>();
   protected String contentType; 
   protected boolean isAddNew = true;
-  protected boolean isRemovePreference = false;
-  protected boolean isShowingComponent = false;
-  protected boolean isUpdateSelect = false;
+  protected boolean isRemovePreference;
+  protected boolean isShowingComponent;
+  protected boolean isUpdateSelect;
   protected Map<String, JcrInputProperty> properties = new HashMap<String, JcrInputProperty>();
-  protected String repositoryName = null;
+  protected String repositoryName;
   protected JCRResourceResolver resourceResolver;
   private String childPath;
-  private boolean isNotEditNode = false;
-  private boolean dataRemoved_ = false;
+  private boolean isNotEditNode;
+  private boolean dataRemoved_;
 
-  private boolean isNTFile = false; 
-  private boolean isOnchange = false;
-  private boolean isResetForm = false;
-  private boolean isResetMultiField = false;
+  private boolean isNTFile; 
+  private boolean isOnchange;
+  private boolean isResetForm;
+  private boolean isResetMultiField;
   protected String nodePath;
   private List<String> postScriptInterceptor = new ArrayList<String>();  
   private List<String> prevScriptInterceptor = new ArrayList<String>();
 
-  private String storedPath = null;
+  private String storedPath;
 
-  protected String workspaceName = null;
-  protected boolean isReference = false;
+  protected String workspaceName;
+  protected boolean isReference;
   
   final static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
 
@@ -126,8 +134,8 @@ public class UIDialogForm extends UIForm {
 
   public void setStoredLocation(String repository, String workspace, String storedPath) {
     this.repositoryName = repository;
-    this.workspaceName = workspace;
-    this.storedPath = storedPath;
+    setWorkspace(workspace);
+    setStoredPath(storedPath);
   }
 
   public void addActionField(String name,String label,String[] arguments) throws Exception {
@@ -325,6 +333,7 @@ public class UIDialogForm extends UIForm {
           if("repository".equals(scriptParams[0])) scriptParams[0] = repositoryName;
           executeScript(script, uiSelectBox, scriptParams);
         } catch(Exception e) {
+          LOG.error("An unexpected error occurs", e);
           uiSelectBox.setOptions(optionsList);
         }      
       } else if (options != null && options.length() >0) {
@@ -476,7 +485,7 @@ public class UIDialogForm extends UIForm {
         }
       }
     }    
-    //set default value for textarea if no value was setted by above code
+    //set default value for textarea if no value was set by above code
     if(uiTextArea.getValue() == null) {
       if(formTextAreaField.getDefaultValue() != null)
         uiTextArea.setValue(formTextAreaField.getDefaultValue());
@@ -492,7 +501,7 @@ public class UIDialogForm extends UIForm {
   
   public String getPathTaxonomy() throws Exception {
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    Session session = getSesssion();
+    Session session = getSession();
     return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS))).getPath();
   }
 
@@ -739,7 +748,7 @@ public class UIDialogForm extends UIForm {
   }
   public Node getChildNode() throws Exception { 
     if(childPath == null) return null;
-    return (Node) getSesssion().getItem(childPath); 
+    return (Node) getSession().getItem(childPath); 
   }
 
   public String getContentType() { return contentType; };
@@ -751,7 +760,7 @@ public class UIDialogForm extends UIForm {
 
   public Node getNode() throws Exception { 
     if(nodePath == null) return null;
-    return (Node) getSesssion().getItem(nodePath); 
+    return (Node) getSession().getItem(nodePath); 
   }
 
   public String getPropertyName(String jcrPath) { 
@@ -764,7 +773,12 @@ public class UIDialogForm extends UIForm {
     return null;
   }
 
+  @Deprecated
   public Session getSesssion() throws Exception {
+    return getSession();
+  }
+  
+  public Session getSession() throws Exception {
     return SessionProviderFactory.createSessionProvider().getSession(workspaceName, getRepository());
   }
 
@@ -783,7 +797,7 @@ public class UIDialogForm extends UIForm {
 
   public boolean isResetForm() { return isResetForm; }
 
-  public void onchange(Event event) throws Exception {}
+  public void onchange(Event<?> event) throws Exception {}
 
   @Override
   public void processAction(WebuiRequestContext context) throws Exception {       
@@ -819,11 +833,11 @@ public class UIDialogForm extends UIForm {
     Writer w = context.getWriter();
     uiInput.processRender(context);
     if(componentSelectors.get(name) != null) {
-      Map fieldPropertiesMap = componentSelectors.get(name);
-      String fieldName = (String)fieldPropertiesMap.get("returnField");
+      Map<String,String> fieldPropertiesMap = componentSelectors.get(name);
+      String fieldName = fieldPropertiesMap.get("returnField");
       String iconClass = "Add16x16Icon";
       if(fieldPropertiesMap.get("selectorIcon") != null) {
-        iconClass = (String)fieldPropertiesMap.get("selectorIcon");
+        iconClass = fieldPropertiesMap.get("selectorIcon");
       }
 
       if(name.equals(fieldName)) {
@@ -916,7 +930,7 @@ public class UIDialogForm extends UIForm {
       }
       dialogScript.execute(o);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("An unexpected error occurs", e);
     }
   }
 
@@ -927,10 +941,11 @@ public class UIDialogForm extends UIForm {
       try{
         node = SessionProviderFactory.createSystemProvider().getSession(ws, getRepository()).getNodeByUUID(uuid);
         return ws + ":" + node.getPath();
-      } catch(Exception e) {
-        continue;
+      } catch(ItemNotFoundException e) {
+        // do nothing
       }      
     }
+    LOG.error("No node with uuid ='" + uuid + "' can be found");
     return null;
   }  
 

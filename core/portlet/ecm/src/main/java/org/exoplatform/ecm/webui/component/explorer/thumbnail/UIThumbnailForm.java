@@ -26,13 +26,14 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
-import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -62,6 +63,11 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 )
 public class UIThumbnailForm extends UIForm implements UIPopupComponent {
  
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIJCRExplorer");
+  
   final static public String THUMBNAIL_FIELD = "mediumSize";
   private boolean thumbnailRemoved_ = false;
   
@@ -101,10 +107,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
         return;
       }
       Node selectedNode = uiExplorer.getRealCurrentNode();
-      if(selectedNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(selectedNode);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-      }
+      uiExplorer.addLockToken(selectedNode);
       String fileName = input.getUploadResource().getFileName();
       MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
       String mimeType = mimeTypeSolver.getMimeType(fileName) ;
@@ -141,12 +144,12 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("An unexpected error occurs", e);
         JCRExceptionManager.process(uiApp, e);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      uiExplorer.getSession().save();
+      selectedNode.getSession().save();
       uiExplorer.updateAjax(event);
     }
   }
@@ -158,16 +161,13 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
       uiForm.thumbnailRemoved_ = true;
       Node selectedNode = uiExplorer.getRealCurrentNode();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
-      if(selectedNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(selectedNode);
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-      }
+      uiExplorer.addLockToken(selectedNode);
       ThumbnailService thumbnailService = uiForm.getApplicationComponent(ThumbnailService.class);
       Node thumbnailNode = thumbnailService.getThumbnailNode(selectedNode);
       if(thumbnailNode != null) {
         try {
           thumbnailNode.remove();
-          uiExplorer.getSession().save();
+          selectedNode.getSession().save();
         } catch(LockException lock) {
           Object[] arg = { selectedNode.getPath() };
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
@@ -186,7 +186,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         } catch(Exception e) {
-          e.printStackTrace();
+          LOG.error("An unexpected error occurs", e);
           JCRExceptionManager.process(uiApp, e);
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;

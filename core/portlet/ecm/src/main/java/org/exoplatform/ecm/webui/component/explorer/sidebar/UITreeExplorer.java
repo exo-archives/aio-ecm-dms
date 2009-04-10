@@ -19,20 +19,23 @@ package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -59,6 +62,11 @@ import org.exoplatform.webui.event.EventListener;
 )
 
 public class UITreeExplorer extends UIContainer {
+	
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("dms.UIJCRExplorer");	
   private TreeNode treeRoot_ ;
   public UITreeExplorer() throws Exception { 
   }
@@ -72,7 +80,7 @@ public class UITreeExplorer extends UIContainer {
   public String getRootActionList() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     if(uiExplorer.getAllClipBoard().size() > 0) {
-      return getContextMenu().getJSOnclickShowPopup(uiExplorer.getRootNode().getPath(), "Paste").toString() ;
+      return getContextMenu().getJSOnclickShowPopup(uiExplorer.getCurrentWorkspace() + ":" + uiExplorer.getRootPath(), "Paste").toString() ;
     }
     return "" ;
   }
@@ -86,11 +94,9 @@ public class UITreeExplorer extends UIContainer {
     return getAncestorOfType(UIWorkingArea.class).getCustomActions(node) ;
   }
   
-  @SuppressWarnings("unused")
   public boolean isPreferenceNode(Node node) throws RepositoryException {
     return getAncestorOfType(UIWorkingArea.class).isPreferenceNode(node) ;
   }
-  
   
   @SuppressWarnings("unchecked")
   public List<TreeNode> getRenderedChildren(TreeNode treeNode) throws Exception {    
@@ -110,7 +116,8 @@ public class UITreeExplorer extends UIContainer {
   }
   
   public boolean isSymLink(Node node) throws RepositoryException {
-    return Utils.isSymLink(node); 
+    LinkManager linkManager = getApplicationComponent(LinkManager.class);
+    return linkManager.isLink(node);
   }
   
   public boolean isPaginated(TreeNode treeNode) {
@@ -157,84 +164,84 @@ public class UITreeExplorer extends UIContainer {
   private Node getRootNode() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Session session = 
-      uiExplorer.getSessionProvider().getSession(uiExplorer.getCurrentWorkspace(), uiExplorer.getRepository());
+      uiExplorer.getSessionProvider().getSession(uiExplorer.getCurrentDriveWorkspace(), uiExplorer.getRepository());
     return uiExplorer.getNodeByPath(uiExplorer.getRootPath(), session);
   }  
   
   private void buildTree(String path) throws Exception {
-    UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class);
     int nodePerPages = jcrExplorer.getPreference().getNodesPerPage();
-    TreeNode treeRoot = new TreeNode(getRootNode()) ;
-    if(path == null) path = jcrExplorer.getCurrentNode().getPath() ;     
-    String[] arr = path.replaceFirst(treeRoot.getPath(), "").split("/") ;
-    TreeNode temp = treeRoot ;
-    String subPath = null ;
-    String prefix = "/" ;
-    if(!treeRoot.getNode().getPath().equals("/")) prefix = treeRoot.getNode().getPath() + prefix;
-    for(String nodeName : arr) {
-      if(nodeName.length() == 0) continue ;
-      if(subPath == null) subPath = prefix + nodeName;
-      else subPath = subPath + "/" + nodeName ;      
-      temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;
-      if(temp.getChildrenSize()> nodePerPages) {                
-        ObjectPageList list = new ObjectPageList(temp.getChildren(),nodePerPages);
-        addTreeNodePageIteratorAsChild(temp.getPath(),list,temp.getPath(),path);
-      }
-      temp = temp.getChild(subPath) ;            
-      if(temp == null)  {
+    TreeNode treeRoot = new TreeNode(getRootNode());
+    if (path == null)
+      path = jcrExplorer.getCurrentPath();
+    String[] arr = path.replaceFirst(treeRoot.getPath(), "").split("/");
+    TreeNode temp = treeRoot;
+    String subPath = null;
+    String rootPath = treeRoot.getPath();
+    String prefix = rootPath;
+    if (!rootPath.equals("/")) {
+      prefix += "/";      
+    }
+    temp.setChildren(jcrExplorer.getChildrenList(rootPath, false));
+    if (temp.getChildrenSize() > nodePerPages) {
+      ObjectPageList list = new ObjectPageList(temp.getChildren(), nodePerPages);
+      addTreeNodePageIteratorAsChild(temp.getPath(), list, rootPath, path);
+    }
+    for (String nodeName : arr) {
+      if (nodeName.length() == 0)
+        continue;
+      temp = temp.getChildByName(nodeName);
+      if (temp == null) {
+        LOG.error("The node '" + nodeName + "' cannot be found");
         treeRoot_ = treeRoot;
         return;
       }
+      if (subPath == null)
+        subPath = prefix + nodeName;
+      else
+        subPath = subPath + "/" + nodeName;
+      temp.setChildren(jcrExplorer.getChildrenList(subPath, false));
+      if (temp.getChildrenSize() > nodePerPages) {
+        ObjectPageList list = new ObjectPageList(temp.getChildren(), nodePerPages);
+        addTreeNodePageIteratorAsChild(temp.getPath(), list, subPath, path);
+      }
     }
-    temp.setChildren(jcrExplorer.getChildrenList(temp.getNode(), false)) ;        
-    if(temp.getChildrenSize()> nodePerPages) {             
-      ObjectPageList list = new ObjectPageList(temp.getChildren(),nodePerPages);
-      addTreeNodePageIteratorAsChild(temp.getPath(),list,temp.getPath(),path);
-    }    
-    treeRoot_ = treeRoot ;  
+    treeRoot_ = treeRoot;
   }
   
   public void buildTree() throws Exception {    
     buildTree(null);
   }
   
-  public Node getRealNode(Node node) throws Exception {
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class); 
-    return uiExplorer.getRealNode(node.getPath());
-  }
-  
   static public class ExpandActionListener extends EventListener<UITreeExplorer> {
     public void execute(Event<UITreeExplorer> event) throws Exception {
       UITreeExplorer uiTreeExplorer = event.getSource();
-      String path = event.getRequestContext().getRequestParameter(OBJECTID);
-      UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class);      
-      UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class);
-      Node selectedNode = null;
+      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
+      UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class) ;
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
-      if (workspaceName != null && workspaceName.length() > 0) {
-        if(!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {              
-          uiExplorer.setIsReferenceNode(true) ;
-          uiExplorer.setReferenceWorkspace(workspaceName) ;
-        } else {              
-          uiExplorer.setIsReferenceNode(false) ;
-        }
-      } else workspaceName = uiExplorer.getCurrentWorkspace();
       Session session = uiExplorer.getSessionByWorkspace(workspaceName);
-      String realpath = uiExplorer.processRealNode((Node) session.getItem(path));
-      if (realpath != null) path = realpath;
-//      try {
-////        selectedNode = uiExplorer.getRealNode(path);
-//        selectedNode = (Node) uiExplorer.getSession().getItem(path);
-//      } catch(PathNotFoundException pa) {
-//        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
-//            ApplicationMessage.WARNING)) ;
-//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-//        return ;
-//      } catch(AccessDeniedException ace) {
-//        selectedNode = uiExplorer.getSession().getRootNode();
-//      }
-//      uiExplorer.setSelectNode(selectedNode.getPath(), uiExplorer.getSession()) ; 
-      uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
+      try {
+    	// Check if the path exists
+        NodeFinder nodeFinder = uiTreeExplorer.getApplicationComponent(NodeFinder.class);
+        nodeFinder.getItem(session, path);
+      } catch(PathNotFoundException pa) {
+        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      } catch(ItemNotFoundException inf) {
+          uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+      } catch(AccessDeniedException ace) {
+          uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.access-denied", null, 
+                  ApplicationMessage.WARNING)) ;
+	      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+	      return ;    	  
+      }
+      uiExplorer.setSelectNode(workspaceName, path) ; 
       uiExplorer.updateAjax(event) ;      
     }
   }
@@ -242,32 +249,34 @@ public class UITreeExplorer extends UIContainer {
   static public class ExpandTreeActionListener extends EventListener<UITreeExplorer> {
     public void execute(Event<UITreeExplorer> event) throws Exception {
       UITreeExplorer uiTreeExplorer = event.getSource();
-      String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
-      UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class) ;
+      String path = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class);
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
-      if (workspaceName != null && workspaceName.length() > 0) {
-        if (!workspaceName.equals(uiExplorer.getCurrentWorkspace())) {              
-          uiExplorer.setIsReferenceNode(true) ;
-          uiExplorer.setReferenceWorkspace(workspaceName) ;
-        } else {              
-          uiExplorer.setIsReferenceNode(false) ;
-        }
-      } else workspaceName = uiExplorer.getCurrentWorkspace();
       Session session = uiExplorer.getSessionByWorkspace(workspaceName);
-      String realpath = uiExplorer.processRealNode((Node) session.getItem(path));
-      if (realpath != null) path = realpath;
-//      try {
-////        uiExplorer.getSession().getItem(path);
-//        uiExplorer.getRealNode(path);
-//      } catch(PathNotFoundException pa) {
-//        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
-//            ApplicationMessage.WARNING)) ;
-//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-//        return ;
-//      } catch(AccessDeniedException ace) {
-//        path = uiExplorer.getSession().getRootNode().getPath();
-//      }
+      try {
+        // Check if the path exists
+        NodeFinder nodeFinder = uiTreeExplorer.getApplicationComponent(NodeFinder.class);
+        nodeFinder.getItem(session, path);
+      } catch (PathNotFoundException pa) {
+        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found",
+                                                null,
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch (ItemNotFoundException inf) {
+        uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found",
+                                                null,
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch (AccessDeniedException ace) {
+        uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.access-denied",
+                                                null,
+                                                ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       if (uiExplorer.getPreference().isShowSideBar()) {
         uiTreeExplorer.buildTree(path);
       }
@@ -279,8 +288,8 @@ public class UITreeExplorer extends UIContainer {
       UITreeExplorer treeExplorer = event.getSource();
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = treeExplorer.getAncestorOfType(UIJCRExplorer.class) ;
-      path = path.substring(0, path.lastIndexOf("/")) ;
-      uiExplorer.setSelectNode(path, uiExplorer.getSession()) ;
+      path = LinkUtils.getParentPath(path) ;
+      uiExplorer.setSelectNode(path) ;
       uiExplorer.updateAjax(event) ;      
     }
   }
