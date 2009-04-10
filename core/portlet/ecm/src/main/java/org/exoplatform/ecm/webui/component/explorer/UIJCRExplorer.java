@@ -131,6 +131,9 @@ public class UIJCRExplorer extends UIContainer {
     return currentPath.replaceFirst(currentRootPath_, "") ;
   }
   
+  /**
+   * Sets the root path
+   */
   public void setRootPath(String rootPath) {
     currentDriveRootPath_ = rootPath;
     setCurrentRootPath(rootPath);
@@ -140,24 +143,54 @@ public class UIJCRExplorer extends UIContainer {
     currentRootPath_ = rootPath ;
   }
   
+  /**
+   * @return the root node itself if it is not a link otherwise the target node (= resolve the link)
+   */
   public Node getRootNode() throws Exception { return getNodeByPath(currentRootPath_, getSession()) ; }
 
+  /**
+   * @return the root path
+   */
   public String getRootPath() { return currentRootPath_; }
   
-  public String getDefaultRootPath() { return "/"; }
   
+  private String getDefaultRootPath() { return "/"; }
+  
+  /**
+   * @return the current node itself if it is not a link otherwise the target node (= resolve the link)
+   */
   public Node getCurrentNode() throws Exception { return getNodeByPath(currentPath_, getSession()) ; }
   
+  /**
+   * @return the current node even if it is a link (= don't resolve the link)
+   */
   public Node getRealCurrentNode() throws Exception {
-	return getNodeByPath(currentPath_, getSession(), false);
+    return getNodeByPath(currentPath_, getSession(), false);
   }
   
+  /**
+   * @return the current path
+   */
   public String getCurrentPath() { return currentPath_ ; }
+  
+  /**
+   * Sets the current path
+   */
   public void setCurrentPath(String currentPath) { currentPath_ = currentPath ; }
   
+  /**
+   * Indicates if the current node is a referenced node 
+   */
   public boolean isReferenceNode() { return isReferenceNode_ ; }
+  
+  /**
+   * Tells that the current node is a referenced node 
+   */
   public void setIsReferenceNode(boolean isReferenceNode) { isReferenceNode_ = isReferenceNode ; }
   
+  /**
+   * Sets the workspace name the referenced node
+   */
   public void setReferenceWorkspace(String referenceWorkspace) { referenceWorkspace_ = referenceWorkspace ; }
   public String getReferenceWorkspace() { return referenceWorkspace_ ; }
   
@@ -181,6 +214,9 @@ public class UIJCRExplorer extends UIContainer {
     setBackNodePath(null, previousPath);
   }
   
+  /**
+   * Tells to go back to the given location 
+   */
   public void setBackNodePath(String previousWorkspaceName, String previousPath) throws Exception {
     setTargetWorkspaceProperties(previousWorkspaceName);
     if (previousPath != null) {
@@ -213,6 +249,9 @@ public class UIJCRExplorer extends UIContainer {
 
   public SessionProvider getSystemProvider() { return SessionProviderFactory.createSystemProvider(); }  
 
+  /**
+   * @return the session of the current node (= UIJCRExplorer.getCurrentNode())
+   */
   public Session getTargetSession() throws Exception {
     return getCurrentNode().getSession();    
   }
@@ -249,9 +288,18 @@ public class UIJCRExplorer extends UIContainer {
     }         
   }
   
+  /**
+   * Sets the repository of the current drive
+   */
   public void setRepositoryName(String repositoryName) { currentDriveRepositoryName_ = repositoryName ; }
+  /**
+   * @return the repository of the current drive
+   */
   public String getRepositoryName() { return currentDriveRepositoryName_ ; }
   
+  /**
+   * Sets the workspace of the current drive 
+   */
   public void setWorkspaceName(String workspaceName) { 
     currentDriveWorkspaceName_ = workspaceName ; 
     setLastWorkspace(workspaceName);
@@ -261,8 +309,14 @@ public class UIJCRExplorer extends UIContainer {
     lastWorkspaceName_ = lastWorkspaceName;
   }
   
+  /**
+   * @return the workspace of the current drive
+   */
   public String getCurrentDriveWorkspace() { return currentDriveWorkspaceName_ ; }
   
+  /**
+   * @return the workspace of the session of the current node (= UIJCRExplorer.getCurrentNode())
+   */
   public String getCurrentWorkspace() {
     try {
       return getCurrentNode().getSession().getWorkspace().getName();
@@ -334,6 +388,9 @@ public class UIJCRExplorer extends UIContainer {
     return true;
   }
 
+  /**
+   * Allows you to add a lock token to the given node
+   */
   public void addLockToken(Node node) throws Exception {
     if (node.isLocked()) {
       String lockToken = LockUtil.getLockToken(node);

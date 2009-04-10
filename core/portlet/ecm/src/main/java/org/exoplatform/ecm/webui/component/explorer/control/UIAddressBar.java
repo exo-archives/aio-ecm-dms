@@ -86,7 +86,7 @@ public class UIAddressBar extends UIForm {
       try {        
         uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
         setRenderedChild(UIDocumentContainer.class) ;
-        if(uiExplorer.isViewTag() && !uiExplorer.getCurrentNode().equals(uiExplorer.getRootNode())) {
+        if(uiExplorer.isViewTag() && !uiExplorer.getCurrentPath().equals(uiExplorer.getRootPath())) {
           uiExplorer.setSelectNode(uiExplorer.getRootPath()) ;
           uiExplorer.setIsViewTag(true) ;
         } else if(uiExplorer.isViewTag() && uiExplorer.getCurrentStateNode() != null) {
