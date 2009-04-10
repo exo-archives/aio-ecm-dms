@@ -12,6 +12,7 @@
     <label>
       <UIFolksonomyManager>Quản lý nhãn</UIFolksonomyManager>
       <UITaxonomyManager>Quản lý danh mục</UITaxonomyManager>
+      <UITaxonomyManagerTrees>Quản lý cây danh mục</UITaxonomyManagerTrees>
       <UIMetadataManager>Quản lý dữ liệu Metadata</UIMetadataManager>
       <UINamespaceManager>Quản lý namespace</UINamespaceManager>
       <UINodeTypeManager>Quản lý nodetype</UINodeTypeManager>

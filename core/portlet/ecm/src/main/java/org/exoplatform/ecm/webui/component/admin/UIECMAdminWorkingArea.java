@@ -27,6 +27,7 @@ import org.exoplatform.ecm.webui.component.admin.nodetype.UINodeTypeManager;
 import org.exoplatform.ecm.webui.component.admin.queries.UIQueriesManager;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManager;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManagerTrees;
 import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
 import org.exoplatform.ecm.webui.component.admin.views.UIViewManager;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -54,49 +55,52 @@ public class UIECMAdminWorkingArea extends UIContainer {
   public void setRenderedCompId(String renderedId) { this.renderedCompId_ = renderedId ; }
 
   public <T extends UIComponent> void setChild(Class<T> type) {
-    renderedCompId_ = getChild(type).getId() ;
-    setRenderedChild(type) ;
+    renderedCompId_ = getChild(type).getId();
+    setRenderedChild(type);
   }
 
   public UIECMAdminWorkingArea() throws Exception {
-    renderedCompId_ = addChild(UITaxonomyManager.class, null , null).getId() ;
-    addChild(UIViewManager.class, null, null).setRendered(false) ;
-    addChild(UIMetadataManager.class, null, null).setRendered(false) ;
-    addChild(UINodeTypeManager.class, null, null).setRendered(false) ;
-    addChild(UIDriveManager.class, null, null).setRendered(false) ;
-    addChild(UINamespaceManager.class, null, null).setRendered(false) ;
-    addChild(UIActionManager.class, null ,null).setRendered(false) ;
-    addChild(UIScriptManager.class, null ,null).setRendered(false) ;
-    addChild(UITemplatesManager.class, null, null).setRendered(false) ;
-    addChild(UIQueriesManager.class, null, null).setRendered(false) ;
-    addChild(UIFolksonomyManager.class, null, null).setRendered(false) ;
+    renderedCompId_ = addChild(UITaxonomyManager.class, null, null).getId();
+    addChild(UIViewManager.class, null, null).setRendered(false);
+    addChild(UIMetadataManager.class, null, null).setRendered(false);
+    addChild(UINodeTypeManager.class, null, null).setRendered(false);
+    addChild(UIDriveManager.class, null, null).setRendered(false);
+    addChild(UINamespaceManager.class, null, null).setRendered(false);
+    addChild(UIActionManager.class, null, null).setRendered(false);
+    addChild(UIScriptManager.class, null, null).setRendered(false);
+    addChild(UITemplatesManager.class, null, null).setRendered(false);
+    addChild(UIQueriesManager.class, null, null).setRendered(false);
+    addChild(UIFolksonomyManager.class, null, null).setRendered(false);
+    addChild(UITaxonomyManagerTrees.class, null, null).setRendered(false);
   }
   
   public void init() throws Exception { 
-    getChild(UITaxonomyManager.class).update() ;
-    getChild(UIViewManager.class).update() ;
-    getChild(UIMetadataManager.class).update() ;
-    getChild(UINodeTypeManager.class).update() ;
-    getChild(UIDriveManager.class).update() ;
-    getChild(UINamespaceManager.class).refresh() ;
-    getChild(UIActionManager.class).refresh() ;
-    getChild(UIScriptManager.class).refresh() ;
-    getChild(UITemplatesManager.class).refresh() ;
-    getChild(UIQueriesManager.class).update() ;
-    getChild(UIFolksonomyManager.class).update() ;
+    getChild(UITaxonomyManager.class).update();
+    getChild(UIViewManager.class).update();
+    getChild(UIMetadataManager.class).update();
+    getChild(UINodeTypeManager.class).update();
+    getChild(UIDriveManager.class).update();
+    getChild(UINamespaceManager.class).refresh();
+    getChild(UIActionManager.class).refresh();
+    getChild(UIScriptManager.class).refresh();
+    getChild(UITemplatesManager.class).refresh();
+    getChild(UIQueriesManager.class).update();
+    getChild(UIFolksonomyManager.class).update();
+    getChild(UITaxonomyManagerTrees.class).update();
   }
   
   public void checkRepository() throws Exception{
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences pref = pcontext.getRequest().getPreferences() ;
-    String repository = pref.getValue(Utils.REPOSITORY, "") ;
-    try{
-      getApplicationComponent(RepositoryService.class).getRepository(repository) ;
-    }catch(Exception e) {
-      String defaultRepo = getApplicationComponent(RepositoryService.class)
-      .getDefaultRepository().getConfiguration().getName();
-      pref.setValue(Utils.REPOSITORY, defaultRepo) ;
-      pref.store() ;      
+    PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext
+        .getCurrentInstance();
+    PortletPreferences pref = pcontext.getRequest().getPreferences();
+    String repository = pref.getValue(Utils.REPOSITORY, "");
+    try {
+      getApplicationComponent(RepositoryService.class).getRepository(repository);
+    } catch (Exception e) {
+      String defaultRepo = getApplicationComponent(RepositoryService.class).getDefaultRepository()
+          .getConfiguration().getName();
+      pref.setValue(Utils.REPOSITORY, defaultRepo);
+      pref.store();
     }
   }
   

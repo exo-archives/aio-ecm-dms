@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2003-2007 eXo Platform SAS.
+/***************************************************************************
+ * Copyright (C) 2003-2009 eXo Platform SAS.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -13,7 +13,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
- */
+ *
+ **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.taxonomy;
 
 import java.util.ArrayList;
@@ -21,16 +22,12 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
-import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
-import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -45,94 +42,100 @@ import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
- * Author : Dang Van Minh
- *          minh.dang@exoplatform.com
- * Apr 10, 2008 4:28:44 PM
+ * Author : Hoang Van Hung
+ *          hunghvit@gmail.com
+ * Apr 5, 2009  
  */
+
 @ComponentConfigs(
     {
       @ComponentConfig(lifecycle = UIContainerLifecycle.class),
       @ComponentConfig(
-          type = UIBreadcumbs.class, id = "BreadcumbTaxonomyECMAdmin",
+          type = UIBreadcumbs.class, id = "BreadcumbTaxonomyTreeECMAdmin",
           template = "system:/groovy/webui/core/UIBreadcumbs.gtmpl",
-          events = @EventConfig(listeners = UITaxonomyManager.SelectPathActionListener.class)
+          events = @EventConfig(listeners = UITaxonomyTreeCreateChild.SelectPathActionListener.class)
       )
     }
 )
-public class UITaxonomyManager extends UIContainer {
+
+public class UITaxonomyTreeCreateChild extends UIContainer {
   
-  static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
-  static private String EXO_ECM_ALIAS = "exoECMSystemPath" ;
+  static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath";
+  static private String EXO_ECM_ALIAS = "exoECMSystemPath";
   
-  public static final String PERMISSION_ID_POPUP = "TaxonomyViewPermissionPopup";
+  private String workspace;
+  
+  public static final String PERMISSION_ID_POPUP = "TaxonomyTreeViewPermissionPopup";
   
   private String selectedPath_ = null ;
 
-  public UITaxonomyManager() throws Exception {
-    addChild(UIBreadcumbs.class, "BreadcumbTaxonomyECMAdmin", "BreadcumbTaxonomyECMAdmin");
-    addChild(UITaxonomyTree.class, null, null) ;
-    addChild(UITaxonomyWorkingArea.class, null, null) ;
+  public UITaxonomyTreeCreateChild() throws Exception {
+    addChild(UIBreadcumbs.class, "BreadcumbTaxonomyTreeECMAdmin", "BreadcumbTaxonomyTreeECMAdmin");
+    addChild(UITaxonomyTreeBrowser.class, null, null);
+    addChild(UITaxonomyTreeWorkingArea.class, null, null);
   }
   
   public void update() throws Exception {
-    UITaxonomyTree uiTree = getChild(UITaxonomyTree.class) ;
-    uiTree.update() ;
-    UITaxonomyWorkingArea uiTaxonomyWorkingArea = getChild(UITaxonomyWorkingArea.class);
-    uiTaxonomyWorkingArea.update();
+    UITaxonomyTreeBrowser uiTree = getChild(UITaxonomyTreeBrowser.class);
+    uiTree.update();
+    UITaxonomyTreeWorkingArea uiTaxonomyTreeWorkingArea = getChild(UITaxonomyTreeWorkingArea.class);
+    uiTaxonomyTreeWorkingArea.update();
   }
   
   public void update(String parentPath) throws Exception {
-    UITaxonomyTree uiTree = getChild(UITaxonomyTree.class) ;
-    uiTree.setNodeSelect(parentPath) ;
-    UITaxonomyWorkingArea uiWorkingArea = getChild(UITaxonomyWorkingArea.class) ;
-    uiWorkingArea.setSelectedPath(parentPath) ;
-    uiWorkingArea.update() ;    
+    UITaxonomyTreeBrowser uiTree = getChild(UITaxonomyTreeBrowser.class);
+    uiTree.setNodeSelect(parentPath);
+    UITaxonomyTreeWorkingArea uiTaxonomyTreeWorkingArea = getChild(UITaxonomyTreeWorkingArea.class);
+    uiTaxonomyTreeWorkingArea.setSelectedPath(parentPath);
+    uiTaxonomyTreeWorkingArea.update();    
   }
   
   public Node getRootNode() throws Exception {
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
-    return (Node)getSession().getItem(nodeHierarchyCreator.getJcrPath(EXO_ECM_ALIAS)) ;
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    return (Node) getSession().getItem(nodeHierarchyCreator.getJcrPath(EXO_ECM_ALIAS));
   }
   
   public Node getTaxonomyNode() throws Exception {
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class) ;
-    return (Node)getSession().getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS)) ;
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    return (Node) getSession().getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS));
   }
   
-  public void setSelectedPath(String selectedPath) { selectedPath_ = selectedPath ; }
-  public String getSelectedPath() { return selectedPath_ ; }
+  public void setSelectedPath(String selectedPath) {
+    selectedPath_ = selectedPath;
+  }
+
+  public String getSelectedPath() {
+    return selectedPath_;
+  }
   
   public Node getNodeByPath(String path) throws Exception {
     return (Node) getSession().getItem(path) ;
   }
   
-  public String getRepository() throws Exception {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences pref = pcontext.getRequest().getPreferences() ;
-    String repository = pref.getValue(Utils.REPOSITORY, "") ;
-    return repository ;
+  protected String getRepository() throws Exception {
+    return getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
   }
   
   public Session getSession() throws Exception {
-    String repositoryName = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    String workspace = getRepository(repositoryName).getConfiguration().getSystemWorkspaceName() ;
-    return SessionProviderFactory.createSystemProvider().getSession(workspace, getRepository(repositoryName)) ;
+    String repositoryName = getRepository();
+    return SessionProviderFactory.createSystemProvider().getSession(workspace,
+        getRepository(repositoryName));
   }
   
   public ManageableRepository getRepository(String repositoryName) throws Exception{
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
-    return repositoryService.getRepository(repositoryName) ;
+    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
+    return repositoryService.getRepository(repositoryName);
   }
   
   public void initPopup(String path) throws Exception {
-    removeChildById("TaxonomyPopup") ;
-    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "TaxonomyPopup") ;
-    uiPopup.setWindowSize(600,250) ;
-    UITaxonomyForm uiTaxoForm = createUIComponent(UITaxonomyForm.class, null, null) ;
-    uiTaxoForm.setParent(path) ;
-    uiPopup.setUIComponent(uiTaxoForm) ;
-    uiPopup.setRendered(true) ;
-    uiPopup.setShow(true) ;
+    removeChildById("TaxonomyPopupCreateChild");
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "TaxonomyPopupCreateChild");
+    uiPopup.setWindowSize(600, 250);
+    UITaxonomyForm uiTaxoForm = createUIComponent(UITaxonomyForm.class, null, null);
+    uiTaxoForm.setParent(path);
+    uiPopup.setUIComponent(uiTaxoForm);
+    uiPopup.setRendered(true);
+    uiPopup.setShow(true);
   }
 
   public UIPopupContainer initPopupPermission(String id) throws Exception {
@@ -151,7 +154,8 @@ public class UITaxonomyManager extends UIContainer {
       if (arrayPath.length > 0) {
         for (int i = 0; i < arrayPath.length; i++) {
           if (!arrayPath[i].trim().equals("")) {
-            UIBreadcumbs.LocalPath localPath1 = new UIBreadcumbs.LocalPath(arrayPath[i].trim(), arrayPath[i].trim());
+            UIBreadcumbs.LocalPath localPath1 = new UIBreadcumbs.LocalPath(arrayPath[i].trim(),
+                arrayPath[i].trim());
             listLocalPath.add(localPath1);
           }
         }
@@ -185,20 +189,36 @@ public class UITaxonomyManager extends UIContainer {
           if (i < listLocalPathString.size() - 1) stringPath += "/";
         }
       }
-      UITaxonomyTree uiTaxonomyTree = getChild(UITaxonomyTree.class);
+      UITaxonomyTreeBrowser uiTaxonomyTree = getChild(UITaxonomyTreeBrowser.class);
       uiTaxonomyTree.setNodeSelect(stringPath);
     }
   }
   
   static  public class SelectPathActionListener extends EventListener<UIBreadcumbs> {
     public void execute(Event<UIBreadcumbs> event) throws Exception {
-      UIBreadcumbs uiBreadcumbs = event.getSource() ;
-      UITaxonomyManager uiTaxonomyManager = uiBreadcumbs.getParent() ;
-      String objectId =  event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiBreadcumbs.setSelectPath(objectId);    
-      String selectGroupId = uiBreadcumbs.getSelectLocalPath().getId() ;
-      uiTaxonomyManager.changeGroup(selectGroupId, event.getRequestContext()) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManager) ;
+      UIBreadcumbs uiBreadcumbs = event.getSource();
+      UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = uiBreadcumbs.getParent();
+      String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
+      uiBreadcumbs.setSelectPath(objectId);
+      String selectGroupId = uiBreadcumbs.getSelectLocalPath().getId();
+      uiTaxonomyTreeCreateChild.changeGroup(selectGroupId, event.getRequestContext());
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyTreeCreateChild);
     }
+  }
+  
+  static public class ChangeNodeActionListener extends EventListener<UITaxonomyTreeCreateChild> {
+    public void execute(Event<UITaxonomyTreeCreateChild> event) throws Exception {
+      UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = event.getSource();
+      String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
+     System.out.println(uri);
+    }
+  }
+
+  public String getWorkspace() {
+    return workspace;
+  }
+
+  public void setWorkspace(String workspace) {
+    this.workspace = workspace;
   }
 }

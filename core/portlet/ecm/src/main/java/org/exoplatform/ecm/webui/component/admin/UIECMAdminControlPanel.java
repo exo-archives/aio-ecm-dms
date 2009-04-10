@@ -31,6 +31,7 @@ import org.exoplatform.ecm.webui.component.admin.nodetype.UINodeTypeManager;
 import org.exoplatform.ecm.webui.component.admin.queries.UIQueriesManager;
 import org.exoplatform.ecm.webui.component.admin.script.UIScriptManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManager;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManagerTrees;
 import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
 import org.exoplatform.ecm.webui.component.admin.views.UIViewManager;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -54,6 +55,7 @@ import org.exoplatform.webui.exception.MessageException;
         @EventConfig(listeners = UIECMAdminControlPanel.UIViewManagerActionListener.class),
         @EventConfig(listeners = UIECMAdminControlPanel.UIMetadataManagerActionListener.class),
         @EventConfig(listeners = UIECMAdminControlPanel.UITaxonomyManagerActionListener.class),
+        @EventConfig(listeners = UIECMAdminControlPanel.UITaxonomyManagerTreesActionListener.class),
         @EventConfig(listeners = UIECMAdminControlPanel.UINamespaceManagerActionListener.class),
         @EventConfig(listeners = UIECMAdminControlPanel.UINodeTypeManagerActionListener.class),
         @EventConfig(listeners = UIECMAdminControlPanel.UITemplatesManagerActionListener.class),
@@ -130,10 +132,20 @@ public class UIECMAdminControlPanel extends UIComponent {
 
   static public class UITaxonomyManagerActionListener extends EventListener<UIECMAdminControlPanel> {
     public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
-      UIECMAdminPortlet portlet = event.getSource().getParent() ;
+      UIECMAdminPortlet portlet = event.getSource().getParent();
       UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
-      uiWorkingArea.setChild(UITaxonomyManager.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
+      uiWorkingArea.setChild(UITaxonomyManager.class);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea);
+    }
+  }
+  
+  static public class UITaxonomyManagerTreesActionListener extends EventListener<UIECMAdminControlPanel> {
+    public void execute(Event<UIECMAdminControlPanel> event) throws Exception {
+      UIECMAdminPortlet portlet = event.getSource().getParent();
+      UIECMAdminWorkingArea uiWorkingArea = portlet.getChild(UIECMAdminWorkingArea.class);
+      uiWorkingArea.getChild(UITaxonomyManagerTrees.class).update();
+      uiWorkingArea.setChild(UITaxonomyManagerTrees.class);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea);
     }
   }
 

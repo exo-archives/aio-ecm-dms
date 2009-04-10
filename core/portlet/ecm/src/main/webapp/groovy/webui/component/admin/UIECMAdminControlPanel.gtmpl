@@ -1,6 +1,6 @@
 <%
 	String[] typeManage = ["Ontologies","ContentPresentation", "TypesOfContent", "AdvanceConfiguaration"] ;
-  String Ontologies = "UIFolksonomyManager;UITaxonomyManager" ;
+  String Ontologies = "UIFolksonomyManager;UITaxonomyManager;UITaxonomyManagerTrees" ;
   String TypesOfContent = "UINamespaceManager;UINodeTypeManager" ;
   String ContentPresentation = "UITemplatesManager;UIMetadataManager;UIViewManager;UIDriveManager" ;
   String AdvanceConfiguaration = "UIQueriesManager;UIScriptManager;UIActionManager" ;

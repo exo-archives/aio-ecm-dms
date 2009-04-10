@@ -17,6 +17,7 @@
     <label>
       <UIFolksonomyManager>Tags</UIFolksonomyManager>
       <UITaxonomyManager>Catégories</UITaxonomyManager>
+      <UITaxonomyManagerTrees>Manage Taxonomy Trees</UITaxonomyManagerTrees>
       <UIMetadataManager>Gestion des Metadonnées</UIMetadataManager>
       <UINamespaceManager>Espaces de Nommage</UINamespaceManager>
       <UINodeTypeManager>Types de Contenu</UINodeTypeManager>

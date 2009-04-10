@@ -17,6 +17,7 @@
     <label>
       <UIFolksonomyManager>Folksonomy beheer</UIFolksonomyManager>
       <UITaxonomyManager>Taxonomy beheer</UITaxonomyManager>
+      <UITaxonomyManagerTrees>Manage Taxonomy Trees</UITaxonomyManagerTrees>
       <UIMetadataManager>Metadata beheer</UIMetadataManager>
       <UINamespaceManager>Namespace Register</UINamespaceManager>
       <UINodeTypeManager>Node Type beheer</UINodeTypeManager>

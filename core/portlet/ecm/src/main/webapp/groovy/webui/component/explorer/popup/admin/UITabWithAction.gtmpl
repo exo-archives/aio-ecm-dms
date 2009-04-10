@@ -15,7 +15,7 @@
     	<tr>
     		<td>
 		      <%for (action in uicomponent.getActions()) {%>
-		        <div onclick="<%=uicomponent.event("Cancel")%>" class="ActionButton LightBlueStyle" >
+		        <div onclick="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle" >
 		          <div class="ButtonLeft">
 		            <div class="ButtonRight">
 		              <div class="ButtonMiddle">

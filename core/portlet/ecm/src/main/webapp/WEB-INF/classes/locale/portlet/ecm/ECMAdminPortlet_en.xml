@@ -16,7 +16,8 @@
     </tab>
     <label>
       <UIFolksonomyManager>Manage Folksonomy</UIFolksonomyManager>
-      <UITaxonomyManager>Manage Taxonomy</UITaxonomyManager>
+      <UITaxonomyManager>Manage Simple Taxonomy</UITaxonomyManager>
+      <UITaxonomyManagerTrees>Manage Taxonomy Trees</UITaxonomyManagerTrees>
       <UIMetadataManager>Manage Metadata</UIMetadataManager>
       <UINamespaceManager>Namespace Registry</UINamespaceManager>
       <UINodeTypeManager>Manage Node Type</UINodeTypeManager>
@@ -1253,6 +1254,81 @@
       <name-too-long>Taxonomy name must less than 30 characters</name-too-long>
     </msg>
   </UITaxonomyForm>
+  
+  <!--
+  ######################################################################################
+  #             org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeList	 #
+  ######################################################################################
+  -->
+  <UITaxonomyTreeList>
+    <header>
+      <name>Name</name>
+      <workspace>Workspace</workspace>
+      <homePath>Home path</homePath>
+      <permissions>Permissions</permissions>
+    </header>
+    <action>
+      <AddTaxonomyTree>Add Taxonomy Tree</AddTaxonomyTree>
+    </action>
+    <title>Browses Taxonomy Tree</title>
+    <msg>
+      <no-list>No available taxonomy tree</no-list>
+    </msg>
+  </UITaxonomyTreeList>
+  
+  <!--
+  ######################################################################################
+  #             org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeForm  #
+  ######################################################################################
+  -->
+  <UITaxonomyTreeForm>
+    <label>
+      <name>Name</name>
+      <workspace>Workspace</workspace>
+      <homePath>Home path</homePath>
+      <permissions>Permissions</permissions>
+    </label>
+  </UITaxonomyTreeForm>
+  
+  <TaxonomyTreeForm>
+    <tab>
+      <label>
+        <TaxonomyTreeInputSet>Main</TaxonomyTreeInputSet>
+        <TaxonomyTreeAction>Action</TaxonomyTreeAction>
+      </label>
+    </tab>
+    <label>
+      <name>Name</name>
+      <workspace>Workspace</workspace>
+      <homePath>Home path</homePath>
+      <permissions>Permissions</permissions>
+    </label>
+    <action>
+      <Save>Save</Save>
+      <Refresh>Refresh</Refresh>
+      <Cancel>Cancel</Cancel>
+    </action>
+  </TaxonomyTreeForm>
+  
+  <TaxonomyTreeInputSet>
+	  <title>
+      <AddPermission>Select permission</AddPermission>
+      <AddPath>Select home path</AddPath>
+    </title>
+  </TaxonomyTreeInputSet>
+  
+  <PopupTaxonomyTreePermission>
+    <title>
+      <UIPermissionSelector>Select permissions</UIPermissionSelector>
+    </title>
+   </PopupTaxonomyTreePermission>
+   
+   <PopupDrivePermission>
+    <title>
+      <AddDrivePermissionSelector>Add Permission</AddDrivePermissionSelector>
+      <UIPermissionSelector>Select Permission</UIPermissionSelector>
+    </title>
+  </PopupDrivePermission>
   
   <UIPopupWindow>
     <title>
