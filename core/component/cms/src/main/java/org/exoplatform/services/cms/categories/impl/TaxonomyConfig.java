@@ -18,7 +18,11 @@ package org.exoplatform.services.cms.categories.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/*
+ * New TaxonomyConfix was created at org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig
+ * to replace this one
+ */
+@Deprecated
 public class TaxonomyConfig {
   
 	private List<Taxonomy> taxonomies = new ArrayList<Taxonomy>() ;

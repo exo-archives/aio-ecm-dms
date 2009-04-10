@@ -36,6 +36,11 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.picocontainer.Startable;
 
+/*
+ * New service was created at org.exoplatform.services.cms.taxonomy.impl.TaxonomyServiceImpl
+ * to replace this one.
+ */
+@Deprecated
 public class CategoriesServiceImpl implements CategoriesService,Startable {		
   private static final String CATEGORY_MIXIN = "exo:categorized";
   private static final String CATEGORY_PROP = "exo:category";

@@ -25,6 +25,11 @@ import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.categories.impl.TaxonomyPlugin;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
+/**
+ * New service was created at org.exoplatform.services.cms.taxonomy.TaxonomyService
+ * to replace this one.
+ */
+@Deprecated
 public interface CategoriesService {
 	
   /**

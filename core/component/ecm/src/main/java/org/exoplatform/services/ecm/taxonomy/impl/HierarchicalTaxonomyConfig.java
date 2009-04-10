@@ -26,6 +26,7 @@ import java.util.List;
  *			    xxx5669@yahoo.com
  * May 28, 2008  
  */
+@Deprecated
 public class HierarchicalTaxonomyConfig {    
   private List<Taxonomy> taxonomies = new ArrayList<Taxonomy>();
   

@@ -29,6 +29,7 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  *          hoa.pham@exoplatform.com
  * May 6, 2008  
  */
+@Deprecated
 public interface TaxonomyManagerService {
   
   /**

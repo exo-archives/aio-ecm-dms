@@ -31,6 +31,7 @@ import org.exoplatform.container.xml.ObjectParameter;
  *			    xxx5669@yahoo.com
  * May 28, 2008  
  */
+@Deprecated
 public class TaxonomyPlugin extends BaseComponentPlugin {
 
   private List<HierarchicalTaxonomyConfig> taxonomiesConfig_ = new ArrayList<HierarchicalTaxonomyConfig>(3);

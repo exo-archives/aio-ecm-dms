@@ -38,6 +38,11 @@ import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
+/*
+ * New plugin was created at org.exoplatform.services.cms.taxonomy.impl.TaxonomyPlugin
+ * to replace this one
+ */
+@Deprecated
 public class TaxonomyPlugin extends BaseComponentPlugin{	
 
   private RepositoryService repositoryService_ ;  

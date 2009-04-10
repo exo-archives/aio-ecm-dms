@@ -46,6 +46,7 @@ import org.picocontainer.Startable;
  *			    xxx5669@yahoo.com
  * May 20, 2008  
  */
+@Deprecated
 public class TaxonomyManagerServiceImpl implements TaxonomyManagerService, Startable {
   private static final String CATEGORY_MIXIN = "exo:categorized";
   private static final String CATEGORY_PROP = "exo:category";
