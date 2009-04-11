@@ -315,6 +315,14 @@ public class UIWorkingArea extends UIContainer {
   }
 
   public List<Node> getCustomActions(Node node) throws Exception {
+    if (node instanceof NodeLinkAware) {
+      NodeLinkAware nodeLA = (NodeLinkAware) node;
+      try {
+        node = nodeLA.getTargetNode().getRealNode();
+      } catch (Exception e) {
+        // The target of the link is not reachable
+      }
+    }    
     List<Node> safeActions = new ArrayList<Node>();
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
     String userName = context.getRemoteUser();
