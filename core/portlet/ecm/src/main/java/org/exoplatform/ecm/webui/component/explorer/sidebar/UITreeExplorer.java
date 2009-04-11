@@ -80,7 +80,7 @@ public class UITreeExplorer extends UIContainer {
   public String getRootActionList() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     if(uiExplorer.getAllClipBoard().size() > 0) {
-      return getContextMenu().getJSOnclickShowPopup(uiExplorer.getCurrentWorkspace() + ":" + uiExplorer.getRootPath(), "Paste").toString() ;
+      return getContextMenu().getJSOnclickShowPopup(uiExplorer.getCurrentDriveWorkspace() + ":" + uiExplorer.getRootPath(), "Paste").toString() ;
     }
     return "" ;
   }
@@ -163,9 +163,7 @@ public class UITreeExplorer extends UIContainer {
   
   private Node getRootNode() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Session session = 
-      uiExplorer.getSessionProvider().getSession(uiExplorer.getCurrentDriveWorkspace(), uiExplorer.getRepository());
-    return uiExplorer.getNodeByPath(uiExplorer.getRootPath(), session);
+    return uiExplorer.getRootNode();
   }  
   
   private void buildTree(String path) throws Exception {

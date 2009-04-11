@@ -205,7 +205,7 @@ public class UIPermissionInfo extends UIContainer {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;          
         }
-        if(uiJCRExplorer.getRootPath().equals(node.getPath())) {
+        if(uiJCRExplorer.getRootNode().equals(node)) {
           if(!PermissionUtil.canRead(currentNode)) {
             uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class) ;
             return ;

@@ -134,19 +134,15 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       Node node = uiExplorer.getCurrentNode();
       String nodeTypeName = node.getPrimaryNodeType().getName();
       currentRepository_ = uiExplorer.getRepositoryName();
-      currentWorkspaceName_ = uiExplorer.getCurrentWorkspace();
+      currentWorkspaceName_ = node.getSession().getWorkspace().getName();;
       selectedLang_ = uiExplorer.getLanguage();
-      if(templateService.getDocumentTemplates(currentRepository_).contains(nodeTypeName)) {
-        isDocumentTemplate_ = true;
-      } else {
-        isDocumentTemplate_ = false;
-      }
+      isDocumentTemplate_ = templateService.getDocumentTemplates(currentRepository_).contains(nodeTypeName);
       String template = templateService.getTemplatePath(node,false) ;
       templateService.removeCacheTemplate(uiExplorer.getJCRTemplateResourceResolver().createResourceId(template));
       if(template != null) return template ;
     } catch(AccessDeniedException ace) {
       try {
-        uiExplorer.setSelectNode(uiExplorer.getRootPath()) ;
+        uiExplorer.setSelectRootNode() ;
         Object[] args = { uiExplorer.getCurrentNode().getName() } ;
         throw new MessageException(new ApplicationMessage("UIDocumentInfo.msg.access-denied", args, 
             ApplicationMessage.WARNING)) ;

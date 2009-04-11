@@ -103,7 +103,7 @@ public class UIJCRExplorer extends UIContainer {
   private String currentRootPath_ ;
   private String currentPath_ ;
   private String currentStatePath_ ;
-  private String lastWorkspaceName_ ;
+  private String currentStateWorkspaceName_ ;  private String lastWorkspaceName_ ;
   private String currentDriveRootPath_ ;
   private String currentDriveWorkspaceName_ ;
   private String currentDriveRepositoryName_ ;
@@ -146,7 +146,9 @@ public class UIJCRExplorer extends UIContainer {
   /**
    * @return the root node itself if it is not a link otherwise the target node (= resolve the link)
    */
-  public Node getRootNode() throws Exception { return getNodeByPath(currentRootPath_, getSession()) ; }
+  public Node getRootNode() throws Exception {     
+    return getNodeByPath(currentRootPath_, getSession()) ; 
+  }
 
   /**
    * @return the root path
@@ -169,12 +171,12 @@ public class UIJCRExplorer extends UIContainer {
   }
   
   /**
-   * @return the current path
+   * @return the virtual current path
    */
   public String getCurrentPath() { return currentPath_ ; }
   
   /**
-   * Sets the current path
+   * Sets the virtual current path
    */
   public void setCurrentPath(String currentPath) { currentPath_ = currentPath ; }
   
@@ -218,10 +220,7 @@ public class UIJCRExplorer extends UIContainer {
    * Tells to go back to the given location 
    */
   public void setBackNodePath(String previousWorkspaceName, String previousPath) throws Exception {
-    setTargetWorkspaceProperties(previousWorkspaceName);
-    if (previousPath != null) {
-      setCurrentPath(previousPath);    
-    }
+    setSelectNode(previousWorkspaceName, previousPath);
     refreshExplorer() ;
   }
   
@@ -272,10 +271,22 @@ public class UIJCRExplorer extends UIContainer {
     documentInfoTemplate_  = template ; 
   }
   
-  public String getCurrentStatePath() { return currentStatePath_;}; 
-  public void setCurrentStatePath(String currentStatePath) { currentStatePath_ =  currentStatePath ; }
+  public void setCurrentState() {
+    setCurrentState(currentDriveWorkspaceName_, currentPath_);
+  }
+  
+  public void setCurrentState(String currentStateWorkspaceName, String currentStatePath) {
+    currentStateWorkspaceName_ = currentStateWorkspaceName;
+    currentStatePath_ =  currentStatePath ; 
+  }
+
+  public String getCurrentStatePath() { return currentStatePath_;};
+  public void setCurrentStatePath(String currentStatePath) { 
+    setCurrentState(currentDriveWorkspaceName_, currentStatePath);
+  }
+  
   public Node getCurrentStateNode() throws Exception { 
-    return getNodeByPath(currentStatePath_, getSession()) ; 
+    return getNodeByPath(currentStatePath_, getSessionProvider().getSession(currentStateWorkspaceName_, getRepository())) ; 
   }
 
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
@@ -302,7 +313,9 @@ public class UIJCRExplorer extends UIContainer {
    */
   public void setWorkspaceName(String workspaceName) { 
     currentDriveWorkspaceName_ = workspaceName ; 
-    setLastWorkspace(workspaceName);
+    if (lastWorkspaceName_ == null) {
+      setLastWorkspace(workspaceName);
+    }
   }
   
   private void setLastWorkspace(String lastWorkspaceName) {
@@ -527,6 +540,8 @@ public class UIJCRExplorer extends UIContainer {
   }
 
   public void record(String str, String ws) {
+    //Uncomment this line if you have problem with the history 
+    //LOG.info("record(" + str + ", " + ws + ")", new Exception());
     nodesHistory_.add(str);
     wsHistory_.add(ws);
     addressPath_.put(str, new HistoryEntry(ws, str));
@@ -545,6 +560,10 @@ public class UIJCRExplorer extends UIContainer {
     String lastWorkspaceName = setTargetWorkspaceProperties(workspaceName);
     setSelectNode(uri);
     setLastWorkspace(lastWorkspaceName);
+  }
+
+  public void setSelectRootNode() throws Exception {
+    setSelectNode(getCurrentDriveWorkspace(), getRootPath());
   }
   
   public void setSelectNode(String uri) throws Exception {  
@@ -690,7 +709,13 @@ public class UIJCRExplorer extends UIContainer {
         JCRExceptionManager.process(uiApp, e);
         WebuiRequestContext context = WebuiRequestContext.getCurrentInstance() ;
         context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        LOG.warn("The node cannot be found at " + nodePath);        
+        String workspace = null;
+        try {
+          workspace = session.getWorkspace().getName();
+        } catch (Exception e2) {
+          // do nothing
+        }
+        LOG.warn("The node cannot be found at " + nodePath + (workspace == null ? "" : " into the workspace " + workspace));        
       }
       if (nodePath.equals(currentPath_) && !nodePath.equals(currentRootPath_)) {
         setCurrentPath(LinkUtils.getParentPath(currentPath_));

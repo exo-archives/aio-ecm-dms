@@ -301,7 +301,7 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.setRepositoryName(uiDrive.repoName_);
       uiJCRExplorer.setWorkspaceName(drive.getWorkspace());
       uiJCRExplorer.setRootPath(homePath);
-      uiJCRExplorer.setSelectNode(homePath);
+      uiJCRExplorer.setSelectNode(drive.getWorkspace(), homePath);
       uiJCRExplorer.refreshExplorer();      
       UIControl uiControl = uiJCRExplorer.getChild(UIControl.class);
       UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);

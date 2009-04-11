@@ -102,7 +102,7 @@ public class UISideBar extends UIContainer {
       UISideBar uiSideBar = event.getSource() ;
       UIJCRExplorer uiExplorer = uiSideBar.getAncestorOfType(UIJCRExplorer.class) ;
       uiSideBar.currentComp = "TagExplorer" ;
-      uiExplorer.setCurrentStatePath(uiExplorer.getCurrentNode().getPath()) ;
+      uiExplorer.setCurrentState() ;
       uiSideBar.setRenderedChild(UITagExplorer.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar.getParent()) ;
     }

@@ -276,8 +276,8 @@ public class UIActionBar extends UIForm {
     return templates;
   }
 
-  private boolean isRootNode(Node node) throws Exception {
-    return getAncestorOfType(UIJCRExplorer.class).getRootPath().equals(node.getPath());
+  private boolean isRootNode(UIJCRExplorer uiExplorer, Node node) throws Exception {
+    return uiExplorer.getRootNode().equals(node);
   }
 
   static public class AddFolderActionListener extends EventListener<UIActionBar> {
@@ -596,15 +596,16 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar= event.getSource();
       UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
+      Node currentNode = uiJCRExplorer.getCurrentNode();
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
-      if(!uiJCRExplorer.isReferenceableNode(uiJCRExplorer.getCurrentNode())) {
-        Object[] args = {uiJCRExplorer.getCurrentNode().getPath()};
+      if(!uiJCRExplorer.isReferenceableNode(currentNode)) {
+        Object[] args = {currentNode.getPath()};
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.is-not-referenable", args,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if(uiActionBar.isRootNode(uiJCRExplorer.getCurrentNode())) {
+      if(uiActionBar.isRootNode(uiJCRExplorer, currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -639,14 +640,6 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource();
       UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       Node node = uiJCRExplorer.getCurrentNode();
-      /*
-      if(uiActionBar.isRootNode(node)) {
-        UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-       */
       UIPropertiesManager uiPropertiesManager = 
         uiJCRExplorer.createUIComponent(UIPropertiesManager.class, null, null);
       UIPropertyForm uiForm = uiPropertiesManager.getChild(UIPropertyForm.class);
@@ -668,7 +661,7 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource();
       UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       Node currentNode = uiJCRExplorer.getCurrentNode();
-      if(uiActionBar.isRootNode(currentNode)) {
+      if(uiActionBar.isRootNode(uiJCRExplorer, currentNode)) {
         UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -710,7 +703,7 @@ public class UIActionBar extends UIForm {
       Node currentNode = uiExplorer.getCurrentNode();
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       uiExplorer.setIsHidePopup(false);
-      if(currentNode.getPath().equals(uiExplorer.getRootPath())) {
+      if(uiActionBar.isRootNode(uiExplorer, currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-version-rootnode", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -766,7 +759,7 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }      
-      if (currentNode.getPath().equals(uiExplorer.getRootPath())) {
+      if (uiActionBar.isRootNode(uiExplorer, currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-enable-publication-rootnode",
             null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -852,7 +845,7 @@ public class UIActionBar extends UIForm {
       NodeHierarchyCreator nodeHierarchyCreator = uiActionBar.getApplicationComponent(NodeHierarchyCreator.class);
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(uiActionBar.isRootNode(currentNode)) {
+      if(uiActionBar.isRootNode(uiExplorer, currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -905,7 +898,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(uiActionBar.isRootNode(currentNode)) {
+      if(uiActionBar.isRootNode(uiExplorer, currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -1192,7 +1185,7 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource();
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       Node selectedNode = uiExplorer.getRealCurrentNode();
-      if(uiExplorer.getRootPath().equals(selectedNode.getPath())) {
+      if(uiActionBar.isRootNode(uiExplorer, selectedNode)) {
         UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null, 
             ApplicationMessage.WARNING));
@@ -1213,7 +1206,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       Node selectedNode = uiExplorer.getRealCurrentNode();
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
-      if(uiExplorer.getRootPath().equals(selectedNode.getPath())) {
+      if(uiActionBar.isRootNode(uiExplorer, selectedNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());

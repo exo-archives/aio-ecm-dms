@@ -215,7 +215,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
         if(PermissionUtil.canChangePermission(node)) node.setPermission(userOrGroup, permsArray);
         uiParent.getChild(UIPermissionInfo.class).updateGrid(1);
         node.save();
-        if (uiExplorer.getRootPath().equals(node.getPath())) {
+        if (uiExplorer.getRootNode().equals(node)) {
           if (!PermissionUtil.canRead(currentNode)) {
             uiExplorer.setRenderSibbling(UIDrivesBrowserContainer.class);
             return;
