@@ -149,6 +149,15 @@
 		}
 	};
 	
+	ECMUtils.prototype.isEventTarget = function(element, e) {
+		if (window.event) e = window.event; 
+		var srcEl = e.srcElement? e.srcElement : e.target; 
+		if (element == srcEl) {
+			return true;
+		}
+		return false;
+	};	
+	
 	ECMUtils.prototype.collapseExpand = function(element) {
 		var node = element.parentNode ;
 		var subGroup = DOM.findFirstChildByClass(node, "div", "NodeGroup") ;
