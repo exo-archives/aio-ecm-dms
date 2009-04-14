@@ -76,7 +76,7 @@ public class UIActionTypeForm extends UIForm {
 
   public void setDefaultActionType() throws Exception {
     if (defaultActionType_ == null) {
-      defaultActionType_ = "exo:sendMailAction";
+      defaultActionType_ = "exo:taxonomyAction";
       getUIFormSelectBox(ACTION_TYPE).setValue(defaultActionType_);
     }
   }
@@ -111,7 +111,7 @@ public class UIActionTypeForm extends UIForm {
           uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.access-denied", arg,
               ApplicationMessage.WARNING));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          actionType = "exo:sendMailAction";
+          actionType = "exo:taxonomyAction";
           uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType);
         }
       } catch (PathNotFoundException path) {
@@ -119,7 +119,7 @@ public class UIActionTypeForm extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.not-support", arg,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        actionType = "exo:sendMailAction";
+        actionType = "exo:taxonomyAction";
         uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType);
       }
       uiActionForm.createNewAction(null, actionType, true);

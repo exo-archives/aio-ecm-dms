@@ -91,7 +91,7 @@ public class UITaxonomyTreeBrowser extends UIContainer {
     }
     List<Node> sibblingList = new ArrayList<Node>();
     List<Node> childrenList = new ArrayList<Node>();
-    if(nodeSelected.getPath().equals(uiManager.getTaxonomyNode().getPath())) {
+    if(nodeSelected.getPath().equals(uiManager.getTaxonomyTreeNode().getPath())) {
       sibbling = nodeSelected.getNodes();
     }
     while(sibbling.hasNext()) {
@@ -101,7 +101,7 @@ public class UITaxonomyTreeBrowser extends UIContainer {
       }
     }    
     if(nodeSelected.getPath().equals(rootPath_) || rootNode_.getParent().getPath().equals(currentNode_.getPath())) {
-      taxonomyList.add(uiManager.getTaxonomyNode());
+      taxonomyList.add(uiManager.getTaxonomyTreeNode());
       children = taxonomyList.iterator();
     }
     
@@ -142,7 +142,7 @@ public class UITaxonomyTreeBrowser extends UIContainer {
       nodes.add(nodeIter.nextNode());
     }
     if(nodeSelected.getPath().equals(rootPath_)) {
-      rootTaxonomyList.add(uiTaxonomyManager.getTaxonomyNode());
+      rootTaxonomyList.add(uiTaxonomyManager.getTaxonomyTreeNode());
       nodes = rootTaxonomyList;
     }
     UITaxonomyTreeCreateChild uiManager = getParent();

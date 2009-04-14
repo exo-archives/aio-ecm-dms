@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
@@ -32,15 +31,14 @@ import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionTaxonom
 import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionTypeForm;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
+import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyAlreadyExistsException;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ExtendedNode;
-import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -51,7 +49,6 @@ import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 
@@ -65,7 +62,6 @@ import org.exoplatform.webui.form.UIFormStringInput;
 @ComponentConfig(
     template =  "app:/groovy/webui/component/admin/taxonomy/UITaxonomyTreeWizard.gtmpl",
     events = {
-      @EventConfig(listeners = UITaxonomyTreeContainer.SaveActionListener.class),
       @EventConfig(listeners = UITaxonomyTreeContainer.RefreshActionListener.class),
       @EventConfig(listeners = UITaxonomyTreeContainer.CloseActionListener.class),
       @EventConfig(listeners = UITaxonomyTreeContainer.ViewStep1ActionListener.class),
@@ -76,27 +72,24 @@ import org.exoplatform.webui.form.UIFormStringInput;
 
 public class UITaxonomyTreeContainer extends UIContainer implements UISelectable {
 
-  private boolean isAddNew_ = true;
-  
+  private boolean            isAddNew_        = true;
+
   private int                wizardMaxStep_   = 3;
 
   private int                selectedStep_    = 1;
 
   private int                currentStep_     = 0;
   
+  private TaxonomyTreeData   taxonomyTreeData;
   
   public static final String POPUP_PERMISSION = "PopupTaxonomyTreePermission";
+  public static final String POPUP_TAXONOMYHOMEPATH = "PopupTaxonomyJCRBrowser";
 
   private String[]           actions_         = { "Close"};
   
   public UITaxonomyTreeContainer() throws Exception {
-    UITaxonomyTreeMainForm uiTaxonomyTreeMain = addChild(UITaxonomyTreeMainForm.class, null, "TaxonomyTreeMain");
-    UIFormSelectBox selectBox = uiTaxonomyTreeMain.findComponentById(UITaxonomyTreeInputSet.FIELD_WORKSPACE);
-    selectBox.setOnChange("Change");
+    addChild(UITaxonomyTreeMainForm.class, null, "TaxonomyTreeMain");
     addChild(UIActionTaxonomyManager.class, null, null).setRendered(false);
-    if (!isAddNew_) {
-      addChild(UITaxonomyTreeCreateChild.class, null, null).setRendered(false);
-    }
   }
   
   public String[] getActions() {return actions_ ;}
@@ -139,10 +132,18 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
   }
   
   public void refresh() throws Exception {
+    TaxonomyTreeData taxoTreeData = new TaxonomyTreeData();
+    taxoTreeData.setRepository(getRepository());
+    setTaxonomyTreeData(taxoTreeData);
     UIActionTaxonomyManager uiActionTaxonomyManager = getChild(UIActionTaxonomyManager.class);
     uiActionTaxonomyManager.getChild(UIActionTypeForm.class).update();
     if (isAddNew_) {
       findFirstComponentOfType(UITaxonomyTreeMainForm.class).update(null);
+    }
+    UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = getChild(UITaxonomyTreeCreateChild.class);
+    if (uiTaxonomyTreeCreateChild != null) {
+      UIFormSelectBox uiSelectBox = findComponentById(UITaxonomyTreeMainForm.FIELD_WORKSPACE);
+      uiTaxonomyTreeCreateChild.setWorkspace(uiSelectBox.getValue().toString());
     }
   }
   
@@ -189,7 +190,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     taxonomyService_.addTaxonomyTree(taxonomyTreeNode);
   }
   
-  public static class SaveActionListener extends EventListener<UITaxonomyTreeContainer> {
+ /* public static class SaveActionListener extends EventListener<UITaxonomyTreeContainer> {
     public void execute(Event<UITaxonomyTreeContainer> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource();
       UITaxonomyTreeMainForm  uiTaxonomyTreeMain = uiTaxonomyTreeContainer.getChildById("TaxonomyTreeMain");
@@ -239,7 +240,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
       uiTaxonomyManagerTrees.update();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
-  }
+  }*/
   
   public static class RefreshActionListener extends EventListener<UITaxonomyTreeContainer> {
     public void execute(Event<UITaxonomyTreeContainer> event) throws Exception {
@@ -255,33 +256,13 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
       uiTaxonomyManagerTrees.removeChildById(UITaxonomyTreeList.ST_ADD);
       uiTaxonomyManagerTrees.removeChildById(UITaxonomyTreeList.ST_EDIT);
+      uiTaxonomyManagerTrees.update();
       uiPopup.setRendered(false);
       uiPopup.setShow(false);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
   }
   
-  public static class AddPathActionListener extends EventListener<UITaxonomyTreeContainer> {
-    public void execute(Event<UITaxonomyTreeContainer> event) throws Exception {
-      UITaxonomyTreeContainer uiTaxonomyTreeForm = event.getSource();
-      UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeForm.getAncestorOfType(UITaxonomyManagerTrees.class);
-      UITaxonomyTreeInputSet taxonomyTreeInputSet = uiTaxonomyTreeForm.getChild(UITaxonomyTreeInputSet.class);
-      String workspace = 
-        taxonomyTreeInputSet.getUIFormSelectBox(UITaxonomyTreeInputSet.FIELD_WORKSPACE).getValue();
-      uiTaxonomyManagerTrees.initPopupJCRBrowser(workspace, true);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
-    }
-  }
-  
-  public static class AddPermissionActionListener extends EventListener<UITaxonomyTreeContainer> {
-    public void execute(Event<UITaxonomyTreeContainer> event) throws Exception {
-      UITaxonomyTreeContainer uiTaxonomyTreeForm = event.getSource();
-      UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeForm.getAncestorOfType(UITaxonomyManagerTrees.class);
-      String membership = uiTaxonomyTreeForm.getFormInputById(UITaxonomyTreeInputSet.FIELD_PERMISSION).getValue();
-      uiTaxonomyManagerTrees.initPopupPermission(membership);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
-    }
-  }
   
   public static class ChangeActionListener extends EventListener<UITaxonomyTreeContainer> {
     public void execute(Event<UITaxonomyTreeContainer> event) throws Exception {
@@ -289,8 +270,6 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeForm.getAncestorOfType(UITaxonomyManagerTrees.class);
       String treeName = uiTaxonomyTreeForm.getFormInputById(UIDriveInputSet.FIELD_NAME).getValue();
       String repository = uiTaxonomyTreeForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
-      String selectedWorkspace = uiTaxonomyTreeForm.getFormInputById(UITaxonomyTreeInputSet.FIELD_WORKSPACE).getValue();
-      UITaxonomyTreeInputSet uiTreeInputSet = uiTaxonomyTreeForm.getChild(UITaxonomyTreeInputSet.class);
       RepositoryService repositoryService = 
         uiTaxonomyTreeForm.getApplicationComponent(RepositoryService.class);
       List<WorkspaceEntry> wsEntries = 
@@ -305,7 +284,6 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
   public static class ViewStep1ActionListener extends EventListener<UITaxonomyTreeContainer> {
     public void execute(Event<UITaxonomyTreeContainer> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource();
-      //uiTaxonomyTreeContainer.setRenderedChild(UITaxonomyTreeMainForm.class);
       uiTaxonomyTreeContainer.viewStep(1);
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
@@ -346,14 +324,22 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
   public static class ViewStep3ActionListener extends EventListener<UITaxonomyTreeContainer> {
     public void execute(Event<UITaxonomyTreeContainer> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource();
-      String uri = event.getRequestContext().getRequestParameter(OBJECTID);
+      UITaxonomyTreeCreateChild uiTaxonomyCreateChild = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeCreateChild.class);
+      if (uiTaxonomyCreateChild == null) uiTaxonomyTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
       uiTaxonomyTreeContainer.viewStep(3);
       UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeCreateChild.class);
       UIFormSelectBox uiSelectBox = uiTaxonomyTreeContainer.findComponentById(UITaxonomyTreeMainForm.FIELD_WORKSPACE);
       uiTaxonomyTreeCreateChild.setWorkspace(uiSelectBox.getValue().toString());
-      System.out.println("\n\n uri = " + uri);
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
+  }
+
+  public TaxonomyTreeData getTaxonomyTreeData() {
+    return taxonomyTreeData;
+  }
+
+  public void setTaxonomyTreeData(TaxonomyTreeData taxonomyTreeData) {
+    this.taxonomyTreeData = taxonomyTreeData;
   }
 }

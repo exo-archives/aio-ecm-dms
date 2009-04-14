@@ -21,8 +21,8 @@
 			  <td class="FieldLabel"><%=_ctx.appRes("ScriptAction.dialog.label.name")%></td>
 			  <td class="FieldComponent">
 				  <% 
-					String[] fieldName = ["jcrPath=/node/exo:name", "validate=empty"];
-					uicomponent.addTextField("actionName", fieldName);
+						String[] fieldName = ["jcrPath=/node/exo:name", "validate=empty"];
+						uicomponent.addTextField("actionName", fieldName);
 				  %>
 				</td>
 			</tr>		          					
@@ -30,8 +30,8 @@
 			  <td class="FieldLabel"><%=_ctx.appRes("ScriptAction.dialog.label.lifecycle")%></td>
 			  <td class="FieldComponent">
 				  <% 
-					String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=add"] ;
-					uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
+						String[] fieldLifecycle = ["jcrPath=/node/exo:lifecyclePhase", "options=add"] ;
+						uicomponent.addSelectBoxField("lifecycle", fieldLifecycle) 
 				  %>
 				</td>
 			</tr>
@@ -39,8 +39,8 @@
 			  <td class="FieldLabel"><%=_ctx.appRes("ScriptAction.dialog.label.homePath")%></td>
 			  <td class="FieldComponent">
 				  <% 
-					String[] fieldHomePath = ["jcrPath=/node/exo:storeHomePath", "validate=empty"];
-					uicomponent.addTextField("homePath", fieldHomePath);
+						String[] fieldHomePath = ["jcrPath=/node/exo:storeHomePath", "validate=empty", "editable=false"];
+						uicomponent.addTextField("homePath", fieldHomePath);
 				  %>
 				</td>
 			</tr>			

@@ -605,6 +605,7 @@ public class UIDialogForm extends UIForm {
       uiInput = formTextField.createUIFormInput();
       addUIFormInput(uiInput);      
     }
+    uiInput.setEditable(formTextField.isEditable());
     if(uiInput.getValue() == null) uiInput.setValue(formTextField.getDefaultValue());       
     else uiInput.setEditable(true);
     if(getNode() != null && !isShowingComponent && !isRemovePreference) {
@@ -828,7 +829,7 @@ public class UIDialogForm extends UIForm {
   }
 
   public void renderField(String name) throws Exception {
-    UIComponent uiInput = findComponentById(name);;
+    UIComponent uiInput = findComponentById(name);
     WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
     Writer w = context.getWriter();
     uiInput.processRender(context);

@@ -25,10 +25,13 @@ import javax.jcr.RepositoryException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponentDecorator;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
@@ -102,10 +105,12 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
     try {
       if (node != null) {
         taxonomyTreeData = new TaxonomyTreeData();
-        taxonomyTreeData.setName(node.getName());
-        taxonomyTreeData.setHomePath(node.getPath());
-        taxonomyTreeData.setWorkspace(node.getSession().getWorkspace().getName());
-        taxonomyTreeData.setPermissions(node.getProperty(ACCESS_PERMISSION).toString());
+        taxonomyTreeData.setTaxoTreeName(node.getName());
+        taxonomyTreeData.setTaxoTreeHomePath(node.getPath());
+        taxonomyTreeData.setTaxoTreeWorkspace(node.getSession().getWorkspace().getName());
+        LinkManager linkManager = getApplicationComponent(LinkManager.class);
+        Node realTreeNode = linkManager.getTarget(node);
+        taxonomyTreeData.setTaxoTreePermissions(realTreeNode.getProperty(ACCESS_PERMISSION).toString());
       }
     } catch (RepositoryException e) {
       // TODO: handle exception
@@ -115,7 +120,29 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
   
   public static class DeleteActionListener extends EventListener<UITaxonomyTreeList> {
     public void execute(Event<UITaxonomyTreeList> event) throws Exception {
-      System.out.println("Delete taxonomy tree");
+      UITaxonomyTreeList uiTaxonomyTreeList = event.getSource();
+      UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeList.getParent();
+      String taxoTreeName = event.getRequestContext().getRequestParameter(OBJECTID);
+      TaxonomyService taxonomyService = uiTaxonomyTreeList.getApplicationComponent(TaxonomyService.class);
+      LinkManager linkManager = uiTaxonomyTreeList.getApplicationComponent(LinkManager.class);
+      UIApplication uiApp = uiTaxonomyTreeList.getAncestorOfType(UIApplication.class);
+      String repository = uiTaxonomyTreeList.getAncestorOfType(UIECMAdminPortlet.class).getRepoName();
+      try {
+        Node taxoTreeNode = taxonomyService.getTaxonomyTree(repository, taxoTreeName, true);
+        Node taxoTreeTargetNode = linkManager.getTarget(taxoTreeNode, true);
+        if (taxoTreeTargetNode != null) {
+          Node parentNode = taxoTreeTargetNode.getParent();
+          taxoTreeTargetNode.remove();
+          parentNode.save();
+        }
+        taxonomyService.removeTaxonomyTree(taxoTreeName);
+      } catch(RepositoryException e) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeList.msg.remove-exception",
+            null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
   }
 
@@ -135,8 +162,11 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = event.getSource().getParent();
       uiTaxonomyManagerTrees.removeChildById(UITaxonomyTreeList.ST_ADD);
       uiTaxonomyManagerTrees.initPopup(UITaxonomyTreeList.ST_EDIT);
-      UITaxonomyTreeContainer uiForm = uiTaxonomyManagerTrees.findFirstComponentOfType(UITaxonomyTreeContainer.class);
-      uiForm.refresh();
+      UITaxonomyTreeContainer uiTaxoTreeContainer = uiTaxonomyManagerTrees.findFirstComponentOfType(UITaxonomyTreeContainer.class);
+      String taxoTreeName = event.getRequestContext().getRequestParameter(OBJECTID);
+      uiTaxoTreeContainer.refresh();
+      TaxonomyTreeData taxoTreeData = uiTaxoTreeContainer.getTaxonomyTreeData();
+      taxoTreeData.setTaxoTreeName(taxoTreeName);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
   }

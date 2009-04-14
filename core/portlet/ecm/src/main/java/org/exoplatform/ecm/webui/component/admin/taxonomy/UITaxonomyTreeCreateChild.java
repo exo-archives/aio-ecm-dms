@@ -25,6 +25,11 @@ import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.categories.impl.TaxonomyConfig.Taxonomy;
+import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
+import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -60,9 +65,6 @@ import org.exoplatform.webui.event.EventListener;
 
 public class UITaxonomyTreeCreateChild extends UIContainer {
   
-  static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath";
-  static private String EXO_ECM_ALIAS = "exoECMSystemPath";
-  
   private String workspace;
   
   public static final String PERMISSION_ID_POPUP = "TaxonomyTreeViewPermissionPopup";
@@ -91,13 +93,15 @@ public class UITaxonomyTreeCreateChild extends UIContainer {
   }
   
   public Node getRootNode() throws Exception {
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    return (Node) getSession().getItem(nodeHierarchyCreator.getJcrPath(EXO_ECM_ALIAS));
+    TaxonomyTreeData taxoTreeData = getAncestorOfType(UITaxonomyTreeContainer.class).getTaxonomyTreeData();
+    return (Node) getSession().getItem(taxoTreeData.getTaxoTreeHomePath());
   }
   
-  public Node getTaxonomyNode() throws Exception {
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    return (Node) getSession().getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS));
+  public Node getTaxonomyTreeNode() throws Exception {
+    UITaxonomyTreeContainer uiTaxonomyTreeContainer = getAncestorOfType(UITaxonomyTreeContainer.class);
+    TaxonomyTreeData taxoTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
+    TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
+    return taxonomyService.getTaxonomyTree(getRepository(), taxoTreeData.getTaxoTreeName(), true);
   }
   
   public void setSelectedPath(String selectedPath) {
@@ -112,11 +116,11 @@ public class UITaxonomyTreeCreateChild extends UIContainer {
     return (Node) getSession().getItem(path) ;
   }
   
-  protected String getRepository() throws Exception {
+  String getRepository() throws Exception {
     return getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
   }
   
-  public Session getSession() throws Exception {
+  Session getSession() throws Exception {
     String repositoryName = getRepository();
     return SessionProviderFactory.createSystemProvider().getSession(workspace,
         getRepository(repositoryName));
@@ -131,7 +135,7 @@ public class UITaxonomyTreeCreateChild extends UIContainer {
     removeChildById("TaxonomyPopupCreateChild");
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "TaxonomyPopupCreateChild");
     uiPopup.setWindowSize(600, 250);
-    UITaxonomyForm uiTaxoForm = createUIComponent(UITaxonomyForm.class, null, null);
+    UITaxonomyTreeCreateChildForm uiTaxoForm = createUIComponent(UITaxonomyTreeCreateChildForm.class, null, null);
     uiTaxoForm.setParent(path);
     uiPopup.setUIComponent(uiTaxoForm);
     uiPopup.setRendered(true);
@@ -147,7 +151,7 @@ public class UITaxonomyTreeCreateChild extends UIContainer {
     UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class);
     List<LocalPath> listLocalPath = new ArrayList<LocalPath>();
     String path = currentNode.getPath().trim();
-    String taxonomyPath = getTaxonomyNode().getPath();
+    String taxonomyPath = getTaxonomyTreeNode().getPath();
     if (path.startsWith(taxonomyPath)) {
       String subTaxonomy = path.substring(taxonomyPath.length(), path.length());
       String[] arrayPath = subTaxonomy.split("/");
@@ -165,7 +169,7 @@ public class UITaxonomyTreeCreateChild extends UIContainer {
   }
   
   public void changeGroup(String groupId, Object context) throws Exception {    
-    String stringPath = getTaxonomyNode().getPath() + "/";    
+    String stringPath = getTaxonomyTreeNode().getPath() + "/";    
     UIBreadcumbs uiBreadcumb = getChild(UIBreadcumbs.class);
     if (groupId == null) groupId = "";
     List<LocalPath> listLocalPath = uiBreadcumb.getPath();

@@ -26,34 +26,18 @@ import java.util.List;
  */
 public class TaxonomyTreeData implements Comparable<TaxonomyTreeData> {
 
-  private String  name;
+  private String taxoTreeName;
 
-  private String  repository;
+  private String repository;
 
-  private String  workspace;
+  private String taxoTreeWorkspace;
 
-  private String  permissions;
+  private String taxoTreePermissions;
 
-  private String  homePath;
+  private String taxoTreeHomePath;
 
   public TaxonomyTreeData() {
     
-  }
-
-  /**
-   * @return the name of drive
-   */
-  public String getName() {
-    return name;
-  }
-
-  /**
-   * Register drive name
-   * 
-   * @param name the name of DriveData
-   */
-  public void setName(String name) {
-    this.name = name;
   }
 
   /**
@@ -73,58 +57,10 @@ public class TaxonomyTreeData implements Comparable<TaxonomyTreeData> {
   }
 
   /**
-   * @return the name of workspace
-   */
-  public String getWorkspace() {
-    return workspace;
-  }
-
-  /**
-   * Register workspace to drive
-   * 
-   * @param ws the workspace name
-   */
-  public void setWorkspace(String ws) {
-    workspace = ws;
-  }
-
-  /**
    * @return the permissions of drive
    */
   public String getPermissions() {
-    return this.permissions;
-  }
-
-  /**
-   * Register permission to drive
-   * 
-   * @param permissions
-   */
-  public void setPermissions(String permissions) {
-    this.permissions = permissions;
-  }
-
-  /**
-   * @return the home path of drive
-   */
-  public String getHomePath() {
-    return homePath;
-  }
-
-  /**
-   * Register home path to drive
-   * 
-   * @param path the home path of drive
-   */
-  public void setHomePath(String path) {
-    homePath = path;
-  }
-
-  /**
-   * @return the array of permission
-   */
-  public String[] getAllPermissions() {
-    return permissions.split(",");
+    return this.taxoTreePermissions;
   }
 
   /**
@@ -151,6 +87,65 @@ public class TaxonomyTreeData implements Comparable<TaxonomyTreeData> {
   }
 
   public int compareTo(TaxonomyTreeData arg) {
-    return name.compareToIgnoreCase(arg.getName());
+    return taxoTreeName.compareToIgnoreCase(arg.getTaxoTreeName());
+  }
+
+
+  /**
+   * Get taxonomy tree home path
+   * @return taxoTreeHomePath
+   */
+  public String getTaxoTreeHomePath() {
+    return taxoTreeHomePath;
+  }
+
+  /**
+   * Register home path to taxonomy Tree
+   * @param path the home path of drive
+   */
+  public void setTaxoTreeHomePath(String taxoTreeHomePath) {
+    this.taxoTreeHomePath = taxoTreeHomePath;
+  }
+  
+  /**
+   * get taxonomy tree name
+   */
+  public String getTaxoTreeName() {
+    return taxoTreeName;
+  }
+  
+  /**
+   * Register taxonomy tree name
+   * @param name the name of taxonomy tree
+   */
+  public void setTaxoTreeName(String taxoTreeName) {
+    this.taxoTreeName = taxoTreeName;
+  }
+
+  public String getTaxoTreePermissions() {
+    return taxoTreePermissions;
+  }
+
+  /**
+   * Register permission to taxonomy tree
+   * @param taxoTreePermissions
+   */
+  public void setTaxoTreePermissions(String taxoTreePermissions) {
+    this.taxoTreePermissions = taxoTreePermissions;
+  }
+
+  /**
+   * @return the name of workspace
+   */
+  public String getTaxoTreeWorkspace() {
+    return taxoTreeWorkspace;
+  }
+
+  /**
+   * Register workspace to tree
+   * @param ws the workspace name
+   */
+  public void setTaxoTreeWorkspace(String taxoTreeWorkspace) {
+    this.taxoTreeWorkspace = taxoTreeWorkspace;
   }
 }

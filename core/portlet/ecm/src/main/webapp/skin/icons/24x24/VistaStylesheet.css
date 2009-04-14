@@ -332,6 +332,13 @@ a:hover .ShowHideBoxContainer {
   background: url('VistaSkin/ManageTaxonomyIcon.png') no-repeat;
 }
 
+.UITaxonomyManagerTreesIcon {
+  float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	width: 32px;	height: 28px;
+  background: url('VistaSkin/ManageTaxonomyIcon.png') no-repeat;
+}
+
 .UIMetadataManagerIcon {
   float: left; /* orientation=lt */
 	float: right; /* orientation=rt */

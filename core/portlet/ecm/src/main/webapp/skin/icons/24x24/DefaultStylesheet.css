@@ -311,6 +311,11 @@ a:hover .ShowHideBoxContainer {
   background: url('DefaultSkin/ManageTaxonomyIcon.gif') no-repeat;
 }
 
+.UITaxonomyManagerTreesIcon {
+	width: 24px;	height: 24px;
+  background: url('DefaultSkin/ManageTaxonomyIcon.gif') no-repeat;
+}
+
 .UIMetadataManagerIcon {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat;

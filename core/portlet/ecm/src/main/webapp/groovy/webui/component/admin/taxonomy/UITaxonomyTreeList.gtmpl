@@ -31,14 +31,14 @@
 	  	      even = !even;
 	      %>
 	          <tr class="$rowClass">
-	            <td><div class="Text" title="<%=taxonomyTree.getName().replace("|", " | ")%>"><%=taxonomyTree.getName().replace("|", " | ")%></div></td>
-	            <td><div class="Text" title="$taxonomyTree.workspace">$taxonomyTree.workspace</div></td>
-	            <td><div class="Text" title="<%=taxonomyTree.getHomePath().replace("/", " /")%></div>"><%=taxonomyTree.getHomePath().replace("/", " /")%></div></td>
-	            <td><div class="Text" title="$taxonomyTree.permissions">$taxonomyTree.permissions</div></td>
+	            <td><div class="Text" title="<%=taxonomyTree.getTaxoTreeName().replace("|", " | ")%>"><%=taxonomyTree.getTaxoTreeName().replace("|", " | ")%></div></td>
+	            <td><div class="Text" title="$taxonomyTree.taxoTreeWorkspace">$taxonomyTree.taxoTreeWorkspace</div></td>
+	            <td><div class="Text" title="<%=taxonomyTree.getTaxoTreeHomePath().replace("/", " /")%>"><%=taxonomyTree.getTaxoTreeHomePath().replace("/", " /")%></div></td>
+	            <td><div class="Text" title="$taxonomyTree.taxoTreePermissions">$taxonomyTree.taxoTreePermissions</div></td>
 		          <td>
 		          	<div class="ActionContainer">
-		              <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("EditTaxonomyTree", Utils.formatNodeName(taxonomyTree.getName()))%>" title="<%=_ctx.appRes("UITaxonomyTreeList.tooltip.EditTaxonomyTree")%>" alt="" class="Edit16x16Icon">
-		              <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("Delete", Utils.formatNodeName(taxonomyTree.getName()))%>" title="<%=_ctx.appRes("UITaxonomyTreeList.tooltip.Delete")%>" alt="" class="Delete16x16Icon">
+		              <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("EditTaxonomyTree", Utils.formatNodeName(taxonomyTree.getTaxoTreeName()))%>" title="<%=_ctx.appRes("UITaxonomyTreeList.tooltip.EditTaxonomyTree")%>" alt="" class="Edit16x16Icon">
+		              <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("Delete", Utils.formatNodeName(taxonomyTree.getTaxoTreeName()))%>" title="<%=_ctx.appRes("UITaxonomyTreeList.tooltip.Delete")%>" alt="" class="Delete16x16Icon">
 				        </div>
 		          </td>	                    
 	          </tr>

@@ -28,6 +28,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
@@ -67,19 +68,22 @@ public class UITaxonomyManagerTrees extends UIContainer {
   }
   
   public void initPopupPermission(String membership) throws Exception {
-    removeChildById(UITaxonomyTreeContainer.POPUP_PERMISSION) ;
-    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, UITaxonomyTreeContainer.POPUP_PERMISSION);
+    //removeChildById(UITaxonomyTreeContainer.POPUP_PERMISSION);
+    removePopup();
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null,
+        UITaxonomyTreeContainer.POPUP_PERMISSION);
     uiPopup.setWindowSize(560, 300);
-    UIPermissionSelector uiTaxonomyTreePermission = 
-      createUIComponent(UIPermissionSelector.class, null, null) ;
+    UIPermissionSelector uiTaxonomyTreePermission = createUIComponent(UIPermissionSelector.class,
+        null, null);
     uiTaxonomyTreePermission.setSelectedMembership(true);
-    if(membership != null && membership.indexOf(":/") > -1) {
-      String[] arrMember = membership.split(":/") ;
+    if (membership != null && membership.indexOf(":/") > -1) {
+      String[] arrMember = membership.split(":/");
       uiTaxonomyTreePermission.setCurrentPermission("/" + arrMember[1]);
     }
     uiPopup.setUIComponent(uiTaxonomyTreePermission);
     UITaxonomyTreeContainer uiTaxonomyTreeContainer = findFirstComponentOfType(UITaxonomyTreeContainer.class);
-    uiTaxonomyTreePermission.setSourceComponent(uiTaxonomyTreeContainer, new String[] {UITaxonomyTreeMainForm.FIELD_PERMISSION});
+    uiTaxonomyTreePermission.setSourceComponent(uiTaxonomyTreeContainer,
+        new String[] { UITaxonomyTreeMainForm.FIELD_PERMISSION });
     uiPopup.setShow(true);
   }
   
@@ -90,9 +94,10 @@ public class UITaxonomyManagerTrees extends UIContainer {
   }
   
   public void initPopupJCRBrowser(String workspace, boolean isDisable) throws Exception {
-    removeChildById("TaxonomyJCRBrowser");
+    //removeChildById(UITaxonomyTreeContainer.POPUP_TAXONOMYHOMEPATH);
+    removePopup();
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
-    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "TaxonomyJCRBrowser");
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, UITaxonomyTreeContainer.POPUP_TAXONOMYHOMEPATH);
     uiPopup.setWindowSize(610, 300);
     String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED, Utils.EXO_TAXANOMY};
     UIOneNodePathSelector uiOneNodePathSelector = createUIComponent(UIOneNodePathSelector.class, null, null);
@@ -111,7 +116,23 @@ public class UITaxonomyManagerTrees extends UIContainer {
     uiPopup.setUIComponent(uiOneNodePathSelector);
     UITaxonomyTreeContainer uiTaxonomyTreeContainer = findFirstComponentOfType(UITaxonomyTreeContainer.class);
     uiOneNodePathSelector.setSourceComponent(uiTaxonomyTreeContainer,
-        new String[] { UITaxonomyTreeInputSet.FIELD_HOMEPATH });
+        new String[] { UITaxonomyTreeMainForm.FIELD_HOMEPATH });
     uiPopup.setShow(true);
+  }
+  
+  public void initPopup(UIComponent uiComp) throws Exception {
+    //removeChildById("PopupComponent") ;
+    removePopup();
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "PopupComponent");
+    uiPopup.setUIComponent(uiComp);
+    uiPopup.setWindowSize(640, 300);
+    uiPopup.setShow(true);
+    uiPopup.setResizable(true);
+  }
+  
+  private void removePopup() {
+    removeChildById("PopupComponent");
+    removeChildById(UITaxonomyTreeContainer.POPUP_PERMISSION);
+    removeChildById(UITaxonomyTreeContainer.POPUP_TAXONOMYHOMEPATH);
   }
 }
