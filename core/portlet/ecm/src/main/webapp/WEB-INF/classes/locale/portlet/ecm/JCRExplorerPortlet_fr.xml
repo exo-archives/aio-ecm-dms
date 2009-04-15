@@ -2251,5 +2251,20 @@
   	<msg>
   		<AccessDeniedException>Access deny! You don't have read permission in this workspace</AccessDeniedException>
   	</msg>
+  	<label>
+      <taxonomyTree>Taxonomy Tree</taxonomyTree>
+    </label>
   </UIWorkspaceList>
+  
+  <UIPopupTaxonomy>
+    <title>
+			<UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+    </title>
+  </UIPopupTaxonomy>
+  
+  <UITreeTaxonomyList>
+  	<label>
+      <taxonomyTree>Taxonomy Tree</taxonomyTree>
+    </label>
+  </UITreeTaxonomyList>
 </bundle>

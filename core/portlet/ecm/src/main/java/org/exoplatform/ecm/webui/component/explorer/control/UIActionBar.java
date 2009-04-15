@@ -84,6 +84,7 @@ import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -879,13 +880,13 @@ public class UIActionBar extends UIForm {
       }
       uiExplorer.setIsHidePopup(true);
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null);
-      UIOneNodePathSelector uiNodePathSelector = uiManager.getChild(UIOneNodePathSelector.class);
-      uiNodePathSelector.setIsDisable(workspaceName, true);
-      uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
-          nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
-      uiNodePathSelector.init(uiExplorer.getSessionProvider());
+      UIOneTaxonomySelector uiOneTaxonomySelector = uiManager.getChild(UIOneTaxonomySelector.class);
+      uiOneTaxonomySelector.setIsDisable(workspaceName, true);
+      uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, 
+          nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_DEFINITION_PATH));
+      uiOneTaxonomySelector.init(uiExplorer.getSessionProvider());
       UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
-      uiNodePathSelector.setSourceComponent(uiCateAddedList, null);
+      uiOneTaxonomySelector.setSourceComponent(uiCateAddedList, null);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIPopupContainer.activate(uiManager, 630, 500);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);

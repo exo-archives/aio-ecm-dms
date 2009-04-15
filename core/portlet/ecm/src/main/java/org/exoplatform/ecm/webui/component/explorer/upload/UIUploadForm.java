@@ -27,6 +27,7 @@ import java.util.Map;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
@@ -39,9 +40,8 @@ import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
-import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.selector.UISelectable;
-import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -65,7 +65,9 @@ import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupWindow;
+import org.exoplatform.webui.core.UIBreadcumbs.LocalPath;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -152,7 +154,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   public String getPathTaxonomy() throws Exception {
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
     Session session = getAncestorOfType(UIJCRExplorer.class).getSession();
-    return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS))).getPath();
+    return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_DEFINITION_PATH))).getPath();
   }
   
   public void initFieldInput() throws Exception {
@@ -292,7 +294,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
           if(uiStringInput.getValue() != null) {
             String value = uiStringInput.getValue().trim();
             listTaxonomyNameNew.add(value);
-            listTaxonomyNew.add(uiForm.getPathTaxonomy() + "/" + value);
+            if (value.startsWith("/"))
+              listTaxonomyNew.add(uiForm.getPathTaxonomy() + value);
+            else
+              listTaxonomyNew.add(uiForm.getPathTaxonomy() + "/" + value);
           }
         }
         uiForm.setListTaxonomy(listTaxonomyNew);
@@ -525,14 +530,22 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
       
       UIPopupWindow uiPopupWindow = uiUploadManager.initPopupTaxonomy(POPUP_TAXONOMY);
-      UIOneNodePathSelector uiNodePathSelector = uiUploadManager.createUIComponent(UIOneNodePathSelector.class, null, null);
-      uiPopupWindow.setUIComponent(uiNodePathSelector);
-      uiNodePathSelector.setIsDisable(workspaceName, true);
-      uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
-          nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
-      uiNodePathSelector.init(uiExplorer.getSystemProvider());
+      UIOneTaxonomySelector uiOneTaxonomySelector = uiUploadManager.createUIComponent(UIOneTaxonomySelector.class, null, null);
+      uiPopupWindow.setUIComponent(uiOneTaxonomySelector);
+      uiOneTaxonomySelector.setIsDisable(workspaceName, false);
+      String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_DEFINITION_PATH);      
+      Session session = uiUploadForm.getAncestorOfType(UIJCRExplorer.class).getSession();
+      Node rootTree = (Node) session.getItem(rootTreePath);      
+      NodeIterator childrenIterator = rootTree.getNodes();
+      while (childrenIterator.hasNext()) {
+        Node childNode = childrenIterator.nextNode();
+        rootTreePath = childNode.getPath();
+        break;
+      }      
+      uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
+      uiOneTaxonomySelector.init(uiExplorer.getSystemProvider());
       String param = "returnField=" + FIELD_TAXONOMY ;
-      uiNodePathSelector.setSourceComponent(uiUploadForm, new String[]{param}) ;
+      uiOneTaxonomySelector.setSourceComponent(uiUploadForm, new String[]{param});
       uiPopupWindow.setRendered(true);
       uiPopupWindow.setShow(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadManager);
