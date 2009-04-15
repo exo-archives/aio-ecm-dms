@@ -70,6 +70,90 @@ public class ActionConfig {
     
   }
 
+  static public class TaxonomyAction {
+    private String name;
+    private String type;    
+    private String description;    
+    private String homePath;
+    private String targetWspace;
+    private String targetPath;
+    private String lifecyclePhase;
+    private String roles;
+    private List mixins = new ArrayList(10);
+    
+    public String getDescription() {
+      return description;
+    }
+    
+    public void setDescription(String description) {
+      this.description = description;
+    }
+    
+    public String getHomePath() {
+      return homePath;
+    }
+    
+    public void setHomePath(String homePath) {
+      this.homePath = homePath;
+    }
+    
+    public String getLifecyclePhase() {
+      return lifecyclePhase;
+    }
+    
+    public void setLifecyclePhase(String lifecyclePhase) {
+      this.lifecyclePhase = lifecyclePhase;
+    }
+    
+    public List getMixins() {
+      return mixins;
+    }
+    
+    public void setMixins(List mixins) {
+      this.mixins = mixins;
+    }
+    
+    public String getName() {
+      return name;
+    }
+    
+    public void setName(String name) {
+      this.name = name;
+    }
+    
+    public String getRoles() {
+      return roles;
+    }
+    
+    public void setRoles(String roles) {
+      this.roles = roles;
+    }
+    
+    public String getTargetPath() {
+      return targetPath;
+    }
+    
+    public void setTargetPath(String targetPath) {
+      this.targetPath = targetPath;
+    }
+    
+    public String getTargetWspace() {
+      return targetWspace;
+    }
+    
+    public void setTargetWspace(String targetWspace) {
+      this.targetWspace = targetWspace;
+    }
+    
+    public String getType() {
+      return type;
+    }
+    
+    public void setType(String type) {
+      this.type = type;
+    }
+  }
+  
   static public class Action {
     private String name;
     private String type;    

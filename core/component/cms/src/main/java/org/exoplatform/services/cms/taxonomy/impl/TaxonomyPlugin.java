@@ -17,22 +17,31 @@
 package org.exoplatform.services.cms.taxonomy.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
 
+import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.categories.impl.TaxonomyConfig;
-import org.exoplatform.services.cms.categories.impl.TaxonomyConfig.Taxonomy;
+import org.exoplatform.services.cms.actions.impl.ActionConfig;
+import org.exoplatform.services.cms.actions.impl.ActionConfig.TaxonomyAction;
 import org.exoplatform.services.cms.impl.Utils;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig.Permission;
+import org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig.Taxonomy;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.config.RepositoryEntry;
+import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
@@ -44,24 +53,34 @@ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
  * Mar 31, 2009  
  */
 public class TaxonomyPlugin extends BaseComponentPlugin {
-  private String workspace;
-  private String path;
-  private String name;
+  private String workspace = "";
+  private String path = "";
+  private String treeName = "";
   private List<Permission> permissions = new ArrayList<Permission>(4);
   
   private boolean autoCreateInNewRepository_ = true;
-  private RepositoryService repositoryService_;  
+  private RepositoryService repositoryService_;
+  private TaxonomyService taxonomyService_;
   private String baseTaxonomiesStorage_;  
   private InitParams params_;  
   
-  public TaxonomyPlugin(InitParams params, RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
+  public TaxonomyPlugin(InitParams params, RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator, TaxonomyService taxonomyService) throws Exception {
     repositoryService_ = repositoryService;
-    baseTaxonomiesStorage_ = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);    
+    baseTaxonomiesStorage_ = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
+    taxonomyService_ = taxonomyService;
     params_ = params;
-    ValueParam valueParam = params_.getValueParam("autoCreateInNewRepository");
-    if (valueParam !=null) {
-      autoCreateInNewRepository_ = Boolean.parseBoolean(valueParam.getValue());
-    }   
+    ValueParam autoCreated = params_.getValueParam("autoCreateInNewRepository");
+    ValueParam workspaceParam = params_.getValueParam("workspace");
+    ValueParam pathParam = params_.getValueParam("path");
+    ValueParam nameParam = params_.getValueParam("treeName");
+    if (autoCreated != null) autoCreateInNewRepository_ = Boolean.parseBoolean(autoCreated.getValue());
+    if (pathParam == null) path = baseTaxonomiesStorage_;
+    if (workspaceParam == null || workspaceParam.getValue().trim().length() == 0) {
+      path = baseTaxonomiesStorage_;
+    }
+    if (nameParam != null) {
+      treeName = nameParam.getValue();
+    }
   }
   
   public void init(String repository) throws Exception {
@@ -101,29 +120,140 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     this.workspace = workspace;
   }
   
-  private void importPredefineTaxonomies(String repository) throws Exception {    
-//    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
-//    String workspace = manageableRepository.getConfiguration().getSystemWorkspaceName();    
-//    Session session = manageableRepository.getSystemSession(workspace);    
-//    Node taxonomyHomeNode = (Node)session.getItem(baseTaxonomiesPath_);
-//    //TODO Need remove this code
-//    if(taxonomyHomeNode.hasProperty("exo:isImportedChildren"))  { 
-//      session.logout();
-//      return; 
-//    }
-//    taxonomyHomeNode.setProperty("exo:isImportedChildren",true);
-//    Iterator<ObjectParameter> it = params_.getObjectParamIterator();
-//    while(it.hasNext()) {
-//      TaxonomyConfig config = (TaxonomyConfig)it.next().getObject();
-//      for(Taxonomy taxonomy : config.getTaxonomies()) {
-//        Node taxonomyNode = Utils.makePath(taxonomyHomeNode, taxonomy.getPath(), "exo:taxonomy", getPermissions(taxonomy.getPermissions()));
-//        if(taxonomyNode.canAddMixin("mix:referenceable")) {
-//          taxonomyNode.addMixin("mix:referenceable");
-//        }
-//      }
-//    }
-//    taxonomyHomeNode.save();
-//    session.save();
-//    session.logout();
+  private void importPredefineTaxonomies(String repository) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
+//    String workspace = manageableRepository.getConfiguration().getSystemWorkspaceName();
+    if (getWorkspace() == null || getWorkspace().trim().length() == 0) {
+      setWorkspace(repositoryService_.getRepository(repository).getConfiguration().getSystemWorkspaceName());
+    }
+    Session session = manageableRepository.getSystemSession(getWorkspace());    
+    Node taxonomyStorageNode = (Node) session.getItem(path);
+    String nodePath = path + "/" + treeName;
+    Node taxonomyStorageNodeSystem = null;
+    if (taxonomyStorageNode.hasProperty("exo:isImportedChildren"))  { 
+      session.logout();
+      return; 
+    }
+    taxonomyStorageNode.setProperty("exo:isImportedChildren",true);
+    Iterator<ObjectParameter> it = params_.getObjectParamIterator();
+    while (it.hasNext()) {
+      ObjectParameter objectParam = it.next();
+      if (objectParam.getName().equals("permission.configuration")) {
+        TaxonomyConfig config = (TaxonomyConfig) objectParam.getObject();
+        for (Taxonomy taxonomy : config.getTaxonomies()) {
+          Map mapPermissions = getPermissions(taxonomy.getPermissions());
+          if (mapPermissions != null){          
+            ((ExtendedNode)taxonomyStorageNodeSystem).setPermissions(mapPermissions);
+          }
+          if (taxonomyStorageNodeSystem.canAddMixin("mix:referenceable")) {
+            taxonomyStorageNodeSystem.addMixin("mix:referenceable");
+          }
+        }
+      } else if (objectParam.getName().equals("taxonomy.configuration")) {
+        taxonomyStorageNodeSystem = (Node) session.getItem(nodePath);
+        TaxonomyConfig config = (TaxonomyConfig) objectParam.getObject();
+        for (Taxonomy taxonomy : config.getTaxonomies()) {
+          Node taxonomyNode = Utils.makePath(taxonomyStorageNodeSystem, taxonomy.getPath(), "exo:taxonomy", getPermissions(taxonomy.getPermissions()));
+          if (taxonomyNode.canAddMixin("mix:referenceable")) {
+            taxonomyNode.addMixin("mix:referenceable");
+          }
+        }
+      } else if (objectParam.getName().equals("predefined.actions")) {
+        taxonomyStorageNodeSystem = Utils.makePath(taxonomyStorageNode, treeName, "exo:taxonomy", null);
+        session.save();
+        ActionConfig config = (ActionConfig)objectParam.getObject();
+        List actions = config.getActions();
+        for (Iterator iter = actions.iterator(); iter.hasNext();) {
+          TaxonomyAction action = (TaxonomyAction) iter.next(); 
+          addAction(action, taxonomyStorageNodeSystem);
+        }
+      }
+      
+    }
+    taxonomyStorageNode.save();
+    try {
+      taxonomyService_.addTaxonomyTree(taxonomyStorageNodeSystem);
+    } catch (TaxonomyAlreadyExistsException e) {
+      e.printStackTrace();
+    }
+    session.save();
+    session.logout();
+  }
+  
+  private void addAction(ActionConfig.TaxonomyAction action, Node srcNode) throws Exception{
+    Node actionNode = null;
+    String actionsNodeName = "exo:actions" + "/" + action.getName();
+    Node actionsNode = null;
+    if (!srcNode.hasNode(actionsNodeName)) {
+      if (!srcNode.isNodeType("exo:actionable")) {
+        srcNode.addMixin("exo:actionable");                  
+      }
+      if (srcNode.hasNode("exo:actions")) {
+        actionsNode = srcNode.getNode("exo:actions");
+      } else {
+        actionsNode = srcNode.addNode("exo:actions", "exo:actionStorage");
+        srcNode.save();
+      }
+      actionNode = actionsNode.addNode(action.getName(), action.getType());
+      actionNode.setProperty("exo:name", action.getName());
+      actionNode.setProperty("exo:description", action.getDescription());
+      if (action.getLifecyclePhase() != null)
+        actionNode.setProperty("exo:lifecyclePhase", action.getLifecyclePhase());
+      if (action.getRoles() != null) {
+        String[] roles = StringUtils.split(action.getRoles(), ";");
+        actionNode.setProperty("exo:roles", roles);
+      }
+      
+      actionNode.setProperty("exo:storeHomePath", action.getHomePath());
+      actionNode.setProperty("exo:targetWorkspace", action.getTargetWspace());
+      actionNode.setProperty("exo:targetPath", action.getTargetPath());
+      
+      Iterator mixins = action.getMixins().iterator();
+      while (mixins.hasNext()) {
+        ActionConfig.Mixin mixin = (ActionConfig.Mixin) mixins.next();
+        actionNode.addMixin(mixin.getName());
+        Map<String, String> props = mixin.getParsedProperties();
+        Set keys = props.keySet();
+        for (Iterator iterator = keys.iterator(); iterator.hasNext();) {
+          String key = (String) iterator.next();
+          actionNode.setProperty(key, props.get(key));
+        }
+      }
+    } 
+  }
+  
+  
+  public Map getPermissions(List<Permission> listPermissions) {
+    Map<String, String[]> permissionsMap = new HashMap<String, String[]>();
+    for (Permission permission : listPermissions) {
+      StringBuilder strPer = new StringBuilder();
+      if ("true".equals(permission.getRead()))
+        strPer.append(PermissionType.READ);
+      if ("true".equals(permission.getAddNode()))
+        strPer.append(",").append(PermissionType.ADD_NODE);
+      if ("true".equals(permission.getSetProperty()))
+        strPer.append(",").append(PermissionType.SET_PROPERTY);
+      if ("true".equals(permission.getRemove()))
+        strPer.append(",").append(PermissionType.REMOVE);
+      permissionsMap.put(permission.getIdentity(), strPer.toString().split(","));
+    }
+    return permissionsMap;
+  }
+  
+  public void init() throws Exception { 
+    if (autoCreateInNewRepository_) {
+      for (RepositoryEntry repositoryEntry : repositoryService_.getConfig().getRepositoryConfigurations()) {
+        importPredefineTaxonomies(repositoryEntry.getName());        
+      }
+      return;
+    }
+    ValueParam param = params_.getValueParam("repository");
+    String repository = null;
+    if (param == null) {
+      repository = repositoryService_.getDefaultRepository().getConfiguration().getName();
+    } else {
+      repository = param.getValue();
+    }    
+    importPredefineTaxonomies(repository);
   }
 }

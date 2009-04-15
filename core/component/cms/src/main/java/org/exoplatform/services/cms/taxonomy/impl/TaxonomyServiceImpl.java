@@ -40,12 +40,13 @@ import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.picocontainer.Startable;
 
 /**
  * Created by The eXo Platform SARL Author : Ly Dinh Quang
  * quang.ly@exoplatform.com xxx5669@gmail.com Mar 31, 2009
  */
-public class TaxonomyServiceImpl implements TaxonomyService {
+public class TaxonomyServiceImpl implements TaxonomyService, Startable {
   private SessionProviderService providerService_;
 
   private NodeHierarchyCreator   nodeHierarchyCreator_;
@@ -133,7 +134,6 @@ public class TaxonomyServiceImpl implements TaxonomyService {
     } catch (RepositoryConfigurationException e1) {
       throw new RepositoryException(e1);
     } catch (PathNotFoundException e2) {
-      // throw new RepositoryException(e2);
     }
     return false;
   }
@@ -328,5 +328,19 @@ public class TaxonomyServiceImpl implements TaxonomyService {
       return providerService_.getSystemSessionProvider(null).getSession(workspaceName,
           manageRepository);
     return providerService_.getSessionProvider(null).getSession(workspaceName, manageRepository);
+  }
+
+  public void start() {
+    try {
+      for (TaxonomyPlugin plugin : plugins_) {
+        plugin.init() ;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void stop() {
+    // TODO Auto-generated method stub
   }
 }
