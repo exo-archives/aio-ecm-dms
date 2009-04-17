@@ -217,7 +217,7 @@
         <org.exoplatform.ecm.dms.version>2.3.x</org.exoplatform.ecm.dms.version>
 		<exo.test.classes>Test</exo.test.classes>
         <exo.test.skip>true</exo.test.skip>
-        <bonita.version>3.0</bonita.version>        
+        <bonita.version>4.0</bonita.version>        
       </properties>
     </profile>
 	<profile>
