@@ -59,6 +59,88 @@
       <remove>Delete</remove>
     </title>
   </UITaxonomyManager>
+  
+  <!--
+  ################################################################################
+  #     org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeContainer#
+  ################################################################################
+  -->
+	<UITaxonomyTreeContainer>
+		<tab>
+			<info>
+				<UITaxonomyTreeMainForm>Input taxonomy name, choose workspace and taxonomy home path</UITaxonomyTreeMainForm>
+				<UIPermissionTreeManager>Select permission for taxonomy tree node</UIPermissionTreeManager>
+				<UIActionTaxonomyManager>Regist exo:taxonomyAction</UIActionTaxonomyManager>
+				<UITaxonomyTreeCreateChild>Edit taxonomy tree by add, copy, cut and select permission</UITaxonomyTreeCreateChild>
+			</info>
+		</tab>
+		<label>
+			<step></step>
+			<wizardSteps>Wizard Steps</wizardSteps>
+		</label>
+		<action>
+			<Close>Close</Close>
+			<wizardSteps></wizardSteps>
+		</action>
+	</UITaxonomyTreeContainer>
+  
+  	<!--
+	##########################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo  #
+	##########################################################################################
+	-->
+	<UIPermissionTreeInfo>
+		<action>
+			<title>
+				<Delete>Delete</Delete>
+				<Edit>Edit</Edit>
+			</title>
+		</action>
+		<header>
+			<usersOrGroups>User or Group</usersOrGroups>
+			<read>Read</read>
+			<addNode>Add Node</addNode>
+			<setProperty>Set Property</setProperty>
+			<remove>Remove</remove>
+			<action>Action</action>
+		</header>
+	</UIPermissionTreeInfo>
+	
+	<!--
+	##########################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeForm  #
+	##########################################################################################
+	-->
+	<UIPermissionTreeForm>
+		<title>Add a permission to that node</title>
+		<label>
+			<userOrGroup>User or Group</userOrGroup>
+			<read>Read</read>
+			<add_node>Add Node</add_node>
+			<set_property>Set Property</set_property>
+			<remove>Remove</remove>
+		</label>
+		<action>
+			<Save>Save</Save>
+			<Reset>Reset</Reset>
+			<Next>Next</Next>
+		</action>
+	</UIPermissionTreeForm>
+	
+	<!--
+	################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.UIActionForm#
+	################################################################################
+	-->
+	<UIActionForm>
+		<title>Add Permission for taxonomy tree</title>
+		<action>
+			<Save>Save</Save>
+			<Reset>Reset</Reset>
+			<Next>Back</Next>
+		</action>
+	</UIActionForm>
+	
   <!--
   ################################################################################
   #             org.exoplatform.ecm.webui.component.admin.UITemplatesManager		 #

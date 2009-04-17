@@ -693,7 +693,7 @@
 }
 
 .UIPageIterator .PageIteratorContainer .RightPageIteratorBlock{
-margin:5px 0px;
+	margin:5px 0px;
 }
 
 ..UINamespaceManager UINamespaceList .UIPageIterator .PageIteratorContainer{
@@ -709,3 +709,84 @@ float: left;
 	float: right; /* orientation=rt */
 	clear: both;
 }
+
+.UITaxonomyManagerTrees .PopupContent {
+	margin:  0px;
+	background: #F9F9F9 none repeat scroll 0 0;
+	padding:  0px;
+}
+.UITaxonomyTreeWizard .WorkingArea .SelectedLabel {
+	border-bottom: 1px solid #B7B7B7;
+	padding: 15px 0px;
+	line-height: 15px;
+  background: #f9f9f9;
+}
+
+.UITaxonomyTreeWizard .WorkingArea .HiddenLabel  {
+	display: none;
+}
+
+.UITaxonomyTreeWizard .WorkingArea .UIWizardAction {
+  background: #F9F9F9 none repeat scroll 0 0;
+}
+
+.UITaxonomyTreeWizard .WorkingArea .UIWizardAction .StepNavigationTitle {
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  font-weight: bold;
+  margin: 0px 10px 0px 15px; /* orientation=lt */
+  margin: 0px 15px 0px 10px; /* orientation=rt */
+}
+
+.UITaxonomyTreeWizard .WorkingArea .UIWizardAction .StepNavigationBar {
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  line-height: 38px;
+}
+
+.UITaxonomyTreeWizard .WorkingArea .UIForm .FieldComponent .FieldComponent input {
+	width: 235px;
+}
+
+.UITaxonomyTreeWizard .WorkingArea .UIWizardAction .StepNavigationBar a {
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  width: 18px; line-height: 18px;
+  font-weight: bold;
+  text-align: center;
+  margin: 9px 3px 0px 3px; 
+  border: solid 1px gray;
+}
+
+.UITaxonomyTreeWizard .WorkingArea .UIWizardAction .StepNavigationBar a:hover {
+  color: orange;
+  background: #f8f8f8;
+  border: solid 1px #fdb913;
+}
+
+.UITaxonomyTreeWizard .WorkingArea .StepNavigationBar a.SelectedStep {
+  color: red;
+}
+
+.UITaxonomyTreeWizard .WorkingArea .UIWizardAction .UIAction {
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
+	padding-right: 10px; /* orientation=lt */
+	padding-left: 10px; /* orientation=rt */
+}
+
+.UITaxonomyTreeWizard .WorkingArea .UIWizardAction .UIAction .ActionContainer {
+	margin: 0px;
+}
+
+.UITaxonomyTreeWizard .WorkingArea .UITabPane .UIFormWithTitle .HorizontalLayout {
+	border: 1px solid #b7b7b7;
+	border-top: none;
+	padding: 10px;
+}
+
+.UIECMAdminPortlet .UITaxonomyTreeWizard .UIFormGrid .FieldComponent .ActionIcon {
+	float:none;
+	margin:0 5px;
+}
+

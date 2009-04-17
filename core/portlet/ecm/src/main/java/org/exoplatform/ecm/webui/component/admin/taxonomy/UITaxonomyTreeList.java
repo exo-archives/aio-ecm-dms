@@ -22,10 +22,13 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
+import javax.jcr.Value;
+import javax.jcr.ValueFormatException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.services.cms.link.LinkManager;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeForm;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -102,15 +105,27 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
   
   private TaxonomyTreeData setData(Node node) {
     TaxonomyTreeData taxonomyTreeData = null ;
+    TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
+    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
     try {
       if (node != null) {
         taxonomyTreeData = new TaxonomyTreeData();
         taxonomyTreeData.setTaxoTreeName(node.getName());
         taxonomyTreeData.setTaxoTreeHomePath(node.getPath());
         taxonomyTreeData.setTaxoTreeWorkspace(node.getSession().getWorkspace().getName());
-        LinkManager linkManager = getApplicationComponent(LinkManager.class);
-        Node realTreeNode = linkManager.getTarget(node);
-        taxonomyTreeData.setTaxoTreePermissions(realTreeNode.getProperty(ACCESS_PERMISSION).toString());
+        Node realTreeNode = taxonomyService.getTaxonomyTree(repository, node.getName(), true);
+        Value[] values = realTreeNode.getProperty("exo:permissions").getValues();
+        StringBuffer buffer = new StringBuffer(1024);
+        try {
+          for (Value permission: values) {
+            buffer.append(permission.getString()).append(';');
+          }
+        } catch (ValueFormatException e) {
+        }
+        catch (RepositoryException e) {
+        }
+        String permission = buffer.toString();
+        taxonomyTreeData.setTaxoTreePermissions(permission.substring(0, permission.length() - 1));
       }
     } catch (RepositoryException e) {
       // TODO: handle exception
@@ -124,16 +139,13 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeList.getParent();
       String taxoTreeName = event.getRequestContext().getRequestParameter(OBJECTID);
       TaxonomyService taxonomyService = uiTaxonomyTreeList.getApplicationComponent(TaxonomyService.class);
-      LinkManager linkManager = uiTaxonomyTreeList.getApplicationComponent(LinkManager.class);
       UIApplication uiApp = uiTaxonomyTreeList.getAncestorOfType(UIApplication.class);
-      String repository = uiTaxonomyTreeList.getAncestorOfType(UIECMAdminPortlet.class).getRepoName();
+      String repository = uiTaxonomyTreeList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
       try {
         Node taxoTreeNode = taxonomyService.getTaxonomyTree(repository, taxoTreeName, true);
-        Node taxoTreeTargetNode = linkManager.getTarget(taxoTreeNode, true);
-        if (taxoTreeTargetNode != null) {
-          Node parentNode = taxoTreeTargetNode.getParent();
-          taxoTreeTargetNode.remove();
-          parentNode.save();
+        if (taxoTreeNode != null) {
+          taxonomyService.removeTaxonomyNode(repository, taxoTreeNode.getSession()
+              .getWorkspace().getName(), taxoTreeNode.getPath());
         }
         taxonomyService.removeTaxonomyTree(taxoTreeName);
       } catch(RepositoryException e) {
@@ -142,6 +154,7 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      uiTaxonomyManagerTrees.update();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
   }
@@ -150,7 +163,7 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
     public void execute(Event<UITaxonomyTreeList> event) throws Exception {
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = event.getSource().getParent();
       uiTaxonomyManagerTrees.removeChildById(UITaxonomyTreeList.ST_EDIT);
-      uiTaxonomyManagerTrees.initPopup(UITaxonomyTreeList.ST_ADD);
+      uiTaxonomyManagerTrees.initPopupTreeContainer(UITaxonomyTreeList.ST_ADD);
       UITaxonomyTreeContainer uiForm = uiTaxonomyManagerTrees.findFirstComponentOfType(UITaxonomyTreeContainer.class);
       uiForm.refresh();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
@@ -161,12 +174,39 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
     public void execute(Event<UITaxonomyTreeList> event) throws Exception {
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = event.getSource().getParent();
       uiTaxonomyManagerTrees.removeChildById(UITaxonomyTreeList.ST_ADD);
-      uiTaxonomyManagerTrees.initPopup(UITaxonomyTreeList.ST_EDIT);
-      UITaxonomyTreeContainer uiTaxoTreeContainer = uiTaxonomyManagerTrees.findFirstComponentOfType(UITaxonomyTreeContainer.class);
+      uiTaxonomyManagerTrees.initPopupTreeContainer(UITaxonomyTreeList.ST_EDIT);
+      UITaxonomyTreeContainer uiTaxoTreeContainer = uiTaxonomyManagerTrees
+          .findFirstComponentOfType(UITaxonomyTreeContainer.class);
       String taxoTreeName = event.getRequestContext().getRequestParameter(OBJECTID);
-      uiTaxoTreeContainer.refresh();
-      TaxonomyTreeData taxoTreeData = uiTaxoTreeContainer.getTaxonomyTreeData();
+      String repository = uiTaxonomyManagerTrees.getAncestorOfType(UIECMAdminPortlet.class)
+      .getPreferenceRepository();
+      TaxonomyTreeData taxoTreeData = new TaxonomyTreeData();
       taxoTreeData.setTaxoTreeName(taxoTreeName);
+      taxoTreeData.setEdit(true);
+      taxoTreeData.setRepository(repository);
+      uiTaxoTreeContainer.setTaxonomyTreeData(taxoTreeData);
+      uiTaxoTreeContainer.refresh();
+
+      UIPermissionTreeInfo uiPermInfo = uiTaxoTreeContainer
+          .findFirstComponentOfType(UIPermissionTreeInfo.class);
+      UIPermissionTreeForm uiPermForm = uiTaxoTreeContainer
+          .findFirstComponentOfType(UIPermissionTreeForm.class);
+      TaxonomyService taxonomyService = uiTaxonomyManagerTrees
+          .getApplicationComponent(TaxonomyService.class);
+     
+      Node currentTreeNode = taxonomyService.getTaxonomyTree(repository, taxoTreeName, true);
+      uiPermInfo.setCurrentNode(currentTreeNode);
+      uiPermForm.setCurrentNode(currentTreeNode);
+      UITaxonomyTreeCreateChild uiTaxonomyCreateChild = uiTaxoTreeContainer
+          .getChild(UITaxonomyTreeCreateChild.class);
+      
+      if (uiTaxonomyCreateChild == null)
+        uiTaxonomyCreateChild = uiTaxoTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
+      uiTaxonomyCreateChild.setWorkspace(uiTaxoTreeContainer.getTaxonomyTreeData().getTaxoTreeWorkspace());
+      uiTaxonomyCreateChild.setRootTreeNode(currentTreeNode);
+      uiTaxonomyCreateChild.update();
+      uiPermInfo.updateGrid();
+      uiTaxoTreeContainer.viewStep(4);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
   }

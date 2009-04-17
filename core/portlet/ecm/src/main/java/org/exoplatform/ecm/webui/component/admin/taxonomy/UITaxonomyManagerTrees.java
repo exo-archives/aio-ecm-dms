@@ -20,6 +20,7 @@ package org.exoplatform.ecm.webui.component.admin.taxonomy;
 import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionForm;
 import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -46,7 +47,7 @@ public class UITaxonomyManagerTrees extends UIContainer {
     addChild(UITaxonomyTreeList.class, null, null);
   }
 
-  public void initPopup(String id) throws Exception {
+  public void initPopupTreeContainer(String id) throws Exception {
     UITaxonomyTreeContainer uiTaxonomyTreeContainer;
     UIPopupWindow uiPopup = getChildById(id);
     if (uiPopup == null) {
@@ -68,7 +69,6 @@ public class UITaxonomyManagerTrees extends UIContainer {
   }
   
   public void initPopupPermission(String membership) throws Exception {
-    //removeChildById(UITaxonomyTreeContainer.POPUP_PERMISSION);
     removePopup();
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null,
         UITaxonomyTreeContainer.POPUP_PERMISSION);
@@ -81,9 +81,6 @@ public class UITaxonomyManagerTrees extends UIContainer {
       uiTaxonomyTreePermission.setCurrentPermission("/" + arrMember[1]);
     }
     uiPopup.setUIComponent(uiTaxonomyTreePermission);
-    UITaxonomyTreeContainer uiTaxonomyTreeContainer = findFirstComponentOfType(UITaxonomyTreeContainer.class);
-    uiTaxonomyTreePermission.setSourceComponent(uiTaxonomyTreeContainer,
-        new String[] { UITaxonomyTreeMainForm.FIELD_PERMISSION });
     uiPopup.setShow(true);
   }
   
@@ -94,12 +91,11 @@ public class UITaxonomyManagerTrees extends UIContainer {
   }
   
   public void initPopupJCRBrowser(String workspace, boolean isDisable) throws Exception {
-    //removeChildById(UITaxonomyTreeContainer.POPUP_TAXONOMYHOMEPATH);
     removePopup();
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, UITaxonomyTreeContainer.POPUP_TAXONOMYHOMEPATH);
     uiPopup.setWindowSize(610, 300);
-    String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED, Utils.EXO_TAXANOMY};
+    String[] filterType = {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED};
     UIOneNodePathSelector uiOneNodePathSelector = createUIComponent(UIOneNodePathSelector.class, null, null);
     uiOneNodePathSelector.setIsDisable(workspace, isDisable);
     uiOneNodePathSelector.setShowRootPathSelect(true);
@@ -120,10 +116,9 @@ public class UITaxonomyManagerTrees extends UIContainer {
     uiPopup.setShow(true);
   }
   
-  public void initPopup(UIComponent uiComp) throws Exception {
-    //removeChildById("PopupComponent") ;
+  public void initPopupComponent(UIComponent uiComp, String id) throws Exception {
     removePopup();
-    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "PopupComponent");
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, id);
     uiPopup.setUIComponent(uiComp);
     uiPopup.setWindowSize(640, 300);
     uiPopup.setShow(true);
@@ -131,7 +126,7 @@ public class UITaxonomyManagerTrees extends UIContainer {
   }
   
   private void removePopup() {
-    removeChildById("PopupComponent");
+    removeChildById(UIActionForm.POPUP_COMPONENT);
     removeChildById(UITaxonomyTreeContainer.POPUP_PERMISSION);
     removeChildById(UITaxonomyTreeContainer.POPUP_TAXONOMYHOMEPATH);
   }

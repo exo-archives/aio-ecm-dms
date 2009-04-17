@@ -78,50 +78,51 @@ public class UITaxonomyTreeCreateChildForm extends UIForm {
       UITaxonomyManagerTrees uiTaxonomyManageTrees = uiForm.getAncestorOfType(UITaxonomyManagerTrees.class);
       TaxonomyTreeData taxoTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
-      String name = uiForm.getUIStringInput(FIELD_NAME).getValue() ;
-      if(name == null || name.trim().length() == 0) {
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeCreateChildForm.msg.name-null", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+      String name = uiForm.getUIStringInput(FIELD_NAME).getValue();
+      if (name == null || name.trim().length() == 0) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeCreateChildForm.msg.name-null",
+            null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      
-      if(!Utils.isNameValid(name, new String[]{"&", "$", "@", ",", ":","]", "[", "*", "%", "!"})) {
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeCreateChildForm.msg.name-invalid", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+
+      if (!Utils.isNameValid(name, new String[] { "&", "$", "@", ",", ":", "]", "[", "*", "%", "!" })) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeCreateChildForm.msg.name-invalid",
+            null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      
-      if(name.length() > 30) {
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeCreateChildForm.msg.name-too-long", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+
+      if (name.length() > 30) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeCreateChildForm.msg.name-too-long",
+            null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
       try {
         TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
         String parentPath = taxoTreeData.getTaxoTreeHomePath() + "/" + taxoTreeData.getTaxoTreeName();
-        taxonomyService.addTaxonomyNode(taxoTreeData.getRepository(), taxoTreeData.getTaxoTreeWorkspace(), parentPath, name);
-        uiCreateChild.update(parentPath);
-      } catch(TaxonomyNodeAlreadyExistsException e) {
-        Object[] arg = {name} ;
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeCreateChildForm.msg.exist", arg, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      } catch(RepositoryException e) {
-        Object[] arg = {name} ;
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeCreateChildForm.msg.error", arg, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+        taxonomyService.addTaxonomyNode(taxoTreeData.getRepository(), taxoTreeData
+            .getTaxoTreeWorkspace(), parentPath, name);
+        uiCreateChild.update();
+      } catch (TaxonomyNodeAlreadyExistsException e) {
+        Object[] arg = { name };
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeCreateChildForm.msg.exist", arg,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch (RepositoryException e) {
+        Object[] arg = { name };
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeCreateChildForm.msg.error", arg,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      uiForm.reset() ;
-      UIPopupWindow uiPopup = uiForm.getParent() ;
-      uiPopup.setRendered(false) ;
-      uiPopup.setShow(false) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManageTrees) ;
+      uiForm.reset();
+      UIPopupWindow uiPopup = uiForm.getParent();
+      uiPopup.setRendered(false);
+      uiPopup.setShow(false);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManageTrees);
     }
   }
 

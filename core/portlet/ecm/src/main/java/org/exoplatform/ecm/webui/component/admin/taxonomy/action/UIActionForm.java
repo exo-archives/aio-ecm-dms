@@ -25,11 +25,11 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManagerTrees;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeContainer;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeCreateChild;
-import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeMainForm;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeForm;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
@@ -44,7 +44,10 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
+import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyAlreadyExistsException;
+import org.exoplatform.services.cms.taxonomy.impl.TaxonomyNodeAlreadyExistsException;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -61,8 +64,6 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormInputBase;
-import org.exoplatform.webui.form.UIFormSelectBox;
-import org.exoplatform.webui.form.UIFormStringInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -80,6 +81,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
+
 public class UIActionForm extends UIDialogForm implements UISelectable {
   
   private String              parentPath_ = "";
@@ -91,8 +93,10 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   private String              scriptPath_   = null;
 
   private String              rootPath_     = null;
+  
+  public static final String POPUP_COMPONENT = "PopupComponent";
 
-  private static final String EXO_ACTIONS   = "exo:actions".intern();
+  public static final String EXO_ACTIONS   = "exo:actions".intern();
   
   public UIActionForm() throws Exception {
     setActions(new String[] { "Save", "Back" });
@@ -111,39 +115,42 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   public void doSelect(String selectField, Object value) {
     isUpdateSelect = true;
     getUIStringInput(selectField).setValue(value.toString());
+    UITaxonomyManagerTrees uiTaxoManageTree = getAncestorOfType(UITaxonomyManagerTrees.class);
+    uiTaxoManageTree.removeChildById(POPUP_COMPONENT);
   }
   
   public String getCurrentPath() throws Exception { 
     return parentPath_;
   }
   
-  public String getRepositoryName() {
-    return getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
+  public void setCurrentPath(String path) {
+    parentPath_ = path;
   }
   
   public String getWorkspace() {
-    UITaxonomyTreeContainer uiTaxonomyTreeContainer = getAncestorOfType(UITaxonomyTreeContainer.class);
-    UITaxonomyTreeMainForm uiTaxonomyTreeMainForm = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeMainForm.class);
-    UIFormSelectBox uiSelectBox = uiTaxonomyTreeMainForm.getChildById(UITaxonomyTreeMainForm.FIELD_WORKSPACE);
-    return uiSelectBox.getValue().toString();
+    return getTaxoTreeData().getTaxoTreeWorkspace();
   }
   
-  private String getTaxonomyTreePath() throws Exception{
-    UITaxonomyTreeContainer uiTaxonomyTreeContainer = getAncestorOfType(UITaxonomyTreeContainer.class);
-    UITaxonomyTreeMainForm uiTaxonomyTreeMainForm = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeMainForm.class);
-    UIFormStringInput uiInputHomePath = uiTaxonomyTreeMainForm.findComponentById(UITaxonomyTreeMainForm.FIELD_HOMEPATH);
-    UIFormStringInput uiInputName = uiTaxonomyTreeMainForm.findComponentById(UITaxonomyTreeMainForm.FIELD_NAME);
-    String workspace = getWorkspace();
-    String homePath = "";
-    if ((uiInputHomePath != null) && (uiInputHomePath.getValue() != null))
-      homePath = uiInputHomePath.getValue().toString();
+  public String getRepositoryName() {
+    return getTaxoTreeData().getRepository();
+  }
+  
+  
+  public TaxonomyTreeData getTaxoTreeData() {
+    return getAncestorOfType(UITaxonomyTreeContainer.class).getTaxonomyTreeData();
+  }
+  
+  private String getTaxonomyTreeHomePath() throws Exception{
+    TaxonomyTreeData taxoTreeData = getTaxoTreeData();
+    String workspace = taxoTreeData.getTaxoTreeWorkspace();
+    String homePath = taxoTreeData.getTaxoTreeHomePath();
     String systemWorkspace = getAncestorOfType(UITaxonomyManagerTrees.class)
     .getSystemWorkspaceName(getRepositoryName());
     if (workspace.equals(systemWorkspace) && homePath.length() == 0) {
       homePath = getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
+      taxoTreeData.setTaxoTreeHomePath(homePath);
     }
-    StringBuilder buffer = new StringBuilder(1024);
-    return buffer.append(getWorkspace()).append(':').append(homePath).append('/').append(uiInputName.getValue()).toString();
+    return (workspace + ":" + homePath);
   }
   
   private String getJcrPath(String path) {
@@ -151,21 +158,20 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     return nodeHierarchyCreator.getJcrPath(path);
   }
   
-  @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    return new JCRResourceResolver(getRepositoryName(), getWorkspace(), "exo:templateFile");
+    return new JCRResourceResolver(getTaxoTreeData().getRepository(), getWorkspace(), "exo:templateFile");
   }
 
   public String getTemplate() { return getDialogPath() ; }
 
   public String getDialogPath() {
-    repositoryName = getRepositoryName();
+    repositoryName = getTaxoTreeData().getRepository();
     TemplateService templateService = getApplicationComponent(TemplateService.class);
     String userName = Util.getPortalRequestContext().getRemoteUser();
     String dialogPath = null;
     if (nodeTypeName_ != null) {
       try {
-        dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName_, userName, getRepositoryName());
+        dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName_, userName, repositoryName);
       } catch (Exception e) {
         e.printStackTrace();
       }
@@ -175,17 +181,20 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   
   
   public void renderField(String name) throws Exception {
+    TaxonomyTreeData taxoTreeData = getTaxoTreeData();
     UIComponent uiInput = findComponentById(name);
-    if ("homePath".equals(name)) ((UIFormInput)uiInput).setValue(getTaxonomyTreePath());
+    if ("homePath".equals(name)) {
+      ((UIFormInput<String>) uiInput).setValue(getTaxonomyTreeHomePath() + "/" + taxoTreeData.getTaxoTreeName());
+    }
     super.renderField(name);
   }
   
-  private void setPath(String scriptPath) {
+/*  private void setPath(String scriptPath) {
     if(scriptPath.indexOf(":") < 0) {
       scriptPath = getWorkspace() + ":" + scriptPath ;
     }
     scriptPath_ = scriptPath ; 
-  }
+  }*/
   
   public String getTenmplateNodeType() {
     return nodeTypeName_;
@@ -208,27 +217,24 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
   }
   
-  
   public static class SaveActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UIActionForm uiActionForm = event.getSource();
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = uiActionForm.getAncestorOfType(UITaxonomyTreeContainer.class);
-      UITaxonomyTreeMainForm uiTaxonomyTreeMainForm = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeMainForm.class);
+      UIPermissionTreeInfo uiPermissionInfo = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeInfo.class);
+      TaxonomyTreeData taxoTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiActionForm.getAncestorOfType(UITaxonomyManagerTrees.class);
-      UIFormInputBase inputName = uiTaxonomyTreeMainForm.getChildById(UITaxonomyTreeMainForm.FIELD_NAME);
-      UIFormSelectBox selectBox = uiTaxonomyTreeMainForm.getChildById(UITaxonomyTreeMainForm.FIELD_WORKSPACE);
-      UIFormInputBase inputHomePath = uiTaxonomyTreeMainForm.findComponentById(UITaxonomyTreeMainForm.FIELD_HOMEPATH);
-      UIFormInputBase inputPermission = uiTaxonomyTreeMainForm.findComponentById(UITaxonomyTreeMainForm.FIELD_PERMISSION);
-      String repository = uiActionForm.getRepositoryName();
+      TaxonomyService taxonomyService = uiTaxonomyTreeContainer.getApplicationComponent(TaxonomyService.class);
+      String repository = uiActionForm.getTaxoTreeData().getRepository();
       String systemWorkspace = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class)
-          .getSystemWorkspaceName(uiActionForm.getRepositoryName());
-      
+          .getSystemWorkspaceName(repository);
       UIApplication uiApp = uiTaxonomyTreeContainer.getAncestorOfType(UIApplication.class);
-      String name = inputName.getValue().toString();
-      String workspace = selectBox.getValue();
-      String homePath = inputHomePath.getValue() != null ? inputHomePath.getValue().toString() : "";
-      String permission = inputPermission.getValue().toString();
-      if (homePath == null || homePath.length() == 0) {
+      String name = taxoTreeData.getTaxoTreeName();
+      String workspace = taxoTreeData.getTaxoTreeWorkspace();
+      String homePath = taxoTreeData.getTaxoTreeHomePath();
+      homePath = homePath != null ? homePath : "";
+      boolean isEdit = taxoTreeData.isEdit();
+      if (homePath.length() == 0) {
         if (systemWorkspace.equals(workspace)) {
           homePath = uiActionForm.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
         } else {
@@ -239,94 +245,112 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         }
       }        
       
+      boolean regAction = true;
       try {
-        uiTaxonomyTreeContainer.addTaxonomyTree(name, workspace, homePath, permission);
+        if (!isEdit) {
+          uiTaxonomyTreeContainer.addTaxonomyTree(name, workspace, homePath, uiPermissionInfo.getPermBeans());
+        } else {
+          regAction = uiTaxonomyTreeContainer.updateTaxonomyTree(name, workspace, homePath);
+        }
       } catch (PathNotFoundException e) {
-        uiApp.addMessage(new ApplicationMessage("uiTaxonomyTreeForm.msg.path-invalid", null,
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.path-invalid", null,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch (TaxonomyAlreadyExistsException e) {
-        uiApp.addMessage(new ApplicationMessage("uiTaxonomyTreeForm.msg.taxonomy-existed", null,
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.taxonomy-existed", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch (TaxonomyNodeAlreadyExistsException e) {
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.taxonomy-existed", null,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      
-      ActionServiceContainer actionServiceContainer = uiActionForm.getApplicationComponent(ActionServiceContainer.class);
-      Map<String, JcrInputProperty> sortedInputs = DialogFormUtil.prepareMap(uiActionForm
-          .getChildren(), uiActionForm.getInputProperties());
-      Session  session = uiActionForm.getSesssion();
-      Node currentNode = (Node)session.getItem(homePath + "/" + name);
-      if (!PermissionUtil.canAddNode(currentNode) || !PermissionUtil.canSetProperty(currentNode)) {
-        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-      if (currentNode.isLocked()) {
-        String lockToken = LockUtil.getLockToken(currentNode);
-        if (lockToken != null)
-          session.addLockToken(lockToken);
-      }
-      try {
-        JcrInputProperty rootProp = sortedInputs.get("/node");
-        if (rootProp == null) {
-          rootProp = new JcrInputProperty();
-          rootProp.setJcrPath("/node");
-          rootProp.setValue((sortedInputs.get("/node/exo:name")).getValue());
-          sortedInputs.put("/node", rootProp);
-        } else {
-          rootProp.setValue((sortedInputs.get("/node/exo:name")).getValue());
+
+      Node currentNode = taxonomyService.getTaxonomyTree(repository, name, true);
+      if (regAction) {
+        ActionServiceContainer actionServiceContainer = uiActionForm.getApplicationComponent(ActionServiceContainer.class);
+        Map<String, JcrInputProperty> sortedInputs = DialogFormUtil.prepareMap(uiActionForm
+            .getChildren(), uiActionForm.getInputProperties());
+        Session session = currentNode.getSession();
+        if (uiActionForm.getCurrentPath().length() == 0) {
+          uiActionForm.setCurrentPath(currentNode.getPath());
         }
-        String actionName = (String) (sortedInputs.get("/node/exo:name")).getValue();
-        if (currentNode.hasNode(EXO_ACTIONS)) {
-          if (currentNode.getNode(EXO_ACTIONS).hasNode(actionName)) {
-            Object[] args = { actionName };
-            uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args,
-                ApplicationMessage.WARNING));
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-            return;
-          }
-        }
-        if (currentNode.isNew()) {
-          String[] args = { currentNode.getPath() };
-          uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add-action", args));
+        if (!PermissionUtil.canAddNode(currentNode) || !PermissionUtil.canSetProperty(currentNode)) {
+          uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.no-permission-add", null));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         }
-        actionServiceContainer.addAction(currentNode, repository, uiActionForm.nodeTypeName_,
-            sortedInputs);
-        uiActionForm.setIsOnchange(false);
-        session.save();
-        uiActionForm.createNewAction(currentNode, uiActionForm.nodeTypeName_, true);
-        uiActionForm.reset();
-      } catch (RepositoryException repo) {
-        String key = "UIActionForm.msg.repository-exception";
-        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch (NumberFormatException nume) {
-        String key = "UIActionForm.msg.numberformat-exception";
-        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      } catch (Exception e) {
-        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null));
-        return;
+        if (currentNode.isLocked()) {
+          String lockToken = LockUtil.getLockToken(currentNode);
+          if (lockToken != null)
+            session.addLockToken(lockToken);
+        }
+        try {
+          JcrInputProperty rootProp = sortedInputs.get("/node");
+          if (rootProp == null) {
+            rootProp = new JcrInputProperty();
+            rootProp.setJcrPath("/node");
+            rootProp.setValue((sortedInputs.get("/node/exo:name")).getValue());
+            sortedInputs.put("/node", rootProp);
+          } else {
+            rootProp.setValue((sortedInputs.get("/node/exo:name")).getValue());
+          }
+          String actionName = (String) (sortedInputs.get("/node/exo:name")).getValue();
+          if (currentNode.hasNode(EXO_ACTIONS)) {
+            if (currentNode.getNode(EXO_ACTIONS).hasNode(actionName)) {
+              Object[] args = { actionName };
+              uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.existed-action", args,
+                  ApplicationMessage.WARNING));
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
+            }
+          }
+          if (currentNode.isNew()) {
+            String[] args = { currentNode.getPath() };
+            uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add-action", args));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
+          actionServiceContainer.addAction(currentNode, repository, uiActionForm.nodeTypeName_,
+              sortedInputs);
+          Node actionNode = actionServiceContainer.getAction(currentNode, actionName);
+          uiActionForm.setIsOnchange(false);
+          uiActionForm.setNodePath(actionNode.getPath());
+          session.save();
+          uiActionForm.createNewAction(currentNode, uiActionForm.nodeTypeName_, true);
+          uiActionForm.reset();
+        } catch (RepositoryException repo) {
+          String key = "UIActionForm.msg.repository-exception";
+          uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        } catch (NumberFormatException nume) {
+          String key = "UIActionForm.msg.numberformat-exception";
+          uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        } catch (Exception e) {
+          e.printStackTrace();
+          uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null));
+          return;
+        }
       }
-      /*UIPopupWindow uiPopup = uiTaxonomyTreeContainer.getParent();
-      uiTaxonomyManagerTrees.removeChildById(UITaxonomyTreeList.ST_ADD);
-      uiTaxonomyManagerTrees.removeChildById(UITaxonomyTreeList.ST_EDIT);
-      uiTaxonomyManagerTrees.update();
-      uiPopup.setRendered(false);
-      uiPopup.setShow(false);*/
+      UIPermissionTreeInfo uiPermInfo = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeInfo.class);
+      UIPermissionTreeForm uiPermForm = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeForm.class);
+      uiPermInfo.setCurrentNode(currentNode);
+      uiPermForm.setCurrentNode(currentNode);
+      uiPermInfo.updateGrid();
       UITaxonomyTreeCreateChild uiTaxonomyCreateChild = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeCreateChild.class);
       if (uiTaxonomyCreateChild == null) uiTaxonomyTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
-      uiTaxonomyTreeContainer.viewStep(3);
+      uiTaxonomyTreeContainer.viewStep(4);
       UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeCreateChild.class);
-      UIFormSelectBox uiSelectBox = uiTaxonomyTreeContainer.findComponentById(UITaxonomyTreeMainForm.FIELD_WORKSPACE);
-      uiTaxonomyTreeCreateChild.setWorkspace(uiSelectBox.getValue().toString());
-      
+      uiTaxonomyTreeCreateChild.setWorkspace(workspace);
+      uiTaxonomyTreeCreateChild.setRootTreeNode(currentNode);
+      uiTaxonomyTreeCreateChild.update();
+      uiTaxonomyManagerTrees.update();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
   }
@@ -335,7 +359,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     public void execute(Event<UIActionForm> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource().getAncestorOfType(UITaxonomyTreeContainer.class);
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
-      uiTaxonomyTreeContainer.viewStep(1);
+      uiTaxonomyTreeContainer.viewStep(2);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
   }
@@ -354,7 +378,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       Class clazz = Class.forName(classPath, true, cl);
       UIComponent uiComp = uiManager.createUIComponent(clazz, null, null);
       if (uiComp instanceof UIOneNodePathSelector) {
-        String repositoryName = uiForm.getRepositoryName();
+        String repositoryName = uiForm.getTaxoTreeData().getRepository();
         SessionProvider provider = SessionProviderFactory.createSessionProvider();
         String wsFieldName = (String) fieldPropertiesMap.get("workspaceField");
         String wsName = "";
@@ -364,10 +388,11 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         }
         String selectorParams = (String) fieldPropertiesMap.get("selectorParams");
         if (selectorParams != null) {
+          String[] filterType = new String[] {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED};
           String[] arrParams = selectorParams.split(",");
           if (arrParams.length == 4) {
-            ((UIOneNodePathSelector) uiComp)
-                .setAcceptedNodeTypesInPathPanel(new String[] { Utils.NT_FILE });
+            ((UIOneNodePathSelector) uiComp).setAcceptedNodeTypesInPathPanel(filterType);
+            ((UIOneNodePathSelector) uiComp).setAcceptedNodeTypesInTree(filterType);
             wsName = arrParams[1];
             rootPath = arrParams[2];
             ((UIOneNodePathSelector) uiComp).setIsDisable(wsName, true);
@@ -384,7 +409,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         ((UIOneNodePathSelector) uiComp).setShowRootPathSelect(true);
         ((UIOneNodePathSelector) uiComp).init(provider);
       }
-      uiManager.initPopup(uiComp);
+      uiManager.initPopupComponent(uiComp, UIActionForm.POPUP_COMPONENT);
       String param = "returnField=" + fieldName;
       ((ComponentSelector) uiComp).setSourceComponent(uiTaxonomyTree, new String[] { param });
       if (uiForm.isAddNew_) {

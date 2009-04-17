@@ -25,8 +25,10 @@ import javax.jcr.PathNotFoundException;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -94,6 +96,8 @@ public class UIActionTypeForm extends UIForm {
   public static class ChangeActionTypeActionListener extends EventListener<UIActionTypeForm> {
     public void execute(Event<UIActionTypeForm> event) throws Exception {
       UIActionTypeForm uiActionType = event.getSource();
+      UITaxonomyTreeContainer uiTaxonomyTreeContainer = uiActionType
+          .getAncestorOfType(UITaxonomyTreeContainer.class);
       String actionType = uiActionType.getUIFormSelectBox(ACTION_TYPE).getValue();
       TemplateService templateService = uiActionType.getApplicationComponent(TemplateService.class);
       String repository = uiActionType.getAncestorOfType(UIECMAdminPortlet.class)
@@ -111,7 +115,7 @@ public class UIActionTypeForm extends UIForm {
           uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.access-denied", arg,
               ApplicationMessage.WARNING));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          actionType = "exo:taxonomyAction";
+          actionType = TaxonomyTreeData.ACTION_TAXONOMY_TREE;
           uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType);
         }
       } catch (PathNotFoundException path) {
@@ -119,9 +123,10 @@ public class UIActionTypeForm extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.not-support", arg,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        actionType = "exo:taxonomyAction";
+        actionType = TaxonomyTreeData.ACTION_TAXONOMY_TREE;
         uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType);
       }
+      uiTaxonomyTreeContainer.getTaxonomyTreeData().setTaxoTreeActionTypeName(actionType);
       uiActionForm.createNewAction(null, actionType, true);
       uiActionTaxonomyManager.setRenderSibbling(UIActionTaxonomyManager.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionTaxonomyManager);

@@ -4,26 +4,28 @@
 	int step = uicomponent.getSelectedStep();
 	String compName = uicomponent.getName() ;
 %>
+<div class="UITaxonomyTreeWizard">
   <div class="UITabPane">
 		<div class="TabPaneContent">
 	    <div class="WorkingArea">		     	
 			 <%
           for(inputSet in uicomponent.getChildren()) {
-        		String className="HiddenLabel" ;
-        		if(inputSet.isRendered()) className="SelectedLabel" ;
-          String tabName = inputSet.getName() ; 
-          tabName = _ctx.appRes(compName + ".tab.info." + inputSet.name) ;
+        		String className="HiddenLabel";
+        		if(inputSet.isRendered()) {
+	        		className="SelectedLabel";
+		          String tabName = inputSet.getName(); 
+  	          tabName = _ctx.appRes(compName + ".tab.info." + inputSet.name);
         %>	        
-			        <div class="$className">
-			        	<span class="WizardLabel">
-			        		$tabName
-			        	</span>
-			        	<div style="clear:left;"><span></span></div>
-			        </div>
-        <% 
+				        <div class="$className">
+				        	<span class="WizardLabel">
+				        		$tabName
+				        	</span>
+				        	<div style="clear:left;"><span></span></div>
+				        </div>
+        <% }
           }
         %>
-    	<div class="HorizontalLayout">
+    	  <div class="HorizontalLayout">
 		        <div class="UITabContentContainer">
 	            <%
 	              for(formInput in uicomponent.getChildren()) { 
@@ -87,7 +89,7 @@
 		 	        <div style="clear:right;"><span></span></div>
 	 	        </div>
 			    </div>
-			  
-      </div>
-		</div>  
+		  </div>
+    </div>
+	</div>  
 </div>

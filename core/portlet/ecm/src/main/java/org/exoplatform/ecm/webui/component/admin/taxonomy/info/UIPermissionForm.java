@@ -64,9 +64,11 @@ import org.exoplatform.webui.form.UIForm;
 
 public class UIPermissionForm extends UIForm implements UISelectable {
   
-  final static public String PERMISSION   = "permission";
+  public static final String PERMISSION   = "permission";
 
-  final static public String POPUP_SELECT = "SelectUserOrGroup";
+  public static final String POPUP_SELECT = "SelectUserOrGroup";
+  
+  public static final String SELECT_GROUP_ID = "TaxoSelectUserOrGroup";
 
   private Node               currentNode;
   
@@ -94,6 +96,10 @@ public class UIPermissionForm extends UIForm implements UISelectable {
     UIPermissionInputSet uiInputSet = getChildById(PERMISSION) ;
     refresh() ;
     uiInputSet.getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP).setValue(user) ;
+    /*UIFormStringInput uiIn = uiInputSet.getUIStringInput(UIPermissionInputSet.FIELD_USERORGROUP);
+    if (uiIn != null) {
+      uiIn.setValue(user);
+    }*/
     if(user.equals(Utils.getNodeOwner(node))) {
       for (String perm : PermissionType.ALL) { 
         uiInputSet.getUIFormCheckBoxInput(perm).setChecked(true) ;
@@ -253,7 +259,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
   static public class SelectMemberActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
-      UIGroupMemberSelector uiGroupMemberSelector = uiForm.createUIComponent(UIGroupMemberSelector.class, null, null);
+      UIGroupMemberSelector uiGroupMemberSelector = uiForm.createUIComponent(UIGroupMemberSelector.class, null, UIPermissionForm.SELECT_GROUP_ID);
       uiGroupMemberSelector.setSourceComponent(uiForm, new String[] { UIPermissionInputSet.FIELD_USERORGROUP });
       uiForm.getAncestorOfType(UIPermissionManager.class).initPopupPermission(uiGroupMemberSelector);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());

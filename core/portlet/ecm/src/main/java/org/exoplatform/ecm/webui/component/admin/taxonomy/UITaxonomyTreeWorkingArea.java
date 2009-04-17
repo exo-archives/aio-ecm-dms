@@ -29,7 +29,6 @@ import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionForm;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionInfo;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionManager;
-import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -70,6 +69,8 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
 
   private String           selectedPath_;
   
+  private String[] acceptedNodeTypes = {};
+  
   public UITaxonomyTreeWorkingArea() throws Exception {
     uiPageIterator_ = addChild(UIPageIterator.class, null, "UICategoriesSelect");
   }
@@ -101,7 +102,15 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
     return false;
   }
   
-  public void setSelectedPath(String selectedPath) { selectedPath_ = selectedPath; }
+ 
+  
+  private boolean matchNodeType(Node node) throws Exception {
+    if(acceptedNodeTypes == null || acceptedNodeTypes.length == 0) return true;
+    for(String nodeType: acceptedNodeTypes) {
+      if(node.isNodeType(nodeType)) return true;
+    }
+    return false;
+  }
   
   public void update() throws Exception {
     UITaxonomyTreeCreateChild uiManager = getParent();
@@ -111,12 +120,23 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
       List<Node> listNodes = new ArrayList<Node>();
       while (nodeIter.hasNext()) {
         Node node = nodeIter.nextNode();
-        listNodes.add(node);
+        if (matchNodeType(node))
+          listNodes.add(node);
       }
       setNodeList(listNodes);
     }
     updateGrid();
   }
+  
+  public String[] getAcceptedNodeTypes() {
+    return acceptedNodeTypes;
+  }
+
+  public void setAcceptedNodeTypes(String[] acceptedNodeTypes) {
+    this.acceptedNodeTypes = acceptedNodeTypes;
+  }
+  
+  public void setSelectedPath(String selectedPath) { selectedPath_ = selectedPath; }
   
   public static class AddActionListener extends EventListener<UITaxonomyTreeWorkingArea> {
     public void execute(Event<UITaxonomyTreeWorkingArea> event) throws Exception {
@@ -137,8 +157,8 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
       Node selectedNode = uiTaxonomyTreeCreateChild.getNodeByPath(path);
       try {
         uiTreeWorkingArea.setSelectedPath(selectedNode.getParent().getPath());
-        uiTreeWorkingArea.getApplicationComponent(CategoriesService.class).removeTaxonomyNode(path,
-            uiTreeWorkingArea.getRepository());
+        uiTreeWorkingArea.getApplicationComponent(TaxonomyService.class).removeTaxonomyNode(
+            uiTreeWorkingArea.getRepository(), uiTaxonomyTreeCreateChild.getWorkspace(), path);
       } catch (ReferentialIntegrityException ref) {
         Object[] arg = { path };
         uiApp.addMessage(new ApplicationMessage("UITaxonomyWorkingArea.msg.reference-exception",
@@ -207,7 +227,7 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
       Node realNode = uiTaxonomyTreeCreateChild.getNodeByPath(realPath);
       if (realNode.hasNode(srcPath.substring(srcPath.lastIndexOf("/") + 1))) {
         Object[] args = { srcPath.substring(srcPath.lastIndexOf("/") + 1) };
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyForm.msg.exist", args,
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyWorkingArea.msg.exist", args,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -217,7 +237,7 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
       try {
         taxonomyService.moveTaxonomyNode(taxoTreeData.getRepository(), taxoTreeData
             .getTaxoTreeWorkspace(), srcPath, destPath, type);
-        uiTaxonomyTreeCreateChild.update(realPath);
+        uiTaxonomyTreeCreateChild.update();
       } catch (Exception e) {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyWorkingArea.msg.referential-integrity",
             null, ApplicationMessage.WARNING));
@@ -252,4 +272,5 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
       uiPerMan.checkPermissonInfo(uiTaxonomyTreeCreateChild.getNodeByPath(path));
     }
   }
+
 }

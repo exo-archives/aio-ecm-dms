@@ -32,9 +32,8 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
 @ComponentConfig(template = "classpath:groovy/ecm/webui/form/UIFormInputSetWithAction.gtmpl")
 public class UIPermissionInputSet extends UIFormInputSetWithAction {
   
-  final static public String FIELD_USERORGROUP = "userOrGroup" ;
+  final static public String FIELD_USERORGROUP = "userOrGroup";
   
-
   public UIPermissionInputSet(String name) throws Exception {
     super(name);
     setComponentConfig(getClass(), null) ;

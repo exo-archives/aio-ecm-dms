@@ -26,16 +26,28 @@ import java.util.List;
  */
 public class TaxonomyTreeData implements Comparable<TaxonomyTreeData> {
 
-  private String taxoTreeName;
+  private String             taxoTreeName;
 
-  private String repository;
+  private String             repository;
 
-  private String taxoTreeWorkspace;
+  private String             taxoTreeWorkspace;
 
-  private String taxoTreePermissions;
+  private String             taxoTreePermissions;
 
-  private String taxoTreeHomePath;
+  private String             taxoTreeHomePath;
 
+  private String             taxoTreeActionName;
+
+  private String             taxoTreeActionTargetPath;
+
+  private String             taxoTreeActionTargetWorkspace;
+
+  private String             taxoTreeActionTypeName;
+
+  private boolean            edit               = false; 
+
+  public static final String ACTION_TAXONOMY_TREE = "exo:taxonomyAction";
+  
   public TaxonomyTreeData() {
     
   }
@@ -130,8 +142,8 @@ public class TaxonomyTreeData implements Comparable<TaxonomyTreeData> {
    * Register permission to taxonomy tree
    * @param taxoTreePermissions
    */
-  public void setTaxoTreePermissions(String taxoTreePermissions) {
-    this.taxoTreePermissions = taxoTreePermissions;
+  public void setTaxoTreePermissions(String permission) {
+    this.taxoTreePermissions = permission;
   }
 
   /**
@@ -147,5 +159,73 @@ public class TaxonomyTreeData implements Comparable<TaxonomyTreeData> {
    */
   public void setTaxoTreeWorkspace(String taxoTreeWorkspace) {
     this.taxoTreeWorkspace = taxoTreeWorkspace;
+  }
+
+  /**
+   * Get action name of Taxonomy tree
+   */
+  public String getTaxoTreeActionName() {
+    return taxoTreeActionName;
+  }
+  
+  /**
+   * Set action name of Taxonomy tree
+   * @param taxoTreeActionName
+   */
+  public void setTaxoTreeActionName(String taxoTreeActionName) {
+    this.taxoTreeActionName = taxoTreeActionName;
+  }
+  
+  /**
+   * Get targetPath of action
+   */
+  public String getTaxoTreeActionTargetPath() {
+    return taxoTreeActionTargetPath;
+  }
+
+  /**
+   * Set targetPath of action
+   * @param taxoTreeActionTargetPath
+   */
+  public void setTaxoTreeActionTargetPath(String taxoTreeActionTargetPath) {
+    this.taxoTreeActionTargetPath = taxoTreeActionTargetPath;
+  }
+
+  /**
+   * Get targetWorkspace of action
+   */
+  public String getTaxoTreeActionTargetWorkspace() {
+    return taxoTreeActionTargetWorkspace;
+  }
+
+  /**
+   * Set targetWorkspace of action
+   * @param taxoTreeActionTargetWorkspace
+   */
+  public void setTaxoTreeActionTargetWorkspace(String taxoTreeActionTargetWorkspace) {
+    this.taxoTreeActionTargetWorkspace = taxoTreeActionTargetWorkspace;
+  }
+
+  public String getTaxoTreeActionTypeName() {
+    return taxoTreeActionTypeName;
+  }
+
+  public void setTaxoTreeActionTypeName(String taxoTreeActionTypeName) {
+    this.taxoTreeActionTypeName = taxoTreeActionTypeName;
+  }
+
+  /**
+   * Check data in edited state or not
+   */
+  public boolean isEdit() {
+    return edit;
+  }
+
+  /**
+   * Set edit state
+   * @param edit
+   */
+  public void setEdit(boolean edit) {
+    this.edit = edit;
   }
 }
