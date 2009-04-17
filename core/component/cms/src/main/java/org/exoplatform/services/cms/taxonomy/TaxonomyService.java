@@ -168,7 +168,7 @@ public interface TaxonomyService {
    * @param taxonomyName The name of the taxonomy
    * @throws RepositoryException if the categories cannot be retrieved
    */
-  public List<String> getCategories(Node node, String taxonomyName) throws RepositoryException;
+  public List<Node> getCategories(Node node, String taxonomyName) throws RepositoryException;
 
   /**
    * Removes a category to the given node

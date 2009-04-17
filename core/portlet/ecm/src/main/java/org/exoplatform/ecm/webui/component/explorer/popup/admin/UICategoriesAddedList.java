@@ -25,7 +25,7 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
-import org.exoplatform.services.cms.categories.CategoriesService;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -71,18 +71,18 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
   
   public List<Node> getCategories() throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
-    CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
-    return categoriesService.getCategories(uiJCRExplorer.getCurrentNode(), uiJCRExplorer.getRepositoryName());
+    TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
+    return taxonomyService.getCategories(uiJCRExplorer.getCurrentNode(), "System");
   }
   
   @SuppressWarnings("unused")
   public void doSelect(String selectField, Object value) throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    CategoriesService categoriesService = getApplicationComponent(CategoriesService.class) ;
+    TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     try {
       Node currentNode = uiJCRExplorer.getCurrentNode();
       uiJCRExplorer.addLockToken(currentNode);
-      categoriesService.addCategory(currentNode, value.toString(), uiJCRExplorer.getRepositoryName()) ;
+      taxonomyService.addCategory(currentNode, "System", value.toString());
       uiJCRExplorer.getCurrentNode().save() ;
       uiJCRExplorer.getSession().save() ;
       updateGrid(1) ;
@@ -99,11 +99,10 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
       UIApplication uiApp = uiAddedList.getAncestorOfType(UIApplication.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
-      CategoriesService categoriesService = 
-        uiAddedList.getApplicationComponent(CategoriesService.class) ;
+      TaxonomyService categoriesService = 
+        uiAddedList.getApplicationComponent(TaxonomyService.class);
       try {
-        categoriesService.removeCategory(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName()) ;
-//        uiAddedList.updateGrid(categoriesService.getCategories(uiExplorer.getCurrentNode(), uiExplorer.getRepositoryName())) ;
+        categoriesService.removeCategory(uiExplorer.getCurrentNode(), "System", nodePath);
         uiAddedList.updateGrid(uiAddedList.getUIPageIterator().getCurrentPage());
       } catch(AccessDeniedException ace) {
         throw new MessageException(new ApplicationMessage("UICategoriesAddedList.msg.access-denied",
@@ -111,7 +110,7 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
       } catch(Exception e) {
         JCRExceptionManager.process(uiApp, e) ;
       }
-      uiManager.setRenderedChild("UICategoriesAddedList") ;
+      uiManager.setRenderedChild("UICategoriesAddedList");
     }
   }
 }

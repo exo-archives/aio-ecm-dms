@@ -60,7 +60,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
   private LinkManager            linkManager_;
 
   private final String           SQL_QUERY       = "Select * from exo:taxonomyLink where jcr:path like '$0/%' and exo:uuid = '$1'";
-
+                                                    
   List<TaxonomyPlugin>           plugins_        = new ArrayList<TaxonomyPlugin>();
 
   public TaxonomyServiceImpl(SessionProviderService providerService,
@@ -212,28 +212,32 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
   }
 
-  public List<String> getCategories(Node node, String taxonomyName) throws RepositoryException {
+  public List<Node> getCategories(Node node, String taxonomyName) throws RepositoryException {
+    List<Node> listCate = new ArrayList<Node>();
     if (node.isNodeType("mix:referenceable")) {
       String repository = ((ManageableRepository) node.getSession().getRepository())
           .getConfiguration().getName();
       Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName);
       if (rootNodeTaxonomy != null) {
-        String sql = StringUtils.replace(SQL_QUERY, "$0", rootNodeTaxonomy.getPath());
-        sql = StringUtils.replace(SQL_QUERY, "$1", node.getUUID());
+        System.out.println("\n\n" + rootNodeTaxonomy.getPath() + "\n\n");
+        String sql = null; 
+        sql = StringUtils.replace(SQL_QUERY, "$0", rootNodeTaxonomy.getPath());        
+        sql = StringUtils.replace(sql, "$1", node.getUUID());
         QueryManager queryManager = node.getSession().getWorkspace().getQueryManager();
         Query query = queryManager.createQuery(sql, Query.SQL);
         QueryResult result = query.execute();
         NodeIterator iterate = result.getNodes();
-        List<String> listCate = new ArrayList<String>();
+        //List<String> listCate = new ArrayList<String>();        
         while (iterate.hasNext()) {
           Node parentCate = iterate.nextNode().getParent();
-          listCate.add(parentCate.getPath());
+          //listCate.add(parentCate.getPath());
+          listCate.add(parentCate);
         }
         if (listCate.size() > 0)
           return listCate;
       }
     }
-    return null;
+    return listCate;
   }
 
   public void addCategory(Node node, String taxonomyName, String categoryPath)
@@ -248,7 +252,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
       String repository = ((ManageableRepository) node.getSession().getRepository())
           .getConfiguration().getName();
       Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName);
-      for (String categoryPath : categoryPaths) {
+      for (String categoryPath : categoryPaths) {        
         if (rootNodeTaxonomy.getPath().equals("/")) {
           category = categoryPath;
         } else if (!categoryPath.startsWith("/")) {
@@ -256,7 +260,14 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
         } else {
           category = rootNodeTaxonomy.getPath() + categoryPath;
         }
-        Node categoryNode = (Node) node.getSession().getItem(categoryPath);
+        Node categoryNode;
+        if (categoryPath.startsWith(rootNodeTaxonomy.getPath())) {
+          categoryNode = (Node) node.getSession().getItem(categoryPath);
+        } else {
+          categoryNode = (Node) node.getSession().getItem(category);
+          System.out.println("=====================================================================");
+        }
+                
         linkManager_.createLink(categoryNode, TAXONOMY_LINK, node, node.getName());
       }
     } catch (PathNotFoundException e) {
@@ -265,7 +276,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
   }
 
   public boolean hasCategories(Node node, String taxonomyName) throws RepositoryException {
-    List<String> listCate = getCategories(node, taxonomyName);
+    List<Node> listCate = getCategories(node, taxonomyName);
     if (listCate != null && listCate.size() > 0)
       return true;
     return false;
