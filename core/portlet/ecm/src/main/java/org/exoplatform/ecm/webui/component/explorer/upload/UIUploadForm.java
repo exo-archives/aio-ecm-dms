@@ -48,8 +48,8 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
-import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -67,7 +67,6 @@ import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupWindow;
-import org.exoplatform.webui.core.UIBreadcumbs.LocalPath;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -120,7 +119,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   final static public String FIELD_TAXONOMY = "fieldTaxonomy";
   final static public String FIELD_LISTTAXONOMY = "fieldListTaxonomy";
   final static public String POPUP_TAXONOMY = "UIPopupTaxonomy";
-  final static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
   
   private boolean isMultiLanguage_;
   private String language_;
@@ -154,14 +152,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   public String getPathTaxonomy() throws Exception {
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
     Session session = getAncestorOfType(UIJCRExplorer.class).getSession();
-    return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_DEFINITION_PATH))).getPath();
+    return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH))).getPath();
   }
   
   public void initFieldInput() throws Exception {
-    CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
+    TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     Node currentNode = uiExplorer.getCurrentNode();
-    if (categoriesService.hasCategories(currentNode)) {
+    if (taxonomyService.hasCategories(currentNode, "")) {
       Value[] values = currentNode.getProperty("exo:category").getValues();
       for (int i = 0; i < values.length; i++) {
         String path  = uiExplorer.getSession().getNodeByUUID(values[i].getString()).getPath();
@@ -235,7 +233,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIFormUploadInput input = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD);
       CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
-      CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
+      TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
       if(input.getUploadResource() == null) {
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
                                                 ApplicationMessage.WARNING)) ;
@@ -295,7 +293,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
             String value = uiStringInput.getValue().trim();
             listTaxonomyNameNew.add(value);
             if (value.startsWith("/"))
-              listTaxonomyNew.add(uiForm.getPathTaxonomy() + value);
+              listTaxonomyNew.add(uiForm.getPathTaxonomy()+ "" + value);
             else
               listTaxonomyNew.add(uiForm.getPathTaxonomy() + "/" + value);
           }
@@ -403,7 +401,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
                 newNode = Utils.findNodeByUUID(repository, newNodeUUID);
               }
               if(newNode != null) {
-              categoriesService.addMultiCategory(newNode, arrayTaxonomy, uiExplorer.getRepositoryName());
+              taxonomyService.addCategories(newNode, "System", arrayTaxonomy);
               selectedNode.getSession().save() ;                        
             }
             }
@@ -432,7 +430,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
               node.setProperty("exo:dateModified",new GregorianCalendar()) ;
             }
             if(arrayTaxonomy.length > 0) {
-              categoriesService.addMultiCategory(node, arrayTaxonomy, uiExplorer.getRepositoryName());
+              taxonomyService.addCategories(node, "System", arrayTaxonomy);
             }
             node.save();
           }
@@ -533,7 +531,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       UIOneTaxonomySelector uiOneTaxonomySelector = uiUploadManager.createUIComponent(UIOneTaxonomySelector.class, null, null);
       uiPopupWindow.setUIComponent(uiOneTaxonomySelector);
       uiOneTaxonomySelector.setIsDisable(workspaceName, false);
-      String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_DEFINITION_PATH);      
+      String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
       Session session = uiUploadForm.getAncestorOfType(UIJCRExplorer.class).getSession();
       Node rootTree = (Node) session.getItem(rootTreePath);      
       NodeIterator childrenIterator = rootTree.getNodes();

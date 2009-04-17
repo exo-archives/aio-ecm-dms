@@ -130,7 +130,7 @@ public class UITreeTaxonomyList extends UIForm {
     listNode = taxonomyService.getAllTaxonomyTrees(repository);
     List<SelectItemOption<String>> taxonomyTree = new ArrayList<SelectItemOption<String>>();
     for(Node itemNode : listNode) {
-      taxonomyTree.add(new SelectItemOption<String>(itemNode.getName(),  itemNode.getPath()));
+      taxonomyTree.add(new SelectItemOption<String>(itemNode.getName(), itemNode.getPath()));
     }
     UIFormSelectBox uiTreeTaxonomyList = getUIFormSelectBox(TAXONOMY_TREE);
     uiTreeTaxonomyList.setOptions(taxonomyTree);

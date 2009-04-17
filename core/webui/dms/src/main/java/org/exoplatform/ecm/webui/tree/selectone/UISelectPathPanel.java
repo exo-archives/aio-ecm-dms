@@ -29,7 +29,9 @@ import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.container.UIContainer;
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.ecm.publication.PublicationService;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIBreadcumbs;
@@ -165,18 +167,25 @@ public class UISelectPathPanel extends UIContainer {
     }
     return false;
   }
+  
+  public String getPathTaxonomy() throws Exception {
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    return nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
+  }
 
   static public class SelectActionListener extends EventListener<UISelectPathPanel> {
     public void execute(Event<UISelectPathPanel> event) throws Exception {
-      UISelectPathPanel uiDefault = event.getSource();      
-      UIContainer uiTreeSelector = uiDefault.getParent();
+      UISelectPathPanel uiSelectPathPanel = event.getSource();      
+      UIContainer uiTreeSelector = uiSelectPathPanel.getParent();
       UIBreadcumbs uiBreadcumbs = uiTreeSelector.getChild(UIBreadcumbs.class);
       String breadcumbsPaths = "";
       for(LocalPath iterLocalPath: uiBreadcumbs.getPath()) {
         breadcumbsPaths += "/" + iterLocalPath.getId();
       }
       String value = event.getRequestContext().getRequestParameter(OBJECTID);
-      value = breadcumbsPaths + value.substring(value.lastIndexOf("/"));
+      
+      //value = breadcumbsPaths + value.substring(value.lastIndexOf("/"));
+      value = breadcumbsPaths + value.substring(uiSelectPathPanel.getPathTaxonomy().length() + 1);
       if(uiTreeSelector instanceof UIOneNodePathSelector) {
         if(!((UIOneNodePathSelector)uiTreeSelector).isDisable()) {
           value = ((UIOneNodePathSelector)uiTreeSelector).getWorkspaceName() + ":" + value ;
@@ -185,7 +194,7 @@ public class UISelectPathPanel extends UIContainer {
       String returnField = ((UIBaseNodeTreeSelector)uiTreeSelector).getReturnFieldName();
       ((UISelectable)((UIBaseNodeTreeSelector)uiTreeSelector).getSourceComponent()).doSelect(returnField, value) ;
       
-      UIComponent uiOneNodePathSelector = uiDefault.getParent();
+      UIComponent uiOneNodePathSelector = uiSelectPathPanel.getParent();
       if (uiOneNodePathSelector instanceof UIOneNodePathSelector) {
         UIComponent uiComponent = uiOneNodePathSelector.getParent();
         if (uiComponent instanceof UIPopupWindow) {

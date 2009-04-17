@@ -883,7 +883,7 @@ public class UIActionBar extends UIForm {
       UIOneTaxonomySelector uiOneTaxonomySelector = uiManager.getChild(UIOneTaxonomySelector.class);
       uiOneTaxonomySelector.setIsDisable(workspaceName, true);
       uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, 
-          nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_DEFINITION_PATH));
+          nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH));
       uiOneTaxonomySelector.init(uiExplorer.getSessionProvider());
       UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
       uiOneTaxonomySelector.setSourceComponent(uiCateAddedList, null);

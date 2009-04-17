@@ -256,7 +256,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
         } else {
           category = rootNodeTaxonomy.getPath() + categoryPath;
         }
-        Node categoryNode = (Node) node.getSession().getItem(category);
+        Node categoryNode = (Node) node.getSession().getItem(categoryPath);
         linkManager_.createLink(categoryNode, TAXONOMY_LINK, node, node.getName());
       }
     } catch (PathNotFoundException e) {
