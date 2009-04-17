@@ -78,7 +78,7 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
     addChild(UIBreadcumbs.class, "BreadcumbOneTaxonomy", "BreadcumbOneTaxonomy");
     addChild(UITreeTaxonomyList.class, null, null);
     addChild(UITreeTaxonomyBuilder.class, null, UITreeTaxonomyBuilder.class.getSimpleName()+hashCode());
-    addChild(UISelectPathPanel.class, null, null);
+    addChild(UISelectTaxonomyPanel.class, null, null);
   }
   
   public void init(SessionProvider sessionProvider) throws Exception {
@@ -105,7 +105,7 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
       builder.setAllowPublish(allowPublish, publicationService, templates);
       builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);
       builder.setRootTreeNode(rootNode);
-      UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
+      UISelectTaxonomyPanel selectPathPanel = getChild(UISelectTaxonomyPanel.class);
       selectPathPanel.setAllowPublish(allowPublish, publicationService, templates);
       selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
       selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
@@ -191,7 +191,7 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
   }      
   
   public void onChange(final Node currentNode, Object context) throws Exception {
-    UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
+    UISelectTaxonomyPanel selectPathPanel = getChild(UISelectTaxonomyPanel.class);
     selectPathPanel.setParentNode(currentNode);
     selectPathPanel.updateGrid();
     UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class);
