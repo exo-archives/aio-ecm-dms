@@ -71,6 +71,7 @@
       <no-view-found>Il n'y a pas de vue disponible par rapport à vos droits d'accès dans le lecteur '{0}'</no-view-found>
       <access-denied>Accès interdit</access-denied>
       <empty-drives>Il n'y a pas de lécteur dans ce dépôt de données ou vous n'avez pas les droits requis pour accéder à au moins un lecteur de ce dépôt de données</empty-drives>
+      <workspace-not-exist>Le lecteur '{0}' a été sauvegardé ndas un espace de travail inconnu. Veuillez reconfigurer le lecteur.</workspace-not-exist>
     </msg>
   </UIDrivesBrowser>
   <!--
@@ -250,15 +251,6 @@
     </header>
   </UIPopupWindow>
   <!--
-  #to be translated
-  -->
-  <UIPopupTaxonomy>
-    <title>
-      <UICategoriesSelector>Add Categories</UICategoriesSelector>
-      <UIOneNodePathSelector>Ajouter des catégories</UIOneNodePathSelector>
-    </title>
-  </UIPopupTaxonomy>
-  <!--
   #########################################################################################
   #             org.exoplatform.ecm.webui.component.explorer.UIResourceForm #
   #########################################################################################
@@ -308,12 +300,6 @@
       <ViewRelations>Affichier/Masquer les relations</ViewRelations>
       <ShowJCRStructure>Affichier/Masquer la structure JCR brute</ShowJCRStructure>
     </tooltip>
-    <title>
-      <select-tab>Select tab</select-tab>
-      <SimpleSearch>Recherche Rapide</SimpleSearch>
-      <AdvanceSearch>Recherche Avancée</AdvanceSearch>
-      <SavedQueries>Requêtes Sauvegardées</SavedQueries>
-    </title>
     <msg>
       <cannot-action-in-rootnode>Action interdite sur le noeud racine</cannot-action-in-rootnode>
       <node-checkedin>Vous devez d'abord effectuer un check out</node-checkedin>
@@ -353,6 +339,12 @@
       <unsupported-multilanguage>Seuls les documents supportent le multilingue</unsupported-multilanguage>
       <multilang-checkedin>Vous devez d'abord effectuer un checkout avant de pouvoir ajouter une langue</multilang-checkedin>
     </msg>
+    <title>
+      <select-tab>Sélectioner l'onglet</select-tab>
+      <SimpleSearch>Recherche Rapide</SimpleSearch>
+      <AdvanceSearch>Recherche Avancée</AdvanceSearch>
+      <SavedQueries>Requêtes Sauvegardées</SavedQueries>
+    </title>
   </UIActionBar>
   <UIPopupMenu>
     <msg>
@@ -363,6 +355,7 @@
       <has-not-permission-unlok>Vous n'avez pas les droits suffisants pour déverrouiller ce noeud</has-not-permission-unlok>
       <bound-exception>Vous ne pouvez pas couper / coller un noeud sur lui-même</bound-exception>
       <bound-move-exception>Vous ne pouvez pas déplacer le noeud sur lui-même ou ses enfants.</bound-move-exception>
+      <does-not-support-auditing>Vous ne pouvez pas activer l'audit sur ce noeud</does-not-support-auditing>
       <can-not-rename-node>Vous n'avez pas les droits suffisants pour renommer ce noeud.</can-not-rename-node>
       <can-not-cut-node>Vous n'avez pas les droits suffisants pour couper ce noeud.</can-not-cut-node>
       <can-not-remove-node>Vous n'avez pas les droits suffisants pour supprimer ce noeud.</can-not-remove-node>
@@ -370,11 +363,10 @@
       <can-not-unlock-node>Vous n'avez pas les droits suffisants pour déverrouiller ce noeud.</can-not-unlock-node>
       <no-node>Aucun noeud n'a été sélectionné.</no-node>
       <can-not-paste-node>Vous n'avez pas les droits suffisants pour coller ce noeud.</can-not-paste-node>
-      <can-not-move-node>You don't have permission to move to this node. Please contact with administrator to get correct right.</can-not-move-node>
+      <can-not-move-node>Vous n'avez pas les droits requis pour supprimer ce noeud.</can-not-move-node>
       <does-not-support-versioning>Le versioning n'est pas supporté par ce noeud</does-not-support-versioning>
       <path-not-found>Ce noeud a été modifié ou supprimé, veuillez cliquer sur le bouton "Actualiser"</path-not-found>
       <paste-lock-exception>Impossible de coller le noeud car le noeud source ou le noeud cible est verrouillé ou possède une relation avec un noeud verrouillé.</paste-lock-exception>
-      <does-not-support-auditing><![CDATA[Vous ne pouvez pas activer la tra&ccedil;abilit&eacute; pour ce noeud]]></does-not-support-auditing>
       <can-not-checkin-node>Vous ne pouvez pas faire de check-in sur ce noeud. Veuillez vérifier vos permissions!</can-not-checkin-node>
       <can-not-checkout-node>Vous ne pouvez pas faire de check-out sur ce noeud. Veuillez vérifier vos permissions!</can-not-checkout-node>
       <move-constraint-exception>Des contraintes sont violées si le noeud est déplacé. Veuillez vérifier le noeud source et le noeud destination.</move-constraint-exception>
@@ -437,7 +429,7 @@
     <msg>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
       <confirm-delete-multi>Etes vous certains de vouloir déplacer ces {0} éléments vers la corbeille?</confirm-delete-multi>
-      <confirm-move>Are you sure want to move?</confirm-move>
+      <confirm-move>Souhaitez-vous vraiment déplacer ce(s) noeud(s)?</confirm-move>
       <node-cut>Le noeud '{0}' a été coupé.</node-cut>
       <execute-successfully>L'action '{0}' a été exécutée.</execute-successfully>
       <save-node-success>Le noeud '{0}' a été sauvegardé.</save-node-success>
@@ -475,8 +467,8 @@
     <msg>
       <access-denied>Accès interdit</access-denied>
       <null-exception>Elément non trouvé ! Il a été supprimé ou modifié, ou vous n'avez pas le droit d'accéder à ce noeud !</null-exception>
-      <access-denied-exception>Accès interdit ! Veuillez vérifier vos droits d'accès à ce noeud</access-denied-exception>
       <confirm-deleteattachment>Confirmez-vous la suppression du fichier attaché?</confirm-deleteattachment>
+      <access-denied-exception>Accès interdit ! Veuillez vérifier vos droits d'accès à ce noeud</access-denied-exception>
     </msg>
     <tooltip>
       <remove-attachment>Supprimer le fichier attaché</remove-attachment>
@@ -609,8 +601,8 @@
       <UIDocumentInfo>Vue document</UIDocumentInfo>
       <UICategoriesSelectPanel>Selectionner des catégories</UICategoriesSelectPanel>
       <UISelectedCategoriesGrid>Catégories référencées</UISelectedCategoriesGrid>
-      <UIWorkflowPublicationActionForm>Workflow Publication Action</UIWorkflowPublicationActionForm>
-      <UIWorkflowPublicationViewForm>Workflow Publication View</UIWorkflowPublicationViewForm>
+      <UIWorkflowPublicationActionForm>Action sur le Workflow de Publication</UIWorkflowPublicationActionForm>
+      <UIWorkflowPublicationViewForm>Vue du Workflow de Publication</UIWorkflowPublicationViewForm>
     </title>
   </UITabPane>
   <UIPropertyTab>
@@ -807,7 +799,6 @@
       <upload>Sélectionner un fichier</upload>
       <name>Nom</name>
       <fieldListTaxonomy>Liste des taxonomies</fieldListTaxonomy>
-      <fieldTaxonomy>Ajouter une taxonomie</fieldTaxonomy>
     </label>
     <action>
       <Save>#{word.save}</Save>
@@ -1236,6 +1227,12 @@
       <UIUserContainer>Sélectionner des permissions utilisateur</UIUserContainer>
     </title>
   </PopupUserSelector>
+  <UIPopupTaxonomy>
+    <title>
+      <UICategoriesSelector>Ajouter des Catégories</UICategoriesSelector>
+      <UIOneNodePathSelector>Ajouter des Catégories</UIOneNodePathSelector>
+    </title>
+  </UIPopupTaxonomy>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo       #
@@ -1266,6 +1263,8 @@
   ################################################################################
   #  org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo
   ################################################################################
+  e_
+  
   -->
   <UIAuditingInfo>
     <msg>
@@ -1305,6 +1304,7 @@
       <version>Version</version>
     </label>
   </UIAuditingInfo>
+  
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
@@ -1318,21 +1318,6 @@
       <button-cancel>Annuler</button-cancel>
     </label>
   </UIActivateVersion>
-  <!--
-  ###############################################################################
-  #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateAuditing  #
-  ###############################################################################
-  -->
-  <UIActivateAuditing>
-    <label>
-      <note><![CDATA[La tra&ccedil;abilit&eacute; n'a pas &eacute;t&eacute; activ&eacute; pour ce noeud]]></note>
-      <question>Confirmez-vous l'activation ?</question>
-    </label>
-    <action>
-      <activate>Activer</activate>
-      <cancel>Cancel</cancel>
-    </action>
-  </UIActivateAuditing>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivePublication #
@@ -1362,6 +1347,16 @@
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateAuditing  #
   ###############################################################################
   -->
+  <UIActivateAuditing>
+    <label>
+      <note><![CDATA[La tra&ccedil;abilit&eacute; n'a pas &eacute;t&eacute; activ&eacute; pour ce noeud]]></note>
+      <question>Confirmez-vous l'activation ?</question>
+    </label>
+    <action>
+      <activate>Activer</activate>
+      <cancel>Cancel</cancel>
+    </action>
+  </UIActivateAuditing>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIDiff   #
@@ -1508,7 +1503,7 @@
   </UITreeList>
   <!--
   ################################################################################
-  #       org.exoplatform.ecm.webui.component.explorer.admin.UICategoryManager #
+  #       org.exoplatform.ecm.webui.component.explorer.admin.UIRelationManager #
   ################################################################################
   -->
   <UIRelationManager>
@@ -1571,18 +1566,6 @@
   <UISelectDocumentForm>
     <label>
       <selectTemplate>Sélectionner un formulaire</selectTemplate>
-      <name>Nom</name>
-      <title>Titre</title>
-      <link>Lien</link>
-      <author>Auteur</author>
-      <category>Catégorie</category>
-      <explicit>Explicite</explicit>
-      <keywords>Mots clés</keywords>
-      <pubDate>Date de Publication</pubDate>
-      <description>Description</description>
-      <uploadFile>Fichier Média à uploader</uploadFile>
-      <mimeType>MimeType du Média</mimeType>
-      <lenght>Longueur</lenght>
     </label>
   </UISelectDocumentForm>
   <!--

@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bundle>
   <!--
-  ###################################################################
-  #      WARNING THIS FILE MUST BE ENCODED IN UTF-8 FORMAT          #
-  ###################################################################
   ###################### global word for ECM dialogs resoucebundle ####
   -->
   <Ecm>
@@ -36,6 +33,38 @@
       <no-view>Ce noeud ou ce formulaire a été supprimé ou modifié. Veuillez cliquer sur le bouton "Actualiser".</no-view>
     </msg>
   </Article>
+  <UIDocumentForm>
+    <label>
+      <title>#{word.title}</title>
+      <link>Lien</link>
+      <contentHtml>#{word.content}</contentHtml>
+      <content>#{word.content}</content>
+      <contentPlain>#{word.content}</contentPlain>
+      <name>Nom</name>
+    </label>
+  </UIDocumentForm>
+  <!--
+  ###################### resoucebundle for exo:podcast dialogs template ####
+  -->
+  <Podcast>
+    <dialog>
+      <label>
+        <name>Nom</name>
+        <categories>Catégories</categories>
+        <title>Titre</title>
+        <link>Lien</link>
+        <author>Auteur</author>
+        <explicit>Explicite</explicit>
+        <category>Catégorie</category>
+        <keywords>Mot Clé</keywords>
+        <publish-date>Date de Publication</publish-date>
+        <description>Description</description>
+        <upload-file>Uploader un Fichier</upload-file>
+        <mime-type>Type Mime</mime-type>
+        <lenght>Longueur</lenght>
+      </label>
+    </dialog>
+  </Podcast>
   <!--
   ###################### resoucebundle for exo:calendar dialogs template ####
   -->
@@ -87,19 +116,20 @@
     <dialog>
       <label>
         <name>#{word.name}</name>
-        <record-properties>Propriétés du Record</record-properties>
+        <categories>Catégories</categories>
+        <record-properties>Propriétés de l'Enregistrement</record-properties>
         <process-properties>Propriétés du Processus</process-properties>
         <note>Note du File Plan</note>
-        <record-category-identifier>Identification de la catégorie du Record</record-category-identifier>
+        <record-category-identifier>Identification de la catégorie de l'Enregistrement</record-category-identifier>
         <disposition-author>Auteur de la disposition</disposition-author>
         <disposition-instruction>Instructions de la disposition</disposition-instruction>
-        <permanent-record-indicator>Indicateur de Record permanent</permanent-record-indicator>
-        <contain-record-folder>Dossier contenant le Record</contain-record-folder>
+        <permanent-record-indicator>Indicateur d'enregistrement permanent</permanent-record-indicator>
+        <contain-record-folder>Dossier contenant l'Enregistrement</contain-record-folder>
         <default-media-type>Type de média par défaut</default-media-type>
         <default-marking-list>Liste de marquage par défaut</default-marking-list>
         <default-originating-organization>Organisation émettrice par défaut</default-originating-organization>
-        <vital-record-indicator>Indicateur de Record vital</vital-record-indicator>
-        <vital-record-review-period>Période de revue pour les Records vitaux</vital-record-review-period>
+        <vital-record-indicator>Indicateur d'enregistrement vital</vital-record-indicator>
+        <vital-record-review-period>Période de revue pour les enregistrements vitaux</vital-record-review-period>
         <process-cutoff>Processus de prélèvement</process-cutoff>
         <event-trigger>Déclenchement d'évènement</event-trigger>
         <cutoff-period>Période de prélèvement</cutoff-period>
@@ -130,34 +160,13 @@
     </dialog>
   </Kofax>
   <!--
-  ################resoucebundle for exo:podcast dialogs template ##############
-  -->
-  <Podcast>
-    <dialog>
-      <label>
-        <name>Nom</name>
-        <categories>Catégories</categories>
-        <podcast>Podcast</podcast>
-        <title>Titre</title>
-        <link>Lien</link>
-        <author>Auteur</author>
-        <explicit>Explicite</explicit>
-        <category>#{word.category}</category>
-        <keyword>Mots clés</keyword>
-        <publish-date>Date de publication</publish-date>
-        <mime-type>Type Mime</mime-type>
-        <length>Longueur</length>
-        <description>Description</description>
-      </label>
-    </dialog>
-  </Podcast>
-  <!--
   ###################### resoucebundle for exo:sample dialogs template ####
   -->
   <Sample>
     <dialog>
       <label>
         <name>#{word.name}</name>
+        <categories>Catégories</categories>
         <title>#{word.title}</title>
         <description>#{word.description}</description>
         <date>#{word.date}</date>
@@ -185,6 +194,28 @@
       </label>
     </dialog>
   </Workflow>
+  <UIActionForm>
+    <label>
+      <description>#{word.description}</description>
+      <port>Port</port>
+      <userName>#{word.userName}</userName>
+      <password>Mot de Passe</password>
+      <link>Lien</link>
+      <to>Envoyer un Email à</to>
+      <actionName>#{word.name}</actionName>
+    </label>
+  </UIActionForm>
+  <EditFormAction>
+    <label>
+      <description>#{word.description}</description>
+      <port>Port</port>
+      <userName>#{word.userName}</userName>
+      <password>Mot de Passe</password>
+      <link>Lien</link>
+      <to>Envoyer un Email à</to>
+      <actionName>#{word.name}</actionName>
+    </label>
+  </EditFormAction>
   <!--
   ###################### resoucebundle for exo:bacupAction dialogs template ####
   -->
@@ -319,18 +350,6 @@
       </label>
     </dialog>
   </SendMail>
-  <UIActionForm>
-    <label>
-      <to>Send mail to</to>
-      <actionName>#{word.name}</actionName>
-    </label>
-  </UIActionForm>
-  <EditFormAction>
-    <label>
-      <to>Send mail to</to>
-      <actionName>#{word.name}</actionName>
-    </label>
-  </EditFormAction>
   <!--
   ###################### resoucebundle for exo:transformBinaryToTextAction dialogs template ####
   -->
@@ -625,29 +644,6 @@
     </dialog>
   </VitalRecord>
   <!--
-  ###################### resoucebundle exo:contentPublishing dialogs template ####
-  -->
-  <ContentPublishing>
-    <dialog>
-      <label>
-        <id>Id</id>
-        <name>#{word.name}</name>
-        <lifecycle>#{Ecm.dialog.label.lifecycle}</lifecycle>
-        <description>#{word.description}</description>
-        <validator>Validateur</validator>
-        <supervisor>Superviseur</supervisor>
-        <public-workspace>Espace de publication</public-workspace>
-        <public-path>Emplacement de la publication</public-path>
-        <pending-workspace>Espace de mise en attente</pending-workspace>
-        <pending-path>Emplacement de la mise en attente</pending-path>
-        <backup-workspace>Espace de sauvegarde</backup-workspace>
-        <backup-path>Emplacement de la sauvegarde</backup-path>
-        <trash-workspace>Espace de la corbeille</trash-workspace>
-        <trash-path>Emplacement de la corbeille</trash-path>
-      </label>
-    </dialog>
-  </ContentPublishing>
-  <!--
   ##################### resoucebundle for resouce container dialogs template#####
   -->
   <ResouceContainer>
@@ -660,5 +656,23 @@
       </label>
     </dialog>
   </ResouceContainer>
+  <!--
+  ###################### resoucebundle for validator ####
+  -->
+  <EmailAddressValidator>
+    <msg>
+      <Invalid-input>L'adresse Email est invalide !</Invalid-input>
+    </msg>
+  </EmailAddressValidator>
+  <EmptyFieldValidator>
+    <msg>
+      <empty-input>Le champs '{0}' est requis. Veuillez saisir une valeur.</empty-input>
+    </msg>
+  </EmptyFieldValidator>
+  <NumberFormatValidator>
+    <msg>
+      <Invalid-number>Le champs '{0}' est invalid.</Invalid-number>
+    </msg>
+  </NumberFormatValidator>
 </bundle>
 

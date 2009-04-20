@@ -9,7 +9,7 @@
   <sitemap>Карта Сайта</sitemap>
   <news>Новости</news>
   <ideas>
-    Ideas
+    <title>Ideas</title>
     <read>Read Ideas</read>
     <write>Write Ideas</write>
   </ideas>

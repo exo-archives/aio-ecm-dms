@@ -449,7 +449,6 @@
       <Invalid-char5>Gần kí tự '~' không được phép có khoảng trống</Invalid-char5>
     </msg>
   </SearchValidator>
-  
   <!--
   ######################################################################################
   # Since ECM 2.3

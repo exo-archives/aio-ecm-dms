@@ -9,7 +9,7 @@
     <tab>
       <label>
         <UIPathConfig>Configuratie pad</UIPathConfig>
-        <UINewConfigForm>Cre�er Nieuw</UINewConfigForm>
+        <UINewConfigForm>Nieuwe</UINewConfigForm>
       </label>
     </tab>
   </UIConfigTabPane>
@@ -104,6 +104,16 @@
   #      org.exoplatform.ecm.webui.component.browse.UIQueryConfig #
   ###################################################################
   -->
+  <path>
+    <title>
+      <AddPath>Pad toevoegen</AddPath>
+    </title>
+  </path>
+  <rootNodeInfo>
+    <title>
+      <AddRootNode>Toevoegen Root Node</AddRootNode>
+    </title>
+  </rootNodeInfo>
   <!--
   #############################################################
   # org.exoplatform.ecm.webui.component.UIVoteForm.gtmpl		#
@@ -201,7 +211,7 @@
       <workspace>Werkruimte</workspace>
       <browseType>Inhoud navigeren</browseType>
     </label>
-    <title>Nieuw cre�eren</title>
+    <title>Nieuwe</title>
     <action>
       <Next>Volgende</Next>
       <Back>#{word.back}</Back>
@@ -305,7 +315,16 @@
       <summary>Samenvatting</summary>
       <more>Meer documenten</more>
       <previous>Vorige zicht</previous>
+      <path-Previous>Previous</path-Previous>
+      <path-Root>Root</path-Root>
+      <home>Home</home>
+      <cannot-access>Access denied. Maybe you don't have view permission in this portlet configuration.</cannot-access>
     </label>
+    <title>
+      <home>Home</home>
+      <prevTabs>Previous Tabs</prevTabs>
+      <moreTabs>More Tabs</moreTabs>
+    </title>
     <msg>
       <template-notsupported>Geen view template om te laden</template-notsupported>
       <invalid-node>Vermiste node : werd verplaatst of verwijderd</invalid-node>
@@ -429,5 +448,38 @@
       <confirm-delete>Bent u zeker om te verwijderen?</confirm-delete>
     </msg>
   </UIFormInputSetWithAction>
+  <!--
+  ###################################################################################
+  # org.exoplatform.ecm.jcr.SearchValidator																			#
+  ###################################################################################
+  -->
+  <SearchValidator>
+    <msg>
+      <empty-input>The value of this field is null or empty!</empty-input>
+      <Invalid-char>There are some invalid characters in this field. Type another value, please!</Invalid-char>
+      <Invalid-char2>Number must be following the char '~'</Invalid-char2>
+      <Invalid-char1>Number follow the char '~' must between 0 to 1</Invalid-char1>
+      <Invalid-char3>Number must be following the char '^'</Invalid-char3>
+      <Invalid-char4>No space is allowed near the char '~'</Invalid-char4>
+      <Invalid-char5>No space is allowed near the char '^'</Invalid-char5>
+    </msg>
+  </SearchValidator>
+  <!--
+  ######################################################################################
+  # Since ECM 2.3
+  ######################################################################################
+  -->
+  <UIPathConfig>
+    <label>
+      <searchEnable>Enable search location</searchEnable>
+      <searchLocation>Search location</searchLocation>
+      <searchPath>UIPathConfig</searchPath>
+      <explain></explain>
+    </label>
+    <msg>
+      <enter-search-location>You have to specify the search location</enter-search-location>
+      <explain>When the path shown in Browse Content corresponds to a hierarchy of categories, it is needed to specify the path where documents are actually stored, so that they can be found by the search feature of the Portlet.</explain>
+    </msg>
+  </UIPathConfig>
 </bundle>
 

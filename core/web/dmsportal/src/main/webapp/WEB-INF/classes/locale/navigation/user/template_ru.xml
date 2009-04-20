@@ -5,7 +5,7 @@
   <sitemap>Карта сайта</sitemap>
   <news>Новости</news>
   <ideas>
-    Идеи
+    <title>Идеи</title>
     <read>Читать идеи</read>
     <write>Написать идею</write>
   </ideas>

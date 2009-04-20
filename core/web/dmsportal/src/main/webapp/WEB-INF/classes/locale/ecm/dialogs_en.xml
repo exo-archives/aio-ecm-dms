@@ -61,7 +61,7 @@
         <description>Description</description>
         <upload-file>Upload File</upload-file>
         <mime-type>Mime Type</mime-type>
-        <lenght>Lenght</lenght>
+        <lenght>Length</lenght>
       </label>
     </dialog>
   </Podcast>

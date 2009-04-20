@@ -96,12 +96,8 @@
     <label>
       <workspaceName>Werkruimte</workspaceName>
       <rootNodeInfo>Root pad</rootNodeInfo>
-      <rootPath>Root pad</rootPath>
     </label>
   </UIWorkspaceList>
-  <!--
-  # to be translated
-  -->
   <UITabPane>
     <title>
       <UICategoriesSelectPanel>Select categories</UICategoriesSelectPanel>
@@ -113,5 +109,10 @@
       <UICategoriesSelector>Add Categories</UICategoriesSelector>
     </title>
   </PopupComponent>
+  <UICategoriesSelector>
+    <action>
+      <close>Close</close>
+    </action>
+  </UICategoriesSelector>
 </bundle>
 

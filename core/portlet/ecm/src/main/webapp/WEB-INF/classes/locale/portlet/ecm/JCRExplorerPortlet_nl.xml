@@ -71,6 +71,7 @@
       <no-view-found>Er is geen enkele view for uw schijven rechten  '{0}'</no-view-found>
       <access-denied>Toegang geweigerd! U hebt misschien geen recht op werkruimte van schijf '{0}'</access-denied>
       <empty-drives>Er is geen schijf in deze repository of u hebt geen toegang op schijven van deze repository</empty-drives>
+      <workspace-not-exist>The drive '{0}' was stored in one unrecognized workspace. Please reconfig for this drive.</workspace-not-exist>
     </msg>
   </UIDrivesBrowser>
   <!--
@@ -111,16 +112,14 @@
   <UIViewBar>
     <label>
       <driveWorkspace>werkruimte schijven :</driveWorkspace>
-      <currentDrive>Current drive</currentDrive>
-      <selectView>Select view</selectView>
-      <showSideBar>Show side bar</showSideBar>
-    </label>
-    <title>
       <backToJCR>Terug naar JCR pirmaire schijven</backToJCR>
       <setUpBrowser>Configureer uw navigatie voorkeuren</setUpBrowser>
       <refesh>Herlaad</refesh>
       <saveSession>Sessie opslaan</saveSession>
-    </title>
+      <currentDrive>Current drive</currentDrive>
+      <selectView>Select view</selectView>
+      <showSideBar>Show side bar</showSideBar>
+    </label>
   </UIViewBar>
   <Views>
     <label>
@@ -220,6 +219,8 @@
       <UINodeTypeInfo>NodeType Infomatie</UINodeTypeInfo>
       <UIVersionInfo>Versie Info</UIVersionInfo>
       <UIActivateVersion>Activateer Versie</UIActivateVersion>
+      <UIAuditingInfo>Auditing Information</UIAuditingInfo>
+      <UIActivateAuditing>Activate Auditing</UIActivateAuditing>
       <UIPermissionManager>Rechten beheer</UIPermissionManager>
       <UIPropertiesManager>Eigenschappen beheer</UIPropertiesManager>
       <UIECMSearch>geavanceerd Zoeken</UIECMSearch>
@@ -236,6 +237,9 @@
       <UIVoteForm>Stem Document</UIVoteForm>
       <UICommentForm>Commentaar toevoegen</UICommentForm>
       <UIPreferencesForm>Voorkeuren Setting</UIPreferencesForm>
+      <UIPublicationManager>Manage publication</UIPublicationManager>
+      <UIConfirmMessage>Confirm delete</UIConfirmMessage>
+      <UIActivePublication>Enrol to publication lifecycle</UIActivePublication>
       <UITaggingForm>Tagging dit document</UITaggingForm>
       <UIMultiLanguageForm>Multi taal</UIMultiLanguageForm>
       <UIMultiLanguageManager>Multi taal</UIMultiLanguageManager>
@@ -246,15 +250,6 @@
       <path>Pad</path>
     </header>
   </UIPopupWindow>
-  <!--
-  #to be translated
-  -->
-  <UIPopupTaxonomy>
-    <title>
-      <UICategoriesSelector>Add Categories</UICategoriesSelector>
-      <UIOneNodePathSelector>Add Categories</UIOneNodePathSelector>
-    </title>
-  </UIPopupTaxonomy>
   <!--
   #########################################################################################
   #             org.exoplatform.ecm.webui.component.explorer.UIResourceForm #
@@ -287,14 +282,15 @@
       <MultiLanguage>localised inhoud toevoegen/wijzigen</MultiLanguage>
       <Vote>Stem voor document</Vote>
       <Comment>Geef Commentaar op dit document</Comment>
-      <OverloadThumbnail>Overload thumbnail</OverloadThumbnail>
       <ManageVersions>Versies beheren</ManageVersions>
+      <ManageAuditing>Manage Auditing</ManageAuditing>
+      <ManagePublications>Manage Publications</ManagePublications>
       <ManageCategories>Categories beheren</ManageCategories>
       <ManageRelations>Relaties beheren</ManageRelations>
-      <ManagePublications>Manage Publications</ManagePublications>
       <ManageActions>Acties beheren</ManageActions>
       <ExportNode>Exporteer Node</ExportNode>
       <ImportNode>Importeer Node</ImportNode>
+      <OverloadThumbnail>Overload thumbnail</OverloadThumbnail>
       <ManageHidden>Hide/Show content</ManageHidden>
       <ViewReferences>Toon Referenties</ViewReferences>
       <ViewNodeType>Toon Node Types</ViewNodeType>
@@ -304,16 +300,20 @@
       <ViewRelations>Relaties tonen/verbergen</ViewRelations>
       <ShowJCRStructure>Als JCR Structure Add/Edit</ShowJCRStructure>
     </tooltip>
-    <title>
-      <select-tab>Select tab</select-tab>
-      <SimpleSearch>Snel zoeken</SimpleSearch>
-      <AdvanceSearch>geavanceerd zoeken</AdvanceSearch>
-      <SavedQueries>Opgeslangen queries</SavedQueries>
-    </title>
     <msg>
       <cannot-action-in-rootnode>U kan geen acties uitvoeren in root node</cannot-action-in-rootnode>
       <node-checkedin>U moet eerst check out</node-checkedin>
       <cannot-enable-version-rootnode>Kan versie niet activeren voor root node</cannot-enable-version-rootnode>
+      <cannot-enable-publication-rootnode>Can not enable publication for root node</cannot-enable-publication-rootnode>
+      <manage-publication>
+        <not-supported-nodetype>The publication support document node only.</not-supported-nodetype>
+        <no-publication-lifecycle>No publication lifecycle is configured.</no-publication-lifecycle>
+      </manage-publication>
+      <unsubcriber-lifecycle>
+        The node already was unsubcribed lifecycle
+        <not-supported-nodetype>The unsubcriber lifecycle support document node only.</not-supported-nodetype>
+      </unsubcriber-lifecycle>
+      <unsubcriber-lifecycle-finish>The node is unsubcribed successfully</unsubcriber-lifecycle-finish>
       <access-false>node is niet artikel of checked in !</access-false>
       <unsupported-action>node ondersteund niet relaties</unsupported-action>
       <not-relationable>Node nog geen relatie</not-relationable>
@@ -330,10 +330,6 @@
       <access-add-denied>toegang geweigerd. U hebt geen 'toevoegen' rechten in deze node</access-add-denied>
       <removed-hidden-mixin>You removed hidden mixin successfully!</removed-hidden-mixin>
       <added-hidden-mixin>You added hidden mixin successfully!</added-hidden-mixin>
-      <unsubcriber-lifecycle>
-        The node already was unsubcribed lifecycle
-        <not-supported-nodetype>The unsubcriber lifecycle support document node only.</not-supported-nodetype>
-      </unsubcriber-lifecycle>
       <not-supported>Functie is alleen ondersteund voor document type</not-supported>
       <empty-file-type>Lkan document niet toevoegen aan deze node.</empty-file-type>
       <unsupported-watch>Allen document node kan watched zijn</unsupported-watch>
@@ -342,16 +338,14 @@
       <tagnode-checkedin>u moet eerst check out node voor het  tagging</tagnode-checkedin>
       <unsupported-multilanguage>U kan geen talen toevoegen aan deze node. Omdat node is geen document type of is gemengd met andere types.</unsupported-multilanguage>
       <multilang-checkedin>U moet check out node voor het toevoegen van taal</multilang-checkedin>
-      <manage-publication>
-        <not-supported-nodetype>The publication support document node only.</not-supported-nodetype>
-        <no-publication-lifecycle>No publication lifecycle is configured.</no-publication-lifecycle>
-      </manage-publication>
-      <unsubcriber-lifecycle-finish>The node is unsubcribed successfully</unsubcriber-lifecycle-finish>
     </msg>
+    <title>
+      <select-tab>Select tab</select-tab>
+      <SimpleSearch>Snel zoeken</SimpleSearch>
+      <AdvanceSearch>geavanceerd zoeken</AdvanceSearch>
+      <SavedQueries>Opgeslangen queries</SavedQueries>
+    </title>
   </UIActionBar>
-  <!--
-  #       Need to be translated                       #
-  -->
   <UIPopupMenu>
     <msg>
       <has-not-permission>toegang geweigerd. U hebt geen 'toevoegen' rechten in deze node</has-not-permission>
@@ -361,6 +355,7 @@
       <has-not-permission-unlok>u hebt geen recht op deze node vrij te maken</has-not-permission-unlok>
       <bound-exception>U kan dit niet knippen en plakken in zijn sub node</bound-exception>
       <bound-move-exception>You can not move to itself or in its sub node</bound-move-exception>
+      <does-not-support-auditing>You cannot activate auditing on this node</does-not-support-auditing>
       <can-not-rename-node>U hebt geen recht om deze node te hernoemen. contacteer uw beheerder</can-not-rename-node>
       <can-not-cut-node>U hebt geen recht om deze node te knippen. contacteer uw beheerder</can-not-cut-node>
       <can-not-remove-node>U hebt geen recht om deze node te verwijderen. contacteer uw beheerder</can-not-remove-node>
@@ -472,8 +467,8 @@
     <msg>
       <access-denied>toegang geweigerd! U heeft geen toegang op node '{0}'</access-denied>
       <null-exception>Object niet gevonden! Het werd verwijderd of gewijzigd of u hebt geen toegang tot deze node!</null-exception>
-      <access-denied-exception>toegang geweigerd! U hebt geen recht op lezen, verwijderen of wijzigen</access-denied-exception>
       <confirm-deleteattachment>Do you want to remove this attachment file?</confirm-deleteattachment>
+      <access-denied-exception>toegang geweigerd! U hebt geen recht op lezen, verwijderen of wijzigen</access-denied-exception>
     </msg>
     <tooltip>
       <remove-attachment>Remove this attachment file</remove-attachment>
@@ -485,19 +480,12 @@
         <name>naam</name>
         <versionable>Versionable</versionable>
         <exo_owner>Eigenaar</exo_owner>
+        <auditing>Auditing</auditing>
         <exo_dateCreated>Datum aangemaakt</exo_dateCreated>
         <exo_dateModified>Datum gewijzigd</exo_dateModified>
       </label>
     </view>
   </ListView>
-  <!--
-  #####################################################################
-  # Need to be translated
-  ######################################################################
-  -->
-  <!--
-  #to be translated
-  -->
   <!--
   #############################################################################
   #             org.exoplatform.ecm.webui.component.explorer.ECMContextMenu  	#
@@ -595,6 +583,7 @@
       <AdvancedSearchResult>Zoek resultaten</AdvancedSearchResult>
       <UISimpleSearch>Eenvoudig zoeken</UISimpleSearch>
       <UISearchContainer>geavanceerd zoeken</UISearchContainer>
+      <UICategoryManagerSearch>Add category to search</UICategoryManagerSearch>
       <UIConstraintsForm>Beperkings Formulier</UIConstraintsForm>
       <UIViewSearchResult>Toon inhoud</UIViewSearchResult>
       <UIContentNameSearch>Zoek op naam</UIContentNameSearch>
@@ -605,6 +594,9 @@
       <UIActionViewContainer>Actie info</UIActionViewContainer>
       <UIMultiLanguageForm>Toon taal</UIMultiLanguageForm>
       <UIAddLanguageContainer>taal toevoegen</UIAddLanguageContainer>
+      <UINonPublishedForm>State</UINonPublishedForm>
+      <UIPublishedForm>State</UIPublishedForm>
+      <UIPublicationLogList>History</UIPublicationLogList>
       <UIDocumentWithTree>bestandszicht</UIDocumentWithTree>
       <UIDocumentInfo>Document zicht</UIDocumentInfo>
       <UICategoriesSelectPanel>Select categories</UICategoriesSelectPanel>
@@ -659,6 +651,8 @@
     </label>
     <action>
       <Save>#{word.save}</Save>
+      <Cancel>Cancel</Cancel>
+      <Reset>Reset</Reset>
     </action>
     <msg>
       <name-invalid>Geef naam !</name-invalid>
@@ -805,7 +799,6 @@
       <upload>Selecteer  bestand</upload>
       <name>naam</name>
       <fieldListTaxonomy>List Taxonomy</fieldListTaxonomy>
-      <fieldTaxonomy>Add Taxonomy</fieldTaxonomy>
     </label>
     <action>
       <Save>#{word.save}</Save>
@@ -821,12 +814,6 @@
       <lock-exception>Node is op slot.</lock-exception>
     </msg>
   </UIUploadForm>
-  <!--
-  #to be translated
-  -->
-  <!--
-  #to be translated
-  -->
   <UIUploadContent>
     <label>
       <fileName>bestandsnaam</fileName>
@@ -847,9 +834,6 @@
       <has-not-template>Template va, '{0}' is null of leeg.</has-not-template>
     </msg>
   </UIUploadContent>
-  <!--
-  #to be translated
-  -->
   <UIUploadContainer>
     <action>
       <Close>#{word.close}</Close>
@@ -917,6 +901,13 @@
   #                    org.exoplatform.ecm.webui.component.explorer.search		  #
   ###############################################################################
   -->
+  <UICategoryManagerSearch>
+    <tab>
+      <label>
+        <UIOneNodePathSelector>Choose category</UIOneNodePathSelector>
+      </label>
+    </tab>
+  </UICategoryManagerSearch>
   <UIContentNameSearch>
     <label>
       <keyword>inhoudsnaam</keyword>
@@ -971,7 +962,20 @@
       <path>pad</path>
       <action>Actie</action>
       <shortcutPath>pad</shortcutPath>
+      <type>Type</type>
+      <dateCreated>Date created</dateCreated>
+      <score>Score</score>
     </header>
+    <title>
+      <typeASC>Sort by document type in ascending</typeASC>
+      <typeDESC>Sort by document type in descending</typeDESC>
+      <scoreASC>Sort by score in ascending</scoreASC>
+      <scoreDESC>Sort by score in descending</scoreDESC>
+      <nameASC>Sort by name in ascending</nameASC>
+      <nameDESC>Sort by name in descending</nameDESC>
+      <datecreatedASC>Sort by Created date in ascending</datecreatedASC>
+      <datecreatedDESC>Sort by Created date in descending</datecreatedDESC>
+    </title>
     <tooltip>
       <View>Toon node</View>
       <OpenFolder>ga naar folder</OpenFolder>
@@ -1027,19 +1031,17 @@
       <Category-label>Category</Category-label>
     </label>
   </UIConstraintForm>
-  <!--
-  # Need to translated			###
-  -->
-  <!--
-  #####################################################
-  # Need to be translated     												#
-  #####################################################
-  -->
   <NodeTypePopup>
     <title>
       <UINodeTypeSelectForm>Selecteer node type</UINodeTypeSelectForm>
     </title>
   </NodeTypePopup>
+  <CategoryPopup>
+    <title>
+      <UICategoryManagerSearch>Add category to search</UICategoryManagerSearch>
+      <UIOneNodePathSelector>Choose category</UIOneNodePathSelector>
+    </title>
+  </CategoryPopup>
   <SaveQueryPopup>
     <title>
       <UISaveQueryForm>Query formulier</UISaveQueryForm>
@@ -1193,6 +1195,7 @@
     <label>
       <results>Resultaten</results>
       <of-about>about</of-about>
+      <of>of</of>
     </label>
   </UIQueryResultPageIterator>
   <!--
@@ -1219,19 +1222,17 @@
   #             org.exoplatform.ecm.webui.component.explorer.UIPopupAction	   #
   ###############################################################################
   -->
-  <!--
-  #############################################################
-  ## Need to be translated
-  #############################################################
-  -->
   <PopupUserSelector>
     <title>
       <UIUserContainer>Select User Permission</UIUserContainer>
     </title>
   </PopupUserSelector>
-  <!--
-  #to be translated
-  -->
+  <UIPopupTaxonomy>
+    <title>
+      <UICategoriesSelector>Add Categories</UICategoriesSelector>
+      <UIOneNodePathSelector>Add Categories</UIOneNodePathSelector>
+    </title>
+  </UIPopupTaxonomy>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo       #
@@ -1253,7 +1254,94 @@
       <not-checked-out>U moet eerst check out deze node vooraleer u kunt herstellen.</not-checked-out>
       <invalid-item-state>You can not restore this version. Probably one or more items was deleted or moved by another session.</invalid-item-state>
     </msg>
+    <action>
+      <close>Close</close>
+      <close-view>Close view</close-view>
+    </action>
   </UIVersionInfo>
+  <!--
+  ################################################################################
+  #  org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo
+  ################################################################################
+  e_
+  
+  -->
+  <UIAuditingInfo>
+    <msg>
+      <noVersion>No version</noVersion>
+    </msg>
+    <eventName>      
+      <e_1>Node added</e_1>
+      <e_2>Node removed</e_2>
+      <e_4>Property added</e_4>
+      <e_16>Property changed</e_16>
+      <e_8>Property removed</e_8>
+      <e_32>Save</e_32>
+      <e_64>Move</e_64>
+      <e_128>Copy</e_128>
+      <e_256>Add mixin</e_256>
+      <e_512>Remove mixin</e_512>
+      <e_1024>Clone</e_1024>
+      <e_2048>Update</e_2048>
+      <e_4096>Import</e_4096>
+      <e_8192>Check in</e_8192>
+      <e_16384>Check out</e_16384>
+      <e_32768>Restore</e_32768>
+      <e_65536>Merge</e_65536>
+      <e_131072>Cancel merge</e_131072>
+      <e_262144>Done merge</e_262144>
+      <e_524288>Add version label</e_524288>
+      <e_1048576>Remove version label</e_1048576>
+      <e_2097152>Remove version</e_2097152>
+      <e_4194304>Lock</e_4194304>
+      <e_8388608>Unlock</e_8388608>
+      <e_16777216>Read</e_16777216>      
+    </eventName>
+    <label>
+      <operation>Operation</operation>
+      <userName>User name</userName>
+      <date>Date</date>
+      <version>Version</version>
+    </label>
+  </UIAuditingInfo>
+  
+  <!--
+  ###############################################################################
+  #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
+  ###############################################################################
+  -->
+  <UIActivateVersion>
+    <label>
+      <note>Node werd nog niet geactiveerd</note>
+      <question>Wilt u activeren?</question>
+      <button-active>Activate</button-active>
+      <button-cancel>Cancel</button-cancel>
+    </label>
+  </UIActivateVersion>
+  <!--
+  ###############################################################################
+  #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivePublication #
+  ###############################################################################
+  -->
+  <UIActivePublication>
+    <header>
+      <LifecycleName>Name</LifecycleName>
+      <LifecycleDesc>Description</LifecycleDesc>
+      <action>Action</action>
+    </header>
+    <action>
+      <Cancel>Close</Cancel>
+    </action>
+    <grid>
+      <msg>
+        <empty>Not publication plugin found</empty>
+      </msg>
+    </grid>
+    <msg>
+      <node-type-invalid>Only documents node type can be enroled</node-type-invalid>
+      <already-enroled>This document already enroled</already-enroled>
+    </msg>
+  </UIActivePublication>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateAuditing  #
@@ -1269,60 +1357,6 @@
       <cancel>Cancel</cancel>
     </action>
   </UIActivateAuditing>
-  <!--
-  ################################################################################
-  #  org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo
-  ################################################################################
-  -->
-  <UIAuditingInfo>
-    <msg>
-      <noVersion>No version</noVersion>
-    </msg>
-    <label>
-      <operation>Operation</operation>
-      <userName>User name</userName>
-      <date>Date</date>
-      <version>Version</version>
-    </label>
-  </UIAuditingInfo>
-  <!--
-  #UIAuditingInfo.eventName.1=Node added
-  #UIAuditingInfo.eventName.2=Node removed
-  #UIAuditingInfo.eventName.4=Property added
-  #UIAuditingInfo.eventName.16=Property changed
-  #UIAuditingInfo.eventName.8=Property removed
-  #UIAuditingInfo.eventName.32=Save
-  #UIAuditingInfo.eventName.64=Move
-  #UIAuditingInfo.eventName.128=Copy
-  #UIAuditingInfo.eventName.256=Add mixin
-  #UIAuditingInfo.eventName.512=Remove mixin
-  #UIAuditingInfo.eventName.1024=Clone
-  #UIAuditingInfo.eventName.2048=Update
-  #UIAuditingInfo.eventName.4096=Import
-  #UIAuditingInfo.eventName.8192=Check in
-  #UIAuditingInfo.eventName.16384=Check out
-  #UIAuditingInfo.eventName.32768=Restore
-  #UIAuditingInfo.eventName.65536=Merge
-  #UIAuditingInfo.eventName.131072=Cancel merge
-  #UIAuditingInfo.eventName.262144=Done merge
-  #UIAuditingInfo.eventName.524288=Add version label
-  #UIAuditingInfo.eventName.1048576=Remove version label
-  #UIAuditingInfo.eventName.2097152=Remove version
-  #UIAuditingInfo.eventName.4194304=Lock
-  #UIAuditingInfo.eventName.8388608=Unlock
-  #UIAuditingInfo.eventName.16777216=Read
-  -->
-  <!--
-  ###############################################################################
-  #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
-  ###############################################################################
-  -->
-  <UIActivateVersion>
-    <label>
-      <note>Node werd nog niet geactiveerd</note>
-      <question>Wilt u activeren?</question>
-    </label>
-  </UIActivateVersion>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIDiff   #
@@ -1452,6 +1486,11 @@
         <Delete>verwijderen</Delete>
       </title>
     </action>
+    <label>
+      <category>Category</category>
+      <actions>Actions</actions>
+      <delete>Delete</delete>
+    </label>
   </UICategoriesAddedList>
   <UITreeList>
     <header>
@@ -1468,15 +1507,14 @@
   ################################################################################
   -->
   <UIRelationManager>
-    <tab>
-      <label>
-        <UIOneNodePathSelector>selecteer relatie document</UIOneNodePathSelector>
-        <UIRelationsAddedList>gereferencieerd relaties</UIRelationsAddedList>
-      </label>
-    </tab>
     <action>
       <Close>Sluiten</Close>
     </action>
+    <tab>
+      <label>
+        <UIOneNodePathSelector>selecteer relatie document</UIOneNodePathSelector>
+      </label>
+    </tab>
   </UIRelationManager>
   <UIRelationsAddedList>
     <header>
@@ -1651,11 +1689,6 @@
       <actionType>aanmaken Actie van Type</actionType>
     </label>
   </UIActionTypeForm>
-  <JCRBrowserPopup>
-    <title>
-      <UIOneNodePathSelector>selecteer locatie</UIOneNodePathSelector>
-    </title>
-  </JCRBrowserPopup>
   <PopupComponent>
     <title>
       <UIOneNodePathSelector>selecteer locatie</UIOneNodePathSelector>
@@ -1853,6 +1886,29 @@
   </PathNotFoundException>
   <!--
   ###################################################################################
+  # Publication Manage																														  #
+  ###################################################################################
+  -->
+  <UIPublicationForm>
+    <label>
+      <published>Published</published>
+      <non-published>UnPublished</non-published>
+      <public>Public</public>
+      <private>Private</private>
+      <state>State</state>
+      <visibility>Visibility</visibility>
+      <nodeName>Node Name:</nodeName>
+      <lifecycleName>Lifecycle Name</lifecycleName>
+      <stateName>State Name</stateName>
+    </label>
+    <action>
+      <Save>Save</Save>
+      <UnsubcriberLifeCycle>Unsubcriber</UnsubcriberLifeCycle>
+      <Cancel>Cancel</Cancel>
+    </action>
+  </UIPublicationForm>
+  <!--
+  ###################################################################################
   # JCR Browser																														  #
   ###################################################################################
   -->
@@ -1863,6 +1919,11 @@
       <rootPath>Root pad</rootPath>
     </label>
   </UIWorkspaceList>
+  <pathSelector>
+    <title>
+      <UIOneNodePathSelector>selecteer locatie</UIOneNodePathSelector>
+    </title>
+  </pathSelector>
   <!--
   ###################################################################################
   # Others																																				  #
@@ -1910,7 +1971,6 @@
   ###################################################################################
   # org.exoplatform.ecm.jcr.SearchValidator																			#
   ###################################################################################
-  #to be translated
   -->
   <SearchValidator>
     <msg>
@@ -1927,26 +1987,7 @@
   ###################################################################################
   # PublicationService						                                        					#
   ###################################################################################
-  #  Need to be translated  																      						      #
   -->
-  <UIPublicationForm>
-    <label>
-      <published>Published</published>
-      <non-published>UnPublished</non-published>
-      <public>Public</public>
-      <private>Private</private>
-      <state>State</state>
-      <visibility>Visibility</visibility>
-      <nodeName>Node Name:</nodeName>
-      <lifecycleName>Lifecycle Name</lifecycleName>
-      <stateName>State Name</stateName>
-    </label>
-    <action>
-      <Save>Save</Save>
-      <UnsubcriberLifeCycle>Unsubcriber</UnsubcriberLifeCycle>
-      <Cancel>Cancel</Cancel>
-    </action>
-  </UIPublicationForm>
   <UIPublicationLogList>
     <header>
       <date>Date</date>
@@ -1984,11 +2025,6 @@
   </NodeType>
   <!--
   ###################################################################################
-  # Manage Publication				                                        					#
-  ###################################################################################
-  -->
-  <!--
-  ###################################################################################
   # UIThumbnailForm						                                        					#
   ###################################################################################
   -->
@@ -2011,23 +2047,20 @@
     </title>
   </UIThumbnailForm>
   <!--
-  ############################################################################
-  # Advance search 																													 #
-  ############################################################################
-  # Need to be translated #
+  ###################################################################################
+  # UIAnyPermission						                                        							#
+  ###################################################################################
   -->
-  <CategoryPopup>
-    <title>
-      <UICategoryManagerSearch>Add category to search</UICategoryManagerSearch>
-    </title>
-  </CategoryPopup>
-  <UICategoryManagerSearch>
-    <tab>
+  <UIAnyPermission>
       <label>
-        <UIOneNodePathSelector>Choose category</UIOneNodePathSelector>
+      <anyPermission>Any Permission</anyPermission>
       </label>
-    </tab>
-  </UICategoryManagerSearch>
+  </UIAnyPermission>
+  <!--
+  ###################################################################################
+  # UICategoriesAddedList						                                       					#
+  ###################################################################################
+  -->
   <UICategoriesSelector>
     <action>
       <close>Close</close>
@@ -2035,7 +2068,7 @@
   </UICategoriesSelector>
   <!--
   ###################################################################################
-  # Since ECM version 2.2 Need to be translated																			#
+  # Since ECM version 2.2				                                        							#
   ###################################################################################
   -->
   <UIGroupMemberSelector>
@@ -2079,7 +2112,7 @@
   Access directly a JCR FE drive
   -->
   <UIJCRExporerPortlet>
-    <nopermission>There has no drive or you don't have permission to access this drive</nopermission>
+    <nopermission>There is no drive or you don't have permission to access this drive</nopermission>
   </UIJCRExporerPortlet>
   
   <UIJcrExplorerEditForm>
@@ -2091,7 +2124,7 @@
     </action>
     <label>
       <repository>Repository</repository>
-      <categoryMandatoryWhenFileUpload>Category Mandatory</categoryMandatoryWhenFileUpload>
+      <categoryMandatoryWhenFileUpload>Specify a category when uploading a file</categoryMandatoryWhenFileUpload>
       <isDirectlyDrive>Directly Drive</isDirectlyDrive>
       <driveName>Drive Name</driveName>
       <usecase>Select Type</usecase>
@@ -2110,6 +2143,10 @@
       <driveName>Drive Name</driveName>
       <DriveNameInput>UIJcrExplorerEditForm</DriveNameInput>
     </label>
+    <msg>
+      <not-have-social>The Social usecase is not available, the Selection one will be used instead.</not-have-social>
+      <personal-usecase>The private drive of current user will be used when you choose Personal usecase.</personal-usecase>
+    </msg>
   </UIJcrExplorerEditForm>
   
   <PopUpSelectDrive>

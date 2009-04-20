@@ -71,6 +71,7 @@
       <no-view-found><![CDATA[Es gibt keine Ansichtsanwendungen f&uuml;r Ihre Zugangsgenehmigung in Laufwerk '{0}']]></no-view-found>
       <access-denied><![CDATA[Zugang verweigert! Vielleicht haben Sie keine Genehmigung f&uuml;r den Arbeitsplatz des '{0}' Laufwerks]]></access-denied>
       <empty-drives><![CDATA[Es befindet sich kein Laufwerk in dieser Ablage oder Sie haben keine Zugangsgenehmigung f&uuml;r jegliches Laufwerk in dieser Ablage]]></empty-drives>
+      <workspace-not-exist>The drive '{0}' was stored in one unrecognized workspace. Please reconfig for this drive.</workspace-not-exist>
     </msg>
   </UIDrivesBrowser>
   <!--
@@ -111,16 +112,14 @@
   <UIViewBar>
     <label>
       <driveWorkspace>Arbeitsplatzlaufwerk :</driveWorkspace>
-      <currentDrive>Current drive</currentDrive>
-      <selectView>Select view</selectView>
-      <showSideBar>Show side bar</showSideBar>
-    </label>
-    <title>
       <backToJCR><![CDATA[Zur&uuml;ck zu JCR Hauptlaufwerke]]></backToJCR>
       <setUpBrowser>Ihre Browsingvorlieben einstellen</setUpBrowser>
       <refesh>Aktualisieren</refesh>
       <saveSession>Sitzung speichern</saveSession>
-    </title>
+      <currentDrive>Current drive</currentDrive>
+      <selectView>Select view</selectView>
+      <showSideBar>Show side bar</showSideBar>
+    </label>
   </UIViewBar>
   <Views>
     <label>
@@ -220,6 +219,8 @@
       <UINodeTypeInfo>Knotentyp Information</UINodeTypeInfo>
       <UIVersionInfo>Version Information</UIVersionInfo>
       <UIActivateVersion>Version aktivieren</UIActivateVersion>
+      <UIAuditingInfo>Auditing Information</UIAuditingInfo>
+      <UIActivateAuditing>Activate Auditing</UIActivateAuditing>
       <UIPermissionManager>Genehmigungs Management</UIPermissionManager>
       <UIPropertiesManager>Eigenschafts Management</UIPropertiesManager>
       <UIECMSearch>Fortgeschrittene Suche</UIECMSearch>
@@ -236,6 +237,9 @@
       <UIVoteForm>Dokument abstimmen</UIVoteForm>
       <UICommentForm><![CDATA[Kommentar hinzuf&uuml;gen]]></UICommentForm>
       <UIPreferencesForm>Vorliebeneinstellung</UIPreferencesForm>
+      <UIPublicationManager>Manage publication</UIPublicationManager>
+      <UIConfirmMessage>Confirm delete</UIConfirmMessage>
+      <UIActivePublication>Enrol to publication lifecycle</UIActivePublication>
       <UITaggingForm>Dieses Dokument wird getaggt</UITaggingForm>
       <UIMultiLanguageForm>Mehrsprachig</UIMultiLanguageForm>
       <UIMultiLanguageManager>Mehrsprachig</UIMultiLanguageManager>
@@ -246,14 +250,6 @@
       <path>Pfad</path>
     </header>
   </UIPopupWindow>
-  <!--
-  #to be translated
-  -->
-  <UIPopupTaxonomy>
-    <title>
-      <UICategoriesSelector>Add Categories</UICategoriesSelector>
-    </title>
-  </UIPopupTaxonomy>
   <!--
   #########################################################################################
   #             org.exoplatform.ecm.webui.component.explorer.UIResourceForm #
@@ -286,15 +282,16 @@
       <MultiLanguage><![CDATA[Ortsgebundene Inhalte Hinzuf&uuml;gen/&Auml;ndern]]></MultiLanguage>
       <Vote><![CDATA[F&uuml;r Dokument stimmen]]></Vote>
       <Comment>Dokument kommentieren</Comment>
-      <OverloadThumbnail>Overload thumbnail</OverloadThumbnail>
       <ManageVersions>Versionen verwalten</ManageVersions>
+      <ManageAuditing>Manage Auditing</ManageAuditing>
+      <ManagePublications>Manage Publications</ManagePublications>
       <ManageCategories>Kategorien verwalten</ManageCategories>
       <ManageRelations>Beziehungen verwalten</ManageRelations>
-      <ManagePublications>Manage Publications</ManagePublications>
-      <UnsubcribeLifecycle>Unsubcribe Lifecycle</UnsubcribeLifecycle>
       <ManageActions>Aktionen verwalten</ManageActions>
       <ExportNode>Knoten exportieren</ExportNode>
       <ImportNode>Knoten importieren</ImportNode>
+      <OverloadThumbnail>Overload thumbnail</OverloadThumbnail>
+      <ManageHidden>Hide/Show content</ManageHidden>
       <ViewReferences>Referenzen ansehen</ViewReferences>
       <ViewNodeType>Knotentypen ansehen</ViewNodeType>
       <ViewPermissions>Genehmigungen ansehen</ViewPermissions>
@@ -302,18 +299,21 @@
       <ViewMetadatas>Metadata ansehen</ViewMetadatas>
       <ViewRelations>Beziehungen anzeigen/verstecken</ViewRelations>
       <ShowJCRStructure>Like JCR Struktur anzeigen/verstecken</ShowJCRStructure>
-      <ManageHidden>Hide/Show content</ManageHidden>
     </tooltip>
-    <title>
-      <select-tab>Select tab</select-tab>
-      <SimpleSearch>Schnelle Suche</SimpleSearch>
-      <AdvanceSearch>Vertiefte Suche</AdvanceSearch>
-      <SavedQueries>Gespeicherte Abfragen</SavedQueries>
-    </title>
     <msg>
       <cannot-action-in-rootnode><![CDATA[Sie k&ouml;nnen nicht Aktion in Wurzelknoten]]></cannot-action-in-rootnode>
       <node-checkedin><![CDATA[Erst &uuml;berpr&uuml;fen]]></node-checkedin>
       <cannot-enable-version-rootnode><![CDATA[Sie k&ouml;nnen Version f&uuml;r Wurzelknoten nicht einstellen]]></cannot-enable-version-rootnode>
+      <cannot-enable-publication-rootnode>Can not enable publication for root node</cannot-enable-publication-rootnode>
+      <manage-publication>
+        <not-supported-nodetype>The publication support document node only.</not-supported-nodetype>
+        <no-publication-lifecycle>No publication lifecycle is configured.</no-publication-lifecycle>
+      </manage-publication>
+      <unsubcriber-lifecycle>
+        The node already was unsubcribed lifecycle
+        <not-supported-nodetype>The unsubcriber lifecycle support document node only.</not-supported-nodetype>
+      </unsubcriber-lifecycle>
+      <unsubcriber-lifecycle-finish>The node is unsubcribed successfully.</unsubcriber-lifecycle-finish>
       <access-false>Der Knoten ist kein Artikel oder nicht eingecheckt !</access-false>
       <unsupported-action><![CDATA[Dieser Knoten unterst&uuml;tzt keine beziehungsf&auml;hige]]></unsupported-action>
       <not-relationable><![CDATA[Dieser Knoten wurde noch nich beziehungsf&auml;hig]]></not-relationable>
@@ -338,20 +338,14 @@
       <tagnode-checkedin><![CDATA[Sie m&uuml;ssen Knoten erst auschecken bevor Sie Taggen]]></tagnode-checkedin>
       <unsupported-multilanguage><![CDATA[Soe k&ouml;nnen keine Sprachen in diesen Knoten hinzuf&uuml;gen. Weil dieser Knoten kein Dokumenttyp ist oder eine Mischung derer ist.]]></unsupported-multilanguage>
       <multilang-checkedin><![CDATA[Sie m&uuml;ssen Knoten erst auschecken bevor Sie Sprache hinzuf&uuml;gen]]></multilang-checkedin>
-      <manage-publication>
-        <not-supported-nodetype>The publication support document node only.</not-supported-nodetype>
-        <no-publication-lifecycle>No publication lifecycle is configured.</no-publication-lifecycle>
-      </manage-publication>
-      <unsubcriber-lifecycle>
-        The node already was unsubcribed lifecycle
-        <not-supported-nodetype>The unsubcriber lifecycle support document node only.</not-supported-nodetype>
-      </unsubcriber-lifecycle>
-      <unsubcriber-lifecycle-finish>The node is unsubcribed successfully.</unsubcriber-lifecycle-finish>
     </msg>
+    <title>
+      <select-tab>Select tab</select-tab>
+      <SimpleSearch>Schnelle Suche</SimpleSearch>
+      <AdvanceSearch>Vertiefte Suche</AdvanceSearch>
+      <SavedQueries>Gespeicherte Abfragen</SavedQueries>
+    </title>
   </UIActionBar>
-  <!--
-  #       Need to be translated                       #
-  -->
   <UIPopupMenu>
     <msg>
       <has-not-permission><![CDATA[Zugang verweigert. Sie haben in diesem Knoten keine Hinzuf&uuml;gegenehmigung.]]></has-not-permission>
@@ -361,6 +355,7 @@
       <has-not-permission-unlok>Sie haben keine Genehmigung diesen Knoten aufzusperren</has-not-permission-unlok>
       <bound-exception><![CDATA[Sie k&ouml;nnen ihn nicht ausschneiden und in seinem Unterknoten einf&uuml;gen]]></bound-exception>
       <bound-move-exception>You can not move to itself or in its sub node</bound-move-exception>
+      <does-not-support-auditing>You cannot activate auditing on this node</does-not-support-auditing>
       <can-not-rename-node><![CDATA[Sie haben keine Genegmigung diesen Knoten umzunennen. Bitte kontaktieren Sie den Administrator f&uuml;r das Recht.]]></can-not-rename-node>
       <can-not-cut-node><![CDATA[Sie haben keine Genegmigung diesen Knoten auszuschneiden. Bitte kontaktieren Sie den Administrator f&uuml;r das Recht.]]></can-not-cut-node>
       <can-not-remove-node><![CDATA[Sie haben keine Genegmigung diesen Knoten zu entfernen. Bitte kontaktieren Sie den Administrator f&uuml;r das Recht.]]></can-not-remove-node>
@@ -472,8 +467,8 @@
     <msg>
       <access-denied><![CDATA[Zugang verweigert! Sie haben f&uuml;r Knoten '{0}' keinen Zugang]]></access-denied>
       <null-exception><![CDATA[Artikel nicht gefunden! Er wurde entfernt oder der Artikel wurde ge&auml;ndert oder Sie haben keine Zugangsgenehmigung f&uuml;r diesen Knoten!]]></null-exception>
-      <access-denied-exception><![CDATA[Zugang verweigert! Vielleicht haben Sie keine Leseprivilegien oder der Knoten wurde entfernt oder ver&auml;ndert]]></access-denied-exception>
       <confirm-deleteattachment>Do you want to remove this attachment file?</confirm-deleteattachment>
+      <access-denied-exception><![CDATA[Zugang verweigert! Vielleicht haben Sie keine Leseprivilegien oder der Knoten wurde entfernt oder ver&auml;ndert]]></access-denied-exception>
     </msg>
     <tooltip>
       <remove-attachment>Remove this attachment file</remove-attachment>
@@ -485,19 +480,12 @@
         <name>Name</name>
         <versionable>Versionierbar</versionable>
         <exo_owner>Besitzer</exo_owner>
+        <auditing>Auditing</auditing>
         <exo_dateCreated>Datum erstellt</exo_dateCreated>
         <exo_dateModified><![CDATA[Datum ge&auml;ndert]]></exo_dateModified>
       </label>
     </view>
   </ListView>
-  <!--
-  #####################################################################
-  # Need to be translated
-  ######################################################################
-  -->
-  <!--
-  #to be translated
-  -->
   <!--
   #############################################################################
   #             org.exoplatform.ecm.webui.component.explorer.ECMContextMenu  	#
@@ -595,6 +583,7 @@
       <AdvancedSearchResult>Suchergebinisse</AdvancedSearchResult>
       <UISimpleSearch>Einfache Suche</UISimpleSearch>
       <UISearchContainer>Fortgeschrittene Suche</UISearchContainer>
+      <UICategoryManagerSearch>Add category to search</UICategoryManagerSearch>
       <UIConstraintsForm><![CDATA[Einschr&auml;nkungsform]]></UIConstraintsForm>
       <UIViewSearchResult>Inhalt ansehen</UIViewSearchResult>
       <UIContentNameSearch>Nach Namen suchen</UIContentNameSearch>
@@ -605,9 +594,11 @@
       <UIActionViewContainer>Aktionsinformation</UIActionViewContainer>
       <UIMultiLanguageForm>Sprachenansicht</UIMultiLanguageForm>
       <UIAddLanguageContainer><![CDATA[Sprache hinzuf&uuml;gen]]></UIAddLanguageContainer>
+      <UINonPublishedForm>State</UINonPublishedForm>
+      <UIPublishedForm>State</UIPublishedForm>
+      <UIPublicationLogList>History</UIPublicationLogList>
       <UIDocumentWithTree>Datenansicht</UIDocumentWithTree>
       <UIDocumentInfo>Dokumentansicht</UIDocumentInfo>
-      <UICategoryManagerSearch>Add category to search</UICategoryManagerSearch>
       <UICategoriesSelectPanel>Select categories</UICategoriesSelectPanel>
       <UISelectedCategoriesGrid>Referenced categories</UISelectedCategoriesGrid>
       <UIWorkflowPublicationActionForm>Workflow Publication Action</UIWorkflowPublicationActionForm>
@@ -660,6 +651,8 @@
     </label>
     <action>
       <Save>#{word.save}</Save>
+      <Cancel>Cancel</Cancel>
+      <Reset>Reset</Reset>
     </action>
     <msg>
       <name-invalid><![CDATA[Sie m&uuml;ssen Namen eingeben !]]></name-invalid>
@@ -806,7 +799,6 @@
       <upload><![CDATA[Datei ausw&auml;hlen]]></upload>
       <name>Name</name>
       <fieldListTaxonomy>List Taxonomy</fieldListTaxonomy>
-      <fieldTaxonomy>Add Taxonomy</fieldTaxonomy>
     </label>
     <action>
       <Save>#{word.save}</Save>
@@ -822,12 +814,6 @@
       <lock-exception>Dieser Knoten ist gesperrt. Aktionen unwahrscheinlich.</lock-exception>
     </msg>
   </UIUploadForm>
-  <!--
-  #to be translated
-  -->
-  <!--
-  #to be translated
-  -->
   <UIUploadContent>
     <label>
       <fileName>Dateiname</fileName>
@@ -848,9 +834,6 @@
       <has-not-template><![CDATA[Vorlage f&uuml;r '{0}' ist Null oder leer.]]></has-not-template>
     </msg>
   </UIUploadContent>
-  <!--
-  #to be translated
-  -->
   <UIUploadContainer>
     <action>
       <Close>#{word.close}</Close>
@@ -918,6 +901,13 @@
   #                    org.exoplatform.ecm.webui.component.explorer.search		  #
   ###############################################################################
   -->
+  <UICategoryManagerSearch>
+    <tab>
+      <label>
+        <UIOneNodePathSelector>Choose category</UIOneNodePathSelector>
+      </label>
+    </tab>
+  </UICategoryManagerSearch>
   <UIContentNameSearch>
     <label>
       <keyword>Inhaltsname</keyword>
@@ -972,7 +962,20 @@
       <path>Pfad</path>
       <action>Aktion</action>
       <shortcutPath>Pfad</shortcutPath>
+      <type>Type</type>
+      <dateCreated>Date created</dateCreated>
+      <score>Score</score>
     </header>
+    <title>
+      <typeASC>Sort by document type in ascending</typeASC>
+      <typeDESC>Sort by document type in descending</typeDESC>
+      <scoreASC>Sort by score in ascending</scoreASC>
+      <scoreDESC>Sort by score in descending</scoreDESC>
+      <nameASC>Sort by name in ascending</nameASC>
+      <nameDESC>Sort by name in descending</nameDESC>
+      <datecreatedASC>Sort by Created date in ascending</datecreatedASC>
+      <datecreatedDESC>Sort by Created date in descending</datecreatedDESC>
+    </title>
     <tooltip>
       <View>Knoten anschauen</View>
       <OpenFolder>Zum Ordner</OpenFolder>
@@ -1028,19 +1031,17 @@
       <Category-label>Category</Category-label>
     </label>
   </UIConstraintForm>
-  <!--
-  # Need to translated																							###
-  -->
-  <!--
-  #####################################################
-  # Need to be translated     												#
-  #####################################################
-  -->
   <NodeTypePopup>
     <title>
       <UINodeTypeSelectForm>Knotentypen aussuchen</UINodeTypeSelectForm>
     </title>
   </NodeTypePopup>
+  <CategoryPopup>
+    <title>
+      <UICategoryManagerSearch>Add category to search</UICategoryManagerSearch>
+      <UIOneNodePathSelector>Choose category</UIOneNodePathSelector>
+    </title>
+  </CategoryPopup>
   <SaveQueryPopup>
     <title>
       <UISaveQueryForm>Abfrageform</UISaveQueryForm>
@@ -1194,6 +1195,7 @@
     <label>
       <results>Ergebnisse</results>
       <of-about><![CDATA[von ungef&auml;hr]]></of-about>
+      <of>of</of>
     </label>
   </UIQueryResultPageIterator>
   <!--
@@ -1220,19 +1222,17 @@
   #             org.exoplatform.ecm.webui.component.explorer.UIPopupAction	   #
   ###############################################################################
   -->
-  <!--
-  #############################################################
-  ## Need to be translated
-  #############################################################
-  -->
   <PopupUserSelector>
     <title>
       <UIUserContainer>Select User Permission</UIUserContainer>
     </title>
   </PopupUserSelector>
-  <!--
-  #to be translated
-  -->
+  <UIPopupTaxonomy>
+    <title>
+      <UICategoriesSelector>Add Categories</UICategoriesSelector>
+      <UIOneNodePathSelector>Add Categories</UIOneNodePathSelector>
+    </title>
+  </UIPopupTaxonomy>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo       #
@@ -1254,7 +1254,94 @@
       <not-checked-out><![CDATA[Vor Wiederherstellung m&uuml;ssen Sie den Knoten &uuml;berpr&uuml;fen.]]></not-checked-out>
       <invalid-item-state>You can not restore this version. Probably one or more items was deleted or moved by another session.</invalid-item-state>
     </msg>
+    <action>
+      <close>Close</close>
+      <close-view>Close view</close-view>
+    </action>
   </UIVersionInfo>
+  <!--
+  ################################################################################
+  #  org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo
+  ################################################################################
+  e_
+  
+  -->
+  <UIAuditingInfo>
+    <msg>
+      <noVersion>No version</noVersion>
+    </msg>
+    <eventName>      
+      <e_1>Node added</e_1>
+      <e_2>Node removed</e_2>
+      <e_4>Property added</e_4>
+      <e_16>Property changed</e_16>
+      <e_8>Property removed</e_8>
+      <e_32>Save</e_32>
+      <e_64>Move</e_64>
+      <e_128>Copy</e_128>
+      <e_256>Add mixin</e_256>
+      <e_512>Remove mixin</e_512>
+      <e_1024>Clone</e_1024>
+      <e_2048>Update</e_2048>
+      <e_4096>Import</e_4096>
+      <e_8192>Check in</e_8192>
+      <e_16384>Check out</e_16384>
+      <e_32768>Restore</e_32768>
+      <e_65536>Merge</e_65536>
+      <e_131072>Cancel merge</e_131072>
+      <e_262144>Done merge</e_262144>
+      <e_524288>Add version label</e_524288>
+      <e_1048576>Remove version label</e_1048576>
+      <e_2097152>Remove version</e_2097152>
+      <e_4194304>Lock</e_4194304>
+      <e_8388608>Unlock</e_8388608>
+      <e_16777216>Read</e_16777216>      
+    </eventName>
+    <label>
+      <operation>Operation</operation>
+      <userName>User name</userName>
+      <date>Date</date>
+      <version>Version</version>
+    </label>
+  </UIAuditingInfo>
+  
+  <!--
+  ###############################################################################
+  #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
+  ###############################################################################
+  -->
+  <UIActivateVersion>
+    <label>
+      <note>Dieser Knoten wurde nicht aktiviert Version</note>
+      <question>Wollen Sie wirklich aktivieren ?</question>
+      <button-active>Activate</button-active>
+      <button-cancel>Cancel</button-cancel>
+    </label>
+  </UIActivateVersion>
+  <!--
+  ###############################################################################
+  #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivePublication #
+  ###############################################################################
+  -->
+  <UIActivePublication>
+    <header>
+      <LifecycleName>Name</LifecycleName>
+      <LifecycleDesc>Description</LifecycleDesc>
+      <action>Action</action>
+    </header>
+    <action>
+      <Cancel>Close</Cancel>
+    </action>
+    <grid>
+      <msg>
+        <empty>Not publication plugin found</empty>
+      </msg>
+    </grid>
+    <msg>
+      <node-type-invalid>Only documents node type can be enroled</node-type-invalid>
+      <already-enroled>This document already enroled</already-enroled>
+    </msg>
+  </UIActivePublication>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateAuditing  #
@@ -1270,60 +1357,6 @@
       <cancel>Cancel</cancel>
     </action>
   </UIActivateAuditing>
-  <!--
-  ################################################################################
-  #  org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo
-  ################################################################################
-  -->
-  <UIAuditingInfo>
-    <msg>
-      <noVersion>No version</noVersion>
-    </msg>
-    <label>
-      <operation>Operation</operation>
-      <userName>User name</userName>
-      <date>Date</date>
-      <version>Version</version>
-    </label>
-  </UIAuditingInfo>
-  <!--
-  #UIAuditingInfo.eventName.1=Node added
-  #UIAuditingInfo.eventName.2=Node removed
-  #UIAuditingInfo.eventName.4=Property added
-  #UIAuditingInfo.eventName.16=Property changed
-  #UIAuditingInfo.eventName.8=Property removed
-  #UIAuditingInfo.eventName.32=Save
-  #UIAuditingInfo.eventName.64=Move
-  #UIAuditingInfo.eventName.128=Copy
-  #UIAuditingInfo.eventName.256=Add mixin
-  #UIAuditingInfo.eventName.512=Remove mixin
-  #UIAuditingInfo.eventName.1024=Clone
-  #UIAuditingInfo.eventName.2048=Update
-  #UIAuditingInfo.eventName.4096=Import
-  #UIAuditingInfo.eventName.8192=Check in
-  #UIAuditingInfo.eventName.16384=Check out
-  #UIAuditingInfo.eventName.32768=Restore
-  #UIAuditingInfo.eventName.65536=Merge
-  #UIAuditingInfo.eventName.131072=Cancel merge
-  #UIAuditingInfo.eventName.262144=Done merge
-  #UIAuditingInfo.eventName.524288=Add version label
-  #UIAuditingInfo.eventName.1048576=Remove version label
-  #UIAuditingInfo.eventName.2097152=Remove version
-  #UIAuditingInfo.eventName.4194304=Lock
-  #UIAuditingInfo.eventName.8388608=Unlock
-  #UIAuditingInfo.eventName.16777216=Read
-  -->
-  <!--
-  ###############################################################################
-  #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
-  ###############################################################################
-  -->
-  <UIActivateVersion>
-    <label>
-      <note>Dieser Knoten wurde nicht aktiviert Version</note>
-      <question>Wollen Sie wirklich aktivieren ?</question>
-    </label>
-  </UIActivateVersion>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIDiff   #
@@ -1434,8 +1467,8 @@
     </action>
     <tab>
       <label>
-        <UIOneNodePathSelector>Kategorie aussuchen</UIOneNodePathSelector>
         <UICategoriesAddedList>Referenzierte Kategorien</UICategoriesAddedList>
+        <UIOneNodePathSelector>Kategorie aussuchen</UIOneNodePathSelector>
       </label>
     </tab>
   </UICategoryManager>
@@ -1453,6 +1486,11 @@
         <Delete><![CDATA[L&ouml;schen]]></Delete>
       </title>
     </action>
+    <label>
+      <category>Category</category>
+      <actions>Actions</actions>
+      <delete>Delete</delete>
+    </label>
   </UICategoriesAddedList>
   <UITreeList>
     <header>
@@ -1469,15 +1507,14 @@
   ################################################################################
   -->
   <UIRelationManager>
-    <tab>
-      <label>
-        <UIOneNodePathSelector><![CDATA[Beziehungsdokument ausw&auml;hlen]]></UIOneNodePathSelector>
-        <UIRelationsAddedList>Referenzierte Beziehungen</UIRelationsAddedList>
-      </label>
-    </tab>
     <action>
       <Close><![CDATA[Schlie&szlig;en]]></Close>
     </action>
+    <tab>
+      <label>
+        <UIOneNodePathSelector><![CDATA[Beziehungsdokument ausw&auml;hlen]]></UIOneNodePathSelector>
+      </label>
+    </tab>
   </UIRelationManager>
   <UIRelationsAddedList>
     <header>
@@ -1628,6 +1665,9 @@
       <Save>#{word.save}</Save>
       <Back>#{word.back}</Back>
     </action>
+    <label>
+      <name>Action Form</name>
+    </label>
     <msg>
       <repository-exception><![CDATA[Sie k&ouml;nnen diese Aktion nicht speichern. Der angegebene Name darf nicht mit einem Index enden.]]></repository-exception>
       <numberformat-exception><![CDATA[Sie k&ouml;nnen diese Aktion nicht speichern. Der angegebene Name darf nicht '[' or ']' beinhalten.]]></numberformat-exception>
@@ -1649,11 +1689,6 @@
       <actionType>Aktionstypen erstellen</actionType>
     </label>
   </UIActionTypeForm>
-  <JCRBrowserPopup>
-    <title>
-      <UIOneNodePathSelector>Standort aussuchen</UIOneNodePathSelector>
-    </title>
-  </JCRBrowserPopup>
   <PopupComponent>
     <title>
       <UIOneNodePathSelector>Standort aussuchen</UIOneNodePathSelector>
@@ -1851,6 +1886,29 @@
   </PathNotFoundException>
   <!--
   ###################################################################################
+  # Publication Manage																														  #
+  ###################################################################################
+  -->
+  <UIPublicationForm>
+    <label>
+      <published>Published</published>
+      <non-published>UnPublished</non-published>
+      <public>Public</public>
+      <private>Private</private>
+      <state>State</state>
+      <visibility>Visibility</visibility>
+      <nodeName>Node Name:</nodeName>
+      <lifecycleName>Lifecycle Name</lifecycleName>
+      <stateName>State Name</stateName>
+    </label>
+    <action>
+      <Save>Save</Save>
+      <UnsubcriberLifeCycle>Unsubcriber</UnsubcriberLifeCycle>
+      <Cancel>Cancel</Cancel>
+    </action>
+  </UIPublicationForm>
+  <!--
+  ###################################################################################
   # JCR Browser																														  #
   ###################################################################################
   -->
@@ -1861,6 +1919,11 @@
       <rootPath>Wurzelpfad</rootPath>
     </label>
   </UIWorkspaceList>
+  <pathSelector>
+    <title>
+      <UIOneNodePathSelector>Node selector</UIOneNodePathSelector>
+    </title>
+  </pathSelector>
   <!--
   ###################################################################################
   # Others																																				  #
@@ -1886,29 +1949,6 @@
       <invalid-value><![CDATA[Ung&uuml;ltiger Wert 'Zeitinterval' Feld. Nur langen Typen erlauben]]></invalid-value>
     </msg>
   </RepeatIntervalValidator>
-  <!--
-  ###################################################
-  # UIPublicationForm Need to be translated         #
-  ###################################################
-  -->
-  <UIPublicationForm>
-    <label>
-      <published>Published</published>
-      <non-published>UnPublished</non-published>
-      <public>Public</public>
-      <private>Private</private>
-      <state>State</state>
-      <visibility>Visibility</visibility>
-      <nodeName>Node Name:</nodeName>
-      <lifecycleName>Lifecycle Name</lifecycleName>
-      <stateName>State Name</stateName>
-    </label>
-    <action>
-      <Save>Save</Save>
-      <UnsubcriberLifeCycle>Unsubcriber</UnsubcriberLifeCycle>
-      <Cancel>Cancel</Cancel>
-    </action>
-  </UIPublicationForm>
   <UIPermissionSelector>
     <label>
       <selectGroup>Select group</selectGroup>
@@ -1985,16 +2025,6 @@
   </NodeType>
   <!--
   ###################################################################################
-  # Manage Publication				                                        					#
-  ###################################################################################
-  -->
-  <!--
-  ###################################################################################
-  # Unsubcriber Lifecycle		                                        					#
-  ###################################################################################
-  -->
-  <!--
-  ###################################################################################
   # UIThumbnailForm						                                        					#
   ###################################################################################
   -->
@@ -2017,26 +2047,20 @@
     </title>
   </UIThumbnailForm>
   <!--
-  #to be translated
+  ###################################################################################
+  # UIAnyPermission						                                        							#
+  ###################################################################################
   -->
+  <UIAnyPermission>
+    <label>
+      <anyPermission>Any Permission</anyPermission>
+    </label>
+  </UIAnyPermission>
   <!--
-  ############################################################################
-  # Advance search 																													 #
-  ############################################################################
-  # Need to be translated #
+  ###################################################################################
+  # UICategoriesAddedList						                                       					#
+  ###################################################################################
   -->
-  <CategoryPopup>
-    <title>
-      <UICategoryManagerSearch>Add category to search</UICategoryManagerSearch>
-    </title>
-  </CategoryPopup>
-  <UICategoryManagerSearch>
-    <tab>
-      <label>
-        <UIOneNodePathSelector>Choose category</UIOneNodePathSelector>
-      </label>
-    </tab>
-  </UICategoryManagerSearch>
   <UICategoriesSelector>
     <action>
       <close>Close</close>
@@ -2044,7 +2068,7 @@
   </UICategoriesSelector>
   <!--
   ###################################################################################
-  # Since ECM version 2.2 Need to be translated																			#
+  # Since ECM version 2.2				                                        							#
   ###################################################################################
   -->
   <UIGroupMemberSelector>
@@ -2088,7 +2112,7 @@
   Access directly a JCR FE drive
   -->
   <UIJCRExporerPortlet>
-    <nopermission>There has no drive or you don't have permission to access this drive</nopermission>
+    <nopermission>There is no drive or you don't have permission to access this drive</nopermission>
   </UIJCRExporerPortlet>
   
   <UIJcrExplorerEditForm>
@@ -2100,7 +2124,7 @@
     </action>
     <label>
       <repository>Repository</repository>
-      <categoryMandatoryWhenFileUpload>Category Mandatory</categoryMandatoryWhenFileUpload>
+      <categoryMandatoryWhenFileUpload>Specify a category when uploading a file</categoryMandatoryWhenFileUpload>
       <isDirectlyDrive>Directly Drive</isDirectlyDrive>
       <driveName>Drive Name</driveName>
       <usecase>Select Type</usecase>
@@ -2119,6 +2143,10 @@
       <driveName>Drive Name</driveName>
       <DriveNameInput>UIJcrExplorerEditForm</DriveNameInput>
     </label>
+    <msg>
+      <not-have-social>The Social usecase is not available, the Selection one will be used instead.</not-have-social>
+      <personal-usecase>The private drive of current user will be used when you choose Personal usecase.</personal-usecase>
+    </msg>
   </UIJcrExplorerEditForm>
   
   <PopUpSelectDrive>

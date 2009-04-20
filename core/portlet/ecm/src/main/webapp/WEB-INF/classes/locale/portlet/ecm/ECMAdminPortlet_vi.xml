@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bundle>
+  <!--
+  ################################################################################
+  #             org.exoplatform.ecm.webui.component.admin.UIECMAdminControlPanel #
+  ################################################################################
+  -->
   <UIECMAdminControlPanel>
     <tab>
       <label>
@@ -271,6 +276,7 @@
     <tab>
       <label>
         <ViewsInputSet>Các khung nhìn</ViewsInputSet>
+        <ViewsInputSet>Apply Views</ViewsInputSet>
         <PermissionInputSet>Chọn quyền truy nhập</PermissionInputSet>
       </label>
     </tab>
@@ -786,16 +792,11 @@
   #             org.exoplatform.ecm.webui.component.admin.UIDriveForm						 #
   ################################################################################
   -->
-  <UUIDriveForm>
-    <tab>
-      <label>
-        <DriveInputSet>Ổ đĩa</DriveInputSet>
-      </label>
-    </tab>
-  </UUIDriveForm>
   <DriveInputSet>
     <label>
       <both>Cả hai</both>      
+      <folderOnly>Folder</folderOnly>
+      <unstructuredFolder>Unstructured folder</unstructuredFolder>
     </label>
     <title>
       <AddPermission>Thêm quyền truy nhập</AddPermission>
@@ -1252,17 +1253,7 @@
       <name-too-long>Tên Taxonomy phải nhỏ hơn hoặc bằng 30 kí tự</name-too-long>
     </msg>
   </UITaxonomyForm>
-  <TaxonomyPopup>
-    <title>
-      <UITaxonomyForm>Thêm Taxonomy</UITaxonomyForm>
-    </title>
-  </TaxonomyPopup>
-   <!--
-  ######################################################################################
-  #             SINCE DMS version 2.3-SNAPSHOT                              			           #
-  #             Add permission for taxonomy			                                       #
-  ######################################################################################
-  -->
+  
   <UIPopupWindow>
     <title>
       <UIPermissionManager>Quản lí phân quyền</UIPermissionManager>
@@ -1773,12 +1764,6 @@
   <!--
   ########Since ECM 2.3##################
   -->
-  <DriveInputSet>
-    <label>      
-      <folderOnly>Thư mục</folderOnly>
-      <unstructuredFolder>Không cấu trúc thư mục</unstructuredFolder>
-    </label>    
-  </DriveInputSet>
   <QueriesPermissionBrowse>
     <label>
       <selectGroup>Chọn nhóm</selectGroup>

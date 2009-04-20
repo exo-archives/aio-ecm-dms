@@ -381,13 +381,8 @@
       <directoryPath>Datenverzeichnis</directoryPath>
       <maxBufferSize><![CDATA[Max Zwischenspeichergr&ouml;&szlig;e]]></maxBufferSize>
     </label>
-    <action>
-      <Close>#{word.close}</Close>
-      <Save>#{word.save}</Save>
-      <Reset>Neustarten</Reset>
-      <AddWorkspace><![CDATA[Arbeitsplatz hinzuf&uuml;gen]]></AddWorkspace>
-    </action>
     <msg>
+      <cannot-delete-default-workspace>Can not delete the workpsace '{0}' because this is default workspace.</cannot-delete-default-workspace>
       <repoName-exist>Ablage '{0}' existiert schon!</repoName-exist>
       <repoName-not-alow><![CDATA[Es sind ung&uuml;ltige Symbole im Namen!]]></repoName-not-alow>
       <workspace-isrequire>Mindestens einen Arbeitsplatz anfragen</workspace-isrequire>
@@ -402,6 +397,12 @@
       <authen-isrequire><![CDATA[Authentifikationsrichtlinie wird ben&ouml;tigt]]></authen-isrequire>
       <confirm-workspace-delete><![CDATA[Sind Sie sicher, dass Sie diesen Arbeitsplatz l&ouml;schen wollen ?]]></confirm-workspace-delete>
     </msg>
+    <action>
+      <Close>#{word.close}</Close>
+      <Save>#{word.save}</Save>
+      <Reset>Neustarten</Reset>
+      <AddWorkspace><![CDATA[Arbeitsplatz hinzuf&uuml;gen]]></AddWorkspace>
+    </action>
   </UIRepositoryForm>
   <UIRepositoryList>
     <titlebar>
@@ -966,6 +967,8 @@
       <viewPermissions>Genehmigungen anschauen</viewPermissions>
       <viewProperties>Eigenschaften anschauen</viewProperties>
       <manageVersions>Versionen verwalten</manageVersions>
+      <manageAuditing>Manage Auditing</manageAuditing>
+      <managePublications>Manage Publication</managePublications>
       <manageCategories>Kategorien verwalten</manageCategories>
       <manageRelations>Beziehungen verwalten</manageRelations>
       <manageActions>Aktionen verwalten</manageActions>
@@ -981,9 +984,6 @@
       <manageHidden>Hide/Show content</manageHidden>
     </label>
   </UIViewFormTabPane>
-  <!--
-  #       Need to be translated                               #
-  -->
   <PopupViewPermission>
     <title>
       <UIPermissionSelector><![CDATA[Genehmigung ausw&auml;hlen]]></UIPermissionSelector>
@@ -1253,18 +1253,7 @@
       <name-too-long>Taxonomie Name muss weniger als 30 Buchstaben beinhalten.</name-too-long>
     </msg>
   </UITaxonomyForm>
-  <TaxonomyPopup>
-    <title>
-      <UITaxonomyForm><![CDATA[Taxonomie hinzuf&uuml;gen]]></UITaxonomyForm>
-    </title>
-  </TaxonomyPopup>
   
-   <!--
-  ######################################################################################
-  #             SINCE DMS version 2.3-SNAPSHOT                              			           #
-  #             Add permission for taxonomy			                                       #
-  ######################################################################################
-  -->
   <UIPopupWindow>
     <title>
       <UIPermissionManager>Permission Management</UIPermissionManager>
@@ -1755,9 +1744,6 @@
       <SelectQueryHandler><![CDATA[Abfrage-Handler w&auml;hlen]]></SelectQueryHandler>
     </title>
   </step3>
-  <!--
-  # to be translated
-  -->
   <UIPermissionSelector>
     <label>
       <selectGroup>Select group</selectGroup>
@@ -1775,6 +1761,9 @@
       <AddAnyPermission>Set any permission</AddAnyPermission>
     </title>
   </anyPermission>
+  <!--
+  #########Since ECM 2.3##################
+  -->
   <QueriesPermissionBrowse>
     <label>
       <selectGroup>Select group</selectGroup>

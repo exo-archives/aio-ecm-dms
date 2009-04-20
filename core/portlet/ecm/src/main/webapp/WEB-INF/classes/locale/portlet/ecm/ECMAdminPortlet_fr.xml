@@ -285,9 +285,6 @@
       <workspace>Espace de travail</workspace>
       <homePath>Répertoire racine</homePath>
       <icon>Icône de l'espace de travail</icon>
-      <option>
-        <icon>Choisir l'icône</icon>
-      </option>
       <viewPreferences>Afficher les documents référencés</viewPreferences>
       <viewNonDocument>Afficher les "non documents"</viewNonDocument>
       <viewSideBar>Afficher le panneau latéral</viewSideBar>
@@ -1256,56 +1253,46 @@
       <name-too-long>Le nom de la catégorie ne peut excéder 30 caractères</name-too-long>
     </msg>
   </UITaxonomyForm>
-  <TaxonomyPopup>
-    <title>
-      <UITaxonomyForm>Ajout d'une catégorie</UITaxonomyForm>
-    </title>
-  </TaxonomyPopup>
-  <!--
-  ######################################################################################
-  #             SINCE DMS version 2.3-SNAPSHOT                              			           #
-  #             Add permission for taxonomy			                                       #
-  ######################################################################################
-  -->
+  
   <UIPopupWindow>
     <title>
-      <UIPermissionManager>Permission Management</UIPermissionManager>
+      <UIPermissionManager>Gestion des Permissions</UIPermissionManager>
     </title>
    </UIPopupWindow>
 
   <PopupUserSelector>
     <title>
-      <UIUserContainer>Permission Management</UIUserContainer>
+      <UIUserContainer>Gestion des Permissions</UIUserContainer>
     </title>
    </PopupUserSelector>
    
   <UIPermissionInfo>
     <action>
       <title>
-        <Edit>Edit</Edit>
-        <Delete>Remove permission</Delete>
+        <Edit>Editer</Edit>
+        <Delete>Supprimer une permission</Delete>
       </title>
     </action>
     <header>
-      <usersOrGroups>User Or Group</usersOrGroups>
-      <read>Read</read>
-      <addNode>Add Node</addNode>
-      <setProperty>Set Property</setProperty>
-      <remove>Remove</remove>
+      <usersOrGroups>Uilisateur Ou Groupe</usersOrGroups>
+      <read>Lecture</read>
+      <addNode>Ajout de Noeud</addNode>
+      <setProperty>MAJ des Propriétés</setProperty>
+      <remove>Suppression</remove>
       <action>Action</action>
     </header>
     <msg>
-      <confirm-delete-permission>Do you want to remove this permission?</confirm-delete-permission>
-      <no-permission-tochange>You have no right to remove permission</no-permission-tochange>
-      <no-permission-remove>You can not remove the owner</no-permission-remove>
-      <access-denied>Access denied! You can not remove this permission.</access-denied>
+      <confirm-delete-permission>Souhaitez-vous supprimer cette permission ?</confirm-delete-permission>
+      <no-permission-tochange>Vous n'avez pas les droits requis pour supprimer la permission</no-permission-tochange>
+      <no-permission-remove>Vous ne pouvez pas supprimer le propriétaire</no-permission-remove>
+      <access-denied>Accès refusé ! Vous ne pouvez pas supprimer cette permission.</access-denied>
     </msg>
   </UIPermissionInfo>
   <permission>
     <title>
-      <SelectUser>Select user</SelectUser>
-      <SelectMember>Select membership</SelectMember>
-      <AddAny>Select everyone</AddAny>
+      <SelectUser>Sélectionner un utilisateur</SelectUser>
+      <SelectMember>Sélectionner un rôle</SelectMember>
+      <AddAny>Sélectionner "tout le monde"</AddAny>
     </title>
   </permission>
   <!--
@@ -1315,53 +1302,53 @@
   -->
   <SelectUserOrGroup>
     <title>
-      <UIGroupSelector>Select user</UIGroupSelector>
-      <UIPermissionSelector>Select member</UIPermissionSelector>
-      <UIGroupMemberSelector>Select membership</UIGroupMemberSelector>
+      <UIGroupSelector>Sélectionner un utilisateur</UIGroupSelector>
+      <UIPermissionSelector>Sélectionner un membre</UIPermissionSelector>
+      <UIGroupMemberSelector>Sélectionner un rôle</UIGroupMemberSelector>
     </title>
   </SelectUserOrGroup>
   <UIGroupSelector>
     <label>
-      <selectGroup>Browse and select a group</selectGroup>
-      <selectUser>Select user</selectUser>
+      <selectGroup>Parcourir et sélectionner un groupe</selectGroup>
+      <selectUser>Sélectionner un utilisateur</selectUser>
     </label>
     <msg>
-      <not-change-owner>'{0}' is owner of this node and have full control permission</not-change-owner>
+      <not-change-owner>'{0}' est le propriétaire du noeud et a l'accès total</not-change-owner>
     </msg>
   </UIGroupSelector>
   <UIPermissionForm>
     <label>
-      <UIPopupWindow>Select</UIPopupWindow>
+      <UIPopupWindow>Sélectionner</UIPopupWindow>
       <permission>UIPermissionForm</permission>
-      <userOrGroup>User Or Group</userOrGroup>
-      <read>Read Right</read>
-      <add_node>Add Node Right</add_node>
-      <set_property>Set Property Right</set_property>
-      <remove>Remove Right</remove>
+      <userOrGroup>Utilisateur Ou Groupe</userOrGroup>
+      <read>Droit de Lecture</read>
+      <add_node>Droit d'Ajout de Noeud</add_node>
+      <set_property>Droit de MAJ des Propriétés</set_property>
+      <remove>Droit de Suppression</remove>
     </label>
-    <title>Add a permission to that node</title>
+    <title>Ajouter une permission à ce noeud</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>#{word.save}</Save>
       <Reset>Reset</Reset>
     </action>
     <msg>
-      <checkbox-require>You must select at least one permission</checkbox-require>
-      <userOrGroup-required>You must select user or group before save this permission</userOrGroup-required>
-      <not-change-permission>You have no right to add permission</not-change-permission>
-      <access-denied>Access denied! You can not remove this right permission.</access-denied>
+      <checkbox-require>Vous devez selectionner au moins une propriété</checkbox-require>
+      <userOrGroup-required>Vous devez choisir un utilisateur ou un groupe avant de sauver cette permission</userOrGroup-required>
+      <not-change-permission>Vous n'avez pas les droits requis pour ajouter une permission</not-change-permission>
+      <access-denied>Accès refusé ! Vous ne pouvez pas supprimer cette permission.</access-denied>
     </msg>
   </UIPermissionForm>
   
   <TaxonomyPopup>
     <title>
-      <UITaxonomyForm>Add Taxonomy</UITaxonomyForm>
+      <UITaxonomyForm>Ajouter une Taxonomie</UITaxonomyForm>
     </title>
   </TaxonomyPopup>
   
   <UITaxonomyManager>
     <title>
-      <permission>Permission Management</permission>
+      <permission>Gestion des Permissions</permission>
     </title>
   </UITaxonomyManager>
   <!--

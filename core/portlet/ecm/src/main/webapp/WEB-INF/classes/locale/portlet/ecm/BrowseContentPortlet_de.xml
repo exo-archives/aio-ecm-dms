@@ -104,6 +104,16 @@
   #      org.exoplatform.ecm.webui.component.browse.UIQueryConfig #
   ###################################################################
   -->
+  <path>
+    <title>
+      <AddPath>Pfad hinzufügen</AddPath>
+    </title>
+  </path>
+  <rootNodeInfo>
+    <title>
+      <AddRootNode>Add Wurzelknoten</AddRootNode>
+    </title>
+  </rootNodeInfo>
   <!--
   #############################################################
   # org.exoplatform.ecm.webui.component.UIVoteForm.gtmpl		#
@@ -306,6 +316,11 @@
       <more>Mehr Dokumente</more>
       <previous>Vorherige Ansicht</previous>
     </label>
+    <title>
+      <home>Heim</home>
+      <prevTabs>Zurück Tabs</prevTabs>
+      <moreTabs>Mehr Tabs</moreTabs>
+    </title>
     <msg>
       <template-notsupported>Keine Vorlagenansicht zum Laden</template-notsupported>
       <invalid-node><![CDATA[Fehlender Knoten : wurde entfernt oder gel&ouml;scht]]></invalid-node>
@@ -398,7 +413,7 @@
   -->
   <UITagList>
     <label>
-      <tagTitle>Tag Map</tagTitle>
+      <tagTitle>Tag Karte</tagTitle>
     </label>
   </UITagList>
   <UICategoryTree>
@@ -429,5 +444,38 @@
       <confirm-delete><![CDATA[Wollen Sie sicher l&ouml;schen?]]></confirm-delete>
     </msg>
   </UIFormInputSetWithAction>
+  <!--
+  ###################################################################################
+  # org.exoplatform.ecm.jcr.SearchValidator																			#
+  ###################################################################################
+  -->
+  <SearchValidator>
+    <msg>
+      <empty-input>The value of this field is null or empty!</empty-input>
+      <Invalid-char>There are some invalid characters in this field. Type another value, please!</Invalid-char>
+      <Invalid-char2>Number must be following the char '~'</Invalid-char2>
+      <Invalid-char1>Number follow the char '~' must between 0 to 1</Invalid-char1>
+      <Invalid-char3>Number must be following the char '^'</Invalid-char3>
+      <Invalid-char4>No space is allowed near the char '~'</Invalid-char4>
+      <Invalid-char5>No space is allowed near the char '^'</Invalid-char5>
+    </msg>
+  </SearchValidator>
+  <!--
+  ######################################################################################
+  # Since ECM 2.3
+  ######################################################################################
+  -->
+  <UIPathConfig>
+    <label>
+      <searchEnable>Enable search location</searchEnable>
+      <searchLocation>Search location</searchLocation>
+      <searchPath>UIPathConfig</searchPath>
+      <explain></explain>
+    </label>
+    <msg>
+      <enter-search-location>You have to specify the search location</enter-search-location>
+      <explain>When the path shown in Browse Content corresponds to a hierarchy of categories, it is needed to specify the path where documents are actually stored, so that they can be found by the search feature of the Portlet.</explain>
+    </msg>
+  </UIPathConfig>
 </bundle>
 

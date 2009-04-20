@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bundle>
   <administration>
-    Администрирование
+    <title>Администрирование</title>
     <application-registry>Реестр приложений</application-registry>
     <newAccount>Новая учетная запись</newAccount>
     <comunity-management>Управление сообщества</comunity-management>

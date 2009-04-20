@@ -18,6 +18,13 @@
   #      org.exoplatform.ecm.webui.component.browse.UIPathConfig #
   ###################################################################
   -->
+  <!--
+    ###################################################################
+		#	    FROM VERSION DMS 2.3-SNAPSHOT, we add filterCategory        #
+		#	    to display checkbox for filtering category tree             #
+		#	    base on permission of user                                  #
+    ###################################################################
+   -->
   <UIPathConfig>
     <label>
       <categoryPath>فئات الطريق</categoryPath>
@@ -29,10 +36,12 @@
       <detailBoxTemp>نوع النظرة التفصيلية</detailBoxTemp>
       <enableToolBar>اظهر شريط الأدوات</enableToolBar>
       <enableRefDoc>وثيقة ذات صلة</enableRefDoc>
+      <filterCategory>تصنيف الفئات حسب  صلاحيّات المستخدم الحالي</filterCategory>
       <enableChildDoc>وثيقة الابن</enableChildDoc>
       <enableTagMap>خريطة العلامات</enableTagMap>
       <enableComment>امكانية اضافة تعليق</enableComment>
       <enableVote>امكانية التصويت </enableVote>
+      <isAllowPublish>عرض الوثائق ذات النمط ''العمومي'' فقط</isAllowPublish>
     </label>
     <title>تهيئة المسار</title>
     <action>
@@ -48,7 +57,6 @@
       <invalid-value>رقم الصفحة غير صالح</invalid-value>
       <invalid-number>يجب عليك ادخال عدد</invalid-number>
       <access-denied>غير مسموح بالدخول، ليس لديك الصلاحية الكافية للوصول إلى مجلد الفئات</access-denied>
-
     </msg>
   </UIPathConfig>
   <UIQueryConfig>
@@ -74,6 +82,7 @@
       <enableTagMap>خريطة العلامات</enableTagMap>
       <enableComment>امكانية اضافة تعليق</enableComment>
       <enableVote>امكانية التصويت</enableVote>
+      <isAllowPublish>عرض الوثائق ذات النمط ''العمومي'' فقط</isAllowPublish>
     </label>
     <action>
       <Add>التهيئة الجديدة</Add>
@@ -134,13 +143,6 @@
       <enableComment>امكانية اضافة تعليق</enableComment>
       <enableVote> امكانية التصويت </enableVote>
       <isAllowPublish>عرض الوثائق ذات النمط ''العمومي'' فقط</isAllowPublish> 
- <!--
-Show only documents in "published" state
-  ###############################################################################
-  #      j'ai remarqué que cette dernière balise existe en EN mais pas en FR et AR donc je l'ai ajouté #
-  ###############################################################################
-  -->
-
     </label>
     <action>
       <Add>التهيئة الجديدة</Add>
@@ -155,7 +157,6 @@ Show only documents in "published" state
   #    org.exoplatform.ecm.webui.component.browse.UIDocumentConfig #
   ###################################################################
   -->
-
   <UIDocumentConfig>
     <title>تهيئة الوثيقة</title>
     <label>
@@ -168,6 +169,7 @@ Show only documents in "published" state
       <detailBoxTemp>تفاصيل صندوق القالب</detailBoxTemp>  
       <enableComment>امكانية اضافة تعليق</enableComment>
       <enableVote>امكانية التصويت</enableVote>
+      <isAllowPublish>عرض الوثائق ذات النمط ''العمومي'' فقط</isAllowPublish>
     </label>
     <action>
       <Add>تهيئة جديدة</Add>
@@ -302,7 +304,7 @@ Show only documents in "published" state
       <path-Previous>السابق</path-Previous>
       <path-Root>الجذر</path-Root>
       <home>الاستقبال</home>
-      <cannot-access>portlet configuration غير مسموح بالدخول  ربما لم يكن لديك الإذن لرؤية</cannot-access>
+      <cannot-access>غير مسموح بالدخول  ربما لم يكن لديك الإذن لرؤية التّهيئة الخاصّة بهذا المدخل</cannot-access>
     </label>
     <title>
       <home>الاستقبال</home>

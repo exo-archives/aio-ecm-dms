@@ -381,12 +381,6 @@
       <directoryPath>Map</directoryPath>
       <maxBufferSize>Maximum Buffer grootte</maxBufferSize>
     </label>
-    <action>
-      <Close>#{word.close}</Close>
-      <Save>#{word.save}</Save>
-      <Reset>Reset</Reset>
-      <AddWorkspace>werkruimte toevoegen</AddWorkspace>
-    </action>
     <msg>
       <repoName-exist>repository '{0}' bestaat reeds!</repoName-exist>
       <repoName-not-alow>Er zijn enkele ongeldige karakters in naam!</repoName-not-alow>
@@ -402,6 +396,12 @@
       <authen-isrequire>Authentificatie beleid is vereist</authen-isrequire>
       <confirm-workspace-delete>Wilt u deze werkruimte verwijderen?</confirm-workspace-delete>
     </msg>
+    <action>
+      <Close>#{word.close}</Close>
+      <Save>#{word.save}</Save>
+      <Reset>Reset</Reset>
+      <AddWorkspace>werkruimte toevoegen</AddWorkspace>
+    </action>
   </UIRepositoryForm>
   <UIRepositoryList>
     <titlebar>
@@ -1753,9 +1753,6 @@
       <SelectQueryHandler>selecteer Query Handler</SelectQueryHandler>
     </title>
   </step3>
-  <!--
-  # to be translated
-  -->
   <UIPermissionSelector>
     <label>
       <selectGroup>Select group</selectGroup>
@@ -1773,6 +1770,9 @@
       <AddAnyPermission>Set any permission</AddAnyPermission>
     </title>
   </anyPermission>
+  <!--
+  #########Since ECM 2.3##################
+  -->
   <QueriesPermissionBrowse>
     <label>
       <selectGroup>Select group</selectGroup>

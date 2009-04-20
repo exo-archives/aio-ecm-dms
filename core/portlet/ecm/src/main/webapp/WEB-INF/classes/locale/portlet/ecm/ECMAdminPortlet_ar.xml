@@ -40,7 +40,6 @@
     <msg>
       <referential-integrity>لا يمكن قراءة الملف من المصدر أو المقصد هو فئة فرعية.</referential-integrity>
       <no-taxonomy-selected>يجب عليك نسخ أو قص فئة واحدة على الأقل!</no-taxonomy-selected>
-
       <node-is-cutting>لا يمكنك اللصق هنا. ربما تم قطع تصنيف العقدة '{0}'  </node-is-cutting>
       <can-not-paste>لا توجد بيانات في الحافظة تستطيع لصقها.</can-not-paste>
       <reference-exception> لا يمكن حذف هذا التصنيف لانه ذات وصلة.</reference-exception>
@@ -104,7 +103,7 @@
   <UINamespaceList>
     <header>
       <prefix>بادئة</prefix>
-      <uri>Namespace Uri</uri>
+      <uri>اسم الفضاء الخاص بالـ uri</uri>
       <action>عمل</action>
     </header>
     <action>
@@ -273,7 +272,6 @@
       <permission-null>.يجب أن تختار الصلاحية لهذا القرص</permission-null>
       <name-null>أدخل إسم القرص، أرجوك!</name-null>
       <fileName-invalid>هناك بعض الأحرف غير متاحة في هذا الإسم.</fileName-invalid>
-
     </msg>
     <tab>
       <label>
@@ -654,7 +652,7 @@
     </action>
     <msg>
       <register-successfully>نوع العقدة '{0}' تم تسجيله بنجاح</register-successfully>
-          <supertype-is-madatory>النوع السوبر إجباري لتسجيل نوع عقدة جديد. يجب اختيار نوع سوبر واحد على الاقل</supertype-is-madatory>
+      <supertype-is-madatory>النوع السوبر إجباري لتسجيل نوع عقدة جديد. يجب اختيار نوع سوبر واحد على الاقل</supertype-is-madatory>
       <register-failed>تسجيل نوع العقدة لم يتم بنجاح. اما انه موجود من قبل او ان الانواع السوبر غير صحيحة</register-failed>
       <nodeType-name>اسم نوع العقدة ضروري</nodeType-name>
       <fileName-invalid>هناك بعض احرف في الاسم غير صحيحة</fileName-invalid>
@@ -1410,7 +1408,7 @@
       <viewPermission>الصلاحية</viewPermission>
       <enableVersion>تفعييل الإصدار</enableVersion>
     </label>
-    <title>add/edit dialog</title>
+    <title>إضافة / تغيير واجهة المُــستخدم</title>
   </DialogForm>
   <DialogFormTemplatePermission>
     <title>
@@ -1634,8 +1632,6 @@
       <range-validator>
 عدد الوصلات غير صحيح. الشكل الصحيح هو: أ..ب، أ و ب أعداد صحيحة موجبة.يمكن إستعمال '*' للإشارة بأنه غيرمحدود
 </range-validator>
-
-
       <error-update>خطأ في التحديث.</error-update>
     </msg>
   </UITagStyleForm>

@@ -276,6 +276,7 @@
       <Upload>Tải lên</Upload>
       <Paste>Dán</Paste>
       <Search>Tìm kiếm</Search>
+      <CreateTicket>New Ticket</CreateTicket>
       <WatchDocument>Theo dõi/ngừng theo dõi tài liệu này</WatchDocument>
       <TaggingDocument>Gán nhãn tài liệu này</TaggingDocument>
       <MultiLanguage>Thêm/Sửa đổi nội dung đa ngôn ngữ</MultiLanguage>
@@ -525,6 +526,32 @@
   </ECMContextMenu>
   <!--
   #############################################################################
+  #             org.exoplatform.ecm.webui.component.explorer.UITicketForm     #
+  #############################################################################
+  -->
+  <UITicketForm>
+    <title>Create Ticket</title>
+    <label>
+      <users>Users</users>
+      <permission>Permission</permission>
+      <creator>Creator</creator>
+      <accessTime>Access Time</accessTime>
+      <accessLimit>Access Limit</accessLimit>
+      <description>Description</description>
+      <sendToMail>Send To Mail</sendToMail>
+      <ticketID>Ticket ID</ticketID>
+    </label>
+    <action>
+      <Cancel>#{word.cancel}</Cancel>
+      <Update>#{word.update}</Update>
+      <Save>#{word.save}</Save>
+    </action>
+    <msg>
+      <unable-create>Unable create !</unable-create>
+    </msg>
+  </UITicketForm>
+  <!--
+  #############################################################################
   #     org.exoplatform.ecm.webui.component.explorer.UIReferencesList         #
   #############################################################################
   -->
@@ -574,6 +601,8 @@
       <UIDocumentInfo>Hiển thị theo kiểu tài liệu</UIDocumentInfo>
       <UICategoriesSelectPanel>Chọn loại</UICategoriesSelectPanel>
       <UISelectedCategoriesGrid>Các loại tham chiếu</UISelectedCategoriesGrid>
+      <UIWorkflowPublicationActionForm>Workflow Publication Action</UIWorkflowPublicationActionForm>
+      <UIWorkflowPublicationViewForm>Workflow Publication View</UIWorkflowPublicationViewForm>
     </title>
   </UITabPane>
   <UIPropertyTab>
@@ -1234,6 +1263,8 @@
   ################################################################################
   #  org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo
   ################################################################################
+  e_
+  
   -->
   <UIAuditingInfo>
     <msg>
@@ -1273,6 +1304,7 @@
       <version>Phiên bản</version>
     </label>
   </UIAuditingInfo>
+  
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
@@ -1865,6 +1897,9 @@
       <private>Bí mật</private>
       <state>Trạng thái</state>
       <visibility>Có thể hiển thị</visibility>
+      <nodeName>Node Name:</nodeName>
+      <lifecycleName>Lifecycle Name</lifecycleName>
+      <stateName>State Name</stateName>
     </label>
     <action>
       <Save>Lưu</Save>
@@ -1921,13 +1956,6 @@
       <selectMembership>Chọn quan hệ thành viên</selectMembership>
     </label>
   </UIPermissionSelector>
-  <UIGroupMemberSelector>
-    <label>
-      <selectGroup>Chọn nhóm người dùng</selectGroup>
-      <selectUser>Chọn người dùng</selectUser>
-      <selectMembership>Chọn quan hệ thành viên</selectMembership>
-    </label>
-  </UIGroupMemberSelector>
   <!--
   ###################################################################################
   # org.exoplatform.ecm.jcr.ECMStandardPropertyNameValidator												#
@@ -2038,77 +2066,41 @@
       <close>Đóng</close>
     </action>
   </UICategoriesSelector>
-  
   <!--
-  ########Since ECM 2.3##################
+  ###################################################################################
+  # Since ECM version 2.2				                                        							#
+  ###################################################################################
   -->
-  <UIUserSelector>
+  <UIGroupMemberSelector>
     <label>
-      <option>
-        <userName>Tên đăng nhập</userName>
-        <lastName>Họ</lastName>
-        <firstName>Tên</firstName>      
-        <email>Hòm mail</email>
-      </option>
-      <group>Nhóm: </group>
-      <searchUser>Tìm kiếm</searchUser>
-      <userName>Tên đăng nhập</userName>
-      <lastName>Họ</lastName>
-      <firstName>Tên</firstName>      
-      <email>Hòm mail</email>
-      <actions>Thao tác</actions>
-      <Add>Thêm</Add>      
-      <Close>Đóng</Close>
+      <selectGroup>Chọn nhóm người dùng</selectGroup>
+      <selectUser>Chọn người dùng</selectUser>
+      <selectMembership>Chọn quan hệ thành viên</selectMembership>
     </label>
-    <header>
-      <action>Thao tác</action>
-    </header>
-  </UIUserSelector>
-  
-  <UIPageIterator>
-    <label>
-      <totalPage>Tổng số trang</totalPage>
-      <backTenPages>Quay lại 10 trang</backTenPages>
-      <previous>Trang trước</previous>
-      <next>Trang tiếp theo</next>
-      <nextTenPages>Tiếp 10 trang</nextTenPages>
-    </label>
-  </UIPageIterator>
-  
-  <UIPublicationForm>
-    <label>
-      <nodeName>Tên node: </nodeName>
-      <lifecycleName>Tên vòng đời: </lifecycleName>
-      <stateName>Tên trạng thái: </stateName>
-    </label>    
-  </UIPublicationForm>
-  
-  <UITabPane>
-    <title>
-      <UIWorkflowPublicationActionForm>Workflow Publication Action</UIWorkflowPublicationActionForm>
-      <UIWorkflowPublicationViewForm>Workflow Publication View</UIWorkflowPublicationViewForm>
-    </title>
-  </UITabPane>
-  
+  </UIGroupMemberSelector>
+  <!--
+  ###Since ECM version 2.2##############
+  -->
+  <!--
+  ###Since ECM version 2.3 Alpha##############
+  -->
   <UIWorkflowPublicationActionForm>
     <label>
       <fieldValidator>fieldValidator</fieldValidator>
       <fieldDestPath>fieldDestPath</fieldDestPath>
+      <fieldBackup>fieldBackup</fieldBackup>
     </label>
   </UIWorkflowPublicationActionForm>
-  
   <workflow_validator>
     <title>
       <AddPermission>Thêm quyền truy nhập</AddPermission>
     </title>
   </workflow_validator>
-  
   <workflow_destpath>
     <title>
       <AddDestPath>Thêm đường dẫn</AddDestPath>
     </title>
   </workflow_destpath>
-  
   <PublicationService>
     <WorkflowPublicationPlugin>
       <nodeValidationRequest>Node này đang trong trạng thái yêu cầu phê chuẩn</nodeValidationRequest>

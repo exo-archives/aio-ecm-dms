@@ -96,12 +96,8 @@
     <label>
       <workspaceName>Arbeitsplatz</workspaceName>
       <rootNodeInfo>Wurzelpfad</rootNodeInfo>
-      <rootPath>Wurzelpfad</rootPath>
     </label>
   </UIWorkspaceList>
-  <!--
-  # to be translated
-  -->
   <UITabPane>
     <title>
       <UICategoriesSelectPanel>Select categories</UICategoriesSelectPanel>

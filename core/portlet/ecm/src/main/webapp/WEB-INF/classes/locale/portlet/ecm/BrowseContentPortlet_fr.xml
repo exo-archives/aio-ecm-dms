@@ -413,6 +413,11 @@
       <invalid-node>Document introuvable (probablement déplacé ou supprimé)</invalid-node>
     </msg>
   </UICategoryTree>
+  <UICategoryTree_new>
+    <label>
+      <test>Test</test>
+    </label>
+  </UICategoryTree_new>
   <!--
   ###################################################################################
   #  org.exoplatform.ecm.webui.component.browse.UIBrowseContentHelp																  #

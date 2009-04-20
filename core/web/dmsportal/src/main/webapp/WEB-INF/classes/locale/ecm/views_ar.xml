@@ -25,6 +25,7 @@
         <vi>فيتنامية</vi>
         <ln>ألمانية</ln>
         <uk>اوكرانية</uk>
+        <ar>العربية</ar>
       </languages>
     </label>
   </View>
@@ -224,9 +225,9 @@
       <label>
         <name>الاسم</name>
         <versionable>قابل (ـة) للإصدار</versionable>
-        <owner>المالك</owner>
-        <dateCreated>تاريخ الانشاء</dateCreated>
-        <dateModified>تاريخ التعديل</dateModified>
+        <exo_owner>المالك</exo_owner>
+        <exo_dateCreated>تاريخ الانشاء</exo_dateCreated>
+        <exo_dateModified>تاريخ التعديل</exo_dateModified>
         <auditing>تقفي الأثر</auditing>
       </label>
     </view>
@@ -308,7 +309,7 @@
         <repeat-count>تكرار العد</repeat-count>
         <time-interval>الفترة الزمنية</time-interval>
         <cron-expression>عبارة كرون</cron-expression>
-		<feed-node-name>اسم العقدة</feed-node-name>
+	<feed-node-name>اسم العقدة</feed-node-name>
         <feed-store-path>مسارالتخزين</feed-store-path>
         <query-items>عناصر الاستبيان</query-items>
         <rss-url> عنوان الموارد الموحد لــرسس</rss-url>
@@ -535,7 +536,7 @@
         <format>الشكل</format>
         <addresses>العناوين</addresses>
         <originating-organization>الهيئةالاصلية</originating-organization>
-		<other-addresses>عناوين اخرى</other-addresses>
+	<other-addresses>عناوين اخرى</other-addresses>
         <publication-date>تاريخ النشر</publication-date>
         <record-note>مذكرة السجل</record-note>
         <date-received>تاريخ الاستقبال</date-received>
@@ -562,7 +563,7 @@
     <view>
       <label>
         <not-available>غير متوفرة</not-available>
-		<transfer-executed>تحويل منفذ</transfer-executed>
+	<transfer-executed>تحويل منفذ</transfer-executed>
         <transfer-date>تاريخ التحويل</transfer-date>
         <transfer-location>مكان التحويل</transfer-location>
       </label>
@@ -583,8 +584,8 @@
     <view>
       <label>
         <not-available>غير متوفرة</not-available>
-		<is-vital-record>السجل حيوي</is-vital-record>
-        <previous-review-date>تاريخ المراجعة السابقة</previous-review-date>
+	<is-vital-record>السجل حيوي</is-vital-record>
+        <prev-review-date>تاريخ المراجعة السابقة</prev-review-date>
         <next-review-date>تاريخ المراجعة المُـقبلة</next-review-date>
       </label>
       <action>
