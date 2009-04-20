@@ -1,2 +1,2 @@
-<Context path="/gadgets" docBase="../../../eXoProjects/ecm/dms/branches/2.3.x/core/gadgets/src/main/webapp" 
+<Context path="/gadgets" docBase="../../../eXoProjects/ecm/dms/tags/2.3.1/core/gadgets/src/main/webapp" 
          debug="0" reloadable="true" />
