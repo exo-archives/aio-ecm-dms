@@ -825,7 +825,7 @@
       <uploaded-file>الملف الذي تم تحميله</uploaded-file>
       <external-metadata>قالب المعلومات القياسية الخارجية</external-metadata>
       <metadata-name>اسم قالب المعلومات القياسية</metadata-name>
-      <action>عمل</action>
+      <action>إجراء</action>
     </title>
     <tooltip>
       <Edit>تغيير</Edit>
@@ -960,7 +960,7 @@
     <header>
       <name>#{word.name}</name>
       <path>المسار</path>
-      <action>العمل</action>
+      <action>الإجراء</action>
       <shortcutPath>المسار</shortcutPath>
       <type>النوع</type>
       <dateCreated>تاريخ الصنع</dateCreated>
@@ -1144,7 +1144,7 @@
       <name>الاسم</name>
       <language>اللغة</language>
       <query>الاستبيان</query>
-      <action>الأعمال</action>
+      <action>الإجراءات</action>
       <path>المسار</path>
     </header>
   </UIECMSearch>
@@ -1153,7 +1153,7 @@
       <not-found>بيانات غير موجودة</not-found>
     </msg>
     <header>
-      <action>العمل</action>
+      <action>الإجراء</action>
     </header>
   </UIResult>
   <UISaveQueryForm>
@@ -1176,7 +1176,7 @@
       <type>النوع</type>
       <statement>بيان</statement>
       <permission>التصاريح</permission>
-      <action>الأعمال</action>
+      <action>الإجراءات</action>
     </header>
     <tooltip>
       <Execute>تنفيذ</Execute>
@@ -1327,7 +1327,7 @@
     <header>
       <LifecycleName>الاسم</LifecycleName>
       <LifecycleDesc>وصف</LifecycleDesc>
-      <action>عمل</action>
+      <action>إجراء</action>
     </header>
     <action>
       <Cancel>إغلاق</Cancel>
@@ -1475,7 +1475,7 @@
   <UICategoriesAddedList>
     <header>
       <path>فئة</path>
-      <action>الأعمال</action>
+      <action>الإجراءات</action>
     </header>
     <msg>
       <access-denied>غير مسموح! ليس لك التصاريح الكافية على هذه العقدة.</access-denied>
@@ -1495,7 +1495,7 @@
   <UITreeList>
     <header>
       <name>الاسم</name>
-      <action>عمل</action>
+      <action>إجراء</action>
     </header>
     <info>
       <child-not-found>هذه العقدة ليس لها فروع</child-not-found>
@@ -1519,7 +1519,7 @@
   <UIRelationsAddedList>
     <header>
       <path>الصلات</path>
-      <action>الأعمال</action>
+      <action>الإجراءات</action>
     </header>
     <action>
       <title>
@@ -1647,7 +1647,7 @@
       <name>#{word.name}</name>
       <description>وصف</description>
       <instanceOf>نموذج من نوع العمل</instanceOf>
-      <action>عمل</action>
+      <action>إجراء</action>
     </header>
     <msg>
       <remove-popup-first>يجب عليك إغلاق مشهد التغيير قبل حذف العقدة.</remove-popup-first>
@@ -2112,52 +2112,52 @@
   Access directly a JCR FE drive
   -->
   <UIJCRExporerPortlet>
-    <nopermission>There is no drive or you don't have permission to access this drive</nopermission>
+    <nopermission>هذا ليس بقُرص أو انّك لا تملك الصلاحيّة الكافية للدّخول إلى هذا القُرص</nopermission>
   </UIJCRExporerPortlet>
   
   <UIJcrExplorerEditForm>
-    <title>File Explorer Edit Form</title>
+    <title>مُستكشف الملفات مشهد التغيير</title>
     <action>
-      <Edit>Edit</Edit>
-      <Save>Save</Save>
-      <Cancel>Cancel</Cancel>
+      <Edit>تغيير</Edit>
+      <Save>حفظ</Save>
+      <Cancel>إلغاء</Cancel>
     </action>
     <label>
-      <repository>Repository</repository>
-      <categoryMandatoryWhenFileUpload>Specify a category when uploading a file</categoryMandatoryWhenFileUpload>
-      <isDirectlyDrive>Directly Drive</isDirectlyDrive>
-      <driveName>Drive Name</driveName>
-      <usecase>Select Type</usecase>
+      <repository>مُستودع البيانات</repository>
+      <categoryMandatoryWhenFileUpload>الرجاء تحديد الفئة عند تحميلك للملفّ</categoryMandatoryWhenFileUpload>
+      <isDirectlyDrive>القرص المباشر</isDirectlyDrive>
+      <driveName>اسم القرص</driveName>
+      <usecase>اختيار النّوع</usecase>
     </label>
   </UIJcrExplorerEditForm>
   
   <UIDriveSelector>
     <label>
-      <driveName>Drive Name</driveName>
-      <action>Action</action>
-      <adddrives>Add Drives</adddrives>
+      <driveName>اسم القرص</driveName>
+      <action>إجراء</action>
+      <adddrives>إضافة أقراص</adddrives>
     </label>
   </UIDriveSelector>
   <UIJcrExplorerEditForm>
     <label>
-      <driveName>Drive Name</driveName>
+      <driveName>اسم القرص</driveName>
       <DriveNameInput>UIJcrExplorerEditForm</DriveNameInput>
     </label>
     <msg>
-      <not-have-social>The Social usecase is not available, the Selection one will be used instead.</not-have-social>
-      <personal-usecase>The private drive of current user will be used when you choose Personal usecase.</personal-usecase>
+      <not-have-social>النموذج التطبيقي الاجتماعي غير متوفّر، سيتمّ استعمال النموذج المُختار عوضاً عن ذلك</not-have-social>
+      <personal-usecase>سيتمّ استعمال القرص الشخصي الخاص بالمستخدم الحالي عند اختيارك للنموذج التطبيقي الشخصي</personal-usecase>
     </msg>
   </UIJcrExplorerEditForm>
   
   <PopUpSelectDrive>
     <title>
-      <UIDriveSelector>Select Drive</UIDriveSelector>
+      <UIDriveSelector>اختيار  قرص</UIDriveSelector>
     </title>
   </PopUpSelectDrive>
   
   <DriveNameInput>
     <title>
-      <SelectDrive>Select Drive</SelectDrive>
+      <SelectDrive>اختيار  قرص</SelectDrive>
     </title>
   </DriveNameInput>
 </bundle>
