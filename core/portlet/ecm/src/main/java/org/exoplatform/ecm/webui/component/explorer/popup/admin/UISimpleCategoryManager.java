@@ -17,7 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -34,21 +34,21 @@ import org.exoplatform.webui.event.EventListener;
  */
 @ComponentConfig(
     template = "app:/groovy/webui/component/explorer/UITabPaneWithAction.gtmpl",
-    events = @EventConfig(listeners = UICategoryManager.CloseActionListener.class)
+    events = @EventConfig(listeners = UISimpleCategoryManager.CloseActionListener.class)
 )
-public class UICategoryManager extends UIContainer implements UIPopupComponent {
+public class UISimpleCategoryManager extends UIContainer implements UIPopupComponent {
 
   final static public String[] ACTIONS = {"Close"} ;
   
-  public UICategoryManager() throws Exception {
-    addChild(UICategoriesAddedList.class, null, null) ;
-    addChild(UIOneTaxonomySelector.class, null, null).setRendered(false);
+  public UISimpleCategoryManager() throws Exception {
+    addChild(UICategoriesAddedList.class, null, null);
+    addChild(UIOneNodePathSelector.class, null, null).setRendered(false);
   }
   
   public String[] getActions() { return ACTIONS ; }
 
-  static public class CloseActionListener extends EventListener<UICategoryManager> {
-    public void execute(Event<UICategoryManager> event) throws Exception {
+  static public class CloseActionListener extends EventListener<UISimpleCategoryManager> {
+    public void execute(Event<UISimpleCategoryManager> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       uiExplorer.setIsHidePopup(false) ;
       uiExplorer.cancelAction() ;

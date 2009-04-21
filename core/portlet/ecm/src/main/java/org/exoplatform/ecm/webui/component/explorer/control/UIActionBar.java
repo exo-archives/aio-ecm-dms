@@ -64,6 +64,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertyForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPublicationManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIRelationManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIRelationsAddedList;
+import org.exoplatform.ecm.webui.component.explorer.popup.admin.UISimpleCategoryManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UINodeTypeInfo;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIPermissionManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIReferencesList;
@@ -84,6 +85,7 @@ import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion;
 import org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -144,6 +146,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.ManageVersionsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageAuditingActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManagePublicationsActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.ManageSimpleCategoriesActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageCategoriesActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageRelationsActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ManageActionsActionListener.class, phase = Phase.DECODE),
@@ -834,6 +837,64 @@ public class UIActionBar extends UIForm {
     }
   }
 
+  static public class ManageSimpleCategoriesActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {
+      UIActionBar uiActionBar = event.getSource();
+      UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
+      String repository = uiExplorer.getRepositoryName();
+      ManageableRepository manaRepository = 
+        uiActionBar.getApplicationComponent(RepositoryService.class).getRepository(repository);
+      String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
+      NodeHierarchyCreator nodeHierarchyCreator = uiActionBar.getApplicationComponent(NodeHierarchyCreator.class);
+      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
+      Node currentNode = uiExplorer.getCurrentNode();
+      if(uiActionBar.isRootNode(uiExplorer, currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.cannot-action-in-rootnode", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }               
+      if(!currentNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(!PermissionUtil.canSetProperty(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(uiExplorer.nodeIsLocked(currentNode)) {
+        Object[] arg = { currentNode.getPath() };
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class);
+      NodeType nodeType = uiExplorer.getCurrentNode().getPrimaryNodeType();
+      if(!templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-supported", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;        
+      }
+      uiExplorer.setIsHidePopup(true);
+      UISimpleCategoryManager uiSimpleCategoryManager = uiExplorer.createUIComponent(UISimpleCategoryManager.class, null, null);
+      UIOneNodePathSelector uiNodePathSelector = uiSimpleCategoryManager.getChild(UIOneNodePathSelector.class);
+      uiNodePathSelector.setIsDisable(workspaceName, true);
+      uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
+          nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
+      uiNodePathSelector.init(uiExplorer.getSessionProvider());
+      UICategoriesAddedList uiCateAddedList = uiSimpleCategoryManager.getChild(UICategoriesAddedList.class);
+      uiNodePathSelector.setSourceComponent(uiCateAddedList, null);
+      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UIPopupContainer.activate(uiSimpleCategoryManager, 630, 500);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+    }
+  }
+  
   static public class ManageCategoriesActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIActionBar uiActionBar = event.getSource();
@@ -879,13 +940,13 @@ public class UIActionBar extends UIForm {
       }
       uiExplorer.setIsHidePopup(true);
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null);
-      UIOneNodePathSelector uiNodePathSelector = uiManager.getChild(UIOneNodePathSelector.class);
-      uiNodePathSelector.setIsDisable(workspaceName, true);
-      uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
+      UIOneTaxonomySelector uiOneTaxonomySelector = uiManager.getChild(UIOneTaxonomySelector.class);
+      uiOneTaxonomySelector.setIsDisable(workspaceName, true);
+      uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, 
           nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
-      uiNodePathSelector.init(uiExplorer.getSessionProvider());
+      uiOneTaxonomySelector.init(uiExplorer.getSessionProvider());
       UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
-      uiNodePathSelector.setSourceComponent(uiCateAddedList, null);
+      uiOneTaxonomySelector.setSourceComponent(uiCateAddedList, null);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIPopupContainer.activate(uiManager, 630, 500);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);

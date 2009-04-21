@@ -123,6 +123,11 @@
   background: url('DefaultSkin/ManageCategories.gif') no-repeat;
 }
 
+.ManageSimpleCategoriesIcon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/ManageCategories.gif') no-repeat;
+}
+
 .ManageRelationsIcon {
 	width: 24px; height: 24px;
   background: url('DefaultSkin/ManageRelations.gif') no-repeat;

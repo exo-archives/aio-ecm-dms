@@ -2267,4 +2267,38 @@
       <taxonomyTree>Taxonomy Tree</taxonomyTree>
     </label>
   </UITreeTaxonomyList>
+  
+  <UIActionBar>
+    <tooltip>
+      <ManageSimpleCategories>Manage Simple Categories</ManageSimpleCategories>
+    </tooltip>
+	</UIActionBar>
+	
+	<UISimpleCategoryManager>
+    <tab>
+      <label>
+        <UICategoriesAddedList>Referenced categories</UICategoriesAddedList>
+        <UIOneNodePathSelector>Select category</UIOneNodePathSelector>
+      </label>
+    </tab>
+  </UISimpleCategoryManager>
+  
+  <UICategoryManager>
+    <tab>
+      <label>
+				<UIOneTaxonomySelector>Select category</UIOneTaxonomySelector>
+      </label>
+    </tab>
+  </UICategoryManager>
+  
+  <UISimpleCategoryManager>
+  	<action>
+  		<Close>Close</Close>	
+  	</action>
+  </UISimpleCategoryManager>  
+  <UIPopupWindow>
+  	<title>
+  		<UISimpleCategoryManager>Add Category</UISimpleCategoryManager>	
+  	</title>
+  </UIPopupWindow>
 </bundle>

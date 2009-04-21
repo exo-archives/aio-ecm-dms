@@ -125,6 +125,11 @@
   background: url('VistaSkin/ManageCategoriesIcon.png') no-repeat;
 }
 
+.ManageSimpleCategoriesIcon {
+  width: 32px; height: 30px;
+  background: url('VistaSkin/ManageCategoriesIcon.png') no-repeat;
+}
+
 .ManageRelationsIcon {
 	width: 32px; height: 30px;
   background: url('VistaSkin/ManageRelationsIcon.png') no-repeat;
