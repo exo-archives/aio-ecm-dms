@@ -214,28 +214,28 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
 
   public List<Node> getCategories(Node node, String taxonomyName) throws RepositoryException {
     List<Node> listCate = new ArrayList<Node>();
-    if (node.isNodeType("mix:referenceable")) {
-      String repository = ((ManageableRepository) node.getSession().getRepository())
-          .getConfiguration().getName();
-      Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName);
-      if (rootNodeTaxonomy != null) {
-        System.out.println("\n\n" + rootNodeTaxonomy.getPath() + "\n\n");
-        String sql = null; 
-        sql = StringUtils.replace(SQL_QUERY, "$0", rootNodeTaxonomy.getPath());        
-        sql = StringUtils.replace(sql, "$1", node.getUUID());
-        QueryManager queryManager = node.getSession().getWorkspace().getQueryManager();
-        Query query = queryManager.createQuery(sql, Query.SQL);
-        QueryResult result = query.execute();
-        NodeIterator iterate = result.getNodes();
-        //List<String> listCate = new ArrayList<String>();        
-        while (iterate.hasNext()) {
-          Node parentCate = iterate.nextNode().getParent();
-          //listCate.add(parentCate.getPath());
-          listCate.add(parentCate);
+    try {
+      if (node.isNodeType("mix:referenceable")) {
+        String repository = ((ManageableRepository) node.getSession().getRepository())
+            .getConfiguration().getName();
+        Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName);
+        if (rootNodeTaxonomy != null) {
+          String sql = null; 
+          sql = StringUtils.replace(SQL_QUERY, "$0", rootNodeTaxonomy.getPath());        
+          sql = StringUtils.replace(sql, "$1", node.getUUID());
+          Session session = repositoryService_.getRepository(repository).login(rootNodeTaxonomy.getSession().getWorkspace().getName());
+          QueryManager queryManager = session.getWorkspace().getQueryManager();
+          Query query = queryManager.createQuery(sql, Query.SQL);
+          QueryResult result = query.execute();
+          NodeIterator iterate = result.getNodes();
+          while (iterate.hasNext()) {
+            Node parentCate = iterate.nextNode().getParent();
+            listCate.add(parentCate);
+          }
         }
-        if (listCate.size() > 0)
-          return listCate;
       }
+    } catch (RepositoryConfigurationException e) {
+      throw new RepositoryException(e);
     }
     return listCate;
   }
@@ -265,7 +265,6 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
           categoryNode = (Node) node.getSession().getItem(categoryPath);
         } else {
           categoryNode = (Node) node.getSession().getItem(category);
-          System.out.println("=====================================================================");
         }
                 
         linkManager_.createLink(categoryNode, TAXONOMY_LINK, node, node.getName());
