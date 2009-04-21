@@ -941,7 +941,7 @@ public class UIActionBar extends UIForm {
       uiExplorer.setIsHidePopup(true);
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null);
       UIOneTaxonomySelector uiOneTaxonomySelector = uiManager.getChild(UIOneTaxonomySelector.class);
-      uiOneTaxonomySelector.setIsDisable(workspaceName, true);
+      uiOneTaxonomySelector.setIsDisable(workspaceName, false);
       uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, 
           nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
       uiOneTaxonomySelector.init(uiExplorer.getSessionProvider());
