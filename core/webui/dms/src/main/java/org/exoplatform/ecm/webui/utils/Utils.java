@@ -149,6 +149,8 @@ public class Utils {
   
   final static public String CATEGORY_MANDATORY = "categoryMandatoryWhenFileUpload";
   
+  final static public String UPLOAD_SIZE_LIMIT_MB = "uploadFileSizeLimitMB";
+  
   public Map<String, Object> maps_ = new HashMap<String, Object>();
 
   public static String encodeHTML(String text) {

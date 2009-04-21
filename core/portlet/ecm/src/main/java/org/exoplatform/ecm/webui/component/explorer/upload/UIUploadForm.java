@@ -122,7 +122,18 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   public UIUploadForm() throws Exception {
     setMultiPart(true) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
-    UIFormUploadInput uiInput = new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD) ;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+    String limitPref = portletPref.getValue(Utils.UPLOAD_SIZE_LIMIT_MB, "");
+    int limitMB = 0;
+    if (limitPref != null) {
+    	try {
+    		limitMB = Integer.parseInt(limitPref.trim());
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    }
+    UIFormUploadInput uiInput = new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD, limitMB) ;
     addUIFormInput(uiInput);
   }
   
