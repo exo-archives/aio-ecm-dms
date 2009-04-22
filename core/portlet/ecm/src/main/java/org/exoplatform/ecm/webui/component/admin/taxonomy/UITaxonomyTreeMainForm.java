@@ -21,8 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionForm;
-import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionTaxonomyManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeManager;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
@@ -79,13 +77,6 @@ public class UITaxonomyTreeMainForm extends UIForm {
         .setEditable(false));
     uiActionHomePath.setActionInfo(FIELD_HOMEPATH, new String[] { "AddPath" });
     addUIComponentInput(uiActionHomePath);
-    /*UIFormInputSetWithAction uiActionPermission = new UIFormInputSetWithAction(
-        "TaxonomyTreePermission");
-    uiActionPermission.addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION,
-        null).setEditable(false));
-    uiActionPermission.addValidator(MandatoryValidator.class);
-    uiActionPermission.setActionInfo(FIELD_PERMISSION, new String[] { "AddPermission" });
-    addUIComponentInput(uiActionPermission);*/
     setActions(new String[] {"Save", "Reset"});
   }
   
@@ -128,17 +119,6 @@ public class UITaxonomyTreeMainForm extends UIForm {
       }
     }
     return 0;
-  }
-  public void doSelect(String selectField, Object value) throws Exception {
-      getUIStringInput(selectField).setValue(value.toString());
-      /*UITaxonomyManagerTrees uiContainer = getAncestorOfType(UITaxonomyManagerTrees.class);
-      for(UIComponent uiChild : uiContainer.getChildren()) {
-        if(uiChild.getId().equals(UITaxonomyTreeContainer.POPUP_PERMISSION) || uiChild.getId().equals("JCRBrowser")) {
-          UIPopupWindow uiPopup = uiContainer.getChildById(uiChild.getId());
-          uiPopup.setRendered(false);
-          uiPopup.setShow(false);
-        }
-      }*/
   }
   
   public static class AddPathActionListener extends EventListener<UITaxonomyTreeMainForm> {

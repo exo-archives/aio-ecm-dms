@@ -715,11 +715,17 @@ float: left;
 	background: #F9F9F9 none repeat scroll 0 0;
 	padding:  0px;
 }
+
 .UITaxonomyTreeWizard .WorkingArea .SelectedLabel {
 	border-bottom: 1px solid #B7B7B7;
 	padding: 15px 0px;
 	line-height: 15px;
   background: #f9f9f9;
+}
+
+.UIECMAdminPortlet .UITaxonomyTreeWizard .WorkingArea .UIFormWithTitle {
+  width: auto;
+  margin: 3px auto;
 }
 
 .UITaxonomyTreeWizard .WorkingArea .HiddenLabel  {
@@ -744,7 +750,7 @@ float: left;
   line-height: 38px;
 }
 
-.UITaxonomyTreeWizard .WorkingArea .UIForm .FieldComponent .FieldComponent input {
+.UITaxonomyTreeWizard .WorkingArea .TaxonomyTreeMainForm .FieldComponent .FieldComponent input {
 	width: 235px;
 }
 
@@ -779,14 +785,17 @@ float: left;
 	margin: 0px;
 }
 
-.UITaxonomyTreeWizard .WorkingArea .UITabPane .UIFormWithTitle .HorizontalLayout {
+.UITaxonomyTreeWizard .WorkingArea .UIFormWithTitle .HorizontalLayout {
 	border: 1px solid #b7b7b7;
 	border-top: none;
 	padding: 10px;
 }
 
 .UIECMAdminPortlet .UITaxonomyTreeWizard .UIFormGrid .FieldComponent .ActionIcon {
-	float:none;
-	margin:0 5px;
+	float: none;
+	margin: 0px 5px;
 }
 
+.UITaxonomyTreeWizard .WorkingArea .UITaxonomyTreeCreateChild .UIBreadcumbs {
+  padding-bottom: 10px;
+}

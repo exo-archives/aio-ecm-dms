@@ -66,32 +66,38 @@ public class UITaxonomyTreeCreateChild extends UIContainer {
   
   private String selectedPath_ = null ;
   
-  private Node rootTreeNode = null;
+  private Node taxonomyTreeNode = null;
 
   public UITaxonomyTreeCreateChild() throws Exception {
     addChild(UIBreadcumbs.class, "BreadcumbTaxonomyTreeECMAdmin", "BreadcumbTaxonomyTreeECMAdmin");
     addChild(UITaxonomyTreeBrowser.class, null, null);
-    addChild(UITaxonomyTreeWorkingArea.class, null, null);
+    UITaxonomyTreeWorkingArea uiTaxonomyTreeWorkingArea = addChild(UITaxonomyTreeWorkingArea.class, null, null);
+    uiTaxonomyTreeWorkingArea.setAcceptedNodeTypes(new String[] {Utils.EXO_TAXANOMY});
   }
   
   public void update() throws Exception {
     UITaxonomyTreeBrowser uiTree = getChild(UITaxonomyTreeBrowser.class);
     uiTree.update();
-    String rootPath = getRootNode().getPath();
-    uiTree.setNodeSelect(rootPath);
     UITaxonomyTreeWorkingArea uiTaxonomyTreeWorkingArea = getChild(UITaxonomyTreeWorkingArea.class);
-    uiTaxonomyTreeWorkingArea.setSelectedPath(getTaxonomyTreeNode().getPath());
-    uiTaxonomyTreeWorkingArea.setAcceptedNodeTypes(new String[] {Utils.EXO_TAXANOMY});
     uiTaxonomyTreeWorkingArea.update(); 
   }
   
-  
-  public Node getRootNode() throws Exception {
-    return getRootTreeNode().getParent();
+  public void update(String path) throws Exception {
+    UITaxonomyTreeBrowser uiTree = getChild(UITaxonomyTreeBrowser.class);
+    uiTree.update();
+    uiTree.setNodeSelect(path);
+    UITaxonomyTreeWorkingArea uiTaxonomyTreeWorkingArea = getChild(UITaxonomyTreeWorkingArea.class);
+    uiTaxonomyTreeWorkingArea.setSelectedPath(path);
+    uiTaxonomyTreeWorkingArea.update(); 
+    setSelectedPath(path);
   }
   
-  public Node getTaxonomyTreeNode() throws Exception {
-    return getRootTreeNode();
+  public Node getRootNode() throws Exception {
+    return getTaxonomyTreeNode().getParent();
+  }
+  
+  public Node getTaxonomyTreeNode() {
+    return taxonomyTreeNode;
   }
   
   public void setSelectedPath(String selectedPath) {
@@ -200,14 +206,6 @@ public class UITaxonomyTreeCreateChild extends UIContainer {
     }
   }
   
-  public static class ChangeNodeActionListener extends EventListener<UITaxonomyTreeCreateChild> {
-    public void execute(Event<UITaxonomyTreeCreateChild> event) throws Exception {
-      UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = event.getSource();
-      String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
-     System.out.println(uri);
-    }
-  }
-
   public String getWorkspace() {
     return workspace;
   }
@@ -216,11 +214,7 @@ public class UITaxonomyTreeCreateChild extends UIContainer {
     this.workspace = workspace;
   }
 
-  public Node getRootTreeNode() {
-    return rootTreeNode;
-  }
-
-  public void setRootTreeNode(Node rootTreeNode) {
-    this.rootTreeNode = rootTreeNode;
+  public void setTaxonomyTreeNode(Node taxonomyTreeNode) {
+    this.taxonomyTreeNode = taxonomyTreeNode;
   }
 }

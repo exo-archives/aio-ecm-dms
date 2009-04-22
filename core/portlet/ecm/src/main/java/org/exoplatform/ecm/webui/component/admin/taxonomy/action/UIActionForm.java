@@ -135,7 +135,6 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     return getTaxoTreeData().getRepository();
   }
   
-  
   public TaxonomyTreeData getTaxoTreeData() {
     return getAncestorOfType(UITaxonomyTreeContainer.class).getTaxonomyTreeData();
   }
@@ -162,7 +161,9 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     return new JCRResourceResolver(getTaxoTreeData().getRepository(), getWorkspace(), "exo:templateFile");
   }
 
-  public String getTemplate() { return getDialogPath() ; }
+  public String getTemplate() {
+    return getDialogPath();
+  }
 
   public String getDialogPath() {
     repositoryName = getTaxoTreeData().getRepository();
@@ -183,8 +184,11 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   public void renderField(String name) throws Exception {
     TaxonomyTreeData taxoTreeData = getTaxoTreeData();
     UIComponent uiInput = findComponentById(name);
+    String homPath = getTaxonomyTreeHomePath();
+    if (homPath.endsWith("/"))
+      homPath = homPath.substring(0, homPath.length() - 1);
     if ("homePath".equals(name)) {
-      ((UIFormInput<String>) uiInput).setValue(getTaxonomyTreeHomePath() + "/" + taxoTreeData.getTaxoTreeName());
+      ((UIFormInput<String>) uiInput).setValue(homPath + "/" + taxoTreeData.getTaxoTreeName());
     }
     super.renderField(name);
   }
@@ -320,8 +324,9 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           uiActionForm.setIsOnchange(false);
           uiActionForm.setNodePath(actionNode.getPath());
           session.save();
-          uiActionForm.createNewAction(currentNode, uiActionForm.nodeTypeName_, true);
-          uiActionForm.reset();
+          uiActionForm.setCurrentPath(currentNode.getPath());
+          //uiActionForm.createNewAction(currentNode, uiActionForm.nodeTypeName_, true);
+          //uiActionForm.reset();
         } catch (RepositoryException repo) {
           String key = "UIActionForm.msg.repository-exception";
           uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
@@ -338,18 +343,23 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           return;
         }
       }
+      
       UIPermissionTreeInfo uiPermInfo = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeInfo.class);
       UIPermissionTreeForm uiPermForm = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeForm.class);
       uiPermInfo.setCurrentNode(currentNode);
       uiPermForm.setCurrentNode(currentNode);
       uiPermInfo.updateGrid();
-      UITaxonomyTreeCreateChild uiTaxonomyCreateChild = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeCreateChild.class);
-      if (uiTaxonomyCreateChild == null) uiTaxonomyTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
+      //UITaxonomyTreeCreateChild uiTaxonomyCreateChild = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeCreateChild.class);
+      //if (uiTaxonomyCreateChild == null) uiTaxonomyTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
       uiTaxonomyTreeContainer.viewStep(4);
       UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeCreateChild.class);
+      if (uiTaxonomyTreeCreateChild == null) 
+        uiTaxonomyTreeCreateChild = uiTaxonomyTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
       uiTaxonomyTreeCreateChild.setWorkspace(workspace);
-      uiTaxonomyTreeCreateChild.setRootTreeNode(currentNode);
-      uiTaxonomyTreeCreateChild.update();
+      uiTaxonomyTreeCreateChild.setTaxonomyTreeNode(currentNode);
+      //uiTaxonomyTreeCreateChild.setSelectedPath(currentNode.getPath());
+      //String path = currentNode.getParent().getPath();
+      //uiTaxonomyCreateChild.update(path);
       uiTaxonomyManagerTrees.update();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
@@ -387,12 +397,12 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           ((UIOneNodePathSelector) uiComp).setIsDisable(wsName, true);
         }
         String selectorParams = (String) fieldPropertiesMap.get("selectorParams");
+        String[] filterType = new String[] {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED};
+        ((UIOneNodePathSelector) uiComp).setAcceptedNodeTypesInPathPanel(filterType);
+        ((UIOneNodePathSelector) uiComp).setAcceptedNodeTypesInTree(filterType);
         if (selectorParams != null) {
-          String[] filterType = new String[] {Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED};
           String[] arrParams = selectorParams.split(",");
           if (arrParams.length == 4) {
-            ((UIOneNodePathSelector) uiComp).setAcceptedNodeTypesInPathPanel(filterType);
-            ((UIOneNodePathSelector) uiComp).setAcceptedNodeTypesInTree(filterType);
             wsName = arrParams[1];
             rootPath = arrParams[2];
             ((UIOneNodePathSelector) uiComp).setIsDisable(wsName, true);

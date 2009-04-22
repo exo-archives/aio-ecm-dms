@@ -76,8 +76,7 @@ public class UITaxonomyTreeBrowser extends UIContainer {
     }
     UINodeTree tree = getChildById("UITaxonomyTreeBrowser");
     Node nodeSelected = getSelectedNode();
-    if(nodeSelected.getPath().equals(rootPath_) || rootNode_.getParent().getPath().equals(currentNode_.getPath())) {
-      nodeSelected = rootNode_;
+    if(nodeSelected.getPath().equals(rootPath_)) {
       children = nodeSelected.getNodes();
     }
     tree.setSelected(nodeSelected);
@@ -100,7 +99,7 @@ public class UITaxonomyTreeBrowser extends UIContainer {
         sibblingList.add(sibblingNode);      
       }
     }    
-    if(nodeSelected.getPath().equals(rootPath_) || rootNode_.getParent().getPath().equals(currentNode_.getPath())) {
+    if(nodeSelected.getPath().equals(rootPath_)) { 
       taxonomyList.add(uiManager.getTaxonomyTreeNode());
       children = taxonomyList.iterator();
     }
@@ -128,7 +127,9 @@ public class UITaxonomyTreeBrowser extends UIContainer {
   public void setNodeSelect(String path) throws Exception {
     UITaxonomyTreeCreateChild uiManager = getParent();
     currentNode_ = uiManager.getNodeByPath(path);
-    if(rootNode_.getParent().getPath().equals(path)) currentNode_ = rootNode_;
+    if (!rootNode_.getPath().equals("/"))
+      if (rootNode_.getParent().getPath().equals(path))
+        currentNode_ = rootNode_;
     uiManager.setSelectedPath(currentNode_.getPath());
     changeNode(currentNode_);
   }
@@ -145,9 +146,15 @@ public class UITaxonomyTreeBrowser extends UIContainer {
       rootTaxonomyList.add(uiTaxonomyManager.getTaxonomyTreeNode());
       nodes = rootTaxonomyList;
     }
+    
     UITaxonomyTreeCreateChild uiManager = getParent();
     UITaxonomyTreeWorkingArea uiTreeWorkingArea = uiManager.getChild(UITaxonomyTreeWorkingArea.class);
-    uiTreeWorkingArea.setNodeList(nodes);
+    List<Node> lstNode = new ArrayList<Node>();
+    for (Node node : nodes) {
+      if (uiTreeWorkingArea.matchNodeType(node))
+        lstNode.add(node);
+    }
+    uiTreeWorkingArea.setNodeList(lstNode);
     uiTreeWorkingArea.updateGrid();
   }
   
@@ -156,7 +163,7 @@ public class UITaxonomyTreeBrowser extends UIContainer {
     return currentNode_; 
   }
   
-  static public class ChangeNodeActionListener extends EventListener<UITaxonomyTreeBrowser> {
+  public static class ChangeNodeActionListener extends EventListener<UITaxonomyTreeBrowser> {
     public void execute(Event<UITaxonomyTreeBrowser> event) throws Exception {
       UITaxonomyTreeBrowser uiTaxonomyTreeBrowser = event.getSource();
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;

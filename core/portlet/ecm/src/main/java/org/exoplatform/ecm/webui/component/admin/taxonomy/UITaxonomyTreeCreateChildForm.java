@@ -56,13 +56,14 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 public class UITaxonomyTreeCreateChildForm extends UIForm {
   
-  final static private String FIELD_PARENT = "parentPath" ;
-  final static private String FIELD_NAME = "taxonomyName" ;
+  final static private String FIELD_PARENT = "parentPath";
+
+  final static private String FIELD_NAME   = "taxonomyName";
   
   public UITaxonomyTreeCreateChildForm() throws Exception {
-    addUIFormInput(new UIFormInputInfo(FIELD_PARENT, FIELD_PARENT, null)) ;
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).
-    addValidator(MandatoryValidator.class).addValidator(ECMNameValidator.class)) ;
+    addUIFormInput(new UIFormInputInfo(FIELD_PARENT, FIELD_PARENT, null));
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(
+        MandatoryValidator.class).addValidator(ECMNameValidator.class));
   }
   
   public void setParent(String path) {
@@ -70,7 +71,7 @@ public class UITaxonomyTreeCreateChildForm extends UIForm {
     getUIStringInput(FIELD_NAME).setValue(null);
   }
   
-  static public class SaveActionListener extends EventListener<UITaxonomyTreeCreateChildForm> {
+  public static class SaveActionListener extends EventListener<UITaxonomyTreeCreateChildForm> {
     public void execute(Event<UITaxonomyTreeCreateChildForm> event) throws Exception {
       UITaxonomyTreeCreateChildForm uiForm = event.getSource();
       UITaxonomyTreeCreateChild uiCreateChild = uiForm.getAncestorOfType(UITaxonomyTreeCreateChild.class);
@@ -99,9 +100,10 @@ public class UITaxonomyTreeCreateChildForm extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      
       try {
         TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
-        String parentPath = taxoTreeData.getTaxoTreeHomePath() + "/" + taxoTreeData.getTaxoTreeName();
+        String parentPath = uiForm.getUIFormInputInfo(FIELD_PARENT).getValue();
         taxonomyService.addTaxonomyNode(taxoTreeData.getRepository(), taxoTreeData
             .getTaxoTreeWorkspace(), parentPath, name);
         uiCreateChild.update();
@@ -126,13 +128,13 @@ public class UITaxonomyTreeCreateChildForm extends UIForm {
     }
   }
 
-  static public class CancelActionListener extends EventListener<UITaxonomyTreeCreateChildForm> {
+  public static class CancelActionListener extends EventListener<UITaxonomyTreeCreateChildForm> {
     public void execute(Event<UITaxonomyTreeCreateChildForm> event) throws Exception {
-      UITaxonomyTreeCreateChildForm uiForm = event.getSource() ;
-      UIPopupWindow uiPopup = uiForm.getParent() ;
-      uiPopup.setRendered(false) ;
-      uiPopup.setShow(false) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup) ;
+      UITaxonomyTreeCreateChildForm uiForm = event.getSource();
+      UIPopupWindow uiPopup = uiForm.getParent();
+      uiPopup.setRendered(false);
+      uiPopup.setShow(false);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopup);
     }
   }
 }

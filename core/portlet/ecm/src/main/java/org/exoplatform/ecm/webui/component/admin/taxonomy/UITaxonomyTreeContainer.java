@@ -323,6 +323,20 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
   public static class ViewStep2ActionListener extends EventListener<UITaxonomyTreeContainer> {
     public void execute(Event<UITaxonomyTreeContainer> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource();
+      UITaxonomyTreeMainForm uiTaxonomyTreeMainForm = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeMainForm.class);
+      UIApplication uiApp = uiTaxonomyTreeContainer.getAncestorOfType(UIApplication.class);
+      int validateCode = uiTaxonomyTreeMainForm.checkForm();
+      if (validateCode == 1) {
+        uiApp.addMessage(new ApplicationMessage("uiTaxonomyTreeForm.msg.homePath-emty", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } else if (validateCode == 2) {
+        uiApp.addMessage(new ApplicationMessage("uiTaxonomyTreeForm.msg.permission-emty", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       uiTaxonomyTreeContainer.viewStep(2);
       UIPermissionTreeManager uiPermissionManage = uiTaxonomyTreeContainer.getChild(UIPermissionTreeManager.class);
       uiPermissionManage.update();
@@ -398,6 +412,8 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
         uiTaxonomyTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
       uiTaxonomyCreateChild.setWorkspace(taxoTreeData.getTaxoTreeWorkspace());
       uiTaxonomyTreeContainer.viewStep(4);
+      uiTaxonomyCreateChild.setSelectedPath(currentTreeNode.getPath());
+      uiTaxonomyCreateChild.setTaxonomyTreeNode(currentTreeNode);
       uiTaxonomyCreateChild.update();
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer
           .getAncestorOfType(UITaxonomyManagerTrees.class);

@@ -102,9 +102,7 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
     return false;
   }
   
- 
-  
-  private boolean matchNodeType(Node node) throws Exception {
+  boolean matchNodeType(Node node) throws Exception {
     if(acceptedNodeTypes == null || acceptedNodeTypes.length == 0) return true;
     for(String nodeType: acceptedNodeTypes) {
       if(node.isNodeType(nodeType)) return true;
@@ -156,7 +154,7 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
       String path = event.getRequestContext().getRequestParameter(OBJECTID);
       Node selectedNode = uiTaxonomyTreeCreateChild.getNodeByPath(path);
       try {
-        uiTreeWorkingArea.setSelectedPath(selectedNode.getParent().getPath());
+        uiTreeWorkingArea.setSelectedPath(selectedNode.getPath());
         uiTreeWorkingArea.getApplicationComponent(TaxonomyService.class).removeTaxonomyNode(
             uiTreeWorkingArea.getRepository(), uiTaxonomyTreeCreateChild.getWorkspace(), path);
       } catch (ReferentialIntegrityException ref) {

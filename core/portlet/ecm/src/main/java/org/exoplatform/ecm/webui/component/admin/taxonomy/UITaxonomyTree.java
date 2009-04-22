@@ -130,7 +130,7 @@ public class UITaxonomyTree extends UIContainer {
     uiManager.setSelectedPath(currentNode_.getPath());
     changeNode(currentNode_);
   }
-   
+  
   public void changeNode(Node nodeSelected) throws Exception {
     List<Node> nodes = new ArrayList<Node>();
     NodeIterator nodeIter = nodeSelected.getNodes();

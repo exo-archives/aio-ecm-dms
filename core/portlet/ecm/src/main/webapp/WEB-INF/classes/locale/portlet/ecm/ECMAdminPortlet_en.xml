@@ -84,7 +84,34 @@
 		</action>
 	</UITaxonomyTreeContainer>
   
-  	<!--
+  <!--
+	##########################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeMainForm          #
+	##########################################################################################
+	-->
+	<UITaxonomyTreeMainForm>
+		<action>
+			<Save>Save</Save>
+			<Reset>Reset</Reset>
+			<Next>Next</Next>
+		</action>
+	</UITaxonomyTreeMainForm>
+	
+	<TaxonomyTreeMainForm>
+		<label>
+			<TaxoTreeName>Name</TaxoTreeName>
+			<TaxoTreeWorkspace>Workspace</TaxoTreeWorkspace>
+			<TaxonomyTreeHomePath>Home path</TaxonomyTreeHomePath>
+		</label>
+  </TaxonomyTreeMainForm>
+		
+	<TaxonomyTreeHomePath>
+    <title>
+      <AddPath>Add Path</AddPath>
+    </title>
+  </TaxonomyTreeHomePath>
+  
+  <!--
 	##########################################################################################
 	#     org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo  #
 	##########################################################################################
@@ -1336,6 +1363,57 @@
       <name-too-long>Taxonomy name must less than 30 characters</name-too-long>
     </msg>
   </UITaxonomyForm>
+    
+  <EditTaxonomyTreePopup>
+    <title>
+      <UITaxonomyTreeContainer>Edit taxonomy tree</UITaxonomyTreeContainer>
+    </title>
+  </EditTaxonomyTreePopup>
+
+  <AddTaxonomyTreePopup>
+    <title>
+      <UITaxonomyTreeContainer>Add taxonomy tree</UITaxonomyTreeContainer>
+    </title>
+  </AddTaxonomyTreePopup>
+  
+  <TaxonomyPopupCreateChild>
+    <title>
+      <UITaxonomyTreeCreateChildForm>Edit taxonomy tree</UITaxonomyTreeCreateChildForm>
+    </title>
+  </TaxonomyPopupCreateChild>
+
+  <PopupComponent>
+    <title>
+      <UIOneNodePathSelector>Select path</UIOneNodePathSelector>
+    </title>
+  </PopupComponent>
+  
+  <TaxoPopupUserSelector>
+	  <title>
+      <TaxoTreeSelectUserOrGroup>Select User</TaxoTreeSelectUserOrGroup>
+      <UIPermissionTreeSelectUser>Select User</UIPermissionTreeSelectUser>
+    </title>
+  </TaxoPopupUserSelector>
+
+  <TaxoTreeSelectUserOrGroupPopup>
+	  <title>
+      <TaxoTreeSelectUserOrGroup>Select membership</TaxoTreeSelectUserOrGroup>
+    </title>
+  </TaxoTreeSelectUserOrGroupPopup>
+  
+  <TaxoTreeAnyPermission>
+    <label>
+      <any>Any Permission</any>
+      <anyPermission>TaxoTreeAnyPermission</anyPermission>
+    </label>
+  </TaxoTreeAnyPermission>
+  
+  <TaxoTreeSelectUserOrGroup>
+    <label>
+      <selectGroup>Any Permission</selectGroup>
+      <selectMembership>Any Permission</selectMembership>
+    </label>
+  </TaxoTreeSelectUserOrGroup>
   
   <!--
   ######################################################################################
@@ -1348,10 +1426,15 @@
       <workspace>Workspace</workspace>
       <homePath>Home path</homePath>
       <permissions>Permissions</permissions>
+      <action>Action</action>
     </header>
     <action>
       <AddTaxonomyTree>Add Taxonomy Tree</AddTaxonomyTree>
     </action>
+    <tooltip>
+      <EditTaxonomyTree>Edit taxonomy Tree</EditTaxonomyTree>
+      <Delete>Delete taxonomy Tree</Delete>
+    </tooltip>
     <title>Browses Taxonomy Tree</title>
     <msg>
       <no-list>No available taxonomy tree</no-list>
@@ -1383,7 +1466,6 @@
       <name>Name</name>
       <workspace>Workspace</workspace>
       <homePath>Home path</homePath>
-      <permissions>Permissions</permissions>
     </label>
     <action>
       <Save>Save</Save>
@@ -1391,6 +1473,30 @@
       <Cancel>Cancel</Cancel>
     </action>
   </TaxonomyTreeForm>
+  
+  <UIPermissionTreeForm>
+    <label>
+      <UIPopupWindow>Select</UIPopupWindow>
+      <permission>UIPermissionTreeForm</permission>
+      <userOrGroup>User Or Group</userOrGroup>
+      <read>Read Right</read>
+      <add_node>Add Node Right</add_node>
+      <set_property>Set Property Right</set_property>
+      <remove>Remove Right</remove>
+    </label>
+    <title>Add a permission to that node</title>
+    <action>
+      <Close>#{word.close}</Close>
+      <Save>#{word.save}</Save>
+      <Reset>Reset</Reset>
+    </action>
+    <msg>
+      <checkbox-require>You must select at least one permission</checkbox-require>
+      <userOrGroup-required>You must select user or group before save this permission</userOrGroup-required>
+      <not-change-permission>You have no right to add permission</not-change-permission>
+      <access-denied>Access denied! You can not remove this right permission.</access-denied>
+    </msg>
+  </UIPermissionTreeForm>
   
   <TaxonomyTreeInputSet>
 	  <title>
