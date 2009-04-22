@@ -141,7 +141,7 @@
 .UIJCRExplorerPortlet .UIListView .TitleTable {
 	font-weight: bold; 
 	line-height: 19px; height: 19px;
-  background: url('DefaultSkin/background/ThGridRepeatBg1x19.gif') repeat-x center;
+	background: url('DefaultSkin/background/ThGridRepeatBg1x19.gif') repeat-x center top;
 }
 
 .UIJCRExplorerPortlet .UIListView .OverHeader {
@@ -168,7 +168,8 @@
 	padding-right: 3px; /* orientation=rt */
 	width: 105px;
 	overflow: hidden;
-  cursor: pointer;
+	white-space: nowrap;
+	cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .ResizeColumn {

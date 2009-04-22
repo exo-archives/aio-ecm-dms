@@ -125,16 +125,20 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
     PortletPreferences portletPref = pcontext.getRequest().getPreferences();
     String limitPref = portletPref.getValue(Utils.UPLOAD_SIZE_LIMIT_MB, "");
-    int limitMB = 0;
+    //int limitMB = 0;
+    UIFormUploadInput uiInput = null;
     if (limitPref != null) {
     	try {
-    		limitMB = Integer.parseInt(limitPref.trim());
+    		//limitMB = Integer.parseInt(limitPref.trim());
+        uiInput = new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD, Integer.parseInt(limitPref.trim())) ;
     	} catch (Exception e) {
-    		e.printStackTrace();
+    	  uiInput = new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD) ;
     	}
+    } else {
+      uiInput = new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD) ;
     }
-    UIFormUploadInput uiInput = new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD, limitMB) ;
     addUIFormInput(uiInput);
+    
   }
   
   public List<String> getListTaxonomy() {
