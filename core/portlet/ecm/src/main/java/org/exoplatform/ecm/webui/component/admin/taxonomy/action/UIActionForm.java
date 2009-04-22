@@ -64,6 +64,7 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormInputBase;
+import org.exoplatform.webui.form.UIFormStringInput;
 
 /**
  * Created by The eXo Platform SARL
@@ -193,13 +194,6 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     super.renderField(name);
   }
   
-/*  private void setPath(String scriptPath) {
-    if(scriptPath.indexOf(":") < 0) {
-      scriptPath = getWorkspace() + ":" + scriptPath ;
-    }
-    scriptPath_ = scriptPath ; 
-  }*/
-  
   public String getTenmplateNodeType() {
     return nodeTypeName_;
   }
@@ -217,8 +211,9 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   }
 
   public void onchange(Event event) throws Exception {
-    UITaxonomyManagerTrees uiTaxonomyManagerTrees = getAncestorOfType(UITaxonomyManagerTrees.class);
-    event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
+    removeChildById("targetPath");
+    UIFormStringInput uiInput = new UIFormStringInput("targetPath","");
+    addUIFormInput(uiInput);
   }
   
   public static class SaveActionListener extends EventListener<UIActionForm> {
@@ -242,7 +237,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         if (systemWorkspace.equals(workspace)) {
           homePath = uiActionForm.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
         } else {
-          uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.homePath-emty", null,
+          uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.homepath-emty", null,
               ApplicationMessage.WARNING));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
@@ -318,15 +313,12 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
             return;
           }
+          
           actionServiceContainer.addAction(currentNode, repository, uiActionForm.nodeTypeName_,
               sortedInputs);
-          Node actionNode = actionServiceContainer.getAction(currentNode, actionName);
-          uiActionForm.setIsOnchange(false);
-          uiActionForm.setNodePath(actionNode.getPath());
           session.save();
-          uiActionForm.setCurrentPath(currentNode.getPath());
-          //uiActionForm.createNewAction(currentNode, uiActionForm.nodeTypeName_, true);
-          //uiActionForm.reset();
+          Node actionNode = actionServiceContainer.getAction(currentNode, actionName);
+          taxoTreeData.setTaxoTreeActionName(actionNode.getName());
         } catch (RepositoryException repo) {
           String key = "UIActionForm.msg.repository-exception";
           uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
@@ -349,17 +341,12 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       uiPermInfo.setCurrentNode(currentNode);
       uiPermForm.setCurrentNode(currentNode);
       uiPermInfo.updateGrid();
-      //UITaxonomyTreeCreateChild uiTaxonomyCreateChild = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeCreateChild.class);
-      //if (uiTaxonomyCreateChild == null) uiTaxonomyTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
-      uiTaxonomyTreeContainer.viewStep(4);
       UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeCreateChild.class);
       if (uiTaxonomyTreeCreateChild == null) 
         uiTaxonomyTreeCreateChild = uiTaxonomyTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
       uiTaxonomyTreeCreateChild.setWorkspace(workspace);
       uiTaxonomyTreeCreateChild.setTaxonomyTreeNode(currentNode);
-      //uiTaxonomyTreeCreateChild.setSelectedPath(currentNode.getPath());
-      //String path = currentNode.getParent().getPath();
-      //uiTaxonomyCreateChild.update(path);
+      uiTaxonomyTreeContainer.viewStep(4);
       uiTaxonomyManagerTrees.update();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
@@ -430,7 +417,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     }
   }
   
-  static public class RemoveReferenceActionListener extends EventListener<UIActionForm> {
+  public static class RemoveReferenceActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UIActionForm uiForm = event.getSource() ;
       uiForm.isRemovePreference = true;

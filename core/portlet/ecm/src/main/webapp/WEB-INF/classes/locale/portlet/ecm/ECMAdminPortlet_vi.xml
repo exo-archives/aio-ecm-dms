@@ -1982,6 +1982,7 @@
     <title>Hiện thị cấu trúc cây danh mục</title>
     <msg>
       <no-list>Không tồn tại cây danh mục nào</no-list>
+      <confirm-delete>Bạn có chắc chắn muốn xóa không?</confirm-delete>
     </msg>
   </UITaxonomyTreeList>
   

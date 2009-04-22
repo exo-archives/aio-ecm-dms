@@ -187,8 +187,8 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
           }
           if (node != null) {
             taxonomyTreeData.setTaxoTreeActionName(node.getName());
-            taxonomyTreeData.setTaxoTreeActionTargetPath(node.getProperty("exo:targetPath").getString());
-            taxonomyTreeData.setTaxoTreeActionTargetWorkspace(node.getProperty("exo:targetWorkspace").getString());
+            /*taxonomyTreeData.setTaxoTreeActionTargetPath(node.getProperty("exo:targetPath").getString());
+            taxonomyTreeData.setTaxoTreeActionTargetWorkspace(node.getProperty("exo:targetWorkspace").getString());*/
           }
         }
     }
@@ -374,13 +374,26 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
       }
       
       TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
-      UIActionForm uiActionForm = uiTaxonomyTreeContainer.findFirstComponentOfType(UIActionForm.class);
-      uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
-      uiTaxonomyTreeContainer.viewStep(3);
       UIActionTaxonomyManager uiActionTaxonomyManager = uiTaxonomyTreeContainer.getChild(UIActionTaxonomyManager.class);
+      UIActionForm uiActionForm = uiTaxonomyTreeContainer.findFirstComponentOfType(UIActionForm.class);
       uiActionTaxonomyManager.setDefaultConfig();
-      uiActionForm.createNewAction(null, TaxonomyTreeData.ACTION_TAXONOMY_TREE, true);
+      TaxonomyService taxonomyService = uiTaxonomyTreeContainer.getApplicationComponent(TaxonomyService.class);
+      ActionServiceContainer actionService = uiTaxonomyTreeContainer.getApplicationComponent(ActionServiceContainer.class);
+      Node taxoTreeNode = taxonomyService.getTaxonomyTree(taxonomyTreeData.getRepository(),
+          taxonomyTreeData.getTaxoTreeName(), true);
+      if (taxoTreeNode != null) {
+        uiActionTaxonomyManager.removeChild(UIActionForm.class);
+        uiActionForm = uiActionTaxonomyManager.addChild(UIActionForm.class, null, null);
+        Node actionNode = actionService.getAction(taxoTreeNode, taxonomyTreeData.getTaxoTreeActionName());
+        uiActionForm.setIsOnchange(false);
+        uiActionForm.setNodePath(actionNode.getPath());
+        uiActionForm.createNewAction(taxoTreeNode, actionNode.getPrimaryNodeType().getName(), false);
+      } else {
+        uiActionForm.createNewAction(null, TaxonomyTreeData.ACTION_TAXONOMY_TREE, true);
+      }
+      uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
       uiActionTaxonomyManager.setRenderSibbling(UIActionTaxonomyManager.class);
+      uiTaxonomyTreeContainer.viewStep(3);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
   }

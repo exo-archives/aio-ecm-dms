@@ -1973,6 +1973,7 @@
     <title>Browses Taxonomy Tree</title>
     <msg>
       <no-list>No available taxonomy tree</no-list>
+      <confirm-delete>Are you sure to delete</confirm-delete>
     </msg>
   </UITaxonomyTreeList>
   

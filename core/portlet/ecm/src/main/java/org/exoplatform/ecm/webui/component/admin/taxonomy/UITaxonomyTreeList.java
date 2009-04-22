@@ -27,10 +27,8 @@ import javax.jcr.ValueFormatException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionForm;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeForm;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo;
-import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -188,21 +186,9 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
       taxoTreeData.setRepository(repository);
       uiTaxoTreeContainer.setTaxonomyTreeData(taxoTreeData);
       uiTaxoTreeContainer.refresh();
-      TaxonomyService taxonomyService = uiTaxonomyManagerTrees
-          .getApplicationComponent(TaxonomyService.class);
-      UIActionForm uiActionForm = uiTaxoTreeContainer
-      .findFirstComponentOfType(UIActionForm.class);
-      
-      /* Set action */
-      ActionServiceContainer actionServiceContainer = uiActionForm.getApplicationComponent(ActionServiceContainer.class);
+      TaxonomyService taxonomyService = uiTaxonomyManagerTrees.getApplicationComponent(TaxonomyService.class);
       Node currentTreeNode = taxonomyService.getTaxonomyTree(repository, taxoTreeName, true);
-      List<Node> lstActionNode = actionServiceContainer.getActions(currentTreeNode);
-      if (lstActionNode != null && lstActionNode.size() > 0) {
-        uiActionForm.setIsOnchange(false);
-        uiActionForm.setNodePath(lstActionNode.get(0).getPath());
-        uiActionForm.createNewAction(currentTreeNode, lstActionNode.get(0).getPrimaryNodeType().getName(), true);
-      }
-      
+
       /* Set permission */
       UIPermissionTreeInfo uiPermInfo = uiTaxoTreeContainer
           .findFirstComponentOfType(UIPermissionTreeInfo.class);
