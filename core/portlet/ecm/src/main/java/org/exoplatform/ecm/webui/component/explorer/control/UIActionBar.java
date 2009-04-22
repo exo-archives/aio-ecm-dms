@@ -885,7 +885,7 @@ public class UIActionBar extends UIForm {
       UIOneNodePathSelector uiNodePathSelector = uiSimpleCategoryManager.getChild(UIOneNodePathSelector.class);
       uiNodePathSelector.setIsDisable(workspaceName, true);
       uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
-          nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
+          nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH));
       uiNodePathSelector.init(uiExplorer.getSessionProvider());
       UICategoriesAddedList uiCateAddedList = uiSimpleCategoryManager.getChild(UICategoriesAddedList.class);
       uiNodePathSelector.setSourceComponent(uiCateAddedList, null);
@@ -943,7 +943,7 @@ public class UIActionBar extends UIForm {
       UIOneTaxonomySelector uiOneTaxonomySelector = uiManager.getChild(UIOneTaxonomySelector.class);
       uiOneTaxonomySelector.setIsDisable(workspaceName, false);
       uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, 
-          nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
+          nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH));
       uiOneTaxonomySelector.init(uiExplorer.getSessionProvider());
       UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
       uiOneTaxonomySelector.setSourceComponent(uiCateAddedList, null);
