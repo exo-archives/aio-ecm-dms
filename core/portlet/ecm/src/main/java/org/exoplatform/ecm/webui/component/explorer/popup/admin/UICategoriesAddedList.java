@@ -82,7 +82,9 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
     try {
       Node currentNode = uiJCRExplorer.getCurrentNode();
       uiJCRExplorer.addLockToken(currentNode);
-      taxonomyService.addCategory(currentNode, "System", value.toString());
+      String[] arrayCategoryPath = value.toString().split("/");
+      String categoryPath = value.toString().replaceAll(arrayCategoryPath[0], "");
+      taxonomyService.addCategory(currentNode, arrayCategoryPath[0], categoryPath);
       uiJCRExplorer.getCurrentNode().save() ;
       uiJCRExplorer.getSession().save() ;
       updateGrid(1) ;

@@ -188,7 +188,7 @@ public class UISelectTaxonomyPanel extends UIContainer {
         if(!((UIOneNodePathSelector)uiTreeSelector).isDisable()) {
           value = ((UIOneNodePathSelector)uiTreeSelector).getWorkspaceName() + ":" + value ;
         }
-      }      
+      }
       String returnField = ((UIBaseNodeTreeSelector)uiTreeSelector).getReturnFieldName();
       ((UISelectable)((UIBaseNodeTreeSelector)uiTreeSelector).getSourceComponent()).doSelect(returnField, value) ;
       

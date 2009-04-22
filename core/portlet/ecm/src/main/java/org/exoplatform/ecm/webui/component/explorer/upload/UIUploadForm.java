@@ -400,10 +400,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
               } catch(ItemNotFoundException e) {
                 newNode = Utils.findNodeByUUID(repository, newNodeUUID);
               }
-              if(newNode != null) {
-              taxonomyService.addCategories(newNode, "System", arrayTaxonomy);
-              selectedNode.getSession().save() ;                        
-            }
+              if(newNode != null) {              
+                for(String categoryPath : arrayTaxonomy) {
+                  String tempCategoryPath = categoryPath.replaceAll(uiForm.getPathTaxonomy() + "/", "");
+                  String[] arrayCategoryPath = tempCategoryPath.split("/");
+                  taxonomyService.addCategory(newNode, arrayCategoryPath[0], categoryPath);
+                }                
+                selectedNode.getSession().save() ;                        
+              }
             }
           } else {
             Node node = selectedNode.getNode(name) ;
@@ -430,7 +434,11 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
               node.setProperty("exo:dateModified",new GregorianCalendar()) ;
             }
             if(arrayTaxonomy.length > 0) {
-              taxonomyService.addCategories(node, "System", arrayTaxonomy);
+              for(String categoryPath : arrayTaxonomy) {
+                String tempCategoryPath = categoryPath.replaceAll(uiForm.getPathTaxonomy() + "/", "");
+                String[] arrayCategoryPath = tempCategoryPath.split("/");
+                taxonomyService.addCategory(node, arrayCategoryPath[0], categoryPath);
+              }
             }
             node.save();
           }
