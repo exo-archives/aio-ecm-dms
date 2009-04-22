@@ -172,6 +172,11 @@ public class UISelectTaxonomyPanel extends UIContainer {
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
     return nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
   }
+  
+  public String getPathSystemTaxonomy() throws Exception {
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    return nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);
+  }
 
   static public class SelectActionListener extends EventListener<UISelectTaxonomyPanel> {
     public void execute(Event<UISelectTaxonomyPanel> event) throws Exception {
@@ -183,7 +188,10 @@ public class UISelectTaxonomyPanel extends UIContainer {
         breadcumbsPaths += "/" + iterLocalPath.getId();
       }
       String value = event.getRequestContext().getRequestParameter(OBJECTID);
-      value = breadcumbsPaths + value.substring(uiSelectPathPanel.getPathTaxonomy().length() + 1);
+      String valueTempPath = value.replaceAll(uiSelectPathPanel.getPathSystemTaxonomy(), "");
+      String valuePath = valueTempPath.replaceAll(uiSelectPathPanel.getPathTaxonomy(), "");
+      value = breadcumbsPaths + valuePath;
+      if (value.startsWith("/")) value = value.substring(1);
       if(uiTreeSelector instanceof UIOneNodePathSelector) {
         if(!((UIOneNodePathSelector)uiTreeSelector).isDisable()) {
           value = ((UIOneNodePathSelector)uiTreeSelector).getWorkspaceName() + ":" + value ;
