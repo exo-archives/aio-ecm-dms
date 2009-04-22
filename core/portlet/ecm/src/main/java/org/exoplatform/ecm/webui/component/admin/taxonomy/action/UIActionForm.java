@@ -242,7 +242,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         if (systemWorkspace.equals(workspace)) {
           homePath = uiActionForm.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
         } else {
-          uiApp.addMessage(new ApplicationMessage("uiTaxonomyTreeForm.msg.homePath-emty", null,
+          uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.homePath-emty", null,
               ApplicationMessage.WARNING));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;

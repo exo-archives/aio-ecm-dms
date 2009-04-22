@@ -32,6 +32,7 @@ import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionForm;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionTaxonomyManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionTypeForm;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeManager;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
@@ -327,12 +328,12 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
       UIApplication uiApp = uiTaxonomyTreeContainer.getAncestorOfType(UIApplication.class);
       int validateCode = uiTaxonomyTreeMainForm.checkForm();
       if (validateCode == 1) {
-        uiApp.addMessage(new ApplicationMessage("uiTaxonomyTreeForm.msg.homePath-emty", null,
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.name-emty", null,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } else if (validateCode == 2) {
-        uiApp.addMessage(new ApplicationMessage("uiTaxonomyTreeForm.msg.permission-emty", null,
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.homePath-emty", null,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
@@ -353,16 +354,25 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
       UIApplication uiApp = uiTaxonomyTreeContainer.getAncestorOfType(UIApplication.class);
       int validateCode = uiTaxonomyTreeMainForm.checkForm();
       if (validateCode == 1) {
-        uiApp.addMessage(new ApplicationMessage("uiTaxonomyTreeForm.msg.homePath-emty", null,
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.name-emty", null,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } else if (validateCode == 2) {
-        uiApp.addMessage(new ApplicationMessage("uiTaxonomyTreeForm.msg.permission-emty", null,
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.homePath-emty", null,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      
+      UIPermissionTreeInfo uiPermInfo = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeInfo.class);
+      if (uiPermInfo.getPermBeans().size() < 1) {
+        uiApp.addMessage(new ApplicationMessage("UIPermissionTreeForm.msg.have-not-any-permission",
+            null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      
       TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
       UIActionForm uiActionForm = uiTaxonomyTreeContainer.findFirstComponentOfType(UIActionForm.class);
       uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());

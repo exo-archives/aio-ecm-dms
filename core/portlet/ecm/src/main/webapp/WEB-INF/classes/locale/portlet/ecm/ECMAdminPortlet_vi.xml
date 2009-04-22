@@ -1794,6 +1794,262 @@
     <label>
       <addSymLink>Thêm liên kết</addSymLink>
     </label>
-  </UIViewFormTabPane>  
+  </UIViewFormTabPane>
+    <!--
+  ################################################################################
+  #    org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeContainer#
+  ################################################################################
+  -->
+	<UITaxonomyTreeContainer>
+		<tab>
+			<info>
+				<UITaxonomyTreeMainForm>Nhập tên danh mục, chọn vùng làm việc và đường dẫn</UITaxonomyTreeMainForm>
+				<UIPermissionTreeManager>Lựa chọn quyền truy cập</UIPermissionTreeManager>
+				<UIActionTaxonomyManager>Đăng kí hành động exo:taxonomyAction</UIActionTaxonomyManager>
+				<UITaxonomyTreeCreateChild>Sửa cây danh mục bằng cách thêm mới, copy, cut và lựa chọn quyền thao tác</UITaxonomyTreeCreateChild>
+			</info>
+		</tab>
+		<label>
+			<step></step>
+			<wizardSteps>Các bước thực hiện</wizardSteps>
+		</label>
+		<msg>
+  		<not-exist-tree>Cây danh mục chưa tồn tại</not-exist-tree>
+		</msg>
+		<action>
+			<Close>Đóng lại</Close>
+			<wizardSteps></wizardSteps>
+		</action>
+	</UITaxonomyTreeContainer>
+  
+  <!--
+	##########################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeMainForm          #
+	##########################################################################################
+	-->
+	<UITaxonomyTreeMainForm>
+		<action>
+			<Save>Lưu</Save>
+			<Reset>Xóa</Reset>
+			<Next>Next</Next>
+		</action>
+	</UITaxonomyTreeMainForm>
+	
+	<TaxonomyTreeMainForm>
+		<label>
+			<TaxoTreeName>Tên</TaxoTreeName>
+			<TaxoTreeWorkspace>Vùng làm việc</TaxoTreeWorkspace>
+			<TaxonomyTreeHomePath>Đường dẫn</TaxonomyTreeHomePath>
+		</label>
+  </TaxonomyTreeMainForm>
+		
+	<TaxonomyTreeHomePath>
+    <title>
+      <AddPath>Chọn đường dẫn</AddPath>
+    </title>
+  </TaxonomyTreeHomePath>
+  
+    <!--
+	##########################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo  #
+	##########################################################################################
+	-->
+	<UIPermissionTreeInfo>
+		<action>
+			<title>
+				<Delete>Xóa</Delete>
+				<Edit>Sửa</Edit>
+			</title>
+		</action>
+		<header>
+			<usersOrGroups>Thành viên hay nhóm</usersOrGroups>
+			<read>Đọc</read>
+			<addNode>Thêm nút</addNode>
+			<setProperty>Thêm thuộc tính</setProperty>
+			<remove>Loại bỏ</remove>
+			<action>Hành động</action>
+		</header>
+	</UIPermissionTreeInfo>
+	
+	<!--
+	##########################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeForm  #
+	##########################################################################################
+	-->
+	<UIPermissionTreeForm>
+		<title>Thêm quyền vào nút</title>
+		<label>
+			<userOrGroup>Thành viên hay nhóm</userOrGroup>
+			<read>Đọc</read>
+			<add_node>Thêm nút</add_node>
+			<set_property>Thiết lập thuộc tính</set_property>
+			<remove>Loại bỏ</remove>
+		</label>
+		<action>
+			<Save>Lưu</Save>
+			<Reset>Xóa</Reset>
+			<Next>Chuyển/Next>
+		</action>
+		<msg>
+		  <have-not-any-permission>Chưa chọn quyền nào</have-not-any-permission>
+		</msg>
+	</UIPermissionTreeForm>
+	
+	<!--
+	################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.UIActionForm          #
+	################################################################################
+	-->
+	<UIActionForm>
+		<title>Tạo hành động cho cây danh mục</title>
+		<action>
+			<Save>Lưu</Save>
+			<Reset>Xóa</Reset>
+			<Back>Quay lại</Back>
+		</action>
+	</UIActionForm>
+	<EditTaxonomyTreePopup>
+    <title>
+      <UITaxonomyTreeContainer>Sửa cây danh mục</UITaxonomyTreeContainer>
+    </title>
+  </EditTaxonomyTreePopup>
+
+  <AddTaxonomyTreePopup>
+    <title>
+      <UITaxonomyTreeContainer>Thêm cây danh mục</UITaxonomyTreeContainer>
+    </title>
+  </AddTaxonomyTreePopup>
+  
+  <TaxonomyPopupCreateChild>
+    <title>
+      <UITaxonomyTreeCreateChildForm>Sửa cây danh mục</UITaxonomyTreeCreateChildForm>
+    </title>
+  </TaxonomyPopupCreateChild>
+
+  <PopupComponent>
+    <title>
+      <UIOneNodePathSelector>Lựa chon đường dẫn</UIOneNodePathSelector>
+    </title>
+  </PopupComponent>
+  
+  <TaxoPopupUserSelector>
+	  <title>
+      <TaxoTreeSelectUserOrGroup>Chọn người dùng hoặc nhóm</TaxoTreeSelectUserOrGroup>
+      <UIPermissionTreeSelectUser>Chọn người dùng</UIPermissionTreeSelectUser>
+    </title>
+  </TaxoPopupUserSelector>
+
+  <TaxoTreeSelectUserOrGroupPopup>
+	  <title>
+      <TaxoTreeSelectUserOrGroup>Lựa chọn thành viên</TaxoTreeSelectUserOrGroup>
+    </title>
+  </TaxoTreeSelectUserOrGroupPopup>
+  
+  <TaxoTreeAnyPermission>
+    <label>
+      <any>Tất cả người dùng</any>
+      <anyPermission>TaxoTreeAnyPermission</anyPermission>
+    </label>
+  </TaxoTreeAnyPermission>
+  
+  <TaxoTreeSelectUserOrGroup>
+    <label>
+      <selectGroup>Chọn nhóm</selectGroup>
+      <selectMembership>Chọn thành viên</selectMembership>
+    </label>
+  </TaxoTreeSelectUserOrGroup>
+  
+  <!--
+  ######################################################################################
+  #             org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeList	 #
+  ######################################################################################
+  -->
+  <UITaxonomyTreeList>
+    <header>
+      <name>Tên cây danh mục</name>
+      <workspace>Vùng làm việc</workspace>
+      <homePath>Thư mục</homePath>
+      <permissions>Quyền</permissions>
+      <action>Hành động</action>
+    </header>
+    <action>
+      <AddTaxonomyTree>Thêm cây danh mục</AddTaxonomyTree>
+    </action>
+    <tooltip>
+      <EditTaxonomyTree>Sửa cây danh mục</EditTaxonomyTree>
+      <Delete>Xóa cây danh mục</Delete>
+    </tooltip>
+    <title>Hiện thị cấu trúc cây danh mục</title>
+    <msg>
+      <no-list>Không tồn tại cây danh mục nào</no-list>
+    </msg>
+  </UITaxonomyTreeList>
+  
+  <!--
+  ######################################################################################
+  #             org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeForm  #
+  ######################################################################################
+  -->
+  <UITaxonomyTreeForm>
+    <label>
+      <name>Tên danh mục</name>
+      <workspace>Vùng làm việc</workspace>
+      <homePath>Đường dẫn</homePath>
+      <permissions>Quyền</permissions>
+    </label>
+    <msg>
+      <homapath-emty>Nhập đường dẫn</homapath-emty>
+    </msg>
+  </UITaxonomyTreeForm>
+  
+  <TaxonomyTreeForm>
+    <tab>
+      <label>
+        <TaxonomyTreeInputSet>Cây danh mục</TaxonomyTreeInputSet>
+        <TaxonomyTreeAction>Hành động</TaxonomyTreeAction>
+      </label>
+    </tab>
+    <label>
+      <name>Tên</name>
+      <workspace>Vùng làm việc</workspace>
+      <homePath>Đường dẫn</homePath>
+    </label>
+    <action>
+      <Save>Lưu</Save>
+      <Refresh>Làm tươi</Refresh>
+      <Cancel>Hủy</Cancel>
+    </action>
+  </TaxonomyTreeForm>
+  
+  <UIPermissionTreeForm>
+    <label>
+      <UIPopupWindow>Lựa chọn</UIPopupWindow>
+      <permission>UIPermissionTreeForm</permission>
+      <userOrGroup>Thành viên hoặc nhóm</userOrGroup>
+      <read>Quyền đọc</read>
+      <add_node>Thêm nút</add_node>
+      <set_property>Thêm thuộc tính</set_property>
+      <remove>Loại bỏ</remove>
+    </label>
+    <title>Thêm quyền cho nút</title>
+    <action>
+      <Close>#{word.close}</Close>
+      <Save>#{word.save}</Save>
+      <Reset>Xóa</Reset>
+    </action>
+    <msg>
+      <checkbox-require>Bạn phải lựa chọn ít nhất 1 quyền</checkbox-require>
+      <userOrGroup-required>Bạn phải chọn thành viên hoặc nhóm trước khi lưu</userOrGroup-required>
+      <not-change-permission>Bạn không có quyền thêm mới</not-change-permission>
+      <access-denied>Truy nhập bị từ chối! Bạn không có quyền loại bỏ quyền này</access-denied>
+    </msg>
+  </UIPermissionTreeForm>
+  
+  <PopupTaxonomyTreePermission>
+    <title>
+      <UIPermissionSelector>Lựa chọn quyền</UIPermissionSelector>
+    </title>
+   </PopupTaxonomyTreePermission>
+   
 </bundle>
 

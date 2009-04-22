@@ -238,7 +238,7 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
           if(lockToken != null) currentNode.getSession().addLockToken(lockToken);
         }
         if(!currentNode.isCheckedOut()) {
-          uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null,
+          uiApp.addMessage(new ApplicationMessage("UIPermissionTreeForm.msg.node-checkedin", null,
               ApplicationMessage.WARNING));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;

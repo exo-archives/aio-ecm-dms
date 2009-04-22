@@ -35,6 +35,7 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
@@ -106,6 +107,10 @@ public class UITaxonomyTreeMainForm extends UIForm {
   }
   
   int checkForm() throws Exception {
+    UIFormStringInput input = getChildById(UITaxonomyTreeMainForm.FIELD_WORKSPACE);
+    if (input == null || input.getValue() == null || input.getValue().length() == 0) {
+      return 1;
+    }
     UIFormSelectBox selectBox = getChildById(UITaxonomyTreeMainForm.FIELD_WORKSPACE);
     UIFormInputBase inputHomePath = findComponentById(UITaxonomyTreeMainForm.FIELD_HOMEPATH);
     String homePath = "";
@@ -115,7 +120,7 @@ public class UITaxonomyTreeMainForm extends UIForm {
     String workspace = selectBox.getValue();
     if (homePath.length() == 0) {
       if (!systemWorkspace.equals(workspace)) {
-        return 1;
+        return 2;
       }
     }
     return 0;
@@ -154,12 +159,12 @@ public class UITaxonomyTreeMainForm extends UIForm {
       UIApplication uiApp = uiTaxonomyTreeContainer.getAncestorOfType(UIApplication.class);
       int validateCode = uiTaxonomyTreeMainForm.checkForm();
       if (validateCode == 1) {
-        uiApp.addMessage(new ApplicationMessage("uiTaxonomyTreeForm.msg.homePath-emty", null,
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.name-emty", null,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } else if (validateCode == 2) {
-        uiApp.addMessage(new ApplicationMessage("uiTaxonomyTreeForm.msg.permission-emty", null,
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.homapath-emty", null,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
