@@ -28,6 +28,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
@@ -883,9 +884,17 @@ public class UIActionBar extends UIForm {
       uiExplorer.setIsHidePopup(true);
       UISimpleCategoryManager uiSimpleCategoryManager = uiExplorer.createUIComponent(UISimpleCategoryManager.class, null, null);
       UIOneNodePathSelector uiNodePathSelector = uiSimpleCategoryManager.getChild(UIOneNodePathSelector.class);
-      uiNodePathSelector.setIsDisable(workspaceName, true);
-      uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
-          nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH));
+      uiNodePathSelector.setIsDisable(workspaceName, true);      
+      String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
+      Session session = uiExplorer.getSession();
+      Node rootTree = (Node) session.getItem(rootTreePath);      
+      NodeIterator childrenIterator = rootTree.getNodes();
+      while (childrenIterator.hasNext()) {
+        Node childNode = childrenIterator.nextNode();
+        rootTreePath = childNode.getPath();
+        break;
+      }
+      uiNodePathSelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
       uiNodePathSelector.init(uiExplorer.getSessionProvider());
       UICategoriesAddedList uiCateAddedList = uiSimpleCategoryManager.getChild(UICategoriesAddedList.class);
       uiNodePathSelector.setSourceComponent(uiCateAddedList, null);
@@ -941,9 +950,17 @@ public class UIActionBar extends UIForm {
       uiExplorer.setIsHidePopup(true);
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null);
       UIOneTaxonomySelector uiOneTaxonomySelector = uiManager.getChild(UIOneTaxonomySelector.class);
-      uiOneTaxonomySelector.setIsDisable(workspaceName, false);
-      uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, 
-          nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH));
+      uiOneTaxonomySelector.setIsDisable(workspaceName, false);      
+      String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
+      Session session = uiExplorer.getSession();
+      Node rootTree = (Node) session.getItem(rootTreePath);      
+      NodeIterator childrenIterator = rootTree.getNodes();
+      while (childrenIterator.hasNext()) {
+        Node childNode = childrenIterator.nextNode();
+        rootTreePath = childNode.getPath();
+        break;
+      }
+      uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
       uiOneTaxonomySelector.init(uiExplorer.getSessionProvider());
       UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
       uiOneTaxonomySelector.setSourceComponent(uiCateAddedList, null);
