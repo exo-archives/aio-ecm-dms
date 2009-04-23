@@ -187,12 +187,11 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
           }
           if (node != null) {
             taxonomyTreeData.setTaxoTreeActionName(node.getName());
-            /*taxonomyTreeData.setTaxoTreeActionTargetPath(node.getProperty("exo:targetPath").getString());
-            taxonomyTreeData.setTaxoTreeActionTargetWorkspace(node.getProperty("exo:targetWorkspace").getString());*/
           }
         }
     }
   }
+  
   private UIFormStringInput getFormInputById(String id) {
     return (UIFormStringInput)findComponentById(id);
   }
@@ -220,6 +219,17 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     }
   }
   
+  /**
+   * Add taxonomy tree with given name, workspace, home path. Add permission for tree node
+   * @param name
+   * @param workspace
+   * @param homePath
+   * @param permBeans
+   * @throws TaxonomyAlreadyExistsException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws AccessControlException
+   * @throws Exception
+   */
   public void addTaxonomyTree(String name, String workspace, String homePath, List<PermissionBean> permBeans)
       throws TaxonomyAlreadyExistsException, TaxonomyNodeAlreadyExistsException, AccessControlException, Exception {
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
@@ -243,7 +253,6 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
           if(PermissionUtil.canChangePermission(node)) {
             if (permsList.size() > 0) {
               node.setPermission(permBean.getUsersOrGroups(), permsList.toArray(new String[permsList.size()]));
-              
             }
           }
         }
@@ -256,9 +265,19 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     taxonomyService.addTaxonomyTree(taxonomyTreeNode);
   }
   
+  /**
+   * Update taxonomy tree: If home path or workspace is changed, move taxonomy tree to new target
+   * @param name
+   * @param workspace
+   * @param homePath
+   * @return true: if taxonomy tree already has moved successfully
+   *         false: if taxonomy has not changed
+   * @throws RepositoryException
+   * @throws AccessControlException
+   * @throws Exception
+   */
   public boolean updateTaxonomyTree(String name, String workspace, String homePath)
       throws RepositoryException, AccessControlException, Exception {
-    
     String repository = getRepository();
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     Node taxonomyTreeNode = taxonomyService.getTaxonomyTree(repository, name, true);
@@ -376,7 +395,6 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
       TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
       UIActionTaxonomyManager uiActionTaxonomyManager = uiTaxonomyTreeContainer.getChild(UIActionTaxonomyManager.class);
       UIActionForm uiActionForm = uiTaxonomyTreeContainer.findFirstComponentOfType(UIActionForm.class);
-      uiActionTaxonomyManager.setDefaultConfig();
       TaxonomyService taxonomyService = uiTaxonomyTreeContainer.getApplicationComponent(TaxonomyService.class);
       ActionServiceContainer actionService = uiTaxonomyTreeContainer.getApplicationComponent(ActionServiceContainer.class);
       Node taxoTreeNode = taxonomyService.getTaxonomyTree(taxonomyTreeData.getRepository(),

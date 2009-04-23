@@ -294,7 +294,6 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
       TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
       UIActionTaxonomyManager uiActionTaxonomyManager = uiTaxonomyTreeContainer.getChild(UIActionTaxonomyManager.class);
       UIActionForm uiActionForm = uiActionTaxonomyManager.getChild(UIActionForm.class);
-      uiActionTaxonomyManager.setDefaultConfig();
       uiTaxonomyTreeContainer.viewStep(3);
       uiActionForm.createNewAction(null, TaxonomyTreeData.ACTION_TAXONOMY_TREE, true);
       uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
