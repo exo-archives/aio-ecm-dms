@@ -97,10 +97,6 @@ public class AddTaxonomyActionScript implements CmsScript {
     }
     if(!storeWorkspace.equals(targetWorkspace)) {
       Node currentNode = (Node)storeNode.getSession().getItem(nodePath);
-      if(currentNode.canAddMixin("mix:referenceable")) {
-        currentNode.addMixin("mix:referenceable");
-        currentNode.save();
-      }
       sessionTargetNode.getWorkspace().clone(storeWorkspace, nodePath, targetPath, false);
       currentNode.remove();
       storeNode.save();
