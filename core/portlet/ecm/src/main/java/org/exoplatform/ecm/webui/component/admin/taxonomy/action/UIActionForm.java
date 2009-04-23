@@ -27,8 +27,6 @@ import javax.jcr.Session;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManagerTrees;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeContainer;
-import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeCreateChild;
-import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeForm;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;

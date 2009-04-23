@@ -194,18 +194,6 @@ public class UITaxonomyTreeCreateChild extends UIContainer {
     }
   }
   
-  public static class SelectPathActionListener extends EventListener<UIBreadcumbs> {
-    public void execute(Event<UIBreadcumbs> event) throws Exception {
-      UIBreadcumbs uiBreadcumbs = event.getSource();
-      UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = uiBreadcumbs.getParent();
-      String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
-      uiBreadcumbs.setSelectPath(objectId);
-      String selectGroupId = uiBreadcumbs.getSelectLocalPath().getId();
-      uiTaxonomyTreeCreateChild.changeGroup(selectGroupId, event.getRequestContext());
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyTreeCreateChild);
-    }
-  }
-  
   public String getWorkspace() {
     return workspace;
   }
@@ -217,4 +205,17 @@ public class UITaxonomyTreeCreateChild extends UIContainer {
   public void setTaxonomyTreeNode(Node taxonomyTreeNode) {
     this.taxonomyTreeNode = taxonomyTreeNode;
   }
+  
+  public static class SelectPathActionListener extends EventListener<UIBreadcumbs> {
+    public void execute(Event<UIBreadcumbs> event) throws Exception {
+      UIBreadcumbs uiBreadcumbs = event.getSource();
+      UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = uiBreadcumbs.getParent();
+      String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
+      uiBreadcumbs.setSelectPath(objectId);
+      String selectGroupId = uiBreadcumbs.getSelectLocalPath().getId();
+      uiTaxonomyTreeCreateChild.changeGroup(selectGroupId, event.getRequestContext());
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyTreeCreateChild);
+    }
+  }
+
 }

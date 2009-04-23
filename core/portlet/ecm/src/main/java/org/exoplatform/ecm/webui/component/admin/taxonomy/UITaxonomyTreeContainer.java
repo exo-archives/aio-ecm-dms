@@ -426,35 +426,18 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     public void execute(Event<UITaxonomyTreeContainer> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource();
       TaxonomyTreeData taxoTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
-      TaxonomyService taxonomyService = uiTaxonomyTreeContainer
-          .getApplicationComponent(TaxonomyService.class);
+      TaxonomyService taxonomyService = uiTaxonomyTreeContainer.getApplicationComponent(TaxonomyService.class);
       UIApplication uiApp = uiTaxonomyTreeContainer.getAncestorOfType(UIApplication.class);
-      
-      if (taxoTreeData.getTaxoTreeName() == null || taxoTreeData.getTaxoTreeName().length() == 0) {
+      if ((taxoTreeData.getTaxoTreeName() == null || taxoTreeData.getTaxoTreeName().length() == 0)
+          || (!taxonomyService.hasTaxonomyTree(taxoTreeData.getRepository(), taxoTreeData.getTaxoTreeName()))
+          || (taxonomyService.getTaxonomyTree(taxoTreeData.getRepository(), taxoTreeData.getTaxoTreeName(), true) == null)) {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeContainer.msg.not-exist-tree", null,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } 
-      
-      if (!taxonomyService.hasTaxonomyTree(taxoTreeData.getRepository(), taxoTreeData.getTaxoTreeName())) {
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeContainer.msg.not-exist-tree", null,
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-      
-      Node currentTreeNode = taxonomyService.getTaxonomyTree(taxoTreeData.getRepository(),
-          taxoTreeData.getTaxoTreeName(), true);
-      if (currentTreeNode == null) {
-        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeContainer.msg.not-exist-tree", null,
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-      
-      UITaxonomyTreeCreateChild uiTaxonomyCreateChild = uiTaxonomyTreeContainer
-          .getChild(UITaxonomyTreeCreateChild.class);
+      Node currentTreeNode = taxonomyService.getTaxonomyTree(taxoTreeData.getRepository(), taxoTreeData.getTaxoTreeName(), true);
+      UITaxonomyTreeCreateChild uiTaxonomyCreateChild = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeCreateChild.class);
       if (uiTaxonomyCreateChild == null)
         uiTaxonomyTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
       uiTaxonomyCreateChild.setWorkspace(taxoTreeData.getTaxoTreeWorkspace());
@@ -462,8 +445,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
       uiTaxonomyCreateChild.setSelectedPath(currentTreeNode.getPath());
       uiTaxonomyCreateChild.setTaxonomyTreeNode(currentTreeNode);
       uiTaxonomyCreateChild.update();
-      UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer
-          .getAncestorOfType(UITaxonomyManagerTrees.class);
+      UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
   }
