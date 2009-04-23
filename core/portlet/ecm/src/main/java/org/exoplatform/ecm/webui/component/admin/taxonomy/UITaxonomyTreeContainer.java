@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Workspace;
@@ -153,8 +152,10 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
       loadData(taxoTreeNode);
       Node actionNode = actionService.getAction(taxoTreeNode,
           taxonomyTreeData.getTaxoTreeActionName());
+      UIActionTypeForm uiActionTypeForm = uiActionTaxonomyManager.getChild(UIActionTypeForm.class);
+      uiActionTypeForm.setDefaultActionType(taxonomyTreeData.getTaxoTreeActionTypeName());
       UIActionForm uiActionForm = uiActionTaxonomyManager.getChild(UIActionForm.class);
-      uiActionForm.createNewAction(taxoTreeNode, actionNode.getPrimaryNodeType().getName(), false);
+      uiActionForm.createNewAction(taxoTreeNode, taxonomyTreeData.getTaxoTreeActionTypeName(), false);
       uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
       uiActionForm.setNodePath(actionNode.getPath());
     }
@@ -167,28 +168,23 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     }
   }
   
-  private void loadData(Node taxoTreeTargetNode) throws RepositoryException{
+  private void loadData(Node taxoTreeTargetNode) throws RepositoryException, Exception{
     String taxoTreeName = taxonomyTreeData.getTaxoTreeName();
     if (taxoTreeName == null || taxoTreeName.length() == 0) return;
     if (taxoTreeTargetNode != null) {
-        Session session = taxoTreeTargetNode.getSession();
-        taxonomyTreeData.setTaxoTreeWorkspace(session.getWorkspace().getName());
-        taxonomyTreeData.setTaxoTreeHomePath(taxoTreeTargetNode.getParent().getPath());
-        taxonomyTreeData.setTaxoTreePermissions("");
-        NodeIterator nodeIterator = taxoTreeTargetNode.getNode("exo:actions").getNodes();
-        if (nodeIterator != null && nodeIterator.getSize() > 0) {
-          Node node = null;
-          while (nodeIterator.hasNext()) {
-            node = nodeIterator.nextNode();
-            if (node.isNodeType(TaxonomyTreeData.ACTION_TAXONOMY_TREE)) {
-              break;
-            }
-            node = null;
-          }
-          if (node != null) {
-            taxonomyTreeData.setTaxoTreeActionName(node.getName());
-          }
+      Session session = taxoTreeTargetNode.getSession();
+      taxonomyTreeData.setTaxoTreeWorkspace(session.getWorkspace().getName());
+      taxonomyTreeData.setTaxoTreeHomePath(taxoTreeTargetNode.getParent().getPath());
+      taxonomyTreeData.setTaxoTreePermissions("");
+      ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class);
+      List<Node> lstActionNodes = actionService.getActions(taxoTreeTargetNode);
+      if (lstActionNodes != null && lstActionNodes.size() > 0) {
+        Node node = lstActionNodes.get(0);
+        if (node != null) {
+          taxonomyTreeData.setTaxoTreeActionName(node.getName());
+          taxonomyTreeData.setTaxoTreeActionTypeName(node.getPrimaryNodeType().getName());
         }
+      }
     }
   }
   
@@ -287,10 +283,10 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     Workspace objWorkspace = session.getWorkspace();
     if (homeNode.getPath().equals(homePath) && srcWorkspace.equals(workspace)) return false;
     ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class);
-    Node actionNode = taxonomyTreeNode.getNode(UIActionForm.EXO_ACTIONS);
     //remove action
-    if(actionNode != null && actionNode.hasNodes()) {
-      for (Node actionTmpNode : actionService.getActions(taxonomyTreeNode)) {
+    List<Node> lstActionNodes = actionService.getActions(taxonomyTreeNode);
+    if(lstActionNodes != null && lstActionNodes.size() > 0) {
+      for (Node actionTmpNode : lstActionNodes) {
         actionService.removeAction(taxonomyTreeNode, actionTmpNode.getName(), repository);
       }
     }

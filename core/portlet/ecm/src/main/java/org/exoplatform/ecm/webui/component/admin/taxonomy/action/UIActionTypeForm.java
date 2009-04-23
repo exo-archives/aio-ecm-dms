@@ -76,11 +76,12 @@ public class UIActionTypeForm extends UIForm {
     return actionService.getCreatedActionTypes(repository).iterator();
   }
 
-  public void setDefaultActionType() throws Exception {
-    if (defaultActionType_ == null) {
+  public void setDefaultActionType(String actionType) throws Exception {
+    defaultActionType_ = actionType;
+    if (actionType == null) {
       defaultActionType_ = "exo:taxonomyAction";
-      getUIFormSelectBox(ACTION_TYPE).setValue(defaultActionType_);
     }
+    getUIFormSelectBox(ACTION_TYPE).setValue(defaultActionType_);
   }
 
   public void update() throws Exception {
@@ -90,7 +91,7 @@ public class UIActionTypeForm extends UIForm {
       typeList_.add(new SelectItemOption<String>(action, action));
     }
     getUIFormSelectBox(ACTION_TYPE).setOptions(typeList_);
-    setDefaultActionType();
+    setDefaultActionType(defaultActionType_);
   }
 
   public static class ChangeActionTypeActionListener extends EventListener<UIActionTypeForm> {

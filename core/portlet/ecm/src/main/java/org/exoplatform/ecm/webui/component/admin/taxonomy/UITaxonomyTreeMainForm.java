@@ -188,8 +188,8 @@ public class UITaxonomyTreeMainForm extends UIForm {
       String homePath = "";
       if (inputHomePath != null && inputHomePath.getValue() != null) homePath =inputHomePath.getValue().toString();
       UIPermissionTreeManager uiPermissionManage = uiTaxonomyTreeContainer.getChild(UIPermissionTreeManager.class);
-      taxonomyTreeData.setTaxoTreeName(name);
-      taxonomyTreeData.setTaxoTreeHomePath(homePath);
+      taxonomyTreeData.setTaxoTreeName(name.trim());
+      taxonomyTreeData.setTaxoTreeHomePath(homePath.trim());
       taxonomyTreeData.setTaxoTreeWorkspace(selectBox.getValue());
       uiTaxonomyTreeContainer.viewStep(2);
       uiPermissionManage.update();
