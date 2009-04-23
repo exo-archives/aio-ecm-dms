@@ -59,8 +59,8 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
 
   private LinkManager            linkManager_;
 
-  private final String           SQL_QUERY       = "Select * from exo:taxonomyLink where jcr:path like '$0/%' and exo:uuid = '$1'";
-                                                    
+  private final String           SQL_QUERY       = "Select * from exo:taxonomyLink where jcr:path like '$0/%' and exo:uuid = '$1' order by exo:dateCreated DESC";
+  
   List<TaxonomyPlugin>           plugins_        = new ArrayList<TaxonomyPlugin>();
 
   public TaxonomyServiceImpl(SessionProviderService providerService,
@@ -234,7 +234,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
           }
         }
       }
-    } catch (RepositoryConfigurationException e) {
+    } catch (Exception e) {
       throw new RepositoryException(e);
     }
     return listCate;
