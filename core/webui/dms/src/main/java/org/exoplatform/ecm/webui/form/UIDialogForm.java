@@ -970,5 +970,9 @@ public class UIDialogForm extends UIForm {
       event.getSource().isOnchange = true;
       event.getSource().onchange(event);
     }
+  }
+
+  public boolean isOnchange() {
+    return isOnchange;
   }  
 }
