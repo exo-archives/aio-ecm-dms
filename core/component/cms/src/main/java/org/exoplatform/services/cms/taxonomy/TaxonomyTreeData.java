@@ -176,36 +176,6 @@ public class TaxonomyTreeData implements Comparable<TaxonomyTreeData> {
     this.taxoTreeActionName = taxoTreeActionName;
   }
   
-  /**
-   * Get targetPath of action
-   */
-  public String getTaxoTreeActionTargetPath() {
-    return taxoTreeActionTargetPath;
-  }
-
-  /**
-   * Set targetPath of action
-   * @param taxoTreeActionTargetPath
-   */
-  public void setTaxoTreeActionTargetPath(String taxoTreeActionTargetPath) {
-    this.taxoTreeActionTargetPath = taxoTreeActionTargetPath;
-  }
-
-  /**
-   * Get targetWorkspace of action
-   */
-  public String getTaxoTreeActionTargetWorkspace() {
-    return taxoTreeActionTargetWorkspace;
-  }
-
-  /**
-   * Set targetWorkspace of action
-   * @param taxoTreeActionTargetWorkspace
-   */
-  public void setTaxoTreeActionTargetWorkspace(String taxoTreeActionTargetWorkspace) {
-    this.taxoTreeActionTargetWorkspace = taxoTreeActionTargetWorkspace;
-  }
-
   public String getTaxoTreeActionTypeName() {
     return taxoTreeActionTypeName;
   }
