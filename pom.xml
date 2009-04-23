@@ -215,9 +215,9 @@
         <org.exoplatform.pc.version>2.0.4</org.exoplatform.pc.version>
         <org.exoplatform.portal.version>2.5.2</org.exoplatform.portal.version>
         <org.exoplatform.ecm.dms.version>2.4-SNAPSHOT</org.exoplatform.ecm.dms.version>
-		<exo.test.classes>Test</exo.test.classes>
+		    <exo.test.classes>Test</exo.test.classes>
         <exo.test.skip>true</exo.test.skip>
-        <bonita.version>3.0</bonita.version>        
+        <bonita.version>4.0</bonita.version>        
       </properties>
     </profile>
 	<profile>
