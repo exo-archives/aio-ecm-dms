@@ -63,7 +63,7 @@ public class AddTaxonomyActionScript implements CmsScript {
     String targetPath = (String)variables.get("exo:targetPath");
     if(storeFullPath.indexOf(":/") > -1) {
       storeWorkspace = storeFullPath.split(":/")[0];
-      if(storeHomePath = storeFullPath.split(":/")[1];
+      storeHomePath = storeFullPath.split(":/")[1];
       if(!storeHomePath.startsWith("/")) storeHomePath = "/" + storeHomePath;
     } else {
       storeWorkspace = targetWorkspace;
@@ -109,7 +109,7 @@ public class AddTaxonomyActionScript implements CmsScript {
     }
     sessionTargetNode.save();
     targetNode = (Node)sessionTargetNode.getItem(targetPath);
-    linkManager_.createLink(storeNode, "exo:symlink", targetNode);
+    linkManager_.createLink(storeNode, "exo:taxonomyLink", targetNode);
     storeNode.getSession().save();
     targetNode.getSession().save();
   }
