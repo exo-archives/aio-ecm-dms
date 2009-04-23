@@ -124,13 +124,12 @@ public class UITreeTaxonomyList extends UIForm {
   
   public void setTaxonomyTreeList(String repository) throws Exception {
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    
     List<Node> listNode = new ArrayList<Node>();
     listNode = taxonomyService.getAllTaxonomyTrees(repository);
     List<SelectItemOption<String>> taxonomyTree = new ArrayList<SelectItemOption<String>>();
     for(Node itemNode : listNode) {
-      taxonomyTree.add(new SelectItemOption<String>(itemNode.getName(), itemNode.getPath()));
+      String value = itemNode.getSession().getWorkspace().getName() + ":" + itemNode.getPath(); 
+      taxonomyTree.add(new SelectItemOption<String>(itemNode.getName(), value));
     }
     UIFormSelectBox uiTreeTaxonomyList = getUIFormSelectBox(TAXONOMY_TREE);
     uiTreeTaxonomyList.setOptions(taxonomyTree);
@@ -153,12 +152,23 @@ public class UITreeTaxonomyList extends UIForm {
     public void execute(Event<UITreeTaxonomyList> event) throws Exception {
       UITreeTaxonomyList uiTreeTaxonomyList = event.getSource();
       UIOneTaxonomySelector uiJBrowser = uiTreeTaxonomyList.getParent();
-      String pathTaxonomy = uiTreeTaxonomyList.getUIFormSelectBox(TAXONOMY_TREE).getValue();
+      String valueTaxonomy = uiTreeTaxonomyList.getUIFormSelectBox(TAXONOMY_TREE).getValue();      
+      String workspaceName = uiJBrowser.getWorkspaceName();
+      String pathTaxonomy = valueTaxonomy;
+      if (valueTaxonomy.indexOf(":/") > -1) {
+        String[] arrayValueTaxonomy = valueTaxonomy.split(":/");
+        workspaceName = arrayValueTaxonomy[0];
+        if (arrayValueTaxonomy[1].startsWith("/")) 
+          pathTaxonomy = arrayValueTaxonomy[1];
+        else
+          pathTaxonomy = "/" + arrayValueTaxonomy[1];
+      }
+      
       UITreeTaxonomyBuilder uiTreeJCRExplorer = uiJBrowser.getChild(UITreeTaxonomyBuilder.class);
       UIApplication uiApp = uiTreeTaxonomyList.getAncestorOfType(UIApplication.class);
       try {
         uiTreeJCRExplorer.setRootTreeNode(uiTreeTaxonomyList.getRootNode(uiJBrowser.getRepositoryName(), 
-            uiJBrowser.getWorkspaceName(), pathTaxonomy));
+            workspaceName, pathTaxonomy));
       } catch (AccessDeniedException ade) {        
         uiTreeTaxonomyList.getUIFormSelectBox(TAXONOMY_TREE).setValue("collaboration");
         uiApp.addMessage(new ApplicationMessage("UIWorkspaceList.msg.AccessDeniedException", null, ApplicationMessage.WARNING));
