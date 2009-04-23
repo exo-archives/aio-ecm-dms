@@ -62,7 +62,6 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
-import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormStringInput;
 
@@ -183,13 +182,17 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   
   
   public void renderField(String name) throws Exception {
-    TaxonomyTreeData taxoTreeData = getTaxoTreeData();
     UIComponent uiInput = findComponentById(name);
-    String homPath = getTaxonomyTreeHomePath();
-    if (homPath.endsWith("/"))
-      homPath = homPath.substring(0, homPath.length() - 1);
     if ("homePath".equals(name)) {
-      ((UIFormInput<String>) uiInput).setValue(homPath + "/" + taxoTreeData.getTaxoTreeName());
+      TaxonomyTreeData taxoTreeData = getTaxoTreeData();
+      String homPath = getTaxonomyTreeHomePath();
+      if (homPath.endsWith("/"))
+        homPath = homPath.substring(0, homPath.length() - 1);
+      ((UIFormStringInput) uiInput).setValue(homPath + "/" + taxoTreeData.getTaxoTreeName());
+    }
+    if ("targetPath".equals(name) && (isOnchange())) {
+      setIsOnchange(false);
+      ((UIFormStringInput) uiInput).reset();
     }
     super.renderField(name);
   }
@@ -208,12 +211,6 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   
   public String getRootPath() {
     return rootPath_;
-  }
-
-  public void onchange(Event event) throws Exception {
-    removeChildById("targetPath");
-    UIFormStringInput uiInput = new UIFormStringInput("targetPath","");
-    addUIFormInput(uiInput);
   }
   
   public static class SaveActionListener extends EventListener<UIActionForm> {
