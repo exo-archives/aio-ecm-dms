@@ -884,7 +884,9 @@ public class UIActionBar extends UIForm {
       uiExplorer.setIsHidePopup(true);
       UISimpleCategoryManager uiSimpleCategoryManager = uiExplorer.createUIComponent(UISimpleCategoryManager.class, null, null);
       UIOneNodePathSelector uiNodePathSelector = uiSimpleCategoryManager.getChild(UIOneNodePathSelector.class);
-      uiNodePathSelector.setIsDisable(workspaceName, true);      
+      uiNodePathSelector.setIsDisable(workspaceName, true);
+      uiNodePathSelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
+      System.out.println("Here 111 =================================================================== ");
       String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
       Session session = uiExplorer.getSession();
       Node rootTree = (Node) session.getItem(rootTreePath);      
@@ -950,10 +952,12 @@ public class UIActionBar extends UIForm {
       uiExplorer.setIsHidePopup(true);
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null);
       UIOneTaxonomySelector uiOneTaxonomySelector = uiManager.getChild(UIOneTaxonomySelector.class);
-      uiOneTaxonomySelector.setIsDisable(workspaceName, false);      
+      uiOneTaxonomySelector.setIsDisable(workspaceName, false);
+      uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
+      System.out.println("Here 222 =================================================================== ");
       String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
       Session session = uiExplorer.getSession();
-      Node rootTree = (Node) session.getItem(rootTreePath);      
+      Node rootTree = (Node) session.getItem(rootTreePath);
       NodeIterator childrenIterator = rootTree.getNodes();
       while (childrenIterator.hasNext()) {
         Node childNode = childrenIterator.nextNode();
