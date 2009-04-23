@@ -31,6 +31,7 @@ import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionForm;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionTaxonomyManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionTypeForm;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeForm;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeManager;
 import org.exoplatform.ecm.webui.selector.UISelectable;
@@ -143,29 +144,38 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     taxonomyTreeData.setRepository(getRepository());
     String taxoTreeName = taxonomyTreeData.getTaxoTreeName();
     UIActionTaxonomyManager uiActionTaxonomyManager = getChild(UIActionTaxonomyManager.class);
-    
+    UITaxonomyTreeCreateChild uiTaxonomyCreateChild = getChild(UITaxonomyTreeCreateChild.class);
+    UIActionTypeForm uiActionTypeForm = uiActionTaxonomyManager.getChild(UIActionTypeForm.class);
+    if (uiTaxonomyCreateChild != null) {
+      uiTaxonomyCreateChild.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
+    }
     if (taxoTreeName != null && taxoTreeName.length() > 0) {
       TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
       ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class);
       Node taxoTreeNode = taxonomyService.getTaxonomyTree(taxonomyTreeData.getRepository(),
           taxoTreeName, true);
-      loadData(taxoTreeNode);
-      Node actionNode = actionService.getAction(taxoTreeNode,
-          taxonomyTreeData.getTaxoTreeActionName());
-      UIActionTypeForm uiActionTypeForm = uiActionTaxonomyManager.getChild(UIActionTypeForm.class);
-      uiActionTypeForm.setDefaultActionType(taxonomyTreeData.getTaxoTreeActionTypeName());
-      UIActionForm uiActionForm = uiActionTaxonomyManager.getChild(UIActionForm.class);
-      uiActionForm.createNewAction(taxoTreeNode, taxonomyTreeData.getTaxoTreeActionTypeName(), false);
-      uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
-      uiActionForm.setNodePath(actionNode.getPath());
+      if (taxoTreeNode != null) {
+        loadData(taxoTreeNode);
+        Node actionNode = actionService.getAction(taxoTreeNode,
+            taxonomyTreeData.getTaxoTreeActionName());
+        uiActionTypeForm.setDefaultActionType(taxonomyTreeData.getTaxoTreeActionTypeName());
+        UIActionForm uiActionForm = uiActionTaxonomyManager.getChild(UIActionForm.class);
+        uiActionForm.createNewAction(taxoTreeNode, taxonomyTreeData.getTaxoTreeActionTypeName(), false);
+        uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
+        uiActionForm.setNodePath(actionNode.getPath());
+        if (uiTaxonomyCreateChild == null)
+          uiTaxonomyCreateChild = addChild(UITaxonomyTreeCreateChild.class, null, null);
+        uiTaxonomyCreateChild.setWorkspace(getTaxonomyTreeData().getTaxoTreeWorkspace());
+        uiTaxonomyCreateChild.setTaxonomyTreeNode(taxoTreeNode);
+        UIPermissionTreeInfo uiPermInfo = findFirstComponentOfType(UIPermissionTreeInfo.class);
+        UIPermissionTreeForm uiPermForm = findFirstComponentOfType(UIPermissionTreeForm.class);
+        uiPermInfo.setCurrentNode(taxoTreeNode);
+        uiPermForm.setCurrentNode(taxoTreeNode);
+        uiPermInfo.updateGrid();
+      }
     }
-
-    uiActionTaxonomyManager.getChild(UIActionTypeForm.class).update();
+    uiActionTypeForm.update();
     findFirstComponentOfType(UITaxonomyTreeMainForm.class).update(taxonomyTreeData);
-    UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = getChild(UITaxonomyTreeCreateChild.class);
-    if (uiTaxonomyTreeCreateChild != null) {
-      uiTaxonomyTreeCreateChild.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
-    }
   }
   
   private void loadData(Node taxoTreeTargetNode) throws RepositoryException, Exception{

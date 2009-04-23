@@ -1824,6 +1824,11 @@
 			<Reset>Reset</Reset>
 			<Next>Next</Next>
 		</action>
+		<msg>
+  		<name-not-allowed>Name is disallowed</name-not-allowed>
+  		<name-emty>Name of tree is empty</name-emty>
+  		<homePath-emty>Home path is empty</homePath-emty>
+		</msg>
 	</UITaxonomyTreeMainForm>
 	
 	<TaxonomyTreeMainForm>

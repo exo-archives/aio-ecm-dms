@@ -27,8 +27,6 @@ import javax.jcr.ValueFormatException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeForm;
-import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -186,25 +184,6 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
       taxoTreeData.setRepository(repository);
       uiTaxoTreeContainer.setTaxonomyTreeData(taxoTreeData);
       uiTaxoTreeContainer.refresh();
-      TaxonomyService taxonomyService = uiTaxonomyManagerTrees.getApplicationComponent(TaxonomyService.class);
-      Node currentTreeNode = taxonomyService.getTaxonomyTree(repository, taxoTreeName, true);
-
-      /* Set permission */
-      UIPermissionTreeInfo uiPermInfo = uiTaxoTreeContainer
-          .findFirstComponentOfType(UIPermissionTreeInfo.class);
-      UIPermissionTreeForm uiPermForm = uiTaxoTreeContainer
-          .findFirstComponentOfType(UIPermissionTreeForm.class);
-      uiPermInfo.setCurrentNode(currentTreeNode);
-      uiPermForm.setCurrentNode(currentTreeNode);
-      uiPermInfo.updateGrid();
-      
-      /* Get taxonomy child node */
-      UITaxonomyTreeCreateChild uiTaxonomyCreateChild = uiTaxoTreeContainer
-          .getChild(UITaxonomyTreeCreateChild.class);
-      if (uiTaxonomyCreateChild == null)
-        uiTaxonomyCreateChild = uiTaxoTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
-      uiTaxonomyCreateChild.setWorkspace(uiTaxoTreeContainer.getTaxonomyTreeData().getTaxoTreeWorkspace());
-      uiTaxonomyCreateChild.setTaxonomyTreeNode(currentTreeNode);
       uiTaxoTreeContainer.viewStep(4);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }

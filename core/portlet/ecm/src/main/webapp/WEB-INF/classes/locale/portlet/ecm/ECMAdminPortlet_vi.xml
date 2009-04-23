@@ -1834,7 +1834,9 @@
 			<Next>Next</Next>
 		</action>
 		<msg>
-  		<name-not-allowed>Name is disallowed</name-not-allowed>
+  		<name-not-allowed>Tên không hợp lệ</name-not-allowed>
+  		<name-emty>Tên danh mục bị trống</name-emty>
+  		<homePath-emty>Đường dẫn trống</homePath-emty>
 		</msg>
 	</UITaxonomyTreeMainForm>
 	

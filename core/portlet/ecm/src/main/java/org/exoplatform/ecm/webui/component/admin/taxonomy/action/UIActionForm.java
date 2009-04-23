@@ -349,7 +349,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         }
       }
       
-      UIPermissionTreeInfo uiPermInfo = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeInfo.class);
+/*      UIPermissionTreeInfo uiPermInfo = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeInfo.class);
       UIPermissionTreeForm uiPermForm = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeForm.class);
       uiPermInfo.setCurrentNode(currentNode);
       uiPermForm.setCurrentNode(currentNode);
@@ -358,7 +358,8 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       if (uiTaxonomyTreeCreateChild == null) 
         uiTaxonomyTreeCreateChild = uiTaxonomyTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
       uiTaxonomyTreeCreateChild.setWorkspace(workspace);
-      uiTaxonomyTreeCreateChild.setTaxonomyTreeNode(currentNode);
+      uiTaxonomyTreeCreateChild.setTaxonomyTreeNode(currentNode);*/
+      uiTaxonomyTreeContainer.refresh();
       uiTaxonomyTreeContainer.viewStep(4);
       uiTaxonomyManagerTrees.update();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
