@@ -36,6 +36,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
   final static public String REPOSITORY =  "repository";
   final static public String CATEGORY_MANDATORY =  "categoryMandatoryWhenFileUpload";
   final static public String ISDIRECTLY_DRIVE =  "isDirectlyDrive";
+  final static public String MAX_SIZE_UPLOAD = "uploadFileSizeLimitMB";
   final static public String DRIVE_NAME =  "driveName";
   final static public String USECASE = "usecase";
   final static public String JAILED = "jailed";

@@ -2125,6 +2125,7 @@
     <label>
       <repository>Kho dữ liệu</repository>
       <categoryMandatoryWhenFileUpload>Bắt buộc chọn danh mục khi tải lên</categoryMandatoryWhenFileUpload>
+      <uploadFileSizeLimitMB>Giới hạn kích thước file tải lên(MB)</uploadFileSizeLimitMB>
       <isDirectlyDrive>Truy cập trực tiếp</isDirectlyDrive>
       <driveName>Tên ổ đĩa</driveName>
       <usecase>Loại</usecase>

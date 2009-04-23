@@ -2125,6 +2125,7 @@
     <label>
       <repository>Repository</repository>
       <categoryMandatoryWhenFileUpload>Specify a category when uploading a file</categoryMandatoryWhenFileUpload>
+      <uploadFileSizeLimitMB>Upload file size limit(MB)</uploadFileSizeLimitMB>
       <isDirectlyDrive>Directly Drive</isDirectlyDrive>
       <driveName>Drive Name</driveName>
       <usecase>Select Type</usecase>

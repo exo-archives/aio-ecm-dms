@@ -2125,6 +2125,7 @@
     <label>
       <repository>Dépôt de données</repository>
       <categoryMandatoryWhenFileUpload>Nécessité de spécifier une catégorie quand un fichier est uploadé dans la base</categoryMandatoryWhenFileUpload>
+      <uploadFileSizeLimitMB>Limite de la taille d'upload (MB)</uploadFileSizeLimitMB>
       <isDirectlyDrive>Accès direct aux lecteurs</isDirectlyDrive>
       <driveName>Nom du lecteur</driveName>
       <usecase>Type d'accès</usecase>

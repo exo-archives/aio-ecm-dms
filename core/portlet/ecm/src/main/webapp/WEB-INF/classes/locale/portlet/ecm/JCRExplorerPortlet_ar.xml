@@ -2125,6 +2125,7 @@
     <label>
       <repository>مُستودع البيانات</repository>
       <categoryMandatoryWhenFileUpload>الرجاء تحديد الفئة عند تحميلك للملفّ</categoryMandatoryWhenFileUpload>
+      <uploadFileSizeLimitMB>حجم ملف التحميل(MB)</uploadFileSizeLimitMB>	
       <isDirectlyDrive>القرص المباشر</isDirectlyDrive>
       <driveName>اسم القرص</driveName>
       <usecase>اختيار النّوع</usecase>
