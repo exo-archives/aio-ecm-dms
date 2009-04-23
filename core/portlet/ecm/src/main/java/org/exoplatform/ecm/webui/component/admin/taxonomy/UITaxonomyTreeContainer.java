@@ -263,7 +263,10 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     Node taxonomyTreeNode = taxonomyService.getTaxonomyTree(repository, name, true);
     Node homeNode = taxonomyTreeNode.getParent();
-    if (homeNode.getPath().equals(homePath)) return false;
+    String srcWorkspace = taxonomyTreeNode.getSession().getWorkspace().getName();
+    Session session = getSession(workspace);
+    Workspace objWorkspace = session.getWorkspace();
+    if (homeNode.getPath().equals(homePath) && srcWorkspace.equals(workspace)) return false;
     ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class);
     Node actionNode = taxonomyTreeNode.getNode(UIActionForm.EXO_ACTIONS);
     //remove action
@@ -272,9 +275,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
         actionService.removeAction(taxonomyTreeNode, actionTmpNode.getName(), repository);
       }
     }
-    String srcWorkspace = taxonomyTreeNode.getSession().getWorkspace().getName();
-    Session session = getSession(workspace);
-    Workspace objWorkspace = session.getWorkspace();
+    
     String destPath = homePath + "/" + name;
     if (srcWorkspace.equals(workspace)) {
       objWorkspace.move(taxonomyTreeNode.getPath(), destPath);
