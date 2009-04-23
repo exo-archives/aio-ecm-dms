@@ -33,7 +33,6 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -67,7 +66,6 @@ public class UITreeTaxonomyList extends UIForm {
   static private String TAXONOMY_TREE = "taxonomyTree";
   
   private List<String> wsList_;
-  private List<String> taxonomyTreeList_;
   private boolean isShowSystem_ = true;
 
   public UITreeTaxonomyList() throws Exception {    

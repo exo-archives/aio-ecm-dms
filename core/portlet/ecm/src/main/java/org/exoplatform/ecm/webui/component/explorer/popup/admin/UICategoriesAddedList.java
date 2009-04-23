@@ -84,6 +84,8 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
       uiJCRExplorer.addLockToken(currentNode);
       String[] arrayCategoryPath = value.toString().split("/");
       String categoryPath = value.toString().replaceAll(arrayCategoryPath[0], "");
+      System.out.println("arrayCategoryPath[0] ======> " + arrayCategoryPath[0]);
+      System.out.println("categoryPath ======> " + categoryPath);
       taxonomyService.addCategory(currentNode, arrayCategoryPath[0], categoryPath);
       uiJCRExplorer.getCurrentNode().save() ;
       uiJCRExplorer.getSession().save() ;
