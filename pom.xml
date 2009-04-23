@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.exoplatform</groupId>
     <artifactId>parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.1</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
@@ -215,7 +215,7 @@
         <org.exoplatform.pc.version>2.0.6</org.exoplatform.pc.version>
         <org.exoplatform.portal.version>2.5.3</org.exoplatform.portal.version>
         <org.exoplatform.ecm.dms.version>2.3.x</org.exoplatform.ecm.dms.version>
-		<exo.test.classes>Test</exo.test.classes>
+    		<exo.test.classes>Test</exo.test.classes>
         <exo.test.skip>true</exo.test.skip>
         <bonita.version>4.0</bonita.version>        
       </properties>
