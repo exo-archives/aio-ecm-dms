@@ -180,6 +180,9 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     return dialogPath;    
   }
   
+  public void onchange(Event<?> event) throws Exception {
+    setIsUpdateSelect(false);
+  }
   
   public void renderField(String name) throws Exception {
     UIComponent uiInput = findComponentById(name);
@@ -190,8 +193,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         homPath = homPath.substring(0, homPath.length() - 1);
       ((UIFormStringInput) uiInput).setValue(homPath + "/" + taxoTreeData.getTaxoTreeName());
     }
-    if ("targetPath".equals(name) && (isOnchange())) {
-      setIsOnchange(false);
+    if ("targetPath".equals(name) && (isOnchange()) && !isUpdateSelect) {
       ((UIFormStringInput) uiInput).reset();
     }
     super.renderField(name);
@@ -286,15 +288,26 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         }
         try {
           JcrInputProperty rootProp = sortedInputs.get("/node");
+          String actionName = (String) (sortedInputs.get("/node/exo:name")).getValue();
+          String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", 
+              "'", "#", ";", "}", "{", "/", "|", "\""};
+          for(String filterChar : arrFilterChar) {
+            if(actionName.indexOf(filterChar) > -1) {
+              uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.name-not-allowed", null, 
+                  ApplicationMessage.WARNING));
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
+            }
+          }
+          
           if (rootProp == null) {
             rootProp = new JcrInputProperty();
             rootProp.setJcrPath("/node");
-            rootProp.setValue((sortedInputs.get("/node/exo:name")).getValue());
+            rootProp.setValue(actionName);
             sortedInputs.put("/node", rootProp);
           } else {
-            rootProp.setValue((sortedInputs.get("/node/exo:name")).getValue());
+            rootProp.setValue(actionName);
           }
-          String actionName = (String) (sortedInputs.get("/node/exo:name")).getValue();
           if (currentNode.hasNode(EXO_ACTIONS)) {
             if (currentNode.getNode(EXO_ACTIONS).hasNode(actionName)) {
               Object[] args = { actionName };
@@ -405,7 +418,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       }
       uiManager.initPopupComponent(uiComp, UIActionForm.POPUP_COMPONENT);
       String param = "returnField=" + fieldName;
-      ((ComponentSelector) uiComp).setSourceComponent(uiTaxonomyTree, new String[] { param });
+      ((ComponentSelector) uiComp).setSourceComponent(uiForm, new String[] { param });
       if (uiForm.isAddNew_) {
         UIContainer uiParent = uiManager.getParent();
         uiParent.setRenderedChild(uiManager.getId());

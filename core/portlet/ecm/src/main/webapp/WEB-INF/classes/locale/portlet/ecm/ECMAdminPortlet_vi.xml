@@ -1833,6 +1833,9 @@
 			<Reset>Xóa</Reset>
 			<Next>Next</Next>
 		</action>
+		<msg>
+  		<name-not-allowed>Name is disallowed</name-not-allowed>
+		</msg>
 	</UITaxonomyTreeMainForm>
 	
 	<TaxonomyTreeMainForm>
@@ -1888,7 +1891,7 @@
 		<action>
 			<Save>Lưu</Save>
 			<Reset>Xóa</Reset>
-			<Next>Chuyển/Next>
+			<Next>Chuyển</Next>
 		</action>
 		<msg>
 		  <have-not-any-permission>Chưa chọn quyền nào</have-not-any-permission>
@@ -1907,6 +1910,9 @@
 			<Reset>Xóa</Reset>
 			<Back>Quay lại</Back>
 		</action>
+		<msg>
+  		<name-not-allowed>Name is disallowed</name-not-allowed>
+		</msg>
 	</UIActionForm>
 	<EditTaxonomyTreePopup>
     <title>

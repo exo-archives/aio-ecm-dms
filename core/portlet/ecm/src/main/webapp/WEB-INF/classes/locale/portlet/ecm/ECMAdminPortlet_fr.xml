@@ -1832,6 +1832,9 @@
 			<Reset>Reset</Reset>
 			<Next>Next</Next>
 		</action>
+		<msg>
+  		<name-not-allowed>Name is disallowed</name-not-allowed>
+		</msg>
 	</UITaxonomyTreeMainForm>
 	
 	<TaxonomyTreeMainForm>
@@ -1906,6 +1909,9 @@
 			<Reset>Reset</Reset>
 			<Back>Back</Back>
 		</action>
+		<msg>
+  		<name-not-allowed>Name is disallowed</name-not-allowed>
+		</msg>
 	</UIActionForm>
 	<EditTaxonomyTreePopup>
     <title>

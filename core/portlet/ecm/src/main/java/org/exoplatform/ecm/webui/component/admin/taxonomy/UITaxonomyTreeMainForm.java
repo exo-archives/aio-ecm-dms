@@ -35,7 +35,6 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
-import org.exoplatform.webui.form.UIFormInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
@@ -169,14 +168,27 @@ public class UITaxonomyTreeMainForm extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+
+      UIFormInputBase inputName = uiTaxonomyTreeMainForm.findComponentById(UITaxonomyTreeMainForm.FIELD_NAME);
+      String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", 
+          "'", "#", ";", "}", "{", "/", "|", "\""};
+      String name = inputName.getValue().toString();
+      for(String filterChar : arrFilterChar) {
+        if(name.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.name-not-allowed", null, 
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+      }
+      
       UIFormSelectBox selectBox = uiTaxonomyTreeMainForm.getChildById(UITaxonomyTreeMainForm.FIELD_WORKSPACE);
       TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
-      UIFormInputBase inputName = uiTaxonomyTreeMainForm.findComponentById(UITaxonomyTreeMainForm.FIELD_NAME);
       UIFormInputBase inputHomePath = uiTaxonomyTreeMainForm.findComponentById(UITaxonomyTreeMainForm.FIELD_HOMEPATH);
       String homePath = "";
       if (inputHomePath != null && inputHomePath.getValue() != null) homePath =inputHomePath.getValue().toString();
       UIPermissionTreeManager uiPermissionManage = uiTaxonomyTreeContainer.getChild(UIPermissionTreeManager.class);
-      taxonomyTreeData.setTaxoTreeName(inputName.getValue().toString());
+      taxonomyTreeData.setTaxoTreeName(name);
       taxonomyTreeData.setTaxoTreeHomePath(homePath);
       taxonomyTreeData.setTaxoTreeWorkspace(selectBox.getValue());
       uiTaxonomyTreeContainer.viewStep(2);

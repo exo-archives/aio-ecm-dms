@@ -212,8 +212,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     UITaxonomyManagerTrees uiContainer = getAncestorOfType(UITaxonomyManagerTrees.class);
     for (UIComponent uiChild : uiContainer.getChildren()) {
       if (uiChild.getId().equals(UITaxonomyTreeContainer.POPUP_PERMISSION)
-          || uiChild.getId().equals(UITaxonomyTreeContainer.POPUP_TAXONOMYHOMEPATH)
-          || uiChild.getId().equals(UIActionForm.POPUP_COMPONENT)) {
+          || uiChild.getId().equals(UITaxonomyTreeContainer.POPUP_TAXONOMYHOMEPATH)) {
         UIPopupWindow uiPopup = uiContainer.getChildById(uiChild.getId());
         uiPopup.setRendered(false);
         uiPopup.setShow(false);
