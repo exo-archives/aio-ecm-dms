@@ -329,6 +329,9 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           session.save();
           Node actionNode = actionServiceContainer.getAction(currentNode, actionName);
           taxoTreeData.setTaxoTreeActionName(actionNode.getName());
+          uiActionForm.setIsOnchange(false);
+          uiActionForm.setNodePath(actionNode.getPath());
+          uiActionForm.createNewAction(currentNode, actionNode.getPrimaryNodeType().getName(), false);
         } catch (RepositoryException repo) {
           String key = "UIActionForm.msg.repository-exception";
           uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));

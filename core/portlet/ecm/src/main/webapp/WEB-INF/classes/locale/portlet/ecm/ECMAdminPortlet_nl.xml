@@ -1799,7 +1799,7 @@
 			<info>
 				<UITaxonomyTreeMainForm>Input taxonomy name, choose workspace and taxonomy home path</UITaxonomyTreeMainForm>
 				<UIPermissionTreeManager>Select permission for taxonomy tree node</UIPermissionTreeManager>
-				<UIActionTaxonomyManager>Regist exo:taxonomyAction</UIActionTaxonomyManager>
+				<UIActionTaxonomyManager>Register exo:taxonomyAction</UIActionTaxonomyManager>
 				<UITaxonomyTreeCreateChild>Edit taxonomy tree by add, copy, cut and select permission</UITaxonomyTreeCreateChild>
 			</info>
 		</tab>
