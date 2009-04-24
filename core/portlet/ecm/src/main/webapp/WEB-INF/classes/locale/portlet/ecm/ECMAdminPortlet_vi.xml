@@ -1913,7 +1913,11 @@
 			<Back>Quay lại</Back>
 		</action>
 		<msg>
-  		<name-not-allowed>Name is disallowed</name-not-allowed>
+  		<name-not-allowed>Tên không hợp lệ</name-not-allowed>
+  		<path-invalid>Đường dẫn không hợp lệ</path-invalid>
+			<taxonomy-existed>Cây danh mục đã tồn tại</taxonomy-existed>
+			<taxonomy-node-existed>Nút danh mục đã tồn tại</taxonomy-node-existed>
+			<no-permission-add>Người dùng không có quyền thêm mới</no-permission-add>
 		</msg>
 	</UIActionForm>
 	<EditTaxonomyTreePopup>

@@ -21,13 +21,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeContainer;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -63,7 +66,6 @@ public class UIActionTypeForm extends UIForm {
   public String                          defaultActionType_;
 
   public UIActionTypeForm() throws Exception {
-    typeList_ = new ArrayList<SelectItemOption<String>>();
     UIFormSelectBox uiSelectBox = new UIFormSelectBox(ACTION_TYPE, ACTION_TYPE,
         new ArrayList<SelectItemOption<String>>());
     uiSelectBox.setOnChange(CHANGE_ACTION);
@@ -86,12 +88,16 @@ public class UIActionTypeForm extends UIForm {
 
   public void update() throws Exception {
     Iterator actions = getCreatedActionTypes();
-    while (actions.hasNext()) {
-      String action = ((NodeType) actions.next()).getName();
-      typeList_.add(new SelectItemOption<String>(action, action));
+    if (actions != null && actions.hasNext()) {
+      typeList_ = new ArrayList<SelectItemOption<String>>();
+      while (actions.hasNext()) {
+        String action = ((NodeType) actions.next()).getName();
+        typeList_.add(new SelectItemOption<String>(action, action));
+      }
+      getUIFormSelectBox(ACTION_TYPE).setOptions(typeList_);
+      setDefaultActionType(defaultActionType_);
+      
     }
-    getUIFormSelectBox(ACTION_TYPE).setOptions(typeList_);
-    setDefaultActionType(defaultActionType_);
   }
 
   public static class ChangeActionTypeActionListener extends EventListener<UIActionTypeForm> {
@@ -127,9 +133,20 @@ public class UIActionTypeForm extends UIForm {
         actionType = TaxonomyTreeData.ACTION_TAXONOMY_TREE;
         uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType);
       }
-      uiTaxonomyTreeContainer.getTaxonomyTreeData().setTaxoTreeActionTypeName(actionType);
-      uiActionForm.createNewAction(null, actionType, true);
-      uiActionTaxonomyManager.setRenderSibbling(UIActionTaxonomyManager.class);
+      
+      TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
+      String oldActionType = taxonomyTreeData.getTaxoTreeActionTypeName();
+      taxonomyTreeData.setTaxoTreeActionTypeName(actionType);
+      TaxonomyService taxonomyService = uiTaxonomyTreeContainer.getApplicationComponent(TaxonomyService.class);
+      Node taxoTreeNode = null;
+      try {
+        taxoTreeNode = taxonomyService.getTaxonomyTree(taxonomyTreeData.getRepository(),
+            taxonomyTreeData.getTaxoTreeName(), true);
+      } catch (RepositoryException re) {
+      }
+      boolean isAddNew_ = !actionType.equals(oldActionType);
+      uiActionForm.createNewAction(taxoTreeNode, actionType, isAddNew_);
+      uiActionTaxonomyManager.setRendered(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionTaxonomyManager);
     }
   }

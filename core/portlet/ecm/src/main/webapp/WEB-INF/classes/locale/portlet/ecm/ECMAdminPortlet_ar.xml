@@ -1903,6 +1903,13 @@
 			<Reset>Reset</Reset>
 			<Back>Back</Back>
 		</action>
+		<msg>
+  		<name-not-allowed>Name is disallowed</name-not-allowed>
+  		<path-invalid>Path is invalid</path-invalid>
+			<taxonomy-existed>Taxonomy tree has alreday been existed</taxonomy-existed>
+			<taxonomy-node-existed>Taxonomy node has been existed</taxonomy-node-existed>
+			<no-permission-add>User has no add right</no-permission-add>
+		</msg>
 	</UIActionForm>
 	<EditTaxonomyTreePopup>
     <title>

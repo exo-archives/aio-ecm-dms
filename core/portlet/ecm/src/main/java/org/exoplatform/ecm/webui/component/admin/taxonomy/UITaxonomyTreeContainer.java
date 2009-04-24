@@ -124,6 +124,15 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     return wizardMaxStep_;
   }
   
+
+  public TaxonomyTreeData getTaxonomyTreeData() {
+    return taxonomyTreeData;
+  }
+
+  public void setTaxonomyTreeData(TaxonomyTreeData taxonomyTreeData) {
+    this.taxonomyTreeData = taxonomyTreeData;
+  }
+  
   public void viewStep(int step) {   
     selectedStep_ = step;
     currentStep_ = step - 1;    
@@ -291,6 +300,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     String srcWorkspace = taxonomyTreeNode.getSession().getWorkspace().getName();
     Session session = getSession(workspace);
     Workspace objWorkspace = session.getWorkspace();
+    //No change
     if (homeNode.getPath().equals(homePath) && srcWorkspace.equals(workspace)) return false;
     ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class);
     //remove action
@@ -312,6 +322,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     session.save();
     //Update taxonomy tree
     taxonomyTreeNode = (Node)session.getItem(destPath);
+    session.logout();
     taxonomyService.updateTaxonomyTree(name, taxonomyTreeNode);
     return true;
   }
@@ -416,7 +427,6 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
         uiActionForm.createNewAction(null, TaxonomyTreeData.ACTION_TAXONOMY_TREE, true);
       }
       uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
-      uiActionTaxonomyManager.setRenderSibbling(UIActionTaxonomyManager.class);
       uiTaxonomyTreeContainer.viewStep(3);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
@@ -448,13 +458,5 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
-  }
-
-  public TaxonomyTreeData getTaxonomyTreeData() {
-    return taxonomyTreeData;
-  }
-
-  public void setTaxonomyTreeData(TaxonomyTreeData taxonomyTreeData) {
-    this.taxonomyTreeData = taxonomyTreeData;
   }
 }

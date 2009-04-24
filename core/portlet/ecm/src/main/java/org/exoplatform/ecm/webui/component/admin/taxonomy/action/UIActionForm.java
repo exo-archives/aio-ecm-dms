@@ -17,6 +17,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.taxonomy.action;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
@@ -40,6 +41,7 @@ import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
@@ -259,17 +261,36 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch (TaxonomyNodeAlreadyExistsException e) {
-        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.taxonomy-existed", null,
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.taxonomy-node-existed", null,
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-
+      
       Node currentNode = taxonomyService.getTaxonomyTree(repository, name, true);
-      if (regAction) {
-        ActionServiceContainer actionServiceContainer = uiActionForm.getApplicationComponent(ActionServiceContainer.class);
-        Map<String, JcrInputProperty> sortedInputs = DialogFormUtil.prepareMap(uiActionForm
-            .getChildren(), uiActionForm.getInputProperties());
+      Map<String, JcrInputProperty> sortedInputs = DialogFormUtil.prepareMap(uiActionForm
+          .getChildren(), uiActionForm.getInputProperties());
+      ActionServiceContainer actionServiceContainer = uiActionForm.getApplicationComponent(ActionServiceContainer.class);
+      if (!regAction) {
+        if (!uiActionForm.isAddNew_) {
+          // Only update action for taxonomy tree
+          CmsService cmsService = uiActionForm.getApplicationComponent(CmsService.class) ;      
+          Node storedHomeNode = uiActionForm.getNode().getParent();
+          cmsService.storeNode(uiActionForm.nodeTypeName_, storedHomeNode, sortedInputs, false,repository) ;
+          storedHomeNode.getSession().save();
+          
+        } else {
+          //remove action
+          List<Node> lstActionNodes = actionServiceContainer.getActions(currentNode);
+          if(lstActionNodes != null && lstActionNodes.size() > 0) {
+            for (Node actionTmpNode : lstActionNodes) {
+              actionServiceContainer.removeAction(currentNode, actionTmpNode.getName(), repository);
+            }
+          }
+        }
+      } 
+      if (regAction || (!regAction && uiActionForm.isAddNew_)) {
+        // Create new action for new/edited taxonomy tree
         Session session = currentNode.getSession();
         if (uiActionForm.getCurrentPath().length() == 0) {
           uiActionForm.setCurrentPath(currentNode.getPath());
@@ -346,17 +367,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           return;
         }
       }
-      
-/*      UIPermissionTreeInfo uiPermInfo = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeInfo.class);
-      UIPermissionTreeForm uiPermForm = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeForm.class);
-      uiPermInfo.setCurrentNode(currentNode);
-      uiPermForm.setCurrentNode(currentNode);
-      uiPermInfo.updateGrid();
-      UITaxonomyTreeCreateChild uiTaxonomyTreeCreateChild = uiTaxonomyTreeContainer.getChild(UITaxonomyTreeCreateChild.class);
-      if (uiTaxonomyTreeCreateChild == null) 
-        uiTaxonomyTreeCreateChild = uiTaxonomyTreeContainer.addChild(UITaxonomyTreeCreateChild.class, null, null);
-      uiTaxonomyTreeCreateChild.setWorkspace(workspace);
-      uiTaxonomyTreeCreateChild.setTaxonomyTreeNode(currentNode);*/
+      taxoTreeData.setEdit(true);
       uiTaxonomyTreeContainer.refresh();
       uiTaxonomyTreeContainer.viewStep(4);
       uiTaxonomyManagerTrees.update();

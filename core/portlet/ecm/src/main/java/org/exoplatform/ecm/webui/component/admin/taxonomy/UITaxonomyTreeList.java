@@ -68,9 +68,11 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
     uiPageIterator_ = createUIComponent(UIPageIterator.class, null, "UITaxonomyTreeListIterator");
     setUIComponent(uiPageIterator_);
   }
+  
   public UIPageIterator getUIPageIterator() {
     return uiPageIterator_;
   }
+  
   public String[] getActions() {
     return ACTIONS;
   }
