@@ -136,15 +136,12 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
 
   private void importPredefineTaxonomies(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
-    // String workspace =
-    // manageableRepository.getConfiguration().getSystemWorkspaceName();
     if (getWorkspace() == null || getWorkspace().trim().length() == 0) {
       setWorkspace(repositoryService_.getRepository(repository).getConfiguration()
           .getSystemWorkspaceName());
     }
     Session session = manageableRepository.getSystemSession(getWorkspace());
     Node taxonomyStorageNode = (Node) session.getItem(path);
-    String nodePath = path + "/" + treeName;
     Node taxonomyStorageNodeSystem = null;
     if (taxonomyStorageNode.hasProperty("exo:isImportedChildren")) {
       session.logout();
@@ -166,7 +163,6 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
           }
         }
       } else if (objectParam.getName().equals("taxonomy.configuration")) {
-//        taxonomyStorageNodeSystem = (Node) session.getItem(nodePath);
         TaxonomyConfig config = (TaxonomyConfig) objectParam.getObject();
         for (Taxonomy taxonomy : config.getTaxonomies()) {
           Node taxonomyNode = Utils.makePath(taxonomyStorageNodeSystem, taxonomy.getPath(),
@@ -226,10 +222,6 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     }
     actionServiceContainer_.addAction(srcNode, repository, action.getType(), sortedInputs);
     Node actionNode = actionServiceContainer_.getAction(srcNode, action.getName());
-//    actionNode.setProperty("exo:name", action.getName());
-//    actionNode.setProperty("exo:description", action.getDescription());
-//    if (action.getLifecyclePhase() != null)
-//      actionNode.setProperty("exo:lifecyclePhase", action.getLifecyclePhase());
     if (action.getRoles() != null) {
       String[] roles = StringUtils.split(action.getRoles(), ";");
       actionNode.setProperty("exo:roles", roles);
@@ -251,49 +243,6 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     }
     actionNode.getSession().save();
   }
-
-  // private void addAction(ActionConfig.TaxonomyAction action, Node srcNode)
-  // throws Exception{
-  // Node actionNode = null;
-  // String actionsNodeName = "exo:actions" + "/" + action.getName();
-  // Node actionsNode = null;
-  // if (!srcNode.hasNode(actionsNodeName)) {
-  // if (!srcNode.isNodeType("exo:actionable")) {
-  // srcNode.addMixin("exo:actionable");
-  // }
-  // if (srcNode.hasNode("exo:actions")) {
-  // actionsNode = srcNode.getNode("exo:actions");
-  // } else {
-  // actionsNode = srcNode.addNode("exo:actions", "exo:actionStorage");
-  // srcNode.save();
-  // }
-  // actionNode = actionsNode.addNode(action.getName(), action.getType());
-  // actionNode.setProperty("exo:name", action.getName());
-  // actionNode.setProperty("exo:description", action.getDescription());
-  // if (action.getLifecyclePhase() != null)
-  // actionNode.setProperty("exo:lifecyclePhase", action.getLifecyclePhase());
-  // if (action.getRoles() != null) {
-  // String[] roles = StringUtils.split(action.getRoles(), ";");
-  // actionNode.setProperty("exo:roles", roles);
-  // }
-  //      
-  // actionNode.setProperty("exo:storeHomePath", action.getHomePath());
-  // actionNode.setProperty("exo:targetWorkspace", action.getTargetWspace());
-  // actionNode.setProperty("exo:targetPath", action.getTargetPath());
-  //      
-  // Iterator mixins = action.getMixins().iterator();
-  // while (mixins.hasNext()) {
-  // ActionConfig.Mixin mixin = (ActionConfig.Mixin) mixins.next();
-  // actionNode.addMixin(mixin.getName());
-  // Map<String, String> props = mixin.getParsedProperties();
-  // Set keys = props.keySet();
-  // for (Iterator iterator = keys.iterator(); iterator.hasNext();) {
-  // String key = (String) iterator.next();
-  // actionNode.setProperty(key, props.get(key));
-  // }
-  // }
-  // }
-  // }
 
   public Map getPermissions(List<Permission> listPermissions) {
     Map<String, String[]> permissionsMap = new HashMap<String, String[]>();

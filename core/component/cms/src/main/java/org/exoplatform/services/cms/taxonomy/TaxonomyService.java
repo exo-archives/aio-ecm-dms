@@ -171,6 +171,13 @@ public interface TaxonomyService {
   public List<Node> getCategories(Node node, String taxonomyName) throws RepositoryException;
 
   /**
+   * Returns all the paths of the categories which have been associated to the given node
+   * @param node  The node for which we seek the categories
+   * @throws RepositoryException
+   */
+  public List<Node> getAllCategories(Node node) throws RepositoryException;
+  
+  /**
    * Removes a category to the given node
    * 
    * @param node The node for which we remove the category
@@ -220,5 +227,4 @@ public interface TaxonomyService {
    * @throws Exception
    */
   public void init(String repository) throws Exception;
-
 }

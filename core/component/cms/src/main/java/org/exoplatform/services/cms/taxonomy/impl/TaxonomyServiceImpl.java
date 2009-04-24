@@ -239,6 +239,18 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
     return listCate;
   }
+  
+  public List<Node> getAllCategories(Node node) throws RepositoryException {
+    List<Node> listCategories = new ArrayList<Node>();
+    String repository = ((ManageableRepository) node.getSession().getRepository())
+    .getConfiguration().getName();
+    List<Node> allTrees = getAllTaxonomyTrees(repository);
+    for (Node tree : allTrees) {
+      List<Node> categories = getCategories(node, tree.getName());
+      for (Node category : categories) listCategories.add(category);
+    }
+    return listCategories;
+  }
 
   public void addCategory(Node node, String taxonomyName, String categoryPath)
       throws RepositoryException {
