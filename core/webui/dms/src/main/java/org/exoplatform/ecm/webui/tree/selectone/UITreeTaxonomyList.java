@@ -149,10 +149,11 @@ public class UITreeTaxonomyList extends UIForm {
   static public class ChangeTaxonomyTreeActionListener extends EventListener<UITreeTaxonomyList> {
     public void execute(Event<UITreeTaxonomyList> event) throws Exception {
       UITreeTaxonomyList uiTreeTaxonomyList = event.getSource();
-      UIOneTaxonomySelector uiJBrowser = uiTreeTaxonomyList.getParent();
+      UIOneTaxonomySelector uiOneTaxonomySelector = uiTreeTaxonomyList.getParent();
       String valueTaxonomy = uiTreeTaxonomyList.getUIFormSelectBox(TAXONOMY_TREE).getValue();      
-      String workspaceName = uiJBrowser.getWorkspaceName();
+      String workspaceName = uiOneTaxonomySelector.getWorkspaceName();
       String pathTaxonomy = valueTaxonomy;
+      uiOneTaxonomySelector.setRootTaxonomyName(valueTaxonomy.substring(valueTaxonomy.lastIndexOf("/") + 1));
       if (valueTaxonomy.indexOf(":/") > -1) {
         String[] arrayValueTaxonomy = valueTaxonomy.split(":/");
         workspaceName = arrayValueTaxonomy[0];
@@ -162,10 +163,10 @@ public class UITreeTaxonomyList extends UIForm {
           pathTaxonomy = "/" + arrayValueTaxonomy[1];
       }
       
-      UITreeTaxonomyBuilder uiTreeJCRExplorer = uiJBrowser.getChild(UITreeTaxonomyBuilder.class);
+      UITreeTaxonomyBuilder uiTreeJCRExplorer = uiOneTaxonomySelector.getChild(UITreeTaxonomyBuilder.class);
       UIApplication uiApp = uiTreeTaxonomyList.getAncestorOfType(UIApplication.class);
       try {
-        uiTreeJCRExplorer.setRootTreeNode(uiTreeTaxonomyList.getRootNode(uiJBrowser.getRepositoryName(), 
+        uiTreeJCRExplorer.setRootTreeNode(uiTreeTaxonomyList.getRootNode(uiOneTaxonomySelector.getRepositoryName(), 
             workspaceName, pathTaxonomy));
       } catch (AccessDeniedException ade) {        
         uiTreeTaxonomyList.getUIFormSelectBox(TAXONOMY_TREE).setValue("collaboration");
@@ -177,7 +178,7 @@ public class UITreeTaxonomyList extends UIForm {
         return;
       }
       uiTreeJCRExplorer.buildTree();
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiJBrowser);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiOneTaxonomySelector);
     }
   }
   

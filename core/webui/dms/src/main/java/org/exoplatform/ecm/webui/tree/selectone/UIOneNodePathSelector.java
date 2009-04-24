@@ -74,11 +74,19 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   
   private boolean alreadyChangePath = false;
   
+  private String rootTaxonomyName = null;
+  
   public UIOneNodePathSelector() throws Exception {
     addChild(UIBreadcumbs.class, "BreadcumbCategoriesOne", "BreadcumbCategoriesOne");
     addChild(UIWorkspaceList.class, null, null);
     addChild(UINodeTreeBuilder.class, null, UINodeTreeBuilder.class.getSimpleName()+hashCode());
     addChild(UISelectPathPanel.class, null, null);
+  }
+  
+  public String getRootTaxonomyName() { return rootTaxonomyName; }
+  
+  public void setRootTaxonomyName(String rootTaxonomyName) {
+    this.rootTaxonomyName = rootTaxonomyName;
   }
   
   public void init(SessionProvider sessionProvider) throws Exception {

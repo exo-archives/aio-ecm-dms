@@ -893,6 +893,7 @@ public class UIActionBar extends UIForm {
       while (childrenIterator.hasNext()) {
         Node childNode = childrenIterator.nextNode();
         rootTreePath = childNode.getPath();
+        uiNodePathSelector.setRootTaxonomyName(rootTreePath.substring(rootTreePath.lastIndexOf("/") + 1));
         break;
       }
       uiNodePathSelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
@@ -960,6 +961,7 @@ public class UIActionBar extends UIForm {
       while (childrenIterator.hasNext()) {
         Node childNode = childrenIterator.nextNode();
         rootTreePath = childNode.getPath();
+        uiOneTaxonomySelector.setRootTaxonomyName(rootTreePath.substring(rootTreePath.lastIndexOf("/") + 1));
         break;
       }
       uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);

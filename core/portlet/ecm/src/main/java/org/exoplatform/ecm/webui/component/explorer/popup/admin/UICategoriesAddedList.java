@@ -24,6 +24,8 @@ import javax.jcr.Node;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -77,16 +79,32 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
   
   @SuppressWarnings("unused")
   public void doSelect(String selectField, Object value) throws Exception {
-    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);    
+    UICategoryManager uiCategoryManager = getAncestorOfType(UICategoryManager.class);
+    String rootTaxonomyName;
+    if (uiCategoryManager == null) {
+      UISimpleCategoryManager uiSimpleCategoryManager = getAncestorOfType(UISimpleCategoryManager.class);
+      UIOneNodePathSelector uiNodePathSelector = uiSimpleCategoryManager.getChild(UIOneNodePathSelector.class);
+      rootTaxonomyName = uiNodePathSelector.getRootTaxonomyName();
+    } else {
+      UIOneTaxonomySelector uiOneTaxonomySelector = uiCategoryManager.getChild(UIOneTaxonomySelector.class);
+      rootTaxonomyName = uiOneTaxonomySelector.getRootTaxonomyName();
+    }
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     try {
       Node currentNode = uiJCRExplorer.getCurrentNode();
       uiJCRExplorer.addLockToken(currentNode);
-      String[] arrayCategoryPath = value.toString().split("/");
-      String categoryPath = value.toString().replaceAll(arrayCategoryPath[0], "");
-      System.out.println("arrayCategoryPath[0] ======> " + arrayCategoryPath[0]);
-      System.out.println("categoryPath ======> " + categoryPath);
-      taxonomyService.addCategory(currentNode, arrayCategoryPath[0], categoryPath);
+      String[] arrayCategoryPath = value.toString().split(rootTaxonomyName + "/");
+      String categoryPath;
+      if (arrayCategoryPath.length > 1) {
+        if (arrayCategoryPath[1].startsWith("/"))
+          categoryPath = arrayCategoryPath[1];
+        else
+          categoryPath = "/" + arrayCategoryPath[1];
+      } else {
+        categoryPath = value.toString();
+      } 
+      taxonomyService.addCategory(currentNode, rootTaxonomyName, categoryPath);
       uiJCRExplorer.getCurrentNode().save() ;
       uiJCRExplorer.getSession().save() ;
       updateGrid(1) ;
