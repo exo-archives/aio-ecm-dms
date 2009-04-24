@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
@@ -72,9 +73,21 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
   }
   
   public List<Node> getCategories() throws Exception {
+    List<Node> listCategories = new ArrayList<Node>();
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
-    return taxonomyService.getCategories(uiJCRExplorer.getCurrentNode(), "System");
+    String repository = uiJCRExplorer.getRepositoryName();
+    List<Node> listNode = new ArrayList<Node>();
+    listNode = taxonomyService.getAllTaxonomyTrees(repository);
+    String taxonomyName;
+    String pathItemNode;
+    for(Node itemNode : listNode) {
+      pathItemNode = itemNode.getPath();
+      taxonomyName = pathItemNode.substring(pathItemNode.lastIndexOf("/") + 1);
+      listCategories.addAll(taxonomyService.getCategories(uiJCRExplorer.getCurrentNode(), taxonomyName));
+    }
+    
+    return listCategories;
   }
   
   @SuppressWarnings("unused")
@@ -117,14 +130,23 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
   static public class DeleteActionListener extends EventListener<UICategoriesAddedList> {
     public void execute(Event<UICategoriesAddedList> event) throws Exception {
       UICategoriesAddedList uiAddedList = event.getSource() ;
-      UICategoryManager uiManager = uiAddedList.getParent() ;
+      UIContainer uiManager = uiAddedList.getParent();      
       UIApplication uiApp = uiAddedList.getAncestorOfType(UIApplication.class) ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
-      TaxonomyService categoriesService = 
+      TaxonomyService taxonomyService = 
         uiAddedList.getApplicationComponent(TaxonomyService.class);
       try {
-        categoriesService.removeCategory(uiExplorer.getCurrentNode(), "System", nodePath);
+        String repository = uiExplorer.getRepositoryName();
+        String taxonomyName;
+        String pathItemNode;
+        List<Node> listNode = new ArrayList<Node>();
+        listNode = taxonomyService.getAllTaxonomyTrees(repository);
+        for(Node itemNode : listNode) {
+          pathItemNode = itemNode.getPath();
+          taxonomyName = pathItemNode.substring(pathItemNode.lastIndexOf("/") + 1);
+          taxonomyService.removeCategory(uiExplorer.getCurrentNode(), taxonomyName, nodePath);
+        }
         uiAddedList.updateGrid(uiAddedList.getUIPageIterator().getCurrentPage());
       } catch(AccessDeniedException ace) {
         throw new MessageException(new ApplicationMessage("UICategoriesAddedList.msg.access-denied",
