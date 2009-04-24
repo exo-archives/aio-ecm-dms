@@ -43,7 +43,7 @@
       </preference>            
       <preference>
         <name>path</name>     
-        <value>/jcr:system/exo:ecm/exo:taxonomies</value>
+        <value>/exo:ecm/exo:taxonomies</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
@@ -265,7 +265,7 @@
       </preference>            
       <preference>
         <name>path</name>     
-        <value>/jcr:system/exo:ecm/exo:taxonomies</value>
+        <value>/exo:ecm/exo:taxonomies</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
@@ -514,7 +514,7 @@
       </preference>            
       <preference>
         <name>path</name>     
-        <value>/jcr:system/exo:ecm/exo:taxonomies/cms/news</value>
+        <value>/exo:ecm/exo:taxonomies/cms/news</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
@@ -539,7 +539,7 @@
       </preference>      
       <preference>
         <name>queryStatement</name>
-        <value>/jcr:root//jcr:system/exo:ecm/exo:taxonomies/cms/news//element(*, exo:article)</value>
+        <value>/jcr:root//exo:ecm/exo:taxonomies/cms/news//element(*, exo:article)</value>
         <read-only>false</read-only>
       </preference>      
       <preference>
@@ -736,7 +736,7 @@
       </preference>            
       <preference>
         <name>path</name>     
-        <value>/jcr:system/exo:ecm/exo:taxonomies/cms/news</value>
+        <value>/exo:ecm/exo:taxonomies/cms/news</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
@@ -761,7 +761,7 @@
       </preference>      
       <preference>
         <name>queryStatement</name>
-        <value>/jcr:root//jcr:system/exo:ecm/exo:taxonomies/cms/news//element(*, exo:article)</value>
+        <value>/jcr:root//exo:ecm/exo:taxonomies/cms/news//element(*, exo:article)</value>
         <read-only>false</read-only>
       </preference>      
       <preference>

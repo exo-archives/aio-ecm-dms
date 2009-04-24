@@ -86,7 +86,7 @@
       </preference>            
       <preference>
         <name>path</name>     
-        <value>/jcr:system/exo:ecm/exo:taxonomies</value>
+        <value>/exo:ecm/exo:taxonomies</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
@@ -308,7 +308,7 @@
       </preference>            
       <preference>
         <name>path</name>     
-        <value>/jcr:system/exo:ecm/exo:taxonomies</value>
+        <value>/exo:ecm/exo:taxonomies</value>
         <read-only>false</read-only>
       </preference>            
       <preference>

@@ -71,7 +71,7 @@
                       <field  name="type"><string>exo:taxonomyAction</string></field>
                       <field  name="name"><string>taxonomyAction</string></field>                  
                       <field  name="description"><string></string></field>
-                      <field  name="homePath"><string>system:/jcr:system/exo:ecm/exo:taxonomyTrees/storage/System</string></field>
+                      <field  name="homePath"><string>dms-system:/exo:ecm/exo:taxonomyTrees/storage/System</string></field>
                       <field  name="targetWspace"><string>collaboration</string></field>
                       <field  name="targetPath"><string>/Documents</string></field>
                       <field  name="lifecyclePhase"><string>read</string></field>

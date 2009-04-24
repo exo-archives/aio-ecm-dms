@@ -208,7 +208,7 @@
       <!-- Specify the root path and you will see all child nodes when browse the portlet	-->  
       <preference>
         <name>path</name>     
-        <value>/jcr:system/exo:ecm/exo:taxonomies</value>
+        <value>/exo:ecm/exo:taxonomies</value>
         <read-only>false</read-only>
       </preference>            
       <!-- Specify the name of document in category when you choose the usecase is detail-document	-->
@@ -273,7 +273,7 @@
       <!--
       	When you choose usecase is query and query status is existing then you have to use this 
       	preference to specify the query location.
-      	Normaly all existing shared queries stored in folder: /jcr:system/exo:ecm/queries
+      	Normaly all existing shared queries stored in folder: /exo:ecm/queries
       	personal queries stored in folder: /Users/$username/Private/Queries
       -->
       <preference>

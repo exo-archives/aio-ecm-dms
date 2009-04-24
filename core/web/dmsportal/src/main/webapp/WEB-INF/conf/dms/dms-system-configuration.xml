@@ -17,7 +17,7 @@
 	        	<field  name="repository"><string>repository</string></field>
 	        	<field name="workspaces">
 	          	<collection type="java.util.ArrayList">
-	          		<value><string>system</string></value>              		
+	          		<value><string>dms-system</string></value>              		
 	          	</collection>              	
 	          </field>
 	          <field  name="jcrPaths">
@@ -25,7 +25,7 @@
 	          		<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>exoECMSystemPath</string></field>
-		                  <field  name="path"><string>/jcr:system/exo:ecm</string></field>
+		                  <field  name="path"><string>/exo:ecm</string></field>
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -54,7 +54,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>exoTaxonomiesPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:taxonomies</string></field>
+	                  <field  name="path"><string>/exo:ecm/exo:taxonomies</string></field>
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -82,7 +82,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>calendarPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:taxonomies/calendar</string></field>                  
+	                  <field  name="path"><string>/exo:ecm/exo:taxonomies/calendar</string></field>                  
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -102,7 +102,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>exoTaxoTreesDefinitionPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:taxonomyTrees/definition</string></field>
+	                  <field  name="path"><string>/exo:ecm/exo:taxonomyTrees/definition</string></field>
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -130,7 +130,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>exoTaxoTreesStoragePath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:taxonomyTrees/storage</string></field>                  
+	                  <field  name="path"><string>/exo:ecm/exo:taxonomyTrees/storage</string></field>                  
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -149,7 +149,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>exoDrivesPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:drives</string></field>                  
+	                  <field  name="path"><string>/exo:ecm/exo:drives</string></field>                  
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -168,7 +168,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>templatesPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/templates</string></field>   
+	                  <field  name="path"><string>/exo:ecm/templates</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -187,7 +187,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>cmsScriptsPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/scripts</string></field>    
+	                  <field  name="path"><string>/exo:ecm/scripts</string></field>    
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -206,7 +206,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>contentBrowserScripts</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/scripts/content-browser</string></field>    
+	                  <field  name="path"><string>/exo:ecm/scripts/content-browser</string></field>    
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -225,7 +225,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>ecmExplorerScripts</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/scripts/ecm-explorer</string></field>    
+	                  <field  name="path"><string>/exo:ecm/scripts/ecm-explorer</string></field>    
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -244,7 +244,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>ecmActionScripts</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/scripts/ecm-explorer/action</string></field>    
+	                  <field  name="path"><string>/exo:ecm/scripts/ecm-explorer/action</string></field>    
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -263,7 +263,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>ecmInterceptorScripts</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/scripts/ecm-explorer/interceptor</string></field>    
+	                  <field  name="path"><string>/exo:ecm/scripts/ecm-explorer/interceptor</string></field>    
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -282,7 +282,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>ecmWidgetScripts</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/scripts/ecm-explorer/widget</string></field>    
+	                  <field  name="path"><string>/exo:ecm/scripts/ecm-explorer/widget</string></field>    
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -301,7 +301,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>metadataPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/metadata</string></field>    
+	                  <field  name="path"><string>/exo:ecm/metadata</string></field>    
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -320,7 +320,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>queriesPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/queries</string></field>    
+	                  <field  name="path"><string>/exo:ecm/queries</string></field>    
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -339,7 +339,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>viewsPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/views</string></field>   
+	                  <field  name="path"><string>/exo:ecm/views</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -358,7 +358,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>viewTemplatesPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/views/templates</string></field>   
+	                  <field  name="path"><string>/exo:ecm/views/templates</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -377,7 +377,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>userViewsPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/views/userviews</string></field>   
+	                  <field  name="path"><string>/exo:ecm/views/userviews</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -396,7 +396,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>ecmExplorerTemplates</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer</string></field>   
+	                  <field  name="path"><string>/exo:ecm/views/templates/ecm-explorer</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -415,7 +415,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>contentBrowserTemplates</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/views/templates/content-browser</string></field>   
+	                  <field  name="path"><string>/exo:ecm/views/templates/content-browser</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -434,7 +434,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>cbPathTemplates</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/views/templates/content-browser/path</string></field>   
+	                  <field  name="path"><string>/exo:ecm/views/templates/content-browser/path</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -454,7 +454,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>cbQueryTemplates</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/views/templates/content-browser/query</string></field>   
+	                  <field  name="path"><string>/exo:ecm/views/templates/content-browser/query</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -473,7 +473,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>cbScriptTemplates</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/views/templates/content-browser/script</string></field>   
+	                  <field  name="path"><string>/exo:ecm/views/templates/content-browser/script</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -492,7 +492,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>cbDetaiViewTemplates</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/views/templates/content-browser/detail-document</string></field>   
+	                  <field  name="path"><string>/exo:ecm/views/templates/content-browser/detail-document</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -511,7 +511,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>businessProcessesPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/business processes</string></field>   
+	                  <field  name="path"><string>/exo:ecm/business processes</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -530,7 +530,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>exoFolksonomiesPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:folksomomies</string></field>
+	                  <field  name="path"><string>/exo:ecm/exo:folksomomies</string></field>
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -549,7 +549,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>exoTagsPath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:folksomomies/exo:tags</string></field>
+	                  <field  name="path"><string>/exo:ecm/exo:folksomomies/exo:tags</string></field>
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
@@ -568,7 +568,7 @@
 	              	<value>              	
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>exoTagStylePath</string></field>
-	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:folksomomies/exo:tagStyle</string></field>
+	                  <field  name="path"><string>/exo:ecm/exo:folksomomies/exo:tagStyle</string></field>
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            

@@ -99,7 +99,7 @@
               <field  name="repository"><string>repository</string></field>
               <field  name="workspace"><string>system</string></field>
               <field  name="permissions"><string>*:/platform/administrators</string></field>
-              <field  name="homePath"><string>/jcr:system/exo:ecm/exo:taxonomies</string></field>
+              <field  name="homePath"><string>/exo:ecm/exo:taxonomies</string></field>
               <field  name="icon"><string></string></field>
               <field  name="views">
                 <string>taxonomy-list,taxonomy-icons</string>
