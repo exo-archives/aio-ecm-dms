@@ -107,6 +107,7 @@ public class UIActionTypeForm extends UIForm {
           .getAncestorOfType(UITaxonomyTreeContainer.class);
       String actionType = uiActionType.getUIFormSelectBox(ACTION_TYPE).getValue();
       TemplateService templateService = uiActionType.getApplicationComponent(TemplateService.class);
+      ActionServiceContainer actionServiceContainer = uiActionType.getApplicationComponent(ActionServiceContainer.class);
       String repository = uiActionType.getAncestorOfType(UIECMAdminPortlet.class)
           .getPreferenceRepository();
       UIActionTaxonomyManager uiActionTaxonomyManager = uiActionType
@@ -144,8 +145,20 @@ public class UIActionTypeForm extends UIForm {
             taxonomyTreeData.getTaxoTreeName(), true);
       } catch (RepositoryException re) {
       }
-      boolean isAddNew_ = !actionType.equals(oldActionType);
-      uiActionForm.createNewAction(taxoTreeNode, actionType, isAddNew_);
+      boolean isNewAction = false;
+      if (taxoTreeNode != null) {
+        //Check existend action of node
+        List<Node> lstActionNodes = actionServiceContainer.getActions(taxoTreeNode);
+        if (lstActionNodes != null && lstActionNodes.size() > 0) {
+          for (Node actionTmpNode : lstActionNodes) {
+            if (actionTmpNode.getPrimaryNodeType().getName().equals(actionType)) {
+              isNewAction = true;
+              break;
+            }
+          }
+        }
+      }
+      uiActionForm.createNewAction(taxoTreeNode, actionType, isNewAction);
       uiActionTaxonomyManager.setRendered(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionTaxonomyManager);
     }

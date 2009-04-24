@@ -231,7 +231,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       String workspace = taxoTreeData.getTaxoTreeWorkspace();
       String homePath = taxoTreeData.getTaxoTreeHomePath();
       homePath = homePath != null ? homePath : "";
-      boolean isEdit = taxoTreeData.isEdit();
+      boolean isEditTree = taxoTreeData.isEdit();
       if (homePath.length() == 0) {
         if (systemWorkspace.equals(workspace)) {
           homePath = uiActionForm.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
@@ -243,12 +243,11 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         }
       }        
       
-      boolean regAction = true;
       try {
-        if (!isEdit) {
+        if (!isEditTree) {
           uiTaxonomyTreeContainer.addTaxonomyTree(name, workspace, homePath, uiPermissionInfo.getPermBeans());
         } else {
-          regAction = uiTaxonomyTreeContainer.updateTaxonomyTree(name, workspace, homePath);
+          uiTaxonomyTreeContainer.updateTaxonomyTree(name, workspace, homePath);
         }
       } catch (PathNotFoundException e) {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.path-invalid", null,
@@ -271,25 +270,26 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       Map<String, JcrInputProperty> sortedInputs = DialogFormUtil.prepareMap(uiActionForm
           .getChildren(), uiActionForm.getInputProperties());
       ActionServiceContainer actionServiceContainer = uiActionForm.getApplicationComponent(ActionServiceContainer.class);
-      if (!regAction) {
-        if (!uiActionForm.isAddNew_) {
-          // Only update action for taxonomy tree
-          CmsService cmsService = uiActionForm.getApplicationComponent(CmsService.class) ;      
-          Node storedHomeNode = uiActionForm.getNode().getParent();
-          cmsService.storeNode(uiActionForm.nodeTypeName_, storedHomeNode, sortedInputs, false,repository) ;
-          storedHomeNode.getSession().save();
-          
-        } else {
-          //remove action
-          List<Node> lstActionNodes = actionServiceContainer.getActions(currentNode);
-          if(lstActionNodes != null && lstActionNodes.size() > 0) {
-            for (Node actionTmpNode : lstActionNodes) {
-              actionServiceContainer.removeAction(currentNode, actionTmpNode.getName(), repository);
-            }
+      
+      boolean isEditAction = false;
+      //Check existend action of node
+      List<Node> lstActionNodes = actionServiceContainer.getActions(currentNode);
+      if (lstActionNodes != null && lstActionNodes.size() > 0) {
+        for (Node actionTmpNode : lstActionNodes) {
+          if (actionTmpNode.getPrimaryNodeType().getName().equals(uiActionForm.nodeTypeName_)) {
+            isEditAction = true;
+            break;
           }
         }
-      } 
-      if (regAction || (!regAction && uiActionForm.isAddNew_)) {
+      }
+      
+      if (isEditAction) {
+         //Only update action for taxonomy tree
+        CmsService cmsService = uiActionForm.getApplicationComponent(CmsService.class) ;      
+        Node storedHomeNode = uiActionForm.getNode().getParent();
+        cmsService.storeNode(uiActionForm.nodeTypeName_, storedHomeNode, sortedInputs, false,repository) ;
+        storedHomeNode.getSession().save();
+      } else {
         // Create new action for new/edited taxonomy tree
         Session session = currentNode.getSession();
         if (uiActionForm.getCurrentPath().length() == 0) {
