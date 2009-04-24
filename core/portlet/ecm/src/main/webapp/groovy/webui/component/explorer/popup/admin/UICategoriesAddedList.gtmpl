@@ -19,10 +19,9 @@
   	 	      if (even) rowClass = "EvenRow";  
 	  	      else rowClass = "OddRow"; 
 	  	      even = !even;
-	  	      
 	  	      String path = node.getPath();
 						String[] array = path.split("/");
-				    String value = "";
+				    String value = path;
 				    if (array.length > 4) {
 				      for (int i = 4; i < array.length; i++) {
 				        value += array[i]; 
