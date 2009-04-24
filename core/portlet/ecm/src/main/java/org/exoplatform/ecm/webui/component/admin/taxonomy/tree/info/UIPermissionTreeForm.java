@@ -292,12 +292,13 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = uiForm.getAncestorOfType(UITaxonomyTreeContainer.class);
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
       TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
-      UIActionTaxonomyManager uiActionTaxonomyManager = uiTaxonomyTreeContainer.getChild(UIActionTaxonomyManager.class);
-      UIActionForm uiActionForm = uiActionTaxonomyManager.getChild(UIActionForm.class);
+      if (!taxonomyTreeData.isEdit()) {
+        UIActionTaxonomyManager uiActionTaxonomyManager = uiTaxonomyTreeContainer.getChild(UIActionTaxonomyManager.class);
+        UIActionForm uiActionForm = uiActionTaxonomyManager.getChild(UIActionForm.class);
+        uiActionForm.createNewAction(null, TaxonomyTreeData.ACTION_TAXONOMY_TREE, true);
+        uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
+      }
       uiTaxonomyTreeContainer.viewStep(3);
-      uiActionForm.createNewAction(null, TaxonomyTreeData.ACTION_TAXONOMY_TREE, true);
-      uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
-      uiActionTaxonomyManager.setRenderSibbling(UIActionTaxonomyManager.class);
       uiTaxonomyTreeContainer.setRenderedChild(UIActionTaxonomyManager.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }

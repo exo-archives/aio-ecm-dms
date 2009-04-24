@@ -153,22 +153,20 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     taxonomyTreeData.setRepository(getRepository());
     String taxoTreeName = taxonomyTreeData.getTaxoTreeName();
     UIActionTaxonomyManager uiActionTaxonomyManager = getChild(UIActionTaxonomyManager.class);
-    UITaxonomyTreeCreateChild uiTaxonomyCreateChild = getChild(UITaxonomyTreeCreateChild.class);
     UIActionTypeForm uiActionTypeForm = uiActionTaxonomyManager.getChild(UIActionTypeForm.class);
-    if (uiTaxonomyCreateChild != null) {
-      uiTaxonomyCreateChild.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
-    }
-    if (taxoTreeName != null && taxoTreeName.length() > 0) {
+    if (taxonomyTreeData.isEdit()) {
+      UITaxonomyTreeCreateChild uiTaxonomyCreateChild = getChild(UITaxonomyTreeCreateChild.class);
       TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
       ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class);
       Node taxoTreeNode = taxonomyService.getTaxonomyTree(taxonomyTreeData.getRepository(),
           taxoTreeName, true);
       if (taxoTreeNode != null) {
         loadData(taxoTreeNode);
-        Node actionNode = actionService.getAction(taxoTreeNode,
-            taxonomyTreeData.getTaxoTreeActionName());
+        Node actionNode = actionService.getAction(taxoTreeNode, taxonomyTreeData
+            .getTaxoTreeActionName());
+        uiActionTaxonomyManager.removeChild(UIActionForm.class);
+        UIActionForm uiActionForm = uiActionTaxonomyManager.addChild(UIActionForm.class, null, null);
         uiActionTypeForm.setDefaultActionType(taxonomyTreeData.getTaxoTreeActionTypeName());
-        UIActionForm uiActionForm = uiActionTaxonomyManager.getChild(UIActionForm.class);
         uiActionForm.createNewAction(taxoTreeNode, taxonomyTreeData.getTaxoTreeActionTypeName(), false);
         uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
         uiActionForm.setNodePath(actionNode.getPath());
@@ -312,6 +310,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     }
     
     String destPath = homePath + "/" + name;
+    destPath = destPath.replaceAll("/+", "/");
     if (srcWorkspace.equals(workspace)) {
       objWorkspace.move(taxonomyTreeNode.getPath(), destPath);
     } else {
@@ -408,25 +407,13 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      
       TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
-      UIActionTaxonomyManager uiActionTaxonomyManager = uiTaxonomyTreeContainer.getChild(UIActionTaxonomyManager.class);
-      UIActionForm uiActionForm = uiTaxonomyTreeContainer.findFirstComponentOfType(UIActionForm.class);
-      TaxonomyService taxonomyService = uiTaxonomyTreeContainer.getApplicationComponent(TaxonomyService.class);
-      ActionServiceContainer actionService = uiTaxonomyTreeContainer.getApplicationComponent(ActionServiceContainer.class);
-      Node taxoTreeNode = taxonomyService.getTaxonomyTree(taxonomyTreeData.getRepository(),
-          taxonomyTreeData.getTaxoTreeName(), true);
-      if (taxoTreeNode != null) {
-        uiActionTaxonomyManager.removeChild(UIActionForm.class);
-        uiActionForm = uiActionTaxonomyManager.addChild(UIActionForm.class, null, null);
-        Node actionNode = actionService.getAction(taxoTreeNode, taxonomyTreeData.getTaxoTreeActionName());
-        uiActionForm.setIsOnchange(false);
-        uiActionForm.setNodePath(actionNode.getPath());
-        uiActionForm.createNewAction(taxoTreeNode, actionNode.getPrimaryNodeType().getName(), false);
-      } else {
+      if (!taxonomyTreeData.isEdit()) {
+        UIActionTaxonomyManager uiActionTaxonomyManager = uiTaxonomyTreeContainer.getChild(UIActionTaxonomyManager.class);
+        UIActionForm uiActionForm = uiActionTaxonomyManager.getChild(UIActionForm.class);
         uiActionForm.createNewAction(null, TaxonomyTreeData.ACTION_TAXONOMY_TREE, true);
+        uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
       }
-      uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
       uiTaxonomyTreeContainer.viewStep(3);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
