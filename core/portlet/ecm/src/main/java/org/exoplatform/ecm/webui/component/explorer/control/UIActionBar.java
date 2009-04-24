@@ -886,18 +886,7 @@ public class UIActionBar extends UIForm {
       UIOneNodePathSelector uiNodePathSelector = uiSimpleCategoryManager.getChild(UIOneNodePathSelector.class);
       uiNodePathSelector.setIsDisable(workspaceName, true);
       uiNodePathSelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
-      String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);
-      /*
-      Session session = uiExplorer.getSession();
-      Node rootTree = (Node) session.getItem(rootTreePath);      
-      NodeIterator childrenIterator = rootTree.getNodes();
-      while (childrenIterator.hasNext()) {
-        Node childNode = childrenIterator.nextNode();
-        rootTreePath = childNode.getPath();
-        uiNodePathSelector.setRootTaxonomyName(rootTreePath.substring(rootTreePath.lastIndexOf("/") + 1));
-        break;
-      }
-      */
+      String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);      
       uiNodePathSelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
       uiNodePathSelector.init(uiExplorer.getSessionProvider());
       UICategoriesAddedList uiCateAddedList = uiSimpleCategoryManager.getChild(UICategoriesAddedList.class);
