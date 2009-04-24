@@ -77,16 +77,10 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     String repository = uiJCRExplorer.getRepositoryName();
-    List<Node> listNode = new ArrayList<Node>();
-    listNode = taxonomyService.getAllTaxonomyTrees(repository);
-    String taxonomyName;
-    String pathItemNode;
+    List<Node> listNode = taxonomyService.getAllTaxonomyTrees(repository);
     for(Node itemNode : listNode) {
-      pathItemNode = itemNode.getPath();
-      taxonomyName = pathItemNode.substring(pathItemNode.lastIndexOf("/") + 1);
-      listCategories.addAll(taxonomyService.getCategories(uiJCRExplorer.getCurrentNode(), taxonomyName));
+      listCategories.addAll(taxonomyService.getCategories(uiJCRExplorer.getCurrentNode(), itemNode.getName()));
     }
-    
     return listCategories;
   }
   
@@ -138,14 +132,9 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
         uiAddedList.getApplicationComponent(TaxonomyService.class);
       try {
         String repository = uiExplorer.getRepositoryName();
-        String taxonomyName;
-        String pathItemNode;
-        List<Node> listNode = new ArrayList<Node>();
-        listNode = taxonomyService.getAllTaxonomyTrees(repository);
+        List<Node> listNode = taxonomyService.getAllTaxonomyTrees(repository);
         for(Node itemNode : listNode) {
-          pathItemNode = itemNode.getPath();
-          taxonomyName = pathItemNode.substring(pathItemNode.lastIndexOf("/") + 1);
-          taxonomyService.removeCategory(uiExplorer.getCurrentNode(), taxonomyName, nodePath);
+          taxonomyService.removeCategory(uiExplorer.getCurrentNode(), itemNode.getName(), nodePath);
         }
         uiAddedList.updateGrid(uiAddedList.getUIPageIterator().getCurrentPage());
       } catch(AccessDeniedException ace) {
