@@ -290,7 +290,27 @@
               <field  name="showHiddenNode"><boolean>false</boolean></field>
               <field  name="allowCreateFolder"><string>Both</string></field>       
             </object>
-          </object-param>                                                                        
+          </object-param>
+          <object-param>        
+            <name>DMS Administration</name>
+            <description>DMS system data area</description>
+            <object type="org.exoplatform.services.cms.drives.DriveData">
+              <field  name="name"><string>DMS Administration</string></field>
+              <field  name="repository"><string>repository</string></field>
+              <field  name="workspace"><string>dms-system</string></field>
+              <field  name="permissions"><string>*:/platform/administrators</string></field>
+              <field  name="homePath"><string>/</string></field>
+              <field  name="icon"><string></string></field>
+              <field  name="views">
+                <string>icon-view, simple-view, admin-view, cover-flow</string>
+              </field>
+              <field  name="viewPreferences"><boolean>false</boolean></field>
+              <field  name="viewNonDocument"><boolean>true</boolean></field>
+              <field  name="viewSideBar"><boolean>true</boolean></field>
+              <field  name="showHiddenNode"><boolean>false</boolean></field>
+              <field  name="allowCreateFolder"><string>Both</string></field>       
+            </object>
+          </object-param>                                                                                            
         </init-params>  
       </component-plugin> 
 
