@@ -2282,6 +2282,11 @@
   	<title>
   		<UISimpleCategoryManager>Add Category</UISimpleCategoryManager>	
   	</title>
-  </UIPopupWindow>      
+  </UIPopupWindow>
+  <UICategoriesAddedList>
+  	<msg>
+  		<ItemExistsException>The category is exist. The same name sibling is not allowed</ItemExistsException>
+  	</msg>
+	</UICategoriesAddedList>        
 </bundle>
 

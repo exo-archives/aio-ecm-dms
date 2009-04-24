@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemExistsException;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
@@ -116,6 +117,9 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
       uiJCRExplorer.getSession().save() ;
       updateGrid(1) ;
       setRenderSibbling(UICategoriesAddedList.class) ;
+    } catch(ItemExistsException item) {
+      throw new MessageException(new ApplicationMessage("UICategoriesAddedList.msg.ItemExistsException",
+          null, ApplicationMessage.WARNING));
     } catch(Exception e) {
       e.printStackTrace() ;
     }
@@ -134,7 +138,10 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
         String repository = uiExplorer.getRepositoryName();
         List<Node> listNode = taxonomyService.getAllTaxonomyTrees(repository);
         for(Node itemNode : listNode) {
-          taxonomyService.removeCategory(uiExplorer.getCurrentNode(), itemNode.getName(), nodePath);
+          if(nodePath.contains(itemNode.getPath())) {
+            taxonomyService.removeCategory(uiExplorer.getCurrentNode(), itemNode.getName(), nodePath.substring(itemNode.getPath().length()));
+            break;
+          }
         }
         uiAddedList.updateGrid(uiAddedList.getUIPageIterator().getCurrentPage());
       } catch(AccessDeniedException ace) {
