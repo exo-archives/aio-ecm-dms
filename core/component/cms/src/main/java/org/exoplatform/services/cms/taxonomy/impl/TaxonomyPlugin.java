@@ -166,7 +166,7 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
           }
         }
       } else if (objectParam.getName().equals("taxonomy.configuration")) {
-        taxonomyStorageNodeSystem = (Node) session.getItem(nodePath);
+//        taxonomyStorageNodeSystem = (Node) session.getItem(nodePath);
         TaxonomyConfig config = (TaxonomyConfig) objectParam.getObject();
         for (Taxonomy taxonomy : config.getTaxonomies()) {
           Node taxonomyNode = Utils.makePath(taxonomyStorageNodeSystem, taxonomy.getPath(),
@@ -174,6 +174,7 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
           if (taxonomyNode.canAddMixin("mix:referenceable")) {
             taxonomyNode.addMixin("mix:referenceable");
           }
+          taxonomyNode.getSession().save();
         }
       } else if (objectParam.getName().equals("predefined.actions")) {
         taxonomyStorageNodeSystem = Utils.makePath(taxonomyStorageNode, treeName, "exo:taxonomy",
