@@ -79,7 +79,6 @@ public class CmsServiceImpl implements CmsService {
     return path;
   }
 
-  @SuppressWarnings("unused")
   public String storeNode(String nodeTypeName, Node storeHomeNode, Map mappings, 
       boolean isAddNew, String repository) throws Exception {    
     Set keys = mappings.keySet();
@@ -108,7 +107,7 @@ public class CmsServiceImpl implements CmsService {
     }
     if (isAddNew) {
       //Broadcast CmsService.event.preCreate event
-      listenerService.broadcast(PRE_CREATE_CONTENT_VENT,storeHomeNode,mappings);
+      listenerService.broadcast(PRE_CREATE_CONTENT_EVENT,storeHomeNode,mappings);
       currentNode = storeHomeNode.addNode(nodeName, primaryType);
       createNodeRecursively(NODE, currentNode, nodeType, mappings);
       if(mixinTypes != null){
@@ -139,7 +138,6 @@ public class CmsServiceImpl implements CmsService {
     return currentNode.getPath();
   }
 
-  @SuppressWarnings("unused")
   public String storeNodeByUUID(String nodeTypeName, Node storeHomeNode, Map mappings, 
       boolean isAddNew, String repository) throws Exception {    
     Set keys = mappings.keySet();
@@ -196,7 +194,7 @@ public class CmsServiceImpl implements CmsService {
    * @param path            Path to node
    * @param currentNode     Node is updated
    * @param currentNodeType Node type
-   * @param jcrVariables    Maping key = property name and value
+   * @param jcrVariables    Mapping key = property name and value
    * @throws Exception
    * @see {@link #processNodeRecursively(boolean, String, Node, NodeType, Map)}
    */
@@ -211,7 +209,7 @@ public class CmsServiceImpl implements CmsService {
    * @param path            Path to node
    * @param currentNode     Node is updated
    * @param currentNodeType Node type
-   * @param jcrVariables    Maping key = property name and value
+   * @param jcrVariables    Mapping key = property name and value
    * @throws Exception
    * @see {@link #processNodeRecursively(boolean, String, Node, NodeType, Map)}
    */
@@ -227,7 +225,7 @@ public class CmsServiceImpl implements CmsService {
    * @param create          create = true or false
    * @param currentNode     Node is updated
    * @param currentNodeType Node type
-   * @param jcrVariables    Maping key = property name and value
+   * @param jcrVariables    Mapping key = property name and value
    * @throws Exception\
    * @see {@link #processProperty(String, Node, int, Object, boolean)}
    */
@@ -263,7 +261,7 @@ public class CmsServiceImpl implements CmsService {
    * @param itemPath        used with property name as key to get value of one property
    * @param currentNode     Node is updated
    * @param currentNodeType Node type
-   * @param jcrVariables    Maping key = property name and value
+   * @param jcrVariables    Mapping key = property name and value
    * @throws Exception
    */
   @SuppressWarnings("unchecked")
@@ -383,7 +381,7 @@ public class CmsServiceImpl implements CmsService {
 
   /**
    * Process when add property for node.
-   * Base on type of property, needing specific proccessing
+   * Base on type of property, needing specific processing
    * @param propertyName    name of property
    * @param node            node to process
    * @param requiredtype    type of property: STRING, BINARY, BOOLEAN, LONG, DOUBLE, DATE, REFERENCE
@@ -568,7 +566,7 @@ public class CmsServiceImpl implements CmsService {
   
   /**
    * Process when update property for node.
-   * Base on type of property, needing specific proccessing
+   * Base on type of property, needing specific processing
    * @param property        Property of node
    * @param node            node to process
    * @param requiredtype    type of property: STRING, BINARY, BOOLEAN, LONG, DOUBLE, DATE, REFERENCE
@@ -906,7 +904,7 @@ public class CmsServiceImpl implements CmsService {
    * Check whether node type can add property in NodeDefinition
    * @param nodeDef   NodeDefinition
    * @param nodeType  NodeType
-   * @return  true: can add propety to node
+   * @return  true: can add property to node
    *          false: can't add
    */
   private boolean canAddNode(NodeDefinition nodeDef, NodeType nodeType) {
