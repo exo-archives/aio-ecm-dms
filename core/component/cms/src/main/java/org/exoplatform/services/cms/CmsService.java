@@ -29,12 +29,12 @@ public interface CmsService {
   
   public final static String POST_CREATE_CONTENT_EVENT = "CmsService.event.postCreate".intern();
   public final static String POST_EDIT_CONTENT_EVENT = "CmsService.event.postEdit".intern();
-  public final static String PRE_CREATE_CONTENT_VENT = "CmsService.event.preCreate".intern();
+  public final static String PRE_CREATE_CONTENT_EVENT = "CmsService.event.preCreate".intern();
   public final static String PRE_EDIT_CONTENT_EVENT = "CmsService.event.preEdit".intern();
   
   /**
    * Constant string to refer property of node in Map
-   * For getting propreties of specific node in Map, 
+   * For getting properties of specific node in Map, 
    * use key = NODE + propertyName 
    */
   public static final String NODE = "/node";  
@@ -47,7 +47,7 @@ public interface CmsService {
    * @param inputProperties Map of node's property including (property name, value)
    * @param repository      Repository's name
    * @throws Exception      Throwing exception 
-   * @return path to saved noded
+   * @return path to saved node
    * @see #storeNode(String nodetypeName, Node storeNode, Map inputProperties, boolean isAddNew,String repository) throws Exception
    */
   public String storeNode(String workspace, String nodetypeName, String storePath, Map inputProperties,String repository) throws Exception;
@@ -59,7 +59,7 @@ public interface CmsService {
    * @param inputProperties Map of node's property including (property name, value)
    * @param isAddNew        flag to decide whether this situation is adding node or updating node
    * @param repository      Name of repository
-   * @return                return path to saved noded
+   * @return                return path to saved node
    * @throws Exception
    */
   public String storeNode(String nodetypeName, Node storeNode, Map inputProperties, boolean isAddNew,String repository) throws Exception;
@@ -80,7 +80,7 @@ public interface CmsService {
   
   /**
    * Move node from one workspace to the other, with the same repository
-   * @param nodePath      Path to node in source workpace
+   * @param nodePath      Path to node in source workspace
    * @param srcWorkspace  Source workspace name
    * @param destWorkspace Destination of workspace name
    * @param destPath      Destination of node path
