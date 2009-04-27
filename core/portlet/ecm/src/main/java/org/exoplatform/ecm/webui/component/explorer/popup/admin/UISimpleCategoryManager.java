@@ -41,7 +41,7 @@ public class UISimpleCategoryManager extends UIContainer implements UIPopupCompo
   final static public String[] ACTIONS = {"Close"} ;
   
   public UISimpleCategoryManager() throws Exception {
-    addChild(UICategoriesAddedList.class, null, null);
+    addChild(UISimpleCategoriesAddedList.class, null, null);
     addChild(UIOneNodePathSelector.class, null, null).setRendered(false);
   }
   
@@ -56,7 +56,7 @@ public class UISimpleCategoryManager extends UIContainer implements UIPopupCompo
   }
 
   public void activate() throws Exception { 
-    getChild(UICategoriesAddedList.class).updateGrid(1);
+    getChild(UISimpleCategoriesAddedList.class).updateGrid(1);
   }
 
   public void deActivate() throws Exception { }

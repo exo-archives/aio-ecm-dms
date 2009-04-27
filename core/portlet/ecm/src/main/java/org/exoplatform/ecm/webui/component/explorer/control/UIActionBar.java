@@ -65,6 +65,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPropertyForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPublicationManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIRelationManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIRelationsAddedList;
+import org.exoplatform.ecm.webui.component.explorer.popup.admin.UISimpleCategoriesAddedList;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UISimpleCategoryManager;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UINodeTypeInfo;
 import org.exoplatform.ecm.webui.component.explorer.popup.info.UIPermissionManager;
@@ -889,8 +890,8 @@ public class UIActionBar extends UIForm {
       String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);      
       uiNodePathSelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
       uiNodePathSelector.init(uiExplorer.getSessionProvider());
-      UICategoriesAddedList uiCateAddedList = uiSimpleCategoryManager.getChild(UICategoriesAddedList.class);
-      uiNodePathSelector.setSourceComponent(uiCateAddedList, null);
+      UISimpleCategoriesAddedList uiSimpleCategoriesAddedList = uiSimpleCategoryManager.getChild(UISimpleCategoriesAddedList.class);
+      uiNodePathSelector.setSourceComponent(uiSimpleCategoriesAddedList, null);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIPopupContainer.activate(uiSimpleCategoryManager, 630, 500);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
