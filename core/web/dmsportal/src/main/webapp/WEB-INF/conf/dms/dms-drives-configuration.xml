@@ -11,6 +11,14 @@
         <type>org.exoplatform.services.cms.drives.impl.ManageDrivePlugin</type>
         <description>Nothing</description>
         <init-params>
+          <value-param>
+	        	<name>repository</name>
+	        	<value>repository</value>
+	        </value-param>
+          <value-param>
+	        	<name>workspace</name>
+	        	<value>dms-system</value>
+	        </value-param>          
           <object-param>        
             <name>System files</name>
             <description>System workspace</description>

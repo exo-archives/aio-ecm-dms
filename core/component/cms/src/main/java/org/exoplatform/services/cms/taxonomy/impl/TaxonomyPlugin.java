@@ -36,6 +36,8 @@ import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.actions.impl.ActionConfig;
 import org.exoplatform.services.cms.actions.impl.ActionConfig.TaxonomyAction;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyConfig.Permission;
@@ -71,10 +73,13 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
   private ActionServiceContainer actionServiceContainer_;
 
   private InitParams             params_;
+  
+  private DMSConfiguration dmsConfiguration_;
 
   public TaxonomyPlugin(InitParams params, RepositoryService repositoryService,
       NodeHierarchyCreator nodeHierarchyCreator, TaxonomyService taxonomyService,
-      ActionServiceContainer actionServiceContainer) throws Exception {
+      ActionServiceContainer actionServiceContainer, 
+      DMSConfiguration dmsConfiguration) throws Exception {
     repositoryService_ = repositoryService;
     baseTaxonomiesStorage_ = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
     taxonomyService_ = taxonomyService;
@@ -94,6 +99,7 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     if (nameParam != null) {
       treeName = nameParam.getValue();
     }
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   public void init(String repository) throws Exception {
@@ -134,11 +140,12 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     this.workspace = workspace;
   }
 
+  @SuppressWarnings("unchecked")
   private void importPredefineTaxonomies(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
     if (getWorkspace() == null || getWorkspace().trim().length() == 0) {
-      setWorkspace(repositoryService_.getRepository(repository).getConfiguration()
-          .getSystemWorkspaceName());
+      setWorkspace(dmsRepoConfig.getSystemWorkspace());
     }
     Session session = manageableRepository.getSystemSession(getWorkspace());
     Node taxonomyStorageNode = (Node) session.getItem(path);

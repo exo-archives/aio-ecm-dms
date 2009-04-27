@@ -21,12 +21,14 @@
 	  	      even = !even;
 	  	      String path = node.getPath();
 						String[] array = path.split("/");
-				    String value = path;
+				    String value = "/";
 				    if (array.length > 4) {
 				      for (int i = 4; i < array.length; i++) {
 				        value += array[i]; 
 				        if (i < array.length - 1) value += "/";
 				      }
+				    } else {
+				      value = node.getPath();
 				    }
 	     %>
 	          <tr class="$rowClass">

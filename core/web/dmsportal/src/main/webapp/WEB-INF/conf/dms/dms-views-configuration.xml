@@ -43,7 +43,7 @@
 		        <object type="org.exoplatform.services.cms.views.ViewConfig">		          
 		          <field name="name"><string>system-view</string></field>
 		          <field name="permissions"><string>*:/platform/administrators</string></field>
-		          <field name="template"><string>/exo:ecm/views/templates/ecm-explorer/SystemView</string></field>	
+		          <field name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/SystemView</string></field>	
 		          <field name="tabList">
                 <collection type="java.util.ArrayList">               
                   <value>
@@ -66,7 +66,7 @@
 		        <object type="org.exoplatform.services.cms.views.ViewConfig">		          
 		          <field name="name"><string>admin-view</string></field>
 		          <field name="permissions"><string>*:/platform/administrators</string></field>
-		          <field name="template"><string>/exo:ecm/views/templates/ecm-explorer/ListView</string></field>	
+		          <field name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/ListView</string></field>	
 		          <field name="tabList">
                 <collection type="java.util.ArrayList">               
                   <value>
@@ -120,7 +120,7 @@
 		        <object type="org.exoplatform.services.cms.views.ViewConfig">		        	
 		          <field name="name"><string>icon-view</string></field>
 		          <field name="permissions"><string>*:/platform/users</string></field>
-		          <field name="template"><string>/exo:ecm/views/templates/ecm-explorer/IconView</string></field>
+		          <field name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/IconView</string></field>
 		          <field name="tabList">
                 <collection type="java.util.ArrayList">
                   <value>
@@ -153,7 +153,7 @@
 		        <object type="org.exoplatform.services.cms.views.ViewConfig">		        	
 		          <field name="name"><string>cover-flow</string></field>
 		          <field name="permissions"><string>*:/platform/users</string></field>
-		          <field name="template"><string>/exo:ecm/views/templates/ecm-explorer/CoverFlow</string></field>
+		          <field name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/CoverFlow</string></field>
 		          <field name="tabList">
                 <collection type="java.util.ArrayList">
                   <value>
@@ -186,7 +186,7 @@
 		        <object type="org.exoplatform.services.cms.views.ViewConfig">		        	
 		          <field name="name"><string>simple-view</string></field>
 		          <field name="permissions"><string>*:/platform/users</string></field>
-		          <field name="template"><string>/exo:ecm/views/templates/ecm-explorer/ThumbnailsView</string></field>
+		          <field name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/ThumbnailsView</string></field>
 		          <field name="tabList">
                 <collection type="java.util.ArrayList">
                   <value>
@@ -219,7 +219,7 @@
 		        <object type="org.exoplatform.services.cms.views.ViewConfig">		        	
 		          <field name="name"><string>anonymous-view</string></field>
 		          <field name="permissions"><string>*</string></field>
-		          <field name="template"><string>/exo:ecm/views/templates/ecm-explorer/ListView</string></field>
+		          <field name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/ListView</string></field>
 		          <field name="tabList">
                 <collection type="java.util.ArrayList">
                   <value>
@@ -238,7 +238,7 @@
 		        <object type="org.exoplatform.services.cms.views.ViewConfig">		        	
 		          <field name="name"><string>taxonomy-list</string></field>
 		          <field name="permissions"><string>*:/platform/users</string></field>
-		          <field name="template"><string>/exo:ecm/views/templates/ecm-explorer/ListView</string></field>
+		          <field name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/ListView</string></field>
 		          <field name="tabList">
                 <collection type="java.util.ArrayList">
                   <value>
@@ -267,7 +267,7 @@
 		        <object type="org.exoplatform.services.cms.views.ViewConfig">		        	
 		          <field name="name"><string>taxonomy-icons</string></field>
 		          <field name="permissions"><string>*:/platform/users</string></field>
-		          <field name="template"><string>/exo:ecm/views/templates/ecm-explorer/IconView</string></field>
+		          <field name="template"><string>/jcr:system/exo:ecm/views/templates/ecm-explorer/IconView</string></field>
 		          <field name="tabList">
                 <collection type="java.util.ArrayList">
                   <value>

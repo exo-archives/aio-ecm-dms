@@ -139,7 +139,8 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
         List<Node> listNode = taxonomyService.getAllTaxonomyTrees(repository);
         for(Node itemNode : listNode) {
           if(nodePath.contains(itemNode.getPath())) {
-            taxonomyService.removeCategory(uiExplorer.getCurrentNode(), itemNode.getName(), nodePath.substring(itemNode.getPath().length()));
+            taxonomyService.removeCategory(uiExplorer.getCurrentNode(), itemNode.getName(), 
+                nodePath.substring(itemNode.getPath().length()));
             break;
           }
         }
@@ -148,6 +149,7 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
         throw new MessageException(new ApplicationMessage("UICategoriesAddedList.msg.access-denied",
                                    null, ApplicationMessage.WARNING)) ;
       } catch(Exception e) {
+        e.printStackTrace();
         JCRExceptionManager.process(uiApp, e) ;
       }
       uiManager.setRenderedChild("UICategoriesAddedList");

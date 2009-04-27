@@ -33,6 +33,8 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -62,14 +64,17 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
   private final String           SQL_QUERY       = "Select * from exo:taxonomyLink where jcr:path like '$0/%' and exo:uuid = '$1' order by exo:dateCreated DESC";
   
   List<TaxonomyPlugin>           plugins_        = new ArrayList<TaxonomyPlugin>();
+  
+  private DMSConfiguration dmsConfiguration_;
 
   public TaxonomyServiceImpl(SessionProviderService providerService,
       NodeHierarchyCreator nodeHierarchyCreator, RepositoryService repoService,
-      LinkManager linkManager) throws Exception {
+      LinkManager linkManager, DMSConfiguration dmsConfiguration) throws Exception {
     providerService_ = providerService;
     nodeHierarchyCreator_ = nodeHierarchyCreator;
     repositoryService_ = repoService;
     linkManager_ = linkManager;
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   public void init(String repository) throws Exception {
@@ -223,7 +228,8 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
           String sql = null; 
           sql = StringUtils.replace(SQL_QUERY, "$0", rootNodeTaxonomy.getPath());        
           sql = StringUtils.replace(sql, "$1", node.getUUID());
-          Session session = repositoryService_.getRepository(repository).login(rootNodeTaxonomy.getSession().getWorkspace().getName());
+          Session session = 
+            repositoryService_.getRepository(repository).login(rootNodeTaxonomy.getSession().getWorkspace().getName());
           QueryManager queryManager = session.getWorkspace().getQueryManager();
           Query query = queryManager.createQuery(sql, Query.SQL);
           QueryResult result = query.execute();
@@ -274,11 +280,10 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
         }
         Node categoryNode;
         if (categoryPath.startsWith(rootNodeTaxonomy.getPath())) {
-          categoryNode = (Node) node.getSession().getItem(categoryPath);
+          categoryNode = (Node) rootNodeTaxonomy.getSession().getItem(categoryPath);
         } else {
-          categoryNode = (Node) node.getSession().getItem(category);
+          categoryNode = (Node) rootNodeTaxonomy.getSession().getItem(category);
         }
-                
         linkManager_.createLink(categoryNode, TAXONOMY_LINK, node, node.getName());
       }
     } catch (PathNotFoundException e) {
@@ -326,8 +331,10 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
       } else {
         category = rootNodeTaxonomy.getPath() + categoryPath;
       }
-      Node nodeTaxonomyLink = ((Node) node.getSession().getItem(category)).getNode(node.getName());
+      Node categoryNode = ((Node) rootNodeTaxonomy.getSession().getItem(category));
+      Node nodeTaxonomyLink = categoryNode.getNode(node.getName());
       nodeTaxonomyLink.remove();
+      categoryNode.save();
       node.getSession().save();
     } catch (PathNotFoundException e) {
       throw new RepositoryException(e);
@@ -337,8 +344,8 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
   private Node getRootTaxonomyDef(String repository) throws RepositoryException,
       RepositoryConfigurationException {
     ManageableRepository manaRepository = repositoryService_.getRepository(repository);
-    Session sysmtemSession = getSession(manaRepository, manaRepository.getConfiguration()
-        .getSystemWorkspaceName(), true);
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    Session sysmtemSession = getSession(manaRepository, dmsRepoConfig.getSystemWorkspace(), true);
     String taxonomiesTreeDef = nodeHierarchyCreator_
         .getJcrPath(BasePath.TAXONOMIES_TREE_DEFINITION_PATH);
     return (Node) sysmtemSession.getItem(taxonomiesTreeDef);

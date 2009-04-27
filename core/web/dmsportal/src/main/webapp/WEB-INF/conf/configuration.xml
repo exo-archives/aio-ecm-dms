@@ -40,5 +40,6 @@
 	<import>war:/conf/dms/organization-component-plugins-configuration.xml</import>
 	<import>war:/conf/dms/publication-configuration.xml</import>  
 	<import>war:/conf/dms/dms-thumbnail-configuration.xml</import>
+	<import>war:/conf/dms/dms-common-configuration.xml</import>
   
 </configuration>

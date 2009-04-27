@@ -97,7 +97,7 @@ public class AddTaxonomyActionScript implements CmsScript {
     }
     if(!storeWorkspace.equals(targetWorkspace)) {
       Node currentNode = (Node)storeNode.getSession().getItem(nodePath);
-      sessionTargetNode.getWorkspace().clone(storeWorkspace, nodePath, targetPath, false);
+      sessionTargetNode.getWorkspace().clone(storeWorkspace, nodePath, targetPath, true);
       currentNode.remove();
       storeNode.save();
     } else {

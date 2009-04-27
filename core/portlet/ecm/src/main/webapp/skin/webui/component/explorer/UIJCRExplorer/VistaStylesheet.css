@@ -726,3 +726,29 @@
 .UIJCRExplorerPortlet .UISymLinkManager {
   padding: 10px;
 }
+
+.UITrees .Node .NodeIconLink {
+	background-position: left top;
+	font-weight: bold;
+	height:  16px;
+	padding-left: 11px;
+	width: 20px;
+}
+
+.UIOneNodePathSelector .LinkSmall {
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat left bottom;
+  width: 20px;
+  height: 15px;
+  padding-left: 12px;
+  right: 0;
+  bottom: 0;
+}
+
+.UIOneTaxonomySelector .LinkSmall {
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat left bottom;
+  width: 20px;
+  height: 15px;
+  padding-left: 12px;
+  right: 0;
+  bottom: 0;
+}

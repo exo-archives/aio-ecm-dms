@@ -203,6 +203,10 @@
     <type>org.exoplatform.services.cms.link.impl.NodeFinderImpl</type>
   </component>
   
+  <component>
+    <type>org.exoplatform.services.cms.impl.DMSConfiguration</type>
+  </component>  
+  
   <external-component-plugins>
 	  <target-component>org.exoplatform.services.jcr.RepositoryService</target-component>      
 	  <component-plugin>

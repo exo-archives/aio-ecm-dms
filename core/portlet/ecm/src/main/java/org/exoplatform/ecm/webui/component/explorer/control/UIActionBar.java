@@ -93,6 +93,8 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.relations.RelationsService;
@@ -905,7 +907,9 @@ public class UIActionBar extends UIForm {
       String repository = uiExplorer.getRepositoryName();
       ManageableRepository manaRepository = 
         uiActionBar.getApplicationComponent(RepositoryService.class).getRepository(repository);
-      String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
+      DMSConfiguration dmsConfiguration = uiExplorer.getApplicationComponent(DMSConfiguration.class);
+      DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(repository);
+      String workspaceName = dmsRepoConfig.getSystemWorkspace();
       NodeHierarchyCreator nodeHierarchyCreator = uiActionBar.getApplicationComponent(NodeHierarchyCreator.class);
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
@@ -947,7 +951,7 @@ public class UIActionBar extends UIForm {
       uiOneTaxonomySelector.setIsDisable(workspaceName, false);
       uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
       String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
-      Session session = uiExplorer.getSession();
+      Session session = uiExplorer.getSessionByWorkspace(dmsRepoConfig.getSystemWorkspace());
       Node rootTree = (Node) session.getItem(rootTreePath);
       NodeIterator childrenIterator = rootTree.getNodes();
       while (childrenIterator.hasNext()) {
