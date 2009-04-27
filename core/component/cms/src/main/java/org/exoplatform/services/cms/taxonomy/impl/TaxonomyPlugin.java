@@ -152,6 +152,9 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     while (it.hasNext()) {
       ObjectParameter objectParam = it.next();
       if (objectParam.getName().equals("permission.configuration")) {
+        taxonomyStorageNodeSystem = Utils.makePath(taxonomyStorageNode, treeName, "exo:taxonomy",
+            null);
+        session.save();
         TaxonomyConfig config = (TaxonomyConfig) objectParam.getObject();
         for (Taxonomy taxonomy : config.getTaxonomies()) {
           Map mapPermissions = getPermissions(taxonomy.getPermissions());
