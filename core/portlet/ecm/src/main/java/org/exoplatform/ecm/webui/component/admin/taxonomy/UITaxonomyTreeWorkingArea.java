@@ -26,6 +26,8 @@ import javax.jcr.ReferentialIntegrityException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionForm;
+import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionTaxonomyManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionForm;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionInfo;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.info.UIPermissionManager;
@@ -51,6 +53,7 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template =  "app:/groovy/webui/component/admin/taxonomy/UITaxonomyTreeWorkingArea.gtmpl",
     events = {
+        @EventConfig(listeners = UITaxonomyTreeWorkingArea.BackActionListener.class),
         @EventConfig(listeners = UITaxonomyTreeWorkingArea.AddActionListener.class),
         @EventConfig(listeners = UITaxonomyTreeWorkingArea.RemoveActionListener.class, confirm = "UITaxonomyManager.msg.confirm-delete"),
         @EventConfig(listeners = UITaxonomyTreeWorkingArea.CopyActionListener.class),
@@ -71,6 +74,7 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
   
   private String[] acceptedNodeTypes = {};
   
+  private String[] actions_ = { "Back" };
   public UITaxonomyTreeWorkingArea() throws Exception {
     uiPageIterator_ = addChild(UIPageIterator.class, null, "UICategoriesSelect");
   }
@@ -81,6 +85,8 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
     ObjectPageList objPageList = new ObjectPageList(getNodeList(), 10);
     uiPageIterator_.setPageList(objPageList);
   }
+  
+  public String[] getActions() {return actions_;}
   
   public List getListNodes() throws Exception { return uiPageIterator_.getCurrentPageData(); }
   
@@ -268,6 +274,20 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
       uiPopupContainer.activate(uiPerMan, 650,550);
       uiPopupContainer.setRendered(true);
       uiPerMan.checkPermissonInfo(uiTaxonomyTreeCreateChild.getNodeByPath(path));
+    }
+  }
+  
+  public static class BackActionListener extends EventListener<UITaxonomyTreeWorkingArea> {
+    public void execute(Event<UITaxonomyTreeWorkingArea> event) throws Exception {
+      UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource().getAncestorOfType(UITaxonomyTreeContainer.class);
+      UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
+      TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
+      UIActionTaxonomyManager uiActionTaxonomyManager = uiTaxonomyTreeContainer.getChild(UIActionTaxonomyManager.class);
+      UIActionForm uiActionForm = uiActionTaxonomyManager.getChild(UIActionForm.class);
+      uiActionForm.createNewAction(null, TaxonomyTreeData.ACTION_TAXONOMY_TREE, true);
+      uiActionForm.setWorkspace(taxonomyTreeData.getTaxoTreeWorkspace());
+      uiTaxonomyTreeContainer.viewStep(3);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
   }
 
