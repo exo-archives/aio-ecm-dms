@@ -45,7 +45,7 @@
 				        </div>
 				      <%}%>
 				    </div>
-			    
+			      
 				    <div class="RightColumn" style="border: none" onclick="<%=uicomponent.event("Sort", typeActionLink + "Auditing")%>">
 			        <%
 			          if (selectedSortType.equals("Auditing")) {
@@ -72,7 +72,7 @@
 			      String[] arrSortType = ["exo:owner","exo:dateModified","exo:dateCreated"];  
 			      for(String sortType: arrSortType) {
 			    %>
-             <div class="RightColumn" onclick="<%= uicomponent.event("Sort", typeActionLink + sortType)%>">
+             <div class="RightColumn" style="width: 120px;" onclick="<%= uicomponent.event("Sort", typeActionLink + sortType)%>">
 			       <%  
 			       if (sortType.equals(selectedSortType)) {
              %>
@@ -255,14 +255,14 @@
 		            }
 		          %>
 	        </div>
-	        <div class="RightColumn" style="width: 90px">
+	        <div class="RightColumn" style="width: 120px;">
 		        <%=uicomponent.getNodeOwner(data)%>
 	        </div>
-	        <div class="RightColumn" style="width: 125px">
+	        <div class="RightColumn" style="width: 120px;">
 	    			<%=dateFormat.format(uicomponent.getDateModified(data))%>
 	 				</div>
 	       
-	        <div class="RightColumn" style="width: 105px;">
+	        <div class="RightColumn" style="width: 120px;">
 	        	<%=dateFormat.format(uicomponent.getDateCreated(data))%>
 	        </div>
 	        <div class="ResizeColumn">
