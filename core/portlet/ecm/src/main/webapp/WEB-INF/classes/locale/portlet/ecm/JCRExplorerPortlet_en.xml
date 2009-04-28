@@ -2287,6 +2287,13 @@
   	<msg>
   		<ItemExistsException>The category is exist. The same name sibling is not allowed</ItemExistsException>
   	</msg>
-	</UICategoriesAddedList>        
+	</UICategoriesAddedList>
+	
+	<UIConfirmMessage>
+	  <label>
+	    <Close>#{word.close}</Close>
+	    <OK>OK</OK>
+	  </label>
+	</UIConfirmMessage>        
 </bundle>
 

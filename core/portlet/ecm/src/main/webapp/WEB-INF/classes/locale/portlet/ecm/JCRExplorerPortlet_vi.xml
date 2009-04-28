@@ -2240,22 +2240,22 @@
   
   <UIWorkspaceList>
   	<msg>
-  		<AccessDeniedException>Access deny! You don't have read permission in this workspace</AccessDeniedException>
+  		<AccessDeniedException>Truy cập không được phép. Bạn đã bị giới hạn quyền truy cập trong phần này</AccessDeniedException>
   	</msg>
   	<label>
-      <taxonomyTree>Taxonomy Tree</taxonomyTree>
+      <taxonomyTree>Cây phân loại</taxonomyTree>
     </label>
   </UIWorkspaceList>
   
   <UIPopupTaxonomy>
     <title>
-			<UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+			<UIOneTaxonomySelector>Thêm danh mục</UIOneTaxonomySelector>
     </title>
   </UIPopupTaxonomy>
   
   <UITreeTaxonomyList>
   	<label>
-      <taxonomyTree>Taxonomy Tree</taxonomyTree>
+      <taxonomyTree>Cây phân loại</taxonomyTree>
     </label>
   </UITreeTaxonomyList>
   
@@ -2268,8 +2268,8 @@
 	<UISimpleCategoryManager>
     <tab>
       <label>
-        <UICategoriesAddedList>Referenced categories</UICategoriesAddedList>
-        <UIOneNodePathSelector>Select category</UIOneNodePathSelector>
+        <UICategoriesAddedList>Những danh mục liên quan</UICategoriesAddedList>
+        <UIOneNodePathSelector>Lựa chọn danh mục</UIOneNodePathSelector>
       </label>
     </tab>
   </UISimpleCategoryManager>
@@ -2277,24 +2277,31 @@
   <UICategoryManager>
     <tab>
       <label>
-				<UIOneTaxonomySelector>Select category</UIOneTaxonomySelector>
+				<UIOneTaxonomySelector>Lựa chọn danh mục</UIOneTaxonomySelector>
       </label>
     </tab>
   </UICategoryManager>
   
   <UISimpleCategoryManager>
   	<action>
-  		<Close>Close</Close>	
+  		<Close>#{word.close}</Close>	
   	</action>
   </UISimpleCategoryManager>  
   <UIPopupWindow>
   	<title>
-  		<UISimpleCategoryManager>Add Category</UISimpleCategoryManager>	
+  		<UISimpleCategoryManager>Thêm danh mục</UISimpleCategoryManager>	
   	</title>
   </UIPopupWindow>
   <UICategoriesAddedList>
   	<msg>
-  		<ItemExistsException>The category is exist. The same name sibling is not allowed</ItemExistsException>
+  		<ItemExistsException>Danh mục đã tại. Không chấp nhận việc danh mục trùng tên</ItemExistsException>
   	</msg>
 	</UICategoriesAddedList>
+
+	<UIConfirmMessage>
+	  <label>
+	    <Close>#{word.close}</Close>
+	    <OK>Đồng ý</OK>
+	  </label>
+	</UIConfirmMessage>	
 </bundle>
