@@ -1,7 +1,15 @@
 <%
+/**
+ * Created by The eXo Platform SARL
+ * Author : Hoang Van Hung
+ *          hunghvit@gmail.com
+ * Apr 3, 2009
+ */
+%>
+
+<%
   def rcontext = _ctx.getRequestContext() ;
 	rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs') ;
-	int step = uicomponent.getSelectedStep();
 	String compName = uicomponent.getName() ;
 %>
 <div class="UITaxonomyTreeWizard">

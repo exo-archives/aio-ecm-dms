@@ -841,7 +841,7 @@
 	padding: 10px;
 }
 
-.UITaxonomyTreeWizard .UITabPane .WorkingArea .UIForm .HorizontalLayout {
+.UITaxonomyTreeWizard .UITabPane .WorkingArea .UITaxonomyTreeCreateChildForm .HorizontalLayout {
 	border: 1px solid #b7b7b7;
   padding:  10px;
 	margin: 10px;

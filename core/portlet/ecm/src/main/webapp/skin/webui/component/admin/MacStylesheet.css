@@ -818,7 +818,7 @@
 	padding: 10px;
 }
 
-.UITaxonomyTreeWizard .UITabPane .WorkingArea .UIForm .HorizontalLayout {
+.UITaxonomyTreeWizard .UITabPane .WorkingArea .UITaxonomyTreeCreateChildForm .HorizontalLayout {
 	background: transparent url(/ecm/skin/webui/component/admin/MacSkin/background/Background1x4.png) repeat scroll 0 50%;
 	padding-top: 10px;
 	margin: 10px;

@@ -72,8 +72,6 @@ import org.exoplatform.webui.form.UIFormStringInput;
 
 public class UITaxonomyTreeContainer extends UIContainer implements UISelectable {
 
-  private int                wizardMaxStep_         = 4;
-
   private int                selectedStep_          = 1;
 
   private int                currentStep_           = 0;
@@ -109,15 +107,6 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
   public int getSelectedStep() {
     return selectedStep_;
   }
-
-  public int getMaxStep() {
-    return wizardMaxStep_;
-  }
-  
-  public int getNumberSteps() {
-    return wizardMaxStep_;
-  }
-  
 
   public TaxonomyTreeData getTaxonomyTreeData() {
     return taxonomyTreeData;
