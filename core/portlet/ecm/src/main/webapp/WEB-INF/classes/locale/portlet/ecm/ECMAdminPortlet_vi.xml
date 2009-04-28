@@ -1941,6 +1941,23 @@
     </title>
   </TaxonomyPopupCreateChild>
 
+	<UITaxonomyTreeCreateChildForm>
+	  <action>
+      <Save>Lưu</Save>
+      <Cancel>Hủy</Cancel>
+    </action>
+    <label>
+      <parentPath>Đường dẫn cha</parentPath>
+      <taxonomyName>Tên danh mục</taxonomyName>
+    </label>
+    <msg>
+			<name-null>Tên danh mục trống</name-null>
+			<name-invalid>Tên danh mục không hợp lệ</name-invalid>
+			<name-too-long>Tên danh mục quá dài</name-too-long>
+			<exist>Tên danh mục đã tồn tại</exist>
+		</msg>
+	</UITaxonomyTreeCreateChildForm>
+	
   <PopupComponent>
     <title>
       <UIOneNodePathSelector>Lựa chon đường dẫn</UIOneNodePathSelector>

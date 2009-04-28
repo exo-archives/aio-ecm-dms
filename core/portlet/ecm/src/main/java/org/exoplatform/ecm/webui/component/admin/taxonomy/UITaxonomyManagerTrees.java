@@ -25,6 +25,8 @@ import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -88,6 +90,12 @@ public class UITaxonomyManagerTrees extends UIContainer {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
     ManageableRepository manageableRepository = repositoryService.getRepository(repository);
     return manageableRepository.getConfiguration().getSystemWorkspaceName();
+  }
+
+  public String getDmsSystemWorkspaceName(String repository) {
+    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(repository);
+    return dmsRepoConfig.getSystemWorkspace();
   }
   
   public void initPopupJCRBrowser(String workspace, boolean isDisable) throws Exception {

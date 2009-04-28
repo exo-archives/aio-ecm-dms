@@ -841,6 +841,12 @@
 	padding: 10px;
 }
 
+.UITaxonomyTreeWizard .UITabPane .WorkingArea .UIForm .HorizontalLayout {
+	border: 1px solid #b7b7b7;
+  padding:  10px;
+	margin: 10px;
+}
+
 .UIECMAdminPortlet .UITaxonomyTreeWizard .UIFormGrid .FieldComponent .ActionIcon {
 	float: none;
 	margin: 0px 5px;

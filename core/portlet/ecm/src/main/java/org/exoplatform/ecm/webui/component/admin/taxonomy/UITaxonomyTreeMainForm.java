@@ -23,6 +23,7 @@ import java.util.List;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeManager;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -82,15 +83,21 @@ public class UITaxonomyTreeMainForm extends UIForm {
   }
   
   public void update(TaxonomyTreeData taxonomyTree) throws Exception {
-    
-    String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
+    String repository = getRepository();
     String[] wsNames = getApplicationComponent(RepositoryService.class)
                       .getRepository(repository).getWorkspaceNames();
     List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>();
+    String systemWorkspace = getAncestorOfType(UITaxonomyManagerTrees.class).getSystemWorkspaceName(repository);
+    String dmsSystemWorkspace = getAncestorOfType(UITaxonomyManagerTrees.class).getDmsSystemWorkspaceName(repository);
+    
     for(String wsName : wsNames) {
-      workspace.add(new SelectItemOption<String>(wsName,  wsName));
+      if (!systemWorkspace.equals(wsName))
+        workspace.add(new SelectItemOption<String>(wsName, wsName));
     }
     UIFormSelectBox uiSelectBox = getUIFormSelectBox(FIELD_WORKSPACE).setOptions(workspace);
+    if (taxonomyTree.getTaxoTreeWorkspace() == null) {
+      taxonomyTree.setTaxoTreeWorkspace(dmsSystemWorkspace);
+    }
     uiSelectBox.setValue(taxonomyTree.getTaxoTreeWorkspace());
     UIFormInputBase<String> inputName = findComponentById(UITaxonomyTreeMainForm.FIELD_NAME);
     UIFormInputBase<String> inputHomePath = findComponentById(UITaxonomyTreeMainForm.FIELD_HOMEPATH);
@@ -114,12 +121,13 @@ public class UITaxonomyTreeMainForm extends UIForm {
     UIFormSelectBox selectBox = getChildById(UITaxonomyTreeMainForm.FIELD_WORKSPACE);
     UIFormInputBase inputHomePath = findComponentById(UITaxonomyTreeMainForm.FIELD_HOMEPATH);
     String homePath = "";
-    if (inputHomePath != null && inputHomePath.getValue() != null) homePath =inputHomePath.getValue().toString();
-    String systemWorkspace = getAncestorOfType(UITaxonomyManagerTrees.class)
-        .getSystemWorkspaceName(getRepository());
+    if (inputHomePath != null && inputHomePath.getValue() != null) {
+      homePath = inputHomePath.getValue().toString();
+    }
+    String dmsSysWorkspace = getAncestorOfType(UITaxonomyManagerTrees.class).getDmsSystemWorkspaceName(getRepository());
     String workspace = selectBox.getValue();
     if (homePath.length() == 0) {
-      if (!systemWorkspace.equals(workspace)) {
+      if (!dmsSysWorkspace.equals(workspace)) {
         return 2;
       }
     }
@@ -155,6 +163,7 @@ public class UITaxonomyTreeMainForm extends UIForm {
     public void execute(Event<UITaxonomyTreeMainForm> event) throws Exception {
       UITaxonomyTreeMainForm uiTaxonomyTreeMainForm = event.getSource();
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = uiTaxonomyTreeMainForm.getParent();
+      TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
       UIApplication uiApp = uiTaxonomyTreeContainer.getAncestorOfType(UIApplication.class);
       int validateCode = uiTaxonomyTreeMainForm.checkForm();
@@ -174,17 +183,16 @@ public class UITaxonomyTreeMainForm extends UIForm {
       String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", 
           "'", "#", ";", "}", "{", "/", "|", "\""};
       String name = inputName.getValue().toString().trim();
-      for(String filterChar : arrFilterChar) {
-        if(name.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.name-not-allowed", null, 
-              ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
-        }
+      
+      if (!Utils.isNameValid(name,arrFilterChar)) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.name-not-allowed", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
       
       TaxonomyService taxonomyService = uiTaxonomyTreeMainForm.getApplicationComponent(TaxonomyService.class);
-      if (taxonomyService.hasTaxonomyTree(uiTaxonomyTreeMainForm.getRepository(), name)) {
+      if (taxonomyService.hasTaxonomyTree(uiTaxonomyTreeMainForm.getRepository(), name) && !taxonomyTreeData.isEdit()) {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.taxonomytree-existed", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -192,7 +200,6 @@ public class UITaxonomyTreeMainForm extends UIForm {
       }
       
       UIFormSelectBox selectBox = uiTaxonomyTreeMainForm.getChildById(UITaxonomyTreeMainForm.FIELD_WORKSPACE);
-      TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
       UIFormInputBase inputHomePath = uiTaxonomyTreeMainForm.findComponentById(UITaxonomyTreeMainForm.FIELD_HOMEPATH);
       String homePath = "";
       if (inputHomePath != null && inputHomePath.getValue() != null) homePath =inputHomePath.getValue().toString();

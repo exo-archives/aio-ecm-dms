@@ -1927,6 +1927,23 @@
     </title>
   </TaxonomyPopupCreateChild>
 
+	<UITaxonomyTreeCreateChildForm>
+	  <action>
+      <Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>
+    </action>
+    <label>
+      <parentPath>Parent</parentPath>
+      <taxonomyName>Taxonomy name</taxonomyName>
+    </label>
+    <msg>
+			<name-null>Name is null</name-null>
+			<name-invalid>Name is invalid</name-invalid>
+			<name-too-long>Name is too long</name-too-long>
+			<exist>Name is existed</exist>
+		</msg>
+	</UITaxonomyTreeCreateChildForm>
+	
   <PopupComponent>
     <title>
       <UIOneNodePathSelector>Select path</UIOneNodePathSelector>

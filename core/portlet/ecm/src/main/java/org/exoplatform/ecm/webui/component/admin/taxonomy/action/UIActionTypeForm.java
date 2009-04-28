@@ -107,7 +107,6 @@ public class UIActionTypeForm extends UIForm {
           .getAncestorOfType(UITaxonomyTreeContainer.class);
       String actionType = uiActionType.getUIFormSelectBox(ACTION_TYPE).getValue();
       TemplateService templateService = uiActionType.getApplicationComponent(TemplateService.class);
-      ActionServiceContainer actionServiceContainer = uiActionType.getApplicationComponent(ActionServiceContainer.class);
       String repository = uiActionType.getAncestorOfType(UIECMAdminPortlet.class)
           .getPreferenceRepository();
       UIActionTaxonomyManager uiActionTaxonomyManager = uiActionType

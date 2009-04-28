@@ -26,14 +26,11 @@ import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.permission.PermissionBean;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.portal.webui.util.SessionProviderFactory;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
@@ -162,14 +159,6 @@ public class UIPermissionTreeInfo extends UIContainer {
     uiGrid.getUIPageIterator().setPageList(objPageList);    
   }
   
-  private Session getSession() throws Exception {
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
-    String systemWorkspace = repositoryService.getCurrentRepository().getConfiguration()
-        .getSystemWorkspaceName();
-    return SessionProviderFactory.createSystemProvider().getSession(systemWorkspace,
-        repositoryService.getCurrentRepository());
-  }
-  
   public static class EditActionListener extends EventListener<UIPermissionTreeInfo> {
     public void execute(Event<UIPermissionTreeInfo> event) throws Exception {
       UIPermissionTreeInfo uicomp = event.getSource() ;
@@ -222,15 +211,14 @@ public class UIPermissionTreeInfo extends UIContainer {
             node.removePermission(name);
             node.save();
           } catch(AccessDeniedException ace) {
-            uicomp.getSession().refresh(false) ;
+            node.getSession().refresh(false) ;
             uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.access-denied", null, 
                                                     ApplicationMessage.WARNING)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;          
           }
-          Session session = uicomp.getSession();
-          session.save();
-          session.refresh(false);
+          node.getSession().save();
+          node.getSession().refresh(false);
         } else {
           uiApp.addMessage(new ApplicationMessage("UIPermissionInfo.msg.no-permission-tochange", null, 
               ApplicationMessage.WARNING)) ;

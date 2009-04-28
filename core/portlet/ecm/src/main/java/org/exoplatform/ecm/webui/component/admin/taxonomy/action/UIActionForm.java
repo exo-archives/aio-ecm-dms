@@ -265,8 +265,8 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiActionForm.getAncestorOfType(UITaxonomyManagerTrees.class);
       TaxonomyService taxonomyService = uiTaxonomyTreeContainer.getApplicationComponent(TaxonomyService.class);
       String repository = taxoTreeData.getRepository();
-      String systemWorkspace = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class)
-          .getSystemWorkspaceName(repository);
+      String dmsSysWorkspace = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class)
+          .getDmsSystemWorkspaceName(repository);
       UIApplication uiApp = uiTaxonomyTreeContainer.getAncestorOfType(UIApplication.class);
       String name = taxoTreeData.getTaxoTreeName();
       String workspace = taxoTreeData.getTaxoTreeWorkspace();
@@ -274,7 +274,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       homePath = homePath != null ? homePath : "";
       boolean isEditTree = taxoTreeData.isEdit();
       if (homePath.length() == 0) {
-        if (systemWorkspace.equals(workspace)) {
+        if (dmsSysWorkspace.equals(workspace)) {
           homePath = uiActionForm.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
         } else {
           uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.homepath-emty", null,
@@ -348,13 +348,11 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           String actionName = (String) (sortedInputs.get("/node/exo:name")).getValue();
           String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", 
               "'", "#", ";", "}", "{", "/", "|", "\""};
-          for(String filterChar : arrFilterChar) {
-            if(actionName.indexOf(filterChar) > -1) {
-              uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.name-not-allowed", null, 
-                  ApplicationMessage.WARNING));
-              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-              return;
-            }
+          if (!Utils.isNameValid(actionName,arrFilterChar)) {
+            uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.name-not-allowed", null, 
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
           }
           
           if (rootProp == null) {
