@@ -31,7 +31,7 @@
 	            <div class="ButtonLeft">
 	              <div class="ButtonRight">
 	                <div class="ButtonMiddle">
-										<a href="javascript:void(0);">OK</a>
+										<a href="javascript:void(0);"><%=_ctx.appRes("UIConfirmMessage.label.OK")%></a>
 	                </div>
 	              </div>
 	            </div>
@@ -40,7 +40,7 @@
 	            <div class="ButtonLeft">
 	              <div class="ButtonRight">
 	                <div class="ButtonMiddle">
-										<a href="javascript:void(0);">Close</a>
+										<a href="javascript:void(0);"><%=_ctx.appRes("UIConfirmMessage.label.Close")%></a>
 	                </div>
 	              </div>
 	            </div>

@@ -2052,5 +2052,12 @@
       <close>Đóng</close>
     </action>
   </UICategoriesSelector>
+  
+	<UIConfirmMessage>
+	  <label>
+	    <Close>#{word.close}</Close>
+	    <OK>Đồng ý</OK>
+	  </label>
+	</UIConfirmMessage>   
 </bundle>
 
