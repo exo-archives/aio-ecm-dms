@@ -107,7 +107,7 @@ public class UICBSearchForm extends UIForm {
       return resultList;
     }            
     duration_ = 0;
-    String statement = StringUtils.replace(CATEGORY_QUERY, "$1", keyword);
+    String statement = StringUtils.replace(CATEGORY_QUERY, "$1", keyword.trim());
     for(String type : Utils.CATEGORY_NODE_TYPES) {            
       String queryStatement = StringUtils.replace(statement, "$0", type);
       long beforeTime = System.currentTimeMillis();
