@@ -135,30 +135,15 @@ public class UIActionTypeForm extends UIForm {
         uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType);
       }
       
-      TaxonomyTreeData taxonomyTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
-      String oldActionType = taxonomyTreeData.getTaxoTreeActionTypeName();
-      taxonomyTreeData.setTaxoTreeActionTypeName(actionType);
+      TaxonomyTreeData taxoTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
       TaxonomyService taxonomyService = uiTaxonomyTreeContainer.getApplicationComponent(TaxonomyService.class);
       Node taxoTreeNode = null;
       try {
-        taxoTreeNode = taxonomyService.getTaxonomyTree(taxonomyTreeData.getRepository(),
-            taxonomyTreeData.getTaxoTreeName(), true);
+        taxoTreeNode = taxonomyService.getTaxonomyTree(taxoTreeData.getRepository(),
+            taxoTreeData.getTaxoTreeName(), true);
       } catch (RepositoryException re) {
       }
-      boolean isNewAction = false;
-      if (taxoTreeNode != null) {
-        //Check existend action of node
-        List<Node> lstActionNodes = actionServiceContainer.getActions(taxoTreeNode);
-        if (lstActionNodes != null && lstActionNodes.size() > 0) {
-          for (Node actionTmpNode : lstActionNodes) {
-            if (actionTmpNode.getPrimaryNodeType().getName().equals(actionType)) {
-              isNewAction = true;
-              break;
-            }
-          }
-        }
-      }
-      uiActionForm.createNewAction(taxoTreeNode, actionType, isNewAction);
+      uiActionForm.createNewAction(taxoTreeNode, actionType, true);
       uiActionTaxonomyManager.setRendered(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiActionTaxonomyManager);
     }
