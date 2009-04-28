@@ -77,7 +77,7 @@ var SimpleView = function() {
 		if (mobileElement && mobileElement.move) {
 			var expandElement = DOM.findAncestorByClass(element, "ExpandIcon");
 			if(expandElement && expandElement.onclick) {
-				if (expandElement.onclick instanceof Function) expandElement.onclick();
+				if (expandElement.onclick instanceof Function) expandElement.onclick(event);
 			}
 		}
 	};
