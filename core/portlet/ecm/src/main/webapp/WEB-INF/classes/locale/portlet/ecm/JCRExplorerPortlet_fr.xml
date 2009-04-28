@@ -2161,5 +2161,12 @@
       <SelectDrive>Sélectionner Conduire</SelectDrive>
     </title>
   </DriveNameInput>
+  
+	<UIConfirmMessage>
+	  <label>
+	    <Close>#{word.close}</Close>
+	    <OK>OK</OK>
+	  </label>
+	</UIConfirmMessage>  
 </bundle>
 
