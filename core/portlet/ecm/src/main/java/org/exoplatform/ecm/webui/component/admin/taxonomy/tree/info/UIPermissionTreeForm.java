@@ -37,6 +37,7 @@ import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
@@ -67,7 +68,8 @@ import org.exoplatform.webui.form.UIForm;
     template = "system:/groovy/webui/form/UIFormWithTitle.gtmpl", 
     events = {
       @EventConfig(listeners = UIPermissionTreeForm.SaveActionListener.class),
-      @EventConfig(listeners = UIPermissionTreeForm.NextActionListener.class),
+      @EventConfig(listeners = UIPermissionTreeForm.AddActionActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPermissionTreeForm.BackActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPermissionTreeForm.ResetActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPermissionTreeForm.SelectUserActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPermissionTreeForm.SelectMemberActionListener.class),
@@ -88,7 +90,7 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
   
   public UIPermissionTreeForm() throws Exception {
     addChild(new UIPermissionInputSet(PERMISSION));
-    setActions(new String[] { "Save", "Reset", "Next"});
+    setActions(new String[] { "Back", "Save", "Reset", "AddAction" });
   }
 
   private void refresh() {
@@ -149,10 +151,10 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
   protected void lockForm(boolean isLock) {
     UIPermissionInputSet uiInputSet = getChildById(PERMISSION);
     if (isLock) {
-      setActions(new String[] { "Reset", "Next" });
+      setActions(new String[] { "Back", "Reset", "AddAction" });
       uiInputSet.setActionInfo(UIPermissionInputSet.FIELD_USERORGROUP, null);
     } else {
-      setActions(new String[] { "Save", "Reset", "Next" });
+      setActions(new String[] { "Back", "Save", "Reset", "AddAction" });
       uiInputSet.setActionInfo(UIPermissionInputSet.FIELD_USERORGROUP, new String[] { "SelectUser",
           "SelectMember", "AddAny" });
     }
@@ -163,6 +165,22 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
 
   private String getExoOwner(Node node) throws Exception {
     return Utils.getNodeOwner(node);
+  }
+  
+  public Node getCurrentNode() {
+    return currentNode;
+  }
+
+  public void setCurrentNode(Node currentNode) {
+    this.currentNode = currentNode;
+  }
+
+  public PermissionBean getPermBean() {
+    return permBean;
+  }
+
+  public void setPermBean(PermissionBean permBean) {
+    this.permBean = permBean;
   }
   
   public void doSelect(String selectField, Object value) {
@@ -191,6 +209,7 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
       UIPermissionTreeForm uiForm = event.getSource();
       Node currentNode = uiForm.getCurrentNode();
       UIPermissionTreeManager uiParent = uiForm.getParent();
+      UITaxonomyTreeContainer uiContainer = uiForm.getAncestorOfType(UITaxonomyTreeContainer.class);
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       String userOrGroup = uiForm.getChild(UIPermissionInputSet.class).getUIStringInput(
           UIPermissionInputSet.FIELD_USERORGROUP).getValue();
@@ -270,6 +289,8 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
           return;
         }
         currentNode.getSession().save();
+        TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
+        taxonomyService.updateTaxonomyTree(uiContainer.getTaxonomyTreeData().getTaxoTreeName(), currentNode);
       }
       uiForm.refresh();
       UIPermissionTreeInfo uiInfo = uiParent.getChild(UIPermissionTreeInfo.class);
@@ -278,7 +299,7 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
     }
   }
 
-  public static class NextActionListener extends EventListener<UIPermissionTreeForm> {
+  public static class AddActionActionListener extends EventListener<UIPermissionTreeForm> {
     public void execute(Event<UIPermissionTreeForm> event) throws Exception {
       UIPermissionTreeForm uiForm = event.getSource();
       UIPermissionTreeInfo uiPermInfo = ((UIContainer)uiForm.getParent()).getChild(UIPermissionTreeInfo.class);
@@ -337,20 +358,13 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getParent());
     }
   }
-
-  public Node getCurrentNode() {
-    return currentNode;
-  }
-
-  public void setCurrentNode(Node currentNode) {
-    this.currentNode = currentNode;
-  }
-
-  public PermissionBean getPermBean() {
-    return permBean;
-  }
-
-  public void setPermBean(PermissionBean permBean) {
-    this.permBean = permBean;
+  
+  public static class BackActionListener extends EventListener<UIPermissionTreeForm> {
+    public void execute(Event<UIPermissionTreeForm> event) throws Exception {
+      UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource().getAncestorOfType(UITaxonomyTreeContainer.class);
+      uiTaxonomyTreeContainer.viewStep(1);
+      UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
+    }
   }
 }

@@ -88,7 +88,6 @@ public class UIPermissionTreeInfo extends UIContainer {
   }
   
   public void updateGrid() throws Exception {
-    //List<PermissionBean> permBeans = new ArrayList<PermissionBean>(); 
     Map<String, List<String>> permsMap = new HashMap<String, List<String>>();
     int iSystemOwner = 0;
     if (currentNode != null) {
@@ -120,10 +119,10 @@ public class UIPermissionTreeInfo extends UIContainer {
       PermissionBean permOwnerBean = new PermissionBean();
       if(!permsMap.containsKey(owner)) {
         permOwnerBean.setUsersOrGroups(owner);
-        permOwnerBean.setRead(true) ;
-        permOwnerBean.setAddNode(true) ;
-        permOwnerBean.setSetProperty(true) ;
-        permOwnerBean.setRemove(true) ;
+        permOwnerBean.setRead(true);
+        permOwnerBean.setAddNode(true);
+        permOwnerBean.setSetProperty(true);
+        permOwnerBean.setRemove(true);
         permBeans.add(permOwnerBean);
       }
       while(keysIter.hasNext()) {
@@ -156,7 +155,6 @@ public class UIPermissionTreeInfo extends UIContainer {
         }
         uiForm.setPermBean(null);
       }
-      
     }
     sizeOfListPermission = permBeans.size() + iSystemOwner;
     UIGrid uiGrid = findFirstComponentOfType(UIGrid.class);
