@@ -83,13 +83,13 @@
 	    def ctMenu = "" ;
 	    if(!uicomponent.isSystemWorkspace()) ctMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(path), uicomponent.getActionsList(node)) ;
 	    println "<div  class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
-	    println "  <div class=\"${iconType}Icon\" onclick=\"if(eXo.ecm.ECMUtils.isEventTarget(this, event)) {if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "}\">" ;
-	    println "    <div onclick=\"if(eXo.ecm.ECMUtils.isEventTarget(this, event)) {" + expandLink + "}\" objectId=\"" + treeNode.getPath() + "\" workspacename=\"" + preferenceWS + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", iconType) + "\" " + ctMenu + ">" + strActs ;
+	    println "  <div class=\"${iconType}Icon\" onclick=\"event.cancelBubble=true; if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
+	    println "    <div onclick=\"event.cancelBubble=true;" + expandLink + "\" objectId=\"" + treeNode.getPath() + "\" workspacename=\"" + preferenceWS + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", iconType) + "\" " + ctMenu + ">" + strActs ;
 	    if(uicomponent.isSymLink(node)) {
 	      println "      <div class='LinkSmall'><span></span></div>" ;
 	    }
 	    println "      <div class='NodeLabel'>" ;
-	    println "			   <a onclick=\"if(eXo.ecm.ECMUtils.isEventTarget(this, event)) {" + expandLink + "}\" style='cursor: pointer;' title=\"$treeNodeName\">$treeNodeName</a>" ;
+	    println "			   <a onclick=\"event.cancelBubble=true;" + expandLink + "\" style='cursor: pointer;' title=\"$treeNodeName\">$treeNodeName</a>" ;
 	    println "      </div>" ; 
 	    println "    </div>" ; 
 	    println "  </div>" ; 

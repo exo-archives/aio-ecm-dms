@@ -94,7 +94,7 @@ public class UITreeExplorer extends UIContainer {
     return getAncestorOfType(UIWorkingArea.class).getCustomActions(node) ;
   }
   
-  public boolean isPreferenceNode(Node node) throws RepositoryException {
+  public boolean isPreferenceNode(Node node) {
     return getAncestorOfType(UIWorkingArea.class).isPreferenceNode(node) ;
   }
   
