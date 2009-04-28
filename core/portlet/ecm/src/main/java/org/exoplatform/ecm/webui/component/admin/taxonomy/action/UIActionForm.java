@@ -17,6 +17,8 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.admin.taxonomy.action;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +51,10 @@ import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyAlreadyExistsException;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyNodeAlreadyExistsException;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.access.AccessControlEntry;
+import org.exoplatform.services.jcr.access.PermissionType;
+import org.exoplatform.services.jcr.access.SystemIdentity;
+import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -75,7 +81,8 @@ import org.exoplatform.webui.form.UIFormStringInput;
     lifecycle = UIFormLifecycle.class,
     events = {
       @EventConfig(listeners = UIActionForm.SaveActionListener.class),
-      @EventConfig(listeners = UIActionForm.BackActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIActionForm.ViewPermissionActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIActionForm.ViewTreeActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIDialogForm.OnchangeActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIActionForm.ShowComponentActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
@@ -99,7 +106,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   public static final String EXO_ACTIONS   = "exo:actions".intern();
   
   public UIActionForm() throws Exception {
-    setActions(new String[] { "Save", "Back" });
+    setActions(new String[] {  "ViewPermission", "Save", "ViewTree"});
   }
   
   public void createNewAction(Node parentNode, String actionType, boolean isAddNew) throws Exception {
@@ -215,15 +222,49 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     return rootPath_;
   }
   
+  private void setPermissionAction(Node currentNode) throws Exception {
+    Session session = getSession();
+    Node exoActionNode = currentNode.getNode(EXO_ACTIONS);
+    if (PermissionUtil.canChangePermission(exoActionNode)) {
+      if (exoActionNode.canAddMixin("exo:privilegeable")) {
+        exoActionNode.addMixin("exo:privilegeable");
+      }
+      Map<String, String[]> perMap = new HashMap<String, String[]>();
+      List<String> permsList = new ArrayList<String>();
+      List<String> idList = new ArrayList<String>();
+      String identity = null;
+      for (AccessControlEntry accessEntry : ((ExtendedNode) currentNode).getACL().getPermissionEntries()) {
+        identity = accessEntry.getIdentity();
+        if (!idList.contains(identity)) {
+          idList.add(identity);
+          permsList = ((ExtendedNode) currentNode).getACL().getPermissions(identity);
+          if (SystemIdentity.SYSTEM.equals(identity)) {
+            if (!permsList.contains(PermissionType.REMOVE)) {
+              permsList.add(PermissionType.REMOVE);
+            }
+          } else {
+            permsList.remove(PermissionType.REMOVE);
+          }
+          perMap.put(accessEntry.getIdentity(), permsList.toArray(new String[permsList.size()]));
+        }
+      }
+
+      ((ExtendedNode) exoActionNode).setPermissions(perMap);
+      currentNode.save();
+      session.save();
+      session.logout();
+    }
+  }
+  
   public static class SaveActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UIActionForm uiActionForm = event.getSource();
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = uiActionForm.getAncestorOfType(UITaxonomyTreeContainer.class);
       UIPermissionTreeInfo uiPermissionInfo = uiTaxonomyTreeContainer.findFirstComponentOfType(UIPermissionTreeInfo.class);
-      TaxonomyTreeData taxoTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
+      TaxonomyTreeData taxoTreeData = uiActionForm.getTaxoTreeData();
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiActionForm.getAncestorOfType(UITaxonomyManagerTrees.class);
       TaxonomyService taxonomyService = uiTaxonomyTreeContainer.getApplicationComponent(TaxonomyService.class);
-      String repository = uiActionForm.getTaxoTreeData().getRepository();
+      String repository = taxoTreeData.getRepository();
       String systemWorkspace = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class)
           .getSystemWorkspaceName(repository);
       UIApplication uiApp = uiTaxonomyTreeContainer.getAncestorOfType(UIApplication.class);
@@ -242,12 +283,12 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           return;
         }
       }        
-      
+      boolean isChangeLocation = false;
       try {
         if (!isEditTree) {
           uiTaxonomyTreeContainer.addTaxonomyTree(name, workspace, homePath, uiPermissionInfo.getPermBeans());
         } else {
-          uiTaxonomyTreeContainer.updateTaxonomyTree(name, workspace, homePath);
+          isChangeLocation = uiTaxonomyTreeContainer.updateTaxonomyTree(name, workspace, homePath, taxoTreeData.getTaxoTreeActionName());
         }
       } catch (PathNotFoundException e) {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.path-invalid", null,
@@ -270,26 +311,22 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       Map<String, JcrInputProperty> sortedInputs = DialogFormUtil.prepareMap(uiActionForm
           .getChildren(), uiActionForm.getInputProperties());
       ActionServiceContainer actionServiceContainer = uiActionForm.getApplicationComponent(ActionServiceContainer.class);
-      
-      boolean isEditAction = false;
+     
       //Check existend action of node
-      List<Node> lstActionNodes = actionServiceContainer.getActions(currentNode);
-      if (lstActionNodes != null && lstActionNodes.size() > 0) {
-        for (Node actionTmpNode : lstActionNodes) {
-          if (actionTmpNode.getPrimaryNodeType().getName().equals(uiActionForm.nodeTypeName_)) {
-            isEditAction = true;
-            break;
+      if (uiActionForm.nodeTypeName_.equals(taxoTreeData.getTaxoTreeActionTypeName()) && !isChangeLocation)  {
+         //update action for taxonomy tree
+          CmsService cmsService = uiActionForm.getApplicationComponent(CmsService.class);
+          Node storedHomeNode = uiActionForm.getNode().getParent();
+          cmsService.storeNode(uiActionForm.nodeTypeName_, storedHomeNode, sortedInputs, false,
+              repository);
+          storedHomeNode.getSession().save();
+      } else {
+        //Remove action if existed
+        if (!isChangeLocation) {
+          if (actionServiceContainer.hasActions(currentNode)) {
+            actionServiceContainer.removeAction(currentNode, taxoTreeData.getTaxoTreeActionName(), repository);
           }
         }
-      }
-      
-      if (isEditAction) {
-         //Only update action for taxonomy tree
-        CmsService cmsService = uiActionForm.getApplicationComponent(CmsService.class) ;      
-        Node storedHomeNode = uiActionForm.getNode().getParent();
-        cmsService.storeNode(uiActionForm.nodeTypeName_, storedHomeNode, sortedInputs, false,repository) ;
-        storedHomeNode.getSession().save();
-      } else {
         // Create new action for new/edited taxonomy tree
         Session session = currentNode.getSession();
         if (uiActionForm.getCurrentPath().length() == 0) {
@@ -305,6 +342,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           if (lockToken != null)
             session.addLockToken(lockToken);
         }
+        
         try {
           JcrInputProperty rootProp = sortedInputs.get("/node");
           String actionName = (String) (sortedInputs.get("/node/exo:name")).getValue();
@@ -343,14 +381,16 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
             return;
           }
           
-          actionServiceContainer.addAction(currentNode, repository, uiActionForm.nodeTypeName_,
-              sortedInputs);
+          actionServiceContainer.addAction(currentNode, repository, uiActionForm.nodeTypeName_, sortedInputs);
           session.save();
+          // Set permission for action node
+          uiActionForm.setPermissionAction(currentNode);
           Node actionNode = actionServiceContainer.getAction(currentNode, actionName);
           taxoTreeData.setTaxoTreeActionName(actionNode.getName());
           uiActionForm.setIsOnchange(false);
           uiActionForm.setNodePath(actionNode.getPath());
           uiActionForm.createNewAction(currentNode, actionNode.getPrimaryNodeType().getName(), false);
+          uiActionForm.reset();
         } catch (RepositoryException repo) {
           String key = "UIActionForm.msg.repository-exception";
           uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
@@ -375,7 +415,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     }
   }
   
-  public static class BackActionListener extends EventListener<UIActionForm> {
+  public static class ViewPermissionActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource().getAncestorOfType(UITaxonomyTreeContainer.class);
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
@@ -384,10 +424,27 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     }
   }
   
+  public static class ViewTreeActionListener extends EventListener<UIActionForm> {
+    public void execute(Event<UIActionForm> event) throws Exception {
+      UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource().getAncestorOfType(UITaxonomyTreeContainer.class);
+      UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
+      TaxonomyTreeData taxoTreeData = uiTaxonomyTreeContainer.getTaxonomyTreeData();
+      UIApplication uiApp = uiTaxonomyTreeContainer.getAncestorOfType(UIApplication.class);
+      if (taxoTreeData.isEdit()) {
+        uiTaxonomyTreeContainer.viewStep(4);
+      } else {
+        String key = "UIActionForm.msg.not-created-tree";
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
+    }
+  }
+
   public static class ShowComponentActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UIActionForm uiForm = event.getSource();
-      UITaxonomyTreeContainer uiTaxonomyTree = uiForm.getAncestorOfType(UITaxonomyTreeContainer.class);
       UITaxonomyManagerTrees uiManager = uiForm.getAncestorOfType(UITaxonomyManagerTrees.class);
       uiForm.isShowingComponent = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID);
