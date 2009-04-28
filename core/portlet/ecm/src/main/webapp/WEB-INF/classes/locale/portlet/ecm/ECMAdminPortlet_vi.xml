@@ -1805,20 +1805,15 @@
 			<info>
 				<UITaxonomyTreeMainForm>Nhập tên danh mục, chọn vùng làm việc và đường dẫn</UITaxonomyTreeMainForm>
 				<UIPermissionTreeManager>Lựa chọn quyền truy cập</UIPermissionTreeManager>
-				<UIActionTaxonomyManager>Đăng kí hành động exo:taxonomyAction</UIActionTaxonomyManager>
+				<UIActionTaxonomyManager>Sau khi đăng kí hành động, việc tạo hoặc sửa danh mục sẽ được thực hiện</UIActionTaxonomyManager>
 				<UITaxonomyTreeCreateChild>Sửa cây danh mục bằng cách thêm mới, copy, cut và lựa chọn quyền thao tác</UITaxonomyTreeCreateChild>
 			</info>
 		</tab>
-		<label>
-			<step></step>
-			<wizardSteps>Các bước thực hiện</wizardSteps>
-		</label>
 		<msg>
   		<not-exist-tree>Cây danh mục chưa tồn tại</not-exist-tree>
 		</msg>
 		<action>
 			<Close>Đóng lại</Close>
-			<wizardSteps></wizardSteps>
 		</action>
 	</UITaxonomyTreeContainer>
   
@@ -1829,14 +1824,14 @@
 	-->
 	<UITaxonomyTreeMainForm>
 		<action>
-			<Save>Lưu</Save>
+		  <ViewPermission>Xem quyền</ViewPermission>
 			<Reset>Xóa</Reset>
-			<Next>Next</Next>
 		</action>
 		<msg>
   		<name-not-allowed>Tên không hợp lệ</name-not-allowed>
   		<name-emty>Tên danh mục bị trống</name-emty>
   		<homePath-emty>Đường dẫn trống</homePath-emty>
+  		<taxonomytree-existed>Cây danh mục với tên này đã tồn tại</taxonomytree-existed>
 		</msg>
 	</UITaxonomyTreeMainForm>
 	
@@ -1893,7 +1888,8 @@
 		<action>
 			<Save>Lưu</Save>
 			<Reset>Xóa</Reset>
-			<Next>Chuyển</Next>
+			<Back>Quay lại</Back>
+			<AddAction>Thêm hành động</AddAction>
 		</action>
 		<msg>
 		  <have-not-any-permission>Chưa chọn quyền nào</have-not-any-permission>
@@ -1909,8 +1905,8 @@
 		<title>Tạo hành động cho cây danh mục</title>
 		<action>
 			<Save>Lưu</Save>
-			<Reset>Xóa</Reset>
-			<Back>Quay lại</Back>
+			<ViewPermission>Xem quyền</ViewPermission>
+			<ViewTree>Xem cây danh mục</ViewTree>
 		</action>
 		<msg>
   		<name-not-allowed>Tên không hợp lệ</name-not-allowed>
@@ -1920,12 +1916,19 @@
 			<no-permission-add>Người dùng không có quyền thêm mới</no-permission-add>
 		</msg>
 	</UIActionForm>
+	
 	<EditTaxonomyTreePopup>
     <title>
       <UITaxonomyTreeContainer>Sửa cây danh mục</UITaxonomyTreeContainer>
     </title>
   </EditTaxonomyTreePopup>
 
+  <PopupTaxonomyJCRBrowser>
+	  <title>
+      <UIOneNodePathSelector>Chọn đường dẫn</UIOneNodePathSelector>
+    </title>
+  </PopupTaxonomyJCRBrowser>
+  
   <AddTaxonomyTreePopup>
     <title>
       <UITaxonomyTreeContainer>Thêm cây danh mục</UITaxonomyTreeContainer>
@@ -2014,25 +2017,6 @@
       <homapath-emty>Nhập đường dẫn</homapath-emty>
     </msg>
   </UITaxonomyTreeForm>
-  
-  <TaxonomyTreeForm>
-    <tab>
-      <label>
-        <TaxonomyTreeInputSet>Cây danh mục</TaxonomyTreeInputSet>
-        <TaxonomyTreeAction>Hành động</TaxonomyTreeAction>
-      </label>
-    </tab>
-    <label>
-      <name>Tên</name>
-      <workspace>Vùng làm việc</workspace>
-      <homePath>Đường dẫn</homePath>
-    </label>
-    <action>
-      <Save>Lưu</Save>
-      <Refresh>Làm tươi</Refresh>
-      <Cancel>Hủy</Cancel>
-    </action>
-  </TaxonomyTreeForm>
   
   <UIPermissionTreeForm>
     <label>

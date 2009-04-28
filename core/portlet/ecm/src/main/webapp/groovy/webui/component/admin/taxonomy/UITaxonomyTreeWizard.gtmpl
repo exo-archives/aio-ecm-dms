@@ -37,57 +37,29 @@
 	                </div>
 	            <%}%>
 	          </div>
-	          <div class="UIWizardAction">
-	          	<div class="StepNavigationBar">	       
-					      <div class="StepNavigationTitle">
-					        <%=_ctx.appRes(uicomponent.getId() + ".label.wizardSteps")%>:
-					      </div>
-					      <%                
-	  						      List children  = uicomponent.getChildren();
-	  						      int numberSteps = uicomponent.getNumberSteps();    
-	  						      String actionLink = "#";    					     	
-											int i = 1;				     	  						     			       	
-							        while(i <= numberSteps) {
-							          int j = i;
-							          if(j < 1){
-							            i++;
-							            continue;
-							          }
-							          strStep = _ctx.appRes(uicomponent.getId() + ".label.step") + String.valueOf(j) ;
-							          if(i != step) {
-							            actionLink = uicomponent.event("ViewStep"+String.valueOf(i));
-							            print "<a href=\"$actionLink\" title=\"$strStep\">" ;
-							          } else print "<a href=\"#\" class=\"SelectedStep\" title=\"$strStep\">" ;
-							          print String.valueOf(j);
-							          println "</a>";
-							          i++;
-							        }
-								  	%>    	        
-				    	</div>
-							<div class="UIAction">
-					      <table class="ActionContainer">
-					      	<tr>
-					      		<td>
-						          <%for(action in uicomponent.getActions()) { 
-						          		String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action);
-													String link = uicomponent.event(action) ;
-						          %>
-					              <div onclick="$link" class="ActionButton LightBlueStyle">
-												  <div class="ButtonLeft">
-													  <div class="ButtonRight">
-													    <div class="ButtonMiddle">
-												        <a href="javascript:void(0);">$actionLabel</a>
-													    </div>
+						<div class="UIAction">
+				      <table class="ActionContainer">
+				      	<tr>
+				      		<td>
+					          <%for(action in uicomponent.getActions()) { 
+					          		String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action);
+												String link = uicomponent.event(action) ;
+					          %>
+				              <div onclick="$link" class="ActionButton LightBlueStyle">
+											  <div class="ButtonLeft">
+												  <div class="ButtonRight">
+												    <div class="ButtonMiddle">
+											        <a href="javascript:void(0);">$actionLabel</a>
 												    </div>
-													</div>
+											    </div>
 												</div>
-					            <%}%>
-			            	</td>
-			            </tr>
-			          </table>
-		 	        </div>
-		 	        <div style="clear:right;"><span></span></div>
+											</div>
+				            <%}%>
+		            	</td>
+		            </tr>
+		          </table>
 	 	        </div>
+	 	        <div style="clear:right;"><span></span></div>
 			    </div>
 		  </div>
     </div>

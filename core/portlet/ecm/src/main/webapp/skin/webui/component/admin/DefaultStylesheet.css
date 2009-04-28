@@ -799,3 +799,8 @@ float: left;
 .UITaxonomyTreeWizard .WorkingArea .UITaxonomyTreeCreateChild .UIBreadcumbs {
   padding-bottom: 10px;
 }
+
+.UITaxonomyTreeWizard .WorkingArea .UITaxonomyTreeCreateChild .UIAction {
+	clear: both;
+	padding: 8px;
+}

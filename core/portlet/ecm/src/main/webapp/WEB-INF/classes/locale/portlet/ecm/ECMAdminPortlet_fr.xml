@@ -1808,16 +1808,11 @@
 				<UITaxonomyTreeCreateChild>Edit taxonomy tree by add, copy, cut and select permission</UITaxonomyTreeCreateChild>
 			</info>
 		</tab>
-		<label>
-			<step></step>
-			<wizardSteps>Wizard Steps</wizardSteps>
-		</label>
 		<msg>
   		<not-exist-tree>Tree has not existed yet</not-exist-tree>
 		</msg>
 		<action>
 			<Close>Close</Close>
-			<wizardSteps></wizardSteps>
 		</action>
 	</UITaxonomyTreeContainer>
   
@@ -1836,6 +1831,7 @@
   		<name-not-allowed>Name is disallowed</name-not-allowed>
   		<name-emty>Name of tree is empty</name-emty>
   		<homePath-emty>Home path is empty</homePath-emty>
+  		<taxonomytree-existed>Taxonomy tree with this name is existed</taxonomytree-existed>
 		</msg>
 	</UITaxonomyTreeMainForm>
 	
@@ -1931,6 +1927,12 @@
     </title>
   </AddTaxonomyTreePopup>
   
+  <PopupTaxonomyJCRBrowser>
+	  <title>
+      <UIOneNodePathSelector>Select home path</UIOneNodePathSelector>
+    </title>
+  </PopupTaxonomyJCRBrowser>
+  
   <TaxonomyPopupCreateChild>
     <title>
       <UITaxonomyTreeCreateChildForm>Edit taxonomy tree</UITaxonomyTreeCreateChildForm>
@@ -2007,31 +2009,11 @@
       <name>Name</name>
       <workspace>Workspace</workspace>
       <homePath>Home path</homePath>
-      <permissions>Permissions</permissions>
     </label>
     <msg>
       <homapath-emty>Input home path</homapath-emty>
     </msg>
   </UITaxonomyTreeForm>
-  
-  <TaxonomyTreeForm>
-    <tab>
-      <label>
-        <TaxonomyTreeInputSet>Main</TaxonomyTreeInputSet>
-        <TaxonomyTreeAction>Action</TaxonomyTreeAction>
-      </label>
-    </tab>
-    <label>
-      <name>Name</name>
-      <workspace>Workspace</workspace>
-      <homePath>Home path</homePath>
-    </label>
-    <action>
-      <Save>Save</Save>
-      <Refresh>Refresh</Refresh>
-      <Cancel>Cancel</Cancel>
-    </action>
-  </TaxonomyTreeForm>
   
   <UIPermissionTreeForm>
     <label>

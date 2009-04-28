@@ -70,20 +70,15 @@
 			<info>
 				<UITaxonomyTreeMainForm>Input taxonomy name, choose workspace and taxonomy home path</UITaxonomyTreeMainForm>
 				<UIPermissionTreeManager>Select permission for taxonomy tree node</UIPermissionTreeManager>
-				<UIActionTaxonomyManager>Register exo:taxonomyAction</UIActionTaxonomyManager>
+				<UIActionTaxonomyManager>After register action for tree, the taxonomy tree will be created/edited</UIActionTaxonomyManager>
 				<UITaxonomyTreeCreateChild>Edit taxonomy tree by add, copy, cut and select permission</UITaxonomyTreeCreateChild>
 			</info>
 		</tab>
-		<label>
-			<step></step>
-			<wizardSteps>Wizard Steps</wizardSteps>
-		</label>
 		<msg>
   		<not-exist-tree>Tree has not existed yet</not-exist-tree>
 		</msg>
 		<action>
 			<Close>Close</Close>
-			<wizardSteps></wizardSteps>
 		</action>
 	</UITaxonomyTreeContainer>
   
@@ -94,14 +89,14 @@
 	-->
 	<UITaxonomyTreeMainForm>
 		<action>
-			<Save>Save</Save>
+			<ViewPermission>View Permission</ViewPermission>
 			<Reset>Reset</Reset>
-			<Next>Next</Next>
 		</action>
 		<msg>
   		<name-not-allowed>Name is disallowed</name-not-allowed>
   		<name-emty>Name of tree is empty</name-emty>
   		<homePath-emty>Home path is empty</homePath-emty>
+  		<taxonomytree-existed>Taxonomy tree with this name is existed</taxonomytree-existed>
 		</msg>
 	</UITaxonomyTreeMainForm>
 	
@@ -158,7 +153,8 @@
 		<action>
 			<Save>Save</Save>
 			<Reset>Reset</Reset>
-			<Next>Next</Next>
+			<AddAction>Add Action</AddAction>
+			<Back>Back</Back>
 		</action>
 		<msg>
 		  <have-not-any-permission>Add Permission to node</have-not-any-permission>
@@ -170,12 +166,13 @@
 	#     org.exoplatform.ecm.webui.component.admin.taxonomy.UIActionForm          #
 	################################################################################
 	-->
+	
 	<UIActionForm>
 		<title>Add Permission for taxonomy tree</title>
 		<action>
 			<Save>Save</Save>
-			<Reset>Reset</Reset>
-			<Back>Back</Back>
+			<ViewPermission>View Permission</ViewPermission>
+			<ViewTree>View Tree</ViewTree>
 		</action>
 		<msg>
   		<name-not-allowed>Name is disallowed</name-not-allowed>
@@ -183,6 +180,7 @@
 			<taxonomy-existed>Taxonomy tree has alreday been existed</taxonomy-existed>
 			<taxonomy-node-existed>Taxonomy node has been existed</taxonomy-node-existed>
 			<no-permission-add>User has no add right</no-permission-add>
+			<not-created-tree>Taxonomy tree has not been created yet</not-created-tree>
 		</msg>
 	</UIActionForm>
 	
@@ -1477,25 +1475,6 @@
     </msg>
   </UITaxonomyTreeForm>
   
-  <TaxonomyTreeForm>
-    <tab>
-      <label>
-        <TaxonomyTreeInputSet>Main</TaxonomyTreeInputSet>
-        <TaxonomyTreeAction>Action</TaxonomyTreeAction>
-      </label>
-    </tab>
-    <label>
-      <name>Name</name>
-      <workspace>Workspace</workspace>
-      <homePath>Home path</homePath>
-    </label>
-    <action>
-      <Save>Save</Save>
-      <Refresh>Refresh</Refresh>
-      <Cancel>Cancel</Cancel>
-    </action>
-  </TaxonomyTreeForm>
-  
   <UIPermissionTreeForm>
     <label>
       <UIPopupWindow>Select</UIPopupWindow>
@@ -1520,12 +1499,11 @@
     </msg>
   </UIPermissionTreeForm>
   
-  <TaxonomyTreeInputSet>
+  <PopupTaxonomyJCRBrowser>
 	  <title>
-      <AddPermission>Select permission</AddPermission>
-      <AddPath>Select home path</AddPath>
+      <UIOneNodePathSelector>Select home path</UIOneNodePathSelector>
     </title>
-  </TaxonomyTreeInputSet>
+  </PopupTaxonomyJCRBrowser>
   
   <PopupTaxonomyTreePermission>
     <title>
