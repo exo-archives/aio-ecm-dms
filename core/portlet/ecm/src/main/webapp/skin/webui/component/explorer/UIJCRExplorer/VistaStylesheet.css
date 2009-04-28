@@ -114,6 +114,8 @@
 	padding-right: 3px; /* orientation=rt */
 	width: 105px;
 	cursor: pointer;
+	overflow: hidden;
+	white-space: nowrap;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .ResizeColumn {
