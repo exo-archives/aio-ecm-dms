@@ -35,6 +35,7 @@ import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -47,6 +48,7 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -73,17 +75,20 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
    */
   private static final Log LOG  = ExoLogger.getLogger("explorer.popup.actions.UIRenameForm");
   
-  final static public String FIELD_OLDNAME =  "oldName" ;
-  final static public String FIELD_NEWNAME = "newName" ;  
-  final static private String RELATION_PROP = "exo:relation";
+  final static public String  FIELD_OLDNAME     = "oldName";
 
-  private Node renameNode_ ;
-  private boolean isReferencedNode_ = false ;
+  final static public String  FIELD_NEWNAME     = "newName";
 
-  public UIRenameForm() throws Exception {    
-    addUIFormInput(new UIFormStringInput(FIELD_OLDNAME, FIELD_OLDNAME, null)) ;
-    addUIFormInput(new UIFormStringInput(FIELD_NEWNAME, FIELD_NEWNAME, null).
-                   addValidator(ECMNameValidator.class)) ;
+  final static private String RELATION_PROP     = "exo:relation";
+
+  private Node                renameNode_;
+
+  private boolean             isReferencedNode_ = false;
+
+  public UIRenameForm() throws Exception {
+    addUIFormInput(new UIFormStringInput(FIELD_OLDNAME, FIELD_OLDNAME, null));
+    addUIFormInput(new UIFormStringInput(FIELD_NEWNAME, FIELD_NEWNAME, null)
+        .addValidator(MandatoryValidator.class));
   }
 
   public void update(Node renameNode, boolean isReferencedNode) throws Exception {
@@ -112,8 +117,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
   static  public class SaveActionListener extends EventListener<UIRenameForm> {
     public void execute(Event<UIRenameForm> event) throws Exception {
       UIRenameForm uiRenameForm = event.getSource();
-      RelationsService relationsService = uiRenameForm
-          .getApplicationComponent(RelationsService.class);
+      RelationsService relationsService = uiRenameForm.getApplicationComponent(RelationsService.class);
       UIJCRExplorer uiJCRExplorer = uiRenameForm.getAncestorOfType(UIJCRExplorer.class);
       List<Node> refList = new ArrayList<Node>();
       boolean isReference = false;
@@ -140,16 +144,17 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
             }
           }
         }
-        String newName = uiRenameForm.getUIStringInput(FIELD_NEWNAME).getValue();        
+        
+        String newName = uiRenameForm.getUIStringInput(FIELD_NEWNAME).getValue().trim();
         String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{", "/", "|", "\""}; 
-        for (String filterChar : arrFilterChar) {
-          if (newName.indexOf(filterChar) > -1) {
-            uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null,
-                ApplicationMessage.WARNING));
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-            return;
-          }
+        if (!Utils.isNameValid(newName, arrFilterChar)) {
+          uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
         }
+        
+        if (uiRenameForm.renameNode_.equals(newName)) return;
         String srcPath = uiRenameForm.renameNode_.getPath();
         String destPath;
         if (uiJCRExplorer.nodeIsLocked(uiRenameForm.renameNode_)) {
@@ -215,7 +220,6 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         Object[] args = { uiRenameForm.renameNode_.getPrimaryNodeType().getName() };
         uiApp.addMessage(new ApplicationMessage("UIRenameForm.msg.constraintViolation-exception", args, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-
         return;
       } catch (LockException lockex) {
         LOG.error("Cannot log the node", lockex);
