@@ -56,6 +56,8 @@ public class UINodeTreeBuilder extends UIContainer {
   
   private String[] acceptedNodeTypes = {};
   
+  private String[] defaultExceptedNodeTypes = {};
+  
   /** The root tree node. */
   protected Node rootTreeNode;
   
@@ -130,6 +132,31 @@ public class UINodeTreeBuilder extends UIContainer {
    */
   public void setAcceptedNodeTypes(String[] acceptedNodeTypes) {
     this.acceptedNodeTypes = acceptedNodeTypes;
+  }
+  
+  /**
+   * Gets the default excepted node types.
+   * 
+   * @return the default excepted node types
+   */
+  public String[] getDefaultExceptedNodeTypes() { return defaultExceptedNodeTypes; }
+  
+  /**
+   * Sets the default excepted node types.
+   * 
+   * @param defaultExceptedNodeTypes the new excepted node types
+   */
+  public void setDefaultExceptedNodeTypes(String[] defaultExceptedNodeTypes) {
+    this.defaultExceptedNodeTypes = defaultExceptedNodeTypes;
+  }
+  
+  public boolean isExceptedNodeType(Node node) throws RepositoryException {
+    if(defaultExceptedNodeTypes.length > 0) {
+      for(String nodeType: defaultExceptedNodeTypes) {
+        if(node.isNodeType(nodeType)) return true;
+      }
+    }
+    return false;
   }
 
   /**
@@ -220,7 +247,7 @@ public class UINodeTreeBuilder extends UIContainer {
     }        
     for(;iterator.hasNext();) {
       Node sibbling = iterator.nextNode();
-      if(sibbling.isNodeType("exo:hiddenable")) continue;            
+      if(sibbling.isNodeType("exo:hiddenable") || isExceptedNodeType(sibbling)) continue;            
       list.add(sibbling);                  
     }            
     List<Node> listNodeCheck = new ArrayList<Node>();

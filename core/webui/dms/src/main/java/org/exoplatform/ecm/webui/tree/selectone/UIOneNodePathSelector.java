@@ -65,6 +65,8 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
   private String[] acceptedMimeTypes = {};
   
   private String[] exceptedNodeTypesInPathPanel = {};
+  
+  private String[] defaultExceptedNodeTypes = {"exo:symlink"};
 
   private String repositoryName = null;
   private String workspaceName = null;
@@ -112,7 +114,8 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
       uiWorkspaceList.setIsDisable(workspaceName, isDisable);
       UINodeTreeBuilder builder = getChild(UINodeTreeBuilder.class);
       builder.setAllowPublish(allowPublish, publicationService, templates);
-      builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);    
+      builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);   
+      builder.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
       builder.setRootTreeNode(rootNode);
       
       UISelectPathPanel selectPathPanel = getChild(UISelectPathPanel.class);
@@ -120,6 +123,7 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
       selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
       selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
       selectPathPanel.setExceptedNodeTypes(exceptedNodeTypesInPathPanel);
+      selectPathPanel.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
       selectPathPanel.updateGrid();
     } finally {
       sessionProvider.close();
@@ -178,7 +182,9 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
 
   public void setExceptedNodeTypesInPathPanel(String[] exceptedNodeTypesInPathPanel) {
     this.exceptedNodeTypesInPathPanel = exceptedNodeTypesInPathPanel;
-  }  
+  }
+  
+  public String[] getDefaultExceptedNodeTypes() { return defaultExceptedNodeTypes; }
   
   public String[] getAcceptedMimeTypes() { return acceptedMimeTypes; }
   

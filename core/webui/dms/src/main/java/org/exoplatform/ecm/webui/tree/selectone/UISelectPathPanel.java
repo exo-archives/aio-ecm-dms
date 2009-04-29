@@ -61,6 +61,7 @@ public class UISelectPathPanel extends UIContainer {
   protected Node parentNode;
   private String[] acceptedNodeTypes = {};
   private String[] exceptedNodeTypes = {};
+  private String[] defaultExceptedNodeTypes = {};
   private boolean allowPublish = false;
   private PublicationService publicationService_ = null;
   private List<String> templates_ = null;
@@ -112,6 +113,13 @@ public class UISelectPathPanel extends UIContainer {
   public void setExceptedNodeTypes(String[] exceptedNodeTypes) { 
     this.exceptedNodeTypes = exceptedNodeTypes;
   }
+  
+  public String[] getDefaultExceptedNodeTypes() { return defaultExceptedNodeTypes; }
+  
+  public void setDefaultExceptedNodeTypes(String[] defaultExceptedNodeTypes) {
+    this.defaultExceptedNodeTypes = defaultExceptedNodeTypes;
+  }
+  
 
   public String[] getAcceptedMimeTypes() { return acceptedMimeTypes; }
   public void setAcceptedMimeTypes(String[] acceptedMimeTypes) { this.acceptedMimeTypes = acceptedMimeTypes; }  
@@ -150,6 +158,11 @@ public class UISelectPathPanel extends UIContainer {
   }
   
   protected boolean isExceptedNodeType(Node node) throws RepositoryException {
+    if(defaultExceptedNodeTypes.length > 0) {
+      for(String nodeType: defaultExceptedNodeTypes) {
+        if(node.isNodeType(nodeType)) return true;
+      }
+    }
     if(exceptedNodeTypes == null || exceptedNodeTypes.length == 0) return false;
     for(String nodeType: exceptedNodeTypes) {
       if(node.isNodeType(nodeType)) return true;
