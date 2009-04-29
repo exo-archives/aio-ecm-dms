@@ -2303,5 +2303,11 @@
 	    <Close>#{word.close}</Close>
 	    <OK>Đồng ý</OK>
 	  </label>
-	</UIConfirmMessage>	
+	</UIConfirmMessage>
+	
+	<PopupComponent>
+    <title>
+			<UIOneTaxonomySelector>Thêm categories</UIOneTaxonomySelector>
+    </title>
+  </PopupComponent>	
 </bundle>

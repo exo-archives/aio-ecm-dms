@@ -2268,4 +2268,10 @@
 	    <OK>OK</OK>
 	  </label>
 	</UIConfirmMessage>
+	
+	<PopupComponent>
+    <title>
+			<UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+    </title>
+  </PopupComponent>
 </bundle>

@@ -2294,6 +2294,12 @@
 	    <Close>#{word.close}</Close>
 	    <OK>OK</OK>
 	  </label>
-	</UIConfirmMessage>        
+	</UIConfirmMessage>
+	
+	<PopupComponent>
+    <title>
+			<UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+    </title>
+  </PopupComponent>        
 </bundle>
 

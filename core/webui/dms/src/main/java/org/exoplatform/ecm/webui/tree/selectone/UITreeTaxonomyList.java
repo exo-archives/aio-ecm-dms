@@ -122,8 +122,7 @@ public class UITreeTaxonomyList extends UIForm {
   
   public void setTaxonomyTreeList(String repository) throws Exception {
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
-    List<Node> listNode = new ArrayList<Node>();
-    listNode = taxonomyService.getAllTaxonomyTrees(repository);
+    List<Node> listNode = taxonomyService.getAllTaxonomyTrees(repository);
     List<SelectItemOption<String>> taxonomyTree = new ArrayList<SelectItemOption<String>>();
     for(Node itemNode : listNode) {
       String value = itemNode.getSession().getWorkspace().getName() + ":" + itemNode.getPath(); 

@@ -905,8 +905,6 @@ public class UIActionBar extends UIForm {
       UIActionBar uiActionBar = event.getSource();
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       String repository = uiExplorer.getRepositoryName();
-      ManageableRepository manaRepository = 
-        uiActionBar.getApplicationComponent(RepositoryService.class).getRepository(repository);
       DMSConfiguration dmsConfiguration = uiExplorer.getApplicationComponent(DMSConfiguration.class);
       DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(repository);
       String workspaceName = dmsRepoConfig.getSystemWorkspace();

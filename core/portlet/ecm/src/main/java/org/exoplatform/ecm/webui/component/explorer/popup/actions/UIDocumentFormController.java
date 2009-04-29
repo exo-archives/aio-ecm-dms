@@ -23,11 +23,11 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.comparator.ItemOptionNameComparator;
-import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
@@ -103,7 +103,10 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     getChild(UIDocumentForm.class).resetProperties();
   }
 
-  public void activate() throws Exception {}
+  public void activate() throws Exception {
+    UIDocumentForm uiDocumentForm = getChild(UIDocumentForm.class);
+    uiDocumentForm.initFieldInput();
+  }
 
   public void deActivate() throws Exception {}
 

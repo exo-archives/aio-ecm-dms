@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemExistsException;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -49,10 +50,10 @@ import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
-import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
-import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
 import org.exoplatform.services.log.ExoLogger;
@@ -150,8 +151,13 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   }
   
   public String getPathTaxonomy() throws Exception {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    String repository = uiExplorer.getRepositoryName();
+    DMSConfiguration dmsConfig = getApplicationComponent(DMSConfiguration.class);
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfig.getConfig(repository);
+    String workspaceName = dmsRepoConfig.getSystemWorkspace();    
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    Session session = getAncestorOfType(UIJCRExplorer.class).getSession();
+    Session session = uiExplorer.getSessionByWorkspace(workspaceName);
     return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH))).getPath();
   }
   
@@ -159,14 +165,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     Node currentNode = uiExplorer.getCurrentNode();
-    if (taxonomyService.hasCategories(currentNode, "")) {
-      Value[] values = currentNode.getProperty("exo:category").getValues();
-      for (int i = 0; i < values.length; i++) {
-        String path  = uiExplorer.getSession().getNodeByUUID(values[i].getString()).getPath();
-        if (!listTaxonomy.contains(path)) {
-          listTaxonomy.add(path);
-          listTaxonomyName.add(cutPath(path));
-        }
+    List<Node> listCategories = taxonomyService.getAllCategories(currentNode);
+    for (Node itemNode : listCategories) {
+      String categoryPath = itemNode.getPath().replaceAll(getPathTaxonomy() + "/", "");
+      if (!listTaxonomy.contains(categoryPath)) {
+        listTaxonomy.add(categoryPath);
+        listTaxonomyName.add(cutPath(categoryPath));
       }
     }
     UIFormMultiValueInputSet uiFormMultiValue = createUIComponent(UIFormMultiValueInputSet.class, "UploadMultipleInputset", null);
@@ -231,6 +235,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       UIUploadForm uiForm = event.getSource();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      String repository = uiExplorer.getRepositoryName();
       UIFormUploadInput input = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD);
       CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
       TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
@@ -293,7 +298,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
             String value = uiStringInput.getValue().trim();
             listTaxonomyNameNew.add(value);
             if (value.startsWith("/"))
-              listTaxonomyNew.add(uiForm.getPathTaxonomy()+ "" + value);
+              listTaxonomyNew.add(uiForm.getPathTaxonomy() + value);
             else
               listTaxonomyNew.add(uiForm.getPathTaxonomy() + "/" + value);
           }
@@ -308,12 +313,23 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       for (int i = 0; i < arrayTaxonomy.length; i++) {
         arrayTaxonomy[i] = uiForm.getListTaxonomy().get(i).trim();
       }
-           
-      Session session = uiExplorer.getSession();          
-      for(String categoryPath : arrayTaxonomy) {              
+      List<Node> listNode = taxonomyService.getAllTaxonomyTrees(repository);
+      String workspaceName = null;
+      Session session = null;
+      Node rootTaxonomyNode = null;
+      for(String categoryPath : arrayTaxonomy) {
+        for(Node itemNode : listNode) {
+          if (categoryPath.contains(itemNode.getPath())) {
+            workspaceName = itemNode.getSession().getWorkspace().getName();
+            session = uiExplorer.getSessionByWorkspace(workspaceName);
+            rootTaxonomyNode = itemNode;
+            break;
+          } 
+        }
         if((categoryPath != null) && (categoryPath.trim().length() > 0)){
           try {
-            session.getItem(categoryPath.trim());
+            categoryPath = categoryPath.substring(categoryPath.indexOf(rootTaxonomyNode.getName()));
+            //session.getItem(categoryPath.trim());
           } catch (ItemNotFoundException e) {
             uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
                 ApplicationMessage.WARNING)) ;
@@ -338,7 +354,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       String mimeType = mimeTypeSolver.getMimeType(fileName) ;
       Node selectedNode = uiExplorer.getCurrentNode();      
       boolean isExist = selectedNode.hasNode(name) ;
-      String repository = uiExplorer.getRepositoryName() ;
       String newNodeUUID = null;
       try {
         String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
@@ -402,9 +417,21 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
               }
               if(newNode != null) {              
                 for(String categoryPath : arrayTaxonomy) {
-                  String tempCategoryPath = categoryPath.replaceAll(uiForm.getPathTaxonomy() + "/", "");
-                  String[] arrayCategoryPath = tempCategoryPath.split("/");
-                  taxonomyService.addCategory(newNode, arrayCategoryPath[0], categoryPath);
+                  for(Node itemNode : listNode) {
+                    if (categoryPath.contains(itemNode.getPath())) {
+                      rootTaxonomyNode = itemNode;
+                      break;
+                    } 
+                  }
+                  try {
+                    String[] arrayCategoryPath = categoryPath.split("/" + rootTaxonomyNode.getName());
+                    taxonomyService.addCategory(newNode, rootTaxonomyNode.getName(), arrayCategoryPath[1]);
+                  } catch(ItemExistsException item) {
+                    uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.ItemExistsException", null, 
+                        ApplicationMessage.WARNING)) ;
+                    event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+                    return;
+                  }
                 }                
                 selectedNode.getSession().save() ;                        
               }
@@ -529,18 +556,21 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       UIUploadForm uiUploadForm =  (UIUploadForm) uiSet.getParent();
       UIUploadManager uiUploadManager = uiUploadForm.getParent();
       UIJCRExplorer uiExplorer = uiUploadForm.getAncestorOfType(UIJCRExplorer.class);
-      NodeHierarchyCreator nodeHierarchyCreator = uiUploadForm.getApplicationComponent(NodeHierarchyCreator.class);
+      NodeHierarchyCreator nodeHierarchyCreator = 
+        uiUploadForm.getApplicationComponent(NodeHierarchyCreator.class);
       String repository = uiExplorer.getRepositoryName();
-      ManageableRepository manaRepository = 
-        uiUploadForm.getApplicationComponent(RepositoryService.class).getRepository(repository);
-      String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
+      DMSConfiguration dmsConfig = uiUploadForm.getApplicationComponent(DMSConfiguration.class);
+      DMSRepositoryConfiguration dmsRepoConfig = dmsConfig.getConfig(repository);
+      String workspaceName = dmsRepoConfig.getSystemWorkspace();
       
       UIPopupWindow uiPopupWindow = uiUploadManager.initPopupTaxonomy(POPUP_TAXONOMY);
-      UIOneTaxonomySelector uiOneTaxonomySelector = uiUploadManager.createUIComponent(UIOneTaxonomySelector.class, null, null);
+      UIOneTaxonomySelector uiOneTaxonomySelector = 
+        uiUploadManager.createUIComponent(UIOneTaxonomySelector.class, null, null);
       uiPopupWindow.setUIComponent(uiOneTaxonomySelector);
       uiOneTaxonomySelector.setIsDisable(workspaceName, false);
       String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
-      Session session = uiUploadForm.getAncestorOfType(UIJCRExplorer.class).getSession();
+      Session session = 
+        uiUploadForm.getAncestorOfType(UIJCRExplorer.class).getSessionByWorkspace(workspaceName);
       Node rootTree = (Node) session.getItem(rootTreePath);      
       NodeIterator childrenIterator = rootTree.getNodes();
       while (childrenIterator.hasNext()) {
