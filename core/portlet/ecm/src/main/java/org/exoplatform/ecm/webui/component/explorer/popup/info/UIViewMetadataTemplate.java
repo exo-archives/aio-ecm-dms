@@ -28,6 +28,7 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -89,10 +90,16 @@ public class UIViewMetadataTemplate extends UIContainer {
       String nodeType = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIViewMetadataManager uiMetaManager = uiViewTemplate.getAncestorOfType(UIViewMetadataManager.class) ;
       UIJCRExplorer uiExplorer = uiViewTemplate.getAncestorOfType(UIJCRExplorer.class) ;
-      Node currentNode = uiExplorer.getCurrentNode() ;
-      if(!PermissionUtil.canSetProperty(currentNode)) {
+      UIApplication uiApp = uiViewTemplate.getAncestorOfType(UIApplication.class);
+      Node currentNode = uiExplorer.getCurrentNode();
+      if (!PermissionUtil.canSetProperty(currentNode)) {
         throw new MessageException(new ApplicationMessage("UIViewMetadataTemplate.msg.access-denied",
                                                           null, ApplicationMessage.WARNING)) ;
+      }
+      if (!currentNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
       uiMetaManager.initMetadataFormPopup(nodeType) ;
       UIViewMetadataContainer uiContainer = uiViewTemplate.getParent() ;

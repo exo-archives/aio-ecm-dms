@@ -28,9 +28,11 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.metadata.MetadataService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
@@ -60,38 +62,38 @@ import org.exoplatform.webui.form.UIFormStringInput;
 )
 public class UIViewMetadataForm extends UIDialogForm {
 
-  private String nodeType_ ;
+  private String nodeType_;
   
   public UIViewMetadataForm() throws Exception {
-    setActions(ACTIONS) ;
+    setActions(ACTIONS);
   }
 
-  public void setNodeType(String nodeType) { nodeType_ = nodeType ; }
-  public String getNodeType() { return nodeType_ ; } 
+  public void setNodeType(String nodeType) { nodeType_ = nodeType; }
+  public String getNodeType() { return nodeType_; } 
   
   public String getDialogTemplatePath() { 
-    repositoryName = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-    MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
+    repositoryName = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+    MetadataService metadataService = getApplicationComponent(MetadataService.class);
     try {
-      return metadataService.getMetadataPath(nodeType_, true, repositoryName) ;
+      return metadataService.getMetadataPath(nodeType_, true, repositoryName);
     } catch (Exception e) {
-      e.printStackTrace() ;
+      e.printStackTrace();
     } 
-    return null ;
+    return null;
   }
   
-  public String getTemplate() { return getDialogTemplatePath() ; }
+  public String getTemplate() { return getDialogTemplatePath(); }
   
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
+    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver();
   }
 
   @SuppressWarnings("unchecked")
   static public class SaveActionListener extends EventListener<UIViewMetadataForm> {
     public void execute(Event<UIViewMetadataForm> event) throws Exception {
       UIViewMetadataForm uiForm = event.getSource();
-      UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
-      UIViewMetadataManager uiViewManager = uiForm.getAncestorOfType(UIViewMetadataManager.class) ;
+      UIJCRExplorer uiJCRExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+      UIViewMetadataManager uiViewManager = uiForm.getAncestorOfType(UIViewMetadataManager.class);
       Node node = uiViewManager.getViewNode(uiForm.getNodeType());
       NodeTypeManager ntManager = uiJCRExplorer.getSession().getWorkspace().getNodeTypeManager();
       PropertyDefinition[] props = ntManager.getNodeType(uiForm.getNodeType()).getPropertyDefinitions();
@@ -104,17 +106,17 @@ public class UIViewMetadataForm extends UIDialogForm {
           if (prop.isMultiple()) {
             if (requiredType == 5) { // date
               UIFormDateTimeInput uiFormDateTime = (UIFormDateTimeInput) uiForm.getUIInput(inputName);
-              valueList.add(uiJCRExplorer.getSession().getValueFactory().createValue(uiFormDateTime.getCalendar())) ;
+              valueList.add(uiJCRExplorer.getSession().getValueFactory().createValue(uiFormDateTime.getCalendar()));
               node.setProperty(name, valueList.toArray(new Value[] {}));
             } else {
-              List<String> values = (List<String>) ((UIFormMultiValueInputSet)uiForm.getUIInput(inputName)).getValue() ;
+              List<String> values = (List<String>) ((UIFormMultiValueInputSet)uiForm.getUIInput(inputName)).getValue();
               node.setProperty(name, values.toArray(new String[values.size()]));
             }
           } else {
             if (requiredType == 6) { // boolean
-              UIFormInput uiInput = uiForm.getUIInput(inputName) ;
+              UIFormInput uiInput = uiForm.getUIInput(inputName);
               String value = "false";
-              if(uiInput instanceof UIFormSelectBox) value =  ((UIFormSelectBox)uiInput).getValue() ;
+              if(uiInput instanceof UIFormSelectBox) value =  ((UIFormSelectBox)uiInput).getValue();
               node.setProperty(name, Boolean.parseBoolean(value));
             } else if (requiredType == 5) { // date
               UIFormDateTimeInput cal = (UIFormDateTimeInput) uiForm.getUIInput(inputName);
@@ -132,30 +134,30 @@ public class UIViewMetadataForm extends UIDialogForm {
       }
       node.save();
       node.getSession().save();
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewManager) ;
-      UIPopupWindow uiPopup = uiViewManager.getChildById(UIViewMetadataManager.METADATAS_POPUP) ;
-      uiPopup.setShow(false) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewManager);
+      UIPopupWindow uiPopup = uiViewManager.getChildById(UIViewMetadataManager.METADATAS_POPUP);
+      uiPopup.setShow(false);
     }
   }
   
   static public class CancelActionListener extends EventListener<UIViewMetadataForm> {
     public void execute(Event<UIViewMetadataForm> event) throws Exception {
-      UIViewMetadataForm uiForm = event.getSource() ;
-      UIPopupWindow uiPopup = uiForm.getAncestorOfType(UIPopupWindow.class) ;
-      uiPopup.setShow(false) ;
-      uiPopup.setRendered(false) ;
+      UIViewMetadataForm uiForm = event.getSource();
+      UIPopupWindow uiPopup = uiForm.getAncestorOfType(UIPopupWindow.class);
+      uiPopup.setShow(false);
+      uiPopup.setRendered(false);
     }
   }
 
   static public class AddActionListener extends EventListener<UIViewMetadataForm> {
     public void execute(Event<UIViewMetadataForm> event) throws Exception {
-      event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent());
     }
   }
 
   static public class RemoveActionListener extends EventListener<UIViewMetadataForm> {
     public void execute(Event<UIViewMetadataForm> event) throws Exception {
-      event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource().getParent());
     }
   }  
 }
