@@ -3,23 +3,23 @@
   <parent>
     <groupId>org.exoplatform.ecm.dms</groupId>
     <artifactId>ext</artifactId>
-    <version>2.4-SNAPSHOT</version>
+    <version>2.4beta1</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms.ext</groupId>
   <artifactId>contentvalidation</artifactId>
   <name>eXo Content Validation</name>
-  <version>2.4-SNAPSHOT</version>
+  <version>2.4beta1</version>
   <packaging>pom</packaging>
 
   <modules>
-	<module>bp</module>
-	<module>component/bonitaconfig</module>
-	<module>component/jbpmconfig</module>
-	<module>component/plugin</module>
-	<module>component/webui</module>
-	<module>component/workflowPublication</module>
+  	<module>bp</module>
+  	<module>component/bonitaconfig</module>
+  	<module>component/jbpmconfig</module>
+  	<module>component/plugin</module>
+  	<module>component/webui</module>
+  	<module>component/workflowPublication</module>
   </modules>
 
   <build>
@@ -219,7 +219,7 @@
         <org.exoplatform.ws.version>1.3.2</org.exoplatform.ws.version>
         <org.exoplatform.pc.version>2.0.4</org.exoplatform.pc.version>
         <org.exoplatform.portal.version>2.5.2</org.exoplatform.portal.version>
-		    <org.exoplatform.ecm.dms.version>2.4-SNAPSHOT</org.exoplatform.ecm.dms.version>
+		    <org.exoplatform.ecm.dms.version>2.4beta1</org.exoplatform.ecm.dms.version>
 	    	<org.exoplatform.ecm.workflow.version>1.0</org.exoplatform.ecm.workflow.version>
 	    	<exo.test.classes>Test</exo.test.classes>
         <exo.test.skip>true</exo.test.skip>

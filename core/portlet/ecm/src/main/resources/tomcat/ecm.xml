@@ -1,2 +1,2 @@
-<Context path="/ecm" docBase="../../../eXoProjects/ecm/dms/trunk/core/portlet/ecm/src/main/webapp" 
+<Context path="/ecm" docBase="../../../eXoProjects/ecm/dms/tags/2.4beta1/core/portlet/ecm/src/main/webapp" 
          debug="0" reloadable="true" />

@@ -3,27 +3,27 @@
   <parent>
     <groupId>org.exoplatform.ecm</groupId>
     <artifactId>dms</artifactId>
-    <version>2.4-SNAPSHOT</version>
+    <version>2.4beta1</version>
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms.core</groupId>
   <artifactId>config</artifactId>
   <name>eXo DMS Config</name>
-  <version>2.4-SNAPSHOT</version>
+  <version>2.4beta1</version>
   <packaging>pom</packaging>
 
   <modules>
     <module>component/cms</module>
-	<module>component/deployment</module>
-	<module>component/publication</module>
-	<module>connectors/fckeditor</module>
-	<module>webui/dms</module>
-	<module>web/eXoDMSResources</module>	
+  	<module>component/deployment</module>
+  	<module>component/publication</module>
+  	<module>connectors/fckeditor</module>
+  	<module>webui/dms</module>
+  	<module>web/eXoDMSResources</module>	
     <module>portlet/ecm</module>
     <module>portlet/jcr-console</module>
     <module>web/dmsportal</module>
-	<module>gadgets</module>
+  	<module>gadgets</module>
   </modules>
 
   <build>
@@ -223,7 +223,7 @@
         <org.exoplatform.ws.version>1.3.2</org.exoplatform.ws.version>
         <org.exoplatform.pc.version>2.0.4</org.exoplatform.pc.version>
         <org.exoplatform.portal.version>2.5.2</org.exoplatform.portal.version>
-        <org.exoplatform.ecm.dms.version>2.4-SNAPSHOT</org.exoplatform.ecm.dms.version>
+        <org.exoplatform.ecm.dms.version>2.4beta1</org.exoplatform.ecm.dms.version>
 	    	<org.shindig.version>0.8.1-1-r719456</org.shindig.version>
 		    <exo.test.classes>Test</exo.test.classes>
         <exo.test.skip>true</exo.test.skip>
