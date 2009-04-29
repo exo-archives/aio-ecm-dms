@@ -1492,7 +1492,9 @@ public class UIBrowseContainer extends UIContainer {
       UIBrowseContainer uiContainer = event.getSource();
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class);
       List templates = templateService.getDocumentTemplates(uiContainer.getRepository());
-      Node historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT);
+      Node historyNode = null;
+      historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT);
+      if (historyNode == null) historyNode = uiContainer.getCurrentNode();
       if (historyNode.getName() != "") {
         uiContainer.listHistoryNode.clear();
       }
@@ -1501,7 +1503,7 @@ public class UIBrowseContainer extends UIContainer {
           LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
           historyNode = linkManager.getTarget(historyNode);
         }
-        if(historyNode.hasNodes()) {
+        if (historyNode.hasNodes()) {
           NodeIterator nodeIter = historyNode.getNodes();
           while(nodeIter.hasNext()) {
             Node child = nodeIter.nextNode();
@@ -1532,9 +1534,15 @@ public class UIBrowseContainer extends UIContainer {
         String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "");
         uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, 
             repoName, SessionProviderFactory.createSystemProvider()).getNode(detailTemplateName).getPath());
-        uiContainer.viewDocument(historyNode, true);
-        uiContainer.setCurrentNodePath(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT).getPath());
-        uiContainer.setSelectedTabPath(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED).getPath());
+        if (uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT) == null) {
+          uiContainer.changeNode(historyNode.getParent());
+          uiContainer.setCurrentNodePath(historyNode.getParent().getPath());
+          uiContainer.setSelectedTabPath(historyNode.getParent().getPath());
+        } else {
+          uiContainer.viewDocument(historyNode, true);
+          uiContainer.setCurrentNodePath(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT).getPath());
+          uiContainer.setSelectedTabPath(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED).getPath());
+        }
         uiContainer.getHistory().clear();
       } else if(uiContainer.isShowDocumentDetail() && historyNode == null) {
         uiContainer.setShowDocumentByTag(false);
@@ -1558,9 +1566,14 @@ public class UIBrowseContainer extends UIContainer {
         UIDocumentDetail uiDocumentDetail = uiContainer.getChild(UIDocumentDetail.class);      
         uiContainer.setShowDocumentDetail(false);
         uiDocumentDetail.setRendered(false);
-        if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH) && historyNode != null) {
-          uiContainer.setCurrentNodePath(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT).getPath());
-          uiContainer.setSelectedTabPath(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED).getPath());
+        if (uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH) && historyNode != null) {
+          if (uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT) == null) {
+            uiContainer.setCurrentNodePath(historyNode.getParent().getPath());
+            uiContainer.setSelectedTabPath(historyNode.getParent().getPath());
+          } else {
+            uiContainer.setCurrentNodePath(uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT).getPath());
+            uiContainer.setSelectedTabPath(uiContainer.getHistory().get(UIBrowseContainer.KEY_SELECTED).getPath());
+          }
           if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
             uiContainer.setPageIterator(uiContainer.getSubDocumentList(historyNode));
           }
