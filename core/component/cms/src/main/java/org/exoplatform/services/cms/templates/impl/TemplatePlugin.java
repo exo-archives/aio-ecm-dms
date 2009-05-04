@@ -34,6 +34,8 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
@@ -70,8 +72,14 @@ public class TemplatePlugin extends BaseComponentPlugin {
   private boolean autoCreateInNewRepository_=false;
   private Log log = ExoLogger.getLogger("Templateplugin") ;
   
-  public TemplatePlugin(InitParams params, RepositoryService jcrService, ConfigurationManager configManager,
-      NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
+  /**
+   * DMS configuration which used to store informations
+   */   
+  private DMSConfiguration dmsConfiguration_;
+  
+  public TemplatePlugin(InitParams params, RepositoryService jcrService, 
+      ConfigurationManager configManager, NodeHierarchyCreator nodeHierarchyCreator, 
+      DMSConfiguration dmsConfiguration) throws Exception {
     nodeHierarchyCreator_ = nodeHierarchyCreator;
     repositoryService_ = jcrService;
     configManager_ = configManager;
@@ -82,7 +90,8 @@ public class TemplatePlugin extends BaseComponentPlugin {
     ValueParam param = params_.getValueParam("autoCreateInNewRepository");
     if(param!=null) {
       autoCreateInNewRepository_ = Boolean.parseBoolean(param.getValue()) ;
-    }        
+    }
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   public void init() throws Exception {               
@@ -150,17 +159,12 @@ public class TemplatePlugin extends BaseComponentPlugin {
   @SuppressWarnings("unchecked")
   private void importPredefineTemplates(String repositoryName) throws Exception {
     ManageableRepository repository = repositoryService_.getRepository(repositoryName) ;
-    String workspace = repository.getConfiguration().getDefaultWorkspaceName();
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repositoryName);
+    String workspace = dmsRepoConfig.getSystemWorkspace();
     Session session = repository.getSystemSession(workspace) ;
     Node templatesHome = Utils.makePath(session.getRootNode(), cmsTemplatesBasePath_, NT_UNSTRUCTURED);
     TemplateConfig templateConfig = null ;
     Iterator<ObjectParameter> iter = params_.getObjectParamIterator() ;
-    //be carefull. Maybe lost data here
-    //recommented by Hung: this code over the init template in second plugin
-    /*if(templatesHome.hasNodes()) {
-      session.logout();
-      return ;
-    }*/
     while(iter.hasNext()) {
       Object object = iter.next().getObject() ;
       if(!(object instanceof TemplateConfig)) {          
