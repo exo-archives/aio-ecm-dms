@@ -29,6 +29,8 @@ import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.container.xml.ValueParam;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -44,8 +46,10 @@ public class QueryPlugin extends BaseComponentPlugin {
   private boolean autoCreateInNewRepository_ = false;  
   private String repository_ ;  
   private RepositoryService repositoryService_ ;
+  private DMSConfiguration dmsConfiguration_;
 
-  public QueryPlugin(RepositoryService repositoryService, InitParams params) throws Exception {
+  public QueryPlugin(RepositoryService repositoryService, InitParams params, 
+      DMSConfiguration dmsConfiguration) throws Exception {
     params_ = params ;    
     repositoryService_ = repositoryService ;
     ValueParam autoInitParam = params.getValueParam("autoCreateInNewRepository") ;    
@@ -56,6 +60,7 @@ public class QueryPlugin extends BaseComponentPlugin {
     if(param !=null) {
       repository_ = param.getValue();
     }        
+    dmsConfiguration_ = dmsConfiguration;
   } 
 
   public void init(String basedQueriesPath) throws Exception {
@@ -102,8 +107,8 @@ public class QueryPlugin extends BaseComponentPlugin {
   
   private Session getSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
-    return manageableRepository.getSystemSession(workspace) ;    
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace()) ;    
   }
 
   private void addQuery(Node queryHome, QueryData data) throws Exception {

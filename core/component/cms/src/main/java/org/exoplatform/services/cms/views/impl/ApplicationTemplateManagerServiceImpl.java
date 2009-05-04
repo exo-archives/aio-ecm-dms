@@ -30,6 +30,8 @@ import org.apache.commons.logging.Log;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PropertiesParam;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.views.ApplicationTemplateManagerService;
 import org.exoplatform.services.cms.views.PortletTemplatePlugin;
 import org.exoplatform.services.cms.views.PortletTemplatePlugin.PortletTemplateConfig;
@@ -57,6 +59,8 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
   private Map<String, String> storedWorkspaces = new HashMap<String,String>();
   
   private String basedApplicationTemplatesPath;
+  
+  private DMSConfiguration dmsConfiguration_;
 
   /**
    * Instantiates a new application template manager service impl.
@@ -67,7 +71,9 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
    * 
    * @throws Exception the exception
    */
-  public ApplicationTemplateManagerServiceImpl(RepositoryService repositoryService, NodeHierarchyCreator hierarchyCreator, InitParams params) throws Exception{
+  public ApplicationTemplateManagerServiceImpl(RepositoryService repositoryService, 
+      NodeHierarchyCreator hierarchyCreator, InitParams params, 
+      DMSConfiguration dmsConfiguration) throws Exception{
     this.repositoryService = repositoryService;
     PropertiesParam propertiesParam = params.getPropertiesParam("storedLocations");
     if(propertiesParam == null)
@@ -80,7 +86,8 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
       }
       storedWorkspaces.put(repoName,workspaceName);
       basedApplicationTemplatesPath = hierarchyCreator.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);
-    }        
+    }
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   /* (non-Javadoc)
@@ -195,9 +202,11 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
    * @throws Exception the exception
    */
   private Node getBasedApplicationTemplatesHome(SessionProvider sessionProvider, String repository) throws Exception {
-    String workspace = storedWorkspaces.get(repository);
+//    String workspace = storedWorkspaces.get(repository);
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
     ManageableRepository manageableRepository = repositoryService.getRepository(repository);
-    Session session = sessionProvider.getSession(workspace,manageableRepository);
+    Session session = 
+      sessionProvider.getSession(dmsRepoConfig.getSystemWorkspace(),manageableRepository);
     return (Node)session.getItem(basedApplicationTemplatesPath);
   }
 

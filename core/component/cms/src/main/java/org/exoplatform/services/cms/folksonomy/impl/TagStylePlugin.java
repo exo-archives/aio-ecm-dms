@@ -27,6 +27,8 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.impl.TagStyleConfig.HtmlTagStyle;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
@@ -39,14 +41,20 @@ public class TagStylePlugin extends BaseComponentPlugin{
   final private static String TAG_RATE_PROP = "exo:styleRange".intern() ;
   final private static String HTML_STYLE_PROP = "exo:htmlStyle".intern() ;
 	private InitParams params_ ;
-  private RepositoryService repoService_ ;
+  private RepositoryService repositoryService_ ;
   private NodeHierarchyCreator nodeHierarchyCreator_ ;
   
+  /**
+   * DMS configuration which used to store informations
+   */   
+   private DMSConfiguration dmsConfiguration_;
+  
 	public TagStylePlugin(InitParams params, RepositoryService repoService,
-      NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
+      NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration) throws Exception {
     params_ = params ;
-    repoService_ = repoService ;
+    repositoryService_ = repoService ;
     nodeHierarchyCreator_ = nodeHierarchyCreator ;
+    dmsConfiguration_ = dmsConfiguration;
 	}	 
   
   
@@ -58,15 +66,14 @@ public class TagStylePlugin extends BaseComponentPlugin{
     while(it.hasNext()) {
       tagConfig = (TagStyleConfig)it.next().getObject() ;
       if(tagConfig.getAutoCreatedInNewRepository()) {
-        List<RepositoryEntry> repositories = repoService_.getConfig().getRepositoryConfigurations() ;
+        List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
         for(RepositoryEntry repo : repositories) {
-          ManageableRepository manageableRepository = repoService_.getRepository(repo.getName()) ;
-          session = manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName()) ; ;
+          session = getSession(repo.getName());
           addTag(session, tagConfig) ;
           session.logout();
         }
       } else {
-        session = repoService_.getRepository(tagConfig.getRepository()).getSystemSession(repoService_.getRepository(tagConfig.getRepository()).getConfiguration().getSystemWorkspaceName()) ;
+        session = getSession(tagConfig.getRepository());
         addTag(session, tagConfig) ;
         session.logout();
       }      
@@ -78,11 +85,10 @@ public class TagStylePlugin extends BaseComponentPlugin{
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
     TagStyleConfig tagConfig ;
     Session session ;
-    ManageableRepository manageableRepository = repoService_.getRepository(repository) ;
     while(it.hasNext()) {
       tagConfig = (TagStyleConfig)it.next().getObject() ;
       if(tagConfig.getAutoCreatedInNewRepository() || repository.equals(tagConfig.getRepository())) {
-        session = manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName()) ; 
+        session = getSession(tagConfig.getRepository()); 
         addTag(session, tagConfig) ;
         session.logout();
       }
@@ -101,4 +107,16 @@ public class TagStylePlugin extends BaseComponentPlugin{
     exoTagStyleHomeNode.save() ;
     session.save() ;    
   }
+  
+  /**
+  * Get session in system workspace from given repository name
+  * @param repository        repository name
+  * @return                  Session
+  * @throws Exception
+  */
+ private Session getSession(String repository) throws Exception{ 
+   ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
+   DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+   return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
+ }
 }

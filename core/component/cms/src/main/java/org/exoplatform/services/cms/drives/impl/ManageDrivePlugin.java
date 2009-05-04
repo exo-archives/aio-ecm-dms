@@ -26,6 +26,8 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -45,13 +47,15 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
 
   private RepositoryService repositoryService_;
   private NodeHierarchyCreator nodeHierarchyCreator_;
-  private InitParams params_ ; 
+  private InitParams params_ ;
+  private DMSConfiguration dmsConfiguration_;
 
-  public ManageDrivePlugin(RepositoryService repositoryService, 
-      InitParams params, NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
+  public ManageDrivePlugin(RepositoryService repositoryService, InitParams params, 
+      NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration) throws Exception {
     repositoryService_ = repositoryService;
     nodeHierarchyCreator_ = nodeHierarchyCreator ;
     params_ = params ;  
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   /**
@@ -135,6 +139,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
    */
   private Session getSession(String repository)throws Exception {
     ManageableRepository manaRepository = repositoryService_.getRepository(repository) ;
-    return manaRepository.getSystemSession(manaRepository.getConfiguration().getSystemWorkspaceName()) ;
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return manaRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace()) ;
   }
 }

@@ -28,6 +28,8 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.views.TemplateConfig;
 import org.exoplatform.services.cms.views.ViewConfig;
 import org.exoplatform.services.cms.views.ViewConfig.Tab;
@@ -49,9 +51,10 @@ public class ManageViewPlugin extends BaseComponentPlugin {
   private ConfigurationManager cservice_ ;
   private boolean autoCreateInNewRepository_ = false ;  
   private String predefinedViewsLocation_ = "war:/conf/dms/artifacts";
+  private DMSConfiguration dmsConfiguration_;
 
   public ManageViewPlugin(RepositoryService repositoryService, InitParams params, ConfigurationManager cservice, 
-      NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
+      NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration) throws Exception {
     params_ = params ;
     repositoryService_ = repositoryService ;
     nodeHierarchyCreator_ = nodeHierarchyCreator ;
@@ -64,6 +67,7 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     if(predefinedViewLocation != null) {
       predefinedViewsLocation_ = predefinedViewLocation.getValue();
     }
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   public void init() throws Exception {    
@@ -95,8 +99,8 @@ public class ManageViewPlugin extends BaseComponentPlugin {
     String templatesPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);    
     String warViewPath = predefinedViewsLocation_ + templatesPath.substring(templatesPath.lastIndexOf("exo:ecm") + 7) ;
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;    
-    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
-    Session session = manageableRepository.getSystemSession(workspace) ;
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    Session session = manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace()) ;
     ViewConfig viewObject = null ;
     TemplateConfig templateObject = null ;
     Node viewHomeNode = (Node)session.getItem(viewsPath) ;

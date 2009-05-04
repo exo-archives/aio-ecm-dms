@@ -37,6 +37,8 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
@@ -60,9 +62,11 @@ public class QueryServiceImpl implements QueryService, Startable{
   private String baseUserPath_ ;
   private String baseQueriesPath_ ;
   private String group_ ;
+  private DMSConfiguration dmsConfiguration_;
 
   public QueryServiceImpl(RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator, 
-      InitParams params, PortalContainerInfo containerInfo, CacheService cacheService,OrganizationService organizationService) throws Exception {
+      InitParams params, PortalContainerInfo containerInfo, CacheService cacheService, 
+      OrganizationService organizationService, DMSConfiguration dmsConfiguration) throws Exception {
     relativePath_ = params.getValueParam("relativePath").getValue();    
     group_ = params.getValueParam("group").getValue();
     repositoryService_ = repositoryService;
@@ -71,6 +75,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     organizationService_ = organizationService ;
     baseUserPath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
     baseQueriesPath_ = nodeHierarchyCreator.getJcrPath(BasePath.QUERIES_PATH) ;
+    dmsConfiguration_ = dmsConfiguration;
   }
   
   /**
@@ -374,14 +379,15 @@ public class QueryServiceImpl implements QueryService, Startable{
   //TODO need to use SystemProvider
   private Session getSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
-    return manageableRepository.getSystemSession(workspace);    
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());    
   }
 
   private Session getSession(String repository,SessionProvider provider) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
-    return provider.getSession(workspace,manageableRepository) ;
+//    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return provider.getSession(dmsRepoConfig.getSystemWorkspace(), manageableRepository) ;
   }
 
   private Session getSession(String repository,String workspace,SessionProvider provider) throws Exception {

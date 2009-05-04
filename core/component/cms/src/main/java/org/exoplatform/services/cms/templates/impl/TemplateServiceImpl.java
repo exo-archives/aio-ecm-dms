@@ -38,6 +38,8 @@ import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.cms.templates.ContentTypeFilterPlugin;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -78,15 +80,22 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   private ExoCache templatesCache_ ;
   private ExoCache rtlTemplateCache_;
   
+  /**
+   * DMS configuration which used to store informations
+   */   
+  private DMSConfiguration dmsConfiguration_;
+  
   public TemplateServiceImpl(RepositoryService jcrService,
       NodeHierarchyCreator nodeHierarchyCreator, IdentityRegistry identityRegistry,
-      LocaleConfigService localeConfigService, CacheService caService) throws Exception {
+      LocaleConfigService localeConfigService, CacheService caService, 
+      DMSConfiguration dmsConfiguration) throws Exception {
     identityRegistry_ = identityRegistry;
     repositoryService_ = jcrService;
     localeConfigService_ = localeConfigService;
     cmsTemplatesBasePath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_TEMPLATES_PATH);
     templatesCache_ = caService.getCacheInstance(org.exoplatform.groovyscript.text.TemplateService.class.getName()) ;
     rtlTemplateCache_ = caService.getCacheInstance("RTLTemplateCache");
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   public void start() {
@@ -560,8 +569,8 @@ public class TemplateServiceImpl implements TemplateService, Startable {
 
   private Session getSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
-    String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
-    return manageableRepository.getSystemSession(systemWorksapce);
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
   }
 
   private List<String> getAllDocumentNodeTypes(String repository) throws Exception {
@@ -579,8 +588,8 @@ public class TemplateServiceImpl implements TemplateService, Startable {
 
   private Session getSession(String repository, SessionProvider provider) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
-    String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
-    return provider.getSession(systemWorksapce, manageableRepository);
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return provider.getSession(dmsRepoConfig.getSystemWorkspace(), manageableRepository);
   }
 
   private boolean hasPermission(String userId,Value[] roles, IdentityRegistry identityRegistry) throws Exception {        

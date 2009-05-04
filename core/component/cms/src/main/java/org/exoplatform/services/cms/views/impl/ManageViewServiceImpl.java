@@ -28,6 +28,8 @@ import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.views.ViewConfig;
 import org.exoplatform.services.cms.views.ViewConfig.Tab;
@@ -56,14 +58,16 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   private RepositoryService repositoryService_ ;
   private String baseViewPath_ ;
   private NodeHierarchyCreator nodeHierarchyCreator_ ;
-
+  private DMSConfiguration dmsConfiguration_;
+  
   public ManageViewServiceImpl(InitParams params, RepositoryService jcrService,
-      NodeHierarchyCreator nodeHierarchyCreator) throws Exception{
+      NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration) throws Exception{
     repositoryService_ = jcrService ;
     nodeHierarchyCreator_ = nodeHierarchyCreator ;
     baseViewPath_ = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_VIEWS_PATH) ;
     ValueParam buttonParam = params.getValueParam("buttons") ;
     buttons_ = buttonParam.getValue() ;
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   public void start() {
@@ -228,14 +232,14 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
 
   private Session getSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    String worksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
-    return manageableRepository.getSystemSession(worksapce) ;    
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace()) ;    
   }
   
   private Session getSession(String repository,SessionProvider sessionProvider) throws Exception{
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    String worksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
-    return sessionProvider.getSession(worksapce,manageableRepository) ;
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return sessionProvider.getSession(dmsRepoConfig.getSystemWorkspace(), manageableRepository) ;
   }
 
   public List<Node> getAllTemplates(String homeAlias, String repository,SessionProvider provider) throws Exception {

@@ -31,6 +31,8 @@ import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.categories.impl.TaxonomyConfig.Permission;
 import org.exoplatform.services.cms.categories.impl.TaxonomyConfig.Taxonomy;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
@@ -49,9 +51,14 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
   private String baseTaxonomiesPath_ ;  
   private InitParams params_ ;  
   private boolean autoCreateInNewRepository_ = true;  
+  /**
+   * DMS configuration which used to store informations
+   */   
+  private DMSConfiguration dmsConfiguration_;
 
-
-  public TaxonomyPlugin(InitParams params, RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
+  public TaxonomyPlugin(InitParams params, RepositoryService repositoryService, 
+      NodeHierarchyCreator nodeHierarchyCreator, 
+      DMSConfiguration dmsConfiguration) throws Exception {
     repositoryService_ = repositoryService ;
     baseTaxonomiesPath_ = nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH) ;    
     params_ = params ;
@@ -59,6 +66,7 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
     if(valueParam !=null) {
       autoCreateInNewRepository_ = Boolean.parseBoolean(valueParam.getValue()) ;
     }   
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   public void init() throws Exception {    
@@ -86,8 +94,8 @@ public class TaxonomyPlugin extends BaseComponentPlugin{
   @SuppressWarnings("unchecked")
   private void importPredefineTaxonomies(String repository) throws Exception {    
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    String workspace = manageableRepository.getConfiguration().getSystemWorkspaceName() ;    
-    Session session = manageableRepository.getSystemSession(workspace) ;    
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);    
+    Session session = manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace()) ;    
     Node taxonomyHomeNode = (Node)session.getItem(baseTaxonomiesPath_) ;
     //TODO Need remove this code
     if(taxonomyHomeNode.hasProperty("exo:isImportedChildren"))  { 

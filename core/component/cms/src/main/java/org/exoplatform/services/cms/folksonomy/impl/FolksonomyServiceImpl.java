@@ -34,6 +34,8 @@ import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.folksonomy.TagStyle;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -151,6 +153,11 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   private ExoCache cache_ ;  
   
   /**
+   * DMS configuration which used to store informations
+   */   
+  private DMSConfiguration dmsConfiguration_;  
+  
+  /**
    * Constructor method
    * Construct repoService_, nodeHierarchyCreator_, baseTagsPath_, exoTagStylePath_, cache_
    * @param repoService             RepositoryService object
@@ -159,12 +166,14 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * @throws Exception
    */
   public FolksonomyServiceImpl(RepositoryService repoService,
-      NodeHierarchyCreator nodeHierarchyCreator, CacheService cacheService ) throws Exception{
+      NodeHierarchyCreator nodeHierarchyCreator, CacheService cacheService, 
+      DMSConfiguration dmsConfiguration) throws Exception{
     repoService_ = repoService ;
     nodeHierarchyCreator_ = nodeHierarchyCreator ;    
     baseTagsPath_ = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_TAGS_PATH) ;
     exoTagStylePath_ = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_TAG_STYLE_PATH) ;
-    cache_ = cacheService.getCacheInstance(FolksonomyServiceImpl.class.getName()) ;       
+    cache_ = cacheService.getCacheInstance(FolksonomyServiceImpl.class.getName()) ;
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   /**
@@ -373,7 +382,8 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    */
   protected Session getSystemSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repoService_.getRepository(repository) ;
-    return manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName()) ;    
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace()) ;    
   }  
 
   /**

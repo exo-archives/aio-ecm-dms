@@ -56,6 +56,8 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.link.ItemLinkAware;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
@@ -291,8 +293,11 @@ public class UIJCRExplorer extends UIContainer {
 
   public JCRResourceResolver getJCRTemplateResourceResolver() { return jcrTemplateResourceResolver_; }
   public void newJCRTemplateResourceResolver() {    
-    try{                        
-      String workspace =  driveData_.getWorkspace() ;
+    try{
+      DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+      DMSRepositoryConfiguration dmsRepoConfig = 
+        dmsConfiguration.getConfig(currentDriveRepositoryName_);
+      String workspace =  dmsRepoConfig.getSystemWorkspace();
       jcrTemplateResourceResolver_ = new JCRResourceResolver(currentDriveRepositoryName_, workspace, "exo:templateFile") ;
     } catch(Exception e) {
       LOG.error("Cannot instantiate the JCRResourceResolver", e);

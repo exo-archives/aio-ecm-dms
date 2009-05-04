@@ -26,6 +26,8 @@ import javax.jcr.Session;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -108,6 +110,8 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
    * NodeHierarchyCreator object 
    */
   private NodeHierarchyCreator nodeHierarchyCreator_ ;
+  
+  private DMSConfiguration dmsConfiguration_;
 
   /**
    * Constructor method
@@ -117,10 +121,11 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
    * @throws Exception
    */
   public ManageDriveServiceImpl(RepositoryService jcrService, 
-      NodeHierarchyCreator nodeHierarchyCreator) throws Exception{
+      NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration) throws Exception{
     repositoryService_ = jcrService ;
     nodeHierarchyCreator_ = nodeHierarchyCreator ;
     baseDrivePath_ = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_DRIVES_PATH);
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   /**
@@ -276,7 +281,8 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
    */
   private Session getSession(String repository) throws Exception{    
     ManageableRepository manaRepository = repositoryService_.getRepository(repository) ;
-    return manaRepository.getSystemSession(manaRepository.getConfiguration().getSystemWorkspaceName()) ;          
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return manaRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace()) ;          
   }
 
   public boolean isUsedView(String viewName, String repository) throws Exception {

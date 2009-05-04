@@ -28,6 +28,8 @@ import javax.jcr.nodetype.PropertyDefinition;
 
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.cms.templates.impl.TemplatePlugin;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -114,6 +116,11 @@ public class MetadataServiceImpl implements MetadataService, Startable{
    * List of TemplatePlugin plugins_
    */
   private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
+ 
+  /**
+  * DMS configuration which used to store informations
+  */   
+  private DMSConfiguration dmsConfiguration_;
 
   /**
    * Constructor method
@@ -123,10 +130,11 @@ public class MetadataServiceImpl implements MetadataService, Startable{
    * @throws Exception
    */
   public MetadataServiceImpl(NodeHierarchyCreator nodeHierarchyCreator, 
-      RepositoryService repositoryService) throws Exception{
+      RepositoryService repositoryService, DMSConfiguration dmsConfiguration) throws Exception {
     nodeHierarchyCreator_ = nodeHierarchyCreator;
     repositoryService_ = repositoryService;
     baseMetadataPath_ = nodeHierarchyCreator_.getJcrPath(BasePath.METADATA_PATH);
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   /**
@@ -438,6 +446,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
    */
   private Session getSession(String repository) throws Exception{ 
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
-    return manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName());
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
   }
 }

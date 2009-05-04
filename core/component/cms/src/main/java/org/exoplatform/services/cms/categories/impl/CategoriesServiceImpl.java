@@ -30,6 +30,8 @@ import javax.jcr.Workspace;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.categories.CategoriesService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -51,10 +53,17 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   private String baseTaxonomyPath_ ;  
   List<TaxonomyPlugin> plugins_ = new ArrayList<TaxonomyPlugin>() ;
 
+  /**
+   * DMS configuration which used to store informations
+   */   
+  private DMSConfiguration dmsConfiguration_;  
+  
   public CategoriesServiceImpl(RepositoryService repositoryService,
-      NodeHierarchyCreator nodeHierarchyCreator) throws Exception{  
+      NodeHierarchyCreator nodeHierarchyCreator, 
+      DMSConfiguration dmsConfiguration) throws Exception{  
     repositoryService_ = repositoryService;    
     baseTaxonomyPath_ = nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);
+    dmsConfiguration_ = dmsConfiguration;
   }
   
   public void init(String repository) throws Exception {
@@ -224,14 +233,14 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
 
   public Session getSession(String repository) throws Exception {    
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
-    return manageableRepository.getSystemSession(workspace) ;
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace()) ;
   }
   
   private Session getSession(String repository,SessionProvider provider) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
-    return provider.getSession(workspace,manageableRepository) ;
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    return provider.getSession(dmsRepoConfig.getSystemWorkspace(), manageableRepository) ;
   }
 
   public void start() {

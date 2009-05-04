@@ -42,6 +42,8 @@ import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.BaseResourceLoaderService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.impl.ResourceConfig;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
@@ -57,13 +59,16 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   private RepositoryService repositoryService_ ;
   private NodeHierarchyCreator nodeHierarchyCreator_ ;   
   List<ScriptPlugin> plugins_ = new ArrayList<ScriptPlugin>() ;
+  private DMSConfiguration dmsConfiguration_;
 
   public ScriptServiceImpl(RepositoryService repositoryService, ConfigurationManager cservice,
-      NodeHierarchyCreator nodeHierarchyCreator,CacheService cacheService) throws Exception {    
+      NodeHierarchyCreator nodeHierarchyCreator, CacheService cacheService, 
+      DMSConfiguration dmsConfiguration) throws Exception {    
     super(cservice, nodeHierarchyCreator, repositoryService, cacheService);
     groovyClassLoader_ = createGroovyClassLoader();
     repositoryService_ = repositoryService ; 
-    nodeHierarchyCreator_ = nodeHierarchyCreator ;    
+    nodeHierarchyCreator_ = nodeHierarchyCreator ;
+    dmsConfiguration_ = dmsConfiguration;
   }
 
   public void start() {    
@@ -75,7 +80,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   }
 
   public void addScriptPlugin(ComponentPlugin plugin) {
-    if(plugin instanceof ScriptPlugin) {			
+    if(plugin instanceof ScriptPlugin) {      
       plugins_.add((ScriptPlugin)plugin) ;
     }
   }
@@ -87,8 +92,10 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       String scriptsLocation = plugin.getPredefineScriptsLocation();
       if(plugin.getAutoCreateInNewRepository()) {
         List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;                
+        DMSRepositoryConfiguration dmsRepoConfig = null;
         for(RepositoryEntry repo : repositories) {
-          session = repositoryService_.getRepository(repo.getName()).getSystemSession(repo.getSystemWorkspaceName());          
+          dmsRepoConfig = dmsConfiguration_.getConfig(repo.getName());
+          session = repositoryService_.getRepository(repo.getName()).getSystemSession(dmsRepoConfig.getSystemWorkspace());          
           Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
           while(iter.hasNext()) {
             init(session,(ResourceConfig) iter.next().getObject(),scriptsLocation) ;            
@@ -104,7 +111,8 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
         repository = repositoryService_.getDefaultRepository().getConfiguration().getName();
       }
       ManageableRepository mRepository = repositoryService_.getRepository(repository) ;
-      session = mRepository.getSystemSession(mRepository.getConfiguration().getSystemWorkspaceName()) ;          
+      DMSRepositoryConfiguration dmsDefaultRepoConfig = dmsConfiguration_.getConfig(repository);
+      session = mRepository.getSystemSession(dmsDefaultRepoConfig.getSystemWorkspace()) ;          
       Iterator<ObjectParameter> iter = plugin.getScriptIterator() ;
       while(iter.hasNext()) {
         init(session,(ResourceConfig) iter.next().getObject(),scriptsLocation) ;            
@@ -121,7 +129,8 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   public void initRepo(String repository) throws Exception {
     ManageableRepository mRepository = repositoryService_.getRepository(repository) ;
     String scriptsPath = getBasePath();
-    Session session = mRepository.getSystemSession(mRepository.getConfiguration().getSystemWorkspaceName()) ;
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+    Session session = mRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace()) ;
     for(ScriptPlugin plugin : plugins_) {
       if(!plugin.getAutoCreateInNewRepository()) continue ;
       String scriptsLocation = plugin.getPredefineScriptsLocation();
@@ -262,10 +271,12 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
       try {
         path = event.getPath();
         List<RepositoryEntry> repositories = repositoryService_.getConfig().getRepositoryConfigurations() ;
+        DMSRepositoryConfiguration dmsRepoConfig = null;
         for(RepositoryEntry repo : repositories) {
           try {
             ManageableRepository manageableRepository = repositoryService_.getRepository(repo.getName()) ;
-            jcrSession = manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName());
+            dmsRepoConfig = dmsConfiguration_.getConfig(repo.getName());
+            jcrSession = manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
             Property property = (Property) jcrSession.getItem(path);
             if ("jcr:data".equals(property.getName())) {
               Node node = property.getParent();
@@ -334,8 +345,9 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   
   private Session getSession(String repository,SessionProvider provider) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
-    String systemWokspace = manageableRepository.getConfiguration().getSystemWorkspaceName();
-    return provider.getSession(systemWokspace,manageableRepository);
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
+//    String systemWokspace = manageableRepository.getConfiguration().getSystemWorkspaceName();
+    return provider.getSession(dmsRepoConfig.getSystemWorkspace(), manageableRepository);
   }
   
   private Node getNodeByAlias(String alias,Session session) throws Exception {
