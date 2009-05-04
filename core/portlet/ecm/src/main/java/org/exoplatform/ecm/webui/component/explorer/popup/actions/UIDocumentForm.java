@@ -371,8 +371,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(RepositoryException repo) {
-        repo.printStackTrace();
-        String key = "UIDocumentForm.msg.repository-exception";
+        String key = "UIDocumentForm.msg.repository-exception-permission";
         if(ItemExistsException.class.isInstance(repo)) key = "UIDocumentForm.msg.not-allowed-same-name-sibling";
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());

@@ -1549,6 +1549,8 @@
       <not-support>Kan template van '{0}' niet laden.</not-support>
       <value-invalid>'{0}' is vereist</value-invalid>
       <repository-exception>Kan document niet opslaan. naam moet index op het einde bevatten</repository-exception>
+      <!--DMS 2.4.x; ECM-3543-->
+      <repository-exception-permission>You don't have permission to add a new document on this node</repository-exception-permission>
       <not-allowed-same-name-sibling>Kan document niet opslaan. geen zelfde naam voor node</not-allowed-same-name-sibling>
       <numberformat-exception>Kan document niet opslaan. naam mag geen '[' or ']' bevatten.</numberformat-exception>
       <item-not-found>object niet gevonden! klik om te herladen</item-not-found>

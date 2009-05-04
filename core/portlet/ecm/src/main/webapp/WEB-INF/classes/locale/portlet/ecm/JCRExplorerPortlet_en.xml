@@ -1586,6 +1586,7 @@
       <not-support>Cannot load template of '{0}'.</not-support>
       <value-invalid>'{0}' is needed value</value-invalid>
       <repository-exception>Can not save this document. The name provided must not have an index on its final element.</repository-exception>
+      <repository-exception-permission>You don't have permission to add a new document on this node</repository-exception-permission>
       <not-allowed-same-name-sibling>Can not save this document. This node is not allowed same name sibling</not-allowed-same-name-sibling>
       <numberformat-exception>Can not save this document. The name provided must not have '[' or ']'.</numberformat-exception>
       <item-not-found>Item not found! Maybe this node or ancestor was deleted. Please click to refresh button.</item-not-found>

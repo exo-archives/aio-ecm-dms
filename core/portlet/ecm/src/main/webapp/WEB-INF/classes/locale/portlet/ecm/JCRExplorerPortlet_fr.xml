@@ -1604,6 +1604,8 @@
       <not-support>Impossible de charge le formulaire de '{0}'.</not-support>
       <value-invalid>Valeur requise dans '{0}'</value-invalid>
       <repository-exception>Sauvegarde du document impossible. Le nom du noeud existe déjà.</repository-exception>
+      <!--DMS 2.4.x; ECM-3543-->
+      <repository-exception-permission>You don't have permission to add a new document on this node</repository-exception-permission>
       <not-allowed-same-name-sibling>Impossible de sauvegarder ce document. Le nom du noeud existe déjà</not-allowed-same-name-sibling>
       <numberformat-exception>Sauvegarde du document impossible. Les caractères '[' ou ']' ne sont pas autorisés dans le nom.</numberformat-exception>
       <item-not-found>L'élément n'a pas été trouvé ! Peut être que ce noeud ou un de ses ancètres a été supprimé. Veuiller cliquer sur le bouton "Actualiser".</item-not-found>

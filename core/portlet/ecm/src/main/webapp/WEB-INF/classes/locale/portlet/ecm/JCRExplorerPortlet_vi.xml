@@ -1554,6 +1554,8 @@
       <not-support>Không thể tải mẫu của '{0}'.</not-support>
       <value-invalid>'{0}' là giá trị cần thiết.</value-invalid>
       <repository-exception>Không thể lưu tài liệu này. Tên của tài liệu không chứa chỉ mục trên phần tử cuối cùng cửa nó.</repository-exception>
+      <!--DMS 2.4.x; ECM-3543-->
+      <repository-exception-permission>You don't have permission to add a new document on this node</repository-exception-permission>
       <not-allowed-same-name-sibling>Không thể lưu tài liệu này.Node này không được phép trùng tên.</not-allowed-same-name-sibling>
       <numberformat-exception>Không thể lưu tài liệu này. Tên của tài liệu không được chứa '[' hoặc ']'.</numberformat-exception>
       <item-not-found>Khoản mục không được tìm thấy!Có thể node này hoặc node cha đã bị xóa.Vui lòng nhấp vào nút refresh.</item-not-found>
