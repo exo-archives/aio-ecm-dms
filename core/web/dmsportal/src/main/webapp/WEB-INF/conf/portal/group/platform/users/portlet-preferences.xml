@@ -198,7 +198,12 @@
         <name>categoryMandatoryWhenFileUpload</name>     
         <value>false</value>        
         <read-only>false</read-only>
-      </preference>    
+      </preference>
+      <preference>
+        <name>uploadFileSizeLimitMB</name>     
+        <value>30</value>        
+        <read-only>false</read-only>
+      </preference>
       <preference>
         <name>usecase</name>
         <value>selection</value>  

@@ -45,6 +45,7 @@ import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.validator.NumberFormatValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -77,6 +78,12 @@ public class UIJcrExplorerEditForm extends UIForm {
     checkBoxCategory.setChecked(Boolean.parseBoolean(getPreference().getValue(UIJCRExplorerPortlet.CATEGORY_MANDATORY, "")));
     checkBoxCategory.setEnable(false);
     addChild(checkBoxCategory);
+    
+    UIFormStringInput uiMaxSizeUpload = new UIFormStringInput(UIJCRExplorerPortlet.MAX_SIZE_UPLOAD, UIJCRExplorerPortlet.MAX_SIZE_UPLOAD, null);
+    uiMaxSizeUpload.addValidator(NumberFormatValidator.class);
+    uiMaxSizeUpload.setValue(getPreference().getValue(UIJCRExplorerPortlet.MAX_SIZE_UPLOAD, ""));
+    uiMaxSizeUpload.setEditable(false);
+    addChild(uiMaxSizeUpload);
     
     List<SelectItemOption<String>> listType = new ArrayList<SelectItemOption<String>>();
     String usecase = getPreference().getValue(UIJCRExplorerPortlet.USECASE, "");
@@ -174,6 +181,8 @@ public class UIJcrExplorerEditForm extends UIForm {
     checkBoxCategory.setEnable(isEditable);
     UIFormSelectBox typeSelectBox = getChildById(UIJCRExplorerPortlet.USECASE);
     typeSelectBox.setEnable(isEditable);
+    UIFormStringInput uiMaxFileSize = getChildById(UIJCRExplorerPortlet.MAX_SIZE_UPLOAD);
+    uiMaxFileSize.setEditable(isEditable);
   } 
   
   private PortletPreferences getPreference() {
@@ -228,6 +237,8 @@ public class UIJcrExplorerEditForm extends UIForm {
       } else {
         driveNameInput.setRendered(false);
       }
+      UIFormStringInput uiMaxFileSize = uiForm.getUIStringInput(UIJCRExplorerPortlet.MAX_SIZE_UPLOAD);
+      uiMaxFileSize.setValue(pref.getValue(UIJCRExplorerPortlet.MAX_SIZE_UPLOAD, ""));
       uiForm.setEditable(false);
       uiForm.setActions(new String[] {"Edit"});
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
@@ -278,6 +289,7 @@ public class UIJcrExplorerEditForm extends UIForm {
       PortletPreferences pref = uiForm.getPreference();
       UIFormSelectBox repository = uiForm.getChildById(UIJCRExplorerPortlet.REPOSITORY);
       UIFormCheckBoxInput<Boolean> checkBoxCategory = uiForm.getChildById(UIJCRExplorerPortlet.CATEGORY_MANDATORY);
+      UIFormStringInput uiMaxFileSize = uiForm.getUIStringInput(UIJCRExplorerPortlet.MAX_SIZE_UPLOAD);
       UIFormSelectBox typeSelectBox = uiForm.getChildById(UIJCRExplorerPortlet.USECASE);
       UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
       UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
@@ -290,6 +302,7 @@ public class UIJcrExplorerEditForm extends UIForm {
       }
       pref.setValue(UIJCRExplorerPortlet.REPOSITORY, repository.getValue());
       pref.setValue(UIJCRExplorerPortlet.CATEGORY_MANDATORY, String.valueOf(checkBoxCategory.isChecked()));
+      pref.setValue(UIJCRExplorerPortlet.MAX_SIZE_UPLOAD, String.valueOf(uiMaxFileSize.getValue()));
       pref.setValue(UIJCRExplorerPortlet.USECASE, useCase);
       pref.setValue(UIJCRExplorerPortlet.DRIVE_NAME, driveName);
       pref.store();

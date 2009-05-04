@@ -2103,6 +2103,7 @@
     <label>
       <repository>Repository</repository>
       <categoryMandatoryWhenFileUpload>Category Mandatory</categoryMandatoryWhenFileUpload>
+      <uploadFileSizeLimitMB>Upload file size limit(MB)</uploadFileSizeLimitMB>
       <isDirectlyDrive>Directly Drive</isDirectlyDrive>
       <driveName>Drive Name</driveName>
       <usecase>Select Type</usecase>

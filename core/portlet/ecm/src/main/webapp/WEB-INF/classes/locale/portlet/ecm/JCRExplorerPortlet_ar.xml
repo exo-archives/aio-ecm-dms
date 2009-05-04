@@ -2114,6 +2114,68 @@ Nouvelle configuration
   </PublicationService>
   
   <!--
+  ### Since ECM version 2.3 Alpha##############
+  Access directly a JCR FE drive
+  -->
+  <UIJCRExporerPortlet>
+    <nopermission>هذا ليس بقُرص أو انّك لا تملك الصلاحيّة الكافية للدّخول إلى هذا القُرص</nopermission>
+  </UIJCRExporerPortlet>
+  
+  <UIJcrExplorerEditForm>
+    <title>مُستكشف الملفات مشهد التغيير</title>
+    <action>
+      <Edit>تغيير</Edit>
+      <Save>حفظ</Save>
+      <Cancel>إلغاء</Cancel>
+    </action>
+    <label>
+      <repository>مُستودع البيانات</repository>
+      <categoryMandatoryWhenFileUpload>الرجاء تحديد الفئة عند تحميلك للملفّ</categoryMandatoryWhenFileUpload>
+      <uploadFileSizeLimitMB>حجم ملف التحميل(MB)</uploadFileSizeLimitMB>	
+      <isDirectlyDrive>القرص المباشر</isDirectlyDrive>
+      <driveName>اسم القرص</driveName>
+      <usecase>اختيار النّوع</usecase>
+    </label>
+  </UIJcrExplorerEditForm>
+  
+  <UIDriveSelector>
+    <label>
+      <driveName>اسم القرص</driveName>
+      <action>إجراء</action>
+      <adddrives>إضافة أقراص</adddrives>
+    </label>
+  </UIDriveSelector>
+  <UIJcrExplorerEditForm>
+    <label>
+      <driveName>اسم القرص</driveName>
+      <DriveNameInput>UIJcrExplorerEditForm</DriveNameInput>
+    </label>
+    <msg>
+      <not-have-social>النموذج التطبيقي الاجتماعي غير متوفّر، سيتمّ استعمال النموذج المُختار عوضاً عن ذلك</not-have-social>
+      <personal-usecase>سيتمّ استعمال القرص الشخصي الخاص بالمستخدم الحالي عند اختيارك للنموذج التطبيقي الشخصي</personal-usecase>
+    </msg>
+  </UIJcrExplorerEditForm>
+  
+  <PopUpSelectDrive>
+    <title>
+      <UIDriveSelector>اختيار  قرص</UIDriveSelector>
+    </title>
+  </PopUpSelectDrive>
+  
+  <DriveNameInput>
+    <title>
+      <SelectDrive>اختيار  قرص</SelectDrive>
+    </title>
+  </DriveNameInput>
+  
+  <UIConfirmMessage>
+	<label>
+	  <Close>#{word.close}</Close>
+	  <OK>OK</OK>
+	</label>
+  </UIConfirmMessage>  
+  
+  <!--
 	### Since ECM version 2.4.x ##############
 	### To be translated ####
   -->

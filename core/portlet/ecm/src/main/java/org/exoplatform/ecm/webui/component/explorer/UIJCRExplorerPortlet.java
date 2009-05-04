@@ -41,15 +41,26 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
    */
   private static final Log LOG  = ExoLogger.getLogger("explorer.UIJCRExplorerPortlet");
   
-  final static public String REPOSITORY =  "repository";
-  final static public String CATEGORY_MANDATORY =  "categoryMandatoryWhenFileUpload";
-  final static public String ISDIRECTLY_DRIVE =  "isDirectlyDrive";
-  final static public String DRIVE_NAME =  "driveName";
-  final static public String USECASE = "usecase";
-  final static public String JAILED = "jailed";
-  final static public String SOCIAL = "social";
-  final static public String SELECTION = "selection";
-  final static public String PERSONAL = "personal";
+  final static public String REPOSITORY         = "repository";
+
+  final static public String CATEGORY_MANDATORY = "categoryMandatoryWhenFileUpload";
+
+  final static public String MAX_SIZE_UPLOAD    = "uploadFileSizeLimitMB";
+
+  final static public String ISDIRECTLY_DRIVE   = "isDirectlyDrive";
+
+  final static public String DRIVE_NAME         = "driveName";
+
+  final static public String USECASE            = "usecase";
+
+  final static public String JAILED             = "jailed";
+
+  final static public String SOCIAL             = "social";
+
+  final static public String SELECTION          = "selection";
+
+  final static public String PERSONAL           = "personal";
+  
   
   private boolean flagSelect = false;
   
