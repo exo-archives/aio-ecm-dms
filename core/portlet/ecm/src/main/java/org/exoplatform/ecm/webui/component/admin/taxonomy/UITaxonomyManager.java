@@ -26,6 +26,8 @@ import javax.portlet.PortletPreferences;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -113,9 +115,15 @@ public class UITaxonomyManager extends UIContainer {
     return repository ;
   }
   
+  private String getDmsSystemWorkspaceName(String repository) {
+    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(repository);
+    return dmsRepoConfig.getSystemWorkspace();
+  }
+  
   public Session getSession() throws Exception {
     String repositoryName = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    String workspace = getRepository(repositoryName).getConfiguration().getSystemWorkspaceName() ;
+    String workspace = getDmsSystemWorkspaceName(repositoryName) ;
     return SessionProviderFactory.createSystemProvider().getSession(workspace, getRepository(repositoryName)) ;
   }
   
@@ -125,14 +133,14 @@ public class UITaxonomyManager extends UIContainer {
   }
   
   public void initPopup(String path) throws Exception {
-    removeChildById("TaxonomyPopup") ;
-    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "TaxonomyPopup") ;
-    uiPopup.setWindowSize(600,250) ;
-    UITaxonomyForm uiTaxoForm = createUIComponent(UITaxonomyForm.class, null, null) ;
-    uiTaxoForm.setParent(path) ;
-    uiPopup.setUIComponent(uiTaxoForm) ;
-    uiPopup.setRendered(true) ;
-    uiPopup.setShow(true) ;
+    removeChildById("TaxonomyPopup");
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, "TaxonomyPopup");
+    uiPopup.setWindowSize(600, 250);
+    UITaxonomyForm uiTaxoForm = createUIComponent(UITaxonomyForm.class, null, null);
+    uiPopup.setUIComponent(uiTaxoForm);
+    uiTaxoForm.setParent(path);
+    uiPopup.setRendered(true);
+    uiPopup.setShow(true);
   }
 
   public UIPopupContainer initPopupPermission(String id) throws Exception {

@@ -21,7 +21,9 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.ReferentialIntegrityException;
+import javax.jcr.RepositoryException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
@@ -56,6 +58,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UITaxonomyWorkingArea.ViewPermissionActionListener.class)
     }
 )
+
 public class UITaxonomyWorkingArea extends UIContainer {
   private UIPageIterator uiPageIterator_;
   private List<Node> taxonomyNodes_ ;

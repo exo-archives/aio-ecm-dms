@@ -51,7 +51,6 @@ public class UITaxonomyForm extends UIForm {
   
   final static private String FIELD_PARENT = "parentPath" ;
   final static private String FIELD_NAME = "taxonomyName" ;
-  final static private String ROOT_PATH = "/jcr:system/exo:ecm/" ;
   
   public UITaxonomyForm() throws Exception {
     addUIFormInput(new UIFormInputInfo(FIELD_PARENT, FIELD_PARENT, null)) ;
@@ -59,8 +58,9 @@ public class UITaxonomyForm extends UIForm {
     			addValidator(MandatoryValidator.class).addValidator(ECMNameValidator.class)) ;
   }
   
-  public void setParent(String path) {
-    path = path.replaceFirst(ROOT_PATH, "") ;
+  public void setParent(String path) throws Exception {
+    String rootPath = getAncestorOfType(UITaxonomyManager.class).getRootNode().getPath();
+    path = path.replaceFirst(rootPath, "") ;
     getUIFormInputInfo(FIELD_PARENT).setValue(path) ;
     getUIStringInput(FIELD_NAME).setValue(null) ;
   }
@@ -97,7 +97,8 @@ public class UITaxonomyForm extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String parentPath = ROOT_PATH + uiForm.getUIFormInputInfo(FIELD_PARENT).getValue() ;
+      String rootPath = uiManager.getRootNode().getPath();
+      String parentPath = rootPath + uiForm.getUIFormInputInfo(FIELD_PARENT).getValue() ;
       try {
         uiForm.addTaxonomy(parentPath, name)  ;
         uiManager.update(parentPath) ;
