@@ -23,6 +23,8 @@ import java.util.ResourceBundle;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.ConstraintViolationException;
+import javax.jcr.nodetype.NodeDefinition;
+import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
@@ -119,8 +121,8 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         type = uiFolderForm.allowCreateFolder_ ;
       }
       try {
-        node.addNode(name, type) ;
-        node.save() ;
+        node.addNode(name, type);
+        node.save();
         node.getSession().save();
         if(!uiExplorer.getPreference().isJcrEnable())  { node.getSession().save() ; }
         uiExplorer.updateAjax(event) ;
@@ -129,9 +131,17 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         throw new MessageException(new ApplicationMessage("UIFolderForm.msg.constraint-violation",
             arg, ApplicationMessage.WARNING)) ;
       } catch(RepositoryException re) {
-        String key = "UIFolderForm.msg.repository-exception" ;
-        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        String key = "";
+        NodeDefinition[] definitions = node.getPrimaryNodeType().getChildNodeDefinitions();
+        for (NodeDefinition def : definitions) {
+          if (node.hasNode(name) && !def.allowsSameNameSiblings()) {
+            key = "UIFolderForm.msg.not-allow-sameNameSibling";
+          } else {
+            key = "UIFolderForm.msg.repository-exception";
+          }
+        }
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return ;
       } catch(NumberFormatException nume) {
         String key = "UIFolderForm.msg.numberformat-exception" ;

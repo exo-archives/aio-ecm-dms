@@ -417,6 +417,8 @@ Nouvelle configuration
       <constraint-violation>العقدة المختارة لا تسمح بهذا النوع من العقد: '{0}'.</constraint-violation>
       <repository-exception>غير مسموح بالدخول!ليس لك الصلاحية لإضافة في هذا المجلد</repository-exception>
       <numberformat-exception>لا يمكن حفظ المجلد. الاسم يجب أن لا يحتوي على '[' أو ']'</numberformat-exception>
+      <!--DMS 2.4.x; ECM-3553-->
+      <not-allow-sameNameSibling>Can not save. This node is not allowed same name sibling</not-allow-sameNameSibling>
     </msg>
   </UIFolderForm>
   <!--

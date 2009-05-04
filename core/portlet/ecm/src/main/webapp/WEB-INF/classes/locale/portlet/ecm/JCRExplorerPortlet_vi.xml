@@ -414,6 +414,7 @@
       <constraint-violation>Node Hiển thị không được phép thêm kiểu node '{0}'.</constraint-violation>
       <repository-exception>Truy cập bị từ chối. Bạn không có quyền thêm mới node ở đây.</repository-exception>
       <numberformat-exception>Không thể lưu lại thư mục này. Tên đưa vào phải không chứa '[' hoặc ']'</numberformat-exception>
+      <not-allow-sameNameSibling>Không thể lưu lại thư mục này. Loại node này không hỗ trợ trùng tên</not-allow-sameNameSibling>
     </msg>
   </UIFolderForm>
   <!--

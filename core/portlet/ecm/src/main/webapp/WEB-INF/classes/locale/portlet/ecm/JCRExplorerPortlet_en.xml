@@ -415,6 +415,7 @@
       <constraint-violation>Current node does not allow to add '{0}' node type</constraint-violation>
       <repository-exception>Access deny! You don't have add permission in this folder</repository-exception>
       <numberformat-exception>Can not save this folder. The name provided must not have '[' or ']'</numberformat-exception>
+      <not-allow-sameNameSibling>Can not save. This node is not allowed same name sibling</not-allow-sameNameSibling>
     </msg>
   </UIFolderForm>
   <!--

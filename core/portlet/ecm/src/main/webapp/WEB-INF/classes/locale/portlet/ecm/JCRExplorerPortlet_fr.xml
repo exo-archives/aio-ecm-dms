@@ -423,6 +423,8 @@
       <constraint-violation>Le noeud courant n'autorise pas l'ajout d'un noeud du type '{0}'</constraint-violation>
       <repository-exception>Ce répertoire ne peut être sauvegardé. Le nom fournit ne doit pas avoir d'indexe ou existe déjà.</repository-exception>
       <numberformat-exception>Ce répertoire ne peut être sauvegardé. Le nom fournit ne doit pas contenir les caractéres '[' et ']'</numberformat-exception>
+      <!--DMS 2.4.x; ECM-3553-->
+      <not-allow-sameNameSibling>Can not save. This node is not allowed same name sibling</not-allow-sameNameSibling>
     </msg>
   </UIFolderForm>
   <!--

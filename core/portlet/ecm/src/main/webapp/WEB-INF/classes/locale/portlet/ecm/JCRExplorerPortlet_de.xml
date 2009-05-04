@@ -420,6 +420,8 @@
       <constraint-violation><![CDATA[Momentaner Knoten erlaubt kein Hinzuf&uuml;gen von '{0}' Knotentypen]]></constraint-violation>
       <repository-exception>Kann diesen Ordner nicht speichern. Der angegebene Name darf nich mit einem Index enden oder dieser Name ist schon vergeben.</repository-exception>
       <numberformat-exception>Kann diesen Ordner nicht speichern. Der angegebene Name darf nicht '[' or ']' enthalten</numberformat-exception>
+      <!--DMS 2.4.x; ECM-3553-->
+      <not-allow-sameNameSibling>Can not save. This node is not allowed same name sibling</not-allow-sameNameSibling>
     </msg>
   </UIFolderForm>
   <!--
