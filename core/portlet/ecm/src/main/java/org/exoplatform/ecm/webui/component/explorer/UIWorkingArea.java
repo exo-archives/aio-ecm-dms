@@ -995,6 +995,16 @@ public class UIWorkingArea extends UIContainer {
     UIJCRExplorer uiExplorer = getParent();
     Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
     String wsName = null;
+    UIApplication uiApp = getAncestorOfType(UIApplication.class);
+    if(srcPath.indexOf(":/") > -1) {
+      String[] arrSrcPath = srcPath.split(":/");
+      if(("/" + arrSrcPath[1]).equals(destNode.getPath())) {
+        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.can-not-move-to-itself", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+    }
     if (matcher.find()) {
       wsName = matcher.group(1);
       srcPath = matcher.group(2);
@@ -1009,7 +1019,6 @@ public class UIWorkingArea extends UIContainer {
     // Reset the session to manage the links that potentially change of workspace
     srcSession = selectedNode.getSession();
     
-    UIApplication uiApp = getAncestorOfType(UIApplication.class);
     if(!selectedNode.isCheckedOut()) {
       uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null, 
           ApplicationMessage.WARNING));

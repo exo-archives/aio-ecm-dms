@@ -2313,5 +2313,11 @@
     <title>
 			<UIOneTaxonomySelector>Thêm categories</UIOneTaxonomySelector>
     </title>
-  </PopupComponent>	
+  </PopupComponent>
+  
+  <UIWorkingArea>
+    <msg>
+      <can-not-move-to-itself>Không thể di chuyển vị trí: Thư mục đích và thư mục nguồn là giống nhau</can-not-move-to-itself>
+    </msg>
+  </UIWorkingArea>  
 </bundle>

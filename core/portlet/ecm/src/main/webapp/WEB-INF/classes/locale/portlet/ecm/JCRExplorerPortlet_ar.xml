@@ -2318,5 +2318,11 @@ Nouvelle configuration
     <title>
 			<UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
     </title>
-  </PopupComponent>    
+  </PopupComponent>
+  
+  <UIWorkingArea>
+    <msg>
+      <can-not-move-to-itself>Can not move: The destination folder is the same as the source folder</can-not-move-to-itself>
+    </msg>
+  </UIWorkingArea>  
 </bundle>
