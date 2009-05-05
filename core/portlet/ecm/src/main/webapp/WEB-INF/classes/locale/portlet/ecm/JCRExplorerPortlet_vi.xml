@@ -1053,7 +1053,7 @@
       <Search>Tìm kiếm</Search>
     </action>
     <msg>
-      <name-invalid>Tên là bắt buộc</name-invalid>
+      <name-invalid>Tên có một số kí tự không hợp lệ</name-invalid>
       <query-added>Truy vấn được thêm vào</query-added>
       <save_unSuccessful>Không thể lưu: Truy vấn không hợp lệ hoặc tên của truy vấn đã tồn tại</save_unSuccessful>
       <invalid-queryStatement>Câu truy vấn không hợp lệ.</invalid-queryStatement>

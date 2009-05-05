@@ -1082,7 +1082,7 @@
       <Search>Search</Search>
     </action>
     <msg>
-      <name-invalid>Name is required</name-invalid>
+      <name-invalid>Name is invalid!</name-invalid>
       <query-added>Query added</query-added>
       <save_unSuccessful>Can't save : statement is invalid or query name already exists</save_unSuccessful>
       <invalid-queryStatement>Invalid query statement.</invalid-queryStatement>

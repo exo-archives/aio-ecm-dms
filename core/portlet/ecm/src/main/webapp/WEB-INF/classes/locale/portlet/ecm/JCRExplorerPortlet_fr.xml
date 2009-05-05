@@ -1092,7 +1092,8 @@
       <Search>Rechercher</Search>
     </action>
     <msg>
-      <name-invalid>Le nom est manquant</name-invalid>
+      <!--DMS 2.4.x ECM-3566-->
+      <name-invalid>Name is invalid!</name-invalid>
       <query-added>Requête ajoutée</query-added>
       <save_unSuccessful>Sauvegarde impossible : la requête est invalide ou une requête du même nom existe déjà</save_unSuccessful>
       <invalid-queryStatement>la requête est invalide</invalid-queryStatement>

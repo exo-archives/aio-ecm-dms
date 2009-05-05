@@ -24,6 +24,7 @@ import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.ValueFactory;
@@ -124,10 +125,15 @@ public class QueryServiceImpl implements QueryService, Startable{
 
   public List<Query> getQueries(String userName, String repository,SessionProvider provider) throws Exception {
     List<Query> queries = new ArrayList<Query>();        
-    if(userName == null) return queries;    
-    Session session = getSession(repository,provider) ;
-    QueryManager manager = session.getWorkspace().getQueryManager();           
-    Node usersHome = (Node) session.getItem(baseUserPath_);
+    if (userName == null) return queries;    
+    Session session = getSession(repository, provider, true);
+    QueryManager manager = session.getWorkspace().getQueryManager();
+    Node usersHome;
+    try {
+      usersHome = (Node)session.getItem(baseUserPath_);
+    } catch (PathNotFoundException e) {
+      usersHome = (Node)getSession(repository, provider, false).getItem(baseUserPath_);
+    }
     Node userHome = null ;
     if(usersHome.hasNode(userName)) {
       userHome = usersHome.getNode(userName);
@@ -259,12 +265,12 @@ public class QueryServiceImpl implements QueryService, Startable{
   }
 
   public Node getSharedQuery(String queryName, String repository,SessionProvider provider) throws Exception {
-    Session session = getSession(repository,provider) ;    
+    Session session = getSession(repository, provider, true) ;    
     return (Node)session.getItem(baseQueriesPath_ + "/" + queryName);
   }
   
   public List<Node> getSharedQueries(String repository,SessionProvider provider) throws Exception {
-    Session session = getSession(repository,provider);
+    Session session = getSession(repository, provider, true);
     List<Node> queries = new ArrayList<Node>() ;
     Node sharedQueryHome = (Node) session.getItem(baseQueriesPath_);
     NodeIterator iter = sharedQueryHome.getNodes();
@@ -315,7 +321,7 @@ public class QueryServiceImpl implements QueryService, Startable{
   }
   
   public QueryResult execute(String queryPath, String workspace, String repository,SessionProvider provider, String userId) throws Exception {
-    Session session = getSession(repository,provider);    
+    Session session = getSession(repository, provider, true);    
     Node queryNode = (Node)session.getItem(queryPath) ;    
     if(queryNode.hasProperty("exo:cachedResult")){
       if(queryNode.getProperty("exo:cachedResult").getBoolean()) {
@@ -383,9 +389,12 @@ public class QueryServiceImpl implements QueryService, Startable{
     return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());    
   }
 
-  private Session getSession(String repository,SessionProvider provider) throws Exception {
+  private Session getSession(String repository,SessionProvider provider, boolean flag) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-//    String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
+    if (!flag) {
+      String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
+      return provider.getSession(workspace,manageableRepository) ;
+    }
     DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
     return provider.getSession(dmsRepoConfig.getSystemWorkspace(), manageableRepository) ;
   }

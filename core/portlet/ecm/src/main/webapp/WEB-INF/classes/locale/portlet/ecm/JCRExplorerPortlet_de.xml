@@ -1082,7 +1082,8 @@
       <Search>Suchen</Search>
     </action>
     <msg>
-      <name-invalid><![CDATA[Name wird ben&ouml;tigt]]></name-invalid>
+      <!--DMS 2.4.x ECM-3566-->
+      <name-invalid>Name is invalid!</name-invalid>
       <query-added><![CDATA[Abfrage ben&ouml;tigt]]></query-added>
       <save_unSuccessful><![CDATA[Kann nicht speichern : Aussage ist ung&uuml;ltig oder Abfragename existiert schon]]></save_unSuccessful>
       <invalid-queryStatement><![CDATA[Ung&uuml;ltige Abfragenaussage.]]></invalid-queryStatement>

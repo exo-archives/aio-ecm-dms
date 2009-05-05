@@ -1087,7 +1087,8 @@ Nouvelle configuration
       <Search>بحث</Search>
     </action>
     <msg>
-      <name-invalid>الاسم ظروري</name-invalid>
+      <!--DMS 2.4.x ECM-3566-->
+      <name-invalid>Name is invalid!</name-invalid>
       <query-added>تم إضافة الاستبيان</query-added>
       <save_unSuccessful>لا يمكن الحفظ، استبيان غير صحيح أو اسم الاستبيان موجود</save_unSuccessful>
       <invalid-queryStatement> استبيان غير صحيح.</invalid-queryStatement>

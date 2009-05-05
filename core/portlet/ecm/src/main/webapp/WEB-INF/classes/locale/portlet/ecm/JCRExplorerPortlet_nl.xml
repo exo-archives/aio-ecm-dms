@@ -1081,7 +1081,8 @@
       <Search>Zoeken</Search>
     </action>
     <msg>
-      <name-invalid>naam is vereist</name-invalid>
+      <!--DMS 2.4.x ECM-3566-->
+      <name-invalid>Name is invalid!</name-invalid>
       <query-added>Query toegevoegd</query-added>
       <save_unSuccessful>kan niet  opslaan : verklaring is ongeldig of query naam bestaat reeds</save_unSuccessful>
       <invalid-queryStatement>ongeldig query verklaring</invalid-queryStatement>
