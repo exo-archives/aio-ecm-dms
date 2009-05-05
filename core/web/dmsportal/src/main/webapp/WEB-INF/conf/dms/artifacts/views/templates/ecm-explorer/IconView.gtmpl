@@ -12,7 +12,7 @@
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UISimpleView','/ecm/javascript/'); 
-  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UISimpleView.initAllEvent('${componentId}-$viewComponentId');");
+  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UISimpleView.initAllEvent('${componentId}-$viewComponentId');}");
 %>
 <div id="$componentId">
 	<div id="${componentId}-$viewComponentId">
@@ -92,7 +92,7 @@
 				</div>
 			</div>
 		<%}%>	
-		<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 290px;">
+		<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 365px;">
 		  <div class="ActionIconsContainer">
 		    <%for(data in uicomponent.getChildrenList()) { %>
 		        <%
