@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
@@ -715,8 +716,8 @@ public class UIBrowseContainer extends UIContainer {
   
   @SuppressWarnings("unchecked")
   public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
+    LinkManager linkManager = getApplicationComponent(LinkManager.class);
     if (selectedNode.isNodeType(Utils.EXO_SYMLINK)) {
-      LinkManager linkManager = getApplicationComponent(LinkManager.class);
       selectedNode = linkManager.getTarget(selectedNode);
     }
     List<Node> subDocumentList = new ArrayList<Node>();
@@ -738,10 +739,28 @@ public class UIBrowseContainer extends UIContainer {
                 PublicationService publicationService = getApplicationComponent(PublicationService.class);
                 Node nodecheck = publicationService.getNodePublish(node, null);
                 if (nodecheck != null) {
-                  subDocumentList.add(nodecheck); 
+                  subDocumentList.add(nodecheck);
+                  if(nodecheck.isNodeType(Utils.EXO_SYMLINK)) {
+                    try {
+                      linkManager.getTarget(nodecheck);
+                    } catch (ItemNotFoundException ie) {
+                      subDocumentList.remove(nodecheck);
+                    } catch (Exception e) {
+                      subDocumentList.remove(nodecheck);
+                    }
+                  }
                 }
               } else {
                 subDocumentList.add(node);
+                if(node.isNodeType(Utils.EXO_SYMLINK)) {
+                  try {
+                    linkManager.getTarget(node);
+                  } catch (ItemNotFoundException ie) {
+                    subDocumentList.remove(node);
+                  } catch (Exception e) {
+                    subDocumentList.remove(node);
+                  }
+                }
               }
             }
           }
@@ -1233,8 +1252,14 @@ public class UIBrowseContainer extends UIContainer {
         while(nodeIter.hasNext()) {
           Node child = nodeIter.nextNode();
           Node tempChild = child;
-          if (child.isNodeType(Utils.EXO_SYMLINK)) {
-            child = linkManager.getTarget(child);
+          if (child.isNodeType(Utils.EXO_SYMLINK)) {            
+            try {
+              child = linkManager.getTarget(child);
+            } catch (ItemNotFoundException ie) {
+              continue;
+            } catch (Exception e) {
+              continue;
+            }
           }
           if ((parentNode != null) && (child.getPath().equals(parentNode.getPath()))) {
             parentNode = tempChild;

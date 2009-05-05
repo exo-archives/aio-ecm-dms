@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jcr.Item;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
@@ -59,6 +60,7 @@ import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.link.ItemLinkAware;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.link.NodeLinkAware;
@@ -594,6 +596,7 @@ public class UIJCRExplorer extends UIContainer {
   public List<Node> getChildrenList(String path, boolean isReferences) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    LinkManager linkManager = getApplicationComponent(LinkManager.class);
     Node node = (Node) ItemLinkAware.newInstance(getSession(), path, getNodeByPath(path, getSession())) ;
     NodeIterator childrenIterator = node.getNodes();
     List<Node> childrenList  = new ArrayList<Node>() ;
@@ -660,6 +663,15 @@ public class UIJCRExplorer extends UIContainer {
         Node realChild = child instanceof NodeLinkAware ? ((NodeLinkAware) child).getRealNode() : child;
         if(PermissionUtil.canRead(child) && !realChild.isNodeType(Utils.EXO_HIDDENABLE)) {
           childList.add(child) ;
+        }
+        if(PermissionUtil.canRead(realChild) && realChild.isNodeType(Utils.EXO_SYMLINK)) {
+          try {
+            linkManager.getTarget(child);
+          } catch (ItemNotFoundException ie) {
+            childList.remove(child);
+          } catch (Exception e) {
+            childList.remove(child);
+          }         
         }
       }
     } else {
