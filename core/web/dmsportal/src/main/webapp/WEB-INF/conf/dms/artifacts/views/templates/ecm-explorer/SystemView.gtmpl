@@ -19,7 +19,7 @@
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext();
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIListView','/ecm/javascript/'); 
-  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UIListView.initAllEvent('${componentId}-$viewComponentId');}");
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIListView.initAllEvent('${componentId}-$viewComponentId');");
 %>
 <div id="$componentId">
 	<div id="${componentId}-$viewComponentId" class="UIListView" style="">	
