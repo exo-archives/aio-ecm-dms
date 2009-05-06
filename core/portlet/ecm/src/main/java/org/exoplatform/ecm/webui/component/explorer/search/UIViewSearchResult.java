@@ -29,6 +29,7 @@ import javax.jcr.Value;
 import javax.jcr.ValueFormatException;
 import javax.portlet.PortletRequest;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
@@ -43,10 +44,14 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -74,6 +79,11 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
   private String language_ ;
   private String currentRepository_ = null;
   private String currentWorkspaceName_ = null;
+  
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("cms.UIViewSearchResult");
   
   public UIViewSearchResult() throws Exception {
   }
@@ -202,9 +212,20 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
         e.printStackTrace();
       }
     }
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+    try {
+      ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository);
+      DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+      DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(repository);
+      return new JCRResourceResolver(currentRepository_, dmsConfiguration.getConfig(repository).getSystemWorkspace(), 
+          Utils.EXO_TEMPLATEFILE, language_) ;
+    } catch (RepositoryConfigurationException e) {
+      LOG.error("", e);
+    } catch (RepositoryException e) {
+      LOG.error("", e);
+    }
     return new JCRResourceResolver(currentRepository_, currentWorkspaceName_, 
         Utils.EXO_TEMPLATEFILE, language_) ;
-//    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
   }
 
   public List<Node> getComments() throws Exception {

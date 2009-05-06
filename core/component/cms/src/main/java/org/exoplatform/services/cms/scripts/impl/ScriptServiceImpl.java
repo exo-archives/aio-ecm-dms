@@ -64,7 +64,7 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   public ScriptServiceImpl(RepositoryService repositoryService, ConfigurationManager cservice,
       NodeHierarchyCreator nodeHierarchyCreator, CacheService cacheService, 
       DMSConfiguration dmsConfiguration) throws Exception {    
-    super(cservice, nodeHierarchyCreator, repositoryService, cacheService);
+    super(cservice, nodeHierarchyCreator, repositoryService, cacheService, dmsConfiguration);
     groovyClassLoader_ = createGroovyClassLoader();
     repositoryService_ = repositoryService ; 
     nodeHierarchyCreator_ = nodeHierarchyCreator ;

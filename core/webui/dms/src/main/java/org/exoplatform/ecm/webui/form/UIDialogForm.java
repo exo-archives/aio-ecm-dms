@@ -49,6 +49,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.JcrInputProperty;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.cms.scripts.ScriptService;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -501,7 +502,9 @@ public class UIDialogForm extends UIForm {
   
   public String getPathTaxonomy() throws Exception {
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    Session session = getSession();
+    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+    String workspace = dmsConfiguration.getConfig(repositoryName).getSystemWorkspace();
+    Session session = SessionProviderFactory.createSessionProvider().getSession(workspace, getRepository());
     return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS))).getPath();
   }
 

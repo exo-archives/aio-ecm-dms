@@ -17,14 +17,13 @@
 package org.exoplatform.ecm.webui.component.explorer.search;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
@@ -71,9 +70,8 @@ public class UISearchContainer extends UIContainer {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     /* Get repository name */
     String repository = uiExplorer.getRepositoryName();
-    ManageableRepository manaRepository = 
-      uiExplorer.getApplicationComponent(RepositoryService.class).getRepository(repository);
-    String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
+    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+    String workspaceName = dmsConfiguration.getConfig(repository).getSystemWorkspace();
     NodeHierarchyCreator nodeHierarchyCreator = uiExplorer.getApplicationComponent(NodeHierarchyCreator.class);
     uiExplorer.setIsHidePopup(true);
     /* Create Category panel in Search function */

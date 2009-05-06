@@ -40,16 +40,26 @@ import org.picocontainer.Startable;
 public abstract class BaseResourceLoaderService implements Startable{
 
   protected NodeHierarchyCreator nodeHierarchyCreator_;
-  protected RepositoryService repositoryService_;
+
+  protected RepositoryService    repositoryService_;
+
   protected ConfigurationManager cservice_;
-  protected ExoCache resourceCache_ ;
+
+  protected ExoCache             resourceCache_;
+
+  /**
+   * DMS configuration which used to store informations
+   */
+  private DMSConfiguration       dmsConfiguration_;
 
   public BaseResourceLoaderService(ConfigurationManager cservice,
-      NodeHierarchyCreator nodeHierarchyCreator, RepositoryService repositoryService,CacheService cacheService) throws Exception {
+      NodeHierarchyCreator nodeHierarchyCreator, RepositoryService repositoryService,
+      CacheService cacheService, DMSConfiguration dmsConfiguration) throws Exception {
     nodeHierarchyCreator_ = nodeHierarchyCreator;
-    repositoryService_ = repositoryService;    
-    cservice_ = cservice;        
-    resourceCache_ = cacheService.getCacheInstance(this.getClass().getName()) ;
+    repositoryService_ = repositoryService;
+    cservice_ = cservice;
+    resourceCache_ = cacheService.getCacheInstance(this.getClass().getName());
+    dmsConfiguration_ = dmsConfiguration;
   }  
 
   abstract protected String getBasePath(); 
@@ -114,8 +124,8 @@ public abstract class BaseResourceLoaderService implements Startable{
     }else {
       manageableRepository = repositoryService_.getRepository(repository) ;
     }
-    String workpsace = manageableRepository.getConfiguration().getDefaultWorkspaceName();
-    Session session = sessionProvider.getSession(workpsace,manageableRepository);     
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(manageableRepository.getConfiguration().getName());
+    Session session = sessionProvider.getSession(dmsRepoConfig.getSystemWorkspace(), manageableRepository);     
     String resourcesPath = getBasePath();
     return (Node) session.getItem(resourcesPath);
   }  

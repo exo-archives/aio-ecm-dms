@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Property;
@@ -28,6 +29,7 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
@@ -39,6 +41,7 @@ import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
 /**
@@ -49,6 +52,11 @@ import org.picocontainer.Startable;
  * Dec 5, 2006  
  */
 public class FolksonomyServiceImpl implements FolksonomyService, Startable {
+  
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("cms.FolksonomyServiceImpl");
   
   /**
    * NodeType EXO_FOLKSONOMIZED_MIXIN
@@ -185,7 +193,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     try {
       init() ;
     }catch (Exception e) {
-      System.out.println("===>>>>Exception when init FolksonomySerice"+e.getMessage());      
+      LOG.error("===>>>>Exception when init FolksonomySerice", e);      
     }
   }
 
@@ -317,12 +325,19 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     Session  sessionOnWS = null ;
     for(String workspaceName: workspaces) {
       sessionOnWS = repoService_.getRepository(repository).getSystemSession(workspaceName) ;
-      Node tagNodeOnWS = sessionOnWS.getNodeByUUID(uuid) ;
-      PropertyIterator iter = tagNodeOnWS.getReferences() ;
-      for(;iter.hasNext();) {
-        Property folksonomy = iter.nextProperty() ;
-        Node document = folksonomy.getParent() ;
-        documentList.add(document) ;
+      Node tagNodeOnWS = null;
+      try {
+        tagNodeOnWS = sessionOnWS.getNodeByUUID(uuid);
+      } catch (ItemNotFoundException e) {
+        LOG.warn("Item not found by uuid = " + uuid);
+      }
+      if (tagNodeOnWS != null) {
+        PropertyIterator iter = tagNodeOnWS.getReferences();
+        for (; iter.hasNext();) {
+          Property folksonomy = iter.nextProperty();
+          Node document = folksonomy.getParent();
+          documentList.add(document);
+        }
       }
       sessionOnWS.logout();
     }

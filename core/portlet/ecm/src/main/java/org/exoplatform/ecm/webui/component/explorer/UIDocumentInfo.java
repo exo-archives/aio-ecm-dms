@@ -46,7 +46,6 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
@@ -58,6 +57,7 @@ import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
@@ -154,12 +154,13 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    if(isDocumentTemplate_) {
-      JCRResourceResolver resourceResolver = new JCRResourceResolver(currentRepository_, 
-          currentWorkspaceName_, Utils.EXO_TEMPLATEFILE, selectedLang_) ;
+    if (isDocumentTemplate_) {
+      DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+      String workspace = dmsConfiguration.getConfig(currentRepository_).getSystemWorkspace();
+      JCRResourceResolver resourceResolver = new JCRResourceResolver(currentRepository_, workspace, Utils.EXO_TEMPLATEFILE, selectedLang_);
       return resourceResolver;
     }
-    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
+    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver();
   }
 
   public UIRightClickPopupMenu getContextMenu() {
