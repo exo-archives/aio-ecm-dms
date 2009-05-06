@@ -51,7 +51,11 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIPageIterator {
 	width: auto;
-	padding-right: 10px;
+	padding-right: 10px; /* orientation=lt */
+	padding-left: 10px; /* orientation=rt */
+	margin: 0px;
+	padding-bottom: 10px;
+	padding-top: 10px;
 }
 
 .UIJCRExplorerPortlet .UITabPane .UIFormWithTitle .HorizontalLayout {

@@ -13,6 +13,7 @@
   def rcontext = _ctx.getRequestContext() ;
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UISimpleView','/ecm/javascript/'); 
   rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UISimpleView.initAllEvent('${componentId}-$viewComponentId');}");
+	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UISimpleView.setHeight");
 %>
 <div id="$componentId">
 	<div id="${componentId}-$viewComponentId">
@@ -90,7 +91,7 @@
 				 </div>
 			</div>
 		</div>
-		<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden; height: 365px;">
+		<div class="UIThumbnailsView" style="overflow-y: auto; overflow-x: hidden;">
 		  <div class="ActionIconsContainer">
 		    <%
 		      for(data in uicomponent.getChildrenList()) { %>
@@ -176,8 +177,11 @@
 		  </div>  
 		</div>
 	</div>	
-	<% if(uicomponent.getContentPageIterator().getAvailablePage()>1) { %>	
-		<div style="margin:4px 0px 4px 0px;">
+	<% 
+	  int availablePage = uicomponent.getContentPageIterator().getAvailablePage();
+	  if (availablePage > 1) { 
+	%>	
+		<div class="PageAvailable" pageAvailable='$availablePage'>
 			<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
 		</div>
 	<% } %>

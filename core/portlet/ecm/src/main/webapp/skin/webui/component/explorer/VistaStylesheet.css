@@ -57,6 +57,9 @@
 	width: auto;
 	padding-right: 10px; /* orientation=lt */
 	padding-left: 10px; /* orientation=rt */
+	padding-bottom: 10px;
+	padding-top: 10px;
+	margin: 0px;
 }
 
 .UIVersionTreeList {

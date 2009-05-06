@@ -70,18 +70,15 @@
 
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 .UIJCRExplorerPortlet .UIDocumentWorkspace {
-  height: 320px;
   overflow: auto;
 }
 
 .UIJCRExplorerPortlet .UIListView {
-	padding-bottom: 30px; 
 	posititon: relative;
 }
 
 .UIJCRExplorerPortlet .UIListView .UIListGrid {
 	overflow: auto;
-	height: 385px;
 	-moz-user-select: none;
 }
 

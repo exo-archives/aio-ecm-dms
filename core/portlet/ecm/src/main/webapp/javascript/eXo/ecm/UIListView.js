@@ -684,6 +684,22 @@ var ListView = function() {
 		var uiResizableBlock = DOM.findFirstDescendantByClass(uiWorkingArea, "div", "UIResizableBlock");
 		if (uiResizableBlock) uiResizableBlock.style.overflow = "auto";
 	}
+	
+	ListView.prototype.setHeight = function() {
+		var root = document.getElementById("UIDocumentInfo");
+		var view = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIListGrid");
+		var workingArea = document.getElementById('UIWorkingArea');
+		var page = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "PageAvailable");
+		var title = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "TitleTable");
+		if (page) {
+			if (parseInt(page.getAttribute('pageAvailable')) > 1) {
+				if (view) view.style.height = workingArea.offsetHeight - page.offsetHeight - 20 + 'px';
+			}
+		} else {
+		  if (view) view.style.height = workingArea.offsetHeight - title.offsetHeight - 20 + 'px';
+		}
+	};
+	
 };
 
 eXo.ecm.UIListView = new ListView();
