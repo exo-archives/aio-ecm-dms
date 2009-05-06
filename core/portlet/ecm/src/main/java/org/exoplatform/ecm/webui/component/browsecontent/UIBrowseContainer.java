@@ -51,6 +51,7 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.portal.PageNodeEvent;
 import org.exoplatform.portal.webui.portal.UIPortal;
@@ -550,10 +551,28 @@ public class UIBrowseContainer extends UIContainer {
                       PublicationService publicationService = getApplicationComponent(PublicationService.class);
                       Node nodecheck = publicationService.getNodePublish(node, null);
                       if (nodecheck != null) {
-                        subCategoryDoc.add(nodecheck); 
+                        subCategoryDoc.add(nodecheck);
+                        if(PermissionUtil.canRead(nodecheck) && nodecheck.isNodeType(Utils.EXO_SYMLINK)) {
+                          try {
+                            linkManager.getTarget(nodecheck);
+                          } catch (ItemNotFoundException ie) {
+                            subCategoryDoc.remove(nodecheck);
+                          } catch (Exception e) {
+                            subCategoryDoc.remove(nodecheck);
+                          }         
+                        }
                       }
                     } else {
                       subCategoryDoc.add(node);
+                      if(PermissionUtil.canRead(node) && node.isNodeType(Utils.EXO_SYMLINK)) {
+                        try {
+                          linkManager.getTarget(node);
+                        } catch (ItemNotFoundException ie) {
+                          subCategoryDoc.remove(node);
+                        } catch (Exception e) {
+                          subCategoryDoc.remove(node);
+                        }         
+                      }
                     }
                   }
                 }
@@ -562,7 +581,7 @@ public class UIBrowseContainer extends UIContainer {
                     PublicationService publicationService = getApplicationComponent(PublicationService.class);
                     Node nodecheck = publicationService.getNodePublish(node, null);
                     if (nodecheck != null) {
-                      subCategoryCat.add(nodecheck.getPath()); 
+                      subCategoryCat.add(nodecheck.getPath());
                     }
                   } else {
                     subCategoryCat.add(node.getPath());
@@ -924,8 +943,8 @@ public class UIBrowseContainer extends UIContainer {
     List<Node> subDocumentList = new ArrayList<Node>();
     Node currentNode = getCurrentNode();
     Map content = new HashMap();
+    LinkManager linkManager = getApplicationComponent(LinkManager.class);
     if (currentNode.isNodeType(Utils.EXO_SYMLINK)) {
-      LinkManager linkManager = getApplicationComponent(LinkManager.class);
       currentNode = linkManager.getTarget(currentNode);
     }
     NodeIterator childIter = currentNode.getNodes();
@@ -1421,6 +1440,7 @@ public class UIBrowseContainer extends UIContainer {
   
   private Map getChildOfSubCategory(RepositoryService repositoryService, Node subCat,
       List documentTemplates) throws Exception {
+    LinkManager linkManager = getApplicationComponent(LinkManager.class);
     List<String> subCategories = new ArrayList<String>();
     List<Node> childDocOrReferencedDoc = new ArrayList<Node>();
     Map<String, List> childMap = new HashMap<String, List>();
@@ -1437,6 +1457,15 @@ public class UIBrowseContainer extends UIContainer {
         }
         if (documentTemplates.contains(typeName) && isShowDocument){
           if (childDocOrReferencedDoc.size() < getRowPerBlock()) childDocOrReferencedDoc.add(item);
+          if(PermissionUtil.canRead(item) && item.isNodeType(Utils.EXO_SYMLINK)) {
+            try {
+              linkManager.getTarget(item);
+            } catch (ItemNotFoundException ie) {
+              childDocOrReferencedDoc.remove(item);
+            } catch (Exception e) {
+              childDocOrReferencedDoc.remove(item);
+            }         
+          }
         } else {
           if (isCategories(item)) subCategories.add(item.getPath());          
         }
