@@ -59,6 +59,8 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.queries.QueryService;
@@ -1084,16 +1086,18 @@ public class UIBrowseContainer extends UIContainer {
       return;
     }     
   }
+  
   public void newJCRTemplateResourceResolver() {
     try{      
-      RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class);      
-      ManageableRepository repository = repositoryService.getRepository(getRepository());
-      String workspace = repository.getConfiguration().getDefaultWorkspaceName();
-      jcrTemplateResourceResolver_ = new JCRResourceResolver(getRepository(), workspace, Utils.EXO_TEMPLATEFILE);
+      DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+      DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(getRepository());
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(getRepository(), 
+                                      dmsRepoConfig.getSystemWorkspace(), Utils.EXO_TEMPLATEFILE);
     } catch(Exception e) {
       e.printStackTrace();
     }     
   }
+  
   public void processRender(WebuiRequestContext context) throws Exception {
     try {
       getApplicationComponent(RepositoryService.class).getRepository(getRepository());
