@@ -327,12 +327,12 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         return; 
       }
       if (uiForm.defaulWorkspace_ == null) {
-        uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-setdefault", null));
+        uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-setdefault", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());  
         return; 
       }
       if (uiForm.dmsSystemWorkspace_ == null) {
-        uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-setDMSsystem", null));
+        uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-setDMSsystem", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());  
         return; 
       }
