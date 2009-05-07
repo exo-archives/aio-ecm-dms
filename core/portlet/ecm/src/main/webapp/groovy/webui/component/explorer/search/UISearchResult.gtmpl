@@ -87,6 +87,7 @@
   	      if (even) rowClass = "EvenRow";  
   	      else rowClass =  "OddRow"; 
   	      even = !even;
+  	      System.out.println("\n\n path = " + row.getValue("jcr:path"));
   	      String nodePath = row.getValue("jcr:path").getString();
   	      JCRPath path = ((SessionImpl)uicomponent.getSession()).getLocationFactory().parseJCRPath(nodePath);
   	      Node node = (Node)uicomponent.getSession().getItem(path.getAsString(false));
@@ -94,7 +95,9 @@
   	      	node = node.getParent();
   	      	nodePath = node.getPath();
   	      }
-  	      String excerpt = row.getValue("rep:excerpt(.)").getString();
+  	     
+  	      String excerpt = row.getValue("rep:excerpt(.)")== null ? "" : row.getValue("rep:excerpt(.)").getString();
+  	      String score = row.getValue("jcr:score")== null ? "" : row.getValue("jcr:score").getString();
   	      String s = "";
       %>
           <tr class="$rowClass">
@@ -109,7 +112,7 @@
        				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
        				<div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(uicomponent.getDateCreated(node))%></div>
 		        </td>
-            <td><div class="ActionContainer"><%=row.getValue("jcr:score").getString()%></div></td>
+            <td><div class="ActionContainer">$score</div></td>
 	          <td>
 	          	<div class="ActionContainer">
 		            <img onclick="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" alt="" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>" src="/eXoResources/skin/sharedImages/Blank.gif" class="View16x16Icon"/>
