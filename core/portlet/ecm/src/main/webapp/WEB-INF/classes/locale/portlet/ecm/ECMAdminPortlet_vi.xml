@@ -383,6 +383,7 @@
       <workspace-isrequire>Phải có ít nhất một vùng làm việc</workspace-isrequire>
       <cannot-delete-workspace>Không thể xóa{0}</cannot-delete-workspace>
       <workspace-setdefault>Bạn phải thiết lập một vùng làm việc mặc định</workspace-setdefault>
+      <workspace-setDMSsystem>Bạn phải thiết lập một vùng làm việc hệ thống</workspace-setDMSsystem>
       <workspace-bseChanel>Kênh là bắt buộc</workspace-bseChanel>
       <workspace-bseMode>Chế độ sao lưu là bắt buộc</workspace-bseMode>
       <workspace-bsePath>Thư mục là bắt buộc</workspace-bsePath>
@@ -449,7 +450,8 @@
       <wsname-exist>Vùng làm việc '{0}' đã tồn tại trong cơ sở dữ liệu!</wsname-exist>
       <name-require>Tên của vùng làm việc là bắt buộc</name-require>
       <permission-require>Bạn phải chọn quyền truy nhập</permission-require>
-      <nodeType-invalid>Vùng làm việc khởi tạo mặc định phải là dạng nt:unstructured</nodeType-invalid>
+      <nodeType-invalid>Vùng làm việc khởi tạo mặc định phải là dạng nt:unstructured</nodeType-invalid>	  
+	  <nodeType-invalidSystemWs>Vùng làm việc hệ thống khởi tạo phải là dạng nt:unstructured</nodeType-invalidSystemWs>
       <lockTimeOut-required>Thời gian làm việc là bắt buộc</lockTimeOut-required>
       <lockTimeOut-invalid>Định dạng số không hợp lệ</lockTimeOut-invalid>
       <buffer-invalid>Bộ nhớ đệm định dạng không hợp lệ</buffer-invalid>
@@ -480,6 +482,7 @@
       <name>Tên</name>
       <autoInitializedRootNt>Kiểu của node gốc</autoInitializedRootNt>
       <isDefault>Thiết lập mặc định</isDefault>
+      <isDMSSytemWs>Thiết lập DMS system workspace</isDMSSytemWs>
       <permission>Tự động khởi tạo quyền truy nhập</permission>
       <setLockTimeOut>Kết thúc thời gian khóa</setLockTimeOut>
       <step2>Workspace Wizard</step2>

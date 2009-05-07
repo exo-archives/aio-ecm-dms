@@ -390,6 +390,8 @@
       <workspace-isrequire>يتطلب على الأقل فضاء عمل</workspace-isrequire>
       <cannot-delete-workspace>لا يمكن حذف {0}</cannot-delete-workspace>
       <workspace-setdefault>يجب ان تضع فضاء العمل الإفتراضي</workspace-setdefault>
+      <!--DMS 2.4.x ECM-3611> -->
+      <workspace-setDMSsystem>You must set DMS system workspace one</workspace-setDMSsystem>
       <workspace-bseChanel>القناة ضرورية</workspace-bseChanel>
       <workspace-bseMode>طريقة التكرار ضرورية </workspace-bseMode>
       <workspace-bsePath>المجلد ضروري</workspace-bsePath>
@@ -457,6 +459,8 @@
       <name-require>إسم  فضاء العمل ضروري</name-require>
       <permission-require>يجب ان تختار صلاحية</permission-require>
       <nodeType-invalid> نوع العقدة التابعة لفضاء العمل الإفتراضي يجب ان يكون 'nt:unstructured' </nodeType-invalid>
+	  <!--DMS 2.4.x ECM-3611-->
+	  <nodeType-invalidSystemWs>DMS system workspace auto init nodetype must nt:unstructured</nodeType-invalidSystemWs>
       <lockTimeOut-required>مدة حياة القفل ضرورية</lockTimeOut-required>
       <lockTimeOut-invalid>شكل مدة حياة القفل غير صحيح</lockTimeOut-invalid>
       <buffer-invalid>شكل حجم الذاكرة المؤقتة غير صحيح </buffer-invalid>
@@ -487,6 +491,8 @@
       <name>الإسم</name>
       <autoInitializedRootNt>نوع العقدة الجذر</autoInitializedRootNt>
       <isDefault>ضعه كافتراضي</isDefault>
+      <!--DMS 2.4.x ECM-3611-->
+      <isDMSSytemWs>Set as DMS system workspace</isDMSSytemWs>
       <permission>الصلاحية الإفتراضية</permission>
       <setLockTimeOut>مدة حياة القفل</setLockTimeOut>
       <step2>UIWorkspaceWizard</step2>

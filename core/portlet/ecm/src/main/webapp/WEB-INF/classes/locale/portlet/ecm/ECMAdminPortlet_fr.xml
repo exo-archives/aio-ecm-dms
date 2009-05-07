@@ -392,6 +392,8 @@
       <workspace-isrequire>Veuillez indiquer au moins un espace de travail</workspace-isrequire>
       <cannot-delete-workspace>Suppression impossible de '{0}'</cannot-delete-workspace>
       <workspace-setdefault>Un espace de travail par défaut doit être défini</workspace-setdefault>
+      <!--DMS 2.4.x ECM-3611> -->
+      <workspace-setDMSsystem>You must set DMS system workspace one</workspace-setDMSsystem>
       <workspace-bseChanel>Un canal est requis</workspace-bseChanel>
       <workspace-bseMode>Veuillez indiquer un mode de réplication</workspace-bseMode>
       <workspace-bsePath>Veuillez indiquer un répertoire</workspace-bsePath>
@@ -459,6 +461,8 @@
       <name-require>Veuillez indiquer un nom d'espace de travail</name-require>
       <permission-require>Veuillez sélectionner une permission</permission-require>
       <nodeType-invalid>Le nodetype d'initialisation de l'espace de travail par défaut doit être "nt:unstructured"</nodeType-invalid>
+	  <!--DMS 2.4.x ECM-3611-->
+	  <nodeType-invalidSystemWs>DMS system workspace auto init nodetype must nt:unstructured</nodeType-invalidSystemWs>
       <lockTimeOut-required>Veuillez indiquer un timeout verrouillage</lockTimeOut-required>
       <lockTimeOut-invalid>Le format du timeout de verrouillage est incorrect</lockTimeOut-invalid>
       <buffer-invalid>Le format de la taille du buffer est invalide</buffer-invalid>
@@ -489,6 +493,8 @@
       <name>Nom</name>
       <autoInitializedRootNt>Type du noeud racine</autoInitializedRootNt>
       <isDefault>Définir par défault</isDefault>
+      <!--DMS 2.4.x ECM-3611-->
+      <isDMSSytemWs>Set as DMS system workspace</isDMSSytemWs>
       <permission>Permission par défaut</permission>
       <setLockTimeOut>Timeout de verrouillage</setLockTimeOut>
       <step2>UIWorkspaceWizard</step2>

@@ -155,6 +155,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
     UIWizardStep2 uiWSFormStep2 = getChildById(FIELD_STEP2) ;
     UIWizardStep3 uiWSFormStep3 = getChildById(FIELD_STEP3) ;
     uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).setChecked(false) ;
+    uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).setChecked(false) ;
     UIRepositoryForm uiRepoForm = getAncestorOfType(UIECMAdminPortlet.class).findFirstComponentOfType(UIRepositoryForm.class) ;
     String repoName = uiRepoForm.getUIStringInput(UIRepositoryForm.FIELD_NAME).getValue() ;
     String name = "" ;
@@ -223,6 +224,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
         StringBuilder sb2 = new StringBuilder() ;
         if(isNewRepo_) {
           uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).setEditable(true) ;
+          uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).setEditable(true) ;
           sb1.append(swapPath.substring(0, swapPath.lastIndexOf("/")+1)).append(repoName).append("/") ;
           sb2.append(storePath.substring(0, storePath.lastIndexOf("/")+1)).append(repoName).append("/") ;
         } else {
@@ -242,6 +244,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       if(isNewWizard_) {
         lockForm(false) ;
         uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).setEnable(false) ;
+        uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).setEnable(false) ;
       } else {
         lockForm(true) ;
       }
@@ -325,6 +328,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       UIWizardStep1 uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       String wsName = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_NAME).getValue() ;
       boolean isDefault = uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).isChecked() ;
+      boolean isDMSSystemWs = uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).isChecked() ;
       String nodeType = uiWSFormStep1.getUIFormSelectBox(UIWizardStep1.FIELD_NODETYPE).getValue() ;
       String lockTimeOut = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_TIMEOUT).getValue() ;
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
@@ -359,8 +363,13 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
               return ;
             }  
           }
-          if(isDefault && !Utils.NT_UNSTRUCTURED.equals(nodeType)) {
+          if (isDefault && !Utils.NT_UNSTRUCTURED.equals(nodeType)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.nodeType-invalid",null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if (isDMSSystemWs && !Utils.NT_UNSTRUCTURED.equals(nodeType)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.nodeType-invalidSystemWs",null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
@@ -413,6 +422,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       UIWizardStep1 uiWSFormStep1 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP1) ;
       String wsName = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_NAME).getValue() ;
       boolean isDefault = uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).isChecked() ;
+      boolean isDMSSystemWs = uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).isChecked() ;
       String nodeType = uiWSFormStep1.getUIFormSelectBox(UIWizardStep1.FIELD_NODETYPE).getValue() ;
       String lockTimeOut = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_TIMEOUT).getValue() ;
       UIFormInputSet uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
@@ -433,6 +443,11 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
           }
           if(isDefault && !Utils.NT_UNSTRUCTURED.equals(nodeType)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.nodeType-invalid",null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if(isDMSSystemWs && !Utils.NT_UNSTRUCTURED.equals(nodeType)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.nodeType-invalidSystemWs",null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }
@@ -535,6 +550,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       String name = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_NAME).getValue() ;
       String initNodeType = uiWSFormStep1.getUIFormSelectBox(UIWizardStep1.FIELD_NODETYPE).getValue() ;
       boolean isDefault = uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).isChecked() ;
+      boolean isDMSSystemWs = uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).isChecked() ;
       String lockTimeOut = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_TIMEOUT).getValue() ;
 
       UIWizardStep2 uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
@@ -612,7 +628,8 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       workspaceEntry.setQueryHandler(newQueryHandlerEntry(queryHandlerType, indexPath)) ;
 
       if(uiRepoForm.isAddnew_) {
-        if(isDefault) uiRepoForm.defaulWorkspace_ = name ;
+        if (isDefault) uiRepoForm.defaulWorkspace_ = name;
+        if (isDMSSystemWs) uiRepoForm.dmsSystemWorkspace_ = name;
         if(uiFormWizard.isNewWizard_) {
           uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
         } else {
@@ -719,6 +736,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       UIWizardStep1 uiWSFormStep1 = uiFormWizard.getChildById(FIELD_STEP1) ;
       String wsName = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_NAME).getValue() ;
       boolean isDefault = uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDEFAULT).isChecked() ;
+      boolean isDMSSytemWs = uiWSFormStep1.getUIFormCheckBoxInput(UIWizardStep1.FIELD_ISDMS_SYSTEM_WS).isChecked() ;
       String nodeType = uiWSFormStep1.getUIFormSelectBox(UIWizardStep1.FIELD_NODETYPE).getValue() ;
       String lockTimeOut = uiWSFormStep1.getUIStringInput(UIWizardStep1.FIELD_TIMEOUT).getValue() ;
       UIWizardStep2 uiWSFormStep2 = uiFormWizard.getChildById(UIWorkspaceWizard.FIELD_STEP2) ;
@@ -765,6 +783,11 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
           }
           if(isDefault && !Utils.NT_UNSTRUCTURED.equals(nodeType)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.nodeType-invalid",null)) ;
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
+            return ;
+          }
+          if (isDMSSytemWs && !Utils.NT_UNSTRUCTURED.equals(nodeType)) {
+            uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.nodeType-invalidSystemWs",null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
             return ;
           }

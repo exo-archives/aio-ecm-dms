@@ -394,6 +394,8 @@
       <workspace-isrequire>Minstens ��n werkruimte vereist</workspace-isrequire>
       <cannot-delete-workspace>kan {0} niet Verwijderen</cannot-delete-workspace>
       <workspace-setdefault>U moet ��n werkruimte als standaard instellen</workspace-setdefault>
+      <!--DMS 2.4.x ECM-3611> -->
+      <workspace-setDMSsystem>You must set DMS system workspace one</workspace-setDMSsystem>
       <workspace-bseChanel>Kanaal is vereist</workspace-bseChanel>
       <workspace-bseMode>Replicatie Mode is vereist</workspace-bseMode>
       <workspace-bsePath>Map is vereist</workspace-bsePath>
@@ -455,6 +457,8 @@
       <name-require>werkruimte naam is vereist</name-require>
       <permission-require>U moet rechten selecteren</permission-require>
       <nodeType-invalid>standaard werkruimte auto init nodetype moet nt:unstructured</nodeType-invalid>
+	  <!--DMS 2.4.x ECM-3611-->
+	  <nodeType-invalidSystemWs>DMS system workspace auto init nodetype must nt:unstructured</nodeType-invalidSystemWs>
       <lockTimeOut-required>Lock timeout is vereist</lockTimeOut-required>
       <lockTimeOut-invalid>Lock timeout heefts ongeldig nummer formaat</lockTimeOut-invalid>
       <buffer-invalid>Buffer grootte ongeldig nummer formaat</buffer-invalid>
@@ -485,6 +489,8 @@
       <name>naam</name>
       <autoInitializedRootNt>Root node type</autoInitializedRootNt>
       <isDefault>instellen as standaard</isDefault>
+      <!--DMS 2.4.x ECM-3611-->
+      <isDMSSytemWs>Set as DMS system workspace</isDMSSytemWs>
       <permission>Auto init rechten</permission>
       <setLockTimeOut>Lock timeout</setLockTimeOut>
       <step2>UIWorkspaceWizard</step2>

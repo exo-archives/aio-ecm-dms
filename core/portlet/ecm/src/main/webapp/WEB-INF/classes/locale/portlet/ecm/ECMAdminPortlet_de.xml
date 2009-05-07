@@ -393,6 +393,8 @@
       <workspace-isrequire>Mindestens einen Arbeitsplatz anfragen</workspace-isrequire>
       <cannot-delete-workspace><![CDATA[Kann {0} nicht l&ouml;schen]]></cannot-delete-workspace>
       <workspace-setdefault><![CDATA[Sie m&uuml;ssen Arbeitsplatzstandardeinstellung Einz einstellen]]></workspace-setdefault>
+      <!--DMS 2.4.x ECM-3611> -->
+      <workspace-setDMSsystem>You must set DMS system workspace one</workspace-setDMSsystem>
       <workspace-bseChanel><![CDATA[Chanel wird ben&ouml;tigt]]></workspace-bseChanel>
       <workspace-bseMode><![CDATA[Abgleichmodus wird ben&ouml;tigt]]></workspace-bseMode>
       <workspace-bsePath><![CDATA[Datenverzeichnis wird ben&ouml;tigt]]></workspace-bsePath>
@@ -454,6 +456,8 @@
       <name-require><![CDATA[Arbeitsplatname ist ben&ouml;tigt]]></name-require>
       <permission-require><![CDATA[Genehmigung ausw&auml;hlen]]></permission-require>
       <nodeType-invalid>Default workspace auto init nodetype must nt:unstructured</nodeType-invalid>
+	  <!--DMS 2.4.x ECM-3611-->
+	  <nodeType-invalidSystemWs>DMS system workspace auto init nodetype must nt:unstructured</nodeType-invalidSystemWs>
       <lockTimeOut-required><![CDATA[Sperrenablaufzeit wird ben&ouml;tigt]]></lockTimeOut-required>
       <lockTimeOut-invalid><![CDATA[Sperrenablaufzeit ist in einem ung&uuml;ltigen Format]]></lockTimeOut-invalid>
       <buffer-invalid><![CDATA[Zwischenspeichergr&ouml;&szlig;e ist in einem ung&uuml;ltigen Format]]></buffer-invalid>
@@ -484,6 +488,8 @@
       <name>Name</name>
       <autoInitializedRootNt>Wurzelknotentyp</autoInitializedRootNt>
       <isDefault><![CDATA[Als Standardeinstellung &uuml;bernehmen]]></isDefault>
+      <!--DMS 2.4.x ECM-3611-->
+      <isDMSSytemWs>Set as DMS system workspace</isDMSSytemWs>
       <permission>Auto init Genehmigung</permission>
       <setLockTimeOut>Sperrenablaufszeit</setLockTimeOut>
       <step2>UIWorkspaceWizard</step2>

@@ -514,6 +514,7 @@
       <workspace-isrequire>Require at least one workspace</workspace-isrequire>
       <cannot-delete-workspace>Can not delete {0}</cannot-delete-workspace>
       <workspace-setdefault>You must set workspace default one</workspace-setdefault>
+      <workspace-setDMSsystem>You must set DMS system workspace one</workspace-setDMSsystem>
       <workspace-bseChanel>Chanel is required</workspace-bseChanel>
       <workspace-bseMode>Replication Mode is required</workspace-bseMode>
       <workspace-bsePath>Directory is required</workspace-bsePath>
@@ -581,6 +582,7 @@
       <name-require>Workspace name is required</name-require>
       <permission-require>You must select permission</permission-require>
       <nodeType-invalid>Default workspace auto init nodetype must nt:unstructured</nodeType-invalid>
+      <nodeType-invalidSystemWs>DMS system workspace auto init nodetype must nt:unstructured</nodeType-invalidSystemWs>
       <lockTimeOut-required>Lock timeout is required</lockTimeOut-required>
       <lockTimeOut-invalid>Lock timeout is invalid number format</lockTimeOut-invalid>
       <buffer-invalid>Buffer size invalid number format</buffer-invalid>
@@ -611,6 +613,7 @@
       <name>Name</name>
       <autoInitializedRootNt>Root node type</autoInitializedRootNt>
       <isDefault>Set as default</isDefault>
+      <isDMSSytemWs>Set as DMS System workspace</isDMSSytemWs>
       <permission>Auto init permission</permission>
       <setLockTimeOut>Lock timeout</setLockTimeOut>
       <step2>UIWorkspaceWizard</step2>
