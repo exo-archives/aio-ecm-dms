@@ -125,21 +125,11 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     addChild(autField);
     addChild(new UIFormStringInput(FIELD_SCURITY,FIELD_SCURITY, null).addValidator(MandatoryValidator.class));    
     addChild(new UIFormStringInput(FIELD_SESSIONTIME,FIELD_SESSIONTIME, null));
-//    UIFormCheckBoxInput<Boolean> bseCheckbox = new UIFormCheckBoxInput<Boolean>(FIELD_REPENABLE,FIELD_REPENABLE, null);
-//    bseCheckbox.setOnChange("ShowHidden");
-//    addChild(bseCheckbox);
-//    addChild(new UIFormStringInput(FIELD_REPCHANNEL,FIELD_REPCHANNEL, null).setRendered(false));
-//    addChild(new UIFormStringInput(FIELD_REPMODE,FIELD_REPMODE, null).setRendered(false));
-//    addChild(new UIFormCheckBoxInput<Boolean>(FIELD_REPTESTMODE,FIELD_REPTESTMODE, null).setRendered(false));
-//    addChild(new UIFormStringInput(FIELD_BSEPATH,FIELD_BSEPATH, null).setRendered(false));
-//    addChild(new UIFormStringInput(FIELD_BSEMAXBUFFER,FIELD_BSEMAXBUFFER, null).addValidator(NumberFormatValidator.class).setRendered(false));
   }  
 
   public void refresh(RepositoryEntry repo) throws Exception{
     reset();
     getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(false);
-//    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(false);
-//    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setChecked(false);
     UIFormInputSetWithAction autField = getChildById(FIELD_AUTHINPUTSET);
     workspaceMap_.clear();
     if(repo != null) {
@@ -152,12 +142,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setChecked(false);
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false);
         setActions(new String[] {"Save","AddWorkspace", "Reset", "Close"});
-//        getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(false);
-//        getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setRendered(false);
-//        getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setRendered(false);
-//        getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setRendered(false);
-//        getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).setRendered(false);
-//        getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setRendered(false);
       } else {
         repoName_ = repo.getName();
         defaulWorkspace_ = repo.getDefaultWorkspaceName();
@@ -172,28 +156,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
         getUIFormCheckBoxInput(FIELD_ISDEFAULT).setEnable(false);
         autField.setActionInfo(FIELD_AUTHENTICATION, null);
         setActions(new String[] {"AddWorkspace", "Close"});
-/*        
-        //TODO: JCR doesn't support to use ReplicationEntry
-        ReplicationEntry re = repo.getReplication();
-        if(re != null) {
-          getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setChecked(re.isEnabled());
-          if(re.isEnabled()) {
-            getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setRendered(true);
-            getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setValue(re.getChannelConfig());  
-            getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setRendered(true);
-            getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setValue(re.getMode());  
-            getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setRendered(true);
-            getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setChecked(re.isTestMode());
-            BinarySwapEntry bse = repo.getBinaryTemp();
-            if(bse != null) {
-              getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).setRendered(true);
-              getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).setValue(bse.getDirectoryPath());   
-              getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setRendered(true);
-              getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setValue(bse.getMaxBufferSize());
-            } 
-          }
-        }
-*/        
       }
       getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).setValue(repo.getAccessControl());      
       autField.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).setValue(repo.getAuthenticationPolicy());      
@@ -204,23 +166,15 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   protected void lockForm(boolean isLock) throws Exception {
     boolean editable = !isLock;
     UIFormInputSetWithAction autField = getChildById(FIELD_AUTHINPUTSET);
-//    UIFormInputSetWithAction workspaceField = getChildById(FIELD_WSINPUTSET);
-   // workspaceField.setIsView(isLock);
     if(isLock) {
       autField.setActionInfo(FIELD_AUTHENTICATION, null);
     } else {
       autField.setActionInfo(FIELD_AUTHENTICATION, new String[]{"Select"});
     }
-//    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).setEnable(editable);
     getUIStringInput(UIRepositoryForm.FIELD_ACCESSCONTROL).setEditable(editable); 
     autField.getUIStringInput(UIRepositoryForm.FIELD_AUTHENTICATION).setEditable(editable);     
     getUIStringInput(UIRepositoryForm.FIELD_SCURITY).setEditable(editable); 
     getUIStringInput(UIRepositoryForm.FIELD_SESSIONTIME).setEditable(editable);
-//    getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).setEditable(editable);
-//    getUIStringInput(UIRepositoryForm.FIELD_REPMODE).setEditable(editable);
-//    getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).setEnable(editable);;
-//    getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).setEditable(editable);
-//    getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).setEditable(editable);
   }
   
   protected boolean isDefaultWorkspace(String workspaceName) {
@@ -316,11 +270,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   }
   
   protected void ShowHidden() {
-//    getUIStringInput(FIELD_REPCHANNEL).setRendered(!getUIStringInput(FIELD_REPCHANNEL).isRendered());
-//    getUIStringInput(FIELD_REPMODE).setRendered(!getUIStringInput(FIELD_REPMODE).isRendered());
-//    getUIFormCheckBoxInput(FIELD_REPTESTMODE).setRendered(!getUIFormCheckBoxInput(FIELD_REPTESTMODE).isRendered());
-//    getUIStringInput(FIELD_BSEPATH).setRendered(!getUIStringInput(FIELD_BSEPATH).isRendered());
-//    getUIStringInput(FIELD_BSEMAXBUFFER).setRendered(!getUIStringInput(FIELD_BSEMAXBUFFER).isRendered());
   }
   
   public void activate() throws Exception {}
@@ -414,44 +363,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       re.setAuthenticationPolicy(authen);
       re.setSecurityDomain(security);
       re.setSessionTimeOut(Long.parseLong(sessionTimeOut));
-//      Boolean repEnable = uiForm.getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPENABLE).isChecked();
-//      if(repEnable) {
-//        String chanel = uiForm.getUIStringInput(UIRepositoryForm.FIELD_REPCHANNEL).getValue();     
-//        String mode = uiForm.getUIStringInput(UIRepositoryForm.FIELD_REPMODE).getValue();     
-//        Boolean testMode = uiForm.getUIFormCheckBoxInput(UIRepositoryForm.FIELD_REPTESTMODE).isChecked();
-//        String path = uiForm.getUIStringInput(UIRepositoryForm.FIELD_BSEPATH).getValue();     
-//        String buffer = uiForm.getUIStringInput(UIRepositoryForm.FIELD_BSEMAXBUFFER).getValue();   
-//        if(Utils.isNameEmpty(chanel)){
-//          uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-bseChanel", null));
-//          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());  
-//          return;
-//        }
-//        if(Utils.isNameEmpty(mode)){
-//          uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-bseMode", null));
-//          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());  
-//          return;
-//        }
-//        if(Utils.isNameEmpty(path)){
-//          uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-bsePath", null));
-//          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());  
-//          return;
-//        }
-//        if(Utils.isNameEmpty(buffer)){
-//          uiApp.addMessage(new ApplicationMessage("UIRepositoryForm.msg.workspace-bseBuffer", null));
-//          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());  
-//          return;
-//        }
-//        ReplicationEntry repl = new ReplicationEntry();
-//        repl.setChannelConfig(chanel);
-//        repl.setEnabled(repEnable);
-//        repl.setMode(mode);
-//        repl.setTestMode(testMode);
-//        re.setReplication(repl);
-//        BinarySwapEntry bse = new BinarySwapEntry();
-//        bse.setDirectoryPath(path);
-//        bse.setMaxBufferSize(buffer);
-//        re.setBinaryTemp(bse);        
-//      }
       re.setDefaultWorkspaceName(uiForm.defaulWorkspace_);
       re.setSystemWorkspaceName(uiForm.defaulWorkspace_);
       re.addWorkspace(uiForm.getWorkspace(uiForm.defaulWorkspace_));
