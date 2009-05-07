@@ -32,6 +32,9 @@ public class DMSRepositoryConfiguration extends BaseComponentPlugin {
   
   private String     repositoryName_ ;
   
+  public DMSRepositoryConfiguration() throws Exception {
+  }
+  
   public DMSRepositoryConfiguration(InitParams params) throws Exception {
     systemWorkspaceName_ = params.getValueParam("systemWorkspace").getValue();
     repositoryName_ = params.getValueParam("repository").getValue();

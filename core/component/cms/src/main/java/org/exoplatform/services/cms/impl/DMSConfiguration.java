@@ -44,6 +44,10 @@ public class DMSConfiguration implements Startable {
           (DMSRepositoryConfiguration)plugin);
     }
   }
+  
+  public void initNewRepo(String repository, DMSRepositoryConfiguration plugin) {
+    dmsConfigMap_.put(repository, plugin);
+  }
 
   public void start() {
     // TODO Auto-generated method stub

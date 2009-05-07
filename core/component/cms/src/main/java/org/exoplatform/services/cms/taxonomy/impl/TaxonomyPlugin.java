@@ -144,10 +144,8 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
   private void importPredefineTaxonomies(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
-    if (getWorkspace() == null || getWorkspace().trim().length() == 0) {
-      setWorkspace(dmsRepoConfig.getSystemWorkspace());
-    }
-    Session session = manageableRepository.getSystemSession(getWorkspace());
+    setWorkspace(dmsRepoConfig.getSystemWorkspace());
+    Session session = manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
     Node taxonomyStorageNode = (Node) session.getItem(path);
     Node taxonomyStorageNodeSystem = null;
     if (taxonomyStorageNode.hasProperty("exo:isImportedChildren")) {
