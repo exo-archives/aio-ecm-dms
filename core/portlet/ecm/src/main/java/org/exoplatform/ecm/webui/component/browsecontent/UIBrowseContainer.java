@@ -533,8 +533,14 @@ public class UIBrowseContainer extends UIContainer {
             List<Node> subCategoryDoc = new ArrayList<Node>();
             List<String> subCategoryCat = new ArrayList<String>();
             Node tempChildNode = childNode; 
-            if (childNode.isNodeType(Utils.EXO_SYMLINK)) {
-              childNode = linkManager.getTarget(childNode);
+            if (childNode.isNodeType(Utils.EXO_SYMLINK)) {              
+              try {
+                childNode = linkManager.getTarget(childNode);
+              } catch (ItemNotFoundException ie) {
+                continue;
+              } catch (Exception e) {
+                continue;
+              }
             }
             NodeIterator item = childNode.getNodes();
             while (item.hasNext()) {

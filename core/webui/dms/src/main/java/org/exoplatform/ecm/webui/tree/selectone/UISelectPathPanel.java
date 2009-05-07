@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.tree.selectone;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
@@ -30,6 +31,7 @@ import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -152,7 +154,7 @@ public class UISelectPathPanel extends UIContainer {
   protected boolean matchNodeType(Node node) throws Exception {
     if(acceptedNodeTypes == null || acceptedNodeTypes.length == 0) return true;
     for(String nodeType: acceptedNodeTypes) {
-      if(node.isNodeType(nodeType)) return true;
+      if((node != null) && node.isNodeType(nodeType)) return true;
     }
     return false;
   }
@@ -160,12 +162,12 @@ public class UISelectPathPanel extends UIContainer {
   protected boolean isExceptedNodeType(Node node) throws RepositoryException {
     if(defaultExceptedNodeTypes.length > 0) {
       for(String nodeType: defaultExceptedNodeTypes) {
-        if(node.isNodeType(nodeType)) return true;
+        if((node != null) && node.isNodeType(nodeType)) return true;
       }
     }
     if(exceptedNodeTypes == null || exceptedNodeTypes.length == 0) return false;
     for(String nodeType: exceptedNodeTypes) {
-      if(node.isNodeType(nodeType)) return true;
+      if((node != null) && node.isNodeType(nodeType)) return true;
     }
     return false;
   }
