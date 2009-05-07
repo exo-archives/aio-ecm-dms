@@ -724,6 +724,20 @@ var SimpleView = function() {
 		var uiResizableBlock = DOM.findFirstDescendantByClass(uiWorkingArea, "div", "UIResizableBlock");
 		if (uiResizableBlock) uiResizableBlock.style.overflow = "auto";
 	}
+	
+	SimpleView.prototype.setHeight = function() {
+		var root = document.getElementById("UIDocumentInfo");
+		var view = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIThumbnailsView");
+		var workingArea = document.getElementById('UIWorkingArea');
+		var page = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "PageAvailable");
+		if (page) {
+			if (parseInt(page.getAttribute('pageAvailable')) > 1) {
+				if (view) view.style.height = workingArea.offsetHeight - page.offsetHeight - 20 + 'px';
+			}
+		} else {
+		  if (view) view.style.height = workingArea.offsetHeight  - 20 + 'px';
+		}
+	};
 };
 
 eXo.ecm.UISimpleView = new SimpleView();

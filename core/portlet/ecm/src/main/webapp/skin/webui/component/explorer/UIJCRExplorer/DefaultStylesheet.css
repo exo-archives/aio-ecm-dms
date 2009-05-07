@@ -115,7 +115,6 @@
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 
 .UIJCRExplorerPortlet .UIDocumentWorkspace {
-  height: 431px;
   overflow: auto;
   /*
 	* minh.js.exo
@@ -123,7 +122,6 @@
 }
 
 .UIJCRExplorerPortlet .UIListView {
-	padding-bottom: 30px; 
 	posititon: relative;
 }
 
