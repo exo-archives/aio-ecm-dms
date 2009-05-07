@@ -88,7 +88,6 @@
 
 .UIJCRExplorerPortlet .UIListView .UIListGrid {
 	overflow: auto;
-	height: 385px;
 	-moz-user-select: none;
 }
 
