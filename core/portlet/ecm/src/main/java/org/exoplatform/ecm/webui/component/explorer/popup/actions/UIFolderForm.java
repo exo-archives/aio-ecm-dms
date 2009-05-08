@@ -134,7 +134,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         String key = "";
         NodeDefinition[] definitions = node.getPrimaryNodeType().getChildNodeDefinitions();
         for (NodeDefinition def : definitions) {
-          if (node.hasNode(name) && !def.allowsSameNameSiblings()) {
+          if (node.hasNode(name) || !def.allowsSameNameSiblings()) {
             key = "UIFolderForm.msg.not-allow-sameNameSibling";
           } else {
             key = "UIFolderForm.msg.repository-exception";
