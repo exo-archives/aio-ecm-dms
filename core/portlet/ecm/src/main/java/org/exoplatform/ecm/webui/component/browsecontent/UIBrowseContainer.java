@@ -44,6 +44,7 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 import javax.portlet.WindowState;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
@@ -77,6 +78,7 @@ import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -117,29 +119,54 @@ import org.exoplatform.webui.event.EventListener;
 )
 
 public class UIBrowseContainer extends UIContainer {
-  final public static String CATEGORYPATH = "categoryPath";
-  final public static String CURRENTNODE = "currentNode";
-  final public static String HISTORY = "history";
-  final public static String ISSHOWALLDOCUMENT = "isShowAllDocument";
-  final public static String ISSHOWCATEGORYTREE = "isShowCategoryTree";
-  final public static String ISSHOWDOCUMENTBYTAG = "isShowDocumentByTag";
-  final public static String ISSHOWDOCUMENTDETAIL = "isShowDocumentDetail";
-  final public static String ISSHOWDOCUMENTLIST = "isShowDocumentList";
-  final public static String ISSHOWPAGEACTION = "isShowPageAction";
-  final public static String ISSHOWSEARCHFORM= "isShowSearchForm";
-  final public static String KEY_CURRENT = "currentNode";
-  final public static String KEY_SELECTED = "selectedNode";
-  final public static String NODESHISTORY = "nodesHistory";
-  final public static String OLDTEMPLATE = "oldTemplate";
-  final public static String ROOTNODE = "rootNode";
-  final public static String ROWPERBLOCK = "rowPerBlock";
-  final public static String SELECTEDTAB = "selectedTab";
-  final public static String TAGPATH = "tagPath";
-  final public static String TEMPLATEDETAIL = "templateDetail";
-  final public static String TEMPLATEPATH = "templatePath";
-  final public static String TREELIST = "TreeList";
-  final public static String TREEROOT = "treeRoot";
-  final public static String USECASE = "usecase";
+  
+  final public static String           CATEGORYPATH          = "categoryPath";
+
+  final public static String           CURRENTNODE           = "currentNode";
+
+  final public static String           HISTORY               = "history";
+
+  final public static String           ISSHOWALLDOCUMENT     = "isShowAllDocument";
+
+  final public static String           ISSHOWCATEGORYTREE    = "isShowCategoryTree";
+
+  final public static String           ISSHOWDOCUMENTBYTAG   = "isShowDocumentByTag";
+
+  final public static String           ISSHOWDOCUMENTDETAIL  = "isShowDocumentDetail";
+
+  final public static String           ISSHOWDOCUMENTLIST    = "isShowDocumentList";
+
+  final public static String           ISSHOWPAGEACTION      = "isShowPageAction";
+
+  final public static String           ISSHOWSEARCHFORM      = "isShowSearchForm";
+
+  final public static String           KEY_CURRENT           = "currentNode";
+
+  final public static String           KEY_SELECTED          = "selectedNode";
+
+  final public static String           NODESHISTORY          = "nodesHistory";
+
+  final public static String           OLDTEMPLATE           = "oldTemplate";
+
+  final public static String           ROOTNODE              = "rootNode";
+
+  final public static String           ROWPERBLOCK           = "rowPerBlock";
+
+  final public static String           SELECTEDTAB           = "selectedTab";
+
+  final public static String           TAGPATH               = "tagPath";
+
+  final public static String           TEMPLATEDETAIL        = "templateDetail";
+
+  final public static String           TEMPLATEPATH          = "templatePath";
+
+  final public static String           TREELIST              = "TreeList";
+
+  final public static String           TREEROOT              = "treeRoot";
+
+  final public static String           USECASE               = "usecase";
+
+  private static final Log             LOG                   = ExoLogger.getLogger("portlet.BrowseContainer");
 
   private String categoryPath_;
   private String currentPath_;
@@ -162,10 +189,9 @@ public class UIBrowseContainer extends UIContainer {
   private int totalRecord_;
   private String wsName_ = null;
 
-  @SuppressWarnings("unchecked")
-  private LinkedList<String> nodesHistory_ = new LinkedList<String>();
-  @SuppressWarnings("unchecked")
-  private Map<String,Node> nodesHistoryMap_ = new HashMap<String,Node>();
+  private LinkedList<String>           nodesHistory_         = new LinkedList<String>();
+
+  private Map<String, Node>            nodesHistoryMap_      = new HashMap<String, Node>();
 
   private int rowPerBlock_ = 6;
   private String tagPath_;  
@@ -211,6 +237,7 @@ public class UIBrowseContainer extends UIContainer {
   public SessionProvider getAnonimProvider() { return SessionProviderFactory.createAnonimProvider(); } 
   
   public String getCategoryPath() { return categoryPath_; }
+  
   public List getCurrentList() throws Exception {
     return uiPageIterator_.getCurrentPageData();
   }
@@ -294,7 +321,7 @@ public class UIBrowseContainer extends UIContainer {
     } catch(AccessDeniedException ace) {
       return null;
     } catch(Exception e){
-      e.printStackTrace();
+      LOG.error("Exception when get node by path = " + nodePath, e);
       return null;
     }
   }
@@ -308,7 +335,7 @@ public class UIBrowseContainer extends UIContainer {
     } catch(AccessDeniedException ace) {
       return null;
     } catch(Exception e){
-      e.printStackTrace();
+      LOG.error("Exception when get node by path = " + nodePath + " in workspace " + workspace, e);
       return null;
     }
   }
@@ -481,7 +508,7 @@ public class UIBrowseContainer extends UIContainer {
         addNodePublish(queryDocuments, node);
       }
     } catch(Exception e) {
-      e.printStackTrace();
+      LOG.error("Exception when execute query: " + queryString, e);
     }
     totalRecord_ = queryDocuments.size();
     return queryDocuments;
@@ -741,7 +768,6 @@ public class UIBrowseContainer extends UIContainer {
   
   public SessionProvider getSessionProvider() { return SessionProviderFactory.createSessionProvider(); }
   
-  @SuppressWarnings("unchecked")
   public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
     LinkManager linkManager = getApplicationComponent(LinkManager.class);
     if (selectedNode.isNodeType(Utils.EXO_SYMLINK)) {
@@ -1112,13 +1138,18 @@ public class UIBrowseContainer extends UIContainer {
     }     
   }
   
+  
+  String getDmsSystemWorkspace() {
+    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(getRepository());
+    return dmsRepoConfig.getSystemWorkspace();
+  }
+  
   public void newJCRTemplateResourceResolver() {
     try{      
-      DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
-      DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(getRepository());
-      jcrTemplateResourceResolver_ = new JCRResourceResolver(getRepository(), 
-                                      dmsRepoConfig.getSystemWorkspace(), Utils.EXO_TEMPLATEFILE);
-    } catch(Exception e) {
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(getRepository(),
+          getDmsSystemWorkspace(), Utils.EXO_TEMPLATEFILE);
+    } catch (Exception e) {
       e.printStackTrace();
     }     
   }

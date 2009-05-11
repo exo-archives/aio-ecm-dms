@@ -48,6 +48,7 @@ import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.categories.CategoriesService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -91,7 +92,6 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
 
   final static public String FIELD_TAXONOMY = "categories";
   final static public String POPUP_TAXONOMY = "UIPopupTaxonomy";
-  final static public String PATH_TAXONOMY = "exoTaxonomiesPath";
   
   private List<String> listTaxonomy = new ArrayList<String>();
   private List<String> listTaxonomyName = new ArrayList<String>();
@@ -194,18 +194,20 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
   }
 
   public void newJCRTemplateResourceResolver() {
-    PortletPreferences preferences = getPortletPreferences();       
     try {
-      String workspaceName = preferences.getValue("workspace", "") ;    
-      jcrTemplateResourceResolver_ = new JCRResourceResolver(repositoryName, workspaceName, "exo:templateFile") ;
+      jcrTemplateResourceResolver_ = new JCRResourceResolver(repositoryName, getDMSWorkspace(), "exo:templateFile") ;
     } catch(Exception e) { }
+  }
+  
+  private String getDMSWorkspace() {
+    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+    return dmsConfiguration.getConfig(repositoryName).getSystemWorkspace();   
   }
   
   @SuppressWarnings("unchecked")
   static public class SaveActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       UIFastContentCreatortForm uiForm = event.getSource() ;
-      
       NodeHierarchyCreator nodeHierarchyCreator = uiForm.getApplicationComponent(NodeHierarchyCreator.class);
       RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class) ;
       PortletPreferences preferences = uiForm.getPortletPreferences();
@@ -219,8 +221,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       } catch(Exception e) {
         session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
       }
-      String pathTaxonomy = ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(PATH_TAXONOMY))).getPath();
-      
+      String pathTaxonomy = nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);
       CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       boolean hasCategories = false;
@@ -233,14 +234,12 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
         UIFormInput input = (UIFormInput) inputs.get(i);
         if((input.getName() != null) && input.getName().equals("name")) {
           String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{", "/", "|", "\""};          
-          String valueName = input.getValue().toString();          
-          for(String filterChar : arrFilterChar) {
-            if(valueName.indexOf(filterChar) > -1) {
+          String valueName = input.getValue().toString().trim();          
+          if (!Utils.isNameValid(valueName, arrFilterChar)) {
               uiApp.addMessage(new ApplicationMessage("UIFastContentCreatortForm.msg.name-not-allowed", null, 
                   ApplicationMessage.WARNING));
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
               return;
-            }
           }
         }
       }

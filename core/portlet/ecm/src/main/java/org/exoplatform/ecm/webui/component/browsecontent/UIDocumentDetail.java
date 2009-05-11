@@ -28,14 +28,13 @@ import javax.jcr.Value;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.webui.core.UIPopupComponent;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -48,11 +47,14 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -76,6 +78,8 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
   private String language_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
+  private static final Log             LOG                   = ExoLogger.getLogger("portlet.DocumentDetail");
+  
   public UIDocumentDetail() {} 
 
   @Override
@@ -112,6 +116,7 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
       templateService.removeCacheTemplate(jcrTemplateResourceResolver_.createResourceId(template));
       return template;
     }catch(Exception e) {
+      LOG.error("Exception when get template ", e);
       e.printStackTrace() ;
     }    
     return null ;
@@ -131,15 +136,13 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
 
   public void newJCRTemplateResourceResolver() {
     try{
-      String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;            
-      ManageableRepository mRepository = 
-        getApplicationComponent(RepositoryService.class).getRepository(repository) ;
-      String systemWorkspace = mRepository.getConfiguration().getSystemWorkspaceName() ;
+      String repository = getAncestorOfType(UIBrowseContainer.class).getRepository();            
+      String systemWorkspace = getAncestorOfType(UIBrowseContainer.class).getDmsSystemWorkspace();
       if(language_ == null) language_ = node_.getProperty(Utils.EXO_LANGUAGE).getString();
       jcrTemplateResourceResolver_ = new JCRResourceResolver(repository, systemWorkspace, 
           Utils.EXO_TEMPLATEFILE, language_) ;
     }catch(Exception e) {
-      e.printStackTrace() ;
+      LOG.error("Exception when get template resource", e);
     }     
   }
 
@@ -151,7 +154,7 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
       Class object = loader.loadClass(className);
       service = getApplicationComponent(object);
     } catch (ClassNotFoundException ex) {
-      ex.printStackTrace();
+      LOG.error("Not found class " + className, ex);
     } 
     return service;
   }
