@@ -419,6 +419,7 @@
       <fileName-error>Ongeldig bestandsnaam</fileName-error>
       <constraint-violation>Huidig node laat niet toe '{0}' node type toe te voegen</constraint-violation>
       <repository-exception>Kan niet naar dit folder opslaan. Naam heeft geen index of bestaat al</repository-exception>
+      <repository-exception-permission>You don't have permission to add a new folder on this node</repository-exception-permission>
       <numberformat-exception>Kan niet naar dit folder opslaan. Naam mag geen '[' of ']' bevatten</numberformat-exception>
       <!--DMS 2.4.x; ECM-3553-->
       <not-allow-sameNameSibling>Can not save. This node is not allowed same name sibling</not-allow-sameNameSibling>

@@ -413,6 +413,7 @@
       <fileName-error>Tên file không hợp lệ.</fileName-error>
       <constraint-violation>Node Hiển thị không được phép thêm kiểu node '{0}'.</constraint-violation>
       <repository-exception>Truy cập bị từ chối. Bạn không có quyền thêm mới node ở đây.</repository-exception>
+      <repository-exception-permission>Bạn không có đủ quyền để thêm mới folder cho node này</repository-exception-permission>
       <numberformat-exception>Không thể lưu lại thư mục này. Tên đưa vào phải không chứa '[' hoặc ']'</numberformat-exception>
       <not-allow-sameNameSibling>Không thể lưu lại thư mục này. Loại node này không hỗ trợ trùng tên</not-allow-sameNameSibling>
     </msg>

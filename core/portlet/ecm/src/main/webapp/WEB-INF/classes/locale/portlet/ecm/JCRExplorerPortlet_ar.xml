@@ -416,6 +416,7 @@ Nouvelle configuration
       <fileName-error>اسم الملف خاطئ</fileName-error>
       <constraint-violation>العقدة المختارة لا تسمح بهذا النوع من العقد: '{0}'.</constraint-violation>
       <repository-exception>غير مسموح بالدخول!ليس لك الصلاحية لإضافة في هذا المجلد</repository-exception>
+      <repository-exception-permission>You don't have permission to add a new folder on this node</repository-exception-permission>
       <numberformat-exception>لا يمكن حفظ المجلد. الاسم يجب أن لا يحتوي على '[' أو ']'</numberformat-exception>
       <!--DMS 2.4.x; ECM-3553-->
       <not-allow-sameNameSibling>Can not save. This node is not allowed same name sibling</not-allow-sameNameSibling>

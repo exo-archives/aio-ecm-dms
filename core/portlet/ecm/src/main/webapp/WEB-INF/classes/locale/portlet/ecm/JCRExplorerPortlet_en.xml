@@ -414,6 +414,7 @@
       <fileName-error>Invalid file name</fileName-error>
       <constraint-violation>Current node does not allow to add '{0}' node type</constraint-violation>
       <repository-exception>Access deny! You don't have add permission in this folder</repository-exception>
+      <repository-exception-permission>You don't have permission to add a new folder on this node</repository-exception-permission>
       <numberformat-exception>Can not save this folder. The name provided must not have '[' or ']'</numberformat-exception>
       <not-allow-sameNameSibling>Can not save. This node is not allowed same name sibling</not-allow-sameNameSibling>
     </msg>
@@ -2194,7 +2195,7 @@
       <name-not-allowed>This name is not allowed.</name-not-allowed>
       <fileName-error>Invalid file name</fileName-error>
       <constraint-violation>Current node does not allow to add '{0}' node type</constraint-violation>
-      <repository-exception>Access deny! You don't have add permission in this node</repository-exception>
+      <repository-exception>Access deny! You don't have execute permission in this node</repository-exception>
       <numberformat-exception>Can not save this folder. The name provided must not have '[' or ']'</numberformat-exception>      
 			<path-node-invalid>Please enter Path Node!</path-node-invalid>
 			<path-node-not-allowed>This name is not allowed.</path-node-not-allowed>

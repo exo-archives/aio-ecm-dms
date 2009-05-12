@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.ConstraintViolationException;
@@ -130,6 +131,11 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         Object[] arg = { type } ;
         throw new MessageException(new ApplicationMessage("UIFolderForm.msg.constraint-violation",
             arg, ApplicationMessage.WARNING)) ;
+      } catch(AccessDeniedException accessDeniedException) {
+        uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.repository-exception-permission", null, 
+            ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
       } catch(RepositoryException re) {
         String key = "";
         NodeDefinition[] definitions = node.getPrimaryNodeType().getChildNodeDefinitions();
@@ -144,9 +150,9 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return ;
       } catch(NumberFormatException nume) {
-        String key = "UIFolderForm.msg.numberformat-exception" ;
-        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        String key = "UIFolderForm.msg.numberformat-exception";
+        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return ;
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
