@@ -106,8 +106,34 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("Podcast.dialog.label.upload-file")%></td>
 	      <td class="FieldComponent">
 		      <%
-					  String[] fieldMedia = ["jcrPath=/node/jcr:content/jcr:data"] ;
-					  uicomponent.addUploadField("media", fieldMedia) ;
+		        if (uicomponent.isEditing()) { 
+							def curNode = uicomponent.getNode() ;
+							if (curNode.hasNode("jcr:content")) {
+								def imageNode = curNode.getNode("jcr:content") ;
+								if (imageNode.getProperty("jcr:data").getStream().available() > 0) {
+									def actionLink = uicomponent.event("RemoveData", "/jcr:content");
+						%>		
+									<div>
+									  <div style="font-size:12px; font-weight: bold; line-height: 17px;">
+									    <%=_ctx.appRes("File.dialog.label.re-upload")%>
+									  </div>
+										<a href="$actionLink">
+											<img src="/eXoResources/skin/DefaultSkin/background/Blank.gif" alt="" class="ActionIcon Remove16x16Icon"/>
+										</a>
+									</div>
+						<%
+								} else {
+					        String[] fieldMedia = ["jcrPath=/node/jcr:content/jcr:data"] ;
+				  	      uicomponent.addUploadField("media", fieldMedia) ;				
+								}
+							}
+						} else if (uicomponent.dataRemoved()) {
+			        String[] fieldMedia = ["jcrPath=/node/jcr:content/jcr:data"] ;
+				  	  uicomponent.addUploadField("media", fieldMedia) ;
+						}	else {
+			        String[] fieldMedia = ["jcrPath=/node/jcr:content/jcr:data"] ;
+					    uicomponent.addUploadField("media", fieldMedia) ;
+						}
 		      %>
 		    </td>
 	    </tr>
