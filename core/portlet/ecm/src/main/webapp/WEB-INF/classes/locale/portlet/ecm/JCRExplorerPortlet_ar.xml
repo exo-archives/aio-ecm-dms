@@ -1584,6 +1584,7 @@
       <in-versioning>يجب إنهاء معالجة  هذه العقدة قبل إضافة أخرى.</in-versioning>
       <not-support>لا يمكن قراءة القالب '{0}'.</not-support>
       <value-invalid>'{0}' يجب أن يحمل محتوى</value-invalid>
+      <repository-exception-permission>You don't have permission to add a new document on this node</repository-exception-permission>
       <repository-exception>لا يمكن حفظ هذه الوثيقة. هذا الاسم قد يكون موجود أو خاطئ.</repository-exception>
       <not-allowed-same-name-sibling>لا يمكن حفظ هذه الوثيقة. هذه العقدة لا تسمح بفرعان بنفس الاسم</not-allowed-same-name-sibling>
       <numberformat-exception>لا يمكن حفظ هذه الوثيقة. الاسم المستخدم يجب أن لا يحمل '[' أو ']'.</numberformat-exception>

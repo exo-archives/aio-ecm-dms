@@ -1584,6 +1584,7 @@
       <in-versioning>Cần checkout node hiện thời trước khi thêm node mới.</in-versioning>
       <not-support>Không thể tải mẫu của '{0}'.</not-support>
       <value-invalid>'{0}' là giá trị cần thiết.</value-invalid>
+      <repository-exception-permission>Bạn không có đủ quyền để thêm mới document cho node này</repository-exception-permission>
       <repository-exception>Không thể lưu tài liệu này. Tên của tài liệu không chứa chỉ mục trên phần tử cuối cùng cửa nó.</repository-exception>
       <not-allowed-same-name-sibling>Không thể lưu tài liệu này.Node này không được phép trùng tên.</not-allowed-same-name-sibling>
       <numberformat-exception>Không thể lưu tài liệu này. Tên của tài liệu không được chứa '[' hoặc ']'.</numberformat-exception>
