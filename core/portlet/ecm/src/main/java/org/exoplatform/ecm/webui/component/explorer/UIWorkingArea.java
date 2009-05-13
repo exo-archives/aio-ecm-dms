@@ -1353,6 +1353,12 @@ public class UIWorkingArea extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      if(!PermissionUtil.canAddNode(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       if(uiExplorer.nodeIsLocked(currentNode)) {
         Object[] arg = { uiExplorer.getCurrentNode().getPath() };
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg));
@@ -1377,6 +1383,12 @@ public class UIWorkingArea extends UIContainer {
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();      
       if(!PermissionUtil.canRead(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -1417,6 +1429,12 @@ public class UIWorkingArea extends UIContainer {
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
       if(!PermissionUtil.canRead(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
