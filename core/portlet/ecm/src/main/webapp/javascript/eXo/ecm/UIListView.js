@@ -85,6 +85,7 @@ var ListView = function() {
 		var event = event || window.event;
 		var element = this;
 		Self.enableDragDrop = true;
+		Self.srcPath = element.getAttribute("objectId");
 		resetArrayItemsSelected();
 		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
@@ -129,7 +130,6 @@ var ListView = function() {
 		var element = this;
 		revertResizableBlock();
 		Self.enableDragDrop = null;
-		
 		var mobileElement = document.getElementById(Self.mobileId);
 		if (mobileElement && mobileElement.move) {
 			//post action
@@ -137,6 +137,16 @@ var ListView = function() {
 			var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 			var wsTarget = element.getAttribute('workspacename');
 			var idTarget = element.getAttribute('objectId');
+			var regex = new RegExp("^"+idTarget);
+			var regex1 = new RegExp("^"+Self.srcPath);
+			if(regex.test(Self.srcPath)){
+			  delete Self.srcPath;
+			  return ;
+			}
+			if(regex1.test(idTarget)){
+			  delete Self.srcPath;
+			  return ;
+			}
 			//Dunghm : check symlink
 			if(event.ctrlKey && event.shiftKey)
 			  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
@@ -174,6 +184,7 @@ var ListView = function() {
 		removeMobileElement();
 		Self.hideContextMenu();
 		Self.enableDragDrop = true;
+		Self.srcPath = element.getAttribute("objectId");
 		document.onselectstart = function(){return false};
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		if (!rightClick) {
@@ -264,6 +275,10 @@ var ListView = function() {
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		var leftClick = !rightClick;
 		if (leftClick) {
+		  if(Self.rootNode == element){
+		    delete Self.rootNode;
+		    return ;
+		  }
 			var mobileElement = document.getElementById(Self.mobileId);
 			if (mobileElement && mobileElement.move && element.temporary) {
 				//post action
@@ -272,6 +287,11 @@ var ListView = function() {
 				var wsTarget = element.getAttribute('workspacename');
 				var idTarget = element.getAttribute('objectId');
 				//Dunghm: check symlink
+				var regex = new RegExp("^"+idTarget);
+				if(regex.test(Self.srcPath)){
+				  delete Self.srcPath;
+				  return ;
+				}
 				if(event.ctrlKey && event.shiftKey)
 				  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
 				else

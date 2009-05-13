@@ -90,7 +90,7 @@ var SimpleView = function() {
 		var element = this;
 		Self.enableDragDrop = true;
 		resetArrayItemsSelected();
-		
+		Self.srcPath = element.getAttribute("objectId");
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		if (rightClick) {
 			eval(element.getAttribute("mousedown"));
@@ -141,6 +141,16 @@ var SimpleView = function() {
 			var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 			var wsTarget = element.getAttribute('workspacename');
 			var idTarget = element.getAttribute('objectId');
+			var regex = new RegExp("^"+idTarget);
+			var regex1 = new RegExp("^"+Self.srcPath);
+			if(regex.test(Self.srcPath)){
+			  delete Self.srcPath;
+			  return ;
+			}
+			if(regex1.test(idTarget)){
+			  delete Self.srcPath;
+			  return ;
+			}
 			//Dunghm : check symlink
 			if(event.ctrlKey && event.shiftKey)
 			  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
@@ -177,6 +187,7 @@ var SimpleView = function() {
 		removeMobileElement();
 		Self.hideContextMenu();
 		Self.enableDragDrop = true;
+		Self.srcPath = element.getAttribute("objectId");
 		document.onselectstart = function(){return false};
 		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
@@ -276,6 +287,11 @@ var SimpleView = function() {
 				var wsTarget = element.getAttribute('workspacename');
 				var idTarget = element.getAttribute('objectId');
 				//Dunghm: check symlink
+				var regex = new RegExp("^"+idTarget);
+				if(regex.test(Self.srcPath)){
+				  delete Self.srcPath;
+				  return ;
+				}
 				if(event.ctrlKey && event.shiftKey)
 				  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
 				else
