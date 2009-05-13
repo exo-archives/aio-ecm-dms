@@ -77,7 +77,7 @@ var SimpleView = function() {
 		if (mobileElement && mobileElement.move) {
 			var expandElement = DOM.findAncestorByClass(element, "ExpandIcon");
 			if(expandElement && expandElement.onclick) {
-				if (expandElement.onclick instanceof Function) expandElement.onclick();
+				if (expandElement.onclick instanceof Function) expandElement.onclick(event);
 			}
 		}
 	};
@@ -90,7 +90,7 @@ var SimpleView = function() {
 		var element = this;
 		Self.enableDragDrop = true;
 		resetArrayItemsSelected();
-		
+		Self.srcPath = element.getAttribute("objectId");
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
 		if (rightClick) {
 			eval(element.getAttribute("mousedown"));
@@ -141,7 +141,21 @@ var SimpleView = function() {
 			var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 			var wsTarget = element.getAttribute('workspacename');
 			var idTarget = element.getAttribute('objectId');
-			Self.postGroupAction(moveAction.getAttribute('request'), "&destInfo="+idTarget+";"+wsTarget);
+			var regex = new RegExp("^"+idTarget);
+			var regex1 = new RegExp("^"+Self.srcPath);
+			if(regex.test(Self.srcPath)){
+			  delete Self.srcPath;
+			  return ;
+			}
+			if(regex1.test(idTarget)){
+			  delete Self.srcPath;
+			  return ;
+			}
+			//Dunghm : check symlink
+			if(event.ctrlKey && event.shiftKey)
+			  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
+			else
+			  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
 		}
 	};
 	
@@ -173,6 +187,7 @@ var SimpleView = function() {
 		removeMobileElement();
 		Self.hideContextMenu();
 		Self.enableDragDrop = true;
+		Self.srcPath = element.getAttribute("objectId");
 		document.onselectstart = function(){return false};
 		
 		var rightClick = (event.which && event.which > 1) || (event.button && event.button == 2);
@@ -216,7 +231,7 @@ var SimpleView = function() {
 			var event = event || window.event;
 			document.onselectstart = function(){return false;}
 			var mobileElement = document.getElementById(Self.mobileId);
-			if (Self.enableDragDrop && mobileElement && !event.ctrlKey) {
+			if (Self.enableDragDrop && mobileElement && (!event.ctrlKey || (event.shiftKey && event.ctrlKey))) {
 				mobileElement.style.display = "block";
 				var X = eXo.core.Browser.findMouseXInPage(event);
 				var Y = eXo.core.Browser.findMouseYInPage(event);
@@ -244,6 +259,9 @@ var SimpleView = function() {
 		var event = event || window.event;
 		resetArrayItemsSelected();
 		element.selected = true;
+		//Dunghm: Check Shift key
+		if(event.shiftKey) element.setAttribute("isLink",true);
+		else element.setAttribute("isLink",null);
 		//for select use shilf key;
 		Self.temporaryItem = element;
 		Self.itemsSelected = new Array(element);
@@ -268,16 +286,29 @@ var SimpleView = function() {
 				var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 				var wsTarget = element.getAttribute('workspacename');
 				var idTarget = element.getAttribute('objectId');
-				Self.postGroupAction(moveAction.getAttribute('request'), "&destInfo="+idTarget+";"+wsTarget);
+				//Dunghm: check symlink
+				var regex = new RegExp("^"+idTarget);
+				if(regex.test(Self.srcPath)){
+				  delete Self.srcPath;
+				  return ;
+				}
+				if(event.ctrlKey && event.shiftKey)
+				  Self.postGroupAction(moveAction.getAttribute("symlink"), "&destInfo=" + wsTarget + ":" + idTarget);
+				else
+				  Self.postGroupAction(moveAction, "&destInfo=" + wsTarget + ":" + idTarget);
 			} else {
 				if (event.ctrlKey && !element.selected) {
 					element.selected = true;
 					//for select use shilf key;
 					Self.temporaryItem = element;
 					Self.itemsSelected.push(element);
+					//Dunghm: Check Shift key
+					element.setAttribute("isLink",null);
+					if(event.shiftKey) element.setAttribute("isLink",true);
 				} else if(event.ctrlKey && element.selected) {
 					element.selected = null;
 					element.style.background = "none";
+					element.setAttribute("isLink",null);
 					removeItem(Self.itemsSelected, element);
 				} else if (event.shiftKey) {
 					//use shift key to select;
@@ -291,6 +322,9 @@ var SimpleView = function() {
 					resetArrayItemsSelected();
 					for (var i = lowIndex; i <= heightIndex; i++) {
 						Self.allItems[i].selected = true;
+						//Dunghm: Check Shift key
+						element.setAttribute("isLink",null);
+						if(event.ctrlKey) element.setAttribute("isLink",true);
 						Self.itemsSelected.push(Self.allItems[i]);
 					}
 				} else {
@@ -422,10 +456,14 @@ var SimpleView = function() {
 					if (mask.X < posX && posX < mask.storeX &&
 							posY < mask.Y && mask.storeY < posY) {
 						itemBox.selected = true;
+						//Dunghm: Check Shift key
+						itemBox.setAttribute("isLink",null);
+						if(event.ctrlKey && event.shiftKey) itemBox.setAttribute("isLink",true);
 						itemBox.style.background = Self.colorSelected;
 						//eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
+						itemBox.setAttribute("isLink",null);
 						itemBox.style.background = "none";
 						//eXo.core.Browser.setOpacity(itemBox, 85);
 					}
@@ -453,10 +491,14 @@ var SimpleView = function() {
 					if (mask.X < posX && posX < mask.storeX &&
 							mask.Y < posY && posY < mask.storeY) {
 						itemBox.selected = true;
+						//Dunghm: Check Shift key
+						itemBox.setAttribute("isLink",null);
+						if(event.ctrlKey && event.shiftKey) itemBox.setAttribute("isLink",true);
 						itemBox.style.background = Self.colorSelected;
 						//eXo.core.Browser.setOpacity(itemBox, 100);
 					} else {
 						itemBox.selected = null;
+						itemBox.setAttribute("isLink",null);
 						itemBox.style.background = "none";
 						//eXo.core.Browser.setOpacity(itemBox, 85);
 					}
@@ -649,28 +691,38 @@ var SimpleView = function() {
 		eXo.core.MouseEventManager.onMouseDownHandlers = null;
 	};
 	
-	SimpleView.prototype.postGroupAction = function(url, ext) {
+	SimpleView.prototype.postGroupAction = function(moveActionNode, ext) {
 		var objectId = [];
 		var workspaceName = [];
+		var islink = "";
 		var ext = ext? ext : "";
 		if(Self.itemsSelected.length) {
 			for(var i in Self.itemsSelected) {
 				if (Array.prototype[i]) continue;
 				var currentNode = Self.itemsSelected[i];
 				currentNode.isSelect = false;
-				var wsname = currentNode.getAttribute("workspaceName");
-				if (wsname) workspaceName.push(wsname);
-				else workspaceName.push("");
+				
+				//Dunghm: Check Shift key
+				var islinkValue = currentNode.getAttribute("isLink");
+				if (islinkValue && (islinkValue != "") && (islinkValue != "null")) islink += islinkValue ;
+
 				var oid = currentNode.getAttribute("objectId");
-				if (oid) objectId.push(oid);
+				var wsname = currentNode.getAttribute("workspaceName");
+				if (oid) objectId.push(wsname + ":" + oid);
 				else objectId.push("");
 			}
-			url = url.replace("MultiSelection", objectId.join(";") + "&workspaceName=" + workspaceName.join(";") + ext);
+			//Dunghm: Check Shift key
+			var url = (typeof(moveActionNode) == "string")?moveActionNode:moveActionNode.getAttribute("request");
+			if(islink && islink != "") {
+				url = moveActionNode.getAttribute("symlink");
+				ext += "&isLink="+true;
+			}
+			url = url.replace("MultiSelection", objectId.join(";") + ext);
 			eval(url);
 		}
 	};
 	SimpleView.prototype.errorCallback = function(obj){
-	  var img = eXo.core.DOMUtil.findNextElementByTagName(obj.parentNode,"span");
+	  var img = eXo.core.DOMUtil.findNextElementByTagName(obj.parentNode,"div");
 	  img.style.display = "block";
 	  obj.parentNode.style.display = "none";
 	};
@@ -724,6 +776,20 @@ var SimpleView = function() {
 		var uiResizableBlock = DOM.findFirstDescendantByClass(uiWorkingArea, "div", "UIResizableBlock");
 		if (uiResizableBlock) uiResizableBlock.style.overflow = "auto";
 	}
+	
+	SimpleView.prototype.setHeight = function() {
+		var root = document.getElementById("UIDocumentInfo");
+		var view = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIThumbnailsView");
+		var workingArea = document.getElementById('UIWorkingArea');
+		var page = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "PageAvailable");
+		if (page) {
+			if (parseInt(page.getAttribute('pageAvailable')) > 1) {
+				if (view) view.style.height = workingArea.offsetHeight - page.offsetHeight - 20 + 'px';
+			}
+		} else {
+		  if (view) view.style.height = workingArea.offsetHeight  - 20 + 'px';
+		}
+	};
 };
 
 eXo.ecm.UISimpleView = new SimpleView();
