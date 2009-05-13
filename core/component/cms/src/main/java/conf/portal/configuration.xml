@@ -207,6 +207,10 @@
     <type>org.exoplatform.services.cms.impl.DMSConfiguration</type>
   </component>  
   
+  <component>
+    <type>org.exoplatform.services.cms.presentation.document.edit.GetEditedDocumentRESTService</type>
+  </component>  
+  
   <external-component-plugins>
 	  <target-component>org.exoplatform.services.jcr.RepositoryService</target-component>      
 	  <component-plugin>

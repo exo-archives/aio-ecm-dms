@@ -4,5 +4,9 @@
 	<gadget name="PublishedDocument">
 		<path>/gadgets/PublishedDocuments.xml</path>
 	</gadget>
+
+	<gadget name="LastEditedDocument">
+		<path>/gadgets/LastEditedDocument.xml</path>
+	</gadget>
 			
 </gadgets>
