@@ -114,7 +114,7 @@
   <div style="white-space: nowrap; -moz-user-select: none;">
     <div class="HomeNode">
       <div class="HardDisk24x24Icon" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><span></span></div>
-      <div class="NodeLabel"><a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><%=_ctx.appRes("UITreeExplorer.label.Root")%></a></div>
+      <div class="NodeLabel"><a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" title="<%=uicomponent.getDriveName().replace(".", " / ")%>" $contextMenuEvent><%=uicomponent.getDriveName().replace(".", " / ")%></a></div>
     </div>
     <div class="NodeGroup">
       <%

@@ -27,6 +27,5 @@
 	  <a class="Icon ShowSideBarButton" href="<%=uicomponent.event("ShowSideBar")%>" title="<%=_ctx.appRes("UIViewBar.label.showSideBar")%>"><span></span></a>
 	<%}%>		
 	<div class="Separator ViewBarSeparator"><span></span></div>		
-	<div class="WorkspaceName"><%=_ctx.appRes("UIViewBar.label.currentDrive")%> : <font color="#0766e7"><%=uicomponent.getDriveName().replace(".", " / ")%></font></div>
   <div class="ClearBoth"><span></span></div>
 </div>
