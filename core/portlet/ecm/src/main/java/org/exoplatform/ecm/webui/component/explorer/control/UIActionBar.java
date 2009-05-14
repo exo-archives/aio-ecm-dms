@@ -582,14 +582,7 @@ public class UIActionBar extends UIForm {
       }
       String repository = uiActionBar.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
       NodeType nodeType = currentNode.getPrimaryNodeType();
-      NodeType[] superTypes = nodeType.getSupertypes();
-      boolean isFolder = false;
-      for(NodeType superType : superTypes) {
-        if(superType.getName().equals(Utils.NT_FOLDER) || superType.getName().equals(Utils.NT_UNSTRUCTURED)) {
-          isFolder = true;
-        }
-      }
-      if(!templateService.getDocumentTemplates(repository).contains(nodeType.getName()) || isFolder || uiExplorer.getCurrentNode().isNodeType("rma:record")) {
+      if(!templateService.getDocumentTemplates(repository).contains(nodeType.getName())) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.unsupported-multilanguage", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
