@@ -36,9 +36,6 @@ import org.exoplatform.services.log.ExoLogger;
 
 /**
  * Created by The eXo Platform SARL
- * Author : Pham Xuan Hoa
- *          hoa.pham@exoplatform.com
- * Feb 28, 2008  
  */
 public class LockManagerListener implements HttpSessionListener {
 
@@ -55,7 +52,8 @@ public class LockManagerListener implements HttpSessionListener {
     try {      
       HttpSession httpSession = event.getSession();
       log.info("Removing the locks of all locked nodes");
-      Map<String,String> lockedNodes = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+      Map<String,String> lockedNodes = 
+        (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
       if(lockedNodes == null || lockedNodes.values().isEmpty()) return;      
       String portalContainerName = event.getSession().getServletContext().getServletContextName() ;
       RootContainer rootContainer = RootContainer.getInstance() ;
@@ -67,7 +65,7 @@ public class LockManagerListener implements HttpSessionListener {
       String[] temp = null, location = null ;
       Session session = null;      
       for(Iterator<String> iter = lockedNodes.keySet().iterator(); iter.hasNext();) {                
-        try{
+        try {
           //The key structrure is built in org.exoplatform.ecm.webui.utils.LockUtil.createLockKey() method
           key = iter.next();          
           temp = key.split(":/:");
@@ -75,7 +73,8 @@ public class LockManagerListener implements HttpSessionListener {
           location = temp[0].split("/::/");
           repoName = location[0]; 
           workspaceName = location[1] ;
-          session = sessionProvider.getSession(workspaceName,repositoryService.getRepository(repoName));
+          session = 
+            sessionProvider.getSession(workspaceName,repositoryService.getRepository(repoName));
           lockToken = lockedNodes.get(key);
           session.addLockToken(lockToken);
           Node node = (Node)session.getItem(nodePath);
