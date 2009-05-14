@@ -65,7 +65,6 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.IdentityRegistry;
 import org.exoplatform.services.security.MembershipEntry;
@@ -847,7 +846,7 @@ public class UIWorkingArea extends UIContainer {
           session.addLockToken(lockToken);
         }
         node.unlock();
-        ((NodeImpl)node).removeMixin(Utils.MIX_LOCKABLE);
+        node.removeMixin(Utils.MIX_LOCKABLE);
         node.getSession().save();
       }
     } catch(LockException le) {
