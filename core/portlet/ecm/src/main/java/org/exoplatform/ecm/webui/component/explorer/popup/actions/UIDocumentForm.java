@@ -436,7 +436,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         if(selectorParams != null) {
           String[] arrParams = selectorParams.split(",");
           if(arrParams.length == 4) {
-            ((UIOneNodePathSelector)uiComp).setAcceptedNodeTypesInPathPanel(new String[] {Utils.NT_FILE});
+            ((UIOneNodePathSelector)uiComp).setAcceptedNodeTypesInPathPanel(new String[] {Utils.NT_FILE, 
+                Utils.NT_FOLDER, Utils.NT_UNSTRUCTURED, Utils.EXO_TAXANOMY});
             wsName = arrParams[1];
             rootPath = arrParams[2];
             ((UIOneNodePathSelector)uiComp).setIsDisable(wsName, true);
