@@ -317,8 +317,11 @@ public class UIBrowseContainer extends UIContainer {
       }
       return (Node) nodeFinder.getItem(getRepository(), wsName_, nodePath);
     } catch(PathNotFoundException path) {
-      return (Node) nodeFinder.getItem(getRepository(), wsName_, rootPath_);
+      //return (Node) nodeFinder.getItem(getRepository(), wsName_, rootPath_);
+      LOG.error("PathNotFoundException when get node by path = " + nodePath, path);
+      return null;
     } catch(AccessDeniedException ace) {
+      LOG.error("AccessDeniedException when get node by path = " + nodePath, ace);
       return null;
     } catch(Exception e){
       LOG.error("Exception when get node by path = " + nodePath, e);
@@ -1094,7 +1097,20 @@ public class UIBrowseContainer extends UIContainer {
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "");
     NodeFinder nodeFinder_ =  getApplicationComponent(NodeFinder.class);
     LinkManager linkManager_ = getApplicationComponent(LinkManager.class);
-    Node categoryNode = (Node)nodeFinder_.getItem(repoName, getWorkSpace(), categoryPath);
+    Node categoryNode = null;
+    try {
+      categoryNode = (Node)nodeFinder_.getItem(repoName, getWorkSpace(), categoryPath);
+    } catch (PathNotFoundException pathNotFoundException) {
+      UIApplication app = getAncestorOfType(UIApplication.class);
+      app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null, 
+          ApplicationMessage.WARNING));
+      return;
+    } catch (Exception e) {
+      UIApplication app = getAncestorOfType(UIApplication.class);
+      app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null, 
+          ApplicationMessage.WARNING));
+      return;
+    }
     if (linkManager_.isLink(categoryNode)) {
       if (linkManager_.isTargetReachable(categoryNode)) {
         categoryNode = linkManager_.getTarget(categoryNode);
@@ -1172,10 +1188,11 @@ public class UIBrowseContainer extends UIContainer {
         setPageIterator(getDocumentByTag());
       } else {
         if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
-          if(getNodeByPath(getCategoryPath()) == null || getNodeByPath(getRootNode().getPath()) == null) {
-//            UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class);
-//            uiPorlet.setPorletMode(PortletMode.HELP);
-//            uiPorlet.reload();
+          if(getCategoryPath() == null || getRootNode().getPath() == null) {
+            //UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class);
+            //uiPorlet.setPorletMode(PortletMode.HELP);
+            //uiPorlet.reload();
+            return;
           } else if(getNodeByPath(getSelectedTab().getPath()) == null || 
               getNodeByPath(getCurrentNode().getPath()) == null) {
             setSelectedTabPath(null);
