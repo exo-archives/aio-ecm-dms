@@ -25,10 +25,13 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.imageio.ImageIO;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemNotFoundException;
+import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
@@ -46,6 +49,9 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
+import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
+import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
@@ -56,6 +62,8 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
+import org.exoplatform.services.cms.drives.DriveData;
+import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.link.LinkManager;
@@ -64,6 +72,7 @@ import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.link.NodeLinkAware;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
+import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.SystemIdentity;
@@ -71,6 +80,7 @@ import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.audit.AuditHistory;
 import org.exoplatform.services.jcr.ext.audit.AuditService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -80,6 +90,7 @@ import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
+import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.exception.MessageException;
@@ -97,6 +108,7 @@ import org.exoplatform.webui.exception.MessageException;
 @ComponentConfig(
     events = {
         @EventConfig(listeners = UIDocumentInfo.ChangeNodeActionListener.class),
+        @EventConfig(listeners = UIDocumentInfo.ViewDocActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.RemoveAttachActionListener.class, confirm="UIDocumentInfo.msg.confirm-deleteattachment"),
         @EventConfig(listeners = UIDocumentInfo.ViewNodeActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.SortActionListener.class),
@@ -665,6 +677,106 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       int page = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID)) ;      
       extendedPageIterator.setCurrentPage(page);
       event.getRequestContext().addUIComponentToUpdateByAjax(treeExplorer);      
+    }
+  }
+
+  public static class ViewDocActionListener extends EventListener<UIDocumentInfo> {
+    public void execute(Event<UIDocumentInfo> event) throws Exception {      
+      UIDocumentInfo uicomp =  event.getSource();
+      UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
+      String path = event.getRequestContext().getRequestParameter("path");
+      String driveName = event.getRequestContext().getRequestParameter("drive");
+      String repositoryName = event.getRequestContext().getRequestParameter("repository");
+      ManageDriveService manageDrive = uicomp.getApplicationComponent(ManageDriveService.class);
+      DriveData driveData = manageDrive.getDriveByName(driveName, repositoryName);
+      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
+      RepositoryService rservice = uicomp.getApplicationComponent(RepositoryService.class);
+      ManageDriveService dservice = uicomp.getApplicationComponent(ManageDriveService.class);
+      DriveData drive = dservice.getDriveByName(driveName, repositoryName);
+      String userId = Util.getPortalRequestContext().getRemoteUser();
+      UIApplication uiApp = uicomp.getApplicationComponent(UIApplication.class);
+      List<String> viewLists = new ArrayList<String>();
+      
+      for (String role : Utils.getMemberships()) {
+        for (String viewName : drive.getViews().split(",")) {
+          if (!viewLists.contains(viewName.trim())) {
+            Node viewNode = 
+              uicomp.getApplicationComponent(ManageViewService.class).getViewByName(viewName.trim(),
+                  repositoryName, SessionProviderFactory.createSystemProvider());
+            String permiss = viewNode.getProperty("exo:accessPermissions").getString();
+            if (permiss.contains("${userId}")) permiss = permiss.replace("${userId}", userId);
+            String[] viewPermissions = permiss.split(",");
+            if (permiss.equals("*")) viewLists.add(viewName.trim());
+            if (drive.hasPermission(viewPermissions, role)) viewLists.add(viewName.trim());
+          }
+        }
+      }
+      String viewListStr = "";
+      List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>();
+      ResourceBundle res = context.getApplicationResourceBundle();
+      String viewLabel = null;
+      for (String viewName : viewLists) {
+        try {
+          viewLabel = res.getString("Views.label." + viewName) ; 
+        } catch (MissingResourceException e) {
+          viewLabel = viewName;
+        }        
+        viewOptions.add(new SelectItemOption<String>(viewLabel, viewName));
+        if(viewListStr.length() > 0) viewListStr = viewListStr + "," + viewName;
+        else viewListStr = viewName;
+      }
+      drive.setViews(viewListStr);
+      String homePath = drive.getHomePath();
+      if (homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId);
+      
+      UIJCRExplorerPortlet uiParent = uicomp.getAncestorOfType(UIJCRExplorerPortlet.class);  
+      uiParent.setFlagSelect(true);
+      Preference pref = new Preference();
+      pref.setShowSideBar(drive.getViewSideBar());
+      pref.setShowNonDocumentType(drive.getViewNonDocument());
+      pref.setShowPreferenceDocuments(drive.getViewPreferences());
+      pref.setAllowCreateFoder(drive.getAllowCreateFolder()); 
+      pref.setShowHiddenNode(drive.getShowHiddenNode());
+      uiExplorer.setPreferences(pref);
+      uiExplorer.setDriveData(drive);
+      uiExplorer.setIsReferenceNode(false);
+      
+      SessionProvider provider = SessionProviderFactory.createSessionProvider();                  
+      ManageableRepository repository = rservice.getRepository(repositoryName);
+      try {
+        Session session = provider.getSession(drive.getWorkspace(),repository);      
+        // check if it exists
+        // we assume that the path is a real path
+        session.getItem(homePath);        
+      } catch(AccessDeniedException ace) {
+        Object[] args = { driveName };
+        uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args, 
+            ApplicationMessage.WARNING));
+        context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;        
+      } catch(NoSuchWorkspaceException nosuchWS) {
+        Object[] args = { driveName };
+        uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.workspace-not-exist", args, 
+            ApplicationMessage.WARNING));
+        context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;        
+      } catch(Exception e) {
+        JCRExceptionManager.process(uiApp, e);
+        return;
+      } 
+      
+      uiExplorer.setRepositoryName(repositoryName);
+      uiExplorer.setWorkspaceName(drive.getWorkspace());
+      uiExplorer.setRootPath(homePath);
+      UIControl uiControl = uiExplorer.getChild(UIControl.class);
+      UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);
+      UIViewBar uiViewBar = uiControl.getChild(UIViewBar.class);
+      uiViewBar.setViewOptions(viewOptions);
+      uiActionbar.setTabOptions(viewLists.get(0));
+      uiExplorer.setSelectNode(driveData.getWorkspace(), path);
+      uiExplorer.updateAjax(event);
+      uiExplorer.refreshExplorer();
+      uiExplorer.setRenderSibbling(UIJCRExplorer.class);
     }
   }
 }
