@@ -17,7 +17,9 @@
  **************************************************************************/
 package org.exoplatform.services.cms.presentation.document.edit;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,16 +33,15 @@ import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
-import org.exoplatform.commons.utils.ISO8601;
+import org.apache.poi.hwpf.usermodel.DropCapSpecifier;
 import org.exoplatform.ecm.utils.comparator.PropertyValueComparator;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.cms.drives.DriveData;
+import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.ext.audit.AuditHistory;
-import org.exoplatform.services.jcr.ext.audit.AuditRecord;
-import org.exoplatform.services.jcr.ext.audit.AuditService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.rest.HTTPMethod;
@@ -61,41 +62,34 @@ import org.exoplatform.ws.frameworks.json.transformer.Bean2JsonOutputTransformer
 @URITemplate("/presentation/document/edit/")
 public class GetEditedDocumentRESTService implements ResourceContainer {
   
-  private RepositoryService  repositoryService;
+  private RepositoryService   repositoryService;
 
-  private TemplateService  templateService;
-  
-  private FolksonomyService folksonomyService;
-  
-  private AuditService auditService;
-  
-  private static final String DATE_MODIFIED = "exo:dateModified";
+  private TemplateService     templateService;
+
+  private FolksonomyService   folksonomyService;
+
+  private ManageDriveService   manageDriveService;
+
+  private static final String DATE_MODIFIED   = "exo:dateModified";
 
   private static final String JCR_PRIMARYTYPE = "jcr:primaryType";
 
-  private static final String NT_FILE = "nt:file";
+  private static final String NT_BASE         = "nt:base";
 
-  private static final String NT_BASE = "nt:base";
+  private static final String EXO_OWNER       = "exo:owner";
 
-  private static final String JCR_CONTENT = "jcr:content";
-  
-  private static final String EXO_AUDITABLE = "exo:auditable";
-
-  private static final String EXO_OWNER = "exo:owner";
-  
-  private static final int NO_PER_PAGE = 3;
+  private static final int    NO_PER_PAGE     = 5;
   
   private static final String QUERY_STATEMENT = "SELECT * FROM $0 WHERE $1 ORDER BY $2 DESC";
 
   private Log LOG = ExoLogger.getLogger("cms.GetEditedDocumentRESTService");
   
   public GetEditedDocumentRESTService(RepositoryService repositoryService,
-      TemplateService templateService, FolksonomyService folksonomyService,
-      AuditService auditService) {
+      TemplateService templateService, FolksonomyService folksonomyService, ManageDriveService manageDriveService) {
     this.repositoryService = repositoryService;
     this.templateService = templateService;
     this.folksonomyService = folksonomyService;
-    this.auditService = auditService;
+    this.manageDriveService = manageDriveService;
   }
   
   @URITemplate("/{repository}/")
@@ -120,6 +114,7 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
             .append(")").append(" OR ");
       }
     }
+    
     if (bf.length() == 1) return null;
     bf.delete(bf.lastIndexOf("OR") - 1, bf.length());
     if (noOfItem == null || noOfItem.trim().length() == 0) noOfItem = String.valueOf(NO_PER_PAGE);
@@ -160,60 +155,57 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
     return getDocumentData(repository, lstNode, String.valueOf(NO_PER_PAGE));
   }
   
-  private String getDateFormat(String date) {
-    return ISO8601.parse(date).getTime().toString();
+  private String getDateFormat(Calendar date) {
+    return String.valueOf(date.getTimeInMillis());
+  }
+  
+  public static void main(String[] args) {
+    System.out.println( new SimpleDateFormat().format("Sat May 16 15:56:51 ICT 2009").toString());
   }
   
   private List<DocumentNode> getDocumentData(String repository, List<Node> lstNode, String noOfItem) throws Exception {
     if (lstNode == null || lstNode.size() == 0) return null;
     List<DocumentNode> lstDocNode = new ArrayList<DocumentNode>();
-    Collections.sort(lstNode, new PropertyValueComparator(DATE_MODIFIED, PropertyValueComparator.DESCENDING_ORDER));
     DocumentNode docNode = null;
-    StringBuilder linkedTags = null;
-    StringBuilder author = null;
-    List<AuditRecord> listRec = null;
+    StringBuilder tags = null;
     
+    Collections.sort(lstNode, new PropertyValueComparator(DATE_MODIFIED, PropertyValueComparator.DESCENDING_ORDER));
+    
+    List<DriveData> lstDrive = manageDriveService.getAllDrives(repository);
     for (Node node : lstNode) {
       docNode = new DocumentNode();
       docNode.setName(node.getName());
       docNode.setPath(node.getPath());
       docNode.setLastAuthor(node.getProperty(EXO_OWNER).getString());
       docNode.setLstAuthor(node.getProperty(EXO_OWNER).getString());
-      docNode.setDateEdited(getDateFormat(node.getProperty(DATE_MODIFIED).getString()));
-      linkedTags = new StringBuilder(1024);
-      author = new StringBuilder(1024);
+      docNode.setDateEdited(getDateFormat(node.getProperty(DATE_MODIFIED).getDate()));
+      tags = new StringBuilder(1024);
+
       for(Node tag : folksonomyService.getLinkedTagsOfDocument(node, repository)) {
-        if (linkedTags.length() > 0) linkedTags = linkedTags.append(",");
-        linkedTags.append(tag.getName());
-      }
-      docNode.setTags(linkedTags.toString());
-      String user = "";
-      if (auditService.hasHistory(node)){
-        if (NT_FILE.equals(node.getProperty(JCR_PRIMARYTYPE).getString())) { 
-          node = node.getNode(JCR_CONTENT);
-        }
-        if(node.isNodeType(EXO_AUDITABLE)){
-          AuditHistory auHistory = auditService.getHistory(node);
-          listRec = auHistory.getAuditRecords();
-        }
-        if (listRec != null && listRec.size() > 0) {
-          for (AuditRecord ar : listRec) {
-            if (!user.equals(ar.getUserId()))
-              author.append(ar.getUserId()).append(", ");
-            user = ar.getUserId();
-          }
-        }
+        tags.append(tag.getName()).append(", ");
       }
       
-      if (author.indexOf(",") > 0) {
-        String lstAuthor = author.substring(0, author.lastIndexOf(","));
-        docNode.setLastAuthor(lstAuthor.substring(lstAuthor.lastIndexOf(",")));
-        docNode.setLstAuthor(lstAuthor);
+      if (tags.lastIndexOf(",") > 0) {
+        tags.delete(tags.lastIndexOf(","), tags.length());
       }
-      docNode.setDriveName("");
+      
+      docNode.setTags(tags.toString());
+      docNode.setDriveName(getDriveName(lstDrive, node));
       if (lstDocNode.size() < Integer.parseInt(noOfItem))  lstDocNode.add(docNode);
     }
     return lstDocNode;
+  }
+  
+  private String getDriveName(List<DriveData> lstDrive, Node node) throws RepositoryException{
+    String driveName = "";
+    for (DriveData drive : lstDrive) {
+      if (node.getSession().getWorkspace().getName().equals(drive.getWorkspace())
+          && node.getPath().contains(drive.getHomePath())) {
+        driveName = drive.getName();
+        break;
+      }
+    }
+    return driveName;
   }
   
   public class DocumentNode {
@@ -235,18 +227,23 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
     public String getTags() {
       return tags;
     }
+    
     public void setTags(String tags) {
       this.tags = tags;
     }
+    
     public String getLastAuthor() {
       return lastAuthor;
     }
+    
     public void setLastAuthor(String lastAuthor) {
       this.lastAuthor = lastAuthor;
     }
+    
     public String getLstAuthor() {
       return lstAuthor;
     }
+    
     public void setLstAuthor(String lstAuthor) {
       this.lstAuthor = lstAuthor;
     }
@@ -278,10 +275,10 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
     public String getDateEdited() {
       return dateEdited_;
     }
+    
     public void setDateEdited(String dateEdited_) {
       this.dateEdited_ = dateEdited_;
     }
-
   }
 
   public class ListEditDocumentNode {
