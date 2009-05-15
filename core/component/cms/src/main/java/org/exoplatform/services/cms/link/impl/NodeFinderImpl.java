@@ -173,7 +173,8 @@ public class NodeFinderImpl implements NodeFinder {
         high = mid - 1;
       }
     }
-    throw new PathNotFoundException("Can't find path: " + absPath);
+    //throw new PathNotFoundException("Can't find path: " + absPath);
+    return null;
   }
 
   /**

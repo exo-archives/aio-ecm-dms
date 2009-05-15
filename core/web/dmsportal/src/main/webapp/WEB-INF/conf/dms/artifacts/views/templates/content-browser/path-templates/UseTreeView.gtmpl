@@ -20,6 +20,7 @@
   int totalPages = uicomponent.getUIPageIterator().getAvailablePage() ;
 %>
 <div class="UIBrowseContainer" id="$uicomponent.id">  
+	<%if(uicomponent.getCurrentNode() != null) {%>
 	<%if(uicomponent.isEnableToolBar()){uicomponent.renderChild(UIToolBar.class);}%>
 	<div class="ContentHolder">  
 	<%
@@ -212,4 +213,7 @@
 	  </div>
   <%}%>
  </div>
+ <%} else {%>
+	<div style="text-align:center;"><%=_ctx.appRes("UIBrowseContainer.label.cannot-access")%></div>
+<%}%>
 </div>

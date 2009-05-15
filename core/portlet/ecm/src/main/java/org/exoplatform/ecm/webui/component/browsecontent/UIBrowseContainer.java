@@ -772,12 +772,12 @@ public class UIBrowseContainer extends UIContainer {
   public SessionProvider getSessionProvider() { return SessionProviderFactory.createSessionProvider(); }
   
   public List<Node> getSubDocumentList(Node selectedNode) throws Exception {
+    List<Node> subDocumentList = new ArrayList<Node>();
+    if (selectedNode == null) return subDocumentList; 
     LinkManager linkManager = getApplicationComponent(LinkManager.class);
     if (selectedNode.isNodeType(Utils.EXO_SYMLINK)) {
       selectedNode = linkManager.getTarget(selectedNode);
     }
-    List<Node> subDocumentList = new ArrayList<Node>();
-    if (selectedNode == null) return subDocumentList;
     TemplateService templateService  = getApplicationComponent(TemplateService.class);
     List<String> templates = templateService.getDocumentTemplates(getRepository());
     try {
@@ -978,38 +978,40 @@ public class UIBrowseContainer extends UIContainer {
     List<Node> subDocumentList = new ArrayList<Node>();
     Node currentNode = getCurrentNode();
     Map content = new HashMap();
-    LinkManager linkManager = getApplicationComponent(LinkManager.class);
-    if (currentNode.isNodeType(Utils.EXO_SYMLINK)) {
-      currentNode = linkManager.getTarget(currentNode);
-    }
-    NodeIterator childIter = currentNode.getNodes();
-    boolean isShowDocument = isEnableChildDocument();
-    boolean isShowReferenced = isEnableRefDocument();
-    while(childIter.hasNext()) {
-      Node child = childIter.nextNode();
-      if(canRead(child) && !child.isNodeType(Utils.EXO_HIDDENABLE)) {
-        String typeName = child.getPrimaryNodeType().getName();
-        if(child.isNodeType(Utils.EXO_SYMLINK)) {
-          typeName = child.getProperty(Utils.EXO_PRIMARYTYPE).getString();
-        }
-        if(templates.contains(typeName)&&(isShowDocument)) {       
-          if(canRead(child)) subDocumentList.add(child);
-        } else {
-          if(isCategories(child)) {
-            Map childOfSubCategory = getChildOfSubCategory(repositoryService, child, templates);
-            String path = child.getPath();
-            String keyPath = path.substring(path.lastIndexOf("/") + 1);
-            content.put(keyPath, childOfSubCategory);
-            subCategoryList.add(path);
+    if (currentNode != null) {
+      LinkManager linkManager = getApplicationComponent(LinkManager.class);
+      if (currentNode.isNodeType(Utils.EXO_SYMLINK)) {
+        currentNode = linkManager.getTarget(currentNode);
+      }
+      NodeIterator childIter = currentNode.getNodes();
+      boolean isShowDocument = isEnableChildDocument();
+      boolean isShowReferenced = isEnableRefDocument();
+      while(childIter.hasNext()) {
+        Node child = childIter.nextNode();
+        if(canRead(child) && !child.isNodeType(Utils.EXO_HIDDENABLE)) {
+          String typeName = child.getPrimaryNodeType().getName();
+          if(child.isNodeType(Utils.EXO_SYMLINK)) {
+            typeName = child.getProperty(Utils.EXO_PRIMARYTYPE).getString();
+          }
+          if(templates.contains(typeName)&&(isShowDocument)) {       
+            if(canRead(child)) subDocumentList.add(child);
+          } else {
+            if(isCategories(child)) {
+              Map childOfSubCategory = getChildOfSubCategory(repositoryService, child, templates);
+              String path = child.getPath();
+              String keyPath = path.substring(path.lastIndexOf("/") + 1);
+              content.put(keyPath, childOfSubCategory);
+              subCategoryList.add(path);
+            }
           }
         }
       }
+  
+      if(isShowReferenced) subDocumentList.addAll(getReferences(repositoryService,
+          currentNode, isShowAllDocument(), subDocumentList.size(), templates));
+      content.put("subCategoryList", subCategoryList);
+      content.put("subDocumentList", subDocumentList);
     }
-
-    if(isShowReferenced) subDocumentList.addAll(getReferences(repositoryService,
-        currentNode, isShowAllDocument(), subDocumentList.size(), templates));
-    content.put("subCategoryList", subCategoryList);
-    content.put("subDocumentList", subDocumentList);
     return content;
   } 
   public BCTreeNode getTreeRoot() { return treeRoot_;  }
@@ -1101,15 +1103,27 @@ public class UIBrowseContainer extends UIContainer {
     try {
       categoryNode = (Node)nodeFinder_.getItem(repoName, getWorkSpace(), categoryPath);
     } catch (PathNotFoundException pathNotFoundException) {
+      setRootPath(categoryPath);
+      setCategoryPath(categoryPath);
+      setSelectedTabPath(categoryPath);
+      setCurrentNodePath(categoryPath);
+      /*
       UIApplication app = getAncestorOfType(UIApplication.class);
       app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null, 
           ApplicationMessage.WARNING));
       return;
+      */
     } catch (Exception e) {
+      setRootPath(categoryPath);
+      setCategoryPath(categoryPath);
+      setSelectedTabPath(categoryPath);
+      setCurrentNodePath(categoryPath);
+      /*
       UIApplication app = getAncestorOfType(UIApplication.class);
       app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null, 
           ApplicationMessage.WARNING));
       return;
+      */
     }
     if (linkManager_.isLink(categoryNode)) {
       if (linkManager_.isTargetReachable(categoryNode)) {
@@ -1127,7 +1141,8 @@ public class UIBrowseContainer extends UIContainer {
       if(getTemplateName().equals(TREELIST)) {
         if(isEnableToolBar()) initToolBar(true, false, true);
         getChild(UICategoryTree.class).setTreeRoot(getRootNode());
-        getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath());
+        if (getCurrentNode() != null)
+          getChild(UICategoryTree.class).buildTree(getCurrentNode().getPath());
       }
       if(!isShowDocumentByTag()) setPageIterator(getSubDocumentList(getSelectedTab()));
       return;
@@ -1188,7 +1203,7 @@ public class UIBrowseContainer extends UIContainer {
         setPageIterator(getDocumentByTag());
       } else {
         if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
-          if(getCategoryPath() == null || getRootNode().getPath() == null) {
+          if(getCategoryPath() == null || getRootNode() == null) {
             //UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class);
             //uiPorlet.setPorletMode(PortletMode.HELP);
             //uiPorlet.reload();
