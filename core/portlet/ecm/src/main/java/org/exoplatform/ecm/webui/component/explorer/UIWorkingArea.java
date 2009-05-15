@@ -1693,13 +1693,7 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
-      Node currentNode = uiExplorer.getCurrentNode();      
-      if(!PermissionUtil.canRead(currentNode)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
+      Node currentNode = uiExplorer.getCurrentNode();
       if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
@@ -1729,12 +1723,6 @@ public class UIWorkingArea extends UIContainer {
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();      
-      if(!PermissionUtil.canRead(currentNode)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
       if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
@@ -1781,12 +1769,6 @@ public class UIWorkingArea extends UIContainer {
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!PermissionUtil.canRead(currentNode)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
       if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
@@ -1836,12 +1818,6 @@ public class UIWorkingArea extends UIContainer {
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
       Node currentNode = uiExplorer.getCurrentNode();      
-      if(!PermissionUtil.canRead(currentNode)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
       if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));

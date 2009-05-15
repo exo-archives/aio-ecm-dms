@@ -292,12 +292,6 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!PermissionUtil.canRead(currentNode)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
       if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
@@ -326,12 +320,6 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!PermissionUtil.canRead(currentNode)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
       if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
@@ -445,12 +433,6 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!PermissionUtil.canRead(currentNode)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
       if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
@@ -568,6 +550,12 @@ public class UIActionBar extends UIForm {
       TemplateService templateService = uiActionBar.getApplicationComponent(TemplateService.class);
       Node currentNode = uiExplorer.getCurrentNode();
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
+      if(!PermissionUtil.canAddNode(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       if(!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
@@ -1046,6 +1034,12 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
+      if(!PermissionUtil.canAddNode(currentNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       if(!PermissionUtil.canSetProperty(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
@@ -1084,7 +1078,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!PermissionUtil.canRead(currentNode)) {
+      if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -1239,7 +1233,7 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!PermissionUtil.canRead(currentNode)) {
+      if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-add-denied", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -1299,6 +1293,12 @@ public class UIActionBar extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      if(!PermissionUtil.canSetProperty(selectedNode)) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.access-denied", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       if(selectedNode.isNodeType("exo:hiddenable")) {
         selectedNode.removeMixin("exo:hiddenable");
         selectedNode.save();
@@ -1328,12 +1328,6 @@ public class UIActionBar extends UIForm {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       Node currentNode = uiExplorer.getCurrentNode();
-      if(!PermissionUtil.canRead(currentNode)) {
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
       if(!PermissionUtil.canAddNode(currentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", null, 
             ApplicationMessage.WARNING));
