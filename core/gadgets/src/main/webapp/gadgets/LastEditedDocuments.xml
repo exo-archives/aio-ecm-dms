@@ -278,7 +278,7 @@
 					editedDocList.appendChild(AppClass);
 				}
 				var title = _gel("BgTitle");
-				if (title) {
+				if (data && (data.length > 0) && title) {
 					editedDocList.parentNode.removeChild(title);
 				}
 				gadgets.window.adjustHeight();

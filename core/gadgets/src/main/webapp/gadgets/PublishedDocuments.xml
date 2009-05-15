@@ -16,6 +16,9 @@
 	</ModulePrefs>
 	<Content type="html">
 	<![CDATA[
+	
+		<script type="text/javascript" src="/eXoDMSGadgets/javascript/script.js"></script>
+		
 		<style type="text/css">
 			body{
 				font: 11px Tahoma,Verdana,Arial,Helvetica,sans-serif;
@@ -176,11 +179,24 @@
 			}
 			
 			.ContentGadGet .BgRightContent .ItemIcon {
+				border-bottom:1px solid #CCCCCC;
 				line-height: 16px;
 				margin: 0px 5px 0px 11px;
-				padding: 5px 0 5px 22px;
+				padding: 0px 0 0px 22px;
 				width: auto;
 			}
+			
+			.ContentGadGet .BgRightContent .NotAvailableItemIcon {
+				margin: 0px 5px 0px 11px;
+				padding:5px;
+				text-align: center;
+				font-style: italic;
+				color: #EF5604;
+				width: auto;
+				font-weight:normal;
+				height:30px;
+			}
+			
 			
 			.ContentGadGet .BgRightContent .TextDateTime{
 				color: #83add4;
@@ -204,6 +220,8 @@
 	  </style>
     <script type="text/javascript">
 			function PublishedDocument() {}
+			var accessUrl = 'http://localhost:8080/portal/private/classic/contentmanagement/fileexplorer?portal:componentId=fileexplorer&portal:type=action&uicomponent=UIDocumentInfo&op=ViewDoc';
+			var siteUrl = 'http://localhost:8080/portal/rest/publication/presentation/repository/collaboration/state?showItems=5';
 			
 			PublishedDocument.prototype.makeRequest = function(url, callback) {
 				var params = {};
@@ -223,26 +241,40 @@
 			}
 			
 			PublishedDocument.prototype.init = function() {
-				var siteUrl = 'http://localhost:8080/portal/rest/publication/presentation/repository/collaboration/state?showItems=5';
 				publishedDocument.makeRequest(siteUrl,publishedDocument.displayValue)
 			}
 			
 			PublishedDocument.prototype.displayValue = function(resp) {
 				var data = resp.data.publishedListNode;
 				var publishedDocList = _gel("PublishedDocumentList");
+				var displayTime = new DisplayTime();
 				for (var i = 0; i < data.length; i++) {
 					var doc = data[i];
 					var AppClass = document.createElement('div');
 					var showHTML = "<a href='#'>";
+					var showHTML = "<a target='_top' href='";
+					showHTML+= accessUrl;
+					showHTML+= "&repository=repository";
+					showHTML+= "&drive=";
+					showHTML+= doc.driveName;
+					showHTML+= "&path=";
+					showHTML+= doc.path;
+					showHTML+= "'>";
 					showHTML+=doc.name;
 					showHTML+="</a>";
 					showHTML+="<span class='DateTime'>";
-					showHTML+=doc.datePublished;
+					showHTML+=displayTime.timeToPrettyString(doc.datePublished);
 					showHTML+="</span>";
 					AppClass.innerHTML = showHTML;
 					AppClass.className = 'ItemIcon';
 					publishedDocList.appendChild(AppClass);
 				}
+
+				var title = _gel("BgTitle");
+				if (data && (data.length > 0) && title) {
+					publishedDocList.parentNode.removeChild(title);
+				}
+				
 				gadgets.window.adjustHeight();
 			}
 			var publishedDocument = new PublishedDocument();
@@ -265,9 +297,9 @@
 				<div class="BgRightContent">
 					<div class="BgLeftContent">
 						<div class="BgCenterContent">
-						<div class="BgTitle">
-							<div class="ItemIcon IconDriver">
-								Collaboration center
+						<div id="BgTitle" class="BgTitle">
+							<div class="NotAvailableItemIcon">
+									Not available document!
 							</div>
 						</div>
 						<div id="PublishedDocumentList" class="PublishedDocumentList">
