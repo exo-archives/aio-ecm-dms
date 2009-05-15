@@ -312,7 +312,7 @@
     </title>
     <msg>
       <template-notsupported>No view template to load</template-notsupported>
-      <invalid-node>Missing node : it has been moved or deleted</invalid-node>
+      <invalid-node>Missing node : it has been moved or deleted or you don't have enough permission to access</invalid-node>
     </msg>
   </UIBrowseContainer>
   <!--
