@@ -588,15 +588,15 @@ public class RecordsServiceImpl implements RecordsService {
       String workspace = filePlan.getSession().getWorkspace().getName();            
       ManageableRepository repository = (ManageableRepository)filePlan.getSession().getRepository();
       queryManager = providerService_.getSessionProvider(null).getSession(workspace,repository).getWorkspace().getQueryManager();
+      Query query = queryManager.createQuery(statement,Query.XPATH);
+      QueryResult queryResult = query.execute();    
+      for(NodeIterator iterator = queryResult.getNodes();iterator.hasNext();) {
+        Node node = iterator.nextNode();
+        list.add(node);
+      }
     } catch (Exception e) {      
       return list;
     }    
-    Query query = queryManager.createQuery(statement,Query.XPATH);
-    QueryResult queryResult = query.execute();    
-    for(NodeIterator iterator = queryResult.getNodes();iterator.hasNext();) {
-      Node node = iterator.nextNode();
-      list.add(node);
-    }
     return list;
   }
 
