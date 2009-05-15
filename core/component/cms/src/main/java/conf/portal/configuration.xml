@@ -208,7 +208,11 @@
   </component>  
   
   <component>
-    <type>org.exoplatform.services.cms.presentation.document.edit.GetEditedDocumentRESTService</type>
+    <type>org.exoplatform.services.cms.REST.presentation.document.edit.GetEditedDocumentRESTService</type>
+  </component>  
+  
+  <component>
+    <type>org.exoplatform.services.cms.REST.presentation.document.publication.PublicationGetDocumentRESTService</type>
   </component>  
   
   <external-component-plugins>

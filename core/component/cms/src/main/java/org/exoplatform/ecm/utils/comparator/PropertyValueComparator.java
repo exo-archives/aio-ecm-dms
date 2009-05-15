@@ -80,7 +80,7 @@ public class PropertyValueComparator implements Comparator<Node> {
       if (node.hasProperty(propertyName)) {
         return node.getProperty(propertyName).getDefinition().getRequiredType();
       }
-      return -1;
+     return -1;
     } catch (RepositoryException e) {
       e.printStackTrace();
       return -1;
