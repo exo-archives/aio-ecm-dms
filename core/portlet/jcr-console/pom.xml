@@ -6,7 +6,6 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.portlet.jcr-console</artifactId>
-  <version>${org.exoplatform.ecm.dms.version}</version>
   <packaging>war</packaging>
   <name>eXo DMS JCR console Portlet</name>
   <url>http://www.exoplatform.org</url>
@@ -17,14 +16,14 @@
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.framework.command</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
-      <scope>compile</scope>
+      <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.exoplatform.portletcontainer</groupId> 
       <artifactId>exo.pc.component.plugins.pc</artifactId> 
       <version>${org.exoplatform.pc.version}</version> 
-      <scope>compile</scope> 
+      <scope>provided</scope> 
     </dependency>
   
   <dependency>
