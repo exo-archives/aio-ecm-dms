@@ -597,7 +597,7 @@ public class UIJCRExplorer extends UIContainer {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     LinkManager linkManager = getApplicationComponent(LinkManager.class);
-    Node node = (Node) ItemLinkAware.newInstance(getSession(), path, getNodeByPath(path, getSession())) ;
+    Node node = (Node) ItemLinkAware.newInstance(getSession(), path, getNodeByPath(path, getSession()));
     NodeIterator childrenIterator = node.getNodes();
     List<Node> childrenList  = new ArrayList<Node>() ;
     NodeType nodeType = node.getPrimaryNodeType() ;

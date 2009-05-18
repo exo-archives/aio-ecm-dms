@@ -212,7 +212,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           rootProp.setValue((sortedInputs.get("/node/exo:name")).getValue());
         }
         String actionName = (String)(sortedInputs.get("/node/exo:name")).getValue() ;
-        Node parentNode = actionForm.getParentNode() ;
+        Node parentNode = actionForm.getParentNode();
         if(parentNode.hasNode(EXO_ACTIONS)) {
           if(parentNode.getNode(EXO_ACTIONS).hasNode(actionName)) { 
             Object[] args = {actionName} ;
@@ -248,8 +248,13 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
+      } catch (NullPointerException nullPointerException) {
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
       } catch (Exception e) {           
-        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null)) ;
+        uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.unable-add", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return;
       }      
     }
