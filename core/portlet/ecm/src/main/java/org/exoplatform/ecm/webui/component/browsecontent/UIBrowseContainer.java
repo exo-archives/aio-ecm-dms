@@ -313,7 +313,7 @@ public class UIBrowseContainer extends UIContainer {
     NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
     try{
       if(wsName_ == null) {
-        wsName_ = getWorkSpace();
+        wsName_ = getWspace();
       }
       return (Node) nodeFinder.getItem(getRepository(), wsName_, nodePath);
     } catch(PathNotFoundException path) {
@@ -412,7 +412,7 @@ public class UIBrowseContainer extends UIContainer {
     String queryStatement = getQueryStatement();
     
     // Prepare the query
-    QueryManager queryManager = getSession().getWorkspace().getQueryManager();
+    QueryManager queryManager = getSession(true).getWorkspace().getQueryManager();
     Query query = queryManager.createQuery(queryStatement, getQueryLanguage());
     
     // Execute the query and return results
@@ -431,7 +431,7 @@ public class UIBrowseContainer extends UIContainer {
     String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"");
     String workspace = getWorkSpace();
     String repository = getRepository();
-    return queryService.execute(queryPath, workspace, repository, getSystemProvider(), getSession().getUserID());
+    return queryService.execute(queryPath, workspace, repository, getSystemProvider(), getSession(true).getUserID());
   }
   
   public boolean nodeIsLocked(Node node) throws Exception {
@@ -730,9 +730,14 @@ public class UIBrowseContainer extends UIContainer {
     return getNodeByPath(selectedTabPath_);  
   }
 
-  public Session getSession() throws Exception{
+  public Session getSession(boolean flag) throws Exception{
     Session session = null;
-    String workspace = getWorkSpace();
+    String workspace = "";
+    if (flag) {
+      workspace = getWorkSpace();
+    } else {
+      workspace = getWspace();
+    }
     ManageableRepository manageableRepository = getRepositoryService().getRepository(getRepository());
     if(categoryPath_ != null && categoryPath_.startsWith("/jcr:system")) { 
       if(!Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_FILTER_CATEGORY, ""))){
@@ -916,7 +921,7 @@ public class UIBrowseContainer extends UIContainer {
   }
   
   public boolean isSymLink(String nodePath) throws Exception {
-    Node node = (Node)getSession().getItem(nodePath);
+    Node node = (Node)getSession(false).getItem(nodePath);
     if(Utils.isSymLink(node)) return true;
     return false;
   }
@@ -1099,7 +1104,7 @@ public class UIBrowseContainer extends UIContainer {
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "");
     NodeFinder nodeFinder_ =  getApplicationComponent(NodeFinder.class);
     LinkManager linkManager_ = getApplicationComponent(LinkManager.class);
-    Node categoryNode = null;
+    Node categoryNode = (Node)nodeFinder_.getItem(repoName, getWspace(), categoryPath);
     try {
       categoryNode = (Node)nodeFinder_.getItem(repoName, getWorkSpace(), categoryPath);
     } catch (PathNotFoundException pathNotFoundException) {
@@ -1183,6 +1188,12 @@ public class UIBrowseContainer extends UIContainer {
     } catch (Exception e) {
       e.printStackTrace();
     }     
+  }
+  
+  public String getWspace() {
+    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(getRepository());
+    return dmsRepoConfig.getSystemWorkspace();
   }
   
   public void processRender(WebuiRequestContext context) throws Exception {
