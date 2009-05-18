@@ -7,7 +7,6 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.connector.fckeditor</artifactId>
-  <version>${org.exoplatform.ecm.dms.version}</version>
   <packaging>jar</packaging>
   <name>eXo DMS FCKEditor Connector</name>
   <url>http://www.exoplatform.org</url>
