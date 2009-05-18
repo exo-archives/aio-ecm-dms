@@ -7,7 +7,6 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.component.cms</artifactId>
-  <version>${org.exoplatform.ecm.dms.version}</version>
   <packaging>jar</packaging>
   <name>eXo CMS Service</name>
   <url>http://www.exoplatform.org</url>
@@ -61,8 +60,15 @@
       <artifactId>exo.ecm.dms.core.component.publication</artifactId>
       <version>${org.exoplatform.ecm.dms.version}</version>
       <scope>compile</scope>
-    </dependency>   
-
+    </dependency>
+	
+    <dependency>
+      <groupId>org.exoplatform.ecm.dms.core</groupId>
+      <artifactId>exo.ecm.dms.core.webui.ext</artifactId>
+      <version>${org.exoplatform.ecm.dms.version}</version>
+      <scope>provided</scope>
+    </dependency>
+	
     <dependency>
       <groupId>org.codehaus.groovy</groupId>
       <artifactId>groovy-all-minimal</artifactId>

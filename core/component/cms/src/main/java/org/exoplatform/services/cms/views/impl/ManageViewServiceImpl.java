@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.views.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
@@ -24,9 +25,8 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.xml.InitParams;
-import org.exoplatform.container.xml.ValueParam;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
@@ -37,6 +37,9 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.webui.ext.UIExtension;
+import org.exoplatform.webui.ext.UIExtensionManager;
 import org.picocontainer.Startable;
 /**
  * Created by The eXo Platform SARL
@@ -46,6 +49,11 @@ import org.picocontainer.Startable;
  */
 public class ManageViewServiceImpl implements ManageViewService, Startable {
 
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger(ManageViewServiceImpl.class);
+  
   protected final static String EXO_TEMPLATE = "exo:template".intern() ;
   protected final static String TEMPLATE_PROP = "exo:templateFile".intern() ;
   protected final static String ADMIN_VIEW = "admin".intern() ;
@@ -53,30 +61,44 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   protected final static String EXO_PERMISSIONS = "exo:accessPermissions".intern()  ;
   protected final static String BUTTON_PROP = "exo:buttons".intern() ;
 
-  private List<ManageViewPlugin> plugins_ = new ArrayList<ManageViewPlugin> ();
-  private String buttons_ ;
-  private RepositoryService repositoryService_ ;
+  private final List<ManageViewPlugin> plugins_ = new ArrayList<ManageViewPlugin> ();
+  private List<?> buttons_ ;
+  private final RepositoryService repositoryService_ ;
   private String baseViewPath_ ;
-  private NodeHierarchyCreator nodeHierarchyCreator_ ;
-  private DMSConfiguration dmsConfiguration_;
+  private final NodeHierarchyCreator nodeHierarchyCreator_ ;
+  private final DMSConfiguration dmsConfiguration_;
+  private final UIExtensionManager extensionManager_;
   
   public ManageViewServiceImpl(InitParams params, RepositoryService jcrService,
-      NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration) throws Exception{
+      NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration,
+      UIExtensionManager extensionManager) throws Exception{
     repositoryService_ = jcrService ;
     nodeHierarchyCreator_ = nodeHierarchyCreator ;
     baseViewPath_ = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_VIEWS_PATH) ;
-    ValueParam buttonParam = params.getValueParam("buttons") ;
-    buttons_ = buttonParam.getValue() ;
     dmsConfiguration_ = dmsConfiguration;
+    extensionManager_ = extensionManager;
   }
 
+  private void initButtons() {
+    List<UIExtension> extensions = extensionManager_.getUIExtensions(EXTENSION_TYPE);
+    List<String> actions = new ArrayList<String>();
+    if (extensions != null) {
+      for (UIExtension extension : extensions) {
+        actions.add(extension.getName());
+      }
+    }
+    // prevent from any undesired modification
+    buttons_ = Collections.unmodifiableList(actions);
+  }
+  
   public void start() {
-    try{
+    try {
+      initButtons();
       for(ManageViewPlugin plugin : plugins_) {
         plugin.init() ;
       } 
-    }catch(Exception e) {
-      e.printStackTrace() ;
+    } catch(Exception e) {
+      LOG.error("an error occured while starting the component", e);
     }    
   }
 
@@ -92,20 +114,8 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     plugins_.add(viewPlugin) ;
   }
 
-  @SuppressWarnings("unchecked")
-  public List getButtons(){
-    List buttonList = new ArrayList() ;
-    if (buttons_ == null || buttons_.length() < 1) return buttonList ;    
-    if(buttons_.indexOf(";") > -1) {
-      String[] buttons = StringUtils.split(buttons_ , ";") ;
-      if(buttons == null || buttons.length < 1) return null ;
-      for(int i = 0 ; i < buttons.length ; i ++) {
-        buttonList.add(buttons[i].trim()) ;
-      }
-    } else {
-      buttonList.add(buttons_) ;
-    }    
-    return buttonList ;
+  public List<?> getButtons(){
+    return buttons_ ;
   }
 
   public Node getViewHome(String repository) throws Exception {    
@@ -160,7 +170,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     }
   }
   
-  public void addView(String name, String permissions, String template, List tabs, 
+  public void addView(String name, String permissions, String template, List<?> tabs, 
       String repository) throws Exception{
     Session session = getSession(repository) ;
     Node viewHome = (Node)session.getItem(baseViewPath_) ;

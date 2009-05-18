@@ -20,7 +20,9 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.services.cms.views.impl.ManageViewPlugin;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 /**
  * Created by The eXo Platform SARL
@@ -30,6 +32,11 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public interface ManageViewService {
 
+  /**
+   * The type of extension related to this service
+   */
+  public static final String EXTENSION_TYPE = "org.exoplatform.ecm.dms.UIActionBar";
+  
   /**
    * Inserts a new view by giving the following params
    * @param name          String  
@@ -45,7 +52,7 @@ public interface ManageViewService {
    * @see                 Node  
    * @throws Exception
    */
-  public void addView(String name, String permissions, String template, List tabs, String repository)throws Exception ;
+  public void addView(String name, String permissions, String template, List<?> tabs, String repository)throws Exception ;
   
   /**
    * Return specify view depend on Name by giving the following params 
@@ -65,7 +72,7 @@ public interface ManageViewService {
    * Return all string of buttons
    * @throws Exception
    */
-  public List getButtons() throws Exception;     
+  public List<?> getButtons() throws Exception;     
   
   /**
    * Removes the view by giving the following params
