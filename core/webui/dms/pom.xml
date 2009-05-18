@@ -8,7 +8,6 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.webui.dms</artifactId>
   <packaging>jar</packaging>
-  <version>${org.exoplatform.ecm.dms.version}</version>
   <name>eXo DMS webui component</name>
   <url>http://www.exoplatform.org</url>
   <description>eXo DMS webui extension</description>

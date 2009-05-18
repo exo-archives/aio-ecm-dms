@@ -148,6 +148,8 @@ public class Utils {
   final static public String EXO_PICTUREFOLDER = "exo:pictureFolder";
   final static public String EXO_DOCUMENTFOLDER = "exo:documentFolder";
   final static public String EXO_SEARCHFOLDER = "exo:searchFolder";
+  final static public String MIX_COMMENTABLE = "mix:commentable";
+  final static public String MIX_VOTABLE = "mix:votable";
   final static public String RMA_RECORD = "rma:record";
   final static public String EXO_SYMLINK = "exo:symlink";
   final static public String EXO_PRIMARYTYPE = "exo:primaryType";
