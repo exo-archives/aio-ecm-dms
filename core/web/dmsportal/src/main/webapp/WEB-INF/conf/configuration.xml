@@ -31,6 +31,7 @@
 	<import>war:/conf/dms/dms-actions-configuration.xml</import>
 	<import>war:/conf/dms/dms-categories-configuration.xml</import>
 	<import>war:/conf/dms/dms-taxonomies-configuration.xml</import>
+	<import>war:/conf/dms/dms-ext-configuration.xml</import>
 	<import>war:/conf/dms/dms-views-configuration.xml</import>
 	<import>war:/conf/dms/dms-drives-configuration.xml</import>
 	<import>war:/conf/dms/dms-metadata-configuration.xml</import>
