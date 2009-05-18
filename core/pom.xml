@@ -20,10 +20,10 @@
   	<module>webui/dms</module>
   	<module>webui/ext</module>
   	<module>web/eXoDMSResources</module>	
-    <module>portlet/ecm</module>
-    <module>portlet/ecm-ext/content</module>
-    <module>portlet/ecm-ext/config</module>
-    <module>portlet/ecm-webcontent</module>
+    <module>portlet/ecm/core/main</module>
+    <module>portlet/ecm/ext/main</module>
+    <module>portlet/ecm/ext/config</module>
+    <module>portlet/ecm/core/web</module>
     <module>portlet/jcr-console</module>
     <module>web/dmsportal</module>
 	<module>gadgets</module>
