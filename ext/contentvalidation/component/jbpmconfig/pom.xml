@@ -9,7 +9,6 @@
   
   <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
   <artifactId>exo.ecm.dms.ext.contentvalidation.component.jbpmconfig</artifactId>
-  <version>${org.exoplatform.ecm.dms.version}</version>
   <packaging>jar</packaging>
   <name>eXo Content Validation with jBPM workflow</name>
   <url>http://www.exoplatform.org</url>

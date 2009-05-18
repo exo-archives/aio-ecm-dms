@@ -8,7 +8,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
   <artifactId>bp</artifactId>
-  <version>2.4-SNAPSHOT</version>
   <name>eXo Content validation business processes configuration</name>
   <packaging>pom</packaging>
 
@@ -16,14 +15,6 @@
     <module>bonita/content-publishing</module>
     <module>jbpm/content-publishing</module>
   </modules>
-
-  <developers>
-    <developer>
-      <name>Brice Revenant</name>
-      <organization>Bull S.A.S</organization>
-      <organizationUrl>http://www.bull.com</organizationUrl>
-    </developer>
-  </developers>
 
   <build>
     <resources>

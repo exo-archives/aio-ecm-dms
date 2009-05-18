@@ -10,7 +10,6 @@
   <groupId>org.exoplatform.ecm.dms</groupId>
   <artifactId>ext</artifactId>
   <name>eXo Content Validation</name>
-  <version>2.4-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <modules>

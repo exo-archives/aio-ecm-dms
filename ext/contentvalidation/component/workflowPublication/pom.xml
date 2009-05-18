@@ -8,7 +8,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
   <artifactId>exo.ecm.dms.ext.contentvalidation.component.workflowPublication</artifactId>
-  <version>${org.exoplatform.ecm.dms.version}</version>
   <packaging>jar</packaging>
   <name>eXo workflow publication</name>
   <url>http://www.exoplatform.org</url>

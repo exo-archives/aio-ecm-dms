@@ -9,7 +9,6 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm.dms.ext.contentvalidation</groupId>
   <artifactId>exo.ecm.dms.ext.contentvalidation.component.webui</artifactId>
-  <version>${org.exoplatform.ecm.dms.version}</version>
   <packaging>jar</packaging>
   <name>eXo contentvalidation webui</name>
   <url>http://www.exoplatform.org</url>
