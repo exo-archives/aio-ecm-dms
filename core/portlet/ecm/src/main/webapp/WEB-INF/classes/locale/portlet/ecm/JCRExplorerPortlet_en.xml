@@ -1674,7 +1674,7 @@
       <numberformat-exception>Can not save this action. The name provided must not have '[' or ']'.</numberformat-exception>
       <existed-action>The action name '{0}' is existing so choose another name please!</existed-action>
       <unable-add-action>Unable add this action</unable-add-action>
-      <unable-add>Unable add ! check some require field</unable-add>
+      <unable-add>Unable add this action! This node is root or you don't have enough permision</unable-add>
       <not-support>The dialog '{0}' is not supported</not-support>
       <no-permission-add>Access denied ! You have no right to add action here</no-permission-add>
       <access-denied>Access denied! You haven't got permission to access this template.</access-denied>
