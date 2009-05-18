@@ -19,11 +19,11 @@ package org.exoplatform.ecm.webui.component.admin.metadata;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
@@ -35,7 +35,7 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
  * 11:45:11 AM 
  */
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
-public class UIMetadataManager extends UIContainer {
+public class UIMetadataManager extends UIAbstractManager {
   
   final static public String METADATA_POPUP = "MetadataPopupEdit" ;
   final static public String VIEW_METADATA_POPUP = "ViewMetadataPopup" ;
@@ -45,7 +45,11 @@ public class UIMetadataManager extends UIContainer {
     addChild(UIMetadataList.class, null, null) ;
   }
   
-  public void update()throws Exception {
+  public void refresh() throws Exception {
+    update();
+  }
+  
+  public void update() throws Exception {
     getChild(UIMetadataList.class).updateGrid() ;
   }
   public void initPopup() throws Exception {

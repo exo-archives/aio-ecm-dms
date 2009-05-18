@@ -17,8 +17,8 @@
 package org.exoplatform.ecm.webui.component.admin.namespace;
 
 
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
@@ -30,7 +30,7 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
  * 16:37:15 AM
  */
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
-public class UINamespaceManager extends UIContainer {
+public class UINamespaceManager extends UIAbstractManager {
 
   public UINamespaceManager() throws Exception {addChild(UINamespaceList.class, null, null) ;}
   

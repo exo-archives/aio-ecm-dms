@@ -47,6 +47,7 @@ import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.comparator.NodeNameComparator;
 import org.exoplatform.ecm.webui.comparator.PropertyValueComparator;
 import org.exoplatform.ecm.webui.comparator.StringComparator;
+import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
@@ -499,6 +500,7 @@ public class UIJCRExplorer extends UIContainer {
     uiAddressBar.getUIStringInput(UIAddressBar.FIELD_ADDRESS).setValue(filterPath(currentPath_)) ;
     event.getRequestContext().addUIComponentToUpdateByAjax(uiAddressBar) ;
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class) ;
+    UIActionBar uiActionBar = findFirstComponentOfType(UIActionBar.class) ;
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
     UIDocumentContainer uiDocumentContainer = findFirstComponentOfType(UIDocumentContainer.class) ;
     UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
@@ -512,7 +514,8 @@ public class UIJCRExplorer extends UIContainer {
       findFirstComponentOfType(UITreeExplorer.class).buildTree();
     }
     uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;
-    event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;    
+    event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea);
+    event.getRequestContext().addUIComponentToUpdateByAjax(uiActionBar);
     if(!isHidePopup_) {
       UIPopupContainer popupAction = getChild(UIPopupContainer.class) ;
       if(popupAction.isRendered()) {

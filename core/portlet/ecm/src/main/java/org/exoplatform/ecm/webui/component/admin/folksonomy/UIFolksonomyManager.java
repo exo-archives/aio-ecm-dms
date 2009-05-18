@@ -19,10 +19,10 @@ package org.exoplatform.ecm.webui.component.admin.folksonomy;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 import org.exoplatform.webui.event.Event;
@@ -39,10 +39,14 @@ import org.exoplatform.webui.event.EventListener;
     lifecycle = UIContainerLifecycle.class,
     events = @EventConfig(listeners = UIFolksonomyManager.EditStyleActionListener.class)
 )
-public class UIFolksonomyManager extends UIContainer {
+public class UIFolksonomyManager extends UIAbstractManager {
   
   public UIFolksonomyManager() throws Exception {
     addChild(UITagStyleList.class, null, null) ;
+  }
+  
+  public void refresh() throws Exception {
+    update();
   }
   
   public void update() throws Exception {

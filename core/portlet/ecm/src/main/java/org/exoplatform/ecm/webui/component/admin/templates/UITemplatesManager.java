@@ -16,10 +16,10 @@
  */
 package org.exoplatform.ecm.webui.component.admin.templates;
 
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
@@ -33,7 +33,7 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
  */
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
 
-public class UITemplatesManager extends UIContainer{
+public class UITemplatesManager extends UIAbstractManager {
   final static public String EDIT_TEMPLATE = "EditTemplatePopup" ;
   final static public String NEW_TEMPLATE = "TemplatePopup" ;
 

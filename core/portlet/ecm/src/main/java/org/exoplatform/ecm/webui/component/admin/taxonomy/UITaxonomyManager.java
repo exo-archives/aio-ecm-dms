@@ -24,6 +24,7 @@ import javax.jcr.Session;
 import javax.portlet.PortletPreferences;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
@@ -37,7 +38,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.ComponentConfigs;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIBreadcumbs;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.UIBreadcumbs.LocalPath;
@@ -61,7 +61,7 @@ import org.exoplatform.webui.event.EventListener;
       )
     }
 )
-public class UITaxonomyManager extends UIContainer {
+public class UITaxonomyManager extends UIAbstractManager {
   
   static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
   static private String EXO_ECM_ALIAS = "exoECMSystemPath" ;
@@ -74,6 +74,13 @@ public class UITaxonomyManager extends UIContainer {
     addChild(UIBreadcumbs.class, "BreadcumbTaxonomyECMAdmin", "BreadcumbTaxonomyECMAdmin");
     addChild(UITaxonomyTree.class, null, null) ;
     addChild(UITaxonomyWorkingArea.class, null, null) ;
+  }
+  
+  @Override
+  public void init() throws Exception {}
+  
+  public void refresh() throws Exception {
+    update();
   }
   
   public void update() throws Exception {
@@ -188,7 +195,7 @@ public class UITaxonomyManager extends UIContainer {
       uiBreadcumb.setPath(listLocalPath);
       for (int i = 0; i < listLocalPathString.size(); i++) {
         String pathName = listLocalPathString.get(i);
-        if (pathName != null || !pathName.equals("")) {
+        if (pathName != null && pathName.length() > 0) {
           stringPath += pathName.trim();
           if (i < listLocalPathString.size() - 1) stringPath += "/";
         }

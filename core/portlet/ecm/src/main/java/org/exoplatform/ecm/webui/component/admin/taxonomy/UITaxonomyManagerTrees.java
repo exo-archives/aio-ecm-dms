@@ -20,6 +20,7 @@ package org.exoplatform.ecm.webui.component.admin.taxonomy;
 import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.action.UIActionForm;
 import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
@@ -32,7 +33,6 @@ import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
@@ -43,7 +43,7 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
  */
 
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
-public class UITaxonomyManagerTrees extends UIContainer {
+public class UITaxonomyManagerTrees extends UIAbstractManager {
   
   public UITaxonomyManagerTrees() throws Exception {
     addChild(UITaxonomyTreeList.class, null, null);
@@ -65,6 +65,10 @@ public class UITaxonomyManagerTrees extends UIContainer {
     uiPopup.setResizable(true);
   }
 
+  public void refresh() throws Exception {
+    update();
+  }
+  
   public void update() throws Exception {
     UITaxonomyTreeList uiTaxonomyTreeList = getChild(UITaxonomyTreeList.class);
     uiTaxonomyTreeList.updateTaxonomyTreeListGrid(uiTaxonomyTreeList.getUIPageIterator().getCurrentPage());

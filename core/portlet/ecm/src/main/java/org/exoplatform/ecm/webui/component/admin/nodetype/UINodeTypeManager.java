@@ -16,8 +16,8 @@
  */
 package org.exoplatform.ecm.webui.component.admin.nodetype;
 
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
@@ -31,13 +31,17 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 @ComponentConfig (
     lifecycle = UIContainerLifecycle.class
 )
-public class UINodeTypeManager extends UIContainer {
+public class UINodeTypeManager extends UIAbstractManager {
 
   final static public String IMPORT_POPUP = "NodeTypeImportPopup" ;
   final static public String EXPORT_POPUP = "NodeTypeExportPopup" ;
 
   public UINodeTypeManager() throws Exception {
     addChild(UINodeTypeList.class, null, "ListNodeType") ;
+  }
+  
+  public void refresh() throws Exception {
+    update();
   }
   
   public void update() throws Exception {

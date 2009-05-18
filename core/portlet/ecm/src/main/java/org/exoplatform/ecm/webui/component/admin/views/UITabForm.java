@@ -40,7 +40,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
 public class UITabForm extends UIFormInputSetWithAction {
   
   final static public String FIELD_NAME = "tabName" ;
-  private List buttons_ ;
+  private List<?> buttons_ ;
   
   public UITabForm(String name) throws Exception {
     super(name) ;
@@ -49,9 +49,14 @@ public class UITabForm extends UIFormInputSetWithAction {
     ManageViewService vservice_ = getApplicationComponent(ManageViewService.class) ;
     buttons_ = vservice_.getButtons();
     for(Object bt : buttons_) {
-      addUIFormInput(new UIFormCheckBoxInput<Boolean>(bt.toString(), "", null)) ;
+      addUIFormInput(new UIFormCheckBoxInput<Boolean>(getButtonName(bt), "", null)) ;
     }
     setActions(new String[]{"Save", "Reset"}, null) ;
+  }
+  
+  private String getButtonName(Object bt) {
+    String button = (String) bt;
+    return button.substring(0, 1).toLowerCase() + button.substring(1);
   }
   
   public void processRender(WebuiRequestContext context) throws Exception {
@@ -61,7 +66,7 @@ public class UITabForm extends UIFormInputSetWithAction {
   public void refresh(boolean isEditable) throws Exception {
     getUIStringInput(FIELD_NAME).setEditable(isEditable).setValue(null) ;
     for(Object bt : buttons_){
-      getUIFormCheckBoxInput(bt.toString()).setChecked(false).setEditable(isEditable) ;
+      getUIFormCheckBoxInput(getButtonName(bt)).setChecked(false).setEditable(isEditable) ;
     }
     if(isEditable) setActions(new String[]{"Save", "Reset"}, null) ;
   }
@@ -73,7 +78,7 @@ public class UITabForm extends UIFormInputSetWithAction {
     String buttonsProperty = tab.getButtons() ;
     String[] buttonArray = StringUtils.split(buttonsProperty, ";") ;
     for(String bt : buttonArray){
-      UIFormCheckBoxInput cbInput = getUIFormCheckBoxInput(bt.trim()) ;
+      UIFormCheckBoxInput<?> cbInput = getUIFormCheckBoxInput(bt.trim()) ;
       if(cbInput != null) cbInput.setChecked(true) ;
     }
   }
@@ -98,7 +103,7 @@ public class UITabForm extends UIFormInputSetWithAction {
     StringBuilder selectedButton = new StringBuilder() ;
     boolean isSelected = false ;
     for(Object bt : buttons_ ) {
-      String button = bt.toString() ;
+      String button = getButtonName(bt) ;
       if(getUIFormCheckBoxInput(button).isChecked()) {
         isSelected = true ;
         if(selectedButton.length() > 0) selectedButton.append(";").append(button) ;

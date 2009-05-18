@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.component.admin.drives;
 import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -27,7 +28,6 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
@@ -39,12 +39,17 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
  * 11:45:11 AM 
  */
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
-public class UIDriveManager extends UIContainer {
+public class UIDriveManager extends UIAbstractManager {
   
   public UIDriveManager() throws Exception {
     addChild(UIDriveList.class, null, null) ;
   }
-  public void update()throws Exception  {
+  
+  public void refresh() throws Exception  {
+    update();
+  }
+  
+  public void update() throws Exception  {
     UIDriveList uiDriveList = getChild(UIDriveList.class); 
     uiDriveList.updateDriveListGrid(uiDriveList.getUIPageIterator().getCurrentPage());
   }

@@ -16,9 +16,9 @@
  */
 package org.exoplatform.ecm.webui.component.admin.queries;
 
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.selector.UIPermissionSelector;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
@@ -30,10 +30,14 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
  * 11:27:14 AM
  */
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
-public class UIQueriesManager extends UIContainer {
+public class UIQueriesManager extends UIAbstractManager {
 
   public UIQueriesManager() throws Exception {
     addChild(UIQueriesList.class, null, null) ;
+  }
+  
+  public void refresh() throws Exception {
+    update();
   }
   
   public void update() throws Exception {

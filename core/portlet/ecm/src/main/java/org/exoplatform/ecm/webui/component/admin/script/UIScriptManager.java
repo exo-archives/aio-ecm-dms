@@ -16,8 +16,8 @@
  */
 package org.exoplatform.ecm.webui.component.admin.script;
 
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 
 /**
@@ -29,7 +29,7 @@ import org.exoplatform.webui.core.UIPopupWindow;
  */
 @ComponentConfig(template = "system:/groovy/webui/core/UITabPane.gtmpl")
 
-public class UIScriptManager extends UIContainer {
+public class UIScriptManager extends UIAbstractManager {
 
   public UIScriptManager() throws Exception {
     addChild(UIECMScripts.class, null , null) ;

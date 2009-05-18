@@ -16,8 +16,8 @@
  */
 package org.exoplatform.ecm.webui.component.admin.views;
 
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
-import org.exoplatform.webui.core.UIContainer;
 
 /**
  * Created by The eXo Platform SARL
@@ -28,7 +28,7 @@ import org.exoplatform.webui.core.UIContainer;
  */
 
 @ComponentConfig(template = "system:/groovy/webui/core/UITabPane.gtmpl")
-public class UIViewManager extends UIContainer {
+public class UIViewManager extends UIAbstractManager {
   public UIViewManager() throws Exception{
     addChild(UIViewContainer.class, null, null) ;
     UITemplateContainer uiECMTemp = addChild(UITemplateContainer.class, null, "ECMTemplate") ;
@@ -38,6 +38,11 @@ public class UIViewManager extends UIContainer {
     uiCBTemp.addChild(UICBTemplateList.class, null, null) ;
     uiCBTemp.setRendered(false) ;
   }
+  
+  public void refresh() throws Exception {
+    update();
+  }
+  
   public void update() throws Exception {
     getChild(UIViewContainer.class).update() ;
     UIECMTemplateList uiECMTemplateList = ((UITemplateContainer)getChildById("ECMTemplate")).getChild(UIECMTemplateList.class);

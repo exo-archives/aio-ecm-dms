@@ -16,22 +16,17 @@
  */
 package org.exoplatform.ecm.webui.component.admin;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.webui.component.admin.action.UIActionManager;
-import org.exoplatform.ecm.webui.component.admin.drives.UIDriveManager;
-import org.exoplatform.ecm.webui.component.admin.folksonomy.UIFolksonomyManager;
-import org.exoplatform.ecm.webui.component.admin.metadata.UIMetadataManager;
-import org.exoplatform.ecm.webui.component.admin.namespace.UINamespaceManager;
-import org.exoplatform.ecm.webui.component.admin.nodetype.UINodeTypeManager;
-import org.exoplatform.ecm.webui.component.admin.queries.UIQueriesManager;
-import org.exoplatform.ecm.webui.component.admin.script.UIScriptManager;
-import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManager;
-import org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyManagerTrees;
-import org.exoplatform.ecm.webui.component.admin.templates.UITemplatesManager;
-import org.exoplatform.ecm.webui.component.admin.views.UIViewManager;
+import org.apache.commons.logging.Log;
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -49,6 +44,11 @@ import org.exoplatform.webui.core.UIContainer;
     template = "app:/groovy/webui/component/admin/UIECMAdminWorkingArea.gtmpl"
 )
 public class UIECMAdminWorkingArea extends UIContainer {
+
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger(UIECMAdminWorkingArea.class);
   private String renderedCompId_ ;
   
   public String getRenderedCompId() { return renderedCompId_ ; }
@@ -59,34 +59,44 @@ public class UIECMAdminWorkingArea extends UIContainer {
     setRenderedChild(type);
   }
 
-  public UIECMAdminWorkingArea() throws Exception {
-    renderedCompId_ = addChild(UITaxonomyManager.class, null, null).getId();
-    addChild(UIViewManager.class, null, null).setRendered(false);
-    addChild(UIMetadataManager.class, null, null).setRendered(false);
-    addChild(UINodeTypeManager.class, null, null).setRendered(false);
-    addChild(UIDriveManager.class, null, null).setRendered(false);
-    addChild(UINamespaceManager.class, null, null).setRendered(false);
-    addChild(UIActionManager.class, null, null).setRendered(false);
-    addChild(UIScriptManager.class, null, null).setRendered(false);
-    addChild(UITemplatesManager.class, null, null).setRendered(false);
-    addChild(UIQueriesManager.class, null, null).setRendered(false);
-    addChild(UIFolksonomyManager.class, null, null).setRendered(false);
-    addChild(UITaxonomyManagerTrees.class, null, null).setRendered(false);
-  }
+  public UIECMAdminWorkingArea() throws Exception {}
   
   public void init() throws Exception { 
-    getChild(UITaxonomyManager.class).update();
-    getChild(UIViewManager.class).update();
-    getChild(UIMetadataManager.class).update();
-    getChild(UINodeTypeManager.class).update();
-    getChild(UIDriveManager.class).update();
-    getChild(UINamespaceManager.class).refresh();
-    getChild(UIActionManager.class).refresh();
-    getChild(UIScriptManager.class).refresh();
-    getChild(UITemplatesManager.class).refresh();
-    getChild(UIQueriesManager.class).update();
-    getChild(UIFolksonomyManager.class).update();
-    getChild(UITaxonomyManagerTrees.class).update();
+    UIECMAdminPortlet portlet = getAncestorOfType(UIECMAdminPortlet.class);
+    UIECMAdminControlPanel controlPanel = portlet.getChild(UIECMAdminControlPanel.class);
+    List<UIAbstractManagerComponent> managers = controlPanel.getManagers();
+    List<UIAbstractManagerComponent> rejectedManagers = null;
+    if (managers == null) {
+      return;
+    }    
+    for (UIAbstractManagerComponent manager : managers) {
+      UIAbstractManager uiManager = getChild(manager.getUIAbstractManagerClass());
+      if (uiManager == null) {
+        uiManager = addChild(manager.getUIAbstractManagerClass(), null, null);
+        if (renderedCompId_ == null) {
+          try {
+            uiManager.init();
+            renderedCompId_ = uiManager.getId();
+          } catch (Exception e) {
+            LOG.error("The manager " + uiManager.getClass() + " cannot be initialized, it will be unregistered", e);
+            if (rejectedManagers == null) {
+              rejectedManagers = new ArrayList<UIAbstractManagerComponent>();
+            }
+            rejectedManagers.add(manager);
+            removeChild(manager.getUIAbstractManagerClass());
+          }
+        } else {
+          uiManager.setRendered(false);
+        }
+      } else {
+        uiManager.refresh();
+      }
+    }
+    if (rejectedManagers != null) {
+      for (UIAbstractManagerComponent manager : rejectedManagers) {
+        controlPanel.unregister(manager);      
+      }      
+    }
   }
   
   public void checkRepository() throws Exception{

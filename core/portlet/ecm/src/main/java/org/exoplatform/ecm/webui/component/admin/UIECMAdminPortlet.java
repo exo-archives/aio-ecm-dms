@@ -19,15 +19,17 @@ package org.exoplatform.ecm.webui.component.admin;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.UIPopupMessages;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.UIPortletApplication;
@@ -47,6 +49,12 @@ import org.exoplatform.webui.event.EventListener;
     events = { @EventConfig(listeners = UIECMAdminPortlet.ShowHideActionListener.class)}
 )
 public class UIECMAdminPortlet extends UIPortletApplication {
+
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger(UIECMAdminPortlet.class);
+  
   private boolean isShowSideBar = true ;
   private boolean isSelectedRepo_ = true ;
   private String repoName_ = "" ;
@@ -58,24 +66,27 @@ public class UIECMAdminPortlet extends UIPortletApplication {
     String repo = getPreferenceRepository() ;
     try{
       getApplicationComponent(RepositoryService.class).getRepository(repo) ;
-      addChild(UIECMAdminControlPanel.class, null, null) ;
-      addChild(UIECMAdminWorkingArea.class, null, null);
+      UIECMAdminControlPanel controlPanel = addChild(UIECMAdminControlPanel.class, null, null) ;
+      controlPanel.initialize();
+      UIECMAdminWorkingArea workingArea = addChild(UIECMAdminWorkingArea.class, null, null);
+      workingArea.init();
     } catch(Exception e) {
-     // e.printStackTrace() ;
-      System.out.println("RepositoryException: Repository '"+repo+"' not found !");
+      LOG.error("An expected error occured while initializing the portlet", e);
     }        
   }
   
   public void initChilds() throws Exception{
     UIECMAdminControlPanel controlPanel = getChild(UIECMAdminControlPanel.class) ;
-    if(controlPanel == null) addChild(UIECMAdminControlPanel.class, null, null) ;
+    if(controlPanel == null) {
+      controlPanel = addChild(UIECMAdminControlPanel.class, null, null) ;
+      controlPanel.initialize();
+    }
     
     UIECMAdminWorkingArea workingArea = getChild(UIECMAdminWorkingArea.class) ;
     if(workingArea == null){
-      addChild(UIECMAdminWorkingArea.class, null, null) ;
-    } else {
-      workingArea.init() ;      
+      workingArea = addChild(UIECMAdminWorkingArea.class, null, null) ;
     }
+    workingArea.init() ;      
   }
   public void renderPopupMessages() throws Exception {
     UIPopupMessages popupMess = getUIPopupMessages();

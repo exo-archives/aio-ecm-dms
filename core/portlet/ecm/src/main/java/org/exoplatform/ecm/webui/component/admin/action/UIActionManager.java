@@ -16,9 +16,9 @@
  */
 package org.exoplatform.ecm.webui.component.admin.action;
 
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
@@ -33,7 +33,7 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
     lifecycle = UIContainerLifecycle.class
 )
 
-public class UIActionManager extends UIContainer {
+public class UIActionManager extends UIAbstractManager {
 
   public UIActionManager() throws Exception {
     addChild(UIActionTypeList.class, null, null) ;
