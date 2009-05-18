@@ -6,7 +6,7 @@
   </parent>
 
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>exo.ecm.dms.core.portlet.ecm.web-content</artifactId>
+  <artifactId>exo.ecm.dms.core.portlet.ecm.core.web</artifactId>
   <packaging>war</packaging>
   <name>eXo DMS Portlet Web Content</name>
   <url>http://www.exoplatform.org</url>
@@ -15,12 +15,12 @@
   <dependencies>    
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
-      <artifactId>exo.ecm.dms.core.portlet.ecm</artifactId>
+      <artifactId>exo.ecm.dms.core.portlet.ecm.core.main</artifactId>
       <version>${org.exoplatform.ecm.dms.version}</version>
     </dependency>  	
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
-      <artifactId>exo.ecm.dms.core.portlet.ecm.ext.content</artifactId>
+      <artifactId>exo.ecm.dms.core.portlet.ecm.ext.main</artifactId>
       <version>${org.exoplatform.ecm.dms.version}</version>
     </dependency>  	
   </dependencies>
