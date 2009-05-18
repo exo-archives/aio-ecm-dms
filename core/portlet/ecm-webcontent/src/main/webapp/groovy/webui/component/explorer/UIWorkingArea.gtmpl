@@ -1,0 +1,32 @@
+<%
+	/**
+	 * Created by The eXo Platform SARL
+	 * Author : Tran The Trong
+	 *          trongtt@gmail.com
+	 * July 25, 2006
+	 * version: $Id$	 
+	 */
+%>
+<%
+  import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar ;
+  import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace ;
+  import org.exoplatform.webui.core.UIRightClickPopupMenu ;
+%>
+
+<div class="UIWorkingArea" id="UIWorkingArea">
+  <%
+	  uicomponent.renderChild(UIRightClickPopupMenu.class) ;
+	  String className = "" ;
+
+	  if( uicomponent.isShowSideBar() ) {
+	    className = "RightContainer"
+	    println "<div class=\"LeftCotainer\">" ;
+	  	uicomponent.renderChild(UISideBar.class) ; 
+	  	println "</div>" ;
+	  }
+	%>
+  <div class="$className">
+		<% uicomponent.renderChild(UIDocumentWorkspace.class) ;%>
+	</div>
+	<div style="height: 0px;" class="ClearLeft"><span></span></div>
+</div>
