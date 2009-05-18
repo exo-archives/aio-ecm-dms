@@ -43,7 +43,7 @@
       <td class="FieldLabel"><%=_ctx.appRes("ContentPublishing.dialog.label.supervisor")%></td>
       <td class="FieldComponent">
         <% 
-        String[] fieldSupervisor = ["jcrPath=/node/exo:supervisor", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.component.UIPermissionSelector", "selectorIcon=Permission24x24Icon", "validate=empty", "editable=false"] ;
+        String[] fieldSupervisor = ["jcrPath=/node/exo:supervisor", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.selector.UIPermissionSelector", "selectorIcon=Permission24x24Icon", "validate=empty", "editable=false"] ;
           uicomponent.addActionField("supervisor", fieldSupervisor)  ;
         %>
       </td>
@@ -61,7 +61,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("ContentPublishing.dialog.label.public-path")%></td>
 	      <td class="FieldComponent">
 		      <% 
-		        String[] fieldPublicPath = ["jcrPath=/node/exo:publishPath", "selectorAction=selectPublicLocationPath", "selectorClass=org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector", "workspaceField=publicWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"] ;
+		        String[] fieldPublicPath = ["jcrPath=/node/exo:publishPath", "selectorAction=selectPublicLocationPath", "selectorClass=org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector", "workspaceField=publishWorkspace", "selectorIcon=SelectPath24x24Icon", "validate=empty", "editable=false"] ;
 		        uicomponent.addActionField("publicPath", fieldPublicPath)  ;
 		      %>
 		    </td>
@@ -70,7 +70,7 @@
       <td class="FieldLabel"><%=_ctx.appRes("ContentPublishing.dialog.label.validator")%></td>
       <td class="FieldComponent">
         <% 
-          String[] fieldValidator = ["jcrPath=/node/exo:validator", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.component.UIECMPermissionBrowser", "selectorIcon=Permission24x24Icon", "validate=empty", "editable=false"] ;
+          String[] fieldValidator = ["jcrPath=/node/exo:validator", "selectorAction=selectPermission", "selectorClass=org.exoplatform.ecm.webui.selector.UIPermissionSelector", "selectorIcon=Permission24x24Icon", "validate=empty", "editable=false"] ;
           uicomponent.addActionField("validator", fieldValidator) ;
         %>
       </td>
@@ -116,7 +116,7 @@
         <td class="FieldComponent">
           <% 
             String[] fieldTrashWorkspace = ["jcrPath=/node/exo:trashWorkspace", "script=ecm-explorer/widget/FillSelectBoxWithWorkspaces.groovy", "scriptParams=repository", "onchange=true"] ;
-            uicomponent.addSelectBoxField("backupTrashspace", fieldTrashWorkspace) ;
+            uicomponent.addSelectBoxField("trashWorkspace", fieldTrashWorkspace);
           %>
         </td>
       </tr>
