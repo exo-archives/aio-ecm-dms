@@ -7,20 +7,12 @@
 
   <modelVersion>4.0.0</modelVersion>
   <artifactId>exo.ecm.dms.core.portlet.ecm</artifactId>
-  <packaging>war</packaging>
-  <version>${org.exoplatform.ecm.dms.version}</version>
-  <name>eXo DMS Portlet</name>
+  <packaging>jar</packaging>
+  <name>eXo DMS Portlet Java Content</name>
   <url>http://www.exoplatform.org</url>
-  <description>eXo DMS Portlet: File Explorer, Browser Content, ECM Admin</description>
+  <description>eXo DMS Portlet Java Content: File Explorer, Browser Content, ECM Admin</description>
 
   <dependencies>
-    <dependency>
-      <groupId>org.exoplatform.portal</groupId>
-      <artifactId>exo.portal.webui.eXo</artifactId>
-      <version>${org.exoplatform.portal.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
     <dependency>
       <groupId>org.exoplatform.portal</groupId>
       <artifactId>exo.portal.webui.portal</artifactId>
@@ -29,61 +21,12 @@
     </dependency>
 
     <dependency>
-      <groupId>org.exoplatform.portal</groupId>
-      <artifactId>exo.portal.web.rest</artifactId>
-      <version>${org.exoplatform.portal.version}</version>
-      <type>war</type>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
       <groupId>org.exoplatform.jcr</groupId>
       <artifactId>exo.jcr.component.core</artifactId>
       <version>${org.exoplatform.jcr.version}</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.exoplatform.jcr</groupId>
-      <artifactId>exo.jcr.component.webdav</artifactId>
-      <version>${org.exoplatform.jcr.version}</version>
       <scope>provided</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.exoplatform.ws</groupId>
-      <artifactId>exo.ws.frameworks.servlet</artifactId>
-      <version>${org.exoplatform.ws.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.exoplatform.jcr</groupId>
-      <artifactId>exo.jcr.component.ftp</artifactId>
-      <version>${org.exoplatform.jcr.version}</version>
-      <scope>provided</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.exoplatform.ecm.dms.core</groupId>
-      <artifactId>exo.ecm.dms.core.component.cms</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.exoplatform.ecm.dms.core</groupId>
-      <artifactId>exo.ecm.dms.core.component.publication</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
-      <scope>provided</scope>
-    </dependency>
-    
-    <dependency>
-      <groupId>org.exoplatform.ecm.dms.core</groupId>
-      <artifactId>exo.ecm.dms.core.connector.fckeditor</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
-      <scope>provided</scope>
-    </dependency>    
-    
     <dependency>
       <groupId>org.exoplatform.ecm.dms.core</groupId>
       <artifactId>exo.ecm.dms.core.webui.dms</artifactId>
@@ -91,9 +34,11 @@
       <scope>provided</scope>
     </dependency>    
     
+    <dependency>
+      <groupId>org.exoplatform.ecm.dms.core</groupId>
+      <artifactId>exo.ecm.dms.core.webui.ext</artifactId>
+      <version>${org.exoplatform.ecm.dms.version}</version>
+      <scope>provided</scope>
+    </dependency>  	
   </dependencies>
-
-  <build>
-    <finalName>dms</finalName>
-  </build>
 </project>
