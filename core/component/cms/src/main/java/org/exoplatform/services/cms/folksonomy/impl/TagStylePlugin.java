@@ -27,8 +27,6 @@ import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.impl.TagStyleConfig.HtmlTagStyle;
-import org.exoplatform.services.cms.impl.DMSConfiguration;
-import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
@@ -44,17 +42,12 @@ public class TagStylePlugin extends BaseComponentPlugin{
   private RepositoryService repositoryService_ ;
   private NodeHierarchyCreator nodeHierarchyCreator_ ;
   
-  /**
-   * DMS configuration which used to store informations
-   */   
-   private DMSConfiguration dmsConfiguration_;
   
 	public TagStylePlugin(InitParams params, RepositoryService repoService,
-      NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration) throws Exception {
+      NodeHierarchyCreator nodeHierarchyCreator) throws Exception {
     params_ = params ;
     repositoryService_ = repoService ;
     nodeHierarchyCreator_ = nodeHierarchyCreator ;
-    dmsConfiguration_ = dmsConfiguration;
 	}	 
   
   
@@ -116,7 +109,6 @@ public class TagStylePlugin extends BaseComponentPlugin{
   */
  private Session getSession(String repository) throws Exception{ 
    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
-   DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
-   return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
+   return manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName());
  }
 }
