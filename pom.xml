@@ -13,6 +13,18 @@
   <version>2.4-SNAPSHOT</version>
   <packaging>pom</packaging>
 
+  <properties>
+	<org.exoplatform.kernel.version>2.0.7</org.exoplatform.kernel.version>
+	<org.exoplatform.core.version>2.1.5</org.exoplatform.core.version>
+	<org.exoplatform.jcr.version>1.10.3</org.exoplatform.jcr.version>
+	<org.exoplatform.ws.version>1.3.3</org.exoplatform.ws.version>
+	<org.exoplatform.pc.version>2.0.6</org.exoplatform.pc.version>
+	<org.exoplatform.portal.version>2.5.3</org.exoplatform.portal.version>
+	<org.exoplatform.ecm.dms.version>2.4-SNAPSHOT</org.exoplatform.ecm.dms.version>
+	<org.shindig.version>0.8.1-1-r719456</org.shindig.version>
+	<bonita.version>4.0</bonita.version>        
+  </properties>
+  
   <modules>
     <module>core</module>
   </modules>
@@ -203,31 +215,22 @@
         <property><name>default</name></property>
         <activeByDefault>true</activeByDefault>
       </activation>
-      <properties>
-        <org.exoplatform.kernel.version>2.0.7</org.exoplatform.kernel.version>
-        <org.exoplatform.core.version>2.1.5</org.exoplatform.core.version>
-        <org.exoplatform.jcr.version>1.10.3</org.exoplatform.jcr.version>
-        <org.exoplatform.ws.version>1.3.3</org.exoplatform.ws.version>
-        <org.exoplatform.pc.version>2.0.6</org.exoplatform.pc.version>
-        <org.exoplatform.portal.version>2.5.3</org.exoplatform.portal.version>
-        <org.exoplatform.ecm.dms.version>2.4-SNAPSHOT</org.exoplatform.ecm.dms.version>
-	    	<org.shindig.version>0.8.1-1-r719456</org.shindig.version>
-		    <exo.test.classes>Test</exo.test.classes>
-        <exo.test.skip>true</exo.test.skip>
-        <bonita.version>4.0</bonita.version>        
-      </properties>
+	  <properties>
+		<exo.test.classes>Test</exo.test.classes>
+		<exo.test.skip>true</exo.test.skip>
+	  </properties>
     </profile>
 	<profile>
-            <id>ext</id>
-			<activation>
-	        <property>
-				<name>ext</name>
-			</property>
-	        <activeByDefault>false</activeByDefault>
-			</activation>
-            <modules>
-                <module>/ext</module>
-            </modules>
+		<id>ext</id>
+		<activation>
+		<property>
+			<name>ext</name>
+		</property>
+		<activeByDefault>false</activeByDefault>
+		</activation>
+		<modules>
+			<module>/ext</module>
+		</modules>
     </profile>
   </profiles>
 </project>

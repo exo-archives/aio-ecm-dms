@@ -6,7 +6,6 @@
   </parent> 
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.exoplatform.ecm.dms.core</groupId>
   <artifactId>exo.ecm.dms.core.webui.ext</artifactId>
   <packaging>jar</packaging>
   <name>eXo DMS webui ext</name>
