@@ -30,6 +30,7 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
@@ -55,6 +56,7 @@ import org.exoplatform.services.ecm.fckconfig.FCKEditorContext;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.core.UIApplication;
@@ -117,6 +119,11 @@ public class UIDialogForm extends UIForm {
   final static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
 
   private String SEPARATOR_VALUE = "::";
+  
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger("webui.form.UIDialogForm");
   
   public UIDialogForm() { }
 
@@ -326,6 +333,7 @@ public class UIDialogForm extends UIForm {
           executeScript(script, uiSelectBox, scriptParams);
         } catch(Exception e) {
           uiSelectBox.setOptions(optionsList);
+          LOG.error("An unexpected error occurs", e);
         }      
       } else if (options != null && options.length() >0) {
         String[] array = options.split(",");
@@ -916,7 +924,7 @@ public class UIDialogForm extends UIForm {
       }
       dialogScript.execute(o);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("An unexpected error occurs", e);
     }
   }
 
