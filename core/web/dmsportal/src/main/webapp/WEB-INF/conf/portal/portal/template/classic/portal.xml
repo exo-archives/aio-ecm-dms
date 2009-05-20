@@ -2,7 +2,7 @@
 <portal-config>
   <portal-name>@owner@</portal-name>
   <locale>en</locale>
-  <access-permissions>*:/platform/guests</access-permissions>
+  <access-permissions>Everyone</access-permissions>
   <edit-permission>*:/platform/administrators</edit-permission>
   <creator>root</creator>
   
