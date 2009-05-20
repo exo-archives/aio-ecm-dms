@@ -275,12 +275,12 @@
 		        path += encodeURIComponent(nodePath[i]) + "/";
 		      }
 		    }
-		    window.location = serverInfo+ "/"+portalName + "/rest/private/lnkproducer/openit.lnk?path=/"+repository +"/" +workspace + path;
+		    window.open(serverInfo + "/" + portalName + "/rest/private/lnkproducer/openit.lnk?path=/" + repository + "/" + workspace + path, '_new');
 	   	} else {
-	 	  	window.location = serverInfo + "/"+portalName + "/rest/private/jcr/"+repository +"/" +workspace + nodePath; 		 		
+	 	  	window.open(serverInfo + "/" + portalName + "/rest/private/jcr/" + repository + "/" +workspace + nodePath, '_new');
 	 	  } 	  
 	  } else {
-	    window.location = serverInfo+ "/"+portalName + "/rest/private/jcr/"+repository +"/" +workspace + nodePath;
+		  window.open(serverInfo+ "/" + portalName + "/rest/private/jcr/" + repository + "/" + workspace + nodePath, '_new');
 	  } 
 	} ;
 	
