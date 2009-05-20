@@ -81,16 +81,19 @@
       def rowClass = null ;
  	    boolean even = true ;
  	    boolean found = false ;
+ 	    Node node = null; 
  	    if (resultList != null && resultList.size() > 0) {
   	    for (row in resultList) {
   	      found = true;
   	      if (even) rowClass = "EvenRow";  
   	      else rowClass =  "OddRow"; 
   	      even = !even;
-  	      System.out.println("\n\n path = " + row.getValue("jcr:path"));
   	      String nodePath = row.getValue("jcr:path").getString();
-  	      JCRPath path = ((SessionImpl)uicomponent.getSession()).getLocationFactory().parseJCRPath(nodePath);
-  	      Node node = (Node)uicomponent.getSession().getItem(path.getAsString(false));
+  	      try {
+  	      	node = uicomponent.getNodeByPath(nodePath);
+  	      } catch(Exception e) {
+  	      	continue;
+  	      }
   	      if (node.getPrimaryNodeType().getName().equals("nt:resource")) {
   	      	node = node.getParent();
   	      	nodePath = node.getPath();

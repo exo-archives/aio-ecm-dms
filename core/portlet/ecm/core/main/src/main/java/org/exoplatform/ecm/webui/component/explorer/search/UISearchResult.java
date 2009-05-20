@@ -140,17 +140,27 @@ public class UISearchResult extends UIContainer {
     return new GregorianCalendar().getTime();
   }
   
+  public Node getNodeByPath(String path) throws Exception {
+    JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
+    return (Node)getSession().getItem(nodePath.getAsString(false));
+  }
+  
   public List<Row> getResultList() throws Exception {    
     List<Node> listNodes = new ArrayList<Node>();
-    List<Row> listRows = new ArrayList<Row>();    
+    List<Row> listRows = new ArrayList<Row>();
+    Node resultNode = null;
     long resultListSize = queryResult_.getNodes().getSize();
     if (!queryResult_.getRows().hasNext()) return currentListRows_;    
     if (resultListSize > 100) {
       for (RowIterator iter = queryResult_.getRows(); iter.hasNext();) {
         Row r = iter.nextRow();
         String path = r.getValue("jcr:path").getString();
-        JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
-        Node resultNode = (Node)getSession().getItem(nodePath.getAsString(false));
+        try {
+          resultNode = getNodeByPath(path);
+        } catch (Exception e) {
+          LOG.warn("Can't get node by path " + path, e);
+          continue;
+        }
         addNode(listNodes, resultNode, listRows, r);
         if (!iter.hasNext()) isEndOfIterator_ = true;
         if (listNodes.size() == 100) {
@@ -169,8 +179,12 @@ public class UISearchResult extends UIContainer {
         Row r = iter.nextRow();        
         if (!iter.hasNext()) isEndOfIterator_ = true;
         String path = r.getValue("jcr:path").getString();
-        JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
-        Node resultNode = (Node)getSession().getItem(nodePath.getAsString(false));
+        try {
+          resultNode = getNodeByPath(path);
+        } catch (Exception e) {
+          LOG.warn("Can't get node by path " + path, e);
+          continue;
+        }
         addNode(listNodes, resultNode, listRows, r);        
       }
       currentListNodes_= listNodes;
@@ -239,7 +253,7 @@ public class UISearchResult extends UIContainer {
       UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class);
       Node node;
       try {
-        node = (Node) uiExplorer.getNodeByPath(path, uiExplorer.getTargetSession());
+        node = uiExplorer.getNodeByPath(path, uiExplorer.getTargetSession());
       } catch(AccessDeniedException ace) {
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.access-denied", null, 
                                                 ApplicationMessage.WARNING));
@@ -285,7 +299,7 @@ public class UISearchResult extends UIContainer {
       String folderPath = LinkUtils.getParentPath(path);
       Node node = null;
       try {
-        node = (Node) uiExplorer.getNodeByPath(folderPath, uiExplorer.getTargetSession());
+        node = uiExplorer.getNodeByPath(folderPath, uiExplorer.getTargetSession());
       } catch(AccessDeniedException ace) {
         UIApplication uiApp = uiSearchResult.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UISearchResult.msg.access-denied", null, 

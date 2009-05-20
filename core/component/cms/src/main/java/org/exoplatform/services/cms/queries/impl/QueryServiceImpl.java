@@ -32,6 +32,7 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PortalContainerInfo;
@@ -47,6 +48,7 @@ import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.organization.MembershipHandler;
 import org.exoplatform.services.organization.OrganizationService;
 import org.picocontainer.Startable;
@@ -64,6 +66,8 @@ public class QueryServiceImpl implements QueryService, Startable{
   private String baseQueriesPath_ ;
   private String group_ ;
   private DMSConfiguration dmsConfiguration_;
+  
+  private static final Log LOG = ExoLogger.getLogger(QueryServiceImpl.class);
 
   public QueryServiceImpl(RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator, 
       InitParams params, PortalContainerInfo containerInfo, CacheService cacheService, 
@@ -88,8 +92,7 @@ public class QueryServiceImpl implements QueryService, Startable{
       try{
         queryPlugin.init(baseQueriesPath_) ;
       }catch (Exception e) {
-        System.out.println("[WARNING] ==> Can not init query plugin '" + queryPlugin.getName() + "'");
-        e.printStackTrace() ;
+        LOG.error("Can not start query plugin '" + queryPlugin.getName() + "'", e);
       }
     }
   }
@@ -106,8 +109,7 @@ public class QueryServiceImpl implements QueryService, Startable{
       try{
         queryPlugin.init(repository,baseQueriesPath_) ;
       }catch (Exception e) { 
-        System.out.println("[WARNING] ==> Can not init query plugin '" + queryPlugin.getName() + "'");
-        //e.printStackTrace() ;
+        LOG.error("Can not init query plugin '" + queryPlugin.getName() + "'", e);
       }
     } 
   }
@@ -322,22 +324,26 @@ public class QueryServiceImpl implements QueryService, Startable{
   
   public QueryResult execute(String queryPath, String workspace, String repository,SessionProvider provider, String userId) throws Exception {
     Session session = getSession(repository, provider, true);    
-    Node queryNode = (Node)session.getItem(queryPath) ;    
-    if(queryNode.hasProperty("exo:cachedResult")){
-      if(queryNode.getProperty("exo:cachedResult").getBoolean()) {
-        ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName()) ;
-        String portalName = containerInfo_.getContainerName() ;
-        String key = portalName + queryPath ;
-        QueryResult result = (QueryResult)queryCache.get(key) ;
-        if (result != null) return result ;
-        Session querySession = getSession(repository,workspace,provider) ;        
-        result = execute(querySession,queryNode, userId) ;
-        queryCache.put(key, result) ;
-        return result ;      
-      }
+    Session querySession = getSession(repository, workspace, provider);
+    Node queryNode = null;
+    try {
+      queryNode = (Node) session.getItem(queryPath);
+    } catch (PathNotFoundException e) {
+      LOG.warn("Can not find node by path " + queryPath + " in dms-system workspace");
+      queryNode = (Node) querySession.getItem(queryPath);
     }
-    Session querySession = getSession(repository,workspace,provider) ;        
-    return execute(querySession,queryNode, userId);
+    if (queryNode != null && queryNode.hasProperty("exo:cachedResult")
+        && queryNode.getProperty("exo:cachedResult").getBoolean()) {
+      ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName());
+      String portalName = containerInfo_.getContainerName();
+      String key = portalName + queryPath;
+      QueryResult result = (QueryResult) queryCache.get(key);
+      if (result != null) return result;
+      result = execute(querySession, queryNode, userId);
+      queryCache.put(key, result);
+      return result;
+    }
+    return execute(querySession, queryNode, userId);
   }
   
   private QueryResult execute(Session session,Node queryNode, String userId) throws Exception {
@@ -385,8 +391,8 @@ public class QueryServiceImpl implements QueryService, Startable{
   //TODO need to use SystemProvider
   private Session getSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
-    return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());    
+    return manageableRepository.getSystemSession(manageableRepository.getConfiguration().getDefaultWorkspaceName());
+        
   }
 
   private Session getSession(String repository,SessionProvider provider, boolean flag) throws Exception {
