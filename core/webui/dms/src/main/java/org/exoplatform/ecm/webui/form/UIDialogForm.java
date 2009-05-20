@@ -911,7 +911,7 @@ public class UIDialogForm extends UIForm {
     try {
       CmsScript dialogScript = scriptService.getScript(script, repositoryName);
       if(params != null) {
-        if(params.equals(REPOSITORY)) params = new String[] { repositoryName }; 
+        if (REPOSITORY.equals(params[0])) params = new String[] { repositoryName }; 
         dialogScript.setParams(params);
       }
       dialogScript.execute(o);
