@@ -20,7 +20,7 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.webui.ext.UIExtensionAbstractFilter;
 import org.exoplatform.webui.ext.UIExtensionFilterType;
 
@@ -42,8 +42,7 @@ public class IsNotRootNodeFilter extends UIExtensionAbstractFilter {
   
   public boolean accept(Map<String, Object> context) throws Exception {
     Node currentNode = (Node) context.get(Node.class.getName());
-    UIJCRExplorer uiExplorer = (UIJCRExplorer) context.get(UIJCRExplorer.class.getName());
-    return !uiExplorer.getRootNode().equals(currentNode);
+    return !((NodeImpl)currentNode).isRoot();
   }
 
   public void onDeny(Map<String, Object> context) throws Exception {
