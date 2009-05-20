@@ -11,15 +11,6 @@
 	  <edit-permission>*:/platform/administrators</edit-permission>
     <show-max-window>true</show-max-window>
     
-    <application>
-	    <instance-id>group#platform/guests:/eXoWidgetWeb/WelcomeWidget/WelcomeWidget</instance-id>
-	    <application-type>eXoWidget</application-type>
-	    <title>Welcome Widget</title>
-	    <show-info-bar>true</show-info-bar>
-      <show-application-state>true</show-application-state>
-      <show-application-mode>true</show-application-mode>
-	  </application>
-	  
 	  <application>
       <instance-id>group#platform/guests:/exoadmin/AccountPortlet/webosAccount</instance-id>    
       <title>Register</title>

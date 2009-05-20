@@ -312,7 +312,9 @@ public class UIBrowseContainer extends UIContainer {
   public Node getNodeByPath(String nodePath) throws Exception {
     NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
     try{
-      if(wsName_ == null) {
+      if(getWorkSpace() != null) {
+        wsName_ = getWorkSpace();
+      } else {
         wsName_ = getWspace();
       }
       return (Node) nodeFinder.getItem(getRepository(), wsName_, nodePath);
