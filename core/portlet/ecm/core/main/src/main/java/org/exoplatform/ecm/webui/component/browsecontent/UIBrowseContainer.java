@@ -1106,31 +1106,13 @@ public class UIBrowseContainer extends UIContainer {
     String categoryPath = preferences.getValue(Utils.JCR_PATH, "");
     NodeFinder nodeFinder_ =  getApplicationComponent(NodeFinder.class);
     LinkManager linkManager_ = getApplicationComponent(LinkManager.class);
-    Node categoryNode = (Node)nodeFinder_.getItem(repoName, getWspace(), categoryPath);
+    Node categoryNode = null;
     try {
       categoryNode = (Node)nodeFinder_.getItem(repoName, getWorkSpace(), categoryPath);
     } catch (PathNotFoundException pathNotFoundException) {
-      setRootPath(categoryPath);
-      setCategoryPath(categoryPath);
-      setSelectedTabPath(categoryPath);
-      setCurrentNodePath(categoryPath);
-      /*
-      UIApplication app = getAncestorOfType(UIApplication.class);
-      app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null, 
-          ApplicationMessage.WARNING));
       return;
-      */
     } catch (Exception e) {
-      setRootPath(categoryPath);
-      setCategoryPath(categoryPath);
-      setSelectedTabPath(categoryPath);
-      setCurrentNodePath(categoryPath);
-      /*
-      UIApplication app = getAncestorOfType(UIApplication.class);
-      app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null, 
-          ApplicationMessage.WARNING));
       return;
-      */
     }
     if (linkManager_.isLink(categoryNode)) {
       if (linkManager_.isTargetReachable(categoryNode)) {
@@ -1220,6 +1202,9 @@ public class UIBrowseContainer extends UIContainer {
             //UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class);
             //uiPorlet.setPorletMode(PortletMode.HELP);
             //uiPorlet.reload();
+            UIApplication app = getAncestorOfType(UIApplication.class);
+            app.addMessage(new ApplicationMessage("UIBrowseContainer.label.cannot-access", null, 
+                ApplicationMessage.WARNING));
             return;
           } else if(getNodeByPath(getSelectedTab().getPath()) == null || 
               getNodeByPath(getCurrentNode().getPath()) == null) {
