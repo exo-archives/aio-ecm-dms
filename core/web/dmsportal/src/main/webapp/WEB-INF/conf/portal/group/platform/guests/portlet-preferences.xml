@@ -38,12 +38,12 @@
       </preference>
       <preference>
         <name>workspace</name>
-        <value>system</value>
+        <value>dms-system</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
         <name>path</name>     
-        <value>/exo:ecm/exo:taxonomies</value>
+        <value>/exo:ecm/exo:taxonomyTrees/storage/System</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
@@ -260,12 +260,12 @@
       </preference>
       <preference>
         <name>workspace</name>
-        <value>system</value>
+        <value>dms-system</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
         <name>path</name>     
-        <value>/exo:ecm/exo:taxonomies</value>
+        <value>/exo:ecm/exo:taxonomyTrees/storage/System</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
@@ -509,12 +509,12 @@
       </preference>
       <preference>
         <name>workspace</name>
-        <value>system</value>
+        <value>dms-system</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
         <name>path</name>     
-        <value>/exo:ecm/exo:taxonomies/cms/news</value>
+        <value>/exo:ecm/exo:taxonomyTrees/storage/System/cms/news</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
@@ -539,7 +539,7 @@
       </preference>      
       <preference>
         <name>queryStatement</name>
-        <value>/jcr:root//exo:ecm/exo:taxonomies/cms/news//element(*, exo:article)</value>
+        <value>/jcr:root//exo:ecm/exo:taxonomyTrees/storage/System/cms/news//element(*, exo:article)</value>
         <read-only>false</read-only>
       </preference>      
       <preference>
@@ -731,12 +731,12 @@
       </preference>
       <preference>
         <name>workspace</name>
-        <value>system</value>
+        <value>dms-system</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
         <name>path</name>     
-        <value>/exo:ecm/exo:taxonomies/cms/news</value>
+        <value>/exo:ecm/exo:taxonomyTrees/storage/System/cms/news</value>
         <read-only>false</read-only>
       </preference>            
       <preference>
@@ -761,7 +761,7 @@
       </preference>      
       <preference>
         <name>queryStatement</name>
-        <value>/jcr:root//exo:ecm/exo:taxonomies/cms/news//element(*, exo:article)</value>
+        <value>/jcr:root//exo:ecm/exo:taxonomyTrees/storage/System/cms/news//element(*, exo:article)</value>
         <read-only>false</read-only>
       </preference>      
       <preference>

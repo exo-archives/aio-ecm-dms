@@ -312,11 +312,7 @@ public class UIBrowseContainer extends UIContainer {
   public Node getNodeByPath(String nodePath) throws Exception {
     NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
     try{
-      if(getWorkSpace() != null) {
-        wsName_ = getWorkSpace();
-      } else {
-        wsName_ = getWspace();
-      }
+      if(wsName_ == null) wsName_ = getWorkSpace();
       return (Node) nodeFinder.getItem(getRepository(), wsName_, nodePath);
     } catch(PathNotFoundException path) {
       //return (Node) nodeFinder.getItem(getRepository(), wsName_, rootPath_);
@@ -433,7 +429,8 @@ public class UIBrowseContainer extends UIContainer {
     String queryPath = getPortletPreferences().getValue(Utils.CB_QUERY_STORE,"");
     String workspace = getWorkSpace();
     String repository = getRepository();
-    return queryService.execute(queryPath, workspace, repository, getSystemProvider(), getSession(true).getUserID());
+    return queryService.execute(queryPath, workspace, repository, getSystemProvider(), 
+        getSession(true).getUserID());
   }
   
   public boolean nodeIsLocked(Node node) throws Exception {
@@ -738,7 +735,7 @@ public class UIBrowseContainer extends UIContainer {
     if (flag) {
       workspace = getWorkSpace();
     } else {
-      workspace = getWspace();
+      workspace = getDmsSystemWorkspace();
     }
     ManageableRepository manageableRepository = getRepositoryService().getRepository(getRepository());
     if(categoryPath_ != null && categoryPath_.startsWith("/jcr:system")) { 
@@ -1081,7 +1078,6 @@ public class UIBrowseContainer extends UIContainer {
     return Boolean.parseBoolean(getPortletPreferences().getValue(Utils.CB_VIEW_VOTE, ""));
   }
 
-  //TODO maybe need change name of this method
   public void loadPortletConfig(PortletPreferences preferences) throws Exception {
     String tempName = preferences.getValue(Utils.CB_TEMPLATE, "");
     String repoName = preferences.getValue(Utils.REPOSITORY, "");
@@ -1109,8 +1105,6 @@ public class UIBrowseContainer extends UIContainer {
     Node categoryNode = null;
     try {
       categoryNode = (Node)nodeFinder_.getItem(repoName, getWorkSpace(), categoryPath);
-    } catch (PathNotFoundException pathNotFoundException) {
-      return;
     } catch (Exception e) {
       return;
     }
@@ -1157,9 +1151,8 @@ public class UIBrowseContainer extends UIContainer {
       return;
     }     
   }
-  
-  
-  String getDmsSystemWorkspace() {
+    
+  public String getDmsSystemWorkspace() {
     DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
     DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(getRepository());
     return dmsRepoConfig.getSystemWorkspace();
@@ -1173,13 +1166,7 @@ public class UIBrowseContainer extends UIContainer {
       e.printStackTrace();
     }     
   }
-  
-  public String getWspace() {
-    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
-    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(getRepository());
-    return dmsRepoConfig.getSystemWorkspace();
-  }
-  
+
   public void processRender(WebuiRequestContext context) throws Exception {
     try {
       getApplicationComponent(RepositoryService.class).getRepository(getRepository());
