@@ -15,7 +15,7 @@
       <repositoryName>Lựa chọn kho chứa</repositoryName>
     </label>
     <msg>
-      <save-successfully>Thành công trong việc cấu hình portlet ưu tiên đặc biệt</save-successfully>
+      <save-successfully>Việc cấu hình porlet đã thành công</save-successfully>
       <item-not-found>Đường dẫn này không đúng!</item-not-found>
       <fileType-empty>Bạn phải chọn kiểu tài liệu trước khi lưu lại cấu hình này.</fileType-empty>
       <ws-empty>Bạn phải chọn một vùng làm việc.</ws-empty>
@@ -32,12 +32,12 @@
   <UIFastContentCreatortForm>
     <msg>
       <name-not-allowed>Tên này không được chấp nhận.</name-not-allowed>
-      <in-versioning>Bạn cần checkout nút cần thao tác trước khi thêm mới một nút</in-versioning>
+      <in-versioning>Bạn cần check out node hiện tại trước khi thêm node con cho nó</in-versioning>
       <cannot-save>Một vài ràng buộc bị vi phạm trong quá trình thực hiện hành động.</cannot-save>
       <saved-successfully>Nút này đã được lưu thành công tại vị trí '{0}'</saved-successfully>
       <not-support>Không thể tải được định dạng của '{0}'.</not-support>
       <not-add-folder>Chỉ chấp nhận thêm kiểu nt:file trong thư mục này</not-add-folder>
-      <access-denied>Quyền truy cập bị từ chối! Bạn không được phép thêm mới với '{0}'</access-denied>
+      <access-denied>Bạn không có quyền để tạo mới một node trong '{0}'</access-denied>
       <path-not-found>Đường dẫn '{0}' đã bị xóa hoặc đó là đường dẫn không đúng.</path-not-found>
       <node-locked>Nút '{0}' đã bị khóa. Nút phải được mở khóa trước khi tạo tài liệu.</node-locked>
       <node-isExist>Nút này đã tồn tại trong '{0}' và tên cùng mức không được chấp nhận</node-isExist>

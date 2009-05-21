@@ -200,8 +200,8 @@
   <Vote>
     <view>
       <label>
-        <avg-rating>Phân loại trung bình</avg-rating>
-        <subscription>Bỏ phiếu</subscription>
+        <avg-rating>Trung bình</avg-rating>
+        <subscription>Tổng số phiếu</subscription>
       </label>
     </view>
   </Vote>

@@ -251,9 +251,9 @@
   <UICBSearchForm>
     <label>
       <inputValue>Từ khóa để tìm kiếm</inputValue>
-      <option>Không có nhãn</option>
+      <option>nolabel</option>
       <search>Tìm kiếm</search>
-      <referencesDoc>Tham khảo</referencesDoc>
+      <referencesDoc>Tham chiếu</referencesDoc>
       <childDoc>Con</childDoc>
     </label>
     <title>
@@ -299,7 +299,7 @@
       <author>Tác giả</author>
       <summary>Sơ lược</summary>
       <more>Thêm tài liệu</more>
-      <previous>Xem màn hình trước</previous>
+      <previous>Quay lại</previous>
       <path-Previous>Quay lại</path-Previous>
       <path-Root>Gốc</path-Root>
       <home>Home</home>
