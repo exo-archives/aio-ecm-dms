@@ -617,6 +617,17 @@
         <targetPath>Đường dẫn đích</targetPath>
       </label>
     </dialog>
-  </ScriptAction>  
+  </ScriptAction>
+  
+  <EmptyFieldValidator>
+    <msg>
+      <empty-input>Vui lòng nhập '{0}' của bạn.</empty-input>
+    </msg>
+  </EmptyFieldValidator>
+  <NumberFormatValidator>
+    <msg>
+      <Invalid-number>'{0}' không hợp lệ.</Invalid-number>
+    </msg>
+  </NumberFormatValidator>  
 </bundle>
 
