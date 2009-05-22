@@ -733,9 +733,9 @@ public class UIBrowseContainer extends UIContainer {
     Session session = null;
     String workspace = "";
     if (flag) {
-      workspace = getWorkSpace();
-    } else {
       workspace = getDmsSystemWorkspace();
+    } else {
+      workspace = getWorkSpace();
     }
     ManageableRepository manageableRepository = getRepositoryService().getRepository(getRepository());
     if(categoryPath_ != null && categoryPath_.startsWith("/jcr:system")) { 
