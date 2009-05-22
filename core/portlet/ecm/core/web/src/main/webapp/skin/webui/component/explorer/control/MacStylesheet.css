@@ -393,3 +393,99 @@
   width: 24px;	height: 24px;
   background: url('DefaultSkin/icons/ShowSideBarButton.gif') no-repeat bottom;
 }
+
+
+
+/**************New skin**************/
+/********************
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
+  border-top: solid 1px #fdfdfd;
+  border-bottom: solid 1px #b7b7b7;
+  height:57px;
+  background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x;
+}
+
+.UIJCRExplorerPortlet .Block {
+	margin: 4px;
+}
+
+.UIJCRExplorerPortlet .Left {
+	float: left;
+	width: 114px;
+}
+
+.UIJCRExplorerPortlet .Right {
+	float: right;
+	width: 236px;
+}
+
+.UIJCRExplorerPortlet .Center {
+	height: 22px;
+	margin-left: 114px;
+	margin-right: 236px;
+}
+	
+.UIJCRExplorerPortlet .Left .View {
+	background: url(DefaultSkin/background/ViewStyle.jpg) no-repeat; 
+	width: 109px;
+	height: 22px;
+	float: left;
+}
+
+.UIJCRExplorerPortlet .Center .BackBtn {
+	background: url(DefaultSkin/background/BackBtn.jpg) no-repeat; 
+	height: 22px;
+	padding-left: 28px;
+}
+
+.UIJCRExplorerPortlet .Center .SearchTxtField {
+	height: 19px;
+	border: 1px solid #ccc;
+	background: #fff;
+}
+
+.UIJCRExplorerPortlet .Center .SearchTxtField .HddIco {
+	background: url(DefaultSkin/background/DirIco.jpg) no-repeat;
+	height: 14px;
+	padding-left: 22px;
+	margin: 3px 4px;
+	float: left;
+}
+
+.UIJCRExplorerPortlet .Center .SearchTxtField .DropDownBtn {
+	background: url(DefaultSkin/background/DropDownBtn.jpg) no-repeat;
+	float: right;
+	height: 15px;
+	width: 18px;
+	margin: 3px 4px;
+}
+
+.UIJCRExplorerPortlet .Center .SearchTxtField .Path {
+	margin: 3px 24px 18px;
+	line-height: 15px;
+}
+
+.UIJCRExplorerPortlet .Right .SearchSetting {
+	background: url(DefaultSkin/background/SearchSetting.jpg) no-repeat; 
+	width: 51px;
+	height: 22px;
+	float: right;
+}
+
+.UIJCRExplorerPortlet .Right .Advance {
+	height: 19px;
+	border: 1px solid #ccc;
+	background: #fff;
+	width: 165px;
+	margin-left: 8px;
+}
+
+.UIJCRExplorerPortlet .Right .Advance .SearchBtn {
+	background: url(DefaultSkin/background/SearchBtn.jpg) no-repeat; 
+	width: 18px;
+	height: 16px;
+	float: right;
+	margin-top: 2px;
+	margin-right: 2px;
+}
+*/

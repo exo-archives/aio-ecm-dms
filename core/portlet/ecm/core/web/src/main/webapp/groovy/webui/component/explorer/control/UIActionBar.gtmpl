@@ -77,3 +77,110 @@
   </div>
   <% uiform.end() %>
 </div>
+
+
+<!-- 
+<div class="UIActionBar">
+	<div class="UIHorizontalTabs">
+		<div class="TabsContainer" style="position: relative">
+		
+			<div class="UITab" style="display: block;">
+			  <div class="NormalActionBarTab">
+					<div class="TabL">
+					  <div class="TabR">
+							<div class="TabM">
+							 <a href="#" class="TabLabel">Actions</a>
+							</div>
+					  </div>
+					</div>  
+			  </div>
+			</div>
+			
+			<div class="UITab" style="display: block;">
+			  <div class="SelectedActionBarTab">
+					<div class="TabL">
+					  <div class="TabR">
+							<div class="TabM">
+								<a href="#" class="TabLabel">Collaboration</a>
+							</div>
+						</div>
+					</div>  
+			  </div>
+				
+				  <div class="MenuItemContainer" style="display: block; position: absolute; left: 0px;">
+						
+						<div class="NormalSubItem SubTabItem">
+							<div class="NormalSubTabItemL">
+								<div class="NormalSubTabItemR">
+									<div class="NormalSubTabItemM">
+										<a href="#" class="SubTabIcon AddIcon">Add News</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="NormalSubItem SubTabItem">
+							<div class="NormalSubTabItemL">
+								<div class="NormalSubTabItemR">
+									<div class="NormalSubTabItemM">
+										<a href="#" class="SubTabIcon DocumentIcon">Document</a>
+									</div>
+								</div>
+							</div>
+						</div>
+						
+						<div class="SelectedSubItem SubTabItem">
+							<div class="SubTabItemL">
+								<div class="SubTabItemR">
+									<div class="SubTabItemM">
+										<a href="#" class="SubTabIcon TransferIcon">Transfer Document</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					
+					</div>
+				
+			</div>
+		
+			<div class="UITab" style="display: block;">
+			  <div class="NormalActionBarTab">
+					<div class="TabL">
+					  <div class="TabR">
+							<div class="TabM">
+								<a href="#" class="TabLabel">Functions</a>
+							</div>
+						</div>
+					</div>  
+			  </div>
+			</div>
+			
+			<div class="UITab" style="display: block;">
+			  <div class="NormalActionBarTab">
+					<div class="TabL">
+					  <div class="TabR">
+							<div class="TabM">
+								<a href="#" class="TabLabel">Samples</a>
+							</div>
+						</div>
+					</div>  
+			  </div>
+			</div>
+			
+			<div class="UITab" style="display: block;">
+			  <div class="NormalActionBarTab">
+					<div class="TabL">
+					  <div class="TabR">
+							<div class="TabM">
+								<a href="#" class="TabLabel">My Actions</a>
+							</div>
+						</div>
+					</div>  
+			  </div>
+			</div>
+			
+		</div>
+	</div>
+</div>
+
+-->

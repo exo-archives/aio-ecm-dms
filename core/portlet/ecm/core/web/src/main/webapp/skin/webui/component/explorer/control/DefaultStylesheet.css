@@ -208,10 +208,10 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
   border-top: solid 1px #fdfdfd;
   border-bottom: solid 1px #b7b7b7;
-  background: url('DefaultSkin/background/LineDecorator1x32.gif') repeat-x center center;
-  height: 32px;
+  height:57px;
+  background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x;
+  
 }
-
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionLabel {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
@@ -383,3 +383,196 @@
   width: 24px;	height: 24px;
   background: url('DefaultSkin/icons/ShowSideBarButton.gif') no-repeat bottom;
 }
+
+/**************New skin**************/
+
+/*New Search Bar
+
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
+  border-top: solid 1px #fdfdfd;
+  border-bottom: solid 1px #b7b7b7;
+  height:57px;
+  background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x;
+  
+}
+
+.UIJCRExplorerPortlet .Block {
+	margin: 4px;
+}
+
+.UIJCRExplorerPortlet .Left {
+	float: left;
+	width: 114px;
+}
+
+.UIJCRExplorerPortlet .Right {
+	float: right;
+	width: 236px;
+}
+
+.UIJCRExplorerPortlet .Center {
+	height: 22px;
+	margin-left: 114px;
+	margin-right: 236px;
+}
+	
+.UIJCRExplorerPortlet .Left .View {
+	background: url(DefaultSkin/background/ViewStyle.jpg) no-repeat; 
+	width: 109px;
+	height: 22px;
+	float: left;
+}
+
+.UIJCRExplorerPortlet .Center .BackBtn {
+	background: url(DefaultSkin/background/BackBtn.jpg) no-repeat; 
+	height: 22px;
+	padding-left: 28px;
+}
+
+.UIJCRExplorerPortlet .Center .SearchTxtField {
+	height: 19px;
+	border: 1px solid #ccc;
+	background: #fff;
+}
+
+.UIJCRExplorerPortlet .Center .SearchTxtField .HddIco {
+	background: url(DefaultSkin/background/DirIco.jpg) no-repeat;
+	height: 14px;
+	padding-left: 22px;
+	margin: 3px 4px;
+	float: left;
+}
+
+.UIJCRExplorerPortlet .Center .SearchTxtField .DropDownBtn {
+	background: url(DefaultSkin/background/DropDownBtn.jpg) no-repeat;
+	float: right;
+	height: 15px;
+	width: 18px;
+	margin: 3px 4px;
+}
+
+.UIJCRExplorerPortlet .Center .SearchTxtField .Path {
+	margin: 3px 24px 18px;
+	line-height: 15px;
+}
+
+.UIJCRExplorerPortlet .Right .SearchSetting {
+	background: url(DefaultSkin/background/SearchSetting.jpg) no-repeat; 
+	width: 51px;
+	height: 22px;
+	float: right;
+}
+
+.UIJCRExplorerPortlet .Right .Advance {
+	height: 19px;
+	border: 1px solid #ccc;
+	background: #fff;
+	width: 165px;
+	margin-left: 8px;
+}
+
+.UIJCRExplorerPortlet .Right .Advance .SearchBtn {
+	background: url(DefaultSkin/background/SearchBtn.jpg) no-repeat; 
+	width: 18px;
+	height: 16px;
+	float: right;
+	margin-top: 2px;
+	margin-right: 2px;
+}
+	
+.UIJCRExplorerPortlet  .UIActionBar  {
+	background: #b7b7b7;
+	height: 57px;
+}
+.UIJCRExplorerPortlet  .UIActionBar .MenuItemContainer{
+	padding: 0px 10px;
+}	
+
+.UIJCRExplorerPortlet  .UIActionBar  .UIHorizontalTabs .TabsContainer {
+	height: 25px;
+}
+
+.UIJCRExplorerPortlet  .UIActionBar  .UITab {
+	padding: 0px 5px;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .SelectedActionBarTab  .TabL {
+	background: url(DefaultSkin/background/TabSelectL.gif) no-repeat left bottom;
+	padding-left: 5px;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .SelectedActionBarTab  .TabR {
+	background: url(DefaultSkin/background/TabSelectR.gif) no-repeat right bottom;
+	padding-right: 5px;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .SelectedActionBarTab  .TabM {
+	background: url(DefaultSkin/background/TabSelectBg.gif) repeat-x center bottom;
+	height: 25px;
+	padding: 0px 10px;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .SubTabItem {
+	float: left;
+}
+.UIJCRExplorerPortlet .UIActionBar .TabLabel {
+	line-height: 24px;
+	color: #333;
+	padding: 0px 10px;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .SubTabIcon{
+	line-height: 16px;
+	padding: 0 25px 0px 23px;
+	display: block;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .AddIcon{
+	background: url(DefaultSkin/background/AddNewBtn.jpg) no-repeat;
+	height: 18px;
+}	
+
+.UIJCRExplorerPortlet .UIActionBar .DocumentIcon{
+	background: url(DefaultSkin/background/NewDocument.jpg) no-repeat;
+	height: 18px;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .TransferIcon{
+	background: url(DefaultSkin/background/TransferDoc.jpg) no-repeat;
+	height: 18px;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .SubTabItemL{
+	background: url(DefaultSkin/background/SelectedTabL.jpg) no-repeat left;
+	padding-left: 4px;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .SubTabItemR{
+	background: url(DefaultSkin/background/SelectedTabR.jpg) no-repeat right;
+	padding-right: 4px;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .SubTabItemM{
+	background: url(DefaultSkin/background/SelectedTabBg.jpg) repeat-x;
+	height: 21px;
+	padding: 3px 3px 0px
+}
+
+.UIJCRExplorerPortlet .UIActionBar .NormalSubItem{
+	padding-top: 9px;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .SelectedSubItem{
+	padding: 5px;
+}
+
+.UIJCRExplorerPortlet .UIActionBar .SelectedActionBarTab  a{
+	color: #d56e00;
+}
+
+.UIJCRExplorerPortlet .NormalSubItem,.SubTabItemM a{
+	font-weight:normal;
+}
+
+*/
