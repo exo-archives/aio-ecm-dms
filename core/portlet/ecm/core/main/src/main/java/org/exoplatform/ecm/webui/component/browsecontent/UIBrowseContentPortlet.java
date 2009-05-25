@@ -21,14 +21,16 @@ import javax.portlet.PortletModeException;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
-import org.exoplatform.webui.core.UIPopupContainer;
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.UIPortletApplication;
 import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
@@ -45,6 +47,11 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 
 public class UIBrowseContentPortlet extends UIPortletApplication  {
 
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger(UIBrowseContentPortlet.class);
+  
   private boolean isViewModing_ = true;
   @SuppressWarnings("unused") 
   public UIBrowseContentPortlet() throws Exception {
@@ -61,9 +68,8 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     addChild(UIConfigTabPane.class, null, null);    
     try {
       uiBrowseContainer.loadPortletConfig(getPortletPreferences());
-    } catch (Throwable e) {
-      e.printStackTrace();
-      setPorletMode(PortletMode.HELP);
+    } catch (Exception e) {
+      LOG.error("Cannot initialize the UIBrowseContentPortlet", e);
     }
   }
 
@@ -98,7 +104,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     try {
       super.processRender(app, context);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Cannot display the content of the UIBrowseContentPortlet", e);
     }
   }
   protected void reload() throws Exception {
@@ -117,7 +123,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
       rService.getRepository(repoName);
       return true;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("The repository " + repoName + " cannot be found", e);
       return false;
     }
   }

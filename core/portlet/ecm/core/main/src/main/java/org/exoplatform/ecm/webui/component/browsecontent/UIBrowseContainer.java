@@ -166,7 +166,7 @@ public class UIBrowseContainer extends UIContainer {
 
   final public static String           USECASE               = "usecase";
 
-  private static final Log             LOG                   = ExoLogger.getLogger("portlet.BrowseContainer");
+  private static final Log             LOG                   = ExoLogger.getLogger(UIBrowseContainer.class);
 
   private String categoryPath_;
   private String currentPath_;
@@ -238,7 +238,7 @@ public class UIBrowseContainer extends UIContainer {
   
   public String getCategoryPath() { return categoryPath_; }
   
-  public List getCurrentList() throws Exception {
+  public List<?> getCurrentList() throws Exception {
     return uiPageIterator_.getCurrentPageData();
   }
   public Node getCurrentNode() throws Exception {
@@ -394,7 +394,7 @@ public class UIBrowseContainer extends UIContainer {
       }
     } catch(Exception e) {
       // Display the stack trace
-      e.printStackTrace();
+      LOG.error("An error occured while loading the result", e);
     }
     
     return queryDocuments;
@@ -475,7 +475,7 @@ public class UIBrowseContainer extends UIContainer {
     try{
       queryManager = session.getWorkspace().getQueryManager();
     }catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("An error occured while retrieving the query manager", e);
       return queryDocuments;
     }           
     String queryStatiement = getQueryStatement();
@@ -872,13 +872,11 @@ public class UIBrowseContainer extends UIContainer {
     return templatePath_; 
   }
   
-  @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver();
     return jcrTemplateResourceResolver_;
   } 
 
-  @SuppressWarnings("unchecked")
   public List<Node> getSortedListNode(Node node, boolean isASC) throws Exception {
     NodeIterator nodeIter = node.getNodes();
     List<Node> nodes = new ArrayList<Node>();
@@ -891,7 +889,6 @@ public class UIBrowseContainer extends UIContainer {
     return nodes;
   }
   
-  @SuppressWarnings("unchecked")
   public List<Node> getSortedListFolderNode(Node node, boolean isASC) throws Exception {
     NodeIterator nodeIter = node.getNodes();
     List<Node> nodes = new ArrayList<Node>();
@@ -907,7 +904,6 @@ public class UIBrowseContainer extends UIContainer {
     return nodes;
   }  
   
-  @SuppressWarnings("unchecked")
   public List<Node> getSortedListNodeByDate(Node node, boolean isASC) throws Exception {
     NodeIterator nodeIter = node.getNodes();
     List<Node> nodes = new ArrayList<Node>();
@@ -926,7 +922,7 @@ public class UIBrowseContainer extends UIContainer {
     return false;
   }
   
-  static public class NodeNameDESCComparator implements Comparator {
+  static public class NodeNameDESCComparator implements Comparator<Object> {
     public int compare(Object o1, Object o2) throws ClassCastException {
       try {
         String name1 = ((Node)o1).getName();
@@ -938,7 +934,7 @@ public class UIBrowseContainer extends UIContainer {
     }
   }
   
-  static public class NodeNameASCComparator implements Comparator {
+  static public class NodeNameASCComparator implements Comparator<Object> {
     public int compare(Object o1, Object o2) throws ClassCastException {
       try {
         String name1 = ((Node)o1).getName();
@@ -950,7 +946,7 @@ public class UIBrowseContainer extends UIContainer {
     }
   }  
   
-  static public class DateASCComparator implements Comparator {
+  static public class DateASCComparator implements Comparator<Object> {
     public int compare(Object o1, Object o2) throws ClassCastException {
       try {
         Date date1 = ((Node)o1).getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
@@ -962,7 +958,7 @@ public class UIBrowseContainer extends UIContainer {
     }
   }
   
-  static public class DateDESCComparator implements Comparator {
+  static public class DateDESCComparator implements Comparator<Object> {
     public int compare(Object o1, Object o2) throws ClassCastException {
       try {
         Date date1 = ((Node)o1).getProperty(Utils.EXO_CREATED_DATE).getDate().getTime();
@@ -1111,6 +1107,7 @@ public class UIBrowseContainer extends UIContainer {
       setSelectedTabPath(categoryPath);
       setCurrentNodePath(categoryPath);
     } catch (Exception e) {
+      LOG.error("An error occured while loading the portlet config", e);
       setRootPath(null);
       setCategoryPath(null);
       setSelectedTabPath(null);
@@ -1147,8 +1144,8 @@ public class UIBrowseContainer extends UIContainer {
           }
         }
       }catch (Exception e) { 
+        LOG.error("An error occured while loading the portlet config", e);
         return;
-        //e.printStackTrace();
       }      
       viewDocument(documentNode, false);
       if(isEnableToolBar()) initToolBar(false, false, false);
@@ -1167,7 +1164,7 @@ public class UIBrowseContainer extends UIContainer {
       jcrTemplateResourceResolver_ = new JCRResourceResolver(getRepository(),
           getDmsSystemWorkspace(), Utils.EXO_TEMPLATEFILE);
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("An error occured while creating a new JCR Resource resolver", e);
     }     
   }
 
@@ -1176,6 +1173,7 @@ public class UIBrowseContainer extends UIContainer {
       getApplicationComponent(RepositoryService.class).getRepository(getRepository());
       super.processRender(context);
     } catch (Exception e) {
+      LOG.error("An error occured while displaying the content", e);      
       getAncestorOfType(UIBrowseContentPortlet.class).setPorletMode(PortletMode.HELP);
       return;
     }
@@ -1429,6 +1427,7 @@ public class UIBrowseContainer extends UIContainer {
       CmsScript cmsScript = scriptService.getScript(scripts.getName()+ "/" + scriptName , repository);
       cmsScript.execute(data);
     } catch (Exception e) {
+      LOG.error("An error occured while executing the script", e);      
       return new ArrayList<Node>();
     }
     List<Node> listNode = data.getContentList();
@@ -1492,12 +1491,12 @@ public class UIBrowseContainer extends UIContainer {
     return false;
   }
   
-  private Map getChildOfSubCategory(RepositoryService repositoryService, Node subCat,
-      List documentTemplates) throws Exception {
+  private Map<String, List<? extends Object>> getChildOfSubCategory(RepositoryService repositoryService, Node subCat,
+      List<?> documentTemplates) throws Exception {
     LinkManager linkManager = getApplicationComponent(LinkManager.class);
     List<String> subCategories = new ArrayList<String>();
     List<Node> childDocOrReferencedDoc = new ArrayList<Node>();
-    Map<String, List> childMap = new HashMap<String, List>();
+    Map<String, List<? extends Object>> childMap = new HashMap<String, List<? extends Object>>();
     NodeIterator items  =  subCat.getNodes();
     boolean isShowDocument = isEnableChildDocument();
     boolean isShowReferenced = isEnableRefDocument();
@@ -1543,7 +1542,7 @@ public class UIBrowseContainer extends UIContainer {
     return historyList;
   } 
   private List<Node> getReferences(RepositoryService repositoryService, Node node, boolean isShowAll,
-      int size, List templates) throws Exception {
+      int size, List<?> templates) throws Exception {
     List<Node> refDocuments = new ArrayList<Node>();    
     String repository = getRepository();
     ManageableRepository manageableRepository = repositoryService.getRepository(repository);
@@ -1603,7 +1602,7 @@ public class UIBrowseContainer extends UIContainer {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIBrowseContainer uiContainer = event.getSource();
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class);
-      List templates = templateService.getDocumentTemplates(uiContainer.getRepository());
+      List<String> templates = templateService.getDocumentTemplates(uiContainer.getRepository());
       Node historyNode = null;
       historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT);
       if (historyNode == null) historyNode = uiContainer.getCurrentNode();
@@ -1753,7 +1752,7 @@ public class UIBrowseContainer extends UIContainer {
         selectNode = linkManager.getTarget(selectNode);
       }
       TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class);
-      List templates = templateService.getDocumentTemplates(uiContainer.getRepository());
+      List<String> templates = templateService.getDocumentTemplates(uiContainer.getRepository());
       if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
         if(catPath != null) {
           if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
