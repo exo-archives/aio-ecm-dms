@@ -310,6 +310,7 @@ public class UIBrowseContainer extends UIContainer {
   }
 
   public Node getNodeByPath(String nodePath) throws Exception {
+    if (nodePath == null) return null;
     NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
     try{
       if(wsName_ == null) wsName_ = getWorkSpace();
@@ -1105,8 +1106,15 @@ public class UIBrowseContainer extends UIContainer {
     Node categoryNode = null;
     try {
       categoryNode = (Node)nodeFinder_.getItem(repoName, getWorkSpace(), categoryPath);
+      setRootPath(categoryPath);
+      setCategoryPath(categoryPath);
+      setSelectedTabPath(categoryPath);
+      setCurrentNodePath(categoryPath);
     } catch (Exception e) {
-      return;
+      setRootPath(null);
+      setCategoryPath(null);
+      setSelectedTabPath(null);
+      setCurrentNodePath(null);
     }
     if (linkManager_.isLink(categoryNode)) {
       if (linkManager_.isTargetReachable(categoryNode)) {
@@ -1116,10 +1124,6 @@ public class UIBrowseContainer extends UIContainer {
     if(getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
       setTemplate(viewService.getTemplateHome(BasePath.CB_PATH_TEMPLATES, 
           repoName, SessionProviderFactory.createSystemProvider()).getNode(tempName).getPath());
-      setRootPath(categoryPath);
-      setCategoryPath(categoryPath);
-      setSelectedTabPath(categoryPath);
-      setCurrentNodePath(categoryPath);      
       initToolBar(false, isEnableToolBar(), isEnableToolBar());
       if(getTemplateName().equals(TREELIST)) {
         if(isEnableToolBar()) initToolBar(true, false, true);
@@ -1189,10 +1193,6 @@ public class UIBrowseContainer extends UIContainer {
             //UIBrowseContentPortlet uiPorlet = getAncestorOfType(UIBrowseContentPortlet.class);
             //uiPorlet.setPorletMode(PortletMode.HELP);
             //uiPorlet.reload();
-            UIApplication app = getAncestorOfType(UIApplication.class);
-            app.addMessage(new ApplicationMessage("UIBrowseContainer.label.cannot-access", null, 
-                ApplicationMessage.WARNING));
-            return;
           } else if(getNodeByPath(getSelectedTab().getPath()) == null || 
               getNodeByPath(getCurrentNode().getPath()) == null) {
             setSelectedTabPath(null);
