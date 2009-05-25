@@ -22,8 +22,10 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 /**
- * Created by The eXo Platform SARL Author : Ly Dinh Quang
- * quang.ly@exoplatform.com xxx5669@gmail.com Mar 13, 2009
+ * Created by The eXo Platform SARL
+ * Author : Ly Dinh Quang
+ *          quang.ly@exoplatform.com
+ * Mar 13, 2009
  */
 public interface LinkManager {
 
