@@ -42,8 +42,10 @@ import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.log.ExoLogger;
 
 /**
- * Created by The eXo Platform SARL Author : Ly Dinh Quang
- * quang.ly@exoplatform.com xxx5669@gmail.com Mar 13, 2009
+ * Created by The eXo Platform SARL
+ * Author : Ly Dinh Quang
+ *          quang.ly@exoplatform.com
+ * Mar 13, 2009
  */
 public class LinkManagerImpl implements LinkManager {
 
@@ -55,10 +57,10 @@ public class LinkManagerImpl implements LinkManager {
 
   private final static String    PRIMARY_TYPE = "exo:primaryType";
 
-  private static SessionProviderService providerService_;
-  
-  private static final Log       LOG  = ExoLogger.getLogger("job.RecordsJob");
+  private final static Log       LOG  = ExoLogger.getLogger(LinkManagerImpl.class);
 
+  private final SessionProviderService providerService_;
+  
   public LinkManagerImpl(SessionProviderService providerService) throws Exception {
     providerService_ = providerService;
   }
