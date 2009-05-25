@@ -39,6 +39,7 @@ import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -256,7 +257,7 @@ public class UIDocumentContent extends UIContainer {
   public String getTemplatePath() throws Exception { 
     String nodeTypeName = node_.getPrimaryNodeType().getName();
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    TemplateService templateService = getApplicationComponent(TemplateService.class);
     return templateService.getTemplatePathByUser(false, nodeTypeName, userName, getRepository());
   }
 
@@ -331,7 +332,9 @@ public class UIDocumentContent extends UIContainer {
   }
   
   public String getWorkspaceName() throws Exception {
-    return node_.getSession().getWorkspace().getName();
+    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+    return dmsConfiguration.getConfig(getRepository()).getSystemWorkspace();
+    //return node_.getSession().getWorkspace().getName();
   }
   
   public String getRepository() throws Exception {
