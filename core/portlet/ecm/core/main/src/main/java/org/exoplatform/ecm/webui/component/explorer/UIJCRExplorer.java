@@ -557,6 +557,13 @@ public class UIJCRExplorer extends UIContainer {
     addressPath_.put(str, new HistoryEntry(ws, str));
   }
 
+  public void clearNodeHistory() {
+    nodesHistory_.clear();
+    wsHistory_.clear();
+    addressPath_.clear();
+    currentPath_ = currentRootPath_;
+  }
+  
   public String rewind() { return nodesHistory_.removeLast() ; }
 
   public String previousWsName() { return wsHistory_.removeLast(); }
