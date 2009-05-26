@@ -63,7 +63,7 @@
     <msg>
       <repostoryException>Câu truy vấn có thể không hợp lệ. Hãy kiểm tra lại</repostoryException>
       <noSuchNodeTypeException>Câu truy vấn có thể không hợp lệ. Hãy kiểm tra lại</noSuchNodeTypeException>
-      <invalid-value>Số trang không hợp lệ</invalid-value>
+      <invalid-value>Bạn phải nhập vào số mục trong một trang</invalid-value>
       <invalid-query>Câu truy vấn không hợp lệ</invalid-query>
       <invalid-name>Không tìm thấy tên truy vấn, hãy thử với kiểu, ngôn ngữ hoặc trạng thái khác</invalid-name>
     </msg>
@@ -221,7 +221,7 @@
     </tooltip>
     <msg>
       <back-view-search>Quay lại màn hình trước để tìm kiếm</back-view-search>
-      <select-doc>Không có tại liệu nào được chọn hoặc loại bỏ</select-doc>
+      <select-doc>Không có tại liệu nào được chọn hoặc tài liệu đó đã bị hủy bỏ</select-doc>
       <node-removed>Nút đã bị loại bỏ</node-removed>
       <readonly-doc>Tài liệu hiện thời đang được checked in, hãy thực hiện check out!</readonly-doc>
       <not-support-vote>Không được phép bình chọn cho loại tài liệu này</not-support-vote>
@@ -251,9 +251,9 @@
   <UICBSearchForm>
     <label>
       <inputValue>Từ khóa để tìm kiếm</inputValue>
-      <option>Không có nhãn</option>
+      <option>nolabel</option>
       <search>Tìm kiếm</search>
-      <referencesDoc>Tham khảo</referencesDoc>
+      <referencesDoc>Tham chiếu</referencesDoc>
       <childDoc>Con</childDoc>
     </label>
     <title>
@@ -299,7 +299,7 @@
       <author>Tác giả</author>
       <summary>Sơ lược</summary>
       <more>Thêm tài liệu</more>
-      <previous>Xem màn hình trước</previous>
+      <previous>Quay lại</previous>
       <path-Previous>Quay lại</path-Previous>
       <path-Root>Gốc</path-Root>
       <home>Home</home>
@@ -449,6 +449,7 @@
       <Invalid-char5>Gần kí tự '~' không được phép có khoảng trống</Invalid-char5>
     </msg>
   </SearchValidator>
+  
   <!--
   ######################################################################################
   # Since ECM 2.3

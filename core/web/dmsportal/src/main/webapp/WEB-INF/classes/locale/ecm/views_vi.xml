@@ -16,6 +16,11 @@
       </label>
     </view>
   </Article>
+  <!--
+  #########################################
+  # Need to be translated
+  #########################################
+  -->
   <View>
     <label>
       <languages>
@@ -25,7 +30,6 @@
         <vi>Tiếng Việt</vi>
         <ln>Tiếng Hà Lan</ln>
         <uk>Tiếng Ucraina</uk>
-        <ar>Tiếng A-rập</ar>
       </languages>
     </label>
   </View>
@@ -91,7 +95,6 @@
     <view>
       <label>
         <not-viewable>Không thể xem nội dung. Xin vui lòng tải nó về hoặc dùng WebDAV</not-viewable>
-        <file-size-too-big>The content of this file is too big. You should download and open in the client.</file-size-too-big>
         <webDAV>WebDAV View</webDAV>
         <download>Tải file về</download>
         <htmlview>Xem dưới dạng HTML</htmlview>
@@ -153,21 +156,6 @@
     </view>
   </Kofax>
   <!--
-  ################resoucebundle FOR MAIL:DOCUMENT VIEW TEMPLATE##############
-  -->
-  <Mail>
-    <view>
-      <label>
-        <from>From:</from>
-        <to>To:</to>
-        <cc>Cc:</cc>
-        <date>Date:</date>
-        <subject>Subject:</subject>
-        <attachment>Attachments:</attachment>
-      </label>
-    </view>
-  </Mail>
-  <!--
   ################resoucebundle FOR EXO:PODCAST VIEW TEMPLATE##############
   -->
   <Podcast>
@@ -212,8 +200,8 @@
   <Vote>
     <view>
       <label>
-        <avg-rating>Phân loại trung bình</avg-rating>
-        <subscription>Bỏ phiếu</subscription>
+        <avg-rating>Trung bình</avg-rating>
+        <subscription>Tổng số phiếu</subscription>
       </label>
     </view>
   </Vote>
@@ -225,10 +213,9 @@
       <label>
         <name>Tên</name>
         <versionable>Phiên bản</versionable>
-        <exo_owner>Người sở hữu</exo_owner>
-        <exo_dateCreated>Ngày tạo</exo_dateCreated>
-        <exo_dateModified>Ngày sửa đổi</exo_dateModified>
-        <auditing>Auditing</auditing>
+        <exo:owner>Người sở hữu</exo:owner>
+        <exo:dateCreated>Ngày tạo</exo:dateCreated>
+        <exo:dateModified>Ngày sửa đổi</exo:dateModified>
       </label>
     </view>
   </ListView>
@@ -247,20 +234,6 @@
       </label>
     </view>
   </Workflow>
-  <!--
-  ################resoucebundle FOR exo:backupAction VIEW TEMPLATE##############
-  -->
-  <Backup>
-    <view>
-      <label>
-        <name>Name</name>
-        <lifecycle>Lifecycle</lifecycle>
-        <description>Description</description>
-        <to-workspace>To workspace</to-workspace>
-        <at-location>At location</at-location>
-      </label>
-    </view>
-  </Backup>
   <!--
   ################resoucebundle FOR exo:getMailAction VIEW TEMPLATE##############
   -->

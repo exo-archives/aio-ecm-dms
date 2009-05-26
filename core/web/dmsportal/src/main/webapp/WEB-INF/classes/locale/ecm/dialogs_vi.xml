@@ -29,42 +29,7 @@
         <content>Nội dung</content>
       </label>
     </dialog>
-    <msg>
-      <no-view>This node or this template was deleted or changed. Please click refresh button.</no-view>
-    </msg>
   </Article>
-  <UIDocumentForm>
-    <label>
-      <title>#{word.title}</title>
-      <link>Link</link>
-      <contentHtml>#{word.content}</contentHtml>
-      <content>#{word.content}</content>
-      <contentPlain>#{word.content}</contentPlain>
-      <name>Name</name>
-    </label>
-  </UIDocumentForm>
-  <!--
-  ###################### resoucebundle for exo:podcast dialogs template ####
-  -->
-  <Podcast>
-    <dialog>
-      <label>
-        <name>Name</name>
-        <categories>Categories</categories>
-        <title>Title</title>
-        <link>Link</link>
-        <author>Author</author>
-        <explicit>Explicit</explicit>
-        <category>Category</category>
-        <keywords>Keyword</keywords>
-        <publish-date>Publish Date</publish-date>
-        <description>Description</description>
-        <upload-file>Upload File</upload-file>
-        <mime-type>Mime Type</mime-type>
-        <lenght>length</lenght>
-      </label>
-    </dialog>
-  </Podcast>
   <!--
   ###################### resoucebundle for exo:calendar dialogs template ####
   -->
@@ -115,7 +80,6 @@
     <dialog>
       <label>
         <name>Tên</name>
-        <categories>Categories</categories>
         <record-properties>Thuộc tính bản ghi</record-properties>
         <process-properties>Thuộc tính xử lý</process-properties>
         <note>Ghi chú</note>
@@ -154,7 +118,6 @@
     <dialog>
       <label>
         <name>Tên</name>
-        <categories>Categories</categories>
       </label>
     </dialog>
   </Kofax>
@@ -165,7 +128,6 @@
     <dialog>
       <label>
         <name>Tên</name>
-        <categories>Categories</categories>
         <title>Tiêu đề</title>
         <description>Mô tả</description>
         <date>Ngày</date>
@@ -193,43 +155,6 @@
       </label>
     </dialog>
   </Workflow>
-  <UIActionForm>
-    <label>
-      <description>#{word.description}</description>
-      <port>Port</port>
-      <userName>#{word.userName}</userName>
-      <password>Password</password>
-      <link>Link</link>
-      <to>Send mail to</to>
-      <actionName>#{word.name}</actionName>
-    </label>
-  </UIActionForm>
-  <EditFormAction>
-    <label>
-      <description>#{word.description}</description>
-      <port>Port</port>
-      <userName>#{word.userName}</userName>
-      <password>Password</password>
-      <link>Link</link>
-      <to>Send mail to</to>
-      <actionName>#{word.name}</actionName>
-    </label>
-  </EditFormAction>
-  <!--
-  ###################### resoucebundle for exo:bacupAction dialogs template ####
-  -->
-  <Backup>
-    <dialog>
-      <label>
-        <id>Id</id>
-        <name>#{word.name}</name>
-        <lifecycle>#{Ecm.dialog.label.lifecycle}</lifecycle>
-        <description>#{word.description}</description>
-        <to-workspace>To workspace</to-workspace>
-        <with-path>With path</with-path>
-      </label>
-    </dialog>
-  </Backup>
   <!--
   ###################### resoucebundle for exo:getmail dialogs template ####
   -->
@@ -286,8 +211,6 @@
         <rss-url>Đường dẫn Rss</rss-url>
         <feed-title>Tiêu đề Feed</feed-title>
         <feed-type>Loại Feed</feed-type>
-        <summary>Summary</summary>
-        <title>Title</title>
         <rss-version>Phiên bản Rss</rss-version>
         <link>Liên kết</link>
         <description>Mô tả</description>
@@ -349,6 +272,18 @@
       </label>
     </dialog>
   </SendMail>
+  <UIActionForm>
+    <label>
+      <to>Gửi thư tới</to>
+      <actionName>Tên</actionName>
+    </label>
+  </UIActionForm>
+  <EditFormAction>
+    <label>
+      <to>Gửi thư tới</to>
+      <actionName>Tên</actionName>
+    </label>
+  </EditFormAction>
   <!--
   ###################### resoucebundle for exo:transformBinaryToTextAction dialogs template ####
   -->
@@ -643,35 +578,56 @@
     </dialog>
   </VitalRecord>
   <!--
-  ##################### resoucebundle for resouce container dialogs template#####
+  ###################### resoucebundle exo:contentPublishing dialogs template ####
   -->
-  <ResouceContainer>
+  <ContentPublishing>
     <dialog>
       <label>
-        <name>Name</name>
-        <autoload>Auto Load</autoload>
-        <minetype>Mine Type</minetype>
-        <content>Content</content>
+        <id>Id</id>
+        <name>Tên</name>
+        <lifecycle>Vòng đời</lifecycle>
+        <description>Mô tả</description>
+        <validator>Người xác thực</validator>
+        <supervisor>Người giám sát</supervisor>
+        <public-workspace>Vùng làm việc công bố</public-workspace>
+        <public-path>Đường dẫn công bố</public-path>
+        <pending-workspace>Vùng làm việc chờ đợi xử lý</pending-workspace>
+        <pending-path>Đường dẫn vùng làm việc chờ đợi xử lý</pending-path>
+        <backup-workspace>Sao lưu vùng làm việc</backup-workspace>
+        <backup-path>Đường dẫn sao lưu</backup-path>
+        <trash-workspace>Vùng làm việc rác</trash-workspace>
+        <trash-path>Đường dẫn vùng làm việc rác</trash-path>
       </label>
     </dialog>
-  </ResouceContainer>
+  </ContentPublishing>
+
   <!--
-  ###################### resoucebundle for validator ####
+  #####Since version 2.4#######
+    
+  ###################### resoucebundle exo:taxonomyAction dialogs template ####
   -->
-  <EmailAddressValidator>
-    <msg>
-      <Invalid-input>Email address is invalid!</Invalid-input>
-    </msg>
-  </EmailAddressValidator>
+  <ScriptAction>
+    <dialog>
+      <label>
+        <id>Id</id>
+        <name>Tên</name>
+        <lifecycle>Vòng đời</lifecycle>
+        <homePath>Đường dẫn nguồn</homePath>
+        <targetWorkspace>Vùng đích</targetWorkspace>
+        <targetPath>Đường dẫn đích</targetPath>
+      </label>
+    </dialog>
+  </ScriptAction>
+  
   <EmptyFieldValidator>
     <msg>
-      <empty-input>The field '{0}' is required. Please enter your value.</empty-input>
+      <empty-input>Vui lòng nhập '{0}' của bạn.</empty-input>
     </msg>
   </EmptyFieldValidator>
   <NumberFormatValidator>
     <msg>
-      <Invalid-number>The field '{0}' is invalid.</Invalid-number>
+      <Invalid-number>'{0}' không hợp lệ.</Invalid-number>
     </msg>
-  </NumberFormatValidator>
+  </NumberFormatValidator>  
 </bundle>
 
