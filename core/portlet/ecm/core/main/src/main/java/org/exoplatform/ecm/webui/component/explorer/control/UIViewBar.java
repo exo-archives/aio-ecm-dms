@@ -60,6 +60,7 @@ import org.exoplatform.webui.form.UIFormSelectBox;
     }
 )
 
+@Deprecated
 public class UIViewBar extends UIForm {
   final static private String FIELD_SELECT_VIEW = "views" ;
   

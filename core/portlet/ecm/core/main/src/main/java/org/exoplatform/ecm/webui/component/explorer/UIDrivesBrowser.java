@@ -35,8 +35,8 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
+import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
-import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -221,22 +221,22 @@ public class UIDrivesBrowser extends UIContainer {
       DriveData drive = dservice.getDriveByName(driveName, uiDrive.repoName_);
       String userId = Util.getPortalRequestContext().getRemoteUser();
       UIApplication uiApp = uiDrive.getAncestorOfType(UIApplication.class);
-      List<String> viewLists = new ArrayList<String>();
+      List<String> viewList = new ArrayList<String>();
       for(String role : Utils.getMemberships()){
         for(String viewName : drive.getViews().split(",")) {
-          if(!viewLists.contains(viewName.trim())) {
+          if(!viewList.contains(viewName.trim())) {
             Node viewNode = 
               uiDrive.getApplicationComponent(ManageViewService.class).getViewByName(viewName.trim(),
                   uiDrive.repoName_,SessionProviderFactory.createSystemProvider());
             String permiss = viewNode.getProperty("exo:accessPermissions").getString();
             if(permiss.contains("${userId}")) permiss = permiss.replace("${userId}", userId);
             String[] viewPermissions = permiss.split(",");
-            if(permiss.equals("*")) viewLists.add(viewName.trim());
-            if(drive.hasPermission(viewPermissions, role)) viewLists.add(viewName.trim());
+            if(permiss.equals("*")) viewList.add(viewName.trim());
+            if(drive.hasPermission(viewPermissions, role)) viewList.add(viewName.trim());
           }
         }
       }
-      if(viewLists.isEmpty()) {
+      if(viewList.isEmpty()) {
         Object[] args = { driveName };
         uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.no-view-found", args));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -246,7 +246,7 @@ public class UIDrivesBrowser extends UIContainer {
       List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>();
       ResourceBundle res = event.getRequestContext().getApplicationResourceBundle();
       String viewLabel = null;
-      for(String viewName : viewLists) {
+      for(String viewName : viewList) {
         try {
           viewLabel = res.getString("Views.label." + viewName) ; 
         } catch (MissingResourceException e) {
@@ -304,9 +304,10 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.refreshExplorer();      
       UIControl uiControl = uiJCRExplorer.getChild(UIControl.class);
       UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);
-      UIViewBar uiViewBar = uiControl.getChild(UIViewBar.class);
-      uiViewBar.setViewOptions(viewOptions);
-      uiActionbar.setTabOptions(viewLists.get(0));
+      uiActionbar.setTabOptions(viewList.get(0));
+      UIAddressBar uiAddressBar = uiControl.getChild(UIAddressBar.class);
+      uiAddressBar.setViewList(viewList);
+      uiAddressBar.setSelectedViewName(viewList.get(0));
       explorerContainer.setRenderedChild(UIJCRExplorer.class);
       uiParent.setRenderedChild(UIJcrExplorerContainer.class);
     }

@@ -219,18 +219,34 @@
 		elemt.innerHTML = text ;
 	};
 	
-	ECMUtils.prototype.onKeyPress = function() {
-		var uiAddressBarControl = document.getElementById("UIAddressBarControl");
+	ECMUtils.prototype.onKeyAddressBarPress = function() {
+		var uiAddressBarControl = document.getElementById("AddressBarControl");
 		if(uiAddressBarControl) {
-			uiAddressBarControl.onkeypress = Self.onEnterPress ;
+			uiAddressBarControl.onkeypress = Self.onAddressBarEnterPress ;
 		}
 	};
 	
-	ECMUtils.prototype.onEnterPress = function(event) {
-		var uiAdressBarAction = document.getElementById("UIAddressBarAction");
+	ECMUtils.prototype.onKeySimpleSearchPress = function() {
+		var uiAddressBarControl = document.getElementById("SimpleSearchControl");
+		if(uiAddressBarControl) {
+			uiAddressBarControl.onkeypress = Self.onSimpleSearchEnterPress ;
+		}
+	};	
+
+	ECMUtils.prototype.onSimpleSearchEnterPress = function(event) {
+		var gotoLocation = document.getElementById("SimpleSearch");
 		var event = event || window.event;
-		if(uiAdressBarAction && event.keyCode == 13) {
-			eval(uiAdressBarAction.href);
+		if(gotoLocation && event.keyCode == 13) {
+			eval(gotoLocation.href);
+			return false;
+		}
+	};
+	
+	ECMUtils.prototype.onAddressBarEnterPress = function(event) {
+		var gotoLocation = document.getElementById("GotoLocation");
+		var event = event || window.event;
+		if(gotoLocation && event.keyCode == 13) {
+			eval(gotoLocation.href);
 			return false;
 		}
 	};

@@ -59,17 +59,28 @@
   cursor: pointer;
 }
 
-.UIJCRExplorerPortlet .UIViewBar .BackToMainDriveButton {
+.UIJCRExplorerPortlet .BackToMainDriveButton {
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/icons/BackToMainDriveButton.gif') no-repeat center ;
+  float: right;
+  padding: 5px 10px 0px 0px;
 }
 
-.UIJCRExplorerPortlet .UIViewBar .SetupPreferencesButton {
+.UIJCRExplorerPortlet .SetupPreferencesButton {
   width: 24px;	height: 24px;
   background: url('DefaultSkin/icons/SetupPreferencesButton.gif') no-repeat bottom;
+  float: right;
+  padding: 2px 0px 0px 10px;
 }
 
-.UIJCRExplorerPortlet .UIViewBar .RefreshSessionButton  {
+.UIJCRExplorerPortlet .SaveSessionButton {
+  width: 24px;	height: 24px;
+  background: url('DefaultSkin/icons/SaveSession.gif') no-repeat bottom;
+  float: right;
+  padding: 2px 0px 0px 10px;
+}
+
+.UIJCRExplorerPortlet .RefreshSessionButton  {
   width: 24px;	height: 24px;
   background: url('DefaultSkin/icons/RefreshSessionButton.gif') no-repeat bottom;
 }
@@ -131,8 +142,8 @@
 }
  
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
-  margin: 4px 50px 0px 93px; /* orientation=lt */
-  margin: 4px 93px 0px 50px; /* orientation=rt */
+  margin: 4px 230px 0px 170px; /* orientation=lt */
+  margin: 4px 170px 0px 230px; /* orientation=rt */
   height: 20px; line-height: 20px;
   background: white;
   border: solid 1px #d8d8d8;
@@ -155,11 +166,17 @@
   margin: 0px 30px;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .InputContainer input {
+  border: solid 0px white;
+  float: left; /* orientation=lt */
+  float: left; /* orientation=lt */
+  width: 100%;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar input {
   border: solid 0px white;
   float: left; /* orientation=lt */
   float: left; /* orientation=lt */
-  width: 99%;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DropDownButtonBox {
@@ -386,7 +403,7 @@
 
 /**************New skin**************/
 
-/*New Search Bar
+/*New Search Bar*/
 
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
@@ -394,51 +411,95 @@
   border-bottom: solid 1px #b7b7b7;
   height:57px;
   background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x;
-  
 }
 
-.UIJCRExplorerPortlet .Block {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Block {
 	margin: 4px;
 }
 
-.UIJCRExplorerPortlet .Left {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left {
 	float: left;
-	width: 114px;
+	width: 116px;
 }
 
-.UIJCRExplorerPortlet .Right {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Right {
 	float: right;
 	width: 236px;
 }
 
-.UIJCRExplorerPortlet .Center {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Center {
 	height: 22px;
-	margin-left: 114px;
+	margin-left: 116px;
 	margin-right: 236px;
+	line-height:22px;
 }
 	
-.UIJCRExplorerPortlet .Left .View {
-	background: url(DefaultSkin/background/ViewStyle.jpg) no-repeat; 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .View {
 	width: 109px;
 	height: 22px;
 	float: left;
 }
-
-.UIJCRExplorerPortlet .Center .BackBtn {
-	background: url(DefaultSkin/background/BackBtn.jpg) no-repeat; 
-	height: 22px;
-	padding-left: 28px;
+.FloatLeft{
+	float:left;
+	height:22px;
+}
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view{
+	background: url(DefaultSkin/background/IconView.gif) no-repeat; 
+	width:26px;
 }
 
-.UIJCRExplorerPortlet .Center .SearchTxtField {
-	height: 19px;
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view-selected{
+	background: url(DefaultSkin/background/IconViewSelected.gif) no-repeat; 
+	width:26px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .admin-view{
+	background: url(DefaultSkin/background/DetailView.gif) no-repeat; 
+	width:25px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .admin-view-selected{
+	background: url(DefaultSkin/background/DetailViewSelected.gif) no-repeat; 
+	width:25px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left  .simple-view{
+	background: url(DefaultSkin/background/ThumbnailView.gif) no-repeat; 
+	width:28px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left  .simple-view-selected{
+	background: url(DefaultSkin/background/ThumbnailViewSelected.gif) no-repeat; 
+	width:28px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .cover-flow{
+	background: url(DefaultSkin/background/CoverflowView.gif) no-repeat; 
+	width:30px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .cover-flow-selected{
+	background: url(DefaultSkin/background/CoverflowViewSelected.gif) no-repeat; 
+	width:30px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BackBtn {
+	background: url(DefaultSkin/background/BackBtn.jpg) no-repeat; 
+	height: 22px;
+	padding-left: 30px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Center .SearchTxtField {
+	height: 20px;
 	border: 1px solid #ccc;
 	background: #fff;
+	width: 100%;
 }
 
 .UIJCRExplorerPortlet .Center .SearchTxtField .HddIco {
 	background: url(DefaultSkin/background/DirIco.jpg) no-repeat;
 	height: 14px;
+	line-height: 14px;
 	padding-left: 22px;
 	margin: 3px 4px;
 	float: left;
@@ -457,15 +518,27 @@
 	line-height: 15px;
 }
 
-.UIJCRExplorerPortlet .Right .SearchSetting {
-	background: url(DefaultSkin/background/SearchSetting.jpg) no-repeat; 
+.UIJCRExplorerPortlet .UIAddressBar .Right .SearchSetting {
 	width: 51px;
+	float: right;
+}
+
+.UIJCRExplorerPortlet .UIAddressBar .Right .SearchSetting .SearchAdvanceBtn{
+	background: url(DefaultSkin/background/SearchAdvance.gif) no-repeat;
+	width: 25px;
+	height: 22px;
+	float: right;
+}
+
+.UIJCRExplorerPortlet .UIAddressBar .Right .SearchSetting .SearchSettingBtn{
+	background: url(DefaultSkin/background/SearchSetting.gif) no-repeat;
+	width: 26px;
 	height: 22px;
 	float: right;
 }
 
 .UIJCRExplorerPortlet .Right .Advance {
-	height: 19px;
+	height: 20px;
 	border: 1px solid #ccc;
 	background: #fff;
 	width: 165px;
@@ -523,8 +596,8 @@
 }
 
 .UIJCRExplorerPortlet .UIActionBar .SubTabIcon{
-	line-height: 16px;
-	padding: 0 25px 0px 23px;
+	line-height: 20px;
+	padding: 0 25px 0px 27px;
 	display: block;
 }
 
@@ -574,5 +647,3 @@
 .UIJCRExplorerPortlet .NormalSubItem,.SubTabItemM a{
 	font-weight:normal;
 }
-
-*/

@@ -13,174 +13,64 @@
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
   rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UIJCRExplorer.initEvent('$uniqueId');}");
 %>
-<div class="UIActionBar UISelectBoxOnChange">
-  
-  <% 
-  uiform.setSubmitAction(uicomponent.event("SimpleSearch")+";return false;");
-  uiform.begin() 
-  %>
-  <div class="Separator ActionBarSeparator"><span></span></div>
-  <div class="ActionLabel"><%=_ctx.appRes("UIActionBar.title.select-tab")%></div>
-  <div class="Separator ActionBarSeparator"><span></span></div>
-  <div class="ActionComboBox">
-    <% uicomponent.renderChild(0); %>
-  </div>
-  <div class="Separator ActionBarSeparator"><span></span></div>
-  <div class="ActionIconContainer" id="$uniqueId">
-	  <div class="StoreBoxContentContainer">
-			<a href="javascript: void(0)">
-				<div class="ArrowDownIcon"><span></span></div>
-				<div class="ShowHideBoxContainer" style="z-index: 9;"></div>
-			</a>
-	  </div>
-	  <div class="SelectBoxContentContainer" style="overflow: hidden;">
-		  <%
-		  def tabs = uicomponent.getTabs() ;
-		  int selectedIndex = uicomponent.getSelectedTab() ;
-		  String style = "display: none";
-		  String active = "";
-		  for(tab in tabs) {
-		    if(0 == selectedIndex--) {
-				style = "display: block" ;
-				active = "ActiveBoxContent";
-			} else {
-				style = "display: none" ;
-			}
-		    println "<div class=\"SelectBoxContent $active\" style=\"$style\">" ;
-		    for(button in tab) {
-				def action = uicomponent.getUIAction(button);
-				if (action != null) {
-		  %>
-		    <div class="ActionBg">
-	 	      <a href="<%=action.event(button)%>" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip." + button)%>"><div class="Icon ${button}Icon"><span></span></div></a>
-		    </div>
-	    <%
-				}
-	      }
-	      println "</div>" ;
-	    }
-	    if(0 == selectedIndex) style = "display: block" ;
-	    else style = "display: none" ;
-	    %>
-		  <div class="SelectBoxContent" style="$style">
-		    <div class="UISimpleSearch">
-		      <% uicomponent.renderChild(1); %>
-		      <a class="SearchIcon" href="<%=uicomponent.event("SimpleSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.SimpleSearch")%>"><span></span></a>
-		      <div class="SeparatorLine Separator"><span></span></div>
-		      <div class="SwitchSearch" onclick="<%=uicomponent.event("AdvanceSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.AdvanceSearch")%>"><span></span></div>
-		      <div class="SeparatorLine Separator"><span></span></div>
-		      <div class="SavedQueries" onclick="<%=uicomponent.event("SavedQueries")%>" title="<%=_ctx.appRes("UIActionBar.title.SavedQueries")%>"><span></span></div>
-		    </div>
-		  </div>
-		  <div style="clear: both; height: 0px;"><span></span></div>
-		 </div>
-  </div>
-  <% uiform.end() %>
-</div>
-
-
-<!-- 
-<div class="UIActionBar">
+ 
+<% uiform.begin() %>
+<div class="UIActionBar" id="$uicomponent.id">
 	<div class="UIHorizontalTabs">
 		<div class="TabsContainer" style="position: relative">
-		
-			<div class="UITab" style="display: block;">
-			  <div class="NormalActionBarTab">
-					<div class="TabL">
-					  <div class="TabR">
-							<div class="TabM">
-							 <a href="#" class="TabLabel">Actions</a>
-							</div>
-					  </div>
-					</div>  
-			  </div>
-			</div>
-			
-			<div class="UITab" style="display: block;">
-			  <div class="SelectedActionBarTab">
-					<div class="TabL">
-					  <div class="TabR">
-							<div class="TabM">
-								<a href="#" class="TabLabel">Collaboration</a>
-							</div>
-						</div>
-					</div>  
-			  </div>
-				
-				  <div class="MenuItemContainer" style="display: block; position: absolute; left: 0px;">
-						
-						<div class="NormalSubItem SubTabItem">
-							<div class="NormalSubTabItemL">
-								<div class="NormalSubTabItemR">
-									<div class="NormalSubTabItemM">
-										<a href="#" class="SubTabIcon AddIcon">Add News</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="NormalSubItem SubTabItem">
-							<div class="NormalSubTabItemL">
-								<div class="NormalSubTabItemR">
-									<div class="NormalSubTabItemM">
-										<a href="#" class="SubTabIcon DocumentIcon">Document</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						
-						<div class="SelectedSubItem SubTabItem">
-							<div class="SubTabItemL">
-								<div class="SubTabItemR">
-									<div class="SubTabItemM">
-										<a href="#" class="SubTabIcon TransferIcon">Transfer Document</a>
-									</div>
-								</div>
-							</div>
-						</div>
-					
+		<%
+		  def tabs = uicomponent.getTabList() ;
+		  for(tab in tabs) {
+		    def selectedTab = uicomponent.getSelectedTab();
+		    def tabStyle = "NormalActionBarTab";
+		    def isSelected = false;
+		    if(selectedTab.equals(tab)) {
+		      isSelected = true;
+		      tabStyle = "SelectedActionBarTab";  
+		    }
+		%>
+		   <div class="UITab" style="display: block;">
+			   <div class="$tabStyle">
+					 <div class="TabL">
+					   <div class="TabR">
+							 <div class="TabM">
+							   <a href="<%=uicomponent.event("ChangeTab", tab)%>" class="TabLabel">$tab</a>
+							 </div>
+					   </div>
+					 </div>  
+			   </div>
+			 <%if(isSelected) {%>
+			   <div class="MenuItemContainer" style="display: block; position: absolute; left: 0px;">
+			   <%for(button in uicomponent.getActionInTab(tab)) {
+			       def action = uicomponent.getUIAction(button);
+					   if (action != null) {
+					     def title = _ctx.appRes(uicomponent.getId() + ".tooltip." + button);
+				 %>
+							 <div class="NormalSubItem SubTabItem">
+								 <div class="NormalSubTabItemL">
+									 <div class="NormalSubTabItemR">
+										 <div class="NormalSubTabItemM">
+											 <a href="<%=action.event(button)%>" title="$title" class="SubTabIcon ${button}Icon">$title</a>
+										 </div>
+									 </div>
+								 </div>
+							 </div>
+					<%
+						 }
+					 }
+					%>
 					</div>
-				
-			</div>
-		
-			<div class="UITab" style="display: block;">
-			  <div class="NormalActionBarTab">
-					<div class="TabL">
-					  <div class="TabR">
-							<div class="TabM">
-								<a href="#" class="TabLabel">Functions</a>
-							</div>
-						</div>
-					</div>  
-			  </div>
-			</div>
-			
-			<div class="UITab" style="display: block;">
-			  <div class="NormalActionBarTab">
-					<div class="TabL">
-					  <div class="TabR">
-							<div class="TabM">
-								<a href="#" class="TabLabel">Samples</a>
-							</div>
-						</div>
-					</div>  
-			  </div>
-			</div>
-			
-			<div class="UITab" style="display: block;">
-			  <div class="NormalActionBarTab">
-					<div class="TabL">
-					  <div class="TabR">
-							<div class="TabM">
-								<a href="#" class="TabLabel">My Actions</a>
-							</div>
-						</div>
-					</div>  
-			  </div>
-			</div>
-			
+			 <%}%>
+			 </div>
+		<%}%>
 		</div>
+		<%if(uicomponent.isShowSaveSession()) {%>
+      <a class="SaveSessionButton" href="<%=uicomponent.event("SaveSession")%>" title="<%=_ctx.appRes("UIViewBar.label.saveSession")%>"><span></span></a>
+    <%}%>
+    <a class="SetupPreferencesButton" href="<%=uicomponent.event("Preferences")%>" title="<%=_ctx.appRes("UIViewBar.label.setUpBrowser")%>"><span></span></a>
+    <%if (!uicomponent.isDirectlyDrive()) {%>
+      <a class="BackToMainDriveButton" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIViewBar.label.backToJCR")%>"><span></span></a>
+	  <%}%>
 	</div>
 </div>
-
--->
+<% uiform.end() %>

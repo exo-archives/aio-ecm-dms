@@ -411,7 +411,7 @@ public class UIBrowseContainer extends UIContainer {
     String queryStatement = getQueryStatement();
     
     // Prepare the query
-    QueryManager queryManager = getSession(true).getWorkspace().getQueryManager();
+    QueryManager queryManager = getSession(false).getWorkspace().getQueryManager();
     Query query = queryManager.createQuery(queryStatement, getQueryLanguage());
     
     // Execute the query and return results

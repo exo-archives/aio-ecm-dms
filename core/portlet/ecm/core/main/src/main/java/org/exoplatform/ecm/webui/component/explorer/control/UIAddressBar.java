@@ -17,22 +17,36 @@
 package org.exoplatform.ecm.webui.component.explorer.control ;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.Node;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 
+import org.apache.commons.lang.StringUtils;
+import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer.HistoryEntry;
+import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
+import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
+import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
+import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
+import org.exoplatform.ecm.webui.component.explorer.search.UISimpleSearch;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -50,9 +64,14 @@ import org.exoplatform.webui.form.UIFormStringInput;
     lifecycle = UIFormLifecycle.class,
     template =  "app:/groovy/webui/component/explorer/control/UIAddressBar.gtmpl",
     events = {
-      @EventConfig(listeners = UIAddressBar.ChangeNodeActionListener.class),
+      @EventConfig(listeners = UIAddressBar.ChangeNodeActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIAddressBar.BackActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIAddressBar.HistoryActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIAddressBar.HistoryActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIAddressBar.ChangeViewActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIAddressBar.SimpleSearchActionListener.class),
+      @EventConfig(listeners = UIAddressBar.AdvanceSearchActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIAddressBar.SavedQueriesActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIAddressBar.RefreshSessionActionListener.class, phase = Phase.DECODE)
     }
 )
 
@@ -61,12 +80,37 @@ public class UIAddressBar extends UIForm {
   public static final Pattern FILE_EXPLORER_URL_SYNTAX = Pattern.compile("([^:/]+):(.*)");
   
   public final static String WS_NAME = "workspaceName";  
-  public final static String FIELD_ADDRESS = "address" ; 
+  public final static String FIELD_ADDRESS = "address";
+  
+  private String selectedViewName_;
+  
+  private String[] arrView_ = {};
+  final static private String FIELD_SIMPLE_SEARCH = "simpleSearch" ;
+
+  final static private String ROOT_SQL_QUERY = "select * from nt:base where contains(*, '$1') order by exo:dateCreated DESC, jcr:primaryType DESC" ;
+  final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1') order by jcr:path DESC, jcr:primaryType DESC";
   
   public UIAddressBar() throws Exception {
     addUIFormInput(new UIFormStringInput(FIELD_ADDRESS, FIELD_ADDRESS, null)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null).addValidator(SearchValidator.class));
   }
 
+  public void setViewList(List<String> viewList) {
+    Collections.sort(viewList);
+    arrView_ = viewList.toArray(new String[viewList.size()]); 
+  }
+  
+  public String[] getViewList() { return arrView_; } 
+  
+  public void setSelectedViewName(String viewName) { selectedViewName_ = viewName; }
+  
+  public boolean isSelectedView(String viewName) { 
+    if(selectedViewName_ != null && selectedViewName_.equals(viewName)) return true;
+    return false;
+  }
+  
+  public String getSelectedViewName() { return selectedViewName_; }
+  
   @Deprecated
   public Set<String> getHistory() {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class) ;
@@ -159,4 +203,89 @@ public class UIAddressBar extends UIForm {
       }
     }
   }
+  
+  static public class ChangeViewActionListener extends EventListener<UIAddressBar> {
+    public void execute(Event<UIAddressBar> event) throws Exception {
+      UIAddressBar uiAddressBar = event.getSource() ;
+      String viewName = event.getRequestContext().getRequestParameter(OBJECTID);
+      uiAddressBar.setSelectedViewName(viewName);
+      UIControl uiControl = uiAddressBar.getParent() ;
+      UIActionBar uiActionBar = uiControl.getChild(UIActionBar.class) ;
+      uiActionBar.setTabOptions(viewName) ;
+    }
+  }
+  
+  static public class SimpleSearchActionListener extends EventListener<UIAddressBar> {
+    public void execute(Event<UIAddressBar> event) throws Exception {
+      UIAddressBar uiForm = event.getSource();
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+      String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue();
+      Node currentNode = uiExplorer.getCurrentNode();
+      String queryStatement = null;
+      if("/".equals(currentNode.getPath())) {
+        queryStatement = ROOT_SQL_QUERY;        
+      }else {
+        queryStatement = StringUtils.replace(SQL_QUERY,"$0",currentNode.getPath());
+      }
+      queryStatement = StringUtils.replace(queryStatement,"$1", text.replaceAll("'", "''"));            
+      uiExplorer.removeChildById("ViewSearch");
+      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
+      getChild(UIDocumentWorkspace.class);
+      UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);           
+      QueryManager queryManager = currentNode.getSession().getWorkspace().getQueryManager();
+      long startTime = System.currentTimeMillis();
+      Query query = queryManager.createQuery(queryStatement, Query.SQL);        
+      QueryResult queryResult = query.execute();                  
+      uiSearchResult.setIsQuickSearch(true);
+      uiSearchResult.clearAll();
+      uiSearchResult.setQueryResults(queryResult);            
+      uiSearchResult.updateGrid(true);
+      long time = System.currentTimeMillis() - startTime;
+      uiSearchResult.setSearchTime(time);
+      uiDocumentWorkspace.setRenderedChild(UISearchResult.class);
+    }
+  }
+  
+  static public class AdvanceSearchActionListener extends EventListener<UIAddressBar> {
+    public void execute(Event<UIAddressBar> event) throws Exception {
+      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UIECMSearch uiECMSearch = event.getSource().createUIComponent(UIECMSearch.class, null, null);
+      UIContentNameSearch contentNameSearch = uiECMSearch.findFirstComponentOfType(UIContentNameSearch.class);
+      String currentNodePath = uiJCRExplorer.getCurrentNode().getPath();
+      contentNameSearch.setLocation(currentNodePath);
+      UISimpleSearch uiSimpleSearch = uiECMSearch.findFirstComponentOfType(UISimpleSearch.class);
+      uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(currentNodePath);
+      UIPopupContainer.activate(uiECMSearch, 700, 500);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+    }
+  }
+
+  static public class SavedQueriesActionListener extends EventListener<UIAddressBar> {
+    public void execute(Event<UIAddressBar> event) throws Exception {
+      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UISavedQuery uiSavedQuery = event.getSource().createUIComponent(UISavedQuery.class, null, null);
+      uiSavedQuery.setIsQuickSearch(true);
+      uiSavedQuery.setRepositoryName(uiJCRExplorer.getRepositoryName());
+      uiSavedQuery.updateGrid(1);
+      UIPopupContainer.activate(uiSavedQuery, 700, 400);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+    }
+  }
+  
+  static public class RefreshSessionActionListener extends EventListener<UIAddressBar> {
+    public void execute(Event<UIAddressBar> event) throws Exception {
+      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      uiJCRExplorer.getSession().refresh(false) ;
+      uiJCRExplorer.refreshExplorer() ;
+      UIControl uiControl = event.getSource().getParent() ;
+      UIActionBar uiActionBar = uiControl.getChild(UIActionBar.class) ;
+      uiActionBar.setTabOptions(event.getSource().getSelectedViewName()) ;
+      UIApplication uiApp = uiJCRExplorer.getAncestorOfType(UIApplication.class) ;
+      String mess = "UIJCRExplorer.msg.refresh-session-success" ;
+      uiApp.addMessage(new ApplicationMessage(mess, null, ApplicationMessage.INFO)) ;
+    }
+  }
+  
 }

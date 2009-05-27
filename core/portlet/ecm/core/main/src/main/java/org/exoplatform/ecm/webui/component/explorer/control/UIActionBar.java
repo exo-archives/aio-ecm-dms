@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 
 import javax.jcr.Item;
 import javax.jcr.ItemNotFoundException;
@@ -33,11 +32,13 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
+import javax.portlet.PortletPreferences;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
@@ -51,9 +52,12 @@ import org.exoplatform.services.cms.metadata.MetadataService;
 import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.log.ExoLogger;
-import org.exoplatform.web.application.RequestContext;
+import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
@@ -80,7 +84,10 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.SimpleSearchActionListener.class),
       @EventConfig(listeners = UIActionBar.AdvanceSearchActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.SavedQueriesActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.PreferencesActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.BackActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIActionBar.SaveSessionActionListener.class, phase = Phase.DECODE)
     }
 )
 
@@ -93,10 +100,13 @@ public class UIActionBar extends UIForm {
   
   private Node view_ ;
   private String templateName_ ;
-  private List<SelectItemOption<String>> tabOptions = new ArrayList<SelectItemOption<String>>() ;
+  //private List<SelectItemOption<String>> tabOptions = new ArrayList<SelectItemOption<String>>() ;
+  private List<String> tabList_ = new ArrayList<String>();
   private List<String[]> tabs_ = new ArrayList<String[]>();
+  private Map<String, String[]> actionInTabs_ = new HashMap<String, String[]>();
 
-  final static private String FIELD_SELECT_TAB = "tabs" ;
+  private String selectedTabName_;
+  
   final static private String FIELD_SIMPLE_SEARCH = "simpleSearch" ;
   final static private String FIELD_ADVANCE_SEARCH = "advanceSearch" ;
   final static private String FIELD_SEARCH_TYPE = "searchType" ;
@@ -107,9 +117,6 @@ public class UIActionBar extends UIForm {
   final static private String SQL_QUERY = "select * from nt:base where jcr:path like '$0/%' and contains(*, '$1') order by jcr:path DESC, jcr:primaryType DESC";
 
   public UIActionBar() throws Exception{
-    UIFormSelectBox selectTab  = new UIFormSelectBox(FIELD_SELECT_TAB, FIELD_SELECT_TAB, tabOptions) ;
-    selectTab.setOnChange("ChangeTab") ;
-    addUIFormInput(selectTab) ;
     addChild(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null).addValidator(SearchValidator.class));
 
     List<SelectItemOption<String>> typeOptions = new ArrayList<SelectItemOption<String>>();
@@ -120,24 +127,17 @@ public class UIActionBar extends UIForm {
   }
 
   public void setTabOptions(String viewName) throws Exception {
-    tabOptions.clear();
-    tabs_.clear();
-    tabs_ = new ArrayList<String[]>();
+    tabList_ = new ArrayList<String>();
     String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
     view_ = getApplicationComponent(ManageViewService.class).getViewByName(viewName,repository, 
         SessionProviderFactory.createSystemProvider()); 
     NodeIterator tabs = view_.getNodes();
-    int i = 0;
     while (tabs.hasNext()) {
       Node tab = tabs.nextNode();
-      tabOptions.add(new SelectItemOption<String>(tab.getName(), String.valueOf(i++)));
+      if(!tabList_.contains(tab.getName())) tabList_.add(tab.getName());
       setListButton(tab.getName());
     }
-    RequestContext context = RequestContext.getCurrentInstance();
-    ResourceBundle res = context.getApplicationResourceBundle();
-    String searchLabel = res.getString("UIJCRAdvancedSearch.action.Search"); 
-    tabOptions.add(new SelectItemOption<String>(searchLabel, String.valueOf(i++)));
-    getUIFormSelectBox(FIELD_SELECT_TAB).setOptions(tabOptions).setValue(tabOptions.get(0).getValue());
+    setSelectedTab(tabList_.get(0));
     String template = view_.getProperty("exo:template").getString();
     templateName_ = template.substring(template.lastIndexOf("/") + 1);
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
@@ -156,16 +156,38 @@ public class UIActionBar extends UIForm {
         buttonName = buttonName.substring(0, 1).toUpperCase() + buttonName.substring(1);
         buttonsInTab[j] = buttonName;
       }
+      actionInTabs_.put(tabName, buttonsInTab);
       tabs_.add(buttonsInTab);
     }
   }
 
-  public List<String[]> getTabs() throws Exception { return tabs_; }
-
-  public int getSelectedTab() {
-    return Integer.parseInt(getUIFormSelectBox(FIELD_SELECT_TAB).getValue());
+  public String[] getActionInTab(String tabName) { return actionInTabs_.get(tabName); }
+  
+  public void setSelectedTab(String tabName) { selectedTabName_ = tabName; }
+  
+  public String getSelectedTab() { 
+    if(selectedTabName_ == null || selectedTabName_.length() == 0) return tabList_.get(0);
+    return selectedTabName_; 
   }
-
+  
+  public boolean isShowSaveSession() throws Exception {
+    UIJCRExplorer uiExplorer =  getAncestorOfType(UIJCRExplorer.class) ;
+    return uiExplorer.getPreference().isJcrEnable() ;    
+  }
+  
+  public boolean isDirectlyDrive() {
+    boolean returnboolean = false;
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+    String usecase =  portletPref.getValue("usecase", "").trim();
+    if (usecase.equals("jailed") || usecase.equals("personal") || usecase.equals("social")) {
+      returnboolean = true;
+    }
+    return returnboolean;
+  }  
+  
+  public List<String> getTabList() { return tabList_; }
+  
   public List<Query> getSavedQueries() throws Exception {
     String userName = Util.getPortalRequestContext().getRemoteUser();
     String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
@@ -222,7 +244,7 @@ public class UIActionBar extends UIForm {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
-      UIPopupContainer.activate(UIECMSearch .class, 700);
+      UIPopupContainer.activate(UIECMSearch.class, 700);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
@@ -288,7 +310,43 @@ public class UIActionBar extends UIForm {
 
   static public class ChangeTabActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
-      event.getRequestContext().addUIComponentToUpdateByAjax(event.getSource());
+      UIActionBar uiActionBar = event.getSource();
+      String selectedTabName = event.getRequestContext().getRequestParameter(OBJECTID);
+      uiActionBar.setSelectedTab(selectedTabName);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiActionBar);
     }
   }
+  
+  static public class PreferencesActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {
+      UIActionBar uiActionBar = event.getSource();
+      UIJCRExplorer uiJCRExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);                                         
+      UIPopupContainer popupAction = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UIPreferencesForm uiPrefForm = popupAction.activate(UIPreferencesForm.class,600) ;
+      uiPrefForm.update(uiJCRExplorer.getPreference()) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;
+    }
+  }  
+
+  static public class SaveSessionActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {
+      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      uiJCRExplorer.getSession().save() ;
+      uiJCRExplorer.getSession().refresh(false) ;
+      UIApplication uiApp = uiJCRExplorer.getAncestorOfType(UIApplication.class) ;
+      String mess = "UIJCRExplorer.msg.save-session-success" ;
+      uiApp.addMessage(new ApplicationMessage(mess, null, ApplicationMessage.INFO)) ;
+    }
+  }
+  
+  static public class BackActionListener extends EventListener<UIActionBar> {
+    public void execute(Event<UIActionBar> event) throws Exception {
+      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
+      UISearchResult simpleSearchResult = uiJCRExplorer.findComponentById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);
+      if(simpleSearchResult != null) simpleSearchResult.setRendered(false);
+      uiJCRExplorer.clearNodeHistory();
+      uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class);
+    }
+  }
+  
 }

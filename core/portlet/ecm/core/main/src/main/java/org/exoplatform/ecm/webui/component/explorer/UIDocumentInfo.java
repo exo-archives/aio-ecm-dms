@@ -50,8 +50,8 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
+import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
-import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
@@ -695,19 +695,19 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       DriveData drive = dservice.getDriveByName(driveName, repositoryName);
       String userId = Util.getPortalRequestContext().getRemoteUser();
       UIApplication uiApp = uicomp.getApplicationComponent(UIApplication.class);
-      List<String> viewLists = new ArrayList<String>();
+      List<String> viewList = new ArrayList<String>();
       
       for (String role : Utils.getMemberships()) {
         for (String viewName : drive.getViews().split(",")) {
-          if (!viewLists.contains(viewName.trim())) {
+          if (!viewList.contains(viewName.trim())) {
             Node viewNode = 
               uicomp.getApplicationComponent(ManageViewService.class).getViewByName(viewName.trim(),
                   repositoryName, SessionProviderFactory.createSystemProvider());
             String permiss = viewNode.getProperty("exo:accessPermissions").getString();
             if (permiss.contains("${userId}")) permiss = permiss.replace("${userId}", userId);
             String[] viewPermissions = permiss.split(",");
-            if (permiss.equals("*")) viewLists.add(viewName.trim());
-            if (drive.hasPermission(viewPermissions, role)) viewLists.add(viewName.trim());
+            if (permiss.equals("*")) viewList.add(viewName.trim());
+            if (drive.hasPermission(viewPermissions, role)) viewList.add(viewName.trim());
           }
         }
       }
@@ -715,7 +715,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>();
       ResourceBundle res = context.getApplicationResourceBundle();
       String viewLabel = null;
-      for (String viewName : viewLists) {
+      for (String viewName : viewList) {
         try {
           viewLabel = res.getString("Views.label." + viewName) ; 
         } catch (MissingResourceException e) {
@@ -770,9 +770,10 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       uiExplorer.setRootPath(homePath);
       UIControl uiControl = uiExplorer.getChild(UIControl.class);
       UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);
-      UIViewBar uiViewBar = uiControl.getChild(UIViewBar.class);
-      uiViewBar.setViewOptions(viewOptions);
-      uiActionbar.setTabOptions(viewLists.get(0));
+      uiActionbar.setTabOptions(viewList.get(0));
+      UIAddressBar uiAddressBar = uiControl.getChild(UIAddressBar.class);
+      uiAddressBar.setViewList(viewList);
+      uiAddressBar.setSelectedViewName(viewList.get(0));
       uiExplorer.setSelectNode(driveData.getWorkspace(), path);
       uiExplorer.updateAjax(event);
       uiExplorer.refreshExplorer();
