@@ -65,7 +65,7 @@
 				      viewIcon = viewStyle + "-selected";
 				    }
 				%>
-    				<a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="DefautView $viewIcon FloatLeft" title="$label"><span></span></a>
+    				<a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="DefaultView $viewIcon FloatLeft" title="$label"><span></span></a>
 				<%}%>
 			</div>
 		</div>
