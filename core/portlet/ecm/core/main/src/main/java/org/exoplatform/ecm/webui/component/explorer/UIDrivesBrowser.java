@@ -297,6 +297,7 @@ public class UIDrivesBrowser extends UIContainer {
         JCRExceptionManager.process(uiApp, e);
         return;
       } 
+      uiJCRExplorer.clearNodeHistory(homePath);
       uiJCRExplorer.setRepositoryName(uiDrive.repoName_);
       uiJCRExplorer.setWorkspaceName(drive.getWorkspace());
       uiJCRExplorer.setRootPath(homePath);
