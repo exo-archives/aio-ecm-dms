@@ -7,6 +7,7 @@
 	 * version: $Id$
 	 */
 %>
+<!--
 <div class="UISideBar" id="UISideBar">
   <div class="UISideBarControl UIPopupSelector">
 	  <%/*Begin popup*/%>
@@ -53,4 +54,39 @@
 	    <% uicomponent.renderChildren(); %>
 	  </div>
   </div>
+</div>
+-->
+<%
+	String getCSSClassName(String item) {
+		if (uicomponent.getCurrentComp().equals(item)) return "SelectedItem";
+		return "NormalItem";
+	}
+
+%>
+<div class="UISideBar" id="UISideBar" style="overflow: hidden">
+
+  <div class="UISideBarContainer UIResizableBlock" style="overflow: auto;">
+  		<div style="width: 200px; float: left">
+  	  <% uicomponent.renderChildren(); %>
+  	</div>
+  	<div style="float: right; height: 200px; width: 36px;">
+		  <div class="UISelectContent" style="display: block">
+		  	<div class="<%=getCSSClassName("Explorer")%>" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Explorer")%>">
+		      <div class="ItemIcon FileExplorerIcon"><span></span></div>
+	      </div>
+    		<%if(!uicomponent.isSystemWorkspace()) {%>
+		    <div class="<%=getCSSClassName("Relation")%>" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Relation")%>">
+		      <div class="ItemIcon RelationsIcon"><span></span></div>
+	      </div>
+	    	<%}%>
+	      <div class="<%=getCSSClassName("Clipboard")%>" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("Clipboard")%>">
+          <div class="ItemIcon ClipboardIcon"><span></span></div>
+        </div>
+		    <div class="<%=getCSSClassName("TagExplorer")%>" onmouseout="this.className = 'NormalItem'" onmouseover="this.className = 'SelectedItem'" onclick="<%=uicomponent.event("TagExplorer")%>">
+		      <div class="ItemIcon TagExplorerIcon"><span></span></div>
+	      </div>
+		  </div>
+  	</div>
+  </div>
+ 
 </div>
