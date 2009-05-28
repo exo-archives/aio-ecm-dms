@@ -2321,4 +2321,26 @@
       <can-not-move-to-itself>Không thể di chuyển vị trí: Thư mục đích và thư mục nguồn là giống nhau</can-not-move-to-itself>
     </msg>
   </UIWorkingArea>  
+
+  <UIImportNode>
+    <label>
+      <behavior>Kiểu UUID</behavior>
+    </label>
+  </UIImportNode> 
+ 
+  <Import>
+    <Behavior>
+      <type0>Tạo mới</type0>
+      <type1>Xóa nếu node đang tồn tại</type1>
+      <type2>Chèn nếu node đang tồn tại</type2>
+      <type3>Văng lỗi nếu node đang tồn tại</type3>
+    </Behavior>
+  </Import>
+  
+  <UIExportNode>
+    <action>
+      <ExportHistory>Xuất lịch sử phiên bản</ExportHistory>
+    </action>
+  </UIExportNode>  
+  
 </bundle>

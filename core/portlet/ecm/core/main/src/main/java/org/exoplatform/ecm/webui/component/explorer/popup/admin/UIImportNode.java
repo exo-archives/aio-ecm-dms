@@ -16,9 +16,10 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
-import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.zip.ZipInputStream;
 
 import javax.jcr.AccessDeniedException;
@@ -30,13 +31,14 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -44,6 +46,7 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormRadioBoxInput;
+import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormUploadInput;
 
 /**
@@ -56,21 +59,24 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
 
   private final static Log          log           = ExoLogger.getLogger("ecm.UIImportNode");
 
-  public static final String FORMAT        = "format";
+  public static final String FORMAT          = "format";
 
-  public static final String DOCUMENT_VIEW = "Document View";
+  public static final String DOCUMENT_VIEW   = "Document View";
 
-  public static final String SYSTEM_VIEW   = "System View";
+  public static final String SYSTEM_VIEW     = "System View";
 
-  public static final String DOC_VIEW      = "docview";
+  public static final String DOC_VIEW        = "docview";
 
-  public static final String SYS_VIEW      = "sysview";
+  public static final String SYS_VIEW        = "sysview";
 
-  public static final String FILE_UPLOAD   = "upload";
+  public static final String FILE_UPLOAD     = "upload";
+  
+  public static final String IMPORT_BEHAVIOR = "behavior";
 
   public UIImportNode() throws Exception {
     this.setMultiPart(true);
     addUIFormInput(new UIFormUploadInput(FILE_UPLOAD, FILE_UPLOAD));
+    addUIFormInput(new UIFormSelectBox(IMPORT_BEHAVIOR, IMPORT_BEHAVIOR, null));
     List<SelectItemOption<String>> formatItem = new ArrayList<SelectItemOption<String>>();
     formatItem.add(new SelectItemOption<String>(DOCUMENT_VIEW, DOC_VIEW));
     formatItem.add(new SelectItemOption<String>(SYSTEM_VIEW, SYS_VIEW));
@@ -78,6 +84,26 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
   }
 
   public void activate() throws Exception {
+    List<SelectItemOption<String>> importBehavior = new ArrayList<SelectItemOption<String>>();
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    importBehavior.add(new SelectItemOption<String>(
+        res.getString("Import.Behavior.type" + 
+            Integer.toString(ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW)), 
+        Integer.toString(ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW)));
+    importBehavior.add(new SelectItemOption<String>(
+        res.getString("Import.Behavior.type" + 
+            Integer.toString(ImportUUIDBehavior.IMPORT_UUID_COLLISION_REMOVE_EXISTING)), 
+        Integer.toString(ImportUUIDBehavior.IMPORT_UUID_COLLISION_REMOVE_EXISTING)));
+    importBehavior.add(new SelectItemOption<String>(
+        res.getString("Import.Behavior.type" + 
+            Integer.toString(ImportUUIDBehavior.IMPORT_UUID_COLLISION_REPLACE_EXISTING)), 
+        Integer.toString(ImportUUIDBehavior.IMPORT_UUID_COLLISION_REPLACE_EXISTING)));
+    importBehavior.add(new SelectItemOption<String>(
+        res.getString("Import.Behavior.type" + 
+            Integer.toString(ImportUUIDBehavior.IMPORT_UUID_COLLISION_THROW)), 
+        Integer.toString(ImportUUIDBehavior.IMPORT_UUID_COLLISION_THROW)));
+    getUIFormSelectBox(IMPORT_BEHAVIOR).setOptions(importBehavior);
   }
 
   public void deActivate() throws Exception {
@@ -101,19 +127,22 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       String fileName = input.getUploadResource().getFileName();
       MimeTypeResolver resolver = new MimeTypeResolver();
       String mimeType = resolver.getMimeType(fileName);
-      ByteArrayInputStream xmlInputStream = null;
+      InputStream xmlInputStream = null;
       if ("text/xml".equals(mimeType)) {
-        xmlInputStream = new ByteArrayInputStream(input.getUploadData());
+        xmlInputStream = input.getUploadDataAsStream();
       } else if ("application/zip".equals(mimeType)) {
         ZipInputStream zipInputStream = new ZipInputStream(input.getUploadDataAsStream());
         xmlInputStream = Utils.extractFromZipFile(zipInputStream);
       } else {
-        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.mimetype-invalid", null, ApplicationMessage.WARNING));
+        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.mimetype-invalid", null, 
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
       try {
-        session.importXML(nodePath, xmlInputStream, ImportUUIDBehavior.IMPORT_UUID_CREATE_NEW);
+        int importBehavior = 
+          Integer.parseInt(uiImport.getUIFormSelectBox(IMPORT_BEHAVIOR).getValue());
+        session.importXML(nodePath, xmlInputStream, importBehavior);
 
         if (!uiExplorer.getPreference().isJcrEnable())
           // TODO

@@ -22,15 +22,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 
+import org.apache.commons.lang.StringUtils;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.compress.CompressData;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -51,6 +57,7 @@ import org.exoplatform.webui.form.UIFormRadioBoxInput;
     template =  "app:/groovy/webui/component/explorer/popup/admin/UIFormWithMultiRadioBox.gtmpl",
     events = {
       @EventConfig(listeners = UIExportNode.ExportActionListener.class),
+      @EventConfig(listeners = UIExportNode.ExportHistoryActionListener.class),
       @EventConfig(listeners = UIExportNode.CancelActionListener.class)
     }
 )
@@ -63,6 +70,10 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
   public static final String SYSTEM_VIEW = "System View" ;
   public static final String DOC_VIEW = "docview" ;
   public static final String SYS_VIEW = "sysview" ;
+  public static final String VERSION_SQL_QUERY = "select * from mix:versionable where jcr:path like '$0/%' order by exo:dateCreated DESC";
+  public static final String ROOT_SQL_QUERY = "select * from mix:versionable order by exo:dateCreated DESC";
+  
+  private boolean isVerionNode_ = false;
 
   public UIExportNode() throws Exception {
     List<SelectItemOption<String>> formatItem = new ArrayList<SelectItemOption<String>>() ;
@@ -83,6 +94,32 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
   }
 
   public void deActivate() throws Exception { }
+  
+  public QueryResult getQueryResult(Node currentNode) throws RepositoryException {
+    QueryManager queryManager = currentNode.getSession().getWorkspace().getQueryManager();
+    String queryStatement = "";
+    if(currentNode.getPath().equals("/")) {
+      queryStatement = ROOT_SQL_QUERY;
+    } else {
+      queryStatement = StringUtils.replace(VERSION_SQL_QUERY,"$0",currentNode.getPath());
+    }
+    Query query = queryManager.createQuery(queryStatement, Query.SQL);
+    return query.execute();
+  }
+  
+  public String[] getActions() {
+    try {
+      Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
+      if(currentNode.isNodeType(Utils.MIX_VERSIONABLE)) isVerionNode_ = true;
+      QueryResult queryResult = getQueryResult(currentNode);
+      if(queryResult.getNodes().getSize() > 0 || isVerionNode_) {
+        return new String[] {"Export", "ExportHistory", "Cancel"};
+      }
+    } catch(Exception e) {
+      return new String[] {"Export", "Cancel"}; 
+    }
+    return new String[] {"Export", "Cancel"};
+  }
   
   static public class ExportActionListener extends EventListener<UIExportNode> {
     public void execute(Event<UIExportNode> event) throws Exception {
@@ -120,6 +157,13 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
     }
   }
 
+  static public class ExportHistoryActionListener extends EventListener<UIExportNode> {
+    public void execute(Event<UIExportNode> event) throws Exception {
+      UIExportNode uiExport = event.getSource() ;
+      //TODO: export history data
+    }
+  }
+  
   static public class CancelActionListener extends EventListener<UIExportNode> {
     public void execute(Event<UIExportNode> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;

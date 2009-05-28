@@ -2287,4 +2287,26 @@
       <can-not-move-to-itself>Can not move: The destination folder is the same as the source folder</can-not-move-to-itself>
     </msg>
   </UIWorkingArea>  
+
+  <UIImportNode>
+    <label>
+      <behavior>UUID Behaviour</behavior>
+    </label>
+  </UIImportNode> 
+  
+  <Import>
+    <Behavior>
+      <type0>Create new</type0>
+      <type1>Remove existing</type1>
+      <type2>Replace existing</type2>
+      <type3>Throw</type3>
+    </Behavior>
+  </Import>
+  
+  <UIExportNode>
+    <action>
+      <ExportHistory>Export vesion history</ExportHistory>
+    </action>
+  </UIExportNode>  
+    
 </bundle>
