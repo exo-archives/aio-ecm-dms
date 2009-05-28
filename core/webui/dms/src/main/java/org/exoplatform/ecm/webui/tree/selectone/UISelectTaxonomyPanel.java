@@ -65,6 +65,8 @@ public class UISelectTaxonomyPanel extends UIContainer {
   private PublicationService publicationService_ = null;
   private List<String> templates_ = null;
   
+  private static String TAXONOMY_TREE = "taxonomyTree";
+  
   public UISelectTaxonomyPanel() throws Exception { 
     uiPageIterator_ = addChild(UIPageIterator.class, null, "UISelectPathIterate");
   }
@@ -181,22 +183,29 @@ public class UISelectTaxonomyPanel extends UIContainer {
   static public class SelectActionListener extends EventListener<UISelectTaxonomyPanel> {
     public void execute(Event<UISelectTaxonomyPanel> event) throws Exception {
       UISelectTaxonomyPanel uiSelectPathPanel = event.getSource();      
+      UIOneTaxonomySelector uiTaxonomySelector = uiSelectPathPanel.getParent();      
+      UITreeTaxonomyList uiTreeList = uiTaxonomySelector.getChild(UITreeTaxonomyList.class);     
       UIContainer uiTreeSelector = uiSelectPathPanel.getParent();
       UIBreadcumbs uiBreadcumbs = uiTreeSelector.getChild(UIBreadcumbs.class);
       String breadcumbsPaths = "";
       for(LocalPath iterLocalPath: uiBreadcumbs.getPath()) {
         breadcumbsPaths += "/" + iterLocalPath.getId();
       }
+      
       String value = event.getRequestContext().getRequestParameter(OBJECTID);
-      String valueTempPath = value.replaceAll(uiSelectPathPanel.getPathSystemTaxonomy(), "");
-      String valuePath = valueTempPath.replaceAll(uiSelectPathPanel.getPathTaxonomy(), "");
-      value = breadcumbsPaths + valuePath;
+      String taxoTreeName = uiTreeList.getUIFormSelectBox(TAXONOMY_TREE).getValue();  
+      Node taxoTreeNode = uiTaxonomySelector.getTaxoTreeNode(taxoTreeName);
+      uiTaxonomySelector.setRootTaxonomyName(taxoTreeName);
+      String taxoTreePath = taxoTreeNode.getPath();
+      value = value.replace(taxoTreePath, taxoTreeName);
+
       if (value.startsWith("/")) value = value.substring(1);
       if(uiTreeSelector instanceof UIOneNodePathSelector) {
         if(!((UIOneNodePathSelector)uiTreeSelector).isDisable()) {
           value = ((UIOneNodePathSelector)uiTreeSelector).getWorkspaceName() + ":" + value ;
         }
       }
+      
       String returnField = ((UIBaseNodeTreeSelector)uiTreeSelector).getReturnFieldName();
       ((UISelectable)((UIBaseNodeTreeSelector)uiTreeSelector).getSourceComponent()).doSelect(returnField, value) ;
       

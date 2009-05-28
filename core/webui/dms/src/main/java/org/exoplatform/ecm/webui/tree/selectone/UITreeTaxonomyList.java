@@ -63,9 +63,8 @@ public class UITreeTaxonomyList extends UIForm {
 
   static private String ROOT_NODE_INFO = "rootNodeInfo";
   static private String ROOT_NODE_PATH = "rootNodePath";
-  static private String TAXONOMY_TREE = "taxonomyTree";
+  public static String TAXONOMY_TREE = "taxonomyTree";
   
-  private List<String> wsList_;
   private boolean isShowSystem_ = true;
 
   public UITreeTaxonomyList() throws Exception {    
@@ -92,49 +91,16 @@ public class UITreeTaxonomyList extends UIForm {
     uiInputAction.setRendered(isRender); 
   }
   
-  public void setWorkspaceList(String repository) throws Exception {
-    wsList_ = new ArrayList<String>();
-    RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
-    String[] wsNames = repositoryService.getRepository(repository).getWorkspaceNames();
-    String systemWsName = 
-      repositoryService.getRepository(repository).getConfiguration().getSystemWorkspaceName();
-    List<SelectItemOption<String>> workspace = new ArrayList<SelectItemOption<String>>();
-    for(String wsName : wsNames) {
-      if(!isShowSystem_) {
-        if(!wsName.equals(systemWsName)) {
-          workspace.add(new SelectItemOption<String>(wsName,  wsName));
-          wsList_.add(wsName);
-        }
-      } else {
-        workspace.add(new SelectItemOption<String>(wsName,  wsName));
-        wsList_.add(wsName);
-      }
-    }
-    UIFormSelectBox uiTreeTaxonomyList = getUIFormSelectBox(TAXONOMY_TREE);
-    uiTreeTaxonomyList.setOptions(workspace);
-    UIOneTaxonomySelector uiBrowser = getParent();
-    if(uiBrowser.getWorkspaceName() != null) {
-      if(wsList_.contains(uiBrowser.getWorkspaceName())) {
-        uiTreeTaxonomyList.setValue(uiBrowser.getWorkspaceName()); 
-      }
-    }
-  }
   
   public void setTaxonomyTreeList(String repository) throws Exception {
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     List<Node> listNode = taxonomyService.getAllTaxonomyTrees(repository);
     List<SelectItemOption<String>> taxonomyTree = new ArrayList<SelectItemOption<String>>();
     for(Node itemNode : listNode) {
-      String value = itemNode.getSession().getWorkspace().getName() + ":" + itemNode.getPath(); 
-      taxonomyTree.add(new SelectItemOption<String>(itemNode.getName(), value));
+      taxonomyTree.add(new SelectItemOption<String>(itemNode.getName(), itemNode.getName()));
     }
     UIFormSelectBox uiTreeTaxonomyList = getUIFormSelectBox(TAXONOMY_TREE);
     uiTreeTaxonomyList.setOptions(taxonomyTree);
-  }
-  
-  public void setIsDisable(String wsName, boolean isDisable) {
-    if(wsList_.contains(wsName)) getUIFormSelectBox(TAXONOMY_TREE).setValue(wsName); 
-    getUIFormSelectBox(TAXONOMY_TREE).setDisabled(isDisable);
   }
   
   private Node getRootNode(String repositoryName, String workspaceName, String pathNode) throws 
@@ -149,19 +115,11 @@ public class UITreeTaxonomyList extends UIForm {
     public void execute(Event<UITreeTaxonomyList> event) throws Exception {
       UITreeTaxonomyList uiTreeTaxonomyList = event.getSource();
       UIOneTaxonomySelector uiOneTaxonomySelector = uiTreeTaxonomyList.getParent();
-      String valueTaxonomy = uiTreeTaxonomyList.getUIFormSelectBox(TAXONOMY_TREE).getValue();      
-      String workspaceName = uiOneTaxonomySelector.getWorkspaceName();
-      String pathTaxonomy = valueTaxonomy;
-      uiOneTaxonomySelector.setRootTaxonomyName(valueTaxonomy.substring(valueTaxonomy.lastIndexOf("/") + 1));
-      if (valueTaxonomy.indexOf(":/") > -1) {
-        String[] arrayValueTaxonomy = valueTaxonomy.split(":/");
-        workspaceName = arrayValueTaxonomy[0];
-        if (arrayValueTaxonomy[1].startsWith("/")) 
-          pathTaxonomy = arrayValueTaxonomy[1];
-        else
-          pathTaxonomy = "/" + arrayValueTaxonomy[1];
-      }
+      String taxoTreeName = uiTreeTaxonomyList.getUIFormSelectBox(TAXONOMY_TREE).getValue();  
       
+      Node taxoTreeNode = uiOneTaxonomySelector.getTaxoTreeNode(taxoTreeName);
+      String workspaceName = taxoTreeNode.getSession().getWorkspace().getName();
+      String pathTaxonomy = taxoTreeNode.getPath();
       UITreeTaxonomyBuilder uiTreeJCRExplorer = uiOneTaxonomySelector.getChild(UITreeTaxonomyBuilder.class);
       UIApplication uiApp = uiTreeTaxonomyList.getAncestorOfType(UIApplication.class);
       try {

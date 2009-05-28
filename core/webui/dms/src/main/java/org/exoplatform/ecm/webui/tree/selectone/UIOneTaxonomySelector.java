@@ -21,10 +21,12 @@ import java.util.List;
 
 import javax.jcr.Item;
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.tree.UITreeTaxonomyBuilder;
 import org.exoplatform.services.cms.link.NodeFinder;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -89,6 +91,11 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
     this.rootTaxonomyName = rootTaxonomyName;
   }
   
+  Node getTaxoTreeNode(String taxoTreeName) throws RepositoryException {
+    TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
+    return taxonomyService.getTaxonomyTree(repositoryName, taxoTreeName);
+  }
+  
   public void init(SessionProvider sessionProvider) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
     ManageableRepository manageableRepository = repositoryService.getRepository(repositoryName);
@@ -106,9 +113,7 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
       }
       
       UITreeTaxonomyList uiTreeTaxonomyList = getChild(UITreeTaxonomyList.class);
-      uiTreeTaxonomyList.setWorkspaceList(repositoryName);
       uiTreeTaxonomyList.setTaxonomyTreeList(repositoryName);
-      uiTreeTaxonomyList.setIsDisable(workspaceName, isDisable);
       UITreeTaxonomyBuilder builder = getChild(UITreeTaxonomyBuilder.class);
       builder.setAllowPublish(allowPublish, publicationService, templates);
       builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);
@@ -204,7 +209,6 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
     selectPathPanel.updateGrid();
     UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class);
     String pathName = currentNode.getName();
-    //Node rootNode = (Node)currentNode.getSession().getItem(rootTreePath);    
     NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
     Node rootNode = (Node) nodeFinder.getItem(repositoryName, workspaceName, rootTreePath);
     

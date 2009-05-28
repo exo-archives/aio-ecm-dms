@@ -26,17 +26,16 @@ import javax.jcr.Value;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
-import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -279,8 +278,8 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
    * @throws Exception the exception
    */
   public List<Node> getCategories(Node node) throws Exception {
-    CategoriesService categoriesService = getApplicationComponent(CategoriesService.class);
-    return categoriesService.getCategories(node,getRepositoryName());
+    TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
+    return taxonomyService.getCategories(node,getRepositoryName());
   }
 
   /**
