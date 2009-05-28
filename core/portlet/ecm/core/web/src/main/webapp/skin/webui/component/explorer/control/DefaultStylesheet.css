@@ -443,15 +443,16 @@
 	float:left;
 	height:22px;
 }
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultView {
+	background: url(DefaultSkin/background/DefaultView.gif) no-repeat; 
+	width:26px;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view{
 	background: url(DefaultSkin/background/IconView.gif) no-repeat; 
 	width:26px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultView {
-	background: url(DefaultSkin/background/DefaultView.gif) no-repeat; 
-	width:26px;
-}
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view-selected{
 	background: url(DefaultSkin/background/IconViewSelected.gif) no-repeat; 

@@ -797,3 +797,9 @@
   right: 0;
   bottom: 0;
 }
+
+.UIImportNode .HorizontalLayout select {
+  font-size: 11px;
+  width: 100px;
+}
+

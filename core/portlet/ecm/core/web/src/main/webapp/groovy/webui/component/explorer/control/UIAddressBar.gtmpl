@@ -65,10 +65,23 @@
 				      viewIcon = viewStyle + "-selected";
 				    }
 				%>
-    				<a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="DefaultView $viewIcon FloatLeft" title="$label"><span></span></a>
+    				<a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="DefautView $viewIcon FloatLeft" title="$label"><span></span></a>
 				<%}%>
 			</div>
 		</div>
+		
+		<div class="Right">
+			<div class="SearchSetting">
+				<a href="<%=uicomponent.event("SavedQueries")%>" title="<%=_ctx.appRes("UIActionBar.title.SavedQueries")%>"  class="SearchSettingBtn"><span></span></a>
+				<a href="<%=uicomponent.event("AdvanceSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.AdvanceSearch")%>" class="SearchAdvanceBtn"><span></span></a>
+			</div>
+			<div class="Advance" id="SimpleSearchControl">
+				<a href="<%=uicomponent.event("SimpleSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.SimpleSearch")%>" class="SearchBtn" id="SimpleSearch"><span></span></a>
+				<% uicomponent.renderChild(1); %>
+			</div>
+			
+		</div>
+		
 		<div class="FloatLeft">
 			<a class="BackBtn FloatLeft" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIAddressBar.title.backButton")%>"><span></span></a>	
   		<a class="RefreshSessionButton FloatLeft" href="<%=uicomponent.event("RefreshSession")%>" title="<%=_ctx.appRes("UIViewBar.label.refesh")%>"><span></span></a>
@@ -94,18 +107,6 @@
 	    </div>
 	    <div style="clear: both;"><span></span></div>
 	  </div>
-		<div class="Right" style="float: left">
-			<div class="SearchSetting">
-				<a href="<%=uicomponent.event("SavedQueries")%>" title="<%=_ctx.appRes("UIActionBar.title.SavedQueries")%>"  class="SearchSettingBtn"><span></span></a>
-				<a href="<%=uicomponent.event("AdvanceSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.AdvanceSearch")%>" class="SearchAdvanceBtn"><span></span></a>
-			</div>
-			<div class="Advance" id="SimpleSearchControl">
-				<a href="<%=uicomponent.event("SimpleSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.SimpleSearch")%>" class="SearchBtn" id="SimpleSearch"><span></span></a>
-				<% uicomponent.renderChild(1); %>
-			</div>
-			
-		</div>
-		
 	</div>
 </div>
 <% uiform.end() %>
