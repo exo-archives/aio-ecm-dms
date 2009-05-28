@@ -36,17 +36,16 @@ import org.exoplatform.ecm.webui.form.DialogFormActionListeners;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
-import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsService;
-import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
@@ -123,12 +122,15 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     listTaxonomyName = listTaxonomyNameNew;
   }
   
-  public String getPathTaxonomy() throws Exception {
+  public String getDMSWorkspace() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     String repository = uiExplorer.getRepositoryName();
     DMSConfiguration dmsConfig = getApplicationComponent(DMSConfiguration.class);
-    DMSRepositoryConfiguration dmsRepoConfig = dmsConfig.getConfig(repository);
-    String wsName = dmsRepoConfig.getSystemWorkspace();    
+    return dmsConfig.getConfig(repository).getSystemWorkspace();    
+  }
+  public String getPathTaxonomy() throws Exception {
+    String wsName = getDMSWorkspace(); 
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
     Session session = uiExplorer.getSessionByWorkspace(wsName);
     return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH))).getPath();
@@ -212,7 +214,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   static  public class SaveActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIDocumentForm documentForm = event.getSource();
-      String pathTaxonomy = documentForm.getPathTaxonomy() + "/";
       UIJCRExplorer uiExplorer = documentForm.getAncestorOfType(UIJCRExplorer.class);
       List inputs = documentForm.getChildren();
       UIApplication uiApp = documentForm.getAncestorOfType(UIApplication.class);
@@ -221,27 +222,24 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       String[] categoriesPathList = null;
       String repository = uiExplorer.getRepositoryName();
       TaxonomyService taxonomyService = documentForm.getApplicationComponent(TaxonomyService.class);
-      List<Node> listNode = taxonomyService.getAllTaxonomyTrees(repository);
-      String workspaceName = null;
-      Session session = null;
-      Node rootTaxonomyNode = null;
-      if(documentForm.isAddNew()) {
+      if (documentForm.isAddNew()) {
         for (int i = 0; i < inputs.size(); i++) {
-          UIFormInput input = (UIFormInput) inputs.get(i);          
-          if((input.getName() != null) && input.getName().equals("name")) {
-            String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{", "/", "|", "\""};          
-            String valueName = input.getValue().toString();          
-            for(String filterChar : arrFilterChar) {
-              if(valueName.indexOf(filterChar) > -1) {
-                uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null, 
-                    ApplicationMessage.WARNING));
-                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-                return;
-              }
+          UIFormInput input = (UIFormInput) inputs.get(i);
+          if ((input.getName() != null) && input.getName().equals("name")) {
+            String[] arrFilterChar = { "&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")",
+                "'", "#", ";", "}", "{", "/", "|", "\"" };
+            String valueName = input.getValue().toString();
+            if (!Utils.isNameValid(valueName, arrFilterChar)) {
+              uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null,
+                  ApplicationMessage.WARNING));
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
             }
-          }          
+          }
         }
       }
+      
+      int index = 0;
       if (documentForm.isReference) {
         UIFormMultiValueInputSet uiSet = documentForm.getChild(UIFormMultiValueInputSet.class);
         if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals("categories")) {
@@ -254,6 +252,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
               categoriesPath += value + ",";
             }
           }
+          
           if (categoriesPath.endsWith(",")) categoriesPath = categoriesPath.substring(0, categoriesPath.length()-1).trim();
           categoriesPathList = categoriesPath.split(",");
           if ((categoriesPathList == null) || (categoriesPathList.length == 0)) {
@@ -262,42 +261,19 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
             return;
           }
-          Session systemSession = uiExplorer.getSessionByWorkspace(workspaceName);
-          for(String categoryPath : categoriesPathList) {
-            if((categoryPath != null) && (categoryPath.trim().length() > 0)){
-              categoryPath = pathTaxonomy + categoryPath.trim();
-              for(Node itemNode : listNode) {
-                if (categoryPath.contains(itemNode.getPath())) {
-                  workspaceName = itemNode.getSession().getWorkspace().getName();
-                  session = uiExplorer.getSessionByWorkspace(workspaceName);
-                  rootTaxonomyNode = itemNode;
-                  break;
-                } 
-              }
-              try {
-                categoryPath = categoryPath.substring(categoryPath.indexOf(rootTaxonomyNode.getName()));
-                categoryPath = pathTaxonomy + "/" + categoryPath;
-                //systemSession.getItem(categoryPath.trim());
-              } catch (ItemNotFoundException e) {
-                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                    ApplicationMessage.WARNING));
-                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-                return;
-              } catch (RepositoryException re) {
-                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                    ApplicationMessage.WARNING));
-                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-                return;
-              } catch(Exception e) {
-                e.printStackTrace();
-                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                    ApplicationMessage.WARNING));
-                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-                return;
-              }
+          
+          for (String categoryPath : categoriesPathList) {
+            index = categoryPath.indexOf("/");
+            try {
+              taxonomyService.getTaxonomyTree(repository, categoryPath.substring(0, index))
+                  .getNode(categoryPath.substring(index + 1));
+            } catch (Exception e) {
+              e.printStackTrace();
+              uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, ApplicationMessage.WARNING));
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
             }
           }
-          systemSession.logout();
         }
       }     
       Map inputProperties = DialogFormUtil.prepareMap(inputs, documentForm.getInputProperties());
@@ -332,20 +308,9 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           homeNode.save();
           newNode = (Node)homeNode.getSession().getItem(addedPath);
           if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
-            for(int i = 0; i < categoriesPathList.length; i ++ ) {
-              String categoryPath;
-              if (categoriesPathList[i].startsWith(documentForm.getPathTaxonomy()))
-                categoryPath = categoriesPathList[i];
-              else
-                categoryPath = documentForm.getPathTaxonomy() + "/" + categoriesPathList[i];
-              for(Node itemNode : listNode) {
-                if (categoryPath.contains(itemNode.getPath())) {
-                  rootTaxonomyNode = itemNode;
-                  break;
-                } 
-              }
-              String[] arrayCategoryPath = categoryPath.split("/" + rootTaxonomyNode.getName());
-              taxonomyService.addCategory(newNode, rootTaxonomyNode.getName(), arrayCategoryPath[1]);              
+            for(String categoryPath : categoriesPathList) {    
+              index = categoryPath.indexOf("/");
+              taxonomyService.addCategory(newNode, categoryPath.substring(0, index), categoryPath.substring(index + 1));
             }
           } else {
             List<Value> vals = new ArrayList<Value>();
@@ -422,8 +387,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           }
         }
       }
+      UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       if(uiComp instanceof UIOneNodePathSelector) {
-        UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
         String repositoryName = explorer.getRepositoryName();
         SessionProvider provider = explorer.getSessionProvider();                
         String wsFieldName = (String)fieldPropertiesMap.get("workspaceField");
@@ -452,28 +417,22 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         ((UIOneNodePathSelector)uiComp).setRootNodeLocation(repositoryName, wsName, rootPath);
         ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
         ((UIOneNodePathSelector)uiComp).init(provider);
-      } else if (uiComp instanceof UICategoriesSelector){
-        CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
-        UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
-        Node currentNode = uiExplorer.getCurrentNode();
-        String repository = uiExplorer.getRepositoryName();
-        List<Node> cats = categoriesService.getCategories(currentNode, repository);
-        List<String> arrCategoriesList = new ArrayList<String>();        
-        for(int i=0; i<cats.size(); i++) {
-          arrCategoriesList.add(cats.get(i).getPath());          
-        }        
-        ((UICategoriesSelector)uiComp).setExistedCategoryList(arrCategoriesList);       
-        if (value != null && !value.equals("")) {
-          List<String> listTaxonomy = new ArrayList<String>();
-          if (arrayTaxonomy.length > 0) {
-            for (int i = 0; i < arrayTaxonomy.length; i++) {
-              if ((arrayTaxonomy[i] != null) && (arrayTaxonomy[i].length() > 0) && !listTaxonomy.contains(arrayTaxonomy[i])) 
-                listTaxonomy.add(arrayTaxonomy[i]);
-            }
-          }
-          ((UICategoriesSelector)uiComp).setExistedCategoryList(listTaxonomy);
+      } else if (uiComp instanceof UIOneTaxonomySelector) {
+        NodeHierarchyCreator nodeHierarchyCreator = uiForm.getApplicationComponent(NodeHierarchyCreator.class);
+        String workspaceName = uiForm.getDMSWorkspace();
+        ((UIOneTaxonomySelector)uiComp).setIsDisable(workspaceName, false);
+        String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
+        Session session = explorer.getSessionByWorkspace(workspaceName);
+        Node rootTree = (Node) session.getItem(rootTreePath);      
+        NodeIterator childrenIterator = rootTree.getNodes();
+        while (childrenIterator.hasNext()) {
+          Node childNode = childrenIterator.nextNode();
+          rootTreePath = childNode.getPath();
+          break;
         }
-        ((UICategoriesSelector)uiComp).init();
+        
+        ((UIOneTaxonomySelector)uiComp).setRootNodeLocation(uiForm.repositoryName, workspaceName, rootTreePath);
+        ((UIOneTaxonomySelector)uiComp).init(SessionProviderFactory.createSystemProvider());
       }
       uiContainer.initPopup(uiComp);
       String param = "returnField=" + fieldName;

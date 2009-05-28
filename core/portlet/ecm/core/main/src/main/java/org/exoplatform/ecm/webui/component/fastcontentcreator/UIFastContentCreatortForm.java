@@ -23,8 +23,8 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemExistsException;
-import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
@@ -37,8 +37,8 @@ import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
-import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -47,11 +47,11 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsService;
-import org.exoplatform.services.cms.categories.CategoriesService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.upload.UploadService;
@@ -88,6 +88,7 @@ import org.exoplatform.webui.form.UIFormUploadInput;
       @EventConfig(listeners = UIFastContentCreatortForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
     }
 )
+
 public class UIFastContentCreatortForm extends UIDialogForm implements UISelectable {
 
   final static public String FIELD_TAXONOMY = "categories";
@@ -117,18 +118,6 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
   
   public void setListTaxonomyName(List<String> listTaxonomyNameNew) {
     listTaxonomyName = listTaxonomyNameNew;
-  }
-  
-  private String cutPath(String path) {
-    String[] array = path.split("/");
-    String value = "";
-    if (array.length > 4) {
-      for (int i = 4; i < array.length; i++) {
-        value += array[i].trim(); 
-        if (i < array.length - 1) value += "/";
-      }
-    } else value = path;
-    return value;
   }
   
   public String getTemplate() {
@@ -161,8 +150,8 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       List taxonomylist = inputSet.getValue();
       if (!taxonomylist.contains(valueTaxonomy)) {
         listTaxonomy.add(valueTaxonomy);
-        listTaxonomyName.add(cutPath(valueTaxonomy));
-        taxonomylist.add(cutPath(valueTaxonomy));
+        listTaxonomyName.add(valueTaxonomy);
+        taxonomylist.add(valueTaxonomy);
       }
       inputSet.setValue(taxonomylist);
     }
@@ -204,31 +193,33 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
     return dmsConfiguration.getConfig(repositoryName).getSystemWorkspace();   
   }
   
+  private Session getSession(String repository, String workspace) throws RepositoryException, RepositoryConfigurationException {
+    RepositoryService repositoryService  = getApplicationComponent(RepositoryService.class);      
+    return SessionProviderFactory.createSessionProvider().getSession(workspace, repositoryService.getRepository(repository));
+  }
+  
+  public String getPathTaxonomy() throws Exception {
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    Session session = getSession(repositoryName, getDMSWorkspace());
+    return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH))).getPath();
+  }
+  
   @SuppressWarnings("unchecked")
   static public class SaveActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
       UIFastContentCreatortForm uiForm = event.getSource() ;
-      NodeHierarchyCreator nodeHierarchyCreator = uiForm.getApplicationComponent(NodeHierarchyCreator.class);
-      RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class) ;
       PortletPreferences preferences = uiForm.getPortletPreferences();
       String repository = preferences.getValue(Utils.REPOSITORY, "");
       String prefLocate = preferences.getValue("path", "") ;
       String prefType = preferences.getValue("type", "") ;
       String workspace = preferences.getValue("workspace", "") ;
-      Session session = null ;
-      try {
-        session = repositoryService.getRepository(repository).login(workspace) ;
-      } catch(Exception e) {
-        session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
-      }
-      String pathTaxonomy = nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);
+      Session session = uiForm.getSession(repository, workspace);
       CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
+      TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);      
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       boolean hasCategories = false;
       String categoriesPath = "";
       String[] categoriesPathList = null;
-      CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);      
-            
       List inputs = uiForm.getChildren();
       for (int i = 0; i < inputs.size(); i++) {
         UIFormInput input = (UIFormInput) inputs.get(i);
@@ -263,24 +254,10 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
             return;
           }
-          Session systemSession = categoriesService.getSession(repository);          
+          
           for(String categoryPath : categoriesPathList) {              
             if((categoryPath != null) && (categoryPath.trim().length() > 0)){
-              categoryPath = pathTaxonomy + "/" + categoryPath.trim();
-              try {
-                systemSession.getItem(categoryPath.trim());
-              } catch (ItemNotFoundException e) {
-                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                    ApplicationMessage.WARNING));
-                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-                return;
-              } catch (RepositoryException re) {
-                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                    ApplicationMessage.WARNING));
-                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-                return;
-              } catch(Exception e) {
-                e.printStackTrace();
+              if (categoryPath.indexOf("/") == -1) {
                 uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
                     ApplicationMessage.WARNING));
                 event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -288,7 +265,6 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
               }
             }
           }
-          systemSession.logout();
         }
       }      
       Map inputProperties = DialogFormUtil.prepareMap(uiForm.getChildren(), uiForm.getInputProperties()) ;
@@ -314,13 +290,14 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       try {
         String addedPath = cmsService.storeNode(prefType, homeNode, inputProperties, true, repository);
         homeNode.getSession().save() ;
+        int index = 0;
         if(homeNode.hasNode(addedPath.substring(addedPath.lastIndexOf("/") + 1))) {
           newNode = homeNode.getNode(addedPath.substring(addedPath.lastIndexOf("/") + 1));
           if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
-            for(int i = 0; i < categoriesPathList.length; i ++ ){
-              categoriesPathList[i] = pathTaxonomy + "/" + categoriesPathList[i].trim();
+            for(String categoryPath : categoriesPathList) {    
+              index = categoryPath.indexOf("/");
+              taxonomyService.addCategory(newNode, categoryPath.substring(0, index), categoryPath.substring(index + 1));
             }
-            categoriesService.addMultiCategory(newNode, categoriesPathList, repository);            
           }
           event.getRequestContext().setAttribute("nodePath", newNode.getPath());
         }
@@ -385,7 +362,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       ClassLoader cl = Thread.currentThread().getContextClassLoader() ;
       Class clazz = Class.forName(classPath, true, cl) ;
       UIComponent uiComp = uiContainer.createUIComponent(clazz, null, null);
-      
+      NodeHierarchyCreator nodeHierarchyCreator = uiForm.getApplicationComponent(NodeHierarchyCreator.class);  
       String value = uiForm.getUIStringInput(fieldName).getValue();
       String[] arrayTaxonomy = new String[1];
       if (value != null && !value.equals("")) {
@@ -426,37 +403,22 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
         ((UIOneNodePathSelector)uiComp).setRootNodeLocation(repositoryName, wsName, rootPath) ;
         ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
         ((UIOneNodePathSelector)uiComp).init(provider);
-      }else if (uiComp instanceof UICategoriesSelector){
-        CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
-        PortletPreferences preferences = uiForm.getPortletPreferences() ;
-        String repository = preferences.getValue(Utils.REPOSITORY, "") ;
-        String prefLocate = preferences.getValue("path", "") ;
-        String workspace = preferences.getValue("workspace", "");
-        RepositoryService repositoryService = uiForm.getApplicationComponent(RepositoryService.class);
-        Session session = null;
-        try {
-          session = repositoryService.getRepository(repository).login(workspace) ;
-        } catch(Exception e) {
-          session = repositoryService.getRepository(repository).getSystemSession(workspace) ;
+      } else if (uiComp instanceof UIOneTaxonomySelector) {
+        String workspaceName = uiForm.getDMSWorkspace();
+        ((UIOneTaxonomySelector)uiComp).setIsDisable(workspaceName, false);
+        String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
+        Session session = uiForm.getSession(uiForm.repositoryName, workspaceName);
+        Node rootTree = (Node) session.getItem(rootTreePath);      
+        NodeIterator childrenIterator = rootTree.getNodes();
+        while (childrenIterator.hasNext()) {
+          Node childNode = childrenIterator.nextNode();
+          rootTreePath = childNode.getPath();
+          break;
         }
-        Node currentNode = (Node) session.getItem(prefLocate);        
-        List<Node> cats = categoriesService.getCategories(currentNode, repository);
-        List<String> arrCategoriesList = new ArrayList<String>();        
-        for(int i=0; i<cats.size(); i++) {
-          arrCategoriesList.add(cats.get(i).getPath());          
-        }        
-        ((UICategoriesSelector)uiComp).setExistedCategoryList(arrCategoriesList);       
-        if (value != null && !value.equals("")) {
-          List<String> listTaxonomy = new ArrayList<String>();
-          if (arrayTaxonomy.length > 0) {
-            for (int i = 0; i < arrayTaxonomy.length; i++) {
-              if ((arrayTaxonomy[i] != null) && (arrayTaxonomy[i].length() > 0) && !listTaxonomy.contains(arrayTaxonomy[i])) 
-                listTaxonomy.add(arrayTaxonomy[i]);
-            }
-          }
-          ((UICategoriesSelector)uiComp).setExistedCategoryList(listTaxonomy);
-        }
-        ((UICategoriesSelector)uiComp).init();
+        
+        ((UIOneTaxonomySelector)uiComp).setRootNodeLocation(uiForm.repositoryName, workspaceName, rootTreePath);
+        ((UIOneTaxonomySelector)uiComp).init(SessionProviderFactory.createSystemProvider());
+        
       }
       uiContainer.initPopup(uiComp) ;
       String param = "returnField=" + fieldName ;
@@ -477,35 +439,38 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
 
   static public class AddActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
-      UIFastContentCreatortForm uiCreatortForm = event.getSource();
-      UIFastContentCreatorPortlet uiContainer = uiCreatortForm.getParent();
+      UIFastContentCreatortForm uiCreatorForm = event.getSource();
+      UIFastContentCreatorPortlet uiContainer = uiCreatorForm.getParent();
       String clickedField = event.getRequestContext().getRequestParameter(OBJECTID);
-      if (uiCreatortForm.isReference) {
-        UIFormMultiValueInputSet uiSet = uiCreatortForm.getChildById(FIELD_TAXONOMY);
+      if (uiCreatorForm.isReference) {
+        UIFormMultiValueInputSet uiSet = uiCreatorForm.getChildById(FIELD_TAXONOMY);
         if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals(FIELD_TAXONOMY)) {
           if ((clickedField != null) && (clickedField.equals(FIELD_TAXONOMY))){
-            NodeHierarchyCreator nodeHierarchyCreator = uiCreatortForm.getApplicationComponent(NodeHierarchyCreator.class);        
-            PortletPreferences preferences = uiCreatortForm.getPortletPreferences();
-            String repository = preferences.getValue(Utils.REPOSITORY, "");
-            
-            ManageableRepository manaRepository = 
-              uiCreatortForm.getApplicationComponent(RepositoryService.class).getRepository(repository);
-            String workspaceName = manaRepository.getConfiguration().getSystemWorkspaceName();
+            NodeHierarchyCreator nodeHierarchyCreator = uiCreatorForm.getApplicationComponent(NodeHierarchyCreator.class);        
             if(uiSet.getValue().size() == 0) uiSet.setValue(new ArrayList<Value>());
-            
-            UIOneNodePathSelector uiNodePathSelector = uiCreatortForm.createUIComponent(UIOneNodePathSelector.class, null, null);
-            uiNodePathSelector.setIsDisable(workspaceName, true);
-            uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
-                nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
-            uiNodePathSelector.init(SessionProviderFactory.createSystemProvider());
+            String workspaceName = uiCreatorForm.getDMSWorkspace();
+            UIOneTaxonomySelector uiOneTaxonomySelector = 
+              uiCreatorForm.createUIComponent(UIOneTaxonomySelector.class, null, null);
+            uiOneTaxonomySelector.setIsDisable(workspaceName, false);
+            String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
+            Session session = uiCreatorForm.getSession(uiCreatorForm.repositoryName, workspaceName);
+            Node rootTree = (Node) session.getItem(rootTreePath);      
+            NodeIterator childrenIterator = rootTree.getNodes();
+            while (childrenIterator.hasNext()) {
+              Node childNode = childrenIterator.nextNode();
+              rootTreePath = childNode.getPath();
+              break;
+            }
+            uiOneTaxonomySelector.setRootNodeLocation(uiCreatorForm.repositoryName, workspaceName, rootTreePath);
+            uiOneTaxonomySelector.init(SessionProviderFactory.createSystemProvider());
             String param = "returnField=" + FIELD_TAXONOMY;        
-            uiContainer.initPopup(uiNodePathSelector) ;
-            uiNodePathSelector.setSourceComponent(uiCreatortForm, new String[]{param});
+            uiOneTaxonomySelector.setSourceComponent(uiCreatorForm, new String[]{param});
+            uiContainer.initPopup(uiOneTaxonomySelector) ;
           }
         }
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
       } else {        
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiCreatortForm.getParent());
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiCreatorForm.getParent());
       }
     }
   }

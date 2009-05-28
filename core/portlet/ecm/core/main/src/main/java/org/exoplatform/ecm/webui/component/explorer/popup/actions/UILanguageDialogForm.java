@@ -16,35 +16,37 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
-import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.selector.ComponentSelector;
 import org.exoplatform.ecm.webui.selector.UISelectable;
-import org.exoplatform.ecm.webui.tree.selectmany.UICategoriesSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
-import org.exoplatform.services.cms.categories.CategoriesService;
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -148,6 +150,11 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
     return false;
   }
   
+  private String getDMSWorkspace() {
+    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+    return dmsConfiguration.getConfig(repositoryName).getSystemWorkspace();   
+  }
+  
   static  public class SaveActionListener extends EventListener<UILanguageDialogForm> {
     public void execute(Event<UILanguageDialogForm> event) throws Exception {
       UILanguageDialogForm languageDialogForm = event.getSource();
@@ -222,6 +229,8 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
     public void execute(Event<UILanguageDialogForm> event) throws Exception {
       UILanguageDialogForm uiForm = event.getSource();
       UIAddLanguageContainer uiContainer = uiForm.getAncestorOfType(UIAddLanguageContainer.class); 
+      UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+      NodeHierarchyCreator nodeHierarchyCreator = uiForm.getApplicationComponent(NodeHierarchyCreator.class);  
       uiForm.isShowingComponent = true;
       String fieldName = event.getRequestContext().getRequestParameter(OBJECTID);
       Map fieldPropertiesMap = uiForm.componentSelectors.get(fieldName);
@@ -243,7 +252,6 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
       }
       
       if(uiComp instanceof UIOneNodePathSelector) {
-        UIJCRExplorer explorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
         String repositoryName = explorer.getRepositoryName();
         SessionProvider provider = explorer.getSessionProvider();                
         String wsFieldName = (String)fieldPropertiesMap.get("workspaceField");
@@ -272,28 +280,22 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
         ((UIOneNodePathSelector)uiComp).setRootNodeLocation(repositoryName, wsName, rootPath);
         ((UIOneNodePathSelector)uiComp).setShowRootPathSelect(true);
         ((UIOneNodePathSelector)uiComp).init(provider);
-      } else if (uiComp instanceof UICategoriesSelector){
-        CategoriesService categoriesService = uiForm.getApplicationComponent(CategoriesService.class);
-        UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
-        Node currentNode = uiExplorer.getCurrentNode();
-        String repository = uiExplorer.getRepositoryName();
-        List<Node> cats = categoriesService.getCategories(currentNode, repository);
-        List<String> arrCategoriesList = new ArrayList<String>();        
-        for(int i=0; i<cats.size(); i++) {
-          arrCategoriesList.add(cats.get(i).getPath());          
-        }        
-        ((UICategoriesSelector)uiComp).setExistedCategoryList(arrCategoriesList);       
-        if (value != null && !value.equals("")) {
-          List<String> listTaxonomy = new ArrayList<String>();
-          if (arrayTaxonomy.length > 0) {
-            for (int i = 0; i < arrayTaxonomy.length; i++) {
-              if ((arrayTaxonomy[i] != null) && (arrayTaxonomy[i].length() > 0) && !listTaxonomy.contains(arrayTaxonomy[i])) 
-                listTaxonomy.add(arrayTaxonomy[i]);
-            }
-          }
-          ((UICategoriesSelector)uiComp).setExistedCategoryList(listTaxonomy);
+      } else if (uiComp instanceof UIOneTaxonomySelector) {
+        String workspaceName = uiForm.getDMSWorkspace();
+        ((UIOneTaxonomySelector)uiComp).setIsDisable(workspaceName, false);
+        String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
+        Session session = explorer.getSessionByWorkspace(workspaceName);
+        Node rootTree = (Node) session.getItem(rootTreePath);      
+        NodeIterator childrenIterator = rootTree.getNodes();
+        while (childrenIterator.hasNext()) {
+          Node childNode = childrenIterator.nextNode();
+          rootTreePath = childNode.getPath();
+          break;
         }
-        ((UICategoriesSelector)uiComp).init();
+        
+        ((UIOneTaxonomySelector)uiComp).setRootNodeLocation(uiForm.repositoryName, workspaceName, rootTreePath);
+        ((UIOneTaxonomySelector)uiComp).init(SessionProviderFactory.createSystemProvider());
+        
       }
       uiContainer.initPopup(uiComp);
       String param = "returnField=" + fieldName;

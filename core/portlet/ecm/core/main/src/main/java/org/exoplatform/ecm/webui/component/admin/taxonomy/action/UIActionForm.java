@@ -46,6 +46,8 @@ import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyAlreadyExistsException;
@@ -165,7 +167,9 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   }
   
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    return new JCRResourceResolver(getTaxoTreeData().getRepository(), getWorkspace(), "exo:templateFile");
+    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+    String workspace =  dmsConfiguration.getConfig(getTaxoTreeData().getRepository()).getSystemWorkspace();
+    return new JCRResourceResolver(getTaxoTreeData().getRepository(), workspace, "exo:templateFile");
   }
 
   public String getTemplate() {
