@@ -36,6 +36,7 @@ import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.PortalContainerInfo;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
@@ -229,7 +230,8 @@ public class QueryServiceImpl implements QueryService, Startable{
 
   public void addSharedQuery(String queryName, String statement, String language, 
       String[] permissions, boolean cachedResult, String repository) throws Exception {
-    Session session = getSession(repository);
+    SessionProvider provider = SessionProviderFactory.createSessionProvider();
+    Session session = getSession(repository, provider, true);
     ValueFactory vt = session.getValueFactory();
     String queryPath ;
     List<Value> perm = new ArrayList<Value>() ;                 
