@@ -17,11 +17,11 @@
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -38,21 +38,22 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UIRelationManager extends UIContainer implements UIPopupComponent {
 
-  final static public String[] ACTIONS = {"Close"} ;
+  final static public String[] ACTIONS = {"Close"};
   
   public UIRelationManager() throws Exception {
-    addChild(UIRelationsAddedList.class, null, null) ;
-    addChild(UIOneNodePathSelector.class, null, null).setRendered(false) ;
+    addChild(UIRelationsAddedList.class, null, null);
+    addChild(UIOneNodePathSelector.class, null, null).setRendered(false);
   }
   
-  public String[] getActions() { return ACTIONS ; }
+  public String[] getActions() { return ACTIONS; }
 
   static public class CloseActionListener extends EventListener<UIRelationManager> {
     public void execute(Event<UIRelationManager> event) throws Exception {
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.getCurrentNode().save() ;
-      uiExplorer.setIsHidePopup(false) ;
-      uiExplorer.cancelAction() ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+      uiExplorer.getCurrentNode().save();
+      uiExplorer.setIsHidePopup(false);
+      uiExplorer.cancelAction();
+      uiExplorer.updateAjax(event);
     }
   }
 
