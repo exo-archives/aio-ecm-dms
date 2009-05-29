@@ -390,6 +390,7 @@
       <remove-referentialIntegrityException>Không thể xóa node này bởi vì nó là đích của thuộc tính REFERENCE.</remove-referentialIntegrityException>
       <constraintviolation-exception>Khoản mục bắt buộc jcr:uuid không tìm thấy.Có thể node đã bị xóa hoặc bị thay đổi. Vui lòng nhấp nút Refresh!</constraintviolation-exception>
       <path-not-found-exception>Node này đã bị xóa hoặc thay đổi!Vui lòng lựa chọn nút Refresh.</path-not-found-exception>
+      <node-locked-other-person>Node đang xét hoặc node cha đang bị khóa bởi người dùng khác, Bạn không thể xóa!</node-locked-other-person>
     </msg>
   </UIPopupMenu>
   <!--

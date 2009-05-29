@@ -390,6 +390,7 @@
       <remove-referentialIntegrityException>لا يمكن حذف هذه العقدة لأنها موصولة بعقدة أخرى</remove-referentialIntegrityException>
       <constraintviolation-exception>عنصر ضروري: 'jcr:uuid' غير موجود. ربما تم تغييره أو حذفه. اظغط على زر التحديث.</constraintviolation-exception>
       <path-not-found-exception>هذه العقدة تم تغييرها أو حذفها. اظغط على زر التحديث.</path-not-found-exception>
+      <node-locked-other-person>This node or parent node is being locked by other user, you can not delete!</node-locked-other-person>
     </msg>
   </UIPopupMenu>
   <!--

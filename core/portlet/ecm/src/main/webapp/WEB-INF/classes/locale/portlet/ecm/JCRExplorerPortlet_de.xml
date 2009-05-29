@@ -390,6 +390,7 @@
       <remove-referentialIntegrityException><![CDATA[Kann Knoten nicht l&ouml;schen, weil er im Augenblick einer REFERENZ Eigenschaft unterworfen ist]]></remove-referentialIntegrityException>
       <constraintviolation-exception><![CDATA[Pflichtartikel jcr:uuid nicht gefunden. Vielleicht wurde Knoten gel&ouml;scht oder ge&auml;ndert. Bitte Aktualisierungsknopf dr&uuml;cken.]]></constraintviolation-exception>
       <path-not-found-exception><![CDATA[Dieser Knoten wurde gel&ouml;scht oder ge&auml;ndert. Bitte Aktualisierungsknopf dr&uuml;cken.]]></path-not-found-exception>
+      <node-locked-other-person>This node or parent node is being locked by other user, you can not delete!</node-locked-other-person>
     </msg>
   </UIPopupMenu>
   <!--

@@ -390,6 +390,7 @@
       <remove-referentialIntegrityException>Impossible de le supprimer car il est référencé ailleurs</remove-referentialIntegrityException>
       <constraintviolation-exception>Le jcr:uuid n'a pas été trouvé. Le noeud a peut être été modifié ou supprimé. Veuiller cliquer sur le bouton "Actualiser".</constraintviolation-exception>
       <path-not-found-exception>Le noeud a été modifié ou supprimé. Veuiller cliquer sur le bouton "Actualiser".</path-not-found-exception>
+      <node-locked-other-person>This node or parent node is being locked by other user, you can not delete!</node-locked-other-person>
     </msg>
   </UIPopupMenu>
   <!--
