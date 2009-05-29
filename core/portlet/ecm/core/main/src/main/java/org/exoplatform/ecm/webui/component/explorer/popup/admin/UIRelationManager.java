@@ -53,6 +53,7 @@ public class UIRelationManager extends UIContainer implements UIPopupComponent {
       uiExplorer.getCurrentNode().save() ;
       uiExplorer.setIsHidePopup(false) ;
       uiExplorer.cancelAction() ;
+      uiExplorer.updateAjax(event);
     }
   }
 
