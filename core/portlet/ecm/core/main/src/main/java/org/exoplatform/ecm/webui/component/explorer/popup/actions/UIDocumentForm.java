@@ -26,6 +26,7 @@ import javax.jcr.ItemExistsException;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
@@ -253,20 +254,17 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
             }
           }
           
-          if (categoriesPath.endsWith(",")) categoriesPath = categoriesPath.substring(0, categoriesPath.length()-1).trim();
-          categoriesPathList = categoriesPath.split(",");
-          if ((categoriesPathList == null) || (categoriesPathList.length == 0)) {
-            uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                ApplicationMessage.WARNING));
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-            return;
-          }
-          
-          for (String categoryPath : categoriesPathList) {
-            index = categoryPath.indexOf("/");
+          if (categoriesPath != null && categoriesPath.length() > 0) {
             try {
-              taxonomyService.getTaxonomyTree(repository, categoryPath.substring(0, index))
-                  .getNode(categoryPath.substring(index + 1));
+              if (categoriesPath.endsWith(",")) categoriesPath = categoriesPath.substring(0, categoriesPath.length()-1).trim();
+              categoriesPathList = categoriesPath.split(",");
+              if ((categoriesPathList == null) || (categoriesPathList.length == 0)) 
+                throw new PathNotFoundException();
+              for (String categoryPath : categoriesPathList) {
+                index = categoryPath.indexOf("/");
+                if (index < 0) throw new PathNotFoundException();
+                taxonomyService.getTaxonomyTree(repository, categoryPath.substring(0, index)).getNode(categoryPath.substring(index + 1));
+              }
             } catch (Exception e) {
               e.printStackTrace();
               uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, ApplicationMessage.WARNING));
