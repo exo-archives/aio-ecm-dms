@@ -722,6 +722,12 @@ public class UIWorkingArea extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
       return;        
+    } catch(LockException lockException) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked-other-person", null,
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
     } catch(Exception e) {  
       LOG.error("an unexpected error occurs while removing the node", e);
       JCRExceptionManager.process(uiApp, e);
