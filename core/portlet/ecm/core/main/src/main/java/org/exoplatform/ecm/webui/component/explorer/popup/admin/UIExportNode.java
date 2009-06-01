@@ -22,8 +22,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.Value;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -33,7 +35,7 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.services.compress.CompressData;
+import org.exoplatform.services.cms.compress.CompressData;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIPopupComponent;
@@ -156,11 +158,63 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       uiExplorer.cancelAction() ;
     }
   }
-
+  
   static public class ExportHistoryActionListener extends EventListener<UIExportNode> {
     public void execute(Event<UIExportNode> event) throws Exception {
       UIExportNode uiExport = event.getSource() ;
-      //TODO: export history data
+      UIJCRExplorer uiExplorer = uiExport.getAncestorOfType(UIJCRExplorer.class) ;
+      CompressData zipService = new CompressData();
+      DownloadService dservice = uiExport.getApplicationComponent(DownloadService.class) ;
+      InputStreamDownloadResource dresource ;
+      String format = uiExport.<UIFormRadioBoxInput>getUIInput(FORMAT).getValue() ;
+      ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      String sysWsName = uiExplorer.getRepository().getConfiguration().getSystemWorkspaceName();
+      Session session = uiExplorer.getSessionByWorkspace(sysWsName);
+      QueryResult queryResult = uiExport.getQueryResult(currentNode);
+      NodeIterator queryIter = queryResult.getNodes();
+      ByteArrayOutputStream propertiesBOS = new ByteArrayOutputStream() ;
+      while(queryIter.hasNext()) {
+        Node node = queryIter.nextNode();
+        bos = new ByteArrayOutputStream();
+        String versionHistory = node.getProperty("jcr:versionHistory").getValue().getString();
+        String baseVersion = node.getProperty("jcr:baseVersion").getValue().getString();
+        Value[] predecessors = node.getProperty("jcr:predecessors").getValues();
+        StringBuilder historyValue = new StringBuilder();
+        StringBuilder predecessorsBuilder = new StringBuilder();
+        for(Value value : predecessors) {
+          if(predecessorsBuilder.length() > 0) predecessorsBuilder.append(",") ;
+          predecessorsBuilder.append(value.toString());
+        }
+        historyValue.append(node.getBaseVersion().getUUID()).append("=").append(versionHistory).
+          append("|").append(baseVersion).append("|").append(predecessorsBuilder.toString()); 
+        propertiesBOS.write(historyValue.toString().getBytes());
+        propertiesBOS.write('\n');
+        if(format.equals(DOC_VIEW)) session.exportDocumentView(node.getVersionHistory().getPath(), bos, false, false );
+        else session.exportSystemView(node.getVersionHistory().getPath(), bos, false, false );
+        ByteArrayInputStream input = new ByteArrayInputStream(bos.toByteArray()) ;
+        zipService.addInputStream(node.getBaseVersion().getUUID() + ".xml",input);
+      }
+      ByteArrayInputStream mappingInput = new ByteArrayInputStream(propertiesBOS.toByteArray()) ;
+      zipService.addInputStream("mapping.properties", mappingInput);
+      if(currentNode.isNodeType(Utils.MIX_VERSIONABLE)) {
+        bos = new ByteArrayOutputStream();
+        if(format.equals(DOC_VIEW)) session.exportDocumentView(currentNode.getVersionHistory().getPath(), bos, false, false );
+        else session.exportSystemView(currentNode.getVersionHistory().getPath(), bos, false, false );
+        ByteArrayInputStream input = new ByteArrayInputStream(bos.toByteArray()) ;
+        zipService.addInputStream(currentNode.getBaseVersion().getUUID() + ".xml",input);
+      }
+      bos = new ByteArrayOutputStream();
+      zipService.createZip(bos);
+      ByteArrayInputStream zipInput = new ByteArrayInputStream(bos.toByteArray());
+      dresource = new InputStreamDownloadResource(zipInput, "application/zip") ;
+      dresource.setDownloadName(format + "_verionHistory.zip");
+      bos.close();
+      propertiesBOS.close();
+      mappingInput.close();
+      String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
+      uiExplorer.cancelAction() ;
     }
   }
   
