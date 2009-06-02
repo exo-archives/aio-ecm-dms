@@ -101,7 +101,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
   }
 
   static  public class SaveActionListener extends EventListener<UIRenameForm> {
-    public void execute(Event<UIRenameForm> event) throws Exception {      
+    public void execute(Event<UIRenameForm> event) throws Exception {
       UIRenameForm uiRenameForm = event.getSource() ; 
       RelationsService relationsService = 
         uiRenameForm.getApplicationComponent(RelationsService.class);
@@ -112,7 +112,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
       UIApplication uiApp = uiRenameForm.getAncestorOfType(UIApplication.class) ;
       try {  
         try {
-          references = uiRenameForm.renameNode_.getReferences() ;
+          references = uiRenameForm.renameNode_.getReferences();
           isReference = true ;
         } catch(Exception e) {
           isReference = false ;
@@ -120,9 +120,10 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         if(isReference && references != null) {
           if(references.getSize() > 0 ) {
             while (references.hasNext()) {
-              Property pro = references.nextProperty() ;
-              Node refNode = pro.getParent() ;
+              Property pro = references.nextProperty();
+              Node refNode = pro.getParent();
               if(refNode.hasProperty(RELATION_PROP)) {
+                refList.add(refNode);
                 relationsService.removeRelation(refNode, uiRenameForm.renameNode_.getPath(), 
                     uiJCRExplorer.getRepositoryName()) ;
                 refNode.save()  ;
