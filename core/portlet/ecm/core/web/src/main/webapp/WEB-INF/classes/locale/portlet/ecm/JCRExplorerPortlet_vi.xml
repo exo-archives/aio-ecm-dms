@@ -2325,6 +2325,7 @@
   <UIImportNode>
     <label>
       <behavior>Kiểu UUID</behavior>
+      <versionHistory>Lịch sử phiên bản</versionHistory>
     </label>
   </UIImportNode> 
  
@@ -2342,9 +2343,17 @@
       <ExportHistory>Xuất lịch sử phiên bản</ExportHistory>
     </action>
   </UIExportNode>  
+  
   <UIPopupMenu>
   	<msg>
   		<node-locked-other-person>Node đang xét hoặc node cha đang bị khóa bởi người dùng khác, Bạn không thể xóa!</node-locked-other-person>
     </msg>
   </UIPopupMenu>
+
+  <Import>
+    <label>
+      <docview>Kiểu văn bản</docview>
+      <sysview>Kiểu hệ thống</sysview>
+    </label>
+  </Import>  
 </bundle>

@@ -20,6 +20,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -36,6 +37,7 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.compress.CompressData;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIPopupComponent;
@@ -68,8 +70,6 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
   public static final String NODE_PATH = "nodePath" ;
   public static final String FORMAT = "format" ;
   public static final String ZIP = "zip" ;
-  public static final String DOCUMENT_VIEW = "Document View" ;
-  public static final String SYSTEM_VIEW = "System View" ;
   public static final String DOC_VIEW = "docview" ;
   public static final String SYS_VIEW = "sysview" ;
   public static final String VERSION_SQL_QUERY = "select * from mix:versionable where jcr:path like '$0/%' order by exo:dateCreated DESC";
@@ -78,9 +78,13 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
   private boolean isVerionNode_ = false;
 
   public UIExportNode() throws Exception {
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle resourceBundle = context.getApplicationResourceBundle();
     List<SelectItemOption<String>> formatItem = new ArrayList<SelectItemOption<String>>() ;
-    formatItem.add(new SelectItemOption<String>(DOCUMENT_VIEW, DOC_VIEW));
-    formatItem.add(new SelectItemOption<String>(SYSTEM_VIEW, SYS_VIEW));
+    formatItem.add(new SelectItemOption<String>(
+        resourceBundle.getString("Import.label." + DOC_VIEW), DOC_VIEW));
+    formatItem.add(new SelectItemOption<String>(
+        resourceBundle.getString("Import.label." + SYS_VIEW), SYS_VIEW));
     addUIFormInput(new UIFormInputInfo(NODE_PATH, NODE_PATH, null)) ;
     addUIFormInput(new UIFormRadioBoxInput(FORMAT, DOC_VIEW, formatItem).
                    setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
@@ -186,14 +190,14 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
           if(predecessorsBuilder.length() > 0) predecessorsBuilder.append(",") ;
           predecessorsBuilder.append(value.toString());
         }
-        historyValue.append(node.getBaseVersion().getUUID()).append("=").append(versionHistory).
+        historyValue.append(node.getUUID()).append("=").append(versionHistory).
           append("|").append(baseVersion).append("|").append(predecessorsBuilder.toString()); 
         propertiesBOS.write(historyValue.toString().getBytes());
         propertiesBOS.write('\n');
         if(format.equals(DOC_VIEW)) session.exportDocumentView(node.getVersionHistory().getPath(), bos, false, false );
         else session.exportSystemView(node.getVersionHistory().getPath(), bos, false, false );
         ByteArrayInputStream input = new ByteArrayInputStream(bos.toByteArray()) ;
-        zipService.addInputStream(node.getBaseVersion().getUUID() + ".xml",input);
+        zipService.addInputStream(node.getUUID() + ".xml", input);
       }
       ByteArrayInputStream mappingInput = new ByteArrayInputStream(propertiesBOS.toByteArray()) ;
       zipService.addInputStream("mapping.properties", mappingInput);
@@ -202,13 +206,13 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
         if(format.equals(DOC_VIEW)) session.exportDocumentView(currentNode.getVersionHistory().getPath(), bos, false, false );
         else session.exportSystemView(currentNode.getVersionHistory().getPath(), bos, false, false );
         ByteArrayInputStream input = new ByteArrayInputStream(bos.toByteArray()) ;
-        zipService.addInputStream(currentNode.getBaseVersion().getUUID() + ".xml",input);
+        zipService.addInputStream(currentNode.getUUID() + ".xml",input);
       }
       bos = new ByteArrayOutputStream();
       zipService.createZip(bos);
       ByteArrayInputStream zipInput = new ByteArrayInputStream(bos.toByteArray());
       dresource = new InputStreamDownloadResource(zipInput, "application/zip") ;
-      dresource.setDownloadName(format + "_verionHistory.zip");
+      dresource.setDownloadName(format + "_versionHistory.zip");
       bos.close();
       propertiesBOS.close();
       mappingInput.close();
