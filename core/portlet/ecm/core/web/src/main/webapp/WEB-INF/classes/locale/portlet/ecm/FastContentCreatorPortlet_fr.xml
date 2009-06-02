@@ -114,5 +114,18 @@
       <close>Fermer</close>
     </action>
   </UICategoriesSelector>
+  
+    <PopupComponent>
+	  <title>
+	    <UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+	  </title>
+  </PopupComponent>
+  
+  <UITreeTaxonomyList>
+    <label>
+      <taxonomyTree>Taxonomy Tree</taxonomyTree>
+    </label>
+  </UITreeTaxonomyList>
+  
 </bundle>
 

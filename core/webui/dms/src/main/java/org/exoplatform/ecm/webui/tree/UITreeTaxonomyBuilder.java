@@ -49,6 +49,7 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     events = @EventConfig(listeners = UITreeTaxonomyBuilder.ChangeNodeActionListener.class)
 )
+
 public class UITreeTaxonomyBuilder extends UIContainer {
   private boolean allowPublish = false;
   private PublicationService publicationService_ = null;
@@ -132,16 +133,6 @@ public class UITreeTaxonomyBuilder extends UIContainer {
     this.acceptedNodeTypes = acceptedNodeTypes;
   }
 
-  /**
-   * Builds the tree.
-   * 
-   * @throws Exception the exception
-   */
-  /*private Node getNodeSymLink(Node node) throws Exception{
-    LinkManager linkManager_ = getApplicationComponent(LinkManager.class);
-    return Utils.getNodeSymLink(node, linkManager_);
-  }*/
-  
   public void buildTree() throws Exception {  
     NodeIterator sibbling = null ;
     NodeIterator children = null ;    
@@ -169,7 +160,6 @@ public class UITreeTaxonomyBuilder extends UIContainer {
     UIOneTaxonomySelector uiOneTaxonomySelector = (UIOneTaxonomySelector) getParent();
     UIBreadcumbs uiBreadcumbs = uiOneTaxonomySelector.getChildById("BreadcumbOneTaxonomy");
     List<LocalPath> listLocalPath = uiBreadcumbs.getPath();
-    listLocalPath.clear();
     StringBuilder buffer = new StringBuilder(1024);
     String rootPath = rootTreeNode.getPath();
     for (LocalPath iterLocalPath : listLocalPath) {
@@ -177,7 +167,7 @@ public class UITreeTaxonomyBuilder extends UIContainer {
     }
     String path = buffer.toString();
     if (rootPath.endsWith(path)) rootPath = rootPath.substring(0, rootPath.length() - path.length());
-    if (path.startsWith("//")) path = path.substring(1);
+    path = path.replaceAll("/+", "/");
     if (!path.startsWith(rootPath)) path = rootPath + path;
     if (path.endsWith("/")) path = path.substring(0, path.length() - 1);
     if (path.length() == 0) path = "/";

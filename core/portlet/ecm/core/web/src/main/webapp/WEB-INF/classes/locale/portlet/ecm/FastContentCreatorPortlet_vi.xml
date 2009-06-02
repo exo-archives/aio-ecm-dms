@@ -114,5 +114,18 @@
       <close>Đóng</close>
     </action>
   </UICategoriesSelector>
+  
+    <PopupComponent>
+	  <title>
+	    <UIOneTaxonomySelector>Thêm danh mục</UIOneTaxonomySelector>
+	  </title>
+  </PopupComponent>
+  
+  <UITreeTaxonomyList>
+    <label>
+      <taxonomyTree>Cây danh mục</taxonomyTree>
+    </label>
+  </UITreeTaxonomyList>
+  
 </bundle>
 

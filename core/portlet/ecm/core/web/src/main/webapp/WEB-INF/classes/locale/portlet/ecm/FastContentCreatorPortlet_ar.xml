@@ -89,7 +89,7 @@
   </ECMNameValidator>
   <!--
   ###################################################################################
-  # JCR Browser																			  #
+  # JCR Browser																																																																			  #
   ###################################################################################
   -->
   <UIWorkspaceList>
@@ -109,6 +109,20 @@
       <UICategoriesSelector>إضافة فئات</UICategoriesSelector>
     </title>
   </PopupComponent>
+  
+    <PopupComponent>
+    <title>
+      <UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+    </title>
+  </PopupComponent>
+  
+  <UITreeTaxonomyList>
+    <label>
+      <taxonomyTree>Taxonomy Tree</taxonomyTree>
+    </label>
+  </UITreeTaxonomyList>
+  
+  
   <UICategoriesSelector>
     <action>
       <close>الإغلاق</close>
