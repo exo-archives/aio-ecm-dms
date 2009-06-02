@@ -28,8 +28,8 @@ import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.ext.UIExtension;
-import org.exoplatform.webui.ext.UIExtensionFilter;
-import org.exoplatform.webui.ext.UIExtensionFilterType;
+import org.exoplatform.webui.ext.filter.UIExtensionFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 import org.exoplatform.webui.ext.UIExtensionManager;
 import org.exoplatform.webui.ext.UIExtensionPlugin;
 

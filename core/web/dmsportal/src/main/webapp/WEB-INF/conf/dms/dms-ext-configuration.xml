@@ -115,7 +115,7 @@
 							<!-- field name="extendedFilters">
 								<collection type="java.util.ArrayList">
 									<value>
-										<object type="org.exoplatform.webui.ext.filter.UserACLFilter">
+										<object type="org.exoplatform.webui.ext.filter.impl.UserACLFilter">
 											<field name="permissions">
 												<collection type="java.util.ArrayList">
 													<value>
@@ -138,7 +138,7 @@
 							<!-- field name="extendedFilters">
 								<collection type="java.util.ArrayList">
 									<value>
-										<object type="org.exoplatform.webui.ext.filter.UserACLFilter">
+										<object type="org.exoplatform.webui.ext.filter.impl.UserACLFilter">
 											<field name="permissions">
 												<collection type="java.util.ArrayList">
 													<value>
@@ -332,7 +332,7 @@
 							<!-- field name="extendedFilters">
 								<collection type="java.util.ArrayList">
 									<value>
-										<object type="org.exoplatform.webui.ext.filter.UserACLFilter">
+										<object type="org.exoplatform.webui.ext.filter.impl.UserACLFilter">
 											<field name="permissions">
 												<collection type="java.util.ArrayList">
 													<value>
@@ -357,7 +357,7 @@
 							<!-- field name="extendedFilters">
 								<collection type="java.util.ArrayList">
 									<value>
-										<object type="org.exoplatform.webui.ext.filter.UserACLFilter">
+										<object type="org.exoplatform.webui.ext.filter.impl.UserACLFilter">
 											<field name="permissions">
 												<collection type="java.util.ArrayList">
 													<value>
@@ -382,7 +382,7 @@
 							<!-- field name="extendedFilters">
 								<collection type="java.util.ArrayList">
 									<value>
-										<object type="org.exoplatform.webui.ext.filter.UserACLFilter">
+										<object type="org.exoplatform.webui.ext.filter.impl.UserACLFilter">
 											<field name="permissions">
 												<collection type="java.util.ArrayList">
 													<value>

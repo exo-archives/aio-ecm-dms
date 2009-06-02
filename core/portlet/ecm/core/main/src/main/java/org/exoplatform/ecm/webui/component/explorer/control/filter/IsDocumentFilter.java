@@ -23,8 +23,8 @@ import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.cms.templates.TemplateService;
-import org.exoplatform.webui.ext.UIExtensionAbstractFilter;
-import org.exoplatform.webui.ext.UIExtensionFilterType;
+import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
 /**
  * Created by The eXo Platform SAS

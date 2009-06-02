@@ -23,6 +23,9 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
+import org.exoplatform.webui.ext.filter.UIExtensionFilters;
+import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 
 /**
  * Created by The eXo Platform SAS

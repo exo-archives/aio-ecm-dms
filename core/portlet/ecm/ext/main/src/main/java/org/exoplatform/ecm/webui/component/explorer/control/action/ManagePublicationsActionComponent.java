@@ -42,8 +42,8 @@ import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.ext.UIExtensionFilter;
-import org.exoplatform.webui.ext.UIExtensionFilters;
+import org.exoplatform.webui.ext.filter.UIExtensionFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 import org.exoplatform.webui.form.UIForm;
 
 /**

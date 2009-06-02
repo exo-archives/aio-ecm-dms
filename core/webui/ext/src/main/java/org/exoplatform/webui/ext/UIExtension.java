@@ -23,6 +23,8 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.ext.filter.UIExtensionFilters;
+import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 
 /**
  * A Pojo that describes an UI extension
@@ -214,9 +216,6 @@ public class UIExtension implements Comparable<UIExtension> {
    * {@inheritDoc}
    */
   public boolean equals(Object o) {
-    if (o instanceof UIExtension) {
-      return compareTo((UIExtension) o) == 0;
-    }
-    return false;
+      return o instanceof UIExtension && compareTo((UIExtension) o) == 0;
   }
 }

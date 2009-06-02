@@ -20,7 +20,7 @@ import java.util.Hashtable;
 import java.util.Map;
 
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
-import org.exoplatform.webui.ext.UIExtensionAbstractFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
 
 /**
  * Created by The eXo Platform SAS

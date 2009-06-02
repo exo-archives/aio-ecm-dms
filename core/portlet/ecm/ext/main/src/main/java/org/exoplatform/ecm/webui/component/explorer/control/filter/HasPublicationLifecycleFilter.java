@@ -20,7 +20,7 @@ import java.util.Map;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.services.ecm.publication.PublicationService;
-import org.exoplatform.webui.ext.UIExtensionAbstractFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
 
 /**
  * Created by The eXo Platform SAS

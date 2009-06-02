@@ -21,7 +21,7 @@ import java.util.Map;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
-import org.exoplatform.webui.ext.UIExtensionAbstractFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
 
 /**
  * Created by The eXo Platform SAS

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.webui.ext.filter;
+package org.exoplatform.webui.ext.filter.impl;
 
 import java.util.List;
 import java.util.Map;
@@ -22,8 +22,8 @@ import java.util.Map;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.portal.config.UserACL;
-import org.exoplatform.webui.ext.UIExtensionFilter;
-import org.exoplatform.webui.ext.UIExtensionFilterType;
+import org.exoplatform.webui.ext.filter.UIExtensionFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
 /**
  * This filter is used to add some access permissions to a specific extension

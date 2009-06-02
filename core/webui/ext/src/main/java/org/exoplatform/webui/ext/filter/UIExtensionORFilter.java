@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.webui.ext;
+package org.exoplatform.webui.ext.filter;
 
 import java.util.List;
 import java.util.Map;
