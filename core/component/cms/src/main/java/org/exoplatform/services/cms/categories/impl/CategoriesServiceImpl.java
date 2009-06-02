@@ -196,9 +196,13 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   }
 
   public void addMultiCategory(Node node, String[] arrCategoryPath, String repository) throws Exception {
-    Session systemSession = getSession(repository);    
-    processRemoveCategory(node);
-    for(String categoryPath : arrCategoryPath) {      
+    addMultiCategory(node, arrCategoryPath, repository, true);
+  }
+  
+  public void addMultiCategory(Node node, String[] arrCategoryPath, String repository, boolean flag) throws Exception {
+  	Session systemSession = getSession(repository);
+  	if (flag) processRemoveCategory(node);
+    for (String categoryPath : arrCategoryPath) {      
       processCategory(systemSession, node, categoryPath);
     }
     systemSession.logout();

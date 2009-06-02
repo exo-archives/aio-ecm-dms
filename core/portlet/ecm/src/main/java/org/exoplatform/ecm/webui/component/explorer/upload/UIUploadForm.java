@@ -429,7 +429,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
               node.setProperty("exo:dateModified",new GregorianCalendar()) ;
             }
             if(arrayTaxonomy.length > 0) {
-              categoriesService.addMultiCategory(node, arrayTaxonomy, uiExplorer.getRepositoryName());
+              categoriesService.addMultiCategory(node, arrayTaxonomy, uiExplorer.getRepositoryName(), false);
             }
             node.save();
           }

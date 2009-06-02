@@ -113,6 +113,17 @@ public interface CategoriesService {
   public void addMultiCategory(Node node, String[] arrCategoryPath, String repository) throws Exception;
   
   /**
+   * Adds multi category to the given node by specify an array of category path
+   * @param node              Specify the node wants to get multi category
+   * @param arrCategoryPath   An array of category path
+   * @param repository        The name of repository
+   * @param flag							The flag is specified to decide remove all categories before adding
+   * @see                     Node
+   * @throws Exception
+   */
+  public void addMultiCategory(Node node, String[] arrCategoryPath, String repository, boolean flag) throws Exception;
+  
+  /**
    * Adds a new category path to the given node
    * @param node              Specify the node wants to add a new category path
    * @param categoryPath      Specify the path that adds into the given node
