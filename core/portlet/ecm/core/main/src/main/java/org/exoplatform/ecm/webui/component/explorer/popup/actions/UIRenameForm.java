@@ -136,6 +136,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
               Property pro = references.nextProperty();
               Node refNode = pro.getParent();
               if (refNode.hasProperty(RELATION_PROP)) {
+                refList.add(refNode);
                 relationsService.removeRelation(refNode, uiRenameForm.renameNode_.getPath(),
                     uiJCRExplorer.getRepositoryName());
                 refNode.save();
