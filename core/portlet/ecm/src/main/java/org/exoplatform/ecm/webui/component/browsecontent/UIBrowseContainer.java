@@ -1479,10 +1479,8 @@ public class UIBrowseContainer extends UIContainer {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       UIPortal uiPortal = Util.getUIPortal();
       String uri  = event.getRequestContext().getRequestParameter(OBJECTID);
-      String[] arrUri = {uri};
-      if(uri.contains("/")) arrUri = uri.split("/");
       PageNodeEvent<UIPortal> pnevent;
-      pnevent = new PageNodeEvent<UIPortal>(uiPortal, PageNodeEvent.CHANGE_PAGE_NODE, arrUri[0]);      
+      pnevent = new PageNodeEvent<UIPortal>(uiPortal, PageNodeEvent.CHANGE_PAGE_NODE, uri);      
       uiPortal.broadcast(pnevent, Event.Phase.PROCESS);
       uiPortal.getSelectedNode().setUri(uri);
     }
