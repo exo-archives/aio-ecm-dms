@@ -175,6 +175,10 @@
 	
 	<component>    
     <type>org.exoplatform.services.cms.thumbnail.impl.ThumbnailRESTService</type>    
+  </component>
+  
+	<component>    
+    <type>org.exoplatform.services.cms.compress.CompressData</type>    
   </component>	
 	
 	<component>
