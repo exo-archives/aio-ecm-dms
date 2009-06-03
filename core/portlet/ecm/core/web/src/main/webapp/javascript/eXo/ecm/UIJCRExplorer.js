@@ -96,6 +96,7 @@ UIJCRExplorer.prototype.initEvent = function(uniqueId) {
 UIJCRExplorer.prototype.dropDownIconList = function(uniqueId) {
  	var DOMUtil = eXo.core.DOMUtil;
 	var actionBar = document.getElementById(uniqueId);
+	if (!actionBar) return;
 	var activeBoxContent = DOMUtil.findFirstDescendantByClass(actionBar, "div", "ActiveBoxContent");
 	var actionBgs = DOMUtil.findChildrenByClass(activeBoxContent, "div", "ActionBg");
 	var nSize = actionBgs.length;
