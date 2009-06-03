@@ -61,6 +61,7 @@ import org.exoplatform.webui.form.UIFormRadioBoxInput;
     template =  "app:/groovy/webui/component/explorer/popup/admin/UIFormWithMultiRadioBox.gtmpl",
     events = {
       @EventConfig(listeners = UIExportNode.ExportActionListener.class),
+      @EventConfig(listeners = UIExportNode.ExportHistoryActionListener.class),
       @EventConfig(listeners = UIExportNode.CancelActionListener.class)
     }
 )
@@ -158,7 +159,6 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       }
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
-      uiExplorer.cancelAction() ;
     }
   }
   
