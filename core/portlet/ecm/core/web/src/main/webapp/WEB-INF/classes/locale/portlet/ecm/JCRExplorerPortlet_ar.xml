@@ -392,6 +392,7 @@ Nouvelle configuration
       <remove-referentialIntegrityException>لا يمكن حذف هذه العقدة لأنها موصولة بعقدة أخرى</remove-referentialIntegrityException>
       <constraintviolation-exception>عنصر ضروري: 'jcr:uuid' غير موجود. ربما تم تغييره أو حذفه. اظغط على زر التحديث.</constraintviolation-exception>
       <path-not-found-exception>هذه العقدة تم تغييرها أو حذفها. اظغط على زر التحديث.</path-not-found-exception>
+      <not-exist-categories>Category does not exist</not-exist-categories>
     </msg>
   </UIPopupMenu>
   <!--

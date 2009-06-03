@@ -38,9 +38,12 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
@@ -75,29 +78,28 @@ public class ManageCategoriesActionComponent extends UIComponent {
       DMSConfiguration dmsConfiguration = uiExplorer.getApplicationComponent(DMSConfiguration.class);
       DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(repository);
       String workspaceName = dmsRepoConfig.getSystemWorkspace();
-      NodeHierarchyCreator nodeHierarchyCreator = uiActionBar.getApplicationComponent(NodeHierarchyCreator.class);
       uiExplorer.setIsHidePopup(true);
       UICategoryManager uiManager = uiExplorer.createUIComponent(UICategoryManager.class, null, null);
       UIOneTaxonomySelector uiOneTaxonomySelector = uiManager.getChild(UIOneTaxonomySelector.class);
-      uiOneTaxonomySelector.setIsDisable(workspaceName, false);
-      uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
-      String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
-      Session session = uiExplorer.getSessionByWorkspace(dmsRepoConfig.getSystemWorkspace());
-      Node rootTree = (Node) session.getItem(rootTreePath);
-      NodeIterator childrenIterator = rootTree.getNodes();
-      while (childrenIterator.hasNext()) {
-        Node childNode = childrenIterator.nextNode();
-        rootTreePath = childNode.getPath();
-        uiOneTaxonomySelector.setRootTaxonomyName(rootTreePath.substring(rootTreePath.lastIndexOf("/") + 1));
-        break;
+      TaxonomyService taxonomyService = uiActionBar.getApplicationComponent(TaxonomyService.class);
+      UIApplication uiApp = uiActionBar.getAncestorOfType(UIApplication.class);
+      List<Node> lstNode = taxonomyService.getAllTaxonomyTrees(repository);
+      if (lstNode != null && lstNode.size() > 0) {
+        uiOneTaxonomySelector.setRootTaxonomyName(lstNode.get(0).getName());
+        uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, lstNode.get(0).getPath());
+        uiOneTaxonomySelector.setIsDisable(workspaceName, false);
+        uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
+        uiOneTaxonomySelector.init(uiExplorer.getSessionProvider());
+        UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
+        uiOneTaxonomySelector.setSourceComponent(uiCateAddedList, null);
+        UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+        UIPopupContainer.activate(uiManager, 630, 500);
+        event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+      } else {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-exist-categories", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        uiExplorer.updateAjax(event);
       }
-      uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
-      uiOneTaxonomySelector.init(uiExplorer.getSessionProvider());
-      UICategoriesAddedList uiCateAddedList = uiManager.getChild(UICategoriesAddedList.class);
-      uiOneTaxonomySelector.setSourceComponent(uiCateAddedList, null);
-      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
-      UIPopupContainer.activate(uiManager, 630, 500);
-      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
 }

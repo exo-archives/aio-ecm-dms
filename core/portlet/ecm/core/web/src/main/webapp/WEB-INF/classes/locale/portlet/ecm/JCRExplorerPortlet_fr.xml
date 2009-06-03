@@ -352,6 +352,7 @@
       <tagnode-checkedin>Vous devez d'abord effectuer un checkout avant de pouvoir tagguer ce document</tagnode-checkedin>
       <unsupported-multilanguage>Seuls les documents supportent le multilingue</unsupported-multilanguage>
       <multilang-checkedin>Vous devez d'abord effectuer un checkout avant de pouvoir ajouter une langue</multilang-checkedin>
+      <not-exist-categories>Category does not exist</not-exist-categories>
     </msg>
   </UIActionBar>
   <UIPopupMenu>

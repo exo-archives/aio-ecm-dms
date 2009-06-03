@@ -347,6 +347,7 @@
         <no-publication-lifecycle>No publication lifecycle is configured.</no-publication-lifecycle>
       </manage-publication>
       <unsubcriber-lifecycle-finish>The node is unsubcribed successfully</unsubcriber-lifecycle-finish>
+      <not-exist-categories>Category does not exist</not-exist-categories>
     </msg>
   </UIActionBar>
   <!--

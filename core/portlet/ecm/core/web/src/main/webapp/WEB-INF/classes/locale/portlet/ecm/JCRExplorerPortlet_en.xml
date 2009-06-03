@@ -390,6 +390,7 @@
       <remove-referentialIntegrityException>Can not delete this node because it is currently the target of a REFERENCE property</remove-referentialIntegrityException>
       <constraintviolation-exception>Mandatory item jcr:uuid not found. Maybe have node deleted or changed. Please click to refresh button.</constraintviolation-exception>
       <path-not-found-exception>This node was deleted or changed. Please click to refresh button.</path-not-found-exception>
+      <not-exist-categories>Category does not exist</not-exist-categories>
     </msg>
   </UIPopupMenu>
   <!--
