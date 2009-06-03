@@ -17,52 +17,55 @@
 <% uiform.begin() %>
 <div class="UIActionBar" id="$uicomponent.id">
 	<div class="UIHorizontalTabs">
-		<div class="TabsContainer" style="position: relative">
-		<%
-		  def tabs = uicomponent.getTabList() ;
-		  for(tab in tabs) {
-		    def selectedTab = uicomponent.getSelectedTab();
-		    def tabStyle = "NormalActionBarTab";
-		    def isSelected = false;
-		    if(selectedTab.equals(tab)) {
-		      isSelected = true;
-		      tabStyle = "SelectedActionBarTab";
-		    }
-		%>
-		   <div class="UITab" style="display: block;">
-			   <div class="$tabStyle">
-					 <div class="TabL">
-					   <div class="TabR">
-							 <div class="TabM">
-							   <a href="<%=uicomponent.event("ChangeTab", tab)%>" class="TabLabel">$tab</a>
-							 </div>
+		<div class="TabsContainer">
+		  <div style="overflow: hidden;">
+				<%
+				  def tabs = uicomponent.getTabList() ;
+			    def isSelected = false;
+				  for(tab in tabs) {
+				    def selectedTab = uicomponent.getSelectedTab();
+				    def tabStyle = "NormalActionBarTab";
+				    if(selectedTab.equals(tab)) {
+				      isSelected = true;
+				      tabStyle = "SelectedActionBarTab";
+				    }
+				%>
+				   <div class="UITab" style="display: block;">
+					   <div class="$tabStyle">
+							 <div class="TabL">
+							   <div class="TabR">
+									 <div class="TabM">
+									   <a href="<%=uicomponent.event("ChangeTab", tab)%>" class="TabLabel">$tab</a>
+									 </div>
+							   </div>
+							 </div>  
 					   </div>
-					 </div>  
-			   </div>
-			 <%if(isSelected) {%>
-			   <div id="DMSMenuItemContainer" class="DMSMenuItemContainer MenuItemContainer">
-			   <%for(button in uicomponent.getActionInTab(tab)) {
-			       def action = uicomponent.getUIAction(button);
-					   if (action != null) {
-					     def title = _ctx.appRes(uicomponent.getId() + ".tooltip." + button);
-				 %>
-							 <div class="NormalSubItem SubTabItem">
-								 <div class="NormalSubTabItemL">
-									 <div class="NormalSubTabItemR">
-										 <div class="NormalSubTabItemM">
-											 <a href="<%=action.event(button)%>" title="$title" class="SubTabIcon ${button}Icon">$title</a>
-										 </div>
+					 </div>
+				<%}%>
+				<div style="clear: left;"><span></span></div>
+		  </div>
+		 <%if(isSelected) {%>
+		   <div id="DMSMenuItemContainer" class="DMSMenuItemContainer MenuItemContainer">
+		   <%for(button in uicomponent.getActionInTab(uicomponent.getSelectedTab())) {
+		       def action = uicomponent.getUIAction(button);
+				   if (action != null) {
+				     def title = _ctx.appRes(uicomponent.getId() + ".tooltip." + button);
+			 %>
+						 <div class="NormalSubItem SubTabItem">
+							 <div class="NormalSubTabItemL">
+								 <div class="NormalSubTabItemR">
+									 <div class="NormalSubTabItemM">
+										 <a href="<%=action.event(button)%>" title="$title" class="SubTabIcon ${button}Icon">$title</a>
 									 </div>
 								 </div>
 							 </div>
-					<%
-						 }
+						 </div>
+				<%
 					 }
-					%>
-					</div>
-			 <%}%>
-			 </div>
-		<%}%>
+				 }
+				%>
+				</div>
+		 <%}%>
 		</div>
 		<div class="UIViewBarContainer" id="UIViewBarContainer">
 			<%if(uicomponent.isShowSaveSession()) {%>
