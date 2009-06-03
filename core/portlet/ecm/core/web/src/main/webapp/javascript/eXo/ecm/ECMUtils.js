@@ -338,8 +338,96 @@
 			}
 		}
 	};
+	
+	ECMUtils.prototype.checkAvailableSpace = function() { 
+		var actionBar = document.getElementById('UIActionBar');
+		var prtNode = document.getElementById('DMSMenuItemContainer');
+		var uiTabs = DOM.findDescendantsByClass(prtNode, "div", "SubTabItem");
+		var listHideIcon = document.getElementById('IconListHideElement');
+		var viewBarContainer = document.getElementById("UIViewBarContainer");
+		var elementSpace = 0;
+		var portletFrag = DOM.findAncestorByClass(actionBar, "PORTLET-FRAGMENT");
+		if(eXo.core.Browser.browserType == 'ie') {
+			maxSpace = parseInt(actionBar.offsetWidth) - parseInt(viewBarContainer.offsetWidth);
+		} else {
+			var maxSpace = parseInt(portletFrag.offsetWidth) - parseInt(viewBarContainer.offsetWidth);
+		}
+
+		for(var i = 0; i <  uiTabs.length; i++){
+			uiTabs[i].style.display = "block" ;
+			listHideIcon.style.display = "block" ;
+			if(elementSpace >= maxSpace - uiTabs[i].offsetWidth - listHideIcon.offsetWidth) {
+				listHideIcon.className = "IconListHideElement ShowElementIcon";
+				listHideIcon.style.visibility = "visible" ;
+				eXo.ecm.ECMUtils.addElementListHide(uiTabs[i]);
+				uiTabs[i].style.display = 'none';
+			} else {
+				listHideIcon.className = "IconListHideElement ShowElementIcon";
+				listHideIcon.style.visibility = "hidden" ;
+				uiTabs[i].style.display = 'block';
+				elementSpace += uiTabs[i].offsetWidth;
+				var subItem = DOM.findFirstDescendantByClass(uiTabs[i], "a", "SubTabIcon");
+				eXo.ecm.ECMUtils.removeElementListHide(subItem);
+			}
+		}
+		eXo.core.Browser.addOnResizeCallback('ECMresize', function(){eXo.ecm.ECMUtils.checkAvailableSpace()});
+	};	
+	
+	ECMUtils.prototype.addElementListHide = function(obj) {
+		var tmpNode = obj.cloneNode(true);
+		var subItem = DOM.findFirstDescendantByClass(tmpNode, "a", "SubTabIcon");
+		var listHideIcon = document.getElementById('IconListHideElement');
+		var listHideContainer = DOM.findFirstDescendantByClass(listHideIcon, "div", "ListHideContainer");
+		var uiTabs = DOM.findDescendantsByClass(listHideContainer, "div", "SubTabItem");
+		for(var i = 0; i < uiTabs.length; i++) {
+			var hideSubItem = DOM.findFirstDescendantByClass(uiTabs[i], "a", "SubTabIcon");
+			if(hideSubItem.className == subItem.className) {
+				return;
+			}
+		}
+		listHideContainer.appendChild(tmpNode);
+		
+		if (listHideContainer.innerHTML != "") {
+			var clearElement = document.createElement("div");
+			clearElement.style.clear = "left";
+			listHideContainer.appendChild(clearElement);
+		} else {
+			listHideContainer.style.display = "none";
+		}
+	};
+	
+	ECMUtils.prototype.removeElementListHide = function(obj) {
+		if(!obj) return;
+		var listHideIcon = document.getElementById('IconListHideElement');
+		var listHideContainer = DOM.findFirstDescendantByClass(listHideIcon, "div", "ListHideContainer");
+		var uiTabs = DOM.findDescendantsByClass(listHideContainer, "div", "SubTabItem");
+		var tmpNode = false;
+		for(var i = 0; i < uiTabs.length; i++) {
+			tmpNode = DOM.findFirstDescendantByClass(uiTabs[i], "a", "SubTabIcon");
+			if(tmpNode.className == obj.className) {
+				listHideContainer.removeChild(uiTabs[i]);
+			}
+		}
+	};
+	
+	ECMUtils.prototype.showListHideElements = function(obj,event) {
+		event = event || window.event;
+		event.cancelBubble = true;
+		var listHideContainer = DOM.findFirstDescendantByClass(obj, "div", "ListHideContainer");
+		var listItems = DOM.findDescendantsByClass(listHideContainer, "div", "SubTabItem");
+		if(listItems && listItems.length > 0) {
+			if(listHideContainer.style.display != 'block') {
+				obj.style.position = 'relative';
+				listHideContainer.style.display = 'block';
+				listHideContainer.style.top = obj.offsetHeight + 'px';
+				listHideContainer.style.left =  -(listHideContainer.offsetWidth - obj.offsetWidth) + 'px';
+			 } else {
+				 obj.style.position = 'static';
+				 listHideContainer.style.display = 'none';
+			 }
+			DOM.listHideElements(listHideContainer);
+		} 
+	};
 };
 
 eXo.ecm.ECMUtils = new ECMUtils();
-
-

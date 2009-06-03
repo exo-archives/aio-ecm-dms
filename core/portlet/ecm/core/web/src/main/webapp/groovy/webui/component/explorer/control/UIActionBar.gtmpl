@@ -10,8 +10,8 @@
 <%
   def uniqueId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
-  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
-  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UIJCRExplorer.initEvent('$uniqueId');}");
+	rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.checkAvailableSpace');
+  rcontext.getJavascriptManager().addOnResizeJavascript('eXo.ecm.ECMUtils.checkAvailableSpace');
 %>
  
 <% uiform.begin() %>
@@ -26,7 +26,7 @@
 		    def isSelected = false;
 		    if(selectedTab.equals(tab)) {
 		      isSelected = true;
-		      tabStyle = "SelectedActionBarTab";  
+		      tabStyle = "SelectedActionBarTab";
 		    }
 		%>
 		   <div class="UITab" style="display: block;">
@@ -40,7 +40,7 @@
 					 </div>  
 			   </div>
 			 <%if(isSelected) {%>
-			   <div class="MenuItemContainer" style="display: block; position: absolute; left: 0px;">
+			   <div id="DMSMenuItemContainer" class="DMSMenuItemContainer MenuItemContainer">
 			   <%for(button in uicomponent.getActionInTab(tab)) {
 			       def action = uicomponent.getUIAction(button);
 					   if (action != null) {
@@ -64,13 +64,22 @@
 			 </div>
 		<%}%>
 		</div>
-		<%if(uicomponent.isShowSaveSession()) {%>
-      <a class="SaveSessionButton" href="<%=uicomponent.event("SaveSession")%>" title="<%=_ctx.appRes("UIViewBar.label.saveSession")%>"><span></span></a>
-    <%}%>
-    <a class="SetupPreferencesButton" href="<%=uicomponent.event("Preferences")%>" title="<%=_ctx.appRes("UIViewBar.label.setUpBrowser")%>"><span></span></a>
-    <%if (!uicomponent.isDirectlyDrive()) {%>
-      <a class="BackToMainDriveButton" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIViewBar.label.backToJCR")%>"><span></span></a>
-	  <%}%>
+		<div class="UIViewBarContainer" id="UIViewBarContainer">
+			<%if(uicomponent.isShowSaveSession()) {%>
+	      <a class="SaveSessionButton" href="<%=uicomponent.event("SaveSession")%>" title="<%=_ctx.appRes("UIViewBar.label.saveSession")%>"></a>
+	    <%}%>
+	    <a class="SetupPreferencesButton" href="<%=uicomponent.event("Preferences")%>" title="<%=_ctx.appRes("UIViewBar.label.setUpBrowser")%>"></a>
+	    <%if (!uicomponent.isDirectlyDrive()) {%>
+	      <a class="BackToMainDriveButton" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIViewBar.label.backToJCR")%>"></a>
+		  <%}%>
+			<div class="ClearRight"><span></span></div>
+		</div>
+		<div id="IconListHideElement" style="float: right; padding-top: 3px;" onclick="eXo.ecm.ECMUtils.showListHideElements(this,event);">
+			<a class="ListHideElementIcon"></a>
+			<div class="ListHideContainer" id="ListHideContainer" style="display:none">								
+			</div>
+		</div>
 	</div>
 </div>
+		  
 <% uiform.end() %>

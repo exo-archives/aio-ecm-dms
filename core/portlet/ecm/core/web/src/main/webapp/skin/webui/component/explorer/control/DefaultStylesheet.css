@@ -63,7 +63,7 @@
 	width: 24px;	height: 24px;
   background: url('DefaultSkin/icons/BackToMainDriveButton.gif') no-repeat center ;
   float: right;
-  padding: 5px 10px 0px 0px;
+  margin-left: 5px 
 }
 
 .UIJCRExplorerPortlet .SetupPreferencesButton {
@@ -177,6 +177,7 @@
   border: solid 0px white;
   float: left; /* orientation=lt */
   float: left; /* orientation=lt */
+  width: 140px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DropDownButtonBox {
@@ -605,6 +606,7 @@
 	line-height: 20px;
 	padding: 0 25px 0px 27px;
 	display: block;
+	white-space: nowrap;
 }
 
 .UIJCRExplorerPortlet .UIActionBar .AddIcon{
@@ -652,4 +654,35 @@
 
 .UIJCRExplorerPortlet .NormalSubItem,.SubTabItemM a{
 	font-weight:normal;
+}
+
+.UIJCRExplorerPortlet .ShowElementIcon {
+	background: url(DefaultSkin/icons/NormalButton.gif) no-repeat;
+	width:24px;
+	height:24px;
+	display:block;
+	border: 1px solid #666;
+}
+
+.UIJCRExplorerPortlet .ShowElementIcon:hover {
+	background: url(DefaultSkin/icons/HoverButton.gif) no-repeat;
+}
+
+
+.UIViewBarContainer {
+	float: right;	
+	padding-top: 3px;
+	width:100px;
+}
+
+.ListHideContainer {
+	background: #f7f7f7;
+	border:solid 1px #b7b7b7;
+	position:absolute;
+}
+
+.DMSMenuItemContainer {
+	display: block; 
+	position: absolute; 
+	left: 0px;
 }
