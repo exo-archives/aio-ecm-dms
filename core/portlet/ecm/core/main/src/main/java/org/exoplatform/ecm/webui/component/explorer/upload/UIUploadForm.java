@@ -279,16 +279,17 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
           return ;
       }      
       String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
-      for(String filterChar : arrFilterChar) {
-        if (fileName.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null, ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-        }
-      }
-
       InputStream inputStream = input.getUploadDataAsStream();
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue();
+      if (name == null) {
+        for(String filterChar : arrFilterChar) {
+          if (fileName.indexOf(filterChar) > -1) {
+            name = fileName.replaceAll(filterChar, "");
+            fileName = name;
+          }
+        }
+        name = fileName;
+      } else name = name.trim();
       if (name == null) name = fileName;      
       else name = name.trim();
       for(String filterChar : arrFilterChar) {
