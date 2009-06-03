@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
@@ -37,6 +38,7 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -116,25 +118,34 @@ public class UITreeTaxonomyList extends UIForm {
       UITreeTaxonomyList uiTreeTaxonomyList = event.getSource();
       UIOneTaxonomySelector uiOneTaxonomySelector = uiTreeTaxonomyList.getParent();
       String taxoTreeName = uiTreeTaxonomyList.getUIFormSelectBox(TAXONOMY_TREE).getValue();  
-      
       Node taxoTreeNode = uiOneTaxonomySelector.getTaxoTreeNode(taxoTreeName);
       String workspaceName = taxoTreeNode.getSession().getWorkspace().getName();
       String pathTaxonomy = taxoTreeNode.getPath();
-      UITreeTaxonomyBuilder uiTreeJCRExplorer = uiOneTaxonomySelector.getChild(UITreeTaxonomyBuilder.class);
       UIApplication uiApp = uiTreeTaxonomyList.getAncestorOfType(UIApplication.class);
-      try {
-        uiTreeJCRExplorer.setRootTreeNode(uiTreeTaxonomyList.getRootNode(uiOneTaxonomySelector.getRepositoryName(), 
-            workspaceName, pathTaxonomy));
-      } catch (AccessDeniedException ade) {        
-        uiTreeTaxonomyList.getUIFormSelectBox(TAXONOMY_TREE).setValue("collaboration");
-        uiApp.addMessage(new ApplicationMessage("UIWorkspaceList.msg.AccessDeniedException", null, ApplicationMessage.WARNING));
+      if (taxoTreeNode.hasNodes()) {
+        uiOneTaxonomySelector.setWorkspaceName(workspaceName);
+        uiOneTaxonomySelector.setRootTaxonomyName(taxoTreeNode.getName());
+        uiOneTaxonomySelector.setRootTreePath(taxoTreeNode.getPath());
+        UIBreadcumbs uiBreadcumbs = uiOneTaxonomySelector.getChildById("BreadcumbOneTaxonomy");
+        uiBreadcumbs.getPath().clear();
+        UITreeTaxonomyBuilder uiTreeJCRExplorer = uiOneTaxonomySelector.getChild(UITreeTaxonomyBuilder.class);
+        try {
+          uiTreeJCRExplorer.setRootTreeNode(uiTreeTaxonomyList.getRootNode(uiOneTaxonomySelector
+              .getRepositoryName(), workspaceName, pathTaxonomy));
+          uiTreeJCRExplorer.buildTree();
+        } catch (AccessDeniedException ade) {        
+          uiApp.addMessage(new ApplicationMessage("UIWorkspaceList.msg.AccessDeniedException", null, ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        } catch(Exception e) {
+          e.printStackTrace();
+          return;
+        }
+      } else {
+        uiApp.addMessage(new ApplicationMessage("UITreeTaxonomyList.msg.NoChild", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
-      } catch(Exception e) {
-        e.printStackTrace();
-        return;
       }
-      uiTreeJCRExplorer.buildTree();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiOneTaxonomySelector);
     }
   }

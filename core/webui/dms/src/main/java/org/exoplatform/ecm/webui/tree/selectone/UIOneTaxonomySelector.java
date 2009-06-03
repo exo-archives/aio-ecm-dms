@@ -19,7 +19,6 @@ package org.exoplatform.ecm.webui.tree.selectone;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jcr.Item;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
@@ -205,14 +204,14 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
   
   public void onChange(final Node currentNode, Object context) throws Exception {
     UISelectTaxonomyPanel selectPathPanel = getChild(UISelectTaxonomyPanel.class);
+    UITreeTaxonomyList uiTreeTaxonomyList = getChild(UITreeTaxonomyList.class);
+    String taxoTreeName = uiTreeTaxonomyList.getUIFormSelectBox(UITreeTaxonomyList.TAXONOMY_TREE).getValue();  
+    Node parentRoot = getTaxoTreeNode(taxoTreeName);
     selectPathPanel.setParentNode(currentNode);
     selectPathPanel.updateGrid();
     UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class);
     String pathName = currentNode.getName();
-    NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
-    Node rootNode = (Node) nodeFinder.getItem(repositoryName, workspaceName, rootTreePath);
-    
-    if (currentNode.equals(rootNode)) {
+    if (currentNode.equals(parentRoot)) {
       pathName = "";
     }
     UIBreadcumbs.LocalPath localPath = new UIBreadcumbs.LocalPath(pathName, pathName);
@@ -223,28 +222,31 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
     }
     if (!alreadyChangePath) {
       String path = buffer.toString();
-      if (path.startsWith("//")) path = path.substring(1);
-      if (!path.startsWith(rootTreePath)) path = rootTreePath + path;
+      path = path.replaceAll("/+", "/");
+      if (!path.startsWith(rootTreePath)) {
+        if (currentNode.getPath().contains(parentRoot.getPath())) {
+          path = currentNode.getPath();
+        }else {
+          path = rootTreePath + path;
+        }
+      }
       if (path.endsWith("/")) path = path.substring(0, path.length() - 1);
       if (path.length() == 0) path = "/";
-      Node currentBreadcumbsNode = getNodeByVirtualPath(path);
-      if (currentNode.equals(rootNode)
-          ||((!currentBreadcumbsNode.equals(rootNode) && currentBreadcumbsNode.getParent().equals(currentNode)))){
-        if (listLocalPath != null && listLocalPath.size() > 0) {  
-          listLocalPath.remove(listLocalPath.size() - 1);
+      String breadcumbPath = rootTreePath + buffer.toString();
+      if (!breadcumbPath.equals(path)) {
+        if (breadcumbPath.startsWith(path)) {
+          if (listLocalPath != null && listLocalPath.size() > 0) {  
+            listLocalPath.remove(listLocalPath.size() - 1);
+          }
+        } else {
+          if (!currentNode.equals(parentRoot)) {
+            listLocalPath.add(localPath);
+          }
         }
-      } else {
-          listLocalPath.add(localPath);
       }
     }
     alreadyChangePath = false;
     uiBreadcumbs.setPath(listLocalPath);
-  }
-  
-  private Node getNodeByVirtualPath(String pathLinkNode) throws Exception{
-    NodeFinder nodeFinder_ = getApplicationComponent(NodeFinder.class);
-    Item item = nodeFinder_.getItem(repositoryName, workspaceName, pathLinkNode);
-    return (Node)item;
   }
   
   private void changeNode(String stringPath, Object context) throws Exception {
