@@ -191,7 +191,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
           predecessorsBuilder.append(value.toString());
         }
         historyValue.append(node.getUUID()).append("=").append(versionHistory).
-          append("|").append(baseVersion).append("|").append(predecessorsBuilder.toString()); 
+          append(";").append(baseVersion).append(";").append(predecessorsBuilder.toString()); 
         propertiesBOS.write(historyValue.toString().getBytes());
         propertiesBOS.write('\n');
         if(format.equals(DOC_VIEW)) session.exportDocumentView(node.getVersionHistory().getPath(), bos, false, false );
@@ -218,7 +218,6 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       mappingInput.close();
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
-      uiExplorer.cancelAction() ;
     }
   }
   

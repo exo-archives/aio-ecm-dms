@@ -2293,6 +2293,10 @@
       <behavior>UUID Behaviour</behavior>
       <versionHistory>Version hisotry</versionHistory>
     </label>
+    <msg>
+      <history-invalid-type>Invalid version history file type. The right file must be *.zip file</history-invalid-type>
+      <history-invalid-content>Invalid version history data content. You should choose the right file to import.</history-invalid-content>
+    </msg>    
   </UIImportNode> 
   
   <Import>

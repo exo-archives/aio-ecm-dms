@@ -82,6 +82,8 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
   public static final String IMPORT_BEHAVIOR             = "behavior";
   
   public static final String VERSION_HISTORY_FILE_UPLOAD = "versionHistory";
+  
+  public static final String MAPPING_FILE                = "mapping.properties";
 
   public UIImportNode() throws Exception {
     this.setMultiPart(true);
@@ -124,9 +126,24 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
   public void deActivate() throws Exception {
   }
   
-  private boolean validHistoryUploadFile() {
+  private boolean validHistoryUploadFile(Event<?> event) throws Exception {
     UIFormUploadInput inputHistory = getUIInput(VERSION_HISTORY_FILE_UPLOAD);
-    return true;
+    UIApplication uiApp = getAncestorOfType(UIApplication.class);
+    ZipInputStream zipInputStream = new ZipInputStream(inputHistory.getUploadDataAsStream());
+    ZipEntry entry = zipInputStream.getNextEntry();
+    while(entry != null) {
+      if(entry.getName().equals(MAPPING_FILE)) {
+        zipInputStream.closeEntry();
+        return true;
+      }
+      zipInputStream.closeEntry();
+      entry = zipInputStream.getNextEntry();
+    }
+    zipInputStream.close();
+    uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.history-invalid-content", null, 
+        ApplicationMessage.WARNING));
+    event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    return false;
   }
   
   private void importHistory(
@@ -149,7 +166,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
     Map<String, String> mapHistoryValue = new HashMap<String, String>();
     while(entry != null) {
       int available = -1;
-      if(entry.getName().equals("mapping.properties")) {
+      if(entry.getName().equals(MAPPING_FILE)) {
         while ((available = zipInputStream.read(data, 0, 1024)) > -1) {
           out.write(data, 0, available); 
         }
@@ -176,12 +193,12 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
   }
   
   private String getBaseVersionUUID(String valueHistory) {
-    String[] arrHistoryValue = valueHistory.split("|");
+    String[] arrHistoryValue = valueHistory.split(";");
     return arrHistoryValue[1];
   }
   
   private String[] getPredecessors(String valueHistory) {
-    String[] arrHistoryValue = valueHistory.split("|");
+    String[] arrHistoryValue = valueHistory.split(";");
     String strPredecessors = arrHistoryValue[2];
     if(strPredecessors.indexOf(",") > -1) {
       return strPredecessors.split(",");
@@ -190,45 +207,48 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
   }
   
   private String getVersionHistory(String valueHistory) {
-    String[] arrHistoryValue = valueHistory.split("|");
+    String[] arrHistoryValue = valueHistory.split(";");
     return arrHistoryValue[0];
   }
   
   private void processImportHistory(Node currentNode) throws Exception {
     UIFormUploadInput inputHistory = getUIInput(VERSION_HISTORY_FILE_UPLOAD);
-    ZipInputStream zipInputStream = new ZipInputStream(inputHistory.getUploadDataAsStream());
-    ByteArrayOutputStream out= new ByteArrayOutputStream();
-    byte[] data  = new byte[1024];   
-    ZipEntry entry = zipInputStream.getNextEntry();
     Map<String, String> mapHistoryValue = getMapImportHistory();
     for(String uuid : mapHistoryValue.keySet()) {
-      out= new ByteArrayOutputStream();
+      ZipInputStream zipInputStream = new ZipInputStream(inputHistory.getUploadDataAsStream());
+      byte[] data  = new byte[1024];   
+      ByteArrayOutputStream out= new ByteArrayOutputStream();
+      ZipEntry entry = zipInputStream.getNextEntry();
       while(entry != null) {
         int available = -1;
         if(entry.getName().equals(uuid + ".xml")) {
           while ((available = zipInputStream.read(data, 0, 1024)) > -1) {
             out.write(data, 0, available); 
           }
-          zipInputStream.closeEntry();
           try {
             ByteArrayInputStream inputStream = new ByteArrayInputStream(out.toByteArray());
             String value = mapHistoryValue.get(uuid);
             Node versionableNode = currentNode.getSession().getNodeByUUID(uuid);
             importHistory((NodeImpl)versionableNode, inputStream, 
                 getBaseVersionUUID(value), getPredecessors(value), getVersionHistory(value));
+            currentNode.getSession().save();
           } catch(ItemNotFoundException item) {
+            currentNode.getSession().refresh(false);
             log.error("Can not found versionable node" + item, item);
           } catch(Exception e) {
+            currentNode.getSession().refresh(false);
             log.error("Import version history failed " + e, e);
           }
+          zipInputStream.closeEntry();
           entry = zipInputStream.getNextEntry();
         } else {
+          zipInputStream.closeEntry();
           entry = zipInputStream.getNextEntry();
         }
       }
+      out.close();
+      zipInputStream.close();
     }
-    out.close();
-    zipInputStream.close();
   }
   
   private String getMimeType(String fileName) {
@@ -249,9 +269,20 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       uiExplorer.addLockToken(currentNode);
       
       if (input.getUploadResource() == null) {
-        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filename-invalid", null));
+        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filename-invalid", null, 
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
+      }
+      if(inputHistory.getUploadResource() != null) {
+        String mimeTypeHistory = uiImport.getMimeType(inputHistory.getUploadResource().getFileName());
+        if(!mimeTypeHistory.equals("application/zip")) {
+          uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.history-invalid-type", null, 
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+        if(!uiImport.validHistoryUploadFile(event)) return;
       }
       String mimeType = uiImport.getMimeType(input.getUploadResource().getFileName());
       InputStream xmlInputStream = null;
@@ -274,10 +305,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
         if (!uiExplorer.getPreference().isJcrEnable()) session.save();
         //Process import version history
         if(inputHistory.getUploadResource() != null) {
-          if(uiImport.validHistoryUploadFile()) {
-            uiImport.processImportHistory(currentNode);
-            session.save();
-          }
+          uiImport.processImportHistory(currentNode);
         }
           // TODO
           // if an import fails, it's possible when source xml contains errors,
@@ -293,7 +321,8 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       } catch (AccessDeniedException ace) {
         log.error("XML Import error " + ace, ace);
         session.refresh(false);
-        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.access-denied", null, ApplicationMessage.WARNING));
+        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.access-denied", null, 
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch (ConstraintViolationException con) {
@@ -308,7 +337,8 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
       } catch (Exception ise) {
         log.error("XML Import error " + ise, ise);
         session.refresh(false);
-        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filetype-error", null, ApplicationMessage.WARNING));
+        uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.filetype-error", null, 
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } finally {

@@ -2327,6 +2327,10 @@
       <behavior>Kiểu UUID</behavior>
       <versionHistory>Lịch sử phiên bản</versionHistory>
     </label>
+    <msg>
+      <history-invalid-type>Kiểu file lịch sử phiên bản là không chính xác. File chính xác phải có phần mở rộng là *.zip</history-invalid-type>
+      <history-invalid-content>Dữ liệu trong file lịch sử phiên bản là không chính xác. Bạn nên chọn file chính xác để sử dụng.</history-invalid-content>
+    </msg>    
   </UIImportNode> 
  
   <Import>
