@@ -461,5 +461,11 @@
       <explain>Quand la Portlet affiche une hiérarchie de catégories, il est nécessaire de spécifier l'emplacement où les documents sont en fait stockés, afin qu'ils puissent être trouvés par la fonctionnalité de recherche de la Portlet.</explain>
     </msg>
   </UIPathConfig>
+  
+  <UIDocumentForm>
+  	<msg>
+  		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
+  	</msg>
+  </UIDocumentForm>
 </bundle>
 

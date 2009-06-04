@@ -128,5 +128,10 @@
     </label>
   </UITreeTaxonomyList>
   
+  <UIDocumentForm>
+  	<msg>
+  		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
+  	</msg>
+  </UIDocumentForm>
 </bundle>
 

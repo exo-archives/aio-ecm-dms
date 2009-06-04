@@ -467,5 +467,11 @@
       <explain>Khi các tài liệu được hiển thị tương ứng với với cấp bậc các danh mục. Đường dẫn nơi chứa các tài liệu cần phải được chỉ rõ, có như vậy thì những tài liệu mới có thể được tìm thấy dựa vào chức năng tìm kiếm ở trong portlet này.</explain> 
     </msg>
   </UIPathConfig>
+  
+  <UIDocumentForm>
+  	<msg>
+  		<do-not-permission>Bạn không có quyền để thao tác trên template này</do-not-permission>
+  	</msg>
+  </UIDocumentForm>
 </bundle>
 

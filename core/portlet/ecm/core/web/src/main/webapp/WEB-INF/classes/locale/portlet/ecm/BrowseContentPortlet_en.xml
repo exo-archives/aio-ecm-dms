@@ -466,5 +466,11 @@
       <explain>When the path shown in Browse Content corresponds to a hierarchy of categories, it is needed to specify the path where documents are actually stored, so that they can be found by the search feature of the Portlet.</explain>
     </msg>
   </UIPathConfig>
+  
+  <UIDocumentForm>
+  	<msg>
+  		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
+  	</msg>
+  </UIDocumentForm>
 </bundle>
 

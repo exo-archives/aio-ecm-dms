@@ -466,4 +466,10 @@ Show only documents in "published" state
       <explain>عندما تتوافق رؤية مسار ''مستكشف المحتوى''  مع التسلسل الهرمي للفئات ، من الضروري أن تحدد المسارالذي يحتوي فعلا على الوثائق المخزنة، ولكي تتمكن من العثور عليها، يمكنك استعمال وظيفة ''البحث'' المتوفرة في المدخل</explain>
     </msg>
   </UIPathConfig>
+  
+  <UIDocumentForm>
+  	<msg>
+  		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
+  	</msg>
+  </UIDocumentForm>
 </bundle>
