@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.io.InputStream;
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,9 +36,11 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentFormController;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -48,6 +51,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -105,8 +109,8 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
+    String template = null;
     try{
-      String template = null;
       if(SessionProviderFactory.isAnonim()) {
         template = templateService.getTemplatePathByAnonymous(false, getNodeType(), repository);
       } else {
@@ -115,11 +119,23 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
       if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver();
       templateService.removeCacheTemplate(jcrTemplateResourceResolver_.createResourceId(template));
       return template;
+    } catch (AccessControlException e) {
+      UIApplication uiApp = getAncestorOfType(UIApplication.class);
+      Object[] arg = { template };
+      uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.do-not-permission", arg, 
+          ApplicationMessage.ERROR));
+      UIDocumentFormController uiFormController = getAncestorOfType(UIDocumentFormController.class);
+      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
+      context.addUIComponentToUpdateByAjax(uiFormController);
+      return null;
     }catch(Exception e) {
       LOG.error("Exception when get template ", e);
-      e.printStackTrace() ;
-    }    
-    return null ;
+      UIApplication uiApp = getAncestorOfType(UIApplication.class);
+      Object[] arg = { template };
+      uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.not-support", arg, 
+          ApplicationMessage.ERROR));
+      return null;
+    }
   }
 
   public String getIcons(Node node, String type) throws Exception {
