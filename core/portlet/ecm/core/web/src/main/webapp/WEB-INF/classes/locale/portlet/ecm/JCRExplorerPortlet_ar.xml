@@ -2369,6 +2369,7 @@ Nouvelle configuration
     
   <UIDocumentForm>
   	<msg>
+  		<not-support>Cannot load template of '{0}'.</not-support>
   		<do-not-permission>You don't have permission to access this template</do-not-permission>
   	</msg>
   </UIDocumentForm>

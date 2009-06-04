@@ -2364,6 +2364,7 @@
   
   <UIDocumentForm>
   	<msg>
+  		<not-support>Không thể tải mẫu của '{0}'.</not-support>
   		<do-not-permission>Bạn không có quyền để thao tác trên template này</do-not-permission>
   	</msg>
   </UIDocumentForm>  

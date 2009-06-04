@@ -130,6 +130,7 @@
   
   <UIDocumentForm>
   	<msg>
+  		<not-support>Cannot load template of '{0}'.</not-support>
   		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
   	</msg>
   </UIDocumentForm>
