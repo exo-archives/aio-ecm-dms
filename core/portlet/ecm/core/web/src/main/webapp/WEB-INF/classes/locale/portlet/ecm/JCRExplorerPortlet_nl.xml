@@ -2319,4 +2319,9 @@
     </label>
   </Import>  
   
+  <UIDocumentForm>
+  	<msg>
+  		<do-not-permission>You don't have permission to access this template</do-not-permission>
+  	</msg>
+  </UIDocumentForm>
 </bundle>
