@@ -440,54 +440,63 @@
 	height: 22px;
 	float: left;
 }
-.FloatLeft{
-	float:left;
-	height:22px;
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .ViewIcon {
+	height: 22px;
+	width: 23px;
+	float: left;
+	margin: 0px 1px 0px 0px;
 }
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .MoreViewIcon {
+	background: url(DefaultSkin/background/MoreViewIcon.gif) no-repeat; 
+	width: 12px;
+	height: 21px;
+	float: left;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .MoreViewIconSelected {
+	background: url(DefaultSkin/background/MoreViewIconSelected.gif) no-repeat; 
+	width: 12px;
+	height: 21px;
+	float: left;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultView {
 	background: url(DefaultSkin/background/DefaultView.gif) no-repeat; 
-	width:26px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view{
 	background: url(DefaultSkin/background/IconView.gif) no-repeat; 
-	width:26px;
 }
 
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view-selected{
 	background: url(DefaultSkin/background/IconViewSelected.gif) no-repeat; 
-	width:26px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .admin-view{
 	background: url(DefaultSkin/background/DetailView.gif) no-repeat; 
-	width:25px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .admin-view-selected{
 	background: url(DefaultSkin/background/DetailViewSelected.gif) no-repeat; 
-	width:25px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left  .simple-view{
 	background: url(DefaultSkin/background/ThumbnailView.gif) no-repeat; 
-	width:28px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left  .simple-view-selected{
 	background: url(DefaultSkin/background/ThumbnailViewSelected.gif) no-repeat; 
-	width:28px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .cover-flow{
 	background: url(DefaultSkin/background/CoverflowView.gif) no-repeat; 
-	width:30px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .cover-flow-selected{
 	background: url(DefaultSkin/background/CoverflowViewSelected.gif) no-repeat; 
-	width:30px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BackBtn {

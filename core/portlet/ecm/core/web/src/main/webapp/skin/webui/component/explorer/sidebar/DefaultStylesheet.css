@@ -32,11 +32,23 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISideBarContainer {
   width: 100%;
-  padding: 5px 0px 0px 0px;
 	height: 475px;
 	/*
   * minh.js.exo
   */
+}
+
+.UIJCRExplorerPortlet .UISideBar .UIResizableBlock {
+	width: 204px;
+	height: 100%;
+	float: left;
+	overflow: auto;
+}
+
+.UIJCRExplorerPortlet .UISideBar .UISelectContent {
+	float: right;
+	padding: 5px 0px 0px;
+	width: 36px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemIcon {
