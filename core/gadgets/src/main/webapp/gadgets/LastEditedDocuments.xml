@@ -17,7 +17,7 @@
 	</ModulePrefs>
 	<Content type="html">
 	<![CDATA[
-	
+	 
 		<script type="text/javascript" src="/eXoDMSGadgets/javascript/script.js"></script>
 		
 		<style type="text/css">
@@ -229,7 +229,7 @@
 			}
 			
 			var siteUrl = 'http://localhost:8080/portal/rest/presentation/document/edit/repository?showItems=5';
-			var accessUrl = 'http://localhost:8080/portal/private/classic/contentmanagement/fileexplorer?portal:componentId=fileexplorer&portal:type=action&uicomponent=UIDocumentInfo&op=ViewDoc'
+			var accessUrl = 'http://localhost:8080/portal/private/classic/contentmanagement/fileexplorer/repository/';
 			  
 			LastEditedDocument.prototype.makeRequest = function(url, callback) {
 				var params = {};
@@ -261,10 +261,7 @@
 					var AppClass = document.createElement('div');
 					var showHTML = "<a target='_top' href='";
 					showHTML+= accessUrl;
-					showHTML+= "&repository=repository";
-					showHTML+= "&drive=";
 					showHTML+= doc.driveName;
-					showHTML+= "&path=";
 					showHTML+= doc.path;
 					showHTML+= "'>";
 					showHTML+=doc.name;
