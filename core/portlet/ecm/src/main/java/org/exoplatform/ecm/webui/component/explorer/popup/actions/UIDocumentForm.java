@@ -181,6 +181,15 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     String userName = Util.getPortalRequestContext().getRemoteUser();
     try {      
       return templateService.getTemplatePathByUser(true, contentType, userName, repositoryName);
+    } catch (AccessControlException e) {
+      UIApplication uiApp = getAncestorOfType(UIApplication.class);
+      Object[] arg = { contentType };
+      uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.do-not-permission", arg, 
+          ApplicationMessage.ERROR));
+      UIDocumentFormController uiFormController = getAncestorOfType(UIDocumentFormController.class);
+      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
+      context.addUIComponentToUpdateByAjax(uiFormController);
+      return null;
     } catch (Exception e) {
       e.printStackTrace();
       UIApplication uiApp = getAncestorOfType(UIApplication.class);

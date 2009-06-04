@@ -2202,6 +2202,11 @@
       <docview>Kiểu văn bản</docview>
       <sysview>Kiểu hệ thống</sysview>
     </label>
-  </Import>  	
-	
+  </Import>
+    	
+  <UIDocumentForm>
+  	<msg>
+  		<do-not-permission>Bạn không có quyền để thao tác trên template này</do-not-permission>
+  	</msg>
+  </UIDocumentForm>	
 </bundle>
