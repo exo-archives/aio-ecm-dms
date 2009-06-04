@@ -37,7 +37,6 @@ import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
-import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.application.PortalRequestContext;
@@ -232,17 +231,6 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     UIActionBar uiActionBar = findFirstComponentOfType(UIActionBar.class);
     UIWorkingArea uiWorkingArea = findFirstComponentOfType(UIWorkingArea.class);
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
-    UIDocumentContainer uiDocumentContainer = findFirstComponentOfType(UIDocumentContainer.class);
-    UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class);
-    if (uiExplorer.isShowViewFile()) {
-      uiDocumentInfo.updatePageListData();
-      uiDocumentInfo.setRendered(false) ;
-    } else {
-      uiDocumentInfo.setRendered(true) ;
-    }
-    if(uiExplorer.getPreference().isShowSideBar()) {
-      findFirstComponentOfType(UITreeExplorer.class).buildTree();
-    }
     uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;
     context.addUIComponentToUpdateByAjax(uiWorkingArea);
     context.addUIComponentToUpdateByAjax(uiActionBar);
