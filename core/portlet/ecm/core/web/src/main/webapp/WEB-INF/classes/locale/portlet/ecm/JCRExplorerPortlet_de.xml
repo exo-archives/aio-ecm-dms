@@ -2112,6 +2112,7 @@
       <isDirectlyDrive>Directly Drive</isDirectlyDrive>
       <driveName>Drive Name</driveName>
       <usecase>Select Type</usecase>
+      <SelectNodePath>Select path</SelectNodePath>
     </label>
   </UIJcrExplorerEditForm>
   
@@ -2122,6 +2123,13 @@
       <adddrives>Add Drives</adddrives>
     </label>
   </UIDriveSelector>
+  
+  <PopupSelectPath>
+    <title>
+      <UIOneNodePathSelector>Select node</UIOneNodePathSelector>
+    </title>
+  </PopupSelectPath>
+  
   <UIJcrExplorerEditForm>
     <label>
       <driveName>Drive Name</driveName>

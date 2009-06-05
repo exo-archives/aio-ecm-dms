@@ -213,5 +213,10 @@
         <value>Collaboration Center</value>        
         <read-only>false</read-only>
       </preference>
+      <preference>
+        <name>nodePath</name>     
+        <value>/</value>        
+        <read-only>false</read-only>
+      </preference>
    </portlet-preferences>
 </portlet-preferences-set>

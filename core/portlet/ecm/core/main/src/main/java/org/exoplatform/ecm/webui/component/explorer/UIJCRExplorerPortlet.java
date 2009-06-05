@@ -89,6 +89,10 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
   final static public String SELECTION          = "selection";
 
   final static public String PERSONAL           = "personal";
+
+  final static public String PARAMETERIZE       = "parameterize";
+
+  final static public String PARAMETERIZE_PATH       = "nodePath";
   
   
   private boolean flagSelect = false;
@@ -108,10 +112,10 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     this.flagSelect = flagSelect;
   }
   
-  private HashMap<String, String> getUrlElement(WebuiRequestContext context) {
+  private HashMap<String, String> getElementByContext(WebuiRequestContext context) {
     HashMap<String, String> mapParam = new HashMap<String, String>();
     //In case access by ajax request
-    if (context.getUIComponentToUpdateByAjax() != null ) return mapParam;
+    if (context.getUIComponentToUpdateByAjax() != null) return mapParam;
     Pattern patternUrl = Pattern.compile("([^/]+)/([^/]+)/(.*)");
     PortalRequestContext pcontext = Util.getPortalRequestContext();
     PortletRequestContext portletReqContext = (PortletRequestContext) context;
@@ -246,7 +250,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIJCRExplorerPortlet') ;");
     PortletRequestContext portletReqContext = (PortletRequestContext) context ;
-    HashMap<String, String> map = getUrlElement(context);
+    HashMap<String, String> map = getElementByContext(context);
     if (portletReqContext.getApplicationMode() == PortletMode.VIEW) {
       if (map.size() > 0) {
         showDocument(context, map);
@@ -292,6 +296,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
   public void initwhenDirect(UIJcrExplorerContainer explorerContainer, UIJcrExplorerEditContainer editContainer, PortletPreferences portletPref) throws Exception {
     explorerContainer.setFlag(false);
     String driveName = portletPref.getValue("driveName", "").trim();
+    String repository = portletPref.getValue("repository", "").trim();
     List<String> listDriveName = explorerContainer.getDrives();
     for (String driveDataName : listDriveName) {
       if (driveDataName.trim().equals(driveName)) {
@@ -299,12 +304,21 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
         break;
       }
     }
+    UIJCRExplorer uiJCRExplorer = explorerContainer.getChild(UIJCRExplorer.class);
     if (editContainer.getChild(UIJcrExplorerEditForm.class).isFlagSelectRender()) {
       explorerContainer.initExplorer(driveName, portletPref);
       editContainer.getChild(UIJcrExplorerEditForm.class).setFlagSelectRender(false);
-    } 
-    explorerContainer.getChild(UIJCRExplorer.class).setRendered(true);
+      ManageDriveService manageDriveService = getApplicationComponent(ManageDriveService.class);
+      DriveData driveData = manageDriveService.getDriveByName(driveName, repository);
+      String nodePath = portletPref.getValue("nodePath", "").trim();
+      String homePath = (driveData.getHomePath() + nodePath).replaceAll("/+", "/");
+      uiJCRExplorer.setSelectNode(driveData.getWorkspace(), homePath);
+      uiJCRExplorer.refreshExplorer(); 
+    }
+    uiJCRExplorer.setRendered(true);
     explorerContainer.getChild(UIDrivesBrowserContainer.class).setRendered(false);
+    
+    
   }
   
   public String getPreferenceRepository() {

@@ -2142,8 +2142,15 @@
       <isDirectlyDrive>Truy cập trực tiếp</isDirectlyDrive>
       <driveName>Tên ổ đĩa</driveName>
       <usecase>Loại</usecase>
+       <SelectNodePath>Chọn nút</SelectNodePath>
     </label>
   </UIJcrExplorerEditForm>
+  
+  <PopupSelectPath>
+    <title>
+      <UIOneNodePathSelector>Chọn nút</UIOneNodePathSelector>
+    </title>
+  </PopupSelectPath>
   
   <UIDriveSelector>
     <label>

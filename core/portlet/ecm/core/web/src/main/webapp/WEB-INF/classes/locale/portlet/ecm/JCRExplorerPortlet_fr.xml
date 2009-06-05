@@ -2153,6 +2153,7 @@
       <isDirectlyDrive>Accès direct aux lecteurs</isDirectlyDrive>
       <driveName>Nom du lecteur</driveName>
       <usecase>Type d'accès</usecase>
+      <SelectNodePath>Select path</SelectNodePath>
     </label>
   </UIJcrExplorerEditForm>
   
@@ -2163,6 +2164,13 @@
       <adddrives>Ajouter lecteurs</adddrives>
     </label>
   </UIDriveSelector>
+  
+  <PopupSelectPath>
+    <title>
+      <UIOneNodePathSelector>Select node</UIOneNodePathSelector>
+    </title>
+  </PopupSelectPath>
+  
   <UIJcrExplorerEditForm>
     <label>
       <driveName>Conduire Nom</driveName>
