@@ -176,14 +176,13 @@ public class UIActionBar extends UIForm {
   }
   
   public boolean isDirectlyDrive() {
-    boolean returnboolean = true;
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
     PortletPreferences portletPref = pcontext.getRequest().getPreferences();
     String usecase =  portletPref.getValue("usecase", "").trim();
     if ("selection".equals(usecase)) {
       return false;
     }
-    return returnboolean;
+    return true;
   }  
   
   public List<String> getTabList() { return tabList_; }

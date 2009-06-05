@@ -228,12 +228,9 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     uiAddressBar.setViewList(viewList);
     uiAddressBar.setSelectedViewName(viewList.get(0));
     uiExplorer.setSelectNode(driveData.getWorkspace(), path);
-    UIActionBar uiActionBar = findFirstComponentOfType(UIActionBar.class);
     UIWorkingArea uiWorkingArea = findFirstComponentOfType(UIWorkingArea.class);
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
     uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;
-    context.addUIComponentToUpdateByAjax(uiWorkingArea);
-    context.addUIComponentToUpdateByAjax(uiActionBar);
     UIPopupContainer popupAction = getChild(UIPopupContainer.class);
     if (popupAction != null && popupAction.isRendered()) {
       popupAction.deActivate();
@@ -315,19 +312,5 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
     return repository ;
-  }
-  
-  public static void main(String[] args) {
-    String a = "aaa/bbb/ccc/ddd/eee/fff";
-    //("([^:/]+):(.*)");
-    Pattern FILE_EXPLORER_URL_SYNTAX = Pattern.compile("([^/]+)/([^/]+)/(.*)");
-    Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(a);
-    if (matcher.find()) {
-      matcher.group(1);
-      matcher.group(2);
-      matcher.group(3);
-    }
-    String[] test = a.split("([^/]+)/([^/]+)/(.*)");
-    System.out.println(test);
   }
 }
