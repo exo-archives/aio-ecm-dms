@@ -16,23 +16,56 @@
  */
 package org.exoplatform.ecm.webui.component.explorer;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import javax.jcr.AccessDeniedException;
+import javax.jcr.NoSuchWorkspaceException;
+import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
+import javax.jcr.Session;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
 
+import org.apache.commons.logging.Log;
+import org.exoplatform.ecm.jcr.model.Preference;
+import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
+import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
+import org.exoplatform.ecm.webui.component.explorer.control.UIViewBar;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.application.PortalRequestContext;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.services.cms.drives.DriveData;
+import org.exoplatform.services.cms.drives.ManageDriveService;
+import org.exoplatform.services.cms.views.ManageViewService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.UIPortletApplication;
 import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
+import org.exoplatform.webui.core.model.SelectItemOption;
 
 @ComponentConfig(
   lifecycle = UIApplicationLifecycle.class
 )
 public class UIJCRExplorerPortlet extends UIPortletApplication {
+  
+  private static final Log LOG  = ExoLogger.getLogger("explorer.UIJCRExplorerPortlet");
   final static public String REPOSITORY =  "repository";
   final static public String CATEGORY_MANDATORY =  "categoryMandatoryWhenFileUpload";
   final static public String ISDIRECTLY_DRIVE =  "isDirectlyDrive";
@@ -61,25 +94,162 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     this.flagSelect = flagSelect;
   }
 
+  private HashMap<String, String> getUrlElement(WebuiRequestContext context) {
+    HashMap<String, String> mapParam = new HashMap<String, String>();
+    //In case access by ajax request
+    if (context.getUIComponentToUpdateByAjax() != null ) return mapParam;
+    Pattern patternUrl = Pattern.compile("([^/]+)/([^/]+)/(.*)");
+    PortalRequestContext pcontext = Util.getPortalRequestContext();
+    PortletRequestContext portletReqContext = (PortletRequestContext) context;
+    String requestUrl = pcontext.getRequestURI();
+    String portalUrl = pcontext.getPortalURI();
+    String portletId = portletReqContext.getWindowId();
+    String accessViewUrl = requestUrl.replace(portalUrl,"");
+    if (!accessViewUrl.contains(portletId)) return mapParam;
+    String[] uri = accessViewUrl.split(portletId + "/");
+    if (uri == null || uri.length < 2) return mapParam;
+    Matcher matcher = patternUrl.matcher(uri[1]);
+    if (matcher.find()) {
+      mapParam.put("repository", matcher.group(1));
+      mapParam.put("drive", matcher.group(2));
+      mapParam.put("path", "/" + matcher.group(3));
+    }
+    return mapParam;
+  }
+  
+  private void showDocument(WebuiRequestContext context, HashMap<String, String> map) throws Exception {
+    String repositoryName = String.valueOf(map.get("repository"));
+    String driveName = String.valueOf(map.get("drive"));
+    String path = String.valueOf(map.get("path"));
+    UIApplication uiApp = findFirstComponentOfType(UIApplication.class);
+    ManageDriveService manageDrive = getApplicationComponent(ManageDriveService.class);
+    DriveData driveData = null;
+    try {
+      driveData = manageDrive.getDriveByName(driveName, repositoryName);
+    } catch (PathNotFoundException e) {
+      uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING));
+      context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+    RepositoryService rservice = getApplicationComponent(RepositoryService.class);
+    DriveData drive = manageDrive.getDriveByName(driveName, repositoryName);
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    List<String> viewList = new ArrayList<String>();
+    
+    for (String role : Utils.getMemberships()) {
+      for (String viewName : drive.getViews().split(",")) {
+        if (!viewList.contains(viewName.trim())) {
+          Node viewNode = 
+            getApplicationComponent(ManageViewService.class).getViewByName(viewName.trim(),
+                repositoryName, SessionProviderFactory.createSystemProvider());
+          String permiss = viewNode.getProperty("exo:accessPermissions").getString();
+          if (permiss.contains("${userId}")) permiss = permiss.replace("${userId}", userId);
+          String[] viewPermissions = permiss.split(",");
+          if (permiss.equals("*")) viewList.add(viewName.trim());
+          if (drive.hasPermission(viewPermissions, role)) viewList.add(viewName.trim());
+        }
+      }
+    }
+    String viewListStr = "";
+    List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    String viewLabel = null;
+    for (String viewName : viewList) {
+      try {
+        viewLabel = res.getString("Views.label." + viewName) ; 
+      } catch (MissingResourceException e) {
+        viewLabel = viewName;
+      }        
+      viewOptions.add(new SelectItemOption<String>(viewLabel, viewName));
+      if(viewListStr.length() > 0) viewListStr = viewListStr + "," + viewName;
+      else viewListStr = viewName;
+    }
+    drive.setViews(viewListStr);
+    String homePath = drive.getHomePath();
+    if (homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId);
+    
+    setFlagSelect(true);
+    Preference pref = new Preference();
+    pref.setShowSideBar(drive.getViewSideBar());
+    pref.setShowNonDocumentType(drive.getViewNonDocument());
+    pref.setShowPreferenceDocuments(drive.getViewPreferences());
+    pref.setAllowCreateFoder(drive.getAllowCreateFolder()); 
+    pref.setShowHiddenNode(drive.getShowHiddenNode());
+    
+    UIJCRExplorer uiExplorer = findFirstComponentOfType(UIJCRExplorer.class);
+    uiExplorer.setPreferences(pref);
+    uiExplorer.setDriveData(drive);
+    uiExplorer.setIsReferenceNode(false);
+    
+    SessionProvider provider = SessionProviderFactory.createSessionProvider();                  
+    ManageableRepository repository = rservice.getRepository(repositoryName);
+    try {
+      Session session = provider.getSession(drive.getWorkspace(),repository);      
+      // check if it exists
+      // we assume that the path is a real path
+      session.getItem(homePath);        
+    } catch(AccessDeniedException ace) {
+      Object[] args = { driveName };
+      uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.access-denied", args, 
+          ApplicationMessage.WARNING));
+      context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;        
+    } catch(NoSuchWorkspaceException nosuchWS) {
+      Object[] args = { driveName };
+      uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.workspace-not-exist", args, 
+          ApplicationMessage.WARNING));
+      context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;        
+    } catch(Exception e) {
+      JCRExceptionManager.process(uiApp, e);
+      return;
+    } 
+    uiExplorer.setRepositoryName(repositoryName);
+    uiExplorer.setWorkspaceName(drive.getWorkspace());
+    uiExplorer.setRootPath(homePath);
+    UIControl uiControl = uiExplorer.getChild(UIControl.class);
+    UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);
+    uiActionbar.setTabOptions(viewList.get(0));
+    uiExplorer.setSelectNode(path, uiExplorer.getSessionByWorkspace(drive.getWorkspace()));
+    UIViewBar uiViewBar = uiControl.getChild(UIViewBar.class);
+    uiViewBar.setViewOptions(viewOptions);
+    UIWorkingArea uiWorkingArea = findFirstComponentOfType(UIWorkingArea.class);
+    UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+    uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;
+    UIPopupContainer popupAction = getChild(UIPopupContainer.class);
+    if (popupAction != null && popupAction.isRendered()) {
+      popupAction.deActivate();
+      context.addUIComponentToUpdateByAjax(popupAction);
+    }
+    uiExplorer.refreshExplorer();
+    uiExplorer.setRenderSibbling(UIJCRExplorer.class);
+  }
+  
+  
   public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
     UIJcrExplorerContainer explorerContainer = getChild(UIJcrExplorerContainer.class);
     UIJcrExplorerEditContainer editContainer = getChild(UIJcrExplorerEditContainer.class);
     context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
     context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIJCRExplorerPortlet') ;");
     PortletRequestContext portletReqContext = (PortletRequestContext) context ;
+    HashMap<String, String> map = getUrlElement(context);
     if (portletReqContext.getApplicationMode() == PortletMode.VIEW) {
-      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
-      PortletPreferences portletPref = pcontext.getRequest().getPreferences();
-      String usecase =  portletPref.getValue("usecase", "").trim();
-      if (usecase.equals(SELECTION)) {
-        initwhenSelect(explorerContainer);
+      if (map.size() > 0) {
+        showDocument(context, map);
       } else {
-        initwhenDirect(explorerContainer, editContainer, portletPref);
+        PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+        PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+        String usecase =  portletPref.getValue("usecase", "").trim();
+        if (usecase.equals(SELECTION)) {
+          initwhenSelect(explorerContainer);
+        } else {
+          initwhenDirect(explorerContainer, editContainer, portletPref);
+        }
       }
       explorerContainer.setRendered(true);
       getChild(UIJcrExplorerEditContainer.class).setRendered(false);
     } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {
-      System.out.println("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
+      LOG.info("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
     } else if(portletReqContext.getApplicationMode() == PortletMode.EDIT) {
       explorerContainer.setRendered(false);
       getChild(UIJcrExplorerEditContainer.class).setRendered(true);

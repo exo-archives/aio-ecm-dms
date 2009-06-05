@@ -20,6 +20,11 @@
       </value-param>            
     </init-params>    
   </component>  
+  
+  <component>    
+    <type>org.exoplatform.services.cms.REST.presentation.document.publication.PublicationGetDocumentRESTService</type>    
+  </component>		
+  
   <component>
 	  <key>org.exoplatform.services.cms.categories.CategoriesService</key>  
 	  <type>org.exoplatform.services.cms.categories.impl.CategoriesServiceImpl</type>  	

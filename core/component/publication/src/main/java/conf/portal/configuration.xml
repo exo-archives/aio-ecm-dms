@@ -12,10 +12,6 @@
     <type>org.exoplatform.services.ecm.publication.impl.PublicationPresentationServiceImpl</type>
   </component> 
   	
-  <component>    
-    <type>org.exoplatform.services.ecm.publication.presentation.PublicationGetDocumentRESTService</type>    
-  </component>		
-  
 	<external-component-plugins>
   	<target-component>org.exoplatform.services.jcr.RepositoryService</target-component>
 		<component-plugin>
