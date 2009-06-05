@@ -133,6 +133,17 @@
 		}
 	};
 	
+	ECMUtils.prototype.showHideExtendedView = function(event) {
+	  var elemt = document.getElementById("ListExtendedView");
+	  event = event || window.event;
+	  event.cancelBubble = true;
+	  if(elemt.style.display == 'none') {
+	    elemt.style.display = 'block';
+	  } else {
+	    elemt.style.display = 'none' ;
+	  }
+	  DOM.listHideElements(elemt);
+	}
 	 
 	ECMUtils.prototype.showHideComponent = function(elemtClicked) {
 		var nodeReference = DOM.findAncestorByClass(elemtClicked,  "ShowHideContainer");

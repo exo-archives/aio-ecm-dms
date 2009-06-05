@@ -165,8 +165,11 @@ public class UIActionBar extends UIForm {
   
   public void setSelectedTab(String tabName) { selectedTabName_ = tabName; }
   
-  public String getSelectedTab() { 
-    if(selectedTabName_ == null || selectedTabName_.length() == 0) return tabList_.get(0);
+  public String getSelectedTab() throws Exception { 
+    if(selectedTabName_ == null || selectedTabName_.length() == 0) {
+      setTabOptions(tabList_.get(0));
+      return tabList_.get(0);
+    }
     return selectedTabName_; 
   }
   

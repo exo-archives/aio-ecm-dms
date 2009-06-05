@@ -21,8 +21,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
@@ -55,7 +53,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
-import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -243,16 +240,7 @@ public class UIDrivesBrowser extends UIContainer {
         return;
       }
       String viewListStr = "";
-      List<SelectItemOption<String>> viewOptions = new ArrayList<SelectItemOption<String>>();
-      ResourceBundle res = event.getRequestContext().getApplicationResourceBundle();
-      String viewLabel = null;
       for(String viewName : viewList) {
-        try {
-          viewLabel = res.getString("Views.label." + viewName) ; 
-        } catch (MissingResourceException e) {
-          viewLabel = viewName;
-        }        
-        viewOptions.add(new SelectItemOption<String>(viewLabel, viewName));
         if(viewListStr.length() > 0) viewListStr = viewListStr + "," + viewName;
         else viewListStr = viewName;
       }

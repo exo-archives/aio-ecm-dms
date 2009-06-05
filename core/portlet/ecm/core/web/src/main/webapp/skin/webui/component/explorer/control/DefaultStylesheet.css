@@ -452,18 +452,32 @@
 	background: url(DefaultSkin/background/MoreViewIcon.gif) no-repeat; 
 	width: 12px;
 	height: 21px;
-	float: left;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .MoreViewIconSelected {
 	background: url(DefaultSkin/background/MoreViewIconSelected.gif) no-repeat; 
 	width: 12px;
 	height: 21px;
-	float: left;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .ExtendedView {
+  float: left; 
+  position: relative;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .ListExtendedView {
+  position: absolute; 
+  background: #f7f7f7; 
+  border: 1px solid #b7b7b7; 
+  padding: 5px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultView {
 	background: url(DefaultSkin/background/DefaultView.gif) no-repeat; 
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultViewSelected {
+	background: url(DefaultSkin/background/DefaultViewSelected.gif) no-repeat; 
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view{

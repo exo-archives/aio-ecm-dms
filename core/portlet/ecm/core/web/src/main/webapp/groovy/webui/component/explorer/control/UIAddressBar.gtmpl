@@ -1,51 +1,6 @@
-<!--
-<%
-	/**
-	 * Created by The eXo Platform SARL
-	 * Author : Tran The Trong
-	 *          trongtt@gmail.com
-	 * July 3, 2006
-	 * version: $Id$	 
-	 */
-%>
-
-<div class="UIAddressBar" id="UIAddressBarControl">
-  <div class="BlockRight">
-  	<div class="Separator AddressBarSeparator"><span></span></div>
-  	<div class="AddressLabel"><%=_ctx.appRes("UIAddressBar.label.exeButton")%></div>
-    <div onclick="<%=uicomponent.event("ChangeNode")%>" class="GoButton Style1NextArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.exeButton")%>" id="UIAddressBarAction"><span></span></div>
-  </div>
-  <div class="BlockLeft">
-	  <div class="Separator AddressBarSeparator"><span></span></div>    
-	  <div class="BackButton Style1BackArrow24x24Icon" onclick="<%=uicomponent.event("Back")%>"  title="<%=_ctx.appRes("UIAddressBar.title.backButton")%>"><span></span></div>
-	  <div class="AddressLabel"><%=_ctx.appRes("UIAddressBar.label.address")%></div>
-	</div>
-	<% uiform.begin() %>
-	<div class="BlockMiddle UIPopupSelector">
-    <div style="position: relative;">
-	    <div class="UISelectContent">
-	      <%
-	      for(entry in uicomponent.getFullHistory()) {
-			String actionLink = uicomponent.event("History", entry.workspace + ":" + entry.path);
-	        println "<div class=\"AddressItem\" onmouseout=\"this.className = 'AddressItem'\" onmouseover=\"this.className = 'SelectedAddressItem'\" onclick=\"$actionLink\">$entry.path</div>" ;
-	      }
-	      %>
-	    </div>
-	  </div>
-	  <div class="HardDisk"><span></span></div>
-	  <div class="DropDownButtonBox" onmousedown="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2,1)">
-	    <div class="DropDownButton Style1DownArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.showHistory")%>"><span></span></div>
-	  </div>
-	  <div class="InputContainer">
-      <% uicomponent.renderChildren(); %>
-    </div>
-    <div style="clear: both;"><span></span></div>
-  </div>
-	<% uiform.end() %>
-</div>
--->
 <%
   import org.exoplatform.web.application.JavascriptManager;
+  import java.util.HashMap;
   def rcontext = _ctx.getRequestContext() ;
   JavascriptManager jsmanager = rcontext.getJavascriptManager();
   
@@ -58,18 +13,46 @@
 		<div class="Left">
 			<div class="View">
 				<%
+				  int viewCount = 0;
+				  def extendMap = new HashMap<String, String>();
 				  for(viewStyle in uicomponent.getViewList()) { 
 				    def label = _ctx.appRes("Views.label." + viewStyle);
 				    def viewIcon = viewStyle;
+				    def defaultView = "DefaultView";
 				    if(uicomponent.isSelectedView(viewStyle)) {
 				      viewIcon = viewStyle + "-selected";
+				      defaultView = "DefaultViewSelected";
 				    }
+				    viewCount++;
+				    if(viewCount < 5) {
 				%>
-    				<a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="DefaultView $viewIcon ViewIcon" title="$label"><span></span></a>
-				<%}%>
-						<div class="MoreViewIcon">
-								
-						</div>			
+    				  <a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
+				<%  } else {
+				      extendMap.put(viewStyle, label + ";" + viewIcon);
+            }
+          }				
+				 %>
+				 <%if(!extendMap.isEmpty()) {%>
+					  <div class="ExtendedView">
+							<div class="MoreViewIcon" onclick="javascript: eXo.ecm.ECMUtils.showHideExtendedView(event);">
+							</div>
+							<div class="ListExtendedView" id="ListExtendedView" style="display: none;">
+							  <%
+							    for(key in extendMap.keySet()) {
+							      def viewInfor = extendMap.get(key);
+							      def label = viewInfor.split(";")[0];
+				            def viewIcon = viewInfor.split(";")[1];
+				            def defaultView = "DefaultView";
+				            if(uicomponent.isSelectedView(key)) {
+				              viewIcon = key + "-selected";
+				              defaultView = "DefaultViewSelected";
+				            }
+							  %>
+  							  <a href="<%=uicomponent.event("ChangeView", key)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
+	              <%}%>
+							</div>
+				    </div>
+				 <%}%>
 			</div>
 		</div>
 		
