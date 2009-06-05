@@ -152,8 +152,8 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
 
   public void newJCRTemplateResourceResolver() {
     try{
-      String repository = getAncestorOfType(UIBrowseContainer.class).getRepository();            
-      String systemWorkspace = getAncestorOfType(UIBrowseContainer.class).getDmsSystemWorkspace();
+      String repository = getAncestorOfType(UIBrowseContentPortlet.class).getChild(UIBrowseContainer.class).getRepository();
+      String systemWorkspace = getAncestorOfType(UIBrowseContentPortlet.class).getChild(UIBrowseContainer.class).getDmsSystemWorkspace();
       if(language_ == null) language_ = node_.getProperty(Utils.EXO_LANGUAGE).getString();
       jcrTemplateResourceResolver_ = new JCRResourceResolver(repository, systemWorkspace, 
           Utils.EXO_TEMPLATEFILE, language_) ;
