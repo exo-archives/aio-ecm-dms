@@ -1,5 +1,5 @@
 Enterprise Content Management(ECM) > Document Management System(DMS)
-Version 2.3
+Version 2.4rc1
 
 You may find it helpful to see the details at wiki place of ECM
 http://wiki.exoplatform.org/xwiki/bin/view/ECM/
@@ -26,7 +26,7 @@ documents to be modified and managed easily and conveniently by managing version
 	Workflow: is the way of looking at and controlling the processes presented in an organization such as service provision or 
 information processing, etc. It is an effective tool to use in times of crisis to make certain that the processes are efficient and 
 effective with the purpose of better and more cost efficient organization.
-	ECM (Web Content Management): helps in maintaining, controlling, changing and reassembling the content on a web-page. It also 
+	WCM (Web Content Management): helps in maintaining, controlling, changing and reassembling the content on a web-page. It also 
 helps webmasters who handle all tasks needed to run a website, including development, deployment, design, content publication and 
 monitoring.
 
@@ -60,144 +60,106 @@ and navigate to URL: http://localhost:8080/portal
 
 3. RELEASE NOTES 
 ---------------------------------------------------
-** In DMS-2.3-final, we focus to some main changes:
-	- RTL for ECM Admin portlet
-	- RTL for Worfklow controller portlet
-	- RTL for Workflow administration portlet
-	- RTL for File Explorer portlet
-	- RTL for Browse Content portlet
-	- RTL for Fast Content Creator portlet
-	- Created REST service to get the publised documents
-	- Allow set permission for each category
-	- Allow use xml file with ressource bundle in Bpar
-	- Some documents added on the wiki
-	- Supported copy paste cross drives
- 	- Support BC is the publication aware
- 	- Some bugs fixed
- 	- Support RTL when change language in document template
- 	- Refactor the location of contentvalidation
- 	- Add some documents in Hows to section
- 	- Complete the translation for Arabic
+Release Notes - exo-ecm-dms - Version dms-2.4-RC1
 
 ** Bug
-    	* [ECM-3329] - Make language selection work for RTL when choosing another language from a document
-	* [ECM-2979] - Bug when edit property without name space
-	* [ECM-3057] - Throw exception when select new repository
-	* [ECM-3045] - Throw exception when view webDAV
-	* [ECM-3101] - Upload Document: File Name/Location dissapears when assignin a category
-	* [ECM-3081] - Exception when open form 'Information Auditing' with node is nt:file
-	* [ECM-3214] - ECM actions aren't triggered when a document is added in the JCR via the FTP connector
-	* [ECM-2686] - Search don't work with non-Latin item location
-	* [ECM-2964] - Can edit persmission of owner in special case
-	* [ECM-3100] - Unknown error when specifying a space at the end of a search content name
-	* [ECM-3058] - In File Explorer, parameter categoryMandatoryWhenFileUpload in portlet preferences is not read if changed in UI
-	* [ECM-3225] - Read Action are not working as expected : no right cick menu entry 
-	* [ECM-3299] - Cannot use * as name of a child node while creating a new nodeType
-	* [ECM-3151] - Cannot set value for auto created property(but is not protected)
-	* [ECM-3306] - No label appears when the label has not been translated
+    * [ECM-2329] - Unable to add an action
+    * [ECM-2568] - Can't automatically unlock node after locker sign out
+    * [ECM-2753] - Upload icon not visible on Firefox 3 (Ubuntu)
+    * [ECM-3011] - Change messages  in Content Browser in Vietnamese language
+    * [ECM-3029] - Change message in Fast Content Creator in Vietnamese language
+    * [ECM-3044] - Show duplicate information of user when user has 2 membership type in this group
+    * [ECM-3064] - exception when trying to create a portal with a new group
+    * [ECM-3091] - Error when displaying an image in exo:article when user not loggued
+    * [ECM-3092] - not target link on webdav view button
+    * [ECM-3096] - Throw exception when view content of File Plan in 'Version Infor' pop-up after manage publication
+    * [ECM-3221] - Bad error message displayed when we have not enough rights to add a folder
+    * [ECM-3222] - Bad error message displayed when we have not enough rights to add an article and the article form is not displayed properly
+    * [ECM-3225] - Read Action are not working as expected : no right cick menu entry 
+    * [ECM-3310] - Display bug on the File Explorer when we choose the "Dutch" language
+    * [ECM-3401] - the method UIDialogForm.executeScript contains an incoherent test
+    * [ECM-3428] - Allocate more space when the name of a column is too long
+    * [ECM-3432] - Error in ContentBrowser when target folder is not readable by current user
+    * [ECM-3478] - The attached file is deleted from the document with type Podcast in edit mode
+    * [ECM-3492] - File explorer has a view bug for the first entry in list view
+    * [ECM-3499] - new content or modified content don't show until we restart the AS or disconnect
+    * [ECM-3507] - Cannot use Dashboard portlet in DMS Trunk (so cannot use the new DMS gadgets
+    * [ECM-3512] - Cannot edit Documents by "Collaboration Action" which use "UIOneNodePathSelector"
+    * [ECM-3541] - Bugs display after refactoring
+    * [ECM-3546] - Error with action on opening node
+    * [ECM-3555] - Unknown error when add metadata while node/parent is in check in status
+    * [ECM-3557] - Unknown error when click Previous View after viewing uploaded file of a document
+    * [ECM-3561] - BC: Unknown error when search by category with space at the first/last in searching keyword 
+    * [ECM-3562] - Error when back to previous node in special case
+    * [ECM-3567] - UI issue in JCR FE detailed view, difference between english and french view
+    * [ECM-3580] - Missing icons in the Intranet's file explorer on Mac and Vista style skins unlike default style one
+    * [ECM-3582] - Bad displaying of the list of sub nodes on FileExplorer
+    * [ECM-3598] - Hard coded labels in webapp/groovy/webui/component/explorer/UIConfirmMessage.gtmpl
+    * [ECM-3599] - Resizing of the container according to the contents 
+    * [ECM-3600] - The links are not properly displayed in the path selector
+    * [ECM-3610] - Drag and drop node into itself -> node disappears
+    * [ECM-3620] - Change resource bundle in Fast Content and Browser Content in Vietnamese language
+    * [ECM-3673] - Exception when select News page in navigation bar
+    * [ECM-3680] - Cannot find a document from a Tag
+    * [ECM-3681] - The test to know if the current node is the root node is incorrect
+    * [ECM-3682] - Invisible content after an import-export
+    * [ECM-3684] - Error when access Content Browser or Ideas-> Read Ideas
+    * [ECM-3685] - Can not add category for document while editing this doc
+    * [ECM-3688] - Exception when manage task in Business Process Controller
+    * [ECM-3724] - Possible problem with categories when upload document
+    * [ECM-3741] - Unknown error when create or edit query in ECM Administration
+    * [ECM-3745] - Must select category while creating document 
+    * [ECM-3752] - Unknown error when select category of new taxonomy tree to add for document
 
-	* [ECM-3159] - In FE cannot select the "*:" role when assigning permission to a group
-	* [ECM-3242] - Unexpected customer work
-	* [ECM-3220] - Change style of <A> tag to be sure that it is "visible" by default
-	
-	* [ECM-3073] - Can not delete drive
-	* [ECM-3398] - No validate argument for calendar fields
-	* [ECM-1160] - Errors relate to restore version function
-	* [ECM-2003] - [Unknown error] when import File Plan has child node
-	* [ECM-2347] - Error in displaying [Advanced Search] when add more constraints
-	* [ECM-2545] - Illegal char in path entry
-	* [ECM-2711] - The org.exoplatform.services.workflow.impl.bonita.WorkflowServiceContainerImpl 
-		doesn't release properly the resources stored into the ThreadLocal
-	* [ECM-2949] - Migrate from ECM 2.0.x
-	* [ECM-2961] - Rename "rss-enable"
-	* [ECM-3113] - View tasks that are active
-	* [ECM-3164] - Error while trying to create an exo:ReloadBPAction
-	* [ECM-3166] - Make sure finished task appear in Bonita
-	* [ECM-3168] - Should see a dialog form in second tab when disapproving a document (content-validation)
-	* [ECM-3165] - Make sure WF Portlets pages appear in the navigation when --enable-workflow option is used 
-	* [ECM-3169] - Cannot trigger the workflow in validation-requests folder
-	* [ECM-3305] - French translation is incomplete
-	* [ECM-3401] - the method UIDialogForm.executeScript contains an incoherent test
-	* [ECM-3428] - Allocate more space when the name of a column is too long  
-	* [ECM-3413] - The parameter "multiValues" doesn't work with the field "Action"
-	* [ECM-1656] - IE6: Can not display uploaded image of Sample node
-	* [ECM-2085] - Filter is not exactly
-	* [ECM-3324] - Dependency on pc 2.0 hardcoded in 
-	* [ECM-3310] - Display bug on the File Explorer when we choose the "Dutch" language
-	* [ECM-3414] - Cannot save after uploading a file whose name contains a forbidden character like '&'
-	* [ECM-3419] - paginator of search in sites explorer--> display not good
-	* [ECM-3406] - Show a clear error message when a user has not enough rights to access to one of all the available dialog templates
-	* [ECM-3429] - typos in parameter getters in ScriptPlugin.java
-	* [ECM-3430] - File Explorer does not render correctly
-	* [ECM-3347] - Mistake text with message to confirm delete.
-	* [ECM-3399] - Calendar fields should not be hidden by default
+** Doc
+    * [ECM-3687] - Create the article "How to migrate a DMS 2.3 to DMS 2.4" in the wiki
+		* [ECM-3760] - Update the wiki articles to describe the improvements with import/export
+
 
 ** Improvement
-	* [ECM-3300] - Automaticaly redirected to the 1st page after removing an element not located on the 1st page	
-	* [ECM-3344] - Change the way content-validation is stored in DMS
-	* [ECM-3346] - Finish the code to sort any column in JCR FE
-	* [ECM-2981] - Show allow user view property of root drive node if the node is not real root node
-	
-	* [ECM-3213] - Allow to apply permissions on taxonomies and filter them
-	* [ECM-3211] - Allow XML files to be used at the same time as properties files in business process archives
-	* [ECM-3208] - Include the JCR console into the Maven build
-	
-	* [ECM-3330] - Make the UI for the Gadget prototype
-	* [ECM-1829] - New column in TimerList to show timer status based on duedate(Finished or Running)
-	* [ECM-2120] - Do not allow user to config when he/she does not have right
-	* [ECM-2690] - Remove WF UI component from Portlets
-	* [ECM-2691] - Allow specify value of an option in a select box component
-	* [ECM-2717] - Make finished process instances appear in a different location
-	* [ECM-2983] - In Add categories multiple fields, allow to have a garbage icon for the first item
-	* [ECM-2992] - Reused some uicomponent from portal to make code consitency
-	* [ECM-3079] - Unify resource bundles
-	* [ECM-3097] - Refine the deployed components
-	* [ECM-3099] - Insert new DMS logo	
-	* [ECM-3117] - Make ECM home page RTLized
-	* [ECM-3158] - Specify the root location of the search in ECM BC Portlet
-	* [ECM-3156] - Replaced content-validation and content-backup process by content-publishing 
-		process
-	* [ECM-3163] - Bind back to Portal 2.5.0
-	* [ECM-3172] - RTLize Workflow Portlets
-	* [ECM-3170] - Allow DMS document templates to be RTLized
-	* [ECM-3400] - The argument "scriptParams" should not be mandatory in case we use a script 
-		to populate options of a select box field
-	* [ECM-3403] - The "Add Drive" UI has not been translated properly into french and use same 
-		terminology between ECM Admin and FE
-	* [ECM-3423] - Allow show more than 2 tabs in manage publication popup
-	* [ECM-3433] - Broadcast some event when create/edit a document by CMSService
-	* [ECM-3146] - Move coverflow related resource(js, javacode, groovy template...) to out side ecm portlet package	
+    * [ECM-2562] - In File Explorer: allow user to rezie column and rearrange them
+    * [ECM-3313] - siteexplorer visual ergonomy (step 1)
+    * [ECM-3314] - FileExplorer : buttons => plugin buttons
+    * [ECM-3431] - File Explorer Drag and Drop too delicate
+    * [ECM-3433] - Broadcast some event when create/edit a document by CMSService
+    * [ECM-3454] - New Taxonomy Management
+    * [ECM-3484] - Broadcast some event when copy/cut/clone a node in FE
+    * [ECM-3577] - Reduce the effect of drag and drop in file explorer
+    * [ECM-3581] - use the upload file size limit in the upload form
+    * [ECM-3601] - The path selector should not allow to select a link by default to avoid unexpected bugs
+    * [ECM-3611] - Auto create dms-system workspace when create new repository
+    * [ECM-3619] - Use of appropriate tests
+    * [ECM-3671] - Allow to translate node whose type extends nt:folder or nt:unstructured
+    * [ECM-3734] - Allow to export/import a versionnable node
+    * [ECM-3746] - The workspace creator must be up to date
 
 ** New Feature
-	* [ECM-3149] - Create gadgets for delivering information on documents
-	* [ECM-3297] - Document in the wiki how to define icons for node types
-	* [ECM-3335] - Document in the wiki how to manage versions of a document
-	* [ECM-3333] - Document in the wiki how to creat a drive
-	* [ECM-3334] - Add a Fast Content Creator section in practical how-tos
-	* [ECM-3332] - Document in the wiki the tags (aka folksonomy) feature
-	* [ECM-3069] - Update the readme
+    * [ECM-2547] - create an opensocial gadget that list the last documents edited by your contacts
+    * [ECM-3316] - New taxonomy management : using symlinks
 
-	* [ECM-2127] - Clipboard improvement
-	* [ECM-3239] - RTLize JCR FE
-	* [ECM-3240] - RTLize BC
-	* [ECM-3223] - Make sure BC is publication aware
-	* [ECM-3248] - Complete the wiki page that describes how to directly access a JCR FE drive
-	* [ECM-3245] - Document how to create an RSS feed in eXo DMS
-	* [ECM-3246] - Document the research features in eXo DMS
+** Task
+    * [ECM-3411] - Add a logger and use the logger to print all the errors caught in the class org.exoplatform.ecm.webui.form.UIDialogForm
+    * [ECM-3427] - Add the new Upload Service which allows to limit the size of the uploaded files
+    * [ECM-3563] - Edit the label in form to add permission when edit metadata
+    * [ECM-3565] - Edit the label when create workspace
+    * [ECM-3590] - Move all the content of system:/jcr:system/exo:ecm to dms-system:/exo:ecm
+    * [ECM-3716] - Allow to disable the symlinks
+    * [ECM-3717] - Ensure that the new TaxonomyService can be used instead of the old service everywhere in the code
 
-	* [ECM-2987] - Improve wiki documentation
-	* [ECM-2365] - Create workflow plublication plugin
-	* [ECM-2764] - Translate into Vietnamese
-	* [ECM-2841] - RTLize ECM Admin
-	* [ECM-2847] - Add a breadcrumb in the category selection panel
-	* [ECM-2848] - Add a paginator to categories selector
-	* [ECM-2986] - Improve migration guide
-	* [ECM-3076] - Have a product description panel in the wiki WCM home page
-	* [ECM-3085] - Make PDF doc for eXo workflow / Update PDF doc for eXo DMS
-	* [ECM-3110] - Have a design for home page of exo-workflow
-	* [ECM-3148] - Access directly a JCR FE drive
-	* [ECM-3161] - Group WCM, DMS and WF into a same ECM navigation item in the wiki
-	* [ECM-2563] - FileExplorer: allow user to sort by any of the column showed in the file explorer instance	
+** Sub-task
+    * [ECM-3542] - Still displaying symlink node after target node is deleted
+    * [ECM-3543] - Show wrong message and throw exception when create a document in node that user does not have "Add" right
+    * [ECM-3553] - Show wrong message when create the same name node in Document Folder or in document
+    * [ECM-3554] - Unknown error when rename for node with "New name" field is blank
+    * [ECM-3566] - Change message when create new query with special character in 'Name' field
+    * [ECM-3583] - Apply these changes in the trunk
+    * [ECM-3586] - Describe this new feature in the guides
+    * [ECM-3592] - Change the configuration files
+    * [ECM-3593] - Test the ECM Administration
+    * [ECM-3594] - Test the File Explorer
+    * [ECM-3595] - Find a way to migrate 
+    * [ECM-3603] - Add a new category selector for the dialog template and replace the old one in all the default templates (Podcast, Sample Node, Kofax, File and File Plan) by this new one
+    * [ECM-3609] - Always show message and throw exception when select new repository
 
 
 ** Other resources and links
@@ -210,19 +172,17 @@ and navigate to URL: http://localhost:8080/portal
 
 4. MIGRATION GUIDE
 ---------------------------------------------------
-Check compatibility between ECM 2.2 and ECM 2.3
-Since ECM 2.3, we split ECM to 3 products as DMS, Workflow and WCM. So, how can we upgrade from 2.2 to 2.3? 
-You can follow these steps to get successful upgrade. 
+Migrate from DMS 2.3 to DMS 2.4
+Since DMS 2.4 we have some main changes and need to be migrated
 
-4.1. Migration for drives path
-	Since ECM 2.3, the DriveMigrationService was available at the location ecm/dms/trunk/component/migration/2.3/drives. 
-This service is used to rename the old drive which contains invalid characters and prevent the WARNING messages at the console.
+4.1 New features with Symlink and Taxonomy Management
+4.2 Using new workspace dms-system
+4.3 Create default taxonomy tree to Manage Taxonomy
+4.4 Filter all action in File Explorer, ECM Admin
+4.5 Gadget for last edited documents
+4.6 Set up size of uploading file
 
-4.2. How to use for Workflow Publication Plugin?
-	Since ECM 2.3, the Workflow Publication Plugin was availabled at the location 
-ecm/contentvalidation/trunk/component/workflowPublication/. This plugin is used to publish a content of documents. 
-It breaks a work process down into tasks. 
-See more details about http://wiki.exoplatform.com/xwiki/bin/view/ECM/Migrate+to+ECM2_3
+You can refer to this link to see more details: http://wiki.exoplatform.com/xwiki/bin/view/ECM/ECM+Migration+from+DMS+2-3+to+DMS+2-4
 
 DMS can be reached at:
 
