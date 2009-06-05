@@ -42,6 +42,7 @@ import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.form.UIFormSelectBox;
 
 /**
  * Created by The eXo Platform SARL
@@ -138,7 +139,12 @@ public class UIDriveSelector extends UIContainer {
       UIJcrExplorerEditContainer editContainer = driveSelector.getAncestorOfType(UIJcrExplorerEditContainer.class);
       UIJcrExplorerEditForm form = editContainer.getChild(UIJcrExplorerEditForm.class);
       UIFormInputSetWithAction driveNameInput = form.getChildById("DriveNameInput");
-      driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME).setValue(driveName); 
+      driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME).setValue(driveName);
+      UIFormSelectBox typeSelectBox = form.getChildById(UIJCRExplorerPortlet.USECASE);
+      if (UIJCRExplorerPortlet.PARAMETERIZE.equals(typeSelectBox.getValue())) {
+        UIFormInputSetWithAction uiParamPathInput = form.getChildById(UIJcrExplorerEditForm.PARAM_PATH_ACTION);
+        uiParamPathInput.setRendered(true);
+      }
       UIComponent uiComponent = driveSelector.getParent();
       if (uiComponent != null) {
         if (uiComponent instanceof UIPopupWindow) {

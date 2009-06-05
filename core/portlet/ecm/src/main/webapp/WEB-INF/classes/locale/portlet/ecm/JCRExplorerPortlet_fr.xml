@@ -2131,8 +2131,15 @@
       <isDirectlyDrive>Accès direct aux lecteurs</isDirectlyDrive>
       <driveName>Nom du lecteur</driveName>
       <usecase>Type d'accès</usecase>
+      <SelectNodePath>Select path</SelectNodePath>
     </label>
   </UIJcrExplorerEditForm>
+  
+  <PopupSelectPath>
+    <title>
+      <UIOneNodePathSelector>Select node</UIOneNodePathSelector>
+    </title>
+  </PopupSelectPath>
   
   <UIDriveSelector>
     <label>

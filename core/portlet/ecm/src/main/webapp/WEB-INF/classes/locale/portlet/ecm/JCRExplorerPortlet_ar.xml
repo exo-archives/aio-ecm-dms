@@ -2131,6 +2131,7 @@
       <isDirectlyDrive>القرص المباشر</isDirectlyDrive>
       <driveName>اسم القرص</driveName>
       <usecase>اختيار النّوع</usecase>
+      <SelectNodePath>Select path</SelectNodePath>
     </label>
   </UIJcrExplorerEditForm>
   
@@ -2157,6 +2158,12 @@
       <UIDriveSelector>اختيار  قرص</UIDriveSelector>
     </title>
   </PopUpSelectDrive>
+  
+  <PopupSelectPath>
+    <title>
+      <UIOneNodePathSelector>Select node</UIOneNodePathSelector>
+    </title>
+  </PopupSelectPath>
   
   <DriveNameInput>
     <title>

@@ -16,10 +16,16 @@
  */
 package org.exoplatform.ecm.webui.component.explorer;
 
+import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIWorkspaceList;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.cms.drives.DriveData;
+import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
+import org.exoplatform.webui.form.UIFormSelectBox;
 
 /**
  * Created by The eXo Platform SARL
@@ -43,6 +49,26 @@ public class UIJcrExplorerEditContainer extends UIContainer {
     uiPopup.setWindowSize(700, 350);
     uiPopup.setShow(true);
     uiPopup.setResizable(true);
+    return uiPopup;
+  }
+  
+  
+  public UIPopupWindow initPopupDriveBrowser(String id, String driveName) throws Exception {
+    String repository = getAncestorOfType(UIJCRExplorerPortlet.class).getPreferenceRepository();
+    UIPopupWindow uiPopup = initPopup(id);
+    UIOneNodePathSelector uiOneNodePathSelector = createUIComponent(UIOneNodePathSelector.class, null, null);
+    UIWorkspaceList uiWorkspaceList= uiOneNodePathSelector.getChild(UIWorkspaceList.class);
+    uiOneNodePathSelector.setShowRootPathSelect(true);
+    uiWorkspaceList.getChild(UIFormSelectBox.class).setRendered(false);
+    ManageDriveService manageDrive = getApplicationComponent(ManageDriveService.class);
+    DriveData driveData = manageDrive.getDriveByName(driveName, repository);
+    uiOneNodePathSelector.setRootNodeLocation(repository, driveData.getWorkspace(), driveData.getHomePath());
+    uiOneNodePathSelector.init(SessionProviderFactory.createSessionProvider());
+    uiPopup.setUIComponent(uiOneNodePathSelector);
+    uiOneNodePathSelector.setSourceComponent(this.getChild(UIJcrExplorerEditForm.class),
+        new String[] { UIJcrExplorerEditForm.PARAM_PATH_INPUT });
+    uiPopup.setRendered(true);
+    uiPopup.setShow(true);
     return uiPopup;
   }
 }
