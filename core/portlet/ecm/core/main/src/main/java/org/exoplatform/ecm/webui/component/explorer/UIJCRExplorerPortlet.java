@@ -115,7 +115,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
   private HashMap<String, String> getElementByContext(WebuiRequestContext context) {
     HashMap<String, String> mapParam = new HashMap<String, String>();
     //In case access by ajax request
-    if (context.getUIComponentToUpdateByAjax() != null) return mapParam;
+    if (context.useAjax()) return mapParam;
     Pattern patternUrl = Pattern.compile("([^/]+)/([^/]+)/(.*)");
     PortalRequestContext pcontext = Util.getPortalRequestContext();
     PortletRequestContext portletReqContext = (PortletRequestContext) context;
@@ -150,12 +150,11 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       return;
     }
     RepositoryService rservice = getApplicationComponent(RepositoryService.class);
-    DriveData drive = manageDrive.getDriveByName(driveName, repositoryName);
     String userId = Util.getPortalRequestContext().getRemoteUser();
     List<String> viewList = new ArrayList<String>();
     
     for (String role : Utils.getMemberships()) {
-      for (String viewName : drive.getViews().split(",")) {
+      for (String viewName : driveData.getViews().split(",")) {
         if (!viewList.contains(viewName.trim())) {
           Node viewNode = 
             getApplicationComponent(ManageViewService.class).getViewByName(viewName.trim(),
@@ -164,7 +163,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
           if (permiss.contains("${userId}")) permiss = permiss.replace("${userId}", userId);
           String[] viewPermissions = permiss.split(",");
           if (permiss.equals("*")) viewList.add(viewName.trim());
-          if (drive.hasPermission(viewPermissions, role)) viewList.add(viewName.trim());
+          if (driveData.hasPermission(viewPermissions, role)) viewList.add(viewName.trim());
         }
       }
     }
@@ -182,27 +181,27 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       if(viewListStr.length() > 0) viewListStr = viewListStr + "," + viewName;
       else viewListStr = viewName;
     }
-    drive.setViews(viewListStr);
-    String homePath = drive.getHomePath();
+    driveData.setViews(viewListStr);
+    String homePath = driveData.getHomePath();
     if (homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId);
     
     setFlagSelect(true);
     Preference pref = new Preference();
-    pref.setShowSideBar(drive.getViewSideBar());
-    pref.setShowNonDocumentType(drive.getViewNonDocument());
-    pref.setShowPreferenceDocuments(drive.getViewPreferences());
-    pref.setAllowCreateFoder(drive.getAllowCreateFolder()); 
-    pref.setShowHiddenNode(drive.getShowHiddenNode());
+    pref.setShowSideBar(driveData.getViewSideBar());
+    pref.setShowNonDocumentType(driveData.getViewNonDocument());
+    pref.setShowPreferenceDocuments(driveData.getViewPreferences());
+    pref.setAllowCreateFoder(driveData.getAllowCreateFolder()); 
+    pref.setShowHiddenNode(driveData.getShowHiddenNode());
     
     UIJCRExplorer uiExplorer = findFirstComponentOfType(UIJCRExplorer.class);
     uiExplorer.setPreferences(pref);
-    uiExplorer.setDriveData(drive);
+    uiExplorer.setDriveData(driveData);
     uiExplorer.setIsReferenceNode(false);
     
     SessionProvider provider = SessionProviderFactory.createSessionProvider();                  
     ManageableRepository repository = rservice.getRepository(repositoryName);
     try {
-      Session session = provider.getSession(drive.getWorkspace(),repository);      
+      Session session = provider.getSession(driveData.getWorkspace(),repository);      
       // check if it exists
       // we assume that the path is a real path
       session.getItem(homePath);        
@@ -223,7 +222,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       return;
     } 
     uiExplorer.setRepositoryName(repositoryName);
-    uiExplorer.setWorkspaceName(drive.getWorkspace());
+    uiExplorer.setWorkspaceName(driveData.getWorkspace());
     uiExplorer.setRootPath(homePath);
     UIControl uiControl = uiExplorer.getChild(UIControl.class);
     UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);
