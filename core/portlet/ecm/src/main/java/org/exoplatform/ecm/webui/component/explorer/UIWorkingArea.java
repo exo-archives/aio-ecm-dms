@@ -870,9 +870,14 @@ public class UIWorkingArea extends UIContainer {
     }    
   }
   
-  private void moveNode(String srcPath, String wsName, String destPath, Event event) throws Exception {
+  private void moveNode(String srcPath, String destPath, Event event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
     Workspace workspace = uiExplorer.getSession().getWorkspace();
+    String wsName = null;
+    if(srcPath.indexOf(":/") > -1) {
+      wsName = srcPath.split(":/")[0];
+      srcPath = "/" + srcPath.split(":/")[1];
+    }
     Node selectedNode = uiExplorer.getNodeByPath(srcPath, uiExplorer.getSessionByWorkspace(wsName));
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
     if(!selectedNode.isCheckedOut()) {
@@ -901,10 +906,10 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
-  private void moveMultiNode(String[] srcPaths, String[] wsNames, String destPath, 
+  private void moveMultiNode(String[] srcPaths, String destPath, 
       Event event) throws Exception {
     for(int i=0; i< srcPaths.length; i++) {
-      moveNode(srcPaths[i], wsNames[i], destPath, event);
+      moveNode(srcPaths[i], destPath, event);
     }
   }
   
@@ -1450,24 +1455,26 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
-      String[] destInfo = event.getRequestContext().getRequestParameter("destInfo").split(";");
+      String[] destInfo = event.getRequestContext().getRequestParameter("destInfo").split(":/");
       UIJCRExplorer uiExplorer = uiWorkingArea.getParent();
       UIApplication uiApp = uiWorkingArea.getAncestorOfType(UIApplication.class);
       Node destNode = null;
-      if(destInfo[0].startsWith(nodePath)) {
+      String destPath = "/" + destInfo[1];
+      if(destPath.startsWith(nodePath)) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.bound-move-exception", 
             null,ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
       try {
-        destNode = (Node)uiExplorer.getSession().getItem(destInfo[0]);
+        destNode = (Node)uiExplorer.getSessionByWorkspace(destInfo[0]).getItem(destPath);
       } catch(PathNotFoundException path) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
             null,ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch (Exception e) {
+        e.printStackTrace();
         JCRExceptionManager.process(uiApp, e);
         return;
       }
@@ -1479,7 +1486,7 @@ public class UIWorkingArea extends UIContainer {
         return;
       }
       if(uiExplorer.nodeIsLocked(destNode)) {
-        Object[] arg = { destInfo[0] };
+        Object[] arg = { destPath };
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
@@ -1488,15 +1495,15 @@ public class UIWorkingArea extends UIContainer {
       try {
         if(nodePath.indexOf(";") > -1) {
           uiWorkingArea.isMultiSelect_ = true;
-          uiWorkingArea.moveMultiNode(nodePath.split(";"), wsName.split(";"), destInfo[0], event);
+          uiWorkingArea.moveMultiNode(nodePath.split(";"), destPath, event);
         } else {
           uiWorkingArea.isMultiSelect_ = false;
-          uiWorkingArea.moveNode(nodePath, wsName, destInfo[0], event);
+          uiWorkingArea.moveNode(nodePath, destPath, event);
         }
         uiExplorer.getSession().save();
         uiExplorer.updateAjax(event);
       } catch(AccessDeniedException ace) {
-        Object[] arg = { destInfo[0] };
+        Object[] arg = { destPath };
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-add-permission", arg, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());        
