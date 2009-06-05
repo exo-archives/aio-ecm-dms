@@ -127,6 +127,21 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
     return new String[] {"Export", "Cancel"};
   }
   
+  private String getHistoryValue(Node node) throws Exception {
+    String versionHistory = node.getProperty("jcr:versionHistory").getValue().getString();
+    String baseVersion = node.getProperty("jcr:baseVersion").getValue().getString();
+    Value[] predecessors = node.getProperty("jcr:predecessors").getValues();
+    StringBuilder historyValue = new StringBuilder();
+    StringBuilder predecessorsBuilder = new StringBuilder();
+    for(Value value : predecessors) {
+      if(predecessorsBuilder.length() > 0) predecessorsBuilder.append(",") ;
+      predecessorsBuilder.append(value.toString());
+    }
+    historyValue.append(node.getUUID()).append("=").append(versionHistory).
+      append(";").append(baseVersion).append(";").append(predecessorsBuilder.toString()); 
+    return historyValue.toString();
+  }
+  
   static public class ExportActionListener extends EventListener<UIExportNode> {
     public void execute(Event<UIExportNode> event) throws Exception {
       UIExportNode uiExport = event.getSource() ;
@@ -180,33 +195,26 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       while(queryIter.hasNext()) {
         Node node = queryIter.nextNode();
         bos = new ByteArrayOutputStream();
-        String versionHistory = node.getProperty("jcr:versionHistory").getValue().getString();
-        String baseVersion = node.getProperty("jcr:baseVersion").getValue().getString();
-        Value[] predecessors = node.getProperty("jcr:predecessors").getValues();
-        StringBuilder historyValue = new StringBuilder();
-        StringBuilder predecessorsBuilder = new StringBuilder();
-        for(Value value : predecessors) {
-          if(predecessorsBuilder.length() > 0) predecessorsBuilder.append(",") ;
-          predecessorsBuilder.append(value.toString());
-        }
-        historyValue.append(node.getUUID()).append("=").append(versionHistory).
-          append(";").append(baseVersion).append(";").append(predecessorsBuilder.toString()); 
-        propertiesBOS.write(historyValue.toString().getBytes());
+        String historyValue = uiExport.getHistoryValue(node);
+        propertiesBOS.write(historyValue.getBytes());
         propertiesBOS.write('\n');
         if(format.equals(DOC_VIEW)) session.exportDocumentView(node.getVersionHistory().getPath(), bos, false, false );
         else session.exportSystemView(node.getVersionHistory().getPath(), bos, false, false );
         ByteArrayInputStream input = new ByteArrayInputStream(bos.toByteArray()) ;
         zipService.addInputStream(node.getUUID() + ".xml", input);
       }
-      ByteArrayInputStream mappingInput = new ByteArrayInputStream(propertiesBOS.toByteArray()) ;
-      zipService.addInputStream("mapping.properties", mappingInput);
       if(currentNode.isNodeType(Utils.MIX_VERSIONABLE)) {
         bos = new ByteArrayOutputStream();
+        String historyValue = uiExport.getHistoryValue(currentNode);
+        propertiesBOS.write(historyValue.getBytes());
+        propertiesBOS.write('\n');
         if(format.equals(DOC_VIEW)) session.exportDocumentView(currentNode.getVersionHistory().getPath(), bos, false, false );
         else session.exportSystemView(currentNode.getVersionHistory().getPath(), bos, false, false );
         ByteArrayInputStream input = new ByteArrayInputStream(bos.toByteArray()) ;
         zipService.addInputStream(currentNode.getUUID() + ".xml",input);
       }
+      ByteArrayInputStream mappingInput = new ByteArrayInputStream(propertiesBOS.toByteArray()) ;
+      zipService.addInputStream("mapping.properties", mappingInput);
       bos = new ByteArrayOutputStream();
       zipService.createZip(bos);
       ByteArrayInputStream zipInput = new ByteArrayInputStream(bos.toByteArray());
@@ -217,7 +225,6 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       mappingInput.close();
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
-      uiExplorer.cancelAction() ;
     }
   }
   
