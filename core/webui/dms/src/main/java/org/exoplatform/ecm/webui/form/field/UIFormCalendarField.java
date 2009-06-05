@@ -66,6 +66,9 @@ public class UIFormCalendarField extends DialogFormField {
     return (T)uiDateTime;
   }
   
-  public boolean isVisible() { return "true".equalsIgnoreCase(visible); }
+  public boolean isVisible() { 
+    if (visible == null) return true; 
+    return "true".equalsIgnoreCase(visible);
+  }
   public boolean isDisplayTime() { return "displaytime".equals(options); }
 }
