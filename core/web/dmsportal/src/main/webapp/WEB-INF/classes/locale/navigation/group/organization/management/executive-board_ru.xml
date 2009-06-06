@@ -3,17 +3,16 @@
   <group>
     <executive-board>
       <management>
-        Управление
+        <title>Управление</title>
         <newStaff>Новый работник</newStaff>
         <organization>Организация</organization>
         <ecmadmin>ECMАдминистрация</ecmadmin>
       </management>
       <businessprocess>
-        Бизнесс процесс
+        <title>Бизнесс процесс</title>
         <administrator>Администратор бизнесс процесса</administrator>
         <controller>Контроллер бизнесс процесса</controller>
       </businessprocess>
     </executive-board>
   </group>
 </bundle>
-

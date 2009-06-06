@@ -18,7 +18,7 @@
       <save-successfully>Succesvol opgeslaan naar portlet voorkeuren</save-successfully>
       <item-not-found>Ongeldig pad</item-not-found>
       <fileType-empty>U moet eerst bestandstype kiezen voor u deze configuratie opslaat</fileType-empty>
-      <ws-empty>U moet ��n werkruimte kiezen</ws-empty>
+      <ws-empty>Je moet kiezen voor een werkruimte</ws-empty>
     </msg>
     <action>
       <Save>Opslaan</Save>
@@ -31,7 +31,7 @@
   </UIPopupWindow>
   <UIFastContentCreatortForm>
     <msg>
-      <name-not-allowed>This name is not allowed.</name-not-allowed>
+      <name-not-allowed>Deze naam is niet toegestaan.</name-not-allowed>
       <in-versioning>U moet huidige node uitchecken vooraleer u een nieuwe node toevoegd</in-versioning>
       <cannot-save>Sommige beperkingen werden overtreden tijdens die actie.</cannot-save>
       <saved-successfully>Node werd niet succesvol opgeslaan in '{0}' locatie</saved-successfully>
@@ -96,40 +96,41 @@
     <label>
       <workspaceName>Werkruimte</workspaceName>
       <rootNodeInfo>Root pad</rootNodeInfo>
-      <rootPath>Root pad</rootPath>
     </label>
   </UIWorkspaceList>
-  <!--
-  # to be translated
-  -->
   <UITabPane>
     <title>
-      <UICategoriesSelectPanel>Select categories</UICategoriesSelectPanel>
-      <UISelectedCategoriesGrid>Referenced categories</UISelectedCategoriesGrid>
+      <UICategoriesSelectPanel>Selecteer categorieën</UICategoriesSelectPanel>
+      <UISelectedCategoriesGrid>Verwezen categorieën</UISelectedCategoriesGrid>
     </title>
   </UITabPane>
   <PopupComponent>
     <title>
-      <UICategoriesSelector>Add Categories</UICategoriesSelector>
+      <UICategoriesSelector>Toevoegen rubrieken</UICategoriesSelector>
     </title>
   </PopupComponent>
+  <UICategoriesSelector>
+    <action>
+      <close>Close</close>
+    </action>
+  </UICategoriesSelector>
   
   <PopupComponent>
 	  <title>
-	    <UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+	    <UIOneTaxonomySelector>Toevoegen rubrieken</UIOneTaxonomySelector>
 	  </title>
   </PopupComponent>
   
   <UITreeTaxonomyList>
     <label>
-      <taxonomyTree>Taxonomy Tree</taxonomyTree>
+      <taxonomyTree>Taxonomie Boom</taxonomyTree>
     </label>
   </UITreeTaxonomyList>
   
   <UIDocumentForm>
   	<msg>
-  		<not-support>Cannot load template of '{0}'.</not-support>
-  		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
+  		<not-support>Kan niet laden sjabloon va '{0}'.</not-support>
+  		<do-not-permission>U heeft geen toestemming voor het laden van de sjabloon '{0}'.</do-not-permission>
   	</msg>
   </UIDocumentForm>
 </bundle>

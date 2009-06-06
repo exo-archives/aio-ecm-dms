@@ -19,7 +19,7 @@
     <msg>
       <not-support>Seuls les documents peuvent être commentés</not-support>
       <not-checkedout>Vous devez effectuer un check out sur le noeud avant de pouvoir ajouter un commentaire</not-checkedout>
-      <content-null>le contenu de votre commentaire est vide !</content-null>
+      <content-null>Le contenu de votre commentaire est vide !</content-null>
     </msg>
   </UICommentForm>
   <!--
@@ -71,6 +71,7 @@
       <no-view-found>Il n'y a pas de vue disponible par rapport à vos droits d'accès dans le lecteur '{0}'</no-view-found>
       <access-denied>Accès interdit</access-denied>
       <empty-drives>Il n'y a pas de lécteur dans ce dépôt de données ou vous n'avez pas les droits requis pour accéder à au moins un lecteur de ce dépôt de données</empty-drives>
+      <workspace-not-exist>Le lecteur '{0}' a été sauvegardé ndas un espace de travail inconnu. Veuillez reconfigurer le lecteur.</workspace-not-exist>
     </msg>
   </UIDrivesBrowser>
   <!--
@@ -250,15 +251,6 @@
     </header>
   </UIPopupWindow>
   <!--
-  #to be translated
-  -->
-  <UIPopupTaxonomy>
-    <title>
-      <UICategoriesSelector>Add Categories</UICategoriesSelector>
-      <UIOneNodePathSelector>Ajouter des catégories</UIOneNodePathSelector>
-    </title>
-  </UIPopupTaxonomy>
-  <!--
   #########################################################################################
   #             org.exoplatform.ecm.webui.component.explorer.UIResourceForm #
   #########################################################################################
@@ -308,12 +300,6 @@
       <ViewRelations>Affichier/Masquer les relations</ViewRelations>
       <ShowJCRStructure>Affichier/Masquer la structure JCR brute</ShowJCRStructure>
     </tooltip>
-    <title>
-      <select-tab>Select tab</select-tab>
-      <SimpleSearch>Recherche Rapide</SimpleSearch>
-      <AdvanceSearch>Recherche Avancée</AdvanceSearch>
-      <SavedQueries>Requêtes Sauvegardées</SavedQueries>
-    </title>
     <msg>
       <cannot-action-in-rootnode>Action interdite sur le noeud racine</cannot-action-in-rootnode>
       <node-checkedin>Vous devez d'abord effectuer un check out</node-checkedin>
@@ -352,8 +338,13 @@
       <tagnode-checkedin>Vous devez d'abord effectuer un checkout avant de pouvoir tagguer ce document</tagnode-checkedin>
       <unsupported-multilanguage>Seuls les documents supportent le multilingue</unsupported-multilanguage>
       <multilang-checkedin>Vous devez d'abord effectuer un checkout avant de pouvoir ajouter une langue</multilang-checkedin>
-      <not-exist-categories>Category does not exist</not-exist-categories>
     </msg>
+    <title>
+      <select-tab>Sélectioner l'onglet</select-tab>
+      <SimpleSearch>Recherche Rapide</SimpleSearch>
+      <AdvanceSearch>Recherche Avancée</AdvanceSearch>
+      <SavedQueries>Requêtes Sauvegardées</SavedQueries>
+    </title>
   </UIActionBar>
   <UIPopupMenu>
     <msg>
@@ -364,6 +355,7 @@
       <has-not-permission-unlok>Vous n'avez pas les droits suffisants pour déverrouiller ce noeud</has-not-permission-unlok>
       <bound-exception>Vous ne pouvez pas couper / coller un noeud sur lui-même</bound-exception>
       <bound-move-exception>Vous ne pouvez pas déplacer le noeud sur lui-même ou ses enfants.</bound-move-exception>
+      <does-not-support-auditing>Vous ne pouvez pas activer l'audit sur ce noeud</does-not-support-auditing>
       <can-not-rename-node>Vous n'avez pas les droits suffisants pour renommer ce noeud.</can-not-rename-node>
       <can-not-cut-node>Vous n'avez pas les droits suffisants pour couper ce noeud.</can-not-cut-node>
       <can-not-remove-node>Vous n'avez pas les droits suffisants pour supprimer ce noeud.</can-not-remove-node>
@@ -371,11 +363,10 @@
       <can-not-unlock-node>Vous n'avez pas les droits suffisants pour déverrouiller ce noeud.</can-not-unlock-node>
       <no-node>Aucun noeud n'a été sélectionné.</no-node>
       <can-not-paste-node>Vous n'avez pas les droits suffisants pour coller ce noeud.</can-not-paste-node>
-      <can-not-move-node>You don't have permission to move to this node. Please contact with administrator to get correct right.</can-not-move-node>
+      <can-not-move-node>Vous n'avez pas les droits requis pour supprimer ce noeud.</can-not-move-node>
       <does-not-support-versioning>Le versioning n'est pas supporté par ce noeud</does-not-support-versioning>
       <path-not-found>Ce noeud a été modifié ou supprimé, veuillez cliquer sur le bouton "Actualiser"</path-not-found>
       <paste-lock-exception>Impossible de coller le noeud car le noeud source ou le noeud cible est verrouillé ou possède une relation avec un noeud verrouillé.</paste-lock-exception>
-      <does-not-support-auditing><![CDATA[Vous ne pouvez pas activer la tra&ccedil;abilit&eacute; pour ce noeud]]></does-not-support-auditing>
       <can-not-checkin-node>Vous ne pouvez pas faire de check-in sur ce noeud. Veuillez vérifier vos permissions!</can-not-checkin-node>
       <can-not-checkout-node>Vous ne pouvez pas faire de check-out sur ce noeud. Veuillez vérifier vos permissions!</can-not-checkout-node>
       <move-constraint-exception>Des contraintes sont violées si le noeud est déplacé. Veuillez vérifier le noeud source et le noeud destination.</move-constraint-exception>
@@ -399,6 +390,7 @@
       <remove-referentialIntegrityException>Impossible de le supprimer car il est référencé ailleurs</remove-referentialIntegrityException>
       <constraintviolation-exception>Le jcr:uuid n'a pas été trouvé. Le noeud a peut être été modifié ou supprimé. Veuiller cliquer sur le bouton "Actualiser".</constraintviolation-exception>
       <path-not-found-exception>Le noeud a été modifié ou supprimé. Veuiller cliquer sur le bouton "Actualiser".</path-not-found-exception>
+      <node-locked-other-person>Aucune catégorie</node-locked-other-person>
     </msg>
   </UIPopupMenu>
   <!--
@@ -423,10 +415,10 @@
       <fileName-error>Nom de fichier invalide</fileName-error>
       <constraint-violation>Le noeud courant n'autorise pas l'ajout d'un noeud du type '{0}'</constraint-violation>
       <repository-exception>Ce répertoire ne peut être sauvegardé. Le nom fournit ne doit pas avoir d'indexe ou existe déjà.</repository-exception>
-      <repository-exception-permission>You don't have permission to add a new folder on this node</repository-exception-permission>
+      <repository-exception-permission>Vous n'avez pas le droit d'ajouter un répertoire à ce noeud</repository-exception-permission>
       <numberformat-exception>Ce répertoire ne peut être sauvegardé. Le nom fournit ne doit pas contenir les caractéres '[' et ']'</numberformat-exception>
       <!--DMS 2.4.x; ECM-3553-->
-      <not-allow-sameNameSibling>Can not save. This node is not allowed same name sibling</not-allow-sameNameSibling>
+      <not-allow-sameNameSibling>Impossible de sauver car un autre noeud du même nom existe déjà</not-allow-sameNameSibling>
     </msg>
   </UIFolderForm>
   <!--
@@ -441,7 +433,7 @@
     <msg>
       <confirm-delete>Confirmez-vous la suppression ?</confirm-delete>
       <confirm-delete-multi>Etes vous certains de vouloir déplacer ces {0} éléments vers la corbeille?</confirm-delete-multi>
-      <confirm-move>Are you sure want to move?</confirm-move>
+      <confirm-move>Souhaitez-vous vraiment déplacer ce(s) noeud(s)?</confirm-move>
       <node-cut>Le noeud '{0}' a été coupé.</node-cut>
       <execute-successfully>L'action '{0}' a été exécutée.</execute-successfully>
       <save-node-success>Le noeud '{0}' a été sauvegardé.</save-node-success>
@@ -479,8 +471,8 @@
     <msg>
       <access-denied>Accès interdit</access-denied>
       <null-exception>Elément non trouvé ! Il a été supprimé ou modifié, ou vous n'avez pas le droit d'accéder à ce noeud !</null-exception>
-      <access-denied-exception>Accès interdit ! Veuillez vérifier vos droits d'accès à ce noeud</access-denied-exception>
       <confirm-deleteattachment>Confirmez-vous la suppression du fichier attaché?</confirm-deleteattachment>
+      <access-denied-exception>Accès interdit ! Veuillez vérifier vos droits d'accès à ce noeud</access-denied-exception>
     </msg>
     <tooltip>
       <remove-attachment>Supprimer le fichier attaché</remove-attachment>
@@ -613,8 +605,8 @@
       <UIDocumentInfo>Vue document</UIDocumentInfo>
       <UICategoriesSelectPanel>Selectionner des catégories</UICategoriesSelectPanel>
       <UISelectedCategoriesGrid>Catégories référencées</UISelectedCategoriesGrid>
-      <UIWorkflowPublicationActionForm>Workflow Publication Action</UIWorkflowPublicationActionForm>
-      <UIWorkflowPublicationViewForm>Workflow Publication View</UIWorkflowPublicationViewForm>
+      <UIWorkflowPublicationActionForm>Action sur le Workflow de Publication</UIWorkflowPublicationActionForm>
+      <UIWorkflowPublicationViewForm>Vue du Workflow de Publication</UIWorkflowPublicationViewForm>
     </title>
   </UITabPane>
   <UIPropertyTab>
@@ -634,7 +626,7 @@
     </header>
     <label>
       <binary>Contenu binaire</binary>
-      <notavailable>N/A</notavailable>
+      <notavailable>ND</notavailable>
       <cannotget>Impossible d'obtenir les valeurs</cannotget>
     </label>
     <action>
@@ -810,7 +802,6 @@
     <label>
       <upload>Sélectionner un fichier</upload>
       <name>Nom</name>
-      <fieldListTaxonomy>Liste des taxonomies</fieldListTaxonomy>
       <fieldTaxonomy>Ajouter une taxonomie</fieldTaxonomy>
     </label>
     <action>
@@ -1095,7 +1086,7 @@
     </action>
     <msg>
       <!--DMS 2.4.x ECM-3566-->
-      <name-invalid>Name is invalid!</name-invalid>
+      <name-invalid>Le nom est invalide !</name-invalid>
       <query-added>Requête ajoutée</query-added>
       <save_unSuccessful>Sauvegarde impossible : la requête est invalide ou une requête du même nom existe déjà</save_unSuccessful>
       <invalid-queryStatement>la requête est invalide</invalid-queryStatement>
@@ -1241,6 +1232,12 @@
       <UIUserContainer>Sélectionner des permissions utilisateur</UIUserContainer>
     </title>
   </PopupUserSelector>
+  <UIPopupTaxonomy>
+    <title>
+      <UICategoriesSelector>Ajouter des Catégories</UICategoriesSelector>
+      <UIOneNodePathSelector>Ajouter des Catégories</UIOneNodePathSelector>
+    </title>
+  </UIPopupTaxonomy>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIVersionInfo       #
@@ -1310,6 +1307,7 @@
       <version>Version</version>
     </label>
   </UIAuditingInfo>
+  
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
@@ -1323,21 +1321,6 @@
       <button-cancel>Annuler</button-cancel>
     </label>
   </UIActivateVersion>
-  <!--
-  ###############################################################################
-  #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateAuditing  #
-  ###############################################################################
-  -->
-  <UIActivateAuditing>
-    <label>
-      <note><![CDATA[La tra&ccedil;abilit&eacute; n'a pas &eacute;t&eacute; activ&eacute; pour ce noeud]]></note>
-      <question>Confirmez-vous l'activation ?</question>
-    </label>
-    <action>
-      <activate>Activer</activate>
-      <cancel>Cancel</cancel>
-    </action>
-  </UIActivateAuditing>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivePublication #
@@ -1367,6 +1350,16 @@
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateAuditing  #
   ###############################################################################
   -->
+  <UIActivateAuditing>
+    <label>
+      <note><![CDATA[La tra&ccedil;abilit&eacute; n'a pas &eacute;t&eacute; activ&eacute; pour ce noeud]]></note>
+      <question>Confirmez-vous l'activation ?</question>
+    </label>
+    <action>
+      <activate>Activer</activate>
+      <cancel>Annuler</cancel>
+    </action>
+  </UIActivateAuditing>
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIDiff   #
@@ -1513,7 +1506,7 @@
   </UITreeList>
   <!--
   ################################################################################
-  #       org.exoplatform.ecm.webui.component.explorer.admin.UICategoryManager #
+  #       org.exoplatform.ecm.webui.component.explorer.admin.UIRelationManager #
   ################################################################################
   -->
   <UIRelationManager>
@@ -1576,18 +1569,6 @@
   <UISelectDocumentForm>
     <label>
       <selectTemplate>Sélectionner un formulaire</selectTemplate>
-      <name>Nom</name>
-      <title>Titre</title>
-      <link>Lien</link>
-      <author>Auteur</author>
-      <category>Catégorie</category>
-      <explicit>Explicite</explicit>
-      <keywords>Mots clés</keywords>
-      <pubDate>Date de Publication</pubDate>
-      <description>Description</description>
-      <uploadFile>Fichier Média à uploader</uploadFile>
-      <mimeType>MimeType du Média</mimeType>
-      <lenght>Longueur</lenght>
     </label>
   </UISelectDocumentForm>
   <!--
@@ -1608,7 +1589,7 @@
       <value-invalid>Valeur requise dans '{0}'</value-invalid>
       <repository-exception>Sauvegarde du document impossible. Le nom du noeud existe déjà.</repository-exception>
       <!--DMS 2.4.x; ECM-3543-->
-      <repository-exception-permission>You don't have permission to add a new document on this node</repository-exception-permission>
+      <repository-exception-permission>Vous n'avez pas le droit d'ajouter un document à ce noeud</repository-exception-permission>
       <not-allowed-same-name-sibling>Impossible de sauvegarder ce document. Le nom du noeud existe déjà</not-allowed-same-name-sibling>
       <numberformat-exception>Sauvegarde du document impossible. Les caractères '[' ou ']' ne sont pas autorisés dans le nom.</numberformat-exception>
       <item-not-found>L'élément n'a pas été trouvé ! Peut être que ce noeud ou un de ses ancètres a été supprimé. Veuiller cliquer sur le bouton "Actualiser".</item-not-found>
@@ -1921,9 +1902,9 @@
       <private>Privé</private>
       <state>Etat</state>
       <visibility>Visibilité</visibility>
-      <nodeName>Node Name:</nodeName>
-      <lifecycleName>Lifecycle Name</lifecycleName>
-      <stateName>State Name</stateName>
+      <nodeName>Nom Noeud:</nodeName>
+      <lifecycleName>Nom Cycle de Vie</lifecycleName>
+      <stateName>Nom Etat</stateName>
     </label>
     <action>
       <Save>Sauvegarder</Save>
@@ -2159,21 +2140,14 @@
   
   <UIDriveSelector>
     <label>
-      <driveName>Conduire Nom</driveName>
+      <driveName>Nom du Lecteur</driveName>
       <action>Action</action>
       <adddrives>Ajouter lecteurs</adddrives>
     </label>
   </UIDriveSelector>
-  
-  <PopupSelectPath>
-    <title>
-      <UIOneNodePathSelector>Select node</UIOneNodePathSelector>
-    </title>
-  </PopupSelectPath>
-  
   <UIJcrExplorerEditForm>
     <label>
-      <driveName>Conduire Nom</driveName>
+      <driveName>Nom du Lecteur</driveName>
       <DriveNameInput>UIJcrExplorerEditForm</DriveNameInput>
     </label>
     <msg>
@@ -2184,117 +2158,122 @@
   
   <PopUpSelectDrive>
     <title>
-      <UIDriveSelector>Sélectionner Conduire</UIDriveSelector>
+      <UIDriveSelector>Sélectionner Lecteur</UIDriveSelector>
     </title>
   </PopUpSelectDrive>
   
+  <PopupSelectPath>
+    <title>
+      <UIOneNodePathSelector>Choisir un noeud</UIOneNodePathSelector>
+    </title>
+  </PopupSelectPath>
+  
   <DriveNameInput>
     <title>
-      <SelectDrive>Sélectionner Conduire</SelectDrive>
+      <SelectDrive>Sélectionner Lecteur</SelectDrive>
     </title>
   </DriveNameInput>
   
   <!--
 	### Since ECM version 2.4.x ##############
-	### To be translated ####
   -->
   <UIActionBar>
     <tooltip>
-      <AddSymLink>Add Sym Link</AddSymLink>
+      <AddSymLink>Ajouter un Raccourci</AddSymLink>
 		</tooltip>
 	</UIActionBar>
 	
 	<UIPopupWindow>
 		<title>
-			<UISymLinkManager>Sym Link Manager</UISymLinkManager>
+			<UISymLinkManager>Gestionnaire de Raccourcis</UISymLinkManager>
 		</title>
 	</UIPopupWindow>
 	
 	<UISymLinkForm>
 		<label>
-      <symLinkName>Sym Link Name</symLinkName>
-			<pathNode>Path Node</pathNode>
+      <symLinkName>Nom du raccourci</symLinkName>
+			<pathNode>Chemin du Noeud</pathNode>
 		</label>
 		<action>
 			<Save>#{word.save}</Save>
       <Cancel>#{word.cancel}</Cancel>
 		</action>
 		<msg>
-      <addFolder-successful>Add Sym Link '{0}' Successful</addFolder-successful>
-			<name-invalid>Please enter Sym Link Name!</name-invalid>
-      <name-not-allowed>This name is not allowed.</name-not-allowed>
-      <fileName-error>Invalid file name</fileName-error>
-      <constraint-violation>Current node does not allow to add '{0}' node type</constraint-violation>
-      <repository-exception>Access deny! You don't have add permission in this node</repository-exception>
-      <numberformat-exception>Can not save this folder. The name provided must not have '[' or ']'</numberformat-exception>      
-			<path-node-invalid>Please enter Path Node!</path-node-invalid>
-			<path-node-not-allowed>This name is not allowed.</path-node-not-allowed>
-			<non-node>Please choose trust target node Or you don't have enough rights to read this node</non-node>
-			<cannot-save>Some constraints were violated during that action.</cannot-save>
-			<item-exists-exception>The same name node sibling is not allowed</item-exists-exception>
-			<UnsupportedRepositoryOperationException>This target node is not referenceable</UnsupportedRepositoryOperationException>
+      <addFolder-successful>Le raccourci '{0}' a été ajouté avec succès</addFolder-successful>
+			<name-invalid>Veuillez saisir un nom de raccourci!</name-invalid>
+      <name-not-allowed>Ce nom n'est pas autorisé.</name-not-allowed>
+      <fileName-error>Nom de fichier invalide</fileName-error>
+      <constraint-violation>Le noeud courant ne permet pas d'ajouter le type de noeud '{0}'</constraint-violation>
+      <repository-exception>Accès refusé! Vous n'avez pas les droits d'ajout sur ce noeud</repository-exception>
+      <numberformat-exception>Impossible de sauver ce répertoire. Le nom fourni ne doit pas contenir '[' ni ']'</numberformat-exception>      
+			<path-node-invalid>Veuillez saisir le chemin du noeud!</path-node-invalid>
+			<path-node-not-allowed>Ce nom n'est pas autorisé.</path-node-not-allowed>
+			<non-node>Vous n'avez pas les droits d'accès au noeud cible</non-node>
+			<cannot-save>Certaines contraintes ont été violées durant cette opération.</cannot-save>
+			<item-exists-exception>Un noeud du même nom existe déjà</item-exists-exception>
+			<UnsupportedRepositoryOperationException>Cette cible ne peut pas être référencée</UnsupportedRepositoryOperationException>
     </msg>
 	</UISymLinkForm>
 	
 	<UIPopupSymLink>
 		<title>
-			<UIOneNodePathSelector>Choose Target Node</UIOneNodePathSelector>
+			<UIOneNodePathSelector>Choisir un noeud cible</UIOneNodePathSelector>
 		</title>
 	</UIPopupSymLink>
 	
 	<ECMContextMenu>
 		<event>
-			<AddSymLink>Add Sym Link</AddSymLink>
+			<AddSymLink>Ajouter un Raccourci</AddSymLink>
     </event>
   </ECMContextMenu>
   
   <UIWorkingArea>
     <msg>
-      <create-link-problem>You can not create a link for node '{0}' at '{1}'</create-link-problem>
-      <dest-node-is-link>The destination node '{0}' is already a symlink. So you can not create a symlink inside it</dest-node-is-link>
-      <selected-is-link>The selected node '{0}' is a instance of a link, so you can not create a link point to another link</selected-is-link>
-      <confirm-create-link>Are you sure want to create link in this location?</confirm-create-link>    
+      <create-link-problem>Vous ne pouvez pas créer de lien entre les noeuds '{0}' et '{1}'</create-link-problem>
+      <dest-node-is-link>Le noeud cible '{0}' est déjà un raccourci. Il est donc impossible de créer le raccourci</dest-node-is-link>
+      <selected-is-link>Le noeud sélectionné '{0}' est un raccourci, vous ne pouvez pas créer un lien qui pointe sur un autre lien</selected-is-link>
+      <confirm-create-link>Souhaitez-vous réellement créer un raccourci à cette endroit?</confirm-create-link>    
     </msg>
   </UIWorkingArea>
   
   <ECMContextMenu>
     <event>
-      <CreateLink>Create link</CreateLink>
+      <CreateLink>Créer un raccourci</CreateLink>
     </event>
   </ECMContextMenu>  
   
   <UIWorkspaceList>
   	<msg>
-  		<AccessDeniedException>Access deny! You don't have read permission in this workspace</AccessDeniedException>
+  		<AccessDeniedException>Accès refusé! Vous n'avez pas accès à cet espace de travail</AccessDeniedException>
   	</msg>
   	<label>
-      <taxonomyTree>Taxonomy Tree</taxonomyTree>
+      <taxonomyTree>Arbre de Taxonomies</taxonomyTree>
     </label>
   </UIWorkspaceList>
   
   <UIPopupTaxonomy>
     <title>
-			<UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+			<UIOneTaxonomySelector>Ajouter des catégories</UIOneTaxonomySelector>
     </title>
   </UIPopupTaxonomy>
   
   <UITreeTaxonomyList>
   	<label>
-      <taxonomyTree>Taxonomy Tree</taxonomyTree>
+      <taxonomyTree>Arbre de Taxonomies</taxonomyTree>
     </label>
   </UITreeTaxonomyList>
   
   <UIActionBar>
     <tooltip>
-      <ManageSimpleCategories>Manage Simple Categories</ManageSimpleCategories>
+      <ManageSimpleCategories>Gestion Simple des Catégories</ManageSimpleCategories>
     </tooltip>
 	</UIActionBar>
 	
 	<UISimpleCategoryManager>
     <tab>
       <label>
-        <UICategoriesAddedList>Referenced categories</UICategoriesAddedList>
-        <UIOneNodePathSelector>Select category</UIOneNodePathSelector>
+        <UICategoriesAddedList>Catégories Référencées</UICategoriesAddedList>
+        <UIOneNodePathSelector>Choisir une catégorie</UIOneNodePathSelector>
       </label>
     </tab>
   </UISimpleCategoryManager>
@@ -2302,24 +2281,24 @@
   <UICategoryManager>
     <tab>
       <label>
-				<UIOneTaxonomySelector>Select category</UIOneTaxonomySelector>
+				<UIOneTaxonomySelector>Choisir une catégorie</UIOneTaxonomySelector>
       </label>
     </tab>
   </UICategoryManager>
   
   <UISimpleCategoryManager>
   	<action>
-  		<Close>Close</Close>	
+  		<Close>Fermer</Close>	
   	</action>
   </UISimpleCategoryManager>  
   <UIPopupWindow>
   	<title>
-  		<UISimpleCategoryManager>Add Category</UISimpleCategoryManager>	
+  		<UISimpleCategoryManager>Ajouter une catégorie</UISimpleCategoryManager>	
   	</title>
   </UIPopupWindow>
   <UICategoriesAddedList>
   	<msg>
-  		<ItemExistsException>The category is exist. The same name sibling is not allowed</ItemExistsException>
+  		<ItemExistsException>Une catégorie du même nom existe déjà</ItemExistsException>
   	</msg>
 	</UICategoriesAddedList>
 	
@@ -2332,59 +2311,59 @@
 	
 	<PopupComponent>
     <title>
-			<UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+			<UIOneTaxonomySelector>Ajouter des catégories</UIOneTaxonomySelector>
     </title>
   </PopupComponent>
   
   <UIWorkingArea>
     <msg>
-      <can-not-move-to-itself>Can not move: The destination folder is the same as the source folder</can-not-move-to-itself>
+      <can-not-move-to-itself>Impossible de déplacer: La destination et la source sont identiques</can-not-move-to-itself>
     </msg>
   </UIWorkingArea>  
  
   <UIImportNode>
     <label>
-      <behavior>UUID Behaviour</behavior>
-      <versionHistory>Version hisotry</versionHistory>
+      <behavior>Gestion de l'UUID</behavior>
+      <versionHistory>Historique</versionHistory>
     </label>
     <msg>
-      <history-invalid-type>Invalid version history file type. The right file must be *.zip file</history-invalid-type>
-      <history-invalid-content>Invalid version history data content. You should choose the right file to import.</history-invalid-content>
+      <history-invalid-type>Le type de fichier de l'historique est invalide, un fichier zip est attendu</history-invalid-type>
+      <history-invalid-content>Le contenu de l'historique est invalide, veuillez sélectionner le bon fichier.</history-invalid-content>
     </msg>    
   </UIImportNode>  
  
   <Import>
     <Behavior>
-      <type0>Create new</type0>
-      <type1>Remove existing</type1>
-      <type2>Replace existing</type2>
-      <type3>Throw</type3>
+      <type0>Créer un nouveau</type0>
+      <type1>Supprimer l'existant</type1>
+      <type2>Remplacer l'existant</type2>
+      <type3>Lever une Exception</type3>
     </Behavior>
   </Import>  
   
   <UIExportNode>
     <action>
-      <ExportHistory>Export vesion history</ExportHistory>
+      <ExportHistory>Exporter l'historique</ExportHistory>
     </action>
   </UIExportNode>  
   
   <UIPopupMenu>
   	<msg>
-  		<node-locked-other-person>This node or parent node is being locked by other user, you can not delete!</node-locked-other-person>
+  		<node-locked-other-person>Ce noeud ou un de ses ancètres est actuellement verrouillé par un autre utilisateur, vous ne pouvez donc pas le supprimer !</node-locked-other-person>
     </msg>
   </UIPopupMenu>
 
   <Import>
     <label>
-      <docview>Document view</docview>
-      <sysview>System view</sysview>
+      <docview>Vue Document</docview>
+      <sysview>Vue System</sysview>
     </label>
   </Import>
     
   <UIDocumentForm>
   	<msg>
-  		<not-support>Cannot load template of '{0}'.</not-support>
-  		<do-not-permission>You don't have permission to access this template</do-not-permission>
+  		<not-support>Impossible de charger le template '{0}'.</not-support>
+  		<do-not-permission>Vous n'avez pas le droit de charger le template '{0}'.</do-not-permission>
   	</msg>
   </UIDocumentForm>
 </bundle>

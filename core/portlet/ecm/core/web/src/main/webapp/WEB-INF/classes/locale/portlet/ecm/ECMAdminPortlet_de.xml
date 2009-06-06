@@ -17,6 +17,7 @@
     <label>
       <UIFolksonomyManager>Folksonomie verwalten</UIFolksonomyManager>
       <UITaxonomyManager>Taxonomy verwalten</UITaxonomyManager>
+      <UITaxonomyManagerTrees>Verwalten Taxonomie Bäume</UITaxonomyManagerTrees>
       <UIMetadataManager>Metadata verwalten</UIMetadataManager>
       <UINamespaceManager>Namenspalte Eintragung</UINamespaceManager>
       <UINodeTypeManager>Knotentypen verwalten</UINodeTypeManager>
@@ -58,6 +59,131 @@
       <remove><![CDATA[L&ouml;schen]]></remove>
     </title>
   </UITaxonomyManager>
+  
+  <!--
+  ################################################################################
+  #    org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeContainer#
+  ################################################################################
+  -->
+	<UITaxonomyTreeContainer>
+		<tab>
+			<info>
+				<UITaxonomyTreeMainForm>Input Taxonomie Namen, wählen Sie Arbeitsplatz und Taxonomie Hause Weg</UITaxonomyTreeMainForm>
+				<UIPermissionTreeManager>Wählen Sie die Erlaubnis für die Taxonomie Baumknoten</UIPermissionTreeManager>
+				<UIActionTaxonomyManager>Nach der Registrierung für Baum, der Taxonomie-Baum wird erstellt / bearbeitet</UIActionTaxonomyManager>
+				<UITaxonomyTreeCreateChild>Bearbeiten von Taxonomie Baum hinzufügen, kopieren, ausschneiden und wählen Sie Genehmigung</UITaxonomyTreeCreateChild>
+			</info>
+		</tab>
+		<msg>
+  		<not-exist-tree>Baum noch nicht vorhanden ist</not-exist-tree>
+		</msg>
+		<action>
+			<Close>Schließen</Close>
+		</action>
+	</UITaxonomyTreeContainer>
+  
+  <!--
+	##########################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeMainForm          #
+	##########################################################################################
+	-->
+	<UITaxonomyTreeMainForm>
+		<action>
+			<ViewPermission>Anzeigen Permission</ViewPermission>
+			<Reset>Reset</Reset>
+		</action>
+		<msg>
+  		<name-not-allowed>Name verboten</name-not-allowed>
+  		<name-emty>Der Name des Baumes ist leer</name-emty>
+  		<homePath-emty>Die Wohnung leer ist</homePath-emty>
+  		<taxonomytree-existed>Eine Taxonomie-Baum mit dem gleichen Namen ist bereits vorhanden</taxonomytree-existed>
+		</msg>
+	</UITaxonomyTreeMainForm>
+	
+	<TaxonomyTreeMainForm>
+		<label>
+			<TaxoTreeName>Name</TaxoTreeName>
+			<TaxoTreeWorkspace>Arbeitsplatz</TaxoTreeWorkspace>
+			<TaxonomyTreeHomePath>Home pfad</TaxonomyTreeHomePath>
+		</label>
+  </TaxonomyTreeMainForm>
+		
+	<TaxonomyTreeHomePath>
+    <title>
+      <AddPath>Pfad Hinzufügen</AddPath>
+    </title>
+  </TaxonomyTreeHomePath>
+  
+  <!--
+	##########################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo  #
+	##########################################################################################
+	-->
+	<UIPermissionTreeInfo>
+		<action>
+			<title>
+				<Delete>Löschen</Delete>
+				<Edit>Bearbeiten</Edit>
+			</title>
+		</action>
+		<header>
+			<usersOrGroups>Benutzer oder Gruppe</usersOrGroups>
+			<read>Lesen</read>
+			<addNode>Knoten Hinzufügen</addNode>
+			<setProperty>Festlegen Eigentum</setProperty>
+			<remove>Entfernen</remove>
+			<action>Aktion</action>
+		</header>
+	</UIPermissionTreeInfo>
+	
+	<!--
+	##########################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeForm  #
+	##########################################################################################
+	-->
+	<UIPermissionTreeForm>
+		<title>Fügen Sie eine Erlaubnis, dass die Knoten</title>
+		<label>
+			<userOrGroup>Benutzer oder Gruppe</userOrGroup>
+			<read>Lesen</read>
+			<add_node>Knoten Hinzufügen</add_node>
+			<set_property>Festlegen Eigentum</set_property>
+			<remove>Entfernen</remove>
+		</label>
+		<action>
+			<Save>Sichern</Save>
+			<Reset>Reset</Reset>
+			<AddAction>Aktion Hinzufügen</AddAction>
+			<Back>Zurück</Back>
+		</action>
+		<msg>
+		  <have-not-any-permission>Die Erlaubnis zum Knoten hinzufügen</have-not-any-permission>
+		</msg>
+	</UIPermissionTreeForm>
+	
+	<!--
+	################################################################################
+	#     org.exoplatform.ecm.webui.component.admin.taxonomy.UIActionForm          #
+	################################################################################
+	-->
+	
+	<UIActionForm>
+		<title>Fügen Sie eine Erlaubnis für die Taxonomie-Baum</title>
+		<action>
+			<Save>Sichern</Save>
+			<ViewPermission>Anzeigen Permission</ViewPermission>
+			<ViewTree>Anzeigen Baum</ViewTree>
+		</action>
+		<msg>
+  		<name-not-allowed>Name verboten</name-not-allowed>
+  		<path-invalid>Pfad ist ungültig</path-invalid>
+			<taxonomy-existed>Taxonomy Baum ist bereits vorhanden</taxonomy-existed>
+			<taxonomy-node-existed>Taxonomie Knoten bereits vorhanden</taxonomy-node-existed>
+			<no-permission-add>Benutzer hat keine hinzufügen Recht</no-permission-add>
+			<not-created-tree>Taxonomy Baum wurde nicht erstellt noch</not-created-tree>
+		</msg>
+	</UIActionForm>
+	
   <!--
   ################################################################################
   #             org.exoplatform.ecm.webui.component.admin.UITemplatesManager		 #
@@ -102,7 +228,7 @@
   -->
   <UINamespaceList>
     <header>
-      <prefix>Prefix</prefix>
+      <prefix>Präfix</prefix>
       <uri>Namensspalten Uri</uri>
       <action>Aktion</action>
     </header>
@@ -134,7 +260,7 @@
     </title>
     <header>
       <icon>Piktogramm</icon>
-      <name>Metadata Name</name>
+      <name>Metadaten Name</name>
       <type>Mixin Typ</type>
       <internalUse>Interner Gebrauch</internalUse>
       <action>Aktionen der Vorlagen</action>
@@ -170,7 +296,7 @@
   ################################################################################
   -->
   <UIMetadataForm>
-    <title>Mapping Metadata</title>
+    <title>Mapping-Metadaten</title>
     <action>
       <Cancel>#{word.cancel}</Cancel>
       <Save>Anwenden</Save>
@@ -381,20 +507,15 @@
       <directoryPath>Datenverzeichnis</directoryPath>
       <maxBufferSize><![CDATA[Max Zwischenspeichergr&ouml;&szlig;e]]></maxBufferSize>
     </label>
-    <action>
-      <Close>#{word.close}</Close>
-      <Save>#{word.save}</Save>
-      <Reset>Neustarten</Reset>
-      <AddWorkspace><![CDATA[Arbeitsplatz hinzuf&uuml;gen]]></AddWorkspace>
-    </action>
     <msg>
+      <cannot-delete-default-workspace>Kann nicht löschen workpsace '{0}', denn dies ist Standard-Arbeitsbereich.</cannot-delete-default-workspace>
       <repoName-exist>Ablage '{0}' existiert schon!</repoName-exist>
       <repoName-not-alow><![CDATA[Es sind ung&uuml;ltige Symbole im Namen!]]></repoName-not-alow>
       <workspace-isrequire>Mindestens einen Arbeitsplatz anfragen</workspace-isrequire>
       <cannot-delete-workspace><![CDATA[Kann {0} nicht l&ouml;schen]]></cannot-delete-workspace>
       <workspace-setdefault><![CDATA[Sie m&uuml;ssen Arbeitsplatzstandardeinstellung Einz einstellen]]></workspace-setdefault>
       <!--DMS 2.4.x ECM-3611> -->
-      <workspace-setDMSsystem>You must set DMS system workspace one</workspace-setDMSsystem>
+      <workspace-setDMSsystem>Sie müssen die DMS-System Arbeitsbereich</workspace-setDMSsystem>
       <workspace-bseChanel><![CDATA[Chanel wird ben&ouml;tigt]]></workspace-bseChanel>
       <workspace-bseMode><![CDATA[Abgleichmodus wird ben&ouml;tigt]]></workspace-bseMode>
       <workspace-bsePath><![CDATA[Datenverzeichnis wird ben&ouml;tigt]]></workspace-bsePath>
@@ -404,6 +525,12 @@
       <authen-isrequire><![CDATA[Authentifikationsrichtlinie wird ben&ouml;tigt]]></authen-isrequire>
       <confirm-workspace-delete><![CDATA[Sind Sie sicher, dass Sie diesen Arbeitsplatz l&ouml;schen wollen ?]]></confirm-workspace-delete>
     </msg>
+    <action>
+      <Close>#{word.close}</Close>
+      <Save>#{word.save}</Save>
+      <Reset>Neustarten</Reset>
+      <AddWorkspace><![CDATA[Arbeitsplatz hinzuf&uuml;gen]]></AddWorkspace>
+    </action>
   </UIRepositoryForm>
   <UIRepositoryList>
     <titlebar>
@@ -446,8 +573,8 @@
       <UIPermissionSelector>Genehmigungsbrowser</UIPermissionSelector>
     </title>
     <label>
-      <selectGroup>Select group</selectGroup>
-      <selectMembership>Select membership</selectMembership>
+      <selectGroup>Wählen Sie die Gruppe</selectGroup>
+      <selectMembership>Wählen Sie die Mitgliedschaft</selectMembership>
     </label>
   </PermissionPopupSelect>
   <UIWorkspaceWizard>
@@ -455,9 +582,9 @@
       <wsname-exist>Der Arbeitsplatz '{0}' existiert in dieser Datenbank!</wsname-exist>
       <name-require><![CDATA[Arbeitsplatname ist ben&ouml;tigt]]></name-require>
       <permission-require><![CDATA[Genehmigung ausw&auml;hlen]]></permission-require>
-      <nodeType-invalid>Default workspace auto init nodetype must nt:unstructured</nodeType-invalid>
-	  <!--DMS 2.4.x ECM-3611-->
-	  <nodeType-invalidSystemWs>DMS system workspace auto init nodetype must nt:unstructured</nodeType-invalidSystemWs>
+      <nodeType-invalid>Standard-Arbeitsbereich auto init nodetype müssen nt:unstructured</nodeType-invalid>
+      <!--DMS 2.4.x ECM-3611-->
+      <nodeType-invalidSystemWs>DMS-System Arbeitsbereich auto init nodetype müssen nt:unstructured</nodeType-invalidSystemWs>
       <lockTimeOut-required><![CDATA[Sperrenablaufzeit wird ben&ouml;tigt]]></lockTimeOut-required>
       <lockTimeOut-invalid><![CDATA[Sperrenablaufzeit ist in einem ung&uuml;ltigen Format]]></lockTimeOut-invalid>
       <buffer-invalid><![CDATA[Zwischenspeichergr&ouml;&szlig;e ist in einem ung&uuml;ltigen Format]]></buffer-invalid>
@@ -489,14 +616,14 @@
       <autoInitializedRootNt>Wurzelknotentyp</autoInitializedRootNt>
       <isDefault><![CDATA[Als Standardeinstellung &uuml;bernehmen]]></isDefault>
       <!--DMS 2.4.x ECM-3611-->
-      <isDMSSytemWs>Set as DMS system workspace</isDMSSytemWs>
+      <isDMSSytemWs>Als DMS-System Arbeitsbereich</isDMSSytemWs>
       <permission>Auto init Genehmigung</permission>
       <setLockTimeOut>Sperrenablaufszeit</setLockTimeOut>
       <step2>UIWorkspaceWizard</step2>
       <container><![CDATA[Typ des Beh&auml;lters]]></container>
       <sourceName>Quellenname</sourceName>
       <dbType>Dialekt</dbType>
-      <isMulti>Is multi</isMulti>
+      <isMulti>Ist Mehrere</isMulti>
       <storeType>Speichertyp</storeType>
       <filterType>Filter</filterType>
       <maxBuffer>Max Zwischenspeicher (bytes)</maxBuffer>
@@ -838,7 +965,7 @@
     <label>
       <actionType>Aktionstyp erweitern</actionType>
       <name><![CDATA[Name (f&auml;ngt mit "exo:" an)]]></name>
-      <isMove>sst Aktionsbewegung</isMove>
+      <isMove>Aktion Verschieben ist</isMove>
       <variables>Variablen</variables>
       <exo_businessProcessAction>Businessprozesse</exo_businessProcessAction>
       <exo_scriptAction>Groovy Scripte</exo_scriptAction>
@@ -940,7 +1067,7 @@
   <UIViewFormTabPane>
     <tab>
       <label>
-        <UITabForm>Tab Form</UITabForm>
+        <UITabForm>Tab-Form</UITabForm>
         <UIViewForm>Ansichtsform</UIViewForm>
       </label>
     </tab>
@@ -972,6 +1099,8 @@
       <viewPermissions>Genehmigungen anschauen</viewPermissions>
       <viewProperties>Eigenschaften anschauen</viewProperties>
       <manageVersions>Versionen verwalten</manageVersions>
+      <manageAuditing>Verwalten der Überwachung</manageAuditing>
+      <managePublications>Verwalten Veröffentlichungsnummer</managePublications>
       <manageCategories>Kategorien verwalten</manageCategories>
       <manageRelations>Beziehungen verwalten</manageRelations>
       <manageActions>Aktionen verwalten</manageActions>
@@ -982,14 +1111,14 @@
       <watchDocument>Dokument anschauen</watchDocument>
       <taggingDocument>Dokument taggen</taggingDocument>
       <multiLanguage>Mehrsprachig</multiLanguage>
-      <viewMetadatas>Metadata anschauen</viewMetadatas>
-      <overloadThumbnail>Overload thumbnail</overloadThumbnail>
-      <manageHidden>Hide/Show content</manageHidden>
+      <viewMetadatas>Metadaten anzeigen</viewMetadatas>
+      <overloadThumbnail>Überlast thumbnail</overloadThumbnail>
+      <manageHidden>Ausblenden/Anzeigen content</manageHidden>
+      <comment>Kommentar</comment>
+      <vote>Abstimmung</vote>	  
+      <manageSimpleCategories>Einfache Verwaltung von Kategorien</manageSimpleCategories>
     </label>
   </UIViewFormTabPane>
-  <!--
-  #       Need to be translated                               #
-  -->
   <PopupViewPermission>
     <title>
       <UIPermissionSelector><![CDATA[Genehmigung ausw&auml;hlen]]></UIPermissionSelector>
@@ -1259,57 +1388,201 @@
       <name-too-long>Taxonomie Name muss weniger als 30 Buchstaben beinhalten.</name-too-long>
     </msg>
   </UITaxonomyForm>
-  <TaxonomyPopup>
+    
+  <EditTaxonomyTreePopup>
     <title>
-      <UITaxonomyForm><![CDATA[Taxonomie hinzuf&uuml;gen]]></UITaxonomyForm>
+      <UITaxonomyTreeContainer>Bearbeiten Taxonomie Baum</UITaxonomyTreeContainer>
     </title>
-  </TaxonomyPopup>
+  </EditTaxonomyTreePopup>
+
+  <AddTaxonomyTreePopup>
+    <title>
+      <UITaxonomyTreeContainer>Hinzufügen Taxonomie Baum</UITaxonomyTreeContainer>
+    </title>
+  </AddTaxonomyTreePopup>
   
-   <!--
+  <TaxonomyPopupCreateChild>
+    <title>
+      <UITaxonomyTreeCreateChildForm>Bearbeiten Taxonomie Baum</UITaxonomyTreeCreateChildForm>
+    </title>
+  </TaxonomyPopupCreateChild>
+
+	<UITaxonomyTreeCreateChildForm>
+	  <action>
+      <Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>
+    </action>
+    <label>
+      <parentPath>Parent</parentPath>
+      <taxonomyName>Taxonomie Namen</taxonomyName>
+    </label>
+    <msg>
+			<name-null>Der Name ist null</name-null>
+			<name-invalid>Name ist ungültig</name-invalid>
+			<name-too-long>Name ist zu lang</name-too-long>
+			<exist>Name ist bereits vorhanden</exist>
+		</msg>
+	</UITaxonomyTreeCreateChildForm>
+	
+  <PopupComponent>
+    <title>
+      <UIOneNodePathSelector>Wählen Sie Pfad</UIOneNodePathSelector>
+    </title>
+  </PopupComponent>
+  
+  <TaxoPopupUserSelector>
+	  <title>
+      <TaxoTreeSelectUserOrGroup>Wählen Sie Benutzer</TaxoTreeSelectUserOrGroup>
+      <UIPermissionTreeSelectUser>Wählen Sie Benutzer</UIPermissionTreeSelectUser>
+    </title>
+  </TaxoPopupUserSelector>
+
+  <TaxoTreeSelectUserOrGroupPopup>
+	  <title>
+      <TaxoTreeSelectUserOrGroup>Wählen Sie die Mitgliedschaft</TaxoTreeSelectUserOrGroup>
+    </title>
+  </TaxoTreeSelectUserOrGroupPopup>
+  
+  <TaxoTreeAnyPermission>
+    <label>
+      <any>Jede Erlaubnis</any>
+      <anyPermission>TaxoTreeAnyPermission</anyPermission>
+    </label>
+  </TaxoTreeAnyPermission>
+  
+  <TaxoTreeSelectUserOrGroup>
+    <label>
+      <selectGroup>Jede Erlaubnis</selectGroup>
+      <selectMembership>Jede Erlaubnis</selectMembership>
+    </label>
+  </TaxoTreeSelectUserOrGroup>
+  
+  <!--
   ######################################################################################
-  #             SINCE DMS version 2.3-SNAPSHOT                              			           #
-  #             Add permission for taxonomy			                                       #
+  #             org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeList	 #
   ######################################################################################
   -->
+  <UITaxonomyTreeList>
+    <header>
+      <name>Name</name>
+      <workspace>Arbeitsplatz</workspace>
+      <homePath>Heim Pfad</homePath>
+      <permissions>Berechtigungen</permissions>
+      <action>Aktion</action>
+    </header>
+    <action>
+      <AddTaxonomyTree>Hinzufügen Taxonomie Baum</AddTaxonomyTree>
+    </action>
+    <tooltip>
+      <EditTaxonomyTree>Bearbeiten Taxonomie Baum</EditTaxonomyTree>
+      <Delete>Taxonomie Baum löschen</Delete>
+    </tooltip>
+    <title>Durchsucht Taxonomie Baum</title>
+    <msg>
+      <no-list>Nr. Taxonomie Baum verfügbar</no-list>
+      <confirm-delete>Sind Sie sicher, dass zu löschen?</confirm-delete>
+    </msg>
+  </UITaxonomyTreeList>
+  
+  <!--
+  ######################################################################################
+  #             org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeForm  #
+  ######################################################################################
+  -->
+  <UITaxonomyTreeForm>
+    <label>
+      <name>Name</name>
+      <workspace>Arbeitsplatz</workspace>
+      <homePath>Heim Pfad</homePath>
+      <permissions>Berechtigungen</permissions>
+    </label>
+    <msg>
+      <homapath-emty>Eingang heim pfad</homapath-emty>
+    </msg>
+  </UITaxonomyTreeForm>
+  
+  <UIPermissionTreeForm>
+    <label>
+      <UIPopupWindow>Wählen Sie</UIPopupWindow>
+      <permission>UIPermissionTreeForm</permission>
+      <userOrGroup>Benutzer oder eine Gruppe</userOrGroup>
+      <read>Lesen Sie Rechts</read>
+      <add_node>Knoten Hinzufügen Rechts</add_node>
+      <set_property>Festlegen Eigentum Rechts</set_property>
+      <remove>Entfernen Rechts</remove>
+    </label>
+    <title>Fügen Sie eine Erlaubnis, dass die Knoten</title>
+    <action>
+      <Close>#{word.close}</Close>
+      <Save>#{word.save}</Save>
+      <Reset>Reset</Reset>
+    </action>
+    <msg>
+      <checkbox-require>Sie müssen mindestens eine Erlaubnis</checkbox-require>
+      <userOrGroup-required>Sie müssen ein Benutzer oder eine Gruppe vor dem Speichern der Genehmigung</userOrGroup-required>
+      <not-change-permission>Sie haben kein Recht auf eine Genehmigung</not-change-permission>
+      <access-denied>Zugriff verweigert! Sie können diese Erlaubnis nicht entfernen.</access-denied>
+    </msg>
+  </UIPermissionTreeForm>
+  
+  <PopupTaxonomyJCRBrowser>
+	  <title>
+      <UIOneNodePathSelector>Wählen Sie Home-Pfad</UIOneNodePathSelector>
+    </title>
+  </PopupTaxonomyJCRBrowser>
+  
+  <PopupTaxonomyTreePermission>
+    <title>
+      <UIPermissionSelector>Wählen Sie Berechtigungen</UIPermissionSelector>
+    </title>
+   </PopupTaxonomyTreePermission>
+   
+   <PopupDrivePermission>
+    <title>
+      <AddDrivePermissionSelector>Hinzufügen Genehmigung</AddDrivePermissionSelector>
+      <UIPermissionSelector>Wählen Sie die Erlaubnis</UIPermissionSelector>
+    </title>
+  </PopupDrivePermission>
+  
   <UIPopupWindow>
     <title>
-      <UIPermissionManager>Permission Management</UIPermissionManager>
+      <UIPermissionManager>Genehmigung Management</UIPermissionManager>
     </title>
    </UIPopupWindow>
 
   <PopupUserSelector>
     <title>
-      <UIUserContainer>Permission Management</UIUserContainer>
+      <UIUserContainer>Genehmigung Management</UIUserContainer>
     </title>
    </PopupUserSelector>
    
   <UIPermissionInfo>
     <action>
       <title>
-        <Edit>Edit</Edit>
-        <Delete>Remove permission</Delete>
+        <Edit>Bearbeiten</Edit>
+        <Delete>Entfernen Sie die Erlaubnis</Delete>
       </title>
     </action>
     <header>
-      <usersOrGroups>User Or Group</usersOrGroups>
-      <read>Read</read>
-      <addNode>Add Node</addNode>
-      <setProperty>Set Property</setProperty>
-      <remove>Remove</remove>
-      <action>Action</action>
+      <usersOrGroups>Benutzer oder eine Gruppe</usersOrGroups>
+      <read>Lesen</read>
+      <addNode>Knoten Hinzufügen</addNode>
+      <setProperty>Festlegen Eigentum</setProperty>
+      <remove>Entfernen</remove>
+      <action>Aktion</action>
     </header>
     <msg>
-      <confirm-delete-permission>Do you want to remove this permission?</confirm-delete-permission>
-      <no-permission-tochange>You have no right to remove permission</no-permission-tochange>
-      <no-permission-remove>You can not remove the owner</no-permission-remove>
-      <access-denied>Access denied! You can not remove this permission.</access-denied>
+      <confirm-delete-permission>Möchten Sie diese Erlaubnis?</confirm-delete-permission>
+      <no-permission-tochange>Sie haben kein Recht, um die Erlaubnis</no-permission-tochange>
+      <no-permission-remove>Sie können nicht die Besitzer</no-permission-remove>
+      <access-denied>Zugriff verweigert! Sie können diese Erlaubnis nicht entfernen.</access-denied>
     </msg>
   </UIPermissionInfo>
   <permission>
     <title>
-      <SelectUser>Select user</SelectUser>
-      <SelectMember>Select membership</SelectMember>
-      <AddAny>Select everyone</AddAny>
+      <SelectUser>Wählen Sie Benutzer</SelectUser>
+      <SelectMember>Wählen Sie die Mitgliedschaft</SelectMember>
+      <AddAny>Wählen Sie alle</AddAny>
     </title>
   </permission>
   <!--
@@ -1319,53 +1592,53 @@
   -->
   <SelectUserOrGroup>
     <title>
-      <UIGroupSelector>Select user</UIGroupSelector>
-      <UIPermissionSelector>Select member</UIPermissionSelector>
-      <UIGroupMemberSelector>Select membership</UIGroupMemberSelector>
+      <UIGroupSelector>Wählen Sie Benutzer</UIGroupSelector>
+      <UIPermissionSelector>Wählen Sie Mitglied</UIPermissionSelector>
+      <UIGroupMemberSelector>Wählen Sie die Mitgliedschaft</UIGroupMemberSelector>
     </title>
   </SelectUserOrGroup>
   <UIGroupSelector>
     <label>
-      <selectGroup>Browse and select a group</selectGroup>
-      <selectUser>Select user</selectUser>
+      <selectGroup>Durchsuchen und wählen Sie eine Gruppe</selectGroup>
+      <selectUser>Wählen Sie Benutzer</selectUser>
     </label>
     <msg>
-      <not-change-owner>'{0}' is owner of this node and have full control permission</not-change-owner>
+      <not-change-owner>'{0}' ist Eigentümer dieser Knoten und haben die volle Kontrolle Genehmigung</not-change-owner>
     </msg>
   </UIGroupSelector>
   <UIPermissionForm>
     <label>
-      <UIPopupWindow>Select</UIPopupWindow>
+      <UIPopupWindow>Wählen Sie</UIPopupWindow>
       <permission>UIPermissionForm</permission>
-      <userOrGroup>User Or Group</userOrGroup>
-      <read>Read Right</read>
-      <add_node>Add Node Right</add_node>
-      <set_property>Set Property Right</set_property>
-      <remove>Remove Right</remove>
+      <userOrGroup>Benutzer oder eine Gruppe</userOrGroup>
+      <read>Lesen Sie Rechts</read>
+      <add_node>Knoten Hinzufügen Rechts</add_node>
+      <set_property>Festlegen Eigentum Rechts</set_property>
+      <remove>Entfernen Rechts</remove>
     </label>
-    <title>Add a permission to that node</title>
+    <title>Fügen Sie eine Erlaubnis, dass die Knoten</title>
     <action>
       <Close>#{word.close}</Close>
       <Save>#{word.save}</Save>
       <Reset>Reset</Reset>
     </action>
     <msg>
-      <checkbox-require>You must select at least one permission</checkbox-require>
-      <userOrGroup-required>You must select user or group before save this permission</userOrGroup-required>
-      <not-change-permission>You have no right to add permission</not-change-permission>
-      <access-denied>Access denied! You can not remove this right permission.</access-denied>
+      <checkbox-require>Sie müssen mindestens eine Erlaubnis</checkbox-require>
+      <userOrGroup-required>Sie müssen ein Benutzer oder eine Gruppe vor dem Speichern der Genehmigung</userOrGroup-required>
+      <not-change-permission>Sie haben kein Recht auf eine Genehmigung</not-change-permission>
+      <access-denied>Zugriff verweigert! Sie können diese Erlaubnis nicht entfernen.</access-denied>
     </msg>
   </UIPermissionForm>
   
   <TaxonomyPopup>
     <title>
-      <UITaxonomyForm>Add Taxonomy</UITaxonomyForm>
+      <UITaxonomyForm>Hinzufügen Taxonomie</UITaxonomyForm>
     </title>
   </TaxonomyPopup>
   
   <UITaxonomyManager>
     <title>
-      <permission>Permission Management</permission>
+      <permission>Genehmigung Management</permission>
     </title>
   </UITaxonomyManager>
   <!--
@@ -1761,31 +2034,31 @@
       <SelectQueryHandler><![CDATA[Abfrage-Handler w&auml;hlen]]></SelectQueryHandler>
     </title>
   </step3>
-  <!--
-  # to be translated
-  -->
   <UIPermissionSelector>
     <label>
-      <selectGroup>Select group</selectGroup>
-      <selectUser>Select user</selectUser>
-      <selectMembership>Select membership</selectMembership>
+      <selectGroup>Wählen Sie die Gruppe</selectGroup>
+      <selectUser>Wählen Sie Benutzer</selectUser>
+      <selectMembership>Wählen Sie die Mitgliedschaft</selectMembership>
     </label>
   </UIPermissionSelector>
   <UIAnyPermission>
     <label>
-      <anyPermission>Any Permission</anyPermission>
+      <anyPermission>Jede Erlaubnis</anyPermission>
     </label>
   </UIAnyPermission>
   <anyPermission>
     <title>
-      <AddAnyPermission>Set any permission</AddAnyPermission>
+      <AddAnyPermission>Jede Erlaubnis</AddAnyPermission>
     </title>
   </anyPermission>
+  <!--
+  #########Since ECM 2.3##################
+  -->
   <QueriesPermissionBrowse>
     <label>
-      <selectGroup>Select group</selectGroup>
-      <selectUser>Select user</selectUser>
-      <selectMembership>Select membership</selectMembership>
+      <selectGroup>Wählen Sie die Gruppe</selectGroup>
+      <selectUser>Wählen Sie Benutzer</selectUser>
+      <selectMembership>Wählen Sie die Mitgliedschaft</selectMembership>
     </label>
   </QueriesPermissionBrowse>
     <!--
@@ -1793,274 +2066,8 @@
   -->  
   <UIViewFormTabPane>
     <label>
-      <addSymLink>Add Sym Link</addSymLink>
+      <addSymLink>Hinzufügen einer Verknüpfung</addSymLink>
     </label>
   </UIViewFormTabPane>
- 
- 	<UITaxonomyTreeContainer>
-		<tab>
-			<info>
-				<UITaxonomyTreeMainForm>Input taxonomy name, choose workspace and taxonomy home path</UITaxonomyTreeMainForm>
-				<UIPermissionTreeManager>Select permission for taxonomy tree node</UIPermissionTreeManager>
-				<UIActionTaxonomyManager>After register action for tree, the taxonomy tree will be created/edited</UIActionTaxonomyManager>
-				<UITaxonomyTreeCreateChild>Edit taxonomy tree by add, copy, cut and select permission</UITaxonomyTreeCreateChild>
-			</info>
-		</tab>
-		<msg>
-  		<not-exist-tree>Tree has not existed yet</not-exist-tree>
-		</msg>
-		<action>
-			<Close>Close</Close>
-		</action>
-	</UITaxonomyTreeContainer>
-  
-  <!--
-	##########################################################################################
-	#     org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeMainForm          #
-	##########################################################################################
-	-->
-	<UITaxonomyTreeMainForm>
-		<action>
-			<ViewPermission>View Permission</ViewPermission>
-			<Reset>Reset</Reset>
-		</action>
-		<msg>
-  		<name-not-allowed>Name is disallowed</name-not-allowed>
-  		<name-emty>Name of tree is empty</name-emty>
-  		<homePath-emty>Home path is empty</homePath-emty>
-  		<taxonomytree-existed>Taxonomy tree with this name is existed</taxonomytree-existed>
-		</msg>
-	</UITaxonomyTreeMainForm>
-	
-	<TaxonomyTreeMainForm>
-		<label>
-			<TaxoTreeName>Name</TaxoTreeName>
-			<TaxoTreeWorkspace>Workspace</TaxoTreeWorkspace>
-			<TaxonomyTreeHomePath>Home path</TaxonomyTreeHomePath>
-		</label>
-  </TaxonomyTreeMainForm>
-		
-	<TaxonomyTreeHomePath>
-    <title>
-      <AddPath>Add Path</AddPath>
-    </title>
-  </TaxonomyTreeHomePath>
-  
-  <!--
-	##########################################################################################
-	#     org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeInfo  #
-	##########################################################################################
-	-->
-	<UIPermissionTreeInfo>
-		<action>
-			<title>
-				<Delete>Delete</Delete>
-				<Edit>Edit</Edit>
-			</title>
-		</action>
-		<header>
-			<usersOrGroups>User or Group</usersOrGroups>
-			<read>Read</read>
-			<addNode>Add Node</addNode>
-			<setProperty>Set Property</setProperty>
-			<remove>Remove</remove>
-			<action>Action</action>
-		</header>
-	</UIPermissionTreeInfo>
-	
-	<!--
-	##########################################################################################
-	#     org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeForm  #
-	##########################################################################################
-	-->
-	<UIPermissionTreeForm>
-		<title>Add a permission to that node</title>
-		<label>
-			<userOrGroup>User or Group</userOrGroup>
-			<read>Read</read>
-			<add_node>Add Node</add_node>
-			<set_property>Set Property</set_property>
-			<remove>Remove</remove>
-		</label>
-		<action>
-			<Save>Save</Save>
-			<Reset>Reset</Reset>
-			<AddAction>Add Action</AddAction>
-			<Back>Back</Back>
-		</action>
-		<msg>
-		  <have-not-any-permission>Add Permission to node</have-not-any-permission>
-		</msg>
-	</UIPermissionTreeForm>
-	
-	<!--
-	################################################################################
-	#     org.exoplatform.ecm.webui.component.admin.taxonomy.UIActionForm          #
-	################################################################################
-	-->
-	<UIActionForm>
-		<title>Add Permission for taxonomy tree</title>
-		<action>
-			<Save>Save</Save>
-			<ViewPermission>View Permission</ViewPermission>
-			<ViewTree>View Tree</ViewTree>
-		</action>
-		<msg>
-  		<name-not-allowed>Name is disallowed</name-not-allowed>
-  		<path-invalid>Path is invalid</path-invalid>
-			<taxonomy-existed>Taxonomy tree has alreday been existed</taxonomy-existed>
-			<taxonomy-node-existed>Taxonomy node has been existed</taxonomy-node-existed>
-			<no-permission-add>User has no add right</no-permission-add>
-			<not-created-tree>Taxonomy tree has not been created yet</not-created-tree>
-		</msg>
-	</UIActionForm>
-	
-	<EditTaxonomyTreePopup>
-    <title>
-      <UITaxonomyTreeContainer>Edit taxonomy tree</UITaxonomyTreeContainer>
-    </title>
-  </EditTaxonomyTreePopup>
-
-  <AddTaxonomyTreePopup>
-    <title>
-      <UITaxonomyTreeContainer>Add taxonomy tree</UITaxonomyTreeContainer>
-    </title>
-  </AddTaxonomyTreePopup>
-  
-  <TaxonomyPopupCreateChild>
-    <title>
-      <UITaxonomyTreeCreateChildForm>Edit taxonomy tree</UITaxonomyTreeCreateChildForm>
-    </title>
-  </TaxonomyPopupCreateChild>
-
-	<UITaxonomyTreeCreateChildForm>
-	  <action>
-      <Save>#{word.save}</Save>
-      <Cancel>#{word.cancel}</Cancel>
-    </action>
-    <label>
-      <parentPath>Parent</parentPath>
-      <taxonomyName>Taxonomy name</taxonomyName>
-    </label>
-    <msg>
-			<name-null>Name is null</name-null>
-			<name-invalid>Name is invalid</name-invalid>
-			<name-too-long>Name is too long</name-too-long>
-			<exist>Name is existed</exist>
-		</msg>
-	</UITaxonomyTreeCreateChildForm>
-	
-  <PopupComponent>
-    <title>
-      <UIOneNodePathSelector>Select path</UIOneNodePathSelector>
-    </title>
-  </PopupComponent>
-  
-  <PopupTaxonomyJCRBrowser>
-	  <title>
-      <UIOneNodePathSelector>Select home path</UIOneNodePathSelector>
-    </title>
-  </PopupTaxonomyJCRBrowser>
-  
-  <TaxoPopupUserSelector>
-	  <title>
-      <TaxoTreeSelectUserOrGroup>Select User</TaxoTreeSelectUserOrGroup>
-      <UIPermissionTreeSelectUser>Select User</UIPermissionTreeSelectUser>
-    </title>
-  </TaxoPopupUserSelector>
-
-  <TaxoTreeSelectUserOrGroupPopup>
-	  <title>
-      <TaxoTreeSelectUserOrGroup>Select membership</TaxoTreeSelectUserOrGroup>
-    </title>
-  </TaxoTreeSelectUserOrGroupPopup>
-  
-  <TaxoTreeAnyPermission>
-    <label>
-      <any>Any Permission</any>
-      <anyPermission>TaxoTreeAnyPermission</anyPermission>
-    </label>
-  </TaxoTreeAnyPermission>
-  
-  <TaxoTreeSelectUserOrGroup>
-    <label>
-      <selectGroup>Any Permission</selectGroup>
-      <selectMembership>Any Permission</selectMembership>
-    </label>
-  </TaxoTreeSelectUserOrGroup>
-  
-  <!--
-  ######################################################################################
-  #             org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeList	 #
-  ######################################################################################
-  -->
-  <UITaxonomyTreeList>
-    <header>
-      <name>Name</name>
-      <workspace>Workspace</workspace>
-      <homePath>Home path</homePath>
-      <permissions>Permissions</permissions>
-      <action>Action</action>
-    </header>
-    <action>
-      <AddTaxonomyTree>Add Taxonomy Tree</AddTaxonomyTree>
-    </action>
-    <tooltip>
-      <EditTaxonomyTree>Edit taxonomy Tree</EditTaxonomyTree>
-      <Delete>Delete taxonomy Tree</Delete>
-    </tooltip>
-    <title>Browses Taxonomy Tree</title>
-    <msg>
-      <no-list>No available taxonomy tree</no-list>
-      <confirm-delete>Are you sure to delete?</confirm-delete>
-    </msg>
-  </UITaxonomyTreeList>
-  
-  <!--
-  ######################################################################################
-  #             org.exoplatform.ecm.webui.component.admin.taxonomy.UITaxonomyTreeForm  #
-  ######################################################################################
-  -->
-  <UITaxonomyTreeForm>
-    <label>
-      <name>Name</name>
-      <workspace>Workspace</workspace>
-      <homePath>Home path</homePath>
-      <permissions>Permissions</permissions>
-    </label>
-    <msg>
-      <homapath-emty>Input home path</homapath-emty>
-    </msg>
-  </UITaxonomyTreeForm>
-  
-  <UIPermissionTreeForm>
-    <label>
-      <UIPopupWindow>Select</UIPopupWindow>
-      <permission>UIPermissionTreeForm</permission>
-      <userOrGroup>User Or Group</userOrGroup>
-      <read>Read Right</read>
-      <add_node>Add Node Right</add_node>
-      <set_property>Set Property Right</set_property>
-      <remove>Remove Right</remove>
-    </label>
-    <title>Add a permission to that node</title>
-    <action>
-      <Close>#{word.close}</Close>
-      <Save>#{word.save}</Save>
-      <Reset>Reset</Reset>
-    </action>
-    <msg>
-      <checkbox-require>You must select at least one permission</checkbox-require>
-      <userOrGroup-required>You must select user or group before save this permission</userOrGroup-required>
-      <not-change-permission>You have no right to add permission</not-change-permission>
-      <access-denied>Access denied! You can not remove this right permission.</access-denied>
-    </msg>
-  </UIPermissionTreeForm>
-  
-  <PopupTaxonomyTreePermission>
-    <title>
-      <UIPermissionSelector>Select permissions</UIPermissionSelector>
-    </title>
-   </PopupTaxonomyTreePermission>
 </bundle>
 

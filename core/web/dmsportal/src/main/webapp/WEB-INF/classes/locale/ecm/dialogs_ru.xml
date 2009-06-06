@@ -29,7 +29,42 @@
         <content>#{word.content}</content>
       </label>
     </dialog>
+    <msg>
+      <no-view>This node or this template was deleted or changed. Please click refresh button.</no-view>
+    </msg>
   </Article>
+  <UIDocumentForm>
+    <label>
+      <title>#{word.title}</title>
+      <link>Link</link>
+      <contentHtml>#{word.content}</contentHtml>
+      <content>#{word.content}</content>
+      <contentPlain>#{word.content}</contentPlain>
+      <name>Name</name>
+    </label>
+  </UIDocumentForm>
+  <!--
+  ###################### resoucebundle for exo:podcast dialogs template ####
+  -->
+  <Podcast>
+    <dialog>
+      <label>
+        <name>Name</name>
+        <categories>Categories</categories>
+        <title>Title</title>
+        <link>Link</link>
+        <author>Author</author>
+        <explicit>Explicit</explicit>
+        <category>Category</category>
+        <keywords>Keyword</keywords>
+        <publish-date>Publish Date</publish-date>
+        <description>Description</description>
+        <upload-file>Upload File</upload-file>
+        <mime-type>Mime Type</mime-type>
+        <lenght>length</lenght>
+      </label>
+    </dialog>
+  </Podcast>
   <!--
   ###################### resoucebundle for exo:calendar dialogs template ####
   -->
@@ -67,6 +102,7 @@
     <dialog>
       <label>
         <name>#{word.name}</name>
+        <categories>Categories</categories>
         <mimeType>#{Ecm.dialog.label.mimeType}</mimeType>
         <content>#{word.content}</content>
         <re-upload>Необходимо перезагрузить файл чтобы его изменить.</re-upload>
@@ -80,6 +116,7 @@
     <dialog>
       <label>
         <name>#{word.name}</name>
+        <categories>Categories</categories>
         <record-properties>Сохранить свойства</record-properties>
         <process-properties>Обработать свойства</process-properties>
         <note>File plan note</note>
@@ -118,6 +155,7 @@
     <dialog>
       <label>
         <name>#{word.name}</name>
+        <categories>Categories</categories>
       </label>
     </dialog>
   </Kofax>
@@ -128,6 +166,7 @@
     <dialog>
       <label>
         <name>#{word.name}</name>
+        <categories>Categories</categories>
         <title>#{word.title}</title>
         <description>#{word.description}</description>
         <date>#{word.date}</date>
@@ -155,6 +194,43 @@
       </label>
     </dialog>
   </Workflow>
+  <UIActionForm>
+    <label>
+      <description>#{word.description}</description>
+      <port>Port</port>
+      <userName>#{word.userName}</userName>
+      <password>Password</password>
+      <link>Link</link>
+      <to>Send mail to</to>
+      <actionName>#{word.name}</actionName>
+    </label>
+  </UIActionForm>
+  <EditFormAction>
+    <label>
+      <description>#{word.description}</description>
+      <port>Port</port>
+      <userName>#{word.userName}</userName>
+      <password>Password</password>
+      <link>Link</link>
+      <to>Send mail to</to>
+      <actionName>#{word.name}</actionName>
+    </label>
+  </EditFormAction>
+  <!--
+  ###################### resoucebundle for exo:bacupAction dialogs template ####
+  -->
+  <Backup>
+    <dialog>
+      <label>
+        <id>Id</id>
+        <name>#{word.name}</name>
+        <lifecycle>#{Ecm.dialog.label.lifecycle}</lifecycle>
+        <description>#{word.description}</description>
+        <to-workspace>To workspace</to-workspace>
+        <with-path>With path</with-path>
+      </label>
+    </dialog>
+  </Backup>
   <!--
   ###################### resoucebundle for exo:getmail dialogs template ####
   -->
@@ -211,6 +287,8 @@
         <rss-url>Rss URL</rss-url>
         <feed-title>Feed title</feed-title>
         <feed-type>Feed type</feed-type>
+        <summary>Summary</summary>
+        <title>Title</title>
         <rss-version>Rss version</rss-version>
         <link>Link</link>
         <description>#{word.description}</description>
@@ -272,18 +350,6 @@
       </label>
     </dialog>
   </SendMail>
-  <UIActionForm>
-    <label>
-      <to>Send mail to</to>
-      <actionName>#{word.name}</actionName>
-    </label>
-  </UIActionForm>
-  <EditFormAction>
-    <label>
-      <to>Send mail to</to>
-      <actionName>#{word.name}</actionName>
-    </label>
-  </EditFormAction>
   <!--
   ###################### resoucebundle for exo:transformBinaryToTextAction dialogs template ####
   -->
@@ -577,7 +643,37 @@
       </label>
     </dialog>
   </VitalRecord>
-  
+  <!--
+  ##################### resoucebundle for resouce container dialogs template#####
+  -->
+  <ResouceContainer>
+    <dialog>
+      <label>
+        <name>Name</name>
+        <autoload>Auto Load</autoload>
+        <minetype>Mine Type</minetype>
+        <content>Content</content>
+      </label>
+    </dialog>
+  </ResouceContainer>
+  <!--
+  ###################### resoucebundle for validator ####
+  -->
+  <EmailAddressValidator>
+    <msg>
+      <Invalid-input>Email address is invalid!</Invalid-input>
+    </msg>
+  </EmailAddressValidator>
+  <EmptyFieldValidator>
+    <msg>
+      <empty-input>The field '{0}' is required. Please enter your value.</empty-input>
+    </msg>
+  </EmptyFieldValidator>
+  <NumberFormatValidator>
+    <msg>
+      <Invalid-number>The field '{0}' is invalid.</Invalid-number>
+    </msg>
+  </NumberFormatValidator>  
   <!--
   #####Since version 2.4#######
     
@@ -596,4 +692,3 @@
     </dialog>
   </ScriptAction>  
 </bundle>
-

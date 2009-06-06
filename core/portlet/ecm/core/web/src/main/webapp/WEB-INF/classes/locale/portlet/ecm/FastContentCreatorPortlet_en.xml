@@ -109,7 +109,6 @@
       <UICategoriesSelector>Add Categories</UICategoriesSelector>
     </title>
   </PopupComponent>
-  
   <UICategoriesSelector>
     <action>
       <close>Close</close>

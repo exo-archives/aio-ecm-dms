@@ -413,11 +413,6 @@
       <invalid-node>Missing node : it has been moved or deleted</invalid-node>
     </msg>
   </UICategoryTree>
-  <UICategoryTree_new>
-    <label>
-      <test>Test</test>
-    </label>
-  </UICategoryTree_new>
   <!--
   ###################################################################################
   #  org.exoplatform.ecm.webui.component.browse.UIBrowseContentHelp																  #
@@ -474,4 +469,3 @@
   	</msg>
   </UIDocumentForm>
 </bundle>
-

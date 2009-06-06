@@ -4,11 +4,10 @@
     <register>Регистрация</register>
     <news>Новости</news>
     <ideas>
-      Идеи
+      <title>Идеи</title>
       <read>Читать идеи</read>
       <write>Написать идею</write>
     </ideas>
     <sitemap>Карта сайта</sitemap>
   </platform-guests>
 </bundle>
-

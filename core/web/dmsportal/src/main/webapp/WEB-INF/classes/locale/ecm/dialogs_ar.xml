@@ -638,7 +638,7 @@
     <dialog>
       <label>
         <is-vital-record>السجل حيوي</is-vital-record>
-        <previous-review-date>تاريخ المراجعة السابقة</previous-review-date>
+        <prev-review-date>تاريخ المراجعة السابقة</prev-review-date>
         <next-review-date>تاريخ المراجعة المُـقبلة</next-review-date>
       </label>
     </dialog>
@@ -674,7 +674,6 @@
       <Invalid-number>المجال '{0}' غير صحيح</Invalid-number>
     </msg>
   </NumberFormatValidator>
-  
   <!--
   #####Since version 2.4#######
     

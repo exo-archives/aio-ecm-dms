@@ -75,7 +75,7 @@
 			</info>
 		</tab>
 		<msg>
-  		<not-exist-tree>Tree has not existed yet</not-exist-tree>
+  		<not-exist-tree>Tree does not exist yet</not-exist-tree>
 		</msg>
 		<action>
 			<Close>Close</Close>
@@ -93,10 +93,10 @@
 			<Reset>Reset</Reset>
 		</action>
 		<msg>
-  		<name-not-allowed>Name is disallowed</name-not-allowed>
-  		<name-emty>Name of tree is empty</name-emty>
-  		<homePath-emty>Home path is empty</homePath-emty>
-  		<taxonomytree-existed>Taxonomy tree with this name is existed</taxonomytree-existed>
+  		<name-not-allowed>Name forbidden</name-not-allowed>
+  		<name-emty>The name of the tree is empty</name-emty>
+  		<homePath-emty>The home path is empty</homePath-emty>
+  		<taxonomytree-existed>A taxonomy tree with the same name already exists</taxonomytree-existed>
 		</msg>
 	</UITaxonomyTreeMainForm>
 	
@@ -168,17 +168,17 @@
 	-->
 	
 	<UIActionForm>
-		<title>Add Permission for taxonomy tree</title>
+		<title>Add a permission to the taxonomy tree</title>
 		<action>
 			<Save>Save</Save>
 			<ViewPermission>View Permission</ViewPermission>
 			<ViewTree>View Tree</ViewTree>
 		</action>
 		<msg>
-  		<name-not-allowed>Name is disallowed</name-not-allowed>
+  		<name-not-allowed>Name forbidden</name-not-allowed>
   		<path-invalid>Path is invalid</path-invalid>
-			<taxonomy-existed>Taxonomy tree has alreday been existed</taxonomy-existed>
-			<taxonomy-node-existed>Taxonomy node has been existed</taxonomy-node-existed>
+			<taxonomy-existed>Taxonomy tree already exists</taxonomy-existed>
+			<taxonomy-node-existed>Taxonomy node already exists</taxonomy-node-existed>
 			<no-permission-add>User has no add right</no-permission-add>
 			<not-created-tree>Taxonomy tree has not been created yet</not-created-tree>
 		</msg>
@@ -391,9 +391,9 @@
       <Refresh>#{word.refresh}</Refresh>
     </action>
     <msg>
-      <drive-exists>Drive is existing !</drive-exists>
-      <workspace-path-invalid>Workspace path invalid !</workspace-path-invalid>
-      <drive-views-invalid>You must select one apply view !</drive-views-invalid>
+      <drive-exists>Drive already exists!</drive-exists>
+      <workspace-path-invalid>Workspace path invalid!</workspace-path-invalid>
+      <drive-views-invalid>You must select one apply view!</drive-views-invalid>
       <icon-not-found>Icon not found.</icon-not-found>
       <permission-null>You must choose permission for this drive</permission-null>
       <name-null>Enter drive name, please!</name-null>
@@ -513,8 +513,9 @@
       <repoName-not-alow>There are some invalid characters in name!</repoName-not-alow>
       <workspace-isrequire>Require at least one workspace</workspace-isrequire>
       <cannot-delete-workspace>Can not delete {0}</cannot-delete-workspace>
-      <workspace-setdefault>You must set workspace default one</workspace-setdefault>
-      <workspace-setDMSsystem>You must set DMS system workspace one</workspace-setDMSsystem>
+      <workspace-setdefault>You must set the default workspace</workspace-setdefault>
+      <!--DMS 2.4.x ECM-3611> -->
+      <workspace-setDMSsystem>You must set DMS system workspace</workspace-setDMSsystem>
       <workspace-bseChanel>Chanel is required</workspace-bseChanel>
       <workspace-bseMode>Replication Mode is required</workspace-bseMode>
       <workspace-bsePath>Directory is required</workspace-bsePath>
@@ -582,6 +583,7 @@
       <name-require>Workspace name is required</name-require>
       <permission-require>You must select permission</permission-require>
       <nodeType-invalid>Default workspace auto init nodetype must nt:unstructured</nodeType-invalid>
+      <!--DMS 2.4.x ECM-3611-->
       <nodeType-invalidSystemWs>DMS system workspace auto init nodetype must nt:unstructured</nodeType-invalidSystemWs>
       <lockTimeOut-required>Lock timeout is required</lockTimeOut-required>
       <lockTimeOut-invalid>Lock timeout is invalid number format</lockTimeOut-invalid>
@@ -613,6 +615,7 @@
       <name>Name</name>
       <autoInitializedRootNt>Root node type</autoInitializedRootNt>
       <isDefault>Set as default</isDefault>
+      <!--DMS 2.4.x ECM-3611-->
       <isDMSSytemWs>Set as DMS System workspace</isDMSSytemWs>
       <permission>Auto init permission</permission>
       <setLockTimeOut>Lock timeout</setLockTimeOut>
@@ -620,7 +623,7 @@
       <container>Type of container</container>
       <sourceName>Source Name</sourceName>
       <dbType>Dialect</dbType>
-      <isMulti>Is multi</isMulti>
+      <isMulti>Is Multiple</isMulti>
       <storeType>Store type</storeType>
       <filterType>Filters</filterType>
       <maxBuffer>Max Buffer (bytes)</maxBuffer>
@@ -1049,9 +1052,9 @@
     <msg>
       <view-name-invalid>You must enter name</view-name-invalid>
       <fileName-invalid>There are some invalid characters in name!</fileName-invalid>
-      <permission-not-empty>You must select permission</permission-not-empty>
-      <mustbe-add-tab>You must add tab</mustbe-add-tab>
-      <view-exist>View name is existing.</view-exist>
+      <permission-not-empty>You must select a permission</permission-not-empty>
+      <mustbe-add-tab>You must add a tab</mustbe-add-tab>
+      <view-exist>View name already exists.</view-exist>
     </msg>
   </UIViewForm>
   <UITabForm>
@@ -1138,7 +1141,7 @@
     </action>
     <msg>
       <template-in-use>Cannot delete {0} : template currently in use</template-in-use>
-      <confirm-delete>Do you really want to delete ?</confirm-delete>
+      <confirm-delete>Do you really want to delete?</confirm-delete>
       <access-denied>Access denied! You haven't got permission to use this function.</access-denied>
     </msg>
   </UIECMTemplateList>
@@ -1158,7 +1161,7 @@
       <Add>Add</Add>
     </action>
     <msg>
-      <confirm-delete>Do you really want to delete ?</confirm-delete>
+      <confirm-delete>Do you really want to delete?</confirm-delete>
       <access-denied>Access denied! You haven't got permission to use this function.</access-denied>
     </msg>
   </UICBTemplateList>
@@ -1177,7 +1180,7 @@
     </action>
     <msg>
       <version-restored>The version {0} was restored successfully.</version-restored>
-      <role-require>You must select permission</role-require>
+      <role-require>You must select a permission</role-require>
       <template-name-exist>The template name '{0}' is existing</template-name-exist>
     </msg>
     <tab>
@@ -1284,7 +1287,7 @@
       <AddNew>Add</AddNew>
     </action>
     <msg>
-      <confirm-delete>Do you really want to delete ?</confirm-delete>
+      <confirm-delete>Do you really want to delete?</confirm-delete>
     </msg>
     <header>
       <scriptName>Name</scriptName>
@@ -1323,7 +1326,7 @@
     <msg>
       <version-restored>The version {0} was restored successfully.</version-restored>
       <name-null>Enter script name, please!</name-null>
-      <name-exist>The script name '{0}' is existing</name-exist>
+      <name-exist>A script with the name '{0}' already exists</name-exist>
       <fileName-invalid>Script name have some invalid characters.</fileName-invalid>
     </msg>
   </UIScriptForm>
@@ -1379,7 +1382,7 @@
       <parentPath>Parent</parentPath>
     </label>
     <msg>
-      <exist>The "{0}" category is existing!</exist>
+      <exist>The "{0}" category already exists!</exist>
       <name-null>You must enter taxonomy name.</name-null>
       <name-invalid>There are some invalid characters in name.</name-invalid>
       <name-too-long>Taxonomy name must less than 30 characters</name-too-long>
@@ -1417,7 +1420,7 @@
 			<name-null>Name is null</name-null>
 			<name-invalid>Name is invalid</name-invalid>
 			<name-too-long>Name is too long</name-too-long>
-			<exist>Name is existed</exist>
+			<exist>Name already exists</exist>
 		</msg>
 	</UITaxonomyTreeCreateChildForm>
 	
@@ -1476,7 +1479,7 @@
     </tooltip>
     <title>Browses Taxonomy Tree</title>
     <msg>
-      <no-list>No available taxonomy tree</no-list>
+      <no-list>No taxonomy tree available</no-list>
       <confirm-delete>Are you sure to delete?</confirm-delete>
     </msg>
   </UITaxonomyTreeList>
@@ -1516,9 +1519,9 @@
     </action>
     <msg>
       <checkbox-require>You must select at least one permission</checkbox-require>
-      <userOrGroup-required>You must select user or group before save this permission</userOrGroup-required>
-      <not-change-permission>You have no right to add permission</not-change-permission>
-      <access-denied>Access denied! You can not remove this right permission.</access-denied>
+      <userOrGroup-required>You must select a user or a group before saving the permission</userOrGroup-required>
+      <not-change-permission>You have no right to add a permission</not-change-permission>
+      <access-denied>Access denied! You can not remove this permission.</access-denied>
     </msg>
   </UIPermissionTreeForm>
   
@@ -1621,9 +1624,9 @@
     </action>
     <msg>
       <checkbox-require>You must select at least one permission</checkbox-require>
-      <userOrGroup-required>You must select user or group before save this permission</userOrGroup-required>
-      <not-change-permission>You have no right to add permission</not-change-permission>
-      <access-denied>Access denied! You can not remove this right permission.</access-denied>
+      <userOrGroup-required>You must select a user or a group before saving the permission</userOrGroup-required>
+      <not-change-permission>You have no right to add a permission</not-change-permission>
+      <access-denied>Access denied! You can not remove this permission.</access-denied>
     </msg>
   </UIPermissionForm>
   
@@ -1652,7 +1655,7 @@
       <AddNew>Add</AddNew>
     </action>
     <msg>
-      <confirm-delete>Do you really want to delete ?</confirm-delete>
+      <confirm-delete>Do you really want to delete?</confirm-delete>
       <access-denied>Access denied! You haven't got permission to use this function.</access-denied>
     </msg>
   </UITemplateList>
@@ -1673,7 +1676,7 @@
   </TemplatePopup>
   <ViewForm>
     <label>
-      <UITemplateContent>ViewForm</UITemplateContent>
+      <UITemplateContent>View Form</UITemplateContent>
       <UIPopupWindow>View Permission</UIPopupWindow>
       <selectVersion>Versions</selectVersion>
       <content>Content</content>
@@ -1686,7 +1689,7 @@
   </ViewForm>
   <DialogForm>
     <label>
-      <UITemplateContent>DialogForm</UITemplateContent>
+      <UITemplateContent>Dialog Form</UITemplateContent>
       <UIPopupWindow>Dialog Permission</UIPopupWindow>
       <selectVersion>Versions</selectVersion>
       <content>Content</content>
@@ -1754,7 +1757,7 @@
     </header>
     <msg>
       <undeletable>'{0}' can not be deleted, it is the default one!</undeletable>
-      <confirm-delete>Do you really want to delete ?</confirm-delete>
+      <confirm-delete>Do you really want to delete?</confirm-delete>
     </msg>
     <action>
       <title>
@@ -1802,7 +1805,7 @@
       <name-invalid>Field name can not contain special characters</name-invalid>
       <roles-invalid>The Permission field can not be empty.</roles-invalid>
       <version-restored>The version {0} was restored successfully.</version-restored>
-      <name-exist>The name '{0}' is existing</name-exist>
+      <name-exist>The name '{0}' already exists</name-exist>
     </msg>
     <title>
       <AddPermission>Add Permission</AddPermission>
@@ -1854,7 +1857,7 @@
       <Delete>Delete this query</Delete>
     </tooltip>
     <msg>
-      <confirm-delete>Do you really want to delete ?</confirm-delete>
+      <confirm-delete>Do you really want to delete?</confirm-delete>
     </msg>
   </UIQueriesList>
   <UIQueriesForm>
@@ -1872,8 +1875,8 @@
     </action>
     <msg>
       <permission-require>You must select permissions</permission-require>
-      <name-invalid>Field name is not contain special characters</name-invalid>
-      <name-existing>This query name is existing. Choose another name, please!</name-existing>
+      <name-invalid>Field name must not contain any special character</name-invalid>
+      <name-existing>This query name already exists. Choose another name, please!</name-existing>
       <invalid-query>Invalid query. Check your query statement, please!</invalid-query>
     </msg>
   </UIQueriesForm>

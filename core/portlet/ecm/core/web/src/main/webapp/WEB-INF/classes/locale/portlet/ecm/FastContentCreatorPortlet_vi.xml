@@ -129,8 +129,8 @@
   
   <UIDocumentForm>
   	<msg>
-  		<not-support>Cannot load template of '{0}'.</not-support>
-  		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
+  		<not-support>Không thể tải các bản mẫu '{0}'.</not-support>
+  		<do-not-permission>Bạn không được phép để tải các bản mẫu của '{0}'.</do-not-permission>
   	</msg>
   </UIDocumentForm>
 </bundle>

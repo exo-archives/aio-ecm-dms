@@ -109,30 +109,29 @@
       <UICategoriesSelector>إضافة فئات</UICategoriesSelector>
     </title>
   </PopupComponent>
-  
-    <PopupComponent>
-    <title>
-      <UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
-    </title>
-  </PopupComponent>
-  
-  <UITreeTaxonomyList>
-    <label>
-      <taxonomyTree>Taxonomy Tree</taxonomyTree>
-    </label>
-  </UITreeTaxonomyList>
-  
-  
   <UICategoriesSelector>
     <action>
       <close>الإغلاق</close>
     </action>
   </UICategoriesSelector>
   
+    <PopupComponent>
+    <title>
+      <UIOneTaxonomySelector>إضافة التصنيفات</UIOneTaxonomySelector>
+    </title>
+  </PopupComponent>
+  
+  <UITreeTaxonomyList>
+    <label>
+      <taxonomyTree>شجرة التصنيف</taxonomyTree>
+    </label>
+  </UITreeTaxonomyList>
+    
   <UIDocumentForm>
   	<msg>
-  		<not-support>Cannot load template of '{0}'.</not-support>
-  		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
+  		<not-support>لا يمكن تحميل نموذج'{0}'.</not-support>
+  		<do-not-permission>ليس لديك إذن لتحميل نموذج '{0}'.</do-not-permission>
   	</msg>
   </UIDocumentForm>
 </bundle>
+

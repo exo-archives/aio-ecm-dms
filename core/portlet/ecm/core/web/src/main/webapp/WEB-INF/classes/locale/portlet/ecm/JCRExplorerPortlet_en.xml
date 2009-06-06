@@ -124,7 +124,7 @@
   <Views>
     <label>
       <simple-view>Thumbnails</simple-view>
-      <cover-flow>Cover flow</cover-flow>
+      <cover-flow>Cover Flow</cover-flow>
       <admin-view>Details</admin-view>
       <icon-view>Icons</icon-view>
       <system-view>Details</system-view>
@@ -306,12 +306,12 @@
       <cannot-enable-version-rootnode>Can not enable version for root node</cannot-enable-version-rootnode>
       <cannot-enable-publication-rootnode>Can not enable publication for root node</cannot-enable-publication-rootnode>
       <manage-publication>
-        <not-supported-nodetype>The publication support document node only.</not-supported-nodetype>
+        <not-supported-nodetype>The publication supports document node only.</not-supported-nodetype>
         <no-publication-lifecycle>No publication lifecycle is configured.</no-publication-lifecycle>
       </manage-publication>
       <unsubcriber-lifecycle>
-        The node already was unsubcribed lifecycle
-        <not-supported-nodetype>The unsubcriber lifecycle support document node only.</not-supported-nodetype>
+        The node was already unsubcribed
+        <not-supported-nodetype>The unsubcriber lifecycle supports document node only.</not-supported-nodetype>
       </unsubcriber-lifecycle>
       <unsubcriber-lifecycle-finish>The node is unsubcribed successfully</unsubcriber-lifecycle-finish>
       <access-false>The node is not article or checked in !</access-false>
@@ -382,7 +382,7 @@
       <copied-node-in-versioning>Copied node in versioning, can not paste</copied-node-in-versioning>
       <parent-node-locked>There are no permission to unlock the node '{0}'</parent-node-locked>
       <this-node-locked-by-parent>This node locked by parent or ancestor node, can not unlock!</this-node-locked-by-parent>
-      <paste-node-same-name>Destination folder don't let same name node</paste-node-same-name>
+      <paste-node-same-name>Destination folder doesn't allow two nodes with the same name</paste-node-same-name>
       <has-not-add-permission>You do not have permission to add new node</has-not-add-permission>
       <node-cutting>Node is cutting. You can't paste in here!</node-cutting>
       <access-denied>Access denied! Maybe, you haven't got permission in this node</access-denied>
@@ -417,7 +417,8 @@
       <repository-exception>Access deny! You don't have add permission in this folder</repository-exception>
       <repository-exception-permission>You don't have permission to add a new folder on this node</repository-exception-permission>
       <numberformat-exception>Can not save this folder. The name provided must not have '[' or ']'</numberformat-exception>
-      <not-allow-sameNameSibling>Can not save. This node is not allowed same name sibling</not-allow-sameNameSibling>
+      <!--DMS 2.4.x; ECM-3553-->
+      <not-allow-sameNameSibling>Can not save. This node doesn't allow 2 nodes with the same name</not-allow-sameNameSibling>
     </msg>
   </UIFolderForm>
   <!--
@@ -430,8 +431,8 @@
       <Icon>Icon</Icon>
     </title>
     <msg>
-      <confirm-delete>Are you sure want to delete the node '{0}' and move all its contents to Rycycle Bin'?</confirm-delete>
-      <confirm-delete-multi>Are you sure want to delete these {0} items to the Rycycle Bin?</confirm-delete-multi>
+      <confirm-delete>Are you sure want to delete the node '{0}' and move all its contents to Recycle Bin?</confirm-delete>
+      <confirm-delete-multi>Are you sure want to move these {0} items to the Recycle Bin?</confirm-delete-multi>
       <confirm-move>Are you sure want to move?</confirm-move>
       <node-cut>The node '{0}' has been cut.</node-cut>
       <execute-successfully>The custom action '{0}' has been executed.</execute-successfully>
@@ -822,7 +823,7 @@
       <fileName>File name</fileName>
       <nodeName>Node name</nodeName>
       <fileSize>File size</fileSize>
-      <mimeType>Mime type</mimeType>
+      <mimeType>Mime Type</mimeType>
     </label>
     <title>
       <uploaded-file>Uploaded file</uploaded-file>
@@ -845,7 +846,7 @@
     <tab>
       <label>
         <UIUploadContent>Information</UIUploadContent>
-        <UIAddMetadataForm>Metadata form</UIAddMetadataForm>
+        <UIAddMetadataForm>Metadata Form</UIAddMetadataForm>
       </label>
     </tab>
   </UIUploadContainer>
@@ -1084,6 +1085,7 @@
       <Search>Search</Search>
     </action>
     <msg>
+      <!--DMS 2.4.x ECM-3566-->
       <name-invalid>Name is invalid!</name-invalid>
       <query-added>Query added</query-added>
       <save_unSuccessful>Can't save : statement is invalid or query name already exists</save_unSuccessful>
@@ -1139,7 +1141,7 @@
   </UISelectPropertyForm>
   <ExactlyFormPopup>
     <title>
-      <UICompareExactlyForm>Filter form</UICompareExactlyForm>
+      <UICompareExactlyForm>Filter Form</UICompareExactlyForm>
     </title>
   </ExactlyFormPopup>
   <UIECMSearch>
@@ -1266,8 +1268,6 @@
   ################################################################################
   #  org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo
   ################################################################################
-  e_
-  
   -->
   <UIAuditingInfo>
     <msg>
@@ -1337,12 +1337,12 @@
     </action>
     <grid>
       <msg>
-        <empty>Not publication plugin found</empty>
+        <empty>No publication plugin found</empty>
       </msg>
     </grid>
     <msg>
-      <node-type-invalid>Only documents node type can be enroled</node-type-invalid>
-      <already-enroled>This document already enroled</already-enroled>
+      <node-type-invalid>Only document node type can be enroled</node-type-invalid>
+      <already-enroled>This document has already been enroled</already-enroled>
     </msg>
   </UIActivePublication>
   <!--
@@ -1353,7 +1353,7 @@
   <UIActivateAuditing>
     <label>
       <note>Auditing has not been activated for this node</note>
-      <question>Do you want to activate ?</question>
+      <question>Do you want to activate?</question>
     </label>
     <action>
       <activate>Activate</activate>
@@ -1588,6 +1588,7 @@
       <not-support>Cannot load template of '{0}'.</not-support>
       <value-invalid>'{0}' is needed value</value-invalid>
       <repository-exception>Can not save this document. The name provided must not have an index on its final element.</repository-exception>
+      <!--DMS 2.4.x; ECM-3543-->
       <repository-exception-permission>You don't have permission to add a new document on this node</repository-exception-permission>
       <not-allowed-same-name-sibling>Can not save this document. This node is not allowed same name sibling</not-allowed-same-name-sibling>
       <numberformat-exception>Can not save this document. The name provided must not have '[' or ']'.</numberformat-exception>
@@ -1862,7 +1863,7 @@
   </CronExpressionValidator>
   <EmptyFieldValidator>
     <msg>
-      <empty-input>Type value into field '{0}' please</empty-input>
+      <empty-input>Please fill out the field '{0}'</empty-input>
     </msg>
   </EmptyFieldValidator>
   <!--
@@ -2198,18 +2199,18 @@
       <Cancel>#{word.cancel}</Cancel>
 		</action>
 		<msg>
-      <addFolder-successful>Add Sym Link '{0}' Successful</addFolder-successful>
-			<name-invalid>Please enter Sym Link Name!</name-invalid>
+      <addFolder-successful>Add Symbolic Link '{0}' Successful</addFolder-successful>
+			<name-invalid>Please enter Symbolic Link Name!</name-invalid>
       <name-not-allowed>This name is not allowed.</name-not-allowed>
       <fileName-error>Invalid file name</fileName-error>
       <constraint-violation>Current node does not allow to add '{0}' node type</constraint-violation>
-      <repository-exception>Access deny! You don't have execute permission in this node</repository-exception>
+      <repository-exception>Access deny! You don't have add permission in this node</repository-exception>
       <numberformat-exception>Can not save this folder. The name provided must not have '[' or ']'</numberformat-exception>      
 			<path-node-invalid>Please enter Path Node!</path-node-invalid>
 			<path-node-not-allowed>This name is not allowed.</path-node-not-allowed>
 			<non-node>Please choose trust target node Or you don't have enough rights to read this node</non-node>
 			<cannot-save>Some constraints were violated during that action.</cannot-save>
-			<item-exists-exception>The same name node sibling is not allowed</item-exists-exception>
+			<item-exists-exception>The node with the same name already exists</item-exists-exception>
 			<UnsupportedRepositoryOperationException>This target node is not referenceable</UnsupportedRepositoryOperationException>
     </msg>
 	</UISymLinkForm>
@@ -2230,8 +2231,8 @@
     <msg>
       <create-link-problem>You can not create a link for node '{0}' at '{1}'</create-link-problem>
       <dest-node-is-link>The destination node '{0}' is already a symlink. So you can not create a symlink inside it</dest-node-is-link>
-      <selected-is-link>The selected node '{0}' is a instance of a link, so you can not create a link point to another link</selected-is-link>
-      <confirm-create-link>Are you sure want to create link in this location?</confirm-create-link>    
+      <selected-is-link>The selected node '{0}' is already a link, you can not create a link point to another link</selected-is-link>
+      <confirm-create-link>Do you really want to create a link to this location?</confirm-create-link>    
     </msg>
   </UIWorkingArea>
   
@@ -2297,7 +2298,7 @@
   </UIPopupWindow>
   <UICategoriesAddedList>
   	<msg>
-  		<ItemExistsException>The category is exist. The same name sibling is not allowed</ItemExistsException>
+  		<ItemExistsException>A category with the same name already exists</ItemExistsException>
   	</msg>
 	</UICategoriesAddedList>
 	
@@ -2323,10 +2324,10 @@
   <UIImportNode>
     <label>
       <behavior>UUID Behaviour</behavior>
-      <versionHistory>Version hisotry</versionHistory>
+      <versionHistory>Version history</versionHistory>
     </label>
     <msg>
-      <history-invalid-type>Invalid version history file type. The right file must be *.zip file</history-invalid-type>
+      <history-invalid-type>Invalid version history file type. The right file must be a zip file</history-invalid-type>
       <history-invalid-content>Invalid version history data content. You should choose the right file to import.</history-invalid-content>
     </msg>
   </UIImportNode>  
@@ -2336,13 +2337,13 @@
       <type0>Create new</type0>
       <type1>Remove existing</type1>
       <type2>Replace existing</type2>
-      <type3>Throw</type3>
+      <type3>Throw Exception</type3>
     </Behavior>
   </Import>
   
   <UIExportNode>
     <action>
-      <ExportHistory>Export vesion history</ExportHistory>
+      <ExportHistory>Export version history</ExportHistory>
     </action>
   </UIExportNode>
   
@@ -2366,4 +2367,3 @@
   	</msg>
   </UIDocumentForm>
 </bundle>
-

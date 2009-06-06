@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bundle>
   <!--
-  ###################################################################
-  #      WARNING THIS FILE MUST BE ENCODED IN UTF-8 FORMAT          #
-  ###################################################################
   ################resoucebundle FOR EXO:ARTICLE VIEW TEMPLATE############
   -->
   <Article>
@@ -19,20 +16,15 @@
       </label>
     </view>
   </Article>
-  <!--
-  #########################################
-  # Need to be translated
-  #########################################
-  -->
   <View>
     <label>
       <languages>
-        <en>English</en>
-        <fr>French</fr>
-        <ru>Russian</ru>
-        <vi>Vietnamese</vi>
-        <ln>Dutch</ln>
-        <uk>Ukrainian</uk>
+        <en>Anglais</en>
+        <fr>Français</fr>
+        <ru>Russe</ru>
+        <vi>Vietnamien</vi>
+        <ln>Néerlandais</ln>
+        <uk>Ukrainien</uk>
         <ar>Arabe</ar>
       </languages>
     </label>
@@ -114,26 +106,26 @@
     <view>
       <label>
         <content>Contenu du File Plan</content>
-        <record-category-identifier>Identification de la catégorie du Record</record-category-identifier>
+        <record-category-identifier>Identification de la catégorie de l'Enregistrement</record-category-identifier>
         <disposition-author>Auteur de la disposition</disposition-author>
         <disposition-instruction>Instructions de la disposition</disposition-instruction>
-        <permanent-record-indicator>Indicateur de Record permanent</permanent-record-indicator>
-        <contain-record-folder>Dossier contenant le Record</contain-record-folder>
+        <permanent-record-indicator>Indicateur d'enregistrement permanent</permanent-record-indicator>
+        <contain-record-folder>Dossier contenant l'Enregistrement</contain-record-folder>
         <default-media-type>Type de média par défaut</default-media-type>
         <default-marking-list>Liste de marquage par défaut</default-marking-list>
         <default-originating-organization>Organisation émettrice par défaut</default-originating-organization>
-        <number-of-record>Nombre de Records</number-of-record>
-        <record>Records</record>
-        <obsolete-record>Records obsolètes</obsolete-record>
-        <supreseded-record>Records remplacés</supreseded-record>
-        <vital-record>Records vitaux</vital-record>
-        <cutoff-record>Records prélevés</cutoff-record>
-        <holdable-record>Records suspensifs</holdable-record>
-        <transferable-record>Records transférables</transferable-record>
-        <accessionable-record>Records acquis</accessionable-record>
-        <destroyable-record>Records destructibles</destroyable-record>
-        <record-id>Identifiant du Record</record-id>
-        <record-name>Nom du Record</record-name>
+        <number-of-record>Nombre d'Enregistrements</number-of-record>
+        <record>Enregistrement</record>
+        <obsolete-record>Enregistrements obsolètes</obsolete-record>
+        <supreseded-record>Enregistrements remplacés</supreseded-record>
+        <vital-record>Enregistrements vitaux</vital-record>
+        <cutoff-record>Enregistrements prélevés</cutoff-record>
+        <holdable-record>Enregistrements suspensifs</holdable-record>
+        <transferable-record>Enregistrements transférables</transferable-record>
+        <accessionable-record>Enregistrements acquis</accessionable-record>
+        <destroyable-record>Enregistrements destructibles</destroyable-record>
+        <record-id>Identifiant de l'Enregistrement</record-id>
+        <record-name>Nom de l'Enregistrement</record-name>
         <originator>Originataire</originator>
         <date-received>Date de réception</date-received>
         <originating-organization>Organisation originataire</originating-organization>
@@ -233,9 +225,9 @@
       <label>
         <name>Nom</name>
         <versionable>Versionable</versionable>
-        <exo:owner>Propriétaire</exo:owner>
-        <exo:dateCreated>Date de Création</exo:dateCreated>
-        <exo:dateModified>Date de Modification</exo:dateModified>
+        <exo_owner>Propriétaire</exo_owner>
+        <exo_dateCreated>Date de Création</exo_dateCreated>
+        <exo_dateModified>Date de Modif.</exo_dateModified>
         <auditing>Traçabilité</auditing>
       </label>
     </view>
@@ -630,4 +622,3 @@
     </dialog>
   </ContentPublishing>
 </bundle>
-

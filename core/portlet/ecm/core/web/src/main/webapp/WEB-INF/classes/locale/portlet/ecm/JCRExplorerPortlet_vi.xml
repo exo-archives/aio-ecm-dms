@@ -276,6 +276,7 @@
       <Upload>Tải lên</Upload>
       <Paste>Dán</Paste>
       <Search>Tìm kiếm</Search>
+      <CreateTicket>New Ticket</CreateTicket>
       <WatchDocument>Theo dõi/ngừng theo dõi tài liệu này</WatchDocument>
       <TaggingDocument>Gán nhãn tài liệu này</TaggingDocument>
       <MultiLanguage>Thêm/Sửa đổi nội dung đa ngôn ngữ</MultiLanguage>
@@ -416,6 +417,7 @@
       <repository-exception>Truy cập bị từ chối. Bạn không có quyền thêm mới node ở đây.</repository-exception>
       <repository-exception-permission>Bạn không có đủ quyền để thêm mới folder cho node này</repository-exception-permission>
       <numberformat-exception>Không thể lưu lại thư mục này. Tên đưa vào phải không chứa '[' hoặc ']'</numberformat-exception>
+      <!--DMS 2.4.x; ECM-3553-->
       <not-allow-sameNameSibling>Không thể lưu lại thư mục này. Loại node này không hỗ trợ trùng tên</not-allow-sameNameSibling>
     </msg>
   </UIFolderForm>
@@ -528,6 +530,32 @@
   </ECMContextMenu>
   <!--
   #############################################################################
+  #             org.exoplatform.ecm.webui.component.explorer.UITicketForm     #
+  #############################################################################
+  -->
+  <UITicketForm>
+    <title>Create Ticket</title>
+    <label>
+      <users>Users</users>
+      <permission>Permission</permission>
+      <creator>Creator</creator>
+      <accessTime>Access Time</accessTime>
+      <accessLimit>Access Limit</accessLimit>
+      <description>Description</description>
+      <sendToMail>Send To Mail</sendToMail>
+      <ticketID>Ticket ID</ticketID>
+    </label>
+    <action>
+      <Cancel>#{word.cancel}</Cancel>
+      <Update>#{word.update}</Update>
+      <Save>#{word.save}</Save>
+    </action>
+    <msg>
+      <unable-create>Unable create !</unable-create>
+    </msg>
+  </UITicketForm>
+  <!--
+  #############################################################################
   #     org.exoplatform.ecm.webui.component.explorer.UIReferencesList         #
   #############################################################################
   -->
@@ -577,6 +605,8 @@
       <UIDocumentInfo>Hiển thị theo kiểu tài liệu</UIDocumentInfo>
       <UICategoriesSelectPanel>Chọn loại</UICategoriesSelectPanel>
       <UISelectedCategoriesGrid>Các loại tham chiếu</UISelectedCategoriesGrid>
+      <UIWorkflowPublicationActionForm>Workflow Publication Action</UIWorkflowPublicationActionForm>
+      <UIWorkflowPublicationViewForm>Workflow Publication View</UIWorkflowPublicationViewForm>
     </title>
   </UITabPane>
   <UIPropertyTab>
@@ -1055,6 +1085,7 @@
       <Search>Tìm kiếm</Search>
     </action>
     <msg>
+      <!--DMS 2.4.x ECM-3566-->
       <name-invalid>Tên có một số kí tự không hợp lệ</name-invalid>
       <query-added>Truy vấn được thêm vào</query-added>
       <save_unSuccessful>Không thể lưu: Truy vấn không hợp lệ hoặc tên của truy vấn đã tồn tại</save_unSuccessful>
@@ -1276,6 +1307,7 @@
       <version>Phiên bản</version>
     </label>
   </UIAuditingInfo>
+  
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
@@ -1870,6 +1902,9 @@
       <private>Bí mật</private>
       <state>Trạng thái</state>
       <visibility>Có thể hiển thị</visibility>
+      <nodeName>Node Name:</nodeName>
+      <lifecycleName>Lifecycle Name</lifecycleName>
+      <stateName>State Name</stateName>
     </label>
     <action>
       <Save>Lưu</Save>
@@ -1926,13 +1961,6 @@
       <selectMembership>Chọn quan hệ thành viên</selectMembership>
     </label>
   </UIPermissionSelector>
-  <UIGroupMemberSelector>
-    <label>
-      <selectGroup>Chọn nhóm người dùng</selectGroup>
-      <selectUser>Chọn người dùng</selectUser>
-      <selectMembership>Chọn quan hệ thành viên</selectMembership>
-    </label>
-  </UIGroupMemberSelector>
   <!--
   ###################################################################################
   # org.exoplatform.ecm.jcr.ECMStandardPropertyNameValidator												#
@@ -2043,77 +2071,41 @@
       <close>Đóng</close>
     </action>
   </UICategoriesSelector>
-  
   <!--
-  ########Since ECM 2.3##################
+  ###################################################################################
+  # Since ECM version 2.2				                                        							#
+  ###################################################################################
   -->
-  <UIUserSelector>
+  <UIGroupMemberSelector>
     <label>
-      <option>
-        <userName>Tên đăng nhập</userName>
-        <lastName>Họ</lastName>
-        <firstName>Tên</firstName>      
-        <email>Hòm mail</email>
-      </option>
-      <group>Nhóm: </group>
-      <searchUser>Tìm kiếm</searchUser>
-      <userName>Tên đăng nhập</userName>
-      <lastName>Họ</lastName>
-      <firstName>Tên</firstName>      
-      <email>Hòm mail</email>
-      <actions>Thao tác</actions>
-      <Add>Thêm</Add>      
-      <Close>Đóng</Close>
+      <selectGroup>Chọn nhóm người dùng</selectGroup>
+      <selectUser>Chọn người dùng</selectUser>
+      <selectMembership>Chọn quan hệ thành viên</selectMembership>
     </label>
-    <header>
-      <action>Thao tác</action>
-    </header>
-  </UIUserSelector>
-  
-  <UIPageIterator>
-    <label>
-      <totalPage>Tổng số trang</totalPage>
-      <backTenPages>Quay lại 10 trang</backTenPages>
-      <previous>Trang trước</previous>
-      <next>Trang tiếp theo</next>
-      <nextTenPages>Tiếp 10 trang</nextTenPages>
-    </label>
-  </UIPageIterator>
-  
-  <UIPublicationForm>
-    <label>
-      <nodeName>Tên node: </nodeName>
-      <lifecycleName>Tên vòng đời: </lifecycleName>
-      <stateName>Tên trạng thái: </stateName>
-    </label>    
-  </UIPublicationForm>
-  
-  <UITabPane>
-    <title>
-      <UIWorkflowPublicationActionForm>Workflow Publication Action</UIWorkflowPublicationActionForm>
-      <UIWorkflowPublicationViewForm>Workflow Publication View</UIWorkflowPublicationViewForm>
-    </title>
-  </UITabPane>
-  
+  </UIGroupMemberSelector>
+  <!--
+  ###Since ECM version 2.2##############
+  -->
+  <!--
+  ###Since ECM version 2.3 Alpha##############
+  -->
   <UIWorkflowPublicationActionForm>
     <label>
       <fieldValidator>fieldValidator</fieldValidator>
       <fieldDestPath>fieldDestPath</fieldDestPath>
+      <fieldBackup>fieldBackup</fieldBackup>
     </label>
   </UIWorkflowPublicationActionForm>
-  
   <workflow_validator>
     <title>
       <AddPermission>Thêm quyền truy nhập</AddPermission>
     </title>
   </workflow_validator>
-  
   <workflow_destpath>
     <title>
       <AddDestPath>Thêm đường dẫn</AddDestPath>
     </title>
   </workflow_destpath>
-  
   <PublicationService>
     <WorkflowPublicationPlugin>
       <nodeValidationRequest>Node này đang trong trạng thái yêu cầu phê chuẩn</nodeValidationRequest>
@@ -2146,12 +2138,6 @@
     </label>
   </UIJcrExplorerEditForm>
   
-  <PopupSelectPath>
-    <title>
-      <UIOneNodePathSelector>Chọn nút</UIOneNodePathSelector>
-    </title>
-  </PopupSelectPath>
-  
   <UIDriveSelector>
     <label>
       <driveName>Tên drive</driveName>
@@ -2175,6 +2161,12 @@
       <UIDriveSelector>Lựa chọn drive</UIDriveSelector>
     </title>
   </PopUpSelectDrive>
+
+  <PopupSelectPath>
+    <title>
+      <UIOneNodePathSelector>Chọn nút</UIOneNodePathSelector>
+    </title>
+  </PopupSelectPath>
   
   <DriveNameInput>
     <title>
@@ -2184,7 +2176,6 @@
   
   <!--
 	### Since ECM version 2.4.x ##############
-	### To be translated ####
   -->
 <UIActionBar>
     <tooltip>

@@ -225,9 +225,9 @@
       <label>
         <name>Name</name>
         <versionable>Versionable</versionable>
-        <exo:owner>Owner</exo:owner>
-        <exo:dateCreated>Date Created</exo:dateCreated>
-        <exo:dateModified>Date Modifed</exo:dateModified>
+        <exo_owner>Owner</exo_owner>
+        <exo_dateCreated>Date Created</exo_dateCreated>
+        <exo_dateModified>Date Modified</exo_dateModified>
         <auditing>Auditing</auditing>
       </label>
     </view>
@@ -622,4 +622,3 @@
     </dialog>
   </ContentPublishing>
 </bundle>
-

@@ -31,7 +31,7 @@
   </UIPopupWindow>
   <UIFastContentCreatortForm>
     <msg>
-      <name-not-allowed>This name is not allowed.</name-not-allowed>
+      <name-not-allowed>Dieser Name ist nicht erlaubt.</name-not-allowed>
       <in-versioning><![CDATA[Jetziger Knoten muss abgemeldet werden bevor ein neuer hinzugef&uuml;gt werden kann]]></in-versioning>
       <cannot-save><![CDATA[Einige Grenzen wurden &uuml;berschritten um diese Aktion auszuf&uuml;hren.]]></cannot-save>
       <saved-successfully>Dieser Knoten wurde erfolgreich am Ort '{0}' gespeichert</saved-successfully>
@@ -73,7 +73,7 @@
   </UIFastContentCreatorPortlet>
   <DateTimeValidator>
     <msg>
-      <Invalid-input>Field '{0}' with value '{1}' is invalid</Invalid-input>
+      <Invalid-input>Feld '{0} "mit dem Wert" {1}' ist ungültig</Invalid-input>
     </msg>
   </DateTimeValidator>
   <!--
@@ -96,21 +96,17 @@
     <label>
       <workspaceName>Arbeitsplatz</workspaceName>
       <rootNodeInfo>Wurzelpfad</rootNodeInfo>
-      <rootPath>Wurzelpfad</rootPath>
     </label>
   </UIWorkspaceList>
-  <!--
-  # to be translated
-  -->
   <UITabPane>
     <title>
-      <UICategoriesSelectPanel>Select categories</UICategoriesSelectPanel>
-      <UISelectedCategoriesGrid>Referenced categories</UISelectedCategoriesGrid>
+      <UICategoriesSelectPanel>Wählen Sie Kategorien</UICategoriesSelectPanel>
+      <UISelectedCategoriesGrid>Referenzierte Kategorien</UISelectedCategoriesGrid>
     </title>
   </UITabPane>
   <PopupComponent>
     <title>
-      <UICategoriesSelector>Add Categories</UICategoriesSelector>
+      <UICategoriesSelector>Kategorien hinzufügen</UICategoriesSelector>
     </title>
   </PopupComponent>
   <UICategoriesSelector>
@@ -121,20 +117,20 @@
   
   <PopupComponent>
 	  <title>
-	    <UIOneTaxonomySelector>Add Categories</UIOneTaxonomySelector>
+	    <UIOneTaxonomySelector>Kategorien hinzufügen</UIOneTaxonomySelector>
 	  </title>
   </PopupComponent>
   
   <UITreeTaxonomyList>
     <label>
-      <taxonomyTree>Taxonomy Tree</taxonomyTree>
+      <taxonomyTree>Taxonomie-Baum</taxonomyTree>
     </label>
   </UITreeTaxonomyList>
   
   <UIDocumentForm>
   	<msg>
-  		<not-support>Cannot load template of '{0}'.</not-support>
-  		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
+  		<not-support>Kann nicht geladen Vorlage der'{0}'.</not-support>
+  		<do-not-permission>Sie haben keine Berechtigung zum Laden der Vorlage '{0}'.</do-not-permission>
   	</msg>
   </UIDocumentForm>
 </bundle>

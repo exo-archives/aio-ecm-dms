@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bundle>
-  <!--
-  ###################################################################
-  #      WARNING THIS FILE MUST BE ENCODED IN UTF-8 FORMAT          #
-  ###################################################################
-  -->
   <group>
     <executive-board>
       <management>
         <title>Gestion</title>
         <newStaff>Nouveau membre du personnel</newStaff>
         <organization>Organisation</organization>
-        <ecmadmin>ECMAdministration</ecmadmin>
+        <ecmadmin>Administration de l'ECM</ecmadmin>
       </management>
       <businessprocess>
         <title>Processus Métier</title>
@@ -21,4 +16,3 @@
     </executive-board>
   </group>
 </bundle>
-

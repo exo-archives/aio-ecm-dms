@@ -16,6 +16,19 @@
       </label>
     </view>
   </Article>
+  <View>
+    <label>
+      <languages>
+        <en>Английский</en>
+        <fr>Французский</fr>
+        <ru>Русский</ru>
+        <vi>Вьетнамский</vi>
+        <ln>Голландский</ln>
+        <uk>Украинский</uk>
+        <ar>Арабский</ar>
+      </languages>
+    </label>
+  </View>
   <!--
   ################resoucebundle FOR EXO:CALENDAR VIEW TEMPLATE############
   -->
@@ -78,6 +91,7 @@
     <view>
       <label>
         <not-viewable>Этот контент не возможно отобразить. Загрузите его или используйте WebDAV для доступа</not-viewable>
+        <file-size-too-big>The content of this file is too big. You should download and open in the client.</file-size-too-big>
         <webDAV>Показать через WebDAV</webDAV>
         <download>Загрузить этот файл</download>
         <htmlview>Показать как HTML</htmlview>
@@ -139,6 +153,21 @@
     </view>
   </Kofax>
   <!--
+  ################resoucebundle FOR MAIL:DOCUMENT VIEW TEMPLATE##############
+  -->
+  <Mail>
+    <view>
+      <label>
+        <from>From:</from>
+        <to>To:</to>
+        <cc>Cc:</cc>
+        <date>Date:</date>
+        <subject>Subject:</subject>
+        <attachment>Attachments:</attachment>
+      </label>
+    </view>
+  </Mail>
+  <!--
   ################resoucebundle FOR EXO:PODCAST VIEW TEMPLATE##############
   -->
   <Podcast>
@@ -196,9 +225,10 @@
       <label>
         <name>Имя</name>
         <versionable>Версионный</versionable>
-        <exo:owner>Владелец</exo:owner>
-        <exo:dateCreated>Дата создания</exo:dateCreated>
-        <exo:dateModified>Дата изменения</exo:dateModified>
+        <exo_owner>Владелец</exo_owner>
+        <exo_dateCreated>Дата создания</exo_dateCreated>
+        <exo_dateModified>Дата изменения</exo_dateModified>
+        <auditing>Auditing</auditing>
       </label>
     </view>
   </ListView>
@@ -217,6 +247,20 @@
       </label>
     </view>
   </Workflow>
+  <!--
+  ################resoucebundle FOR exo:backupAction VIEW TEMPLATE##############
+  -->
+  <Backup>
+    <view>
+      <label>
+        <name>Name</name>
+        <lifecycle>Lifecycle</lifecycle>
+        <description>Description</description>
+        <to-workspace>To workspace</to-workspace>
+        <at-location>At location</at-location>
+      </label>
+    </view>
+  </Backup>
   <!--
   ################resoucebundle FOR exo:getMailAction VIEW TEMPLATE##############
   -->
@@ -292,7 +336,7 @@
   <AddMetadata>
     <view>
       <label>
-        <action-name>Actin name</action-name>
+        <action-name>Action name</action-name>
         <lifecycle>Lifecycle</lifecycle>
         <metadata>Metadata</metadata>
         <description>Description</description>
@@ -554,5 +598,27 @@
       </tooltip>
     </view>
   </VitalRecord>
+  <!--
+  ###################### resoucebundle exo:contentPublishing dialogs template ####
+  -->
+  <ContentPublishing>
+    <dialog>
+      <label>
+        <id>Id</id>
+        <name>#{word.name}</name>
+        <lifecycle>#{Ecm.dialog.label.lifecycle}</lifecycle>
+        <description>#{word.description}</description>
+        <validator>Validator</validator>
+        <supervisor>Supervisor</supervisor>
+        <public-workspace>Publishing workspace</public-workspace>
+        <public-path>Publishing path</public-path>
+        <pending-workspace>Pending workspace</pending-workspace>
+        <pending-path>Pending path</pending-path>
+        <backup-workspace>Backup workspace</backup-workspace>
+        <backup-path>Backup path</backup-path>
+        <trash-workspace>Trash workspace</trash-workspace>
+        <trash-path>Trash path</trash-path>
+      </label>
+    </dialog>
+  </ContentPublishing>
 </bundle>
-

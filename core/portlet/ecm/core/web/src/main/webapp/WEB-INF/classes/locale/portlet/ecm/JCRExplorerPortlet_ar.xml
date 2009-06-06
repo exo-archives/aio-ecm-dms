@@ -5,7 +5,6 @@
   #             org.exoplatform.ecm.webui.component.UICommentForm						  #
   #############################################################################
   -->
-Nouvelle configuration	 	
 <UICommentForm>
      <label>
        <name>الاسم</name>
@@ -144,7 +143,6 @@ Nouvelle configuration
     <label>
       <Root>الجذر</Root>
       <webDavView>تحميل و سماح التغيير</webDavView>
-      <sendmail>بعث بريد الكتروني</sendmail>
     </label>
     <msg>
       <path-not-found>ربما هذه العقدة تم حذفها أو تغييرها! الرجاء الضغط على زر التحديث!</path-not-found>
@@ -392,7 +390,7 @@ Nouvelle configuration
       <remove-referentialIntegrityException>لا يمكن حذف هذه العقدة لأنها موصولة بعقدة أخرى</remove-referentialIntegrityException>
       <constraintviolation-exception>عنصر ضروري: 'jcr:uuid' غير موجود. ربما تم تغييره أو حذفه. اظغط على زر التحديث.</constraintviolation-exception>
       <path-not-found-exception>هذه العقدة تم تغييرها أو حذفها. اظغط على زر التحديث.</path-not-found-exception>
-      <not-exist-categories>Category does not exist</not-exist-categories>
+      <not-exist-categories>هذه الفئة لا وجود له</not-exist-categories>
     </msg>
   </UIPopupMenu>
   <!--
@@ -417,10 +415,10 @@ Nouvelle configuration
       <fileName-error>اسم الملف خاطئ</fileName-error>
       <constraint-violation>العقدة المختارة لا تسمح بهذا النوع من العقد: '{0}'.</constraint-violation>
       <repository-exception>غير مسموح بالدخول!ليس لك الصلاحية لإضافة في هذا المجلد</repository-exception>
-      <repository-exception-permission>You don't have permission to add a new folder on this node</repository-exception-permission>
+      <repository-exception-permission>لم يكن لديك تصريح لإضافة مجلد جديد عن هذه العقدة</repository-exception-permission>
       <numberformat-exception>لا يمكن حفظ المجلد. الاسم يجب أن لا يحتوي على '[' أو ']'</numberformat-exception>
       <!--DMS 2.4.x; ECM-3553-->
-      <not-allow-sameNameSibling>Can not save. This node is not allowed same name sibling</not-allow-sameNameSibling>
+      <not-allow-sameNameSibling>غير قادرين على الادخار. وقال العقدة من نفس الاسم بالفعل</not-allow-sameNameSibling>
     </msg>
   </UIFolderForm>
   <!--
@@ -467,7 +465,6 @@ Nouvelle configuration
       <Unlock>تحرير القفل</Unlock>
       <EditDocument>تبديل</EditDocument>
       <Paste>ألصق</Paste>
-      <sendmail>بعث بريد الكتروني</sendmail>
     </tooltip>
   </UIDocumentWorkspace>
   <UIDocumentInfo>
@@ -512,7 +509,6 @@ Nouvelle configuration
       <CheckOut>إنهاء المراجعة</CheckOut>
       <CheckIn>مراجعة</CheckIn>
       <WebDAV>عرض WebDAV</WebDAV>
-      <webDavView>تحميل و سماح التغيير</webDavView>
       <sendmail>بعث بريد الكتروني</sendmail>
       <transformsd>تحويل</transformsd>
       <reloadBP>تحديث BP</reloadBP>
@@ -833,7 +829,7 @@ Nouvelle configuration
       <uploaded-file>الملف الذي تم تحميله</uploaded-file>
       <external-metadata>قالب المعلومات القياسية الخارجية</external-metadata>
       <metadata-name>اسم قالب المعلومات القياسية</metadata-name>
-      <action>عمل</action>
+      <action>إجراء</action>
     </title>
     <tooltip>
       <Edit>تغيير</Edit>
@@ -968,7 +964,7 @@ Nouvelle configuration
     <header>
       <name>#{word.name}</name>
       <path>المسار</path>
-      <action>العمل</action>
+      <action>الإجراء</action>
       <shortcutPath>المسار</shortcutPath>
       <type>النوع</type>
       <dateCreated>تاريخ الصنع</dateCreated>
@@ -1090,7 +1086,7 @@ Nouvelle configuration
     </action>
     <msg>
       <!--DMS 2.4.x ECM-3566-->
-      <name-invalid>Name is invalid!</name-invalid>
+      <name-invalid>اسم غير صالح</name-invalid>
       <query-added>تم إضافة الاستبيان</query-added>
       <save_unSuccessful>لا يمكن الحفظ، استبيان غير صحيح أو اسم الاستبيان موجود</save_unSuccessful>
       <invalid-queryStatement> استبيان غير صحيح.</invalid-queryStatement>
@@ -1153,7 +1149,7 @@ Nouvelle configuration
       <name>الاسم</name>
       <language>اللغة</language>
       <query>الاستبيان</query>
-      <action>الأعمال</action>
+      <action>الإجراءات</action>
       <path>المسار</path>
     </header>
   </UIECMSearch>
@@ -1162,7 +1158,7 @@ Nouvelle configuration
       <not-found>بيانات غير موجودة</not-found>
     </msg>
     <header>
-      <action>العمل</action>
+      <action>الإجراء</action>
     </header>
   </UIResult>
   <UISaveQueryForm>
@@ -1185,7 +1181,7 @@ Nouvelle configuration
       <type>النوع</type>
       <statement>بيان</statement>
       <permission>التصاريح</permission>
-      <action>الأعمال</action>
+      <action>الإجراءات</action>
     </header>
     <tooltip>
       <Execute>تنفيذ</Execute>
@@ -1272,8 +1268,6 @@ Nouvelle configuration
   ################################################################################
   #  org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo
   ################################################################################
-  e_
-  
   -->
   <UIAuditingInfo>
     <msg>
@@ -1336,7 +1330,7 @@ Nouvelle configuration
     <header>
       <LifecycleName>الاسم</LifecycleName>
       <LifecycleDesc>وصف</LifecycleDesc>
-      <action>عمل</action>
+      <action>إجراء</action>
     </header>
     <action>
       <Cancel>إغلاق</Cancel>
@@ -1484,7 +1478,7 @@ Nouvelle configuration
   <UICategoriesAddedList>
     <header>
       <path>فئة</path>
-      <action>الأعمال</action>
+      <action>الإجراءات</action>
     </header>
     <msg>
       <access-denied>غير مسموح! ليس لك التصاريح الكافية على هذه العقدة.</access-denied>
@@ -1504,7 +1498,7 @@ Nouvelle configuration
   <UITreeList>
     <header>
       <name>الاسم</name>
-      <action>عمل</action>
+      <action>إجراء</action>
     </header>
     <info>
       <child-not-found>هذه العقدة ليس لها فروع</child-not-found>
@@ -1528,7 +1522,7 @@ Nouvelle configuration
   <UIRelationsAddedList>
     <header>
       <path>الصلات</path>
-      <action>الأعمال</action>
+      <action>الإجراءات</action>
     </header>
     <action>
       <title>
@@ -1595,7 +1589,7 @@ Nouvelle configuration
       <value-invalid>'{0}' يجب أن يحمل محتوى</value-invalid>
       <repository-exception>لا يمكن حفظ هذه الوثيقة. هذا الاسم قد يكون موجود أو خاطئ.</repository-exception>
       <!--DMS 2.4.x; ECM-3543-->
-      <repository-exception-permission>You don't have permission to add a new document on this node</repository-exception-permission>
+      <repository-exception-permission>لم يكن لديك تصريح لإضافة وثيقة جديدة حول هذه العقدة</repository-exception-permission>
       <not-allowed-same-name-sibling>لا يمكن حفظ هذه الوثيقة. هذه العقدة لا تسمح بفرعان بنفس الاسم</not-allowed-same-name-sibling>
       <numberformat-exception>لا يمكن حفظ هذه الوثيقة. الاسم المستخدم يجب أن لا يحمل '[' أو ']'.</numberformat-exception>
       <item-not-found>العنصر غير موجود! ربما هذه العقدة أو أو أحد فروعها حذفت. الرجاء اضغط على زر التحديث.</item-not-found>
@@ -1658,7 +1652,7 @@ Nouvelle configuration
       <name>#{word.name}</name>
       <description>وصف</description>
       <instanceOf>نموذج من نوع العمل</instanceOf>
-      <action>عمل</action>
+      <action>إجراء</action>
     </header>
     <msg>
       <remove-popup-first>يجب عليك إغلاق مشهد التغيير قبل حذف العقدة.</remove-popup-first>
@@ -2151,7 +2145,6 @@ Nouvelle configuration
       <adddrives>إضافة أقراص</adddrives>
     </label>
   </UIDriveSelector>
-  
   <UIJcrExplorerEditForm>
     <label>
       <driveName>اسم القرص</driveName>
@@ -2181,16 +2174,8 @@ Nouvelle configuration
     </title>
   </DriveNameInput>
   
-  <UIConfirmMessage>
-	<label>
-	  <Close>#{word.close}</Close>
-	  <OK>OK</OK>
-	</label>
-  </UIConfirmMessage>  
-  
   <!--
 	### Since ECM version 2.4.x ##############
-	### To be translated ####
   -->
   <UIActionBar>
     <tooltip>
@@ -2214,8 +2199,8 @@ Nouvelle configuration
       <Cancel>#{word.cancel}</Cancel>
 		</action>
 		<msg>
-      <addFolder-successful>Add Sym Link '{0}' Successful</addFolder-successful>
-			<name-invalid>Please enter Sym Link Name!</name-invalid>
+      <addFolder-successful>Add Symbolic Link '{0}' Successful</addFolder-successful>
+			<name-invalid>Please enter Symbolic Link Name!</name-invalid>
       <name-not-allowed>This name is not allowed.</name-not-allowed>
       <fileName-error>Invalid file name</fileName-error>
       <constraint-violation>Current node does not allow to add '{0}' node type</constraint-violation>
@@ -2225,14 +2210,14 @@ Nouvelle configuration
 			<path-node-not-allowed>This name is not allowed.</path-node-not-allowed>
 			<non-node>Please choose trust target node Or you don't have enough rights to read this node</non-node>
 			<cannot-save>Some constraints were violated during that action.</cannot-save>
-			<item-exists-exception>The same name node sibling is not allowed</item-exists-exception>
+			<item-exists-exception>The node with the same name already exists</item-exists-exception>
 			<UnsupportedRepositoryOperationException>This target node is not referenceable</UnsupportedRepositoryOperationException>
     </msg>
 	</UISymLinkForm>
 	
 	<UIPopupSymLink>
 		<title>
-			<UIOneNodePathSelector>Choose the target node</UIOneNodePathSelector>
+			<UIOneNodePathSelector>Choose Target Node</UIOneNodePathSelector>
 		</title>
 	</UIPopupSymLink>
 	
@@ -2246,8 +2231,8 @@ Nouvelle configuration
     <msg>
       <create-link-problem>You can not create a link for node '{0}' at '{1}'</create-link-problem>
       <dest-node-is-link>The destination node '{0}' is already a symlink. So you can not create a symlink inside it</dest-node-is-link>
-      <selected-is-link>The selected node '{0}' is a instance of a link, so you can not create a link point to another link</selected-is-link>
-      <confirm-create-link>Are you sure want to create link in this location?</confirm-create-link>
+      <selected-is-link>The selected node '{0}' is already a link, you can not create a link point to another link</selected-is-link>
+      <confirm-create-link>Do you really want to create a link to this location?</confirm-create-link>    
     </msg>
   </UIWorkingArea>
 
@@ -2313,7 +2298,7 @@ Nouvelle configuration
   </UIPopupWindow>
   <UICategoriesAddedList>
   	<msg>
-  		<ItemExistsException>The category is exist. The same name sibling is not allowed</ItemExistsException>
+  		<ItemExistsException>A category with the same name already exists</ItemExistsException>
   	</msg>
 	</UICategoriesAddedList>
 	
@@ -2339,10 +2324,10 @@ Nouvelle configuration
   <UIImportNode>
     <label>
       <behavior>UUID Behaviour</behavior>
-      <versionHistory>Version hisotry</versionHistory>
+      <versionHistory>Version history</versionHistory>
     </label>
     <msg>
-      <history-invalid-type>Invalid version history file type. The right file must be *.zip file</history-invalid-type>
+      <history-invalid-type>Invalid version history file type. The right file must be a zip file</history-invalid-type>
       <history-invalid-content>Invalid version history data content. You should choose the right file to import.</history-invalid-content>
     </msg>
   </UIImportNode>   
@@ -2352,13 +2337,13 @@ Nouvelle configuration
       <type0>Create new</type0>
       <type1>Remove existing</type1>
       <type2>Replace existing</type2>
-      <type3>Throw</type3>
+      <type3>Throw Exception</type3>
     </Behavior>
   </Import>  
   
   <UIExportNode>
     <action>
-      <ExportHistory>Export vesion history</ExportHistory>
+      <ExportHistory>Export version history</ExportHistory>
     </action>
   </UIExportNode>
   
@@ -2378,7 +2363,7 @@ Nouvelle configuration
   <UIDocumentForm>
   	<msg>
   		<not-support>Cannot load template of '{0}'.</not-support>
-  		<do-not-permission>You don't have permission to access this template</do-not-permission>
+  		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
   	</msg>
   </UIDocumentForm>
 </bundle>

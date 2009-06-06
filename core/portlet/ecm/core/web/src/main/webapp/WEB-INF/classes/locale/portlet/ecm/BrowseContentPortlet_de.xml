@@ -36,16 +36,12 @@
       <detailBoxTemp>Detail Box Vorlage</detailBoxTemp>
       <enableToolBar>Werkzeugsleiste sehen</enableToolBar>
       <enableRefDoc>Referenz Dokument</enableRefDoc>
-      <filterCategory>Filters out categories based on current user permissions</filterCategory>
+      <filterCategory>Filtert Kategorien auf der Grundlage der derzeitigen Benutzerrecht</filterCategory>
       <enableChildDoc>Kinder Dokument</enableChildDoc>
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Kommentierbar</enableComment>
       <enableVote>Abstimmbar</enableVote>
-      <!--
-			  ### Since ECM version 2.3 Alpha##############
-			  Make sure BC is publication aware
-			-->
-      <isAllowPublish>Show only documents in "published" state</isAllowPublish>
+      <isAllowPublish>Zeigen nur Dokumente, in "veröffentlicht"-Status</isAllowPublish>
     </label>
     <title>Pfad Config</title>
     <action>
@@ -59,6 +55,7 @@
       <require-path><![CDATA[Sie m&uuml;ssen einen Kategorie Pfad ausw&auml;hlen]]></require-path>
       <invalid-path><![CDATA[Ung&uuml;ltiger Kategorie Pfad]]></invalid-path>
       <invalid-value><![CDATA[Ung&uuml;ltige Seitennummer]]></invalid-value>
+      <invalid-number>Sie müssen eine Zahl eingeben</invalid-number>
       <access-denied><![CDATA[Kein Zugang! Sie haben f&uuml;r diesen Kategorie Pfad nicht gen&uuml;gend Genehmigungen.]]></access-denied>
     </msg>
   </UIPathConfig>
@@ -85,11 +82,7 @@
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Kommentierbar</enableComment>
       <enableVote>Abstimmbar</enableVote>
-      <!--
-			  ### Since ECM version 2.3 Alpha##############
-			  Make sure BC is publication aware
-			-->
-      <isAllowPublish>Show only documents in "published" state</isAllowPublish>
+      <isAllowPublish>Zeigen nur Dokumente, in "veröffentlicht"-Status</isAllowPublish>
     </label>
     <action>
       <Add>Neue config</Add>
@@ -104,6 +97,16 @@
   #      org.exoplatform.ecm.webui.component.browse.UIQueryConfig #
   ###################################################################
   -->
+  <path>
+    <title>
+      <AddPath>Pfad hinzufügen</AddPath>
+    </title>
+  </path>
+  <rootNodeInfo>
+    <title>
+      <AddRootNode>Add Wurzelknoten</AddRootNode>
+    </title>
+  </rootNodeInfo>
   <!--
   #############################################################
   # org.exoplatform.ecm.webui.component.UIVoteForm.gtmpl		#
@@ -139,11 +142,7 @@
       <enableTagMap>Tagmap</enableTagMap>
       <enableComment>Kommentierbar</enableComment>
       <enableVote>Abstimmbar</enableVote>
-      <!--
-			  ### Since ECM version 2.3 Alpha##############
-			  Make sure BC is publication aware
-			-->
-      <isAllowPublish>Show only documents in "published" state</isAllowPublish>
+      <isAllowPublish>Zeigen nur Dokumente, in "veröffentlicht"-Status</isAllowPublish>
     </label>
     <action>
       <Add>Neue config</Add>
@@ -170,11 +169,7 @@
       <detailBoxTemp>Detail Box Vorlage</detailBoxTemp>
       <enableComment>Kommentierbar</enableComment>
       <enableVote>Abstimmbar</enableVote>
-      <!--
-			  ### Since ECM version 2.3 Alpha##############
-			  Make sure BC is publication aware
-			-->
-      <isAllowPublish>Show only documents in "published" state</isAllowPublish>
+      <isAllowPublish>Zeigen nur Dokumente, in "veröffentlicht"-Status</isAllowPublish>
     </label>
     <action>
       <Add>Neue config</Add>
@@ -301,11 +296,20 @@
   <UIBrowseContainer>
     <label>
       <NoDocument>Kein Dokument in dieser Kategorie</NoDocument>
-      <author>Author</author>
+      <author>Autor</author>
       <summary>Zusammenfassung</summary>
       <more>Mehr Dokumente</more>
       <previous>Vorherige Ansicht</previous>
+      <path-Previous>Zurück</path-Previous>
+      <path-Root>Root</path-Root>
+      <home>Heim</home>
+      <cannot-access>Zugriff verweigert. Vielleicht hast du nicht gesehen haben, die Erlaubnis in diesem Portlet-Konfiguration.</cannot-access>
     </label>
+    <title>
+      <home>Heim</home>
+      <prevTabs>Zurück Tabs</prevTabs>
+      <moreTabs>Mehr Tabs</moreTabs>
+    </title>
     <msg>
       <template-notsupported>Keine Vorlagenansicht zum Laden</template-notsupported>
       <invalid-node><![CDATA[Fehlender Knoten : wurde entfernt oder gel&ouml;scht]]></invalid-node>
@@ -318,13 +322,13 @@
   -->
   <pathSelector>
     <title>
-      <UIOneNodePathSelector>Path Select</UIOneNodePathSelector>
+      <UIOneNodePathSelector>Pfad auswählen</UIOneNodePathSelector>
       <pathSelector><![CDATA[Pfadausw&auml;hler]]></pathSelector>
     </title>
   </pathSelector>
   <documentSelector>
     <title>
-      <UIOneNodePathSelector>Document Select</UIOneNodePathSelector>
+      <UIOneNodePathSelector>Wählen Sie Dokument</UIOneNodePathSelector>
     </title>
   </documentSelector>
   <UITreeList>
@@ -398,7 +402,7 @@
   -->
   <UITagList>
     <label>
-      <tagTitle>Tag Map</tagTitle>
+      <tagTitle>Tag Karte</tagTitle>
     </label>
   </UITagList>
   <UICategoryTree>
@@ -409,11 +413,6 @@
       <invalid-node><![CDATA[Fehlender Knoten : wurde entfernt oder gel&ouml;scht]]></invalid-node>
     </msg>
   </UICategoryTree>
-  <UICategoryTree_new>
-    <label>
-      <test>Test</test>
-    </label>
-  </UICategoryTree_new>
   <!--
   ###################################################################################
   #  org.exoplatform.ecm.webui.component.browse.UIBrowseContentHelp																  #
@@ -429,6 +428,39 @@
       <confirm-delete><![CDATA[Wollen Sie sicher l&ouml;schen?]]></confirm-delete>
     </msg>
   </UIFormInputSetWithAction>
+  <!--
+  ###################################################################################
+  # org.exoplatform.ecm.jcr.SearchValidator																			#
+  ###################################################################################
+  -->
+  <SearchValidator>
+    <msg>
+      <empty-input>The value of this field is null or empty!</empty-input>
+      <Invalid-char>There are some invalid characters in this field. Type another value, please!</Invalid-char>
+      <Invalid-char2>Number must be following the char '~'</Invalid-char2>
+      <Invalid-char1>Number follow the char '~' must between 0 to 1</Invalid-char1>
+      <Invalid-char3>Number must be following the char '^'</Invalid-char3>
+      <Invalid-char4>No space is allowed near the char '~'</Invalid-char4>
+      <Invalid-char5>No space is allowed near the char '^'</Invalid-char5>
+    </msg>
+  </SearchValidator>
+  <!--
+  ######################################################################################
+  # Since ECM 2.3
+  ######################################################################################
+  -->
+  <UIPathConfig>
+    <label>
+      <searchEnable>Enable search location</searchEnable>
+      <searchLocation>Search location</searchLocation>
+      <searchPath>UIPathConfig</searchPath>
+      <explain></explain>
+    </label>
+    <msg>
+      <enter-search-location>You have to specify the search location</enter-search-location>
+      <explain>When the path shown in Browse Content corresponds to a hierarchy of categories, it is needed to specify the path where documents are actually stored, so that they can be found by the search feature of the Portlet.</explain>
+    </msg>
+  </UIPathConfig>  
   
   <UIDocumentForm>
   	<msg>
@@ -437,4 +469,3 @@
   	</msg>
   </UIDocumentForm>
 </bundle>
-

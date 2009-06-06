@@ -413,11 +413,6 @@
       <invalid-node>Không thấy nút: nút đã được di chuyển hoặc bị xóa</invalid-node>
     </msg>
   </UICategoryTree>
-  <UICategoryTree_new>
-    <label>
-      <test>Kiểm tra</test>
-    </label>
-  </UICategoryTree_new>
   <!--
   ###################################################################################
   #  org.exoplatform.ecm.webui.component.browse.UIBrowseContentHelp																  #
@@ -449,7 +444,6 @@
       <Invalid-char5>Gần kí tự '~' không được phép có khoảng trống</Invalid-char5>
     </msg>
   </SearchValidator>
-  
   <!--
   ######################################################################################
   # Since ECM 2.3
@@ -475,4 +469,3 @@
   	</msg>
   </UIDocumentForm>
 </bundle>
-

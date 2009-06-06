@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bundle>
-  <!--
-  #######################################################
-  #   WARNING THIS FILE MUST BE ENCODED IN UTF-8 FORMAT #
-  #######################################################
-  -->
   <platform>
     <users>
       <iframe>IFrame</iframe>
@@ -17,4 +12,3 @@
     </users>
   </platform>
 </bundle>
-

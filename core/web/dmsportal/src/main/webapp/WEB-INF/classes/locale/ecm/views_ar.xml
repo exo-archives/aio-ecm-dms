@@ -25,6 +25,7 @@
         <vi>فيتنامية</vi>
         <ln>ألمانية</ln>
         <uk>اوكرانية</uk>
+        <ar>العربية</ar>
       </languages>
     </label>
   </View>
@@ -224,9 +225,9 @@
       <label>
         <name>الاسم</name>
         <versionable>قابل (ـة) للإصدار</versionable>
-        <owner>المالك</owner>
-        <dateCreated>تاريخ الانشاء</dateCreated>
-        <dateModified>تاريخ التعديل</dateModified>
+        <exo_owner>المالك</exo_owner>
+        <exo_dateCreated>تاريخ الانشاء</exo_dateCreated>
+        <exo_dateModified>تاريخ التعديل</exo_dateModified>
         <auditing>تقفي الأثر</auditing>
       </label>
     </view>
@@ -584,7 +585,7 @@
       <label>
         <not-available>غير متوفرة</not-available>
 		<is-vital-record>السجل حيوي</is-vital-record>
-        <previous-review-date>تاريخ المراجعة السابقة</previous-review-date>
+        <prev-review-date>تاريخ المراجعة السابقة</prev-review-date>
         <next-review-date>تاريخ المراجعة المُـقبلة</next-review-date>
       </label>
       <action>
