@@ -468,8 +468,8 @@
     <msg>
       <access-denied>Accès interdit</access-denied>
       <null-exception>Elément non trouvé ! Il a été supprimé ou modifié, ou vous n'avez pas le droit d'accéder à ce noeud !</null-exception>
-      <confirm-deleteattachment>Confirmez-vous la suppression du fichier attaché?</confirm-deleteattachment>
       <access-denied-exception>Accès interdit ! Veuillez vérifier vos droits d'accès à ce noeud</access-denied-exception>
+      <confirm-deleteattachment>Confirmez-vous la suppression du fichier attaché?</confirm-deleteattachment>
     </msg>
     <tooltip>
       <remove-attachment>Supprimer le fichier attaché</remove-attachment>
@@ -1082,7 +1082,7 @@
       <Search>Rechercher</Search>
     </action>
     <msg>
-      <name-invalid>Le nom est manquant</name-invalid>
+      <name-invalid>Le nom est invalide !</name-invalid>
       <query-added>Requête ajoutée</query-added>
       <save_unSuccessful>Sauvegarde impossible : la requête est invalide ou une requête du même nom existe déjà</save_unSuccessful>
       <invalid-queryStatement>la requête est invalide</invalid-queryStatement>
@@ -1264,8 +1264,6 @@
   ################################################################################
   #  org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo
   ################################################################################
-  e_
-  
   -->
   <UIAuditingInfo>
     <msg>
@@ -1305,7 +1303,6 @@
       <version>Version</version>
     </label>
   </UIAuditingInfo>
-  
   <!--
   ###############################################################################
   #   org.exoplatform.ecm.webui.component.explorer.versions.UIActivateVersion   #
@@ -1355,7 +1352,7 @@
     </label>
     <action>
       <activate>Activer</activate>
-      <cancel>Cancel</cancel>
+      <cancel>Annuler</cancel>
     </action>
   </UIActivateAuditing>
   <!--
@@ -1585,8 +1582,8 @@
       <in-versioning>Vous devez effectuer un checkout sur ce noeud avant de pouvoir lui en ajouter un autre</in-versioning>
       <not-support>Impossible de charge le formulaire de '{0}'.</not-support>
       <value-invalid>Valeur requise dans '{0}'</value-invalid>
-      <repository-exception-permission>You don't have permission to add a new document on this node</repository-exception-permission>
       <repository-exception>Sauvegarde du document impossible. Le nom du noeud existe déjà.</repository-exception>
+      <repository-exception-permission>Vous n'avez pas le droit d'ajouter un document à ce noeud</repository-exception-permission>
       <not-allowed-same-name-sibling>Impossible de sauvegarder ce document. Le nom du noeud existe déjà</not-allowed-same-name-sibling>
       <numberformat-exception>Sauvegarde du document impossible. Les caractères '[' ou ']' ne sont pas autorisés dans le nom.</numberformat-exception>
       <item-not-found>L'élément n'a pas été trouvé ! Peut être que ce noeud ou un de ses ancètres a été supprimé. Veuiller cliquer sur le bouton "Actualiser".</item-not-found>
@@ -2137,7 +2134,7 @@
   
   <PopupSelectPath>
     <title>
-      <UIOneNodePathSelector>Select node</UIOneNodePathSelector>
+      <UIOneNodePathSelector>Choisir un noeud</UIOneNodePathSelector>
     </title>
   </PopupSelectPath>
   

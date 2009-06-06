@@ -1264,8 +1264,6 @@
   ################################################################################
   #  org.exoplatform.ecm.webui.component.explorer.auditing.UIAuditingInfo
   ################################################################################
-  e_
-  
   -->
   <UIAuditingInfo>
     <msg>
@@ -1585,8 +1583,8 @@
       <in-versioning><![CDATA[Momentanen Knoten auschecken bevor neuer hinzugef&uuml;gt werden kann]]></in-versioning>
       <not-support><![CDATA[Kann Vorlage f&uuml;r '{0}' nicht laden.]]></not-support>
       <value-invalid><![CDATA['{0}' ist ein ben&ouml;tigter Wert]]></value-invalid>
-      <repository-exception-permission>You don't have permission to add a new document on this node</repository-exception-permission>
       <repository-exception><![CDATA[Sie k&ouml;nnen dieses Dokument nicht speichern. Der angegebene Name darf nicht mit einem Index enden.]]></repository-exception>
+      <repository-exception-permission>You don't have permission to add a new document on this node</repository-exception-permission>
       <not-allowed-same-name-sibling><![CDATA[Sie k&ouml;nnen dieses Dokument nicht speichern. Name besteht schon.]]></not-allowed-same-name-sibling>
       <numberformat-exception><![CDATA[Sie k&ouml;nnen dieses Dokument nicht speichern. Der angegebene Name darf nicht '[' or ']' beinhalten.]]></numberformat-exception>
       <item-not-found><![CDATA[Artikel nicht gefunden! Vielleicht wurden dieser Knoten oder sein Vorfahre gel&ouml;scht. Bitte Aktualisierungsknopf dr&uuml;cken.]]></item-not-found>
@@ -2216,6 +2214,4 @@
   		<do-not-permission>You don't have permission to access this template</do-not-permission>
   	</msg>
   </UIDocumentForm>		
-	
 </bundle>
-
