@@ -26,7 +26,6 @@ import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
@@ -69,7 +68,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   private final DMSConfiguration dmsConfiguration_;
   private final UIExtensionManager extensionManager_;
   
-  public ManageViewServiceImpl(InitParams params, RepositoryService jcrService,
+  public ManageViewServiceImpl(RepositoryService jcrService,
       NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration,
       UIExtensionManager extensionManager) throws Exception{
     repositoryService_ = jcrService ;
