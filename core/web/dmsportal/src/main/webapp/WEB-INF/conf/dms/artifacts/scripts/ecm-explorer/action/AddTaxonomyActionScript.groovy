@@ -89,13 +89,11 @@ public class AddTaxonomyActionScript implements CmsScript {
 	String[] subPaths = getDateLocation().split("/");
 	Node cNode = targetNode;
 	for (String subPath : subPaths) {
-		if (cNode.hasNode(subPath)) {
-			break;
-		} else {
+		if (!cNode.hasNode(subPath)) {
 			cNode.addNode(subPath);
 			cNode.save();
-			cNode = cNode.getNode(subPath);
 		}
+		cNode = cNode.getNode(subPath);
 	}
     if(targetPath.equals("/")) {
       targetPath += getDateLocation() + nodePath.substring(nodePath.lastIndexOf("/"));
