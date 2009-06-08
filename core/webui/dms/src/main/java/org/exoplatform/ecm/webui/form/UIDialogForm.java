@@ -504,7 +504,12 @@ public class UIDialogForm extends UIForm {
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
     DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
     String workspace = dmsConfiguration.getConfig(repositoryName).getSystemWorkspace();
-    Session session = SessionProviderFactory.createAnonimProvider().getSession(workspace, getRepository());
+    String userName = Util.getPortalRequestContext().getRemoteUser();
+    Session session;
+    if (userName != null)
+      session = SessionProviderFactory.createSessionProvider().getSession(workspace, getRepository());
+    else
+      session = SessionProviderFactory.createAnonimProvider().getSession(workspace, getRepository());
     return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS))).getPath();
   }
 
