@@ -504,12 +504,11 @@ public class UIDialogForm extends UIForm {
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
     DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
     String workspace = dmsConfiguration.getConfig(repositoryName).getSystemWorkspace();
-    Session session = SessionProviderFactory.createSessionProvider().getSession(workspace, getRepository());
+    Session session = SessionProviderFactory.createAnonimProvider().getSession(workspace, getRepository());
     return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(TAXONOMIES_ALIAS))).getPath();
   }
 
   public void addTextField(String name, String label, String[] arguments) throws Exception {
-    String pathTaxonomy = getPathTaxonomy() + "/";
     UIFormTextField formTextField = new UIFormTextField(name,label,arguments);
     String jcrPath = formTextField.getJcrPath();
     String mixintype = formTextField.getMixinTypes();
@@ -571,6 +570,7 @@ public class UIDialogForm extends UIForm {
           Value[] values = childNode.getProperty(propertyName).getValues();
           for(Value value : values) {
             if(propertyName.equals("exo:category")){
+              String pathTaxonomy = getPathTaxonomy() + "/";
               String categoryPath = node.getSession().getNodeByUUID(value.getString()).getPath().replaceAll(pathTaxonomy, "");
               valueList.add(categoryPath);
             } else {
@@ -587,6 +587,7 @@ public class UIDialogForm extends UIForm {
           for(Value vl : values) {
             if (vl != null) {
               if(propertyPath.equals("exo:category")){
+                String pathTaxonomy = getPathTaxonomy() + "/";
                 String categoryPath = node.getSession().getNodeByUUID(vl.getString()).getPath().replaceAll(pathTaxonomy, "");
                 valueList.add(categoryPath);
               } else {
