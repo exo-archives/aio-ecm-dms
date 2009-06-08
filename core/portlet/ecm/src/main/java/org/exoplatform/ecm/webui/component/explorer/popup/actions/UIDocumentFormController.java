@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
+import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -24,6 +25,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.comparator.ItemOptionNameComparator;
 import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -75,9 +77,17 @@ public class UIDocumentFormController extends UIContainer implements UIPopupComp
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<String> acceptableContentTypes = templateService.getCreationableContentTypes(currentNode_);
     if(acceptableContentTypes.size() == 0) return options;
+    String userName = Util.getPortalRequestContext().getRemoteUser();
     for(String contentType: acceptableContentTypes) {
       String label = templateService.getTemplateLabel(contentType,repository_);
-      options.add(new SelectItemOption<String>(label, contentType));
+      try {
+        String templatePath = templateService.getTemplatePathByUser(true, contentType, userName, repository_);
+        if ((templatePath != null) && (templatePath.length() > 0)) {
+          options.add(new SelectItemOption<String>(label, contentType));
+        }
+      } catch (AccessControlException e) {
+      } catch (Exception e) {  
+      }
     }    
     Collections.sort(options, new ItemOptionNameComparator()) ;
     if(options.size()>0) {
