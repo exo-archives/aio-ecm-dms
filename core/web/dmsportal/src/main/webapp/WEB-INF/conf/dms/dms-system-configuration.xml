@@ -507,25 +507,6 @@
 				              </field>   			               
 		              	</object>
 	              	</value>	              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              		              		              		              		              	        		              		              		              	
-	              	<value>              	
-		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
-		              		<field  name="alias"><string>businessProcessesPath</string></field>
-	                  <field  name="path"><string>/exo:ecm/business processes</string></field>   
-		                  <field name="permissions">
-				                <collection type="java.util.ArrayList">               
-				                  <value>                            
-				                    <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
-				                      <field name="identity"><string>*:/platform/administrators</string></field>
-				                      <field name="read"><string>true</string></field>                
-				                      <field name="addNode"><string>true</string></field>                
-				                      <field name="setProperty"><string>true</string></field>                
-				                      <field name="remove"><string>true</string></field>                
-				                    </object>  
-				                  </value>				                  
-				                </collection>
-				              </field>   			               
-		              	</object>
-	              	</value>
 	          	</collection>              	              	
 	          </field>
 	        </object>
@@ -591,6 +572,25 @@
 		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		              		<field  name="alias"><string>exoTagStylePath</string></field>
 	                  <field  name="path"><string>/jcr:system/exo:ecm/exo:folksonomies/exo:tagStyle</string></field>
+		                  <field name="permissions">
+				                <collection type="java.util.ArrayList">               
+				                  <value>                            
+				                    <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$Permission">             
+				                      <field name="identity"><string>*:/platform/administrators</string></field>
+				                      <field name="read"><string>true</string></field>                
+				                      <field name="addNode"><string>true</string></field>                
+				                      <field name="setProperty"><string>true</string></field>                
+				                      <field name="remove"><string>true</string></field>                
+				                    </object>  
+				                  </value>				                  
+				                </collection>
+				              </field>   			               
+		              	</object>
+	              	</value>
+                  <value>              	
+		              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
+		              		<field  name="alias"><string>businessProcessesPath</string></field>
+	                  <field  name="path"><string>/jcr:system/exo:ecm/business processes</string></field>   
 		                  <field name="permissions">
 				                <collection type="java.util.ArrayList">               
 				                  <value>                            
