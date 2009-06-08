@@ -198,12 +198,6 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
     return SessionProviderFactory.createSessionProvider().getSession(workspace, repositoryService.getRepository(repository));
   }
   
-  public String getPathTaxonomy() throws Exception {
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    Session session = getSession(repositoryName, getDMSWorkspace());
-    return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH))).getPath();
-  }
-  
   @SuppressWarnings("unchecked")
   static public class SaveActionListener extends EventListener<UIFastContentCreatortForm> {
     public void execute(Event<UIFastContentCreatortForm> event) throws Exception {
