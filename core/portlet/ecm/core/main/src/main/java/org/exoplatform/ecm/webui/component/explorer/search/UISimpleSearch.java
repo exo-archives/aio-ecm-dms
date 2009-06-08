@@ -118,7 +118,7 @@ public class UISimpleSearch extends UIForm {
       } else {
         statement.append(StringUtils.replace(XPATH_QUERY, "$0", currentNode.getPath()));
       }
-      statement.append("([jcr:contains(.,'").append(text.replaceAll("'", "''")).append("'))]");
+      statement.append("[(jcr:contains(.,'").append(text.replaceAll("'", "''")).append("'))]");
     } else if(constraints_.size() > 0) {
       if(text == null) {
         if ("/".equals(currentNode.getPath())) {
