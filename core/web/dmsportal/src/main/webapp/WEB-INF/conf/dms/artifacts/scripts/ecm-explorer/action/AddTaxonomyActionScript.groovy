@@ -86,10 +86,17 @@ public class AddTaxonomyActionScript implements CmsScript {
     } catch(Exception e) {
       e.printStackTrace();
     }
-    if(!targetNode.hasNode(getDateLocation())) {
-      targetNode.addNode(getDateLocation());
-      targetNode.save();
-    }
+	String[] subPaths = getDateLocation().split("/");
+	Node cNode = targetNode;
+	for (String subPath : subPaths) {
+		if (cNode.hasNode(subPath)) {
+			break;
+		} else {
+			cNode.addNode(subPath);
+			cNode.save();
+			cNode = cNode.getNode(subPath);
+		}
+	}
     if(targetPath.equals("/")) {
       targetPath += getDateLocation() + nodePath.substring(nodePath.lastIndexOf("/"));
     } else {
@@ -105,14 +112,14 @@ public class AddTaxonomyActionScript implements CmsScript {
     }
     sessionTargetNode.save();
     targetNode = (Node)sessionTargetNode.getItem(targetPath);
-    linkManager_.createLink(storeNode, "exo:taxonomyLink", targetNode);
+    linkManager_.createLink((Node)storeNode.getSession().getItem(nodePath.substring(0, nodePath.lastIndexOf("/"))), "exo:taxonomyLink", targetNode);
     storeNode.getSession().save();
     targetNode.getSession().save();
   }
   
   private String getDateLocation() {
     Calendar calendar = new GregorianCalendar();
-    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd") ;
+    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd") ;
     return dateFormat.format(calendar.getTime());
   }
   
