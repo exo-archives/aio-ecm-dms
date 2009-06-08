@@ -137,13 +137,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     try {
       return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH))).getPath();
     } catch (AccessDeniedException accessDeniedException) {
-      UIApplication uiApp = getAncestorOfType(UIApplication.class);
-      Object[] arg = { contentType };
-      uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.do-not-permission", arg, 
-          ApplicationMessage.ERROR));
-      UIDocumentFormController uiFormController = getAncestorOfType(UIDocumentFormController.class);
-      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
-      context.addUIComponentToUpdateByAjax(uiFormController);
       return null;
     } catch (Exception e) {
       e.printStackTrace();
@@ -209,13 +202,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     try {      
       return templateService.getTemplatePathByUser(true, contentType, userName, repositoryName);
     } catch (AccessControlException e) {
-      UIApplication uiApp = getAncestorOfType(UIApplication.class);
-      Object[] arg = { contentType };
-      uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.do-not-permission", arg, 
-          ApplicationMessage.ERROR));
-      UIDocumentFormController uiFormController = getAncestorOfType(UIDocumentFormController.class);
-      WebuiRequestContext context = WebuiRequestContext.getCurrentInstance();
-      context.addUIComponentToUpdateByAjax(uiFormController);
       return null;
     } catch (Exception e) {
       e.printStackTrace();

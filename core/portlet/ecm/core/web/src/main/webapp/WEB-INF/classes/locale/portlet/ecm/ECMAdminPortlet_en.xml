@@ -1689,7 +1689,7 @@
   </ViewForm>
   <DialogForm>
     <label>
-      <UITemplateContent>Dialog Form</UITemplateContent>
+      <UITemplateContent>DialogForm</UITemplateContent>
       <UIPopupWindow>Dialog Permission</UIPopupWindow>
       <selectVersion>Versions</selectVersion>
       <content>Content</content>
