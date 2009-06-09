@@ -228,8 +228,19 @@
   border-bottom: solid 1px #b7b7b7;
   height:57px;
   background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x;
-  
 }
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBarAlone {
+  border-top: solid 1px #fdfdfd;
+  border-bottom: solid 1px #b7b7b7;
+  height: 30px;
+  background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x center bottom; 
+}
+
+.UIJCRExplorerPortlet .UIActionBarAlone .TabsContainer {
+  float: left;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionLabel {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
@@ -405,14 +416,6 @@
 /**************New skin**************/
 
 /*New Search Bar*/
-
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
-  border-top: solid 1px #fdfdfd;
-  border-bottom: solid 1px #b7b7b7;
-  height:57px;
-  background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x;
-}
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Block {
 	margin: 4px;
