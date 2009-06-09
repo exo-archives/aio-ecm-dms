@@ -423,7 +423,6 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left {
 	float: left;
-	width: 116px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Right {
@@ -439,7 +438,6 @@
 }
 	
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .View {
-	width: 109px;
 	height: 22px;
 	float: left;
 }
@@ -477,6 +475,11 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultView {
 	background: url(DefaultSkin/background/DefaultView.gif) no-repeat; 
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Block .BackAndRefreshBlock {
+  float: left;
+  margin-left: 3px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultViewSelected {

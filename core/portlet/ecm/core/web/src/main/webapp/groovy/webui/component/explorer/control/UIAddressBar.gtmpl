@@ -15,22 +15,24 @@
 				<%
 				  int viewCount = 0;
 				  def extendMap = new HashMap<String, String>();
-				  for(viewStyle in uicomponent.getViewList()) { 
-				    def label = _ctx.appRes("Views.label." + viewStyle);
-				    def viewIcon = viewStyle;
-				    def defaultView = "DefaultView";
-				    if(uicomponent.isSelectedView(viewStyle)) {
-				      viewIcon = viewStyle + "-selected";
-				      defaultView = "DefaultViewSelected";
-				    }
-				    viewCount++;
-				    if(viewCount < 5) {
-				%>
-    				  <a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
-				<%  } else {
-				      extendMap.put(viewStyle, label + ";" + viewIcon);
-            }
-          }				
+				  if(uicomponent.getViewList().size() > 1) {
+					  for(viewStyle in uicomponent.getViewList()) { 
+					    def label = _ctx.appRes("Views.label." + viewStyle);
+					    def viewIcon = viewStyle;
+					    def defaultView = "DefaultView";
+					    if(uicomponent.isSelectedView(viewStyle)) {
+					      viewIcon = viewStyle + "-selected";
+					      defaultView = "DefaultViewSelected";
+					    }
+					    viewCount++;
+					    if(viewCount < 5) {
+					%>
+	    				  <a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
+					<%  } else {
+					      extendMap.put(viewStyle, label + ";" + viewIcon);
+	            }
+	          }
+	        } 
 				 %>
 				 <%if(!extendMap.isEmpty()) {%>
 					  <div class="ExtendedView">
@@ -68,7 +70,7 @@
 			
 		</div>
 		
-		<div class="FloatLeft">
+		<div class="BackAndRefreshBlock">
 			<a class="BackBtn FloatLeft" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIAddressBar.title.backButton")%>"><span></span></a>	
   		<a class="RefreshSessionButton FloatLeft" href="<%=uicomponent.event("RefreshSession")%>" title="<%=_ctx.appRes("UIViewBar.label.refesh")%>"><span></span></a>
 		</div>	
