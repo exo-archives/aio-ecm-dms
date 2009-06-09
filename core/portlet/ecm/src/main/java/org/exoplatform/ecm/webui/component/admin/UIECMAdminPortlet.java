@@ -19,11 +19,13 @@ package org.exoplatform.ecm.webui.component.admin;
 import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -47,6 +49,12 @@ import org.exoplatform.webui.event.EventListener;
     events = { @EventConfig(listeners = UIECMAdminPortlet.ShowHideActionListener.class)}
 )
 public class UIECMAdminPortlet extends UIPortletApplication {
+
+  /**
+   * Logger.
+   */
+  private static final Log LOG  = ExoLogger.getLogger(UIECMAdminPortlet.class);
+  
   private boolean isShowSideBar = true ;
   private boolean isSelectedRepo_ = true ;
   private String repoName_ = "" ;
@@ -61,8 +69,7 @@ public class UIECMAdminPortlet extends UIPortletApplication {
       addChild(UIECMAdminControlPanel.class, null, null) ;
       addChild(UIECMAdminWorkingArea.class, null, null);
     } catch(Exception e) {
-     // e.printStackTrace() ;
-      System.out.println("RepositoryException: Repository '"+repo+"' not found !");
+      LOG.error("An expected error occured while initializing the portlet", e);
     }        
   }
   
@@ -106,17 +113,15 @@ public class UIECMAdminPortlet extends UIPortletApplication {
   }
   
   public String getPreferenceRepository() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    PortletPreferences portletPref = getPortletPreferences() ;
     String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
     return repository ;
   }
   
   public String getPreferenceWorkspace() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    String repository = portletPref.getValue(Utils.WORKSPACE_NAME, "") ;
-    return repository ;
+    PortletPreferences portletPref = getPortletPreferences() ;
+    String workspace = portletPref.getValue(Utils.WORKSPACE_NAME, "") ;
+    return workspace ;
   }
   
   public PortletPreferences getPortletPreferences() {
