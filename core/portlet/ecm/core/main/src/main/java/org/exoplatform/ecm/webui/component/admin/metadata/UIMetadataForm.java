@@ -88,7 +88,6 @@ public class UIMetadataForm extends UIFormTabPane implements UISelectable {
     setActions(new String[] {"Save", "Cancel"}) ;
   }
 
-  @SuppressWarnings("unused")
   public void doSelect(String selectField, Object value) {
     getUIStringInput(VIEW_PERMISSION).setValue(value.toString()) ;
     UIMetadataManager uiManager = getAncestorOfType(UIMetadataManager.class) ;
@@ -99,7 +98,7 @@ public class UIMetadataForm extends UIFormTabPane implements UISelectable {
     metadataName_ = metadata ;
     MetadataService metadataService = getApplicationComponent(MetadataService.class) ;
     repository_ = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
-    workspaceName_ = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    workspaceName_ = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceWorkspace() ;
     getUIStringInput(METADATA_NAME).setValue(metadata) ;
     String dialogTemplate = metadataService.getMetadataTemplate(metadata, true, repository_) ;
     String viewTemplate = metadataService.getMetadataTemplate(metadata, false, repository_) ;
