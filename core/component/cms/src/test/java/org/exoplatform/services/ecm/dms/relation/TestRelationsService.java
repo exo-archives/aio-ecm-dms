@@ -32,8 +32,6 @@ import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
 public class TestRelationsService extends BaseDMSTestCase {
     
   private RelationsService relationsService;
-  private static final String RELATION_MIXIN = "exo:relationable".intern();
-  private static final String RELATION_PROP = "exo:relation".intern();
   
   public void setUp() throws Exception {
     super.setUp();
