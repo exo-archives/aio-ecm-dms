@@ -16,17 +16,14 @@
  */
 package org.exoplatform.services.ecm.dms.relation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
-import javax.jcr.Value;
 
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
-import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 
 /**
  * Created by The eXo Platform SARL

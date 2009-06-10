@@ -173,6 +173,11 @@
     <type>org.exoplatform.services.cms.link.impl.LinkManagerImpl</type>
   </component>
   
+  <component>
+    <key>org.exoplatform.services.cms.relations.RelationsService</key>
+    <type>org.exoplatform.services.cms.relations.impl.RelationsService</type>
+  </component>
+  
   <remove-configuration>org.exoplatform.services.scheduler.JobSchedulerService</remove-configuration>    
   <remove-configuration>org.exoplatform.services.transaction.ExoTransactionService</remove-configuration>  
 </configuration>
