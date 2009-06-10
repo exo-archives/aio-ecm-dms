@@ -137,10 +137,13 @@
 	  var elemt = document.getElementById("ListExtendedView");
 	  event = event || window.event;
 	  event.cancelBubble = true;
+    var iconTree = document.getElementById("iconTreeExplorer");
 	  if(elemt.style.display == 'none') {
 	    elemt.style.display = 'block';
+	    iconTree.style.position = 'static';
 	  } else {
 	    elemt.style.display = 'none' ;
+	    iconTree.style.position = 'relative';
 	  }
 	  DOM.listHideElements(elemt);
 	}

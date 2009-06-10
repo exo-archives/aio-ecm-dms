@@ -152,6 +152,61 @@
   border-bottom: solid 1px #cdcdcd;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
+  margin: 4px 230px 0px 170px; /* orientation=lt */
+  margin: 4px 170px 0px 230px; /* orientation=rt */
+  height: 20px; line-height: 20px;
+  background: white;
+  border: solid 1px #d8d8d8;
+  border-right: solid 1px #cdcdcd; /* orientation=lt */
+  border-left: solid 1px #cdcdcd; /* orientation=rt */
+  border-bottom: solid 1px #cdcdcd;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle1 {
+  margin: 4px 230px 0px 60px; /* orientation=lt */
+  margin: 4px 60px 0px 230px; /* orientation=rt */
+  height: 20px; line-height: 20px;
+  background: white;
+  border: solid 1px #d8d8d8;
+  border-right: solid 1px #cdcdcd; /* orientation=lt */
+  border-left: solid 1px #cdcdcd; /* orientation=rt */
+  border-bottom: solid 1px #cdcdcd;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle2 {
+  margin: 4px 230px 0px 110px; /* orientation=lt */
+  margin: 4px 110px 0px 230px; /* orientation=rt */
+  height: 20px; line-height: 20px;
+  background: white;
+  border: solid 1px #d8d8d8;
+  border-right: solid 1px #cdcdcd; /* orientation=lt */
+  border-left: solid 1px #cdcdcd; /* orientation=rt */
+  border-bottom: solid 1px #cdcdcd;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle3 {
+  margin: 4px 230px 0px 135px; /* orientation=lt */
+  margin: 4px 135px 0px 230px; /* orientation=rt */
+  height: 20px; line-height: 20px;
+  background: white;
+  border: solid 1px #d8d8d8;
+  border-right: solid 1px #cdcdcd; /* orientation=lt */
+  border-left: solid 1px #cdcdcd; /* orientation=rt */
+  border-bottom: solid 1px #cdcdcd;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle4 {
+  margin: 4px 230px 0px 160px; /* orientation=lt */
+  margin: 4px 160px 0px 230px; /* orientation=rt */
+  height: 20px; line-height: 20px;
+  background: white;
+  border: solid 1px #d8d8d8;
+  border-right: solid 1px #cdcdcd; /* orientation=lt */
+  border-left: solid 1px #cdcdcd; /* orientation=rt */
+  border-bottom: solid 1px #cdcdcd;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */

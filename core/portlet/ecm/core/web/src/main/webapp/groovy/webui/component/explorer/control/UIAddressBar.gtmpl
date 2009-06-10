@@ -32,7 +32,9 @@
 					      extendMap.put(viewStyle, label + ";" + viewIcon);
 	            }
 	          }
-	        } 
+	        } else {
+	          viewCount++;
+	        }
 				 %>
 				 <%if(!extendMap.isEmpty()) {%>
 					  <div class="ExtendedView">
@@ -50,7 +52,7 @@
 				              defaultView = "DefaultViewSelected";
 				            }
 							  %>
-  							  <a href="<%=uicomponent.event("ChangeView", key)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
+  							    <a href="<%=uicomponent.event("ChangeView", key)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
 	              <%}%>
 							</div>
 				    </div>
@@ -74,7 +76,11 @@
 			<a class="BackBtn FloatLeft" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIAddressBar.title.backButton")%>"><span></span></a>	
   		<a class="RefreshSessionButton FloatLeft" href="<%=uicomponent.event("RefreshSession")%>" title="<%=_ctx.appRes("UIViewBar.label.refesh")%>"><span></span></a>
 		</div>	
-		<div class="BlockMiddle UIPopupSelector" id="UIAddressBarAction">
+		<%
+		   def viewSize = "";
+		   if(viewCount < 5 && viewCount > 0) viewSize = Integer.toString(viewCount);
+		%>
+		<div class="BlockMiddle${viewSize} UIPopupSelector" id="UIAddressBarAction">
 	    <div style="position: relative;">
 		    <div class="UISelectContent">
 		      <%

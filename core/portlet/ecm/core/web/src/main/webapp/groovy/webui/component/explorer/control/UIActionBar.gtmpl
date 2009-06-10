@@ -24,7 +24,7 @@
 	    tabAvailableList.add(tab);       
 	  }
 	}
-	if(tabAvailableList.size() == 1) {
+	if(tabAvailableList.size() < 2) {
     actionBarStyle = "UIActionBarAlone";
     displayTabContainer = "display: none;";
   }
