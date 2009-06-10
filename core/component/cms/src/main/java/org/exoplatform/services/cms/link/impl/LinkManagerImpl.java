@@ -159,6 +159,10 @@ public class LinkManagerImpl implements LinkManager {
    * {@inheritDoc}
    */
   public Node updateLink(Node linkNode, Node targetNode) throws RepositoryException {
+    if (targetNode.canAddMixin("mix:referenceable")) {
+      targetNode.addMixin("mix:referenceable");
+      targetNode.getSession().save();
+    }
     try {
       updateAccessPermissionToLink(linkNode, targetNode);
     } catch(Exception e) {

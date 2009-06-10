@@ -22,10 +22,8 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 /**
- * Created by The eXo Platform SARL
- * Author : Ly Dinh Quang
- *          quang.ly@exoplatform.com
- * Mar 13, 2009
+ * Created by The eXo Platform SARL Author : Ly Dinh Quang
+ * quang.ly@exoplatform.com Mar 13, 2009
  */
 public interface LinkManager {
 
@@ -111,11 +109,12 @@ public interface LinkManager {
    * Indicates whether the given item is a link
    * 
    * @param item the item to test
-   * @return <code>true</code> if the node is a link, <code>false</code> otherwise
+   * @return <code>true</code> if the node is a link, <code>false</code>
+   *         otherwise
    * @throws RepositoryException if an unexpected error occurs
    */
   public boolean isLink(Item item) throws RepositoryException;
-  
+
   /**
    * Gives the primary node type of the target
    * 
