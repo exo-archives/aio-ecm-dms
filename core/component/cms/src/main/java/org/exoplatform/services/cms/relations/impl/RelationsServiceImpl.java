@@ -53,13 +53,25 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     nodeHierarchyCreator_ = nodeHierarchyCreator;
     repositories_ = params.getValueParam("repositories").getValue();
   }
-
+  
+  /**
+   * {@inheritDoc}
+   */
   public boolean hasRelations(Node node) throws Exception {
     if (node.isNodeType(RELATION_MIXIN)) return true;
     return false;
 
   }
-
+  
+  /**
+   * Get node by UUID
+   * @param uuid          The specified UUI. 
+   * @param repository    The name of repository 
+   * @param provider      SessionProvider
+   * @see                 SessionProvider
+   * @return              Node with specified UUID 
+   * @throws Exception
+   */
   private Node getNodeByUUID(String uuid, String repository,SessionProvider provider) throws Exception {   
     ManageableRepository manageRepo = repositoryService_.getRepository(repository) ;
     String[] workspaces = manageRepo.getWorkspaceNames() ;
@@ -73,6 +85,9 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     return null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getRelations(Node node, String repository, SessionProvider provider) {
     List<Node> rels = new ArrayList<Node>();
     try {
@@ -89,6 +104,9 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     return rels ;    
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void removeRelation(Node node, String relationPath, String repository) throws Exception {
     List<Value> vals = new ArrayList<Value>();
     if (!"*".equals(relationPath)) {
@@ -113,6 +131,9 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     node.save() ;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addRelation(Node node, String relationPath,String workpace,String repository) throws Exception {
     SessionProvider provider = SessionProvider.createSystemProvider() ;
     Session session = getSession(repository,workpace,provider) ;
@@ -153,6 +174,9 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void start() {
     Session session = null;
     Node relationsHome = null;
@@ -176,9 +200,15 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void stop() {
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void init(String repository) throws Exception {
     Session session = getSession(repository);
     String relationPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
@@ -194,16 +224,31 @@ public class RelationsServiceImpl implements RelationsService, Startable {
     }
     session.logout();
   }
-
+  
+  /**
+   * Get session of respository
+   * @param repository    The name of repository
+   * @see                 Session 
+   * @return              Session
+   * @throws Exception
+   */
   protected Session getSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     String workspaceName = manageableRepository.getConfiguration().getSystemWorkspaceName();
     return manageableRepository.getSystemSession(workspaceName);
   }
-
+  
+  /**
+   * Get session of workspace
+   * @param repository    The name of repository   
+   * @param workspace     The name of workspace
+   * @param provider      SessionProvider
+   * @see                 SessionProvider
+   * @return              Session
+   * @throws Exception
+   */
   private Session getSession(String repository,String workspace,SessionProvider provider) throws Exception{
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
     return provider.getSession(workspace,manageableRepository) ;
   }
-
 }
