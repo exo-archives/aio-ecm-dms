@@ -196,6 +196,12 @@ public class LinkManagerImpl implements LinkManager {
     return link.getProperty(PRIMARY_TYPE).getString();
   }
   
+  /**
+   * Update the permission between two given node  
+   * @param linkNode    The node to update permission
+   * @param targetNode  The target node to get permission 
+   * @throws Exception
+   */
   private void updateAccessPermissionToLink(Node linkNode, Node targetNode) throws Exception {
     if(canChangePermission(linkNode)) {
       if(linkNode.canAddMixin("exo:privilegeable")) {
@@ -217,6 +223,12 @@ public class LinkManagerImpl implements LinkManager {
     }
   }
   
+  /**
+   * Remove all identity of the given node
+   * @param linkNode  The node to remove all identity
+   * @throws AccessControlException
+   * @throws RepositoryException
+   */
   private void removeCurrentIdentites(Node linkNode) throws AccessControlException, RepositoryException {
     for(AccessControlEntry accessEntry : ((ExtendedNode)linkNode).getACL().getPermissionEntries()) {
       if(canRemovePermission(linkNode, accessEntry.getIdentity())) {
@@ -225,6 +237,15 @@ public class LinkManagerImpl implements LinkManager {
     }
   }
   
+  /**
+   * Remove the permission from the given node
+   * @param node      The node to remove permission
+   * @param identity  The identity of the permission
+   * @return
+   * @throws ValueFormatException
+   * @throws PathNotFoundException
+   * @throws RepositoryException
+   */
   private boolean canRemovePermission(Node node, String identity) throws ValueFormatException, 
         PathNotFoundException, RepositoryException {
     String owner = getNodeOwner(node);
@@ -233,6 +254,14 @@ public class LinkManagerImpl implements LinkManager {
     return true;
   }
   
+  /**
+   * Get the owner of the given node
+   * @param node      The node to get owner
+   * @return
+   * @throws ValueFormatException
+   * @throws PathNotFoundException
+   * @throws RepositoryException
+   */
   private String getNodeOwner(Node node) throws ValueFormatException, PathNotFoundException, RepositoryException {
     if(node.hasProperty("exo:owner")) {
       return node.getProperty("exo:owner").getString();
@@ -240,6 +269,12 @@ public class LinkManagerImpl implements LinkManager {
     return null;
   }
   
+  /**
+   * Check permission of the given node
+   * @param node      The Node to check permission
+   * @return
+   * @throws RepositoryException
+   */
   private boolean canChangePermission(Node node) throws RepositoryException {
     try {
       ((ExtendedNode)node).checkPermission(PermissionType.CHANGE_PERMISSION);
