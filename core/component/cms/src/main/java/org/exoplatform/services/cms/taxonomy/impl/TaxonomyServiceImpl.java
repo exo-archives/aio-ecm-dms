@@ -67,6 +67,15 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
   
   private DMSConfiguration dmsConfiguration_;
 
+  /**
+   * Constructor method
+   * @param providerService         create session
+   * @param nodeHierarchyCreator    get path by alias name
+   * @param repoService             manage repository
+   * @param linkManager             create and reach link
+   * @param dmsConfiguration        get dms-system workspace
+   * @throws Exception
+   */
   public TaxonomyServiceImpl(SessionProviderService providerService,
       NodeHierarchyCreator nodeHierarchyCreator, RepositoryService repoService,
       LinkManager linkManager, DMSConfiguration dmsConfiguration) throws Exception {
@@ -77,22 +86,34 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     dmsConfiguration_ = dmsConfiguration;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void init(String repository) throws Exception {
     for (TaxonomyPlugin plugin : plugins_) {
       plugin.init(repository);
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addTaxonomyPlugin(ComponentPlugin plugin) {
     if (plugin instanceof TaxonomyPlugin) {
       plugins_.add((TaxonomyPlugin) plugin);
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getAllTaxonomyTrees(String repository) throws RepositoryException {
     return getAllTaxonomyTrees(repository, false);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getAllTaxonomyTrees(String repository, boolean system)
       throws RepositoryException {
     List<Node> listNode = new ArrayList<Node>();
@@ -113,10 +134,16 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     return listNode;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node getTaxonomyTree(String repository, String taxonomyName) throws RepositoryException {
     return getTaxonomyTree(repository, taxonomyName, false);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node getTaxonomyTree(String repository, String taxonomyName, boolean system)
       throws RepositoryException {
     try {
@@ -132,6 +159,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     return null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public boolean hasTaxonomyTree(String repository, String taxonomyName) throws RepositoryException {
     try {
       Node taxonomyTree = getRootTaxonomyDef(repository).getNode(taxonomyName);
@@ -143,6 +173,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     return false;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addTaxonomyTree(Node taxonomyTree) throws RepositoryException,
       TaxonomyAlreadyExistsException {
     if (hasTaxonomyTree(((ManageableRepository) taxonomyTree.getSession().getRepository())
@@ -158,6 +191,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void updateTaxonomyTree(String taxonomyName, Node taxonomyTree) throws RepositoryException {
     String repository = ((ManageableRepository) taxonomyTree.getSession().getRepository())
         .getConfiguration().getName();
@@ -171,6 +207,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void removeTaxonomyTree(String taxonomyName) throws RepositoryException {
     try {
       String repository = repositoryService_.getDefaultRepository().getConfiguration().getName();
@@ -185,6 +224,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addTaxonomyNode(String repository, String workspace, String parentPath,
       String taxoNodeName) throws RepositoryException, TaxonomyNodeAlreadyExistsException {
     try {
@@ -202,6 +244,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void removeTaxonomyNode(String repository, String workspace, String absPath)
       throws RepositoryException {
     try {
@@ -217,6 +262,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getCategories(Node node, String taxonomyName) throws RepositoryException {
     List<Node> listCate = new ArrayList<Node>();
     try {
@@ -246,6 +294,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     return listCate;
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getAllCategories(Node node) throws RepositoryException {
     List<Node> listCategories = new ArrayList<Node>();
     String repository = ((ManageableRepository) node.getSession().getRepository())
@@ -258,11 +309,17 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     return listCategories;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addCategory(Node node, String taxonomyName, String categoryPath)
       throws RepositoryException {
     addCategories(node, taxonomyName, new String[] { categoryPath });
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addCategories(Node node, String taxonomyName, String[] categoryPaths)
       throws RepositoryException {
     String category = "";
@@ -291,6 +348,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public boolean hasCategories(Node node, String taxonomyName) throws RepositoryException {
     List<Node> listCate = getCategories(node, taxonomyName);
     if (listCate != null && listCate.size() > 0)
@@ -298,6 +358,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     return false;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void moveTaxonomyNode(String repository, String workspace, String srcPath,
       String destPath, String type) throws RepositoryException {
     try {
@@ -317,6 +380,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void removeCategory(Node node, String taxonomyName, String categoryPath)
       throws RepositoryException {
     try {
@@ -341,6 +407,13 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
   }
 
+  /**
+   * Get node as root of all taxonomy in the repository that is in TAXONOMIES_TREE_DEFINITION_PATH
+   * @param repository
+   * @return 
+   * @throws RepositoryException
+   * @throws RepositoryConfigurationException
+   */
   private Node getRootTaxonomyDef(String repository) throws RepositoryException,
       RepositoryConfigurationException {
     ManageableRepository manaRepository = repositoryService_.getRepository(repository);
@@ -351,6 +424,14 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     return (Node) sysmtemSession.getItem(taxonomiesTreeDef);
   }
 
+  /**
+   * Get session by workspace and ManageableRepository
+   * @param manageRepository
+   * @param workspaceName
+   * @param system    
+   * @return          System session if system = true, else return session of current user 
+   * @throws RepositoryException
+   */
   private Session getSession(ManageableRepository manageRepository, String workspaceName,
       boolean system) throws RepositoryException {
     if (system)
@@ -359,6 +440,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     return providerService_.getSessionProvider(null).getSession(workspaceName, manageRepository);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void start() {
     try {
       for (TaxonomyPlugin plugin : plugins_) {
@@ -369,6 +453,9 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void stop() {
     // TODO Auto-generated method stub
   }

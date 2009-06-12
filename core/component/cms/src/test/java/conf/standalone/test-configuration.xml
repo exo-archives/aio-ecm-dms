@@ -76,9 +76,13 @@
 	<component>
 		<key>org.exoplatform.webui.ext.UIExtensionManager</key>
 		<type>org.exoplatform.webui.ext.impl.UIExtensionManagerImpl</type>
-	</component>  
-   <import>classpath:/conf/standalone/test-jcr-configuration.xml</import> 
-   <import>classpath:/conf/standalone/system-configuration.xml</import> 
-  <import>classpath:/conf/standalone/test-organization-configuration.xml</import> 
+	</component>
+	
+	<import>classpath:/conf/standalone/test-jcr-configuration.xml</import>
+	<import>classpath:/conf/standalone/system-configuration.xml</import>
+	<import>classpath:/conf/standalone/test-organization-configuration.xml</import>
+	<import>classpath:/conf/standalone/test-taxonomies-configuration.xml</import>
+	<import>classpath:/conf/standalone/test-dms-actions-configuration.xml</import>
+	 
   <import>classpath:/conf/standalone/test-drives-configuration.xml</import> 
 </configuration>
