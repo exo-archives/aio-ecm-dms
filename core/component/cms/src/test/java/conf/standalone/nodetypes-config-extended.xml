@@ -273,7 +273,7 @@
     	<supertype>nt:base</supertype>
     </supertypes> 
     <propertyDefinitions>
-      <propertyDefinition name="exo:permissions" requiredType="String" autoCreated="false" mandatory="true" 
+      <propertyDefinition name="exo:accessPermissions" requiredType="String" autoCreated="false" mandatory="true" 
         onParentVersion="IGNORE" protected="false" multiple="false">
         <valueConstraints/>        
       </propertyDefinition>      
@@ -322,7 +322,7 @@
         </requiredPrimaryTypes>     
       </childNodeDefinition>
     </childNodeDefinitions>   
-  </nodeType>  
+  </nodeType>    
   <nodeType name="exo:createRSSFeedAction" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
     <supertypes>
       <supertype>exo:scriptAction</supertype>

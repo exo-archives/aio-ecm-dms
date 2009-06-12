@@ -80,4 +80,5 @@
    <import>classpath:/conf/standalone/test-jcr-configuration.xml</import> 
    <import>classpath:/conf/standalone/system-configuration.xml</import> 
   <import>classpath:/conf/standalone/test-organization-configuration.xml</import> 
+  <import>classpath:/conf/standalone/test-drives-configuration.xml</import> 
 </configuration>

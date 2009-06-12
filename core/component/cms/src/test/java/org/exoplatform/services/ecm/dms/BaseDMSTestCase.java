@@ -56,7 +56,8 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
   protected final String REPO_NAME = "repository".intern();
   protected final String SYSTEM_WS = "system".intern();
   protected final String COLLABORATION_WS = "collaboration".intern();
-
+  protected final String DMSSYSTEM_WS = "dms-system".intern();
+  
   public void setUp() throws Exception {
     String containerConf = getClass().getResource("/conf/standalone/test-configuration.xml").toString();
     String loginConf = Thread.currentThread().getContextClassLoader().getResource("login.conf").toString();
