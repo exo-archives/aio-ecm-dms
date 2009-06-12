@@ -54,7 +54,6 @@ public class CmsServiceTest extends BaseDMSTestCase {
   
   public void setUp() throws Exception {
     super.setUp();
-    repositoryService = (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
     cmsService = (CmsService) container.getComponentInstanceOfType(CmsService.class);
   }
   
