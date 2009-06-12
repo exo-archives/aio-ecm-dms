@@ -57,12 +57,20 @@ public class CommentsServiceImpl implements CommentsService {
   private ExoCache commentsCache_ ;
   private MultiLanguageService multiLangService_ ;  
 
+  /**
+   * Constructor Method
+   * @param cacheService        CacheService Object
+   * @param multiLangService    MultiLanguageService Object
+   */
   public CommentsServiceImpl(CacheService cacheService, 
       MultiLanguageService multiLangService) throws Exception {    
     commentsCache_ = cacheService.getCacheInstance(CommentsService.class.getName()) ;
     multiLangService_ = multiLangService ;    
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addComment(Node node, String commentor,String email, String site, String comment,String language) throws Exception {
     Session session = node.getSession();
     ManageableRepository  repository = (ManageableRepository)session.getRepository();
@@ -118,6 +126,9 @@ public class CommentsServiceImpl implements CommentsService {
     commentsCache_.remove(commentNode.getPath()) ;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   @SuppressWarnings("unchecked")
   public List<Node> getComments(Node document,String language) throws Exception {    
     Node commentsNode = null ;
@@ -155,8 +166,16 @@ public class CommentsServiceImpl implements CommentsService {
     return list;
   }  
 
+  /**
+   * This Class implements Comparator<Node> to compare the created date of nodes.
+   */
   private class DateComparator implements Comparator<Node> {
 
+    /**
+     * Compare the created date of nodes
+     * @param Node1     node is used to compare
+     * @param Node2     node is used to compare
+     */
     public int compare(Node node1, Node node2) {
       try{
         Date date1 = node1.getProperty(CREATED_DATE).getDate().getTime() ;
@@ -168,6 +187,12 @@ public class CommentsServiceImpl implements CommentsService {
     }        
   }
 
+  /**
+   * Check language of comment is supported in a document
+   * @param  document    The document node is commented
+   * @Param  language    The language of comment node
+   * @throws Exception
+   */
   private boolean isSupportedLocalize(Node document,String language)throws Exception {
     List<String> locales= multiLangService_.getSupportedLanguages(document) ;
     if(Collections.frequency(locales,language) >0) return true ;
