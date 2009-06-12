@@ -24,7 +24,6 @@ import javax.jcr.NodeIterator;
 
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
-import org.exoplatform.services.jcr.impl.core.SessionImpl;
 
 /**
  * Created by The eXo Platform SARL
@@ -45,7 +44,6 @@ public class TestCommentService extends BaseDMSTestCase {
   public void setUp() throws Exception {
     super.setUp();
     commentsService = (CommentsService) container.getComponentInstanceOfType(CommentsService.class);
-    session = (SessionImpl) repositoryService.getRepository(REPO_NAME).getSystemSession(COLLABORATION_WS);
   }
 
   /*
