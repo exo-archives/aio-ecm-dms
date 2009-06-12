@@ -23,9 +23,11 @@ import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 /**
  * Created by The eXo Platform SARL
@@ -36,8 +38,10 @@ import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
  */
 public class TestDriveService extends BaseDMSTestCase {
   private ManageDriveService driveService;
+  private NodeHierarchyCreator nodeHierarchyCreator;
   private Session session;
   private Node rootNode;
+  private String drivePath;
   
   private static String WORKSPACE = "exo:workspace".intern() ;
   private static String PERMISSIONS = "exo:accessPermissions".intern() ;
@@ -69,6 +73,8 @@ public class TestDriveService extends BaseDMSTestCase {
   public void setUp() throws Exception {
     super.setUp();
     driveService = (ManageDriveService)container.getComponentInstanceOfType(ManageDriveService.class);
+    nodeHierarchyCreator = (NodeHierarchyCreator)container.getComponentInstanceOfType(NodeHierarchyCreator.class);
+    drivePath = nodeHierarchyCreator.getJcrPath(BasePath.EXO_DRIVES_PATH);
     createTree();
   }
   
@@ -85,14 +91,14 @@ public class TestDriveService extends BaseDMSTestCase {
   
   public void testInit() throws Exception {
     Session mySession = repository.login(credentials, DMSSYSTEM_WS);
-    Node myDrive = (Node)mySession.getItem("/exo:ecm/exo:drives");
+    Node myDrive = (Node)mySession.getItem(drivePath);
     assertEquals(myDrive.getNodes().getSize(), 3);
   }
   
   public void testAddDrive() throws Exception {
     driveService.addDrive("MyDrive", COLLABORATION_WS, "*:/platform/administrators", "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
     Session mySession = repository.login(credentials, DMSSYSTEM_WS);
-    Node myDrive = (Node)mySession.getItem("/exo:ecm/exo:drives/MyDrive");
+    Node myDrive = (Node)mySession.getItem(drivePath + "/MyDrive");
     assertNotNull(myDrive);
     assertEquals(myDrive.getProperty(WORKSPACE).getString(), COLLABORATION_WS) ;
     assertEquals(myDrive.getProperty(PERMISSIONS).getString(), "*:/platform/administrators");
@@ -210,7 +216,7 @@ public class TestDriveService extends BaseDMSTestCase {
     Node root;
     try {
       Session mySession = repository.login(credentials, DMSSYSTEM_WS);
-      Node rootDrive = (Node)mySession.getItem("/exo:ecm/exo:drives");
+      Node rootDrive = (Node)mySession.getItem(drivePath);
       NodeIterator iter = rootDrive.getNodes();
       while (iter.hasNext()) {
         iter.nextNode().remove();
