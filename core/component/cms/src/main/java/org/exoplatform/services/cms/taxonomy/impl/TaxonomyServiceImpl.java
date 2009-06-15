@@ -214,6 +214,10 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
     try {
       String repository = repositoryService_.getDefaultRepository().getConfiguration().getName();
       if (hasTaxonomyTree(repository, taxonomyName)) {
+        Node targetNode = getTaxonomyTree(repository, taxonomyName, true);
+        Session session = targetNode.getSession();
+        targetNode.remove();
+        session.save();
         Node taxonomyDef = getRootTaxonomyDef(repository);
         Node taxonomyTree = taxonomyDef.getNode(taxonomyName);
         taxonomyTree.remove();

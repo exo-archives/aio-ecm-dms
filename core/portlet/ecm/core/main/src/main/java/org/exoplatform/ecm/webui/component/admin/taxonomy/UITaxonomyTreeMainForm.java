@@ -94,6 +94,7 @@ public class UITaxonomyTreeMainForm extends UIForm {
       if (!systemWorkspace.equals(wsName))
         workspace.add(new SelectItemOption<String>(wsName, wsName));
     }
+    if (taxonomyTree == null) taxonomyTree = new TaxonomyTreeData();
     UIFormSelectBox uiSelectBox = getUIFormSelectBox(FIELD_WORKSPACE).setOptions(workspace);
     if (taxonomyTree.getTaxoTreeWorkspace() == null) {
       taxonomyTree.setTaxoTreeWorkspace(dmsSystemWorkspace);

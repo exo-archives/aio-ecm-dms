@@ -146,6 +146,7 @@ public class TaxonomyServiceTest extends BaseDMSTestCase {
     assertTrue(dmsSesssion.itemExists(definitionPath + "/Miscellaneous"));
     taxonomyService.removeTaxonomyTree("Miscellaneous");
     assertFalse(dmsSesssion.itemExists(definitionPath + "/Miscellaneous"));
+    assertFalse(dmsSesssion.itemExists("/MyDocuments/Miscellaneous"));
   }
   
   // Test method TaxonomyService.getAllTaxonomyTrees(String repository, boolean system)
