@@ -158,7 +158,7 @@
        </value-param>
       </init-params>  
 		</component-plugin>  		
- </external-component-plugins>	    
+ </external-component-plugins>    
 
   <remove-configuration>org.exoplatform.services.scheduler.JobSchedulerService</remove-configuration>
   <remove-configuration>org.exoplatform.services.transaction.ExoTransactionService</remove-configuration>
