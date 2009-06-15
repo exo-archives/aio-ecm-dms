@@ -138,8 +138,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
 
   /**
-   * Implemented method in Startable class
-   * Call {@link #init()} method to init some template
+   * {@inheritDoc}
    */
   public void start() {
     try {      
@@ -150,8 +149,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
 
   /**
-   * Implemented method in Startable class
-   * 
+   * {@inheritDoc}
    */
   public void stop() {}
 
@@ -181,10 +179,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
 
   /**
-   * Call all available in list of TemplatePlugin to 
-   * add some predefine template to repository
-   * @repository        repository name 
-   * @throws Exception
+   * {@inheritDoc}
    */
   public void init(String repository) throws Exception {    
     for(TemplatePlugin plugin : plugins_) {
@@ -198,20 +193,9 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
 
   /**
-   * Add new nodetype and set property  EXO_ROLES_PROP, EXO_TEMPLATE_FILE_PROP 
-   * for dialog template node or view template node if node doesn't exist
-   * Set property  EXO_ROLES_PROP, EXO_TEMPLATE_FILE_PROP 
-   * for dialog template node or view template node if node exists
-   * @param nodetype    Node name for processing
-   * @param isDialog    true for dialog template
-   * @param role        permission
-   * @param content     content of template
-   * @param isAddNew    false if nodetype exist in repository, true if not
-   * @param repository  repository name
-   * @return path to node if node exist, otherwise return null
-   * @throws Exception
+   * {@inheritDoc}
    */
-  public String addMetadata(String nodetype, boolean isDialog, String role, String content, boolean isAddNew, String repository) throws Exception {        
+  public String addMetadata(String nodetype, boolean isDialog, String role, String content, boolean isAddNew, String repository) throws Exception {
     Session session = getSession(repository);
     Node metadataHome = (Node)session.getItem(baseMetadataPath_);
     String path = null;
@@ -269,9 +253,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
 
   /**
-   * Remove node named nodetype below baseMetadataPath_
-   * @param nodetype      name of node
-   * @param repository    repository name
+   * {@inheritDoc}
    */
   public void removeMetadata(String nodetype, String repository) throws Exception {    
     Session session = getSession(repository);
@@ -284,10 +266,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   } 
 
   /**
-   * Get name of all NodeType in repository
-   * @param repository    repository name
-   * @return              ArrayList of name
-   * @see {@link #getAllMetadatasNodeType(String)}
+   * {@inheritDoc}
    */
   public List<String> getMetadataList(String repository) throws Exception {
     List<String> metadataTypes = new ArrayList<String>();
@@ -298,9 +277,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
 
   /**
-   * Get all NodeType in repository with NodeType = exo:metadata
-   * @param repository    repository name
-   * @return              ArrayList of NodeType   
+   * {@inheritDoc}
    */
   public List<NodeType> getAllMetadatasNodeType(String repository) throws Exception {
     List<NodeType> metadataTypes = new ArrayList<NodeType>();    
@@ -336,12 +313,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
 
   /**
-   * Get content of dialog template node or view template in repository
-   * @param name            Node name      
-   * @param isDialog        true: Get dialog template content
-   *                        false: Get view template content
-   * @param repository      repository name
-   * @return                content of template                        
+   * {@inheritDoc}
    */
   public String getMetadataTemplate(String name, boolean isDialog, String repository) throws Exception {
     Session session = getSession(repository);
@@ -355,12 +327,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
 
   /**
-   * Get path to dialog template or view tempate node
-   * @param name            Node name      
-   * @param isDialog        true: Get dialog template content
-   *                        false: Get view template content
-   * @param repository      repository name
-   * @return                path to template node
+   * {@inheritDoc}
    */
   public String getMetadataPath(String name, boolean isDialog, String repository) throws Exception {
     Session session = getSession(repository);
@@ -377,12 +344,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
 
   /**
-   * Get permission of template node
-   * @param name            Node name      
-   * @param isDialog        true: Get dialog template content
-   *                        false: Get view template content
-   * @param repository      repository name
-   * @return                String of permission
+   * {@inheritDoc}
    */
   public String getMetadataRoles(String name, boolean isDialog, String repository) throws Exception {
     Session session = getSession(repository);
@@ -405,11 +367,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }  
 
   /**
-   * Check node with given name exists or not below baseMetadataPath_ path in repositorys 
-   * @param name            Node name      
-   * @param repository      repository name
-   * @return                true : Exist this node name<br>
-   *                        false: Not exist this node name
+   * {@inheritDoc}
    */
   public boolean hasMetadata(String name, String repository) throws Exception {
     Session session = getSession(repository);
@@ -423,10 +381,7 @@ public class MetadataServiceImpl implements MetadataService, Startable{
   }
 
   /**
-   * Get all NodeType name that contains property that is not autocreated 
-   * and name of NodeType differs from exo:metadata
-   * @param repository      repository name
-   * @return                ArrayList of metadata type
+   * {@inheritDoc}
    */
   public List<String> getExternalMetadataType(String repository) throws Exception {
     List<String> extenalMetaTypes = new ArrayList<String>();
@@ -435,13 +390,15 @@ public class MetadataServiceImpl implements MetadataService, Startable{
       PropertyDefinition internalUseDef = extNT.getPropertyDefinitions(INTERNAL_USE).getAnyDefinition();
       if(!internalUseDef.getDefaultValues()[0].getBoolean() && !metadata.getName().equals(METADATA_TYPE)) extenalMetaTypes.add(metadata.getName());
     }
+    
     return extenalMetaTypes;
   }
 
   /**
-   * Get session in system workspace from given repository name
-   * @param repository        repository name
-   * @return                  Session
+   * Get session of respository
+   * @param repository    The name of repository
+   * @see                 Session 
+   * @return              Session
    * @throws Exception
    */
   private Session getSession(String repository) throws Exception{ 

@@ -20,8 +20,10 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 /**
  * Created by The eXo Platform SARL
@@ -32,6 +34,8 @@ public class TestTemplateService extends BaseDMSTestCase {
   private TemplateService templateService;
   private String expectedArticleDialogPath = "/exo:ecm/templates/exo:article/dialogs/dialog1";
   private String expectedTemplateLabel = "Article";
+  private NodeHierarchyCreator nodeHierarchyCreator;
+  private String cmsTemplatesBasePath;
   
   static private final String DMSSYSTEM_WS = "dms-system".intern();
   static private final String EXO_ARTICLE = "exo:article".intern();
@@ -39,6 +43,8 @@ public class TestTemplateService extends BaseDMSTestCase {
   public void setUp() throws Exception {
     super.setUp();
     templateService = (TemplateService)container.getComponentInstanceOfType(TemplateService.class);
+    nodeHierarchyCreator = (NodeHierarchyCreator)container.getComponentInstanceOfType(NodeHierarchyCreator.class);
+    cmsTemplatesBasePath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_TEMPLATES_PATH);
   }
   
   public void testGetDefaultTemplatePath() throws Exception {
@@ -173,5 +179,11 @@ public class TestTemplateService extends BaseDMSTestCase {
     sessionSystem.save();
     
     assertEquals("Hello EEE", templateService.getTemplateData(eee, "en", "exo:title", REPO_NAME));
+  }
+  
+  public void testInit() throws Exception {
+    Session mySession = repository.login(credentials, DMSSYSTEM_WS);
+    Node myTemplate = (Node)mySession.getItem(cmsTemplatesBasePath);
+    assertEquals(14, myTemplate.getNodes().getSize());
   }
 }
