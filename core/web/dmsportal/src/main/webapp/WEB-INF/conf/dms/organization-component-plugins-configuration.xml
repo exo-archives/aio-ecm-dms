@@ -23,7 +23,7 @@
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		             		<field name="alias"><string>groupApplicationData</string></field>
-		                <field name="path"><string>Application Data</string></field>
+		                <field name="path"><string>ApplicationData</string></field>
 		                <field name="nodeType"><string>nt:unstructured</string></field>
 		                <field name="permissions">
 				              <collection type="java.util.ArrayList">               
@@ -248,60 +248,7 @@
 	      </value-param>	      	      	      	      	      	      	      	      	      	      
 	    </init-params>
 	  </component-plugin>	  	  
-<!--
-	  <component-plugin>
-	    <name>drive.new.user.event.listener</name>
-	    <set-method>addListenerPlugin</set-method>
-	    <type>org.exoplatform.services.cms.drives.impl.NewUserListener</type>
-	    <description>description</description>
-	    <init-params>
-	      <value-param>
-	        <name>name</name>
-	        <value>Content of user</value>
-	      </value-param>
-	      <value-param>
-	        <name>repository</name>
-	        <value>repository</value>
-	      </value-param>
-	      <value-param>
-	        <name>workspace</name>
-	        <value>collaboration</value>
-	      </value-param>
-	      <value-param>
-	        <name>permissions</name>
-	        <value>member:/platform/administrators</value>
-	      </value-param>
-	      <value-param>
-	        <name>icon</name>
-	        <value></value>
-	      </value-param>
-	      <value-param>
-	        <name>views</name>
-	        <value>simple-view</value>
-	      </value-param>
-	      <value-param>
-	        <name>viewPreferences</name>
-	        <value>false</value>
-	      </value-param>
-	      <value-param>
-	        <name>viewNonDocument</name>
-	        <value>true</value>
-	      </value-param>	      	      	      	      	      	      	      
-	      <value-param>
-	        <name>viewSideBar</name>
-	        <value>true</value>
-	      </value-param>	      	      	      	      	      	      	      
-	      <value-param>
-	        <name>showHiddenNode</name>
-	        <value>true</value>
-	      </value-param>	      	      	      	      	      	      	      
-	      <value-param>
-	        <name>allowCreateFolder</name>
-	        <value>both</value>
-	      </value-param>	      	      	      	      	      	      	      	      	      	      
-	    </init-params>
-	  </component-plugin>	  
--->	  	
+
 	  <component-plugin>
 	    <name>queries.new.user.event.listener</name>
 	    <set-method>addListenerPlugin</set-method>
