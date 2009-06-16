@@ -1304,11 +1304,10 @@ public class UIWorkingArea extends UIContainer {
         return;
       }
       try {
-        boolean isReferencedNode = !wsName.equals(uiExplorer.getCurrentDriveWorkspace());
         UIControl uiControl = uiExplorer.getChild(UIControl.class);
         UIActionBar uiActionBar = uiControl.getChild(UIActionBar.class);
         UIRenameForm uiRenameForm = uiActionBar.createUIComponent(UIRenameForm.class, null, null);
-        uiRenameForm.update(renameNode, isReferencedNode);
+        uiRenameForm.update(renameNode);
         UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
         UIPopupContainer.activate(uiRenameForm, 700, 0);
         UIPopupContainer.setRendered(true);
