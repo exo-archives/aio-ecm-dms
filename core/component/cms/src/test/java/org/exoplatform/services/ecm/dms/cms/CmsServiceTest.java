@@ -461,10 +461,6 @@ public class CmsServiceTest extends BaseDMSTestCase {
       b2 = is2.read();
       if (b1 != b2) return false;
     } while ((b1 !=-1) && (b2!=-1));
-    
     return true;
-    
   }
-  
-  
 }
