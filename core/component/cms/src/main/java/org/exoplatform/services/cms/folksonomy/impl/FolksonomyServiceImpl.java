@@ -218,8 +218,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }
   
   /**
-   * Init all TagStylePlugin with session in repository name
-   * @param repository     repository name
+   * {@inheritDoc}
    */
   public void init(String repository) throws Exception {
     for(TagStylePlugin plugin : plugin_) {
@@ -232,16 +231,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }
   
   /**
-   * Add new child node in node baseTagsPath_
-   * If there are not node with name in tagNames then create new one
-   * Add mixin type MIX_REFERENCEABLE_MIXIN for new node
-   * Add new property TAG_CREATED_DATE_PROP, TAG_STATUS_PROP
-   * Add new mixin type EXO_FOLKSONOMIZED_MIXIN to current node if not exist
-   * Set property EXO_FOLKSONOMY_PROP for current node
-   * @param node        current node
-   * @param tagNames    Array of node name as child node of exoTagsHomeNode_
-   * @param repository
-   * @throws Exception
+   * {@inheritDoc}
    */
   public void addTag(Node node, String[] tagNames, String repository) throws Exception {        
     Session systemSession = getSystemSession(repository) ;     
@@ -286,11 +276,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }
   
   /**
-   * Get node following path in repository
-   * @param path          path to node
-   * @param repository    repository name
-   * @return  node following path
-   * @throws Exception
+   * {@inheritDoc}
    */
   public Node getTag(String path, String repository) throws Exception {    
     Session systemSession = getSystemSession(repository) ;
@@ -298,11 +284,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }
 
   /**
-   * Get document list      from repository
-   * @param tagPath         path to node in all workspace
-   * @param repository      repository name
-   * @return ArrayList of node
-   * @throws Exception
+   * {@inheritDoc}
    */
   public List<Node> getDocumentsOnTag(String tagPath, String repository) throws Exception {
 //    if(cache_.get(tagPath)!=null) {
@@ -338,9 +320,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   } 
 
   /**
-   * Get all node base on path = baseTagsPath_ in repository
-   * @param repository      repository name
-   * @return ArrayList of Node
+   * {@inheritDoc}
    */
   public List<Node> getAllTags(String repository) throws Exception {
 //    Object cachedList = cache_.get(baseTagsPath_) ;
@@ -359,10 +339,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }
   
   /**
-   *  Get all node base on path = exoTagStylePath_ in repository
-   * @param repository
-   * @return ArrayList of Node
-   * @throws Exception
+   *  {@inheritDoc}
    */
   public List<Node> getAllTagStyle(String repository) throws Exception {
 //    Object cachedList = cache_.get(exoTagStylePath_) ;
@@ -392,11 +369,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }  
 
   /**
-   * Get HTML_STYLE_PROP property in styleName node in repository
-   * @param styleName       name of node
-   * @param repository      repository name
-   * @return  value of HTML_STYLE_PROP property of styleName node
-   * @throws Exception
+   * {@inheritDoc}
    */
   public String getTagStyle(String styleName, String repository) throws Exception {
 //    Object cachedObj = cache_.get(styleName) ;
@@ -413,13 +386,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }
 
   /**
-   * Update property TAG_RATE_PROP, HTML_STYLE_PROP following value tagRate, htmlStyle
-   * for node in tagPath in repository
-   * @param tagPath     path to node
-   * @param tagRate
-   * @param htmlStyle
-   * @param repository
-   * @throws Exception
+   * {@inheritDoc}
    */
   public void updateStype(String tagPath, String tagRate, String htmlStyle, String repository) throws Exception {
     Session session = getSystemSession(repository) ;
@@ -497,12 +464,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   }
   
   /**
-   * Base on uuid in values in EXO_FOLKSONOMY_PROP property in document node,
-   * get all node linked to this document node
-   * @param document          document node
-   * @param repository        repository name
-   * @return                  ArrayList of Node
-   * @throws Exception
+   * {@inheritDoc}
    */
   public List<Node> getLinkedTagsOfDocument(Node document, String repository) throws Exception {
     if(document == null || !document.hasProperty(EXO_FOLKSONOMY_PROP)) 

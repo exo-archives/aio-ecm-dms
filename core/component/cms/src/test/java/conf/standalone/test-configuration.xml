@@ -86,4 +86,5 @@
 	<import>classpath:/conf/standalone/test-templates-configuration.xml</import> 
   <import>classpath:/conf/standalone/test-drives-configuration.xml</import>
   <import>classpath:/conf/standalone/test-metadata-configuration.xml</import>
+  <import>classpath:/conf/standalone/test-folksonomy-configuration.xml</import>
 </configuration>

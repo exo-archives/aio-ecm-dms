@@ -50,7 +50,9 @@ public class TagStylePlugin extends BaseComponentPlugin{
     nodeHierarchyCreator_ = nodeHierarchyCreator ;
 	}	 
   
-  
+  /**
+   * Init tag style nodes in repository. 
+   */  
   @SuppressWarnings("unchecked")
   public void init() throws Exception {   
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
@@ -73,6 +75,9 @@ public class TagStylePlugin extends BaseComponentPlugin{
     }
   }
   
+  /**
+   * Init tag style nodes in specific repository. 
+   */
   @SuppressWarnings("unchecked")
   public void init(String repository) throws Exception {
     Iterator<ObjectParameter> it = params_.getObjectParamIterator() ;
@@ -88,6 +93,10 @@ public class TagStylePlugin extends BaseComponentPlugin{
     }
   }
   
+  /**
+   * Method addTag will set value of HTML_STYLE_PROP property and value of TAG_RATE_PROP property
+   * for tag style node.
+   */
   private void addTag(Session session, TagStyleConfig tagConfig) throws Exception {
     String exoTagStylePath = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_TAG_STYLE_PATH) ;
     Node exoTagStyleHomeNode = (Node)session.getItem(exoTagStylePath) ;
