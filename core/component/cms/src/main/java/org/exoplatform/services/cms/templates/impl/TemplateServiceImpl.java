@@ -85,6 +85,18 @@ public class TemplateServiceImpl implements TemplateService, Startable {
    */   
   private DMSConfiguration dmsConfiguration_;
   
+  /**
+   * Constructor method
+   * Init jcrService, nodeHierarchyCreator, identityRegistry, localeConfigService, caService, 
+   * dmsConfiguration
+   * @param jcrService              RepositoryService
+   * @param nodeHierarchyCreator    NodeHierarchyCreator
+   * @param identityRegistry        IdentityRegistry
+   * @param localeConfigService     LocaleConfigService
+   * @param caService               CacheService
+   * @param dmsConfiguration        DMSConfiguration
+   * @throws Exception
+   */
   public TemplateServiceImpl(RepositoryService jcrService,
       NodeHierarchyCreator nodeHierarchyCreator, IdentityRegistry identityRegistry,
       LocaleConfigService localeConfigService, CacheService caService, 
