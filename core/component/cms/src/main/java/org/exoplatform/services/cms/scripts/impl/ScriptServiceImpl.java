@@ -61,6 +61,16 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
   List<ScriptPlugin> plugins_ = new ArrayList<ScriptPlugin>() ;
   private DMSConfiguration dmsConfiguration_;
 
+  /**
+   * Constructor method
+   * Init repositoryService, configurationManager, nodeHierarchyCreator, caService, dmsConfiguration   
+   * @param repositoryService       RepositoryService
+   * @param cservice                ConfigurationManager
+   * @param nodeHierarchyCreator    NodeHierarchyCreator
+   * @param cacheService            CacheService
+   * @param dmsConfiguration        DMSConfiguration
+   * @throws Exception
+   */
   public ScriptServiceImpl(RepositoryService repositoryService, ConfigurationManager cservice,
       NodeHierarchyCreator nodeHierarchyCreator, CacheService cacheService, 
       DMSConfiguration dmsConfiguration) throws Exception {    
@@ -71,6 +81,9 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     dmsConfiguration_ = dmsConfiguration;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void start() {    
     try {
       initPlugins();      
@@ -79,12 +92,27 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     }
   }
 
+  /**
+   * add ScriptPlugin
+   * @param plugin  ComponentPlugin
+   * @see           ScriptPlugin
+   * @see           ComponentPlugin  
+   */
   public void addScriptPlugin(ComponentPlugin plugin) {
     if(plugin instanceof ScriptPlugin) {      
       plugins_.add((ScriptPlugin)plugin) ;
     }
   }
 
+  /**
+   * init Plugin
+   * @see       Session
+   * @see       ScriptPlugin
+   * @see       RepositoryEntry
+   * @see       DMSRepositoryConfiguration
+   * @see       ObservationManager
+   * @throws Exception
+   */
   private void initPlugins() throws Exception{
     Session session = null ;
     String scriptsPath = getBasePath();
@@ -124,8 +152,16 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     }
   }
 
+  /**
+   * get Base Script Path
+   * @see       NodeHierarchyCreator 
+   * @return    String
+   */
   protected String getBasePath() { return nodeHierarchyCreator_.getJcrPath(BasePath.CMS_SCRIPTS_PATH); }    
 
+  /**
+   * {@inheritDoc}
+   */
   public void initRepo(String repository) throws Exception {
     ManageableRepository mRepository = repositoryService_.getRepository(repository) ;
     String scriptsPath = getBasePath();
@@ -146,21 +182,35 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     session.logout();
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public Node getECMScriptHome(String repository,SessionProvider provider) throws Exception {
     Session session = getSession(repository,provider);
     return getNodeByAlias(BasePath.ECM_EXPLORER_SCRIPTS,session);        
   }        
 
+  /**
+   * {@inheritDoc}
+   */
   public Node getCBScriptHome(String repository,SessionProvider provider) throws Exception {
     Session session = getSession(repository,provider);
     return getNodeByAlias(BasePath.CONTENT_BROWSER_SCRIPTS,session);    
   }
 
-
 //  public boolean hasCBScript(String repository) throws Exception {    
 //    return getCBScriptHome(repository).hasNodes();
 //  }
 
+  /**
+   * get CBSCcripts
+   * @param repository    String
+   *                      The name of Repository
+   * @param provider      SessionProvider
+   * @see                 SessionProvider
+   * @return
+   * @throws Exception 
+   */
   public List<Node> getCBScripts(String repository,SessionProvider provider) throws Exception {
     List<Node> scriptList = new ArrayList<Node>() ;
     Node cbScriptHome = getCBScriptHome(repository,provider) ;
@@ -170,25 +220,43 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     return scriptList;    
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getECMActionScripts(String repository,SessionProvider provider) throws Exception {
     Session session = getSession(repository,provider);
     return getScriptList(BasePath.ECM_ACTION_SCRIPTS, session);
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getECMInterceptorScripts(String repository,SessionProvider provider) throws Exception {
     Session session = getSession(repository,provider);
     return getScriptList(BasePath.ECM_INTERCEPTOR_SCRIPTS, session);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getECMWidgetScripts(String repository,SessionProvider provider) throws Exception {
     Session session = getSession(repository,provider);
     return getScriptList(BasePath.ECM_WIDGET_SCRIPTS,session);
   } 
 
+  /**
+   * {@inheritDoc}
+   */
   public String getBaseScriptPath() throws Exception {   
     return getBasePath() ;
   }
 
+  /**
+   * get ECMCategoriesPath
+   * @see       NodeHierarchyCreator 
+   * @return
+   * @throws Exception
+   */
   public String[] getECMCategoriesPath() throws Exception {
     String[] categoriesPath 
     = { nodeHierarchyCreator_.getJcrPath(BasePath.ECM_ACTION_SCRIPTS),
@@ -197,16 +265,28 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     return categoriesPath;
   }
 
+  /**
+   * get CBCategoriesPath
+   * @see       NodeHierarchyCreator 
+   * @return
+   * @throws Exception
+   */
   public String[] getCBCategoriesPath() throws Exception {
     String[] categoriesPath = { nodeHierarchyCreator_.getJcrPath(BasePath.CONTENT_BROWSER_SCRIPTS)} ;
     return categoriesPath;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public String getScriptAsText(String scriptName, String repository) throws Exception {
     return getResourceAsText(scriptName, repository);
   }
 
   @SuppressWarnings("unused")
+  /**
+   * {@inheritDoc}
+   */
   public CmsScript getScript(String scriptName, String repository) throws Exception {
     CmsScript scriptObject = (CmsScript) resourceCache_.get(scriptName);
     if (scriptObject != null) return scriptObject;
@@ -225,21 +305,45 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     return scriptObject;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addScript(String name, String text, String repository,SessionProvider provider) throws Exception {
     addResource(name, text, repository,provider);
     removeFromCache(name) ;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void removeScript(String scriptName, String repository,SessionProvider provider) throws Exception {
     removeResource(scriptName, repository,provider);
     removeFromCache(scriptName) ;
   }    
 
+  /**
+   * Get ScriptHome
+   * @param scriptAlias     String
+   *                        The alias of script
+   * @param session         Session
+   * @see                   NodeHierarchyCreator
+   * @return
+   * @throws Exception
+   */
   private Node getScriptHome(String scriptAlias, Session session) throws Exception {
     String path = nodeHierarchyCreator_.getJcrPath(scriptAlias) ;               
     return (Node)session.getItem(path);
   }
 
+  /**
+   * get Script List with the following param
+   * @param scriptAlias   String
+   *                      The alias of script
+   * @param session       Session
+   * @see                   NodeHierarchyCreator
+   * @return
+   * @throws Exception
+   */
   private List<Node> getScriptList(String scriptAlias,Session session) throws Exception {
     List<Node> scriptList = new ArrayList<Node>() ;
     Node scriptHome = getScriptHome(scriptAlias,session) ;
@@ -249,6 +353,13 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     return scriptList;
   }  
 
+  /**
+   * remove From Cache
+   * @param scriptName    String
+   *                      The name of script
+   * @see                 ExoContainer
+   * @see                 ExoContainerContext                          
+   */
   protected void removeFromCache(String scriptName){  
     try{
       Object cachedobject = resourceCache_.get(scriptName);
@@ -263,6 +374,13 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     }        
   }
 
+  /**
+   * onEvent
+   * @param events      EventIterator
+   * @see               Session
+   * @see               DMSRepositoryConfiguration
+   * @see               ManageableRepository
+   */
   public void onEvent(EventIterator events) {
     while (events.hasNext()) {
       Event event = events.nextEvent();
@@ -295,6 +413,11 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     }
   }
 
+  /**
+   * create Groovy ClassLoader
+   * @see   SessionProvider
+   * @return
+   */
   private GroovyClassLoader createGroovyClassLoader() {
     ClassLoader parentLoader = Thread.currentThread().getContextClassLoader();    
     return new GroovyClassLoader(parentLoader) {
@@ -333,23 +456,46 @@ public class ScriptServiceImpl extends BaseResourceLoaderService implements Scri
     };
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node getScriptNode(String scriptName, String repository,SessionProvider provider) throws Exception {
     try {
       Node scriptHome = getResourcesHome(repository,provider) ;
       return scriptHome.getNode(scriptName) ;      
     }catch (Exception e) {
-      e.printStackTrace() ;
-      return null ;
+      return null;
     }
   }
   
-  private Session getSession(String repository,SessionProvider provider) throws Exception {
+  /**
+   * Return session of the specified repository
+   * @param repository      String
+   *                        The name of repository
+   * @param provider        SessionProvider                    
+   * @return
+   * @see                   SessionProvider
+   * @see                   ManageableRepository
+   * @see                   DMSRepositoryConfiguration
+   * @throws Exception
+   */
+  private Session getSession(String repository, SessionProvider provider) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
-//    String systemWokspace = manageableRepository.getConfiguration().getSystemWorkspaceName();
+    // String systemWokspace = manageableRepository.getConfiguration().getSystemWorkspaceName();
     return provider.getSession(dmsRepoConfig.getSystemWorkspace(), manageableRepository);
   }
   
+  /**
+   * Get Node By Alias 
+   * @param alias       String  
+   *                    The alias of the specefied node
+   * @param session     Session
+   * @see               NodeHierarchyCreator
+   * @see               Session
+   * @return
+   * @throws Exception
+   */
   private Node getNodeByAlias(String alias,Session session) throws Exception {
     String path = nodeHierarchyCreator_.getJcrPath(alias) ;
     return (Node)session.getItem(path);
