@@ -60,38 +60,50 @@ public class QueryServiceImpl implements QueryService, Startable{
   private String relativePath_;  
   private List<QueryPlugin> queryPlugins_ = new ArrayList<QueryPlugin> ();
   private RepositoryService repositoryService_;
-  private CacheService cacheService_ ;  
-  private PortalContainerInfo containerInfo_ ;
-  private OrganizationService organizationService_ ;
-  private String baseUserPath_ ;
-  private String baseQueriesPath_ ;
-  private String group_ ;
+  private CacheService cacheService_;  
+  private PortalContainerInfo containerInfo_;
+  private OrganizationService organizationService_;
+  private String baseUserPath_;
+  private String baseQueriesPath_;
+  private String group_;
   private DMSConfiguration dmsConfiguration_;
   
   private static final Log LOG = ExoLogger.getLogger(QueryServiceImpl.class);
 
+  /**
+   * Constructor method
+   * @param repositoryService
+   * @param nodeHierarchyCreator
+   * @param params
+   * @param containerInfo
+   * @param cacheService
+   * @param organizationService
+   * @param dmsConfiguration
+   * @throws Exception
+   */
   public QueryServiceImpl(RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator, 
       InitParams params, PortalContainerInfo containerInfo, CacheService cacheService, 
       OrganizationService organizationService, DMSConfiguration dmsConfiguration) throws Exception {
     relativePath_ = params.getValueParam("relativePath").getValue();    
     group_ = params.getValueParam("group").getValue();
     repositoryService_ = repositoryService;
-    containerInfo_ = containerInfo ;
-    cacheService_ = cacheService ;
-    organizationService_ = organizationService ;
+    containerInfo_ = containerInfo;
+    cacheService_ = cacheService;
+    organizationService_ = organizationService;
     baseUserPath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
-    baseQueriesPath_ = nodeHierarchyCreator.getJcrPath(BasePath.QUERIES_PATH) ;
+    baseQueriesPath_ = nodeHierarchyCreator.getJcrPath(BasePath.QUERIES_PATH);
     dmsConfiguration_ = dmsConfiguration;
   }
   
   /**
-   * This method will start to init query plugin
+   * Implemented method from Startable class
+   * init all ManageDrivePlugin
    * @see QueryPlugin
    */
   public void start() {
     for(QueryPlugin queryPlugin : queryPlugins_){
       try{
-        queryPlugin.init(baseQueriesPath_) ;
+        queryPlugin.init(baseQueriesPath_);
       }catch (Exception e) {
         LOG.error("Can not start query plugin '" + queryPlugin.getName() + "'", e);
       }
@@ -99,16 +111,19 @@ public class QueryServiceImpl implements QueryService, Startable{
   }
 
   /**
-   * This method will start to init query plugin
+   * Implemented method from Startable class
    */
   public void stop() {
     // TODO Auto-generated method stub    
   }
 
+  /**
+   * Init query node with specified repository
+   */
   public void init(String repository) throws Exception {
     for(QueryPlugin queryPlugin : queryPlugins_){
       try{
-        queryPlugin.init(repository,baseQueriesPath_) ;
+        queryPlugin.init(repository,baseQueriesPath_);
       }catch (Exception e) { 
         LOG.error("Can not init query plugin '" + queryPlugin.getName() + "'", e);
       }
@@ -116,17 +131,23 @@ public class QueryServiceImpl implements QueryService, Startable{
   }
   
   /**
-   * This method will add QueryPlugin to proccess
+   * Add new QueryPlugin to queryPlugins_
    * @see                   QueryPlugin
    * @param queryPlugin     QueryPlugin
    */
   public void setQueryPlugin(QueryPlugin queryPlugin) {
-    queryPlugins_.add(queryPlugin) ;
+    queryPlugins_.add(queryPlugin);
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public String getRelativePath() { return relativePath_; }
 
-  public List<Query> getQueries(String userName, String repository,SessionProvider provider) throws Exception {
+  /**
+   * {@inheritDoc}
+   */
+  public List<Query> getQueries(String userName, String repository, SessionProvider provider) throws Exception {
     List<Query> queries = new ArrayList<Query>();        
     if (userName == null) return queries;    
     Session session = getSession(repository, provider, true);
@@ -137,7 +158,7 @@ public class QueryServiceImpl implements QueryService, Startable{
     } catch (PathNotFoundException e) {
       usersHome = (Node)getSession(repository, provider, false).getItem(baseUserPath_);
     }
-    Node userHome = null ;
+    Node userHome = null;
     if(usersHome.hasNode(userName)) {
       userHome = usersHome.getNode(userName);
     } else{
@@ -146,23 +167,23 @@ public class QueryServiceImpl implements QueryService, Startable{
         userHome.addMixin("exo:privilegeable");
       }
       ((ExtendedNode)userHome).setPermissions(getPermissions(userName));
-      Node query = null ;
+      Node query = null;
       if(userHome.hasNode(relativePath_)) {
-        query = userHome.getNode(relativePath_) ;
+        query = userHome.getNode(relativePath_);
       } else {
-        query = getNodeByRelativePath(userHome, relativePath_) ;
+        query = getNodeByRelativePath(userHome, relativePath_);
       }
       if (query.canAddMixin("exo:privilegeable")){
         query.addMixin("exo:privilegeable");
       }
       ((ExtendedNode)query).setPermissions(getPermissions(userName));
-      usersHome.save() ;
+      usersHome.save();
     }
-    Node queriesHome = null ;
+    Node queriesHome = null;
     if(userHome.hasNode(relativePath_)) {
-      queriesHome = userHome.getNode(relativePath_) ;
+      queriesHome = userHome.getNode(relativePath_);
     } else {
-      queriesHome = getNodeByRelativePath(userHome, relativePath_) ;
+      queriesHome = getNodeByRelativePath(userHome, relativePath_);
     }
     NodeIterator iter = queriesHome.getNodes();
     while (iter.hasNext()) {
@@ -172,18 +193,30 @@ public class QueryServiceImpl implements QueryService, Startable{
     return queries;
   }
   
+  /**
+   * Get node by giving the node user and the relative path to its 
+   * @param userHome      Node user
+   * @param relativePath  The relative path to its
+   * @return
+   * @throws Exception
+   */
   private Node getNodeByRelativePath(Node userHome, String relativePath) throws Exception {
-    String[] paths = relativePath.split("/") ;
-    String relPath = null ;
-    Node queriesHome = null ;
+    String[] paths = relativePath.split("/");
+    String relPath = null;
+    Node queriesHome = null;
     for(String path : paths) {
-      if(relPath == null) relPath = path ;
-      else relPath = relPath + "/" + path ;
-      if(!userHome.hasNode(relPath)) queriesHome = userHome.addNode(relPath) ;
+      if(relPath == null) relPath = path;
+      else relPath = relPath + "/" + path;
+      if(!userHome.hasNode(relPath)) queriesHome = userHome.addNode(relPath);
     }
-    return queriesHome ;
+    return queriesHome;
   }
 
+  /**
+   * Get all permission of the giving owner
+   * @param owner
+   * @return
+   */
   private Map<String,String[]> getPermissions(String owner) {
     Map<String, String[]> permissions = new HashMap<String, String[]>();
     permissions.put(owner, perms);         
@@ -191,91 +224,106 @@ public class QueryServiceImpl implements QueryService, Startable{
     return permissions;
   } 
 
+  /**
+   * {@inheritDoc}
+   */
   public void addQuery(String queryName, String statement, String language, 
       String userName, String repository) throws Exception {
-    if(userName == null) return;
-    Session session = getSession(repository) ;
+    if (userName == null) return;
+    Session session = getSession(repository);
     QueryManager manager = session.getWorkspace().getQueryManager();    
     Query query = manager.createQuery(statement, language);    
-    Node usersNode = (Node) session.getItem(baseUserPath_) ;
-    if(!usersNode.hasNode(userName)) {
-      usersNode.addNode(userName) ;
-      usersNode.save() ;
+    Node usersNode = (Node) session.getItem(baseUserPath_);
+    if (!usersNode.hasNode(userName)) {
+      usersNode.addNode(userName);
+      usersNode.save();
     }
-    Node userNode = usersNode.getNode(userName) ;
-    if(!userNode.hasNode(relativePath_)) {
-      getNodeByRelativePath(userNode, relativePath_) ;
-      userNode.save() ;
-      session.save() ;
+    Node userNode = usersNode.getNode(userName);
+    if (!userNode.hasNode(relativePath_)) {
+      getNodeByRelativePath(userNode, relativePath_);
+      userNode.save();
+      session.save();
     }
     String absPath = baseUserPath_ + "/" + userName + "/" + relativePath_ + "/" + queryName;
     query.storeAsNode(absPath);
-    session.refresh(true) ;
+    session.refresh(true);
     session.getItem(baseUserPath_).save();
     session.save();
     session.logout();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void removeQuery(String queryPath, String userName, String repository) throws Exception {
     if(userName == null) return;    
-    Session session = getSession(repository) ;
+    Session session = getSession(repository);
     Node queryNode = (Node) session.getItem(queryPath);
-    Node queriesHome = queryNode.getParent() ;
-    queryNode.remove() ;
-    queriesHome.save() ;
+    Node queriesHome = queryNode.getParent();
+    queryNode.remove();
+    queriesHome.save();
     session.save();
     session.logout();
-    removeFromCache(queryPath) ;
+    removeFromCache(queryPath);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addSharedQuery(String queryName, String statement, String language, 
       String[] permissions, boolean cachedResult, String repository) throws Exception {
     SessionProvider provider = SessionProviderFactory.createSessionProvider();
     Session session = getSession(repository, provider, true);
     ValueFactory vt = session.getValueFactory();
-    String queryPath ;
-    List<Value> perm = new ArrayList<Value>() ;                 
-    for(String permission : permissions) {
-      Value vl = vt.createValue(permission) ;
-      perm.add(vl) ;
+    String queryPath;
+    List<Value> perm = new ArrayList<Value>();                 
+    for (String permission : permissions) {
+      Value vl = vt.createValue(permission);
+      perm.add(vl);
     }
-    Value[] vls = perm.toArray(new Value[] {}) ;
+    Value[] vls = perm.toArray(new Value[] {});
 
-    String queriesPath = baseQueriesPath_ ;
-    Node queryHome = (Node)session.getItem(baseQueriesPath_) ;
-    QueryManager queryManager = session.getWorkspace().getQueryManager() ;
-    queryManager.createQuery(statement, language) ;
-    if(queryHome.hasNode(queryName)) {
-      Node query = queryHome.getNode(queryName) ;
-      query.setProperty("jcr:language", language) ;
-      query.setProperty("jcr:statement", statement) ;
-      query.setProperty("exo:accessPermissions", vls) ;
-      query.setProperty("exo:cachedResult", cachedResult) ;
-      query.save() ;
-      session.save() ;
-      queryPath = query.getPath() ;
-    }else {
+    String queriesPath = baseQueriesPath_;
+    Node queryHome = (Node)session.getItem(baseQueriesPath_);
+    QueryManager queryManager = session.getWorkspace().getQueryManager();
+    queryManager.createQuery(statement, language);
+    if (queryHome.hasNode(queryName)) {
+      Node query = queryHome.getNode(queryName);
+      query.setProperty("jcr:language", language);
+      query.setProperty("jcr:statement", statement);
+      query.setProperty("exo:accessPermissions", vls);
+      query.setProperty("exo:cachedResult", cachedResult);
+      query.save();
+      session.save();
+      queryPath = query.getPath();
+    } else {
       QueryManager manager = session.getWorkspace().getQueryManager();    
       Query query = manager.createQuery(statement, language);      
       Node newQuery = query.storeAsNode(baseQueriesPath_ + "/" + queryName);
-      newQuery.addMixin("mix:sharedQuery") ;
-      newQuery.setProperty("exo:accessPermissions", vls) ;
-      newQuery.setProperty("exo:cachedResult", cachedResult) ;
+      newQuery.addMixin("mix:sharedQuery");
+      newQuery.setProperty("exo:accessPermissions", vls);
+      newQuery.setProperty("exo:cachedResult", cachedResult);
       session.getItem(queriesPath).save();
-      queryPath = queriesPath ;
+      queryPath = queriesPath;
     }
     session.logout();
-    removeFromCache(queryPath) ;
+    removeFromCache(queryPath);
   }
 
-  public Node getSharedQuery(String queryName, String repository,SessionProvider provider) throws Exception {
-    Session session = getSession(repository, provider, true) ;    
+  /**
+   * {@inheritDoc}
+   */
+  public Node getSharedQuery(String queryName, String repository, SessionProvider provider) throws Exception {
+    Session session = getSession(repository, provider, true);    
     return (Node)session.getItem(baseQueriesPath_ + "/" + queryName);
   }
   
-  public List<Node> getSharedQueries(String repository,SessionProvider provider) throws Exception {
+  /**
+   * {@inheritDoc}
+   */
+  public List<Node> getSharedQueries(String repository, SessionProvider provider) throws Exception {
     Session session = getSession(repository, provider, true);
-    List<Node> queries = new ArrayList<Node>() ;
+    List<Node> queries = new ArrayList<Node>();
     Node sharedQueryHome = (Node) session.getItem(baseQueriesPath_);
     NodeIterator iter = sharedQueryHome.getNodes();
     while (iter.hasNext()) {
@@ -283,48 +331,63 @@ public class QueryServiceImpl implements QueryService, Startable{
       if("nt:query".equals(node.getPrimaryNodeType().getName()))
         queries.add(node);
     }
-    return queries ;
+    return queries;
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getSharedQueries(String userId, String repository, SessionProvider provider) throws Exception {
     List<Node> sharedQueries = new ArrayList<Node>();
-    for(Node query:getSharedQueries(repository,provider)) {
-      if(canUseQuery(userId,query)) {
-        sharedQueries.add(query) ;
+    for(Node query : getSharedQueries(repository, provider)) {
+      if (canUseQuery(userId, query)) {
+        sharedQueries.add(query);
       }
     }
     return sharedQueries;
   }  
+  
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getSharedQueries(String queryType, String userId, String repository, SessionProvider provider) throws Exception {
-    List<Node> resultList = new ArrayList<Node>() ;
-    String language = null ;    
-    for(Node queryNode: getSharedQueries(repository,provider)) {
-      language = queryNode.getProperty("jcr:language").getString() ;
-      if(!queryType.equalsIgnoreCase(language)) continue ;
-      if(canUseQuery(userId,queryNode)) {
-        resultList.add(queryNode) ;
+    List<Node> resultList = new ArrayList<Node>();
+    String language = null;    
+    for (Node queryNode: getSharedQueries(repository,provider)) {
+      language = queryNode.getProperty("jcr:language").getString();
+      if (!queryType.equalsIgnoreCase(language)) continue;
+      if (canUseQuery(userId,queryNode)) {
+        resultList.add(queryNode);
       }
     }
     return resultList;
   }
 
-
-  public Query getQueryByPath(String queryPath, String userName, String repository,SessionProvider provider) throws Exception {
-    List<Query> queries = getQueries(userName, repository,provider) ;
-    for(Query query : queries) {
-      if(query.getStoredQueryPath().equals(queryPath)) return query ;
+  /**
+   * {@inheritDoc}
+   */
+  public Query getQueryByPath(String queryPath, String userName, String repository, SessionProvider provider) throws Exception {
+    List<Query> queries = getQueries(userName, repository, provider);
+    for (Query query : queries) {
+      if (query.getStoredQueryPath().equals(queryPath)) return query;
     }
-    return null ;
+    return null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void removeSharedQuery(String queryName, String repository) throws Exception {
-    Session session = getSession(repository) ;    
+    Session session = getSession(repository);    
     session.getItem(baseQueriesPath_ + "/" + queryName).remove();
-    session.save() ;
+    session.save();
     session.logout();
   }
   
-  public QueryResult execute(String queryPath, String workspace, String repository,SessionProvider provider, String userId) throws Exception {
+  /**
+   * {@inheritDoc}
+   */
+  public QueryResult execute(String queryPath, String workspace, String repository, SessionProvider provider, String userId) throws Exception {
     Session session = getSession(repository, provider, true);    
     Session querySession = getSession(repository, workspace, provider);
     Node queryNode = null;
@@ -348,7 +411,15 @@ public class QueryServiceImpl implements QueryService, Startable{
     return execute(querySession, queryNode, userId);
   }
   
-  private QueryResult execute(Session session,Node queryNode, String userId) throws Exception {
+  /**
+   * Execute the query by giving the session, query node and userid
+   * @param session     The Session
+   * @param queryNode   The node of query
+   * @param userId      The userid
+   * @return  
+   * @throws Exception
+   */
+  private QueryResult execute(Session session, Node queryNode, String userId) throws Exception {
     String statement = this.computeStatement(queryNode.getProperty("jcr:statement").getString(), userId);
     String language = queryNode.getProperty("jcr:language").getString();
     Query query = session.getWorkspace().getQueryManager().createQuery(statement,language);
@@ -382,55 +453,93 @@ public class QueryServiceImpl implements QueryService, Startable{
     return ret;
   }
   
+  /**
+   * Remove query from cache by giving the query path
+   * @param queryPath   The path to query
+   * @throws Exception
+   */
   private void removeFromCache(String queryPath) throws Exception {
-    ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName()) ;
-    String portalName = containerInfo_.getContainerName() ;
-    String key = portalName + queryPath ;
-    QueryResult result = (QueryResult)queryCache.get(key) ;
-    if (result != null) queryCache.remove(key) ;
+    ExoCache queryCache = cacheService_.getCacheInstance(QueryServiceImpl.class.getName());
+    String portalName = containerInfo_.getContainerName();
+    String key = portalName + queryPath;
+    QueryResult result = (QueryResult)queryCache.get(key);
+    if (result != null) queryCache.remove(key);
   }
 
-  //TODO need to use SystemProvider
+  /**
+   * Get the session with specified repository
+   * @param repository
+   * @return
+   * @throws Exception
+   */
   private Session getSession(String repository) throws Exception {
-    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     return manageableRepository.getSystemSession(manageableRepository.getConfiguration().getDefaultWorkspaceName());
         
   }
 
+  /**
+   * Get the session by specify the repository, sessionprovider and flag params
+   * @param repository    The repository name
+   * @param provider      The SessionProvider
+   * @param flag          The boolean to decide which session will be chosen
+   * @return
+   * @throws Exception
+   */
   private Session getSession(String repository,SessionProvider provider, boolean flag) throws Exception {
-    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     if (!flag) {
-      String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName() ;
-      return provider.getSession(workspace,manageableRepository) ;
+      String workspace = manageableRepository.getConfiguration().getDefaultWorkspaceName();
+      return provider.getSession(workspace, manageableRepository);
     }
     DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
-    return provider.getSession(dmsRepoConfig.getSystemWorkspace(), manageableRepository) ;
+    return provider.getSession(dmsRepoConfig.getSystemWorkspace(), manageableRepository);
   }
 
-  private Session getSession(String repository,String workspace,SessionProvider provider) throws Exception {
-    ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-    return provider.getSession(workspace,manageableRepository) ;
+  /**
+   * Get the session by specify the repository, workspace and sessionprovider
+   * @param repository    The repository name
+   * @param workspace     The workspace name
+   * @param provider      The SessionProvider
+   * @return
+   * @throws Exception
+   */
+  private Session getSession(String repository, String workspace, SessionProvider provider) throws Exception {
+    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
+    return provider.getSession(workspace,manageableRepository);
   }
   
-  private boolean canUseQuery(String userId,Node queryNode) throws Exception{    
-    Value[] values = queryNode.getProperty("exo:accessPermissions").getValues() ;
+  /**
+   * Check the given user can use this query
+   * @param userId      The user id
+   * @param queryNode   The node of query
+   * @return
+   * @throws Exception
+   */
+  private boolean canUseQuery(String userId, Node queryNode) throws Exception{    
+    Value[] values = queryNode.getProperty("exo:accessPermissions").getValues();
     for(Value value : values) {
-      String accessPermission = value.getString() ;
-      if(hasMembership(userId,accessPermission)) {
-        return true ;
+      String accessPermission = value.getString();
+      if (hasMembership(userId,accessPermission)) {
+        return true;
       }
     }
-    return false ;
+    return false;
   }
 
-  //TODO :this method will be removed when MembershipHandler support
+  /**
+   * Check the user which has a given membership
+   * @param userId          The user id
+   * @param roleExpression  The expression of membership
+   * @return
+   */
   private boolean hasMembership(String userId, String roleExpression) {
     if("*".equals(roleExpression))
       return true;
     String membershipType = roleExpression.substring(0, roleExpression.indexOf(":"));
     String groupName = roleExpression.substring(roleExpression.indexOf(":") + 1);
     try {
-      MembershipHandler membershipHandler = organizationService_.getMembershipHandler() ;
+      MembershipHandler membershipHandler = organizationService_.getMembershipHandler();
       if ("*".equals(membershipType)) {
         // Determine if there exists at least one membership
         return !membershipHandler.findMembershipsByUserAndGroup( userId,groupName).isEmpty();
@@ -440,6 +549,6 @@ public class QueryServiceImpl implements QueryService, Startable{
     }
     catch(Exception e) {            
     }  
-    return false ;
+    return false;
   }   
 }

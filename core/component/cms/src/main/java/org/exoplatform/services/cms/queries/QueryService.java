@@ -25,180 +25,175 @@ import javax.jcr.query.QueryResult;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 public interface QueryService {
-  
+
+  /**
+   * Get the relative path
+   * 
+   * @return
+   */
   public String getRelativePath();
-  
+
   /**
-   * This method will get queries by giving the following params : userName, repository, provider
-   * @param userName    String
-   *                    Can be <code>null</code>           
-   * @param repository  String
-   *                    The name of repository
-   * @param provider    SessionProvider
-   * @return queries    List<Query>
-   * @see               Query
-   * @see               SessionProvider
+   * Get queries by giving the following params : userName, repository, provider
+   * 
+   * @param userName String Can be <code>null</code>
+   * @param repository String The name of repository
+   * @param provider SessionProvider
+   * @return queries List<Query>
+   * @see Query
+   * @see SessionProvider
    * @throws Exception
    */
-  public List<Query> getQueries(String userName, String repository,SessionProvider provider) throws Exception;  
-  
+  public List<Query> getQueries(String userName, String repository, SessionProvider provider)
+      throws Exception;
+
   /**
-   * This method will execute query by giving the following params : queryPath, workspace, repository, 
-   * provider, userId
-   * @param queryPath     String
-   *                      The path of query
-   * @param workspace     String
-   *                      The name of workspace          
-   * @param repository    String
-   *                      The name of repository
-   * @param provider      SessionProvider
-   * @param userId        String
-   *                      The id of current user
-   * @return queries      QueryResult
-   * @see                 QueryResult
-   * @see                 SessionProvider
+   * Execute query by giving the following params : queryPath, workspace,
+   * repository, provider, userId
+   * 
+   * @param queryPath String The path of query
+   * @param workspace String The name of workspace
+   * @param repository String The name of repository
+   * @param provider SessionProvider
+   * @param userId String The id of current user
+   * @return queries QueryResult
+   * @see QueryResult
+   * @see SessionProvider
    * @throws Exception
    */
-  public QueryResult execute (String queryPath, String workspace, String repository,SessionProvider provider, String userId) throws Exception;
-  
+  public QueryResult execute(String queryPath, String workspace, String repository,
+      SessionProvider provider, String userId) throws Exception;
+
   /**
-   * This method will add query by giving the following params : queryName, statement, language, 
-   * userName, repository
-   *    
-   * @param queryName     String
-   *                      The name of query            
-   * @param statement     String
-   *                      The statement query
-   * @param language      String
-   *                      The language is requested 
-   * @param userName      String
-   *                      Can be <code>null</code>  
-   * @param repository    String
-   *                      The name of repository 
+   * Add new query by giving the following params : queryName, statement,
+   * language, userName, repository
+   * 
+   * @param queryName String The name of query
+   * @param statement String The statement query
+   * @param language String The language is requested
+   * @param userName String Can be <code>null</code>
+   * @param repository String The name of repository
    * @throws Exception
    */
-  public void addQuery(String queryName, String statement, String language, String userName, String repository) throws Exception;
-  
+  public void addQuery(String queryName, String statement, String language, String userName,
+      String repository) throws Exception;
+
   /**
-   * This method will remove query by giving the following params : queryPath, userName, repository
-   * @param queryPath     String
-   *                      The path of query             
-   * @param userName      String
-   *                      Can be <code>null</code> 
-   * @param repository    String
-   *                      The name of repository 
+   * Remove query by giving the following params : queryPath, userName,
+   * repository
+   * 
+   * @param queryPath String The path of query
+   * @param userName String Can be <code>null</code>
+   * @param repository String The name of repository
    * @throws Exception
    */
   public void removeQuery(String queryPath, String userName, String repository) throws Exception;
-  
+
   /**
-   * This method will add shared query by giving the following params: queryName, statement, language, 
-   * permissions, cachedResult, repository
-   * @param queryName     String
-   *                      The name of query
-   * @param statement     String
-   *                      The statement query
-   * @param language      String
-   *                      The language is requested
-   * @param permissions   String[]
-   *        
-   * @param cachedResult  boolean
-   *                      Choosen for caching results
-   * @param repository    String
-   *                      The name of repository
+   * Add new shared query by giving the following params: queryName, statement,
+   * language, permissions, cachedResult, repository
+   * 
+   * @param queryName String The name of query
+   * @param statement String The statement query
+   * @param language String The language is requested
+   * @param permissions String[]
+   * @param cachedResult boolean Choosen for caching results
+   * @param repository String The name of repository
    * @throws Exception
    */
-  public void addSharedQuery(String queryName, String statement, String language, String[] permissions, boolean cachedResult, String repository) throws Exception;
-  
+  public void addSharedQuery(String queryName, String statement, String language,
+      String[] permissions, boolean cachedResult, String repository) throws Exception;
+
   /**
-   * This method will get shared queries by giving the following params : userId, repository, provider
-   * @param userId          String
-   *                        The id of current user
-   * @param repository      String
-   *                        The name of repository
-   * @param provider        SessionProvider
-   * @return sharedQueries  List<Node>
-   * @see                   Node
-   * @see                   SessionProvider       
+   * Get shared queries by giving the following params : userId, repository,
+   * provider
+   * 
+   * @param userId String The id of current user
+   * @param repository String The name of repository
+   * @param provider SessionProvider
+   * @return sharedQueries List<Node>
+   * @see Node
+   * @see SessionProvider
    * @throws Exception
    */
-  public Node getSharedQuery(String queryName, String repository, SessionProvider provider) throws Exception ;
-  
+  public Node getSharedQuery(String queryName, String repository, SessionProvider provider)
+      throws Exception;
+
   /**
-   * This method will remove share query by giving the following params : queryName, repository
-   * @param queryName     String
-   *                      The name of query
-   * @param repository    String
-   *                      The name of repository 
+   * Remove share query by giving the following params : queryName, repository
+   * 
+   * @param queryName String The name of query
+   * @param repository String The name of repository
    * @throws Exception
    */
   public void removeSharedQuery(String queryName, String repository) throws Exception;
-  
+
   /**
-   * This method will get shared queries by giving the following params : repository, provider
-   * @param repository      String
-   *                        The name of repository
-   * @param provider        SessionProvider
-   * @return sharedQueries  List<Node>
-   * @see                   Node
-   * @see                   SessionProvider
+   * Get shared queries by giving the following params : repository, provider
+   * 
+   * @param repository String The name of repository
+   * @param provider SessionProvider
+   * @return sharedQueries List<Node>
+   * @see Node
+   * @see SessionProvider
    * @throws Exception
    */
   public List<Node> getSharedQueries(String repository, SessionProvider provider) throws Exception;
-  
+
   /**
-   * This method will get query with path by giving the following params : queryPath, userName, repository, provider
-   * @param queryPath     String
-   *                      The path of query
-   * @param userName      String
-   *                      The  name of current user
-   * @param repository    String
-   *                      The name of repository 
-   * @param provider      SessionProvider
-   * @return query        Query
-   * @see                 Node
-   * @see                 Query            
-   * @see                 SessionProvider      
+   * Get query with path by giving the following params : queryPath, userName,
+   * repository, provider
+   * 
+   * @param queryPath String The path of query
+   * @param userName String The name of current user
+   * @param repository String The name of repository
+   * @param provider SessionProvider
+   * @return query Query
+   * @see Node
+   * @see Query
+   * @see SessionProvider
    * @throws Exception
    */
-  public Query getQueryByPath(String queryPath, String userName, String repository, SessionProvider provider) throws Exception;
-  
+  public Query getQueryByPath(String queryPath, String userName, String repository,
+      SessionProvider provider) throws Exception;
+
   /**
-   * This method will get shared queries by giving the following params : userId, repository, provider
-   * @param userId          String
-   *                        The id of current user
-   * @param repository      String
-   *                        The name of repository
-   * @param provider        SessionProvider
-   * @return sharedQueries  List<Node>
-   * @see                   Node
-   * @see                   SessionProvider
+   * Get shared queries by giving the following params : userId, repository,
+   * provider
+   * 
+   * @param userId String The id of current user
+   * @param repository String The name of repository
+   * @param provider SessionProvider
+   * @return sharedQueries List<Node>
+   * @see Node
+   * @see SessionProvider
    * @throws Exception
    */
-  public List<Node> getSharedQueries(String userId,String repository,SessionProvider provider) throws Exception;
-  
+  public List<Node> getSharedQueries(String userId, String repository, SessionProvider provider)
+      throws Exception;
+
   /**
-   * This method will get shared queries by giving the following params : queryType, userId, repository, provider
-   * @param queryType       String
-   *                        The type of query
-   * @param userId          String
-   *                        The id of current user
-   * @param repository      String
-   *                        The name of repository
-   * @param provider        SessionProvider
-   * @return sharedQueries  List<Node>
-   * @see                   Node
-   * @see                   SessionProvider
+   * Get shared queries by giving the following params : queryType, userId,
+   * repository, provider
+   * 
+   * @param queryType String The type of query
+   * @param userId String The id of current user
+   * @param repository String The name of repository
+   * @param provider SessionProvider
+   * @return sharedQueries List<Node>
+   * @see Node
+   * @see SessionProvider
    * @throws Exception
    */
-  public List<Node> getSharedQueries(String queryType, String userId,String repository,SessionProvider provider) throws Exception ;
-  
+  public List<Node> getSharedQueries(String queryType, String userId, String repository,
+      SessionProvider provider) throws Exception;
+
   /**
-   * This method will init query plugin by giving the following params : repository
-   * @param repository      String
-   *                        The name of repository
-   * @see                   QueryPlugin
+   * Init all query plugin by giving the following params : repository
+   * 
+   * @param repository String The name of repository
+   * @see QueryPlugin
    * @throws Exception
-   */  
-  public void init(String repository) throws Exception ;
+   */
+  public void init(String repository) throws Exception;
 }

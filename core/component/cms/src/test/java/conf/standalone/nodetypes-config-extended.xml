@@ -703,7 +703,7 @@
   </nodeType>
   <nodeType name="mix:sharedQuery" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
 	  <propertyDefinitions>	
-	  	<propertyDefinition name="exo:permissions" requiredType="String" autoCreated="false" mandatory="false"
+	  	<propertyDefinition name="exo:accessPermissions" requiredType="String" autoCreated="false" mandatory="false"
 		   onParentVersion="COPY" protected="false" multiple="true">
 		    <valueConstraints/>        
 		  </propertyDefinition>
