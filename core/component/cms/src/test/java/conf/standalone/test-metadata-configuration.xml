@@ -14,7 +14,7 @@
 	        </value-param>
 	        <value-param>
 	        	<name>storedLocation</name>
-	        	<value>jar:/conf/standalone/metadata</value>
+	        	<value>jar:/conf/dms/artifacts/metadata</value>
 	        </value-param>
 	        <value-param>
 	        	<name>repository</name>

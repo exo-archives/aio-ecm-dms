@@ -89,4 +89,5 @@
   <import>classpath:/conf/standalone/test-folksonomy-configuration.xml</import>
   <import>classpath:/conf/standalone/cms-configuration.xml</import> 
   <import>classpath:/conf/standalone/test-queries-configuration.xml</import>
+  <import>classpath:/conf/standalone/test-scripts-configuration.xml</import>  
 </configuration>

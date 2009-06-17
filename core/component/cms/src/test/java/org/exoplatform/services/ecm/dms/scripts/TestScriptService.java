@@ -64,24 +64,22 @@ public class TestScriptService extends BaseDMSTestCase {
   }
   
   public void testGetECMActionScripts() throws Exception {
-    assertEquals(0, scriptService.getECMActionScripts(REPO_NAME, 
+    assertEquals(10, scriptService.getECMActionScripts(REPO_NAME, 
         SessionProviderFactory.createSessionProvider()).size());
   }
   
   public void testGetECMInterceptorScripts() throws Exception {
-    assertEquals(0, scriptService.getECMInterceptorScripts(REPO_NAME, 
-        SessionProviderFactory.createSessionProvider()).size());    
+    assertEquals(3, scriptService.getECMInterceptorScripts(REPO_NAME, 
+        SessionProviderFactory.createSessionProvider()).size());
   }
   
   public void testGetECMWidgetScripts() throws Exception {
-    assertEquals(0, scriptService.getECMWidgetScripts(REPO_NAME, 
+    assertEquals(4, scriptService.getECMWidgetScripts(REPO_NAME, 
         SessionProviderFactory.createSessionProvider()).size());
   }
   
   public void testGetScript() throws Exception {
-    scriptService.addScript("Testing", "This is my testing script as text", REPO_NAME, 
-        SessionProviderFactory.createSessionProvider());
-    assertNotNull(scriptService.getScript("/exo:ecm/scripts/Testing", REPO_NAME));
+    assertNotNull(scriptService.getScript("content-browser/GetDocuments.groovy", REPO_NAME));
   }
   
   public void testGetBaseScriptPath() throws Exception {

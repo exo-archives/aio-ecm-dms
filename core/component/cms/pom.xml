@@ -130,6 +130,7 @@
           <include>**/*.sha1</include>
           <include>**/*.conf</include>
           <include>**/*.gtmpl</include>
+          <include>**/*.groovy</include>          
         </includes>
       </testResource>
       <testResource>
@@ -137,6 +138,7 @@
         <includes>
           <include>**/*.xml</include>
           <include>**/*.gtmpl</include>
+          <include>**/*.groovy</include>
         </includes>
       </testResource>
     </testResources>
