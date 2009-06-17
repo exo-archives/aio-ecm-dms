@@ -78,7 +78,6 @@ public class ManageViewServiceTest extends BaseDMSTestCase {
     templatesDetail = nodeHierarchyCreator.getJcrPath(BasePath.CB_DETAIL_VIEW_TEMPLATES);
   }
   
-  /*
   private void checkInitData() throws Exception {
     List<?> buttons = manageViewService.getButtons();
     assertTrue(buttons.size() > 0);
@@ -87,7 +86,6 @@ public class ManageViewServiceTest extends BaseDMSTestCase {
     assertTrue(buttons.contains("ManageVersions"));
     assertTrue(buttons.contains("ViewNodeType"));
     assertTrue(buttons.contains("WatchDocument"));
-    Session sessionDMS = repository.login(credentials, DMSSYSTEM_WS);
     assertTrue(sessionDMS.itemExists(viewsPath));
     assertTrue(sessionDMS.itemExists(templatesPathEx));
     assertTrue(sessionDMS.itemExists(templatesQuery));
@@ -144,7 +142,6 @@ public class ManageViewServiceTest extends BaseDMSTestCase {
     manageViewService.init(REPO_NAME);
     checkInitData();
   }
-*/
   
   //Test ManageViewServiceImpl.addView()
   public void testAddView() throws Exception {
@@ -266,7 +263,8 @@ public class ManageViewServiceTest extends BaseDMSTestCase {
     assertEquals(TAB_NODETYPE, tab.getPrimaryNodeType().getName());
     assertEquals(buttons, tab.getProperty("exo:buttons").getString());
   }
-  
+   
+  //Clean templateTest node 
   public void tearDown() throws Exception {
     if (sessionDMS.itemExists(viewsPath + "/templateTest")) {
       Node templateTest = (Node)sessionDMS.getItem(viewsPath + "/templateTest");
