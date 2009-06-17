@@ -158,7 +158,7 @@ public interface ManageViewService {
    *                        The name of new template         
    * @param content         String
    *                        The property of template
-   * @param homeAlias       String
+   * @param homePath       String
    *                        The path of specified node
    * @param repository      String
    *                        The name of repository
@@ -166,7 +166,7 @@ public interface ManageViewService {
    * @see                   Node                       
    * @throws Exception
    */
-  public String addTemplate(String name, String content, String homeAlias, String repository)throws Exception ;
+  public String addTemplate(String name, String content, String homePath, String repository)throws Exception ;
   
   /**
    * Removes the template to the given node by specified the templatePath params

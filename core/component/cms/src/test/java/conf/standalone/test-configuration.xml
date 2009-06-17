@@ -84,10 +84,11 @@
 	<import>classpath:/conf/standalone/test-taxonomies-configuration.xml</import>
 	<import>classpath:/conf/standalone/test-dms-actions-configuration.xml</import>
 	<import>classpath:/conf/standalone/test-templates-configuration.xml</import> 
-  <import>classpath:/conf/standalone/test-drives-configuration.xml</import>
-  <import>classpath:/conf/standalone/test-metadata-configuration.xml</import>
-  <import>classpath:/conf/standalone/test-folksonomy-configuration.xml</import>
-  <import>classpath:/conf/standalone/cms-configuration.xml</import> 
-  <import>classpath:/conf/standalone/test-queries-configuration.xml</import>
-  <import>classpath:/conf/standalone/test-scripts-configuration.xml</import>  
+	<import>classpath:/conf/standalone/test-drives-configuration.xml</import>
+	<import>classpath:/conf/standalone/test-metadata-configuration.xml</import>
+	<import>classpath:/conf/standalone/test-folksonomy-configuration.xml</import>
+	<import>classpath:/conf/standalone/cms-configuration.xml</import> 
+	<import>classpath:/conf/standalone/test-queries-configuration.xml</import>
+	<import>classpath:/conf/standalone/test-dms-views-configuration.xml</import>
+	<import>classpath:/conf/standalone/test-scripts-configuration.xml</import>  
 </configuration>

@@ -68,6 +68,14 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   private final DMSConfiguration dmsConfiguration_;
   private final UIExtensionManager extensionManager_;
   
+  /**
+   * Constructor
+   * @param jcrService            : Manage repository 
+   * @param nodeHierarchyCreator  : Manage alias path
+   * @param dmsConfiguration      : Manage dms-system workspace
+   * @param extensionManager      : Manage UIComponent in each view
+   * @throws Exception
+   */
   public ManageViewServiceImpl(RepositoryService jcrService,
       NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration,
       UIExtensionManager extensionManager) throws Exception{
@@ -78,6 +86,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     extensionManager_ = extensionManager;
   }
 
+  //Add buttons defined in configuration file
   private void initButtons() {
     List<UIExtension> extensions = extensionManager_.getUIExtensions(EXTENSION_TYPE);
     List<String> actions = new ArrayList<String>();
@@ -90,6 +99,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     buttons_ = Collections.unmodifiableList(actions);
   }
   
+  //Start initiating from configuration file
   public void start() {
     try {
       initButtons();
@@ -101,27 +111,45 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     }    
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void stop() { }
 
+  /**
+   * {@inheritDoc}
+   */
   public void init(String repository) throws Exception  {
     for(ManageViewPlugin plugin : plugins_) {
       plugin.init(repository) ;
     }    
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void setManageViewPlugin(ManageViewPlugin viewPlugin) {
     plugins_.add(viewPlugin) ;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<?> getButtons(){
     return buttons_ ;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node getViewHome(String repository) throws Exception {    
     String viewsPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_VIEWS_PATH);
     return (Node) getSession(repository).getItem(viewsPath);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<ViewConfig> getAllViews(String repository) throws Exception {
     List<ViewConfig> viewList = new ArrayList<ViewConfig>() ;
     ViewConfig view = null;
@@ -152,6 +180,9 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public boolean hasView(String name, String repository) throws Exception {
     Session session = getSession(repository) ;
     Node viewHome = (Node)session.getItem(baseViewPath_) ;
@@ -160,6 +191,9 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     return b;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node getViewByName(String name, String repository,SessionProvider provider) throws Exception{          
     Session session = getSession(repository,provider) ;
     try {
@@ -169,6 +203,9 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     }
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public void addView(String name, String permissions, String template, List<?> tabs, 
       String repository) throws Exception{
     Session session = getSession(repository) ;
@@ -201,6 +238,9 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     session.logout();
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public void removeView(String viewName, String repository) throws Exception {
     Session session = getSession(repository) ;
     Node viewHome = (Node)session.getItem(baseViewPath_) ;
@@ -213,6 +253,9 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     session.logout();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addTab(Node view, String name, String buttons) throws Exception {
     Node tab ;
     if(view.hasNode(name)){
@@ -224,6 +267,9 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     view.save() ;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node getTemplateHome(String homeAlias, String repository,SessionProvider provider) throws Exception{
     String homePath = getJCRPath(homeAlias) ;
     try {
@@ -234,23 +280,45 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     }
   }
 
+  /**
+   * Get path by alias 
+   * @param jcrAlias
+   * @return
+   * @throws Exception
+   */
   private String getJCRPath(String jcrAlias) throws Exception{
     return nodeHierarchyCreator_.getJcrPath(jcrAlias) ;
   }
 
 
+  /**
+   * Get session by repository
+   * @param repository      : ManageableRepository object
+   * @return
+   * @throws Exception
+   */
   private Session getSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
     DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
     return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace()) ;    
   }
   
+  /**
+   * Get session by repository and SessionProvider
+   * @param repository
+   * @param sessionProvider
+   * @return
+   * @throws Exception
+   */
   private Session getSession(String repository,SessionProvider sessionProvider) throws Exception{
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
     DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
     return sessionProvider.getSession(dmsRepoConfig.getSystemWorkspace(), manageableRepository) ;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getAllTemplates(String homeAlias, String repository,SessionProvider provider) throws Exception {
     Node templateHomNode = getTemplateHome(homeAlias, repository,provider) ;
     List<Node> list = new ArrayList<Node>() ;
@@ -261,10 +329,17 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     return list;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node getTemplate(String path, String repository,SessionProvider provider) throws Exception{    
     return (Node)getSession(repository,provider).getItem(path) ;
   }
 
+
+  /**
+   * {@inheritDoc}
+   */
   public String addTemplate(String name, String content, String homeTemplate, String repository) throws Exception {
     Session session = getSession(repository) ;
     Node templateHome = (Node)session.getItem(homeTemplate) ;
@@ -281,21 +356,33 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     return newTemp.getPath() ;    
   }
 
+
+  /**
+   * {@inheritDoc}
+   */
   public void removeTemplate(String templatePath, String repository) throws Exception {
-    Node selectedTemplate = (Node)getSession(repository).getItem(templatePath) ;
-    Node parent = selectedTemplate.getParent() ;
-    selectedTemplate.remove() ;
-    parent.save() ;
-    parent.getSession().save() ;    
+    Node selectedTemplate = (Node) getSession(repository).getItem(templatePath);
+    Node parent = selectedTemplate.getParent();
+    selectedTemplate.remove();
+    parent.save();
+    parent.getSession().save();    
   }
 
+  /**
+   * Add view node into one node with given name, permssion and template
+   * @param viewManager
+   * @param name
+   * @param permissions
+   * @param template
+   * @return
+   * @throws Exception
+   */
   private Node addView(Node viewManager, String name, String permissions, String template) throws Exception {
     Node contentNode = viewManager.addNode(name, "exo:view");
     contentNode.setProperty("exo:accessPermissions", permissions);
-    contentNode.setProperty("exo:template", template);  
-    viewManager.save() ;
-
-    return contentNode ;
+    contentNode.setProperty("exo:template", template);
+    viewManager.save();
+    return contentNode;
   }
   
 }
