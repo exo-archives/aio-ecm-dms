@@ -48,6 +48,10 @@ public class EmailNotifyListener implements EventListener {
     observedNode_ = oNode ;
   }
   
+  /**
+   * This method is used for listening to all changes of property of a node, when there is a change,
+   * message is sent to list of email
+   */
   @SuppressWarnings("unused")
   public void onEvent(EventIterator arg0) {
     ExoContainer container = ExoContainerContext.getCurrentContainer() ;
@@ -69,6 +73,12 @@ public class EmailNotifyListener implements EventListener {
     }
   }
   
+  /**
+   * Create message when there is any changes of property of a node.
+   * @param receiver
+   * @param messageConfig
+   * @return
+   */
   private Message createMessage(String receiver, MessageConfig messageConfig) {
     Message message = new Message() ;
     message.setFrom(messageConfig.getSender()) ;
@@ -79,6 +89,11 @@ public class EmailNotifyListener implements EventListener {
     return message ;
   }
   
+  /**
+   * This Method will get email of watchers when they watch a document 
+   * @param observedNode
+   * @return
+   */
   private List<String> getEmailList(Node observedNode) {
     List<String> emailList = new ArrayList<String>() ;
     ExoContainer container = ExoContainerContext.getCurrentContainer() ;

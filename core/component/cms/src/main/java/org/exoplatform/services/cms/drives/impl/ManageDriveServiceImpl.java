@@ -146,6 +146,9 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
    */
   public void stop() { }
 
+  /**
+   * Init drive node with specified repository
+   */
   public void init(String repository) throws Exception {
     for(ManageDrivePlugin plugin : drivePlugins_) {
       plugin.init(repository) ;
@@ -159,7 +162,10 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
   public void setManageDrivePlugin(ManageDrivePlugin drivePlugin) {
     drivePlugins_.add(drivePlugin) ;
   }    
-
+  
+  /**
+   * {@inheritDoc}
+   */
   public List<DriveData> getAllDrives(String repository) throws Exception {
     Session session = getSession(repository) ;    
     Node driveHome = (Node)session.getItem(baseDrivePath_);
@@ -185,6 +191,9 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     return driveList ;    
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public DriveData getDriveByName(String name, String repository) throws Exception{  
     Session session = getSession(repository) ;    
     Node driveHome = (Node)session.getItem(baseDrivePath_);
@@ -209,6 +218,9 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     return null ;    
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addDrive(String name, String workspace, String permissions, String homePath, 
       String views, String icon, boolean viewReferences, boolean viewNonDocument, 
       boolean viewSideBar, boolean showHiddenNode, String repository, String allowCreateFolder) throws Exception {    
@@ -227,7 +239,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       driveNode.setProperty(ALLOW_CREATE_FOLDER, allowCreateFolder) ;
       driveNode.setProperty(SHOW_HIDDEN_NODE, Boolean.toString(showHiddenNode)) ;
       driveHome.save() ;
-    }else{
+    } else{
       Node driveNode = driveHome.getNode(name);
       driveNode.setProperty(WORKSPACE, workspace) ;
       driveNode.setProperty(PERMISSIONS, permissions) ;
@@ -245,6 +257,9 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     session.logout();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<DriveData> getAllDriveByPermission(String permission, String repository) throws Exception {
     List<DriveData> driveByPermission = new ArrayList<DriveData>() ;
     try{
@@ -263,6 +278,9 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     return driveByPermission ;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void removeDrive(String driveName, String repository) throws Exception {
     Session session = getSession(repository);
     Node driveHome = (Node)session.getItem(baseDrivePath_) ;
@@ -285,6 +303,9 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     return manaRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace()) ;          
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public boolean isUsedView(String viewName, String repository) throws Exception {
     Session session = getSession(repository);      
     Node driveHome = (Node)session.getItem(baseDrivePath_) ;

@@ -140,13 +140,7 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
       String taxoTreeName = event.getRequestContext().getRequestParameter(OBJECTID);
       TaxonomyService taxonomyService = uiTaxonomyTreeList.getApplicationComponent(TaxonomyService.class);
       UIApplication uiApp = uiTaxonomyTreeList.getAncestorOfType(UIApplication.class);
-      String repository = uiTaxonomyTreeList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
       try {
-        Node taxoTreeNode = taxonomyService.getTaxonomyTree(repository, taxoTreeName, true);
-        if (taxoTreeNode != null) {
-          taxonomyService.removeTaxonomyNode(repository, taxoTreeNode.getSession()
-              .getWorkspace().getName(), taxoTreeNode.getPath());
-        }
         taxonomyService.removeTaxonomyTree(taxoTreeName);
       } catch(RepositoryException e) {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeList.msg.remove-exception",

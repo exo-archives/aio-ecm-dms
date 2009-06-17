@@ -30,9 +30,14 @@ import javax.jcr.Node;
 public interface FolksonomyService {
   
   /**
-   * 
-   * @param node
-   * @param tagName
+   * Add new child node in node baseTagsPath_
+   * If there are not node with name in tagNames then create new one
+   * Add mixin type MIX_REFERENCEABLE_MIXIN for new node
+   * Add new property TAG_CREATED_DATE_PROP, TAG_STATUS_PROP
+   * Add new mixin type EXO_FOLKSONOMIZED_MIXIN to current node if not exist
+   * Set property EXO_FOLKSONOMY_PROP for current node
+   * @param node        current node
+   * @param tagNames    Array of node name as child node of exoTagsHomeNode_
    * @param repository
    * @throws Exception
    */
@@ -55,10 +60,10 @@ public interface FolksonomyService {
   public Node getTag(String path, String repository) throws Exception ;  
   
   /**
-   * 
-   * @param tagPath
-   * @param repository
-   * @return
+   * Get document list      from repository
+   * @param tagPath         path to node in all workspace
+   * @param repository      repository name
+   * @return ArrayList of node
    * @throws Exception
    */
   public List<Node> getDocumentsOnTag(String tagPath, String repository) throws Exception ;

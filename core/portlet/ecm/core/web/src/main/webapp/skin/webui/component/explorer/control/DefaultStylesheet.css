@@ -152,6 +152,61 @@
   border-bottom: solid 1px #cdcdcd;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
+  margin: 4px 230px 0px 170px; /* orientation=lt */
+  margin: 4px 170px 0px 230px; /* orientation=rt */
+  height: 20px; line-height: 20px;
+  background: white;
+  border: solid 1px #d8d8d8;
+  border-right: solid 1px #cdcdcd; /* orientation=lt */
+  border-left: solid 1px #cdcdcd; /* orientation=rt */
+  border-bottom: solid 1px #cdcdcd;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle1 {
+  margin: 4px 230px 0px 60px; /* orientation=lt */
+  margin: 4px 60px 0px 230px; /* orientation=rt */
+  height: 20px; line-height: 20px;
+  background: white;
+  border: solid 1px #d8d8d8;
+  border-right: solid 1px #cdcdcd; /* orientation=lt */
+  border-left: solid 1px #cdcdcd; /* orientation=rt */
+  border-bottom: solid 1px #cdcdcd;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle2 {
+  margin: 4px 230px 0px 110px; /* orientation=lt */
+  margin: 4px 110px 0px 230px; /* orientation=rt */
+  height: 20px; line-height: 20px;
+  background: white;
+  border: solid 1px #d8d8d8;
+  border-right: solid 1px #cdcdcd; /* orientation=lt */
+  border-left: solid 1px #cdcdcd; /* orientation=rt */
+  border-bottom: solid 1px #cdcdcd;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle3 {
+  margin: 4px 230px 0px 135px; /* orientation=lt */
+  margin: 4px 135px 0px 230px; /* orientation=rt */
+  height: 20px; line-height: 20px;
+  background: white;
+  border: solid 1px #d8d8d8;
+  border-right: solid 1px #cdcdcd; /* orientation=lt */
+  border-left: solid 1px #cdcdcd; /* orientation=rt */
+  border-bottom: solid 1px #cdcdcd;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle4 {
+  margin: 4px 230px 0px 160px; /* orientation=lt */
+  margin: 4px 160px 0px 230px; /* orientation=rt */
+  height: 20px; line-height: 20px;
+  background: white;
+  border: solid 1px #d8d8d8;
+  border-right: solid 1px #cdcdcd; /* orientation=lt */
+  border-left: solid 1px #cdcdcd; /* orientation=rt */
+  border-bottom: solid 1px #cdcdcd;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
@@ -228,8 +283,19 @@
   border-bottom: solid 1px #b7b7b7;
   height:57px;
   background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x;
-  
 }
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBarAlone {
+  border-top: solid 1px #fdfdfd;
+  border-bottom: solid 1px #b7b7b7;
+  height: 30px;
+  background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x center bottom; 
+}
+
+.UIJCRExplorerPortlet .UIActionBarAlone .TabsContainer {
+  float: left;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionLabel {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
@@ -406,21 +472,12 @@
 
 /*New Search Bar*/
 
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
-  border-top: solid 1px #fdfdfd;
-  border-bottom: solid 1px #b7b7b7;
-  height:57px;
-  background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x;
-}
-
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Block {
 	margin: 4px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left {
 	float: left;
-	width: 116px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Right {
@@ -436,7 +493,6 @@
 }
 	
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .View {
-	width: 109px;
 	height: 22px;
 	float: left;
 }
@@ -474,6 +530,11 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultView {
 	background: url(DefaultSkin/background/DefaultView.gif) no-repeat; 
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Block .BackAndRefreshBlock {
+  float: left;
+  margin-left: 3px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultViewSelected {

@@ -26,6 +26,7 @@ import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.observation.Event;
 import javax.jcr.observation.EventListener;
+import javax.jcr.observation.EventListenerIterator;
 import javax.jcr.observation.ObservationManager;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
@@ -37,12 +38,11 @@ import org.exoplatform.services.cms.watch.WatchDocumentService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
-import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.picocontainer.Startable;
 
 
 /**
- * Created by The eXo Platform SARL
+ * Created by eXo Platform
  * Author : Pham Xuan Hoa
  *          hoapham@exoplatform.com
  * Nov 30, 2006  
@@ -59,6 +59,12 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
   private MessageConfig messageConfig_ ;
   private TemplateService templateService_ ;
 
+  /**
+   * Constructor Method 
+   * @param params
+   * @param repoService
+   * @param templateService
+   */
   public WatchDocumentServiceImpl(InitParams params, 
       RepositoryService repoService, TemplateService templateService) {        
     repoService_ = repoService ;
@@ -67,6 +73,9 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
       (MessageConfig)params.getObjectParam(initParamName).getObject() ;    
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public int getNotificationType(Node documentNode, String userName) throws Exception {
     NodeType[] mixinTypes = documentNode.getMixinNodeTypes() ;
     NodeType watchableMixin = null ;
@@ -87,6 +96,9 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     return -1 ;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void watchDocument(Node documentNode, String userName, int notifyType) throws Exception {
     Session session = documentNode.getSession() ;
     Value newWatcher = session.getValueFactory().createValue(userName) ;
@@ -118,6 +130,9 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void unwatchDocument(Node documentNode, String userName, int notificationType) throws Exception {
     if(!documentNode.isNodeType(EXO_WATCHABLE_MIXIN)) return  ;
     Session session = documentNode.getSession() ;
@@ -138,7 +153,7 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
   
   /**
    * This method will observes the specification node by giving the following param : listener, node
-   * Its add an eventlistener to this node to observes anything that changes to this
+   * Its add an event listener to this node to observes anything that changes to this
    * @param node              Specify the node to observe
    * @param listener          The object of EventListener
    * @see                     EventListener
@@ -154,10 +169,20 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     String[] observedNodeTypeNames = list.toArray(new String[list.size()]) ;
     ObservationManager observationManager = systemSession.getWorkspace().getObservationManager() ;
     observationManager.addEventListener(listener,Event.PROPERTY_CHANGED,
-        node.getPath(),true,null,observedNodeTypeNames,false) ;   
+        node.getPath(),true,null,observedNodeTypeNames,false) ;
+    EventListenerIterator eventListenerIterator = observationManager.getRegisteredEventListeners();
+    System.out.println(eventListenerIterator.getSize());
     systemSession.logout();
   }
 
+  /**
+   * This method will check notify type of watcher, userName is equal value of property with notification type 
+   * @param documentNode    specify a node to watch
+   * @param userName        userName to watch a document
+   * @param notification    Notification Type
+   * @return boolean
+   * @throws Exception
+   */
   private boolean checkNotifyTypeOfWatcher(Node documentNode, String userName,String notificationType) throws Exception {
     if(documentNode.hasProperty(notificationType)) {
       Value [] watchers = documentNode.getProperty(notificationType).getValues() ;
@@ -168,6 +193,12 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     return false ;
   }  
 
+  /**
+   * This method will get all node types of node.
+   * @param node
+   * @return
+   * @throws Exception
+   */
   private List<String> getDocumentNodeTypes(Node node) throws Exception {
     List<String> nodeTypeNameList = new ArrayList<String>() ;
     NodeType  primaryType = node.getPrimaryNodeType() ;
@@ -183,6 +214,11 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     }
     return nodeTypeNameList ;
   }
+  
+  /**
+   * This method will re-observer all nodes that have been ever observed with all repositories.
+   * @throws Exception
+   */
   private void reInitObserver() throws Exception {
     List<RepositoryEntry> repositories = repoService_.getConfig().getRepositoryConfigurations() ;
     for(RepositoryEntry repo : repositories) {
@@ -222,8 +258,16 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     }
   }    
 
+  /**
+   * This method will get message configuration when a node is observing and there is some changes 
+   * with it's properties.
+   * @return MessageCongig
+   */
   protected MessageConfig getMessageConfig() { return messageConfig_ ; }
 
+  /**
+   * using for re-observer
+   */
   public void start() {
     try {
       reInitObserver() ;
@@ -233,5 +277,8 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void stop() { }
 }

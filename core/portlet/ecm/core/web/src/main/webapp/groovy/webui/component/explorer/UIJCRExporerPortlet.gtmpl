@@ -1,3 +1,8 @@
+<%
+  def rcontext = _ctx.getRequestContext() ;
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.Select_fix','/ecm/javascript/') ;
+  rcontext.getJavascriptManager().addJavascript("SelectFix.autoRepairFloatingElements(100) ;") ;
+%>
 <div class="$uicomponent.id" id="$uicomponent.id">
 	<div style="height: 0px;"><div style="width: 880px;" ><span style="display: none;"></span></div></div>
 	<div  

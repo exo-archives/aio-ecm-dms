@@ -52,6 +52,16 @@ public abstract class BaseResourceLoaderService implements Startable{
    */
   private DMSConfiguration       dmsConfiguration_;
 
+  /**
+   * Constructor method
+   * Init cservice, nodeHierarchyCreator, repositoryService, cacheService, dmsConfiguration
+   * @param cservice                ConfigurationManager
+   * @param nodeHierarchyCreator    NodeHierarchyCreator
+   * @param repositoryService       RepositoryService
+   * @param cacheService            CacheService
+   * @param dmsConfiguration        DMSConfiguration
+   * @throws Exception
+   */
   public BaseResourceLoaderService(ConfigurationManager cservice,
       NodeHierarchyCreator nodeHierarchyCreator, RepositoryService repositoryService,
       CacheService cacheService, DMSConfiguration dmsConfiguration) throws Exception {
@@ -62,16 +72,51 @@ public abstract class BaseResourceLoaderService implements Startable{
     dmsConfiguration_ = dmsConfiguration;
   }  
 
+  /**
+   * get BasePath
+   * @return
+   */
   abstract protected String getBasePath(); 
+  
+  /**
+   * remove From Cache
+   * @param resourceName    String
+   *                        The name of resource
+   */
   abstract protected void removeFromCache(String resourceName);
 
-  public void start(){};  
+  /**
+   * {@inheritDoc}
+   */
+  public void start(){};
+  
+  /**
+   * {@inheritDoc}
+   */
   public void stop(){};  
 
+  /**
+   * init 
+   * @param session           Session
+   * @param resourceConfig    ResourceConfig
+   * @param location          String
+   *                          The code of location
+   * @see                     Session
+   * @see                     ResourceConfig
+   * @throws Exception
+   */
   protected void init(Session session, ResourceConfig resourceConfig, String location) throws Exception {                   
     addScripts(session, resourceConfig.getRessources(),location) ;       
   }
 
+  /**
+   * add Script with following param
+   * @param session       Session       
+   * @param resources     List
+   * @param location      String
+   * @see                 ResourceConfig
+   * @throws Exception
+   */
   protected void addScripts(Session session, List resources,String location) throws Exception{
     String resourcesPath = getBasePath();
     if (resources.size() == 0) return;
@@ -95,6 +140,13 @@ public abstract class BaseResourceLoaderService implements Startable{
     root.save();    
   }
 
+  /**
+   * add Resource
+   * @param resourcesHome     Node
+   * @param resourceName      String
+   * @param in                InputStream
+   * @throws Exception
+   */
   public void addResource(Node resourcesHome, String resourceName, InputStream in)
   throws Exception {
     Node contentNode = null;
@@ -117,6 +169,17 @@ public abstract class BaseResourceLoaderService implements Startable{
     resourcesHome.save() ;
   }
 
+  /**
+   * get ResourcesHome
+   * @param repository        String  
+   *                          The name of repository
+   * @param sessionProvider   SessionProvider
+   * @see                     SessionProvider
+   * @see                     DMSRepositoryConfiguration
+   * @see                     ManageableRepository
+   * @return
+   * @throws Exception
+   */
   protected Node getResourcesHome(String repository,SessionProvider sessionProvider) throws Exception {    
     ManageableRepository manageableRepository = null ;
     if(repository == null) {
@@ -130,6 +193,15 @@ public abstract class BaseResourceLoaderService implements Startable{
     return (Node) session.getItem(resourcesPath);
   }  
 
+  /**
+   * get Resource As Text
+   * @param resourceName    String
+   * @param repository      String
+   *                        The name of repository
+   * @see                                          
+   * @return                SessionProvider
+   * @throws Exception
+   */
   public String getResourceAsText(String resourceName, String repository) throws Exception {
     SessionProvider sessionProvider = SessionProvider.createSystemProvider() ;
     Node resourcesHome = getResourcesHome(repository,sessionProvider);
@@ -139,16 +211,45 @@ public abstract class BaseResourceLoaderService implements Startable{
     return text;
   }  
 
+  /**
+   * get Resources
+   * @param repository          String  
+   *                            The name of repository
+   * @param sessionProvider     SessionProvider
+   * @see                       SessionProvider       
+   * @return
+   * @throws Exception
+   */
   public NodeIterator getResources(String repository,SessionProvider sessionProvider) throws Exception {
     Node resourcesHome = getResourcesHome(repository,sessionProvider);
     return resourcesHome.getNodes();
   }
 
+  /**
+   * Check has Resources
+   * @param repository        String  
+   *                          The name of repository
+   * @param sessionProvider   SessionProvider
+   * @see                     SessionProvider
+   * @return
+   * @throws Exception
+   */
   public boolean hasResources(String repository,SessionProvider sessionProvider) throws Exception {    
     Node resourcesHome = getResourcesHome(repository,sessionProvider);
     return resourcesHome.hasNodes();
   }
-
+  
+  /**
+   * add Resource
+   * @param name          String  
+   *                      The name of resource
+   * @param text          String
+   * @param repository    String  
+   *                      The name of repository
+   * @param provider      SessionProvider
+   * @see                 SessionProvider
+   * @throws Exception
+   */
   public void addResource(String name, String text, String repository,SessionProvider provider) throws Exception {
     Node resourcesHome = getResourcesHome(repository,provider);
     InputStream in = new ByteArrayInputStream(text.getBytes());
@@ -156,6 +257,16 @@ public abstract class BaseResourceLoaderService implements Startable{
     resourcesHome.save();
   }
 
+  /**
+   * remove Resource
+   * @param resourceName    String  
+   *                        The name of resource
+   * @param repository      String  
+   *                        The name of repository
+   * @param provider        SessionProvider
+   * @see                   SessionProvider
+   * @throws Exception
+   */
   public void removeResource(String resourceName, String repository,SessionProvider provider) throws Exception {
     removeFromCache(resourceName);
     Node resourcesHome = getResourcesHome(repository,provider);

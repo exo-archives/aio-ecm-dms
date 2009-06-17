@@ -242,6 +242,16 @@ public class UIActionBar extends UIForm {
     return null;
   }
   
+  public boolean isActionAvailable(String tabName) {
+    List<UIComponent> listActions = new ArrayList<UIComponent>();
+    for(String action : getActionInTab(tabName)) {
+      UIComponent uicomp = getUIAction(action);
+      if(uicomp != null) listActions.add(uicomp);
+    }
+    if(listActions.size() > 0) return true;
+    return false;
+  }
+  
   static public class SearchActionListener extends EventListener<UIActionBar> {
     public void execute(Event<UIActionBar> event) throws Exception {
       UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);

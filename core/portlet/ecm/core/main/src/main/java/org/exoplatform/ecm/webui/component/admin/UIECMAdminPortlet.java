@@ -117,17 +117,15 @@ public class UIECMAdminPortlet extends UIPortletApplication {
   }
   
   public String getPreferenceRepository() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    PortletPreferences portletPref = getPortletPreferences() ;
     String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
     return repository ;
   }
   
   public String getPreferenceWorkspace() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    String repository = portletPref.getValue(Utils.WORKSPACE_NAME, "") ;
-    return repository ;
+    PortletPreferences portletPref = getPortletPreferences() ;
+    String workspace = portletPref.getValue(Utils.WORKSPACE_NAME, "") ;
+    return workspace ;
   }
   
   public PortletPreferences getPortletPreferences() {
