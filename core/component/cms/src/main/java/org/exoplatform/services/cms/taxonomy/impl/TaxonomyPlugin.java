@@ -251,10 +251,6 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
       actionNode.setProperty("exo:roles", roles);
     }
     
-    /*actionNode.setProperty("exo:storeHomePath", action.getHomePath());
-    actionNode.setProperty("exo:targetWorkspace", action.getTargetWspace());
-    actionNode.setProperty("exo:targetPath", action.getTargetPath());*/
-
     Iterator mixins = action.getMixins().iterator();
     while (mixins.hasNext()) {
       ActionConfig.Mixin mixin = (ActionConfig.Mixin) mixins.next();
