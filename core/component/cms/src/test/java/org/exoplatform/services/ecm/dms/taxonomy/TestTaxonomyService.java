@@ -37,7 +37,7 @@ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
  *          hunghvit@gmail.com
  * Jun 14, 2009  
  */
-public class TaxonomyServiceTest extends BaseDMSTestCase {
+public class TestTaxonomyService extends BaseDMSTestCase {
 
   private TaxonomyService      taxonomyService;
 

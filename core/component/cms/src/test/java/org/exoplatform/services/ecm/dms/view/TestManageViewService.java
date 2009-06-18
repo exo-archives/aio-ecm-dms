@@ -39,7 +39,7 @@ import edu.emory.mathcs.backport.java.util.Arrays;
  *          hunghvit@gmail.com
  * Jun 18, 2009  
  */
-public class ManageViewServiceTest extends BaseDMSTestCase {
+public class TestManageViewService extends BaseDMSTestCase {
   
   ManageViewService manageViewService;
   

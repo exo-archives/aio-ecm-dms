@@ -41,7 +41,7 @@ import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
  *          hunghvit@gmail.com
  * Jun 17, 2009  
  */
-public class MultiLanguageServiceTest extends BaseDMSTestCase {
+public class TestMultiLanguageService extends BaseDMSTestCase {
   
   private static final String I18NMixin = "mix:i18n";
 

@@ -38,7 +38,7 @@ import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
  *          hunghvit@gmail.com
  * Jun 12, 2009  
  */
-public class CmsServiceTest extends BaseDMSTestCase {
+public class TestCmsService extends BaseDMSTestCase {
 
   private CmsService cmsService;
   
