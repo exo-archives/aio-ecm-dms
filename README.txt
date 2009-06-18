@@ -1,5 +1,5 @@
 Enterprise Content Management(ECM) > Document Management System(DMS)
-Version 2.3
+Version 2.3.2
 
 You may find it helpful to see the details at wiki place of ECM
 http://wiki.exoplatform.org/xwiki/bin/view/ECM/
@@ -60,145 +60,70 @@ and navigate to URL: http://localhost:8080/portal
 
 3. RELEASE NOTES 
 ---------------------------------------------------
-** In DMS-2.3-final, we focus to some main changes:
-	- RTL for ECM Admin portlet
-	- RTL for Worfklow controller portlet
-	- RTL for Workflow administration portlet
-	- RTL for File Explorer portlet
-	- RTL for Browse Content portlet
-	- RTL for Fast Content Creator portlet
-	- Created REST service to get the publised documents
-	- Allow set permission for each category
-	- Allow use xml file with ressource bundle in Bpar
-	- Some documents added on the wiki
-	- Supported copy paste cross drives
- 	- Support BC is the publication aware
- 	- Some bugs fixed
- 	- Support RTL when change language in document template
- 	- Refactor the location of contentvalidation
- 	- Add some documents in Hows to section
- 	- Complete the translation for Arabic
 
 ** Bug
-    	* [ECM-3329] - Make language selection work for RTL when choosing another language from a document
-	* [ECM-2979] - Bug when edit property without name space
-	* [ECM-3057] - Throw exception when select new repository
-	* [ECM-3045] - Throw exception when view webDAV
-	* [ECM-3101] - Upload Document: File Name/Location dissapears when assignin a category
-	* [ECM-3081] - Exception when open form 'Information Auditing' with node is nt:file
-	* [ECM-3214] - ECM actions aren't triggered when a document is added in the JCR via the FTP connector
-	* [ECM-2686] - Search don't work with non-Latin item location
-	* [ECM-2964] - Can edit persmission of owner in special case
-	* [ECM-3100] - Unknown error when specifying a space at the end of a search content name
-	* [ECM-3058] - In File Explorer, parameter categoryMandatoryWhenFileUpload in portlet preferences is not read if changed in UI
-	* [ECM-3225] - Read Action are not working as expected : no right cick menu entry 
-	* [ECM-3299] - Cannot use * as name of a child node while creating a new nodeType
-	* [ECM-3151] - Cannot set value for auto created property(but is not protected)
-	* [ECM-3306] - No label appears when the label has not been translated
-
-	* [ECM-3159] - In FE cannot select the "*:" role when assigning permission to a group
-	* [ECM-3242] - Unexpected customer work
-	* [ECM-3220] - Change style of <A> tag to be sure that it is "visible" by default
-	
-	* [ECM-3073] - Can not delete drive
-	* [ECM-3398] - No validate argument for calendar fields
-	* [ECM-1160] - Errors relate to restore version function
-	* [ECM-2003] - [Unknown error] when import File Plan has child node
-	* [ECM-2347] - Error in displaying [Advanced Search] when add more constraints
-	* [ECM-2545] - Illegal char in path entry
-	* [ECM-2711] - The org.exoplatform.services.workflow.impl.bonita.WorkflowServiceContainerImpl 
-		doesn't release properly the resources stored into the ThreadLocal
-	* [ECM-2949] - Migrate from ECM 2.0.x
-	* [ECM-2961] - Rename "rss-enable"
-	* [ECM-3113] - View tasks that are active
-	* [ECM-3164] - Error while trying to create an exo:ReloadBPAction
-	* [ECM-3166] - Make sure finished task appear in Bonita
-	* [ECM-3168] - Should see a dialog form in second tab when disapproving a document (content-validation)
-	* [ECM-3165] - Make sure WF Portlets pages appear in the navigation when --enable-workflow option is used 
-	* [ECM-3169] - Cannot trigger the workflow in validation-requests folder
-	* [ECM-3305] - French translation is incomplete
-	* [ECM-3401] - the method UIDialogForm.executeScript contains an incoherent test
-	* [ECM-3428] - Allocate more space when the name of a column is too long  
-	* [ECM-3413] - The parameter "multiValues" doesn't work with the field "Action"
-	* [ECM-1656] - IE6: Can not display uploaded image of Sample node
-	* [ECM-2085] - Filter is not exactly
-	* [ECM-3324] - Dependency on pc 2.0 hardcoded in 
-	* [ECM-3310] - Display bug on the File Explorer when we choose the "Dutch" language
-	* [ECM-3414] - Cannot save after uploading a file whose name contains a forbidden character like '&'
-	* [ECM-3419] - paginator of search in sites explorer--> display not good
-	* [ECM-3406] - Show a clear error message when a user has not enough rights to access to one of all the available dialog templates
-	* [ECM-3429] - typos in parameter getters in ScriptPlugin.java
-	* [ECM-3430] - File Explorer does not render correctly
-	* [ECM-3347] - Mistake text with message to confirm delete.
-	* [ECM-3399] - Calendar fields should not be hidden by default
+    * [ECM-2329] - Unable to add an action
+    * [ECM-2469] - IE6 - Combo-box appears on top of all others components
+    * [ECM-2568] - Can't automatically unlock node after locker sign out
+    * [ECM-2753] - Upload icon not visible on Firefox 3 (Ubuntu)
+    * [ECM-3011] - Change messages  in Content Browser in Vietnamese language
+    * [ECM-3029] - Change message in Fast Content Creator in Vietnamese language
+    * [ECM-3044] - Show duplicate information of user when user has 2 membership type in this group
+    * [ECM-3064] - exception when trying to create a portal with a new group
+    * [ECM-3091] - Error when displaying an image in exo:article when user not loggued
+    * [ECM-3092] - not target link on webdav view button
+    * [ECM-3096] - Throw exception when view content of File Plan in 'Version Infor' pop-up after manage publication
+    * [ECM-3221] - Bad error message displayed when we have not enough rights to add a folder
+    * [ECM-3222] - Bad error message displayed when we have not enough rights to add an article and the article form is not displayed properly
+    * [ECM-3225] - Read Action are not working as expected : no right cick menu entry 
+    * [ECM-3310] - Display bug on the File Explorer when we choose the "Dutch" language
+    * [ECM-3401] - the method UIDialogForm.executeScript contains an incoherent test
+    * [ECM-3428] - Allocate more space when the name of a column is too long
+    * [ECM-3432] - Error in ContentBrowser when target folder is not readable by current user
+    * [ECM-3474] - Cannot sort a column in the detailed view
+    * [ECM-3478] - The attached file is deleted from the document with type Podcast in edit mode
+    * [ECM-3486] - Constant warning in console regarding bonita when navgating the JCR using DAV
+    * [ECM-3492] - File explorer has a view bug for the first entry in list view
+    * [ECM-3499] - new content or modified content don't show until we restart the AS or disconnect
+    * [ECM-3507] - Cannot use Dashboard portlet in DMS Trunk (so cannot use the new DMS gadgets
+    * [ECM-3510] - Problem after importing document with special permissions
+    * [ECM-3512] - Cannot edit Documents by "Collaboration Action" which use "UIOneNodePathSelector"
+    * [ECM-3567] - UI issue in JCR FE detailed view, difference between english and french view
+    * [ECM-3580] - Missing icons in the Intranet's file explorer on Mac and Vista style skins unlike default style one
+    * [ECM-3582] - Bad displaying of the list of sub nodes on FileExplorer
+    * [ECM-3598] - Hard coded labels in webapp/groovy/webui/component/explorer/UIConfirmMessage.gtmpl
+    * [ECM-3599] - Resizing of the container according to the contents 
+    * [ECM-3679] - Can not create query in File Explorer
+    * [ECM-3681] - The test to know if the current node is the root node is incorrect
+    * [ECM-3682] - Invisible content after an import-export
+    * [ECM-3718] - Right-click menu is not shown when right click on node in new added repository
+    * [ECM-3719] - 'msg' message when try to move node by drag & drop
+    * [ECM-3720] - 'msg' message when try to delete sub node of a being locked node by user who is not locker
+    * [ECM-3724] - Possible problem with categories when upload document
+    * [ECM-3731] - Impossible to choose value in list for searching by property in Advanced search
+    * [ECM-3852] - Typo Issue in  org.exoplatform.ecm.webui.component.admin.metadata.UIMetadataForm: The repository is retrieved instead of the  
+                   workspace 
+    * [ECM-3876] - Even if the renaming process fails, the relations are removed
 
 ** Improvement
-	* [ECM-3300] - Automaticaly redirected to the 1st page after removing an element not located on the 1st page	
-	* [ECM-3344] - Change the way content-validation is stored in DMS
-	* [ECM-3346] - Finish the code to sort any column in JCR FE
-	* [ECM-2981] - Show allow user view property of root drive node if the node is not real root node
-	
-	* [ECM-3213] - Allow to apply permissions on taxonomies and filter them
-	* [ECM-3211] - Allow XML files to be used at the same time as properties files in business process archives
-	* [ECM-3208] - Include the JCR console into the Maven build
-	
-	* [ECM-3330] - Make the UI for the Gadget prototype
-	* [ECM-1829] - New column in TimerList to show timer status based on duedate(Finished or Running)
-	* [ECM-2120] - Do not allow user to config when he/she does not have right
-	* [ECM-2690] - Remove WF UI component from Portlets
-	* [ECM-2691] - Allow specify value of an option in a select box component
-	* [ECM-2717] - Make finished process instances appear in a different location
-	* [ECM-2983] - In Add categories multiple fields, allow to have a garbage icon for the first item
-	* [ECM-2992] - Reused some uicomponent from portal to make code consitency
-	* [ECM-3079] - Unify resource bundles
-	* [ECM-3097] - Refine the deployed components
-	* [ECM-3099] - Insert new DMS logo	
-	* [ECM-3117] - Make ECM home page RTLized
-	* [ECM-3158] - Specify the root location of the search in ECM BC Portlet
-	* [ECM-3156] - Replaced content-validation and content-backup process by content-publishing 
-		process
-	* [ECM-3163] - Bind back to Portal 2.5.0
-	* [ECM-3172] - RTLize Workflow Portlets
-	* [ECM-3170] - Allow DMS document templates to be RTLized
-	* [ECM-3400] - The argument "scriptParams" should not be mandatory in case we use a script 
-		to populate options of a select box field
-	* [ECM-3403] - The "Add Drive" UI has not been translated properly into french and use same 
-		terminology between ECM Admin and FE
-	* [ECM-3423] - Allow show more than 2 tabs in manage publication popup
-	* [ECM-3433] - Broadcast some event when create/edit a document by CMSService
-	* [ECM-3146] - Move coverflow related resource(js, javacode, groovy template...) to out side ecm portlet package	
+    * [ECM-3431] - File Explorer Drag and Drop too delicate
+    * [ECM-3433] - Broadcast some event when create/edit a document by CMSService
+    * [ECM-3577] - Reduce the effect of drag and drop in file explorer
+    * [ECM-3581] - use the upload file size limit in the upload form
+    * [ECM-3619] - Use of appropriate tests
+    * [ECM-3671] - Allow to translate node whose type extends nt:folder or nt:unstructured
+    * [ECM-3734] - Allow to export/import a versionnable node
+    * [ECM-3746] - The workspace creator must be up to date
 
 ** New Feature
-	* [ECM-3149] - Create gadgets for delivering information on documents
-	* [ECM-3297] - Document in the wiki how to define icons for node types
-	* [ECM-3335] - Document in the wiki how to manage versions of a document
-	* [ECM-3333] - Document in the wiki how to creat a drive
-	* [ECM-3334] - Add a Fast Content Creator section in practical how-tos
-	* [ECM-3332] - Document in the wiki the tags (aka folksonomy) feature
-	* [ECM-3069] - Update the readme
+    * [ECM-2547] - create an opensocial gadget that list the last documents edited by your contacts
 
-	* [ECM-2127] - Clipboard improvement
-	* [ECM-3239] - RTLize JCR FE
-	* [ECM-3240] - RTLize BC
-	* [ECM-3223] - Make sure BC is publication aware
-	* [ECM-3248] - Complete the wiki page that describes how to directly access a JCR FE drive
-	* [ECM-3245] - Document how to create an RSS feed in eXo DMS
-	* [ECM-3246] - Document the research features in eXo DMS
-
-	* [ECM-2987] - Improve wiki documentation
-	* [ECM-2365] - Create workflow plublication plugin
-	* [ECM-2764] - Translate into Vietnamese
-	* [ECM-2841] - RTLize ECM Admin
-	* [ECM-2847] - Add a breadcrumb in the category selection panel
-	* [ECM-2848] - Add a paginator to categories selector
-	* [ECM-2986] - Improve migration guide
-	* [ECM-3076] - Have a product description panel in the wiki WCM home page
-	* [ECM-3085] - Make PDF doc for eXo workflow / Update PDF doc for eXo DMS
-	* [ECM-3110] - Have a design for home page of exo-workflow
-	* [ECM-3148] - Access directly a JCR FE drive
-	* [ECM-3161] - Group WCM, DMS and WF into a same ECM navigation item in the wiki
-	* [ECM-2563] - FileExplorer: allow user to sort by any of the column showed in the file explorer instance	
-
+** Task
+    * [ECM-3411] - Add a logger and use the logger to print all the errors caught in the class org.exoplatform.ecm.webui.form.UIDialogForm
+    * [ECM-3585] - Use the parent POM 1.1.1 for dms 2.3.x and 2.4.x
+    * [ECM-3696] - Release DMS 2.3.2
+    * [ECM-3850] - Integrate JCR 1.10.4 in DMS 2.3.2
+    * [ECM-3889] - Integrate with Workflow 1.0.2
 
 ** Other resources and links
 	Company site        http://www.exoplatform.com
@@ -224,8 +149,20 @@ ecm/contentvalidation/trunk/component/workflowPublication/. This plugin is used 
 It breaks a work process down into tasks. 
 See more details about http://wiki.exoplatform.com/xwiki/bin/view/ECM/Migrate+to+ECM2_3
 
-DMS can be reached at:
+4.3 Set up size of uploading file
+	When we upload file in File Explorer, we need limit size of file. Maximum size of file is set up in portlet-preferences.xml at the location dms/core/web/portal/.../WEB-INF/conf/portal/group/platform/users. In this file, we set 30M by default for file size
 
+ <portlet-preferences>
+ ...
+  <preference>
+   <name>uploadFileSizeLimitMB</name>     
+   <value>30</value>        
+   <read-only>false</read-only>
+  </preference>
+ ...
+ </portlet-preferences>
+
+	 DMS can be reached at:
    Web site: http://www.exoplatform.com
 						 http://www.exoplatform.vn
    	 E-mail: exoplatform@ow2.org
