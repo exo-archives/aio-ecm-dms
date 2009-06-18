@@ -54,7 +54,9 @@ public class TestCmsService extends BaseDMSTestCase {
     cmsService = (CmsService) container.getComponentInstanceOfType(CmsService.class);
   }
   
-  // Create data for String with String property
+  /**
+   *  Create data for String with String property
+   */
   private Map<String, JcrInputProperty> createArticleMapInput() {
     Map<String, JcrInputProperty> map = new HashMap<String, JcrInputProperty>();
     String titlePath = CmsService.NODE + "/" + "exo:title";
@@ -83,7 +85,9 @@ public class TestCmsService extends BaseDMSTestCase {
     return map;
   }
 
-  //Add mixin for node
+  /**
+   * Add mixin for node
+   */
   private Map<String, JcrInputProperty> createArticleEditMapInput() {
     Map<String, JcrInputProperty> map = new HashMap<String, JcrInputProperty>();
     String titlePath = CmsService.NODE + "/" + "exo:title";
@@ -107,7 +111,9 @@ public class TestCmsService extends BaseDMSTestCase {
     return map;
   }
 
-  //Create data for Node with String and date time property
+  /**
+   * Create data for Node with String and date time property
+   */
   private Map<String, JcrInputProperty> createSampleMapInput() {
     Map<String, JcrInputProperty> map = new HashMap<String, JcrInputProperty>();
     String titlePath = CmsService.NODE + "/" + "exo:title";
@@ -173,7 +179,9 @@ public class TestCmsService extends BaseDMSTestCase {
     return map;
   }
   
-  //Create data for Node with String and date time property
+  /**
+   * Create data for Node with String and date time property
+   */
   private Map<String, JcrInputProperty> createSampleMapInputEdit() {
     Map<String, JcrInputProperty> map = new HashMap<String, JcrInputProperty>();
     String titlePath = CmsService.NODE + "/" + "exo:title";
@@ -246,7 +254,9 @@ public class TestCmsService extends BaseDMSTestCase {
     return map;
   }
 
-  //Create data for Node with String and date time property
+  /**
+   * Create data for Node with String and date time property
+   */
   private Map<String, JcrInputProperty> createReferenceMapInput() {
     Map<String, JcrInputProperty> map = new HashMap<String, JcrInputProperty>();
     String categoryPath = CmsService.NODE + "/" + "exo:category";
@@ -266,11 +276,15 @@ public class TestCmsService extends BaseDMSTestCase {
   
   /**
    * Test property value is string with
-   * CmsService.storeNode(String nodetypeName, Node storeNode, Map inputProperties, boolean isAddNew,String repository)}
+   * CmsService.storeNode(String nodetypeName, Node storeNode, Map inputProperties, boolean isAddNew,String repository)
+   * Input: property for node: exo:title = "this is title";exo:summary="this is summary";exo:text="this is article content"
+   *        name = "document_1";
+   * Expect: node: name = "document_1";property for node: exo:title = "this is title";
+   * exo:summary="this is summary";exo:text="this is article content"
    */
   public void testStoreNodeArticle() throws RepositoryException, Exception {
     Node storeNode = session.getRootNode();
-    Map map = createArticleMapInput();
+    Map<String, JcrInputProperty> map = createArticleMapInput();
     String path = cmsService.storeNode(ARTICLE, storeNode, map, true, REPO_NAME);
     assertTrue(session.itemExists(path));
     Node articleNode = (Node)session.getItem(path);
@@ -283,6 +297,10 @@ public class TestCmsService extends BaseDMSTestCase {
   /**
    * Test add mixin 
    * CmsService.storeNode(String nodetypeName, Node storeNode, Map inputProperties, boolean isAddNew,String repository)}
+   * Input: property for node: exo:title = "this is title";exo:summary="this is summary";exo:text="this is article content"
+   *        exo:category = uuid of one reference node; name = "document_1";
+   * Expect: node: name = "document_1";property for node: exo:title = "this is title";
+   * exo:summary="this is summary";exo:text="this is article content"; exo:category = uuid of one reference node above;
    */
   public void testStoreNodeArticleEdit() throws RepositoryException, Exception {
     Node storeNode = session.getRootNode();
@@ -291,7 +309,7 @@ public class TestCmsService extends BaseDMSTestCase {
       referencedNode.addMixin("mix:referenceable");
     }
     session.save();
-    Map map = createArticleMapInput();
+    Map<String, JcrInputProperty> map = createArticleMapInput();
     String path = cmsService.storeNode(ARTICLE, storeNode, map, true, REPO_NAME);
     assertTrue(session.itemExists(path));
     Node articleNode = (Node)session.getItem(path);
@@ -307,11 +325,15 @@ public class TestCmsService extends BaseDMSTestCase {
   /**
    * Test property value is string with
    * CmsService.storeNode(String workspace, String nodetypeName, String storePath, Map inputProperties,String repository)
+   * Input: property for node: exo:title = "this is title";exo:summary="this is summary";exo:text="this is article content"
+   *        name = "document_1";
+   * Expect: node: name = "document_1";property for node: exo:title = "this is title";
+   *  exo:summary="this is summary";exo:text="this is article content"
    */
   public void testStoreNodeArticleByPath1() throws RepositoryException, Exception {
     Node storeNode = session.getRootNode().addNode("storeNode");
     session.save();
-    Map map = createArticleMapInput();
+    Map<String, JcrInputProperty> map = createArticleMapInput();
     String path = cmsService.storeNode(COLLABORATION_WS, ARTICLE, storeNode.getPath(), map, REPO_NAME);
     assertTrue(session.itemExists(path));
     Node articleNode = (Node)session.getItem(path);
@@ -321,7 +343,10 @@ public class TestCmsService extends BaseDMSTestCase {
     assertEquals("this is article content", articleNode.getProperty("exo:text").getString());
   }
 
-  // Create binary data
+  /**
+   *  Create binary data
+   * @throws IOException
+   */
   private Map<String, JcrInputProperty> createBinaryMapInput() throws IOException {
     Map<String, JcrInputProperty> map = new HashMap<String, JcrInputProperty>();
     String data = CmsService.NODE + "/" + "jcr:data";
@@ -338,10 +363,16 @@ public class TestCmsService extends BaseDMSTestCase {
     return map;
   }
   
-  //Test property value is binary
+  /**
+   * Test property value is binary
+   * input: data of file /conf/standalone/test-configuration.xml
+   * output: value in property jcr:data of one nt:resource node = value in file /conf/standalone/test-configuration.xml 
+   * @throws RepositoryException
+   * @throws Exception
+   */
   public void testStoreNodeBinaryProperty() throws RepositoryException, Exception {
     Node rootNode = session.getRootNode();
-    Map map = createBinaryMapInput();
+    Map<String, JcrInputProperty> map = createBinaryMapInput();
     String path = cmsService.storeNode(NTRESOURCE, rootNode, map, true, REPO_NAME);
     assertTrue(session.itemExists(path));
     Node binaryNode = (Node)session.getItem(path);
@@ -350,9 +381,15 @@ public class TestCmsService extends BaseDMSTestCase {
     assertTrue(compareInputStream(is, binaryNode.getProperty("jcr:data").getStream()));
   }
 
-  //Test with path does not existed
+  /**
+   * Test with path does not existed, 
+   * Input: /temp: path does not exist
+   * Expect: PathNotFoundException
+   * @throws RepositoryException
+   * @throws Exception
+   */
   public void testStoreNodeArticleByPath2() throws RepositoryException, Exception {
-    Map map = createArticleMapInput();
+    Map<String, JcrInputProperty> map = createArticleMapInput();
     Exception e = null;
     try {
       cmsService.storeNode(COLLABORATION_WS, ARTICLE, "/temp", map, REPO_NAME);
@@ -362,10 +399,20 @@ public class TestCmsService extends BaseDMSTestCase {
     assertNotNull(e);
   }
 
-  //Test property value is String, Date time, Long, Double, Boolean
+  /**
+   * Test property value is String, Date time, Long, Double, Boolean
+   * Input: property of sample node: exo:title = "this is title";exo:description="this is description";
+   *  exo:summary = "this is summary";exo:content = "this is sample's content"; exo:averageScore = 1.23; 
+   *  exo:totalScore = 15; exo:moveable = true
+   *  exo:date = Calendar of "06/12/2009"; exo:datetime = Calendar of "06/12/2009 14:58:49"
+   *        name = "document_2";
+   *  Expect: return sample node with the same properties listed above
+   * @throws RepositoryException
+   * @throws Exception
+   */
   public void testStoreNodeSample() throws RepositoryException, Exception {
     Node storeNode = session.getRootNode();
-    Map map = createSampleMapInput();
+    Map<String, JcrInputProperty> map = createSampleMapInput();
     String path = cmsService.storeNode(SAMPLE, storeNode, map, true, REPO_NAME);
     assertTrue(session.itemExists(path));
     Node sampleNode = (Node)session.getItem(path);
@@ -381,14 +428,24 @@ public class TestCmsService extends BaseDMSTestCase {
     assertEquals(true, sampleNode.getProperty("exo:moveable").getValue().getBoolean());
   }
   
-  //Test edit property of added mixin type
+  /**
+   * Test edit property of added mixin type
+   * Input: property of sample node: exo:title = "this is title";exo:description="this is description";
+   *  exo:summary = "this is summary";exo:content = "this is sample's content"; exo:averageScore = 2.34; 
+   *  exo:totalScore = 16; exo:moveable = true
+   *  exo:date = Calendar of "06/12/2009"; exo:datetime = Calendar of "06/12/2009 14:58:49"
+   *        name = "document_2";
+   *  Expect: return sample node with the same properties listed above
+
+   */
   public void testStoreNodeSampleByEdit() throws RepositoryException, Exception {
     Node storeNode = session.getRootNode();
+    Map<String, JcrInputProperty> map;
     if (!session.itemExists("/document_2")) {
-      Map map = createSampleMapInput();
+      map = createSampleMapInput();
       cmsService.storeNode(SAMPLE, storeNode, map, true, REPO_NAME);
     }
-    Map map = createSampleMapInputEdit();
+    map = createSampleMapInputEdit();
     String path = cmsService.storeNode(SAMPLE, storeNode, map, false, REPO_NAME);
     assertTrue(session.itemExists(path));
     Node sampleNode = (Node)session.getItem(path);
@@ -404,7 +461,13 @@ public class TestCmsService extends BaseDMSTestCase {
     assertEquals(false, sampleNode.getProperty("exo:moveable").getValue().getBoolean());
   }
 
-  // Test create property with reference type
+  /**
+   * Test create property with reference type
+   * Input: property for node: exo:category = uuid of one reference node; name = "document_3";
+   * Expect: node: name = "document_3";property for node:  exo:category = uuid of one reference node above;
+   * @throws RepositoryException
+   * @throws Exception
+   */
   public void testStoreNodeWithReference() throws RepositoryException, Exception {
     Node storeNode = session.getRootNode();
     Node referencedNode = storeNode.addNode("referencedNode");
@@ -414,7 +477,7 @@ public class TestCmsService extends BaseDMSTestCase {
     }
     session.save();
     String uuid = referencedNode.getUUID();
-    Map map = createReferenceMapInput();
+    Map<String, JcrInputProperty> map = createReferenceMapInput();
     String path = cmsService.storeNode(SAMPLE, storeNode, map, true, REPO_NAME);
     assertTrue(session.itemExists(path));
     Node sampleNode = (Node)session.getItem(path);
@@ -422,10 +485,19 @@ public class TestCmsService extends BaseDMSTestCase {
     assertEquals(uuid, sampleNode.getProperty("exo:category").getValues()[0].getString());
   }
 
-  //Test method CmsService.storeNodeByUUID()
+  /**
+   * Test method CmsService.storeNodeByUUID()
+   * Input: property of sample node: exo:title = "this is title";exo:description="this is description";
+   *  exo:summary = "this is summary";exo:content = "this is sample's content"; exo:averageScore = 2.34; 
+   *  exo:totalScore = 16; exo:moveable = true
+   *  exo:date = Calendar of "06/12/2009"; exo:datetime = Calendar of "06/12/2009 14:58:49"
+   *        name = "document_2";
+   *  Expect: return sample node given by uuid with the same properties listed above
+   * @throws Exception
+   */
   public void testStoreNodeByUUID() throws Exception {
     Node storeNode = session.getRootNode();
-    Map map = createSampleMapInput();
+    Map<String, JcrInputProperty> map = createSampleMapInput();
     String uuid = cmsService.storeNodeByUUID(SAMPLE, storeNode, map, true, REPO_NAME);
     Node sampleNode = session.getNodeByUUID(uuid);
     assertEquals("document_2", sampleNode.getName());
@@ -440,7 +512,12 @@ public class TestCmsService extends BaseDMSTestCase {
     assertEquals(true, sampleNode.getProperty("exo:moveable").getValue().getBoolean());
   }
   
- //Test method CmsService.moveNode()
+ /**
+  * Test method CmsService.moveNode()
+  * Move node test1 to test2 node, clean test1 node
+  * Expect: node test1 does not exist, node test2/test1 exits
+  * @throws Exception
+  */
   public void testMoveNode() throws Exception {
     Node test1 = session.getRootNode().addNode("test1");
     session.save();
@@ -453,7 +530,13 @@ public class TestCmsService extends BaseDMSTestCase {
     assertTrue(!session.itemExists("/test1"));
   }
   
-  // Compare two input stream, return true if bytes of is1 equal bytes of is2
+  /**
+   *  Compare two input stream, return true if bytes of is1 equal bytes of is2
+   * @param is1
+   * @param is2
+   * @return
+   * @throws IOException
+   */
   private boolean compareInputStream(InputStream is1, InputStream is2) throws IOException {
     int b1, b2;
     do {
