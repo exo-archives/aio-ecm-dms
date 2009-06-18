@@ -47,7 +47,6 @@ import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
-import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyAlreadyExistsException;
@@ -153,7 +152,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     String workspace = taxoTreeData.getTaxoTreeWorkspace();
     String homePath = taxoTreeData.getTaxoTreeHomePath();
     String systemWorkspace = getAncestorOfType(UITaxonomyManagerTrees.class)
-    .getSystemWorkspaceName(getRepositoryName());
+    .getDmsSystemWorkspaceName(getRepositoryName());
     if (workspace.equals(systemWorkspace) && homePath.length() == 0) {
       homePath = getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
       taxoTreeData.setTaxoTreeHomePath(homePath);

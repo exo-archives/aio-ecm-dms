@@ -214,10 +214,26 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     jcrInputDes.setJcrPath("/node/exo:description");
     jcrInputDes.setValue(action.getDescription());
     sortedInputs.put("/node/exo:description", jcrInputDes);
+    
     JcrInputProperty jcrInputLife = new JcrInputProperty();
     jcrInputLife.setJcrPath("/node/exo:lifecyclePhase");
     jcrInputLife.setValue(action.getLifecyclePhase());
     sortedInputs.put("/node/exo:lifecyclePhase", jcrInputLife);
+    
+    JcrInputProperty jcrInputHomePath = new JcrInputProperty();
+    jcrInputHomePath.setJcrPath("/node/exo:storeHomePath");
+    jcrInputHomePath.setValue(action.getHomePath());
+    sortedInputs.put("/node/exo:storeHomePath", jcrInputHomePath);
+
+    JcrInputProperty jcrInputTargetWspace = new JcrInputProperty();
+    jcrInputTargetWspace.setJcrPath("/node/exo:targetWorkspace");
+    jcrInputTargetWspace.setValue(action.getTargetWspace());
+    sortedInputs.put("/node/exo:targetWorkspace", jcrInputTargetWspace);
+
+    JcrInputProperty jcrInputTargetPath = new JcrInputProperty();
+    jcrInputTargetPath.setJcrPath("/node/exo:targetPath");
+    jcrInputTargetPath.setValue(action.getTargetPath());
+    sortedInputs.put("/node/exo:targetPath", jcrInputTargetPath);
     
     JcrInputProperty rootProp = sortedInputs.get("/node");
     if (rootProp == null) {
@@ -234,9 +250,10 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
       String[] roles = StringUtils.split(action.getRoles(), ";");
       actionNode.setProperty("exo:roles", roles);
     }
-    actionNode.setProperty("exo:storeHomePath", action.getHomePath());
+    
+    /*actionNode.setProperty("exo:storeHomePath", action.getHomePath());
     actionNode.setProperty("exo:targetWorkspace", action.getTargetWspace());
-    actionNode.setProperty("exo:targetPath", action.getTargetPath());
+    actionNode.setProperty("exo:targetPath", action.getTargetPath());*/
 
     Iterator mixins = action.getMixins().iterator();
     while (mixins.hasNext()) {
