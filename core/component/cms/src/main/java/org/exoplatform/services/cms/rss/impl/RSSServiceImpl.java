@@ -102,11 +102,23 @@ public class RSSServiceImpl implements RSSService{
   static private String MIX_VERSIONABLE = "mix:versionable".intern() ;
 
   private RepositoryService repositoryService_;
+  
+  /**
+   * Constructor method
+   * Init repositoryService, nodeHierarchyCreator    
+   * @param repositoryService       RepositoryService
+   * @param nodeHierarchyCreator    NodeHierarchyCreator
+   * @see                           RepositoryService
+   * @see                           NodeHierarchyCreator 
+   */
   public RSSServiceImpl(RepositoryService repositoryService, 
       NodeHierarchyCreator nodeHierarchyCreator) {
     repositoryService_ = repositoryService;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void generateFeed(Map context) {
     String feedType = (String) context.get(FEED_TYPE) ;
     if(feedType.equals("rss")) generateRSS(context) ;
@@ -414,7 +426,7 @@ public class RSSServiceImpl implements RSSService{
         contentNode.setProperty(JCR_DATA, new ByteArrayInputStream(feedXML.getBytes()));
         contentNode.setProperty(JCR_MIMETYPE, mimeType);
         contentNode.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
-        session.save(); 
+        session.save();
       } else {
         rss = rootNode.getNode(rssNodeName);
         boolean isEnabledVersion = false ;
