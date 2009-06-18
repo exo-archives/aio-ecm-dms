@@ -15,7 +15,7 @@
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  *
  **************************************************************************/
-package org.exoplatform.services.ecm.dms.cms.taxonomy;
+package org.exoplatform.services.ecm.dms.taxonomy;
 
 import java.util.List;
 
@@ -30,7 +30,6 @@ import org.exoplatform.services.cms.taxonomy.impl.TaxonomyAlreadyExistsException
 import org.exoplatform.services.cms.taxonomy.impl.TaxonomyNodeAlreadyExistsException;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
-import org.exoplatform.services.jcr.impl.core.SessionImpl;
 
 /**
  * Created by The eXo Platform SARL

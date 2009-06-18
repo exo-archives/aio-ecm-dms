@@ -74,7 +74,7 @@
                       <field  name="homePath"><string>dms-system:/exo:ecm/exo:taxonomyTrees/storage/System</string></field>
                       <field  name="targetWspace"><string>collaboration</string></field>
                       <field  name="targetPath"><string>/Documents</string></field>
-                      <field  name="lifecyclePhase"><string>read</string></field>
+                      <field  name="lifecyclePhase"><string>add</string></field>
                       <field  name="roles"><string>*:/platform/administrators</string></field>
                     </object>  
                   </value>                                  

@@ -15,7 +15,7 @@
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  *
  **************************************************************************/
-package org.exoplatform.services.ecm.dms.cms.i18n;
+package org.exoplatform.services.ecm.dms.i18n;
 
 import java.io.BufferedReader;
 import java.io.IOException;
