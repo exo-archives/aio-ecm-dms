@@ -56,6 +56,9 @@ public class VotingServiceImpl implements VotingService {
     multiLangService_ = multiLangService ;
   }  
 
+  /**
+   * {@inheritDoc}
+   */
   public long getVoteTotal(Node node) throws Exception {
     long voteTotal = 0;
     if(!node.hasNode(LANGUAGES) && node.hasProperty(VOTE_TOTAL_PROP)) {
@@ -76,6 +79,11 @@ public class VotingServiceImpl implements VotingService {
     return voteTotal ;
   }
   
+  /**
+   * Getting node is "nt:file" node type.
+   * @param currentNode
+   * @return 
+   */
   public Node getFileLangNode(Node currentNode) throws Exception {
     if(currentNode.getNodes().getSize() > 0) {
       NodeIterator nodeIter = currentNode.getNodes() ;
@@ -90,6 +98,9 @@ public class VotingServiceImpl implements VotingService {
     return currentNode ;
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public void vote(Node node, double rate, String userName, String language) throws Exception {
     Session session = node.getSession();
     if (userName == null) {
