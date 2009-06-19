@@ -51,9 +51,6 @@ public class TestTaxonomyService extends BaseDMSTestCase {
   
   private NodeHierarchyCreator nodeHierarchyCreator;
   
-  /**
-   * *  @see {@link # testInit()}
-   */
   public void setUp() throws Exception {
     super.setUp();
     taxonomyService = (TaxonomyService) container.getComponentInstanceOfType(TaxonomyService.class);
@@ -74,7 +71,7 @@ public class TestTaxonomyService extends BaseDMSTestCase {
 
   /**
    *  Test method TaxonomyService.init()
-   *  Create system taxonomy tree in dms-system
+   *  Expect: Create system taxonomy tree in dms-system
    *  @see {@link # testInit()}
    */
   public void testInit() throws Exception {
@@ -85,13 +82,24 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertEquals(systemTreeStorage, linkManage.getTarget(systemTreeDef, true));
   }
   
-  // Test method TaxonomyService.getTaxonomyTree(String repository, String taxonomyName, boolean system)
+  /**
+   *  Test method TaxonomyService.getTaxonomyTree(String repository, String taxonomyName, boolean system)
+   *  Expect: return System tree
+   * @throws Exception
+   */
   public void testGetTaxonomyTree1() throws Exception {
     Node systemTree = taxonomyService.getTaxonomyTree(REPO_NAME, "System");
     assertNotNull(systemTree);
   }
   
-  // Test method TaxonomyService.addTaxonomyTree(Node taxonomyTree)
+  /**
+   *  Test method TaxonomyService.addTaxonomyTree(Node taxonomyTree)
+   *  Input: add Doc as root tree node, get taxonomy tree with name = Doc
+   *  Expect: return Doc node  
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws TaxonomyAlreadyExistsException
+   */
   public void testAddTaxonomyTree1() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
@@ -103,7 +111,13 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertEquals(docTree, linkManage.getTarget(definitionDocTree));
   }
 
-  // Test method TaxonomyService.addTaxonomyTree(Node taxonomyTree) with one tree has already existed
+  /**
+   * Test method TaxonomyService.addTaxonomyTree(Node taxonomyTree) with one tree has already existed
+   * Input: add 2 tree node with same name
+   * Expect: Fire TaxonomyAlreadyExistsException
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   */
   public void testAddTaxonomyTree2() throws RepositoryException, TaxonomyNodeAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
@@ -117,7 +131,14 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     }
   }
   
-  // Test method TaxonomyService.getTaxonomyTree(String repository, String taxonomyName)
+  /**
+   *  Test method TaxonomyService.getTaxonomyTree(String repository, String taxonomyName)
+   *  Input: Create taxonomy tree Music
+   *  Expect: Node Music
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws TaxonomyAlreadyExistsException
+   */
   public void testGetTaxonomyTree2() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
@@ -129,12 +150,23 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertEquals(musicTree, linkManage.getTarget(musicTreeDefinition));
   }
 
-  // Test method TaxonomyService.getAllTaxonomyTrees(String repository)
+  /**
+   *  Test method TaxonomyService.getAllTaxonomyTrees(String repository)
+   *  Expect: return one tree in repository
+   * @throws Exception
+   */
   public void testGetAllTaxonomyTrees2() throws Exception {
     assertEquals(1, taxonomyService.getAllTaxonomyTrees(REPO_NAME).size());
   }
 
-  // Test method TaxonomyService.getTaxonomyTree(String repository, String taxonomyName)
+  /**
+   *  Test method TaxonomyService.getTaxonomyTree(String repository, String taxonomyName)
+   *  Input: Add 2 tree Miscellaneous and Shoes, remove Miscellaneous tree
+   *  Expect: Node Miscellaneous is remove in definition and real path
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws TaxonomyAlreadyExistsException
+   */
   public void testRemoveTaxonomyTree() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
@@ -148,7 +180,14 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertFalse(dmsSesssion.itemExists("/MyDocuments/Miscellaneous"));
   }
   
-  // Test method TaxonomyService.getAllTaxonomyTrees(String repository, boolean system)
+  /**
+   *  Test method TaxonomyService.getAllTaxonomyTrees(String repository, boolean system)
+   *  Input: Add 2 taxonomy tree
+   *  Output: size of tree increase 2 trees
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws TaxonomyAlreadyExistsException
+   */
   public void testGetAllTaxonomyTrees1() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
@@ -163,7 +202,14 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertEquals(2, totalTree2 - totalTree1);
   }
 
-  // Test method TaxonomyService.hasTaxonomyTree(String repository, String taxonomyName)
+  /**
+   *  Test method TaxonomyService.hasTaxonomyTree(String repository, String taxonomyName)
+   *  Input: Add one tree: Primera Liga
+   *  Expect: Return 2 taxonomy tree: System and Primera Liga tree
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws TaxonomyAlreadyExistsException
+   */
   public void testHasTaxonomyTree() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
@@ -173,7 +219,13 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertTrue(taxonomyService.hasTaxonomyTree(REPO_NAME, "Primera Liga"));
   }
   
-  // Test method TaxonomyService.addTaxonomyNode()
+  /**
+   * Test method TaxonomyService.addTaxonomyNode()
+   * Input: Add one taxonomy node below MyDocument
+   * Expect: One node with primary node type = exo:taxonomy in path MyDocument/
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws RepositoryException
+   */
   public void testAddTaxonomyNode1() throws TaxonomyNodeAlreadyExistsException, RepositoryException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
@@ -182,7 +234,12 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertTrue(taxonomyNode.isNodeType("exo:taxonomy"));
   }
 
-  // Test method TaxonomyService.addTaxonomyNode() throws TaxonomyNodeAlreadyExistsException when Already exist node
+  /**
+   *  Test method TaxonomyService.addTaxonomyNode() throws TaxonomyNodeAlreadyExistsException when Already exist node
+   *  Input: Add 2 taxonomy node below MyDocument path
+   *  Ouput: TaxonomyNodeAlreadyExistsException
+   * @throws RepositoryException
+   */
   public void testAddTaxonomyNode2() throws RepositoryException {
     try {
       session.getRootNode().addNode("MyDocuments");
@@ -193,7 +250,13 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     }
   }
 
-  // Test method TaxonomyService.removeTaxonomyNode()
+  /**
+   *  Test method TaxonomyService.removeTaxonomyNode()
+   *  Input: Add and remove Tennis node
+   *  Expect: Node Tennis has not existed
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   */
   public void testRemoveTaxonomyNode() throws RepositoryException, TaxonomyNodeAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     session.save();
@@ -202,7 +265,13 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertFalse(session.itemExists("/MyDocuments/Tennis"));
   }
   
-  // Test method TaxonomyService.moveTaxonomyNode()
+  /**
+   *  Test method TaxonomyService.moveTaxonomyNode()
+   *  Input: Move node to other place
+   *  Output: Node is moved
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   */
   public void testMoveTaxonomyNode() throws RepositoryException, TaxonomyNodeAlreadyExistsException  {
     session.getRootNode().addNode("MyDocuments");
     session.save();
@@ -216,7 +285,15 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertTrue(session.itemExists("/MyDocuments/Budesliga"));
   }
   
-  // Test method TaxonomyService.addCategory()
+  /**
+   *  Test method TaxonomyService.addCategory()
+   *  Input: Add category for article node
+   *  Expect: one node with primary type exo:taxonomyLink is create in taxonomy tree
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws TaxonomyAlreadyExistsException
+   */
+  
   public void testAddCategory() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");
@@ -232,7 +309,14 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertEquals(article, linkManage.getTarget(link));
   }
   
-  // Test method TaxonomyService.addCategories()
+  /**
+   *  Test method TaxonomyService.addCategories()
+   *  Input: add 2 categories in article node
+   *  Output: create 2 exo:taxonomyLink in each category
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws TaxonomyAlreadyExistsException
+   */
   public void testAddCategories() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");
@@ -251,7 +335,15 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertEquals(article, linkManage.getTarget(link2));
   }
   
-  // Test method TaxonomyService.hasCategories()
+  /**
+   *  Test method TaxonomyService.hasCategories()
+   *  Input: Add categories for article node
+   *  Expect: return true with category is added
+   *          return false with category that is not added
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws TaxonomyAlreadyExistsException
+   */
   public void testHasCategories() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");
@@ -269,7 +361,14 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertFalse(taxonomyService.hasCategories(article, "Budesliga"));
   }
   
-  // Test method TaxonomyService.getCategories()
+  /**
+   * Test method TaxonomyService.getCategories()
+   * Input: Add 2 categories to article node
+   * Expect: Return 2 node of categories
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws TaxonomyAlreadyExistsException
+   */
   public void testGetCategories() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");
@@ -288,7 +387,14 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertTrue(lstNode.contains(taxoLink2));
   }
   
-  // Test method TaxonomyService.getAllCategories()
+  /**
+   * Test method TaxonomyService.getAllCategories()
+   * Input: Add 3 categories to node
+   * Expect: return 3 categories
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws TaxonomyAlreadyExistsException
+   */
   public void testGetAllCategories() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");
@@ -314,7 +420,14 @@ public class TestTaxonomyService extends BaseDMSTestCase {
     assertTrue(lstNode.contains(taxoLink3));
   }
   
-  // Test method TaxonomyService.removeCategory()
+  /**
+   *  Test method TaxonomyService.removeCategory()
+   *  Input: Remove categories of Article node
+   *  Expect: Return empty list
+   * @throws RepositoryException
+   * @throws TaxonomyNodeAlreadyExistsException
+   * @throws TaxonomyAlreadyExistsException
+   */
   public void testRemoveCategory() throws RepositoryException, TaxonomyNodeAlreadyExistsException, TaxonomyAlreadyExistsException {
     session.getRootNode().addNode("MyDocuments");
     Node article = session.getRootNode().addNode("Article");

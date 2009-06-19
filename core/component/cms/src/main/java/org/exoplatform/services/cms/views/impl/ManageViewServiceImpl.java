@@ -86,7 +86,9 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     extensionManager_ = extensionManager;
   }
 
-  //Add buttons defined in configuration file
+  /**
+   * Add buttons defined in configuration file
+   */
   private void initButtons() {
     List<UIExtension> extensions = extensionManager_.getUIExtensions(EXTENSION_TYPE);
     List<String> actions = new ArrayList<String>();
