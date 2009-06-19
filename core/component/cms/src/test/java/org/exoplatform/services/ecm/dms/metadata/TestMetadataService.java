@@ -97,6 +97,6 @@ public class TestMetadataService extends BaseDMSTestCase {
   public void testInit() throws Exception {
     Session mySession = repository.login(credentials, DMSSYSTEM_WS);
     Node myMetadata = (Node)mySession.getItem(baseMetadataPath);
-    assertEquals(1, myMetadata.getNodes().getSize());
+    assertTrue(myMetadata.getNodes().getSize() > 0);
   }
 }

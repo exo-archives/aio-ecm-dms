@@ -40,7 +40,7 @@ public class TestRSSService extends BaseDMSTestCase {
   }
   
   public void testGenerateFeed() throws Exception {
-    Map contextRss = new HashMap();
+    Map<String, String> contextRss = new HashMap<String, String>();
     contextRss.put("exo:feedType", "rss");
     contextRss.put("repository", "repository");
     contextRss.put("srcWorkspace", COLLABORATION_WS);
@@ -68,7 +68,7 @@ public class TestRSSService extends BaseDMSTestCase {
     assertNotNull(myJcrContent.getProperty("jcr:data").getString());
     assertEquals("text/xml", myJcrContent.getProperty("jcr:mimeType").getString());
     
-    Map contextPodcast = new HashMap();
+    Map<String, String> contextPodcast = new HashMap<String, String>();
     contextPodcast.put("exo:feedType", "podcast");
     contextPodcast.put("repository", "repository");
     contextPodcast.put("srcWorkspace", COLLABORATION_WS);

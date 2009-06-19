@@ -65,9 +65,13 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
   /**
    * Instantiates a new application template manager service impl.
    * 
-   * @param repositoryService the repository service
-   * @param hierarchyCreator the hierarchy creator
-   * @param params the params
+   * @param repositoryService       RepositoryService
+   * @param hierarchyCreator        NodeHierarchyCreator
+   * @param params                  InitParams
+   * @param dmsConfiguration        DMSConfiguration
+   * @see RepositoryService
+   * @see NodeHierarchyCreator
+   * @see DMSConfiguration
    * 
    * @throws Exception the exception
    */
@@ -90,23 +94,23 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
     dmsConfiguration_ = dmsConfiguration;
   }
 
-  /* (non-Javadoc)
-   * @see org.exoplatform.services.cms.views.ApplicationTemplateManagerService#addPlugin(org.exoplatform.services.cms.views.PortletTemplatePlugin)
+  /**
+   * {@inheritDoc}
    */
   public void addPlugin(PortletTemplatePlugin portletTemplatePlugin) throws Exception {
     portletTemplatePlugins.add(portletTemplatePlugin);
   }
   
-  /* (non-Javadoc)
-   * @see org.exoplatform.services.cms.views.ApplicationTemplateManagerService#getTemplatesByApplication(java.lang.String, java.lang.String, org.exoplatform.services.jcr.ext.common.SessionProvider)
+  /**
+   * {@inheritDoc}
    */
   public List<Node> getTemplatesByApplication(String repository, String portletName,
       SessionProvider provider) throws Exception {  
     return null;
   }
   
-  /* (non-Javadoc)
-   * @see org.exoplatform.services.cms.views.ApplicationTemplateManagerService#addTemplate(javax.jcr.Node, org.exoplatform.services.cms.views.PortletTemplatePlugin.PortletTemplateConfig)
+  /**
+   * {@inheritDoc}
    */
   public void addTemplate(Node portletTemplateHome, PortletTemplateConfig config) throws Exception {
     Node category = null;
@@ -120,7 +124,7 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
     try {
       templateNode = category.getNode(config.getTemplateName());
     } catch (Exception e) {
-      templateNode = category.addNode(config.getTemplateName(),"exo:template");      
+      templateNode = category.addNode(config.getTemplateName(),"exo:template");
     }
     templateNode.setProperty("exo:templateFile",config.getTemplateData());
     //TODO need set permission for the template in future
@@ -129,13 +133,13 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
 
   /**
    * Gets the application template home.
-   * 
-   * @param repository the repository
-   * @param portletName the portlet name
-   * @param provider the provider
-   * 
-   * @return the application template home
-   * 
+   * @param repository        String
+   *                          The name of repository
+   * @param portletName       String
+   *                          The name of portlet
+   * @param provider          SessionProvider
+   * @see SessionProvider
+   * @return the application template home 
    * @throws Exception the exception
    */
   public Node getApplicationTemplateHome(String repository, String portletName,
@@ -144,15 +148,15 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
     return basedApplicationTemplateHome.getNode(portletName);    
   }
 
-  /* (non-Javadoc)
-   * @see org.exoplatform.services.cms.views.ApplicationTemplateManagerService#getAllManagedPortletName(java.lang.String)
+  /**
+   * {@inheritDoc}
    */
   public List<String> getAllManagedPortletName(String repository) throws Exception {
     return managedApplicationNames.get(repository);
   }
 
-  /* (non-Javadoc)
-   * @see org.exoplatform.services.cms.views.ApplicationTemplateManagerService#getTemplateByName(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.exoplatform.services.jcr.ext.common.SessionProvider)
+  /**
+   * {@inheritDoc}
    */
   public Node getTemplateByName(String repository, String portletName, String category,
       String templateName, SessionProvider sessionProvider) throws Exception {
@@ -160,8 +164,8 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
     return basedApplicationTemplateHome.getNode(portletName + "/" + category + "/" + templateName);    
   }  
 
-  /* (non-Javadoc)
-   * @see org.exoplatform.services.cms.views.ApplicationTemplateManagerService#getTemplatesByCategory(java.lang.String, java.lang.String, java.lang.String, org.exoplatform.services.jcr.ext.common.SessionProvider)
+  /**
+   * {@inheritDoc}
    */
   public List<Node> getTemplatesByCategory(String repository, String portletName, String category,
       SessionProvider sessionProvider) throws Exception {
@@ -175,13 +179,16 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
     return templateNodes;
   } 
   
+  /**
+   * {@inheritDoc}
+   */
   public Node getTemplateByPath(String repository, String templatePath, SessionProvider sessionProvider) throws Exception {
    Node basedTemplateNode = getBasedApplicationTemplatesHome(sessionProvider,repository);
    return (Node)basedTemplateNode.getSession().getItem(templatePath);
   }
   
-  /* (non-Javadoc)
-   * @see org.exoplatform.services.cms.views.ApplicationTemplateManagerService#removeTemplate(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.exoplatform.services.jcr.ext.common.SessionProvider)
+  /**
+   * {@inheritDoc}
    */
   public void removeTemplate(String repository, String portletName, String catgory,
       String templateName, SessionProvider sessionProvider) throws Exception {
@@ -194,11 +201,11 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
   /**
    * Gets the based application templates home.
    * 
-   * @param sessionProvider the session provider
-   * @param repository the repository
-   * 
+   * @param sessionProvider       SessionProvider
+   * @param repository            String
+   *                              The name of repository
    * @return the based application templates home
-   * 
+   * @see SessionProvider
    * @throws Exception the exception
    */
   private Node getBasedApplicationTemplatesHome(SessionProvider sessionProvider, String repository) throws Exception {
@@ -215,7 +222,7 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
    * Import predefined template to db.
    * 
    * @param storedTemplateHomeNode the stored template home node
-   * 
+   * @see   Node
    * @throws Exception the exception
    */
   private void importPredefinedTemplateToDB(Node storedTemplateHomeNode) throws Exception{    
@@ -250,8 +257,8 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
     storedTemplateHomeNode.getSession().save();
   }
   
-  /* (non-Javadoc)
-   * @see org.picocontainer.Startable#start()
+  /**
+   * {@inheritDoc}
    */
   public void start() {               
     SessionProvider sessionProvider = SessionProvider.createSystemProvider();
@@ -270,11 +277,9 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
     portletTemplatePlugins = null;
   }
 
-  /* (non-Javadoc)
-   * @see org.picocontainer.Startable#stop()
+  /**
+   * {@inheritDoc}
    */
   public void stop() {
-
-  }  
-
+  }
 }

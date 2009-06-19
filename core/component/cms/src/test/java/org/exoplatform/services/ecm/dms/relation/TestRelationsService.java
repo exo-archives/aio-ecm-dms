@@ -54,8 +54,8 @@ public class TestRelationsService extends BaseDMSTestCase {
     Node aaa = root.getNode("AAA");
     Node ccc = root.getNode("CCC");
     
-    assertEquals(true, relationsService.hasRelations(aaa));
-    assertEquals(false, relationsService.hasRelations(ccc));
+    assertTrue(relationsService.hasRelations(aaa));
+    assertFalse(relationsService.hasRelations(ccc));
   }
   
   public void testGetRelations() throws Exception {
