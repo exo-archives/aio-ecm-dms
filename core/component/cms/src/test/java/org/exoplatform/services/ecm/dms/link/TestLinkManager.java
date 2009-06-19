@@ -155,14 +155,14 @@ public class TestLinkManager extends BaseDMSTestCase {
     
     try {
       linkManager.getTarget(nodeA1);
-    } catch (Exception e) {
       fail("\nNode: " + nodeA1.getName() + " is not a symlink");
+      assertNotNull(linkManager.getTarget(symlinkNodeA1));
+      assertEquals(linkManager.getTarget(symlinkNodeA1), nodeB1_1.getName());
+      
+      assertNotNull(linkManager.getTarget(symlinkNodeA1, true));
+      assertEquals(linkManager.getTarget(symlinkNodeA1, true), nodeB1_1.getName());
+    } catch (Exception e) {
     }
-    assertNotNull(linkManager.getTarget(symlinkNodeA1));
-    assertEquals(linkManager.getTarget(symlinkNodeA1), nodeB1_1.getName());
-    
-    assertNotNull(linkManager.getTarget(symlinkNodeA1, true));
-    assertEquals(linkManager.getTarget(symlinkNodeA1, true), nodeB1_1.getName());
   }
   
   public void testIsTargetReachable() throws Exception {
@@ -175,10 +175,10 @@ public class TestLinkManager extends BaseDMSTestCase {
     try {
       boolean isReachable = linkManager.isTargetReachable(nodeA1);
       assertFalse(isReachable);
-    } catch (Exception e) {
       fail("\nNode: " + nodeA1.getName() + " is not a symlink");
+      assertTrue(linkManager.isTargetReachable(symlinkNodeA1));
+    } catch (Exception e) {
     }
-    assertTrue(linkManager.isTargetReachable(symlinkNodeA1));
   }
   
   public void testGetTargetPrimaryNodeType() throws Exception {
@@ -190,10 +190,10 @@ public class TestLinkManager extends BaseDMSTestCase {
     try {
       String primaryNodeType = linkManager.getTargetPrimaryNodeType(nodeA1);
       System.out.println("\n\n====" + primaryNodeType);
-    } catch (Exception e) {
       fail("\nNode: " + nodeA1.getName() + " is not a symlink");
+      assertEquals(linkManager.getTargetPrimaryNodeType(symlinkNodeA1), nodeB1_1.getPrimaryNodeType().getName());
+    } catch (Exception e) {
     }
-    assertEquals(linkManager.getTargetPrimaryNodeType(symlinkNodeA1), nodeB1_1.getPrimaryNodeType().getName());
   }
   
   public void testUpdateLink() throws Exception {
