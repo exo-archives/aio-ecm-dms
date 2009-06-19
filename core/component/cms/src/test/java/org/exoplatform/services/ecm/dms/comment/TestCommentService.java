@@ -26,19 +26,31 @@ import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
 
 /**
- * Created by The eXo Platform SARL
+ * Created by eXo Platform
  * Author : Nguyen Manh Cuong
  *          manhcuongpt@gmail.com 
  * Jun 9, 2009
  */
+
+/**
+ * Unit test for CommentService
+ * Methods need to test:
+ * 1. addComment() method
+ * 2. getComment() method
+ */
 public class TestCommentService extends BaseDMSTestCase {
+  
+  private final static String COMMENT            = "comments".intern();
+
+  private final static String LANGUAGES          = "languages".intern();
+
+  private final static String COMMENTOR          = "exo:commentor".intern();
+
+  private final static String COMMENTOR_EMAIL    = "exo:commentorEmail".intern();
+
+  private final static String COMMENTOR_MESSAGES = "exo:commentContent".intern();
 
   private CommentsService     commentsService    = null;
-  private final static String COMMENT            = "comments".intern();
-  private final static String LANGUAGES          = "languages".intern();
-  private final static String COMMENTOR          = "exo:commentor".intern();
-  private final static String COMMENTOR_EMAIL    = "exo:commentorEmail".intern();
-  private final static String COMMENTOR_MESSAGES = "exo:commentContent".intern();
   
   @Override
   public void setUp() throws Exception {
@@ -46,21 +58,19 @@ public class TestCommentService extends BaseDMSTestCase {
     commentsService = (CommentsService) container.getComponentInstanceOfType(CommentsService.class);
   }
 
-  /*
+  /**
    * Test Method: addComment(): 
-   * Input: test node has languages node, languages doesn't node "jp"
-   *    comment node has properties:
-   *          commentor = root,
-   *          commentor_email = root@exoplatform,
-   *          commentor_messages = Hello,
-   *          language = jp
+   * Input: Test node has multi-languages node, but not "jp" language.
+   *        Comment node has properties: Commenter = root,
+   *                                     Commentor_email = root@exoplatform,
+   *                                     Commentor_messages = Hello,
+   *                                     Language = jp
    * Expected Result:
-   *    "jp" node is added in languages node
-   *    comment node is added in "jp" node with properties like input.
+   *       "jp" node is added in languages node
+   *       comment node is added in "jp" node with properties like input.
    */
   public void testAddCommnent() throws Exception {
-    Node root = session.getRootNode();
-    Node test = root.addNode("Test");
+    Node test = session.getRootNode().addNode("Test");
     session.save();
     Node languages = test.addNode(LANGUAGES);
     session.save();
@@ -77,15 +87,13 @@ public class TestCommentService extends BaseDMSTestCase {
     }
   }
   
-  /*
+  /**
    * Test Method: addComment()
-   * Input: test node doesn't has languages node.
-   * Expected result:
-   *    comments node is added in test node.
+   * Input: Test node doesn't has languages node.
+   * Expected result: Comments node is added in test node.
    */
   public void testAddCommnent2() throws Exception {
-    Node root = session.getRootNode();
-    Node test = root.addNode("Test");
+    Node test = session.getRootNode().addNode("Test");
     session.save();
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "jp");
     Node comments = test.getNode(COMMENT);
@@ -99,15 +107,13 @@ public class TestCommentService extends BaseDMSTestCase {
     }
   }  
   
-  /*
+  /**
    * Test Method: addComment()
    * Input Node: NodeType is unstructured
-   * Expected Result:
-   *      throws Exception
+   * Expected Result: throws Exception
    */
   public void testAddCommnent3() throws Exception {
-    Node root = session.getRootNode();
-    Node test = root.addNode("test3", "nt:file");
+    Node test = session.getRootNode().addNode("test3", "nt:file");
     Exception e = null;
     if(test.getPrimaryNodeType().getName().equals("nt:file")){
       test.addNode("jcr:content", "nt:base");
@@ -121,15 +127,14 @@ public class TestCommentService extends BaseDMSTestCase {
     assertNotNull(e);
   }
 
-  /*
+  /**
    * Test Method: getComments()
    * Input: Node has some comment nodes in "jp" node.
    * Expected Result:
    *        Get all comment nodes with jp language.
    */
   public void testGetComments() throws Exception{
-    Node root = session.getRootNode();
-    Node test = root.addNode("Test");
+    Node test = session.getRootNode().addNode("Test");
     session.save();
     test.addNode(LANGUAGES);
     session.save();
@@ -155,16 +160,15 @@ public class TestCommentService extends BaseDMSTestCase {
     assertEquals("Bye", commentNode3.getProperty(COMMENTOR_MESSAGES).getString());
   }
   
-  /*
+  /**
    * Test Method: getComments()
-   * Input: test node doesn't have languages node, so adding comment nodes will be set default 
+   * Input: Test node doesn't have languages node, so adding comment nodes will be set default 
    *        language. 
    * Expected Result:
    *        Get all comment nodes with default language.
    */
   public void testGetComments2() throws Exception{
-    Node root = session.getRootNode();
-    Node test = root.addNode("Test");
+    Node test = session.getRootNode().addNode("Test");
     session.save();
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "jp");
     commentsService.addComment(test, "john", "john@explatform.com", null, "Thanks", "cn");

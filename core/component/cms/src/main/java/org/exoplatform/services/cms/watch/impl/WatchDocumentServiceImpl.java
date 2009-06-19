@@ -170,8 +170,6 @@ public class WatchDocumentServiceImpl implements WatchDocumentService, Startable
     ObservationManager observationManager = systemSession.getWorkspace().getObservationManager() ;
     observationManager.addEventListener(listener,Event.PROPERTY_CHANGED,
         node.getPath(),true,null,observedNodeTypeNames,false) ;
-    EventListenerIterator eventListenerIterator = observationManager.getRegisteredEventListeners();
-    System.out.println(eventListenerIterator.getSize());
     systemSession.logout();
   }
 

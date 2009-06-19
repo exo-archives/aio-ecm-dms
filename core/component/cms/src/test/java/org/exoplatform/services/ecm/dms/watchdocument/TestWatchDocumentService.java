@@ -37,12 +37,23 @@ import edu.emory.mathcs.backport.java.util.Arrays;
  *          manhcuongpt@gmail.com
  * Jun 16, 2009  
  */
+
+/**
+ * Unit test for WatchDocumentService
+ * Methods need to test:
+ * 1. getNotificationType() method
+ * 2. watthDocument() method
+ * 3. unWatchDocument() method
+ */
 public class TestWatchDocumentService extends BaseDMSTestCase{
   
+  private final static String  EXO_WATCHABLE_MIXIN  = "exo:watchable".intern();
+
+  private final static String  EMAIL_WATCHERS_PROP  = "exo:emailWatcher".intern();
+
+  private final static String  RSS_WATCHERS_PROP    = "exo:rssWatcher".intern();
+
   private WatchDocumentService watchDocumentService = null;
-  private final static String EXO_WATCHABLE_MIXIN = "exo:watchable".intern() ;  
-  private final static String EMAIL_WATCHERS_PROP = "exo:emailWatcher".intern() ;
-  private final static String RSS_WATCHERS_PROP = "exo:rssWatcher".intern() ;
   
   @Override
   public void setUp() throws Exception {
@@ -50,24 +61,7 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
     watchDocumentService = (WatchDocumentService) container.getComponentInstanceOfType(WatchDocumentService.class);
   }
   
-  private void createMultipleProperty(Node node, String emailWatcherValue, String rssWatcherValue) throws Exception{
-    NodeTypeManager nodeTypeManager = session.getWorkspace().getNodeTypeManager();
-    NodeType nodeType = nodeTypeManager.getNodeType(EXO_WATCHABLE_MIXIN);
-    
-    for(PropertyDefinition def : nodeType.getDeclaredPropertyDefinitions()){
-      String proName = def.getName();
-      if(def.isMultiple() & proName.equals(EMAIL_WATCHERS_PROP)){
-        Value val = session.getValueFactory().createValue(emailWatcherValue);
-        node.setProperty(EMAIL_WATCHERS_PROP, new Value[] {val});
-      }
-      if(def.isMultiple() & proName.equals(RSS_WATCHERS_PROP)){
-        Value val = session.getValueFactory().createValue(rssWatcherValue);
-        node.setProperty(RSS_WATCHERS_PROP, new Value[] {val});
-      }
-    }
-  }
-  
-  /*
+  /**
    * Test Method: getNotification()
    * Input: test node is not exo:watchable document
    * Expected:
@@ -81,7 +75,7 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
     assertEquals(-1, notification);
   }    
   
-  /*
+  /**
    * Test Method: getNotification()
    * Input: type of notification for test node is email and rss.
    * Expected:
@@ -97,7 +91,7 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
     assertEquals(0, notification);
   }
 
-  /*
+  /**
    * Test Method: getNotification()
    * Input: type of notification for test node is email
    * Expected:
@@ -113,7 +107,7 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
     assertEquals(1, notification);
   }  
   
-  /*
+  /**
    * Test Method: getNotification()
    * Input: type of notification for test node is rss
    * Expected:
@@ -129,7 +123,7 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
     assertEquals(2, notification);
   }
   
-  /*
+  /**
    * Test Method: watchDocument()
    * Input: document node is not added exo:watchable mixinType, user: root will watch this document
    * Expected:
@@ -151,7 +145,7 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
     }
   }
   
-  /*
+  /**
    * Test Method: watchDocument()
    * Input: document node is not added exo:watchable mixinType,
    *        user: root will watch this document
@@ -169,7 +163,7 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
     assertFalse(document.hasProperty(EMAIL_WATCHERS_PROP));
   }  
   
-  /*
+  /**
    * Test Method: watchDocument()
    * Input: document node follows exo:watchable mixinType, 
    *        user: root and marry will watch this document
@@ -179,8 +173,7 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
    */  
   @SuppressWarnings("unchecked")
   public void testWatchDocument2() throws Exception{
-    Node root = session.getRootNode();
-    Node document = root.addNode("MyDocument");
+    Node document = session.getRootNode().addNode("MyDocument");
     session.save();
     watchDocumentService.watchDocument(document, "root", 1);
     watchDocumentService.watchDocument(document, "marry", 1);
@@ -194,17 +187,16 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
     }
   }
   
-  /*
+  /**
    * Test Method: unwatchDocument()
-   * Input: document is watch by two user(root, marry)
-   *        root user will be unwatched
+   * Input: Document is watched by two user(root, marry)
+   *        Root user will be unwatched
    * Expected:
    *        exo:emailWatch property of document node only has value: marry.
    */
   @SuppressWarnings("unchecked")
   public void testUnWatchDocument() throws Exception {
-    Node root = session.getRootNode();
-    Node document = root.addNode("MyDocument");
+    Node document = session.getRootNode().addNode("MyDocument");
     session.save();
     watchDocumentService.watchDocument(document, "root", 1);
     watchDocumentService.watchDocument(document, "marry", 1);
@@ -220,18 +212,18 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
       assertEquals(1, value.length);
     }
   }
-  /*
+  
+  /**
    * Test Method: unwatchDocument()
-   * Input: document is watch by two user(root, marry)
-   *        root user will be unwatched
-   *        notification has value: 2
+   * Input: Document is watch by two user(root, marry)
+   *        Root user will be unwatched
+   *        Notification has value: 2
    * Expected:
    *        exo:emailWatch property of a document node has value: both root and marry.
    */
   @SuppressWarnings("unchecked")
   public void testUnWatchDocument2() throws Exception{
-    Node root = session.getRootNode();
-    Node document = root.addNode("MyDocument");
+    Node document = session.getRootNode().addNode("MyDocument");
     session.save();
     watchDocumentService.watchDocument(document, "root", 1);
     watchDocumentService.watchDocument(document, "marry", 1);
@@ -244,6 +236,30 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
         assertTrue(watcher.contains(val.getString()));
       }
       assertEquals(2, value.length);
+    }
+  }
+
+  /**
+   * Create multiple value property for node.
+   * @param node
+   * @param emailWatcherValue
+   * @param rssWatcherValue
+   * @throws Exception
+   */
+  private void createMultipleProperty(Node node, String emailWatcherValue, String rssWatcherValue) throws Exception{
+    NodeTypeManager nodeTypeManager = session.getWorkspace().getNodeTypeManager();
+    NodeType nodeType = nodeTypeManager.getNodeType(EXO_WATCHABLE_MIXIN);
+    
+    for(PropertyDefinition def : nodeType.getDeclaredPropertyDefinitions()){
+      String proName = def.getName();
+      if(def.isMultiple() & proName.equals(EMAIL_WATCHERS_PROP)){
+        Value val = session.getValueFactory().createValue(emailWatcherValue);
+        node.setProperty(EMAIL_WATCHERS_PROP, new Value[] {val});
+      }
+      if(def.isMultiple() & proName.equals(RSS_WATCHERS_PROP)){
+        Value val = session.getValueFactory().createValue(rssWatcherValue);
+        node.setProperty(RSS_WATCHERS_PROP, new Value[] {val});
+      }
     }
   }
 }
