@@ -49,12 +49,12 @@ public class TestMetadataService extends BaseDMSTestCase {
   
   public void testGetMetadataList() throws Exception {
     List<String> metadataTypes = metadataService.getMetadataList(REPO_NAME);
-    assertEquals(1, metadataTypes.size());
+    assertEquals(8, metadataTypes.size());
   }
   
   public void testGetAllMetadatasNodeType() throws Exception {
     List<NodeType> metadataTypes = metadataService.getAllMetadatasNodeType(REPO_NAME);
-    assertEquals(1, metadataTypes.size());
+    assertEquals(8, metadataTypes.size());
   }
   
   public void testAddMetadata() throws Exception {
