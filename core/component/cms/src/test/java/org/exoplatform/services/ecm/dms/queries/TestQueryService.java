@@ -105,8 +105,8 @@ public class TestQueryService extends BaseDMSTestCase {
       queryService.removeQuery(queryPathMarry, "marry", REPO_NAME);
       listQuery = queryService.getQueries("marry", REPO_NAME, sessionProvider);
       assertEquals(listQuery.size(), 0);
-    } catch (PathNotFoundException e) {
       fail("Query Path not found!");
+    } catch (PathNotFoundException e) {
     }
   }
 
@@ -163,12 +163,12 @@ public class TestQueryService extends BaseDMSTestCase {
         new String[] { "*:/platform/administrators" }, false, REPO_NAME);
     try {
       queryService.removeSharedQuery("QueryAll2", REPO_NAME);
-    } catch (PathNotFoundException e) {
       fail("Query Path not found!");
+      queryService.removeSharedQuery("QueryAll1", REPO_NAME);
+      Node nodeQuery = queryService.getSharedQuery("QueryAll1", REPO_NAME, sessionProvider);
+      assertNull(nodeQuery);
+    } catch (PathNotFoundException e) {
     }
-    queryService.removeSharedQuery("QueryAll1", REPO_NAME);
-    Node nodeQuery = queryService.getSharedQuery("QueryAll1", REPO_NAME, sessionProvider);
-    assertNull(nodeQuery);
   }
 
   public void testgetSharedQueries() throws Exception {
@@ -257,8 +257,8 @@ public class TestQueryService extends BaseDMSTestCase {
       queryResult = queryService.execute(queryPath, DMSSYSTEM_WS, REPO_NAME, sessionProvider,
           "root");
       assertEquals(queryResult.getNodes().getSize(), 0);
-    } catch (PathNotFoundException e) {
       fail("Query Path not found!");
+    } catch (PathNotFoundException e) {
     }
   }
 
