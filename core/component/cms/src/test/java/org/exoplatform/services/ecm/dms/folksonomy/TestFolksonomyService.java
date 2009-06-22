@@ -32,6 +32,8 @@ import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
+import edu.emory.mathcs.backport.java.util.Arrays;
+
 /**
  * Created by eXo Platform
  * Author : Nguyen Manh Cuong
@@ -62,6 +64,8 @@ public class TestFolksonomyService extends BaseDMSTestCase {
   
   private FolksonomyService folksonomyService = null;
   
+  private Node test;
+  
   @Override
   public void setUp() throws Exception {
     super.setUp();
@@ -70,6 +74,8 @@ public class TestFolksonomyService extends BaseDMSTestCase {
     .getComponentInstanceOfType(NodeHierarchyCreator.class);
     exoTagStylePath = nodehierarchyCreator.getJcrPath(BasePath.EXO_TAG_STYLE_PATH);
     baseTagsPath = nodehierarchyCreator.getJcrPath(BasePath.EXO_TAGS_PATH);
+    test = session.getRootNode().addNode("Test");
+    session.save();
   }
 
   /**
@@ -101,17 +107,12 @@ public class TestFolksonomyService extends BaseDMSTestCase {
   public void testAddTag() throws Exception {
     Session systemSession = getSystemSession(REPO_NAME);
     Node exoTagsHomeNode = (Node) systemSession.getItem(baseTagsPath);
-    Node test = session.getRootNode().addNode("Test");
-    session.save();
     String[] tagNames = { "AAAA" };
     folksonomyService.addTag(test, tagNames, REPO_NAME);
     Property property = test.getProperty("exo:folksonomy");
-    Value[] values;
-    if (property.getDefinition().isMultiple()) {
-      values = property.getValues();
+    Value[] values = property.getValues();
       for (Value val : values) {
         assertEquals(val.getString(), exoTagsHomeNode.getNode("AAAA").getUUID());
-      }
     }
     assertTrue(exoTagsHomeNode.hasNode("AAAA"));
     assertTrue(test.isNodeType("exo:folksonomized"));
@@ -124,21 +125,17 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    *        Test node has a property which value is equal with UUID of tag node
    *        Property add more value equal UUID of tag node
    */
+  @SuppressWarnings("unchecked")
   public void testAddTag1() throws Exception {
     Session systemSession = getSystemSession(REPO_NAME);
     Node exoTagsHomeNode = (Node) systemSession.getItem(baseTagsPath);    
-    Node test = session.getRootNode().addNode("Test");
-    session.save();
     String[] tagNames = { "AAAA", "BBBB"};
     folksonomyService.addTag(test, tagNames, REPO_NAME);
     Property property = test.getProperty("exo:folksonomy");
-    Value[] values;
-    if (property.getDefinition().isMultiple()) {
-      values = property.getValues();
-      Value val1 = values[0];
-      Value val2 = values[1];
-      assertEquals(val1.getString(), exoTagsHomeNode.getNode("AAAA").getUUID());
-      assertEquals(val2.getString(), exoTagsHomeNode.getNode("BBBB").getUUID());
+    List list = Arrays.asList(new String[] {exoTagsHomeNode.getNode("AAAA").getUUID(), exoTagsHomeNode.getNode("BBBB").getUUID()});
+    Value[] values = property.getValues();
+    for (Value value : values) {
+        assertTrue(list.contains(value.getString()));
     }
   }
   
@@ -150,12 +147,8 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    */
   public void testGetTag() throws Exception{
     String tagPath = baseTagsPath + "/AAAA";
-    Node root = session.getRootNode();
-    Node test = root.addNode("Test");
-    session.save();
     String[] tagNames = {"AAAA"};
     folksonomyService.addTag(test, tagNames, REPO_NAME);
-    
     Node node = folksonomyService.getTag(tagPath, REPO_NAME);
     assertEquals(tagPath, node.getPath());
   }
@@ -167,13 +160,11 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    */
   public void testGetTag1()throws Exception{
     String tagPath = baseTagsPath + "/DDDD";    
-    Exception e = null;
     try{
       folksonomyService.getTag(tagPath, REPO_NAME);
+      fail();
     } catch (PathNotFoundException ex) {
-      e = ex;
     }
-    assertNotNull(e);
   }
   
   /**
@@ -183,31 +174,21 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    *        Get all tags in repository: "AAAA", "BBBB", "CCCC"
    *        UUID of tag nodes are equal value of "exo:folksonomy" property
    */
+  @SuppressWarnings("unchecked")
   public void testGetAllTags() throws Exception{
-    Node test = session.getRootNode().addNode("Test");
-    session.save();
     String[] tagNames = {"AAAA", "BBBB", "CCCC"};
     folksonomyService.addTag(test, tagNames, REPO_NAME);
-    
     List<Node> listTags = folksonomyService.getAllTags(REPO_NAME);
-    Node tagNode1 = listTags.get(0);
-    Node tagNode2 = listTags.get(1);
-    Node tagNode3 = listTags.get(2);
+    List list = Arrays.asList(new String[] {listTags.get(0).getUUID(), listTags.get(1).getUUID(), listTags.get(2).getUUID()});
+    List listTagNames = Arrays.asList(new String[] {"AAAA", "BBBB", "CCCC"});
     Property property = test.getProperty("exo:folksonomy");
-    Value[] values;
-    if (property.getDefinition().isMultiple()) {
-      values = property.getValues();
-      Value val1 = values[0];
-      Value val2 = values[1];
-      Value val3 = values[2];
-      assertEquals(val1.getString(), tagNode1.getUUID());
-      assertEquals(val2.getString(), tagNode2.getUUID());
-      assertEquals(val3.getString(), tagNode3.getUUID());
+    Value[] values = property.getValues();
+    for (Value value : values) {
+      assertTrue(list.contains(value.getString()));
     }
-    assertEquals("AAAA", tagNode1.getName());
-    assertEquals("BBBB", tagNode2.getName());
-    assertEquals("CCCC", tagNode3.getName());
-    
+    for (Node node : listTags) {
+      assertTrue(listTagNames.contains(node.getName()));
+    }
   }
   
   /**
@@ -215,15 +196,15 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    * Input: Repository has some tag styles. 
    * Expected: all tag styles are listed
    */
+  @SuppressWarnings("unchecked")
   public void testGetAllTagStyle() throws Exception{
     List<Node> listTagStyles = folksonomyService.getAllTagStyle(REPO_NAME);
+    List listStyleName = Arrays.asList(new String[] {"nomal", "interesting", "attractive", "hot", "hotest"});
     assertNotNull(listTagStyles);
+    for (Node styleNode : listTagStyles) {
+      assertTrue(listStyleName.contains(styleNode.getName()));
+    }
     assertEquals(5, listTagStyles.size());
-    assertEquals("nomal", listTagStyles.get(0).getName());
-    assertEquals("interesting", listTagStyles.get(1).getName());
-    assertEquals("attractive", listTagStyles.get(2).getName());
-    assertEquals("hot", listTagStyles.get(3).getName());
-    assertEquals("hotest", listTagStyles.get(4).getName());
   }
   
   /**
@@ -245,13 +226,11 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    * Expected: throws Exception
    */
   public void testGetTagStyle1() {
-    Exception e = null;
     try {
       folksonomyService.getTagStyle("normal", REPO_NAME);
+      fail("normal is not existed");
     } catch (Exception ex) {
-      e = ex;
     }
-    assertNotNull(e);
   }
   
   /**
@@ -262,19 +241,16 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    */
   public void testGetDocumentsOnTag() throws Exception{
     String tagPath = baseTagsPath + "/EEEE";    
-    Node test = session.getRootNode().addNode("Test1");
-    Node test1 = session.getRootNode().addNode("Test2");
+    Node test1 = test.addNode("Test1");
+    Node test2 = test.addNode("Test2");
     session.save();
     String[] tagNames = {"AAAA", "BBBB", "CCCC", "EEEE"};
     String[] tagNames1 = {"EEEE"};
-    folksonomyService.addTag(test, tagNames, REPO_NAME);
-    folksonomyService.addTag(test1, tagNames1, REPO_NAME);
-
+    folksonomyService.addTag(test1, tagNames, REPO_NAME);
+    folksonomyService.addTag(test2, tagNames1, REPO_NAME);
     List<Node> list = folksonomyService.getDocumentsOnTag(tagPath, REPO_NAME);
-    Node node1 = list.get(0);
-    Node node2 = list.get(1);
-    assertEquals("Test1", node1.getName());
-    assertEquals("Test2", node2.getName());
+    assertTrue(list.contains(test1));
+    assertTrue(list.contains(test2));
   }
   
   /**
@@ -284,47 +260,34 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    */
   public void testGetDocumentOnTag() throws Exception{
     String tagPath = baseTagsPath + "/FFFF";        
-    Exception e = null;
     try {
       folksonomyService.getDocumentsOnTag(tagPath, REPO_NAME);
+      fail("FFFF tag is not existed");
     } catch (Exception ex) {
-      e =ex;
     }
-    assertNotNull(e);
   }
   
   /**
    * Test Method: getLinkedTagsOfDocument()
-   * Input: Document node has 3 linked tags: tag1, tag2, tag3.
+   * Input: test node has 3 linked tags: tag1, tag2, tag3.
    * Expected:
-   *        List all linked tags of document node.  
+   *        List all linked tags of test node.  
    */
+  @SuppressWarnings("unchecked")
   public void testGetLinkedTagsOfDocument() throws Exception{
-    Node document = session.getRootNode().addNode("document");
-    session.save();
     String[] tagNames = {"tag1", "tag2", "tag3"};
-    folksonomyService.addTag(document, tagNames, REPO_NAME);
-    
-    List<Node> tagList = folksonomyService.getLinkedTagsOfDocument(document, REPO_NAME);
-    Node tagNode1 = tagList.get(0);
-    Node tagNode2 = tagList.get(1);
-    Node tagNode3 = tagList.get(2);
-    
-    Property property = document.getProperty("exo:folksonomy");
-    Value[] values;
-    if (property.getDefinition().isMultiple()) {
-      values = property.getValues();
-      Value val1 = values[0];
-      Value val2 = values[1];
-      Value val3 = values[2];
-      assertEquals(val1.getString(), tagNode1.getUUID());
-      assertEquals(val2.getString(), tagNode2.getUUID());
-      assertEquals(val3.getString(), tagNode3.getUUID());
+    folksonomyService.addTag(test, tagNames, REPO_NAME);
+    List<Node> tagList = folksonomyService.getLinkedTagsOfDocument(test, REPO_NAME);
+    List listTagNames = Arrays.asList(new String[] {"tag1", "tag2", "tag3"});
+    List listValue = Arrays.asList(new String[] {tagList.get(0).getUUID(), tagList.get(1).getUUID(), tagList.get(2).getUUID()});
+    Property property = test.getProperty("exo:folksonomy");
+    Value[] values = property.getValues();
+    for (Value value : values) {
+      assertTrue(listValue.contains(value.getString()));
     }
-    
-    assertEquals("tag1", tagNode1.getName());
-    assertEquals("tag2", tagNode2.getName());
-    assertEquals("tag3", tagNode3.getName());
+    for (Node node : tagList) {
+      assertTrue(listTagNames.contains(node.getName()));
+    }
   }
 
   /**
@@ -402,5 +365,17 @@ public class TestFolksonomyService extends BaseDMSTestCase {
     default:
       break;
     }
-  }  
+  }
+  
+  /**
+   * Clean data test
+   */
+  public void tearDown() throws Exception {
+    if (session.itemExists("/Test")) {
+      test = session.getRootNode().getNode("Test");
+      test.remove();
+      session.save();
+    }
+    super.tearDown();
+  }    
 }
