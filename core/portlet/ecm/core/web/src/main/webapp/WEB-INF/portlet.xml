@@ -403,5 +403,39 @@
       </preference>              
     </portlet-preferences>    
   </portlet>
+  
+   <portlet>
+    <description xml:lang="EN">Portlet Form Generator</description>
+    <portlet-name>FormGeneratorPortlet</portlet-name>
+    <display-name xml:lang="EN">Form Generator</display-name>
+    <portlet-class>org.exoplatform.webui.application.portlet.PortletApplicationController</portlet-class>    
+    
+    <init-param>
+      <name>webui.configuration</name>
+      <value>/WEB-INF/conf/portlet/ecm/FormGeneratorPortlet/webui/configuration.xml</value>
+    </init-param>    
+
+    <expiration-cache>0</expiration-cache>
+    <supports>
+      <mime-type>text/html</mime-type>
+      <portlet-mode>help</portlet-mode>
+      <portlet-mode>edit</portlet-mode>
+    </supports>
+    <supported-locale>en</supported-locale>    
+    <resource-bundle>locale.portlet.ecm.FormGenerator</resource-bundle>    																														
+    
+    <portlet-info>
+      <title>Form Generator</title>
+      <short-title>form generator</short-title>
+      <keywords>portlet, form generator</keywords>
+    </portlet-info>
+    <portlet-preferences>
+    	<preference>
+        <name>repository</name>
+        <value>repository</value>
+        <read-only>false</read-only>
+      </preference>
+    </portlet-preferences>
+  </portlet>  
       
 </portlet-app>
