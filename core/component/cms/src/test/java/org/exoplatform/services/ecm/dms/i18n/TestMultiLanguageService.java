@@ -460,7 +460,13 @@ public class TestMultiLanguageService extends BaseDMSTestCase {
     assertNull(multiLanguageService.getLanguage(test, "fr"));
   }
   
-  //Compare two input stream
+  /**
+   * Compare two input stream, return true if 2 streams are equal
+   * @param is1
+   * @param is2
+   * @return
+   * @throws IOException
+   */
   private boolean compareInputStream(InputStream is1, InputStream is2) throws IOException {
     int b1, b2;
     do {
@@ -471,26 +477,6 @@ public class TestMultiLanguageService extends BaseDMSTestCase {
     return true;
   }
 
-  String convertStreamToString(InputStream is) {
-    BufferedReader reader = new BufferedReader(new InputStreamReader(is));
-    StringBuilder sb = new StringBuilder();
-    String line = null;
-    try {
-        while ((line = reader.readLine()) != null) {
-            sb.append(line + "\n");
-        }
-    } catch (IOException e) {
-        e.printStackTrace();
-    } finally {
-        try {
-            is.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    return sb.toString();
-}
   /**
    * Clean data test
    */
