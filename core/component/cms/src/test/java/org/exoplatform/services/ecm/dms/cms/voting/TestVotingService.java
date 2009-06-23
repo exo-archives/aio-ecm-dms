@@ -96,11 +96,13 @@ public class TestVotingService extends BaseDMSTestCase {
   /**
    * Test Method: vote()
    * Input: Test node is set English default language, but not set MultiLanguage. 
-   *        Voter: root, rate: 3.0, voter's language is default language.
+   *        Voter: root,  rate: 1.0, voter's language is default language.
+   *               marry, rate: 4.0, voter's language is default language.
+   *               john,  rate: 5.0, voter's language is default language.
    * Expected:
    *        Value of VOTER_PROP property of test node contains "root"
-   *        Vote total of test with default language = 1
-   *        rate = 3.0
+   *        Vote total of test with default language = 3
+   *        votingRate = (1 + 4 + 5)/3 = 3.33
    */
   @SuppressWarnings("unchecked")
   public void testVote() throws Exception {
@@ -109,14 +111,16 @@ public class TestVotingService extends BaseDMSTestCase {
       test.addMixin(I18NMixin);
     }
     session.save();
-    votingService.vote(test, 3, "root", multiLanguageService.getDefault(test));
-    List voters = Arrays.asList(new String[] {"root"});
+    votingService.vote(test, 1, "root", multiLanguageService.getDefault(test));
+    votingService.vote(test, 4, "marry", multiLanguageService.getDefault(test));
+    votingService.vote(test, 5, "john", multiLanguageService.getDefault(test));
+    List voters = Arrays.asList(new String[] {"root", "marry", "john"});
     Value[] value = test.getProperty(VOTER_PROP).getValues();
     for (Value val : value) {
       assertTrue(voters.contains(val.getString()));
     }
-    assertEquals(1, test.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
-    assertEquals(3.0, test.getProperty(VOTING_RATE_PROP).getValue().getDouble());
+    assertEquals(3, test.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
+    assertEquals(3.33, test.getProperty(VOTING_RATE_PROP).getValue().getDouble());
   }
   
   /**
@@ -131,74 +135,81 @@ public class TestVotingService extends BaseDMSTestCase {
       test.addMixin(I18NMixin);
     }
     session.save();
-    Exception e = null;
     try {
       votingService.vote(test, 3, "root", "fr");
     } catch (NullPointerException ex) {
-      e = ex;
     }
-    assertNotNull(e);
   }
   
   /**
    * Test Method: vote()
    * Input: test node is set English default language.
    *        adding vote for test node by French
-   *        userName = null
-   *        rate = 3 
+   *        first vote : userName = null, rate = 3.0, language = "fr"
+   *        second vote: userName = null, rate = 1.0, language = "fr"
+   *        third vote : userName = null, rate = 4.0, language = "fr"
    * Expected:
    *        user is not voter, value of VOTER_PRO doesn't exist.
-   *        rate = 3.0
-   *        total of vote: 1.
+   *        votingRate = (3 + 1 + 4)/3 = 2.67
+   *        total of vote: 3.
    */
   public void testVote2() throws Exception {
     Node test = initNode();
     votingService.vote(test, 3, null, "fr");
+    votingService.vote(test, 1, null, "fr");
+    votingService.vote(test, 4, null, "fr");
     Node fr = multiLanguageService.getLanguage(test, "fr");
     
     assertEquals(0, fr.getProperty(VOTER_PROP).getValues().length);
-    assertEquals(3.0, fr.getProperty(VOTING_RATE_PROP).getValue().getDouble());
-    assertEquals(1, fr.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
+    assertEquals(2.67, fr.getProperty(VOTING_RATE_PROP).getValue().getDouble());
+    assertEquals(3, fr.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
   }  
   
   /**
    * Test Method: vote()
    * Input: Test node is set default language not equals voter's language
-   *        In this case: voter's language is French
-   *        Example userName: root, rate: 3, there is only "root" to vote
+   *        In this case: voter's language is fr
+   *        Example 
+   *              first vote : root, rate: 2.0, language = fr,
+   *              second vote: root, rate: 3.0, language = fr,
+   *              third vote : root, rate: 4.0, language = fr
    * Expected:
-   *        Voter that uses French is "root"
-   *        Total of vote of French is 1
-   *        Rating is 3
+   *        Voter that uses fr language is "root", "marry", "john"
+   *        Total of vote of French is 3
+   *        votingRate = (2 + 3 + 4)/3
    */
   @SuppressWarnings("unchecked")
   public void testVote3() throws Exception {
     Node test = initNode();
-    votingService.vote(test, 3, "root", "fr");
+    votingService.vote(test, 2, "root", "fr");
+    votingService.vote(test, 3, "marry", "fr");
+    votingService.vote(test, 4, "john", "fr");
     Node fr = multiLanguageService.getLanguage(test, "fr");
-    List voters = Arrays.asList(new String[] { "root" });
+    List voters = Arrays.asList(new String[] { "root", "marry", "john"});
     Property voterProperty = fr.getProperty(VOTER_PROP);
     Value[] value = voterProperty.getValues();
     for (Value val : value) {
       assertTrue(voters.contains(val.getString()));
     }
     assertEquals(3.0, fr.getProperty(VOTING_RATE_PROP).getValue().getDouble());
-    assertEquals(1, fr.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
+    assertEquals(3, fr.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
   }
   
   /**
    * Test Method: vote()
    * Input: Test node is set default language and is not equals voter's language.
-   *        Voter: root, rate: 3.0, language French
+   *        first vote : root, rate: 3.0, language fr
+   *        second vote: marry, rate: 2.0, language fr
+   *        second vote: john, rate: 5.0, language fr
    * Expected: 
    *        Each language add "jcr:contest" node and their data is equals data of "jcr:content" of test node.
-   *        Voter who uses French is "root"
-   *        Total of vote of French is 1
-   *        Rating = 3.0
+   *        Voters who use fr language is "root", "marry", "john"
+   *        Total of vote of fr is 3
+   *        votingRate = 3.33
    */
   @SuppressWarnings("unchecked")
   public void testVote4() throws Exception{
-    Node test = session.getRootNode().addNode("test", FILE);
+    Node test = session.getRootNode().addNode("Test", FILE);
     Node testFile = test.addNode(CONTENT, RESOURCE);
     testFile.setProperty(DATA, getClass().getResource("/conf/standalone/system-configuration.xml").openStream());
     testFile.setProperty(MIMETYPE, "text/xml");
@@ -214,10 +225,12 @@ public class TestVotingService extends BaseDMSTestCase {
     multiLanguageService.addLanguage(test, createFileInput(), "en", false, "jcr:content");
     multiLanguageService.addLanguage(test, createFileInput(), "vi", false, "jcr:content");
     votingService.vote(test, 3, "root", "fr");
+    votingService.vote(test, 2, "marry", "fr");
+    votingService.vote(test, 5, "john", "fr");
     Node viLangNode = multiLanguageService.getLanguage(test, "vi");
     Node enLangNode = multiLanguageService.getLanguage(test, "en");
     Node frLangNode = multiLanguageService.getLanguage(test, "fr");
-    List voters = Arrays.asList(new String[] { "root" });
+    List voters = Arrays.asList(new String[] { "root", "marry", "john" });
     Property voterProperty = frLangNode.getProperty(VOTER_PROP);
     Value[] value = voterProperty.getValues();
     for (Value val : value) {
@@ -229,8 +242,8 @@ public class TestVotingService extends BaseDMSTestCase {
     assertEquals(testFile.getProperty(DATA).getValue(), viLangNode.getNode(CONTENT).getProperty(DATA).getValue());
     assertEquals(testFile.getProperty(MIMETYPE).getString(), enLangNode.getNode(CONTENT).getProperty(MIMETYPE).getString());
     assertEquals(testFile.getProperty(DATA).getValue(), enLangNode.getNode(CONTENT).getProperty(DATA).getValue());
-    assertEquals(3.0, frLangNode.getProperty(VOTING_RATE_PROP).getValue().getDouble());
-    assertEquals(1, frLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
+    assertEquals(3.33, frLangNode.getProperty(VOTING_RATE_PROP).getValue().getDouble());
+    assertEquals(3, frLangNode.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
   }
   
   /**
@@ -240,32 +253,30 @@ public class TestVotingService extends BaseDMSTestCase {
    * Expected: throws Exception
    */
   public void testVote5() throws Exception {
-    Exception e = null;
     try {
-      Node test = initNode();
-      multiLanguageService.setDefault(test, "en", REPO_NAME);
+      Node test = session.getRootNode().addNode("Test");
+      if(test.canAddMixin(I18NMixin)){
+        test.addMixin(I18NMixin);
+      }
+      session.save();
       votingService.vote(test, 3, "root", null);
     } catch (Exception ex) {
-      e = ex;
     }
-    assertNotNull(e);
   }   
   
   /**
    * Test Method: vote()
-   * Input: Test node is not set default language
+   * Input: Test node doesn't have multiple language.
+   *        Voter's language is not equal default language.
    * Expected: throws Exception
    */  
   public void testVote6() throws Exception{
-    Exception e = null;
     try {
       Node test = session.getRootNode().addNode("Test");
       session.save();
       votingService.vote(test, 3, "root", "fr");
     } catch (Exception ex) {
-      e = ex;
     }
-    assertNotNull(e);
   }
 
   /**
@@ -289,25 +300,37 @@ public class TestVotingService extends BaseDMSTestCase {
   /**
    * Test Method: getVoteTotal()
    * Input: test node is set English default language and has MultiLanguage
-   *        test node is voted 4 times: root votes 2 times using English
-   *                                    john votes 1 times using English
-   *                                    marry votes 2 times using both French and Vi
+   *        test node is voted 4 times: root votes 1 times using default language.
+   *                                    john votes 1 times using default language.
+   *                                    marry votes 3 times using both fr, vi, and en language.
    * Expected:
    *       Total of votes of test node = value of VOTE_TOTAL_PROP property of test node.
-   *       In this case: total = 5.
+   *       In this case: 
+   *       total = total of voters with default language + total of voter with other languages.
    */
   public void testGetVoteTotal1() throws Exception{
-    Node test1 = initNode();
-    String DefaultLang = multiLanguageService.getDefault(test1);
-    votingService.vote(test1, 3, "root", DefaultLang);
-    votingService.vote(test1, 3, "john", DefaultLang);
-    votingService.vote(test1, 3, "marry", "en");
-    votingService.vote(test1, 3, "marry", "fr");
-    votingService.vote(test1, 3, "marry", "vi");
-    long voteTotal = votingService.getVoteTotal(test1);
-    assertNull(multiLanguageService.getLanguage(test1, multiLanguageService.getDefault(test1)));
-    assertEquals(voteTotal, test1.getProperty(VOTE_TOTAL_PROP).getValue().getLong());
-    assertEquals(2, test1.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
+    Node test = initNode();
+    String DefaultLang = multiLanguageService.getDefault(test);
+    votingService.vote(test, 5, "root", DefaultLang);
+    votingService.vote(test, 4, "john", DefaultLang);
+    votingService.vote(test, 4, "marry", "en");
+    votingService.vote(test, 3, "marry", "fr");
+    votingService.vote(test, 2, "marry", "vi");
+    long voteTotal = votingService.getVoteTotal(test);
+    assertEquals(voteTotal, test.getProperty(VOTE_TOTAL_PROP).getValue().getLong());
+    assertEquals(2, test.getProperty(VOTE_TOTAL_LANG_PROP).getValue().getLong());
+  }
+  
+  /**
+   * Clean data test
+   */
+  public void tearDown() throws Exception {
+    if (session.itemExists("/Test")) {
+      Node test = session.getRootNode().getNode("Test");
+      test.remove();
+      session.save();
+    }
+    super.tearDown();
   }
   
   /**
@@ -364,7 +387,7 @@ public class TestVotingService extends BaseDMSTestCase {
    * This method will create a node which is added MultiLanguage
    */
   private Node initNode() throws Exception{
-    Node test = session.getRootNode().addNode("test", ARTICLE);
+    Node test = session.getRootNode().addNode("Test", ARTICLE);
     if (test.canAddMixin(I18NMixin)) {
       test.addMixin(I18NMixin);
     }
