@@ -429,24 +429,13 @@ public class TestTemplateService extends BaseDMSTestCase {
    * Clean all templateTest node 
    */
   public void tearDown() throws Exception {    
-    Node templateTest;
-    if (sessionDMS.itemExists("/AAA")) {
-      templateTest = (Node)sessionDMS.getItem("/AAA");
-      templateTest.remove();
+    String[] paths = new String[] {"AAA", "BBB", "DDD", "EEE"};
+    for (String path : paths) {
+      if (sessionDMS.getRootNode().hasNode(path)) {
+        sessionDMS.getRootNode().getNode(path).remove();
+      }
     }
-    if (sessionDMS.itemExists("/BBB")) {
-      templateTest = (Node)sessionDMS.getItem("/BBB");
-      templateTest.remove();
-    }
-    if (sessionDMS.itemExists("/DDD")) {
-      templateTest = (Node)sessionDMS.getItem("/DDD");
-      templateTest.remove();
-    }
-    if (sessionDMS.itemExists("/EEE")) {
-      templateTest = (Node)sessionDMS.getItem("/EEE");
-      templateTest.remove();
-    }
-    sessionDMS.save();    
+    sessionDMS.save();        
     super.tearDown();
   }
 }

@@ -19,7 +19,9 @@ package org.exoplatform.services.ecm.dms.metadata;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 import javax.jcr.Session;
+import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.services.cms.BasePath;
@@ -37,6 +39,7 @@ public class TestMetadataService extends BaseDMSTestCase {
   private String expectedArticleDialogPath = "/exo:ecm/metadata/exo:article/dialogs/dialog1";
   private NodeHierarchyCreator nodeHierarchyCreator;
   private String baseMetadataPath;
+  private Session sessionDMS;
 
   static private final String EXO_ARTICLE = "exo:article".intern();
   
@@ -45,58 +48,174 @@ public class TestMetadataService extends BaseDMSTestCase {
     metadataService = (MetadataService)container.getComponentInstanceOfType(MetadataService.class);
     nodeHierarchyCreator = (NodeHierarchyCreator)container.getComponentInstanceOfType(NodeHierarchyCreator.class);
     baseMetadataPath = nodeHierarchyCreator.getJcrPath(BasePath.METADATA_PATH);
+    sessionDMS = repository.login(credentials, DMSSYSTEM_WS);
   }
   
+  /**
+   * Test MetadataServiceImpl.init()
+   * Check all data initiated from repository in test-metadata-configuration.xml file
+   * @throws Exception
+   */
+  public void testInit() throws Exception {
+    metadataService.init(REPO_NAME);
+    Node myMetadata = (Node)sessionDMS.getItem(baseMetadataPath);
+    assertTrue(myMetadata.getNodes().getSize() > 0);
+    assertTrue(sessionDMS.itemExists(baseMetadataPath));
+    assertTrue(sessionDMS.itemExists(baseMetadataPath + "/dc:elementSet"));
+  }
+  
+  /**
+   * Test method: MetadataServiceImpl.getMetadataList()
+   * Input: repository      String
+   *                        The name of repository
+   * Expect: Return name of all NodeType in repository
+   * @throws Exception
+   */
   public void testGetMetadataList() throws Exception {
     List<String> metadataTypes = metadataService.getMetadataList(REPO_NAME);
-    assertEquals(8, metadataTypes.size());
+    assertTrue(metadataTypes.contains("dc:elementSet"));
+    assertTrue(metadataTypes.contains("rma:record"));
+    assertTrue(metadataTypes.contains("rma:vitalRecord"));
+    assertTrue(metadataTypes.contains("rma:cutoffable"));
+    assertTrue(metadataTypes.contains("rma:holdable"));
+    assertTrue(metadataTypes.contains("rma:transferable"));
+    assertTrue(metadataTypes.contains("rma:accessionable"));
+    assertTrue(metadataTypes.contains("rma:destroyable"));
   }
   
+  /**
+   * Test method: MetadataServiceImpl.getAllMetadatasNodeType()
+   * Input: repository      String
+   *                        The name of repository
+   * Expect: Return all NodeType in repository with NodeType = exo:metadata
+   * @throws Exception
+   */
   public void testGetAllMetadatasNodeType() throws Exception {
     List<NodeType> metadataTypes = metadataService.getAllMetadatasNodeType(REPO_NAME);
     assertEquals(8, metadataTypes.size());
   }
   
+  /**
+   * Test method: MetadataServiceImpl.addMetadata()
+   * Input: nodetype    Node name for processing
+   *        isDialog    true for dialog template
+   *        role        permission
+   *        content     content of template
+   *        isAddNew    false if nodetype exist in repository, true if not
+   *        repository  repository name
+   * Expect: Add new nodetype and set property  EXO_ROLES_PROP, EXO_TEMPLATE_FILE_PROP
+   * @throws Exception
+   */
   public void testAddMetadata() throws Exception {
-    assertNull(metadataService.getMetadataTemplate(EXO_ARTICLE, true, REPO_NAME));
     metadataService.addMetadata(EXO_ARTICLE, true, "*:/platform/administrators", "This is content", true, REPO_NAME);
-    assertEquals("This is content", metadataService.getMetadataTemplate(EXO_ARTICLE, true, REPO_NAME));
+    
+    Node myMetadata = (Node)sessionDMS.getItem("/exo:ecm/metadata/exo:article/dialogs/dialog1");
+    assertEquals("This is content", myMetadata.getProperty("exo:templateFile").getString());
+    
+    Value[] values = myMetadata.getProperty("exo:roles").getValues();
+    StringBuffer roles = new StringBuffer();
+    for(int i = 0; i < values.length; i ++ ) {
+      if(roles.length() > 0 ) roles.append(";");
+      roles.append(values[i].getString());
+    }
+    assertEquals("*:/platform/administrators", roles.toString());
   }
-
-  public void testRemoveMetadata() throws Exception {
-    assertEquals("This is content", metadataService.getMetadataTemplate(EXO_ARTICLE, true, REPO_NAME));
-    metadataService.removeMetadata(EXO_ARTICLE, REPO_NAME);
-    assertNull(metadataService.getMetadataTemplate(EXO_ARTICLE, true, REPO_NAME));
-  }
-
-  public void testGetExternalMetadataType() throws Exception {
-    List<String> extenalMetaTypes = metadataService.getExternalMetadataType(REPO_NAME);
-    assertEquals(1, extenalMetaTypes.size());
-  }
-
+  
+  /**
+   * Test method: MetadataServiceImpl.getMetadataTemplate()
+   * Input: name            Node name      
+   *        isDialog        true: Get dialog template content
+   *                        false: Get view template content
+   *        repository      repository name
+   * Expect: Return "This is content" is content of dialog template node or view template in repository
+   * @throws Exception
+   */
   public void testGetMetadataTemplate() throws Exception {
     metadataService.addMetadata(EXO_ARTICLE, true, "*:/platform/administrators", "This is content", true, REPO_NAME);
     assertEquals("This is content", metadataService.getMetadataTemplate(EXO_ARTICLE, true, REPO_NAME));
   }
 
+  /**
+   * Test method: MetadataServiceImpl.removeMetadata()
+   * Input: nodetype      name of node
+   *        repository    repository name
+   * Expect: Remove metadata
+   * @throws Exception
+   */
+  public void testRemoveMetadata() throws Exception {
+    metadataService.addMetadata(EXO_ARTICLE, true, "*:/platform/administrators", "This is content", true, REPO_NAME);
+    assertEquals("This is content", metadataService.getMetadataTemplate(EXO_ARTICLE, true, REPO_NAME));
+    metadataService.removeMetadata(EXO_ARTICLE, REPO_NAME);
+    assertNull(metadataService.getMetadataTemplate(EXO_ARTICLE, true, REPO_NAME));
+  }
+
+  /**
+   * Test method: MetadataServiceImpl.getExternalMetadataType()
+   * Input: repository    String    
+   *                      The name of repository
+   * Expect: Remove metadata
+   * @throws Exception
+   */
+  public void testGetExternalMetadataType() throws Exception {
+    List<String> extenalMetaTypes = metadataService.getExternalMetadataType(REPO_NAME);
+    assertEquals(1, extenalMetaTypes.size());
+  }
+  
+  /**
+   * Test method: MetadataServiceImpl.getMetadataPath()
+   * Input: name            Node name      
+   *        isDialog        true: Get dialog template content
+   *                        false: Get view template content
+   *        repository      repository name
+   * Expect: Return "/exo:ecm/metadata/exo:article/dialogs/dialog1" is path of dialog template or view tempate
+   * @throws Exception
+   */
   public void testGetMetadataPath() throws Exception {
     metadataService.addMetadata(EXO_ARTICLE, true, "*:/platform/administrators", "This is my content", true, REPO_NAME);
     assertEquals(expectedArticleDialogPath, metadataService.getMetadataPath(EXO_ARTICLE, true, REPO_NAME));
   }
 
+  /**
+   * Test method: MetadataServiceImpl.getMetadataRoles()
+   * Input: name            Node name      
+   *        isDialog        true: Get dialog template content
+   *                        false: Get view template content
+   *        repository      repository name
+   * Expect: Return "/exo:ecm/metadata/exo:article/dialogs/dialog1" is path of dialog template or view tempate
+   * @throws Exception
+   */
   public void testGetMetadataRoles() throws Exception {
+    metadataService.addMetadata(EXO_ARTICLE, true, "*:/platform/administrators", "This is content", true, REPO_NAME);
     assertEquals("*:/platform/administrators", metadataService.getMetadataRoles(EXO_ARTICLE, true, REPO_NAME));
   }
 
+  /**
+   * Test method: MetadataServiceImpl.hasMetadata()
+   * Input: name            Node name      
+   *        repository      repository name
+   * Expect: true : Exist this node name
+   *         false: Not exist this node name
+   * @throws Exception
+   */
   public void testHasMetadata() throws Exception {
+    metadataService.addMetadata(EXO_ARTICLE, true, "*:/platform/administrators", "This is content", true, REPO_NAME);
     assertTrue(metadataService.hasMetadata(EXO_ARTICLE, REPO_NAME));
     metadataService.removeMetadata(EXO_ARTICLE, REPO_NAME);
     assertFalse(metadataService.hasMetadata(EXO_ARTICLE, REPO_NAME));
-  } 
-
-  public void testInit() throws Exception {
-    Session mySession = repository.login(credentials, DMSSYSTEM_WS);
-    Node myMetadata = (Node)mySession.getItem(baseMetadataPath);
-    assertTrue(myMetadata.getNodes().getSize() > 0);
+  }
+  
+  /**
+   * Clean all metadata test node 
+   */
+  public void tearDown() throws Exception {
+    Node myMetadata = (Node)sessionDMS.getItem(baseMetadataPath);
+    String[] paths = new String[] {"exo:article"};
+    for (String path : paths) {
+      if (myMetadata.hasNode(path)) {
+        myMetadata.getNode(path).remove();
+      }
+    }
+    sessionDMS.save();
+    super.tearDown();
   }
 }
