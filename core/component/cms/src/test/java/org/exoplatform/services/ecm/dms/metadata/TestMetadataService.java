@@ -106,7 +106,7 @@ public class TestMetadataService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testAddMetadata() throws Exception {
-    metadataService.addMetadata(EXO_ARTICLE, true, "*:/platform/administrators", "This is content", true, REPO_NAME);
+    metadataService.addMetadata(EXO_ARTICLE, true, "*:/platform/administrators;*:/platform/users", "This is content", true, REPO_NAME);
     
     Node myMetadata = (Node)sessionDMS.getItem("/exo:ecm/metadata/exo:article/dialogs/dialog1");
     assertEquals("This is content", myMetadata.getProperty("exo:templateFile").getString());
@@ -117,7 +117,7 @@ public class TestMetadataService extends BaseDMSTestCase {
       if(roles.length() > 0 ) roles.append(";");
       roles.append(values[i].getString());
     }
-    assertEquals("*:/platform/administrators", roles.toString());
+    assertEquals("*:/platform/administrators;*:/platform/users", roles.toString());
   }
   
   /**
@@ -208,12 +208,7 @@ public class TestMetadataService extends BaseDMSTestCase {
    */
   public void tearDown() throws Exception {
     Node myMetadata = (Node)sessionDMS.getItem(baseMetadataPath);
-    String[] paths = new String[] {"exo:article"};
-    for (String path : paths) {
-      if (myMetadata.hasNode(path)) {
-        myMetadata.getNode(path).remove();
-      }
-    }
+    if (myMetadata.hasNode("exo:article")) myMetadata.getNode("exo:article").remove();
     sessionDMS.save();
     super.tearDown();
   }
