@@ -20,6 +20,7 @@ package org.exoplatform.services.ecm.dms.comment;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -81,7 +82,6 @@ public class TestCommentService extends BaseDMSTestCase {
   }
 
   /**
-   * Case 1:
    * Test Method: addComment()
    * Input:
    *      Test node: doesn't have multiple languages
@@ -89,7 +89,7 @@ public class TestCommentService extends BaseDMSTestCase {
    * Expected:
    *      Test node has comment node with 2 comments.
    */
-  public void testAddComment11() throws Exception{
+  public void testAddComment1() throws Exception{
     Node test = session.getRootNode().addNode("Test");
     if(test.canAddMixin(I18NMixin)){
       test.addMixin(I18NMixin);
@@ -99,14 +99,12 @@ public class TestCommentService extends BaseDMSTestCase {
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", multiLangService.getDefault(test));
     NodeIterator iter = test.getNode(COMMENT).getNodes();
     int i = 0;
-    while(iter.hasNext()){
-      check(i, iter.nextNode());
-      i++;
+    while (iter.hasNext()) {
+      check(i++, iter.nextNode());
     }
   }
 
   /**
-   * Case 2:
    * Test Method: addComment()
    * Input:
    *      Test Node: has multiple languages
@@ -115,20 +113,18 @@ public class TestCommentService extends BaseDMSTestCase {
    * Expected:
    *      Test node has comment node with 2 comments.
    */
-  public void testAddComment12() throws Exception{
+  public void testAddComment2() throws Exception{
     Node test = initNode();
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", multiLangService.getDefault(test));
     NodeIterator iter = test.getNode(COMMENT).getNodes();
     int i = 0;
-    while(iter.hasNext()){
-      check(i, iter.nextNode());
-      i++;
+    while (iter.hasNext()) {
+      check(i++, iter.nextNode());
     }
   }
 
   /**
-   * Case 3:
    * Test Method: addComment()
    * Input:
    *      Test Node: has multiple language
@@ -139,27 +135,25 @@ public class TestCommentService extends BaseDMSTestCase {
    * Expected:
    *      Test node has comment node which added more comment.
    */
-  public void testAddComment13() throws Exception{
+  public void testAddComment3() throws Exception{
     Node test = initNode();
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", multiLangService.getDefault(test));
     NodeIterator iter = test.getNode(COMMENT).getNodes();
     int i = 0;
-    while(iter.hasNext()){
-      check(i, iter.nextNode());
-      i++;
+    while (iter.hasNext()) {
+      check(i++, iter.nextNode());
     }
   }
   
   /**
-   * Case 4:
    * Test Method: addComment()
    * Input:
    *      Test Node: has multiple languages, NodeType of test node is "nt:file" 
    *                 doesn't have comment node, NodeType of COMMENTS node is "nt:unstructured" 
    * Expected Result: throws Exception
    */
-  public void testAddComment14() throws Exception {
+  public void testAddComment4() throws Exception {
     Node test = session.getRootNode().addNode("Test", "nt:file");
     if(test.getPrimaryNodeType().getName().equals("nt:file")){
       test.addNode("jcr:content", "nt:base");
@@ -167,7 +161,6 @@ public class TestCommentService extends BaseDMSTestCase {
     session.save();
     try {
       commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "vi");
-      fail("Cannot add nt:unstrutured node in nt:file node");
     } catch (Exception e) {
     }
   }
@@ -181,20 +174,18 @@ public class TestCommentService extends BaseDMSTestCase {
    * Expected:
    *      comment node is added in en node with 2 comments
    */
-  public void testAddComment15() throws Exception{
+  public void testAddComment5() throws Exception{
     Node test = initNode();
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "en");
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", "en");
     NodeIterator iter = multiLangService.getLanguage(test, "en").getNode(COMMENT).getNodes();
     int i = 0;
-    while(iter.hasNext()){
-      check(i, iter.nextNode());
-      i++;
+    while (iter.hasNext()) {
+      check(i++, iter.nextNode());
     }
   }
   
   /**
-   * Case 6:
    * Test Method: addComment()
    * Input:
    *      Test Node: has multiple languages which contains language of comment (en)
@@ -202,20 +193,18 @@ public class TestCommentService extends BaseDMSTestCase {
    * Expected:
    *      comment node with en language will be added more comments
    */
-  public void testAddComment16() throws Exception{
+  public void testAddComment6() throws Exception{
     Node test = initNode();
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "en");
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", "en");
     NodeIterator iter = multiLangService.getLanguage(test, "en").getNode(COMMENT).getNodes();
     int i = 0;
-    while(iter.hasNext()){
-      check(i, iter.nextNode());
-      i++;
+    while (iter.hasNext()) {
+      check(i++, iter.nextNode());
     }
   }
   
   /**
-   * Case 7:
    * Test Method: addComment()
    * Input:
    *      Test Node: has multiple languages which doesn't contain language of comment (jp).
@@ -223,28 +212,26 @@ public class TestCommentService extends BaseDMSTestCase {
    *         multiple languages adds language of comment.
    *         comment node is added jp node with comments.
    */
-  public void testAddComment17() throws Exception{
+  public void testAddComment7() throws Exception{
     Node test = initNode();
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "jp");
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", "jp");
     NodeIterator iter = multiLangService.getLanguage(test, "jp").getNode(COMMENT).getNodes();
     int i = 0;
-    while(iter.hasNext()){
-      check(i, iter.nextNode());
-      i++;
+    while (iter.hasNext()) {
+      check(i++, iter.nextNode());
     }
     assertEquals("jp", multiLangService.getLanguage(test, "jp").getName());
   }
   
   /**
-   * Case 8:
    * Test Method: addComment()
    * Input:
    *      Test node doesn't have multiple languages, 
    *      language of comment = null;
    * Expected: throws NullPointerException
    */
-  public void testAddComment18() throws Exception {
+  public void testAddComment8() throws Exception {
     Node test = session.getRootNode().addNode("Test");
     if (test.canAddMixin(I18NMixin)) {
       test.addMixin(I18NMixin);
@@ -253,30 +240,30 @@ public class TestCommentService extends BaseDMSTestCase {
     multiLangService.addLanguage(test, createMapInput(), "jp", false);
     try {
       commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", null);
-      fail("language node is null!");
     } catch (NullPointerException e) {
     }
   }
   
   /**
-   * Case 9:
    * Test Method: addComment()
    * Input:
    *      commenter's name is null.
    * Expected:
    *      commenter's name will be assigned ANONYMOUS.
    */
-  public void testAdddComment19() throws Exception{
+  public void testAdddComment9() throws Exception{
     Node test = session.getRootNode().addNode("Test");
     if(test.canAddMixin(I18NMixin)){
       test.addMixin(I18NMixin);
     }
     session.save();
     commentsService.addComment(test, null, "null@explatform.com", null, "Hello", multiLangService.getDefault(test));
+    commentsService.addComment(test, null, "abc@explatform.com", null, "Hello", multiLangService.getDefault(test));
     List<Node> listCommentNode = commentsService.getComments(test, multiLangService.getDefault(test));
     Collections.sort(listCommentNode, new NameComparator());
-    for(int i=0; i < listCommentNode.size(); i++){
-      assertEquals(ANONYMOUS, listCommentNode.get(i).getProperty(COMMENTOR).getString());
+    Iterator<Node> iter = listCommentNode.iterator();
+    while(iter.hasNext()){
+      assertEquals(ANONYMOUS, iter.next().getProperty(COMMENTOR).getString());
     }
   }
   
@@ -287,7 +274,7 @@ public class TestCommentService extends BaseDMSTestCase {
    * Expected:
    *      comment doesn't have COMMENTOR_EMAIL property.
    */
-  public void testAdddComment110() throws Exception{
+  public void testAdddComment10() throws Exception{
     Node test = session.getRootNode().addNode("Test");
     if(test.canAddMixin(I18NMixin)){
       test.addMixin(I18NMixin);
@@ -296,8 +283,9 @@ public class TestCommentService extends BaseDMSTestCase {
     commentsService.addComment(test, "root", null, null, "Hello", multiLangService.getDefault(test));
     List<Node> listCommentNode = commentsService.getComments(test, multiLangService.getDefault(test));
     Collections.sort(listCommentNode, new NameComparator());
-    for(int i=0; i < listCommentNode.size(); i++){
-      assertFalse(listCommentNode.get(i).hasProperty(COMMENTOR_EMAIL));
+    Iterator<Node> iter = listCommentNode.iterator();
+    while(iter.hasNext()){
+      assertFalse(iter.next().hasProperty(COMMENTOR_EMAIL));
     }
   }
   
@@ -318,10 +306,11 @@ public class TestCommentService extends BaseDMSTestCase {
     commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", multiLangService.getDefault(test));
     List<Node> listCommentNode = commentsService.getComments(test, multiLangService.getDefault(test));
     Collections.sort(listCommentNode, new NameComparator());
-    for(int i=0; i < listCommentNode.size(); i++){
-      check(i, listCommentNode.get(i));
+    Iterator<Node> iter = listCommentNode.iterator();
+    int i = 0;
+    while(iter.hasNext()){
+      check(i++, iter.next());
     }
-    assertEquals(2, listCommentNode.size());
   }
 
   /**
@@ -342,8 +331,10 @@ public class TestCommentService extends BaseDMSTestCase {
     
     List<Node> listCommentNode = commentsService.getComments(test, "jp");
     Collections.sort(listCommentNode, new NameComparator());
-    for(int i = 0; i < listCommentNode.size(); i++){
-      check(i, listCommentNode.get(i));
+    Iterator<Node> iter = listCommentNode.iterator();
+    int i = 0;
+    while(iter.hasNext()){
+      check(i++, iter.next());
     }
     assertEquals(2, listCommentNode.size());
   }

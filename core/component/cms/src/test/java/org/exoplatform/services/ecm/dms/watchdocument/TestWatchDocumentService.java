@@ -84,8 +84,8 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
    */
   public void testGetNotificationType1() throws Exception{
     test.addMixin(EXO_WATCHABLE_MIXIN);
-    createMultipleProperty(test, "root", "root");
     session.save();
+    createMultipleProperty(test, "root", "root");
     int notification = watchDocumentService.getNotificationType(test, "root");
     assertEquals(0, notification);
   }
@@ -98,8 +98,8 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
    */  
   public void testGetNotificationType2() throws Exception{
     test.addMixin(EXO_WATCHABLE_MIXIN);
-    createMultipleProperty(test, "root", "marry");
     session.save();
+    createMultipleProperty(test, "root", "marry");
     int notification = watchDocumentService.getNotificationType(test, "root");
     assertEquals(1, notification);
   }  
@@ -112,8 +112,8 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
    */  
   public void testGetNotificationType3() throws Exception{
     test.addMixin(EXO_WATCHABLE_MIXIN);
-    createMultipleProperty(test, "marry", "root");
     session.save();
+    createMultipleProperty(test, "marry", "root");
     int notification = watchDocumentService.getNotificationType(test, "root");
     assertEquals(2, notification);
   }
@@ -185,11 +185,9 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
     Property pro = test.getProperty(EMAIL_WATCHERS_PROP);
     List watcher = Arrays.asList(new String[] { "marry" });
     Value[] value = pro.getValues();
-    for (Value val : value) {
-      assertTrue(watcher.contains(val.getString()));
-      assertFalse(val.equals("root"));
-    }
     assertEquals(1, value.length);
+    assertTrue(watcher.contains(value[0].getString()));
+    assertFalse(value[0].equals("root"));
   }
   
   /**
@@ -235,6 +233,7 @@ public class TestWatchDocumentService extends BaseDMSTestCase{
         node.setProperty(RSS_WATCHERS_PROP, new Value[] {val});
       }
     }
+    session.save();
   }
   
   /**
