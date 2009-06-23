@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -238,12 +239,14 @@ public class TestManageViewService extends BaseDMSTestCase {
   
   /**
    * Test ManageViewServiceImpl.hasView()
-   * Input: admin-view
-   * Expect: Return one view with name = admin-view and path = /exo:ecm/views/userviews in dms-system
+   * Input: admin-view, admin_view
+   * Expect: 1. Return true with view name = admin-view in path = /exo:ecm/views/userviews in dms-system
+   *         2. Return false with view name = admin_view in path = /exo:ecm/views/userviews in dms-system
    * @throws Exception
    */
   public void testHasView() throws Exception {
     assertTrue(manageViewService.hasView("admin-view", REPO_NAME));
+    assertFalse(manageViewService.hasView("admin_view", REPO_NAME));
   }
   
   /**
@@ -280,8 +283,21 @@ public class TestManageViewService extends BaseDMSTestCase {
    * Expect: No exception when get template data
    * @throws Exception
    */
-  public void testGetTemplate() throws Exception {
+  public void testGetTemplate1() throws Exception {
     manageViewService.getTemplate("/exo:ecm/views/templates/content-browser/detail-document/DocumentView", REPO_NAME, SessionProviderFactory.createSystemProvider());
+  }
+
+  /**
+   * Test ManageViewServiceImpl.getTemplate()
+   * Input: path = "/exo:ecm/views/templates/content-browser/detail-document/DocumentView1"
+   * Expect: Fail
+   * @throws Exception
+   */
+  public void testGetTemplate2() throws Exception {
+    try {
+      manageViewService.getTemplate("/exo:ecm/views/templates/content-browser/detail-document/DocumentView1", REPO_NAME, SessionProviderFactory.createSystemProvider());
+    } catch (PathNotFoundException e) {
+    }
   }
   
   /**

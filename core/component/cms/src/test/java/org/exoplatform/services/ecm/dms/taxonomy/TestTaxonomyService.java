@@ -127,7 +127,6 @@ public class TestTaxonomyService extends BaseDMSTestCase {
       taxonomyService.addTaxonomyTree(docTree);
       taxonomyService.addTaxonomyTree(docTree);
     } catch(TaxonomyAlreadyExistsException e) {
-      
     }
   }
   
