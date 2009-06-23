@@ -194,7 +194,7 @@ public interface TemplateService {
       String[] roles, String templateFile, String repository, String locale) throws Exception;
   
   /**
-   * Insert a template of NodeType by giving the following params
+   * Remove a template of NodeType by giving the following params
    * @param isDialog          boolean
    *                          The boolean value which specify the type of template
    * @param nodeTypeName      String
@@ -323,6 +323,18 @@ public interface TemplateService {
    */
   public void init(String repository) throws Exception ;
 
+  /**
+   * Get TemplateData
+   * @param templateNode    Node
+   * @param locale          String
+   *                        code of locale
+   * @param propertyName    String
+   *                        The name of property
+   * @param repository      String
+   *                        The name of repository
+   * @return
+   * @throws Exception
+   */
   public String getTemplateData(Node templateNode, String locale, String propertyName, String repository) throws Exception; 
   
   /**
