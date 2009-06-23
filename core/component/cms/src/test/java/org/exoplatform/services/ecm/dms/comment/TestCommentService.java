@@ -17,12 +17,20 @@
  **************************************************************************/
 package org.exoplatform.services.ecm.dms.comment;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
 
+import org.exoplatform.services.cms.CmsService;
+import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.comments.CommentsService;
+import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
 
 /**
@@ -40,124 +48,257 @@ import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
  */
 public class TestCommentService extends BaseDMSTestCase {
   
-  private final static String COMMENT            = "comments".intern();
+  private final static String I18NMixin = "mix:i18n";
+  
+  private final static String ARTICLE = "exo:article";
+  
+  private final static String TITLE = "exo:title";
 
-  private final static String LANGUAGES          = "languages".intern();
+  private final static String SUMMARY = "exo:summary";
+
+  private final static String TEXT = "exo:text";
+  
+  private final static String COMMENT            = "comments".intern();
 
   private final static String COMMENTOR          = "exo:commentor".intern();
 
   private final static String COMMENTOR_EMAIL    = "exo:commentorEmail".intern();
 
   private final static String COMMENTOR_MESSAGES = "exo:commentContent".intern();
+  
+  private final static String ANONYMOUS = "anonymous".intern() ;
 
   private CommentsService     commentsService    = null;
+  
+  private MultiLanguageService multiLangService  = null;
   
   @Override
   public void setUp() throws Exception {
     super.setUp();
     commentsService = (CommentsService) container.getComponentInstanceOfType(CommentsService.class);
+    multiLangService = (MultiLanguageService) container.getComponentInstanceOfType(MultiLanguageService.class);
+
   }
 
   /**
-   * Test Method: addComment(): 
-   * Input: Test node has multi-languages node, but not "jp" language.
-   *        Comment node has properties: Commenter = root,
-   *                                     Commentor_email = root@exoplatform,
-   *                                     Commentor_messages = Hello,
-   *                                     Language = jp
-   * Expected Result:
-   *       "jp" node is added in languages node
-   *       comment node is added in "jp" node with properties like input.
+   * Case 1:
+   * Test Method: addComment()
+   * Input:
+   *      Test node: doesn't have multiple languages
+   *                 doesn't have comment node
+   * Expected:
+   *      Test node has comment node with 2 comments.
    */
-  public void testAddCommnent() throws Exception {
+  public void testAddComment11() throws Exception{
     Node test = session.getRootNode().addNode("Test");
+    if(test.canAddMixin(I18NMixin)){
+      test.addMixin(I18NMixin);
+    }
     session.save();
-    Node languages = test.addNode(LANGUAGES);
-    session.save();
-    commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "jp");
-    Node comments = languages.getNode("jp").getNode(COMMENT);
-    NodeIterator iterator = comments.getNodes();
-    Node temp;
-    while(iterator.hasNext()){
-      temp = iterator.nextNode();
-      assertEquals("root", temp.getProperty(COMMENTOR).getString());
-      assertEquals("root@explatform.com", temp.getProperty(COMMENTOR_EMAIL).getString());
-      assertEquals("Hello", temp.getProperty(COMMENTOR_MESSAGES).getString());
-      assertEquals("jp", languages.getNode("jp").getName());
+    commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
+    commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", multiLangService.getDefault(test));
+    NodeIterator iter = test.getNode(COMMENT).getNodes();
+    int i = 0;
+    while(iter.hasNext()){
+      check(i, iter.nextNode());
+      i++;
+    }
+  }
+
+  /**
+   * Case 2:
+   * Test Method: addComment()
+   * Input:
+   *      Test Node: has multiple languages
+   *                 doesn't have comment node
+   *      language of comment  = default language
+   * Expected:
+   *      Test node has comment node with 2 comments.
+   */
+  public void testAddComment12() throws Exception{
+    Node test = initNode();
+    commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
+    commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", multiLangService.getDefault(test));
+    NodeIterator iter = test.getNode(COMMENT).getNodes();
+    int i = 0;
+    while(iter.hasNext()){
+      check(i, iter.nextNode());
+      i++;
+    }
+  }
+
+  /**
+   * Case 3:
+   * Test Method: addComment()
+   * Input:
+   *      Test Node: has multiple language
+   *                 has comment node
+   *      first: add comment of root
+   *      and then: Test node had comment node --> add more comment
+   *      language of comment != default language
+   * Expected:
+   *      Test node has comment node which added more comment.
+   */
+  public void testAddComment13() throws Exception{
+    Node test = initNode();
+    commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
+    commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", multiLangService.getDefault(test));
+    NodeIterator iter = test.getNode(COMMENT).getNodes();
+    int i = 0;
+    while(iter.hasNext()){
+      check(i, iter.nextNode());
+      i++;
     }
   }
   
   /**
+   * Case 4:
    * Test Method: addComment()
-   * Input: Test node doesn't has languages node.
-   * Expected result: Comments node is added in test node.
-   */
-  public void testAddCommnent2() throws Exception {
-    Node test = session.getRootNode().addNode("Test");
-    session.save();
-    commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "jp");
-    Node comments = test.getNode(COMMENT);
-    NodeIterator iterator = comments.getNodes();
-    Node temp;
-    while(iterator.hasNext()){
-      temp = iterator.nextNode();
-      assertEquals("root", temp.getProperty(COMMENTOR).getString());
-      assertEquals("root@explatform.com", temp.getProperty(COMMENTOR_EMAIL).getString());
-      assertEquals("Hello", temp.getProperty(COMMENTOR_MESSAGES).getString());
-    }
-  }  
-  
-  /**
-   * Test Method: addComment()
-   * Input Node: NodeType is unstructured
+   * Input:
+   *      Test Node: has multiple languages, NodeType of test node is "nt:file" 
+   *                 doesn't have comment node, NodeType of COMMENTS node is "nt:unstructured" 
    * Expected Result: throws Exception
    */
-  public void testAddCommnent3() throws Exception {
-    Node test = session.getRootNode().addNode("test3", "nt:file");
-    Exception e = null;
+  public void testAddComment14() throws Exception {
+    Node test = session.getRootNode().addNode("Test", "nt:file");
     if(test.getPrimaryNodeType().getName().equals("nt:file")){
       test.addNode("jcr:content", "nt:base");
     }
     session.save();
-   try{
+    try {
       commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "vi");
-    }catch (Exception ex) {
-      e = ex;
+      fail("Cannot add nt:unstrutured node in nt:file node");
+    } catch (Exception e) {
     }
-    assertNotNull(e);
   }
-
+  
   /**
-   * Test Method: getComments()
-   * Input: Node has some comment nodes in "jp" node.
-   * Expected Result:
-   *        Get all comment nodes with jp language.
+   * Case 5:
+   * Test Method: addComment()
+   * Input: 
+   *      Test Node: has multiple languages which contains language of comment (en)
+   *                 en node: doesn't have comment node.
+   * Expected:
+   *      comment node is added in en node with 2 comments
    */
-  public void testGetComments() throws Exception{
-    Node test = session.getRootNode().addNode("Test");
-    session.save();
-    test.addNode(LANGUAGES);
-    session.save();
+  public void testAddComment15() throws Exception{
+    Node test = initNode();
+    commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "en");
+    commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", "en");
+    NodeIterator iter = multiLangService.getLanguage(test, "en").getNode(COMMENT).getNodes();
+    int i = 0;
+    while(iter.hasNext()){
+      check(i, iter.nextNode());
+      i++;
+    }
+  }
+  
+  /**
+   * Case 6:
+   * Test Method: addComment()
+   * Input:
+   *      Test Node: has multiple languages which contains language of comment (en)
+   *                 en Node: has comment node.
+   * Expected:
+   *      comment node with en language will be added more comments
+   */
+  public void testAddComment16() throws Exception{
+    Node test = initNode();
+    commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "en");
+    commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", "en");
+    NodeIterator iter = multiLangService.getLanguage(test, "en").getNode(COMMENT).getNodes();
+    int i = 0;
+    while(iter.hasNext()){
+      check(i, iter.nextNode());
+      i++;
+    }
+  }
+  
+  /**
+   * Case 7:
+   * Test Method: addComment()
+   * Input:
+   *      Test Node: has multiple languages which doesn't contain language of comment (jp).
+   * Expected:
+   *         multiple languages adds language of comment.
+   *         comment node is added jp node with comments.
+   */
+  public void testAddComment17() throws Exception{
+    Node test = initNode();
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "jp");
-    commentsService.addComment(test, "john", "john@explatform.com", null, "Thanks", "jp");
-    commentsService.addComment(test, "marry", "marry@explatform.com", null, "Bye", "en");
-    
-    List<Node> listCommentNode = commentsService.getComments(test, "jp");
-    List<Node> listCommentNodeByEn = commentsService.getComments(test, "en");
-    Node commentNode1 = listCommentNode.get(0);
-    assertEquals("john", commentNode1.getProperty(COMMENTOR).getString());
-    assertEquals("john@explatform.com", commentNode1.getProperty(COMMENTOR_EMAIL).getString());
-    assertEquals("Thanks", commentNode1.getProperty(COMMENTOR_MESSAGES).getString());
-    
-    Node commentNode2 = listCommentNode.get(1);
-    assertEquals("root", commentNode2.getProperty(COMMENTOR).getString());
-    assertEquals("root@explatform.com", commentNode2.getProperty(COMMENTOR_EMAIL).getString());
-    assertEquals("Hello", commentNode2.getProperty(COMMENTOR_MESSAGES).getString());
-    
-    Node commentNode3 = listCommentNodeByEn.get(0);
-    assertEquals("marry", commentNode3.getProperty(COMMENTOR).getString());
-    assertEquals("marry@explatform.com", commentNode3.getProperty(COMMENTOR_EMAIL).getString());
-    assertEquals("Bye", commentNode3.getProperty(COMMENTOR_MESSAGES).getString());
+    commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", "jp");
+    NodeIterator iter = multiLangService.getLanguage(test, "jp").getNode(COMMENT).getNodes();
+    int i = 0;
+    while(iter.hasNext()){
+      check(i, iter.nextNode());
+      i++;
+    }
+    assertEquals("jp", multiLangService.getLanguage(test, "jp").getName());
+  }
+  
+  /**
+   * Case 8:
+   * Test Method: addComment()
+   * Input:
+   *      Test node doesn't have multiple languages, 
+   *      language of comment = null;
+   * Expected: throws NullPointerException
+   */
+  public void testAddComment18() throws Exception {
+    Node test = session.getRootNode().addNode("Test");
+    if (test.canAddMixin(I18NMixin)) {
+      test.addMixin(I18NMixin);
+    }
+    session.save();
+    multiLangService.addLanguage(test, createMapInput(), "jp", false);
+    try {
+      commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", null);
+      fail("language node is null!");
+    } catch (NullPointerException e) {
+    }
+  }
+  
+  /**
+   * Case 9:
+   * Test Method: addComment()
+   * Input:
+   *      commenter's name is null.
+   * Expected:
+   *      commenter's name will be assigned ANONYMOUS.
+   */
+  public void testAdddComment19() throws Exception{
+    Node test = session.getRootNode().addNode("Test");
+    if(test.canAddMixin(I18NMixin)){
+      test.addMixin(I18NMixin);
+    }
+    session.save();
+    commentsService.addComment(test, null, "null@explatform.com", null, "Hello", multiLangService.getDefault(test));
+    List<Node> listCommentNode = commentsService.getComments(test, multiLangService.getDefault(test));
+    Collections.sort(listCommentNode, new NameComparator());
+    for(int i=0; i < listCommentNode.size(); i++){
+      assertEquals(ANONYMOUS, listCommentNode.get(i).getProperty(COMMENTOR).getString());
+    }
+  }
+  
+  /**
+   * Test Method: addComment()
+   * Input:
+   *      commenter's email is null.
+   * Expected:
+   *      comment doesn't have COMMENTOR_EMAIL property.
+   */
+  public void testAdddComment110() throws Exception{
+    Node test = session.getRootNode().addNode("Test");
+    if(test.canAddMixin(I18NMixin)){
+      test.addMixin(I18NMixin);
+    }
+    session.save();
+    commentsService.addComment(test, "root", null, null, "Hello", multiLangService.getDefault(test));
+    List<Node> listCommentNode = commentsService.getComments(test, multiLangService.getDefault(test));
+    Collections.sort(listCommentNode, new NameComparator());
+    for(int i=0; i < listCommentNode.size(); i++){
+      assertFalse(listCommentNode.get(i).hasProperty(COMMENTOR_EMAIL));
+    }
   }
   
   /**
@@ -167,21 +308,136 @@ public class TestCommentService extends BaseDMSTestCase {
    * Expected Result:
    *        Get all comment nodes with default language.
    */
+  public void testGetComments1() throws Exception{
+    Node test = session.getRootNode().addNode("Test");
+    if(test.canAddMixin(I18NMixin)){
+      test.addMixin(I18NMixin);
+    }
+    session.save();
+    commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
+    commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", multiLangService.getDefault(test));
+    List<Node> listCommentNode = commentsService.getComments(test, multiLangService.getDefault(test));
+    Collections.sort(listCommentNode, new NameComparator());
+    for(int i=0; i < listCommentNode.size(); i++){
+      check(i, listCommentNode.get(i));
+    }
+    assertEquals(2, listCommentNode.size());
+  }
+
+  /**
+   * Test Method: getComments()
+   * Input: Node has some comment nodes in "jp" node.
+   * Expected Result:
+   *        Get all comment nodes with jp language.
+   */
   public void testGetComments2() throws Exception{
     Node test = session.getRootNode().addNode("Test");
+    if(test.canAddMixin(I18NMixin)){
+      test.addMixin(I18NMixin);
+    }
     session.save();
+    multiLangService.addLanguage(test, createMapInput(), "jp", false);
     commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", "jp");
-    commentsService.addComment(test, "john", "john@explatform.com", null, "Thanks", "cn");
+    commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", "jp");
     
     List<Node> listCommentNode = commentsService.getComments(test, "jp");
-    Node commentNode1 = listCommentNode.get(0);
-    assertEquals("john", commentNode1.getProperty(COMMENTOR).getString());
-    assertEquals("john@explatform.com", commentNode1.getProperty(COMMENTOR_EMAIL).getString());
-    assertEquals("Thanks", commentNode1.getProperty(COMMENTOR_MESSAGES).getString());
-    
-    Node commentNode2 = listCommentNode.get(1);
-    assertEquals("root", commentNode2.getProperty(COMMENTOR).getString());
-    assertEquals("root@explatform.com", commentNode2.getProperty(COMMENTOR_EMAIL).getString());
-    assertEquals("Hello", commentNode2.getProperty(COMMENTOR_MESSAGES).getString());
+    Collections.sort(listCommentNode, new NameComparator());
+    for(int i = 0; i < listCommentNode.size(); i++){
+      check(i, listCommentNode.get(i));
+    }
+    assertEquals(2, listCommentNode.size());
+  }
+
+  /**
+   * Create a map to use for MultilLanguageService
+   */
+  private Map<String, JcrInputProperty>  createMapInput() {
+    Map<String, JcrInputProperty> map = new HashMap<String, JcrInputProperty>();
+    String titlePath = CmsService.NODE + "/" + TITLE;
+    String summaryPath = CmsService.NODE + "/" + SUMMARY;
+    String textPath = CmsService.NODE + "/" + TEXT;
+    JcrInputProperty inputProperty = new JcrInputProperty();
+    inputProperty.setJcrPath(CmsService.NODE);
+
+    inputProperty.setValue("test");
+    map.put(CmsService.NODE, inputProperty);
+
+    inputProperty = new JcrInputProperty();
+    inputProperty.setJcrPath(titlePath);
+    inputProperty.setValue("this is title");
+    map.put(titlePath, inputProperty);
+
+    inputProperty = new JcrInputProperty();
+    inputProperty.setJcrPath(summaryPath);
+    inputProperty.setValue("this is summary");
+    map.put(summaryPath, inputProperty);
+
+    inputProperty = new JcrInputProperty();
+    inputProperty.setJcrPath(textPath);
+    inputProperty.setValue("this is article content");
+    map.put(textPath, inputProperty);
+    return map;
   }  
+  
+  /**
+   * This method will create a node which is added MultiLanguage
+   */  
+  private Node initNode() throws Exception{
+    Node test = session.getRootNode().addNode("test", ARTICLE);
+    if (test.canAddMixin(I18NMixin)) {
+      test.addMixin(I18NMixin);
+    }
+    test.setProperty(TITLE, "sport");
+    test.setProperty(SUMMARY, "report of season");
+    test.setProperty(TEXT, "sport is exciting");
+    session.save();
+    multiLangService.addLanguage(test, createMapInput(), "en", false);
+    multiLangService.addLanguage(test, createMapInput(), "vi", false);
+    return test;
+  }  
+  
+  /**
+   * This method is used to check case test.
+   * @param i          
+   * @param node       node is tested
+   * @throws Exception
+   */
+  private void check(int i, Node node) throws Exception{
+    switch (i) {
+    case 0:
+      assertEquals("root", node.getProperty(COMMENTOR).getString());
+      assertEquals("root@explatform.com", node.getProperty(COMMENTOR_EMAIL).getString());
+      assertEquals("Hello", node.getProperty(COMMENTOR_MESSAGES).getString());
+      break;
+    case 1:
+      assertEquals("marry", node.getProperty(COMMENTOR).getString());
+      assertEquals("marry@explatform.com", node.getProperty(COMMENTOR_EMAIL).getString());
+      assertEquals("Thanks", node.getProperty(COMMENTOR_MESSAGES).getString());
+      break;
+    default:
+      break;
+    }
+  }  
+  
+  /**
+   * Clean data test
+   */
+  public void tearDown() throws Exception {
+    if (session.itemExists("/Test")) {
+      Node test = session.getRootNode().getNode("Test");
+      test.remove();
+      session.save();
+    }
+    super.tearDown();
+  }
+  
+  class NameComparator implements Comparator<Node>{
+    public int compare(Node node1, Node node2){
+        try {
+          return node1.getName().compareTo(node2.getName());
+        } catch (RepositoryException e) {
+          return 0;
+        }
+    }
+  }
 }
