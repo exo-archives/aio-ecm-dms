@@ -139,6 +139,7 @@
           <include>**/*.xml</include>
           <include>**/*.gtmpl</include>
           <include>**/*.groovy</include>
+		  <include>**/*.jpg</include>
         </includes>
       </testResource>
     </testResources>

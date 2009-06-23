@@ -62,6 +62,9 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     isEnableThumbnail_ = Boolean.parseBoolean(initParams.getValueParam("enable").getValue());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getFlowImages(Node node) throws Exception {
     NodeIterator nodeIter = node.getNodes();
     List<Node> listNodes = new ArrayList<Node>();
@@ -77,6 +80,9 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     return listNodes;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getAllFileInNode(Node node) throws RepositoryException {
     List<Node> fileListNodes = new ArrayList<Node>();
     NodeIterator nodeIter = node.getNodes();
@@ -90,6 +96,9 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     return fileListNodes;
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getFileNodesByType(Node node, String jcrMimeType) throws RepositoryException {
     List<Node> fileListNodes = getAllFileInNode(node);
     List<Node> listNodes = new ArrayList<Node>();
@@ -103,14 +112,23 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     return listNodes;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public boolean isEnableThumbnail() {
     return isEnableThumbnail_;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void setEnableThumbnail(boolean isEnable) {
     isEnableThumbnail_ = isEnable;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public InputStream getThumbnailImage(Node node, String thumbnailType) throws Exception {
     Node thumbnailNode = addThumbnailNode(node);
     if(thumbnailNode != null && thumbnailNode.hasProperty(thumbnailType)) {
@@ -119,16 +137,25 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     return null;
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public void addThumbnailImage(Node thumbnailNode, BufferedImage image, String propertyName) throws Exception {
     if(propertyName.equals(SMALL_SIZE)) parseImageSize(thumbnailNode, image, smallSize_, SMALL_SIZE);
     else if(propertyName.equals(MEDIUM_SIZE)) parseImageSize(thumbnailNode, image, mediumSize_, MEDIUM_SIZE);
     else if(propertyName.equals(BIG_SIZE)) parseImageSize(thumbnailNode, image, bigSize_, BIG_SIZE);
   }
  
+  /**
+   * {@inheritDoc}
+   */
   public void createSpecifiedThumbnail(Node node, BufferedImage image, String propertyName) throws Exception {
     addThumbnailImage(addThumbnailNode(node), image, propertyName);
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public void createThumbnailImage(Node node, BufferedImage image, String mimeType) throws Exception {
     Node thumbnailNode = addThumbnailNode(node);
     if(thumbnailNode != null) {
@@ -138,6 +165,9 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     }
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public void processThumbnailList(List<Node> listNodes, String type) throws Exception {
     for(Node node : listNodes) {
       Node thumbnailNode = addThumbnailNode(node);
@@ -152,10 +182,16 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     }
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public List<String> getMimeTypes() {
     return Arrays.asList(mimeTypes_.split(";"));
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public Node addThumbnailNode(Node node) throws Exception {
     Node parentNode = node.getParent();
     Node thumbnailFolder = ThumbnailUtils.getThumbnailFolder(parentNode);
@@ -164,6 +200,9 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     return thumbnailNode;
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public Node getThumbnailNode(Node node) throws Exception {
     Node parentNode = node.getParent();
     try {
@@ -174,6 +213,9 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     }
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public void processRemoveThumbnail(Node showingNode) throws Exception {
     Node parentNode = showingNode.getParent();
     if(parentNode.hasNode(EXO_THUMBNAILS_FOLDER)) {
@@ -187,12 +229,28 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     }
   }
   
+  /**
+   * Put data from image to 3 property : exo:smallSizes, exo:mediumSizes, exo:bigSizes
+   * with each property, image is parsed to correlative size 
+   * @param node
+   * @param image
+   * @throws Exception
+   */
   private void processImage2Image(Node node, BufferedImage image) throws Exception {
     parseImageSize(node, image, smallSize_, SMALL_SIZE);
     parseImageSize(node, image, mediumSize_, MEDIUM_SIZE);
     parseImageSize(node, image, bigSize_, BIG_SIZE);
   }
   
+  /**
+   * Put image data to property name of node with given height and width
+   * @param thumbnailNode
+   * @param image
+   * @param width
+   * @param height
+   * @param propertyName
+   * @throws Exception
+   */
   private void createThumbnailImage(Node thumbnailNode, BufferedImage image, int width, int height, 
       String propertyName) throws Exception {
     InputStream thumbnailStream = ImageUtils.scaleImage(image, width, height);
@@ -208,6 +266,15 @@ public class ThumbnailServiceImpl implements ThumbnailService {
     }
   }
   
+  /**
+   * Analysis size which has format (width x height) and call method createThumbnailImage
+   * to put data into propertyName of node
+   * @param node
+   * @param image
+   * @param size
+   * @param propertyName
+   * @throws Exception
+   */
   private void parseImageSize(Node node, BufferedImage image, String size, String propertyName) throws Exception {
     if(size.indexOf("x") > -1) {
       String[] imageSize = size.split("x");
