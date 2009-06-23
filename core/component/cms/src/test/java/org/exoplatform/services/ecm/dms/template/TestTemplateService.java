@@ -19,7 +19,6 @@ package org.exoplatform.services.ecm.dms.template;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
