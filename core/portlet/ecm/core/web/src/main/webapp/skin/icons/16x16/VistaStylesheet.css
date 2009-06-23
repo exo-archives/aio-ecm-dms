@@ -262,6 +262,21 @@
   background: url('VistaSkin/True.png') no-repeat;  
 }
 
+.false16x16Icon {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/False.gif') no-repeat;  
+}
+
+.true16x16Icon {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/True.gif') no-repeat;  
+}
+
+
 .AddType16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/Save.gif') no-repeat;  
