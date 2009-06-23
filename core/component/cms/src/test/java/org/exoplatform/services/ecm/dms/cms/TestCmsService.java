@@ -390,13 +390,10 @@ public class TestCmsService extends BaseDMSTestCase {
    */
   public void testStoreNodeArticleByPath2() throws RepositoryException, Exception {
     Map<String, JcrInputProperty> map = createArticleMapInput();
-    Exception e = null;
     try {
       cmsService.storeNode(COLLABORATION_WS, ARTICLE, "/temp", map, REPO_NAME);
     } catch (PathNotFoundException ex) {
-      e = ex;
     }
-    assertNotNull(e);
   }
 
   /**
