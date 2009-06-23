@@ -56,7 +56,8 @@
   float: right; /* orientation=rt */
   margin: 2px 3px 0px 5px; /* orientation=lt */
   margin: 2px 5px 0px 3px; /* orientation=rt */
-  width: 16px; height: 16px;
+  width: 22px;
+  height: 22px;
 }
 
 .UICategoryTree .MiddleCategoryTree .RootTreeNode{
