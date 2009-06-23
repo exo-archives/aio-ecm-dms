@@ -117,12 +117,13 @@
 }
 	
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
+ /*
+	* minh.js.exo
+	*/
 
 .UIJCRExplorerPortlet .UIDocumentWorkspace {
   overflow: auto;
-  /*
-	* minh.js.exo
-	*/
+  height: 475px;
 }
 
 .UIJCRExplorerPortlet .UIListView {
