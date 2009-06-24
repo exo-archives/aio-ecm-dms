@@ -16,6 +16,7 @@
  */
 package org.exoplatform.services.ecm.dms.records;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -156,7 +157,7 @@ public class TestRecordsService extends BaseDMSTestCase {
    *    1. Add record for file plan node A3 from node record A1 
    *    2. Add record for file plan node A4 from node record A2
    * Expect:
-   *    Result: Size of result = 2; item node first = A1; item node second = A2
+   *    Result: Size of result = 2; contains node A1 and A2
    * @throws Exception
    */
   public void testGetRecords() throws Exception {
@@ -171,8 +172,9 @@ public class TestRecordsService extends BaseDMSTestCase {
     
     List<Node> listRecord = recordsService.getRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 2);
-    assertEquals(listRecord.get(0).getName(), "A1");
-    assertEquals(listRecord.get(1).getName(), "A2");
+    List<String> listNodeName = getListName(listRecord);
+    assertTrue(listNodeName.contains("A1"));
+    assertTrue(listNodeName.contains("A2"));
   }
   
   /**
@@ -181,7 +183,7 @@ public class TestRecordsService extends BaseDMSTestCase {
    *    1. Add record for file plan node A3 from node record A1 
    *    2. Add record for file plan node A4 from node record A2
    * Expect: 
-   *    Result: Size of result = 2; item node first = A1; item node second = A2;
+   *    Result: Size of result = 2; contains node A1 and A2
    * @throws Exception
    */
   public void testGetVitalRecords() throws Exception {
@@ -197,8 +199,9 @@ public class TestRecordsService extends BaseDMSTestCase {
     
     List<Node> listRecord = recordsService.getVitalRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 2);
-    assertEquals(listRecord.get(0).getName(), "A2");
-    assertEquals(listRecord.get(1).getName(), "A1");
+    List<String> listNodeName = getListName(listRecord);
+    assertTrue(listNodeName.contains("A1"));
+    assertTrue(listNodeName.contains("A2"));
   }
   
   /**
@@ -251,7 +254,7 @@ public class TestRecordsService extends BaseDMSTestCase {
    *    3. Set property rma:superseded is true for node A1 and node A2
    *    4. Set property rma:dateReceived for node A2 and node A1
    * Expect:
-   *    Result: Size of result = 2; item node first = A2; item node second = A1   
+   *    Result: Size of result = 2; contains node A1 and A2
    * @throws Exception
    */
   public void testGetSupersededRecords() throws Exception {
@@ -276,8 +279,9 @@ public class TestRecordsService extends BaseDMSTestCase {
     session.save();
     listRecord = recordsService.getSupersededRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 2);
-    assertEquals(listRecord.get(0).getName(), "A2");
-    assertEquals(listRecord.get(1).getName(), "A1");
+    List<String> listNodeName = getListName(listRecord);
+    assertTrue(listNodeName.contains("A1"));
+    assertTrue(listNodeName.contains("A2"));
   }
   
   /**
@@ -295,7 +299,7 @@ public class TestRecordsService extends BaseDMSTestCase {
    *    rma:cutoffDateTime
    *    4. Set property rma:dateReceived for node A2 and node A1
    * Expect:
-   *    Result: Size of result = 2; item node first = A2; item node second = A1 
+   *    Result: Size of result = 2; contains node A1 and A2
    * @throws Exception
    */
   public void testGetCutoffRecords() throws Exception {
@@ -321,8 +325,9 @@ public class TestRecordsService extends BaseDMSTestCase {
     
     listRecord = recordsService.getCutoffRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 2);
-    assertEquals(listRecord.get(0).getName(), "A2");
-    assertEquals(listRecord.get(1).getName(), "A1");
+    List<String> listNodeName = getListName(listRecord);
+    assertTrue(listNodeName.contains("A1"));
+    assertTrue(listNodeName.contains("A2"));
   }
   
   /**
@@ -382,7 +387,7 @@ public class TestRecordsService extends BaseDMSTestCase {
    *    4. Add mixin rma:transferable and set property (rma:transferDate, rma:transferLocation = 
    *    "location1", rma:transferExecuted = false, rma:dateReceived) for node A1
    * Expect:
-   *    Result: Size of result = 2; item node first = A2
+   *    Result: Size of result = 2; contains node A1 and A2
    * @throws Exception
    */
   public void testGetTransferableRecords() throws Exception {
@@ -413,8 +418,9 @@ public class TestRecordsService extends BaseDMSTestCase {
     
     listRecord = recordsService.getTransferableRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 2);
-    assertEquals(listRecord.get(0).getName(), "A2");
-    assertEquals(listRecord.get(1).getName(), "A1");
+    List<String> listNodeName = getListName(listRecord);
+    assertTrue(listNodeName.contains("A1"));
+    assertTrue(listNodeName.contains("A2"));
   }
   
   /**
@@ -433,7 +439,7 @@ public class TestRecordsService extends BaseDMSTestCase {
    *    4. Add mixin rma:accessionable and set property (rma:accessionExecuted is false, 
    *    rma:accessionDate, rma:dateReceived for node A1
    * Expect:
-   *    Result: Size of result = 2; item node first = A2; item node second = A1
+   *    Result: Size of result = 2; contains node A1 and A2
    * @throws Exception
    */
   public void testGetAccessionableRecords() throws Exception {
@@ -462,8 +468,9 @@ public class TestRecordsService extends BaseDMSTestCase {
     
     listRecord = recordsService.getAccessionableRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 2);
-    assertEquals(listRecord.get(0).getName(), "A2");
-    assertEquals(listRecord.get(1).getName(), "A1");
+    List<String> listNodeName = getListName(listRecord);
+    assertTrue(listNodeName.contains("A1"));
+    assertTrue(listNodeName.contains("A2"));
   }
   
   /**
@@ -480,7 +487,7 @@ public class TestRecordsService extends BaseDMSTestCase {
    *    3. Add mixin rma:destroyable and set property (rma:destructionDate, rma:dateReceived for node A2
    *    4. Add mixin rma:destroyable and set property (rma:destructionDate, rma:dateReceived for node A1
    * Expect:
-   *    Result: Size of result = 2; item node first = A2; item node second = A1
+   *    Result: Size of result = 2; contains node A1 and A2
    * @throws Exception
    */
   public void testGetDestroyableRecords() throws Exception {
@@ -507,8 +514,9 @@ public class TestRecordsService extends BaseDMSTestCase {
     
     listRecord = recordsService.getDestroyableRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 2);
-    assertEquals(listRecord.get(0).getName(), "A2");
-    assertEquals(listRecord.get(1).getName(), "A1");
+    List<String> listNodeName = getListName(listRecord);
+    assertTrue(listNodeName.contains("A1"));
+    assertTrue(listNodeName.contains("A2"));
   }
 
   /**
@@ -719,6 +727,14 @@ public class TestRecordsService extends BaseDMSTestCase {
         node.removeMixin(mixinNode.getName());
       }
     }
+  }
+  
+  private List<String> getListName(List<Node> listNode) throws Exception {
+    List<String> listNodeName = new ArrayList<String>();
+    for (Node node : listNode) {
+      listNodeName.add(node.getName());
+    }
+    return listNodeName;
   }
   
   public void tearDown() throws Exception {
