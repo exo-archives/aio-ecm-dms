@@ -40,9 +40,9 @@ public class TestDMSConfigurationService extends BaseDMSTestCase{
   
   private DMSConfiguration dmsConfiguration = null;
   
-  private final static String REPO = "repo".intern();
+  private final static String REPO_TEST = "repository-test".intern();
   
-  private final static String TEST_WS = "test".intern();
+  private final static String TEST_WS = "workspace-test".intern();
   
   
   @Override
@@ -72,11 +72,11 @@ public class TestDMSConfigurationService extends BaseDMSTestCase{
    */
   public void testInitNewRepo() throws Exception{
     DMSRepositoryConfiguration dmsRepoConfig = new DMSRepositoryConfiguration();
-    dmsRepoConfig.setRepositoryName(REPO);
+    dmsRepoConfig.setRepositoryName(REPO_TEST);
     dmsRepoConfig.setSystemWorkspace(TEST_WS);
     dmsConfiguration.initNewRepo(dmsRepoConfig.getRepositoryName(), dmsRepoConfig);
-    DMSRepositoryConfiguration dmsRepoConf = dmsConfiguration.getConfig(REPO);
-    assertEquals(REPO, dmsRepoConf.getRepositoryName());
+    DMSRepositoryConfiguration dmsRepoConf = dmsConfiguration.getConfig(REPO_TEST);
+    assertEquals(REPO_TEST, dmsRepoConf.getRepositoryName());
     assertEquals(TEST_WS, dmsRepoConf.getSystemWorkspace());
   }
   
@@ -88,16 +88,16 @@ public class TestDMSConfigurationService extends BaseDMSTestCase{
    */
   public void testAddPlugin() throws Exception{
     DMSRepositoryConfiguration dmsRepoConfig = new DMSRepositoryConfiguration();
-    dmsRepoConfig.setRepositoryName(REPO);
+    dmsRepoConfig.setRepositoryName(REPO_TEST);
     dmsRepoConfig.setSystemWorkspace(TEST_WS);
     dmsConfiguration.addPlugin(dmsRepoConfig);
-    DMSRepositoryConfiguration dmsRepoConf = dmsConfiguration.getConfig(REPO);
-    assertEquals(REPO, dmsRepoConf.getRepositoryName());
+    DMSRepositoryConfiguration dmsRepoConf = dmsConfiguration.getConfig(REPO_TEST);
+    assertEquals(REPO_TEST, dmsRepoConf.getRepositoryName());
     assertEquals(TEST_WS, dmsRepoConf.getSystemWorkspace());
   }
   
   @Override
-  protected void tearDown() throws Exception {
+  public void tearDown() throws Exception {
     super.tearDown();
   }
 }

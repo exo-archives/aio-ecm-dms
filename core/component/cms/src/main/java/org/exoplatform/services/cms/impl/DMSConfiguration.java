@@ -34,10 +34,19 @@ public class DMSConfiguration implements Startable {
   private Map<String, DMSRepositoryConfiguration> dmsConfigMap_ = 
     new HashMap<String, DMSRepositoryConfiguration>();
   
+  /**
+   * Get DMS configuration with specific repository. 
+   * @param repository repository name.
+   * @return
+   */
   public DMSRepositoryConfiguration getConfig(String repository) {
     return dmsConfigMap_.get(repository);
   }
   
+  /**
+   * This method will add more plugin.
+   * @param plugin
+   */
   public void addPlugin(ComponentPlugin plugin) {
     if(plugin instanceof DMSRepositoryConfiguration) {
       dmsConfigMap_.put(((DMSRepositoryConfiguration)plugin).getRepositoryName(), 
@@ -45,6 +54,11 @@ public class DMSConfiguration implements Startable {
     }
   }
   
+  /**
+   * This method will create new repository 
+   * @param repository          repository name
+   * @param plugin              plugin name
+   */
   public void initNewRepo(String repository, DMSRepositoryConfiguration plugin) {
     dmsConfigMap_.put(repository, plugin);
   }
