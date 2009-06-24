@@ -40,8 +40,6 @@ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 public class TestQueryService extends BaseDMSTestCase {
   private QueryService         queryService;
 
-  private Session              session;
-
   private NodeHierarchyCreator nodeHierarchyCreator;
 
   private String               baseUserPath;
@@ -57,15 +55,36 @@ public class TestQueryService extends BaseDMSTestCase {
         .getComponentInstanceOfType(NodeHierarchyCreator.class);
     baseUserPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
     baseQueriesPath = nodeHierarchyCreator.getJcrPath(BasePath.QUERIES_PATH);
-    session = repository.login(credentials, COLLABORATION_WS);
   }
 
+  /**
+   * Init all query plugin by giving the following params : repository
+   * Input:
+   *    Init three param which is configured in test-queries-configuration.xml
+   * Expect: 
+   *    Size of list node = 3, contains CreatedDocuments node, CreatedDocumentsDayBefore node, 
+   *    AllArticles node
+   * @throws Exception
+   */
   public void testInit() throws Exception {
     Session mySession = repository.login(credentials, DMSSYSTEM_WS);
     Node queriesHome = (Node) mySession.getItem(baseQueriesPath);
     assertEquals(queriesHome.getNodes().getSize(), 3);
+    assertNotNull(queriesHome.getNode("Created Documents"));
+    assertNotNull(queriesHome.getNode("CreatedDocumentDayBefore"));
+    assertNotNull(queriesHome.getNode("All Articles"));
   }
 
+  /**
+   * Add new query by giving the following params : queryName, statement,
+   * language, userName, repository
+   * Input: 
+   *    queryName = "QueryAll"; statement = "Select * from nt:base"; language = "sql"; 
+   *    userName = "root"; repository = "repository";
+   * Expect: 
+   *    node: name = "QueryAll" not null;
+   * @throws Exception
+   */
   public void testAddQuery() throws Exception {
     queryService.addQuery("QueryAll", "Select * from nt:base", "sql", "root", REPO_NAME);
     String userPath = baseUserPath + "/root/" + relativePath;
@@ -74,6 +93,22 @@ public class TestQueryService extends BaseDMSTestCase {
     assertNotNull(queryAll);
   }
 
+  /**
+   * Get queries by giving the following params : userName, repository, provider
+   * Input: 
+   *    1. Add 2 query node to test
+   *      1.1 queryName = "QueryAll1"; statement = "Select * from nt:base"; language = "sql";
+   *          userName = "root"; repository = "repository";
+   *      1.2 queryName = "QueryAll2"; statement = "//element(*, exo:article)"; language = "xpath";
+   *          userName = "root"; repository = "repository";
+   * Input: userName = "root", repository = "repository", provider = sessionProvider
+   * Expect: Size of list node = 2   
+   * Input: userName = "marry", repository = "repository", provider = sessionProvider
+   * Expect: Size of list node = 0
+   * Input: userName = null, repository = "repository", provider = sessionProvider
+   * Expect: Size of list node = 0        
+   * @throws Exception
+   */
   public void testGetQueries() throws Exception {
     SessionProviderService sessionProviderService_ = (SessionProviderService) container
         .getComponentInstanceOfType(SessionProviderService.class);
@@ -88,6 +123,26 @@ public class TestQueryService extends BaseDMSTestCase {
     assertEquals(listQueryNull.size(), 0);
   }
 
+  /**
+   * Remove query by giving the following params : queryPath, userName, repository
+   * Input: 
+   *    1. Add 2 query node to test
+   *      1.1 queryName = "QueryAll1"; statement = "Select * from nt:base"; language = "sql";
+   *          userName = "root"; repository = "repository";
+   *      1.2 queryName = "QueryAll2"; statement = "//element(*, exo:article)"; language = "xpath";
+   *          userName = "root"; repository = "repository";
+   * Input: 
+   *    queryPath = "/Users/root/Private/Searches/QueryAll1", userName = "root", 
+   *    repository = "repository"
+   * Expect:
+   *    node: name = "QueryAll1" is removed
+   * Input: 
+   *    queryPath = "/Users/marry/Private/Searches/QueryAll2", userName = "marry", 
+   *    repository = "repository"
+   * Expect:
+   *    exception: Query path not found!
+   * @throws Exception
+   */
   public void testRemoveQuery() throws Exception {
     SessionProviderService sessionProviderService_ = (SessionProviderService) container
         .getComponentInstanceOfType(SessionProviderService.class);
@@ -110,12 +165,33 @@ public class TestQueryService extends BaseDMSTestCase {
     }
   }
 
+  /**
+   * Get query with path by giving the following params : queryPath, userName, repository, provider
+   * Input: 
+   *    1. Add 2 query node to test
+   *      1.1 queryName = "QueryAll1"; statement = "Select * from nt:base"; language = "sql";
+   *          userName = "root"; repository = "repository";
+   *      1.2 queryName = "QueryAll2"; statement = "//element(*, exo:article)"; language = "xpath";
+   *          userName = "root"; repository = "repository";
+   * Input: 
+   *    queryPath = "/Users/root/Private/Searches/QueryAll1", userName = "root", 
+   *    repository = "repository"
+   * Expect:
+   *    node: name = "QueryAll1" is not null
+   * Input: 
+   *    queryPath = "/Users/root/Private/Searches/QueryAll3", userName = "root", 
+   *    repository = "repository"
+   * Expect:
+   *    node: query node is null
+   * @throws Exception
+   */
   public void testGetQueryByPath() throws Exception {
     SessionProviderService sessionProviderService_ = (SessionProviderService) container
         .getComponentInstanceOfType(SessionProviderService.class);
     SessionProvider sessionProvider = sessionProviderService_.getSystemSessionProvider(null);
     queryService.addQuery("QueryAll1", "Select * from nt:base", "sql", "root", REPO_NAME);
     queryService.addQuery("QueryAll2", "//element(*, exo:article)", "xpath", "root", REPO_NAME);
+    
     String queryPath1 = baseUserPath + "/root/" + relativePath + "/QueryAll1";
     Query query = queryService.getQueryByPath(queryPath1, "root", REPO_NAME, sessionProvider);
     assertNotNull(query);
@@ -125,12 +201,25 @@ public class TestQueryService extends BaseDMSTestCase {
     query = queryService.getQueryByPath(queryPath2, "root", REPO_NAME, sessionProvider);
     assertNull(query);
   }
-
+  
+  /**
+   * Add new shared query by giving the following params: queryName, statement, language, 
+   * permissions, cachedResult, repository
+   * Input: 
+   *    queryName = "QueryAll1", statement = "Select * from nt:base", language = "sql", 
+   *    permissions = { "*:/platform/administrators" }, cachedResult = false, repository = "repository"
+   * Expect:
+   *    node: name = "QueryAll1" is not null 
+   *    Value of property
+   *      jcr:language = sql, jcr:statement = Select * from nt:base, exo:cachedResult = false, 
+   *      exo:accessPermissions = *:/platform/administrators
+   * @throws Exception
+   */
   public void testAddSharedQuery() throws Exception {
     queryService.addSharedQuery("QueryAll1", "Select * from nt:base", "sql",
         new String[] { "*:/platform/administrators" }, false, REPO_NAME);
-    session = repository.login(credentials, DMSSYSTEM_WS);
-    Node queriesHome = (Node) session.getItem(baseQueriesPath);
+    Session mySession = repository.login(credentials, DMSSYSTEM_WS);
+    Node queriesHome = (Node) mySession.getItem(baseQueriesPath);
     Node queryAll1 = queriesHome.getNode("QueryAll1");
     assertNotNull(queryAll1);
     assertEquals(queryAll1.getProperty("jcr:language").getString(), "sql");
@@ -140,6 +229,20 @@ public class TestQueryService extends BaseDMSTestCase {
         "*:/platform/administrators");
   }
 
+  /**
+   * Get shared queries by giving the following params : userId, repository, provider
+   * Input: 
+   *    1. Add a shared query node
+   *       queryName = "QueryAll1", statement = "Select * from nt:base", language = "sql", 
+   *       permissions = { "*:/platform/administrators" }, cachedResult = false, 
+   *       repository = "repository"
+   * Expect:
+   *    node: name = "QueryAll1" is not null
+   *    Value of property
+   *      jcr:language = sql, jcr:statement = Select * from nt:base, exo:cachedResult = false, 
+   *      exo:accessPermissions = *:/platform/administrators
+   * @throws Exception
+   */
   public void testGetSharedQuery() throws Exception {
     SessionProviderService sessionProviderService_ = (SessionProviderService) container
         .getComponentInstanceOfType(SessionProviderService.class);
@@ -155,6 +258,23 @@ public class TestQueryService extends BaseDMSTestCase {
         "*:/platform/administrators");
   }
 
+  /**
+   * Remove share query by giving the following params : queryName, repository
+   * Input: 
+   *    1. Add a shared query node
+   *       queryName = "QueryAll1", statement = "Select * from nt:base", language = "sql", 
+   *       permissions = { "*:/platform/administrators" }, cachedResult = false, 
+   *       repository = "repository"
+   * Input: 
+   *    queryName = "QueryAll2", repository = "repository"
+   * Expect: 
+   *    exception: Query Path not found!
+   * Input: 
+   *    queryName = "QueryAll1", repository = "repository"
+   * Expect:   
+   *    node: name = "QueryAll1" is removed
+   * @throws Exception
+   */
   public void testRemoveSharedQuery() throws Exception {
     SessionProviderService sessionProviderService_ = (SessionProviderService) container
         .getComponentInstanceOfType(SessionProviderService.class);
@@ -171,7 +291,42 @@ public class TestQueryService extends BaseDMSTestCase {
     }
   }
 
-  public void testgetSharedQueries() throws Exception {
+  /**
+   * Get shared queries
+   * Input: 
+   *    1. Add two shared query node
+   *       1.1 queryName = "QueryAll1", statement = "Select * from nt:base", language = "sql", 
+   *           permissions = { "*:/platform/administrators" }, cachedResult = false, 
+   *           repository = "repository"
+   *       1.2 queryName = "QueryAll2", statement = "//element(*, exo:article)", language = "xpath", 
+   *           permissions = { "*:/platform/users" }, cachedResult = true, repository = "repository"
+   * Input: 
+   *    repository = "repository", provider = sessionProvider
+   * Expect:
+   *    Size of listNode = 2, contains QueryAll1 and QueryAll2 node
+   * Input: 
+   *    userId = "root", repository = "repository", provider = sessionProvider
+   * Expect:
+   *    Size of listNode = 2, contains QueryAll1 and QueryAll2 node
+   * Input: 
+   *    userId = "marry", repository = "repository", provider = sessionProvider
+   * Expect:
+   *    Size of listNode = 1, contains QueryAll2
+   * Input: 
+   *    queryType = "sql", userId = "root", repository = "repository", provider = sessionProvider
+   * Expect:
+   *    Size of listNode = 1, contains QueryAll1
+   * Input: 
+   *    queryType = "sql", userId = "marry", repository = "repository", provider = sessionProvider
+   * Expect:
+   *    Size of listNode = 0
+   * Input: 
+   *    queryType = "xpath", userId = "marry", repository = "repository", provider = sessionProvider
+   * Expect:
+   *    Size of listNode = 1, contains QueryAll2
+   * @throws Exception
+   */
+  public void testGetSharedQueries() throws Exception {
     SessionProviderService sessionProviderService_ = (SessionProviderService) container
         .getComponentInstanceOfType(SessionProviderService.class);
     SessionProvider sessionProvider = sessionProviderService_.getSessionProvider(null);
@@ -238,6 +393,29 @@ public class TestQueryService extends BaseDMSTestCase {
         "*:/platform/users");
   }
 
+  /**
+   * Execute query by giving the following params : queryPath, workspace, repository, 
+   * provider, userId
+   * Input: 
+   *    1. Add two shared query node
+   *       1.1 queryName = "QueryAll1", statement = 
+   *           "Select * from nt:base where jcr:path like '/exo:ecm/queries/%'", language = "sql", 
+   *           permissions = { "*:/platform/administrators" }, cachedResult = false, 
+   *           repository = "repository"
+   *       1.2 queryName = "QueryAll2", statement = "//element(*, exo:article)", language = "xpath", 
+   *           permissions = { "*:/platform/users" }, cachedResult = true, repository = "repository"
+   * Input: 
+   *    queryPath = "/exo:ecm/queries/QueryAll1", workspace = DMSSYSTEM_WS, 
+   *    repository = "repository", provider = sessionProvider, userId = "root"
+   * Expect:
+   *    Size of list node = 2
+   * Input: 
+   *    queryPath = "/exo:ecm/queries/QueryAll2", workspace = DMSSYSTEM_WS, 
+   *    repository = "repository", provider = sessionProvider, userId = "root"
+   * Expect:
+   *    exception: Query Path not found!
+   * @throws Exception
+   */
   public void testExecute() throws Exception {
     SessionProviderService sessionProviderService_ = (SessionProviderService) container
         .getComponentInstanceOfType(SessionProviderService.class);
@@ -275,13 +453,13 @@ public class TestQueryService extends BaseDMSTestCase {
       }
       mySession.save();
 
-      session = repository.login(credentials, DMSSYSTEM_WS);
-      Node nodeQueryHome = (Node) session.getItem(baseQueriesPath);
+      mySession = repository.login(credentials, DMSSYSTEM_WS);
+      Node nodeQueryHome = (Node) mySession.getItem(baseQueriesPath);
       iter = nodeQueryHome.getNodes();
       while (iter.hasNext()) {
         iter.nextNode().remove();
       }
-      session.save();
+      mySession.save();
     } catch (PathNotFoundException e) {
     }
     super.tearDown();
