@@ -197,8 +197,8 @@ public class TestRecordsService extends BaseDMSTestCase {
     
     List<Node> listRecord = recordsService.getVitalRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 2);
-    assertEquals(listRecord.get(0).getName(), "A1");
-    assertEquals(listRecord.get(1).getName(), "A2");
+    assertEquals(listRecord.get(0).getName(), "A2");
+    assertEquals(listRecord.get(1).getName(), "A1");
   }
   
   /**
