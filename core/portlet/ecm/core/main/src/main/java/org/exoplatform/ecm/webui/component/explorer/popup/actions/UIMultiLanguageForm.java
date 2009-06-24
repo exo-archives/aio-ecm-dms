@@ -115,6 +115,8 @@ public class UIMultiLanguageForm extends UIForm {
       UIMultiLanguageForm uiForm = event.getSource() ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      Node node = uiExplorer.getCurrentNode();
+      uiExplorer.addLockToken(node);
       if(!PermissionUtil.canAddNode(uiExplorer.getCurrentNode())) { 
         throw new MessageException(new ApplicationMessage("UIMultiLanguageForm.msg.access-denied", 
                                                           null, ApplicationMessage.WARNING)) ;

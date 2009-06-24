@@ -107,6 +107,8 @@ public class UIRelationsAddedList extends UIContainer implements UISelectable {
       RelationsService relationService = 
         uiAddedList.getApplicationComponent(RelationsService.class) ;
       UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
+      Node currentNode = uiExplorer.getCurrentNode();
+      uiExplorer.addLockToken(currentNode);
       try {
         relationService.removeRelation(uiExplorer.getCurrentNode(), nodePath, uiExplorer.getRepositoryName());
         UIGrid uiGrid = uiAddedList.getChildById("RelateAddedList");
