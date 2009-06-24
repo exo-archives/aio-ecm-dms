@@ -23,15 +23,10 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
-import javax.jcr.Session;
 import javax.jcr.nodetype.NodeType;
-import javax.jcr.query.Query;
-import javax.jcr.query.QueryManager;
-import javax.jcr.query.QueryResult;
 
 import org.exoplatform.services.cms.records.RecordsService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
-import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 /**
  * Created by The eXo Platform SARL Author : Ly Dinh Quang
@@ -40,22 +35,24 @@ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 public class TestRecordsService extends BaseDMSTestCase {
   private RecordsService       recordsService;
 
-  private Session              session;
-
-  private NodeHierarchyCreator nodeHierarchyCreator;
-
   private Node                 rootNode;
 
   public void setUp() throws Exception {
     super.setUp();
     recordsService = (RecordsService) container.getComponentInstanceOfType(RecordsService.class);
-    nodeHierarchyCreator = (NodeHierarchyCreator) container
-        .getComponentInstanceOfType(NodeHierarchyCreator.class);
     createTree();
   }
-
+  
+  /**
+   * Create tree for testing
+   * Input: A1: nt:file (name = "A1")
+   *        A2: nt:file (name = "A2")
+   *        A3: filePlan (name = "A3" and some property for nodetype rma:filePlan)
+   *        A4: filePlan (name = "A4" and some property for nodetype rma:filePlan)
+   *        A5: Node test
+   * @throws Exception
+   */
   public void createTree() throws Exception {
-    session = repository.login(credentials, COLLABORATION_WS);
     rootNode = session.getRootNode();
     Node testNode = rootNode.addNode("TestTreeNode");
 
@@ -75,11 +72,13 @@ public class TestRecordsService extends BaseDMSTestCase {
         "markingList1", "original1", true, false, "trigger1", false, false, false, false, "hourly");
 
     Node nodeA4 = addNodeFilePlan("A4", testNode, "cateIdentify2", "disposition2", true, true, "mediaType2",
-        "markingList2", "original2", true, true, "trigger2", false, false, false, false,
+        "markingList2", "original2", true, true, "trigger2", true, true, false, false,
         "quarterly");
     nodeA4.setProperty("rma:cutoffPeriod", "hourly");
     nodeA4.setProperty("rma:cutoffOnObsolete", true);
     nodeA4.setProperty("rma:cutoffOnSuperseded", false);
+    
+    testNode.addNode("A5");
     session.save();
   }
 
@@ -107,6 +106,15 @@ public class TestRecordsService extends BaseDMSTestCase {
     return filePlan;
   }
 
+  /**
+   * Set property for filePlan node which is get from record node
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   * Expect: 
+   *    Some property in file plan node has been changed
+   * @throws Exception
+   */
   public void testAddRecord() throws Exception {
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
     Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
@@ -140,13 +148,17 @@ public class TestRecordsService extends BaseDMSTestCase {
     assertEquals(nodeA2.getProperty("rma:originatingOrganization").getString(), "original2");
     assertEquals(nodeA2.getProperty("rma:cutoffObsolete").getBoolean(), true);
     assertEquals(nodeA2.getProperty("rma:cutoffEvent").getString(), "trigger2");
-    try {
-      assertEquals(nodeA2.getProperty("rma:cutoffSuperseded").getBoolean(), false);
-    } catch (PathNotFoundException e) {
-      fail("Property not found rma:cutoffSuperseded");
-    }
   }
   
+  /**
+   * Get list of node by query statement
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   * Expect:
+   *    Result: Size of result = 2; item node first = A1; item node second = A2
+   * @throws Exception
+   */
   public void testGetRecords() throws Exception {
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
     Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
@@ -163,36 +175,51 @@ public class TestRecordsService extends BaseDMSTestCase {
     assertEquals(listRecord.get(1).getName(), "A2");
   }
   
-//  public void testGetVitalRecords() throws Exception {
-//    Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
-//    Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
-//    Node nodeA3 = rootNode.getNode("TestTreeNode/A3");
-//    Node nodeA4 = rootNode.getNode("TestTreeNode/A4");
-//    
-//    recordsService.addRecord(nodeA3, nodeA1);
-//    recordsService.addRecord(nodeA4, nodeA2);
-//    
-//    nodeA2.setProperty("rma:nextReviewDate", new GregorianCalendar());
-//    nodeA1.setProperty("rma:nextReviewDate", new GregorianCalendar());
-//    session.save();
-//    
-////    List<Node> listRecord = recordsService.getVitalRecords(rootNode.getNode("TestTreeNode"));
-////    System.out.println("\n===ListRecord: " + listRecord.size());
-////    assertEquals(listRecord.size(), 2);
-////    assertEquals(listRecord.get(0).getName(), "A1");
-////    assertEquals(listRecord.get(2).getName(), "A2");
-//    
-//    QueryManager queryManager = session.getWorkspace().getQueryManager();
-//    String sql = null;
-//    sql = "/jcr:root/TestTreeNode//element(*,rma:vitalRecord) order by exo:dateCreated descending";
-//    Query query = queryManager.createQuery(sql, Query.XPATH);
-//    QueryResult result = query.execute();
-//    NodeIterator iterate = result.getNodes();
-//    while (iterate.hasNext()) {
-//      System.out.println("\nName: " + iterate.nextNode().getName() + "\n");
-//    }
-//  }
+  /**
+   * Get list of node by query statement with constraint concerning @rma:vitalRecord
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   *    3. Set property rma:nextReviewDate for node A1 and node A2
+   * Expect: 
+   *    Result: Size of result = 2; item node first = A2; item node second = A3;
+   * @throws Exception
+   */
+  public void testGetVitalRecords() throws Exception {
+    Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
+    Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
+    Node nodeA3 = rootNode.getNode("TestTreeNode/A3");
+    Node nodeA4 = rootNode.getNode("TestTreeNode/A4");
+    
+    recordsService.addRecord(nodeA3, nodeA1);
+    recordsService.addRecord(nodeA4, nodeA2);
+    
+    nodeA1.setProperty("rma:nextReviewDate", new GregorianCalendar());
+    nodeA2.setProperty("rma:nextReviewDate", new GregorianCalendar());
+    session.save();
+    
+    List<Node> listRecord = recordsService.getVitalRecords(rootNode.getNode("TestTreeNode"));
+    assertEquals(listRecord.size(), 2);
+    assertEquals(listRecord.get(0).getName(), "A2");
+    assertEquals(listRecord.get(1).getName(), "A1");
+  }
   
+  /**
+   * Get list of node by query statement with constraint concerning @rma:isObsolete
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   * Expect:
+   *    Result: Size of result = 0
+   *    
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   *    3. Set property rma:isObsolete is true for node A1
+   * Expect:
+   *    Result: Size of result = 1; item node first = A1   
+   * @throws Exception
+   */
   public void testGetObsoleteRecords() throws Exception {
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
     Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
@@ -213,6 +240,23 @@ public class TestRecordsService extends BaseDMSTestCase {
     assertEquals(listRecord.get(0).getName(), "A1");
   }
   
+  /**
+   * Get list of node by query statement with constraint concerning @rma:superseded
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   * Expect:
+   *    Result: Size of result = 0
+   *    
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   *    3. Set property rma:superseded is true for node A1 and node A2
+   *    4. Set property rma:dateReceived for node A2 and node A1
+   * Expect:
+   *    Result: Size of result = 2; item node first = A2; item node second = A1   
+   * @throws Exception
+   */
   public void testGetSupersededRecords() throws Exception {
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
     Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
@@ -239,47 +283,68 @@ public class TestRecordsService extends BaseDMSTestCase {
     assertEquals(listRecord.get(1).getName(), "A1");
   }
   
-//  public void testGetCutoffRecords() throws Exception {
-//    Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
-//    Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
-//    Node nodeA3 = rootNode.getNode("TestTreeNode/A3");
-//    Node nodeA4 = rootNode.getNode("TestTreeNode/A4");
-//    
-//    recordsService.addRecord(nodeA3, nodeA1);
-//    recordsService.addRecord(nodeA4, nodeA2);
-//    
-//    nodeA1.addMixin("rma:cutoffable");
-//    nodeA1.setProperty("rma:cutoffExecuted", true);
-//    nodeA1.setProperty("rma:cutoffDateTime", new GregorianCalendar());
-//    
-//    nodeA2.setProperty("rma:cutoffDateTime", new GregorianCalendar());
-//    nodeA2.setProperty("rma:cutoffExecuted", false);
-//    
-//    nodeA2.setProperty("rma:dateReceived", new GregorianCalendar());
-//    nodeA1.setProperty("rma:dateReceived", new GregorianCalendar());
-//    session.save();
-//    
-////    List<Node> listRecord = recordsService.getCutoffRecords(rootNode.getNode("TestTreeNode"));
-////    System.out.println("\n" + listRecord.size() + "\n");
-////    assertEquals(listRecord.size(), 2);
-////    System.out.println("\n" + listRecord.get(0).getName() + "\n");
-////    assertEquals(listRecord.get(0).getName(), "A2");
-////    assertEquals(listRecord.get(1).getName(), "A1");
-//    
-//    
-//    
-//    QueryManager queryManager = session.getWorkspace().getQueryManager();
-//    String sql = null;
-//    sql = "select * from rma:cutoffable where rma:cutoffExecuted='false' order by rma:dateReceived DESC";
-//    Query query = queryManager.createQuery(sql, Query.SQL);
-//    QueryResult result = query.execute();
-//    NodeIterator iterate = result.getNodes();
-//    while (iterate.hasNext()) {
-//      System.out.println("\nName: " + iterate.nextNode().getName() + "\n");
-//    }
-//  }
+  /**
+   * Get list of node by query statement with constraint concerning @rma:cutoffExecuted
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   * Expect:
+   *    Result: Size of result = 1; item node first = A2
+   *    
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   *    3. Add mixin rma:cutoffable for node A1; set property rma:cutoffExecuted is false and
+   *    rma:cutoffDateTime
+   *    4. Set property rma:dateReceived for node A2 and node A1
+   * Expect:
+   *    Result: Size of result = 2; item node first = A2; item node second = A1 
+   * @throws Exception
+   */
+  public void testGetCutoffRecords() throws Exception {
+    Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
+    Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
+    Node nodeA3 = rootNode.getNode("TestTreeNode/A3");
+    Node nodeA4 = rootNode.getNode("TestTreeNode/A4");
+    
+    recordsService.addRecord(nodeA3, nodeA1);
+    recordsService.addRecord(nodeA4, nodeA2);
+    
+    List<Node> listRecord = recordsService.getCutoffRecords(rootNode.getNode("TestTreeNode"));
+    assertEquals(listRecord.size(), 1);
+    assertEquals(listRecord.get(0).getName(), "A2");
+    
+    nodeA1.addMixin("rma:cutoffable");
+    nodeA1.setProperty("rma:cutoffExecuted", false);
+    nodeA1.setProperty("rma:cutoffDateTime", new GregorianCalendar());
+    
+    nodeA2.setProperty("rma:dateReceived", new GregorianCalendar());
+    nodeA1.setProperty("rma:dateReceived", new GregorianCalendar());
+    session.save();
+    
+    listRecord = recordsService.getCutoffRecords(rootNode.getNode("TestTreeNode"));
+    assertEquals(listRecord.size(), 2);
+    assertEquals(listRecord.get(0).getName(), "A2");
+    assertEquals(listRecord.get(1).getName(), "A1");
+  }
   
-  
+  /**
+   * Get list of node by query statement with constraint concerning @rma:holdExecuted
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   * Expect:
+   *    Result: Size of result = 0
+   *    
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   *    3. Add mixin rma:holdable and set property rma:holdExecuted is true for node A1
+   *    4. Add mixin rma:holdable and set property rma:holdExecuted is false for node A2
+   * Expect:
+   *    Result: Size of result = 1; item node first = A2
+   * @throws Exception   
+   */
   public void testGetHolableRecords() throws Exception {
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
     Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
@@ -299,12 +364,30 @@ public class TestRecordsService extends BaseDMSTestCase {
     nodeA2.setProperty("rma:holdExecuted", false);
     session.save();
     
-    
     listRecord = recordsService.getHolableRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 1);
     assertEquals(listRecord.get(0).getName(), "A2");
   }
   
+  /**
+   * Get list of node by query statement with constraint concerning @rma:transferExecuted
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   * Expect:
+   *    Result: Size of result = 0
+   *    
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   *    3. Add mixin rma:transferable and set property (rma:transferDate, rma:transferLocation = 
+   *    "location2", rma:transferExecuted = false, rma:dateReceived) for node A2
+   *    4. Add mixin rma:transferable and set property (rma:transferDate, rma:transferLocation = 
+   *    "location1", rma:transferExecuted = false, rma:dateReceived) for node A1
+   * Expect:
+   *    Result: Size of result = 2; item node first = A2
+   * @throws Exception
+   */
   public void testGetTransferableRecords() throws Exception {
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
     Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
@@ -314,8 +397,6 @@ public class TestRecordsService extends BaseDMSTestCase {
     recordsService.addRecord(nodeA3, nodeA1);
     recordsService.addRecord(nodeA4, nodeA2);
     session.save();
-    System.out.println("\nNode A1 co phai la nodetype cua rma:transferable?? " + nodeA1.isNodeType("rma:transferable"));
-    System.out.println("\nNode A2 co phai la nodetype cua rma:transferable?? " + nodeA2.isNodeType("rma:transferable"));
 
     List<Node> listRecord = recordsService.getTransferableRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 0);
@@ -339,6 +420,25 @@ public class TestRecordsService extends BaseDMSTestCase {
     assertEquals(listRecord.get(1).getName(), "A1");
   }
   
+  /**
+   * Get list of node by query statement with constraint concerning @rma:accessionExecuted
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   * Expect:
+   *    Result: Size of result = 0
+   *    
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   *    3. Add mixin rma:accessionable and set property (rma:accessionExecuted is false, 
+   *    rma:accessionDate, rma:dateReceived for node A2
+   *    4. Add mixin rma:accessionable and set property (rma:accessionExecuted is false, 
+   *    rma:accessionDate, rma:dateReceived for node A1
+   * Expect:
+   *    Result: Size of result = 2; item node first = A2; item node second = A1
+   * @throws Exception
+   */
   public void testGetAccessionableRecords() throws Exception {
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
     Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
@@ -369,6 +469,23 @@ public class TestRecordsService extends BaseDMSTestCase {
     assertEquals(listRecord.get(1).getName(), "A1");
   }
   
+  /**
+   * Get list of rma:destroyable node by query statement @param filePlan filePlan node
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   * Expect:
+   *    Result: Size of result = 0
+   *    
+   * Input: 
+   *    1. Add record for file plan node A3 from node record A1 
+   *    2. Add record for file plan node A4 from node record A2
+   *    3. Add mixin rma:destroyable and set property (rma:destructionDate, rma:dateReceived for node A2
+   *    4. Add mixin rma:destroyable and set property (rma:destructionDate, rma:dateReceived for node A1
+   * Expect:
+   *    Result: Size of result = 2; item node first = A2; item node second = A1
+   * @throws Exception
+   */
   public void testGetDestroyableRecords() throws Exception {
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
     Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
@@ -393,43 +510,224 @@ public class TestRecordsService extends BaseDMSTestCase {
     
     listRecord = recordsService.getDestroyableRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 2);
-//    assertEquals(listRecord.get(0).getName(), "A2");
-//    assertEquals(listRecord.get(1).getName(), "A1");
+    assertEquals(listRecord.get(0).getName(), "A2");
+    assertEquals(listRecord.get(1).getName(), "A1");
+  }
+
+  /**
+   * Copy record node in filePlan node to path which value is 
+   * rma:transferLocation property of filePlan Node
+   * Input: 
+   *    1. Add record for file plan node A4 from node record A2
+   *    2. Add mixin rma:transferable and set property (rma:transferDate, rma:dateReceived, 
+   *    rma:transferLocation = "/TestTreeNode/A5", rma:transferExecuted = false) for node A2
+   * Expect:
+   *    1. Property rma:transferExecuted of node A2 is set to true
+   *    2. node A2 is copied to path "/TestTreeNode/A5"
+   * @throws Exception
+   */
+  public void testComputeTransfers() throws Exception {
+    Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
+    Node nodeA4 = rootNode.getNode("TestTreeNode/A4");
+    
+    recordsService.addRecord(nodeA4, nodeA2);
+    
+    nodeA2.addMixin("rma:transferable");
+    nodeA2.setProperty("rma:transferDate", new GregorianCalendar());
+    nodeA2.setProperty("rma:transferLocation", "/TestTreeNode/A5");
+    nodeA2.setProperty("rma:transferExecuted", false);
+    nodeA2.setProperty("rma:dateReceived", new GregorianCalendar());
+    
+    session.save();
+    
+    recordsService.computeTransfers(rootNode.getNode("TestTreeNode"));
+    
+    assertTrue(nodeA2.getProperty("rma:transferExecuted").getBoolean());
+    Node node = (Node)session.getItem("/TestTreeNode/A5/A2");
+    assertNotNull(node);
   }
   
-//  public void testComputeHolds() throws Exception {
-//    Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
-//    Node nodeA2 = rootNode.getNode("TestTreeNode/A2");
-//    Node nodeA3 = rootNode.getNode("TestTreeNode/A3");
-//    Node nodeA4 = rootNode.getNode("TestTreeNode/A4");
-//    
-//    recordsService.addRecord(nodeA3, nodeA1);
-//    recordsService.addRecord(nodeA4, nodeA2);
-//    nodeA1.addMixin("rma:holdable");
-//    nodeA1.setProperty("rma:holdExecuted", true);
-//    nodeA2.addMixin("rma:holdable");
-//    nodeA2.setProperty("rma:holdExecuted", false);
-//    nodeA2.setProperty("rma:holdUntil", new GregorianCalendar());
-//    nodeA2.setProperty("rma:processAccession", true);
-//    nodeA2.setProperty("rma:processDestruction", true);
-//    
-//    session.save();
-//
-//    recordsService.computeHolds(rootNode.getNode("TestTreeNode"));
-//    assertEquals(nodeA2.getProperty("rma:holdExecuted"), true);
-//  }
+  /**
+   * Copy record node in filePlan node to path which value is rma:accessionLocation property of 
+   * filePlan Node
+   * Input: 
+   *    1. Create a new node A1 (nodeA1Copy) under node A4 (copy)
+   *    2. Set property rma:accessionLocation = "/TestTreeNode/A5" for node A4 
+   *    3. Add record for file plan node A3 from node record nodeA1Copy
+   *    4. Add mixin rma:accessionable and set property (rma:accessionDate, rma:dateReceived, 
+   *    rma:accessionExecuted = false) for node nodeA1Copy
+   * Expect:
+   *    1. Property rma:accessionExecuted of node nodeA1Copy is set to true
+   *    2. nodeA1Copy is copied to path "/TestTreeNode/A5"
+   * @throws Exception
+   */
+  public void testComputeAccessions() throws Exception {
+    Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
+    Node nodeA3 = rootNode.getNode("TestTreeNode/A3");
+    Node nodeA4 = rootNode.getNode("TestTreeNode/A4");
+    nodeA4.setProperty("rma:accessionLocation", "/TestTreeNode/A5");
+    
+    session.getWorkspace().copy(nodeA1.getPath(), "/TestTreeNode/A4/A1");
+    Node nodeA1Copy = (Node)session.getItem("/TestTreeNode/A4/A1");
+    session.save();
+    
+    recordsService.addRecord(nodeA3, nodeA1Copy);
+    session.save();
+
+    nodeA1Copy.addMixin("rma:accessionable");
+    nodeA1Copy.setProperty("rma:accessionExecuted", false);
+    nodeA1Copy.setProperty("rma:accessionDate", new GregorianCalendar());
+    nodeA1Copy.setProperty("rma:dateReceived", new GregorianCalendar());
+    session.save();
+    
+    recordsService.computeAccessions(rootNode.getNode("TestTreeNode/A4"));
+    assertTrue(nodeA1Copy.getProperty("rma:accessionExecuted").getBoolean());
+    Node node = (Node)session.getItem("/TestTreeNode/A5/A1");
+    assertNotNull(node);
+  }
+  
+  /**
+   * Remove record node in filePlan node
+   * Input: 
+   *    1. Create a new node A1 (nodeA1Copy) under node A4 (copy)
+   *    2. Set property rma:accessionLocation = "/TestTreeNode/A5" for node A4 
+   *    3. Add record for file plan node A3 from node record nodeA1Copy
+   *    4. Add mixin rma:accessionable and set property (rma:accessionDate, rma:dateReceived, 
+   *    rma:accessionExecuted = false) for nodeA1Copy
+   * Expect:
+   *    1. Property rma:accessionExecuted of node nodeA1Copy is set to true
+   *    2. nodeA1Copy is copied to path "/TestTreeNode/A5"
+   * @throws Exception
+   */
+  public void testComputeDestructions() throws Exception {
+    Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
+    Node nodeA3 = rootNode.getNode("TestTreeNode/A3");
+    Node nodeA4 = rootNode.getNode("TestTreeNode/A4");
+    nodeA4.setProperty("rma:accessionLocation", "/TestTreeNode/A5");
+    
+    session.getWorkspace().copy(nodeA1.getPath(), "/TestTreeNode/A4/A1");
+    Node nodeA1Copy = (Node)session.getItem("/TestTreeNode/A4/A1");
+    session.save();
+    
+    recordsService.addRecord(nodeA3, nodeA1Copy);
+    session.save();
+
+    nodeA1Copy.addMixin("rma:destroyable");
+    Calendar calendar = Calendar.getInstance();
+    calendar.add(Calendar.YEAR, 2);
+    nodeA1Copy.setProperty("rma:destructionDate", calendar);
+    nodeA1Copy.setProperty("rma:dateReceived", new GregorianCalendar());
+    session.save();
+    
+    recordsService.computeDestructions(nodeA4);
+    
+    try {
+      session.getItem("/TestTreeNode/A4/A1");
+      fail("Node A1 has been removed!");
+    } catch (PathNotFoundException e) {
+    }
+  }
+  
+  /**
+   * Determine if the next phase is a hold, transfer or destruction
+   * Input: 
+   *    1. Create a new node A1 (nodeA1Copy) under node A4 (copy)
+   *    2. Set property rma:discretionaryHold = true for node A4 
+   *    3. Add record for file plan node A3 from node record nodeA1Copy
+   *    4. Add mixin rma:cutoffable and set property (rma:cutoffDateTime, rma:dateReceived, 
+   *    rma:cutoffExecuted = false, rma:isObsolete = true) for nodeA1Copy
+   * Expect:
+   *    nodeA1Copy: rma:holdsDiscretionary = true, rma:holdUntilEvent = "EventToWaitFor", 
+   *    rma:cutoffExecuted = true
+   * @throws Exception
+   */
+  public void testComputeCutoffs() throws Exception {
+    Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
+    Node nodeA3 = rootNode.getNode("TestTreeNode/A3");
+    Node nodeA4 = rootNode.getNode("TestTreeNode/A4");
+    session.getWorkspace().copy(nodeA1.getPath(), "/TestTreeNode/A4/A1");
+    nodeA4.setProperty("rma:discretionaryHold", true);
+    Node nodeA1Copy = (Node)session.getItem("/TestTreeNode/A4/A1");
+    session.save();
+    
+    recordsService.addRecord(nodeA3, nodeA1Copy);
+    
+    nodeA1Copy.addMixin("rma:cutoffable");
+    nodeA1Copy.setProperty("rma:cutoffDateTime", new GregorianCalendar());
+    nodeA1Copy.setProperty("rma:cutoffExecuted", false);
+    nodeA1Copy.setProperty("rma:isObsolete", true);
+    nodeA1Copy.setProperty("rma:dateReceived", new GregorianCalendar());
+    session.save();
+    
+    recordsService.computeCutoffs(nodeA4);
+    assertTrue(nodeA1Copy.getProperty("rma:holdsDiscretionary").getBoolean());
+    assertEquals(nodeA1Copy.getProperty("rma:holdUntilEvent").getString(), "EventToWaitFor");
+    assertTrue(nodeA1Copy.getProperty("rma:cutoffExecuted").getBoolean());
+  }
+  
+  /**
+   * Process transfer or destruction
+   * Input: 
+   *    1. Create a new node A1 (nodeA1Copy) under node A4 (copy)
+   *    2. Set property rma:defaultTransferLocation = "location" for node A4 
+   *    3. Add record for file plan node A3 from node record nodeA1Copy
+   *    4. Add mixin rma:holdable and set property (rma:holdUntil, 
+   *    rma:holdExecuted = false for nodeA1Copy
+   * Expect:
+   *    nodeA1Copy: rma:holdExecuted = true, rma:transferLocation = "location", 
+   * @throws Exception
+   */
+  public void testComputeHolds() throws Exception {
+    Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
+    Node nodeA3 = rootNode.getNode("TestTreeNode/A3");
+    Node nodeA4 = rootNode.getNode("TestTreeNode/A4");
+    nodeA4.setProperty("rma:defaultTransferLocation", "location");
+    session.getWorkspace().copy(nodeA1.getPath(), "/TestTreeNode/A4/A1");
+    Node nodeA1Copy = (Node)session.getItem("/TestTreeNode/A4/A1");
+    session.save();
+    
+    recordsService.addRecord(nodeA3, nodeA1Copy);
+    nodeA1Copy.addMixin("rma:holdable");
+    nodeA1Copy.setProperty("rma:holdExecuted", false);
+    nodeA1Copy.setProperty("rma:holdUntil", new GregorianCalendar());
+    session.save();
+  
+    recordsService.computeHolds(nodeA4);
+    assertTrue(nodeA1Copy.getProperty("rma:holdExecuted").getBoolean());
+    assertEquals(nodeA1Copy.getProperty("rma:transferLocation").getString(), "location");
+  }
+  
+  /**
+   * Add action for filePlan node in repository
+   * Input: 
+   *    Node A3 - filePlan
+   * Expect:
+   *    actionNode: not null, type = "exo:processRecordAction"; 
+   * @throws Exception
+   */
+  public void testBindFilePlanAction() throws Exception {
+    Node nodeA3 = rootNode.getNode("TestTreeNode/A3");
+    recordsService.bindFilePlanAction(nodeA3, REPO_NAME);
+    Node actionNameNode = nodeA3.getNode("exo:actions/processRecords");
+    assertNotNull(actionNameNode);
+    assertEquals(actionNameNode.getPrimaryNodeType().getName(), "exo:processRecordAction");
+  }
+  
+  private void deleteNode(NodeIterator iter) throws Exception {
+    while (iter.hasNext()) {
+      Node node = iter.nextNode();
+      if (node.getNodes().getSize() > 0) deleteNode(node.getNodes());
+      NodeType[] mixins = node.getMixinNodeTypes();
+      for (NodeType mixinNode : mixins) {
+        node.removeMixin(mixinNode.getName());
+      }
+    }
+  }
   
   public void tearDown() throws Exception {
     try {
       Node testNode = rootNode.getNode("TestTreeNode");
-      NodeIterator iter = testNode.getNodes();
-      while (iter.hasNext()) {
-        Node node = iter.nextNode();
-        NodeType[] mixins = node.getMixinNodeTypes();
-        for (NodeType mixinNode : mixins) {
-          node.removeMixin(mixinNode.getName());
-        }
-      }
+      deleteNode(testNode.getNodes());
       testNode.remove();
       session.save();
     } catch (Exception e) {

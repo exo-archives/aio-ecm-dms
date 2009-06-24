@@ -38,9 +38,9 @@ public class RecordsServiceImpl implements RecordsService {
   final static public String ASCENDING = "ascending" ;
   
   /**
-   * Type of order in query statement: orderType = dedcending
+   * Type of order in query statement: orderType = descending
    */
-  final static public String DESCENDING = "dedcending" ;  
+  final static public String DESCENDING = "descending" ;  
 
   /**
    * Base query statement
@@ -94,6 +94,9 @@ public class RecordsServiceImpl implements RecordsService {
     repositoryService_ = repositoryService;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addRecord(Node filePlan, Node record) throws RepositoryException {
     //TODO need filter nodetype whe register evenlistener for observation
     if(!record.isNodeType("nt:file")) return;
@@ -110,6 +113,9 @@ public class RecordsServiceImpl implements RecordsService {
     filePlan.getSession().save() ;
   }
   
+  /**
+   * {@inheritDoc}
+   */
   public void bindFilePlanAction(Node filePlan, String repository) throws Exception {
     Map<String,JcrInputProperty> mappings = new HashMap<String,JcrInputProperty>();
 
@@ -137,10 +143,13 @@ public class RecordsServiceImpl implements RecordsService {
     actionsService_.addAction(filePlan, repository, "exo:processRecordAction", mappings);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void computeAccessions(Node filePlan) throws RepositoryException {
     log_.info("Compute records accession");     
     for(Node record:getAccessionableRecords(filePlan)){
-      Calendar accessionDate = record.getProperty("rma:accessionableDate").getDate();
+      Calendar accessionDate = record.getProperty("rma:accessionDate").getDate();
       Calendar currentDate = new GregorianCalendar();
       if (accessionDate.before(currentDate)) {
         Session session = record.getSession();
@@ -162,14 +171,12 @@ public class RecordsServiceImpl implements RecordsService {
     log_.info("Compute records accession over");
   }
 
-  /*
-   * (non-Javadoc)
-   * @see #cutoffObsolete(javax.jcr.Node,javax.jcr.Node)
+  /**
+   * {@inheritDoc}
    */
   public void computeCutoffs(Node filePlan) throws RepositoryException {
     List<Node>toCutoffList = getCutoffRecords(filePlan) ; 
     for(Node record: toCutoffList){
-
       // check if it is obsolete
       if (cutoffObsolete(filePlan, record))
         return;
@@ -189,22 +196,28 @@ public class RecordsServiceImpl implements RecordsService {
       // check if an event occured
       if (cutoffEvent(filePlan, record))
         return;
-
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void computeDestructions(Node filePlan) throws RepositoryException { 
     List<Node> toDestroyList = getDestroyableRecords(filePlan) ;
     for(Node record:toDestroyList){
       Calendar destructionDate = record.getProperty("rma:destructionDate").getDate();
       Calendar currentDate = new GregorianCalendar();
       if (destructionDate.after(currentDate)) {
+        Node nodeParent = record.getParent();
         record.remove();
-        filePlan.save() ;
+        nodeParent.getSession().save();
       }
     }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void computeHolds(Node filePlan) throws RepositoryException {
     List<Node> toHoldList = getHolableRecords(filePlan) ; 
     for(Node record:toHoldList){
@@ -241,6 +254,9 @@ public class RecordsServiceImpl implements RecordsService {
     filePlan.save() ;
   }
 
+  /**
+   * {@inheritDoc}
+   */ 
   public void computeTransfers(Node filePlan) throws RepositoryException {
     log_.info("Compute records transfer");
     List<Node> toTransfer = getTransferableRecords(filePlan) ;
@@ -267,9 +283,7 @@ public class RecordsServiceImpl implements RecordsService {
   }
 
   /**
-   * Get list of node by query statement following recordType = "rma:accessionable", 
-   * orderProperty = "rma:dateReceived", orderType = ASCENDING
-   * and constrain @rma:accessionExecuted= 'false'
+   * {@inheritDoc}
    */  
   public List<Node> getAccessionableRecords(Node filePlan) throws RepositoryException {
     String statement = makeConstraintsStatement("[@rma:accessionExecuted= 'false']");
@@ -277,55 +291,45 @@ public class RecordsServiceImpl implements RecordsService {
   }
 
   /**
-   * Get list of node by query statement following recordType = "rma:cutoffable", 
-   * orderProperty = "rma:dateReceived", orderType = ASCENDING
-   * and constrain @rma:cutoffExecuted= 'false'
-   */  
+   * {@inheritDoc}
+   */ 
   public List<Node> getCutoffRecords(Node filePlan) throws RepositoryException {
     String statement = makeConstraintsStatement("[@rma:cutoffExecuted= 'false']");    
     return getRecordsByQuery(filePlan,statement,"rma:cutoffable","rma:dateReceived",ASCENDING);
   }
 
   /**
-   * Get list of node by BASE_STATEMENT statement following recordType = "rma:destroyable", 
-   * orderProperty = "rma:dateReceived", orderType = ASCENDING
+   * {@inheritDoc}
    */  
   public List<Node> getDestroyableRecords(Node filePlan) throws RepositoryException {
     return getRecordsByQuery(filePlan,BASE_STATEMENT,"rma:destroyable","rma:dateReceived",ASCENDING);
   }
   
   /**
-   * Get list of node by query statement following recordType = "rma:record", 
-   * orderProperty = "rma:dateReceived", orderType = ASCENDING
-   * and constrain @rma:holdExecuted= 'false'
-   */  
+   * {@inheritDoc}
+   */ 
   public List<Node> getHolableRecords(Node filePlan) throws RepositoryException {    
     String statement = makeConstraintsStatement("[@rma:holdExecuted= 'false']");
     return getRecordsByQuery(filePlan,statement,"rma:holdable","rma:dateReceived",ASCENDING);
   }
 
   /**
-   * Get list of node by query statement following recordType = "rma:record", 
-   * orderProperty = "rma:dateReceived", orderType = ASCENDING
-   * and constrain @rma:isObsolete= 'true'
-   */  
+   * {@inheritDoc}
+   */
   public List<Node> getObsoleteRecords(Node filePlan) throws RepositoryException {        
     String statement = makeConstraintsStatement("[@rma:isObsolete= 'true']");
     return getRecordsByQuery(filePlan,statement,"rma:record","rma:dateReceived",ASCENDING);    
   }
 
   /**
-   * Get list of node by BASE_STATEMENT statement following recordType = "rma:record", 
-   * orderProperty = "rma:dateReceived", orderType = ASCENDING
+   * {@inheritDoc}
    */
   public List<Node> getRecords(Node filePlan) throws RepositoryException {
     return getRecordsByQuery(filePlan,BASE_STATEMENT, "rma:record","rma:dateReceived",ASCENDING);   
   }
 
   /**
-   * Get list of node by query statement following recordType = "rma:record", 
-   * orderProperty = "rma:dateReceived", orderType = ASCENDING
-   * and constrain @rma:superseded = 'true'
+   * {@inheritDoc}
    */
   public List<Node> getSupersededRecords(Node filePlan) throws RepositoryException {
     String statement = makeConstraintsStatement("[@rma:superseded = 'true']") ;    
@@ -333,9 +337,7 @@ public class RecordsServiceImpl implements RecordsService {
   }
   
   /**
-   * Get list of node by query statement following recordType = "rma:transferable", 
-   * orderProperty = "rma:dateReceived", orderType = ASCENDING
-   * and constrain @rma:transferExecuted = 'false'
+   * {@inheritDoc}
    */
   public List<Node> getTransferableRecords(Node filePlan) throws RepositoryException {    
     String statement = makeConstraintsStatement("[@rma:transferExecuted = 'false']") ;
@@ -343,8 +345,7 @@ public class RecordsServiceImpl implements RecordsService {
   }
 
   /**
-   * Get list of node by query statement following recordType = "rma:vitalRecord", 
-   * orderProperty = "rma:nextReviewDate", orderType = DESCENDING
+   * {@inheritDoc}
    */
   public List<Node> getVitalRecords(Node filePlan) throws RepositoryException {    
     return getRecordsByQuery(filePlan,BASE_STATEMENT,"rma:vitalRecord","rma:nextReviewDate",DESCENDING);
