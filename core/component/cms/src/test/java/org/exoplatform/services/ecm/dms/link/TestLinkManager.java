@@ -78,6 +78,53 @@ public class TestLinkManager extends BaseDMSTestCase {
     assertNotNull(nodeA1);
   }
   
+  /**
+   * Creates a new link
+   * Input:
+   *    parent = nodeA1(TestTreeNode/A1), target = nodeB1_1(TestTreeNode/B1/B1_1)
+   * Expect:
+   *    node: name = B1_1, primaryNodeType = "exo:symlink", parent = nodeA1,
+   *    value property of this node
+   *        exo:workspace = COLLABORATION_WS, exo:uuid = uuid of nodeB1_1, 
+   *        exo:primaryType = primaryType of node B1_1 
+   * 
+   * Input:
+   *    parent = nodeA1_1(TestTreeNode/A1/A1_1), linkType = exo:taxonomyLink, 
+   *    target = nodeB1_1(TestTreeNode/B1/B1_1)
+   * Expect:
+   *    node: name = "B1_1", primaryNodeType = "exo:taxonomyLink", parent = nodeA1_1,
+   *    value property of this node
+   *        exo:workspace = COLLABORATION_WS, exo:uuid = uuid of nodeB1_1, 
+   *        exo:primaryType = primaryType of node B1_1
+   *        
+   * Input:
+   *    parent = nodeA1_2(TestTreeNode/A1/A1_2), linkType = null, 
+   *    target = nodeB1_1(TestTreeNode/B1/B1_1)
+   * Expect:
+   *    node: name = "B1_1", primaryNodeType = "exo:symlink", parent = nodeA1_1,
+   *    value property of this node
+   *        exo:workspace = COLLABORATION_WS, exo:uuid = uuid of nodeB1_1, 
+   *        exo:primaryType = primaryType of node B1_1
+   *        
+   * Input:
+   *    parent = nodeA1_3(TestTreeNode/A1/A1_3), linkType = "exo:taxonomyLink", linkName = null,
+   *    target = nodeB1_1(TestTreeNode/B1/B1_1)
+   * Expect:
+   *    node: name = "B1_1", primaryNodeType = "exo:taxonomyLink", parent = nodeA1_1,
+   *    value property of this node
+   *        exo:workspace = COLLABORATION_WS, exo:uuid = uuid of nodeB1_1, 
+   *        exo:primaryType = primaryType of node B1_1
+   * 
+   * Input:
+   *    parent = nodeA1_4(TestTreeNode/A1/A1_4), linkType = "exo:taxonomyLink", 
+   *    linkName = "A1_3_To_B1_1", target = nodeB1_1(TestTreeNode/B1/B1_1)
+   * Expect:
+   *    node: name = "A1_3_To_B1_1", primaryNodeType = "exo:taxonomyLink", parent = nodeA1_1,
+   *    value property of this node
+   *        exo:workspace = COLLABORATION_WS, exo:uuid = uuid of nodeB1_1, 
+   *        exo:primaryType = primaryType of node B1_1
+   * @throws Exception
+   */
   public void testCreateLink() throws Exception {
     System.out.println("================== Test Create Link  ==================");
 //    Test method createLink(Node parent, Node target)
@@ -136,6 +183,20 @@ public class TestLinkManager extends BaseDMSTestCase {
     assertEquals(symlinkNodeA1_4.getPrimaryNodeType().getName(), "exo:taxonomyLink");
   }
   
+  /**
+   * Indicates whether the given item is a link
+   * Input: Create a new link
+   *    parent = nodeA1(TestTreeNode/A1), nodeB1_1(TestTreeNode/B1/B1_1)
+   * Input:
+   *    item = symlinkNodeA1
+   * Expect:
+   *    result: true
+   * Input
+   *    item = nodeA1
+   * Expect:
+   *    result: false
+   * @throws Exception
+   */
   public void testIsLink() throws Exception {
     System.out.println("================== Test Is Link  ==================");
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
@@ -146,6 +207,26 @@ public class TestLinkManager extends BaseDMSTestCase {
     assertFalse(linkManager.isLink(nodeA1));
   }
   
+  /**
+   * Gets the target node of the given link
+   * Input: Create a new link (symlinkNodeA1)
+   *    parent = nodeA1(TestTreeNode/A1), nodeB1_1(TestTreeNode/B1/B1_1)
+   * Input: 
+   *    link = nodeA1
+   * Expect:
+   *    exception: NodeA1 is not a symlink
+   *    
+   * Input:
+   *    link = symlinkNodeA1
+   * Expect:
+   *    node target: name = "B1_1" is not null, 
+   *    
+   * Input:
+   *    link = symlinkNodeA1, system = true
+   * Expect:
+   *    node target: name = "B1_1" is not null,
+   * @throws Exception
+   */
   public void testGetTarget() throws Exception {
     System.out.println("================== Test Get Target  ==================");
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
@@ -156,15 +237,30 @@ public class TestLinkManager extends BaseDMSTestCase {
     try {
       linkManager.getTarget(nodeA1);
       fail("\nNode: " + nodeA1.getName() + " is not a symlink");
-      assertNotNull(linkManager.getTarget(symlinkNodeA1));
-      assertEquals(linkManager.getTarget(symlinkNodeA1), nodeB1_1.getName());
-      
-      assertNotNull(linkManager.getTarget(symlinkNodeA1, true));
-      assertEquals(linkManager.getTarget(symlinkNodeA1, true), nodeB1_1.getName());
     } catch (Exception e) {
     }
+    assertNotNull(linkManager.getTarget(symlinkNodeA1));
+    assertEquals(linkManager.getTarget(symlinkNodeA1).getName(), nodeB1_1.getName());
+    
+    assertNotNull(linkManager.getTarget(symlinkNodeA1, true));
+    assertEquals(linkManager.getTarget(symlinkNodeA1, true).getName(), nodeB1_1.getName());
   }
   
+  /**
+   * Checks if the target node of the given link can be reached using the user session
+   * Input: Create a new link (symlinkNodeA1)
+   *    parent = nodeA1(TestTreeNode/A1), nodeB1_1(TestTreeNode/B1/B1_1)
+   * Input:
+   *    link = nodeA1
+   * Expect:
+   *    exception: NodeA1 is not a symlink node   
+   * 
+   * Input:
+   *    link = symlinkNodeA1
+   * Expect:
+   *    result: true
+   * @throws Exception
+   */
   public void testIsTargetReachable() throws Exception {
     System.out.println("================== Test IsTargetReachable  ==================");
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
@@ -175,12 +271,26 @@ public class TestLinkManager extends BaseDMSTestCase {
     try {
       boolean isReachable = linkManager.isTargetReachable(nodeA1);
       assertFalse(isReachable);
-      fail("\nNode: " + nodeA1.getName() + " is not a symlink");
-      assertTrue(linkManager.isTargetReachable(symlinkNodeA1));
+      fail("\nNode: " + nodeA1.getName() + " is not a symlink node");
     } catch (Exception e) {
     }
+    assertTrue(linkManager.isTargetReachable(symlinkNodeA1));
   }
   
+  /**
+   * Gives the primary node type of the target
+   * Input: Create a new link (symlinkNodeA1)
+   *    parent = nodeA1(TestTreeNode/A1), nodeB1_1(TestTreeNode/B1/B1_1)
+   * Input: 
+   *    link = nodeA1
+   * Expect:
+   *    exception: NodeA1 is not a symlink node
+   * Input:
+   *    link = symlinkNodeA1
+   * Expect:
+   *    property exo:primaryType = primaryNodeType of nodeB1_1
+   * @throws Exception
+   */
   public void testGetTargetPrimaryNodeType() throws Exception {
     System.out.println("================== Test GetTargetPrimaryNodeType  ==================");
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
@@ -188,14 +298,25 @@ public class TestLinkManager extends BaseDMSTestCase {
     Node symlinkNodeA1 = linkManager.createLink(nodeA1, nodeB1_1);
     assertNotNull(symlinkNodeA1);
     try {
-      String primaryNodeType = linkManager.getTargetPrimaryNodeType(nodeA1);
-      System.out.println("\n\n====" + primaryNodeType);
-      fail("\nNode: " + nodeA1.getName() + " is not a symlink");
-      assertEquals(linkManager.getTargetPrimaryNodeType(symlinkNodeA1), nodeB1_1.getPrimaryNodeType().getName());
+      fail("\nNode: " + nodeA1.getName() + " is not a symlink node");
     } catch (Exception e) {
     }
+    assertEquals(linkManager.getTargetPrimaryNodeType(symlinkNodeA1), nodeB1_1.getPrimaryNodeType().getName());
   }
   
+  /**
+   * Updates the target node of the given link
+   * Input: Create a new link (symlinkNodeA1)
+   *    parent = nodeA1(TestTreeNode/A1), nodeB1_1(TestTreeNode/B1/B1_1)
+   * Input:
+   *    link = symlinkNodeA1, target = nodeB1
+   * Expect:
+   *    node update is not null
+   *    value property of this node
+   *        exo:workspace = workspace of node B1, exo:uuid = uuid of nodeB1, 
+   *        exo:primaryType = primaryType of node B1
+   * @throws Exception
+   */
   public void testUpdateLink() throws Exception {
     System.out.println("================== Test Update Link  ==================");
     Node nodeA1 = rootNode.getNode("TestTreeNode/A1");
