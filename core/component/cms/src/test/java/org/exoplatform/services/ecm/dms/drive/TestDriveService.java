@@ -39,7 +39,6 @@ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 public class TestDriveService extends BaseDMSTestCase {
   private ManageDriveService driveService;
   private NodeHierarchyCreator nodeHierarchyCreator;
-  private Session session;
   private Node rootNode;
   private String drivePath;
   
@@ -79,7 +78,6 @@ public class TestDriveService extends BaseDMSTestCase {
   }
   
   public void createTree() throws Exception {
-    session = repository.login(credentials, COLLABORATION_WS);
     rootNode = session.getRootNode();
     Node testNode = rootNode.addNode("TestTreeNode");
     Node nodeA1 = testNode.addNode("A1");
@@ -89,14 +87,39 @@ public class TestDriveService extends BaseDMSTestCase {
     session.save();
   }
   
+  /**
+   * Register all drive plugins to repository
+   * Input:
+   *    Init three param which is configured in test-drives-configuration.xml
+   * Expect: 
+   *    Size of list node = 3, contains 'System files' node, 'Collaboration Center' node, 
+   *    'Backup Administration' node
+   * @throws Exception
+   */
   public void testInit() throws Exception {
     Session mySession = repository.login(credentials, DMSSYSTEM_WS);
     Node myDrive = (Node)mySession.getItem(drivePath);
     assertEquals(myDrive.getNodes().getSize(), 3);
+    assertNotNull(myDrive.getNode("System files"));
+    assertNotNull(myDrive.getNode("Collaboration Center"));
+    assertNotNull(myDrive.getNode("Backup Center"));
   }
   
+  /**
+   * Register a new drive to workspace or update if the drive is existing
+   * Input:
+   *    name = "MyDrive", workspace = COLLABORATION_WS, permissions = "*:/platform/administrators", 
+   *    homePath = "/TestTreeNode/A1", views = "admin-view", icon = "", viewReferences = true, 
+   *    viewNonDocument = true, viewSideBar = true, showHiddenNode = true, repository = REPO_NAME, 
+   *    allowCreateFolder = "nt:folder"
+   * Expect:
+   *    node: name = MyDrive is not null
+   *    property of this node is mapped exactly
+   * @throws Exception
+   */
   public void testAddDrive() throws Exception {
-    driveService.addDrive("MyDrive", COLLABORATION_WS, "*:/platform/administrators", "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
+    driveService.addDrive("MyDrive", COLLABORATION_WS, "*:/platform/administrators", 
+        "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
     Session mySession = repository.login(credentials, DMSSYSTEM_WS);
     Node myDrive = (Node)mySession.getItem(drivePath + "/MyDrive");
     assertNotNull(myDrive);
@@ -112,8 +135,26 @@ public class TestDriveService extends BaseDMSTestCase {
     assertEquals(myDrive.getProperty(SHOW_HIDDEN_NODE).getBoolean(), true);
   }
   
+  /**
+   * Return an DriveData Object
+   * Input: Add a new drive
+   *    name = "MyDrive", workspace = COLLABORATION_WS, permissions = "*:/platform/administrators", 
+   *    homePath = "/TestTreeNode/A1", views = "admin-view", icon = "", viewReferences = true, 
+   *    viewNonDocument = true, viewSideBar = true, showHiddenNode = true, repository = REPO_NAME, 
+   *    allowCreateFolder = "nt:folder"
+   * Input: 
+   *    driveName = "abc", repository = REPO_NAME
+   * Expect:
+   *    node: name = "abc" is null
+   * Input:
+   *    driveName = "MyDrive", repository = REPO_NAME
+   * Expect:
+   *    node: name = MyDrive is not null
+   * @throws Exception
+   */
   public void testGetDriveByName() throws Exception {
-    driveService.addDrive("MyDrive", COLLABORATION_WS, "*:/platform/administrators", "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
+    driveService.addDrive("MyDrive", COLLABORATION_WS, "*:/platform/administrators", 
+        "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
     DriveData driveData1 = driveService.getDriveByName("abc", REPO_NAME);
     assertNull(driveData1);
     DriveData driveData2 = driveService.getDriveByName("MyDrive", REPO_NAME);
@@ -130,6 +171,23 @@ public class TestDriveService extends BaseDMSTestCase {
     assertEquals(driveData2.getShowHiddenNode(), true);
   }
   
+  /**
+   * This method will look up in all workspaces of repository to find DriveData
+   * Input:
+   *    Add two drive
+   *    1.  name = "MyDrive1", workspace = COLLABORATION_WS, 
+   *        permissions = "*:/platform/administrators", homePath = "/TestTreeNode/A1", 
+   *        views = "admin-view", icon = "", viewReferences = true, viewNonDocument = true, 
+   *        viewSideBar = true, showHiddenNode = true, repository = REPO_NAME, 
+   *        allowCreateFolder = "nt:folder"
+   *    2.  name = "MyDrive2", workspace = COLLABORATION_WS, permissions = "*:/platform/user", 
+   *        homePath = "/TestTreeNode/A1_1", views = "admin-view, system-view", icon = "", 
+   *        viewReferences = true, viewNonDocument = true, viewSideBar = true, 
+   *        showHiddenNode = false, repository = REPO_NAME, allowCreateFolder = "nt:folder"
+   * Expect:
+   *    Size of list node = 2, contains node MyDrive1 and MyDrive2
+   * @throws Exception
+   */
   public void testGetAllDrives() throws Exception {
     driveService.addDrive("MyDrive1", COLLABORATION_WS, "*:/platform/administrators", "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
     driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", "admin-view, system-view", "", true, true, true, false, REPO_NAME, "Both");
@@ -158,6 +216,29 @@ public class TestDriveService extends BaseDMSTestCase {
     assertEquals(listDriveData.get(1).getShowHiddenNode(), false);
   }
   
+  /**
+   * Remove drive with specified drive name and repository
+   * Input:
+   *    Add two drive
+   *    1.  name = "MyDrive1", workspace = COLLABORATION_WS, 
+   *        permissions = "*:/platform/administrators", homePath = "/TestTreeNode/A1", 
+   *        views = "admin-view", icon = "", viewReferences = true, viewNonDocument = true, 
+   *        viewSideBar = true, showHiddenNode = true, repository = REPO_NAME, 
+   *        allowCreateFolder = "nt:folder"
+   *    2.  name = "MyDrive2", workspace = COLLABORATION_WS, permissions = "*:/platform/user", 
+   *        homePath = "/TestTreeNode/A1_1", views = "admin-view, system-view", icon = "", 
+   *        viewReferences = true, viewNonDocument = true, viewSideBar = true, 
+   *        showHiddenNode = false, repository = REPO_NAME, allowCreateFolder = "nt:folder"
+   * Input: Remove drive
+   *    driveName = "MyDrive1", repository = REPO_NAME
+   * Expect: 
+   *    Size of list node = 1
+   * Input: Remove drive
+   *    driveName = "xXx", repository = REPO_NAME
+   * Expect: 
+   *    Size of list node = 1
+   * @throws Exception
+   */
   public void testRemoveDrive() throws Exception {
     driveService.addDrive("MyDrive1", COLLABORATION_WS, "*:/platform/administrators", "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
     driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", "admin-view, system-view", "", true, true, true, false, REPO_NAME, "Both");
@@ -168,10 +249,41 @@ public class TestDriveService extends BaseDMSTestCase {
     assertEquals(driveService.getAllDrives(REPO_NAME).size(), 1);
   }
   
+  /**
+   * Return the list of DriveData
+   * Input:
+   *    Add three drive
+   *    1.  name = "MyDrive1", workspace = COLLABORATION_WS, 
+   *        permissions = "*:/platform/administrators", homePath = "/TestTreeNode/A1", 
+   *        views = "admin-view", icon = "", viewReferences = true, viewNonDocument = true, 
+   *        viewSideBar = true, showHiddenNode = true, repository = REPO_NAME, 
+   *        allowCreateFolder = "nt:folder"
+   *    2.  name = "MyDrive2", workspace = COLLABORATION_WS, permissions = "*:/platform/user", 
+   *        homePath = "/TestTreeNode/A1_1", views = "admin-view, system-view", icon = "", 
+   *        viewReferences = true, viewNonDocument = true, viewSideBar = true, 
+   *        showHiddenNode = false, repository = REPO_NAME, allowCreateFolder = "Both"
+   *    2.  name = "MyDrive3", workspace = COLLABORATION_WS, permissions = "*:/platform/user", 
+   *        homePath = "/TestTreeNode/A1_2", views = "system-view", icon = "", 
+   *        viewReferences = true, viewNonDocument = true, viewSideBar = true, 
+   *        showHiddenNode = true, repository = REPO_NAME, allowCreateFolder = "nt:unstructured"
+   * Input:
+   *    permission = "*:/platform/user", repository = REPO_NAME
+   * Expect: 
+   *    Size of list node = 2, contains node MyDrive2 and MyDrive3
+   *    
+   * Input:
+   *    permission = "*:/platform/xXx", repository = REPO_NAME
+   * Expect: 
+   *    Size of list node = 0
+   * @throws Exception
+   */
   public void testGetAllDriveByPermission() throws Exception {
-    driveService.addDrive("MyDrive1", COLLABORATION_WS, "*:/platform/administrators", "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
-    driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", "admin-view, system-view", "", true, true, true, false, REPO_NAME, "Both");
-    driveService.addDrive("MyDrive3", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_2", "system-view", "", true, true, true, true, REPO_NAME, "nt:unstructured");
+    driveService.addDrive("MyDrive1", COLLABORATION_WS, "*:/platform/administrators", 
+        "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
+    driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", 
+        "admin-view, system-view", "", true, true, true, false, REPO_NAME, "Both");
+    driveService.addDrive("MyDrive3", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_2", 
+        "system-view", "", true, true, true, true, REPO_NAME, "nt:unstructured");
     List<DriveData> listDriveData = driveService.getAllDrives(REPO_NAME);
     assertEquals(listDriveData.size(), 3);
     List<DriveData> driveDatas = driveService.getAllDriveByPermission("*:/platform/user", REPO_NAME);
@@ -202,6 +314,33 @@ public class TestDriveService extends BaseDMSTestCase {
     assertEquals(driveDatas2.size(), 0);
   }
   
+  /**
+   * This method will check to make sure the view is not in used before remove this view
+   * Input:
+   *    Add three drive
+   *    1.  name = "MyDrive1", workspace = COLLABORATION_WS, 
+   *        permissions = "*:/platform/administrators", homePath = "/TestTreeNode/A1", 
+   *        views = "admin-view", icon = "", viewReferences = true, viewNonDocument = true, 
+   *        viewSideBar = true, showHiddenNode = true, repository = REPO_NAME, 
+   *        allowCreateFolder = "nt:folder"
+   *    2.  name = "MyDrive2", workspace = COLLABORATION_WS, permissions = "*:/platform/user", 
+   *        homePath = "/TestTreeNode/A1_1", views = "admin-view, system-view", icon = "", 
+   *        viewReferences = true, viewNonDocument = true, viewSideBar = true, 
+   *        showHiddenNode = false, repository = REPO_NAME, allowCreateFolder = "Both"
+   *    2.  name = "MyDrive3", workspace = COLLABORATION_WS, permissions = "*:/platform/user", 
+   *        homePath = "/TestTreeNode/A1_2", views = "system-view", icon = "", 
+   *        viewReferences = true, viewNonDocument = true, viewSideBar = true, 
+   *        showHiddenNode = true, repository = REPO_NAME, allowCreateFolder = "nt:unstructured"
+   * Input:
+   *    viewName = "system-view", repository = REPO_NAME
+   * Expect:
+   *    result: true
+   * Input:
+   *    viewName = "xXx", repository = REPO_NAME
+   * Expect:
+   *    result: false
+   * @throws Exception
+   */
   public void testIsUsedView() throws Exception {
     driveService.addDrive("MyDrive1", COLLABORATION_WS, "*:/platform/administrators", "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
     driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", "admin-view, system-view", "", true, true, true, false, REPO_NAME, "Both");
@@ -213,7 +352,6 @@ public class TestDriveService extends BaseDMSTestCase {
   }
   
   public void tearDown() throws Exception {
-    Node root;
     try {
       Session mySession = repository.login(credentials, DMSSYSTEM_WS);
       Node rootDrive = (Node)mySession.getItem(drivePath);
@@ -222,10 +360,9 @@ public class TestDriveService extends BaseDMSTestCase {
         iter.nextNode().remove();
       }
       rootDrive.getSession().save();
-      session = repository.login(credentials, COLLABORATION_WS);
-      root = session.getRootNode();
-      root.getNode("TestTreeNode").remove();
-      root.save();
+      
+      session.getRootNode().getNode("TestTreeNode").remove();
+      session.save();
     } catch (PathNotFoundException e) {
     }
     super.tearDown();

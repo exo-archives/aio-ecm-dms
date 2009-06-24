@@ -81,7 +81,7 @@ public interface ManageDriveService {
    * @return list of DriveData with specified repository
    * @throws Exception
    */
-  public List getAllDrives(String repository) throws Exception;
+  public List<DriveData> getAllDrives(String repository) throws Exception;
   
   /**
    * This method will check to make sure the view is not in used before remove this view
