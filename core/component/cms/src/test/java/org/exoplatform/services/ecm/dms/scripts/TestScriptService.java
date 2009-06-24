@@ -16,6 +16,9 @@
  */
 package org.exoplatform.services.ecm.dms.scripts;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jcr.Node;
 import javax.jcr.Session;
 
@@ -36,70 +39,217 @@ public class TestScriptService extends BaseDMSTestCase {
   private String expectedCBScriptHomePath = "/exo:ecm/scripts/content-browser";
   private String expectedBaseScriptPath = "/exo:ecm/scripts";
   private NodeHierarchyCreator nodeHierarchyCreator;
-  private String cmsScriptsPath;  
+  private String cmsScriptsPath;
+  private Session sessionDMS;
   
   public void setUp() throws Exception {
     super.setUp();
     scriptService = (ScriptService)container.getComponentInstanceOfType(ScriptService.class);
     nodeHierarchyCreator = (NodeHierarchyCreator)container.getComponentInstanceOfType(NodeHierarchyCreator.class);
     cmsScriptsPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_SCRIPTS_PATH);
+    sessionDMS = repository.login(credentials, DMSSYSTEM_WS);
   }
   
+  /**
+   * Test ScriptServiceImpl.init()
+   * Input: repository      String
+   *                        The name of repository
+   * Expect: Return all data initiated from repository in test-scripts-configuration.xml file
+   * @throws Exception
+   */
   public void testInitRepo() throws Exception {
-    Session mySession = repository.login(credentials, DMSSYSTEM_WS);
-    Node myScript = (Node)mySession.getItem(cmsScriptsPath);
-    assertTrue(myScript.getNodes().getSize() > 0);
+    scriptService.initRepo(REPO_NAME);
+    assertTrue(sessionDMS.itemExists(cmsScriptsPath));
+    assertTrue(sessionDMS.itemExists(cmsScriptsPath + "/content-browser"));
+    assertTrue(sessionDMS.itemExists(cmsScriptsPath + "/ecm-explorer"));    
   }
   
+  /**
+   * Test method: ScriptServiceImpl.getECMScriptHome()
+   * Input: repository    String
+   *                      The name of repository
+   *        provider      SessionProvider
+   * Expect: Return "/exo:ecm/scripts/ecm-explorer" is path of node for ECM Explorer Scripts
+   * @throws Exception
+   */
   public void testGetECMScriptHome() throws Exception {
     assertNotNull(scriptService.getECMScriptHome(REPO_NAME, SessionProviderFactory.createSessionProvider()));
     assertEquals(expectedECMScriptHomePath, scriptService.getECMScriptHome(REPO_NAME, 
         SessionProviderFactory.createSessionProvider()).getPath());
   }
   
+  /**
+   * Test method: ScriptServiceImpl.getCBScriptHome()
+   * Input: repository    String
+   *                      The name of repository
+   *        provider      SessionProvider
+   * Expect: Return "/exo:ecm/scripts/content-browser" is path of node for Content Browser Scripts
+   * @throws Exception
+   */
   public void testGetCBScriptHome() throws Exception {
     assertNotNull(scriptService.getCBScriptHome(REPO_NAME, SessionProviderFactory.createSessionProvider()));
     assertEquals(expectedCBScriptHomePath, scriptService.getCBScriptHome(REPO_NAME, 
         SessionProviderFactory.createSessionProvider()).getPath());
   }
   
+  /**
+   * Test method: ScriptServiceImpl.getECMActionScripts()
+   * Input: repository    String
+   *                      The name of repository
+   *        provider      SessionProvider
+   * Expect: Return All node for ECM Action Scripts
+   * @throws Exception
+   */
   public void testGetECMActionScripts() throws Exception {
-    assertEquals(10, scriptService.getECMActionScripts(REPO_NAME, 
-        SessionProviderFactory.createSessionProvider()).size());
+    List<Node> listECMScripts = scriptService.getECMActionScripts(REPO_NAME, SessionProviderFactory.createSessionProvider());
+    assertTrue(listECMScripts.size() >0);
+    
+    List<String> scriptPathList = new ArrayList<String>();    
+    for (Node ECMScript : listECMScripts) {
+      scriptPathList.add(ECMScript.getPath());
+    }
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/action/RSSScript.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/action/SendMailScript.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/action/EnableVersioningScript.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/action/AutoVersioningScript.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/action/AddMetadataScript.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/action/TransformBinaryChildrenToTextScript.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/action/GetMailScript.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/action/ProcessRecordsScript.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/action/PublishingRequestScript.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/action/AddTaxonomyActionScript.groovy"));
   }
   
+  /**
+   * Test method: ScriptServiceImpl.getECMInterceptorScripts()
+   * Input: repository    String
+   *                      The name of repository
+   *        provider      SessionProvider
+   * Expect: Return All node for ECM Interceptor Scripts
+   * @throws Exception
+   */
   public void testGetECMInterceptorScripts() throws Exception {
-    assertEquals(3, scriptService.getECMInterceptorScripts(REPO_NAME, 
-        SessionProviderFactory.createSessionProvider()).size());
+    List<Node> listECMInterceptorcripts = scriptService.getECMInterceptorScripts(REPO_NAME, 
+        SessionProviderFactory.createSessionProvider());
+    assertTrue(listECMInterceptorcripts.size() >0);
+    
+    List<String> scriptPathList = new ArrayList<String>();    
+    for (Node interceptorScript : listECMInterceptorcripts) {
+      scriptPathList.add(interceptorScript.getPath());
+    }
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/interceptor/PreNodeSaveInterceptor.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/interceptor/PostNodeSaveInterceptor.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/interceptor/PostFilePlanInterceptor.groovy"));
   }
   
+  /**
+   * Test method: ScriptServiceImpl.getECMWidgetScripts()
+   * Input: repository    String
+   *                      The name of repository
+   *        provider      SessionProvider
+   * Expect: Return All node for ECM Widget Scripts
+   * @throws Exception
+   */
   public void testGetECMWidgetScripts() throws Exception {
-    assertEquals(4, scriptService.getECMWidgetScripts(REPO_NAME, 
-        SessionProviderFactory.createSessionProvider()).size());
+    List<Node> listECMWidgetScripts = scriptService.getECMWidgetScripts(REPO_NAME, 
+        SessionProviderFactory.createSessionProvider());
+    assertTrue(listECMWidgetScripts.size() >0);
+    
+    List<String> scriptPathList = new ArrayList<String>();    
+    for (Node widgetScript : listECMWidgetScripts) {
+      scriptPathList.add(widgetScript.getPath());
+    }
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/widget/FillSelectBoxWithCalendarCategories.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/widget/FillSelectBoxWithMetadatas.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/widget/FillSelectBoxWithWorkspaces.groovy"));
+    assertTrue(scriptPathList.contains("/exo:ecm/scripts/ecm-explorer/widget/FillSelectBoxWithNodeChildren.groovy"));
   }
   
+  /**
+   * Test method: ScriptServiceImpl.getScript()
+   * Input: scriptPath    String
+   *                      The path of script
+   *        repository    String
+   *                      The name of repository
+   * Expect: Return script
+   * @throws Exception
+   */
   public void testGetScript() throws Exception {
     assertNotNull(scriptService.getScript("content-browser/GetDocuments.groovy", REPO_NAME));
   }
   
+  /**
+   * Test method: ScriptServiceImpl.getBaseScriptPath()
+   * Expect: Return "/exo:ecm/scripts" is base path of script
+   * @throws Exception
+   */
   public void testGetBaseScriptPath() throws Exception {
     assertEquals(expectedBaseScriptPath, scriptService.getBaseScriptPath());
   }
   
+  /**
+   * Test method: ScriptServiceImpl.addScript()
+   * Input: name          String
+   *                      The name of script
+   *        text          String
+   *        repository    String
+   *                      The name of repository      
+   *        provider      SessionProvider
+   * Expect: Insert a new script
+   * @throws Exception
+   */
+  public void testAddScript() throws Exception {
+    scriptService.addScript("Hello Name", "Hello Text", REPO_NAME, SessionProviderFactory.createSessionProvider());
+    Node hello = (Node)sessionDMS.getItem("/exo:ecm/scripts/Hello Name");
+    assertNotNull(hello);    
+    assertEquals("Hello Text", hello.getProperty("jcr:data").getString());
+  }
+  
+  /**
+   * Test method: ScriptServiceImpl.getScriptAsText()
+   * Input: scriptPath    String
+   *                      The path of script
+   *        repository    String
+   *                      The name of repository
+   * Expect: Return "This is my script as text" as text of script
+   * @throws Exception
+   */
   public void testGetScriptAsText() throws Exception {
     scriptService.addScript("My script", "This is my script as text", REPO_NAME, SessionProviderFactory.createSessionProvider());
     assertEquals("This is my script as text", scriptService.getScriptAsText("My script", REPO_NAME));
   }
   
-  public void testAddScript() throws Exception {
-    scriptService.addScript("Hello Name", "Hello Text", REPO_NAME, SessionProviderFactory.createSessionProvider());
-    Node hello = scriptService.getScriptNode("Hello Name", REPO_NAME, 
-        SessionProviderFactory.createSessionProvider());
-    assertNotNull(hello);
-    assertEquals("Hello Text", hello.getProperty("jcr:data").getString());
+  /**
+   * Test method: ScriptServiceImpl.getScriptNode()
+   * Input: scriptName    String
+   *                      The name of script  
+   *        repository    String
+   *                      The name of repository 
+   *        provider      SessionProvider
+   * Expect: Return script node
+   * @throws Exception
+   */  
+  public void testGetScriptNode() throws Exception {
+    scriptService.addScript("My script 2", "This is my script as text 2", REPO_NAME, SessionProviderFactory.createSessionProvider());
+    
+    Node scriptNode = scriptService.getScriptNode("My script 2", REPO_NAME, SessionProviderFactory.createSessionProvider());
+    assertEquals("My script 2", scriptNode.getName());
+    assertEquals("This is my script as text 2", scriptNode.getProperty("jcr:data").getString());
   }
 
+  /**
+   * Test method: ScriptServiceImpl.removeScript()
+   * Input: scriptPath    String
+   *                      The path of script
+   *        repository    String
+   *                      The name of repository      
+   *        provider      SessionProvider
+   * Expect: remove the script
+   * @throws Exception
+   */
   public void testRemoveScript() throws Exception {
+    scriptService.addScript("Hello Name", "Hello Text", REPO_NAME, SessionProviderFactory.createSessionProvider());
+    
     Node hello = scriptService.getScriptNode("Hello Name", REPO_NAME, 
         SessionProviderFactory.createSessionProvider());
     assertNotNull(hello);
@@ -108,12 +258,19 @@ public class TestScriptService extends BaseDMSTestCase {
     scriptService.removeScript("Hello Name", REPO_NAME, SessionProviderFactory.createSessionProvider());
     assertNull(scriptService.getScriptNode("Hello Name", REPO_NAME, SessionProviderFactory.createSessionProvider()));
   }
-
-  public void testGetScriptNode() throws Exception {
-    scriptService.addScript("My script 2", "This is my script as text 2", REPO_NAME, SessionProviderFactory.createSessionProvider());
-    
-    Node scriptNode = scriptService.getScriptNode("My script 2", REPO_NAME, SessionProviderFactory.createSessionProvider());
-    assertEquals("My script 2", scriptNode.getName());
-    assertEquals("This is my script as text 2", scriptNode.getProperty("jcr:data").getString());
-  }  
+  
+  /**
+   * Clean all scripts for testing 
+   */
+  public void tearDown() throws Exception {    
+    Node rootScripts = (Node)sessionDMS.getItem(cmsScriptsPath);
+    String[] paths = new String[] {"My script", "My script 2", "Hello Name"};
+    for (String path : paths) {
+      if (rootScripts.hasNode(path)) {
+        rootScripts.getNode(path).remove();
+      }
+    }
+    sessionDMS.save();
+    super.tearDown();
+  }
 }
