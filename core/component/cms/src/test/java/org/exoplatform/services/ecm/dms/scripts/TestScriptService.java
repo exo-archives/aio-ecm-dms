@@ -176,6 +176,11 @@ public class TestScriptService extends BaseDMSTestCase {
    */
   public void testGetScript() throws Exception {
     assertNotNull(scriptService.getScript("content-browser/GetDocuments.groovy", REPO_NAME));
+    try {
+      scriptService.getScript("content-browser/GetDocuments1.groovy", REPO_NAME);
+      fail();
+    } catch (Exception ex) {
+    }
   }
   
   /**
