@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.exoplatform.services.cms.rss.RSSService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
@@ -33,12 +32,18 @@ public class TestRSSService extends BaseDMSTestCase {
     
   private RSSService rssService;
   
-  
   public void setUp() throws Exception {
     super.setUp();
     rssService = (RSSService)container.getComponentInstanceOfType(RSSService.class);
   }
   
+  /**
+   * Test method: generateFeed()
+   * Input: context     Map
+   *                    Consist of among information
+   * Expect: Create a Feed file (feed type is RSS or Podcast)
+   * @throws Exception
+   */
   public void testGenerateFeed() throws Exception {
     Map<String, String> contextRss = new HashMap<String, String>();
     contextRss.put("exo:feedType", "rss");
@@ -56,16 +61,19 @@ public class TestRSSService extends BaseDMSTestCase {
     contextRss.put("exo:url", "http://www.facebook.com");    
     rssService.generateFeed(contextRss);
     
-    Session mySession = repository.login(credentials, COLLABORATION_WS);
-    Node myFeeds = (Node) mySession.getItem("/Feeds");
-    Node myRSS = (Node) mySession.getItem("/Feeds/rss");
-    Node myFeedName = (Node) mySession.getItem("/Feeds/rss/feedName");
+    Node myFeeds = (Node) session.getItem("/Feeds");
+    Node myRSS = (Node) session.getItem("/Feeds/rss");
+    Node myFeedName = (Node) session.getItem("/Feeds/rss/feedName");
     Node myJcrContent = myFeedName.getNode("jcr:content");    
     assertEquals("Feeds", myFeeds.getName());
     assertEquals("rss", myRSS.getName());
     assertEquals("feedName", myFeedName.getName());
-    assertEquals("/Feeds/rss/feedName/jcr:content", myJcrContent.getPath());
+    assertEquals("/Feeds/rss/feedName/jcr:content", myJcrContent.getPath());    
+    String jcrData = myJcrContent.getProperty("jcr:data").getString(); 
     assertNotNull(myJcrContent.getProperty("jcr:data").getString());
+    assertTrue(jcrData.indexOf("<title>Hello Feed</title>") > 0);
+    assertTrue(jcrData.indexOf("<description>Hello Description</description>") > 0);
+    assertTrue(jcrData.indexOf("<description>Not data</description>") < 0);
     assertEquals("text/xml", myJcrContent.getProperty("jcr:mimeType").getString());
     
     Map<String, String> contextPodcast = new HashMap<String, String>();
@@ -85,15 +93,31 @@ public class TestRSSService extends BaseDMSTestCase {
     contextPodcast.put("exo:url", "http://twitter.com");    
     rssService.generateFeed(contextPodcast);
     
-    myFeeds = (Node) mySession.getItem("/Feeds");
-    Node myPodcast = (Node) mySession.getItem("/Feeds/podcast");
-    Node myPodcastName = (Node) mySession.getItem("/Feeds/podcast/podcastName");
+    myFeeds = (Node) session.getItem("/Feeds");
+    Node myPodcast = (Node) session.getItem("/Feeds/podcast");
+    Node myPodcastName = (Node) session.getItem("/Feeds/podcast/podcastName");
     myJcrContent = myPodcastName.getNode("jcr:content");    
     assertEquals("Feeds", myFeeds.getName());
     assertEquals("podcast", myPodcast.getName());
     assertEquals("podcastName", myPodcastName.getName());
     assertEquals("/Feeds/podcast/podcastName/jcr:content", myJcrContent.getPath());
-    assertNotNull(myJcrContent.getProperty("jcr:data").getString());
+    jcrData = myJcrContent.getProperty("jcr:data").getString();
+    assertNotNull(jcrData);
+    assertTrue(jcrData.indexOf("<title>Hello Feed</title>") > 0);
+    assertTrue(jcrData.indexOf("<description>Hello Description</description>") > 0);
+    assertTrue(jcrData.indexOf("<description>Not data</description>") < 0);
     assertEquals("text/xml", myJcrContent.getProperty("jcr:mimeType").getString());
-  }  
+  }
+  
+  /**
+   * Clean all node for testing 
+   */
+  public void tearDown() throws Exception {    
+    Node myRoot = session.getRootNode();
+    if (myRoot.hasNode("Feeds")) {
+      myRoot.getNode("Feeds").remove();
+    }
+    session.save();        
+    super.tearDown();
+  }
 }
