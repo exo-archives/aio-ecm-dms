@@ -180,9 +180,8 @@ public class TestRecordsService extends BaseDMSTestCase {
    * Input: 
    *    1. Add record for file plan node A3 from node record A1 
    *    2. Add record for file plan node A4 from node record A2
-   *    3. Set property rma:nextReviewDate for node A1 and node A2
    * Expect: 
-   *    Result: Size of result = 2; item node first = A2; item node second = A3;
+   *    Result: Size of result = 2; item node first = A1; item node second = A2;
    * @throws Exception
    */
   public void testGetVitalRecords() throws Exception {
@@ -194,14 +193,12 @@ public class TestRecordsService extends BaseDMSTestCase {
     recordsService.addRecord(nodeA3, nodeA1);
     recordsService.addRecord(nodeA4, nodeA2);
     
-    nodeA1.setProperty("rma:nextReviewDate", new GregorianCalendar());
-    nodeA2.setProperty("rma:nextReviewDate", new GregorianCalendar());
     session.save();
     
     List<Node> listRecord = recordsService.getVitalRecords(rootNode.getNode("TestTreeNode"));
     assertEquals(listRecord.size(), 2);
-    assertEquals(listRecord.get(0).getName(), "A2");
-    assertEquals(listRecord.get(1).getName(), "A1");
+    assertEquals(listRecord.get(0).getName(), "A1");
+    assertEquals(listRecord.get(1).getName(), "A2");
   }
   
   /**
