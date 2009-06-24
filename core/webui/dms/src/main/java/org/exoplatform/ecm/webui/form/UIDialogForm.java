@@ -226,19 +226,18 @@ public class UIDialogForm extends UIForm {
     if(calendarField.isMultiValues()) {
       renderMultiValuesInput(UIFormDateTimeInput.class,name,label);      
       return;
-    } 
-    UIFormDateTimeInput uiDateTime = findComponentById(name);
-    if(uiDateTime == null) {
-      uiDateTime = calendarField.createUIFormInput();      
-      addUIFormInput(uiDateTime);
     }
+    UIFormDateTimeInput uiDateTime = findComponentById(name);
+    if (uiDateTime == null) uiDateTime = calendarField.createUIFormInput(); 
     uiDateTime.setDisplayTime(calendarField.isDisplayTime());
     String propertyName = getPropertyName(jcrPath);
     propertiesName.put(name, propertyName);
     fieldNames.put(propertyName, name);
     Node  node = getNode();
+    uiDateTime.setCalendar(uiDateTime.getCalendar());
     if(node != null && node.hasProperty(propertyName) && !isShowingComponent && !isRemovePreference) {
-      uiDateTime.setCalendar(node.getProperty(propertyName).getDate());
+      if (findComponentById(name) == null)
+        uiDateTime.setCalendar(node.getProperty(propertyName).getDate());
     } 
     Node childNode = getChildNode();
     if(isNotEditNode && !isShowingComponent && !isRemovePreference) {
@@ -260,6 +259,7 @@ public class UIDialogForm extends UIForm {
         uiDateTime.setCalendar(new GregorianCalendar());
       }
     }
+    if (findComponentById(name) == null) addUIFormInput(uiDateTime);
     if(calendarField.isVisible()) renderField(name);
   }
   public void addCalendarField(String name, String[] arguments) throws Exception {
@@ -315,7 +315,6 @@ public class UIDialogForm extends UIForm {
 
   public void addSelectBoxField(String name, String label, String[] arguments) throws Exception {
     UIFormSelectBoxField formSelectBoxField = new UIFormSelectBoxField(name,label,arguments);
-    
     String jcrPath = formSelectBoxField.getJcrPath();
     String editable = formSelectBoxField.getEditable();
     String onchange = formSelectBoxField.getOnchange();
@@ -327,7 +326,6 @@ public class UIDialogForm extends UIForm {
     UIFormSelectBox uiSelectBox = findComponentById(name);
     if(uiSelectBox == null || isResetForm) {
       uiSelectBox = new UIFormSelectBox(name, name, null);
-      addUIFormInput(uiSelectBox);
       if (script != null) {
         try {
           String[] scriptParams = formSelectBoxField.getScriptParams();
@@ -403,11 +401,13 @@ public class UIDialogForm extends UIForm {
       } else {
         if(node != null && node.hasProperty(propertyName)) {
           if(node.getProperty(propertyName).getDefinition().isMultiple()) {
-            uiSelectBox.setValue(node.getProperty(propertyName).getValues().toString());
+            if (findComponentById(name) == null)
+              uiSelectBox.setValue(node.getProperty(propertyName).getValues().toString());
           } else if(formSelectBoxField.isOnchange() && isOnchange) {
             uiSelectBox.setValue(uiSelectBox.getValue());
           } else {
-            uiSelectBox.setValue(node.getProperty(propertyName).getValue().getString());      
+              if (findComponentById(name) == null)
+                 uiSelectBox.setValue(node.getProperty(propertyName).getValue().getString());      
           }
         }
       }  
@@ -423,6 +423,7 @@ public class UIDialogForm extends UIForm {
         uiSelectBox.setValue(DialogFormUtil.getPropertyValueAsString(child,propertyName)); 
     }
     if(formSelectBoxField.isOnchange()) uiSelectBox.setOnChange("Onchange");
+    if (findComponentById(name) == null) addUIFormInput(uiSelectBox);
     renderField(name);   
   }    
 
