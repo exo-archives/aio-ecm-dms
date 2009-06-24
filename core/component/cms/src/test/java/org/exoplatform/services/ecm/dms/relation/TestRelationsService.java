@@ -16,14 +16,17 @@
  */
 package org.exoplatform.services.ecm.dms.relation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
+import javax.jcr.Value;
 
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
 /**
  * Created by The eXo Platform SARL
@@ -32,69 +35,151 @@ import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
 public class TestRelationsService extends BaseDMSTestCase {
     
   private RelationsService relationsService;
+  private NodeHierarchyCreator nodeHierarchyCreator;
+  private String cmsPublicationsPath;
+  
+  private static final String RELATION_MIXIN = "exo:relationable";
+  private static final String RELATION_PROP = "exo:relation";
   
   public void setUp() throws Exception {
     super.setUp();
     relationsService = (RelationsService)container.getComponentInstanceOfType(RelationsService.class);
+    nodeHierarchyCreator = (NodeHierarchyCreator)container.getComponentInstanceOfType(NodeHierarchyCreator.class);
+    cmsPublicationsPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_PUBLICATIONS_PATH);
+  }
+  
+  /**
+   * Test method: RelationsServiceImpl.init()
+   * Input: repository        The name of repository
+   * Expect: Initial the root of relation node and its sub node
+   * @throws Exception
+   */
+  public void testInit() throws Exception {
+    relationsService.init(REPO_NAME);
+    assertTrue(!session.itemExists(cmsPublicationsPath));
+  }
+  
+  /**
+   * Test method: RelationsServiceImpl.addRelation()
+   * Input: node              Specify the node wants to remove a relation
+   *        relationPath      The path of relation
+   *        repository        The name of repository
+   * Expect: Removes the relation to the given node
+   * @throws Exception
+   */
+  public void testAddRelation() throws Exception {
+    Node root = session.getRootNode();
+    Node aaa = root.addNode("AAA");
+    Node bbb = root.addNode("BBB");
+    session.save();
     
-    Session sessionCollaboration = repository.login(credentials, COLLABORATION_WS);
-    Node root = sessionCollaboration.getRootNode();
+    relationsService.addRelation(aaa, bbb.getPath(), COLLABORATION_WS, REPO_NAME);
+    assertTrue(aaa.isNodeType(RELATION_MIXIN));
+    
+    Value[] values = aaa.getProperty(RELATION_PROP).getValues();
+    Node relatedNode = session.getNodeByUUID(values[0].getString());
+    assertEquals(bbb.getPath(), relatedNode.getPath());
+  }
+  
+  /**
+   * Test method: RelationsServiceImpl.hasRelations()
+   * Input: node              Specify the node wants to check relation
+   * Expect: Returns true is the given node has relation
+   * @throws Exception
+   */
+  public void testHasRelations() throws Exception {
+    Node root = session.getRootNode();
+    Node aaa = root.addNode("AAA");
+    Node bbb = root.addNode("BBB");
+    session.save();
+    
+    relationsService.addRelation(aaa, bbb.getPath(), COLLABORATION_WS, REPO_NAME);
+    assertTrue(relationsService.hasRelations(aaa));
+    assertFalse(relationsService.hasRelations(bbb));
+  }
+  
+  /**
+   * Test method: RelationsServiceImpl.getRelations()
+   * Input: node              Specify the node wants to get all node relative to it
+   *        repository        The name of repository
+   *        provider          The SessionProvider object is used to managed Sessions
+   * Expect: Return all node that has relation to the given node
+   * @throws Exception
+   */
+  public void testGetRelations() throws Exception {
+    Node root = session.getRootNode();
     Node aaa = root.addNode("AAA");
     Node bbb = root.addNode("BBB");
     Node ccc = root.addNode("CCC");
-    sessionCollaboration.save();
+    Node ddd = root.addNode("DDD");
+    session.save();
     
     relationsService.addRelation(aaa, bbb.getPath(), COLLABORATION_WS, REPO_NAME);
-    relationsService.addRelation(aaa, ccc.getPath(), COLLABORATION_WS, REPO_NAME);   
-  }
-  
-  public void testHasRelations() throws Exception {
-    Session sessionCollaboration = repository.login(credentials, COLLABORATION_WS);    
-    Node root = sessionCollaboration.getRootNode();
-    Node aaa = root.getNode("AAA");
-    Node ccc = root.getNode("CCC");
+    relationsService.addRelation(aaa, ccc.getPath(), COLLABORATION_WS, REPO_NAME);
     
-    assertTrue(relationsService.hasRelations(aaa));
-    assertFalse(relationsService.hasRelations(ccc));
+    List<Node> listRelation = relationsService.getRelations(aaa, REPO_NAME, SessionProviderFactory.createSessionProvider());
+    List<String> relationPathList = new ArrayList<String>();    
+    for (Node relation : listRelation) {
+      relationPathList.add(relation.getPath());
+    }    
+    assertTrue(relationPathList.contains(bbb.getPath()));
+    assertTrue(relationPathList.contains(ccc.getPath()));
+    assertFalse(relationPathList.contains(ddd.getPath()));
   }
   
-  public void testGetRelations() throws Exception {
-    Session sessionCollaboration = repository.login(credentials, COLLABORATION_WS);
-    Node root = sessionCollaboration.getRootNode();
-    Node aaa = root.getNode("AAA");
-    
-    List<Node> listRelation = relationsService.getRelations(aaa, REPO_NAME, SessionProviderFactory.createSessionProvider());    
-    assertEquals(2, listRelation.size());
-  }
-  
+  /**
+   * Test method: RelationsServiceImpl.removeRelation()
+   * Input: node              Specify the node wants to remove a relation
+   *        relationPath      The path of relation
+   *        repository        The name of repository
+   * Expect: Removes the relation to the given node
+   * @throws Exception
+   */
   public void testRemoveRelation() throws Exception {
-    Session sessionCollaboration = repository.login(credentials, COLLABORATION_WS);
-    Node root = sessionCollaboration.getRootNode();
-    Node aaa = root.getNode("AAA");
-    
-    List<Node> beforeRemove = relationsService.getRelations(aaa, REPO_NAME, SessionProviderFactory.createSessionProvider());    
-    assertEquals(2, beforeRemove.size());
-    
-    relationsService.removeRelation(aaa, "/CCC", REPO_NAME);     
-    
-    List<Node> afterRemove = relationsService.getRelations(aaa, REPO_NAME, SessionProviderFactory.createSessionProvider());    
-    assertEquals(1, afterRemove.size());
-  }
-  
-  public void testAddRelation() throws Exception {
-    Session sessionCollaboration = repository.login(credentials, COLLABORATION_WS);
-    Node root = sessionCollaboration.getRootNode();
-    Node aaa = root.getNode("AAA");
-    
+    Node root = session.getRootNode();
+    Node aaa = root.addNode("AAA");
+    Node bbb = root.addNode("BBB");
+    Node ccc = root.addNode("CCC");
     Node ddd = root.addNode("DDD");
-    sessionCollaboration.save();
+    session.save();
     
-    List<Node> beforeAdd = relationsService.getRelations(aaa, REPO_NAME, SessionProviderFactory.createSessionProvider());    
-    assertEquals(1, beforeAdd.size());
-    
+    relationsService.addRelation(aaa, bbb.getPath(), COLLABORATION_WS, REPO_NAME);
+    relationsService.addRelation(aaa, ccc.getPath(), COLLABORATION_WS, REPO_NAME);
     relationsService.addRelation(aaa, ddd.getPath(), COLLABORATION_WS, REPO_NAME);
     
-    List<Node> afterAdd = relationsService.getRelations(aaa, REPO_NAME, SessionProviderFactory.createSessionProvider());    
-    assertEquals(2, afterAdd.size());
+    List<Node> listBeforeRemove = relationsService.getRelations(aaa, REPO_NAME, SessionProviderFactory.createSessionProvider());
+    List<String> pathBeforeRemove = new ArrayList<String>();    
+    for (Node relation : listBeforeRemove) {
+      pathBeforeRemove.add(relation.getPath());
+    }    
+    assertTrue(pathBeforeRemove.contains(bbb.getPath()));
+    assertTrue(pathBeforeRemove.contains(ccc.getPath()));
+    assertTrue(pathBeforeRemove.contains(ddd.getPath()));
+    
+    relationsService.removeRelation(aaa, "/DDD", REPO_NAME);
+    
+    List<Node> listAfterRemove = relationsService.getRelations(aaa, REPO_NAME, SessionProviderFactory.createSessionProvider());
+    List<String> pathAfterRemove = new ArrayList<String>();    
+    for (Node relation : listAfterRemove) {
+      pathAfterRemove.add(relation.getPath());
+    }    
+    assertTrue(pathAfterRemove.contains(bbb.getPath()));
+    assertTrue(pathAfterRemove.contains(ccc.getPath()));
+    assertFalse(pathAfterRemove.contains(ddd.getPath()));
+  }
+    
+  /**
+   * Clean all node for testing 
+   */
+  public void tearDown() throws Exception {
+    Node root = session.getRootNode();
+    String[] paths = new String[] {"AAA", "BBB", "CCC", "DDD"};
+    for (String path : paths) {
+      if (root.hasNode(path)) {
+        root.getNode(path).remove();
+      }
+    }
+    session.save();
+    super.tearDown();
   }
 }
