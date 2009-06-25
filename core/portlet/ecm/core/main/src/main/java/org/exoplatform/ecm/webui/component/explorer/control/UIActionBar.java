@@ -118,7 +118,6 @@ public class UIActionBar extends UIForm {
 
   public UIActionBar() throws Exception{
     addChild(new UIFormStringInput(FIELD_SIMPLE_SEARCH, FIELD_SIMPLE_SEARCH, null).addValidator(SearchValidator.class));
-
     List<SelectItemOption<String>> typeOptions = new ArrayList<SelectItemOption<String>>();
     typeOptions.add(new SelectItemOption<String>(FIELD_SQL, Query.SQL));
     typeOptions.add(new SelectItemOption<String>(FIELD_XPATH, Query.XPATH));

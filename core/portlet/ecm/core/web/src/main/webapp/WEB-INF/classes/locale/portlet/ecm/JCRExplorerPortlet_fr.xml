@@ -345,6 +345,13 @@
       <AdvanceSearch>Recherche Avancée</AdvanceSearch>
       <SavedQueries>Requêtes Sauvegardées</SavedQueries>
     </title>
+    <obtion>
+      <Admin>Admin</Admin>
+      <Info>Info</Info>
+      <Actions>Actions</Actions>
+      <Collaboration>Collaboration</Collaboration>
+      <Search>Search</Search>
+    </obtion>
   </UIActionBar>
   <UIPopupMenu>
     <msg>

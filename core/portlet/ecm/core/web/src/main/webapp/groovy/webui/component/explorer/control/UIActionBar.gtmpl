@@ -50,7 +50,7 @@
 								  <div class="TabL">
 								    <div class="TabR">
 										  <div class="TabM">
-										    <a href="<%=uicomponent.event("ChangeTab", tab)%>" class="TabLabel">$tab</a>
+										    <a href="<%=uicomponent.event("ChangeTab", tab)%>" class="TabLabel"><%=_ctx.appRes(uicomponent.getId() + ".obtion." + tab)%></a>
 										  </div>
 								    </div>
 								  </div>  
