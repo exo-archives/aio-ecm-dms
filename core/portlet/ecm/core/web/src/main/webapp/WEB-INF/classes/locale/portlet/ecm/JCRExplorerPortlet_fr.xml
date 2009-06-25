@@ -2369,17 +2369,17 @@
   
   <!--
   ###################################################################################
-  #             org.exoplatform.ecm.webui.component.explorer.UIActionBar    			  			#
-  #                           Localize tab																																										#
+  #             org.exoplatform.ecm.webui.component.explorer.UIActionBar      			#
+  #                           Localize tab																					#
   ###################################################################################
   -->
   <UIActionBar>
     <obtion>
-      <Admin>Admin</Admin>
-      <Info>Info</Info>
+      <Admin>Administrateur</Admin>
+      <Info>Information</Info>
       <Actions>Actions</Actions>
       <Collaboration>Collaboration</Collaboration>
-      <Search>Search</Search>
+      <Search>Rechercher</Search>
     </obtion>
   </UIActionBar>
   

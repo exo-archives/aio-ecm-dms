@@ -2321,65 +2321,58 @@
     </msg>
   </UIWorkingArea>  
   
-  <UIImportNode>
+    <UIImportNode>
     <label>
-      <behavior>UUID Behaviour</behavior>
-      <versionHistory>Version history</versionHistory>
+      <behavior> سلوك الـ UUID</behavior>
+      <versionHistory>تاريخ الإصدار</versionHistory>
     </label>
     <msg>
-      <history-invalid-type>Invalid version history file type. The right file must be a zip file</history-invalid-type>
-      <history-invalid-content>Invalid version history data content. You should choose the right file to import.</history-invalid-content>
+      <history-invalid-type>نوع الملف الخاص بتاريخ الإصدار غير صالح، الملف الصحيح يجب أن يكون من نوع *.zip</history-invalid-type>
+      <history-invalid-content>محتوى بيانات تاريخ الإصدار غير صالح، يجب اختيار الملف الصحيح الذي ترغب في استيراده</history-invalid-content>
     </msg>
-  </UIImportNode>   
+  </UIImportNode>  
   
   <Import>
     <Behavior>
-      <type0>Create new</type0>
-      <type1>Remove existing</type1>
-      <type2>Replace existing</type2>
-      <type3>Throw Exception</type3>
+      <type0>صنع جديد</type0>
+      <type1>حذف القديم</type1>
+      <type2>تعويض القديم</type2>
+      <type3>إزالة</type3>
     </Behavior>
-  </Import>  
+  </Import>
   
   <UIExportNode>
     <action>
-      <ExportHistory>Export version history</ExportHistory>
+      <ExportHistory>تصدير تاريخ الإصدار</ExportHistory>
     </action>
   </UIExportNode>
   
-  <UIPopupMenu>
-  	<msg>
-  		<node-locked-other-person>This node or parent node is being locked by other user, you can not delete!</node-locked-other-person>
-    </msg>
-  </UIPopupMenu>  
-  
   <Import>
     <label>
-      <docview>Document view</docview>
-      <sysview>System view</sysview>
+      <docview>رؤية الوثيقة</docview>
+      <sysview>رؤية النظام</sysview>
     </label>
   </Import>
-    
+  
   <UIDocumentForm>
   	<msg>
-  		<not-support>Cannot load template of '{0}'.</not-support>
-  		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
+  		<do-not-permission>لا تملك الصلاحية الكافية لرؤية هذا القالب</do-not-permission>
   	</msg>
   </UIDocumentForm>
   
   <!--
   ###################################################################################
-  #             org.exoplatform.ecm.webui.component.explorer.UIActionBar    			  			#
-  #                           Localize tab																																										#
+  #             org.exoplatform.ecm.webui.component.explorer.UIActionBar      			#
+  #                           Localize tab																					#
   ###################################################################################
   -->
   <UIActionBar>
     <obtion>
-      <Admin>Admin</Admin>
-      <Info>Info</Info>
-      <Actions>Actions</Actions>
-      <Collaboration>Collaboration</Collaboration>
-      <Search>Search</Search>
+      <Admin>إدارة</Admin>
+      <Info>معلومات</Info>
+      <Actions>إجراءات</Actions>
+      <Collaboration>تعاون</Collaboration>
+      <Search>بحث</Search>
     </obtion>
   </UIActionBar>
   
