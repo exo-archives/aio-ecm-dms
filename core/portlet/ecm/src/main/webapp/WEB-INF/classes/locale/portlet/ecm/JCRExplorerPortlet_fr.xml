@@ -345,14 +345,6 @@
       <AdvanceSearch>Recherche Avancée</AdvanceSearch>
       <SavedQueries>Requêtes Sauvegardées</SavedQueries>
     </title>
-    <obtion>
-      <Admin>Admin</Admin>
-      <Info>Info</Info>
-      <Actions>Actions</Actions>
-      <Collaboration>Collaboration</Collaboration>
-      <Search>Search</Search>
-    </obtion>
-    
   </UIActionBar>
   <UIPopupMenu>
     <msg>
@@ -2221,5 +2213,22 @@
   		<do-not-permission>You don't have permission to access this template</do-not-permission>
   	</msg>
   </UIDocumentForm>	
+  
+  <!--
+  ###################################################################################
+  #             org.exoplatform.ecm.webui.component.explorer.UIActionBar      			#
+  #                           Localize tab																					#
+  ###################################################################################
+  -->
+  <UIActionBar>
+    <obtion>
+      <Admin>Admin</Admin>
+      <Info>Info</Info>
+      <Actions>Actions</Actions>
+      <Collaboration>Collaboration</Collaboration>
+      <Search>Search</Search>
+    </obtion>
+  </UIActionBar>
+  
 </bundle>
 
