@@ -345,7 +345,15 @@
       <AdvanceSearch>Vertiefte Suche</AdvanceSearch>
       <SavedQueries>Gespeicherte Abfragen</SavedQueries>
     </title>
+    <obtion>
+      <Admin>Admin</Admin>
+      <Info>Info</Info>
+      <Actions>Actions</Actions>
+      <Collaboration>Collaboration</Collaboration>
+      <Search>Search</Search>
+    </obtion>
   </UIActionBar>
+  
   <UIPopupMenu>
     <msg>
       <has-not-permission><![CDATA[Zugang verweigert. Sie haben in diesem Knoten keine Hinzuf&uuml;gegenehmigung.]]></has-not-permission>

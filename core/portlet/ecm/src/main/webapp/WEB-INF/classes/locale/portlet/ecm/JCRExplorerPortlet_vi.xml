@@ -345,7 +345,15 @@
       <AdvanceSearch>Tìm kiếm nâng cao.</AdvanceSearch>
       <SavedQueries>Các truy vấn được lưu lại.</SavedQueries>
     </title>
+    <obtion>
+      <Admin>Quản trị</Admin>
+      <Info>Thông tin</Info>
+      <Actions>Hành động</Actions>
+      <Collaboration>Cộng đồng</Collaboration>
+      <Search>Tìm kiếm</Search>
+    </obtion>
   </UIActionBar>
+  
   <UIPopupMenu>
     <msg>
       <has-not-permission>Truy nhập bị hủy bỏ. Bạn không có quyền thêm mới trên node này.</has-not-permission>

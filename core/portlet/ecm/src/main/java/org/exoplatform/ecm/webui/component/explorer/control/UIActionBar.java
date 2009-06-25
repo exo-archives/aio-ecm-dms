@@ -198,16 +198,19 @@ public class UIActionBar extends UIForm {
     view_ = getApplicationComponent(ManageViewService.class).getViewByName(viewName,repository, 
         SessionProviderFactory.createSystemProvider()); 
     NodeIterator tabs = view_.getNodes();
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    String label = "";
     int i = 0;
     while (tabs.hasNext()) {
       Node tab = tabs.nextNode();
-      tabOptions.add(new SelectItemOption<String>(tab.getName(), String.valueOf(i++)));
+      label = res.getString("UIActionBar.obtion." + tab.getName()); 
+      tabOptions.add(new SelectItemOption<String>(label, String.valueOf(i++)));
       setListButton(tab.getName());
     }
-    RequestContext context = RequestContext.getCurrentInstance();
-    ResourceBundle res = context.getApplicationResourceBundle();
-    String searchLabel = res.getString("UIJCRAdvancedSearch.action.Search"); 
-    tabOptions.add(new SelectItemOption<String>(searchLabel, String.valueOf(i++)));
+    
+    label = res.getString("UIActionBar.obtion.Search"); 
+    tabOptions.add(new SelectItemOption<String>(label, String.valueOf(i++)));
     getUIFormSelectBox(FIELD_SELECT_TAB).setOptions(tabOptions).setValue(tabOptions.get(0).getValue());
     String template = view_.getProperty("exo:template").getString();
     templateName_ = template.substring(template.lastIndexOf("/") + 1);

@@ -345,7 +345,15 @@
       <AdvanceSearch>بحث متقدم</AdvanceSearch>
       <SavedQueries>استبيانات محفوظة</SavedQueries>
     </title>
+    <obtion>
+      <Admin>Admin</Admin>
+      <Info>Info</Info>
+      <Actions>Actions</Actions>
+      <Collaboration>Collaboration</Collaboration>
+      <Search>Search</Search>
+    </obtion>
   </UIActionBar>
+  
   <UIPopupMenu>
     <msg>
       <has-not-permission>غير مسموح بالدخول. ليس لديك الصلاحية للإضافة تحت هذه العقدة.</has-not-permission>

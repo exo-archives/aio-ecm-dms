@@ -345,7 +345,15 @@
       <AdvanceSearch>Advance Search</AdvanceSearch>
       <SavedQueries>Saved queries</SavedQueries>
     </title>
+    <obtion>
+      <Admin>Admin</Admin>
+      <Info>Info</Info>
+      <Actions>Actions</Actions>
+      <Collaboration>Collaboration</Collaboration>
+      <Search>Search</Search>
+    </obtion>
   </UIActionBar>
+  
   <UIPopupMenu>
     <msg>
       <has-not-permission>Access denied. You haven't got 'Add' permission in this node.</has-not-permission>
