@@ -176,7 +176,8 @@
 
 .Style1NextArrow16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueCircleNextArrow.gif') no-repeat;
+  background: url('DefaultSkin/BlueCircleNextArrow.gif') no-repeat;/* orientation=lt */
+  background: url('DefaultSkin/BlueCircleNextArrow-rt.gif') no-repeat;/* orientation=rt */
 }
 
 .Style1DownArrow16x16Icon {

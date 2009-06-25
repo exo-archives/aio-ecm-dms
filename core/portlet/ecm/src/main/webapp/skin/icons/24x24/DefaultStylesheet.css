@@ -60,7 +60,8 @@
 
 .Style1BackArrow24x24Icon {
   width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueCircleLeftArrow.gif') no-repeat center center;
+  background: url('DefaultSkin/BlueCircleLeftArrow.gif') no-repeat center center; /* orientation=lt */
+  background: url('DefaultSkin/BlueCircleLeftArrow-rt.gif') no-repeat scroll center center; /* orientation=rt */
 }
 
 .EditDocumentIcon {
