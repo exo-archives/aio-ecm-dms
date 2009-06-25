@@ -109,6 +109,9 @@
 	                  String path = selectedTab.getPath() ;
 	                  String name = path.substring(path.lastIndexOf("/") + 1) ;
 	                  if(tabName.equals(name)) className = "CBSelectedTab" ;
+	                  def listParam = new ArrayList<Parameter>();
+					          listParam.add(new Parameter("workspace", currentNode.getSession().getWorkspace().getName()));
+					          String tabAction = uicomponent.event("ChangeNode", Utils.formatNodeName(tab), listParam.toArray(new Parameter[listParam.size()]));
 	              %>
 	                  <div class="UITab">
 	                    <div class="$className"> 
@@ -117,7 +120,7 @@
 	                          <div class="MiddleTab">
 	                          	<div class="Icon CBDefaultFolder16x16Icon"><span></span></div>
 	                            <div class="LabelButton">                            	
-	                              <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(tab) + "&workspace=" + currentNode.getSession().getWorkspace().getName());%>">$tabName</a>
+	                              <a onclick="$tabAction" style="cursor: pointer;">$tabName</a>
 	                            </div>
 	                            <div style="clear:left;"><span></span></div>
 	                          </div>
@@ -317,8 +320,10 @@
 	                          </tr> 
 	                      <%} else {   
 	                           for(Node doc in docChilds) {
-	                           	String docId = Utils.formatNodeName(doc.getPath())+ "&category=" + Utils.formatNodeName(subCat) + "&workspace=" + doc.getSession().getWorkspace().getName() ;
-	                            String docActionLink = uicomponent.event("ChangeNode", docId) ;
+	                           	def listParam = new ArrayList<Parameter>();
+										          listParam.add(new Parameter("category", Utils.formatNodeName(subCat)));
+	          									listParam.add(new Parameter("workspace", doc.getSession().getWorkspace().getName()));
+										          String docActionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(doc.getPath()), listParam.toArray(new Parameter[listParam.size()]));
 	                            String icon = uicomponent.getIcons(doc,"16x16Icon") ;
 	                            String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
 	                      %>
@@ -331,7 +336,7 @@
 	                                    <%}%>
 	                                  </div>
 	                                  <div class="DocumentLabel">
-	                                    <a href="$docActionLink"><%=docName%></a>
+	                                    <a onclick="$docActionLink" style="cursor: pointer;"><%=docName%></a>
 	                                  </div>
 	                                  <div style="clear:both"><span></span></div>  
 	                                </div>

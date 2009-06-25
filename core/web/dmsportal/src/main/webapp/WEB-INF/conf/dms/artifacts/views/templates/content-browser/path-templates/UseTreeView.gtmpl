@@ -5,6 +5,8 @@
 	import org.exoplatform.ecm.webui.component.browsecontent.UICategoryTree ;
   import javax.jcr.Node;
   import org.exoplatform.ecm.webui.utils.Utils ;
+  import org.exoplatform.web.application.Parameter ;
+  import java.util.ArrayList;
   
   String componentName = uicomponent.getName() ;
   def content = uicomponent.getTreeContent() ;                  
@@ -64,8 +66,10 @@
 	  				<div class="EventContent">
 			      <%
 			        for (Node doc in subDocumentList) {
-			        	String objectId = Utils.formatNodeName(doc.getPath()) + "&category=" + Utils.formatNodeName(uicomponent.getCurrentNode().getPath() + "&workspace=" + doc.getSession().getWorkspace().getName()) ;
-			          String viewAction = uicomponent.event("ChangeNode", objectId);
+			        	def listParam = new ArrayList<Parameter>();
+	          		listParam.add(new Parameter("category", Utils.formatNodeName(uicomponent.getCurrentNode().getPath())));
+	          		listParam.add(new Parameter("workspace", doc.getSession().getWorkspace().getName()));
+	          		String viewAction = uicomponent.event("ChangeNode", Utils.formatNodeName(doc.getPath()), listParam.toArray(new Parameter[listParam.size()]));
 			          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
 			          String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
 			      %>
@@ -80,7 +84,7 @@
 	                        <%}%>			                      
 			                    </div>
 			                    <div class="EventDocumentLabel">
-			                      <a href="$viewAction"><%=docName%></a>
+			                      <a onclick="$viewAction" style="cursor:pointer;"><%=docName%></a>
 			                    </div>  
 			                  </td>
 			                  <td class="EventAuthorNameLabel">
@@ -165,8 +169,10 @@
 			                      String cssStyle = "ChildrenContentHolderLeft" ;
 									          if(isRight) cssStyle = "ChildrenContentHolderRight" ;
 									          if(numbDocument == 1) cssStyle = "ChildrenContentHolder" ;
-									          String docId = Utils.formatNodeName(subChild.getPath()) + "&category=" + Utils.formatNodeName(subCat) + "&workspace=" + subChild.getSession().getWorkspace().getName() ;
-			                      String subChildLink = uicomponent.event("ChangeNode", docId);                       
+									          def listParam = new ArrayList<Parameter>();
+						          			listParam.add(new Parameter("category", Utils.formatNodeName(subCat)));
+	        						  		listParam.add(new Parameter("workspace", subChild.getSession().getWorkspace().getName()));
+	          								String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild.getPath()), listParam.toArray(new Parameter[listParam.size()]));
 											 %>
 														<div class="$cssStyle">
 															<div class="Icon48x48 DefaultIconImage <%=Utils.getNodeTypeIcon(subChild, "48x48Icon")%>">
@@ -175,7 +181,7 @@
 	                            <%}%>
 															</div>
 															<div class="ContentLabel">
-																<div class="UserName"><a href="$subChildLink"><%=subChild.getName()%></a></div>
+																<div class="UserName"><a onclick="$subChildLink" style="cursor:pointer;"><%=subChild.getName()%></a></div>
 																<div class="Author">
 									                Author:<%=uicomponent.getOwner(subChild)%>
 									              </div>

@@ -3,6 +3,7 @@
 	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ; 	
 	import org.exoplatform.ecm.webui.component.browsecontent.UISearchController ;
 	import org.exoplatform.ecm.webui.utils.Utils ;
+	import org.exoplatform.web.application.Parameter ;
 	
 	def subDocumentList =  uicomponent.getCurrentList() ;
 	boolean hasNoDocument = subDocumentList.isEmpty() ;
@@ -23,8 +24,7 @@
 	      <%
 	        for(Node doc in subDocumentList) {
 	        	try {
-		        	String objectId = doc.getPath() + "&category=" + uicomponent.getCategoryPath() ;
-		          String viewAction = uicomponent.event("ChangeNode",objectId);
+		        	String viewAction = uicomponent.event("ChangeNode", Utils.formatNodeName(doc.getPath()), new Parameter("category", uicomponent.getCategoryPath()));
 		          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
 		          String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
 		      %>
@@ -39,7 +39,7 @@
 		                      <%}%>
 		                    </div>
 		                    <div class="EventDocumentLabel">
-		                      <a href="$viewAction"><%=docName%></a>
+		                      <a onclick="$viewAction" style="cursor: pointer;"><%=docName%></a>
 		                    </div>  
 		                  </td>
 		                  <td class="EventAuthorNameLabel">
