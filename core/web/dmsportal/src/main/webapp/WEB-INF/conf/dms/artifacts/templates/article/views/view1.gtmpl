@@ -7,6 +7,7 @@
 		.UIArticle {
 			background: white;
 			padding: 8px;
+			overflow: hidden; /* orientation=rt */
 		}
 			
 		.UIArticle .ArticleTLDecorator {
@@ -154,7 +155,7 @@
 		
 		.UIArticle .AttachmentsContainer .AttachmentsContentIcon {
 		  background: url('/eXoDMSResources/skin/images/article/AttachmentsIcon.gif') no-repeat left top; /* orientation=lt */
-		  background: url('/eXoDMSResources/skin/images/article/AttachmentsIcon.gif') no-repeat left top; /* orientation=rt */
+		  background: url('/eXoDMSResources/skin/images/article/AttachmentsIcon.gif') no-repeat right top; /* orientation=rt */
 		  margin: 0px 5px 0px 3px; /* orientation=lt */
 		  margin: 0px 3px 0px 5px; /* orientation=rt */
 		  padding-left: 18px; /* orientation=lt */
@@ -300,6 +301,10 @@
 		  color: #058ee6;
 		  float: left; /* orientation=lt */
 		  float: right; /* orientation=rt */
+		}
+		
+		.UIArticle .AttachmentsContainer .AttachmentsContentIcon a {
+			float: none;
 		}
 		
 		.UIArticle .AttachmentsContainer a:hover {
