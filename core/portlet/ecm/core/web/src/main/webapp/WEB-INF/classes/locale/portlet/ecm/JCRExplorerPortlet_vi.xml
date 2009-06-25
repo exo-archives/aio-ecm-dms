@@ -2373,4 +2373,21 @@
   		<do-not-permission>Bạn không có quyền để thao tác trên template này</do-not-permission>
   	</msg>
   </UIDocumentForm>  
+  
+   <!--
+  ###################################################################################
+  #             org.exoplatform.ecm.webui.component.explorer.UIActionBar      						#
+  #                           Localize tab																																										#
+  ###################################################################################
+  -->
+  <UIActionBar>
+     <obtion>
+      <Admin>Quản trị</Admin>
+      <Info>Thông tin</Info>
+      <Actions>Hành động</Actions>
+      <Collaboration>Cộng đồng</Collaboration>
+      <Search>Tìm kiếm</Search>
+    </obtion>
+  </UIActionBar>
+  	
 </bundle>
