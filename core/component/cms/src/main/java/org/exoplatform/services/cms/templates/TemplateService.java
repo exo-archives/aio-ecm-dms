@@ -194,6 +194,13 @@ public interface TemplateService {
       String[] roles, String templateFile, String repository, String locale) throws Exception;
   
   /**
+   * This method is used to filter types of NodeType which is added in folder. 
+   * @param filterPlugin      Content filer plugin
+   * @throws Exception
+   */
+  public void addContentTypeFilterPlugin(ContentTypeFilterPlugin filterPlugin) throws Exception;
+  
+  /**
    * Remove a template of NodeType by giving the following params
    * @param isDialog          boolean
    *                          The boolean value which specify the type of template
