@@ -172,4 +172,14 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
     assertEquals(0, appTemplateManagerService.getTemplatesByCategory(REPO_NAME, "content-browser", 
         "detail-document", SessionProviderFactory.createSessionProvider()).size());
   }
+  
+  public void tearDown() throws Exception {
+    Node nodeAppTemplate = (Node) sessionDMS.getItem(basedApplicationTemplatesPath);
+    if (nodeAppTemplate.hasNode("categoryA")) {
+      nodeAppTemplate.getNode("categoryA").remove();
+    }
+    sessionDMS.save();
+    
+    super.tearDown();
+  }
 }
