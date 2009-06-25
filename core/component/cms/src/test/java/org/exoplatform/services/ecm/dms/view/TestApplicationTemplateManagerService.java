@@ -38,6 +38,7 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
   private ApplicationTemplateManagerService appTemplateManagerService;
   private NodeHierarchyCreator nodeHierarchyCreator;
   private String basedApplicationTemplatesPath;
+  private Session sessionDMS;
   
   public void setUp() throws Exception {
     super.setUp();
@@ -45,40 +46,96 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
         ApplicationTemplateManagerService.class);
     nodeHierarchyCreator = (NodeHierarchyCreator)container.getComponentInstanceOfType(NodeHierarchyCreator.class);
     basedApplicationTemplatesPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_VIEWTEMPLATES_PATH);
+    sessionDMS = repository.login(credentials, DMSSYSTEM_WS);
   }
   
-  public void testAddPlugin() throws Exception {
-    
-  }
-  
+  /**
+   * Test ApplicationTemplateManagerServiceImpl.getAllManagedPortletName()
+   * Input: repository        String
+   *                          The name of repository
+   * Expect: Return The templates by category 
+   * @throws Exception
+   */
   public void testGetAllManagedPortletName() throws Exception {
     List<String> listTemplateManager = appTemplateManagerService.getAllManagedPortletName(REPO_NAME);
     assertEquals(0, listTemplateManager.size());
   }
   
+  /**
+   * Test ApplicationTemplateManagerServiceImpl.getTemplatesByApplication()
+   * Input: repository        String
+   *                          The name of repository
+   *        portletName       String
+   *                          The name of portlet
+   *        sessionProvider   SessionProvider 
+   * Expect: Return The templates by category 
+   * @throws Exception
+   */
   public void testGetTemplatesByApplication() throws Exception {
     assertNull(appTemplateManagerService.getTemplatesByApplication(REPO_NAME, 
         "UIBrowseContentPortlet", SessionProviderFactory.createSessionProvider()));
   }
   
+  /**
+   * Test ApplicationTemplateManagerServiceImpl.getTemplatesByCategory()
+   * Input: repository        String
+   *                          The name of repository
+   *        portletName       String
+   *                          The name of portlet
+   *        category          String
+   *                          The name of category
+   *        sessionProvider   SessionProvider 
+   * Expect: Return The templates by category 
+   * @throws Exception
+   */
   public void testGetTemplatesByCategory() throws Exception {
     assertEquals(1, appTemplateManagerService.getTemplatesByCategory(REPO_NAME, "content-browser", 
         "detail-document", SessionProviderFactory.createSessionProvider()).size());
   }
   
+  /**
+   * Test ApplicationTemplateManagerServiceImpl.getTemplateByName()
+   * Input: repository        String
+   *                          The name of repository
+   *        portletName       String
+   *                          The name of portlet
+   *        category          String
+   *                          The name of category
+   *        templateName      String
+   *                          The name of template
+   *        sessionProvider   SessionProvider 
+   * Expect: Return the template by name 
+   * @throws Exception
+   */
   public void testGetTemplateByName() throws Exception {
     assertNotNull(appTemplateManagerService.getTemplateByName(REPO_NAME, "content-browser", 
         "detail-document", "DocumentView", SessionProviderFactory.createSessionProvider()));
   }
   
+  /**
+   * Test ApplicationTemplateManagerServiceImpl.getTemplateByPath()
+   * Input: repository    String
+   *                      The name of repository
+   *        templatePath  String
+   *                      The path of template
+   *      sessionProvider SessionProvider
+   * Expect: Return template by path 
+   * @throws Exception
+   */
   public void testGetTemplateByPath() throws Exception {
     assertNotNull(appTemplateManagerService.getTemplateByPath(REPO_NAME, 
         "/exo:ecm/views/templates/content-browser/detail-document/DocumentView", SessionProviderFactory.createSessionProvider()));
   }
   
+  /**
+   * Test ApplicationTemplateManagerServiceImpl.addTemplate()
+   * Input: portletTemplateHome the portlet template home
+   *        config the config
+   * Expect: Add the teamplate 
+   * @throws Exception
+   */
   public void testAddTemplate() throws Exception {
-    Session sessionSystem = repository.login(credentials, DMSSYSTEM_WS);
-    Node portletTemplateHome = (Node) sessionSystem.getItem(basedApplicationTemplatesPath);
+    Node portletTemplateHome = (Node) sessionDMS.getItem(basedApplicationTemplatesPath);
     
     PortletTemplateConfig config = new PortletTemplateConfig();
     ArrayList<String> accessPermissions = new ArrayList<String>();
@@ -95,15 +152,18 @@ public class TestApplicationTemplateManagerService extends BaseDMSTestCase {
   }
   
   /**
-   * Test Method: removeTemplate(): 
-   * Input: Test node has multi-languages node, but not "jp" language.
-   *        Comment node has properties: Commenter = root,
-   *                                     Commentor_email = root@exoplatform,
-   *                                     Commentor_messages = Hello,
-   *                                     Language = jp
-   * Expected Result:
-   *       "jp" node is added in languages node
-   *       comment node is added in "jp" node with properties like input.
+   * Test ApplicationTemplateManagerServiceImpl.removeTemplate()
+   * Input: repository    String
+   *                      The name of repository
+   *        portletName   String
+   *                      The name of portlet
+   *        catgory       String
+   *                      The category
+   *        templateName  String
+   *                      The name of template
+   *        sessionProvider SessionProvider
+   * Expect: Remove the teamplate 
+   * @throws Exception
    */
   public void testRemoveTemplate() throws Exception {
     appTemplateManagerService.removeTemplate(REPO_NAME, "content-browser", "detail-document", 
