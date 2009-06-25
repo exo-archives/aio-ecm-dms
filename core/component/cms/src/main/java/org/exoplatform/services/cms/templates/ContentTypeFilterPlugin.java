@@ -35,7 +35,7 @@ public class ContentTypeFilterPlugin extends BaseComponentPlugin {
   private List<FolderFilterConfig> folderFilterConfigs = new ArrayList<FolderFilterConfig>();
   private String repository;
   public ContentTypeFilterPlugin(InitParams initParams) {
-    repository = initParams.getValueParam("repository").getName();
+    repository = initParams.getValueParam("repository").getValue();
     for(Iterator<ObjectParameter> iterator = initParams.getObjectParamIterator();iterator.hasNext();) {
       Object object = iterator.next().getObject();
       if(object instanceof FolderFilterConfig ) {
