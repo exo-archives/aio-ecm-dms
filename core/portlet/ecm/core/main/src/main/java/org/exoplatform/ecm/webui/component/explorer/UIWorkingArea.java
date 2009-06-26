@@ -1730,7 +1730,7 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       String destPath = event.getRequestContext().getRequestParameter("destInfo");
-      uiWorkingArea.processMultipleSelection(nodePath, false, destPath, event);
+      uiWorkingArea.processMultipleSelection(nodePath.trim(), false, destPath.trim(), event);
     }
   }
   
@@ -1739,7 +1739,7 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       String destPath = event.getRequestContext().getRequestParameter("destInfo");
-      uiWorkingArea.processMultipleSelection(nodePath, true, destPath, event);
+      uiWorkingArea.processMultipleSelection(nodePath.trim(), true, destPath.trim(), event);
     }
   }  
   
