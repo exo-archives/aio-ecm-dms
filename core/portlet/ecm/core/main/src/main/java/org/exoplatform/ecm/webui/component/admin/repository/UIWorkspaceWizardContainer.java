@@ -40,10 +40,10 @@ public class UIWorkspaceWizardContainer extends UIContainer implements UIPopupCo
     UIPopupContainer UIPopupContainer = addChild(UIPopupContainer.class, null, "UIPopupWizard");
     UIPopupContainer.getChild(UIPopupWindow.class).setId("UIPopupWindowInWizard");
   }
-  protected void initWizard(boolean isAddnewRepo, boolean isAddNewWizard, WorkspaceEntry ws) throws Exception {
+  protected void initWizard(boolean isAddnewRepo, boolean isAddNewWizard, WorkspaceEntry ws, boolean isAddNewWs) throws Exception {
     getChild(UIWorkspaceWizard.class).isNewWizard_ = isAddNewWizard;
     getChild(UIWorkspaceWizard.class).isNewRepo_ = isAddnewRepo;
-    getChild(UIWorkspaceWizard.class).refresh(ws);
+    getChild(UIWorkspaceWizard.class).refresh(ws, isAddNewWs);
   }
   protected void initPopupPermission(String id, String membership, UIComponent comp) throws Exception {
     UIPopupWindow uiPopup = getChildById(id);

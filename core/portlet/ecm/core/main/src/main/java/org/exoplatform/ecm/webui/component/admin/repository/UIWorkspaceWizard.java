@@ -18,6 +18,7 @@ package org.exoplatform.ecm.webui.component.admin.repository;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,9 @@ import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.AccessControlEntry;
+import org.exoplatform.services.jcr.access.AccessControlList;
+import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.CacheEntry;
 import org.exoplatform.services.jcr.config.ContainerEntry;
 import org.exoplatform.services.jcr.config.LockManagerEntry;
@@ -38,6 +42,7 @@ import org.exoplatform.services.jcr.config.SimpleParameterEntry;
 import org.exoplatform.services.jcr.config.ValueStorageEntry;
 import org.exoplatform.services.jcr.config.ValueStorageFilterEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
+import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.naming.InitialContextInitializer;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -149,7 +154,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
   public String[] getCurrentAction() {return actionMap_.get(selectedStep_) ;}
 
   @SuppressWarnings("unchecked")
-  protected void refresh(WorkspaceEntry workSpace) throws Exception{
+  protected void refresh(WorkspaceEntry workSpace, boolean isAddNewWs) throws Exception{
     reset() ;
     UIWizardStep1 uiWSFormStep1 = getChildById(FIELD_STEP1) ;
     UIWizardStep2 uiWSFormStep2 = getChildById(FIELD_STEP2) ;
@@ -177,14 +182,28 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
     boolean isEnableCache = true ;
     String maxCache ="5000" ;
     String liveTime ="30000" ;
-
-    if(workSpace != null) {
-      if(!isNewWizard_) {
-        name = workSpace.getName() ;
-        isDefaultWS = uiRepoForm.isDefaultWorkspace(name) ;
-        selectedNodeType = workSpace.getAutoInitializedRootNt();
+    
+    if (workSpace != null) {
+      RepositoryService rService = (RepositoryService)getApplicationComponent(ExoContainer.class).
+      getComponentInstanceOfType(RepositoryService.class);
+      
+      ManageableRepository manageRepository = rService.getDefaultRepository();
+      if (!isNewWizard_) {
+        name = workSpace.getName();
+        isDefaultWS = uiRepoForm.isDefaultWorkspace(name);
+        selectedNodeType = manageRepository.getSystemSession(workSpace.getName()).getRootNode().getPrimaryNodeType().getName();
       }
-      permission = workSpace.getAutoInitPermissions();
+      List<AccessControlEntry> listEntry = ((ExtendedNode)manageRepository.getSystemSession(workSpace.getName()).getRootNode()).getACL().getPermissionEntries();
+      Iterator perIter = listEntry.iterator() ;
+      StringBuilder userPermission = new StringBuilder();
+      while (perIter.hasNext()) {
+        AccessControlEntry accessControlEntry = (AccessControlEntry)perIter.next();
+        userPermission.append(accessControlEntry.getIdentity());
+        userPermission.append(" ");
+        userPermission.append(accessControlEntry.getPermission() + ";");
+      }
+      if (!isAddNewWs) { permission = userPermission.toString(); } 
+      
       if(workSpace.getLockManager() != null) {
         lockTime  = String.valueOf(workSpace.getLockManager().getTimeout()) ; 
       }
@@ -234,9 +253,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
         uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_SWAPPATH).setValue(sb1.toString()) ;
         uiWSFormStep2.getUIStringInput(UIWizardStep2.FIELD_STOREPATH).setValue(sb2.toString()) ;
         uiWSFormStep2.getUIFormSelectBox(UIWizardStep2.FIELD_FILTER).setValue(filterType) ;
-      } else {
-
-      }
+      } 
     }
     if(isNewRepo_) {
       lockForm(false) ;
@@ -261,6 +278,38 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
     }
   }
 
+  private void setPermissionToRoot(ExtendedNode rootNode, String stringPermission) throws Exception {
+    HashMap<String, List<String>> permission = new HashMap<String, List<String>>();
+    String [] items = stringPermission.split(";");
+    for (String item : items) {
+      String[] permissionType = item.split(" ");
+      if (permission.containsKey(permissionType[0])) {
+        List<String> type = permission.get(permissionType[0]);
+        if (!type.contains(permissionType[1])) {
+          type.add(permissionType[1]);
+          permission.put(permissionType[0], type);
+        }
+      } else {
+        List<String> type = new ArrayList<String>();
+        type.add(permissionType[1]);
+        permission.put(permissionType[0], type);
+      }
+    }
+    
+    Iterator iter = permission.keySet().iterator();
+    while (iter.hasNext()) {
+      String key = (String)iter.next();
+      List<String> types = permission.get(key);
+      if (key.equals("*")) key = "any";
+      for (String type : types) {
+        if (type.equals("read")) rootNode.setPermission(key, new String[] {PermissionType.READ});
+        else if (type.equals("add_node")) rootNode.setPermission(key, new String[] {PermissionType.ADD_NODE});
+        else if (type.equals("set_property")) rootNode.setPermission(key, new String[] {PermissionType.SET_PROPERTY});
+        else rootNode.setPermission(key, new String[] {PermissionType.REMOVE});
+      }
+    }
+  }
+  
   public String url(String name) throws Exception {
     UIComponent renderedChild = getChild(currentStep_);
     if(!(renderedChild instanceof UIForm)) return super.event(name);
@@ -612,7 +661,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
         if(!s.endsWith(";")) s = s + ";" ;
         permSb.append(s);
       }
-      workspaceEntry.setAutoInitPermissions(permSb.toString()) ;
+//      workspaceEntry.setAutoInitPermissions(permSb.toString()) ;
       LockManagerEntry lockEntry = new LockManagerEntry() ;
       lockEntry.setTimeout(lockTimeOutValue) ;
       LockPersisterEntry persisterEntry = new LockPersisterEntry();
@@ -652,6 +701,10 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
           if(rService.getConfig().isRetainable()) {
             rService.getConfig().retain() ;
           }
+//          ((ExtendedNode)manageRepository.getSystemSession(name).getRootNode()).setPermission("any", PermissionType.ALL);
+          
+          uiFormWizard.setPermissionToRoot((ExtendedNode)manageRepository.getSystemSession(name).getRootNode(), permSb.toString());
+          
           uiRepoForm.workspaceMap_.clear() ;
           for(WorkspaceEntry ws : manageRepository.getConfiguration().getWorkspaceEntries()) {
             uiRepoForm.workspaceMap_.put(ws.getName(), ws) ;
@@ -941,7 +994,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
   public static class CancelActionListener extends EventListener<UIWorkspaceWizard> {
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
-      uiFormWizard.refresh(null) ;
+      uiFormWizard.refresh(null, false) ;
       UIPopupContainer UIPopupContainer = uiFormWizard.getAncestorOfType(UIPopupContainer.class) ;
       UIPopupContainer.deActivate() ;
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer) ;

@@ -442,7 +442,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
           break;
         }
       }
-      uiWsContainer.initWizard(uiForm.isAddnew_, true, wsdf);      
+      uiWsContainer.initWizard(uiForm.isAddnew_, true, wsdf, true);      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
     }
   }
@@ -467,7 +467,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       UIPopupContainer uiPopupAction = uiControl.getChild(UIPopupContainer.class);
       uiPopupAction.deActivate();
       UIWorkspaceWizardContainer uiWsContainer = uiPopupAction.activate(UIWorkspaceWizardContainer.class, 600); 
-      uiWsContainer.initWizard(uiForm.isAddnew_, false, uiForm.getWorkspace(workspaceName));
+      uiWsContainer.initWizard(uiForm.isAddnew_, false, uiForm.getWorkspace(workspaceName), false);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm.getAncestorOfType(UIPopupContainer.class));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
     }
