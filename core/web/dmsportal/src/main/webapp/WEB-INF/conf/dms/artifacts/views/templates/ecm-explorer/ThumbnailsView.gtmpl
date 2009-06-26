@@ -1,4 +1,5 @@
 <%
+  import java.net.URLEncoder;
   import org.exoplatform.ecm.webui.utils.Utils ;
   import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
@@ -142,7 +143,7 @@
 		          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;
 		        %>   
 		      <div class="ActionIconBox" locked="<%=isLocked%>" <%=rightClickMenu%> style="padding: 4px 0px 4px 0px; height: auto;"
-		       				objectId="<%=data.getPath()%>" workspaceName="<%=preferenceWS%>" ondblclick="$actionLink">
+		       				objectId="<%=URLEncoder.encode(Utils.formatNodeName(data.getPath()), "utf-8")%>" workspaceName="$preferenceWS" ondblclick="$actionLink">
 		        <div style="height: auto; width: auto; border: none; -moz-user-select: none;" unselectable="on">
 							<div class="NodeLabel">
 								<div class="ThumbnailImage">
