@@ -1,4 +1,5 @@
 <%
+  import java.net.URLEncoder;
   import javax.jcr.Node;
   import javax.jcr.AccessDeniedException ;
   import org.exoplatform.ecm.webui.utils.Utils;
@@ -79,13 +80,13 @@
 	    if(!uicomponent.isSystemWorkspace()) ctMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(path), uicomponent.getActionsList(node)) ;
 	    println "<div  class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
 	    println "  <div class=\"${iconType}Icon\" onclick=\"event.cancelBubble=true;if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
-	    println "    <div onclick=\"event.cancelBubble=true;" + expandLink + "\" objectId=\"" + treeNode.getPath() + "\" workspacename=\"" + preferenceWS + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", iconType) + "\" " + ctMenu + ">" + strActs ;
+	    println "    <div onclick=\"event.cancelBubble=true;" + expandLink + "\" objectId=\"" + URLEncoder.encode(Utils.formatNodeName(treeNode.getPath()), "utf-8") + "\" workspacename=\"" + preferenceWS + "\" class=\"Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", iconType) + "\" " + ctMenu + ">" + strActs ;
 	    println "      <div class='NodeLabel'>" ;
 	    println "		 <a onclick=\"event.cancelBubble=true;" + expandLink + "\" style='cursor: pointer;' title=\"$treeNodeName\">$treeNodeName</a>" ;
 	    println "      </div>" ; 
 	    println "    </div>" ; 
 	    println "  </div>" ; 
-	    if(treeNode.getChildrenSize() > 0) {
+		if(treeNode.getChildrenSize() > 0) {
 	      println "<div class=\"NodeGroup\">" ;
 	      writeNodes(treeNode) ;
 	      if(uicomponent.isPaginated(treeNode)) {

@@ -8,6 +8,7 @@
    */
 %>
 <%
+	import java.net.URLEncoder;
   import org.exoplatform.ecm.webui.utils.Utils ;
   import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
@@ -217,7 +218,7 @@
 	          if (!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;	          
 	      
 	      %>
-	      <div <%=rightClickMenu%> class="RowView Normal" locked="$isLocked" workspacename="$preferenceWS" objectId="$nodePath" ondblclick="$actionLink">
+	      <div <%=rightClickMenu%> class="RowView Normal" locked="$isLocked" workspacename="$preferenceWS" objectId="<%=URLEncoder.encode(Utils.formatNodeName(nodePath), "utf-8")%>" ondblclick="$actionLink">
 		      $strActs
 	        <div class="LeftColumn" style="padding: 2px 0px; 	border-right: none;">
 					  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>"><span></span></div>
