@@ -1,6 +1,7 @@
-
 <%
   import org.exoplatform.ecm.webui.utils.PermissionUtil;
+  import org.exoplatform.ecm.webui.utils.Utils ;
+  import org.exoplatform.web.application.Parameter ;
 %>
 <div id="$uicomponent.id" class="UIResizableBlock">
 	<style>
@@ -428,14 +429,13 @@
 																	    String relPath = rel.getPath() ;
 																	    String relName = relPath.substring(relPath.lastIndexOf("/") + 1, relPath.length()) ; 
 																	    if(!uicomponent.isRssLink()) { 
-																	      String path = relPath + "&workspaceName=" + wsName ;
-																	      actionLink = uicomponent.event("ChangeNode", path) ;
+																	      actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(relPath), new Parameter("workspaceName", wsName)) ;
 																      } else { 
 																	 	    actionLink = uicomponent.getRssLink() + wsName + relPath ;
 																      }
 																    
 														    %>
-					  								    <div> - <a href="$actionLink">$relName</a></div>
+					  								    <div> - <a onclick="$actionLink" style="cursor: pointer;">$relName</a></div>
 					  							    <%		}
 					  							    	}%>
 							              </div>
@@ -470,14 +470,13 @@
 														for (att in attachments) {
 															if(att != null) {
 		  													String wsName = att.getSession().getWorkspace().getName() ;
-		  													String attPath = att.getPath() + "&workspaceName=" + wsName ;
 														%>
 														  <div class="AttachmentsContainer">	
 							                  <div class="AttachmentsContentIcon">
-							                  	<a href="<%=uicomponent.event("ChangeNode", attPath)%>"><%=att.getName()%></a>
+							                  	<a onclick="<%=uicomponent.event("ChangeNode", Utils.formatNodeName(att.getPath()), new Parameter("workspaceName", wsName))%>" style="cursor: pointer;"><%=att.getName()%></a>
 							                  </div>
 							                  <% if (PermissionUtil.canRemoveNode(att)) {%>
-							                    <a href="<%=uicomponent.event("RemoveAttach", attPath)%>" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-attachment")%>">
+							                    <a onclick="<%=uicomponent.event("RemoveAttach", Utils.formatNodeName(att.getPath()), new Parameter("workspaceName", wsName))%>" style="cursor: pointer;" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-attachment")%>">
 							                      <div class="RemoveAttachments"><span></span></div>
 							                    </a>
                                 <% } %>
