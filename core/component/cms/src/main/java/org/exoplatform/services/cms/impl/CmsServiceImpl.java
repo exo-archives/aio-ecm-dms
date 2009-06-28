@@ -298,7 +298,7 @@ public class CmsServiceImpl implements CmsService {
       Set keys = jcrVariables.keySet();
       String nodePath = extractNodeName(keys);
       JcrInputProperty relRootProp = (JcrInputProperty) jcrVariables.get(nodePath); 
-      String[] mixinTypes = null;
+      String[] mixinTypes = {};
       String mixintypeName = relRootProp.getMixintype();
       if (mixintypeName != null && mixintypeName.trim().length() > 0) {
         if (mixintypeName.indexOf(",") > -1) {
