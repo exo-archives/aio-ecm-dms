@@ -18,6 +18,12 @@
   background: url('/eXoDMSResources/skin/DefaultSkin/skinIcons/48x48/icons/NodeTypes/default.gif') no-repeat;  
 }
 
+.exo_sample48x48Icon {
+  width: 48px; height: 48px;
+  background: url('icons/NodeTypes/default.gif') no-repeat;  
+}
+
+
 .exo_accessControllable48x48Icon {
   width: 48px; height: 48px;
   background: url('/eXoDMSResources/skin/DefaultSkin/skinIcons/48x48/icons/NodeTypes/exo-accessControllable.gif') no-repeat;  
