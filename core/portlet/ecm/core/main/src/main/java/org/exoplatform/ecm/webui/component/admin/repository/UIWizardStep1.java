@@ -21,9 +21,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
@@ -31,7 +31,6 @@ import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
-import org.exoplatform.webui.form.validator.NumberFormatValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -62,8 +61,7 @@ public class UIWizardStep1 extends UIFormInputSetWithAction {
     setActionInfo(FIELD_PERMISSION, actionInfor);
     setFieldActions(FIELD_PERMISSION, new String[]{"AddPermission"});
     showActionInfo(true);
-    addChild(new UIFormStringInput(FIELD_TIMEOUT, FIELD_TIMEOUT, null).addValidator(MandatoryValidator.class).
-        addValidator(NumberFormatValidator.class)); 
+    addChild(new UIFormStringInput(FIELD_TIMEOUT, FIELD_TIMEOUT, null).addValidator(MandatoryValidator.class)); 
   }
   private List<SelectItemOption<String>>  getNodeType() {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
@@ -92,13 +90,14 @@ public class UIWizardStep1 extends UIFormInputSetWithAction {
   protected void setFieldLockTime(String lockTime) {
     getUIStringInput(UIWizardStep1.FIELD_TIMEOUT).setValue(lockTime);
   }
-  protected String getFieldLockTime() {return getUIStringInput(UIWizardStep1.FIELD_TIMEOUT).getValue();}
+  protected String getFieldLockTime() { return getUIStringInput(UIWizardStep1.FIELD_TIMEOUT).getValue(); }
 
   protected void resetFields() {
     reset();
     setFieldDefault(false);
     setFieldNodeType(getNodeType());
-  } 
+  }
+  
   protected void fillFields(String name, String selectedNodeType, boolean isDefaultWS, String permission, String lockTime) {
     setFieldName(name);
     setPermissionMap(permission);

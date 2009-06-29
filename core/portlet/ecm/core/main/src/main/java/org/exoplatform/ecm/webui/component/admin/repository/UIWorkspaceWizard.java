@@ -26,12 +26,10 @@ import org.exoplatform.container.ExoContainer;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.AccessControlEntry;
-import org.exoplatform.services.jcr.access.AccessControlList;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.CacheEntry;
 import org.exoplatform.services.jcr.config.ContainerEntry;
@@ -50,6 +48,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -363,6 +362,36 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
     }
   }
   
+  private boolean checkLockTimeOut(String lockTimeOut) {
+    if (lockTimeOut.matches("\\d+") || lockTimeOut.matches("\\d+[smhdw]") || lockTimeOut.matches("\\d+ms")) {
+      return true;
+    }
+    return false;
+  }
+  
+// if no ending - seconds
+  private long convertLockTimeOut(String lockTimeOut) {
+    if (lockTimeOut.contains("ms")) {
+      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("ms")));
+    } 
+    if (lockTimeOut.contains("m")) {
+      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("m"))) * 60000; 
+    }
+    if (lockTimeOut.contains("h")) {
+      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("h"))) * 3600000; 
+    }
+    if (lockTimeOut.contains("d")) {
+      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("d"))) * 86400000; 
+    }
+    if (lockTimeOut.contains("w")) {
+      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("w"))) * 604800000; 
+    }
+    if (lockTimeOut.contains("s")) {
+      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("s"))) * 1000; 
+    }
+    return Long.parseLong(lockTimeOut) * 1000;
+  }
+  
   public static class ViewStep1ActionListener extends EventListener<UIWorkspaceWizard>{
     public void execute(Event<UIWorkspaceWizard> event) throws Exception {
       UIWorkspaceWizard uiFormWizard = event.getSource() ;
@@ -432,12 +461,10 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
-          try {
-            Long.parseLong(lockTimeOut) ;
-          } catch (Exception e) {
+          if (!uiFormWizard.checkLockTimeOut(lockTimeOut)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.lockTimeOut-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-            return ;
+            return; 
           }
           if(!Utils.isNameEmpty(swapPath)) {
             if(!swapPath.contains(wsName))  swapPath = swapPath + wsName ;
@@ -512,34 +539,32 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
           } else if(uiFormWizard.isNewRepo_ ) {
             UIRepositoryFormContainer formContainer = uiFormWizard.getAncestorOfType(UIRepositoryFormContainer.class) ;
             UIRepositoryForm uiRepoForm = formContainer.findFirstComponentOfType(UIRepositoryForm.class) ;
-            if(uiFormWizard.selectedWsName_ == null && uiRepoForm.getWorkspaceMap().containsKey(wsName)){
+            if (uiFormWizard.selectedWsName_ == null && uiRepoForm.getWorkspaceMap().containsKey(wsName)){
               Object[] args = new Object[]{wsName}  ;        
               uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.wsname-exist", args)) ;
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
               return ;
             }  
           }
-          if(uiFormWizard.isNewWizard_ && uiWSFormStep1.isPermissionEmpty()) {
+          if (uiFormWizard.isNewWizard_ && uiWSFormStep1.isPermissionEmpty()) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.permission-require", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
-          if(Utils.isNameEmpty(lockTimeOut)) {
+          if (Utils.isNameEmpty(lockTimeOut)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.lockTimeOut-required", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
-          try {
-            Long.parseLong(lockTimeOut) ;
-          } catch (Exception e) {
+          if (!uiFormWizard.checkLockTimeOut(lockTimeOut)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.lockTimeOut-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-            return ;
+            return; 
           }
         }
-        if(uiWSFormStep2.isRendered()) {
+        if (uiWSFormStep2.isRendered()) {
           boolean isExternalStoreage = uiWSFormStep2.getUIFormCheckBoxInput(UIWizardStep2.FIELD_EXTERNAL_STORE).isChecked() ;
-          if(uiFormWizard.isEmpty(containerType)) {
+          if (uiFormWizard.isEmpty(containerType)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.containerName-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
@@ -645,7 +670,11 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             return ;
           }
         }
-        lockTimeOutValue = Integer.parseInt(lockTimeOut) ;
+        
+        
+        lockTimeOutValue = uiFormWizard.convertLockTimeOut(lockTimeOut);
+        
+//        lockTimeOutValue = Integer.parseInt(lockTimeOut) ;
         if(uiFormWizard.isNewWizard_) {
           if(uiRepoForm.isExistWorkspace(name)){
             Object[] args = new Object[]{name}  ;        
@@ -849,17 +878,15 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
-          if(Utils.isNameEmpty(lockTimeOut)) {
+          if (Utils.isNameEmpty(lockTimeOut)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.lockTimeOut-required", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
-          try {
-            Long.parseLong(lockTimeOut) ;
-          } catch (Exception e) {
+          if (!uiFormWizard.checkLockTimeOut(lockTimeOut)) {
             uiApp.addMessage(new ApplicationMessage("UIWorkspaceWizard.msg.lockTimeOut-invalid", null)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-            return ;
+            return; 
           }
         }
         if(uiWSFormStep2.isRendered()) {
