@@ -18,7 +18,6 @@ package org.exoplatform.ecm.webui.component.explorer;
 
 import java.awt.Image;
 import java.io.InputStream;
-import java.net.URLEncoder;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -231,7 +230,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     if(fileName.lastIndexOf("."+ext)<0){
       fileName = fileName + "." +ext ;
     } 
-    dresource.setDownloadName(URLEncoder.encode(fileName, "utf-8")) ;
+    dresource.setDownloadName(fileName) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
 
