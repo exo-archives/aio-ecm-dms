@@ -1,4 +1,4 @@
-<% uicomponent.addInterceptor("ecm-explorer/interceptor/PreNodeSaveInterceptor.groovy", "post") ; %>
+<% uicomponent.addInterceptor("ecm-explorer/interceptor/PreNodeSaveInterceptor.groovy", "pre") ; %>
 <div class="UIForm FormLayout"> 
 	<% uiform.begin() %>
   <div class="HorizontalLayout">	  

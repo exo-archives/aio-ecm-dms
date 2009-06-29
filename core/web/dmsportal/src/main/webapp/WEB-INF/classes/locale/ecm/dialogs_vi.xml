@@ -691,5 +691,10 @@
       </label>
     </dialog>
   </ScriptAction>
+  <UIDialogForm>
+   <form>
+   	<DialogFormException>Can not save this document. Maybe there is a problem with pre save interceptor</DialogFormException>
+   </form>
+  </UIDialogForm>
 </bundle>
 

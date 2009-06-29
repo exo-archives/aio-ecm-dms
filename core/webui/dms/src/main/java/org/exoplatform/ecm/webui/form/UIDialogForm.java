@@ -45,6 +45,7 @@ import org.exoplatform.ecm.webui.form.field.UIFormUploadField;
 import org.exoplatform.ecm.webui.form.field.UIFormWYSIWYGField;
 import org.exoplatform.ecm.webui.form.field.UIMixinField;
 import org.exoplatform.ecm.webui.utils.DialogFormUtil;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
@@ -89,6 +90,8 @@ public class UIDialogForm extends UIForm {
    * Logger.
    */
   private static final Log LOG  = ExoLogger.getLogger("webui.form.UIDialogForm");
+  public final static String PRE_SAVE_EVENT = "Dialog.event.preSave".intern(); 
+  public final static String POST_SAVE_EVENT = "Dialog.event.postSave".intern(); 
   
   private final String REPOSITORY = "repository";
   protected final static String CANCEL_ACTION = "Cancel".intern();
@@ -126,7 +129,7 @@ public class UIDialogForm extends UIForm {
   final static private String TAXONOMIES_ALIAS = "exoTaxonomiesPath" ;
 
   private String SEPARATOR_VALUE = "::";
-  
+
   public UIDialogForm() { }
 
   public boolean isEditing() { return !isAddNew;}
@@ -330,8 +333,10 @@ public class UIDialogForm extends UIForm {
         try {
           String[] scriptParams = formSelectBoxField.getScriptParams();
           if("repository".equals(scriptParams[0])) scriptParams[0] = repositoryName;
-          executeScript(script, uiSelectBox, scriptParams);
-        } catch(Exception e) {
+          executeScript(script, uiSelectBox, scriptParams, false);
+        } catch (DialogFormException ex) {
+          LOG.error("An unexpected error occurs", ex);
+        } catch (Exception e) {
           LOG.error("An unexpected error occurs", e);
           uiSelectBox.setOptions(optionsList);
         }      
@@ -808,23 +813,32 @@ public class UIDialogForm extends UIForm {
 
   public boolean isResetForm() { return isResetForm; }
 
-  public void onchange(Event<?> event) throws Exception {}
+  public void onchange(Event<?> event) throws Exception {
+  }
 
   @Override
-  public void processAction(WebuiRequestContext context) throws Exception {       
-    String action =  context.getRequestParameter(UIForm.ACTION);    
-    if(SAVE_ACTION.equalsIgnoreCase(action)) {
-      executePreSaveEventInterceptor();
-      super.processAction(context);
-      String nodePath = (String)context.getAttribute("nodePath");
-      if(nodePath != null) {
-        executePostSaveEventInterceptor(nodePath); 
+  public void processAction(WebuiRequestContext context) throws Exception {
+    String action = context.getRequestParameter(UIForm.ACTION);
+    if (SAVE_ACTION.equalsIgnoreCase(action)) {
+      try {
+        if (executePreSaveEventInterceptor()) {
+          super.processAction(context);
+          String nodePath_ = (String) context.getAttribute("nodePath");
+          if (nodePath_ != null) {
+            executePostSaveEventInterceptor(nodePath);
+          }
+        }
+      } catch (DialogFormException e) {
+        UIApplication uiApp = getAncestorOfType(UIApplication.class);
+        uiApp.addMessage(new ApplicationMessage(e.getMessageKey(), new String[] { e.getMessage() }, ApplicationMessage.WARNING));
+        context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      } finally {
+        prevScriptInterceptor.clear();
+        postScriptInterceptor.clear();
       }
-      prevScriptInterceptor.clear();
-      postScriptInterceptor.clear();
-    }else {
-      super.processAction(context); 
-    }    
+    } else {
+      super.processAction(context);
+    }
   }
 
   //update by quangld
@@ -913,38 +927,51 @@ public class UIDialogForm extends UIForm {
 
   public void setWorkspace(String workspace) { this.workspaceName = workspace; }  
 
-  private void executePostSaveEventInterceptor(String nodePath) throws Exception {
-    if(postScriptInterceptor.size()>0) {
-      String path = nodePath + "&workspaceName=" + this.workspaceName + "&repository=" + this.repositoryName;
-      for(String interceptor : postScriptInterceptor) {              
-        this.executeScript(interceptor, path, null);                
-      }      
-    }    
-  }
-
-  private void executePreSaveEventInterceptor() throws Exception {
-    if(prevScriptInterceptor.size()>0) {
-      Map<String,JcrInputProperty> maps = DialogFormUtil.prepareMap(this.getChildren(),getInputProperties());    
-      for(String interceptor : prevScriptInterceptor) {              
-        this.executeScript(interceptor, maps, null);                
-      } 
-    }           
-  }  
-
-  private void executeScript(String script, Object o, String[] params) throws Exception{
-    ScriptService scriptService = getApplicationComponent(ScriptService.class);
-    try {
-      CmsScript dialogScript = scriptService.getScript(script, repositoryName);
-      if(params != null) {
-        if (REPOSITORY.equals(params[0])) params = new String[] { repositoryName }; 
-        dialogScript.setParams(params);
-      }
-      dialogScript.execute(o);
-    } catch (Exception e) {
-      LOG.error("An unexpected error occurs", e);
+  private void executePostSaveEventInterceptor(String nodePath_) throws DialogFormException,
+      Exception {
+    if (postScriptInterceptor.size() > 0) {
+      String path = nodePath_ + "&workspaceName=" + this.workspaceName + "&repository="
+          + this.repositoryName;
+        for (String interceptor : postScriptInterceptor) {
+          this.executeScript(interceptor, path, null, false);
+        }
     }
   }
 
+  private boolean executePreSaveEventInterceptor() throws DialogFormException, Exception {
+    if (prevScriptInterceptor.size() > 0) {
+      Map<String, JcrInputProperty> maps = DialogFormUtil.prepareMap(this.getChildren(),
+          getInputProperties());
+      for (String interceptor : prevScriptInterceptor) {
+        return executeScript(interceptor, maps, null, false);
+      }
+      return false;
+    }
+    return false;
+  }
+
+  private boolean executeScript(String script, Object o, String[] params, boolean printException)
+      throws DialogFormException {
+    ScriptService scriptService = getApplicationComponent(ScriptService.class);
+    try {
+      CmsScript dialogScript = scriptService.getScript(script, repositoryName);
+      if (params != null) {
+        if (REPOSITORY.equals(params[0]))
+          params = new String[] { repositoryName };
+        dialogScript.setParams(params);
+      }
+      dialogScript.execute(o);
+      return true;
+    } catch (Exception e) {
+      if(printException) {
+        LOG.warn("An unexpected error occurs", e);
+      } else {
+        throw new DialogFormException();
+      }
+    }
+    return false;
+  }
+  
   private String getNodePathByUUID(String uuid) throws Exception{
     String[] workspaces = getRepository().getWorkspaceNames();
     Node node = null;
