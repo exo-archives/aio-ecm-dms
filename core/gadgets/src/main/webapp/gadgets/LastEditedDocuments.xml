@@ -228,8 +228,13 @@
 				
 			}
 			
-			var siteUrl = 'http://localhost:8080/portal/rest/presentation/document/edit/repository?showItems=5';
-			var accessUrl = 'http://localhost:8080/portal/private/classic/contentmanagement/fileexplorer/repository/';
+			var prefixUrl = location.protocol + '//' + location.hostname;
+			if (location.port) {
+				prefixUrl += ':' + location.port;
+			}
+			
+			var siteUrl = prefixUrl + '/portal/rest/presentation/document/edit/repository?showItems=5';
+			var accessUrl = prefixUrl + '/portal/private/classic/fileexplorer/repository/';
 			  
 			LastEditedDocument.prototype.makeRequest = function(url, callback) {
 				var params = {};

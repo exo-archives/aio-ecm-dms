@@ -214,8 +214,13 @@
 	  </style>
     <script type="text/javascript">
 			function PublishedDocument() {}
-			var accessUrl = 'http://localhost:8080/portal/private/classic/contentmanagement/fileexplorer/repository/';
-			var siteUrl = 'http://localhost:8080/portal/rest/publication/presentation/repository/collaboration/state?showItems=5';
+			var prefixUrl = location.protocol + '//' + location.hostname;
+			if (location.port) {
+				prefixUrl += ':' + location.port;
+			}
+
+			var siteUrl = prefixUrl + '/portal/rest/publication/presentation/repository/collaboration/state?showItems=5';
+			var accessUrl = prefixUrl + '/portal/private/classic/fileexplorer/repository/';
 			
 			PublishedDocument.prototype.makeRequest = function(url, callback) {
 				var params = {};
