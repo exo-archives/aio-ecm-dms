@@ -2,12 +2,5 @@
 <bundle>
   <platform-guests>
     <register>Đăng kí</register>
-    <news>Tin tức</news>
-    <ideas>
-      <title>Ý kiến</title>
-      <read>Đọc ý kiến</read>
-      <write>Viết ý kiến</write>
-    </ideas>
-    <sitemap>Bản đồ site</sitemap>
   </platform-guests>
 </bundle>

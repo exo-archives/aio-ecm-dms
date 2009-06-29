@@ -11,12 +11,5 @@
 	    <label>#{portal.classic.home}</label>
 	    <page-reference>portal::classic::homepage</page-reference>	    
 	  </node>
-	     
-    <node>
-	    <uri>welcome</uri>
-	    <name>welcome</name>
-	    <label>#{welcome}</label>
-	    <page-reference>portal::classic::welcome</page-reference>	    
-	  </node>	  	  	  	 	     	  	  
   </page-nodes>
 </node-navigation>

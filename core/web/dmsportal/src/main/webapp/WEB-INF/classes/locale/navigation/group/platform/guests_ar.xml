@@ -2,12 +2,5 @@
 <bundle>
   <platform-guests>
     <register>تسجيل</register>
-    <news>أخبار</news>
-    <ideas>
-      <title>أفكار</title>
-      <read>قراءة الأفكار</read>
-      <write>كتابة الأفكار</write>
-    </ideas>
-    <sitemap>خريطه الموقع</sitemap>
   </platform-guests>
 </bundle>

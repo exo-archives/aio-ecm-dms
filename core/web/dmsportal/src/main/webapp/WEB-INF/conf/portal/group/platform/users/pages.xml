@@ -61,44 +61,6 @@
                  
   </page>
           		  		
-  <page>
-  	<page-id>group::platform/users::ContentManagement</page-id>
-  	<owner-type>group</owner-type>
-    <owner-id>platform/users</owner-id>
-    <name>ContentManagement</name>
-    <factory-id>Desktop</factory-id>
-    <access-permissions>*:/platform/users</access-permissions>
-    <edit-permission>manager:/platform/administrators</edit-permission>
-    <show-max-window>true</show-max-window>
-    
-    <application>
-      <instance-id>group#platform/users:/ecm/FileExplorerPortlet/fileexplorer</instance-id>
-      <title>File Explorer</title>
-      <show-info-bar>true</show-info-bar>
-      <show-application-mode>true</show-application-mode>      
-    </application>
-    
-    <application>
-      <instance-id>group#platform/users:/ecm/FastContentCreatorPortlet/fastcontentcreator</instance-id>
-      <title>Fast Content Creator</title>
-      <show-info-bar>true</show-info-bar>
-      <show-application-mode>true</show-application-mode>      
-    </application>
-    
-    <application>
-      <instance-id>group#platform/users:/ecm/ContentBrowserPortlet/contentbrowser</instance-id>
-      <title>Content Browser</title>
-      <show-info-bar>true</show-info-bar>
-      <show-application-mode>true</show-application-mode>      
-    </application>
-    
-    <application>
-      <instance-id>group#platform/users:/workflow/WorkflowControllerPortlet/workflowcontroller</instance-id>    
-      <title>Business Process Center</title>
-      <show-info-bar>false</show-info-bar>      
-    </application>
-                                
-  </page>
   
   <page>
   	<page-id>group::platform/users::FileExplorer</page-id>
@@ -163,20 +125,6 @@
     </application>  
   </page>
   
-  <page>
-  	<page-id>group::platform/users::sitemap</page-id>
-    <owner-type>group</owner-type>
-    <owner-id>platform/users</owner-id>
-    <name>sitemap</name>
-    <title>Site Map</title>
-	  <access-permissions>*:/platform/users</access-permissions>
-	  <edit-permission>*:/platform/administrators</edit-permission>
-	  <application>
-      <instance-id>group#platform/users:/web/SiteMapPortlet/sitemapportlet</instance-id>
-      <title>Site Map</title>
-      <show-info-bar>false</show-info-bar>      
-    </application>          
-  </page>
     
 </page-set>
 

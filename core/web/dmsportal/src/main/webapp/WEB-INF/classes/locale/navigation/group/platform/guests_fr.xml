@@ -2,12 +2,5 @@
 <bundle>
   <platform-guests>
     <register>S'enregistrer</register>
-    <news>Actualités</news>
-    <ideas>
-      <title>Idées</title>
-      <read>Consulter les Idées</read>
-      <write>Proposer des Idées</write>
-    </ideas>
-    <sitemap>Plan du Site</sitemap>
   </platform-guests>
 </bundle>

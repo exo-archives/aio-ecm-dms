@@ -21,16 +21,5 @@
       <read-only>false</read-only>
     </preference>
   </portlet-preferences>
-  
-  
-  <portlet-preferences>
-    <owner-type>portal</owner-type>
-    <owner-id>@owner@</owner-id>
-    <window-id>portal#portalclassic:/web/GroovyPortlet/groovyportlet</window-id>
-    <preference>
-      <name>template</name>
-      <value>par:/groovy/groovy/webui/component/UIGroovyPortlet.gtmpl</value>
-      <read-only>false</read-only>
-    </preference>
-  </portlet-preferences>
+
 </portlet-preferences-set>

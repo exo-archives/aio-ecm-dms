@@ -6,14 +6,6 @@
     </classic>
   </portal>
   <register>S'enregistrer</register>
-  <sitemap>Plan du Site</sitemap>
-  <news>Actualités</news>
-  <ideas>
-    <title>Idées</title>
-    <read>Consulter les Idées</read>
-    <write>Proposer des Idées</write>
-  </ideas>
-  <welcome>Centre d'Accueil</welcome>
   <content-management>
     <file-explorer>Explorateur de Fichiers</file-explorer>
     <content-creator>Création Rapide de Contenu</content-creator>

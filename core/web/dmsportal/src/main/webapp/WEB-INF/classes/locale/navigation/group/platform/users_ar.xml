@@ -3,12 +3,10 @@
   <platform>
     <users>
       <iframe>IFrame</iframe>
-      <content-management>إدارة المحتوى</content-management>
       <file-explorer>مستكشف الملفات</file-explorer>
       <content-browser>مستعرض المحتوى</content-browser>
       <content-creator>خالق سريع للمحتوى</content-creator>
       <workflow-controller>مركز تدفق الأعمال</workflow-controller>
-      <sitemap>خريطه الموقع</sitemap>
     </users>
   </platform>
 </bundle>
