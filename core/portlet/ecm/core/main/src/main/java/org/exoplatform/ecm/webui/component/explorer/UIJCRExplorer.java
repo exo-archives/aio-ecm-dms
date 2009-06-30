@@ -27,7 +27,6 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jcr.Item;
-import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
@@ -673,15 +672,6 @@ public class UIJCRExplorer extends UIContainer {
         Node realChild = child instanceof NodeLinkAware ? ((NodeLinkAware) child).getRealNode() : child;
         if(PermissionUtil.canRead(child) && !realChild.isNodeType(Utils.EXO_HIDDENABLE)) {
           childList.add(child) ;
-        }
-        if(PermissionUtil.canRead(realChild) && realChild.isNodeType(Utils.EXO_SYMLINK)) {
-          try {
-            linkManager.getTarget(child);
-          } catch (ItemNotFoundException ie) {
-            childList.remove(child);
-          } catch (Exception e) {
-            childList.remove(child);
-          }         
         }
       }
     } else {
