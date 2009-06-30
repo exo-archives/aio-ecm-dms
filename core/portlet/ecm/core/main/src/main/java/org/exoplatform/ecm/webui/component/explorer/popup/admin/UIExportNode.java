@@ -135,7 +135,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
     StringBuilder predecessorsBuilder = new StringBuilder();
     for(Value value : predecessors) {
       if(predecessorsBuilder.length() > 0) predecessorsBuilder.append(",") ;
-      predecessorsBuilder.append(value.toString());
+      predecessorsBuilder.append(value.getString());
     }
     historyValue.append(node.getUUID()).append("=").append(versionHistory).
       append(";").append(baseVersion).append(";").append(predecessorsBuilder.toString()); 
@@ -186,7 +186,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       DownloadService dservice = uiExport.getApplicationComponent(DownloadService.class) ;
       InputStreamDownloadResource dresource ;
       String format = uiExport.<UIFormRadioBoxInput>getUIInput(FORMAT).getValue() ;
-      ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
       Node currentNode = uiExplorer.getCurrentNode();
       String sysWsName = uiExplorer.getRepository().getConfiguration().getSystemWorkspaceName();
       Session session = uiExplorer.getSessionByWorkspace(sysWsName);
