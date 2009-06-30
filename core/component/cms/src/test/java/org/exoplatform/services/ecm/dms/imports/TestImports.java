@@ -145,7 +145,7 @@ public class TestImports extends BaseDMSTestCase {
     versionList.clear();
     Version rootVersionImport = helloImport.getVersionHistory().getRootVersion();    
     getListVersion(rootVersionImport);
-    assertEquals(0, versionList.size());
+    assertEquals(1, versionList.size());
   }
   
   public void getListVersion(Version version) {
