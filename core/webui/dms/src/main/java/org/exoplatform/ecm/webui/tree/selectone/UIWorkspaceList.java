@@ -24,6 +24,7 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.UINodeTreeBuilder;
@@ -32,10 +33,12 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -67,6 +70,8 @@ public class UIWorkspaceList extends UIForm {
   private List<String> wsList_;
   private boolean isShowSystem_ = true;
 
+  private static final Log LOG = ExoLogger.getLogger(UIWorkspaceList.class);
+  
   public UIWorkspaceList() throws Exception {
     List<SelectItemOption<String>> wsList = new ArrayList<SelectItemOption<String>>();
     UIFormSelectBox uiWorkspaceList = new UIFormSelectBox(WORKSPACE_NAME, WORKSPACE_NAME, wsList);
@@ -136,20 +141,23 @@ public class UIWorkspaceList extends UIForm {
       UIOneNodePathSelector uiJBrowser = uiWorkspaceList.getParent();
       String wsName = uiWorkspaceList.getUIFormSelectBox(WORKSPACE_NAME).getValue();
       uiJBrowser.setWorkspaceName(wsName);
-      UINodeTreeBuilder uiTreeJCRExplorer = uiJBrowser.getChild(UINodeTreeBuilder.class);
+      UINodeTreeBuilder uiTreeBuilder = uiJBrowser.getChild(UINodeTreeBuilder.class);
+      UIBreadcumbs uiBreadcumbs = uiJBrowser.getChild(UIBreadcumbs.class);
+      if (uiBreadcumbs != null) uiBreadcumbs.getPath().clear();
       UIApplication uiApp = uiWorkspaceList.getAncestorOfType(UIApplication.class);
       try {
-        uiTreeJCRExplorer.setRootTreeNode(uiWorkspaceList.getRootNode(uiJBrowser.getRepositoryName(), wsName));
+        uiTreeBuilder.setRootTreeNode(uiWorkspaceList.getRootNode(uiJBrowser.getRepositoryName(), wsName));
       } catch (AccessDeniedException ade) {        
         uiWorkspaceList.getUIFormSelectBox(WORKSPACE_NAME).setValue("collaboration");
         uiApp.addMessage(new ApplicationMessage("UIWorkspaceList.msg.AccessDeniedException", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("An unexpected error occurs", e);
         return;
       }
-      uiTreeJCRExplorer.buildTree();
+      
+      uiTreeBuilder.buildTree();
       event.getRequestContext().addUIComponentToUpdateByAjax(uiJBrowser);
     }
   }

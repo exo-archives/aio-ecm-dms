@@ -105,8 +105,6 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
       } else {
         NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
         rootNode = (Node) nodeFinder.getItem(repositoryName, workspaceName, rootTreePath);
-        //Session session = sessionProvider.getSession(workspaceName, manageableRepository);
-        //rootNode = (Node)session.getItem(rootTreePath);
       }
       
       UIWorkspaceList uiWorkspaceList = getChild(UIWorkspaceList.class);
@@ -212,7 +210,6 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
     selectPathPanel.updateGrid();
     UIBreadcumbs uiBreadcumbs = getChild(UIBreadcumbs.class);
     String pathName = currentNode.getName();
-    //Node rootNode = (Node)currentNode.getSession().getItem(rootTreePath);    
     NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
     Node rootNode = (Node) nodeFinder.getItem(repositoryName, workspaceName, rootTreePath);
     

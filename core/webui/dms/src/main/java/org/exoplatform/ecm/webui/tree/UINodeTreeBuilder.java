@@ -164,10 +164,6 @@ public class UINodeTreeBuilder extends UIContainer {
    * 
    * @throws Exception the exception
    */
-  /*private Node getNodeSymLink(Node node) throws Exception{
-    LinkManager linkManager_ = getApplicationComponent(LinkManager.class);
-    return Utils.getNodeSymLink(node, linkManager_);
-  }*/
   
   public void buildTree() throws Exception {  
     NodeIterator sibbling = null ;
@@ -210,6 +206,7 @@ public class UINodeTreeBuilder extends UIContainer {
     NodeFinder nodeFinder_ = getApplicationComponent(NodeFinder.class);
     return (Node)nodeFinder_.getItem(uiOneNodePathSelector.getRepositoryName(), uiOneNodePathSelector.getWorkspaceName(), path);
   }
+  
   private void addNodePublish(List<Node> listNode, Node node, PublicationService publicationService) throws Exception {
     if (isAllowPublish()) {
       NodeType nt = node.getPrimaryNodeType();
