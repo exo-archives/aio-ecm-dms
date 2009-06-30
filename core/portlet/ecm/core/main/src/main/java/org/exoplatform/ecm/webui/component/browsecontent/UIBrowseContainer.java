@@ -312,11 +312,23 @@ public class UIBrowseContainer extends UIContainer {
   public Node getNodeByPath(String nodePath) throws Exception {
     if (nodePath == null) return null;
     NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
+    String repository = getRepository();
     try{
       if(wsName_ == null) wsName_ = getWorkSpace();
-      return (Node) nodeFinder.getItem(getRepository(), wsName_, nodePath);
+      return (Node) nodeFinder.getItem(repository, wsName_, nodePath);
     } catch(PathNotFoundException path) {
-      //return (Node) nodeFinder.getItem(getRepository(), wsName_, rootPath_);
+      // Target node with other workspace
+      RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
+      String[] wsNames = repositoryService.getRepository(repository).getWorkspaceNames();
+      for(String wsName : wsNames) {
+        Node targetNode = null;
+        try {
+          targetNode = (Node) nodeFinder.getItem(repository, wsName, nodePath);
+        } catch (Exception e) {
+          targetNode = null;
+        }
+        if (targetNode != null) return targetNode;
+      }
       LOG.error("PathNotFoundException when get node by path = " + nodePath, path);
       return null;
     } catch(AccessDeniedException ace) {
