@@ -1518,6 +1518,11 @@
         <UIOneNodePathSelector>Sélectionner une relation</UIOneNodePathSelector>
       </label>
     </tab>
+    <tab>
+      <label>
+        <UIRelationsAddedList>Liste des Relations</UIRelationsAddedList>
+      </label>
+    </tab>
   </UIRelationManager>
   <UIRelationsAddedList>
     <header>

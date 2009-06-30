@@ -1525,6 +1525,11 @@
         <UIOneNodePathSelector>Lựa chọn quan hệ</UIOneNodePathSelector>
       </label>
     </tab>
+    <tab>
+      <label>
+        <UIRelationsAddedList>Danh sách các quan hệ</UIRelationsAddedList>
+      </label>
+    </tab>
   </UIRelationManager>
   <UIRelationsAddedList>
     <header>
