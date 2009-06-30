@@ -1120,7 +1120,6 @@ public class UIBrowseContainer extends UIContainer {
       setSelectedTabPath(categoryPath);
       setCurrentNodePath(categoryPath);
     } catch (Exception e) {
-      LOG.error("An error occured while loading the portlet config", e);
       setRootPath(null);
       setCategoryPath(null);
       setSelectedTabPath(null);
