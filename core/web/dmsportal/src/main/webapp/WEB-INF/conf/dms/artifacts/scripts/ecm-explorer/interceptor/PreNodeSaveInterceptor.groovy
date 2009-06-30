@@ -25,8 +25,8 @@ public class PreNodeSaveInterceptor implements CmsScript {
   public PreNodeSaveInterceptor() {
   }
   
-  public void execute(Object context) {
-    String path = (String) context;       
+  public void execute(Object context) throws Exception{
+    String path = (String) context;     
     println(" Pre Node Save, a good form validator");
   }
 

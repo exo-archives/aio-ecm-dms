@@ -17,6 +17,11 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.form;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.exoplatform.web.application.ApplicationMessage;
+
 /**
  * Created by eXo Platform
  * Author : Nguyen Manh Cuong
@@ -27,16 +32,19 @@ package org.exoplatform.ecm.webui.form;
 /**
  * This is an exception which will be thrown when there is a problem with pre save interceptor
  */
-@SuppressWarnings("serial")
-public class DialogFormException extends Throwable {
+public class DialogFormException extends Exception {
 
-  private final static String DIALOGFORM_MESSAGE_KEY = "UIDialogForm.form.DialogFormException";
+  private List<ApplicationMessage> appMsgList = new ArrayList<ApplicationMessage>();
 
-  public DialogFormException(){
-    super();
+  public DialogFormException(ApplicationMessage app){
+    appMsgList.add(app);
   }
-
-  public String getMessageKey() {
-    return DIALOGFORM_MESSAGE_KEY;
+  
+  public void addApplicationMessage(ApplicationMessage app) {
+    appMsgList.add(app);
+  }
+  
+  public List<ApplicationMessage> getMessages() {
+    return appMsgList;
   }
 }

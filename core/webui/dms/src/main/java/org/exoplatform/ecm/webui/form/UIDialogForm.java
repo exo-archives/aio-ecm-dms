@@ -90,8 +90,6 @@ public class UIDialogForm extends UIForm {
    * Logger.
    */
   private static final Log LOG  = ExoLogger.getLogger("webui.form.UIDialogForm");
-  public final static String PRE_SAVE_EVENT = "Dialog.event.preSave".intern(); 
-  public final static String POST_SAVE_EVENT = "Dialog.event.postSave".intern(); 
   
   private final String REPOSITORY = "repository";
   protected final static String CANCEL_ACTION = "Cancel".intern();
@@ -332,10 +330,8 @@ public class UIDialogForm extends UIForm {
       if (script != null) {
         try {
           String[] scriptParams = formSelectBoxField.getScriptParams();
-          if("repository".equals(scriptParams[0])) scriptParams[0] = repositoryName;
+          if(scriptParams != null && scriptParams.length > 0 && "repository".equals(scriptParams[0])) scriptParams[0] = repositoryName;
           executeScript(script, uiSelectBox, scriptParams, false);
-        } catch (DialogFormException ex) {
-          LOG.error("An unexpected error occurs", ex);
         } catch (Exception e) {
           LOG.error("An unexpected error occurs", e);
           uiSelectBox.setOptions(optionsList);
@@ -828,10 +824,6 @@ public class UIDialogForm extends UIForm {
             executePostSaveEventInterceptor(nodePath);
           }
         }
-      } catch (DialogFormException e) {
-        UIApplication uiApp = getAncestorOfType(UIApplication.class);
-        uiApp.addMessage(new ApplicationMessage(e.getMessageKey(), new String[] { e.getMessage() }, ApplicationMessage.WARNING));
-        context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       } finally {
         prevScriptInterceptor.clear();
         postScriptInterceptor.clear();
@@ -927,8 +919,7 @@ public class UIDialogForm extends UIForm {
 
   public void setWorkspace(String workspace) { this.workspaceName = workspace; }  
 
-  private void executePostSaveEventInterceptor(String nodePath_) throws DialogFormException,
-      Exception {
+  private void executePostSaveEventInterceptor(String nodePath_) throws Exception {
     if (postScriptInterceptor.size() > 0) {
       String path = nodePath_ + "&workspaceName=" + this.workspaceName + "&repository="
           + this.repositoryName;
@@ -938,35 +929,49 @@ public class UIDialogForm extends UIForm {
     }
   }
 
-  private boolean executePreSaveEventInterceptor() throws DialogFormException, Exception {
+  private boolean executePreSaveEventInterceptor() throws Exception {
     if (prevScriptInterceptor.size() > 0) {
       Map<String, JcrInputProperty> maps = DialogFormUtil.prepareMap(this.getChildren(),
           getInputProperties());
       for (String interceptor : prevScriptInterceptor) {
         return executeScript(interceptor, maps, null, false);
       }
-      return false;
+      return true;
     }
     return false;
   }
 
   private boolean executeScript(String script, Object o, String[] params, boolean printException)
-      throws DialogFormException {
+      throws Exception {
     ScriptService scriptService = getApplicationComponent(ScriptService.class);
     try {
       CmsScript dialogScript = scriptService.getScript(script, repositoryName);
       if (params != null) {
-        if (REPOSITORY.equals(params[0]))
+        if (params.length > 0 && REPOSITORY.equals(params[0]))
           params = new String[] { repositoryName };
         dialogScript.setParams(params);
       }
       dialogScript.execute(o);
       return true;
     } catch (Exception e) {
-      if(printException) {
-        LOG.warn("An unexpected error occurs", e);
+      if (e instanceof DialogFormException) {
+        if (printException) {
+          LOG.warn("An unexpected error occurs", e);
+        } else {
+          UIApplication uiApp = getAncestorOfType(UIApplication.class);
+          for (ApplicationMessage message : ((DialogFormException) e).getMessages()) {
+            uiApp.addMessage(message);
+          }
+          return false;
+        }
       } else {
-        throw new DialogFormException();
+        if (printException) {
+          LOG.error("An unexpected error occurs", e);
+        } else {
+          UIApplication uiApp = getAncestorOfType(UIApplication.class);
+          JCRExceptionManager.process(uiApp, e);
+        }
+        return false;
       }
     }
     return false;

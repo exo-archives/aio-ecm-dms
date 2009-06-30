@@ -18,7 +18,7 @@ package org.exoplatform.services.cms.scripts;
 
 public interface CmsScript {
 
-  public void execute(Object context);
+  public void execute(Object context) throws Exception;
 
   public void setParams(String[] params);
   
