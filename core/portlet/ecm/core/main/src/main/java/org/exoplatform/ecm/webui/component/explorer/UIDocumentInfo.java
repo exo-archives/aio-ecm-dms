@@ -211,11 +211,13 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   public String getThumbnailImage(Node node) throws Exception {
+    node = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getTargetNode().getRealNode() : node;
     return Utils.getThumbnailImage(node, ThumbnailService.MEDIUM_SIZE);
   }
   
   public Node getThumbnailNode(Node node) throws Exception {
     ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+    node = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getTargetNode().getRealNode() : node;
     return thumbnailService.getThumbnailNode(node);
   }
 
@@ -520,10 +522,12 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   public String getFlowImage(Node node) throws Exception {
+    node = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getTargetNode().getRealNode() : node;
     return Utils.getThumbnailImage(node, ThumbnailService.BIG_SIZE);
   }
   
   public String getThumbnailSize(Node node) throws Exception {
+    node = node instanceof NodeLinkAware ? ((NodeLinkAware) node).getTargetNode().getRealNode() : node;
     String imageSize = null;
     if(node.hasProperty(ThumbnailService.BIG_SIZE)) {
       Image image = ImageIO.read(node.getProperty(ThumbnailService.BIG_SIZE).getStream());
