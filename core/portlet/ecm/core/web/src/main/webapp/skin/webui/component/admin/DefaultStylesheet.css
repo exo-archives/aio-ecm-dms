@@ -10,6 +10,10 @@
 @import url("UIMetadataManager/DefaultStylesheet.css");
 @import url("UINodeTypeManager/DefaultStylesheet.css");
 
+.UIGroupMembershipSelector .MembershipTitle {
+font-weight:bold;
+}
+
 .UIWindow .UIECMAdminPortlet {
 	border: none;
 	margin: 0px;
