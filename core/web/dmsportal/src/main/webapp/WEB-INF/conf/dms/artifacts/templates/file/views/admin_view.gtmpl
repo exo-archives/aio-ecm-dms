@@ -38,7 +38,6 @@
   
    .FileContent .Content .TextContent {  
    	overflow: auto;
-   	height: 300px;
     margin: auto;
     width: 89%;
    	padding: 10px;
