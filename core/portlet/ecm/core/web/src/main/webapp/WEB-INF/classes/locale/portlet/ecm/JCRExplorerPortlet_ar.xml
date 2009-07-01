@@ -1518,6 +1518,11 @@
         <UIOneNodePathSelector>اختر الصلة</UIOneNodePathSelector>
       </label>
     </tab>
+    <tab>
+      <label>
+        <UIRelationsAddedList>العلاقة القائمة</UIRelationsAddedList>
+      </label>
+    </tab>
   </UIRelationManager>
   <UIRelationsAddedList>
     <header>

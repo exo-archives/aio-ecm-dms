@@ -1518,6 +1518,11 @@
         <UIOneNodePathSelector>selecteer relatie document</UIOneNodePathSelector>
       </label>
     </tab>
+    <tab>
+      <label>
+        <UIRelationsAddedList>Relatie Lijst</UIRelationsAddedList>
+      </label>
+    </tab>    
   </UIRelationManager>
   <UIRelationsAddedList>
     <header>

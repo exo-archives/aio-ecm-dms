@@ -1518,6 +1518,11 @@
         <UIOneNodePathSelector><![CDATA[Beziehungsdokument ausw&auml;hlen]]></UIOneNodePathSelector>
       </label>
     </tab>
+    <tab>
+      <label>
+        <UIRelationsAddedList>Verbunden Liste</UIRelationsAddedList>
+      </label>
+    </tab>     
   </UIRelationManager>
   <UIRelationsAddedList>
     <header>
