@@ -77,6 +77,8 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
   
   private String rootTaxonomyName = null;
   
+  private String[] defaultExceptedNodeTypes = {"exo:symlink"};
+  
   public UIOneTaxonomySelector() throws Exception {
     addChild(UIBreadcumbs.class, "BreadcumbOneTaxonomy", "BreadcumbOneTaxonomy");
     addChild(UITreeTaxonomyList.class, null, null);
@@ -94,6 +96,8 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     return taxonomyService.getTaxonomyTree(repositoryName, taxoTreeName);
   }
+  
+  public String[] getDefaultExceptedNodeTypes() { return defaultExceptedNodeTypes; }
   
   public void init(SessionProvider sessionProvider) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
@@ -116,12 +120,14 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
       UITreeTaxonomyBuilder builder = getChild(UITreeTaxonomyBuilder.class);
       builder.setAllowPublish(allowPublish, publicationService, templates);
       builder.setAcceptedNodeTypes(acceptedNodeTypesInTree);
+      builder.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
       builder.setRootTreeNode(rootNode);
       UISelectTaxonomyPanel selectPathPanel = getChild(UISelectTaxonomyPanel.class);
       selectPathPanel.setAllowPublish(allowPublish, publicationService, templates);
       selectPathPanel.setAcceptedNodeTypes(acceptedNodeTypesInPathPanel);
       selectPathPanel.setAcceptedMimeTypes(acceptedMimeTypes);
       selectPathPanel.setExceptedNodeTypes(exceptedNodeTypesInPathPanel);
+      selectPathPanel.setDefaultExceptedNodeTypes(defaultExceptedNodeTypes);
       selectPathPanel.updateGrid();
     } finally {
       sessionProvider.close();

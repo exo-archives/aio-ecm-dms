@@ -64,6 +64,7 @@ public class UISelectTaxonomyPanel extends UIContainer {
   private boolean allowPublish = false;
   private PublicationService publicationService_ = null;
   private List<String> templates_ = null;
+  private String[] defaultExceptedNodeTypes = {};
   
   private static String TAXONOMY_TREE = "taxonomyTree";
   
@@ -117,6 +118,12 @@ public class UISelectTaxonomyPanel extends UIContainer {
 
   public String[] getAcceptedMimeTypes() { return acceptedMimeTypes; }
   public void setAcceptedMimeTypes(String[] acceptedMimeTypes) { this.acceptedMimeTypes = acceptedMimeTypes; }  
+  
+  public String[] getDefaultExceptedNodeTypes() { return defaultExceptedNodeTypes; }
+  
+  public void setDefaultExceptedNodeTypes(String[] defaultExceptedNodeTypes) {
+    this.defaultExceptedNodeTypes = defaultExceptedNodeTypes;
+  }
 
   public List getSelectableNodes() throws Exception { return uiPageIterator_.getCurrentPageData(); }
   

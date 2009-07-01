@@ -27,13 +27,14 @@
 		    boolean even = true ;
 		    if(nodes.size() > 0) {
 			    for(node in nodes) {
-				      if(even) {
-				      	rowClass = "EvenRow" ;  
-				      } else {
-				      	rowClass =  "OddRow" ; 
-				      }
-				      even = !even ;
+			      if(even) {
+			      	rowClass = "EvenRow" ;  
+			      } else {
+			      	rowClass =  "OddRow" ; 
+			      }
+			      even = !even ;
 	      %>
+			      <%if(!uicomponent.isExceptedNodeType(node)) {%>
 				      <tr class="$rowClass">
 				        <td>
 				        <%
@@ -50,14 +51,13 @@
 				          $nodeName</div>
 				        </td>
 				        <td>
-				          <%if(!uicomponent.isExceptedNodeType(node)) {%>
-			              <a href="<%=uicomponent.event("Select", node.getPath())%>">
-			                <div class="Select16x16Icon" style="margin-left:15px;"></div>
-			              </a>
-				          <%}%>
+		              <a href="<%=uicomponent.event("Select", node.getPath())%>">
+		                <div class="Select16x16Icon" style="margin-left:15px;"></div>
+		              </a>
 				        </td>
 				      </tr>
 			<%
+			      }
 					}
 		    } else {
 		  %>

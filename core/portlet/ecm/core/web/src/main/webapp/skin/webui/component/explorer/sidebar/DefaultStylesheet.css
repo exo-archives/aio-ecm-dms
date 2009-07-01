@@ -130,9 +130,9 @@
   position: absolute;
   width: 9px;
   height: 5px;
-  left: 9px; /* orientation=lt */
-  right: 9px; /* orientation=rt */
-  bottom: 0;
+  left: 65px; /* orientation=lt */
+  right: 100px; /* orientation=rt */
+  padding-top: 12px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
