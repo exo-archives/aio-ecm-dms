@@ -157,7 +157,8 @@
 	float: right; /* orientation=rt */
 	border-right: 1px solid #b7b7b7; /* orientation=lt */
 	border-left: 1px solid #b7b7b7; /* orientation=rt */
-	width: 30px; height: 19px; 
+	width: 30px; 
+	height: 19px; 
 	overflow: hidden;
   white-space: nowrap;
 }

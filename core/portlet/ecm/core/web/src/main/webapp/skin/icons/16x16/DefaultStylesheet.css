@@ -12,7 +12,8 @@
 }
 
 .AddIcon16x16 {
-  width: 16px; height: 16px;
+  width: 16px; 
+  height: 16px;
   background: url('DefaultSkin/BlueCirclePlus.gif') no-repeat; 
   cursor: pointer;
 }
@@ -185,8 +186,10 @@
 }
 
 .BlueDownArrow16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat;
+  width: 16px; 
+  height: 16px;
+  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/BlueDownArrow.gif') no-repeat right center; /* orientation=rt */
 }
 
 .BlueUpArrow16x16Icon {

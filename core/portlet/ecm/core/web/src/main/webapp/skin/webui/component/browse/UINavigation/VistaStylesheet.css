@@ -177,7 +177,8 @@
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	height: 26px;
-	padding-left: 3px;
+	padding-left: 3px; /* orientation=lt */
+	padding-right: 3px; /* orientation=rt */
 }
 
 .UICBNavigation .UIHorizontalTabs .TabIcon {

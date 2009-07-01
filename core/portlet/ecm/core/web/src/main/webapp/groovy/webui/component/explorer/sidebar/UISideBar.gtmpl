@@ -20,7 +20,7 @@
   	<div class="UIResizableBlock" style="">
   	  <% uicomponent.renderChildren(); %>
   	</div>
-	  <div class="UISelectContent" style="display: block">
+	  <div class="UISelectContent">
 	  	<div class="<%=getCSSClassName("Explorer")%>" onclick="<%=uicomponent.event("Explorer")%>" title="<%=_ctx.appRes("UISideBar.label.Explorer")%>">
 	      <div class="ItemIcon FileExplorerIcon"><span></span></div>
       </div>

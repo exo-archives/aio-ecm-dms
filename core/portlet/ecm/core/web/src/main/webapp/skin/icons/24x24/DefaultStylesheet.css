@@ -7,185 +7,232 @@
  */
  
 .Relations24x24Icon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/RelationsIcon.gif') no-repeat center center;
+  width: 24px; 
+  height: 24px;
+  background: url('DefaultSkin/RelationsIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/RelationsIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .SavedQueries {
   width: 24px; height: 24px;
-  background: url('DefaultSkin/SavedQueries.gif') no-repeat center;
+  background: url('DefaultSkin/SavedQueries.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/SavedQueries.gif') no-repeat right center; /* orientation=rt */
   cursor: pointer;
 }
 
 .SwitchSearch  {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/AdvancedSearch.gif') no-repeat center;
+  width: 24px;
+  height: 24px;
+  background: url('DefaultSkin/AdvancedSearch.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/AdvancedSearch.gif') no-repeat right center; /* orientation=rt */
   cursor: pointer;
 }
 
 .JCRExplorer24x24Icon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/JCRExplorerIcon.gif') no-repeat center center;
+  width: 24px; 
+  height: 24px;
+  background: url('DefaultSkin/JCRExplorerIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/JCRExplorerIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .TagExplorer24x24Icon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/Tagging.gif') no-repeat center center;
+  width: 24px; 
+  height: 24px;
+  background: url('DefaultSkin/Tagging.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Tagging.gif') no-repeat right center; /* orientation=rt */
 }
 
 .Clipboard24x24Icon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/Clipboard.gif') no-repeat center center;
+  width: 24px; 
+  height: 24px;
+  background: url('DefaultSkin/Clipboard.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/Clipboard.gif') no-repeat right center; /* orientation=rt */
 }
 
 .CloseSidebar24x24Icon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat center center;
+  width: 24px; 
+  height: 24px;
+  background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/CloseSidebarIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .CollapseFolder24x24Icon {
-  background: url('DefaultSkin/BlueOpenFolder.gif') no-repeat center center;
-  width: 24px; height: 24px;
+  background: url('DefaultSkin/BlueOpenFolder.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/BlueOpenFolder.gif') no-repeat right center; /* orientation=rt */
+  width: 24px; 
+  height: 24px;
 }
 
 .ExpandFolder24x24Icon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueClosedFolder.gif') no-repeat center center;
+  width: 24px; 
+  height: 24px;
+  background: url('DefaultSkin/BlueClosedFolder.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/BlueClosedFolder.gif') no-repeat right center; /* orientation=rt */
 }
 
 .Style1NextArrow24x24Icon  {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueCircleRightArrow.gif') no-repeat center center;
+  width: 24px; 
+  height: 24px;
+  background: url('DefaultSkin/BlueCircleRightArrow.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/BlueCircleRightArrow.gif') no-repeat right center; /* orientation=rt */
 }
 
 .Style1BackArrow24x24Icon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/BlueCircleLeftArrow.gif') no-repeat center center;
+  width: 24px; 
+  height: 24px;
+  background: url('DefaultSkin/BlueCircleLeftArrow.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/BlueCircleLeftArrow.gif') no-repeat right center; /* orientation=rt */
 }
 
 .EditDocumentIcon {
 	height: 24px;
-	background: url('DefaultSkin/EditDocument.gif') no-repeat;
+	background: url('DefaultSkin/EditDocument.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/EditDocument.gif') no-repeat right center; /* orientation=rt */
 }
 
 .WatchDocumentIcon {
 	height: 24px;
-	background: url('DefaultSkin/WatchDocument.gif') no-repeat;
+	background: url('DefaultSkin/WatchDocument.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/WatchDocument.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewMetadatasIcon {
 	height: 24px;
-	background: url('DefaultSkin/ViewMatadata.gif') no-repeat;
+	background: url('DefaultSkin/ViewMatadata.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ViewMatadata.gif') no-repeat right center; /* orientation=rt */
 }
 
 .VoteIcon {
 	height: 24px;
-	background: url('DefaultSkin/VoteDocument.gif') no-repeat;
+	background: url('DefaultSkin/VoteDocument.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/VoteDocument.gif') no-repeat right center; /* orientation=rt */
 }
 
 .CommentIcon {
 	height: 24px;
-	background: url('DefaultSkin/Comment.gif') no-repeat;
+	background: url('DefaultSkin/Comment.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/Comment.gif') no-repeat right center; /* orientation=rt */
 }
 
 .TaggingDocumentIcon {
 	height: 24px;
-  background: url('DefaultSkin/Tagging.gif') no-repeat;
+  background: url('DefaultSkin/Tagging.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/Tagging.gif') no-repeat right center; /* orientation=rt */
 }
 
 .MultiLanguageIcon {
 	height: 24px;
-  background: url('DefaultSkin/MultiLanguages.gif') no-repeat;
+  background: url('DefaultSkin/MultiLanguages.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/MultiLanguages.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageVersionsIcon {
 	height: 24px;
-  background: url('DefaultSkin/ManageVersions.gif') no-repeat;
+  background: url('DefaultSkin/ManageVersions.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageVersions.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageAuditingIcon {
 	height: 24px;
-  background: url('DefaultSkin/ManageAuditing.gif') no-repeat;
+  background: url('DefaultSkin/ManageAuditing.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageAuditing.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManagePublicationsIcon {
 	height: 24px;
-  background: url('DefaultSkin/ManagerPuplication.gif') no-repeat;
+  background: url('DefaultSkin/ManagerPuplication.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManagerPuplication.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageActionsIcon {
 	height: 24px;
-  background: url('DefaultSkin/ManageActions.gif') no-repeat;
+  background: url('DefaultSkin/ManageActions.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageActions.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageCategoriesIcon {
 	height: 24px;
-  background: url('DefaultSkin/ManageCategories.gif') no-repeat;
+  background: url('DefaultSkin/ManageCategories.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageCategories.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageSimpleCategoriesIcon {
   height: 24px;
-  background: url('DefaultSkin/ManageCategories.gif') no-repeat;
+  background: url('DefaultSkin/ManageCategories.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageCategories.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageRelationsIcon {
 	height: 24px;
-  background: url('DefaultSkin/ManageRelations.gif') no-repeat;
+  background: url('DefaultSkin/ManageRelations.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageRelations.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ImportNodeIcon {
 	height: 24px;
-  background: url('DefaultSkin/ImportNode.gif') no-repeat;
+  background: url('DefaultSkin/ImportNode.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ImportNode.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageHiddenIcon {
   height: 24px;
-  background: url('DefaultSkin/AddRemoveHidden.gif') no-repeat;
+  background: url('DefaultSkin/AddRemoveHidden.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/AddRemoveHidden.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ExportNodeIcon {
 	height: 24px;
-  background: url('DefaultSkin/ExportNode.gif') no-repeat;
+  background: url('DefaultSkin/ExportNode.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ExportNode.gif') no-repeat right center; /* orientation=rt */
 }
 
 .SearchIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/Search.gif') no-repeat;
+	width: 24px; 
+	height: 24px;
+  background: url('DefaultSkin/Search.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Search.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddDocumentIcon {
 	height: 24px;
-  background: url('DefaultSkin/AddDocument.gif') no-repeat;
+  background: url('DefaultSkin/AddDocument.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/AddDocument.gif') no-repeat right center; /* orientation=rt */
 }
 
 .CreateTicketIcon {
 	height: 24px;
-  background: url('DefaultSkin/AddTicket.gif') no-repeat;
+  background: url('DefaultSkin/AddTicket.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/AddTicket.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddFolderIcon {
 	height: 24px;
-  background: url('DefaultSkin/AddFolder.gif') no-repeat;
+  background: url('DefaultSkin/AddFolder.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/AddFolder.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UploadIcon {
 	height: 24px;
-  background: url('DefaultSkin/UploadFile.gif') no-repeat;
+  background: url('DefaultSkin/UploadFile.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/UploadFile.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddSymLinkIcon {
   height: 24px;
-  background: url('DefaultSkin/AddSymLink.gif') no-repeat;
+  background: url('DefaultSkin/AddSymLink.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/AddSymLink.gif') no-repeat right center; /* orientation=rt */
 }
 
 .OverloadThumbnailIcon {
 	height: 24px;
-  background: url('DefaultSkin/OverloadThumbnailIcon.gif') no-repeat;
+  background: url('DefaultSkin/OverloadThumbnailIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/OverloadThumbnailIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewReferencesIcon {
 	height: 24px;
-  background: url('DefaultSkin/ViewReferences.gif') no-repeat;
+  background: url('DefaultSkin/ViewReferences.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ViewReferences.gif') no-repeat right center; /* orientation=rt */
 }
 
 /* <ECM-1543>
@@ -205,42 +252,54 @@ a:hover .ShowHideBoxContainer {
 
 .ShowJCRStructureIcon {
 	height: 24px;
-  background: url('DefaultSkin/ShowJCRStructure.gif') no-repeat;
+  background: url('DefaultSkin/ShowJCRStructure.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ShowJCRStructure.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewNodeTypeIcon {
 	height: 24px;
-  background: url('DefaultSkin/ViewNodeType.gif') no-repeat;
+  background: url('DefaultSkin/ViewNodeType.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ViewNodeType.gif') no-repeat right center; /* orientation=rt */
+  
 }
 
 .ViewPropertiesIcon {
 	height: 24px;
-  background: url('DefaultSkin/ViewProperties.gif') no-repeat;
+  background: url('DefaultSkin/ViewProperties.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ViewProperties.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewRelationsIcon {
 	height: 24px;
-  background: url('DefaultSkin/ViewRelations.gif') no-repeat;
+  background: url('DefaultSkin/ViewRelations.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ViewRelations.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewPermissionsIcon {
 	height: 24px;
-  background: url('DefaultSkin/ViewPermission.gif') no-repeat;
+  background: url('DefaultSkin/ViewPermission.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ViewPermission.gif') no-repeat right center; /* orientation=rt */
 }
 
 .HardDisk24x24Icon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/HardDisk.gif') no-repeat;
+	width: 24px; 
+	height: 24px;
+  background: url('DefaultSkin/HardDisk.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/HardDisk.gif') no-repeat right center; /* orientation=rt */
 }
 
 .BlueDiamond24x24Icon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/BlueDiamond.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/BlueDiamond.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/BlueDiamond.gif') no-repeat right center; /* orientation=rt */
 }
 
 .PermissionIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/PermissionIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/PermissionIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/PermissionIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .Permission24x24Icon {
@@ -253,189 +312,239 @@ a:hover .ShowHideBoxContainer {
 .SelectPath24x24Icon {
   float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
-	width: 16px;	height: 16px;
+	width: 16px;	
+	height: 16px;
   background: url('DefaultSkin/MagnifierIconNews.png') no-repeat;
 }
 
 .OntologiesIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageOntologies.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageOntologies.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageOntologies.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UITemplatesManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageTemplateIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageTemplateIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageTemplateIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIViewManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageViewIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageViewIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageViewIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIDriveManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageDriveIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageDriveIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageDriveIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIQueriesManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageQueries.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageQueries.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageQueries.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIActionManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/CreateActionTypeIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/CreateActionTypeIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/CreateActionTypeIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIScriptManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageScriptIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageScriptIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageScriptIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRuleManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageRuleIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageRuleIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageRuleIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIFolksonomyManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageFolksonomyIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageFolksonomyIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageFolksonomyIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UITaxonomyManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageTaxonomyIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageTaxonomyIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageTaxonomyIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UITaxonomyManagerTreesIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageTaxonomyIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageTaxonomyIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageTaxonomyIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIMetadataManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddMetadataTypeIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat;
+	width: 24px;
+	height: 24px;
+  background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageMetadataIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UINamespaceManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/NameSpaceRegistryIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/NameSpaceRegistryIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/NameSpaceRegistryIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UINodeTypeManagerIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat;
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddNodeTypeIcon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat;
+  background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageNodeTypeIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddCategoryIcon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat;
+  background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .TypesOfContentIcon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/CreateDocumentTypes.gif') no-repeat;
+  background: url('DefaultSkin/CreateDocumentTypes.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/CreateDocumentTypes.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ContentPresentationIcon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/DisplayDocuments.gif') no-repeat;
+  background: url('DefaultSkin/DisplayDocuments.gif') no-repeat left center; /* orientation=lt */
+	sbackground: url('DefaultSkin/DisplayDocuments.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AdvanceConfiguarationIcon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageDynamicContent.gif') no-repeat;
+  background: url('DefaultSkin/ManageDynamicContent.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageDynamicContent.gif') no-repeat right center; /* orientation=rt */
 }
 
 .RefreshSession24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/MetalSync.gif') no-repeat;
+  background: url('DefaultSkin/MetalSync.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/MetalSync.gif') no-repeat right center; /* orientation=rt */
 }
 
 .HomeIcon {
   width: 24px;	height: 16px;
-  background: url('DefaultSkin/HardDisk20x12.gif') no-repeat center center;
+  background: url('DefaultSkin/HardDisk20x12.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/HardDisk20x12.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewPortlet24x24Icon {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/DisplayDocuments.gif') no-repeat;
+  background: url('DefaultSkin/DisplayDocuments.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/DisplayDocuments.gif') no-repeat right center; /* orientation=rt */
 }
 
 .Switch24x24Icon {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/DisplayDocuments.gif') no-repeat;
+  background: url('DefaultSkin/DisplayDocuments.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/DisplayDocuments.gif') no-repeat right center; /* orientation=rt */
 }
 .ConfigPortlet24x24Icon {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/ManageActions.gif') no-repeat;
+  background: url('DefaultSkin/ManageActions.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ManageActions.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddNewConfig24x24Icon {
   width: 24px;	height: 24px;
-  background: url('DefaultSkin/AddDocument.gif') no-repeat;
+  background: url('DefaultSkin/AddDocument.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/AddDocument.gif') no-repeat right center; /* orientation=rt */
 }
 
 .SmallNote24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/SmallNote.gif') no-repeat;
+  background: url('DefaultSkin/SmallNote.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/SmallNote.gif') no-repeat right center; /* orientation=rt */
 }
 
 .GreenLeftArrowFolder24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/GreenLeftArrowFolder.gif') no-repeat;
+  background: url('DefaultSkin/GreenLeftArrowFolder.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/GreenLeftArrowFolder.gif') no-repeat right center; /* orientation=rt */
 }
 
 .GreenUpArrowFolder24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/GreenUpArrowFolder.gif') no-repeat;
+  background: url('DefaultSkin/GreenUpArrowFolder.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/GreenUpArrowFolder.gif') no-repeat right center; /* orientation=rt */
 }
 
 .GreenLeftArrow24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/GreenLeftArrow.gif') no-repeat; /* orientation=lt */
-  background: url('DefaultSkin/GreenLeftArrow-rt.gif') no-repeat; /* orientation=rt */
+  background: url('DefaultSkin/GreenLeftArrow.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/GreenLeftArrow-rt.gif') no-repeat right center; /* orientation=rt */
 }
 
 .GreenRightArrow24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/GreenRightArrow.gif') no-repeat; /* orientation=lt */
-  background: url('DefaultSkin/GreenRightArrow-rt.gif') no-repeat; /* orientation=rt */
+  background: url('DefaultSkin/GreenRightArrow.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/GreenRightArrow-rt.gif') no-repeat right center; /* orientation=rt */
 }
 
 .Categories24x24Icon {
 	width: 24px;	height: 24px;
-  background: url('DefaultSkin/Categories.gif') no-repeat;
+  background: url('DefaultSkin/Categories.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/Categories.gif') no-repeat right center; /* orientation=rt */
 }
 
 .BlackMonitor24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/BlackMonitor.gif') no-repeat;
+  background: url('DefaultSkin/BlackMonitor.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/BlackMonitor.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/AddRepositoryIcon.gif') no-repeat;
+  background: url('DefaultSkin/AddRepositoryIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/AddRepositoryIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .EditRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/EditRepositoryIcon.gif') no-repeat;
+  background: url('DefaultSkin/EditRepositoryIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/EditRepositoryIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .RemoveRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/RemoveRepositoryIcon.gif') no-repeat;
+  background: url('DefaultSkin/RemoveRepositoryIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/RemoveRepositoryIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 /*############################## -- Begin NodeType Icon -- ########################*/

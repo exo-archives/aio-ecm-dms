@@ -197,168 +197,201 @@ a:hover .ShowHideBoxContainer {
 /* </ECM-1543> */
 
 .EditDocumentIcon {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/EditDocument.gif') no-repeat;
+	height: 24px;
+	background: url('DefaultSkin/EditDocument.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/EditDocument.gif') no-repeat right center; /* orientation=rt */
 }
 
 .WatchDocumentIcon {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/WatchDocument.gif') no-repeat;
+	height: 24px;
+	background: url('DefaultSkin/WatchDocument.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/WatchDocument.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewMetadatasIcon {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/ViewMatadata.gif') no-repeat;
+	height: 24px;
+	background: url('DefaultSkin/ViewMatadata.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/ViewMatadata.gif') no-repeat right center; /* orientation=rt */
 }
 
 .VoteIcon {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/VoteDocument.gif') no-repeat;
+	height: 24px;
+	background: url('DefaultSkin/VoteDocument.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/VoteDocument.gif') no-repeat right center; /* orientation=rt */
 }
 
 .CommentIcon {
-	width: 24px; height: 24px;
-	background: url('DefaultSkin/Comment.gif') no-repeat;
+	height: 24px;
+	background: url('DefaultSkin/Comment.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/Comment.gif') no-repeat right center; /* orientation=rt */
 }
 
 .TaggingDocumentIcon {
-	width: 26px; height: 24px;
-  background: url('DefaultSkin/Tagging.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/Tagging.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Tagging.gif') no-repeat right center; /* orientation=rt */
 }
 
 .MultiLanguageIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/MultiLanguages.gif') no-repeat;
+ 	height: 24px;
+  background: url('DefaultSkin/MultiLanguages.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/MultiLanguages.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageVersionsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageVersions.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ManageVersions.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageVersions.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageAuditingIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageAuditing.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ManageAuditing.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageAuditing.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManagePublicationsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManagerPuplication.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ManagerPuplication.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManagerPuplication.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageActionsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageActions.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ManageActions.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageActions.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageCategoriesIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageCategories.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ManageCategories.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageCategories.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageSimpleCategoriesIcon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageCategories.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ManageCategories.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageCategories.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageRelationsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageRelations.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ManageRelations.gif') no-repeat  left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageRelations.gif') no-repeat  right center; /* orientation=rt */
 }
 
 .ImportNodeIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ImportNode.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ImportNode.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ImportNode.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageHiddenIcon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/AddRemoveHidden.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/AddRemoveHidden.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/AddRemoveHidden.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ExportNodeIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ExportNode.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ExportNode.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ExportNode.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddDocumentIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/AddDocument.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/AddDocument.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/AddDocument.gif') no-repeat right center; /* orientation=rt */
 }
 
 .CreateTicketIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/AddTicket.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/AddTicket.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/AddTicket.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddFolderIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/AddFolder.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/AddFolder.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/AddFolder.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UploadIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/UploadFile.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/UploadFile.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/UploadFile.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddSymLinkIcon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/AddSymLink.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/AddSymLink.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/AddSymLink.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewReferencesIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewReferences.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ViewReferences.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ViewReferences.gif') no-repeat right center; /* orientation=rt */
 }
 
 .OverloadThumbnailIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/OverloadThumbnailIcon.gif') no-repeat;
+ 	height: 24px;
+  background: url('DefaultSkin/OverloadThumbnailIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/OverloadThumbnailIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ShowJCRStructureIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ShowJCRStructure.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ShowJCRStructure.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ShowJCRStructure.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewNodeTypeIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewNodeType.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ViewNodeType.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ViewNodeType.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewPropertiesIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewProperties.gif') no-repeat;
+ 	height: 24px;
+  background: url('DefaultSkin/ViewProperties.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ViewProperties.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewRelationsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewRelations.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ViewRelations.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ViewRelations.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewPermissionsIcon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/ViewPermission.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/ViewPermission.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ViewPermission.gif') no-repeat right center; /* orientation=rt */
 }
 
 .Clipboard24x24Icon {
-  width: 24px; height: 24px;
-  background: url('DefaultSkin/Clipboard.gif') no-repeat center center;
+	height: 24px;
+  background: url('DefaultSkin/Clipboard.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Clipboard.gif') no-repeat right center; /* orientation=rt */
 }
 
 .HardDisk24x24Icon {
-	width: 24px; height: 24px;
-  background: url('DefaultSkin/HardDisk.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/HardDisk.gif') no-repeat  left center; /* orientation=lt */
+  background: url('DefaultSkin/HardDisk.gif') no-repeat  right center; /* orientation=rt */
 }
 
 .BlueDiamond24x24Icon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/BlueDiamond.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/BlueDiamond.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/BlueDiamond.gif') no-repeat right center; /* orientation=rt */
 }
 
 .PermissionIcon {
-	width: 24px;	height: 24px;
-  background: url('DefaultSkin/PermissionIcon.gif') no-repeat;
+	height: 24px;
+  background: url('DefaultSkin/PermissionIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/PermissionIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .Permission24x24Icon {
@@ -377,17 +410,20 @@ a:hover .ShowHideBoxContainer {
 
 .AddRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/AddRepositoryIcon.gif') no-repeat;
+  background: url('DefaultSkin/AddRepositoryIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/AddRepositoryIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .EditRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/EditRepositoryIcon.gif') no-repeat;
+  background: url('DefaultSkin/EditRepositoryIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/EditRepositoryIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .RemoveRepository24x24Icon {
 	width: 24px;	height: 19px;
-  background: url('DefaultSkin/RemoveRepositoryIcon.gif') no-repeat;
+  background: url('DefaultSkin/RemoveRepositoryIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/RemoveRepositoryIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 /*=================================================================*/
