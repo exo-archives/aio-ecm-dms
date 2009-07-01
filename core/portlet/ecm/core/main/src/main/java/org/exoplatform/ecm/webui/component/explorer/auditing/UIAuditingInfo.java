@@ -8,7 +8,6 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.ext.audit.AuditHistory;
 import org.exoplatform.services.jcr.ext.audit.AuditRecord;
@@ -17,6 +16,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -69,11 +69,8 @@ public class UIAuditingInfo extends UIContainer implements UIPopupComponent {
      Node currentNode = getCurrentNode(); 
      try {
       AuditService auditService = getApplicationComponent(AuditService.class);
-      if (auditService.hasHistory(currentNode)){
-        if (Utils.NT_FILE.equals(currentNode.getProperty(Utils.JCR_PRIMARYTYPE).getString())) { 
-          currentNode = currentNode.getNode(Utils.JCR_CONTENT);
-        }
-        if(Utils.isAuditable(currentNode)){
+      if(Utils.isAuditable(currentNode)){
+        if (auditService.hasHistory(currentNode)){
           AuditHistory auHistory = auditService.getHistory(currentNode);
           listRec = auHistory.getAuditRecords();
         }    
