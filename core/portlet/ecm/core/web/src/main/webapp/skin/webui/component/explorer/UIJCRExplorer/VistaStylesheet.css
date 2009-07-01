@@ -109,8 +109,8 @@
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RightColumn {
-	float: right;  /* orientation=lt */
-	float: left;  /* orientation=rt */
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
 	border-right: 1px solid #b7b7b7; /* orientation=lt */
 	border-left: 1px solid #b7b7b7; /* orientation=rt */
 	padding-left: 3px; /* orientation=lt */
@@ -129,8 +129,8 @@
 	margin: 0px 30px 0px 590px; /* orientation=rt */
 	padding-left: 5px; /* orientation=lt */
 	padding-right: 5px; /* orientation=rt */
+	white-space: nowrap; 
 	cursor: pointer;
-	white-space: nowrap;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView {

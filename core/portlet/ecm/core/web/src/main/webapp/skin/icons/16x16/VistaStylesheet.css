@@ -208,13 +208,9 @@
 }
 
 .BlueDownArrow16x16Icon {
-  width: 16px; height: 16px;
-  background: url('VistaSkin/BlueDownArrow.png') no-repeat center;
-}
-
-.BlueUpArrow16x16Icon {
-  width: 16px; height: 16px;
-  background: url('VistaSkin/BlueUpArrow.png') no-repeat;
+  height: 16px;
+  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat right center; /* orientation=lt */
+	background: url('DefaultSkin/BlueDownArrow.gif') no-repeat left center; /* orientation=rt */
 }
 
 .Close16x16Icon {

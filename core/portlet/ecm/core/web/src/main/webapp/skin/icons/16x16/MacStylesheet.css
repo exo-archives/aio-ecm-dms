@@ -206,13 +206,10 @@
 }
 
 .BlueDownArrow16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat;
-}
-
-.BlueUpArrow16x16Icon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/BlueUpArrow.gif') no-repeat;
+  width: 16px; 
+  height: 16px;
+  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat right center; /* orientation=lt */
+	background: url('DefaultSkin/BlueDownArrow.gif') no-repeat left center; /* orientation=rt */
 }
 
 .AddType16x16Icon {

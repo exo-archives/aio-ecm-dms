@@ -184,7 +184,7 @@
 }
 
 .SwitchSearch  {
-  width: 24px; height: 24px;
+  height: 24px;
   background: url('VistaSkin/AdvancedSearch.png') no-repeat left center; /* orientation=lt */
   background: url('VistaSkin/AdvancedSearch.png') no-repeat right center; /* orientation=rt */
   cursor: pointer;
@@ -197,13 +197,13 @@
 }
 
 .CreateTicketIcon {
-	width: 24px; height: 24px;
+	height: 24px;
   background: url('VistaSkin/AddTicket.gif') no-repeat left center; /* orientation=lt */
   background: url('VistaSkin/AddTicket.gif') no-repeat right center; /* orientation=rt */
 }
 
 .OverloadThumbnailIcon {
-	width: 24px; height: 24px;
+	height: 24px;
   background: url('VistaSkin/OverloadThumbnailIcon.gif') no-repeat left center; /* orientation=lt */
   background: url('VistaSkin/OverloadThumbnailIcon.gif') no-repeat right center; /* orientation=rt */
 }
@@ -256,7 +256,7 @@ a:hover .ShowHideBoxContainer {
 .ViewNodeTypeIcon {
 	height: 24px;
   background: url('VistaSkin/ViewNodeTypeIcon.png') no-repeat left center; /* orientation=lt */
-  background: url('VistaSkin/ViewNodeTypeIcon.png') no-repeat left center; /* orientation=rt */
+  background: url('VistaSkin/ViewNodeTypeIcon.png') no-repeat right center; /* orientation=rt */
 }
 
 .ViewPropertiesIcon {

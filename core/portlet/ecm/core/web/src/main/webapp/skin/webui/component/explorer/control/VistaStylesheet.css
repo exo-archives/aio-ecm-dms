@@ -62,14 +62,24 @@
   cursor: pointer;
 }
 
-.UIJCRExplorerPortlet .UIViewBar .BackToMainDriveButton {
-	width: 32px;	height: 26px;
-  background: url('VistaSkin/background/BackToMainDriveButton.png') no-repeat center ;
+.UIJCRExplorerPortlet .BackToMainDriveButton {
+	width: 24px;	
+	height: 24px;
+  background: url('DefaultSkin/icons/BackToMainDriveButton.gif') no-repeat center ;
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
+  margin-left: 5px; /* orientation=lt */
+	margin-right: 5px; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIViewBar .SetupPreferencesButton {
-  width: 32px;	height: 28px;
-  background: url('VistaSkin/background/SetupPreferencesButton.png') no-repeat bottom;
+.UIJCRExplorerPortlet .SetupPreferencesButton {
+  width: 24px;	
+  height: 24px;
+  background: url('DefaultSkin/icons/SetupPreferencesButton.gif') no-repeat bottom;
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
+  padding: 2px 0px 0px 10px; /* orientation=lt */
+  padding: 2px 10px 0px 0px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIViewBar .RefreshSessionButton  {
@@ -464,7 +474,7 @@
   border-top: solid 1px #fdfdfd;
   border-bottom: solid 1px #b7b7b7;
   height:57px;
-  background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x;
+  background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x left bottom;
 }
 
 .UIJCRExplorerPortlet .Block {
@@ -668,8 +678,16 @@
 	padding: 0px 10px;
 }	
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBarAlone {
+  border-top: solid 1px #fdfdfd;
+  border-bottom: solid 1px #b7b7b7;
+  height: 30px;
+  background:url('DefaultSkin/icons/HeaderBg.jpg') repeat-x center bottom; 
+}
+
 .UIJCRExplorerPortlet .UIActionBarAlone .TabsContainer {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet  .UIActionBar  .UIHorizontalTabs .TabsContainer {
@@ -776,7 +794,8 @@
 	background: url(DefaultSkin/icons/HoverButton.gif) no-repeat;
 }
 .UIViewBarContainer {
-	float: right;	
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
 	padding-top: 3px;
 	width:100px;
 }

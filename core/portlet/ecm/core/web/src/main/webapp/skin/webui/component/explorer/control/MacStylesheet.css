@@ -301,7 +301,8 @@
 }
 
 .UIJCRExplorerPortlet .UIActionBarAlone .TabsContainer {
-  float: left;
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .ActionLabel {
