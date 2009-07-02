@@ -238,8 +238,8 @@
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .Icon16x16 {
-	padding-left: 20px; /* orientation=lt */
-	padding-right: 20px; /* orientation=rt */
+  padding-left: 18px; /* orientation=lt */
+  padding-right: 18px; /* orientation=rt */
 	height: 20px;
   line-height: 20px;
 	width: auto;
