@@ -54,7 +54,7 @@
          </cache>
          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
           <properties>
-            <property name="indexDir" value="../temp/jcrlucenedb/index/system"/>
+            <property name="index-dir" value="../temp/jcrlucenedb/index/system"/>
           </properties>
          </query-handler>
          <lock-manager>
@@ -98,7 +98,7 @@
          </cache>
          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
           <properties>
-            <property name="indexDir" value="../temp/jcrlucenedb/index/collaboration"/>
+            <property name="index-dir" value="../temp/jcrlucenedb/index/collaboration"/>
           </properties>
          </query-handler>
          <lock-manager>
@@ -142,7 +142,7 @@
          </cache>
          <query-handler class="org.exoplatform.services.jcr.impl.core.query.lucene.SearchIndex">
           <properties>
-            <property name="indexDir" value="../temp/jcrlucenedb/index/backup"/>
+            <property name="index-dir" value="../temp/jcrlucenedb/index/backup"/>
           </properties>
          </query-handler>
          <lock-manager>
