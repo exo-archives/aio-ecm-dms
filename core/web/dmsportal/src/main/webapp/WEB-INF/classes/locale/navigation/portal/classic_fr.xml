@@ -3,6 +3,7 @@
   <portal>
     <classic>
       <home>Accueil</home>
+	   <tour>Tour Rapide</tour>
     </classic>
   </portal>
   <register>S'enregistrer</register>

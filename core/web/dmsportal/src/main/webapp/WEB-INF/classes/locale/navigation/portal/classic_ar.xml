@@ -3,6 +3,7 @@
   <portal>
     <classic>
       <home>استقبال</home>
+	  <tour>قم بجولة</tour>
     </classic>
   </portal>
   <content-management>

@@ -10,9 +10,9 @@
       <uri>register</uri>
       <name>register</name>
       <label>#{platform-guests.register}</label>
+      <visible>false</visible>
       <page-reference>group::platform/guests::register</page-reference>
-    </node>
-	  	  
+    </node>	  	  
    </page-nodes>
   
 </node-navigation>

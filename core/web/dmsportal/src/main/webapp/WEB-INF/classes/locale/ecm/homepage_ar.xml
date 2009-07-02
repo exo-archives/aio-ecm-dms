@@ -5,14 +5,6 @@
       <label>
         <slogan>"بث الحياة في مستنداتك!</slogan>
         <productIntro>استخدام أدوات متقدمة للتعاون الجماعي."</productIntro>
-        <instructionTitle>حاول eXo ECM مع حسابات المستخدمين التالية</instructionTitle>
-        <admin>مخطط النظام</admin>
-        <userName>اسم المستخدم</userName>
-        <password>كلمة السر</password>
-        <manager>مدير</manager>
-        <hr-manager>إدارة الموارد البشرية</hr-manager>
-        <user>مستخدم</user>
-        <demo>تجربة</demo>
       </label>
     </ecm>
   </Homepage>

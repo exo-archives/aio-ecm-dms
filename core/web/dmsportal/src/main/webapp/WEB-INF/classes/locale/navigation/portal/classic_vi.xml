@@ -3,6 +3,7 @@
   <portal>
     <classic>
       <home>Trang chủ</home>
+	   <tour>Tham gia một tour du lịch</tour>
     </classic>
   </portal>
   <register>Đăng kí</register>

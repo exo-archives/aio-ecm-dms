@@ -3,6 +3,7 @@
   <portal>
     <classic>
       <home>Home</home>
+      <tour>Take a tour</tour>
     </classic>
   </portal>
   <register>Register</register>

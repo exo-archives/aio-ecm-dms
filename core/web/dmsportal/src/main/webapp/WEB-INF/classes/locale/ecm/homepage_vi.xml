@@ -5,14 +5,6 @@
       <label>
         <slogan>"Make your documents alive !</slogan>
         <productIntro>Through collaborative and other advanced features."</productIntro>
-        <instructionTitle>Thử nghiệm eXo ECM với những tài khoản người dùng sẵn có sau</instructionTitle>
-        <admin>Quản trị viên</admin>
-        <userName>Tên đăng nhập</userName>
-        <password>Mật khẩu</password>
-        <manager>Quản lý</manager>
-        <hr-manager>Quản lý nhân lực</hr-manager>
-        <user>Người dùng</user>
-        <demo>Thử nghiệm</demo>
       </label>
     </ecm>
   </Homepage>

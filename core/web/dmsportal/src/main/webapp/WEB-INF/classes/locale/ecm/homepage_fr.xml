@@ -5,14 +5,6 @@
       <label>
         <slogan>"Donnez vie à vos documents !</slogan>
         <productIntro>A travers des fonctionnalités collaboratives avancées."</productIntro>
-        <instructionTitle>Essayez eXo ECM en utilisant les comptes utilisateur suivants</instructionTitle>
-        <admin>Administrateur</admin>
-        <userName>Login</userName>
-        <password>Mot de passe</password>
-        <manager>Gestionnaire</manager>
-        <hr-manager>Responsable RH</hr-manager>
-        <user>Utilisateur</user>
-        <demo>Demo</demo>
       </label>
     </ecm>
   </Homepage>

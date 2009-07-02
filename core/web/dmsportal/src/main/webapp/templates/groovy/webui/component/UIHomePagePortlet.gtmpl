@@ -28,95 +28,96 @@
 			</div>
 		</div>
 
-		<div class="HomePortletContent">
-			<div class="LeftAccountsContainer">
-				<div class="RightAccountsContainer">
-					<div class="MiddleAccountsContainer">
-						<div class="InstructionTitle"><%=res.getString("Homepage.ecm.label.instructionTitle")%>:</div>
-						
-						<div class="AccountsContainerDeco">
-							<div class="AccountBlock AdministratorUser">
-								<div class="AccountInfos">
-									<div class="AccountTitle"><%=res.getString("Homepage.ecm.label.admin")%></div>
-									<div class="Username"><div class="Lable"><%=res.getString("Homepage.ecm.label.userName")%>:</div><span>root</span>
-									<div class="ClearBoth"><span></span></div>
-									</div>
-									<div class="Passwords">
-									<div class="Lable"><%=res.getString("Homepage.ecm.label.password")%>:</div><span>exo</span>
-									<div class="ClearBoth"><span></span></div>
-									</div>
-								</div>
-							</div>
-							<div class="SeparatorLine"><span></span></div>
-							<div class="AccountBlock ManagerUser">
-								<div class="AccountInfos">
-									<div class="AccountTitle"><%=res.getString("Homepage.ecm.label.manager")%></div>
-									<div class="Username">
-									<div class="Lable">
-									<%=res.getString("Homepage.ecm.label.userName")%>:</div><span>john</span>
-									<div class="ClearBoth"><span></span></div>
-									</div>
-									<div class="Passwords">
-									<div class="Lable">
-									<%=res.getString("Homepage.ecm.label.password")%>:</div><span>exo</span>
-									<div class="ClearBoth"><span></span></div>
-									</div>
-								</div>
-							</div>
-							<div class="SeparatorLine"><span></span></div>
-							<div class="AccountBlock HRManagerUser">
-								<div class="AccountInfos">
-									<div class="AccountTitle"><%=res.getString("Homepage.ecm.label.hr-manager")%></div>
-									<div class="Username">
-									<div class="Lable">
-									<%=res.getString("Homepage.ecm.label.userName")%>:</div><span>james</span>
-									<div class="ClearBoth"><span></span></div>
-									</div>
-									<div class="Passwords">
-									<div class="Lable">
-									<%=res.getString("Homepage.ecm.label.password")%>:</div><span>exo</span>
-									<div class="ClearBoth"><span></span></div>
-									</div>
-								</div>
-							</div>
-							<div class="SeparatorLine"><span></span></div>
-							<div class="AccountBlock NormalUser">
-								<div class="AccountInfos">
-									<div class="AccountTitle"><%=res.getString("Homepage.ecm.label.user")%></div>
-									<div class="Username">
-									<div class="Lable">
-									<%=res.getString("Homepage.ecm.label.userName")%>:</div><span>marry</span>
-									<div class="ClearBoth"><span></span></div>
-									</div>
-									<div class="Passwords">
-									<div class="Lable"><%=res.getString("Homepage.ecm.label.password")%>:</div><span>exo</span>
-									<div class="ClearBoth"><span></span></div>
-									</div>
-								</div>
-							</div>
-							<div class="SeparatorLine"><span></span></div>
-							<div class="AccountBlock DemoUser" style="margin-right: 0px;">
-								<div class="AccountInfos">
-									<div class="AccountTitle"><%=res.getString("Homepage.ecm.label.demo")%></div>
-									<div class="Username">
-									<div class="Lable">
-									<%=res.getString("Homepage.ecm.label.userName")%>:</div><span>demo</span>
-									<div class="ClearBoth"><span></span></div>
-									</div>
-									<div class="Passwords">
-									<div class="Lable">
-									<%=res.getString("Homepage.ecm.label.password")%>:
-									</div>
-									<span>exo</span>
-									<div class="ClearBoth"><span></span></div></div>
-								</div>
-							</div>
-							<div style="clear: both"><span></span></div>
+		<table style="table-layout: fixed; width: 100%;-width: auto;">
+			<tr>
+				<td>
+					<div class="HomePortletContainer" style="margin: 10px 5px 0px 0px">
+						<div class="BgReat">
+							<div class="FE LabelProduct"><%=res.getString("Homepage.ecm.label.FE.name")%></div>
 						</div>
-				
+						<div class="ContentProductsDMS">
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.FE.bullet1")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.FE.bullet2")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.FE.bullet3")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.FE.bullet4")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.FE.bullet5")%></div>
+							</div>
+						</div>
+						<div class="CenterBottom">
+							<div class="LeftBottom">
+								<div class="RightBottom"><span></span></div>
+							</div>
+						</div>
 					</div>
-				</div>
-			</div>		
-		</div>
+				</td>
+				<td>
+					<div class="HomePortletContainer" style="margin: 10px 5px 0px 0px">
+						<div class="BgReat">
+							<div class="CB LabelProduct"><%=res.getString("Homepage.ecm.label.CB.name")%></div>
+						</div>
+						<div class="ContentProductsDMS">
+						<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.CB.bullet1")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.CB.bullet2")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.CB.bullet3")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.CB.bullet4")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.CB.bullet5")%></div>
+							</div>
+						</div>
+						<div class="CenterBottom">
+							<div class="LeftBottom">
+								<div class="RightBottom"><span></span></div>
+							</div>
+						</div>
+					</div>	
+				</td>
+				<td>
+					<div class="HomePortletContainer" style="margin: 10px 0px 0px 0px">
+						<div class="BgReat">
+							<div class="ECMA LabelProduct"><%=res.getString("Homepage.ecm.label.ECMA.name")%></div>
+						</div>
+						<div class="ContentProductsDMS">
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.ECMA.bullet1")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.ECMA.bullet2")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.ECMA.bullet3")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.ECMA.bullet4")%></div>
+							</div>
+							<div class="Bullet">
+								<div class="Text"><%=res.getString("Homepage.ecm.label.ECMA.bullet5")%></div>
+							</div>
+						</div>
+						<div class="CenterBottom">
+							<div class="LeftBottom">
+								<div class="RightBottom"><span></span></div>
+							</div>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>		
 	</div>
 </div>

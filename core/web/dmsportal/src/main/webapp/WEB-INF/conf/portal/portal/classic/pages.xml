@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <page-set>  
-
   <page>
   	<page-id>portal::classic::homepage</page-id>
     <owner-type>portal</owner-type>
@@ -9,10 +8,41 @@
     <title>Home Page</title>
 	  <access-permissions>Everyone</access-permissions>
 	  <edit-permission>*:/platform/administrators</edit-permission>
+    <container id="DMS" template="system:/templates/groovy/webui/component/UITableColumnContainer.gtmpl">
+      <container id="pagebody" template="system:/groovy/portal/webui/container/UIContainer.gtmpl">
     <application>
       <instance-id>portal#classic:/web/HomePagePortlet/homepageportlet</instance-id>
       <title>Home Page</title>
       <show-info-bar>false</show-info-bar>      
+      <show-application-state>false</show-application-state>
+      <show-application-mode>false</show-application-mode>
     </application>
+      </container>
+      <container id="sidebar" template="system:/groovy/portal/webui/container/UIContainer.gtmpl">
+        <application>
+          <instance-id>portal#classic:/web/HomePagePortlet/sidebar</instance-id>
+          <title>Sidebar</title>
+          <show-info-bar>false</show-info-bar>
+          <show-application-state>false</show-application-state>
+          <show-application-mode>false</show-application-mode>          
+        </application>
+      </container>
+    </container>   
   </page>                       
+  <page>
+    <page-id>portal::classic::tour</page-id>
+    <owner-type>portal</owner-type>
+    <owner-id>classic</owner-id>
+    <name>tour</name>
+    <title>DMS Tour</title>
+    <access-permissions>Everyone</access-permissions>
+    <edit-permission>*:/platform/administrators</edit-permission>
+    <application>
+      <instance-id>portal#classic:/web/HomePagePortlet/tour</instance-id>
+      <title>Tour</title>
+      <show-info-bar>false</show-info-bar>
+      <show-application-state>false</show-application-state>
+      <show-application-mode>false</show-application-mode>
+    </application>
+  </page>  
 </page-set>
