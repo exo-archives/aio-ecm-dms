@@ -42,6 +42,7 @@ import org.exoplatform.services.jcr.config.ValueStorageFilterEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.util.StringNumberParser;
 import org.exoplatform.services.naming.InitialContextInitializer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -204,7 +205,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       if (!isAddNewWs) { permission = userPermission.toString(); } 
       
       if(workSpace.getLockManager() != null) {
-        lockTime  = String.valueOf(workSpace.getLockManager().getTimeout()) ; 
+        lockTime  = String.valueOf(workSpace.getLockManager().getTimeout()) + "ms"; 
       }
       ContainerEntry container = workSpace.getContainer() ;
       if(container != null) {
@@ -367,29 +368,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       return true;
     }
     return false;
-  }
-  
-// if no ending - seconds
-  private long convertLockTimeOut(String lockTimeOut) {
-    if (lockTimeOut.contains("ms")) {
-      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("ms")));
-    } 
-    if (lockTimeOut.contains("m")) {
-      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("m"))) * 60000; 
-    }
-    if (lockTimeOut.contains("h")) {
-      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("h"))) * 3600000; 
-    }
-    if (lockTimeOut.contains("d")) {
-      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("d"))) * 86400000; 
-    }
-    if (lockTimeOut.contains("w")) {
-      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("w"))) * 604800000; 
-    }
-    if (lockTimeOut.contains("s")) {
-      return Long.parseLong(lockTimeOut.substring(0, lockTimeOut.indexOf("s"))) * 1000; 
-    }
-    return Long.parseLong(lockTimeOut) * 1000;
   }
   
   public static class ViewStep1ActionListener extends EventListener<UIWorkspaceWizard>{
@@ -670,11 +648,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             return ;
           }
         }
-        
-        
-        lockTimeOutValue = uiFormWizard.convertLockTimeOut(lockTimeOut);
-        
-//        lockTimeOutValue = Integer.parseInt(lockTimeOut) ;
+        lockTimeOutValue = StringNumberParser.parseTime(lockTimeOut);
         if(uiFormWizard.isNewWizard_) {
           if(uiRepoForm.isExistWorkspace(name)){
             Object[] args = new Object[]{name}  ;        
@@ -690,7 +664,6 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
         if(!s.endsWith(";")) s = s + ";" ;
         permSb.append(s);
       }
-//      workspaceEntry.setAutoInitPermissions(permSb.toString()) ;
       LockManagerEntry lockEntry = new LockManagerEntry() ;
       lockEntry.setTimeout(lockTimeOutValue) ;
       LockPersisterEntry persisterEntry = new LockPersisterEntry();
