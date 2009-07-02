@@ -45,27 +45,14 @@ public class PublicationPresentationServiceImpl implements PublicationPresentati
 
   public PublicationPresentationServiceImpl () {
     log = ExoLogger.getLogger("portal:PublicationPresentationServiceImpl");
-
-    log.info("#################################################");
     log.info("# PublicationPresentationService initialization #");
-    log.info("#################################################\n");
-
     this.publicationPlugins_ = new HashMap<String, PublicationPlugin>();
-
-    log.info("#################################################");    
-    log.info("#  PublicationPresentationService initialized   #");
-    log.info("#################################################\n");
   }
 
   /* (non-Javadoc)
    * @see org.exoplatform.services.cms.publication.PublicationService#getStateUI(javax.jcr.Node)
    */
   public UIForm getStateUI(Node node, UIComponent component) throws NotInPublicationLifecycleException, Exception {
-    // TODO Auto-generated method stub
-    log.info("################");
-    log.info("#  getStateUI  #");
-    log.info("################\n");
-
     ExoContainer container = ExoContainerContext.getCurrentContainer();    
     PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
 

@@ -65,28 +65,15 @@ public class PublicationServiceImpl implements PublicationService {
 
   public PublicationServiceImpl (PublicationPresentationService presentationService) {
     log = ExoLogger.getLogger("portal:PublicationServiceImpl");
-
-    log.info("#####################################");
     log.info("# PublicationService initialization #");
-    log.info("#####################################\n");
-
     this.publicationPresentationService = presentationService;
-
     publicationPlugins_ = new HashMap<String, PublicationPlugin>();
-
-    log.info("#####################################");    
-    log.info("#  PublicationService initialized   #");
-    log.info("#####################################\n");
   }
 
   /* (non-Javadoc)
    * @see org.exoplatform.services.cms.publication.PublicationService#addLog(javax.jcr.Node, java.lang.String[])
    */
   public void addLog(Node node, String[] args) throws NotInPublicationLifecycleException, Exception {
-    log.info("############");
-    log.info("#  addLog  #");
-    log.info("############\n");
-
     Session session = node.getSession() ;
     ManageableRepository repository = (ManageableRepository)session.getRepository() ;
     Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;
@@ -112,9 +99,6 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#addPublicationPlugin(org.exoplatform.services.cms.publication.PublicationPlugin)
    */
   public void addPublicationPlugin(PublicationPlugin p) {
-    log.info("##########################");
-    log.info("#  addPublicationPlugin  #");
-    log.info("##########################\n");
     this.publicationPlugins_.put(p.getLifecycleName(),p);
     publicationPresentationService.addPublicationPlugin(p);
   }
@@ -124,10 +108,6 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public void changeState(Node node, String newState, HashMap<String, String> context)
   throws NotInPublicationLifecycleException, IncorrectStateUpdateLifecycleException, Exception {
-    log.info("#################");
-    log.info("#  changeState  #");
-    log.info("#################\n");
-
     if (!isNodeEnrolledInLifecycle(node)) throw new NotInPublicationLifecycleException();
     String lifecycleName=getNodeLifecycleName(node);
     PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
@@ -139,10 +119,6 @@ public class PublicationServiceImpl implements PublicationService {
    */
   public void enrollNodeInLifecycle(Node node, String lifecycle)
   throws AlreadyInPublicationLifecycleException, Exception {
-    log.info("###########################");
-    log.info("#  enrollNodeInLifecycle  #");
-    log.info("###########################\n");
-
     if (isNodeEnrolledInLifecycle(node)) throw new AlreadyInPublicationLifecycleException();
     //create mixin publication,
     //with lifecycleName = lifecycle
@@ -172,10 +148,6 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getCurrentState(javax.jcr.Node)
    */
   public String getCurrentState(Node node) throws NotInPublicationLifecycleException,Exception {
-    log.info("#####################");
-    log.info("#  getCurrentState  #");
-    log.info("#####################\n");
-
     if (!isNodeEnrolledInLifecycle(node)) throw new NotInPublicationLifecycleException();
     return node.getProperty(CURRENT_STATE).getString();
   }
@@ -184,10 +156,6 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getLog(javax.jcr.Node)
    */
   public String[][] getLog(Node node) throws NotInPublicationLifecycleException, Exception {
-    log.info("############");
-    log.info("#  getLog  #");
-    log.info("############\n");
-
     if (!isNodeEnrolledInLifecycle(node)) throw new NotInPublicationLifecycleException();
     Value[] values = node.getProperty(HISTORY).getValues();
     String [][] result=new String[values.length][];
@@ -205,10 +173,6 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getNodeLifecycleDesc(javax.jcr.Node)
    */
   public String getNodeLifecycleDesc(Node node) throws NotInPublicationLifecycleException, Exception {
-    log.info("##########################");
-    log.info("#  getNodeLifecycleDesc  #");
-    log.info("##########################\n");
-
     if (!isNodeEnrolledInLifecycle(node)) throw new NotInPublicationLifecycleException();
     String lifecycleName=getNodeLifecycleName(node);
     PublicationPlugin nodePlugin = this.publicationPlugins_.get(lifecycleName);
@@ -234,9 +198,6 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getStateImage(javax.jcr.Node)
    */
   public byte[] getStateImage(Node node,Locale locale) throws NotInPublicationLifecycleException, Exception {
-//  log.info("###################");
-//  log.info("#  getStateImage  #");
-//  log.info("###################\n");    
     if (!isNodeEnrolledInLifecycle(node)) {
       throw new NotInPublicationLifecycleException();      
     }
@@ -250,10 +211,6 @@ public class PublicationServiceImpl implements PublicationService {
    * @see org.exoplatform.services.cms.publication.PublicationService#getUserInfo(javax.jcr.Node)
    */
   public String getUserInfo(Node node, Locale locale) throws NotInPublicationLifecycleException, Exception {
-    log.info("#################");
-    log.info("#  getUserInfo  #");
-    log.info("#################\n");
-
     if (!isNodeEnrolledInLifecycle(node)) {
       throw new NotInPublicationLifecycleException();
     } 
