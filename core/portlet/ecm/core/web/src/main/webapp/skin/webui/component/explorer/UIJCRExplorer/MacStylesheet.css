@@ -131,14 +131,14 @@
 
 .UIJCRExplorerPortlet .UIListGrid .ResizeColumn {
 	border-right: 1px solid #b7b7b7; /* orientation=lt */
-	border-right: 1px solid #b7b7b7; /* orientation=lt */
+	border-left: 1px solid #b7b7b7; /* orientation=rt */
 	height: 19px; 
 	margin: 0px 590px 0px 30px; /* orientation=lt */
 	margin: 0px 30px 0px 590px; /* orientation=rt */
 	padding-left: 5px; /* orientation=lt */
 	padding-right: 5px; /* orientation=rt */
-	cursor:pointer;
-	white-space: nowrap;
+	white-space: nowrap; 
+	cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView {
