@@ -136,6 +136,7 @@
   background-position: right center; /* orientation=rt */
   overflow: hidden;
   line-height: 20px;
+	float: none;
 }
 
 .UIJCRExplorerPortlet .UINodeTypeInfo .HorizontalLayout {
