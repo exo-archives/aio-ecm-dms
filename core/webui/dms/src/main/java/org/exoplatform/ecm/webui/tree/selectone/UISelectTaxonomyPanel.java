@@ -34,11 +34,9 @@ import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
-import org.exoplatform.webui.core.UIBreadcumbs;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIPopupWindow;
-import org.exoplatform.webui.core.UIBreadcumbs.LocalPath;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -193,20 +191,12 @@ public class UISelectTaxonomyPanel extends UIContainer {
       UIOneTaxonomySelector uiTaxonomySelector = uiSelectPathPanel.getParent();      
       UITreeTaxonomyList uiTreeList = uiTaxonomySelector.getChild(UITreeTaxonomyList.class);     
       UIContainer uiTreeSelector = uiSelectPathPanel.getParent();
-      UIBreadcumbs uiBreadcumbs = uiTreeSelector.getChild(UIBreadcumbs.class);
-      String breadcumbsPaths = "";
-      for(LocalPath iterLocalPath: uiBreadcumbs.getPath()) {
-        breadcumbsPaths += "/" + iterLocalPath.getId();
-      }
-      
       String value = event.getRequestContext().getRequestParameter(OBJECTID);
       String taxoTreeName = uiTreeList.getUIFormSelectBox(TAXONOMY_TREE).getValue();  
       Node taxoTreeNode = uiTaxonomySelector.getTaxoTreeNode(taxoTreeName);
-      uiTaxonomySelector.setRootTaxonomyName(taxoTreeName);
       String taxoTreePath = taxoTreeNode.getPath();
       value = value.replace(taxoTreePath, taxoTreeName);
 
-      if (value.startsWith("/")) value = value.substring(1);
       if(uiTreeSelector instanceof UIOneNodePathSelector) {
         if(!((UIOneNodePathSelector)uiTreeSelector).isDisable()) {
           value = ((UIOneNodePathSelector)uiTreeSelector).getWorkspaceName() + ":" + value ;

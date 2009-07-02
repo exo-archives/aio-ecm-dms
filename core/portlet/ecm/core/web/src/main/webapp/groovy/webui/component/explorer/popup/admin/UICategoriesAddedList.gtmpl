@@ -12,6 +12,7 @@
 	    <div class="HomeNode">
 	    <%
 	      def listCategory = uicomponent.getListCategories();
+	      def lstTaxonomyTrees = uicomponent.getAllTaxonomyTrees();
 	      if (listCategory != null && listCategory.size() > 0) {
 	        def rowClass = null;
   	      boolean even = true;
@@ -19,6 +20,7 @@
   	 	      if (even) rowClass = "EvenRow";  
 	  	      else rowClass = "OddRow"; 
 	  	      even = !even;
+	  	   /*   
 	  	      String path = node.getPath();
 						String[] array = path.split("/");
 				    String value = "/";
@@ -29,7 +31,9 @@
 				      }
 				    } else {
 				      value = node.getPath();
-				    }
+				    }*/
+				    String value = uicomponent.displayCategory(node, lstTaxonomyTrees);
+				    if (value.length() > 0) {
 	     %>
 	          <tr class="$rowClass">
 							<td><%=value%></td>	          	
@@ -39,7 +43,7 @@
 								</div>
 							</td>
 	          </tr>
-	     <% 
+	     <% }
 	        }
 	      } else { %>
 	         <tr class="EvenRow">

@@ -22,7 +22,9 @@ import java.util.List;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemExistsException;
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
@@ -30,6 +32,7 @@ import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -54,8 +57,11 @@ import org.exoplatform.webui.exception.MessageException;
     }
 )
 public class UICategoriesAddedList extends UIContainer implements UISelectable {
+  
   private UIPageIterator uiPageIterator_;
 
+  private static final Log LOG = ExoLogger.getLogger(UICategoriesAddedList.class);
+  
   public UICategoriesAddedList() throws Exception {
     uiPageIterator_ = addChild(UIPageIterator.class, null, "CategoriesAddedList");
   }
@@ -77,12 +83,31 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
     List<Node> listCategories = new ArrayList<Node>();
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
-    String repository = uiJCRExplorer.getRepositoryName();
-    List<Node> listNode = taxonomyService.getAllTaxonomyTrees(repository);
+    List<Node> listNode = getAllTaxonomyTrees();
     for(Node itemNode : listNode) {
       listCategories.addAll(taxonomyService.getCategories(uiJCRExplorer.getCurrentNode(), itemNode.getName()));
     }
     return listCategories;
+  }
+  
+  List<Node> getAllTaxonomyTrees() throws RepositoryException {
+    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
+    String repository = uiJCRExplorer.getRepositoryName();
+    TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
+    return taxonomyService.getAllTaxonomyTrees(repository);
+  }
+  
+  String displayCategory(Node node, List<Node> taxonomyTrees) {
+    try {
+      for (Node taxonomyTree : taxonomyTrees) {
+        if (node.getPath().contains(taxonomyTree.getPath())) {
+          return node.getPath().replace(taxonomyTree.getPath(), taxonomyTree.getName());
+        }
+      }
+    } catch (RepositoryException e) {
+      LOG.error("Unexpected error when ");
+    }
+    return "";
   }
   
   @SuppressWarnings("unused")
@@ -102,17 +127,8 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
     try {
       Node currentNode = uiJCRExplorer.getCurrentNode();
       uiJCRExplorer.addLockToken(currentNode);
-      String[] arrayCategoryPath = value.toString().split(rootTaxonomyName + "/");
-      String categoryPath;
-      if (arrayCategoryPath.length > 1) {
-        if (arrayCategoryPath[1].startsWith("/"))
-          categoryPath = arrayCategoryPath[1];
-        else
-          categoryPath = "/" + arrayCategoryPath[1];
-      } else {
-        categoryPath = value.toString();
-      } 
-      taxonomyService.addCategory(currentNode, rootTaxonomyName, categoryPath);
+      String[] arrayCategoryPath = String.valueOf(value.toString()).split(rootTaxonomyName);
+      taxonomyService.addCategory(currentNode, rootTaxonomyName, arrayCategoryPath[1]);
       uiJCRExplorer.getCurrentNode().save() ;
       uiJCRExplorer.getSession().save() ;
       updateGrid(1) ;
@@ -121,22 +137,22 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
       throw new MessageException(new ApplicationMessage("UICategoriesAddedList.msg.ItemExistsException",
           null, ApplicationMessage.WARNING));
     } catch(Exception e) {
-      e.printStackTrace() ;
+      LOG.error("Unexpected error", e);
+      JCRExceptionManager.process(getAncestorOfType(UIApplication.class), e);
     }
   }
   
   static public class DeleteActionListener extends EventListener<UICategoriesAddedList> {
     public void execute(Event<UICategoriesAddedList> event) throws Exception {
-      UICategoriesAddedList uiAddedList = event.getSource() ;
-      UIContainer uiManager = uiAddedList.getParent();      
-      UIApplication uiApp = uiAddedList.getAncestorOfType(UIApplication.class) ;
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class) ;
+      UICategoriesAddedList uiAddedList = event.getSource();
+      UIContainer uiManager = uiAddedList.getParent();
+      UIApplication uiApp = uiAddedList.getAncestorOfType(UIApplication.class);
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIJCRExplorer uiExplorer = uiAddedList.getAncestorOfType(UIJCRExplorer.class);
       TaxonomyService taxonomyService = 
         uiAddedList.getApplicationComponent(TaxonomyService.class);
       try {
-        String repository = uiExplorer.getRepositoryName();
-        List<Node> listNode = taxonomyService.getAllTaxonomyTrees(repository);
+        List<Node> listNode = uiAddedList.getAllTaxonomyTrees();
         for(Node itemNode : listNode) {
           if(nodePath.contains(itemNode.getPath())) {
             taxonomyService.removeCategory(uiExplorer.getCurrentNode(), itemNode.getName(), 
@@ -149,8 +165,8 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
         throw new MessageException(new ApplicationMessage("UICategoriesAddedList.msg.access-denied",
                                    null, ApplicationMessage.WARNING)) ;
       } catch(Exception e) {
-        e.printStackTrace();
-        JCRExceptionManager.process(uiApp, e) ;
+        LOG.error("Unexpected error", e);
+        JCRExceptionManager.process(uiApp, e);
       }
       uiManager.setRenderedChild("UICategoriesAddedList");
     }

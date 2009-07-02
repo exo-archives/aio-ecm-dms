@@ -32,6 +32,7 @@ import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.version.VersionException;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.DialogFormActionListeners;
 import org.exoplatform.ecm.webui.form.UIDialogForm;
@@ -53,6 +54,7 @@ import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -103,6 +105,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   private List<String> listTaxonomy = new ArrayList<String>();
   private List<String> listTaxonomyName = new ArrayList<String>();
   
+  private static final Log LOG  = ExoLogger.getLogger(UIDocumentForm.class);
+  
   public UIDocumentForm() throws Exception {
     setActions(new String[]{"Save", "Cancel"});  
   }
@@ -139,7 +143,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     } catch (AccessDeniedException accessDeniedException) {
       return null;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
       Object[] arg = { contentType };
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.not-support", arg, 
@@ -157,7 +161,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       String categoryPath = itemNode.getPath().replaceAll(getPathTaxonomy() + "/", "");
       if (!listTaxonomy.contains(categoryPath)) {
         listTaxonomy.add(categoryPath);
-        listTaxonomyName.add(cutPath(categoryPath));
+        listTaxonomyName.add(categoryPath);
       }
     }
     UIFormMultiValueInputSet uiFormMultiValue = createUIComponent(UIFormMultiValueInputSet.class, null, null);
@@ -166,13 +170,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     uiFormMultiValue.setType(UIFormStringInput.class);
     uiFormMultiValue.setValue(listTaxonomyName);
     addUIFormInput(uiFormMultiValue);
-  }
-  
-  private String cutPath(String path) throws Exception {
-    String pathTaxonomy = getPathTaxonomy() + "/";
-    String returnString = path.replaceAll(pathTaxonomy, "");
-    
-    return returnString;
   }
   
   @SuppressWarnings("unchecked")
@@ -187,8 +184,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       List taxonomylist = inputSet.getValue();
       if (!taxonomylist.contains(valueTaxonomy)) {
         listTaxonomy.add(valueTaxonomy);
-        listTaxonomyName.add(cutPath(valueTaxonomy));
-        taxonomylist.add(cutPath(valueTaxonomy));
+        listTaxonomyName.add(valueTaxonomy);
+        taxonomylist.add(valueTaxonomy);
       }      
       inputSet.setValue(taxonomylist);
     }
@@ -202,9 +199,10 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     try {      
       return templateService.getTemplatePathByUser(true, contentType, userName, repositoryName);
     } catch (AccessControlException e) {
+      LOG.error("Unexpected error", e);
       return null;
     } catch (Exception e) {
-      e.printStackTrace();
+      LOG.error("Unexpected error", e);
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
       Object[] arg = { contentType };
       uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.not-support", arg, 
@@ -279,7 +277,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
                 taxonomyService.getTaxonomyTree(repository, categoryPath.substring(0, index)).getNode(categoryPath.substring(index + 1));
               }
             } catch (Exception e) {
-              e.printStackTrace();
+              LOG.error("Unexpected error occurs", e);
               uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, ApplicationMessage.WARNING));
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
               return;
@@ -363,7 +361,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error("Unexpected error occurs", e);
         String key = "UIDocumentForm.msg.cannot-save";
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
