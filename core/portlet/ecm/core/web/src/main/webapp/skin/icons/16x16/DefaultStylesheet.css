@@ -132,15 +132,15 @@
 }
  
 .ExpandIcon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGray.gif') no-repeat left -16px; /* orientation=lt */
-  background: url('DefaultSkin/SmallGray-rt.gif') no-repeat right -16px; /* orientation=rt */
+  width: 16px;
+  background: url('DefaultSkin/SmallGrayExpand.gif') no-repeat left top; /* orientation=lt */
+  background: url('DefaultSkin/SmallGray-rt.gif') no-repeat right top; /* orientation=rt */
   cursor: pointer;
 }
 
 .CollapseIcon  {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGray.gif') no-repeat left top; /* orientation=lt */
+  width: 16px;
+  background: url('DefaultSkin/SmallGrayCollapse.gif') no-repeat left top; /* orientation=lt */
   background: url('DefaultSkin/SmallGray-rt.gif') no-repeat right top; /* orientation=rt */
   cursor: pointer;
 }
