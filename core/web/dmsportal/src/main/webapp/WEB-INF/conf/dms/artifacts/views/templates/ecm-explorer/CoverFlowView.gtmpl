@@ -162,7 +162,7 @@
 					</textarea>
 				</div>
 				<% if(uicomponent.getContentPageIterator().getAvailablePage()>1) { %>	
-					<div style="margin:4px 0px 4px 0px;">
+					<div style="background:#fff;">
 						<%_ctx.renderUIComponent(uicomponent.getContentPageIterator())%>
 					</div>
 				<% } %>
