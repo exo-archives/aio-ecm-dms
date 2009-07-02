@@ -33,6 +33,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.PortalContainer;
+import org.exoplatform.container.RootContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 /**
@@ -52,16 +54,13 @@ public class RssServlet extends HttpServlet {
     String pathInfo = request.getPathInfo() ;
     portalName = pathInfo.substring(1, pathInfo.indexOf("/", 1)) ;
     wsName = pathInfo.substring(portalName.length() + 2, pathInfo.indexOf("/", portalName.length() + 2)) ;
-    path = pathInfo.substring(pathInfo.indexOf(wsName)+ wsName.length() + 1) ;
-    /* Get currect ExoContainer object */
-    ExoContainer exoContainer = ExoContainerContext.getCurrentContainer();
-    /*
-     * Get services from current ExoContainer
-     */
-    RepositoryService repositoryService = (RepositoryService) exoContainer
-        .getComponentInstanceOfType(RepositoryService.class);
-    TemplateService tservice = (TemplateService) exoContainer
-        .getComponentInstanceOfType(TemplateService.class);
+    path = pathInfo.substring(pathInfo.indexOf(wsName)+ wsName.length() + 1);    
+    PortalContainer pcontainer =  RootContainer.getInstance().getPortalContainer(portalName);
+    PortalContainer.setInstance(pcontainer) ;
+    RepositoryService repositoryService = 
+      (RepositoryService)pcontainer.getComponentInstanceOfType(RepositoryService.class);
+    TemplateService tservice = 
+      (TemplateService)pcontainer.getComponentInstanceOfType(TemplateService.class);
     Session session = null ;
     try{
       session = repositoryService.getDefaultRepository().getSystemSession(wsName) ;
