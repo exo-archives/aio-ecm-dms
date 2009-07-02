@@ -611,7 +611,7 @@
       Workspace Wizard
       <step>Bước</step>
       <wizardSteps>Các bước Wizard</wizardSteps>
-      <step1>Workspace Wizard</step1>
+      <step1>Bước 1</step1>
       <name>Tên</name>
       <autoInitializedRootNt>Kiểu của node gốc</autoInitializedRootNt>
       <isDefault>Thiết lập mặc định</isDefault>
@@ -619,7 +619,7 @@
       <isDMSSytemWs>Thiết lập DMS system workspace</isDMSSytemWs>
       <permission>Tự động khởi tạo quyền truy nhập</permission>
       <setLockTimeOut>Kết thúc thời gian khóa</setLockTimeOut>
-      <step2>Workspace Wizard</step2>
+      <step2>Bước 2</step2>
       <container>Kiểu của container</container>
       <sourceName>Tên nguồn</sourceName>
       <dbType>Ngôn ngữ</dbType>
@@ -630,7 +630,7 @@
       <swapPath>Đường dẫn trao đổi</swapPath>
       <storePath>Đường dẫn lưu trữ</storePath>
       <externalStore>Lưu trữ giá trị mở rộng</externalStore>
-      <step3>Workspace Wizard</step3>
+      <step3>Bước 3</step3>
       <queryHandler>Điều khiển truy vấn</queryHandler>
       <indexPath>Đường dẫn chỉ số truy vấn</indexPath>
       <isCache>Được phép lưu trữ</isCache>
