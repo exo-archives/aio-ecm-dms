@@ -21,7 +21,7 @@
   public void repairName(String name) {
     String str = name.replace(":", "_");
     println """
-	    <div class="Icon16x16 default16x16Icon ${str}16x16Icon">$name</div>
+	    <div class="Icon16x16 default16x16Icon ${str}16x16Icon" title="$name">$name</div>
     """;
   }
  %>
