@@ -611,7 +611,6 @@
      مساعد انشاء فضاء العمل
       <step>الخطوة</step>
       <wizardSteps>خطوات المساعد </wizardSteps>
-      <step1>UIWorkspaceWizard</step1>
       <name>الإسم</name>
       <autoInitializedRootNt>نوع العقدة الجذر</autoInitializedRootNt>
       <isDefault>ضعه كافتراضي</isDefault>
@@ -619,7 +618,6 @@
       <isDMSSytemWs>حدد نظام عمل نظام إدارة الوجهات السياحية</isDMSSytemWs>
       <permission>الصلاحية الإفتراضية</permission>
       <setLockTimeOut>مدة حياة القفل</setLockTimeOut>
-      <step2>UIWorkspaceWizard</step2>
       <container>نوع الحاوية</container>
       <sourceName>اسم المصدر</sourceName>
       <dbType>اللهجة </dbType>
@@ -630,7 +628,6 @@
       <swapPath>مسارالتبادل</swapPath>
       <storePath>مسار التخزين</storePath>
       <externalStore>التخزين الخارجي </externalStore>
-      <step3>UIWorkspaceWizard</step3>
       <queryHandler>المتصرف في الاستبيانات</queryHandler>
       <indexPath> مجلد مؤشرات الإستبيانات</indexPath>
       <isCache> تفعيل الذاكرة المخبئية </isCache>
@@ -2078,6 +2075,18 @@
     <label>
       <addSymLink>إضافة صلة رمزية</addSymLink>
     </label>
-  </UIViewFormTabPane>    
+  </UIViewFormTabPane>  
+  
+    <!--
+  #########Since ECM 2.5##################
+  --> 
+  <UIWorkspaceWizard>
+    <label>
+      <step1>Step 1</step1>
+      <step2>Step 2</step2>
+      <step3>Step 3</step3>
+    </label>
+  </UIWorkspaceWizard>
+    
 </bundle>
   

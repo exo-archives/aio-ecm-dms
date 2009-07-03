@@ -611,7 +611,6 @@
       Arbeitsplatz Wizard
       <step>Stufe</step>
       <wizardSteps>Wizard Stufen</wizardSteps>
-      <step1>Step 1</step1>
       <name>Name</name>
       <autoInitializedRootNt>Wurzelknotentyp</autoInitializedRootNt>
       <isDefault><![CDATA[Als Standardeinstellung &uuml;bernehmen]]></isDefault>
@@ -619,7 +618,6 @@
       <isDMSSytemWs>Als DMS-System Arbeitsbereich</isDMSSytemWs>
       <permission>Auto init Genehmigung</permission>
       <setLockTimeOut>Sperrenablaufszeit</setLockTimeOut>
-      <step2>Step 2</step2>
       <container><![CDATA[Typ des Beh&auml;lters]]></container>
       <sourceName>Quellenname</sourceName>
       <dbType>Dialekt</dbType>
@@ -630,7 +628,6 @@
       <swapPath>Austauschpfad</swapPath>
       <storePath>Speicherpfad</storePath>
       <externalStore>Externer Wert Speicher</externalStore>
-      <step3>Step 3</step3>
       <queryHandler>Abfragen handler</queryHandler>
       <indexPath>Abfragenindexpfad</indexPath>
       <isCache>Cache einschalten</isCache>
@@ -2079,5 +2076,17 @@
       <addSymLink>Hinzufügen einer Verknüpfung</addSymLink>
     </label>
   </UIViewFormTabPane>
+  
+    <!--
+  #########Since ECM 2.5##################
+  --> 
+  <UIWorkspaceWizard>
+    <label>
+      <step1>Step 1</step1>
+      <step2>Step 2</step2>
+      <step3>Step 3</step3>
+    </label>
+  </UIWorkspaceWizard>
+  
 </bundle>
 

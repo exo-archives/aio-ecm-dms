@@ -611,7 +611,6 @@
       Workspace Wizard
       <step>Step</step>
       <wizardSteps>Wizard Steps</wizardSteps>
-      <step1>UIWorkspaceWizard</step1>
       <name>Name</name>
       <autoInitializedRootNt>Root node type</autoInitializedRootNt>
       <isDefault>Set as default</isDefault>
@@ -619,7 +618,6 @@
       <isDMSSytemWs>Set as DMS System workspace</isDMSSytemWs>
       <permission>Auto init permission</permission>
       <setLockTimeOut>Lock timeout</setLockTimeOut>
-      <step2>UIWorkspaceWizard</step2>
       <container>Type of container</container>
       <sourceName>Source Name</sourceName>
       <dbType>Dialect</dbType>
@@ -630,7 +628,6 @@
       <swapPath>Swap path</swapPath>
       <storePath>Store path</storePath>
       <externalStore>External Value Storages</externalStore>
-      <step3>UIWorkspaceWizard</step3>
       <queryHandler>Query handler</queryHandler>
       <indexPath>Query index path</indexPath>
       <isCache>Enable cache</isCache>
@@ -1676,7 +1673,7 @@
   </TemplatePopup>
   <ViewForm>
     <label>
-      <UITemplateContent>ViewForm</UITemplateContent>
+      <UITemplateContent>View Form</UITemplateContent>
       <UIPopupWindow>View Permission</UIPopupWindow>
       <selectVersion>Versions</selectVersion>
       <content>Content</content>
@@ -2079,5 +2076,16 @@
       <addSymLink>Add Sym Link</addSymLink>
     </label>
   </UIViewFormTabPane>
+  <!--
+  #########Since ECM 2.5##################
+  --> 
+  <UIWorkspaceWizard>
+    <label>
+      <step1>Step 1</step1>
+      <step2>Step 2</step2>
+      <step3>Step 3</step3>
+    </label>
+  </UIWorkspaceWizard>
+  
 </bundle>
 

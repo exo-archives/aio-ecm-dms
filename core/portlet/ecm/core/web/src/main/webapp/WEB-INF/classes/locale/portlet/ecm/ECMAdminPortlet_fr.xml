@@ -611,7 +611,6 @@
       Assistant de création d'espace de travail
       <step>Etape</step>
       <wizardSteps>Etapes de l'assistant</wizardSteps>
-      <step1>Step 1</step1>
       <name>Nom</name>
       <autoInitializedRootNt>Type du noeud racine</autoInitializedRootNt>
       <isDefault>Définir par défault</isDefault>
@@ -619,7 +618,6 @@
       <isDMSSytemWs>Définir comme l'espace de travail système de DMS</isDMSSytemWs>
       <permission>Permission par défaut</permission>
       <setLockTimeOut>Timeout de verrouillage</setLockTimeOut>
-      <step2>Step 2</step2>
       <container>Type de container</container>
       <sourceName>Nom de la source</sourceName>
       <dbType>Dialecte</dbType>
@@ -630,7 +628,6 @@
       <swapPath>Répertoire fichier d'échange</swapPath>
       <storePath>Répertoire de stockage</storePath>
       <externalStore>Stockage externe</externalStore>
-      <step3>Step 3</step3>
       <queryHandler>Gestionnaire de requêtes</queryHandler>
       <indexPath>Répertoire des index de requêtes</indexPath>
       <isCache>Gestion du cache activée</isCache>
@@ -2079,5 +2076,15 @@
       <addSymLink>Ajouter un Raccourci</addSymLink>
     </label>
   </UIViewFormTabPane>
+  <!--
+  #########Since ECM 2.5##################
+  --> 
+  <UIWorkspaceWizard>
+    <label>
+      <step1>Step 1</step1>
+      <step2>Step 2</step2>
+      <step3>Step 3</step3>
+    </label>
+  </UIWorkspaceWizard>
 </bundle>
 

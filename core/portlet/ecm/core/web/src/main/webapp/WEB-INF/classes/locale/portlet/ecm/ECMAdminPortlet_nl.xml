@@ -611,7 +611,6 @@
       werkruimte Wizard
       <step>Stap</step>
       <wizardSteps>Wizard Stappe</wizardSteps>
-      <step1>Step 1</step1>
       <name>Naam</name>
       <autoInitializedRootNt>Root node type</autoInitializedRootNt>
       <isDefault>instellen as standaard</isDefault>
@@ -619,7 +618,6 @@
       <isDMSSytemWs>Set as DMS system workspace</isDMSSytemWs>
       <permission>Auto init rechten</permission>
       <setLockTimeOut>Lock timeout</setLockTimeOut>
-      <step2>Step 2</step2>
       <container>Type container</container>
       <sourceName>Bron Naam</sourceName>
       <dbType>Dialect</dbType>
@@ -630,7 +628,6 @@
       <swapPath>Swap pad</swapPath>
       <storePath>Opslag pad</storePath>
       <externalStore>External Value Storages</externalStore>
-      <step3>Step 3</step3>
       <queryHandler>Query handler</queryHandler>
       <indexPath>Query index pad</indexPath>
       <isCache>Cache activeren</isCache>
@@ -2079,5 +2076,17 @@
       <addSymLink>Voeg Symbolische Link</addSymLink>
     </label>
   </UIViewFormTabPane>  
+  
+  <!--
+  #########Since ECM 2.5##################
+  --> 
+  <UIWorkspaceWizard>
+    <label>
+      <step1>Step 1</step1>
+      <step2>Step 2</step2>
+      <step3>Step 3</step3>
+    </label>
+  </UIWorkspaceWizard>
+  
 </bundle>
 
