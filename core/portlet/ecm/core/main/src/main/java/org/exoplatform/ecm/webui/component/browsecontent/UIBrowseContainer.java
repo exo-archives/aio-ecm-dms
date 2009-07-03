@@ -1156,7 +1156,6 @@ public class UIBrowseContainer extends UIContainer {
           }
         }
       }catch (Exception e) { 
-        LOG.error("An error occured while loading the portlet config", e);
         return;
       }      
       viewDocument(documentNode, false);
