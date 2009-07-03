@@ -648,6 +648,9 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             return ;
           }
         }
+        if (lockTimeOut.endsWith("s") && !lockTimeOut.endsWith("ms")) {
+          lockTimeOut = lockTimeOut.substring(0, lockTimeOut.length() - 1);
+        }
         lockTimeOutValue = StringNumberParser.parseTime(lockTimeOut);
         if(uiFormWizard.isNewWizard_) {
           if(uiRepoForm.isExistWorkspace(name)){
