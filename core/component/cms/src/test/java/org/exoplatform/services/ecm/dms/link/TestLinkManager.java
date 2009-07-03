@@ -281,10 +281,6 @@ public class TestLinkManager extends BaseDMSTestCase {
    * Gives the primary node type of the target
    * Input: Create a new link (symlinkNodeA1)
    *    parent = nodeA1(TestTreeNode/A1), nodeB1_1(TestTreeNode/B1/B1_1)
-   * Input: 
-   *    link = nodeA1
-   * Expect:
-   *    exception: NodeA1 is not a symlink node
    * Input:
    *    link = symlinkNodeA1
    * Expect:
@@ -297,10 +293,6 @@ public class TestLinkManager extends BaseDMSTestCase {
     Node nodeB1_1 = rootNode.getNode("TestTreeNode/B1/B1_1");
     Node symlinkNodeA1 = linkManager.createLink(nodeA1, nodeB1_1);
     assertNotNull(symlinkNodeA1);
-    try {
-      fail("\nNode: " + nodeA1.getName() + " is not a symlink node");
-    } catch (Exception e) {
-    }
     assertEquals(linkManager.getTargetPrimaryNodeType(symlinkNodeA1), nodeB1_1.getPrimaryNodeType().getName());
   }
   
