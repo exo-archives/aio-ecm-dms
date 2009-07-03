@@ -2046,6 +2046,16 @@
       <anyPermission>Toute permission</anyPermission>
     </label>
   </UIAnyPermission>
+  <MetadataPermission>
+    <label>
+      <selectGroup>Sélectionner un groupe</selectGroup>
+    </label>
+  </MetadataPermission> 
+  <MetadataPermission>
+    <label>
+      <selectMembership>Sélectionner un membership</selectMembership>
+    </label>
+  </MetadataPermission>
   <anyPermission>
     <title>
       <AddAnyPermission>Ajouter une permission quelconque</AddAnyPermission>

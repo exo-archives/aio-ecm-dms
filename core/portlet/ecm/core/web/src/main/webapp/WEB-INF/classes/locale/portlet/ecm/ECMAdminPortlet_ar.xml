@@ -2046,6 +2046,16 @@
       <anyPermission>جميع الصلاحيات</anyPermission>
     </label>
   </UIAnyPermission>
+  <MetadataPermission>
+    <label>
+      <selectGroup>اختر مجموعة</selectGroup>
+    </label>
+  </MetadataPermission>  
+  <MetadataPermission>
+    <label>
+    	<selectMembership>اختر عضوية</selectMembership>
+    </label>
+  </MetadataPermission>  
   <anyPermission>
     <title>
       <AddAnyPermission>ضع اي صلاحية</AddAnyPermission>

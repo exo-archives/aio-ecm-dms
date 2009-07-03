@@ -2046,6 +2046,16 @@
       <anyPermission>Tất cả người dùng</anyPermission>
     </label>
   </UIAnyPermission>
+  <MetadataPermission>
+    <label>
+      <selectGroup>Chọn nhóm người dùng</selectGroup>
+    </label>
+  </MetadataPermission>    
+  <MetadataPermission>
+    <label>
+      <selectMembership>Chọn quan hệ thành viên</selectMembership>
+    </label>
+  </MetadataPermission>
   <anyPermission>
     <title>
       <AddAnyPermission>Tất cả người dùng</AddAnyPermission>
