@@ -31,8 +31,8 @@
 		overflow: hidden;
 		padding-right:12px;
     padding-left:12px;
-		float:right; /* orientation=lt */
-		float:left; /* orientation=rt */
+		float:right; /* orientation=rt */
+		float:left; /* orientation=lt */
 	}	
 	
 	.UIDivInfo .Title  .TextTitleFilePlan{
