@@ -258,7 +258,13 @@ public class QueryServiceImpl implements QueryService, Startable{
   public void removeQuery(String queryPath, String userName, String repository) throws Exception {
     if(userName == null) return;    
     Session session = getSession(repository);
-    Node queryNode = (Node) session.getItem(queryPath);
+    
+    Node queryNode = null;
+    try {
+      queryNode = (Node) session.getItem(queryPath);
+    } catch (PathNotFoundException pe) {
+      queryNode = (Node) getSession(repository, SessionProviderFactory.createSessionProvider(), true).getItem(queryPath);
+    }
     Node queriesHome = queryNode.getParent();
     queryNode.remove();
     queriesHome.save();
