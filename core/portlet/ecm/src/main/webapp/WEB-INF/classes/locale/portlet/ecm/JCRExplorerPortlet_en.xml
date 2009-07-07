@@ -2234,6 +2234,12 @@
     </obtion>
   </UIActionBar>
   
+  <UIPopupMenu>
+  	<msg>
+		<can-not-unlock-node-is-checked-in>Can not unlock because node '{0}' or ancestor of '{0}' is checked-in</can-not-unlock-node-is-checked-in>
+	</msg>
+  </UIPopupMenu>
+  
 </bundle>
 
 

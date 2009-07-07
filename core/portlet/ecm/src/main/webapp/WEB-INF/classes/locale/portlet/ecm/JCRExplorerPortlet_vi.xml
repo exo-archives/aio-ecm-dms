@@ -2233,5 +2233,11 @@
       <Search>Tìm kiếm</Search>
     </obtion>
   </UIActionBar>
+  
+  <UIPopupMenu>
+  	<msg>
+		<can-not-unlock-node-is-checked-in>Không thể unlock bởi vì node '{0}' hoặc cha của '{0}' đang ở trạng thái checked-in</can-not-unlock-node-is-checked-in>
+	</msg>
+  </UIPopupMenu>
   	
 </bundle>
