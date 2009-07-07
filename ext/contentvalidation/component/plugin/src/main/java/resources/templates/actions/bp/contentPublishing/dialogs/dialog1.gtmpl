@@ -7,7 +7,7 @@
 	      <td class="FieldLabel"><%=_ctx.appRes("ContentPublishing.dialog.label.id")%></td>
 	      <td class="FieldComponent">
 		      <%
-		        String[] fieldId = ["jcrPath=/node", "mixintype=exo:publicationable,exo:backupable,exo:pendingable,exo:trashable", "editable=false", "visible=if-not-null"] ;
+		        String[] fieldId = ["jcrPath=/node", "mixintype=exo:publishLocation,exo:pendingLocation,exo:backupLocation,exo:trashLocation", "editable=false", "visible=if-not-null"] ;
 		        uicomponent.addMixinField("id", fieldId) ;  
 		      %>
 		    </td>
