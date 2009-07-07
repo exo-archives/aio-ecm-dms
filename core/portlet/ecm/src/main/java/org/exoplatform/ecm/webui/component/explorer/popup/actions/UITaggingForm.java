@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
@@ -169,8 +170,11 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
       }
       folksonomyService.addTag(currentNode, fitlerTagNames, repository) ;
       uiForm.activate() ;
-      UISideBar uiSideBar = uiExplorer.findFirstComponentOfType(UISideBar.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
+      Preference preferences = uiExplorer.getPreference();
+      if (preferences.isShowSideBar()) {
+        UISideBar uiSideBar = uiExplorer.findFirstComponentOfType(UISideBar.class);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar);
+      }
       uiForm.getUIStringInput(TAG_NAMES).setValue(null) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
     }
