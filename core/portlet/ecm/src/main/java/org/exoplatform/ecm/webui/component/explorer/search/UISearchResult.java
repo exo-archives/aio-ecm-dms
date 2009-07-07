@@ -142,8 +142,10 @@ public class UISearchResult extends UIContainer {
         Row r = iter.nextRow();
         String path = r.getValue("jcr:path").getString();
         JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
-        Node resultNode = (Node)getSession().getItem(nodePath.getAsString(false));
-        addNode(listNodes, resultNode, listRows, r);
+        try {        
+          Node resultNode = (Node)getSession().getItem(nodePath.getAsString(false));
+          addNode(listNodes, resultNode, listRows, r);
+        } catch (Exception e) {} 
         if (!iter.hasNext()) isEndOfIterator_ = true;
         if (listNodes.size() == 100) {
           currentListNodes_.addAll(listNodes);
@@ -162,8 +164,10 @@ public class UISearchResult extends UIContainer {
         if (!iter.hasNext()) isEndOfIterator_ = true;
         String path = r.getValue("jcr:path").getString();
         JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
-        Node resultNode = (Node)getSession().getItem(nodePath.getAsString(false));
-        addNode(listNodes, resultNode, listRows, r);        
+        try {
+          Node resultNode = (Node)getSession().getItem(nodePath.getAsString(false));
+          addNode(listNodes, resultNode, listRows, r);
+        } catch (Exception e) {}       
       }
       currentListNodes_= listNodes;
       currentListRows_ = listRows;
