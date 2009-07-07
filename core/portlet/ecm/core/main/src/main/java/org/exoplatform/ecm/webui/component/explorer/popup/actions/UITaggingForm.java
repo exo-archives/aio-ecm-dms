@@ -21,6 +21,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
@@ -55,55 +56,55 @@ import org.exoplatform.webui.form.UIFormStringInput;
 )
 public class UITaggingForm extends UIForm implements UIPopupComponent {
   
-  final static public String TAG_NAMES = "names" ;
-  final static public String LINKED_TAGS = "linked" ;
-  final static public String LINKED_TAGS_SET = "tagSet" ;
-  final static public String TAG_STATUS_PROP = "exo:tagStatus".intern() ;  
-  final static public String TAG_NAME_ACTION = "tagNameAct".intern() ;
+  final static public String TAG_NAMES = "names";
+  final static public String LINKED_TAGS = "linked";
+  final static public String LINKED_TAGS_SET = "tagSet";
+  final static public String TAG_STATUS_PROP = "exo:tagStatus".intern();  
+  final static public String TAG_NAME_ACTION = "tagNameAct".intern();
   final static public String ASCENDING_ORDER = "Ascending".intern();
   
   public UITaggingForm() throws Exception {
-    UIFormInputSetWithAction uiInputSet = new UIFormInputSetWithAction(LINKED_TAGS_SET) ;
-    uiInputSet.addUIFormInput(new UIFormStringInput(TAG_NAMES, TAG_NAMES, null)) ;
-    uiInputSet.addUIFormInput(new UIFormInputInfo(LINKED_TAGS, LINKED_TAGS, null)) ;
-    uiInputSet.setIntroduction(TAG_NAMES, "UITaggingForm.introduction.tagName") ;
-    addUIComponentInput(uiInputSet) ;
-    uiInputSet.setIsView(false) ;
+    UIFormInputSetWithAction uiInputSet = new UIFormInputSetWithAction(LINKED_TAGS_SET);
+    uiInputSet.addUIFormInput(new UIFormStringInput(TAG_NAMES, TAG_NAMES, null));
+    uiInputSet.addUIFormInput(new UIFormInputInfo(LINKED_TAGS, LINKED_TAGS, null));
+    uiInputSet.setIntroduction(TAG_NAMES, "UITaggingForm.introduction.tagName");
+    addUIComponentInput(uiInputSet);
+    uiInputSet.setIsView(false);
   }
   
   public void activate() throws Exception {
-    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    StringBuilder linkedTags = new StringBuilder() ;
-    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode() ;
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class);
+    StringBuilder linkedTags = new StringBuilder();
+    Node currentNode = getAncestorOfType(UIJCRExplorer.class).getCurrentNode();
     for(Node tag : folksonomyService.getLinkedTagsOfDocument(currentNode, repository)) {
-      if(linkedTags.length() > 0) linkedTags = linkedTags.append(",") ;
-      linkedTags.append(tag.getName()) ;
+      if(linkedTags.length() > 0) linkedTags = linkedTags.append(",");
+      linkedTags.append(tag.getName());
     }
-    UIFormInputSetWithAction uiLinkedInput = getChildById(LINKED_TAGS_SET) ;
-    uiLinkedInput.setInfoField(LINKED_TAGS, linkedTags.toString()) ;
-    uiLinkedInput.setIsShowOnly(true) ;
+    UIFormInputSetWithAction uiLinkedInput = getChildById(LINKED_TAGS_SET);
+    uiLinkedInput.setInfoField(LINKED_TAGS, linkedTags.toString());
+    uiLinkedInput.setIsShowOnly(true);
     
   }
   public void deActivate() throws Exception {}
 
   static public class AddTagActionListener extends EventListener<UITaggingForm> {
     public void execute(Event<UITaggingForm> event) throws Exception {
-      UITaggingForm uiForm = event.getSource() ;
-      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
-      String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-      String tagName = uiForm.getUIStringInput(TAG_NAMES).getValue() ;
-      FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class) ;
-      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
+      UITaggingForm uiForm = event.getSource();
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+      String repository = uiForm.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+      String tagName = uiForm.getUIStringInput(TAG_NAMES).getValue();
+      FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class);
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       Node currentNode = uiExplorer.getCurrentNode();
       uiExplorer.addLockToken(currentNode);
       if(tagName == null || tagName.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tag-name-empty", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
-      String[] tagNames = null ;
+      String[] tagNames = null;
       if (tagName.indexOf(",") > -1) {
         tagNames = tagName.split(",");
         List<String> listTagNames = new ArrayList<String>(tagNames.length);
@@ -124,7 +125,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
           listTagNamesClone.add(tag);          
         }
       }
-      else tagNames = new String[] {tagName} ;
+      else tagNames = new String[] {tagName};
       String[] fitlerTagNames = new String[tagNames.length];
       int i = 0;
       for(String t : tagNames) {
@@ -132,50 +133,54 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
         i++;
         if(t.trim().length() == 0) {
           uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tag-name-empty", null, 
-              ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
         }
         if(t.trim().length() > 20) {
           uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tagName-too-long", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
+                                                  ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
         }
-        String[] arrFilterChar = {"&", "'", "$", "@", ":","]", "[", "*", "%", "!", "/", "\\"} ;
+        String[] arrFilterChar = {"&", "'", "$", "@", ":","]", "[", "*", "%", "!", "/", "\\"};
         for(String filterChar : arrFilterChar) {
           if(t.indexOf(filterChar) > -1) {
             uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tagName-invalid", null, 
-                                                    ApplicationMessage.WARNING)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-            return ;
+                                                    ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
           }
         }
       }
       for(Node tag : folksonomyService.getLinkedTagsOfDocument(uiExplorer.getCurrentNode(), repository)) {
         for(String t : fitlerTagNames) {
           if(t.equals(tag.getName())) {
-            Object[] args = {t} ;
+            Object[] args = {t};
             uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.name-exist", args, 
-                                                    ApplicationMessage.WARNING)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-            return ;
+                                                    ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
           }
         }
       }
-      folksonomyService.addTag(currentNode, fitlerTagNames, repository) ;
-      uiForm.activate() ;
-      UISideBar uiSideBar = uiExplorer.findFirstComponentOfType(UISideBar.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
-      uiForm.getUIStringInput(TAG_NAMES).setValue(null) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;
+      folksonomyService.addTag(currentNode, fitlerTagNames, repository);
+      uiForm.activate();
+      
+      Preference preferences = uiExplorer.getPreference();
+      if (preferences.isShowSideBar()) {
+        UISideBar uiSideBar = uiExplorer.findFirstComponentOfType(UISideBar.class);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar);
+      }
+      uiForm.getUIStringInput(TAG_NAMES).setValue(null);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
   }
   
   static public class CancelActionListener extends EventListener<UITaggingForm> {
     public void execute(Event<UITaggingForm> event) throws Exception {
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.cancelAction() ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+      uiExplorer.cancelAction();
     }
   }
 }
