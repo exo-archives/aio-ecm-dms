@@ -1,5 +1,11 @@
 <%
 	import java.text.SimpleDateFormat ;
+	import org.exoplatform.webui.core.UIPopupWindow;
+	
+	UIPopupWindow uiPopupWindow = uicomponent.getAncestorOfType(UIPopupWindow.class);
+  def resizeBlock = "class=\"UIResizableBlock\"";
+  if(uiPopupWindow != null) resizeBlock = ""; 
+  
 	def node = uicomponent.getNode() ;
 	String pattern = "MMMMM dd yyyy" ;
 	SimpleDateFormat dateFormat = new SimpleDateFormat() ;
@@ -51,7 +57,7 @@
 		}
 	</style>
 </head>
-<div class="UIResizableBlock" id="$uicomponent.id">
+<div $resizeBlock id="$uicomponent.id">
 	<div style="padding: 8px">
 		<div class="ContentPodcast">
 			<% def originalNode = uicomponent.getOriginalNode(); %>

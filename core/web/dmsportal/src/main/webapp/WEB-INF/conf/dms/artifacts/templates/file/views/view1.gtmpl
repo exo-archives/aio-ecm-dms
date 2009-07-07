@@ -69,6 +69,11 @@
 <%
 	import javax.jcr.Node;
 	import javax.jcr.NodeIterator;
+	import org.exoplatform.webui.core.UIPopupWindow;
+	
+	UIPopupWindow uiPopupWindow = uicomponent.getAncestorOfType(UIPopupWindow.class);
+  def resizeBlock = "class=\"UIResizableBlock\"";
+  if(uiPopupWindow != null) resizeBlock = ""; 
 
 	public boolean isVersionable(Node node) throws Exception {
     return node.isNodeType("mix:versionable");
@@ -104,7 +109,7 @@
   }
   
 %>
-<div class="UIResizableBlock">
+<div $resizeBlock>
 	<div class="FileContent">
 		<%if(mimeType.equals("text/html")) { 
 		  def rcontext = _ctx.getRequestContext() ;

@@ -38,8 +38,8 @@
   
    .FileContent .Content .TextContent {  
    	overflow: auto;
-    margin: auto;
-    width: 89%;
+        margin: auto;
+        width: 89%;
    	padding: 10px;
    	border: 1px solid #b7b7b7;
   }
@@ -61,10 +61,19 @@
   .FileContent .UIRatingInfoContainer {
     margin:0px 0px 0px auto;
   }
+  .FileContent p a {
+		color: #058EE6;
+    text-decoration: underline;
+	}
 </style>
 <%
 	import javax.jcr.Node;
 	import javax.jcr.NodeIterator;
+	import org.exoplatform.webui.core.UIPopupWindow;
+	
+	UIPopupWindow uiPopupWindow = uicomponent.getAncestorOfType(UIPopupWindow.class);
+  def resizeBlock = "class=\"UIResizableBlock\"";
+  if(uiPopupWindow != null) resizeBlock = ""; 
 
 	public boolean isVersionable(Node node) throws Exception {
     return node.isNodeType("mix:versionable");
@@ -100,7 +109,7 @@
   }
   
 %>
-<div class="UIResizableBlock">
+<div $resizeBlock>
 	<div class="FileContent">
 		<%if(mimeType.equals("text/html")) { 
 		  def rcontext = _ctx.getRequestContext() ;

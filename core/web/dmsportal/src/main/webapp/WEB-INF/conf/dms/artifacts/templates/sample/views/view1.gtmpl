@@ -2,6 +2,11 @@
 	import java.text.SimpleDateFormat ;
 	import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.ecm.webui.utils.PermissionUtil;
+  import org.exoplatform.webui.core.UIPopupWindow;
+	
+	UIPopupWindow uiPopupWindow = uicomponent.getAncestorOfType(UIPopupWindow.class);
+  def resizeBlock = "class=\"UIResizableBlock\"";
+  if(uiPopupWindow != null) resizeBlock = ""; 
   
 	def node = uicomponent.getNode() ;
 	def originalNode = uicomponent.getOriginalNode()
@@ -99,7 +104,7 @@
       text-decoration: underline;
 		}
 	</style>
-<div class="UIResizableBlock" id="$uicomponent.id">
+<div $resizeBlock id="$uicomponent.id">
 	<div class="WorkSample">
 		<div class="SampleBG">
 				<label class="text"><%=_ctx.appRes("Sample.view.label.node-name")%>: </label>
