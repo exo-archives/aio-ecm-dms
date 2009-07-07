@@ -45,13 +45,6 @@
         <property><name>default</name></property>
         <activeByDefault>true</activeByDefault>
       </activation>
-      <properties>
-        <org.exoplatform.ecm.dms.version>2.4-SNAPSHOT</org.exoplatform.ecm.dms.version>
-	    	<org.exoplatform.ecm.workflow.version>1.0.2</org.exoplatform.ecm.workflow.version>
-		    <exo.test.classes>Test</exo.test.classes>
-        <exo.test.skip>true</exo.test.skip>
-        <bonita.version>4.0</bonita.version>        
-      </properties>
     </profile>
   </profiles>
   
