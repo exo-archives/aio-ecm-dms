@@ -50,16 +50,16 @@
 	  <tr>
 	    <td style="width:25%"><%=_ctx.appRes("ContentPublishing.view.label.public-workspace")%></td>
 	    <td>
-	      <%if(node.hasProperty("exo:publicWorkspace")) {%>
-			    <%=node.getProperty("exo:publicWorkspace").getString()%>
+	      <%if(node.hasProperty("exo:publishWorkspace")) {%>
+			    <%=node.getProperty("exo:publishWorkspace").getString()%>
 			  <%}%>
 	    </td>
 	  </tr>
 	  <tr>
 	    <td style="width:25%"><%=_ctx.appRes("ContentPublishing.view.label.public-path")%></td>
 	    <td>
-	      <%if(node.hasProperty("exo:publicPath")) {%>
-			    <%=node.getProperty("exo:publicPath").getString()%>
+	      <%if(node.hasProperty("exo:publishPath")) {%>
+			    <%=node.getProperty("exo:publishPath").getString()%>
 			  <%}%>
 	    </td>
 	  </tr>
