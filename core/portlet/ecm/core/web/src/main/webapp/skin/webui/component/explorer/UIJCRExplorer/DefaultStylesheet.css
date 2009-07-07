@@ -209,7 +209,7 @@
 	float: none;
 	margin: auto;
 	width: 20px;
-	position: relative;
+	line-height: 16px;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .LeftColumn .LinkSmall {
@@ -752,6 +752,7 @@
 	padding: 0px 20px 10px 0px; /* orientation=rt */
 	width: auto;
 	background-position: right center; /* orientation=rt */
+	background-position: left center; /* orientation=lt */
 	white-space: nowrap;
 }
 
@@ -762,6 +763,7 @@
 	padding: 3px 20px 3px 0px; /* orientation=rt */
 	width: auto;
 	background-position: right center; /* orientation=rt */
+	background-position: left center; /* orientation=lt */
 }
 
 .UIJCRExplorerPortlet .UISymLinkManager {

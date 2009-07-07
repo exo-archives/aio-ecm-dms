@@ -377,7 +377,7 @@ a:hover .ShowHideBoxContainer {
 }
 
 .HardDisk24x24Icon {
-	height: 24px;
+	width: 27px; height: 24px;
   background: url('DefaultSkin/HardDisk.gif') no-repeat  left center; /* orientation=lt */
   background: url('DefaultSkin/HardDisk.gif') no-repeat  right center; /* orientation=rt */
 }

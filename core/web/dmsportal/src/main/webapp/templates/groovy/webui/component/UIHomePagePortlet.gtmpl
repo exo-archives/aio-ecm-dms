@@ -31,7 +31,7 @@
 		<table style="table-layout: fixed; width: 100%;-width: auto;">
 			<tr>
 				<td>
-					<div class="HomePortletContainer" style="margin: 10px 5px 0px 0px">
+					<div class="HomePortletContainer" style="margin: 10px 0px 0px 0px">
 						<div class="BgReat">
 							<div class="FE LabelProduct"><%=res.getString("Homepage.ecm.label.FE.name")%></div>
 						</div>
@@ -60,7 +60,7 @@
 					</div>
 				</td>
 				<td>
-					<div class="HomePortletContainer" style="margin: 10px 5px 0px 0px">
+					<div class="HomePortletContainer" style="margin: 10px 5px 0px 5px">
 						<div class="BgReat">
 							<div class="CB LabelProduct"><%=res.getString("Homepage.ecm.label.CB.name")%></div>
 						</div>

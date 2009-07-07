@@ -14,20 +14,32 @@
 }
 
 .UIHomePagePortlet .HomePortletContainer .FE {
-	background: transparent url('DefaultSkin/background/FileExplorerPortlet.png') no-repeat;
-	padding-left: 95px;
+	background: url('DefaultSkin/background/FileExplorerPortlet.png') no-repeat left 5px; /* orientation=lt */
+	background: url('DefaultSkin/background/FileExplorerPortlet.png') no-repeat right 5px; /* orientation=rt */
+	padding-left: 95px; /* orientation=lt */
+	padding-right: 95px; /* orientation=rt */
+	margin-left: 5px; /* orientation=lt */
+	margin-right: 5px; /* orientation=rt */
 	height: 89px; line-height: 89px;
 }
 
 .UIHomePagePortlet .HomePortletContainer .CB {
-	background: transparent url('DefaultSkin/background/BrowseContentPortlet.png') no-repeat;
-	padding-left: 95px;
+	background: url('DefaultSkin/background/BrowseContentPortlet.png') no-repeat left 5px; /* orientation=lt */
+	background: url('DefaultSkin/background/BrowseContentPortlet.png') no-repeat right 5px; /* orientation=rt */
+	padding-left: 95px; /* orientation=lt */
+	padding-right: 95px; /* orientation=rt */
+	margin-left: 5px; /* orientation=lt */
+	margin-right: 5px; /* orientation=rt */
 	height: 89px; line-height: 89px;
 }
 
 .UIHomePagePortlet .HomePortletContainer .ECMA {
-	background: transparent url('DefaultSkin/background/ECMAdminPortlet.png') no-repeat;
-	padding-left: 95px;
+	background: url('DefaultSkin/background/ECMAdminPortlet.png') no-repeat left 5px; /* orientation=lt */
+	background: url('DefaultSkin/background/ECMAdminPortlet.png') no-repeat right 5px; /* orientation=rt */
+	padding-left: 95px; /* orientation=lt */
+	padding-right: 95px; /* orientation=rt */
+	margin-left: 5px; /* orientation=lt */
+	margin-right: 5px; /* orientation=rt */
 	height: 89px; line-height: 89px;
 }
 
@@ -49,8 +61,12 @@
 }
 
 .UIHomePagePortlet .HomePortletContainer .ContentProductsDMS .Bullet {
-	background: url('DefaultSkin/background/Bullet.gif') no-repeat;
-	padding-left: 25px;
+	background: url('DefaultSkin/background/Bullet.gif') no-repeat left top; /* orientation=lt */
+	background: url('DefaultSkin/background/Bullet.gif') no-repeat right top; /* orientation=rt */
+	padding-left: 25px; /* orientation=lt */
+	padding-right: 25px; /* orientation=rt */
+	margin-left: 5px; /* orientation=lt */
+	margin-right: 5px; /* orientation=rt */
 }
 
 .UIHomePagePortlet .HomePortletContainer .ContentProductsDMS .Text {
@@ -333,8 +349,10 @@
 }
 
 .SideBar .ArowIcon{
-	background: url('DefaultSkin/background/ArowIcon.gif') no-repeat left ;
-	padding-left: 20px;
+	background: url('DefaultSkin/background/ArowIcon.gif') no-repeat left; /* orientation=lt */
+	background: url('DefaultSkin/background/ArowIcon-rt.gif') no-repeat right; /* orientation=rt */
+	padding-left: 20px; /* orientation=lt */
+	padding-right: 20px; /* orientation=rt */
 	margin: 2px 10px;
 }
 
@@ -356,12 +374,13 @@
 }
 
 .SideBar .CenterButton {
-	background: url('DefaultSkin/background/CenterButton1x33.gif') repeat-x ;
+	background: url('DefaultSkin/background/CenterButton1x33.gif') repeat-x;
 	line-height: 33px;
 	font-size: 18px;
 	font-family: tahoma;
 	font-weight: bold;
-	padding-left: 20px;
+	padding-left: 20px; /* orientation=lt */
+	padding-right: 20px; /* orientation=rt */
 	color: white;
 }
 
@@ -383,7 +402,8 @@
 .SideBar .ProVersion {
 	font-family: tahoma;
 	font-weight: bold;
-	padding-left: 30px;
+	padding-left: 30px; /* orientation=lt */
+	padding-right: 30px; /* orientation=rt */
 	color: #5d8c18;
 	font-size: 12px;
 }
@@ -423,7 +443,8 @@
 	background: url('DefaultSkin/background/RightHome.jpg') no-repeat left -257px; /* orientation=rt */
 	text-align: right; /* orientation=lt */
 	text-align: left; /* orientation=rt */
-	height: 257px; oveflow: hidden;
+	height: 257px; 
+	overflow: hidden;
 	padding: 0px 36px 0px 0px; /* orientation=lt */
 	padding: 0px 0px 0px 36px; /* orientation=rt */
 	letter-spacing: 1px;
