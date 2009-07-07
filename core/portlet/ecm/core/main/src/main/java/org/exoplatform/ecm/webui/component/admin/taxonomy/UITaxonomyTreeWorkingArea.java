@@ -22,6 +22,7 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.ReferentialIntegrityException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
@@ -119,15 +120,18 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
   public void update() throws Exception {
     UITaxonomyTreeCreateChild uiManager = getParent();
     if (selectedPath_ != null) {
-      Node selectedTaxonomy = uiManager.getNodeByPath(selectedPath_);
-      NodeIterator nodeIter = selectedTaxonomy.getNodes();
-      List<Node> listNodes = new ArrayList<Node>();
-      while (nodeIter.hasNext()) {
-        Node node = nodeIter.nextNode();
-        if (matchNodeType(node))
-          listNodes.add(node);
+      try {
+        Node selectedTaxonomy = uiManager.getNodeByPath(selectedPath_);
+        NodeIterator nodeIter = selectedTaxonomy.getNodes();
+        List<Node> listNodes = new ArrayList<Node>();
+        while (nodeIter.hasNext()) {
+          Node node = nodeIter.nextNode();
+          if (matchNodeType(node))
+            listNodes.add(node);
+        }
+        setNodeList(listNodes);
+      } catch (PathNotFoundException e) {
       }
-      setNodeList(listNodes);
     }
     updateGrid();
   }
@@ -160,7 +164,7 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
       String path = event.getRequestContext().getRequestParameter(OBJECTID);
       Node selectedNode = uiTaxonomyTreeCreateChild.getNodeByPath(path);
       try {
-        uiTreeWorkingArea.setSelectedPath(selectedNode.getPath());
+        uiTreeWorkingArea.setSelectedPath(selectedNode.getParent().getPath());
         uiTreeWorkingArea.getApplicationComponent(TaxonomyService.class).removeTaxonomyNode(
             uiTreeWorkingArea.getRepository(), uiTaxonomyTreeCreateChild.getWorkspace(), path);
       } catch (ReferentialIntegrityException ref) {
