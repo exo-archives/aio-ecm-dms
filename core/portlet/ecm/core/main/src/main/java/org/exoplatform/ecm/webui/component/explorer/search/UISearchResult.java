@@ -141,8 +141,12 @@ public class UISearchResult extends UIContainer {
   }
   
   public Node getNodeByPath(String path) throws Exception {
-    JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
-    return (Node)getSession().getItem(nodePath.getAsString(false));
+    try {        
+      JCRPath nodePath = ((SessionImpl)getSession()).getLocationFactory().parseJCRPath(path);
+      return (Node)getSession().getItem(nodePath.getAsString(false));
+    } catch (Exception e) {
+      return null;
+    }
   }
   
   public List<Row> getResultList() throws Exception {    
@@ -161,7 +165,7 @@ public class UISearchResult extends UIContainer {
           LOG.warn("Can't get node by path " + path, e);
           continue;
         }
-        addNode(listNodes, resultNode, listRows, r);
+        if (resultNode != null) addNode(listNodes, resultNode, listRows, r);
         if (!iter.hasNext()) isEndOfIterator_ = true;
         if (listNodes.size() == 100) {
           currentListNodes_.addAll(listNodes);
@@ -185,7 +189,7 @@ public class UISearchResult extends UIContainer {
           LOG.warn("Can't get node by path " + path, e);
           continue;
         }
-        addNode(listNodes, resultNode, listRows, r);        
+        if (resultNode != null) addNode(listNodes, resultNode, listRows, r);        
       }
       currentListNodes_= listNodes;
       currentListRows_ = listRows;
