@@ -3,6 +3,7 @@
 	import org.exoplatform.ecm.webui.component.browsecontent.UIDocumentDetail ;
 	import org.exoplatform.ecm.webui.component.browsecontent.UITagList ;
 	import org.exoplatform.ecm.webui.utils.Utils ;
+  import org.exoplatform.web.application.Parameter ;
 	
 	String componentName = uicomponent.getName() ;
 	def subDocumentList = uicomponent.getCurrentList() ;
@@ -44,7 +45,7 @@
     <div class="EventContent">
       <%
         for (Node doc in subDocumentList) {
-          String viewAction = uicomponent.event("ChangeNode",Utils.formatNodeName(doc.getPath()));
+          String viewAction = uicomponent.event("ChangeNode",Utils.formatNodeName(doc.getPath()), new Parameter("workspace", doc.getSession().getWorkspace().getName()));
           String icon = uicomponent.getIcons(doc,"16x16Icon") ;
       %>
           <div class="EventContentDetail">
