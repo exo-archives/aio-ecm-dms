@@ -365,7 +365,8 @@ public class UIJcrExplorerEditForm extends UIForm implements UISelectable {
     if ("/".equals(String.valueOf(value))) {
       stValue = "/";
     } else {
-      stValue = String.valueOf(value).split(":/")[1];
+      if (String.valueOf(value).split(":/").length > 1) stValue = String.valueOf(value).split(":/")[1];
+      else stValue = "/";
     }
     ((UIFormStringInput)findComponentById(selectField)).setValue(stValue);
     UIJcrExplorerEditContainer uiContainer = getParent();
