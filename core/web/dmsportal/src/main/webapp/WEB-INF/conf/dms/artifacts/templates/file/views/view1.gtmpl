@@ -101,6 +101,7 @@
   def fileLangNode = getFileLangNode(currentNode) ;
   def contentNode = fileLangNode.getNode("jcr:content") ;
   def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
+  def unsupportMimeTypeText = uicomponent.getUnsupportMimeTypeText();
   
   public String formatNodeName(String text) {
     return text.replaceAll("'", "\\\\'") ;
@@ -192,7 +193,7 @@
 		    <div class="Content">
 		    	<div class="TextContent">
 			      <%        
-			        if(mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
+			        if(!unsupportMimeTypeText.contains(mimeType)&& mimeType.startsWith("text") && contentNode.hasProperty("jcr:data")) {
 			          if(getFileSize(contentNode) < 1024) {
 			            println uicomponent.encodeHTML(contentNode.getProperty("jcr:data").getString()); 
 			          } else {
