@@ -13,7 +13,7 @@
   public void writeNodes(List nodes, String clazz, int level) {
     int padding ;
     for(node in nodes) {
-		  if(clazz == "Even") clazz = "" ;
+		  if(clazz == "Even") clazz = "";
       else clazz = "Even" ;
       padding = (level * 20) ;
 	    println """
@@ -50,17 +50,25 @@
 			}
 			
 			String[] labels = uicomponent.getVersionLabels(node);
-      StringBuffer label = new StringBuffer() ;
-      label.append("<label>") ;
+   StringBuffer label = new StringBuffer() ;
+   label.append("<label>") ;
+   StringBuffer displayLabel = new StringBuffer();
 			for(temp in labels) {
-       label.append("[").append(temp).append("] ") ;
-        
-      }
-      label.append("</label>") ;
+       displayLabel.append("[").append(temp).append("] ") ;
+ 		}
+
+   if (displayLabel.length() > 50) {
+    	label.append(displayLabel.substring(0, 50)).append("...");
+   } else {
+    label.append(displayLabel);
+   }
+   label.append("</label>") ;
+      
 			String show = "Version: " + node.getName() + " " + label.toString() + baseVersion;
 			String dateCreated = node.getVersion().getCreated().getTime().toString() ;
+			String titleLable = displayLabel.toString();
 			println """
-				    <div class="NodeLabel" title="$dateCreated">$show</div>
+				    <div class="NodeLabel" title="$dateCreated : $titleLable">$show</div>
 				    <div style="clear: both;"><span></span></div>
 			  </div>
 	    """;
