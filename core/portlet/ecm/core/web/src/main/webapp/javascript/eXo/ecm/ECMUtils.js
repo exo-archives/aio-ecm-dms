@@ -8,6 +8,7 @@
 	
 	ECMUtils.prototype.popupArray = [];
 	
+	
 	ECMUtils.prototype.init = function(portletId) {
 		var portlet = document.getElementById(portletId) ;
 		if(!portlet) return ;
@@ -16,7 +17,8 @@
 			eXo.ecm.ECMUtils.closeAllPopup() ;
 		}
 		if(document.getElementById("UIPageDesktop")) {
-			Self.fixHeight(portletId) ;
+			Self.fixHeight(portletId);
+			return;
 			var uiPageDeskTop = document.getElementById("UIPageDesktop");
 			var uiJCRExplorers = DOM.findDescendantsByClass(uiPageDeskTop, 'div', 'UIJCRExplorer') ;
 			if (uiJCRExplorers.length) {
@@ -37,16 +39,27 @@
 	};
 	
 	ECMUtils.prototype.fixHeight = function(portletId) {
-		var portlet = document.getElementById(portletId);
-		var refElement = DOM.findAncestorByClass(portlet, "UIApplication");
-		if (refElement == null) return;
-		var delta = (parseInt(refElement.style.height) - portlet.offsetHeight);
-		var resizeObj = DOM.findDescendantsByClass(portlet, 'div', 'UIResizableBlock');
-		if(resizeObj.length) {
-			for(var i = 0; i < resizeObj.length; i++) {
-				resizeObj[i].style.height = (resizeObj[i].offsetHeight + delta) + "px";
-			}
-		}
+       var portlet = document.getElementById(portletId);
+       var refElement = DOM.findAncestorByClass(portlet, "UIApplication");
+       if (!refElement) return;
+        
+       // 30/06/2009 
+       //Recalculate height of UIResizableBlock in the UISideBarContainer 
+       //var delta = parseInt(refElement.style.height) - portlet.offsetHeight;
+                
+       var uiControl = document.getElementById('UIControl');
+       var uiSideBar = document.getElementById('UISideBar');
+       if(!uiControl || !uiSideBar) return;
+       var uiSideBarControl = DOM.findFirstDescendantByClass(uiSideBar, 'div', 'UISideBarControl');
+       if(!uiSideBarControl) return;
+       var deltaH = refElement.offsetHeight - uiControl.offsetHeight - uiSideBarControl.offsetHeight;
+       var resizeObj = DOM.findDescendantsByClass(portlet, 'div', 'UIResizableBlock');
+       if(resizeObj.length) {
+       		for(var i = 0; i < resizeObj.length; i++) {
+          	    resizeObj[i].style.display = 'block';
+                resizeObj[i].style.height = (resizeObj[i].offsetHeight + deltaH) + "px";
+          }
+       }
 	};
 	
 	ECMUtils.prototype.controlLayout = function(portletId) {
@@ -133,20 +146,6 @@
 		}
 	};
 	
-	ECMUtils.prototype.showHideExtendedView = function(event) {
-	  var elemt = document.getElementById("ListExtendedView");
-	  event = event || window.event;
-	  event.cancelBubble = true;
-    var iconTree = document.getElementById("iconTreeExplorer");
-	  if(elemt.style.display == 'none') {
-	    elemt.style.display = 'block';
-	    iconTree.style.position = 'static';
-	  } else {
-	    elemt.style.display = 'none' ;
-	    iconTree.style.position = 'relative';
-	  }
-	  DOM.listHideElements(elemt);
-	}
 	 
 	ECMUtils.prototype.showHideComponent = function(elemtClicked) {
 		var nodeReference = DOM.findAncestorByClass(elemtClicked,  "ShowHideContainer");
@@ -170,7 +169,7 @@
 			return true;
 		}
 		return false;
-	};
+	};	
 	
 	ECMUtils.prototype.collapseExpand = function(element) {
 		var node = element.parentNode ;
@@ -233,34 +232,18 @@
 		elemt.innerHTML = text ;
 	};
 	
-	ECMUtils.prototype.onKeyAddressBarPress = function() {
-		var uiAddressBarControl = document.getElementById("AddressBarControl");
+	ECMUtils.prototype.onKeyPress = function() {
+		var uiAddressBarControl = document.getElementById("UIAddressBarControl");
 		if(uiAddressBarControl) {
-			uiAddressBarControl.onkeypress = Self.onAddressBarEnterPress ;
+			uiAddressBarControl.onkeypress = Self.onEnterPress ;
 		}
 	};
 	
-	ECMUtils.prototype.onKeySimpleSearchPress = function() {
-		var uiAddressBarControl = document.getElementById("SimpleSearchControl");
-		if(uiAddressBarControl) {
-			uiAddressBarControl.onkeypress = Self.onSimpleSearchEnterPress ;
-		}
-	};	
-
-	ECMUtils.prototype.onSimpleSearchEnterPress = function(event) {
-		var gotoLocation = document.getElementById("SimpleSearch");
+	ECMUtils.prototype.onEnterPress = function(event) {
+		var uiAdressBarAction = document.getElementById("UIAddressBarAction");
 		var event = event || window.event;
-		if(gotoLocation && event.keyCode == 13) {
-			eval(gotoLocation.href);
-			return false;
-		}
-	};
-	
-	ECMUtils.prototype.onAddressBarEnterPress = function(event) {
-		var gotoLocation = document.getElementById("GotoLocation");
-		var event = event || window.event;
-		if(gotoLocation && event.keyCode == 13) {
-			eval(gotoLocation.href);
+		if(uiAdressBarAction && event.keyCode == 13) {
+			eval(uiAdressBarAction.href);
 			return false;
 		}
 	};
@@ -305,12 +288,12 @@
 		        path += encodeURIComponent(nodePath[i]) + "/";
 		      }
 		    }
-		    window.open(serverInfo + "/" + portalName + "/rest/private/lnkproducer/openit.lnk?path=/" + repository + "/" + workspace + path, '_new');
+		    window.location = serverInfo+ "/"+portalName + "/rest/private/lnkproducer/openit.lnk?path=/"+repository +"/" +workspace + path;
 	   	} else {
-	 	  	window.open(serverInfo + "/" + portalName + "/rest/private/jcr/" + repository + "/" +workspace + nodePath, '_new');
+	 	  	window.location = serverInfo + "/"+portalName + "/rest/private/jcr/"+repository +"/" +workspace + nodePath; 		 		
 	 	  } 	  
 	  } else {
-		  window.open(serverInfo+ "/" + portalName + "/rest/private/jcr/" + repository + "/" + workspace + nodePath, '_new');
+	    window.location = serverInfo+ "/"+portalName + "/rest/private/jcr/"+repository +"/" +workspace + nodePath;
 	  } 
 	} ;
 	
@@ -352,96 +335,8 @@
 			}
 		}
 	};
-	
-	ECMUtils.prototype.checkAvailableSpace = function() { 
-		var actionBar = document.getElementById('UIActionBar');
-		var prtNode = document.getElementById('DMSMenuItemContainer');
-		var uiTabs = DOM.findDescendantsByClass(prtNode, "div", "SubTabItem");
-		var listHideIcon = document.getElementById('IconListHideElement');
-		var viewBarContainer = document.getElementById("UIViewBarContainer");
-		var elementSpace = 0;
-		var portletFrag = DOM.findAncestorByClass(actionBar, "PORTLET-FRAGMENT");
-		if(eXo.core.Browser.browserType == 'ie') {
-			maxSpace = parseInt(actionBar.offsetWidth) - parseInt(viewBarContainer.offsetWidth);
-		} else {
-			var maxSpace = parseInt(portletFrag.offsetWidth) - parseInt(viewBarContainer.offsetWidth);
-		}
-
-		for(var i = 0; i <  uiTabs.length; i++){
-			uiTabs[i].style.display = "block" ;
-			listHideIcon.style.display = "block" ;
-			if(elementSpace >= maxSpace - uiTabs[i].offsetWidth - listHideIcon.offsetWidth) {
-				listHideIcon.className = "IconListHideElement ShowElementIcon";
-				listHideIcon.style.visibility = "visible" ;
-				eXo.ecm.ECMUtils.addElementListHide(uiTabs[i]);
-				uiTabs[i].style.display = 'none';
-			} else {
-				listHideIcon.className = "IconListHideElement ShowElementIcon";
-				listHideIcon.style.visibility = "hidden" ;
-				uiTabs[i].style.display = 'block';
-				elementSpace += uiTabs[i].offsetWidth;
-				var subItem = DOM.findFirstDescendantByClass(uiTabs[i], "a", "SubTabIcon");
-				eXo.ecm.ECMUtils.removeElementListHide(subItem);
-			}
-		}
-		eXo.core.Browser.addOnResizeCallback('ECMresize', function(){eXo.ecm.ECMUtils.checkAvailableSpace()});
-	};	
-	
-	ECMUtils.prototype.addElementListHide = function(obj) {
-		var tmpNode = obj.cloneNode(true);
-		var subItem = DOM.findFirstDescendantByClass(tmpNode, "a", "SubTabIcon");
-		var listHideIcon = document.getElementById('IconListHideElement');
-		var listHideContainer = DOM.findFirstDescendantByClass(listHideIcon, "div", "ListHideContainer");
-		var uiTabs = DOM.findDescendantsByClass(listHideContainer, "div", "SubTabItem");
-		for(var i = 0; i < uiTabs.length; i++) {
-			var hideSubItem = DOM.findFirstDescendantByClass(uiTabs[i], "a", "SubTabIcon");
-			if(hideSubItem.className == subItem.className) {
-				return;
-			}
-		}
-		listHideContainer.appendChild(tmpNode);
-		
-		if (listHideContainer.innerHTML != "") {
-			var clearElement = document.createElement("div");
-			clearElement.style.clear = "left";
-			listHideContainer.appendChild(clearElement);
-		} else {
-			listHideContainer.style.display = "none";
-		}
-	};
-	
-	ECMUtils.prototype.removeElementListHide = function(obj) {
-		if(!obj) return;
-		var listHideIcon = document.getElementById('IconListHideElement');
-		var listHideContainer = DOM.findFirstDescendantByClass(listHideIcon, "div", "ListHideContainer");
-		var uiTabs = DOM.findDescendantsByClass(listHideContainer, "div", "SubTabItem");
-		var tmpNode = false;
-		for(var i = 0; i < uiTabs.length; i++) {
-			tmpNode = DOM.findFirstDescendantByClass(uiTabs[i], "a", "SubTabIcon");
-			if(tmpNode.className == obj.className) {
-				listHideContainer.removeChild(uiTabs[i]);
-			}
-		}
-	};
-	
-	ECMUtils.prototype.showListHideElements = function(obj,event) {
-		event = event || window.event;
-		event.cancelBubble = true;
-		var listHideContainer = DOM.findFirstDescendantByClass(obj, "div", "ListHideContainer");
-		var listItems = DOM.findDescendantsByClass(listHideContainer, "div", "SubTabItem");
-		if(listItems && listItems.length > 0) {
-			if(listHideContainer.style.display != 'block') {
-				obj.style.position = 'relative';
-				listHideContainer.style.display = 'block';
-				listHideContainer.style.top = obj.offsetHeight + 'px';
-				listHideContainer.style.left =  -(listHideContainer.offsetWidth - obj.offsetWidth) + 'px';
-			 } else {
-				 obj.style.position = 'static';
-				 listHideContainer.style.display = 'none';
-			 }
-			DOM.listHideElements(listHideContainer);
-		} 
-	};
 };
 
 eXo.ecm.ECMUtils = new ECMUtils();
+
+
