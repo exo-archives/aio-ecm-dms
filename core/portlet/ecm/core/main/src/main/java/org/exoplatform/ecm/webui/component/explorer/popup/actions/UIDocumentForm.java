@@ -501,7 +501,10 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
             uiOneTaxonomySelector.init(uiExplorer.getSystemProvider());
             String param = "returnField=" + FIELD_TAXONOMY;
             uiOneTaxonomySelector.setSourceComponent(uiDocumentForm, new String[]{param});
-            UIPopupWindow uiPopupWindow = uiFormController.addChild(UIPopupWindow.class, null, POPUP_TAXONOMY);
+            UIPopupWindow uiPopupWindow = uiFormController.getChildById(POPUP_TAXONOMY);
+            if (uiPopupWindow == null) {
+              uiPopupWindow = uiFormController.addChild(UIPopupWindow.class, null, POPUP_TAXONOMY);
+            }
             uiPopupWindow.setWindowSize(700, 450);
             uiPopupWindow.setUIComponent(uiOneTaxonomySelector);
             uiPopupWindow.setRendered(true);
