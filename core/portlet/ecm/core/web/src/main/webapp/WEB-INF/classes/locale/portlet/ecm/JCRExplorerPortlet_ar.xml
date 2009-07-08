@@ -1679,7 +1679,11 @@
       <name>مشهد العمل</name>
     </label>
     <msg>
-      <repository-exception>لا يمكن حفظ هذا العمل. الاسم قد يكون خاطئ.</repository-exception>
+      <!-- 
+        Deeper test on DMS 2.4 RC1
+        ECM-3873 Error content of message when type name of action by special character
+	    -->
+      <repository-exception>Can not save this action. The name provided has some special character.</repository-exception>
       <numberformat-exception>لا يمكن حفظ هذا العمل. الاسم المستخدم يجب أن لا يحمل '[' أو ']'.</numberformat-exception>
       <existed-action>هذا الاسم '{0}' مستخدم، هلا اخترت اسما آخرا.</existed-action>
       <unable-add-action>لم يتمكن من إضافة هذا العمل</unable-add-action>

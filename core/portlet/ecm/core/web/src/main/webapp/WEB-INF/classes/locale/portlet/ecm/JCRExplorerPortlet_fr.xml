@@ -1679,7 +1679,11 @@
       <name>Formulaire d'action</name>
     </label>
     <msg>
-      <repository-exception>Sauvegarde de cette action impossible. The name provided must not have an index on its final element.</repository-exception>
+      <!-- 
+        Deeper test on DMS 2.4 RC1
+        ECM-3873 Error content of message when type name of action by special character
+	    -->
+      <repository-exception>Can not save this action. The name provided has some special character.</repository-exception>
       <numberformat-exception>Sauvegarde de cette action impossible. Les caractères '[' ou ']' ne sont pas autorisés dans le nom.</numberformat-exception>
       <existed-action>Ce nom existe déjà, veuillez en choisir un autre!</existed-action>
       <unable-add-action>Impossible d'ajouter cette action</unable-add-action>

@@ -1679,7 +1679,11 @@
       <name>Actie Formulier</name>
     </label>
     <msg>
-      <repository-exception>Kan actie niet opslaan. naam moet index op het einde bevatten.</repository-exception>
+      <!-- 
+        Deeper test on DMS 2.4 RC1
+        ECM-3873 Error content of message when type name of action by special character
+	  -->
+      <repository-exception>Can not save this action. The name provided has some special character.</repository-exception>
       <numberformat-exception>Kan actie niet opslaan. naam mag geen '[' or ']' bevatten.</numberformat-exception>
       <existed-action>naam bestaat reeds, probeer opnieuw!</existed-action>
       <unable-add-action>Onmogelijk om actie toe te voegen</unable-add-action>

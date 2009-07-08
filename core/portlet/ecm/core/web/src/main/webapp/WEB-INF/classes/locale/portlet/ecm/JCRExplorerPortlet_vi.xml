@@ -1686,7 +1686,11 @@
       <name>Form thao tác</name>
     </label>
     <msg>
-      <repository-exception>Không thể lưu thao tác này. Tên thao tác không được chứa một chỉ mục trên phần tử cuối cùng của nó.</repository-exception>
+    <!-- 
+        Deeper test on DMS 2.4 RC1
+        ECM-3873 Error content of message when type name of action by special character
+	  -->
+      <repository-exception>Không thể lưu thao tác này. Tên thao tác vừa nhập chứa một số kí tự đặc biệt.</repository-exception>
       <numberformat-exception>Không thể lưu thao tác này. Tên thao tác không được chứa  '[' or ']'.</numberformat-exception>
       <existed-action>Thao tác tên '{0}' đã tồn tại. Vui lòng lựa chọn tên khác!</existed-action>
       <unable-add-action>Không thể thêm thao tác này.</unable-add-action>

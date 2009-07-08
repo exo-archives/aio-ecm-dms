@@ -1679,7 +1679,11 @@
       <name>Aktion Form</name>
     </label>
     <msg>
-      <repository-exception><![CDATA[Sie k&ouml;nnen diese Aktion nicht speichern. Der angegebene Name darf nicht mit einem Index enden.]]></repository-exception>
+    <!-- 
+        Deeper test on DMS 2.4 RC1
+        ECM-3873 Error content of message when type name of action by special character
+	  -->
+      <repository-exception>Can not save this action. The name provided has some special character.</repository-exception>
       <numberformat-exception><![CDATA[Sie k&ouml;nnen diese Aktion nicht speichern. Der angegebene Name darf nicht '[' or ']' beinhalten.]]></numberformat-exception>
       <existed-action>Name besteht schon, bitte neuen eingeben!</existed-action>
       <unable-add-action><![CDATA[Aktion konnte nicht hinzugef&uuml;gt werden]]></unable-add-action>
