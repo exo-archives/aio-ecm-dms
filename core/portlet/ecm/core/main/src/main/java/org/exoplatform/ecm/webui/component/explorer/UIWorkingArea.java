@@ -1643,10 +1643,16 @@ public class UIWorkingArea extends UIContainer {
         return;
       }
       
-      if(uiWorkingArea.getVirtualClipboards().isEmpty()) {
-        uiWorkingArea.processPaste(uiExplorer.getAllClipBoard().getLast(), destPath, event);
-      } else {
-        uiWorkingArea.processPasteMultiple(destPath, event);
+      try {
+        if(uiWorkingArea.getVirtualClipboards().isEmpty()) {
+          uiWorkingArea.processPaste(uiExplorer.getAllClipBoard().getLast(), destPath, event);
+        } else {
+          uiWorkingArea.processPasteMultiple(destPath, event);
+        } 
+      } catch (PathNotFoundException pe) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cannot-readsource", null));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       }
       if(!uiExplorer.getPreference().isJcrEnable()) session.save();
       uiExplorer.updateAjax(event);
