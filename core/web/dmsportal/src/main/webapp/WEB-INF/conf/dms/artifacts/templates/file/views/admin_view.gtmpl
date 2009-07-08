@@ -20,7 +20,8 @@
   
   .FileContent .ECMIframe {
    	border: 1px solid #cbcbcb; 
-  	height: 100% ;
+  	height: 100%;
+  	!height: 320px ;
   	overflow: auto;
   	width: 93%;
   	margin: 5px;
@@ -38,7 +39,8 @@
   
    .FileContent .Content .TextContent {  
    	overflow: auto;
-   	height: 300px;
+   	height: 100%;
+   	!height: 320px;
     margin: auto;
     width: 89%;
    	padding: 10px;
