@@ -2403,5 +2403,20 @@
   	<msg>
 			<can-not-unlock-node-is-checked-in>Không thể unlock bởi vì node '{0}' hoặc cha của '{0}' đang ở trạng thái checked-in</can-not-unlock-node-is-checked-in>
 		</msg>
-  </UIPopupMenu>  	
+  </UIPopupMenu>
+  
+  <!-- 
+ 	 #############	From DMS 2.5 #############
+  -->
+  <UIActionBar>
+  	<msg>
+				<cannot-enable-version>Không cho phép tạo phiên bản</cannot-enable-version>
+			</msg>
+  </UIActionBar>
+  <UIPopupMenu>
+  	<msg>
+				<cannot-readsource>Không thể đọc dữ liệu từ nguồn</cannot-readsource>
+	 	</msg>
+  </UIPopupMenu>
+  
 </bundle>

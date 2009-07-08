@@ -2398,4 +2398,17 @@
 		</msg>
   </UIPopupMenu>
   
+  <!-- 
+ 	 #############	From DMS 2.5 #############
+  -->
+  <UIActionBar>
+  	<msg>
+				<cannot-enable-version>Can not enable version node</cannot-enable-version>
+			</msg>
+  </UIActionBar>
+  <UIPopupMenu>
+  	<msg>
+				<cannot-readsource>Can not read data from source node</cannot-readsource>
+	 	</msg>
+  </UIPopupMenu>
 </bundle>
