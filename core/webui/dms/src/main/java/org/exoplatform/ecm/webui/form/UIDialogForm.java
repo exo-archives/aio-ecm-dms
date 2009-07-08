@@ -37,7 +37,9 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.form.field.UIFormActionField;
 import org.exoplatform.ecm.webui.form.field.UIFormCalendarField;
+import org.exoplatform.ecm.webui.form.field.UIFormCheckBoxField;
 import org.exoplatform.ecm.webui.form.field.UIFormHiddenField;
+import org.exoplatform.ecm.webui.form.field.UIFormRadioBoxField;
 import org.exoplatform.ecm.webui.form.field.UIFormSelectBoxField;
 import org.exoplatform.ecm.webui.form.field.UIFormTextAreaField;
 import org.exoplatform.ecm.webui.form.field.UIFormTextField;
@@ -68,8 +70,10 @@ import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
+import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
+import org.exoplatform.webui.form.UIFormRadioBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
@@ -314,6 +318,68 @@ public class UIDialogForm extends UIForm {
     addMixinField(name,null,arguments);
   }  
 
+  @SuppressWarnings("unchecked")
+  public void addCheckBoxField(String name, String lable, String[] arguments) throws Exception{
+    UIFormCheckBoxField formCheckBoxField =  new UIFormCheckBoxField(name, lable, arguments);
+    String jcrPath = formCheckBoxField.getJcrPath();
+    String defaultValue = formCheckBoxField.getDefaultValue();
+    JcrInputProperty inputProperty = new JcrInputProperty();
+    inputProperty.setJcrPath(jcrPath);
+    UIFormCheckBoxInput uiCheckBoxInput = findComponentById(name);
+    if(uiCheckBoxInput == null){
+      uiCheckBoxInput = new UIFormCheckBoxInput(name, name, null);
+      if(defaultValue != null) {
+        uiCheckBoxInput.setChecked(Boolean.valueOf(defaultValue));
+        uiCheckBoxInput.setValue(defaultValue);
+      }
+    }
+    if(formCheckBoxField.isOnchange()){
+      uiCheckBoxInput.setOnChange("Onchange");
+      uiCheckBoxInput.setValue(uiCheckBoxInput.getValue());
+    }
+    addUIFormInput(uiCheckBoxInput);
+    renderField(name);
+  }
+  
+  public void addCheckBoxField(String name, String[] arguments) throws Exception{
+    addCheckBoxField(name, null, arguments);
+  }
+  
+  public void addRadioBoxField(String name, String label, String[] arguments) throws Exception{
+    UIFormRadioBoxField formRadioBoxField = new UIFormRadioBoxField(name, label, arguments);
+    String jcrPath = formRadioBoxField.getJcrPath();
+    String options = formRadioBoxField.getOptions();
+    String defaultValue = formRadioBoxField.getDefaultValue();
+    List<SelectItemOption<String>> optionsList = new ArrayList<SelectItemOption<String>>();
+    UIFormRadioBoxInput uiRadioBox = findComponentById(name);
+    if(uiRadioBox == null){
+      String value = defaultValue.trim().substring(1, defaultValue.length()-1).split(",")[1];
+      uiRadioBox = new UIFormRadioBoxInput(name, value, null);
+      if(options != null && options.length() > 0){
+        String[] array = options.split(";");
+        for(int i = 0; i < array.length; i++) {
+          String[] arrayChild = array[i].trim().substring(1, array[i].length()-1).split(",");
+          List<String> listValue = new ArrayList<String>();
+          for(int j=0; j<arrayChild.length; j++) {
+            listValue.add(arrayChild[j].trim());
+          }
+          optionsList.add(new SelectItemOption<String>(listValue.get(0), listValue.get(1)));
+        }
+        uiRadioBox.setOptions(optionsList);        
+      } else {
+        uiRadioBox.setOptions(optionsList);
+      }
+      if(defaultValue != null) uiRadioBox.setDefaultValue(defaultValue);
+    }
+    uiRadioBox.setValue(uiRadioBox.getValue());
+    addUIComponentInput(uiRadioBox);
+    renderField(name);
+  }
+  
+  public void addRadioBoxField(String name, String[] arguments) throws Exception{
+    addRadioBoxField(name, null, arguments);
+  }
+  
   public void addSelectBoxField(String name, String label, String[] arguments) throws Exception {
     UIFormSelectBoxField formSelectBoxField = new UIFormSelectBoxField(name,label,arguments);
     String jcrPath = formSelectBoxField.getJcrPath();
