@@ -284,7 +284,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       if (name == null) {
         for(String filterChar : arrFilterChar) {
           if (fileName.indexOf(filterChar) > -1) {
-            name = fileName.replaceAll(filterChar, "");
+            name = fileName.replace(filterChar, "");
             fileName = name;
           }
         }
