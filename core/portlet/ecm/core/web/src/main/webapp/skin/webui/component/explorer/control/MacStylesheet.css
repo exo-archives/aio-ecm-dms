@@ -488,6 +488,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
+	_width: 55px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Right {
@@ -509,6 +510,7 @@
 	height: 22px;
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
+	_width: 55px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .ViewIcon {
@@ -553,6 +555,7 @@
   float: right; /* orientation=rt */
   margin-left: 3px; /* orientation=lt */
   margin-right: 3px; /* orientation=rt */
+  _width: 55px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultViewSelected {

@@ -150,14 +150,14 @@
 }
  
 .ExpandIcon {
-  width: 18px; height: 16px;
-  background: url('VistaSkin/SmallGrayMinus.gif') no-repeat left -16px; /* orientation=lt */
-  background: url('VistaSkin/SmallGrayMinus-rt.gif') no-repeat right -16px; /* orientation=rt */
+  width: 16px;
+  background: url('VistaSkin/SmallGrayMinus.gif') no-repeat left top; /* orientation=lt */
+  background: url('VistaSkin/SmallGrayMinus-rt.gif') no-repeat right top; /* orientation=rt */
   cursor: pointer;
 }
 
 .CollapseIcon  {
-  width: 18px; height: 16px;
+  width: 18px;
   background: url('VistaSkin/SmallGrayPlus.gif') no-repeat left top; /* orientation=lt */
   background: url('VistaSkin/SmallGrayPlus-rt.gif') no-repeat right top; /* orientation=rt */
   cursor: pointer;
@@ -617,6 +617,11 @@
 .UIVersionTreeList .UnPublishedicon {
   background: url('DefaultSkin/UnPublished.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/UnPublished.gif') no-repeat right center; /* orientation=rt */
+}
+
+.UIRightClickPopupMenu .MenuItem .ItemIcon{
+	background-position: 6px center; /* orientation=lt */
+  background-position: 98% center; /* orientation=rt */
 }
 
 /*

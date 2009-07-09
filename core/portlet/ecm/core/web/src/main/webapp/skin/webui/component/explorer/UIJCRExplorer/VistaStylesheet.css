@@ -169,7 +169,8 @@
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn {
  	border-right: none; /* orientation=lt */
  	border-left: none; /* orientation=rt */
-	padding: 2px 0px 2px 3px;
+	padding: 2px 0px 2px 3px; /* orientation=lt */
+	padding: 2px 3px 2px 0px; /* orientation=rt */
 } 
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn .NodeLabel {
@@ -700,8 +701,8 @@
 .UIRightClickPopupMenu .MenuURLIcon  {
 	line-height: 16px;
 	margin: 0 7px;
-	padding: 0px 0 10px 26px; /* orientation=lt */
-	padding: 0px 26px 0px 0px; /* orientation=rt */
+	padding: 0px 0 10px 20px; /* orientation=lt */
+	padding: 0px 20px 0px 0px; /* orientation=rt */
 	width: auto;
 	background-position: right center; /* orientation=rt */
 	white-space: nowrap;

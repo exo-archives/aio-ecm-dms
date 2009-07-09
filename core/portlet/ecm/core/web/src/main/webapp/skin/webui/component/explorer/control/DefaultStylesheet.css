@@ -564,7 +564,9 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view{
-	background: url(DefaultSkin/background/IconView.gif) no-repeat; 
+	background: url(DefaultSkin/background/IconView.gif) no-repeat;
+	width: 23px;
+	height: 21px;
 }
 
 
@@ -573,11 +575,15 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .admin-view{
-	background: url(DefaultSkin/background/DetailView.gif) no-repeat; 
+	background: url(DefaultSkin/background/DetailView.gif) no-repeat;
+	width: 23px;
+	height: 21px;
+	display: block;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .admin-view-selected{
-	background: url(DefaultSkin/background/DetailViewSelected.gif) no-repeat; 
+	background: url(DefaultSkin/background/DetailViewSelected.gif) no-repeat left center; /* orientation=lt */
+	background: url(DefaultSkin/background/DetailViewSelected.gif) no-repeat right center; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left  .simple-view{
@@ -589,7 +595,9 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .cover-flow{
-	background: url(DefaultSkin/background/CoverflowView.gif) no-repeat; 
+	background: url(DefaultSkin/background/CoverflowView.gif) no-repeat left center; /* orientation=lt */
+	background: url(DefaultSkin/background/CoverflowView.gif) no-repeat right center; /* orientation=rt */
+	width: 23px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .cover-flow-selected{
@@ -599,7 +607,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BackBtn {
 	background: url(DefaultSkin/background/BackBtn.jpg) no-repeat; 
 	height: 22px;
-	padding-left: 30px;
+	width: 28px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Center .SearchTxtField {

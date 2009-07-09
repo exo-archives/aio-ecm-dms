@@ -152,16 +152,16 @@
 }
  
 .ExpandIcon {
-  width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGrayMinus.gif') no-repeat; /* orientation=lt */
-  background: url('DefaultSkin/SmallGrayMinus-rt.gif') no-repeat; /* orientation=rt */
+  width: 16px;
+  background: url('DefaultSkin/SmallGrayExpand.gif') no-repeat left top; /* orientation=lt */
+  background: url('DefaultSkin/SmallGray-rt.gif') no-repeat right top; /* orientation=rt */
   cursor: pointer;
 }
 
 .CollapseIcon  {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGrayPlus.gif') no-repeat; /* orientation=lt */
-  background: url('DefaultSkin/SmallGrayPlus-rt.gif') no-repeat; /* orientation=rt */
+  background: url('DefaultSkin/SmallGrayPlus.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/SmallGrayPlus-rt.gif') no-repeat right center; /* orientation=rt */
   cursor: pointer;
 }
 
@@ -735,6 +735,12 @@
 .UIRightClickPopupMenu .Save16x16Icon {
   background: url('DefaultSkin/Save.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/Save.gif') no-repeat right center; /* orientation=rt */
+}
+
+.UIRightClickPopupMenu .MenuItem .ItemIcon{
+	background-position: 6px center; /* orientation=lt */
+  background-position: 96% center; /* orientation=rt */
+  _background-position: 99% center; /* orientation=rt */
 }
 
 /*############################## -- End BC Portlet Icon -- ########################*/

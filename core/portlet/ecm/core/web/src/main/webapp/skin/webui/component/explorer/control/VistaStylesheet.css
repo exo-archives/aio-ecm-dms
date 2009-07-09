@@ -516,6 +516,12 @@
 	margin: 0px 0px 0px 1px; /* orientation=rt */
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	_width: 55px; /* orientation=rt */
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .MoreViewIcon {
 	background: url(DefaultSkin/background/MoreViewIcon.gif) no-repeat; 
 	width: 12px;
@@ -550,6 +556,14 @@
   float: right; /* orientation=rt */
   margin-left: 3px; /* orientation=lt */
   margin-right: 3px; /* orientation=rt */
+  _width: 55px; /* orientation=rt */
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .View {
+	height: 22px;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	_width: 55px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultViewSelected {
@@ -594,6 +608,7 @@
 	height: 22px;
 	padding-left: 28px; /* orientation=lt */
 	padding-right: 28px; /* orientation=rt */
+	border: solid 1px red; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .Center .SearchTxtField {
