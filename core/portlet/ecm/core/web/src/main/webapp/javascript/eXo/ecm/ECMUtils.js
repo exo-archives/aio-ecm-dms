@@ -38,15 +38,26 @@
 	
 	ECMUtils.prototype.fixHeight = function(portletId) {
 		var portlet = document.getElementById(portletId);
-		var refElement = DOM.findAncestorByClass(portlet, "UIApplication");
-		if (refElement == null) return;
-		var delta = (parseInt(refElement.style.height) - portlet.offsetHeight);
-		var resizeObj = DOM.findDescendantsByClass(portlet, 'div', 'UIResizableBlock');
-		if(resizeObj.length) {
-			for(var i = 0; i < resizeObj.length; i++) {
-				resizeObj[i].style.height = (resizeObj[i].offsetHeight + delta) + "px";
-			}
-		}
+ 	 	var refElement = DOM.findAncestorByClass(portlet, "UIApplication");
+ 	 	if (!refElement) return;
+ 	 	
+ 	 	// 30/06/2009
+ 	 	//Recalculate height of UIResizableBlock in the UISideBarContainer
+ 	 	//var delta = parseInt(refElement.style.height) - portlet.offsetHeight;
+ 	 		               
+ 	 	var uiControl = document.getElementById('UIControl');
+ 	 	var uiSideBar = document.getElementById('UISideBar');
+ 	 	if(!uiControl || !uiSideBar) return;
+ 	 	var uiSideBarControl = DOM.findFirstDescendantByClass(uiSideBar, 'div', 'UISideBarControl');
+ 	 	if(!uiSideBarControl) return;
+ 	 	var deltaH = refElement.offsetHeight - uiControl.offsetHeight - uiSideBarControl.offsetHeight;
+ 	 	var resizeObj = DOM.findDescendantsByClass(portlet, 'div', 'UIResizableBlock');
+ 	 	if(resizeObj.length) {
+	 	 	for(var i = 0; i < resizeObj.length; i++) {
+	 	 	  resizeObj[i].style.display = 'block';
+	 	 	  resizeObj[i].style.height = (resizeObj[i].offsetHeight + deltaH) + "px";
+	 	 	}
+ 	 	}
 	};
 	
 	ECMUtils.prototype.controlLayout = function(portletId) {
