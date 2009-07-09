@@ -1773,5 +1773,11 @@
       <selectMembership>Sélectionner un membership</selectMembership>
     </label>
   </QueriesPermissionBrowse>
+  
+  <UIDriveForm>
+	<msg>
+  		<permission-path-invalid>Permission is invalid!</permission-path-invalid>	
+  	</msg>
+  </UIDriveForm>
 </bundle>
 

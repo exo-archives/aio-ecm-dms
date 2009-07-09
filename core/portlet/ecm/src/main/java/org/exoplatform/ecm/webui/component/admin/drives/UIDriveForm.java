@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.admin.drives;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -30,6 +31,8 @@ import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
+import org.exoplatform.services.organization.MembershipType;
+import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -44,6 +47,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIFormInputSet;
 import org.exoplatform.webui.form.UIFormRadioBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
+import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTabPane;
 
 /**
@@ -71,6 +75,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
   private boolean isAddNew_ = true;  
   final static public String[] ACTIONS = {"Save", "Refresh", "Cancel"};
   final static public String POPUP_DRIVEPERMISSION = "PopupDrivePermission";
+  private String membershipString = "";
 
   public UIDriveForm() throws Exception {
     super("UIDriveForm");
@@ -93,15 +98,28 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
     }    
   }
 
-  public void doSelect(String selectField, Object value) {
-    getUIStringInput(selectField).setValue(value.toString());
-    UIDriveManager uiContainer = getAncestorOfType(UIDriveManager.class);
+  public void doSelect(String selectField, Object value) {    
+    UIFormStringInput uiStringInput = getUIStringInput(selectField);
+    if (selectField.equals(UIDriveInputSet.FIELD_PERMISSION)){
+      String membership = value.toString(); 
+      String valuePermissions = uiStringInput.getValue(); 
+      if ((membership != null) && (valuePermissions.indexOf(membership) < 0)){
+        if (valuePermissions.length() > 0)
+          valuePermissions += "," + membership;
+        else
+          valuePermissions += membership;
+      }        
+      uiStringInput.setValue(valuePermissions);
+    } else {
+      uiStringInput.setValue(value.toString());
+    }
+    UIDriveManager uiContainer = getAncestorOfType(UIDriveManager.class) ;
     for(UIComponent uiChild : uiContainer.getChildren()) {
       if(uiChild.getId().equals(POPUP_DRIVEPERMISSION) || uiChild.getId().equals("JCRBrowser")
           || uiChild.getId().equals("JCRBrowserAssets")) {
-        UIPopupWindow uiPopup = uiContainer.getChildById(uiChild.getId());
-        uiPopup.setRendered(false);
-        uiPopup.setShow(false);
+        UIPopupWindow uiPopup = uiContainer.getChildById(uiChild.getId()) ;
+        uiPopup.setRendered(false) ;
+        uiPopup.setShow(false) ;
       }
     }
   }
@@ -134,6 +152,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      
       String[] arrFilterChar = {"&", "$", "@", "'", ":","]", "[", "*", "%", "!"};
       for(String filterChar : arrFilterChar) {
         if(name.indexOf(filterChar) > -1) {
@@ -179,6 +198,48 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      
+      OrganizationService oservice = uiDriveForm.getApplicationComponent(OrganizationService.class);
+      String[] arrPermissions = permissions.split(",");
+      List<String> listMemberhip;
+      Collection<?> collection = oservice.getMembershipTypeHandler().findMembershipTypes();
+      listMemberhip  = new ArrayList<String>(5);
+      for(Object obj : collection){
+        listMemberhip.add(((MembershipType)obj).getName());
+      }
+      listMemberhip.add("*");
+      for(String itemPermission : arrPermissions) {
+        if(itemPermission.length() == 0) {
+          uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.permission-path-invalid", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return;
+        } 
+        String[] permission = itemPermission.split(":");
+        if((permission[0] == null) || (permission[0].length() == 0)){
+          uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.permission-path-invalid", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        } else if(!listMemberhip.contains(permission[0])) {
+          uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.permission-path-invalid", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+        if((permission[1] == null) || (permission[1].length() == 0)) {
+          uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.permission-path-invalid", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        } else if(oservice.getGroupHandler().findGroupById(permission[1]) == null){
+          uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.permission-path-invalid", null, 
+              ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return;
+        }
+      }
+      
       ManageDriveService dservice_ = uiDriveForm.getApplicationComponent(ManageDriveService.class);
       if(uiDriveForm.isAddNew_ && (dservice_.getDriveByName(name, repository) != null)) {
         uiApp.addMessage(new ApplicationMessage("UIDriveForm.msg.drive-exists", null, 
@@ -246,7 +307,15 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
       UIDriveForm uiDriveForm = event.getSource();
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class);
       String membership = uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_PERMISSION).getValue();
-      uiManager.initPopupPermission(membership);
+      if ((membership != null) && (uiDriveForm.membershipString.indexOf(membership) < 0)){
+        if (uiDriveForm.membershipString.length() > 0)
+          uiDriveForm.membershipString += "," + membership;
+        else
+          uiDriveForm.membershipString += membership;
+      }        
+      uiDriveForm.getUIStringInput(UIDriveInputSet.FIELD_PERMISSION).setValue(uiDriveForm.membershipString);
+      
+      uiManager.initPopupPermission(uiDriveForm.membershipString);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
     }
   }
