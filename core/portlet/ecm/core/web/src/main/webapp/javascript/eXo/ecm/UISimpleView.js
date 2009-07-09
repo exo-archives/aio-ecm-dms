@@ -141,15 +141,15 @@ var SimpleView = function() {
 			var moveAction = DOM.findFirstDescendantByClass(actionArea, "div", "JCRMoveAction");
 			var wsTarget = element.getAttribute('workspacename');
 			var idTarget = element.getAttribute('objectId');
-			var regex = new RegExp("^"+idTarget);
-			var regex1 = new RegExp("^"+Self.srcPath);
-			if(regex.test(Self.srcPath)){
+			var regex = new RegExp("^"+decodeURIComponent(idTarget) + "/");
+			var regex1 = new RegExp("^"+decodeURIComponent(Self.srcPath) + "/");
+			if(regex.test(decodeURIComponent(Self.srcPath) + "/")){
 			  delete Self.srcPath;
 			  return ;
 			}
-			if(regex1.test(idTarget)){
+			if(regex1.test(decodeURIComponent(idTarget) + "/")) {
 			  delete Self.srcPath;
-			  return ;
+			  return;
 			}
 			//Dunghm : check symlink
 			if(event.ctrlKey && event.shiftKey)
