@@ -66,17 +66,17 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .RelationsIcon {
-	background: url('DefaultSkin/icons/Relations.gif') no-repeat center;
+	background: url('MacSkin/icons/Relations.gif') no-repeat center;
 	width: 21px; height: 20px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ClipboardIcon {
-	background: url('DefaultSkin/icons/Clipboard.gif') no-repeat center;
+	background: url('MacSkin/icons/Clipboard.gif') no-repeat center;
 	width: 19px; height: 16px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .TagExplorerIcon {
-	background: url('DefaultSkin/icons/Tags.gif') no-repeat center;
+	background: url('MacSkin/icons/Tags.gif') no-repeat center;
 	width: 20px; height: 17px;
 }
 

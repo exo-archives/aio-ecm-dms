@@ -98,7 +98,7 @@
 .UIJCRExplorerPortlet .UIListView .TitleTable {
 	font-weight: bold; 
 	line-height: 19px; height: 19px;
-  background: url('DefaultSkin/background/ThGridRepeatBg1x19.gif') repeat-x center;
+  background: url('MacSkin/background/ThGridRepeatBg1x19.gif') repeat-x center;
 }
 
 .UIJCRExplorerPortlet .UIListView .OverHeader {

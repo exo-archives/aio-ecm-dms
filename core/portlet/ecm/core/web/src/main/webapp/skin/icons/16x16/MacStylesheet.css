@@ -202,13 +202,13 @@
 
 .Style1DownArrow16x16Icon {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/BlackBorderDownArrow.gif') no-repeat;
+  background: url('MacSkin/BlackBorderDownArrow.gif') no-repeat right center;
 }
 
 .BlueDownArrow16x16Icon {
   height: 16px;
-  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat right center; /* orientation=lt */
-	background: url('DefaultSkin/BlueDownArrow.gif') no-repeat left center; /* orientation=rt */
+  background: url('MacSkin/BlueDownArrow.gif') no-repeat right center; /* orientation=lt */
+	background: url('MacSkin/BlueDownArrow.gif') no-repeat left center; /* orientation=rt */
 }
 
 .AddType16x16Icon {
