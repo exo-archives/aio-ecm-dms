@@ -37,7 +37,7 @@ public enum UIExtensionFilterType {
    * If it succeeds, we will check the other filters.
    * If it fails, we will stop.
    */
-  MANDATORY,
+  MANDATORY(true, true, true),
   /**
    * This type of filter will be used to know if the
    * action related to the extension can be launched.
@@ -46,7 +46,7 @@ public enum UIExtensionFilterType {
    * If it succeeds, we will check the other filters.
    * If it fails, we will stop.
    */
-  REQUISITE,
+  REQUISITE(false, true, true),
   /**
    * This type of filter will only be used to know if the
    * action related to the extension can be launched.
@@ -54,13 +54,55 @@ public enum UIExtensionFilterType {
    * If it succeeds or fails, we will check the other filters.
    * It can be used to add warnings
    */
-  REQUIRED,
+  REQUIRED(false, false, true),
   /**
    * This type of filter will only be used to know if the
    * action related to the extension can be launched.
    * The filter is not required to launch the action.
    * If it succeeds or fails, we will check the other filters.
-   * It can be used to add warnings
+   * It can be used for auditing purpose
    */
-  OPTIONAL
+  OPTIONAL(false, false, false);
+  
+  /**
+   * Indicates if the filter allows to display the extension if it fails
+   */
+  private final boolean showExtensionOnlyIfOK;
+ 
+  /**
+   * Indicates if the other filters can be checked if it fails
+   */
+  private final boolean checkOtherFiltersOnlyIfOK;
+ 
+  /**
+   * Indicates if the filter allows to continue if it fails
+   */
+ private final boolean acceptOnlyIfOK;
+ 
+ private UIExtensionFilterType(boolean showExtensionOnlyIfOK, boolean checkOtherFiltersOnlyIfOK, boolean acceptOnlyIfOK) {
+   this.showExtensionOnlyIfOK = showExtensionOnlyIfOK;
+   this.checkOtherFiltersOnlyIfOK = checkOtherFiltersOnlyIfOK;
+   this.acceptOnlyIfOK = acceptOnlyIfOK;
+ }
+
+ /**
+  * Indicates if the filter allows to display the extension if it fails
+  */
+  public boolean showExtensionOnlyIfOK() {
+    return showExtensionOnlyIfOK;
+  }
+
+  /**
+   * Indicates if the other filters can be checked if it fails
+   */
+  public boolean checkOtherFiltersOnlyIfOK() {
+    return checkOtherFiltersOnlyIfOK;
+  }
+
+  /**
+   * Indicates if the filter allows to continue if it fails
+   */
+  public boolean acceptOnlyIfOK() {
+    return acceptOnlyIfOK;
+  } 
 }

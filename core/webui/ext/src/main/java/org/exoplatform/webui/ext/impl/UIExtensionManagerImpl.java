@@ -28,10 +28,10 @@ import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.ext.UIExtension;
-import org.exoplatform.webui.ext.filter.UIExtensionFilter;
-import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 import org.exoplatform.webui.ext.UIExtensionManager;
 import org.exoplatform.webui.ext.UIExtensionPlugin;
+import org.exoplatform.webui.ext.filter.UIExtensionFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
 /**
  * The default implementation of an extension manager
@@ -177,28 +177,30 @@ public class UIExtensionManagerImpl implements UIExtensionManager {
       for (int i = 0, length = filters.size(); i < length; i++) {
         UIExtensionFilter filter = filters.get(i);
         UIExtensionFilterType type = filter.getType();
-        if (checkOnly && type != UIExtensionFilterType.MANDATORY) {
+        if (checkOnly && (type == null || !type.showExtensionOnlyIfOK())) {
           // only test the filter that are mandatory
           continue;
         }
         try {
           if (!filter.accept(context)) {
             onDeny(checkOnly, filter, context);
-            if (type == UIExtensionFilterType.REQUISITE ||
-                type == UIExtensionFilterType.MANDATORY) {
-              return false;
-            } else if (type == UIExtensionFilterType.REQUIRED) {
-              result = false;
+            if (type != null) {
+              if (type.checkOtherFiltersOnlyIfOK()) {
+                return false;
+              } else if (type.acceptOnlyIfOK()) {
+                result = false;
+              }
             }
           }
         } catch (Exception e) {
           LOG.error("An execption occurs while applying the filter", e);
           onDeny(checkOnly, filter, context);
-          if (type == UIExtensionFilterType.REQUISITE ||
-              type == UIExtensionFilterType.MANDATORY) {
-            return false;
-          } else if (type == UIExtensionFilterType.REQUIRED) {
-            result = false;
+          if (type != null) {
+            if (type.checkOtherFiltersOnlyIfOK()) {
+              return false;
+            } else if (type.acceptOnlyIfOK()) {
+              result = false;
+            }
           }
         }
       }
