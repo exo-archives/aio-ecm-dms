@@ -32,6 +32,9 @@ import org.exoplatform.webui.form.UIFormTextAreaInput;
  */
 public class UIFormTextAreaField extends DialogFormField {
 
+  public final static int DEFAULT_ROW = 10;
+  public final static int DEFAULT_COL = 30;
+  
   public UIFormTextAreaField(String name, String label, String[] arguments) {
     super(name, label, arguments);
   }

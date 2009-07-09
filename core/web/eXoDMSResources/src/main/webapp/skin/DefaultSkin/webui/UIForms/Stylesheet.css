@@ -79,6 +79,13 @@
 	padding: 2px;
 }
 
+.UIDocumentFormController .UIForm .HorizontalLayout textarea {
+	font-size: 11px;
+	border: 1px solid #b7b7b7;
+  height: auto;
+	width: auto;
+}
+
 /**************************************UIFormInputSet*******************************/
 
 .UIFormInputSet .FormContainer {
@@ -88,3 +95,4 @@
 .FieldComponent .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
 	padding: 0px;
 }
+

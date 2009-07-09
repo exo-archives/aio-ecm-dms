@@ -50,9 +50,13 @@ public abstract class DialogFormField {
   protected final String REFERENCE = "reference" + SEPARATOR;
   protected final String REPOSITORY = "repository";
   protected final String DEFAULT_VALUES = "defaultValues" + SEPARATOR ;
-
+  protected final String ROW_SIZE = "rows" + SEPARATOR ;
+  protected final String COL_SIZE = "columns" + SEPARATOR ;
+  
   protected String editable;
   protected String defaultValue;
+  protected String rowSize;
+  protected String colSize;
   protected String jcrPath;
   protected String selectorAction;
   protected String selectorClass;    
@@ -77,6 +81,8 @@ public abstract class DialogFormField {
     HashMap<String,String> parsedArguments = parseArguments(arguments) ;
     this.editable = parsedArguments.get(EDITABLE);
     this.defaultValue = parsedArguments.get(DEFAULT_VALUES);
+    this.rowSize = parsedArguments.get(ROW_SIZE);
+    this.colSize = parsedArguments.get(COL_SIZE);
     this.jcrPath = parsedArguments.get(JCR_PATH);
     this.selectorAction = parsedArguments.get(SELECTOR_ACTION);
     this.selectorClass = parsedArguments.get(SELECTOR_CLASS);    
@@ -116,6 +122,12 @@ public abstract class DialogFormField {
   public String getDefaultValue() { return defaultValue; }
   public void setDefaultValue(String defaultValue) { this.defaultValue = defaultValue; }
 
+  public String getRowSize() { return rowSize; }
+  public void setRowSize(String rowSize) { this.rowSize = rowSize; }
+
+  public String getColSize() { return colSize; }
+  public void setColSize(String colSize) { this.colSize = colSize; }
+  
   public String getJcrPath() { return jcrPath; }
   public void setJcrPath(String jcrPath) { this.jcrPath = jcrPath; }
 
@@ -232,24 +244,28 @@ public abstract class DialogFormField {
         map.put(REFERENCE, value); continue;
       } else if(argument.startsWith(DEFAULT_VALUES)) {       
         map.put(DEFAULT_VALUES,value); continue;
+      } else if(argument.startsWith(ROW_SIZE)) {       
+        map.put(ROW_SIZE,value); continue;
+      } else if(argument.startsWith(COL_SIZE)) {       
+        map.put(COL_SIZE,value); continue;
       } else if(argument.startsWith(OPTIONS)){        
         map.put(OPTIONS,value);  continue;
-      }else if(argument.startsWith(SCRIPT)) {
+      } else if(argument.startsWith(SCRIPT)) {
         map.put(SCRIPT,value); continue;
-      }else if(argument.startsWith(SCRIPT_PARAMS)) {        
+      } else if(argument.startsWith(SCRIPT_PARAMS)){        
         map.put(SCRIPT_PARAMS,value); continue;
-      }else if(argument.startsWith(VISIBLE)){        
+      } else if(argument.startsWith(VISIBLE)){        
         map.put(VISIBLE,value); continue;
-      }else if(argument.startsWith(TYPE)){
+      } else if(argument.startsWith(TYPE)){
         map.put(TYPE,value) ; continue;
       } else if(argument.startsWith(ONCHANGE)){
         map.put(ONCHANGE,value); continue;
       } else if (argument.startsWith(MIXINTYPE)) {
         map.put(MIXINTYPE, value); continue;
-      }else if(argument.startsWith(NODETYPE)) {
+      } else if(argument.startsWith(NODETYPE)) {
         map.put(NODETYPE, value) ;
         continue ;
-      }else {
+      } else {
         map.put(DEFAULT_VALUES,argument);
       }      
     }

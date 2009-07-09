@@ -227,13 +227,13 @@ public class UIDialogForm extends UIForm {
     String jcrPath = calendarField.getJcrPath();
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
-    setInputProperty(name, inputProperty);    
+    setInputProperty(name, inputProperty);
     if(calendarField.isMultiValues()) {
       renderMultiValuesInput(UIFormDateTimeInput.class,name,label);      
       return;
     }
     UIFormDateTimeInput uiDateTime = findComponentById(name);
-    if (uiDateTime == null) uiDateTime = calendarField.createUIFormInput(); 
+    if (uiDateTime == null) uiDateTime = calendarField.createUIFormInput();
     uiDateTime.setDisplayTime(calendarField.isDisplayTime());
     String propertyName = getPropertyName(jcrPath);
     propertiesName.put(name, propertyName);
@@ -513,7 +513,17 @@ public class UIDialogForm extends UIForm {
     }
     UIFormTextAreaInput uiTextArea = findComponentById(name);    
     if(uiTextArea == null) {
-      uiTextArea = formTextAreaField.createUIFormInput();      
+      uiTextArea = formTextAreaField.createUIFormInput();  
+      if(formTextAreaField.getRowSize() != null){
+        uiTextArea.setRows(Integer.parseInt(formTextAreaField.getRowSize()));
+      } else {
+        uiTextArea.setRows(UIFormTextAreaField.DEFAULT_ROW);
+      }
+      if(formTextAreaField.getColSize() != null){
+        uiTextArea.setColumns(Integer.parseInt(formTextAreaField.getColSize()));
+      } else {
+        uiTextArea.setColumns(UIFormTextAreaField.DEFAULT_COL);
+      }
       addUIFormInput(uiTextArea);
     }    
     String propertyName = getPropertyName(jcrPath);
