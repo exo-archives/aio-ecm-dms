@@ -682,7 +682,7 @@
 }	
 
 .UIJCRExplorerPortlet  .UIActionBar  .UIHorizontalTabs .TabsContainer {
-	height: 25px;
+	height: auto;
 }
 
 .UIJCRExplorerPortlet  .UIActionBar  .UITab {
@@ -702,7 +702,9 @@
 .UIJCRExplorerPortlet .UIActionBar .SelectedActionBarTab  .TabM {
 	background: url(DefaultSkin/background/TabSelectBg.gif) repeat-x center bottom;
 	height: 25px;
-	padding: 0px 10px;
+	text-align: center;
+	padding: 0 10px;
+	line-height: 25px;
 }
 
 .UIJCRExplorerPortlet .UIActionBar .SubTabItem {
@@ -712,7 +714,6 @@
 .UIJCRExplorerPortlet .UIActionBar .TabLabel {
 	line-height: 24px;
 	color: #333;
-	padding: 0px 10px;
 }
 
 .UIJCRExplorerPortlet .UIActionBar .SubTabIcon{

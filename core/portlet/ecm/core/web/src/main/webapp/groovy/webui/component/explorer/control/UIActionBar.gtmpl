@@ -15,6 +15,7 @@
   def rcontext = _ctx.getRequestContext() ;
 	rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.checkAvailableSpace');
   rcontext.getJavascriptManager().addOnResizeJavascript('eXo.ecm.ECMUtils.checkAvailableSpace');
+  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.checkTabSize');
   def tabs = uicomponent.getTabList() ;
   def actionBarStyle = "";
   def displayTabContainer = "";
@@ -44,13 +45,15 @@
 				      isSelected = true;
 				      tabStyle = "SelectedActionBarTab";
 				    }
+				    def tabName = _ctx.appRes(uicomponent.getId() + ".obtion." + tab);
+				    def tabSize = tabName.length()*3 + 40;
 				%>
 					    <div class="UITab" style="display: block;">
 						    <div class="$tabStyle">
 								  <div class="TabL">
 								    <div class="TabR">
-										  <div class="TabM">
-										    <a href="<%=uicomponent.event("ChangeTab", tab)%>" class="TabLabel"><%=_ctx.appRes(uicomponent.getId() + ".obtion." + tab)%></a>
+										  <div class="TabM" style="width: ${tabSize}px;">
+										    <a href="<%=uicomponent.event("ChangeTab", tab)%>" class="TabLabel">$tabName</a>
 										  </div>
 								    </div>
 								  </div>  
@@ -68,8 +71,9 @@
 		       def action = uicomponent.getUIAction(button);
 				   if (action != null) {
 				     def title = _ctx.appRes(uicomponent.getId() + ".tooltip." + button);
+				     def titleSize = title.length()*5 + 50;
 			 %>
-						 <div class="NormalSubItem SubTabItem">
+						 <div class="NormalSubItem SubTabItem" style="width: ${titleSize}px;">
 							 <div class="NormalSubTabItemL">
 								 <div class="NormalSubTabItemR">
 									 <div class="NormalSubTabItemM">

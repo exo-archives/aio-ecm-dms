@@ -684,7 +684,7 @@
 }	
 
 .UIJCRExplorerPortlet  .UIActionBar  .UIHorizontalTabs .TabsContainer {
-	height: 25px;
+	height: auto;
 }
 
 .UIJCRExplorerPortlet  .UIActionBar  .UITab {
@@ -705,6 +705,8 @@
 	background: url(DefaultSkin/background/TabSelectBg.gif) repeat-x center bottom;
 	height: 25px;
 	padding: 0px 10px;
+	text-align: center;
+  line-height: 25px;
 }
 
 .UIJCRExplorerPortlet .UIActionBar .SubTabItem {
@@ -714,7 +716,6 @@
 .UIJCRExplorerPortlet .UIActionBar .TabLabel {
 	line-height: 24px;
 	color: #333;
-	padding: 0px 10px;
 	font-weight: bold;
 }
 

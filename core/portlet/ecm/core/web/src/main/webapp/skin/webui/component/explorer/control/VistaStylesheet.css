@@ -691,7 +691,7 @@
 }
 
 .UIJCRExplorerPortlet  .UIActionBar  .UIHorizontalTabs .TabsContainer {
-	height: 25px;
+	height: auto;
 }
 
 .UIJCRExplorerPortlet  .UIActionBar  .UITab {
@@ -713,6 +713,7 @@
 	height: 25px;
 	padding: 0px 10px;
 	line-height: 25px;
+	text-align: center;
 }
 
 
@@ -723,7 +724,6 @@
 .UIJCRExplorerPortlet .UIActionBar .TabLabel {
 	line-height: 24px;
 	color: #333;
-	padding: 0px 10px;
 	font-weight: bold;
 }
 
