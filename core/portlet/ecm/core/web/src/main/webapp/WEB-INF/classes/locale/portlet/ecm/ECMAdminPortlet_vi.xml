@@ -2088,5 +2088,11 @@
     </label>
   </UIWorkspaceWizard>
   
+  <UIDriveForm>
+		<msg>
+  		<permission-path-invalid>Quyền không đúng hoặc không tồn tại!</permission-path-invalid>	
+  	</msg>
+  </UIDriveForm>
+  
 </bundle>
 

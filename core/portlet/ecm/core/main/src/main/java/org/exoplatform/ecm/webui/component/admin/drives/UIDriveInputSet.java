@@ -75,7 +75,7 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     addUIFormInput(new UIFormStringInput(FIELD_WORKSPACEICON, FIELD_WORKSPACEICON, null).setEditable(false));
     UIFormStringInput permissonSelectField = new UIFormStringInput(FIELD_PERMISSION , FIELD_PERMISSION , null);
     permissonSelectField.addValidator(MandatoryValidator.class);
-    permissonSelectField.setEditable(false);
+    permissonSelectField.setEditable(true);
     addUIFormInput(permissonSelectField);
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWPREFERENCESDOC, FIELD_VIEWPREFERENCESDOC, null));
     addUIFormInput(new UIFormCheckBoxInput<String>(FIELD_VIEWNONDOC, FIELD_VIEWNONDOC, null));
