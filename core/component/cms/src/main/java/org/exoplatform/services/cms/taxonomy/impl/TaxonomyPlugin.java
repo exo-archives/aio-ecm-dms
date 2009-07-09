@@ -54,7 +54,7 @@ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
  * quang.ly@exoplatform.com xxx5669@gmail.com Mar 31, 2009
  */
 public class TaxonomyPlugin extends BaseComponentPlugin {
-  private String                 workspace                  = "";
+  private String                 workspace                  = null;
 
   private String                 path                       = "";
 
@@ -89,12 +89,13 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     ValueParam workspaceParam = params_.getValueParam("workspace");
     ValueParam pathParam = params_.getValueParam("path");
     ValueParam nameParam = params_.getValueParam("treeName");
-    if (autoCreated != null)
-      autoCreateInNewRepository_ = Boolean.parseBoolean(autoCreated.getValue());
-    if (pathParam == null)
+    if (autoCreated != null) autoCreateInNewRepository_ = Boolean.parseBoolean(autoCreated.getValue());
+    if (workspaceParam != null) {
+      workspace = workspaceParam.getValue();
+    } else if (pathParam == null) {
       path = baseTaxonomiesStorage_;
-    if (workspaceParam == null || workspaceParam.getValue().trim().length() == 0) {
-      path = baseTaxonomiesStorage_;
+    } else {
+      path = pathParam.getValue();
     }
     if (nameParam != null) {
       treeName = nameParam.getValue();
@@ -144,7 +145,9 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
   private void importPredefineTaxonomies(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
-    setWorkspace(dmsRepoConfig.getSystemWorkspace());
+    if (workspace == null) {
+      setWorkspace(dmsRepoConfig.getSystemWorkspace());
+    }
     Session session = manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
     Node taxonomyStorageNode = (Node) session.getItem(path);
     Node taxonomyStorageNodeSystem = null;
