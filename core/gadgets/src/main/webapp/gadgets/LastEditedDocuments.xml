@@ -264,17 +264,21 @@
 				for (var i = 0; i < data.length; i++) {
 					var doc = data[i];
 					var AppClass = document.createElement('div');
-					var showHTML = "<a target='_top' href='";
-					showHTML+= accessUrl;
-					showHTML+= doc.driveName;
-					showHTML+= doc.path;
-					showHTML+= "'>";
-					showHTML+=doc.name;
-					showHTML+="</a>";
-					showHTML+="<div class='DateTime'>";
-					showHTML+="";
-					showHTML+=displayTime.timeToPrettyString(doc.dateEdited);
-					showHTML+="</div>";
+					var showHTML = "<a target='_top' ";
+					if (accessUrl.length > 0 && doc.driveName.length > 0 && doc.path.length > 0) {
+						showHTML += "href='";
+						showHTML += accessUrl;
+						showHTML += doc.driveName;
+						showHTML += doc.path;
+						showHTML += "'";
+					}
+					showHTML += ">";
+					showHTML += doc.name;
+					showHTML += "</a>";
+					showHTML += "<div class='DateTime'>";
+					showHTML += "";
+					showHTML += displayTime.timeToPrettyString(doc.dateEdited);
+					showHTML += "</div>";
 					AppClass.innerHTML = showHTML;
 					AppClass.className = 'ItemIcon';
 					editedDocList.appendChild(AppClass);

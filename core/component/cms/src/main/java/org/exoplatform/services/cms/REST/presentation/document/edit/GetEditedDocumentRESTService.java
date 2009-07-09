@@ -18,6 +18,7 @@
 package org.exoplatform.services.cms.REST.presentation.document.edit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
@@ -82,7 +83,12 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
   
   private static final String QUERY_STATEMENT = "SELECT * FROM $0 WHERE $1 ORDER BY $2 DESC";
 
+  private static final String GADGET          = "gadgets";
+
+  private boolean             show_gadget     = false;
+
   private Log LOG = ExoLogger.getLogger("cms.GetEditedDocumentRESTService");
+
   
   public GetEditedDocumentRESTService(RepositoryService repositoryService,
       TemplateService templateService, FolksonomyService folksonomyService, ManageDriveService manageDriveService) {
@@ -96,15 +102,18 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
   @HTTPMethod("GET")
   @OutputTransformer(Bean2JsonOutputTransformer.class)
   public Response getLastEditedDoc(@URIParam("repository") String repository,
-      @QueryParam("showItems") String showItems) throws Exception {
-    List<Node> lstLastEditedNode = getLastEditedNode(repository, showItems);
+      @QueryParam("showItems") String showItems, @QueryParam("showGadgetWs") String showGadgetWs) throws Exception {
+    List<Node> lstLastEditedNode = getLastEditedNode(repository, showItems, showGadgetWs);
     List<DocumentNode> lstDocNode = getDocumentData(repository, lstLastEditedNode);
     ListEditDocumentNode listEditDocumentNode = new ListEditDocumentNode();
     listEditDocumentNode.setLstDocNode(lstDocNode);
     return Response.Builder.ok(listEditDocumentNode).mediaType("application/json").build();
   }
 
-  private List<Node> getLastEditedNode(String repository, String noOfItem) throws Exception{
+  private List<Node> getLastEditedNode(String repository, String noOfItem, String showGadgetWs) throws Exception{
+    if (showGadgetWs != null && showGadgetWs.length() > 0) {
+      show_gadget = Boolean.parseBoolean(showGadgetWs);
+    }
     ArrayList<Node>  lstNode = new ArrayList<Node>();
     StringBuffer bf = new StringBuffer(1024);
     List<String> lstNodeType = templateService.getDocumentTemplates(repository);
@@ -124,12 +133,18 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
     ManageableRepository manageableRepository = repositoryService.getRepository(repository);
     try {
       String[] workspaces = manageableRepository.getWorkspaceNames();
+      List<String> lstWorkspace = new ArrayList<String>();
+      //Arrays.asList() return fixed size;
+      lstWorkspace.addAll(Arrays.asList(workspaces));
+      if (!show_gadget && lstWorkspace.contains(GADGET)) {
+        lstWorkspace.remove(GADGET);
+      }
       SessionProvider provider = SessionProviderFactory.createAnonimProvider();
       Query query = null;
       Session session = null;
       QueryResult queryResult = null;
       QueryManager queryManager = null;
-      for (String workspace : workspaces) {
+      for (String workspace : lstWorkspace) {
         session = provider.getSession(workspace, manageableRepository);
         queryManager = session.getWorkspace().getQueryManager();
         query = queryManager.createQuery(queryStatement, Query.SQL);

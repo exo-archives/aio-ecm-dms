@@ -250,17 +250,20 @@
 				for (var i = 0; i < data.length; i++) {
 					var doc = data[i];
 					var AppClass = document.createElement('div');
-					var showHTML = "<a href='#'>";
-					var showHTML = "<a target='_top' href='";
-					showHTML+= accessUrl;
-					showHTML+= doc.driveName;
-					showHTML+= doc.path;
-					showHTML+= "'>";
-					showHTML+=doc.name;
-					showHTML+="</a>";
-					showHTML+="<span class='DateTime'>";
-					showHTML+=displayTime.timeToPrettyString(doc.datePublished);
-					showHTML+="</span>";
+					var showHTML = "<a target='_top' ";
+					if (accessUrl.length > 0 && doc.driveName.length > 0 && doc.path.length > 0) {
+						showHTML += "href='";	
+						showHTML += accessUrl;
+						showHTML += doc.driveName;
+						showHTML += doc.path;
+						showHTML += "'";
+					}
+					showHTML += ">";
+					showHTML += doc.name;
+					showHTML += "</a>";
+					showHTML += "<span class='DateTime'>";
+					showHTML += displayTime.timeToPrettyString(doc.datePublished);
+					showHTML += "</span>";
 					AppClass.innerHTML = showHTML;
 					AppClass.className = 'ItemIcon';
 					publishedDocList.appendChild(AppClass);
