@@ -8,14 +8,13 @@ String registeruri = Util.getPortalRequestContext().getPortalURI() + "register";
         <div class="PortletDecoration">
                 <div class="PortletDecorationTL">
                         <div class="PortletDecorationTR">
-                                <div class="PortletDecorationTC">
-                                </div>
+                                <div class="PortletDecorationTC"><span></span></div>
                         </div>
                 </div>
                 <div class="PortletDecorationML">
                         <div class="PortletDecorationMR">
-                                <div class="HomePortletAdBackround">                                        
-                                		<div class="ArowIcon">To test, you can either <a href="$registeruri" style="color: red; font-weight: bold">register</a> or <span style="color: black; font-weight: bold"">use the Demo Account</span> <b>Login:</b> <i>demo</i>, <b>Password:</b> <i>exo</i></div>
+                                <div class="HomePortletAdBackround">                                       
+                                		<div class="ArowIcon">To test, you can either <a href="$registeruri" style="font-weight: bold">register</a> or <span style="color: black; font-weight: bold"">use the Demo Account</span> <b style="color: #f95106">Login:</b> <i>demo</i>, <b style="color: #f95106">Password:</b> <i>exo</i></div>
                                         <div class="DotLine"><span></span></div>
                                         <a href="http://forge.ow2.org/project/showfiles.php?group_id=151"><div class="DownloadButton"><span></span></div></a>
                                         <div class="ArowIcon">eXo DMS is open source and FREE for download</div>
