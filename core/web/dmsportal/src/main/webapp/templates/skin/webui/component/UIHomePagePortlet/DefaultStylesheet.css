@@ -338,7 +338,7 @@
 
 .SideBar {
 	border:1px solid #FFFFFF;
-	margin:0 5px 5px;
+	margin:5px 5px 5px;
 }
 
 .SideBar  .PortletDecoration{
@@ -403,7 +403,7 @@
 
 .SideBar .VersionIcon {
 	background: url('DefaultSkin/background/VersionIcon.gif') no-repeat ;
-	width: 58px; height: 67px;
+	width: 58px; height: 64px;
 	margin: auto;
 }
 
@@ -423,7 +423,7 @@
 }
 
 .UIHomePagePortlet {	
-	margin: 0px 5px 5px 5px;
+	margin: 5px 5px 5px 5px;
 	border: 1px solid #fff;
 }
 
