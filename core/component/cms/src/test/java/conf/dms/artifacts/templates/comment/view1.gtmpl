@@ -144,7 +144,7 @@
 		}
 	</style>
   <div class="Comments ShowHideContainer">
-		<div class="CommentBar" style="width: 400px;">
+		<div class="CommentBar" style="width: 600px;">
 			<div class="LeftCommentBar">
 			  <div class="RightCommentBar">
 			    <div class="MiddleCommentBar">
