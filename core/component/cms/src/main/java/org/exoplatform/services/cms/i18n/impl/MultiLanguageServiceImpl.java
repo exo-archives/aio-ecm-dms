@@ -252,14 +252,19 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
    * Set value of all mixintype from current node to newLang Node
    * @param node        current node
    * @param newLang     new node that is added mixintype
+   * @param setValuesOnyIfCanAddMixin indicates if the values must be set if we cannot add the mixin 
    * @throws Exception
    */
-  private void setMixin(Node node, Node newLang) throws Exception {
+  private void setMixin(Node node, Node newLang, boolean setValuesOnyIfCanAddMixin) throws Exception {
     NodeType[] mixins = node.getMixinNodeTypes() ;
     for(NodeType mixin:mixins) {
-      if(!mixin.getName().equals("exo:actionable")) {
+      if(canCopy(mixin)) {
+        boolean mixinAdded = false;
         if(newLang.canAddMixin(mixin.getName())) {
           newLang.addMixin(mixin.getName()) ;
+          mixinAdded = true;
+        }
+        if (!setValuesOnyIfCanAddMixin || mixinAdded) {
           for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
             if(!def.isProtected()) {
               String propName = def.getName() ;
@@ -271,10 +276,21 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
                 }
               }        
             }
-          }
+          }          
         }
       }
     }
+  }
+
+  /**
+   * Add all available mixintype from current node to newLang Node
+   * Set value of all mixintype from current node to newLang Node
+   * @param node        current node
+   * @param newLang     new node that is added mixintype
+   * @throws Exception
+   */ 
+  private void setMixin(Node node, Node newLang) throws Exception {
+    setMixin(node, newLang, true);
   }
 
   /**
@@ -364,48 +380,14 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           newLanguageNode = languagesNode.getNode(defaultLanguage) ;
         } else {
           newLanguageNode = languagesNode.addNode(defaultLanguage) ;
-          NodeType[] mixins = node.getMixinNodeTypes() ;
-          for(NodeType mixin:mixins) {
-            if(!mixin.getName().equals("exo:actionable")) {
-              if(newLanguageNode.canAddMixin(mixin.getName())) newLanguageNode.addMixin(mixin.getName()) ;
-              for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
-                if(!def.isProtected()) {
-                  String propName = def.getName() ;
-                  if(def.isMandatory() && !def.isAutoCreated()) {
-                    if(def.isMultiple()) {
-                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
-                    } else {
-                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
-                    }
-                  }        
-                }
-              }
-            }
-          }
+          setMixin(node, newLanguageNode, false);
         }
       } else {
         if(languagesNode.hasNode(language)) {
           newLanguageNode = languagesNode.getNode(language) ;
         } else {
           newLanguageNode = languagesNode.addNode(language) ;
-          NodeType[] mixins = node.getMixinNodeTypes() ;
-          for(NodeType mixin : mixins) {
-            if(!mixin.getName().equals("exo:actionable")) {
-              if(newLanguageNode.canAddMixin(mixin.getName())) newLanguageNode.addMixin(mixin.getName()) ;
-              for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
-                if(!def.isProtected()) {
-                  String propName = def.getName() ;
-                  if(def.isMandatory() && !def.isAutoCreated()) {
-                    if(def.isMultiple()) {
-                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
-                    } else {
-                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
-                    }
-                  }        
-                }
-              }
-            }
-          }
+          setMixin(node, newLanguageNode, false);
           newLanguageNode.setProperty(EXO_LANGUAGE, language) ;
         }
       }
@@ -435,48 +417,14 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           newLanguageNode = languagesNode.getNode(defaultLanguage) ;
         } else {
           newLanguageNode = languagesNode.addNode(defaultLanguage) ;
-          NodeType[] mixins = node.getMixinNodeTypes() ;
-          for(NodeType mixin:mixins) {
-            if(!mixin.getName().equals("exo:actionable")) {
-              if(newLanguageNode.canAddMixin(mixin.getName())) newLanguageNode.addMixin(mixin.getName()) ;            
-              for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
-                if(!def.isProtected()) {
-                  String propName = def.getName() ;
-                  if(def.isMandatory() && !def.isAutoCreated()) {
-                    if(def.isMultiple()) {
-                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
-                    } else {
-                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
-                    }
-                  }        
-                }
-              }
-            }
-          }
+          setMixin(node, newLanguageNode, false);
         }
       } else {
         if(languagesNode.hasNode(language)) {
           newLanguageNode = languagesNode.getNode(language) ;
         } else {
           newLanguageNode = languagesNode.addNode(language) ;
-          NodeType[] mixins = node.getMixinNodeTypes() ;
-          for(NodeType mixin : mixins) {
-            if(!mixin.getName().equals("exo:actionable")) {
-              if(newLanguageNode.canAddMixin(mixin.getName())) newLanguageNode.addMixin(mixin.getName()) ;
-              for(PropertyDefinition def: mixin.getPropertyDefinitions()) {
-                if(!def.isProtected()) {
-                  String propName = def.getName() ;
-                  if(def.isMandatory() && !def.isAutoCreated()) {
-                    if(def.isMultiple()) {
-                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValues()) ;
-                    } else {
-                      newLanguageNode.setProperty(propName,node.getProperty(propName).getValue()) ; 
-                    }
-                  }        
-                }
-              }
-            }
-          }
+          setMixin(node, newLanguageNode, false);
           newLanguageNode.setProperty(EXO_LANGUAGE, language) ;
         }
       }
@@ -762,6 +710,18 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       if(nodeType.getName().equals(nodeTypeName)) return true ;
     }
     return false ;
+  }
+  
+  /**
+   * Check if the given mixin type can be copied 
+   * @param mixin the mixin type to check
+   * @return <code>true</code> if it the mixin can be copied, <code>false</code> otherwise
+   */
+  private boolean canCopy(NodeType mixin) {
+    final String name = mixin.getName();
+    // We must prevent to copy "mix:versionable" to avoid 
+    // ECM-4028: Restoring previous version of multilanguage article loose all languages except root one 
+    return !name.equals("exo:actionable") && !name.equals("mix:versionable");
   }
   
   private void setPropertyLanguage(Node node, Node newLanguageNode, Map mappings, boolean isDefault, String defaultLanguage, String language) throws Exception {
