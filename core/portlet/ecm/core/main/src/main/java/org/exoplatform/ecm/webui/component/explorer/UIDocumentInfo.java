@@ -120,16 +120,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 
   private UIPageIterator pageIterator_ ;  
 
-  List<String> unsupportMimeTypeText = Arrays.asList(new String[] {"text/rtf"});
-  
-  public List<String> getUnsupportMimeTypeText() {
-    return unsupportMimeTypeText;
-  }
-
-  public void setUnsupportMimeTypeText(List<String> unsupportMimeTypeText) {
-    this.unsupportMimeTypeText = unsupportMimeTypeText;
-  }
-
   public UIDocumentInfo() throws Exception {
     pageIterator_ = addChild(UIPageIterator.class, null,CONTENT_PAGE_ITERATOR_ID) ;    
   }
