@@ -70,10 +70,11 @@
 	}
 </style>
 <%
+	import java.util.List;
+	import java.util.ArrayList;
 	import javax.jcr.Node;
 	import javax.jcr.NodeIterator;
 	import org.exoplatform.webui.core.UIPopupWindow;
-	
 	UIPopupWindow uiPopupWindow = uicomponent.getAncestorOfType(UIPopupWindow.class);
   def resizeBlock = "class=\"UIResizableBlock\"";
   if(uiPopupWindow != null) resizeBlock = ""; 
@@ -101,8 +102,8 @@
   def fileLangNode = getFileLangNode(currentNode) ;
   def contentNode = fileLangNode.getNode("jcr:content") ;
   def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
-  def unsupportMimeTypeText = uicomponent.getUnsupportMimeTypeText();
-  
+  List<String> unsupportMimeTypeText = new ArrayList<String>();
+  unsupportMimeTypeText.add("text/rtf");
   public String formatNodeName(String text) {
     return text.replaceAll("'", "\\\\'") ;
   }
@@ -164,7 +165,7 @@
 				        	  rcontext.getJavascriptManager().addCustomizedOnLoadScript("eXo.ecm.ECMUtils.replaceToIframe('$iframeId');");
 				        %>
 				        	<div style="text-align: center">
-				        	  <textarea id="<%=iframeId%>"><%=contentNode.getProperty("jcr:data").getString()%></textarea> 
+				        		<textarea id="<%=iframeId%>"><%=contentNode.getProperty("jcr:data").getString()%></textarea> 
 				        	</div>
 				        <%}%>
 					    </div>   

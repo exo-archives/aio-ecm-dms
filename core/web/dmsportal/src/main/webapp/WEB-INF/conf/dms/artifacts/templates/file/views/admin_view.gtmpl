@@ -70,6 +70,8 @@
 	}
 </style>
 <%
+ import java.util.List;
+	import java.util.ArrayList;
 	import javax.jcr.Node;
 	import javax.jcr.NodeIterator;
 	import org.exoplatform.webui.core.UIPopupWindow;
@@ -101,7 +103,8 @@
   def fileLangNode = getFileLangNode(currentNode) ;
   def contentNode = fileLangNode.getNode("jcr:content") ;
   def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
-  def unsupportMimeTypeText = uicomponent.getUnsupportMimeTypeText();
+  List<String> unsupportMimeTypeText = new ArrayList<String>();
+  unsupportMimeTypeText.add("text/rtf");
   public String formatNodeName(String text) {
     return text.replaceAll("'", "\\\\'") ;
   }
