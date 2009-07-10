@@ -799,7 +799,7 @@
 
 /*===========================================UIRightClickPopupMenu===========================================*/
 .UIRightClickPopupMenu .MenuIcon {
-	line-height: 16px;
+	line-height: 12px;
 	margin: 0 7px;
 	padding: 5px 0 5px 26px; /* orientation=lt */
 	padding: 5px 26px 5px 0px; /* orientation=rt */
