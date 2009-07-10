@@ -296,7 +296,7 @@
   border-top: solid 1px #fdfdfd;
   border-bottom: solid 1px #b7b7b7;
   height: 30px;
-  background:url('MacSkin/icons/HeaderBg.jpg') repeat-x center bottom; 
+  background:url('MacSkin/background/HeaderBg.jpg') repeat-x center bottom; 
 }
 
 .UIJCRExplorerPortlet .UIActionBarAlone .TabsContainer {

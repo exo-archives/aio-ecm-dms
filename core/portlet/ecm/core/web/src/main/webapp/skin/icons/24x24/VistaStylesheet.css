@@ -161,8 +161,8 @@
 
 .ImportNodeIcon {
 	height: 23px;
-  background: url('VistaSkin/ImportNodeIcon.png') no-repeat left center; /* orientation=lt */
-  background: url('VistaSkin/ImportNodeIcon.png') no-repeat right center; /* orientation=rt */
+  background: url('VistaSkin/ImportNodeIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('VistaSkin/ImportNodeIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageHiddenIcon {
@@ -173,8 +173,8 @@
 
 .ExportNodeIcon {
 	height: 22px;
-  background: url('VistaSkin/ExportNodeIcon.png') no-repeat left center; /* orientation=lt */
-  background: url('VistaSkin/ExportNodeIcon.png') no-repeat right center; /* orientation=rt */
+  background: url('VistaSkin/ExportNodeIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('VistaSkin/ExportNodeIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .SearchIcon {
@@ -261,8 +261,8 @@ a:hover .ShowHideBoxContainer {
 
 .ViewPropertiesIcon {
 	height: 21px;
-  background: url('VistaSkin/SmallBallColorPlate.png') no-repeat left center; /* orientation=lt */
-  background: url('VistaSkin/SmallBallColorPlate.png') no-repeat right center; /* orientation=rt */
+  background: url('VistaSkin/SmallBallColorPlate.gif') no-repeat left center; /* orientation=lt */
+  background: url('VistaSkin/SmallBallColorPlate.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewRelationsIcon {

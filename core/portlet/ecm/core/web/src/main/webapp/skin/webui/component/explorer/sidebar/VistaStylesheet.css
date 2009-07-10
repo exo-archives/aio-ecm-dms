@@ -9,8 +9,8 @@
 /*############################## -- Begin UISideBar   -- ##############################*/
 
 .UIJCRExplorerPortlet .UISideBar {
-  background: url('DefaultSkin/background/BgSideBar.gif') repeat-y top right; /* orientation=lt */
-  background: url('DefaultSkin/background/BgSideBar-rt.gif') repeat-y top left; /* orientation=rt */
+  background: url('VistaSkin/background/BgSideBar.gif') repeat-y top right; /* orientation=lt */
+  background: url('VistaSkin/background/BgSideBar-rt.gif') repeat-y top left; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .NormalItem {
@@ -25,8 +25,8 @@
   cursor: pointer;
   padding: 8px 0px 8px 5px; /* orientation=lt */
   padding: 8px 5px 8px 0px; /* orientation=rt */
-  background: url('DefaultSkin/background/SelectedItem.gif') no-repeat left center; /* orientation=lt */
-  background: url('DefaultSkin/background/SelectedItem-rt.gif') no-repeat right center; /* orientation=rt */
+  background: url('VistaSkin/background/SelectedItem.gif') no-repeat 7px; /* orientation=lt */
+  background: url('VistaSkin/background/SelectedItem-rt.gif') no-repeat 4px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemIcon {
@@ -61,22 +61,22 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .FileExplorerIcon {
-	background: url('DefaultSkin/icons/FileExplorer.gif') no-repeat center;
-	width: 18px; height: 14px;
+	background: url('VistaSkin/icons/FileExplorer.gif') no-repeat center;
+	width: 18px; height: 15px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .RelationsIcon {
-	background: url('DefaultSkin/icons/Relations.gif') no-repeat center;
+	background: url('VistaSkin/icons/Relations.gif') no-repeat center;
 	width: 21px; height: 20px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ClipboardIcon {
-	background: url('DefaultSkin/icons/Clipboard.gif') no-repeat center;
+	background: url('VistaSkin/icons/Clipboard.gif') no-repeat center;
 	width: 19px; height: 16px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .TagExplorerIcon {
-	background: url('DefaultSkin/icons/Tags.gif') no-repeat center;
+	background: url('VistaSkin/icons/Tags.gif') no-repeat center;
 	width: 20px; height: 17px;
 }
 
