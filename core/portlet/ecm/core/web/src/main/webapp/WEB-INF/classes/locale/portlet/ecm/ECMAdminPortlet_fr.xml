@@ -2092,5 +2092,11 @@
   		<permission-path-invalid>Permission is invalid!</permission-path-invalid>	
   	</msg>
   </UIDriveForm>
+  
+  <UITaxonomyTreeMainForm>
+    <msg>
+      <homepath-emty>The Home path is empty</homepath-emty>
+    </msg>
+  </UITaxonomyTreeMainForm>
 </bundle>
 

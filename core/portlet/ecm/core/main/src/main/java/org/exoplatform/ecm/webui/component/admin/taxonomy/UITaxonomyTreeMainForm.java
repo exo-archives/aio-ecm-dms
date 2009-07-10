@@ -41,6 +41,7 @@ import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
+import org.exoplatform.webui.form.validator.Validator;
 
 /**
  * Created by The eXo Platform SARL
@@ -156,6 +157,17 @@ public class UITaxonomyTreeMainForm extends UIForm {
       UIFormSelectBox selectBox = uiTaxonomyTreeMainForm.getChildById(UITaxonomyTreeMainForm.FIELD_WORKSPACE);
       taxonomyTreeData.setTaxoTreeHomePath("");
       taxonomyTreeData.setTaxoTreeWorkspace(selectBox.getValue());
+      
+      String dmsSysWorkspace = uiTaxonomyManagerTrees.getDmsSystemWorkspaceName(uiTaxonomyTreeMainForm.getRepository());
+      UIFormInputSetWithAction uiActionHomePath = uiTaxonomyTreeMainForm.getChildById("TaxonomyTreeHomePath");
+      uiActionHomePath.removeChildById(FIELD_HOMEPATH);
+      if (!selectBox.getValue().equals(dmsSysWorkspace)) {
+        uiActionHomePath.addUIFormInput(new UIFormStringInput(FIELD_HOMEPATH, FIELD_HOMEPATH, null).
+            addValidator(MandatoryValidator.class).setEditable(false));
+      } else {
+        uiActionHomePath.addUIFormInput(new UIFormStringInput(FIELD_HOMEPATH, FIELD_HOMEPATH, null).
+            setEditable(false));
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTaxonomyManagerTrees);
     }
   }

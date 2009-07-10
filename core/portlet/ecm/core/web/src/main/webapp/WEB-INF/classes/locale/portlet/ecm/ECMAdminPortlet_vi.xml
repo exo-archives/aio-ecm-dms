@@ -2094,5 +2094,11 @@
   	</msg>
   </UIDriveForm>
   
+  <UITaxonomyTreeMainForm>
+    <msg>
+      <homepath-emty>Đường dẫn trống</homepath-emty>
+    </msg>
+  </UITaxonomyTreeMainForm>
+
 </bundle>
 
