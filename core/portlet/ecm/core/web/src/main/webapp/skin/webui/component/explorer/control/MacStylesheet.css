@@ -72,11 +72,11 @@
 .UIJCRExplorerPortlet .SetupPreferencesButton {
   width: 24px;	
   height: 24px;
-  background: url('MacSkin/icons/SetupPreferencesButton.gif') no-repeat bottom;
+  background: url('MacSkin/icons/SetupPreferencesButton.gif') no-repeat center;
   float: right; /* orientation=lt */
   float: left; /* orientation=rt */
   padding: 0px 0px 0px 10px; /* orientation=lt */
-  padding: 2px 10px 0px 0px; /* orientation=rt */
+  padding: 0px 10px 0px 0px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .SaveSessionButton {

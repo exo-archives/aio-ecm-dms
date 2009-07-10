@@ -61,8 +61,8 @@
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .FileExplorerIcon {
-	background: url('DefaultSkin/icons/FileExplorer.gif') no-repeat center;
-	width: 18px; height: 14px;
+	background: url('MacSkin/icons/FileExplorer.gif') no-repeat center;
+	width: 18px; height: 18px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .RelationsIcon {
