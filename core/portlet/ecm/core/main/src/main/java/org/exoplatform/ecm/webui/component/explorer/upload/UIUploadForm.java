@@ -179,6 +179,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     Node currentNode = uiExplorer.getCurrentNode();
     List<Node> listCategories = taxonomyService.getAllCategories(currentNode);
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+    String categoryMandatoryWhenFileUpload =  portletPref.getValue(Utils.CATEGORY_MANDATORY, "").trim();
     for (Node itemNode : listCategories) {
       String categoryPath = itemNode.getPath().replaceAll(getPathTaxonomy() + "/", "");
       if (!listTaxonomy.contains(categoryPath)) {
@@ -190,6 +193,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     uiFormMultiValue.setId(FIELD_LISTTAXONOMY);
     uiFormMultiValue.setName(FIELD_LISTTAXONOMY);
     uiFormMultiValue.setType(UIFormStringInput.class);
+    if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true")) {
+      uiFormMultiValue.addValidator(MandatoryValidator.class);
+    }
     uiFormMultiValue.setValue(listTaxonomyName);
     addUIFormInput(uiFormMultiValue);
   }
@@ -206,17 +212,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     addUIFormInput(new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD));
   }  
 
-  public void processRender(WebuiRequestContext context) throws Exception {
-    UIFormMultiValueInputSet uiFormMultiValue = getChild(UIFormMultiValueInputSet.class);
-    List<UIComponent> uiChildren = uiFormMultiValue.getChildren();
-    if (uiChildren == null || uiChildren.size() == 0) uiFormMultiValue.createUIFormInput(0);
-    for(UIComponent ui: uiFormMultiValue.getChildren()) {
-      if ( ui instanceof UIFormStringInput) {
-        ((UIFormStringInput) ui).addValidator(MandatoryValidator.class);
-      }
-    }
-    super.processRender(context);
-  }
   public boolean isMultiLanguage() { return isMultiLanguage_ ; }
 
   public void setIsDefaultLanguage(boolean isDefault) { isDefault_ = isDefault ; }
