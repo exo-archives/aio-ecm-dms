@@ -97,7 +97,6 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
   final static public String POPUP_SYMLINK = "UIPopupSymLink";
   
   public UISymLinkForm() throws Exception {
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(MandatoryValidator.class));
   }
   
   public void activate() throws Exception {}
@@ -110,6 +109,7 @@ public class UISymLinkForm extends UIForm implements UIPopupComponent, UISelecta
     uiFormMultiValue.setEditable(false);
     uiFormMultiValue.setType(UIFormStringInput.class);
     addUIFormInput(uiFormMultiValue);
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(MandatoryValidator.class));
   }
     
   public void doSelect(String selectField, Object value) throws Exception {
