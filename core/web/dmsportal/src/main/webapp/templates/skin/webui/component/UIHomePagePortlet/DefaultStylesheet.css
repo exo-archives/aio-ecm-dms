@@ -370,7 +370,7 @@
 	background: url('DefaultSkin/background/BgButton-rt.gif') no-repeat 98% top; /* orientation=rt */
 	padding-left: 17px; /* orientation=lt */
 	padding-right: 18px; /* orientation=rt */
-	margin: 8px 12px 0px 12px;
+	margin: 8px 25px 0px 25px;
 	
 }
 
@@ -384,7 +384,7 @@
 .SideBar .CenterButton {
 	background: url('DefaultSkin/background/BgButton.gif') repeat-x left -112px;
 	line-height: 35px;
-	font-size: 18px;
+	font-size: 15px;
 	font-family: tahoma;
 	font-weight: bold;
 	color: white;
