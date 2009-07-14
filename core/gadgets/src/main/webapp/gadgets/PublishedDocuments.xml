@@ -212,7 +212,7 @@
 				color: orange;
 			}
 	  </style>
-    <script type="text/javascript">
+  <script type="text/javascript">
 			function PublishedDocument() {}
 			var prefixUrl = location.protocol + '//' + location.hostname;
 			if (location.port) {
@@ -222,15 +222,19 @@
 			var siteUrl = prefixUrl + '/portal/rest/publication/presentation/repository/collaboration/state?showItems=5';
 			var accessUrl = prefixUrl + '/portal/private/classic/fileexplorer/repository/';
 			
+			/**
+				* Time to refresh data in client and gadget server
+				*/
+			var refreshInterval = 60000;
+			
 			PublishedDocument.prototype.makeRequest = function(url, callback) {
 				var params = {};
 				params[gadgets.io.RequestParameters.METHOD] = gadgets.io.MethodType.GET;
 				params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
 				var ts = new Date().getTime();
 			  var sep = "?";
-			  var refreshInterval = 60;
 			  if (refreshInterval && refreshInterval > 0) {
-			    ts = Math.floor(ts / (refreshInterval * 1000));
+			    ts = Math.floor(ts / refreshInterval);
 			  }
 			  if (url.indexOf("?") > -1) {
 			    sep = "&";
@@ -246,6 +250,11 @@
 			PublishedDocument.prototype.displayValue = function(resp) {
 				var data = resp.data.publishedListNode;
 				var publishedDocList = _gel("PublishedDocumentList");
+				if (publishedDocList) {
+					 while (publishedDocList.hasChildNodes()) {
+					  	publishedDocList.removeChild(publishedDocList.lastChild);
+					  }
+				}
 				var displayTime = new DisplayTime();
 				for (var i = 0; i < data.length; i++) {
 					var doc = data[i];
@@ -273,12 +282,20 @@
 				if (data && (data.length > 0) && title) {
 					publishedDocList.parentNode.removeChild(title);
 				}
-				
 				gadgets.window.adjustHeight();
 			}
-			var publishedDocument = new PublishedDocument();
 			
-	    gadgets.util.registerOnLoadHandler(publishedDocument.init);
+			/**
+		 	*  Set refresh automatically in refreshInterval seconds
+		 	*/
+			PublishedDocument.prototype.autoRefresh = function() {
+				window.setInterval("publishedDocument.init();", refreshInterval);
+			}
+			
+			var publishedDocument = new PublishedDocument();
+	  gadgets.util.registerOnLoadHandler(publishedDocument.init);
+	  gadgets.util.registerOnLoadHandler(publishedDocument.autoRefresh);
+	  
 		</script>
 
 		<body>

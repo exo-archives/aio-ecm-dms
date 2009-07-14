@@ -233,8 +233,14 @@
 				prefixUrl += ':' + location.port;
 			}
 			
+			/**
+				* siteUrl locates source to get last edited/created documents.
+				*	showItems: Maximum size of list documents
+				* showGadgetWs: =true: show data in gadgets workspace. In default we ignore this param.
+			 */
 			var siteUrl = prefixUrl + '/portal/rest/presentation/document/edit/repository?showItems=5';
 			var accessUrl = prefixUrl + '/portal/private/classic/fileexplorer/repository/';
+			var refreshInterval = 60000;
 			  
 			LastEditedDocument.prototype.makeRequest = function(url, callback) {
 				var params = {};
@@ -242,9 +248,8 @@
 				params[gadgets.io.RequestParameters.CONTENT_TYPE] = gadgets.io.ContentType.JSON;
 				var ts = new Date().getTime();
 			  var sep = "?";
-			  var refreshInterval = 60;
 			  if (refreshInterval && refreshInterval > 0) {
-			    ts = Math.floor(ts / (refreshInterval * 1000));
+			    ts = Math.floor(ts / refreshInterval);
 			  }
 			  if (url.indexOf("?") > -1) {
 			    sep = "&";
@@ -261,6 +266,11 @@
 				var data = resp.data.lstDocNode;
 				var editedDocList = _gel("ListEditDocumentNode");
 				var displayTime = new DisplayTime();
+				if (editedDocList) {
+					 while (editedDocList.hasChildNodes()) {
+					  	editedDocList.removeChild(editedDocList.lastChild);
+					  }
+				}
 				for (var i = 0; i < data.length; i++) {
 					var doc = data[i];
 					var AppClass = document.createElement('div');
@@ -290,8 +300,17 @@
 				gadgets.window.adjustHeight();
 			}
 			
+			/**
+		 	*  Set refresh automatically in refreshInterval seconds
+		 	*/
+			LastEditedDocument.prototype.autoRefresh = function() {
+				window.setInterval("lastEditedDocument.init();", refreshInterval);
+			}
+			
 			var lastEditedDocument = new LastEditedDocument();
 			gadgets.util.registerOnLoadHandler(lastEditedDocument.init);
+			gadgets.util.registerOnLoadHandler(lastEditedDocument.autoRefresh);
+			
 		</script>
 
 		<body>

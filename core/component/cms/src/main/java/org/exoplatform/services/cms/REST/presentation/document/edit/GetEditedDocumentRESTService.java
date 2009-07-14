@@ -134,7 +134,7 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
     try {
       String[] workspaces = manageableRepository.getWorkspaceNames();
       List<String> lstWorkspace = new ArrayList<String>();
-      //Arrays.asList() return fixed size;
+      //Arrays.asList() return fixed size list;
       lstWorkspace.addAll(Arrays.asList(workspaces));
       if (!show_gadget && lstWorkspace.contains(GADGET)) {
         lstWorkspace.remove(GADGET);
