@@ -16,12 +16,16 @@
  */
 package org.exoplatform.ecm.webui.component.admin.repository;
 
+import java.io.FileWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.configuration.ConfigurationManager;
+import org.exoplatform.container.monitor.jvm.J2EEServerInfo;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
@@ -60,6 +64,10 @@ import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.input.SAXBuilder;
+import org.jdom.output.XMLOutputter;
 
 /**
  * Created by The eXo Platform SARL
@@ -83,6 +91,8 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
     }  
 )
 public class UIRepositoryForm extends UIForm implements UIPopupComponent {  
+  private ConfigurationManager configurationManager;
+  
   final  static public String ST_ADD = "AddRepoPopup";
   final  static public String ST_EDIT = "EditRepoPopup";
   final static public String POPUP_WORKSPACE = "PopupWorkspace";
@@ -112,6 +122,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   protected Map<String, WorkspaceEntry> workspaceMap_ = new HashMap<String, WorkspaceEntry>(); 
 
   public UIRepositoryForm() throws Exception { 
+    configurationManager = getApplicationComponent(ConfigurationManager.class);
     addChild(new UIFormStringInput(FIELD_NAME,FIELD_NAME, null).addValidator(MandatoryValidator.class)); 
     UIFormInputSetWithAction workspaceField = new UIFormInputSetWithAction(FIELD_WSINPUTSET);
     workspaceField.addUIFormInput(new UIFormInputInfo(FIELD_WORKSPACE, FIELD_WORKSPACE, null));
@@ -276,6 +287,90 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
   public void deActivate() throws Exception { repoName_ = null;}
 
+  private void addNewElement(String repoName, String systemWs) throws Exception {
+    URL url = configurationManager.getURL("war:/conf/dms/dms-common-configuration.xml");
+    String path = "/";
+    String[] arrays = url.getPath().split("/");
+    for (int i = 2; i < arrays.length; i++) {
+      path += arrays[i];
+      if (i < arrays.length - 1) path += "/";
+    }
+    
+    J2EEServerInfo jServerInfo = new J2EEServerInfo();
+    String serverName = jServerInfo.getServerName();
+    String serverHome = jServerInfo.getServerHome() ;
+    String appPath = "" ;
+    String filePath = "" ;
+    if (serverName.equals("tomcat")) {
+      appPath = serverHome + "/webapps" ;
+      filePath = appPath + path;
+    } else if (serverName.equals("jonas")) {
+      appPath = serverHome + "/apps/autoload/exoplatform.ear/portal.war/data";
+      filePath = appPath + path;
+    } else if (serverName.equals("jboss")) {
+      appPath = serverHome + "/server/default/deploy/exoplatform.sar/02portal.war";
+      filePath = appPath + path;
+    } else {
+      System.out.println("\n\nThe server name "+serverName+"is not actually supported.\n\n");
+      return;
+    }
+    SAXBuilder builder = new SAXBuilder();
+    Document doc = builder.build(filePath);
+    Element root = doc.getRootElement();
+    List listExternalElement = root.getChildren();
+    if (listExternalElement.size() == 0) return;
+    Element externalElementTemp = (Element)listExternalElement.get(0);
+    String targetComponentTemp = externalElementTemp.getChildText("target-component");
+    Element componentPluginTemp = externalElementTemp.getChild("component-plugin");
+    
+    Element externalElement = new Element("external-component-plugins");
+    Element targetComponent = new Element("target-component");
+    targetComponent.addContent(targetComponentTemp);
+    
+    Element componentPlugin = new Element("component-plugin");
+    Element name = new Element("name");
+    name.addContent("dmsconfiguration.plugin" + listExternalElement.size());
+    Element setMethod = new Element("set-method");
+    setMethod.addContent(componentPluginTemp.getChildText("set-method"));
+    Element type = new Element("type");
+    type.addContent(componentPluginTemp.getChildText("type"));
+    
+    Element initParams = new Element("init-params");
+    Element valueParam1 = new Element("value-param");
+    Element nameRepoParam = new Element("name");
+    nameRepoParam.addContent("repository");
+    Element valueRepoParam = new Element("value");
+    valueRepoParam.addContent(repoName);
+    
+    valueParam1.addContent(nameRepoParam);
+    valueParam1.addContent(valueRepoParam);
+    
+    Element valueParam2 = new Element("value-param");
+    Element nameWsParam = new Element("name");
+    nameWsParam.addContent("systemWorkspace");
+    Element valueWsParam = new Element("value");
+    valueWsParam.addContent(systemWs);
+    
+    valueParam2.addContent(nameWsParam);
+    valueParam2.addContent(valueWsParam);
+    
+    
+    initParams.addContent(valueParam1);
+    initParams.addContent(valueParam2);
+    
+    componentPlugin.addContent(name);
+    componentPlugin.addContent(setMethod);
+    componentPlugin.addContent(type);
+    componentPlugin.addContent(initParams);
+    
+    externalElement.addContent(targetComponent);
+    externalElement.addContent(componentPlugin);
+    
+    root.addContent(externalElement);
+
+    XMLOutputter xmlOutputter = new XMLOutputter(org.jdom.output.Format.getPrettyFormat());
+    xmlOutputter.output(doc, new FileWriter(filePath));
+  }
 
   public static class SelectActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
@@ -373,6 +468,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       DMSConfiguration dmsConfiguration = uiForm.getApplicationComponent(DMSConfiguration.class);
       dmsConfiguration.initNewRepo(repoName, newDConfiguration);
       
+      uiForm.addNewElement(repoName, uiForm.dmsSystemWorkspace_);
       
       uiForm.saveRepo(re);
       UIRepositoryControl uiRepoControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
