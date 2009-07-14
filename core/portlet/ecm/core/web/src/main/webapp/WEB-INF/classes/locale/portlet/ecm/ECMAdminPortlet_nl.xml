@@ -2099,5 +2099,11 @@
       <homepath-emty>The Home path is empty</homepath-emty>
     </msg>
   </UITaxonomyTreeMainForm>
+
+  <UITaxonomyWorkingArea>
+  	<msg>
+  		<exist>This tree node is existed!</exist>
+  	</msg>
+  </UITaxonomyWorkingArea>  
 </bundle>
 

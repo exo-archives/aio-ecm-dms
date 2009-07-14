@@ -2099,5 +2099,11 @@
       <homepath-emty>The Home path is empty</homepath-emty>
     </msg>
   </UITaxonomyTreeMainForm>
+
+  <UITaxonomyWorkingArea>
+  	<msg>
+  		<exist>هذه الشجرة هي العقدة قائمة!</exist>
+  	</msg>
+  </UITaxonomyWorkingArea>    
 </bundle>
   

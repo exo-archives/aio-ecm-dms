@@ -2100,5 +2100,10 @@
     </msg>
   </UITaxonomyTreeMainForm>
 
+  <UITaxonomyWorkingArea>
+  	<msg>
+  		<exist>Nút này đã tồn tại trong cây!</exist>
+  	</msg>
+  </UITaxonomyWorkingArea>  
 </bundle>
 
