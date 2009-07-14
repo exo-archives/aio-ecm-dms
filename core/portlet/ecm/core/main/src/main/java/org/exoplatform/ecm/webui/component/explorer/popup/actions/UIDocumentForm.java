@@ -317,9 +317,13 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           homeNode.save();
           newNode = (Node)homeNode.getSession().getItem(addedPath);
           if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
-            for(String categoryPath : categoriesPathList) {    
+            for(String categoryPath : categoriesPathList) {
               index = categoryPath.indexOf("/");
-              taxonomyService.addCategory(newNode, categoryPath.substring(0, index), categoryPath.substring(index + 1));
+              try {
+                taxonomyService.addCategory(newNode, categoryPath.substring(0, index), categoryPath.substring(index + 1));
+              } catch (Exception e) {
+                continue;
+              }
             }
           } else {
             List<Value> vals = new ArrayList<Value>();
@@ -366,8 +370,10 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
-      }
-      event.getRequestContext().setAttribute("nodePath",newNode.getPath());      
+      }      
+      event.getRequestContext().setAttribute("nodePath",newNode.getPath());
+      uiExplorer.refreshExplorer();
+      uiExplorer.updateAjax(event);      
     }
   }
   
