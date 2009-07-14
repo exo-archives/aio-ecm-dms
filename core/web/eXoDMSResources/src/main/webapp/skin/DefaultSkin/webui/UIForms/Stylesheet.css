@@ -65,7 +65,7 @@
 	border:1px solid #AEAEAE;
 }
 
-.UIAnyPermission .UIForm .UIFormGrid td.FieldLabel {
+.UIJCRExplorerPortlet .UIJcrExplorerEditContainer .UIForm .UIFormGrid td.FieldLabel {
 	vertical-align: middle;
 }
 
@@ -89,7 +89,7 @@
 /**************************************UIFormInputSet*******************************/
 
 .UIFormInputSet .FormContainer {
-	padding: 5px 0px;
+	padding: 0px;
 }
 
 .FieldComponent .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {

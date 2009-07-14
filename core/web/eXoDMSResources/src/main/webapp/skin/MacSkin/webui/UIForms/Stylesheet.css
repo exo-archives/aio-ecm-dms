@@ -70,9 +70,10 @@
 
 /**************************************UIFormInputSet*******************************/
 
-.UIFormInputSet .FormContainer {
-	padding: 5px 0px;
+.UIJCRExplorerPortlet .UIFormWithTitle .UIFormGrid .UIFormInputSet .FormContainer{
+	padding: 0px;
 }
+
 
 .UIFormInputSet .UIFormInputSetWithAction .ActionField a {
   color: blue;
@@ -81,4 +82,24 @@
 .FieldComponent .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
 	padding: 0px;
 }
+
+
+.FieldComponent .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
+	padding: 0px;
+}
+
+.UIForm .FieldComponent .FieldComponent input{
+	width: 200px;
+}
+
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+	padding: 0px;
+	width: 100%;
+}
+
+.UIJCRExplorerPortlet .UIJcrExplorerEditContainer .UIForm .UIFormGrid td.FieldLabel {
+	vertical-align: middle;
+}
+
+
 

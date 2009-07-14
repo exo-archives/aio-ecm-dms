@@ -88,7 +88,7 @@
 }
 
 .UIJCRExplorerPortlet .DriveNameInput .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td.FieldLabel {
- 	padding: 4px 8px 4px 14px; /* orientation=lt */
+ 	padding: 4px 8px 4px 0px; /* orientation=lt */
  	padding: 4px 0px 4px 8px; /* orientation=rt */
  	width: 119px;
  	_width: 140px;

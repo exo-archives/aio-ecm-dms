@@ -1,3 +1,4 @@
+
 /******************************* UIFormWithoutAction **************************/
 .UIFormWithoutAction {
   margin: 0px 0px 10px 0px;
@@ -53,33 +54,54 @@
 /*====================================UIAnyPermission==================================*/
 .UIAnyPermission {
 	margin-bottom: 2px;
-	border-top: 1px solid #B7B7B7;
+	border: 1px solid white;
 }
 
-.UIAnyPermission .UIForm .UIFormInputSetWithAction .UIFormGrid td {
-	padding: 7px 8px 4px 0px; /* orientation=lt */
-	padding: 7px 0px 4px 8px; /* orientation=rt */
+.UIAnyPermission .UIForm .HorizontalLayout {
+	padding: 0px;
 }
 
-.UIAnyPermission .UIForm .UIFormGrid td.FieldLabel {
+.UITabPane .UIAnyPermission .UIForm .HorizontalLayout {
+	border:1px solid #AEAEAE;
+}
+
+.UIJCRExplorerPortlet .UIJcrExplorerEditContainer .UIForm .UIFormGrid td.FieldLabel {
 	vertical-align: middle;
 }
 
-.UIAnyPermission .UIForm .UIFormGrid {
+.UIAnyPermission .UIForm .HorizontalLayout .UIFormGrid {
 	width: auto;
 	margin: 0px;
 }
 
-.UIAnyPermission .UIForm .UIFormGrid .UIFormInputSet {
-	padding: 0px;
+.UIAnyPermission .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid td {	
+	vertical-align: middle;
+	padding: 2px;
+}
+
+.UIDocumentFormController .UIForm .HorizontalLayout textarea {
+	font-size: 11px;
+	border: 1px solid #b7b7b7;
+  height: auto;
+	width: auto;
 }
 
 /**************************************UIFormInputSet*******************************/
 
-.UIFormInputSet .FormContainer {
-	padding: 5px 0px;
+.UIJCRExplorerPortlet .UIFormWithTitle .UIFormGrid .UIFormInputSet .FormContainer{
+	padding: 0px;
 }
 
 .FieldComponent .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
 	padding: 0px;
 }
+
+.UIForm .FieldComponent .FieldComponent input{
+	width: 200px;
+}
+
+.UIJCRExplorerPortlet .UIForm .HorizontalLayout .UIFormInputSet {
+	padding: 0px;
+	width: 100%;
+}
+
