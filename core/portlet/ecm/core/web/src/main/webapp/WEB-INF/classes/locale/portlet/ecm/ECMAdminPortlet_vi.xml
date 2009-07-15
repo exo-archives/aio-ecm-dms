@@ -2104,6 +2104,26 @@
   	<msg>
   		<exist>Nút này đã tồn tại trong cây!</exist>
   	</msg>
-  </UITaxonomyWorkingArea>  
+  </UITaxonomyWorkingArea>
+  
+  <PermissionTreeSelectUser>
+    <label>
+      <option>
+        <userName>#{word.userName}</userName>
+        <lastName>#{word.lastName}</lastName>
+        <firstName>#{word.firstName}</firstName>
+        <email>#{word.email}</email>
+      </option>
+      <group>Nhóm</group>
+      <searchUser>#{word.searchUser}</searchUser>
+      <userName>#{word.userName}</userName>
+      <lastName>#{word.lastName}</lastName>
+      <firstName>#{word.firstName}</firstName>
+	    <email>#{word.email}</email>
+      <action>#{word.action}</action>
+      <Add>#{word.add}</Add>
+      <Close>#{word.close}</Close>
+    </label>
+  </PermissionTreeSelectUser>    
 </bundle>
 

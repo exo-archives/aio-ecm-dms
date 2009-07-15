@@ -168,7 +168,7 @@
 	-->
 	
 	<UIActionForm>
-		<title>Ajouter une Permission pour la taxonomie</title>
+		<title>Ajouter une Action pour la taxonomie</title>
 		<action>
 			<Save>Sauver</Save>
 			<ViewPermission>Voir les Permissions</ViewPermission>
@@ -1449,8 +1449,8 @@
   
   <TaxoTreeSelectUserOrGroup>
     <label>
-      <selectGroup>Toute permission</selectGroup>
-      <selectMembership>Toute permission</selectMembership>
+      <selectGroup>Sélectionner un groupe</selectGroup>
+      <selectMembership>Sélectionner un membership</selectMembership>
     </label>
   </TaxoTreeSelectUserOrGroup>
   
@@ -2103,5 +2103,25 @@
   	<msg>
   		<exist>Ce nœud de l'arbre est l'existence!</exist>
   	</msg>
-  </UITaxonomyWorkingArea>  
+  </UITaxonomyWorkingArea>
+    
+  <PermissionTreeSelectUser>
+    <label>
+      <option>
+        <userName>#{word.userName}</userName>
+        <lastName>#{word.lastName}</lastName>
+        <firstName>#{word.firstName}</firstName>
+        <email>#{word.email}</email>
+      </option>
+      <group>Groupe</group>
+      <searchUser>#{word.searchUser}</searchUser>
+      <userName>#{word.userName}</userName>
+      <lastName>#{word.lastName}</lastName>
+      <firstName>#{word.firstName}</firstName>
+	    <email>#{word.email}</email>
+      <action>#{word.action}</action>
+      <Add>#{word.Add}</Add>
+      <Close>#{word.Close}</Close>
+    </label>
+  </PermissionTreeSelectUser>      
 </bundle>

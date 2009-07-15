@@ -168,7 +168,7 @@
 	-->
 	
 	<UIActionForm>
-		<title>Voeg een toestemming voor de taxonomie boom</title>
+		<title>Voeg een actie voor de taxonomie boom</title>
 		<action>
 			<Save>Redden</Save>
 			<ViewPermission>Bekijk Toestemming</ViewPermission>
@@ -1449,8 +1449,8 @@
   
   <TaxoTreeSelectUserOrGroup>
     <label>
-      <selectGroup>Elke Toestemming</selectGroup>
-      <selectMembership>Elke Toestemming</selectMembership>
+      <selectGroup>Selecte groep</selectGroup>
+      <selectMembership>Selecteer lidmaatschap</selectMembership>      
     </label>
   </TaxoTreeSelectUserOrGroup>
   
@@ -2104,6 +2104,26 @@
   	<msg>
   		<exist>This tree node is existed!</exist>
   	</msg>
-  </UITaxonomyWorkingArea>  
+  </UITaxonomyWorkingArea>
+  
+  <PermissionTreeSelectUser>
+    <label>
+      <option>
+        <userName>#{word.userName}</userName>
+        <lastName>#{word.lastName}</lastName>
+        <firstName>#{word.firstName}</firstName>
+        <email>#{word.email}</email>
+      </option>
+      <group>Gruppe</group>
+      <searchUser>#{word.searchUser}</searchUser>
+      <userName>#{word.userName}</userName>
+      <lastName>#{word.lastName}</lastName>
+      <firstName>#{word.firstName}</firstName>
+	    <email>#{word.email}</email>
+      <action>#{word.action}</action>
+      <Add>#{word.add}</Add>
+      <Close>#{word.close}</Close>
+    </label>
+  </PermissionTreeSelectUser>      
 </bundle>
 

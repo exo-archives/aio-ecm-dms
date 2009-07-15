@@ -168,7 +168,7 @@
 	-->
 	
 	<UIActionForm>
-		<title>إذن إضافة إلى شجرة التصنيف</title>
+		<title>إضافة إلى العمل التصنيف شجرة</title>
 		<action>
 			<Save>حفظ</Save>
 			<ViewPermission>ونظرا لتصريح</ViewPermission>
@@ -1449,8 +1449,8 @@
   
   <TaxoTreeSelectUserOrGroup>
     <label>
-      <selectGroup>ولا يسمح لأي</selectGroup>
-      <selectMembership>ولا يسمح لأي</selectMembership>
+      <selectGroup>إختيار مجموعة</selectGroup>
+      <selectMembership>إختيار العضوية</selectMembership>      
     </label>
   </TaxoTreeSelectUserOrGroup>
   
@@ -2104,6 +2104,26 @@
   	<msg>
   		<exist>هذه الشجرة هي العقدة قائمة!</exist>
   	</msg>
-  </UITaxonomyWorkingArea>    
+  </UITaxonomyWorkingArea>
+  
+  <PermissionTreeSelectUser>
+    <label>
+      <option>
+        <userName>#{word.userName}</userName>
+        <lastName>#{word.lastName}</lastName>
+        <firstName>#{word.firstName}</firstName>
+        <email>#{word.email}</email>
+      </option>
+      <group>:المجموعة</group>
+      <searchUser>#{word.searchUser}</searchUser>
+      <userName>#{word.userName}</userName>
+      <lastName>#{word.lastName}</lastName>
+      <firstName>#{word.firstName}</firstName>
+	    <email>#{word.email}</email>
+      <action>#{word.action}</action>
+      <Add>#{word.Add}</Add>
+      <Close>#{word.Close}</Close>
+    </label>
+  </PermissionTreeSelectUser>       
 </bundle>
   

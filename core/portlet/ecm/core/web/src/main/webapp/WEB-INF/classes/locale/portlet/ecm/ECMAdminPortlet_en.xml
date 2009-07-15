@@ -41,7 +41,7 @@
     <msg>
       <referential-integrity>Can not read from source file or destination category is subcategory</referential-integrity>
       <no-taxonomy-selected>You must copy or cut at least one category</no-taxonomy-selected>
-      <node-is-cutting>You can not paste here. Maybe, the taxonomy node '{0}' is cutting.</node-is-cutting>
+      <node-is-cutting>You can not paste here. Maybe, the taxonomy node '{0}' is being cut.</node-is-cutting>
       <can-not-paste>No data in clipboard to paste.</can-not-paste>
       <reference-exception>Can not delete this taxonomy node because it is currently the target of a REFERENCE property.</reference-exception>
       <path-error>Maybe, have problem when remove this taxonomy node.</path-error>
@@ -168,7 +168,7 @@
 	-->
 	
 	<UIActionForm>
-		<title>Add a permission to the taxonomy tree</title>
+		<title>Add an action to the taxonomy tree</title>
 		<action>
 			<Save>Save</Save>
 			<ViewPermission>View Permission</ViewPermission>
@@ -1449,8 +1449,8 @@
   
   <TaxoTreeSelectUserOrGroup>
     <label>
-      <selectGroup>Any Permission</selectGroup>
-      <selectMembership>Any Permission</selectMembership>
+      <selectGroup>Select group</selectGroup>
+      <selectMembership>Select membership</selectMembership>
     </label>
   </TaxoTreeSelectUserOrGroup>
   
@@ -2098,11 +2098,30 @@
       <homepath-emty>The Home path is empty</homepath-emty>
     </msg>
   </UITaxonomyTreeMainForm>
-  
   <UITaxonomyWorkingArea>
   	<msg>
   		<exist>This tree node is existed!</exist>
   	</msg>
   </UITaxonomyWorkingArea>
+
+  <PermissionTreeSelectUser>
+    <label>
+      <option>
+        <userName>#{word.userName}</userName>
+        <lastName>#{word.lastName}</lastName>
+        <firstName>#{word.firstName}</firstName>
+        <email>#{word.email}</email>
+      </option>
+      <group>Group</group>
+      <searchUser>#{word.searchUser}</searchUser>
+      <userName>#{word.userName}</userName>
+      <lastName>#{word.lastName}</lastName>
+      <firstName>#{word.firstName}</firstName>
+	    <email>#{word.email}</email>
+      <action>#{word.action}</action>
+      <Add>#{word.Add}</Add>
+      <Close>#{word.Close}</Close>
+    </label>
+  </PermissionTreeSelectUser>  
 </bundle>
 
