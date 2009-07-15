@@ -27,7 +27,7 @@
 }
 
 .UIECMAdminPortlet .UIFormGrid {
-	width: 90%;
+	width: auto;
 }
 
 .UIECMAdminPortlet .UITrees .Node .NodeIcon   {
