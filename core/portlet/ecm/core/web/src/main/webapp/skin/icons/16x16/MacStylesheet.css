@@ -9,6 +9,7 @@
 .Icon16x16 {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
+	position: relative;
 }
 
 .UIGrid .ViewIcon {
