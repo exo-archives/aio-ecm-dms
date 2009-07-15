@@ -440,15 +440,6 @@
 .UIHomePagePortlet .AdImageLeft {
 	background: url('DefaultSkin/background/LeftHome.jpg') no-repeat left 0px; /* orientation=lt */
 	background: url('DefaultSkin/background/LeftHome.jpg') no-repeat right -514px; /* orientation=rt */
-}
-
-*html .UIHomePagePortlet .AdImageLeft {
-	background: url('DefaultSkin/background/LeftHome.jpg') no-repeat right -257px; /* orientation=rt */
-}
-
-.UIHomePagePortlet .AdImageRight {
-	background: url('DefaultSkin/background/RightHome.jpg') no-repeat right 0px; /* orientation=lt */
-	background: url('DefaultSkin/background/RightHome.jpg') no-repeat left -258px; /* orientation=rt */
 	text-align: right; /* orientation=lt */
 	text-align: left; /* orientation=rt */
 	height: 257px; /* orientation=lt */
@@ -459,12 +450,22 @@
 	letter-spacing: 1px;
 }
 
+*html .UIHomePagePortlet .AdImageLeft {
+	background: url('DefaultSkin/background/LeftHome.jpg') no-repeat right -257px; /* orientation=rt */
+}
+
+.UIHomePagePortlet .AdImageRight {
+	background: url('DefaultSkin/background/RightHome.jpg') no-repeat right 0px; /* orientation=lt */
+	background: url('DefaultSkin/background/RightHome.jpg') no-repeat left -258px; /* orientation=rt */
+
+}
+
 *html .UIHomePagePortlet .AdImageRight {
 	background: url('DefaultSkin/background/RightHome.jpg') no-repeat left -258px; /* orientation=rt */
 	height: 256px; /* orientation=rt */
 }
 
-.UIHomePagePortlet .AdImageLeft .EmptyBlock {
+.UIHomePagePortlet .EmptyBlock {
 	height: 105px;
 }
 

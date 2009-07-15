@@ -178,8 +178,8 @@
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn {
  	border-right: none; /* orientation=lt */
  	border-left: none; /* orientation=rt */
-	padding: 2px 0px 2px 3px; /* orientation=lt */
-	padding: 2px 3px 2px 0px; /* orientation=rt */
+	padding: 5px 0px 2px 3px; /* orientation=lt */
+	padding: 5px 3px 2px 0px; /* orientation=rt */
 } 
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn .NodeLabel {
