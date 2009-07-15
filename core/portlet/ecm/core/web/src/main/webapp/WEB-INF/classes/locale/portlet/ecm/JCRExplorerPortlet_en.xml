@@ -1393,7 +1393,7 @@
     <title>Import Node</title>
     <msg>
       <import-successful>Import successfully!</import-successful>
-      <filename-invalid>Browse xml file for import!</filename-invalid>
+      <filename-invalid>Browse xml file for 'Upload File' field to import!</filename-invalid>
       <filetype-error>Can not import node from uploaded file. Maybe it is a invalid xml file.</filetype-error>
       <mimetype-invalid>Only xml file or zip file are supported to import.</mimetype-invalid>
       <access-denied>Access denied! You are not allowed to import there.</access-denied>

@@ -1393,7 +1393,7 @@
     <title>استيراد عقدة</title>
     <msg>
       <import-successful>تم الاستيراد!</import-successful>
-      <filename-invalid> اختر ملف من نوع 'xml' للاستيراد!</filename-invalid>
+      <filename-invalid> اختر ملف من نوع 'xml'إلى للاستيرادتحميل ملف!</filename-invalid>
       <filetype-error>لا يمكن الاستيراد! قد يكون هناك خطء في الملف الذي تم تحميله.</filetype-error>
       <mimetype-invalid>لا يمكن استيرادالملفات إلا من نوع 'xml' أو 'zip'.</mimetype-invalid>
       <access-denied>غير مسموح! لا يمكنك الاستيراد هناك.</access-denied>

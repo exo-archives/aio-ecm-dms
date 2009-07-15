@@ -1393,7 +1393,7 @@
     <title>Importer un noeud</title>
     <msg>
       <import-successful>Import effectué !</import-successful>
-      <filename-invalid>Veuillez sélectionner un fichier xml pour l'import!</filename-invalid>
+      <filename-invalid>Veuillez sélectionner un fichier xml pour 'Uploader un fichier' le fichier à importer!</filename-invalid>
       <filetype-error>Import impossible. Le fichier uploadé est probablement corrompu.</filetype-error>
       <mimetype-invalid>Seuls les fichier xml ou zip sont supportés pour l'import.</mimetype-invalid>
       <access-denied>Accès interdit ! Vous n'avez pas les droits suffisants pour importer à cet endroit.</access-denied>

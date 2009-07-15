@@ -1393,7 +1393,7 @@
     <title>Importeer Node</title>
     <msg>
       <import-successful>Importeer successvol!</import-successful>
-      <filename-invalid>Navigeer xml bestand voor import!</filename-invalid>
+      <filename-invalid>Browse xml file for 'Upload File' field to import!</filename-invalid>
       <filetype-error>Kan node niet importeren van geupload bestand.</filetype-error>
       <mimetype-invalid>Alleen xml bestand of zip bestand zijn ondersteund om te importeren.</mimetype-invalid>
       <access-denied>toegang geweigerd! U kan hier niet importeren.</access-denied>

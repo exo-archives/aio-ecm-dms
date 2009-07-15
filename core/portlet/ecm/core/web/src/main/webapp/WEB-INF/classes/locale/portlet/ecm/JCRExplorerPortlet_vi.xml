@@ -1400,7 +1400,7 @@
     <title>Nhập Node</title>
     <msg>
       <import-successful>Nhập thành công !</import-successful>
-      <filename-invalid>Duyệt tệp tin xml để nhập vào!</filename-invalid>
+      <filename-invalid>Duyệt tệp tin xml tại trường 'Tải tệp tin' để nhập vào!</filename-invalid>
       <filetype-error>Không thể nhập node tới một tệp tin được đưa lên.Có lẽ đó là một tệp tin xml không hợp lệ.</filetype-error>
       <mimetype-invalid>Chỉ những tệp tin xml hoặc zip được hỗ trợ để nhập vào.</mimetype-invalid>
       <access-denied>Truy nhập bị hủy bỏ!Bạn không được phép nhập ở đây.</access-denied>
