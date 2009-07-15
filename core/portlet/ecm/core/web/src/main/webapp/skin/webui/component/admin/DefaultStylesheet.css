@@ -27,7 +27,7 @@ font-weight:bold;
 }
 
 .UIECMAdminPortlet .UIFormGrid {
-	width: auto;
+	width: 100%;
 }
 
 .UIECMAdminPortlet .Icon16x16 {
