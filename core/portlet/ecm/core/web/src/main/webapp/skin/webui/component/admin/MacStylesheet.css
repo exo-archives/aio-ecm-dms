@@ -864,3 +864,8 @@
   right: 0;
   bottom: 0;
 }
+
+
+.UIECMAdminPortlet .UIDriveManager .UIFormGrid {
+	width: 99%;
+}

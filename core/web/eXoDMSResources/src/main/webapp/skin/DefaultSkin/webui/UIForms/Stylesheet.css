@@ -86,6 +86,10 @@
 	width: auto;
 }
 
+.HorizontalLayout .UIFormInputSet .FormContainer .UIFormGrid td{
+	padding: 4px;
+}
+
 /**************************************UIFormInputSet*******************************/
 
 .UIFormInputSet .FormContainer {

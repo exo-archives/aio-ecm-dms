@@ -841,3 +841,7 @@ float: left;
   right: 0;
   bottom: 0;
 }
+
+.UIECMAdminPortlet .UIDriveManager .DriveInputSet .UIFormInputSetWithAction .FieldLabel {
+  width: 140px;
+}

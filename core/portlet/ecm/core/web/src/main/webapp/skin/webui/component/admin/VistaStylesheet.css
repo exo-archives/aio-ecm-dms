@@ -887,3 +887,8 @@
 	clear: both;
 	padding: 8px;
 }
+
+
+.UIECMAdminPortlet .UIDriveManager .UIFormGrid {
+	width: 99%;
+}

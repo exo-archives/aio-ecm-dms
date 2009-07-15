@@ -16,6 +16,10 @@
 	padding: 0px;
 }
 
+.HorizontalLayout .UIFormInputSet .FormContainer .UIFormGrid td{
+	padding: 4px;
+}
+
 /**************************************************************************/
 
 .UIECMAdminPortlet .UIWorkspaceList .UIFormGrid {
@@ -69,6 +73,10 @@
 }
 
 /**************************************UIFormInputSet*******************************/
+
+.UIFormInputSet .FormContainer {
+	padding: 0px;
+}
 
 .UIJCRExplorerPortlet .UIFormWithTitle .UIFormGrid .UIFormInputSet .FormContainer{
 	padding: 0px;

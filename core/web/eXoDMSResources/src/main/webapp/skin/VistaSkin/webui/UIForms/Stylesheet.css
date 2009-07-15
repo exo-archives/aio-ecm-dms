@@ -17,6 +17,14 @@
 	padding: 0px;
 }
 
+.HorizontalLayout .UIFormInputSet .FormContainer .UIFormGrid td{
+	padding: 4px;
+}
+
+.UIFormInputSet .FormContainer {
+	padding: 0px;
+}
+
 /**************************************************************************/
 
 .UIECMAdminPortlet .UIWorkspaceList .UIFormGrid {
