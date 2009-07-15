@@ -469,7 +469,7 @@
 	height: 105px;
 }
 
-.UIHomePagePortlet .AdImageLeft .ProductSlogan {
+.UIHomePagePortlet .AdImageRight .ProductSlogan {
 	color:#2C2C2C;
 	font-family:Arial;
 	font-size:15px;
@@ -480,7 +480,7 @@
 	text-transform:uppercase;
 }
 
-.UIHomePagePortlet .AdImageLeft .ProductIntro {
+.UIHomePagePortlet .AdImageRight .ProductIntro {
 	color:#F95106;
 	font-size:12px;
 	font-weight:bold;

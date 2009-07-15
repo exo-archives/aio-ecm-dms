@@ -19,15 +19,14 @@
 <div class="UIHomePagePortlet" id="$uicomponent.id">
 	<div class="PortletDecoration">
 		<div class="HomePortletAdBackround">
-			<div class="AdImageLeft">
-				<div class="AdImageRight">
+			<div class="AdImageRight">
+				<div class="AdImageLeft">
 					<div class="EmptyBlock"><span></span></div>
 					<div class="ProductSlogan"><%=res.getString("Homepage.ecm.label.slogan")%></div>
 					<div class="ProductIntro"><%=res.getString("Homepage.ecm.label.productIntro")%></div>
 				</div>
 			</div>
 		</div>
-
 		<table style="table-layout: fixed; width: 100%;-width: auto;">
 			<tr>
 				<td>
