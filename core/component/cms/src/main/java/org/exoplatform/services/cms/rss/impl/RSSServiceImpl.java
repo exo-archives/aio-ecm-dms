@@ -162,7 +162,7 @@ public class RSSServiceImpl implements RSSService{
           String url = getEntryUrl(portalName, wsName, child.getPath(), rssUrl) ;
           entry = new SyndEntryImpl();
           try {
-            entry.setTitle(child.getProperty(title).getString());                
+            if (child.hasProperty(title)) entry.setTitle(child.getProperty(title).getString());                
           } catch(PathNotFoundException path) {
             entry.setTitle("") ;
           }
@@ -170,8 +170,10 @@ public class RSSServiceImpl implements RSSService{
           description = new SyndContentImpl();
           description.setType("text/plain");          
           try {
-            description.setValue(child.getProperty(summary).getString());
+            if (child.hasProperty(summary))
+              description.setValue(child.getProperty(summary).getString().replaceAll("&nbsp;", " "));
           } catch(PathNotFoundException path) {
+            path.printStackTrace();
             description.setValue("") ;
           }
           entry.setDescription(description);        
