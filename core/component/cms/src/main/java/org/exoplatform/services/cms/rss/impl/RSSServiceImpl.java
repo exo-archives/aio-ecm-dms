@@ -156,9 +156,9 @@ public class RSSServiceImpl implements RSSService{
       QueryResult queryResult = query.execute();            
       SyndFeed feed = new SyndFeedImpl();      
       feed.setFeedType(rssVersion);      
-      feed.setTitle(feedTitle);
+      feed.setTitle(feedTitle.replaceAll("&nbsp;", " "));
       feed.setLink("");
-      feed.setDescription(feedDescription);     
+      feed.setDescription(feedDescription.replaceAll("&nbsp;", " "));     
       List<SyndEntry> entries = new ArrayList<SyndEntry>();
       SyndEntry entry;
       SyndContent description;
@@ -182,7 +182,8 @@ public class RSSServiceImpl implements RSSService{
           description = new SyndContentImpl();
           description.setType("text/plain");          
           try {
-            description.setValue(child.getProperty(summary).getString());
+            if (child.hasProperty(summary))
+              description.setValue(child.getProperty(summary).getString().replaceAll("&nbsp;", " "));
           } catch(PathNotFoundException path) {
             description.setValue("") ;
           }
@@ -284,7 +285,7 @@ public class RSSServiceImpl implements RSSService{
       modules.add(infor) ;
       feed.setModules(modules) ;
       feed.setCopyright(copyright) ;
-      feed.setDescription(feedDescription) ;
+      feed.setDescription(feedDescription.replaceAll("&nbsp;", " "));
       feed.setFeedType(rssVersion);
       feed.setLanguage(language) ;
       feed.setLink(feedLink) ;
@@ -303,12 +304,10 @@ public class RSSServiceImpl implements RSSService{
         Node child = iter.nextNode();        
         entry = new SyndEntryImpl();
         try {
-          entry.setTitle(child.getProperty(title).getString());
+          if (child.hasProperty(title)) entry.setTitle(child.getProperty(title).getString().replaceAll("&nbsp;", " "));
         } catch(PathNotFoundException path) {
           entry.setTitle("") ;
-        }
-        if (child.hasProperty(title)) {
-        }        
+        }       
         List enclosureList = new ArrayList() ;
         SyndEnclosure enc = new SyndEnclosureImpl() ;
         Node content = child.getNode(JCR_CONTENT) ;
@@ -326,9 +325,12 @@ public class RSSServiceImpl implements RSSService{
         description = new SyndContentImpl();
         description.setType("text/plain");
         try {
-          description.setValue(child.getProperty(summary).getString());
-          entryInfo.setSubtitle(child.getProperty(summary).getString()) ;
-          entryInfo.setSummary(child.getProperty(summary).getString()) ;
+          if (child.hasProperty(summary)){
+            String summaryValue = child.getProperty(summary).getString();
+            description.setValue(summaryValue);
+            entryInfo.setSubtitle(summaryValue);
+            entryInfo.setSummary(summaryValue);
+          }          
         } catch(PathNotFoundException pnf) {
           description.setValue("");
           entryInfo.setSubtitle("") ;
