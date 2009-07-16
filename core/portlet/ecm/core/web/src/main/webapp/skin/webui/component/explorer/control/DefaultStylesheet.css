@@ -666,7 +666,8 @@
 	border: 1px solid #ccc;
 	background: #fff;
 	width: 165px;
-	margin-left: 8px;
+	margin-left: 8px; /* orientation=lt */
+	margin-right: 8px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .Right .Advance .SearchBtn {

@@ -9,7 +9,6 @@
 .Icon16x16 {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
-	position: relative;
 }
 
 .AddIcon16x16 {
@@ -135,14 +134,14 @@
 .ExpandIcon {
   width: 16px;
   background: url('DefaultSkin/SmallGrayExpand.gif') no-repeat left top; /* orientation=lt */
-  background: url('DefaultSkin/SmallGray-rt.gif') no-repeat right top; /* orientation=rt */
+  background: url('DefaultSkin/SmallGrayExpand-rt.gif') no-repeat right top; /* orientation=rt */
   cursor: pointer;
 }
 
 .CollapseIcon  {
   width: 16px;
   background: url('DefaultSkin/SmallGrayCollapse.gif') no-repeat left top; /* orientation=lt */
-  background: url('DefaultSkin/SmallGray-rt.gif') no-repeat right top; /* orientation=rt */
+  background: url('DefaultSkin/SmallGrayCollapse-rt.gif') no-repeat right top; /* orientation=rt */
   cursor: pointer;
 }
 

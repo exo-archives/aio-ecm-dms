@@ -11,7 +11,7 @@
 @import url("UINodeTypeManager/DefaultStylesheet.css");
 
 .UIGroupMembershipSelector .MembershipTitle {
-font-weight:bold;
+	font-weight:bold;
 }
 
 .UIWindow .UIECMAdminPortlet {
