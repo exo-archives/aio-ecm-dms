@@ -89,9 +89,11 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
 
   public UIImportNode() throws Exception {
     this.setMultiPart(true);
-    addUIFormInput(new UIFormUploadInput(FILE_UPLOAD, FILE_UPLOAD));
+    // Disabling the size limit since it makes no sense in the import case
+    addUIFormInput(new UIFormUploadInput(FILE_UPLOAD, FILE_UPLOAD, 0));
     addUIFormInput(new UIFormSelectBox(IMPORT_BEHAVIOR, IMPORT_BEHAVIOR, null));
-    addUIFormInput(new UIFormUploadInput(VERSION_HISTORY_FILE_UPLOAD, VERSION_HISTORY_FILE_UPLOAD));
+    // Disabling the size limit since it makes no sense in the import case
+    addUIFormInput(new UIFormUploadInput(VERSION_HISTORY_FILE_UPLOAD, VERSION_HISTORY_FILE_UPLOAD, 0));
     List<SelectItemOption<String>> formatItem = new ArrayList<SelectItemOption<String>>();
     RequestContext context = RequestContext.getCurrentInstance();
     ResourceBundle resourceBundle = context.getApplicationResourceBundle();
