@@ -17,7 +17,7 @@
 <div class="UISideBar" id="UISideBar">
 
   <div class="UISideBarContainer">
-  	<div class="UIResizableBlock" style="">
+  	<div class="UIResizableBlock" style="height: 100%;">
   	  <% uicomponent.renderChildren(); %>
   	</div>
 	  <div class="UISelectContent">

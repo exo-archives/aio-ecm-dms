@@ -131,14 +131,15 @@
 	background-position: right top; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UITreeExplorer .LinkSmall {
-	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
-  position: absolute;
-  width: 9px;
-  height: 5px;
-  left: 9px; /* orientation=lt */
-  right: 9px; /* orientation=rt */
-  bottom: 0;
+.UIJCRExplorerPortlet .UITreeExplorer .IconSymLink {
+	padding: 0px;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .IconSymLink .NodeLabel {
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat 10px bottom; /* orientation=lt */
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat 94% bottom; /* orientation=rt */
+	padding-left: 22px; /* orientation=lt */
+	padding-right: 22px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {

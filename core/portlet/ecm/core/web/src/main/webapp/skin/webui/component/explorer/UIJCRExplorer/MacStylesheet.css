@@ -166,13 +166,10 @@
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .LeftColumn .LinkSmall {
-	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom;
-  position: absolute;
-  width: 9px;
-  height: 5px;
-  right: 0; /* orientation=lt */
-  left: 0; /* orientation=rt */
-  bottom: 6px;
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom; /* orientation=lt */
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat left bottom; /* orientation=rt */
+	width: 22px;
+	height: 20px;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn {
