@@ -23,9 +23,9 @@ import java.util.Map;
 import junit.framework.TestCase;
 
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
-import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 
 /**
  * Created by The eXo Platform SAS
@@ -125,6 +125,38 @@ public class UIExtensionTest extends TestCase {
     extension.setComponent("org.exoplatform.webui.ext.UIExtensionTest$MyTestUIExtensionComponent5");
     assertEquals(null, extension.getComponentFilters());
     assertEquals(false, extension.isEnable());
+    extension.setComponent("org.exoplatform.webui.ext.UIExtensionTest$MyTestUIExtensionComponent6");
+    assertEquals(null, extension.getComponentFilters());
+    assertEquals(false, extension.isEnable());
+    extension.setComponent("org.exoplatform.webui.ext.UIExtensionTest$MyTestUIExtensionComponent7");
+    assertEquals(null, extension.getComponentFilters());
+    assertEquals(false, extension.isEnable());
+    extension.setComponent("org.exoplatform.webui.ext.UIExtensionTest$MyTestUIExtensionComponent8");
+    assertEquals(null, extension.getComponentFilters());
+    assertEquals(false, extension.isEnable());    
+    extension.setComponent("org.exoplatform.webui.ext.UIExtensionTest$MyTestUIExtensionComponent9");
+    assertEquals(null, extension.getComponentFilters());
+    assertEquals(false, extension.isEnable());
+    extension.setComponent("org.exoplatform.webui.ext.UIExtensionTest$MyTestUIExtensionComponent10");
+    assertEquals(null, extension.getComponentFilters());
+    assertEquals(false, extension.isEnable());
+  }
+  
+  public void testAnnotationInheritance() {
+    UIExtension extension = new UIExtension();
+    extension.setComponent("org.exoplatform.webui.ext.UIExtensionTest$MyTestUISubExtensionComponent");
+    assertEquals(1, extension.getComponentFilters().size());
+    assertEquals(true, extension.isEnable());
+  }
+  
+  public static class MyTestUISubExtensionComponent extends MyTestUISuperExtensionComponent {
+  }
+  
+  public static abstract class MyTestUISuperExtensionComponent extends UIComponent {
+    @UIExtensionFilters
+    public List<UIExtensionFilter> getFilters() {
+      return Arrays.asList(new UIExtensionFilter[]{new MyTestUIExtensionFilter1()});
+    }    
   }
   
   public static class MyTestUIExtensionComponent extends UIComponent {
@@ -162,6 +194,40 @@ public class UIExtensionTest extends TestCase {
       return Arrays.asList(new UIExtensionFilter[]{new MyTestUIExtensionFilter1()});
     }    
   }
+  
+  public static class MyTestUIExtensionComponent6 extends UIComponent {    
+    @UIExtensionFilters
+    public void dummy() {
+    }    
+  }
+  
+  public static class MyTestUIExtensionComponent7 extends UIComponent {    
+    @UIExtensionFilters
+    public String[] getValues() {
+      return new String[]{"a"};
+    }    
+  }  
+  
+  public static class MyTestUIExtensionComponent8 extends UIComponent {    
+    @UIExtensionFilters
+    public List<String> getValues() {
+      return Arrays.asList(new String[]{"a"});
+    }    
+  }  
+ 
+  public static class MyTestUIExtensionComponent9 extends UIComponent {    
+    @UIExtensionFilters
+    public List<UIExtensionFilter> getValues(String arg) {
+      return Arrays.asList(new UIExtensionFilter[]{new MyTestUIExtensionFilter1()});
+    }    
+  } 
+  
+  public static class MyTestUIExtensionComponent10 extends UIComponent {    
+    @UIExtensionFilters
+    public List<? extends UIExtensionFilter> getValues() {
+      return Arrays.asList(new UIExtensionFilter[]{new MyTestUIExtensionFilter1()});
+    }    
+  } 
   
   public static class MyTestUIExtensionFilter1 implements UIExtensionFilter {
 

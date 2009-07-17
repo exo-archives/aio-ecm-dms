@@ -17,14 +17,16 @@
 package org.exoplatform.webui.ext;
 
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 import org.exoplatform.webui.ext.filter.UIExtensionFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 
 /**
  * A Pojo that describes an UI extension
@@ -158,17 +160,21 @@ public class UIExtension implements Comparable<UIExtension> {
   public List<UIExtensionFilter> getComponentFilters() {
     if (!componentFiltersInitialized) {
       try {
-        Class<? extends UIComponent> componentClass = getComponent();
-        for (Method m : componentClass.getDeclaredMethods()) {
-          if (m.isAnnotationPresent(UIExtensionFilters.class)) {
-            @SuppressWarnings("unchecked") 
-            List<UIExtensionFilter> filters = (List<UIExtensionFilter>) m.invoke(componentClass.newInstance(), (Object[]) null);
-            if (filters != null) {
-              // prevent from any undesired modification
-              this.componentFilters = Collections.unmodifiableList(filters);              
+        Class<?> currentClass = getComponent();
+        while (currentClass != null) {
+          for (Method m : currentClass.getDeclaredMethods()) {
+            if (m.isAnnotationPresent(UIExtensionFilters.class)) {
+              checkMethodReturnType(m);
+              @SuppressWarnings("unchecked") 
+              List<UIExtensionFilter> filters = (List<UIExtensionFilter>) m.invoke(getComponent().newInstance(), (Object[]) null);
+              if (filters != null) {
+                // prevent from any undesired modification
+                this.componentFilters = Collections.unmodifiableList(filters);              
+              }
+              break;
             }
-            break;
           }
+          currentClass = currentClass.getSuperclass();
         }
       } catch (Exception e) {
         // disable the extension to ensure that it won't be used
@@ -180,6 +186,29 @@ public class UIExtension implements Comparable<UIExtension> {
     }
     return componentFilters;
   }    
+  
+  /**
+   * Checks the return type of the method that has been annotated with @UIExtensionFilters
+   * it must be a list of objects of type UIExtensionFilter
+   * @param m the method to check
+   */
+  private void checkMethodReturnType(Method m) {
+    // Check the return type
+    final Type returnType = m.getGenericReturnType();
+    if (returnType instanceof ParameterizedType) {
+      // The return type is ParameterizedType
+      final ParameterizedType pReturnType = (ParameterizedType) returnType;
+      if (pReturnType.getRawType().equals(List.class)) {
+        // The raw type is a List
+        final Type[] actualTypeArguments = pReturnType.getActualTypeArguments();
+        if (actualTypeArguments != null && actualTypeArguments.length == 1 && actualTypeArguments[0].equals(UIExtensionFilter.class)) {
+          // The type argument is UIExtensionFilter, the return type is valid
+          return;
+        }
+      }
+    }
+    throw new RuntimeException("The expected type is a list of objects of type UIExtensionFilter");
+  }
   
   public boolean isEnable() {
     return enable;
