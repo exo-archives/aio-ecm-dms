@@ -46,6 +46,11 @@
 	height: auto;
 }
 
+
+.UIJCRExplorerPortlet .UIRelationManager .UIBreadcumbs .LeftBreadcumbsBar {
+	height: 25px;
+}
+
 /*############################## -- End UIJCRExplorer -- ##############################*/
 
 .UIJCRExplorerPortlet .UIFormWithTitle {
