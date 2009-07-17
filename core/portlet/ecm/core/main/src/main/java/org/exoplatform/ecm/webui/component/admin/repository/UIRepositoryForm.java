@@ -16,15 +16,16 @@
  */
 package org.exoplatform.ecm.webui.component.admin.repository;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.net.URL;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.exoplatform.container.ExoContainer;
-import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.monitor.jvm.J2EEServerInfo;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
@@ -91,7 +92,6 @@ import org.jdom.output.XMLOutputter;
     }  
 )
 public class UIRepositoryForm extends UIForm implements UIPopupComponent {  
-  private ConfigurationManager configurationManager;
   
   final  static public String ST_ADD = "AddRepoPopup";
   final  static public String ST_EDIT = "EditRepoPopup";
@@ -122,7 +122,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   protected Map<String, WorkspaceEntry> workspaceMap_ = new HashMap<String, WorkspaceEntry>(); 
 
   public UIRepositoryForm() throws Exception { 
-    configurationManager = getApplicationComponent(ConfigurationManager.class);
     addChild(new UIFormStringInput(FIELD_NAME,FIELD_NAME, null).addValidator(MandatoryValidator.class)); 
     UIFormInputSetWithAction workspaceField = new UIFormInputSetWithAction(FIELD_WSINPUTSET);
     workspaceField.addUIFormInput(new UIFormInputInfo(FIELD_WORKSPACE, FIELD_WORKSPACE, null));
@@ -286,54 +285,84 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   public void activate() throws Exception {}
 
   public void deActivate() throws Exception { repoName_ = null;}
-
-  private void addNewElement(String repoName, String systemWs) throws Exception {
-    URL url = configurationManager.getURL("war:/conf/dms/dms-common-configuration.xml");
-    String path = "/";
-    String[] arrays = url.getPath().split("/");
-    for (int i = 2; i < arrays.length; i++) {
-      path += arrays[i];
-      if (i < arrays.length - 1) path += "/";
+  
+  private void addConfiguration(String fileConfiguration) throws Exception {
+    SAXBuilder builder1 = new SAXBuilder();
+    Document docConfiguration = null;
+    Element rootConfiguration = null;
+    boolean isExist = false;
+    try {
+      docConfiguration = builder1.build(fileConfiguration);
+      rootConfiguration = docConfiguration.getRootElement();
+      List listImportElement = rootConfiguration.getChildren("import");
+      for (int i = 0; i < listImportElement.size(); i++) {
+        Element element = (Element)listImportElement.get(i);
+        if (element.getValue().trim().equals("dms-common-extend-configuration.xml")) {
+          isExist = true;
+          break;
+        }
+      }
+      if (!isExist) {
+        Element importElement = new Element("import");
+        importElement.addContent("dms-common-extend-configuration.xml");
+        rootConfiguration.addContent(importElement);
+        XMLOutputter xmlOutputter = new XMLOutputter(org.jdom.output.Format.getPrettyFormat());
+        xmlOutputter.output(docConfiguration, new FileWriter(fileConfiguration));
+      }
+    } catch (FileNotFoundException e) {
+      StringBuilder builder = new StringBuilder();
+      FileWriter outputFileReader;
+      PrintWriter outputStream = null;
+      builder.append("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
+      builder.append("<configuration>\n");
+      builder.append("  <import>dms-common-extend-configuration.xml</import>\n"); 
+      builder.append("</configuration>\n");
+      outputFileReader  = new FileWriter(fileConfiguration);
+      outputStream = new PrintWriter(outputFileReader);
+      outputStream.println(builder);
+      if (outputStream != null) outputStream.close();
     }
-    
-    J2EEServerInfo jServerInfo = new J2EEServerInfo();
-    String serverName = jServerInfo.getServerName();
-    String serverHome = jServerInfo.getServerHome() ;
-    String appPath = "" ;
-    String filePath = "" ;
-    if (serverName.equals("tomcat")) {
-      appPath = serverHome + "/webapps" ;
-      filePath = appPath + path;
-    } else if (serverName.equals("jonas")) {
-      appPath = serverHome + "/apps/autoload/exoplatform.ear/portal.war/data";
-      filePath = appPath + path;
-    } else if (serverName.equals("jboss")) {
-      appPath = serverHome + "/server/default/deploy/exoplatform.sar/02portal.war";
-      filePath = appPath + path;
-    } else {
-      System.out.println("\n\nThe server name "+serverName+"is not actually supported.\n\n");
-      return;
-    }
+  }
+  
+  private void addElement(String fileDmsCommon, String repoName, String systemWs) throws Exception {
     SAXBuilder builder = new SAXBuilder();
-    Document doc = builder.build(filePath);
-    Element root = doc.getRootElement();
-    List listExternalElement = root.getChildren();
-    if (listExternalElement.size() == 0) return;
-    Element externalElementTemp = (Element)listExternalElement.get(0);
-    String targetComponentTemp = externalElementTemp.getChildText("target-component");
-    Element componentPluginTemp = externalElementTemp.getChild("component-plugin");
+    Document doc = null;
+    Element root = null;
+    int count = 0;
+    FileWriter outputFileReader;
+    PrintWriter outputStream = null;
+    try {
+      doc = builder.build(fileDmsCommon);
+    } catch (FileNotFoundException e) {
+      StringBuilder builderString = new StringBuilder();
+      builderString.append("<?xml version=\"1.0\" encoding=\"ISO-8859-1\"?>\n");
+      builderString.append("<configuration>\n");
+      builderString.append("  <component>\n");
+      builderString.append("    <key>org.exoplatform.services.cms.impl.DMSConfiguration</key>\n");
+      builderString.append("    <type>org.exoplatform.services.cms.impl.DMSConfiguration</type>\n"); 
+      builderString.append("  </component>\n");
+      builderString.append("</configuration>\n");
+      outputFileReader  = new FileWriter(fileDmsCommon);
+      outputStream = new PrintWriter(outputFileReader);
+      outputStream.println(builderString);
+      outputStream.close();
+      doc = builder.build(fileDmsCommon);
+    } 
+    
+    root = doc.getRootElement();
+    count = root.getChildren("external-component-plugins").size();
     
     Element externalElement = new Element("external-component-plugins");
     Element targetComponent = new Element("target-component");
-    targetComponent.addContent(targetComponentTemp);
+    targetComponent.addContent("org.exoplatform.services.cms.impl.DMSConfiguration");
     
     Element componentPlugin = new Element("component-plugin");
     Element name = new Element("name");
-    name.addContent("dmsconfiguration.plugin" + listExternalElement.size());
+    name.addContent("dmsconfiguration.plugin" + count);
     Element setMethod = new Element("set-method");
-    setMethod.addContent(componentPluginTemp.getChildText("set-method"));
+    setMethod.addContent("addPlugin");
     Element type = new Element("type");
-    type.addContent(componentPluginTemp.getChildText("type"));
+    type.addContent("org.exoplatform.services.cms.impl.DMSRepositoryConfiguration");
     
     Element initParams = new Element("init-params");
     Element valueParam1 = new Element("value-param");
@@ -354,7 +383,6 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     valueParam2.addContent(nameWsParam);
     valueParam2.addContent(valueWsParam);
     
-    
     initParams.addContent(valueParam1);
     initParams.addContent(valueParam2);
     
@@ -367,11 +395,24 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     externalElement.addContent(componentPlugin);
     
     root.addContent(externalElement);
-
+    
     XMLOutputter xmlOutputter = new XMLOutputter(org.jdom.output.Format.getPrettyFormat());
-    xmlOutputter.output(doc, new FileWriter(filePath));
+    xmlOutputter.output(doc, new FileWriter(fileDmsCommon));
   }
-
+  
+  private void addNewElement(String repoName, String wsName) throws Exception {
+    J2EEServerInfo jServerInfo = new J2EEServerInfo();
+    String configDir = jServerInfo.getExoConfigurationDirectory();
+    String commonExtPath = configDir + "/dms-common-extend-configuration.xml";
+    File configDirFile;
+    configDirFile = new File(configDir);
+    if (!configDirFile.exists()) {
+      configDirFile.mkdir();
+    }
+    addConfiguration(configDir + "/configuration.xml");
+    addElement(commonExtPath, repoName, wsName);
+  }
+  
   public static class SelectActionListener extends EventListener<UIRepositoryForm>{
     public void execute(Event<UIRepositoryForm> event) throws Exception{
       UIRepositoryFormContainer uiRepoContainer = 
