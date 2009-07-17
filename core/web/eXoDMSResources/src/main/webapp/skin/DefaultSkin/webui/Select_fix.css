@@ -7,7 +7,7 @@ But keep in mind that these classes are a bit modified.
 */
 
 .select-free {
-	overflow:hidden;/*must have*/
+	_overflow:hidden;/*must have*/
 }
 .select-free .innerFixer {
 	position:absolute;/*must have*/
