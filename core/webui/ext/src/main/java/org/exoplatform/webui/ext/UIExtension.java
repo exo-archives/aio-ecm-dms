@@ -192,22 +192,29 @@ public class UIExtension implements Comparable<UIExtension> {
    * it must be a list of objects of type UIExtensionFilter
    * @param m the method to check
    */
+  
   private void checkMethodReturnType(Method m) {
     // Check the return type
     final Type returnType = m.getGenericReturnType();
     if (returnType instanceof ParameterizedType) {
       // The return type is ParameterizedType
       final ParameterizedType pReturnType = (ParameterizedType) returnType;
-      if (pReturnType.getRawType().equals(List.class)) {
+      final Type rawType = pReturnType.getRawType();
+      if (compareTypes(rawType, List.class)) {
         // The raw type is a List
         final Type[] actualTypeArguments = pReturnType.getActualTypeArguments();
-        if (actualTypeArguments != null && actualTypeArguments.length == 1 && actualTypeArguments[0].equals(UIExtensionFilter.class)) {
+        if (actualTypeArguments != null && actualTypeArguments.length == 1 && compareTypes(actualTypeArguments[0], UIExtensionFilter.class)) {
           // The type argument is UIExtensionFilter, the return type is valid
           return;
         }
       }
     }
     throw new RuntimeException("The expected type is a list of objects of type UIExtensionFilter");
+  }
+  
+  @SuppressWarnings("unchecked")
+  private boolean compareTypes(Type type, Class targetClass) {
+    return type instanceof Class && ((Class) type).getName().equals(targetClass.getName());
   }
   
   public boolean isEnable() {
