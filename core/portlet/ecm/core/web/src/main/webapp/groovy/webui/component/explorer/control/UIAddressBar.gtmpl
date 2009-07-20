@@ -9,98 +9,99 @@
 %>
 <% uiform.begin() %>
 <div class="UIAddressBar">
-	<div class="Block">
-		<div class="Left">
-			<div class="View">
-				<%
-				  int viewCount = 0;
-				  def extendMap = new HashMap<String, String>();
-				  if(uicomponent.getViewList().size() > 1) {
-					  for(viewStyle in uicomponent.getViewList()) { 
-					    def label = _ctx.appRes("Views.label." + viewStyle);
-					    def viewIcon = viewStyle;
-					    def defaultView = "DefaultView";
-					    if(uicomponent.isSelectedView(viewStyle)) {
-					      viewIcon = viewStyle + "-selected";
-					      defaultView = "DefaultViewSelected";
-					    }
-					    viewCount++;
-					    if(viewCount < 5) {
-					%>
-	    				  <a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
-					<%  } else {
-					      extendMap.put(viewStyle, label + ";" + viewIcon);
-	            }
-	          }
-	        } else {
-	          viewCount++;
-	        }
-				 %>
-				 <%if(!extendMap.isEmpty()) {%>
-					  <div class="ExtendedView">
-							<div class="MoreViewIcon" onclick="javascript: eXo.ecm.ECMUtils.showHideExtendedView(event);">
-							</div>
-							<div class="ListExtendedView" id="ListExtendedView" style="display: none;">
-							  <%
-							    for(key in extendMap.keySet()) {
-							      def viewInfor = extendMap.get(key);
-							      def label = viewInfor.split(";")[0];
-				            def viewIcon = viewInfor.split(";")[1];
-				            def defaultView = "DefaultView";
-				            if(uicomponent.isSelectedView(key)) {
-				              viewIcon = key + "-selected";
-				              defaultView = "DefaultViewSelected";
-				            }
-							  %>
-  							    <a href="<%=uicomponent.event("ChangeView", key)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
-	              <%}%>
-							</div>
-				    </div>
-				 <%}%>
-			</div>
-		</div>
-		
-		<div class="Right">
-			<div class="SearchSetting">
-				<a href="<%=uicomponent.event("SavedQueries")%>" title="<%=_ctx.appRes("UIActionBar.title.SavedQueries")%>"  class="SearchSettingBtn"><span></span></a>
-				<a href="<%=uicomponent.event("AdvanceSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.AdvanceSearch")%>" class="SearchAdvanceBtn"><span></span></a>
-			</div>
-			<div class="Advance" id="SimpleSearchControl">
-				<a href="<%=uicomponent.event("SimpleSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.SimpleSearch")%>" class="SearchBtn" id="SimpleSearch"><span></span></a>
-				<% uicomponent.renderChild(1); %>
-			</div>
+	<table class="TblAddressBar">
+		<tr class="Block">
+						<%
+						  int viewCount = 0;
+						  def extendMap = new HashMap<String, String>();
+						  if(uicomponent.getViewList().size() > 1) {
+							  for(viewStyle in uicomponent.getViewList()) { 
+							    def label = _ctx.appRes("Views.label." + viewStyle);
+							    def viewIcon = viewStyle;
+							    def defaultView = "DefaultView";
+							    if(uicomponent.isSelectedView(viewStyle)) {
+							      viewIcon = viewStyle + "-selected";
+							      defaultView = "DefaultViewSelected";
+							    }
+							    viewCount++;
+							    if(viewCount < 5) {
+							%>
+								<td class="IconFileExplorer">
+			    				  <a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
+			    			</td>
+							<%  } else {
+							      extendMap.put(viewStyle, label + ";" + viewIcon);
+			            }
+			          }
+			        } else {
+			          viewCount++;
+			        }
+						 %>
+					 <%if(!extendMap.isEmpty()) {%>
+					 <td class="DetailMoreViewIcon">
+											<div class="MoreViewIcon" onclick="javascript: eXo.ecm.ECMUtils.showHideExtendedView(event);">
+											<span></span></div>
+											<div class="ListExtendedView" id="ListExtendedView" style="display: none;">
+												  <%
+												    for(key in extendMap.keySet()) {
+												      def viewInfor = extendMap.get(key);
+												      def label = viewInfor.split(";")[0];
+									            def viewIcon = viewInfor.split(";")[1];
+									            def defaultView = "DefaultView";
+									            if(uicomponent.isSelectedView(key)) {
+									              viewIcon = key + "-selected";
+									              defaultView = "DefaultViewSelected";
+									            }
+												  %>
+												  
+						  							    <a href="<%=uicomponent.event("ChangeView", key)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
+						              <%}%>
+					  					</div>
+					 <%}%>
+			</td>
+			<td class="BackAndRefreshBlock" style="width: 58px;">
+				<a class="BackBtn FloatLeft" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIAddressBar.title.backButton")%>"><span></span></a>	
+	  		<a class="RefreshSessionButton FloatLeft" href="<%=uicomponent.event("RefreshSession")%>" title="<%=_ctx.appRes("UIViewBar.label.refesh")%>"><span></span></a>
+			</td>	
 			
-		</div>
-		
-		<div class="BackAndRefreshBlock">
-			<a class="BackBtn FloatLeft" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIAddressBar.title.backButton")%>"><span></span></a>	
-  		<a class="RefreshSessionButton FloatLeft" href="<%=uicomponent.event("RefreshSession")%>" title="<%=_ctx.appRes("UIViewBar.label.refesh")%>"><span></span></a>
-		</div>	
-		<%
-		   def viewSize = "";
-		   if(viewCount < 5 && viewCount > 0) viewSize = Integer.toString(viewCount);
-		%>
-		<div class="BlockMiddle${viewSize} UIPopupSelector" id="UIAddressBarAction">
-	    <div style="position: relative;">
-		    <div class="UISelectContent">
-		      <%
-		      for(entry in uicomponent.getFullHistory()) {
-    				String actionLink = uicomponent.event("History", entry.workspace + ":" + entry.path);
-		        println "<div class=\"AddressItem\" onmouseout=\"this.className = 'AddressItem'\" onmouseover=\"this.className = 'SelectedAddressItem'\" onclick=\"$actionLink\">$entry.path</div>" ;
-		      }
-		      %>
+			<%
+			   def viewSize = "";
+			   if(viewCount < 5 && viewCount > 0) viewSize = Integer.toString(viewCount);
+			%>
+			<td class="BlockMiddle${viewSize} UIPopupSelector" id="UIAddressBarAction" style="width: 100%;">
+		    <div style="position: relative;">
+			    <div class="UISelectContent">
+			      <%
+			      for(entry in uicomponent.getFullHistory()) {
+	    				String actionLink = uicomponent.event("History", entry.workspace + ":" + entry.path);
+			        println "<div class=\"AddressItem\" onmouseout=\"this.className = 'AddressItem'\" onmouseover=\"this.className = 'SelectedAddressItem'\" onclick=\"$actionLink\">$entry.path</div>" ;
+			      }
+			      %>
+			    </div>
+			  </div>
+			  <div class="HardDisk"><span></span></div>
+			  <div class="DropDownButtonBox" onmousedown="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2,1)">
+			    <div class="DropDownButton Style1DownArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.showHistory")%>"><span></span></div>
+			  </div>
+			  <div class="InputContainer"  id="AddressBarControl">
+			    <a href="<%=uicomponent.event("ChangeNode")%>" id="GotoLocation"></a>
+		      <% uicomponent.renderChild(0); %>
 		    </div>
-		  </div>
-		  <div class="HardDisk"><span></span></div>
-		  <div class="DropDownButtonBox" onmousedown="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2,1)">
-		    <div class="DropDownButton Style1DownArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.showHistory")%>"><span></span></div>
-		  </div>
-		  <div class="InputContainer"  id="AddressBarControl">
-		    <a href="<%=uicomponent.event("ChangeNode")%>" id="GotoLocation"></a>
-	      <% uicomponent.renderChild(0); %>
-	    </div>
-	    <div style="clear: both;"><span></span></div>
-	  </div>
-	</div>
+		    <div style="clear: both;"><span></span></div>
+		  </td>
+			<td class="Right">
+				<div class="SearchSetting">
+					<a href="<%=uicomponent.event("SavedQueries")%>" title="<%=_ctx.appRes("UIActionBar.title.SavedQueries")%>"  class="SearchSettingBtn"><span></span></a>
+					<a href="<%=uicomponent.event("AdvanceSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.AdvanceSearch")%>" class="SearchAdvanceBtn"><span></span></a>
+				</div>
+				<div class="Advance" id="SimpleSearchControl">
+					<a href="<%=uicomponent.event("SimpleSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.SimpleSearch")%>" class="SearchBtn" id="SimpleSearch"><span></span></a>
+					<% uicomponent.renderChild(1); %>
+				</div>
+				
+			</td>
+		</tr>
+	</table>
 </div>
+
 <% uiform.end() %>

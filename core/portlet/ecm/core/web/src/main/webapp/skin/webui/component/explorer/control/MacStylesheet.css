@@ -240,7 +240,7 @@
   border: solid 0px white;
   float: left; /* orientation=lt */
   float: right; /* orientation=lt */
-  width: 140px;
+  width: 135px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DropDownButtonBox {
@@ -480,6 +480,17 @@
 
 /*New Search Bar*/
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .TblAddressBar{
+	table-layout: fixed; 
+	width: 100%; 
+	_width: auto; 
+	margin: 4px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .IconFileExplorer{
+	width: 26px;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Block {
 	margin: 4px;
 }
@@ -491,8 +502,6 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Right {
-	float: right; /* orientation=lt */
-	float: left; /* orientation=rt */
 	width: 236px;
 }
 
@@ -505,95 +514,96 @@
 	line-height:22px;
 }
 	
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .View {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .View {
 	height: 22px;
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
-	_width: 110px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .ViewIcon {
 	height: 22px;
 	width: 26px;
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
+	display: block;
+	margin: 0px 1px 0px 0px; /* orientation=lt */
+	margin: 0px 0px 0px 1px; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .MoreViewIcon {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .MoreViewIcon {
 	background: url(DefaultSkin/background/MoreViewIcon.gif) no-repeat; 
 	width: 12px;
 	height: 21px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .MoreViewIconSelected {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DetailMoreViewIcon {
+	width: 13px;
+}
+
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .MoreViewIconSelected {
 	background: url(DefaultSkin/background/MoreViewIconSelected.gif) no-repeat; 
 	width: 12px;
 	height: 21px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .ExtendedView {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .ExtendedView {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
   position: relative;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .ListExtendedView {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .ListExtendedView {
   position: absolute; 
   background: #f7f7f7; 
   border: 1px solid #b7b7b7; 
   padding: 5px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultView {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DefaultView {
 	background: url(DefaultSkin/background/DefaultView.gif) no-repeat; 
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Block .BackAndRefreshBlock {
-  float: left; /* orientation=lt */
-  float: right; /* orientation=rt */
   margin-left: 3px; /* orientation=lt */
   margin-right: 3px; /* orientation=rt */
   _width: 55px; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultViewSelected {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DefaultViewSelected {
 	background: url(DefaultSkin/background/DefaultViewSelected.gif) no-repeat; 
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .icon-view{
 	background: url(MacSkin/icons/IconView.gif) no-repeat; 
 }
 
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view-selected{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .icon-view-selected{
 	background: url(MacSkin/icons/IconViewSelected.gif) no-repeat; 
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .admin-view{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .admin-view{
 	background: url(MacSkin/icons/DetailView.gif) no-repeat; /* orientation=lt */
 	background: url(MacSkin/icons/DetailView-rt.gif) no-repeat; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .admin-view-selected{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .admin-view-selected{
 	background: url(MacSkin/icons/DetailViewSelected.gif) no-repeat; /* orientation=lt */
 	background: url(MacSkin/icons/DetailViewSelected-rt.gif) no-repeat; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left  .simple-view{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .simple-view{
 	background: url(MacSkin/icons/ThumbnailView.gif) no-repeat; /* orientation=lt */
 	background: url(MacSkin/icons/ThumbnailView-rt.gif) no-repeat; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left  .simple-view-selected{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .simple-view-selected{
 	background: url(MacSkin/icons/ThumbnailViewSelected.gif) no-repeat; /* orientation=lt */
 	background: url(MacSkin/icons/ThumbnailViewSelected-rt.gif) no-repeat; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .cover-flow{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .cover-flow{
 	background: url(MacSkin/icons/CoverflowView.gif) no-repeat; 
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .cover-flow-selected{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .cover-flow-selected{
 	background: url(MacSkin/icons/CoverflowViewSelected.gif) no-repeat; 
 }
 
@@ -645,7 +655,7 @@
 
 .UIJCRExplorerPortlet .UIAddressBar .Right .SearchSetting .SearchAdvanceBtn{
 	background: url(MacSkin/icons/SearchAdvance.gif) no-repeat;
-	width: 25px;
+	width: 20px;
 	height: 22px;
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
@@ -653,7 +663,7 @@
 
 .UIJCRExplorerPortlet .UIAddressBar .Right .SearchSetting .SearchSettingBtn{
 	background: url(MacSkin/icons/SearchSetting.gif) no-repeat;
-	width: 26px;
+	width: 22px;
 	height: 22px;
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
@@ -669,7 +679,7 @@
 }
 
 .UIJCRExplorerPortlet .Right .Advance .SearchBtn {
-	background: url(MacSkin/icons/SearchBtn.jpg) no-repeat; 
+	background: url(MacSkin/icons/SearchBtn.gif) no-repeat; 
 	width: 18px;
 	height: 16px;
 	float: right; /* orientation=lt */

@@ -467,6 +467,17 @@
 
 /**************New skin**************/
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .TblAddressBar{
+	table-layout: fixed; 
+	width: 100%; 
+	_width: auto; 
+	margin: 4px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .IconFileExplorer{
+	width: 25px;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
   border-bottom: solid 1px #b7b7b7;
   height:57px;
@@ -483,8 +494,6 @@
 }
 
 .UIJCRExplorerPortlet .Right {
-	float: right; /* orientation=lt */
-	float: left; /* orientation=rt */
 	width: 230px;
 }
 
@@ -496,7 +505,7 @@
 	margin-left: 236px; /* orientation=rt */
 }
 	
-.UIJCRExplorerPortlet .Left .View {
+.UIJCRExplorerPortlet .View {
 	height: 22px;
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
@@ -506,8 +515,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .ViewIcon {
 	height: 22px;
 	width: 25px;
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
+	display: block;
 	margin: 0px 1px 0px 0px; /* orientation=lt */
 	margin: 0px 0px 0px 1px; /* orientation=rt */
 }
@@ -518,84 +526,89 @@
 	*width: 110px; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .MoreViewIcon {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .MoreViewIcon {
 	background: url(DefaultSkin/background/MoreViewIcon.gif) no-repeat; 
 	width: 12px;
 	height: 21px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .MoreViewIconSelected {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DetailMoreViewIcon {
+	width: 13px;
+}
+
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .MoreViewIconSelected {
 	background: url(DefaultSkin/background/MoreViewIconSelected.gif) no-repeat; 
 	width: 12px;
 	height: 21px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .ExtendedView {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .ExtendedView {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
   position: relative;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .ListExtendedView {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .ListExtendedView {
   position: absolute; 
   background: #f7f7f7; 
   border: 1px solid #b7b7b7; 
   padding: 5px;
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultView {
-	background: url(DefaultSkin/background/DefaultView.gif) no-repeat; 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DefaultView {
+	background: url(DefaultSkin/background/DefaultView.gif) no-repeat left center; /* orientation=lt */ 
+	background: url(DefaultSkin/background/DefaultView.gif) no-repeat right center; /* orientation=rt */ 
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Block .BackAndRefreshBlock {
-  float: left; /* orientation=lt */
-  float: right; /* orientation=rt */
   margin-left: 3px; /* orientation=lt */
   margin-right: 3px; /* orientation=rt */
   *width: 55px; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .View {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .View {
 	height: 22px;
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	*width: 110px; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .DefaultViewSelected {
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DefaultViewSelected {
 	background: url(DefaultSkin/background/DefaultViewSelected.gif) no-repeat; 
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .icon-view{
 	background: url(VistaSkin/icons/IconView.gif) no-repeat center; 
 }
 
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .icon-view-selected{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .icon-view-selected{
 	background: url(VistaSkin/icons/IconViewSelected.gif) no-repeat center; 
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .admin-view{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .admin-view{
 	background: url(VistaSkin/icons/DetailView.gif) no-repeat center; 
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .admin-view-selected{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .admin-view-selected{
 	background: url(VistaSkin/icons/DetailViewSelected.gif) no-repeat center; 
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left  .simple-view{
-	background: url(VistaSkin/icons/ThumbnailView.gif) no-repeat center; 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .simple-view{
+	background: url(VistaSkin/icons/ThumbnailView.gif) no-repeat left center; /* orientation=lt */
+	background: url(VistaSkin/icons/ThumbnailView.gif) no-repeat right center; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left  .simple-view-selected{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar  .simple-view-selected{
 	background: url(VistaSkin/icons/ThumbnailViewSelected.gif) no-repeat center; 
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .cover-flow{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .cover-flow{
 	background: url(VistaSkin/icons/CoverflowView.gif) no-repeat center; 
 }
 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Left .cover-flow-selected{
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .cover-flow-selected{
 	background: url(VistaSkin/icons/CoverflowViewSelected.gif) no-repeat center; 
 }
 
