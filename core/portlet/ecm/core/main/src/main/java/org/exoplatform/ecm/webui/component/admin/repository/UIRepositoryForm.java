@@ -408,6 +408,9 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
     configDirFile = new File(configDir);
     if (!configDirFile.exists()) {
       configDirFile.mkdir();
+      File gadgets = new File(configDir + "/gadgets");
+      gadgets.mkdir();
+      new FileWriter(configDir + "/gadgets/key.txt");
     }
     addConfiguration(configDir + "/configuration.xml");
     addElement(commonExtPath, repoName, wsName);
