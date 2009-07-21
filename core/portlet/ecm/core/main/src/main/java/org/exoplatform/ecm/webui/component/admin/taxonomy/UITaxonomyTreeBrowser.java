@@ -48,6 +48,7 @@ public class UITaxonomyTreeBrowser extends UIContainer {
   private Node currentNode_;
   private Node rootNode_ = null;
   private String rootPath_;
+  private String[] acceptedNodeTypes = {};
   
   public UITaxonomyTreeBrowser() throws Exception {
     UINodeTree tree = addChild(UINodeTree.class, null, "UITaxonomyTreeBrowser");
@@ -62,6 +63,22 @@ public class UITaxonomyTreeBrowser extends UIContainer {
   }
   
   public Node getRootNode() throws Exception { return rootNode_;  }
+  
+  public String[] getAcceptedNodeTypes() {
+    return acceptedNodeTypes;
+  }
+
+  public void setAcceptedNodeTypes(String[] acceptedNodeTypes) {
+    this.acceptedNodeTypes = acceptedNodeTypes;
+  }  
+  
+  public boolean matchNodeType(Node node) throws Exception {
+    if(acceptedNodeTypes == null || acceptedNodeTypes.length == 0) return true;
+    for(String nodeType: acceptedNodeTypes) {
+      if(node.isNodeType(nodeType)) return true;
+    }
+    return false;
+  }
   
   public void buildTree() throws Exception {
     Iterator sibbling = null;
@@ -95,6 +112,7 @@ public class UITaxonomyTreeBrowser extends UIContainer {
     }
     while(sibbling.hasNext()) {
       Node sibblingNode = (Node)sibbling.next();
+      if(!matchNodeType(sibblingNode)) continue;
       if(PermissionUtil.canRead(sibblingNode) && !sibblingNode.isNodeType("exo:hiddenable")) {
         sibblingList.add(sibblingNode);      
       }
@@ -107,6 +125,7 @@ public class UITaxonomyTreeBrowser extends UIContainer {
     if(children != null) {
       while(children.hasNext()) {
         Node childrenNode = (Node)children.next();
+        if(!matchNodeType(childrenNode)) continue;
         if(PermissionUtil.canRead(childrenNode) && !childrenNode.isNodeType("exo:hiddenable")) {
           childrenList.add(childrenNode);        
         }

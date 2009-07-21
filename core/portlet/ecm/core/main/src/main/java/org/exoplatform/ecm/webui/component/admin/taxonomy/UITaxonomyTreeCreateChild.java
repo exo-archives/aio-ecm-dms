@@ -70,7 +70,8 @@ public class UITaxonomyTreeCreateChild extends UIContainer {
 
   public UITaxonomyTreeCreateChild() throws Exception {
     addChild(UIBreadcumbs.class, "BreadcumbTaxonomyTreeECMAdmin", "BreadcumbTaxonomyTreeECMAdmin");
-    addChild(UITaxonomyTreeBrowser.class, null, null);
+    UITaxonomyTreeBrowser uiTaxonomyTreeBrowser = addChild(UITaxonomyTreeBrowser.class, null, null);
+    uiTaxonomyTreeBrowser.setAcceptedNodeTypes(new String[] {Utils.EXO_TAXANOMY});
     UITaxonomyTreeWorkingArea uiTaxonomyTreeWorkingArea = addChild(UITaxonomyTreeWorkingArea.class, null, null);
     uiTaxonomyTreeWorkingArea.setAcceptedNodeTypes(new String[] {Utils.EXO_TAXANOMY});
   }
