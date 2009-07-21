@@ -95,6 +95,12 @@ public class UIECMAdminPortlet extends UIPortletApplication {
     popupMess.processRender(context);
   }
   
+  public String getUserAgent() {
+    PortletRequestContext requestContext = PortletRequestContext.getCurrentInstance();
+    PortletRequest portletRequest = requestContext.getRequest();
+    return portletRequest.getProperty("User-Agent");
+  }
+  
   public ManageableRepository getRepository() throws Exception {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
     return rservice.getRepository(repoName_) ;
