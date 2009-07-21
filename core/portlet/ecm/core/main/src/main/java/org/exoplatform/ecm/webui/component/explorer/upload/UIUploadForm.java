@@ -57,6 +57,7 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.impl.core.value.ValueFactoryImpl;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.upload.UploadResource;
 import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -443,10 +444,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
               node.save() ;       
               node.checkin() ;
               node.checkout() ;
-            }else {
+            } else {
               contentNode.setProperty(Utils.JCR_DATA, inputStream);              
             }
-            if(node.isNodeType("exo:datetime")) {
+            if (node.isNodeType("exo:datetime")) {
               node.setProperty("exo:dateModified",new GregorianCalendar()) ;
             }
             node.save();
@@ -541,6 +542,15 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     public void execute(Event<UIFormMultiValueInputSet> event) throws Exception {
       UIFormMultiValueInputSet uiSet = event.getSource();
       UIUploadForm uiUploadForm =  (UIUploadForm) uiSet.getParent();
+      UIFormUploadInput uiFormUploadInput = uiUploadForm.getChildById(FIELD_UPLOAD);
+      UploadResource uploadResource = uiFormUploadInput.getUploadResource();
+      if (uploadResource == null) {
+        UIApplication uiApp = uiUploadForm.getAncestorOfType(UIApplication.class);
+        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.upload-not-null", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       UIUploadManager uiUploadManager = uiUploadForm.getParent();
       UIJCRExplorer uiExplorer = uiUploadForm.getAncestorOfType(UIJCRExplorer.class);
       NodeHierarchyCreator nodeHierarchyCreator = 

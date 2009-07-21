@@ -2418,5 +2418,9 @@
 				<cannot-readsource>Không thể đọc dữ liệu từ nguồn</cannot-readsource>
 	 	</msg>
   </UIPopupMenu>
-  
+  <UIUploadForm>
+    <msg>
+      <upload-not-null>Bạn cần tải file trước khi phân loại nó</upload-not-null>
+    </msg>
+  </UIUploadForm>
 </bundle>

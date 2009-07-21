@@ -217,6 +217,19 @@ public class UISelectTaxonomyPanel extends UIContainer {
         UIComponent component = ((UIOneNodePathSelector)uiOneNodePathSelector).getSourceComponent().getParent();
         if (component != null) {
           event.getRequestContext().addUIComponentToUpdateByAjax(component);
+          return;
+        }
+      }
+      if (uiOneNodePathSelector instanceof UIOneTaxonomySelector) {
+        UIComponent uiComponent = uiOneNodePathSelector.getParent();
+        if (uiComponent instanceof UIPopupWindow) {
+          ((UIPopupWindow)uiComponent).setShow(false);
+          ((UIPopupWindow)uiComponent).setRendered(false);
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiComponent);
+        }
+        UIComponent component = ((UIOneTaxonomySelector)uiOneNodePathSelector).getSourceComponent().getParent();
+        if (component != null) {
+          event.getRequestContext().addUIComponentToUpdateByAjax(component);
         }
       }
     }

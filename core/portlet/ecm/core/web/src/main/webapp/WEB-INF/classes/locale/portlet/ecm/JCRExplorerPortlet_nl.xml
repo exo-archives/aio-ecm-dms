@@ -2411,4 +2411,9 @@
 				<cannot-readsource>Can not read data from source node</cannot-readsource>
 	 	</msg>
   </UIPopupMenu>
+  <UIUploadForm>
+    <msg>
+      <upload-not-null>You need upload file before add category</upload-not-null>
+    </msg>
+  </UIUploadForm>
 </bundle>
