@@ -298,12 +298,13 @@ public class UIDrivesBrowser extends UIContainer {
       uiJCRExplorer.setRootPath(homePath);
       uiJCRExplorer.setSelectNode(drive.getWorkspace(), homePath);
       uiJCRExplorer.refreshExplorer();      
+      String selectedView = viewList.get(0);
       UIControl uiControl = uiJCRExplorer.getChild(UIControl.class);
       UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);
-      uiActionbar.setTabOptions(viewList.get(0));
+      uiActionbar.setTabOptions(selectedView);
       UIAddressBar uiAddressBar = uiControl.getChild(UIAddressBar.class);
       uiAddressBar.setViewList(viewList);
-      uiAddressBar.setSelectedViewName(viewList.get(0));
+      uiAddressBar.setSelectedViewName(selectedView);
       explorerContainer.setRenderedChild(UIJCRExplorer.class);
       uiParent.setRenderedChild(UIJcrExplorerContainer.class);
     }
