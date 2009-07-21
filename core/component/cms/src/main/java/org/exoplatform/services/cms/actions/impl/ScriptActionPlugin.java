@@ -22,6 +22,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.PropertyType;
+import javax.jcr.Value;
+import javax.jcr.nodetype.NodeType;
+import javax.jcr.nodetype.PropertyDefinition;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.ExoContainer;
@@ -92,7 +96,17 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
   
   @SuppressWarnings("unchecked")
   public void executeAction(String userId, Node actionNode, Map variables, String repository) throws Exception {
-    String script = actionNode.getProperty("exo:script").getString();    
+    String script = null;
+    if (actionNode.hasProperty("exo:script")) {
+      script = actionNode.getProperty("exo:script").getString();    
+    } else {
+      NodeType nodeType = actionNode.getPrimaryNodeType();
+      for (PropertyDefinition prodef : nodeType.getPropertyDefinitions()) {
+        if(prodef.getName().equals("exo:script")) {
+          script = getDefaultValue(prodef);
+        }
+      }
+    }
     variables.put("actionNode", actionNode);
     variables.put("repository",repository) ;
     executeAction(userId, script, variables, repository);
@@ -127,4 +141,28 @@ public class ScriptActionPlugin extends BaseActionPlugin implements ComponentPlu
     return ScriptActionActivationJob.class ;
   }  
   
+  private String getDefaultValue(PropertyDefinition proDef) throws Exception {
+    StringBuilder defaultValue = new StringBuilder() ;
+    Value[] values = proDef.getDefaultValues() ;
+    if(values == null || values.length < 0) return "" ;
+    for(Value value : values) {
+      if(value == null) continue ;
+      if(defaultValue.length() > 0) defaultValue.append(",") ;
+      defaultValue.append(getPropertyValue(value)) ;
+    }
+    return defaultValue.toString() ;
+  }
+  
+  private String getPropertyValue(Value value) throws Exception{    
+    switch(value.getType()) {
+      case PropertyType.BINARY: return Integer.toString(PropertyType.BINARY) ; 
+      case PropertyType.BOOLEAN :return Boolean.toString(value.getBoolean()) ;
+      case PropertyType.DATE : return value.getDate().getTime().toString() ;
+      case PropertyType.DOUBLE : return Double.toString(value.getDouble()) ;
+      case PropertyType.LONG : return Long.toString(value.getLong()) ;
+      case PropertyType.NAME : return value.getString() ;
+      case PropertyType.STRING : return value.getString() ;
+    }
+    return null ;
+  }   
 }
