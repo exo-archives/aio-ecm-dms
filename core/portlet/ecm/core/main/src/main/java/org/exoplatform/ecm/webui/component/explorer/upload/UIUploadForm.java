@@ -193,6 +193,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     uiFormMultiValue.setId(FIELD_LISTTAXONOMY);
     uiFormMultiValue.setName(FIELD_LISTTAXONOMY);
     uiFormMultiValue.setType(UIFormStringInput.class);
+    uiFormMultiValue.setEditable(false);
     if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true")) {
       uiFormMultiValue.addValidator(MandatoryValidator.class);
     }
