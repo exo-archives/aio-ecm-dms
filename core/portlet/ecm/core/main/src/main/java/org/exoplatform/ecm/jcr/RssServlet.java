@@ -31,8 +31,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.exoplatform.container.ExoContainer;
-import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.RootContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -64,6 +62,7 @@ public class RssServlet extends HttpServlet {
     Session session = null ;
     try{
       session = repositoryService.getDefaultRepository().getSystemSession(wsName) ;
+      String repositoryName = repositoryService.getCurrentRepository().getConfiguration().getName();
       Node rootNode = session.getRootNode() ;
       Node file = null ;
       if(rootNode.hasNode(path))
@@ -87,10 +86,10 @@ public class RssServlet extends HttpServlet {
         ServletOutputStream os = response.getOutputStream();
         os.write(buf);
       } else if (file.isNodeType("exo:rss-enable")){
-        List documentNodeType = tservice.getDocumentTemplates("repository") ;
+        List documentNodeType = tservice.getDocumentTemplates(repositoryName) ;
         String nodeType = file.getPrimaryNodeType().getName() ;
         if(documentNodeType.contains(nodeType)){
-          String templateName = tservice.getTemplatePath(false, nodeType, "view1", "repository") ;
+          String templateName = tservice.getTemplatePath(false, nodeType, "view1", repositoryName) ;
           request.setAttribute("portalName", portalName) ;
           request.setAttribute("wsName", wsName) ;
           request.setAttribute("templateName", "jcr:"+templateName) ;
