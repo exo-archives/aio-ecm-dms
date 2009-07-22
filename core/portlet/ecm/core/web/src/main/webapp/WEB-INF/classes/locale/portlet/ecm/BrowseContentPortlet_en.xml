@@ -281,6 +281,7 @@
     <msg>
       <node-removed>Missing node : it has been moved or deleted</node-removed>
       <not-support>View template of this node is not supported</not-support>
+      <not-permission>Access denied, maybe you don't have privileges to access this node!</not-permission>
       <empty>No result found!</empty>
     </msg>
     <tooltip>

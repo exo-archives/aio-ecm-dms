@@ -281,6 +281,7 @@
     <msg>
       <node-removed><![CDATA[Fehlender Knoten : wurde entfernt oder gel&ouml;scht]]></node-removed>
       <not-support><![CDATA[Vorlagenansicht ist f&uuml;r diesen Knoten nicht unterst&uuml;tzt]]></not-support>
+      <not-permission>Access denied, maybe you don't have privileges to access this node!</not-permission>
       <empty>Kein Ergebnis!</empty>
     </msg>
     <tooltip>

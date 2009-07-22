@@ -281,6 +281,7 @@
     <msg>
       <node-removed>Không thấy nút: nút đã được di chuyển hoặc bị xóa</node-removed>
       <not-support>Không hỗ trợ xem mẫu của nút</not-support>
+      <not-permission>Truy nhập bị từ chối. Bạn không có quyền trên nút này!</not-permission>
       <empty>Không tìm thấy!</empty>
     </msg>
     <tooltip>

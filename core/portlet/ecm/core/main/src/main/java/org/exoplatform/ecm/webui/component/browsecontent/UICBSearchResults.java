@@ -21,12 +21,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.commons.utils.ObjectPageList;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -34,6 +35,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -133,33 +135,47 @@ public class UICBSearchResults extends UIContainer {
       UICBSearchResults uiResults = event.getSource();
       String itemPath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class);
-      Node node = container.getNodeByPath(itemPath);  
       UIApplication uiApp = uiResults.getAncestorOfType(UIApplication.class);
-      if(node == null) {
-        uiApp.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null));
+      Node parentNode = null;
+      try {
+        Node node = container.getNodeByPath(itemPath);
+        if (node == null) {
+          uiApp.addMessage(new ApplicationMessage("UICBSearchResults.msg.node-removed", null));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+        if (node.getPath().equals(container.getRootNode().getPath()))
+          parentNode = node;
+        else
+          parentNode = node.getParent();
+        NodeType nodeType = parentNode.getPrimaryNodeType();
+        UISearchController uiSearchController = uiResults
+            .getAncestorOfType(UISearchController.class);
+        if (container.isCategories(nodeType)) {
+          uiSearchController.setShowHiddenSearch();
+          if (container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
+            container.getChild(UICategoryTree.class).buildTree(parentNode.getPath());
+            container.setCurrentNodePath(parentNode.getPath());
+          }
+          container.changeNode(parentNode);
+          return;
+        }
+      } catch (AccessDeniedException e) {
+        uiApp.addMessage(new ApplicationMessage("UICBSearchResults.msg.not-permission", null,
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
-      }
-      Node parentNode = null;
-      if(node.getPath().equals(container.getRootNode().getPath())) parentNode = node;
-      else parentNode = node.getParent();
-      NodeType nodeType = parentNode.getPrimaryNodeType();
-      UISearchController uiSearchController = uiResults.getAncestorOfType(UISearchController.class);
-      if(container.isCategories(nodeType)) {
-        uiSearchController.setShowHiddenSearch();
-        if(container.getPortletPreferences().getValue(Utils.CB_TEMPLATE, "").equals("TreeList")) {
-          container.getChild(UICategoryTree.class).buildTree(parentNode.getPath());
-          container.setCurrentNodePath(parentNode.getPath());
-        }
-        container.changeNode(parentNode);
+      } catch (Exception e) {
+        JCRExceptionManager.process(uiApp, e);
         return;
       }
-      if(uiResults.isDocumentTemplate(parentNode.getPrimaryNodeType().getName())) {
-        UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class);
+      if (uiResults.isDocumentTemplate(parentNode.getPrimaryNodeType().getName())) {
+        UIBrowseContentPortlet cbPortlet = uiResults
+            .getAncestorOfType(UIBrowseContentPortlet.class);
         UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction");
-        UIDocumentDetail uiDocument =  uiPopupAction.activate(UIDocumentDetail.class, 600);// cbPortlet.createUIComponent(UIDocumentDetail.class, null, null);
+        UIDocumentDetail uiDocument = uiPopupAction.activate(UIDocumentDetail.class, 600);
         uiDocument.setNode(parentNode);
-        UIPopupWindow uiPopup  = uiPopupAction.getChildById("UICBPopupWindow");
+        UIPopupWindow uiPopup = uiPopupAction.getChildById("UICBPopupWindow");
         uiPopup.setResizable(true);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
         return;

@@ -281,6 +281,7 @@
     <msg>
       <node-removed>Document introuvable (probablement déplacé ou supprimé)</node-removed>
       <not-support>Visualisation de ce document impossible (formulaire non supporté)</not-support>
+      <not-permission>Accès interdit. Vous n'avez pas les droits privilège sur ce document.</not-permission>
       <empty>Aucun résultat trouvé !</empty>
     </msg>
     <tooltip>

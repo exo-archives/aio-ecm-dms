@@ -281,6 +281,7 @@
     <msg>
       <node-removed>عقدة مفقودة، تم نقلها أوحذفها</node-removed>   
       <not-support>لا يمكن مشاهدة هذه العقدة (قالب المشهد غير متوفر)٫</not-support>
+      <not-permission>غير مسموح بالدخول، ليست لديك صلاحية  امتياز تحت هذه العقدة</not-permission>
       <empty>لم يتم العثور على أي نتيجة </empty>
     </msg>
     <tooltip>
