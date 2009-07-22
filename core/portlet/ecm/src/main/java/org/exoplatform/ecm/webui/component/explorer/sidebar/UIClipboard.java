@@ -78,27 +78,30 @@ public class UIClipboard extends UIComponent {
       UIJCRExplorer uiExplorer = uiClipboard.getAncestorOfType(UIJCRExplorer.class);
       UIWorkingArea uiWorkingArea = uiExplorer.findFirstComponentOfType(UIWorkingArea.class);
       String id = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      int index = Integer.parseInt(id) ;
-      ClipboardCommand selectedClipboard = uiClipboard.clipboard_.get(index-1);      
-      Node node = uiExplorer.getCurrentNode() ;
-      String type = selectedClipboard.getType();
-      String nodePath = node.getPath();
-      UIApplication app = uiClipboard.getAncestorOfType(UIApplication.class);
-      try {
-        uiWorkingArea.processPaste(selectedClipboard, nodePath, event);
-          if(ClipboardCommand.CUT.equals(type)) {
-            uiClipboard.clipboard_.remove(index-1) ;
-          } else {
-          }
-        uiExplorer.updateAjax(event);
-      } catch(PathNotFoundException path) {
-        app.addMessage(new ApplicationMessage("PathNotFoundException.msg", null, ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
-        return ;    
-      } catch (Exception e) {
-        app.addMessage(new ApplicationMessage("UIClipboard.msg.unable-pasted", null, ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
-        return ;
+      int index = Integer.parseInt(id);
+      if (uiClipboard.clipboard_.size() > 0) {
+        ClipboardCommand selectedClipboard = uiClipboard.clipboard_.get(index-1);      
+        Node node = uiExplorer.getCurrentNode() ;
+        String type = selectedClipboard.getType();
+        String nodePath = node.getPath();
+        UIApplication app = uiClipboard.getAncestorOfType(UIApplication.class);
+        try {
+          uiWorkingArea.processPaste(selectedClipboard, nodePath, event);
+            if(ClipboardCommand.CUT.equals(type)) {
+              if (uiClipboard.clipboard_.size() > 0) uiClipboard.clipboard_.remove(index-1);
+            } else {
+            }
+          uiExplorer.updateAjax(event);
+        } catch(PathNotFoundException path) {
+          app.addMessage(new ApplicationMessage("PathNotFoundException.msg", null, ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+          return ;    
+        } catch (Exception e) {
+          e.printStackTrace();
+          app.addMessage(new ApplicationMessage("UIClipboard.msg.unable-pasted", null, ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages()) ;
+          return ;
+        }
       }
     }
   }
