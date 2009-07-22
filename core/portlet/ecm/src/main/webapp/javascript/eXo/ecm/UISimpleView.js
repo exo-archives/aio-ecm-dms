@@ -427,7 +427,7 @@ var SimpleView = function() {
 		if (element.holdMouse) {
 			resetArrayItemsSelected();
 			//select mutiple item by mouse
-			mask.X = eXo.core.Browser.findMouseRelativeX(element, event);
+			mask.X = eXo.ecm.DMSBrowser.findMouseRelativeX(element, event);
 			mask.Y = eXo.core.Browser.findMouseRelativeY(element, event);
 			mask.deltaX = mask.X - mask.storeX;
 			mask.deltaY = mask.Y - mask.storeY;

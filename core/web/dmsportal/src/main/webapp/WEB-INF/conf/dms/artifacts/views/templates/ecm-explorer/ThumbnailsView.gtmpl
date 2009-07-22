@@ -139,10 +139,10 @@
 									<%
 									  String thumbnailImage = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + data.getPath() + "/?size=medium&reloadnum=" + Math.random();
 									%>
-								    <span style="display: block;" class="LoadingProgressIcon">
+								    <div style="display: block;" class="LoadingProgressIcon">
 								    	<img src="$thumbnailImage" onerror='eXo.ecm.UISimpleView.errorCallback(this);' onload="this.parentNode.style.backgroundImage = 'url(' + this.src + ')';this.style.display = 'none';" />
-								    </span>
-								    <span style="display: none;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"></span>
+								    </div>
+								    <div style="display: none;" class="Icon48x48 default48x48Icon <%=Utils.getNodeTypeIcon(data, "48x48Icon")%>"><span></span></div>
 								</div>
 							</div>
 			        <%

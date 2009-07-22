@@ -361,7 +361,7 @@ var ListView = function() {
 			resetArrayItemsSelected();
 			element.onmousemove = Self.mutipleSelect;
 			var mask = DOM.findFirstDescendantByClass(element, "div", "Mask");
-			mask.storeX = eXo.core.Browser.findMouseRelativeX(element, event);
+			mask.storeX = eXo.ecm.DMSBrowser.findMouseRelativeX(element, event);
 			mask.storeY = eXo.core.Browser.findMouseRelativeY(element, event);
 			addStyle(mask, {
 				left: mask.storeX + "px",
@@ -396,7 +396,7 @@ var ListView = function() {
 		if (element.holdMouse) {
 				resetArrayItemsSelected();
 				//select mutiple item by mouse
-				mask.X = eXo.core.Browser.findMouseRelativeX(element, event);
+				mask.X = eXo.ecm.DMSBrowser.findMouseRelativeX(element, event);
 				mask.Y = eXo.core.Browser.findMouseRelativeY(element, event);
 				mask.deltaX = mask.X - mask.storeX;
 				mask.deltaY = mask.Y - mask.storeY;
