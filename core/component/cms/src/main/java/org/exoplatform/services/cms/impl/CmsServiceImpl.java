@@ -459,11 +459,9 @@ public class CmsServiceImpl implements CmsService {
         node.setProperty(propertyName, 
             new ByteArrayInputStream((byte[]) value));
       } else if (value instanceof String) {
-        node.setProperty(propertyName, 
-            new ByteArrayInputStream(((String)value).getBytes()));
+        node.setProperty(propertyName, value.toString(), PropertyType.BINARY);
       } else if (value instanceof String[]) {
-        node.setProperty(propertyName, 
-            new ByteArrayInputStream((((String[]) value)).toString().getBytes()));
+        node.setProperty(propertyName, (String[]) value, PropertyType.BINARY);
       }      
       break;
     case PropertyType.BOOLEAN:
@@ -658,12 +656,11 @@ public class CmsServiceImpl implements CmsService {
         }
       } else if (value instanceof String) {
         if(!property.getValue().getStream().equals(new ByteArrayInputStream(((String)value).getBytes()))) {
-          node.setProperty(propertyName, new ByteArrayInputStream(((String)value).getBytes()));
+          node.setProperty(propertyName, value.toString(), PropertyType.BINARY);
         }
       } else if (value instanceof String[]) {
         if(!property.getValue().getStream().equals(new ByteArrayInputStream((((String[]) value)).toString().getBytes()))) {
-          node.setProperty(propertyName, 
-              new ByteArrayInputStream((((String[]) value)).toString().getBytes()));
+          node.setProperty(propertyName, (String[]) value, PropertyType.BINARY);
         }
       }      
       break;
