@@ -712,7 +712,7 @@ public class UIJCRExplorer extends UIContainer {
   }
   
   public Node getNodeByPath(String nodePath, Session session, boolean giveTarget) throws Exception {
-    return getNodeByPath(nodePath, session, giveTarget, true);
+    return getNodeByPath(nodePath.trim(), session, giveTarget, true);
   }
   
   private Node getNodeByPath(String nodePath, Session session, boolean giveTarget, boolean firstTime) throws Exception {
