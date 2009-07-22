@@ -54,83 +54,89 @@ import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
- * Created by The eXo Platform SARL
- * Author : Tran The Trong
- *          trongtt@gmail.com
- * July 3, 2006
- * 10:07:15 AM
+ * Created by The eXo Platform SARL Author : Tran The Trong trongtt@gmail.com
+ * July 3, 2006 10:07:15 AM
  */
-@ComponentConfig(
-    lifecycle = UIFormLifecycle.class,
-    template =  "system:/groovy/webui/form/UIForm.gtmpl",
-    events = {
-      @EventConfig(listeners = UITemplateForm.SaveActionListener.class),
-      @EventConfig(phase=Phase.DECODE,listeners = UITemplateForm.CancelActionListener.class),
-      @EventConfig(phase=Phase.DECODE,listeners = UITemplateForm.ResetActionListener.class),
-      @EventConfig(phase=Phase.DECODE,listeners = UITemplateForm.ChangeActionListener.class),
-      @EventConfig(phase=Phase.DECODE,listeners = UITemplateForm.RestoreActionListener.class)
-    }
-)
-
+@ComponentConfig(lifecycle = UIFormLifecycle.class, template = "system:/groovy/webui/form/UIForm.gtmpl", events = {
+    @EventConfig(listeners = UITemplateForm.SaveActionListener.class),
+    @EventConfig(phase = Phase.DECODE, listeners = UITemplateForm.CancelActionListener.class),
+    @EventConfig(phase = Phase.DECODE, listeners = UITemplateForm.ResetActionListener.class),
+    @EventConfig(phase = Phase.DECODE, listeners = UITemplateForm.ChangeActionListener.class),
+    @EventConfig(phase = Phase.DECODE, listeners = UITemplateForm.RestoreActionListener.class) })
 public class UITemplateForm extends UIForm {
 
-  final static private String FIELD_VERSION = "version";
-  final static private String FIELD_CONTENT = "content";
-  final static private String FIELD_NAME = "name";
-  final static private String FIELD_HOMETEMPLATE = "homeTemplate";
+  final static private String FIELD_VERSION       = "version";
+
+  final static private String FIELD_CONTENT       = "content";
+
+  final static private String FIELD_NAME          = "name";
+
+  final static private String FIELD_HOMETEMPLATE  = "homeTemplate";
+
   final static private String FIELD_ENABLEVERSION = "enableVersion";
 
-  private Node template_ = null;
-  private List<String> listVersion = new ArrayList<String>();
-  private Version baseVersion_;
-  private VersionNode selectedVersion_;
-  public boolean isAddNew_ = false;
-  private String templatePath_;
-  private VersionNode rootVersionNode;
+  private Node                template_           = null;
+
+  private List<String>        listVersion         = new ArrayList<String>();
+
+  private Version             baseVersion_;
+
+  private VersionNode         selectedVersion_;
+
+  public boolean              isAddNew_           = false;
+
+  private String              templatePath_;
+
+  private VersionNode         rootVersionNode;
 
   public UITemplateForm() throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
-    UIFormSelectBox versions = new UIFormSelectBox(FIELD_VERSION , FIELD_VERSION, options);
+    UIFormSelectBox versions = new UIFormSelectBox(FIELD_VERSION, FIELD_VERSION, options);
     versions.setOnChange("Change");
     versions.setRendered(false);
     addUIFormInput(versions);
-    addUIFormInput(new UIFormTextAreaInput(FIELD_CONTENT, FIELD_CONTENT, null).addValidator(MandatoryValidator.class));
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(ECMNameValidator.class));
+    addUIFormInput(new UIFormTextAreaInput(FIELD_CONTENT, FIELD_CONTENT, null)
+        .addValidator(MandatoryValidator.class));
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(
+        MandatoryValidator.class).addValidator(ECMNameValidator.class));
     List<SelectItemOption<String>> typeList = new ArrayList<SelectItemOption<String>>();
     addUIFormInput(new UIFormSelectBox(FIELD_HOMETEMPLATE, FIELD_HOMETEMPLATE, typeList));
-    UIFormCheckBoxInput enableVersion = new UIFormCheckBoxInput<Boolean>(FIELD_ENABLEVERSION, FIELD_ENABLEVERSION, null);
+    UIFormCheckBoxInput enableVersion = new UIFormCheckBoxInput<Boolean>(FIELD_ENABLEVERSION,
+        FIELD_ENABLEVERSION, null);
     enableVersion.setRendered(false);
     addUIFormInput(enableVersion);
   }
-  
+
   public String getRepository() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    PortletRequestContext pcontext = (PortletRequestContext) WebuiRequestContext
+        .getCurrentInstance();
     PortletPreferences portletPref = pcontext.getRequest().getPreferences();
     return portletPref.getValue(Utils.REPOSITORY, "");
   }
-  
+
   public void updateOptionList() throws Exception {
     getUIFormSelectBox(FIELD_HOMETEMPLATE).setOptions(getOptionList());
   }
-  
+
   public List<SelectItemOption<String>> getOptionList() throws Exception {
     List<SelectItemOption<String>> typeList = new ArrayList<SelectItemOption<String>>();
     String repository = getRepository();
     SessionProvider provider = SessionProviderFactory.createSessionProvider();
-    if(getId().equalsIgnoreCase("ECMTempForm")) {              
-      Node ecmTemplateHome = getApplicationComponent(ManageViewService.class)
-      .getTemplateHome(BasePath.ECM_EXPLORER_TEMPLATES, repository,provider); 
-      if(ecmTemplateHome != null) {
-        typeList.add(new SelectItemOption<String>(ecmTemplateHome.getName(),ecmTemplateHome.getPath()));
+    if (getId().equalsIgnoreCase("ECMTempForm")) {
+      Node ecmTemplateHome = getApplicationComponent(ManageViewService.class).getTemplateHome(
+          BasePath.ECM_EXPLORER_TEMPLATES, repository, provider);
+      if (ecmTemplateHome != null) {
+        typeList.add(new SelectItemOption<String>(ecmTemplateHome.getName(), ecmTemplateHome
+            .getPath()));
       }
-    } else {        
-      Node cbTemplateHome = getApplicationComponent(ManageViewService.class)
-      .getTemplateHome(BasePath.CONTENT_BROWSER_TEMPLATES, repository,provider);
-      if(cbTemplateHome != null) {
+    } else {
+      Node cbTemplateHome = getApplicationComponent(ManageViewService.class).getTemplateHome(
+          BasePath.CONTENT_BROWSER_TEMPLATES, repository, provider);
+      if (cbTemplateHome != null) {
         NodeIterator iter = cbTemplateHome.getNodes();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
           Node template = iter.nextNode();
-          typeList.add(new SelectItemOption<String>(template.getName(),template.getPath()));
+          typeList.add(new SelectItemOption<String>(template.getName(), template.getPath()));
         }
       }
     }
@@ -141,33 +147,34 @@ public class UITemplateForm extends UIForm {
     return node.canAddMixin(Utils.MIX_VERSIONABLE);
   }
 
-  private boolean isVersioned(Node node) throws RepositoryException {          
-    return node.isNodeType(Utils.MIX_VERSIONABLE);    
+  private boolean isVersioned(Node node) throws RepositoryException {
+    return node.isNodeType(Utils.MIX_VERSIONABLE);
   }
 
-  private VersionNode getRootVersion(Node node) throws Exception{       
+  private VersionNode getRootVersion(Node node) throws Exception {
     VersionHistory vH = node.getVersionHistory();
     return (vH != null) ? new VersionNode(vH.getRootVersion(), node.getSession()) : null;
   }
 
-  private List<String> getNodeVersions(List<VersionNode> children) throws Exception {         
+  private List<String> getNodeVersions(List<VersionNode> children) throws Exception {
     List<VersionNode> child = new ArrayList<VersionNode>();
-    for(VersionNode vNode : children){
+    for (VersionNode vNode : children) {
       listVersion.add(vNode.getName());
       child = vNode.getChildren();
-      if (!child.isEmpty()) getNodeVersions(child); 
-    }           
+      if (!child.isEmpty())
+        getNodeVersions(child);
+    }
     return listVersion;
   }
 
-  private List<SelectItemOption<String>> getVersionValues(Node node) throws Exception { 
+  private List<SelectItemOption<String>> getVersionValues(Node node) throws Exception {
     List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
     List<VersionNode> children = getRootVersion(node).getChildren();
     listVersion.clear();
     List<String> versionList = getNodeVersions(children);
-    for(int i = 0; i < versionList.size(); i++) {
-      for(int j = i + 1; j < versionList.size(); j ++) {
-        if( Integer.parseInt(versionList.get(j)) < Integer.parseInt(versionList.get(i))) {
+    for (int i = 0; i < versionList.size(); i++) {
+      for (int j = i + 1; j < versionList.size(); j++) {
+        if (Integer.parseInt(versionList.get(j)) < Integer.parseInt(versionList.get(i))) {
           String temp = versionList.get(i);
           versionList.set(i, versionList.get(j));
           versionList.set(j, temp);
@@ -180,7 +187,7 @@ public class UITemplateForm extends UIForm {
 
   public void refresh() throws Exception {
     UIFormSelectBox versionField = getUIFormSelectBox(FIELD_VERSION);
-    if(isAddNew_) {
+    if (isAddNew_) {
       versionField.setRendered(false);
       getUIFormTextAreaInput(FIELD_CONTENT).setValue(null);
       getUIStringInput(FIELD_NAME).setEditable(true).setValue(null);
@@ -191,16 +198,16 @@ public class UITemplateForm extends UIForm {
       selectedVersion_ = null;
       baseVersion_ = null;
       return;
-    } 
+    }
     update(template_.getPath(), null);
   }
 
   public void update(String templatePath, VersionNode selectedVersion) throws Exception {
-    if(templatePath != null) {
-      String repository = getRepository(); 
+    if (templatePath != null) {
+      String repository = getRepository();
       templatePath_ = templatePath;
-      template_ = getApplicationComponent(ManageViewService.class).
-                   getTemplate(templatePath, repository, SessionProviderFactory.createSessionProvider());      
+      template_ = getApplicationComponent(ManageViewService.class).getTemplate(templatePath,
+          repository, SessionProviderFactory.createSessionProvider());
       getUIStringInput(FIELD_NAME).setValue(template_.getName());
       getUIStringInput(FIELD_NAME).setEditable(false);
       String value = templatePath.substring(0, templatePath.lastIndexOf("/"));
@@ -208,31 +215,33 @@ public class UITemplateForm extends UIForm {
       getUIFormSelectBox(FIELD_HOMETEMPLATE).setDisabled(false);
       getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setRendered(true);
       if (isVersioned(template_)) {
-        rootVersionNode = getRootVersion(template_);      
+        rootVersionNode = getRootVersion(template_);
         baseVersion_ = template_.getBaseVersion();
         List<SelectItemOption<String>> options = getVersionValues(template_);
         getUIFormSelectBox(FIELD_VERSION).setOptions(options).setRendered(true);
         getUIFormSelectBox(FIELD_VERSION).setValue(baseVersion_.getName());
         getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(true).setEnable(false);
-        if(options.size()>1) setActions(new String[]{"Save", "Reset", "Restore", "Cancel"});
-        else setActions(new String[]{"Save", "Reset", "Cancel"});
+        if (options.size() > 1)
+          setActions(new String[] { "Save", "Reset", "Restore", "Cancel" });
+        else
+          setActions(new String[] { "Save", "Reset", "Cancel" });
       } else if (canEnableVersionning(template_)) {
         getUIFormSelectBox(FIELD_VERSION).setRendered(false);
-        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(false).setEditable(true);   
+        getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setChecked(false).setEditable(true);
       }
     }
-    if(selectedVersion != null) {      
+    if (selectedVersion != null) {
       template_.restore(selectedVersion.getVersion(), false);
       selectedVersion_ = selectedVersion;
-      Object[] args = {getUIStringInput(FIELD_VERSION).getValue()};
+      Object[] args = { getUIStringInput(FIELD_VERSION).getValue() };
       UIApplication app = getAncestorOfType(UIApplication.class);
       app.addMessage(new ApplicationMessage("UITemplateForm.msg.version-restored", args));
     }
     String content = template_.getProperty(Utils.EXO_TEMPLATEFILE).getString();
     getUIFormTextAreaInput(FIELD_CONTENT).setValue(content);
-  } 
+  }
 
-  static  public class SaveActionListener extends EventListener<UITemplateForm> {
+  static public class SaveActionListener extends EventListener<UITemplateForm> {
     public void execute(Event<UITemplateForm> event) throws Exception {
       UITemplateForm uiForm = event.getSource();
       String repository = uiForm.getRepository();
@@ -242,56 +251,57 @@ public class UITemplateForm extends UIForm {
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class);
       ManageViewService manageViewService = uiForm.getApplicationComponent(ManageViewService.class);
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
-      if(homeTemplate == null) {
+      if (homeTemplate == null) {
         String tempPath = uiForm.template_.getPath();
         homeTemplate = tempPath.substring(0, tempPath.lastIndexOf("/"));
       }
       boolean isEnableVersioning = uiForm.getUIFormCheckBoxInput(FIELD_ENABLEVERSION).isChecked();
       String path = null;
-      if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
-        List<Node> ecmTemps = manageViewService.getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES, 
+      if (uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
+        List<Node> ecmTemps = manageViewService.getAllTemplates(BasePath.ECM_EXPLORER_TEMPLATES,
             repository, SessionProviderFactory.createSessionProvider());
-        for(Node temp : ecmTemps) {
-          if(temp.getName().equals(templateName) && uiForm.isAddNew_) {
-            Object[] args = {templateName};
-            uiApp.addMessage(new ApplicationMessage("UITemplateForm.msg.template-name-exist", args, 
+        for (Node temp : ecmTemps) {
+          if (temp.getName().equals(templateName) && uiForm.isAddNew_) {
+            Object[] args = { templateName };
+            uiApp.addMessage(new ApplicationMessage("UITemplateForm.msg.template-name-exist", args,
                 ApplicationMessage.WARNING));
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
             return;
           }
         }
-      } else if(uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
-        if(uiForm.isAddNew_) {
+      } else if (uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
+        if (uiForm.isAddNew_) {
           UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class);
           List<Node> cbTemps = uiCBTempList.getAllTemplates();
-          for(Node temp : cbTemps) {
-            if(temp.getName().equals(templateName)) {
-              Object[] args = {templateName};
-              uiApp.addMessage(new ApplicationMessage("UITemplateForm.msg.template-name-exist", args, 
-                  ApplicationMessage.WARNING));
+          for (Node temp : cbTemps) {
+            if (temp.getName().equals(templateName)) {
+              Object[] args = { templateName };
+              uiApp.addMessage(new ApplicationMessage("UITemplateForm.msg.template-name-exist",
+                  args, ApplicationMessage.WARNING));
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
               return;
             }
           }
         }
       }
-      if(uiForm.isAddNew_ || !isEnableVersioning) {
-        if(uiForm.templatePath_ != null) {
-          String oldHomeTemplate = uiForm.templatePath_.substring(0, uiForm.templatePath_.lastIndexOf("/"));
-          if(!oldHomeTemplate.equals(homeTemplate)) {
-            Node oldNode = manageViewService.getTemplate(uiForm.templatePath_, repository, 
-                  SessionProviderFactory.createSessionProvider());
+      if (uiForm.isAddNew_ || !isEnableVersioning) {
+        if (uiForm.templatePath_ != null) {
+          String oldHomeTemplate = uiForm.templatePath_.substring(0, uiForm.templatePath_
+              .lastIndexOf("/"));
+          if (!oldHomeTemplate.equals(homeTemplate)) {
+            Node oldNode = manageViewService.getTemplate(uiForm.templatePath_, repository,
+                SessionProviderFactory.createSessionProvider());
             oldNode.remove();
-            manageViewService.getTemplate(oldHomeTemplate, repository, 
+            manageViewService.getTemplate(oldHomeTemplate, repository,
                 SessionProviderFactory.createSessionProvider()).save();
           }
         }
-        path = manageViewService.addTemplate(templateName, content, homeTemplate,repository);
-        uiForm.template_ = manageViewService.getTemplate(path, repository, 
-            SessionProviderFactory.createSessionProvider());
+        path = manageViewService.addTemplate(templateName, content, homeTemplate, repository);
+        uiForm.template_ = manageViewService.getTemplate(path, repository, SessionProviderFactory
+            .createSessionProvider());
       } else {
-        if(isEnableVersioning) {
-          if(!uiForm.template_.isNodeType(Utils.MIX_VERSIONABLE)) {
+        if (isEnableVersioning) {
+          if (!uiForm.template_.isNodeType(Utils.MIX_VERSIONABLE)) {
             uiForm.template_.addMixin(Utils.MIX_VERSIONABLE);
             uiForm.template_.save();
           } else {
@@ -303,17 +313,18 @@ public class UITemplateForm extends UIForm {
         }
       }
       String workspaceName = uiForm.template_.getSession().getWorkspace().getName();
-      JCRResourceResolver resourceResolver = 
-        new JCRResourceResolver(repository, workspaceName, "exo:templateFile");
+      JCRResourceResolver resourceResolver = new JCRResourceResolver(repository, workspaceName,
+          "exo:templateFile");
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class);
-      if(path != null) templateService.invalidateTemplate(path, resourceResolver);
+      if (path != null)
+        templateService.invalidateTemplate(path, resourceResolver);
       uiForm.refresh();
-      if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
+      if (uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
         UIECMTemplateList uiECMTempList = uiTempContainer.getChild(UIECMTemplateList.class);
         uiECMTempList.updateTempListGrid(uiECMTempList.getUIPageIterator().getCurrentPage());
         uiECMTempList.setRenderSibbling(UIECMTemplateList.class);
-      } 
-      if(uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
+      }
+      if (uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
         UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class);
         uiCBTempList.updateCBTempListGrid(uiCBTempList.getUIPageIterator().getCurrentPage());
         uiCBTempList.setRenderSibbling(UICBTemplateList.class);
@@ -322,12 +333,12 @@ public class UITemplateForm extends UIForm {
     }
   }
 
-  static  public class CancelActionListener extends EventListener<UITemplateForm> {
+  static public class CancelActionListener extends EventListener<UITemplateForm> {
     public void execute(Event<UITemplateForm> event) throws Exception {
       UITemplateForm uiForm = event.getSource();
       uiForm.refresh();
       UITemplateContainer uiTemplateContainer = uiForm.getAncestorOfType(UITemplateContainer.class);
-      if(uiForm.isAddNew_) {
+      if (uiForm.isAddNew_) {
         uiTemplateContainer.removeChildById(UIECMTemplateList.ST_ECMTempForm + "Add");
         uiTemplateContainer.removeChildById(UICBTemplateList.ST_CBTempForm + "Add");
       } else {
@@ -338,29 +349,29 @@ public class UITemplateForm extends UIForm {
     }
   }
 
-  static  public class ResetActionListener extends EventListener<UITemplateForm> {
+  static public class ResetActionListener extends EventListener<UITemplateForm> {
     public void execute(Event<UITemplateForm> event) throws Exception {
       UITemplateForm uiForm = event.getSource();
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class);
-      if (uiForm.selectedVersion_ != null) { 
+      if (uiForm.selectedVersion_ != null) {
         if (!uiForm.selectedVersion_.equals(uiForm.baseVersion_)) {
           uiForm.template_.restore(uiForm.baseVersion_, true);
           uiForm.template_.checkout();
         }
       }
       uiForm.refresh();
-      if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
+      if (uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
         UIECMTemplateList uiECMTempList = uiTempContainer.getChild(UIECMTemplateList.class);
         uiECMTempList.updateTempListGrid(uiECMTempList.getUIPageIterator().getCurrentPage());
-      } 
-      if(uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
+      }
+      if (uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
         UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class);
         uiCBTempList.updateCBTempListGrid(uiCBTempList.getUIPageIterator().getCurrentPage());
       }
     }
   }
 
-  static  public class ChangeActionListener extends EventListener<UITemplateForm> {
+  static public class ChangeActionListener extends EventListener<UITemplateForm> {
     public void execute(Event<UITemplateForm> event) throws Exception {
       UITemplateForm uiForm = event.getSource();
       String version = uiForm.getUIFormSelectBox(FIELD_VERSION).getValue();
@@ -370,38 +381,39 @@ public class UITemplateForm extends UIForm {
       String content = frozenNode.getProperty(Utils.EXO_TEMPLATEFILE).getString();
       uiForm.getUIFormTextAreaInput(FIELD_CONTENT).setValue(content);
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class);
-      if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
+      if (uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
         UIECMTemplateList uiECMTempList = uiTempContainer.getChild(UIECMTemplateList.class);
         uiECMTempList.updateTempListGrid(uiECMTempList.getUIPageIterator().getCurrentPage());
-      } 
-      if(uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
+      }
+      if (uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
         UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class);
         uiCBTempList.updateCBTempListGrid(uiCBTempList.getUIPageIterator().getCurrentPage());
       }
     }
   }
 
-  static  public class RestoreActionListener extends EventListener<UITemplateForm> {
+  static public class RestoreActionListener extends EventListener<UITemplateForm> {
     public void execute(Event<UITemplateForm> event) throws Exception {
       UITemplateForm uiForm = event.getSource();
       String version = uiForm.getUIFormSelectBox(FIELD_VERSION).getValue();
       String path = uiForm.template_.getVersionHistory().getVersion(version).getPath();
       VersionNode selectedVesion = uiForm.rootVersionNode.findVersionNode(path);
-      if(uiForm.baseVersion_.getName().equals(selectedVesion.getName())) return;
+      if (uiForm.baseVersion_.getName().equals(selectedVesion.getName()))
+        return;
       uiForm.update(null, selectedVesion);
       UITemplateContainer uiTempContainer = uiForm.getAncestorOfType(UITemplateContainer.class);
-      if(uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
+      if (uiForm.getId().equalsIgnoreCase(UIECMTemplateList.ST_ECMTempForm)) {
         UIECMTemplateList uiECMTempList = uiTempContainer.getChild(UIECMTemplateList.class);
         uiECMTempList.updateTempListGrid(uiECMTempList.getUIPageIterator().getCurrentPage());
-      } 
-      if(uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
+      }
+      if (uiForm.getId().equalsIgnoreCase(UICBTemplateList.ST_CBTempForm)) {
         UICBTemplateList uiCBTempList = uiTempContainer.getChild(UICBTemplateList.class);
         uiCBTempList.updateCBTempListGrid(uiCBTempList.getUIPageIterator().getCurrentPage());
       }
 
       uiForm.refresh();
       UITemplateContainer uiTemplateContainer = uiForm.getAncestorOfType(UITemplateContainer.class);
-      if(uiForm.isAddNew_) {
+      if (uiForm.isAddNew_) {
         uiTemplateContainer.removeChildById(UIECMTemplateList.ST_ECMTempForm + "Add");
         uiTemplateContainer.removeChildById(UICBTemplateList.ST_CBTempForm + "Add");
       } else {
@@ -411,4 +423,3 @@ public class UITemplateForm extends UIForm {
     }
   }
 }
-
