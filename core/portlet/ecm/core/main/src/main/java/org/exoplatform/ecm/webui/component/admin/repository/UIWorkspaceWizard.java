@@ -22,6 +22,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.Session;
+
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
@@ -707,14 +709,14 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
             rService.getConfig().retain() ;
           }
 //          ((ExtendedNode)manageRepository.getSystemSession(name).getRootNode()).setPermission("any", PermissionType.ALL);
-          
-          uiFormWizard.setPermissionToRoot((ExtendedNode)manageRepository.getSystemSession(name).getRootNode(), permSb.toString());
-          
+          Session systemSession = manageRepository.getSystemSession(name); 
+          uiFormWizard.setPermissionToRoot((ExtendedNode)systemSession.getRootNode(), permSb.toString());
           uiRepoForm.workspaceMap_.clear() ;
           for(WorkspaceEntry ws : manageRepository.getConfiguration().getWorkspaceEntries()) {
             uiRepoForm.workspaceMap_.put(ws.getName(), ws) ;
           }
           uiRepoForm.refreshWorkspaceList() ;   
+          systemSession.logout();
         }
         catch (Exception e) {
           e.printStackTrace() ;
