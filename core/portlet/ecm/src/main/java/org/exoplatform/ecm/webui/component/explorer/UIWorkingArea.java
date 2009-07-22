@@ -309,16 +309,32 @@ public class UIWorkingArea extends UIContainer {
   }
   
   private void multipleCopy(String[] srcPaths, String[] wsNames, Event event) throws Exception {
+    String srcPath;
+    String[] arraySrcPath;
+    String wsName;
     for(int i=0; i< srcPaths.length; i++) {
-      processCopy(srcPaths[i], wsNames[i], event);
+      srcPath = srcPaths[i];      
+      if (srcPath.indexOf(":/") > -1) {
+        arraySrcPath = srcPath.split(":/");
+        if ((arraySrcPath.length > 0) && (arraySrcPath[1] != null)) srcPath = "/" + arraySrcPath[1];
+        wsName = arraySrcPath[0];
+        processCopy(srcPath, wsName, event);
+      }      
     }
   }
   
   private void processCopy(String srcPath, String wsName, Event event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
+    if (wsName == null || wsName.length() == 0) {
+      wsName = uiExplorer.getCurrentWorkspace();
+    }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
-    try {
+    try {      
+      if (srcPath.indexOf(":/") > -1) {
+        String[] arraySrcPath = srcPath.split(":/");
+        if ((arraySrcPath.length > 0) && (arraySrcPath[1] != null)) srcPath = "/" + arraySrcPath[1];
+      }
       session.getItem(srcPath);
     } catch(PathNotFoundException path) {
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
@@ -550,13 +566,25 @@ public class UIWorkingArea extends UIContainer {
   }
   
   private void processRemoveMultiple(String[] nodePaths, String[] wsNames, Event event) throws Exception {
+    String srcPath;
+    String[] arraySrcPath;
+    String wsName;
     for(int i=0; i< nodePaths.length; i++) {
-      processRemove(nodePaths[i], wsNames[i], event);
+      srcPath = nodePaths[i];      
+      if (srcPath.indexOf(":/") > -1) {
+        arraySrcPath = srcPath.split(":/");
+        if ((arraySrcPath.length > 0) && (arraySrcPath[1] != null)) srcPath = "/" + arraySrcPath[1];
+        wsName = arraySrcPath[0];        
+        processRemove(srcPath, wsName, event);
+      }
     }
   }
   
   private void processRemove(String nodePath, String wsName, Event event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    if (wsName == null || wsName.length() == 0) {
+      wsName = uiExplorer.getCurrentWorkspace();
+    }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
     Node node = null;
@@ -728,10 +756,19 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
-  private void processMultipleCut(String[] nodePaths, String[] wsNames, Event event) throws Exception {
+  private void processMultipleCut(String[] nodePaths, String[] wsNames, Event event) throws Exception {            
     UIJCRExplorer uiExplorer = getParent();
+    String srcPath;
+    String[] arraySrcPath;
+    String wsName;
     for(int i=0; i< nodePaths.length; i++) {
-      processCut(nodePaths[i], wsNames[i], event);
+      srcPath = nodePaths[i];      
+      if (srcPath.indexOf(":/") > -1) {
+        arraySrcPath = srcPath.split(":/");
+        if ((arraySrcPath.length > 0) && (arraySrcPath[1] != null)) srcPath = "/" + arraySrcPath[1];
+        wsName = arraySrcPath[0];        
+        processCut(srcPath, wsName, event);
+      }      
     }
     if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
     uiExplorer.updateAjax(event);
@@ -741,7 +778,10 @@ public class UIWorkingArea extends UIContainer {
     UIJCRExplorer uiExplorer = getParent();
     if(nodePath.indexOf(";") > -1) {
       isMultiSelect_ = true;
-      processRemoveMultiple(nodePath.split(";"), wsName.split(";"), event);
+      if (wsName != null)
+        processRemoveMultiple(nodePath.split(";"), wsName.split(";"), event);
+      else
+        processRemoveMultiple(nodePath.split(";"), null, event);
     } else {
       isMultiSelect_ = false;
       processRemove(nodePath, wsName, event);
@@ -752,8 +792,17 @@ public class UIWorkingArea extends UIContainer {
   
   private void processMultiLock(String[] nodePaths, String[] wsNames, Event event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
+    String srcPath;
+    String[] arraySrcPath;
+    String wsName;    
     for(int i=0; i< nodePaths.length; i++) {
-      processLock(nodePaths[i], wsNames[i], event);
+      srcPath = nodePaths[i];      
+      if (srcPath.indexOf(":/") > -1) {
+        arraySrcPath = srcPath.split(":/");
+        if ((arraySrcPath.length > 0) && (arraySrcPath[1] != null)) srcPath = "/" + arraySrcPath[1];
+        wsName = arraySrcPath[0];
+        processLock(srcPath, wsName, event);
+      }      
     }
     if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
     uiExplorer.updateAjax(event);
@@ -762,6 +811,9 @@ public class UIWorkingArea extends UIContainer {
   private void processLock(String nodePath, String wsName, Event event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+    if (wsName == null || wsName.length() == 0) {
+      wsName = uiExplorer.getCurrentWorkspace();
+    }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
     Node node = null;
     try {
@@ -813,9 +865,18 @@ public class UIWorkingArea extends UIContainer {
   }
   
   private void processMultiUnlock(String[] nodePaths, String[] wsNames, Event event) throws Exception {
-    UIJCRExplorer uiExplorer = getParent();
+    UIJCRExplorer uiExplorer = getParent();    
+    String srcPath;
+    String[] arraySrcPath;
+    String wsName;    
     for(int i=0; i< nodePaths.length; i++) {
-      processUnlock(nodePaths[i], wsNames[i], event);
+      srcPath = nodePaths[i];      
+      if (srcPath.indexOf(":/") > -1) {
+        arraySrcPath = srcPath.split(":/");
+        if ((arraySrcPath.length > 0) && (arraySrcPath[1] != null)) srcPath = "/" + arraySrcPath[1];
+        wsName = arraySrcPath[0];
+        processUnlock(srcPath, wsName, event);
+      }      
     }
     if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
     uiExplorer.updateAjax(event);
@@ -824,6 +885,9 @@ public class UIWorkingArea extends UIContainer {
   private void processUnlock(String nodePath, String wsName, Event event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+    if (wsName == null || wsName.length() == 0) {
+      wsName = uiExplorer.getCurrentWorkspace();
+    }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
     Node node = null;
     try {
@@ -1181,7 +1245,10 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);
       if(nodePath.indexOf(";") > -1) {
         uiWorkingArea.isMultiSelect_ = true;
-        uiWorkingArea.processMultiLock(nodePath.split(";"), wsName.split(";"), event);
+        if (wsName != null)
+          uiWorkingArea.processMultiLock(nodePath.split(";"), wsName.split(";"), event);
+        else
+          uiWorkingArea.processMultiLock(nodePath.split(";"), null, event);
       } else {
         uiWorkingArea.isMultiSelect_ = false;
         uiWorkingArea.processLock(nodePath, wsName, event);
@@ -1196,7 +1263,10 @@ public class UIWorkingArea extends UIContainer {
       String wsName = event.getRequestContext().getRequestParameter(WS_NAME);      
       if(nodePath.indexOf(";") > -1) {
         uiWorkingArea.isMultiSelect_ = true;
-        uiWorkingArea.processMultiUnlock(nodePath.split(";"), wsName.split(";"), event);
+        if (wsName != null)
+          uiWorkingArea.processMultiUnlock(nodePath.split(";"), wsName.split(";"), event);
+        else
+          uiWorkingArea.processMultiUnlock(nodePath.split(";"), null, event);
       } else {
         uiWorkingArea.isMultiSelect_ = false;
         uiWorkingArea.processUnlock(nodePath, wsName, event);
