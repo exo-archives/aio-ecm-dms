@@ -276,6 +276,26 @@
 		}
 	};
 	
+  ECMUtils.prototype.insertContentToIframe = function(i) {
+    var original = document.getElementById("original" + i);
+    var resived = document.getElementById("revised" + i);
+    try {
+	    if(resived != null) {
+        resivedDoc = resived.contentWindow.document;
+        resivedDoc.open() ;
+				resivedDoc.write(resived.getAttribute("content")) ;
+				resivedDoc.close() ;
+			}
+			if(original != null) {
+  			var originaleDoc = original.contentWindow.document;
+				originaleDoc.open() ;
+				originaleDoc.write(original.getAttribute("content")) ;
+				originaleDoc.close() ;
+			}
+		} catch (ex) {}
+  };
+	
+	
 	ECMUtils.prototype.replaceToIframe = function(txtAreaId) {
 		if (!document.getElementById(txtAreaId)) {
 			/*
