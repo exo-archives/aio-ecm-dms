@@ -324,8 +324,14 @@ public class RecordsServiceImpl implements RecordsService {
   /**
    * {@inheritDoc}
    */
-  public List<Node> getRecords(Node filePlan) throws RepositoryException {
-    return getRecordsByQuery(filePlan,BASE_STATEMENT, "rma:record","rma:dateReceived",ASCENDING);   
+  public List<Node> getRecords(Node filePlan) throws RepositoryException {    
+    List<Node> list = new ArrayList<Node>();
+    for(NodeIterator iterator = filePlan.getNodes();iterator.hasNext();) {
+      Node node = iterator.nextNode();
+      list.add(node);
+    }
+    return list;
+    //return getRecordsByQuery(filePlan,BASE_STATEMENT, "rma:record","rma:dateReceived",ASCENDING);   
   }
 
   /**
