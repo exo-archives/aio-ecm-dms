@@ -319,7 +319,13 @@ public class RecordsServiceImpl implements RecordsService {
    * orderProperty = "rma:dateReceived", orderType = ASCENDING
    */
   public List<Node> getRecords(Node filePlan) throws RepositoryException {
-    return getRecordsByQuery(filePlan,BASE_STATEMENT, "rma:record","rma:dateReceived",ASCENDING);   
+    List<Node> list = new ArrayList<Node>();
+    for(NodeIterator iterator = filePlan.getNodes();iterator.hasNext();) {
+      Node node = iterator.nextNode();
+      if (node.isNodeType("rma:record")) list.add(node);
+    }
+    return list;
+    //return getRecordsByQuery(filePlan,BASE_STATEMENT, "rma:record","rma:dateReceived",ASCENDING);   
   }
 
   /**
