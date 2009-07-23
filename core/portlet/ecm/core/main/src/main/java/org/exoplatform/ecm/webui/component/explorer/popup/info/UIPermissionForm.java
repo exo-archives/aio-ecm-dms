@@ -34,6 +34,8 @@ import org.exoplatform.services.jcr.access.AccessControlEntry;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.organization.MembershipHandler;
+import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -145,6 +147,27 @@ public class UIPermissionForm extends UIForm implements UISelectable {
     }
   }
   
+  private boolean hasMembership(String userId, String roleExpression) {
+    if (roleExpression.indexOf(":/") < 0) return false;
+    if("*".equals(roleExpression))
+      return true;
+    OrganizationService organizationService_ = getApplicationComponent(OrganizationService.class);
+    String membershipType = roleExpression.substring(0, roleExpression.indexOf(":"));
+    String groupName = roleExpression.substring(roleExpression.indexOf(":") + 1);
+    try {
+      MembershipHandler membershipHandler = organizationService_.getMembershipHandler();
+      if ("*".equals(membershipType)) {
+        // Determine if there exists at least one membership
+        return !membershipHandler.findMembershipsByUserAndGroup(userId,groupName).isEmpty();
+      } 
+      // Determine if there exists the membership of specified type
+      return membershipHandler.findMembershipByUserGroupAndType(userId,groupName,membershipType) != null;      
+    }
+    catch(Exception e) {            
+    }  
+    return false;
+  }   
+  
   static public class ResetActionListener extends EventListener<UIPermissionForm> {
     public void execute(Event<UIPermissionForm> event) throws Exception {
       UIPermissionForm uiForm = event.getSource();
@@ -158,6 +181,7 @@ public class UIPermissionForm extends UIForm implements UISelectable {
       UIPermissionForm uiForm = event.getSource();
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
       Node currentNode = uiExplorer.getCurrentNode();
+      
       UIPermissionManager uiParent = uiForm.getParent();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
       String userOrGroup = uiForm.getChild(UIPermissionInputSet.class).getUIStringInput(
@@ -173,7 +197,17 @@ public class UIPermissionForm extends UIForm implements UISelectable {
       }
       for (String perm : PermissionType.ALL) {
         if (uiForm.getUIFormCheckBoxInput(perm).isChecked()) permsList.add(perm);
-        else permsRemoveList.add(perm);
+        else {
+          if (uiForm.hasMembership(currentNode.getSession().getUserID(), userOrGroup)) {
+            if (perm.equals(PermissionType.SET_PROPERTY)) {
+              uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.allow-setProperty", null, 
+                  ApplicationMessage.WARNING));
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+              return;
+            }
+          } 
+          permsRemoveList.add(perm);
+        }
       }
       if (uiForm.getUIFormCheckBoxInput(PermissionType.ADD_NODE).isChecked() ||
           uiForm.getUIFormCheckBoxInput(PermissionType.REMOVE).isChecked() || 

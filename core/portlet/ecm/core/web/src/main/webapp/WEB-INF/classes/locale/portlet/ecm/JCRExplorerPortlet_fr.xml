@@ -2417,5 +2417,9 @@
       <upload-not-null>You need upload file before add category</upload-not-null>
     </msg>
   </UIUploadForm>
-  
+  <UIActionBar>
+    <msg>
+      <allow-setProperty>You must select set property for this group</allow-setProperty>
+    </msg>
+  </UIActionBar>
 </bundle>

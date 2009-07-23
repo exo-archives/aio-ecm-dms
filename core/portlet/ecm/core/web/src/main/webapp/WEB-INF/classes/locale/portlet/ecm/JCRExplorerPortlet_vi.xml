@@ -2423,4 +2423,9 @@
       <upload-not-null>Bạn cần tải file trước khi phân loại nó</upload-not-null>
     </msg>
   </UIUploadForm>
+  <UIActionBar>
+    <msg>
+      <allow-setProperty>Bạn cần chọn thuộc tính 'set property' cho nhóm này</allow-setProperty>
+    </msg>
+  </UIActionBar>
 </bundle>
