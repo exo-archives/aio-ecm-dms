@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -346,7 +345,7 @@ public class UIBrowseContainer extends UIContainer {
     try{
       return (Node) nodeFinder.getItem(getRepository(), workspace, nodePath);
     } catch(PathNotFoundException path) {
-      return (Node) nodeFinder.getItem(getRepository(), workspace, rootPath_);
+      return null;
     } catch(AccessDeniedException ace) {
       return null;
     } catch(Exception e){
@@ -1729,31 +1728,33 @@ public class UIBrowseContainer extends UIContainer {
     public void execute(Event<UIBrowseContainer> event) throws Exception {
       String useMaxState = event.getRequestContext().getRequestParameter("useMaxState");
       UIBrowseContainer uiContainer = event.getSource();
+      UIApplication uiApp = uiContainer.getAncestorOfType(UIApplication.class);
       PortletRequest portletRequest = event.getRequestContext().getRequest();
-      uiContainer.windowId_ = portletRequest.getWindowID() + portletRequest.getPortletSession().getId();
-      if(useMaxState != null) {
+      uiContainer.windowId_ = portletRequest.getWindowID()
+          + portletRequest.getPortletSession().getId();
+      if (useMaxState != null) {
         ActionResponse response = event.getRequestContext().getResponse();
         response.setWindowState(WindowState.MAXIMIZED);
-        if(!uiContainer.windowState_.containsKey(uiContainer.windowId_)) {
+        if (!uiContainer.windowState_.containsKey(uiContainer.windowId_)) {
           uiContainer.windowState_.put(uiContainer.windowId_, WindowState.MAXIMIZED);
         }
       }
       uiContainer.setShowDocumentDetail(false);
       uiContainer.setShowAllChildren(false);
       String objectId = event.getRequestContext().getRequestParameter(OBJECTID);
-      String catPath = event.getRequestContext().getRequestParameter("category");  
+      String catPath = event.getRequestContext().getRequestParameter("category");
       String wsName = event.getRequestContext().getRequestParameter("workspace");
       Node selectNode = null;
-      if(wsName != null) {
+      if (wsName != null) {
         selectNode = uiContainer.getNodeByPath(objectId, wsName);
-        if (uiContainer.wsName_ == null) uiContainer.wsName_ = wsName;
+        if (uiContainer.wsName_ == null)
+          uiContainer.wsName_ = wsName;
       } else {
-        selectNode = uiContainer.getNodeByPath(objectId);   
+        selectNode = uiContainer.getNodeByPath(objectId);
       }
-      if(selectNode == null) {
-        UIApplication app = uiContainer.getAncestorOfType(UIApplication.class);
-        app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null));
-        event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
+      if (selectNode == null) {
+        uiApp.addMessage(new ApplicationMessage("UIBrowseContainer.msg.invalid-node", null,
+            ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
         return;
       }
@@ -1763,27 +1764,32 @@ public class UIBrowseContainer extends UIContainer {
         LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
         selectNode = linkManager.getTarget(selectNode);
       }
-      TemplateService templateService  = uiContainer.getApplicationComponent(TemplateService.class);
+      TemplateService templateService = uiContainer.getApplicationComponent(TemplateService.class);
       List<String> templates = templateService.getDocumentTemplates(uiContainer.getRepository());
-      if(templates.contains(selectNode.getPrimaryNodeType().getName())) {
-        if(catPath != null) {
-          if(uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
+      if (templates.contains(selectNode.getPrimaryNodeType().getName())) {
+        if (catPath != null) {
+          if (uiContainer.getUseCase().equals(Utils.CB_USE_FROM_PATH)) {
             uiContainer.setCategoryPath(catPath);
-            Node currentCat  = uiContainer.getNodeByPath(catPath);
+            Node currentCat = uiContainer.getNodeByPath(catPath);
             uiContainer.setPageIterator(uiContainer.getSubDocumentList(currentCat));
           }
         }
         ManageViewService vservice = uiContainer.getApplicationComponent(ManageViewService.class);
         String repoName = uiContainer.getPortletPreferences().getValue(Utils.REPOSITORY, "");
-        String detailTemplateName = uiContainer.getPortletPreferences().getValue(Utils.CB_BOX_TEMPLATE, "");
-        uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, 
-            repoName, SessionProviderFactory.createSystemProvider()).getNode(detailTemplateName).getPath());
+        String detailTemplateName = uiContainer.getPortletPreferences().getValue(
+            Utils.CB_BOX_TEMPLATE, "");
+        uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES,
+            repoName, SessionProviderFactory.createSystemProvider()).getNode(detailTemplateName)
+            .getPath());
         uiContainer.viewDocument(selectNode, true);
       } else {
         String templateType = uiContainer.getPortletPreferences().getValue(Utils.CB_USECASE, "");
-        if((templateType.equals(Utils.CB_USE_JCR_QUERY)) || (templateType.equals(Utils.CB_SCRIPT_NAME))) {
+        if ((templateType.equals(Utils.CB_USE_JCR_QUERY))
+            || (templateType.equals(Utils.CB_SCRIPT_NAME))) {
           UIApplication app = uiContainer.getAncestorOfType(UIApplication.class);
-          app.addMessage(new ApplicationMessage("UIBrowseContainer.msg.template-notsupported", null));
+          app
+              .addMessage(new ApplicationMessage("UIBrowseContainer.msg.template-notsupported",
+                  null));
           event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         } else {
           uiContainer.changeNode(selectNode);
@@ -1792,7 +1798,8 @@ public class UIBrowseContainer extends UIContainer {
       }
       uiContainer.setCurrentNodePath(objectId);
       uiContainer.setSelectedTabPath(objectId);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer.getAncestorOfType(UIBrowseContentPortlet.class));
+      event.getRequestContext().addUIComponentToUpdateByAjax(
+          uiContainer.getAncestorOfType(UIBrowseContentPortlet.class));
     }
   }
 
