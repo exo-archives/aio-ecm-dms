@@ -3,6 +3,7 @@
 
 var ZeroClipboard = {
 	
+	version: "1.0.4",
 	clients: {}, // registered upload clients on page, indexed by id
 	moviePath: '/ecm/javascript/eXo/ecm/ZeroClipboard.swf', // URL to movie
 	nextId: 1, // ID of next movie
@@ -41,7 +42,7 @@ var ZeroClipboard = {
 	register: function(id, client) {
 		// register new client to receive events
 		this.clients[id] = client;
-		alert('register');
+		//alert('register');
 	},
 	
 	getDOMObjectPosition: function(obj) {
@@ -64,6 +65,7 @@ var ZeroClipboard = {
 	
 	Client: function(elem) {
 		// constructor for new simple upload client
+		this.handlers = {};
 		
 		// unique ID
 		this.id = ZeroClipboard.nextId++;
@@ -85,7 +87,7 @@ ZeroClipboard.Client.prototype = {
 	clipText: '', // text to copy to clipboard
 	handCursorEnabled: true, // whether to show hand cursor, or default pointer cursor
 	cssEffects: true, // enable CSS mouse effects on dom container
-	handlers: {}, // user event handlers
+	handlers: null, // user event handlers
 	
 	glue: function(elem) {
 		// glue to DOM element
@@ -100,7 +102,7 @@ ZeroClipboard.Client.prototype = {
 		
 		// find X/Y position of domElement
 		var box = this.domElement;
-		alert(box.getAttribute('path'));
+		//alert(box.getAttribute('path'));
 		// create floating DIV above element
 		this.div = document.createElement('div');
 		var style = this.div.style;
@@ -112,17 +114,18 @@ ZeroClipboard.Client.prototype = {
 		style.position = 'absolute';
 		style.left = '0px';
 		style.bottom = '0px';
-		style.width = "100%";
+		style.width = size[5] + 'px';
 		style.height = height + 'px';
 		style.zIndex = zIndex;
 		style.backgroundColor = '#f00'; // debug
-		
+		style.overflow = 'auto'; 
 		var body = document.getElementsByTagName('body')[0];
 		//body.appendChild(this.div);
-		this.domElement.appendChild(this.div);
-		this.div.innerHTML = this.getHTML(size[0], height);
+		var parent = this.domElement.parentNode;
+		//this.domElement.appendChild(this.div);
+		parent.appendChild(this.div);
+		this.div.innerHTML = this.getHTML(size[5], height);
 		this.clipText = box.getAttribute('path');
-		
 	},
 	getElementSize: function(obj){
 		var orginalDisplay = obj.style.display ;
@@ -133,21 +136,29 @@ ZeroClipboard.Client.prototype = {
 		size.push(obj.offsetHeight);
 		size.push(obj.offsetTop);
 		size.push(obj.offsetLeft);
-		if(menuItem) size.push(menuItem.offsetHeight);
+		if(menuItem) {
+			size.push(menuItem.offsetHeight);
+			size.push(menuItem.offsetWidth);
+		}
+		
 		obj.style.display = orginalDisplay;
 		return size ;
 	},
 	getHTML: function(width, height) {
 		// return HTML for movie
 		var html = '';
+		var flashvars = 'id=' + this.id + 
+			'&width=' + width + 
+			'&height=' + height;
+			
 		if (navigator.userAgent.match(/MSIE/)) {
 			// IE gets an OBJECT tag
 			var protocol = location.href.match(/^https/i) ? 'https://' : 'http://';
-			html += '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="'+protocol+'download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="'+width+'" height="'+height+'" id="'+this.movieId+'" align="middle"><param name="allowScriptAccess" value="sameDomain" /><param name="allowFullScreen" value="false" /><param name="movie" value="'+ZeroClipboard.moviePath+'" /><param name="loop" value="false" /><param name="menu" value="false" /><param name="quality" value="best" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="id='+this.id+'"/><param name="wmode" value="transparent"/></object>';
+			html += '<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="'+protocol+'download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="'+width+'" height="'+height+'" id="'+this.movieId+'" align="middle"><param name="allowScriptAccess" value="always" /><param name="allowFullScreen" value="false" /><param name="movie" value="'+ZeroClipboard.moviePath+'" /><param name="loop" value="false" /><param name="menu" value="false" /><param name="quality" value="best" /><param name="bgcolor" value="#ffffff" /><param name="flashvars" value="'+flashvars+'"/></object>';
 		}
 		else {
 			// all other browsers get an EMBED tag
-			html += '<embed id="'+this.movieId+'" src="'+ZeroClipboard.moviePath+'" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="'+width+'" height="'+height+'" name="'+this.movieId+'" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="id='+this.id+'" wmode="transparent" />';
+			html += '<embed id="'+this.movieId+'" src="'+ZeroClipboard.moviePath+'" loop="false" menu="false" quality="best" bgcolor="#ffffff" width="'+width+'" height="'+height+'" name="'+this.movieId+'" align="middle" allowScriptAccess="always" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" flashvars="'+flashvars+'" wmode="transparent" />';
 		}
 		return html;
 	},
@@ -230,7 +241,9 @@ ZeroClipboard.Client.prototype = {
 		switch (eventName) {
 			case 'load':
 				// movie claims it is ready, but in IE this isn't always the case...
-				this.movie = ZeroClipboard.$(this.movieId);
+				// bug fix: Cannot extend EMBED DOM elements in Firefox, must use traditional function
+				// this.movie = ZeroClipboard.$(this.movieId);
+				this.movie = document.getElementById(this.movieId);
 				if (!this.movie) {
 					var self = this;
 					//setTimeout( function() { self.receiveEvent('load', null); }, 1 );
@@ -250,14 +263,15 @@ ZeroClipboard.Client.prototype = {
 				this.movie.setHandCursor( this.handCursorEnabled );
 				break;
 			
-			//case 'mouseover':
+			case 'mouseover':
 			//	if (this.domElement && this.cssEffects) {
 			//		this.domElement.addClass('hover');
 			//		if (this.recoverActive) this.domElement.addClass('active');
 			//	}
-			//	break;
 			
-			//case 'mouseout':
+			break;
+			
+			case 'mouseout':
 			//	if (this.domElement && this.cssEffects) {
 //this.recoverActive = false;
 			//		if (this.domElement.hasClass('active')) {
@@ -266,20 +280,22 @@ ZeroClipboard.Client.prototype = {
 			//		}
 			//		this.domElement.removeClass('hover');
 			//	}
-			//	break;
+			break;
 			
-			//case 'mousedown':
+			case 'mousedown':
 			//	if (this.domElement && this.cssEffects) {
 			//		this.domElement.addClass('active');
 			//	}
-			//	break;
+			break;
 			
-			//case 'mouseup':
+			case 'mouseup':
 			//	if (this.domElement && this.cssEffects) {
 			//		this.domElement.removeClass('active');
 			//		this.recoverActive = false;
 			//	}
-			//	break;
+			this.movie.setText(this.clipText);
+			eXo.ecm.ECMUtils.closeContextMenu(this.domElement);
+			break;
 		} // switch eventName
 		
 		if (this.handlers[eventName]) {
