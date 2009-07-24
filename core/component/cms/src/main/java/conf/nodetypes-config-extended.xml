@@ -168,7 +168,10 @@
       <propertyDefinition name="exo:text" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY"
         protected="false" multiple="false">
         <valueConstraints/>
-      </propertyDefinition>        
+      </propertyDefinition>
+			<propertyDefinition name="exo:picture" requiredType="Reference" autoCreated="false" mandatory="true" onParentVersion="COPY" protected="false" multiple="false">
+				<valueConstraints />
+			</propertyDefinition>	  
     </propertyDefinitions>
     <childNodeDefinitions>
         <childNodeDefinition name="*" defaultPrimaryType="nt:file" autoCreated="false" mandatory="false"
