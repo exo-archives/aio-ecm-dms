@@ -18,14 +18,18 @@ package org.exoplatform.ecm.webui.component.admin.repository;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.configuration.ConfigurationManager;
 import org.exoplatform.container.monitor.jvm.J2EEServerInfo;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryValueSelect.ClassData;
@@ -47,6 +51,7 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.ext.registry.RegistryService;
 import org.exoplatform.services.naming.InitialContextInitializer;
@@ -92,6 +97,7 @@ import org.jdom.output.XMLOutputter;
     }  
 )
 public class UIRepositoryForm extends UIForm implements UIPopupComponent {  
+  private ConfigurationManager configurationManager;
   
   final  static public String ST_ADD = "AddRepoPopup";
   final  static public String ST_EDIT = "EditRepoPopup";
@@ -122,6 +128,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   protected Map<String, WorkspaceEntry> workspaceMap_ = new HashMap<String, WorkspaceEntry>(); 
 
   public UIRepositoryForm() throws Exception { 
+    configurationManager = getApplicationComponent(ConfigurationManager.class);
     addChild(new UIFormStringInput(FIELD_NAME,FIELD_NAME, null).addValidator(MandatoryValidator.class)); 
     UIFormInputSetWithAction workspaceField = new UIFormInputSetWithAction(FIELD_WSINPUTSET);
     workspaceField.addUIFormInput(new UIFormInputInfo(FIELD_WORKSPACE, FIELD_WORKSPACE, null));
@@ -262,7 +269,11 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
   private void initServices(String repository) throws Exception{
     try {
-      getApplicationComponent(RegistryService.class).start();
+      RepositoryService rService = getApplicationComponent(RepositoryService.class);
+      InputStream xml = configurationManager.getURL("classpath:/conf/portal/registry-nodetypes.xml").openStream();
+      rService.getRepository(repository).getNodeTypeManager().registerNodeTypes(xml, ExtendedNodeTypeManager.IGNORE_IF_EXISTS);
+      xml.close();
+      getApplicationComponent(RegistryService.class).initStorage(false);
       getApplicationComponent(NodeHierarchyCreator.class).init(repository);
       getApplicationComponent(TaxonomyService.class).init(repository);
       getApplicationComponent(ManageDriveService.class).init(repository);

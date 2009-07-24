@@ -84,12 +84,13 @@ public class UIRepositoryList extends UIGrid  implements UIPopupComponent {
     public void execute(Event<UIRepositoryList> event) throws Exception {
       UIRepositoryList uiList = event.getSource() ;
       UIECMAdminPortlet uiAdminPortlet = uiList.getAncestorOfType(UIECMAdminPortlet.class) ;
+      UIRepositoryControl repositoryControl = uiAdminPortlet.getChild(UIRepositoryControl.class);
       UIRepositoryControl uiControl = uiAdminPortlet.findFirstComponentOfType(UIRepositoryControl.class) ;
       RepositoryService rservice = uiList.getApplicationComponent(RepositoryService.class) ;
       String repoName = event.getRequestContext().getRequestParameter(OBJECTID)  ;
       UIApplication uiApp = uiList.getAncestorOfType(UIApplication.class) ;
-      Object[] args = new Object[]{repoName}  ;        
-      if(!rservice.canRemoveRepository(repoName)) {
+      Object[] args = new Object[]{repoName}  ;
+      if(repoName.equals(repositoryControl.getSelectedRepo()) || !rservice.canRemoveRepository(repoName)) {
         uiApp.addMessage(new ApplicationMessage("UIRepositoryList.msg.cannot-delete", args)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;  
         return ;
