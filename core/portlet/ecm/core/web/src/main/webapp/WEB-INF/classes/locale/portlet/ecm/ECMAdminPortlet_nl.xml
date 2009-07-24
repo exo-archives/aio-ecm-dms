@@ -1673,7 +1673,7 @@
   </TemplatePopup>
   <ViewForm>
     <label>
-      <UITemplateContent>Bekijk Vorm</UITemplateContent>
+      <UITemplateContent>ViewForm</UITemplateContent>
       <UIPopupWindow>Toon Rechten</UIPopupWindow>
       <selectVersion>Versies</selectVersion>
       <content>Inhoud</content>

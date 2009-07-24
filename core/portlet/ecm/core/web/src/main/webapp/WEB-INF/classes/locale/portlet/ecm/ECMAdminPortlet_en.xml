@@ -96,6 +96,7 @@
   		<name-not-allowed>Name forbidden</name-not-allowed>
   		<name-emty>The name of the tree is empty</name-emty>
   		<homePath-emty>The home path is empty</homePath-emty>
+  		<targetPath-emty>The target path is empty</targetPath-emty>
   		<taxonomytree-existed>A taxonomy tree with the same name already exists</taxonomytree-existed>
 		</msg>
 	</UITaxonomyTreeMainForm>
@@ -1673,7 +1674,7 @@
   </TemplatePopup>
   <ViewForm>
     <label>
-      <UITemplateContent>View Form</UITemplateContent>
+      <UITemplateContent>ViewForm</UITemplateContent>
       <UIPopupWindow>View Permission</UIPopupWindow>
       <selectVersion>Versions</selectVersion>
       <content>Content</content>
@@ -2096,6 +2097,7 @@
   <UITaxonomyTreeMainForm>
     <msg>
       <homepath-emty>The Home path is empty</homepath-emty>
+      <targetpath-emty>The target path is empty</targetpath-emty>
     </msg>
   </UITaxonomyTreeMainForm>
   <UITaxonomyWorkingArea>
