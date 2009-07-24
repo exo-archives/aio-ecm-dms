@@ -119,6 +119,8 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
    */
   final static String TEMP_NODE = "temp" ;
   
+  private static final String MIX_REFERENCEABLE = "mix:referenceable";
+  
   /**
    * CmsService
    */
@@ -226,12 +228,20 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       } else if (value instanceof String) {
         Session session = node.getSession();
         Node catNode = null;
+        String itemPath = value.toString();
+        if (value.toString().indexOf(":/") > -1){
+          if (value.toString().split(":/").length > 0) itemPath = "/" + value.toString().split(":/")[1];
+        }
         try {
-          catNode = (Node)session.getItem(value.toString());
+          catNode = (Node)session.getItem(itemPath);
         } catch (PathNotFoundException e) {
-          catNode = session.getRootNode().getNode(value.toString());
+          catNode = session.getRootNode().getNode(itemPath);
         }
         if (catNode != null) {
+          if(!catNode.isNodeType(MIX_REFERENCEABLE)) {
+            catNode.addMixin(MIX_REFERENCEABLE);
+            catNode.save();
+          }
           Value value2add = session.getValueFactory().createValue(catNode);
           if(isMultiple) {
             node.setProperty(propertyName, new Value[] {value2add});          
