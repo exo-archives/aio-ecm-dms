@@ -164,7 +164,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   }
   
   static public class SaveActionListener extends EventListener<UIActionForm> {
-    public void execute(Event<UIActionForm> event) throws Exception {
+    public void execute(Event<UIActionForm> event) throws Exception {      
       UIActionForm actionForm = event.getSource();
       UIApplication uiApp = actionForm.getAncestorOfType(UIApplication.class);
       ActionServiceContainer actionServiceContainer = actionForm.getApplicationComponent(ActionServiceContainer.class);
@@ -218,7 +218,16 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
         } else {
           rootProp.setValue((sortedInputs.get("/node/exo:name")).getValue());
         }
-        String actionName = (String)(sortedInputs.get("/node/exo:name")).getValue();
+        String actionName = (String)(sortedInputs.get("/node/exo:name")).getValue();        
+        String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{", "/", "|", "\""};
+        for(String filterChar : arrFilterChar) {
+          if(actionName.indexOf(filterChar) > -1) {
+            uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.name-not-allowed", null, 
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
+        }
         Node parentNode = actionForm.getParentNode();
         if(parentNode.hasNode(EXO_ACTIONS)) {
           if(parentNode.getNode(EXO_ACTIONS).hasNode(actionName)) { 

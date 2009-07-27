@@ -2428,4 +2428,9 @@
       <allow-setProperty>Bạn cần chọn thuộc tính 'set property' cho nhóm này</allow-setProperty>
     </msg>
   </UIActionBar>
+  <UIActionForm>
+  	<msg>
+  		<name-not-allowed>Tên hành động không được chấp nhận.</name-not-allowed>
+  	</msg>
+  </UIActionForm>
 </bundle>

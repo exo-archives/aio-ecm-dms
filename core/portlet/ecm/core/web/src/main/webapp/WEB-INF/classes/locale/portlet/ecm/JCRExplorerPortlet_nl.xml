@@ -2421,4 +2421,9 @@
       <allow-setProperty>You must select set property for this group</allow-setProperty>
     </msg>
   </UIActionBar>
+  <UIActionForm>
+  	<msg>
+  		<name-not-allowed>This action name is not allowed.</name-not-allowed>
+  	</msg>
+  </UIActionForm>
 </bundle>
