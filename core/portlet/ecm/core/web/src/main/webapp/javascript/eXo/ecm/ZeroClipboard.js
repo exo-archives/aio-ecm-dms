@@ -42,7 +42,6 @@ var ZeroClipboard = {
 	register: function(id, client) {
 		// register new client to receive events
 		this.clients[id] = client;
-		//alert('register');
 	},
 	
 	getDOMObjectPosition: function(obj) {
@@ -102,7 +101,6 @@ ZeroClipboard.Client.prototype = {
 		
 		// find X/Y position of domElement
 		var box = this.domElement;
-		//alert(box.getAttribute('path'));
 		// create floating DIV above element
 		this.div = document.createElement('div');
 		var style = this.div.style;
@@ -110,14 +108,14 @@ ZeroClipboard.Client.prototype = {
 		try{
 		var size = this.getElementSize(rightClickMenu);
 		var height = (size[4])?size[4]:0;
-		}catch(e){alert(box + " ---- " +e.message);}
+		}catch(e){}
 		style.position = 'absolute';
 		style.left = '0px';
 		style.bottom = '0px';
 		style.width = size[5] + 'px';
 		style.height = height + 'px';
 		style.zIndex = zIndex;
-		style.backgroundColor = '#f00'; // debug
+		//style.backgroundColor = '#f00'; // debug
 		style.overflow = 'auto'; 
 		var body = document.getElementsByTagName('body')[0];
 		//body.appendChild(this.div);
@@ -180,10 +178,8 @@ ZeroClipboard.Client.prototype = {
 		if (this.domElement && this.div) {
 			this.hide();
 			this.div.innerHTML = '';
-			
 			var body = document.getElementsByTagName('body')[0];
 			try { body.removeChild( this.div ); } catch(e) {;}
-			
 			this.domElement = null;
 			this.div = null;
 		}
@@ -206,12 +202,8 @@ ZeroClipboard.Client.prototype = {
 	},
 	
 	setText: function(newText) {
-		// set text to be copied to clipboard
 		this.clipText = newText;
-		// alert(newText);
 		if (this.ready) this.movie.setText(newText);
-		// alert('this.ready = ' + this.ready);
-		// alert('this.movie.setText(newText) = ' + newText);
 	},
 	
 	addEventListener: function(eventName, func) {
@@ -246,14 +238,14 @@ ZeroClipboard.Client.prototype = {
 				this.movie = document.getElementById(this.movieId);
 				if (!this.movie) {
 					var self = this;
-					//setTimeout( function() { self.receiveEvent('load', null); }, 1 );
+					setTimeout( function() { self.receiveEvent('load', null); }, 1 );
 					return;
 				}
 				
 				// firefox on pc needs a "kick" in order to set these in certain cases
 				if (!this.ready && navigator.userAgent.match(/Firefox/) && navigator.userAgent.match(/Windows/)) {
 					var self = this;
-					//setTimeout( function() { self.receiveEvent('load', null); }, 100 );
+					setTimeout( function() { self.receiveEvent('load', null); }, 100 );
 					this.ready = true;
 					return;
 				}
@@ -264,38 +256,18 @@ ZeroClipboard.Client.prototype = {
 				break;
 			
 			case 'mouseover':
-			//	if (this.domElement && this.cssEffects) {
-			//		this.domElement.addClass('hover');
-			//		if (this.recoverActive) this.domElement.addClass('active');
-			//	}
-			
-			break;
+  			break;
 			
 			case 'mouseout':
-			//	if (this.domElement && this.cssEffects) {
-//this.recoverActive = false;
-			//		if (this.domElement.hasClass('active')) {
-			//			this.domElement.removeClass('active');
-			//			this.recoverActive = true;
-			//		}
-			//		this.domElement.removeClass('hover');
-			//	}
-			break;
+  			break;
 			
 			case 'mousedown':
-			//	if (this.domElement && this.cssEffects) {
-			//		this.domElement.addClass('active');
-			//	}
-			break;
+				break;
 			
 			case 'mouseup':
-			//	if (this.domElement && this.cssEffects) {
-			//		this.domElement.removeClass('active');
-			//		this.recoverActive = false;
-			//	}
-			this.movie.setText(this.clipText);
-			eXo.ecm.ECMUtils.closeContextMenu(this.domElement);
-			break;
+				this.movie.setText(this.clipText);
+	  		eXo.ecm.ECMUtils.closeContextMenu(this.domElement);
+		  	break;
 		} // switch eventName
 		
 		if (this.handlers[eventName]) {

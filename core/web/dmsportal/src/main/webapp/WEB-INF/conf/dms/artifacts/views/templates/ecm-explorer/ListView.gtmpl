@@ -19,9 +19,11 @@
   
   def viewComponentId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
+  def size = uicomponent.getChildrenList().size();
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIListView','/ecm/javascript/'); 
   rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIListView.initAllEvent('${componentId}-$viewComponentId');");
   rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UIListView.setHeight");
+  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('$size')");
 %>
 <div id="$componentId">
 	<div id="${componentId}-$viewComponentId" class="UIListView" style="">	
@@ -181,7 +183,9 @@
 	      	String serverUrl = uicomponent.getWebDAVServerPrefix();
 	      	String portalName = uicomponent.getPortalName() ;
 	      	String repository = uicomponent.getRepository();
+	        int i = 0;
 	        for (data in uicomponent.getChildrenList()) {
+     			  i++;
 	          def isPreferenceNode = uicomponent.isPreferenceNode(data) ;
 	          def preferenceWS = data.getSession().getWorkspace().getName() ;
 	          String nodePath = data.getPath() ;
@@ -216,7 +220,7 @@
 	            }            
 	          }
 	          String clipboardLink = serverUrl + "/" + portalName + "/rest/jcr/" + repository + "/" + preferenceWS + data.getPath();
-	          strActs +=	"<a class='MenuItem' style='display: block;' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
+	          strActs +=	"<a class='MenuItem' style='display: block;' id='clip_button$i' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
 						strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
 						strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
 						strActs +=  "	</div>" ;

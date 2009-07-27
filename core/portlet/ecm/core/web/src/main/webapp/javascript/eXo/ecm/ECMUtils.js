@@ -345,23 +345,34 @@
 	  } 
 	} ;
 	
-	ECMUtils.prototype.pushToClipboard = function(event, url) {
-    if(window.clipboardData) {
-			window.clipboardData.setData('text',url);
-	  } else {
-	    var clipboard = document.getElementById('ecm-clipboard');
-			if (clipboard == null) {
-		   	clipboard = document.createElement('div');
-		   	clipboard.setAttribute("id", "ecm-clipboard");
-		   	clipboard.style.display = "block";
-		   	document.body.appendChild(clipboard);
+	var clip=null;
+	ECMUtils.prototype.initClipboard = function(size) {
+		if(eXo.core.Browser.getBrowserType() != "ie") {
+			if (size > 0) {
+				for(var i=1; i <= size; i++) {
+					clip = new ZeroClipboard.Client();
+					clip.setHandCursor(true);
+					clip.glue('clip_button'+i);
+				}
 			}
-	    clipboard.innerHTML = '<embed src="/ecm/javascript/eXo/ecm/ECMClipboard.swf" FlashVars="clipboard=' + encodeURIComponent(url)
-	    											 + '"width="0" height="0" type="application/x-shockwave-flash"></embed>';
-	  }
-	 	eXo.core.MouseEventManager.docMouseDownEvt(event);
+		}
+	}
+	
+	
+	ECMUtils.prototype.closeContextMenu = function(element) {
+		var contextMenu = document.getElementById("ECMContextMenu");
+		if (contextMenu) contextMenu.style.display = "none";
+	}
+	
+	ECMUtils.prototype.pushToClipboard = function(event, url) {
+		if( window.clipboardData && clipboardData.setData ) {
+			clipboardData.setData("Text", url);
+    } else {
+			alert("Internet Explorer required");
+		}
+		eXo.core.MouseEventManager.docMouseDownEvt(event);
 	  return false;
-	};
+	}
 	
  	ECMUtils.prototype.concatMethod =  function() {
 		var oArg = arguments;
