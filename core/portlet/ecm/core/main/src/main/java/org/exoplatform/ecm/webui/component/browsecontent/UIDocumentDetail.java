@@ -40,7 +40,6 @@ import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
@@ -56,6 +55,7 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
@@ -79,6 +79,7 @@ import org.exoplatform.webui.event.EventListener;
 
 public class UIDocumentDetail extends UIComponent implements NodePresentation, UIPopupComponent {
   protected Node node_ ;
+  private Node originalNode_;
   private String language_ ;
   private JCRResourceResolver jcrTemplateResourceResolver_ ;
 
@@ -96,8 +97,8 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
     }
   }
   protected boolean isValidNode() throws Exception  {
-    if(node_ == null) return false ;
-    if(getUIBrowseContainer().getNodeByPath(node_.getPath(), getWorkspaceName()) == null) return false ;
+    if(originalNode_ == null) return false ;
+    if(getUIBrowseContainer().getNodeByPath(originalNode_.getPath(), getWorkspaceName()) == null) return false ;
     return true ;
   }
 
@@ -188,7 +189,9 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
     return node_;
   }
 
-  public Node getOriginalNode() throws Exception {return node_ ;}
+  public void setOriginalNode(Node node) { originalNode_ = node; }
+  
+  public Node getOriginalNode() throws Exception {return originalNode_ ;}
 
   public PortletPreferences getPortletPreferences() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
@@ -239,7 +242,7 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
       List<String> listCanCreateNodeType = 
-        Utils.getListAllowedFileType(node_, getRepository(), templateService) ;
+        Utils.getListAllowedFileType(originalNode_, getRepository(), templateService) ;
       if (listCanCreateNodeType.contains(nodeType)) attachments.add(childNode);
     }
     return attachments;
@@ -303,7 +306,7 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
   }
 
   public String getNodeType() throws Exception {
-    return node_.getPrimaryNodeType().getName() ;
+    return originalNode_.getPrimaryNodeType().getName() ;
   }
 
   public String getRssLink() {return null ;}
@@ -316,7 +319,7 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
 
   public List<String> getSupportedLocalise() throws Exception {
     MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class) ;
-    return multiLanguageService.getSupportedLanguages(node_) ;
+    return multiLanguageService.getSupportedLanguages(originalNode_) ;
   }
 
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
@@ -336,11 +339,11 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
   }
 
   public String getRepository() throws Exception {
-    return ((ManageableRepository)node_.getSession().getRepository()).getConfiguration().getName() ;
+    return ((ManageableRepository)originalNode_.getSession().getRepository()).getConfiguration().getName() ;
   }
 
   public String getWorkspaceName() throws Exception {
-    return node_.getSession().getWorkspace().getName();
+    return originalNode_.getSession().getWorkspace().getName();
   }
 
   public String encodeHTML(String text) throws Exception {

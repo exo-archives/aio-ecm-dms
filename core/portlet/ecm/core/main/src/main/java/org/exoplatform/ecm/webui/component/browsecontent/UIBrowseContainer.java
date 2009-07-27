@@ -363,16 +363,27 @@ public class UIBrowseContainer extends UIContainer {
     return strCapacity;
   }
   
-  private void addNodePublish(List<Node> listNode, Node node) throws Exception {
+  public boolean isPublisedNode(Node node) throws Exception {
     if (isAllowPublish()) {
       PublicationService publicationService = getApplicationComponent(PublicationService.class);
-      Node nodecheck = publicationService.getNodePublish(node, null);
-      if (nodecheck != null) {
-        listNode.add(nodecheck); 
-      }
-    } else {
-      listNode.add(node);
+      if(publicationService.isNodeEnrolledInLifecycle(node) && 
+          publicationService.getCurrentState(node).equals("published")) 
+        return true;
     }
+    return false;
+  }
+  
+  public Node getViewNode(Node node) throws Exception {
+    if(isPublisedNode(node)) {
+      PublicationService publicationService = getApplicationComponent(PublicationService.class);
+      return publicationService.getNodePublish(node, null);
+    }
+    return node;
+  }
+  
+  private void addNodePublish(List<Node> listNode, Node node) throws Exception {
+    if(isPublisedNode(node)) listNode.add(node);
+    else listNode.add(node);
   }
   
   /**
@@ -808,33 +819,19 @@ public class UIBrowseContainer extends UIContainer {
           }
           if (templates.contains(typeName)) {
             if (canRead(node)) {
-              if (isAllowPublish()) {
-                PublicationService publicationService = getApplicationComponent(PublicationService.class);
-                Node nodecheck = publicationService.getNodePublish(node, null);
-                if (nodecheck != null) {
-                  subDocumentList.add(nodecheck);
-                  if(nodecheck.isNodeType(Utils.EXO_SYMLINK)) {
-                    try {
-                      linkManager.getTarget(nodecheck);
-                    } catch (ItemNotFoundException ie) {
-                      subDocumentList.remove(nodecheck);
-                    } catch (Exception e) {
-                      subDocumentList.remove(nodecheck);
-                    }
-                  }
-                }
-              } else {
-                subDocumentList.add(node);
-                if(node.isNodeType(Utils.EXO_SYMLINK)) {
-                  try {
-                    linkManager.getTarget(node);
-                  } catch (ItemNotFoundException ie) {
-                    subDocumentList.remove(node);
-                  } catch (Exception e) {
-                    subDocumentList.remove(node);
-                  }
+              if(node.isNodeType(Utils.EXO_SYMLINK)) {
+                try {
+                  linkManager.getTarget(node);
+                } catch (ItemNotFoundException ie) {
+                  subDocumentList.remove(node);
+                } catch (Exception e) {
+                  subDocumentList.remove(node);
                 }
               }
+              if (isAllowPublish()) {
+                if(!isPublisedNode(node)) continue;
+              }
+              subDocumentList.add(node);
             }
           }
         }
@@ -1781,6 +1778,15 @@ public class UIBrowseContainer extends UIContainer {
         uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES,
             repoName, SessionProviderFactory.createSystemProvider()).getNode(detailTemplateName)
             .getPath());
+        PublicationService publicationService = 
+          uiContainer.getApplicationComponent(PublicationService.class);
+        if(uiContainer.isAllowPublish()) {
+          if(uiContainer.isPublisedNode(selectNode)) {
+            UIDocumentDetail uiDocumetDetail = uiContainer.getChild(UIDocumentDetail.class);
+            uiDocumetDetail.setOriginalNode(selectNode);
+            selectNode = publicationService.getNodePublish(selectNode, null);
+          }
+        }
         uiContainer.viewDocument(selectNode, true);
       } else {
         String templateType = uiContainer.getPortletPreferences().getValue(Utils.CB_USECASE, "");
