@@ -201,7 +201,9 @@ public class UIDialogForm extends UIForm {
             if(buffer.toString().endsWith(",")) buffer.deleteCharAt(buffer.length() - 1);                        
             uiInput.setValue(buffer.toString());
           } else {
-            uiInput.setValue(node.getProperty(propertyName).getValue().getString());  
+            String path = getNodePathByUUID(node.getProperty(propertyName).getValue().getString());
+            if (path == null) uiInput.setValue(node.getProperty(propertyName).getValue().getString());
+            else uiInput.setValue(path);  
           }          
         }
       } 

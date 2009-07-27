@@ -554,8 +554,14 @@ public class CmsServiceImpl implements CmsService {
           Session session2 = jcrService.getRepository(repositoty).getSystemSession(referenceWorksapce);
           if (session2.getRootNode().hasNode(referenceNodeName)) {
             Node referenceNode = session2.getRootNode().getNode(referenceNodeName);
-            Value value2add = session2.getValueFactory().createValue(referenceNode);
-            node.setProperty(propertyName, value2add);          
+            if (referenceNode != null) {
+              if(!referenceNode.isNodeType(MIX_REFERENCEABLE)) {
+                referenceNode.addMixin(MIX_REFERENCEABLE);
+                referenceNode.save();
+              }
+              Value value2add = session2.getValueFactory().createValue(referenceNode);
+              node.setProperty(propertyName, value2add);
+            }         
           } else {
             node.setProperty(propertyName, session2.getValueFactory().createValue((String)value));
           }
@@ -567,6 +573,10 @@ public class CmsServiceImpl implements CmsService {
               referenceNode = session.getRootNode().getNode(value.toString());
             }
             if (referenceNode != null) {
+              if(!referenceNode.isNodeType(MIX_REFERENCEABLE)) {
+                referenceNode.addMixin(MIX_REFERENCEABLE);
+                referenceNode.save();
+              }
               Value value2add = session.getValueFactory().createValue(referenceNode);
               node.setProperty(propertyName, value2add);
             } else {
@@ -790,6 +800,10 @@ public class CmsServiceImpl implements CmsService {
             referenceNode = session.getRootNode().getNode(value.toString());
           }
           if (referenceNode != null) {
+            if(!referenceNode.isNodeType(MIX_REFERENCEABLE)) {
+              referenceNode.addMixin(MIX_REFERENCEABLE);
+              referenceNode.save();
+            }
             Value value2add = session.getValueFactory().createValue(referenceNode);
             if(!property.getValue().getString().equals(value2add)) {
               node.setProperty(propertyName, value2add);

@@ -119,6 +119,8 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
    */
   final static String TEMP_NODE = "temp" ;
   
+  private static final String MIX_REFERENCEABLE = "mix:referenceable";
+  
   /**
    * CmsService
    */
@@ -225,23 +227,32 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         node.setProperty(propertyName, (Value[]) value);
       } else if (value instanceof String) {
         Session session = node.getSession();
-        Node catNode = null;
-        try {
-          catNode = (Node)session.getItem(value.toString());
-        } catch (PathNotFoundException e) {
-          catNode = session.getRootNode().getNode(value.toString());
-        }
-        if (catNode != null) {
-          Value value2add = session.getValueFactory().createValue(catNode);
-          if(isMultiple) {
-            node.setProperty(propertyName, new Value[] {value2add});          
-          } else {
-            node.setProperty(propertyName, value2add);
+        Node catNode = null;        
+        String itemPath = value.toString();
+        if ((itemPath != null)&& (itemPath.length() > 0)) {
+          if (value.toString().indexOf(":/") > -1){
+            if (value.toString().split(":/").length > 0) itemPath = "/" + value.toString().split(":/")[1];
           }
-        } else {
-          node.setProperty(propertyName, value.toString());
-        }
-      
+          try {
+            catNode = (Node)session.getItem(itemPath);
+          } catch (PathNotFoundException e) {
+            catNode = session.getRootNode().getNode(itemPath);
+          }
+          if (catNode != null) {
+            if(!catNode.isNodeType(MIX_REFERENCEABLE)) {
+              catNode.addMixin(MIX_REFERENCEABLE);
+              catNode.save();
+            }
+            Value value2add = session.getValueFactory().createValue(catNode);
+            if(isMultiple) {
+              node.setProperty(propertyName, new Value[] {value2add});          
+            } else {
+              node.setProperty(propertyName, value2add);
+            }
+          } else {
+            node.setProperty(propertyName, value.toString());
+          }
+        }              
       }
       break ;
     }
