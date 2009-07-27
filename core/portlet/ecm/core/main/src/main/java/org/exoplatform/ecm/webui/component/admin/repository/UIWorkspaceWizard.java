@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.exoplatform.container.ExoContainer;
@@ -193,18 +194,25 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
       if (!isNewWizard_) {
         name = workSpace.getName();
         isDefaultWS = uiRepoForm.isDefaultWorkspace(name);
-        selectedNodeType = manageRepository.getSystemSession(workSpace.getName()).getRootNode().getPrimaryNodeType().getName();
+        try {
+          selectedNodeType = manageRepository.getSystemSession(workSpace.getName()).getRootNode().getPrimaryNodeType().getName();
+          List<AccessControlEntry> listEntry = ((ExtendedNode)manageRepository.getSystemSession(workSpace.getName()).getRootNode()).getACL().getPermissionEntries();
+          Iterator perIter = listEntry.iterator() ;
+          StringBuilder userPermission = new StringBuilder();
+          while (perIter.hasNext()) {
+            AccessControlEntry accessControlEntry = (AccessControlEntry)perIter.next();
+            userPermission.append(accessControlEntry.getIdentity());
+            userPermission.append(" ");
+            userPermission.append(accessControlEntry.getPermission() + ";");
+          }
+          if (!isAddNewWs) { permission = userPermission.toString(); } 
+        } catch (RepositoryException e) {
+          selectedNodeType = uiRepoForm.getWorkspaceMapNodeType(repoName);
+          if (!isAddNewWs) { permission = uiRepoForm.getWorkspaceMapPermission(repoName); } 
+//          manageRepository = rService.getRepository(repoName);
+//          selectedNodeType = manageRepository.getSystemSession(workSpace.getName()).getRootNode().getPrimaryNodeType().getName();
+        }
       }
-      List<AccessControlEntry> listEntry = ((ExtendedNode)manageRepository.getSystemSession(workSpace.getName()).getRootNode()).getACL().getPermissionEntries();
-      Iterator perIter = listEntry.iterator() ;
-      StringBuilder userPermission = new StringBuilder();
-      while (perIter.hasNext()) {
-        AccessControlEntry accessControlEntry = (AccessControlEntry)perIter.next();
-        userPermission.append(accessControlEntry.getIdentity());
-        userPermission.append(" ");
-        userPermission.append(accessControlEntry.getPermission() + ";");
-      }
-      if (!isAddNewWs) { permission = userPermission.toString(); } 
       
       if(workSpace.getLockManager() != null) {
         lockTime  = String.valueOf(workSpace.getLockManager().getTimeout()) + "ms"; 
@@ -688,9 +696,17 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
         if (isDMSSystemWs) uiRepoForm.dmsSystemWorkspace_ = name;
         if(uiFormWizard.isNewWizard_) {
           uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
+          uiRepoForm.getWorkspaceMapNodeType().put(name, initNodeType) ;
+          uiRepoForm.getWorkspaceMapPermission().put(name, permSb.toString());
         } else {
           uiRepoForm.getWorkspaceMap().remove(uiFormWizard.selectedWsName_) ;
           uiRepoForm.getWorkspaceMap().put(name, workspaceEntry) ;
+          
+          uiRepoForm.getWorkspaceMapNodeType().remove(uiFormWizard.selectedWsName_) ;
+          uiRepoForm.getWorkspaceMapNodeType().put(name, initNodeType) ;
+          
+          uiRepoForm.getWorkspaceMapPermission().remove(uiFormWizard.selectedWsName_) ;
+          uiRepoForm.getWorkspaceMapPermission().put(name, permSb.toString());
         }
         uiRepoForm.refreshWorkspaceList() ;  
       }

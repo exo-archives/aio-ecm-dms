@@ -18,11 +18,9 @@ package org.exoplatform.ecm.webui.component.admin.repository;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -126,7 +124,9 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
   protected String dmsSystemWorkspace_ = null;
   protected String repoName_ = null;
   protected Map<String, WorkspaceEntry> workspaceMap_ = new HashMap<String, WorkspaceEntry>(); 
-
+  protected Map<String, String> workspaceMapNodeType_ = new HashMap<String, String>();
+  protected Map<String, String> workspaceMapPermission_ = new HashMap<String, String>();
+  
   public UIRepositoryForm() throws Exception { 
     configurationManager = getApplicationComponent(ConfigurationManager.class);
     addChild(new UIFormStringInput(FIELD_NAME,FIELD_NAME, null).addValidator(MandatoryValidator.class)); 
@@ -218,6 +218,22 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
 
   protected Map<String, WorkspaceEntry> getWorkspaceMap() {
     return workspaceMap_;
+  }
+  
+  protected String getWorkspaceMapNodeType(String workspaceName) {
+    return workspaceMapNodeType_.get(workspaceName);
+  }
+  
+  protected Map<String, String> getWorkspaceMapNodeType() {
+    return workspaceMapNodeType_;
+  }
+  
+  protected String getWorkspaceMapPermission(String workspaceName) {
+    return workspaceMapPermission_.get(workspaceName);
+  }
+  
+  protected Map<String, String> getWorkspaceMapPermission() {
+    return workspaceMapPermission_;
   }
 
   protected void refreshWorkspaceList() {
