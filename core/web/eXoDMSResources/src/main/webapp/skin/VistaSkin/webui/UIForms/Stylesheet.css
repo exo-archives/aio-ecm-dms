@@ -113,3 +113,54 @@
 	width: 100%;
 }
 
+.UIViewMetadataManager .tabNormal {
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  background: url('/eXoDMSResources/skin/images/metadata/Metadata.gif') repeat-x left top;
+  height: 20px; width: 120px; line-height: 20px; text-align: center;
+  border: solid 1px #a3abb6;
+  font-size: 12px; font-weight: bold;
+}
+
+.UIViewMetadataManager .tabSelected {
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  background: url('/eXoDMSResources/skin/images/metadata/Metadata.gif') repeat-x left -20px;
+  height: 20px; width: 120px; line-height: 20px; text-align: center;
+  border: solid 1px #a3abb6;
+  font-size: 12px; font-weight: bold;
+}
+
+.UIViewMetadataManager .ContentBlock {
+  margin: 15px;
+}
+
+.UIViewMetadataManager .LabelMetadata {
+	border-bottom: 1px dotted #666666;
+	padding-bottom: 5px;
+  height:14px;
+  font-weight: bold;
+  font-size: 12px;
+  font-style: Verdana;
+  text-align: left; /* orientation=lt */
+  text-align: right; /* orientation=rt */
+  color: #f68822;
+}
+
+.UIViewMetadataManager .Header {
+  font-weight: bold;
+  font-size: 14px;
+  font-style: Verdana;
+  text-align: left; /* orientation=lt */
+  text-align: right; /* orientation=rt */
+}
+
+.UIViewMetadataManager .Text {
+  text-align: left; /* orientation=lt */
+  text-align: right; /* orientation=rt */
+}
+
+.UIViewMetadataManager .MetaImage {
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+}
