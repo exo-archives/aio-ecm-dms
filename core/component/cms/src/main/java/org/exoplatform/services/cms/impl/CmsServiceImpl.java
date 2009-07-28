@@ -437,7 +437,11 @@ public class CmsServiceImpl implements CmsService {
     switch (requiredtype) {
     case PropertyType.STRING:
       if (value == null) {
-        node.setProperty(propertyName, "");
+        if(isMultiple) {
+          node.setProperty(propertyName, new String[] {StringUtils.EMPTY});
+        } else {
+          node.setProperty(propertyName, StringUtils.EMPTY);
+        }
       } else {
         if(isMultiple) {
           if (value instanceof String) {
@@ -636,7 +640,11 @@ public class CmsServiceImpl implements CmsService {
     switch (requiredtype) {
     case PropertyType.STRING:
       if (value == null) {
-        node.setProperty(propertyName, "");
+        if(isMultiple) {
+          node.setProperty(propertyName, new String[] {StringUtils.EMPTY});
+        } else {
+          node.setProperty(propertyName, StringUtils.EMPTY);
+        }
       } else {
         if(isMultiple) {
           if (value instanceof String) {
