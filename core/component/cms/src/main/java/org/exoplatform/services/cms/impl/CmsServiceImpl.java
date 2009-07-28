@@ -235,7 +235,7 @@ public class CmsServiceImpl implements CmsService {
       PropertyDefinition[] propertyDefs = currentNodeType.getPropertyDefinitions();
       for (int i = 0; i < propertyDefs.length; i++) {      
         PropertyDefinition propertyDef = propertyDefs[i];         
-        if (!propertyDef.isAutoCreated() && !propertyDef.isProtected()) {        
+        if (!propertyDef.isProtected()) {        
           String propertyName = propertyDef.getName();     
           int requiredtype = propertyDef.getRequiredType();
           String currentPath = path + "/" + propertyName;
@@ -328,7 +328,7 @@ public class CmsServiceImpl implements CmsService {
       } else {
         nodeDef = (NodeDefinition) obj;
       } 
-      if(nodeDef.isAutoCreated() || nodeDef.isProtected()) {
+      if(nodeDef.isProtected()) {
         continue ;
       }            
       if(((ExtendedItemDefinition)nodeDef).isResidualSet()) {
