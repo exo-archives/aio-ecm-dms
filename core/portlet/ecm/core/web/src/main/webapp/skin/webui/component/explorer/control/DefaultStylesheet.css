@@ -730,6 +730,7 @@
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 }
+
 .UIJCRExplorerPortlet .UIActionBar .TabLabel {
 	line-height: 24px;
 	color: #333;
@@ -802,7 +803,6 @@
 	background: url(DefaultSkin/icons/HoverButton.gif) no-repeat;
 }
 
-
 .UIViewBarContainer {
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */	
@@ -818,5 +818,12 @@
 
 .DMSMenuItemContainer {
 	display: block; 
-	left: 0px;
+	left: 0px;  /* orientation=lt */
+	right: 0px;  /* orientation=rt */
 }
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .CleanRTL{
+	clear:left;  /* orientation=lt */
+	clear: right;  /* orientation=rt */
+}
+

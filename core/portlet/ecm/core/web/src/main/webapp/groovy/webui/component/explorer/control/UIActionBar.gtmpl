@@ -62,7 +62,7 @@
 				<%
 				  }
 				%>
-				<div style="clear: left;"><span></span></div>
+				<div class="CleanRTL"><span></span></div>
 		  </div>
 		 <%if(isSelected) {%>
 		   <div id="DMSMenuItemContainer" class="DMSMenuItemContainer MenuItemContainer">
