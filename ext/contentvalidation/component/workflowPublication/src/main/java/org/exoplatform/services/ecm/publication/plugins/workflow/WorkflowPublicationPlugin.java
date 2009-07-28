@@ -320,8 +320,6 @@ public class WorkflowPublicationPlugin extends PublicationPlugin {
         throw new RuntimeException("Error while parsing the XML File", e);
       }
     }
-    System.out.println("====== Hello The World======> " + content);
-    
     return String.format(result, values);
   }
 

@@ -180,8 +180,8 @@ public class UIWorkflowPublicationViewForm extends UIForm {
       Node currentNode = viewForm.getCurrentNode();
       
       PublicationService publicationService = viewForm.getApplicationComponent(PublicationService.class);
-      publicationService.getPublicationPlugins().get(WorkflowPublicationPlugin.WORKFLOW).changeState(currentNode, 
-          WorkflowPublicationPlugin.BACKUP, new HashMap<String,String>());  
+      publicationService.getPublicationPlugins().get(WorkflowPublicationPlugin.WORKFLOW).
+        changeState(currentNode, WorkflowPublicationPlugin.BACKUP, new HashMap<String,String>());  
       
       String nodePath = currentNode.getPath();
       String srcWorkspace = currentNode.getSession().getWorkspace().getName();
@@ -191,16 +191,17 @@ public class UIWorkflowPublicationViewForm extends UIForm {
         realDestPath += "/";
       }
       realDestPath += currentNode.getName();
-      
       WorkflowMoveNodeAction.moveNode(repositoryService, nodePath, srcWorkspace, destWorkspace, 
             realDestPath, viewForm.getRepositoryName());
+      
       UIApplication uiApp = viewForm.getAncestorOfType(UIApplication.class);
       
       WorkflowPublicationPlugin plugin = (WorkflowPublicationPlugin) publicationService.getPublicationPlugins().get(WorkflowPublicationPlugin.WORKFLOW);
       Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale();
       String msg = plugin.getLocalizedAndSubstituteMessage(locale, "UIWorkflowPublicationViewForm.msg.unpublish-success", null);
       uiApp.addMessage(new ApplicationMessage(msg, null, ApplicationMessage.INFO));
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      
       UIPopupWindow popupWindow = (UIPopupWindow)container.getParent();
       popupWindow.setRendered(false);
       UIComponent component = popupWindow.getParent();
