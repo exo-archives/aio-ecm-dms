@@ -834,3 +834,8 @@
 	display: block; 
 	left: 0px;
 }
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar .CleanRTL{
+	clear:left;  /* orientation=lt */
+	clear: right;  /* orientation=rt */
+}
