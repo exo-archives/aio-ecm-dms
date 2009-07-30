@@ -102,6 +102,8 @@ public class UIPublicationForm extends UIForm {
       for(int i=0; i < arrPublicationState.length; i++) {
         if(arrPublicationState[0].equals(versionNode.getVersion().getUUID())) {
           return arrPublicationState[1];
+        } else if (arrPublicationState[1].equals(StaticAndDirectPublicationPlugin.PUBLISHED)) {          
+          return StaticAndDirectPublicationPlugin.PUBLISHED;
         }
       }
     }
