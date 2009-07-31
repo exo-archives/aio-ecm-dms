@@ -19,6 +19,8 @@ package org.exoplatform.ecm.webui.component.explorer;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.InvalidItemStateException;
@@ -65,6 +67,7 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.IdentityRegistry;
 import org.exoplatform.services.security.MembershipEntry;
@@ -121,6 +124,8 @@ public class UIWorkingArea extends UIContainer {
 
   final static private String RELATION_PROP = "exo:relation";
   final static public String WS_NAME = "workspaceName";
+  
+  public static final Pattern FILE_EXPLORER_URL_SYNTAX = Pattern.compile("([^:/]+):(/.*)");
   
   private boolean isMultiSelect_ = false;
   private LinkedList<ClipboardCommand> virtualClipboards_ = new LinkedList<ClipboardCommand>();
@@ -565,22 +570,29 @@ public class UIWorkingArea extends UIContainer {
     destNode.save();      
   }
   
-  private void processRemoveMultiple(String[] nodePaths, String[] wsNames, Event event) throws Exception {
-    String srcPath;
-    String[] arraySrcPath;
-    String wsName;
-    for(int i=0; i< nodePaths.length; i++) {
-      srcPath = nodePaths[i];      
-      if (srcPath.indexOf(":/") > -1) {
-        arraySrcPath = srcPath.split(":/");
-        if ((arraySrcPath.length > 0) && (arraySrcPath[1] != null)) srcPath = "/" + arraySrcPath[1];
-        wsName = arraySrcPath[0];        
-        processRemove(srcPath, wsName, event);
+  private void processRemoveMultiple(String[] nodePaths, Event<?> event) throws Exception {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    Session session = uiExplorer.getSession();
+    List<String> identifier = new ArrayList<String>();
+    List<String> workspace = new ArrayList<String>();
+    for (int i = 0; i < nodePaths.length; i++) {
+      Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePaths[i]);
+      String wsName = null;
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        nodePaths[i] = matcher.group(2);
+        identifier.add(((NodeImpl) uiExplorer.getNodeByPath(nodePaths[i], session)).getInternalIdentifier());
+        workspace.add(wsName);
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '" + nodePaths[i] + "'");
       }
+    }
+    for (int i = 0; i < identifier.size(); i++) {
+      processRemove(identifier.get(i), workspace.get(i), event);
     }
   }
   
-  private void processRemove(String nodePath, String wsName, Event event) throws Exception {
+  private void processRemove(String identifier, String wsName, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     if (wsName == null || wsName.length() == 0) {
       wsName = uiExplorer.getCurrentWorkspace();
@@ -589,7 +601,7 @@ public class UIWorkingArea extends UIContainer {
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
     Node node = null;
     try {
-      node = (Node)session.getItem(nodePath);
+      node = session.getNodeByUUID(identifier);
       String lockToken = LockUtil.getLockToken(node);
       if(lockToken != null) session.addLockToken(lockToken);
     } catch(PathNotFoundException path) {
@@ -609,8 +621,7 @@ public class UIWorkingArea extends UIContainer {
       return;
     }
     if(uiExplorer.nodeIsLocked(node)) {
-      Object[] arg = { nodePath };
-      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null, 
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
@@ -774,20 +785,29 @@ public class UIWorkingArea extends UIContainer {
     uiExplorer.updateAjax(event);
   }
   
-  public void doDelete(String nodePath, String wsName, Event event) throws Exception {
+  public void doDelete(String nodePath, String wsName, Event<?> event) throws Exception {
     UIJCRExplorer uiExplorer = getParent();
-    if(nodePath.indexOf(";") > -1) {
+    Session session = uiExplorer.getSession();
+    if (nodePath.indexOf(";") > -1) {
       isMultiSelect_ = true;
-      if (wsName != null)
-        processRemoveMultiple(nodePath.split(";"), wsName.split(";"), event);
-      else
-        processRemoveMultiple(nodePath.split(";"), null, event);
+      processRemoveMultiple(nodePath.split(";"), event);
     } else {
+      Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+      String identifier = null;
       isMultiSelect_ = false;
-      processRemove(nodePath, wsName, event);
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        nodePath = matcher.group(2);
+        identifier = ((NodeImpl) uiExplorer.getNodeByPath(nodePath, session))
+            .getInternalIdentifier();
+        processRemove(identifier, wsName, event);
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '" + nodePath + "'");
+      }
     }
     uiExplorer.updateAjax(event);
-    if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save(); 
+    if (!uiExplorer.getPreference().isJcrEnable())
+      uiExplorer.getSession().save();
   }
   
   private void processMultiLock(String[] nodePaths, String[] wsNames, Event event) throws Exception {
