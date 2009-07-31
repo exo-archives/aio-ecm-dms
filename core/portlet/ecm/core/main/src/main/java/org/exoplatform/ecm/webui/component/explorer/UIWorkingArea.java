@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 import javax.jcr.AccessDeniedException;
 import javax.jcr.InvalidItemStateException;
 import javax.jcr.ItemExistsException;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.LoginException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
@@ -70,6 +71,7 @@ import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.security.Identity;
 import org.exoplatform.services.security.IdentityRegistry;
@@ -627,114 +629,216 @@ public class UIWorkingArea extends UIContainer {
   }
   
   private void processRemoveMultiple(String[] nodePaths, Event<?> event) throws Exception {
-    for(int i=0; i< nodePaths.length; i++) {
-      processRemove(nodePaths[i], event, true);
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    Session session = uiExplorer.getSession();
+    List<String> identifier = new ArrayList<String>();
+    List<String> workspace = new ArrayList<String>();
+    for (int i = 0; i < nodePaths.length; i++) {
+      Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePaths[i]);
+      String wsName = null;
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        nodePaths[i] = matcher.group(2);
+        identifier.add(((NodeImpl) uiExplorer.getNodeByPath(nodePaths[i], session, false))
+            .getInternalIdentifier());
+        workspace.add(wsName);
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '" + nodePaths[i] + "'");
+      }
+    }
+    for (int i = 0; i < identifier.size(); i++) {
+      processRemove(identifier.get(i), workspace.get(i), event);
     }
   }
   
-  private void processRemoveMultiple(String[] nodePaths, String[] wsNames, Event<?> event) throws Exception {
-    for(int i=0; i< nodePaths.length; i++) {
+  private void processRemove(String identifier, String workspace, Event<?> event)
+      throws Exception {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    Session session = uiExplorer.getSessionByWorkspace(workspace);
+    UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+    Node node;
+    try {
+      node = session.getNodeByUUID(identifier);
+      uiExplorer.addLockToken(node);
+    } catch (ItemNotFoundException path) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", null,
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    } catch (Exception e) {
+      JCRExceptionManager.process(uiApp, e);
+      return;
+    }
+    if (!PermissionUtil.canRemoveNode(node)) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-remove-node", null,
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+
+    if (uiExplorer.nodeIsLocked(node)) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", null, ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+    }
+    Node parentNode = node.getParent();
+    uiExplorer.addLockToken(parentNode);
+    try {
+      if (node.isNodeType(Utils.RMA_RECORD))
+        removeMixins(node);
+      ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+      thumbnailService.processRemoveThumbnail(node);
+      node.remove();
+      parentNode.save();
+    } catch (VersionException ve) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-verion-exception", null,
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+    } catch (ReferentialIntegrityException ref) {
+      session.refresh(false);
+      uiExplorer.refreshExplorer();
+      uiApp
+          .addMessage(new ApplicationMessage(
+              "UIPopupMenu.msg.remove-referentialIntegrityException", null,
+              ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+    } catch (ConstraintViolationException cons) {
+      session.refresh(false);
+      uiExplorer.refreshExplorer();
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.constraintviolation-exception",
+          null, ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+    } catch (LockException lockException) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked-other-person", null,
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      uiExplorer.updateAjax(event);
+      return;
+    } catch (Exception e) {
+      LOG.error("an unexpected error occurs while removing the node", e);
+      JCRExceptionManager.process(uiApp, e);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+  }
+
+  private void processRemoveMultiple(String[] nodePaths, String[] wsNames, Event<?> event)
+      throws Exception {
+    for (int i = 0; i < nodePaths.length; i++) {
       processRemove(nodePaths[i], wsNames[i], event, true);
     }
   }
-  
-  private void processRemove(String nodePath, String wsName, Event<?> event, boolean isMultiSelect) throws Exception {
+
+  private void processRemove(String nodePath, String wsName, Event<?> event, boolean isMultiSelect)
+      throws Exception {
     if (wsName == null) {
-      wsName = getDefaultWorkspace();        
+      wsName = getDefaultWorkspace();
     }
-    processCopy(wsName + ":" + nodePath, event, isMultiSelect);    
+    processCopy(wsName + ":" + nodePath, event, isMultiSelect);
   }
   
-  private void processRemove(String nodePath, Event<?> event, boolean isMultiSelect) throws Exception {
+  private void processRemove(String nodePath, Event<?> event, boolean isMultiSelect)
+      throws Exception {
     Matcher matcher = FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
     String wsName = null;
     if (matcher.find()) {
       wsName = matcher.group(1);
       nodePath = matcher.group(2);
     } else {
-      throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
-    }    
+      throw new IllegalArgumentException("The ObjectId is invalid '" + nodePath + "'");
+    }
     final String virtualNodePath = nodePath;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     Session session = uiExplorer.getSessionByWorkspace(wsName);
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
     Node node;
     try {
-      // Use the method getNodeByPath because it is link aware
-      node = uiExplorer.getNodeByPath(nodePath, session, false);
-      // Reset the path to manage the links that potentially create virtual path
-      nodePath = node.getPath();
+      String identifier = ((NodeImpl) uiExplorer.getNodeByPath(nodePath, session, false))
+          .getInternalIdentifier();
+      node = session.getNodeByUUID(identifier);
       // Reset the session to manage the links that potentially change of workspace
       session = node.getSession();
-      // Reset the workspace name to manage the links that potentially change of workspace 
+      // Reset the workspace name to manage the links that potentially change of workspace
       wsName = session.getWorkspace().getName();
       uiExplorer.addLockToken(node);
-    } catch(PathNotFoundException path) {
-      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
-          null,ApplicationMessage.WARNING));
+    } catch (PathNotFoundException path) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", null,
+          ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-      return;      
+      return;
     } catch (Exception e) {
       JCRExceptionManager.process(uiApp, e);
       return;
     }
     if (!PermissionUtil.canRemoveNode(node)) {
-      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-remove-node",null,ApplicationMessage.WARNING));
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.can-not-remove-node", null,
+          ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-      return;        
-    }      
-    
-    if(uiExplorer.nodeIsLocked(node)) {
+      return;
+    }
+
+    if (uiExplorer.nodeIsLocked(node)) {
       Object[] arg = { nodePath };
-      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg,
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
       return;
-    }      
+    }
     Node parentNode = node.getParent();
     uiExplorer.addLockToken(parentNode);
     try {
-      if(node.isNodeType(Utils.RMA_RECORD)) removeMixins(node);      
+      if (node.isNodeType(Utils.RMA_RECORD))
+        removeMixins(node);
       ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
       thumbnailService.processRemoveThumbnail(node);
       node.remove();
       parentNode.save();
-    } catch(VersionException ve) {
+    } catch (VersionException ve) {
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-verion-exception", null,
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
-      return;    
-    } catch(ReferentialIntegrityException ref) {
+      return;
+    } catch (ReferentialIntegrityException ref) {
       session.refresh(false);
       uiExplorer.refreshExplorer();
-      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-referentialIntegrityException", 
-          null,ApplicationMessage.WARNING));
+      uiApp
+          .addMessage(new ApplicationMessage(
+              "UIPopupMenu.msg.remove-referentialIntegrityException", null,
+              ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
       return;
-    } catch(ConstraintViolationException cons) {
+    } catch (ConstraintViolationException cons) {
       session.refresh(false);
       uiExplorer.refreshExplorer();
-      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.constraintviolation-exception", 
-          null,ApplicationMessage.WARNING));
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.constraintviolation-exception",
+          null, ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
-      return;        
-    } catch(LockException lockException) {
+      return;
+    } catch (LockException lockException) {
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked-other-person", null,
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
       return;
-    } catch(Exception e) {  
+    } catch (Exception e) {
       LOG.error("an unexpected error occurs while removing the node", e);
       JCRExceptionManager.process(uiApp, e);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
-    if(!isMultiSelect) uiExplorer.setSelectNode(LinkUtils.getParentPath(virtualNodePath));
+    if (!isMultiSelect)
+      uiExplorer.setSelectNode(LinkUtils.getParentPath(virtualNodePath));
   }
   
   private void processCut(String nodePath, Event<?> event, boolean isMultiSelect) throws Exception {
@@ -1412,6 +1516,35 @@ public class UIWorkingArea extends UIContainer {
       UIWorkingArea uiWorkingArea = event.getSource().getParent();
       UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+//      Session session = uiExplorer.getSession();
+//      // Get UUID
+//      String[] str = {};
+//      String s = null;
+//      Node temp;
+//      if (nodePath.indexOf(";") > -1) {
+//        str = nodePath.split(";");
+//        for (int i = 0; i < str.length; i++) {
+//          // temp = uiExplorer.getNodeByPath(str[i], session, false);
+//          // temp = (Node) session.getItem(str[i]);
+//          if (i == str.length - 1) {
+//            s += ((NodeImpl) uiExplorer.getNodeByPath(str[i], session, false))
+//                .getInternalIdentifier();
+//            // s += temp.getUUID();
+//          } else {
+//            // s += temp.getUUID() + ";";
+//            s += ((NodeImpl) uiExplorer.getNodeByPath(str[i], session, false))
+//                .getInternalIdentifier()
+//                + ";";
+//          }
+//        }
+//        nodePath = s;
+//      } else {
+//        // temp = uiExplorer.getNodeByPath(nodePath, session, false);
+//        // temp = (Node) session.getItem(nodePath);
+//        // nodePath = temp.getUUID();
+//        nodePath = ((NodeImpl) uiExplorer.getNodeByPath(nodePath, session, false))
+//            .getInternalIdentifier();
+//      }
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       UIConfirmMessage uiConfirmMessage = 
         uiWorkingArea.createUIComponent(UIConfirmMessage.class, null, null);
