@@ -28,13 +28,15 @@ import javax.jcr.query.QueryResult;
 
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
@@ -253,8 +255,14 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
   }
   
   private boolean isValidDateTime(String dateTime) {
+    String locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();    
     String[] arr = dateTime.split(SPLIT_REGEX, 7) ;
-    int valid = Integer.parseInt(arr[0]) ;
+    int valid;
+    if (locale.equals("en")) {
+      valid = Integer.parseInt(arr[0]);      
+    } else {
+      valid = Integer.parseInt(arr[1]);
+    }
     if(valid < 1 || valid > 12) return false;
     Calendar date = new GregorianCalendar(Integer.parseInt(arr[2]), valid - 1, 1) ;
     if(Integer.parseInt(arr[1]) > date.getActualMaximum(Calendar.DAY_OF_MONTH)) return false;
