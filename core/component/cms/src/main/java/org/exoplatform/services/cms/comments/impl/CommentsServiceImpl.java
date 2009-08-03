@@ -34,6 +34,7 @@ import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 
+
 /**
  * Created by The eXo Platform SAS
  * Author : Pham Xuan Hoa
@@ -183,6 +184,7 @@ public class CommentsServiceImpl implements CommentsService {
         return date2.compareTo(date1) ;
       }catch (Exception e) {        
       }            
+     
       return 0;
     }        
   }
@@ -198,5 +200,65 @@ public class CommentsServiceImpl implements CommentsService {
     if(Collections.frequency(locales,language) >0) return true ;
     return false ;
   }
-
+  
+  /**
+   * 
+   * @param document
+   * @param commentor
+   * @param language
+   * @throws Exception
+   */
+  public void removeComment(Node document, String commentor, String comment,String language)throws Exception{
+			  	Node commentsNode = null ;
+			    Node languagesNode = null ;
+			    Node languageNode = null ;
+			    if(!isSupportedLocalize(document,language)) {
+			      if(document.hasProperty("exo:language")) language = document.getProperty("exo:language").getString() ; 
+			    }
+			    if(document.hasNode(LANGUAGES)) {
+			      languagesNode = document.getNode(LANGUAGES) ;
+			      if(languagesNode.hasNode(language)) {
+			        languageNode = languagesNode.getNode(language) ;
+			        if(languageNode.hasNode(COMMENTS)) commentsNode = languageNode.getNode(COMMENTS) ;
+			      } else if(language.equals(multiLangService_.getDefault(document))) {
+			        languageNode = document ;
+			      }
+			    } else {
+			      languageNode = document ;
+			    }
+			    Session session = document.getSession();
+			    ManageableRepository  repository = (ManageableRepository)session.getRepository();
+			    //TODO check if really need delegate to system session
+			    Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;
+			    commentsNode = (Node)systemSession.getItem(languageNode.getPath() + "/" + COMMENTS) ;
+			    String cacheKey = document.getPath().concat(commentsNode.getPath());
+			    Object comments = commentsCache_.get(cacheKey) ;
+			    List<Node> list = new ArrayList<Node>() ;
+			    for(NodeIterator iter = commentsNode.getNodes(); iter.hasNext();) {
+			      list.add(iter.nextNode()) ;
+			    }
+			    long size=commentsNode.getNodes().getSize();
+			    boolean deleted=false;
+			    NodeIterator iter = commentsNode.getNodes();
+			    while(iter.hasNext()&&!deleted){
+			    	
+		
+			    	Node commentNode=iter.nextNode();
+			    	if(commentNode.hasProperty(COMMENTOR)){
+			    		String _commentor= commentNode.getProperty(COMMENTOR).getString();
+			    		if(commentNode.hasProperty(MESSAGE)){
+				    		String message= commentNode.getProperty(MESSAGE).getString();
+				    		if(message.compareTo(comment)==0&&_commentor.compareTo(commentor)==0){
+				    			commentNode.remove();
+				    			document.save();;
+				    			systemSession.save();
+				    			systemSession.logout();
+				    			deleted=true;
+				    		}
+			    		}
+			    	}
+			    }
+	  
+  }
+  
 }

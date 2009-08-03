@@ -472,10 +472,12 @@
       <access-denied>Access denied! You can not access node '{0}'</access-denied>
       <null-exception>Item not found!It was removed or item changed or you haven't got permission to access this node!</null-exception>
       <confirm-deleteattachment>Do you want to remove this attachment file?</confirm-deleteattachment>
+      <confirm-deleteattcomment>Do you want to remove this comment?</confirm-deleteattcomment>
       <access-denied-exception>Access denied! Maybe you have no privileges on reading or node removed or changed</access-denied-exception>
     </msg>
     <tooltip>
       <remove-attachment>Remove this attachment file</remove-attachment>
+      <remove-comment>Remove this comment</remove-comment>
     </tooltip>
   </UIDocumentInfo>
   <ListView>

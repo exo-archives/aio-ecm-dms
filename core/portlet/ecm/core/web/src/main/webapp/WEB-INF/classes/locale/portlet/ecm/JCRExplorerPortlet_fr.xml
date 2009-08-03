@@ -472,10 +472,12 @@
       <access-denied>Accès interdit</access-denied>
       <null-exception>Elément non trouvé ! Il a été supprimé ou modifié, ou vous n'avez pas le droit d'accéder à ce noeud !</null-exception>
       <confirm-deleteattachment>Confirmez-vous la suppression du fichier attaché?</confirm-deleteattachment>
+      <confirm-deletecomment>Confirmez-vous la suppression du commentaire?</confirm-deletecomment>
       <access-denied-exception>Accès interdit ! Veuillez vérifier vos droits d'accès à ce noeud</access-denied-exception>
     </msg>
     <tooltip>
       <remove-attachment>Supprimer le fichier attaché</remove-attachment>
+      <remove-comment>Supprimer le commentaire</remove-comment>
     </tooltip>
   </UIDocumentInfo>
   <ListView>

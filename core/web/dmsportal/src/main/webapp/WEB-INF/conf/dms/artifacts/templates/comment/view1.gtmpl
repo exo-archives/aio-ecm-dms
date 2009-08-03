@@ -3,6 +3,8 @@
   if(commentsList.size() > 0) {
     java.text.SimpleDateFormat commentDateFormat = new java.text.SimpleDateFormat("h:mm a. EEE, MMM d, yyyy") ;
     def lastComment = commentsList.get(0) ;
+    def rcontext = _ctx.getRequestContext() ;
+    
 %>
   <style>
 		.Comments {
@@ -142,6 +144,16 @@
 		  color: #058EE6;
       text-decoration: underline;
 		}
+	.RemoveAttachments {
+	  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top; /* orientation=lt */
+	  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat right top; /* orientation=rt */
+	  margin: 0px 5px 0px 3px; /* orientation=lt */
+	  margin: 0px 3px 0px 5px; /* orientation=rt */
+	  padding-left: 18px; /* orientation=lt */
+	  padding-right: 18px; /* orientation=rt */
+	  height: 16px;
+	  cursor: pointer;
+	}
 	</style>
   <div class="Comments ShowHideContainer">
 		<div class="CommentBar" style="width: 600px;">
@@ -191,6 +203,26 @@
 		  		<%if(comment.hasProperty("exo:commentDate")){%>
 		  			<%=commentDateFormat.format(comment.getProperty("exo:commentDate").getDate().getTime())%>
 		  		<%}%>
+		  		
+		  		<%
+		  		String commentor=null;
+		  		String commentContent=null;
+		  		if(comment.hasProperty("exo:commentor")){
+		  		commentor=comment.getProperty("exo:commentor").getString();
+			  	}
+			  	if(comment.hasProperty("exo:commentContent")){
+			  	commentContent=comment.getProperty("exo:commentContent").getString();
+			  	}
+			  	System.out.println(""+"  "+commentor+" "+rcontext.getRemoteUser());
+		  		 if (commentor!=null&& commentor.compareTo(rcontext.getRemoteUser())==0) {
+		  		  Parameter[]parameters=new Parameter[2];
+			      parameters[0]=new Parameter("comment", commentContent);
+			      parameters[1]=new Parameter("commentor", commentor);
+		  		 %>
+		  		<a href="<%=uicomponent.event("RemoveComment", comment.getPath(), parameters)%>" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-comment")%>">
+							                     <span class="RemoveAttachments"></span>
+							                    </a>
+				<%}%>
 		  	</div>
 		  	<div class="CommentBox">  		
 		  		<div class="CommentBoxTopLeft">
