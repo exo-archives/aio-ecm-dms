@@ -46,18 +46,10 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.ecm.webui.component.explorer.popup.actions.UICommentForm;
-import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm;
-import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentFormController;
-import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContainer;
-import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
-import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
-import org.exoplatform.ecm.webui.popup.UIPopupContainer;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
-import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
@@ -112,9 +104,7 @@ import org.exoplatform.webui.exception.MessageException;
         @EventConfig(listeners = UIDocumentInfo.ChangeLanguageActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.DownloadActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.ShowPageActionListener.class),
-        @EventConfig(listeners = UIDocumentInfo.RemoveCommentActionListener.class,confirm="UIDocumentInfo.msg.confirm-deletecomment"),
-
-
+        @EventConfig(listeners = UIDocumentInfo.RemoveCommentActionListener.class,confirm="UIDocumentInfo.msg.confirm-deletecomment")
     }
 )
 public class UIDocumentInfo extends UIContainer implements NodePresentation {
