@@ -569,38 +569,39 @@ public class UIWorkingArea extends UIContainer {
     String srcPath;
     String[] arraySrcPath;
     String wsName;
+    Session session = null;
+    List<Node> lstNode = new ArrayList<Node>();
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
     for(int i=0; i< nodePaths.length; i++) {
       srcPath = nodePaths[i];      
       if (srcPath.indexOf(":/") > -1) {
         arraySrcPath = srcPath.split(":/");
         if ((arraySrcPath.length > 0) && (arraySrcPath[1] != null)) srcPath = "/" + arraySrcPath[1];
-        wsName = arraySrcPath[0];        
-        processRemove(srcPath, wsName, event);
+        wsName = arraySrcPath[0];   
+        session = uiExplorer.getSessionByWorkspace(wsName);
+        try {
+          lstNode.add((Node)session.getItem(srcPath));
+        } catch(PathNotFoundException path) {
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+              null,ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        } catch (Exception e) {
+          JCRExceptionManager.process(uiApp, e);
+        }
       }
+    }
+    for(Node node: lstNode) {
+      processRemove(node, event, true);
     }
   }
   
-  private void processRemove(String nodePath, String wsName, Event event) throws Exception {
+  private void processRemove(Node node, Event event, boolean isMultiSelect) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    if (wsName == null || wsName.length() == 0) {
-      wsName = uiExplorer.getCurrentWorkspace();
-    }
-    Session session = uiExplorer.getSessionByWorkspace(wsName);
+    Session session = node.getSession();
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
-    Node node = null;
-    try {
-      node = (Node)session.getItem(nodePath);
-      String lockToken = LockUtil.getLockToken(node);
-      if(lockToken != null) session.addLockToken(lockToken);
-    } catch(PathNotFoundException path) {
-      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
-          null,ApplicationMessage.WARNING));
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-      return;      
-    } catch (Exception e) {
-      JCRExceptionManager.process(uiApp, e);
-      return;
-    }
+    String lockToken = LockUtil.getLockToken(node);
+    if(lockToken != null) session.addLockToken(lockToken);
     try{
       ((ExtendedNode) node).checkPermission(PermissionType.REMOVE);        
     }catch (Exception e) {
@@ -609,7 +610,7 @@ public class UIWorkingArea extends UIContainer {
       return;
     }
     if(uiExplorer.nodeIsLocked(node)) {
-      Object[] arg = { nodePath };
+      Object[] arg = { node.getPath() };
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg, 
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
@@ -641,32 +642,6 @@ public class UIWorkingArea extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       uiExplorer.updateAjax(event);
       return;
-      /*
-      uiExplorer.getSession().refresh(false);
-      uiExplorer.refreshExplorer();
-      removeMixins(node);
-      if(node.hasNodes()) {
-        NodeIterator nodeIter = node.getNodes();
-        while(nodeIter.hasNext()) {
-          Node child = nodeIter.nextNode();
-          removeMixins(child);
-        }
-      }
-      try {
-        node.remove();
-        parentNode.save();
-      } catch(Exception eee) {
-        uiExplorer.getSession().refresh(false);
-        uiExplorer.refreshExplorer();
-        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-referentialIntegrityException", 
-            null,ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        uiExplorer.updateAjax(event);
-        return; 
-      }
-      uiExplorer.setSelectNode(parentNode);
-      uiExplorer.updateAjax(event);
-      */
     } catch(ConstraintViolationException cons) {
       uiExplorer.getSession().refresh(false);
       uiExplorer.refreshExplorer();
@@ -784,7 +759,12 @@ public class UIWorkingArea extends UIContainer {
         processRemoveMultiple(nodePath.split(";"), null, event);
     } else {
       isMultiSelect_ = false;
-      processRemove(nodePath, wsName, event);
+      if (wsName == null || wsName.length() == 0) {
+        wsName = uiExplorer.getCurrentWorkspace();
+      }
+      Session session = uiExplorer.getSessionByWorkspace(wsName);
+      Node node = uiExplorer.getNodeByPath(nodePath, session);
+      processRemove(node, event, false);
     }
     uiExplorer.updateAjax(event);
     if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save(); 
