@@ -696,5 +696,97 @@
    	<DialogFormException>Can not save this document. Maybe there is a problem with pre save interceptor</DialogFormException>
    </form>
   </UIDialogForm>
+  
+  <!--
+  #####Since version 2.6#######
+    
+  ###################### resoucebundle exo:taxonomyAction dialogs template ####
+  -->
+  <UIDialogForm>
+    <label>
+    	<explicit>
+    		<no>Không</no>
+    		<yes>Có</yes>
+    	</explicit>
+    	<permanentRecordIndicator>
+    		<true>Đúng</true>
+    		<false>Sai</false>	
+    	</permanentRecordIndicator>
+    	<containsRecordFolders>
+    		<true>Đúng</true>
+    		<false>Sai</false>
+    	</containsRecordFolders>
+    	<defaultMediaType>
+    		<Electronic>Điện tử</Electronic>
+    		<Paper>Bài báo</Paper>
+    	</defaultMediaType>
+    	<defaultMarkingList>
+    		<NONE>Không xác định</NONE>
+    		<CLASSIFIED>Đã được phân loại</CLASSIFIED>
+    		<UNCLASSIFIED>Không được phân loại</UNCLASSIFIED>
+    		<NOCONTRACT>Không hợp đồng</NOCONTRACT>
+    	</defaultMarkingList>
+    	<vitalRecordIndicator>
+    		<true>Đúng</true>
+    		<false>Sai</false>
+    	</vitalRecordIndicator>
+    	<vitalRecordReviewPeriod>
+    		<one-minute>1 phút</one-minute>
+    		<hourly>Hàng giờ</hourly>
+    		<daily>Hàng ngày</daily>
+    		<quarterly>Hàng quý</quarterly>
+    		<yearly>Hàng năm</yearly>
+    		<ten-years>10 năm</ten-years>
+    	</vitalRecordReviewPeriod>
+    	<processCutoff>
+    		<true>Đúng</true>
+    		<false>Sai</false>
+    	</processCutoff>
+    	<cutoffPeriod>
+    		<one-minute>1 phút</one-minute>
+    		<hourly>Hàng giờ</hourly>
+    		<daily>Hàng ngày</daily>
+    		<quarterly>Hàng quý</quarterly>
+    		<yearly>Hàng năm</yearly>
+    		<ten-years>10 năm</ten-years>
+    	</cutoffPeriod>
+    	<cutoffOnObsolete>
+    		<true>Đúng</true>
+    		<false>Sai</false>
+    	</cutoffOnObsolete>
+    	<cutoffOnSuperseded>
+    		<true>Đúng</true>
+    		<false>Sai</false>
+    	</cutoffOnSuperseded>
+    	<processHold>
+    		<true>Đúng</true>
+    		<false>Sai</false>
+    	</processHold>
+    	<holdPeriod>
+    		<one-minute>1 phút</one-minute>
+    		<hourly>Hàng giờ</hourly>
+    		<daily>Hàng ngày</daily>
+    		<quarterly>Hàng quý</quarterly>
+    		<yearly>Hàng năm</yearly>
+    		<ten-years>10 năm</ten-years>
+    	</holdPeriod>
+    	<discretionaryHold>
+    		<true>Đúng</true>
+    		<false>Sai</false>
+    	</discretionaryHold>
+    	<processTransfer>
+    		<true>Đúng</true>
+    		<false>Sai</false>
+    	</processTransfer>
+    	<processAccession>
+    		<true>Đúng</true>
+    		<false>Sai</false>
+    	</processAccession>
+    	<processDestruction>
+    		<true>Đúng</true>
+    		<false>Sai</false>
+    	</processDestruction>
+    </label>
+	</UIDialogForm>
 </bundle>
 

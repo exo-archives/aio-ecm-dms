@@ -21,8 +21,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
@@ -63,6 +66,7 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
@@ -405,7 +409,10 @@ public class UIDialogForm extends UIForm {
           uiSelectBox.setOptions(optionsList);
         }      
       } else if (options != null && options.length() >0) {
-        String[] array = options.split(",");
+        String[] array = options.split(",");        
+        RequestContext context = RequestContext.getCurrentInstance();
+        ResourceBundle res = context.getApplicationResourceBundle();
+        String optionLabel;
         for(int i = 0; i < array.length; i++) {
           List<String> listValue = new ArrayList<String>();
           String[] arrayChild = array[i].trim().split(SEPARATOR_VALUE);
@@ -414,11 +421,17 @@ public class UIDialogForm extends UIForm {
               listValue.add(arrayChild[j].trim());
             }
           }
-          if (listValue.size() > 1) {
-            optionsList.add(new SelectItemOption<String>(listValue.get(0), listValue.get(1)));
-          } else {
-            optionsList.add(new SelectItemOption<String>(listValue.get(0), listValue.get(0)));
-          }
+          try {
+            String tagName = listValue.get(0).replaceAll(" ", "-");
+            optionLabel = res.getString("UIDialogForm.label." + name + "." + tagName);
+          } catch (MissingResourceException e) {
+            if (listValue.size() > 1) {
+              optionLabel = listValue.get(1);
+            } else{
+              optionLabel = listValue.get(0);
+            }
+          }          
+          optionsList.add(new SelectItemOption<String>(optionLabel, listValue.get(0)));
         }
         uiSelectBox.setOptions(optionsList);
       } else {
