@@ -2433,4 +2433,14 @@
   		<name-not-allowed>Tên hành động không được chấp nhận.</name-not-allowed>
   	</msg>
   </UIActionForm>
+  <UISaveQueryForm>
+		<msg>
+			<name-not-allowed>Tên câu truy vấn không hợp lệ.</name-not-allowed>
+		</msg>
+	</UISaveQueryForm>
+	<UISimpleSearch>
+		<msg>
+			<name-not-allowed>Một từ hoặc một cụm từ trong nội dung không hợp lệ.</name-not-allowed>
+		</msg>
+	</UISimpleSearch>
 </bundle>

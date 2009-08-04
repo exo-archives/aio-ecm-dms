@@ -2425,4 +2425,15 @@
   		<name-not-allowed>This action name is not allowed.</name-not-allowed>
   	</msg>
   </UIActionForm>
+  
+  <UISaveQueryForm>
+		<msg>
+			<name-not-allowed>This query name is not allowed.</name-not-allowed>
+		</msg>
+	</UISaveQueryForm>
+	<UISimpleSearch>
+		<msg>
+			<name-not-allowed>A word or phrase in content is not allowed.</name-not-allowed>
+		</msg>
+	</UISimpleSearch>	
 </bundle>
