@@ -2239,7 +2239,16 @@
 		<can-not-unlock-node-is-checked-in>Can not unlock because node '{0}' or ancestor of '{0}' is checked-in</can-not-unlock-node-is-checked-in>
 	</msg>
   </UIPopupMenu>
-  
+  <UISaveQueryForm>
+	<msg>
+		<name-not-allowed>This query name is not allowed.</name-not-allowed>
+	</msg>
+  </UISaveQueryForm>
+	<UISimpleSearch>
+		<msg>
+			<name-not-allowed>A word or phrase in content is not allowed.</name-not-allowed>
+		</msg>
+	</UISimpleSearch>
 </bundle>
 
 

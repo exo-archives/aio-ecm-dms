@@ -2239,5 +2239,14 @@
 		<can-not-unlock-node-is-checked-in>Không thể unlock bởi vì node '{0}' hoặc cha của '{0}' đang ở trạng thái checked-in</can-not-unlock-node-is-checked-in>
 	</msg>
   </UIPopupMenu>
-  	
+  <UISaveQueryForm>
+		<msg>
+			<name-not-allowed>Tên câu truy vấn không hợp lệ.</name-not-allowed>
+		</msg>
+	</UISaveQueryForm>
+	<UISimpleSearch>
+		<msg>
+			<name-not-allowed>Một từ hoặc một cụm từ trong nội dung không hợp lệ.</name-not-allowed>
+		</msg>
+	</UISimpleSearch>	
 </bundle>
