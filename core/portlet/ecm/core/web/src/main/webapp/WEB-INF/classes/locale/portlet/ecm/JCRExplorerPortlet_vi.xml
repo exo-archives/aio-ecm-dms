@@ -2448,17 +2448,17 @@
 			<Private>Cá nhân</Private>
 			<Public>Công khai</Public>
 			<BackupCenter>Ổ đĩa sao lưu</BackupCenter>
-			<CategorizedDocumentsCenter>Categorized Documents Center</CategorizedDocumentsCenter>
-			<CollaborationCenter>Collaboration Center</CollaborationCenter>
-			<DigitalAssetsManagementCenter>Digital Assets Management Center</DigitalAssetsManagementCenter>
+			<CategorizedDocumentsCenter>Tài liệu phân loại</CategorizedDocumentsCenter>
+			<CollaborationCenter>Cộng tác</CollaborationCenter>
+			<DigitalAssetsManagementCenter>Quản lý Digital Assets</DigitalAssetsManagementCenter>
 			<DMSAdministration>Quản lý DMS</DMSAdministration>
 			<DocumentsManagementCenter>Ổ đĩa quản lý tài liệu</DocumentsManagementCenter>
-			<LiveDocumentsCenter>Live Documents Center</LiveDocumentsCenter>
-			<PendingDocumentsCenter>Pending Documents Center</PendingDocumentsCenter>
-			<RecordsManagementCenter>Records Management Center</RecordsManagementCenter>
-			<SharedUsersSpace>Shared Users Space</SharedUsersSpace>
-			<Systemfiles>Ổ đĩa tệp hệ thống</Systemfiles>
-			<ValidationRequestsDocumentsCenter>Validation Requests Documents Center</ValidationRequestsDocumentsCenter>
+			<LiveDocumentsCenter>Ổ đĩa chứa tài liệu có hiệu lực</LiveDocumentsCenter>
+			<PendingDocumentsCenter>Ổ đĩa chứa tài liệu chưa xử lý</PendingDocumentsCenter>
+			<RecordsManagementCenter>Ổ đĩa quản lý hồ sơ</RecordsManagementCenter>
+			<SharedUsersSpace>Ổ đĩa chia sẻ cho người dùng</SharedUsersSpace>
+			<Systemfiles>Ổ đĩa chứa tệp hệ thống</Systemfiles>
+			<ValidationRequestsDocumentsCenter>Ổ đĩa chứa tài liệu yêu cầu phê duyệt</ValidationRequestsDocumentsCenter>
 		</label>  
 	</Drives>
 	<Comments>
