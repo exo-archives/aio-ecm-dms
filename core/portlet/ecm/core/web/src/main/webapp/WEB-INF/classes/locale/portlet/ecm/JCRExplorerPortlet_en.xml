@@ -2436,6 +2436,24 @@
 			<name-not-allowed>A word or phrase in content is not allowed.</name-not-allowed>
 		</msg>
 	</UISimpleSearch>	
+	<Drives>
+		<label>
+			<Private>Private</Private>
+			<Public>Public</Public>
+			<BackupCenter>Backup Center</BackupCenter>
+			<CategorizedDocumentsCenter>Categorized Documents Center</CategorizedDocumentsCenter>
+			<CollaborationCenter>Collaboration Center</CollaborationCenter>
+			<DigitalAssetsManagementCenter>Digital Assets Management Center</DigitalAssetsManagementCenter>
+			<DMSAdministration>DMS Administration</DMSAdministration>
+			<DocumentsManagementCenter>Documents Management Center</DocumentsManagementCenter>
+			<LiveDocumentsCenter>Live Documents Center</LiveDocumentsCenter>
+			<PendingDocumentsCenter>Pending Documents Center</PendingDocumentsCenter>
+			<RecordsManagementCenter>Records Management Center</RecordsManagementCenter>
+			<SharedUsersSpace>Shared Users Space</SharedUsersSpace>
+			<Systemfiles>System files</Systemfiles>
+			<ValidationRequestsDocumentsCenter>Validation Requests Documents Center</ValidationRequestsDocumentsCenter>
+		</label>  
+	</Drives>	
 	<Comments>
 	  <tooltip>
 	    <remove-comment>Remove this comment</remove-comment>
@@ -2445,6 +2463,5 @@
 	  <msg>
 	    <confirm-deletecomment>Do you really want to delete this comment?</confirm-deletecomment>
 	  </msg>
-	</UIDocumentInfo>
-	
+	</UIDocumentInfo>	
 </bundle>

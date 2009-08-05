@@ -2439,6 +2439,24 @@
 			<name-not-allowed>A word or phrase in content is not allowed.</name-not-allowed>
 		</msg>
 	</UISimpleSearch>
+	<Drives>
+		<label>
+			<Private>Privé</Private>
+			<Public>Publique</Public>
+			<BackupCenter>Centre de Sauvegarder</BackupCenter>
+			<CategorizedDocumentsCenter>Centre Document des Catégories </CategorizedDocumentsCenter>
+			<CollaborationCenter>Centre de Collaboration</CollaborationCenter>
+			<DigitalAssetsManagementCenter>Centre de Management des Matétiels Digitaux</DigitalAssetsManagementCenter>
+			<DMSAdministration>Administrateur de DMS</DMSAdministration>
+			<DocumentsManagementCenter>Centre de Management des Documents</DocumentsManagementCenter>
+			<LiveDocumentsCenter>Centre des Document Vivrés</LiveDocumentsCenter>
+			<PendingDocumentsCenter>Centre des Documents Suppends</PendingDocumentsCenter>
+			<RecordsManagementCenter>Centre de Management Des Records</RecordsManagementCenter>
+			<SharedUsersSpace>L'espace Partagé des Utilisateurs</SharedUsersSpace>
+			<Systemfiles>Système de Fichiers </Systemfiles>
+			<ValidationRequestsDocumentsCenter>Centre de Validation Des Documents Requêtes</ValidationRequestsDocumentsCenter>
+		</label>  
+	</Drives>
 	<Comments>
 	  <tooltip>
 	    <remove-comment>Supprimer ce commentaire</remove-comment>
@@ -2448,6 +2466,5 @@
 	  <msg>
 	    <confirm-deletecomment>Voulez-vous vraiment supprimer ce commentaire?</confirm-deletecomment>
 	  </msg>
-	</UIDocumentInfo>
-	
+	</UIDocumentInfo>	
 </bundle>

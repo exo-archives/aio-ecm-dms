@@ -54,7 +54,7 @@
 			                  <div class="LeftBar">
 			                    <div class="RightBar">
 			                      <div class="MiddleBar">
-			                        <a href="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><%=personalDrive.getName().substring(personalDrive.getName().lastIndexOf("|") + 1)%></a>
+			                        <a href="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><%=_ctx.appRes("Drives.label.${personalDrive.name.replace(" ", "")}")%></a>
 			                      </div>
 			                    </div>
 			                  </div>
@@ -176,7 +176,7 @@
 				                  <div class="LeftBar">
 				                    <div class="RightBar">
 				                      <div class="MiddleBar">
-				                        <a href="<%=uicomponent.event("SelectDrive", Utils.formatNodeName(drive.getName()))%>">${drive.name}</a>
+				                        <a href="<%=uicomponent.event("SelectDrive", Utils.formatNodeName(drive.getName()))%>"><%=_ctx.appRes("Drives.label.${drive.name.replace(" ", "")}")%></a>
 				                      </div>
 				                    </div>
 				                  </div>
