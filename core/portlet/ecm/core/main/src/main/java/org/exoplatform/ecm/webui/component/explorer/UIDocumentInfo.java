@@ -673,12 +673,14 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     }
   }
   static public class RemoveCommentActionListener extends EventListener<UIDocumentInfo>{
-		public void execute(Event<UIDocumentInfo> event) throws Exception {
-		      UIDocumentInfo uiComp = event.getSource() ;
-		      String comment=event.getRequestContext().getRequestParameter("comment");
-		      String commentor=event.getRequestContext().getRequestParameter("commentor");
-		      uiComp.getApplicationComponent(CommentsService.class).removeComment(uiComp.currentNode_, commentor, comment, uiComp.selectedLang_);
-		      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp); 
-		    }
-	}  
+    public void execute(Event<UIDocumentInfo> event) throws Exception {
+      UIDocumentInfo uiComp = event.getSource() ;
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      Node commentNode = uiComp.getNodeByPath(nodePath, uiComp.getWorkspaceName());
+      Node comments = commentNode.getParent();
+      commentNode.remove();
+      comments.getSession().save();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
+    }
+  }  
 }

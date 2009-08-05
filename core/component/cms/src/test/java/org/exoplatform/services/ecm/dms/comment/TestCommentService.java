@@ -19,7 +19,6 @@ package org.exoplatform.services.ecm.dms.comment;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -81,29 +80,7 @@ public class TestCommentService extends BaseDMSTestCase {
     multiLangService = (MultiLanguageService) container.getComponentInstanceOfType(MultiLanguageService.class);
 
   }
-  public void TestCommentService(int i) throws Exception {
-	    commentsService = (CommentsService) container.getComponentInstanceOfType(CommentsService.class);
-	    multiLangService = (MultiLanguageService) container.getComponentInstanceOfType(MultiLanguageService.class);
-
-	  }
-public void testRemoveComment()throws Exception{
-	Node test = session.getRootNode().addNode("Test");
-    if(test.canAddMixin(I18NMixin)){
-      test.addMixin(I18NMixin);
-    }
-    session.save();
-    commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
-    commentsService.addComment(test, "marry", "marry@explatform.com", null, "Thanks", multiLangService.getDefault(test));
-    try{
-	commentsService.removeComment(test, "root", "Hello", multiLangService.getDefault(test));
-    }
-    catch(Exception ex){
-    	ex.printStackTrace();
-    }
-
-   
-        
-}
+  
   /**
    * Test Method: addComment()
    * Input:

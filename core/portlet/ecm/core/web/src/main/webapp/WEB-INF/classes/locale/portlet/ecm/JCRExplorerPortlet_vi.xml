@@ -2443,4 +2443,15 @@
 			<name-not-allowed>Một từ hoặc một cụm từ trong nội dung không hợp lệ.</name-not-allowed>
 		</msg>
 	</UISimpleSearch>
+	<Comments>
+	  <tooltip>
+	    <remove-comment>Xóa bỏ ý kiến này</remove-comment>
+	  </tooltip>
+	</Comments>	
+	<UIDocumentInfo>
+	  <msg>
+	    <confirm-deletecomment>Bạn có thực sự muốn xóa ý kiến này không?</confirm-deletecomment>
+	  </msg>
+	</UIDocumentInfo>
+	
 </bundle>

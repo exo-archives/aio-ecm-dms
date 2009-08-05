@@ -469,7 +469,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .TblAddressBar{
 	table-layout: fixed; 
-	width: 100%; 
+	width: 99%; 
 	_width: auto; 
 	margin: 4px;
 }

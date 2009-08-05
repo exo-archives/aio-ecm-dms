@@ -28,7 +28,7 @@
     
     .Comments .CommentBar .MiddleCommentBar {    	
     	height: 54px;
-      background: url('/eXoDMSResources/skin/images/article//CommentBar.gif') repeat-x left -54px ;
+      background: url('/eXoDMSResources/skin/images/article/CommentBar.gif') repeat-x left -54px ;
       padding: 0px 3px;
     }
     
@@ -77,7 +77,6 @@
     
     .Comments .CommentBox {
       margin-right: auto;
-			height: 100%;
     }
     
     .Comments .CommentBox .CommentBoxTopLeft {
@@ -116,7 +115,6 @@
     .Comments .CommentBox .CommentBoxCenterBG {
     	padding: 8px; 
     	background: white;
-    	height: 100% ;     	         	    	
     }
     
     .Comments .CommentBox .CommentBoxBottomLeft {
@@ -144,16 +142,15 @@
 		  color: #058EE6;
       text-decoration: underline;
 		}
-	.RemoveAttachments {
-	  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top; /* orientation=lt */
-	  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat right top; /* orientation=rt */
-	  margin: 0px 5px 0px 3px; /* orientation=lt */
-	  margin: 0px 3px 0px 5px; /* orientation=rt */
-	  padding-left: 18px; /* orientation=lt */
-	  padding-right: 18px; /* orientation=rt */
-	  height: 16px;
-	  cursor: pointer;
-	}
+		.CommentInfo .RemoveAttachments {
+		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top; /* orientation=lt */
+		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat right top; /* orientation=rt */
+		  margin: 0px 5px 0px 3px; /* orientation=lt */
+		  margin: 0px 3px 0px 5px; /* orientation=rt */
+		  padding: 3px 10px;
+		  height: 16px;
+		  cursor: pointer;
+		}
 	</style>
   <div class="Comments ShowHideContainer">
 		<div class="CommentBar" style="width: 600px;">
@@ -206,22 +203,14 @@
 		  		
 		  		<%
 		  		String commentor=null;
-		  		String commentContent=null;
 		  		if(comment.hasProperty("exo:commentor")){
-		  		commentor=comment.getProperty("exo:commentor").getString();
+		  		  commentor=comment.getProperty("exo:commentor").getString();
 			  	}
-			  	if(comment.hasProperty("exo:commentContent")){
-			  	commentContent=comment.getProperty("exo:commentContent").getString();
-			  	}
-			  	System.out.println(""+"  "+commentor+" "+rcontext.getRemoteUser());
-		  		 if (commentor!=null&& commentor.compareTo(rcontext.getRemoteUser())==0) {
-		  		  Parameter[]parameters=new Parameter[2];
-			      parameters[0]=new Parameter("comment", commentContent);
-			      parameters[1]=new Parameter("commentor", commentor);
-		  		 %>
-		  		<a href="<%=uicomponent.event("RemoveComment", comment.getPath(), parameters)%>" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-comment")%>">
-							                     <span class="RemoveAttachments"></span>
-							                    </a>
+          if (commentor!=null && commentor.equals(rcontext.getRemoteUser())) {
+	  		 %>
+			  		<a href="<%=uicomponent.event("RemoveComment", comment.getPath())%>">
+							<image class="RemoveAttachments" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" title="<%=_ctx.appRes("Comments.tooltip.remove-comment")%>"/>
+						</a>
 				<%}%>
 		  	</div>
 		  	<div class="CommentBox">  		

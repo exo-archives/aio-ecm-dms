@@ -2439,4 +2439,15 @@
 			<name-not-allowed>A word or phrase in content is not allowed.</name-not-allowed>
 		</msg>
 	</UISimpleSearch>
+	<Comments>
+	  <tooltip>
+	    <remove-comment>Supprimer ce commentaire</remove-comment>
+	  </tooltip>
+	</Comments>
+	<UIDocumentInfo>
+	  <msg>
+	    <confirm-deletecomment>Voulez-vous vraiment supprimer ce commentaire?</confirm-deletecomment>
+	  </msg>
+	</UIDocumentInfo>
+	
 </bundle>

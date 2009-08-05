@@ -16,7 +16,6 @@
  */
 package org.exoplatform.services.cms.comments;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -57,15 +56,5 @@ public interface CommentsService {
    * @throws Exception
    */
   public List<Node> getComments(Node document, String language) throws Exception ;
-  
-  /**
-   * 
-   * @param document
-   * @param commentor
-   * @param language
-   * @throws Exception
-   */
-  public void removeComment(Node document, String commentor, String comment, String language)throws Exception;
-  
   
 }

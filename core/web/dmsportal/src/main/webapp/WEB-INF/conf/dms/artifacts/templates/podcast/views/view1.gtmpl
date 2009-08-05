@@ -1,6 +1,7 @@
 <%
 	import java.text.SimpleDateFormat ;
 	import org.exoplatform.webui.core.UIPopupWindow;
+	import org.exoplatform.web.application.Parameter;
 	
 	UIPopupWindow uiPopupWindow = uicomponent.getAncestorOfType(UIPopupWindow.class);
   def resizeBlock = "class=\"UIResizableBlock\"";
