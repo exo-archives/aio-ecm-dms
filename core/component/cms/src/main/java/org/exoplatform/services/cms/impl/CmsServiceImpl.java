@@ -134,8 +134,8 @@ public class CmsServiceImpl implements CmsService {
         }
       }
       //all document node should be mix:referenceable that allow retrieve UUID by method Node.getUUID()
-      if(!currentNode.isNodeType("mix:referenceable")) {
-        currentNode.addMixin("mix:referenceable");
+      if(!currentNode.isNodeType(MIX_REFERENCEABLE)) {
+        currentNode.addMixin(MIX_REFERENCEABLE);
       }
     //Broadcast CmsService.event.postCreate event
       listenerService.broadcast(POST_CREATE_CONTENT_EVENT,this,currentNode);
@@ -182,6 +182,8 @@ public class CmsServiceImpl implements CmsService {
       }
     }
     if (isAddNew) {
+      //Broadcast CmsService.event.preCreate event
+      listenerService.broadcast(PRE_CREATE_CONTENT_EVENT,storeHomeNode,mappings);
       currentNode = storeHomeNode.addNode(nodeName, primaryType);            
       if(mixinTypes != null){
         for(String type : mixinTypes){
@@ -193,15 +195,18 @@ public class CmsServiceImpl implements CmsService {
         }
       }        
       createNodeRecursively(NODE, currentNode, nodeType, mappings);                       
+      if(!currentNode.isNodeType(MIX_REFERENCEABLE)) {
+        currentNode.addMixin(MIX_REFERENCEABLE) ;
+      }
+      //Broadcast CmsService.event.postCreate event
+      listenerService.broadcast(POST_CREATE_CONTENT_EVENT,this,currentNode);
     } else {
       currentNode = storeHomeNode.getNode(nodeName);      
       updateNodeRecursively(NODE, currentNode, nodeType, mappings);
       if(currentNode.isNodeType("exo:datetime")) {
         currentNode.setProperty("exo:dateModified",new GregorianCalendar()) ;
       }
-    }
-    if(!currentNode.isNodeType(MIX_REFERENCEABLE)) {
-      currentNode.addMixin(MIX_REFERENCEABLE) ;
+      listenerService.broadcast(POST_EDIT_CONTENT_EVENT, this, currentNode);
     }
     return currentNode.getUUID();
   }
