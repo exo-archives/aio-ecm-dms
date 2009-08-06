@@ -575,9 +575,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     for (VersionNode version : list) {
       String state = getStateByVersion(version, currentNode);
       if (state.equals(PUBLISHED)) {
-        currentNode.restore(version.getVersion(), true);
-        currentNode.checkout();
-        return currentNode;
+        return version.getVersion().getNode("jcr:frozenNode");
       }
       if (version.getChildren().size() > 0) {
         Node node = getVerionNodePublish(version.getChildren(), currentNode);

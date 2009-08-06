@@ -309,17 +309,28 @@ public class UIBrowseContainer extends UIContainer {
     return strCapacity;
   }
   
-  private void addNodePublish(List<Node> listNode, Node node) throws Exception {
+  public boolean isPublishedNode(Node node) throws Exception {
     if (isAllowPublish()) {
       PublicationService publicationService = getApplicationComponent(PublicationService.class);
-      Node nodecheck = publicationService.getNodePublish(node, null);
-      if (nodecheck != null) {
-        listNode.add(nodecheck); 
-      }
-    } else {
-      listNode.add(node);
+      if(publicationService.isNodeEnrolledInLifecycle(node) && 
+          publicationService.getCurrentState(node).equals("published")) 
+        return true;
     }
+    return false;
   }
+  
+  public Node getViewNode(Node node) throws Exception {
+    if(isPublishedNode(node)) {
+      PublicationService publicationService = getApplicationComponent(PublicationService.class);
+      return publicationService.getNodePublish(node, null);
+    }
+    return node;
+  }
+  
+  private void addNodePublish(List<Node> listNode, Node node) throws Exception {
+    if(isPublishedNode(node)) listNode.add(node);
+    else listNode.add(node);
+  }  
   
   /**
    * Return a list of Node in the Query use case
@@ -701,14 +712,9 @@ public class UIBrowseContainer extends UIContainer {
           if (templates.contains(node.getPrimaryNodeType().getName())) {
             if (canRead(node)) {
               if (isAllowPublish()) {
-                PublicationService publicationService = getApplicationComponent(PublicationService.class);
-                Node nodecheck = publicationService.getNodePublish(node, null);
-                if (nodecheck != null) {
-                  subDocumentList.add(nodecheck); 
-                }
-              } else {
-                subDocumentList.add(node);
+                if(!isPublishedNode(node)) continue;
               }
+              subDocumentList.add(node);
             }
           }
         }
@@ -1143,7 +1149,15 @@ public class UIBrowseContainer extends UIContainer {
     setShowDocumentDetail(true);
     setShowDocumentList(hasDocList);
     UIDocumentDetail uiDocumetDetail = getChild(UIDocumentDetail.class);
-    uiDocumetDetail.setNode(docNode);
+    PublicationService publicationService = getApplicationComponent(PublicationService.class);
+    uiDocumetDetail.setOriginalNode(docNode);
+    if(isAllowPublish()) {
+      if(isPublishedNode(docNode)) {
+        uiDocumetDetail.setNode(publicationService.getNodePublish(docNode, null));
+      }
+    } else {
+      uiDocumetDetail.setNode(docNode);
+    }
     uiDocumetDetail.setLanguage(null);
     uiDocumetDetail.setRendered(true);
   }
