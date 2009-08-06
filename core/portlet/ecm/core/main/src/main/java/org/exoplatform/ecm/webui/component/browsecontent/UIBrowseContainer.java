@@ -363,7 +363,7 @@ public class UIBrowseContainer extends UIContainer {
     return strCapacity;
   }
   
-  public boolean isPublisedNode(Node node) throws Exception {
+  public boolean isPublishedNode(Node node) throws Exception {
     if (isAllowPublish()) {
       PublicationService publicationService = getApplicationComponent(PublicationService.class);
       if(publicationService.isNodeEnrolledInLifecycle(node) && 
@@ -374,7 +374,7 @@ public class UIBrowseContainer extends UIContainer {
   }
   
   public Node getViewNode(Node node) throws Exception {
-    if(isPublisedNode(node)) {
+    if(isPublishedNode(node)) {
       PublicationService publicationService = getApplicationComponent(PublicationService.class);
       return publicationService.getNodePublish(node, null);
     }
@@ -382,7 +382,7 @@ public class UIBrowseContainer extends UIContainer {
   }
   
   private void addNodePublish(List<Node> listNode, Node node) throws Exception {
-    if(isPublisedNode(node)) listNode.add(node);
+    if(isPublishedNode(node)) listNode.add(node);
     else listNode.add(node);
   }
   
@@ -829,7 +829,7 @@ public class UIBrowseContainer extends UIContainer {
                 }
               }
               if (isAllowPublish()) {
-                if(!isPublisedNode(node)) continue;
+                if(!isPublishedNode(node)) continue;
               }
               subDocumentList.add(node);
             }
@@ -1418,7 +1418,15 @@ public class UIBrowseContainer extends UIContainer {
     setShowDocumentDetail(true);
     setShowDocumentList(hasDocList);
     UIDocumentDetail uiDocumetDetail = getChild(UIDocumentDetail.class);
-    uiDocumetDetail.setNode(docNode);
+    PublicationService publicationService = getApplicationComponent(PublicationService.class);
+    uiDocumetDetail.setOriginalNode(docNode);
+    if(isAllowPublish()) {
+      if(isPublishedNode(docNode)) {
+        uiDocumetDetail.setNode(publicationService.getNodePublish(docNode, null));
+      }
+    } else {
+      uiDocumetDetail.setNode(docNode);
+    }
     uiDocumetDetail.setLanguage(null);
     uiDocumetDetail.setRendered(true);
   }
@@ -1778,15 +1786,6 @@ public class UIBrowseContainer extends UIContainer {
         uiContainer.setTemplateDetail(vservice.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES,
             repoName, SessionProviderFactory.createSystemProvider()).getNode(detailTemplateName)
             .getPath());
-        PublicationService publicationService = 
-          uiContainer.getApplicationComponent(PublicationService.class);
-        if(uiContainer.isAllowPublish()) {
-          if(uiContainer.isPublisedNode(selectNode)) {
-            UIDocumentDetail uiDocumetDetail = uiContainer.getChild(UIDocumentDetail.class);
-            uiDocumetDetail.setOriginalNode(selectNode);
-            selectNode = publicationService.getNodePublish(selectNode, null);
-          }
-        }
         uiContainer.viewDocument(selectNode, true);
       } else {
         String templateType = uiContainer.getPortletPreferences().getValue(Utils.CB_USECASE, "");

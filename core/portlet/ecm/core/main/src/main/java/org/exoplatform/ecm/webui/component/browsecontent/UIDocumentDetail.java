@@ -206,11 +206,10 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
   public String getDownloadLink(Node node) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;
-    if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return null; 
     Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
     InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
     dresource = new InputStreamDownloadResource(input, "image") ;
-    dresource.setDownloadName(node.getName()) ;
+    dresource.setDownloadName(originalNode_.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
 
@@ -220,7 +219,7 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
     Node imageNode = node.getNode(Utils.EXO_IMAGE) ;
     InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
     dresource = new InputStreamDownloadResource(input, "image") ;
-    dresource.setDownloadName(node.getName()) ;
+    dresource.setDownloadName(originalNode_.getName()) ;
     return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
   }
 
@@ -431,7 +430,7 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
     public void execute(Event<UIDocumentDetail> event) throws Exception {
       UIDocumentDetail uiComp = event.getSource() ;
       String downloadLink = uiComp.getDownloadLink(uiComp.getFileLangNode(uiComp.getNode()));
-      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
+      event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");
     }
   }
 }
