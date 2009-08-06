@@ -135,7 +135,7 @@ public class CmsServiceImpl implements CmsService {
       }
       //all document node should be mix:referenceable that allow retrieve UUID by method Node.getUUID()
       if(!currentNode.isNodeType("mix:referenceable")) {
-    	  currentNode.addMixin("mix:referenceable");
+        currentNode.addMixin("mix:referenceable");
       }
     //Broadcast CmsService.event.postCreate event
       listenerService.broadcast(POST_CREATE_CONTENT_EVENT,this,currentNode);
@@ -250,7 +250,7 @@ public class CmsServiceImpl implements CmsService {
       PropertyDefinition[] propertyDefs = currentNodeType.getPropertyDefinitions();
       for (int i = 0; i < propertyDefs.length; i++) {      
         PropertyDefinition propertyDef = propertyDefs[i];         
-        if (!propertyDef.isProtected()) {        
+        if (!propertyDef.isAutoCreated() && !propertyDef.isProtected()) {        
           String propertyName = propertyDef.getName();     
           int requiredtype = propertyDef.getRequiredType();
           String currentPath = path + "/" + propertyName;
@@ -369,7 +369,7 @@ public class CmsServiceImpl implements CmsService {
       } else {
         nodeDef = (NodeDefinition) obj;
       } 
-      if(nodeDef.isProtected()) {
+      if(nodeDef.isAutoCreated() || nodeDef.isProtected()) {
         continue ;
       }            
       if(((ExtendedItemDefinition)nodeDef).isResidualSet()) {
