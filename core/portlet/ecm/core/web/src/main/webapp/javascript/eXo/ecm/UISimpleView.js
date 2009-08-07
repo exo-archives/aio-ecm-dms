@@ -77,7 +77,9 @@ var SimpleView = function() {
 		if (mobileElement && mobileElement.move) {
 			var expandElement = DOM.findAncestorByClass(element, "ExpandIcon");
 			if(expandElement && expandElement.onclick) {
-				if (expandElement.onclick instanceof Function) expandElement.onclick(event);
+				if (expandElement.onclick instanceof Function) {
+					expandElement.onclick(event);
+				}
 			}
 		}
 	};
@@ -102,8 +104,8 @@ var SimpleView = function() {
 			var itemSelected = element.cloneNode(true);
 			Self.itemsSelected = new Array(itemSelected);
 			
-			var uiResizableBlock = DOM.findAncestorByClass(element, "UIResizableBlock");
-			if (uiResizableBlock) uiResizableBlock.style.overflow = "hidden";
+			//var uiResizableBlock = DOM.findAncestorByClass(element, "UIResizableBlock");
+			//if (uiResizableBlock) uiResizableBlock.style.overflow = "hidden";
 			
 			//create mobile element
 			var mobileElement = newElement({
@@ -130,6 +132,7 @@ var SimpleView = function() {
 	
 	SimpleView.prototype.mouseUpTree = function(event) {
 		var event = event || window.event;
+		
 		var element = this;
 		revertResizableBlock();
 		Self.enableDragDrop = null;
