@@ -334,7 +334,7 @@
   bottom: 3px;
 }
 
-.SeparatorLine { 
+.UICBNavigation .SeparatorLine { 
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 	background: url('DefaultSkin/background/SeparatorLine1x2.gif') repeat-y ;  
