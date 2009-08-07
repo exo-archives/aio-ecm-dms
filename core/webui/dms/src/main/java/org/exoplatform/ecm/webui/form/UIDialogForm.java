@@ -423,7 +423,7 @@ public class UIDialogForm extends UIForm {
           }
           try {
             String tagName = listValue.get(0).replaceAll(" ", "-");
-            optionLabel = res.getString("UIDialogForm.label." + name + "." + tagName);
+            optionLabel = res.getString(tagName);
           } catch (MissingResourceException e) {
             if (listValue.size() > 1) {
               optionLabel = listValue.get(1);

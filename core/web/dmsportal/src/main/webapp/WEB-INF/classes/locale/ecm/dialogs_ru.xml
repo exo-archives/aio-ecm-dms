@@ -701,90 +701,22 @@
     
   ###################### resoucebundle exo:taxonomyAction dialogs template ####
   -->
-  <UIDialogForm>
-    <label>
-    	<explicit>
-    		<no>No</no>
-    		<yes>Yes</yes>
-    	</explicit>
-    	<permanentRecordIndicator>
-    		<true>True</true>
-    		<false>False</false>	
-    	</permanentRecordIndicator>
-    	<containsRecordFolders>
-    		<true>True</true>
-    		<false>False</false>
-    	</containsRecordFolders>
-    	<defaultMediaType>
-    		<Electronic>Electronic</Electronic>
-    		<Paper>Paper</Paper>
-    	</defaultMediaType>
-    	<defaultMarkingList>
-    		<NONE>None</NONE>
-    		<CLASSIFIED>Classified</CLASSIFIED>
-    		<UNCLASSIFIED>Un Classified</UNCLASSIFIED>
-    		<NOCONTRACT>No Contract</NOCONTRACT>
-    	</defaultMarkingList>
-    	<vitalRecordIndicator>
-    		<true>True</true>
-    		<false>False</false>
-    	</vitalRecordIndicator>
-    	<vitalRecordReviewPeriod>
-    		<one-minute>One Minute</one-minute>
-    		<hourly>Hourly</hourly>
-    		<daily>Daily</daily>
-    		<quarterly>Quarterly</quarterly>
-    		<yearly>Yearly</yearly>
-    		<ten-years>Ten Years</ten-years>
-    	</vitalRecordReviewPeriod>
-    	<processCutoff>
-    		<true>True</true>
-    		<false>False</false>
-    	</processCutoff>
-    	<cutoffPeriod>
-    		<one-minute>One Minute</one-minute>
-    		<hourly>Hourly</hourly>
-    		<daily>Daily</daily>
-    		<quarterly>Quarterly</quarterly>
-    		<yearly>Yearly</yearly>
-    		<ten-years>Ten Years</ten-years>
-    	</cutoffPeriod>
-    	<cutoffOnObsolete>
-    		<true>True</true>
-    		<false>False</false>
-    	</cutoffOnObsolete>
-    	<cutoffOnSuperseded>
-    		<true>True</true>
-    		<false>False</false>
-    	</cutoffOnSuperseded>
-    	<processHold>
-    		<true>True</true>
-    		<false>False</false>
-    	</processHold>
-    	<holdPeriod>
-    		<one-minute>One Minute</one-minute>
-    		<hourly>Hourly</hourly>
-    		<daily>Daily</daily>
-    		<quarterly>Quarterly</quarterly>
-    		<yearly>Yearly</yearly>
-    		<ten-years>Ten Years</ten-years>
-    	</holdPeriod>
-    	<discretionaryHold>
-    		<true>True</true>
-    		<false>False</false>
-    	</discretionaryHold>
-    	<processTransfer>
-    		<true>True</true>
-    		<false>False</false>
-    	</processTransfer>
-    	<processAccession>
-    		<true>True</true>
-    		<false>False</false>
-    	</processAccession>
-    	<processDestruction>
-    		<true>True</true>
-    		<false>False</false>
-    	</processDestruction>
-    </label>
-	</UIDialogForm>  
+  <no>No</no>
+	<yes>Yes</yes>
+	<true>True</true>
+	<false>False</false>	
+	<Electronic>Electronic</Electronic>
+	<Paper>Paper</Paper>
+	<NONE>None</NONE>
+	<CLASSIFIED>Classified</CLASSIFIED>
+	<UNCLASSIFIED>Un Classified</UNCLASSIFIED>
+	<NOCONTRACT>No Contract</NOCONTRACT>
+	<true>True</true>
+	<false>False</false>
+	<one-minute>One Minute</one-minute>
+	<hourly>Hourly</hourly>
+	<daily>Daily</daily>
+	<quarterly>Quarterly</quarterly>
+	<yearly>Yearly</yearly>
+	<ten-years>Ten Years</ten-years>  
 </bundle>
