@@ -118,7 +118,7 @@
 %>
 <div $resizeBlock>
 	<div class="FileContent">
-		<%if(mimeType.equals("text/html")) { 
+		<%if(mimeType.equals("text/html") || mimeType.equals("application/rss+xml")) { 
 		  def rcontext = _ctx.getRequestContext() ;
 			rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');
 		%>

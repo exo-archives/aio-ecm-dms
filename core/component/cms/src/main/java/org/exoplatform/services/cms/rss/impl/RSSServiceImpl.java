@@ -420,7 +420,7 @@ public class RSSServiceImpl implements RSSService{
         }
       }
       session.save() ;
-      String mimeType = "text/xml" ;
+      String mimeType = "application/rss+xml";
       Node rss = null;
       if(!rootNode.hasNode(rssNodeName)){
         rss = rootNode.addNode(rssNodeName, NT_FILE);
