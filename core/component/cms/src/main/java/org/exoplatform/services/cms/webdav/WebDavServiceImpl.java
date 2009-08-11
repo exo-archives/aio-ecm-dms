@@ -176,29 +176,6 @@ public class WebDavServiceImpl extends org.exoplatform.services.jcr.webdav.WebDa
                 depthHeader, overwriteHeader, baseURI, body);
   }
 
-  @HTTPMethod(WebDavMethods.DELETE)
-  @URITemplate("/{repoName}/{repoPath}/")
-  @InputTransformer(PassthroughInputTransformer.class)
-  @OutputTransformer(PassthroughOutputTransformer.class)
-  public Response delete(@URIParam("repoName") String repoName,
-                         @URIParam("repoPath") String repoPath,
-                         @HeaderParam(WebDavHeaders.LOCKTOKEN) String lockTokenHeader,
-                         @HeaderParam(WebDavHeaders.IF) String ifHeader) {
-
-    try {
-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath));
-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
-    } catch (PathNotFoundException exc) {
-      return Response.Builder.notFound().build();
-    } catch (NoSuchWorkspaceException exc) {
-      return Response.Builder.notFound().build();
-    } catch (Exception e) {
-      log.warn("Cannot find the item at " + repoName + "/" + repoPath, e);
-      return Response.Builder.serverError().build();
-    }
-    return super.delete(repoName, repoPath, lockTokenHeader, ifHeader);
-  }
-
   @HTTPMethod(WebDavMethods.GET)
   @URITemplate("/{repoName}/{repoPath}/")
   @InputTransformer(PassthroughInputTransformer.class)
@@ -294,63 +271,6 @@ public class WebDavServiceImpl extends org.exoplatform.services.jcr.webdav.WebDa
       return Response.Builder.serverError().build();
     }
     return super.unlock(repoName, repoPath, lockTokenHeader, ifHeader, body);
-  }
-
-  @HTTPMethod(WebDavMethods.MKCOL)
-  @URITemplate("/{repoName}/{repoPath}/")
-  @InputTransformer(PassthroughInputTransformer.class)
-  @OutputTransformer(PassthroughOutputTransformer.class)
-  public Response mkcol(@URIParam("repoName") String repoName,
-                        @URIParam("repoPath") String repoPath,
-                        @HeaderParam(WebDavHeaders.LOCKTOKEN) String lockTokenHeader,
-                        @HeaderParam(WebDavHeaders.IF) String ifHeader,
-                        @HeaderParam(WebDavHeaders.NODETYPE) String nodeTypeHeader,
-                        @HeaderParam(WebDavHeaders.MIXTYPE) String mixinTypesHeader) {
-
-    try {
-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath), true);
-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
-    } catch (PathNotFoundException exc) {
-      return Response.Builder.notFound().build();
-    } catch (NoSuchWorkspaceException exc) {
-      return Response.Builder.notFound().build();
-    } catch (Exception e) {
-      log.warn("Cannot find the item at " + repoName + "/" + repoPath, e);
-      return Response.Builder.serverError().build();
-    }
-    return super.mkcol(repoName, repoPath, lockTokenHeader, ifHeader, nodeTypeHeader, mixinTypesHeader);
-  }
-
-  @HTTPMethod(WebDavMethods.MOVE)
-  @URITemplate("/{repoName}/{repoPath}/")
-  @InputTransformer(XMLInputTransformer.class)
-  @OutputTransformer(PassthroughOutputTransformer.class)
-  public Response move(@URIParam("repoName") String repoName,
-                       @URIParam("repoPath") String repoPath,
-                       @HeaderParam(WebDavHeaders.DESTINATION) String destinationHeader,
-                       @HeaderParam(WebDavHeaders.LOCKTOKEN) String lockTokenHeader,
-                       @HeaderParam(WebDavHeaders.IF) String ifHeader,
-                       @HeaderParam(WebDavHeaders.DEPTH) String depthHeader,
-                       @HeaderParam(WebDavHeaders.OVERWRITE) String overwriteHeader,
-                       @ContextParam(ResourceDispatcher.CONTEXT_PARAM_BASE_URI) String baseURI,
-                       HierarchicalProperty body) {
-    try {
-      Item item = nodeFinder.getItem(repoName, workspaceName(repoPath), path(repoPath));
-      repoPath = item.getSession().getWorkspace().getName() + item.getPath();
-    } catch (PathNotFoundException exc) {
-      return Response.Builder.notFound().build();
-    } catch (NoSuchWorkspaceException exc) {
-      return Response.Builder.notFound().build();
-    } catch (Exception e) {
-      log.warn("Cannot find the item at " + repoName + "/" + repoPath, e);
-      return Response.Builder.serverError().build();
-    }
-    String realDestinationHeader = getRealDestinationHeader(baseURI, repoName, destinationHeader);
-    if (realDestinationHeader != null) {
-      destinationHeader = realDestinationHeader;
-    }
-    return super.move(repoName, repoPath, destinationHeader, lockTokenHeader, ifHeader,
-                depthHeader, overwriteHeader, baseURI, body);
   }
 
   @HTTPMethod(WebDavMethods.OPTIONS)
