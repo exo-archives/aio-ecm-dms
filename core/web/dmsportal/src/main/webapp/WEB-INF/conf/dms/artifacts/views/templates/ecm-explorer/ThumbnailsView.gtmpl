@@ -79,7 +79,17 @@
 		          def preferenceWS = data.getSession().getWorkspace().getName() ;
 		          String name = data.getPath().substring(data.getPath().lastIndexOf("/") + 1) ;
 		          String nodePath = data.getPath() + "&workspaceName=" + preferenceWS ;
-		          String actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;
+		          String actionLink = uicomponent.event("ChangeNode", Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS));
+		          //Begin permlink
+		          permLinkComponent =  uiWorkingArea.getPermlink(data);
+		          if (permLinkComponent != null) {
+		            strActs +=  "<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(data) + "\">" ;
+		            strActs +=  " <div class='MenuURLIcon GetURL16x16Icon'>" ;
+		            strActs +=    _ctx.appRes("ECMContextMenu.event." + permLinkComponent.getUIExtensionName());
+		            strActs +=  " </div>";
+		            strActs +=  "</a>";
+		          }   
+		             
 		          //Begin WebDav Action
 		          String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
 			        if(data.getPrimaryNodeType().getName().equals("nt:file")) {
@@ -95,40 +105,31 @@
 						  	strActs += 		"</a>" ;				  	
 						  }
 						  //End WebDav Action
-      String subName ;
-      List customActs = uicomponent.getCustomActions(data) ;
-      Parameter[] params  ;
-      if(customActs.size() > 0) {            
-        for(act in customActs) {
-          String actName = act.getProperty("exo:name").getValue().getString() ;
-          params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName",act.getName())] ;
-          strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + uiCustomActionComponent.event("Custom",nodePath,params) + "\">" ;
-          strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">$actName</div>" ;
-          strActs += "</a>" ;
-        }            
-      }
-		     
-		    permLinkComponent =  uiWorkingArea.getPermlink(data);
-			 		if (permLinkComponent != null) {
-	      strActs +=	"<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(data) + "\">" ;
-							strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
-							strActs +=	  _ctx.appRes("ECMContextMenu.event." + permLinkComponent.getUIExtensionName());
-							strActs +=  "	</div>";
-				 		strActs +=  "</a>";
-			 		}   
-			 		     
-       String clipboardLink = serverUrl + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + data.getPath();
-       strActs +=	"<a class='MenuItem' style='display: block;' id='clip_button1$i' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
-							strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
-							strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
-							strActs +=  "	</div>" ;
-					 		strActs +=  "</a>";
-		          strActs += "</div>" ;
-		          
-		          def rightClickMenu = "" ;
-		          String isLocked = "false";
-		          if(data.isLocked()) isLocked = "true";     
-		          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;
+              String subName ;
+              List customActs = uicomponent.getCustomActions(data) ;
+              Parameter[] params  ;
+              if(customActs.size() > 0) {            
+                for(act in customActs) {
+                  String actName = act.getProperty("exo:name").getValue().getString() ;
+                  params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName",act.getName())] ;
+                  strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + uiCustomActionComponent.event("Custom",nodePath,params) + "\">" ;
+                  strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">$actName</div>" ;
+                  strActs += "</a>" ;
+                  }            
+                }
+                 
+               String clipboardLink = serverUrl + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + data.getPath();
+               strActs +=	"<a class='MenuItem' style='display: block;' id='clip_button1$i' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
+               strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
+               strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
+               strActs +=  "	</div>" ;
+               strActs +=  "</a>";
+               strActs += "</div>" ;
+                
+               def rightClickMenu = "" ;
+               String isLocked = "false";
+               if(data.isLocked()) isLocked = "true";     
+               if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;
 		        %>   
 		      <div class="ActionIconBox" locked="<%=isLocked%>" <%=rightClickMenu%> style="padding: 4px 0px 4px 0px; height: auto;"
 		       				objectId="<%=URLEncoder.encode(Utils.formatNodeName(data.getPath()), "utf-8")%>" workspaceName="$preferenceWS" ondblclick="$actionLink">

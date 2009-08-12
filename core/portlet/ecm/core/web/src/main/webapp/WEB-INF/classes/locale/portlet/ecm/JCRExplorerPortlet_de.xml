@@ -2468,7 +2468,7 @@
 	 -->
   <ECMContextMenu>
 	    <event>
-	    	<Permlink>Permlink</Permlink>
+	    	<Permlink>View Document</Permlink>
 	    </event>
   </ECMContextMenu>	
 </bundle>

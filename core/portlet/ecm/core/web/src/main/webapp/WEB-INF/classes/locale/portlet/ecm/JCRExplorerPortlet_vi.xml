@@ -2476,7 +2476,7 @@
 	 -->
   <ECMContextMenu>
 	    <event>
-	    	<Permlink>Truy cập</Permlink>
+	    	<Permlink>Xem tài liệu</Permlink>
 	    </event>
   </ECMContextMenu>
 </bundle>
