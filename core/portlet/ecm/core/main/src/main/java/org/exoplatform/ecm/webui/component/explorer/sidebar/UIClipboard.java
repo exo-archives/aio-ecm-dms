@@ -24,6 +24,7 @@ import javax.jcr.PathNotFoundException;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.component.explorer.rightclick.manager.PasteManageComponent;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -82,7 +83,8 @@ public class UIClipboard extends UIComponent {
       String wsName = node.getSession().getWorkspace().getName();
       UIApplication app = uiClipboard.getAncestorOfType(UIApplication.class);
       try {
-        uiWorkingArea.processPaste(selectedClipboard, wsName + ":" + nodePath, event);
+        PasteManageComponent.processPaste(selectedClipboard, wsName + ":" + nodePath, event);
+        //uiWorkingArea.processPaste(selectedClipboard, wsName + ":" + nodePath, event);
         uiExplorer.updateAjax(event);
       } catch(PathNotFoundException path) {
         app.addMessage(new ApplicationMessage("PathNotFoundException.msg", null, ApplicationMessage.WARNING)) ;

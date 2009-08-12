@@ -43,6 +43,7 @@ public class IsDocumentFilter extends UIExtensionAbstractFilter {
   }
   
   public boolean accept(Map<String, Object> context) throws Exception {
+    if (context == null) return true;
     Node currentNode = (Node) context.get(Node.class.getName());
     UIJCRExplorer uiExplorer = (UIJCRExplorer) context.get(UIJCRExplorer.class.getName());
     TemplateService templateService = uiExplorer.getApplicationComponent(TemplateService.class);
@@ -52,6 +53,7 @@ public class IsDocumentFilter extends UIExtensionAbstractFilter {
   }
 
   public void onDeny(Map<String, Object> context) throws Exception {
+    if (context == null) return;
     createUIPopupMessages(context, messageKey);
   }    
 }

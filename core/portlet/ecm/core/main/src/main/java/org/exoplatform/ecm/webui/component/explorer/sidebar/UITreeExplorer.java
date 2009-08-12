@@ -41,6 +41,7 @@ import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
 import org.exoplatform.webui.event.Event;
@@ -75,6 +76,14 @@ public class UITreeExplorer extends UIContainer {
     return getAncestorOfType(UIWorkingArea.class).getChild(UIRightClickPopupMenu.class) ;
   }
   
+  UIWorkingArea getWorkingArea() {
+    return getAncestorOfType(UIWorkingArea.class);
+  }
+  
+  UIComponent getCustomAction() throws Exception {
+    return getAncestorOfType(UIWorkingArea.class).getCustomAction();
+  }
+  
   public TreeNode getRootTreeNode() { return treeRoot_ ; }
   
   public String getRootActionList() throws Exception {
@@ -91,7 +100,7 @@ public class UITreeExplorer extends UIContainer {
   
   public String getActionsList(Node node) throws Exception {
     if(node == null) return "" ;
-    return getAncestorOfType(UIWorkingArea.class).getActionsList(node) ;
+    return getAncestorOfType(UIWorkingArea.class).getActionsExtensionList(node) ;
   }
   
   public List<Node> getCustomActions(Node node) throws Exception {

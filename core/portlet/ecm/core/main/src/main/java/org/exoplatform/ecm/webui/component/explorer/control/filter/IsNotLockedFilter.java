@@ -22,6 +22,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
 /**
  * Created by The eXo Platform SAS
@@ -31,13 +32,23 @@ import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
  */
 public class IsNotLockedFilter extends UIExtensionAbstractFilter {
 
+  public IsNotLockedFilter() {
+    this(null);
+  }
+  
+  public IsNotLockedFilter(String messageKey) {
+    super(messageKey, UIExtensionFilterType.MANDATORY);
+  }
+  
   public boolean accept(Map<String, Object> context) throws Exception {
+    if (context == null) return true;
     Node currentNode = (Node) context.get(Node.class.getName());
     UIJCRExplorer uiExplorer = (UIJCRExplorer) context.get(UIJCRExplorer.class.getName());
     return !uiExplorer.nodeIsLocked(currentNode);
   }
 
   public void onDeny(Map<String, Object> context) throws Exception {
+    if (context == null) return;
     Node currentNode = (Node) context.get(Node.class.getName());
     Object[] arg = { currentNode.getPath() };
     createUIPopupMessages(context, "UIPopupMenu.msg.node-locked", arg);

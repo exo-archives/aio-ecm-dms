@@ -3,7 +3,17 @@
   import org.exoplatform.ecm.webui.utils.Utils ;
   import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
-    
+  import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+      
+  def uiWorkingArea = uicomponent.getAncestorOfType(UIWorkingArea.class);
+  def uiMoveNodeComponent = uiWorkingArea.getJCRMoveAction();
+  def uiCustomActionComponent = uiWorkingArea.getCustomAction();
+  def managersMultiItemContext =  uiWorkingArea.getMultiActionsExtensionList();
+  def managersGroundContext = uiWorkingArea.getGroundActionsExtensionList();
+  
+  def action = "";
+  def permLinkComponent = null;
+  
   UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
   String componentId = uicomponent.getId();
   String serverUrl= uicomponent.getWebDAVServerPrefix();
@@ -15,7 +25,7 @@
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UISimpleView','/ecm/javascript/'); 
   rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UISimpleView.initAllEvent('${componentId}-$viewComponentId');}");
 	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UISimpleView.setHeight");
-	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('$size')");
+	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('clip_button','1','$size')");
 %>
 <div id="$componentId">
 	<div id="${componentId}-$viewComponentId">
@@ -25,70 +35,36 @@
 			<div class="JCRMoveAction" style="display: none;" request="<%=contextMenu.event('MoveNode', 'MultiSelection')%>" symlink="<%=contextMenu.event('CreateLink', 'MultiSelection')%>"></div>
 			<div class="ItemContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
 				<div class="UIRightClickPopupMenu" style="display: block;">
-					<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
-						<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Copy', 'MultiSelection')%>")> 	
-							<div class="ItemIcon Copy16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Copy")%>
+					<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">		
+					<%
+							for(itemContext in managersMultiItemContext) {
+								action = itemContext.getUIExtensionName();
+					%>
+							<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UIListView.postGroupAction("<%=itemContext.event(action, 'MultiSelection')%>")> 	
+							<div class="ItemIcon ${action}16x16Icon">
+							<%=_ctx.appRes("ECMContextMenu.event." + action)%>
 							</div>
-					 	</a>
-					 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Cut', 'MultiSelection')%>")> 	
-							<div class="ItemIcon Cut16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Cut")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Delete', 'MultiSelection')%>")> 	
-							<div class="ItemIcon Delete16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Delete")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Lock', 'MultiSelection')%>")> 	
-							<div class="ItemIcon Lock16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Lock")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('Unlock', 'MultiSelection')%>")> 	
-							<div class="ItemIcon Unlock16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Unlock")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=contextMenu.event('AddSymLink', 'MultiSelection')%>")>  
-              <div class="ItemIcon AddSymLink16x16Icon">
-                <%=_ctx.appRes("ECMContextMenu.event.AddSymLink")%>
-              </div>
-            </a>
+		 			</a>
+					<%
+						}
+					%>
 					 </div>	
 				 </div>
 			</div>
+			
 			<div class="GroundContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;">
 				<div class="UIRightClickPopupMenu" style="display: block;">
 					<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
-						<a class="MenuItem" href="<%=contextMenu.event("AddFolder")%>" style="display: block;"> 	
-							<div class="MenuIcon AddFolder16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.AddFolder")%>
+					<%
+							for(itemGroundContext in managersGroundContext) {
+							action = itemGroundContext.getUIExtensionName();
+						%>
+						<a class="MenuItem" href="<%=itemGroundContext.event(action)%>" style="display: block;"> 	
+							<div class="MenuIcon ${action}16x16Icon">
+								<%=_ctx.appRes("ECMContextMenu.event." + action)%>
 							</div>
-					 	</a>
-					 	<a class="MenuItem" href="<%=contextMenu.event("AddDocument")%>" style="display: block;"> 	
-							<div class="MenuIcon AddDocument16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.AddDocument")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" href="<%=contextMenu.event("Upload")%>" style="display: block;"> 	
-							<div class="MenuIcon Upload16x16Icon">
-								<%=_ctx.appRes("ECMContextMenu.event.Upload")%>
-							</div>
-					 	</a>
-					 	<a class="MenuItem" href="<%=contextMenu.event("AddSymLink")%>" style="display: block;">   
-              <div class="MenuIcon AddSymLink16x16Icon">
-                <%=_ctx.appRes("ECMContextMenu.event.AddSymLink")%>
-              </div>
-            </a>
-					 	<%if(uicomponent.isCanPaste()) {%>
-						 	<a class="MenuItem" href="<%=contextMenu.event("Paste")%>" style="display: block;"> 	
-								<div class="MenuIcon Paste16x16Icon">
-									<%=_ctx.appRes("ECMContextMenu.event.Paste")%>
-								</div>
-						 	</a>
-					  <%}%>
+				 	</a>
+						<%}%>			
 					 </div>	
 				 </div>
 			</div>
@@ -113,26 +89,36 @@
 						  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">Download And Allow Edition</div>" ;
 						  	strActs += 		"</a>" ;				  	
 						  }else {
-						  	String link = serverUrl + "/" + portalName + "/rest/jcr/" + repository + "/" + preferenceWS + data.getPath(); 
+						  	String link = serverUrl + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + data.getPath(); 
 			        	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\"  style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" target='_new' folder=\"" + link +"\">" ;	        
 						  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">Download And Allow Edition</div>" ;
 						  	strActs += 		"</a>" ;				  	
 						  }
 						  //End WebDav Action
-		          String subName ;
-		          List customActs = uicomponent.getCustomActions(data) ;
-		          Parameter[] params  ;
-		          if(customActs.size() > 0) {            
-		            for(act in customActs) {
-		              String actName = act.getProperty("exo:name").getValue().getString() ;
-		              params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName",act.getName())] ;
-		              strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + contextMenu.event("Custom",nodePath,params) + "\">" ;
-		              strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">$actName</div>" ;
-		              strActs += "</a>" ;
-		            }            
-		          }
-		          String clipboardLink = serverUrl + "/" + portalName + "/rest/jcr/" + repository + "/" + preferenceWS + data.getPath();
-		          strActs +=	"<a class='MenuItem' style='display: block;' id='clip_button$i' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
+      String subName ;
+      List customActs = uicomponent.getCustomActions(data) ;
+      Parameter[] params  ;
+      if(customActs.size() > 0) {            
+        for(act in customActs) {
+          String actName = act.getProperty("exo:name").getValue().getString() ;
+          params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName",act.getName())] ;
+          strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + uiCustomActionComponent.event("Custom",nodePath,params) + "\">" ;
+          strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">$actName</div>" ;
+          strActs += "</a>" ;
+        }            
+      }
+		     
+		    permLinkComponent =  uiWorkingArea.getPermlink(data);
+			 		if (permLinkComponent != null) {
+	      strActs +=	"<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(data) + "\">" ;
+							strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
+							strActs +=	  _ctx.appRes("ECMContextMenu.event." + permLinkComponent.getUIExtensionName());
+							strActs +=  "	</div>";
+				 		strActs +=  "</a>";
+			 		}   
+			 		     
+       String clipboardLink = serverUrl + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + data.getPath();
+       strActs +=	"<a class='MenuItem' style='display: block;' id='clip_button1$i' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
 							strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
 							strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
 							strActs +=  "	</div>" ;

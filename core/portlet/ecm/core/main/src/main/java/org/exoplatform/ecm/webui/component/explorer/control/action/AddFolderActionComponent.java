@@ -19,6 +19,8 @@ package org.exoplatform.ecm.webui.component.explorer.control.action;
 import java.util.Arrays;
 import java.util.List;
 
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanAddNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
@@ -44,7 +46,7 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
        @EventConfig(listeners = AddFolderActionComponent.AddFolderActionListener.class)
      }
  )
-public class AddFolderActionComponent extends UIComponent {
+public class AddFolderActionComponent extends UIAbstractManagerComponent {
 
   private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new CanAddNodeFilter(), new IsNotLockedFilter(), new IsCheckedOutFilter()});
   
@@ -64,5 +66,10 @@ public class AddFolderActionComponent extends UIComponent {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       addFolder(event, uiExplorer);
     }
+  }
+
+  @Override
+  public Class<? extends UIAbstractManager> getUIAbstractManagerClass() {
+    return null;
   }
 }

@@ -127,6 +127,7 @@ public class UIJCRExplorer extends UIContainer {
     addChild(UIPopupContainer.class, null, null);
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     pref_ = pcontext.getRequest().getPreferences();
+    getChild(UIWorkingArea.class).initialize();
   }
 
   private String filterPath(String currentPath) throws Exception {

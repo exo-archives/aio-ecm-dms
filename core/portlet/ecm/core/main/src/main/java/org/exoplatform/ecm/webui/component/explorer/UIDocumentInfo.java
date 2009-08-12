@@ -46,6 +46,7 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.component.explorer.rightclick.manager.DeleteManageComponent;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
@@ -277,7 +278,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   public String getActionsList(Node node) throws Exception {
-    return getAncestorOfType(UIWorkingArea.class).getActionsList(node) ;
+    return getAncestorOfType(UIWorkingArea.class).getActionsExtensionList(node) ;
   }
 
   public List<Node> getCustomActions(Node node) throws Exception {
@@ -602,7 +603,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       String attachNodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIWorkingArea uiWorkingArea = event.getSource().getAncestorOfType(UIWorkingArea.class);
       String wsName = event.getRequestContext().getRequestParameter(UIWorkingArea.WS_NAME);
-      uiWorkingArea.doDelete(attachNodePath, wsName,event);
+      uiWorkingArea.getChild(DeleteManageComponent.class).doDelete(attachNodePath, wsName,event);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea);
     }
   }

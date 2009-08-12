@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer;
 
+import org.exoplatform.ecm.webui.component.explorer.rightclick.manager.DeleteManageComponent;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -65,7 +66,7 @@ public class UIConfirmMessage extends UIComponent implements UIPopupComponent {
       UIConfirmMessage uiConfirm = event.getSource();
       UIJCRExplorer uiExplorer = uiConfirm.getAncestorOfType(UIJCRExplorer.class);
       UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
-      uiWorkingArea.doDelete(uiConfirm.nodePath_, event);
+      uiWorkingArea.getChild(DeleteManageComponent.class).doDelete(uiConfirm.nodePath_, event);
       uiConfirm.isOK_ = true;
       UIPopupContainer popupAction = uiConfirm.getAncestorOfType(UIPopupContainer.class);
       popupAction.deActivate() ;

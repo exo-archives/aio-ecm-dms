@@ -22,6 +22,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
 /**
  * Created by The eXo Platform SAS
@@ -31,12 +32,22 @@ import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
  */
 public class IsNotSymlinkFilter extends UIExtensionAbstractFilter {
 
+  public IsNotSymlinkFilter() {
+    this(null);
+  }
+  
+  public IsNotSymlinkFilter(String messageKey) {
+    super(messageKey, UIExtensionFilterType.MANDATORY);
+  }
+  
   public boolean accept(Map<String, Object> context) throws Exception {
+    if (context == null) return true;
     Node currentNode = (Node) context.get(Node.class.getName());
     return !currentNode.isNodeType(Utils.EXO_SYMLINK);
   }
 
   public void onDeny(Map<String, Object> context) throws Exception {
+    if (context == null) return;
     Node currentNode = (Node) context.get(Node.class.getName());
     Object[] arg = { currentNode.getPath() };
     createUIPopupMessages(context, "UIWorkingArea.msg.selected-is-link", arg);

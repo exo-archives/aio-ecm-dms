@@ -1,4 +1,4 @@
-/*
+/***************************************************************************
  * Copyright (C) 2003-2009 eXo Platform SAS.
  *
  * This program is free software; you can redistribute it and/or
@@ -13,41 +13,34 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
- */
+ *
+ **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.control.filter;
 
 import java.util.Map;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
-import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
 /**
- * Created by The eXo Platform SAS
- * Author : eXoPlatform
- *          nicolas.filotto@exoplatform.com
- * 6 mai 2009  
+ * Created by The eXo Platform SARL
+ * Author : Hoang Van Hung
+ *          hunghvit@gmail.com
+ * Aug 6, 2009  
  */
-public class CanSetPropertyFilter extends UIExtensionAbstractFilter {
+public class CanDeleteNodeFilter  extends UIExtensionAbstractFilter {
 
-  public CanSetPropertyFilter() {
-    this("UIPopupMenu.msg.has-not-edit-permission");
-  }
-  
-  public CanSetPropertyFilter(String messageKey) {
-    super(messageKey, UIExtensionFilterType.MANDATORY);
-  }
-  
   public boolean accept(Map<String, Object> context) throws Exception {
-    if (context == null) return true;
+    if (context==null) return true;
     Node currentNode = (Node) context.get(Node.class.getName());
-    return PermissionUtil.canSetProperty(currentNode);
+    UIJCRExplorer uiExplorer = (UIJCRExplorer) context.get(UIJCRExplorer.class.getName());
+    return (!IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode)) || 
+      (IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode) && 
+        IsCheckedOutFilter.isCheckedOut(currentNode));
   }
 
   public void onDeny(Map<String, Object> context) throws Exception {
-    if (context == null) return;
-    createUIPopupMessages(context, messageKey);
-  }    
+  }
 }

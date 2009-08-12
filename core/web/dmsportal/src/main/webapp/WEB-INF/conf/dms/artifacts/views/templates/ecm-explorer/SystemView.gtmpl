@@ -11,7 +11,6 @@
   import org.exoplatform.ecm.webui.utils.Utils;
   import org.exoplatform.web.application.Parameter;
   import org.exoplatform.webui.core.UIRightClickPopupMenu;
-  
   UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu();
   String componentId = uicomponent.getId();
   java.text.DateFormat dateFormat = uicomponent.getSimpleDateFormat();

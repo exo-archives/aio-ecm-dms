@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.jcr.Node;
 
 import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
 /**
  * Created by The eXo Platform SAS
@@ -31,19 +32,25 @@ import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
 public class IsCheckedOutFilter extends UIExtensionAbstractFilter {
 
   public IsCheckedOutFilter() {
-    super("UIActionBar.msg.node-checkedin");
+    this("UIActionBar.msg.node-checkedin");
   }
   
   public IsCheckedOutFilter(String messageKey) {
-    super(messageKey);
+    super(messageKey, UIExtensionFilterType.MANDATORY);
   }
-    
+  
+  public static boolean isCheckedOut(Node node) throws Exception {
+    return node.isCheckedOut();
+  }
+  
   public boolean accept(Map<String, Object> context) throws Exception {
+    if (context == null) return true;
     Node currentNode = (Node) context.get(Node.class.getName());
-    return currentNode.isCheckedOut();
+    return isCheckedOut(currentNode);
   }
 
   public void onDeny(Map<String, Object> context) throws Exception {
+    if (context == null) return;
     Node currentNode = (Node) context.get(Node.class.getName());
     Object[] arg = { currentNode.getPath() };
     createUIPopupMessages(context, messageKey, arg);

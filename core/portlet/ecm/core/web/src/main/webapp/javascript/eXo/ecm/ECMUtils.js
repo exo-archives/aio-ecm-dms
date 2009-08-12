@@ -346,18 +346,17 @@
 	} ;
 	
 	var clip=null;
-	ECMUtils.prototype.initClipboard = function(size) {
+	ECMUtils.prototype.initClipboard = function(id, level, size) {
 		if(eXo.core.Browser.getBrowserType() != "ie") {
 			if (size > 0) {
 				for(var i=1; i <= size; i++) {
 					clip = new ZeroClipboard.Client();
 					clip.setHandCursor(true);
-					clip.glue('clip_button'+i);
+					clip.glue(id+level+i);
 				}
 			}
 		}
 	}
-	
 	
 	ECMUtils.prototype.closeContextMenu = function(element) {
 		var contextMenu = document.getElementById("ECMContextMenu");

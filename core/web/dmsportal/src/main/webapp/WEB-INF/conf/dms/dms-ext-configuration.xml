@@ -396,6 +396,176 @@
 							</field-->
 						</object>
 					</object-param>
+					<object-param>
+						<name>Copy</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>110</int></field>
+							<field name="name"><string>Copy</string></field>
+							<field name="category"><string>ItemContextMenu</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.CopyManageComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>EditDocument</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>120</int></field>
+							<field name="name"><string>EditDocument</string></field>
+							<field name="category"><string>ItemContextMenu_SingleSelection</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.EditDocumentActionComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>Cut</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>130</int></field>
+							<field name="name"><string>Cut</string></field>
+							<field name="category"><string>ItemContextMenu</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.CutManageComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>Delete</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>140</int></field>
+							<field name="name"><string>Delete</string></field>
+							<field name="category"><string>ItemContextMenu</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.DeleteManageComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>Lock</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>150</int></field>
+							<field name="name"><string>Lock</string></field>
+							<field name="category"><string>ItemContextMenu</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.LockManageComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>Unlock</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>160</int></field>
+							<field name="name"><string>Unlock</string></field>
+							<field name="category"><string>ItemContextMenu</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.UnlockManageComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>CheckIn</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>170</int></field>
+							<field name="name"><string>CheckIn</string></field>
+							<field name="category"><string>ItemContextMenu_SingleSelection</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.CheckInManageComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>CheckOut</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>180</int></field>
+							<field name="name"><string>CheckOut</string></field>
+							<field name="category"><string>ItemContextMenu_SingleSelection</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.CheckOutManageComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>Rename</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>190</int></field>
+							<field name="name"><string>Rename</string></field>
+							<field name="category"><string>ItemContextMenu_SingleSelection</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.RenameManageComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>Custom</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>200</int></field>
+							<field name="name"><string>Custom</string></field>
+							<field name="category"><string>CustomActions</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.CustomManageComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>Permlink</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>120</int></field>
+							<field name="name"><string>Permlink</string></field>
+							<field name="category"><string>PermlinkContextMenu</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.PermlinkActionComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>MoveNodeLink</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>210</int></field>
+							<field name="name"><string>MoveNode</string></field>
+							<field name="category"><string>JCRMoveAction</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.MoveNodeManageComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>AddFolder</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>310</int></field>
+							<field name="name"><string>AddFolder</string></field>
+							<field name="category"><string>GroundContextMenu</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.AddFolderActionComponent</string></field>
+						</object>
+					</object-param>	
+					<object-param>
+						<name>AddDocument</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>320</int></field>
+							<field name="name"><string>AddDocument</string></field>
+							<field name="category"><string>GroundContextMenu</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.AddDocumentActionComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>Upload</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>330</int></field>
+							<field name="name"><string>Upload</string></field>
+							<field name="category"><string>GroundContextMenu</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.UploadActionComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>AddSymLink</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>340</int></field>
+							<field name="name"><string>AddSymLink</string></field>
+							<field name="category"><string>ItemGroundContextMenu</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.control.action.AddSymLinkActionComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>Paste</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>350</int></field>
+							<field name="name"><string>Paste</string></field>
+							<field name="category"><string>GroundContextMenu</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.PasteManageComponent</string></field>
+						</object>
+					</object-param>
 				</init-params>
 			</component-plugin>
 		</component-plugins>

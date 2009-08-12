@@ -1,4 +1,4 @@
-/*
+/***************************************************************************
  * Copyright (C) 2003-2009 eXo Platform SAS.
  *
  * This program is free software; you can redistribute it and/or
@@ -13,41 +13,54 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
- */
+ *
+ **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.control.filter;
 
 import java.util.Map;
 
 import javax.jcr.Node;
+import javax.jcr.RepositoryException;
 
-import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
 /**
- * Created by The eXo Platform SAS
- * Author : eXoPlatform
- *          nicolas.filotto@exoplatform.com
- * 6 mai 2009  
+ * Created by The eXo Platform SARL
+ * Author : Hoang Van Hung
+ *          hunghvit@gmail.com
+ * Aug 6, 2009  
  */
-public class CanSetPropertyFilter extends UIExtensionAbstractFilter {
+public class IsVersionableOrAncestorFilter extends UIExtensionAbstractFilter {
+  
 
-  public CanSetPropertyFilter() {
-    this("UIPopupMenu.msg.has-not-edit-permission");
+  public IsVersionableOrAncestorFilter() {
+    this(null);
   }
   
-  public CanSetPropertyFilter(String messageKey) {
+  public IsVersionableOrAncestorFilter(String messageKey) {
     super(messageKey, UIExtensionFilterType.MANDATORY);
+  }
+  
+  public static boolean isAncestorVersionable(Node node) throws RepositoryException {
+    int depth = node.getDepth() - 1;
+    if (depth < 1) return false;
+    Node parent = (Node) node.getAncestor(depth);
+    while (parent != null && depth != 0) {
+      if (parent.isNodeType(Utils.MIX_VERSIONABLE)) return true;
+      depth--;
+      parent = (Node) node.getAncestor(depth);
+    }
+    return false;
   }
   
   public boolean accept(Map<String, Object> context) throws Exception {
     if (context == null) return true;
     Node currentNode = (Node) context.get(Node.class.getName());
-    return PermissionUtil.canSetProperty(currentNode);
+    if (Utils.isVersionable(currentNode) || isAncestorVersionable(currentNode)) return true;
+    return false;
   }
 
-  public void onDeny(Map<String, Object> context) throws Exception {
-    if (context == null) return;
-    createUIPopupMessages(context, messageKey);
-  }    
+  public void onDeny(Map<String, Object> context) throws Exception {}   
 }

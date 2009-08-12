@@ -19,6 +19,8 @@ package org.exoplatform.ecm.webui.component.explorer.control.action;
 import java.util.Arrays;
 import java.util.List;
 
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanAddNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
@@ -46,7 +48,7 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
        @EventConfig(listeners = AddDocumentActionComponent.AddDocumentActionListener.class)
      }
  )
-public class AddDocumentActionComponent extends UIComponent {
+public class AddDocumentActionComponent extends UIAbstractManagerComponent {
 
   private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new CanAddNodeFilter(), new IsNotLockedFilter(), new IsCheckedOutFilter()});
   
@@ -80,5 +82,10 @@ public class AddDocumentActionComponent extends UIComponent {
       UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
       addDocument(event, uiExplorer, uiApp);
     }
+  }
+
+  @Override
+  public Class<? extends UIAbstractManager> getUIAbstractManagerClass() {
+    return null;
   }
 }

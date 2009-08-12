@@ -18,15 +18,23 @@ package org.exoplatform.ecm.webui.component.explorer.control.action;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import javax.jcr.ValueFormatException;
 
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
+import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanSetPropertyFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsDocumentFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsEditableFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIActionBarActionListener;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm;
@@ -34,6 +42,8 @@ import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentForm
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
+import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -58,9 +68,11 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
      }
  )
 
-public class EditDocumentActionComponent extends UIComponent {
+public class EditDocumentActionComponent extends UIAbstractManagerComponent {
 
-  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new CanSetPropertyFilter(), new IsNotLockedFilter(), new IsCheckedOutFilter()});
+  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[] {
+      new IsDocumentFilter(), new IsEditableFilter(), new CanSetPropertyFilter(),
+      new IsNotLockedFilter(), new IsCheckedOutFilter() });
   
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {
@@ -128,10 +140,71 @@ public class EditDocumentActionComponent extends UIComponent {
   public static class EditDocumentActionListener extends UIActionBarActionListener<EditDocumentActionComponent> {
     public void processEvent(Event<EditDocumentActionComponent> event) throws Exception {
       EditDocumentActionComponent uicomp = event.getSource();
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
+      if (nodePath != null && nodePath.length() != 0) {
+        Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+        String wsName = null;
+        if (matcher.find()) {
+          wsName = matcher.group(1);
+          nodePath = matcher.group(2);
+        } else {
+          throw new IllegalArgumentException("The ObjectId is invalid '" + nodePath + "'");
+        }
+        Session session = uiExplorer.getSessionByWorkspace(wsName);
+        UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
+        Node selectedNode = null;
+        try {
+          // Use the method getNodeByPath because it is link aware
+          if (!uiExplorer.getCurrentPath().equals(nodePath)) {
+            uiExplorer.setCurrentPath(nodePath);
+            selectedNode = uiExplorer.getCurrentNode();
+          } else {
+            selectedNode = uiExplorer.getNodeByPath(nodePath, session);
+          }
+        } catch (PathNotFoundException path) {
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        } catch (AccessDeniedException ace) {
+          uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        } catch (Exception e) {
+          JCRExceptionManager.process(uiApp, e);
+          return;
+        }
+        if (!PermissionUtil.canSetProperty(selectedNode)) {
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-edit-permission", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+        Object[] arg = { nodePath };
+        if (uiExplorer.nodeIsLocked(selectedNode)) {
+          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+        if (!selectedNode.isCheckedOut()) {
+          uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+      }
+      
       Node selectedNode = uiExplorer.getCurrentNode();        
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
       editDocument(event, uicomp, uiExplorer, selectedNode, uiApp);
     }
+  }
+
+  @Override
+  public Class<? extends UIAbstractManager> getUIAbstractManagerClass() {
+    return null;
   }
 }

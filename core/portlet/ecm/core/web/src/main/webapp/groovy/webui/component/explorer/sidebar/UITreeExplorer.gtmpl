@@ -9,22 +9,29 @@
   import java.util.List;
 %>
 <%
+		
   public void writeNodes(TreeNode rootTree) {
-    UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
+    UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu();
+    def uiCustomActionComponent = uicomponent.getWorkingArea().getCustomAction();
     String serverPath = uicomponent.getServerPath();
     String portalName = uicomponent.getPortalName();
     String repository = uicomponent.getRepository() ;   
     int counter = 1 ;     
-    List childrenNodes=uicomponent.getRenderedChildren(rootTree);
+    int depth = rootTree.getNode().getDepth() + 1;
+				if (rootTree.getNode().getPath().equals("/")) depth = 2;
+	   List childrenNodes=uicomponent.getRenderedChildren(rootTree);
     boolean isPaginated=uicomponent.isPaginated(rootTree);
-    int childrenSize = childrenNodes.size() ;                 
+    int childrenSize = childrenNodes.size();        
+    def rcontext = _ctx.getRequestContext();
+				rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('treeclip_button','$depth','$childrenSize')");         
     for(treeNode in childrenNodes) {	    
-    	Node node = treeNode.getNode() ;
+    	Node node = treeNode.getNode() 
     	try {
     	  def primaryName = node.getPrimaryNodeType().getName();
     	} catch(Exception e) {
     	  continue;
     	}
+    	//totalNodes++;
 	    String path = node.getPath() ;
 	    String treeNodeName = treeNode.getName();
 	    def isPreferenceNode = uicomponent.isPreferenceNode(node) ;
@@ -62,6 +69,7 @@
 		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
 			  strActs += "</a>" ;				  	
 		  }
+		  	  
 		  //End WebDAV Action					        
 		  List customActs = uicomponent.getCustomActions(node) ;				  
 	    Parameter[] params ;
@@ -69,14 +77,31 @@
 			  for(act in customActs) {
 			    String actName = act.getProperty("exo:name").getValue().getString() ;
 			    params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName", Utils.formatNodeName(act.getName()))] ;
-			    strActs += "<a class=\"MenuItem\" title=\"$actName\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + contextMenu.event("Custom", Utils.formatNodeName(path), params) + "\">" ;
+			    strActs += "<a class=\"MenuItem\" title=\"$actName\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + uiCustomActionComponent.event("Custom", Utils.formatNodeName(path), params) + "\">" ;
 		      strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">";
 		      if (actName.length() > 10) strActs += actName.substring(0, 10) + "...";
 		      else strActs += actName;
 			    strActs += "</div></a>" ;
 			  }				    
 	    }
-	    strActs += "</div>" ;	    
+		
+					def permLinkComponent =  uicomponent.getWorkingArea().getPermlink(node);
+			 		if (permLinkComponent != null) {
+	      strActs +=	"<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(node) + "\">" ;
+							strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
+							strActs +=	  _ctx.appRes("ECMContextMenu.event." + permLinkComponent.getUIExtensionName());
+							strActs +=  "	</div>";
+				 		strActs +=  "</a>";
+			 		}     
+			 	
+					String clipboardLink = serverPath + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + node.getPath();
+					int depthChild = node.getDepth();
+					strActs +=	"<a class='MenuItem' style='display: block;' id='treeclip_button$depthChild$counter' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;        
+					strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
+					strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
+					strActs +=  "	</div>" ;
+					strActs += "</a>" ;
+					strActs += "</div>" ;	    
 	    String lastNodeClass = "" ;
 	    if (counter >= childrenSize && !isPaginated) {
 	    	lastNodeClass = "LastNode " ;
@@ -123,7 +148,9 @@
     <div class="NodeGroup">
       <%
       	writeNodes(treeNodeRoot);
-       	if(uicomponent.isPaginated(treeNodeRoot)) {%>
+      	//re-initialize action
+	 					uicomponent.getWorkingArea().initialize();
+       if(uicomponent.isPaginated(treeNodeRoot)) {%>
        			<div class="Node PageIterator">
        				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNodeRoot.getPath())); %>
        			</div>       	
