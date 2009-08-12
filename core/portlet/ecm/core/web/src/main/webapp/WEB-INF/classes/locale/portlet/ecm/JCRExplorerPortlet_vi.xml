@@ -2471,4 +2471,12 @@
 	    <confirm-deletecomment>Bạn có thực sự muốn xóa ý kiến này không?</confirm-deletecomment>
 	  </msg>
 	</UIDocumentInfo>
+		<!-- 
+	 #############	From DMS 2.6 #############
+	 -->
+  <ECMContextMenu>
+	    <event>
+	    	<Permlink>Truy cập</Permlink>
+	    </event>
+  </ECMContextMenu>
 </bundle>

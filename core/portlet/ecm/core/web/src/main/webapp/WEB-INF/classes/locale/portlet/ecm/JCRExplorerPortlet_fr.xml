@@ -2467,4 +2467,12 @@
 	    <confirm-deletecomment>Voulez-vous vraiment supprimer ce commentaire?</confirm-deletecomment>
 	  </msg>
 	</UIDocumentInfo>	
+		<!-- 
+	 #############	From DMS 2.6 #############
+	 -->
+  <ECMContextMenu>
+	    <event>
+	    	<Permlink>Permlink</Permlink>
+	    </event>
+  </ECMContextMenu>
 </bundle>
