@@ -223,19 +223,17 @@ public class UIWorkingArea extends UIContainer {
   List<UIComponent> getMultiActionsExtensionList() throws Exception {
     List<UIComponent> uiActionList = new ArrayList<UIComponent>();
     List<UIExtension> uiExtensionList = getUIExtensionList();
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    Node currentNode = uiExplorer.getCurrentNode();
     UIComponent uiAddedActionManage;
-    for (UIExtension uiextension : uiExtensionList) {
-      if (ITEM_CONTEXT_MENU.equals(uiextension.getCategory())
-          || ITEM_GROUND_CONTEXT_MENU.equals(uiextension.getCategory())) {
-        uiAddedActionManage = addUIExtension(uiextension, createContext(currentNode));
-        if (uiAddedActionManage != null) {
-          if (!uiActionList.contains(uiAddedActionManage))
-            uiActionList.add(uiAddedActionManage);
+      for (UIExtension uiextension : uiExtensionList) {
+        if (ITEM_CONTEXT_MENU.equals(uiextension.getCategory())
+            || ITEM_GROUND_CONTEXT_MENU.equals(uiextension.getCategory())) {
+          uiAddedActionManage = addUIExtension(uiextension, null);
+          if (uiAddedActionManage != null) {
+            if (!uiActionList.contains(uiAddedActionManage))
+              uiActionList.add(uiAddedActionManage);
+          }
         }
-      }
-    }
+      }  
     return uiActionList;
   }
   

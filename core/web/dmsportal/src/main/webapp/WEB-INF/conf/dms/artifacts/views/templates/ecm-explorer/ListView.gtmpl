@@ -116,8 +116,7 @@
 			    <div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
 						<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px"></div>
 						<div class="JCRMoveAction" style="display: none;" request="<%=uiMoveNodeComponent.event(uiMoveNodeComponent.getUIExtensionName(), 'MultiSelection')%>" symlink="<%=uiMoveNodeComponent.event('CreateLink', 'MultiSelection')%>"></div>
-						<div class="ItemContextMenu" style="position: absolute;
-											 top: 0px; left: 0px; display: none;">
+						<div class="ItemContextMenu" style="position: absolute; top: 0px; left: 0px; display: none;">
 							<div class="UIRightClickPopupMenu" style="display: block;">
 								<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">									
 											<%
@@ -198,26 +197,24 @@
       }
       
       permLinkComponent =  uiWorkingArea.getPermlink(data);
-			 		if (permLinkComponent != null) {
-	      strActs +=	"<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(data) + "\">" ;
-							strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
-							strActs +=	  _ctx.appRes("ECMContextMenu.event." + permLinkComponent.getUIExtensionName());
-							strActs +=  "	</div>";
-				 		strActs +=  "</a>";
-			 		}      
+	 		if (permLinkComponent != null) {
+	 		  strActs +=	"<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(data) + "\">" ;
+				strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
+				strActs +=	  _ctx.appRes("ECMContextMenu.event." + permLinkComponent.getUIExtensionName());
+				strActs +=  "	</div>";
+		 		strActs +=  "</a>";
+	 		}      
 			 		
       String clipboardLink = serverUrl + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + data.getPath();
       strActs +=	"<a class='MenuItem' style='display: block;' id='clip_button1$i' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;
-						strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
-						strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
-						strActs +=  "	</div>" ;
-			 		strActs +=  "</a>";	   
-			 		   
+			strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
+			strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
+			strActs +=  "	</div>" ;
+	 		strActs +=  "</a>";	   
       strActs += "</div>";
       def rightClickMenu = "" ;
       String isLocked = "false";
       if (data.isLocked()) isLocked = "true";    
-      System.out.println(data.getName());
       if (!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(nodePath), uiWorkingArea.getActionsExtensionList(data)) ;	          
 	      
 	      %>
