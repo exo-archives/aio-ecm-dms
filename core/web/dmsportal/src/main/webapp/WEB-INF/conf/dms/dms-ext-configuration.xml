@@ -562,7 +562,7 @@
 							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
 							<field name="rank"><int>350</int></field>
 							<field name="name"><string>Paste</string></field>
-							<field name="category"><string>GroundContextMenu</string></field>
+							<field name="category"><string>ItemGroundContextMenu</string></field>
 							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.PasteManageComponent</string></field>
 						</object>
 					</object-param>

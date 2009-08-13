@@ -43,9 +43,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionContaine
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIActionTypeForm;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
-import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -101,16 +99,12 @@ public class EditDocumentActionComponent extends UIAbstractManagerComponent {
       UIPopupContainer.activate(uiContainer, 700, 550);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     } else {
-      TemplateService tservice = uicomp.getApplicationComponent(TemplateService.class);
-      String repository = uicomp.getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
-      List<String> documentNodeType = tservice.getDocumentTemplates(repository);
       String nodeType = null;
       if(selectedNode.hasProperty("exo:presentationType")) {
         nodeType = selectedNode.getProperty("exo:presentationType").getString();
       }else {
         nodeType = selectedNode.getPrimaryNodeType().getName();
       }        
-      if(documentNodeType.contains(nodeType)){
         UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
         UIDocumentFormController uiController = 
           event.getSource().createUIComponent(UIDocumentFormController.class, null, "EditFormController");
@@ -129,11 +123,7 @@ public class EditDocumentActionComponent extends UIAbstractManagerComponent {
         uiController.setRenderedChild(UIDocumentForm.class);
         UIPopupContainer.activate(uiController, 800, 600);          
         event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
-      } else {
-        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.not-support", null));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
-      }
     }
   }
   
@@ -176,27 +166,7 @@ public class EditDocumentActionComponent extends UIAbstractManagerComponent {
           JCRExceptionManager.process(uiApp, e);
           return;
         }
-        if (!PermissionUtil.canSetProperty(selectedNode)) {
-          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.has-not-edit-permission", null,
-              ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
-        }
-        Object[] arg = { nodePath };
-        if (uiExplorer.nodeIsLocked(selectedNode)) {
-          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.node-locked", arg,
-              ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
-        }
-        if (!selectedNode.isCheckedOut()) {
-          uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null,
-              ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
-        }
       }
-      
       Node selectedNode = uiExplorer.getCurrentNode();        
       UIApplication uiApp = uicomp.getAncestorOfType(UIApplication.class);
       editDocument(event, uicomp, uiExplorer, selectedNode, uiApp);

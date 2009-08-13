@@ -34,7 +34,7 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 public class IsEditableFilter extends UIExtensionAbstractFilter {
   
   public IsEditableFilter() {
-    super("UIActionBar.msg.not-support");
+    this("UIActionBar.msg.not-support");
   }
   
   public IsEditableFilter(String messageKey) {
