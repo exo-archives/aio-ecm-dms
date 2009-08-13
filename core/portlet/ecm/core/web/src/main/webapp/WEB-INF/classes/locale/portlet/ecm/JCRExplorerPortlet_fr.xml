@@ -2466,7 +2466,31 @@
 	  <msg>
 	    <confirm-deletecomment>Voulez-vous vraiment supprimer ce commentaire?</confirm-deletecomment>
 	  </msg>
-	</UIDocumentInfo>	
+	</UIDocumentInfo>
+	
+	<!-- 
+ 	 #############	From DMS 2.6 #############
+  -->
+	<UIUploadContent>
+		<tooltip>
+			<ManageMetadata>Manage Metadata</ManageMetadata>
+		</tooltip>
+		<label>
+			<manageMetadata>Manage Metadata</manageMetadata>
+		</label>		
+	</UIUploadContent>
+	<UIUploadForm>
+		<action>
+			<AddUpload>Add Upload</AddUpload>
+			<RemoveUpload>Remove Upload</RemoveUpload>
+		</action>
+	</UIUploadForm>
+	<UIExternalMetadataForm>
+		<action>
+			<Add>Add</Add>
+			<Cancel>Cancel</Cancel>
+		</action>
+	</UIExternalMetadataForm>	
 		<!-- 
 	 #############	From DMS 2.6 #############
 	 -->

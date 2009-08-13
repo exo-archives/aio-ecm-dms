@@ -2464,12 +2464,33 @@
 	    <confirm-deletecomment>Do you really want to delete this comment?</confirm-deletecomment>
 	  </msg>
 	</UIDocumentInfo>
-		<!-- 
-	 #############	From DMS 2.6 #############
-	 -->
-  <ECMContextMenu>
+	
+	<!-- 
+ 	 #############	From DMS 2.6 #############
+  -->
+	<UIUploadContent>
+		<tooltip>
+			<ManageMetadata>Manage Metadata</ManageMetadata>
+		</tooltip>
+		<label>
+			<manageMetadata>Manage Metadata</manageMetadata>
+		</label>		
+	</UIUploadContent>
+	<UIUploadForm>
+		<action>
+			<AddUpload>Add Upload</AddUpload>
+			<RemoveUpload>Remove Upload</RemoveUpload>
+		</action>
+	</UIUploadForm>
+	<UIExternalMetadataForm>
+		<action>
+			<Add>Add</Add>
+			<Cancel>Cancel</Cancel>
+		</action>
+	</UIExternalMetadataForm>
+	<ECMContextMenu>
 	    <event>
 	    	<Permlink>View Document</Permlink>
 	    </event>
-  </ECMContextMenu>
+	</ECMContextMenu>
 </bundle>

@@ -1,7 +1,8 @@
 <%import org.exoplatform.ecm.webui.utils.Utils ;%>
 <%
-  String[] arrValues = uicomponent.arrUploadValues() ;
-  String[] arrLabel = ["fileName", "nodeName", "fileSize", "mimeType"] ;
+  //String[] arrValues = uicomponent.arrUploadValues() ;
+  List<String[]> listValues = uicomponent.listUploadValues();
+  String[] arrLabel = ["fileName", "nodeName", "fileSize", "mimeType", "manageMetadata"];
 %>
 <div class="$uicomponent.id">
 	<div class="GridTitleBar">
@@ -28,55 +29,30 @@
 	    </tr>
 	  </thead>
 	  <tbody>
+	    <%
+	    for(arrValues in listValues) {
+	    %>
 	    <tr>
-	      <td><div class="ItemIcon <%=Utils.getNodeTypeIcon(uicomponent.getUploadedNode(), "16x16Icon")%>"></div><span></span></td>
+	      <td><div class="ItemIcon16x16 <%=Utils.getNodeTypeIcon(uicomponent.getUploadedNode(), "16x16Icon")%>"></div><span></span></td>
 	      <%
+	        int index = 0;
 	        for(value in arrValues) {
-	          String subValue = value ; 
+	          String subValue = value;
+	          index++; 
 	          if(value.length() > 20) subValue = value.substring(0,20) + "..." ;
 	      %>
-	          <td><span title="$value"><%=subValue%></span></td>
+	          <td>
+	            <%if (index == 5) {%>
+	              <a href="<%=uicomponent.event("ManageMetadata", value)%>">
+	              <div class="Icon16x16 Edit16x16Icon" style="margin-left: 30px;" title="<%=_ctx.appRes("UIUploadContent.tooltip.ManageMetadata")%>"><span></span></div>
+                </a>
+	            <%} else {%>
+	              <span title="$value"><%=subValue%></span>
+	            <% } %>
+            </td>
 	      <%}%>
 	    </tr>
-	  </tbody>
-	</table>
-	<div class="GridTitleBar">
-		<table>
-			<tr>
-				<td>
-				  <div class="GridTitleLeftBar">
-				    <div class="GridTitleRightBar">
-				      <div class="GridTitleMiddleBar"><%=_ctx.appRes("UIUploadContent.title.external-metadata")%></div>
-				    </div>
-				  </div>
-				</td>
-			</tr>
-		</table> 
-	</div>
-	<table class="UIGrid" cellspacing="0" borderspacing="0" style="width: 99%;">
-	  <col width="50px;"><col><col width="50px;">
-	  <thead>
-	    <tr>
-	      <th></th>
-	      <th><%=_ctx.appRes("UIUploadContent.title.metadata-name")%></th>
-	      <th><%=_ctx.appRes("UIUploadContent.title.action")%></th>
-	    </tr>
-	  </thead>
-	  <tbody>
-      <%for(nodeType in uicomponent.getExternalList()) {%>
-		    <tr>
-		      <td>
-		        <%String iconNodeType = nodeType.replace(":", "_") ;%>
-		        <div class="default16x16Icon ${iconNodeType}16x16Icon" style="margin:auto"><span></span></div>
-		      </td>
-		      <td><%=nodeType%></td>
-	 	      <td>
-	          <a href="<%=uicomponent.event("Edit", nodeType)%>">
-	            <div class="Icon16x16 Edit16x16Icon" style="margin-left:7px;" title="<%=_ctx.appRes("UIUploadContent.tooltip.Edit")%>"><span></span></div>
-	          </a>
-	 	      </td>
-		    </tr>
-      <%}%>
+	    <%}%>
 	  </tbody>
 	</table>
 </div>

@@ -16,6 +16,9 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.upload;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jcr.Item;
 import javax.jcr.Node;
 
@@ -44,13 +47,21 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UIUploadContainer extends UIContainer {
 
-  private Node uploadedNode_ ;
+  private Node uploadedNode_;
+  private List<Node> listUploadedNode_ = new ArrayList<Node>();
+  private String[] arrayActions = new String[] {"Close"};
   
   public UIUploadContainer() throws Exception {
     addChild(UIUploadContent.class, null, null) ;
   }
-
-  public String[] getActions() {return new String[] {"AddMetadata","Close"} ;}
+  
+  public void setActions(String[] arrValueActions) {
+    arrayActions = arrValueActions ; 
+  }
+  
+  public String[] getActions() {
+    return arrayActions;
+  }
   
   public Node getEditNode(String nodeType) throws Exception { 
     try {
@@ -66,6 +77,14 @@ public class UIUploadContainer extends UIContainer {
   
   public void setUploadedNode(Node node) throws Exception { uploadedNode_ = node ; }
   public Node getUploadedNode() { return uploadedNode_ ; }
+  
+  public void setListUploadedNode(List<Node> listNode) throws Exception { 
+    listUploadedNode_ = listNode ; 
+  }
+  
+  public List<Node> getListUploadedNode() { 
+    return listUploadedNode_; 
+  }
   
   static public class CloseActionListener extends EventListener<UIUploadContainer> {
     public void execute(Event<UIUploadContainer> event) throws Exception {

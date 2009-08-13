@@ -2471,10 +2471,25 @@
 	    <confirm-deletecomment>Bạn có thực sự muốn xóa ý kiến này không?</confirm-deletecomment>
 	  </msg>
 	</UIDocumentInfo>
-		<!-- 
-	 #############	From DMS 2.6 #############
-	 -->
-  <ECMContextMenu>
+	
+	<!-- 
+ 	 #############	From DMS 2.6 #############
+  -->
+	<UIUploadContent>
+		<tooltip>
+			<ManageMetadata>Quản lý thuộc tính</ManageMetadata>
+		</tooltip>
+		<label>
+			<manageMetadata>Quản lý thuộc tính</manageMetadata>
+		</label>		
+	</UIUploadContent>
+	<UIUploadForm>
+		<action>
+			<AddUpload>Thêm tải một file</AddUpload>
+			<RemoveUpload>Xóa tải một file</RemoveUpload>
+		</action>
+	</UIUploadForm>
+	<ECMContextMenu>
 	    <event>
 	    	<Permlink>Xem tài liệu</Permlink>
 	    </event>
