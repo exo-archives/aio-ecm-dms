@@ -82,10 +82,3 @@ SkinService.addSkin(
     "/ecm/skin/webui/component/fastcontentcreator/MacStylesheet.css",
     ServletContext
 ) ;
-
-SkinService.addSkin(
-    "ecm/FormGeneratorPortlet",
-    "Default",
-    "/ecm/skin/webui/component/formgenerator/DefaultStylesheet.css",
-    ServletContext
-) ;
