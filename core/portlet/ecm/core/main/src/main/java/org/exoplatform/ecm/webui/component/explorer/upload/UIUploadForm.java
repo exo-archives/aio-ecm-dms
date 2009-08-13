@@ -237,11 +237,11 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
 
   public void doSelect(String selectField, Object value) throws Exception {
     String valueTaxonomy = String.valueOf(value).trim();
-    int index = 1;
+    int index = 0;
     if (selectField.replaceAll(FIELD_LISTTAXONOMY, "").length() > 0) 
       index = new Integer(selectField.replaceAll(FIELD_LISTTAXONOMY, "")).intValue(); 
     List<String> indexListTaxonomy = new ArrayList<String>();
-    if (listTaxonomies.size() >= index) indexListTaxonomy = listTaxonomies.get(index);
+    if (listTaxonomies.size() > index) indexListTaxonomy = listTaxonomies.get(index);
     indexListTaxonomy.add(valueTaxonomy);
     listTaxonomies.add(index, indexListTaxonomy);    
     updateAdvanceTaxonomy(selectField);
@@ -250,14 +250,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   }
   
   private void updateAdvanceTaxonomy(String selectField) throws Exception {
-    int index = 1;
+    int index = 0;
     if (selectField.replaceAll(FIELD_LISTTAXONOMY, "").length() > 0) 
       index = new Integer(selectField.replaceAll(FIELD_LISTTAXONOMY, "")).intValue();
     List<UIComponent> listChildren = getChildren();
     for (UIComponent uiComp : listChildren) {
       if (uiComp.getId().equals(selectField)) {
         UIFormMultiValueInputSet uiFormMultiValueInputSet = getChildById(selectField);
-        if (listTaxonomies.size() >= index) uiFormMultiValueInputSet.setValue(listTaxonomies.get(index));
+        if (listTaxonomies.size() > index) uiFormMultiValueInputSet.setValue(listTaxonomies.get(index));
       }
     }
   }
@@ -277,7 +277,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       
       // Proccess with save multiple upload form   
       List<UIComponent> listFormChildren = uiForm.getChildren();
-      int index = 1;
+      int index = 0;
       for (UIComponent uiComp : listFormChildren) {
         if(uiComp instanceof UIFormUploadInput) {
           
@@ -642,7 +642,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     public void execute(Event<UIUploadForm> event) throws Exception {      
       UIUploadForm uiUploadForm = event.getSource();
       List<UIComponent> listChildren = uiUploadForm.getChildren();
-      int index = 1;
+      int index = 0;
       for (UIComponent uiComp : listChildren) {
         if(uiComp instanceof UIFormUploadInput) index++;
       }      
@@ -678,8 +678,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       for (UIComponent uiComp : listChildren) {
         if(uiComp instanceof UIFormUploadInput) index++;
       }
-      uiUploadForm.removeChildById(FIELD_UPLOAD + index);
-      uiUploadForm.removeChildById(FIELD_LISTTAXONOMY + index);
+      uiUploadForm.removeChildById(FIELD_UPLOAD + (index - 1));
+      uiUploadForm.removeChildById(FIELD_LISTTAXONOMY + (index - 1));
       uiUploadForm.setRendered(true);
     }
   }
