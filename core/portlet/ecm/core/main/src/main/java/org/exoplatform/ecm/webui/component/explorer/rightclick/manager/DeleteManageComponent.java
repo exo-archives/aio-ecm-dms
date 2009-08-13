@@ -215,7 +215,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
   }
 
   public void doDelete(String nodePath, String wsName, Event<?> event) throws Exception {
-    UIJCRExplorer uiExplorer = getParent();
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     if (nodePath.indexOf(";") > -1) {
       processRemoveMultiple(nodePath.split(";"), wsName.split(";"), event);
     } else {
@@ -227,7 +227,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
   }
 
   public void doDelete(String nodePath, Event<?> event) throws Exception {
-    UIJCRExplorer uiExplorer = getParent();
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     if (nodePath.indexOf(";") > -1) {
       processRemoveMultiple(nodePath.split(";"), event);
     } else {

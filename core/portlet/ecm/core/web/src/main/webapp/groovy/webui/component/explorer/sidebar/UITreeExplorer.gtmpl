@@ -15,15 +15,16 @@
     def uiCustomActionComponent = uicomponent.getWorkingArea().getCustomAction();
     String serverPath = uicomponent.getServerPath();
     String portalName = uicomponent.getPortalName();
-    String repository = uicomponent.getRepository() ;   
+    String repository = uicomponent.getRepository();
+    String drive = uicomponent.getDriveName();
     int counter = 1 ;     
     int depth = rootTree.getNode().getDepth() + 1;
-				if (rootTree.getNode().getPath().equals("/")) depth = 2;
-	   List childrenNodes=uicomponent.getRenderedChildren(rootTree);
+		if (rootTree.getNode().getPath().equals(uicomponent.getRootTreeNode().getPath())) depth++;
+	  List childrenNodes=uicomponent.getRenderedChildren(rootTree);
     boolean isPaginated=uicomponent.isPaginated(rootTree);
     int childrenSize = childrenNodes.size();        
     def rcontext = _ctx.getRequestContext();
-				rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('treeclip_button','$depth','$childrenSize')");         
+		rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('${drive}_treeclip_button','$depth','$childrenSize')");         
     for(treeNode in childrenNodes) {	    
     	Node node = treeNode.getNode() 
     	try {
@@ -31,7 +32,6 @@
     	} catch(Exception e) {
     	  continue;
     	}
-    	//totalNodes++;
 	    String path = node.getPath() ;
 	    String treeNodeName = treeNode.getName();
 	    def isPreferenceNode = uicomponent.isPreferenceNode(node) ;
@@ -52,8 +52,18 @@
 	      actionLink = uicomponent.event(mode, treeNode.getPath()) ;
 	      expandLink = uicomponent.event("Expand", Utils.formatNodeName(treeNode.getPath())) ;
 	    }
-	    //Begin for WebDav action
+	    
 	    String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
+      //Begin permlink
+	    def permLinkComponent =  uicomponent.getWorkingArea().getPermlink(node);
+      if (permLinkComponent != null) {
+          strActs +=  "<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(node) + "\">" ;
+          strActs +=  " <div class='MenuURLIcon GetURL16x16Icon'>" ;
+          strActs +=    _ctx.appRes("ECMContextMenu.event." + permLinkComponent.getUIExtensionName());
+          strActs +=  " </div>";
+          strActs +=  "</a>";
+      }  
+      //Begin for WebDav action
 	    if (node.getPrimaryNodeType().getName().equals("nt:file")) {
 	      String mimeType = "";
 	      if (node.hasNode("jcr:content")) {
@@ -85,23 +95,14 @@
 			  }				    
 	    }
 		
-					def permLinkComponent =  uicomponent.getWorkingArea().getPermlink(node);
-			 		if (permLinkComponent != null) {
-	      strActs +=	"<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(node) + "\">" ;
-							strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
-							strActs +=	  _ctx.appRes("ECMContextMenu.event." + permLinkComponent.getUIExtensionName());
-							strActs +=  "	</div>";
-				 		strActs +=  "</a>";
-			 		}     
-			 	
-					String clipboardLink = serverPath + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + node.getPath();
-					int depthChild = node.getDepth();
-					strActs +=	"<a class='MenuItem' style='display: block;' id='treeclip_button$depthChild$counter' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;        
-					strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
-					strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
-					strActs +=  "	</div>" ;
-					strActs += "</a>" ;
-					strActs += "</div>" ;	    
+			String clipboardLink = serverPath + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + node.getPath();
+			int depthChild = node.getDepth();
+			strActs +=	"<a class='MenuItem' style='display: block;' id='${drive}_treeclip_button$depthChild$counter' path='$clipboardLink' onclick=\"eXo.ecm.ECMUtils.pushToClipboard(event,'$clipboardLink');\">" ;        
+			strActs +=  "	<div class='MenuURLIcon GetURL16x16Icon'>" ;
+			strActs +=	  _ctx.appRes("ECMContextMenu.event.GetURL");
+			strActs +=  "	</div>" ;
+			strActs += "</a>" ;
+			strActs += "</div>" ;	    
 	    String lastNodeClass = "" ;
 	    if (counter >= childrenSize && !isPaginated) {
 	    	lastNodeClass = "LastNode " ;

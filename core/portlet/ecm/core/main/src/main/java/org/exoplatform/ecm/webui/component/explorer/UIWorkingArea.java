@@ -123,7 +123,7 @@ public class UIWorkingArea extends UIContainer {
     }
   }
   
-  private UIComponent addUIExtension(UIExtension extension, Map<String, Object> context) throws Exception {
+  private synchronized UIComponent addUIExtension(UIExtension extension, Map<String, Object> context) throws Exception {
     UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
     UIComponent component = manager.addUIExtension(extension, context, this);
     if (component instanceof UIAbstractManagerComponent) {
