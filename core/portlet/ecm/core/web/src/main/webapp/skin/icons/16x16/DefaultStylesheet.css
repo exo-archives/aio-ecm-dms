@@ -463,6 +463,12 @@
   background: url('DefaultSkin/DownLoadIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
+.Permlink16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/PermlinkIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/PermlinkIcon.gif') no-repeat right center; /* orientation=rt */
+}
+
 .CheckOut16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/CheckOut.gif') no-repeat left center; /* orientation=lt */

@@ -451,6 +451,11 @@
   background: url('DefaultSkin/DownLoadIcon.gif') no-repeat;   
 }
 
+.Permlink16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/PermlinkIcon.gif') no-repeat;   
+}
+
 .CheckIn16x16Icon {
   width: 24px; height: 20px;
   background: url('VistaSkin/CheckIn.png') no-repeat left center; /* orientation=lt */  

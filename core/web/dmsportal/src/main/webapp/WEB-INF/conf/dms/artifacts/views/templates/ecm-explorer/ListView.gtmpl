@@ -157,7 +157,7 @@
       <%
       	String serverUrl = uicomponent.getWebDAVServerPrefix();
       	String portalName = uicomponent.getPortalName() ;
-      	String repository = uicomponent.getRepository();
+      	String repository = uicomponent.getRepository();      	def permlink;
         int i = 0;
         for (data in uicomponent.getChildrenList()) {
     		  i++;
@@ -165,8 +165,7 @@
           def preferenceWS = data.getSession().getWorkspace().getName() ;
           String nodePath = data.getPath() ;
           String name = nodePath.substring(nodePath.lastIndexOf("/") + 1, nodePath.length()) ;   
-          String subName ;          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;          //Begin permlink          permLinkComponent =  uiWorkingArea.getPermlink(data);          if (permLinkComponent != null) {            strActs +=  "<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(data) + "\">" ;            strActs +=  " <div class='MenuURLIcon GetURL16x16Icon'>" ;            strActs +=    _ctx.appRes("ECMContextMenu.event." + permLinkComponent.getUIExtensionName());            strActs +=  " </div>";            strActs +=  "</a>";          }                //Begin WebDav Action
-          String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;
+          String subName ;          String actionLink = uicomponent.event("ChangeNode",Utils.formatNodeName(data.path), new Parameter("workspaceName", preferenceWS)) ;          //Begin permlink          permLinkComponent =  uiWorkingArea.getPermlink(data);          String strActs = "<div class=\"RightClickCustomItem\" style=\"display: none;\">" ;          if (permLinkComponent != null) {            permlink = permLinkComponent.getUIExtensionName();            strActs +=  "<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(data) + "\">" ;            strActs +=  " <div class='MenuURLIcon ${permlink}16x16Icon'>" ;            strActs +=    _ctx.appRes("ECMContextMenu.event." + permlink);            strActs +=  " </div>";            strActs +=  "</a>";          }                //Begin WebDav Action
           if (data.getPrimaryNodeType().getName().equals("nt:file")) {
     		  	String mimeType=data.getNode("jcr:content").getProperty("jcr:mimeType").getString();
     		  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+serverUrl+"','"+ portalName +"','"+repository+"','"+ preferenceWS+ "','" +Utils.formatNodeName(data.getPath())+"','"+mimeType+"')";				  					  					  	
