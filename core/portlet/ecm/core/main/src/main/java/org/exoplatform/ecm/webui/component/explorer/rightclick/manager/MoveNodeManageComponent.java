@@ -65,7 +65,7 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
   
   public void processMultipleSelection(String nodePath, boolean isLink, String destPath,
       Event<?> event) throws Exception {
-    UIJCRExplorer uiExplorer = getParent();
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(destPath);
     String wsName = null;
     if (matcher.find()) {
@@ -158,7 +158,7 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
   }
   
   private void moveNode(String srcPath, Node destNode, Event<?> event) throws Exception {
-    UIJCRExplorer uiExplorer = getParent();
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
     String wsName = null;
     UIApplication uiApp = getAncestorOfType(UIApplication.class);
@@ -229,7 +229,7 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
   }
 
   private void createLink(String srcPath, Node destNode, Event<?> event) throws Exception {
-    UIJCRExplorer uiExplorer = getParent();
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
     String wsName = null;
     if (matcher.find()) {
