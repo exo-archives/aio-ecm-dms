@@ -239,10 +239,10 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     String valueTaxonomy = String.valueOf(value).trim();
     int index = 0;
     if (selectField.replaceAll(FIELD_LISTTAXONOMY, "").length() > 0) 
-      index = new Integer(selectField.replaceAll(FIELD_LISTTAXONOMY, "")).intValue(); 
+      index = new Integer(selectField.replaceAll(FIELD_LISTTAXONOMY, "")).intValue();    
     List<String> indexListTaxonomy = new ArrayList<String>();
     if (listTaxonomies.size() > index) indexListTaxonomy = listTaxonomies.get(index);
-    indexListTaxonomy.add(valueTaxonomy);
+    if (!indexListTaxonomy.contains(valueTaxonomy)) indexListTaxonomy.add(valueTaxonomy);
     listTaxonomies.add(index, indexListTaxonomy);    
     updateAdvanceTaxonomy(selectField);
     UIUploadManager uiUploadManager = getParent();
@@ -282,12 +282,11 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         if(uiComp instanceof UIFormUploadInput) {
           
         UIFormUploadInput uiFormUploadInput;  
-        if (index == 1){
+        if (index == 0){
           uiFormUploadInput = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD);
         } else {
           uiFormUploadInput = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD + index);
         }
-        index++;
       CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
       TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
       if(uiFormUploadInput.getUploadResource() == null) {
@@ -319,7 +318,13 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       }      
       String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
       InputStream inputStream = uiFormUploadInput.getUploadDataAsStream();
-      String name = uiForm.getUIStringInput(FIELD_NAME).getValue();
+      String name;
+      if (index == 0){
+        name = uiForm.getUIStringInput(FIELD_NAME).getValue();
+      } else {
+        name = uiForm.getUIStringInput(FIELD_NAME + index).getValue();
+      }
+      
       if (name == null) {
         for(String filterChar : arrFilterChar) {
           if (fileName.indexOf(filterChar) > -1) {
@@ -454,6 +459,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
                     taxonomyTree = categoryPath.substring(0, categoryPath.indexOf("/"));
                     taxonomyPath = categoryPath.substring(categoryPath.indexOf("/") + 1);
                     taxonomyService.addCategory(newNode, taxonomyTree, taxonomyPath);
+                    System.out.println("newNode ============> " + newNode.getPath());
                   } catch (ItemExistsException e) {
                     uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.ItemExistsException",
                         null, ApplicationMessage.WARNING));
@@ -498,6 +504,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
               taxonomyTree = categoryPath.substring(0, categoryPath.indexOf("/"));
               taxonomyPath = categoryPath.substring(categoryPath.indexOf("/") + 1);
               taxonomyService.addCategory(node, taxonomyTree, taxonomyPath);
+              System.out.println("node ============> " + node.getPath());
             }
           }
         }
@@ -550,6 +557,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       }
       
         //Begin proccess with save multiple upload form
+        index++;
         }
       }
       uiUploadContent.setListUploadValues(listArrValues);
@@ -645,7 +653,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       int index = 0;
       for (UIComponent uiComp : listChildren) {
         if(uiComp instanceof UIFormUploadInput) index++;
-      }      
+      }
+      uiUploadForm.addUIFormInput(new UIFormStringInput(FIELD_NAME  + index, FIELD_NAME + index, null));
       PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
       PortletPreferences portletPref = pcontext.getRequest().getPreferences();
       String limitPref = portletPref.getValue(Utils.UPLOAD_SIZE_LIMIT_MB, "");
@@ -678,6 +687,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       for (UIComponent uiComp : listChildren) {
         if(uiComp instanceof UIFormUploadInput) index++;
       }
+      uiUploadForm.removeChildById(FIELD_NAME + (index - 1));
       uiUploadForm.removeChildById(FIELD_UPLOAD + (index - 1));
       uiUploadForm.removeChildById(FIELD_LISTTAXONOMY + (index - 1));
       uiUploadForm.setRendered(true);
