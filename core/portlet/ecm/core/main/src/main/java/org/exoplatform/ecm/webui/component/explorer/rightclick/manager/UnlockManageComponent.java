@@ -35,6 +35,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanSetPropertyFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsHoldsLockFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotSameNameSiblingFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
@@ -63,7 +64,7 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 )
 public class UnlockManageComponent extends UIAbstractManagerComponent {
   
-  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new CanSetPropertyFilter(), new IsNotSameNameSiblingFilter(), new IsHoldsLockFilter(), new IsCheckedOutFilter()});
+  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new CanSetPropertyFilter(), new IsNotSameNameSiblingFilter(), new IsHoldsLockFilter(), new IsNotLockedFilter(), new IsCheckedOutFilter()});
   
   private static final Log LOG  = ExoLogger.getLogger(UnlockManageComponent.class);
   

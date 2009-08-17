@@ -86,7 +86,9 @@ public class UIWorkingArea extends UIContainer {
 
   public static final String               ITEM_GROUND_CONTEXT_MENU = "ItemGroundContextMenu";
   
-  public static final String               JCR_MOVE_ACTION = "JCRMoveAction";
+  public static final String               MOVE_NODE = "MoveNode";
+
+  public static final String               CREATE_LINK = "CreateLink";
 
   public static final String               CUSTOM_ACTIONS = "CustomActions";
 
@@ -257,16 +259,16 @@ public class UIWorkingArea extends UIContainer {
   }
 
   public UIComponent getJCRMoveAction() throws Exception {
-    UIComponent uicomponent = null;
-    List<UIExtension> uiExtensionList = getUIExtensionList();
-    for (UIExtension uiextension : uiExtensionList) {
-      if (JCR_MOVE_ACTION.equals(uiextension.getCategory())) {
-        uicomponent = addUIExtension(uiextension, null);
-      }
-    }
-    return uicomponent;
+    UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
+    return manager.addUIExtension(EXTENSION_TYPE, MOVE_NODE, null, this);
   }
 
+  public UIComponent getCreateLinkAction() throws Exception {
+    UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
+    return manager.addUIExtension(EXTENSION_TYPE, CREATE_LINK, null, this);
+  }
+
+  
   public UIComponent getPermlink(Node node) throws Exception {
     UIComponent uicomponent = null;
     List<UIExtension> uiExtensionList = getUIExtensionList();

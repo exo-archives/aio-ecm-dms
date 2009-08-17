@@ -507,13 +507,23 @@
 						</object>
 					</object-param>
 					<object-param>
-						<name>MoveNodeLink</name>
+						<name>MoveNode</name>
 						<object type="org.exoplatform.webui.ext.UIExtension">
 							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
 							<field name="rank"><int>220</int></field>
 							<field name="name"><string>MoveNode</string></field>
 							<field name="category"><string>JCRMoveAction</string></field>
 							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.MoveNodeManageComponent</string></field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>CreateLink</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+							<field name="rank"><int>220</int></field>
+							<field name="name"><string>CreateLink</string></field>
+							<field name="category"><string>JCRMoveAction</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.CreateLinkManageComponent</string></field>
 						</object>
 					</object-param>
 					<object-param>

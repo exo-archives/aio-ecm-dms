@@ -23,7 +23,6 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
-import javax.jcr.Workspace;
 import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 
@@ -35,6 +34,8 @@ import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -47,19 +48,78 @@ import org.exoplatform.webui.event.Event;
  * Created by The eXo Platform SARL
  * Author : Hoang Van Hung
  *          hunghvit@gmail.com
- * Aug 6, 2009  
+ * Aug 16, 2009  
  */
-
 @ComponentConfig(
     events = {
-      @EventConfig(listeners = MoveNodeManageComponent.MoveNodeActionListener.class, confirm="UIWorkingArea.msg.confirm-move")
+      @EventConfig(listeners = CreateLinkManageComponent.CreateLinkActionListener.class)
     }
 )
+public class CreateLinkManageComponent extends UIAbstractManagerComponent {
 
-public class MoveNodeManageComponent extends UIAbstractManagerComponent {
+  private static final Log LOG = ExoLogger.getLogger(CreateLinkManageComponent.class);
 
-  private static final Log LOG = ExoLogger.getLogger(MoveNodeManageComponent.class);
-  
+  private static void createMultiLink(String[] srcPaths, Node destNode,
+      Event<? extends UIComponent> event) throws Exception {
+    for (int i = 0; i < srcPaths.length; i++) {
+      createLink(srcPaths[i], destNode, event);
+    }
+  }
+
+  private static void createLink(String srcPath, Node destNode, Event<? extends UIComponent> event)
+      throws Exception {
+
+    UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+    Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
+    String wsName = null;
+    if (matcher.find()) {
+      wsName = matcher.group(1);
+      srcPath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '" + srcPath + "'");
+    }
+    Session session = uiExplorer.getSessionByWorkspace(wsName);
+    Node selectedNode = uiExplorer.getNodeByPath(srcPath, session, false);
+    UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
+    LinkManager linkManager = event.getSource().getApplicationComponent(LinkManager.class);
+    if (linkManager.isLink(destNode)) {
+      Object[] args = { destNode.getPath() };
+      uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.dest-node-is-link", args,
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+    if (linkManager.isLink(selectedNode)) {
+      Object[] args = { srcPath };
+      uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.selected-is-link", args,
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+    try {
+      linkManager.createLink(destNode, Utils.EXO_SYMLINK, selectedNode, selectedNode.getName()
+          + ".lnk");
+    } catch (Exception e) {
+      Object[] args = { srcPath, destNode.getPath() };
+      uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.create-link-problem", args,
+          ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+  }
+
+  public static class CreateLinkActionListener extends UIWorkingAreaActionListener<CreateLinkManageComponent> {
+    public void processEvent(Event<CreateLinkManageComponent> event) throws Exception {
+      CreateLinkManageComponent.createLinkManager(event);
+    }
+  }
+
+  private static void createLinkManager(Event<? extends UIComponent> event) throws Exception {
+    String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+    String destPath = event.getRequestContext().getRequestParameter("destInfo");
+    processMultipleSelection(nodePath.trim(), destPath.trim(), event);
+  }
+
   private static void processMultipleSelection(String nodePath, String destPath,
       Event<? extends UIComponent> event) throws Exception {
     UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
@@ -118,9 +178,9 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
     }
     try {
       if (nodePath.indexOf(";") > -1) {
-          moveMultiNode(nodePath.split(";"), destNode, event);
+        createMultiLink(nodePath.split(";"), destNode, event);
       } else {
-          moveNode(nodePath, destNode, event);
+        createLink(nodePath, destNode, event);
       }
       session.save();
       uiExplorer.updateAjax(event);
@@ -147,80 +207,7 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
       return;
     }
   }
-  
-  private static void moveNode(String srcPath, Node destNode, Event<?> event) throws Exception {
-    UIComponent uiComponent = (UIComponent)event.getSource();
-    UIJCRExplorer uiExplorer = uiComponent.getAncestorOfType(UIJCRExplorer.class);
-    Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
-    String wsName = null;
-    UIApplication uiApp = uiComponent.getAncestorOfType(UIApplication.class);
-    if (srcPath.indexOf(":/") > -1) {
-      String[] arrSrcPath = srcPath.split(":/");
-      if (("/" + arrSrcPath[1]).equals(destNode.getPath())) {
-        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.can-not-move-to-itself", null,
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-    }
-    if (matcher.find()) {
-      wsName = matcher.group(1);
-      srcPath = matcher.group(2);
-    } else {
-      throw new IllegalArgumentException("The ObjectId is invalid '" + srcPath + "'");
-    }
-    Session srcSession = uiExplorer.getSessionByWorkspace(wsName);
-    // Use the method getNodeByPath because it is link aware
-    Node selectedNode = uiExplorer.getNodeByPath(srcPath, srcSession, false);
-    // Reset the path to manage the links that potentially create virtual path
-    srcPath = selectedNode.getPath();
-    // Reset the session to manage the links that potentially change of
-    // workspace
-    srcSession = selectedNode.getSession();
 
-    if (!selectedNode.isCheckedOut()) {
-      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null,
-          ApplicationMessage.WARNING));
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-      return;
-    }
-    uiExplorer.addLockToken(selectedNode);
-    String destPath = destNode.getPath();
-    if (destPath.endsWith("/")) {
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/") + 1);
-    } else {
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/"));
-    }
-    Workspace srcWorkspace = srcSession.getWorkspace();
-    Workspace destWorkspace = destNode.getSession().getWorkspace();
-    try {
-      if (srcWorkspace.equals(destWorkspace)) {
-        srcWorkspace.move(srcPath, destPath);
-      } else {
-        destWorkspace.clone(srcWorkspace.getName(), srcPath, destPath, false);
-      }
-    } catch (Exception e) {
-      Object[] args = { srcPath, destPath };
-      uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.move-problem", args,
-          ApplicationMessage.WARNING));
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-      return;
-    }
-  }
-
-  private static void moveMultiNode(String[] srcPaths, Node destNode, Event<? extends UIComponent> event) throws Exception {
-    for (int i = 0; i < srcPaths.length; i++) {
-      moveNode(srcPaths[i], destNode, event);
-    }
-  }
-
-  public static class MoveNodeActionListener extends UIWorkingAreaActionListener<MoveNodeManageComponent> {
-    public void processEvent(Event<MoveNodeManageComponent> event) throws Exception {
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      String destPath = event.getRequestContext().getRequestParameter("destInfo");
-      MoveNodeManageComponent.processMultipleSelection(nodePath.trim(), destPath.trim(), event);
-    }
-  }
   @Override
   public Class<? extends UIAbstractManager> getUIAbstractManagerClass() {
     return null;

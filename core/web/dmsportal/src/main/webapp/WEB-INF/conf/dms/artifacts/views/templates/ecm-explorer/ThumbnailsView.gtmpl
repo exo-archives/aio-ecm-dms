@@ -6,7 +6,6 @@
   import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
       
   def uiWorkingArea = uicomponent.getAncestorOfType(UIWorkingArea.class);
-  def uiMoveNodeComponent = uiWorkingArea.getJCRMoveAction();
   def uiCustomActionComponent = uiWorkingArea.getCustomAction();
   def managersMultiItemContext =  uiWorkingArea.getMultiActionsExtensionList();
   def managersGroundContext = uiWorkingArea.getGroundActionsExtensionList();
@@ -32,7 +31,7 @@
 		<div style="position: relative; top: 0px; left: 0px; width: 0px; height: 0px">
 			<div class="JCRMoveIcon" style="display: none;"><div class="MoveNode"><span>{number}</span></div></div>
 			<div class="Mask" style="position: absolute; top: 0px; left: 0px; width: 0px; height: 0px"></div>
-			<div class="JCRMoveAction" style="display: none;" request="<%=contextMenu.event('MoveNode', 'MultiSelection')%>" symlink="<%=contextMenu.event('CreateLink', 'MultiSelection')%>"></div>
+			<div class="JCRMoveAction" style="display: none;" request="<%=uiWorkingArea.getJCRMoveAction().event(UIWorkingArea.MOVE_NODE, 'MultiSelection')%>" symlink="<%=uiWorkingArea.getCreateLinkAction().event(UIWorkingArea.CREATE_LINK, 'MultiSelection')%>"></div>
 			<div class="ItemContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;" >
 				<div class="UIRightClickPopupMenu" style="display: block;">
 					<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">		

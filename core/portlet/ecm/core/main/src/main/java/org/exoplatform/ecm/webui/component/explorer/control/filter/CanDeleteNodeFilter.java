@@ -21,8 +21,8 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
 /**
  * Created by The eXo Platform SARL
@@ -32,10 +32,16 @@ import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
  */
 public class CanDeleteNodeFilter  extends UIExtensionAbstractFilter {
 
+  public CanDeleteNodeFilter() {
+    this("UIActionBar.msg.node-checkedin");
+  }
+  
+  public CanDeleteNodeFilter(String messageKey) {
+    super(messageKey, UIExtensionFilterType.MANDATORY);
+  }
   public boolean accept(Map<String, Object> context) throws Exception {
     if (context==null) return true;
     Node currentNode = (Node) context.get(Node.class.getName());
-    UIJCRExplorer uiExplorer = (UIJCRExplorer) context.get(UIJCRExplorer.class.getName());
     return (!IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode)) || 
       (IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode) && 
         IsCheckedOutFilter.isCheckedOut(currentNode));
