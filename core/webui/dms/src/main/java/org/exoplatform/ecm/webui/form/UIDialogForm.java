@@ -912,7 +912,7 @@ public class UIDialogForm extends UIForm {
           super.processAction(context);
           String nodePath_ = (String) context.getAttribute("nodePath");
           if (nodePath_ != null) {
-            executePostSaveEventInterceptor(nodePath);
+            executePostSaveEventInterceptor(nodePath_);
           }
         }
       } finally {
