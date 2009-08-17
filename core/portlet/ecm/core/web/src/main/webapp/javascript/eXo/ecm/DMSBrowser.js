@@ -1,6 +1,15 @@
 function DMSBrowser(){
 }
 
+DMSBrowser.prototype.managerResize = function() {
+	if(eXo.core.Browser.currheight != document.documentElement.clientHeight || 
+	  eXo.core.Browser.currwidth != document.documentElement.clientWidth) {
+ 		clearTimeout(eXo.core.Browser.breakStream) ;
+ 		eXo.core.Browser.breakStream = setTimeout(eXo.core.Browser.onResize, 100) ;
+ 	}
+ 	eXo.core.Browser.currheight = document.documentElement.clientHeight;
+ 	eXo.core.Browser.currwidth = document.documentElement.clientWidth;
+}
 
 DMSBrowser.prototype.findPosX = function(obj, isRTL) {
   var curleft = 0;
@@ -27,3 +36,4 @@ DMSBrowser.prototype.findMouseRelativeX = function(object, e) {
 } ;
 
 eXo.ecm.DMSBrowser = new DMSBrowser();
+window.onresize = eXo.ecm.DMSBrowser.managerResize;

@@ -14,7 +14,6 @@
   def uniqueId  = new Date().getTime();
   def rcontext = _ctx.getRequestContext() ;
 	rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.checkAvailableSpace');
-  rcontext.getJavascriptManager().addOnResizeJavascript('eXo.ecm.ECMUtils.checkAvailableSpace');
   rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.checkTabSize');
   def tabs = uicomponent.getTabList() ;
   def actionBarStyle = "";
