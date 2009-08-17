@@ -49,6 +49,18 @@ public class LockUtil {
     lockedNodesInfo.put(key,lock.getLockToken());
     httpSession.setAttribute(LockManager.class.getName(),lockedNodesInfo);
   }
+
+  public static void removeLock(Node node) throws Exception {
+    PortalRequestContext requestContext = Util.getPortalRequestContext();
+    HttpSession httpSession = requestContext.getRequest().getSession();
+    String key = createLockKey(node);
+    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    if(lockedNodesInfo == null) {
+      lockedNodesInfo = new HashMap<String,String>();
+    }
+    lockedNodesInfo.remove(key);
+    httpSession.setAttribute(LockManager.class.getName(),lockedNodesInfo);
+  }
   
   @SuppressWarnings("unchecked")
   public static void changeLockToken(Node oldNode, Node newNode) throws Exception {
