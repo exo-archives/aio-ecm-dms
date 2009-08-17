@@ -34,7 +34,7 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 public class IsVersionableFilter extends UIExtensionAbstractFilter {
   
   public IsVersionableFilter() {
-    super(null);
+    this(null);
   }
   
   public IsVersionableFilter(String messageKey) {
