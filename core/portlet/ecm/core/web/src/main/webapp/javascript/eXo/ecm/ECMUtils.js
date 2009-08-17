@@ -407,7 +407,7 @@
 		} else {
 			var maxSpace = parseInt(portletFrag.offsetWidth) - parseInt(viewBarContainer.offsetWidth);
 		}
-
+    
 		for(var i = 0; i <  uiTabs.length; i++){
 			uiTabs[i].style.display = "block" ;
 			listHideIcon.style.display = "block" ;
@@ -425,7 +425,8 @@
 				eXo.ecm.ECMUtils.removeElementListHide(subItem);
 			}
 		}
-		eXo.core.Browser.addOnResizeCallback('ECMresize', function(){eXo.ecm.ECMUtils.checkAvailableSpace()});
+
+		eXo.core.Browser.addOnResizeCallback('ECMresize', function(){eXo.ecm.ECMUtils.checkAvailableSpace();});
 	};	
 	
 	ECMUtils.prototype.addElementListHide = function(obj) {
