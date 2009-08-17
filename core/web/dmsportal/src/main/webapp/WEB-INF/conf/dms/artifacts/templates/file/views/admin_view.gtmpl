@@ -115,12 +115,14 @@
     return size;
   }
   
+  def rqcontext = _ctx.getRequestContext() ;
+  rqcontext.getJavascriptManager().addOnLoadJavascript('initLightbox');
+  
 %>
 <div $resizeBlock>
 	<div class="FileContent">
-		<%if(mimeType.equals("text/html")) { 
-		  def rcontext = _ctx.getRequestContext() ;
-			rcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');
+		<%if(mimeType.equals("text/html") || mimeType.equals("application/rss+xml")) { 
+			rqcontext.getJavascriptManager().importJavascript('eXo.webui.UIHorizontalTabs');
 		%>
 		
 		<div class="UITabPane">
@@ -164,7 +166,7 @@
 				        <%
 				        	if(contentNode.hasProperty("jcr:data")){
 				        	  String iframeId = uicomponent.getId() + "ifame" ;
-				        	  rcontext.getJavascriptManager().addCustomizedOnLoadScript("eXo.ecm.ECMUtils.replaceToIframe('$iframeId');");
+				        	  rqcontext.getJavascriptManager().addCustomizedOnLoadScript("eXo.ecm.ECMUtils.replaceToIframe('$iframeId');");
 				        %>
 				        	<div style="text-align: center">
 				        		<textarea id="<%=iframeId%>"><%=contentNode.getProperty("jcr:data").getString()%></textarea> 
@@ -215,10 +217,21 @@
 			        	  imgSrc = uicomponent.getDownloadLink(fileLangNode) ;
 			        	} else {
 			        	  imgSrc = "/" + uicomponent.getPortalName() + "/rest/jcr/" + uicomponent.getRepository() + "/" + uicomponent.getWorkspaceName() + fileLangNode.getPath();
-			        	}  
+			        	} 
+			        	def dcTitle = "";
+			        	if(contentNode.hasProperty("dc:title")) {
+                  StringBuilder sB = new StringBuilder();
+			        	  def i=0;
+			        	  for(title in contentNode.getProperty("dc:title").getValues()) {
+	                  if (i > 0) sB.append("; ");
+						        sB.append(title.getString());
+						        i++;			        	    
+			        	  }
+			        	  dcTitle=sB.toString();
+			        	}
 			        %> 	
 				    		<div class="ContentDetail">
-				    			<image src="$imgSrc"/>              
+				    			<a href="$imgSrc" rel="lightbox" title="$dcTitle"><image src="$imgSrc"/></a>              
 			          </div>
 			        <%}else {%> 
 								<div style="text-align:center; font-style:italic">
