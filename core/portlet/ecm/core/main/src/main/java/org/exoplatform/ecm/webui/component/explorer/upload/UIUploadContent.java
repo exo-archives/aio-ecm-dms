@@ -54,6 +54,7 @@ public class UIUploadContent extends UIContainer {
   public List<String> externalList_ = new ArrayList<String>() ;
   
   private List<String[]> listArrValues_ = new ArrayList<String[]>();
+  private boolean isExternalMetadata = false;
   
   public UIUploadContent() throws Exception {
   }
@@ -105,6 +106,14 @@ public class UIUploadContent extends UIContainer {
     listArrValues_ = listArrValues;
   }
   
+  public void setIsExternalMetadata(boolean isExternal) {
+    isExternalMetadata = isExternal; 
+  }
+  
+  public boolean getIsExternalMetadata() { 
+    return isExternalMetadata; 
+  }
+  
   static public class EditActionListener extends EventListener<UIUploadContent> {
     public void execute(Event<UIUploadContent> event) throws Exception {
       UIUploadContent uiUploadContent = event.getSource() ;
@@ -143,7 +152,8 @@ public class UIUploadContent extends UIContainer {
       UIUploadContent uiUploadContent = event.getSource() ;
       UIUploadContainer uiUploadContainer = uiUploadContent.getParent() ;
       MetadataService metadataService = uiUploadContent.getApplicationComponent(MetadataService.class) ;
-      UIJCRExplorer uiExplorer = uiUploadContent.getAncestorOfType(UIJCRExplorer.class) ;
+      UIJCRExplorer uiExplorer = uiUploadContent.getAncestorOfType(UIJCRExplorer.class);
+      uiUploadContent.setIsExternalMetadata(true);
       String repository = uiExplorer.getRepositoryName() ;      
       String uploadedNodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       Node uploadedNode = (Node) uiExplorer.getCurrentNode().getSession().getItem(uploadedNodePath);
@@ -176,7 +186,7 @@ public class UIUploadContent extends UIContainer {
       uiAddMetadataForm.setWorkspace(currentNode.getSession().getWorkspace().getName()) ;
       uiAddMetadataForm.setStoredPath(currentNode.getPath()) ;
       uiAddMetadataForm.setChildPath(uiUploadContainer.getEditNode(nodeType).getPath()) ;
-      uiUploadContainer.addChild(uiAddMetadataForm) ;
+      uiUploadContainer.addChild(uiAddMetadataForm);
       uiUploadContainer.setRenderedChild(UIAddMetadataForm.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadContainer) ;
     }

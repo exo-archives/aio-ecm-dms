@@ -92,7 +92,7 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
     {
       @ComponentConfig(
           lifecycle = UIFormLifecycle.class,
-          template =  "system:/groovy/webui/form/UIForm.gtmpl",
+          template = "app:/groovy/webui/component/explorer/upload/UIUploadForm.gtmpl",
           events = {
             @EventConfig(listeners = UIUploadForm.SaveActionListener.class), 
             @EventConfig(listeners = UIUploadForm.CancelActionListener.class, phase = Phase.DECODE),
@@ -132,6 +132,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   private List<String> listTaxonomyName = new ArrayList<String>();
   
   private List<List<String>> listTaxonomies = new ArrayList<List<String>>();
+  private int numberUploadFile = 1;
   
   public UIUploadForm() throws Exception {
     setMultiPart(true) ;
@@ -150,6 +151,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       uiInput = new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD);
     }
     addUIFormInput(uiInput);
+  }
+  
+  public int getNumberUploadFile() {
+    return numberUploadFile;
+  }
+  
+  public void setNumberUploadFile(int numberUpload) {
+    numberUploadFile = numberUpload;
   }
   
   public List<List<String>> getListTaxonomies() {
@@ -214,14 +223,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     addUIFormInput(uiFormMultiValue);
   }
   
-  public String[] getActions() { 
-    List<UIComponent> listFormChildren = getChildren();
-    int uploadInputNumber = 0;
-    for (UIComponent uiComp : listFormChildren) {
-      if(uiComp instanceof UIFormUploadInput) uploadInputNumber++;  
-    }
-    if (uploadInputNumber > 1) return new String[] {"Save", "Cancel", "AddUpload", "RemoveUpload"};
-    return new String[] {"Save", "Cancel", "AddUpload"};
+  public String[] getActions() {
+    return new String[] {"Save", "Cancel"};
   }
 
   public void setIsMultiLanguage(boolean isMultiLanguage, String language) { 
@@ -685,7 +688,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       uiFormMultiValue.setType(UIFormStringInput.class);
       uiFormMultiValue.setEditable(false);
       uiUploadForm.addUIFormInput(uiFormMultiValue);
-      uiUploadForm.setRendered(true);
+      uiUploadForm.setNumberUploadFile(index + 1);
+      uiUploadForm.setRendered(true);      
       event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadForm.getParent());
     }
   }
@@ -706,6 +710,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         uiUploadForm.removeChildById((index - 1) + FIELD_UPLOAD);
         uiUploadForm.removeChildById((index - 1) + FIELD_LISTTAXONOMY);
       }
+      uiUploadForm.setNumberUploadFile(index - 1);
       uiUploadForm.setRendered(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadForm.getParent());
     }

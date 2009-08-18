@@ -1,0 +1,85 @@
+<% 
+String fieldName;
+int numberUploadFile = uicomponent.getNumberUploadFile();
+%>
+<div class="UIForm $uicomponent.id">
+  <%uiform.begin()%>
+  <div class="HorizontalLayout">
+    <div class="FormContainer">
+      <table class="UIFormGrid">
+	      <%
+	        int indexUpload = 1; 
+	        for(field in uiform.getChildren()) { 
+	          if(field.isRendered()) {
+	      %>
+              <tr>
+	              <%fieldName = uicomponent.getLabel(field.getName());%>
+	              <%
+	              	if(fieldName != null && fieldName.length() > 0 && !fieldName.equals(uicomponent.getId())) {
+	              %>                        
+  	              <td class="FieldLabel">                     
+                    <%
+                    String fieldLabel = field.getName();
+							      if (fieldLabel.indexOf("name") >= 0) {
+							        fieldName = "name";
+							      } else if(fieldName.indexOf("upload") >= 0){
+							        fieldName = "upload";
+							        indexUpload = indexUpload + 1;
+							      } else if(fieldName.indexOf("fieldListTaxonomy") >= 0) {
+							        fieldName = "fieldListTaxonomy";
+							      }
+                    %>
+                    <%=uicomponent.getLabel(fieldName)%>
+                  </td>
+  	              <td><% uiform.renderField(field) %></td>
+  	              <td>
+  	              <%
+  	                if (field.getName().indexOf("upload") >= 0) {
+  	                  if (numberUploadFile == 1){
+  	                  %>
+                        <img src="/eXoResources/skin/sharedImages/Blank.gif" class="MultiFieldAction AddNewNodeIcon" alt="" title="Add Upload File" onclick="javascript:eXo.webui.UIForm.submitForm('fileexplorer#UIUploadForm','AddUpload',true)"/>
+										  <%
+  	                  } else {
+	  	                  if (indexUpload == numberUploadFile) {
+	  	                  %>
+	  	                    <img src="/eXoResources/skin/sharedImages/Blank.gif" class="MultiFieldAction Remove16x16Icon" alt="" title="Remove Upload File" onclick="javascript:eXo.webui.UIForm.submitEvent('fileexplorer#UIUploadForm','RemoveUpload','&objectId=<%=field.getName()%>')"/>
+	  	                    <img src="/eXoResources/skin/sharedImages/Blank.gif" class="MultiFieldAction AddNewNodeIcon" alt="" title="Add Upload File" onclick="javascript:eXo.webui.UIForm.submitForm('fileexplorer#UIUploadForm','AddUpload',true)"/>										      									      
+										    <%
+	  	                  }
+							        }
+							      }
+							    %>
+  	              </td>
+	              <%}%>
+	            </tr>
+	      <%
+	          }
+	        }
+	      %>
+      </table>
+      <div class="UIAction"> 
+        <table class="ActionContainer">
+        	<tr>
+        		<td>
+		          <% for(action in uicomponent.getActions()) { 
+                	 String actionLabel = _ctx.appRes(uicomponent.getName() + ".action." + action) ;
+                   String link = uicomponent.event(action) ;
+          		%>
+          		<div onclick="$link" class="ActionButton LightBlueStyle" onmouseover="this.style.color = '#058ee6'" onmouseout="this.style.color='black'">
+                <div class="ButtonLeft">
+                  <div class="ButtonRight">
+                    <div class="ButtonMiddle">
+                      <a href="javascript:void(0);">$actionLabel</a>
+                    </div>
+                  </div>
+                </div>
+           		</div>
+          		<%}%>        
+          	</td>
+          </tr>  
+        </table>
+      </div>
+    </div>
+  </div>
+  <%uiform.end()%>
+</div>
