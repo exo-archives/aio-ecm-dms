@@ -42,27 +42,29 @@ import org.exoplatform.webui.event.EventListener;
  * May 24, 2007 5:48:57 PM
  */
 @ComponentConfig(
-    template = "app:/groovy/webui/component/explorer/upload/UIUploadContent.gtmpl",
+    template = "app:/groovy/webui/component/explorer/upload/UIListMetadata.gtmpl",
     events = {
-        @EventConfig(listeners = UIUploadContent.EditActionListener.class),
-        @EventConfig(listeners = UIUploadContent.ManageMetadataActionListener.class)
+        @EventConfig(listeners = UIListMetadata.EditActionListener.class)
     }
 )
-public class UIUploadContent extends UIContainer {
-  
-  private String[] arrValues_ ;
+public class UIListMetadata extends UIContainer {
   public List<String> externalList_ = new ArrayList<String>() ;
-  
-  private List<String[]> listArrValues_ = new ArrayList<String[]>();
   private boolean isExternalMetadata = false;
   
-  public UIUploadContent() throws Exception {
+  public void setIsExternalMetadata(boolean isExternal) {
+    isExternalMetadata = isExternal; 
   }
+  
+  public boolean getIsExternalMetadata() { 
+    return isExternalMetadata; 
+  }  
   
   public Node getUploadedNode() { return ((UIUploadContainer)getParent()).getUploadedNode() ; }
   
-  public List<Node> getListUploadedNode() { 
-    return ((UIUploadContainer)getParent()).getListUploadedNode(); 
+  private boolean isExternalUse(NodeType nodeType) throws Exception{
+    PropertyDefinition def = 
+      ((ExtendedNodeType)nodeType).getPropertyDefinitions("exo:internalUse").getAnyDefinition() ;    
+    return !def.getDefaultValues()[0].getBoolean() ;
   }
   
   public List<String> getExternalList() throws Exception { 
@@ -88,35 +90,12 @@ public class UIUploadContent extends UIContainer {
     return externalList_ ; 
   }
   
-  private boolean isExternalUse(NodeType nodeType) throws Exception{
-    PropertyDefinition def = 
-      ((ExtendedNodeType)nodeType).getPropertyDefinitions("exo:internalUse").getAnyDefinition() ;    
-    return !def.getDefaultValues()[0].getBoolean() ;
+  public UIListMetadata() throws Exception {
   }
   
-  public String[] arrUploadValues() { return arrValues_ ; }
-  
-  public void setUploadValues(String[] arrValues) { arrValues_ = arrValues ; }
-  
-  public List<String[]> listUploadValues() { 
-    return listArrValues_; 
-  }
-  
-  public void setListUploadValues(List<String[]> listArrValues) { 
-    listArrValues_ = listArrValues;
-  }
-  
-  public void setIsExternalMetadata(boolean isExternal) {
-    isExternalMetadata = isExternal; 
-  }
-  
-  public boolean getIsExternalMetadata() { 
-    return isExternalMetadata; 
-  }
-  
-  static public class EditActionListener extends EventListener<UIUploadContent> {
-    public void execute(Event<UIUploadContent> event) throws Exception {
-      UIUploadContent uiUploadContent = event.getSource() ;
+  static public class EditActionListener extends EventListener<UIListMetadata> {
+    public void execute(Event<UIListMetadata> event) throws Exception {
+      UIListMetadata uiUploadContent = event.getSource() ;
       UIUploadContainer uiUploadContainer = uiUploadContent.getParent() ;
       MetadataService metadataService = uiUploadContent.getApplicationComponent(MetadataService.class) ;
       UIJCRExplorer uiExplorer = uiUploadContent.getAncestorOfType(UIJCRExplorer.class) ;
@@ -145,45 +124,5 @@ public class UIUploadContent extends UIContainer {
       uiUploadContainer.setRenderedChild(UIAddMetadataForm.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadContainer) ;
     }
-  }
-  
-  static public class ManageMetadataActionListener extends EventListener<UIUploadContent> {
-    public void execute(Event<UIUploadContent> event) throws Exception {
-      UIUploadContent uiUploadContent = event.getSource() ;
-      UIUploadContainer uiUploadContainer = uiUploadContent.getParent() ;
-      MetadataService metadataService = uiUploadContent.getApplicationComponent(MetadataService.class) ;
-      UIJCRExplorer uiExplorer = uiUploadContent.getAncestorOfType(UIJCRExplorer.class);
-      uiUploadContent.setIsExternalMetadata(true);
-      String repository = uiExplorer.getRepositoryName() ;      
-      String uploadedNodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node uploadedNode = (Node) uiExplorer.getCurrentNode().getSession().getItem(uploadedNodePath);
-      uiUploadContainer.setUploadedNode(uploadedNode);
-      String nodeType = "dc:elementSet";
-      if(uploadedNode.hasNode(Utils.JCR_CONTENT)) {
-        for(NodeType itemNodeType : uploadedNode.getNode(Utils.JCR_CONTENT).getMixinNodeTypes()) {
-          if(itemNodeType.isNodeType(Utils.EXO_METADATA) && uiUploadContent.isExternalUse(itemNodeType)) {
-            nodeType = itemNodeType.getName();
-          }
-        }
-      }      
-      String template = metadataService.getMetadataTemplate(nodeType, true, repository) ;
-      if(template == null || template.trim().length() == 0) {
-        UIApplication uiApp = uiUploadContent.getAncestorOfType(UIApplication.class) ;
-        Object[] args = {nodeType} ;
-        uiApp.addMessage(new ApplicationMessage("UIUploadContent.msg.has-not-template", args, 
-                         ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-      uiUploadContainer.setActions(new String[] {"AddMetadata","Close"});
-      uiUploadContainer.removeChild(UIAddMetadataForm.class);
-      uiUploadContainer.removeChild(UIListMetadata.class);
-      UIListMetadata uiListMetadata = 
-        uiUploadContainer.createUIComponent(UIListMetadata.class, null, null) ;
-      uiListMetadata.setIsExternalMetadata(true);
-      uiUploadContainer.addChild(uiListMetadata);
-      uiUploadContainer.setRenderedChild(UIListMetadata.class) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadContainer) ;
-    }
-  }
+  }  
 }

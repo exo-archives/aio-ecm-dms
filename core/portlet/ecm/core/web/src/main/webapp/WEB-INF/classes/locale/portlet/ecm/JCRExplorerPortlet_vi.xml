@@ -2494,4 +2494,11 @@
 	    	<Permlink>Xem tài liệu</Permlink>
 	    </event>
   </ECMContextMenu>
+  <UIUploadContainer>
+  	<tab>
+  		<label>
+  			<UIListMetadata>Danh sách metadatas mở rộng</UIListMetadata>
+  		</label>
+  	</tab>
+  </UIUploadContainer>
 </bundle>

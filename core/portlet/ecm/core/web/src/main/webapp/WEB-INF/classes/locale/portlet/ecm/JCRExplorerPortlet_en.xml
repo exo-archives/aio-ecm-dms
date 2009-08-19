@@ -2495,5 +2495,12 @@
 	    <event>
 	    	<Permlink>View Document</Permlink>
 	    </event>
-  </ECMContextMenu>
+  </ECMContextMenu>  
+  <UIUploadContainer>
+  	<tab>
+  		<label>
+  			<UIListMetadata>List external metadatas</UIListMetadata>
+  		</label>
+  	</tab>
+  </UIUploadContainer>  
 </bundle>

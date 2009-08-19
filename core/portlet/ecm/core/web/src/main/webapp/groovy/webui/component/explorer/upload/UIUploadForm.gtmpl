@@ -6,7 +6,7 @@ int numberUploadFile = uicomponent.getNumberUploadFile();
   <%uiform.begin()%>
   <div class="HorizontalLayout">
     <div class="FormContainer">
-      <table class="UIFormGrid">
+      <table class="UIFormGrid" cellspacing="4px">
 	      <%
 	        int indexUpload = 1; 
 	        for(field in uiform.getChildren()) { 
@@ -31,19 +31,19 @@ int numberUploadFile = uicomponent.getNumberUploadFile();
                     %>
                     <%=uicomponent.getLabel(fieldName)%>
                   </td>
-  	              <td><% uiform.renderField(field) %></td>
-  	              <td>
+  	              <td class="FieldComponent"><% uiform.renderField(field) %></td>
+  	              <td class="FieldComponent">
   	              <%
-  	                if (field.getName().indexOf("upload") >= 0) {
+  	                if (field.getName().indexOf("fieldListTaxonomy") >= 0) {
   	                  if (numberUploadFile == 1){
   	                  %>
-                        <img src="/eXoResources/skin/sharedImages/Blank.gif" class="MultiFieldAction AddNewNodeIcon" alt="" title="Add Upload File" onclick="javascript:eXo.webui.UIForm.submitForm('fileexplorer#UIUploadForm','AddUpload',true)"/>
+                        <img src="/eXoResources/skin/sharedImages/Blank.gif" class="MultiFieldAction AddNewNodeIcon" alt="" title="<%=_ctx.appRes("UIUploadForm.action.AddUpload")%>" onclick="<%=uicomponent.event("AddUpload")%>"/>
 										  <%
   	                  } else {
 	  	                  if (indexUpload == numberUploadFile) {
 	  	                  %>
-	  	                    <img src="/eXoResources/skin/sharedImages/Blank.gif" class="MultiFieldAction Remove16x16Icon" alt="" title="Remove Upload File" onclick="javascript:eXo.webui.UIForm.submitEvent('fileexplorer#UIUploadForm','RemoveUpload','&objectId=<%=field.getName()%>')"/>
-	  	                    <img src="/eXoResources/skin/sharedImages/Blank.gif" class="MultiFieldAction AddNewNodeIcon" alt="" title="Add Upload File" onclick="javascript:eXo.webui.UIForm.submitForm('fileexplorer#UIUploadForm','AddUpload',true)"/>										      									      
+	  	                    <img src="/eXoResources/skin/sharedImages/Blank.gif" class="MultiFieldAction Remove16x16Icon" alt="" title="<%=_ctx.appRes("UIUploadForm.action.RemoveUpload")%>" onclick="<%=uicomponent.event("RemoveUpload")%>"/>
+	  	                    <img src="/eXoResources/skin/sharedImages/Blank.gif" class="MultiFieldAction AddNewNodeIcon" alt="" title="<%=_ctx.appRes("UIUploadForm.action.AddUpload")%>" onclick="<%=uicomponent.event("AddUpload")%>"/>										      									      
 										    <%
 	  	                  }
 							        }
