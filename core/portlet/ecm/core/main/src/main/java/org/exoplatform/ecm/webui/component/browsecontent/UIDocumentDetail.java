@@ -19,8 +19,10 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -57,10 +59,13 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.ext.UIExtension;
+import org.exoplatform.webui.ext.UIExtensionManager;
 
 /**
  * Created by The eXo Platform SARL
@@ -77,7 +82,7 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 
-public class UIDocumentDetail extends UIComponent implements NodePresentation, UIPopupComponent {
+public class UIDocumentDetail extends UIContainer implements NodePresentation, UIPopupComponent {
   protected Node node_ ;
   private Node originalNode_;
   private String language_ ;
@@ -379,6 +384,19 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
     }
     return currentNode ;
   }
+
+
+  public UIComponent getUIComponent(String mimeType) throws Exception {
+    UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
+    List<UIExtension> extensions = manager.getUIExtensions(Utils.FILE_VIEWER_EXTENSION_TYPE);
+    Map<String, Object> context = new HashMap<String, Object>();
+    context.put(Utils.MIME_TYPE, mimeType);
+    for (UIExtension extension : extensions) {
+      UIComponent uiComponent = manager.addUIExtension(extension, context, this);
+      if(uiComponent != null) return uiComponent;
+    }
+    return null;
+  }
   
   static public class ChangeLanguageActionListener extends EventListener<UIDocumentDetail>{
     public void execute(Event<UIDocumentDetail> event) throws Exception {
@@ -433,4 +451,5 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
       event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");
     }
   }
+
 }

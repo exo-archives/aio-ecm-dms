@@ -585,6 +585,88 @@
 					</object-param>
 				</init-params>
 			</component-plugin>
+			<component-plugin>
+				<name>File dynamic viewer</name>
+				<set-method>registerUIExtensionPlugin</set-method>
+				<type>org.exoplatform.webui.ext.UIExtensionPlugin</type>
+				<init-params>
+				  <object-param>
+						<name>Images</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.FileViewer</string></field>
+							<field name="rank"><int>100</int></field>
+							<field name="name"><string>Images</string></field>
+							<field name="category"><string>FileViewer</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.viewer.ImageViewer</string></field>
+							<field name="extendedFilters">
+								<collection type="java.util.ArrayList">
+									<value>
+										<object type="org.exoplatform.webui.ext.filter.impl.FileFilter">
+											<field name="mimeTypes">
+												<collection type="java.util.ArrayList">
+													<value><string>image/jpeg</string></value>
+													<value><string>image/png</string></value>
+													<value><string>image/gif</string></value>
+													<value><string>image/bmp</string></value>
+													<value><string>image/tiff</string></value>
+												</collection>
+											</field>
+										</object>
+									</value>
+								</collection>
+							</field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>Text</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.FileViewer</string></field>
+							<field name="rank"><int>110</int></field>
+							<field name="name"><string>Text</string></field>
+							<field name="category"><string>FileViewer</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.viewer.TextViewer</string></field>
+							<field name="extendedFilters">
+								<collection type="java.util.ArrayList">
+									<value>
+										<object type="org.exoplatform.webui.ext.filter.impl.FileFilter">
+											<field name="mimeTypes">
+												<collection type="java.util.ArrayList">
+													<value><string>text/html</string></value>
+													<value><string>text/plain</string></value>
+													<value><string>text/xml</string></value>
+												</collection>
+											</field>
+										</object>
+									</value>
+								</collection>
+							</field>
+						</object>
+					</object-param>
+					<object-param>
+						<name>PDF</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.FileViewer</string></field>
+							<field name="rank"><int>120</int></field>
+							<field name="name"><string>PDF</string></field>
+							<field name="category"><string>FileViewer</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.viewer.PDFViewer</string></field>
+							<field name="extendedFilters">
+								<collection type="java.util.ArrayList">
+									<value>
+										<object type="org.exoplatform.webui.ext.filter.impl.FileFilter">
+											<field name="mimeTypes">
+												<collection type="java.util.ArrayList">
+													<value><string>application/pdf</string></value>
+												</collection>
+											</field>
+										</object>
+									</value>
+								</collection>
+							</field>
+						</object>
+					</object-param>
+				</init-params>
+			</component-plugin>
 		</component-plugins>
 	</component>
 </configuration>

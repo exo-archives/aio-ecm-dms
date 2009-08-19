@@ -20,6 +20,8 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.webui.core.UIComponent;
+
 /**
  * Created by The eXo Platform SARL Author : Dang Van Minh
  * minh.dang@exoplatform.com May 8, 2008 3:22:08 PM
@@ -218,4 +220,12 @@ public interface NodePresentation {
    * @throws Exception the exception
    */
   public String getIcons(Node node, String size) throws Exception;
+
+  /**
+   * Get the UIComponent which to display file
+   * @param mimeType
+   * @return
+   * @throws Exception
+   */
+  public UIComponent getUIComponent(String mimeType) throws Exception;
 }

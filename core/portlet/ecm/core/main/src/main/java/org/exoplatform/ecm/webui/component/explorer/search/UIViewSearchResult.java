@@ -18,7 +18,9 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -56,9 +58,12 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+import org.exoplatform.webui.ext.UIExtension;
+import org.exoplatform.webui.ext.UIExtensionManager;
 
 /**
  * Created by The eXo Platform SARL
@@ -334,6 +339,18 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
     return currentNode ;
   }  
 
+  public UIComponent getUIComponent(String mimeType) throws Exception {
+    UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
+    List<UIExtension> extensions = manager.getUIExtensions(Utils.FILE_VIEWER_EXTENSION_TYPE);
+    Map<String, Object> context = new HashMap<String, Object>();
+    context.put(Utils.MIME_TYPE, mimeType);
+    for (UIExtension extension : extensions) {
+      UIComponent uiComponent = manager.addUIExtension(extension, context, this);
+      if(uiComponent != null) return uiComponent;
+    }
+    return null;
+  }
+  
   static  public class DownloadActionListener extends EventListener<UIViewSearchResult> {
     public void execute(Event<UIViewSearchResult> event) throws Exception {
       UIViewSearchResult uiComp = event.getSource() ;
