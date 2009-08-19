@@ -100,7 +100,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
     Session systemSession = repository.getSystemSession(session.getWorkspace().getName()) ;
 
     if (newState.equals(ENROLLED)) {
-      log.info("Set node to "+NON_PUBLISHED);
+      log.info("Set node to " + PUBLISHED);
       // add mixin versionable
       if (node.canAddMixin("mix:versionable")) node.addMixin("mix:versionable");
       node.save();
@@ -108,14 +108,14 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       Version version = node.checkin();
       node.checkout();
       
-      String newStringValue= version.getUUID()+","+NON_PUBLISHED;
+      String newStringValue = version.getUUID() + "," + PUBLISHED;
       Value value2add=systemSession.getValueFactory().createValue(newStringValue);
       Value[] values = {value2add};
       node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
 
       //set currentState to non published
-      node.setProperty(CURRENT_STATE,NON_PUBLISHED);
-      String visibility=PRIVATE;
+      node.setProperty(CURRENT_STATE, PUBLISHED);
+      String visibility = PUBLIC;
       Value newValueVisibility=systemSession.getValueFactory().createValue(visibility);
       node.setProperty(VISIBILITY,newValueVisibility) ;
       //set permissions
@@ -128,11 +128,11 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
       @SuppressWarnings("hiding")
       String versionName = session.getNodeByUUID(version.getUUID()).getName();
-      String[] log = {date,NON_PUBLISHED,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodeCreated",versionName,visibility};
+      String[] log = {date, PUBLISHED,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodeCreated",versionName,visibility};
       publicationService.addLog(node, log);
       
       
-      node.setProperty(CURRENT_STATE, NON_PUBLISHED);
+      node.setProperty(CURRENT_STATE, PUBLISHED);
       systemSession.logout();
     } else if (newState.equals(PUBLISHED)) {
       String currentState = node.getProperty(CURRENT_STATE).getString();
