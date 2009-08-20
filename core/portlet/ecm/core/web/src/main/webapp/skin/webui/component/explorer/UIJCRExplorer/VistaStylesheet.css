@@ -70,6 +70,7 @@
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .tagSet .FieldLabel {
 		width: 110px;
+		line-height: 20px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .tagSet .ActionField {
@@ -82,8 +83,8 @@
 		color: black;
 		float: left; /* orientation=lt */
 	 float: right; /* orientation=rt */
-	 padding-right: 12px /* orientation=lt */
-	 padding-left: 12px  /* orientation=rt */
+	 padding-right: 12px; /* orientation=lt */
+	 padding-left: 12px;  /* orientation=rt */
 		text-decoration:none;
 }
 
