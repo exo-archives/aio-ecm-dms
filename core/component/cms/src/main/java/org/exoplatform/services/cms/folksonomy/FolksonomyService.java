@@ -113,4 +113,14 @@ public interface FolksonomyService {
    */
   public void init(String repository) throws Exception ;
   
+  /**
+   * Remove tag of given document
+   * @param document
+   * @param tagName
+   * @param repository
+   * @return
+   * @throws Exception
+   */
+  public boolean removeTagOfDocument(Node document, String tagName, String repository) throws Exception;
+  
 }

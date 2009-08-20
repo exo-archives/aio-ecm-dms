@@ -25,6 +25,7 @@ import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -51,6 +52,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
     template = "system:/groovy/webui/form/UIForm.gtmpl",
     events = {
       @EventConfig(listeners = UITaggingForm.AddTagActionListener.class),
+      @EventConfig(listeners = UITaggingForm.RemoveActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UITaggingForm.CancelActionListener.class, phase = Phase.DECODE)
     }
 )
@@ -70,6 +72,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
     uiInputSet.setIntroduction(TAG_NAMES, "UITaggingForm.introduction.tagName");
     addUIComponentInput(uiInputSet);
     uiInputSet.setIsView(false);
+    super.setActions(new String[] {"AddTag", "Cancel"});
   }
   
   public void activate() throws Exception {
@@ -83,7 +86,9 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
     }
     UIFormInputSetWithAction uiLinkedInput = getChildById(LINKED_TAGS_SET);
     uiLinkedInput.setInfoField(LINKED_TAGS, linkedTags.toString());
+    uiLinkedInput.setActionInfo(LINKED_TAGS, new String[] { "Remove" });
     uiLinkedInput.setIsShowOnly(true);
+    uiLinkedInput.setIsDeleteOnly(true);
     
   }
   public void deActivate() throws Exception {}
@@ -181,6 +186,33 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
     public void execute(Event<UITaggingForm> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       uiExplorer.cancelAction();
+    }
+  }
+
+  static public class RemoveActionListener extends EventListener<UITaggingForm> {
+    public void execute(Event<UITaggingForm> event) throws Exception {
+      UITaggingForm uiForm = event.getSource();
+      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
+      Node currentNode = uiExplorer.getCurrentNode();
+      String tagName = event.getRequestContext().getRequestParameter(OBJECTID);
+      String[] arrFilterChar = { "&", "'", "$", "@", ":", "]", "[", "*", "%", "!", "/", "\\" };
+      UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
+      if (!Utils.isNameValid(tagName, arrFilterChar)) {
+        uiApp.addMessage(new ApplicationMessage("UITaggingForm.msg.tagName-invalid", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      FolksonomyService folksonomyService = uiForm.getApplicationComponent(FolksonomyService.class);
+      folksonomyService.removeTagOfDocument(currentNode, tagName, uiExplorer.getRepositoryName());
+      uiForm.activate();
+
+      Preference preferences = uiExplorer.getPreference();
+      if (preferences.isShowSideBar()) {
+        UISideBar uiSideBar = uiExplorer.findFirstComponentOfType(UISideBar.class);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar);
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiForm);
     }
   }
 }

@@ -62,6 +62,31 @@
 	width: 15%;
 }
 
+.UIJCRExplorerPortlet .UIFormInputSet .UIFormInputSetWithAction .UIFormGrid .tagSet td {
+ 	padding: 4px 8px 4px 0px; /* orientation=lt */
+ 	padding: 4px 0px 4px 8px; /* orientation=rt */
+ 	line-height: 20px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .tagSet .FieldLabel {
+		width: 110px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .tagSet .ActionField {
+		float: left; /* orientation=lt */
+	 float: right; /* orientation=rt */
+		line-height: 20px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIFormGrid .tagSet a {
+		color: black;
+		float: left; /* orientation=lt */
+	 float: right; /* orientation=rt */
+	 padding-right: 12px /* orientation=lt */
+	 padding-left: 12px  /* orientation=rt */
+		text-decoration:none;
+}
+
 
 .UIJCRExplorerPortlet .UIWorkingArea .UIPageIterator {
 	width: 90%;

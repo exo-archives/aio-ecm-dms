@@ -112,9 +112,9 @@ public class TestFolksonomyService extends BaseDMSTestCase {
     Property property = test.getProperty("exo:folksonomy");
     Value[] values = property.getValues();
       for (Value val : values) {
-        assertEquals(val.getString(), exoTagsHomeNode.getNode("AAAA").getUUID());
+        assertEquals(val.getString(), exoTagsHomeNode.getNode(session.getUserID() + "/AAAA").getUUID());
     }
-    assertTrue(exoTagsHomeNode.hasNode("AAAA"));
+    assertTrue(exoTagsHomeNode.hasNode(session.getUserID() + "/AAAA"));
     assertTrue(test.isNodeType("exo:folksonomized"));
   }
 
@@ -132,11 +132,39 @@ public class TestFolksonomyService extends BaseDMSTestCase {
     String[] tagNames = { "AAAA", "BBBB"};
     folksonomyService.addTag(test, tagNames, REPO_NAME);
     Property property = test.getProperty("exo:folksonomy");
-    List list = Arrays.asList(new String[] {exoTagsHomeNode.getNode("AAAA").getUUID(), exoTagsHomeNode.getNode("BBBB").getUUID()});
+    List list = Arrays.asList(new String[] {exoTagsHomeNode.getNode(session.getUserID() + "/AAAA").getUUID(), exoTagsHomeNode.getNode(session.getUserID() + "/BBBB").getUUID()});
     Value[] values = property.getValues();
     for (Value value : values) {
         assertTrue(list.contains(value.getString()));
     }
+  }
+
+  /**
+   * Test Method: addTag()
+   * Input: Node test, tags don't exist in repository,
+   *        test node doesn't follow exo:folksonomized NodeType
+   * Expected Result: 
+   *        tags are added in repository test has property: exo:folksonomy
+   *        test node has a property which value is equal with UUID of tagNode
+   */
+  public void testRemoveTag() throws Exception {
+    Session systemSession = getSystemSession(REPO_NAME);
+    Node exoTagsHomeNode = (Node) systemSession.getItem(baseTagsPath);
+    String[] tagNames = { "AAAA" };
+    String[] tagNames1 = { "AAAA", "BBBB" };
+    folksonomyService.addTag(test, tagNames, REPO_NAME);
+    Node test1 = session.getRootNode().addNode("test1");
+    session.save();
+    folksonomyService.addTag(test, tagNames, REPO_NAME);
+    folksonomyService.addTag(test1, tagNames1, REPO_NAME);
+    Node tabA = exoTagsHomeNode.getNode(session.getUserID() + "/AAAA");
+    Node tabB = exoTagsHomeNode.getNode(session.getUserID() + "/BBBB");
+    folksonomyService.removeTagOfDocument(test, "AAAA", REPO_NAME);
+    assertFalse(folksonomyService.getLinkedTagsOfDocument(test, REPO_NAME).contains(tabA));
+    assertTrue(folksonomyService.getLinkedTagsOfDocument(test1, REPO_NAME).contains(tabA));
+    assertTrue(folksonomyService.getLinkedTagsOfDocument(test1, REPO_NAME).contains(tabB));
+    folksonomyService.removeTagOfDocument(test1, "AAAA", REPO_NAME);
+    assertFalse(systemSession.itemExists(baseTagsPath + "/" + session.getUserID() + "/AAAA"));
   }
   
   /**
@@ -146,7 +174,7 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    *        "AAAA" is existed with path: "/jcr:system/exo:ecm/exo:folksonomies/exo:tags/AAAA". 
    */
   public void testGetTag() throws Exception{
-    String tagPath = baseTagsPath + "/AAAA";
+    String tagPath = baseTagsPath + "/" +session.getUserID() + "/AAAA";
     String[] tagNames = {"AAAA"};
     folksonomyService.addTag(test, tagNames, REPO_NAME);
     Node node = folksonomyService.getTag(tagPath, REPO_NAME);
@@ -159,7 +187,7 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    * Expected: throws exceptions
    */
   public void testGetTag1()throws Exception{
-    String tagPath = baseTagsPath + "/DDDD";    
+    String tagPath = baseTagsPath + "/" +session.getUserID() + "/DDDD";    
     try{
       folksonomyService.getTag(tagPath, REPO_NAME);
       fail();
@@ -240,7 +268,7 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    *        Test1 and Test2 node are listed.
    */
   public void testGetDocumentsOnTag() throws Exception{
-    String tagPath = baseTagsPath + "/EEEE";    
+    String tagPath = baseTagsPath + "/" + session.getUserID() + "/EEEE";    
     Node test1 = test.addNode("Test1");
     Node test2 = test.addNode("Test2");
     session.save();
@@ -259,7 +287,7 @@ public class TestFolksonomyService extends BaseDMSTestCase {
    * Expected: throws Exception.
    */
   public void testGetDocumentOnTag() throws Exception{
-    String tagPath = baseTagsPath + "/FFFF";        
+    String tagPath = baseTagsPath + "/" + session.getUserID() + "/FFFF";        
     try {
       folksonomyService.getDocumentsOnTag(tagPath, REPO_NAME);
       fail("FFFF tag is not existed");

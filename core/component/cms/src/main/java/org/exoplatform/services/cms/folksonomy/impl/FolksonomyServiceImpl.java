@@ -31,6 +31,7 @@ import javax.jcr.Value;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
@@ -127,7 +128,12 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * Name of nodes HOSTES_STYLE
    */
   final private static String HOSTES_STYLE = "hotest".intern() ;    
-
+  
+  /**
+   * Owner of Node
+   */
+  final public static String EXO_OWNER = "exo:owner";
+  
   /**
    * RepositoryService object
    */
@@ -234,18 +240,23 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * {@inheritDoc}
    */
   public void addTag(Node node, String[] tagNames, String repository) throws Exception {        
-    Session systemSession = getSystemSession(repository) ;     
-    Session currentSession = node.getSession() ;    
-    Node exoTagsHomeNode_ = (Node)systemSession.getItem(baseTagsPath_) ;
-    Node taggingNode = null ;
+    Session systemSession = getSystemSession(repository);     
+    Session currentSession = node.getSession();    
+    Node exoTagsHomeNode_ = (Node)systemSession.getItem(baseTagsPath_);
+    String userId = currentSession.getUserID();
+    if (!exoTagsHomeNode_.hasNode(userId)) {
+      exoTagsHomeNode_.addNode(userId);
+    }
+    Node exoTagsUserNode = exoTagsHomeNode_.getNode(userId);
+    Node taggingNode = null;
     for(String tagName: tagNames ) {      
-      if(!exoTagsHomeNode_.hasNode(tagName)) {
-        taggingNode = exoTagsHomeNode_.addNode(tagName,EXO_TAG) ;
+      if(!exoTagsUserNode.hasNode(tagName)) {
+        taggingNode = exoTagsUserNode.addNode(tagName,EXO_TAG) ;
         taggingNode.addMixin(MIX_REFERENCEABLE_MIXIN) ;
         taggingNode.setProperty(TAG_CREATED_DATE_PROP,new GregorianCalendar()) ;        
         taggingNode.setProperty(TAG_STATUS_PROP,TagStyle.NOMAL) ;        
       }else {
-        taggingNode = exoTagsHomeNode_.getNode(tagName) ; 
+        taggingNode = exoTagsUserNode.getNode(tagName) ; 
       }            
       Value value2add = currentSession.getValueFactory().createValue(taggingNode);
       if(!node.isNodeType(EXO_FOLKSONOMIZED_MIXIN)) {
@@ -319,23 +330,35 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return documentList;
   } 
 
+  private String getNodeOwner(Node node) throws Exception {
+    if (node.hasProperty(EXO_OWNER)) {
+      return node.getProperty(EXO_OWNER).getString();
+    }
+    return null;
+  }
+  
+  private String getUserTagPath(String repository) throws Exception {
+    StringBuffer bf = new StringBuffer();
+    String userid = getSessionByUser(repository).getUserID();
+    return bf.append(baseTagsPath_).append("/").append(userid).toString();
+  }
+  
+  private List<Node> getTagNodes(Session session, String repository) throws Exception {
+    List<Node> tagList = new ArrayList<Node>();
+    String userPath = getUserTagPath(repository);
+    if (!session.itemExists(userPath)) return tagList;
+    Node exoTagsHomeNode_ = (Node) session.getItem(getUserTagPath(repository));
+    for (NodeIterator iter = exoTagsHomeNode_.getNodes(); iter.hasNext();) {
+      tagList.add(iter.nextNode());
+    }
+    session.logout();
+    return tagList;
+  }
   /**
    * {@inheritDoc}
    */
   public List<Node> getAllTags(String repository) throws Exception {
-//    Object cachedList = cache_.get(baseTagsPath_) ;
-//    if(cachedList != null ) {
-//      return (List<Node>)cachedList ;
-//    }    
-    List<Node> tagList = new ArrayList<Node>() ;       
-    Session systemSession = getSystemSession(repository) ;
-    Node exoTagsHomeNode_ = (Node)systemSession.getItem(baseTagsPath_) ;
-    for(NodeIterator iter = exoTagsHomeNode_.getNodes(); iter.hasNext();) {
-      tagList.add(iter.nextNode()) ;
-    }
-//    cache_.put(baseTagsPath_,tagList) ;
-    systemSession.logout();
-    return tagList ;
+    return getTagNodes(getSystemSession(repository), repository);
   }
   
   /**
@@ -357,6 +380,11 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     return tagStyleList ;
   }    
   
+  private Session getSessionByUser(String repository) throws Exception {
+    ManageableRepository manageableRepository = repoService_.getRepository(repository) ;
+    String systemWorkspacere = manageableRepository.getConfiguration().getSystemWorkspaceName();
+    return SessionProviderFactory.createSessionProvider().getSession(systemWorkspacere, manageableRepository);
+  }
   /**
    * Get session from repository and system workspace
    * @param repository    repository name
@@ -462,6 +490,59 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     if(minValue <=numOfDocument && numOfDocument <maxValue ) return true ;    
     return false ;
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  public boolean removeTagOfDocument(Node document, String tagName, String repository) throws Exception {
+    Value[] folksonomyValues = document.getProperty(EXO_FOLKSONOMY_PROP).getValues() ;
+    Node taggingNode = getTag(getUserTagPath(repository) + "/" + tagName, repository);
+    String currenUUID = taggingNode.getUUID() ;
+    List<Value> vals = new ArrayList<Value>();         
+    for(Value value: folksonomyValues) {
+      String uuid = value.getString() ;
+      if(!uuid.equals(currenUUID)) vals.add(value);
+    }
+    if (vals.size() > 0) {
+      document.setProperty(EXO_FOLKSONOMY_PROP,vals.toArray(new Value[vals.size()])) ; 
+    } else {
+      document.removeMixin(EXO_FOLKSONOMIZED_MIXIN);
+    }
+    document.save();
+    document.getSession().save();
+    //refresh node
+    getSystemSession(repository).refresh(true);
+    String uuid = taggingNode.getUUID();
+    String[] workspaces = repoService_.getRepository(repository).getWorkspaceNames() ;
+    Session  sessionOnWS = null ;
+    boolean removetag = true;
+    for(String workspaceName: workspaces) {
+      sessionOnWS = repoService_.getRepository(repository).getSystemSession(workspaceName) ;
+      Node tagNodeOnWS = null;
+      try {
+        tagNodeOnWS = sessionOnWS.getNodeByUUID(uuid);
+      } catch (ItemNotFoundException e) {
+        LOG.warn("Item not found by uuid = " + uuid);
+      }
+      if (tagNodeOnWS != null) {
+        PropertyIterator iter = tagNodeOnWS.getReferences();
+        if (iter.hasNext()) {
+          removetag = false;
+        }
+      }
+      sessionOnWS.logout();
+    }
+    
+    if (removetag) {
+      Node parent = taggingNode.getParent();
+      taggingNode.remove();
+      parent.save();
+      parent.getSession().save();
+    } else {
+      updateTagStatus(taggingNode.getPath(), repository);
+    }
+    return true;
+  }
   
   /**
    * {@inheritDoc}
@@ -474,16 +555,20 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
 //      return (List<Node>) cache_.get(document.getPath()) ;
 //    }
     List<Node> tagList = new ArrayList<Node>() ;    
-    Session systemSession = getSystemSession(repository) ;
+    Session session = getSystemSession(repository) ;
     try{      
       Value[] values = document.getProperty(EXO_FOLKSONOMY_PROP).getValues() ;
+      Node node;
       for(Value v:values) {
         String uuid = v.getString() ;
-        tagList.add(systemSession.getNodeByUUID(uuid)) ;
+        node = session.getNodeByUUID(uuid);
+        if (node.getParent().getName().equals(getSessionByUser(repository).getUserID())) {
+          tagList.add(node) ;
+        }
       }
     }catch (Exception e) {      
     }
-    systemSession.logout();
+    session.logout();
 //    cache_.put(document.getPath(),tagList) ;
     return tagList;
   }   
