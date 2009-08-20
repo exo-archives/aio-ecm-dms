@@ -1,1 +1,50 @@
-PDFViewer
+<%
+	import java.util.List;
+	import java.util.ArrayList;
+	import javax.jcr.Node;
+	import javax.jcr.NodeIterator;
+	import org.exoplatform.webui.core.UIComponent;
+	
+	UIComponent uiParent = uicomponent.getParent();
+	
+	public boolean isVersionable(Node node) throws Exception {
+    return node.isNodeType("mix:versionable");
+  }	
+
+  public Node getFileLangNode(Node currentNode) throws Exception {
+    if(currentNode.getNodes().getSize() > 0) {
+      NodeIterator nodeIter = currentNode.getNodes() ;
+      while(nodeIter.hasNext()) {
+        Node ntFile = nodeIter.nextNode() ;
+        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+          return ntFile ;
+        }
+      }
+      return currentNode ;
+    }
+    return currentNode ;
+  }
+  
+  def originalNode = uiParent.getOriginalNode();
+  def currentNode = uiParent.getNode() ;
+  def fileLangNode = getFileLangNode(currentNode) ;
+  def contentNode = fileLangNode.getNode("jcr:content") ;
+  def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
+  List<String> unsupportMimeTypeText = new ArrayList<String>();
+  unsupportMimeTypeText.add("text/rtf");
+  public String formatNodeName(String text) {
+    return text.replaceAll("'", "\\\\'") ;
+  }
+  
+%>
+<div class="NavigationContainer">       
+  <div class="TopTitle">$originalNode.name</div>
+	<div class="Content">
+  	<div class="TextContent">
+			<div style="text-align:center; font-style:italic">
+			  <%=_ctx.appRes("File.view.label.not-viewable")%>
+			</div>
+		</div>
+	</div>
+</div>
+		
