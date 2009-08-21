@@ -72,7 +72,8 @@
 	          		String viewAction = uicomponent.event("ChangeNode", Utils.formatNodeName(doc.getPath()), listParam.toArray(new Parameter[listParam.size()]));
 			          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
 			          String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
-			          def viewNode = uicomponent.getViewNode(doc); 
+			          def viewNode = uicomponent.getViewNode(doc);
+			          if(viewNode != null) { 
 			      %>
 			          <div class="EventContentDetail">
 			            <div class="TopEventContentDetail">
@@ -100,6 +101,7 @@
 			            </div>
 			          </div>
 			      <%
+			      		}
 			        }
 			      %>
 	   			</div>

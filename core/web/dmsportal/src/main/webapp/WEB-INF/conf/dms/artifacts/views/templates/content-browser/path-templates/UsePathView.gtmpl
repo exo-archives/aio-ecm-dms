@@ -195,6 +195,7 @@
 	          } catch(Exception e) {
 	            break ;
 	          }
+	          if(viewNode != null) {
 	      %>
 	          <div class="EventContentDetail">
 	            <div class="TopEventContentDetail">
@@ -222,6 +223,7 @@
 	            <%}%>
 	          </div>
 	      <%
+	      		}
 	        }
 	      %>
 	    </div>

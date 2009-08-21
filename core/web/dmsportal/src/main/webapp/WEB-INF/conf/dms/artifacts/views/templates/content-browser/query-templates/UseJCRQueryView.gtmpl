@@ -48,6 +48,7 @@
           String viewAction = uicomponent.event("ChangeNode",Utils.formatNodeName(doc.getPath()), new Parameter("workspace", doc.getSession().getWorkspace().getName()));
           String icon = uicomponent.getIcons(doc,"16x16Icon") ;
           def viewNode = uicomponent.getViewNode(doc); 
+          if(viewNode != null) {
       %>
           <div class="EventContentDetail">
             <div class="TopEventContentDetail">
@@ -74,7 +75,10 @@
               </div>
             </div>
           </div>
-      <%}%>
+      <%
+      		}
+      	}
+      %>
     </div>
     <%if(isShowDocByTag) {%>
     <div class="ViewPreviousDocument"> 
