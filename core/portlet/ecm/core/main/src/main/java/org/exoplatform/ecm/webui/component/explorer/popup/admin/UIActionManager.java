@@ -52,7 +52,6 @@ public class UIActionManager extends UIContainer implements UIPopupComponent {
   public void setDefaultConfig() throws Exception {
     UIActionContainer uiActionContainer = getChild(UIActionContainer.class) ;
     UIActionTypeForm uiActionType = uiActionContainer.getChild(UIActionTypeForm.class) ;
-    uiActionType.defaultActionType_ = null ;
     uiActionType.setDefaultActionType() ;
     Class[] renderClasses = {UIActionTypeForm.class, UIActionForm.class} ;
     uiActionContainer.setRenderedChildrenOfTypes(renderClasses) ;

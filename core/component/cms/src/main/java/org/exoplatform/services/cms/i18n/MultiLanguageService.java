@@ -110,6 +110,17 @@ public interface MultiLanguageService {
   public void addFileLanguage(Node node, String language, Map mappings, boolean isDefault) throws Exception ;
   
   /**
+   * Add new language node as a folder
+   * @param node
+   * @param inputs
+   * @param language
+   * @param isDefault
+   * @param nodeType
+   * @throws Exception
+   */
+  public void addFolderLanguage(Node node, Map inputs, String language, boolean isDefault, String nodeType, String repositoryName) throws Exception ;
+  
+  /**
    * Get value of property exo:language in current node
    * @param node    current node
    * @return value of exo:language property

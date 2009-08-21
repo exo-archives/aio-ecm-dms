@@ -124,6 +124,7 @@ public class UIDialogForm extends UIForm {
   private boolean isResetForm;
   private boolean isResetMultiField;
   protected String nodePath;
+  protected String i18nNodePath = null;
   private List<String> postScriptInterceptor = new ArrayList<String>();  
   private List<String> prevScriptInterceptor = new ArrayList<String>();
 
@@ -148,6 +149,10 @@ public class UIDialogForm extends UIForm {
     setStoredPath(storedPath);
   }
 
+  public void seti18nNodePath(String nodePath) { i18nNodePath = nodePath; }
+
+  public String geti18nNodePath() { return i18nNodePath; }
+  
   public void addActionField(String name,String label,String[] arguments) throws Exception {
     UIFormActionField formActionField = new UIFormActionField(name,label,arguments);    
     if(formActionField.useSelector()) {
@@ -256,7 +261,6 @@ public class UIDialogForm extends UIForm {
         if(childNode.hasProperty(propertyName)) {
           if(childNode.getProperty(propertyName).getDefinition().isMultiple()) {
             Value[] values = childNode.getProperty(propertyName).getValues();
-            //TODO this code is bad. A datetime input can show only for 1 value
             for(Value value : values) {
               uiDateTime.setCalendar(value.getDate());
             }
@@ -445,7 +449,6 @@ public class UIDialogForm extends UIForm {
     Node childNode = null;
     Node node = getNode();
     String propertyName = getPropertyName(jcrPath);
-    //TODO code is smell.
     if(node != null && arrNodes.length == 4) childNode = node.getNode(arrNodes[2]);    
     if(formSelectBoxField.isMultiValues()) {
       uiSelectBox.setMultiple(true);      
@@ -710,12 +713,10 @@ public class UIDialogForm extends UIForm {
     uiInput.setEditable(formTextField.isEditable());
     if(uiInput.getValue() == null) uiInput.setValue(formTextField.getDefaultValue());       
     else uiInput.setEditable(true);
-    if(getNode() != null && !isShowingComponent && !isRemovePreference) {
+    if(node != null && !isShowingComponent && !isRemovePreference) {
       if(jcrPath.equals("/node") && (!formTextField.isEditable() || formTextField.isEditableIfNull())) {
-        Node parentNode = node.getParent();
-        //TODO code is smell
-        if(parentNode != null && parentNode.getName().equals("languages")) {
-          uiInput.setValue(node.getParent().getParent().getName());
+        if(i18nNodePath != null) {
+          uiInput.setValue(i18nNodePath.substring(i18nNodePath.lastIndexOf("/") + 1));
         } else {
           String nameValue =  node.getPath().substring(node.getPath().lastIndexOf("/") + 1);
           uiInput.setValue(nameValue);
@@ -726,14 +727,14 @@ public class UIDialogForm extends UIForm {
       } 
     }
     if(isNotEditNode && !isShowingComponent && !isRemovePreference) {
-      if(childNode != null) {
+      if(childNode != null && childNode.hasProperty(propertyName)) {
         if(childNode.hasProperty(propertyName)) {
           uiInput.setValue(childNode.getProperty(propertyName).getValue().getString());
-        } else {
-          uiInput.setValue(propertyName);
-        }
+        } 
       } else if(childNode == null && jcrPath.equals("/node") && node != null) {
         uiInput.setValue(node.getName());
+      } else if(i18nNodePath != null && jcrPath.equals("/node")) {
+        uiInput.setValue(i18nNodePath.substring(i18nNodePath.lastIndexOf("/") + 1));
       } else {
         uiInput.setValue(formTextField.getDefaultValue());
       }

@@ -126,7 +126,6 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
       try {
         dialogPath = templateService.getTemplatePathByUser(true, nodeTypeName_, userName, repositoryName);
       } catch (Exception e){
-        e.printStackTrace();
       }      
     }
     return dialogPath;    

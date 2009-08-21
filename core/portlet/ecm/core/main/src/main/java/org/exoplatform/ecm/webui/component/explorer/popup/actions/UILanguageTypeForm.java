@@ -117,22 +117,29 @@ public class UILanguageTypeForm extends UIForm {
             uiDialogForm.setIsNTFile(false) ;
           }
           if (languagesNode.hasNode(selectedLang)) {
-            uiDialogForm.setNodePath(languagesNode.getNode(selectedLang).getPath()) ;
+            if(node.isNodeType(Utils.NT_UNSTRUCTURED) || node.isNodeType(Utils.NT_FOLDER)) {
+              uiDialogForm.setNodePath(languagesNode.getNode(selectedLang).getNode(node.getName()).getPath()) ;
+            } else {
+              uiDialogForm.setNodePath(languagesNode.getNode(selectedLang).getPath()) ;
+            }
           } else if(selectedLang.equals(multiLanguageService.getDefault(node))) {
             uiDialogForm.setNodePath(currentPath) ;
           } else {
-            uiDialogForm.setNodePath(currentPath) ;
+            uiDialogForm.setNodePath(null) ;
             uiDialogForm.setIsNotEditNode(true) ;
             uiDialogForm.setIsResetMultiField(true) ;
+            uiDialogForm.seti18nNodePath(currentPath);
           }
         } else if(!node.hasNode(Utils.LANGUAGES) && selectedLang.equals(multiLanguageService.getDefault(node))) {
           uiDialogForm.setIsNotEditNode(false) ;
           uiDialogForm.setNodePath(currentPath) ;
         } else {
-          uiDialogForm.setNodePath(currentPath) ;
+          uiDialogForm.setNodePath(null);
+          uiDialogForm.seti18nNodePath(currentPath);
           uiDialogForm.setIsNotEditNode(true) ;
           uiDialogForm.setIsResetMultiField(true) ;
         }
+        uiDialogForm.seti18nNodePath(currentPath);
         uiDialogForm.setSelectedLanguage(selectedLang) ;
         if(selectedLang.equals(node.getProperty(Utils.EXO_LANGUAGE).getString())) {                  
           uiDialogForm.setChildPath(currentPath) ;
@@ -140,9 +147,14 @@ public class UILanguageTypeForm extends UIForm {
           if(node.hasNode(Utils.LANGUAGES + Utils.SLASH + selectedLang)){
             uiDialogForm.getChildren().clear() ;
             Node languageNode = multiLanguageService.getLanguage(node, selectedLang) ;
-            uiDialogForm.setChildPath(languageNode.getPath()) ;
+            if(node.isNodeType(Utils.NT_UNSTRUCTURED) || node.isNodeType(Utils.NT_FOLDER)) {
+              uiDialogForm.setChildPath(languageNode.getNode(node.getName()).getPath()) ;
+            } else {
+              uiDialogForm.setChildPath(languageNode.getPath()) ;
+            }
           } else {
-            uiDialogForm.setChildPath(null) ;
+            uiDialogForm.getChildren().clear();
+            uiDialogForm.setChildPath(null);
           }
         }
       } else {
