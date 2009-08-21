@@ -17,6 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -74,28 +75,38 @@ public class UIActionTypeForm extends UIForm {
   }
 
   public void setDefaultActionType() throws Exception{    
-    if(defaultActionType_ == null) {
-      defaultActionType_ = "exo:sendMailAction" ;
-      UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-      UIActionContainer uiActionContainer = getParent() ;
-      Node currentNode = uiExplorer.getCurrentNode() ;
-      UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
-      uiActionForm.createNewAction(currentNode, defaultActionType_, true) ;
-      uiActionForm.setNodePath(null) ;
-      uiActionForm.setWorkspace(currentNode.getSession().getWorkspace().getName()) ;
-      uiActionForm.setStoredPath(currentNode.getPath()) ;
-      getUIFormSelectBox(ACTION_TYPE).setValue(defaultActionType_) ;
-    }
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    UIActionContainer uiActionContainer = getParent() ;
+    Node currentNode = uiExplorer.getCurrentNode() ;
+    UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
+    uiActionForm.createNewAction(currentNode, typeList_.get(0).getValue(), true) ;
+    uiActionForm.setWorkspace(currentNode.getSession().getWorkspace().getName()) ;
+    uiActionForm.setStoredPath(currentNode.getPath()) ;
   }  
 
   public void update() throws Exception {
     Iterator<NodeType> actions = getCreatedActionTypes(); 
+    List<String> actionList = new ArrayList<String>();
     while(actions.hasNext()){
       String action =  actions.next().getName();
-      typeList_.add(new SelectItemOption<String>(action, action));
-    }    
+      actionList.add(action);
+    }
+    Collections.sort(actionList);
+    TemplateService templateService = getApplicationComponent(TemplateService.class);
+    String userName = Util.getPortalRequestContext().getRemoteUser();
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    for(String action : actionList) {
+      try {
+        templateService.getTemplatePathByUser(true, action, userName, uiExplorer.getRepositoryName());
+        typeList_.add(new SelectItemOption<String>(action, action));
+      } catch (Exception e){
+        continue;
+      }  
+    }
     getUIFormSelectBox(ACTION_TYPE).setOptions(typeList_) ;
-    setDefaultActionType() ;
+    defaultActionType_ = typeList_.get(0).getValue();
+    getUIFormSelectBox(ACTION_TYPE).setValue(defaultActionType_);
+    setDefaultActionType();
   }
 
   static public class ChangeActionTypeActionListener extends EventListener<UIActionTypeForm> {
@@ -109,17 +120,18 @@ public class UIActionTypeForm extends UIForm {
       String userName = Util.getPortalRequestContext().getRemoteUser() ;
       UIApplication uiApp = uiActionType.getAncestorOfType(UIApplication.class) ;
       try {
-        String templatePath = templateService.getTemplatePathByUser(true, actionType, userName, repository) ;
+        String templatePath = 
+          templateService.getTemplatePathByUser(true, actionType, userName, repository) ;
         if(templatePath == null) {
           Object[] arg = { actionType } ;
           uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.access-denied", arg, 
                                                   ApplicationMessage.WARNING)) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          actionType = "exo:sendMailAction" ;
-          uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType) ;
+          uiActionType.getUIFormSelectBox(
+              UIActionTypeForm.ACTION_TYPE).setValue(uiActionType.defaultActionType_) ;
           UIActionContainer uiActionContainer = uiActionType.getAncestorOfType(UIActionContainer.class) ;
           UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
-          uiActionForm.createNewAction(currentNode, actionType, true) ;
+          uiActionForm.createNewAction(currentNode, uiActionType.defaultActionType_, true) ;
           uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
           event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
           return ;
@@ -129,11 +141,11 @@ public class UIActionTypeForm extends UIForm {
         uiApp.addMessage(new ApplicationMessage("UIActionForm.msg.not-support", arg, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        actionType = "exo:sendMailAction" ;
-        uiActionType.getUIFormSelectBox(UIActionTypeForm.ACTION_TYPE).setValue(actionType) ;
+        uiActionType.getUIFormSelectBox(
+            UIActionTypeForm.ACTION_TYPE).setValue(uiActionType.defaultActionType_) ;
         UIActionContainer uiActionContainer = uiActionType.getAncestorOfType(UIActionContainer.class) ;
         UIActionForm uiActionForm = uiActionContainer.getChild(UIActionForm.class) ;
-        uiActionForm.createNewAction(currentNode, actionType, true) ;
+        uiActionForm.createNewAction(currentNode, uiActionType.defaultActionType_, true) ;
         uiActionContainer.setRenderSibbling(UIActionContainer.class) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiActionContainer) ;
       } 
