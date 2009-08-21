@@ -25,11 +25,10 @@ import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NodeDefinition;
-import javax.jcr.nodetype.NodeType;
 
+import org.exoplatform.ecm.webui.comparator.ItemOptionNameComparator;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
-import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -37,6 +36,7 @@ import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 import org.exoplatform.webui.event.Event;
@@ -46,6 +46,8 @@ import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
+
+import edu.emory.mathcs.backport.java.util.Collections;
 
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
@@ -67,23 +69,30 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
   public void activate() throws Exception { 
     RequestContext context = RequestContext.getCurrentInstance() ;
     ResourceBundle res = context.getApplicationResourceBundle() ;
-    String ntUnstructredLabel = res.getString("NodeType.label.ntUnstructed");
-    String ntFolderLabel = res.getString("NodeType.label.ntFolder");
-    allowCreateFolder_ = getAncestorOfType(UIJCRExplorer.class).getDriveData().getAllowCreateFolder() ;
-    if(allowCreateFolder_.equalsIgnoreCase("Both")) {
-      List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-      options.add(new SelectItemOption<String>(ntUnstructredLabel, Utils.NT_UNSTRUCTURED)) ;
-      options.add(new SelectItemOption<String>(ntFolderLabel, Utils.NT_FOLDER)) ;
-      addUIFormInput(new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, options)) ;
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>();
+    String foldertypes = uiExplorer.getDriveData().getAllowCreateFolders();
+    if (foldertypes.contains(",")) {
+      addUIFormInput(new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, null));
+      String[] arrFoldertypes = foldertypes.split(",");
+      for (String foldertype : arrFoldertypes) {
+        options.add(new SelectItemOption<String>(res.getString(getId() + ".label." + foldertype.replace(":", "_")),  foldertype));
+      }
+      Collections.sort(options, new ItemOptionNameComparator());
+      getUIFormSelectBox(FIELD_TYPE).setOptions(options);
+    } else {
+      allowCreateFolder_ = foldertypes;
     }
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(ECMNameValidator.class)) ;
     setActions(new String[]{"Save", "Cancel"}) ;
     getUIStringInput(FIELD_NAME).setValue(null) ;
-    if(getUIFormSelectBox(FIELD_TYPE) != null) {
-      if(getAncestorOfType(UIJCRExplorer.class).getCurrentNode().isNodeType(Utils.NT_FOLDER)) {
-        List<SelectItemOption<String>> options = new ArrayList<SelectItemOption<String>>() ;
-        options.add(new SelectItemOption<String>(ntFolderLabel, Utils.NT_FOLDER)) ;
-        getUIFormSelectBox(FIELD_TYPE).setOptions(options) ;
+    if (getUIFormSelectBox(FIELD_TYPE) != null) {
+      if (uiExplorer.getCurrentNode().isNodeType(Utils.NT_FOLDER)) {
+        if (getAncestorOfType(UIJCRExplorer.class).getCurrentNode().isNodeType(Utils.NT_FOLDER)) {
+          options.add(new SelectItemOption<String>(getId() + ".label." + Utils.NT_FOLDER.replace(":", "_"), Utils.NT_FOLDER));
+          Collections.sort(options, new ItemOptionNameComparator());
+          getUIFormSelectBox(FIELD_TYPE).setOptions(options);
+        }
       }
     }
   }
@@ -116,7 +125,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         }
       }    
       String type = null ;
-      if(uiFolderForm.allowCreateFolder_.equalsIgnoreCase("Both")) {
+      if(uiFolderForm.getUIFormSelectBox(FIELD_TYPE) != null) {
         type = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
       } else {
         type = uiFolderForm.allowCreateFolder_ ;
@@ -162,8 +171,8 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
 
   static  public class CancelActionListener extends EventListener<UIFolderForm> {
     public void execute(Event<UIFolderForm> event) throws Exception {
-      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.cancelAction() ;
+      UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+      uiExplorer.cancelAction();
     }
   }
 }

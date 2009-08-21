@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -158,6 +159,14 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       }
     }
     foldersFilterMap.put(repository,folderFilterMap);
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public Set<String> getAllowanceFolderType(String repository) {
+    Map<String,List<String>> folderFilterMap = foldersFilterMap.get(repository);
+    return folderFilterMap.keySet();
   }
 
   /**

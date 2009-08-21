@@ -43,7 +43,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
   private static String VIEW_NON_DOCUMENT = "exo:viewNonDocument".intern() ;
   private static String VIEW_SIDEBAR = "exo:viewSideBar".intern() ;
   private static String SHOW_HIDDEN_NODE = "exo:showHiddenNode".intern() ;
-  private static String ALLOW_CREATE_FOLDER = "exo:allowCreateFolder".intern() ;
+  private static String ALLOW_CREATE_FOLDER = "exo:allowCreateFolders".intern() ;
 
   private RepositoryService repositoryService_;
   private NodeHierarchyCreator nodeHierarchyCreator_;
@@ -125,7 +125,7 @@ public class ManageDrivePlugin extends BaseComponentPlugin {
       driveNode.setProperty(VIEW_NON_DOCUMENT, Boolean.toString(data.getViewNonDocument())) ;
       driveNode.setProperty(VIEW_SIDEBAR, Boolean.toString(data.getViewSideBar())) ;
       driveNode.setProperty(SHOW_HIDDEN_NODE, Boolean.toString(data.getShowHiddenNode())) ;
-      driveNode.setProperty(ALLOW_CREATE_FOLDER, data.getAllowCreateFolder()) ;
+      driveNode.setProperty(ALLOW_CREATE_FOLDER, data.getAllowCreateFolders()) ;
       driveHome.save() ;
       session.save() ;
     }

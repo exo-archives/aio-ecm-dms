@@ -190,7 +190,7 @@
         <read-only>false</read-only>
       </preference>
       <preference>
-        <name>allowCreateFolder</name>     
+        <name>allowCreateFolders</name>     
         <value></value>        
         <read-only>false</read-only>
       </preference>      

@@ -2124,4 +2124,18 @@
       <Close>#{word.Close}</Close>
     </label>
   </PermissionTreeSelectUser>      
+  <!--
+  #########Since ECM 2.6 ##################
+  -->   
+  <DriveInputSet>
+    <label>
+      <nt_folder>Dossier de documents</nt_folder>
+      <nt_unstructured>Dossier de contenus</nt_unstructured>
+    </label>
+  </DriveInputSet>
+  <UIDriveForm>
+			<label>
+  		<allowCreateFolders>Création de répertoire</allowCreateFolders>	
+  	</label>
+  </UIDriveForm> 
 </bundle>

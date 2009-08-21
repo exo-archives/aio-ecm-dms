@@ -276,7 +276,7 @@ public class UIJcrExplorerContainer extends UIContainer {
       pref.setShowSideBar(drive.getViewSideBar());
       pref.setShowNonDocumentType(drive.getViewNonDocument());
       pref.setShowPreferenceDocuments(drive.getViewPreferences());
-      pref.setAllowCreateFoder(drive.getAllowCreateFolder()); 
+      pref.setAllowCreateFoder(drive.getAllowCreateFolders()); 
       pref.setShowHiddenNode(drive.getShowHiddenNode());
       uiJCRExplorer.setPreferences(pref);
       uiJCRExplorer.setDriveData(drive);

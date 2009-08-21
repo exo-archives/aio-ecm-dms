@@ -401,8 +401,8 @@
     </msg>
     <tab>
       <label>
-        <DriveInputSet>Lái xe</DriveInputSet>
-        <ViewsInputSet>Áp dụng xem</ViewsInputSet>
+        <DriveInputSet>Ổ đĩa</DriveInputSet>
+        <ViewsInputSet>Áp dụng cách hiện thị</ViewsInputSet>
         <PermissionInputSet>Chọn quyền truy nhập</PermissionInputSet>
       </label>
     </tab>
@@ -2125,5 +2125,19 @@
       <Close>#{word.close}</Close>
     </label>
   </PermissionTreeSelectUser>    
+  <!--
+  #########Since ECM 2.6 ##################
+  -->   
+  <DriveInputSet>
+    <label>
+      <nt_folder>Folder</nt_folder>
+      <nt_unstructured>Unstructured folder</nt_unstructured>
+    </label>
+  </DriveInputSet>
+  <UIDriveForm>
+			<label>
+  		<allowCreateFolders>Cho phép tạo các thư mục</allowCreateFolders>	
+  	</label>
+  </UIDriveForm> 
 </bundle>
 

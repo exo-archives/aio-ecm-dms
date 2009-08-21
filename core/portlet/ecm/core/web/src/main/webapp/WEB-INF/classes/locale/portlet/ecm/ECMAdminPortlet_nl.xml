@@ -2125,5 +2125,19 @@
       <Close>#{word.close}</Close>
     </label>
   </PermissionTreeSelectUser>      
+  <!--
+  #########Since ECM 2.6 ##################
+  -->   
+  <DriveInputSet>
+    <label>
+      <nt_folder>Map</nt_folder>
+      <nt_unstructured>Ongestructureerde map</nt_unstructured>
+    </label>
+  </DriveInputSet>
+  <UIDriveForm>
+			<label>
+  		<allowCreateFolders>Mogelijk maken van de map</allowCreateFolders>	
+  	</label>
+  </UIDriveForm> 
 </bundle>
 

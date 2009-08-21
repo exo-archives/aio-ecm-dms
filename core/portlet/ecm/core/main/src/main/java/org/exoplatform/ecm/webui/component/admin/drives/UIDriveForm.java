@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import javax.jcr.Session;
 
@@ -29,11 +30,13 @@ import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
+import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.organization.MembershipType;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -45,7 +48,6 @@ import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIFormInputSet;
-import org.exoplatform.webui.form.UIFormRadioBoxInput;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTabPane;
@@ -79,7 +81,6 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
 
   public UIDriveForm() throws Exception {
     super("UIDriveForm");
-
     UIFormInputSet driveInputSet = new UIDriveInputSet("DriveInputSet");
     UIFormSelectBox selectBox = driveInputSet.getChildById(UIDriveInputSet.FIELD_WORKSPACE);
     selectBox.setOnChange("Change");
@@ -187,7 +188,13 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.SHOW_HIDDEN_NODE).isChecked();      
       boolean viewNonDocument = 
         driveInputSet.getUIFormCheckBoxInput(UIDriveInputSet.FIELD_VIEWNONDOC).isChecked();
-      String allowCreateFolder =  driveInputSet.<UIFormRadioBoxInput>getUIInput(UIDriveInputSet.ALLOW_CREATE_FOLDER).getValue();
+      //String allowCreateFolder =  driveInputSet.<UIFormRadioBoxInput>getUIInput(UIDriveInputSet.ALLOW_CREATE_FOLDER).getValue();
+      String[] allowCreateFolders = driveInputSet.getUIFormSelectBox(UIDriveInputSet.FIELD_ALLOW_CREATE_FOLDERS).getSelectedValues();
+      StringBuffer foldertypes = new StringBuffer();
+      for (String allowCreateFolder : allowCreateFolders) {
+        foldertypes.append(allowCreateFolder).append(",");
+      }
+      if (foldertypes.toString().endsWith(",")) foldertypes.deleteCharAt(foldertypes.length() -1 );
       UIViewsInputSet viewsInputSet = uiDriveForm.getChild(UIViewsInputSet.class);
       String views = viewsInputSet.getViewsSelected();      
       String permissions = driveInputSet.getUIStringInput(UIDriveInputSet.FIELD_PERMISSION).getValue();
@@ -271,7 +278,7 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
         iconPath = "";
       }
       dservice_.addDrive(name, workspace, permissions, path, views, iconPath, viewReferences, 
-          viewNonDocument, viewSideBar, showHiddenNode, repository, allowCreateFolder);
+          viewNonDocument, viewSideBar, showHiddenNode, repository, foldertypes.toString());
       UIDriveManager uiManager = uiDriveForm.getAncestorOfType(UIDriveManager.class);
       UIDriveList uiDriveList = uiManager.getChild(UIDriveList.class);
       uiDriveList.updateDriveListGrid(uiDriveList.getUIPageIterator().getCurrentPage());
@@ -364,14 +371,23 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
           wsInitRootNodeType = wsEntry.getAutoInitializedRootNt();
         }
       }
+      
+      TemplateService templateService = uiDriveForm.getApplicationComponent(TemplateService.class);
+      Set<String> setFoldertypes = templateService.getAllowanceFolderType(repository);
+      List<SelectItemOption<String>> foldertypeOptions = new ArrayList<SelectItemOption<String>>();
+      RequestContext context = RequestContext.getCurrentInstance();
+      ResourceBundle res = context.getApplicationResourceBundle();
+      for(String foldertype : setFoldertypes) {
+        foldertypeOptions.add(new SelectItemOption<String>(res.getString(driveInputSet.getId() + ".label." + foldertype.replace(":", "_")),  foldertype));
+      }
       List<SelectItemOption<String>> folderOptions = new ArrayList<SelectItemOption<String>>();
-      UIFormRadioBoxInput uiInput = driveInputSet.<UIFormRadioBoxInput>getUIInput(UIDriveInputSet.ALLOW_CREATE_FOLDER);
+      //UIFormRadioBoxInput uiInput = driveInputSet.<UIFormRadioBoxInput>getUIInput(UIDriveInputSet.FIELD_ALLOW_CREATE_FOLDERS);
+      UIFormSelectBox uiInput = driveInputSet.<UIFormSelectBox>getUIInput(UIDriveInputSet.FIELD_ALLOW_CREATE_FOLDERS);
+
       if(wsInitRootNodeType != null && wsInitRootNodeType.equals(Utils.NT_FOLDER)) {
         folderOptions.add(new SelectItemOption<String>(UIDriveInputSet.FIELD_FOLDER_ONLY, Utils.NT_FOLDER));
       } else {
-        folderOptions.add(new SelectItemOption<String>(driveInputSet.folderOnlyLabel_, Utils.NT_FOLDER));
-        folderOptions.add(new SelectItemOption<String>(driveInputSet.unstructuredFolderLabel_, Utils.NT_UNSTRUCTURED));
-        folderOptions.add(new SelectItemOption<String>(driveInputSet.bothLabel_, UIDriveInputSet.FIELD_BOTH));
+        folderOptions.addAll(foldertypeOptions);
       }
       uiInput.setOptions(folderOptions);
       if(!uiDriveForm.isAddNew_) {

@@ -51,7 +51,7 @@ public class TestDriveService extends BaseDMSTestCase {
   private static String VIEW_NON_DOCUMENT = "exo:viewNonDocument".intern() ;
   private static String VIEW_SIDEBAR = "exo:viewSideBar".intern() ;
   private static String SHOW_HIDDEN_NODE = "exo:showHiddenNode".intern() ;
-  private static String ALLOW_CREATE_FOLDER = "exo:allowCreateFolder".intern() ;
+  private static String ALLOW_CREATE_FOLDER = "exo:allowCreateFolders".intern() ;
   
   /**
    * Set up for testing
@@ -167,7 +167,7 @@ public class TestDriveService extends BaseDMSTestCase {
     assertEquals(driveData2.getViewPreferences(), true);
     assertEquals(driveData2.getViewNonDocument(), true);
     assertEquals(driveData2.getViewSideBar(), true);
-    assertEquals(driveData2.getAllowCreateFolder(), "nt:folder");
+    assertEquals(driveData2.getAllowCreateFolders(), "nt:folder");
     assertEquals(driveData2.getShowHiddenNode(), true);
   }
   
@@ -190,7 +190,7 @@ public class TestDriveService extends BaseDMSTestCase {
    */
   public void testGetAllDrives() throws Exception {
     driveService.addDrive("MyDrive1", COLLABORATION_WS, "*:/platform/administrators", "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
-    driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", "admin-view, system-view", "", true, true, true, false, REPO_NAME, "Both");
+    driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", "admin-view, system-view", "", true, true, true, false, REPO_NAME, "nt:folder,nt:unstructured");
     List<DriveData> listDriveData = driveService.getAllDrives(REPO_NAME);
     assertEquals(listDriveData.size(), 2);
     assertEquals(listDriveData.get(0).getWorkspace(), COLLABORATION_WS) ;
@@ -201,7 +201,7 @@ public class TestDriveService extends BaseDMSTestCase {
     assertEquals(listDriveData.get(0).getViewPreferences(), true);
     assertEquals(listDriveData.get(0).getViewNonDocument(), true);
     assertEquals(listDriveData.get(0).getViewSideBar(), true);
-    assertEquals(listDriveData.get(0).getAllowCreateFolder(), "nt:folder");
+    assertEquals(listDriveData.get(0).getAllowCreateFolders(), "nt:folder");
     assertEquals(listDriveData.get(0).getShowHiddenNode(), true);
     
     assertEquals(listDriveData.get(1).getWorkspace(), COLLABORATION_WS) ;
@@ -212,7 +212,7 @@ public class TestDriveService extends BaseDMSTestCase {
     assertEquals(listDriveData.get(1).getViewPreferences(), true);
     assertEquals(listDriveData.get(1).getViewNonDocument(), true);
     assertEquals(listDriveData.get(1).getViewSideBar(), true);
-    assertEquals(listDriveData.get(1).getAllowCreateFolder(), "Both");
+    assertEquals(listDriveData.get(1).getAllowCreateFolders(), "nt:folder,nt:unstructured");
     assertEquals(listDriveData.get(1).getShowHiddenNode(), false);
   }
   
@@ -241,7 +241,7 @@ public class TestDriveService extends BaseDMSTestCase {
    */
   public void testRemoveDrive() throws Exception {
     driveService.addDrive("MyDrive1", COLLABORATION_WS, "*:/platform/administrators", "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
-    driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", "admin-view, system-view", "", true, true, true, false, REPO_NAME, "Both");
+    driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", "admin-view, system-view", "", true, true, true, false, REPO_NAME, "nt:folder,nt:unstructured");
     assertEquals(driveService.getAllDrives(REPO_NAME).size(), 2);
     driveService.removeDrive("MyDrive1", REPO_NAME);
     assertEquals(driveService.getAllDrives(REPO_NAME).size(), 1);
@@ -261,7 +261,7 @@ public class TestDriveService extends BaseDMSTestCase {
    *    2.  name = "MyDrive2", workspace = COLLABORATION_WS, permissions = "*:/platform/user", 
    *        homePath = "/TestTreeNode/A1_1", views = "admin-view, system-view", icon = "", 
    *        viewReferences = true, viewNonDocument = true, viewSideBar = true, 
-   *        showHiddenNode = false, repository = REPO_NAME, allowCreateFolder = "Both"
+   *        showHiddenNode = false, repository = REPO_NAME, allowCreateFolder = "nt:unstructured"
    *    2.  name = "MyDrive3", workspace = COLLABORATION_WS, permissions = "*:/platform/user", 
    *        homePath = "/TestTreeNode/A1_2", views = "system-view", icon = "", 
    *        viewReferences = true, viewNonDocument = true, viewSideBar = true, 
@@ -281,7 +281,7 @@ public class TestDriveService extends BaseDMSTestCase {
     driveService.addDrive("MyDrive1", COLLABORATION_WS, "*:/platform/administrators", 
         "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
     driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", 
-        "admin-view, system-view", "", true, true, true, false, REPO_NAME, "Both");
+        "admin-view, system-view", "", true, true, true, false, REPO_NAME, "nt:unstructured");
     driveService.addDrive("MyDrive3", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_2", 
         "system-view", "", true, true, true, true, REPO_NAME, "nt:unstructured");
     List<DriveData> listDriveData = driveService.getAllDrives(REPO_NAME);
@@ -296,7 +296,7 @@ public class TestDriveService extends BaseDMSTestCase {
     assertEquals(driveDatas.get(0).getViewPreferences(), true);
     assertEquals(driveDatas.get(0).getViewNonDocument(), true);
     assertEquals(driveDatas.get(0).getViewSideBar(), true);
-    assertEquals(driveDatas.get(0).getAllowCreateFolder(), "Both");
+    assertEquals(driveDatas.get(0).getAllowCreateFolders(), "nt:unstructured");
     assertEquals(driveDatas.get(0).getShowHiddenNode(), false);
     
     assertEquals(driveDatas.get(1).getWorkspace(), COLLABORATION_WS) ;
@@ -307,7 +307,7 @@ public class TestDriveService extends BaseDMSTestCase {
     assertEquals(driveDatas.get(1).getViewPreferences(), true);
     assertEquals(driveDatas.get(1).getViewNonDocument(), true);
     assertEquals(driveDatas.get(1).getViewSideBar(), true);
-    assertEquals(driveDatas.get(1).getAllowCreateFolder(), "nt:unstructured");
+    assertEquals(driveDatas.get(1).getAllowCreateFolders(), "nt:unstructured");
     assertEquals(driveDatas.get(1).getShowHiddenNode(), true);
     
     List<DriveData> driveDatas2 = driveService.getAllDriveByPermission("*:/platform/xXx", REPO_NAME);
@@ -326,7 +326,7 @@ public class TestDriveService extends BaseDMSTestCase {
    *    2.  name = "MyDrive2", workspace = COLLABORATION_WS, permissions = "*:/platform/user", 
    *        homePath = "/TestTreeNode/A1_1", views = "admin-view, system-view", icon = "", 
    *        viewReferences = true, viewNonDocument = true, viewSideBar = true, 
-   *        showHiddenNode = false, repository = REPO_NAME, allowCreateFolder = "Both"
+   *        showHiddenNode = false, repository = REPO_NAME, allowCreateFolder = "nt:folder,nt:unstructured"
    *    2.  name = "MyDrive3", workspace = COLLABORATION_WS, permissions = "*:/platform/user", 
    *        homePath = "/TestTreeNode/A1_2", views = "system-view", icon = "", 
    *        viewReferences = true, viewNonDocument = true, viewSideBar = true, 
@@ -343,7 +343,7 @@ public class TestDriveService extends BaseDMSTestCase {
    */
   public void testIsUsedView() throws Exception {
     driveService.addDrive("MyDrive1", COLLABORATION_WS, "*:/platform/administrators", "/TestTreeNode/A1", "admin-view", "", true, true, true, true, REPO_NAME, "nt:folder");
-    driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", "admin-view, system-view", "", true, true, true, false, REPO_NAME, "Both");
+    driveService.addDrive("MyDrive2", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_1", "admin-view, system-view", "", true, true, true, false, REPO_NAME, "nt:folder,nt:unstructured");
     driveService.addDrive("MyDrive3", COLLABORATION_WS, "*:/platform/user", "/TestTreeNode/A1_2", "system-view", "", true, true, true, true, REPO_NAME, "nt:unstructured");
     List<DriveData> listDriveData = driveService.getAllDrives(REPO_NAME);
     assertEquals(listDriveData.size(), 3);

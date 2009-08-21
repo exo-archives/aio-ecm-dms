@@ -537,6 +537,32 @@
           </object-param>
         </init-params>       
       </component-plugin>
+      <component-plugin>
+	      <name>FilterContentTypeFolder</name>
+	      <set-method>addContentTypeFilterPlugin</set-method>
+	      <type>org.exoplatform.services.cms.templates.ContentTypeFilterPlugin</type>
+	      <description>this plugin is used to filter node type for folder</description>
+	      <init-params>	        
+	        <value-param>
+	        	<name>repository</name>
+	        	<value>repository</value>
+	        </value-param>	        
+          <object-param>
+            <name>nt:unstructured</name>
+            <description>allow all document node type for this folder</description>
+            <object type="org.exoplatform.services.cms.templates.ContentTypeFilterPlugin$FolderFilterConfig">
+            	<field  name="folderType"><string>nt:unstructured</string></field>            	
+            </object>
+           </object-param>
+           <object-param>
+            <name>nt:folder</name>
+            <description>allow all document node type for this folder</description>
+            <object type="org.exoplatform.services.cms.templates.ContentTypeFilterPlugin$FolderFilterConfig">
+            	<field  name="folderType"><string>nt:folder</string></field>            	
+            </object>
+           </object-param>
+         </init-params>        	      
+    	</component-plugin>
   </external-component-plugins>
   
 </configuration>

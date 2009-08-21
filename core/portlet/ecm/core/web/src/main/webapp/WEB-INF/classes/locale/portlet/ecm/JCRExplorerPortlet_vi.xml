@@ -2035,17 +2035,6 @@
   </UIVersionTreeList>
   <!--
   ###################################################################################
-  # NodeType						                                        					#
-  ###################################################################################
-  -->
-  <NodeType>
-    <label>
-      <ntUnstructed>Thư  mục kiểu nội dung</ntUnstructed>
-      <ntFolder>Thư mục kiểu Tài liệu</ntFolder>
-    </label>
-  </NodeType>
-  <!--
-  ###################################################################################
   # UIThumbnailForm						                                        					#
   ###################################################################################
   -->
@@ -2501,4 +2490,14 @@
   		</label>
   	</tab>
   </UIUploadContainer>
+
+  <!-- 
+  	############  From DMS 2.6 ##############
+   -->  
+  <UIFolderForm>
+    <label>
+      <nt_folder>Thư mục tài liệu</nt_folder>
+      <nt_unstructured>Thư  mục nội dung</nt_unstructured>
+    </label>
+  </UIFolderForm>
 </bundle>

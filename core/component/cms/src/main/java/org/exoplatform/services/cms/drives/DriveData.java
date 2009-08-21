@@ -37,7 +37,7 @@ public class DriveData implements Comparable<DriveData> {
   private boolean viewNonDocument ;
   private boolean viewSideBar ;
   private boolean showHiddenNode ;
-  private String allowCreateFolder ;
+  private String allowCreateFolders ;
   
   public  DriveData(){}
 
@@ -110,12 +110,12 @@ public class DriveData implements Comparable<DriveData> {
    * 
    * @return the folder type of drive
    */
-  public String getAllowCreateFolder() { return allowCreateFolder ; }
+  public String getAllowCreateFolders() { return allowCreateFolders ; }
   /**
    * Register folder type to drive
    * @param allowCreateFolder folder type
    */
-  public void setAllowCreateFolder(String allowCreateFolder) { this.allowCreateFolder = allowCreateFolder ; }
+  public void setAllowCreateFolders(String allowCreateFolders) { this.allowCreateFolders = allowCreateFolders ; }
 
   /**
    * 

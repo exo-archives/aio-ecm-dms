@@ -190,7 +190,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     pref.setShowSideBar(driveData.getViewSideBar());
     pref.setShowNonDocumentType(driveData.getViewNonDocument());
     pref.setShowPreferenceDocuments(driveData.getViewPreferences());
-    pref.setAllowCreateFoder(driveData.getAllowCreateFolder()); 
+    pref.setAllowCreateFoder(driveData.getAllowCreateFolders()); 
     pref.setShowHiddenNode(driveData.getShowHiddenNode());
     
     UIJCRExplorer uiExplorer = findFirstComponentOfType(UIJCRExplorer.class);

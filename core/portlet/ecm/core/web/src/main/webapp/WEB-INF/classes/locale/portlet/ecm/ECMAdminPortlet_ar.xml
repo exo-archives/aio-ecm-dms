@@ -2125,5 +2125,19 @@
       <Close>#{word.Close}</Close>
     </label>
   </PermissionTreeSelectUser>       
+  <!--
+  #########Since ECM 2.6 ##################
+  -->   
+  <DriveInputSet>
+    <label>
+      <nt_folder>المجلد</nt_folder>
+      <nt_unstructured>مجلد غير منظم </nt_unstructured>
+    </label>
+  </DriveInputSet>
+		<UIDriveForm>
+			<label>
+  		<allowCreateFolders>السماح بإنشاء مجلد</allowCreateFolders>	
+  	</label>
+  </UIDriveForm> 
 </bundle>
   

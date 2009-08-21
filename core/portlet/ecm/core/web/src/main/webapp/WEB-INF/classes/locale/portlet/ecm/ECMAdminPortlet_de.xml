@@ -2125,5 +2125,19 @@
       <Close>#{word.close}</Close>
     </label>
   </PermissionTreeSelectUser>    
+  <!--
+  #########Since ECM 2.6 ##################
+  -->   
+  <DriveInputSet>
+    <label>
+      <nt_folder>Folder</nt_folder>
+      <nt_unstructured>Unstructured folder</nt_unstructured>
+    </label>
+  </DriveInputSet>
+ 	<UIDriveForm>
+			<label>
+  		<allowCreateFolders>Erstellungsordner erlauben</allowCreateFolders>	
+  	</label>
+  </UIDriveForm> 
 </bundle>
 

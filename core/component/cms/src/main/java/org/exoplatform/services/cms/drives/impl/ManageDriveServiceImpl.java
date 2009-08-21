@@ -89,7 +89,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
   /**
    *  Name of property ALLOW_CREATE_FOLDER
    */
-  private static String ALLOW_CREATE_FOLDER = "exo:allowCreateFolder".intern() ;
+  private static String ALLOW_CREATE_FOLDER = "exo:allowCreateFolders".intern() ;
 
   /**
    * List of ManageDrivePlugin
@@ -184,7 +184,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       data.setViewNonDocument(Boolean.parseBoolean(drive.getProperty(VIEW_NON_DOCUMENT).getString())) ;
       data.setViewSideBar(Boolean.parseBoolean(drive.getProperty(VIEW_SIDEBAR).getString())) ;
       data.setShowHiddenNode(Boolean.parseBoolean(drive.getProperty(SHOW_HIDDEN_NODE).getString())) ;
-      data.setAllowCreateFolder(drive.getProperty(ALLOW_CREATE_FOLDER).getString()) ;
+      data.setAllowCreateFolders(drive.getProperty(ALLOW_CREATE_FOLDER).getString()) ;
       driveList.add(data) ;
     }
     session.logout();
@@ -210,7 +210,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       data.setViewNonDocument(Boolean.parseBoolean(drive.getProperty(VIEW_NON_DOCUMENT).getString())) ;
       data.setViewSideBar(Boolean.parseBoolean(drive.getProperty(VIEW_SIDEBAR).getString())) ;
       data.setShowHiddenNode(Boolean.parseBoolean(drive.getProperty(SHOW_HIDDEN_NODE).getString())) ;
-      data.setAllowCreateFolder(drive.getProperty(ALLOW_CREATE_FOLDER).getString()) ;
+      data.setAllowCreateFolders(drive.getProperty(ALLOW_CREATE_FOLDER).getString()) ;
       session.logout();
       return data ;
     }    

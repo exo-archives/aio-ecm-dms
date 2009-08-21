@@ -148,6 +148,17 @@ public class TestTemplateService extends BaseDMSTestCase {
   }
   
   /**
+   * Test method: TemplateServiceImpl.getTemplatePathByAnonymous()
+   * Input: nt:folder,nt:unstructured
+   * Expect: Return set with 2 element nt:folder,nt:unstructured;
+   * @throws Exception
+   */
+  public void testGetAllowanceFolderType() throws Exception {    
+    assertTrue(templateService.getAllowanceFolderType(REPO_NAME).contains("nt:unstructured"));
+    assertTrue(templateService.getAllowanceFolderType(REPO_NAME).contains("nt:folder"));
+  }
+  
+  /**
    * Test method: TemplateServiceImpl.getTemplatePathByUser()
    * Input: isDialog        boolean
    *                        The boolean value which specify the type of template

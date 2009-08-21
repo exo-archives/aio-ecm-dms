@@ -2028,17 +2028,6 @@
   </UIVersionTreeList>
   <!--
   ###################################################################################
-  # NodeType						                                        					#
-  ###################################################################################
-  -->
-  <NodeType>
-    <label>
-      <ntUnstructed>Content Folder</ntUnstructed>
-      <ntFolder>Document Folder</ntFolder>
-    </label>
-  </NodeType>
-  <!--
-  ###################################################################################
   # UIThumbnailForm						                                        					#
   ###################################################################################
   -->
@@ -2500,4 +2489,13 @@
   		</label>
   	</tab>
   </UIUploadContainer>
+  <!-- 
+  	############  From DMS 2.6 ##############
+   -->  
+  <UIFolderForm>
+    <label>
+      <nt_folder>Document Folder</nt_folder>
+      <nt_unstructured>Content Folder</nt_unstructured>
+    </label>
+  </UIFolderForm>
 </bundle>

@@ -30,8 +30,8 @@ public class ItemOptionNameComparator implements Comparator<SelectItemOption> {
   
   public int compare(SelectItemOption o1, SelectItemOption o2) throws ClassCastException {
     try {
-      String name1 = o1.getValue().toString() ;
-      String name2 = o2.getValue().toString() ;
+      String name1 = o1.getLabel().toString() ;
+      String name2 = o2.getLabel().toString() ;
       return name1.compareToIgnoreCase(name2) ;
     } catch(Exception e) {
       return 0;

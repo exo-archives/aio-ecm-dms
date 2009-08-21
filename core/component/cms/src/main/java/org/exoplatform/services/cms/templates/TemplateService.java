@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.templates;
 
 import java.util.List;
+import java.util.Set;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -199,6 +200,12 @@ public interface TemplateService {
    * @throws Exception
    */
   public void addContentTypeFilterPlugin(ContentTypeFilterPlugin filterPlugin) throws Exception;
+  
+  /**
+   * Get set of folder type
+   * @param repository
+   */
+  public Set<String> getAllowanceFolderType(String repository);
   
   /**
    * Remove a template of NodeType by giving the following params
