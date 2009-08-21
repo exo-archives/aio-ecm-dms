@@ -56,8 +56,8 @@
     			if (node.hasProperty("exo:name")) {
 			      actionName = node.getProperty("exo:name").getString();
 			    }
-    		  feedUrl = feedUrl +  "/" + portalName + "/" + wsName + "/" + storePath + "/" + feedType + "/" + feedName + actionName;
-    	%>	  
+    		  feedUrl = feedUrl +  "/" + portalName + "/" + wsName + "/" + storePath + "/" + feedType + "/" + feedName;
+    	%>              	  
     		<a href="$feedUrl" title="$feedUrl" target="_blank">$feedUrl</a>  
 			<%}%>	
 		</td>
