@@ -162,22 +162,25 @@
 			                      String cssStyle = "ChildrenContentHolderLeft" ;
 									          if(isRight) cssStyle = "ChildrenContentHolderRight" ;
 									          if(numbDocument == 1) cssStyle = "ChildrenContentHolder" ;
-			                      def listParam = new ArrayList<Parameter>();
-						          			listParam.add(new Parameter("category", Utils.formatNodeName(subCat)));
-	        						  		listParam.add(new Parameter("workspace", subChild.getSession().getWorkspace().getName()));
-	          								String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild.getPath()), listParam.toArray(new Parameter[listParam.size()]));
+			                      def viewNode = uicomponent.getViewNode(subChild);
+			                      if(viewNode != null) {
+				                      def listParam = new ArrayList<Parameter>();
+							          			listParam.add(new Parameter("category", Utils.formatNodeName(subCat)));
+		        						  		listParam.add(new Parameter("workspace", subChild.getSession().getWorkspace().getName()));
+		          								String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild.getPath()), listParam.toArray(new Parameter[listParam.size()]));
 											 %>
-														<div class="$cssStyle">
-															<div class="ImageNote"><span></span></div>
-															<div class="ContentLabel">
-																<div class="UserName"><a onclick="$subChildLink" style="cursor:pointer;"><%=subChild.getName()%></a></div>
-																<div class="Author">
-									                Author:<%=uicomponent.getOwner(subChild)%>
-									              </div>
+															<div class="$cssStyle">
+																<div class="ImageNote"><span></span></div>
+																<div class="ContentLabel">
+																	<div class="UserName"><a onclick="$subChildLink" style="cursor:pointer;"><%=subChild.getName()%></a></div>
+																	<div class="Author">
+										                Author:<%=uicomponent.getOwner(subChild)%>
+										              </div>
+																</div>
+																<div style="clear:left;"><span></span></div>
 															</div>
-															<div style="clear:left;"><span></span></div>
-														</div>
 												<%
+														}
 														if(isRight) println "<div style=\"clear: both\"><span></span></div>" ;
 							              isRight = !isRight ;
 												  }
