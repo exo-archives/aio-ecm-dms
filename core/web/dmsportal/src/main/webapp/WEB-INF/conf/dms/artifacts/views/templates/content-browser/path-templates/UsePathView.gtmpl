@@ -54,117 +54,117 @@
 	  <%/*Begin UICBNavigation*/%>
 	  <div class="UICBNavigation">
 
-	          <div class="UICBMainNavigation">
-	            <div class="HomeTab UIPopupSelector">
-	              <div style="position: relative;">            
-		              <div class="UIContextMenu UISelectContent">
-		                <div class="SubContextMenu">
-		                  <div class="NodeHistoryContainer">
-		                    <%
-		                      String previousNode =  content.get("previous") ;
-		                      String previousNodeName ;
-		                      String previousActionLink ;
-		                      if(previousNode != null){
-		                         previousNodeName = "Previous" ;
-		                         previousActionLink = uicomponent.event('ChangeNode',previousNode);
-		                      } else {
-		                        previousNodeName = "Root" ;
-		                        previousActionLink = uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()));
-		                      }
-		                    %> 
-		                    <div class="NodeHistoryContainer">   
-			                    <a class="NodeNavigationIcon BackButtonLabel" href="$previousActionLink"><%= _ctx.appRes("UIBrowseContainer.label.path-"+previousNodeName) %></a>
-			                  </div>  
-		                  </div>            
-		                  <%
-		                    for(String nodePath : content.get("history")) {
-		                      String classStyleName = "NodeLabel" ;
-		                      String nodeName =  nodePath.substring(nodePath.lastIndexOf("/") + 1);                  
-		                      String nodeLink = uicomponent.event('ChangeNode',Utils.formatNodeName(nodePath)) ;
-		                      if(nodeName.equals(currentNode.getName())) classStyleName = "NodeLabelSelected";
-		                  %>
-		                      <div class="NodeHistoryContainer">
-		                        <a class="NodeItemIcon $classStyleName" href="$nodeLink">$nodeName</a>
-		                      </div>              
-		                  <%}%>
-		                </div>
-		              </div>
-	              </div>
-	              <div class="LeftHomeTab">
-	                <div class="RightHomeTab">
-	                  <div class="MiddleHomeTab">
-	                  	<div class="LeftIcon CBHome16x16Icon" title="<%= _ctx.appRes( componentName  +".title.home") %>"><span></span></div>
-	                    <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()))%>" ><%= _ctx.appRes(componentName + ".label.home") %></a>
-	                    <div class="RightIcon CBDropDownArrow16x16Icon" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)"><span></span></div>
-	                    <div class="ClearBoth"><span></span></div>
-	                  </div>
-	                </div>
-	              </div>
-	            </div>
-	            <div class="UIHorizontalTabs">
-	              <%
-	                for(String tab in tabList) {
-	                  String className = "CBNormalTab" ;
-	                  String tabName = tab.substring(tab.lastIndexOf("/") + 1) ;
-	                  String path = selectedTab.getPath() ;
-	                  String name = path.substring(path.lastIndexOf("/") + 1) ;
-	                  if(tabName.equals(name)) className = "CBSelectedTab" ;
-	                  def listParam = new ArrayList<Parameter>();
-					          listParam.add(new Parameter("workspace", currentNode.getSession().getWorkspace().getName()));
-					          String tabAction = uicomponent.event("ChangeNode", Utils.formatNodeName(tab), listParam.toArray(new Parameter[listParam.size()]));
-	              %>
-	                  <div class="UITab">
-	                    <div class="$className"> 
-	                      <div class="LeftTab">
-	                        <div class="RightTab">
-	                          <div class="MiddleTab">
-	                          	<div class="Icon CBDefaultFolder16x16Icon"><span></span></div>
-	                            <div class="LabelButton">                            	
-	                              <a onclick="$tabAction" style="cursor: pointer;">$tabName</a>
-	                            </div>
-	                            <div style="clear:left;"><span></span></div>
-	                          </div>
-	                        </div>
-	                      </div>
-	                    </div>
-	                  </div>
-	              <%}%>  
-	            </div>
-	            <div class="NavigationButtonContainer">
-								<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
-									<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
-								</div>
-					  		<!--<div style="clear:both"><span></span></div>-->
-							</div>                  
-	          </div>
-	          <div class="UICBSubNavigation">
-		          <div class="CBLeftNavigation">
-			          <div class="CBRightNavigation">
-				          <div class="CBMiddleNavigation">
-				            <div class="FixHeight"> 
-					              <%
-					                for(String subCat in subCategoryList) {
-					                  String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
-					                  String actionLinkSub = uicomponent.event("ChangeNode", Utils.formatNodeName(subCat)) ; 
-					              %>
-				                    <a class="NodeLabel" href="$actionLinkSub">
-				                     <%if(uicomponent.isSymLink(subCat)) {%> 
-				                       <img class="LinkSmall" />
-				                     <%}%> 
-				                    $catName</a>
-					                  <div class="SeparatorLine"><span></span></div>
-					              <%}%>
-					            <div class="NavigationButtonContainer">
-												<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
-													<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
-												</div>
-					              <!--<div style="clear:both"><span></span></div>-->
-					            </div>
-					          </div>
-				          </div> 
-			          </div>
+      <div class="UICBMainNavigation">
+        <div class="HomeTab UIPopupSelector">
+          <div style="position: relative;">            
+              <div class="UIContextMenu UISelectContent">
+                <div class="SubContextMenu">
+                  <div class="NodeHistoryContainer">
+                    <%
+                      String previousNode =  content.get("previous") ;
+                      String previousNodeName ;
+                      String previousActionLink ;
+                      if(previousNode != null){
+                         previousNodeName = "Previous" ;
+                         previousActionLink = uicomponent.event('ChangeNode',previousNode);
+                      } else {
+                        previousNodeName = "Root" ;
+                        previousActionLink = uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()));
+                      }
+                    %> 
+                    <div class="NodeHistoryContainer">   
+	                    <a class="NodeNavigationIcon BackButtonLabel" href="$previousActionLink"><%= _ctx.appRes("UIBrowseContainer.label.path-"+previousNodeName) %></a>
+	                  </div>  
+                  </div>            
+                  <%
+                    for(String nodePath : content.get("history")) {
+                      String classStyleName = "NodeLabel" ;
+                      String nodeName =  nodePath.substring(nodePath.lastIndexOf("/") + 1);                  
+                      String nodeLink = uicomponent.event('ChangeNode',Utils.formatNodeName(nodePath)) ;
+                      if(nodeName.equals(currentNode.getName())) classStyleName = "NodeLabelSelected";
+                  %>
+                      <div class="NodeHistoryContainer">
+                        <a class="NodeItemIcon $classStyleName" href="$nodeLink">$nodeName</a>
+                      </div>              
+                  <%}%>
+                </div>
+              </div>
+          </div>
+          <div class="LeftHomeTab">
+            <div class="RightHomeTab">
+              <div class="MiddleHomeTab">
+              	<div class="LeftIcon CBHome16x16Icon" title="<%= _ctx.appRes( componentName  +".title.home") %>"><span></span></div>
+                <a href="<%=uicomponent.event('ChangeNode',Utils.formatNodeName(rootNode.getPath()))%>" ><%= _ctx.appRes(componentName + ".label.home") %></a>
+                <div class="RightIcon CBDropDownArrow16x16Icon" onmouseup="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2)"><span></span></div>
+                <div class="ClearBoth"><span></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="UIHorizontalTabs">
+          <%
+            for(String tab in tabList) {
+              String className = "CBNormalTab" ;
+              String tabName = tab.substring(tab.lastIndexOf("/") + 1) ;
+              String path = selectedTab.getPath() ;
+              String name = path.substring(path.lastIndexOf("/") + 1) ;
+              if(tabName.equals(name)) className = "CBSelectedTab" ;
+              def listParam = new ArrayList<Parameter>();
+			        listParam.add(new Parameter("workspace", currentNode.getSession().getWorkspace().getName()));
+			        String tabAction = uicomponent.event("ChangeNode", Utils.formatNodeName(tab), listParam.toArray(new Parameter[listParam.size()]));
+          %>
+              <div class="UITab">
+                <div class="$className"> 
+                  <div class="LeftTab">
+                    <div class="RightTab">
+                      <div class="MiddleTab">
+                      	<div class="Icon CBDefaultFolder16x16Icon"><span></span></div>
+                        <div class="LabelButton">                            	
+                          <a onclick="$tabAction" style="cursor: pointer;">$tabName</a>
+                        </div>
+                        <div style="clear:left;"><span></span></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          <%}%>  
+        </div>
+        <div class="NavigationButtonContainer">
+					<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
+						<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
+					</div>
+		  		<!--<div style="clear:both"><span></span></div>-->
+				</div>                  
+      </div>
+      <div class="UICBSubNavigation">
+      <div class="CBLeftNavigation">
+          <div class="CBRightNavigation">
+	          <div class="CBMiddleNavigation">
+	            <div class="FixHeight"> 
+		              <%
+		                for(String subCat in subCategoryList) {
+		                  String catName = subCat.substring(subCat.lastIndexOf("/") + 1) ;
+		                  String actionLinkSub = uicomponent.event("ChangeNode", Utils.formatNodeName(subCat)) ; 
+		              %>
+	                    <a class="NodeLabel" href="$actionLinkSub">
+	                     <%if(uicomponent.isSymLink(subCat)) {%> 
+	                       <img class="LinkSmall" />
+	                     <%}%> 
+	                    $catName</a>
+		                  <div class="SeparatorLine"><span></span></div>
+		              <%}%>
+		            <div class="NavigationButtonContainer">
+									<div class="NavigationIcon DisableBackArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.prevTabs") %>"><!--<span></span>-->
+										<div class="NavigationIcon DisableNextArrow16x16Icon" title="<%= _ctx.appRes("UIBrowseContainer.title.moreTabs") %>"><span></span></div>
+									</div>
+		              <!--<div style="clear:both"><span></span></div>-->
+		            </div>
 		          </div>
-	          </div>
+	          </div> 
+          </div>
+      </div>
+      </div>
 
 	  </div>
 	  <%/*End UICBNavigation*/%>
@@ -199,37 +199,39 @@
 	          } catch(Exception e) {
 	            break ;
 	          }
+	          if(viewNode != null) {
 	      %>
-	          <div class="EventContentDetail">
-	            <div class="TopEventContentDetail">
-	              <table>  
-	                 <tr>
-	                  <td>
-	                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName">
-	                    <%if(Utils.isSymLink(doc)) {%>
-	                       <div class="LinkSmall"></div>
-	                    <%}%>
-	                    </div>
-	                    <div class="EventDocumentLabel">
-	                      <a onclick="$viewAction" style="cursor:pointer;"><%=docName%></a>
-	                    </div>  
-	                  </td>
-	                  <td class="EventAuthorNameLabel">
-	                  	<%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
-	                  </td>                  
-	                </tr>        
-	              </table>
-	            </div>
-	            <%if(viewNode.hasProperty("exo:summary")){%>
-		            <div class="MainEventContent">
-		              <div class="SummaryTitleLabel">
-										<%=_ctx.appRes(componentName + ".label.summary")%>:
-		                <%=viewNode.getProperty("exo:summary").getString()%>
-		              </div>
+		          <div class="EventContentDetail">
+		            <div class="TopEventContentDetail">
+		              <table>  
+		                 <tr>
+		                  <td>
+		                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName">
+		                    <%if(Utils.isSymLink(doc)) {%>
+		                       <div class="LinkSmall"></div>
+		                    <%}%>
+		                    </div>
+		                    <div class="EventDocumentLabel">
+		                      <a onclick="$viewAction" style="cursor:pointer;"><%=docName%></a>
+		                    </div>  
+		                  </td>
+		                  <td class="EventAuthorNameLabel">
+		                  	<%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
+		                  </td>                  
+		                </tr>        
+		              </table>
 		            </div>
-	            <%}%>
-	          </div>
+		            <%if(viewNode.hasProperty("exo:summary")){%>
+			            <div class="MainEventContent">
+			              <div class="SummaryTitleLabel">
+											<%=_ctx.appRes(componentName + ".label.summary")%>:
+			                <%=viewNode.getProperty("exo:summary").getString()%>
+			              </div>
+			            </div>
+		            <%}%>
+		          </div>
 	      <%
+	        	}
 	        }
 	      %>
 	    </div>
