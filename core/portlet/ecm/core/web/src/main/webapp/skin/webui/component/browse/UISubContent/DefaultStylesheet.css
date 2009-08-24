@@ -121,7 +121,7 @@
 .UISubContent .UIDocumentContentInfo {
 	border: solid 1px #e1e1e1;
 	padding: 5px 0px;
-	margin: 0px 7px;
+	margin: auto;
 }
 
 .UISubContent .TopSubContent  a:hover{

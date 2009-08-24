@@ -73,6 +73,7 @@
 			          String iconName = uicomponent.getIcons(doc,"16x16Icon") ;
 			          String docName = doc.getPath().substring(doc.getPath().lastIndexOf("/") + 1) ;
 			          def viewNode = uicomponent.getViewNode(doc); 
+			          if(viewNode != null) {
 			      %>
 			          <div class="EventContentDetail">
 			            <div class="TopEventContentDetail">
@@ -104,6 +105,7 @@
 			            </div>
 			          </div>
 			      <%
+			          }
 			        }
 			      %>
 	   			</div>
@@ -171,25 +173,28 @@
 									          if(isRight) cssStyle = "ChildrenContentHolderRight" ;
 									          if(numbDocument == 1) cssStyle = "ChildrenContentHolder" ;
 									          def listParam = new ArrayList<Parameter>();
-						          			listParam.add(new Parameter("category", Utils.formatNodeName(subCat)));
-	        						  		listParam.add(new Parameter("workspace", subChild.getSession().getWorkspace().getName()));
-	          								String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild.getPath()), listParam.toArray(new Parameter[listParam.size()]));
+											      def viewNode = uicomponent.getViewNode(subChild);
+											      if(viewNode != null) {
+							          			listParam.add(new Parameter("category", Utils.formatNodeName(subCat)));
+		        						  		listParam.add(new Parameter("workspace", subChild.getSession().getWorkspace().getName()));
+		          								String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild.getPath()), listParam.toArray(new Parameter[listParam.size()]));
 											 %>
-														<div class="$cssStyle">
-															<div class="Icon48x48 DefaultIconImage <%=Utils.getNodeTypeIcon(subChild, "48x48Icon")%>">
-															<%if(Utils.isSymLink(subChild)) {%>
-	                               <div class="Link"></div>
-	                            <%}%>
+															<div class="$cssStyle">
+																<div class="Icon48x48 DefaultIconImage <%=Utils.getNodeTypeIcon(subChild, "48x48Icon")%>">
+																<%if(Utils.isSymLink(viewNode)) {%>
+		                               <div class="Link"></div>
+		                            <%}%>
+																</div>
+																<div class="ContentLabel">
+																	<div class="UserName"><a onclick="$subChildLink" style="cursor:pointer;"><%=viewNode.getName()%></a></div>
+																	<div class="Author">
+										                Author:<%=uicomponent.getOwner(viewNode)%>
+										              </div>
+																</div>
+																<div style="clear:left;"><span></span></div>
 															</div>
-															<div class="ContentLabel">
-																<div class="UserName"><a onclick="$subChildLink" style="cursor:pointer;"><%=subChild.getName()%></a></div>
-																<div class="Author">
-									                Author:<%=uicomponent.getOwner(subChild)%>
-									              </div>
-															</div>
-															<div style="clear:left;"><span></span></div>
-														</div>
 												<%
+												    }
 														if(isRight) println "<div style=\"clear: both\"><span></span></div>" ;
 							              isRight = !isRight ;
 												  }
