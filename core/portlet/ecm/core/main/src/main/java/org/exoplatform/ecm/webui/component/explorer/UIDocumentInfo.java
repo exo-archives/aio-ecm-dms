@@ -48,6 +48,7 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.rightclick.manager.DeleteManageComponent;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
@@ -116,6 +117,9 @@ import org.exoplatform.webui.ext.UIExtensionManager;
 public class UIDocumentInfo extends UIContainer implements NodePresentation {
 
   final private static String CONTENT_PAGE_ITERATOR_ID = "ContentPageIterator".intern();
+
+  final private static String COMMENT_COMPONENT = "Comment".intern();
+
   private String typeSort_ = Preference.SORT_BY_NODETYPE;
   private String sortOrder_ = Preference.BLUE_DOWN_ARROW;
   private Node currentNode_ ;
@@ -521,6 +525,14 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   
   public String encodeHTML(String text) { return Utils.encodeHTML(text) ; }
 
+  
+  public UIComponent getCommentComponent() {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    UIActionBar uiActionBar = uiExplorer.findFirstComponentOfType(UIActionBar.class);
+    UIComponent uicomponent = uiActionBar.getUIAction(COMMENT_COMPONENT);
+    return (uicomponent != null ? uicomponent : this);
+  }
+  
   private Node getFileLangNode(Node currentNode) throws Exception {
     if(currentNode.getNodes().getSize() > 0) {
       NodeIterator nodeIter = currentNode.getNodes() ;
@@ -690,14 +702,14 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       event.getRequestContext().addUIComponentToUpdateByAjax(treeExplorer);      
     }
   }
+  
   static public class RemoveCommentActionListener extends EventListener<UIDocumentInfo>{
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiComp = event.getSource() ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       Node commentNode = uiComp.getNodeByPath(nodePath, uiComp.getWorkspaceName());
-      Node comments = commentNode.getParent();
-      commentNode.remove();
-      comments.getSession().save();
+      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
+      commentService.deleteComment(commentNode);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
     }
   }  

@@ -38,7 +38,9 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -49,6 +51,7 @@ import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -75,7 +78,8 @@ import org.exoplatform.webui.ext.UIExtensionManager;
     events = {
         @EventConfig(listeners = UIViewSearchResult.ChangeLanguageActionListener.class),
         @EventConfig(listeners = UIViewSearchResult.DownloadActionListener.class),
-        @EventConfig(listeners = UIViewSearchResult.ChangeNodeActionListener.class)
+        @EventConfig(listeners = UIViewSearchResult.ChangeNodeActionListener.class),
+        @EventConfig(listeners = UIViewSearchResult.RemoveCommentActionListener.class,confirm="UIDocumentInfo.msg.confirm-deletecomment")
     }
 )
 public class UIViewSearchResult extends UIContainer implements NodePresentation {
@@ -84,7 +88,7 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
   private String language_ ;
   private String currentRepository_ = null;
   private String currentWorkspaceName_ = null;
-  
+  final private static String COMMENT_COMPONENT = "Comment".intern();
   /**
    * Logger.
    */
@@ -179,6 +183,21 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
     } catch (Exception e) {
       return false;
     }
+  }
+  
+  public UIComponent getCommentComponent() {
+    UIComponent uicomponent = null;
+    try {
+      UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
+      Map<String, Object> context = new HashMap<String, Object>();
+      UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+      context.put(UIJCRExplorer.class.getName(), uiExplorer);
+      context.put(Node.class.getName(), node_);
+      uicomponent = manager.addUIExtension(ManageViewService.EXTENSION_TYPE, COMMENT_COMPONENT, context, this);
+    } catch (Exception e) {
+      LOG.error("An error occurs while checking the action", e);
+    }
+    return (uicomponent != null ? uicomponent : this);
   }
   
   public boolean hasPropertyContent(Node node, String property) {
@@ -372,5 +391,17 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
       event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
     }
   }
+  
+  static public class RemoveCommentActionListener extends EventListener<UIViewSearchResult>{
+    public void execute(Event<UIViewSearchResult> event) throws Exception {
+      UIViewSearchResult uiComp = event.getSource() ;
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIJCRExplorer uiExplorer = uiComp.getAncestorOfType(UIJCRExplorer.class); 
+      Node commentNode = uiExplorer.getNodeByPath(nodePath, uiComp.getNode().getSession());
+      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
+      commentService.deleteComment(commentNode);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
+    }
+  } 
 
 }

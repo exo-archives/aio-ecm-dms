@@ -49,6 +49,20 @@ public interface CommentsService {
   public void addComment(Node document, String commentor, String email, String site, String comment, String language) throws Exception ;
   
   /**
+   * Update comment for document: set new comment for node
+   * @param comment
+   * @param newComment
+   * @throws Exception
+   */
+  public void updateComment(Node commentNode, String newComment) throws Exception;
+  
+  /**
+   * Delete comment of document by given comment node
+   * @param commentNode
+   * @throws Exception
+   */
+  public void deleteComment(Node commentNode) throws Exception;
+  /**
    * Gets all comments from the specified node 
    * @param document        The node document is commented
    * @param language        The language of this document is commented

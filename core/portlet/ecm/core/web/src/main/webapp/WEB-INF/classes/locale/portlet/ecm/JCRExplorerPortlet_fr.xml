@@ -2446,17 +2446,6 @@
 			<ValidationRequestsDocumentsCenter>Centre de Validation Des Documents Requêtes</ValidationRequestsDocumentsCenter>
 		</label>  
 	</Drives>
-	<Comments>
-	  <tooltip>
-	    <remove-comment>Supprimer ce commentaire</remove-comment>
-	  </tooltip>
-	</Comments>
-	<UIDocumentInfo>
-	  <msg>
-	    <confirm-deletecomment>Voulez-vous vraiment supprimer ce commentaire?</confirm-deletecomment>
-	  </msg>
-	</UIDocumentInfo>
-	
 	<!-- 
  	 #############	From DMS 2.6 #############
   -->
@@ -2504,4 +2493,15 @@
       <nt_unstructured>Répertoire de contenu</nt_unstructured>
     </label>
   </UIFolderForm>
+  	<Comments>
+		  <tooltip>
+		    <remove-comment>Remove this comment</remove-comment>
+		    <edit-comment>Edit this comment</edit-comment>
+		  </tooltip>
+			</Comments>
+			<UIDocumentInfo>
+			  <msg>
+			    <confirm-deletecomment>Do you really want to delete this comment?</confirm-deletecomment>
+			  </msg>
+			</UIDocumentInfo>
 </bundle>

@@ -90,7 +90,7 @@ import org.exoplatform.webui.form.UIFormUploadInput;
 )
 
 public class UIFastContentCreatortForm extends UIDialogForm implements UISelectable {
-
+ String uuid ;
   final static public String FIELD_TAXONOMY = "categories";
   final static public String POPUP_TAXONOMY = "UIPopupTaxonomy";
   

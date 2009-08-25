@@ -19,10 +19,9 @@ import javax.jcr.Node;
 import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.webui.core.UIPopupComponent;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.organization.User;
@@ -34,6 +33,8 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -66,8 +67,29 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
   final private static String FIELD_EMAIL = "email";
   final private static String FIELD_WEBSITE = "website";
   final private static String FIELD_COMMENT = "comment";
+  
   private Node docNode_;
 
+  private boolean edit;
+  
+  private String nodeCommentPath;
+  
+  public boolean isEdit() {
+    return edit;
+  }
+
+  public void setEdit(boolean edit) {
+    this.edit = edit;
+  }
+
+  public String getNodeCommentPath() {
+    return nodeCommentPath;
+  }
+
+  public void setNodeCommentPath(String nodeCommentPath) {
+    this.nodeCommentPath = nodeCommentPath;
+  }
+  
 
   public UICBCommentForm() throws Exception {
     setActions(new String[] {"Save", "Cancel"});
@@ -84,6 +106,13 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
       addUIFormInput(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null));
     } 
     addUIFormInput(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null).addValidator(MandatoryValidator.class));
+    if (isEdit()) {
+      Node comment = getAncestorOfType(UIBrowseContentPortlet.class).findFirstComponentOfType(UIBrowseContainer.class)
+                     .getNodeByPath(nodeCommentPath,getDocument().getSession().getWorkspace().getName());
+      if(comment.hasProperty("exo:commentContent")){
+        getChild(UIFormWYSIWYGInput.class).setValue(comment.getProperty("exo:commentContent").getString());
+      }
+    }
   }
   
   public static class CancelActionListener extends EventListener<UICBCommentForm>{
@@ -131,42 +160,48 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
         UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-      } else {
-        if(DEFAULT_LANGUAGE.equals(language)) { 
-          if(!uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)){
-            currentDoc.addMixin("mix:i18n");
-            currentDoc.save();
-            language = DEFAULT_LANGUAGE;
-          } else {
-            language = uiForm.getDocument().getProperty(Utils.EXO_LANGUAGE).getString();
-          }
-        }
-        CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class); 
-        String lockToken = LockUtil.getLockToken(currentDoc);
-        if(lockToken != null) currentDoc.getSession().addLockToken(lockToken);
-        try {
-          commentsService.addComment(uiForm.getDocument(), userName, email, website, comment, language);
-        } catch (LockException le) {
-          uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.locked-doc", null, 
-              ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
-        } catch (VersionException ve) {
-          uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.versioning-doc", null, 
-              ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
-        } catch (Exception e) {
-          uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.error-vote", null, 
-              ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
-        }
-        UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class);
-        uiPopupAction.deActivate();
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiBCContainer);
+        return;
       }
+      CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class);
+      String lockToken = LockUtil.getLockToken(currentDoc);
+      if (lockToken != null)
+        currentDoc.getSession().addLockToken(lockToken);
+      try {
+        if (uiForm.isEdit()) {
+          Node commentNode = uiBCContainer.getNodeByPath(uiForm.getNodeCommentPath(), currentDoc.getSession().getWorkspace().getName());
+          commentsService.updateComment(commentNode, comment);
+        } else {
+          if (DEFAULT_LANGUAGE.equals(language)) {
+            if (!uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)) {
+              currentDoc.addMixin("mix:i18n");
+              currentDoc.save();
+              language = DEFAULT_LANGUAGE;
+            } else {
+              language = uiForm.getDocument().getProperty(Utils.EXO_LANGUAGE).getString();
+            }
+          }
+          commentsService.addComment(uiForm.getDocument(), userName, email, website, comment, language);
+        }
+      } catch (LockException le) {
+        uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.locked-doc", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch (VersionException ve) {
+        uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.versioning-doc", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch (Exception e) {
+        uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.error-vote", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class);
+      uiPopupAction.deActivate();
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiBCContainer);
     }
   }
 }

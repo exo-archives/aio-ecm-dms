@@ -469,4 +469,22 @@
   		<do-not-permission>You don't have permission to load template of '{0}'.</do-not-permission>
   	</msg>
   </UIDocumentForm>
+  
+   <!--
+	  ######################################################################################
+	  # Since ECM 2.6
+	  ######################################################################################
+	  -->
+  <Comments>
+	  <tooltip>
+	    <remove-comment>Remove this comment</remove-comment>
+	    <edit-comment>Edit this comment</edit-comment>
+	  </tooltip>
+	</Comments>
+	<UIDocumentDetail>
+	  <msg>
+	    <confirm-deletecomment>Do you really want to delete this comment?</confirm-deletecomment>
+	  </msg>
+	</UIDocumentDetail>
+	
 </bundle>

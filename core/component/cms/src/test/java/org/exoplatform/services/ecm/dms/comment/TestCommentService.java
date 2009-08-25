@@ -251,7 +251,7 @@ public class TestCommentService extends BaseDMSTestCase {
    * Expected:
    *      commenter's name will be assigned ANONYMOUS.
    */
-  public void testAdddComment9() throws Exception{
+  public void testAddComment9() throws Exception{
     Node test = session.getRootNode().addNode("Test");
     if(test.canAddMixin(I18NMixin)){
       test.addMixin(I18NMixin);
@@ -274,7 +274,7 @@ public class TestCommentService extends BaseDMSTestCase {
    * Expected:
    *      comment doesn't have COMMENTOR_EMAIL property.
    */
-  public void testAdddComment10() throws Exception{
+  public void testAddComment10() throws Exception{
     Node test = session.getRootNode().addNode("Test");
     if(test.canAddMixin(I18NMixin)){
       test.addMixin(I18NMixin);
@@ -289,6 +289,39 @@ public class TestCommentService extends BaseDMSTestCase {
     }
   }
   
+  /**
+   * Test Method: updateComment()
+   * Input:
+   *      comment = Hello;
+   *      update comment = Ciao;
+   * Expected:
+   *      Comment message is "Ciao"
+   */
+  public void testUpdateComment() throws Exception{
+    Node test = initNode();
+    commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
+    List<Node> nodes = commentsService.getComments(test, multiLangService.getDefault(test));
+    commentsService.updateComment(nodes.get(0), "Ciao");
+    nodes = commentsService.getComments(test, multiLangService.getDefault(test));
+    assertEquals("Ciao", nodes.get(0).getProperty(COMMENTOR_MESSAGES).getString());
+  }
+  
+  /**
+   * Test Method: deleteComment()
+   * Input:
+   *      comment for node with given email, comment message, commentor.
+   * Expected:
+   *      Comment for node is delete
+   */
+  public void testDeleteComment() throws Exception{
+    Node test = initNode();
+    commentsService.addComment(test, "root", "root@explatform.com", null, "Hello", multiLangService.getDefault(test));
+    List<Node> nodes = commentsService.getComments(test, multiLangService.getDefault(test));
+    assertEquals(1, nodes.size());
+    commentsService.deleteComment(nodes.get(0));
+    nodes = commentsService.getComments(test, multiLangService.getDefault(test));
+    assertEquals(0, nodes.size());
+  }
   /**
    * Test Method: getComments()
    * Input: Test node doesn't have languages node, so adding comment nodes will be set default 

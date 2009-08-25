@@ -2500,4 +2500,15 @@
       <nt_unstructured>Thư  mục nội dung</nt_unstructured>
     </label>
   </UIFolderForm>
+  	<Comments>
+			  <tooltip>
+			    <remove-comment>Xóa bình luận này</remove-comment>
+			    <edit-comment>Sửa bình luận này</edit-comment>
+			  </tooltip>
+			</Comments>
+			<UIDocumentInfo>
+			  <msg>
+			    <confirm-deletecomment>Bạn có muốn xóa bình luận này?</confirm-deletecomment>
+			  </msg>
+			</UIDocumentInfo>
 </bundle>

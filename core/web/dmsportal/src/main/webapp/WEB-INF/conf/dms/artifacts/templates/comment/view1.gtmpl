@@ -1,5 +1,6 @@
 <%
   def commentsList = uicomponent.getComments() ;
+  def uicomment = uicomponent.getCommentComponent();
   if(commentsList.size() > 0) {
     java.text.SimpleDateFormat commentDateFormat = new java.text.SimpleDateFormat("h:mm a. EEE, MMM d, yyyy") ;
     def lastComment = commentsList.get(0) ;
@@ -142,15 +143,24 @@
 		  color: #058EE6;
       text-decoration: underline;
 		}
-		.CommentInfo .RemoveAttachments {
-		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top; /* orientation=lt */
-		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat right top; /* orientation=rt */
-		  margin: 0px 5px 0px 3px; /* orientation=lt */
-		  margin: 0px 3px 0px 5px; /* orientation=rt */
-		  padding: 3px 10px;
-		  height: 16px;
-		  cursor: pointer;
+		
+    .CommentInfo .EditComment {
+		  background: url('/ecm/skin/icons/16x16/DefaultSkin/EditDocument.gif') no-repeat left top; /* orientation=lt */
+		  background: url('/ecm/skin/icons/16x16/DefaultSkin/EditDocument.gif') no-repeat right top; /* orientation=rt */
+      margin: auto;
+      padding: 2px;
+      height: 16px;
+      cursor: pointer;
 		}
+
+    .CommentInfo .RemoveAttachments {
+      background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top; /* orientation=lt */
+      background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat right top; /* orientation=rt */
+      margin: auto;
+      padding: 2px;
+      height: 16px;
+      cursor: pointer;
+    }
 	</style>
   <div class="Comments ShowHideContainer">
 		<div class="CommentBar" style="width: 600px;">
@@ -203,13 +213,23 @@
 		  		
 		  		<%
 		  		String commentor=null;
+		  		String path = comment.getPath();
+		  		String parentPath = comment.getSession().getWorkspace().getName().concat(":").concat(uicomponent.getNode().getPath());
 		  		if(comment.hasProperty("exo:commentor")){
 		  		  commentor=comment.getProperty("exo:commentor").getString();
 			  	}
           if (commentor!=null && commentor.equals(rcontext.getRemoteUser())) {
 	  		 %>
-			  		<a href="<%=uicomponent.event("RemoveComment", comment.getPath())%>">
-							<image class="RemoveAttachments" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" title="<%=_ctx.appRes("Comments.tooltip.remove-comment")%>"/>
+	  		 <% if (uicomment != null) {
+	  		 %>
+			  		<a href="<%=uicomment.event("Comment", parentPath, new Parameter("nodePath", path))%>">
+							<image class="EditComment" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" title="<%=_ctx.appRes("Comments.tooltip.edit-comment")%>"/>
+						</a>
+				<%
+	  		 }
+	  		%>
+						<a href="<%=uicomponent.event("RemoveComment", comment.getPath())%>">
+						<image class="RemoveAttachments" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" title="<%=_ctx.appRes("Comments.tooltip.remove-comment")%>"/>
 						</a>
 				<%}%>
 		  	</div>

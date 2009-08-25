@@ -16,7 +16,6 @@
  */
 package org.exoplatform.ecm.webui.component.browsecontent;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -317,6 +316,11 @@ public class UIToolBar extends UIContainer {
         UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
         UICBCommentForm commentForm = uiComp.createUIComponent(UICBCommentForm.class, null, null) ;
         commentForm.setDocument(uiDocument.node_) ;
+        String nodeCommentPath = event.getRequestContext().getRequestParameter("nodePath");
+        if (nodeCommentPath != null && nodeCommentPath.length() > 0) {
+          commentForm.setEdit(true);
+          commentForm.setNodeCommentPath(nodeCommentPath);
+        }
         uiPopupAction.activate(commentForm, 750, 0) ;
         uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
