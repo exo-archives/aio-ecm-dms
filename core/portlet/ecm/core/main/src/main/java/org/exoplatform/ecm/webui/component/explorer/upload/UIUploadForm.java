@@ -541,8 +541,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
           }
         }
         double size = uploadService.getUploadResource(uiFormUploadInput.getUploadId()).getEstimatedSize()/1024;
-        String fileSize = Double.toString(size);     
-        String[] arrValues = {fileName, name, fileSize +" Kb", mimeType, uploadedNode.getPath()};
+        String fileSize = Double.toString(size);
+        String iconUpload = mimeType.replaceAll("/", "_") + "16x16Icon"; 
+        String[] arrValues = {iconUpload, fileName, name, fileSize +" Kb", mimeType, uploadedNode.getPath()};
         listArrValues.add(arrValues);
         inputStream.close();
         uploadService.removeUpload(uiFormUploadInput.getUploadId());

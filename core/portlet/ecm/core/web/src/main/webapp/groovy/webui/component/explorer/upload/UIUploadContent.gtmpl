@@ -1,6 +1,7 @@
 <%import org.exoplatform.ecm.webui.utils.Utils ;%>
 <%
   List<String[]> listValues = uicomponent.listUploadValues();
+  uicomponent.getListUploadedNode();
   String[] arrLabel = ["fileName", "nodeName", "fileSize", "mimeType", "manageMetadata"];
 %>
 <div class="$uicomponent.id">
@@ -32,16 +33,18 @@
 	    for(arrValues in listValues) {
 	    %>
 	    <tr>
-	      <td><div class="ItemIcon16x16 <%=Utils.getNodeTypeIcon(uicomponent.getUploadedNode(), "16x16Icon")%>"></div><span></span></td>
 	      <%
 	        int index = 0;
 	        for(value in arrValues) {
 	          String subValue = value;
 	          index++; 
 	          if(value.length() > 20) subValue = value.substring(0,20) + "..." ;
+	          if (index == 1) {
 	      %>
+	      <td><div class="ItemIcon16x16 <%=subValue%>"></div><span></span></td>
+	      <%} else {%>
 	          <td>
-	            <%if (index == 5) {%>
+	            <%if (index == 6) {%>
 	              <a href="<%=uicomponent.event("ManageMetadata", value)%>">
 	              <div class="Icon16x16 Edit16x16Icon" style="margin-left: 30px;" title="<%=_ctx.appRes("UIUploadContent.tooltip.ManageMetadata")%>"><span></span></div>
                 </a>
@@ -49,7 +52,8 @@
 	              <span title="$value"><%=subValue%></span>
 	            <% } %>
             </td>
-	      <%}%>
+	      <%}
+	      }%>
 	    </tr>
 	    <%}%>
 	  </tbody>

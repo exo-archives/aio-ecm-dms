@@ -12,7 +12,7 @@ int numberUploadFile = uicomponent.getNumberUploadFile();
 	        for(field in uiform.getChildren()) { 
 	          if(field.isRendered()) {
 	      %>
-              <tr>
+              <tr onmouseover="this.style.background='#E7F3FF'" onmouseout="this.style.background='transparent'">
 	              <%fieldName = uicomponent.getLabel(field.getName());%>
 	              <%
 	              	if(fieldName != null && fieldName.length() > 0 && !fieldName.equals(uicomponent.getId())) {
@@ -51,7 +51,12 @@ int numberUploadFile = uicomponent.getNumberUploadFile();
 							    %>
   	              </td>
 	              <%}%>
-	            </tr>
+              </tr>
+              <%if((field.getName().indexOf("fieldListTaxonomy") >= 0) && (numberUploadFile > 1) && (indexUpload != numberUploadFile)) {%>
+              <tr>
+                <td colspan="3"><div class="GroupUploadILine"><span></span></div></td>
+              </tr>
+              <%}%>
 	      <%
 	          }
 	        }

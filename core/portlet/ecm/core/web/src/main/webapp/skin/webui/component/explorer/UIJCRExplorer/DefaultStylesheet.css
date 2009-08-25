@@ -839,3 +839,10 @@
   width: 100px;
 }
 
+.UIUploadForm .GroupUploadILine {
+  background: url('DefaultSkin/background/DotLine1x2.gif') repeat-x;
+  height: 2px;
+  margin: 10px;
+}
+
+
