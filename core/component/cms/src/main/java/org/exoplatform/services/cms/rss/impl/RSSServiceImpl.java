@@ -144,6 +144,7 @@ public class RSSServiceImpl implements RSSService{
     String queryPath = (String) context.get(QUERY_PATH) ;
     String rssUrl = (String) context.get(URL) ;
     String title = (String) context.get(TITLE) ;
+    String feedLink = (String) context.get(LINK) ;
     String repository = (String) context.get("repository") ;
     storePath = storePath + "/" + feedType ;
     if(feedName == null || feedName.length() == 0) feedName = actionName ;
@@ -157,7 +158,7 @@ public class RSSServiceImpl implements RSSService{
       SyndFeed feed = new SyndFeedImpl();      
       feed.setFeedType(rssVersion);      
       feed.setTitle(feedTitle.replaceAll("&nbsp;", " "));
-      feed.setLink("");
+      feed.setLink(feedLink);
       feed.setDescription(feedDescription.replaceAll("&nbsp;", " "));     
       List<SyndEntry> entries = new ArrayList<SyndEntry>();
       SyndEntry entry;

@@ -109,6 +109,7 @@
 <div $resizeBlock>
 	<div class="FileContent">
 	  <%
+	    if(mimeType.equals("application/rss+xml")) mimeType="text/html"; 
 	    def fileComponent = uicomponent.getUIComponent(mimeType);
 	    if(fileComponent != null) {
 	      uicomponent.renderUIComponent(fileComponent);
