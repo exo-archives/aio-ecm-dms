@@ -11,8 +11,14 @@ int numberUploadFile = uicomponent.getNumberUploadFile();
 	        int indexUpload = 0; 
 	        for(field in uiform.getChildren()) { 
 	          if(field.isRendered()) {
+	          if(field.getName().indexOf("name") >= 0) {
+	          %>
+	          <tr onmouseover="this.style.background='#E7F3FF'" onmouseout="this.style.background='transparent'">
+              <td><table>	            
+	          <%
+	          } 
 	      %>
-              <tr onmouseover="this.style.background='#E7F3FF'" onmouseout="this.style.background='transparent'">
+              <tr>
 	              <%fieldName = uicomponent.getLabel(field.getName());%>
 	              <%
 	              	if(fieldName != null && fieldName.length() > 0 && !fieldName.equals(uicomponent.getId())) {
@@ -52,12 +58,17 @@ int numberUploadFile = uicomponent.getNumberUploadFile();
   	              </td>
 	              <%}%>
               </tr>
-              <%if((field.getName().indexOf("fieldListTaxonomy") >= 0) && (numberUploadFile > 1) && (indexUpload != numberUploadFile)) {%>
-              <tr>
-                <td colspan="3"><div class="GroupUploadILine"><span></span></div></td>
-              </tr>
-              <%}%>
 	      <%
+	          if(field.getName().indexOf("fieldListTaxonomy") >= 0) {
+	          %>
+	          </table></td></tr>
+	          <%if((field.getName().indexOf("fieldListTaxonomy") >= 0) && (numberUploadFile > 1) && (indexUpload != numberUploadFile)) {%>
+              <tr>
+                <td><div class="GroupUploadILine"><span></span></div></td>
+              </tr>
+            <%}%>
+            <%	       
+	          }
 	          }
 	        }
 	      %>
