@@ -41,7 +41,7 @@
 	          if(value.length() > 20) subValue = value.substring(0,20) + "..." ;
 	          if (index == 1) {
 	      %>
-	      <td><div class="ItemIcon16x16 <%=subValue%>"></div><span></span></td>
+	      <td><div class="ItemIcon16x16 <%=value%>"></div><span></span></td>
 	      <%} else {%>
 	          <td>
 	            <%if (index == 6) {%>
