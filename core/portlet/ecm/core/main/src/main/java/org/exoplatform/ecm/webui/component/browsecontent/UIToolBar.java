@@ -18,10 +18,13 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.jcr.Node;
 import javax.portlet.PortletMode;
 
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -64,6 +67,8 @@ public class UIToolBar extends UIContainer {
   private boolean isEnablePath_ = true ;
   private boolean isEnableSeach_ = false ;
 
+  private static final Pattern FILE_EXPLORER_URL_SYNTAX = Pattern.compile("([^:/]+):(/.*)");
+  
   public UIToolBar()throws Exception {}
   public void setEnablePath(boolean enablePath) {isEnablePath_ = enablePath ;}
   public boolean enablePath() {return isEnablePath_ ;}
@@ -277,33 +282,48 @@ public class UIToolBar extends UIContainer {
   }  
   static public class CommentActionListener extends EventListener<UIToolBar> {
     public void execute(Event<UIToolBar> event) throws Exception {
-      UIToolBar uiComp = event.getSource() ;
+      UIToolBar uiComp = event.getSource();
       UIBrowseContainer container = uiComp.getAncestorOfType(UIBrowseContainer.class) ;
+      String documentPath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIDocumentDetail uiDocument = container.getChild(UIDocumentDetail.class)  ;
+      Node documentNode;
+      if (documentPath != null && documentPath.length() > 0) {
+        Matcher matcher = UIToolBar.FILE_EXPLORER_URL_SYNTAX.matcher(documentPath);
+        String wsName = null;
+        if (matcher.find()) {
+          wsName = matcher.group(1);
+          documentPath = matcher.group(2);
+          documentNode = container.getNodeByPath(documentPath, wsName);
+        } else {
+          throw new IllegalArgumentException("The ObjectId is invalid '" + documentPath + "'");
+        }
+      } else  {
+        documentNode = uiDocument.getOriginalNode();
+      }
       UIApplication uiApp = uiComp.getAncestorOfType(UIApplication.class) ;
-      if(!container.isShowDocumentDetail() || !uiDocument.isValidNode()) {
+      if(documentNode == null) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.select-doc", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(container) ;
         return ;
       } 
-      if(!container.hasAddPermission(uiDocument.node_)) {
+      if(!container.hasAddPermission(documentNode)) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.access-add-denied", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      if(!uiDocument.node_.isNodeType("mix:commentable")) {
+      if(!documentNode.isNodeType("mix:commentable")) {
         uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.not-support-comment", null, 
             ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;        
       }
-      String lockToken = LockUtil.getLockToken(uiDocument.node_);
-      if(lockToken != null) uiDocument.node_.getSession().addLockToken(lockToken);
-      if(container.nodeIsLocked(uiDocument.node_)) {
-        String strLockOwner = uiDocument.node_.getLock().getLockOwner();
+      String lockToken = LockUtil.getLockToken(documentNode);
+      if(lockToken != null) documentNode.getSession().addLockToken(lockToken);
+      if(container.nodeIsLocked(documentNode)) {
+        String strLockOwner = documentNode.getLock().getLockOwner();
         String userId = Util.getPortalRequestContext().getRemoteUser();
         if (!strLockOwner.equals(userId)) {
           uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.node-is-locked", null,
@@ -312,17 +332,25 @@ public class UIToolBar extends UIContainer {
           return;
         }
       }
-      if((uiDocument.node_.isCheckedOut())) {
+      if((documentNode.isCheckedOut())) {
         UIBrowseContentPortlet cbPortlet = uiComp.getAncestorOfType(UIBrowseContentPortlet.class) ;
-        UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction") ;
+        UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupComment");
+        if (uiPopupAction == null) {
+          uiPopupAction = cbPortlet.addChild(UIPopupContainer.class, null, "UICBPopupComment");
+        }
+        
         UICBCommentForm commentForm = uiComp.createUIComponent(UICBCommentForm.class, null, null) ;
-        commentForm.setDocument(uiDocument.node_) ;
-        uiPopupAction.activate(commentForm, 750, 0) ;
+        commentForm.setDocument(documentNode);
+        String nodeCommentPath = event.getRequestContext().getRequestParameter("nodePath");
+        if (nodeCommentPath != null && nodeCommentPath.length() > 0) {
+          commentForm.setEdit(true);
+          commentForm.setNodeCommentPath(nodeCommentPath);
+        }
+        uiPopupAction.activate(commentForm, 750, 0);
         uiPopupAction.getChild(UIPopupWindow.class).setResizable(false) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
       } else {
-        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.readonly-doc", null, 
-            ApplicationMessage.WARNING)) ;
+        uiApp.addMessage(new ApplicationMessage("UIToolBar.msg.readonly-doc", null, ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }

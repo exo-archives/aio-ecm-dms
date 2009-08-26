@@ -73,7 +73,8 @@ import org.exoplatform.webui.event.EventListener;
     events ={ 
         @EventConfig(listeners =  UIDocumentDetail.ChangeLanguageActionListener.class),
         @EventConfig(listeners =  UIDocumentDetail.ChangeNodeActionListener.class),
-        @EventConfig(listeners =  UIDocumentDetail.DownloadActionListener.class)
+        @EventConfig(listeners =  UIDocumentDetail.DownloadActionListener.class),
+        @EventConfig(listeners = UIDocumentDetail.RemoveCommentActionListener.class,confirm="UIDocumentDetail.msg.confirm-deletecomment")
     }
 )
 
@@ -104,6 +105,10 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
 
   private UIBrowseContainer getUIBrowseContainer() {
     return  getAncestorOfType(UIBrowseContentPortlet.class).findFirstComponentOfType(UIBrowseContainer.class) ;
+  }
+
+  public UIComponent getCommentComponent() {
+    return getUIBrowseContainer().getChild(UIToolBar.class);
   }
 
   public String getTemplatePath(){
@@ -433,4 +438,16 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
       event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");
     }
   }
+  
+  static public class RemoveCommentActionListener extends EventListener<UIDocumentDetail>{
+    public void execute(Event<UIDocumentDetail> event) throws Exception {
+      UIDocumentDetail uiComp = event.getSource();
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      Node commentNode = uiComp.getUIBrowseContainer().getNodeByPath(nodePath, uiComp.getWorkspaceName());
+      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
+      commentService.deleteComment(commentNode);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
+    }
+  } 
+  
 }

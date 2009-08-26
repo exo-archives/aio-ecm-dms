@@ -2464,4 +2464,15 @@
 	    <confirm-deletecomment>Do you really want to delete this comment?</confirm-deletecomment>
 	  </msg>
 	</UIDocumentInfo>
+  	<Comments>
+		  <tooltip>
+		    <remove-comment>Remove this comment</remove-comment>
+		    <edit-comment>Edit this comment</edit-comment>
+		  </tooltip>
+			</Comments>
+			<UIDocumentInfo>
+			  <msg>
+			    <confirm-deletecomment>Do you really want to delete this comment?</confirm-deletecomment>
+			  </msg>
+			</UIDocumentInfo>
 </bundle>

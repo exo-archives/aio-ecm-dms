@@ -18,10 +18,13 @@ package org.exoplatform.ecm.webui.component.explorer.control.listener;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -46,7 +49,23 @@ public abstract class UIActionBarActionListener<T extends UIComponent> extends U
     Map<String, Object> context = new HashMap<String, Object>();
     UIActionBar uiActionBar = event.getSource().getAncestorOfType(UIActionBar.class);
     UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-    Node currentNode = uiExplorer.getCurrentNode();      
+    String nodePath = event.getRequestContext().getRequestParameter(UIComponent.OBJECTID);
+    Node currentNode;
+    if (nodePath != null && nodePath.length() != 0 && !nodePath.contains(";")) {
+      Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+      String wsName = null;
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        nodePath = matcher.group(2);
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '" + nodePath + "'");
+      }
+      Session session = uiExplorer.getSessionByWorkspace(wsName);
+      // Use the method getNodeByPath because it is link aware
+      currentNode = uiExplorer.getNodeByPath(nodePath, session);
+    } else {
+      currentNode = uiExplorer.getCurrentNode();   
+    }
     WebuiRequestContext requestContext = event.getRequestContext();
     UIApplication uiApp = requestContext.getUIApplication();
     context.put(UIActionBar.class.getName(), uiActionBar);

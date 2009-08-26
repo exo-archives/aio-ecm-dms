@@ -469,4 +469,15 @@
   		<do-not-permission>Bạn không có quyền để thao tác trên template này</do-not-permission>
   	</msg>
   </UIDocumentForm>
+  <Comments>
+	  <tooltip>
+	    <remove-comment>Xóa bình luận này</remove-comment>
+	    <edit-comment>Chỉnh sửa bình luận này</edit-comment>
+	  </tooltip>
+		</Comments>
+		<UIDocumentDetail>
+		  <msg>
+		    <confirm-deletecomment>Bạn có muốn xóa bình luận này không?</confirm-deletecomment>
+		  </msg>
+		</UIDocumentDetail>
 </bundle>

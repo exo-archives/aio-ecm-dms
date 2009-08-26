@@ -88,6 +88,7 @@ public class UICBSearchResults extends UIContainer {
           resultMap_.get(nodeName).getSession().getWorkspace().getName()));
     }
   }
+  
   static public class ViewActionListener extends EventListener<UICBSearchResults> {
     public void execute(Event<UICBSearchResults> event) throws Exception {
       UICBSearchResults uiResults = event.getSource();
@@ -112,6 +113,7 @@ public class UICBSearchResults extends UIContainer {
         UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class);
         UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction");
         UIDocumentDetail uiDocument =  uiPopupAction.activate(UIDocumentDetail.class, 600);// cbPortlet.createUIComponent(UIDocumentDetail.class, null, null);
+        uiDocument.setOriginalNode(node);
         uiDocument.setNode(node);
         UIPopupWindow uiPopup  = uiPopupAction.getChildById("UICBPopupWindow");
         uiPopup.setResizable(true);

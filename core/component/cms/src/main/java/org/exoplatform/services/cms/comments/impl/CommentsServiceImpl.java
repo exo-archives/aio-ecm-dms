@@ -130,6 +130,29 @@ public class CommentsServiceImpl implements CommentsService {
   /**
    * {@inheritDoc}
    */
+  public void updateComment(Node commentNode, String newComment) throws Exception {
+    Session session = commentNode.getSession();
+    Calendar commentDate = new GregorianCalendar() ;
+    commentNode.setProperty(CREATED_DATE, commentDate);
+    commentNode.setProperty(MESSAGE, newComment);
+    commentNode.save();
+    session.save();
+    session.logout();
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public void deleteComment(Node commentNode) throws Exception {
+    Node document = commentNode.getParent();
+    commentNode.remove();
+    document.save();
+    document.getSession().save();
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
   @SuppressWarnings("unchecked")
   public List<Node> getComments(Node document,String language) throws Exception {    
     Node commentsNode = null ;

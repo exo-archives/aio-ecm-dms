@@ -68,11 +68,31 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
   final private static String FIELD_COMMENT = "comment";
   private Node docNode_;
 
+  private boolean edit;
+  
+  private String nodeCommentPath;
+  
+  public boolean isEdit() {
+    return edit;
+  }
 
+  public void setEdit(boolean edit) {
+    this.edit = edit;
+  }
+
+  public String getNodeCommentPath() {
+    return nodeCommentPath;
+  }
+
+  public void setNodeCommentPath(String nodeCommentPath) {
+    this.nodeCommentPath = nodeCommentPath;
+  }
+  
   public UICBCommentForm() throws Exception {
     setActions(new String[] {"Save", "Cancel"});
   }
 
+  
   public Node getDocument() { return docNode_;}
   public void setDocument(Node node) { docNode_ = node;}
 
@@ -84,6 +104,13 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
       addUIFormInput(new UIFormStringInput(FIELD_WEBSITE, FIELD_WEBSITE, null));
     } 
     addUIFormInput(new UIFormWYSIWYGInput(FIELD_COMMENT, FIELD_COMMENT, null).addValidator(MandatoryValidator.class));
+    if (isEdit()) {
+      Node comment = getAncestorOfType(UIBrowseContentPortlet.class).findFirstComponentOfType(UIBrowseContainer.class)
+                     .getNodeByPath(nodeCommentPath,getDocument().getSession().getWorkspace().getName());
+      if(comment.hasProperty("exo:commentContent")){
+        getChild(UIFormWYSIWYGInput.class).setValue(comment.getProperty("exo:commentContent").getString());
+      }
+    }
   }
   
   public static class CancelActionListener extends EventListener<UICBCommentForm>{
@@ -103,49 +130,54 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
   public static class SaveActionListener extends EventListener<UICBCommentForm>{
     public void execute(Event<UICBCommentForm> event) throws Exception {
       UICBCommentForm uiForm = event.getSource();
-      String userName = event.getRequestContext().getRemoteUser();
-      String website = null;
-      String email = null;
-      if(userName == null || userName.trim().length() == 0){
-        userName = "anonymous";
-        website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue();
-        email = uiForm.getUIStringInput(FIELD_EMAIL).getValue();
-      } else {
-        OrganizationService organizationService = uiForm.getApplicationComponent(OrganizationService.class);
-        UserProfileHandler profileHandler = organizationService.getUserProfileHandler();
-        UserHandler userHandler = organizationService.getUserHandler();
-        User user = userHandler.findUserByName(userName);
-        UserProfile userProfile = profileHandler.findUserProfileByName(userName);
-        website = userProfile.getUserInfoMap().get("user.business-info.online.uri");
-        email = user.getEmail();
-      }
       String comment = (String)uiForm.<UIFormInputBase>getUIInput(FIELD_COMMENT).getValue();
-      UIBrowseContentPortlet uiPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class);
-      UIBrowseContainer uiBCContainer = uiPortlet.findFirstComponentOfType(UIBrowseContainer.class);
-      UIDocumentDetail uiDocumentDetail = uiBCContainer.getChild(UIDocumentDetail.class);
       Node currentDoc = uiForm.getDocument();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
-      String language = uiDocumentDetail.getLanguage();
+      UIBrowseContentPortlet uiPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class);
+      UIBrowseContainer uiBCContainer = uiPortlet.findFirstComponentOfType(UIBrowseContainer.class);
       if(comment == null || comment.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.comment-required", null, ApplicationMessage.WARNING));
         UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       } else {
-        if(DEFAULT_LANGUAGE.equals(language)) { 
-          if(!uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)){
-            currentDoc.addMixin("mix:i18n");
-            currentDoc.save();
-            language = DEFAULT_LANGUAGE;
-          } else {
-            language = uiForm.getDocument().getProperty(Utils.EXO_LANGUAGE).getString();
-          }
-        }
         CommentsService commentsService = uiForm.getApplicationComponent(CommentsService.class); 
         String lockToken = LockUtil.getLockToken(currentDoc);
         if(lockToken != null) currentDoc.getSession().addLockToken(lockToken);
         try {
-          commentsService.addComment(uiForm.getDocument(), userName, email, website, comment, language);
+          if (uiForm.isEdit()) {
+            Node commentNode = uiBCContainer.getNodeByPath(uiForm.getNodeCommentPath(), currentDoc.getSession().getWorkspace().getName());
+            commentsService.updateComment(commentNode, comment);
+          } else {
+            String userName = event.getRequestContext().getRemoteUser();
+            String website = null;
+            String email = null;
+            if(userName == null || userName.trim().length() == 0){
+              userName = "anonymous";
+              website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue();
+              email = uiForm.getUIStringInput(FIELD_EMAIL).getValue();
+            } else {
+              OrganizationService organizationService = uiForm.getApplicationComponent(OrganizationService.class);
+              UserProfileHandler profileHandler = organizationService.getUserProfileHandler();
+              UserHandler userHandler = organizationService.getUserHandler();
+              User user = userHandler.findUserByName(userName);
+              UserProfile userProfile = profileHandler.findUserProfileByName(userName);
+              website = userProfile.getUserInfoMap().get("user.business-info.online.uri");
+              email = user.getEmail();
+            }
+            UIDocumentDetail uiDocumentDetail = uiBCContainer.getChild(UIDocumentDetail.class);
+            String language = uiDocumentDetail.getLanguage();
+            if(DEFAULT_LANGUAGE.equals(language)) { 
+              if(!uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)){
+                currentDoc.addMixin("mix:i18n");
+                currentDoc.save();
+                language = DEFAULT_LANGUAGE;
+              } else {
+                language = uiForm.getDocument().getProperty(Utils.EXO_LANGUAGE).getString();
+              }
+            }
+            commentsService.addComment(uiForm.getDocument(), userName, email, website, comment, language);
+          }
         } catch (LockException le) {
           uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.locked-doc", null, 
               ApplicationMessage.WARNING));
@@ -164,6 +196,8 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
         }
         UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class);
         uiPopupAction.deActivate();
+        UIPopupContainer uiPopupContainer = uiPortlet.getChildById("UICBPopupAction");
+        if (uiPopupContainer.isRendered()) event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupContainer);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
         event.getRequestContext().addUIComponentToUpdateByAjax(uiBCContainer);
       }

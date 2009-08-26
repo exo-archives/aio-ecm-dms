@@ -46,6 +46,7 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
@@ -77,6 +78,7 @@ import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.core.UIRightClickPopupMenu;
@@ -117,6 +119,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   private String currentRepository_ = null;
   private String currentWorkspaceName_ = null;
   private String selectedLang_ = null;
+
+  final private static String COMMENT_COMPONENT = "Comment".intern();
 
   private UIPageIterator pageIterator_ ;  
 
@@ -503,6 +507,13 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   
   public String encodeHTML(String text) { return Utils.encodeHTML(text) ; }
 
+  public UIComponent getCommentComponent() {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    UIActionBar uiActionBar = uiExplorer.findFirstComponentOfType(UIActionBar.class);
+    UIComponent uicomponent = uiActionBar.getUIAction(COMMENT_COMPONENT);
+    return (uicomponent != null ? uicomponent : this);
+  }
+  
   private Node getFileLangNode(Node currentNode) throws Exception {
     if(currentNode.getNodes().getSize() > 0) {
       NodeIterator nodeIter = currentNode.getNodes() ;
@@ -672,14 +683,14 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       event.getRequestContext().addUIComponentToUpdateByAjax(treeExplorer);      
     }
   }
+  
   static public class RemoveCommentActionListener extends EventListener<UIDocumentInfo>{
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uiComp = event.getSource() ;
       String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
       Node commentNode = uiComp.getNodeByPath(nodePath, uiComp.getWorkspaceName());
-      Node comments = commentNode.getParent();
-      commentNode.remove();
-      comments.getSession().save();
+      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
+      commentService.deleteComment(commentNode);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
     }
   }  

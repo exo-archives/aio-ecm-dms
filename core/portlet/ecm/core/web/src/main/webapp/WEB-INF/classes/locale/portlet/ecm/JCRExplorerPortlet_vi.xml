@@ -2471,4 +2471,15 @@
 	    <confirm-deletecomment>Bạn có thực sự muốn xóa ý kiến này không?</confirm-deletecomment>
 	  </msg>
 	</UIDocumentInfo>
+	  <Comments>
+			  <tooltip>
+			    <remove-comment>Xóa bình luận này</remove-comment>
+			    <edit-comment>Sửa bình luận này</edit-comment>
+			  </tooltip>
+			</Comments>
+			<UIDocumentInfo>
+			  <msg>
+			    <confirm-deletecomment>Bạn có muốn xóa bình luận này?</confirm-deletecomment>
+			  </msg>
+			</UIDocumentInfo>
 </bundle>

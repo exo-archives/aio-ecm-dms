@@ -57,9 +57,15 @@ public class CommentActionComponent extends UIComponent {
   public static class CommentActionListener extends UIActionBarActionListener<CommentActionComponent> {
     public void processEvent(Event<CommentActionComponent> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-      UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
-      UIPopupContainer.activate(UICommentForm.class, 750);
-      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+      UIPopupContainer uiPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+      UICommentForm uiCommentForm = uiPopupContainer.createUIComponent(UICommentForm.class, null, null);
+      String commentNodePath = event.getRequestContext().getRequestParameter("nodePath");
+      if (commentNodePath != null && commentNodePath.length() > 0) {
+        uiCommentForm.setNodeCommentPath(commentNodePath);
+        uiCommentForm.setEdit(true);  
+      }
+      uiPopupContainer.activate(uiCommentForm, 750, 700);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupContainer);
     }
   }
 }
