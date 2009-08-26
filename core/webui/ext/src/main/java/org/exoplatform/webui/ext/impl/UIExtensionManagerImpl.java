@@ -144,7 +144,10 @@ public class UIExtensionManagerImpl implements UIExtensionManager {
   private Map<String, UIExtension> getUIExtensions(String extensionType, boolean create) {
     Map<String, UIExtension> mExtensions = extensions.get(extensionType);
     if (mExtensions == null && create) {
-      extensions.putIfAbsent(extensionType, new ConcurrentHashMap<String, UIExtension>());
+      final Map<String, UIExtension> m = extensions.putIfAbsent(extensionType, new ConcurrentHashMap<String, UIExtension>());
+      if (m != null) {
+        mExtensions = m;
+      }
       mExtensions = extensions.get(extensionType);
     }
     return mExtensions;
