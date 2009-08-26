@@ -38,9 +38,7 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -109,7 +107,7 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
       templateService.removeCacheTemplate(uiExplorer.getJCRTemplateResourceResolver().createResourceId(template));
       return template;
     } catch(Exception e) {
-      e.printStackTrace() ;
+      LOG.error(e);
     }
     return null; 
   }
@@ -205,7 +203,7 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
       String value = node.getProperty(property).getString() ;
       if(value.length() > 0) return true ;
     } catch (Exception e) {
-      e.printStackTrace() ;      
+      LOG.error(e);      
     }
     return false ;
   }
@@ -233,7 +231,7 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
       try {
         language_ = node_.getProperty(Utils.EXO_LANGUAGE).getString();
       } catch(Exception e) {
-        e.printStackTrace();
+        LOG.error(e);
       }
     }
     String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
@@ -274,7 +272,7 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
       Class clazz = loader.loadClass(className);
       service = getApplicationComponent(clazz);
     } catch (ClassNotFoundException ex) {
-      ex.printStackTrace();
+      LOG.error(ex);
     } 
     return service;
   }

@@ -112,6 +112,7 @@ public class UICBSearchResults extends UIContainer {
         UIBrowseContentPortlet cbPortlet = uiResults.getAncestorOfType(UIBrowseContentPortlet.class);
         UIPopupContainer uiPopupAction = cbPortlet.getChildById("UICBPopupAction");
         UIDocumentDetail uiDocument =  uiPopupAction.activate(UIDocumentDetail.class, 600);// cbPortlet.createUIComponent(UIDocumentDetail.class, null, null);
+        uiDocument.setOriginalNode(node);
         uiDocument.setNode(node);
         UIPopupWindow uiPopup  = uiPopupAction.getChildById("UICBPopupWindow");
         uiPopup.setResizable(true);

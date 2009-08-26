@@ -19,7 +19,6 @@ import javax.jcr.Node;
 import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -90,6 +89,7 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
     this.nodeCommentPath = nodeCommentPath;
   }
   
+  
 
   public UICBCommentForm() throws Exception {
     setActions(new String[] {"Save", "Cancel"});
@@ -132,29 +132,12 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
   public static class SaveActionListener extends EventListener<UICBCommentForm>{
     public void execute(Event<UICBCommentForm> event) throws Exception {
       UICBCommentForm uiForm = event.getSource();
-      String userName = event.getRequestContext().getRemoteUser();
-      String website = null;
-      String email = null;
-      if(userName == null || userName.trim().length() == 0){
-        userName = "anonymous";
-        website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue();
-        email = uiForm.getUIStringInput(FIELD_EMAIL).getValue();
-      } else {
-        OrganizationService organizationService = uiForm.getApplicationComponent(OrganizationService.class);
-        UserProfileHandler profileHandler = organizationService.getUserProfileHandler();
-        UserHandler userHandler = organizationService.getUserHandler();
-        User user = userHandler.findUserByName(userName);
-        UserProfile userProfile = profileHandler.findUserProfileByName(userName);
-        website = userProfile.getUserInfoMap().get("user.business-info.online.uri");
-        email = user.getEmail();
-      }
       String comment = (String)uiForm.<UIFormInputBase>getUIInput(FIELD_COMMENT).getValue();
       UIBrowseContentPortlet uiPortlet = uiForm.getAncestorOfType(UIBrowseContentPortlet.class);
       UIBrowseContainer uiBCContainer = uiPortlet.findFirstComponentOfType(UIBrowseContainer.class);
       UIDocumentDetail uiDocumentDetail = uiBCContainer.getChild(UIDocumentDetail.class);
       Node currentDoc = uiForm.getDocument();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
-      String language = uiDocumentDetail.getLanguage();
       if(comment == null || comment.trim().length() == 0) {
         uiApp.addMessage(new ApplicationMessage("UICBCommentForm.msg.comment-required", null, ApplicationMessage.WARNING));
         UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class);
@@ -171,6 +154,23 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
           Node commentNode = uiBCContainer.getNodeByPath(uiForm.getNodeCommentPath(), currentDoc.getSession().getWorkspace().getName());
           commentsService.updateComment(commentNode, comment);
         } else {
+          String userName = event.getRequestContext().getRemoteUser();
+          String website = null;
+          String email = null;
+          if(userName == null || userName.trim().length() == 0){
+            userName = "anonymous";
+            website = uiForm.getUIStringInput(FIELD_WEBSITE).getValue();
+            email = uiForm.getUIStringInput(FIELD_EMAIL).getValue();
+          } else {
+            OrganizationService organizationService = uiForm.getApplicationComponent(OrganizationService.class);
+            UserProfileHandler profileHandler = organizationService.getUserProfileHandler();
+            UserHandler userHandler = organizationService.getUserHandler();
+            User user = userHandler.findUserByName(userName);
+            UserProfile userProfile = profileHandler.findUserProfileByName(userName);
+            website = userProfile.getUserInfoMap().get("user.business-info.online.uri");
+            email = user.getEmail();
+          }
+          String language = uiDocumentDetail.getLanguage();
           if (DEFAULT_LANGUAGE.equals(language)) {
             if (!uiForm.getDocument().hasProperty(Utils.EXO_LANGUAGE)) {
               currentDoc.addMixin("mix:i18n");
@@ -200,6 +200,8 @@ public class UICBCommentForm extends UIForm implements UIPopupComponent {
       }
       UIPopupContainer uiPopupAction = uiForm.getAncestorOfType(UIPopupContainer.class);
       uiPopupAction.deActivate();
+      UIPopupContainer uiPopupContainer = uiPortlet.getChildById("UICBPopupAction");
+      if (uiPopupContainer.isRendered()) event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupContainer);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiBCContainer);
     }

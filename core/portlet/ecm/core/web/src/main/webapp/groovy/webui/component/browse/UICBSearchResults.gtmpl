@@ -59,7 +59,7 @@
       } else {
     %>
       <tr class="EvenRow">
-        <td colspan="4" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UICBSearchResults.msg.empty")%></td>
+        <td colspan="3" style="text-align:center;font-style:italic; color: #EF5604;"><%=_ctx.appRes("UICBSearchResults.msg.empty")%></td>
       </tr>
     <%}%>
     </tbody>

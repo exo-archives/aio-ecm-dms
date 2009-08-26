@@ -485,4 +485,9 @@
 		    <confirm-deletecomment>Do you really want to delete this comment?</confirm-deletecomment>
 		  </msg>
 		</UIDocumentDetail>
+		<UIPopupWindow>
+			<title>
+				<UICBCommentForm>Input comment</UICBCommentForm>
+			</title> 
+		</UIPopupWindow>
 </bundle>

@@ -64,6 +64,7 @@ public class UIBrowseContentPortlet extends UIPortletApplication  {
     UIPopupContainer popup = addChild(UIPopupContainer.class, null, null);
     popup.setId("UICBPopupAction");
     popup.getChild(UIPopupWindow.class).setId("UICBPopupWindow");
+    addChild(UIPopupContainer.class, null, "UICBPopupComment");
     UIBrowseContainer uiBrowseContainer = addChild(UIBrowseContainer.class, null , null);
     addChild(UIConfigTabPane.class, null, null);    
     try {

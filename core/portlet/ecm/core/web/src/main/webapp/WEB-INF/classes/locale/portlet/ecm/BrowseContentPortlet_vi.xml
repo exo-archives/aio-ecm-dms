@@ -485,4 +485,9 @@
 		    <confirm-deletecomment>Bạn có muốn xóa bình luận này không?</confirm-deletecomment>
 		  </msg>
 		</UIDocumentDetail>
+		<UIPopupWindow>
+			<title>
+				<UICBCommentForm>Nhập bình luận</UICBCommentForm>
+			</title> 
+		</UIPopupWindow>
 </bundle>
