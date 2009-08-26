@@ -463,12 +463,11 @@
     </msg>
   </UIPathConfig>
   
-  <UIDocumentForm>
-  	<msg>
-  		<not-support>Kan niet laden sjabloon van '{0}'.</not-support>
-  		<do-not-permission>U heeft geen toestemming voor het laden van de sjabloon '(0)'.</do-not-permission>
-  	</msg>
-  </UIDocumentForm>
+  <!-- 
+  ####################################################
+  ####			From 2.5.1-snapshot
+  ####################################################	
+   -->
   <Comments>
 	  <tooltip>
 	    <remove-comment>Remove this comment</remove-comment>
@@ -480,4 +479,9 @@
 		    <confirm-deletecomment>Do you really want to delete this comment?</confirm-deletecomment>
 		  </msg>
 		</UIDocumentDetail>
+		<UIPopupWindow>
+			<title>
+				<UICBCommentForm>Comment form</UICBCommentForm>
+			</title> 
+		</UIPopupWindow>
 </bundle>

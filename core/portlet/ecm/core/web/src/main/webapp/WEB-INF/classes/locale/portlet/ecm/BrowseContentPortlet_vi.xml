@@ -469,6 +469,11 @@
   		<do-not-permission>Bạn không có quyền để thao tác trên template này</do-not-permission>
   	</msg>
   </UIDocumentForm>
+  <!-- 
+  ####################################################
+  ####			From 2.5.1-snapshot
+  ####################################################	
+   -->
   <Comments>
 	  <tooltip>
 	    <remove-comment>Xóa bình luận này</remove-comment>
@@ -480,4 +485,9 @@
 		    <confirm-deletecomment>Bạn có muốn xóa bình luận này không?</confirm-deletecomment>
 		  </msg>
 		</UIDocumentDetail>
+			<UIPopupWindow>
+			<title>
+				<UICBCommentForm>Nhập bình luận</UICBCommentForm>
+			</title> 
+		</UIPopupWindow>
 </bundle>
