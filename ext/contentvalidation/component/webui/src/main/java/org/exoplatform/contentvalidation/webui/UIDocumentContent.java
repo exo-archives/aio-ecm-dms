@@ -48,6 +48,7 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -65,7 +66,8 @@ import org.exoplatform.workflow.webui.component.controller.UITaskManager;
     events = {
         @EventConfig(listeners = UIDocumentContent.ChangeLanguageActionListener.class),
         @EventConfig(listeners = UIDocumentContent.DownloadActionListener.class),
-        @EventConfig(listeners = UIDocumentContent.ChangeNodeActionListener.class)
+        @EventConfig(listeners = UIDocumentContent.ChangeNodeActionListener.class),
+        @EventConfig(listeners = UIDocumentContent.RemoveCommentActionListener.class)
     }
 )
 public class UIDocumentContent extends UIContainer {
@@ -89,6 +91,11 @@ public class UIDocumentContent extends UIContainer {
     }    
     return node_;
   }
+  
+  public UIComponent getCommentComponent() {
+   return this;
+  }
+  
   public Node getOriginalNode() throws Exception {return node_;}
   
   public String getNodeType() throws Exception { return node_.getPrimaryNodeType().getName() ; }
@@ -392,4 +399,15 @@ public class UIDocumentContent extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()) ;
     }
   }
+  
+  static public class RemoveCommentActionListener extends EventListener<UIDocumentContent>{
+    public void execute(Event<UIDocumentContent> event) throws Exception {
+      UIDocumentContent uiComp = event.getSource() ;
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      Node commentNode = uiComp.getNodeByPath(nodePath, uiComp.getWorkspaceName());
+      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
+      commentService.deleteComment(commentNode);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
+    }
+  }  
 }

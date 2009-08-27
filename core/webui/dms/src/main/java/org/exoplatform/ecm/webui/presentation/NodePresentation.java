@@ -20,6 +20,8 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.webui.core.UIComponent;
+
 /**
  * Created by The eXo Platform SARL Author : Dang Van Minh
  * minh.dang@exoplatform.com May 8, 2008 3:22:08 PM
@@ -182,7 +184,11 @@ public interface NodePresentation {
    * @throws Exception the exception
    */
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception;
-  
+  /**
+   * Get comment component
+   * @return
+   */
+  public UIComponent getCommentComponent();
   /**
    * Gets the comments.
    * 

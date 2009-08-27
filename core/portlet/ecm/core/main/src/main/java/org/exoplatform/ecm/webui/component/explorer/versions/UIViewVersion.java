@@ -25,12 +25,14 @@ import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Value;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -41,12 +43,14 @@ import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -65,7 +69,8 @@ import org.exoplatform.webui.event.EventListener;
     events = {
       @EventConfig(listeners = UIViewVersion.ChangeLanguageActionListener.class),
       @EventConfig(listeners = UIViewVersion.ChangeNodeActionListener.class),
-      @EventConfig(listeners = UIViewVersion.DownloadActionListener.class)
+      @EventConfig(listeners = UIViewVersion.DownloadActionListener.class),
+      @EventConfig(listeners = UIViewVersion.RemoveCommentActionListener.class,confirm="UIDocumentInfo.msg.confirm-deletecomment")
     }
 )
 
@@ -73,7 +78,9 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
   private Node node_ ;
   protected Node originalNode_ ;
   private String language_ ;
-
+  final private static String COMMENT_COMPONENT = "Comment".intern();
+  private static final Log LOG  = ExoLogger.getLogger(UIViewVersion.class);
+  
   public UIViewVersion() throws Exception {    
     addChild(UINodeInfo.class, null, null) ;
     addChild(UINodeProperty.class, null, null).setRendered(false) ;
@@ -88,7 +95,7 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
       String nodeType = node.getPrimaryNodeType().getName();
       if(isNodeTypeSupported(node)) return templateService.getTemplatePathByUser(false, nodeType, userName, getRepository()) ;
     } catch (Exception e) {
-      // e.printStackTrace();
+      LOG.error(e);
     }
     return null ;
   }
@@ -163,11 +170,18 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
       String value = node.getProperty(property).getString() ;
       if(value.length() > 0) return true ;
     } catch (Exception e) {
-      e.printStackTrace() ;      
+      LOG.error(e);      
     }
     return false ;
   }
 
+  public UIComponent getCommentComponent() {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    UIActionBar uiActionBar = uiExplorer.findFirstComponentOfType(UIActionBar.class);
+    UIComponent uicomponent = uiActionBar.getUIAction(COMMENT_COMPONENT);
+    return (uicomponent != null ? uicomponent : this);
+  }
+  
   public boolean isRssLink() { return false ; }
   public String getRssLink() { return null ; }
 
@@ -187,7 +201,7 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
       Class object = loader.loadClass(className);
       service = getApplicationComponent(object);
     } catch (ClassNotFoundException ex) {
-      ex.printStackTrace();
+      LOG.error(ex);
     } 
     return service;
   }
@@ -308,6 +322,18 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
       uiApp.addMessage(new ApplicationMessage("UIViewVersion.msg.not-supported", null)) ; 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
       return ;
+    }
+  }
+  
+  static public class RemoveCommentActionListener extends EventListener<UIViewVersion>{
+    public void execute(Event<UIViewVersion> event) throws Exception {
+      UIViewVersion uiComp = event.getSource() ;
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIJCRExplorer uiExplorer = uiComp.getAncestorOfType(UIJCRExplorer.class);
+      Node commentNode = uiExplorer.getNodeByPath(nodePath,uiComp.getOriginalNode().getSession());
+      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
+      commentService.deleteComment(commentNode);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
     }
   }
 }
