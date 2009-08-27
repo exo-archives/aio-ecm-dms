@@ -133,6 +133,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   
   private int numberUploadFile = 1;
   private HashMap<String, List<String>> mapTaxonomies = new HashMap<String, List<String>>();
+  private List<Node> listUploadedNodes = new ArrayList<Node>();
   
   public UIUploadForm() throws Exception {
     setMultiPart(true) ;
@@ -300,6 +301,13 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
       TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
       if(uiFormUploadInput.getUploadResource() == null) {
+        if ((uiForm.listUploadedNodes != null) && (uiForm.listUploadedNodes.size() > 0)) {
+          for (Node uploadedNode : uiForm.listUploadedNodes) {
+            uploadedNode.remove();
+          }
+          uiExplorer.getCurrentNode().save();
+          uiForm.listUploadedNodes.clear();
+        }
         uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
                                                 ApplicationMessage.WARNING)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
@@ -321,10 +329,17 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       String fileName = uiFormUploadInput.getUploadResource().getFileName();
       MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
       if(fileName == null || fileName.length() == 0) {
-          uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
-                                                  ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
+        if ((uiForm.listUploadedNodes != null) && (uiForm.listUploadedNodes.size() > 0)) {
+          for (Node uploadedNode : uiForm.listUploadedNodes) {
+            uploadedNode.remove();
+          }
+          uiExplorer.getCurrentNode().save();
+          uiForm.listUploadedNodes.clear();
+        }
+        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
+                                                ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return;
       }      
       String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
       InputStream inputStream = uiFormUploadInput.getUploadDataAsStream();
@@ -544,9 +559,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         String fileSize = Double.toString(size);
         String iconUpload = Utils.getNodeTypeIcon(uploadedNode, "16x16Icon").replaceAll("nt_file16x16Icon ", "");
         String[] arrValues = {iconUpload, fileName, name, fileSize +" Kb", mimeType, uploadedNode.getPath()};
+        uiForm.listUploadedNodes.add(uploadedNode);
         listArrValues.add(arrValues);
         inputStream.close();
-        uploadService.removeUpload(uiFormUploadInput.getUploadId());
       } catch(ConstraintViolationException con) {
         Object[] args = {name, } ;
         throw new MessageException(new ApplicationMessage("UIUploadForm.msg.contraint-violation", 
