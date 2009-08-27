@@ -131,6 +131,14 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       mapParam.put("repository", matcher.group(1));
       mapParam.put("drive", matcher.group(2));
       mapParam.put("path", "/" + matcher.group(3));
+    } else {
+      patternUrl = Pattern.compile("([^/]+)/(.*)");
+      matcher = patternUrl.matcher(uri[1]);
+      if (matcher.find()) {
+        mapParam.put("repository", matcher.group(1));
+        mapParam.put("drive", matcher.group(2));
+        mapParam.put("path", "/");
+      }  
     }
     return mapParam;
   }
@@ -144,8 +152,10 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     DriveData driveData = null;
     try {
       driveData = manageDrive.getDriveByName(driveName, repositoryName);
+      if (driveData == null) throw new PathNotFoundException();
     } catch (PathNotFoundException e) {
-      uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING));
+      Object[] args = { driveName };
+      uiApp.addMessage(new ApplicationMessage("UIDrivesBrowser.msg.drive-not-exist", args, ApplicationMessage.WARNING));
       context.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
@@ -224,6 +234,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     uiExplorer.setRepositoryName(repositoryName);
     uiExplorer.setWorkspaceName(driveData.getWorkspace());
     uiExplorer.setRootPath(homePath);
+    path = homePath.concat(path).replaceAll("/+", "/"); 
     UIControl uiControl = uiExplorer.getChild(UIControl.class);
     UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);
     uiActionbar.setTabOptions(viewList.get(0));
