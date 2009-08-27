@@ -1,2 +1,2 @@
-<Context path="/eXoDMSResources" docBase="../../../eXoProjects/ecm/dms/branches/2.5.x/core/web/eXoDMSResources/src/main/webapp" 
+<Context path="/eXoDMSResources" docBase="../../../eXoProjects/ecm/dms/tags/2.5.1/core/web/eXoDMSResources/src/main/webapp" 
          debug="0" reloadable="true" />
