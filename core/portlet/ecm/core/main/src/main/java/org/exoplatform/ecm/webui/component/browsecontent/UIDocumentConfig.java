@@ -21,9 +21,9 @@ import java.util.List;
 
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -162,10 +162,9 @@ public class UIDocumentConfig extends UIForm implements UISelectable{
       UIFormInputSetWithAction categoryPathSelect = getChildById(FIELD_PATHSELECT);
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH);  
       String path = categoryPathField.getValue();
-      if (value.toString().length() > path.length()) value = value.toString().substring(path.length());
       UIFormInputSetWithAction documentSelect = getChildById(FIELD_DOCSELECT);
       UIFormStringInput documentNameField = documentSelect.getChildById(UINewConfigForm.FIELD_DOCNAME);
-      documentNameField.setValue(value.toString());
+      documentNameField.setValue(String.valueOf(value));
     }
     uiConfig.getChild(UIPopupWindow.class).setShow(false);
     isEdit_ = true;
@@ -182,14 +181,14 @@ public class UIDocumentConfig extends UIForm implements UISelectable{
       String repository = uiForm.getUIStringInput(UINewConfigForm.FIELD_REPOSITORY).getValue();
       UIFormInputSetWithAction categoryPathSelect = uiForm.getChildById(FIELD_PATHSELECT);
       UIFormStringInput categoryPathField = categoryPathSelect.getChildById(UINewConfigForm.FIELD_CATEGORYPATH);
-      String jcrPatth = categoryPathField.getValue();
+      String jcrPath = categoryPathField.getValue();
       UIApplication app = uiForm.getAncestorOfType(UIApplication.class);
-      if (Utils.isNameEmpty(jcrPatth)) {
+      if (Utils.isNameEmpty(jcrPath)) {
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.require-path", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return;
       } 
-      if (container.getNodeByPath(jcrPatth, workSpace) == null) {
+      if (container.getNodeByPath(jcrPath, workSpace) == null) {
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-path", null));
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return;
@@ -202,9 +201,7 @@ public class UIDocumentConfig extends UIForm implements UISelectable{
         event.getRequestContext().addUIComponentToUpdateByAjax(app.getUIPopupMessages());
         return;
       } 
-      String fullPath = null;
-      if (jcrPatth.endsWith("/") || docName.startsWith("/")) fullPath = jcrPatth + docName;
-      else  fullPath = jcrPatth + Utils.SLASH + docName;
+      String fullPath = jcrPath.concat(docName).replaceAll("/+", "/");
       if(container.getNodeByPath(fullPath, workSpace) == null){
         app.addMessage(new ApplicationMessage("UIDocumentConfig.msg.invalid-doc", null, 
                                               ApplicationMessage.WARNING));
@@ -218,7 +215,7 @@ public class UIDocumentConfig extends UIForm implements UISelectable{
       prefs.setValue(Utils.CB_USECASE, Utils.CB_USE_DOCUMENT);
       prefs.setValue(Utils.REPOSITORY, repository);
       prefs.setValue(Utils.WORKSPACE_NAME, workSpace);
-      prefs.setValue(Utils.JCR_PATH, jcrPatth);
+      prefs.setValue(Utils.JCR_PATH, jcrPath);
       prefs.setValue(Utils.CB_DOCUMENT_NAME, docName);
       prefs.setValue(Utils.CB_TEMPLATE, boxTemplate);
       prefs.setValue(Utils.CB_BOX_TEMPLATE, boxTemplate);
