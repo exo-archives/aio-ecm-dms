@@ -28,6 +28,13 @@
       <version>${org.exoplatform.ecm.dms.version}</version>
       <scope>compile</scope>
     </dependency> 
+
+    <dependency>
+      <groupId>org.exoplatform.ecm.dms.core</groupId>
+      <artifactId>exo.ecm.dms.core.webui.ext</artifactId>
+      <version>${org.exoplatform.ecm.dms.version}</version>
+      <scope>compile</scope>
+    </dependency>
     
     <dependency>
       <groupId>org.exoplatform.ecm.workflow</groupId>
