@@ -2482,4 +2482,9 @@
 			    <confirm-deletecomment>Bạn có muốn xóa bình luận này?</confirm-deletecomment>
 			  </msg>
 			</UIDocumentInfo>
+		 <UIDrivesBrowser>
+		  <msg>
+		    <drive-not-exist>Ổ đĩa '{0}' không tìm thấy hoặc bạn không có quyền truy nhập</drive-not-exist>
+		  </msg>
+		 </UIDrivesBrowser>
 </bundle>
