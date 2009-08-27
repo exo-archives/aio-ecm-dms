@@ -2504,9 +2504,9 @@
 			    <confirm-deletecomment>Do you really want to delete this comment?</confirm-deletecomment>
 			  </msg>
 			</UIDocumentInfo>
-			 <UIDrivesBrowser>
-  <msg>
-    <drive-not-exist>The drive '{0}' was not found or you don't have permission to access in this repository</drive-not-exist>
-  </msg>
- </UIDrivesBrowser>
+		 <UIDrivesBrowser>
+		  <msg>
+		    <drive-not-exist>The drive '{0}' was not found or you don't have permission to access in this repository</drive-not-exist>
+		  </msg>
+		 </UIDrivesBrowser>
 </bundle>
