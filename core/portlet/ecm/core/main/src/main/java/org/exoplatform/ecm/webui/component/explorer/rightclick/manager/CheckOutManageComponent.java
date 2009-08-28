@@ -27,12 +27,12 @@ import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
-import org.exoplatform.ecm.webui.component.explorer.IsVersionableFilter;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanSetPropertyFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotCheckedOutFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsVersionableFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.web.application.ApplicationMessage;

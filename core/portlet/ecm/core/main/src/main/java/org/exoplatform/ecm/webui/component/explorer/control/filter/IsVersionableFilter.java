@@ -15,7 +15,7 @@
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  *
  **************************************************************************/
-package org.exoplatform.ecm.webui.component.explorer;
+package org.exoplatform.ecm.webui.component.explorer.control.filter;
 
 import java.util.Map;
 

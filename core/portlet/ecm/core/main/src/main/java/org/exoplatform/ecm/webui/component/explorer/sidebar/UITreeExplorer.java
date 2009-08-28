@@ -35,6 +35,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
+import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
@@ -131,6 +132,11 @@ public class UITreeExplorer extends UIContainer {
   public boolean isSymLink(Node node) throws RepositoryException {
     LinkManager linkManager = getApplicationComponent(LinkManager.class);
     return linkManager.isLink(node);
+  }
+  
+  public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName, getRepository()) ;
   }
   
   public boolean isPaginated(TreeNode treeNode) {
