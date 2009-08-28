@@ -42,6 +42,7 @@ import org.exoplatform.services.cms.rss.RSSService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 
 import com.sun.syndication.feed.synd.SyndContent;
 import com.sun.syndication.feed.synd.SyndContentImpl;
@@ -170,7 +171,7 @@ public class RSSServiceImpl implements RSSService{
       String wsName = session.getWorkspace().getName() ;
       NodeIterator iter = queryResult.getNodes() ;
       while (iter.hasNext()) {        
-        Node child = iter.nextNode(); 
+        Node child = iter.nextNode();
         if(child.isNodeType("exo:rss-enable")) {
           String url = getEntryUrl(portalName, wsName, child.getPath(), rssUrl) ;
           entry = new SyndEntryImpl();
@@ -194,10 +195,10 @@ public class RSSServiceImpl implements RSSService{
         }        
       }      
       feed.setEntries(entries);      
-      feed.setEncoding("UTF-8") ;     
+      feed.setEncoding("UTF-8");     
       SyndFeedOutput output = new SyndFeedOutput();      
       String feedXML = output.outputString(feed);      
-      feedXML = StringUtils.replace(feedXML,"&amp;","&");      
+      feedXML = StringUtils.replace(feedXML,"&amp;","&");
       storeXML(feedXML, storePath, feedName, repository);
       session.logout();
     } catch (Exception e) {
@@ -467,11 +468,15 @@ public class RSSServiceImpl implements RSSService{
    * @throws Exception
    */
   private String getEntryUrl(String portalName, String wsName, String path, String rssUrl) throws Exception{
-    StringBuilder url = new StringBuilder("") ;
-    if(rssUrl.indexOf(RSS) > -1 ) {
-      url = new StringBuilder(rssUrl.substring(0, rssUrl.indexOf(RSS) + 4)) ;
-    }
-    url.append("/").append(portalName).append("/").append(wsName).append(path) ;           
+    String driverName = rssUrl;
+    PortletRequestContext portletRequestContext = PortletRequestContext.getCurrentInstance();
+    rssUrl = portletRequestContext.getRequest().getScheme() + "://" + 
+    portletRequestContext.getRequest().getServerName() + ":" +
+    String.format("%s",portletRequestContext.getRequest().getServerPort());
+    
+    StringBuilder url = new StringBuilder(rssUrl);
+    url.append("/").append(portalName).append("/").append("private/classic/fileexplorer");    
+    url.append("/").append(driverName).append(path);           
     return url.toString();
   }
 }

@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
+import java.util.List;
 import java.util.Map;
 
 import javax.jcr.Node;
@@ -80,7 +81,14 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   
   private static final String EXO_ACTIONS = "exo:actions".intern();
   
-  public UIActionForm() throws Exception {setActions(new String[]{"Save","Back"});}
+  public String getDriverName() {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    return uiExplorer.getRepositoryName() + "/" + uiExplorer.getDriveData().getName();
+  }
+  
+  public UIActionForm() throws Exception {
+    setActions(new String[]{"Save","Back"});
+  }
   
   public void createNewAction(Node parentNode, String actionType, boolean isAddNew) throws Exception {
     reset();
