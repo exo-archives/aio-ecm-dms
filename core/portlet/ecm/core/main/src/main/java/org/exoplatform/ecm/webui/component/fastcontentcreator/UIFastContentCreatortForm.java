@@ -456,6 +456,7 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
               break;
             }
             uiOneTaxonomySelector.setRootNodeLocation(uiCreatorForm.repositoryName, workspaceName, rootTreePath);
+            uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
             uiOneTaxonomySelector.init(SessionProviderFactory.createSystemProvider());
             String param = "returnField=" + FIELD_TAXONOMY;        
             uiOneTaxonomySelector.setSourceComponent(uiCreatorForm, new String[]{param});

@@ -307,6 +307,7 @@ public class UILanguageDialogForm extends UIDialogForm implements UIPopupCompone
         }
         
         ((UIOneTaxonomySelector)uiComp).setRootNodeLocation(uiForm.repositoryName, workspaceName, rootTreePath);
+        ((UIOneTaxonomySelector)uiComp).setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
         ((UIOneTaxonomySelector)uiComp).init(SessionProviderFactory.createSystemProvider());
         
       }

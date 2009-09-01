@@ -528,6 +528,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
               break;
             }
             uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
+            uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
             uiOneTaxonomySelector.init(uiExplorer.getSystemProvider());
             String param = "returnField=" + FIELD_TAXONOMY;
             uiOneTaxonomySelector.setSourceComponent(uiDocumentForm, new String[]{param});
