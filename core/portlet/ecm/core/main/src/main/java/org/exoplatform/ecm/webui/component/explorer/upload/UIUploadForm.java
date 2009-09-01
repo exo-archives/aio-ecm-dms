@@ -576,6 +576,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         break;
       }      
       uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
+      uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
       uiOneTaxonomySelector.init(uiExplorer.getSystemProvider());
       String param = "returnField=" + FIELD_TAXONOMY ;
       uiOneTaxonomySelector.setSourceComponent(uiUploadForm, new String[]{param});
