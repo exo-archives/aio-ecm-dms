@@ -269,11 +269,20 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
             try {
               if (categoriesPath.endsWith(",")) categoriesPath = categoriesPath.substring(0, categoriesPath.length()-1).trim();
               categoriesPathList = categoriesPath.split(",");
-              if ((categoriesPathList == null) || (categoriesPathList.length == 0)) 
-                throw new PathNotFoundException();
+              if ((categoriesPathList == null) || (categoriesPathList.length == 0)) {
+                // throw new PathNotFoundException();
+                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, ApplicationMessage.WARNING));
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                return;
+              } 
               for (String categoryPath : categoriesPathList) {
                 index = categoryPath.indexOf("/");
-                if (index < 0) throw new PathNotFoundException();
+                if (index < 0) {
+                  uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, ApplicationMessage.WARNING));
+                  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                  return;
+                  //throw new PathNotFoundException();
+                }
                 taxonomyService.getTaxonomyTree(repository, categoryPath.substring(0, index)).getNode(categoryPath.substring(index + 1));
               }
             } catch (Exception e) {
@@ -316,6 +325,21 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         try {
           homeNode.save();
           newNode = (Node)homeNode.getSession().getItem(addedPath);
+          
+          // Begin delete listExistedTaxonomy
+          List<Node> listTaxonomyTrees = taxonomyService.getAllTaxonomyTrees(repository);
+          List<Node> listExistedTaxonomy = taxonomyService.getAllCategories(newNode);
+          for (Node existedTaxonomy : listExistedTaxonomy) {
+            for (Node taxonomyTrees : listTaxonomyTrees) {
+              if(existedTaxonomy.getPath().contains(taxonomyTrees.getPath())) {
+                taxonomyService.removeCategory(newNode, taxonomyTrees.getName(), 
+                    existedTaxonomy.getPath().substring(taxonomyTrees.getPath().length()));
+                break;
+              }
+            }
+          }
+          // End delete listExistedTaxonomy
+          
           if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
             for(String categoryPath : categoriesPathList) {
               index = categoryPath.indexOf("/");
