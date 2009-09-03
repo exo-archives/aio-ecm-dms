@@ -51,6 +51,7 @@ import org.exoplatform.webui.form.UIFormMultiValueInputSet;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormUploadInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL 
@@ -108,7 +109,8 @@ public class UIPropertyForm extends UIForm {
         Integer.toString(PropertyType.REFERENCE)));
     List<SelectItemOption<String>> nsOptions = new ArrayList<SelectItemOption<String>>();
     addUIFormInput(new UIFormSelectBox(FIELD_NAMESPACE,FIELD_NAMESPACE, nsOptions));
-    addUIFormInput(new UIFormStringInput(FIELD_PROPERTY, FIELD_PROPERTY, null).addValidator(ECMNameValidator.class));
+    addUIFormInput(new UIFormStringInput(FIELD_PROPERTY, FIELD_PROPERTY, null)
+      .addValidator(ECMNameValidator.class).addValidator(MandatoryValidator.class));
     UIFormSelectBox uiSelectBox = new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, options); 
     uiSelectBox.setOnChange("ChangeType");
     addUIFormInput(uiSelectBox);
