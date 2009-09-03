@@ -1142,7 +1142,11 @@ public class UIBrowseContainer extends UIContainer {
     if (getUseCase().equals(Utils.CB_USE_DOCUMENT)) {
       setTemplateDetail(viewService.getTemplateHome(BasePath.CB_DETAIL_VIEW_TEMPLATES, repoName, 
           SessionProviderFactory.createSystemProvider()).getNode(tempName).getPath());      
-      String documentPath = categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "");
+      String documentPath;
+      if ((categoryPath.equals("/")) && (preferences.getValue(Utils.CB_DOCUMENT_NAME, "").indexOf("/") == 0))        
+        documentPath = preferences.getValue(Utils.CB_DOCUMENT_NAME, "");
+      else 
+        documentPath = categoryPath + preferences.getValue(Utils.CB_DOCUMENT_NAME, "");
       Node documentNode = null;      
       try{
         documentNode = (Node)nodeFinder_.getItem(repoName, getWorkSpace(), documentPath);
