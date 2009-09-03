@@ -429,13 +429,13 @@ public class UIDialogForm extends UIForm {
             String tagName = listValue.get(0).replaceAll(" ", "-");
             optionLabel = res.getString(tagName);
           } catch (MissingResourceException e) {
-            if (listValue.size() > 1) {
-              optionLabel = listValue.get(1);
-            } else{
-              optionLabel = listValue.get(0);
-            }
+            optionLabel = listValue.get(0);
           }          
-          optionsList.add(new SelectItemOption<String>(optionLabel, listValue.get(0)));
+          if (listValue.size() > 1) {
+            optionsList.add(new SelectItemOption<String>(optionLabel, listValue.get(1))); 
+          } else { 
+            optionsList.add(new SelectItemOption<String>(optionLabel, listValue.get(0))); 
+          }
         }
         uiSelectBox.setOptions(optionsList);
       } else {
