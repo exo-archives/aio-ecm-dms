@@ -95,7 +95,8 @@ public class UITemplateForm extends UIForm {
     versions.setRendered(false);
     addUIFormInput(versions);
     addUIFormInput(new UIFormTextAreaInput(FIELD_CONTENT, FIELD_CONTENT, null).addValidator(MandatoryValidator.class));
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(ECMNameValidator.class));
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(ECMNameValidator.class)
+        .addValidator(MandatoryValidator.class));
     List<SelectItemOption<String>> typeList = new ArrayList<SelectItemOption<String>>();
     addUIFormInput(new UIFormSelectBox(FIELD_HOMETEMPLATE, FIELD_HOMETEMPLATE, typeList));
     UIFormCheckBoxInput enableVersion = new UIFormCheckBoxInput<Boolean>(FIELD_ENABLEVERSION, FIELD_ENABLEVERSION, null);
