@@ -216,8 +216,6 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
         out = new BufferedOutputStream(new FileOutputStream(zipFile));
         zipService.addInputStream(format + ".xml", in);
         zipService.createZip(out);
-        out.flush();
-        out.close();
         in.close();
         exportedFile.delete();
         in = new BufferedInputStream(new FileInputStream(zipFile));
@@ -318,9 +316,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       in = new BufferedInputStream(new FileInputStream(zipFile));
       out = new BufferedOutputStream(new FileOutputStream(zipFile));
       zipService.createZip(out);
-      out.close();
       propertiesBIS.close();
-      propertiesBOS.close();
       dresource = new InputStreamDownloadResource(in, "application/zip") ;
       dresource.setDownloadName(format + "_versionHistory.zip");
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
