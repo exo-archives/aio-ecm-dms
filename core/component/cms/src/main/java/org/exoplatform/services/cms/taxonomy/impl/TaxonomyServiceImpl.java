@@ -277,7 +277,7 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
             .getConfiguration().getName();
         Node rootNodeTaxonomy = getTaxonomyTree(repository, taxonomyName);
         if (rootNodeTaxonomy != null) {
-          String sql = null; 
+          String sql = null;
           sql = StringUtils.replace(SQL_QUERY, "$0", rootNodeTaxonomy.getPath());        
           sql = StringUtils.replace(sql, "$1", node.getUUID());
           Session session = 

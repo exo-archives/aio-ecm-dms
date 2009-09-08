@@ -4,12 +4,12 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.search;
 
-import org.exoplatform.webui.core.UIPopupComponent;
-import org.exoplatform.webui.core.UIPopupContainer;
-import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -31,7 +31,7 @@ public class UICategoryManagerSearch extends UIContainer implements UIPopupCompo
   final static public String[] ACTIONS = { "Close" };
 
   public UICategoryManagerSearch() throws Exception {
-    addChild(UIOneNodePathSelector.class, null, null);
+    addChild(UIOneTaxonomySelector.class, null, null);
   }
 
   public String[] getActions() {
