@@ -34,12 +34,15 @@ import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.link.LinkUtils;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.jcr.impl.core.JCRPath;
 import org.exoplatform.services.jcr.impl.core.SessionImpl;
 import org.exoplatform.services.log.ExoLogger;
@@ -91,6 +94,18 @@ public class UISearchResult extends UIContainer {
   private static String iconType = "";
   private static String iconScore = "";
   static private int PAGE_SIZE = 10;
+  private String categoryPath;
+  private String constraintsCondition;
+  
+  public String getCategoryPath() { return categoryPath; }
+  public void setCategoryPath(String categoryPathItem) {
+    categoryPath = categoryPathItem; 
+  }
+  
+  public String getConstraintsCondition() { return constraintsCondition; }
+  public void setConstraintsCondition(String constraintsConditionItem) {
+    constraintsCondition = constraintsConditionItem; 
+  }
   
   public UISearchResult() throws Exception {
     uiPageIterator_ = addChild(UIQueryResultPageIterator.class, null, null);
@@ -150,6 +165,9 @@ public class UISearchResult extends UIContainer {
   }
   
   public List<Row> getResultList() throws Exception {    
+    TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
     List<Node> listNodes = new ArrayList<Node>();
     List<Row> listRows = new ArrayList<Row>();
     Node resultNode = null;
@@ -165,7 +183,20 @@ public class UISearchResult extends UIContainer {
           LOG.warn("Can't get node by path " + path, e);
           continue;
         }
-        if (resultNode != null) addNode(listNodes, resultNode, listRows, r);
+        if (resultNode != null) {
+          if ((categoryPath != null) && (categoryPath.length() > 0)){
+            int index = categoryPath.indexOf("/");
+            List<String> pathCategoriesList = new ArrayList<String>();
+            String searchCategory = rootTreePath + "/" + categoryPath;
+            List<Node> listCategories = taxonomyService.getCategories(resultNode, categoryPath.substring(0, index));
+            for (Node category : listCategories) {
+              pathCategoriesList.add(category.getPath());
+            }
+            if (pathCategoriesList.contains(searchCategory)) addNode(listNodes, resultNode, listRows, r);
+          } else {
+            addNode(listNodes, resultNode, listRows, r);
+          }
+        }
         if (!iter.hasNext()) isEndOfIterator_ = true;
         if (listNodes.size() == 100) {
           currentListNodes_.addAll(listNodes);
@@ -189,7 +220,20 @@ public class UISearchResult extends UIContainer {
           LOG.warn("Can't get node by path " + path, e);
           continue;
         }
-        if (resultNode != null) addNode(listNodes, resultNode, listRows, r);        
+        if (resultNode != null) {
+          if ((categoryPath != null) && (categoryPath.length() > 0)){
+            int index = categoryPath.indexOf("/");
+            List<String> pathCategoriesList = new ArrayList<String>();
+            String searchCategory = rootTreePath + "/" + categoryPath;
+            List<Node> listCategories = taxonomyService.getCategories(resultNode, categoryPath.substring(0, index));
+            for (Node category : listCategories) {
+              pathCategoriesList.add(category.getPath());
+            }
+            if (pathCategoriesList.contains(searchCategory)) addNode(listNodes, resultNode, listRows, r);
+          } else {
+            addNode(listNodes, resultNode, listRows, r);
+          }
+        }        
       }
       currentListNodes_= listNodes;
       currentListRows_ = listRows;

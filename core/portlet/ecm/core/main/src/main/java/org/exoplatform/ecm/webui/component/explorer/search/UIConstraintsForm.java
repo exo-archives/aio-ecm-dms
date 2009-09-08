@@ -21,20 +21,19 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
-import javax.jcr.Node;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.exoplatform.commons.utils.ISO8601;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
@@ -191,16 +190,8 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
    * @return
    */
   private String getCategoryQueryString(String categoryPath) {
-    if (categoryPath == null || categoryPath.length() == 0) return "";
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    String uuid = null;
-    try {
-      uuid = ((Node)(uiExplorer.getTargetSession().getItem(categoryPath))).getUUID(); 
-    } catch (Exception e) {
-      return "";
-    }
-    if (uuid == null || uuid.length() == 0) return "";
-    return ("@exo:category = '" + uuid + "'");
+    if (categoryPath == null || categoryPath.length() == 0) return "";    
+    return ("@jcr:mixinTypes = 'mix:referenceable'");
   }
   
   private void addConstraint(int opt) throws Exception {
@@ -235,6 +226,7 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
       case 5:
         property = getUIStringInput(CATEGORY_TYPE).getValue() ;
         advanceQuery = getCategoryQueryString(property) ;
+        uiSimpleSearch.setCategoryPath(property);
         break;
       default:
         break;

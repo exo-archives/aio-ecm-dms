@@ -70,6 +70,12 @@ public class UISimpleSearch extends UIForm {
   
   private List<String> constraints_ = new ArrayList<String>();
   private List<String> virtualConstraints_ = new ArrayList<String>();
+  private String categoryPath;
+  
+  public String getCategoryPath() { return categoryPath; }
+  public void setCategoryPath(String categoryPathItem) {
+    categoryPath = categoryPathItem; 
+  }
   
   private static final String ROOT_XPATH_QUERY = "//*";
   private static final String XPATH_QUERY = "/jcr:root$0//*";
@@ -205,6 +211,8 @@ public class UISimpleSearch extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      uiSearchResult.setCategoryPath(uiSimpleSearch.getCategoryPath());
+      
       //TODO need review this code. should use validator for text field
       String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"};
       if(text != null) {

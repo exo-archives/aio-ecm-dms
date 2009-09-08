@@ -16,8 +16,13 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.search;
 
+import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.Session;
+
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
+import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -76,13 +81,22 @@ public class UISearchContainer extends UIContainer {
     uiExplorer.setIsHidePopup(true);
     /* Create Category panel in Search function */
     UICategoryManagerSearch uiCategoryManagerSearch = uiExplorer.createUIComponent(UICategoryManagerSearch.class, null, null);
-    UIOneNodePathSelector uiNodePathSelector = uiCategoryManagerSearch.getChild(UIOneNodePathSelector.class);
-    uiNodePathSelector.setIsDisable(workspaceName, true);
-    uiNodePathSelector.setRootNodeLocation(repository, workspaceName, 
-        nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH));
-    uiNodePathSelector.init(uiExplorer.getSystemProvider());
+    UIOneTaxonomySelector uiOneTaxonomySelector = uiCategoryManagerSearch.getChild(UIOneTaxonomySelector.class);
+    uiOneTaxonomySelector.setIsDisable(workspaceName, true);
+    String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
+    Session session = uiExplorer.getSessionByWorkspace(workspaceName);
+    Node rootTree = (Node) session.getItem(rootTreePath);      
+    NodeIterator childrenIterator = rootTree.getNodes();
+    while (childrenIterator.hasNext()) {
+      Node childNode = childrenIterator.nextNode();
+      rootTreePath = childNode.getPath();
+      break;
+    }
+    uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
+    uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
+    uiOneTaxonomySelector.init(uiExplorer.getSystemProvider());
     UIConstraintsForm uiConstraintsForm = findFirstComponentOfType(UIConstraintsForm.class);
-    uiNodePathSelector.setSourceComponent(uiConstraintsForm, new String[] {UIConstraintsForm.CATEGORY_TYPE});
+    uiOneTaxonomySelector.setSourceComponent(uiConstraintsForm, new String[] {UIConstraintsForm.CATEGORY_TYPE});
     UIPopupContainer UIPopupContainer = getChild(UIPopupContainer.class);
     UIPopupContainer.getChild(UIPopupWindow.class).setId(CATEGORY_POPUP) ;
     UIPopupContainer.activate(uiCategoryManagerSearch, 630, 500);
