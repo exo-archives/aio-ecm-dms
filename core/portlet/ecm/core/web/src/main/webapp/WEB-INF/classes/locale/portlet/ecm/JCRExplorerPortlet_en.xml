@@ -2485,4 +2485,9 @@
 		    <OutOfMemoryError>You should choose SystemView when export large data</OutOfMemoryError>
 		  </msg>
 		 </UIExportNode>
+		 <Taxonomy>
+		<msg>
+			<AccessDeniedException>You don't have permission to access in these taxonomies</AccessDeniedException>		 	
+		</msg>
+	 </Taxonomy>
 </bundle>

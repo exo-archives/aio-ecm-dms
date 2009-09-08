@@ -133,5 +133,10 @@
   		<do-not-permission>ليس لديك إذن لتحميل نموذج '{0}'.</do-not-permission>
   	</msg>
   </UIDocumentForm>
+  <Taxonomy>
+			<msg>
+				<AccessDeniedException>You don't have permission to access in these taxonomies</AccessDeniedException>		 	
+			</msg>
+	 	</Taxonomy>
 </bundle>
 
