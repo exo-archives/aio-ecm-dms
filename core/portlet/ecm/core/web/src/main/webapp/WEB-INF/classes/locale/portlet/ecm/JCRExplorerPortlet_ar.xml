@@ -2495,4 +2495,11 @@
 	    <drive-not-exist>The drive '{0}' was not found or you don't have permission to access in this repository</drive-not-exist>
 	  </msg>
 	 </UIDrivesBrowser>
+	 
+ <UIExportNode>
+  <msg>
+    <OutOfMemoryError>You should choose SystemView when export large data</OutOfMemoryError>
+  </msg>
+ </UIExportNode>
+ 
 </bundle>

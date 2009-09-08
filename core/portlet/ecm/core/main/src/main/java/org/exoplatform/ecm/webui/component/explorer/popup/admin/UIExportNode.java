@@ -16,8 +16,14 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -32,14 +38,18 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.compress.CompressData;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
@@ -76,6 +86,8 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
   public static final String ROOT_SQL_QUERY = "select * from mix:versionable order by exo:dateCreated DESC";
   
   private boolean isVerionNode_ = false;
+  
+  private static String exporteddir;
 
   public UIExportNode() throws Exception {
     RequestContext context = RequestContext.getCurrentInstance();
@@ -89,6 +101,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
     addUIFormInput(new UIFormRadioBoxInput(FORMAT, DOC_VIEW, formatItem).
                    setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(ZIP, ZIP, null)) ;
+    exporteddir = createExportedDir();
   }
 
   public void update(Node node) throws Exception {
@@ -141,40 +154,95 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       append(";").append(baseVersion).append(";").append(predecessorsBuilder.toString()); 
     return historyValue.toString();
   }
+
+  /**
+   * Create directory for store exported file
+   * @return exported directory
+   */
+  private static synchronized String createExportedDir() {
+    String tmpdir = System.getProperty("java.io.tmpdir");
+    PortalContainer portalContainer = (PortalContainer)ExoContainerContext.getCurrentContainer();
+    String exportedDir = tmpdir.concat("/")
+                          .concat(portalContainer.getName())
+                          .concat("/eXoDmsDownload/");
+    File exportedHomeDir = new File(exportedDir);
+    if(!exportedHomeDir.exists()) exportedHomeDir.mkdirs();
+    return exportedDir;
+  }
+  /**
+   * Create temp file to allow download a big data
+   * @return file
+   */
+  private static synchronized File getExportedFile(String extension) throws IOException {
+    String exportedFileDir = exporteddir
+                              .concat(String.valueOf(System.currentTimeMillis()))
+                              .concat(".").concat(extension);
+    File exportedFile = new File(exportedFileDir) ;
+    if(!exportedFile.exists()) exportedFile.createNewFile();
+    return exportedFile;
+  }
   
   static public class ExportActionListener extends EventListener<UIExportNode> {
     public void execute(Event<UIExportNode> event) throws Exception {
-      UIExportNode uiExport = event.getSource() ;
-      UIJCRExplorer uiExplorer = uiExport.getAncestorOfType(UIJCRExplorer.class) ;
+      UIExportNode uiExport = event.getSource();
+      UIJCRExplorer uiExplorer = uiExport.getAncestorOfType(UIJCRExplorer.class);
+      UIApplication uiApp = uiExport.getAncestorOfType(UIApplication.class);
+      File exportedFile = UIExportNode.getExportedFile("xml");
+      OutputStream out = new BufferedOutputStream(new FileOutputStream(exportedFile));
+      InputStream in = new BufferedInputStream(new FileInputStream(exportedFile));
       CompressData zipService = new CompressData();
-      DownloadService dservice = uiExport.getApplicationComponent(DownloadService.class) ;
-      InputStreamDownloadResource dresource ;
-      String format = uiExport.<UIFormRadioBoxInput>getUIInput(FORMAT).getValue() ;
-      boolean isZip = uiExport.getUIFormCheckBoxInput(ZIP).isChecked() ;
-      ByteArrayOutputStream bos = new ByteArrayOutputStream() ;
+      DownloadService dservice = uiExport.getApplicationComponent(DownloadService.class);
+      InputStreamDownloadResource dresource;
+      String format = uiExport.<UIFormRadioBoxInput> getUIInput(FORMAT).getValue();
+      boolean isZip = uiExport.getUIFormCheckBoxInput(ZIP).isChecked();
       Node currentNode = uiExplorer.getCurrentNode();
       Session session = currentNode.getSession() ;
       String nodePath = currentNode.getPath();
       if(isZip) {
-        if(format.equals(DOC_VIEW)) session.exportDocumentView(nodePath, bos, false, false ) ;
-        else session.exportSystemView(nodePath, bos, false, false ) ;
-        ByteArrayInputStream input = new ByteArrayInputStream(bos.toByteArray()) ;
-        zipService.addInputStream(format + ".xml",input);
-        bos = new ByteArrayOutputStream() ;
-        zipService.createZip(bos);
-        ByteArrayInputStream zipInput = new ByteArrayInputStream(bos.toByteArray());
-        dresource = new InputStreamDownloadResource(zipInput, "application/zip") ;
-        dresource.setDownloadName( format + ".zip");
+        if(format.equals(DOC_VIEW)) {
+          try {
+            session.exportDocumentView(nodePath, out, false, false );
+          } catch (OutOfMemoryError error) {
+            out.close();
+            uiApp.addMessage(new ApplicationMessage("UIExportNode.msg.OutOfMemoryError", null, ApplicationMessage.ERROR));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
+        }
+        else session.exportSystemView(nodePath, out, false, false );
+        out.flush();
+        out.close();
+        File zipFile = UIExportNode.getExportedFile("zip");
+        out = new BufferedOutputStream(new FileOutputStream(zipFile));
+        zipService.addInputStream(format + ".xml", in);
+        zipService.createZip(out);
+        out.flush();
+        out.close();
+        in.close();
+        exportedFile.delete();
+        in = new BufferedInputStream(new FileInputStream(zipFile));
+        dresource = new InputStreamDownloadResource(in, "application/zip");
+        dresource.setDownloadName(format + ".zip");
       } else {
-        if(format.equals(DOC_VIEW)) session.exportDocumentView(nodePath, bos, false, false ) ;
-        else session.exportSystemView(nodePath, bos, false, false ) ;
-        ByteArrayInputStream is = new ByteArrayInputStream(bos.toByteArray()) ;
-        dresource = new InputStreamDownloadResource(is, "text/xml") ;
+        if (format.equals(DOC_VIEW)) {
+          try {
+            session.exportDocumentView(nodePath, out, false, false);
+          } catch (OutOfMemoryError error) {
+            out.close();
+            uiApp.addMessage(new ApplicationMessage("UIExportNode.msg.OutOfMemoryError", null, ApplicationMessage.ERROR));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
+        }
+        else session.exportSystemView(nodePath, out, false, false);
+        out.flush();
+        out.close();
+        dresource = new InputStreamDownloadResource(in, "text/xml");
         dresource.setDownloadName(format + ".xml");
       }
-      String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+      String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource));
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
-      uiExplorer.cancelAction() ;
+      uiExplorer.cancelAction();
     }
   }
   
@@ -182,48 +250,79 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
     public void execute(Event<UIExportNode> event) throws Exception {
       UIExportNode uiExport = event.getSource() ;
       UIJCRExplorer uiExplorer = uiExport.getAncestorOfType(UIJCRExplorer.class) ;
+      UIApplication uiApp = uiExport.getAncestorOfType(UIApplication.class);
       CompressData zipService = new CompressData();
       DownloadService dservice = uiExport.getApplicationComponent(DownloadService.class) ;
       InputStreamDownloadResource dresource ;
-      String format = uiExport.<UIFormRadioBoxInput>getUIInput(FORMAT).getValue() ;
-      ByteArrayOutputStream bos = new ByteArrayOutputStream();
       Node currentNode = uiExplorer.getCurrentNode();
       String sysWsName = uiExplorer.getRepository().getConfiguration().getSystemWorkspaceName();
       Session session = uiExplorer.getSessionByWorkspace(sysWsName);
       QueryResult queryResult = uiExport.getQueryResult(currentNode);
       NodeIterator queryIter = queryResult.getNodes();
-      ByteArrayOutputStream propertiesBOS = new ByteArrayOutputStream() ;
+      String format = uiExport.<UIFormRadioBoxInput>getUIInput(FORMAT).getValue() ;
+      OutputStream out;
+      InputStream in;
+      File exportedFile;
+      File propertiesFile = UIExportNode.getExportedFile("properties");
+      OutputStream propertiesBOS = new BufferedOutputStream(new FileOutputStream(propertiesFile));
+      InputStream propertiesBIS = new BufferedInputStream(new FileInputStream(propertiesFile));
       while(queryIter.hasNext()) {
+        exportedFile = UIExportNode.getExportedFile("xml");
+        out = new BufferedOutputStream(new FileOutputStream(exportedFile));
+        in = new BufferedInputStream(new FileInputStream(exportedFile));
         Node node = queryIter.nextNode();
-        bos = new ByteArrayOutputStream();
         String historyValue = uiExport.getHistoryValue(node); 
         propertiesBOS.write(historyValue.getBytes());
         propertiesBOS.write('\n');
-        if(format.equals(DOC_VIEW)) session.exportDocumentView(node.getVersionHistory().getPath(), bos, false, false );
-        else session.exportSystemView(node.getVersionHistory().getPath(), bos, false, false );
-        ByteArrayInputStream input = new ByteArrayInputStream(bos.toByteArray()) ;
-        zipService.addInputStream(node.getUUID() + ".xml", input);
+        if(format.equals(DOC_VIEW)) {
+          try {
+            session.exportDocumentView(node.getVersionHistory().getPath(), out, false, false );
+          } catch (OutOfMemoryError error) {
+            out.close();
+            uiApp.addMessage(new ApplicationMessage("UIExportNode.msg.OutOfMemoryError", null, ApplicationMessage.ERROR));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
+        }
+        else session.exportSystemView(node.getVersionHistory().getPath(), out, false, false );
+        out.flush();
+        out.close();
+        zipService.addInputStream(node.getUUID() + ".xml", in);
       }
       if(currentNode.isNodeType(Utils.MIX_VERSIONABLE)) {
-        bos = new ByteArrayOutputStream();
+        exportedFile = UIExportNode.getExportedFile("xml");
+        out = new BufferedOutputStream(new FileOutputStream(exportedFile));
+        in = new BufferedInputStream(new FileInputStream(exportedFile));
         String historyValue = uiExport.getHistoryValue(currentNode);
         propertiesBOS.write(historyValue.getBytes());
         propertiesBOS.write('\n');
-        if(format.equals(DOC_VIEW)) session.exportDocumentView(currentNode.getVersionHistory().getPath(), bos, false, false );
-        else session.exportSystemView(currentNode.getVersionHistory().getPath(), bos, false, false );
-        ByteArrayInputStream input = new ByteArrayInputStream(bos.toByteArray()) ;
-        zipService.addInputStream(currentNode.getUUID() + ".xml",input);
+        if(format.equals(DOC_VIEW)) {
+          try {
+            session.exportDocumentView(currentNode.getVersionHistory().getPath(), out, false, false );
+          } catch (OutOfMemoryError error) {
+            out.close();
+            uiApp.addMessage(new ApplicationMessage("UIExportNode.msg.OutOfMemoryError", null, ApplicationMessage.ERROR));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+            return;
+          }
+        }
+        else session.exportSystemView(currentNode.getVersionHistory().getPath(), out, false, false );
+        out.flush();
+        out.close();
+        zipService.addInputStream(currentNode.getUUID() + ".xml",in);
       }
-      ByteArrayInputStream mappingInput = new ByteArrayInputStream(propertiesBOS.toByteArray()) ;
-      zipService.addInputStream("mapping.properties", mappingInput);
-      bos = new ByteArrayOutputStream();
-      zipService.createZip(bos);
-      ByteArrayInputStream zipInput = new ByteArrayInputStream(bos.toByteArray());
-      dresource = new InputStreamDownloadResource(zipInput, "application/zip") ;
-      dresource.setDownloadName(format + "_versionHistory.zip");
-      bos.close();
+      propertiesBOS.flush();
       propertiesBOS.close();
-      mappingInput.close();
+      zipService.addInputStream("mapping.properties", propertiesBIS);
+      File zipFile = UIExportNode.getExportedFile("zip");
+      in = new BufferedInputStream(new FileInputStream(zipFile));
+      out = new BufferedOutputStream(new FileOutputStream(zipFile));
+      zipService.createZip(out);
+      out.close();
+      propertiesBIS.close();
+      propertiesBOS.close();
+      dresource = new InputStreamDownloadResource(in, "application/zip") ;
+      dresource.setDownloadName(format + "_versionHistory.zip");
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
     }
