@@ -2522,4 +2522,9 @@
 	    <OutOfMemoryError>Bạn nên chọn xuất tài liệu theo cách xem hệ thống</OutOfMemoryError>
 	  </msg>
 	 </UIExportNode>
+	 <Taxonomy>
+			<msg>
+				<AccessDeniedException>Bạn không có quyền truy nhập danh sách danh mục</AccessDeniedException>		 	
+			</msg>
+		 </Taxonomy>
 </bundle>

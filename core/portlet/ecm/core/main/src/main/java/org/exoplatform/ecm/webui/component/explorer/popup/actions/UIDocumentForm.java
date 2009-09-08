@@ -502,46 +502,59 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       UIDocumentFormController uiFormController = uiDocumentForm.getParent();
       String clickedField = event.getRequestContext().getRequestParameter(OBJECTID);
       if (uiDocumentForm.isReference) {
-        UIFormMultiValueInputSet uiSet = uiDocumentForm.getChildById(FIELD_TAXONOMY);
-        if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals(FIELD_TAXONOMY)) {
-          if ((clickedField != null) && (clickedField.equals(FIELD_TAXONOMY))){
-            UIJCRExplorer uiExplorer = uiDocumentForm.getAncestorOfType(UIJCRExplorer.class);
-            NodeHierarchyCreator nodeHierarchyCreator = 
-              uiDocumentForm.getApplicationComponent(NodeHierarchyCreator.class);
-            String repository = uiExplorer.getRepositoryName();
-            DMSConfiguration dmsConfig = uiDocumentForm.getApplicationComponent(DMSConfiguration.class);
-            DMSRepositoryConfiguration dmsRepoConfig = dmsConfig.getConfig(repository);
-            String workspaceName = dmsRepoConfig.getSystemWorkspace();            
-            if(uiSet.getValue().size() == 0) uiSet.setValue(new ArrayList<Value>());            
-            UIOneTaxonomySelector uiOneTaxonomySelector = 
-              uiFormController.createUIComponent(UIOneTaxonomySelector.class, null, null);
-            uiOneTaxonomySelector.setIsDisable(workspaceName, false);
-            String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
-            Session session = 
-              uiDocumentForm.getAncestorOfType(UIJCRExplorer.class).getSessionByWorkspace(workspaceName);
-            Node rootTree = (Node) session.getItem(rootTreePath);      
-            NodeIterator childrenIterator = rootTree.getNodes();
-            while (childrenIterator.hasNext()) {
-              Node childNode = childrenIterator.nextNode();
-              rootTreePath = childNode.getPath();
-              break;
+        UIApplication uiApp = uiDocumentForm.getAncestorOfType(UIApplication.class);
+        try {        
+          UIFormMultiValueInputSet uiSet = uiDocumentForm.getChildById(FIELD_TAXONOMY);
+          if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals(FIELD_TAXONOMY)) {
+            if ((clickedField != null) && (clickedField.equals(FIELD_TAXONOMY))){
+              UIJCRExplorer uiExplorer = uiDocumentForm.getAncestorOfType(UIJCRExplorer.class);
+              NodeHierarchyCreator nodeHierarchyCreator = 
+                uiDocumentForm.getApplicationComponent(NodeHierarchyCreator.class);
+              String repository = uiExplorer.getRepositoryName();
+              DMSConfiguration dmsConfig = uiDocumentForm.getApplicationComponent(DMSConfiguration.class);
+              DMSRepositoryConfiguration dmsRepoConfig = dmsConfig.getConfig(repository);
+              String workspaceName = dmsRepoConfig.getSystemWorkspace();            
+              if(uiSet.getValue().size() == 0) uiSet.setValue(new ArrayList<Value>());            
+              UIOneTaxonomySelector uiOneTaxonomySelector = 
+                uiFormController.createUIComponent(UIOneTaxonomySelector.class, null, null);
+              uiOneTaxonomySelector.setIsDisable(workspaceName, false);
+              String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
+              Session session = 
+                uiDocumentForm.getAncestorOfType(UIJCRExplorer.class).getSessionByWorkspace(workspaceName);
+              Node rootTree = (Node) session.getItem(rootTreePath);      
+              NodeIterator childrenIterator = rootTree.getNodes();
+              while (childrenIterator.hasNext()) {
+                Node childNode = childrenIterator.nextNode();
+                rootTreePath = childNode.getPath();
+                break;
+              }
+              uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
+              uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
+              uiOneTaxonomySelector.init(uiExplorer.getSystemProvider());
+              String param = "returnField=" + FIELD_TAXONOMY;
+              uiOneTaxonomySelector.setSourceComponent(uiDocumentForm, new String[]{param});
+              UIPopupWindow uiPopupWindow = uiFormController.getChildById(POPUP_TAXONOMY);
+              if (uiPopupWindow == null) {
+                uiPopupWindow = uiFormController.addChild(UIPopupWindow.class, null, POPUP_TAXONOMY);
+              }
+              uiPopupWindow.setWindowSize(700, 450);
+              uiPopupWindow.setUIComponent(uiOneTaxonomySelector);
+              uiPopupWindow.setRendered(true);
+              uiPopupWindow.setShow(true);
             }
-            uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
-            uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
-            uiOneTaxonomySelector.init(uiExplorer.getSystemProvider());
-            String param = "returnField=" + FIELD_TAXONOMY;
-            uiOneTaxonomySelector.setSourceComponent(uiDocumentForm, new String[]{param});
-            UIPopupWindow uiPopupWindow = uiFormController.getChildById(POPUP_TAXONOMY);
-            if (uiPopupWindow == null) {
-              uiPopupWindow = uiFormController.addChild(UIPopupWindow.class, null, POPUP_TAXONOMY);
-            }
-            uiPopupWindow.setWindowSize(700, 450);
-            uiPopupWindow.setUIComponent(uiOneTaxonomySelector);
-            uiPopupWindow.setRendered(true);
-            uiPopupWindow.setShow(true);
-          }
-        } 
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiFormController);
+          } 
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiFormController);
+        } catch (AccessDeniedException accessDeniedException) {
+          uiApp.addMessage(new ApplicationMessage("Taxonomy.msg.AccessDeniedException", null, 
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        } catch (Exception e) {
+          uiApp.addMessage(new ApplicationMessage("Taxonomy.msg.AccessDeniedException", null, 
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
       } else {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentForm.getParent());
       }

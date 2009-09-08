@@ -437,33 +437,46 @@ public class UIFastContentCreatortForm extends UIDialogForm implements UISelecta
       UIFastContentCreatorPortlet uiContainer = uiCreatorForm.getParent();
       String clickedField = event.getRequestContext().getRequestParameter(OBJECTID);
       if (uiCreatorForm.isReference) {
-        UIFormMultiValueInputSet uiSet = uiCreatorForm.getChildById(FIELD_TAXONOMY);
-        if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals(FIELD_TAXONOMY)) {
-          if ((clickedField != null) && (clickedField.equals(FIELD_TAXONOMY))){
-            NodeHierarchyCreator nodeHierarchyCreator = uiCreatorForm.getApplicationComponent(NodeHierarchyCreator.class);        
-            if(uiSet.getValue().size() == 0) uiSet.setValue(new ArrayList<Value>());
-            String workspaceName = uiCreatorForm.getDMSWorkspace();
-            UIOneTaxonomySelector uiOneTaxonomySelector = 
-              uiCreatorForm.createUIComponent(UIOneTaxonomySelector.class, null, null);
-            uiOneTaxonomySelector.setIsDisable(workspaceName, false);
-            String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
-            Session session = uiCreatorForm.getSession(uiCreatorForm.repositoryName, workspaceName);
-            Node rootTree = (Node) session.getItem(rootTreePath);      
-            NodeIterator childrenIterator = rootTree.getNodes();
-            while (childrenIterator.hasNext()) {
-              Node childNode = childrenIterator.nextNode();
-              rootTreePath = childNode.getPath();
-              break;
+        UIApplication uiApp = uiCreatorForm.getAncestorOfType(UIApplication.class);
+        try {        
+          UIFormMultiValueInputSet uiSet = uiCreatorForm.getChildById(FIELD_TAXONOMY);
+          if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals(FIELD_TAXONOMY)) {
+            if ((clickedField != null) && (clickedField.equals(FIELD_TAXONOMY))){
+              NodeHierarchyCreator nodeHierarchyCreator = uiCreatorForm.getApplicationComponent(NodeHierarchyCreator.class);        
+              if(uiSet.getValue().size() == 0) uiSet.setValue(new ArrayList<Value>());
+              String workspaceName = uiCreatorForm.getDMSWorkspace();
+              UIOneTaxonomySelector uiOneTaxonomySelector = 
+                uiCreatorForm.createUIComponent(UIOneTaxonomySelector.class, null, null);
+              uiOneTaxonomySelector.setIsDisable(workspaceName, false);
+              String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
+              Session session = uiCreatorForm.getSession(uiCreatorForm.repositoryName, workspaceName);
+              Node rootTree = (Node) session.getItem(rootTreePath);      
+              NodeIterator childrenIterator = rootTree.getNodes();
+              while (childrenIterator.hasNext()) {
+                Node childNode = childrenIterator.nextNode();
+                rootTreePath = childNode.getPath();
+                break;
+              }
+              uiOneTaxonomySelector.setRootNodeLocation(uiCreatorForm.repositoryName, workspaceName, rootTreePath);
+              uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
+              uiOneTaxonomySelector.init(SessionProviderFactory.createSystemProvider());
+              String param = "returnField=" + FIELD_TAXONOMY;        
+              uiOneTaxonomySelector.setSourceComponent(uiCreatorForm, new String[]{param});
+              uiContainer.initPopup(uiOneTaxonomySelector) ;
             }
-            uiOneTaxonomySelector.setRootNodeLocation(uiCreatorForm.repositoryName, workspaceName, rootTreePath);
-            uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
-            uiOneTaxonomySelector.init(SessionProviderFactory.createSystemProvider());
-            String param = "returnField=" + FIELD_TAXONOMY;        
-            uiOneTaxonomySelector.setSourceComponent(uiCreatorForm, new String[]{param});
-            uiContainer.initPopup(uiOneTaxonomySelector) ;
           }
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
+        } catch (AccessDeniedException accessDeniedException) {
+          uiApp.addMessage(new ApplicationMessage("Taxonomy.msg.AccessDeniedException", null, 
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        } catch (Exception e) {
+          uiApp.addMessage(new ApplicationMessage("Taxonomy.msg.AccessDeniedException", null, 
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
         }
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
       } else {        
         event.getRequestContext().addUIComponentToUpdateByAjax(uiCreatorForm.getParent());
       }
