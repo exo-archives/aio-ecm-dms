@@ -120,6 +120,7 @@ public class FCKCoreRESTConnector implements ResourceContainer {
     root.appendChild(files);
     CacheControl cacheControl = new CacheControl();
     cacheControl.setNoCache(true);
+    session.logout();
     return Response.Builder.ok(document).mediaType("text/xml").cacheControl(cacheControl).build();
   }
 
@@ -168,6 +169,7 @@ public class FCKCoreRESTConnector implements ResourceContainer {
       @HeaderParam("content-length") String contentLength) throws Exception {
     Session session = getSession(repositoryName,workspaceName);    
     Node currentNode = (Node)session.getItem(currentFolder);
+    session.logout();
     return fileUploadHandler.upload(uploadId,contentType,Double.parseDouble(contentLength), inputStream, currentNode, language);
   }
 
@@ -193,6 +195,7 @@ public class FCKCoreRESTConnector implements ResourceContainer {
     if(FileUploadHandler.SAVE_ACTION.equals(action)) {     
       Session session = getSession(repositoryName,workspaceName);
       Node currentNode = (Node)session.getItem(currentFolder);
+      session.logout();
       return fileUploadHandler.saveAsNTFile(currentNode, uploadId, fileName, language);
     }    
     return fileUploadHandler.control(uploadId,action);

@@ -140,8 +140,8 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   @SuppressWarnings("unused")
   public List<Node> getCategories(Node node, String repository) throws Exception {
     List<Node> cats = new ArrayList<Node>();
-    Session session = getSession(repository) ;
     if (node.hasProperty("exo:category")) {
+      Session session = getSession(repository) ;
       try {			
         Property categories = node.getProperty("exo:category");
         Value[] values = categories.getValues();
@@ -149,8 +149,10 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
           cats.add(session.getNodeByUUID(values[i].getString()));
         }
       } catch (Exception e) {
-        e.printStackTrace();
-      }    
+        if(session != null) session.logout();
+      } finally {
+        if(session != null) session.logout();
+      }
     }
     return cats;
   }
@@ -206,6 +208,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
       vals.add(value2add);
       node.setProperty(CATEGORY_PROP, vals.toArray(new Value[vals.size()]));
       node.save();
+      systemSession.logout();
     }     
   }
 

@@ -196,6 +196,7 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
     Session session = templateNode.getSession();
     templateNode.remove();
     session.save();
+    session.logout();
   }
 
   /**
@@ -209,12 +210,13 @@ public class ApplicationTemplateManagerServiceImpl implements ApplicationTemplat
    * @throws Exception the exception
    */
   private Node getBasedApplicationTemplatesHome(SessionProvider sessionProvider, String repository) throws Exception {
-//    String workspace = storedWorkspaces.get(repository);
     DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
     ManageableRepository manageableRepository = repositoryService.getRepository(repository);
     Session session = 
       sessionProvider.getSession(dmsRepoConfig.getSystemWorkspace(),manageableRepository);
-    return (Node)session.getItem(basedApplicationTemplatesPath);
+    Node basedTemplateHome = (Node)session.getItem(basedApplicationTemplatesPath);
+    session.logout();
+    return basedTemplateHome;
   }
 
 

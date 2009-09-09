@@ -149,6 +149,7 @@ public class CmsServiceImpl implements CmsService {
       }
       listenerService.broadcast(POST_EDIT_CONTENT_EVENT, this, currentNode);
     }
+    session.logout();
     return currentNode.getPath();
   }
 
@@ -208,6 +209,7 @@ public class CmsServiceImpl implements CmsService {
       }
       listenerService.broadcast(POST_EDIT_CONTENT_EVENT, this, currentNode);
     }
+    session.logout();
     return currentNode.getUUID();
   }
 
@@ -592,6 +594,7 @@ public class CmsServiceImpl implements CmsService {
               node.setProperty(propertyName, session.getValueFactory().createValue(value.toString()));
             }
         }
+        session.logout();
       } else if(value instanceof String[]) {
         String[] values = (String[]) value;        
         String referenceWorksapce = null;
@@ -827,6 +830,7 @@ public class CmsServiceImpl implements CmsService {
             }
           }
         }
+        session.logout();
       } else if(value instanceof String[]) {
         String[] values = (String[]) value;        
         String referenceWorksapce = null;
@@ -845,7 +849,8 @@ public class CmsServiceImpl implements CmsService {
               valueObj = session2.getValueFactory().createValue(referenceNode);              
             }else {             
               valueObj = session2.getValueFactory().createValue(v);
-            }            
+            }
+            session2.logout();
           }else {            
             if(session.getRootNode().hasNode(v)) {
               Node referenceNode = session.getRootNode().getNode(v);
@@ -859,6 +864,7 @@ public class CmsServiceImpl implements CmsService {
         if (!property.getValues().equals(list.toArray(new Value[list.size()]))) {
           node.setProperty(propertyName, list.toArray(new Value[list.size()]));
         }
+        session.logout();
       }       
       break ;
     default:
@@ -908,13 +914,9 @@ public class CmsServiceImpl implements CmsService {
         srcSession.logout();
         destSession.logout();
       } catch (Exception e) {
-        if(srcSession != null) {
-          srcSession.logout();
-        }
-        if(destSession !=null) {
-          destSession.logout();
-          //e.printStackTrace();
-        }
+      } finally {
+        if(srcSession != null) srcSession.logout();
+        if(destSession !=null) destSession.logout();
       }
     } else {
       Session session = null ;
@@ -930,10 +932,8 @@ public class CmsServiceImpl implements CmsService {
         workspace.move(nodePath, destPath);
         session.logout();
       }catch(Exception e){
-        if(session !=null && session.isLive()) {
-          session.logout(); 
-          //e.printStackTrace() ;
-        }
+      } finally {
+        if(session !=null && session.isLive()) session.logout(); 
       }
     }
   }
@@ -956,7 +956,8 @@ public class CmsServiceImpl implements CmsService {
       }
       rootNode = rootNode.getNode(splittedName[i]) ;
     }
-    session.save() ;    
+    session.save() ;   
+    session.logout();
   }
 
   /**

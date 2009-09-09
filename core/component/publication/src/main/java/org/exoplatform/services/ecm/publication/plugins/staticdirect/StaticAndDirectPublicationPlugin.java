@@ -358,6 +358,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       throw new IncorrectStateUpdateLifecycleException("Incorrect current State");
     }
     node.save();
+    session.logout();
     systemSession.logout();
   }
 
@@ -497,12 +498,14 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       } else {
         result += resourceBundle.getString("PublicationService.StaticAndDirectPublicationPlugin.visibilityPrivate");
       }
+      session.logout();
       return result;
     } else {
       //should not append : unknown state
+      session.logout();
       throw new Exception("StaticAndDirectPublicationPlugin.getUserInfo : Unknown state : "+node.getProperty(CURRENT_STATE).getString());
     }
-
+    
   }
 
   public void setVisibility (Node node, String visibility) throws Exception {

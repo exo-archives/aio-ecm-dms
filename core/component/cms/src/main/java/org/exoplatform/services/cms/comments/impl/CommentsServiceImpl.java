@@ -186,7 +186,8 @@ public class CommentsServiceImpl implements CommentsService {
       list.add(iter.nextNode()) ;
     }    
     Collections.sort(list,new DateComparator()) ;
-    commentsCache_.put(commentsNode.getPath(),list) ;        
+    commentsCache_.put(commentsNode.getPath(),list) ;  
+    session.logout();
     return list;
   }  
 

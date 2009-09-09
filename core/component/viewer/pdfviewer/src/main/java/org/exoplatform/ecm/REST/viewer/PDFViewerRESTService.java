@@ -134,6 +134,7 @@ public class PDFViewerRESTService implements ResourceContainer {
       ImageIO.write(rendImage, "png", file);
       InputStream is = new BufferedInputStream(new FileInputStream(file));
       String lastModified = contentNode.getProperty("jcr:lastModified").getString();
+      session.logout();
       return Response.Builder.ok().header(LASTMODIFIED, lastModified)
                                   .entity(is, "image")
                                   .build();
@@ -144,6 +145,7 @@ public class PDFViewerRESTService implements ResourceContainer {
       // clean up resources
       document.dispose();
       if(file != null) file.delete();
+      session.logout();
     }
     return Response.Builder.ok().build();
   }
