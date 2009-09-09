@@ -109,7 +109,7 @@
         </executions>
       </plugin>
       <!-- Run EMMA report on demand-->
-       <plugin>
+      <!--plugin>
         <artifactId>maven-antrun-plugin</artifactId>
         <version>1.2-SNAPSHOT</version>
         <executions>
@@ -191,7 +191,7 @@
             <scope>test</scope>
           </dependency>
         </dependencies>
-      </plugin>
+      </plugin-->
 
     </plugins>
   </build>

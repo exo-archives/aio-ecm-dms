@@ -2515,5 +2515,28 @@
 		<msg>
 			<AccessDeniedException>You don't have permission to access in these taxonomies</AccessDeniedException>		 	
 		</msg>
-	 </Taxonomy>
+	</Taxonomy>
+  <PDFViewer>
+	  <label>
+	    <nextPage>Next page</nextPage>
+      <previousPage>Previous page</previousPage>	  
+      <page>Page</page>
+      <of>of</of>
+      <rotateLeft>Rotate left</rotateLeft>
+      <rotateRight>Rotate right</rotateRight>
+      <downloadFile>Download This File</downloadFile>
+      <viewInfor>View informations</viewInfor>
+      <viewFullPage>View full page</viewFullPage>
+	  </label>
+	  <metadata>
+	    <title>Title</title>
+	    <author>Author</author>
+	    <subject>Subject</subject>
+	    <keyWords>Key words</keyWords>
+	    <creator>Creator</creator>
+	    <producer>Producer</producer>
+	    <creationDate>Created date</creationDate>
+	    <modDate>Modified date</modDate>
+	  </metadata>
+	</PDFViewer>	 
 </bundle>

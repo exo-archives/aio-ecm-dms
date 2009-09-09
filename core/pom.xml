@@ -14,9 +14,10 @@
 
   <modules>
     <module>component/cms</module>
-	<module>component/deployment</module>
+	  <module>component/deployment</module>
   	<module>component/publication</module>
-  	<module>connectors/fckeditor</module>
+    <module>component/viewer/pdfviewer</module>
+    <module>connectors/fckeditor</module>
   	<module>webui/dms</module>
   	<module>webui/ext</module>
   	<module>web/eXoDMSResources</module>	
@@ -26,7 +27,7 @@
     <module>portlet/ecm/core/web</module>
     <module>portlet/jcr-console</module>
     <module>web/dmsportal</module>
-	<module>gadgets</module>
+	  <module>gadgets</module>
   </modules>
 
 </project>

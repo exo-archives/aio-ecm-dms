@@ -484,6 +484,36 @@
 			DOM.listHideElements(listHideContainer);
 		} 
 	};
+	
+	ECMUtils.prototype.showDocumentInformation = function(obj, event) {
+		if(!obj) return;
+	  event = event || window.event;
+		event.cancelBubble = true;
+		var infor = document.getElementById('metadatas');
+		if(infor.style.display == 'none') {
+	    infor.style.display = 'block';
+			infor.style.left = obj.offsetLeft + 'px';
+	  } else {
+  	  infor.style.display = 'none';
+	  }
+	  DOM.listHideElements(infor);
+	};
+	
+	ECMUtils.prototype.onKeyPDFViewerPress = function() {
+		var uiPDFViewer = document.getElementById("PageControl");
+		if(uiPDFViewer) {
+			uiPDFViewer.onkeypress = Self.onGotoPageEnterPress ;
+		}
+	};	
+	
+	ECMUtils.prototype.onGotoPageEnterPress = function(event) {
+		var gotoPage = document.getElementById("GotoPage");
+		var event = event || window.event;
+		if(gotoPage && event.keyCode == 13) {
+			eval(gotoPage.href);
+			return false;
+		}
+	};
 };
 
 eXo.ecm.ECMUtils = new ECMUtils();

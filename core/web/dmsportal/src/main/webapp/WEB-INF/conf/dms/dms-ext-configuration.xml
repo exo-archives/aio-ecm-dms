@@ -642,29 +642,6 @@
 							</field>
 						</object>
 					</object-param>
-					<object-param>
-						<name>PDF</name>
-						<object type="org.exoplatform.webui.ext.UIExtension">
-							<field name="type"><string>org.exoplatform.ecm.dms.FileViewer</string></field>
-							<field name="rank"><int>120</int></field>
-							<field name="name"><string>PDF</string></field>
-							<field name="category"><string>FileViewer</string></field>
-							<field name="component"><string>org.exoplatform.ecm.webui.component.viewer.PDFViewer</string></field>
-							<field name="extendedFilters">
-								<collection type="java.util.ArrayList">
-									<value>
-										<object type="org.exoplatform.webui.ext.filter.impl.FileFilter">
-											<field name="mimeTypes">
-												<collection type="java.util.ArrayList">
-													<value><string>application/pdf</string></value>
-												</collection>
-											</field>
-										</object>
-									</value>
-								</collection>
-							</field>
-						</object>
-					</object-param>
 				</init-params>
 			</component-plugin>
 		</component-plugins>
