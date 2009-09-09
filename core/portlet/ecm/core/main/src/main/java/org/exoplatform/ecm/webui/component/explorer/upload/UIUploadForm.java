@@ -632,53 +632,65 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     public void execute(Event<UIFormMultiValueInputSet> event) throws Exception {
       UIFormMultiValueInputSet uiSet = event.getSource();
       UIUploadForm uiUploadForm =  (UIUploadForm) uiSet.getParent();
-      String fieldTaxonomyId = event.getRequestContext().getRequestParameter(OBJECTID);
-      String[] arrayId = fieldTaxonomyId.split(FIELD_LISTTAXONOMY);
-      int index = 0;
-      if ((arrayId.length > 0) && (arrayId[0].length() > 0)) index = new Integer(arrayId[0]).intValue();
-      String idFieldUpload;
-      if (index == 0) idFieldUpload = FIELD_UPLOAD; else idFieldUpload = index + FIELD_UPLOAD;
-      UIFormUploadInput uiFormUploadInput = uiUploadForm.getChildById(idFieldUpload);
-      UploadResource uploadResource = uiFormUploadInput.getUploadResource();
-      if (uploadResource == null) {
-        UIApplication uiApp = uiUploadForm.getAncestorOfType(UIApplication.class);
-        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.upload-not-null", null,
+      UIApplication uiApp = uiUploadForm.getAncestorOfType(UIApplication.class);
+      try {
+        String fieldTaxonomyId = event.getRequestContext().getRequestParameter(OBJECTID);
+        String[] arrayId = fieldTaxonomyId.split(FIELD_LISTTAXONOMY);
+        int index = 0;
+        if ((arrayId.length > 0) && (arrayId[0].length() > 0)) index = new Integer(arrayId[0]).intValue();
+        String idFieldUpload;
+        if (index == 0) idFieldUpload = FIELD_UPLOAD; else idFieldUpload = index + FIELD_UPLOAD;
+        UIFormUploadInput uiFormUploadInput = uiUploadForm.getChildById(idFieldUpload);
+        UploadResource uploadResource = uiFormUploadInput.getUploadResource();
+        if (uploadResource == null) {
+          uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.upload-not-null", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
+        UIUploadManager uiUploadManager = uiUploadForm.getParent();
+        UIJCRExplorer uiExplorer = uiUploadForm.getAncestorOfType(UIJCRExplorer.class);
+        NodeHierarchyCreator nodeHierarchyCreator = 
+          uiUploadForm.getApplicationComponent(NodeHierarchyCreator.class);
+        String repository = uiExplorer.getRepositoryName();
+        DMSConfiguration dmsConfig = uiUploadForm.getApplicationComponent(DMSConfiguration.class);
+        DMSRepositoryConfiguration dmsRepoConfig = dmsConfig.getConfig(repository);
+        String workspaceName = dmsRepoConfig.getSystemWorkspace();
+        
+        UIPopupWindow uiPopupWindow = uiUploadManager.initPopupTaxonomy(POPUP_TAXONOMY);
+        UIOneTaxonomySelector uiOneTaxonomySelector = 
+          uiUploadManager.createUIComponent(UIOneTaxonomySelector.class, null, null);
+        uiPopupWindow.setUIComponent(uiOneTaxonomySelector);
+        uiOneTaxonomySelector.setIsDisable(workspaceName, false);
+        String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
+        Session session = 
+          uiUploadForm.getAncestorOfType(UIJCRExplorer.class).getSessionByWorkspace(workspaceName);
+        Node rootTree = (Node) session.getItem(rootTreePath);      
+        NodeIterator childrenIterator = rootTree.getNodes();
+        while (childrenIterator.hasNext()) {
+          Node childNode = childrenIterator.nextNode();
+          rootTreePath = childNode.getPath();
+          break;
+        }      
+        uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
+        uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
+        uiOneTaxonomySelector.init(uiExplorer.getSystemProvider());
+        String param = "returnField=" + fieldTaxonomyId;
+        uiOneTaxonomySelector.setSourceComponent(uiUploadForm, new String[]{param});
+        uiPopupWindow.setRendered(true);
+        uiPopupWindow.setShow(true);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadManager);
+      } catch (AccessDeniedException accessDeniedException) {
+        uiApp.addMessage(new ApplicationMessage("Taxonomy.msg.AccessDeniedException", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } catch (Exception e) {
+        uiApp.addMessage(new ApplicationMessage("Taxonomy.msg.AccessDeniedException", null, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      UIUploadManager uiUploadManager = uiUploadForm.getParent();
-      UIJCRExplorer uiExplorer = uiUploadForm.getAncestorOfType(UIJCRExplorer.class);
-      NodeHierarchyCreator nodeHierarchyCreator = 
-        uiUploadForm.getApplicationComponent(NodeHierarchyCreator.class);
-      String repository = uiExplorer.getRepositoryName();
-      DMSConfiguration dmsConfig = uiUploadForm.getApplicationComponent(DMSConfiguration.class);
-      DMSRepositoryConfiguration dmsRepoConfig = dmsConfig.getConfig(repository);
-      String workspaceName = dmsRepoConfig.getSystemWorkspace();
-      
-      UIPopupWindow uiPopupWindow = uiUploadManager.initPopupTaxonomy(POPUP_TAXONOMY);
-      UIOneTaxonomySelector uiOneTaxonomySelector = 
-        uiUploadManager.createUIComponent(UIOneTaxonomySelector.class, null, null);
-      uiPopupWindow.setUIComponent(uiOneTaxonomySelector);
-      uiOneTaxonomySelector.setIsDisable(workspaceName, false);
-      String rootTreePath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);      
-      Session session = 
-        uiUploadForm.getAncestorOfType(UIJCRExplorer.class).getSessionByWorkspace(workspaceName);
-      Node rootTree = (Node) session.getItem(rootTreePath);      
-      NodeIterator childrenIterator = rootTree.getNodes();
-      while (childrenIterator.hasNext()) {
-        Node childNode = childrenIterator.nextNode();
-        rootTreePath = childNode.getPath();
-        break;
-      }      
-      uiOneTaxonomySelector.setRootNodeLocation(repository, workspaceName, rootTreePath);
-      uiOneTaxonomySelector.setExceptedNodeTypesInPathPanel(new String[] {Utils.EXO_SYMLINK});
-      uiOneTaxonomySelector.init(uiExplorer.getSystemProvider());
-      String param = "returnField=" + fieldTaxonomyId;
-      uiOneTaxonomySelector.setSourceComponent(uiUploadForm, new String[]{param});
-      uiPopupWindow.setRendered(true);
-      uiPopupWindow.setShow(true);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadManager);
     }
   }
   
