@@ -170,6 +170,7 @@ public class RelationsServiceImpl implements RelationsService, Startable {
       node.setProperty(RELATION_PROP, vals.toArray(new Value[vals.size()]));
       node.save() ;
       session.save() ;
+      session.logout();
       provider.close();
     }
   }
@@ -192,11 +193,11 @@ public class RelationsServiceImpl implements RelationsService, Startable {
         }
         relationsHome.save();
         session.save();
-        session.logout();
       }      
     } catch (Exception e) {
       if(session !=null && session.isLive()) session.logout();
-      // e.printStackTrace() ;
+    } finally {
+      if(session != null) session.logout();
     }
   }
 
@@ -221,8 +222,9 @@ public class RelationsServiceImpl implements RelationsService, Startable {
       relationsHome.save();      
     } catch (Exception e) {
       // e.printStackTrace() ;
+    } finally {
+      if(session != null) session.logout();
     }
-    session.logout();
   }
   
   /**

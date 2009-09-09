@@ -186,10 +186,12 @@ public class CommentsServiceImpl implements CommentsService {
       list.add(iter.nextNode()) ;
     }    
     Collections.sort(list,new DateComparator()) ;
-    commentsCache_.put(commentsNode.getPath(),list) ;        
+    commentsCache_.put(commentsNode.getPath(),list) ;  
+    session.logout();
     return list;
   }  
 
+  
   /**
    * This Class implements Comparator<Node> to compare the created date of nodes.
    */
@@ -223,5 +225,6 @@ public class CommentsServiceImpl implements CommentsService {
     if(Collections.frequency(locales,language) >0) return true ;
     return false ;
   }
+  
   
 }

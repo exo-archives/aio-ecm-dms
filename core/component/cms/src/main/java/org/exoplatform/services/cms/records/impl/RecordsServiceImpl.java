@@ -271,12 +271,14 @@ public class RecordsServiceImpl implements RecordsService {
           try {
             session.getWorkspace().copy(record.getPath(),transferLocation + "/" + record.getName());
           } catch (ItemNotFoundException ex) {
+            session.logout();
             log_.error(ex.getMessage(), ex);
           }
         }
         record.setProperty("rma:transferExecuted", true);
         record.save() ;
         filePlan.save() ;
+        session.logout();
       }
     }
     log_.info("Transfer records over");

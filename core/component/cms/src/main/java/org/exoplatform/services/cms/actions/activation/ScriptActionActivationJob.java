@@ -86,8 +86,9 @@ public class ScriptActionActivationJob implements Job {
       jcrSession.save() ;
     } catch (Exception e) {
       e.printStackTrace();
-      return;
-    }                        
+    } finally {
+      if(jcrSession != null) jcrSession.logout();
+    }
   }
   
   private boolean checkExcetuteable(String userId,Value[] roles, IdentityRegistry identityRegistry) throws Exception {        

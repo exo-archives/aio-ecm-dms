@@ -190,6 +190,7 @@ public class QueryServiceImpl implements QueryService, Startable{
       Node node = iter.nextNode();
       if("nt:query".equals(node.getPrimaryNodeType().getName())) queries.add(manager.getQuery(node));
     }    
+    session.logout();
     return queries;
   }
   
@@ -321,7 +322,9 @@ public class QueryServiceImpl implements QueryService, Startable{
    */
   public Node getSharedQuery(String queryName, String repository, SessionProvider provider) throws Exception {
     Session session = getSession(repository, provider, true);    
-    return (Node)session.getItem(baseQueriesPath_ + "/" + queryName);
+    Node sharedQueryNode = (Node)session.getItem(baseQueriesPath_ + "/" + queryName); 
+    session.logout();
+    return sharedQueryNode;
   }
   
   /**
@@ -414,7 +417,10 @@ public class QueryServiceImpl implements QueryService, Startable{
       queryCache.put(key, result);
       return result;
     }
-    return execute(querySession, queryNode, userId);
+    QueryResult queryResult = execute(querySession, queryNode, userId);
+    session.logout();
+    querySession.logout();
+    return queryResult;
   }
   
   /**

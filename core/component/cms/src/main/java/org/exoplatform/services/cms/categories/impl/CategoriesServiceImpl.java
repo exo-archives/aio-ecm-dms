@@ -43,7 +43,7 @@ import org.picocontainer.Startable;
  * to replace this one.
  */
 @Deprecated
-public class CategoriesServiceImpl implements CategoriesService,Startable {		
+public class CategoriesServiceImpl implements CategoriesService,Startable {   
   private static final String CATEGORY_MIXIN = "exo:categorized";
   private static final String CATEGORY_PROP = "exo:category";
   private static final String COPY = "copy";
@@ -73,7 +73,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   }
   
   public void addTaxonomyPlugin(ComponentPlugin plugin) {    
-    if(plugin instanceof TaxonomyPlugin) {			
+    if(plugin instanceof TaxonomyPlugin) {      
       plugins_.add((TaxonomyPlugin)plugin) ;           
     }
   }
@@ -82,18 +82,18 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
     Session session = getSession(repository,provider) ;    
     Node homeTaxonomy = (Node)session.getItem(baseTaxonomyPath_) ;
     return homeTaxonomy ;
-  }	
+  } 
   
   public void addTaxonomy(String parentPath,String childName, String repository) throws Exception  {
     Session adminSession = getSession(repository) ;
     Node parent = (Node)adminSession.getItem(parentPath) ;
     if(parent.hasNode(childName)) {
       throw (new ItemExistsException()) ;
-    }		
+    }   
     Node taxonomyNode = parent.addNode(childName,"exo:taxonomy") ;
     if(taxonomyNode.canAddMixin("mix:referenceable")) {
       taxonomyNode.addMixin("mix:referenceable") ;
-    }					
+    }         
     adminSession.save() ;
     adminSession.logout();
   }
@@ -105,16 +105,16 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
     adminSession.getRootNode().save();
     adminSession.save();    
     adminSession.logout();
-  }						
+  }           
 
   public void moveTaxonomyNode(String srcPath, String destPath, String type, String repository) throws Exception { 
-    Session session = getSession(repository) ;    		   
-    if(CUT.equals(type)) {			
+    Session session = getSession(repository) ;           
+    if(CUT.equals(type)) {      
       session.move(srcPath,destPath) ;
       session.save() ;      
       session.logout();
     }
-    else if(COPY.equals(type)) {		
+    else if(COPY.equals(type)) {    
       Workspace workspace = session.getWorkspace() ;       
       workspace.copy(srcPath,destPath) ;
       session.save() ;      
@@ -122,9 +122,9 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
     }
     else {
       session.logout();
-      throw( new UnsupportedRepositoryOperationException()) ;		
-    }									
-  }	
+      throw( new UnsupportedRepositoryOperationException()) ;   
+    }                 
+  } 
 
   public boolean hasCategories(Node node) throws Exception {
     if (node.isNodeType(CATEGORY_MIXIN)) {
@@ -140,17 +140,19 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   @SuppressWarnings("unused")
   public List<Node> getCategories(Node node, String repository) throws Exception {
     List<Node> cats = new ArrayList<Node>();
-    Session session = getSession(repository) ;
     if (node.hasProperty("exo:category")) {
-      try {			
+      Session session = getSession(repository) ;
+      try {     
         Property categories = node.getProperty("exo:category");
         Value[] values = categories.getValues();
-        for (int i = 0; i < values.length; i++) {				
+        for (int i = 0; i < values.length; i++) {       
           cats.add(session.getNodeByUUID(values[i].getString()));
         }
       } catch (Exception e) {
-        e.printStackTrace();
-      }    
+        if(session != null) session.logout();
+      } finally {
+        if(session != null) session.logout();
+      }
     }
     return cats;
   }
@@ -158,7 +160,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
   public void removeCategory(Node node, String categoryPath, String repository) throws Exception {
     Session systemSession = getSession(repository) ;
     List<Value> vals = new ArrayList<Value>();
-    if (!"*".equals(categoryPath)) {						
+    if (!"*".equals(categoryPath)) {            
       Property categories = node.getProperty("exo:category");
       Value[] values = categories.getValues();
       String uuid2Remove = null;
@@ -174,7 +176,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
       if(uuid2Remove == null) {
         systemSession.logout();
         return; 
-      }			
+      }     
     }
     node.setProperty(CATEGORY_PROP, vals.toArray(new Value[vals.size()]));
     node.getSession().save() ;
@@ -206,6 +208,7 @@ public class CategoriesServiceImpl implements CategoriesService,Startable {
       vals.add(value2add);
       node.setProperty(CATEGORY_PROP, vals.toArray(new Value[vals.size()]));
       node.save();
+      systemSession.logout();
     }     
   }
 

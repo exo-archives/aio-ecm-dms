@@ -113,11 +113,11 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       Value[] values = {value2add};
       node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
 
-      //set currentState to non published
+      //set currentState to published
       node.setProperty(CURRENT_STATE, PUBLISHED);
-      String visibility = PUBLIC;
+      String visibility= PUBLIC;
       Value newValueVisibility=systemSession.getValueFactory().createValue(visibility);
-      node.setProperty(VISIBILITY,newValueVisibility) ;
+      node.setProperty(VISIBILITY, newValueVisibility);
       //set permissions
       setVisibility(node, visibility);
 
@@ -126,12 +126,10 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       ExoContainer container = ExoContainerContext.getCurrentContainer();   
       PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
       String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
-      @SuppressWarnings("hiding")
+      //@SuppressWarnings("hiding")
       String versionName = session.getNodeByUUID(version.getUUID()).getName();
-      String[] log = {date, PUBLISHED,session.getUserID(),"PublicationService.StaticAndDirectPublicationPlugin.nodeCreated",versionName,visibility};
+      String[] log = {date, PUBLISHED, session.getUserID(), "PublicationService.StaticAndDirectPublicationPlugin.nodeCreated", versionName, visibility};
       publicationService.addLog(node, log);
-      
-      
       node.setProperty(CURRENT_STATE, PUBLISHED);
       systemSession.logout();
     } else if (newState.equals(PUBLISHED)) {
@@ -360,6 +358,7 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       throw new IncorrectStateUpdateLifecycleException("Incorrect current State");
     }
     node.save();
+    session.logout();
     systemSession.logout();
   }
 
@@ -499,12 +498,14 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
       } else {
         result += resourceBundle.getString("PublicationService.StaticAndDirectPublicationPlugin.visibilityPrivate");
       }
+      session.logout();
       return result;
     } else {
       //should not append : unknown state
+      session.logout();
       throw new Exception("StaticAndDirectPublicationPlugin.getUserInfo : Unknown state : "+node.getProperty(CURRENT_STATE).getString());
     }
-
+    
   }
 
   public void setVisibility (Node node, String visibility) throws Exception {

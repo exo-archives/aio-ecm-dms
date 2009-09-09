@@ -175,11 +175,12 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
         view.setTabList(tabList) ;
         viewList.add(view) ;
       }
-      session.logout();
-      return viewList ;    
     } catch(AccessDeniedException ace) {
       return new ArrayList<ViewConfig>() ;
+    } finally {
+      if(session != null) session.logout();
     }
+    return viewList ;    
   }
 
   /**
@@ -199,10 +200,13 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   public Node getViewByName(String name, String repository,SessionProvider provider) throws Exception{          
     Session session = getSession(repository,provider) ;
     try {
-      return (Node)session.getItem(baseViewPath_ + "/" + name) ;
+      Node viewNode = (Node)session.getItem(baseViewPath_ + "/" + name) ; 
+      session.logout();
+      return viewNode;
     } catch(AccessDeniedException ace) {
+      session.logout();
       return null ;
-    }
+    } 
   }
   
   /**
@@ -274,10 +278,13 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
    */
   public Node getTemplateHome(String homeAlias, String repository,SessionProvider provider) throws Exception{
     String homePath = getJCRPath(homeAlias) ;
+    Session session = getSession(repository,provider) ;
     try {
-      Session session = getSession(repository,provider) ;
-      return (Node)session.getItem(homePath) ;
+      Node templateHome = (Node)session.getItem(homePath); 
+      session.logout();
+      return templateHome;
     } catch(AccessDeniedException ace) {
+      session.logout();
       return null ;
     }
   }

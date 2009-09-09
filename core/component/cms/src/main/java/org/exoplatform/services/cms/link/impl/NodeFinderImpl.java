@@ -84,7 +84,9 @@ public class NodeFinderImpl implements NodeFinder {
     else
       absPath = ancestorNode.getPath() + "/" + relativePath;
     Session session = ancestorNode.getSession();
-    return (Node) getItem(session, absPath, giveTarget);
+    Node node = (Node) getItem(session, absPath, giveTarget); 
+    session.logout();
+    return node;
   }
   
   /**
@@ -106,9 +108,9 @@ public class NodeFinderImpl implements NodeFinder {
    * {@inheritDoc}
    */
   public Item getItem(Session session, String absPath) throws PathNotFoundException, RepositoryException {
-	  return getItem(session, absPath, false);
+    return getItem(session, absPath, false);
   }
-	
+  
   /**
    * {@inheritDoc}
    */
@@ -156,23 +158,23 @@ public class NodeFinderImpl implements NodeFinder {
             // The target can be reached
             Node target = linkManager_.getTarget(link);
             String targetPath = target.getPath();
+            session.logout();
             return getItem(target.getSession(),
                            targetPath + absPath.substring(partPath.length()),
                            giveTarget,
                            targetPath.substring(1).split("/").length);
-          } else {
-            // The target cannot be found
-            throw new PathNotFoundException("Can't reach the target of the link: " + link.getPath());
-          }
-        } else {
-          // The item is not a link so we need
-          low = mid + 1;
+          } 
+          // The target cannot be found
+          session.logout();
+          throw new PathNotFoundException("Can't reach the target of the link: " + link.getPath());
         }
+        low = mid + 1;
       } else {
         // The item doesn't exist
         high = mid - 1;
       }
     }
+    session.logout();
     throw new PathNotFoundException("Can't find path: " + absPath);
   }
 
@@ -198,7 +200,7 @@ public class NodeFinderImpl implements NodeFinder {
   private String makePath(String[] splitString, int toIdx) {
     StringBuilder buffer = new StringBuilder(1024);
     for(int i = 0; i <= toIdx; i++) {
-    	buffer.append('/').append(splitString[i]);
+      buffer.append('/').append(splitString[i]);
     } 
     return buffer.toString();
   }

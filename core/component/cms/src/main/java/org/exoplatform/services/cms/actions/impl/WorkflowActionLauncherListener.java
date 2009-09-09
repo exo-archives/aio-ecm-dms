@@ -140,7 +140,7 @@ public abstract class WorkflowActionLauncherListener implements ECMEventListener
         
         node.getSession().save();
       } catch (Exception e) {
-        jcrSession.logout();
+        if(jcrSession != null) jcrSession.logout();
         e.printStackTrace();
       }
     }
