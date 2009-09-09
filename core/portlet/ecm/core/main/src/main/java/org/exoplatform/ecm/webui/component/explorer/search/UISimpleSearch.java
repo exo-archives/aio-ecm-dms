@@ -70,11 +70,11 @@ public class UISimpleSearch extends UIForm {
   
   private List<String> constraints_ = new ArrayList<String>();
   private List<String> virtualConstraints_ = new ArrayList<String>();
-  private String categoryPath;
+  private List<String> categoryPathList = new ArrayList<String>();
   
-  public String getCategoryPath() { return categoryPath; }
-  public void setCategoryPath(String categoryPathItem) {
-    categoryPath = categoryPathItem; 
+  public List<String> getCategoryPathList() { return categoryPathList; }
+  public void setCategoryPathList(List<String> categoryPathListItem) {
+    categoryPathList = categoryPathListItem; 
   }
   
   private static final String ROOT_XPATH_QUERY = "//*";
@@ -177,6 +177,7 @@ public class UISimpleSearch extends UIForm {
       int intIndex = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID));
       uiSimpleSearch.constraints_.remove(intIndex);
       uiSimpleSearch.virtualConstraints_.remove(intIndex);
+      uiSimpleSearch.categoryPathList.remove(intIndex);
       if(uiSimpleSearch.constraints_.size() > 0 && intIndex == 0) {
         String newFirstConstraint = null;
         String newFirstVirtualConstraint = null;
@@ -211,7 +212,7 @@ public class UISimpleSearch extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      uiSearchResult.setCategoryPath(uiSimpleSearch.getCategoryPath());
+      uiSearchResult.setCategoryPathList(uiSimpleSearch.getCategoryPathList());
       
       //TODO need review this code. should use validator for text field
       String[] arrFilterChar = {"&", "$", "@", ":","]", "[", "*", "%", "!"};

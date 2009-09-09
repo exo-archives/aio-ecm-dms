@@ -94,12 +94,12 @@ public class UISearchResult extends UIContainer {
   private static String iconType = "";
   private static String iconScore = "";
   static private int PAGE_SIZE = 10;
-  private String categoryPath;
+  private List<String> categoryPathList = new ArrayList<String>();
   private String constraintsCondition;
   
-  public String getCategoryPath() { return categoryPath; }
-  public void setCategoryPath(String categoryPathItem) {
-    categoryPath = categoryPathItem; 
+  public List<String> getCategoryPathList() { return categoryPathList; }
+  public void setCategoryPathList(List<String> categoryPathListItem) {
+    categoryPathList = categoryPathListItem; 
   }
   
   public String getConstraintsCondition() { return constraintsCondition; }
@@ -184,15 +184,17 @@ public class UISearchResult extends UIContainer {
           continue;
         }
         if (resultNode != null) {
-          if ((categoryPath != null) && (categoryPath.length() > 0)){
-            int index = categoryPath.indexOf("/");
-            List<String> pathCategoriesList = new ArrayList<String>();
-            String searchCategory = rootTreePath + "/" + categoryPath;
-            List<Node> listCategories = taxonomyService.getCategories(resultNode, categoryPath.substring(0, index));
-            for (Node category : listCategories) {
-              pathCategoriesList.add(category.getPath());
+          if ((categoryPathList != null) && (categoryPathList.size() > 0)){
+            for (String categoryPath : categoryPathList) {
+              int index = categoryPath.indexOf("/");
+              List<String> pathCategoriesList = new ArrayList<String>();
+              String searchCategory = rootTreePath + "/" + categoryPath;
+              List<Node> listCategories = taxonomyService.getCategories(resultNode, categoryPath.substring(0, index));
+              for (Node category : listCategories) {
+                pathCategoriesList.add(category.getPath());
+              }
+              if (pathCategoriesList.contains(searchCategory)) addNode(listNodes, resultNode, listRows, r);
             }
-            if (pathCategoriesList.contains(searchCategory)) addNode(listNodes, resultNode, listRows, r);
           } else {
             addNode(listNodes, resultNode, listRows, r);
           }
@@ -221,15 +223,17 @@ public class UISearchResult extends UIContainer {
           continue;
         }
         if (resultNode != null) {
-          if ((categoryPath != null) && (categoryPath.length() > 0)){
-            int index = categoryPath.indexOf("/");
-            List<String> pathCategoriesList = new ArrayList<String>();
-            String searchCategory = rootTreePath + "/" + categoryPath;
-            List<Node> listCategories = taxonomyService.getCategories(resultNode, categoryPath.substring(0, index));
-            for (Node category : listCategories) {
-              pathCategoriesList.add(category.getPath());
+          if ((categoryPathList != null) && (categoryPathList.size() > 0)){
+            for (String categoryPath : categoryPathList) {
+              int index = categoryPath.indexOf("/");
+              List<String> pathCategoriesList = new ArrayList<String>();
+              String searchCategory = rootTreePath + "/" + categoryPath;
+              List<Node> listCategories = taxonomyService.getCategories(resultNode, categoryPath.substring(0, index));
+              for (Node category : listCategories) {
+                pathCategoriesList.add(category.getPath());
+              }
+              if (pathCategoriesList.contains(searchCategory)) addNode(listNodes, resultNode, listRows, r);
             }
-            if (pathCategoriesList.contains(searchCategory)) addNode(listNodes, resultNode, listRows, r);
           } else {
             addNode(listNodes, resultNode, listRows, r);
           }

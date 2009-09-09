@@ -226,7 +226,8 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
       case 5:
         property = getUIStringInput(CATEGORY_TYPE).getValue() ;
         advanceQuery = getCategoryQueryString(property) ;
-        uiSimpleSearch.setCategoryPath(property);
+        if (!uiSimpleSearch.getCategoryPathList().contains(property))
+          uiSimpleSearch.getCategoryPathList().add(property);
         break;
       default:
         break;
