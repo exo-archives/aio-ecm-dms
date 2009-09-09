@@ -163,32 +163,35 @@ public class UITreeTaxonomyBuilder extends UIContainer {
   public void buildTree() throws Exception {  
     NodeIterator sibbling = null ;
     NodeIterator children = null ;    
-    UINodeTree tree = getChild(UINodeTree.class) ;
+    UINodeTree tree = getChild(UINodeTree.class);
     Node selectedNode = getNodeByPathBreadcumbs();
-    tree.setSelected(selectedNode);
-    if (Utils.getNodeSymLink(selectedNode).getDepth() > 0) {
-      tree.setParentSelected(selectedNode.getParent()) ;
-      sibbling = Utils.getNodeSymLink(selectedNode).getNodes() ;
-      children = Utils.getNodeSymLink(selectedNode).getNodes() ;
-    } else {
-      tree.setParentSelected(selectedNode) ;
-      sibbling = Utils.getNodeSymLink(selectedNode).getNodes() ;
-      children = null;
-    }
-    if (sibbling != null) {
-      tree.setSibbling(filfer(sibbling));
-    }
-    if (children != null) {
-      tree.setChildren(filfer(children));
+    if ((tree != null) && (selectedNode != null)) {
+      tree.setSelected(selectedNode);
+      if (Utils.getNodeSymLink(selectedNode).getDepth() > 0) {
+        tree.setParentSelected(selectedNode.getParent()) ;
+        sibbling = Utils.getNodeSymLink(selectedNode).getNodes() ;
+        children = Utils.getNodeSymLink(selectedNode).getNodes() ;
+      } else {
+        tree.setParentSelected(selectedNode) ;
+        sibbling = Utils.getNodeSymLink(selectedNode).getNodes() ;
+        children = null;
+      }
+      if (sibbling != null) {
+        tree.setSibbling(filfer(sibbling));
+      }
+      if (children != null) {
+        tree.setChildren(filfer(children));
+      }
     }
   }
-
+  
   private Node getNodeByPathBreadcumbs() throws PathNotFoundException, RepositoryException {
     UIOneTaxonomySelector uiOneTaxonomySelector = (UIOneTaxonomySelector) getParent();
     UIBreadcumbs uiBreadcumbs = uiOneTaxonomySelector.getChildById("BreadcumbOneTaxonomy");
     List<LocalPath> listLocalPath = uiBreadcumbs.getPath();
     StringBuilder buffer = new StringBuilder(1024);
-    String rootPath = rootTreeNode.getPath();
+    String rootPath = "";
+    if (rootTreeNode != null) rootPath = rootTreeNode.getPath();
     for (LocalPath iterLocalPath : listLocalPath) {
       buffer.append("/").append(iterLocalPath.getId());
     }
