@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -217,7 +218,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
     UIFormUploadInput inputHistory = getUIInput(VERSION_HISTORY_FILE_UPLOAD);
     Map<String, String> mapHistoryValue = getMapImportHistory();
     for(String uuid : mapHistoryValue.keySet()) {
-      ZipInputStream zipInputStream = new ZipInputStream(inputHistory.getUploadDataAsStream());
+      ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(inputHistory.getUploadDataAsStream()));
       byte[] data  = new byte[1024];   
       ByteArrayOutputStream out= new ByteArrayOutputStream();
       ZipEntry entry = zipInputStream.getNextEntry();
@@ -286,13 +287,15 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
         }
         if(!uiImport.validHistoryUploadFile(event)) return;
       }
+      String storeLocation = input.getUploadResource().getStoreLocation();
+      String extractedFile = storeLocation.substring(0, storeLocation.lastIndexOf(".")).concat(String.valueOf(System.currentTimeMillis())).concat(".xml");
       String mimeType = uiImport.getMimeType(input.getUploadResource().getFileName());
       InputStream xmlInputStream = null;
       if ("text/xml".equals(mimeType)) {
-        xmlInputStream = input.getUploadDataAsStream();
+        xmlInputStream = new BufferedInputStream(input.getUploadDataAsStream());
       } else if ("application/zip".equals(mimeType)) {
-        ZipInputStream zipInputStream = new ZipInputStream(input.getUploadDataAsStream());
-        xmlInputStream = Utils.extractFromZipFile(zipInputStream);
+        ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(input.getUploadDataAsStream()));
+        xmlInputStream = Utils.extractFromZipFile(zipInputStream, extractedFile);
       } else {
         uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.mimetype-invalid", null, 
             ApplicationMessage.WARNING));

@@ -16,8 +16,11 @@
  */
 package org.exoplatform.ecm.webui.utils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -390,22 +393,28 @@ public class Utils {
   
   
   
-  public static ByteArrayInputStream extractFromZipFile(ZipInputStream zipStream) throws Exception {
-    ByteArrayOutputStream out= new ByteArrayOutputStream();
+  public static InputStream extractFromZipFile(ZipInputStream zipStream, String extractedFile) throws Exception {
+    File file = new File(extractedFile);
+    if (!file.exists()) file.createNewFile();
+    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
+//    ByteArrayOutputStream out= new ByteArrayOutputStream();
     byte[] data  = new byte[1024];   
     ZipEntry entry = zipStream.getNextEntry();
     while(entry != null) {
       int available = -1;
       while ((available = zipStream.read(data, 0, 1024)) > -1) {
-        out.write(data, 0, available); 
+//        out.write(data, 0, available); 
+        bos.write(data, 0, available);
       }                         
       zipStream.closeEntry();
       entry = zipStream.getNextEntry();
     }
-    out.close();
+    bos.flush();
+    bos.close();
+//    out.close();
     zipStream.close();
-    ByteArrayInputStream inputStream = new ByteArrayInputStream(out.toByteArray());
-    return inputStream;
+//    ByteArrayInputStream inputStream = new ByteArrayInputStream(out.toByteArray());
+    return new BufferedInputStream(new FileInputStream(file));
   }
   
   public static String getThumbnailImage(Node node, String propertyName) throws Exception {
