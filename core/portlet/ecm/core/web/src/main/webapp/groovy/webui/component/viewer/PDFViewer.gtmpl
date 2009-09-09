@@ -35,15 +35,153 @@
   public String formatNodeName(String text) {
     return text.replaceAll("'", "\\\\'") ;
   }
-  
 %>
-<div class="NavigationContainer">       
-  <div class="TopTitle">$originalNode.name</div>
-	<div class="Content">
-  	<div class="TextContent">
-			<div style="text-align:center; font-style:italic">
-			  <%=_ctx.appRes("File.view.label.not-viewable")%>
-			</div>
+<head>
+  <style>
+
+.UIPDFViewerContainer {
+	border: 1px solid #d1d1d1;
+} 
+
+.UIPDFViewerContainer .PDFViewerBar {
+	background: url('/eXoDMSResources/skin/images/filePlan/PDFViewerBar.gif') repeat-x ;
+	height: 28px; 
+}
+
+.UIPDFViewerContainer .PDFViewerBar .ControlButton {
+	float: left;
+	line-height: 28px;
+	margin-left: 8px;
+}
+
+
+.UIPDFViewerContainer .PDFViewerBar .ControlButton .ButtonBack{
+	background: url('/eXoDMSResources/skin/images/filePlan/ButtonBack.gif') no-repeat left center ;
+	height: 28px;
+	width: 18px;
+	cursor: pointer;
+}
+
+.UIPDFViewerContainer .PDFViewerBar .ControlButton .ButtonNext{
+	background: url('/eXoDMSResources/skin/images/filePlan/ButtonNext.gif') no-repeat left center ;
+	height: 28px;
+	width: 18px;
+	cursor: pointer;
+}
+
+.UIPDFViewerContainer .PDFViewerBar .ControlButton .ZoomIcon{
+	background: url('/eXoDMSResources/skin/images/filePlan/ZoomIcon.gif') no-repeat left center ;
+	height: 28px;
+	width: 18px;
+	cursor: pointer;
+}
+
+.UIPDFViewerContainer .PDFViewerBar .ControlButton .HeightToWidth{
+	background: url('/eXoDMSResources/skin/images/filePlan/HeightToWidth.gif') no-repeat left center ;
+	height: 28px;
+	width: 18px;
+	cursor: pointer;
+}
+
+.UIPDFViewerContainer .PDFViewerBar .ControlButton .WidthToHeight{
+	background: url('/eXoDMSResources/skin/images/filePlan/WidthToHeight.gif') no-repeat left center ;
+	height: 28px;
+	width: 18px;
+	cursor: pointer;
+}
+
+.UIPDFViewerContainer .PDFViewerBar .ControlButton .InfoIcon{
+	background: url('/eXoDMSResources/skin/images/filePlan/InfoIcon.gif') no-repeat left center ;
+	height: 28px;
+	width: 18px;
+	cursor: pointer;
+}
+
+.UIPDFViewerContainer .PDFViewerBar .DownLoadIcon{
+	background: url('/eXoDMSResources/skin/images/filePlan/DownLoadIcon.gif') no-repeat left center ;
+	Line-height: 28px;
+	width: 110px;
+	cursor: pointer;
+	float: right;
+	margin-right: 8px;
+	color: #4f4f4f;
+	padding-left: 22px;
+}
+
+.UIPDFViewerContainer .PDFViewerContent {
+	padding-top: 12px;
+}
+
+.UIPDFViewerContainer .PDFViewerContent .ImageView{
+	background: url('/eXoDMSResources/skin/images/filePlan/ImageView.gif') no-repeat left center ;
+	width: 612px;
+	height: 308px;
+	margin:auto;
+}
+
+.UIPDFViewerContainer .PDFViewerBar .ControlButton .PageNumber{
+	background: white ;
+	height: 20px;
+	width: 22px;
+	margin: 4px 0px 0px 0px;
+	text-align: center;
+	line-height: 20px;
+	border: 1px solid #c7c7c7;
+}
+
+.UIPDFViewerContainer .PDFViewerBar .ControlButton .SeparatorLine{
+	height: 28px;
+	border-left: 1px solid #c7c7c7;
+}
+
+  </style>  
+</head>
+
+<div class="UIPDFViewerContainer">       
+  <div class="PDFViewerBar">
+		<div class="ControlButton">
+			<div class="ButtonBack"><span></span></div>
+		</div>
+		<div class="ControlButton">
+			<div class="Lable">Page</div>
+		</div>
+		<div class="ControlButton">
+			<div class="PageNumber">01</div>
+		</div>
+		<div class="ControlButton">
+			<div class="Lable">of 30</div>
+		</div>
+		<div class="ControlButton">
+			<div class="ButtonNext"><span></span></div>
+		</div>
+		<div class="ControlButton">
+			<div class="SeparatorLine"><span></span></div>
+		</div>
+		<div class="ControlButton">
+			<div class="ZoomIcon"><span></span></div>
+		</div>
+		<div class="ControlButton">
+			<select name="ZoomOption" class="selectbox">
+				<option value="25%">100%</option>
+				<option value="50%">50%</option>
+				<option value="100%">25%</option>
+			</select>
+		</div>
+		<div class="ControlButton">
+			<div class="HeightToWidth"><span></span></div>
+		</div>
+		<div class="ControlButton">
+			<div class="WidthToHeight"><span></span></div>
+		</div>
+		<div class="ControlButton">
+			<div class="InfoIcon"><span></span></div>
+		</div>
+		<div class="DownLoadIcon">Download This File</div>
+		<div class="ClearBoth"><span></span></div>
+	</div>
+	<div class="PDFViewerContent">
+  	<div class="ImageView">
+			<span></span>
 		</div>
 	</div>
 </div>
