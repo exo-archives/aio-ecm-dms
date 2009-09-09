@@ -397,13 +397,11 @@ public class Utils {
     File file = new File(extractedFile);
     if (!file.exists()) file.createNewFile();
     BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-//    ByteArrayOutputStream out= new ByteArrayOutputStream();
     byte[] data  = new byte[1024];   
     ZipEntry entry = zipStream.getNextEntry();
     while(entry != null) {
       int available = -1;
       while ((available = zipStream.read(data, 0, 1024)) > -1) {
-//        out.write(data, 0, available); 
         bos.write(data, 0, available);
       }                         
       zipStream.closeEntry();
@@ -411,9 +409,7 @@ public class Utils {
     }
     bos.flush();
     bos.close();
-//    out.close();
     zipStream.close();
-//    ByteArrayInputStream inputStream = new ByteArrayInputStream(out.toByteArray());
     return new BufferedInputStream(new FileInputStream(file));
   }
   
