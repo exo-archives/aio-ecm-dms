@@ -85,7 +85,6 @@ public class UISearchResult extends UIContainer {
   private QueryResult queryResult_;
   private long searchTime_ = 0; 
   private boolean flag_ = false;
-  private boolean isQuickSearch_ = false;
   private UIQueryResultPageIterator uiPageIterator_;
   private List<Node> currentListNodes_ = new ArrayList<Node>();
   private List<Row> currentListRows_ = new ArrayList<Row>();
@@ -110,8 +109,6 @@ public class UISearchResult extends UIContainer {
   public UISearchResult() throws Exception {
     uiPageIterator_ = addChild(UIQueryResultPageIterator.class, null, null);
   }
-
-  public void setIsQuickSearch(boolean isQuickSearch) { isQuickSearch_ = isQuickSearch; }
 
   public void setQueryResults(QueryResult queryResult) throws Exception {
     queryResult_ = queryResult;         
@@ -319,27 +316,19 @@ public class UISearchResult extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-      if (uiSearchResult.isQuickSearch_) {
-        UIPopupWindow uiPopup = uiExplorer.getChildById("ViewSearch");
-        if (uiPopup == null) {
-          uiPopup = uiExplorer.addChild(UIPopupWindow.class, null, "ViewSearch");
-        }
-        uiPopup.setResizable(true);
-        UIViewSearchResult uiViewSearch = uiPopup.createUIComponent(UIViewSearchResult.class, null, null);
-        uiViewSearch.setNode(node);
+      UIPopupWindow uiPopup = uiExplorer.getChildById("ViewSearch");
+      if (uiPopup == null) {
+        uiPopup = uiExplorer.addChild(UIPopupWindow.class, null, "ViewSearch");
+      }
+      uiPopup.setResizable(true);
+      UIViewSearchResult uiViewSearch = uiPopup.createUIComponent(UIViewSearchResult.class, null, null);
+      uiViewSearch.setNode(node);
 
-        uiPopup.setWindowSize(560,450);
-        uiPopup.setUIComponent(uiViewSearch);
-        uiPopup.setRendered(true);
-        uiPopup.setShow(true);
-        return;
-      }      
-      UIECMSearch uiECMSearch = uiSearchResult.getParent();
-      UIViewSearchResult uiView = uiECMSearch.getChild(UIViewSearchResult.class);
-      if (uiView == null) uiView = uiECMSearch.addChild(UIViewSearchResult.class, null, null);
-      uiView.setNode(node);
-      uiECMSearch.setRenderedChild(UIViewSearchResult.class);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiECMSearch.getParent());
+      uiPopup.setWindowSize(600,750);
+      uiPopup.setUIComponent(uiViewSearch);
+      uiPopup.setRendered(true);
+      uiPopup.setShow(true);
+      return;
     }
   }
 
