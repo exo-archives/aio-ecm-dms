@@ -2245,6 +2245,11 @@
 			<name-not-allowed>A word or phrase in content is not allowed.</name-not-allowed>
 		</msg>
 	</UISimpleSearch>
-  
+
+	<UIExportNode>
+	  <msg>
+	    <OutOfMemoryError>You should choose SystemView when export large data</OutOfMemoryError>
+	  </msg>
+  </UIExportNode>  
 </bundle>
 

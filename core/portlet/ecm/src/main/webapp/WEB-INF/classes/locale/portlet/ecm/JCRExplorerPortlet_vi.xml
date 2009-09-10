@@ -2249,4 +2249,9 @@
 			<name-not-allowed>Một từ hoặc một cụm từ trong nội dung không hợp lệ.</name-not-allowed>
 		</msg>
 	</UISimpleSearch>	
+	<UIExportNode>
+	  <msg>
+	    <OutOfMemoryError>Bạn nên chọn xuất tài liệu theo cách xem hệ thống</OutOfMemoryError>
+	  </msg>
+	 </UIExportNode>	
 </bundle>
