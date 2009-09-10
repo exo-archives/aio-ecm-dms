@@ -275,7 +275,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   
   static  public class SaveActionListener extends EventListener<UIUploadForm> {
     public void execute(Event<UIUploadForm> event) throws Exception {
-      long start = System.currentTimeMillis();
       UIUploadForm uiForm = event.getSource();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
@@ -583,18 +582,13 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         JCRExceptionManager.process(uiApp, e);
         return ;
       }
-      
-        // Begin proccess with save multiple upload form
         }
       }
       uiUploadContent.setListUploadValues(listArrValues);
       uiManager.setRenderedChild(UIUploadContainer.class);
       uiExplorer.setIsHidePopup(true);
-      
       uiExplorer.updateAjax(event);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
-      //End proccess with save multiple upload form    
-      System.out.println("\n\n execute time = " + (System.currentTimeMillis() - start));
     }
   }
 
