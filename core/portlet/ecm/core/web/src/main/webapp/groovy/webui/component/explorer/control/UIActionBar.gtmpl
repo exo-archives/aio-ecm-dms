@@ -37,8 +37,12 @@
 		  <div style="overflow: hidden; $displayTabContainer">
 				<%
 			    def isSelected = false;
-				  for(tab in tabAvailableList) {
-				    def selectedTab = uicomponent.getSelectedTab();
+					def selectedTab = uicomponent.getSelectedTab();
+				  if(!tabAvailableList.contains(selectedTab)) {
+						selectedTab = tabAvailableList.get(0);
+						uicomponent.setSelectedTab(selectedTab);
+					}
+					for(tab in tabAvailableList) {
 				    def tabStyle = "NormalActionBarTab";
 				    if(selectedTab.equals(tab)) {
 				      isSelected = true;
