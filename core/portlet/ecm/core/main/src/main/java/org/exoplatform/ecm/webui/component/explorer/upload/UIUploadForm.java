@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.upload;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.ArrayList;
@@ -274,6 +275,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   
   static  public class SaveActionListener extends EventListener<UIUploadForm> {
     public void execute(Event<UIUploadForm> event) throws Exception {
+      long start = System.currentTimeMillis();
       UIUploadForm uiForm = event.getSource();
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
       UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class) ;
@@ -288,6 +290,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       // Proccess with save multiple upload form   
       List<UIComponent> listFormChildren = uiForm.getChildren();
       int index = 0;
+      InputStream inputStream;
       for (UIComponent uiComp : listFormChildren) {
         if(uiComp instanceof UIFormUploadInput) {
         String[] arrayId = uiComp.getId().split(FIELD_UPLOAD);
@@ -342,7 +345,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         return;
       }      
       String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
-      InputStream inputStream = uiFormUploadInput.getUploadDataAsStream();
+      inputStream = new BufferedInputStream(uiFormUploadInput.getUploadDataAsStream());
       String name;
       if (index == 0){
         name = uiForm.getUIStringInput(FIELD_NAME).getValue();
@@ -590,7 +593,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       
       uiExplorer.updateAjax(event);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
-      //End proccess with save multiple upload form      
+      //End proccess with save multiple upload form    
+      System.out.println("\n\n execute time = " + (System.currentTimeMillis() - start));
     }
   }
 
