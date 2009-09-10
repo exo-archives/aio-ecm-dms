@@ -227,6 +227,10 @@ public class UIDocumentContent extends UIContainer {
     return nodeTypes ;
   }
   
+  public UIComponent getCommentComponent() {
+    return this;
+  }
+  
   public UIComponent getUIComponent(String mimeType) throws Exception {
     UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
     List<UIExtension> extensions = manager.getUIExtensions(Utils.FILE_VIEWER_EXTENSION_TYPE);
