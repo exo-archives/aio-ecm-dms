@@ -169,7 +169,6 @@ public class UISavedQuery extends UIContainer implements UIPopupComponent {
       if(uiQuery.isQuickSearch_) {
         uiSearch = uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class);
         uiSearchResult = ((UIDocumentWorkspace)uiSearch).getChild(UISearchResult.class);
-        uiSearchResult.setIsQuickSearch(true);
       } else {
         uiSearch = uiQuery.getParent();
         ((UIECMSearch)uiSearch).setRenderedChild(UISearchResult.class);
