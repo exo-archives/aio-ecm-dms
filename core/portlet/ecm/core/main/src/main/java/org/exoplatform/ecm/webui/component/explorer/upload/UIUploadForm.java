@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.upload;
 
+import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.ArrayList;
@@ -276,7 +277,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
           return ;
       }      
       String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
-      InputStream inputStream = input.getUploadDataAsStream();
+      InputStream inputStream = new BufferedInputStream(input.getUploadDataAsStream());
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue();
       if (name == null) {
         for(String filterChar : arrFilterChar) {
