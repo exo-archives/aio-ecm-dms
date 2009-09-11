@@ -240,14 +240,14 @@ a:hover .ShowHideBoxContainer {
 
 .ManageVersionsIcon {
 	height: 24px;
-  background: url('MacSkin/ManageVersions.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/ManageVersions.gif') no-repeat right center; /* orientation=rt */
+  background: url('DefaultSkin/ManageVersions.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageVersions.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManageAuditingIcon {
 	height: 24px;
-  background: url('MacSkin/ManageAuditing.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/ManageAuditing.gif') no-repeat right center; /* orientation=rt */
+  background: url('DefaultSkin/ManageAuditing.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageAuditing.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ManagePublicationsIcon {
@@ -276,8 +276,8 @@ a:hover .ShowHideBoxContainer {
 
 .ManageRelationsIcon {
 	height: 24px;
-  background: url('MacSkin/ManageRelations.gif') no-repeat  left center; /* orientation=lt */
-  background: url('MacSkin/ManageRelations.gif') no-repeat  right center; /* orientation=rt */
+  background: url('DefaultSkin/ManageRelations.gif') no-repeat  left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageRelations.gif') no-repeat  right center; /* orientation=rt */
 }
 
 .ImportNodeIcon {
