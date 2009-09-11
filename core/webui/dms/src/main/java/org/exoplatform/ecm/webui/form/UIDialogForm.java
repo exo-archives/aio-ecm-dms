@@ -504,7 +504,7 @@ public class UIDialogForm extends UIForm {
     addUIFormInput(uiSelectBox);
     if(isNotEditNode) {      
       Node child = getChildNode();
-      if(child != null) 
+      if(child != null && child.hasProperty(propertyName)) 
         uiSelectBox.setValue(DialogFormUtil.getPropertyValueAsString(child,propertyName)); 
     }
     if(formSelectBoxField.isOnchange()) uiSelectBox.setOnChange("Onchange");
