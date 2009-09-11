@@ -110,7 +110,9 @@ public class UIDocumentContent extends UIContainer {
   
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     try {
-      return new JCRResourceResolver(getRepository(), getWorkspaceName(), Utils.EXO_TEMPLATEFILE) ;
+      DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
+      String wsName = dmsConfiguration.getConfig(getRepository()).getSystemWorkspace();
+      return new JCRResourceResolver(getRepository(), wsName, Utils.EXO_TEMPLATEFILE) ;
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -353,9 +355,7 @@ public class UIDocumentContent extends UIContainer {
   }
   
   public String getWorkspaceName() throws Exception {
-    DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
-    return dmsConfiguration.getConfig(getRepository()).getSystemWorkspace();
-    //return node_.getSession().getWorkspace().getName();
+    return node_.getSession().getWorkspace().getName();
   }
   
   public String getRepository() throws Exception {

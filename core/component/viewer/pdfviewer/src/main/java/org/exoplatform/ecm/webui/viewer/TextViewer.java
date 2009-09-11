@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.ecm.webui.component.viewer;
+package org.exoplatform.ecm.webui.viewer;
 
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -27,10 +27,10 @@ import org.exoplatform.webui.core.UIComponent;
  * 3:49:41 AM
  */
 @ComponentConfig(
-    template = "app:/groovy/webui/component/viewer/ImageViewer.gtmpl"
+    template = "classpath:resources/templates/TextViewer.gtmpl"
 )
-public class ImageViewer extends UIComponent {
+public class TextViewer extends UIComponent {
   
-  public ImageViewer() throws Exception {
+  public TextViewer() throws Exception {
   }
 }

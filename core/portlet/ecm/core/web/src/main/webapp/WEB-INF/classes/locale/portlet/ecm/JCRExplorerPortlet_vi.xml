@@ -2527,27 +2527,5 @@
 				<AccessDeniedException>Bạn không có quyền truy nhập danh sách danh mục</AccessDeniedException>		 	
 			</msg>
   </Taxonomy>
-	<PDFViewer>
-	  <label>
-	    <nextPage>Trang kế tiếp</nextPage>
-      <previousPage>Trang trước</previousPage>	  
-      <page>Trang</page>
-      <of>của</of>
-      <rotateLeft>Quay trái</rotateLeft>
-      <rotateRight>Quay phải</rotateRight>
-      <downloadFile>Tải xuống tài liệu này</downloadFile>
-      <viewInfor>Xem thông tin</viewInfor>
-      <viewFullPage>Xem trang đầy đủ</viewFullPage>
-	  </label>
-	  <metadata>
-	    <title>Tiêu đề</title>
-	    <author>Tác giả</author>
-	    <subject>Chủ đề</subject>
-	    <keyWords>Từ chìa khóa</keyWords>
-	    <creator>Người tạo</creator>
-	    <producer>Nhà xuất bản</producer>
-	    <creationDate>Ngày tạo</creationDate>
-	    <modDate>Ngày chỉnh sửa</modDate>
-	  </metadata>
-	</PDFViewer>  
+
 </bundle>

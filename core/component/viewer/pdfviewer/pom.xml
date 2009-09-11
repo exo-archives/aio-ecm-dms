@@ -13,18 +13,7 @@
   <description>eXo PDF Viewer</description>
 
   <dependencies>
-    <dependency>
-      <groupId>org.icepdf</groupId>
-      <artifactId>icepdf-viewer</artifactId>
-      <version>3.0</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.icepdf</groupId>
-      <artifactId>icepdf-core</artifactId>
-      <version>3.0</version>
-      <scope>compile</scope>
-    </dependency>	
+    
     <dependency>
       <groupId>org.exoplatform.kernel</groupId>
       <artifactId>exo.kernel.container</artifactId>
@@ -66,6 +55,20 @@
       <version>${org.exoplatform.jcr.version}</version>
       <scope>compile</scope>
     </dependency>
+
+  	<dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.portal</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.exoplatform.portal</groupId>
+      <artifactId>exo.portal.webui.core</artifactId>
+      <version>${org.exoplatform.portal.version}</version>
+      <scope>compile</scope>
+    </dependency>
     
     <dependency>
       <groupId>org.icepdf</groupId>
@@ -80,22 +83,12 @@
       <version>3.0</version>
       <scope>compile</scope>
     </dependency>    
-  </dependencies>
-  
-  <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <outputDirectory>target/classes</outputDirectory>
-  
-    <resources>
-      <resource>
-        <directory>src/main/java</directory>
-        <includes>
-          <include>**/*.xml</include>          
-		      <include>**/*.properties</include>
-        </includes>
-      </resource>
-    </resources>
 
-  </build>
-  
+    <dependency>
+      <groupId>org.codehaus.groovy</groupId>
+      <artifactId>groovy-all-minimal</artifactId>
+      <version>1.5.4</version>
+      <scope>compile</scope>
+    </dependency>
+  </dependencies>
 </project>

@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
  */
-package org.exoplatform.ecm.webui.component.viewer;
+package org.exoplatform.ecm.webui.viewer;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -23,12 +23,18 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
-import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.webui.workspace.UIPortalApplication;
+import org.exoplatform.services.resources.ResourceBundleService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -54,7 +60,7 @@ import org.icepdf.core.pobjects.PInfo;
  */
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
-    template = "app:/groovy/webui/component/viewer/PDFViewer.gtmpl",
+    template = "classpath:resources/templates/PDFViewer.gtmpl",
     events = {
         @EventConfig(listeners = PDFViewer.NextPageActionListener.class, phase = Phase.DECODE),
         @EventConfig(listeners = PDFViewer.PreviousPageActionListener.class, phase = Phase.DECODE),
@@ -62,7 +68,9 @@ import org.icepdf.core.pobjects.PInfo;
         @EventConfig(listeners = PDFViewer.RotateRightPageActionListener.class, phase = Phase.DECODE),
         @EventConfig(listeners = PDFViewer.RotateLeftPageActionListener.class, phase = Phase.DECODE),
         @EventConfig(listeners = PDFViewer.ScalePageActionListener.class, phase = Phase.DECODE),
-        @EventConfig(listeners = PDFViewer.DownloadFileActionListener.class, phase = Phase.DECODE)
+        @EventConfig(listeners = PDFViewer.DownloadFileActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = PDFViewer.ZoomInPageActionListener.class, phase = Phase.DECODE),
+        @EventConfig(listeners = PDFViewer.ZoomOutPageActionListener.class, phase = Phase.DECODE)
     }
 )
 /**
@@ -72,6 +80,8 @@ public class PDFViewer extends UIForm {
 
   final static private String PAGE_NUMBER = "pageNumber";
   final static private String SCALE_PAGE = "scalePage";
+  
+  final private String localeFile = "locale.portlet.viewer.PDFViewer";
   
   private int currentPageNumber_ = 1;
   private int maximumOfPage_ = 0;
@@ -131,13 +141,21 @@ public class PDFViewer extends UIForm {
   public int getPageNumber() { return currentPageNumber_; }
   
   public void setPageNumber(int pageNum) { currentPageNumber_ = pageNum; };
+  
+  public String getResourceBundle(String key) {
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;
+    ResourceBundleService resourceBundleService = (ResourceBundleService) container.getComponentInstanceOfType(ResourceBundleService.class);
+    ResourceBundle resourceBundle=resourceBundleService.getResourceBundle(localeFile, locale, this.getClass().getClassLoader());
+    return resourceBundle.getString(key);
+  }
 
   private Document getDocument(Node node) throws RepositoryException {
-    if(!node.hasNode(Utils.JCR_CONTENT)) return null;
+    if(!node.hasNode("jcr:content")) return null;
     Document document = new Document();
-    Node contentNode = node.getNode(Utils.JCR_CONTENT);
+    Node contentNode = node.getNode("jcr:content");
     try {
-      InputStream input = contentNode.getProperty(Utils.JCR_DATA).getStream() ;      
+      InputStream input = contentNode.getProperty("jcr:data").getStream() ;      
       document.setInputStream(input, node.getPath());
     } catch (PDFException ex) {
       System.out.println("Error parsing PDF document " + ex);
@@ -283,5 +301,40 @@ public class PDFViewer extends UIForm {
       event.getRequestContext().addUIComponentToUpdateByAjax(pdfViewer);
     }
   }
+
+  static public class ZoomInPageActionListener extends EventListener<PDFViewer> {
+    public void execute(Event<PDFViewer> event) throws Exception {     
+      PDFViewer pdfViewer = event.getSource();
+      String[] arrValue = {"0.05f", "0.1f", "0.25f", "0.5f", "0.75f", "1.0f", 
+          "1.25f", "1.5f", "2.0f", "3.0f"};
+      String scale = pdfViewer.getUIFormSelectBox(SCALE_PAGE).getValue();
+      if(scale.equals(arrValue[arrValue.length - 1])) return;
+      for(int i = 0; i < arrValue.length - 1; i++) {
+        if(scale.equals(arrValue[i])) {
+          pdfViewer.setScale(Float.parseFloat(arrValue[i + 1]));
+          pdfViewer.getUIFormSelectBox(SCALE_PAGE).setValue(arrValue[i + 1]);
+          break;
+        }
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(pdfViewer);
+    }
+  }
   
+  static public class ZoomOutPageActionListener extends EventListener<PDFViewer> {
+    public void execute(Event<PDFViewer> event) throws Exception {     
+      PDFViewer pdfViewer = event.getSource();
+      String scale = pdfViewer.getUIFormSelectBox(SCALE_PAGE).getValue();
+      String[] arrValue = {"0.05f", "0.1f", "0.25f", "0.5f", "0.75f", "1.0f", 
+          "1.25f", "1.5f", "2.0f", "3.0f"};
+      if(scale.equals(arrValue[0])) return;
+      for(int i = 0; i < arrValue.length - 1; i++) {
+        if(scale.equals(arrValue[i])) {
+          pdfViewer.setScale(Float.parseFloat(arrValue[i - 1]));
+          pdfViewer.getUIFormSelectBox(SCALE_PAGE).setValue(arrValue[i - 1]);
+          break;
+        }
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(pdfViewer);
+    }
+  }  
 }

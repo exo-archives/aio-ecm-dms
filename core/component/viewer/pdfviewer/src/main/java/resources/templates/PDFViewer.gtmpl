@@ -75,8 +75,16 @@
 	cursor: pointer;
 }
 
-.UIPDFViewerContainer .PDFViewerBar .ControlButton .ZoomIcon{
-	background: url('/eXoDMSResources/skin/images/file/ZoomIcon.gif') no-repeat left center ;
+.UIPDFViewerContainer .PDFViewerBar .ControlButton .ZoomIn{
+	background: url('/eXoDMSResources/skin/images/file/ZoomIn.gif') no-repeat left center ;
+	height: 28px;
+	width: 18px;
+	cursor: pointer;
+}
+
+
+.UIPDFViewerContainer .PDFViewerBar .ControlButton .ZoomOut{
+	background: url('/eXoDMSResources/skin/images/file/ZoomOut.gif') no-repeat left center ;
 	height: 28px;
 	width: 18px;
 	cursor: pointer;
@@ -167,45 +175,56 @@
 <div class="UIPDFViewerContainer">       
   <div class="PDFViewerBar">
 		<div class="ControlButton">
-			<a href="<%=uicomponent.event("PreviousPage")%>" title="<%=_ctx.appRes("PDFViewer.label.previousPage")%>"><div class="ButtonBack"><span></span></div></a>
+			<a href="<%=uicomponent.event("PreviousPage")%>" title="<%=uicomponent.getResourceBundle("PDFViewer.label.previousPage")%>"><div class="ButtonBack"><span></span></div></a>
 		</div>
 		<div class="ControlButton">
-			<div class="Lable"><%=_ctx.appRes("PDFViewer.label.page")%></div>
+			<div class="Lable"><%=uicomponent.getResourceBundle("PDFViewer.label.page")%></div>
 		</div>
 		<div class="ControlButton" id="PageControl">
 		  <a href="<%=uicomponent.event("GotoPage")%>" id="GotoPage"></a>
 			<div class="PageNumber"><%uiform.renderField(uicomponent.getChildById("pageNumber"))%></div>
 		</div>
 		<div class="ControlButton">
-			<div class="Lable"><%=_ctx.appRes("PDFViewer.label.of")%> $maximumPage</div>
+			<div class="Lable"><%=uicomponent.getResourceBundle("PDFViewer.label.of")%> $maximumPage</div>
 		</div>
 		<div class="ControlButton">
-			<a href="<%=uicomponent.event("NextPage")%>" title="<%=_ctx.appRes("PDFViewer.label.nextPage")%>"><div class="ButtonNext"><span></span></div></a>
+			<a href="<%=uicomponent.event("NextPage")%>" title="<%=uicomponent.getResourceBundle("PDFViewer.label.nextPage")%>">
+			  <div class="ButtonNext"><span></span></div>
+			</a>
 		</div>
 		<div class="ControlButton">
 			<div class="SeparatorLine"><span></span></div>
 		</div>
 		<div class="ControlButton">
-			<div class="ZoomIcon"><span></span></div>
+			<a href="<%=uicomponent.event("ZoomOutPage")%>" title="<%=uicomponent.getResourceBundle("PDFViewer.label.zoomOutPage")%>">
+			  <div class="ZoomOut"><span></span></div>
+			</a>
+		</div>
+		<div class="ControlButton">
+			<a href="<%=uicomponent.event("ZoomInPage")%>" title="<%=uicomponent.getResourceBundle("PDFViewer.label.zoomInPage")%>">
+			  <div class="ZoomIn"><span></span></div>
+			</a>
 		</div>
 		<div class="ControlButton">
       <div class="selectbox"><%uiform.renderField(uicomponent.getChildById("scalePage"))%></div>
 		</div>
 		<div class="ControlButton">
-			<a href="<%=uicomponent.event("RotateLeftPage")%>" title="<%=_ctx.appRes("PDFViewer.label.rotateLeft")%>"><div class="RotateLeft"><span></span></div></a>
+			<a href="<%=uicomponent.event("RotateLeftPage")%>" title="<%=uicomponent.getResourceBundle("PDFViewer.label.rotateLeft")%>">
+			  <div class="RotateLeft"><span></span></div>
+			</a>
 		</div>
 		<div class="ControlButton">
-			<a href="<%=uicomponent.event("RotateRightPage")%>" title="<%=_ctx.appRes("PDFViewer.label.rotateRight")%>"><div class="RotateRight"><span></span></div></a>
+			<a href="<%=uicomponent.event("RotateRightPage")%>" title="<%=uicomponent.getResourceBundle("PDFViewer.label.rotateRight")%>"><div class="RotateRight"><span></span></div></a>
 		</div>
 		<div class="ControlButton">
-			<div class="InfoIcon" onclick="javascript:eXo.ecm.ECMUtils.showDocumentInformation(this, event);" title="<%=_ctx.appRes("PDFViewer.label.viewInfor")%>"><span></span></div>
+			<div class="InfoIcon" onclick="javascript:eXo.ecm.ECMUtils.showDocumentInformation(this, event);" title="<%=uicomponent.getResourceBundle("PDFViewer.label.viewInfor")%>"><span></span></div>
 		</div>
-		<a href="javascript: void(0)"><div class="DownLoadIcon" onclick="<%=uicomponent.event("DownloadFile")%>"><%=_ctx.appRes("PDFViewer.label.downloadFile")%></div></a>
+		<a href="javascript: void(0)"><div class="DownLoadIcon" onclick="<%=uicomponent.event("DownloadFile")%>"><%=uicomponent.getResourceBundle("PDFViewer.label.downloadFile")%></div></a>
 		<div class="ClearBoth"><span></span></div>
 	</div>
 	<div class="InfoPopup" id="metadatas" style="display: none;position: absolute;">
 		<%for(key in metadatas.keySet()) {%>
-			<div class="Metadata"><span class="metaKey"><%=_ctx.appRes("PDFViewer.metadata." + key)%>: </span><span class="metaValue"><%=metadatas.get(key)%></span></div>
+			<div class="Metadata"><span class="metaKey"><%=uicomponent.getResourceBundle("PDFViewer.metadata." + key)%>: </span><span class="metaValue"><%=metadatas.get(key)%></span></div>
 		<%}%>
 	</div>
 	<div class="PDFViewerContent">
@@ -214,7 +233,7 @@
 			try {
 			  String pdfPageImage = "/" + uiParent.getPortalName() + "/rest/pdfviewer/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + "/${currentPage}/${currentRotation}/${currentScale}" + fileLangNode.getPath() + "/";
 		%>
-			  <a href="$pdfPageImage" rel="lightbox" title="<%=_ctx.appRes("PDFViewer.label.viewFullPage")%>"><image src="$pdfPageImage"></a>
+			  <a href="$pdfPageImage" rel="lightbox" title="<%=uicomponent.getResourceBundle("PDFViewer.label.viewFullPage")%>"><image src="$pdfPageImage"></a>
 		<%}catch(Exception e) {%>	
 			  <div style="text-align:center; font-style:italic">
 			    <%=_ctx.appRes("File.view.label.not-viewable")%>
