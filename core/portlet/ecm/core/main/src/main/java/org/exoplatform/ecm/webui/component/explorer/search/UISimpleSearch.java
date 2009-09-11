@@ -177,7 +177,7 @@ public class UISimpleSearch extends UIForm {
       int intIndex = Integer.parseInt(event.getRequestContext().getRequestParameter(OBJECTID));
       uiSimpleSearch.constraints_.remove(intIndex);
       uiSimpleSearch.virtualConstraints_.remove(intIndex);
-      uiSimpleSearch.categoryPathList.remove(intIndex);
+      if (uiSimpleSearch.categoryPathList.size() > intIndex) uiSimpleSearch.categoryPathList.remove(intIndex);
       if(uiSimpleSearch.constraints_.size() > 0 && intIndex == 0) {
         String newFirstConstraint = null;
         String newFirstVirtualConstraint = null;
@@ -227,6 +227,15 @@ public class UISimpleSearch extends UIForm {
         }
       }
       String statement = uiSimpleSearch.getQueryStatement() + " order by @exo:dateCreated descending";
+      List<String> searchCategoryPathList = uiSimpleSearch.getCategoryPathList();
+      if ((searchCategoryPathList != null) && (searchCategoryPathList.size() > 0)) {
+        for (String searchCategoryPath : searchCategoryPathList) {
+          String statementReplace = statement.replaceAll("@exo:category = '" + searchCategoryPath + "'", 
+              "@jcr:mixinTypes = 'mix:referenceable'");
+          statement = statementReplace;
+        }
+      }
+      
       long startTime = System.currentTimeMillis();
       try {
         Query query = queryManager.createQuery(statement, Query.XPATH);      
