@@ -137,8 +137,8 @@
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .IconSymLink .NodeLabel {
-	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat left bottom; /* orientation=lt */
-	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat 94% bottom; /* orientation=rt */
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat 14px  bottom; /* orientation=lt */
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat 90% bottom; /* orientation=rt */
 	padding-left: 25px; /* orientation=lt */
 	padding-right: 25px; /* orientation=rt */
 }

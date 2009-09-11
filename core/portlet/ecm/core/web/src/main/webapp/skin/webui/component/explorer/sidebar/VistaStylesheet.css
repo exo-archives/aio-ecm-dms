@@ -129,7 +129,7 @@
 	padding-right: 22px; /* orientation=rt */
 	background-position: left top; /* orientation=lt */
 	background-position: right top; /* orientation=rt */
-	height: 22px;
+	height: 24px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .IconSymLink {
@@ -142,6 +142,7 @@
 	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat 94% bottom; /* orientation=rt */
 	padding-left: 22px; /* orientation=lt */
 	padding-right: 22px; /* orientation=rt */
+	height: 22px;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .HardDisk24x24Icon {
