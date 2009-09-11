@@ -376,10 +376,12 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
+      } catch(ItemExistsException existedex) {
+        uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.not-allowed-same-name-sibling", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
       } catch(RepositoryException repo) {
-        String key = "UIDocumentForm.msg.repository-exception-permission";
-        if(ItemExistsException.class.isInstance(repo)) key = "UIDocumentForm.msg.not-allowed-same-name-sibling";
-        uiApp.addMessage(new ApplicationMessage(key, null, ApplicationMessage.WARNING));
+        uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.repository-exception-permission", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(NumberFormatException nume) {
