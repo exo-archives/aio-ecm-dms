@@ -190,8 +190,12 @@ public class UIConstraintsForm extends UIForm implements UISelectable{
    * @return
    */
   private String getCategoryQueryString(String categoryPath) {
+    /*
     if (categoryPath == null || categoryPath.length() == 0) return "";    
     return ("@jcr:mixinTypes = 'mix:referenceable'");
+    */
+    if (categoryPath == null || categoryPath.length() == 0) return "";
+    return ("@exo:category = '" + categoryPath + "'");
   }
   
   private void addConstraint(int opt) throws Exception {
