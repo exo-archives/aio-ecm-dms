@@ -674,15 +674,15 @@ public class UIWorkingArea extends UIContainer {
   
   private void processRemoveMultiple(String[] nodePaths, String[] wsNames, Event<?> event) throws Exception {
     for(int i=0; i< nodePaths.length; i++) {
-      processRemove(nodePaths[i], wsNames[i], event, true);
+      processRemove(nodePaths[i], wsNames[i], event);
     }
   }
   
-  private void processRemove(String nodePath, String wsName, Event<?> event, boolean isMultiSelect) throws Exception {
+  private void processRemove(String nodePath, String wsName, Event<?> event) throws Exception {
     if (wsName == null) {
       wsName = getDefaultWorkspace();        
     }
-    processCopy(wsName + ":" + nodePath, event, isMultiSelect);    
+    doDelete(wsName.concat(":").concat(nodePath), event);
   }
   
   private void processRemove(String nodePath, Node node, Event<?> event, boolean isMultiSelect) throws Exception {
@@ -904,7 +904,7 @@ public class UIWorkingArea extends UIContainer {
     if(nodePath.indexOf(";") > -1) {
       processRemoveMultiple(nodePath.split(";"), wsName.split(";"), event);
     } else {
-      processRemove(nodePath, wsName, event, false);
+      processRemove(nodePath, wsName, event);
     }
     uiExplorer.updateAjax(event);
     if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save(); 
