@@ -1321,7 +1321,11 @@ public class UIBrowseContainer extends UIContainer {
       if ((parentNode != null) && (countHistoryNode > 0)) {
         Node tempNode = listHistoryNode.get(countHistoryNode - 1);
         if (tempNode.isNodeType(Utils.EXO_SYMLINK)) {
-          tempNode = linkManager.getTarget(tempNode);
+          try {
+            tempNode = linkManager.getTarget(tempNode);
+          } catch (ItemNotFoundException itemNotFoundException) {
+            return getListHistoryNode();
+          }
           if (tempNode.getPath().equals(parentNode.getPath())) parentNode = null;
         }
       }
@@ -1771,7 +1775,14 @@ public class UIBrowseContainer extends UIContainer {
       uiContainer.storeHistory();
       if (selectNode.isNodeType(Utils.EXO_SYMLINK)) {
         LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
-        selectNode = linkManager.getTarget(selectNode);
+        try {
+          selectNode = linkManager.getTarget(selectNode);
+        } catch (ItemNotFoundException itemNotFoundException) {
+          uiApp.addMessage(new ApplicationMessage("UIBrowseContainer.msg.symlinkNode-no-targetNode", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
+          return;
+        }
       }
       TemplateService templateService = uiContainer.getApplicationComponent(TemplateService.class);
       List<String> templates = templateService.getDocumentTemplates(uiContainer.getRepository());
