@@ -2522,4 +2522,9 @@
 		</msg>
 	</Taxonomy>
 	
+	<UIJcrExplorerEditForm>    
+		<msg>
+			<notNullDriveName>Drive Name is null or empty. Fill Drive Name, please!</notNullDriveName>
+		</msg>
+	</UIJcrExplorerEditForm>	
 </bundle>

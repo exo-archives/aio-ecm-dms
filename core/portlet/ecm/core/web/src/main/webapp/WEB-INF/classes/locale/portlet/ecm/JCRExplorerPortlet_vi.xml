@@ -2527,5 +2527,9 @@
 				<AccessDeniedException>Bạn không có quyền truy nhập danh sách danh mục</AccessDeniedException>		 	
 			</msg>
   </Taxonomy>
-
+	<UIJcrExplorerEditForm>    
+		<msg>
+			<notNullDriveName>Giá trị trường Tên ổ đĩa là null hoặc rỗng. Hãy nhập tên ổ đĩa!</notNullDriveName>
+		</msg>
+	</UIJcrExplorerEditForm>
 </bundle>

@@ -2516,5 +2516,9 @@
 			<AccessDeniedException>You don't have permission to access in these taxonomies</AccessDeniedException>		 	
 		</msg>
 	</Taxonomy>
-
+	<UIJcrExplorerEditForm>    
+		<msg>
+			<notNullDriveName>Drive Name is null or empty. Fill Drive Name, please!</notNullDriveName>
+		</msg>
+	</UIJcrExplorerEditForm>
 </bundle>
