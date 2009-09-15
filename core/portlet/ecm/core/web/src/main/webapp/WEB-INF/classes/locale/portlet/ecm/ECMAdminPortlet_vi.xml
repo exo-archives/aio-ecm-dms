@@ -2138,6 +2138,11 @@
 			<label>
   		<allowCreateFolders>Cho phép tạo các thư mục</allowCreateFolders>	
   	</label>
-  </UIDriveForm> 
+  </UIDriveForm>
+  <UIPermissionTreeInfo>
+  	<msg>
+  		<confirm-delete-permission>Bạn có thực sự muốn xóa quyền này không?</confirm-delete-permission>
+  	</msg>
+  </UIPermissionTreeInfo> 
 </bundle>
 

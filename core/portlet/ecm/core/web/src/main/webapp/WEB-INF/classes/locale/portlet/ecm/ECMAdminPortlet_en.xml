@@ -2139,6 +2139,11 @@
 			<label>
   		<allowCreateFolders>Allowance to create folder</allowCreateFolders>	
   	</label>
-  </UIDriveForm>    
+  </UIDriveForm>  
+  <UIPermissionTreeInfo>
+  	<msg>
+  		<confirm-delete-permission>Do you really want to delete this permission?</confirm-delete-permission>
+  	</msg>
+  </UIPermissionTreeInfo>
 </bundle>
 
