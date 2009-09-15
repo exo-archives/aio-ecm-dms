@@ -38,8 +38,6 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
-import org.exoplatform.container.ExoContainerContext;
-import org.exoplatform.container.PortalContainer;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -86,7 +84,6 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
   public static final String ROOT_SQL_QUERY = "select * from mix:versionable order by exo:dateCreated DESC";
   
   private boolean isVerionNode_ = false;
-  private static String exporteddir;
 
   public UIExportNode() throws Exception {
     RequestContext context = RequestContext.getCurrentInstance();
@@ -100,7 +97,6 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
     addUIFormInput(new UIFormRadioBoxInput(FORMAT, DOC_VIEW, formatItem).
                    setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN)) ;
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(ZIP, ZIP, null)) ;
-    exporteddir = createExportedDir();
   }
 
   public void update(Node node) throws Exception {
@@ -155,30 +151,11 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
   }
 
   /**
-   * Create directory for store exported file
-   * @return exported directory
-   */
-  private static synchronized String createExportedDir() {
-    String tmpdir = System.getProperty("java.io.tmpdir");
-    PortalContainer portalContainer = (PortalContainer)ExoContainerContext.getCurrentContainer();
-    String exportedDir = tmpdir.concat("/")
-                          .concat(portalContainer.getName())
-                          .concat("/eXoDmsDownload/");
-    File exportedHomeDir = new File(exportedDir);
-    if(!exportedHomeDir.exists()) exportedHomeDir.mkdirs();
-    return exportedDir;
-  }
-  /**
    * Create temp file to allow download a big data
    * @return file
    */
-  private static synchronized File getExportedFile(String extension) throws IOException {
-    String exportedFileDir = exporteddir
-                              .concat(String.valueOf(System.currentTimeMillis()))
-                              .concat(".").concat(extension);
-    File exportedFile = new File(exportedFileDir) ;
-    if(!exportedFile.exists()) exportedFile.createNewFile();
-    return exportedFile;
+  private static synchronized File getExportedFile(String prefix, String suffix) throws IOException {
+    return File.createTempFile(prefix.concat(String.valueOf(System.currentTimeMillis())), suffix);
   }
   
   static public class ExportActionListener extends EventListener<UIExportNode> {
@@ -186,7 +163,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       UIExportNode uiExport = event.getSource() ;
       UIJCRExplorer uiExplorer = uiExport.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiExport.getAncestorOfType(UIApplication.class);
-      File exportedFile = UIExportNode.getExportedFile("xml");
+      File exportedFile = UIExportNode.getExportedFile("export", ".xml");
       OutputStream out = new BufferedOutputStream(new FileOutputStream(exportedFile));
       InputStream in = new BufferedInputStream(new FileInputStream(exportedFile));
       CompressData zipService = new CompressData();
@@ -197,49 +174,47 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       Node currentNode = uiExplorer.getCurrentNode();
       Session session = currentNode.getSession() ;
       String nodePath = currentNode.getPath();
-      if(isZip) {
-        if(format.equals(DOC_VIEW)) {
-          try {
-            session.exportDocumentView(nodePath, out, false, false );
-          } catch (OutOfMemoryError error) {
-            out.close();
-            uiApp.addMessage(new ApplicationMessage("UIExportNode.msg.OutOfMemoryError", null, ApplicationMessage.ERROR));
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-            return;
-          }
-        }
-        else session.exportSystemView(nodePath, out, false, false );
-        out.flush();
-        out.close();
-        File zipFile = UIExportNode.getExportedFile("zip");
-        out = new BufferedOutputStream(new FileOutputStream(zipFile));
-        zipService.addInputStream(format + ".xml", in);
-        zipService.createZip(out);
-        in.close();
-        exportedFile.delete();
-        in = new BufferedInputStream(new FileInputStream(zipFile));
-        dresource = new InputStreamDownloadResource(in, "application/zip");
-        dresource.setDownloadName( format + ".zip");
-      } else {
-        if (format.equals(DOC_VIEW)) {
-          try {
+      File zipFile = null;
+      try {
+        if(isZip) {
+            if (format.equals(DOC_VIEW))
+              session.exportDocumentView(nodePath, out, false, false);
+            else
+              session.exportSystemView(nodePath, out, false, false);
+          out.flush();
+          out.close();
+          zipFile = UIExportNode.getExportedFile("data", ".zip");
+          out = new BufferedOutputStream(new FileOutputStream(zipFile));
+          zipService.addInputStream(format + ".xml", in);
+          zipService.createZip(out);
+          in.close();
+          exportedFile.delete();
+          in = new BufferedInputStream(new FileInputStream(zipFile));
+          dresource = new InputStreamDownloadResource(in, "application/zip");
+          dresource.setDownloadName( format + ".zip");
+        } else {
+          if (format.equals(DOC_VIEW))
             session.exportDocumentView(nodePath, out, false, false);
-          } catch (OutOfMemoryError error) {
-            out.close();
-            uiApp.addMessage(new ApplicationMessage("UIExportNode.msg.OutOfMemoryError", null, ApplicationMessage.ERROR));
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-            return;
-          }
+          else
+            session.exportSystemView(nodePath, out, false, false);
+          out.flush();
+          dresource = new InputStreamDownloadResource(in, "text/xml");
+          dresource.setDownloadName(format + ".xml");
         }
-        else session.exportSystemView(nodePath, out, false, false);
-        out.flush();
+        String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+        event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
+        uiExplorer.cancelAction();
+      } catch (OutOfMemoryError error) {
+        uiApp.addMessage(new ApplicationMessage("UIExportNode.msg.OutOfMemoryError", null, ApplicationMessage.ERROR));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } finally {
         out.close();
-        dresource = new InputStreamDownloadResource(in, "text/xml");
-        dresource.setDownloadName(format + ".xml");
+        if (zipFile != null && zipFile.exists()) 
+          zipFile.deleteOnExit();
+        if (exportedFile.exists()) 
+          exportedFile.deleteOnExit();
       }
-      String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
-      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
-      uiExplorer.cancelAction() ;
     }
   }
   
@@ -257,69 +232,72 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       QueryResult queryResult = uiExport.getQueryResult(currentNode);
       NodeIterator queryIter = queryResult.getNodes();
       String format = uiExport.<UIFormRadioBoxInput>getUIInput(FORMAT).getValue() ;
-      OutputStream out;
-      InputStream in;
-      File exportedFile;
-      File propertiesFile = UIExportNode.getExportedFile("properties");
+      OutputStream out = null;
+      InputStream in = null;
+      List<File> lstExporedFile = new ArrayList<File>();
+      File exportedFile = null;
+      File zipFile = null;
+      File propertiesFile = UIExportNode.getExportedFile("mapping", ".properties");
       OutputStream propertiesBOS = new BufferedOutputStream(new FileOutputStream(propertiesFile));
       InputStream propertiesBIS = new BufferedInputStream(new FileInputStream(propertiesFile));
+      try {
       while(queryIter.hasNext()) {
-        exportedFile = UIExportNode.getExportedFile("xml");
+        exportedFile = UIExportNode.getExportedFile("data", ".xml");
+        lstExporedFile.add(exportedFile);
         out = new BufferedOutputStream(new FileOutputStream(exportedFile));
         in = new BufferedInputStream(new FileInputStream(exportedFile));
         Node node = queryIter.nextNode();
         String historyValue = uiExport.getHistoryValue(node); 
         propertiesBOS.write(historyValue.getBytes());
         propertiesBOS.write('\n');
-        if(format.equals(DOC_VIEW)) {
-          try {
-            session.exportDocumentView(node.getVersionHistory().getPath(), out, false, false );
-          } catch (OutOfMemoryError error) {
-            out.close();
-            uiApp.addMessage(new ApplicationMessage("UIExportNode.msg.OutOfMemoryError", null, ApplicationMessage.ERROR));
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-            return;
-          }
-        }
-        else session.exportSystemView(node.getVersionHistory().getPath(), out, false, false );
+        if(format.equals(DOC_VIEW))
+          session.exportDocumentView(node.getVersionHistory().getPath(), out, false, false );
+        else 
+          session.exportSystemView(node.getVersionHistory().getPath(), out, false, false );
         out.flush();
-        out.close();
         zipService.addInputStream(node.getUUID() + ".xml", in);
       }
       if(currentNode.isNodeType(Utils.MIX_VERSIONABLE)) {
-        exportedFile = UIExportNode.getExportedFile("xml");
+          exportedFile = UIExportNode.getExportedFile("data", ".xml");
+          lstExporedFile.add(exportedFile);
         out = new BufferedOutputStream(new FileOutputStream(exportedFile));
         in = new BufferedInputStream(new FileInputStream(exportedFile));
         String historyValue = uiExport.getHistoryValue(currentNode);
         propertiesBOS.write(historyValue.getBytes());
         propertiesBOS.write('\n');
-        if(format.equals(DOC_VIEW)) {
-          try {
-            session.exportDocumentView(currentNode.getVersionHistory().getPath(), out, false, false );
-          } catch (OutOfMemoryError error) {
-            out.close();
-            uiApp.addMessage(new ApplicationMessage("UIExportNode.msg.OutOfMemoryError", null, ApplicationMessage.ERROR));
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-            return;
-          }
-        }
-        else session.exportSystemView(currentNode.getVersionHistory().getPath(), out, false, false );
+        if (format.equals(DOC_VIEW))
+          session.exportDocumentView(currentNode.getVersionHistory().getPath(), out, false, false);
+        else
+          session.exportSystemView(currentNode.getVersionHistory().getPath(), out, false, false);
         out.flush();
-        out.close();
         zipService.addInputStream(currentNode.getUUID() + ".xml",in);
       }
       propertiesBOS.flush();
-      propertiesBOS.close();
       zipService.addInputStream("mapping.properties", propertiesBIS);
-      File zipFile = UIExportNode.getExportedFile("zip");
+      zipFile = UIExportNode.getExportedFile("data", "zip");
       in = new BufferedInputStream(new FileInputStream(zipFile));
       out = new BufferedOutputStream(new FileOutputStream(zipFile));
+      out.flush();
       zipService.createZip(out);
-      propertiesBIS.close();
       dresource = new InputStreamDownloadResource(in, "application/zip") ;
       dresource.setDownloadName(format + "_versionHistory.zip");
       String downloadLink = dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
       event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
+      } catch (OutOfMemoryError error) {
+        uiApp.addMessage(new ApplicationMessage("UIExportNode.msg.OutOfMemoryError", null, ApplicationMessage.ERROR));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      } finally {
+        propertiesBOS.close();
+        propertiesBIS.close();
+        if (out != null) {
+          out.close();
+        }
+        if (zipFile != null && zipFile.exists()) zipFile.deleteOnExit();
+        for (File file : lstExporedFile) {
+          if (file != null && file.exists()) file.delete();
+        }
+      }
     }
   }
   
