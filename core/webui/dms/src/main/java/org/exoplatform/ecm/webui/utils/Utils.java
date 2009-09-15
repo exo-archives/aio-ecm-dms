@@ -16,11 +16,6 @@
  */
 package org.exoplatform.ecm.webui.utils;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,7 +23,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 import javax.imageio.ImageIO;
@@ -393,24 +387,8 @@ public class Utils {
   
   
   
-  public static InputStream extractFromZipFile(ZipInputStream zipStream, String extractedFile) throws Exception {
-    File file = new File(extractedFile);
-    if (!file.exists()) file.createNewFile();
-    BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(file));
-    byte[] data  = new byte[1024];   
-    ZipEntry entry = zipStream.getNextEntry();
-    while(entry != null) {
-      int available = -1;
-      while ((available = zipStream.read(data, 0, 1024)) > -1) {
-        bos.write(data, 0, available);
-      }                         
-      zipStream.closeEntry();
-      entry = zipStream.getNextEntry();
-    }
-    bos.flush();
-    bos.close();
-    zipStream.close();
-    return new BufferedInputStream(new FileInputStream(file));
+  public static InputStream extractFirstEntryFromZipFile(ZipInputStream zipStream) throws Exception {
+      return zipStream.getNextEntry() == null ? null : zipStream;
   }
   
   public static String getThumbnailImage(Node node, String propertyName) throws Exception {

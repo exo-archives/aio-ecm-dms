@@ -290,280 +290,287 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       List<UIComponent> listFormChildren = uiForm.getChildren();
       int index = 0;
       InputStream inputStream;
-      for (UIComponent uiComp : listFormChildren) {
-        if(uiComp instanceof UIFormUploadInput) {
-        String[] arrayId = uiComp.getId().split(FIELD_UPLOAD);
-        if ((arrayId.length > 0) && (arrayId[0].length() > 0)) index = new Integer(arrayId[0]).intValue();
-        UIFormUploadInput uiFormUploadInput;  
-        if (index == 0){
-          uiFormUploadInput = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD);
-        } else {
-          uiFormUploadInput = (UIFormUploadInput)uiForm.getUIInput(index + FIELD_UPLOAD);
-        }
-      CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
-      TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
-      if(uiFormUploadInput.getUploadResource() == null) {
-        if ((uiForm.listUploadedNodes != null) && (uiForm.listUploadedNodes.size() > 0)) {
-          for (Node uploadedNode : uiForm.listUploadedNodes) {
-            uploadedNode.remove();
-          }
-          uiExplorer.getCurrentNode().save();
-          uiForm.listUploadedNodes.clear();
-        }
-        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-      if(uiExplorer.getCurrentNode().isLocked()) {
-        String lockToken = LockUtil.getLockToken(uiExplorer.getCurrentNode());
-        if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
-      }
-      PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
-      PortletPreferences portletPref = pcontext.getRequest().getPreferences();
-      String categoryMandatoryWhenFileUpload =  portletPref.getValue(Utils.CATEGORY_MANDATORY, "").trim();    
-      if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true") && uiForm.getListTaxonomy().size() == 0 && !uiExplorer.getCurrentNode().hasNode(JCRCONTENT)) {
-        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.taxonomyPath-error", null, 
-            ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return ;
-      }
-      String fileName = uiFormUploadInput.getUploadResource().getFileName();
-      MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
-      if(fileName == null || fileName.length() == 0) {
-        if ((uiForm.listUploadedNodes != null) && (uiForm.listUploadedNodes.size() > 0)) {
-          for (Node uploadedNode : uiForm.listUploadedNodes) {
-            uploadedNode.remove();
-          }
-          uiExplorer.getCurrentNode().save();
-          uiForm.listUploadedNodes.clear();
-        }
-        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
-                                                ApplicationMessage.WARNING)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return;
-      }      
-      String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
-      inputStream = new BufferedInputStream(uiFormUploadInput.getUploadDataAsStream());
-      String name;
-      if (index == 0){
-        name = uiForm.getUIStringInput(FIELD_NAME).getValue();
-      } else {
-        name = uiForm.getUIStringInput(index + FIELD_NAME).getValue();
-      }
-      
-      if (name == null) {
-        for(String filterChar : arrFilterChar) {
-          if (fileName.indexOf(filterChar) > -1) {
-            name = fileName.replace(filterChar, "");
-            fileName = name;
-          }
-        }
-        name = fileName;
-      } else name = name.trim();
-      
-      if (!Utils.isNameValid(name, arrFilterChar)) {
-          uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null, ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-      }
-      
-      List<String> listTaxonomyNameNew = new ArrayList<String>();
-      if (index == 0) listTaxonomyNameNew = uiForm.mapTaxonomies.get(FIELD_LISTTAXONOMY);
-      else listTaxonomyNameNew = uiForm.mapTaxonomies.get(index + FIELD_LISTTAXONOMY);
-      
-      String taxonomyTree = null;
-      String taxonomyPath = null;
-      if (listTaxonomyNameNew != null) {
-        for(String categoryPath : listTaxonomyNameNew) {
-          try {
-            if (categoryPath.startsWith("/")) categoryPath = categoryPath.substring(1);
-            taxonomyTree = categoryPath.substring(0, categoryPath.indexOf("/"));
-            taxonomyPath = categoryPath.substring(categoryPath.indexOf("/") + 1);
-            taxonomyService.getTaxonomyTree(repository, taxonomyTree).hasNode(taxonomyPath);
-          } catch (ItemNotFoundException e) {
-            uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                ApplicationMessage.WARNING)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-            return;
-          } catch (RepositoryException re) {
-            uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                ApplicationMessage.WARNING)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-            return;
-          } catch(Exception e) {
-            LOG.error("An unexpected error occurs", e);
-            uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
-                ApplicationMessage.WARNING)) ;
-            event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-            return;
-          }
-        }
-      }
-      
-      MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
-      String mimeType = mimeTypeSolver.getMimeType(fileName) ;
-      Node selectedNode = uiExplorer.getCurrentNode();      
-      boolean isExist = selectedNode.hasNode(name) ;
-      String newNodeUUID = null;
+      String name = null;
       try {
-        String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
-        selectedNode.getSession().checkPermission(selectedNode.getPath(), pers);
-        
-        if(uiForm.isMultiLanguage()) {
-          ValueFactoryImpl valueFactory = (ValueFactoryImpl) uiExplorer.getSession().getValueFactory() ;
-          Value contentValue = valueFactory.createValue(inputStream) ;
-          multiLangService.addFileLanguage(selectedNode, name, contentValue, mimeType, uiForm.getLanguageSelected(), uiExplorer.getRepositoryName(), uiForm.isDefault_) ;
-          uiExplorer.setIsHidePopup(true) ;
-          UIMultiLanguageManager uiLanguageManager = uiForm.getAncestorOfType(UIMultiLanguageManager.class) ;
-          UIMultiLanguageForm uiMultiForm = uiLanguageManager.getChild(UIMultiLanguageForm.class) ;
-          uiMultiForm.doSelect(uiExplorer.getCurrentNode()) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiLanguageManager);
-        } else {
-          if(!isExist) {            
-            Map<String,JcrInputProperty> inputProperties = new HashMap<String,JcrInputProperty>() ;            
-            JcrInputProperty nodeInput = new JcrInputProperty() ;
-            nodeInput.setJcrPath("/node") ;
-            nodeInput.setValue(name) ;
-            nodeInput.setMixintype("mix:i18n,mix:votable,mix:commentable") ;
-            nodeInput.setType(JcrInputProperty.NODE) ;
-            inputProperties.put("/node",nodeInput) ;
-
-            JcrInputProperty jcrContent = new JcrInputProperty() ;
-            jcrContent.setJcrPath("/node/jcr:content") ;
-            jcrContent.setValue("") ;
-            jcrContent.setMixintype("dc:elementSet") ;
-            jcrContent.setNodetype(Utils.NT_RESOURCE) ;
-            jcrContent.setType(JcrInputProperty.NODE) ;
-            inputProperties.put("/node/jcr:content",jcrContent) ;
-
-            JcrInputProperty jcrData = new JcrInputProperty() ;
-            jcrData.setJcrPath("/node/jcr:content/jcr:data") ;            
-            jcrData.setValue(inputStream) ;          
-            inputProperties.put("/node/jcr:content/jcr:data",jcrData) ; 
-
-            JcrInputProperty jcrMimeType = new JcrInputProperty() ;
-            jcrMimeType.setJcrPath("/node/jcr:content/jcr:mimeType") ;
-            jcrMimeType.setValue(mimeType) ;          
-            inputProperties.put("/node/jcr:content/jcr:mimeType",jcrMimeType) ;
-
-            JcrInputProperty jcrLastModified = new JcrInputProperty() ;
-            jcrLastModified.setJcrPath("/node/jcr:content/jcr:lastModified") ;
-            jcrLastModified.setValue(new GregorianCalendar()) ;
-            inputProperties.put("/node/jcr:content/jcr:lastModified",jcrLastModified) ;
-
-            JcrInputProperty jcrEncoding = new JcrInputProperty() ;
-            jcrEncoding.setJcrPath("/node/jcr:content/jcr:encoding") ;
-            jcrEncoding.setValue("UTF-8") ;
-            inputProperties.put("/node/jcr:content/jcr:encoding",jcrEncoding) ;          
-            newNodeUUID = cmsService.storeNodeByUUID(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
-            
-            selectedNode.save();
-            selectedNode.getSession().save();
-            if ((listTaxonomyNameNew != null) && (listTaxonomyNameNew.size() > 0)) {
-              Node newNode = null;
-              try {
-                newNode = selectedNode.getSession().getNodeByUUID(newNodeUUID);
-              } catch(ItemNotFoundException e) {
-                newNode = Utils.findNodeByUUID(repository, newNodeUUID);
-              }
-              if (newNode != null) {
-                for (String categoryPath : listTaxonomyNameNew) {
-                  try {
-                    if (categoryPath.startsWith("/")) categoryPath = categoryPath.substring(1);
-                    taxonomyTree = categoryPath.substring(0, categoryPath.indexOf("/"));
-                    taxonomyPath = categoryPath.substring(categoryPath.indexOf("/") + 1);
-                    taxonomyService.addCategory(newNode, taxonomyTree, taxonomyPath);
-                  } catch (ItemExistsException e) {
-                    uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.ItemExistsException",
-                        null, ApplicationMessage.WARNING));
-                    event.getRequestContext().addUIComponentToUpdateByAjax(
-                        uiApp.getUIPopupMessages());
-                    return;
-                  } catch (RepositoryException e) {
-                    LOG.error("Unexpected error", e);
-                    JCRExceptionManager.process(uiApp, e);
-                    return;
-                  }
-                }
-              }
+        for (UIComponent uiComp : listFormChildren) {
+          if(uiComp instanceof UIFormUploadInput) {
+            String[] arrayId = uiComp.getId().split(FIELD_UPLOAD);
+            if ((arrayId.length > 0) && (arrayId[0].length() > 0)) index = new Integer(arrayId[0]).intValue();
+            UIFormUploadInput uiFormUploadInput;  
+            if (index == 0){
+              uiFormUploadInput = (UIFormUploadInput)uiForm.getUIInput(FIELD_UPLOAD);
+            } else {
+              uiFormUploadInput = (UIFormUploadInput)uiForm.getUIInput(index + FIELD_UPLOAD);
             }
-          } else {
-            Node node = selectedNode.getNode(name) ;
-            if(!node.getPrimaryNodeType().isNodeType(Utils.NT_FILE)) {
-              Object[] args = { name } ;
-              uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.name-is-exist", args, 
+            CmsService cmsService = uiForm.getApplicationComponent(CmsService.class) ;
+            TaxonomyService taxonomyService = uiForm.getApplicationComponent(TaxonomyService.class);
+            if(uiFormUploadInput.getUploadResource() == null) {
+              if ((uiForm.listUploadedNodes != null) && (uiForm.listUploadedNodes.size() > 0)) {
+                for (Node uploadedNode : uiForm.listUploadedNodes) {
+                  uploadedNode.remove();
+                }
+                uiExplorer.getCurrentNode().save();
+                uiForm.listUploadedNodes.clear();
+              }
+              uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
                                                       ApplicationMessage.WARNING)) ;
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
               return ;
             }
-            Node contentNode = node.getNode(Utils.JCR_CONTENT);
-            if(node.isNodeType(Utils.MIX_VERSIONABLE)) {              
-              if(!node.isCheckedOut()) node.checkout() ; 
-              contentNode.setProperty(Utils.JCR_DATA, inputStream);
-              contentNode.setProperty(Utils.JCR_MIMETYPE, mimeType);
-              contentNode.setProperty(Utils.JCR_LASTMODIFIED, new GregorianCalendar());
-              node.save() ;       
-              node.checkin() ;
-              node.checkout() ;
+            if(uiExplorer.getCurrentNode().isLocked()) {
+              String lockToken = LockUtil.getLockToken(uiExplorer.getCurrentNode());
+              if(lockToken != null) uiExplorer.getSession().addLockToken(lockToken);
+            }
+            PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+            PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+            String categoryMandatoryWhenFileUpload =  portletPref.getValue(Utils.CATEGORY_MANDATORY, "").trim();    
+            if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true") && uiForm.getListTaxonomy().size() == 0 && !uiExplorer.getCurrentNode().hasNode(JCRCONTENT)) {
+              uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.taxonomyPath-error", null, 
+                  ApplicationMessage.WARNING)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+              return ;
+            }
+            String fileName = uiFormUploadInput.getUploadResource().getFileName();
+            MultiLanguageService multiLangService = uiForm.getApplicationComponent(MultiLanguageService.class) ;
+            if(fileName == null || fileName.length() == 0) {
+              if ((uiForm.listUploadedNodes != null) && (uiForm.listUploadedNodes.size() > 0)) {
+                for (Node uploadedNode : uiForm.listUploadedNodes) {
+                  uploadedNode.remove();
+                }
+                uiExplorer.getCurrentNode().save();
+                uiForm.listUploadedNodes.clear();
+              }
+              uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
+                                                      ApplicationMessage.WARNING)) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+              return;
+            }      
+            String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
+            inputStream = new BufferedInputStream(uiFormUploadInput.getUploadDataAsStream());
+            if (index == 0){
+              name = uiForm.getUIStringInput(FIELD_NAME).getValue();
             } else {
-              contentNode.setProperty(Utils.JCR_DATA, inputStream);              
+              name = uiForm.getUIStringInput(index + FIELD_NAME).getValue();
             }
-            if (node.isNodeType("exo:datetime")) {
-              node.setProperty("exo:dateModified",new GregorianCalendar()) ;
+            
+            if (name == null) {
+              for(String filterChar : arrFilterChar) {
+                if (fileName.indexOf(filterChar) > -1) {
+                  name = fileName.replace(filterChar, "");
+                  fileName = name;
+                }
+              }
+              name = fileName;
+            } else name = name.trim();
+            
+            if (!Utils.isNameValid(name, arrFilterChar)) {
+                uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null, ApplicationMessage.WARNING)) ;
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+                return ;
             }
-            node.save();
+            
+            List<String> listTaxonomyNameNew = new ArrayList<String>();
+            if (index == 0) listTaxonomyNameNew = uiForm.mapTaxonomies.get(FIELD_LISTTAXONOMY);
+            else listTaxonomyNameNew = uiForm.mapTaxonomies.get(index + FIELD_LISTTAXONOMY);
+            
+            String taxonomyTree = null;
+            String taxonomyPath = null;
             if (listTaxonomyNameNew != null) {
-              for (String categoryPath : listTaxonomyNameNew) {
-                try {              
+              for(String categoryPath : listTaxonomyNameNew) {
+                try {
                   if (categoryPath.startsWith("/")) categoryPath = categoryPath.substring(1);
                   taxonomyTree = categoryPath.substring(0, categoryPath.indexOf("/"));
                   taxonomyPath = categoryPath.substring(categoryPath.indexOf("/") + 1);
-                  taxonomyService.addCategory(node, taxonomyTree, taxonomyPath);
-                } catch (ItemExistsException e) {
-                  uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.ItemExistsException",
-                      null, ApplicationMessage.WARNING));
-                  event.getRequestContext().addUIComponentToUpdateByAjax(
-                      uiApp.getUIPopupMessages());
+                  taxonomyService.getTaxonomyTree(repository, taxonomyTree).hasNode(taxonomyPath);
+                } catch (ItemNotFoundException e) {
+                  uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                      ApplicationMessage.WARNING)) ;
+                  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
                   return;
-                } catch (RepositoryException e) {
-                  LOG.error("Unexpected error", e);
-                  JCRExceptionManager.process(uiApp, e);
+                } catch (RepositoryException re) {
+                  uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                      ApplicationMessage.WARNING)) ;
+                  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+                  return;
+                } catch(Exception e) {
+                  LOG.error("An unexpected error occurs", e);
+                  uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, 
+                      ApplicationMessage.WARNING)) ;
+                  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
                   return;
                 }
               }
             }
-          }
-        }
-        uiExplorer.getSession().save() ;
-        
-        Node uploadedNode = null;
-        if(uiForm.isMultiLanguage_) {
-          uiUploadContainer.setUploadedNode(selectedNode);
-          uploadedNode = selectedNode;
-        } else {
-          Node newNode = null ;
-          if(!isExist) {
-            try {
-              newNode = selectedNode.getSession().getNodeByUUID(newNodeUUID);
-            } catch(ItemNotFoundException e) {
-              newNode = Utils.findNodeByUUID(repository, newNodeUUID);
+            
+            MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
+            String mimeType = mimeTypeSolver.getMimeType(fileName) ;
+            Node selectedNode = uiExplorer.getCurrentNode();      
+            boolean isExist = selectedNode.hasNode(name) ;
+            String newNodeUUID = null;
+            String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
+            selectedNode.getSession().checkPermission(selectedNode.getPath(), pers);
+            
+            if(uiForm.isMultiLanguage()) {
+              ValueFactoryImpl valueFactory = (ValueFactoryImpl) uiExplorer.getSession().getValueFactory() ;
+              Value contentValue = valueFactory.createValue(inputStream) ;
+              multiLangService.addFileLanguage(selectedNode, name, contentValue, mimeType, uiForm.getLanguageSelected(), uiExplorer.getRepositoryName(), uiForm.isDefault_) ;
+              uiExplorer.setIsHidePopup(true) ;
+              UIMultiLanguageManager uiLanguageManager = uiForm.getAncestorOfType(UIMultiLanguageManager.class) ;
+              UIMultiLanguageForm uiMultiForm = uiLanguageManager.getChild(UIMultiLanguageForm.class) ;
+              uiMultiForm.doSelect(uiExplorer.getCurrentNode()) ;
+              event.getRequestContext().addUIComponentToUpdateByAjax(uiLanguageManager);
+            } else {
+              if(!isExist) {            
+                Map<String,JcrInputProperty> inputProperties = new HashMap<String,JcrInputProperty>() ;            
+                JcrInputProperty nodeInput = new JcrInputProperty() ;
+                nodeInput.setJcrPath("/node") ;
+                nodeInput.setValue(name) ;
+                nodeInput.setMixintype("mix:i18n,mix:votable,mix:commentable") ;
+                nodeInput.setType(JcrInputProperty.NODE) ;
+                inputProperties.put("/node",nodeInput) ;
+    
+                JcrInputProperty jcrContent = new JcrInputProperty() ;
+                jcrContent.setJcrPath("/node/jcr:content") ;
+                jcrContent.setValue("") ;
+                jcrContent.setMixintype("dc:elementSet") ;
+                jcrContent.setNodetype(Utils.NT_RESOURCE) ;
+                jcrContent.setType(JcrInputProperty.NODE) ;
+                inputProperties.put("/node/jcr:content",jcrContent) ;
+    
+                JcrInputProperty jcrData = new JcrInputProperty() ;
+                jcrData.setJcrPath("/node/jcr:content/jcr:data") ;            
+                jcrData.setValue(inputStream) ;          
+                inputProperties.put("/node/jcr:content/jcr:data",jcrData) ; 
+    
+                JcrInputProperty jcrMimeType = new JcrInputProperty() ;
+                jcrMimeType.setJcrPath("/node/jcr:content/jcr:mimeType") ;
+                jcrMimeType.setValue(mimeType) ;          
+                inputProperties.put("/node/jcr:content/jcr:mimeType",jcrMimeType) ;
+    
+                JcrInputProperty jcrLastModified = new JcrInputProperty() ;
+                jcrLastModified.setJcrPath("/node/jcr:content/jcr:lastModified") ;
+                jcrLastModified.setValue(new GregorianCalendar()) ;
+                inputProperties.put("/node/jcr:content/jcr:lastModified",jcrLastModified) ;
+    
+                JcrInputProperty jcrEncoding = new JcrInputProperty() ;
+                jcrEncoding.setJcrPath("/node/jcr:content/jcr:encoding") ;
+                jcrEncoding.setValue("UTF-8") ;
+                inputProperties.put("/node/jcr:content/jcr:encoding",jcrEncoding) ;          
+                newNodeUUID = cmsService.storeNodeByUUID(Utils.NT_FILE, selectedNode, inputProperties, true,repository) ;
+                
+                selectedNode.save();
+                selectedNode.getSession().save();
+                if ((listTaxonomyNameNew != null) && (listTaxonomyNameNew.size() > 0)) {
+                  Node newNode = null;
+                  try {
+                    newNode = selectedNode.getSession().getNodeByUUID(newNodeUUID);
+                  } catch(ItemNotFoundException e) {
+                    newNode = Utils.findNodeByUUID(repository, newNodeUUID);
+                  }
+                  if (newNode != null) {
+                    for (String categoryPath : listTaxonomyNameNew) {
+                      try {
+                        if (categoryPath.startsWith("/")) categoryPath = categoryPath.substring(1);
+                        taxonomyTree = categoryPath.substring(0, categoryPath.indexOf("/"));
+                        taxonomyPath = categoryPath.substring(categoryPath.indexOf("/") + 1);
+                        taxonomyService.addCategory(newNode, taxonomyTree, taxonomyPath);
+                      } catch (ItemExistsException e) {
+                        uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.ItemExistsException",
+                            null, ApplicationMessage.WARNING));
+                        event.getRequestContext().addUIComponentToUpdateByAjax(
+                            uiApp.getUIPopupMessages());
+                        return;
+                      } catch (RepositoryException e) {
+                        LOG.error("Unexpected error", e);
+                        JCRExceptionManager.process(uiApp, e);
+                        return;
+                      }
+                    }
+                  }
+                }
+              } else {
+                Node node = selectedNode.getNode(name) ;
+                if(!node.getPrimaryNodeType().isNodeType(Utils.NT_FILE)) {
+                  Object[] args = { name } ;
+                  uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.name-is-exist", args, 
+                                                          ApplicationMessage.WARNING)) ;
+                  event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+                  return ;
+                }
+                Node contentNode = node.getNode(Utils.JCR_CONTENT);
+                if(node.isNodeType(Utils.MIX_VERSIONABLE)) {              
+                  if(!node.isCheckedOut()) node.checkout() ; 
+                  contentNode.setProperty(Utils.JCR_DATA, inputStream);
+                  contentNode.setProperty(Utils.JCR_MIMETYPE, mimeType);
+                  contentNode.setProperty(Utils.JCR_LASTMODIFIED, new GregorianCalendar());
+                  node.save() ;       
+                  node.checkin() ;
+                  node.checkout() ;
+                } else {
+                  contentNode.setProperty(Utils.JCR_DATA, inputStream);              
+                }
+                if (node.isNodeType("exo:datetime")) {
+                  node.setProperty("exo:dateModified",new GregorianCalendar()) ;
+                }
+                node.save();
+                if (listTaxonomyNameNew != null) {
+                  for (String categoryPath : listTaxonomyNameNew) {
+                    try {              
+                      if (categoryPath.startsWith("/")) categoryPath = categoryPath.substring(1);
+                      taxonomyTree = categoryPath.substring(0, categoryPath.indexOf("/"));
+                      taxonomyPath = categoryPath.substring(categoryPath.indexOf("/") + 1);
+                      taxonomyService.addCategory(node, taxonomyTree, taxonomyPath);
+                    } catch (ItemExistsException e) {
+                      uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.ItemExistsException",
+                          null, ApplicationMessage.WARNING));
+                      event.getRequestContext().addUIComponentToUpdateByAjax(
+                          uiApp.getUIPopupMessages());
+                      return;
+                    } catch (RepositoryException e) {
+                      LOG.error("Unexpected error", e);
+                      JCRExceptionManager.process(uiApp, e);
+                      return;
+                    }
+                  }
+                }
+              }
             }
-          } else {
-            newNode = selectedNode.getNode(name) ;
-          }
-          if(newNode != null) {
-            uiUploadContainer.setUploadedNode(newNode);
-            uploadedNode = newNode;
+            uiExplorer.getSession().save() ;
+            
+            Node uploadedNode = null;
+            if(uiForm.isMultiLanguage_) {
+              uiUploadContainer.setUploadedNode(selectedNode);
+              uploadedNode = selectedNode;
+            } else {
+              Node newNode = null ;
+              if(!isExist) {
+                try {
+                  newNode = selectedNode.getSession().getNodeByUUID(newNodeUUID);
+                } catch(ItemNotFoundException e) {
+                  newNode = Utils.findNodeByUUID(repository, newNodeUUID);
+                }
+              } else {
+                newNode = selectedNode.getNode(name) ;
+              }
+              if(newNode != null) {
+                uiUploadContainer.setUploadedNode(newNode);
+                uploadedNode = newNode;
+              }
+            }
+            double size = uploadService.getUploadResource(uiFormUploadInput.getUploadId()).getEstimatedSize()/1024;
+            String fileSize = Double.toString(size);
+            String iconUpload = Utils.getNodeTypeIcon(uploadedNode, "16x16Icon").replaceAll("nt_file16x16Icon ", "");
+            String[] arrValues = {iconUpload, fileName, name, fileSize +" Kb", mimeType, uploadedNode.getPath()};
+            uiForm.listUploadedNodes.add(uploadedNode);
+            listArrValues.add(arrValues);
+            inputStream.close();
           }
         }
-        double size = uploadService.getUploadResource(uiFormUploadInput.getUploadId()).getEstimatedSize()/1024;
-        String fileSize = Double.toString(size);
-        String iconUpload = Utils.getNodeTypeIcon(uploadedNode, "16x16Icon").replaceAll("nt_file16x16Icon ", "");
-        String[] arrValues = {iconUpload, fileName, name, fileSize +" Kb", mimeType, uploadedNode.getPath()};
-        uiForm.listUploadedNodes.add(uploadedNode);
-        listArrValues.add(arrValues);
-        inputStream.close();
+        uiUploadContent.setListUploadValues(listArrValues);
+        uiManager.setRenderedChild(UIUploadContainer.class);
+        uiExplorer.setIsHidePopup(true);
+        uiExplorer.updateAjax(event);
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
       } catch(ConstraintViolationException con) {
         Object[] args = {name, } ;
         throw new MessageException(new ApplicationMessage("UIUploadForm.msg.contraint-violation", 
@@ -581,14 +588,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         LOG.error("An unexpected error occurs", e);
         JCRExceptionManager.process(uiApp, e);
         return ;
-      }
+      } finally {
+        for (UIComponent uiComp : listFormChildren) {
+          if (uiComp instanceof UIFormUploadInput) {
+            uploadService.removeUpload(((UIFormUploadInput)uiComp).getUploadId());
+          }
         }
       }
-      uiUploadContent.setListUploadValues(listArrValues);
-      uiManager.setRenderedChild(UIUploadContainer.class);
-      uiExplorer.setIsHidePopup(true);
-      uiExplorer.updateAjax(event);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
+     
     }
   }
 

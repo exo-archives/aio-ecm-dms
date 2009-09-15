@@ -17,7 +17,6 @@
 package org.exoplatform.ecm.webui.component.admin.nodetype;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
 import java.util.zip.ZipInputStream;
@@ -86,22 +85,20 @@ public class UINodeTypeUpload extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      String storeLocation = input.getUploadResource().getStoreLocation();
-      String extractedFile = storeLocation.substring(0, storeLocation.lastIndexOf(".")).concat(String.valueOf(System.currentTimeMillis())).concat(".xml");
       MimeTypeResolver resolver = new MimeTypeResolver();
-      String mimeType = resolver.getMimeType(fileName) ;
+      String mimeType = resolver.getMimeType(fileName);
       InputStream is = null;
-      if(mimeType.trim().equals("text/xml")) {
-        is = new BufferedInputStream(input.getUploadDataAsStream());
-      }else if(mimeType.trim().equals("application/zip")) {
-        ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(input.getUploadDataAsStream())) ;
-        is = Utils.extractFromZipFile(zipInputStream, extractedFile);
-      }else {
-        uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.data-file-error", null)) ;
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-        return;
-      }                                   
       try {
+        if(mimeType.trim().equals("text/xml")) {
+          is = new BufferedInputStream(input.getUploadDataAsStream());
+        }else if(mimeType.trim().equals("application/zip")) {
+          ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(input.getUploadDataAsStream())) ;
+          is = Utils.extractFirstEntryFromZipFile(zipInputStream);
+        }else {
+          uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.data-file-error", null)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return;
+        }                                   
         IBindingFactory factory = BindingDirectory.getFactory(NodeTypeValuesList.class);
         IUnmarshallingContext uctx = factory.createUnmarshallingContext();
         NodeTypeValuesList nodeTypeValuesList = (NodeTypeValuesList)uctx.unmarshalDocument(is, null);
@@ -111,13 +108,15 @@ public class UINodeTypeUpload extends UIForm {
         Class[] childrenToRender = {UINodeTypeImport.class, UIPopupWindow.class} ;
         uiImportPopup.setRenderedChildrenOfTypes(childrenToRender) ;
         uiPopup.setShow(true) ;
-        UploadService uploadService = uiUploadForm.getApplicationComponent(UploadService.class) ;
-        UIFormUploadInput uiUploadInput = uiUploadForm.getChild(UIFormUploadInput.class) ;
-        uploadService.removeUpload(uiUploadInput.getUploadId()) ;
       } catch(Exception e) {
         uiApp.addMessage(new ApplicationMessage("UINodeTypeUpload.msg.data-invalid", null)) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
+      } finally {
+        UploadService uploadService = uiUploadForm.getApplicationComponent(UploadService.class);
+        UIFormUploadInput uiUploadInput = uiUploadForm.getChild(UIFormUploadInput.class);
+        uploadService.removeUpload(uiUploadInput.getUploadId());
+        if (is != null) is.close();
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }    

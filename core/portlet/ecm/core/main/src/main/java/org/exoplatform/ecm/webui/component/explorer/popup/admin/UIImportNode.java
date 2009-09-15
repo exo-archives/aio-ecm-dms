@@ -46,6 +46,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.jcr.util.VersionHistoryImporter;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -287,15 +288,13 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
         }
         if(!uiImport.validHistoryUploadFile(event)) return;
       }
-      String storeLocation = input.getUploadResource().getStoreLocation();
-      String extractedFile = storeLocation.substring(0, storeLocation.lastIndexOf(".")).concat(String.valueOf(System.currentTimeMillis())).concat(".xml");
       String mimeType = uiImport.getMimeType(input.getUploadResource().getFileName());
       InputStream xmlInputStream = null;
       if ("text/xml".equals(mimeType)) {
         xmlInputStream = new BufferedInputStream(input.getUploadDataAsStream());
       } else if ("application/zip".equals(mimeType)) {
         ZipInputStream zipInputStream = new ZipInputStream(new BufferedInputStream(input.getUploadDataAsStream()));
-        xmlInputStream = Utils.extractFromZipFile(zipInputStream, extractedFile);
+        xmlInputStream = Utils.extractFirstEntryFromZipFile(zipInputStream);
       } else {
         uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.mimetype-invalid", null, 
             ApplicationMessage.WARNING));
@@ -347,6 +346,9 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } finally {
+        UploadService uploadService = uiImport.getApplicationComponent(UploadService.class) ;
+        uploadService.removeUpload(input.getUploadId());
+        uploadService.removeUpload(inputHistory.getUploadId());
         session.logout();
       }
 
