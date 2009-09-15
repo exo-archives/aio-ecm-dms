@@ -490,4 +490,9 @@
 				<UICBCommentForm>Nhập bình luận</UICBCommentForm>
 			</title> 
 		</UIPopupWindow>
+	<UIBrowseContainer>
+    <msg>
+			<symlinkNode-no-targetNode>Không thấy nút: Nút thực đã được di chuyển hoặc bị xóa, hoặc bạn không có quyền truy cập nút thực này</symlinkNode-no-targetNode>
+    </msg>
+  </UIBrowseContainer>		
 </bundle>

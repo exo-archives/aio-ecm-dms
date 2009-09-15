@@ -490,4 +490,9 @@
 				<UICBCommentForm>Input comment</UICBCommentForm>
 			</title> 
 	</UIPopupWindow>
+	<UIBrowseContainer>
+    <msg>
+			<symlinkNode-no-targetNode>Missing node : The target node has been moved or deleted or You don't have enough permission to access</symlinkNode-no-targetNode>
+    </msg>
+  </UIBrowseContainer>
 </bundle>
