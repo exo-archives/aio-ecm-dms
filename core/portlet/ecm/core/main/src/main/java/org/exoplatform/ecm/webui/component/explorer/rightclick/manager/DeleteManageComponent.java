@@ -206,7 +206,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     if (wsName == null) {
       wsName = getDefaultWorkspace();
     }
-    CopyManageComponent.processCopy(wsName + ":" + nodePath, event, isMultiSelect);
+    doDelete(wsName.concat(":").concat(nodePath), event);
   }
 
   private String getDefaultWorkspace() {
