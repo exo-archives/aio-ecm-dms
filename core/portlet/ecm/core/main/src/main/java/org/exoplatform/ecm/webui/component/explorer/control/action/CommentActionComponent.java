@@ -64,7 +64,7 @@ public class CommentActionComponent extends UIComponent {
         uiCommentForm.setNodeCommentPath(commentNodePath);
         uiCommentForm.setEdit(true);  
       }
-      uiPopupContainer.activate(uiCommentForm, 600, 600);
+      uiPopupContainer.activate(uiCommentForm, 750, 700);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupContainer);
     }
   }
