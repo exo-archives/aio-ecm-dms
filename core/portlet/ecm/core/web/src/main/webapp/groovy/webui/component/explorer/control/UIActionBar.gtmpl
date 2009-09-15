@@ -103,7 +103,7 @@
 		  <%}%>
 			<div class="ClearRight"><span></span></div>
 		</div>
-		<div id="IconListHideElement" style="float: right; padding-top: 3px;" onclick="eXo.ecm.ECMUtils.showListHideElements(this,event);">
+		<div id="IconListHideElement" onclick="eXo.ecm.ECMUtils.showListHideElements(this,event);">
 			<a class="ListHideElementIcon"></a>
 			<div class="ListHideContainer" id="ListHideContainer" style="display:none">								
 			</div>

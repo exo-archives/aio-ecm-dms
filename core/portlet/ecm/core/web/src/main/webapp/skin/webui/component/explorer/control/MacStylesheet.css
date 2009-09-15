@@ -790,11 +790,14 @@
 }
 
 .UIJCRExplorerPortlet .ShowElementIcon {
-	background: url(DefaultSkin/icons/NormalButton.gif) no-repeat;
+	background: url(DefaultSkin/icons/NormalButton.gif) no-repeat right center; /* orientation=lt */
+	background: url(DefaultSkin/icons/NormalButton.gif) no-repeat left center; /* orientation=rt */
 	width:24px;
 	height:24px;
 	display:block;
 	margin-top: 4px;
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .ShowElementIcon:hover {
@@ -806,7 +809,7 @@
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
 	padding-top: 3px;
-	width:100px;
+	width:70px;
 }
 
 .ListHideContainer {
