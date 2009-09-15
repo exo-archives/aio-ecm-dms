@@ -2124,6 +2124,11 @@
       <Add>#{word.add}</Add>
       <Close>#{word.close}</Close>
     </label>
-  </PermissionTreeSelectUser>    
+  </PermissionTreeSelectUser>
+  <UIPermissionTreeInfo>
+  	<msg>
+  		<confirm-delete-permission>Bạn có thực sự muốn xóa quyền này không?</confirm-delete-permission>
+  	</msg>
+  </UIPermissionTreeInfo>    
 </bundle>
 
