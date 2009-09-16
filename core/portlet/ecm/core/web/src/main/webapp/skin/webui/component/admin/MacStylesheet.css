@@ -876,3 +876,7 @@
 .UIECMAdminPortlet .UIDriveManager .UIFormGrid {
 	width: 99%;
 }
+
+.UITabContent .UIForm .HorizontalLayout .FormContainer{
+	padding: 0px;
+}
