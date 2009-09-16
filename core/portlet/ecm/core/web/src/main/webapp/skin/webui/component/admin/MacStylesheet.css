@@ -26,6 +26,12 @@
 	float: none;
 }
 
+.UIECMAdminPortlet .UIForm td.FieldComponent .textarea {
+	height: 300px ;
+	width: 400px;
+	vertical-align: top;
+}
+
 .UIECMAdminPortlet .UIFormGrid {
 	width: 100%;
 	margin: 0px;

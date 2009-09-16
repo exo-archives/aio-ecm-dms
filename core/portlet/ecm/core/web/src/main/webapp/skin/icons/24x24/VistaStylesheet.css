@@ -209,7 +209,7 @@
 }
 
 .AddFolderIcon {
-	height: 26px;
+	height: 22px;
   background: url('VistaSkin/AddFolder.png') no-repeat left center; /* orientation=lt */
   background: url('VistaSkin/AddFolder.png') no-repeat right center; /* orientation=rt */
 }

@@ -776,7 +776,7 @@
 }
 
 .UIJCRExplorerPortlet .UIActionBar .NormalSubItem{
-	/*padding-top: 5px;*/
+	padding-top: 5px;
 }
 
 .UIJCRExplorerPortlet .UIActionBar .SelectedSubItem{
@@ -793,6 +793,8 @@
 
 .UIJCRExplorerPortlet .ShowElementIcon {
 	background: url(DefaultSkin/icons/NormalButton.gif) no-repeat;
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
 	width:24px;
 	height:24px;
 	display:block;
