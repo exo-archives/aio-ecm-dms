@@ -173,7 +173,7 @@
 
 .UIJCRExplorerPortlet .UITreeExplorer .Node a {
 	display: block;
-	white-space: normal;
+	/*white-space: normal;*/
 	}
 
 .UIJCRExplorerPortlet .UITreeExplorer .LastNode {
