@@ -287,74 +287,73 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * {@inheritDoc}
    */
   public List<Node> getDocumentsOnTag(String tagPath, String repository) throws Exception {
-//    if(cache_.get(tagPath)!=null) {
-//      return (List<Node>)cache_.get(tagPath) ;
-//    }
-    List<Node> documentList = new ArrayList<Node>() ;        
-    Session systemSession = getSystemSession(repository) ;
-    Node tagNode = (Node)systemSession.getItem(tagPath) ;
-    String uuid = tagNode.getUUID() ;    
-    String[] workspaces = repoService_.getRepository(repository).getWorkspaceNames() ;
-    Session  sessionOnWS = null ;
-    for(String workspaceName: workspaces) {
-      sessionOnWS = repoService_.getRepository(repository).getSystemSession(workspaceName) ;
-      Node tagNodeOnWS = null;
-      try {
-        tagNodeOnWS = sessionOnWS.getNodeByUUID(uuid);
-      } catch (ItemNotFoundException e) {
-        LOG.warn("Item not found by uuid = " + uuid);
-      }
-      if (tagNodeOnWS != null) {
-        PropertyIterator iter = tagNodeOnWS.getReferences();
-        for (; iter.hasNext();) {
-          Property folksonomy = iter.nextProperty();
-          Node document = folksonomy.getParent();
-          documentList.add(document);
+    Session systemSession = null;
+    try {
+      List<Node> documentList = new ArrayList<Node>() ;        
+      systemSession = getSystemSession(repository) ;
+      Node tagNode = (Node)systemSession.getItem(tagPath) ;
+      String uuid = tagNode.getUUID() ;    
+      String[] workspaces = repoService_.getRepository(repository).getWorkspaceNames() ;
+      Session  sessionOnWS = null ;
+      for(String workspaceName: workspaces) {
+        sessionOnWS = repoService_.getRepository(repository).getSystemSession(workspaceName) ;
+        Node tagNodeOnWS = null;
+        try {
+          tagNodeOnWS = sessionOnWS.getNodeByUUID(uuid);
+        } catch (ItemNotFoundException e) {
+          LOG.warn("Item not found by uuid = " + uuid);
         }
+        if (tagNodeOnWS != null) {
+          PropertyIterator iter = tagNodeOnWS.getReferences();
+          for (; iter.hasNext();) {
+            Property folksonomy = iter.nextProperty();
+            Node document = folksonomy.getParent();
+            documentList.add(document);
+          }
+        }
+        sessionOnWS.logout();
       }
-      sessionOnWS.logout();
+      return documentList;
+    } finally {
+      if (systemSession != null) systemSession.logout();
     }
-    systemSession.logout();
-//    cache_.put(tagPath,documentList) ;
-    return documentList;
   } 
 
   /**
    * {@inheritDoc}
    */
   public List<Node> getAllTags(String repository) throws Exception {
-//    Object cachedList = cache_.get(baseTagsPath_) ;
-//    if(cachedList != null ) {
-//      return (List<Node>)cachedList ;
-//    }    
-    List<Node> tagList = new ArrayList<Node>() ;       
-    Session systemSession = getSystemSession(repository) ;
-    Node exoTagsHomeNode_ = (Node)systemSession.getItem(baseTagsPath_) ;
-    for(NodeIterator iter = exoTagsHomeNode_.getNodes(); iter.hasNext();) {
-      tagList.add(iter.nextNode()) ;
+    Session systemSession = null;
+    try {
+      List<Node> tagList = new ArrayList<Node>() ;       
+      systemSession = getSystemSession(repository) ;
+      Node exoTagsHomeNode_ = (Node)systemSession.getItem(baseTagsPath_) ;
+      for(NodeIterator iter = exoTagsHomeNode_.getNodes(); iter.hasNext();) {
+        tagList.add(iter.nextNode()) ;
+      }
+      systemSession.logout();
+      return tagList ;
+    } finally {
+      if (systemSession != null) systemSession.logout();
     }
-//    cache_.put(baseTagsPath_,tagList) ;
-    systemSession.logout();
-    return tagList ;
   }
   
   /**
    *  {@inheritDoc}
    */
   public List<Node> getAllTagStyle(String repository) throws Exception {
-//    Object cachedList = cache_.get(exoTagStylePath_) ;
-//    if(cachedList != null ) {
-//      return (List<Node>)cachedList ;
-//    }
-    List<Node> tagStyleList = new ArrayList<Node>() ;   
-    Session systemSession = getSystemSession(repository) ;
-    Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
-    for(NodeIterator iter = tagStyleHomeNode.getNodes(); iter.hasNext() ;) {      
-      tagStyleList.add(iter.nextNode()) ;
+    Session systemSession = null;
+    try {
+      List<Node> tagStyleList = new ArrayList<Node>() ;   
+      systemSession = getSystemSession(repository) ;
+      Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
+      for(NodeIterator iter = tagStyleHomeNode.getNodes(); iter.hasNext() ;) {      
+        tagStyleList.add(iter.nextNode()) ;
+      }
+      return tagStyleList ;
+    } finally {
+      if (systemSession != null) systemSession.logout();
     }
-    systemSession.logout();
-//    cache_.put(exoTagStylePath_,tagStyleList) ;
-    return tagStyleList ;
   }    
   
   /**
@@ -372,33 +371,35 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * {@inheritDoc}
    */
   public String getTagStyle(String styleName, String repository) throws Exception {
-//    Object cachedObj = cache_.get(styleName) ;
-//    if(cachedObj != null) {
-//      return (String)cachedObj ;
-//    }    
-    Session systemSession = getSystemSession(repository) ;    
-    Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
-    Node tagStyle = tagStyleHomeNode.getNode(styleName) ;
-    String htmlStyle = tagStyle.getProperty(HTML_STYLE_PROP).getValue().getString() ;
-//    cache_.put(styleName,htmlStyle) ;
-    systemSession.logout();
-    return htmlStyle ;
+    Session systemSession = null;
+    try {
+      systemSession = getSystemSession(repository) ;    
+      Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
+      Node tagStyle = tagStyleHomeNode.getNode(styleName) ;
+      String htmlStyle = tagStyle.getProperty(HTML_STYLE_PROP).getValue().getString() ;
+      return htmlStyle ;
+    } finally {
+      if (systemSession != null) systemSession.logout();
+    }
   }
 
   /**
    * {@inheritDoc}
    */
   public void updateStype(String tagPath, String tagRate, String htmlStyle, String repository) throws Exception {
-    Session session = getSystemSession(repository) ;
-    Node tagStyle = (Node)session.getItem(tagPath) ;
-    tagStyle.setProperty(TAG_RATE_PROP,tagRate) ;
-    tagStyle.setProperty(HTML_STYLE_PROP,htmlStyle) ;
-    tagStyle.save() ;
-    session.save() ;
-    session.logout();
-//    cache_.remove(tagStyle.getName()) ;
-//    cache_.remove(baseTagsPath_) ;
-//    cache_.remove(exoTagStylePath_) ;
+    Session systemSession = null;
+    try {
+      systemSession = getSystemSession(repository) ;
+      Node tagStyle = (Node)systemSession.getItem(tagPath) ;
+      tagStyle.setProperty(TAG_RATE_PROP,tagRate) ;
+      tagStyle.setProperty(HTML_STYLE_PROP,htmlStyle) ;
+      tagStyle.save() ;
+    } finally {
+      if (systemSession != null) {
+        systemSession.save();
+        systemSession.logout();
+      }
+    }
   }
 
   /**
@@ -408,37 +409,41 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * @throws Exception
    */
   private void updateTagStatus(String tagPath, String repository) throws Exception {    
-    int numberOfDocumentOnTag = getDocumentsOnTag(tagPath, repository).size() ;
-    Session systemSession = getSystemSession(repository) ;
-    Node selectedTagNode = (Node)systemSession.getItem(tagPath) ; 
-    Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
-    Node tagStyle = null ;
-    for(NodeIterator iter = tagStyleHomeNode.getNodes(); iter.hasNext();) {
-      Node node = iter.nextNode() ;
-      if(checkTagRateOnTagStyle(numberOfDocumentOnTag,node)) {
-        tagStyle = node ;
-        break ;
+    Session systemSession = null;
+    try {
+      int numberOfDocumentOnTag = getDocumentsOnTag(tagPath, repository).size() ;
+      systemSession = getSystemSession(repository) ;
+      Node selectedTagNode = (Node)systemSession.getItem(tagPath) ; 
+      Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
+      Node tagStyle = null ;
+      for(NodeIterator iter = tagStyleHomeNode.getNodes(); iter.hasNext();) {
+        Node node = iter.nextNode() ;
+        if(checkTagRateOnTagStyle(numberOfDocumentOnTag,node)) {
+          tagStyle = node ;
+          break ;
+        }
       }
-    }
-    if(tagStyle!=null) {
-      String styleName = tagStyle.getName() ;    
-      if(NORMAL_STYLE.equals(styleName)) {
-        selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.NOMAL) ;
-      }else if(INTERSTING_STYLE.equals(styleName)) {
-        selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.INTERESTING) ;
-      }else if(ATTRACTIVE_STYLE.equals(styleName)) {
-        selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.ATTRACTIVE) ;
-      }else if(HOT_STYLE.equals(styleName)) {
-        selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.HOT) ;
-      }else if(HOSTES_STYLE.equals(styleName)) {
-        selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.HOTEST) ;
-      }
-      selectedTagNode.setProperty(TAG_LAST_UPDATED_DATE_PROP,new GregorianCalendar()) ;
-      selectedTagNode.save() ;      
-      systemSession.save();
-      systemSession.refresh(true) ;      
-    }    
-    systemSession.logout();    
+      if(tagStyle!=null) {
+        String styleName = tagStyle.getName() ;    
+        if(NORMAL_STYLE.equals(styleName)) {
+          selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.NOMAL) ;
+        }else if(INTERSTING_STYLE.equals(styleName)) {
+          selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.INTERESTING) ;
+        }else if(ATTRACTIVE_STYLE.equals(styleName)) {
+          selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.ATTRACTIVE) ;
+        }else if(HOT_STYLE.equals(styleName)) {
+          selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.HOT) ;
+        }else if(HOSTES_STYLE.equals(styleName)) {
+          selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.HOTEST) ;
+        }
+        selectedTagNode.setProperty(TAG_LAST_UPDATED_DATE_PROP,new GregorianCalendar()) ;
+        selectedTagNode.save() ;      
+        systemSession.save();
+        systemSession.refresh(true) ;      
+      }    
+    } finally {
+      if (systemSession != null) systemSession.logout();
+    }   
   }
 
   /**
@@ -467,24 +472,23 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * {@inheritDoc}
    */
   public List<Node> getLinkedTagsOfDocument(Node document, String repository) throws Exception {
-    if(document == null || !document.hasProperty(EXO_FOLKSONOMY_PROP)) 
-      return new ArrayList<Node>() ;
-    
-//    if(cache_.get(document.getPath())!=null ) {
-//      return (List<Node>) cache_.get(document.getPath()) ;
-//    }
-    List<Node> tagList = new ArrayList<Node>() ;    
-    Session systemSession = getSystemSession(repository) ;
-    try{      
-      Value[] values = document.getProperty(EXO_FOLKSONOMY_PROP).getValues() ;
-      for(Value v:values) {
-        String uuid = v.getString() ;
-        tagList.add(systemSession.getNodeByUUID(uuid)) ;
+    Session systemSession = null;
+    try {
+      if(document == null || !document.hasProperty(EXO_FOLKSONOMY_PROP)) 
+        return new ArrayList<Node>() ;
+      List<Node> tagList = new ArrayList<Node>() ;    
+      systemSession = getSystemSession(repository) ;
+      try{      
+        Value[] values = document.getProperty(EXO_FOLKSONOMY_PROP).getValues() ;
+        for(Value v:values) {
+          String uuid = v.getString() ;
+          tagList.add(systemSession.getNodeByUUID(uuid)) ;
+        }
+      }catch (Exception e) {      
       }
-    }catch (Exception e) {      
-    }
-    systemSession.logout();
-//    cache_.put(document.getPath(),tagList) ;
-    return tagList;
+      return tagList;
+    } finally {
+      if (systemSession != null) systemSession.logout();
+    }    
   }   
 }
