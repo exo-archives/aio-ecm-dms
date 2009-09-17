@@ -240,58 +240,66 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * {@inheritDoc}
    */
   public void addTag(Node node, String[] tagNames, String repository) throws Exception {        
-    Session systemSession = getSystemSession(repository);     
-    Session currentSession = node.getSession();    
-    Node exoTagsHomeNode_ = (Node)systemSession.getItem(baseTagsPath_);
-    String userId = currentSession.getUserID();
-    if (!exoTagsHomeNode_.hasNode(userId)) {
-      exoTagsHomeNode_.addNode(userId);
-    }
-    Node exoTagsUserNode = exoTagsHomeNode_.getNode(userId);
-    Node taggingNode = null;
-    for(String tagName: tagNames ) {      
-      if(!exoTagsUserNode.hasNode(tagName)) {
-        taggingNode = exoTagsUserNode.addNode(tagName,EXO_TAG) ;
-        taggingNode.addMixin(MIX_REFERENCEABLE_MIXIN) ;
-        taggingNode.setProperty(TAG_CREATED_DATE_PROP,new GregorianCalendar()) ;        
-        taggingNode.setProperty(TAG_STATUS_PROP,TagStyle.NOMAL) ;        
-      }else {
-        taggingNode = exoTagsUserNode.getNode(tagName) ; 
-      }            
-      Value value2add = currentSession.getValueFactory().createValue(taggingNode);
-      if(!node.isNodeType(EXO_FOLKSONOMIZED_MIXIN)) {
-        node.addMixin(EXO_FOLKSONOMIZED_MIXIN) ;
-        node.setProperty(EXO_FOLKSONOMY_PROP,new Value[] { value2add }) ;        
-      }else {
-        Value[] folksonomyValues = node.getProperty(EXO_FOLKSONOMY_PROP).getValues() ;
-        String currenUUID = taggingNode.getUUID() ;
-        List<Value> vals = new ArrayList<Value>();         
-        for(Value value: folksonomyValues) {
-          String uuid = value.getString() ;
-          if(uuid.equals(currenUUID)) return ; 
-          vals.add(value) ;
-        }
-        vals.add(value2add);
-        node.setProperty(EXO_FOLKSONOMY_PROP,vals.toArray(new Value[vals.size()])) ;        
-      }      
-      exoTagsHomeNode_.save() ;
-      node.save() ;
-//      cache_.remove(taggingNode.getPath()) ;
-//      cache_.remove(baseTagsPath_) ;
-//      cache_.remove(node.getPath()) ;
-      updateTagStatus(taggingNode.getPath(), repository) ;      
-    }        
-    currentSession.save() ;    
-    systemSession.save() ;    
-    systemSession.logout();
+    Session systemSession = null;
+    try {
+      systemSession = getSystemSession(repository);     
+      Session currentSession = node.getSession();    
+      Node exoTagsHomeNode_ = (Node)systemSession.getItem(baseTagsPath_);
+      String userId = currentSession.getUserID();
+      if (!exoTagsHomeNode_.hasNode(userId)) {
+        exoTagsHomeNode_.addNode(userId);
+      }
+      Node exoTagsUserNode = exoTagsHomeNode_.getNode(userId);
+      Node taggingNode = null;
+      for(String tagName: tagNames ) {      
+        if(!exoTagsUserNode.hasNode(tagName)) {
+          taggingNode = exoTagsUserNode.addNode(tagName,EXO_TAG) ;
+          taggingNode.addMixin(MIX_REFERENCEABLE_MIXIN) ;
+          taggingNode.setProperty(TAG_CREATED_DATE_PROP,new GregorianCalendar()) ;        
+          taggingNode.setProperty(TAG_STATUS_PROP,TagStyle.NOMAL) ;        
+        }else {
+          taggingNode = exoTagsUserNode.getNode(tagName) ; 
+        }            
+        Value value2add = currentSession.getValueFactory().createValue(taggingNode);
+        if(!node.isNodeType(EXO_FOLKSONOMIZED_MIXIN)) {
+          node.addMixin(EXO_FOLKSONOMIZED_MIXIN) ;
+          node.setProperty(EXO_FOLKSONOMY_PROP,new Value[] { value2add }) ;        
+        }else {
+          Value[] folksonomyValues = node.getProperty(EXO_FOLKSONOMY_PROP).getValues() ;
+          String currenUUID = taggingNode.getUUID() ;
+          List<Value> vals = new ArrayList<Value>();         
+          for(Value value: folksonomyValues) {
+            String uuid = value.getString() ;
+            if(uuid.equals(currenUUID)) return ; 
+            vals.add(value) ;
+          }
+          vals.add(value2add);
+          node.setProperty(EXO_FOLKSONOMY_PROP,vals.toArray(new Value[vals.size()])) ;        
+        }      
+        exoTagsHomeNode_.save() ;
+        node.save() ;
+        updateTagStatus(taggingNode.getPath(), repository) ;      
+      }        
+      currentSession.save() ;
+    } finally {
+      if (systemSession != null) {
+        systemSession.save();
+        systemSession.logout();
+      }
+    }    
   }
   
   /**
    * {@inheritDoc}
    */
   public Node getTag(String path, String repository) throws Exception {    
-    Session systemSession = getSystemSession(repository) ;
-    return (Node)systemSession.getItem(path) ;
+    Session systemSession = null;
+    try {
+      systemSession = getSystemSession(repository);
+      return (Node)systemSession.getItem(path);
+    } finally {
+      if (systemSession != null) systemSession.logout();
+    }
   }
 
   /**
@@ -438,37 +446,44 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * @throws Exception
    */
   private void updateTagStatus(String tagPath, String repository) throws Exception {    
-    int numberOfDocumentOnTag = getDocumentsOnTag(tagPath, repository).size() ;
-    Session systemSession = getSystemSession(repository) ;
-    Node selectedTagNode = (Node)systemSession.getItem(tagPath) ; 
-    Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
-    Node tagStyle = null ;
-    for(NodeIterator iter = tagStyleHomeNode.getNodes(); iter.hasNext();) {
-      Node node = iter.nextNode() ;
-      if(checkTagRateOnTagStyle(numberOfDocumentOnTag,node)) {
-        tagStyle = node ;
-        break ;
+    Session systemSession = null;
+    try {
+      int numberOfDocumentOnTag = getDocumentsOnTag(tagPath, repository).size() ;
+      systemSession = getSystemSession(repository);
+      Node selectedTagNode = (Node)systemSession.getItem(tagPath) ; 
+      Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
+      Node tagStyle = null ;
+      for(NodeIterator iter = tagStyleHomeNode.getNodes(); iter.hasNext();) {
+        Node node = iter.nextNode() ;
+        if(checkTagRateOnTagStyle(numberOfDocumentOnTag,node)) {
+          tagStyle = node ;
+          break ;
+        }
       }
-    }
-    if(tagStyle!=null) {
-      String styleName = tagStyle.getName() ;    
-      if(NORMAL_STYLE.equals(styleName)) {
-        selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.NOMAL) ;
-      }else if(INTERSTING_STYLE.equals(styleName)) {
-        selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.INTERESTING) ;
-      }else if(ATTRACTIVE_STYLE.equals(styleName)) {
-        selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.ATTRACTIVE) ;
-      }else if(HOT_STYLE.equals(styleName)) {
-        selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.HOT) ;
-      }else if(HOSTES_STYLE.equals(styleName)) {
-        selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.HOTEST) ;
+      if(tagStyle!=null) {
+        String styleName = tagStyle.getName() ;    
+        if(NORMAL_STYLE.equals(styleName)) {
+          selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.NOMAL) ;
+        }else if(INTERSTING_STYLE.equals(styleName)) {
+          selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.INTERESTING) ;
+        }else if(ATTRACTIVE_STYLE.equals(styleName)) {
+          selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.ATTRACTIVE) ;
+        }else if(HOT_STYLE.equals(styleName)) {
+          selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.HOT) ;
+        }else if(HOSTES_STYLE.equals(styleName)) {
+          selectedTagNode.setProperty(TAG_STATUS_PROP,TagStyle.HOTEST) ;
+        }
+        selectedTagNode.setProperty(TAG_LAST_UPDATED_DATE_PROP,new GregorianCalendar()) ;
+        selectedTagNode.save() ;      
+        systemSession.save();
+        systemSession.refresh(true) ;      
+      }    
+    } finally {
+      if (systemSession != null) {
+        systemSession.save() ;
+        systemSession.logout();
       }
-      selectedTagNode.setProperty(TAG_LAST_UPDATED_DATE_PROP,new GregorianCalendar()) ;
-      selectedTagNode.save() ;      
-      systemSession.save();
-      systemSession.refresh(true) ;      
-    }    
-    systemSession.logout();    
+    }        
   }
 
   /**
