@@ -191,12 +191,21 @@ public interface NodePresentation {
    * @throws Exception
    */
   public UIComponent getCommentComponent() throws Exception;
+  
   /**
    * Get UIComponent to remove attachment in document
    * @return
    * @throws Exception
    */
   public UIComponent getRemoveAttach() throws Exception;
+
+  /**
+   * Get UIComponent to remove comment in document
+   * @return
+   * @throws Exception
+   */
+  
+  public UIComponent getRemoveComment() throws Exception;
   
   /**
    * Gets the comments.
