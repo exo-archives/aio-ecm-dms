@@ -20,11 +20,9 @@ package org.exoplatform.ecm.webui.presentation.removecomment;
 import java.util.Map;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.presentation.action.UIPresentationEventListener;
-import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -35,8 +33,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
@@ -79,8 +75,11 @@ public class RemoveCommentComponent extends UIComponent {
     try {
         Node commentNode = (Node) nodefinder.getItem(repository, wsname, nodepath);
         CommentsService commentService = uicomponent.getApplicationComponent(CommentsService.class);
-        commentService.deleteComment(commentNode);
-        requestcontext.addUIComponentToUpdateByAjax(uiParent.getParent());
+        commentService.deleteComment(commentNode);        
+        UIComponent uiParent1 = uiParent.getParent();
+        UIComponent uiParent2 = uiParent1.getParent();
+        UIComponent uiParent3 = uiParent2.getParent();
+        requestcontext.addUIComponentToUpdateByAjax(uiParent3);
         return;
     } catch (Exception e) {
       LOG.error("an unexpected error occurs while removing the node", e);
