@@ -187,7 +187,9 @@
 			</div>
 		</div>
 		<div class="ShowHideComponent" style="display: none;">
-		  <%for(comment in commentsList) {%>
+		  <%
+		  def uiremovecomment = uicomponent.getRemoveComment();
+		  for(comment in commentsList) {%>
 		  	<div class="CommentInfo">
 		  		<%=_ctx.appRes("Comment.view.label.comment-by")%> 
 		  		<span style="color: orange; font-weight: bold;">
@@ -229,7 +231,7 @@
 	  		 }
 	  		 Parameter[] params = [new Parameter("workspaceName", comment.getSession().getWorkspace().getName()), new Parameter("repository", uicomponent.getRepository())];
 	  		%>
-						<a href="<%=uicomponent.getRemoveComment().event("RemoveComment", Utils.formatNodeName(path), params)%>">
+						<a href="<%=uiremovecomment.event("RemoveComment", Utils.formatNodeName(path), params)%>">
 						<image class="RemoveAttachments" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" title="<%=_ctx.appRes("Comments.tooltip.remove-comment")%>"/>
 						</a>
 				<%}%>

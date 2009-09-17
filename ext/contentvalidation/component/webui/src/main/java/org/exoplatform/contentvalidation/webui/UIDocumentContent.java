@@ -38,6 +38,7 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
 import org.exoplatform.ecm.webui.presentation.removecomment.RemoveCommentComponent;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -77,13 +78,13 @@ import org.exoplatform.webui.ext.UIExtensionManager;
         @EventConfig(listeners = UIDocumentContent.ChangeNodeActionListener.class)
     }
 )
-public class UIDocumentContent extends UIContainer {
+public class UIDocumentContent extends UIContainer implements NodePresentation {
   private Node node_ ;
   public static final String DEFAULT_LANGUAGE = "default".intern() ;
   private String language_ = DEFAULT_LANGUAGE ;
   public UIDocumentContent() throws Exception {}
   
-  public void setNode(Node node) throws Exception { 
+  public void setNode(Node node)  { 
     this.node_ = node;
   }
   

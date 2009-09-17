@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -120,12 +121,12 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
 
   public UIComponent getRemoveAttach() throws Exception {
     removeChild(RemoveAttachmentComponent.class);
-    return addChild(RemoveAttachmentComponent.class, null, "DocumentDetailRemoveAttach");
+    return addChild(RemoveAttachmentComponent.class, null, "DocumentDetailRemoveAttach".concat(UUID.randomUUID().toString()));
   }
   
   public UIComponent getRemoveComment() throws Exception {
     removeChild(RemoveCommentComponent.class);
-    return addChild(RemoveCommentComponent.class, null, "DocumentDetailRemoveComment");
+    return addChild(RemoveCommentComponent.class, null, "DocumentDetailRemoveComment".concat(UUID.randomUUID().toString()));
   }
   
   public String getTemplatePath(){
