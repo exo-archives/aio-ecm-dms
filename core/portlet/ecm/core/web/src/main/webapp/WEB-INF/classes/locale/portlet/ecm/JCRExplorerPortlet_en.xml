@@ -1896,6 +1896,9 @@
   <PathNotFoundException>
     <msg>Path not found!Maybe, It was removed or path changed!</msg>
   </PathNotFoundException>
+  <ConstraintViolationException>
+    <msg>You can't do action because of some constraints</msg>
+  </ConstraintViolationException>
   <!--
   ###################################################################################
   # Publication Manage																														  #
@@ -2526,5 +2529,11 @@
 		<msg>
 			<notNullDriveName>Drive Name is null or empty. Fill Drive Name, please!</notNullDriveName>
 		</msg>
-	</UIJcrExplorerEditForm>	
+	</UIJcrExplorerEditForm>
+		
+		<UIViewSearchResult>
+			<tooltip>
+				<remove-attachment>Do you want to remove this attachment file?</remove-attachment>
+			</tooltip>
+		</UIViewSearchResult>
 </bundle>

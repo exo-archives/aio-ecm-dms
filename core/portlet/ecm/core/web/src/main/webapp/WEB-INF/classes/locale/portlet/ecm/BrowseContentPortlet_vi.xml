@@ -494,5 +494,16 @@
     <msg>
 			<symlinkNode-no-targetNode>Không thấy nút: Nút thực đã được di chuyển hoặc bị xóa, hoặc bạn không có quyền truy cập nút thực này</symlinkNode-no-targetNode>
     </msg>
-  </UIBrowseContainer>		
+  </UIBrowseContainer>
+  <UIDocumentDetail>
+  	<tooltip>
+  		<remove-attachment>Xóa file đính kèm này</remove-attachment>
+  	</tooltip>
+  </UIDocumentDetail>
+  <DocumentDetail>
+  	<tooltip>
+  		<remove-attachment>Xóa file đính kèm này</remove-attachment>
+  	</tooltip>
+  </DocumentDetail>
+
 </bundle>

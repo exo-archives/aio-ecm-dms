@@ -227,8 +227,9 @@
 						</a>
 				<%
 	  		 }
+	  		 Parameter[] params = [new Parameter("workspaceName", comment.getSession().getWorkspace().getName()), new Parameter("repository", uicomponent.getRepository())];
 	  		%>
-						<a href="<%=uicomponent.event("RemoveComment", comment.getPath())%>">
+						<a href="<%=uicomponent.getRemoveComment().event("RemoveComment", Utils.formatNodeName(path), params)%>">
 						<image class="RemoveAttachments" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" title="<%=_ctx.appRes("Comments.tooltip.remove-comment")%>"/>
 						</a>
 				<%}%>

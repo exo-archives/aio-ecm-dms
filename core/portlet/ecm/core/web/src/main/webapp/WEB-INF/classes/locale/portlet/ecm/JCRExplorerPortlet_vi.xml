@@ -1905,6 +1905,9 @@
   <PathNotFoundException>
     <msg>Đường dẫn không được tìm thấy!Có thể nó đã được xóa bỏ hoặc thay đổi đường dẫn!</msg>
   </PathNotFoundException>
+  <ConstraintViolationException>
+    <msg>Bạn không thể thực hiện hành động này vì tồn tại ràng buộc</msg>
+  </ConstraintViolationException>
   <!--
   ###################################################################################
   # Publication Manage																														  #
@@ -2532,4 +2535,9 @@
 			<notNullDriveName>Giá trị trường Tên ổ đĩa là null hoặc rỗng. Hãy nhập tên ổ đĩa!</notNullDriveName>
 		</msg>
 	</UIJcrExplorerEditForm>
+	<UIViewSearchResult>
+			<tooltip>
+				<remove-attachment>Xóa file đính kèm này?</remove-attachment>
+			</tooltip>
+		</UIViewSearchResult>
 </bundle>

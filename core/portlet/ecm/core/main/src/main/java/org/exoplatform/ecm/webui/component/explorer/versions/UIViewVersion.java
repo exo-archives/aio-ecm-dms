@@ -33,7 +33,10 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
+import org.exoplatform.ecm.webui.presentation.removecomment.RemoveCommentComponent;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
@@ -79,6 +82,8 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
   protected Node originalNode_ ;
   private String language_ ;
 
+  final private static String COMMENT_COMPONENT = "Comment".intern();
+  
   public UIViewVersion() throws Exception {    
     addChild(UINodeInfo.class, null, null) ;
     addChild(UINodeProperty.class, null, null).setRendered(false) ;
@@ -98,6 +103,24 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
     return null ;
   }
 
+  public UIComponent getCommentComponent() {
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    UIActionBar uiActionBar = uiExplorer.findFirstComponentOfType(UIActionBar.class);
+    UIComponent uicomponent = uiActionBar.getUIAction(COMMENT_COMPONENT);
+    return (uicomponent != null ? uicomponent : this);
+  }
+  
+  public UIComponent getRemoveAttach() throws Exception {
+    removeChild(RemoveAttachmentComponent.class);
+    return addChild(RemoveAttachmentComponent.class, null, "UIViewVersionRemoveAttach");
+  }
+  
+  public UIComponent getRemoveComment() throws Exception {
+    removeChild(RemoveCommentComponent.class);
+    return addChild(RemoveCommentComponent.class, null, "UIViewVersionRemoveComment");
+  }
+  
+  
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;

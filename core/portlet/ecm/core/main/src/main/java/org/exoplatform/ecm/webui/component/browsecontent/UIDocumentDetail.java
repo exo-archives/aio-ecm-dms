@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.browsecontent;
 
+
 import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.ArrayList;
@@ -40,6 +41,8 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentFormController;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
+import org.exoplatform.ecm.webui.presentation.removecomment.RemoveCommentComponent;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -78,8 +81,7 @@ import org.exoplatform.webui.ext.UIExtensionManager;
     events ={ 
         @EventConfig(listeners =  UIDocumentDetail.ChangeLanguageActionListener.class),
         @EventConfig(listeners =  UIDocumentDetail.ChangeNodeActionListener.class),
-        @EventConfig(listeners =  UIDocumentDetail.DownloadActionListener.class),
-        @EventConfig(listeners =  UIDocumentDetail.RemoveCommentActionListener.class,confirm="UIDocumentDetail.msg.confirm-deletecomment")
+        @EventConfig(listeners =  UIDocumentDetail.DownloadActionListener.class)
     }
 )
 
@@ -116,6 +118,16 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
     return getUIBrowseContainer().getChild(UIToolBar.class);
   }
 
+  public UIComponent getRemoveAttach() throws Exception {
+    removeChild(RemoveAttachmentComponent.class);
+    return addChild(RemoveAttachmentComponent.class, null, "DocumentDetailRemoveAttach");
+  }
+  
+  public UIComponent getRemoveComment() throws Exception {
+    removeChild(RemoveCommentComponent.class);
+    return addChild(RemoveCommentComponent.class, null, "DocumentDetailRemoveComment");
+  }
+  
   public String getTemplatePath(){
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
@@ -457,14 +469,4 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
     }
   }
 
-  static public class RemoveCommentActionListener extends EventListener<UIDocumentDetail>{
-    public void execute(Event<UIDocumentDetail> event) throws Exception {
-      UIDocumentDetail uiComp = event.getSource() ;
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node commentNode = uiComp.getUIBrowseContainer().getNodeByPath(nodePath, uiComp.getWorkspaceName());
-      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
-      commentService.deleteComment(commentNode);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
-    }
-  }  
 }

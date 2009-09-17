@@ -2525,5 +2525,14 @@
 			<notNullDriveName>Drive Name is null or empty. Fill Drive Name, please!</notNullDriveName>
 		</msg>
 	</UIJcrExplorerEditForm>	
- 
+ 	<RemoveAttachmentComponent>
+			<msg>
+				<confirm-deleteattachment>Confirmez-vous la suppression du fichier attaché?</confirm-deleteattachment>
+			</msg>
+		</RemoveAttachmentComponent>
+		<UIViewSearchResult>
+			<tooltip>
+				<remove-attachment>Do you want to remove this attachment file?</remove-attachment>
+			</tooltip>
+		</UIViewSearchResult>
 </bundle>

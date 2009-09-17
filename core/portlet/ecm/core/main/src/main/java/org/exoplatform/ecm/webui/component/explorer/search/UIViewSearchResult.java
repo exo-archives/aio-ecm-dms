@@ -40,6 +40,8 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
+import org.exoplatform.ecm.webui.presentation.removecomment.RemoveCommentComponent;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
@@ -76,8 +78,7 @@ import org.exoplatform.webui.ext.UIExtensionManager;
     events = {
         @EventConfig(listeners = UIViewSearchResult.ChangeLanguageActionListener.class),
         @EventConfig(listeners = UIViewSearchResult.DownloadActionListener.class),
-        @EventConfig(listeners = UIViewSearchResult.ChangeNodeActionListener.class),
-        @EventConfig(listeners = UIViewSearchResult.RemoveCommentActionListener.class,confirm="UIDocumentInfo.msg.confirm-deletecomment")
+        @EventConfig(listeners = UIViewSearchResult.ChangeNodeActionListener.class)
     }
 )
 public class UIViewSearchResult extends UIContainer implements NodePresentation {
@@ -95,6 +96,7 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
   public UIViewSearchResult() throws Exception {
   }
 
+  
   public String getTemplate() {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
@@ -126,6 +128,16 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
     return attachments;
   }
 
+  public UIComponent getRemoveAttach() throws Exception {
+    removeChild(RemoveAttachmentComponent.class);
+    return addChild(RemoveAttachmentComponent.class, null, "UIViewSearchResultRemoveAttach");
+  }
+
+  public UIComponent getRemoveComment() throws Exception {
+    removeChild(RemoveCommentComponent.class);
+    return addChild(RemoveCommentComponent.class, null, "UIViewSearchResultRemoveComment");
+  }
+  
   public Node getNode() throws ValueFormatException, PathNotFoundException, RepositoryException { 
     if(node_.hasProperty(Utils.EXO_LANGUAGE)) {
       String defaultLang = node_.getProperty(Utils.EXO_LANGUAGE).getString() ;
@@ -389,17 +401,5 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
       event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
     }
   }
-  
-  static public class RemoveCommentActionListener extends EventListener<UIViewSearchResult>{
-    public void execute(Event<UIViewSearchResult> event) throws Exception {
-      UIViewSearchResult uiComp = event.getSource() ;
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      UIJCRExplorer uiExplorer = uiComp.getAncestorOfType(UIJCRExplorer.class); 
-      Node commentNode = uiExplorer.getNodeByPath(nodePath, uiComp.getNode().getSession());
-      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
-      commentService.deleteComment(commentNode);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
-    }
-  } 
 
 }

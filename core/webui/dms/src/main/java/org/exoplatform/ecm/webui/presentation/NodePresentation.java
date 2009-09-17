@@ -186,6 +186,19 @@ public interface NodePresentation {
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception;
   
   /**
+   * Get UIComponent for comment
+   * @return
+   * @throws Exception
+   */
+  public UIComponent getCommentComponent() throws Exception;
+  /**
+   * Get UIComponent to remove attachment in document
+   * @return
+   * @throws Exception
+   */
+  public UIComponent getRemoveAttach() throws Exception;
+  
+  /**
    * Gets the comments.
    * 
    * @return the comments
