@@ -20,6 +20,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +28,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -154,8 +156,8 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
    * Create temp file to allow download a big data
    * @return file
    */
-  private static synchronized File getExportedFile(String prefix, String suffix) throws IOException {
-    return File.createTempFile(prefix.concat(String.valueOf(System.currentTimeMillis())), suffix);
+  private static File getExportedFile(String prefix, String suffix) throws IOException {
+    return File.createTempFile(prefix.concat(UUID.randomUUID().toString()), suffix);
   }
   
   static public class ExportActionListener extends EventListener<UIExportNode> {
@@ -165,7 +167,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       UIApplication uiApp = uiExport.getAncestorOfType(UIApplication.class);
       File exportedFile = UIExportNode.getExportedFile("export", ".xml");
       OutputStream out = new BufferedOutputStream(new FileOutputStream(exportedFile));
-      InputStream in = new BufferedInputStream(new FileInputStream(exportedFile));
+      InputStream in = new BufferedInputStream(new TempFileInputStream(exportedFile));
       CompressData zipService = new CompressData();
       DownloadService dservice = uiExport.getApplicationComponent(DownloadService.class);
       InputStreamDownloadResource dresource;
@@ -189,7 +191,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
           zipService.createZip(out);
           in.close();
           exportedFile.delete();
-          in = new BufferedInputStream(new FileInputStream(zipFile));
+          in = new BufferedInputStream(new TempFileInputStream(zipFile));
           dresource = new InputStreamDownloadResource(in, "application/zip");
           dresource.setDownloadName(format + ".zip");
         } else {
@@ -210,12 +212,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
         return;
       } finally {
         out.close();
-        if (zipFile != null && zipFile.exists()) 
-          zipFile.deleteOnExit();
-        if (exportedFile.exists()) 
-          exportedFile.deleteOnExit();
-      }
-      
+      }      
     }
   }
   
@@ -240,13 +237,13 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
       File zipFile = null;
       File propertiesFile = UIExportNode.getExportedFile("mapping", ".properties");
       OutputStream propertiesBOS = new BufferedOutputStream(new FileOutputStream(propertiesFile));
-      InputStream propertiesBIS = new BufferedInputStream(new FileInputStream(propertiesFile));
+      InputStream propertiesBIS = new BufferedInputStream(new TempFileInputStream(propertiesFile));
       try {
         while(queryIter.hasNext()) {
           exportedFile = UIExportNode.getExportedFile("data", ".xml");
           lstExporedFile.add(exportedFile);
           out = new BufferedOutputStream(new FileOutputStream(exportedFile));
-          in = new BufferedInputStream(new FileInputStream(exportedFile));
+          in = new BufferedInputStream(new TempFileInputStream(exportedFile));
           Node node = queryIter.nextNode();
           String historyValue = uiExport.getHistoryValue(node); 
           propertiesBOS.write(historyValue.getBytes());
@@ -262,7 +259,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
           exportedFile = UIExportNode.getExportedFile("data", ".xml");
           lstExporedFile.add(exportedFile);
           out = new BufferedOutputStream(new FileOutputStream(exportedFile));
-          in = new BufferedInputStream(new FileInputStream(exportedFile));
+          in = new BufferedInputStream(new TempFileInputStream(exportedFile));
           String historyValue = uiExport.getHistoryValue(currentNode);
           propertiesBOS.write(historyValue.getBytes());
           propertiesBOS.write('\n');
@@ -276,7 +273,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
         propertiesBOS.flush();
         zipService.addInputStream("mapping.properties", propertiesBIS);
         zipFile = UIExportNode.getExportedFile("data", "zip");
-        in = new BufferedInputStream(new FileInputStream(zipFile));
+        in = new BufferedInputStream(new TempFileInputStream(zipFile));
         out = new BufferedOutputStream(new FileOutputStream(zipFile));
         out.flush();
         zipService.createZip(out);
@@ -294,12 +291,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
         if (out != null) {
           out.close();
         }
-        if (zipFile != null && zipFile.exists()) zipFile.deleteOnExit();
-        for (File file : lstExporedFile) {
-          if (file != null && file.exists()) file.delete();
-        }
-      }
-      
+      }      
     }
   }
   
@@ -307,6 +299,31 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
     public void execute(Event<UIExportNode> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
       uiExplorer.cancelAction() ;
+    }
+  }
+  
+  private static class TempFileInputStream extends FileInputStream {
+
+    private final File file;
+    
+    public TempFileInputStream(File file) throws FileNotFoundException {
+      super(file);
+      this.file = file;
+      try {
+        file.deleteOnExit();
+      } catch (Exception e) {
+        // ignore me
+      }
+    }
+
+    @Override
+    protected void finalize() throws IOException {
+      try {
+        file.delete();
+      } catch (Exception e) {
+        // ignore me
+      }
+      super.finalize();
     }
   }
 }
