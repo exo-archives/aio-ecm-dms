@@ -34,6 +34,9 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
+import org.exoplatform.ecm.webui.presentation.removecomment.RemoveCommentComponent;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
@@ -66,17 +69,16 @@ import org.exoplatform.workflow.webui.component.controller.UITaskManager;
     events = {
         @EventConfig(listeners = UIDocumentContent.ChangeLanguageActionListener.class),
         @EventConfig(listeners = UIDocumentContent.DownloadActionListener.class),
-        @EventConfig(listeners = UIDocumentContent.ChangeNodeActionListener.class),
-        @EventConfig(listeners = UIDocumentContent.RemoveCommentActionListener.class)
+        @EventConfig(listeners = UIDocumentContent.ChangeNodeActionListener.class)
     }
 )
-public class UIDocumentContent extends UIContainer {
+public class UIDocumentContent extends UIContainer implements NodePresentation {
   private Node node_ ;
   public static final String DEFAULT_LANGUAGE = "default".intern() ;
   private String language_ = DEFAULT_LANGUAGE ;
   public UIDocumentContent() throws Exception {}
   
-  public void setNode(Node node) throws Exception { 
+  public void setNode(Node node) { 
     this.node_ = node;
   }
   
@@ -94,6 +96,16 @@ public class UIDocumentContent extends UIContainer {
   
   public UIComponent getCommentComponent() {
    return this;
+  }
+  
+  public UIComponent getRemoveAttach() throws Exception {
+    removeChild(RemoveAttachmentComponent.class);
+    return addChild(RemoveAttachmentComponent.class, null, "DocumentContentRemoveAttach");
+  }
+
+  public UIComponent getRemoveComment() throws Exception {
+    removeChild(RemoveCommentComponent.class);
+    return addChild(RemoveCommentComponent.class, null, "DocumentContentRemoveComment");
   }
   
   public Node getOriginalNode() throws Exception {return node_;}
@@ -399,15 +411,4 @@ public class UIDocumentContent extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()) ;
     }
   }
-  
-  static public class RemoveCommentActionListener extends EventListener<UIDocumentContent>{
-    public void execute(Event<UIDocumentContent> event) throws Exception {
-      UIDocumentContent uiComp = event.getSource() ;
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node commentNode = uiComp.getNodeByPath(nodePath, uiComp.getWorkspaceName());
-      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
-      commentService.deleteComment(commentNode);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
-    }
-  }  
 }

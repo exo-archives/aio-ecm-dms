@@ -34,6 +34,8 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
+import org.exoplatform.ecm.webui.presentation.removecomment.RemoveCommentComponent;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
@@ -69,8 +71,7 @@ import org.exoplatform.webui.event.EventListener;
     events = {
       @EventConfig(listeners = UIViewVersion.ChangeLanguageActionListener.class),
       @EventConfig(listeners = UIViewVersion.ChangeNodeActionListener.class),
-      @EventConfig(listeners = UIViewVersion.DownloadActionListener.class),
-      @EventConfig(listeners = UIViewVersion.RemoveCommentActionListener.class,confirm="UIDocumentInfo.msg.confirm-deletecomment")
+      @EventConfig(listeners = UIViewVersion.DownloadActionListener.class)
     }
 )
 
@@ -162,6 +163,16 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
     return attachments;
   }
 
+  public UIComponent getRemoveAttach() throws Exception {
+    removeChild(RemoveAttachmentComponent.class);
+    return addChild(RemoveAttachmentComponent.class, null, "UIViewVersionRemoveAttach");
+  }
+  
+  public UIComponent getRemoveComment() throws Exception {
+    removeChild(RemoveCommentComponent.class);
+    return addChild(RemoveCommentComponent.class, null, "UIViewVersionRemoveComment");
+  }
+  
   public String getIcons(Node node, String type) throws Exception {
     return Utils.getNodeTypeIcon(node, type) ; 
   }
@@ -325,15 +336,4 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
     }
   }
   
-  static public class RemoveCommentActionListener extends EventListener<UIViewVersion>{
-    public void execute(Event<UIViewVersion> event) throws Exception {
-      UIViewVersion uiComp = event.getSource() ;
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      UIJCRExplorer uiExplorer = uiComp.getAncestorOfType(UIJCRExplorer.class);
-      Node commentNode = uiExplorer.getNodeByPath(nodePath,uiComp.getOriginalNode().getSession());
-      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
-      commentService.deleteComment(commentNode);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
-    }
-  }
 }

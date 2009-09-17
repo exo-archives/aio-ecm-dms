@@ -22,7 +22,9 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.ResourceBundle;
 import java.util.zip.ZipInputStream;
 
 import javax.imageio.ImageIO;
@@ -34,9 +36,12 @@ import javax.jcr.nodetype.NodeDefinition;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
@@ -47,6 +52,7 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
+import org.exoplatform.services.resources.ResourceBundleService;
 
 /**
  * Created by The eXo Platform SARL
@@ -159,6 +165,12 @@ public class Utils {
   final static public String   CATEGORY_MANDATORY        = "categoryMandatoryWhenFileUpload";
 
   final static public String   UPLOAD_SIZE_LIMIT_MB      = "uploadFileSizeLimitMB";
+  
+  final static public String LOCALE_WEBUI_DMS = "locale.portlet.i18n.WebUIDms";
+
+  final static public String REQUESTCONTEXT = "requestcontext";
+
+  final static public String WORKSPACE_PARAM = "workspaceName";
   
   public Map<String, Object> maps_ = new HashMap<String, Object>();
 
@@ -412,4 +424,13 @@ public class Utils {
     }
     return null;
   }
+  
+  public static String getResourceBundle(String name, String key, ClassLoader cl) {
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;
+    ResourceBundleService resourceBundleService = (ResourceBundleService) container.getComponentInstanceOfType(ResourceBundleService.class);
+    ResourceBundle resourceBundle=resourceBundleService.getResourceBundle(name, locale, cl);
+    return resourceBundle.getString(key);
+  }
+  
 }

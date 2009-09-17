@@ -2503,4 +2503,9 @@
 			<notNullDriveName>Giá trị trường Tên ổ đĩa là null hoặc rỗng. Hãy nhập tên ổ đĩa!</notNullDriveName>
 		</msg>
 	</UIJcrExplorerEditForm>
+		<UIViewSearchResult>
+			<tooltip>
+				<remove-attachment>Xóa file đính kèm này?</remove-attachment>
+			</tooltip>
+		</UIViewSearchResult>
 </bundle>

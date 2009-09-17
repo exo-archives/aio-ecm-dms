@@ -50,6 +50,8 @@ import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
+import org.exoplatform.ecm.webui.presentation.removecomment.RemoveCommentComponent;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -99,14 +101,12 @@ import org.exoplatform.webui.exception.MessageException;
 @ComponentConfig(
     events = {
         @EventConfig(listeners = UIDocumentInfo.ChangeNodeActionListener.class),
-        @EventConfig(listeners = UIDocumentInfo.RemoveAttachActionListener.class, confirm="UIDocumentInfo.msg.confirm-deleteattachment"),
         @EventConfig(listeners = UIDocumentInfo.ViewNodeActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.SortActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.VoteActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.ChangeLanguageActionListener.class),
         @EventConfig(listeners = UIDocumentInfo.DownloadActionListener.class),
-        @EventConfig(listeners = UIDocumentInfo.ShowPageActionListener.class),
-        @EventConfig(listeners = UIDocumentInfo.RemoveCommentActionListener.class,confirm="UIDocumentInfo.msg.confirm-deletecomment")
+        @EventConfig(listeners = UIDocumentInfo.ShowPageActionListener.class)
     }
 )
 public class UIDocumentInfo extends UIContainer implements NodePresentation {
@@ -358,6 +358,16 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return attachments;
   }
 
+  public UIComponent getRemoveAttach() throws Exception {
+    removeChild(RemoveAttachmentComponent.class);
+    return addChild(RemoveAttachmentComponent.class, null, "DocumentInfoRemoveAttach");
+  }
+
+  public UIComponent getRemoveComment() throws Exception {
+    removeChild(RemoveCommentComponent.class);
+    return addChild(RemoveCommentComponent.class, null, "DocumentInfoRemoveComment");
+  }
+  
   public boolean isNodeTypeSupported(String nodeTypeName) {
     try {      
       TemplateService templateService = getApplicationComponent(TemplateService.class);
@@ -605,19 +615,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     }
   }
   
-  /**
-   * Remove attachment file in an article
-   */
-  static public class RemoveAttachActionListener extends EventListener<UIDocumentInfo> {
-    public void execute(Event<UIDocumentInfo> event) throws Exception {
-      String attachNodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      UIWorkingArea uiWorkingArea = event.getSource().getAncestorOfType(UIWorkingArea.class);
-      String wsName = event.getRequestContext().getRequestParameter(UIWorkingArea.WS_NAME);
-      uiWorkingArea.doDelete(attachNodePath, wsName,event);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea);
-    }
-  }
-
   static public class SortActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {
       UIDocumentInfo uicomp = event.getSource() ;
@@ -683,15 +680,4 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       event.getRequestContext().addUIComponentToUpdateByAjax(treeExplorer);      
     }
   }
-  
-  static public class RemoveCommentActionListener extends EventListener<UIDocumentInfo>{
-    public void execute(Event<UIDocumentInfo> event) throws Exception {
-      UIDocumentInfo uiComp = event.getSource() ;
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node commentNode = uiComp.getNodeByPath(nodePath, uiComp.getWorkspaceName());
-      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
-      commentService.deleteComment(commentNode);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
-    }
-  }  
 }

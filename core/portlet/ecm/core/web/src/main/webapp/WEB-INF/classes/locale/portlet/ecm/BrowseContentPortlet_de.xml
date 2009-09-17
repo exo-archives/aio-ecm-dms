@@ -488,5 +488,15 @@
     <msg>
 			<symlinkNode-no-targetNode>Missing node : The target node has been moved or deleted or You don't have enough permission to access</symlinkNode-no-targetNode>
     </msg>
-  </UIBrowseContainer>		
+  </UIBrowseContainer>
+    <UIDocumentDetail>
+  	<tooltip>
+  		<remove-attachment>Delete this attached file</remove-attachment>
+  	</tooltip>
+  </UIDocumentDetail>
+  <DocumentDetail>
+  	<tooltip>
+  		<remove-attachment>Delete this attached file</remove-attachment>
+  	</tooltip>
+  </DocumentDetail>
 </bundle>

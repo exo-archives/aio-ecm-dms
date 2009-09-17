@@ -21,6 +21,7 @@ import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -38,6 +39,8 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentFormController;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
+import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
+import org.exoplatform.ecm.webui.presentation.removecomment.RemoveCommentComponent;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
@@ -57,6 +60,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
@@ -73,12 +77,11 @@ import org.exoplatform.webui.event.EventListener;
     events ={ 
         @EventConfig(listeners =  UIDocumentDetail.ChangeLanguageActionListener.class),
         @EventConfig(listeners =  UIDocumentDetail.ChangeNodeActionListener.class),
-        @EventConfig(listeners =  UIDocumentDetail.DownloadActionListener.class),
-        @EventConfig(listeners = UIDocumentDetail.RemoveCommentActionListener.class,confirm="UIDocumentDetail.msg.confirm-deletecomment")
+        @EventConfig(listeners =  UIDocumentDetail.DownloadActionListener.class)
     }
 )
 
-public class UIDocumentDetail extends UIComponent implements NodePresentation, UIPopupComponent {
+public class UIDocumentDetail extends UIContainer implements NodePresentation, UIPopupComponent {
   protected Node node_ ;
   private Node originalNode_;
   private String language_ ;
@@ -252,6 +255,16 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
     return attachments;
   }
 
+  public UIComponent getRemoveAttach() throws Exception {
+    removeChild(RemoveAttachmentComponent.class);
+    return addChild(RemoveAttachmentComponent.class, null, "DocumentDetailRemoveAttach".concat(UUID.randomUUID().toString()));
+  }
+  
+  public UIComponent getRemoveComment() throws Exception {
+    removeChild(RemoveCommentComponent.class);
+    return addChild(RemoveCommentComponent.class, null, "DocumentDetailRemoveComment".concat(UUID.randomUUID().toString()));
+  }
+  
   public List<Node> getRelations() throws Exception {
     List<Node> relations = new ArrayList<Node>() ;
     if (node_.hasProperty(Utils.EXO_RELATION)) {
@@ -438,16 +451,5 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
       event.getRequestContext().getJavascriptManager().addCustomizedOnLoadScript("ajaxRedirect('" + downloadLink + "');");
     }
   }
-  
-  static public class RemoveCommentActionListener extends EventListener<UIDocumentDetail>{
-    public void execute(Event<UIDocumentDetail> event) throws Exception {
-      UIDocumentDetail uiComp = event.getSource();
-      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-      Node commentNode = uiComp.getUIBrowseContainer().getNodeByPath(nodePath, uiComp.getWorkspaceName());
-      CommentsService commentService = uiComp.getApplicationComponent(CommentsService.class);
-      commentService.deleteComment(commentNode);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()); 
-    }
-  } 
   
 }

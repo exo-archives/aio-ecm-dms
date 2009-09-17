@@ -92,6 +92,21 @@ public interface NodePresentation {
   public List<Node> getAttachments() throws Exception;
 
   /**
+   * Get UIComponent to remove attachment in document
+   * @return
+   * @throws Exception
+   */
+  public UIComponent getRemoveAttach() throws Exception;
+
+  /**
+   * Get UIComponent to remove comment in document
+   * @return
+   * @throws Exception
+   */
+  
+  public UIComponent getRemoveComment() throws Exception;
+  
+  /**
    * Checks if is rss link.
    * 
    * @return true, if is rss link
