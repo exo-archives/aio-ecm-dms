@@ -234,53 +234,61 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * {@inheritDoc}
    */
   public void addTag(Node node, String[] tagNames, String repository) throws Exception {        
-    Session systemSession = getSystemSession(repository) ;     
-    Session currentSession = node.getSession() ;    
-    Node exoTagsHomeNode_ = (Node)systemSession.getItem(baseTagsPath_) ;
-    Node taggingNode = null ;
-    for(String tagName: tagNames ) {      
-      if(!exoTagsHomeNode_.hasNode(tagName)) {
-        taggingNode = exoTagsHomeNode_.addNode(tagName,EXO_TAG) ;
-        taggingNode.addMixin(MIX_REFERENCEABLE_MIXIN) ;
-        taggingNode.setProperty(TAG_CREATED_DATE_PROP,new GregorianCalendar()) ;        
-        taggingNode.setProperty(TAG_STATUS_PROP,TagStyle.NOMAL) ;        
-      }else {
-        taggingNode = exoTagsHomeNode_.getNode(tagName) ; 
-      }            
-      Value value2add = currentSession.getValueFactory().createValue(taggingNode);
-      if(!node.isNodeType(EXO_FOLKSONOMIZED_MIXIN)) {
-        node.addMixin(EXO_FOLKSONOMIZED_MIXIN) ;
-        node.setProperty(EXO_FOLKSONOMY_PROP,new Value[] { value2add }) ;        
-      }else {
-        Value[] folksonomyValues = node.getProperty(EXO_FOLKSONOMY_PROP).getValues() ;
-        String currenUUID = taggingNode.getUUID() ;
-        List<Value> vals = new ArrayList<Value>();         
-        for(Value value: folksonomyValues) {
-          String uuid = value.getString() ;
-          if(uuid.equals(currenUUID)) return ; 
-          vals.add(value) ;
-        }
-        vals.add(value2add);
-        node.setProperty(EXO_FOLKSONOMY_PROP,vals.toArray(new Value[vals.size()])) ;        
-      }      
-      exoTagsHomeNode_.save() ;
-      node.save() ;
-//      cache_.remove(taggingNode.getPath()) ;
-//      cache_.remove(baseTagsPath_) ;
-//      cache_.remove(node.getPath()) ;
-      updateTagStatus(taggingNode.getPath(), repository) ;      
-    }        
-    currentSession.save() ;    
-    systemSession.save() ;    
-    systemSession.logout();
+    Session systemSession = null;
+    try {
+      systemSession = getSystemSession(repository) ;     
+      Session currentSession = node.getSession() ;    
+      Node exoTagsHomeNode_ = (Node)systemSession.getItem(baseTagsPath_) ;
+      Node taggingNode = null ;
+      for(String tagName: tagNames ) {      
+        if(!exoTagsHomeNode_.hasNode(tagName)) {
+          taggingNode = exoTagsHomeNode_.addNode(tagName,EXO_TAG) ;
+          taggingNode.addMixin(MIX_REFERENCEABLE_MIXIN) ;
+          taggingNode.setProperty(TAG_CREATED_DATE_PROP,new GregorianCalendar()) ;        
+          taggingNode.setProperty(TAG_STATUS_PROP,TagStyle.NOMAL) ;        
+        }else {
+          taggingNode = exoTagsHomeNode_.getNode(tagName) ; 
+        }            
+        Value value2add = currentSession.getValueFactory().createValue(taggingNode);
+        if(!node.isNodeType(EXO_FOLKSONOMIZED_MIXIN)) {
+          node.addMixin(EXO_FOLKSONOMIZED_MIXIN) ;
+          node.setProperty(EXO_FOLKSONOMY_PROP,new Value[] { value2add }) ;        
+        }else {
+          Value[] folksonomyValues = node.getProperty(EXO_FOLKSONOMY_PROP).getValues() ;
+          String currenUUID = taggingNode.getUUID() ;
+          List<Value> vals = new ArrayList<Value>();         
+          for(Value value: folksonomyValues) {
+            String uuid = value.getString() ;
+            if(uuid.equals(currenUUID)) return ; 
+            vals.add(value) ;
+          }
+          vals.add(value2add);
+          node.setProperty(EXO_FOLKSONOMY_PROP,vals.toArray(new Value[vals.size()])) ;        
+        }      
+        exoTagsHomeNode_.save();
+        node.save();
+        updateTagStatus(taggingNode.getPath(), repository);      
+      }        
+      currentSession.save();
+    } finally {
+      if (systemSession != null) {
+        systemSession.save();
+        systemSession.logout();
+      }
+    }
   }
   
   /**
    * {@inheritDoc}
    */
   public Node getTag(String path, String repository) throws Exception {    
-    Session systemSession = getSystemSession(repository) ;
-    return (Node)systemSession.getItem(path) ;
+    Session systemSession = null;
+    try {
+      systemSession = getSystemSession(repository);
+      return (Node)systemSession.getItem(path);
+    } finally {
+      if (systemSession != null) systemSession.logout();
+    }
   }
 
   /**
