@@ -76,10 +76,19 @@ public class RemoveCommentComponent extends UIComponent {
         Node commentNode = (Node) nodefinder.getItem(repository, wsname, nodepath);
         CommentsService commentService = uicomponent.getApplicationComponent(CommentsService.class);
         commentService.deleteComment(commentNode);        
-        UIComponent uiParent1 = uiParent.getParent();
-        UIComponent uiParent2 = uiParent1.getParent();
-        UIComponent uiParent3 = uiParent2.getParent();
-        requestcontext.addUIComponentToUpdateByAjax(uiParent3);
+        UIComponent uiParent1 = uiParent.getParent();        
+        if (uiParent1 != null) {
+          UIComponent uiParent2 = uiParent1.getParent();
+          if (uiParent2 != null) {
+            UIComponent uiParent3 = uiParent2.getParent();
+            if (uiParent3 != null) requestcontext.addUIComponentToUpdateByAjax(uiParent3);
+            else requestcontext.addUIComponentToUpdateByAjax(uiParent2);
+          } else{
+            requestcontext.addUIComponentToUpdateByAjax(uiParent1);
+          }                    
+        } else {
+          requestcontext.addUIComponentToUpdateByAjax(uiParent);
+        }        
         return;
     } catch (Exception e) {
       LOG.error("an unexpected error occurs while removing the node", e);
