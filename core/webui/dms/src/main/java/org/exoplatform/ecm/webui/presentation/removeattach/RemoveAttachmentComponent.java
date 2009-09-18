@@ -23,6 +23,7 @@ import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.ecm.webui.presentation.AbstractActionComponent;
 import org.exoplatform.ecm.webui.presentation.action.UIPresentationEventListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -47,7 +48,7 @@ import org.exoplatform.webui.core.UIComponent;
     }
 )
 
-public class RemoveAttachmentComponent extends UIComponent {
+public class RemoveAttachmentComponent extends AbstractActionComponent {
   
   private static final Log LOG = ExoLogger.getLogger(RemoveAttachmentComponent.class);
   
@@ -65,8 +66,7 @@ public class RemoveAttachmentComponent extends UIComponent {
   }
   
   public static void doDelete(Map<String, Object> variables) throws Exception {
-    UIComponent uicomponent = (UIComponent)variables.get(UICOMPONENT);
-    UIComponent uiParent = uicomponent.getParent();
+    AbstractActionComponent uicomponent = (AbstractActionComponent)variables.get(UICOMPONENT);
     UIApplication uiApp = uicomponent.getAncestorOfType(UIApplication.class);
     NodeFinder nodefinder = uicomponent.getApplicationComponent(NodeFinder.class);
     String repository = String.valueOf(variables.get(Utils.REPOSITORY));
@@ -79,7 +79,7 @@ public class RemoveAttachmentComponent extends UIComponent {
         node.remove();
         session.save();
         session.logout();
-        requestcontext.addUIComponentToUpdateByAjax(uiParent.getParent());
+        uicomponent.updateAjax(requestcontext);
         return;
       } catch (Exception e) {
         LOG.error("an unexpected error occurs while removing the node", e);

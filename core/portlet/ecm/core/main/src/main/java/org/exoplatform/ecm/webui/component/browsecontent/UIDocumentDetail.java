@@ -38,6 +38,7 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentFormController;
+import org.exoplatform.ecm.webui.presentation.AbstractActionComponent;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
 import org.exoplatform.ecm.webui.presentation.removecomment.RemoveCommentComponent;
@@ -65,6 +66,8 @@ import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
+
+import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Created by The eXo Platform SARL
@@ -257,12 +260,16 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
 
   public UIComponent getRemoveAttach() throws Exception {
     removeChild(RemoveAttachmentComponent.class);
-    return addChild(RemoveAttachmentComponent.class, null, "DocumentDetailRemoveAttach".concat(UUID.randomUUID().toString()));
+    UIComponent uicomponent = addChild(RemoveAttachmentComponent.class, null, "DocumentDetailRemoveAttach".concat(UUID.randomUUID().toString()));
+    ((AbstractActionComponent) uicomponent).setLstComponentupdate(Arrays.asList(new Class[] {((UIComponent)this.getParent()).getClass()}));
+    return uicomponent;
   }
   
   public UIComponent getRemoveComment() throws Exception {
     removeChild(RemoveCommentComponent.class);
-    return addChild(RemoveCommentComponent.class, null, "DocumentDetailRemoveComment".concat(UUID.randomUUID().toString()));
+    UIComponent uicomponent = addChild(RemoveCommentComponent.class, null, "DocumentDetailRemoveComment".concat(UUID.randomUUID().toString()));
+    ((AbstractActionComponent) uicomponent).setLstComponentupdate(Arrays.asList(new Class[] {((UIComponent)this.getParent()).getClass()}));
+    return uicomponent;
   }
   
   public List<Node> getRelations() throws Exception {

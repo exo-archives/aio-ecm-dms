@@ -20,11 +20,10 @@ package org.exoplatform.ecm.webui.presentation.removecomment;
 import java.util.Map;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.ecm.webui.presentation.AbstractActionComponent;
 import org.exoplatform.ecm.webui.presentation.action.UIPresentationEventListener;
-import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.comments.CommentsService;
@@ -34,9 +33,6 @@ import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
@@ -50,7 +46,7 @@ import org.exoplatform.webui.event.EventListener;
       @EventConfig(listeners = RemoveCommentComponent.RemoveCommentActionListener.class, confirm = "RemoveCommentComponent.msg.confirm-deletecomment")
     }
 )
-public class RemoveCommentComponent extends UIComponent {
+public class RemoveCommentComponent extends AbstractActionComponent {
 
   private static final Log LOG = ExoLogger.getLogger(RemoveCommentComponent.class);
   
@@ -68,8 +64,7 @@ public class RemoveCommentComponent extends UIComponent {
   }
   
   public static void doDelete(Map<String, Object> variables) throws Exception {
-    UIComponent uicomponent = (UIComponent)variables.get(UICOMPONENT);
-    UIComponent uiParent = uicomponent.getParent();
+    AbstractActionComponent uicomponent = (AbstractActionComponent)variables.get(UICOMPONENT);
     UIApplication uiApp = uicomponent.getAncestorOfType(UIApplication.class);
     NodeFinder nodefinder = uicomponent.getApplicationComponent(NodeFinder.class);
     String repository = String.valueOf(variables.get(Utils.REPOSITORY));
@@ -79,17 +74,15 @@ public class RemoveCommentComponent extends UIComponent {
     try {
         Node commentNode = (Node) nodefinder.getItem(repository, wsname, nodepath);
         CommentsService commentService = uicomponent.getApplicationComponent(CommentsService.class);
-        commentService.deleteComment(commentNode);
-        requestcontext.addUIComponentToUpdateByAjax(uiParent.getParent());
-        return;
+        commentService.deleteComment(commentNode);        
+        uicomponent.updateAjax(requestcontext);    
     } catch (Exception e) {
       LOG.error("an unexpected error occurs while removing the node", e);
       JCRExceptionManager.process(uiApp, e);
       requestcontext.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-      return;
     }
   }
-  
+
   public static class RemoveCommentActionListener extends UIPresentationEventListener<RemoveCommentComponent> {
     protected void executeAction(Map<String, Object> variables) throws Exception {
       RemoveCommentComponent.doDelete(variables);
