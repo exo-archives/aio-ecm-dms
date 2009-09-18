@@ -18,6 +18,7 @@ package org.exoplatform.ecm.webui.component.explorer.versions;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -58,8 +59,6 @@ import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Created by The eXo Platform SARL

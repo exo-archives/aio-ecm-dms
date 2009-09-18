@@ -18,6 +18,7 @@ package org.exoplatform.ecm.webui.component.explorer.search;
 
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,8 +69,6 @@ import org.exoplatform.webui.core.UIPopupWindow;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.ext.UIExtensionManager;
-
-import edu.emory.mathcs.backport.java.util.Arrays;
 
 /**
  * Created by The eXo Platform SARL

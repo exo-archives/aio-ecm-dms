@@ -31,20 +31,19 @@ import org.exoplatform.webui.core.UIComponent;
  */
 public abstract class AbstractActionComponent extends UIComponent {
  
-  private List<Class<UIComponent>> lstComponentupdate = new ArrayList<Class<UIComponent>>();
+  private List<Class> lstComponentupdate = new ArrayList<Class>();
 
-  public void setLstComponentupdate(List<Class<UIComponent>> lstComponentupdate) {
+  public void setLstComponentupdate(List<Class> lstComponentupdate) {
     this.lstComponentupdate = lstComponentupdate;
   }
 
-  public List<Class<UIComponent>> getLstComponentupdate() {
+  public List<Class> getLstComponentupdate() {
     return lstComponentupdate;
   }
 
-  
   public void updateAjax(WebuiRequestContext requestcontext) {
-    for (Class<UIComponent> clazz : lstComponentupdate) {
-      requestcontext.addUIComponentToUpdateByAjax(this.getAncestorOfType(clazz));
+    for (Class clazz : lstComponentupdate) {
+      requestcontext.addUIComponentToUpdateByAjax(this.getAncestorOfType((Class<UIComponent>)clazz));
     }
   }
 }
