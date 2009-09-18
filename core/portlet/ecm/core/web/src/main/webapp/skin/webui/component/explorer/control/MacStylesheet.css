@@ -728,6 +728,11 @@
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
 }
+
+.UIJCRExplorerPortlet .UIActionBar .SubTabItem a:hover{
+	color: blue;
+}
+
 .UIJCRExplorerPortlet .UIActionBar .TabLabel {
 	line-height: 24px;
 	color: #333;
