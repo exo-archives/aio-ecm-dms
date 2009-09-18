@@ -20,6 +20,7 @@ package org.exoplatform.ecm.webui.component.browsecontent;
 import java.io.InputStream;
 import java.security.AccessControlException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -41,6 +42,7 @@ import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentFormController;
+import org.exoplatform.ecm.webui.presentation.AbstractActionComponent;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
 import org.exoplatform.ecm.webui.presentation.removecomment.RemoveCommentComponent;
@@ -121,12 +123,16 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
 
   public UIComponent getRemoveAttach() throws Exception {
     removeChild(RemoveAttachmentComponent.class);
-    return addChild(RemoveAttachmentComponent.class, null, "DocumentDetailRemoveAttach".concat(UUID.randomUUID().toString()));
+    UIComponent uicomponent = addChild(RemoveAttachmentComponent.class, null, "DocumentDetailRemoveAttach".concat(UUID.randomUUID().toString()));
+    ((AbstractActionComponent)uicomponent).setLstComponentupdate(Arrays.asList(new Class[] {((UIComponent)this.getParent()).getClass()}));
+    return uicomponent;
   }
   
   public UIComponent getRemoveComment() throws Exception {
     removeChild(RemoveCommentComponent.class);
-    return addChild(RemoveCommentComponent.class, null, "DocumentDetailRemoveComment".concat(UUID.randomUUID().toString()));
+    UIComponent uicomponent = addChild(RemoveCommentComponent.class, null, "DocumentDetailRemoveComment".concat(UUID.randomUUID().toString()));
+    ((AbstractActionComponent)uicomponent).setLstComponentupdate(Arrays.asList(new Class[] {((UIComponent)this.getParent()).getClass()}));
+    return uicomponent;
   }
   
   public String getTemplatePath(){
