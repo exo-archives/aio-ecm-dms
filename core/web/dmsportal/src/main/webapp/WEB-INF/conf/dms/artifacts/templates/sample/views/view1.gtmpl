@@ -2,6 +2,7 @@
 	import java.text.SimpleDateFormat ;
 	import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.ecm.webui.utils.PermissionUtil;
+  import org.exoplatform.ecm.webui.utils.Utils;
   import org.exoplatform.webui.core.UIPopupWindow;
 	
 	UIPopupWindow uiPopupWindow = uicomponent.getAncestorOfType(UIPopupWindow.class);
