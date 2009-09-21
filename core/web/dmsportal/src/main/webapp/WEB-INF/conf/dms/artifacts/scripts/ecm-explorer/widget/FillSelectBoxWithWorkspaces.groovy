@@ -46,6 +46,8 @@ public class FillSelectBoxWithWorkspaces implements CmsScript {
       options.add(new SelectItemOption(name, name));
     }            
     selectBox.setOptions(options);
+    SelectItemOption option = options.get(2);
+    option.setSelected(true);
   }
 
   public void setParams(String[] params) { repository_ = params[0]; }

@@ -222,12 +222,14 @@
 				<%
 				  def attachments = uicomponent.getAttachments() ;
 				  if(attachments.size() > 0) {
+				  def removeattachcomponent = uicomponent.getRemoveAttach();
+				  String wsName = "";
 				%>			
 					<div style="width: 100%" >
 						<%
 						  for(att in attachments) {
+						  wsName = att.getSession().getWorkspace().getName();
 						  String actionLink3 = uicomponent.event("ChangeNode", att.getPath(), new Parameter("workspaceName", att.getSession().getWorkspace().getName())) ;
-						  String removeLink = uicomponent.event("RemoveAttach", att.getPath(), new Parameter("workspaceName", att.getSession().getWorkspace().getName())) ;
 						%>
 							<div style="font-size: 12px; padding: 10px;">
 								<div class="RemoveNodeFloat">
@@ -236,8 +238,10 @@
 								 	</a>
 								</div>
 								<div class="RemoveNodeFloat"> 	
-							 	 <% if (PermissionUtil.canRemoveNode(att)) {%>
-	                    <a href="$removeLink" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-attachment")%>">
+							 	 <% if (PermissionUtil.canRemoveNode(att)) {
+							 	 			Parameter[] params = [new Parameter("workspaceName", wsName), new Parameter("repository", uicomponent.getRepository())];
+							 	 %>
+																		 	 <a onclick="<%=removeattachcomponent.event("RemoveAttach", Utils.formatNodeName(att.getPath()), params)%>" style="cursor: pointer;" title="<%=_ctx.appRes(uicomponent.getId() + ".tooltip.remove-attachment")%>">
 	                      <div class="RemoveAttachments"><span></span></div>
 	                    </a>
                 <% } %>

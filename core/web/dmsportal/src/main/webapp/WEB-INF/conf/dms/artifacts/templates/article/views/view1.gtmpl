@@ -474,9 +474,10 @@
 						        <%
 						        if(attachments.size() > 0) {
 							        def removeattachcomponent = uicomponent.getRemoveAttach();
+							        String wsName = "";
 															for (att in attachments) {
 																if(att != null) {
-			  													String wsName = att.getSession().getWorkspace().getName() ;
+			  													wsName = att.getSession().getWorkspace().getName();
 														%>
 														  <div class="AttachmentsContainer">	
 							                  <div class="AttachmentsContentIcon">
