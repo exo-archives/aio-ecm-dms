@@ -589,7 +589,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   public UIComponent getRemoveComment() throws Exception {
     removeChild(RemoveCommentComponent.class);
     UIComponent uicomponent = addChild(RemoveCommentComponent.class, null, "DocumentInfoRemoveComment");
-    ((AbstractActionComponent)uicomponent).setLstComponentupdate(Arrays.asList(new Class[] {UIDocumentContainer.class}));
+    ((AbstractActionComponent)uicomponent).setLstComponentupdate(Arrays.asList(new Class[] {UIDocumentContainer.class, UIWorkingArea.class}));
     return uicomponent;
   }
   
