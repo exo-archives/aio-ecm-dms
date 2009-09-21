@@ -222,8 +222,8 @@
 				<%
 				  def attachments = uicomponent.getAttachments() ;
 				  if(attachments.size() > 0) {
-				  def removeattachcomponent = uicomponent.getRemoveAttach();
-				  String wsName = "";
+					  def removeattachcomponent = uicomponent.getRemoveAttach();
+					  String wsName = "";
 				%>			
 					<div style="width: 100%" >
 						<%
