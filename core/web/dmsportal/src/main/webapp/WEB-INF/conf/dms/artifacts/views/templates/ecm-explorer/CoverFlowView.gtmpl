@@ -8,7 +8,8 @@
    */
 %>
 <%   
-  import org.exoplatform.web.application.Parameter ;
+  import org.exoplatform.web.application.Parameter;
+  import org.exoplatform.services.jcr.util.Text;
 %>
 <%
   if(uicomponent.getChildrenList().size() > 0) {
@@ -121,24 +122,26 @@
 	  					    } else {
 	  					      isShowCoverFlow = false;
 	  					    }
-	                imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + wsName + image.getPath() + "/?size=big";
 	  					    if(uicomponent.isImageType(image)) {
+								    imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + wsName + "/" + image.getUUID() + "/?size=big";
 								    if(isShowCoverFlow) {
-	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+image.getName()+"\"/>";
+	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
 								    } else {
-								      println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" onload='this.setAttribute(\"w\", (this.width || 300)); this.setAttribute(\"h\", (this.height || 300));' alt=\""+image.getName()+"\"/>";
+								      println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" onload='this.setAttribute(\"w\", (this.width || 300)); this.setAttribute(\"h\", (this.height || 300));' alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
 								    }
 							    } else if(primaryType.equals("nt:unstructured") || primaryType.equals("nt:folder")) {
 	  						    if(isShowCoverFlow) {
-	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+image.getName()+"\"/>";
+	                    imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + wsName + "/" + image.getUUID() + "/?size=big";
+	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
 	  						    } else {
-  	  						    println "<image src=\"/ecm/skin/webui/component/explorer/UIJCRExplorer/DefaultSkin/background/BigFolder.gif\" longdesc=\""+actionLink+"\" w=\"208\" h=\"218\" alt=\""+image.getName()+"\"/>";
+  	  						    println "<image src=\"/ecm/skin/webui/component/explorer/UIJCRExplorer/DefaultSkin/background/BigFolder.gif\" longdesc=\""+actionLink+"\" w=\"208\" h=\"218\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
 	  						    }
 							    } else {
 							      if(isShowCoverFlow) {
-	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+image.getName()+"\"/>";
+                      imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + wsName + "/" + image.getUUID() + "/?size=big";
+	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
 	  						    } else {
-	  						      println "<image src=\"/ecm/skin/webui/component/explorer/UIJCRExplorer/DefaultSkin/background/BigDocument.gif\" longdesc=\""+actionLink+"\" w=\"115\" h=\"144\" alt=\""+image.getName()+"\"/>";
+	  						      println "<image src=\"/ecm/skin/webui/component/explorer/UIJCRExplorer/DefaultSkin/background/BigDocument.gif\" longdesc=\""+actionLink+"\" w=\"115\" h=\"144\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
 	                  }
 							    }
 							  }

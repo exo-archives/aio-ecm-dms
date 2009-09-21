@@ -38,7 +38,6 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFi
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotSymlinkFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIActionBarActionListener;
 import org.exoplatform.ecm.webui.component.explorer.symlink.UISymLinkManager;
-import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.log.ExoLogger;

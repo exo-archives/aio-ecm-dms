@@ -7,6 +7,7 @@
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
   import org.exoplatform.ecm.webui.component.explorer.sidebar.TreeNode ;
   import java.util.List;
+  import org.exoplatform.ecm.utils.text.Text;
 %>
 <%
 		
@@ -35,7 +36,7 @@
     	  continue;
     	}
 	    String path = node.getPath() ;
-	    String treeNodeName = treeNode.getName();
+	    String treeNodeName = Text.unescapeIllegalJcrChars(treeNode.getName());
 	    def isPreferenceNode = uicomponent.isPreferenceNode(node) ;
 	    def preferenceWS = node.getSession().getWorkspace().getName() ;
 	    String mode = "ExpandTree";
@@ -61,7 +62,7 @@
   	    def permLinkComponent =  uicomponent.getWorkingArea().getPermlink(node);
         if (permLinkComponent != null) {
             strActs +=  "<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(node) + "\">" ;
-            strActs +=  " <div class='MenuURLIcon GetURL16x16Icon'>" ;
+            strActs +=  " <div class='MenuURLIcon " + permLinkComponent.getUIExtensionName() + ".16x16Icon'>" ;
             strActs +=    _ctx.appRes("ECMContextMenu.event." + permLinkComponent.getUIExtensionName());
             strActs +=  " </div>";
             strActs +=  "</a>";
@@ -118,7 +119,7 @@
 	    	isSymLink = true;
 	    	iconClassLink = "IconSymLink ";
 	    }
-	    if(!uicomponent.isSystemWorkspace()) ctMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(path), uicomponent.getActionsList(node)) ;
+	    if(!uicomponent.isSystemWorkspace()) ctMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(node.getPath()), uicomponent.getActionsList(node)) ;
 	    println "<div  class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
 	    println "  <div class=\"${iconType}Icon\" onclick=\"event.cancelBubble=true; if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
 	    println "    <div id=\"iconTreeExplorer\" onclick=\"event.cancelBubble=true;" + expandLink + "\" objectId=\"" + URLEncoder.encode(Utils.formatNodeName(treeNode.getPath()), "utf-8") + "\" workspacename=\"" + preferenceWS + "\" class=\"${iconClassLink}Icon16x16 default16x16Icon " + Utils.getNodeTypeIcon(node, "16x16Icon", iconType) + "\" " + ctMenu + ">" + strActs ;

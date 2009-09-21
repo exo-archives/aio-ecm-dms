@@ -63,6 +63,7 @@ import org.exoplatform.services.ecm.fckconfig.FCKEditorContext;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.jcr.util.Text;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.web.application.RequestContext;
@@ -718,7 +719,7 @@ public class UIDialogForm extends UIForm {
           uiInput.setValue(i18nNodePath.substring(i18nNodePath.lastIndexOf("/") + 1));
         } else {
           String nameValue =  node.getPath().substring(node.getPath().lastIndexOf("/") + 1);
-          uiInput.setValue(nameValue);
+          uiInput.setValue(Text.unescapeIllegalJcrChars(nameValue));
         }
         uiInput.setEditable(false);
       } else if(node.hasProperty(propertyName)) {

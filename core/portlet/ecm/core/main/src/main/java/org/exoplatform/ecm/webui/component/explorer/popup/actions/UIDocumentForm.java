@@ -233,22 +233,22 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       String[] categoriesPathList = null;
       String repository = uiExplorer.getRepositoryName();
       TaxonomyService taxonomyService = documentForm.getApplicationComponent(TaxonomyService.class);
-      if (documentForm.isAddNew()) {
-        for (int i = 0; i < inputs.size(); i++) {
-          UIFormInput input = (UIFormInput) inputs.get(i);
-          if ((input.getName() != null) && input.getName().equals("name")) {
-            String[] arrFilterChar = { "&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")",
-                "'", "#", ";", "}", "{", "/", "|", "\"" };
-            String valueName = input.getValue().toString();
-            if (!Utils.isNameValid(valueName, arrFilterChar)) {
-              uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null,
-                  ApplicationMessage.WARNING));
-              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-              return;
-            }
-          }
-        }
-      }
+//      if (documentForm.isAddNew()) {
+//        for (int i = 0; i < inputs.size(); i++) {
+//          UIFormInput input = (UIFormInput) inputs.get(i);
+//          if ((input.getName() != null) && input.getName().equals("name")) {
+//            String[] arrFilterChar = { "&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")",
+//                "'", "#", ";", "}", "{", "/", "|", "\"" };
+//            String valueName = input.getValue().toString();
+//            if (!Utils.isNameValid(valueName, arrFilterChar)) {
+//              uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null,
+//                  ApplicationMessage.WARNING));
+//              event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+//              return;
+//            }
+//          }
+//        }
+//      }
       
       int index = 0;
       if (documentForm.isReference) {
@@ -381,7 +381,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(RepositoryException repo) {
-        uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.repository-exception-permission", null, ApplicationMessage.WARNING));
+        repo.printStackTrace();
+        uiApp.addMessage(new ApplicationMessage("UIDocumentForm.msg.repository-exception", null, ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       } catch(NumberFormatException nume) {

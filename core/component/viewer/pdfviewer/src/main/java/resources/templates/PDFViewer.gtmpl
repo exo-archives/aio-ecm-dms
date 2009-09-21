@@ -4,6 +4,7 @@
 	import javax.jcr.Node;
 	import javax.jcr.NodeIterator;
 	import org.exoplatform.webui.core.UIComponent;
+  import org.exoplatform.services.jcr.util.Text;	
 	
 	UIComponent uiParent = uicomponent.getParent();
 	
@@ -223,6 +224,7 @@
 		<div class="ClearBoth"><span></span></div>
 	</div>
 	<div class="InfoPopup" id="metadatas" style="display: none;position: absolute;">
+		<div class="Metadata"><span class="metaKey"><%=uicomponent.getResourceBundle("PDFViewer.metadata.fileName")%></span>: <span class="metaValue"><%=Text.unescapeIllegalJcrChars(originalNode.getName())%></span></div>
 		<%for(key in metadatas.keySet()) {%>
 			<div class="Metadata"><span class="metaKey"><%=uicomponent.getResourceBundle("PDFViewer.metadata." + key)%>: </span><span class="metaValue"><%=metadatas.get(key)%></span></div>
 		<%}%>
@@ -231,7 +233,7 @@
   	<div class="ImageView">
 		<%
 			try {
-			  String pdfPageImage = "/" + uiParent.getPortalName() + "/rest/pdfviewer/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + "/${currentPage}/${currentRotation}/${currentScale}" + fileLangNode.getPath() + "/";
+			  String pdfPageImage = "/" + uiParent.getPortalName() + "/rest/pdfviewer/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + "/${currentPage}/${currentRotation}/${currentScale}/" + fileLangNode.getUUID() + "/";
 		%>
 			  <a href="$pdfPageImage" rel="lightbox" title="<%=uicomponent.getResourceBundle("PDFViewer.label.viewFullPage")%>"><image src="$pdfPageImage"></a>
 		<%}catch(Exception e) {%>	

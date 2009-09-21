@@ -59,7 +59,7 @@ import org.exoplatform.services.rest.transformer.PassthroughOutputTransformer;
  * Example: 
  * <img src="/portal/rest/thumbnailImage/repository/collaboration/test.gif" />
  */
-@URITemplate("/thumbnailImage/{repoName}/{workspaceName}/{nodePath}/")
+@URITemplate("/thumbnailImage/{repoName}/{workspaceName}/{uuid}/")
 public class ThumbnailRESTService implements ResourceContainer {
   
   private static final String LASTMODIFIED = "Last-Modified";
@@ -90,8 +90,8 @@ public class ThumbnailRESTService implements ResourceContainer {
   @OutputTransformer(PassthroughOutputTransformer.class)
   public Response getThumbnailImage(@URIParam("repoName") String repoName, 
                                     @URIParam("workspaceName") String wsName,
-                                    @URIParam("nodePath") String nodePath) throws Exception {
-    return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.MEDIUM_SIZE);
+                                    @URIParam("uuid") String uuid) throws Exception {
+    return getThumbnailByType(repoName, wsName, uuid, ThumbnailService.MEDIUM_SIZE);
   }
   
 /**
@@ -109,8 +109,8 @@ public class ThumbnailRESTService implements ResourceContainer {
   @OutputTransformer(PassthroughOutputTransformer.class)
   public Response getCoverImage(@URIParam("repoName") String repoName, 
                                 @URIParam("workspaceName") String wsName,
-                                @URIParam("nodePath") String nodePath) throws Exception {
-    return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.BIG_SIZE);
+                                @URIParam("uuid") String uuid) throws Exception {
+    return getThumbnailByType(repoName, wsName, uuid, ThumbnailService.BIG_SIZE);
   }
   
 /**
@@ -126,14 +126,14 @@ public class ThumbnailRESTService implements ResourceContainer {
   @HTTPMethod("GET")
   public Response getSmallImage(@URIParam("repoName") String repoName, 
                                 @URIParam("workspaceName") String wsName,
-                                @URIParam("nodePath") String nodePath) throws Exception {
-    return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.SMALL_SIZE);
+                                @URIParam("uuid") String uuid) throws Exception {
+    return getThumbnailByType(repoName, wsName, uuid, ThumbnailService.SMALL_SIZE);
   }
   
-  private Response getThumbnailByType(String repoName, String wsName, String nodePath, 
+  private Response getThumbnailByType(String repoName, String wsName, String uuid, 
       String propertyName) throws Exception {
     if(!thumbnailService_.isEnableThumbnail()) return Response.Builder.ok().build();
-    Node showingNode = getShowingNode(repoName, wsName, nodePath);
+    Node showingNode = getShowingNode(repoName, wsName, uuid);
     Node parentNode = showingNode.getParent();
     String identifier = ((NodeImpl) showingNode).getInternalIdentifier();
     Node targetNode;
@@ -187,15 +187,10 @@ public class ThumbnailRESTService implements ResourceContainer {
     return Response.Builder.ok().build();
   }
   
-  private Node getShowingNode(String repoName, String wsName, String nodePath) throws Exception {
+  private Node getShowingNode(String repoName, String wsName, String uuid) throws Exception {
     ManageableRepository repository = repositoryService_.getRepository(repoName);
     Session session = getSystemProvider().getSession(wsName, repository);
-    Node showingNode = null;
-    if(nodePath.equals("/")) showingNode = session.getRootNode();
-    else {
-      showingNode = (Node) nodeFinder_.getItem(session, "/" + nodePath);
-    }
-    return showingNode;
+    return session.getNodeByUUID(uuid);
   }
 
   private SessionProvider getSystemProvider() {

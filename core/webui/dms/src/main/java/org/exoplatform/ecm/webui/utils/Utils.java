@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.ResourceBundle;
 import java.util.zip.ZipInputStream;
 
@@ -425,6 +426,61 @@ public class Utils {
     }
     return null;
   }
+  
+  public static String calculateFileSize(double fileLengthLong) {
+    int fileLengthDigitCount = Double.toString(fileLengthLong).length();
+    double fileSizeKB = 0.0;
+    String howBig = "";
+    if(fileLengthDigitCount < 5) {
+      fileSizeKB = Math.abs(fileLengthLong);
+      howBig = "Byte(s)";
+    } else if(fileLengthDigitCount >= 5 && fileLengthDigitCount <=6) {
+      fileSizeKB = Math.abs((fileLengthLong/1024));
+      howBig = "KB";
+    } else if(fileLengthDigitCount >= 7 && fileLengthDigitCount <= 9) {
+      fileSizeKB = Math.abs(fileLengthLong/(1024*1024));
+      howBig = "MB";
+    } else if(fileLengthDigitCount >9) {
+      fileSizeKB = Math.abs((fileLengthLong/(1024*1024*1024)));
+      howBig = "GB";
+    }
+    String finalResult = getRoundedValue(fileSizeKB);
+    return finalResult+" "+howBig;
+  }
+  
+  private static String getRoundedValue(double decimalVal) {
+    long beforeDecimalValue = decimalTokenize(decimalVal,1);
+    long afterDecimalValue = decimalTokenize(decimalVal,2);
+    long decimalValueLength = String.valueOf(afterDecimalValue).length();
+    long dividerVal = divider(decimalValueLength-1);
+    long dividedValue = afterDecimalValue/dividerVal;
+    String finalResult=String.valueOf(beforeDecimalValue)+"."+String.valueOf(dividedValue) ;
+    return finalResult;
+  }
+
+  private static long divider(long argLength) {
+    long varDivider = 1;
+    for(int i=0;i<(argLength-1);i++) {
+      varDivider = varDivider*10;
+    }
+    return varDivider;
+  }
+
+  private static long decimalTokenize(double decimalVal,int position) {
+    long returnDecimalVal=0;
+    String strDecimalVal="";
+    if(decimalVal >0) strDecimalVal = String.valueOf(decimalVal);
+    if(strDecimalVal.length()>0) {
+      StringTokenizer decimalToken = new StringTokenizer(strDecimalVal,".");
+      if(position==1) {
+        returnDecimalVal = Long.parseLong(decimalToken.nextToken());
+      } else if(position==2) {
+        decimalToken.nextToken();
+        returnDecimalVal = Long.parseLong(decimalToken.nextToken());
+      }
+    }
+    return returnDecimalVal;
+  } 
   
   public static String getResourceBundle(String name, String key, ClassLoader cl) {
     ExoContainer container = ExoContainerContext.getCurrentContainer();

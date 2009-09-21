@@ -43,6 +43,7 @@ import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.comparator.NodeNameComparator;
 import org.exoplatform.ecm.webui.comparator.PropertyValueComparator;
 import org.exoplatform.ecm.webui.comparator.StringComparator;
@@ -497,7 +498,8 @@ public class UIJCRExplorer extends UIContainer {
 
   public void updateAjax(Event<?> event) throws Exception { 
     UIAddressBar uiAddressBar = findFirstComponentOfType(UIAddressBar.class) ;
-    uiAddressBar.getUIStringInput(UIAddressBar.FIELD_ADDRESS).setValue(filterPath(currentPath_)) ;
+    uiAddressBar.getUIStringInput(UIAddressBar.FIELD_ADDRESS).setValue(
+        Text.unescapeIllegalJcrChars(filterPath(currentPath_))) ;
     event.getRequestContext().addUIComponentToUpdateByAjax(uiAddressBar) ;
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class) ;
     UIActionBar uiActionBar = findFirstComponentOfType(UIActionBar.class) ;

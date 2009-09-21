@@ -9,11 +9,11 @@
 %>
 <%
   import java.util.ArrayList;
-		import java.net.URLEncoder;
+	import java.net.URLEncoder;
   import org.exoplatform.ecm.webui.utils.Utils ;
   import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
-  import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+  import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;  import org.exoplatform.services.jcr.util.Text;
   
   def uiWorkingArea = uicomponent.getAncestorOfType(UIWorkingArea.class);
   def uiCustomActionComponent = uiWorkingArea.getCustomAction();
@@ -243,7 +243,7 @@
 	        </div>
 	        <div class="ResizeColumn">
 							<div class="NodeLabel">
-								<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="$name">$subName</div>
+								<div style="cursor: pointer; -moz-outline: none; -moz-user-select: none;" title="<%=Text.unescapeIllegalJcrChars(name)%>"><%=Text.unescapeIllegalJcrChars(subName)%></div>
 		 					</div>
 	        </div>
 	        <div style="clear: both"><span></span></div>

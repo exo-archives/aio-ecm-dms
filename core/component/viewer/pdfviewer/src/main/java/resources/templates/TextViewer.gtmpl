@@ -4,6 +4,7 @@
 	import javax.jcr.Node;
 	import javax.jcr.NodeIterator;
 	import org.exoplatform.webui.core.UIComponent;
+  import org.exoplatform.services.jcr.util.Text;	
 	
 	UIComponent uiParent = uicomponent.getParent();
 
@@ -79,7 +80,7 @@
 	      <div class="UITabContentContainer">
 	        <div class="UITabContent" style="display: block;"> 
 		        <div class="NavigationContainer">       
-	    				<div class="TopTitle">$originalNode.name</div>
+	    				<div class="TopTitle"><%=Text.unescapeIllegalJcrChars(originalNode.getName())%></div>
 			        <%
 			        	if(contentNode.hasProperty("jcr:data")){
 			        	  String iframeId = uiParent.getId() + "ifame" ;

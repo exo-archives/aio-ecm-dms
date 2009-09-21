@@ -4,7 +4,8 @@
 	import javax.jcr.Node;
 	import javax.jcr.NodeIterator;
 	import org.exoplatform.webui.core.UIComponent;
-	
+  import org.exoplatform.services.jcr.util.Text;
+
 	UIComponent uiParent = uicomponent.getParent();
 	
 	public boolean isVersionable(Node node) throws Exception {
@@ -42,12 +43,12 @@
   }
   
   String rndString = String.valueOf(new Date().getTime());
-  String imgSrc = "";
-  if(isVersionable(originalNode)) {
-	  imgSrc = uiParent.getDownloadLink(fileLangNode) ;
-	} else {
-	  imgSrc = "/" + uiParent.getPortalName() + "/rest/jcr/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + fileLangNode.getPath();
-	} 
+//  String imgSrc = "";
+//  if(isVersionable(originalNode)) {
+	String imgSrc = uiParent.getDownloadLink(fileLangNode) ;
+//	} else {
+//	  imgSrc = "/" + uiParent.getPortalName() + "/rest/jcr/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + fileLangNode.getPath();
+//	} 
 	def dcTitle = "";
 	if(contentNode.hasProperty("dc:title")) {
     StringBuilder sB = new StringBuilder();
@@ -64,7 +65,7 @@
   rqcontext.getJavascriptManager().addOnLoadJavascript('initLightbox');
 %>
 <div class="NavigationContainer">       
-  <div class="TopTitle">$originalNode.name</div>
+  <div class="TopTitle"><%=Text.unescapeIllegalJcrChars(originalNode.getName())%></div>
 	<div class="Content">
   	<div class="TextContent">
 		  <div class="ContentDetail">

@@ -39,6 +39,7 @@ import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.MimeTypeResolver;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
@@ -345,7 +346,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
               event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
               return;
             }      
-            String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
+            //String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
             inputStream = new BufferedInputStream(uiFormUploadInput.getUploadDataAsStream());
             if (index == 0){
               name = uiForm.getUIStringInput(FIELD_NAME).getValue();
@@ -353,21 +354,15 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
               name = uiForm.getUIStringInput(index + FIELD_NAME).getValue();
             }
             
-            if (name == null) {
-              for(String filterChar : arrFilterChar) {
-                if (fileName.indexOf(filterChar) > -1) {
-                  name = fileName.replace(filterChar, "");
-                  fileName = name;
-                }
-              }
-              name = fileName;
-            } else name = name.trim();
+            if(name == null) name = fileName;
+            else name = name.trim();
             
-            if (!Utils.isNameValid(name, arrFilterChar)) {
-                uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null, ApplicationMessage.WARNING)) ;
-                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-                return ;
-            }
+            name = Text.escapeIllegalJcrChars(name);
+//            if (!Utils.isNameValid(name, arrFilterChar)) {
+//                uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null, ApplicationMessage.WARNING)) ;
+//                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+//                return ;
+//            }
             
             List<String> listTaxonomyNameNew = new ArrayList<String>();
             if (index == 0) listTaxonomyNameNew = uiForm.mapTaxonomies.get(FIELD_LISTTAXONOMY);
@@ -557,10 +552,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
                 uploadedNode = newNode;
               }
             }
-            double size = uploadService.getUploadResource(uiFormUploadInput.getUploadId()).getEstimatedSize()/1024;
-            String fileSize = Double.toString(size);
+            double size = uploadService.getUploadResource(
+                uiFormUploadInput.getUploadId()).getEstimatedSize();
+            String fileSize = Utils.calculateFileSize(size);
             String iconUpload = Utils.getNodeTypeIcon(uploadedNode, "16x16Icon").replaceAll("nt_file16x16Icon ", "");
-            String[] arrValues = {iconUpload, fileName, name, fileSize +" Kb", mimeType, uploadedNode.getPath()};
+            String[] arrValues = {iconUpload, Text.unescapeIllegalJcrChars(fileName), 
+                Text.unescapeIllegalJcrChars(name), fileSize, mimeType, uploadedNode.getPath()};
             uiForm.listUploadedNodes.add(uploadedNode);
             listArrValues.add(arrValues);
             inputStream.close();

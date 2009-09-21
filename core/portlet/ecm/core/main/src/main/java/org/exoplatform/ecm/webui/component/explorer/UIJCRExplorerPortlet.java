@@ -34,6 +34,7 @@ import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.jcr.model.Preference;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
@@ -147,6 +148,18 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     String repositoryName = String.valueOf(map.get("repository"));
     String driveName = String.valueOf(map.get("drive"));
     String path = String.valueOf(map.get("path"));
+    if(path.equals("/")) return;
+    ArrayList<String> encodeNameArr = new ArrayList<String>();
+    for(String name : path.split("/")) {
+      if(name.length() > 0) {
+        encodeNameArr.add(Text.escapeIllegalJcrChars(name));
+      }
+    }
+    StringBuilder encodedPath = new StringBuilder();
+    for(String encodedName : encodeNameArr) {
+      encodedPath.append("/").append(encodedName);
+    }
+    path = encodedPath.toString();
     UIApplication uiApp = findFirstComponentOfType(UIApplication.class);
     ManageDriveService manageDrive = getApplicationComponent(ManageDriveService.class);
     DriveData driveData = null;

@@ -67,7 +67,7 @@ import org.icepdf.core.util.GraphicsRenderingHints;
  * {scale} Zoom factor to be applied to the rendered page 
  * Example: <img src="/portal/rest/pdfviewer/repository/collaboration/test.pdf/1/0.0f/1.0f">
  */
-@URITemplate("/pdfviewer/{repoName}/{workspaceName}/{pageNumber}/{rotation}/{scale}/{nodePath}/")
+@URITemplate("/pdfviewer/{repoName}/{workspaceName}/{pageNumber}/{rotation}/{scale}/{uuid}/")
 public class PDFViewerRESTService implements ResourceContainer {
 
   private static final String LASTMODIFIED = "Last-Modified";
@@ -82,24 +82,24 @@ public class PDFViewerRESTService implements ResourceContainer {
   @OutputTransformer(PassthroughOutputTransformer.class)
   public Response getCoverImage(@URIParam("repoName") String repoName, 
       @URIParam("workspaceName") String wsName,
-      @URIParam("nodePath") String nodePath,
+      @URIParam("uuid") String uuid,
       @URIParam("pageNumber") String pageNumber,
       @URIParam("rotation") String rotation,
       @URIParam("scale") String scale) throws Exception {
 
-    return getImageByPageNumber(repoName, wsName, nodePath, pageNumber, rotation, scale);
+    return getImageByPageNumber(repoName, wsName, uuid, pageNumber, rotation, scale);
   }
 
-  private Response getImageByPageNumber(String repoName, String wsName, String nodePath, 
+  private Response getImageByPageNumber(String repoName, String wsName, String uuid, 
       String pageNumber, String strRotation, String strScale) throws Exception {
     Document document = new Document();
     ManageableRepository repository = repositoryService_.getRepository(repoName);
     Session session = getSystemProvider().getSession(wsName, repository);
-    Node currentNode = (Node) session.getItem("/" + nodePath);
+    Node currentNode = session.getNodeByUUID(uuid);
     Node contentNode = currentNode.getNode("jcr:content");
     try {
       InputStream input = contentNode.getProperty("jcr:data").getStream() ;      
-      document.setInputStream(input, nodePath);
+      document.setInputStream(input, currentNode.getPath());
     } catch (PDFException ex) {
       System.out.println("Error parsing PDF document " + ex);
     } catch (PDFSecurityException ex) {

@@ -26,9 +26,9 @@ import javax.jcr.RepositoryException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NodeDefinition;
 
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.comparator.ItemOptionNameComparator;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -83,7 +83,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
     } else {
       allowCreateFolder_ = foldertypes;
     }
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(ECMNameValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
     setActions(new String[]{"Save", "Cancel"}) ;
     getUIStringInput(FIELD_NAME).setValue(null) ;
     if (getUIFormSelectBox(FIELD_TYPE) != null) {
@@ -115,15 +115,15 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }      
-      String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{", "/", "|", "\""};
-      for(String filterChar : arrFilterChar) {
-        if(name.indexOf(filterChar) > -1) {
-          uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null, 
-              ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          return;
-        }
-      }    
+//      String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{", "/", "|", "\""};
+//      for(String filterChar : arrFilterChar) {
+//        if(name.indexOf(filterChar) > -1) {
+//          uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null, 
+//              ApplicationMessage.WARNING));
+//          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+//          return;
+//        }
+//      }    
       String type = null ;
       if(uiFolderForm.getUIFormSelectBox(FIELD_TYPE) != null) {
         type = uiFolderForm.getUIFormSelectBox(FIELD_TYPE).getValue() ;
@@ -131,7 +131,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
         type = uiFolderForm.allowCreateFolder_ ;
       }
       try {
-        node.addNode(name, type);
+        node.addNode(Text.escapeIllegalJcrChars(name), type);
         node.save();
         node.getSession().save();
         if(!uiExplorer.getPreference().isJcrEnable())  { node.getSession().save() ; }

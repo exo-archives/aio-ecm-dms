@@ -31,10 +31,10 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.relations.RelationsService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -92,7 +92,8 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
   public void update(Node renameNode) throws Exception {
     renameNode_ = renameNode ;
     String renamePath = renameNode.getPath() ;
-    String oldName = renamePath.substring(renamePath.lastIndexOf("/") + 1, renamePath.length()) ;   
+    String oldName = Text.unescapeIllegalJcrChars(
+        renamePath.substring(renamePath.lastIndexOf("/") + 1, renamePath.length())) ;   
     getUIStringInput(FIELD_OLDNAME).setValue(oldName) ;
     getUIStringInput(FIELD_OLDNAME).setEditable(false) ;
     getUIStringInput(FIELD_NEWNAME).setValue("") ;    
@@ -121,14 +122,15 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
       PropertyIterator references = null;
       UIApplication uiApp = uiRenameForm.getAncestorOfType(UIApplication.class);
       Session nodeSession = null;
-      String newName = uiRenameForm.getUIStringInput(FIELD_NEWNAME).getValue().trim();
-      String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{", "/", "|", "\""}; 
-      if (!Utils.isNameValid(newName, arrFilterChar)) {
-        uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null,
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
+      String newName = Text.escapeIllegalJcrChars(
+          uiRenameForm.getUIStringInput(FIELD_NEWNAME).getValue().trim());
+//      String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{", "/", "|", "\""}; 
+//      if (!Utils.isNameValid(newName, arrFilterChar)) {
+//        uiApp.addMessage(new ApplicationMessage("UIFolderForm.msg.name-not-allowed", null,
+//            ApplicationMessage.WARNING));
+//        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+//        return;
+//      }
       if (uiRenameForm.renameNode_.getName().equals(newName)) {
         uiJCRExplorer.cancelAction();
         return;
