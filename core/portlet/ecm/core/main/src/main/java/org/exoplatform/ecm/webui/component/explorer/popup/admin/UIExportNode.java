@@ -42,6 +42,7 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.compress.CompressData;
@@ -102,7 +103,7 @@ public class UIExportNode extends UIForm implements UIPopupComponent {
   }
 
   public void update(Node node) throws Exception {
-    getUIFormInputInfo(NODE_PATH).setValue(node.getPath()) ;
+    getUIFormInputInfo(NODE_PATH).setValue(Text.unescapeIllegalJcrChars(node.getPath()));
   }
 
   public void activate() throws Exception {

@@ -1,8 +1,9 @@
 <%
-	 import java.net.URLEncoder;
+	import java.net.URLEncoder;
   import org.exoplatform.ecm.webui.utils.Utils ;
   import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
+  import org.exoplatform.services.jcr.util.Text;
     
   UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu() ;
   String componentId = uicomponent.getId();
@@ -163,7 +164,7 @@
 			          else subName = name.substring(0,15) + "..." ;
 			        %>
 			        <div class="ActionIconLabel" style="width: auto;">
-			          <a class="ActionLabel" title="$name">$subName</a>
+			          <a class="ActionLabel" title="<%=Text.unescapeIllegalJcrChars(name)%>"><%=Text.unescapeIllegalJcrChars(subName)%></a>
 			        </div>
 			      </div>
 			      $strActs

@@ -7,6 +7,7 @@
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
   import org.exoplatform.ecm.webui.component.explorer.sidebar.TreeNode ;
   import java.util.List;
+  import org.exoplatform.ecm.utils.text.Text;  
 %>
 <%
   public void writeNodes(TreeNode rootTree) {
@@ -26,7 +27,7 @@
     	  continue;
     	}
 	    String path = node.getPath() ;
-	    String treeNodeName = treeNode.getName();
+	    String treeNodeName = Text.unescapeIllegalJcrChars(treeNode.getName());
 	    def isPreferenceNode = uicomponent.isPreferenceNode(node) ;
 	    def preferenceWS = node.getSession().getWorkspace().getName() ;
 	    String mode = "ExpandTree";

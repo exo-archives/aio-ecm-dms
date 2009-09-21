@@ -31,6 +31,7 @@ import javax.jcr.query.QueryResult;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.SearchValidator;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -159,7 +160,7 @@ public class UIAddressBar extends UIForm {
   static public class ChangeNodeActionListener extends EventListener<UIAddressBar> {
     public void execute(Event<UIAddressBar> event) throws Exception {
       UIAddressBar uiAddress = event.getSource() ;
-      String path = uiAddress.getUIStringInput(FIELD_ADDRESS).getValue() ;
+      String path = Text.escapeIllegalJcrChars(uiAddress.getUIStringInput(FIELD_ADDRESS).getValue());
       if (path == null || path.trim().length() == 0) path = "/";
       UIJCRExplorer uiExplorer = uiAddress.getAncestorOfType(UIJCRExplorer.class) ;
       uiExplorer.setIsViewTag(false) ;

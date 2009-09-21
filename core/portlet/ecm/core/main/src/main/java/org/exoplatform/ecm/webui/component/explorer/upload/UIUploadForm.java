@@ -39,6 +39,7 @@ import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.MimeTypeResolver;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
@@ -276,24 +277,12 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
           return ;
       }      
-      String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
+      //String[] arrFilterChar = {"&", "$", "@", ":", "]", "[", "*", "%", "!", "+", "(", ")", "'", "#", ";", "}", "{"} ;
       InputStream inputStream = new BufferedInputStream(input.getUploadDataAsStream());
       String name = uiForm.getUIStringInput(FIELD_NAME).getValue();
-      if (name == null) {
-        for(String filterChar : arrFilterChar) {
-          if (fileName.indexOf(filterChar) > -1) {
-            name = fileName.replace(filterChar, "");
-            fileName = name;
-          }
-        }
-        name = fileName;
-      } else name = name.trim();
-      
-      if (!Utils.isNameValid(name, arrFilterChar)) {
-          uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-invalid", null, ApplicationMessage.WARNING)) ;
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
-          return ;
-      }
+      if (name == null) name = fileName;
+      else name = name.trim();
+      name = Text.escapeIllegalJcrChars(name);
       
       UIFormMultiValueInputSet uiSet = uiForm.getChild(UIFormMultiValueInputSet.class);
       List<String> listTaxonomyNew = new ArrayList<String>();
@@ -483,7 +472,8 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         UIUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UIUploadContent.class) ;
         double size = uploadService.getUploadResource(uiChild.getUploadId()).getEstimatedSize()/1024;
         String fileSize = Double.toString(size);     
-        String[] arrValues = {fileName, name, fileSize +" Kb", mimeType} ;
+        String[] arrValues = {Text.unescapeIllegalJcrChars(fileName), 
+            Text.unescapeIllegalJcrChars(name), fileSize +" Kb", mimeType} ;
         uiUploadContent.setUploadValues(arrValues) ;
         inputStream.close();
         uploadService.removeUpload(uiChild.getUploadId()) ;

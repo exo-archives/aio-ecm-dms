@@ -18,6 +18,7 @@ package org.exoplatform.services.cms.thumbnail.impl;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.jcr.ItemNotFoundException;
@@ -26,6 +27,7 @@ import javax.jcr.Session;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
@@ -133,6 +135,19 @@ public class ThumbnailRESTService implements ResourceContainer {
   private Response getThumbnailByType(String repoName, String wsName, String nodePath, 
       String propertyName) throws Exception {
     if(!thumbnailService_.isEnableThumbnail()) return Response.Builder.ok().build();
+    ArrayList<String> encodeNameArr = new ArrayList<String>();
+    if(!nodePath.equals("/")) {
+      for(String name : nodePath.split("/")) {
+        if(name.length() > 0) {
+          encodeNameArr.add(Text.escapeIllegalJcrChars(name));
+        }
+      }
+      StringBuilder encodedPath = new StringBuilder();
+      for(String encodedName : encodeNameArr) {
+        encodedPath.append("/").append(encodedName);
+      }
+      nodePath = encodedPath.toString();
+    }
     Node showingNode = getShowingNode(repoName, wsName, nodePath);
     Node parentNode = showingNode.getParent();
     String identifier = ((NodeImpl) showingNode).getInternalIdentifier();
@@ -193,7 +208,7 @@ public class ThumbnailRESTService implements ResourceContainer {
     Node showingNode = null;
     if(nodePath.equals("/")) showingNode = session.getRootNode();
     else {
-      showingNode = (Node) nodeFinder_.getItem(session, "/" + nodePath);
+      showingNode = (Node) nodeFinder_.getItem(session, nodePath);
     }
     return showingNode;
   }

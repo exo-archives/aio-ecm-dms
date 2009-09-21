@@ -38,6 +38,7 @@ import org.apache.commons.logging.Log;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.form.field.UIFormActionField;
 import org.exoplatform.ecm.webui.form.field.UIFormCalendarField;
 import org.exoplatform.ecm.webui.form.field.UIFormCheckBoxField;
@@ -716,10 +717,11 @@ public class UIDialogForm extends UIForm {
     if(node != null && !isShowingComponent && !isRemovePreference) {
       if(jcrPath.equals("/node") && (!formTextField.isEditable() || formTextField.isEditableIfNull())) {
         if(i18nNodePath != null) {
-          uiInput.setValue(i18nNodePath.substring(i18nNodePath.lastIndexOf("/") + 1));
+          uiInput.setValue(
+              Text.unescapeIllegalJcrChars(i18nNodePath.substring(i18nNodePath.lastIndexOf("/") + 1)));
         } else {
           String nameValue =  node.getPath().substring(node.getPath().lastIndexOf("/") + 1);
-          uiInput.setValue(nameValue);
+          uiInput.setValue(Text.unescapeIllegalJcrChars(nameValue));
         }
         uiInput.setEditable(false);
       } else if(node.hasProperty(propertyName)) {
@@ -732,9 +734,9 @@ public class UIDialogForm extends UIForm {
           uiInput.setValue(childNode.getProperty(propertyName).getValue().getString());
         } 
       } else if(childNode == null && jcrPath.equals("/node") && node != null) {
-        uiInput.setValue(node.getName());
+        uiInput.setValue(Text.unescapeIllegalJcrChars(node.getName()));
       } else if(i18nNodePath != null && jcrPath.equals("/node")) {
-        uiInput.setValue(i18nNodePath.substring(i18nNodePath.lastIndexOf("/") + 1));
+        uiInput.setValue(Text.unescapeIllegalJcrChars(i18nNodePath.substring(i18nNodePath.lastIndexOf("/") + 1)));
       } else {
         uiInput.setValue(formTextField.getDefaultValue());
       }

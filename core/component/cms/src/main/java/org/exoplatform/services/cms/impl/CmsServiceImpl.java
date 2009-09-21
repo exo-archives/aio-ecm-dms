@@ -43,6 +43,7 @@ import javax.jcr.nodetype.PropertyDefinition;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.commons.utils.ISO8601;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.idgenerator.IDGeneratorService;
@@ -102,6 +103,7 @@ public class CmsServiceImpl implements CmsService {
     if (nodeName == null || nodeName.length() == 0) {      
       nodeName = idGeneratorService.generateStringID(nodeTypeName);
     }
+    nodeName = Text.escapeIllegalJcrChars(nodeName);
     String primaryType = relRootProp.getNodetype() ;
     if(primaryType == null || primaryType.length() == 0) {
       primaryType = nodeTypeName ;
