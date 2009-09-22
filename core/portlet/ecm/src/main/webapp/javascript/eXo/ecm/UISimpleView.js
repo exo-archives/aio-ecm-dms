@@ -77,12 +77,29 @@ var SimpleView = function() {
 		if (mobileElement && mobileElement.move) {
 			var expandElement = DOM.findAncestorByClass(element, "ExpandIcon");
 			if(expandElement && expandElement.onclick) {
-				if (expandElement.onclick instanceof Function) expandElement.onclick(event);
+				if (expandElement.onclick instanceof Function) {
+					element.Timeout = setTimeout(function() {expandElement.onclick(event)}, 1000);
+				}
 			}
 		}
+		var scroller = DOM.findAncestorByClass(element, "UIResizableBlock");
+    scroller.onmousemove = eXo.ecm.UISimpleView.setScroll ;
 	};
 	
+	SimpleView.prototype.setScroll = function(evt){
+	  eXo.ecm.UISimpleView.object = this;
+    var element = eXo.ecm.UISimpleView.object ;
+	  var pos = eXo.core.Browser.findMouseYInPage(evt) - eXo.core.Browser.findPosY(element);
+	  if(element.offsetHeight - pos < 40){
+	    element.scrollTop = element.scrollTop + 5;  
+	  } else if(element.scrollTop > 0 && pos < 40) {
+	    element.scrollTop = element.scrollTop - 5;  
+	  }
+	};	
+	
 	SimpleView.prototype.mouseOutTree = function(event) {
+		var element = this;
+		clearTimeout(element.Timeout);
 	};
 	
 	SimpleView.prototype.mouseDownTree = function(event) {
