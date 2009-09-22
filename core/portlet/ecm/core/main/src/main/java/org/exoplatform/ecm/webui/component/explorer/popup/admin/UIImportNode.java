@@ -203,7 +203,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
   
   private String[] getPredecessors(String valueHistory) {
     String[] arrHistoryValue = valueHistory.split(";");
-    String strPredecessors = arrHistoryValue[2];
+    String strPredecessors = arrHistoryValue[1];
     if(strPredecessors.indexOf(",") > -1) {
       return strPredecessors.split(",");
     }
