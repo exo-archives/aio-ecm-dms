@@ -104,8 +104,14 @@
 	padding: 0px;
 }
 
+
 .UIForm .FieldComponent .FieldComponent input{
 	width: 200px;
+}
+
+.UIForm .FieldComponent .FieldComponent input.checkbox{
+	width: 16px;
+	margin: 0px;
 }
 
 .UIJCRExplorerPortlet .UIForm .HorizontalLayout .UIFormInputSet {
