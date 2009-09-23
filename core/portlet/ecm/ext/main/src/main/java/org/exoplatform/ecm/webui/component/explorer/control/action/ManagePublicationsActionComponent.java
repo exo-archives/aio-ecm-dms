@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
@@ -35,6 +36,7 @@ import org.exoplatform.ecm.webui.component.explorer.popup.admin.UIPublicationMan
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -72,6 +74,10 @@ public class ManagePublicationsActionComponent extends UIComponent {
       UIJCRExplorer uiExplorer = uiActionBar.getAncestorOfType(UIJCRExplorer.class);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
       Node currentNode = uiExplorer.getCurrentNode();
+      Session session = currentNode.getSession();
+      ManageableRepository managerepository = (ManageableRepository)session.getRepository();
+      Session systemSession = managerepository.getSystemSession(session.getWorkspace().getName()) ;
+      currentNode = (Node)systemSession.getItem(currentNode.getPath());
       uiExplorer.setIsHidePopup(false);
       PublicationService publicationService = uiActionBar.getApplicationComponent(PublicationService.class);
       PublicationPresentationService publicationPresentationService = uiActionBar.getApplicationComponent(PublicationPresentationService.class);
@@ -104,7 +110,7 @@ public class ManagePublicationsActionComponent extends UIComponent {
         UIPublicationLogList uiPublicationLogList = 
           uiPublicationManager.getChild(UIPublicationLogList.class);      
         UIPopupContainer.activate(uiPublicationManager, 700, 500);
-        uiPublicationLogList.setNode(uiExplorer.getCurrentNode());
+        uiPublicationLogList.setNode(currentNode);
         uiPublicationLogList.updateGrid(); 
       }            
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
