@@ -373,8 +373,11 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     contentNode.setProperty(EXO_ROLES_PROP, roles);
     contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
     rtlTemplateCache_.clearCache();
-    setTemplateData(locale, contentNode, nodeTypeName, RT, LTR);
-    setTemplateData(locale, contentNode, nodeTypeName, LT, RTL);
+    String type = "";
+    if(isDialog) type = DIALOGS;
+    else type = VIEWS;
+    setTemplateData(locale, contentNode, nodeTypeName + type, RT, LTR);
+    setTemplateData(locale, contentNode, nodeTypeName + type, LT, RTL);
     templatesHome.save();
     session.save();
     session.logout();
@@ -420,17 +423,17 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     List<String> documentTemplates = managedDocumentTypesMap.get(repository);
     Node parentNode = templateNode.getParent();
     if(documentTemplates.contains(nodeType.getName()) && parentNode.getName().equals(VIEWS)) {
-      if(rtlTemplateCache_.get(nodeType.getName() + LTR) == null || 
-          rtlTemplateCache_.get(nodeType.getName() + RTL) == null) {
-        setTemplateData(locale, templateNode, nodeType.getName(), RT, LTR);
-        setTemplateData(locale, templateNode, nodeType.getName(), LT, RTL);
+      if(rtlTemplateCache_.get(nodeType.getName() + VIEWS + LTR) == null || 
+          rtlTemplateCache_.get(nodeType.getName() + VIEWS + RTL) == null) {
+        setTemplateData(locale, templateNode, nodeType.getName() + VIEWS, RT, LTR);
+        setTemplateData(locale, templateNode, nodeType.getName() + VIEWS, LT, RTL);
       }
       if(orientation.isLT() && 
-          rtlTemplateCache_.get(nodeType.getName() + LTR) != null) {
-        return rtlTemplateCache_.get(nodeType.getName() + LTR).toString();
+          rtlTemplateCache_.get(nodeType.getName() + VIEWS + LTR) != null) {
+        return rtlTemplateCache_.get(nodeType.getName() + VIEWS + LTR).toString();
       } else if(orientation.isRT() && 
-          rtlTemplateCache_.get(nodeType.getName() + RTL) != null) {
-        return rtlTemplateCache_.get(nodeType.getName() + RTL).toString();
+          rtlTemplateCache_.get(nodeType.getName() + VIEWS + RTL) != null) {
+        return rtlTemplateCache_.get(nodeType.getName() + VIEWS + RTL).toString();
       }
     }
     return templateNode.getProperty(propertyName).getString();
