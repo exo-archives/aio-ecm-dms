@@ -646,7 +646,22 @@ public class UIDialogForm extends UIForm {
             for (String validator : validatorList) {
               uiMulti.addValidator(DialogFormUtil.getValidator(validator.trim()));
             }              
-          }          
+          }
+          List<String> valueList = new ArrayList<String>();
+          List<UIComponent> listChildren = uiMulti.getChildren();
+          if (listChildren.size() == 0) {
+            valueList.add(formTextField.getDefaultValue());
+          } else {
+            for (UIComponent component : listChildren) {
+              UIFormStringInput uiStringInput = (UIFormStringInput)component;
+              if(uiStringInput.getValue() != null) {
+                valueList.add(uiStringInput.getValue().trim());            
+              } else{
+                valueList.add(formTextField.getDefaultValue());
+              }
+            }
+          }
+          uiMulti.setValue(valueList);
           addUIFormInput(uiMulti);
         } 
       } else {
