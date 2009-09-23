@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -31,6 +32,7 @@ import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -262,6 +264,10 @@ import org.exoplatform.webui.form.UIForm;
       UIJCRExplorer uiJCRExplorer = uiActivePub.getAncestorOfType(UIJCRExplorer.class);
       String selectedLifecycle = event.getRequestContext().getRequestParameter(OBJECTID);
       Node currentNode = uiJCRExplorer.getCurrentNode();
+      Session session = currentNode.getSession();
+      ManageableRepository managerepository = (ManageableRepository)session.getRepository();
+      // Use system session to enroll node because version storage cannot access by simple use
+      currentNode = (Node)managerepository.getSystemSession(session.getWorkspace().getName()).getItem(currentNode.getPath()); 
       uiActivePub.enrolNodeInLifecycle(currentNode,selectedLifecycle,event.getRequestContext());
     }
   }
