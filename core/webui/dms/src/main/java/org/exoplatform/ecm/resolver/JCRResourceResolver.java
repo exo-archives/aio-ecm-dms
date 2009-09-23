@@ -95,7 +95,7 @@ public class JCRResourceResolver extends ResourceResolver {
     Session session = provider.getSession(workspace,manageableRepository);
     Node node = (Node)session.getItem(removeScheme(url)) ;
     String locale = 
-    Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();
+      Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();
     LocaleConfigService localeConfigService = 
       (LocaleConfigService) container.getComponentInstanceOfType(LocaleConfigService.class);
     Orientation orientation = localeConfigService.getLocaleConfig(locale).getOrientation();
