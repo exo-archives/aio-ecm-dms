@@ -195,7 +195,7 @@
 		.UIArticle .FieldContent {
 		  padding: 1px 50px 5px 0px; /* orientation=lt */
 		  padding: 1px 0px 5px 70px; /* orientation=rt */
-		  width: 90%;
+		  width: 90%; /* orientation=lt */
 		}
 		
 		.UIArticle .FieldContent .FieldContainerContent {
