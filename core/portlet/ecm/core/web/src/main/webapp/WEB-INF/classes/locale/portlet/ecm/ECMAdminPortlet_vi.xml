@@ -2129,6 +2129,11 @@
   	<msg>
   		<confirm-delete-permission>Bạn có thực sự muốn xóa quyền này không?</confirm-delete-permission>
   	</msg>
-  </UIPermissionTreeInfo>    
+  </UIPermissionTreeInfo>
+  <UITaxonomyTreeMainForm>
+		<msg>
+			<no-right-target-path>Bạn phải chọn 1 đường dẫn khác</no-right-target-path>
+		</msg>
+	</UITaxonomyTreeMainForm>    
 </bundle>
 
