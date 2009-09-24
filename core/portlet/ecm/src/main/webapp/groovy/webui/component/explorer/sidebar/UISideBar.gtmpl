@@ -49,7 +49,7 @@
     </div>
   </div>
   <div style="width: 100%;">
-	  <div class="UISideBarContainer UIResizableBlock" style="overflow: auto;">
+	  <div class="UISideBarContainer UIResizableBlock">
 	    <% uicomponent.renderChildren(); %>
 	  </div>
   </div>

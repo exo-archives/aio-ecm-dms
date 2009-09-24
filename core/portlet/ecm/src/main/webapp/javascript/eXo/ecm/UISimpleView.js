@@ -799,12 +799,24 @@ var SimpleView = function() {
 		var view = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIThumbnailsView");
 		var workingArea = document.getElementById('UIWorkingArea');
 		var page = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "PageAvailable");
+		var portlet = document.getElementById('UIJCRExplorerPortlet');
+		var sizeBar = DOM.findFirstDescendantByClass(portlet, 'div', 'UISideBar');
+		var sizeBarContainer;
+		if(sizeBar) {
+			sizeBarContainer = eXo.core.DOMUtil.findFirstDescendantByClass(sizeBar, "div", "UISideBarContainer");
+		}
 		if (page) {
 			if (parseInt(page.getAttribute('pageAvailable')) > 1) {
-				if (view) view.style.height = workingArea.offsetHeight - page.offsetHeight - 20 + 'px';
+				if (view) {
+					if(sizeBarContainer) view.style.height = sizeBarContainer.offsetHeight - 20 + 'px';
+					else view.style.height = workingArea.offsetHeight - page.offsetHeight - 20 + 'px';
+				}
 			}
 		} else {
-		  if (view) view.style.height = workingArea.offsetHeight  - 20 + 'px';
+			if (view) {
+				if(sizeBarContainer) view.style.height = sizeBarContainer.offsetHeight - 20 + 'px';
+				else view.style.height = workingArea.offsetHeight - title.offsetHeight - 20 + 'px'; 
+			}	
 		}
 	};
 };
