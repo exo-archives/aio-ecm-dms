@@ -24,9 +24,11 @@ import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.component.admin.taxonomy.tree.info.UIPermissionTreeManager;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -215,6 +217,15 @@ public class UITaxonomyTreeMainForm extends UIForm {
       UIFormInputBase inputHomePath = uiTaxonomyTreeMainForm.findComponentById(UITaxonomyTreeMainForm.FIELD_HOMEPATH);
       String homePath = "";
       if (inputHomePath != null && inputHomePath.getValue() != null) homePath =inputHomePath.getValue().toString();
+      NodeHierarchyCreator nodeHierarchyCreator = uiTaxonomyTreeMainForm.getApplicationComponent(NodeHierarchyCreator.class);
+      String treeDefinitionPath = nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_DEFINITION_PATH);
+      if ((homePath.length() > 0) && (treeDefinitionPath != null) 
+          && (treeDefinitionPath.length() > 0) && (homePath.equals(treeDefinitionPath))) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.no-right-target-path", null, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       UIPermissionTreeManager uiPermissionManage = uiTaxonomyTreeContainer.getChild(UIPermissionTreeManager.class);
       taxonomyTreeData.setTaxoTreeName(name);
       taxonomyTreeData.setTaxoTreeHomePath(homePath.trim());
