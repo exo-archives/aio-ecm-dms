@@ -731,10 +731,10 @@ var ListView = function() {
 		var title = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "TitleTable");
 		if (page) {
 			if (parseInt(page.getAttribute('pageAvailable')) > 1) {
-				if (view) view.style.height = workingArea.offsetHeight - page.offsetHeight - 20 + 'px';
+				if (view) view.style.height = workingArea.offsetHeight - page.offsetHeight + 'px';
 			}
 		} else {
-		  if (view) view.style.height = workingArea.offsetHeight - title.offsetHeight - 20 + 'px';
+		  if (view) view.style.height = workingArea.offsetHeight + 'px';
 		}
 	};
 	

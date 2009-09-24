@@ -34,7 +34,6 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UIResizableBlock {
-	height: 400px;
 	overflow: auto;
 }
 
