@@ -151,6 +151,7 @@ public class CmsServiceImpl implements CmsService {
       }
       listenerService.broadcast(POST_EDIT_CONTENT_EVENT, this, currentNode);
     }
+    session.save();
     session.logout();
     return currentNode.getPath();
   }
