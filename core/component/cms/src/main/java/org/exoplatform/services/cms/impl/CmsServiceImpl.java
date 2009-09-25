@@ -151,6 +151,7 @@ public class CmsServiceImpl implements CmsService {
       }
       listenerService.broadcast(POST_EDIT_CONTENT_EVENT, this, currentNode);
     }
+    session.save();
     session.logout();
     return currentNode.getPath();
   }
@@ -211,7 +212,7 @@ public class CmsServiceImpl implements CmsService {
       }
       listenerService.broadcast(POST_EDIT_CONTENT_EVENT, this, currentNode);
     }
-    session.logout();
+    //session.logout();
     return currentNode.getUUID();
   }
 
@@ -596,7 +597,7 @@ public class CmsServiceImpl implements CmsService {
               node.setProperty(propertyName, session.getValueFactory().createValue(value.toString()));
             }
         }
-        session.logout();
+        //session.logout();
       } else if(value instanceof String[]) {
         String[] values = (String[]) value;        
         String referenceWorksapce = null;
