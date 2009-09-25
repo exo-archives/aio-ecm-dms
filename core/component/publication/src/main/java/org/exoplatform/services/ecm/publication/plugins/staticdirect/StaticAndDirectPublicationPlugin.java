@@ -48,6 +48,7 @@ import org.exoplatform.services.ecm.publication.plugins.webui.VersionNode;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ExtendedNode;
+import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.resources.ResourceBundleService;
 import org.exoplatform.web.application.RequestContext;
@@ -95,261 +96,270 @@ public class StaticAndDirectPublicationPlugin extends PublicationPlugin {
   throws IncorrectStateUpdateLifecycleException, Exception {
     log.info("Change node state to "+newState);
     Session session = node.getSession() ;
-    // Get user processing this action
-    String userid = RequestContext.<RequestContext>getCurrentInstance().getRemoteUser();
+    ManageableRepository managerepository = (ManageableRepository)session.getRepository();
     // Use systemSession to avoid AccessDeniedPermission when process with version:
-    if (newState.equals(ENROLLED)) {
-      log.info("Set node to " + PUBLISHED);
-      // add mixin versionable
-      if (node.canAddMixin("mix:versionable")) node.addMixin("mix:versionable");
-      node.save();
-     //Creation of the first version of the node
-      Version version = node.checkin();
-      node.checkout();
-      
-      String newStringValue = version.getUUID() + "," + PUBLISHED;
-      Value value2add = session.getValueFactory().createValue(newStringValue);
-      Value[] values = {value2add};
-      node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
-
-      //set currentState to published
-      node.setProperty(CURRENT_STATE, PUBLISHED);
-      String visibility= PUBLIC;
-      Value newValueVisibility = session.getValueFactory().createValue(visibility);
-      node.setProperty(VISIBILITY, newValueVisibility);
-      //set permissions
-      setVisibility(node, visibility);
-
-      //add log
-      log.info("Add log");
-      ExoContainer container = ExoContainerContext.getCurrentContainer();   
-      PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
-      String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
-      //@SuppressWarnings("hiding")
-      String versionName = session.getNodeByUUID(version.getUUID()).getName();
-      String[] log = {date, PUBLISHED, userid, "PublicationService.StaticAndDirectPublicationPlugin.nodeCreated", versionName, visibility};
-      publicationService.addLog(node, log);
-      node.setProperty(CURRENT_STATE, PUBLISHED);
-    } else if (newState.equals(PUBLISHED)) {
-      String currentState = node.getProperty(CURRENT_STATE).getString();
-      if (currentState.equals(NON_PUBLISHED)) {
-        log.info("Node is non published");
-        String nodeVersionUUID = context.get("nodeVersionUUID");
-        String visibility = context.get("visibility");
-        if (nodeVersionUUID == null || visibility == null) {
-          log.error("nodeVersionUUID or visibility is null");
-          throw new IncorrectStateUpdateLifecycleException ("StaticAndDirectPublicationPlugin.changeState : nodeVersionUUID or visibility is not present in context.");
-        } 
-        log.info("nodeVersionUUID and visibility is not null");
-        Value[] values = node.getProperty(VERSIONS_PUBLICATION_STATES).getValues();
-        int i=0;
-        while (i<values.length && !(values[i].getString().split(","))[0].equals(nodeVersionUUID)) {
-          i++;
-        }
-        if (i==values.length || (values[i].getString().split(","))[1].equals(NON_PUBLISHED)) {
-          log.info("Specified version not already published");
-          //specified version to publish is not present in the tab publication:versionsPublicationStates
-          //or is in NON_PUBLISHED state
-          log.info("Set this version published");
-
-          String newStringValue= nodeVersionUUID+","+PUBLISHED;
-          Value value2add = session.getValueFactory().createValue(newStringValue);
-          if (i==values.length) {
-            values = addValueToArray(values, value2add);
-          } else {
-            values[i] = value2add;
+    Session systemSession = managerepository.getSystemSession(session.getWorkspace().getName()) ;
+    node = (Node)systemSession.getItem(node.getPath());
+    // Get user processing this action
+    String userid = session.getUserID();
+    try {
+      if (newState.equals(ENROLLED)) {
+        log.info("Set node to " + PUBLISHED);
+        // add mixin versionable
+        if (node.canAddMixin("mix:versionable")) node.addMixin("mix:versionable");
+        node.save();
+       //Creation of the first version of the node
+        Version version = node.checkin();
+        node.checkout();
+        
+        String newStringValue = version.getUUID() + "," + PUBLISHED;
+        Value value2add = session.getValueFactory().createValue(newStringValue);
+        Value[] values = {value2add};
+        node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
+  
+        //set currentState to published
+        node.setProperty(CURRENT_STATE, PUBLISHED);
+        String visibility= PUBLIC;
+        Value newValueVisibility = session.getValueFactory().createValue(visibility);
+        node.setProperty(VISIBILITY, newValueVisibility);
+        //set permissions
+        setVisibility(node, visibility);
+  
+        //add log
+        log.info("Add log");
+        ExoContainer container = ExoContainerContext.getCurrentContainer();   
+        PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
+        String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+        //@SuppressWarnings("hiding")
+        String versionName = session.getNodeByUUID(version.getUUID()).getName();
+        String[] log = {date, PUBLISHED, userid, "PublicationService.StaticAndDirectPublicationPlugin.nodeCreated", versionName, visibility};
+        publicationService.addLog(node, log);
+        node.setProperty(CURRENT_STATE, PUBLISHED);
+      } else if (newState.equals(PUBLISHED)) {
+        String currentState = node.getProperty(CURRENT_STATE).getString();
+        if (currentState.equals(NON_PUBLISHED)) {
+          log.info("Node is non published");
+          String nodeVersionUUID = context.get("nodeVersionUUID");
+          String visibility = context.get("visibility");
+          if (nodeVersionUUID == null || visibility == null) {
+            log.error("nodeVersionUUID or visibility is null");
+            throw new IncorrectStateUpdateLifecycleException ("StaticAndDirectPublicationPlugin.changeState : nodeVersionUUID or visibility is not present in context.");
+          } 
+          log.info("nodeVersionUUID and visibility is not null");
+          Value[] values = node.getProperty(VERSIONS_PUBLICATION_STATES).getValues();
+          int i=0;
+          while (i<values.length && !(values[i].getString().split(","))[0].equals(nodeVersionUUID)) {
+            i++;
           }
-          node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
-
-          //set visibility
-          log.info("Set the visibility");
-          Value newValueVisibility = session.getValueFactory().createValue(visibility);
-          node.setProperty(VISIBILITY,newValueVisibility) ;
-
-          //set permissions
-          log.info("Set permissions in function of visibility");
-          setVisibility(node, visibility);
-
-          //set currentState to published
-          node.setProperty(CURRENT_STATE,PUBLISHED);
-
-          //add log
-          log.info("Add log");
-          ExoContainer container = ExoContainerContext.getCurrentContainer();   
-          PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
-          String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
-          String version = session.getNodeByUUID(nodeVersionUUID).getName();
-          @SuppressWarnings("hiding")
-          String[] log = {date,newState,userid,"PublicationService.StaticAndDirectPublicationPlugin.nodePublished",version,visibility};
-          publicationService.addLog(node, log);
+          if (i==values.length || (values[i].getString().split(","))[1].equals(NON_PUBLISHED)) {
+            log.info("Specified version not already published");
+            //specified version to publish is not present in the tab publication:versionsPublicationStates
+            //or is in NON_PUBLISHED state
+            log.info("Set this version published");
+  
+            String newStringValue= nodeVersionUUID+","+PUBLISHED;
+            Value value2add = session.getValueFactory().createValue(newStringValue);
+            if (i==values.length) {
+              values = addValueToArray(values, value2add);
+            } else {
+              values[i] = value2add;
+            }
+            node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
+  
+            //set visibility
+            log.info("Set the visibility");
+            Value newValueVisibility = session.getValueFactory().createValue(visibility);
+            node.setProperty(VISIBILITY,newValueVisibility) ;
+  
+            //set permissions
+            log.info("Set permissions in function of visibility");
+            setVisibility(node, visibility);
+  
+            //set currentState to published
+            node.setProperty(CURRENT_STATE,PUBLISHED);
+  
+            //add log
+            log.info("Add log");
+            ExoContainer container = ExoContainerContext.getCurrentContainer();   
+            PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
+            String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+            String version = session.getNodeByUUID(nodeVersionUUID).getName();
+            @SuppressWarnings("hiding")
+            String[] log = {date,newState,userid,"PublicationService.StaticAndDirectPublicationPlugin.nodePublished",version,visibility};
+            publicationService.addLog(node, log);
+          } else {
+            //should not appear because if currentState of the node is NON_PUBLISHED
+            //no version is PUBLISHED
+            throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : Node Version "+nodeVersionUUID+" is already published");
+          }
         } else {
-          //should not appear because if currentState of the node is NON_PUBLISHED
-          //no version is PUBLISHED
-          throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : Node Version "+nodeVersionUUID+" is already published");
+          //currentState = PUBLISHED
+          // means that one version is published
+          
+          //TODO check if new published version is not the current published version
+          //in this case, do nothing
+          
+          log.info("Node is already published, user want to published another version.");
+          String nodeVersionUUID = context.get("nodeVersionUUID");
+          String visibility = context.get("visibility");
+          if (nodeVersionUUID == null || visibility == null) {
+            log.error("nodeVersionUUID or visibility is null");
+            throw new IncorrectStateUpdateLifecycleException ("StaticAndDirectPublicationPlugin.changeState : nodeVersionUUID or visibility is not present in context.");
+          } 
+          log.info("nodeVersionUUID and visibility is not null");
+          Value[] values = node.getProperty(VERSIONS_PUBLICATION_STATES).getValues();
+  
+          //find which version is published
+          int i=0;
+          while (i<values.length && !(values[i].getString().split(","))[1].equals(PUBLISHED)) {
+            i++;
+          }
+          if (i!=values.length) {
+            //and unpublished it
+            String publishedVersionUUID=values[i].getString().split(",")[0];
+            log.info("Unpublished current published version");
+            String newStringValue= publishedVersionUUID+","+NON_PUBLISHED;
+            Value value2add = session.getValueFactory().createValue(newStringValue);
+            values[i] = value2add;
+            node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
+          } else {
+            //error : currentSate = PUBLISHED but no version PUBLISHED
+            //should not appear
+            throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : currentState is published but no version is published");
+          }
+  
+          //publish the new version 
+          i=0;
+          while (i<values.length && !(values[i].getString().split(","))[0].equals(nodeVersionUUID)) {
+            i++;
+          }
+          if (i==values.length || (values[i].getString().split(","))[1].equals(NON_PUBLISHED)) {
+            log.info("Specified version not already published");
+            //specified version to publish is not present in the tab publication:versionsPublicationStates
+            //or is in NON_PUBLISHED state
+  
+            log.info("Set this version published");
+  
+            String newStringValue= nodeVersionUUID+","+PUBLISHED;
+            Value value2add = session.getValueFactory().createValue(newStringValue);
+            if (i==values.length) {
+              values = addValueToArray(values, value2add);
+            } else {
+              values[i] = value2add;
+            }
+            node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
+  
+            //set visibility
+            log.info("Set the visibility");
+            Value newValueVisibility = session.getValueFactory().createValue(visibility);
+            node.setProperty(VISIBILITY,newValueVisibility) ;
+  
+            //set permissions
+            log.info("Set permissions in function of visibility");
+            setVisibility(node, visibility);
+  
+            //set currentState to published
+            node.setProperty(CURRENT_STATE,PUBLISHED);
+  
+            //add log
+            log.info("Add log");
+            ExoContainer container = ExoContainerContext.getCurrentContainer();   
+            PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
+            String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+            String version = session.getNodeByUUID(nodeVersionUUID).getName();
+            @SuppressWarnings("hiding")
+            String[] log = {date,newState, userid, "PublicationService.StaticAndDirectPublicationPlugin.nodePublished",version,visibility};
+            publicationService.addLog(node, log);
+  
+          } else {
+            //should not appear because if currentState of the node is NON_PUBLISHED
+            //no version is PUBLISHED
+            throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : Node Version "+nodeVersionUUID+" is already published");
+          }
+        }
+      } else if (newState.equals(NON_PUBLISHED)) {
+        String currentState = node.getProperty(CURRENT_STATE).getString();
+        if (currentState.equals(NON_PUBLISHED)) {
+          log.info("node already unpublished");
+        
+          //state do not changed
+          //NON_PUBLISHED -> NON_PUBLISHED
+          //but visibility can change
+          String oldVisibility=node.getProperty(VISIBILITY).getString();
+          String newVisibility=context.get("visibility");
+          String nodeVersionUUID = context.get("nodeVersionUUID");
+          
+          if (!oldVisibility.equals(newVisibility)) {
+            //cahnge visibility
+            
+            Value newValueVisibility = session.getValueFactory().createValue(newVisibility);
+            node.setProperty(VISIBILITY,newValueVisibility) ;
+  
+            //set permissions
+            setVisibility(node, newVisibility);
+            
+            //Add log
+            ExoContainer container = ExoContainerContext.getCurrentContainer();   
+            PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
+            String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+            String version = session.getNodeByUUID(nodeVersionUUID).getName();
+            @SuppressWarnings("hiding")
+            String[] log = {date,newState, userid, "PublicationService.StaticAndDirectPublicationPlugin.changeVisibility",newVisibility};
+            publicationService.addLog(node, log);
+          }
+        } else if (currentState.equals(PUBLISHED)) {
+          log.info("Node published, unpublish it");
+          Value[] values = node.getProperty(VERSIONS_PUBLICATION_STATES).getValues();
+  
+          //find which version is published
+          int i=0;
+          while (i<values.length && !(values[i].getString().split(","))[1].equals(PUBLISHED)) {
+            i++;
+          }
+          if (i!=values.length) {
+            //and unpublished it
+            String publishedVersionUUID=values[i].getString().split(",")[0];
+            log.info("Unpublished current published version");
+            String newStringValue= publishedVersionUUID+","+NON_PUBLISHED;
+            Value value2add = session.getValueFactory().createValue(newStringValue);
+            values[i] = value2add;
+            node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
+  
+            //set currentState to non published
+            node.setProperty(CURRENT_STATE,NON_PUBLISHED);
+  
+            String newVisibility=context.get("visibility");
+            Value newValueVisibility = session.getValueFactory().createValue(newVisibility);
+            node.setProperty(VISIBILITY,newValueVisibility) ;
+  
+            //set permissions
+            setVisibility(node, newVisibility);
+  
+            //add log
+            log.info("Add log");
+            ExoContainer container = ExoContainerContext.getCurrentContainer();   
+            PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
+            String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
+            @SuppressWarnings("hiding")
+            String[] log = {date,newState, userid,"PublicationService.StaticAndDirectPublicationPlugin.nodeUnpublished",newVisibility};
+            publicationService.addLog(node, log);
+          } else {
+            //error : currentSate = PUBLISHED but no version PUBLISHED
+            //should not appear
+            throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : currentState is published but no version is published");
+          }
+  
         }
       } else {
-        //currentState = PUBLISHED
-        // means that one version is published
-        
-        //TODO check if new published version is not the current published version
-        //in this case, do nothing
-        
-        log.info("Node is already published, user want to published another version.");
-        String nodeVersionUUID = context.get("nodeVersionUUID");
-        String visibility = context.get("visibility");
-        if (nodeVersionUUID == null || visibility == null) {
-          log.error("nodeVersionUUID or visibility is null");
-          throw new IncorrectStateUpdateLifecycleException ("StaticAndDirectPublicationPlugin.changeState : nodeVersionUUID or visibility is not present in context.");
-        } 
-        log.info("nodeVersionUUID and visibility is not null");
-        Value[] values = node.getProperty(VERSIONS_PUBLICATION_STATES).getValues();
-
-        //find which version is published
-        int i=0;
-        while (i<values.length && !(values[i].getString().split(","))[1].equals(PUBLISHED)) {
-          i++;
-        }
-        if (i!=values.length) {
-          //and unpublished it
-          String publishedVersionUUID=values[i].getString().split(",")[0];
-          log.info("Unpublished current published version");
-          String newStringValue= publishedVersionUUID+","+NON_PUBLISHED;
-          Value value2add = session.getValueFactory().createValue(newStringValue);
-          values[i] = value2add;
-          node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
-        } else {
-          //error : currentSate = PUBLISHED but no version PUBLISHED
-          //should not appear
-          throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : currentState is published but no version is published");
-        }
-
-        //publish the new version 
-        i=0;
-        while (i<values.length && !(values[i].getString().split(","))[0].equals(nodeVersionUUID)) {
-          i++;
-        }
-        if (i==values.length || (values[i].getString().split(","))[1].equals(NON_PUBLISHED)) {
-          log.info("Specified version not already published");
-          //specified version to publish is not present in the tab publication:versionsPublicationStates
-          //or is in NON_PUBLISHED state
-
-          log.info("Set this version published");
-
-          String newStringValue= nodeVersionUUID+","+PUBLISHED;
-          Value value2add = session.getValueFactory().createValue(newStringValue);
-          if (i==values.length) {
-            values = addValueToArray(values, value2add);
-          } else {
-            values[i] = value2add;
-          }
-          node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
-
-          //set visibility
-          log.info("Set the visibility");
-          Value newValueVisibility = session.getValueFactory().createValue(visibility);
-          node.setProperty(VISIBILITY,newValueVisibility) ;
-
-          //set permissions
-          log.info("Set permissions in function of visibility");
-          setVisibility(node, visibility);
-
-          //set currentState to published
-          node.setProperty(CURRENT_STATE,PUBLISHED);
-
-          //add log
-          log.info("Add log");
-          ExoContainer container = ExoContainerContext.getCurrentContainer();   
-          PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
-          String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
-          String version = session.getNodeByUUID(nodeVersionUUID).getName();
-          @SuppressWarnings("hiding")
-          String[] log = {date,newState, userid, "PublicationService.StaticAndDirectPublicationPlugin.nodePublished",version,visibility};
-          publicationService.addLog(node, log);
-
-        } else {
-          //should not appear because if currentState of the node is NON_PUBLISHED
-          //no version is PUBLISHED
-          throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : Node Version "+nodeVersionUUID+" is already published");
-        }
+        throw new IncorrectStateUpdateLifecycleException("Incorrect current State");
       }
-    } else if (newState.equals(NON_PUBLISHED)) {
-      String currentState = node.getProperty(CURRENT_STATE).getString();
-      if (currentState.equals(NON_PUBLISHED)) {
-        log.info("node already unpublished");
-      
-        //state do not changed
-        //NON_PUBLISHED -> NON_PUBLISHED
-        //but visibility can change
-        String oldVisibility=node.getProperty(VISIBILITY).getString();
-        String newVisibility=context.get("visibility");
-        String nodeVersionUUID = context.get("nodeVersionUUID");
-        
-        if (!oldVisibility.equals(newVisibility)) {
-          //cahnge visibility
-          
-          Value newValueVisibility = session.getValueFactory().createValue(newVisibility);
-          node.setProperty(VISIBILITY,newValueVisibility) ;
-
-          //set permissions
-          setVisibility(node, newVisibility);
-          
-          //Add log
-          ExoContainer container = ExoContainerContext.getCurrentContainer();   
-          PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
-          String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
-          String version = session.getNodeByUUID(nodeVersionUUID).getName();
-          @SuppressWarnings("hiding")
-          String[] log = {date,newState, userid, "PublicationService.StaticAndDirectPublicationPlugin.changeVisibility",newVisibility};
-          publicationService.addLog(node, log);
-        }
-      } else if (currentState.equals(PUBLISHED)) {
-        log.info("Node published, unpublish it");
-        Value[] values = node.getProperty(VERSIONS_PUBLICATION_STATES).getValues();
-
-        //find which version is published
-        int i=0;
-        while (i<values.length && !(values[i].getString().split(","))[1].equals(PUBLISHED)) {
-          i++;
-        }
-        if (i!=values.length) {
-          //and unpublished it
-          String publishedVersionUUID=values[i].getString().split(",")[0];
-          log.info("Unpublished current published version");
-          String newStringValue= publishedVersionUUID+","+NON_PUBLISHED;
-          Value value2add = session.getValueFactory().createValue(newStringValue);
-          values[i] = value2add;
-          node.setProperty(VERSIONS_PUBLICATION_STATES,values) ;
-
-          //set currentState to non published
-          node.setProperty(CURRENT_STATE,NON_PUBLISHED);
-
-          String newVisibility=context.get("visibility");
-          Value newValueVisibility = session.getValueFactory().createValue(newVisibility);
-          node.setProperty(VISIBILITY,newValueVisibility) ;
-
-          //set permissions
-          setVisibility(node, newVisibility);
-
-          //add log
-          log.info("Add log");
-          ExoContainer container = ExoContainerContext.getCurrentContainer();   
-          PublicationService publicationService = (PublicationService) container.getComponentInstanceOfType(PublicationService.class);
-          String date =  new SimpleDateFormat("yyyyMMdd.HHmmss.SSS").format(new Date());
-          @SuppressWarnings("hiding")
-          String[] log = {date,newState, userid,"PublicationService.StaticAndDirectPublicationPlugin.nodeUnpublished",newVisibility};
-          publicationService.addLog(node, log);
-        } else {
-          //error : currentSate = PUBLISHED but no version PUBLISHED
-          //should not appear
-          throw new IncorrectStateUpdateLifecycleException("StaticAndDirectPublicationPlugin.changeState : currentState is published but no version is published");
-        }
-
-      }
-    } else {
-      throw new IncorrectStateUpdateLifecycleException("Incorrect current State");
+    } catch (Exception e) {
+      throw e;
+    } finally {
+      systemSession.logout();  
+      systemSession.save();  
     }
-    node.save();
-    session.logout();
+    
   }
 
   @Override
