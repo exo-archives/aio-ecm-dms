@@ -183,6 +183,16 @@
 		return false;
 	};
 	
+	ECMUtils.prototype.focusCurrentNodeInTree = function(id) {
+		var element = document.getElementById(id);
+		if (!element) return; 
+		var sidebar = DOM.findAncestorByClass(element,  "UIResizableBlock");
+		var top = element.offsetTop;
+		var left = element.offsetLeft;
+		sidebar.scrollTop = (top - sidebar.offsetTop) / 2;
+		sidebar.scrollLeft = (left - sidebar.offsetLeft) / 2;
+	};
+	
 	ECMUtils.prototype.collapseExpand = function(element) {
 		var node = element.parentNode ;
 		var subGroup = DOM.findFirstChildByClass(node, "div", "NodeGroup") ;
