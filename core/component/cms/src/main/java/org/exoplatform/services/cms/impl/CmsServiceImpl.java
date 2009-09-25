@@ -598,7 +598,8 @@ public class CmsServiceImpl implements CmsService {
               node.setProperty(propertyName, session.getValueFactory().createValue(value.toString()));
             }
         }
-        //session.logout();
+        session.save();
+        session.logout();
       } else if(value instanceof String[]) {
         String[] values = (String[]) value;        
         String referenceWorksapce = null;
@@ -834,6 +835,7 @@ public class CmsServiceImpl implements CmsService {
             }
           }
         }
+        session.save();
         session.logout();
       } else if(value instanceof String[]) {
         String[] values = (String[]) value;        
@@ -868,6 +870,7 @@ public class CmsServiceImpl implements CmsService {
         if (!property.getValues().equals(list.toArray(new Value[list.size()]))) {
           node.setProperty(propertyName, list.toArray(new Value[list.size()]));
         }
+        session.save();
         session.logout();
       }       
       break ;
