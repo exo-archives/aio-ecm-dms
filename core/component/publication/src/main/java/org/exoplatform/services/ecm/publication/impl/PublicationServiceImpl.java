@@ -131,6 +131,7 @@ public class PublicationServiceImpl implements PublicationService {
     node.setProperty(CURRENT_STATE, "enrolled"); 
     List<Value> history = new ArrayList<Value>();
     node.setProperty(HISTORY, history.toArray(new Value[history.size()]));
+    node.getSession().save();
     publicationPlugins_.get(lifecycle).changeState(node, "enrolled", new HashMap<String,String>());
   }
 

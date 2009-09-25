@@ -21,18 +21,14 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.core.UIPopupComponent;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.services.ecm.publication.AlreadyInPublicationLifecycleException;
 import org.exoplatform.services.ecm.publication.PublicationPlugin;
 import org.exoplatform.services.ecm.publication.PublicationPresentationService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.ecm.publication.plugins.webui.UIPublicationLogList;
-import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -40,6 +36,8 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIGrid;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.form.UIForm;
@@ -142,6 +140,8 @@ import org.exoplatform.webui.form.UIForm;
       requestContext.addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
+    // refresh node prevent the situation node is changed in other session
+    currentNode.refresh(true);
     UIContainer container = createUIComponent(UIContainer.class, null, null);
     UIForm uiFormPublicationManager = publicationPresentationService.getStateUI(currentNode, container);
     UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
@@ -264,10 +264,6 @@ import org.exoplatform.webui.form.UIForm;
       UIJCRExplorer uiJCRExplorer = uiActivePub.getAncestorOfType(UIJCRExplorer.class);
       String selectedLifecycle = event.getRequestContext().getRequestParameter(OBJECTID);
       Node currentNode = uiJCRExplorer.getCurrentNode();
-      Session session = currentNode.getSession();
-      ManageableRepository managerepository = (ManageableRepository)session.getRepository();
-      // Use system session to enroll node because version storage cannot access by simple use
-      currentNode = (Node)managerepository.getSystemSession(session.getWorkspace().getName()).getItem(currentNode.getPath()); 
       uiActivePub.enrolNodeInLifecycle(currentNode, selectedLifecycle,event.getRequestContext());
     }
   }
