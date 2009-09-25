@@ -135,6 +135,8 @@ public class CmsServiceImpl implements CmsService {
       }
       listenerService.broadcast(POST_EDIT_CONTENT_EVENT,this,currentNode);
     }
+    session.save();
+    session.logout();
     return currentNode.getPath();
   }
 
@@ -186,6 +188,8 @@ public class CmsServiceImpl implements CmsService {
     if(!currentNode.isNodeType(MIX_REFERENCEABLE)) {
       currentNode.addMixin(MIX_REFERENCEABLE) ;
     }
+    session.save();
+    session.logout();
     return currentNode.getUUID();
   }
 
