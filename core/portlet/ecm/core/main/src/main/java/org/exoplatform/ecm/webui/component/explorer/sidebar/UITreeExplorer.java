@@ -26,6 +26,7 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
 import org.apache.commons.logging.Log;
+import org.apache.ws.commons.util.Base64;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
@@ -162,6 +163,15 @@ public class UITreeExplorer extends UIContainer {
   public String getRepository() { 
     return getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
   }    
+  
+  public String getEncodeCurrentPath() {
+    return encodeBase64(getAncestorOfType(UIJCRExplorer.class).getCurrentPath());
+  }
+  
+  public static String encodeBase64(String value) {
+    value = value == null ? "" : value;
+    return Base64.encode(value.getBytes()).replaceAll(Base64.LINE_SEPARATOR,"");
+  }
   
   private void addTreeNodePageIteratorAsChild(String id,ObjectPageList pageList, String selectedPath,String currentPath) throws Exception {
     if(findComponentById(id)== null) {
@@ -310,4 +320,5 @@ public class UITreeExplorer extends UIContainer {
       uiExplorer.updateAjax(event) ;      
     }
   }
+  
 }
