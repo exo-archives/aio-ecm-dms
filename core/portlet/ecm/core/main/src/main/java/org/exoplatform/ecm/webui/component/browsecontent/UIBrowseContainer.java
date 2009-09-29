@@ -1209,6 +1209,15 @@ public class UIBrowseContainer extends UIContainer {
           }
           setPageIterator(getSubDocumentList(getSelectedTab()));
         } else if(getUseCase().equals(Utils.CB_USE_SCRIPT)) {
+          PortletPreferences preferences = getPortletPreferences();
+          String tempName = preferences.getValue(Utils.CB_TEMPLATE, "");
+          String repoName = preferences.getValue(Utils.REPOSITORY, "");
+          ManageViewService viewService = getApplicationComponent(ManageViewService.class);
+          setTemplate(viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName,
+              SessionProviderFactory.createSystemProvider()).getNode(tempName).getPath());
+          if (isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false);
+          String scriptName = preferences.getValue(Utils.CB_SCRIPT_NAME, "");
+          if (!isShowDocumentByTag()) setPageIterator(getNodeByScript(repoName, scriptName));
         } else if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
           setPageIterator(getNodeByQuery(-1));
         } else if(getUseCase().equals(Utils.USE_DOCUMENT)) {
@@ -1314,7 +1323,7 @@ public class UIBrowseContainer extends UIContainer {
     Node rootNode = getRootNode();
     Node parentNode = null;
     int countHistoryNode = listHistoryNode.size();
-    if(selectedNode.getPath().equals(rootNode.getPath())) {
+    if(rootNode != null && selectedNode.getPath().equals(rootNode.getPath())) {
       listHistoryNode.clear();
     } else {
       parentNode = selectedNode.getParent();
@@ -1413,7 +1422,7 @@ public class UIBrowseContainer extends UIContainer {
       }
     }
     if (listHistoryNode.contains(rootNode)) listHistoryNode.remove(rootNode);
-    if (rootNode.isNodeType(Utils.EXO_SYMLINK) && (listHistoryNode.size() > 0)) {
+    if (rootNode != null && rootNode.isNodeType(Utils.EXO_SYMLINK) && (listHistoryNode.size() > 0)) {
       Node historyNode1 = listHistoryNode.get(0);
       Node targetRootNode = linkManager.getTarget(rootNode);
       if (historyNode1.getPath().equals(targetRootNode.getPath())) listHistoryNode.remove(historyNode1);
