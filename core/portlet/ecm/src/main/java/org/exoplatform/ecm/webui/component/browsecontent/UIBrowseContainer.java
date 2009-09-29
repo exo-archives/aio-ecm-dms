@@ -49,7 +49,6 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.portal.PageNodeEvent;
 import org.exoplatform.portal.webui.portal.UIPortal;
@@ -80,6 +79,7 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.core.UIPageIterator;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -1050,6 +1050,15 @@ public class UIBrowseContainer extends UIContainer {
           }
           setPageIterator(getSubDocumentList(getSelectedTab()));
         } else if(getUseCase().equals(Utils.CB_USE_SCRIPT)) {
+          PortletPreferences preferences = getPortletPreferences();
+          String tempName = preferences.getValue(Utils.CB_TEMPLATE, "");
+          String repoName = preferences.getValue(Utils.REPOSITORY, "");
+          ManageViewService viewService = getApplicationComponent(ManageViewService.class);
+          setTemplate(viewService.getTemplateHome(BasePath.CB_SCRIPT_TEMPLATES, repoName,
+              SessionProviderFactory.createSystemProvider()).getNode(tempName).getPath());
+          if (isShowCommentForm() || isShowVoteForm()) initToolBar(false, false, false);
+          String scriptName = preferences.getValue(Utils.CB_SCRIPT_NAME, "");
+          if (!isShowDocumentByTag()) setPageIterator(getNodeByScript(repoName, scriptName));
         } else if(getUseCase().equals(Utils.CB_USE_JCR_QUERY)) {
           setPageIterator(getNodeByQuery(-1));
         } else if(getUseCase().equals(Utils.USE_DOCUMENT)) {
