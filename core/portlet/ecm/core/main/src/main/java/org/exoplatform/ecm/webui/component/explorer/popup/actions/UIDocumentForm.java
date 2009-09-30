@@ -326,14 +326,16 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           newNode = (Node)homeNode.getSession().getItem(addedPath);
           
           // Begin delete listExistedTaxonomy
-          List<Node> listTaxonomyTrees = taxonomyService.getAllTaxonomyTrees(repository);
-          List<Node> listExistedTaxonomy = taxonomyService.getAllCategories(newNode);
-          for (Node existedTaxonomy : listExistedTaxonomy) {
-            for (Node taxonomyTrees : listTaxonomyTrees) {
-              if(existedTaxonomy.getPath().contains(taxonomyTrees.getPath())) {
-                taxonomyService.removeCategory(newNode, taxonomyTrees.getName(), 
-                    existedTaxonomy.getPath().substring(taxonomyTrees.getPath().length()));
-                break;
+          if (hasCategories) {
+            List<Node> listTaxonomyTrees = taxonomyService.getAllTaxonomyTrees(repository);
+            List<Node> listExistedTaxonomy = taxonomyService.getAllCategories(newNode);
+            for (Node existedTaxonomy : listExistedTaxonomy) {
+              for (Node taxonomyTrees : listTaxonomyTrees) {
+                if(existedTaxonomy.getPath().contains(taxonomyTrees.getPath())) {
+                  taxonomyService.removeCategory(newNode, taxonomyTrees.getName(), 
+                      existedTaxonomy.getPath().substring(taxonomyTrees.getPath().length()));
+                  break;
+                }
               }
             }
           }
