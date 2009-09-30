@@ -199,14 +199,15 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     return ((Node)session.getItem(nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH))).getPath();
   }
   
-  public void initFieldInput() throws Exception {
+  public void initFieldInput() throws Exception {        
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+    String categoryMandatoryWhenFileUpload =  portletPref.getValue(Utils.CATEGORY_MANDATORY, "").trim();
+    /*
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     Node currentNode = uiExplorer.getCurrentNode();
     List<Node> listCategories = taxonomyService.getAllCategories(currentNode);
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
-    String categoryMandatoryWhenFileUpload =  portletPref.getValue(Utils.CATEGORY_MANDATORY, "").trim();
     for (Node itemNode : listCategories) {
       String categoryPath = itemNode.getPath().replaceAll(getPathTaxonomy() + "/", "");
       if (!listTaxonomy.contains(categoryPath)) {
@@ -214,6 +215,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         listTaxonomyName.add(categoryPath);
       }
     }
+    */
     UIFormMultiValueInputSet uiFormMultiValue = createUIComponent(UIFormMultiValueInputSet.class, "UploadMultipleInputset", null);
     uiFormMultiValue.setId(FIELD_LISTTAXONOMY);
     uiFormMultiValue.setName(FIELD_LISTTAXONOMY);
