@@ -773,6 +773,10 @@
   margin: 3px auto;
 }
 
+.UIECMAdminPortlet .UITaxonomyTreeWizard .UIActionTaxonomyManager .UIFormGrid {
+  width: auto;
+}
+
 .UITaxonomyTreeWizard .WorkingArea .HiddenLabel  {
 	display: none;
 }
