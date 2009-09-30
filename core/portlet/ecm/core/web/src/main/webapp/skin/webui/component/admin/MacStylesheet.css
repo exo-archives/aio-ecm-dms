@@ -767,6 +767,10 @@
   background: #f9f9f9;
 }
 
+.UIECMAdminPortlet .UITaxonomyTreeWizard .UIActionTaxonomyManager .UIFormGrid {
+  width: auto;
+}
+
 .UIECMAdminPortlet .UITaxonomyTreeWizard .WorkingArea .UIFormWithTitle {
   width: auto;
   margin: 3px auto;
