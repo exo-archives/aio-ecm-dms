@@ -445,7 +445,8 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
         node = uiContainer.getNodeByPath(path) ;
       }
       UIDocumentDetail uiDocumentView =  uiPopupAction.activate(UIDocumentDetail.class, null, 600, 450) ;
-      uiDocumentView.setNode(node) ;
+      uiDocumentView.setNode(node);
+      uiDocumentView.setOriginalNode(node);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupAction) ;
     }
   }
