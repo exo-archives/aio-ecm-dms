@@ -125,7 +125,7 @@ public class UILanguageTypeForm extends UIForm {
           } else if(selectedLang.equals(multiLanguageService.getDefault(node))) {
             uiDialogForm.setNodePath(currentPath) ;
           } else {
-            uiDialogForm.setNodePath(null) ;
+            uiDialogForm.setNodePath(currentPath) ;
             uiDialogForm.setIsNotEditNode(true) ;
             uiDialogForm.setIsResetMultiField(true) ;
             uiDialogForm.seti18nNodePath(currentPath);
@@ -134,7 +134,7 @@ public class UILanguageTypeForm extends UIForm {
           uiDialogForm.setIsNotEditNode(false) ;
           uiDialogForm.setNodePath(currentPath) ;
         } else {
-          uiDialogForm.setNodePath(null);
+          uiDialogForm.setNodePath(currentPath);
           uiDialogForm.seti18nNodePath(currentPath);
           uiDialogForm.setIsNotEditNode(true) ;
           uiDialogForm.setIsResetMultiField(true) ;
