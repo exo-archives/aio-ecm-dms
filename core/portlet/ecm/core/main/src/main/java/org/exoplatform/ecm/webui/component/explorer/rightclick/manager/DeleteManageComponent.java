@@ -45,6 +45,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAr
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.link.LinkUtils;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -252,6 +253,19 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
           wsName = session.getWorkspace().getName();
           // Use the method getNodeByPath because it is link aware
           node = uiExplorer.getNodeByPath(nodePath, session, false);
+          // If node has taxonomy
+          TaxonomyService taxonomyService = uiExplorer.getApplicationComponent(TaxonomyService.class);
+          List<Node> listTaxonomyTrees = taxonomyService.getAllTaxonomyTrees(uiExplorer.getRepositoryName());
+          List<Node> listExistedTaxonomy = taxonomyService.getAllCategories(node);
+          for (Node existedTaxonomy : listExistedTaxonomy) {
+            for (Node taxonomyTrees : listTaxonomyTrees) {
+              if(existedTaxonomy.getPath().contains(taxonomyTrees.getPath())) {
+                taxonomyService.removeCategory(node, taxonomyTrees.getName(), 
+                    existedTaxonomy.getPath().substring(taxonomyTrees.getPath().length()));
+                break;
+              }
+            }
+          }
           processRemove(nodePath, node, event, false);
         } catch (PathNotFoundException path) {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", null,
