@@ -152,6 +152,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   }
   
   public void initFieldInput() throws Exception {
+    /*
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     Node currentNode = uiExplorer.getCurrentNode();    
@@ -163,6 +164,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
         listTaxonomyName.add(categoryPath);
       }
     }
+    */
     UIFormMultiValueInputSet uiFormMultiValue = createUIComponent(UIFormMultiValueInputSet.class, null, null);
     uiFormMultiValue.setId(FIELD_TAXONOMY);
     uiFormMultiValue.setName(FIELD_TAXONOMY);
