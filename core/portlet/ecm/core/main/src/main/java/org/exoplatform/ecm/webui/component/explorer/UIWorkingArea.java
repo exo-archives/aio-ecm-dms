@@ -67,6 +67,7 @@ import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeLinkAware;
 import org.exoplatform.services.cms.relations.RelationsService;
+import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.access.PermissionType;
@@ -874,6 +875,19 @@ public class UIWorkingArea extends UIContainer {
           wsName = session.getWorkspace().getName();
           // Use the method getNodeByPath because it is link aware
           node = uiExplorer.getNodeByPath(nodePath, session, false);
+          // If node has taxonomy
+          TaxonomyService taxonomyService = uiExplorer.getApplicationComponent(TaxonomyService.class);
+          List<Node> listTaxonomyTrees = taxonomyService.getAllTaxonomyTrees(uiExplorer.getRepositoryName());
+          List<Node> listExistedTaxonomy = taxonomyService.getAllCategories(node);
+          for (Node existedTaxonomy : listExistedTaxonomy) {
+            for (Node taxonomyTrees : listTaxonomyTrees) {
+              if(existedTaxonomy.getPath().contains(taxonomyTrees.getPath())) {
+                taxonomyService.removeCategory(node, taxonomyTrees.getName(), 
+                    existedTaxonomy.getPath().substring(taxonomyTrees.getPath().length()));
+                break;
+              }
+            }
+          }
           processRemove(nodePath, node, event, false);
         } catch(PathNotFoundException path) {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
