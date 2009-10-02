@@ -1,5 +1,5 @@
-/*
- * Copyright (C) 2003-2008 eXo Platform SAS.
+/***************************************************************************
+ * Copyright (C) 2003-2009 eXo Platform SAS.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -13,68 +13,68 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, see<http://www.gnu.org/licenses/>.
- */
-
-package org.exoplatform.ecm.application;
+ *
+ **************************************************************************/
+package org.exoplatform.ecm.utils;
 
 import java.util.Iterator;
 import java.util.Map;
 
 import javax.jcr.Node;
 import javax.jcr.Session;
-import javax.servlet.http.HttpSession;
-import javax.servlet.http.HttpSessionEvent;
-import javax.servlet.http.HttpSessionListener;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.PortalContainer;
 import org.exoplatform.container.RootContainer;
+import org.exoplatform.services.cache.CacheService;
+import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.impl.core.lock.LockManager;
+import org.exoplatform.services.listener.Event;
+import org.exoplatform.services.listener.Listener;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.security.ConversationRegistry;
+import org.exoplatform.services.security.ConversationState;
 
 /**
  * Created by The eXo Platform SARL
+ * Author : Hoang Van Hung
+ *          hunghvit@gmail.com
+ * Oct 1, 2009  
  */
-public class LockManagerListener implements HttpSessionListener {
-
-  protected static Log log = ExoLogger.getLogger("dms:LockManagerListener");
+public class LockManagerListener extends Listener<ConversationRegistry, ConversationState > {
   
-  @SuppressWarnings("unused")
-  public void sessionCreated(HttpSessionEvent arg0) {
-
-  }
-
+  protected static Log log = ExoLogger.getLogger(LockManagerListener.class);
+  
+  @Override
   @SuppressWarnings("unchecked")
-  public void sessionDestroyed(HttpSessionEvent event) {
+  public void onEvent(Event<ConversationRegistry, ConversationState> event) throws Exception {
+    log.info("Removing the locks of all locked nodes");
     SessionProvider sessionProvider = SessionProvider.createSystemProvider();
-    try {      
-      HttpSession httpSession = event.getSession();
-      log.info("Removing the locks of all locked nodes");
-      Map<String,String> lockedNodes = 
-        (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    ConversationState conversationState = event.getData();
+    String userid = conversationState.getIdentity().getUserId();
+    RootContainer rootContainer = RootContainer.getInstance() ;
+    PortalContainer portalContainer = rootContainer.getPortalContainer("portal") ;
+    CacheService cacheService = (CacheService)portalContainer.getComponentInstanceOfType(CacheService.class);
+    ExoCache lockcache = cacheService.getCacheInstance("dmsLockCache_".concat(userid));
+    try {
+      Map<String,String> lockedNodes = (Map<String,String>)lockcache.get(LockManager.class.getName());
       if(lockedNodes == null || lockedNodes.values().isEmpty()) return;      
-      String portalContainerName = event.getSession().getServletContext().getServletContextName() ;
-      RootContainer rootContainer = RootContainer.getInstance() ;
-      PortalContainer portalContainer = rootContainer.getPortalContainer(portalContainerName) ;
-      PortalContainer.setInstance(portalContainer);
-      RepositoryService repositoryService = 
-        (RepositoryService)portalContainer.getComponentInstanceOfType(RepositoryService.class);
+      RepositoryService repositoryService = (RepositoryService)portalContainer.getComponentInstanceOfType(RepositoryService.class);
       String key = null, nodePath = null, repoName = null,workspaceName = null, lockToken= null ;
       String[] temp = null, location = null ;
       Session session = null;      
       for(Iterator<String> iter = lockedNodes.keySet().iterator(); iter.hasNext();) {                
         try {
-          //The key structrure is built in org.exoplatform.ecm.webui.utils.LockUtil.createLockKey() method
+          //The key structure is built in org.exoplatform.ecm.webui.utils.LockUtil.createLockKey() method
           key = iter.next();          
           temp = key.split(":/:");
           nodePath = temp[1];
           location = temp[0].split("/::/");
           repoName = location[0]; 
           workspaceName = location[1] ;
-          session = 
-            sessionProvider.getSession(workspaceName,repositoryService.getRepository(repoName));
+          session = sessionProvider.getSession(workspaceName,repositoryService.getRepository(repoName));
           lockToken = lockedNodes.get(key);
           session.addLockToken(lockToken);
           Node node = (Node)session.getItem(nodePath);
@@ -89,8 +89,10 @@ public class LockManagerListener implements HttpSessionListener {
       }
     } catch(Exception ex) {
       log.error("Error during the time unlocking the locked nodes",ex);
-    } finally {      
+    } finally {
+      lockcache.clearCache();
       sessionProvider.close();
     }
-  }     
+  }
+
 }
