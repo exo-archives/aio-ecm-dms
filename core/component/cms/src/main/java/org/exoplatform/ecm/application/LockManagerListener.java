@@ -37,6 +37,7 @@ import org.exoplatform.services.log.ExoLogger;
 /**
  * Created by The eXo Platform SARL
  */
+@Deprecated
 public class LockManagerListener implements HttpSessionListener {
 
   protected static Log log = ExoLogger.getLogger("dms:LockManagerListener");
@@ -50,7 +51,7 @@ public class LockManagerListener implements HttpSessionListener {
   public void sessionDestroyed(HttpSessionEvent event) {
     SessionProvider sessionProvider = SessionProvider.createSystemProvider();
     try {      
-      HttpSession httpSession = event.getSession();
+      /*HttpSession httpSession = event.getSession();
       log.info("Removing the locks of all locked nodes");
       Map<String,String> lockedNodes = 
         (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
@@ -86,7 +87,7 @@ public class LockManagerListener implements HttpSessionListener {
         } finally {
           if(session != null) session.logout();
         }
-      }
+      }*/
     } catch(Exception ex) {
       log.error("Error during the time unlocking the locked nodes",ex);
     } finally {      
