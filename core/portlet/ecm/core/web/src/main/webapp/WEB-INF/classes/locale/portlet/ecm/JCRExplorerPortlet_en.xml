@@ -818,6 +818,7 @@
       <name-is-exist>The name '{0}' is existing. You can not upload same name file except for 'nt:file'</name-is-exist>
       <contraint-violation>Can't add node '{0}' to this node because it is not allowed as child's node type for parent node type</contraint-violation>
       <lock-exception>This node is locked. Some action will be run unlikely.</lock-exception>
+      <confirm-behavior>There is already a file with same name '{0}' in this location. Please choose a behavior you want to keep</confirm-behavior>
     </msg>
   </UIUploadForm>
   <UIUploadContent>
@@ -2305,6 +2306,9 @@
 	  <label>
 	    <Close>#{word.close}</Close>
 	    <OK>OK</OK>
+	    <ReplaceData>Replace data</ReplaceData>
+	    <Back>Back to rename</Back>
+	    <Keepfile>Keep both files</Keepfile>
 	  </label>
 	</UIConfirmMessage>
 	
@@ -2531,9 +2535,15 @@
 		</msg>
 	</UIJcrExplorerEditForm>
 		
-		<UIViewSearchResult>
-			<tooltip>
-				<remove-attachment>Do you want to remove this attachment file?</remove-attachment>
-			</tooltip>
-		</UIViewSearchResult>
+	<UIViewSearchResult>
+		<tooltip>
+			<remove-attachment>Do you want to remove this attachment file?</remove-attachment>
+		</tooltip>
+	</UIViewSearchResult>
+	
+	<SameNamePopup>
+		<title>
+			<UIUploadBehaviorWithSameName>Upload file</UIUploadBehaviorWithSameName>		
+		</title>
+	</SameNamePopup>	
 </bundle>

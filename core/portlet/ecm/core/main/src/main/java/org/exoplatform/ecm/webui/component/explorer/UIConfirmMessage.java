@@ -61,6 +61,10 @@ public class UIConfirmMessage extends UIComponent implements UIPopupComponent {
   
   public void setNodePath(String nodePath) { nodePath_ = nodePath; }
   
+  public String[] getActions() {
+    return new String[] {"OK", "Close"};
+  }
+  
   static  public class OKActionListener extends EventListener<UIConfirmMessage> {
     public void execute(Event<UIConfirmMessage> event) throws Exception {
       UIConfirmMessage uiConfirm = event.getSource();

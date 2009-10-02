@@ -2526,13 +2526,30 @@
 		</msg>
 	</UIJcrExplorerEditForm>	
  	<RemoveAttachmentComponent>
-			<msg>
-				<confirm-deleteattachment>Confirmez-vous la suppression du fichier attaché?</confirm-deleteattachment>
-			</msg>
-		</RemoveAttachmentComponent>
-		<UIViewSearchResult>
-			<tooltip>
-				<remove-attachment>Do you want to remove this attachment file?</remove-attachment>
-			</tooltip>
-		</UIViewSearchResult>
+	  <msg>
+		  <confirm-deleteattachment>Confirmez-vous la suppression du fichier attaché?</confirm-deleteattachment>
+		</msg>
+	</RemoveAttachmentComponent>
+	<UIViewSearchResult>
+	  <tooltip>
+		  <remove-attachment>Voulez-vous supprimer ce fichier de pièce jointe?</remove-attachment>
+		</tooltip>
+	</UIViewSearchResult>
+	<UIConfirmMessage>
+	  <label>
+	    <ReplaceData>Remplacer les données</ReplaceData>
+	    <Back>Retour à renommer</Back>
+	    <Keepfile>Gardez les deux fichiers</Keepfile>
+	  </label>
+	</UIConfirmMessage>
+	<UIUploadForm>
+	  <msg>
+	    <confirm-behavior>Il existe déjà un fichier portant le même nom '{0}' dans cette ville. S'il vous plaît choisir un comportement que vous souhaitez conserver</confirm-behavior>
+	  </msg>
+	</UIUploadForm>
+	<SameNamePopup>
+	  <title>
+		  <UIUploadBehaviorWithSameName>Chargement de fichier</UIUploadBehaviorWithSameName>
+	  </title>
+	</SameNamePopup>
 </bundle>
