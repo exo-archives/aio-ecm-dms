@@ -57,9 +57,9 @@ public class LockManagerListener extends Listener<ConversationRegistry, Conversa
     RootContainer rootContainer = RootContainer.getInstance() ;
     PortalContainer portalContainer = rootContainer.getPortalContainer("portal") ;
     CacheService cacheService = (CacheService)portalContainer.getComponentInstanceOfType(CacheService.class);
-    ExoCache lockcache = cacheService.getCacheInstance("dmsLockCache_".concat(userid));
+    ExoCache lockcache = cacheService.getCacheInstance(LockManager.class.getName());
     try {
-      Map<String,String> lockedNodes = (Map<String,String>)lockcache.get(LockManager.class.getName());
+      Map<String,String> lockedNodes = (Map<String,String>)lockcache.get(userid);
       if(lockedNodes == null || lockedNodes.values().isEmpty()) return;      
       RepositoryService repositoryService = (RepositoryService)portalContainer.getComponentInstanceOfType(RepositoryService.class);
       String key = null, nodePath = null, repoName = null,workspaceName = null, lockToken= null ;
@@ -87,10 +87,10 @@ public class LockManagerListener extends Listener<ConversationRegistry, Conversa
           if(session != null) session.logout();
         }
       }
+      lockedNodes.clear();
     } catch(Exception ex) {
       log.error("Error during the time unlocking the locked nodes",ex);
     } finally {
-      lockcache.clearCache();
       sessionProvider.close();
     }
   }
