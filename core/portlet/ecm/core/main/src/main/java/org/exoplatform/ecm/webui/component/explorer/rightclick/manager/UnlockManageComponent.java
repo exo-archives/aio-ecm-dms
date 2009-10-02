@@ -113,7 +113,7 @@ public class UnlockManageComponent extends UIAbstractManagerComponent {
         node.unlock();   
         node.removeMixin(Utils.MIX_LOCKABLE);
         node.getSession().save();
-        //remove lock from HttpSession
+        //remove lock from Cache
         LockUtil.removeLock(node);
       }
     } catch(LockException le) {
