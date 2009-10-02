@@ -42,27 +42,28 @@ public class LockUtil {
   public static ExoCache getLockCache() throws Exception {
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     CacheService cacheService = (CacheService)container.getComponentInstanceOfType(CacheService.class);
-    String userid = Util.getPortalRequestContext().getRemoteUser();
-    return cacheService.getCacheInstance("dmsLockCache_".concat(userid));
+    return cacheService.getCacheInstance(LockManager.class.getName());
   }
   
   @SuppressWarnings("unchecked")
   public static void keepLock(Lock lock) throws Exception {
     ExoCache lockcache = getLockCache();
     String key = createLockKey(lock.getNode());
-    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(LockManager.class.getName());
+    String userid = Util.getPortalRequestContext().getRemoteUser();
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userid);
     if(lockedNodesInfo == null) {
       lockedNodesInfo = new HashMap<String,String>();
     }
     lockedNodesInfo.put(key,lock.getLockToken());
-    lockcache.put(LockManager.class.getName(),lockedNodesInfo);
+    lockcache.put(userid,lockedNodesInfo);
   }
 
   @SuppressWarnings("unchecked")
   public static void removeLock(Node node) throws Exception {
     ExoCache lockcache = getLockCache();
     String key = createLockKey(node);
-    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(LockManager.class.getName());
+    String userid = Util.getPortalRequestContext().getRemoteUser();
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userid);
     if(lockedNodesInfo == null) return;
     lockedNodesInfo.remove(key);
   }
@@ -72,13 +73,14 @@ public class LockUtil {
     ExoCache lockcache = getLockCache();
     String newKey = createLockKey(newNode);
     String oldKey = createLockKey(oldNode);
-    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(LockManager.class.getName());
+    String userid = Util.getPortalRequestContext().getRemoteUser();
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userid);
     if(lockedNodesInfo == null) {
       lockedNodesInfo = new HashMap<String,String>();
     }
     lockedNodesInfo.remove(oldKey) ;
     lockedNodesInfo.put(newKey,newNode.getLock().getLockToken());
-    lockcache.put(LockManager.class.getName(),lockedNodesInfo);
+    lockcache.put(userid,lockedNodesInfo);
   }
   
   @SuppressWarnings("unchecked")
@@ -86,7 +88,8 @@ public class LockUtil {
     ExoCache lockcache = getLockCache();
     String newKey = createLockKey(newNode);
     String oldKey = getOldLockKey(srcPath, newNode);
-    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(LockManager.class.getName());
+    String userid = Util.getPortalRequestContext().getRemoteUser();
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userid);
     if(lockedNodesInfo == null) {
       lockedNodesInfo = new HashMap<String,String>();
     }
@@ -94,14 +97,15 @@ public class LockUtil {
       lockedNodesInfo.put(newKey, lockedNodesInfo.get(oldKey));
       lockedNodesInfo.remove(oldKey);
     }
-    lockcache.put(LockManager.class.getName(),lockedNodesInfo);
+    lockcache.put(userid, lockedNodesInfo);
   }
   
   @SuppressWarnings("unchecked")
   public static String getLockToken(Node node) throws Exception {    
     ExoCache lockcache = getLockCache();
     String key = createLockKey(node);
-    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(LockManager.class.getName());
+    String userid = Util.getPortalRequestContext().getRemoteUser();
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userid);
     if(lockedNodesInfo == null) return null;    
     return lockedNodesInfo.get(key);
   }  
