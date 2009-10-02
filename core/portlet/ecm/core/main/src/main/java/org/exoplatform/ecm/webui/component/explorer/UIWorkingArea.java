@@ -1052,7 +1052,9 @@ public class UIWorkingArea extends UIContainer {
         }
         node.unlock();   
         node.removeMixin(Utils.MIX_LOCKABLE);
-        node.getSession().save(); 
+        node.getSession().save();
+        //remove lock from Cache
+        LockUtil.removeLock(node);
       }
     } catch(LockException le) {
       Object[] args = {node.getName()};

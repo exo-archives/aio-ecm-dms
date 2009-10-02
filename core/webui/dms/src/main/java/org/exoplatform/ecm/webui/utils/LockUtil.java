@@ -22,10 +22,12 @@ import java.util.Map;
 import javax.jcr.Node;
 import javax.jcr.Session;
 import javax.jcr.lock.Lock;
-import javax.servlet.http.HttpSession;
 
-import org.exoplatform.portal.application.PortalRequestContext;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.portal.webui.util.Util;
+import org.exoplatform.services.cache.CacheService;
+import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.impl.core.lock.LockManager;
 
@@ -37,57 +39,69 @@ import org.exoplatform.services.jcr.impl.core.lock.LockManager;
  */
 public class LockUtil {
 
+  public static ExoCache getLockCache() throws Exception {
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    CacheService cacheService = (CacheService)container.getComponentInstanceOfType(CacheService.class);
+    String userid = Util.getPortalRequestContext().getRemoteUser();
+    return cacheService.getCacheInstance("dmsLockCache_".concat(userid));
+  }
+  
   @SuppressWarnings("unchecked")
   public static void keepLock(Lock lock) throws Exception {
-    PortalRequestContext requestContext = Util.getPortalRequestContext();
-    HttpSession httpSession = requestContext.getRequest().getSession();
+    ExoCache lockcache = getLockCache();
     String key = createLockKey(lock.getNode());
-    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(LockManager.class.getName());
     if(lockedNodesInfo == null) {
       lockedNodesInfo = new HashMap<String,String>();
     }
     lockedNodesInfo.put(key,lock.getLockToken());
-    httpSession.setAttribute(LockManager.class.getName(),lockedNodesInfo);
+    lockcache.put(LockManager.class.getName(),lockedNodesInfo);
+  }
+  
+  @SuppressWarnings("unchecked")
+  public static void removeLock(Node node) throws Exception {
+    ExoCache lockcache = getLockCache();
+    String key = createLockKey(node);
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(LockManager.class.getName());
+    if(lockedNodesInfo == null) return;
+    lockedNodesInfo.remove(key);
   }
   
   @SuppressWarnings("unchecked")
   public static void changeLockToken(Node oldNode, Node newNode) throws Exception {
-    PortalRequestContext requestContext = Util.getPortalRequestContext();
-    HttpSession httpSession = requestContext.getRequest().getSession();
+    ExoCache lockcache = getLockCache();
     String newKey = createLockKey(newNode);
     String oldKey = createLockKey(oldNode);
-    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(LockManager.class.getName());
     if(lockedNodesInfo == null) {
       lockedNodesInfo = new HashMap<String,String>();
     }
     lockedNodesInfo.remove(oldKey) ;
     lockedNodesInfo.put(newKey,newNode.getLock().getLockToken());
-    httpSession.setAttribute(LockManager.class.getName(),lockedNodesInfo);
+    lockcache.put(LockManager.class.getName(),lockedNodesInfo);
   }
   
   @SuppressWarnings("unchecked")
   public static void changeLockToken(String srcPath, Node newNode) throws Exception {
-    PortalRequestContext requestContext = Util.getPortalRequestContext();
-    HttpSession httpSession = requestContext.getRequest().getSession();
+    ExoCache lockcache = getLockCache();
     String newKey = createLockKey(newNode);
     String oldKey = getOldLockKey(srcPath, newNode);
-    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(LockManager.class.getName());
+    if(lockedNodesInfo == null) {
+      lockedNodesInfo = new HashMap<String,String>();
+    }
     if(lockedNodesInfo.containsKey(oldKey)) {
       lockedNodesInfo.put(newKey, lockedNodesInfo.get(oldKey));
       lockedNodesInfo.remove(oldKey);
     }
-    if(lockedNodesInfo == null) {
-      lockedNodesInfo = new HashMap<String,String>();
-    }
-    httpSession.setAttribute(LockManager.class.getName(),lockedNodesInfo);
+    lockcache.put(LockManager.class.getName(),lockedNodesInfo);
   }
   
   @SuppressWarnings("unchecked")
   public static String getLockToken(Node node) throws Exception {    
-    PortalRequestContext requestContext = Util.getPortalRequestContext();
-    HttpSession httpSession = requestContext.getRequest().getSession();
+    ExoCache lockcache = getLockCache();
     String key = createLockKey(node);
-    Map<String,String> lockedNodesInfo = (Map<String,String>)httpSession.getAttribute(LockManager.class.getName());
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(LockManager.class.getName());
     if(lockedNodesInfo == null) return null;    
     return lockedNodesInfo.get(key);
   }  
