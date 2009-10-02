@@ -2507,5 +2507,22 @@
 			<tooltip>
 				<remove-attachment>Xóa file đính kèm này?</remove-attachment>
 			</tooltip>
-		</UIViewSearchResult>
+	</UIViewSearchResult>
+  <UIConfirmMessage>
+	  <label>
+	    <ReplaceData>Ghi đè dữ liệu</ReplaceData>
+	    <Back>Quay lại đổi tên</Back>
+	    <Keepfile>Tạo tài liệu mới</Keepfile>
+	  </label>
+	</UIConfirmMessage>
+	<UIUploadForm>
+	  <msg>
+	    <confirm-behavior>Đã tồn tại một tài liệu với tên '{0}' tại vị trí này. Hãy chọn một cách bạn muốn để tạo file</confirm-behavior>
+	  </msg>
+	</UIUploadForm>
+	<SameNamePopup>
+	  <title>
+		  <UIUploadBehaviorWithSameName>Tải dữ liệu lên</UIUploadBehaviorWithSameName>
+	  </title>
+	</SameNamePopup>
 </bundle>

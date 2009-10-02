@@ -718,6 +718,18 @@
 	width: 90%;
 }
 
+.UIJCRExplorer .UIUploadBehaviorWithSameName .RecycleBinFull {
+  width: 48px; height: 48px;
+  background: url('/eXoDMSResources/skin/DefaultSkin/skinIcons/48x48/icons/NodeTypes/exo-versionStorage.gif') no-repeat;  
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+}
+
+.UIJCRExplorer .UIUploadBehaviorWithSameName .Text {
+	padding: 10px;
+	width: 90%;
+}
+
 /*############################## -- End UIDocumentWorkspace -- ##############################*/
 
 

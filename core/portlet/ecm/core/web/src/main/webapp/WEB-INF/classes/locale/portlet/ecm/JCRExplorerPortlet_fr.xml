@@ -2502,5 +2502,22 @@
 			<tooltip>
 				<remove-attachment>Do you want to remove this attachment file?</remove-attachment>
 			</tooltip>
-		</UIViewSearchResult>
+	</UIViewSearchResult>
+	<UIConfirmMessage>
+	  <label>
+	    <ReplaceData>Remplacer les données</ReplaceData>
+	    <Back>Retour à renommer</Back>
+	    <Keepfile>Gardez les deux fichiers</Keepfile>
+	  </label>
+	</UIConfirmMessage>
+	<UIUploadForm>
+	  <msg>
+	    <confirm-behavior>Il existe déjà un fichier portant le même nom '{0}' dans cette ville. S'il vous plaît choisir un comportement que vous souhaitez conserver</confirm-behavior>
+	  </msg>
+	</UIUploadForm>
+	<SameNamePopup>
+	  <title>
+		  <UIUploadBehaviorWithSameName>Chargement de fichier</UIUploadBehaviorWithSameName>
+	  </title>
+	</SameNamePopup>
 </bundle>
