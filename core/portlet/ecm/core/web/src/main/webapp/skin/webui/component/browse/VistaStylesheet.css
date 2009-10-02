@@ -111,6 +111,9 @@
   width: 490px;
 }
 
+.UIBrowseContentPortlet .UIPathConfig .UIForm .HorizontalLayout .UIFormGrid {
+  width: 600px;
+}
 
 .UIBrowseContentPortlet .UIConfigContainer .FieldComponent .path {
 	padding: 0px;

@@ -111,6 +111,10 @@
 	margin: auto;
 }
 
+.UIBrowseContentPortlet .UIPathConfig .UIForm .HorizontalLayout .UIFormGrid {
+  width: 600px;
+}
+
 .UIBrowseContentPortlet .UIForm .FieldComponent .FieldComponent input {
 	width: 200px;
 }
