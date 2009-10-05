@@ -61,6 +61,10 @@ public class UIConfirmMessage extends UIComponent implements UIPopupComponent {
   
   public void setNodePath(String nodePath) { nodePath_ = nodePath; }
   
+  public String[] getActions() {
+    return new String[] {"OK", "Close"};
+  }  
+  
   public void setWorkspaceName(String wsName) { wsName_ = wsName; }
   
   static  public class OKActionListener extends EventListener<UIConfirmMessage> {

@@ -2252,4 +2252,22 @@
 	    <OutOfMemoryError>You should choose SystemView when export large data</OutOfMemoryError>
 	  </msg>
   </UIExportNode>	
+  
+	<UIConfirmMessage>
+	  <label>
+	    <ReplaceData>Replace data</ReplaceData>
+	    <Back>Back to rename</Back>
+	    <Keepfile>Keep both files</Keepfile>
+	  </label>
+	</UIConfirmMessage>
+	<UIUploadForm>
+	  <msg>
+	    <confirm-behavior>There is already a file with the same name '{0}' in this location. Please choose a behavior to keep file</confirm-behavior>
+	  </msg>
+	</UIUploadForm>
+	<SameNamePopup>
+	  <title>
+		  <UIUploadBehaviorWithSameName>Upload file</UIUploadBehaviorWithSameName>
+	  </title>
+	</SameNamePopup>	  
 </bundle>

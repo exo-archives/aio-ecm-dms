@@ -2253,5 +2253,23 @@
 	  <msg>
 	    <OutOfMemoryError>Bạn nên chọn xuất tài liệu theo cách xem hệ thống</OutOfMemoryError>
 	  </msg>
-	 </UIExportNode>	
+	 </UIExportNode>
+	 
+  <UIConfirmMessage>
+	  <label>
+	    <ReplaceData>Ghi đè dữ liệu</ReplaceData>
+	    <Back>Quay lại đổi tên</Back>
+	    <Keepfile>Tạo tài liệu mới</Keepfile>
+	  </label>
+	</UIConfirmMessage>
+	<UIUploadForm>
+	  <msg>
+	    <confirm-behavior>Đã tồn tại một tài liệu với tên '{0}' tại vị trí này. Hãy chọn một cách bạn muốn để tạo file</confirm-behavior>
+	  </msg>
+	</UIUploadForm>
+	<SameNamePopup>
+	  <title>
+		  <UIUploadBehaviorWithSameName>Tải dữ liệu lên</UIUploadBehaviorWithSameName>
+	  </title>
+	</SameNamePopup>	 
 </bundle>

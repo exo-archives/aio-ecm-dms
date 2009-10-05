@@ -27,24 +27,19 @@
 	    <table class="ActionContainer">
 	      <tr>
 	        <td>
-						<div onclick="<%=uicomponent.event("OK")%>" class="ActionButton LightBlueStyle">
-	            <div class="ButtonLeft">
-	              <div class="ButtonRight">
-	                <div class="ButtonMiddle">
-										<a href="javascript:void(0);"><%=_ctx.appRes("UIConfirmMessage.label.OK")%></a>
-	                </div>
-	              </div>
-	            </div>
-						</div>
-						<div onclick="<%=uicomponent.event("Close")%>" class="ActionButton LightBlueStyle">
-	            <div class="ButtonLeft">
-	              <div class="ButtonRight">
-	                <div class="ButtonMiddle">
-										<a href="javascript:void(0);"><%=_ctx.appRes("UIConfirmMessage.label.Close")%></a>
-	                </div>
-	              </div>
-	            </div>
-						</div>
+						<%
+						  for(action in uicomponent.getActions()) {
+						%>
+							<div onclick="<%=uicomponent.event(action)%>" class="ActionButton LightBlueStyle">
+		            <div class="ButtonLeft">
+		              <div class="ButtonRight">
+		                <div class="ButtonMiddle">
+											<a href="javascript:void(0);"><%=_ctx.appRes("UIConfirmMessage.label." + action)%></a>
+		                </div>
+		              </div>
+		            </div>
+							</div>
+						<%}%>
 	      	</td>
 	      </tr>          
 	    </table>
