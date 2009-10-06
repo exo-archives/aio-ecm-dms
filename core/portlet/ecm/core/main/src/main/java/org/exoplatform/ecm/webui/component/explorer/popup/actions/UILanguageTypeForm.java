@@ -23,6 +23,7 @@ import java.util.List;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.upload.UISingleUploadForm;
 import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadForm;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
@@ -158,7 +159,7 @@ public class UILanguageTypeForm extends UIForm {
           }
         }
       } else {
-        UIUploadForm uiUploadForm =  uiContainer.findFirstComponentOfType(UIUploadForm.class) ;
+        UISingleUploadForm uiUploadForm =  uiContainer.findFirstComponentOfType(UISingleUploadForm.class) ;
         uiUploadForm.setIsMultiLanguage(true, selectedLang) ;
       }
       uiContainer.setRenderSibbling(UIAddLanguageContainer.class) ;
@@ -175,7 +176,7 @@ public class UILanguageTypeForm extends UIForm {
         UILanguageDialogForm uiDialogForm = uiLanguageContainer.getChild(UILanguageDialogForm.class) ;
         uiDialogForm.setIsDefaultLanguage(isDefault) ;
       } else {
-        UIUploadForm uiUploadForm = uiLanguageContainer.findFirstComponentOfType(UIUploadForm.class) ;
+        UISingleUploadForm uiUploadForm = uiLanguageContainer.findFirstComponentOfType(UISingleUploadForm.class);
         uiUploadForm.setIsDefaultLanguage(isDefault) ;
       }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiForm) ;

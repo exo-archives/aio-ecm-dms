@@ -32,7 +32,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFi
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIActionBarActionListener;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIAddLanguageContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageManager;
-import org.exoplatform.ecm.webui.component.explorer.upload.UIUploadManager;
+import org.exoplatform.ecm.webui.component.explorer.upload.UISingleUploadManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -77,7 +77,7 @@ public class MultiLanguageActionComponent extends UIComponent {
         String mimeType = uiExplorer.getCurrentNode().getNode(Utils.JCR_CONTENT).
         getProperty(Utils.JCR_MIMETYPE).getString();
         if(mimeType.startsWith("text")) uiAddContainer.setComponentDisplay(nodeType.getName());
-        else uiAddContainer.addChild(UIUploadManager.class, null, null);
+        else uiAddContainer.addChild(UISingleUploadManager.class, null, null);
       } else {
         uiAddContainer.setComponentDisplay(nodeType.getName());
       }

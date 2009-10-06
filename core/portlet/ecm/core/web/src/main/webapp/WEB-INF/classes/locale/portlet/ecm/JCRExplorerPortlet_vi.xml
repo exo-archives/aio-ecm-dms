@@ -2557,4 +2557,99 @@
 		  <UIUploadBehaviorWithSameName>Tải dữ liệu lên</UIUploadBehaviorWithSameName>
 	  </title>
 	</SameNamePopup>	
+	
+	<UISingleUploadForm>
+    <title>Tải một file</title>
+    <label>
+      <upload>Chọn một file</upload>
+      <name>Name</name>
+      <fieldListTaxonomy>Danh sách danh mục</fieldListTaxonomy>
+    </label>
+    <action>
+      <Save>Lưu</Save>
+      <Cancel>Hủy bỏ</Cancel>
+    </action>
+    <msg>
+      <fileName-error>Xin vui lòng chắc chắn rằng bạn đã lên tập tin đã chọn lên máy chủ bằng cách sử dụng biểu tượng tải lên.</fileName-error>
+      <taxonomyPath-error>Vui lòng chọn danh mục!</taxonomyPath-error>
+      <fileName-invalid>Có một số kí tự không hợp lệ trong tên tập tin. Vui lòng gõ lại tên tập tin hoặc tải một tập tin khác.</fileName-invalid>
+      <fileSize-too-big>Kích thước của tập tin là quá lớn. Bạn cần chia thành một số tập tin nhỏ hơn hoặc sử dung tải kiểu WebDav.</fileSize-too-big>
+      <name-is-exist>Tên '{0}' đã tồn tại. Bạn không thể tải một tập tin trùng tên ngoại trừ 'nt:file'</name-is-exist>
+      <contraint-violation>Không thể thêm node '{0}' vào node này bởi vì nó không được phép là loại node con của node cha này.</contraint-violation>
+      <lock-exception>Node này bị khóa. Một số thao tác sẽ được chạy không như mong muốn.</lock-exception>
+    </msg>
+  </UISingleUploadForm>
+  <UISingleUploadContent>
+    <label>
+      <fileName>Tên tệp tin</fileName>
+      <nodeName>Tên node</nodeName>
+      <fileSize>Kích thước tệp tin</fileSize>
+      <mimeType>Mime type</mimeType>
+    </label>
+    <title>
+      <uploaded-file>Tệp tin được tải lên</uploaded-file>
+      <external-metadata>Metadatas mở rộng</external-metadata>
+      <metadata-name>Tên Metadata</metadata-name>
+      <action>Thao tác</action>
+    </title>
+    <tooltip>
+      <Edit>Chỉnh sửa</Edit>
+    </tooltip>
+    <msg>
+      <has-not-template>Mẫu của '(0)' là null hoặc rỗng.</has-not-template>
+    </msg>
+  </UISingleUploadContent>
+  <UISingleUploadContainer>
+    <action>
+      <Close>Đóng</Close>
+      <AddMetadata>Thêm metadata</AddMetadata>
+    </action>
+    <tab>
+      <label>
+        <UIUploadContent>Thông tin</UIUploadContent>
+        <UIAddMetadataForm>Biểu mẫu metadata</UIAddMetadataForm>
+      </label>
+    </tab>
+  </UISingleUploadContainer>
+  <UISingleUploadContainer>
+    <action>
+      <Close>#{word.close}</Close>
+      <AddMetadata>Thêm metadata</AddMetadata>
+    </action>
+    <tab>
+      <label>
+        <UISingleUploadContent>Thông tin</UISingleUploadContent>
+        <UISingleAddMetadataForm>Biểu mẫu metadata</UISingleAddMetadataForm>
+      </label>
+    </tab>
+  </UISingleUploadContainer>
+  <UISingleExternalMetadataForm>
+		<action>
+			<Add>Thêm mới</Add>
+			<Cancel>Thoát</Cancel>
+		</action>
+	</UISingleExternalMetadataForm>
+	<UISingleUploadContainer>
+  	<tab>
+  		<label>
+  			<UIListMetadata>Danh sách metadatas mở rộng</UIListMetadata>
+  		</label>
+  	</tab>
+  </UISingleUploadContainer>
+  <AddMetadataPopup>
+    <title>
+      <UISingleExternalMetadataForm>Thêm mới Metadata mở rộng</UISingleExternalMetadataForm>
+    </title>
+  </AddMetadataPopup>
+  <UISingleExternalMetadataForm>
+    <msg>
+      <can-not-add>Node này không thể thêm mới mixin.</can-not-add>
+    </msg>
+  </UISingleExternalMetadataForm>
+  <UISingleAddMetadataForm>
+    <action>
+      <Cancel>Thoát</Cancel>
+			<Save>Lưu</Save>
+    </action>
+  </UISingleAddMetadataForm>
 </bundle>

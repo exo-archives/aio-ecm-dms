@@ -2546,4 +2546,87 @@
 			<UIUploadBehaviorWithSameName>Upload file</UIUploadBehaviorWithSameName>		
 		</title>
 	</SameNamePopup>	
+		
+	<UISingleUploadForm>
+    <title>Upload a file</title>
+    <label>
+      <upload>Select a file</upload>
+      <name>Name</name>
+      <fieldListTaxonomy>List Taxonomy</fieldListTaxonomy>
+    </label>
+    <action>
+      <Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>
+    </action>
+    <msg>
+      <fileName-error>Please make sure that you uploaded the selected file to the server using the upload icon.</fileName-error>
+      <taxonomyPath-error>Please choose the taxonomy!</taxonomyPath-error>
+      <fileName-invalid>Have some invalid characters in file name. Type file name or upload other file, please.</fileName-invalid>
+      <fileSize-too-big>File size is too big. You should split to some small files or use WebDav upload.</fileSize-too-big>
+      <name-is-exist>The name '{0}' is existing. You can not upload same name file except for 'nt:file'</name-is-exist>
+      <contraint-violation>Can't add node '{0}' to this node because it is not allowed as child's node type for parent node type</contraint-violation>
+      <lock-exception>This node is locked. Some action will be run unlikely.</lock-exception>
+    </msg>
+  </UISingleUploadForm>
+  <UISingleUploadContent>
+    <label>
+      <fileName>File name</fileName>
+      <nodeName>Node name</nodeName>
+      <fileSize>File size</fileSize>
+      <mimeType>Mime Type</mimeType>
+    </label>
+    <title>
+      <uploaded-file>Uploaded file</uploaded-file>
+      <external-metadata>External metadatas</external-metadata>
+      <metadata-name>Metadata name</metadata-name>
+      <action>Action</action>
+    </title>
+    <tooltip>
+      <Edit>Edit</Edit>
+    </tooltip>
+    <msg>
+      <has-not-template>Template of '{0}' is null or empty.</has-not-template>
+    </msg>
+  </UISingleUploadContent>
+  <UISingleUploadContainer>
+    <action>
+      <Close>#{word.close}</Close>
+      <AddMetadata>Add metadata</AddMetadata>
+    </action>
+    <tab>
+      <label>
+        <UISingleUploadContent>Information</UISingleUploadContent>
+        <UISingleAddMetadataForm>Metadata Form</UISingleAddMetadataForm>
+      </label>
+    </tab>
+  </UISingleUploadContainer>
+  <UISingleExternalMetadataForm>
+		<action>
+			<Add>Add</Add>
+			<Cancel>Cancel</Cancel>
+		</action>
+	</UISingleExternalMetadataForm>
+	<UISingleUploadContainer>
+  	<tab>
+  		<label>
+  			<UIListMetadata>List external metadatas</UIListMetadata>
+  		</label>
+  	</tab>
+  </UISingleUploadContainer>
+  <AddMetadataPopup>
+    <title>
+      <UISingleExternalMetadataForm>Add External Metadata</UISingleExternalMetadataForm>
+    </title>
+  </AddMetadataPopup>
+  <UISingleExternalMetadataForm>
+    <msg>
+      <can-not-add>This node can not add mixin.</can-not-add>
+    </msg>
+  </UISingleExternalMetadataForm>
+  <UISingleAddMetadataForm>
+    <action>
+      <Cancel>Cancel</Cancel>
+      <Save>Save</Save>
+    </action>
+  </UISingleAddMetadataForm>		
 </bundle>
