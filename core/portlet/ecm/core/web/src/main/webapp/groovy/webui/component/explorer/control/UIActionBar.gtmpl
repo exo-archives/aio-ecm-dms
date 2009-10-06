@@ -74,9 +74,8 @@
 		       def action = uicomponent.getUIAction(button);
 				   if (action != null) {
 				     def title = _ctx.appRes(uicomponent.getId() + ".tooltip." + button);
-				     def titleSize = title.length()*5 + 50;
 			 %>
-						 <div class="NormalSubItem SubTabItem" style="width: ${titleSize}px;">
+						 <div class="NormalSubItem SubTabItem" style="width: auto;">
 							 <div class="NormalSubTabItemL">
 								 <div class="NormalSubTabItemR">
 									 <div class="NormalSubTabItemM">
