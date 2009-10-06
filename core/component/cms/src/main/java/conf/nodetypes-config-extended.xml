@@ -869,6 +869,26 @@
       <propertyDefinition name="exo:targetPath" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY"
         protected="false" multiple="false"/>      
     </propertyDefinitions>
-  </nodeType>	
-		       	             
+  </nodeType>
+  
+ 	<nodeType name="exo:favourite" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+ 	  <propertyDefinitions>
+ 	    <propertyDefinition name="exo:favouriter" requiredType="String" autoCreated="false" mandatory="true"
+			  onParentVersion="COPY" protected="false" multiple="true">
+			  <valueConstraints/>
+			</propertyDefinition>
+ 	  </propertyDefinitions>
+  </nodeType>
+  
+ 	<nodeType	name="exo:restoreLocation" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">  				
+		<propertyDefinitions>
+			<propertyDefinition name="exo:restoreWorkspace" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
+				<valueConstraints/>
+			</propertyDefinition>
+			<propertyDefinition name="exo:restorePath" requiredType="String" autoCreated="false" mandatory="false" onParentVersion="COPY" protected="false" multiple="false">
+				<valueConstraints/>
+			</propertyDefinition>				  			  						  		
+		</propertyDefinitions>			
+ 	</nodeType>
+ 	
 </nodeTypes>

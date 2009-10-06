@@ -212,9 +212,10 @@ public class CmsServiceImpl implements CmsService {
       }
       listenerService.broadcast(POST_EDIT_CONTENT_EVENT, this, currentNode);
     }
+    String uuid = currentNode.getUUID();
     session.save();
     session.logout();
-    return currentNode.getUUID();
+    return uuid;
   }
 
   /**
