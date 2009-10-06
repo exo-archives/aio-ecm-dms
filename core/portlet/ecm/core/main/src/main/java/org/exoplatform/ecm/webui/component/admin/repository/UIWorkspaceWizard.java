@@ -310,14 +310,18 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
     while (iter.hasNext()) {
       String key = (String)iter.next();
       List<String> types = permission.get(key);
+      List<String> listPermission = new ArrayList<String>();
       if (key.equals("*")) key = "any";
       for (String type : types) {
-        if (type.equals("read")) rootNode.setPermission(key, new String[] {PermissionType.READ});
-        else if (type.equals("add_node")) rootNode.setPermission(key, new String[] {PermissionType.ADD_NODE});
-        else if (type.equals("set_property")) rootNode.setPermission(key, new String[] {PermissionType.SET_PROPERTY});
-        else rootNode.setPermission(key, new String[] {PermissionType.REMOVE});
+        if (type.equals("read")) listPermission.add(PermissionType.READ);
+        else if (type.equals("add_node")) listPermission.add(PermissionType.ADD_NODE);
+        else if (type.equals("set_property")) listPermission.add(PermissionType.SET_PROPERTY);
+        else listPermission.add(PermissionType.REMOVE);
       }
+      String[] criteria = new String[listPermission.size()];
+      rootNode.setPermission(key, listPermission.toArray(criteria));
     }
+    rootNode.save();
   }
   
   public String url(String name) throws Exception {
