@@ -44,6 +44,11 @@
 	    </component-plugin>  
     </component-plugins> 
     <init-params>           
+      <value-param>
+        <name>ldap.userDN.key</name>
+        <description>The key used to compose user DN</description>
+        <value>cn</value>
+      </value-param>
       <object-param>
         <name>ldap.attribute.mapping</name>
         <description>ldap attribute mapping</description>
