@@ -23,8 +23,11 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.jcr.Session;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.configuration.ConfigurationManager;
@@ -46,8 +49,11 @@ import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.AccessControlEntry;
+import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
+import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.core.nodetype.ExtendedNodeTypeManager;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -540,8 +546,61 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       dmsConfiguration.initNewRepo(repoName, newDConfiguration);
       
       uiForm.addNewElement(repoName, uiForm.dmsSystemWorkspace_);
-      
       uiForm.saveRepo(re);
+      
+      Iterator wsPermission = uiForm.workspaceMapPermission_.keySet().iterator();
+      while (wsPermission.hasNext()) {
+        String workSpaceName = (String)wsPermission.next();        
+        ManageableRepository manageRepository = rService.getRepository(repoName);
+        Session systemSession = manageRepository.getSystemSession(workSpaceName);        
+        String stringPermission = uiForm.workspaceMapPermission_.get(workSpaceName);
+        ExtendedNode rootNode = (ExtendedNode)systemSession.getRootNode();
+        HashMap<String, List<String>> permission = new HashMap<String, List<String>>();
+        String [] items = stringPermission.split(";");
+        for (String item : items) {
+          String[] permissionType = item.split(" ");
+          if (permission.containsKey(permissionType[0])) {
+            List<String> type = permission.get(permissionType[0]);
+            if (!type.contains(permissionType[1])) {
+              type.add(permissionType[1]);
+              permission.put(permissionType[0], type);
+            }
+          } else {
+            List<String> type = new ArrayList<String>();
+            type.add(permissionType[1]);
+            permission.put(permissionType[0], type);
+          }
+        }
+        
+        Iterator iter = permission.keySet().iterator();
+        List<String> listKey = new ArrayList<String>();
+        List<String> listType = new ArrayList<String>();
+        while (iter.hasNext()) {
+          String key = (String)iter.next();
+          listKey.add(key);
+          List<String> types = permission.get(key);
+          List<String> listPermission = new ArrayList<String>();      
+          if (key.equals("*")) key = "any";
+          for (String type : types) {
+            if ((key.equals("any") && !listType.contains(type))) listType.add(type);  
+            if (type.equals("read")) listPermission.add(PermissionType.READ);
+            else if (type.equals("add_node")) listPermission.add(PermissionType.ADD_NODE);
+            else if (type.equals("set_property")) listPermission.add(PermissionType.SET_PROPERTY);
+            else listPermission.add(PermissionType.REMOVE);
+          }
+          String[] criteria = new String[listPermission.size()];
+          rootNode.setPermission(key, listPermission.toArray(criteria));          
+        }
+        if (!listKey.contains("any")) {
+          if (!listType.contains(PermissionType.ADD_NODE)) rootNode.removePermission("any", PermissionType.ADD_NODE);
+          if (!listType.contains(PermissionType.SET_PROPERTY)) rootNode.removePermission("any", PermissionType.SET_PROPERTY);
+          if (!listType.contains(PermissionType.REMOVE)) rootNode.removePermission("any", PermissionType.REMOVE);
+        }
+        rootNode.save();
+        systemSession.save();        
+        systemSession.logout();
+      }      
+      
       UIRepositoryControl uiRepoControl = uiForm.getAncestorOfType(UIECMAdminPortlet.class).
       findFirstComponentOfType(UIRepositoryControl.class);
       uiRepoControl.reloadValue(true, rService);
