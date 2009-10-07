@@ -189,8 +189,16 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
     if (workSpace != null) {
       RepositoryService rService = (RepositoryService)getApplicationComponent(ExoContainer.class).
       getComponentInstanceOfType(RepositoryService.class);
-      
-      ManageableRepository manageRepository = rService.getDefaultRepository();
+      ManageableRepository manageRepository;
+      if (isAddNewWs) {
+        manageRepository = rService.getDefaultRepository();
+      } else {
+        try {
+          manageRepository = rService.getRepository(repoName);
+        } catch (RepositoryException e) {
+          manageRepository = rService.getDefaultRepository();
+        }
+      }
       if (!isNewWizard_) {
         name = workSpace.getName();
         isDefaultWS = uiRepoForm.isDefaultWorkspace(name);
@@ -307,19 +315,28 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
     }
     
     Iterator iter = permission.keySet().iterator();
+    List<String> listKey = new ArrayList<String>();
+    List<String> listType = new ArrayList<String>();
     while (iter.hasNext()) {
       String key = (String)iter.next();
+      listKey.add(key);
       List<String> types = permission.get(key);
-      List<String> listPermission = new ArrayList<String>();
+      List<String> listPermission = new ArrayList<String>();      
       if (key.equals("*")) key = "any";
       for (String type : types) {
+        if ((key.equals("any") && !listType.contains(type))) listType.add(type);  
         if (type.equals("read")) listPermission.add(PermissionType.READ);
         else if (type.equals("add_node")) listPermission.add(PermissionType.ADD_NODE);
         else if (type.equals("set_property")) listPermission.add(PermissionType.SET_PROPERTY);
         else listPermission.add(PermissionType.REMOVE);
       }
       String[] criteria = new String[listPermission.size()];
-      rootNode.setPermission(key, listPermission.toArray(criteria));
+      rootNode.setPermission(key, listPermission.toArray(criteria));      
+    }
+    if (!listKey.contains("any")) {
+      if (!listType.contains(PermissionType.ADD_NODE)) rootNode.removePermission("any", PermissionType.ADD_NODE);
+      if (!listType.contains(PermissionType.SET_PROPERTY)) rootNode.removePermission("any", PermissionType.SET_PROPERTY);
+      if (!listType.contains(PermissionType.REMOVE)) rootNode.removePermission("any", PermissionType.REMOVE);
     }
     rootNode.save();
   }
