@@ -813,7 +813,7 @@
     <msg>
       <fileName-error>Assurez-vous d'avoir uploadé le fichier sur le serveur (icône d'upload).</fileName-error>
       <taxonomyPath-error>Choisissez une taxonomie!</taxonomyPath-error>
-      <fileName-invalid>Caractères invalides détectés dans le nom du fichier.</fileName-invalid>
+      <fileName-invalid>Caractères invalides détectés dans le nom du fichier uploadé.</fileName-invalid>
       <fileSize-too-big>Le fichier est trop volumineux. Veuillez le découper en plusieurs petits fichiers ou le charger en utilisant WebDav.</fileSize-too-big>
       <name-is-exist>Le document '{0}' existe déjà. Vous ne pouvez pas uploader un fichier du même nom excepté pour les documents de type 'nt:file'</name-is-exist>
       <contraint-violation>Ajout du noeud '{0}' impossible. Le type de noeud fils dans le parent l'interdit</contraint-violation>
