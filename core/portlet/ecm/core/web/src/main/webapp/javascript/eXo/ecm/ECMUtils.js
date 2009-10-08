@@ -189,8 +189,8 @@
 		var sidebar = DOM.findAncestorByClass(element,  "UIResizableBlock");
 		var top = element.offsetTop;
 		var left = element.offsetLeft;
-		sidebar.scrollTop = top - sidebar.offsetTop;
-		sidebar.scrollLeft = left - sidebar.offsetLeft;
+		sidebar.scrollTop = (top - sidebar.offsetTop)/2;
+		sidebar.scrollLeft = (left - sidebar.offsetLeft)/2;
 	};
 	
 	ECMUtils.prototype.collapseExpand = function(element) {
