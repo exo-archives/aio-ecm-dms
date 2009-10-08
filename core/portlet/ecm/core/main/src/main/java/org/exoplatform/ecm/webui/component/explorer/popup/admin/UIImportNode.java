@@ -306,7 +306,17 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
           Integer.parseInt(uiImport.getUIFormSelectBox(IMPORT_BEHAVIOR).getValue());
         //Process import
         session.importXML(nodePath, xmlInputStream, importBehavior);
-        if (!uiExplorer.getPreference().isJcrEnable()) session.save();
+        try {
+          if (!uiExplorer.getPreference().isJcrEnable()) session.save();
+        } catch (ConstraintViolationException e) {
+          session.refresh(false);
+          Object[] args = { uiExplorer.getCurrentNode().getPrimaryNodeType().getName() };
+          uiApp.addMessage(new ApplicationMessage("UIImportNode.msg.constraint-violation-exception",
+                                                  args,
+                                                  ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+          return;
+        }
         //Process import version history
         if(inputHistory.getUploadResource() != null) {
           uiImport.processImportHistory(currentNode);
