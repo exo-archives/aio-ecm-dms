@@ -1400,7 +1400,7 @@
       <filetype-error>Can not import node from uploaded file. Maybe it is a invalid xml file.</filetype-error>
       <mimetype-invalid>Only xml file or zip file are supported to import.</mimetype-invalid>
       <access-denied>Access denied! You are not allowed to import there.</access-denied>
-      <constraint-violation-exception>Can not import. Node type '{0}' is not allowed child's node type is '{0}'</constraint-violation-exception>
+			<constraint-violation-exception>Can not import because some constraints are violated: Data import is incorrect Or Node type '{0}' is not allowed child's node type is '{0}'</constraint-violation-exception>
     </msg>
   </UIImportNode>
   <!--
