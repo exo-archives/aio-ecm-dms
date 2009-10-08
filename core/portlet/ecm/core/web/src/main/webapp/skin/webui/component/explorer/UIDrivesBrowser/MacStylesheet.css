@@ -155,6 +155,10 @@
 	margin-top: 1px;
 }
 
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator .DecoratorMiddle{
+	width: 99.5%;
+}
+
 .UIJCRExplorerPortlet .UIDrivesBrowser .Drive {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
