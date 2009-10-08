@@ -152,7 +152,11 @@
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator {
 	border: 1px solid #d9d9d9;
-	margin-top: 1px;
+	margin-top: 1px; 
+}
+
+.UIJCRExplorerPortlet .UIDrivesBrowser .DrivesContent .BrowserDecorator .DecoratorMiddle{
+	width: 99.5%;
 }
 
 .UIJCRExplorerPortlet .UIDrivesBrowser .Drive {
