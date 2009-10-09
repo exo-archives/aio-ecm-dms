@@ -41,17 +41,19 @@ public class Utils {
     Node node = rootNode;
     for (int i = 0; i < tokens.length; i++) {
       String token = tokens[i];
-      if(node.hasNode(token)) {
-        node = node.getNode(token) ;
-      }else {
-        node = node.addNode(token, nodetype);
-        if (node.canAddMixin("exo:privilegeable")){
-          node.addMixin("exo:privilegeable");
-        }
-        if(permissions != null){          
-          ((ExtendedNode)node).setPermissions(permissions);
-        }
-      }      
+      if(token.length() > 0) {
+        if(node.hasNode(token)) {
+          node = node.getNode(token) ;
+        } else {
+          node = node.addNode(token, nodetype);
+          if (node.canAddMixin("exo:privilegeable")){
+            node.addMixin("exo:privilegeable");
+          }
+          if(permissions != null){          
+            ((ExtendedNode)node).setPermissions(permissions);
+          }
+        }      
+      }
     }
     return node;
   }
