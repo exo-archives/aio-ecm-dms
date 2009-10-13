@@ -224,6 +224,27 @@ public class CmsServiceImpl implements CmsService {
   }
 
   /**
+   * Check to set value for a property with definition is autocreated
+   * @param propertyDef PropertyDefinition
+   * @param path String
+   * @param jcrVariables Map of properties
+   * @return Boolean
+   */
+  private boolean isAcceptSetValueForAutoCreated(PropertyDefinition propertyDef, String path, 
+      Map jcrVariables) {
+    if(propertyDef.isAutoCreated()) {
+      String propertyName = propertyDef.getName();     
+      String currentPath = path + "/" + propertyName;
+      JcrInputProperty inputVariable = (JcrInputProperty) jcrVariables.get(currentPath) ;
+      if(inputVariable != null && inputVariable.getValue() != null) {
+        return true;    
+      }
+      return false;
+    } 
+    return true;
+  }  
+  
+  /**
    * Add property for current node when create variable = true
    * Value of property is got in Map jcrVariabes by key = path + / property name
    * @param create          create = true or false
@@ -239,7 +260,8 @@ public class CmsServiceImpl implements CmsService {
       PropertyDefinition[] propertyDefs = currentNodeType.getPropertyDefinitions();
       for (int i = 0; i < propertyDefs.length; i++) {      
         PropertyDefinition propertyDef = propertyDefs[i];         
-        if (!propertyDef.isProtected()) {        
+        if (isAcceptSetValueForAutoCreated(propertyDef, path, jcrVariables) && 
+            !propertyDef.isProtected()) {        
           String propertyName = propertyDef.getName();     
           int requiredtype = propertyDef.getRequiredType();
           String currentPath = path + "/" + propertyName;
