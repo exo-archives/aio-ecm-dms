@@ -203,8 +203,10 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
         name = workSpace.getName();
         isDefaultWS = uiRepoForm.isDefaultWorkspace(name);
         try {
-          selectedNodeType = manageRepository.getSystemSession(workSpace.getName()).getRootNode().getPrimaryNodeType().getName();
-          List<AccessControlEntry> listEntry = ((ExtendedNode)manageRepository.getSystemSession(workSpace.getName()).getRootNode()).getACL().getPermissionEntries();
+          Session workspaceSession = manageRepository.getSystemSession(workSpace.getName());
+          selectedNodeType = workspaceSession.getRootNode().getPrimaryNodeType().getName();
+          List<AccessControlEntry> listEntry = ((ExtendedNode)workspaceSession.getRootNode()).getACL().getPermissionEntries();
+          workspaceSession.logout();
           Iterator perIter = listEntry.iterator() ;
           StringBuilder userPermission = new StringBuilder();
           while (perIter.hasNext()) {
