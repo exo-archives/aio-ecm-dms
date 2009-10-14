@@ -1,5 +1,20 @@
+Copyright (C) 2003-2009 eXo Platform SAS.
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU Affero General Public License
+as published by the Free Software Foundation; either version 3
+of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, see<http://www.gnu.org/licenses/>.
+
 Enterprise Content Management(ECM) > Document Management System(DMS)
-Version 2.5.1
+Version 2.5.2
 
 You may find it helpful to see the details at wiki place of ECM
 http://wiki.exoplatform.org/xwiki/bin/view/ECM/
@@ -60,111 +75,89 @@ and navigate to URL: http://localhost:8080/portal
 
 3. RELEASE NOTES 
 ---------------------------------------------------
-Release Notes - exo-ecm-dms - Version  dms-2.5.1
 
+Release Notes - exo-ecm-dms - Version dms-2.5.2
 
 ** Bug
     * [ECM-3151] - Cannot set value for auto created property(but is not protected)
-    * [ECM-3397] - If category is mandatory, there is not star in upload panel or sample node template
-    * [ECM-3549] - MAC, FF3: Impossible to use 1 click to open node from left pane in File Explorer
-    * [ECM-3579] - Integration with KS: Links at the top-right corner of the forum portlet are badly positionned.
-    * [ECM-3685] - Can not add category for document while editing this doc
-    * [ECM-3739] - Error in displaying Metadata form
-    * [ECM-3756] - problem when search in File Explorer
-    * [ECM-3875] - Error message text when display to inform that can not leave blank name field
-    * [ECM-3878] - Export/Import with Replace/Remove Existing UUID behavior is not correct
-    * [ECM-3879] - Unknown error when delete taxonomy
-    * [ECM-3886] - Home Path in Add taxonomy tree form is not marked with * but is required except choosing dms-system workspace
-    * [ECM-3900] - Some UI errors in French
-    * [ECM-3912] - Cannot config taxonomy path and workspace by xml
-    * [ECM-3914] - Error when create new workspace
-    * [ECM-3920] - Errors popup appears when opening the private/public drives on webos on ie6,7 after fresh login
-    * [ECM-3929] - Can not upload file to import at the second time in ECM Admin
-    * [ECM-3931] - Last Edited Documents: The gadget displays some strange files
-    * [ECM-3932] - The auto-refresh of the google gadgest Last Edited Documents and Recently Published Documents doesn't seem to work properly
-    * [ECM-3934] - Exception when create new workspace or new repository
-    * [ECM-3938] - IE7: Can not select all nodes using mouse
-    * [ECM-3940] - Modifications on a createRSSFeedAction are not taken into account
-    * [ECM-3941] - RGR: Basic Publication Workflow does not work on 2.4RC1
-    * [ECM-3943] - Bad display with File explorer on IE6(LTR & RTL)
-    * [ECM-3950] - Popup appears when add tag for node in drive without side bar
-    * [ECM-4010] - Should check if document has language before get that property
-    * [ECM-4015] -  [ECM][file explore] cant Import a node when imported node is being locked
-    * [ECM-4016] - Make it possible to use the RSSServlet with repositories that are not called "repository"
-    * [ECM-4017] - Can not get documents using script in Content Browser
-    * [ECM-4021] - ArrayIndexOutOfBoundsException in File Explore portlet Edit Mode
-    * [ECM-4025] - Error in displaying of 'Add Taxonomy Tree' form in Vista and Mac skin
-    * [ECM-4028] - Restoring previous version of multilanguage article loose all languages except root one
-    * [ECM-4030] - Issues in 2.5 Test Campaign
-    * [ECM-4063] - Lost link icon in File explorer portlet
-    * [ECM-4067] - "Copy URL to clipboard" doesn't seem to work on FF with Flash Player 10
-    * [ECM-4082] - FileExplorer display is not stable
-    * [ECM-4083] - Satic&Direct Publication Service + Content Browser Portlet does not work correctly
-    * [ECM-4094] - can not create node in file type with vietnamese content
-    * [ECM-4101] - Icons in Action bar of Site Explorer was drop down when resize the browser
-    * [ECM-4106] - file explorer does not delete all selected documents
-    * [ECM-4144] - Can not view content of document in CB
-    * [ECM-4166] - Can not create folder with WebDAV
-    * [ECM-4185] - RGR: DMS Interceptors do not receive the correct "Context"  the "path" is null in 2.5 (was ok in 2.3)
-    * [ECM-4186] - Publication "Static and Direct" service change the permission of a node
-    * [ECM-4187] - Can not view WebCotent in Content Browser portlet
-    * [ECM-4194] - Error when view the document in the Content Browser with the imported node (without import/export version history)
-    * [ECM-4214] - Potential "race conditions issue" at UIExtensionManagerImpl initialization
-    * [ECM-4215] - File Explorer direct access (from URL) does not work properly
+    * [ECM-3430] - File Explorer does not render correctly
+    * [ECM-3843] - MAC OS: Can not load icon for thumbnail view in right pane
+    * [ECM-3925] - File explorer does not extend vertically
+    * [ECM-3935] - Lose version history when Import node
+    * [ECM-4012] - Correct misleading error messages in JCR Explorer import function
+    * [ECM-4024] - Error in displaying File Explorer Edit Form with Vista and Mac skin
+    * [ECM-4026] - Error in displaying form to add new drive with Vista skin
+    * [ECM-4027] - Error in displaying 'Add Query' form with Vista and Mac skin
+    * [ECM-4071] - lost all version when do something with node in check-in status
+    * [ECM-4080] - Import of a file with its history does not work
+    * [ECM-4084] - Improved display in the left side of the File Explorer
+    * [ECM-4098] - [DMS] Cannot do advanced search (search by property, category, type..)
+    * [ECM-4105] - Strange behaviour of Permission
+    * [ECM-4109] - Actions on a folder disappear from Action bar after chose Collaboration tab on a document
+    * [ECM-4112] - [DMS] Alert message appears below Upload file pop up
+    * [ECM-4113] - [DMS] Unknown error when create new ECM/BC templates without name
+    * [ECM-4128] - Left panel display issue
+    * [ECM-4129] - Default value in selectbox does not work in form dialog metadata
+    * [ECM-4135] - [DMS][file explore][admin tab] it can add properties for node when 'Name' field of properties is blank
+    * [ECM-4145] - Throw wrong exception in UIDocumentForm
+    * [ECM-4147] - http error 404 when retrieving WebDav icons
+    * [ECM-4148] - Select category form is not shown for normal user when add new document
+    * [ECM-4149] - IE7: Error in displaying document after deleted the comment
+    * [ECM-4150] - Change message when delete permission of taxonomy tree
+    * [ECM-4155] - Error when view multi-languages document from search result
+    * [ECM-4163] - Category is not deleted in special case
+    * [ECM-4167] - Can not create document in the drive of new repository
+    * [ECM-4190] - UI Bug in tabs when using advanced search/view content in French (in fact depend fof the width of the tabs)
+    * [ECM-4193] - OutOfMemoryError when exporting content
+    * [ECM-4199] - Content Browser the published node after exprot/import
+    * [ECM-4202] - Unknown error when add action for taxonomy in special case
+    * [ECM-4213] - Resize Comment pop-up in File Explorer
+    * [ECM-4216] - Display document/uploaded file which added category  in form to add category in special case
+    * [ECM-4217] - Do not show content of document after configuring for CB using document
+    * [ECM-4235] - RGR:  Modification of the behavior of the ECM addSelectBoxField between 2.5.0 and 2.5.1
+    * [ECM-4240] - Unknown error when view deleted document in dms-system workspace in Content Browser
+    * [ECM-4249] - Error when configuring for FE using Parameterize type without select drive
+    * [ECM-4275] - Bad HTML in article summary or body makes site explorer look and behave incorrect
+    * [ECM-4276] - Size optimization and Unnecessary blank zone on JCR 
+    * [ECM-4280] - Permission of workspace is changed to 'any' while viewing
+    * [ECM-4282] - Content of releated document is not shown in Content Browser
+    * [ECM-4289] - File Explorer Tree View (left pane) does not "link" the various level when the folder name is long (2 lines or more0)
+    * [ECM-4291] - Unknown error when delete attachment of Article or Sample Node document
+    * [ECM-4296] - Static and Direct Publication plugin cannot be used by 'standard' user until administrator has used it
+    * [ECM-4297] - FolksonomyServiceImpl may let open jcr session for ever
+    * [ECM-4332] - Auto init category when add/upload file into document which add category 
+    * [ECM-4334] - Category is disappeared after edit document (only Article)
+    * [ECM-4337] - Unknown error when do action with node which added category in specal case
+    * [ECM-4345] - Unknown error when create new folder has space character at the end
+    * [ECM-4357] - RepositoryException at first opening of ECMAdmin when there isn't a repository called "repository"
+    * [ECM-4359] - 3 scrollbars when using UIListView dsplaying many documents
+    * [ECM-4360] - Editing node in UIListView changes page back to first one
+    * [ECM-4382] - Exception when add language for uploaded file
+    * [ECM-4391] - Can't find Bonita class PayRaiseUserNameHook on JBoss
+    * [ECM-4401] - Portlet ContentBrowser does not update query on front
+    * [ECM-4435] - Concurrent access: simultaneous creation of several documents with the same name
+    * [ECM-4443] - WCM publication cause data loss when restoring previous version of content
+    * [ECM-4451] - Problem with empty paths
 
 ** Improvement
-    * [ECM-3412] - Add checkbox fields and radio buttons
-    * [ECM-3921] - Missing some input in UIDialogForm
-    * [ECM-3924] - Rename (Read) actions to a more contextual name for exampe  (User Action/Contextual Action)
-    * [ECM-3939] - replace illegal xml entities when creating a rss xml file
-    * [ECM-4022] - Add methods in UIExtensionFilterType to have better visibility in the code of UIExtensionManagerImpl
-    * [ECM-4072] - Allow annotation inheritance and Check the return type of the method that has been annotated with @UIExtensionFilters 
-    * [ECM-4073] - Disable the upload size limit when using the "Import Node" action
-    * [ECM-4146] - Broadcast events on storeNodeByUUID method.
-    * [ECM-4182] - If we allow a node nt:unstructured can be added mix:i18n, we should allow add language for it.
+    * [ECM-3669] - Set a default value to a multi-value field in a dialog form
+    * [ECM-4206] - Should show label of input for validator popup message instead of name of input.
+    * [ECM-4278] - No autoscroll on the scrollbar in the frame "tree view" of FileExplorer where i drap a node (drap&drop)
+    * [ECM-4293] - The lock token must be stored in a dedicated ExoCache to be able to replicate them over a cluster
+    * [ECM-4294] - The LockManagerListener should be an Exo Listener instead of being an HttpSessionListener
+    * [ECM-4324] - File Explorer toolbar contains lot of spaces between button (especially in FR language)
+    * [ECM-4398] - Change error message "Invalid characters found in the file name"
 
 ** Task
-    * [ECM-3880] - Change message "exists" when copy/cut & paste a taxonomy into a destination contains one with same name
-    * [ECM-3881] - Little error with label in Taxonomy's Permission form 
-    * [ECM-3882] - Little error in message content when cut/paste on the same taxonomy
-    * [ECM-3884] - Change title for Add Action form when add new action on taxonomy
-    * [ECM-3911] - Make a Stress Test of the main features of DMS
-    * [ECM-3947] - Make DMS 2.5 relies on Portal 2.5.5
-    
-** Sub-task
-    * [ECM-3846] - Error when compare 2 versions in html source 
-    * [ECM-3858] - Can't rename child node while parent node is being locked not by locker
-    * [ECM-3913] - Create a benchmark from your tests
-    * [ECM-4031] - Edit workspace form is blank & exception in console when view form to edit ws of new added repo
-    * [ECM-4032] - Can not delete new added workspace while editing repo
-    * [ECM-4033] - Exception in console whenever choose a repository from list to view (no error in UI)
-    * [ECM-4034] - Error after signout while selecting new added repo
-    * [ECM-4035] - Error when signout after deleted the being selected new added repo
-    * [ECM-4036] - Error when switch between repositories
-    * [ECM-4038] - Error in showing node in Taxonomy tree
-    * [ECM-4039] - Can not Delete child node while parent node is being locked by user is not locker
-    * [ECM-4040] - Remove no needed text in View tab of Edit Template form
-    * [ECM-4041] - [File explorer][admin] form version infor of File document is showed not good on IE7
-    * [ECM-4042] - Always display FE in new added view as default instead of displaying in current selecting view
-    * [ECM-4044] - [file explore][admin] show Error when unpublished a node
-    * [ECM-4045] - IE 7: [ File explorer ] UI error when folder tree is so long
-    * [ECM-4046] - can not copy/delete/cut/lock many nodes 
-    * [ECM-4048] - Show content of message is empty when unlock a node in special case
-    * [ECM-4050] - [file explorer] icon of node is displayed not well on IE7
-    * [ECM-4052] - can not login on IE7 again in special case
-    * [ECM-4053] - IE7[File explorer ] : at left pane, don't show menu when right click on folder icon of node 
-    * [ECM-4054] - The record number of File plan is still "0" although added some documents into
-    * [ECM-4055] - [file explorer][admin] show UNKNOWN ERROR in some special case in editting permission of node
-    * [ECM-4056] - [file explore] [admin] Name of action added for node can be contained special chars
-    * [ECM-4057] - Error when view documents using tag when user does not have permission to view in this doc
-    * [ECM-4058] - [file explore][admin] The value of field 'name' and "value" of new properiest are null or empty
-    * [ECM-4059] - Error when go to folder of node after do search but user does not have any right in this folder
-    * [ECM-4060] - Unknown error when add new ECM/BC template with blank Name
-    * [ECM-4061] - Can not set localize for uploaded file
-    * [ECM-4064] - File explorer : FF: UI error when add comment for document
-    * [ECM-4065] - Upload file: Automatic remove selected file when add item into List taxonomy
-    * [ECM-4066] - Remove all categories added although don't select them in special case
+    * [ECM-4218] - Make DMS 2.5.x and 2.6.x rely on jcr 1.10.5
+    * [ECM-4219] - Search and fix all the potential memory leaks in the cms services
+    * [ECM-4239] - Change confirm message when delete permission of taxonomy tree
+    * [ECM-4339] - The init parameter "ldap.userDN.key" is missing in the file activedirectory-configuration.xml
+    * [ECM-4378] - Release DMS 2.5.2
+    * [ECM-4447] - Upgrade to Portal 2.5.6
 
+** Sub-task
+    * [ECM-3898] - Lock operation in FileExplorer - fails
 
 ** Other resources and links
 	Company site        http://www.exoplatform.com
@@ -176,38 +169,19 @@ Release Notes - exo-ecm-dms - Version  dms-2.5.1
 
 4. MIGRATION GUIDE
 ---------------------------------------------------
-Migrate from DMS 2.3 to DMS 2.5
+Migrate from DMS 2.2 to DMS 2.5
 Since DMS 2.5 we have some main changes and need to be migrated
 
-4.1 New features with Symlink and Taxonomy Management
-4.2 Using new workspace dms-system
-4.3 Create default taxonomy tree to Manage Taxonomy
-4.4 Filter all action in File Explorer, ECM Admin
-4.5 Gadget for last edited documents
-4.6 Set up size of uploading file
+4.1 Taxonomy migration from 2.2 to 2.5
 
-You can refer to this link to see more details: http://wiki.exoplatform.com/xwiki/bin/view/ECM/ECM+Migration+from+DMS+2-3+to+DMS+2-5
+You can refer to this link to see more details: http://wiki.exoplatform.com/xwiki/bin/view/ECM/Taxonomy+Migration+from+ECM+2-2-x+to+DMS+2-5
 
 DMS can be reached at:
 
-   Web site: http://www.exoplatform.com
-			 http://www.exoplatform.vn
-   	 E-mail: exoplatform@ow2.org
-			 exo-ecm@ow2.org
-			 exo-dms@exoplatform.com
-						
+   Web site:http://www.exoplatform.com
+						http://www.exoplatform.vn
+   E-mail:exoplatform@ow2.org
+					exo-ecm@ow2.org
+					exo-dms@exoplatform.com
+		
 
-Copyright (C) 2003-2007 eXo Platform SAS.
-
-This program is free software; you can redistribute it and/or
-modify it under the terms of the GNU Affero General Public License
-as published by the Free Software Foundation; either version 3
-of the License, or (at your option) any later version.
-
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program; if not, see<http://www.gnu.org/licenses/>.
