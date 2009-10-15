@@ -200,9 +200,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
   public Node getViewByName(String name, String repository,SessionProvider provider) throws Exception{          
     Session session = getSession(repository,provider) ;
     try {
-      Node viewNode = (Node)session.getItem(baseViewPath_ + "/" + name) ; 
-      session.logout();
-      return viewNode;
+      return (Node)session.getItem(baseViewPath_ + "/" + name) ; 
     } catch(AccessDeniedException ace) {
       session.logout();
       return null ;
@@ -280,9 +278,7 @@ public class ManageViewServiceImpl implements ManageViewService, Startable {
     String homePath = getJCRPath(homeAlias) ;
     Session session = getSession(repository,provider) ;
     try {
-      Node templateHome = (Node)session.getItem(homePath); 
-      session.logout();
-      return templateHome;
+      return (Node)session.getItem(homePath); 
     } catch(AccessDeniedException ace) {
       session.logout();
       return null ;

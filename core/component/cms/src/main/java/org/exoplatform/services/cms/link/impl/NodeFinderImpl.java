@@ -84,9 +84,7 @@ public class NodeFinderImpl implements NodeFinder {
     else
       absPath = ancestorNode.getPath() + "/" + relativePath;
     Session session = ancestorNode.getSession();
-    Node node = (Node) getItem(session, absPath, giveTarget); 
-    session.logout();
-    return node;
+    return (Node) getItem(session, absPath, giveTarget); 
   }
   
   /**
@@ -158,7 +156,6 @@ public class NodeFinderImpl implements NodeFinder {
             // The target can be reached
             Node target = linkManager_.getTarget(link);
             String targetPath = target.getPath();
-            session.logout();
             return getItem(target.getSession(),
                            targetPath + absPath.substring(partPath.length()),
                            giveTarget,

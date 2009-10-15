@@ -148,8 +148,9 @@ public class RSSServiceImpl implements RSSService{
     storePath = storePath + "/" + feedType ;
     if(feedName == null || feedName.length() == 0) feedName = actionName ;
     if(feedTitle == null || feedTitle.length() == 0) feedTitle = actionName ;        
+    Session session = null;
     try {      
-      Session session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
+      session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
       session.refresh(true) ;
       QueryManager queryManager = session.getWorkspace().getQueryManager();
       Query query = queryManager.createQuery(queryPath, Query.XPATH);
@@ -198,10 +199,11 @@ public class RSSServiceImpl implements RSSService{
       String feedXML = output.outputString(feed);      
       feedXML = StringUtils.replace(feedXML,"&amp;","&");      
       storeXML(feedXML, storePath, feedName, repository);
-      session.logout();
     } catch (Exception e) {
       e.printStackTrace();
-    }     
+    } finally {
+      if(session != null) session.logout();
+    }
   }
 
   /**
@@ -212,6 +214,7 @@ public class RSSServiceImpl implements RSSService{
    */
   @SuppressWarnings("unchecked")  
   private void generatePodcast(Map context){
+    Session session = null;
     try{
       String actionName = (String)context.get("actionName") ;
       String srcWorkspace = (String)context.get(SRC_WORKSPACE);                   
@@ -243,7 +246,7 @@ public class RSSServiceImpl implements RSSService{
       storePath = storePath + "/" + feedType ;
       if(feedName == null || feedName.length() == 0) feedName = actionName ;
       if(feedTitle == null || feedTitle.length() == 0) feedTitle = actionName ;
-      Session session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
+      session = repositoryService_.getRepository(repository).getSystemSession(srcWorkspace);
       session.refresh(true) ;
       QueryManager queryManager = session.getWorkspace().getQueryManager();
       Query query = queryManager.createQuery(queryPath, Query.XPATH);
@@ -388,9 +391,10 @@ public class RSSServiceImpl implements RSSService{
       SyndFeedOutput output = new SyndFeedOutput();      
       String feedXML = output.outputString(feed);      
       storeXML(feedXML, storePath, feedName, repository);
-      session.logout();
-    }catch(Exception e) {
+    } catch(Exception e) {
       e.printStackTrace() ;
+    } finally {
+      if(session != null) session.logout();
     }
   }
   
@@ -405,9 +409,10 @@ public class RSSServiceImpl implements RSSService{
    *                          The name of repository
    */
   private void storeXML(String feedXML, String rssStoredPath, String rssNodeName, String repository){   
+    Session session = null;
     try {      
       ManageableRepository manageableRepository = repositoryService_.getRepository(repository) ;
-      Session session = manageableRepository.getSystemSession(manageableRepository.getConfiguration().getDefaultWorkspaceName());
+      session = manageableRepository.getSystemSession(manageableRepository.getConfiguration().getDefaultWorkspaceName());
       Node rootNode = session.getRootNode();
       String[] arrayPaths = rssStoredPath.split("/") ;
       for(String path : arrayPaths) {
@@ -448,9 +453,10 @@ public class RSSServiceImpl implements RSSService{
         rss.save() ;
         rss.checkin() ;        
       }
-      session.logout();
     } catch (Exception e) {
       e.printStackTrace();
+    } finally {
+      if(session != null) session.logout();
     }
   }
   
