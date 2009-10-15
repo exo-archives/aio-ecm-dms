@@ -334,7 +334,9 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       ManageDriveService manageDriveService = getApplicationComponent(ManageDriveService.class);
       DriveData driveData = manageDriveService.getDriveByName(driveName, repository);
       String nodePath = portletPref.getValue("nodePath", "").trim();
-      String homePath = (driveData.getHomePath() + nodePath).replaceAll("/+", "/");
+      String homePath = (driveData.getHomePath().concat(nodePath)).replaceAll("/+", "/");
+      String userId = Util.getPortalRequestContext().getRemoteUser();
+      if (homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId);
       uiJCRExplorer.setSelectNode(driveData.getWorkspace(), homePath);
       uiJCRExplorer.refreshExplorer(); 
     }
