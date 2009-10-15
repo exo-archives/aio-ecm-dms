@@ -138,6 +138,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       throws Exception {
     final String virtualNodePath = nodePath;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    Node currentNode = uiExplorer.getCurrentNode(); 
     Session session = node.getSession();
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
     try {
@@ -191,8 +192,12 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
-    if (!isMultiSelect)
-      uiExplorer.setSelectNode(LinkUtils.getParentPath(virtualNodePath));
+    if (!isMultiSelect) {
+      if (currentNode.getPath().equals(virtualNodePath))
+        uiExplorer.setSelectNode(LinkUtils.getParentPath(virtualNodePath));
+      else
+        uiExplorer.setSelectNode(currentNode.getPath());
+    }
   }
   
   private void processRemoveMultiple(String[] nodePaths, String[] wsNames, Event<?> event)
