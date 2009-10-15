@@ -47,6 +47,7 @@ import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 /**
  * Created by The eXo Platform SARL
  * Author : Tran The Trong  
@@ -79,7 +80,7 @@ public class UIJCRAdvancedSearch extends UIForm implements UIPopupComponent {
   private Query query_ = null ;
 
   public UIJCRAdvancedSearch() throws Exception  {
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(MandatoryValidator.class)) ;
     List<SelectItemOption<String>> ls = new ArrayList<SelectItemOption<String>>() ;
     ls.add(new SelectItemOption<String>("SQL", "sql")) ;
     ls.add(new SelectItemOption<String>("xPath", "xpath")) ;

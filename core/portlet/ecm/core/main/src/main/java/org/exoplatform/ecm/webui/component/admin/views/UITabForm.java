@@ -28,6 +28,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -45,7 +46,7 @@ public class UITabForm extends UIFormInputSetWithAction {
   public UITabForm(String name) throws Exception {
     super(name) ;
     setComponentConfig(getClass(), null) ;
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(MandatoryValidator.class)) ;
     ManageViewService vservice_ = getApplicationComponent(ManageViewService.class) ;
     buttons_ = vservice_.getButtons();
     for(Object bt : buttons_) {
