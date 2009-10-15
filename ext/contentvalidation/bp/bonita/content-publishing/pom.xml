@@ -13,6 +13,14 @@
   <description>eXo content publishing BP for Bonita</description>
  
   <dependencies>
+  
+    <dependency>
+      <groupId>org.exoplatform.ecm.dms.core</groupId>
+      <artifactId>exo.ecm.dms.core.component.cms</artifactId>
+      <version>${org.exoplatform.ecm.dms.version}</version>
+      <scope>provided</scope>
+    </dependency> 
+    
     <dependency>
       <groupId>org.exoplatform.ecm.workflow</groupId>
       <artifactId>exo.ecm.workflow.component.workflow.impl.bonita</artifactId>
@@ -23,16 +31,9 @@
     <dependency>
       <groupId>org.ow2.bonita</groupId>
       <artifactId>bonita-api</artifactId>
-      <version>4.0</version>
+      <version>${bonita.version}</version>
       <scope>provided</scope>
     </dependency>
-    
-    <dependency>
-      <groupId>org.exoplatform.ecm.dms.core</groupId>
-      <artifactId>exo.ecm.dms.core.component.cms</artifactId>
-      <version>${org.exoplatform.ecm.dms.version}</version>
-      <scope>provided</scope>
-    </dependency> 
     
   </dependencies>
   
