@@ -32,6 +32,7 @@ import org.exoplatform.webui.event.Event.Phase;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormInputInfo;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SAS
@@ -56,7 +57,7 @@ public class UIContentNameSearch extends UIForm {
   
   public UIContentNameSearch() throws Exception {
     addChild(new UIFormInputInfo(SEARCH_LOCATION,null,null));
-    addChild(new UIFormStringInput(KEYWORD,null).addValidator(SearchValidator.class));
+    addChild(new UIFormStringInput(KEYWORD,null).addValidator(SearchValidator.class).addValidator(MandatoryValidator.class));
   }
   
   public void setLocation(String location) {

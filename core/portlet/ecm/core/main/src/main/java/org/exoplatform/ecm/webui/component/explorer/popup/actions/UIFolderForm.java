@@ -45,6 +45,7 @@ import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIForm;
 import org.exoplatform.webui.form.UIFormSelectBox;
 import org.exoplatform.webui.form.UIFormStringInput;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 @ComponentConfig(
     lifecycle = UIFormLifecycle.class,
@@ -75,7 +76,7 @@ public class UIFolderForm extends UIForm implements UIPopupComponent {
       options.add(new SelectItemOption<String>(ntFolderLabel, Utils.NT_FOLDER)) ;
       addUIFormInput(new UIFormSelectBox(FIELD_TYPE, FIELD_TYPE, options)) ;
     }
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(MandatoryValidator.class)) ;
     setActions(new String[]{"Save", "Cancel"}) ;
     getUIStringInput(FIELD_NAME).setValue(null) ;
     if(getUIFormSelectBox(FIELD_TYPE) != null) {
