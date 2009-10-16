@@ -40,7 +40,7 @@ import org.exoplatform.webui.form.UIFormTabPane;
     template =  "system:/groovy/webui/form/UIFormTabPane.gtmpl",
     events = {
       @EventConfig(listeners = UIViewFormTabPane.SaveActionListener.class),
-      @EventConfig(listeners = UIViewFormTabPane.ResetActionListener.class),
+      @EventConfig(listeners = UIViewFormTabPane.ResetActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIViewFormTabPane.EditTabActionListener.class),
       @EventConfig(listeners = UIViewFormTabPane.DeleteTabActionListener.class),
       @EventConfig(listeners = UIViewFormTabPane.RestoreActionListener.class),

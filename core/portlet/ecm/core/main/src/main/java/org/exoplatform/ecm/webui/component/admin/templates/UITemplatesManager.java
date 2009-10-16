@@ -57,32 +57,28 @@ public class UITemplatesManager extends UIAbstractManager {
   }
 
   public void initPopupPermission(String id, String membership) throws Exception {
-    String popupId = id + UITemplateContent.TEMPLATE_PERMISSION ;
-    UIPopupWindow uiPopup = getChildById(popupId) ;
-    if(uiPopup == null) {
-      uiPopup = addChild(UIPopupWindow.class, null, popupId);
-      uiPopup.setWindowSize(560, 300);
-      UIPermissionSelector uiECMPermission = 
-        createUIComponent(UIPermissionSelector.class, null, null) ;
-      uiECMPermission.setSelectedMembership(true);
-      if(membership != null && membership.indexOf(":/") > -1) {
-        String[] arrMember = membership.split(":/") ;
-        uiECMPermission.setCurrentPermission("/" + arrMember[1]) ;
-      }
-      if(id.equals("AddNew")) {
-        UITemplateForm uiForm = findFirstComponentOfType(UITemplateForm.class) ;
-        uiECMPermission.setSourceComponent(uiForm, null) ;
-      } else {
-        UITemplateContent uiTemContent = findComponentById(id) ;
-        uiECMPermission.setSourceComponent(uiTemContent, null) ;
-      }
-      uiPopup.setUIComponent(uiECMPermission);
-      uiPopup.setShow(true) ;
-      return ;
+    String popupId = id.concat(UITemplateContent.TEMPLATE_PERMISSION) ;
+    removeChildById(popupId);
+    UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, popupId);
+    uiPopup.setWindowSize(560, 300);
+    UIPermissionSelector uiECMPermission = createUIComponent(UIPermissionSelector.class, null, null);
+    uiECMPermission.setSelectedMembership(true);
+    if (membership != null && membership.indexOf(":/") > -1) {
+      String[] arrMember = membership.split(":/");
+      uiECMPermission.setCurrentPermission("/" + arrMember[1]);
     }
-    uiPopup.setRendered(true) ;
-    uiPopup.setShow(true) ;
-    uiPopup.setResizable(true) ;
+    if (id.equals("AddNew")) {
+      UITemplateForm uiForm = findFirstComponentOfType(UITemplateForm.class);
+      uiECMPermission.setSourceComponent(uiForm, null);
+    } else {
+      UITemplateContent uiTemContent = findComponentById(id);
+      uiECMPermission.setSourceComponent(uiTemContent, null);
+    }
+    uiPopup.setUIComponent(uiECMPermission);
+    uiPopup.setRendered(true);
+    uiPopup.setShow(true);
+    uiPopup.setResizable(true);
+    return;
   }
 
   public void refresh() throws Exception {

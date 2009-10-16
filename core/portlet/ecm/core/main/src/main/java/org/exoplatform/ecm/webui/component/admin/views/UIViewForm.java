@@ -93,7 +93,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelectable
     versions.setRendered(false) ;
     addUIFormInput(versions) ;
     addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(MandatoryValidator.class)) ;
-    addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).setEditable(false)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_PERMISSION, FIELD_PERMISSION, null).setEditable(false).addValidator(MandatoryValidator.class)) ;
     addUIFormInput(new UIFormInputInfo(FIELD_TABS, FIELD_TABS, null)) ;
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
     vservice_ = getApplicationComponent(ManageViewService.class) ;
