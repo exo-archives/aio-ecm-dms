@@ -24,6 +24,7 @@ import java.util.regex.Matcher;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemExistsException;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.LoginException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
@@ -217,6 +218,7 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
 
     // Use the method getNodeByPath because it is link aware
     Node destNode = uiExplorer.getNodeByPath(destPath, destSession);
+    
     // Reset the path to manage the links that potentially create virtual path
     destPath = destNode.getPath();
     // Reset the session to manage the links that potentially change of
@@ -376,10 +378,19 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
         throw new MessageException(new ApplicationMessage("UIPopupMenu.msg.bound-exception", null,
             ApplicationMessage.WARNING));
       }
-      session.save();
       if (!isMultiSelect || (isMultiSelect && isLastPaste)) {
-        Node desNode = (Node) session.getItem(destPath);
-        actionContainer.initiateObservation(desNode, repository);
+        Node desNode = null;
+        try {
+          desNode = (Node) session.getItem(destPath);
+        } catch (PathNotFoundException pathNotFoundException) {
+          uiExplorer.setCurrentPath(LinkUtils.getParentPath(uiExplorer.getCurrentPath()));
+          desNode = uiExplorer.getCurrentNode();
+        } catch (ItemNotFoundException itemNotFoundException) {
+          uiExplorer.setCurrentPath(LinkUtils.getParentPath(uiExplorer.getCurrentPath()));
+          desNode = uiExplorer.getCurrentNode();
+        }
+        if (!(desNode.getPath().equals(uiExplorer.getCurrentNode().getPath())))
+          actionContainer.initiateObservation(desNode, repository);
         for (int i = 0; i < refList.size(); i++) {
           Node addRef = refList.get(i);
           relationsService.addRelation(addRef, destPath, session.getWorkspace().getName(),
@@ -401,6 +412,7 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
         uiWorkingArea.getVirtualClipboards().clear();
       }
     }
+    session.save();
     uiExplorer.getAllClipBoard().remove(currentClipboard);
   }
 
