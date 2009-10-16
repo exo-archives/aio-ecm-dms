@@ -22,7 +22,7 @@
 	<org.exoplatform.portal.version>2.5.6.1</org.exoplatform.portal.version>
 	<org.exoplatform.ecm.dms.version>2.6-SNAPSHOT</org.exoplatform.ecm.dms.version>
 	<org.shindig.version>0.8.1-1-r719456</org.shindig.version>
-	<bonita.version>4.1</bonita.version>        
+	<bonita.version>4.0</bonita.version>        
   </properties>
   
   <modules>

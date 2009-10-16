@@ -222,7 +222,7 @@
 	    	<org.exoplatform.ecm.workflow.version>1.0.3</org.exoplatform.ecm.workflow.version>
 	    	<exo.test.classes>Test</exo.test.classes>
         <exo.test.skip>true</exo.test.skip>
-        <bonita.version>4.1</bonita.version>        
+        <bonita.version>4.0</bonita.version>        
       </properties>
     </profile>
   </profiles>
