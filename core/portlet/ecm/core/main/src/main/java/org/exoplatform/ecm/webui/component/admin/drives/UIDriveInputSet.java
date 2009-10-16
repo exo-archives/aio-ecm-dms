@@ -93,8 +93,6 @@ public class UIDriveInputSet extends UIFormInputSetWithAction {
     folderOptions.add(new SelectItemOption<String>(folderOnlyLabel_, Utils.NT_FOLDER));
     folderOptions.add(new SelectItemOption<String>(unstructuredFolderLabel_, Utils.NT_UNSTRUCTURED));
     folderOptions.add(new SelectItemOption<String>(bothLabel_, FIELD_BOTH));
-    /*addUIFormInput(new UIFormRadioBoxInput(ALLOW_CREATE_FOLDER, ALLOW_CREATE_FOLDER, folderOptions).
-                   setAlign(UIFormRadioBoxInput.VERTICAL_ALIGN));*/
     addUIFormInput(new UIFormSelectBox(FIELD_ALLOW_CREATE_FOLDERS, FIELD_ALLOW_CREATE_FOLDERS, null));
     setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"});
     setActionInfo(FIELD_HOMEPATH, new String[] {"AddPath"});
