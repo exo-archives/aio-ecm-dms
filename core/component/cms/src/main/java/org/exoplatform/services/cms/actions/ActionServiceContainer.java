@@ -161,6 +161,21 @@ public interface ActionServiceContainer {
   public void addAction(Node node, String repository, String type, Map mappings) throws Exception; 
   
   /**
+   * Add mixintype = exo:actionable to current node
+   * Add new node to current node with nodetype = type
+   * @param node        current node
+   * @param repository  current repository
+   * @param type        nodetype name
+   * @param isDeep      affect to child node of node
+   * @param uuid        affect only to parent node of event having given uuid
+   * @param nodeTypeNames        affect to parent node of event having nodetype in nodeTypeNames
+   * @param mappings    value of property for adding to new node
+   * @throws Exception
+   */
+  public void addAction(Node node, String repository, String type, boolean isDeep, String[] uuid, String[] nodeTypeNames, Map mappings) throws Exception; 
+  
+  
+  /**
    * Execute action following userId, node, variables, repository
    * @param userId      user identify
    * @param node        current node

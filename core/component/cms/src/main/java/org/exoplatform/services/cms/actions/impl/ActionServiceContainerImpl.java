@@ -396,6 +396,10 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   }
 
   public void addAction(Node storeActionNode, String repository, String actionType, Map mappings) throws Exception {
+    addAction(storeActionNode, repository, actionType, true, null, null, mappings);
+  }
+  
+  public void addAction(Node storeActionNode, String repository, String actionType, boolean isDeep, String[] uuid, String[] nodeTypeNames, Map mappings) throws Exception {  
     if (!storeActionNode.isNodeType(ACTIONABLE)) {
       storeActionNode.addMixin(ACTIONABLE);
       storeActionNode.save();
