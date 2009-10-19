@@ -160,6 +160,9 @@ public class ActionConfig {
     private String description;    
     private String srcWorkspace;
     private String srcPath;
+    private boolean isDeep = true;
+    private String uuid;
+    private String nodeTypeName;
     private String lifecyclePhase;
     private String roles;
     private String variables;
@@ -182,7 +185,16 @@ public class ActionConfig {
 
     public String getSrcWorkspace() { return srcWorkspace; }
     public void setSrcWorkspace(String srcWorkspace) { this.srcWorkspace = srcWorkspace; }
-
+    
+    public boolean isDeep() { return isDeep; }
+    public void setDeep(boolean isDeep) { this.isDeep = isDeep; }
+    
+    public String getUuid() { return uuid; }
+    public void setUuid(String uuid) { this.uuid = uuid; }
+    
+    public String getNodeTypeName() { return nodeTypeName; }
+    public void setNodeTypeName(String nodeTypeName) { this.nodeTypeName = nodeTypeName; }
+    
     public String getLifecyclePhase() { return lifecyclePhase; }
     public void setLifecyclePhase(String lifecyclePhase) { this.lifecyclePhase = lifecyclePhase; }
 

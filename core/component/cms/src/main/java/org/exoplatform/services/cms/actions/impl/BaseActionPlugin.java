@@ -31,6 +31,7 @@ import javax.jcr.Node;
 import javax.jcr.Property;
 import javax.jcr.PropertyType;
 import javax.jcr.Session;
+import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.jcr.nodetype.PropertyDefinition;
@@ -96,9 +97,12 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       Map variables, String actiontype) throws Exception;
 
   abstract protected Class createActivationJob() throws Exception ;  
+  
+  public void addAction(String actionType, String repository, String srcWorkspace, String srcPath, Map mappings) throws Exception {
+    addAction(actionType, repository, srcWorkspace, srcPath, true, null, null, mappings);
+  }
 
-  public void addAction(String actionType, String repository, String srcWorkspace, String srcPath,
-      Map mappings) throws Exception {
+  public void addAction(String actionType, String repository, String srcWorkspace, String srcPath, boolean isDeep, String[] uuid, String[] nodeTypeNames, Map mappings) throws Exception {
     String actionName = 
       (String) ((JcrInputProperty) mappings.get("/node/exo:name")).getValue();    
     mappings.remove("/node/exo:name");
@@ -121,21 +125,30 @@ abstract public class BaseActionPlugin implements ActionPlugin {
         listeners_.remove(listenerKey) ;      
       }else{
         if (ActionServiceContainer.ADD_PHASE.equals(type)) {
-          obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, true, null, null, false);      
+          obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, isDeep, uuid, nodeTypeNames, false);      
         } else if(ActionServiceContainer.REMOVE_PHASE.equals(type)) {
-          obsManager.addEventListener(listener, Event.NODE_REMOVED, srcPath, true, null, null, false);
+          obsManager.addEventListener(listener, Event.NODE_REMOVED, srcPath, isDeep, uuid, nodeTypeNames, false);
         }else {
-          obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, true,  null, null, false);
+          obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, isDeep,  uuid, nodeTypeNames, false);
         }
       }
       session.logout();
       listeners_.put(listenerKey, listener);
     }        
   }
-
+  
   public void initiateActionObservation(Node storedActionNode, String repository) throws Exception {
     String actionName = storedActionNode.getProperty("exo:name").getString() ;
-    String lifecyclePhase = storedActionNode.getProperty("exo:lifecyclePhase").getString() ;
+    String lifecyclePhase = storedActionNode.getProperty("exo:lifecyclePhase").getString();
+    String[] uuid = storedActionNode.hasProperty("exo:uuid") ? 
+                     parseValuesToArray(storedActionNode.getProperty("exo:uuid").getValues())
+                     : null;
+    boolean isDeep = storedActionNode.hasProperty("exo:isDeep") ?
+                      storedActionNode.getProperty("exo:isDeep").getBoolean()
+                      : true;
+    String[] nodeTypeName = storedActionNode.hasProperty("exo:nodeTypeName") ?
+                             parseValuesToArray(storedActionNode.getProperty("exo:nodeTypeName").getValues())
+                             : null;
     String actionType = storedActionNode.getPrimaryNodeType().getName() ;
     String srcWorkspace = storedActionNode.getSession().getWorkspace().getName() ;
     //TODO all actions are stored in srcNode/exo:actions
@@ -168,11 +181,11 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       listeners_.remove(listenerKey) ;      
     }else{
       if (ActionServiceContainer.ADD_PHASE.equals(lifecyclePhase)) {
-        obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, true, null, null, false);      
+        obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, isDeep, uuid, nodeTypeName, false);      
       } else if(ActionServiceContainer.REMOVE_PHASE.equals(lifecyclePhase)){
-        obsManager.addEventListener(listener, Event.NODE_REMOVED, srcPath, true, null, null, false);
+        obsManager.addEventListener(listener, Event.NODE_REMOVED, srcPath, isDeep, uuid, nodeTypeName, false);
       }else {
-        obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, true, null, null, false);
+        obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, isDeep, uuid, nodeTypeName, false);
       }
     }
     session.logout();
@@ -390,6 +403,11 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       actionNode = actionsNode.addNode(action.getName(), action.getType());
       actionNode.setProperty("exo:name", action.getName());
       actionNode.setProperty("exo:description", action.getDescription());
+      actionNode.setProperty("exo:isDeep", action.isDeep());
+      if (action.getUuid() != null)
+        actionNode.setProperty("exo:uuid", StringUtils.split(action.getUuid(), ";"));
+      if (action.getNodeTypeName() != null)
+        actionNode.setProperty("exo:nodeTypeName", StringUtils.split(action.getNodeTypeName(), ";"));
       if (action.getLifecyclePhase() != null)
         actionNode.setProperty("exo:lifecyclePhase", action.getLifecyclePhase());
       if (action.getRoles() != null) {
@@ -530,6 +548,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     }
     return variables ;
   }  
+  
   private Object getPropertyValue(Property property) throws Exception {
     int propertyType = property.getType() ;
     switch(propertyType) {
@@ -542,6 +561,15 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     case PropertyType.UNDEFINED : return property.getValue() ;
     }
     return null ;
+  }
+  
+  private String[] parseValuesToArray(Value[] values) throws Exception {
+    String[] valueToString = new String[values.length];
+    int i = 0;
+    for(Value value : values) {
+      valueToString[i++] = value.toString();
+    }
+    return valueToString;
   }
 }
 

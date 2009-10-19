@@ -395,7 +395,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     node.save();    
   }
 
-  public void addAction(Node storeActionNode, String repository, String actionType, Map mappings) throws Exception {
+  public void addAction(Node storeActionNode, String repository, String actionType, boolean isDeep, String[] uuid, String[] nodeTypeNames, Map mappings) throws Exception {
     if (!storeActionNode.isNodeType(ACTIONABLE)) {
       storeActionNode.addMixin(ACTIONABLE);
       storeActionNode.save();
@@ -417,7 +417,7 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     if (actionService == null) 
       throw new ClassNotFoundException("Not found any action's service compatible with action type "+actionType) ;      
     try {
-      actionService.addAction(actionType, repository, srcWorkspace, srcPath, mappings);
+      actionService.addAction(actionType, repository, srcWorkspace, srcPath, isDeep, uuid, nodeTypeNames, mappings);
     } catch (Exception e) {
       Session session = getSystemSession(repository, storeActionNode.getSession().getWorkspace().getName());
       Node actionNode = (Node) session.getItem(newActionPath);
@@ -425,6 +425,10 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
       session.save();
       session.logout(); 
     }
+  }
+  
+  public void addAction(Node storeActionNode, String repository, String actionType, Map mappings) throws Exception {
+    addAction(storeActionNode, repository, actionType, true, null, null, mappings);
   }
 
   /**

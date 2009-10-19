@@ -43,6 +43,8 @@ public interface ActionPlugin {
   
   public void addAction(String actionType, String repository, String srcWorkspace, String srcPath, Map mappings) throws Exception;
   
+  public void addAction(String actionType, String repository, String srcWorkspace, String srcPath, boolean isDeep, String[] uuid, String[] nodeTypeNames, Map mappings) throws Exception;
+  
   public void initiateActionObservation(Node actionNode, String repository) throws Exception ;
   
   public void reScheduleActivations(Node actionNode, String repository) throws Exception ;
