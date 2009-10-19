@@ -289,6 +289,10 @@
  
 }
 
+.UIECMAdminPortlet .UITemplateContent .UIFormInputSetWithAction .UIFormGrid input {
+	 width: 235px;
+}
+
 .UIECMAdminPortlet .UIFormGrid .FieldComponent .ActionIcon {
   margin: 0px 5px;
 }
