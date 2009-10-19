@@ -232,6 +232,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     UIFormUploadInput input = (UIFormUploadInput) getUIInput(FIELD_UPLOAD);
     CmsService cmsService = getApplicationComponent(CmsService.class) ;
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
+    UIUploadManager uiManager = getParent() ;
     if(input.getUploadResource() == null) {
       uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
                                               ApplicationMessage.WARNING)) ;
@@ -327,11 +328,23 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         multiLangService.addFileLanguage(selectedNode, name, contentValue, mimeType, 
             getLanguageSelected(), uiExplorer.getRepositoryName(), isDefault_) ;
         uiExplorer.setIsHidePopup(true) ;
-        UIMultiLanguageManager uiManager = getAncestorOfType(UIMultiLanguageManager.class) ;
-        UIMultiLanguageForm uiMultiForm = uiManager.getChild(UIMultiLanguageForm.class) ;
+        UIMultiLanguageManager uiMultiManager = getAncestorOfType(UIMultiLanguageManager.class) ;
+        UIMultiLanguageForm uiMultiForm = uiMultiManager.getChild(UIMultiLanguageForm.class) ;
         uiMultiForm.doSelect(uiExplorer.getCurrentNode()) ;
         event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
       } else {
+        if(selectedNode.getPrimaryNodeType().isNodeType(Utils.NT_FILE)) {
+          if(!selectedNode.isCheckedOut()) selectedNode.checkout() ; 
+          Node contentNode = selectedNode.getNode(Utils.JCR_CONTENT);
+          if(contentNode.getProperty(Utils.JCR_MIMETYPE).getString().equals(mimeType)) {
+            contentNode.setProperty(Utils.JCR_DATA, inputStream);
+            contentNode.setProperty(Utils.JCR_LASTMODIFIED, new GregorianCalendar());
+            selectedNode.save() ;
+            uiManager.setRendered(false);
+            uiExplorer.updateAjax(event);
+            return;
+          }
+        }
         if(!isExist || isKeepFile) {            
           newNodeUUID = cmsService.storeNodeByUUID(Utils.NT_FILE, selectedNode, 
               getInputProperties(name, inputStream, mimeType), true,repository) ;
@@ -398,7 +411,6 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
         }
       }
       uiExplorer.getSession().save() ;
-      UIUploadManager uiManager = getParent() ;
       UIUploadContainer uiUploadContainer = uiManager.getChild(UIUploadContainer.class) ;
       UploadService uploadService = getApplicationComponent(UploadService.class) ;
       UIFormUploadInput uiChild = getChild(UIFormUploadInput.class) ;
