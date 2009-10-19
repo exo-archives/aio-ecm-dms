@@ -293,6 +293,10 @@
   margin: 0px 5px;
 }
 
+.UIECMAdminPortlet .UITemplateContent .UIFormInputSetWithAction .UIFormGrid input {
+	 width: 235px;
+}
+
 .UIECMAdminPortlet .UIFormGrid .FieldLabel {
   width: 110px;
 }
