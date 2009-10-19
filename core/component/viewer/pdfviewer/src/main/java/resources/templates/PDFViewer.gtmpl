@@ -12,24 +12,9 @@
     return node.isNodeType("mix:versionable");
   }	
 
-  public Node getFileLangNode(Node currentNode) throws Exception {
-    if(currentNode.getNodes().getSize() > 0) {
-      NodeIterator nodeIter = currentNode.getNodes() ;
-      while(nodeIter.hasNext()) {
-        Node ntFile = nodeIter.nextNode() ;
-        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
-          return ntFile ;
-        }
-      }
-      return currentNode ;
-    }
-    return currentNode ;
-  }
-  
   def originalNode = uiParent.getOriginalNode();
   def currentNode = uiParent.getNode() ;
-  def fileLangNode = getFileLangNode(currentNode) ;
-  def contentNode = fileLangNode.getNode("jcr:content") ;
+  def contentNode = currentNode.getNode("jcr:content") ;
   def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
    public String formatNodeName(String text) {
     return text.replaceAll("'", "\\\\'") ;
@@ -233,7 +218,7 @@
   	<div class="ImageView">
 		<%
 			try {
-			  String pdfPageImage = "/" + uiParent.getPortalName() + "/rest/pdfviewer/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + "/${currentPage}/${currentRotation}/${currentScale}/" + fileLangNode.getUUID() + "/";
+			  String pdfPageImage = "/" + uiParent.getPortalName() + "/rest/pdfviewer/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + "/${currentPage}/${currentRotation}/${currentScale}/" + currentNode.getUUID() + "/";
 		%>
 			  <a href="$pdfPageImage" rel="lightbox" title="<%=uicomponent.getResourceBundle("PDFViewer.label.viewFullPage")%>"><image src="$pdfPageImage"></a>
 		<%}catch(Exception e) {%>	

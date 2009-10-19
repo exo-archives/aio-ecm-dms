@@ -12,24 +12,9 @@
     return node.isNodeType("mix:versionable");
   }	
 
-  public Node getFileLangNode(Node currentNode) throws Exception {
-    if(currentNode.getNodes().getSize() > 0) {
-      NodeIterator nodeIter = currentNode.getNodes() ;
-      while(nodeIter.hasNext()) {
-        Node ntFile = nodeIter.nextNode() ;
-        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
-          return ntFile ;
-        }
-      }
-      return currentNode ;
-    }
-    return currentNode ;
-  }
-  
   def originalNode = uiParent.getOriginalNode();
   def currentNode = uiParent.getNode() ;
-  def fileLangNode = getFileLangNode(currentNode) ;
-  def contentNode = fileLangNode.getNode("jcr:content") ;
+  def contentNode = currentNode.getNode("jcr:content") ;
   def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
   List<String> unsupportMimeTypeText = new ArrayList<String>();
   unsupportMimeTypeText.add("text/rtf");
@@ -45,9 +30,9 @@
   String rndString = String.valueOf(new Date().getTime());
 //  String imgSrc = "";
 //  if(isVersionable(originalNode)) {
-	String imgSrc = uiParent.getDownloadLink(fileLangNode) ;
+	String imgSrc = uiParent.getDownloadLink(currentNode) ;
 //	} else {
-//	  imgSrc = "/" + uiParent.getPortalName() + "/rest/jcr/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + fileLangNode.getPath();
+//	  imgSrc = "/" + uiParent.getPortalName() + "/rest/jcr/" + uiParent.getRepository() + "/" + uiParent.getWorkspaceName() + currentNode.getPath();
 //	} 
 	def dcTitle = "";
 	if(contentNode.hasProperty("dc:title")) {

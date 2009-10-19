@@ -81,24 +81,9 @@
   def resizeBlock = "class=\"UIResizableBlock\"";
   if(uiPopupWindow != null) resizeBlock = ""; 
 
-  public Node getFileLangNode(Node currentNode) throws Exception {
-    if(currentNode.getNodes().getSize() > 0) {
-      NodeIterator nodeIter = currentNode.getNodes() ;
-      while(nodeIter.hasNext()) {
-        Node ntFile = nodeIter.nextNode() ;
-        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
-          return ntFile ;
-        }
-      }
-      return currentNode ;
-    }
-    return currentNode ;
-  }
-
   def originalNode = uicomponent.getOriginalNode();
   def currentNode = uicomponent.getNode() ;
-  def fileLangNode = getFileLangNode(currentNode) ;
-  def contentNode = fileLangNode.getNode("jcr:content") ;
+  def contentNode = currentNode.getNode("jcr:content") ;
   def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
   List<String> unsupportMimeTypeText = new ArrayList<String>();
   unsupportMimeTypeText.add("text/rtf");
@@ -109,6 +94,7 @@
 <div $resizeBlock>
 	<div class="FileContent">
 	  <%
+	    if(mimeType.equals("application/rss+xml")) mimeType="text/html"; 
 	    def fileComponent = uicomponent.getUIComponent(mimeType);
 	    if(fileComponent != null) {
 	      uicomponent.renderUIComponent(fileComponent);
@@ -129,7 +115,7 @@
 		  <table class="ActionContainer">  
 		  	<tr>
 		  		<td>
-			      <div onclick="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('<%=uicomponent.getWebDAVServerPrefix()%>','<%=uicomponent.getPortalName()%>','<%=uicomponent.getRepository()%>','<%=uicomponent.getWorkspaceName()%>','<%=formatNodeName(fileLangNode.getPath())%>','<%=mimeType%>')" class="ActionButton LightBlueStyle">
+			      <div onclick="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('<%=uicomponent.getWebDAVServerPrefix()%>','<%=uicomponent.getPortalName()%>','<%=uicomponent.getRepository()%>','<%=uicomponent.getWorkspaceName()%>','<%=formatNodeName(currentNode.getPath())%>','<%=mimeType%>')" class="ActionButton LightBlueStyle">
 			        <div class="ButtonLeft">
 			          <div class="ButtonRight">
 			            <div class="ButtonMiddle">
