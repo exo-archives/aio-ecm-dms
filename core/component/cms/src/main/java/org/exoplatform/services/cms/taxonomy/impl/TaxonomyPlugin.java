@@ -150,19 +150,19 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     }
     Session session = manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
     Node taxonomyStorageNode = (Node) session.getItem(path);
-    Node taxonomyStorageNodeSystem = null;
+    //Node taxonomyStorageNodeSystem = null;
     if (taxonomyStorageNode.hasProperty("exo:isImportedChildren")) {
       session.logout();
       return;
     }
     taxonomyStorageNode.setProperty("exo:isImportedChildren", true);
     Iterator<ObjectParameter> it = params_.getObjectParamIterator();
+    Node taxonomyStorageNodeSystem = Utils.makePath(taxonomyStorageNode, treeName, "exo:taxonomy",
+            null);
+    session.save();
     while (it.hasNext()) {
       ObjectParameter objectParam = it.next();
       if (objectParam.getName().equals("permission.configuration")) {
-        taxonomyStorageNodeSystem = Utils.makePath(taxonomyStorageNode, treeName, "exo:taxonomy",
-            null);
-        session.save();
         TaxonomyConfig config = (TaxonomyConfig) objectParam.getObject();
         for (Taxonomy taxonomy : config.getTaxonomies()) {
           Map mapPermissions = getPermissions(taxonomy.getPermissions());
@@ -184,9 +184,9 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
           taxonomyNode.getSession().save();
         }
       } else if (objectParam.getName().equals("predefined.actions")) {
-        taxonomyStorageNodeSystem = Utils.makePath(taxonomyStorageNode, treeName, "exo:taxonomy",
-            null);
-        session.save();
+//        taxonomyStorageNodeSystem = Utils.makePath(taxonomyStorageNode, treeName, "exo:taxonomy",
+//            null);
+//        session.save();
         ActionConfig config = (ActionConfig) objectParam.getObject();
         List actions = config.getActions();
         for (Iterator iter = actions.iterator(); iter.hasNext();) {
