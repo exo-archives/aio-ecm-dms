@@ -96,7 +96,14 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
         variables.put("srcPath", srcPath_);
         variables.putAll(actionVariables_);
         if(event.getType() == Event.NODE_ADDED) {          
-          node = (Node) jcrSession.getItem(path);        
+          try {
+	          node = (Node) jcrSession.getItem(path);        
+	      } catch (Exception e) {
+	        if (path.contains("exo:actions")) {
+	          Node tempnode = (Node) jcrSession.getItem(path.substring(0, path.indexOf("exo:actions") - 1));
+	          node = tempnode.getNodes("exo:actions").nextNode().getNode(path.substring(path.indexOf("exo:actions") + "exo:actions".length() + 1));            
+	        }
+	      }    
           String nodeType = node.getPrimaryNodeType().getName();
           if (templateService.getDocumentTemplates(repository_).contains(nodeType)) {                    
             variables.put("document-type", nodeType);

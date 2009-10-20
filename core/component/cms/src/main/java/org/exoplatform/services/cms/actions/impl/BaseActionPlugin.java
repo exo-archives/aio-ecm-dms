@@ -373,20 +373,27 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     Node srcNode = (Node) session.getItem(action.getSrcPath());
     Node actionNode = null;
     boolean firstImport = false;
-    String actionsNodeName = EXO_ACTIONS + "/" + action.getName();
+    ExoContainer container = ExoContainerContext.getCurrentContainer() ;
+    ActionServiceContainer actionContainer = 
+      (ActionServiceContainer) container.getComponentInstanceOfType(ActionServiceContainer.class) ;
+    Node actionNodeName = null;
+    try {
+      actionNodeName = actionContainer.getAction(srcNode, action.getName()) ;
+    } catch (Exception e) {}
+    
     Node actionsNode = null;
-    if (!srcNode.hasNode(actionsNodeName)) {
+    if (actionNodeName == null) {
       firstImport = true;
       if (!srcNode.isNodeType("exo:actionable")) {
         srcNode.addMixin("exo:actionable");                  
       }
       //TODO now, each node will have actions storage. It's better to store all actions in one storage like version storage
-      if(srcNode.hasNode(EXO_ACTIONS)) {
-        actionsNode = srcNode.getNode(EXO_ACTIONS);
-      }else {
-        actionsNode = srcNode.addNode(EXO_ACTIONS,ACTION_STORAGE);
-        srcNode.save();
-      }
+      try {
+		actionsNode = srcNode.getNodes(EXO_ACTIONS).nextNode();
+	  } catch (Exception e) {
+		actionsNode = srcNode.addNode(EXO_ACTIONS, ACTION_STORAGE);
+		srcNode.save();
+	  }
       actionNode = actionsNode.addNode(action.getName(), action.getType());
       actionNode.setProperty("exo:name", action.getName());
       actionNode.setProperty("exo:description", action.getDescription());
@@ -408,7 +415,7 @@ abstract public class BaseActionPlugin implements ActionPlugin {
         }
       }
     } else {
-      actionNode = srcNode.getNode(actionsNodeName);
+    	actionNodeName = actionContainer.getAction(srcNode, action.getName());
     }
 
     String unparsedVariables = action.getVariables();
