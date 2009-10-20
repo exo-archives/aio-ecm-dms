@@ -125,9 +125,10 @@ public class LockUtil {
     StringBuffer buffer = new StringBuffer();
     Session session = node.getSession();
     String repositoryName = ((ManageableRepository)session.getRepository()).getConfiguration().getName();    
+    String userId = Util.getPortalRequestContext().getRemoteUser();
     buffer.append(repositoryName).append("/::/")
           .append(session.getWorkspace().getName()).append("/::/")
-          .append(session.getUserID()).append(":/:")
+          .append(userId).append(":/:")
           .append(node.getPath());      
     return buffer.toString();
   }

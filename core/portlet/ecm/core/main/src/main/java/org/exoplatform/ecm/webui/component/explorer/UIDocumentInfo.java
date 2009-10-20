@@ -262,13 +262,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   public String getImage(Node node) throws Exception {
-    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
-    InputStreamDownloadResource dresource ;
-    Node imageNode = node.getNode(Utils.EXO_IMAGE) ;    
-    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
-    dresource = new InputStreamDownloadResource(input, "image") ;
-    dresource.setDownloadName(node.getName()) ;
-    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+    return getImage(node, Utils.EXO_IMAGE);
   }
 
   public String getImage(Node node, String nodeTypeName) throws Exception {
