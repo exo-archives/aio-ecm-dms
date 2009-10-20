@@ -25,6 +25,9 @@
 	  	println "</div>" ;
 	  }
 	%>
+	<div class="ResizeSideBar">
+		<div class="ResizeButton"><span></span></div>
+	</div>
   <div class="$className">
 		<% uicomponent.renderChild(UIDocumentWorkspace.class) ;%>
 	</div>

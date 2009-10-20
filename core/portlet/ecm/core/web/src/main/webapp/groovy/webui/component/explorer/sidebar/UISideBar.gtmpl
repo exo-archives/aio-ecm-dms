@@ -19,6 +19,9 @@
   <div class="UISideBarContainer">
   	<div class="UIResizableBlock" style="height: 100%">
   	  <% uicomponent.renderChildren(); %>
+  	  <div class="ResizeTreeExplorer">
+				<div class="ResizeTreeButton"><span></span></div>
+			</div>
   	</div>
 	  <div class="UISelectContent">
 	  	<div class="<%=getCSSClassName("Explorer")%>" onclick="<%=uicomponent.event("Explorer")%>" title="<%=_ctx.appRes("UISideBar.label.Explorer")%>">
