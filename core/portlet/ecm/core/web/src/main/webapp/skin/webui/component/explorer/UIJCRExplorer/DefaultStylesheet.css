@@ -33,6 +33,20 @@
 	width: 100%;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .ResizeSideBar{
+	float: left;
+	background: url('DefaultSkin/background/ResizeSideBar.gif') repeat-y center center;
+	width: 5px;
+	cursor:col-resize;
+	height: 475px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .ResizeSideBar .ResizeButton{
+	background: url('DefaultSkin/background/ResizeButton.gif') no-repeat center center;
+	width: 5px;
+	height: 100%;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIDocumentWorkspace .UIResizableBlock {
 	overflow: auto;
 }

@@ -13,6 +13,20 @@
   background: url('DefaultSkin/background/BgSideBar-rt.gif') repeat-y top left; /* orientation=rt */
 }
 
+.UIJCRExplorerPortlet .UISideBar .ResizeTreeExplorer{
+  background: url('DefaultSkin/background/ResizeTreeExplorer.gif') repeat-x;
+	height: 7px;
+	cursor: row-resize;
+	margin: 0px 3px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .ResizeTreeExplorer .ResizeTreeButton{
+  background: url('DefaultSkin/background/ResizeTreeButton.gif') no-repeat center;
+	height: 7px;
+	width: 7px;
+	margin: auto;
+}
+
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .NormalItem {
   line-height: 26px;
   cursor: pointer;
