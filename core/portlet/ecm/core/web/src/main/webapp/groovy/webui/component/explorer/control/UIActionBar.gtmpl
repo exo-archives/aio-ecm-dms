@@ -97,9 +97,6 @@
 	      <a class="SaveSessionButton" href="<%=uicomponent.event("SaveSession")%>" title="<%=_ctx.appRes("UIViewBar.label.saveSession")%>"></a>
 	    <%}%>
 	    <a class="SetupPreferencesButton" href="<%=uicomponent.event("Preferences")%>" title="<%=_ctx.appRes("UIViewBar.label.setUpBrowser")%>"></a>
-	    <%if (!uicomponent.isDirectlyDrive()) {%>
-	      <a class="BackToMainDriveButton" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIViewBar.label.backToJCR")%>"></a>
-		  <%}%>
 			<div class="ClearRight"><span></span></div>
 		</div>
 		<div id="IconListHideElement" style="float:right; padding-top: 3px;" onclick="eXo.ecm.ECMUtils.showListHideElements(this,event);">

@@ -90,10 +90,6 @@
 		    <div style="clear: both;"><span></span></div>
 		  </td>
 			<td class="Right">
-				<div class="SearchSetting">
-					<a href="<%=uicomponent.event("SavedQueries")%>" title="<%=_ctx.appRes("UIActionBar.title.SavedQueries")%>"  class="SearchSettingBtn"><span></span></a>
-					<a href="<%=uicomponent.event("AdvanceSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.AdvanceSearch")%>" class="SearchAdvanceBtn"><span></span></a>
-				</div>
 				<div class="Advance" id="SimpleSearchControl">
 					<a href="<%=uicomponent.event("SimpleSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.SimpleSearch")%>" class="SearchBtn" id="SimpleSearch"><span></span></a>
 					<% uicomponent.renderChild(1); %>

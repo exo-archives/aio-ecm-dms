@@ -18,11 +18,40 @@
 
   <div class="UISideBarContainer">
   	<div class="UIResizableBlock" style="height: 100%">
-  	  <% uicomponent.renderChildren(); %>
+  		<div class="SideBarContent">
+  			<div class="BarContent">
+  				<div class="Title">Colaborations center</div>
+  				<div class="DriversButton" title="Drivers"><span></span></div>
+  				<div class="ClearLeft"><span></span></div>
+  			</div>
+  			<div class="SideContent">
+  	  		<% uicomponent.renderChildren(); %>
+  	  	</div>
+  	  </div>
   	  <div class="ResizeTreeExplorer">
 				<div class="ResizeTreeButton"><span></span></div>
 			</div>
+			<div class="SideBarContent">
+  			<div class="BarContent">
+  				<div class="Title">All Items</div>
+  				<div class="SideGeneratal" title="Generatal"><span></span></div>
+  				<div class="ClearLeft"><span></span></div>
+  			</div>
+  			<div class="SideContent">
+  	  		dfhdfhdfhh
+  	  	</div>
+  	  </div><div class="SideBarContent">
+  			<div class="BarContent">
+  				<div class="Title">By Type</div>
+  				<div class="SideGeneratal" title="Generatal"><span></span></div>
+  				<div class="ClearLeft"><span></span></div>
+  			</div>
+  			<div class="SideContent">
+  	  		fhdfhdhfdh
+  	  	</div>
+  	  </div>
   	</div>
+  	
 	  <div class="UISelectContent">
 	  	<div class="<%=getCSSClassName("Explorer")%>" onclick="<%=uicomponent.event("Explorer")%>" title="<%=_ctx.appRes("UISideBar.label.Explorer")%>">
 	      <div class="ItemIcon FileExplorerIcon"><span></span></div>
@@ -37,6 +66,9 @@
 	    </div>
 	    <div class="<%=getCSSClassName("TagExplorer")%>" onclick="<%=uicomponent.event("TagExplorer")%>" title="<%=_ctx.appRes("UISideBar.label.TagExplorer")%>">
 	      <div class="ItemIcon TagExplorerIcon"><span></span></div>
+      </div>
+      <div class="<%=getCSSClassName("SideGeneratal")%>" onclick="<%=uicomponent.event("SideGeneratal")%>" title="<%=_ctx.appRes("UISideBar.label.SideGeneratal")%>">
+	      <div class="ItemIcon SideGeneratal"><span></span></div>
       </div>
 	  </div>
   </div>
