@@ -1,1 +1,159 @@
-Timeline view
+<%
+  /**
+   * Created by The eXo Platform SARL
+   * Author : Nguyen Quang Trung
+   *          trung.nguyen@exoplatform.com
+   * October 20, 2009
+   */
+%>
+<div style="" class="UIListView" id="UIDocumentInfo-1256094770906">	
+	<div class="UIListGrid" style="height: 475px;">
+		<div class="TitleTable">
+			<div style="width: 140px;" class="LeftColumn Split">
+				<span></span>
+			</div>
+			<div style="width: 26px;" class="LeftColumn Split">
+				<div class="StarLight" style="margin-top: 5px;"><span></span></div>
+			</div>
+			<div style="border: medium none; width: 278px" class="RightColumn">
+				Date time
+			</div>
+			<div class="ResizeColumn Split">
+				Name
+			</div>
+			<div style="clear: both;"><span><span/></div>
+		</div>
+		<div class="TextTitleDay">To day</div>
+		<div class="RowView Normal">
+			<div class="BorderRow">
+				<div style="width: 130px;" class="LeftColumn">
+				<span></span>
+				</div>
+				<div style="width: 26px; padding-top: 5px;" class="LeftColumn">
+					<div class="StarOff"><span></span></div>
+				</div>
+				<div style="border: medium none; width: 270px" class="RightColumn">
+					15/10/2009 12:30 AM
+				</div>
+				<div class="ResizeColumn">
+					<div class="IconPic PositionIconDocumen">Document 1</div>
+				</div>
+				
+				<div style="clear: both;"><span><span/></div>
+				
+				<div style="width: 130px;" class="LeftColumn">
+					<span></span>
+				</div>
+				<div style="width: 26px; padding-top: 5px;" class="LeftColumn">
+					<div class="StarLight"><span></span></div>
+				</div>
+				<div style="border: medium none; width: 270px" class="RightColumn">
+					15/10/2009 12:30 AM
+				</div>
+				<div class="ResizeColumn">
+					<div class="IconExcel PositionIconDocumen">Document 1</div>
+				</div>
+				<div style="clear: both;"><span><span/></div>
+			</div>
+		</div>
+		<div class="TextTitleDay">Yesterday</div>
+		<div class="RowView Normal">
+			<div class="BorderRow">
+				<div style="width: 130px;" class="LeftColumn">
+				<span></span>
+				</div>
+				<div style="width: 26px; padding-top: 5px;" class="LeftColumn">
+					<div class="StarLight"><span></span></div>
+				</div>
+				<div style="border: medium none; width: 270px" class="RightColumn">
+					15/10/2009 12:30 AM
+				</div>
+				<div class="ResizeColumn">
+					<div class="IconExcel PositionIconDocumen">Document 1</div>
+				</div>
+				
+				<div style="clear: both;"><span><span/></div>
+				
+				<div style="width: 130px;" class="LeftColumn">
+					<span></span>
+				</div>
+				<div style="width: 26px; padding-top: 5px;" class="LeftColumn">
+					<div class="StarLight"><span></span></div>
+				</div>
+				<div style="border: medium none; width: 270px" class="RightColumn">
+					15/10/2009 12:30 AM
+				</div>
+				<div class="ResizeColumn">
+					<div class="IconExcel PositionIconDocumen">Document 1</div>
+				</div>
+				<div style="clear: both;"><span><span/></div>
+			</div>
+		</div>
+		<div class="TextTitleDay">Earlier This Month</div>
+		<div class="RowView Normal">
+			<div class="BorderRow">
+				<div style="width: 130px;" class="LeftColumn">
+				<span></span>
+				</div>
+				<div style="width: 26px; padding-top: 5px;" class="LeftColumn">
+					<div class="StarLight"><span></span></div>
+				</div>
+				<div style="border: medium none; width: 270px" class="RightColumn">
+					15/10/2009 12:30 AM
+				</div>
+				<div class="ResizeColumn">
+					<div class="IconAI PositionIconDocumen">Document 1</div>
+				</div>
+				
+				<div style="clear: both;"><span><span/></div>
+				
+				<div style="width: 130px;" class="LeftColumn">
+					<span></span>
+				</div>
+				<div style="width: 26px; padding-top: 5px;" class="LeftColumn">
+					<div class="StarLight"><span></span></div>
+				</div>
+				<div style="border: medium none; width: 270px" class="RightColumn">
+					15/10/2009 12:30 AM
+				</div>
+				<div class="ResizeColumn">
+					<div class="IconAcrobat PositionIconDocumen">Document 1</div>
+				</div>
+				<div style="clear: both;"><span><span/></div>
+			</div>
+		</div>
+		<div class="TextTitleDay">Earlier This Year</div>
+		<div class="RowView Normal">
+			<div class="LasrBorderRow">
+				<div style="width: 130px;" class="LeftColumn">
+				<span></span>
+				</div>
+				<div style="width: 26px; padding-top: 5px;" class="LeftColumn">
+					<div class="StarLight"><span></span></div>
+				</div>
+				<div style="border: medium none; width: 270px" class="RightColumn">
+					15/10/2009 12:30 AM
+				</div>
+				<div class="ResizeColumn">
+					<div class="IconExcel PositionIconDocumen">Document 1</div>
+				</div>
+				
+				<div style="clear: both;"><span><span/></div>
+				
+				<div style="width: 130px;" class="LeftColumn">
+					<span></span>
+				</div>
+				<div style="width: 26px; padding-top: 5px;" class="LeftColumn">
+					<div class="StarLight"><span></span></div>
+				</div>
+				<div style="border: medium none; width: 270px" class="RightColumn">
+					15/10/2009 12:30 AM
+				</div>
+				<div class="ResizeColumn">
+					<div class="IconIndesign PositionIconDocumen">Document 1</div>
+				</div>
+				<div style="clear: both;"><span><span/></div>
+			</div>
+		</div>
+	</div>
+</div>
