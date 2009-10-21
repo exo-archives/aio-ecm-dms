@@ -1,74 +1,3 @@
-<style>
-  a {behavior: url(#default#AnchorClick);} 
-
-  .FileContent {  
-    padding: 10px;
-    color: #0e396c;
-  }
-  
-  .FileContent .NavigationContainer {  
-    padding-bottom: 5px;
-    background: url('/eXoDMSResources/skin/images/file/TitleBG1x21.gif') repeat-x top;
-    border: 1px solid #cbcbcb;
-  }
-  
-  .FileContent .TopTitle {  
-    padding-left: 10px;
-    height: 22px; line-height: 22px;
-    color: #058ee6; font-weight: bold; 
-  }
-  
-  .FileContent .ECMIframe {
-   	border: 1px solid #cbcbcb; 
-  	height: 100%;
-  	!height: 320px;
-  	overflow: auto;
-  	width: 93%;
-  	margin: 5px;
-  	background: white;
-  }
-  
-  .FileContent .ECMIframe body {
-  	font-size: 13px;
-  }
-  
-  .FileContent .Content {  
-   	white-space: normal;
-   	padding: 10px;
-  }
-  
-  .FileContent .Content .TextContent {  
-   	overflow: auto;
-   	height: 100%;
-   	!height: 320px;
-   	margin: auto;
-    width: 89%;
-   	padding: 10px;
-   	border: 1px solid #b7b7b7;
-  }
-  
-  .FileContent .Content .TextContent pre {  
-    white-space: normal;
-  }
-  
-  .FileContent .ContentDetail {  
-    text-align: center;
-    overflow: visible;
-    padding: 15px 0px;
-  }
-    
-  .FileContent .UIVoteForm {
-    padding: 0px;
-  }
-  
-  .FileContent .UIRatingInfoContainer {
-    margin:0px 0px 0px auto;
-  }
-  .FileContent p a {
-		color: #058EE6;
-    text-decoration: underline;
-	}
-</style>
 <%
 	import java.util.List;
 	import java.util.ArrayList;
@@ -239,4 +168,75 @@
 	  <div><% _ctx.include(uicomponent.getViewTemplate("mix:votable", "view1")); %></div>
 	  <div><% _ctx.include(uicomponent.getViewTemplate("exo:comments", "view1")); %></div>
 	</div>
+	<style>
+  a {behavior: url(#default#AnchorClick);} 
+
+  .FileContent {  
+    padding: 10px;
+    color: #0e396c;
+  }
+  
+  .FileContent .NavigationContainer {  
+    padding-bottom: 5px;
+    background: url('/eXoDMSResources/skin/images/file/TitleBG1x21.gif') repeat-x top;
+    border: 1px solid #cbcbcb;
+  }
+  
+  .FileContent .TopTitle {  
+    padding-left: 10px;
+    height: 22px; line-height: 22px;
+    color: #058ee6; font-weight: bold; 
+  }
+  
+  .FileContent .ECMIframe {
+    border: 1px solid #cbcbcb; 
+    height: 100%;
+    !height: 320px;
+    overflow: auto;
+    width: 93%;
+    margin: 5px;
+    background: white;
+  }
+  
+  .FileContent .ECMIframe body {
+    font-size: 13px;
+  }
+  
+  .FileContent .Content {  
+    white-space: normal;
+    padding: 10px;
+  }
+  
+  .FileContent .Content .TextContent {  
+    overflow: auto;
+    height: 100%;
+    !height: 320px;
+    margin: auto;
+    width: 89%;
+    padding: 10px;
+    border: 1px solid #b7b7b7;
+  }
+  
+  .FileContent .Content .TextContent pre {  
+    white-space: normal;
+  }
+  
+  .FileContent .ContentDetail {  
+    text-align: center;
+    overflow: visible;
+    padding: 15px 0px;
+  }
+    
+  .FileContent .UIVoteForm {
+    padding: 0px;
+  }
+  
+  .FileContent .UIRatingInfoContainer {
+    margin:0px 0px 0px auto;
+  }
+  .FileContent p a {
+    color: #058EE6;
+    text-decoration: underline;
+  }
+</style>
 </div>

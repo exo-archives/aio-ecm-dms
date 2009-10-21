@@ -13,98 +13,7 @@
 	def originalNode = uicomponent.getOriginalNode()
 	SimpleDateFormat dateFormat = new SimpleDateFormat() ;
 %>
-	<style>
-		.WorkSample {
-			padding: 8px;
-		}
-		
-		label.text { 
-			font: normal bold 11px Verdana;
-			color: black; 
-			line-height: 18px;
-		}
-		
-		span.text  { 
-			font-size: 11px; 
-			vertical-align:bottom; 
-			color: #00000; 
-		}
-		
-		div.summary { 
-			width: 96%; 
-			height: 160px ; 
-			font-size: 11px; 
-			padding: 5px 5px 5px 10px;  /* orientation=lt */
-			padding: 5px 10px 5px 5px;  /* orientation=rt */
-			color: black ; 
-			font-weight: normal;
-			overflow: auto;
-		} 
-		
-		div.content { 
-			width: 96%; 
-			height: 160px ; 
-			font-size: 11px; 
-			padding: 5px 5px 5px 10px;  /* orientation=lt */
-			padding: 5px 10px 5px 5px;  /* orientation=rt */
-			color: black ; 
-			font-weight: normal;
-			overflow: auto;
-		}
-		
-		.HeaderSampleBG {
-			background: url('/eXoDMSResources/skin/images/event/EventFrameBG.gif') repeat-x;  /* orientation=lt */
-						
-		  margin-bottom: 2px;
-		  padding: 0px 5px 0px 5px; 
-		  height: 18px;
-		  border: solid 1px #bdbdbd;
-		  border-bottom: none;
-		  line-height: 18px;
-	  }
-	  
-	  .SampleBG {
-		  height: 25px;
-		  line-height: 25px;
-		  border-bottom: solid 1px #BDBDBD;
-	  }
-		.RemoveAttachments {
-		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top;  /* orientation=lt */
-		  background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat right top;  /* orientation=rt */
-		  margin: 0px 5px 0px 3px; /* orientation=lt */
-		  margin: 0px 3px 0px 2px; /* orientation=rt */
-		  padding-left: 18px; /* orientation=lt */
-		  padding-right: 18px; /* orientation=rt */
-		  height: 16px;
-		  cursor: pointer;
-		}
-		.WorkSample .RemoveNodeFloat{
-		float: left; /* orientation=lt */
-		float: right; /* orientation=rt */
-		}
-		.WorkSample .LableLeftDescription{
-		width: 47.5%; 
-		float: left; /* orientation=lt */
-		float: right; /* orientation=rt */
-		margin-top: 5px; 
-		border: 1px solid #bdbdbd
-		}
-		.WorkSample .LableRightDescription{
-		width: 47.5%; 
-		float: right; /* orientation=lt */
-		float: left; /* orientation=rt */
-		margin-top: 5px; 
-		border: 1px solid #bdbdbd
-		}
-		.WorkSample .LableLeftDescription p a {
-		  color: #058EE6;
-      text-decoration: underline;
-		}
-		.WorkSample .LableRightDescription p a {
-		  color: #058EE6;
-      text-decoration: underline;
-		}
-	</style>
+	
 <div $resizeBlock id="$uicomponent.id">
 	<div class="WorkSample">
 		<div class="SampleBG">
@@ -259,4 +168,96 @@
 	</div>
 	<div><% _ctx.include(uicomponent.getViewTemplate("mix:votable", "view1")); %></div>
   <div><% _ctx.include(uicomponent.getViewTemplate("exo:comments", "view1")); %></div>
+  <style>
+  .WorkSample {
+    padding: 8px;
+  }
+  
+  label.text { 
+    font: normal bold 11px Verdana;
+    color: black; 
+    line-height: 18px;
+  }
+  
+  span.text  { 
+    font-size: 11px; 
+    vertical-align:bottom; 
+    color: #00000; 
+  }
+  
+  div.summary { 
+    width: 96%; 
+    height: 160px ; 
+    font-size: 11px; 
+    padding: 5px 5px 5px 10px;  /* orientation=lt */
+    padding: 5px 10px 5px 5px;  /* orientation=rt */
+    color: black ; 
+    font-weight: normal;
+    overflow: auto;
+  } 
+  
+  div.content { 
+    width: 96%; 
+    height: 160px ; 
+    font-size: 11px; 
+    padding: 5px 5px 5px 10px;  /* orientation=lt */
+    padding: 5px 10px 5px 5px;  /* orientation=rt */
+    color: black ; 
+    font-weight: normal;
+    overflow: auto;
+  }
+  
+  .HeaderSampleBG {
+    background: url('/eXoDMSResources/skin/images/event/EventFrameBG.gif') repeat-x;  /* orientation=lt */
+          
+    margin-bottom: 2px;
+    padding: 0px 5px 0px 5px; 
+    height: 18px;
+    border: solid 1px #bdbdbd;
+    border-bottom: none;
+    line-height: 18px;
+  }
+  
+  .SampleBG {
+    height: 25px;
+    line-height: 25px;
+    border-bottom: solid 1px #BDBDBD;
+  }
+  .RemoveAttachments {
+    background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat left top;  /* orientation=lt */
+    background: url('/eXoDMSResources/skin/images/article/DustBin.gif') no-repeat right top;  /* orientation=rt */
+    margin: 0px 5px 0px 3px; /* orientation=lt */
+    margin: 0px 3px 0px 2px; /* orientation=rt */
+    padding-left: 18px; /* orientation=lt */
+    padding-right: 18px; /* orientation=rt */
+    height: 16px;
+    cursor: pointer;
+  }
+  .WorkSample .RemoveNodeFloat{
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  }
+  .WorkSample .LableLeftDescription{
+  width: 47.5%; 
+  float: left; /* orientation=lt */
+  float: right; /* orientation=rt */
+  margin-top: 5px; 
+  border: 1px solid #bdbdbd
+  }
+  .WorkSample .LableRightDescription{
+  width: 47.5%; 
+  float: right; /* orientation=lt */
+  float: left; /* orientation=rt */
+  margin-top: 5px; 
+  border: 1px solid #bdbdbd
+  }
+  .WorkSample .LableLeftDescription p a {
+    color: #058EE6;
+    text-decoration: underline;
+  }
+  .WorkSample .LableRightDescription p a {
+    color: #058EE6;
+    text-decoration: underline;
+  }
+</style>
 </div>
