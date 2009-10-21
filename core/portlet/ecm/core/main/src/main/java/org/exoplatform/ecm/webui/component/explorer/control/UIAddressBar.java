@@ -34,6 +34,7 @@ import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer.HistoryEntry;
@@ -208,6 +209,10 @@ public class UIAddressBar extends UIForm {
   static public class ChangeViewActionListener extends EventListener<UIAddressBar> {
     public void execute(Event<UIAddressBar> event) throws Exception {
       UIAddressBar uiAddressBar = event.getSource() ;
+      UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class);
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
+      uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID);
       uiAddressBar.setSelectedViewName(viewName);
       UIControl uiControl = uiAddressBar.getParent() ;
@@ -218,9 +223,9 @@ public class UIAddressBar extends UIForm {
   
   static public class SimpleSearchActionListener extends EventListener<UIAddressBar> {
     public void execute(Event<UIAddressBar> event) throws Exception {
-      UIAddressBar uiForm = event.getSource();
-      UIJCRExplorer uiExplorer = uiForm.getAncestorOfType(UIJCRExplorer.class);
-      String text = uiForm.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue();
+      UIAddressBar uiAddressBar = event.getSource();
+      UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class);
+      String text = uiAddressBar.getUIStringInput(FIELD_SIMPLE_SEARCH).getValue();
       Node currentNode = uiExplorer.getCurrentNode();
       String queryStatement = null;
       if("/".equals(currentNode.getPath())) {

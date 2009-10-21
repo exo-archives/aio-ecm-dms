@@ -104,6 +104,7 @@ public class UIWorkingArea extends UIContainer {
     addChild(UIRightClickPopupMenu.class, "ECMContextMenu", null);
     addChild(UISideBar.class, null, null);
     addChild(UIDocumentWorkspace.class, null, null);
+    addChild(UIDrivesArea.class, null, null).setRendered(false);
   }
 
   

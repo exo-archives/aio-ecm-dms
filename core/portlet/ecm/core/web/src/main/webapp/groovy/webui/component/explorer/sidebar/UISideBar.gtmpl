@@ -21,7 +21,7 @@
   		<div class="SideBarContent">
   			<div class="BarContent">
   				<div class="Title">Colaborations center</div>
-  				<div class="DriversButton" title="Drivers"><span></span></div>
+  				<a href="<%=uicomponent.event("ShowDrivesArea")%>"><div class="DriversButton" title="Drivers"><span></span></div></a>
   				<div class="ClearLeft"><span></span></div>
   			</div>
   			<div class="SideContent">

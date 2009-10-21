@@ -16,6 +16,8 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.UIJcrExplorerContainer;
@@ -39,7 +41,8 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UISideBar.ExplorerActionListener.class),
         @EventConfig(listeners = UISideBar.RelationActionListener.class),
         @EventConfig(listeners = UISideBar.TagExplorerActionListener.class),
-        @EventConfig(listeners = UISideBar.ClipboardActionListener.class)
+        @EventConfig(listeners = UISideBar.ClipboardActionListener.class),
+        @EventConfig(listeners = UISideBar.ShowDrivesAreaActionListener.class)
     }
 )
 public class UISideBar extends UIContainer {
@@ -116,5 +119,15 @@ public class UISideBar extends UIContainer {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar.getParent()) ;
     }
   }
+  
+  static public class ShowDrivesAreaActionListener extends EventListener<UISideBar> {
+    public void execute(Event<UISideBar> event) throws Exception {
+      UISideBar uiSideBar = event.getSource() ;
+      UIWorkingArea uiWorkingArea = uiSideBar.getParent();
+      uiWorkingArea.getChild(UIDrivesArea.class).setRendered(true);
+      uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(false);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
+    }
+  }  
   
 }
