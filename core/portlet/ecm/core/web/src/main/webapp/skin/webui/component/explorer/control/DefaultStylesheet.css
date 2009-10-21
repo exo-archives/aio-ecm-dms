@@ -59,20 +59,10 @@
   cursor: pointer;
 }
 
-.UIJCRExplorerPortlet .BackToMainDriveButton {
-	width: 24px;	
-	height: 24px;
-  background: url('DefaultSkin/icons/BackToMainDriveButton.gif') no-repeat center ;
-  float: right; /* orientation=lt */
-  float: left; /* orientation=rt */
-  margin-left: 5px; /* orientation=lt */
-	margin-right: 5px; /* orientation=rt */
-}
-
 .UIJCRExplorerPortlet .SetupPreferencesButton {
   width: 24px;	
   height: 24px;
-  background: url('DefaultSkin/icons/SetupPreferencesButton.gif') no-repeat bottom;
+  background: url('DefaultSkin/icons/Generatal.png') no-repeat bottom;
   float: right; /* orientation=lt */
   float: left; /* orientation=rt */
   padding: 0px 0px 0px 10px; /* orientation=lt */
@@ -503,7 +493,7 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Right {
-	width: 236px;
+	width: 180px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Center {
@@ -613,6 +603,12 @@
 	display: block;
 }
 
+.UIJCRExplorerPortlet .RefreshSessionButton  {
+  width: 24px;	
+  height: 24px;
+  background: url('DefaultSkin/icons/RefreshSessionButton.gif') no-repeat bottom;
+}
+
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BackBtn {
 	background: url(DefaultSkin/background/BackBtn.jpg) no-repeat; 
 	height: 22px;
@@ -651,22 +647,6 @@
 
 .UIJCRExplorerPortlet .UIAddressBar .Right .SearchSetting {
 	width: 51px;
-	float: right; /* orientation=lt */
-	float: left; /* orientation=rt */
-}
-
-.UIJCRExplorerPortlet .UIAddressBar .Right .SearchSetting .SearchAdvanceBtn{
-	background: url(DefaultSkin/background/SearchAdvance.gif) no-repeat;
-	width: 25px;
-	height: 22px;
-	float: right; /* orientation=lt */
-	float: left; /* orientation=rt */
-}
-
-.UIJCRExplorerPortlet .UIAddressBar .Right .SearchSetting .SearchSettingBtn{
-	background: url(DefaultSkin/background/SearchSetting.gif) no-repeat;
-	width: 26px;
-	height: 22px;
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
 }
