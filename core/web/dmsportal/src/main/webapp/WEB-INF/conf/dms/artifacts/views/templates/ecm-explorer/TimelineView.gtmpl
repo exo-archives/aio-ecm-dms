@@ -7,7 +7,7 @@
    */
 %>
 <div style="" class="UIListView" id="UIDocumentInfo-1256094770906">	
-	<div class="UIListGrid" style="height: 475px;">
+	<div class="UITimelineView" style="height: 475px;">
 		<div class="TitleTable">
 			<div style="width: 140px;" class="LeftColumn Split">
 				<span></span>

@@ -172,7 +172,6 @@
 
 .UIJCRExplorerPortlet .UIListView {
 	posititon: relative;
-	padding: 4px 3px 0px 3px;
 }
 
 .UIJCRExplorerPortlet .UITabPane .UIListView {
@@ -183,22 +182,13 @@
 .UIJCRExplorerPortlet .UIListView .UIListGrid {
 	overflow: auto;
 	-moz-user-select: none;
-	color: #666666;
 }
 
 .UIJCRExplorerPortlet .UIListView .TitleTable {
 	font-weight: bold; 
-	line-height: 23px; height: 23px;
-  background: url('DefaultSkin/background/BgBorderTitle.gif') repeat-x left top;
-  border: solid 1px #dedede;
+	line-height: 19px; height: 19px;
+  background: url('DefaultSkin/background/ThGridRepeatBg1x19.gif') repeat-x center;
 }
-
-.UIJCRExplorerPortlet .UIListView .Split{
-	background: url('DefaultSkin/background/BgBorderTitle.gif') no-repeat right -23px; /* orientation=lt */
-	background: url('DefaultSkin/background/BgBorderTitle.gif') no-repeat left -23px; /* orientation=rt */
-	height: 23px;
-}
-
 
 .UIJCRExplorerPortlet .UIListView .OverHeader {
   background: url('DefaultSkin/background/OverThGridRepeatBg1x19.gif') repeat-x center;
@@ -209,8 +199,10 @@
 .UIJCRExplorerPortlet .UIListGrid .LeftColumn {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
+	border-right: 1px solid #b7b7b7; /* orientation=lt */
+	border-left: 1px solid #b7b7b7; /* orientation=rt */
 	width: 30px; 
-	height: 23px; 
+	height: 19px; 
 	overflow: hidden;
   white-space: nowrap;
 }
@@ -218,6 +210,8 @@
 .UIJCRExplorerPortlet .UIListGrid .RightColumn {
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
+	border-right: 1px solid #b7b7b7; /* orientation=lt */
+	border-left: 1px solid #b7b7b7; /* orientation=rt */
 	padding-left: 3px; /* orientation=lt */
 	padding-right: 3px; /* orientation=rt */
 	width: 105px;
@@ -227,28 +221,19 @@
 }
 
 .UIJCRExplorerPortlet .UIListGrid .ResizeColumn {
-	height: 23px; 
-	margin: 0px 295px 0px 0px; /* orientation=lt */
-	margin: 0px 0px 0px 295px; /* orientation=rt */
-	padding-left: 185px; /* orientation=lt */
-	padding-right: 185px; /* orientation=rt */
+	border-right: 1px solid #b7b7b7; /* orientation=lt */
+	border-left: 1px solid #b7b7b7; /* orientation=rt */
+	height: 19px; 
+	margin: 0px 590px 0px 30px; /* orientation=lt */
+	margin: 0px 30px 0px 590px; /* orientation=rt */
+	padding-left: 5px; /* orientation=lt */
+	padding-right: 5px; /* orientation=rt */
 	white-space: nowrap; 
 	cursor: pointer;
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView {
 	line-height: 19px;
-	padding-top: 5px;
-}
-
-.UIJCRExplorerPortlet .UIListGrid .RowView .BorderRow{
-	border-bottom: dotted 1px #a0a0a0; 
-	margin: 0px 10px;
-}
-
-.UIJCRExplorerPortlet .UIListGrid .RowView .LasrBorderRow{
-	border-bottom: none; 
-	margin: 0px 10px
 }
 
 .UIJCRExplorerPortlet .UIListGrid .RowView .RightColumn {
@@ -288,49 +273,165 @@
 .UIJCRExplorerPortlet .UIListGrid .RowView .ResizeColumn .NodeLabel {
 	width: 95%;
 	overflow: hidden;
+} 
+
+/*############################## -- Begin TimelineView -- ##############################*/
+ /*
+	* trung.UI.exo
+	*/
+
+
+.UIJCRExplorerPortlet .UIListView .UITimelineView {
+	overflow: auto;
+	-moz-user-select: none;
+	color: #666666;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .TextTitleDay{
+.UIJCRExplorerPortlet .UIListView .UITimelineView .TitleTable {
+	font-weight: bold; 
+	line-height: 23px; height: 23px;
+  background: url('DefaultSkin/background/BgBorderTitle.gif') repeat-x left top;
+  border: solid 1px #dedede;
+}
+
+.UIJCRExplorerPortlet .UIListView .UITimelineView .Split{
+	background: url('DefaultSkin/background/BgBorderTitle.gif') no-repeat right -23px; /* orientation=lt */
+	background: url('DefaultSkin/background/BgBorderTitle.gif') no-repeat left -23px; /* orientation=rt */
+	height: 23px;
+}
+
+
+.UIJCRExplorerPortlet .UIListView .UITimelineView .OverHeader {
+  background: url('DefaultSkin/background/OverThGridRepeatBg1x19.gif') repeat-x center;
+	font-weight: bold; 
+	line-height: 19px; height: 19px;
+}
+
+.UIJCRExplorerPortlet .UITimelineView .LeftColumn {
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	width: 30px; 
+	height: 23px; 
+	overflow: hidden;
+  white-space: nowrap;
+}
+
+.UIJCRExplorerPortlet .UITimelineView .RightColumn {
+	float: right; /* orientation=lt */
+	float: left; /* orientation=rt */
+	padding-left: 3px; /* orientation=lt */
+	padding-right: 3px; /* orientation=rt */
+	width: 105px;
+	overflow: hidden;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.UIJCRExplorerPortlet .UITimelineView .ResizeColumn {
+	height: 23px; 
+	margin: 0px 295px 0px 0px; /* orientation=lt */
+	margin: 0px 0px 0px 295px; /* orientation=rt */
+	padding-left: 80px; /* orientation=lt */
+	padding-right: 80px; /* orientation=rt */
+	white-space: nowrap; 
+	cursor: pointer;
+}
+
+.UIJCRExplorerPortlet .UITimelineView .RowView {
+	line-height: 19px;
+	padding-top: 5px;
+}
+
+.UIJCRExplorerPortlet .UITimelineView .RowView .BorderRow{
+	border-bottom: dotted 1px #a0a0a0; 
+	margin: 0px 10px;
+}
+
+.UIJCRExplorerPortlet .UITimelineView .RowView .LasrBorderRow{
+	border-bottom: none; 
+	margin: 0px 10px
+}
+
+.UIJCRExplorerPortlet .UITimelineView .RowView .RightColumn {
+	padding: 2px 0px 2px 3px; /* orientation=lt */
+	padding: 2px 3px 2px 0px; /* orientation=rt */
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
+}
+
+.UIJCRExplorerPortlet ..UITimelineView .RowView .LeftColumn {
+	padding: 2px 0px; 
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
+}
+
+.UIJCRExplorerPortlet .UITimelineView .LeftColumn .Icon16x16 {
+	float: none;
+	margin: auto;
+	width: 20px;
+	line-height: 16px;
+}
+
+.UIJCRExplorerPortlet .UITimelineView .LeftColumn .LinkSmall {
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat right bottom; /* orientation=lt */
+	background: url('DefaultSkin/background/LinkSmall.gif') no-repeat left bottom; /* orientation=rt */
+  width: 20px;
+  height: 16px;
+}
+
+.UIJCRExplorerPortlet .UITimelineView .RowView .ResizeColumn {
+ 	border-right: none; /* orientation=lt */
+ 	border-left: none; /* orientation=rt */
+	padding: 2px 0px 2px 3px; /* orientation=lt */
+	padding: 2px 3px 2px 0px; /* orientation=rt */
+} 
+
+.UIJCRExplorerPortlet .UITimelineView .RowView .ResizeColumn .NodeLabel {
+	width: 95%;
+	overflow: hidden;
+}
+
+.UIJCRExplorerPortlet .UITimelineView .TextTitleDay{
 	padding: 5px 0px 0px 10px; /* orientation=lt */
 	padding: 5px 10px 0px 0px; /* orientation=rt */
 	font-weight: bold;
 	
 }
 
-.UIJCRExplorerPortlet .UIListGrid .StarLight{
+.UIJCRExplorerPortlet .UITimelineView .StarLight{
 	background: url('DefaultSkin/background/Star.gif') no-repeat center top;
 	height: 10px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .StarOff{
+.UIJCRExplorerPortlet .UITimelineView .StarOff{
 	background: url('DefaultSkin/background/Star.gif') no-repeat center -10px;
 	height: 10px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .ResizeColumn .PositionIconDocumen{
-	margin-left:170px; /* orientation=lt */
-	margin-right:170px; /* orientation=rt */
+.UIJCRExplorerPortlet .UITimelineView .ResizeColumn .PositionIconDocumen{
+	margin-left:65px; /* orientation=lt */
+	margin-right:65px; /* orientation=rt */
 	padding-left:30px; /* orientation=lt */
 	padding-right:30px; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UIListGrid .IconPic{
+.UIJCRExplorerPortlet .UITimelineView .IconPic{
 	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left 4px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .IconExcel{
+.UIJCRExplorerPortlet .UITimelineView .IconExcel{
 	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -70px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .IconAI{
+.UIJCRExplorerPortlet .UITimelineView .IconAI{
 	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -16px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .IconAcrobat{
+.UIJCRExplorerPortlet .UITimelineView .IconAcrobat{
 	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -35px;
 }
 
-.UIJCRExplorerPortlet .UIListGrid .IconIndesign{
+.UIJCRExplorerPortlet .UITimelineView .IconIndesign{
 	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -53px;
 }
 
