@@ -17,6 +17,7 @@
 package org.exoplatform.services.cms.documents.impl;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import javax.jcr.Node;
@@ -28,6 +29,8 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.container.xml.InitParams;
+import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cms.documents.DocumentTypeService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -62,11 +65,30 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
   private final static String END_BRANCH         = " ) ";
       
   private RepositoryService   repositoryService_ ;
+  
+  private InitParams params_;
         
-  public DocumentTypeServiceImpl(RepositoryService repoService) {
+  public DocumentTypeServiceImpl(RepositoryService repoService, InitParams initParams) {
     repositoryService_ = repoService;
+    params_ = initParams;
   }
-      
+  
+  public List<String> getAllSupportedType() {
+    List<String> supportedType = new ArrayList<String>();
+    Iterator iter = params_.getObjectParamIterator();
+    ObjectParameter objectParam = null;
+    while(iter.hasNext()) {
+      objectParam = (ObjectParameter)iter.next();
+      supportedType.add(objectParam.getName());
+    }
+    return supportedType;
+  }
+  
+  public List<Node> getAllDocumentsByKindOfDocumentType(String documentType, String workspace, String repository,
+      SessionProvider sessionProvider) throws Exception {
+    return getAllDocumentsByType(workspace,repository,sessionProvider, getMimeTypes(documentType));
+  }
+  
   public List<Node> getAllDocumentsByType(String workspace, String repository,
       SessionProvider sessionProvider, String mimeType) throws Exception {
     
@@ -128,6 +150,22 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     return resultList;
      
   }
+  
+  private String[] getMimeTypes(String documentType) {
+    Iterator iter = params_.getObjectParamIterator();
+    ObjectParameter objectParam = null;
+    List<String> mimeTypes = new ArrayList<String>();
+    DocumentType objDocumentType = null;
+    while(iter.hasNext()) {
+      objectParam = (ObjectParameter)iter.next();
+      if(objectParam.getName().equals(documentType)) {
+        objDocumentType = (DocumentType)objectParam.getObject();
+        mimeTypes = objDocumentType.getMimeTypes();
+        break;
+      }
+    }
+    return mimeTypes.toArray(new String[mimeTypes.size()]);
+  }  
 
   private QueryResult executeQuery(Session session, String statement, String language)
       throws Exception, RepositoryException {
@@ -148,10 +186,8 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
       for (int index=0; index < mimeTypes.length; index++) {
         query.append(CONTAINS).append("(").append(JCR_MINE_TYPE).append(",").append(SINGLE_QUOTE)
              .append(mimeTypes[index].trim()).append(SINGLE_QUOTE).append(")");
-        
         // Append OR operator for next branch statement   
-        if (index < mimeTypes.length-1) 
-          query.append(OR);                              
+        if (index < mimeTypes.length-1) query.append(OR);                              
       }
     } else {      
       query.append(CONTAINS).append("(").append(OWNER).append(",").append(SINGLE_QUOTE)
@@ -170,8 +206,8 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         } 
       }      
     }
-    
     // Return query statement.
     return query.toString();
   }
+
 }

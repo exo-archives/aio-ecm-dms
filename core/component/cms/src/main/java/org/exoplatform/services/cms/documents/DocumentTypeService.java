@@ -36,6 +36,25 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 public interface DocumentTypeService {
 
   /**
+   * Get all supported document type
+   * @return List<String>
+   */
+  public List<String> getAllSupportedType();
+  
+  /**
+   * Get all documents by kind of document type
+   * @param documentType Kind of document(Images, Video,...)
+   * @param workspace The name of workspace will be used to get documents
+   * @param repository The name of repository will be used to get documents
+   * @param sessionProvider 
+   * @param mimeType The mime type of node(For example: image/jpg)
+   * @return List<Node> all documents by kind of document type
+   * @throws Exception
+   */
+  public List<Node> getAllDocumentsByKindOfDocumentType(String documentType, String workspace, String repository,
+      SessionProvider sessionProvider) throws Exception;
+  
+  /**
    * Get all document by mimetype
    * @param workspace The name of workspace will be used to get documents
    * @param repository The name of repository will be used to get documents
