@@ -11,6 +11,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer {
 }
 
+
 .UIJCRExplorerPortlet .MoveNode {
 	background: url('DefaultSkin/background/MoveNode.gif') no-repeat center center;
 	font-size: 14px;
@@ -331,8 +332,8 @@
 	height: 23px; 
 	margin: 0px 295px 0px 0px; /* orientation=lt */
 	margin: 0px 0px 0px 295px; /* orientation=rt */
-	padding-left: 80px; /* orientation=lt */
-	padding-right: 80px; /* orientation=rt */
+	padding-left: 85px; /* orientation=lt */
+	padding-right: 85px; /* orientation=rt */
 	white-space: nowrap; 
 	cursor: pointer;
 }
@@ -409,8 +410,8 @@
 }
 
 .UIJCRExplorerPortlet .UITimelineView .ResizeColumn .PositionIconDocumen{
-	margin-left:65px; /* orientation=lt */
-	margin-right:65px; /* orientation=rt */
+	margin-left:70px; /* orientation=lt */
+	margin-right:70px; /* orientation=rt */
 	padding-left:30px; /* orientation=lt */
 	padding-right:30px; /* orientation=rt */
 }
@@ -1030,4 +1031,91 @@
   margin: 10px;
 }
 
+/*===============================UIDrivesArea===================================*/
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIDrivesArea {
+	overflow: auto;
+  height: 475px;
+}
+
+.UIJCRExplorer .UIDrivesArea .UIDriversAreaContainer{
+	padding: 10px;
+	color: #666666;
+}
+
+.UIJCRExplorer .UIDrivesArea .RowDrives{
+	border-bottom: dotted 1px #cccccc;
+	padding-bottom: 20px;
+	padding-top: 15px;
+}
+
+.UIJCRExplorer .UIDrivesArea .RowNormal{
+	padding-bottom: 15px;
+	padding-top: 15px;
+}
+
+.UIJCRExplorer .UIDrivesArea .IconArrowDrives{
+	background: url('DefaultSkin/background/ArrowDrivers.gif') no-repeat left center;
+	height: 7px;	
+}
+
+.UIJCRExplorer .UIDrivesArea .TextTitleDriver{
+	font-weight: bold;
+	text-transform: uppercase;
+	padding-left: 15px;
+	line-height: 5px;
+	margin-bottom:10px;
+}
+
+.UIJCRExplorer .UIDrivesArea .TextContentDrives{
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	padding-left: 40px; /* orientation=lt */
+	padding-right: 40px; /* orientation=rt */
+	margin-left: 50px; /* orientation=lt */
+	margin-right: 50px; /* orientation=rt */
+	height: 23px;
+	line-height: 23px;
+}
+
+.UIJCRExplorer .UIDrivesArea .IconDrivesSys{
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left top;
+}
+
+.UIJCRExplorer .UIDrivesArea .IconDrivesAdmin{
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -23px;
+}
+
+
+.UIJCRExplorer .UIDrivesArea .IconDrivesCateDocument{
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -46px;
+}
+
+.UIJCRExplorer .UIDrivesArea .IconDrivesBackUp{
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -64px;
+}
+
+.UIJCRExplorer .UIDrivesArea .IconDrivesUse{
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -84px;
+}
+
+.UIJCRExplorer .UIDrivesArea .IconDrivesLock{
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -108px;
+}
+
+.UIJCRExplorer .UIDrivesArea .IconDrivesUnlock{
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -132px;
+}
+
+.UIJCRExplorer .UIDrivesArea .UIDriversAreaContainer .ClearLeft{
+	clear: left;
+}
+
+.UIJCRExplorer .UIDrivesArea .UIDriversAreaContainer .ClearRight{
+	clear: right;
+}
+
+.UIJCRExplorer .UIDrivesArea .UIDriversAreaContainer .ClearBoth{
+	clear: both;
+}
 

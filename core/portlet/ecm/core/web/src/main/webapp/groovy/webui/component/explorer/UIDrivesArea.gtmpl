@@ -1,3 +1,25 @@
-<div id="$uicomponent.id">
-	<span>Drives Area</span>
+<div id="$uicomponent.id" class="UIDrivesArea">
+	<div class="UIDriversAreaContainer">
+		<div class="RowDrives">
+			<div class="IconArrowDrives TextTitleDriver">Main Drives</div>
+			<div class="IconDrivesSys TextContentDrives">System</div>
+			<div class="IconDrivesAdmin TextContentDrives">Administration</div>
+			<div class="IconDrivesCateDocument TextContentDrives" style="height:18px">Categorized Documents</div>
+			<div class="IconDrivesBackUp TextContentDrives" style="height: 20px">Backup</div>
+			<div class="ClearLeft"><span></span></div>
+		</div>
+		<div class="RowDrives">
+			<div class="IconArrowDrives TextTitleDriver">My Group</div>
+			<div class="IconDrivesUse TextContentDrives">Execurtive Board</div>
+			<div class="IconDrivesUse TextContentDrives">Users</div>
+			<div class="IconDrivesUse TextContentDrives">My Group</div>
+			<div class="ClearLeft"><span></span></div>
+		</div>
+		<div class="RowNormal">
+			<div class="IconArrowDrives TextTitleDriver">My Drives</div>
+			<div class="IconDrivesLock TextContentDrives" style="height: 24px;">Private</div>
+			<div class="IconDrivesUnlock TextContentDrives" style="height: 24px;">Public</div>
+			<div class="ClearLeft"><span></span></div>
+		</div>
+	</div>
 </div>
