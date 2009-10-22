@@ -30,8 +30,10 @@ import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 
+import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.impl.ImageUtils;
+import org.exoplatform.services.cms.thumbnail.ThumbnailPlugin;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
 
@@ -53,6 +55,7 @@ public class ThumbnailServiceImpl implements ThumbnailService {
   private String mediumSize_;
   private String bigSize_;
   private String mimeTypes_;
+  private List<ComponentPlugin> plugins_ = new ArrayList<ComponentPlugin>();
   
   public ThumbnailServiceImpl(InitParams initParams) throws Exception {
     smallSize_ = initParams.getValueParam("smallSize").getValue();
@@ -228,6 +231,14 @@ public class ThumbnailServiceImpl implements ThumbnailService {
       }
     }
   }
+  
+  public void addPlugin(ComponentPlugin plugin) {
+    if(plugin instanceof ThumbnailPlugin) plugins_.add(plugin);
+  }
+
+  public List<ComponentPlugin> getComponentPlugins() {
+    return plugins_;
+  }  
   
   /**
    * Put data from image to 3 property : exo:smallSizes, exo:mediumSizes, exo:bigSizes

@@ -44,6 +44,7 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.component.ComponentPlugin;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
@@ -70,6 +71,7 @@ import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.link.NodeLinkAware;
 import org.exoplatform.services.cms.templates.TemplateService;
+import org.exoplatform.services.cms.thumbnail.ThumbnailPlugin;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.cms.voting.VotingService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -224,6 +226,24 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     String systemWsName = manaRepoService.getConfiguration().getSystemWorkspaceName() ;
     if(systemWsName.equals(uiExplorer.getCurrentWorkspace())) return true ;
     return false ;
+  }
+  
+  public boolean isSupportedThumbnailImage(Node node) throws Exception {
+    if(node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) {
+      Node contentNode = node.getNode(Utils.JCR_CONTENT);
+      ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
+      for(ComponentPlugin plugin : thumbnailService.getComponentPlugins()) {
+        if(plugin instanceof ThumbnailPlugin) {
+          ThumbnailPlugin thumbnailPlugin = (ThumbnailPlugin) plugin;
+          if(thumbnailPlugin.getMimeTypes().contains(
+              contentNode.getProperty(Utils.JCR_MIMETYPE).getString())) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+    return false;
   }
   
   public boolean isImageType(Node node) throws Exception {

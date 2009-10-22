@@ -18,16 +18,19 @@ package org.exoplatform.services.cms.thumbnail.impl;
 
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
+import java.util.ArrayList;
 
-import javax.imageio.ImageIO;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeFinder;
+import org.exoplatform.services.cms.thumbnail.ThumbnailPlugin;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -59,7 +62,7 @@ import org.exoplatform.services.rest.transformer.PassthroughOutputTransformer;
  * Example: 
  * <img src="/portal/rest/thumbnailImage/repository/collaboration/test.gif" />
  */
-@URITemplate("/thumbnailImage/{repoName}/{workspaceName}/{uuid}/")
+@URITemplate("/thumbnailImage/{repoName}/{workspaceName}/{nodePath}/")
 public class ThumbnailRESTService implements ResourceContainer {
   
   private static final String LASTMODIFIED = "Last-Modified";
@@ -90,8 +93,8 @@ public class ThumbnailRESTService implements ResourceContainer {
   @OutputTransformer(PassthroughOutputTransformer.class)
   public Response getThumbnailImage(@URIParam("repoName") String repoName, 
                                     @URIParam("workspaceName") String wsName,
-                                    @URIParam("uuid") String uuid) throws Exception {
-    return getThumbnailByType(repoName, wsName, uuid, ThumbnailService.MEDIUM_SIZE);
+                                    @URIParam("nodePath") String nodePath) throws Exception {
+    return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.MEDIUM_SIZE);
   }
   
 /**
@@ -109,8 +112,8 @@ public class ThumbnailRESTService implements ResourceContainer {
   @OutputTransformer(PassthroughOutputTransformer.class)
   public Response getCoverImage(@URIParam("repoName") String repoName, 
                                 @URIParam("workspaceName") String wsName,
-                                @URIParam("uuid") String uuid) throws Exception {
-    return getThumbnailByType(repoName, wsName, uuid, ThumbnailService.BIG_SIZE);
+                                @URIParam("nodePath") String nodePath) throws Exception {
+    return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.BIG_SIZE);
   }
   
 /**
@@ -126,14 +129,27 @@ public class ThumbnailRESTService implements ResourceContainer {
   @HTTPMethod("GET")
   public Response getSmallImage(@URIParam("repoName") String repoName, 
                                 @URIParam("workspaceName") String wsName,
-                                @URIParam("uuid") String uuid) throws Exception {
-    return getThumbnailByType(repoName, wsName, uuid, ThumbnailService.SMALL_SIZE);
+                                @URIParam("nodePath") String nodePath) throws Exception {
+    return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.SMALL_SIZE);
   }
   
-  private Response getThumbnailByType(String repoName, String wsName, String uuid, 
+  private Response getThumbnailByType(String repoName, String wsName, String nodePath, 
       String propertyName) throws Exception {
     if(!thumbnailService_.isEnableThumbnail()) return Response.Builder.ok().build();
-    Node showingNode = getShowingNode(repoName, wsName, uuid);
+    ArrayList<String> encodeNameArr = new ArrayList<String>();
+    if(!nodePath.equals("/")) {
+      for(String name : nodePath.split("/")) {
+        if(name.length() > 0) {
+          encodeNameArr.add(Text.escapeIllegalJcrChars(name));
+        }
+      }
+      StringBuilder encodedPath = new StringBuilder();
+      for(String encodedName : encodeNameArr) {
+        encodedPath.append("/").append(encodedName);
+      }
+      nodePath = encodedPath.toString();
+    }
+    Node showingNode = getShowingNode(repoName, wsName, nodePath);
     Node parentNode = showingNode.getParent();
     String identifier = ((NodeImpl) showingNode).getInternalIdentifier();
     Node targetNode;
@@ -148,26 +164,32 @@ public class ThumbnailRESTService implements ResourceContainer {
     }
     if(targetNode.getPrimaryNodeType().getName().equals("nt:file")) {
       Node content = targetNode.getNode("jcr:content");
-      if(content.getProperty("jcr:mimeType").getString().startsWith("image")) {
-        Node thumbnailFolder = ThumbnailUtils.getThumbnailFolder(parentNode);
-        
-        Node thumbnailNode = ThumbnailUtils.getThumbnailNode(thumbnailFolder, identifier);
-        
-        if(!thumbnailNode.hasProperty(propertyName)) {
-          BufferedImage image = ImageIO.read(content.getProperty("jcr:data").getStream());
-          thumbnailService_.addThumbnailImage(thumbnailNode, image, propertyName);
+      String mimeType = content.getProperty("jcr:mimeType").getString();
+      for(ComponentPlugin plugin : thumbnailService_.getComponentPlugins()) {
+        if(plugin instanceof ThumbnailPlugin) {
+          ThumbnailPlugin thumbnailPlugin = (ThumbnailPlugin) plugin;
+          if(thumbnailPlugin.getMimeTypes().contains(mimeType)) {
+            Node thumbnailFolder = ThumbnailUtils.getThumbnailFolder(parentNode);
+            
+            Node thumbnailNode = ThumbnailUtils.getThumbnailNode(thumbnailFolder, identifier);
+            
+            if(!thumbnailNode.hasProperty(propertyName)) {
+              BufferedImage image = thumbnailPlugin.getBufferedImage(content, targetNode.getPath());
+              thumbnailService_.addThumbnailImage(thumbnailNode, image, propertyName);
+            }
+            String lastModified = null;
+            if(thumbnailNode.hasProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED)) {
+              lastModified = thumbnailNode.getProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED).getString();
+            }
+            InputStream inputStream = null;
+            if(thumbnailNode.hasProperty(propertyName)) {
+              inputStream = thumbnailNode.getProperty(propertyName).getStream();
+            }
+            return Response.Builder.ok().header(LASTMODIFIED, lastModified)
+                                        .entity(inputStream, "image")
+                                        .build();
+          }
         }
-        String lastModified = null;
-        if(thumbnailNode.hasProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED)) {
-          lastModified = thumbnailNode.getProperty(ThumbnailService.THUMBNAIL_LAST_MODIFIED).getString();
-        }
-        InputStream inputStream = null;
-        if(thumbnailNode.hasProperty(propertyName)) {
-          inputStream = thumbnailNode.getProperty(propertyName).getStream();
-        }
-        return Response.Builder.ok().header(LASTMODIFIED, lastModified)
-                                    .entity(inputStream, "image")
-                                    .build();
       }
     }
     return getThumbnailRes(parentNode, identifier, propertyName);
@@ -187,10 +209,15 @@ public class ThumbnailRESTService implements ResourceContainer {
     return Response.Builder.ok().build();
   }
   
-  private Node getShowingNode(String repoName, String wsName, String uuid) throws Exception {
+  private Node getShowingNode(String repoName, String wsName, String nodePath) throws Exception {
     ManageableRepository repository = repositoryService_.getRepository(repoName);
     Session session = getSystemProvider().getSession(wsName, repository);
-    return session.getNodeByUUID(uuid);
+    Node showingNode = null;
+    if(nodePath.equals("/")) showingNode = session.getRootNode();
+    else {
+      showingNode = (Node) nodeFinder_.getItem(session, nodePath);
+    }
+    return showingNode;
   }
 
   private SessionProvider getSystemProvider() {

@@ -8,8 +8,8 @@
    */
 %>
 <%   
-  import org.exoplatform.web.application.Parameter;
-  import org.exoplatform.services.jcr.util.Text;
+  import org.exoplatform.web.application.Parameter ;
+  import org.exoplatform.services.jcr.util.Text;  
 %>
 <%
   if(uicomponent.getChildrenList().size() > 0) {
@@ -122,8 +122,8 @@
 	  					    } else {
 	  					      isShowCoverFlow = false;
 	  					    }
-	  					    if(uicomponent.isImageType(image)) {
-								    imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + wsName + "/" + image.getUUID() + "/?size=big";
+	                imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + wsName + image.getPath() + "/?size=big";
+	  					    if(uicomponent.isSupportedThumbnailImage(image)) {
 								    if(isShowCoverFlow) {
 	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
 								    } else {
@@ -131,14 +131,12 @@
 								    }
 							    } else if(primaryType.equals("nt:unstructured") || primaryType.equals("nt:folder")) {
 	  						    if(isShowCoverFlow) {
-	                    imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + wsName + "/" + image.getUUID() + "/?size=big";
 	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
 	  						    } else {
   	  						    println "<image src=\"/ecm/skin/webui/component/explorer/UIJCRExplorer/DefaultSkin/background/BigFolder.gif\" longdesc=\""+actionLink+"\" w=\"208\" h=\"218\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
 	  						    }
 							    } else {
 							      if(isShowCoverFlow) {
-                      imgSrc = "/" + uicomponent.getPortalName() + "/rest/thumbnailImage/" + uicomponent.getRepository() + "/" + wsName + "/" + image.getUUID() + "/?size=big";
 	                    println "<image src=\"$imgSrc\" longdesc=\""+actionLink+"\" w=\""+arrSize[0]+"\" h=\""+arrSize[1]+"\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";
 	  						    } else {
 	  						      println "<image src=\"/ecm/skin/webui/component/explorer/UIJCRExplorer/DefaultSkin/background/BigDocument.gif\" longdesc=\""+actionLink+"\" w=\"115\" h=\"144\" alt=\""+Text.unescapeIllegalJcrChars(image.getName())+"\"/>";

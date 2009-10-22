@@ -23,6 +23,8 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
+import org.exoplatform.container.component.ComponentPlugin;
+
 /**
  * Created by The eXo Platform SARL
  * Author : Dang Van Minh
@@ -43,77 +45,77 @@ public interface ThumbnailService {
   final public static String THUMBNAIL_LAST_MODIFIED = "exo:thumbnailLastModified".intern();
   final public static String EXO_THUMBNAILS_FOLDER = "exo:thumbnails".intern();
   final public static String HIDDENABLE_NODETYPE = "exo:hiddenable";
- 
+
   /**
- * Return all nt:file node at current node
- * @param node Current node
- * @return List<Node>
- * @throws RepositoryException
- */
+   * Return all nt:file node at current node
+   * @param node Current node
+   * @return List<Node>
+   * @throws RepositoryException
+   */
   public List<Node> getAllFileInNode(Node node) throws RepositoryException;
-  
-/**
- * Return the list of node in the current node with mimetype specified
- * @param node Current node
- * @param jcrMimeType Mime type of node will be retrieve
- * @return List<Node>
- * @throws RepositoryException
- */  
+
+  /**
+   * Return the list of node in the current node with mimetype specified
+   * @param node Current node
+   * @param jcrMimeType Mime type of node will be retrieve
+   * @return List<Node>
+   * @throws RepositoryException
+   */  
   public List<Node> getFileNodesByType(Node node, String jcrMimeType) throws Exception;
-/**
- * Return a list image in node
- * @param node Current node
- * @return List<Node>
- * @throws RepositoryException
- */  
+  /**
+   * Return a list image in node
+   * @param node Current node
+   * @return List<Node>
+   * @throws RepositoryException
+   */  
   public List<Node> getFlowImages(Node node) throws Exception;
-/**
- * To setup status of node is allow thumbnail or not
- * @param isEnable
- */  
+  /**
+   * To setup status of node is allow thumbnail or not
+   * @param isEnable
+   */  
   public void setEnableThumbnail(boolean isEnable);
-/**
- * Return the status of node is enable thumbnail or not
- * @return Boolean value
- */  
+  /**
+   * Return the status of node is enable thumbnail or not
+   * @return Boolean value
+   */  
   public boolean isEnableThumbnail();
-/**
- * Create thumbnail for node with default size:
- * Small size, medium size, big size
- * @param node Current node which will be added thumbnail
- * @param image BufferedImage which contain the original image
- * @param mimeType File type
- * @throws Exception
- */  
+  /**
+   * Create thumbnail for node with default size:
+   * Small size, medium size, big size
+   * @param node Current node which will be added thumbnail
+   * @param image BufferedImage which contain the original image
+   * @param mimeType File type
+   * @throws Exception
+   */  
   public void createThumbnailImage(Node node, BufferedImage image, String mimeType) throws Exception;
-/**
- * Return the data of thumbnail with specified type
- * @param node Current node which will be added thumbnail
- * @param thumbnailType Type of thumbnail will be return (small, medium, big or specified if has)
- * @throws Exception
- */  
+  /**
+   * Return the data of thumbnail with specified type
+   * @param node Current node which will be added thumbnail
+   * @param thumbnailType Type of thumbnail will be return (small, medium, big or specified if has)
+   * @throws Exception
+   */  
   public InputStream getThumbnailImage(Node node, String thumbnailType) throws Exception;
- /**
-  * Create thumbnail node
-  * @param node Current node which included thumbnail
-  * @return Node
-  * @throws Exception
-  */ 
+  /**
+   * Create thumbnail node
+   * @param node Current node which included thumbnail
+   * @return Node
+   * @throws Exception
+   */ 
   public Node addThumbnailNode(Node node) throws Exception;
-/**
- * Get thumbnail node
- * @param node
- * @return Node
- * @throws Exception
- */  
+  /**
+   * Get thumbnail node
+   * @param node
+   * @return Node
+   * @throws Exception
+   */  
   public Node getThumbnailNode(Node node) throws Exception;
-/**
- * Create a thumbnail for node with size specified 
- * @param node Current node which will be added thumbnail
- * @param image BufferedImage which contain the original image
- * @param propertyName Data will be set to this property
- * @throws Exception
- */  
+  /**
+   * Create a thumbnail for node with size specified 
+   * @param node Current node which will be added thumbnail
+   * @param image BufferedImage which contain the original image
+   * @param propertyName Data will be set to this property
+   * @throws Exception
+   */  
   public void createSpecifiedThumbnail(Node node, BufferedImage image, String propertyName) throws Exception;
   /**
    * Add a thumbnail image to node 
@@ -124,21 +126,32 @@ public interface ThumbnailService {
    */  
   public void addThumbnailImage(Node node, BufferedImage image, String propertyName) throws Exception;
   /**
- * Process thumbnail with list nodes
- * @param listNodes List node which will be process to add thumbnail
- * @param type Type of thumbnail image
- * @throws Exception
- */  
+   * Process thumbnail with list nodes
+   * @param listNodes List node which will be process to add thumbnail
+   * @param type Type of thumbnail image
+   * @throws Exception
+   */  
   public void processThumbnailList(List<Node> listNodes, String type) throws Exception;
-/**
- * Get mime types which allow to view
- * @return List<String> 
- */  
+  /**
+   * Get mime types which allow to view
+   * @return List<String> 
+   */  
   public List<String> getMimeTypes();
-/**
- * Process to remove thumbnail
- * @param showingNode Node contain the thumbnail
- * @throws Exception
- */  
+  /**
+   * Process to remove thumbnail
+   * @param showingNode Node contain the thumbnail
+   * @throws Exception
+   */  
   public void processRemoveThumbnail(Node showingNode) throws Exception;
+  /**
+   * Add Thumbnail Plugin
+   * @param plugin ComponentPlugin
+   */  
+  public void addPlugin(ComponentPlugin plugin);
+
+  /**
+   * Return a list of Thumbnail plugin
+   * @return List<ComponentPlugin>
+   */  
+  public List<ComponentPlugin> getComponentPlugins();  
 }

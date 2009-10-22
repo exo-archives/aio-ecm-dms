@@ -96,6 +96,20 @@
       <version>0.9.20</version>
       <scope>compile</scope>
     </dependency>
+    
+    <dependency>
+      <groupId>org.icepdf</groupId>
+      <artifactId>icepdf-viewer</artifactId>
+      <version>3.0</version>
+      <scope>compile</scope>
+    </dependency>
+    
+    <dependency>
+      <groupId>org.icepdf</groupId>
+      <artifactId>icepdf-core</artifactId>
+      <version>3.0</version>
+      <scope>compile</scope>
+    </dependency>     
   </dependencies>
   
   <build>
