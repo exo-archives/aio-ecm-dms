@@ -1,6 +1,4 @@
 <%
-  import org.exoplatform.ecm.webui.utils.Utils;
-
   def commentsList = uicomponent.getComments();
   def uicomment = uicomponent.getCommentComponent();
   if(commentsList.size() > 0) {
@@ -227,14 +225,14 @@
 	  		 %>
 			  	<% if (uicomment != null) {
 	  		 %>
-			  		<a href="<%=uicomment.event("Comment", parentPath, new Parameter("nodePath", path))%>">
+			  		<a href="<%=uicomment.event("Comment", org.exoplatform.ecm.webui.utils.Utils.formatNodeName(parentPath), new Parameter("nodePath", path))%>">
 							<image class="EditComment" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" title="<%=_ctx.appRes("Comments.tooltip.edit-comment")%>"/>
 						</a>
 				<%
 	  		 }
 	  		 Parameter[] params = [new Parameter("workspaceName", comment.getSession().getWorkspace().getName()), new Parameter("repository", uicomponent.getRepository())];
 	  		%>
-						<a href="<%= uiremovecomment.event("RemoveComment", Utils.formatNodeName(path), params)%>">
+						<a href="<%= uiremovecomment.event("RemoveComment", org.exoplatform.ecm.webui.utils.Utils.formatNodeName(path), params)%>">
 						<image class="RemoveAttachments" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" title="<%=_ctx.appRes("Comments.tooltip.remove-comment")%>"/>
 						</a>
 				<%}%>
