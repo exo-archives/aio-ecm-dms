@@ -553,6 +553,22 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   }
   
   /**
+   * {@inheritDoc}
+   */
+  public List<String> getAllDocumentNodeTypes(String repository) throws Exception {
+    List<String> contentTypes = new ArrayList<String>();
+    Session session = getSession(repository);
+    Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
+    for (NodeIterator templateIter = templatesHome.getNodes(); templateIter.hasNext();) {
+      Node template = templateIter.nextNode();
+      if (template.getProperty(DOCUMENT_TEMPLATE_PROP).getBoolean())
+        contentTypes.add(template.getName());
+    }
+    session.logout();
+    return contentTypes;
+  }  
+  
+  /**
    * Get template with the following specified params 
    * @param session         Session         
    * @param isDialog        boolean
@@ -734,26 +750,6 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
     return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
-  }
-
-  /**
-   * get All Document NodeTypes of the specified repository
-   * @param repository      String
-   *                        The name of repository
-   * @return
-   * @throws Exception
-   */
-  private List<String> getAllDocumentNodeTypes(String repository) throws Exception {
-    List<String> contentTypes = new ArrayList<String>();
-    Session session = getSession(repository);
-    Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
-    for (NodeIterator templateIter = templatesHome.getNodes(); templateIter.hasNext();) {
-      Node template = templateIter.nextNode();
-      if (template.getProperty(DOCUMENT_TEMPLATE_PROP).getBoolean())
-        contentTypes.add(template.getName());
-    }
-    session.logout();
-    return contentTypes;
   }
 
   /**

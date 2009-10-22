@@ -362,4 +362,13 @@ public interface TemplateService {
    * @throws Exception
    */
   public void removeCacheTemplate(String resourceId) throws Exception;
+  
+  /**
+   * get All Document NodeTypes of the specified repository
+   * @param repository      String
+   *                        The name of repository
+   * @return  List<String>
+   * @throws Exception
+   */
+  public List<String> getAllDocumentNodeTypes(String repository) throws Exception;
 }
