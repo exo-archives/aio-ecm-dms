@@ -1,4 +1,6 @@
 <%
+  import org.exoplatform.ecm.webui.utils.Utils;
+
   def commentsList = uicomponent.getComments();
   def uicomment = uicomponent.getCommentComponent();
   if(commentsList.size() > 0) {
