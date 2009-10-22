@@ -300,13 +300,13 @@
 }
 
 .nt_unstructured16x16Icon {
-  background: url('icons/NodeTypes/nt-unstructured.gif') no-repeat left center; /* orientation=lt */
-	background: url('icons/NodeTypes/nt-unstructured.gif') no-repeat right center; /* orientation=rt */  
+  background: url('icons/NodeTypes/nt-unstructured.gif') no-repeat left top; /* orientation=lt */
+	background: url('icons/NodeTypes/nt-unstructured.gif') no-repeat right top; /* orientation=rt */  
 }
 
 .Collapsent_unstructured16x16Icon {
-  background: url('icons/NodeTypes/open-nt-unstructured.gif') no-repeat left center; /* orientation=lt */
-	background: url('icons/NodeTypes/open-nt-unstructured.gif') no-repeat right center; /* orientation=rt */  
+  background: url('icons/NodeTypes/open-nt-unstructured.gif') no-repeat left -16px; /* orientation=lt */
+	background: url('icons/NodeTypes/open-nt-unstructured.gif') no-repeat right -16px; /* orientation=rt */  
 }
 
 .nt_version16x16Icon {

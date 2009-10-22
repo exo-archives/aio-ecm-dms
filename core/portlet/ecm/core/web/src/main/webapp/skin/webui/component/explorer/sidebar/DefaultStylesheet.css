@@ -32,6 +32,17 @@
   line-height: 24px;
 }
 
+.UIJCRExplorerPortlet .UISideBar .SideContent .ArrowSidContent{
+  background: url('DefaultSkin/background/ArrowSideBar.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/background/ArrowSideBar.gif') no-repeat right center; /* orientation=rt */
+}
+
+.UIJCRExplorerPortlet .UISideBar .SideContent .TextSiderContent {
+	padding-left:15px;
+	line-height: 20px;
+	margin-left:20px;
+}
+
 .UIJCRExplorerPortlet .UISideBar .SideContent{
 	 padding: 4px;
 	 background: #f5f5f5;
@@ -40,8 +51,9 @@
 .UIJCRExplorerPortlet .UISideBar .BarContent .Title{
 	float: left;
   line-height: 24px;
-  color: #808080;
+  color: #666666;
   padding-left: 4px;
+  font-weight: bold;
 }
 
 .UIJCRExplorerPortlet .UISideBar .BarContent .DriversButton{
@@ -56,9 +68,9 @@
 .UIJCRExplorerPortlet .UISideBar .BarContent .SideGeneratal{
 	cursor: pointer;
 	float: right;
-  height:16px;
+  height:17px;
 	margin-top:4px;
-	width:14px;
+	width:17px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .ResizeTreeExplorer .ResizeTreeButton{
@@ -264,6 +276,15 @@
 
 .UIJCRExplorerPortlet .UITreeExplorer a:hover {
   color: blue;
+}
+
+.UIJCRExplorerPortlet .UITreeExplorer .EmptyIcon {
+  cursor: pointer;
+  width: auto;
+  height: auto;
+  padding-left: 19px; /* orientation=lt */
+  padding-right: 19px; /* orientation=rt */
+  display: block;
 }
 
 /*############################## -- End UITreeExplorer   -- ##############################*/

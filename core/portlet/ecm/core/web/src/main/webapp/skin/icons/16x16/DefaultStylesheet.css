@@ -138,6 +138,13 @@
   cursor: pointer;
 }
 
+.EmptyIcon {
+  width: 16px;
+  background: url('DefaultSkin/ExpandEmptyIcon.gif') no-repeat left top; /* orientation=lt */
+  background: url('DefaultSkin/ExpandEmptyIcon.gif') no-repeat right top; /* orientation=rt */
+  cursor: pointer;
+}
+
 .CollapseIcon  {
   width: 16px;
   background: url('DefaultSkin/SmallGrayCollapse.gif') no-repeat left top; /* orientation=lt */

@@ -38,16 +38,33 @@
   				<div class="ClearLeft"><span></span></div>
   			</div>
   			<div class="SideContent">
-  	  		dfhdfhdfhh
+  	  		<div class="ArrowSidContent TextSiderContent">Owned by me</div>
+  	  		<div class="ArrowSidContent TextSiderContent">Starred</div>
+  	  		<div class="ArrowSidContent TextSiderContent">Hidden</div>
   	  	</div>
-  	  </div><div class="SideBarContent">
+  	  </div>
+  	  <div class="SideBarContent">
   			<div class="BarContent">
   				<div class="Title">By Type</div>
   				<div class="SideGeneratal" title="Generatal"><span></span></div>
   				<div class="ClearLeft"><span></span></div>
   			</div>
   			<div class="SideContent">
-  	  		fhdfhdhfdh
+  	  		<div class="ArrowSidContent TextSiderContent">Images</div>
+  	  		<div class="ArrowSidContent TextSiderContent">Documents</div>
+  	  		<div class="ArrowSidContent TextSiderContent">Videos</div>
+  	  	</div>
+  	  </div>
+  	  <div class="SideBarContent">
+  			<div class="BarContent">
+  				<div class="Title">Save Searches</div>
+  				<div class="SideGeneratal" title="Generatal"><span></span></div>
+  				<div class="ClearLeft"><span></span></div>
+  			</div>
+  			<div class="SideContent">
+  	  		<div class="ArrowSidContent TextSiderContent">My Document</div>
+  	  		<div class="ArrowSidContent TextSiderContent">HR Scope</div>
+  	  		<div class="ArrowSidContent TextSiderContent">Video</div>
   	  	</div>
   	  </div>
   	</div>
