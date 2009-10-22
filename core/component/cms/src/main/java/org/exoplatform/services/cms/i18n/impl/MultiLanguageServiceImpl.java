@@ -341,7 +341,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
 
     JcrInputProperty jcrData = new JcrInputProperty() ;
     jcrData.setJcrPath("/node/jcr:content/jcr:data") ;            
-    jcrData.setValue(value) ;          
+    jcrData.setValue(value.getStream()) ;          
     inputProperties.put("/node/jcr:content/jcr:data",jcrData) ; 
 
     JcrInputProperty jcrMimeType = new JcrInputProperty() ;
