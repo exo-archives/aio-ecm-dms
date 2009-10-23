@@ -44,7 +44,7 @@ public class ScriptPlugin extends BaseComponentPlugin{
   }
 
   public String getInitRepository() {
-    ValueParam param = params_.getValueParam("reposisoty") ;
+    ValueParam param = params_.getValueParam("repository") ;
     if(param == null) return null ;
     return param.getValue() ;
   }
