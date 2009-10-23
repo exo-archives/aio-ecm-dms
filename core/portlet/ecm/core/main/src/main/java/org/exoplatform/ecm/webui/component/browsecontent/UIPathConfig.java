@@ -286,6 +286,8 @@ public class UIPathConfig extends UIForm implements UISelectable{
       categoryPathField.setValue(path);
       numbPerPageField.setValue(itemPerPage);
     }
+    if(enableSearchLocation.isChecked()) searchPathSelect.setRendered(true);
+    else searchPathSelect.setRendered(false);
     templateField.setEnable(isEdit_);
     enableFilterCategory.setEnable(isEdit_);
     detailtemField.setEnable(isEdit_);
