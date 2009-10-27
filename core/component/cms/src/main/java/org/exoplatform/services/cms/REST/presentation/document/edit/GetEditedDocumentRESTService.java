@@ -42,6 +42,7 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.impl.core.query.QueryImpl;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.services.rest.HTTPMethod;
 import org.exoplatform.services.rest.OutputTransformer;
@@ -140,14 +141,16 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
         lstWorkspace.remove(GADGET);
       }
       SessionProvider provider = SessionProviderFactory.createAnonimProvider();
-      Query query = null;
+      QueryImpl query = null;
       Session session = null;
       QueryResult queryResult = null;
       QueryManager queryManager = null;
       for (String workspace : lstWorkspace) {
         session = provider.getSession(workspace, manageableRepository);
         queryManager = session.getWorkspace().getQueryManager();
-        query = queryManager.createQuery(queryStatement, Query.SQL);
+        query = (QueryImpl) queryManager.createQuery(queryStatement, Query.SQL);
+        query.setLimit(Integer.parseInt(noOfItem));
+        query.setOffset(0);
         queryResult = query.execute();
         puttoList(lstNode, queryResult.getNodes());
         session.logout();

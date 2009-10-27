@@ -40,6 +40,7 @@ import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.impl.core.query.QueryImpl;
 import org.exoplatform.services.rest.HTTPMethod;
 import org.exoplatform.services.rest.OutputTransformer;
 import org.exoplatform.services.rest.QueryParam;
@@ -126,7 +127,9 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
     SessionProvider provider = SessionProviderFactory.createAnonimProvider();
     Session session = provider.getSession(wsName, repositoryService_.getRepository(repoName));
     QueryManager queryManager = session.getWorkspace().getQueryManager();
-    Query query = queryManager.createQuery(queryStatement, Query.SQL);
+    QueryImpl query = (QueryImpl) queryManager.createQuery(queryStatement, Query.SQL);
+    query.setLimit(item);
+    query.setOffset(0);
     QueryResult queryResult = query.execute();
     NodeIterator iter = queryResult.getNodes();
     List<Node> listNode = getNodePublish(iter, pluginName);
