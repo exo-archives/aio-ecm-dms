@@ -152,23 +152,30 @@
   TreeNode treeNodeRoot = uicomponent.getRootTreeNode() ;
   String contextMenuEvent = uicomponent.getRootActionList() ;
 %>
-<div class="UITreeExplorer" id="UITreeExplorer">
-  <div style="white-space: nowrap; -moz-user-select: none;">
-    <div class="HomeNode">
-      <div class="HardDisk24x24Icon" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent><span></span></div>
-      <div class="NodeLabel"><a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" title="<%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%>" $contextMenuEvent><%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%></a></div>
+<div class="SideBarContent">
+  <div class="BarContent">
+    <div class="Title" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent>
+      <a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" title="<%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%>" $contextMenuEvent><%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%></a>
     </div>
-    <div class="NodeGroup">
-      <%
-      	writeNodes(treeNodeRoot);
-      	//re-initialize action
-	 					uicomponent.getWorkingArea().initialize();
-       if(uicomponent.isPaginated(treeNodeRoot)) {%>
-       			<div class="Node PageIterator">
-       				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNodeRoot.getPath())); %>
-       			</div>       	
-				<%}
-			%>
-    </div>
-  </div>   	    
+  	<a href="<%=uicomponent.event("ShowDrivesArea")%>"><div class="DriversButton" title="Drivers"><span></span></div></a>
+  	<div class="ClearLeft"><span></span></div>
+  </div>
+  <div class="SideContent">
+	  <div class="UITreeExplorer" id="UITreeExplorer">
+		  <div style="white-space: nowrap; -moz-user-select: none;">
+		    <div class="NodeGroup">
+		      <%
+		      	writeNodes(treeNodeRoot);
+		      	//re-initialize action
+			 					uicomponent.getWorkingArea().initialize();
+		       if(uicomponent.isPaginated(treeNodeRoot)) {%>
+		       			<div class="Node PageIterator">
+		       				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNodeRoot.getPath())); %>
+		       			</div>       	
+						<%}
+					%>
+		    </div>
+		  </div>   	    
+		</div>
+  </div>
 </div>

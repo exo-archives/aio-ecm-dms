@@ -16,8 +16,6 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 
-import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
-import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.UIJcrExplorerContainer;
@@ -42,17 +40,18 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UISideBar.RelationActionListener.class),
         @EventConfig(listeners = UISideBar.TagExplorerActionListener.class),
         @EventConfig(listeners = UISideBar.ClipboardActionListener.class),
-        @EventConfig(listeners = UISideBar.ShowDrivesAreaActionListener.class)
+        @EventConfig(listeners = UISideBar.SavedSearchesActionListener.class)
     }
 )
 public class UISideBar extends UIContainer {
   private String currentComp = "Explorer";
   
   public UISideBar() throws Exception {
-    addChild(UITreeExplorer.class, null, null).getId() ;
+    addChild(UITreeExplorer.class, null, null) ;
     addChild(UIViewRelationList.class, null, null).setRendered(false) ;
     addChild(UITagExplorer.class, null, null).setRendered(false) ;
     addChild(UIClipboard.class, null, null).setRendered(false) ;
+    addChild(UISavedSearches.class, null, null).setRendered(false);
   }
   
   public String getCurrentComp() { return currentComp ; }
@@ -120,14 +119,12 @@ public class UISideBar extends UIContainer {
     }
   }
   
-  static public class ShowDrivesAreaActionListener extends EventListener<UISideBar> {
+  static public class SavedSearchesActionListener extends EventListener<UISideBar> {
     public void execute(Event<UISideBar> event) throws Exception {
       UISideBar uiSideBar = event.getSource() ;
-      UIWorkingArea uiWorkingArea = uiSideBar.getParent();
-      uiWorkingArea.getChild(UIDrivesArea.class).setRendered(true);
-      uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(false);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
+      uiSideBar.currentComp = "SavedSearches" ;
+      uiSideBar.setRenderedChild(UISavedSearches.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
     }
   }  
-  
 }

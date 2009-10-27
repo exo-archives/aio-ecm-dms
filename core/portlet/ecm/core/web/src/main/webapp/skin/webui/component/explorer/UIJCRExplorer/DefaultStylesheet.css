@@ -1077,13 +1077,14 @@
 	float: right; /* orientation=rt */
 	padding-left: 40px; /* orientation=lt */
 	padding-right: 40px; /* orientation=rt */
-	margin-left: 50px; /* orientation=lt */
-	margin-right: 50px; /* orientation=rt */
+	margin-left: 15px; /* orientation=lt */
+	margin-right: 15px; /* orientation=rt */
 	height: 23px;
+	margin-top: 10px;
 	line-height: 18px;
 }
 
-.UIJCRExplorer .UIDrivesArea .IconDrivesSys{
+.UIJCRExplorer .UIDrivesArea .IconDrivessystem{
 	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left top;
 }
 
@@ -1104,11 +1105,11 @@
 	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -84px;
 }
 
-.UIJCRExplorer .UIDrivesArea .IconDrivesLock{
+.UIJCRExplorer .UIDrivesArea .IconDrivesPrivate{
 	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -108px;
 }
 
-.UIJCRExplorer .UIDrivesArea .IconDrivesUnlock{
+.UIJCRExplorer .UIDrivesArea .IconDrivesPublic{
 	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -132px;
 }
 

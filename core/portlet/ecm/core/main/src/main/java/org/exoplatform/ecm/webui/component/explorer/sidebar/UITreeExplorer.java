@@ -31,6 +31,8 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.services.cms.link.LinkManager;
@@ -60,7 +62,8 @@ import org.exoplatform.webui.event.EventListener;
     events = {
         @EventConfig(listeners = UITreeExplorer.ExpandActionListener.class),
         @EventConfig(listeners = UITreeExplorer.CollapseActionListener.class),
-        @EventConfig(listeners = UITreeExplorer.ExpandTreeActionListener.class)
+        @EventConfig(listeners = UITreeExplorer.ExpandTreeActionListener.class),
+        @EventConfig(listeners = UITreeExplorer.ShowDrivesAreaActionListener.class)
     }    
 )
 
@@ -320,5 +323,16 @@ public class UITreeExplorer extends UIContainer {
       uiExplorer.updateAjax(event) ;      
     }
   }
+  
+  
+  static public class ShowDrivesAreaActionListener extends EventListener<UITreeExplorer> {
+    public void execute(Event<UITreeExplorer> event) throws Exception {
+      UITreeExplorer uiTreeExplorer = event.getSource() ;
+      UIWorkingArea uiWorkingArea = uiTreeExplorer.getAncestorOfType(UIWorkingArea.class);
+      uiWorkingArea.getChild(UIDrivesArea.class).setRendered(true);
+      uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(false);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea) ;
+    }
+  }   
   
 }

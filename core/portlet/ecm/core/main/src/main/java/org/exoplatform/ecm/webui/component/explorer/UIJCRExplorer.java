@@ -27,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jcr.Item;
+import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
@@ -466,6 +467,9 @@ public class UIJCRExplorer extends UIContainer {
         Node primaryNode = (Node) primaryItem ;
         if(primaryNode.isNodeType(nodeType)) return primaryNode ;
       }
+    } catch(ItemNotFoundException item) {
+      LOG.error("Primary item not found for " + getCurrentNode().getPath());      
+      return getCurrentNode() ;
     } catch(Exception e) { 
       LOG.error("The node cannot be seen", e);      
       return getCurrentNode() ;

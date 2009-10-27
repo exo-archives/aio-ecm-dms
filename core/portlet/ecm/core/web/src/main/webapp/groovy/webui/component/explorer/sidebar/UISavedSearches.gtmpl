@@ -1,0 +1,12 @@
+<div class="SideBarContent">
+  <div class="BarContent">
+    <div class="Title">Save Searches</div>
+  	<div class="SideGeneratal" title="Saved Searches"><span></span></div>
+  	<div class="ClearLeft"><span></span></div>
+  </div>
+  <div class="SideContent">
+    <div class="ArrowSidContent TextSiderContent">My Document</div>
+  	<div class="ArrowSidContent TextSiderContent">HR Scope</div>
+  	<div class="ArrowSidContent TextSiderContent">Video</div>
+  </div>
+</div>

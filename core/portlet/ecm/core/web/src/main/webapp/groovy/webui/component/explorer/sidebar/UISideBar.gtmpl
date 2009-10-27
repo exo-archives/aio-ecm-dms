@@ -18,16 +18,7 @@
 
   <div class="UISideBarContainer">
   	<div class="UIResizableBlock" style="height: 100%">
-  		<div class="SideBarContent">
-  			<div class="BarContent">
-  				<div class="Title">Colaborations center</div>
-  				<a href="<%=uicomponent.event("ShowDrivesArea")%>"><div class="DriversButton" title="Drivers"><span></span></div></a>
-  				<div class="ClearLeft"><span></span></div>
-  			</div>
-  			<div class="SideContent">
-  	  		<% uicomponent.renderChildren(); %>
-  	  	</div>
-  	  </div>
+  		<% uicomponent.renderChildren(); %>
   	  <div class="ResizeTreeExplorer">
 				<div class="ResizeTreeButton"><span></span></div>
 			</div>
@@ -55,18 +46,6 @@
   	  		<div class="ArrowSidContent TextSiderContent">Videos</div>
   	  	</div>
   	  </div>
-  	  <div class="SideBarContent">
-  			<div class="BarContent">
-  				<div class="Title">Save Searches</div>
-  				<div class="SideGeneratal" title="Generatal"><span></span></div>
-  				<div class="ClearLeft"><span></span></div>
-  			</div>
-  			<div class="SideContent">
-  	  		<div class="ArrowSidContent TextSiderContent">My Document</div>
-  	  		<div class="ArrowSidContent TextSiderContent">HR Scope</div>
-  	  		<div class="ArrowSidContent TextSiderContent">Video</div>
-  	  	</div>
-  	  </div>
   	</div>
   	
 	  <div class="UISelectContent">
@@ -84,7 +63,7 @@
 	    <div class="<%=getCSSClassName("TagExplorer")%>" onclick="<%=uicomponent.event("TagExplorer")%>" title="<%=_ctx.appRes("UISideBar.label.TagExplorer")%>">
 	      <div class="ItemIcon TagExplorerIcon"><span></span></div>
       </div>
-      <div class="<%=getCSSClassName("SideGeneratal")%>" onclick="<%=uicomponent.event("SideGeneratal")%>" title="<%=_ctx.appRes("UISideBar.label.SideGeneratal")%>">
+      <div class="<%=getCSSClassName("SavedSearches")%>" onclick="<%=uicomponent.event("SavedSearches")%>" title="<%=_ctx.appRes("UISideBar.label.SavedSearches")%>">
 	      <div class="ItemIcon SideGeneratal"><span></span></div>
       </div>
 	  </div>
