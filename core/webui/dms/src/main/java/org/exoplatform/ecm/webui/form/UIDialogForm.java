@@ -336,6 +336,10 @@ public class UIDialogForm extends UIForm {
     String defaultValue = formCheckBoxField.getDefaultValue();
     JcrInputProperty inputProperty = new JcrInputProperty();
     inputProperty.setJcrPath(jcrPath);
+    setInputProperty(name, inputProperty);
+    String propertyName = getPropertyName(jcrPath);
+    propertiesName.put(name, propertyName);
+    fieldNames.put(propertyName, name);
     UIFormCheckBoxInput uiCheckBoxInput = findComponentById(name);
     if(uiCheckBoxInput == null){
       uiCheckBoxInput = new UIFormCheckBoxInput(name, name, null);

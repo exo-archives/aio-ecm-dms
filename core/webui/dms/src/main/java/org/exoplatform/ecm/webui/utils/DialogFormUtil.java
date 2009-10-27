@@ -16,12 +16,12 @@
  */
 package org.exoplatform.ecm.webui.utils;
 
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Property;
@@ -32,6 +32,7 @@ import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.form.validator.RepeatCountValidator;
 import org.exoplatform.ecm.webui.form.validator.RepeatIntervalValidator;
 import org.exoplatform.services.cms.JcrInputProperty;
+import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormDateTimeInput;
 import org.exoplatform.webui.form.UIFormInputBase;
 import org.exoplatform.webui.form.UIFormMultiValueInputSet;
@@ -61,6 +62,7 @@ public class DialogFormUtil {
    * @return the map< string, jcr input property>
    * @throws Exception the exception
    */
+  @SuppressWarnings("unchecked")
   public static Map<String, JcrInputProperty> prepareMap(List inputs, Map properties) throws Exception {
     Map<String, JcrInputProperty> rawinputs = new HashMap<String, JcrInputProperty>();
     HashMap<String, JcrInputProperty> hasMap = new HashMap<String, JcrInputProperty>() ;
@@ -81,7 +83,7 @@ public class DialogFormUtil {
         property = (JcrInputProperty) properties.get(input.getName());
         if(property != null) {
           if (input instanceof UIFormUploadInput) {
-            byte[] content = ((UIFormUploadInput) input).getUploadData() ; 
+            InputStream content = ((UIFormUploadInput) input).getUploadDataAsStream() ; 
             property.setValue(content);
           } else if(input instanceof UIFormDateTimeInput) {
             property.setValue(((UIFormDateTimeInput)input).getCalendar()) ;
@@ -92,6 +94,8 @@ public class DialogFormUtil {
             }else {
               property.setValue(uiSelectBox.getSelectedValues());
             }
+          } else if(input instanceof UIFormCheckBoxInput) {
+            property.setValue(((UIFormCheckBoxInput)input).isChecked()) ;
           } else {
             property.setValue(input.getValue()) ;
           }
@@ -118,6 +122,7 @@ public class DialogFormUtil {
    * @return the t
    * @throws Exception the exception
    */
+  @SuppressWarnings("unchecked")
   public static <T extends UIFormInputBase> T createFormInput(Class<T> type,String name, String label, 
       String validateType, Class valueType) throws Exception {
     Object[] args= {name, null, valueType };
@@ -193,6 +198,7 @@ public class DialogFormUtil {
       return cl.loadClass(validatorType);
     }
   }
+  @SuppressWarnings("unchecked")
   public static void addValidators(UIFormInputBase uiInput, String validators) throws Exception {
     String[] validatorList = null;
     if (validators.indexOf(',') > -1) validatorList = validators.split(",");
