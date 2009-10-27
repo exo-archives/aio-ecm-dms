@@ -17,12 +17,15 @@
 package org.exoplatform.services.cms.drives.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.Session;
 
+import org.exoplatform.services.cache.CacheService;
+import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
@@ -46,6 +49,15 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
    */
   private static String WORKSPACE = "exo:workspace".intern() ;
   
+  private static String ALL_DRIVES_CACHED = "allDrives".intern();
+  
+  private static String ALL_DRIVES_CACHED_BY_ROLES = "allDrivesByRoles".intern();
+  
+  private static String ALL_MAIN_CACHED_DRIVE = "mainDrives".intern();
+  
+  private static String ALL_PERSONAL_CACHED_DRIVE = "personalDrives".intern();
+  
+  private static String ALL_GROUP_CACHED_DRIVES = "groupDrives".intern();
   /**
    * Name of property PERMISSIONS
    */
@@ -112,6 +124,11 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
   private NodeHierarchyCreator nodeHierarchyCreator_ ;
   
   private DMSConfiguration dmsConfiguration_;
+  
+  /**
+   * Keep the drives of repository
+   */
+  private ExoCache drivesCache_ ;
 
   /**
    * Constructor method
@@ -121,11 +138,13 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
    * @throws Exception
    */
   public ManageDriveServiceImpl(RepositoryService jcrService, 
-      NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration) throws Exception{
+      NodeHierarchyCreator nodeHierarchyCreator, DMSConfiguration dmsConfiguration, 
+      CacheService caService) throws Exception{
     repositoryService_ = jcrService ;
     nodeHierarchyCreator_ = nodeHierarchyCreator ;
     baseDrivePath_ = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_DRIVES_PATH);
     dmsConfiguration_ = dmsConfiguration;
+    drivesCache_ = caService.getCacheInstance(ManageDriveService.class.getName());
   }
 
   /**
@@ -166,14 +185,19 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
   /**
    * {@inheritDoc}
    */
+  @SuppressWarnings("unchecked")
   public List<DriveData> getAllDrives(String repository) throws Exception {
+    Object allDrives = drivesCache_.get(ALL_DRIVES_CACHED) ;
+    if(allDrives != null) return (List<DriveData>) allDrives;
     Session session = getSession(repository) ;    
     Node driveHome = (Node)session.getItem(baseDrivePath_);
     NodeIterator itr = driveHome.getNodes() ;
     List<DriveData> driveList = new ArrayList<DriveData>() ;
+    DriveData data = null;
+    Node drive = null;
     while(itr.hasNext()) {
-      DriveData data = new DriveData() ;
-      Node drive = itr.nextNode() ;
+      data = new DriveData() ;
+      drive = itr.nextNode() ;
       data.setName(drive.getName()) ;
       data.setWorkspace(drive.getProperty(WORKSPACE).getString()) ;
       data.setHomePath(drive.getProperty(PATH).getString()) ;
@@ -187,6 +211,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       data.setAllowCreateFolders(drive.getProperty(ALLOW_CREATE_FOLDER).getString()) ;
       driveList.add(data) ;
     }
+    drivesCache_.put(ALL_DRIVES_CACHED, driveList);
     session.logout();
     return driveList ;    
   }
@@ -253,6 +278,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       driveNode.setProperty(SHOW_HIDDEN_NODE, Boolean.toString(showHiddenNode)) ;
       driveNode.save() ;
     }
+    drivesCache_.clearCache();
     session.save() ;
     session.logout();
   }
@@ -288,6 +314,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       driveHome.getNode(driveName).remove() ;
       driveHome.save() ;
     }
+    drivesCache_.clearCache();
     session.logout();
   } 
 
@@ -322,5 +349,117 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
     }
     session.logout();
     return false;
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<DriveData> getDriveByUserRoles(String repository, String userId, List<String> userRoles) throws Exception {
+    Object drivesByRoles = drivesCache_.get(ALL_DRIVES_CACHED_BY_ROLES);
+    if(drivesByRoles != null) return (List<DriveData>) drivesByRoles;
+    List<DriveData> driveList = new ArrayList<DriveData>();
+    if (userId != null) {
+      // We will improve ManageDrive service to allow getAllDriveByUser
+      for (DriveData drive : getAllDrives(repository)) {
+        String[] allPermission = drive.getAllPermissions();
+        boolean flag = false;
+        for (String permission : allPermission) {
+          if (permission.equalsIgnoreCase("${userId}")) {
+            driveList.add(drive);
+            flag = true;
+            break;
+          }
+          if (permission.equalsIgnoreCase("*")) {
+            driveList.add(drive);
+            flag = true;
+            break;
+          }
+          if (flag)
+            continue;
+          for (String rolse : userRoles) {
+            if (drive.hasPermission(allPermission, rolse)) {
+              driveList.add(drive);
+              break;
+            }
+          }
+        }
+      }
+    } else {
+      for (DriveData drive : getAllDrives(repository)) {
+        String[] allPermission = drive.getAllPermissions();
+        for (String permission : allPermission) {
+          if (permission.equalsIgnoreCase("*")) {
+            driveList.add(drive);
+            break;
+          }
+        }
+      }
+    }
+    Collections.sort(driveList);
+    drivesCache_.put(ALL_DRIVES_CACHED_BY_ROLES, driveList);
+    return driveList;
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<DriveData> getGroupDrives(String repository, String userId, List<String> userRoles, 
+      List<String> groups) throws Exception {
+    Object drives = drivesCache_.get(ALL_GROUP_CACHED_DRIVES);
+    if(drives != null) return (List<DriveData>) drives;
+    List<DriveData> groupDrives = new ArrayList<DriveData>();
+    String groupPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_GROUPS_PATH);
+    for(DriveData drive : getDriveByUserRoles(repository, userId, userRoles)) {
+      if(drive.getHomePath().startsWith(groupPath)) {
+        for(String group : groups) {
+          if(drive.getHomePath().equals(groupPath + group)) {
+            groupDrives.add(drive);
+            break;
+          }
+        }
+        for(String permission : drive.getAllPermissions()) {
+          String[] arrPer = permission.split(":/");
+          if(groups.contains("/" + arrPer[1]) && !groupDrives.contains(drive)) {
+            groupDrives.add(drive);
+            break;
+          }
+        }
+      } 
+    }
+    Collections.sort(groupDrives);
+    drivesCache_.put(ALL_GROUP_CACHED_DRIVES, groupDrives);
+    return groupDrives;
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<DriveData> getMainDrives(String repository, String userId, 
+      List<String> userRoles) throws Exception {
+    Object drives = drivesCache_.get(ALL_MAIN_CACHED_DRIVE);
+    if(drives != null) return (List<DriveData>) drives;
+    List<DriveData> generalDrives = new ArrayList<DriveData>();
+    String userPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_USERS_PATH);
+    String groupPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_GROUPS_PATH);
+    for(DriveData drive : getDriveByUserRoles(repository, userId, userRoles)) {
+      if((!drive.getHomePath().startsWith(userPath) && !drive.getHomePath().startsWith(groupPath)) 
+          || drive.getHomePath().equals(userPath)) {
+        generalDrives.add(drive);
+      }
+    }
+    Collections.sort(generalDrives);
+    drivesCache_.put(ALL_MAIN_CACHED_DRIVE, generalDrives);
+    return generalDrives;
+  }
+
+  @SuppressWarnings("unchecked")
+  public List<DriveData> getPersonalDrives(String repository, String userId, 
+      List<String> userRoles) throws Exception {
+    Object drives = drivesCache_.get(ALL_PERSONAL_CACHED_DRIVE);
+    if(drives != null) return (List<DriveData>) drives;
+    List<DriveData> personalDrives = new ArrayList<DriveData>();
+    String userPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_USERS_PATH);
+    for(DriveData drive : getDriveByUserRoles(repository, userId, userRoles)) {
+      if(drive.getHomePath().startsWith(userPath + "/${userId}/")) {
+        personalDrives.add(drive);
+      }
+    }
+    Collections.sort(personalDrives);
+    drivesCache_.put(ALL_PERSONAL_CACHED_DRIVE, personalDrives);
+    return personalDrives;
   }
 }

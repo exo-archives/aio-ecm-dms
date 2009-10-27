@@ -99,4 +99,48 @@ public interface ManageDriveService {
    */
   public void init(String repository) throws Exception; 
   
+  /**
+   * Get all drives by user roles
+   * @param repository Repository name
+   * @param userId User name
+   * @param roles Roles of user
+   * @return List<DriveData>
+   * @throws Exception
+   */
+  public List<DriveData> getDriveByUserRoles(String repository, String userId, 
+      List<String> roles) throws Exception;
+  
+  /**
+   * Get all main drives
+   * @param repository Repository name
+   * @param userId Name of user
+   * @param userRoles Roles of user
+   * @return List<DriveData>
+   * @throws Exception
+   */
+  public List<DriveData> getMainDrives(String repository, String userId, 
+      List<String> userRoles) throws Exception;
+  
+  /**
+   * Get all personal drives
+   * @param repository Repository name
+   * @param userId Name of user
+   * @param userRoles Roles of user
+   * @return List<DriveData>
+   * @throws Exception
+   */
+  public List<DriveData> getPersonalDrives(String repository, String userId, 
+      List<String> userRoles) throws Exception;
+  
+  /**
+   * Get all group drives
+   * @param repository Repository name
+   * @param userId Name of user
+   * @param userRoles Roles of user
+   * @param groups Groups of user
+   * @return List<DriveData>
+   * @throws Exception
+   */
+  public List<DriveData> getGroupDrives(String repository, String userId, List<String> userRoles, 
+      List<String> groups) throws Exception;
 }
