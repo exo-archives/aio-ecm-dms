@@ -17,11 +17,7 @@
 package org.exoplatform.ecm.webui.component.explorer;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.NoSuchWorkspaceException;
@@ -39,7 +35,6 @@ import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
-import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.views.ManageViewService;
@@ -47,7 +42,6 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -71,7 +65,6 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIDrivesBrowser.SelectDriveActionListener.class)
       }
 )
-
 
 public class UIDrivesBrowser extends UIContainer {
   final public static String FIELD_SELECTREPO = "selectRepo" ; 
@@ -101,110 +94,26 @@ public class UIDrivesBrowser extends UIContainer {
   
   public void setRepository(String repoName) {repoName_ = repoName; }  
   
-  @SuppressWarnings("unchecked")
-  public List<DriveData> getDrives(String repoName) throws Exception {    
+  public List<DriveData> generalDrives() throws Exception {
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class);      
-    List<DriveData> driveList = new ArrayList<DriveData>();    
     List<String> userRoles = Utils.getMemberships();    
-    List<DriveData> allDrives = driveService.getAllDrives(repoName);
-    Set<DriveData> temp = new HashSet<DriveData>();
     String userId = Util.getPortalRequestContext().getRemoteUser();
-    if (userId != null) {
-      // We will improve ManageDrive service to allow getAllDriveByUser
-      for (DriveData driveData : allDrives) {
-        String[] allPermission = driveData.getAllPermissions();
-        boolean flag = false;
-        for (String permission : allPermission) {
-          if (permission.equalsIgnoreCase("${userId}")) {
-            temp.add(driveData);
-            flag = true;
-            break;
-          }
-          if (permission.equalsIgnoreCase("*")) {
-            temp.add(driveData);
-            flag = true;
-            break;
-          }
-          if (flag)
-            continue;
-          for (String rolse : userRoles) {
-            if (driveData.hasPermission(allPermission, rolse)) {
-              temp.add(driveData);
-              break;
-            }
-          }
-        }
-      }
-    } else {
-      for (DriveData driveData : allDrives) {
-        String[] allPermission = driveData.getAllPermissions();
-        for (String permission : allPermission) {
-          if (permission.equalsIgnoreCase("*")) {
-            temp.add(driveData);
-            break;
-          }
-        }
-      }
-    }
-    
-    for(Iterator<DriveData> iterator = temp.iterator();iterator.hasNext();) {
-      driveList.add(iterator.next());
-    }
-    Collections.sort(driveList);
-    return driveList; 
+    return driveService.getMainDrives(repoName_, userId, userRoles);
   }
   
-  public List<DriveData> generalDrives(List<DriveData> driveList) throws Exception {
-    List<DriveData> generalDrives = new ArrayList<DriveData>();
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
-    String groupPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_GROUPS_PATH);
-    for(DriveData drive : driveList) {
-      if((!drive.getHomePath().startsWith(userPath) && !drive.getHomePath().startsWith(groupPath)) 
-          || drive.getHomePath().equals(userPath)) {
-        generalDrives.add(drive);
-      }
-    }
-    return generalDrives;
-  }
-  
-  public List<DriveData> groupDrives(List<DriveData> driveList) throws Exception {
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    List<DriveData> groupDrives = new ArrayList<DriveData>();
-    String groupPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_GROUPS_PATH);
+  public List<DriveData> groupDrives() throws Exception {
+    ManageDriveService driveService = getApplicationComponent(ManageDriveService.class);
     List<String> groups = Utils.getGroups();
-    for(DriveData drive : driveList) {
-      if(drive.getHomePath().startsWith(groupPath)) {
-        for(String group : groups) {
-          if(drive.getHomePath().equals(groupPath + group)) {
-            groupDrives.add(drive);
-            break;
-          }
-        }
-        for(String permission : drive.getAllPermissions()) {
-          String[] arrPer = permission.split(":/");
-          if(groups.contains("/" + arrPer[1]) && !groupDrives.contains(drive)) {
-            groupDrives.add(drive);
-            break;
-          }
-        }
-      } 
-    }
-    Collections.sort(groupDrives);
-    return groupDrives;
+    List<String> userRoles = Utils.getMemberships();    
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    return driveService.getGroupDrives(repoName_, userId, userRoles, groups);
   }
   
-  public List<DriveData> personalDrives(List<DriveData> driveList) {
-    List<DriveData> personalDrives = new ArrayList<DriveData>();
-    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
-    String userPath = nodeHierarchyCreator.getJcrPath(BasePath.CMS_USERS_PATH);
-    for(DriveData drive : driveList) {
-      if(drive.getHomePath().startsWith(userPath + "/${userId}/")) {
-        personalDrives.add(drive);
-      }
-    }
-    Collections.sort(personalDrives);
-    return personalDrives;
+  public List<DriveData> personalDrives() throws Exception {
+    ManageDriveService driveService = getApplicationComponent(ManageDriveService.class);      
+    List<String> userRoles = Utils.getMemberships();    
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    return driveService.getPersonalDrives(repoName_, userId, userRoles);
   }
   
   static  public class SelectRepoActionListener extends EventListener<UIDrivesBrowser> {

@@ -6,15 +6,13 @@
   JavascriptManager jsmanager = rcontext.getJavascriptManager();
   
   jsmanager.importJavascript('eXo.webui.UIVerticalSlideTabs');
-  String repoName = uicomponent.getRepository();
-  def driveList = uicomponent.getDrives(uicomponent.getRepository());
 %>
 
 <div class="UIDrivesBrowser" id="<%=uicomponent.getId()%>">
 	<div class="UIDrivesList">
 		<div class="DrivesListContainer" >
 		<%
-      def personalDrives = uicomponent.personalDrives(driveList) ;
+      def personalDrives = uicomponent.personalDrives() ;
 			if(personalDrives.size() > 0) {			
 		%>
 			<div class="DrivesContent">	
@@ -75,7 +73,7 @@
 		  </div>
 		<%}%>
     <%
-      def groupDrives = uicomponent.groupDrives(driveList) ;
+      def groupDrives = uicomponent.groupDrives() ;
       if(groupDrives.size() > 0) {
     %>
       <div class="DrivesContent">	
@@ -156,7 +154,7 @@
 			      <div class="DecoratorMiddleRight">
 			        <div class="DecoratorMiddle">
 			          <%
-			            def drives = uicomponent.generalDrives(driveList) ;
+			            def drives = uicomponent.generalDrives() ;
 			            if(drives.size() > 0) {
 			              for(drive in drives) {
 			          %>
