@@ -2652,4 +2652,15 @@
 			<Save>Lưu</Save>
     </action>
   </UISingleAddMetadataForm>
+  
+  <UIPreferencesForm>
+  		<label>
+  				<Alphabetic>Bảng chữ cái</Alphabetic>
+  				<Type>Kiểu</Type>
+  				<CreatedDate>Ngày tạo</CreatedDate>
+  				<ModifiedDate>Ngày cập nhật</ModifiedDate>
+  				<Ascending>Tăng dần</Ascending>
+  				<Descending>Giảm dần</Descending>
+  		</label>
+  </UIPreferencesForm>
 </bundle>

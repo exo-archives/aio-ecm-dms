@@ -2628,5 +2628,16 @@
       <Cancel>Cancel</Cancel>
       <Save>Save</Save>
     </action>
-  </UISingleAddMetadataForm>		
+  </UISingleAddMetadataForm>
+  
+  <UIPreferencesForm>
+  		<label>
+  				<Alphabetic>Alphabetic</Alphabetic>
+  				<Type>Type</Type>
+  				<CreatedDate>Created Date</CreatedDate>
+  				<ModifiedDate>Modified Date</ModifiedDate>
+  				<Ascending>Ascending</Ascending>
+  				<Descending>Descending</Descending>
+  		</label>
+  </UIPreferencesForm>  		
 </bundle>
