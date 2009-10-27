@@ -2520,4 +2520,15 @@
 		  <UIUploadBehaviorWithSameName>Chargement de fichier</UIUploadBehaviorWithSameName>
 	  </title>
 	</SameNamePopup>
+	
+	<UIPreferencesForm>
+  		<label>
+  				<Alphabetic>Alphabétique</Alphabetic>
+  				<Type>Type</Type>
+  				<CreatedDate>Date de création</CreatedDate>
+  				<ModifiedDate>Date de modification</ModifiedDate>
+  				<Ascending>Ascendant</Ascending>
+  				<Descending>Descendant</Descending>
+  		</label>
+  </UIPreferencesForm>
 </bundle>
