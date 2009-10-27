@@ -334,6 +334,8 @@
 	margin: 0px 0px 0px 295px; /* orientation=rt */
 	padding-left: 85px; /* orientation=lt */
 	padding-right: 85px; /* orientation=rt */
+	_padding-left: 15px; /* orientation=lt */
+	_padding-right: 15px; /* orientation=rt */
 	white-space: nowrap; 
 	cursor: pointer;
 }
@@ -414,6 +416,8 @@
 	margin-right:70px; /* orientation=rt */
 	padding-left:30px; /* orientation=lt */
 	padding-right:30px; /* orientation=rt */
+	_margin-left:10px; /* orientation=lt */
+	_margin-right:10px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UITimelineView .IconPic{
@@ -1064,6 +1068,7 @@
 	text-transform: uppercase;
 	padding-left: 15px;
 	line-height: 5px;
+	_line-height: 15px;
 	margin-bottom:10px;
 }
 
@@ -1075,7 +1080,7 @@
 	margin-left: 50px; /* orientation=lt */
 	margin-right: 50px; /* orientation=rt */
 	height: 23px;
-	line-height: 23px;
+	line-height: 18px;
 }
 
 .UIJCRExplorer .UIDrivesArea .IconDrivesSys{
