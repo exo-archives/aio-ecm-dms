@@ -314,7 +314,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
     Node selectedNode = uiExplorer.getCurrentNode();
     if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true") && 
-        getListTaxonomy().size() == 0 && !uiExplorer.getCurrentNode().hasNode(JCRCONTENT)) {
+        getMapTaxonomies().size() == 0 && !uiExplorer.getCurrentNode().hasNode(JCRCONTENT)) {
       uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.taxonomyPath-error", null, 
           ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
