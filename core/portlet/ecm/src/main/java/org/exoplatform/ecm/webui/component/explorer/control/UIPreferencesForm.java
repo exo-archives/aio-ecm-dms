@@ -18,10 +18,12 @@ package org.exoplatform.ecm.webui.component.explorer.control;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIPopupComponent;
@@ -67,23 +69,39 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
   final static public String NODES_PER_PAGE         = "nodesPerPage".intern();
 
   public UIPreferencesForm() throws Exception {
-
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    String sortByNodeName;
+    String sortByNodeType;
+    String sortByCreatedDate;
+    String sortByModifiedDate;
+    String ascendingOrder;
+    String descendingOrder;
+    try {
+      sortByNodeName = res.getString("UIPreferencesForm.label." + Preference.SORT_BY_NODENAME);
+      sortByNodeType = res.getString("UIPreferencesForm.label." + Preference.SORT_BY_NODETYPE);
+      sortByCreatedDate = res.getString("UIPreferencesForm.label." + Preference.SORT_BY_CREATED_DATE);
+      sortByModifiedDate = res.getString("UIPreferencesForm.label." + Preference.SORT_BY_MODIFIED_DATE);
+      ascendingOrder = res.getString("UIPreferencesForm.label." + Preference.ASCENDING_ORDER);
+      descendingOrder = res.getString("UIPreferencesForm.label." + Preference.DESCENDING_ORDER);
+    } catch (Exception e) {
+      sortByNodeName = Preference.SORT_BY_NODENAME;
+      sortByNodeType = Preference.SORT_BY_NODETYPE;
+      sortByCreatedDate = Preference.SORT_BY_CREATED_DATE;
+      sortByModifiedDate = Preference.SORT_BY_MODIFIED_DATE;
+      ascendingOrder = Preference.ASCENDING_ORDER;
+      descendingOrder = Preference.DESCENDING_ORDER;
+    }
     List<SelectItemOption<String>> sortOptions = new ArrayList<SelectItemOption<String>>();
-    sortOptions.add(new SelectItemOption<String>(Preference.SORT_BY_NODENAME,
-        Preference.SORT_BY_NODENAME));
-    sortOptions.add(new SelectItemOption<String>(Preference.SORT_BY_NODETYPE,
-        Preference.SORT_BY_NODETYPE));
-    sortOptions.add(new SelectItemOption<String>(Preference.SORT_BY_CREATED_DATE,
-        Preference.SORT_BY_CREATED_DATE));
-    sortOptions.add(new SelectItemOption<String>(Preference.SORT_BY_MODIFIED_DATE,
-        Preference.SORT_BY_MODIFIED_DATE));
+    sortOptions.add(new SelectItemOption<String>(sortByNodeName, Preference.SORT_BY_NODENAME));
+    sortOptions.add(new SelectItemOption<String>(sortByNodeType, Preference.SORT_BY_NODETYPE));
+    sortOptions.add(new SelectItemOption<String>(sortByCreatedDate, Preference.SORT_BY_CREATED_DATE));
+    sortOptions.add(new SelectItemOption<String>(sortByModifiedDate, Preference.SORT_BY_MODIFIED_DATE));
 
     List<SelectItemOption<String>> orderOption = new ArrayList<SelectItemOption<String>>();
-    orderOption.add(new SelectItemOption<String>(Preference.ASCENDING_ORDER,
-        Preference.ASCENDING_ORDER));
-    orderOption.add(new SelectItemOption<String>(Preference.DESCENDING_ORDER,
-        Preference.DESCENDING_ORDER));
-
+    orderOption.add(new SelectItemOption<String>(ascendingOrder, Preference.ASCENDING_ORDER));
+    orderOption.add(new SelectItemOption<String>(descendingOrder, Preference.DESCENDING_ORDER));
+    
     List<SelectItemOption<String>> nodesPerPagesOptions = new ArrayList<SelectItemOption<String>>();
     nodesPerPagesOptions.add(new SelectItemOption<String>("5", "5"));
     nodesPerPagesOptions.add(new SelectItemOption<String>("10", "10"));

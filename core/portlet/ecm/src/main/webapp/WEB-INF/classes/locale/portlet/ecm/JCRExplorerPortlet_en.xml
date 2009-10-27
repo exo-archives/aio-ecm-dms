@@ -2274,4 +2274,14 @@
 	  </title>
 	</SameNamePopup>	  
  
+ <UIPreferencesForm>
+  		<label>
+  				<Alphabetic>Alphabetic</Alphabetic>
+  				<Type>Type</Type>
+  				<CreatedDate>Created Date</CreatedDate>
+  				<ModifiedDate>Modified Date</ModifiedDate>
+  				<Ascending>Ascending</Ascending>
+  				<Descending>Descending</Descending>
+  		</label>
+  </UIPreferencesForm>
 </bundle>

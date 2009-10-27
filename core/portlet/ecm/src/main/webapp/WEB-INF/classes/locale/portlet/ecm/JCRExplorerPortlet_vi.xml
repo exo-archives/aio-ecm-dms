@@ -2271,5 +2271,16 @@
 	  <title>
 		  <UIUploadBehaviorWithSameName>Tải dữ liệu lên</UIUploadBehaviorWithSameName>
 	  </title>
-	</SameNamePopup>	 
+	</SameNamePopup>
+	
+	<UIPreferencesForm>
+  		<label>
+  				<Alphabetic>Bảng chữ cái</Alphabetic>
+  				<Type>Kiểu</Type>
+  				<CreatedDate>Ngày tạo</CreatedDate>
+  				<ModifiedDate>Ngày cập nhật</ModifiedDate>
+  				<Ascending>Tăng dần</Ascending>
+  				<Descending>Giảm dần</Descending>
+  		</label>
+ </UIPreferencesForm>	 
 </bundle>
