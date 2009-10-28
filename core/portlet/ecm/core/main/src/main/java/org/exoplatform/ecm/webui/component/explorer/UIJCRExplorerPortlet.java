@@ -343,7 +343,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     uiJCRExplorer.setRendered(true);
     explorerContainer.getChild(UIDrivesBrowserContainer.class).setRendered(false);
     
-    
+   
   }
   
   public String getPreferenceRepository() {
@@ -351,5 +351,23 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
     String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
     return repository ;
+  }
+  
+  public String getPreferenceTrashHomeNodePath() {
+	  return getPortletPreferences().getValue(Utils.TRASH_HOME_NODE_PATH, "");
+  }
+  
+  public String getPreferenceTrashRepository() {
+	  return getPortletPreferences().getValue(Utils.TRASH_REPOSITORY, "");
+  }
+  
+  public String getPreferenceTrashWorkspace() {
+	  return getPortletPreferences().getValue(Utils.TRASH_WORKSPACE, "");
+  }
+  
+  public PortletPreferences getPortletPreferences() {
+	  PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+	  PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+	  return portletPref;
   }
 }

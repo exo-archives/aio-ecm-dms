@@ -403,16 +403,60 @@
 				<set-method>registerUIExtensionPlugin</set-method>
 				<type>org.exoplatform.webui.ext.UIExtensionPlugin</type>
 				<init-params>
+				
 					<object-param>
-						<name>Copy</name>
+						<name>AddToFavourite</name>
 						<object type="org.exoplatform.webui.ext.UIExtension">
 							<field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
-							<field name="rank"><int>110</int></field>
-							<field name="name"><string>Copy</string></field>
+							<field name="rank"><int>106</int></field>
+							<field name="name"><string>AddToFavourite</string></field>
 							<field name="category"><string>ItemContextMenu</string></field>
-							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.CopyManageComponent</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.FavouriteManageComponent</string></field>
 						</object>
 					</object-param>
+          <object-param>
+            <name>RemoveFromFavourite</name>
+            <object type="org.exoplatform.webui.ext.UIExtension">
+              <field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+              <field name="rank"><int>107</int></field>
+              <field name="name"><string>RemoveFromFavourite</string></field>
+              <field name="category"><string>ItemContextMenu</string></field>
+              <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.RemoveFavouriteManageComponent</string></field>
+            </object>
+          </object-param>
+          <object-param>
+            <name>MoveToTrash</name>
+            <object type="org.exoplatform.webui.ext.UIExtension">
+              <field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+              <field name="rank"><int>108</int></field>
+              <field name="name"><string>MoveToTrash</string></field>
+              <field name="category"><string>ItemContextMenu</string></field>
+              <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.TrashManageComponent</string></field>
+            </object>
+          </object-param>
+          <object-param>
+            <name>RestoreFromTrash</name>
+            <object type="org.exoplatform.webui.ext.UIExtension">
+              <field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+              <field name="rank"><int>109</int></field>
+              <field name="name"><string>RestoreFromTrash</string></field>
+              <field name="category"><string>ItemContextMenu</string></field>
+              <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.RestoreFromTrashManageComponent</string></field>
+            </object>
+          </object-param>
+					
+					
+					
+          <object-param>
+            <name>Copy</name>
+            <object type="org.exoplatform.webui.ext.UIExtension">
+              <field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+              <field name="rank"><int>110</int></field>
+              <field name="name"><string>Copy</string></field>
+              <field name="category"><string>ItemContextMenu</string></field>
+              <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.CopyManageComponent</string></field>
+            </object>
+          </object-param>
 					<object-param>
 						<name>EditDocument</name>
 						<object type="org.exoplatform.webui.ext.UIExtension">

@@ -104,6 +104,7 @@ public class Utils {
   final public static String SLASH = "/".intern();
   final public static String BACKSLASH = "\\".intern();
   final public static String EXO_CREATED_DATE = "exo:dateCreated";
+  final public static String EXO_DATETIME = "exo:datetime";
   final public static String EXO_MODIFIED_DATE = "exo:dateModified";
   final public static String EXO_OWNER = "exo:owner";
 
@@ -113,6 +114,9 @@ public class Utils {
   final public static String REPOSITORY = "repository".intern();
   final public static String VIEWS = "views".intern();
   final public static String DRIVE = "drive".intern();
+  final static public String TRASH_HOME_NODE_PATH = "trashHomeNodePath".intern();
+  final static public String TRASH_REPOSITORY = "trashRepository".intern();
+  final static public String TRASH_WORKSPACE = "trashWorkspace".intern();
   final public static String JCR_INFO = "jcrInfo";
   final static public String NT_UNSTRUCTURED = "nt:unstructured";
   final static public String NT_FILE = "nt:file";
@@ -130,6 +134,7 @@ public class Utils {
   final static public String MIX_REFERENCEABLE = "mix:referenceable";
   final static public String MIX_VERSIONABLE = "mix:versionable";
   final static public String NT_RESOURCE = "nt:resource";
+  final static public String NT_BASE = "nt:base";
   final static public String DEFAULT = "default";
   final static public String JCR_CONTENT = "jcr:content";
   final static public String JCR_MIMETYPE = "jcr:mimeType";
@@ -137,6 +142,7 @@ public class Utils {
   final public static String JCR_LASTMODIFIED = "jcr:lastModified";
   final public static String JCR_PRIMARYTYPE = "jcr:primaryType";
   final static public String JCR_DATA = "jcr:data";
+  final static public String JCR_SCORE = "jcr:score";
   final static public String EXO_ROLES = "exo:roles";
   final static public String EXO_TEMPLATEFILE = "exo:templateFile";
   final static public String EXO_TEMPLATE = "exo:template";
@@ -146,6 +152,10 @@ public class Utils {
   final static public String EXO_CATEGORY = "exo:category";
   final static public String EXO_HIDDENABLE = "exo:hiddenable";
   final static public String EXO_ACCESSPERMISSION = "exo:accessPermissions";
+  final static public String EXO_FAVOURITE = "exo:favourite";
+  final static public String EXO_FAVOURITER = "exo:favouriter";
+  final static public String EXO_RESTOREPATH = "exo:restorePath";
+  final static public String EXO_RESTORELOCATION = "exo:restoreLocation";
 
   final static public String EXO_MUSICFOLDER = "exo:musicFolder";
   final static public String EXO_VIDEOFOLDER = "exo:videoFolder";

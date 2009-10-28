@@ -18,6 +18,7 @@ package org.exoplatform.services.cms.timeline.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -48,10 +49,17 @@ import org.exoplatform.services.log.ExoLogger;
 public class TimelineServiceImpl implements TimelineService {
 
   private static final Log LOG = ExoLogger.getLogger("cms.timeline.TimelineServiceImpl");
-  private static final String EXO_DATE_MODIFIED = "exo:dateModified";
-  private static final String SELECT_QUERY = "SELECT * FROM nt:base WHERE ";
+  private static final String EXO_DATETIME = "exo:datetime";
+  private static final String EXO_MODIFIED_DATE = "exo:dateModified";  
+  private static final String SELECT_QUERY = "SELECT * FROM " + EXO_DATETIME + " WHERE ";
+  private static final String TIME_FORMAT_TAIL = "T00:00:00.000+07:00";
+  private static final SimpleDateFormat formatDateTime = new SimpleDateFormat();
   private RepositoryService repositoryService_;
   private TemplateService templateService_;
+  
+  static {
+	  formatDateTime.applyPattern("yyyy-MM-dd");	  
+  }
   
   public TimelineServiceImpl(RepositoryService repoService, TemplateService templateService
       ) throws Exception {
@@ -62,10 +70,56 @@ public class TimelineServiceImpl implements TimelineService {
   /**
    * {@inheritDoc}
    */
+  public List<Node> getDocumentsOfEarlierThisYear(String repository, String workspace, 
+      SessionProvider sessionProvider, String userName) throws Exception {
+
+	  List<Node> documentsOfYear = new ArrayList<Node>();
+	  Session session = getSession(sessionProvider, repository, workspace);
+	  Calendar currentTime = new GregorianCalendar();
+	  String strBeginningOfThisMonthTime = getStrBeginningOfThisMonthTime(currentTime);
+	  String strBeginningOfThisYearTime = getStrBeginningOfThisYearTime(currentTime);	  
+	  StringBuilder sb = new StringBuilder();
+	  sb.append(SELECT_QUERY)
+	  	.append("(" + buildDocumentTypePattern(repository) + ")")
+	  	.append(" AND ")
+	  	.append(" (" + EXO_MODIFIED_DATE + " >= TIMESTAMP '" + strBeginningOfThisYearTime + "')")
+	  	.append(" AND ")
+	  	.append(" (" + EXO_MODIFIED_DATE + " < TIMESTAMP '" + strBeginningOfThisMonthTime + "')");
+
+	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
+	  NodeIterator nodeIter = result.getNodes();
+	  while(nodeIter.hasNext()) {
+		  documentsOfYear.add(nodeIter.nextNode());
+	  }
+	  return documentsOfYear;	  
+  }
+  
+  
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getDocumentsOfEarlierThisMonth(String repository, String workspace, 
       SessionProvider sessionProvider, String userName) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+
+	  List<Node> documentsOfMonth = new ArrayList<Node>();
+	  Session session = getSession(sessionProvider, repository, workspace);
+	  Calendar currentTime = new GregorianCalendar();
+	  String strBeginningOfThisWeekTime = getStrBeginningOfThisWeekTime(currentTime);
+	  String strBeginningOfThisMonthTime = getStrBeginningOfThisMonthTime(currentTime);	  
+	  StringBuilder sb = new StringBuilder();
+	  sb.append(SELECT_QUERY)
+	  	.append("(" + buildDocumentTypePattern(repository) + ")")
+	  	.append(" AND ")
+	  	.append(" (" + EXO_MODIFIED_DATE + " >= TIMESTAMP '" + strBeginningOfThisMonthTime + "')")
+	  	.append(" AND ")
+	  	.append(" (" + EXO_MODIFIED_DATE + " < TIMESTAMP '" + strBeginningOfThisWeekTime + "')");
+
+	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
+	  NodeIterator nodeIter = result.getNodes();
+	  while(nodeIter.hasNext()) {
+		  documentsOfMonth.add(nodeIter.nextNode());
+	  }
+	  return documentsOfMonth;	  
   }
 
   /**
@@ -73,16 +127,53 @@ public class TimelineServiceImpl implements TimelineService {
    */
   public List<Node> getDocumentsOfEarlierThisWeek(String repository, String workspace, 
       SessionProvider sessionProvider, String userName) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+
+	  List<Node> documentsOfWeek = new ArrayList<Node>();
+	  Session session = getSession(sessionProvider, repository, workspace);
+	  Calendar currentTime = new GregorianCalendar();
+	  String strYesterdayTime = getStrYesterdayTime(currentTime);
+	  String strBeginningOfThisWeekTime = getStrBeginningOfThisWeekTime(currentTime);	  
+	  StringBuilder sb = new StringBuilder();
+	  sb.append(SELECT_QUERY)
+	  	.append("(" + buildDocumentTypePattern(repository) + ")")
+	  	.append(" AND ")
+	  	.append(" (" + EXO_MODIFIED_DATE + " >= TIMESTAMP '" + strBeginningOfThisWeekTime + "')")
+	  	.append(" AND ")
+	  	.append(" (" + EXO_MODIFIED_DATE + " < TIMESTAMP '" + strYesterdayTime + "')");
+	  
+	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
+	  NodeIterator nodeIter = result.getNodes();
+	  while(nodeIter.hasNext()) {
+		  documentsOfWeek.add(nodeIter.nextNode());
+	  }
+	  return documentsOfWeek;	  
   }
 
   /**
    * {@inheritDoc}
    */
-  public List<Node> getDocumentsOfEarlierThisYear(String repository, String workspace, 
+  public List<Node> getDocumentsOfYesterday(String repository, String workspace, 
       SessionProvider sessionProvider, String userName) throws Exception {
-    return null;
+	  
+	  List<Node> documentsOfYesterday = new ArrayList<Node>();
+	  Session session = getSession(sessionProvider, repository, workspace);
+	  Calendar currentTime = new GregorianCalendar();
+	  String strTodayTime = getStrTodayTime(currentTime);
+	  String strYesterdayTime = getStrYesterdayTime(currentTime);
+	  StringBuilder sb = new StringBuilder();
+	  sb.append(SELECT_QUERY)
+	  	.append("(" + buildDocumentTypePattern(repository) + ")")
+	  	.append(" AND ")
+	  	.append(" (" + EXO_MODIFIED_DATE + " >= TIMESTAMP '" + strYesterdayTime + "')")
+	  	.append(" AND ")
+	  	.append(" (" + EXO_MODIFIED_DATE + " < TIMESTAMP '" + strTodayTime + "')");
+
+	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
+	  NodeIterator nodeIter = result.getNodes();
+	  while(nodeIter.hasNext()) {
+	  	documentsOfYesterday.add(nodeIter.nextNode());
+	  }
+	  return documentsOfYesterday;
   }
 
   /**
@@ -92,14 +183,14 @@ public class TimelineServiceImpl implements TimelineService {
       SessionProvider sessionProvider, String userName) throws Exception {
     List<Node> documentsOfToday = new ArrayList<Node>();
     Session session = getSession(sessionProvider, repository, workspace);
-    SimpleDateFormat formatDateTime = new SimpleDateFormat();
-    formatDateTime.applyPattern("yyyy-MM-dd");
-    String currentDate = formatDateTime.format((new GregorianCalendar()).getTime());
+    Calendar currentTime = new GregorianCalendar();
+    String strTodayTime = getStrTodayTime(currentTime);
     StringBuilder sb = new StringBuilder();
     sb.append(SELECT_QUERY)
       .append("(" + buildDocumentTypePattern(repository) + ")")
       .append(" AND ")
-      .append(" CONTAINS("+ EXO_DATE_MODIFIED +", '" + currentDate + "')");
+      .append(" (" + EXO_MODIFIED_DATE + " >= TIMESTAMP '" + strTodayTime + "')");
+
     QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
     NodeIterator nodeIter = result.getNodes();
     while(nodeIter.hasNext()) {
@@ -107,16 +198,7 @@ public class TimelineServiceImpl implements TimelineService {
     }
     return documentsOfToday;
   }
-
-  /**
-   * {@inheritDoc}
-   */
-  public List<Node> getDocumentsOfYesterday(String repository, String workspace, 
-      SessionProvider sessionProvider, String userName) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
-  }
-
+  
   /**
    * Create a query statement
    * @param userName Logged in user
@@ -152,5 +234,52 @@ public class TimelineServiceImpl implements TimelineService {
       sb.append("jcr:primaryType='"+documentType+"'");
     }
     return sb.toString();
+  }
+  
+//	Query query = queryManager.createQuery(
+//	"SELECT * FROM " + EXO_DATETIME + " WHERE " + EXO_DATEMODIFIED +
+//	" > TIMESTAMP '2009-11-21T00:00:00.000+07:00'", Query.SQL);  
+  private String getStrTodayTime(Calendar time) {
+    String currentDate = formatDateTime.format(time.getTime());	  
+	return currentDate + TIME_FORMAT_TAIL;
+  }
+
+  private String getStrYesterdayTime(Calendar time) {
+	Calendar yesterday = (Calendar)time.clone();
+	yesterday.add(Calendar.DATE, -1);
+	String yesterdayDate = formatDateTime.format(yesterday.getTime());
+	return yesterdayDate + TIME_FORMAT_TAIL;
+  }
+  
+  private String getStrBeginningOfThisWeekTime(Calendar time) { 
+	  Calendar monday = (Calendar)time.clone();
+	  while (monday.get(Calendar.WEEK_OF_YEAR) == time.get(Calendar.WEEK_OF_YEAR)) {
+		  monday.add(Calendar.DATE, -1);
+	  }
+	  monday.add(Calendar.DATE, 1);
+	  
+	  String mondayDate = formatDateTime.format(monday.getTime());
+	  return mondayDate + TIME_FORMAT_TAIL;
+  }
+  
+  private String getStrBeginningOfThisMonthTime(Calendar time) { 
+	  Calendar theFirst = (Calendar)time.clone();
+	  theFirst.set(time.get(Calendar.YEAR), 
+			       time.get(Calendar.MONTH),
+			       1, 
+			       0, 0, 0);
+	  
+	  String theFirstDate = formatDateTime.format(theFirst.getTime());
+	  return theFirstDate + TIME_FORMAT_TAIL;
+  }
+  
+  private String getStrBeginningOfThisYearTime(Calendar time) { 
+	  Calendar theFirst = (Calendar)time.clone();
+	  theFirst.set(time.get(Calendar.YEAR), 
+			       0,
+			       1, 
+			       0, 0, 0);
+	  String theFirstDate = formatDateTime.format(theFirst.getTime());
+	  return theFirstDate + TIME_FORMAT_TAIL;
   }
 }

@@ -42,6 +42,8 @@ import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
 import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
+import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllFavouriteResult;
+import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllTrashResult;
 import org.exoplatform.ecm.webui.component.explorer.search.UISimpleSearch;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.web.application.ApplicationMessage;

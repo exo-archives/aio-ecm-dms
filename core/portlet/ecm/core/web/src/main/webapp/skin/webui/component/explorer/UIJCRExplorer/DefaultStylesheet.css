@@ -401,12 +401,12 @@
 	
 }
 
-.UIJCRExplorerPortlet .UITimelineView .StarLight{
+.UIJCRExplorerPortlet .StarLight{
 	background: url('DefaultSkin/background/Star.gif') no-repeat center top;
 	height: 10px;
 }
 
-.UIJCRExplorerPortlet .UITimelineView .StarOff{
+.UIJCRExplorerPortlet .StarOff{
 	background: url('DefaultSkin/background/Star.gif') no-repeat center -10px;
 	height: 10px;
 }

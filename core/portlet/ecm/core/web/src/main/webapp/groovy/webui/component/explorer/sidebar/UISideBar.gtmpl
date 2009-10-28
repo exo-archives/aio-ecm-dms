@@ -8,11 +8,20 @@
 	 */
 %>
 <%
+import org.exoplatform.ecm.jcr.model.Preference;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
+%>
+<%
 	public String getCSSClassName(String item) {
 		if (uicomponent.getCurrentComp().equals(item)) return "SelectedItem";
 		return "NormalItem";
 	}
 
+	def uiExplorerPortlet = uicomponent.getAncestorOfType(UIJCRExplorerPortlet.class);
+	def uiExplorer = uiExplorerPortlet.findFirstComponentOfType(UIJCRExplorer.class);
+	def pref = uiExplorer.getPreference();
+	
 %>
 <div class="UISideBar" id="UISideBar">
 
@@ -20,18 +29,60 @@
   	<div class="UIResizableBlock" style="height: 100%">
   		<% uicomponent.renderChildren(); %>
   	  <div class="ResizeTreeExplorer">
-				<div class="ResizeTreeButton"><span></span></div>
+			<div class="ResizeTreeButton"><span></span></div>
 			</div>
 			<div class="SideBarContent">
-  			<div class="BarContent">
-  				<div class="Title">All Items</div>
-  				<div class="SideGeneratal" title="Generatal"><span></span></div>
-  				<div class="ClearLeft"><span></span></div>
-  			</div>
+	  			<div class="BarContent">
+	  				<div class="Title">All Items</div>
+	  				<div class="SideGeneratal" onclick="<%=uicomponent.event("Preferences")%>" title="<%=_ctx.appRes("UISideBar.label.Configuration")%>">
+  						<span></span>
+	  				</div>
+	  				<div class="ClearLeft"><span></span></div>
+	  			</div>
   			<div class="SideContent">
-  	  		<div class="ArrowSidContent TextSiderContent">Owned by me</div>
-  	  		<div class="ArrowSidContent TextSiderContent">Starred</div>
-  	  		<div class="ArrowSidContent TextSiderContent">Hidden</div>
+  				<% if (pref.isShowOwnedByUserDoc()) { %>
+				<div class="ArrowSidContent TextSiderContent">
+					<a href="<%=uicomponent.event("ShowAllOwnedByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllOwnedByUser")%>" class="ShowAllOwnedByUserBtn">
+					  <span>
+					<!--             - Owned by me-->
+					    <%=_ctx.appRes("UISideBar.label.OwnedByMe")%> 
+					  </span>
+					</a>
+				</div>
+  				<% } %>
+  				
+				<% if (pref.isShowFavouriteDoc()) { %>
+	  	        <div class="ArrowSidContent TextSiderContent">
+		            <a href="<%=uicomponent.event("ShowAllFavouriteByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFavouriteByUser")%>" class="ShowAllFavouriteByUserBtn">
+		              <span>
+		  <!--             - Favourites-->
+		                <%=_ctx.appRes("UISideBar.label.Favourites")%>
+		              </span>
+		            </a>
+	            </div>
+	            <% } %>
+	            
+	            <% if (pref.isShowHiddenDoc()) { %>
+	  	        <div class="ArrowSidContent TextSiderContent">
+		            <a href="<%=uicomponent.event("ShowAllHidden")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllHidden")%>" class="ShowAllHiddenBtn">
+		              <span>
+		  <!--             - Hidden-->
+		                <%=_ctx.appRes("UISideBar.label.Hidden")%> 
+		               </span>
+		            </a>
+	            </div>
+	            <% } %>
+	            
+	            <% if (pref.isShowTrashDoc()) { %>
+	  	        <div class="ArrowSidContent TextSiderContent">
+		            <a href="<%=uicomponent.event("ShowAllFromTrashByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFromTrashByUser")%>" class="ShowAllFromTrashByUserBtn">
+		              <span>
+		  <!--             - Trash-->
+		                <%=_ctx.appRes("UISideBar.label.Trash")%> 
+		               </span>
+		            </a>
+	            </div>
+	            <% } %>
   	  	</div>
   	  </div>
   	  <div class="SideBarContent">
@@ -66,6 +117,7 @@
       <div class="<%=getCSSClassName("SavedSearches")%>" onclick="<%=uicomponent.event("SavedSearches")%>" title="<%=_ctx.appRes("UISideBar.label.SavedSearches")%>">
 	      <div class="ItemIcon SideGeneratal"><span></span></div>
       </div>
+
 	  </div>
   </div>
  

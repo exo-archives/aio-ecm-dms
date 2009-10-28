@@ -94,7 +94,6 @@
 					<a href="<%=uicomponent.event("SimpleSearch")%>" title="<%=_ctx.appRes("UIActionBar.title.SimpleSearch")%>" class="SearchBtn" id="SimpleSearch"><span></span></a>
 					<% uicomponent.renderChild(1); %>
 				</div>
-				
 			</td>
 		</tr>
 	</table>

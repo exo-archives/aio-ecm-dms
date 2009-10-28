@@ -16,6 +16,8 @@
  */
 package org.exoplatform.ecm.jcr.model;
 
+import java.util.Map;
+
 public class Preference {
       
   public static final String SORT_BY_NODENAME = "Alphabetic" ;
@@ -26,6 +28,10 @@ public class Preference {
   public static final String SORT_BY_OWNER = "Owner";
   public static final String SORT_BY_VERSIONABLE = "Versionable";
   public static final String SORT_BY_AUDITING = "Auditing";
+  public static final String SHOW_OWNED_BY_USER_DOC = "OwnedByMe";
+  public static final String SHOW_FAVOURITE_DOC = "Favourites";
+  public static final String SHOW_HIDDEN_DOC = "Hidden";
+  public static final String SHOW_TRASH_DOC = "Trash";
 
   public static final String[] SORT_BY_SINGLEVALUE_PROPERTY = {"SingleValueProperty"};
   
@@ -45,6 +51,10 @@ public class Preference {
   private boolean isShowNonDocumentType = false ;
   private boolean isShowPreferenceDocuments = false ;
   private boolean isShowHiddenNode = false ;
+  private boolean isShowOwnedByUserDoc = true;
+  private boolean isShowFavouriteDoc = true;
+  private boolean isShowHiddenDoc = true;
+  private boolean isShowTrashDoc = true;
   
   private int nodesPerPage = 20;
     
@@ -69,9 +79,22 @@ public class Preference {
   public boolean isShowHiddenNode() { return isShowHiddenNode ; }
   public void setShowHiddenNode(boolean b) { isShowHiddenNode = b ; }
   
+  public boolean isShowOwnedByUserDoc() { return isShowOwnedByUserDoc; }
+  public void setShowOwnedByUserDoc(boolean b) { isShowOwnedByUserDoc = b; }
+  
+  public boolean isShowFavouriteDoc() {	return isShowFavouriteDoc; }
+  public void setShowFavouriteDoc(boolean b) { isShowFavouriteDoc = b; }
+  
+  public boolean isShowHiddenDoc() { return isShowHiddenDoc; }
+  public void setShowHiddenDoc(boolean b) {	isShowHiddenDoc = b; }
+  
+  public boolean isShowTrashDoc() {	return isShowTrashDoc; }
+  public void setShowTrashDoc(boolean b) { isShowTrashDoc = b; }
+  
   public String getAllowCreateFoder() { return allowCreateFoder ; }
   public void setAllowCreateFoder(String s) { allowCreateFoder = s ; }
   
   public int getNodesPerPage(){return nodesPerPage ; }
   public void setNodesPerPage(int number) { this.nodesPerPage = number ; }
+  
 }

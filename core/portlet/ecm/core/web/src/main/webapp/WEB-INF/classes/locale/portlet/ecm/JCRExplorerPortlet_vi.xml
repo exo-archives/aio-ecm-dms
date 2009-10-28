@@ -98,6 +98,11 @@
       <Close>Đóng cây thư mục</Close>
       <TagExplorer>Tập hợp thẻ</TagExplorer>
       <Clipboard>Bảng ghi tạm</Clipboard>
+      <OwnedByMe>Thuộc sở hữu của tôi</OwnedByMe>
+      <Favourites>Được ưa thích</Favourites>
+      <Hidden>Ẩn</Hidden>
+      <Trash>Thùng rác</Trash>
+      <Configuration>Thiết lập lựa chọn</Configuration>      
     </label>
     <title>
       <Control>Điều khiển</Control>
@@ -131,6 +136,7 @@
       <anonymous-view>Biểu tượng</anonymous-view>
       <taxonomy-list>Chi tiết</taxonomy-list>
       <taxonomy-icons>Biểu tượng</taxonomy-icons>
+      <timeline-view>Xem theo kiểu timeline</timeline-view>      
     </label>
   </Views>
   <!--
@@ -181,6 +187,21 @@
       <Save>Lưu</Save>
     </action>
   </UIPreferencesForm>
+  <!--
+  #########################################################################################
+  #             org.exoplatform.ecm.webui.component.explorer.control.UIPreferencesForm  #
+  #########################################################################################
+  -->
+  <UIAllItemsPreferenceForm>
+    <title>Thiết lập hiển thị</title>
+    <label>
+    </label>
+    <action>
+      <Cancel>Hủy bỏ</Cancel>
+      <Save>Lưu</Save>
+    </action>
+  </UIAllItemsPreferenceForm>  
+  
   <!--
   #########################################################################################
   #             org.exoplatform.ecm.webui.component.explorer.UIRenameForm  #
@@ -244,6 +265,7 @@
       <UIMultiLanguageForm>Đa ngôn ngữ</UIMultiLanguageForm>
       <UIMultiLanguageManager>Đa ngôn ngữ</UIMultiLanguageManager>
       <UIThumbnailForm>Thêm ảnh nhỏ</UIThumbnailForm>
+      <UIAllItemsPreferenceForm>Thiết lập lựa chọn</UIAllItemsPreferenceForm>      
     </title>
     <header>
       <workspace>Không gian làm việc</workspace>
@@ -344,6 +366,10 @@
       <SimpleSearch>Tìm kiếm nhanh.</SimpleSearch>
       <AdvanceSearch>Tìm kiếm nâng cao.</AdvanceSearch>
       <SavedQueries>Các truy vấn được lưu lại.</SavedQueries>
+      <ShowAllOwnedByUser>Hiển thị các tài liệu của bạn</ShowAllOwnedByUser>
+      <ShowAllFavouriteByUser>Hiển thị các tài liệu trong mục ưa thích của bạn</ShowAllFavouriteByUser>
+      <ShowAllHidden>Hiển thị các tài liệu ẩn</ShowAllHidden>
+      <ShowAllFromTrashByUser>Hiển thị các tài liệu trong thùng rác</ShowAllFromTrashByUser>
     </title>
     <obtion>
       <Admin>Quản trị</Admin>
@@ -533,6 +559,10 @@
       <ViewProperties>Xem các thuộc tính</ViewProperties>
       <GetURL>Sao chép liên kết vào bảng ghi tạm</GetURL>
       <AddThumbnail>Thêm mới/Xóa bỏ ảnh nhỏ</AddThumbnail>
+      <AddToFavourite>Thêm vào mục ưa thích</AddToFavourite>
+      <RemoveFromFavourite>Xóa khỏi mục yêu thích</RemoveFromFavourite>
+      <MoveToTrash>Chuyển vào thùng rác</MoveToTrash>
+      <RestoreFromTrash>Khôi phục khỏi thùng rác</RestoreFromTrash>
     </event>
   </ECMContextMenu>
   <!--
@@ -978,20 +1008,149 @@
       <score>Điểm số</score>
     </header>
     <title>
-      <typeASC>Xắp xếp theo kiểu tài liệu với thứ tự tăng dần.</typeASC>
-      <typeDESC>Xắp xếp theo kiểu tài liệu với thứ tự giảm dần.</typeDESC>
-      <scoreASC>Xắp xếp theo điểm số với thứ tự tăng dần</scoreASC>
-      <scoreDESC>Xắp xếp theo điểm số với thứ tự giảm dần</scoreDESC>
-      <nameASC>Xắp xếp theo tên với thứ tự tăng dần</nameASC>
-      <nameDESC>Xắp xếp theo tên với thứ tự giảm dần</nameDESC>
-      <datecreatedASC>Xắp xếp theo ngày tạo với thứ tự tăng dần</datecreatedASC>
-      <datecreatedDESC>Xắp xếp theo ngày tạo với thứ tự giảm dần</datecreatedDESC>
+      <typeASC>Sắp xếp theo kiểu tài liệu với thứ tự tăng dần.</typeASC>
+      <typeDESC>Sắp xếp theo kiểu tài liệu với thứ tự giảm dần.</typeDESC>
+      <scoreASC>Sắp xếp theo điểm số với thứ tự tăng dần</scoreASC>
+      <scoreDESC>Sắp xếp theo điểm số với thứ tự giảm dần</scoreDESC>
+      <nameASC>Sắp xếp theo tên với thứ tự tăng dần</nameASC>
+      <nameDESC>Sắp xếp theo tên với thứ tự giảm dần</nameDESC>
+      <datecreatedASC>Sắp xếp theo ngày tạo với thứ tự tăng dần</datecreatedASC>
+      <datecreatedDESC>Sắp xếp theo ngày tạo với thứ tự giảm dần</datecreatedDESC>
     </title>
     <tooltip>
       <View>Hiển thị node này.</View>
       <OpenFolder>Đi đến thư mục</OpenFolder>
     </tooltip>
   </UISearchResult>
+  <UIShowAllOwnedByUserResult>
+    <msg>
+      <not-support>Không có mẫu nào cho node này.</not-support>
+      <empty>Không có kết quả nào được tìm thấy!</empty>
+      <access-denied>Bạn không thể xem node này bởi vì mẫu này không được hỗ trợ hoặc truy nhập bị hủy bỏ!</access-denied>
+      <query-invalid>Truy vấn không hợp lệ</query-invalid>
+    </msg>
+    <header>
+      <name>Tên</name>
+      <path>Đường dẫn</path>
+      <action>Thao tác</action>
+      <shortcutPath>Đường dẫn</shortcutPath>
+      <type>Kiểu</type>
+      <dateCreated>Ngày tạo</dateCreated>
+      <score>Điểm số</score>
+    </header>
+    <title>
+      <typeASC>Sắp xếp theo kiểu tài liệu với thứ tự tăng dần.</typeASC>
+      <typeDESC>Sắp xếp theo kiểu tài liệu với thứ tự giảm dần.</typeDESC>
+      <scoreASC>Sắp xếp theo điểm số với thứ tự tăng dần</scoreASC>
+      <scoreDESC>Sắp xếp theo điểm số với thứ tự giảm dần</scoreDESC>
+      <nameASC>Sắp xếp theo tên với thứ tự tăng dần</nameASC>
+      <nameDESC>Sắp xếp theo tên với thứ tự giảm dần</nameDESC>
+      <datecreatedASC>Sắp xếp theo ngày tạo với thứ tự tăng dần</datecreatedASC>
+      <datecreatedDESC>Sắp xếp theo ngày tạo với thứ tự giảm dần</datecreatedDESC>
+    </title>
+    <tooltip>
+      <View>Hiển thị node này.</View>
+      <OpenFolder>Đi đến thư mục</OpenFolder>
+    </tooltip>
+  </UIShowAllOwnedByUserResult>
+  <UIShowAllFavouriteResult>
+    <msg>
+      <not-support>Không có mẫu nào cho node này.</not-support>
+      <empty>Không có kết quả nào được tìm thấy!</empty>
+      <access-denied>Bạn không thể xem node này bởi vì mẫu này không được hỗ trợ hoặc truy nhập bị hủy bỏ!</access-denied>
+      <query-invalid>Truy vấn không hợp lệ</query-invalid>
+    </msg>
+    <header>
+      <name>Tên</name>
+      <path>Đường dẫn</path>
+      <action>Thao tác</action>
+      <shortcutPath>Đường dẫn</shortcutPath>
+      <type>Kiểu</type>
+      <dateCreated>Ngày tạo</dateCreated>
+      <score>Điểm số</score>
+      <AddRemoveFavourite>Thêm/xóa khỏi mục ưa thích</AddRemoveFavourite>
+    </header>
+    <title>
+      <typeASC>Sắp xếp theo kiểu tài liệu với thứ tự tăng dần.</typeASC>
+      <typeDESC>Sắp xếp theo kiểu tài liệu với thứ tự giảm dần.</typeDESC>
+      <scoreASC>Sắp xếp theo điểm số với thứ tự tăng dần</scoreASC>
+      <scoreDESC>Sắp xếp theo điểm số với thứ tự giảm dần</scoreDESC>
+      <nameASC>Sắp xếp theo tên với thứ tự tăng dần</nameASC>
+      <nameDESC>Sắp xếp theo tên với thứ tự giảm dần</nameDESC>
+      <datecreatedASC>Sắp xếp theo ngày tạo với thứ tự tăng dần</datecreatedASC>
+      <datecreatedDESC>Sắp xếp theo ngày tạo với thứ tự giảm dần</datecreatedDESC>
+    </title>
+    <tooltip>
+      <View>Hiển thị node này.</View>
+      <OpenFolder>Đi đến thư mục</OpenFolder>
+    </tooltip>
+  </UIShowAllFavouriteResult>
+  <UIShowAllHiddenResult>
+    <msg>
+      <not-support>Không có mẫu nào cho node này.</not-support>
+      <empty>Không có kết quả nào được tìm thấy!</empty>
+      <access-denied>Bạn không thể xem node này bởi vì mẫu này không được hỗ trợ hoặc truy nhập bị hủy bỏ!</access-denied>
+      <query-invalid>Truy vấn không hợp lệ</query-invalid>
+    </msg>
+    <header>
+      <name>Tên</name>
+      <path>Đường dẫn</path>
+      <action>Thao tác</action>
+      <shortcutPath>Đường dẫn</shortcutPath>
+      <type>Kiểu</type>
+      <dateCreated>Ngày tạo</dateCreated>
+      <score>Điểm số</score>
+    </header>
+    <title>
+      <typeASC>Sắp xếp theo kiểu tài liệu với thứ tự tăng dần.</typeASC>
+      <typeDESC>Sắp xếp theo kiểu tài liệu với thứ tự giảm dần.</typeDESC>
+      <scoreASC>Sắp xếp theo điểm số với thứ tự tăng dần</scoreASC>
+      <scoreDESC>Sắp xếp theo điểm số với thứ tự giảm dần</scoreDESC>
+      <nameASC>Sắp xếp theo tên với thứ tự tăng dần</nameASC>
+      <nameDESC>Sắp xếp theo tên với thứ tự giảm dần</nameDESC>
+      <datecreatedASC>Sắp xếp theo ngày tạo với thứ tự tăng dần</datecreatedASC>
+      <datecreatedDESC>Sắp xếp theo ngày tạo với thứ tự giảm dần</datecreatedDESC>
+    </title>
+    <tooltip>
+      <View>Hiển thị node này.</View>
+      <OpenFolder>Đi đến thư mục</OpenFolder>
+      <RemoveHiddenAttribute>Xóa thuộc tính ẩn</RemoveHiddenAttribute>      
+    </tooltip>
+  </UIShowAllHiddenResult>  
+  <UIShowAllTrashResult>
+    <msg>
+      <not-support>Không có mẫu nào cho node này.</not-support>
+      <empty>Không có kết quả nào được tìm thấy!</empty>
+      <access-denied>Bạn không thể xem node này bởi vì mẫu này không được hỗ trợ hoặc truy nhập bị hủy bỏ!</access-denied>
+      <query-invalid>Truy vấn không hợp lệ</query-invalid>
+    </msg>
+    <header>
+      <name>Tên</name>
+      <path>Đường dẫn</path>
+      <action>Thao tác</action>
+      <shortcutPath>Đường dẫn</shortcutPath>
+      <type>Kiểu</type>
+      <dateCreated>Ngày tạo</dateCreated>
+      <score>Điểm số</score>
+    </header>
+    <title>
+      <typeASC>Sắp xếp theo kiểu tài liệu với thứ tự tăng dần.</typeASC>
+      <typeDESC>Sắp xếp theo kiểu tài liệu với thứ tự giảm dần.</typeDESC>
+      <scoreASC>Sắp xếp theo điểm số với thứ tự tăng dần</scoreASC>
+      <scoreDESC>Sắp xếp theo điểm số với thứ tự giảm dần</scoreDESC>
+      <nameASC>Sắp xếp theo tên với thứ tự tăng dần</nameASC>
+      <nameDESC>Sắp xếp theo tên với thứ tự giảm dần</nameDESC>
+      <datecreatedASC>Sắp xếp theo ngày tạo với thứ tự tăng dần</datecreatedASC>
+      <datecreatedDESC>Sắp xếp theo ngày tạo với thứ tự giảm dần</datecreatedDESC>
+    </title>
+    <tooltip>
+      <View>Hiển thị node này.</View>
+      <OpenFolder>Đi đến thư mục</OpenFolder>
+      <DeletePermanently>Xóa vĩnh viễn</DeletePermanently>
+      <RestoreFromTrash>Khôi phục từ thùng rác</RestoreFromTrash>      
+    </tooltip>
+  </UIShowAllTrashResult>  
+  
   <UIConstraintsForm>
     <label>
       <constraints>UIConstraintsForm</constraints>

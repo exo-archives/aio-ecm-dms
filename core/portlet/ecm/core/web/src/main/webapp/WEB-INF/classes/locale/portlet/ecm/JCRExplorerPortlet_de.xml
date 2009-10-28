@@ -98,6 +98,7 @@
       <Close><![CDATA[Seitenbalken schlie&szlig;en]]></Close>
       <TagExplorer>Tag Wolke</TagExplorer>
       <Clipboard>Ablage</Clipboard>
+      
     </label>
     <title>
       <Control>Seitenbalken kotrollieren</Control>
@@ -244,6 +245,7 @@
       <UIMultiLanguageForm>Mehrsprachig</UIMultiLanguageForm>
       <UIMultiLanguageManager>Mehrsprachig</UIMultiLanguageManager>
       <UIThumbnailForm>Bild hinzufügen</UIThumbnailForm>
+      <UIAllItemsPreferenceForm>Vorliebeneinstellung</UIAllItemsPreferenceForm>      
     </title>
     <header>
       <workspace>Arbeitsplatz</workspace>
@@ -2630,6 +2632,164 @@
       <Save>Save</Save>
     </action>
   </UISingleAddMetadataForm>
+  <UISideBar>
+    <label>
+      <OwnedByMe>Owned by me</OwnedByMe>
+      <Favourites>Favourites</Favourites>
+      <Hidden>Hidden</Hidden>
+      <Trash>Trash</Trash>
+      <Configuration>Set up preferences</Configuration>      
+    </label>
+  <UISideBar>
+  <ECMContextMenu>
+    <event>
+      <AddToFavourite>Add to favourite</AddToFavourite>
+      <RemoveFromFavourite>Remove from favourite</RemoveFromFavourite>
+      <MoveToTrash>Move to Trash</MoveToTrash>
+      <RestoreFromTrash>Restore from Trash</RestoreFromTrash>
+    </event>  
+  </ECMContextMenu>
+  <Views>
+    <label>
+      <timeline-view>Timeline view</timeline-view>
+    </label
+  </Views>
+  <UIActionBar>
+    <title>
+      <ShowAllOwnedByUser>Show all your items</ShowAllOwnedByUser>
+      <ShowAllFavouriteByUser>Show all your favourite items</ShowAllFavouriteByUser>
+      <ShowAllHidden>Show all hidden items</ShowAllHidden>
+      <ShowAllFromTrashByUser>Show all items from Trash</ShowAllFromTrashByUser>
+    </title>
+  </UIActionBar>
+  <UIShowAllOwnedByUserResult>
+    <msg>
+      <not-support>There is no View template for this node</not-support>
+      <empty>No result found!</empty>
+      <access-denied>You can not view this node because this template is not supported or access denied!</access-denied>
+      <query-invalid>The query is invalid</query-invalid>
+    </msg>
+    <header>
+      <name>#{word.name}</name>
+      <path>Path</path>
+      <action>Action</action>
+      <shortcutPath>Path</shortcutPath>
+      <type>Type</type>
+      <dateCreated>Date created</dateCreated>
+      <score>Score</score>
+    </header>
+    <title>
+      <typeASC>Sort by document type in ascending</typeASC>
+      <typeDESC>Sort by document type in descending</typeDESC>
+      <scoreASC>Sort by score in ascending</scoreASC>
+      <scoreDESC>Sort by score in descending</scoreDESC>
+      <nameASC>Sort by name in ascending</nameASC>
+      <nameDESC>Sort by name in descending</nameDESC>
+      <datecreatedASC>Sort by Created date in ascending</datecreatedASC>
+      <datecreatedDESC>Sort by Created date in descending</datecreatedDESC>
+    </title>
+    <tooltip>
+      <View>View this node</View>
+      <OpenFolder>Go to folder</OpenFolder>
+    </tooltip>
+  </UIShowAllOwnedByUserResult>
+  <UIShowAllFavouriteResult>
+    <msg>
+      <not-support>There is no View template for this node</not-support>
+      <empty>No result found!</empty>
+      <access-denied>You can not view this node because this template is not supported or access denied!</access-denied>
+      <query-invalid>The query is invalid</query-invalid>
+    </msg>
+    <header>
+      <name>#{word.name}</name>
+      <path>Path</path>
+      <action>Action</action>
+      <shortcutPath>Path</shortcutPath>
+      <type>Type</type>
+      <dateCreated>Date created</dateCreated>
+      <score>Score</score>
+      <AddRemoveFavourite>Add/remove to favourite</AddRemoveFavourite>      
+    </header>
+    <title>
+      <typeASC>Sort by document type in ascending</typeASC>
+      <typeDESC>Sort by document type in descending</typeDESC>
+      <scoreASC>Sort by score in ascending</scoreASC>
+      <scoreDESC>Sort by score in descending</scoreDESC>
+      <nameASC>Sort by name in ascending</nameASC>
+      <nameDESC>Sort by name in descending</nameDESC>
+      <datecreatedASC>Sort by Created date in ascending</datecreatedASC>
+      <datecreatedDESC>Sort by Created date in descending</datecreatedDESC>
+    </title>
+    <tooltip>
+      <View>View this node</View>
+      <OpenFolder>Go to folder</OpenFolder>
+    </tooltip>
+  </UIShowAllFavouriteResult>
+  <UIShowAllHiddenResult>
+    <msg>
+      <not-support>There is no View template for this node</not-support>
+      <empty>No result found!</empty>
+      <access-denied>You can not view this node because this template is not supported or access denied!</access-denied>
+      <query-invalid>The query is invalid</query-invalid>
+    </msg>
+    <header>
+      <name>#{word.name}</name>
+      <path>Path</path>
+      <action>Action</action>
+      <shortcutPath>Path</shortcutPath>
+      <type>Type</type>
+      <dateCreated>Date created</dateCreated>
+      <score>Score</score>
+    </header>
+    <title>
+      <typeASC>Sort by document type in ascending</typeASC>
+      <typeDESC>Sort by document type in descending</typeDESC>
+      <scoreASC>Sort by score in ascending</scoreASC>
+      <scoreDESC>Sort by score in descending</scoreDESC>
+      <nameASC>Sort by name in ascending</nameASC>
+      <nameDESC>Sort by name in descending</nameDESC>
+      <datecreatedASC>Sort by Created date in ascending</datecreatedASC>
+      <datecreatedDESC>Sort by Created date in descending</datecreatedDESC>
+    </title>
+    <tooltip>
+      <View>View this node</View>
+      <OpenFolder>Go to folder</OpenFolder>
+      <RemoveHiddenAttribute>Remove hidden attribute</RemoveHiddenAttribute>      
+    </tooltip>
+  </UIShowAllHiddenResult>  
+  <UIShowAllTrashResult>
+    <msg>
+      <not-support>There is no View template for this node</not-support>
+      <empty>No result found!</empty>
+      <access-denied>You can not view this node because this template is not supported or access denied!</access-denied>
+      <query-invalid>The query is invalid</query-invalid>
+    </msg>
+    <header>
+      <name>#{word.name}</name>
+      <path>Path</path>
+      <action>Action</action>
+      <shortcutPath>Path</shortcutPath>
+      <type>Type</type>
+      <dateCreated>Date created</dateCreated>
+      <score>Score</score>
+    </header>
+    <title>
+      <typeASC>Sort by document type in ascending</typeASC>
+      <typeDESC>Sort by document type in descending</typeDESC>
+      <scoreASC>Sort by score in ascending</scoreASC>
+      <scoreDESC>Sort by score in descending</scoreDESC>
+      <nameASC>Sort by name in ascending</nameASC>
+      <nameDESC>Sort by name in descending</nameDESC>
+      <datecreatedASC>Sort by Created date in ascending</datecreatedASC>
+      <datecreatedDESC>Sort by Created date in descending</datecreatedDESC>
+    </title>
+    <tooltip>
+      <View>View this node</View>
+      <OpenFolder>Go to folder</OpenFolder>
+      <DeletePermanently>Delete permanently</DeletePermanently>
+      <RestoreFromTrash>Restore from trash</RestoreFromTrash>      
+    </tooltip>
+  </UIShowAllTrashResult>  
   
   <UIPreferencesForm>
   		<label>
@@ -2641,4 +2801,19 @@
   				<Descending>Descending</Descending>
   		</label>
   </UIPreferencesForm>
+  <!--
+  #########################################################################################
+  #             org.exoplatform.ecm.webui.component.explorer.control.UIPreferencesForm  #
+  #########################################################################################
+  -->
+  <UIAllItemsPreferenceForm>
+    <title>Set up preferences</title>
+    <label>
+    </label>
+    <action>
+      <Cancel>#{word.cancel}</Cancel>
+      <Save>#{word.save}</Save>
+    </action>
+  </UIAllItemsPreferenceForm>  
+  
 </bundle>

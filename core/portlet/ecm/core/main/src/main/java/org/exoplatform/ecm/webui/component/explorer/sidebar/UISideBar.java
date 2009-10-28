@@ -16,13 +16,22 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 
+
+
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.UIJcrExplorerContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.component.explorer.control.UIAllItemsPreferenceForm;
+import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllFavouriteResult;
+import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllHiddenResult;
+import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllOwnedByUserResult;
+import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllTrashResult;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -40,6 +49,14 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UISideBar.RelationActionListener.class),
         @EventConfig(listeners = UISideBar.TagExplorerActionListener.class),
         @EventConfig(listeners = UISideBar.ClipboardActionListener.class),
+        @EventConfig(listeners = UISideBar.ShowAllOwnedByUserActionListener.class),
+//        @EventConfig(listeners = UISideBar.ShowAllFavouriteActionListener.class),
+        @EventConfig(listeners = UISideBar.ShowAllFavouriteByUserActionListener.class),
+//        @EventConfig(listeners = UISideBar.ShowAllFromTrashActionListener.class),
+        @EventConfig(listeners = UISideBar.ShowAllFromTrashByUserActionListener.class),
+        @EventConfig(listeners = UISideBar.ShowAllHiddenActionListener.class),
+        @EventConfig(listeners = UISideBar.ShowDrivesAreaActionListener.class),
+        @EventConfig(listeners = UISideBar.PreferencesActionListener.class),
         @EventConfig(listeners = UISideBar.SavedSearchesActionListener.class)
     }
 )
@@ -47,11 +64,11 @@ public class UISideBar extends UIContainer {
   private String currentComp = "Explorer";
   
   public UISideBar() throws Exception {
-    addChild(UITreeExplorer.class, null, null) ;
+    addChild(UITreeExplorer.class, null, null).getId() ;
     addChild(UIViewRelationList.class, null, null).setRendered(false) ;
     addChild(UITagExplorer.class, null, null).setRendered(false) ;
     addChild(UIClipboard.class, null, null).setRendered(false) ;
-    addChild(UISavedSearches.class, null, null).setRendered(false);
+    addChild(UISavedSearches.class, null, null).setRendered(false);    
   }
   
   public String getCurrentComp() { return currentComp ; }
@@ -119,6 +136,169 @@ public class UISideBar extends UIContainer {
     }
   }
   
+  static public class ShowAllFavouriteActionListener extends EventListener<UISideBar> {
+	  public void execute(Event<UISideBar> event) throws Exception {
+	      UISideBar uiSideBar = event.getSource();
+	      UIJCRExplorer uiExplorer = uiSideBar.getAncestorOfType(UIJCRExplorer.class);
+	      
+	      //Node currentNode = uiExplorer.getCurrentNode();
+	      uiExplorer.removeChildById("ViewSearch");
+	      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
+	      getChild(UIDocumentWorkspace.class);
+	     
+	      UIShowAllFavouriteResult uiShowAllFavouriteResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SHOW_ALL_FAVOURITE_RESULT);           
+
+	      long startTime = System.currentTimeMillis();
+	      //uiShowAllFavouriteResult.clearAll();
+	      //uiShowAllFavouriteResult.setQueryResults(queryResult);
+	      //uiShowAllFavouriteResult.updateGrid(true);
+	      //uiShowAllFavouriteResult.update();
+	      long time = System.currentTimeMillis() - startTime;
+	      uiShowAllFavouriteResult.setShowNodeCase(
+	    		  UIShowAllFavouriteResult.SHOW_ALL_FAVOURITE);
+	      uiShowAllFavouriteResult.updateList();
+	      uiShowAllFavouriteResult.setSearchTime(time);
+	      uiDocumentWorkspace.setRenderedChild(UIShowAllFavouriteResult.class);
+	      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+	  }
+  }
+  
+  static public class ShowAllFavouriteByUserActionListener extends EventListener<UISideBar> {
+	  public void execute(Event<UISideBar> event) throws Exception {
+	      UISideBar uiSideBar = event.getSource();
+	      UIJCRExplorer uiExplorer = uiSideBar.getAncestorOfType(UIJCRExplorer.class);
+	      
+	      //Node currentNode = uiExplorer.getCurrentNode();
+	      uiExplorer.removeChildById("ViewSearch");
+	      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
+	      getChild(UIDocumentWorkspace.class);
+	     
+	      UIShowAllFavouriteResult uiShowAllFavouriteResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SHOW_ALL_FAVOURITE_RESULT);           
+
+	      long startTime = System.currentTimeMillis();
+	      //uiShowAllFavouriteResult.clearAll();
+	      //uiShowAllFavouriteResult.setQueryResults(queryResult);
+	      //uiShowAllFavouriteResult.updateGrid(true);
+	      //uiShowAllFavouriteResult.update();
+	      long time = System.currentTimeMillis() - startTime;
+	      uiShowAllFavouriteResult.setShowNodeCase(
+	    		  UIShowAllFavouriteResult.SHOW_ALL_FAVOURITE_BY_USER);
+	      uiShowAllFavouriteResult.updateList();
+	      uiShowAllFavouriteResult.setSearchTime(time);
+	      uiDocumentWorkspace.setRenderedChild(UIShowAllFavouriteResult.class);
+	      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+	  }
+  }
+  
+  static public class ShowAllFromTrashActionListener extends EventListener<UISideBar> {
+	  public void execute(Event<UISideBar> event) throws Exception {
+	      UISideBar uiSideBar = event.getSource();
+	      UIJCRExplorer uiExplorer = uiSideBar.getAncestorOfType(UIJCRExplorer.class);
+	      
+	      //Node currentNode = uiExplorer.getCurrentNode();
+	      uiExplorer.removeChildById("ViewSearch");
+	      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
+	      getChild(UIDocumentWorkspace.class);
+	     
+	      UIShowAllTrashResult uiShowAllTrashResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SHOW_ALL_TRASH_RESULT);           
+
+	      long startTime = System.currentTimeMillis();
+	      //uiShowAllFavouriteResult.clearAll();
+	      //uiShowAllFavouriteResult.setQueryResults(queryResult);
+	      //uiShowAllFavouriteResult.updateGrid(true);
+	      //uiShowAllFavouriteResult.update();
+	      long time = System.currentTimeMillis() - startTime;
+	      uiShowAllTrashResult.setShowNodeCase(
+	    		  UIShowAllTrashResult.SHOW_ALL_FROM_TRASH);
+	      uiShowAllTrashResult.updateList();
+	      uiShowAllTrashResult.setSearchTime(time);
+	      uiDocumentWorkspace.setRenderedChild(UIShowAllTrashResult.class);
+	      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+	  }
+  }
+  
+  static public class ShowAllFromTrashByUserActionListener extends EventListener<UISideBar> {
+	  public void execute(Event<UISideBar> event) throws Exception {
+	      UISideBar uiSideBar = event.getSource();
+	      UIJCRExplorer uiExplorer = uiSideBar.getAncestorOfType(UIJCRExplorer.class);
+	      
+	      //Node currentNode = uiExplorer.getCurrentNode();
+	      uiExplorer.removeChildById("ViewSearch");
+	      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
+	      getChild(UIDocumentWorkspace.class);
+	     
+	      UIShowAllTrashResult uiShowAllTrashResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SHOW_ALL_TRASH_RESULT);           
+
+	      long startTime = System.currentTimeMillis();
+	      //uiShowAllFavouriteResult.clearAll();
+	      //uiShowAllFavouriteResult.setQueryResults(queryResult);
+	      //uiShowAllFavouriteResult.updateGrid(true);
+	      //uiShowAllFavouriteResult.update();
+	      long time = System.currentTimeMillis() - startTime;
+	      uiShowAllTrashResult.setShowNodeCase(
+	    		  UIShowAllTrashResult.SHOW_ALL_FROM_TRASH_BY_USER);
+	      uiShowAllTrashResult.updateList();
+	      uiShowAllTrashResult.setSearchTime(time);
+	      uiDocumentWorkspace.setRenderedChild(UIShowAllTrashResult.class);
+	      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+	  }
+  }
+  
+  static public class ShowAllHiddenActionListener extends EventListener<UISideBar> {
+	  public void execute(Event<UISideBar> event) throws Exception {
+	      UISideBar uiSideBar = event.getSource();
+	      UIJCRExplorer uiExplorer = uiSideBar.getAncestorOfType(UIJCRExplorer.class);
+	      
+	      //Node currentNode = uiExplorer.getCurrentNode();
+	      uiExplorer.removeChildById("ViewSearch");
+	      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
+	      getChild(UIDocumentWorkspace.class);
+	     
+	      UIShowAllHiddenResult uiShowAllHiddenResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SHOW_ALL_HIDDEN_RESULT);           
+
+	      long startTime = System.currentTimeMillis();
+	      //uiShowAllFavouriteResult.clearAll();
+	      //uiShowAllFavouriteResult.setQueryResults(queryResult);
+	      //uiShowAllFavouriteResult.updateGrid(true);
+	      //uiShowAllFavouriteResult.update();
+	      long time = System.currentTimeMillis() - startTime;
+	      uiShowAllHiddenResult.updateList();
+	      uiShowAllHiddenResult.setSearchTime(time);
+	      uiDocumentWorkspace.setRenderedChild(UIShowAllHiddenResult.class);
+	      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+	  }
+  }
+  
+  static public class ShowAllOwnedByUserActionListener extends EventListener<UISideBar> {
+	  public void execute(Event<UISideBar> event) throws Exception {
+	      UISideBar uiSideBar = event.getSource();
+	      UIJCRExplorer uiExplorer = uiSideBar.getAncestorOfType(UIJCRExplorer.class);
+	      
+	      //Node currentNode = uiExplorer.getCurrentNode();
+	      uiExplorer.removeChildById("ViewSearch");
+	      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
+	      getChild(UIDocumentWorkspace.class);
+	     
+	      UIShowAllOwnedByUserResult uiShowAllOwnedByUserResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SHOW_ALL_OWNED_BY_USER_RESULT);           
+
+	      long startTime = System.currentTimeMillis();
+	      //uiShowAllFavouriteResult.clearAll();
+	      //uiShowAllFavouriteResult.setQueryResults(queryResult);
+	      //uiShowAllFavouriteResult.updateGrid(true);
+	      //uiShowAllFavouriteResult.update();
+	      long time = System.currentTimeMillis() - startTime;
+	      uiShowAllOwnedByUserResult.updateList();
+	      uiShowAllOwnedByUserResult.setSearchTime(time);
+	      uiDocumentWorkspace.setRenderedChild(UIShowAllOwnedByUserResult.class);
+	      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+	  }
+  }
+  
+  static public class ShowDrivesAreaActionListener extends EventListener<UISideBar> {
+    public void execute(Event<UISideBar> event) throws Exception {
+    }
+  }
+
   static public class SavedSearchesActionListener extends EventListener<UISideBar> {
     public void execute(Event<UISideBar> event) throws Exception {
       UISideBar uiSideBar = event.getSource() ;
@@ -126,5 +306,16 @@ public class UISideBar extends UIContainer {
       uiSideBar.setRenderedChild(UISavedSearches.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar) ;
     }
-  }  
+  }
+  
+  static public class PreferencesActionListener extends EventListener<UISideBar> {
+	    public void execute(Event<UISideBar> event) throws Exception {
+	      UISideBar sideBar = event.getSource();
+	      UIJCRExplorer uiJCRExplorer = sideBar.getAncestorOfType(UIJCRExplorer.class);                                         
+	      UIPopupContainer popupAction = uiJCRExplorer.getChild(UIPopupContainer.class);
+	      UIAllItemsPreferenceForm uiPrefForm = popupAction.activate(UIAllItemsPreferenceForm.class,600) ;
+	      uiPrefForm.update(uiJCRExplorer.getPreference()) ;
+	      event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;
+	    }
+	  }  
 }

@@ -36,9 +36,9 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 public interface TrashService {
   
-  final static public String EXO_RESOTORE_LOCATION = "exo:restoreLocation";
-  final static public String RESOTORE_PATH = "exo:restorePath";
-  final static public String RESOTORE_WORKSPACE = "exo:restoreWorkspace";
+  final static public String EXO_RESTORE_LOCATION = "exo:restoreLocation";
+  final static public String RESTORE_PATH = "exo:restorePath";
+  final static public String RESTORE_WORKSPACE = "exo:restoreWorkspace";
   
   /**
    * Move node to trash location
@@ -54,14 +54,14 @@ public interface TrashService {
   
   /**
    * Restore node from trash
-   * @param trashNode Node moved to trash
+   * @param trashHomeNode trash home node
    * @param restorePath Restore path which will be used to restore
    * @param restoreWorkspace The workspace name of node which moved to trash
    * @param repository The repository name
    * @param sessionProvider User session provider which will be used to get session
    * @throws Exception
    */
-  public void restoreFromTrash(Node trashNode, String restorePath, String restoreWorkspace, 
+  public void restoreFromTrash(Node trashHomeNode, String trashNodePath, 
       String repository, SessionProvider sessionProvider) throws Exception;
   
   /**

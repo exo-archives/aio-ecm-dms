@@ -218,5 +218,20 @@
         <value>/</value>        
         <read-only>false</read-only>
       </preference>
+           <preference>
+        <name>trashHomeNodePath</name>     
+        <value>/Documents/Trash</value>        
+        <read-only>false</read-only>
+      </preference>   
+      <preference>
+        <name>trashRepository</name>     
+        <value>repository</value>        
+        <read-only>false</read-only>
+      </preference>   
+      <preference>
+        <name>trashWorkspace</name>     
+        <value>collaboration</value>        
+        <read-only>false</read-only>
+      </preference> 
    </portlet-preferences>
 </portlet-preferences-set>
