@@ -1079,7 +1079,6 @@
 }
 
 .UIJCRExplorer .UIDrivesArea .DriveLabel {
-	line-height:15px;
 	margin:3px auto 0;
 }
 
@@ -1088,25 +1087,26 @@
 	margin: 0px 0px 3px 5px; /* orientation=rt */
 	float: left;
 	width: 27px;
+	cursor: pointer;
 }
 
-.UIJCRExplorer .UIDrivesArea .IconDrivesSystem{
+.UIJCRExplorer .UIDrivesArea .IconDrivessystem{
 	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left top;
 	height: 23px;
 }
 
-.UIJCRExplorer .UIDrivesArea .IconDrivesAdmin{
+.UIJCRExplorer .UIDrivesArea .IconDrivesdms-system{
 	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat center -23px;
 	height: 23px;
 }
 
 
-.UIJCRExplorer .UIDrivesArea .IconDrivesCateDocument{
+.UIJCRExplorer .UIDrivesArea .IconDrivescollaboration{
 	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat center -46px;
 	height: 23px;
 }
 
-.UIJCRExplorer .UIDrivesArea .IconDrivesBackUp{
+.UIJCRExplorer .UIDrivesArea .IconDrivesbackup{
 	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat center -69px;
 	height: 23px;
 }
