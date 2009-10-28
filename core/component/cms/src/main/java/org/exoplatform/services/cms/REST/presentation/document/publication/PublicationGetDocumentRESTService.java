@@ -156,7 +156,7 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
       Node node = iter.nextNode();
       Node nodecheck = publicationService_.getNodePublish(node, pluginName);
       if (nodecheck != null) {
-        listNode.add(nodecheck);
+        listNode.add(node);
       }
     }
     return listNode;
@@ -164,7 +164,7 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
   
   private String getPublishedDateTime(Node currentNode) throws Exception {
     Value[] history = currentNode.getProperty("publication:history").getValues();
-    String time = "";
+    String time = currentNode.getProperty("exo:dateModified").getString();
     for (Value value : history) {
       String[] arrHistory = value.getString().split(",");
       time = arrHistory[0];
@@ -191,7 +191,7 @@ public class PublicationGetDocumentRESTService implements ResourceContainer {
         String[] arrHistory = value.getString().split(",");
         return arrHistory[0];
       }
-      return "";
+      return currentNode.getProperty("exo:dateModified").getString();
     }
   }
   
