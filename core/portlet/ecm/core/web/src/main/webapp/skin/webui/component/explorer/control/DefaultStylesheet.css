@@ -62,11 +62,11 @@
 .UIJCRExplorerPortlet .SetupPreferencesButton {
   width: 24px;	
   height: 24px;
-  background: url('DefaultSkin/icons/IconSetupPreferences.png') no-repeat bottom;
+  background: url('DefaultSkin/icons/IconSetupPreferences.gif') no-repeat bottom;
   float: right; /* orientation=lt */
   float: left; /* orientation=rt */
-  padding: 0px 0px 0px 10px; /* orientation=lt */
-  padding: 0px 10px 0px 0px; /* orientation=rt */
+  padding: 2px 0px 0px 10px; /* orientation=lt */
+  padding: 2px 10px 0px 0px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .SaveSessionButton {
@@ -142,25 +142,13 @@
 }
  
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
-  margin: 4px 230px 0px 170px; /* orientation=lt */
-  margin: 4px 170px 0px 230px; /* orientation=rt */
   height: 20px; line-height: 20px;
   background: white;
   border: solid 1px #d8d8d8;
   border-right: solid 1px #cdcdcd; /* orientation=lt */
   border-left: solid 1px #cdcdcd; /* orientation=rt */
   border-bottom: solid 1px #cdcdcd;
-}
-
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
-  margin: 4px 230px 0px 170px; /* orientation=lt */
-  margin: 4px 170px 0px 230px; /* orientation=rt */
-  height: 20px; line-height: 20px;
-  background: white;
-  border: solid 1px #d8d8d8;
-  border-right: solid 1px #cdcdcd; /* orientation=lt */
-  border-left: solid 1px #cdcdcd; /* orientation=rt */
-  border-bottom: solid 1px #cdcdcd;
+  width: 100%;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle1 {
@@ -247,6 +235,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DropDownButton {
   cursor: pointer;
   margin: auto;
+  margin-top: 6px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .UISelectContent {
@@ -510,7 +499,7 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .ViewIcon {
-	height: 22px;
+	height: 21px;
 	width: 23px;
 	margin: 0px 1px 0px 0px; /* orientation=lt */
 	margin: 0px 0px 0px 1px; /* orientation=rt */
@@ -725,6 +714,8 @@
 	padding: 0px 15px 0px 27px; /* orientation=lt */
 	padding: 0px 27px 0px 15px; /* orientation=rt */
 	display: block;
+	margin-left: 10px; /* orientation=lt */
+	margin-right: 10px; /* orientation=rt */
 	white-space: nowrap;
 }
 

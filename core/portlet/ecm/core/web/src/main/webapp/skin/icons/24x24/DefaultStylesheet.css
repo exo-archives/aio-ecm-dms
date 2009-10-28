@@ -194,7 +194,7 @@
 }
 
 .AddDocumentIcon {
-	height: 24px;
+	height: 21px;
   background: url('DefaultSkin/AddDocument.gif') no-repeat left center; /* orientation=lt */
 	background: url('DefaultSkin/AddDocument.gif') no-repeat right center; /* orientation=rt */
 }
@@ -205,14 +205,20 @@
   background: url('DefaultSkin/AddTicket.gif') no-repeat right center; /* orientation=rt */
 }
 
+.Split{
+	height: 22px;
+  background: url('DefaultSkin/Split.gif') no-repeat right center; /* orientation=lt */
+	background: url('DefaultSkin/Split.gif') no-repeat left center; /* orientation=rt */
+}
+
 .AddFolderIcon {
-	height: 24px;
+	height: 20px;
   background: url('DefaultSkin/AddFolder.gif') no-repeat left center; /* orientation=lt */
 	background: url('DefaultSkin/AddFolder.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UploadIcon {
-	height: 24px;
+	height: 17px;
   background: url('DefaultSkin/UploadFile.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/UploadFile.gif') no-repeat right center; /* orientation=rt */
 }

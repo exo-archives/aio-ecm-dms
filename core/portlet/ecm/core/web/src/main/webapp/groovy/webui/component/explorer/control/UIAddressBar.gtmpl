@@ -68,26 +68,28 @@
 			   def viewSize = "";
 			   if(viewCount < 5 && viewCount > 0) viewSize = Integer.toString(viewCount);
 			%>
-			<td class="BlockMiddle${viewSize} UIPopupSelector" id="UIAddressBarAction" style="width: 100%;">
-		    <div style="position: relative;">
-			    <div class="UISelectContent">
-			      <%
-			      for(entry in uicomponent.getFullHistory()) {
-	    				String actionLink = uicomponent.event("History", entry.workspace + ":" + entry.path);
-			        println "<div class=\"AddressItem\" onmouseout=\"this.className = 'AddressItem'\" onmouseover=\"this.className = 'SelectedAddressItem'\" onclick=\"$actionLink\">$entry.path</div>" ;
-			      }
-			      %>
+			<td id="UIAddressBarAction" >
+				<div class="BlockMiddle${viewSize} UIPopupSelector">
+			    <div style="position: relative;">
+				    <div class="UISelectContent">
+				      <%
+				      for(entry in uicomponent.getFullHistory()) {
+		    				String actionLink = uicomponent.event("History", entry.workspace + ":" + entry.path);
+				        println "<div class=\"AddressItem\" onmouseout=\"this.className = 'AddressItem'\" onmouseover=\"this.className = 'SelectedAddressItem'\" onclick=\"$actionLink\">$entry.path</div>" ;
+				      }
+				      %>
+				    </div>
+				  </div>
+				  <div class="HardDisk"><span></span></div>
+				  <div class="DropDownButtonBox" onmousedown="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2,1)">
+				    <div class="DropDownButton Style1DownArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.showHistory")%>"><span></span></div>
+				  </div>
+				  <div class="InputContainer"  id="AddressBarControl">
+				    <a href="<%=uicomponent.event("ChangeNode")%>" id="GotoLocation"></a>
+			      <% uicomponent.renderChild(0); %>
 			    </div>
-			  </div>
-			  <div class="HardDisk"><span></span></div>
-			  <div class="DropDownButtonBox" onmousedown="eXo.ecm.ECMUtils.clickLeftMouse(event,this,2,1)">
-			    <div class="DropDownButton Style1DownArrow16x16Icon" title="<%=_ctx.appRes("UIAddressBar.title.showHistory")%>"><span></span></div>
-			  </div>
-			  <div class="InputContainer"  id="AddressBarControl">
-			    <a href="<%=uicomponent.event("ChangeNode")%>" id="GotoLocation"></a>
-		      <% uicomponent.renderChild(0); %>
-		    </div>
-		    <div style="clear: both;"><span></span></div>
+			    <div style="clear: both;"><span></span></div>
+			   </div>
 		  </td>
 			<td class="Right">
 				<div class="Advance" id="SimpleSearchControl">
