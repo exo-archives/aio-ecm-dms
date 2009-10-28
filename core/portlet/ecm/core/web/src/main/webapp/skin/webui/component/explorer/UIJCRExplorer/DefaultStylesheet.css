@@ -1072,45 +1072,56 @@
 	margin-bottom:10px;
 }
 
-.UIJCRExplorer .UIDrivesArea .TextContentDrives{
-	float: left; /* orientation=lt */
-	float: right; /* orientation=rt */
-	padding-left: 40px; /* orientation=lt */
-	padding-right: 40px; /* orientation=rt */
-	margin-left: 15px; /* orientation=lt */
-	margin-right: 15px; /* orientation=rt */
-	height: 23px;
-	margin-top: 10px;
-	line-height: 18px;
+.UIJCRExplorer .UIDrivesArea .DriveContainer {
+	padding:8px 0 5px;
+	width:158px;
 }
 
-.UIJCRExplorer .UIDrivesArea .IconDrivessystem{
-	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left top;
+.UIJCRExplorer .UIDrivesArea .Drive {
+	margin:6px;
+	float: left;
+}
+
+.UIJCRExplorer .UIDrivesArea .DriveLabel {
+	line-height:15px;
+	margin:3px auto 0;
+	text-align:center;
+}
+
+.UIJCRExplorer .UIDrivesArea .IconDrivesSystem{
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat center top;
+	height: 23px;
 }
 
 .UIJCRExplorer .UIDrivesArea .IconDrivesAdmin{
-	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -23px;
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat center -23px;
+	height: 23px;
 }
 
 
 .UIJCRExplorer .UIDrivesArea .IconDrivesCateDocument{
-	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -46px;
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat center -46px;
+	height: 23px;
 }
 
 .UIJCRExplorer .UIDrivesArea .IconDrivesBackUp{
-	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -64px;
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat center -69px;
+	height: 23px;
 }
 
 .UIJCRExplorer .UIDrivesArea .IconDrivesUse{
-	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -84px;
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat center -92px;
+	height: 23px;
 }
 
 .UIJCRExplorer .UIDrivesArea .IconDrivesPrivate{
-	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -108px;
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat center -115px;
+	height: 23px;
 }
 
 .UIJCRExplorer .UIDrivesArea .IconDrivesPublic{
-	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left -132px;
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat center -138px;
+	height: 23px;
 }
 
 .UIJCRExplorer .UIDrivesArea .UIDriversAreaContainer .ClearLeft{

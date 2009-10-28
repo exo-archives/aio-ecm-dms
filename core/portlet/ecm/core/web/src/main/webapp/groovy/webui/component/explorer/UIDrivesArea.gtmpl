@@ -1,79 +1,237 @@
-<%
-  import org.exoplatform.ecm.webui.utils.Utils;
-  
-  def personalDrives = uicomponent.personalDrives();
-  def groupDrives = uicomponent.groupDrives();
-  def mainDrives = uicomponent.mainDrives();
-%>
 <div id="$uicomponent.id" class="UIDrivesArea">
 	<div class="UIDriversAreaContainer">
-		<%if(mainDrives.size() > 0) {%>
-			<div class="RowDrives">
-				<div class="IconArrowDrives TextTitleDriver"><%=_ctx.appRes("UIDrivesBrowser.title.GeneralDrives" )%></div>
-				<%
-				  for(drive in mainDrives) {
-    				if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-  	          String[] mainIconPath = drive.getIcon().split(":/") ;
-  	    %>      
-  	          <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>">
-    	          <img src="/${uicomponent.getPortalName()}/rest/jcr/${uicomponent.getRepository()}/${mainIconPath[0]}/${mainIconPath[1]}" width="48" height="41" />
-    	        </div>
-				<%
-				    } else {
-				%>
-				      <div class="IconDrives${drive.workspace} TextContentDrives" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>">
-  				      <a href="<%=uicomponent.event("SelectDrive", Utils.formatNodeName(drive.getName()))%>"><%=_ctx.appRes("Drives.label.${drive.name.replace(" ", "")}")%></a>
-				      </div>
-				<%      
-				    }
-				  }
-				%>
-				<div class="ClearLeft"><span></span></div>
-			</div>
-		<%}%>
-		<%if(groupDrives.size() > 0) {%>
-			<div class="RowDrives">
-				<div class="IconArrowDrives TextTitleDriver"><%=_ctx.appRes("UIDrivesBrowser.title.GroupDrives" )%></div>
-				<%
-          for(groupDrive in groupDrives) {
-  	        if(groupDrive.getIcon() != null && groupDrive.getIcon().length() > 0) {
-	  		    String[] groupIconPath = groupDrive.getIcon().split(":/") ;
-	      %>
-		        <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>">
-		        	<img src="/${uicomponent.getPortalName()}/rest/jcr/${uicomponent.getRepository()}/${groupIconPath[0]}/${groupIconPath[1]}" width="48" height="41" />			                				                  
-		        </div>
-        <%  } else {  %>
-			        <div class="IconDrivesUse TextContentDrives" onclick="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>">
-  			        <a href="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><%=groupDrive.getName().replace(".", " / ")%></a>
-			        </div>
-	      <%
-	          }
-	        }
-	      %>
-				<div class="ClearLeft"><span></span></div>
-			</div>
-		<%}%>
-		<%if(personalDrives.size() > 0) {%>
-			<div class="RowNormal">
-				<div class="IconArrowDrives TextTitleDriver"><%=_ctx.appRes("UIDrivesBrowser.title.PersonalDrives" )%></div>
-				<%
-          for(drive in personalDrives) {
-	          if(drive.getIcon() != null && drive.getIcon().length() > 0) {
-	            String[] personalIconPath = drive.getIcon().split(":/") ;
-	      %>
-			        <div class="Icon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>">
-			        	<img src="/${uicomponent.getPortalName()}/rest/jcr/${uicomponent.getRepository()}/${personalIconPath[0]}/${personalIconPath[1]}" alt="" width="48" height="41" />			                				                			                  
-			        </div>
-	      <%  } else { %>
-	            <div class="IconDrives${drive.name} TextContentDrives" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>">
-  	            <a href="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><%=_ctx.appRes("Drives.label.${drive.name.replace(" ", "")}")%></a>
-	            </div>
-        <%
-            }
-          }
-        %>
-				<div class="ClearLeft"><span></span></div>
-			</div>
-		<%}%>
+	
+		<div class="RowDrives">
+			<div class="IconArrowDrives TextTitleDriver">Main Drives</div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesSystem"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">System</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center Categorized Documents Center Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesCateDocument"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesBackUp"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesUse"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+      <div class="ClearLeft"><span></span></div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesPrivate"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesPublic"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+      <div class="ClearLeft"><span></span></div>
+		</div>
+		<div class="RowDrives">
+			<div class="IconArrowDrives TextTitleDriver">My Group</div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesSystem"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">System</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center Categorized Documents Center Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesCateDocument"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesBackUp"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesUse"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+      <div class="ClearLeft"><span></span></div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesPrivate"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesPublic"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+      <div class="ClearLeft"><span></span></div>
+		</div>
+		<div class="RowNormal">
+			<div class="IconArrowDrives TextTitleDriver">Main Drives</div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesSystem"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">System</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center Categorized Documents Center Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesCateDocument"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesBackUp"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesUse"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+      <div class="ClearLeft"><span></span></div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesPrivate"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesPublic"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+			<div class="Drive">
+	  		<div class="DriveContainer">
+	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
+	        <div class="DriveLabel">
+        		<a href="#">Categorized Documents Center</a>
+	        </div>
+	    	</div>    
+      </div>
+      <div class="ClearLeft"><span></span></div>
+		</div>
+		
 	</div>
 </div>
