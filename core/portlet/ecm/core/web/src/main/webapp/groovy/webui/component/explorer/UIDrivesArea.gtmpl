@@ -4,231 +4,88 @@
 		<div class="RowDrives">
 			<div class="IconArrowDrives TextTitleDriver">Main Drives</div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesSystem"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">System</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesSystem DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center Categorized Documents Center Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesAdmin DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesCateDocument"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesCateDocument DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesBackUp"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesBackUp DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesUse"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
-      </div>
-      <div class="ClearLeft"><span></span></div>
-			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesPrivate"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesUse DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesPublic"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
-      </div>
-			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
-      </div>
-			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesPublic DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
       <div class="ClearLeft"><span></span></div>
 		</div>
 		<div class="RowDrives">
-			<div class="IconArrowDrives TextTitleDriver">My Group</div>
+			<div class="IconArrowDrives TextTitleDriver">Main Group</div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesSystem"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">System</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesSystem DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center Categorized Documents Center Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesAdmin DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesCateDocument"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesCateDocument DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesBackUp"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesBackUp DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesUse"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
-      </div>
-      <div class="ClearLeft"><span></span></div>
-			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesPrivate"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesUse DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesPublic"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
-      </div>
-			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
-      </div>
-			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesPublic DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
       <div class="ClearLeft"><span></span></div>
 		</div>
 		<div class="RowNormal">
 			<div class="IconArrowDrives TextTitleDriver">Main Drives</div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesSystem"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">System</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesSystem DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center Categorized Documents Center Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesAdmin DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesCateDocument"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesCateDocument DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesBackUp"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesBackUp DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesUse"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
-      </div>
-      <div class="ClearLeft"><span></span></div>
-			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesPrivate"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesUse DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesPublic"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesPublic DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
 			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
-      </div>
-			<div class="Drive">
-	  		<div class="DriveContainer">
-	        <div style="margin: auto;" class="IconDrivesAdmin"><span></span></div>
-	        <div class="DriveLabel">
-        		<a href="#">Categorized Documents Center</a>
-	        </div>
-	    	</div>    
+        <div class="IconDrivesPrivate DriveIcon"><span></span></div>
+    		<a href="#" class="DriveLabel">Categorized Documents Center</a>
       </div>
       <div class="ClearLeft"><span></span></div>
 		</div>

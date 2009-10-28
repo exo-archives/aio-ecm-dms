@@ -1072,24 +1072,26 @@
 	margin-bottom:10px;
 }
 
-.UIJCRExplorer .UIDrivesArea .DriveContainer {
-	padding:8px 0 5px;
-	width:158px;
-}
-
 .UIJCRExplorer .UIDrivesArea .Drive {
-	margin:6px;
+	margin: 6px;
 	float: left;
+	width:160px;
 }
 
 .UIJCRExplorer .UIDrivesArea .DriveLabel {
 	line-height:15px;
 	margin:3px auto 0;
-	text-align:center;
+}
+
+.UIJCRExplorer .UIDrivesArea .DriveIcon {
+	margin: 0px 5px 3px 0px; /* orientation=lt */
+	margin: 0px 0px 3px 5px; /* orientation=rt */
+	float: left;
+	width: 27px;
 }
 
 .UIJCRExplorer .UIDrivesArea .IconDrivesSystem{
-	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat center top;
+	background: url('DefaultSkin/background/IconDrivesArea.gif') no-repeat left top;
 	height: 23px;
 }
 
