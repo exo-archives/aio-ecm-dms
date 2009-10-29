@@ -251,10 +251,14 @@
                   } else {
                     isShowSlideShow = false;
                   }
-                  if(uicomponent.isSupportedThumbnailImage(image) || isShowSlideShow) {
+                  if(uicomponent.isSupportedThumbnailImage(image)) {
                     imgSrc = "/".concat(uicomponent.getPortalName()).concat("/rest/jcr/").concat(uicomponent.getRepository()).concat("/").concat(wsName).concat(image.getPath()).concat("/?reloadnum=").concat(String.valueOf(Math.random())); 
-                    data = data.concat("'").concat(imgSrc).concat("' : { caption: '").concat(Text.unescapeIllegalJcrChars(image.getName())).concat(".' },");
+                  } else if (isShowSlideShow) {
+                    imgSrc = "/".concat(uicomponent.getPortalName()).concat("/rest/thumbnailImage/").concat(uicomponent.getRepository()).concat("/").concat(wsName).concat(image.getPath()).concat("/?size=big&reloadnum=").concat(String.valueOf(Math.random()));
+                  } else {
+                    continue;
                   }
+                  data = data.concat("'").concat(imgSrc).concat("' : { caption: '").concat(Text.unescapeIllegalJcrChars(image.getName())).concat(".' },");
                 }
                 if (data.length() > 0) {
                   data = "{".concat(data.substring(0,data.length() - 1)).concat("}");
