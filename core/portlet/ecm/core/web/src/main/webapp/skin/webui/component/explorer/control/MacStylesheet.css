@@ -71,7 +71,7 @@
 
 .UIJCRExplorerPortlet .SetupPreferencesButton {
   width: 24px;	
-  height: 24px;
+  height: 22px;
   background: url('MacSkin/icons/SetupPreferencesButton.gif') no-repeat center;
   float: right; /* orientation=lt */
   float: left; /* orientation=rt */
@@ -97,10 +97,9 @@
 /*############################## -- Begin UIViewBar -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar {
-  border-top: solid 1px #fdfdfd;
-  border-bottom: solid 1px #b7b7b7;
+  border-bottom: solid 1px #b3b3b3;
   background: url('MacSkin/background/LineDecorator1x30.gif') repeat-x center center;
-  height: 31px;
+  height: 53px;
   line-height: 21px;
 }
 
@@ -148,32 +147,13 @@
   float: right; /* orientation=rt */
   height: 16px;
 }
- 
-.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
-  margin: 4px 230px 0px 170px; /* orientation=lt */
-  margin: 4px 170px 0px 230px; /* orientation=rt */
-  height: 20px; line-height: 20px;
-  background: white;
-  border: solid 1px #d8d8d8;
-  border-right: solid 1px #cdcdcd; /* orientation=lt */
-  border-left: solid 1px #cdcdcd; /* orientation=rt */
-  border-bottom: solid 1px #cdcdcd;
-}
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle {
-  margin: 4px 230px 0px 170px; /* orientation=lt */
-  margin: 4px 170px 0px 230px; /* orientation=rt */
   height: 20px; line-height: 20px;
-  background: white;
-  border: solid 1px #d8d8d8;
-  border-right: solid 1px #cdcdcd; /* orientation=lt */
-  border-left: solid 1px #cdcdcd; /* orientation=rt */
-  border-bottom: solid 1px #cdcdcd;
+	padding-top: 2px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle1 {
-  margin: 4px 230px 0px 60px; /* orientation=lt */
-  margin: 4px 60px 0px 230px; /* orientation=rt */
   height: 20px; line-height: 20px;
   background: white;
   border: solid 1px #d8d8d8;
@@ -183,8 +163,6 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle2 {
-  margin: 4px 230px 0px 110px; /* orientation=lt */
-  margin: 4px 110px 0px 230px; /* orientation=rt */
   height: 20px; line-height: 20px;
   background: white;
   border: solid 1px #d8d8d8;
@@ -194,8 +172,6 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle3 {
-  margin: 4px 230px 0px 135px; /* orientation=lt */
-  margin: 4px 135px 0px 230px; /* orientation=rt */
   height: 20px; line-height: 20px;
   background: white;
   border: solid 1px #d8d8d8;
@@ -205,14 +181,8 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle4 {
-  margin: 4px 230px 0px 160px; /* orientation=lt */
-  margin: 4px 160px 0px 230px; /* orientation=rt */
-  height: 19px; line-height: 19px;
-  background: white;
-  border: solid 1px #737373;
-  border-right: solid 1px #737373; /* orientation=lt */
-  border-left: solid 1px #737373; /* orientation=rt */
-  border-bottom: solid 1px #737373;
+  height: 19px; 
+  line-height: 19px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
@@ -220,13 +190,13 @@
   float: right; /* orientation=rt */
   margin: 4px 0px 0px 4px; /* orientation=lt */
   margin: 4px 4px 0px 0px; /* orientation=rt */
-  width: 20px;
-  height: 13px;
-  background: url('DefaultSkin/background/HardDisk20x12.gif') no-repeat center center;
+  width: 10px;
+  height: 12px;
+  background: url('MacSkin/icons/HardDisk.gif') no-repeat center center;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .InputContainer {
-  margin: 0px 30px;
+  margin: 0px 20px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .InputContainer input {
@@ -239,7 +209,7 @@
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar input {
   border: solid 0px white;
   float: left; /* orientation=lt */
-  float: right; /* orientation=lt */
+  float: right; /* orientation=rt */
   width: 135px;
 }
 
@@ -283,13 +253,28 @@
   background-color: #316ac5;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BgLeftAddressBar{
+	background: url('MacSkin/background/BgAdressActionBar.gif') no-repeat left top;
+	padding-left: 12px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BgRightAddressBar{
+	background: url('MacSkin/background/BgAdressActionBar.gif') no-repeat right -22px;
+	padding-right: 12px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BgCenterAddressBar{
+	background: url('MacSkin/background/BgAdressActionBar.gif') repeat-x left -44px;
+	height: 22px;
+}
+
 /*############################## -- End UIAddressBar -- ##############################*/
 /*############################## -- Begin UIActionBar -- ##############################*/
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBar {
-  border-bottom: solid 1px #b7b7b7;
-  height:57px;
-  background:url('MacSkin/background/HeaderBg.jpg') repeat-x;
+  border-bottom: solid 1px #cdcdcd;
+  height:50px;
+  background:url('MacSkin/background/HeaderBg.gif') repeat-x;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIActionBarAlone {
@@ -484,7 +469,7 @@
 	table-layout: fixed; 
 	width: 99%; 
 	_width: auto; 
-	margin: 4px;
+	margin: 16px 10px 0px 10px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .IconFileExplorer{
@@ -502,7 +487,8 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Right {
-	width: 236px;
+	width: 180px;
+	padding: 0px 10px;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Center {
@@ -527,13 +513,15 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .MoreViewIcon {
-	background: url(DefaultSkin/background/MoreViewIcon.gif) no-repeat; 
-	width: 12px;
+	background: url(MacSkin/icons/MoreViewIcon.gif) no-repeat; 
+	width: 13px;
 	height: 21px;
+	margin-left: 2px; /* orientation=lt */
+	margin-right: 2px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .DetailMoreViewIcon {
-	width: 13px;
+	width: 17px;
 }
 
 
@@ -611,8 +599,8 @@
 	background: url(MacSkin/icons/BackBtn.gif) no-repeat left center; /* orientation=lt */
 	background: url(MacSkin/icons/BackBtn-rt.gif) no-repeat right center; /* orientation=rt */
 	height: 21px;
-	padding-left: 27px; /* orientation=lt */
-	padding-right: 27px; /* orientation=rt */
+	padding-left: 25px; /* orientation=lt */
+	padding-right: 25px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .Center .SearchTxtField {
@@ -671,11 +659,8 @@
 
 .UIJCRExplorerPortlet .Right .Advance {
 	height: 19px;
-	border: 1px solid #737373;
-	background: #fff;
 	width: 165px;
-	margin-left: 8px; /* orientation=lt */
-	margin-right: 8px; /* orientation=rt */
+	padding-top: 2px;
 }
 
 .UIJCRExplorerPortlet .Right .Advance .SearchBtn {
@@ -707,17 +692,17 @@
 }
 
 .UIJCRExplorerPortlet .UIActionBar .SelectedActionBarTab  .TabL {
-	background: url(DefaultSkin/background/TabSelectL.gif) no-repeat left bottom;
-	padding-left: 5px;
+	background: url(MacSkin/background/TabSelect.gif) no-repeat left 0px;
+	padding-left: 3px;
 }
 
 .UIJCRExplorerPortlet .UIActionBar .SelectedActionBarTab  .TabR {
-	background: url(DefaultSkin/background/TabSelectR.gif) no-repeat right bottom;
-	padding-right: 5px;
+	background: url(MacSkin/background/TabSelect.gif) no-repeat right -25px;
+	padding-right: 3px;
 }
 
 .UIJCRExplorerPortlet .UIActionBar .SelectedActionBarTab  .TabM {
-	background: url(DefaultSkin/background/TabSelectBg.gif) repeat-x center bottom;
+	background: url(MacSkin/background/TabSelect.gif) repeat-x left -50px;
 	height: 25px;
 	padding: 0px 10px;
 	text-align: center;
@@ -740,7 +725,7 @@
 }
 
 .UIJCRExplorerPortlet .UIActionBar .SubTabIcon{
-	line-height: 20px;
+	line-height: 16px;
 	padding: 0px 15px 0px 27px; /* orientation=lt */
 	padding: 0px 27px 0px 15px; /* orientation=rt */
 	display: block;
@@ -798,9 +783,9 @@
 	background: url(DefaultSkin/icons/NormalButton.gif) no-repeat right center; /* orientation=lt */
 	background: url(DefaultSkin/icons/NormalButton.gif) no-repeat left center; /* orientation=rt */
 	width:24px;
-	height:24px;
+	height:22px;
 	display:block;
-	margin-top: 4px;
+	margin-top: 2px;
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
 }
@@ -813,7 +798,7 @@
 .UIViewBarContainer {
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
-	padding-top: 3px;
+	padding-top: 2px;
 	width:70px;
 }
 

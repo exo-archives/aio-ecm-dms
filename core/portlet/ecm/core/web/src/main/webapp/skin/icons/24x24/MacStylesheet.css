@@ -209,9 +209,9 @@ a:hover .ShowHideBoxContainer {
 }
 
 .ViewMetadatasIcon {
-	height: 24px;
-	background: url('MacSkin/ViewMetadata.gif') no-repeat left center; /* orientation=lt */
-	background: url('MacSkin/ViewMetadata.gif') no-repeat right center; /* orientation=rt */
+	height: 16px;
+	background: url('MacSkin/IconActionsBar.gif') no-repeat left -136px; /* orientation=lt */
+	background: url('MacSkin/IconActionsBar.gif') no-repeat right -136px; /* orientation=rt */
 }
 
 .VoteIcon {
@@ -245,9 +245,9 @@ a:hover .ShowHideBoxContainer {
 }
 
 .ManageAuditingIcon {
-	height: 24px;
-  background: url('DefaultSkin/ManageAuditing.gif') no-repeat left center; /* orientation=lt */
-  background: url('DefaultSkin/ManageAuditing.gif') no-repeat right center; /* orientation=rt */
+	height: 16px;
+  background: url('MacSkin/IconActionsBar.gif') no-repeat left -151px; /* orientation=lt */
+  background: url('MacSkin/IconActionsBar.gif') no-repeat right -151px; /* orientation=rt */
 }
 
 .ManagePublicationsIcon {
@@ -281,9 +281,9 @@ a:hover .ShowHideBoxContainer {
 }
 
 .ImportNodeIcon {
-	height: 24px;
-  background: url('MacSkin/ImportNode.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/ImportNode.gif') no-repeat right center; /* orientation=rt */
+	height: 16px;
+  background: url('MacSkin/IconActionsBar.gif') no-repeat left -32px; /* orientation=lt */
+  background: url('MacSkin/IconActionsBar.gif') no-repeat right -32px; /* orientation=rt */
 }
 
 .ManageHiddenIcon {
@@ -293,15 +293,15 @@ a:hover .ShowHideBoxContainer {
 }
 
 .ExportNodeIcon {
-	height: 24px;
-  background: url('MacSkin/ExportNode.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/ExportNode.gif') no-repeat right center; /* orientation=rt */
+	height: 16px;
+  background: url('MacSkin/IconActionsBar.gif') no-repeat left -16px; /* orientation=lt */
+  background: url('MacSkin/IconActionsBar.gif') no-repeat right -16px; /* orientation=rt */
 }
 
 .AddDocumentIcon {
-	height: 24px;
-  background: url('MacSkin/AddDocument.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/AddDocument.gif') no-repeat right center; /* orientation=rt */
+	height: 16px;
+  background: url('MacSkin/IconActionsBar.gif') no-repeat left -59px; /* orientation=lt */
+  background: url('MacSkin/IconActionsBar.gif') no-repeat right -59px; /* orientation=rt */
 }
 
 .CreateTicketIcon {
@@ -311,21 +311,21 @@ a:hover .ShowHideBoxContainer {
 }
 
 .AddFolderIcon {
-	height: 24px;
-  background: url('MacSkin/AddFolder.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/AddFolder.gif') no-repeat right center; /* orientation=rt */
+	height: 11px;
+  background: url('MacSkin/IconActionsBar.gif') no-repeat left -48px; /* orientation=lt */
+  background: url('MacSkin/IconActionsBar.gif') no-repeat right -48px; /* orientation=rt */
 }
 
 .UploadIcon {
-	height: 24px;
-  background: url('MacSkin/UploadFile.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/UploadFile.gif') no-repeat right center; /* orientation=rt */
+	height: 16px;
+  background: url('MacSkin/IconActionsBar.gif') no-repeat left -75px; /* orientation=lt */
+  background: url('MacSkin/IconActionsBar.gif') no-repeat right -75px; /* orientation=rt */
 }
 
 .AddSymLinkIcon {
-	height: 24px;
-  background: url('MacSkin/AddSymLink.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/AddSymLink.gif') no-repeat right center; /* orientation=rt */
+	height: 16px;
+  background: url('MacSkin/IconActionsBar.gif') no-repeat left -91px; /* orientation=lt */
+  background: url('MacSkin/IconActionsBar.gif') no-repeat right -91px; /* orientation=rt */
 }
 
 .ViewReferencesIcon {
@@ -341,21 +341,21 @@ a:hover .ShowHideBoxContainer {
 }
 
 .ShowJCRStructureIcon {
-  height: 24px;
-  background: url('MacSkin/ShowJCRStructure.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/ShowJCRStructure.gif') no-repeat right center; /* orientation=rt */
+  height: 16px;
+  background: url('MacSkin/IconActionsBar.gif') no-repeat left -167px; /* orientation=lt */
+  background: url('MacSkin/IconActionsBar.gif') no-repeat right -167px; /* orientation=rt */
 }
 
 .ViewNodeTypeIcon {
-	height: 24px;
-  background: url('MacSkin/ViewNodeType.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/ViewNodeType.gif') no-repeat right center; /* orientation=rt */
+	height: 14px;
+  background: url('MacSkin/IconActionsBar.gif') no-repeat left -107px; /* orientation=lt */
+  background: url('MacSkin/IconActionsBar.gif') no-repeat right -107px; /* orientation=rt */
 }
 
 .ViewPropertiesIcon {
-  height: 24px;
-  background: url('MacSkin/ViewProperties.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/ViewProperties.gif') no-repeat right center; /* orientation=rt */
+  height: 16px;
+  background: url('MacSkin/IconActionsBar.gif') no-repeat left top; /* orientation=lt */
+  background: url('MacSkin/IconActionsBar.gif') no-repeat right top; /* orientation=rt */
 }
 
 .ViewRelationsIcon {
@@ -365,9 +365,9 @@ a:hover .ShowHideBoxContainer {
 }
 
 .ViewPermissionsIcon {
-	height: 24px;
-  background: url('MacSkin/ViewPermissions.gif') no-repeat left center; /* orientation=lt */
-  background: url('MacSkin/ViewPermissions.gif') no-repeat right center; /* orientation=rt */
+	height: 16px;
+  background: url('MacSkin/IconActionsBar.gif') no-repeat left -121px; /* orientation=lt */
+  background: url('MacSkin/IconActionsBar.gif') no-repeat right -121px; /* orientation=rt */
 }
 
 .Clipboard24x24Icon {
