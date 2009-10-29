@@ -524,6 +524,15 @@
 			return false;
 		}
 	};
+	
+	ECMUtils.prototype.initSlideShow = function(data) {
+		alert(data);
+		alert(1);
+		window.addEvent('domready', function(){
+		   alert(data);
+		    var myShow = new Slideshow('show', data, {controller: true, height: 300, hu: '', thumbnails: true, width: 400});
+		  });
+	};
 };
 
 eXo.ecm.ECMUtils = new ECMUtils();

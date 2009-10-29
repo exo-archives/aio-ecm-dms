@@ -592,6 +592,24 @@
 	display: block;
 }
 
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .slide-show {
+	background: url(DefaultSkin/background/SlideShow.png) no-repeat; 
+	display: block;
+}
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .slide-show-selected {
+	background: url(DefaultSkin/background/SlideShowSelected.gif) no-repeat; 
+	display: block;
+}
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .timeline-view {
+	background: url(DefaultSkin/background/TimeLine.png) no-repeat; 
+	display: block;
+}
+.UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .timeline-view-selected{
+	background: url(DefaultSkin/background/TimeLineSelected.gif) no-repeat; 
+	display: block;
+}
+
+
 .UIJCRExplorerPortlet .RefreshSessionButton  {
   width: 24px;	
   height: 24px;
