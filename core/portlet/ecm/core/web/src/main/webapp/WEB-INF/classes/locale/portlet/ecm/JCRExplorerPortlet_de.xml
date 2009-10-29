@@ -2640,7 +2640,7 @@
       <Trash>Trash</Trash>
       <Configuration>Set up preferences</Configuration>      
     </label>
-  <UISideBar>
+  </UISideBar>
   <ECMContextMenu>
     <event>
       <AddToFavourite>Add to favourite</AddToFavourite>
@@ -2652,7 +2652,7 @@
   <Views>
     <label>
       <timeline-view>Timeline view</timeline-view>
-    </label
+    </label>
   </Views>
   <UIActionBar>
     <title>
@@ -2792,28 +2792,46 @@
   </UIShowAllTrashResult>  
   
   <UIPreferencesForm>
-  		<label>
-  				<Alphabetic>Alphabetic</Alphabetic>
-  				<Type>Type</Type>
-  				<CreatedDate>Created Date</CreatedDate>
-  				<ModifiedDate>Modified Date</ModifiedDate>
-  				<Ascending>Ascending</Ascending>
-  				<Descending>Descending</Descending>
-  		</label>
+    <label>
+  	  <Alphabetic>Alphabetic</Alphabetic>
+  		<Type>Type</Type>
+  	  <CreatedDate>Created Date</CreatedDate>
+  		<ModifiedDate>Modified Date</ModifiedDate>
+  		<Ascending>Ascending</Ascending>
+  		<Descending>Descending</Descending>
+  	</label>
   </UIPreferencesForm>
   <!--
   #########################################################################################
   #             org.exoplatform.ecm.webui.component.explorer.control.UIPreferencesForm  #
   #########################################################################################
   -->
+  
+  <UIAllItems>
+    <label>
+      <OwnedByMe>Owned by me</OwnedByMe>
+      <Favourites>Favourites</Favourites>
+      <Hidden>Hidden</Hidden>
+      <Trash>Trash</Trash>
+      <Configuration>Set up preferences</Configuration>      
+    </label>
+    <title>
+      <allItems>All Items</allItems>
+    </title>
+  </UIAllItems>
+    
   <UIAllItemsPreferenceForm>
     <title>Set up preferences</title>
-    <label>
-    </label>
     <action>
       <Cancel>#{word.cancel}</Cancel>
       <Save>#{word.save}</Save>
     </action>
-  </UIAllItemsPreferenceForm>  
+  </UIAllItemsPreferenceForm>
+  
+  <UISavedSearches>
+    <title>
+      <savedSearches>Saved Searches</savedSearches>
+    </title>
+  </UISavedSearches>  
   
 </bundle>

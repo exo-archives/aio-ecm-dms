@@ -8,120 +8,45 @@
 	 */
 %>
 <%
-import org.exoplatform.ecm.jcr.model.Preference;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
-%>
-<%
 	public String getCSSClassName(String item) {
 		if (uicomponent.getCurrentComp().equals(item)) return "SelectedItem";
 		return "NormalItem";
 	}
-
-	def uiExplorerPortlet = uicomponent.getAncestorOfType(UIJCRExplorerPortlet.class);
-	def uiExplorer = uiExplorerPortlet.findFirstComponentOfType(UIJCRExplorer.class);
-	def pref = uiExplorer.getPreference();
-	
 %>
 <div class="UISideBar" id="UISideBar">
-
   <div class="UISideBarContainer">
   	<div class="UIResizableBlock" style="height: 100%">
-  		<% uicomponent.renderChildren(); %>
+  		<% 
+  		  String[] arrComp = [uicomponent.getCurrentComp()];
+  		  uicomponent.renderSideBarChild(arrComp); 
+  		 %>
   	  <div class="ResizeTreeExplorer">
-			<div class="ResizeTreeButton"><span></span></div>
+			  <div class="ResizeTreeButton"><span></span></div>
 			</div>
-			<div class="SideBarContent">
-	  			<div class="BarContent">
-	  				<div class="Title">All Items</div>
-		  				<div class="SideGeneratal" onclick="<%=uicomponent.event("Preferences")%>" title="<%=_ctx.appRes("UISideBar.label.Configuration")%>">
-	  						<span></span>
-		  				</div>
-	  				<div class="ClearLeft"><span></span></div>
-	  			</div>
-  			<div class="SideContent">
-	  			<div class="ItemContent">
-	  				<% if (pref.isShowOwnedByUserDoc()) { %>
-					<div class="ArrowSidContent TextSiderContent">
-						<a href="<%=uicomponent.event("ShowAllOwnedByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllOwnedByUser")%>" class="ShowAllOwnedByUserBtn">
-						  <span>
-						<!--             - Owned by me-->
-						    <%=_ctx.appRes("UISideBar.label.OwnedByMe")%> 
-						  </span>
-						</a>
-					</div>
-	  				<% } %>
-	  				
-					<% if (pref.isShowFavouriteDoc()) { %>
-		  	        <div class="ArrowSidContent TextSiderContent">
-			            <a href="<%=uicomponent.event("ShowAllFavouriteByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFavouriteByUser")%>" class="ShowAllFavouriteByUserBtn">
-			              <span>
-			  <!--             - Favourites-->
-			                <%=_ctx.appRes("UISideBar.label.Favourites")%>
-			              </span>
-			            </a>
-		            </div>
-		            <% } %>
-		            
-		            <% if (pref.isShowHiddenDoc()) { %>
-		  	        <div class="ArrowSidContent TextSiderContent">
-			            <a href="<%=uicomponent.event("ShowAllHidden")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllHidden")%>" class="ShowAllHiddenBtn">
-			              <span>
-			  <!--             - Hidden-->
-			                <%=_ctx.appRes("UISideBar.label.Hidden")%> 
-			               </span>
-			            </a>
-		            </div>
-		            <% } %>
-		            
-		            <% if (pref.isShowTrashDoc()) { %>
-		  	        <div class="ArrowSidContent TextSiderContent">
-			            <a href="<%=uicomponent.event("ShowAllFromTrashByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFromTrashByUser")%>" class="ShowAllFromTrashByUserBtn">
-			              <span>
-			  <!--             - Trash-->
-			                <%=_ctx.appRes("UISideBar.label.Trash")%> 
-			               </span>
-			            </a>
-		            </div>
-		            <% } %>
-	  	  	</div>
-  	  	</div>
-  	  </div>
-  	  <div class="SideBarContent">
-  			<div class="BarContent">
-  				<div class="Title">By Type</div>
-  				<div class="SideGeneratal" title="Generatal"><span></span></div>
-  				<div class="ClearLeft"><span></span></div>
-  			</div>
-  			<div class="SideContent">
-  				<div class="ItemContent">
-	  	  		<div class="ArrowSidContent TextSiderContent">Images</div>
-	  	  		<div class="ArrowSidContent TextSiderContent">Documents</div>
-	  	  		<div class="ArrowSidContent TextSiderContent">Videos</div>
-  	  		</div>
-  	  	</div>
-  	  </div>
+      <% 
+        String[] arrAllItems = ["UIAllItems", "UIAllItemsByType"];
+        uicomponent.renderSideBarChild(arrAllItems); 
+      %>
   	</div>
   	
 	  <div class="UISelectContent">
-	  	<div class="<%=getCSSClassName("Explorer")%>" onclick="<%=uicomponent.event("Explorer")%>" title="<%=_ctx.appRes("UISideBar.label.Explorer")%>">
+	  	<div class="<%=getCSSClassName("UITreeExplorer")%>" onclick="<%=uicomponent.event("Explorer")%>" title="<%=_ctx.appRes("UISideBar.label.Explorer")%>">
 	      <div class="ItemIcon FileExplorerIcon"><span></span></div>
       </div>
 		<%if(!uicomponent.isSystemWorkspace()) {%>
-	    <div class="<%=getCSSClassName("Relation")%>" onclick="<%=uicomponent.event("Relation")%>" title="<%=_ctx.appRes("UISideBar.label.Relation")%>">
+	    <div class="<%=getCSSClassName("UIViewRelationList")%>" onclick="<%=uicomponent.event("Relation")%>" title="<%=_ctx.appRes("UISideBar.label.Relation")%>">
 	      <div class="ItemIcon RelationsIcon"><span></span></div>
       </div>
     	<%}%>
-      <div class="<%=getCSSClassName("Clipboard")%>" onclick="<%=uicomponent.event("Clipboard")%>" title="<%=_ctx.appRes("UISideBar.label.Clipboard")%>">
+      <div class="<%=getCSSClassName("UIClipboard")%>" onclick="<%=uicomponent.event("Clipboard")%>" title="<%=_ctx.appRes("UISideBar.label.Clipboard")%>">
 	      <div class="ItemIcon ClipboardIcon"><span></span></div>
 	    </div>
-	    <div class="<%=getCSSClassName("TagExplorer")%>" onclick="<%=uicomponent.event("TagExplorer")%>" title="<%=_ctx.appRes("UISideBar.label.TagExplorer")%>">
+	    <div class="<%=getCSSClassName("UITagExplorer")%>" onclick="<%=uicomponent.event("TagExplorer")%>" title="<%=_ctx.appRes("UISideBar.label.TagExplorer")%>">
 	      <div class="ItemIcon TagExplorerIcon"><span></span></div>
       </div>
-      <div class="<%=getCSSClassName("SavedSearches")%>" onclick="<%=uicomponent.event("SavedSearches")%>" title="<%=_ctx.appRes("UISideBar.label.SavedSearches")%>">
+      <div class="<%=getCSSClassName("UISavedSearches")%>" onclick="<%=uicomponent.event("SavedSearches")%>" title="<%=_ctx.appRes("UISavedSearches.title.savedSearches")%>">
 	      <div class="ItemIcon SideGeneratal"><span></span></div>
       </div>
-
 	  </div>
   </div>
  

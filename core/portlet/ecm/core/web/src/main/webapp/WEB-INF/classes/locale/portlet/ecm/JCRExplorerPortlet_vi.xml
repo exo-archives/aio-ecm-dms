@@ -2811,15 +2811,34 @@
 			<Save>Lưu</Save>
     </action>
   </UISingleAddMetadataForm>
+
+  <UIAllItems>
+    <label>
+      <OwnedByMe>Tạo bởi tôi</OwnedByMe>
+      <Favourites>Được ưa thích</Favourites>
+      <Hidden>Tài liệu ẩn</Hidden>
+      <Trash>Thùng rác</Trash>
+      <Configuration>Thiết lập lựa chọn</Configuration>
+    </label>
+    <title>
+      <allItems>Tất cả tài liệu</allItems>
+    </title>
+  </UIAllItems>
   
   <UIPreferencesForm>
-  		<label>
-  				<Alphabetic>Bảng chữ cái</Alphabetic>
-  				<Type>Kiểu</Type>
-  				<CreatedDate>Ngày tạo</CreatedDate>
-  				<ModifiedDate>Ngày cập nhật</ModifiedDate>
-  				<Ascending>Tăng dần</Ascending>
-  				<Descending>Giảm dần</Descending>
-  		</label>
+    <label>
+  	  <Alphabetic>Bảng chữ cái</Alphabetic>
+  		<Type>Kiểu</Type>
+  		<CreatedDate>Ngày tạo</CreatedDate>
+  		<ModifiedDate>Ngày cập nhật</ModifiedDate>
+  		<Ascending>Tăng dần</Ascending>
+  		<Descending>Giảm dần</Descending>
+    </label>
   </UIPreferencesForm>
+  
+  <UISavedSearches>
+    <title>
+      <savedSearches>Câu tìm kiếm</savedSearches>
+    </title>
+  </UISavedSearches>
 </bundle>

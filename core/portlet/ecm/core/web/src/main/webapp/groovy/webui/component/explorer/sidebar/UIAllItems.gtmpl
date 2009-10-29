@@ -1,0 +1,49 @@
+<%
+  def pref = uicomponent.getPreference();
+%>
+<div id="$uicomponent.id">
+	<div class="SideBarContent">
+		<div class="BarContent">
+			<div class="Title"><%=_ctx.appRes("UIAllItems.title.allItems")%></div>
+			<div class="SideGeneratal" onclick="<%=uicomponent.event("Preferences")%>" title="<%=_ctx.appRes("UIAllItems.label.Configuration")%>">
+				<span></span>
+			</div>
+			<div class="ClearLeft"><span></span></div>
+		</div>
+		<div class="SideContent">
+			<div class="ItemContent">
+				<% if (pref.isShowOwnedByUserDoc()) { %>
+						<div class="ArrowSidContent TextSiderContent">
+							<a href="<%=uicomponent.event("ShowAllOwnedByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllOwnedByUser")%>" class="ShowAllOwnedByUserBtn">
+								<span><%=_ctx.appRes("UIAllItems.label.OwnedByMe")%></span>
+							</a>
+						</div>
+				<% } %>
+				
+			  <% if (pref.isShowFavouriteDoc()) { %>
+						<div class="ArrowSidContent TextSiderContent">
+							<a href="<%=uicomponent.event("ShowAllFavouriteByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFavouriteByUser")%>" class="ShowAllFavouriteByUserBtn">
+								<span><%=_ctx.appRes("UIAllItems.label.Favourites")%></span>
+							</a>
+						</div>
+						<% } %>
+						
+				<% if (pref.isShowHiddenDoc()) { %>
+						<div class="ArrowSidContent TextSiderContent">
+							<a href="<%=uicomponent.event("ShowAllHidden")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllHidden")%>" class="ShowAllHiddenBtn">
+								<span><%=_ctx.appRes("UIAllItems.label.Hidden")%></span>
+							</a>
+						</div>
+				<% } %>
+						
+				<% if (pref.isShowTrashDoc()) { %>
+						<div class="ArrowSidContent TextSiderContent">
+							<a href="<%=uicomponent.event("ShowAllFromTrashByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFromTrashByUser")%>" class="ShowAllFromTrashByUserBtn">
+								<span><%=_ctx.appRes("UIAllItems.label.Trash")%> </span>
+							</a>
+						</div>
+				<% } %>
+			</div>
+		</div>
+	</div>
+</div>

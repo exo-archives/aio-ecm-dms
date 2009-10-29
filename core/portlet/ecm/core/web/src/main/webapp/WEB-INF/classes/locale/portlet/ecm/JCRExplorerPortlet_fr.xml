@@ -2648,7 +2648,7 @@
       <Save>Save</Save>
     </action>
   </UISingleAddMetadataForm>
-  <UISideBar>
+  <UIAllItems>
     <label>
       <OwnedByMe>Owned by me</OwnedByMe>
       <Favourites>Favourites</Favourites>
@@ -2656,7 +2656,10 @@
       <Trash>Trash</Trash>
       <Configuration>Set up preferences</Configuration>      
     </label>
-  </UISideBar>
+    <title>
+      <allItems>All Items</allItems>
+    </title>
+  </UIAllItems>
   <ECMContextMenu>
     <event>
       <AddToFavourite>Add to favourite</AddToFavourite>
@@ -2668,7 +2671,7 @@
   <Views>
     <label>
       <timeline-view>Timeline view</timeline-view>
-    </label
+    </label>
   </Views>
   <UIActionBar>
     <title>
@@ -2807,14 +2810,14 @@
     </tooltip>
   </UIShowAllTrashResult>
   <UIPreferencesForm>
-  		<label>
-  				<Alphabetic>Alphabétique</Alphabetic>
-  				<Type>Type</Type>
-  				<CreatedDate>Date de création</CreatedDate>
-  				<ModifiedDate>Date de modification</ModifiedDate>
-  				<Ascending>Ascendant</Ascending>
-  				<Descending>Descendant</Descending>
-  		</label>
+  	<label>
+  	  <Alphabetic>Alphabétique</Alphabetic>
+  		<Type>Type</Type>
+  		<CreatedDate>Date de création</CreatedDate>
+  		<ModifiedDate>Date de modification</ModifiedDate>
+  		<Ascending>Ascendant</Ascending>
+  		<Descending>Descendant</Descending>
+  	</label>
   </UIPreferencesForm>
   <!--
   #########################################################################################
@@ -2823,12 +2826,16 @@
   -->
   <UIAllItemsPreferenceForm>
     <title>Set up preferences</title>
-    <label>
-    </label>
     <action>
       <Cancel>#{word.cancel}</Cancel>
       <Save>#{word.save}</Save>
     </action>
   </UIAllItemsPreferenceForm>  
+  
+  <UISavedSearches>
+    <title>
+      <savedSearches>Requêtes Sauvegardées</savedSearches>
+    </title>
+  </UISavedSearches>  
   
 </bundle>

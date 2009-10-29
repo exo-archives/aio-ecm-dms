@@ -2927,15 +2927,34 @@
       <Save>Save</Save>
     </action>
   </UISingleAddMetadataForm>
+
+  <UIAllItems>
+    <label>
+      <OwnedByMe>Owned by me</OwnedByMe>
+      <Favourites>Favourites</Favourites>
+      <Hidden>Hidden</Hidden>
+      <Trash>Trash</Trash>
+      <Configuration>Set up preferences</Configuration>      
+    </label>
+    <title>
+      <allItems>All Items</allItems>
+    </title>
+  </UIAllItems>
   
   <UIPreferencesForm>
-  		<label>
-  				<Alphabetic>Alphabetic</Alphabetic>
-  				<Type>Type</Type>
-  				<CreatedDate>Created Date</CreatedDate>
-  				<ModifiedDate>Modified Date</ModifiedDate>
-  				<Ascending>Ascending</Ascending>
-  				<Descending>Descending</Descending>
-  		</label>
+    <label>
+  	  <Alphabetic>Alphabetic</Alphabetic>
+  		<Type>Type</Type>
+  		<CreatedDate>Created Date</CreatedDate>
+  		<ModifiedDate>Modified Date</ModifiedDate>
+  		<Ascending>Ascending</Ascending>
+  		<Descending>Descending</Descending>
+    </label>
   </UIPreferencesForm>
+  
+  <UISavedSearches>
+    <title>
+      <savedSearches>Saved Searches</savedSearches>
+    </title>
+  </UISavedSearches>  
 </bundle>

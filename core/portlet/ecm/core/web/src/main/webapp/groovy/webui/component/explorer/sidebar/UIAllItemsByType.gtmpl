@@ -1,0 +1,14 @@
+<div id="$uicomponent.id">
+	<div class="SideBarContent">
+		<div class="BarContent">
+			<div class="Title">By Type</div>
+			<div class="SideGeneratal" title="Generatal"><span></span></div>
+			<div class="ClearLeft"><span></span></div>
+		</div>
+		<div class="SideContent">
+			<div class="ArrowSidContent TextSiderContent">Images</div>
+			<div class="ArrowSidContent TextSiderContent">Documents</div>
+			<div class="ArrowSidContent TextSiderContent">Videos</div>
+		</div>
+	</div>
+</div>

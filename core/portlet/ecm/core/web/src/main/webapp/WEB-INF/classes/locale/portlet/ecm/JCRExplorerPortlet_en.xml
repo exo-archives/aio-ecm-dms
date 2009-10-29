@@ -98,11 +98,6 @@
       <Close>Close sidebar</Close>
       <TagExplorer>Tag cloud</TagExplorer>
       <Clipboard>Clipboard</Clipboard>
-      <OwnedByMe>Owned by me</OwnedByMe>
-      <Favourites>Favourites</Favourites>
-      <Hidden>Hidden</Hidden>
-      <Trash>Trash</Trash>
-      <Configuration>Set up preferences</Configuration>
     </label>
     <title>
       <Control>Control sidebar</Control>
@@ -194,8 +189,6 @@
   -->
   <UIAllItemsPreferenceForm>
     <title>Set up preferences</title>
-    <label>
-    </label>
     <action>
       <Cancel>#{word.cancel}</Cancel>
       <Save>#{word.save}</Save>
@@ -2786,15 +2779,34 @@
       <Save>Save</Save>
     </action>
   </UISingleAddMetadataForm>
+
+  <UIAllItems>
+    <label>
+      <OwnedByMe>Owned by me</OwnedByMe>
+      <Favourites>Favourites</Favourites>
+      <Hidden>Hidden</Hidden>
+      <Trash>Trash</Trash>
+      <Configuration>Set up preferences</Configuration>      
+    </label>
+    <title>
+      <allItems>All Items</allItems>
+    </title>
+  </UIAllItems>
   
   <UIPreferencesForm>
-  		<label>
-  				<Alphabetic>Alphabetic</Alphabetic>
-  				<Type>Type</Type>
-  				<CreatedDate>Created Date</CreatedDate>
-  				<ModifiedDate>Modified Date</ModifiedDate>
-  				<Ascending>Ascending</Ascending>
-  				<Descending>Descending</Descending>
-  		</label>
-  </UIPreferencesForm>  		
+    <label>
+  	  <Alphabetic>Alphabetic</Alphabetic>
+  		<Type>Type</Type>
+  		<CreatedDate>Created Date</CreatedDate>
+  		<ModifiedDate>Modified Date</ModifiedDate>
+  		<Ascending>Ascending</Ascending>
+  		<Descending>Descending</Descending>
+  	</label>
+  </UIPreferencesForm>
+
+  <UISavedSearches>
+    <title>
+      <savedSearches>Saved Searches</savedSearches>
+    </title>
+  </UISavedSearches>
 </bundle>

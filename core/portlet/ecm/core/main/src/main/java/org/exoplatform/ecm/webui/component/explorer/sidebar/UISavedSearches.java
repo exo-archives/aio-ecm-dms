@@ -27,7 +27,11 @@ import javax.jcr.query.QueryResult;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
+import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
+import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
+import org.exoplatform.ecm.webui.component.explorer.search.UISimpleSearch;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.queries.QueryService;
@@ -39,6 +43,7 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -52,7 +57,9 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template =  "app:/groovy/webui/component/explorer/sidebar/UISavedSearches.gtmpl",
     events = {
-        @EventConfig(listeners = UISavedSearches.ExecuteActionListener.class)
+        @EventConfig(listeners = UISavedSearches.ExecuteActionListener.class),
+        @EventConfig(listeners = UISavedSearches.AdvanceSearchActionListener.class),
+        @EventConfig(listeners = UISavedSearches.SavedQueriesActionListener.class)
     }
 )
 public class UISavedSearches extends UIComponent {
@@ -138,7 +145,36 @@ public class UISavedSearches extends UIComponent {
         uiSearchResult.setQueryResults(queryResult);
         uiSearchResult.updateGrid(true);
       }
+      ((UIDocumentWorkspace)uiSearch).setRenderedChild(UISearchResult.class);
     }
   }
-
+  
+  static public class AdvanceSearchActionListener extends EventListener<UISavedSearches> {
+    public void execute(Event<UISavedSearches> event) throws Exception {
+      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UIECMSearch uiECMSearch = event.getSource().createUIComponent(UIECMSearch.class, null, null);
+      UIContentNameSearch contentNameSearch = uiECMSearch.findFirstComponentOfType(UIContentNameSearch.class);
+      String currentNodePath = uiJCRExplorer.getCurrentNode().getPath();
+      contentNameSearch.setLocation(currentNodePath);
+      UISimpleSearch uiSimpleSearch = uiECMSearch.findFirstComponentOfType(UISimpleSearch.class);
+      uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(currentNodePath);
+      UIPopupContainer.activate(uiECMSearch, 700, 500);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+    }
+  }
+  
+  static public class SavedQueriesActionListener extends EventListener<UISavedSearches> {
+    public void execute(Event<UISavedSearches> event) throws Exception {
+      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UISavedQuery uiSavedQuery = event.getSource().createUIComponent(UISavedQuery.class, null, null);
+      uiSavedQuery.setIsQuickSearch(true);
+      uiSavedQuery.setRepositoryName(uiJCRExplorer.getRepositoryName());
+      uiSavedQuery.updateGrid(1);
+      UIPopupContainer.activate(uiSavedQuery, 700, 400);
+      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+    }
+  }  
+  
 }

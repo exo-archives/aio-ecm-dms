@@ -139,6 +139,14 @@
 	width: 17px; height: 17px;
 }
 
+.UIJCRExplorerPortlet .UISideBar .AdvancedSearch {
+	background: url('/eXoResources/skin/DefaultSkin/skinIcons/16x16/icons/SearchIcon.png') no-repeat center;
+	width: 17px; height: 17px;
+	cursor: pointer;
+	float: right;
+	margin-top:4px;
+}
+
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .FileExplorerIcon {
 	background: url('DefaultSkin/icons/FileExplorer.gif') no-repeat center;
 	width: 14px; height: 15px;

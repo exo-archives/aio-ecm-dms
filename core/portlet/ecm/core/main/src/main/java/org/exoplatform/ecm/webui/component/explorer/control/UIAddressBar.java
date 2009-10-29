@@ -38,19 +38,12 @@ import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer.HistoryEntry;
-import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
-import org.exoplatform.ecm.webui.component.explorer.search.UIECMSearch;
-import org.exoplatform.ecm.webui.component.explorer.search.UISavedQuery;
 import org.exoplatform.ecm.webui.component.explorer.search.UISearchResult;
-import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllFavouriteResult;
-import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllTrashResult;
-import org.exoplatform.ecm.webui.component.explorer.search.UISimpleSearch;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -73,8 +66,6 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIAddressBar.HistoryActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIAddressBar.ChangeViewActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIAddressBar.SimpleSearchActionListener.class),
-      @EventConfig(listeners = UIAddressBar.AdvanceSearchActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIAddressBar.SavedQueriesActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIAddressBar.RefreshSessionActionListener.class, phase = Phase.DECODE)
     }
 )
@@ -250,34 +241,6 @@ public class UIAddressBar extends UIForm {
       long time = System.currentTimeMillis() - startTime;
       uiSearchResult.setSearchTime(time);
       uiDocumentWorkspace.setRenderedChild(UISearchResult.class);
-    }
-  }
-  
-  static public class AdvanceSearchActionListener extends EventListener<UIAddressBar> {
-    public void execute(Event<UIAddressBar> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
-      UIECMSearch uiECMSearch = event.getSource().createUIComponent(UIECMSearch.class, null, null);
-      UIContentNameSearch contentNameSearch = uiECMSearch.findFirstComponentOfType(UIContentNameSearch.class);
-      String currentNodePath = uiJCRExplorer.getCurrentNode().getPath();
-      contentNameSearch.setLocation(currentNodePath);
-      UISimpleSearch uiSimpleSearch = uiECMSearch.findFirstComponentOfType(UISimpleSearch.class);
-      uiSimpleSearch.getUIFormInputInfo(UISimpleSearch.NODE_PATH).setValue(currentNodePath);
-      UIPopupContainer.activate(uiECMSearch, 700, 500);
-      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
-    }
-  }
-
-  static public class SavedQueriesActionListener extends EventListener<UIAddressBar> {
-    public void execute(Event<UIAddressBar> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
-      UIPopupContainer UIPopupContainer = uiJCRExplorer.getChild(UIPopupContainer.class);
-      UISavedQuery uiSavedQuery = event.getSource().createUIComponent(UISavedQuery.class, null, null);
-      uiSavedQuery.setIsQuickSearch(true);
-      uiSavedQuery.setRepositoryName(uiJCRExplorer.getRepositoryName());
-      uiSavedQuery.updateGrid(1);
-      UIPopupContainer.activate(uiSavedQuery, 700, 400);
-      event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
   
