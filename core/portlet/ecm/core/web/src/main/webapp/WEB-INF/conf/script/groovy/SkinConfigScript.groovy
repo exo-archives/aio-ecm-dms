@@ -51,14 +51,14 @@ SkinService.addSkin(
 SkinService.addSkin(
     "ecm/FileExplorerPortlet",
     "Vista",
-    "/ecm/skin/webui/component/explorer/DefaultStylesheet.css",
+    "/ecm/skin/webui/component/explorer/VistaStylesheet.css",
     ServletContext
 ) ;
  
 SkinService.addSkin(
     "ecm/FileExplorerPortlet",
     "Mac",
-    "/ecm/skin/webui/component/explorer/DefaultStylesheet.css",
+    "/ecm/skin/webui/component/explorer/MacStylesheet.css",
     ServletContext
 ) ;
 
