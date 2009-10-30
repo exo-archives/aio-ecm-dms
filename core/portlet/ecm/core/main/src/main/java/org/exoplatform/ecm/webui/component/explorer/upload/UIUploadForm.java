@@ -136,6 +136,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   private int numberUploadFile = 1;
   private HashMap<String, List<String>> mapTaxonomies = new HashMap<String, List<String>>();
   private List<Node> listUploadedNodes = new ArrayList<Node>();
+  private boolean taxonomyMandatory = false;
   
   public UIUploadForm() throws Exception {
     setMultiPart(true) ;
@@ -189,6 +190,14 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     listTaxonomyName = listTaxonomyNameNew;
   }
   
+  public boolean getTaxonomyMandatory() {
+    return taxonomyMandatory;
+  }
+  
+  public void setTaxonomyMandatory(boolean taxoMandatory) {
+    taxonomyMandatory = taxoMandatory;
+  }
+  
   public String getPathTaxonomy() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     String repository = uiExplorer.getRepositoryName();
@@ -211,6 +220,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     uiFormMultiValue.setEditable(false);
     if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true")) {
       uiFormMultiValue.addValidator(MandatoryValidator.class);
+      setTaxonomyMandatory(true);
+    } else {
+      setTaxonomyMandatory(false);
     }
     uiFormMultiValue.setValue(listTaxonomyName);
     addUIFormInput(uiFormMultiValue);
@@ -314,7 +326,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
     Node selectedNode = uiExplorer.getCurrentNode();
     if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true") && 
-        getMapTaxonomies().size() == 0 && !uiExplorer.getCurrentNode().hasNode(JCRCONTENT)) {
+        (getMapTaxonomies().size() == 0) && !uiExplorer.getCurrentNode().hasNode(JCRCONTENT)) {
       uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.taxonomyPath-error", null, 
           ApplicationMessage.WARNING)) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;

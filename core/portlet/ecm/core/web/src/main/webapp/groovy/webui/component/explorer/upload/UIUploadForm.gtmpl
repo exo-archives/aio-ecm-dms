@@ -1,4 +1,5 @@
-<% 
+<%
+import org.exoplatform.webui.form.validator.MandatoryValidator; 
 String fieldName;
 int numberUploadFile = uicomponent.getNumberUploadFile();
 %>
@@ -37,6 +38,9 @@ int numberUploadFile = uicomponent.getNumberUploadFile();
                     %>
                     <%=uicomponent.getLabel(fieldName)%>
                   </td>
+                 <% if (uicomponent.getTaxonomyMandatory() && (fieldName.equals("fieldListTaxonomy"))){
+                 		field.addValidator(MandatoryValidator.class);
+                 }%>
   	              <td class="FieldComponent"><% uiform.renderField(field) %></td>
   	              <td class="FieldComponent">
   	              <%
