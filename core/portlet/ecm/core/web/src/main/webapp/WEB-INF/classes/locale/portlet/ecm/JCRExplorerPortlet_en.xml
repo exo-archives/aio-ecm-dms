@@ -2794,22 +2794,46 @@
   </UIAllItems>
   
   <UIPreferencesForm>
-    <label>
-  	  <Alphabetic>Alphabetic</Alphabetic>
-  		<Type>Type</Type>
-  		<CreatedDate>Created Date</CreatedDate>
-  		<ModifiedDate>Modified Date</ModifiedDate>
-  		<Ascending>Ascending</Ascending>
-  		<Descending>Descending</Descending>
-  	</label>
+  		<label>
+  				<Alphabetic>Alphabetic</Alphabetic>
+  				<Type>Type</Type>
+  				<CreatedDate>Created Date</CreatedDate>
+  				<ModifiedDate>Modified Date</ModifiedDate>
+  				<Ascending>Ascending</Ascending>
+  				<Descending>Descending</Descending>
+  		</label>
   </UIPreferencesForm>
-
+  
+  <UIDocumentInfo>
+    <label>
+      <Today>Today</Today>
+      <Yesterday>Yesterday</Yesterday>
+      <EarlierThisWeek>Earlier This Week</EarlierThisWeek>
+      <EarlierThisMonth>Earlier This Month</EarlierThisMonth>
+      <EarlierThisYear>Earlier This Year</EarlierThisYear>
+    </label>
+    <header>
+      <dateTime>Date time</dateTime>
+      <name>Name</name>
+    </header>  	
+    <tooltip>
+      <View>View</View>
+      <RemoveFromFavourite>Remove from favourite</RemoveFromFavourite>
+      <AddToFavourite>Add to favourite</AddToFavourite>
+      <timelineFavouriteDESC>Sort by favourite in descending order</timelineFavouriteDESC>
+      <timelineFavouriteASC>Sort by favourite in ascending order</timelineFavouriteASC>
+      <timelineDateTimeASC>Sort by modified time in ascending order</timelineDateTimeASC>
+      <timelineDateTimeDESC>Sort by modified time in descending order</timelineDateTimeDESC>
+      <timelineNameASC>Sort by name in ascending order</timelineNameASC>
+      <timelineNameDESC>Sort by name in descending order</timelineNameDESC>
+    </tooltip>    
+  </UIDocumentInfo>	
+  
   <UISavedSearches>
     <title>
       <savedSearches>Saved Searches</savedSearches>
     </title>
   </UISavedSearches>
-  
     <Views>
     <label>
       <slide-show>Slide show</slide-show>

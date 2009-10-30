@@ -2835,6 +2835,31 @@
   		<Descending>Giảm dần</Descending>
     </label>
   </UIPreferencesForm>
+ 
+  <UIDocumentInfo>
+    <label>
+      <Today>Ngày hôm nay</Today>
+      <Yesterday>Ngày hôm qua</Yesterday>
+      <EarlierThisWeek>Trong tuần</EarlierThisWeek>
+      <EarlierThisMonth>Trong tháng</EarlierThisMonth>
+      <EarlierThisYear>Trong năm</EarlierThisYear>
+    </label>
+    <header>
+      <dateTime>Ngày đổi</dateTime>
+      <name>Tên</name>
+    </header>   
+    <tooltip>
+      <View>Xem</View>
+      <RemoveFromFavourite>Xóa khỏi mục ưa thích</RemoveFromFavourite>
+      <AddToFavourite>Thêm vào mục ưa thích</AddToFavourite>
+      <timelineFavouriteDESC>Sắp xếp giảm dần theo mục ưa thích</timelineFavouriteDESC>
+      <timelineFavouriteASC>Sắp xếp tăng dần theo mục ưa thích</timelineFavouriteASC>
+      <timelineDateTimeASC>Sắp xếp tăng dần theo thời gian thay đổi</timelineDateTimeASC>
+      <timelineDateTimeDESC>Sắp xếp giảm dần theo thời gian thay đổi</timelineDateTimeDESC>
+      <timelineNameASC>Sắp xếp tăng dần theo tên</timelineNameASC>
+      <timelineNameDESC>Sắp xếp giảm dần theo tên</timelineNameDESC>
+    </tooltip>    
+  </UIDocumentInfo>  
   
   <UISavedSearches>
     <title>
@@ -2847,4 +2872,5 @@
       <timeline-view>Hiển thị theo thời gian</timeline-view>
     </label>
   </Views>
+
 </bundle>

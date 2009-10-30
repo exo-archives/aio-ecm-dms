@@ -31,12 +31,14 @@ import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.timeline.TimelineService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.impl.core.query.QueryImpl;
 import org.exoplatform.services.log.ExoLogger;
 
 /**
@@ -56,15 +58,17 @@ public class TimelineServiceImpl implements TimelineService {
   private static final SimpleDateFormat formatDateTime = new SimpleDateFormat();
   private RepositoryService repositoryService_;
   private TemplateService templateService_;
+  private int itemPerTimeline = 5;
   
   static {
 	  formatDateTime.applyPattern("yyyy-MM-dd");	  
   }
   
-  public TimelineServiceImpl(RepositoryService repoService, TemplateService templateService
-      ) throws Exception {
+  public TimelineServiceImpl(RepositoryService repoService, TemplateService templateService,
+  		InitParams initParams) throws Exception {
     repositoryService_ = repoService;
     templateService_ = templateService;
+    itemPerTimeline = Integer.parseInt(initParams.getValueParam("itemPerTimeline").getValue());
   }
   
   /**
@@ -93,7 +97,6 @@ public class TimelineServiceImpl implements TimelineService {
 	  }
 	  return documentsOfYear;	  
   }
-  
   
   /**
    * {@inheritDoc}
@@ -199,15 +202,6 @@ public class TimelineServiceImpl implements TimelineService {
     return documentsOfToday;
   }
   
-  /**
-   * Create a query statement
-   * @param userName Logged in user
-   * @return String
-   */
-  private String prepareQueryStatement(String userName) {
-    return null;
-  }
-  
   private Session getSession(SessionProvider sessionProvider, String repository, String workspace
       ) throws RepositoryException, RepositoryConfigurationException {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
@@ -218,7 +212,8 @@ public class TimelineServiceImpl implements TimelineService {
       ) throws Exception {
     try {
       QueryManager queryManager = session.getWorkspace().getQueryManager();
-      Query query = queryManager.createQuery(statement, language);
+      QueryImpl query = (QueryImpl)queryManager.createQuery(statement, language);
+      query.setLimit(itemPerTimeline);
       return query.execute();
     } catch(Exception e) {
       LOG.error("Can not execute query", e);
@@ -236,9 +231,6 @@ public class TimelineServiceImpl implements TimelineService {
     return sb.toString();
   }
   
-//	Query query = queryManager.createQuery(
-//	"SELECT * FROM " + EXO_DATETIME + " WHERE " + EXO_DATEMODIFIED +
-//	" > TIMESTAMP '2009-11-21T00:00:00.000+07:00'", Query.SQL);  
   private String getStrTodayTime(Calendar time) {
     String currentDate = formatDateTime.format(time.getTime());	  
 	return currentDate + TIME_FORMAT_TAIL;
@@ -257,28 +249,20 @@ public class TimelineServiceImpl implements TimelineService {
 		  monday.add(Calendar.DATE, -1);
 	  }
 	  monday.add(Calendar.DATE, 1);
-	  
 	  String mondayDate = formatDateTime.format(monday.getTime());
 	  return mondayDate + TIME_FORMAT_TAIL;
   }
   
   private String getStrBeginningOfThisMonthTime(Calendar time) { 
 	  Calendar theFirst = (Calendar)time.clone();
-	  theFirst.set(time.get(Calendar.YEAR), 
-			       time.get(Calendar.MONTH),
-			       1, 
-			       0, 0, 0);
-	  
+	  theFirst.set(time.get(Calendar.YEAR), time.get(Calendar.MONTH), 1, 0, 0, 0);
 	  String theFirstDate = formatDateTime.format(theFirst.getTime());
 	  return theFirstDate + TIME_FORMAT_TAIL;
   }
   
   private String getStrBeginningOfThisYearTime(Calendar time) { 
 	  Calendar theFirst = (Calendar)time.clone();
-	  theFirst.set(time.get(Calendar.YEAR), 
-			       0,
-			       1, 
-			       0, 0, 0);
+	  theFirst.set(time.get(Calendar.YEAR), 0, 1, 0, 0, 0);
 	  String theFirstDate = formatDateTime.format(theFirst.getTime());
 	  return theFirstDate + TIME_FORMAT_TAIL;
   }

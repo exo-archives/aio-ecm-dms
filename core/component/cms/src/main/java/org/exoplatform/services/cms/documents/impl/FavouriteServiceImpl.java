@@ -132,7 +132,7 @@ public class FavouriteServiceImpl implements FavouriteService {
 										append(EXO_FAVOURITER_PROPERTY).
 										append(" IS NOT NULL AND ").
 										append(" CONTAINS (").
-										append("exo:owner").
+										append(EXO_FAVOURITER_PROPERTY).
 										append(", '").
 										append(userName).append("')");
 		return selectNodesByQueryString(workspace, repository, sessionProvider, 
