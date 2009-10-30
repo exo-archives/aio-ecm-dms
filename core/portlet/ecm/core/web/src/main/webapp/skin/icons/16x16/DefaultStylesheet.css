@@ -194,12 +194,14 @@
 
 .BlueDownArrow16x16Icon {
   height: 16px;
-  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat center center;
+  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat right center; /* orientation=lt */
+	background: url('DefaultSkin/BlueDownArrow.gif') no-repeat left center; /* orientation=rt */
 }
 
 .BlueUpArrow16x16Icon {
   height: 16px;
-  background: url('DefaultSkin/BlueUpArrow.gif') no-repeat center center;
+  background: url('DefaultSkin/BlueUpArrow.gif') no-repeat right center; /* orientation=lt */
+	background: url('DefaultSkin/BlueUpArrow.gif') no-repeat left center; /* orientation=rt */
 }
 
 .AddType16x16Icon {
