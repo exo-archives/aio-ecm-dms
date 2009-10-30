@@ -141,7 +141,7 @@
 .EmptyIcon {
   width: 16px;
   background: url('DefaultSkin/ExpandEmptyIcon.gif') no-repeat left 3px; /* orientation=lt */
-  background: url('DefaultSkin/ExpandEmptyIcon.gif') no-repeat right 3px; /* orientation=rt */
+  background: url('DefaultSkin/ExpandEmptyIcon-rt.gif') no-repeat right 3px; /* orientation=rt */
   cursor: pointer;
 }
 

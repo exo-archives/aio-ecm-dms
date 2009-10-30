@@ -35,7 +35,8 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .ResizeSideBar{
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	background: url('DefaultSkin/background/ResizeSideBar.gif') repeat-y center center;
 	width: 5px;
 	cursor:col-resize;
@@ -421,23 +422,28 @@
 }
 
 .UIJCRExplorerPortlet .UITimelineView .IconPic{
-	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left 4px;
+	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left 4px; /* orientation=lt */
+	background: url('DefaultSkin/background/IconDocument.gif') no-repeat right 4px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UITimelineView .IconExcel{
-	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -70px;
+	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -70px; /* orientation=lt */
+	background: url('DefaultSkin/background/IconDocument.gif') no-repeat right -70px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UITimelineView .IconAI{
-	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -16px;
+	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -16px; /* orientation=lt */
+	background: url('DefaultSkin/background/IconDocument.gif') no-repeat right -16px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UITimelineView .IconAcrobat{
-	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -35px;
+	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -35px; /* orientation=lt */
+	background: url('DefaultSkin/background/IconDocument.gif') no-repeat right -35px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UITimelineView .IconIndesign{
-	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -53px;
+	background: url('DefaultSkin/background/IconDocument.gif') no-repeat left -53px; /* orientation=lt */
+	background: url('DefaultSkin/background/IconDocument.gif') no-repeat right -53px; /* orientation=rt */
 }
 
 /*############################## -- Begin CoverFlow -- ##############################*/
@@ -1059,7 +1065,8 @@
 }
 
 .UIJCRExplorer .UIDrivesArea .IconArrowDrives{
-	background: url('DefaultSkin/background/ArrowDrivers.gif') no-repeat left center;
+	background: url('DefaultSkin/background/ArrowDrivers.gif') no-repeat left center; /* orientation=lt */
+	background: url('DefaultSkin/background/ArrowDrivers-rt.gif') no-repeat right center; /* orientation=rt */
 	height: 7px;	
 }
 
@@ -1085,7 +1092,8 @@
 .UIJCRExplorer .UIDrivesArea .DriveIcon {
 	margin: 0px 5px 3px 0px; /* orientation=lt */
 	margin: 0px 0px 3px 5px; /* orientation=rt */
-	float: left;
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
 	width: 27px;
 	cursor: pointer;
 }

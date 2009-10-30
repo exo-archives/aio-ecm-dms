@@ -23,10 +23,12 @@
   	  <div class="ResizeTreeExplorer">
 			  <div class="ResizeTreeButton"><span></span></div>
 			</div>
-      <% 
-        String[] arrAllItems = ["UIAllItems", "UIAllItemsByType"];
-        uicomponent.renderSideBarChild(arrAllItems); 
-      %>
+			<div class="SelectItem">
+	      <% 
+	        String[] arrAllItems = ["UIAllItems", "UIAllItemsByType"];
+	        uicomponent.renderSideBarChild(arrAllItems); 
+	      %>
+      </div>
   	</div>
   	
 	  <div class="UISelectContent">
