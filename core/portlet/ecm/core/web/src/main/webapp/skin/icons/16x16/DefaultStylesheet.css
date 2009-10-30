@@ -194,8 +194,12 @@
 
 .BlueDownArrow16x16Icon {
   height: 16px;
-  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat right center; /* orientation=lt */
-	background: url('DefaultSkin/BlueDownArrow.gif') no-repeat left center; /* orientation=rt */
+  background: url('DefaultSkin/BlueDownArrow.gif') no-repeat center center;
+}
+
+.BlueUpArrow16x16Icon {
+  height: 16px;
+  background: url('DefaultSkin/BlueUpArrow.gif') no-repeat center center;
 }
 
 .AddType16x16Icon {
