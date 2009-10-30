@@ -214,7 +214,7 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
     String driveName = "";
     for (DriveData drive : lstDrive) {
       if (node.getSession().getWorkspace().getName().equals(drive.getWorkspace())
-          && node.getPath().contains(drive.getHomePath())) {
+          && node.getPath().contains(drive.getHomePath()) && drive.getHomePath().equals("/")) {
         driveName = drive.getName();
         break;
       }
