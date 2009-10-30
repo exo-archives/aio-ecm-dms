@@ -2647,5 +2647,11 @@
     <title>
       <allItems>All Items</allItems>
     </title>
-  </UIAllItems>  
+  </UIAllItems>
+  <Views>
+    <label>
+      <slide-show>Slide show</slide-show>
+      <timeline-view>Timeline view</timeline-view>
+    </label>
+  </Views>
 </bundle>

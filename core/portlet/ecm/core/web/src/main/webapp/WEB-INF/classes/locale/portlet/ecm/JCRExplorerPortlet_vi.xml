@@ -2841,4 +2841,10 @@
       <savedSearches>Câu tìm kiếm</savedSearches>
     </title>
   </UISavedSearches>
+  <Views>
+    <label>
+      <slide-show>Trình diễn theo slide</slide-show>
+      <timeline-view>Hiển thị theo thời gian</timeline-view>
+    </label>
+  </Views>
 </bundle>

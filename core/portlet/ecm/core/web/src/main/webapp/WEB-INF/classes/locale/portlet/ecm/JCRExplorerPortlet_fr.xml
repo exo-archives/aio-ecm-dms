@@ -2837,5 +2837,10 @@
       <savedSearches>Requêtes Sauvegardées</savedSearches>
     </title>
   </UISavedSearches>  
-  
+  <Views>
+    <label>
+      <slide-show>Slide show</slide-show>
+      <timeline-view>Timeline view</timeline-view>
+    </label>
+  </Views>
 </bundle>
