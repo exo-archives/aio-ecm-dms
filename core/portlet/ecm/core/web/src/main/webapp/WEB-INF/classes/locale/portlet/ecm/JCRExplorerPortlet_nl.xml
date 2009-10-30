@@ -265,6 +265,7 @@
 			<UIMultiLanguageForm>Multi taal</UIMultiLanguageForm>
 			<UIMultiLanguageManager>Multi taal</UIMultiLanguageManager>
 			<UIThumbnailForm>Add thumbnail image</UIThumbnailForm>
+			<UIDocumentFilterForm>Filter support type</UIDocumentFilterForm>
 		</title>
 		<header>
 			<workspace>Werkruimte</workspace>
@@ -391,6 +392,8 @@
 			<SimpleSearch>Snel zoeken</SimpleSearch>
 			<AdvanceSearch>geavanceerd zoeken</AdvanceSearch>
 			<SavedQueries>Opgeslangen queries</SavedQueries>
+			<ShowImages>Show all images types</ShowImages>
+   <ShowVideo>Show all video types</ShowVideo>
 		</title>
 	</UIActionBar>
 	<UIPopupMenu>
@@ -2957,10 +2960,36 @@
       <savedSearches>Saved Searches</savedSearches>
     </title>
   </UISavedSearches>  
+  
+  <DocumentType>
+    <label>
+    	 <Images>Images</Images>
+    	 <Video>Video</Video>
+    </label>
+  </DocumentType>
+  
+  <UIDocumentFilterForm>
+  	<label>
+    	<Images>My Images</Images>
+    	<Video>My Video</Video>
+    </label>
+    <title>Set up filter preferences</title>
+    <action>
+  		<Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>      
+    </action>
+  </UIDocumentFilterForm>
+  
+  <UIAllItemsByType>
+  	<label>
+  		<DocumentFilterConfiguration>Set up filter preferences</DocumentFilterConfiguration>
+  	</label>
+  </UIAllItemsByType>
+  
   <Views>
     <label>
       <slide-show>Slide show</slide-show>
       <timeline-view>Timeline view</timeline-view>
     </label>
-  </Views>
+  </Views>  
 </bundle>

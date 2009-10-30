@@ -2858,12 +2858,37 @@
       <savedSearches>Saved Searches</savedSearches>
     </title>
   </UISavedSearches>  
+
+  <DocumentType>
+    <label>
+    	 <Images>Images</Images>
+    	 <Video>Video</Video>
+    </label>
+  </DocumentType>
+  
+  <UIDocumentFilterForm>
+  	<label>
+    	<Images>My Images</Images>
+    	<Video>My Video</Video>
+    </label>
+    <title>Set up filter preferences</title>
+    <action>
+  		<Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>      
+    </action>
+  </UIDocumentFilterForm>
+  
+  <UIAllItemsByType>
+  	<label>
+  		<DocumentFilterConfiguration>Set up filter preferences</DocumentFilterConfiguration>
+  	</label>
+  </UIAllItemsByType>
   
   <Views>
     <label>
       <slide-show>Slide show</slide-show>
       <timeline-view>Timeline view</timeline-view>
     </label>
-  </Views>
+  </Views>  
   
 </bundle>

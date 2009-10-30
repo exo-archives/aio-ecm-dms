@@ -41,8 +41,8 @@ import org.exoplatform.services.log.ExoLogger;
  * minh.dang@exoplatform.com Oct 6, 2009 3:39:28 AM
  */
 public class DocumentTypeServiceImpl implements DocumentTypeService {
-  private static final Log    LOG           = ExoLogger
-                                                .getLogger("cms.documents.DocumentTypeServiceImpl");
+  private static final Log    LOG         = ExoLogger
+                                               .getLogger("cms.documents.DocumentTypeServiceImpl");
 
   private final static String         OWNER         = "exo:owner".intern();
 
@@ -66,7 +66,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
       
   private RepositoryService   repositoryService_ ;
   
-  private InitParams params_;
+  private InitParams params_;   
         
   public DocumentTypeServiceImpl(RepositoryService repoService, InitParams initParams) {
     repositoryService_ = repoService;
@@ -84,14 +84,13 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     return supportedType;
   }
   
-  public List<Node> getAllDocumentsByKindOfDocumentType(String documentType, String workspace, String repository,
-      SessionProvider sessionProvider) throws Exception {
+  public List<Node> getAllDocumentsByKindOfDocumentType(String documentType, String workspace, 
+      String repository, SessionProvider sessionProvider) throws Exception {
     return getAllDocumentsByType(workspace,repository,sessionProvider, getMimeTypes(documentType));
   }
   
   public List<Node> getAllDocumentsByType(String workspace, String repository,
-      SessionProvider sessionProvider, String mimeType) throws Exception {
-    
+                            SessionProvider sessionProvider, String mimeType) throws Exception {    
     String[] mimeTypes = { mimeType };
     
     // Get all document types
@@ -99,7 +98,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
   }
 
   public List<Node> getAllDocumentsByUser(String workspace, String repository,
-      SessionProvider sessionProvider, String[] mimeTypes, String userName) throws Exception {
+           SessionProvider sessionProvider, String[] mimeTypes, String userName) throws Exception {
     Session session = sessionProvider.getSession(workspace,
                                                     repositoryService_.getRepository(repository));
     List<Node> resultList = new ArrayList<Node>();
@@ -123,7 +122,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
   }
 
   public List<Node> getAllDocumentsByType(String workspace, String repository,
-      SessionProvider sessionProvider, String[] mimeTypes) throws Exception {
+                          SessionProvider sessionProvider, String[] mimeTypes) throws Exception {
     Session session = sessionProvider.getSession(workspace,repositoryService_.getRepository(repository));
     
     List<Node> resultList = new ArrayList<Node>();
@@ -147,8 +146,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     }
     
     // Return list of nodes
-    return resultList;
-     
+    return resultList;     
   }
   
   private String[] getMimeTypes(String documentType) {
@@ -168,7 +166,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
   }  
 
   private QueryResult executeQuery(Session session, String statement, String language)
-      throws Exception, RepositoryException {
+                                                      throws Exception, RepositoryException {
     try {
       QueryManager queryManager = session.getWorkspace().getQueryManager();
       Query query = queryManager.createQuery(statement, language);
@@ -180,12 +178,13 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
 
   private String parseQuery(String[] mimeTypes, String user) throws Exception {
     StringBuilder query = new StringBuilder();
-    query.append(QUERY);    
+    query.append(QUERY);
     
     if (user == null) {
       for (int index=0; index < mimeTypes.length; index++) {
         query.append(CONTAINS).append("(").append(JCR_MINE_TYPE).append(",").append(SINGLE_QUOTE)
              .append(mimeTypes[index].trim()).append(SINGLE_QUOTE).append(")");
+        
         // Append OR operator for next branch statement   
         if (index < mimeTypes.length-1) query.append(OR);                              
       }
@@ -206,6 +205,7 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         } 
       }      
     }
+    
     // Return query statement.
     return query.toString();
   }

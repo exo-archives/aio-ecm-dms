@@ -57,6 +57,7 @@ import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.services.cms.documents.DocumentTypeService;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
@@ -122,6 +123,46 @@ public class UIJCRExplorer extends UIContainer {
   private boolean isHidePopup_;
   private boolean isReferenceNode_;
   private DriveData driveData_ ;
+    
+  private boolean isViewDocument_ ;
+  
+  private String supportedType;
+  
+  private boolean isFilterSave_ ;
+
+  private List<String> checkedSupportType = new ArrayList<String>();
+      
+  public void setSupportedType(String supportedType) {
+    this.supportedType = supportedType;
+  }
+  
+  public String getSupportedType() {
+    return supportedType;
+  }
+  
+  public boolean isViewDocument() {
+    return isViewDocument_;
+  }
+
+  public void setViewDocument(boolean isViewDocument) {
+    this.isViewDocument_ = isViewDocument;
+  } 
+  
+  public boolean isFilterSave() {
+    return isFilterSave_;
+  }
+  
+  public void setFilterSave(boolean isFilterSave) {
+    isFilterSave_ = isFilterSave;
+  }
+  
+  public List<String> getCheckedSupportType() {
+    return checkedSupportType;
+  }
+  
+  public void setCheckedSupportType(List<String> checkedSupportType) {
+    this.checkedSupportType = checkedSupportType;
+  }
   
   public UIJCRExplorer() throws Exception {
     addChild(UIControl.class, null, null);
@@ -376,7 +417,7 @@ public class UIJCRExplorer extends UIContainer {
       Node nodeGet = currentNode == null ? getCurrentNode() : currentNode;
       if(nodeGet.hasProperty(Utils.EXO_LANGUAGE)) {
         setLanguage(nodeGet.getProperty(Utils.EXO_LANGUAGE).getValue().getString());
-      } 
+      }
     } catch(PathNotFoundException path) {
       LOG.error("The node cannot be found ", path);
       setCurrentPath(currentRootPath_);
@@ -387,13 +428,13 @@ public class UIJCRExplorer extends UIContainer {
     UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
     uiDocumentInfo.updatePageListData();
     if(isShowViewFile()) uiDocumentInfo.setRendered(false) ;
-    else uiDocumentInfo.setRendered(true) ;
+    else uiDocumentInfo.setRendered(true);
     if(preferences_.isShowSideBar()) {
       UITreeExplorer treeExplorer = findFirstComponentOfType(UITreeExplorer.class);
       treeExplorer.buildTree();
     }
-    UIPopupContainer popupAction = getChild(UIPopupContainer.class) ;
-    popupAction.deActivate() ;
+    UIPopupContainer popupAction = getChild(UIPopupContainer.class);
+    popupAction.deActivate();
   }
 
   public boolean nodeIsLocked(String path, Session session) throws Exception {
@@ -512,7 +553,7 @@ public class UIJCRExplorer extends UIContainer {
     UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
     if(isShowViewFile()) {
       uiDocumentInfo.updatePageListData();
-      uiDocumentInfo.setRendered(false) ;
+      uiDocumentInfo.setRendered(false);
     } else {
       uiDocumentInfo.setRendered(true) ;
     }
@@ -525,12 +566,12 @@ public class UIJCRExplorer extends UIContainer {
     if(!isHidePopup_) {
       UIPopupContainer popupAction = getChild(UIPopupContainer.class) ;
       if(popupAction.isRendered()) {
-        popupAction.deActivate() ;
+        popupAction.deActivate();
         event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;
       }
     }    
     isHidePopup_ = false ;
-  }
+  }    
   
   public boolean isShowViewFile() throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
@@ -616,8 +657,8 @@ public class UIJCRExplorer extends UIContainer {
     Node node = (Node) ItemLinkAware.newInstance(getSession(), path, getNodeByPath(path, getSession()));
     NodeIterator childrenIterator = node.getNodes();
     List<Node> childrenList  = new ArrayList<Node>() ;
-    NodeType nodeType = node.getPrimaryNodeType() ;
-    NodeType[] superTypes = nodeType.getSupertypes() ;
+    NodeType nodeType = node.getPrimaryNodeType();
+    NodeType[] superTypes = nodeType.getSupertypes();
     boolean isFolder = false ;
     for(NodeType superType : superTypes) {
       if(superType.getName().equals(Utils.NT_FOLDER) || superType.getName().equals(Utils.NT_UNSTRUCTURED)) {
@@ -689,7 +730,7 @@ public class UIJCRExplorer extends UIContainer {
   }
   
   private void sort(List<Node> childrenList) {
-    if (Preference.SORT_BY_NODENAME.equals(preferences_.getSortType())) {
+    if (Preference.SORT_BY_NODENAME.equals(preferences_.getSortType())) {      
       Collections.sort(childrenList, new NodeNameComparator(preferences_.getOrder())) ;
     } else if (Preference.SORT_BY_NODETYPE.equals(preferences_.getSortType())) {
       Collections.sort(childrenList, new TypeNodeComparator(preferences_.getOrder())) ;
@@ -769,7 +810,7 @@ public class UIJCRExplorer extends UIContainer {
     }
     return documentsOnTag ;
   }
-  
+      
   public void setIsViewTag(boolean isViewTag) { isViewTag_ = isViewTag ; }
   
   public boolean isViewTag() { return isViewTag_ ; }
@@ -804,6 +845,28 @@ public class UIJCRExplorer extends UIContainer {
     return workspaceName ;
   }
   
+  /**
+   * Method get list of document by mimeType  
+   * @author lampt
+   * @throws Exception
+   */
+  public List<Node> getDocumentBySupportedType()throws Exception {
+    List<Node> documentList = new ArrayList<Node>();
+    
+    // Get a DocumentTypeService instance 
+    DocumentTypeService documentTypeService = getApplicationComponent(DocumentTypeService.class);
+    
+    for(Node node : documentTypeService.getAllDocumentsByKindOfDocumentType(getSupportedType(), getCurrentDriveWorkspace(),
+        getRepositoryName(), getSessionProvider())) {
+      
+      // Add node is nt:file type to array list.
+      documentList.add(node.getParent()) ;      
+    }
+    
+    sort(documentList);
+    return documentList;       
+  }
+    
   public static class HistoryEntry {
     private final String workspace;
     private final String path;

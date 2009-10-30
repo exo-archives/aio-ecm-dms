@@ -16,7 +16,6 @@
  */
 package org.exoplatform.ecm.jcr.model;
 
-import java.util.Map;
 
 public class Preference {
       

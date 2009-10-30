@@ -70,9 +70,60 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     session.save();
     session.logout();
   }
-
+  
   /**
-   * Test method getAllDocumentsByType Input : image type 
+   * Execute test for getAllSupportedType method
+   * Input : dms-document-type-configuration.xml
+   * Expect: Get list of all supported types include Video, Images.
+   * @throws Exception
+   */
+  public void testAllSupportedType() throws Exception {
+        
+    List<String> expectedList = documentTypeService_.getAllSupportedType();
+        
+    Iterator<String> iterSupportedType = expectedList.iterator();
+    String expectedSupportedName = null;
+    while (iterSupportedType.hasNext()) {
+      expectedSupportedName = iterSupportedType.next();
+      System.out.println(" The supported type is :" +expectedSupportedName);
+    }
+  }
+  
+  /**
+   * Execute test for getAllDocumentsByKindOfDocumentType method. 
+   * Input : Video supported type
+   * Expect: Get list of mime types of Video supported type.
+   * @throws Exception
+   */
+  public void testAllDocumentsByKindOfDocumentType() throws Exception {
+    Node rootNode = session.getRootNode();
+    Node documentNode = getDocument(rootNode, "document");
+    addDocumentFile(documentNode, "testaudio01", "audio/mp3");    
+    addDocumentFile(documentNode, "videomp302", "video/mp3");
+    addDocumentFile(documentNode, "video", "video/mpeg");    
+    addDocumentFile(documentNode, "image01", "image/gif");
+    addDocumentFile(documentNode, "image02", "image/jpeg");
+    addDocumentFile(documentNode, "image03", "image/png");
+    addDocumentFile(documentNode, "image04", "image/tiff");
+    documentNode.getSession().save();    
+    String supportedType = "Video";
+    List<Node> expectedList = documentTypeService_
+                  .getAllDocumentsByKindOfDocumentType(supportedType, COLLABORATION_WS, 
+        REPO_NAME, createSessionProvider());
+    assertNotNull(expectedList);    
+    Iterator<Node> iterNodes = expectedList.iterator();
+    Node expectedNode = null;
+    while (iterNodes.hasNext()) {
+      expectedNode = iterNodes.next();
+      System.out.println("The supported type : "+supportedType+" have mimeTypes : "
+                                        + expectedNode.getProperty(JCR_MINE_TYPE).getString());
+    }
+  }
+    
+  
+  /**
+   * Test method getAllDocumentsByType 
+   * Input : image type 
    * Expect: Get list of nodes in which jcr:mimeType properties are image/gif types.
    * @throws Exception
    */
@@ -124,7 +175,8 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     Node expectedNode = null;
     while( expectedIter.hasNext()) {
       expectedNode = expectedIter.next();
-      System.out.println("jcr:mimeType include :"+expectedNode.getProperty(JCR_MINE_TYPE).getString());            
+      System.out.println("jcr:mimeType include :"
+                        +expectedNode.getProperty(JCR_MINE_TYPE).getString());            
     }    
   }
 
@@ -155,9 +207,11 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     Node expectedNode= null; 
     while (iterator.hasNext()) {
       expectedNode = iterator.next();
-      System.out.println("jcr:mimeType include :"+expectedNode.getProperty(JCR_MINE_TYPE).getString());
+      System.out.println("jcr:mimeType include :"
+                  +expectedNode.getProperty(JCR_MINE_TYPE).getString());
     }     
   }
+  
   
   /**
    * Test method getAllDocumentsByUser
@@ -186,20 +240,18 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     Node expectedNode= null; 
     while (iterator.hasNext()) {
       expectedNode = iterator.next();
-      System.out.println("jcr:mimeType include :"+expectedNode.getProperty(JCR_MINE_TYPE).getString());
-    } 
-    
+      System.out.println("jcr:mimeType include :"
+                      +expectedNode.getProperty(JCR_MINE_TYPE).getString());
+    }     
   }
   
-  /**
-   * private method create sessionProvider instance.
-   * @return SessionProvider 
-   */
+  
   private SessionProvider createSessionProvider() {
     SessionProviderService sessionProviderService = (SessionProviderService) container
         .getComponentInstanceOfType(SessionProviderService.class);
     return sessionProviderService.getSessionProvider(null);
   }
+  
 
   /**
    * @throws Exception
@@ -213,6 +265,7 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     rootNode.addNode("document", NT_UNSTRUCTURED);   
     session.save();
   }
+  
 
   /**
    * @throws Exception
@@ -226,6 +279,7 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     Node documentNode = rootNode.getNode("document");
     documentNode.remove();
   }
+  
 
   /**
    * @param currentNode
@@ -241,6 +295,7 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     subNode.setProperty(JCR_DATA, "");
     subNode.setProperty(JCR_LAST_MODIFIED, new GregorianCalendar());
   }
+  
 
   /**
    * @param parentNode

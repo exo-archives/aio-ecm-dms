@@ -135,6 +135,5 @@ public class UISideBar extends UIContainer {
       uiSideBar.setCurrentComp(uiSideBar.getChild(UISavedSearches.class).getId());
       event.getRequestContext().addUIComponentToUpdateByAjax(uiSideBar);
     }
-  }
-    
+  }    
 }

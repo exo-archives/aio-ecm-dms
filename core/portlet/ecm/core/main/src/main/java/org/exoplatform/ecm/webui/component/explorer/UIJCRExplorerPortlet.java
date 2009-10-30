@@ -95,9 +95,8 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
 
   final static public String PARAMETERIZE_PATH       = "nodePath";
   
-  
   private boolean flagSelect = false;
-  
+        
   public UIJCRExplorerPortlet() throws Exception {
     UIJcrExplorerContainer explorerContainer = addChild(UIJcrExplorerContainer.class, null, null);
     explorerContainer.setFlag(false);

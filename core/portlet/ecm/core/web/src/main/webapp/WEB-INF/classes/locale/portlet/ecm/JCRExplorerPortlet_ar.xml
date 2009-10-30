@@ -2648,10 +2648,37 @@
       <allItems>All Items</allItems>
     </title>
   </UIAllItems>
+  
+  <DocumentType>
+    <label>
+    	 <Images>Images</Images>
+    	 <Video>Video</Video>
+    </label>
+  </DocumentType>
+  
+  <UIDocumentFilterForm>
+  	<label>
+    	<Images>Images</Images>
+    	<Video>Video</Video>
+    </label>
+    <title>Set up filter preferences</title>
+    <action>
+  		<Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>      
+    </action>
+  </UIDocumentFilterForm>
+  
+  <UIAllItemsByType>
+  	<label>
+  		<DocumentFilterConfiguration>Set up filter preferences</DocumentFilterConfiguration>
+  	</label>
+  </UIAllItemsByType>  
+
   <Views>
     <label>
       <slide-show>Slide show</slide-show>
       <timeline-view>Timeline view</timeline-view>
     </label>
   </Views>
+
 </bundle>

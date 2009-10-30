@@ -101,8 +101,9 @@
       <OwnedByMe>Thuộc sở hữu của tôi</OwnedByMe>
       <Favourites>Được ưa thích</Favourites>
       <Hidden>Ẩn</Hidden>
-      <Trash>Thùng rác</Trash>
-      <Configuration>Thiết lập lựa chọn</Configuration>      
+      <Trash>Thùng rác</Trash>      
+      <Configuration>Thiết lập lựa chọn</Configuration>
+      <DocumentFilterConfiguration>Thiết lập kiểu hiển thị</DocumentFilterConfiguration>      
     </label>
     <title>
       <Control>Điều khiển</Control>
@@ -200,7 +201,9 @@
       <Cancel>Hủy bỏ</Cancel>
       <Save>Lưu</Save>
     </action>
-  </UIAllItemsPreferenceForm>  
+  </UIAllItemsPreferenceForm>
+  
+  
   
   <!--
   #########################################################################################
@@ -265,7 +268,8 @@
       <UIMultiLanguageForm>Đa ngôn ngữ</UIMultiLanguageForm>
       <UIMultiLanguageManager>Đa ngôn ngữ</UIMultiLanguageManager>
       <UIThumbnailForm>Thêm ảnh nhỏ</UIThumbnailForm>
-      <UIAllItemsPreferenceForm>Thiết lập lựa chọn</UIAllItemsPreferenceForm>      
+      <UIAllItemsPreferenceForm>Thiết lập lựa chọn</UIAllItemsPreferenceForm>
+      <UIDocumentFilterForm>Lọc theo kiểu theo tùy chọn</UIDocumentFilterForm>      
     </title>
     <header>
       <workspace>Không gian làm việc</workspace>
@@ -370,6 +374,8 @@
       <ShowAllFavouriteByUser>Hiển thị các tài liệu trong mục ưa thích của bạn</ShowAllFavouriteByUser>
       <ShowAllHidden>Hiển thị các tài liệu ẩn</ShowAllHidden>
       <ShowAllFromTrashByUser>Hiển thị các tài liệu trong thùng rác</ShowAllFromTrashByUser>
+      <ShowImages>Hiển thị kiểu ảnh</ShowImages>
+      <ShowVideo>Hiển thị kiểu phim</ShowVideo>
     </title>
     <obtion>
       <Admin>Quản trị</Admin>
@@ -2808,7 +2814,7 @@
   <UISingleAddMetadataForm>
     <action>
       <Cancel>Thoát</Cancel>
-			<Save>Lưu</Save>
+						<Save>Lưu</Save>
     </action>
   </UISingleAddMetadataForm>
 
@@ -2825,7 +2831,15 @@
     </title>
   </UIAllItems>
   
-  <UIPreferencesForm>
+  
+  
+  <!--
+  #########################################################################################
+  #             org.exoplatform.ecm.webui.component.explorer.side.UIDocumentFilterForm  #
+  #########################################################################################
+  -->
+  
+	<UIPreferencesForm>
     <label>
   	  <Alphabetic>Bảng chữ cái</Alphabetic>
   		<Type>Kiểu</Type>
@@ -2835,7 +2849,45 @@
   		<Descending>Giảm dần</Descending>
     </label>
   </UIPreferencesForm>
- 
+
+  <UISavedSearches>
+    <title>
+      <savedSearches>Câu tìm kiếm</savedSearches>
+    </title>
+  </UISavedSearches>
+  
+  <UIDocumentFilterForm>
+  	<label>
+    	<Images>Ảnh</Images>
+    	<Video>Phim</Video>
+    </label>
+    <title>Thiết lập hiển thị</title>
+    <action>
+  		<Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>      
+    </action>
+  </UIDocumentFilterForm>
+  
+  <UIAllItemsByType>
+  	<label>
+  		<DocumentFilterConfiguration>Chọn thiết lập hiển thị</DocumentFilterConfiguration>
+  	</label>
+  </UIAllItemsByType>  
+  
+  <DocumentType>
+    <label>
+    	 <Images>Ảnh</Images>
+    	 <Video>Phim</Video>
+    </label>
+  </DocumentType>
+  
+  <Views>
+    <label>
+      <slide-show>Trình diễn theo slide</slide-show>
+      <timeline-view>Hiển thị theo thời gian</timeline-view>
+    </label>
+  </Views>
+  
   <UIDocumentInfo>
     <label>
       <Today>Ngày hôm nay</Today>
@@ -2860,17 +2912,4 @@
       <timelineNameDESC>Sắp xếp giảm dần theo tên</timelineNameDESC>
     </tooltip>    
   </UIDocumentInfo>  
-  
-  <UISavedSearches>
-    <title>
-      <savedSearches>Câu tìm kiếm</savedSearches>
-    </title>
-  </UISavedSearches>
-  <Views>
-    <label>
-      <slide-show>Trình diễn theo slide</slide-show>
-      <timeline-view>Hiển thị theo thời gian</timeline-view>
-    </label>
-  </Views>
-
 </bundle>

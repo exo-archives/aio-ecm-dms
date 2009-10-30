@@ -1,55 +1,46 @@
 <%
-	/**
-	 * Created by The eXo Platform SARL
-	 * Author : Tran The Trong
-	 *          trongtt@gmail.com
-	 * August 02, 2006
-	 * version: $Id$
-	 */
-%>
-<%
-	public String getCSSClassName(String item) {
-		if (uicomponent.getCurrentComp().equals(item)) return "SelectedItem";
-		return "NormalItem";
-	}
+  public String getCSSClassName(String item) {
+    if (uicomponent.getCurrentComp().equals(item)) return "SelectedItem";
+    return "NormalItem";
+  }
 %>
 <div class="UISideBar" id="UISideBar">
   <div class="UISideBarContainer">
-  	<div class="UIResizableBlock" style="height: 100%">
-  		<% 
-  		  String[] arrComp = [uicomponent.getCurrentComp()];
-  		  uicomponent.renderSideBarChild(arrComp); 
-  		 %>
-  	  <div class="ResizeTreeExplorer">
-			  <div class="ResizeTreeButton"><span></span></div>
-			</div>
-			<div class="SelectItem">
-	      <% 
-	        String[] arrAllItems = ["UIAllItems", "UIAllItemsByType"];
-	        uicomponent.renderSideBarChild(arrAllItems); 
-	      %>
+    <div class="UIResizableBlock" style="height: 100%">
+      <% 
+        String[] arrComp = [uicomponent.getCurrentComp()];
+        uicomponent.renderSideBarChild(arrComp); 
+       %>
+      <div class="ResizeTreeExplorer">
+        <div class="ResizeTreeButton"><span></span></div>
       </div>
-  	</div>
-  	
-	  <div class="UISelectContent">
-	  	<div class="<%=getCSSClassName("UITreeExplorer")%>" onclick="<%=uicomponent.event("Explorer")%>" title="<%=_ctx.appRes("UISideBar.label.Explorer")%>">
-	      <div class="ItemIcon FileExplorerIcon"><span></span></div>
+      <div class="SelectItem">
+        <% 
+          String[] arrAllItems = ["UIAllItems", "UIAllItemsByType"];
+          uicomponent.renderSideBarChild(arrAllItems); 
+        %>
       </div>
-		<%if(!uicomponent.isSystemWorkspace()) {%>
-	    <div class="<%=getCSSClassName("UIViewRelationList")%>" onclick="<%=uicomponent.event("Relation")%>" title="<%=_ctx.appRes("UISideBar.label.Relation")%>">
-	      <div class="ItemIcon RelationsIcon"><span></span></div>
+    </div>
+    
+    <div class="UISelectContent">
+      <div class="<%=getCSSClassName("UITreeExplorer")%>" onclick="<%=uicomponent.event("Explorer")%>" title="<%=_ctx.appRes("UISideBar.label.Explorer")%>">
+        <div class="ItemIcon FileExplorerIcon"><span></span></div>
       </div>
-    	<%}%>
+    <%if(!uicomponent.isSystemWorkspace()) {%>
+      <div class="<%=getCSSClassName("UIViewRelationList")%>" onclick="<%=uicomponent.event("Relation")%>" title="<%=_ctx.appRes("UISideBar.label.Relation")%>">
+        <div class="ItemIcon RelationsIcon"><span></span></div>
+      </div>
+      <%}%>
       <div class="<%=getCSSClassName("UIClipboard")%>" onclick="<%=uicomponent.event("Clipboard")%>" title="<%=_ctx.appRes("UISideBar.label.Clipboard")%>">
-	      <div class="ItemIcon ClipboardIcon"><span></span></div>
-	    </div>
-	    <div class="<%=getCSSClassName("UITagExplorer")%>" onclick="<%=uicomponent.event("TagExplorer")%>" title="<%=_ctx.appRes("UISideBar.label.TagExplorer")%>">
-	      <div class="ItemIcon TagExplorerIcon"><span></span></div>
+        <div class="ItemIcon ClipboardIcon"><span></span></div>
+      </div>
+      <div class="<%=getCSSClassName("UITagExplorer")%>" onclick="<%=uicomponent.event("TagExplorer")%>" title="<%=_ctx.appRes("UISideBar.label.TagExplorer")%>">
+        <div class="ItemIcon TagExplorerIcon"><span></span></div>
       </div>
       <div class="<%=getCSSClassName("UISavedSearches")%>" onclick="<%=uicomponent.event("SavedSearches")%>" title="<%=_ctx.appRes("UISavedSearches.title.savedSearches")%>">
-	      <div class="ItemIcon SideGeneratal"><span></span></div>
+        <div class="ItemIcon SideGeneratal"><span></span></div>
       </div>
-	  </div>
+    </div>
   </div>
  
 </div>

@@ -609,12 +609,26 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Preference pref = uiExplorer.getPreference();
     String currentPath = uiExplorer.getCurrentPath();
-    List<Node> childrenList = new ArrayList<Node>() ;
-    if(!uiExplorer.isViewTag()) {
+    List<Node> childrenList = new ArrayList<Node>();
+    
+    // Following code trunk is original codes.
+    /*if(!uiExplorer.isViewTag()) {
       childrenList = uiExplorer.getChildrenList(currentPath, pref.isShowPreferenceDocuments());    
     } else {
       childrenList = uiExplorer.getDocumentByTag() ;
+    }*/
+    
+    // This pieces of code to show document types are updated by lampt.
+    // In case of file explorer display.
+    if(!uiExplorer.isViewTag() && !uiExplorer.isViewDocument()) {      
+      childrenList = uiExplorer.getChildrenList(currentPath, pref.isShowPreferenceDocuments());
+    } else if (uiExplorer.isViewTag()) {               
+      childrenList = uiExplorer.getDocumentByTag();       
+    } else if (uiExplorer.isViewDocument()) {              
+      childrenList = uiExplorer.getDocumentBySupportedType();
     }
+    // End updated codes.
+    
     int nodesPerPage = pref.getNodesPerPage();    
     PageList pageList = new ObjectPageList(childrenList,nodesPerPage) ;
     pageIterator_.setPageList(pageList);        

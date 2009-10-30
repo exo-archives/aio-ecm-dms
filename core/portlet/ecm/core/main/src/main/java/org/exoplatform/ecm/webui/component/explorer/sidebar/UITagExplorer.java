@@ -67,7 +67,10 @@ public class UITagExplorer extends UIContainer {
       UIJCRExplorer uiExplorer = uiTagExplorer.getAncestorOfType(UIJCRExplorer.class) ;
       uiExplorer.setSelectRootNode() ;
       uiExplorer.setTagPath(tagPath) ;
-      uiExplorer.setIsViewTag(true) ;
+      
+      // Reset status of document flag updated by lampt 
+      uiExplorer.setViewDocument(false);
+      uiExplorer.setIsViewTag(true);
       uiExplorer.updateAjax(event) ;
     }
   }

@@ -247,10 +247,11 @@ public class UITreeExplorer extends UIContainer {
     public void execute(Event<UITreeExplorer> event) throws Exception {
       UITreeExplorer uiTreeExplorer = event.getSource();
       String path = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class) ;      
+      UIJCRExplorer uiExplorer = uiTreeExplorer.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class) ;
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
       Session session = uiExplorer.getSessionByWorkspace(workspaceName);
+      uiExplorer.setViewDocument(false);
       try {
     	// Check if the path exists
         NodeFinder nodeFinder = uiTreeExplorer.getApplicationComponent(NodeFinder.class);
@@ -284,6 +285,7 @@ public class UITreeExplorer extends UIContainer {
       UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class);
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
       Session session = uiExplorer.getSessionByWorkspace(workspaceName);
+      uiExplorer.setViewDocument(false);
       try {
         // Check if the path exists
         NodeFinder nodeFinder = uiTreeExplorer.getApplicationComponent(NodeFinder.class);

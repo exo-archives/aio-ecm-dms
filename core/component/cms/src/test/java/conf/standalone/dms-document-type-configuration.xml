@@ -25,7 +25,6 @@
 						<collection type="java.util.ArrayList">
 							<value><string>video/mpeg</string></value>
 							<value><string>audio/mpeg</string></value>
-							<value><string>audio/x-wav</string></value>
 						</collection>
 					</field>
 				</object>

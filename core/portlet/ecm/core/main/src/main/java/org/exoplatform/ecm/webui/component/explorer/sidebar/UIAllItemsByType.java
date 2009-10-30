@@ -16,8 +16,16 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.sidebar;
 
+import java.util.List;
+
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.cms.documents.DocumentTypeService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
+import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
@@ -27,13 +35,47 @@ import org.exoplatform.webui.core.UIComponent;
  * 7:08:57 AM
  */
 @ComponentConfig(
-    template = "app:/groovy/webui/component/explorer/sidebar/UIAllItemsByType.gtmpl"
+  template = "app:/groovy/webui/component/explorer/sidebar/UIAllItemsByType.gtmpl",
+  events = {
+    @EventConfig(listeners = UIAllItemsByType.ShowDocumentTypeActionListener.class),
+    @EventConfig(listeners = UIAllItemsByType.DocumentFilterActionListener.class)
+  }
 )
 
 public class UIAllItemsByType extends UIComponent {
 
-  public UIAllItemsByType() {
-    // TODO Auto-generated constructor stub
+  public UIAllItemsByType() {    
   }
-
+  
+  public List<String> getAllSupportedType() {            
+    DocumentTypeService documentTypeService = getApplicationComponent(DocumentTypeService.class);
+    UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);    
+    if (uiJCRExplorer.isFilterSave())
+      return uiJCRExplorer.getCheckedSupportType();
+    return documentTypeService.getAllSupportedType();
+  }
+  
+  static public class ShowDocumentTypeActionListener extends EventListener<UIAllItemsByType> {
+    public void execute(Event<UIAllItemsByType> event) throws Exception {
+      UIAllItemsByType uiViewDocumentTypes = event.getSource();
+      String supportType = event.getRequestContext().getRequestParameter(OBJECTID);
+      UIJCRExplorer uiExplorer = uiViewDocumentTypes.getAncestorOfType(UIJCRExplorer.class);            
+      uiExplorer.setSelectRootNode();      
+      uiExplorer.setSupportedType(supportType);
+      uiExplorer.setViewDocument(true);      
+      uiExplorer.setIsViewTag(false);
+      uiExplorer.updateAjax(event);
+    }
+  }
+  
+  static public class DocumentFilterActionListener extends EventListener<UIAllItemsByType> {
+    public void execute(Event<UIAllItemsByType> event) throws Exception {
+      UIAllItemsByType uiSideBar = event.getSource();
+      UIJCRExplorer uiJCRExplorer = uiSideBar.getAncestorOfType(UIJCRExplorer.class);   
+      UIPopupContainer popupAction = uiJCRExplorer.getChild(UIPopupContainer.class);
+      UIDocumentFilterForm uiDocumentFilter = popupAction.activate(UIDocumentFilterForm.class,300);      
+      uiDocumentFilter.invoke(uiSideBar.getAllSupportedType());
+      event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;
+    }
+  }
 }

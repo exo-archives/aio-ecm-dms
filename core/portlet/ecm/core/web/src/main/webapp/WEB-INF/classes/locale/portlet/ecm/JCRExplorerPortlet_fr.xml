@@ -244,7 +244,8 @@
       <UIMultiLanguageForm>Multilangues</UIMultiLanguageForm>
       <UIMultiLanguageManager>Multilangues</UIMultiLanguageManager>
       <UIThumbnailForm>Ajouter une vignette</UIThumbnailForm>
-      <UIAllItemsPreferenceForm>Préférences</UIAllItemsPreferenceForm>      
+      <UIAllItemsPreferenceForm>Préférences</UIAllItemsPreferenceForm>  
+      <UIDocumentFilterForm>Filter support type</UIDocumentFilterForm>    
     </title>
     <header>
       <workspace>Espace de travail</workspace>
@@ -345,6 +346,8 @@
       <SimpleSearch>Recherche Rapide</SimpleSearch>
       <AdvanceSearch>Recherche Avancée</AdvanceSearch>
       <SavedQueries>Requêtes Sauvegardées</SavedQueries>
+      <ShowImages>Show all images types</ShowImages>
+      <ShowVideo>Show all video types</ShowVideo>
     </title>
   </UIActionBar>
   <UIPopupMenu>
@@ -2831,8 +2834,44 @@
       <Save>#{word.save}</Save>
     </action>
   </UIAllItemsPreferenceForm>  
-
-  <UIDocumentInfo>
+		
+  <UISavedSearches>
+    <title>
+      <savedSearches>Requêtes Sauvegardées</savedSearches>
+    </title>
+  </UISavedSearches>  
+  <Views>
+    <label>
+      <slide-show>Slide show</slide-show>
+      <timeline-view>Timeline view</timeline-view>
+    </label>
+  </Views>
+  <DocumentType>
+    <label>
+    	 <Images>Images</Images>
+    	 <Video>Video</Video>
+    </label>
+  </DocumentType>
+  
+  <UIDocumentFilterForm>
+  	<label>
+    	<Images>My Images</Images>
+    	<Video>My Video</Video>
+    </label>
+    <title>Set up filter preferences</title>
+    <action>
+  		<Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>      
+    </action>
+  </UIDocumentFilterForm>
+  
+  <UIAllItemsByType>
+  	<label>
+  		<DocumentFilterConfiguration>Set up filter preferences</DocumentFilterConfiguration>
+  	</label>
+  </UIAllItemsByType>
+  
+	<UIDocumentInfo>
     <label>
       <Today>Today</Today>
       <Yesterday>Yesterday</Yesterday>
@@ -2855,17 +2894,6 @@
       <timelineNameASC>Sort by name in ascending order</timelineNameASC>
       <timelineNameDESC>Sort by name in descending order</timelineNameDESC>
     </tooltip>    
-  </UIDocumentInfo> 
+  </UIDocumentInfo>  
   
-  <UISavedSearches>
-    <title>
-      <savedSearches>Requêtes Sauvegardées</savedSearches>
-    </title>
-  </UISavedSearches>  
-  <Views>
-    <label>
-      <slide-show>Slide show</slide-show>
-      <timeline-view>Timeline view</timeline-view>
-    </label>
-  </Views>
 </bundle>
