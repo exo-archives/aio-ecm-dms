@@ -51,13 +51,13 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
   
   private static String ALL_DRIVES_CACHED = "allDrives".intern();
   
-  private static String ALL_DRIVES_CACHED_BY_ROLES = "allDrivesByRoles".intern();
+  private static String ALL_DRIVES_CACHED_BY_ROLES = "_allDrivesByRoles".intern();
   
-  private static String ALL_MAIN_CACHED_DRIVE = "mainDrives".intern();
+  private static String ALL_MAIN_CACHED_DRIVE = "_mainDrives".intern();
   
-  private static String ALL_PERSONAL_CACHED_DRIVE = "personalDrives".intern();
+  private static String ALL_PERSONAL_CACHED_DRIVE = "_personalDrives".intern();
   
-  private static String ALL_GROUP_CACHED_DRIVES = "groupDrives".intern();
+  private static String ALL_GROUP_CACHED_DRIVES = "_groupDrives".intern();
   /**
    * Name of property PERMISSIONS
    */
@@ -353,7 +353,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
 
   @SuppressWarnings("unchecked")
   public List<DriveData> getDriveByUserRoles(String repository, String userId, List<String> userRoles) throws Exception {
-    Object drivesByRoles = drivesCache_.get(ALL_DRIVES_CACHED_BY_ROLES);
+    Object drivesByRoles = drivesCache_.get(userId + ALL_DRIVES_CACHED_BY_ROLES);
     if(drivesByRoles != null) return (List<DriveData>) drivesByRoles;
     List<DriveData> driveList = new ArrayList<DriveData>();
     if (userId != null) {
@@ -394,14 +394,14 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       }
     }
     Collections.sort(driveList);
-    drivesCache_.put(ALL_DRIVES_CACHED_BY_ROLES, driveList);
+    drivesCache_.put(userId + ALL_DRIVES_CACHED_BY_ROLES, driveList);
     return driveList;
   }
 
   @SuppressWarnings("unchecked")
   public List<DriveData> getGroupDrives(String repository, String userId, List<String> userRoles, 
       List<String> groups) throws Exception {
-    Object drives = drivesCache_.get(ALL_GROUP_CACHED_DRIVES);
+    Object drives = drivesCache_.get(userId + ALL_GROUP_CACHED_DRIVES);
     if(drives != null) return (List<DriveData>) drives;
     List<DriveData> groupDrives = new ArrayList<DriveData>();
     String groupPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_GROUPS_PATH);
@@ -423,14 +423,14 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       } 
     }
     Collections.sort(groupDrives);
-    drivesCache_.put(ALL_GROUP_CACHED_DRIVES, groupDrives);
+    drivesCache_.put(userId + ALL_GROUP_CACHED_DRIVES, groupDrives);
     return groupDrives;
   }
 
   @SuppressWarnings("unchecked")
   public List<DriveData> getMainDrives(String repository, String userId, 
       List<String> userRoles) throws Exception {
-    Object drives = drivesCache_.get(ALL_MAIN_CACHED_DRIVE);
+    Object drives = drivesCache_.get(userId + ALL_MAIN_CACHED_DRIVE);
     if(drives != null) return (List<DriveData>) drives;
     List<DriveData> generalDrives = new ArrayList<DriveData>();
     String userPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_USERS_PATH);
@@ -442,14 +442,14 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       }
     }
     Collections.sort(generalDrives);
-    drivesCache_.put(ALL_MAIN_CACHED_DRIVE, generalDrives);
+    drivesCache_.put(userId + ALL_MAIN_CACHED_DRIVE, generalDrives);
     return generalDrives;
   }
 
   @SuppressWarnings("unchecked")
   public List<DriveData> getPersonalDrives(String repository, String userId, 
       List<String> userRoles) throws Exception {
-    Object drives = drivesCache_.get(ALL_PERSONAL_CACHED_DRIVE);
+    Object drives = drivesCache_.get(userId + ALL_PERSONAL_CACHED_DRIVE);
     if(drives != null) return (List<DriveData>) drives;
     List<DriveData> personalDrives = new ArrayList<DriveData>();
     String userPath = nodeHierarchyCreator_.getJcrPath(BasePath.CMS_USERS_PATH);
@@ -459,7 +459,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
       }
     }
     Collections.sort(personalDrives);
-    drivesCache_.put(ALL_PERSONAL_CACHED_DRIVE, personalDrives);
+    drivesCache_.put(userId + ALL_PERSONAL_CACHED_DRIVE, personalDrives);
     return personalDrives;
   }
 }
