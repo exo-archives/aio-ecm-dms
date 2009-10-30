@@ -251,10 +251,11 @@
                   } else {
                     isShowSlideShow = false;
                   }
+                  imgSrc = "/".concat(uicomponent.getPortalName()).concat("/rest/thumbnailImage/").concat(uicomponent.getRepository()).concat("/").concat(wsName).concat(image.getPath());
                   if(uicomponent.isSupportedThumbnailImage(image)) {
-                    imgSrc = "/".concat(uicomponent.getPortalName()).concat("/rest/jcr/").concat(uicomponent.getRepository()).concat("/").concat(wsName).concat(image.getPath()).concat("/?reloadnum=").concat(String.valueOf(Math.random())); 
+                    imgSrc = imgSrc.concat("/?size=origin&reloadnum=").concat(String.valueOf(Math.random())); 
                   } else if (isShowSlideShow) {
-                    imgSrc = "/".concat(uicomponent.getPortalName()).concat("/rest/thumbnailImage/").concat(uicomponent.getRepository()).concat("/").concat(wsName).concat(image.getPath()).concat("/?size=big&reloadnum=").concat(String.valueOf(Math.random()));
+                    imgSrc = imgSrc.concat("/?size=big&reloadnum=").concat(String.valueOf(Math.random()));
                   } else {
                     continue;
                   }
@@ -264,7 +265,7 @@
                   data = "{".concat(data.substring(0,data.length() - 1)).concat("}");
                 }
               } else {
-                println "<image src=\"\" w=\"300\" h=\"300\"/>";
+                println "<image src=\"\" w=\"300\" h=\"300\"/>";7
               }
             %>
             <script type="text/javascript">

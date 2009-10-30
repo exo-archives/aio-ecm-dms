@@ -127,41 +127,59 @@ public class ThumbnailRESTService implements ResourceContainer {
  */   
   @QueryTemplate("size=small")
   @HTTPMethod("GET")
+  @InputTransformer(PassthroughInputTransformer.class)
+  @OutputTransformer(PassthroughOutputTransformer.class)
   public Response getSmallImage(@URIParam("repoName") String repoName, 
                                 @URIParam("workspaceName") String wsName,
                                 @URIParam("nodePath") String nodePath) throws Exception {
     return getThumbnailByType(repoName, wsName, nodePath, ThumbnailService.SMALL_SIZE);
   }
   
+  /**
+   * Get the image with origin data
+   * ex: /portal/rest/thumbnailImage/repository/collaboration/test.gif/?size=origin
+   * @param repoName Repository name
+   * @param wsName Workspace name
+   * @param nodePath Node path
+   * @return Response data stream
+   * @throws Exception
+   */   
+    @QueryTemplate("size=origin")
+    @HTTPMethod("GET")
+    @InputTransformer(PassthroughInputTransformer.class)
+    @OutputTransformer(PassthroughOutputTransformer.class)
+    public Response getOriginImage(@URIParam("repoName") String repoName, 
+                                  @URIParam("workspaceName") String wsName,
+                                  @URIParam("nodePath") String nodePath) throws Exception {
+    if (!thumbnailService_.isEnableThumbnail())
+      return Response.Builder.ok().build();
+    Node showingNode = getShowingNode(repoName, wsName, getNodePath(nodePath));
+    Node targetNode = getTargetNode(showingNode);
+    if (targetNode.getPrimaryNodeType().getName().equals("nt:file")) {
+      Node content = targetNode.getNode("jcr:content");
+      String mimeType = content.getProperty("jcr:mimeType").getString();
+      for (ComponentPlugin plugin : thumbnailService_.getComponentPlugins()) {
+        if (plugin instanceof ThumbnailPlugin) {
+          ThumbnailPlugin thumbnailPlugin = (ThumbnailPlugin) plugin;
+          if (thumbnailPlugin.getMimeTypes().contains(mimeType)) {
+            String lastModified = content.getProperty("jcr:lastModified").getDate().getTime()
+                .toString();
+            InputStream inputStream = content.getProperty("jcr:data").getStream();
+            return Response.Builder.ok().header(LASTMODIFIED, lastModified).entity(inputStream, "image").build();
+          }
+        }
+      }
+    }
+    return Response.Builder.ok().build();
+  }
+    
   private Response getThumbnailByType(String repoName, String wsName, String nodePath, 
       String propertyName) throws Exception {
     if(!thumbnailService_.isEnableThumbnail()) return Response.Builder.ok().build();
-    ArrayList<String> encodeNameArr = new ArrayList<String>();
-    if(!nodePath.equals("/")) {
-      for(String name : nodePath.split("/")) {
-        if(name.length() > 0) {
-          encodeNameArr.add(Text.escapeIllegalJcrChars(name));
-        }
-      }
-      StringBuilder encodedPath = new StringBuilder();
-      for(String encodedName : encodeNameArr) {
-        encodedPath.append("/").append(encodedName);
-      }
-      nodePath = encodedPath.toString();
-    }
-    Node showingNode = getShowingNode(repoName, wsName, nodePath);
+    Node showingNode = getShowingNode(repoName, wsName, getNodePath(nodePath));
     Node parentNode = showingNode.getParent();
     String identifier = ((NodeImpl) showingNode).getInternalIdentifier();
-    Node targetNode;
-    if (linkManager_.isLink(showingNode)) {
-      try {
-        targetNode = linkManager_.getTarget(showingNode);
-      } catch (ItemNotFoundException e) {
-        targetNode = showingNode;
-      }
-    } else {
-      targetNode = showingNode;
-    }
+    Node targetNode = getTargetNode(showingNode);
     if(targetNode.getPrimaryNodeType().getName().equals("nt:file")) {
       Node content = targetNode.getNode("jcr:content");
       String mimeType = content.getProperty("jcr:mimeType").getString();
@@ -207,6 +225,37 @@ public class ThumbnailRESTService implements ResourceContainer {
       }
     }
     return Response.Builder.ok().build();
+  }
+  
+  private String getNodePath(String nodePath) throws Exception {
+    ArrayList<String> encodeNameArr = new ArrayList<String>();
+    if(!nodePath.equals("/")) {
+      for(String name : nodePath.split("/")) {
+        if(name.length() > 0) {
+          encodeNameArr.add(Text.escapeIllegalJcrChars(name));
+        }
+      }
+      StringBuilder encodedPath = new StringBuilder();
+      for(String encodedName : encodeNameArr) {
+        encodedPath.append("/").append(encodedName);
+      }
+      nodePath = encodedPath.toString();
+    }
+    return nodePath; 
+  }
+  
+  private Node getTargetNode(Node showingNode) throws Exception {
+    Node targetNode = null;
+    if (linkManager_.isLink(showingNode)) {
+      try {
+        targetNode = linkManager_.getTarget(showingNode);
+      } catch (ItemNotFoundException e) {
+        targetNode = showingNode;
+      }
+    } else {
+      targetNode = showingNode;
+    }
+    return targetNode;
   }
   
   private Node getShowingNode(String repoName, String wsName, String nodePath) throws Exception {

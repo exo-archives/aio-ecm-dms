@@ -38,8 +38,8 @@ Slideshow = new Class({
 		paused: false,
 		properties: ['href', 'rel', 'rev', 'title'],
 		random: false,
-		//replace: ["size=big", 'size=medium'],
-		replace: ['/jcr/', '/thumbnailImage/', '?size=big&', '?', '/?', '/?size=medium&'],
+		replace = [/\?size=.*&/ig, "size=medium&"],
+		//replace: [/[(\?size=big&,\?size=origin&)]/, /\?size=medium&/],
 		//replaces: [/(\.[^\.]+)$/, 't$1'],
 		resize: 'width',
 		slide: 0,
@@ -318,8 +318,8 @@ Syntax:
 			var caption = (obj.caption) ? obj.caption.trim() : '';
 			var href = (obj.href) ? obj.href.trim() : ((this.options.linked) ? this.options.hu + image : this.options.href);
 			var thumbnail = (obj.thumbnail) ? obj.thumbnail.trim() : image.replace(this.options.replace[0], this.options.replace[1]);
-			thumbnail = thumbnail.replace(this.options.replace[2], this.options.replace[3]);
-			thumbnail = thumbnail.replace(this.options.replace[4], this.options.replace[5]);
+			//thumbnail = thumbnail.replace(this.options.replace[2], this.options.replace[3]);
+			//thumbnail = thumbnail.replace(this.options.replace[4], this.options.replace[5]);
 			this.data.images.push(image);
 			this.data.captions.push(caption);
 			this.data.hrefs.push(href);
