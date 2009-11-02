@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -1775,6 +1776,17 @@ public class UIBrowseContainer extends UIContainer {
         return;
       }
       uiContainer.storeListHistory(selectNode);
+      if (uiContainer.listHistoryNode.size() > 0) {
+        int index=0;
+        int indexMark=0;
+        List<Node> listRemovedNode = new ArrayList<Node>();
+        for (Node itemNode : uiContainer.listHistoryNode) {
+          index++;
+          if (!itemNode.getPath().equals(selectNode.getPath())) indexMark = index;
+          if ((indexMark > 0) && (index > indexMark)) listRemovedNode.add(itemNode);
+        }
+        uiContainer.listHistoryNode.removeAll(listRemovedNode);
+      }
       uiContainer.storeHistory();
       if (selectNode.isNodeType(Utils.EXO_SYMLINK)) {
         LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
