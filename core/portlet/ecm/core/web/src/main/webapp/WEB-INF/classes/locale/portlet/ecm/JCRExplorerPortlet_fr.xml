@@ -2895,5 +2895,9 @@
       <timelineNameDESC>Sort by name in descending order</timelineNameDESC>
     </tooltip>    
   </UIDocumentInfo>  
-  
+  <ECMContextMenu>
+    <event>
+      <PlayMedia>Play media</PlayMedia>
+     </event>
+  </ECMContextMenu> 
 </bundle>

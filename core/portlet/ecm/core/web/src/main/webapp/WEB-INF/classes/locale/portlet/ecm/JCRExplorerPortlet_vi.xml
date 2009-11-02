@@ -2912,4 +2912,11 @@
       <timelineNameDESC>Sắp xếp giảm dần theo tên</timelineNameDESC>
     </tooltip>    
   </UIDocumentInfo>  
+  
+  <ECMContextMenu>
+    <event>
+      <PlayMedia>Chơi nhạc</PlayMedia>
+     </event>
+  </ECMContextMenu> 
+  
 </bundle>

@@ -2865,4 +2865,9 @@
       <timeline-view>Timeline view</timeline-view>
     </label>
   </Views>  
+    <ECMContextMenu>
+    <event>
+      <PlayMedia>Play media</PlayMedia>
+     </event>
+  </ECMContextMenu> 
 </bundle>
