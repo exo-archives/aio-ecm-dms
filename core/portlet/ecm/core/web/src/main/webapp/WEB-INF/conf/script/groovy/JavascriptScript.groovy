@@ -6,3 +6,4 @@ JavascriptService.addJavascript("eXo.ecm.UISimpleView", "/javascript/eXo/ecm/UIS
 JavascriptService.addJavascript("eXo.ecm.UICoverFlow", "/javascript/eXo/ecm/UICoverFlow.js", ServletContext);
 JavascriptService.addJavascript("eXo.ecm.ZeroClipboard", "/javascript/eXo/ecm/ZeroClipboard.js", ServletContext);
 JavascriptService.addJavascript("eXo.ecm.DMSWorkspace", "/javascript/eXo/ecm/UIDMSWorkspace.js", ServletContext);
+JavascriptService.addJavascript("eXo.ecm.flowplayer", "/javascript/eXo/ecm/flowplayer-3.1.4.min.js", ServletContext);
