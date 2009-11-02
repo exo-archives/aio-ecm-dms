@@ -265,7 +265,7 @@
                   data = "{".concat(data.substring(0,data.length() - 1)).concat("}");
                 }
               } else {
-                println "<image src=\"\" w=\"300\" h=\"300\"/>";7
+                println "<image src=\"\" w=\"300\" h=\"300\"/>";
               }
             %>
             <script type="text/javascript">

@@ -144,13 +144,13 @@ public class ThumbnailRESTService implements ResourceContainer {
    * @return Response data stream
    * @throws Exception
    */   
-    @QueryTemplate("size=origin")
-    @HTTPMethod("GET")
-    @InputTransformer(PassthroughInputTransformer.class)
-    @OutputTransformer(PassthroughOutputTransformer.class)
-    public Response getOriginImage(@URIParam("repoName") String repoName, 
-                                  @URIParam("workspaceName") String wsName,
-                                  @URIParam("nodePath") String nodePath) throws Exception {
+  @QueryTemplate("size=origin")
+  @HTTPMethod("GET")
+  @InputTransformer(PassthroughInputTransformer.class)
+  @OutputTransformer(PassthroughOutputTransformer.class)
+  public Response getOriginImage(@URIParam("repoName") String repoName,
+                                 @URIParam("workspaceName") String wsName, 
+                                 @URIParam("nodePath") String nodePath) throws Exception {
     if (!thumbnailService_.isEnableThumbnail())
       return Response.Builder.ok().build();
     Node showingNode = getShowingNode(repoName, wsName, getNodePath(nodePath));
@@ -163,9 +163,10 @@ public class ThumbnailRESTService implements ResourceContainer {
           ThumbnailPlugin thumbnailPlugin = (ThumbnailPlugin) plugin;
           if (thumbnailPlugin.getMimeTypes().contains(mimeType)) {
             String lastModified = content.getProperty("jcr:lastModified").getDate().getTime()
-                .toString();
+            .toString();
             InputStream inputStream = content.getProperty("jcr:data").getStream();
-            return Response.Builder.ok().header(LASTMODIFIED, lastModified).entity(inputStream, "image").build();
+            return Response.Builder.ok().header(LASTMODIFIED, lastModified).entity(inputStream,
+            "image").build();
           }
         }
       }
