@@ -734,7 +734,7 @@
 													<value><string>audio/mp3</string></value>
 													<value><string>video/quicktime</string></value>
 													<value><string>video/x-flv</string></value>
-													<value><string>application/octet-stream</string></value>
+													<value><string>video/mp4</string></value>
 												</collection>
 											</field>
 										</object>
