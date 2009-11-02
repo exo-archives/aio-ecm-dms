@@ -28,6 +28,7 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
+import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.impl.core.lock.LockManager;
 
@@ -49,21 +50,23 @@ public class LockUtil {
   public static void keepLock(Lock lock) throws Exception {
     ExoCache lockcache = getLockCache();
     String key = createLockKey(lock.getNode());
-    String userid = Util.getPortalRequestContext().getRemoteUser();
-    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userid);
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    if(userId == null) userId = SystemIdentity.ANONIM;
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userId);
     if(lockedNodesInfo == null) {
       lockedNodesInfo = new HashMap<String,String>();
     }
     lockedNodesInfo.put(key,lock.getLockToken());
-    lockcache.put(userid,lockedNodesInfo);
+    lockcache.put(userId,lockedNodesInfo);
   }
-  
+
   @SuppressWarnings("unchecked")
   public static void removeLock(Node node) throws Exception {
     ExoCache lockcache = getLockCache();
     String key = createLockKey(node);
-    String userid = Util.getPortalRequestContext().getRemoteUser();
-    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userid);
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    if(userId == null) userId = SystemIdentity.ANONIM;
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userId);
     if(lockedNodesInfo == null) return;
     lockedNodesInfo.remove(key);
   }
@@ -73,14 +76,15 @@ public class LockUtil {
     ExoCache lockcache = getLockCache();
     String newKey = createLockKey(newNode);
     String oldKey = createLockKey(oldNode);
-    String userid = Util.getPortalRequestContext().getRemoteUser();
-    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userid);
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    if(userId == null) userId = SystemIdentity.ANONIM;
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userId);
     if(lockedNodesInfo == null) {
       lockedNodesInfo = new HashMap<String,String>();
     }
     lockedNodesInfo.remove(oldKey) ;
     lockedNodesInfo.put(newKey,newNode.getLock().getLockToken());
-    lockcache.put(userid,lockedNodesInfo);
+    lockcache.put(userId,lockedNodesInfo);
   }
   
   @SuppressWarnings("unchecked")
@@ -88,8 +92,9 @@ public class LockUtil {
     ExoCache lockcache = getLockCache();
     String newKey = createLockKey(newNode);
     String oldKey = getOldLockKey(srcPath, newNode);
-    String userid = Util.getPortalRequestContext().getRemoteUser();
-    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userid);
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    if(userId == null) userId = SystemIdentity.ANONIM;
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userId);
     if(lockedNodesInfo == null) {
       lockedNodesInfo = new HashMap<String,String>();
     }
@@ -97,15 +102,16 @@ public class LockUtil {
       lockedNodesInfo.put(newKey, lockedNodesInfo.get(oldKey));
       lockedNodesInfo.remove(oldKey);
     }
-    lockcache.put(userid, lockedNodesInfo);
+    lockcache.put(userId, lockedNodesInfo);
   }
   
   @SuppressWarnings("unchecked")
   public static String getLockToken(Node node) throws Exception {    
     ExoCache lockcache = getLockCache();
     String key = createLockKey(node);
-    String userid = Util.getPortalRequestContext().getRemoteUser();
-    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userid);
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    if(userId == null) userId = SystemIdentity.ANONIM;
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userId);
     if(lockedNodesInfo == null) return null;    
     return lockedNodesInfo.get(key);
   }  
@@ -125,10 +131,13 @@ public class LockUtil {
     StringBuffer buffer = new StringBuffer();
     Session session = node.getSession();
     String repositoryName = ((ManageableRepository)session.getRepository()).getConfiguration().getName();    
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    if(userId == null) userId = SystemIdentity.ANONIM;
     buffer.append(repositoryName).append("/::/")
           .append(session.getWorkspace().getName()).append("/::/")
-          .append(session.getUserID()).append(":/:")
+          .append(userId).append(":/:")
           .append(node.getPath());      
     return buffer.toString();
   }
+  
 }
