@@ -1639,8 +1639,16 @@ public class UIBrowseContainer extends UIContainer {
       Node historyNode = null;
       historyNode = uiContainer.getHistory().get(UIBrowseContainer.KEY_CURRENT);
       if (historyNode == null) historyNode = uiContainer.getCurrentNode();
-      if (uiContainer.listHistoryNode.size() > 0)
-        uiContainer.listHistoryNode.remove(uiContainer.listHistoryNode.size()-1);
+      if (uiContainer.listHistoryNode.size() > 0) {
+        Node nodeTemp1 = uiContainer.listHistoryNode.get(uiContainer.listHistoryNode.size() - 1);
+        if (uiContainer.listHistoryNode.size() > 1) {
+          Node nodeTemp2 = uiContainer.listHistoryNode.get(uiContainer.listHistoryNode.size() - 2);
+          Node nodeTemp2Parent = nodeTemp2.getParent();
+          if (!historyNode.getPath().equals(nodeTemp2.getPath()) && historyNode.getPath().equals(nodeTemp2Parent.getPath())) 
+            uiContainer.listHistoryNode.remove(nodeTemp2);
+        }
+        uiContainer.listHistoryNode.remove(nodeTemp1);
+      }
       if ((historyNode != null) && historyNode.isNodeType(Utils.EXO_SYMLINK)) {
         LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
         historyNode = linkManager.getTarget(historyNode);
