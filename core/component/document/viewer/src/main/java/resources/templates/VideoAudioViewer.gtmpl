@@ -1,0 +1,112 @@
+<%
+  import java.util.List;
+  import java.util.ArrayList;
+  import javax.jcr.Node;
+  import javax.jcr.NodeIterator;
+  import org.exoplatform.webui.core.UIComponent;
+  import org.exoplatform.services.jcr.util.Text;
+
+  UIComponent uiParent = uicomponent.getParent();
+  
+  def presentNodes = uicomponent.getPresentNodes();
+  def links = new ArrayList<String>();
+  def title = "";
+  if (presentNodes.size() == 0) {
+    def currentNode = uiParent.getNode();
+    def originalNode = uiParent.getOriginalNode();
+    title = Text.unescapeIllegalJcrChars(originalNode.getName());
+    presentNodes.add(currentNode);
+  }
+  def repository = uicomponent.getRepository();
+  repository = repository == null ? uiParent.getRepository() : repository;
+  for(nodedata in presentNodes) {
+    links.add("/".concat(uicomponent.getPortalName()).concat("/rest/jcr/").concat(repository).concat("/").concat(nodedata.getSession().getWorkspace().getName()).concat(nodedata.getPath()));
+  }
+  def rqcontext = _ctx.getRequestContext() ;
+  rqcontext.getJavascriptManager().addJavascript("eXo.ecm.flowplayer");
+%>
+
+<div class="NavigationContainer">       
+  <div class="TopTitle">$title</div>
+  <div class="Content">
+    <div class="TextContent">
+      <div class="ContentDetail">
+        
+      <!-- setup player container  --> 
+      <div id="player" style="display:block;width:700px;height:450px;"></div>
+          <script>
+            // install flowplayer into container 
+          flowplayer("player", "/ecm/javascript/eXo/ecm/flowplayer-3.1.5.swf", { 
+            // fullscreen button not needed here 
+              plugins: { 
+                controls: { 
+                  url: '/ecm/javascript/eXo/ecm/flowplayer.controls-tube-3.1.5.swf',
+                  fullscreen: false, 
+                  height: 30,
+                  // setup auto hide 
+                  autoHide: 'always',
+                  playlist: true,
+                } 
+              }, 
+           
+              playlist: [
+                <% for(link in links) {
+                %>         
+                // setup album cover scaling 
+                {url: '$link', autoPlay: true},
+                <%
+                }
+                %>
+              ],
+  
+              clip: { 
+                  autoPlay: false, 
+                  // optional: when playback starts close the first audio playback 
+                  onBeforeBegin: function() { 
+                  flowplayer("player").close(); 
+                  } 
+              } 
+            });
+          </script>
+      </div>
+    </div>
+  </div>
+</div>
+<style>
+
+.NavigationContainer {
+  padding-bottom: 5px;
+  padding: 10px;
+  color: #0e396c;
+  background: url('/eXoDMSResources/skin/images/file/TitleBG1x21.gif') repeat-x top;
+  border: 1px solid #cbcbcb;
+}
+
+ .TopTitle {  
+  padding-left: 10px;
+  height: 22px; line-height: 22px;
+  color: #058ee6; font-weight: bold; 
+}
+ .TextContent {  
+   overflow: auto;
+   height: 100%;
+   !height: 320px;
+   margin: auto;
+   width: 89%;
+   padding: 10px;
+   border: 1px solid #b7b7b7;
+ }
+ 
+ .TextContent pre {  
+   white-space: normal;
+ }
+ 
+ .ContentDetail {  
+   text-align: center;
+   overflow: visible;
+   padding: 15px 0px;
+ }
+ 
+</style>
+
+    

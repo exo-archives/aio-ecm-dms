@@ -48,7 +48,6 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.version.VersionException;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.container.ExoContainer;
@@ -60,8 +59,6 @@ import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
-import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllFavouriteResult;
-import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllTrashResult;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.ecm.webui.presentation.AbstractActionComponent;
@@ -83,6 +80,7 @@ import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.link.NodeLinkAware;
+import org.exoplatform.services.cms.mimetype.DMSMimeTypeResolver;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailPlugin;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
@@ -370,8 +368,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
     String mimeType = jcrContentNode.getProperty(Utils.JCR_MIMETYPE).getString() ;
     InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, mimeType) ;
-    MimeTypeResolver mimeTypeResolver = new MimeTypeResolver() ;
-    String ext = mimeTypeResolver.getExtension(mimeType) ;
+    DMSMimeTypeResolver mimeTypeSolver = getApplicationComponent(DMSMimeTypeResolver.class);
+    String ext = mimeTypeSolver.getExtension(mimeType) ;
     String fileName = node.getName() ;    
     if(fileName.lastIndexOf("."+ext)<0){
       fileName = fileName + "." +ext ;

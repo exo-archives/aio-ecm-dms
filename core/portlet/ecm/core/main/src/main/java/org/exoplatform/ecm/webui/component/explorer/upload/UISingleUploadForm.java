@@ -38,7 +38,6 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
@@ -54,6 +53,7 @@ import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
+import org.exoplatform.services.cms.mimetype.DMSMimeTypeResolver;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -317,8 +317,7 @@ public class UISingleUploadForm extends UIForm implements UIPopupComponent, UISe
           return;
         }
       }  
-      
-      MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
+      DMSMimeTypeResolver mimeTypeSolver = uiForm.getApplicationComponent(DMSMimeTypeResolver.class);
       String mimeType = mimeTypeSolver.getMimeType(fileName) ;
       Node selectedNode = uiExplorer.getCurrentNode();      
       boolean isExist = selectedNode.hasNode(name) ;

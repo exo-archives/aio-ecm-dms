@@ -27,17 +27,17 @@ import javax.jcr.lock.LockException;
 import javax.jcr.version.VersionException;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.mimetype.DMSMimeTypeResolver;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIPopupComponent;
 import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -109,7 +109,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
       Node selectedNode = uiExplorer.getRealCurrentNode();
       uiExplorer.addLockToken(selectedNode);
       String fileName = input.getUploadResource().getFileName();
-      MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
+      DMSMimeTypeResolver mimeTypeSolver = uiForm.getApplicationComponent(DMSMimeTypeResolver.class);
       String mimeType = mimeTypeSolver.getMimeType(fileName) ;
       if(!mimeType.startsWith("image")) {
         uiApp.addMessage(new ApplicationMessage("UIThumbnailForm.msg.mimetype-incorrect", null, 

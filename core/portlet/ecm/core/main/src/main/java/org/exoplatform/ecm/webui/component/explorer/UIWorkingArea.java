@@ -82,6 +82,8 @@ public class UIWorkingArea extends UIContainer {
 
   public static final String               ITEM_CONTEXT_MENU      = "ItemContextMenu";
 
+  public static final String               MULTI_ITEM_CONTEXT_MENU      = "MultiItemContextMenu";
+
   public static final String               GROUND_CONTEXT_MENU      = "GroundContextMenu";
 
   public static final String               ITEM_GROUND_CONTEXT_MENU = "ItemGroundContextMenu";
@@ -229,7 +231,8 @@ public class UIWorkingArea extends UIContainer {
     UIComponent uiAddedActionManage;
       for (UIExtension uiextension : uiExtensionList) {
         if (ITEM_CONTEXT_MENU.equals(uiextension.getCategory())
-            || ITEM_GROUND_CONTEXT_MENU.equals(uiextension.getCategory())) {
+            || ITEM_GROUND_CONTEXT_MENU.equals(uiextension.getCategory())
+            || MULTI_ITEM_CONTEXT_MENU.equals(uiextension.getCategory())) {
           uiAddedActionManage = addUIExtension(uiextension, null);
           if (uiAddedActionManage != null) {
             if (!uiActionList.contains(uiAddedActionManage))

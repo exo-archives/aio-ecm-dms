@@ -23,8 +23,8 @@ import java.util.zip.ZipInputStream;
 
 import javax.jcr.nodetype.NodeType;
 
-import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.mimetype.DMSMimeTypeResolver;
 import org.exoplatform.services.jcr.core.nodetype.NodeTypeValuesList;
 import org.exoplatform.upload.UploadService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -85,7 +85,7 @@ public class UINodeTypeUpload extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      MimeTypeResolver resolver = new MimeTypeResolver();
+      DMSMimeTypeResolver resolver = uiUploadForm.getApplicationComponent(DMSMimeTypeResolver.class);
       String mimeType = resolver.getMimeType(fileName);
       InputStream is = null;
       try {

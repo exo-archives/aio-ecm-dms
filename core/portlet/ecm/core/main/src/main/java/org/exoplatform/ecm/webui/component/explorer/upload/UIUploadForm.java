@@ -38,7 +38,6 @@ import javax.jcr.nodetype.ConstraintViolationException;
 import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIMultiLanguageForm;
@@ -54,6 +53,7 @@ import org.exoplatform.services.cms.JcrInputProperty;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
+import org.exoplatform.services.cms.mimetype.DMSMimeTypeResolver;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -323,7 +323,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
     PortletPreferences portletPref = pcontext.getRequest().getPreferences();
     String categoryMandatoryWhenFileUpload =  portletPref.getValue(Utils.CATEGORY_MANDATORY, "").trim();    
-    MimeTypeResolver mimeTypeSolver = new MimeTypeResolver() ;
+    DMSMimeTypeResolver mimeTypeSolver = getApplicationComponent(DMSMimeTypeResolver.class);
     Node selectedNode = uiExplorer.getCurrentNode();
     if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true") && 
         (getMapTaxonomies().size() == 0) && !uiExplorer.getCurrentNode().hasNode(JCRCONTENT)) {

@@ -40,9 +40,9 @@ import javax.jcr.Session;
 import javax.jcr.nodetype.ConstraintViolationException;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.commons.utils.MimeTypeResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.mimetype.DMSMimeTypeResolver;
 import org.exoplatform.services.jcr.impl.core.NodeImpl;
 import org.exoplatform.services.jcr.util.VersionHistoryImporter;
 import org.exoplatform.services.log.ExoLogger;
@@ -256,7 +256,7 @@ public class UIImportNode extends UIForm implements UIPopupComponent {
   }
   
   private String getMimeType(String fileName) {
-    MimeTypeResolver resolver = new MimeTypeResolver();
+    DMSMimeTypeResolver resolver = getApplicationComponent(DMSMimeTypeResolver.class);
     return resolver.getMimeType(fileName);
   }
 
