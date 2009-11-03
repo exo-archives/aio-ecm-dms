@@ -129,11 +129,20 @@
                 
                def rightClickMenu = "" ;
                String isLocked = "false";
-               if(data.isLocked()) isLocked = "true";     
+               String isFavourite = "false";
+               String isInTrash = "false";
+               if (data.isLocked()) isLocked = "true";
+       				//data.getProperty("exo:favouriter");    
+               if (uicomponent.isFavouriter(data)) isFavourite = "true";
+               if (data.isNodeType("exo:restoreLocation")) isInTrash = "true";
+
                if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;
 		        %>   
-		      <div class="ActionIconBox" locked="<%=isLocked%>" <%=rightClickMenu%> style="padding: 4px 0px 4px 0px; height: auto;"
-		       				objectId="<%=URLEncoder.encode(Utils.formatNodeName(data.getPath()), "utf-8")%>" workspaceName="$preferenceWS" ondblclick="$actionLink">
+		      <div class="ActionIconBox" locked="<%=isLocked%>"
+																		 removeFavourite="$isFavourite"
+																		 inTrash="$isInTrash"
+		      													 <%=rightClickMenu%> style="padding: 4px 0px 4px 0px; height: auto;"
+		       													 objectId="<%=URLEncoder.encode(Utils.formatNodeName(data.getPath()), "utf-8")%>" workspaceName="$preferenceWS" ondblclick="$actionLink">
 		        <div style="height: auto; width: auto; border: none; -moz-user-select: none;" unselectable="on">
 							<div class="NodeLabel">
 								<div class="ThumbnailImage">

@@ -574,13 +574,17 @@ var ListView = function() {
 		
 		//check lock, unlock action
 		var checkUnlock = false;
+		var checkRemoveFavourite = false;
+		var checkInTrash = false;
 		for (var i in Self.itemsSelected) {
 			if (Array.prototype[i]) continue;
 			if (Self.itemsSelected[i].getAttribute('locked') == "true") checkUnlock = true;
+			if (Self.itemsSelected[i].getAttribute('removeFavourite') == "true") checkRemoveFavourite = true;
+			if (Self.itemsSelected[i].getAttribute('inTrash') == "true") checkInTrash = true;
 		}
 		var lockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Lock16x16Icon");
 		var unlockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Unlock16x16Icon");
-	
+		
 		if (checkUnlock) {
 			unlockAction.parentNode.style.display = "block";
 			lockAction.parentNode.style.display = "none";
@@ -588,6 +592,28 @@ var ListView = function() {
 			unlockAction.parentNode.style.display = "none";
 			lockAction.parentNode.style.display = "block";
 		}
+
+    var addFavouriteAction = DOM.findFirstDescendantByClass(contextMenu, "div", "AddToFavourite16x16Icon");
+    var removeFavouriteAction = DOM.findFirstDescendantByClass(contextMenu, "div", "RemoveFromFavourite16x16Icon");
+    if (checkRemoveFavourite) {
+      removeFavouriteAction.parentNode.style.display = "block";    
+      addFavouriteAction.parentNode.style.display = "none";
+    } else {
+      addFavouriteAction.parentNode.style.display = "block";
+      removeFavouriteAction.parentNode.style.display = "none";
+    }
+    
+    var moveToTrashAction = DOM.findFirstDescendantByClass(contextMenu, "div", "MoveToTrash16x16Icon");
+    var restoreFromTrashAction = DOM.findFirstDescendantByClass(contextMenu, "div", "RestoreFromTrash16x16Icon");
+    if (!checkInTrash) {
+      moveToTrashAction.parentNode.style.display = "block";    
+      restoreFromTrashAction.parentNode.style.display = "none";
+    }   
+    if (checkInTrash) {
+      restoreFromTrashAction.parentNode.style.display = "block";
+      moveToTrashAction.parentNode.style.display = "none";
+    }
+    		
 			
 		contextMenu.onmouseup = Self.hideContextMenu;
 		document.body.onmousedown = Self.hideContextMenu;

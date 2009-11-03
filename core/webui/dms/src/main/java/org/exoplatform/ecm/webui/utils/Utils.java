@@ -156,6 +156,7 @@ public class Utils {
   final static public String EXO_FAVOURITER = "exo:favouriter";
   final static public String EXO_RESTOREPATH = "exo:restorePath";
   final static public String EXO_RESTORELOCATION = "exo:restoreLocation";
+  final static public String EXO_LASTMODIFIER = "exo:lastModifier";
 
   final static public String EXO_MUSICFOLDER = "exo:musicFolder";
   final static public String EXO_VIDEOFOLDER = "exo:videoFolder";

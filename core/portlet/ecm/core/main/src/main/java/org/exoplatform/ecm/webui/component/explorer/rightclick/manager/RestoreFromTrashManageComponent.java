@@ -20,9 +20,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
+import javax.jcr.lock.LockException;
+import javax.jcr.version.VersionException;
 import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
@@ -32,9 +35,13 @@ import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.HasRemovePermissionFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsInTrashFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.documents.TrashService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -47,8 +54,6 @@ import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
-
-import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 
 /**
  * Created by The eXo Platform SARL
@@ -66,7 +71,10 @@ import sun.reflect.ReflectionFactory.GetReflectionFactoryAction;
 public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent {
 
 	private static final List<UIExtensionFilter> FILTERS
-				= Arrays.asList(new UIExtensionFilter[] {new IsInTrashFilter()});
+				= Arrays.asList(new UIExtensionFilter[] { new IsInTrashFilter(),
+																							 		new IsNotLockedFilter(),
+																							 		new IsCheckedOutFilter(),
+																							 		new HasRemovePermissionFilter()});
 	
 	private final static Log 	LOG = ExoLogger.getLogger(RestoreFromTrashManageComponent.class);
 	
@@ -85,57 +93,78 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
 		UIWorkingArea uiWorkingArea = ((UIWorkingArea)event.getSource().getParent());
 		UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
 		
-	    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-	    TrashService trashService = (TrashService)myContainer.getComponentInstanceOfType(TrashService.class);
-	    
-	    UIApplication uiApp = uiWorkingArea.getAncestorOfType(UIApplication.class);
-	    Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
-	    String wsName = null;
-	    Node node = null;
-	    if (matcher.find()) {
-	      wsName = matcher.group(1);
-	      srcPath = matcher.group(2);
-	    } else {
-	      throw new IllegalArgumentException("The ObjectId is invalid '"+ srcPath + "'");
-	    }
-	    Session session = uiExplorer.getSessionByWorkspace(wsName);
-	    try {
-	      // Use the method getNodeByPath because it is link aware
-	      node = uiExplorer.getNodeByPath(srcPath, session, false);
-	      // Reset the path to manage the links that potentially create virtual path
-	      srcPath = node.getPath();
-	      // Reset the session to manage the links that potentially change of workspace
-	      //session = node.getSession();
-	      // Reset the workspace name to manage the links that potentially change of workspace 
-	      //wsName = session.getWorkspace().getName();
-	    } catch(PathNotFoundException path) {
-	      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
-	          null,ApplicationMessage.WARNING));
-	      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-	      return;
-	    }
-	    
-	    try {
-	    	PortletPreferences portletPrefs = uiExplorer.getPortletPreferences();
-	    	String repository = uiExplorer.getRepositoryName();
-	    	String trashWorkspace = portletPrefs.getValue(Utils.TRASH_WORKSPACE, "");
-	    	String trashHomeNodePath = portletPrefs.getValue(Utils.TRASH_HOME_NODE_PATH, "");
-	    	Session trashSession = uiExplorer.getSessionByWorkspace(trashWorkspace);
-	    	Node trashHomeNode = (Node) trashSession.getItem(trashHomeNodePath);
-	    	
-	    	SessionProvider sessionProvider = uiExplorer.getSessionProvider();
-	    	
-	    	trashService.restoreFromTrash(trashHomeNode, 
-	    								  srcPath, 
-	    								  repository, 
-	    								  sessionProvider);
-	    	uiExplorer.updateAjax(event);
-	    } catch (Exception e) {
-	    	LOG.error("an unexpected error occurs", e);
-	    	JCRExceptionManager.process(uiApp, e);
-	    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-	    	uiExplorer.updateAjax(event);
-	    }
+    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+    TrashService trashService = (TrashService)myContainer.getComponentInstanceOfType(TrashService.class);
+    
+    UIApplication uiApp = uiWorkingArea.getAncestorOfType(UIApplication.class);
+    Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
+    String wsName = null;
+    Node node = null;
+    if (matcher.find()) {
+      wsName = matcher.group(1);
+      srcPath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '"+ srcPath + "'");
+    }
+    Session session = uiExplorer.getSessionByWorkspace(wsName);
+    try {
+      // Use the method getNodeByPath because it is link aware
+      node = uiExplorer.getNodeByPath(srcPath, session, false);
+      // Reset the path to manage the links that potentially create virtual path
+      srcPath = node.getPath();
+      // Reset the session to manage the links that potentially change of workspace
+      //session = node.getSession();
+      // Reset the workspace name to manage the links that potentially change of workspace 
+      //wsName = session.getWorkspace().getName();
+    } catch(PathNotFoundException path) {
+      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+          null,ApplicationMessage.WARNING));
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+      return;
+    }
+    
+    try {
+    	if (node.isLocked()) 
+    		throw new LockException("node is locked, can't restore node :" + node.getPath());
+    	if (!node.isCheckedOut())
+    		throw new VersionException("node is locked, can't restore node :" + node.getPath());
+			if (!PermissionUtil.canRemoveNode(node))
+				throw new AccessDeniedException("access denied, can't restore node:" + node.getPath());
+    	PortletPreferences portletPrefs = uiExplorer.getPortletPreferences();
+    	String repository = uiExplorer.getRepositoryName();
+    	String trashWorkspace = portletPrefs.getValue(Utils.TRASH_WORKSPACE, "");
+    	String trashHomeNodePath = portletPrefs.getValue(Utils.TRASH_HOME_NODE_PATH, "");
+    	Session trashSession = uiExplorer.getSessionByWorkspace(trashWorkspace);
+    	Node trashHomeNode = (Node) trashSession.getItem(trashHomeNodePath);
+    	
+    	SessionProvider sessionProvider = uiExplorer.getSessionProvider();
+    	
+    	trashService.restoreFromTrash(trashHomeNode, 
+    								  srcPath, 
+    								  repository, 
+    								  sessionProvider);
+    	uiExplorer.updateAjax(event);
+    } catch (LockException e) {
+    	LOG.error("node is locked, can't restore node :" + node.getPath());
+    	JCRExceptionManager.process(uiApp, e);
+    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    	uiExplorer.updateAjax(event);
+    } catch (VersionException e) {
+    	LOG.error("node is checked in, can't restore node:" + node.getPath());
+    	JCRExceptionManager.process(uiApp, e);
+    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    	uiExplorer.updateAjax(event);	    	
+    } catch (AccessDeniedException e) {
+    	LOG.error("access denied, can't remove favourite of node:" + node.getPath());
+    	JCRExceptionManager.process(uiApp, e);
+    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    	uiExplorer.updateAjax(event);
+    } catch (Exception e) {
+    	LOG.error("an unexpected error occurs", e);
+    	JCRExceptionManager.process(uiApp, e);
+    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    	uiExplorer.updateAjax(event);
+    }
 	}
 	
 	public static void restoreFromTrashManage(Event<UIComponent> event) throws Exception {

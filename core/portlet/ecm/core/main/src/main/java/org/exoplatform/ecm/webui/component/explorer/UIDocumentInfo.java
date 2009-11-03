@@ -718,7 +718,18 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return uicomponent;
   }
   
-  
+	public boolean isFavouriter(Node data) throws Exception {
+		if (!data.isNodeType(Utils.EXO_FAVOURITE))
+			return false;
+    Value[] favouriters = data.getProperty("exo:favouriter").getValues();
+	  String userID = data.getSession().getUserID();
+	  for(Value value : favouriters) {
+	  	if (userID.equals(value.getString())) {
+	  		return true;
+	  	}
+	  }		
+	  return false;
+	}
   
   static public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {      

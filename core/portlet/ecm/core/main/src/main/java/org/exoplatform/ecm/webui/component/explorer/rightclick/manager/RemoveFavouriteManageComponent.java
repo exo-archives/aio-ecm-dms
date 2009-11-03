@@ -20,9 +20,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
+import javax.jcr.lock.LockException;
+import javax.jcr.version.VersionException;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
@@ -31,9 +34,13 @@ import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.HasRemovePermissionFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsFavouriteFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.services.cms.documents.FavouriteService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -62,7 +69,10 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 public class RemoveFavouriteManageComponent extends UIAbstractManagerComponent {
 
 	private static final List<UIExtensionFilter> FILTERS 
-			= Arrays.asList(new UIExtensionFilter[] {new IsFavouriteFilter()});
+			= Arrays.asList(new UIExtensionFilter[] { new IsFavouriteFilter(),
+																						 		new IsNotLockedFilter(),
+																						 		new IsCheckedOutFilter(),
+																						 		new HasRemovePermissionFilter()});
 	
 	private final static Log       LOG  = ExoLogger.getLogger(RemoveFavouriteManageComponent.class);
 	  
@@ -112,7 +122,28 @@ public class RemoveFavouriteManageComponent extends UIAbstractManagerComponent {
 	    }
 	    
 	    try {
+	    	if (node.isLocked()) 
+	    		throw new LockException("node is locked, can't remove favourite of node :" + node.getPath());
+	    	if (!node.isCheckedOut())
+	    		throw new VersionException("node is locked, can't remove favourite of node :" + node.getPath());
+				if (!PermissionUtil.canRemoveNode(node))
+					throw new AccessDeniedException("access denied, can't remove favourite of node:" + node.getPath());
 	    	favouriteService.removeFavourite(node, session.getUserID());
+	    } catch (LockException e) {
+	    	LOG.error("node is locked, can't remove favourite of node :" + node.getPath());
+	    	JCRExceptionManager.process(uiApp, e);
+	    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+	    	uiExplorer.updateAjax(event);
+	    } catch (VersionException e) {
+	    	LOG.error("node is checked in, can't remove favourite of node:" + node.getPath());
+	    	JCRExceptionManager.process(uiApp, e);
+	    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+	    	uiExplorer.updateAjax(event);	    	
+	    } catch (AccessDeniedException e) {
+	    	LOG.error("access denied, can't remove favourite of node:" + node.getPath());
+	    	JCRExceptionManager.process(uiApp, e);
+	    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+	    	uiExplorer.updateAjax(event);
 	    } catch (Exception e) {
 	        LOG.error("an unexpected error occurs", e);
 	        JCRExceptionManager.process(uiApp, e);

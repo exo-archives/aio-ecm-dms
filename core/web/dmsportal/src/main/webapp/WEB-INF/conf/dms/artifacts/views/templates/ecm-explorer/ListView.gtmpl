@@ -13,7 +13,7 @@
   import org.exoplatform.ecm.webui.utils.Utils ;
   import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
-  import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;  import org.exoplatform.services.jcr.util.Text;
+  import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;  import org.exoplatform.services.jcr.util.Text;    import javax.jcr.Value;
   
   def uiWorkingArea = uicomponent.getAncestorOfType(UIWorkingArea.class);
   def uiCustomActionComponent = uiWorkingArea.getCustomAction();
@@ -197,12 +197,12 @@
   	 		strActs +=  "</a>";	   
         strActs += "</div>";
         def rightClickMenu = "" ;
-        String isLocked = "false";
-        if (data.isLocked()) isLocked = "true";    
+        String isLocked = "false";        String isFavourite = "false";        String isInTrash = "false";
+        if (data.isLocked()) isLocked = "true";				//data.getProperty("exo:favouriter");            if (uicomponent.isFavouriter(data)) isFavourite = "true";        if (data.isNodeType("exo:restoreLocation")) isInTrash = "true";
         if (!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(nodePath), uiWorkingArea.getActionsExtensionList(data)) ;	          
 	      
 	      %>
-	      <div <%=rightClickMenu%> class="RowView Normal" locked="$isLocked" workspacename="$preferenceWS" objectId="<%=URLEncoder.encode(Utils.formatNodeName(nodePath), "utf-8")%>" ondblclick="$actionLink">
+	      <div <%=rightClickMenu%> class="RowView Normal" locked="$isLocked" removeFavourite="$isFavourite" inTrash="$isInTrash" workspacename="$preferenceWS" objectId="<%=URLEncoder.encode(Utils.formatNodeName(nodePath), "utf-8")%>" ondblclick="$actionLink">
 		      $strActs
 	        <div class="LeftColumn" style="padding: 2px 0px; 	border-right: none;">
 					  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>">
