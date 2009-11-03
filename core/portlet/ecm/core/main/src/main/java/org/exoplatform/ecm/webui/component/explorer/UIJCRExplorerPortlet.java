@@ -297,8 +297,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
           try {
             uiExplorer.getSession().getItem(uiExplorer.getRootPath());
           } catch(PathNotFoundException e) {
-            UIControl uiControl = uiExplorer.getChild(UIControl.class);
-            uiControl.setRenderedChild(UIAddressBar.class);
+            uiExplorer.getChild(UIControl.class).setRendered(false);
             UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
             uiWorkingArea.setRenderedChild(UIDrivesArea.class);
             super.processRender(app, context);
