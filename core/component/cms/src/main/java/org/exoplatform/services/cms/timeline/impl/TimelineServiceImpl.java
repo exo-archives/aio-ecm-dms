@@ -52,7 +52,8 @@ public class TimelineServiceImpl implements TimelineService {
 
   private static final Log LOG = ExoLogger.getLogger("cms.timeline.TimelineServiceImpl");
   private static final String EXO_DATETIME = "exo:datetime";
-  private static final String EXO_MODIFIED_DATE = "exo:dateModified";  
+  private static final String EXO_MODIFIED_DATE = "exo:dateModified";
+  private static final String EXO_OWNER = "exo:owner";
   private static final String SELECT_QUERY = "SELECT * FROM " + EXO_DATETIME + " WHERE ";
   private static final String TIME_FORMAT_TAIL = "T00:00:00.000+07:00";
   private static final SimpleDateFormat formatDateTime = new SimpleDateFormat();
@@ -75,7 +76,7 @@ public class TimelineServiceImpl implements TimelineService {
    * {@inheritDoc}
    */
   public List<Node> getDocumentsOfEarlierThisYear(String repository, String workspace, 
-      SessionProvider sessionProvider, String userName) throws Exception {
+      SessionProvider sessionProvider, String userName, boolean byUser) throws Exception {
 
 	  List<Node> documentsOfYear = new ArrayList<Node>();
 	  Session session = getSession(sessionProvider, repository, workspace);
@@ -89,6 +90,11 @@ public class TimelineServiceImpl implements TimelineService {
 	  	.append(" (" + EXO_MODIFIED_DATE + " >= TIMESTAMP '" + strBeginningOfThisYearTime + "')")
 	  	.append(" AND ")
 	  	.append(" (" + EXO_MODIFIED_DATE + " < TIMESTAMP '" + strBeginningOfThisMonthTime + "')");
+	  
+	  if (byUser) {
+	  	sb.append(" AND ")
+	  		.append(" (" + EXO_OWNER + " = '" + userName + "')");
+	  }
 
 	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
 	  NodeIterator nodeIter = result.getNodes();
@@ -102,7 +108,7 @@ public class TimelineServiceImpl implements TimelineService {
    * {@inheritDoc}
    */
   public List<Node> getDocumentsOfEarlierThisMonth(String repository, String workspace, 
-      SessionProvider sessionProvider, String userName) throws Exception {
+      SessionProvider sessionProvider, String userName, boolean byUser) throws Exception {
 
 	  List<Node> documentsOfMonth = new ArrayList<Node>();
 	  Session session = getSession(sessionProvider, repository, workspace);
@@ -116,7 +122,12 @@ public class TimelineServiceImpl implements TimelineService {
 	  	.append(" (" + EXO_MODIFIED_DATE + " >= TIMESTAMP '" + strBeginningOfThisMonthTime + "')")
 	  	.append(" AND ")
 	  	.append(" (" + EXO_MODIFIED_DATE + " < TIMESTAMP '" + strBeginningOfThisWeekTime + "')");
-
+	  
+	  if (byUser) {
+	  	sb.append(" AND ")
+	  		.append(" (" + EXO_OWNER + " = '" + userName + "')");
+	  }
+	  
 	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
 	  NodeIterator nodeIter = result.getNodes();
 	  while(nodeIter.hasNext()) {
@@ -129,7 +140,7 @@ public class TimelineServiceImpl implements TimelineService {
    * {@inheritDoc}
    */
   public List<Node> getDocumentsOfEarlierThisWeek(String repository, String workspace, 
-      SessionProvider sessionProvider, String userName) throws Exception {
+      SessionProvider sessionProvider, String userName, boolean byUser) throws Exception {
 
 	  List<Node> documentsOfWeek = new ArrayList<Node>();
 	  Session session = getSession(sessionProvider, repository, workspace);
@@ -144,6 +155,11 @@ public class TimelineServiceImpl implements TimelineService {
 	  	.append(" AND ")
 	  	.append(" (" + EXO_MODIFIED_DATE + " < TIMESTAMP '" + strYesterdayTime + "')");
 	  
+	  if (byUser) {
+	  	sb.append(" AND ")
+	  		.append(" (" + EXO_OWNER + " = '" + userName + "')");
+	  }
+	  
 	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
 	  NodeIterator nodeIter = result.getNodes();
 	  while(nodeIter.hasNext()) {
@@ -156,7 +172,7 @@ public class TimelineServiceImpl implements TimelineService {
    * {@inheritDoc}
    */
   public List<Node> getDocumentsOfYesterday(String repository, String workspace, 
-      SessionProvider sessionProvider, String userName) throws Exception {
+      SessionProvider sessionProvider, String userName, boolean byUser) throws Exception {
 	  
 	  List<Node> documentsOfYesterday = new ArrayList<Node>();
 	  Session session = getSession(sessionProvider, repository, workspace);
@@ -170,6 +186,11 @@ public class TimelineServiceImpl implements TimelineService {
 	  	.append(" (" + EXO_MODIFIED_DATE + " >= TIMESTAMP '" + strYesterdayTime + "')")
 	  	.append(" AND ")
 	  	.append(" (" + EXO_MODIFIED_DATE + " < TIMESTAMP '" + strTodayTime + "')");
+	  
+	  if (byUser) {
+	  	sb.append(" AND ")
+	  		.append(" (" + EXO_OWNER + " = '" + userName + "')");
+	  }
 
 	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
 	  NodeIterator nodeIter = result.getNodes();
@@ -183,7 +204,7 @@ public class TimelineServiceImpl implements TimelineService {
    * {@inheritDoc}
    */
   public List<Node> getDocumentsOfToday(String repository, String workspace, 
-      SessionProvider sessionProvider, String userName) throws Exception {
+      SessionProvider sessionProvider, String userName, boolean byUser) throws Exception {
     List<Node> documentsOfToday = new ArrayList<Node>();
     Session session = getSession(sessionProvider, repository, workspace);
     Calendar currentTime = new GregorianCalendar();
@@ -193,6 +214,11 @@ public class TimelineServiceImpl implements TimelineService {
       .append("(" + buildDocumentTypePattern(repository) + ")")
       .append(" AND ")
       .append(" (" + EXO_MODIFIED_DATE + " >= TIMESTAMP '" + strTodayTime + "')");
+    
+	  if (byUser) {
+	  	sb.append(" AND ")
+	  		.append(" (" + EXO_OWNER + " = '" + userName + "')");
+	  }
 
     QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
     NodeIterator nodeIter = result.getNodes();

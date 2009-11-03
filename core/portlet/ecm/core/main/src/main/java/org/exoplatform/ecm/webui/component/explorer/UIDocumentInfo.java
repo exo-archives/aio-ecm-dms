@@ -216,16 +216,18 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     String repository = this.getRepository();
     String workspace = this.getWorkspaceName();
     String userName = session.getUserID();
+    
+    boolean byUser = uiExplorer.getPreference().isShowItemsByUserInTimelineView();
   	todayNodes = timelineService.
-  				getDocumentsOfToday(repository,	workspace, sessionProvider,	userName);
+  				getDocumentsOfToday(repository,	workspace, sessionProvider,	userName, byUser);
   	yesterdayNodes = timelineService.
-  				getDocumentsOfYesterday(repository, workspace, sessionProvider, userName);
+  				getDocumentsOfYesterday(repository, workspace, sessionProvider, userName, byUser);
   	earlierThisWeekNodes = timelineService.
-  				getDocumentsOfEarlierThisWeek(repository, workspace, sessionProvider, userName);
+  				getDocumentsOfEarlierThisWeek(repository, workspace, sessionProvider, userName, byUser);
   	earlierThisMonthNodes = timelineService.
-  				getDocumentsOfEarlierThisMonth(repository, workspace, sessionProvider, userName);
+  				getDocumentsOfEarlierThisMonth(repository, workspace, sessionProvider, userName, byUser);
   	earlierThisYearNodes = timelineService.
-  				getDocumentsOfEarlierThisYear(repository, workspace, sessionProvider, userName);
+  				getDocumentsOfEarlierThisYear(repository, workspace, sessionProvider, userName, byUser);
   	
 		Collections.sort(todayNodes, new SearchComparator());
 		Collections.sort(yesterdayNodes, new SearchComparator());

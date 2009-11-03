@@ -54,8 +54,9 @@ public class Preference {
   private boolean isShowFavouriteDoc = true;
   private boolean isShowHiddenDoc = true;
   private boolean isShowTrashDoc = true;
+  private boolean isShowItemsByUserInTimelineView = true;
   
-  private int nodesPerPage = 20;
+	private int nodesPerPage = 20;
     
   public boolean isJcrEnable() { return jcrEnable ; }
   public void setJcrEnable(boolean b) { jcrEnable = b ; }
@@ -89,6 +90,13 @@ public class Preference {
   
   public boolean isShowTrashDoc() {	return isShowTrashDoc; }
   public void setShowTrashDoc(boolean b) { isShowTrashDoc = b; }
+
+  public boolean isShowItemsByUserInTimelineView() { 
+  	return isShowItemsByUserInTimelineView; 
+  }
+	public void setShowItemsByUserInTimelineView(boolean b) {
+		this.isShowItemsByUserInTimelineView = b;
+	}
   
   public String getAllowCreateFoder() { return allowCreateFoder ; }
   public void setAllowCreateFoder(String s) { allowCreateFoder = s ; }

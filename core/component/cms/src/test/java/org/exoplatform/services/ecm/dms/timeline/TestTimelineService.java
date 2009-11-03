@@ -75,7 +75,7 @@ public class TestTimelineService extends BaseDMSTestCase {
     yesterday1.setProperty(EXO_MODIFIED_DATE, yesterdayTime);
     session.save();
     
-    List<Node> res = timelineService.getDocumentsOfToday(REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root");
+    List<Node> res = timelineService.getDocumentsOfToday(REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root", true);
     assertEquals("testGetDocumentsOfToday failed! ", 2, res.size());
   }
   
@@ -107,7 +107,7 @@ public class TestTimelineService extends BaseDMSTestCase {
     yesterday1.setProperty(EXO_MODIFIED_DATE, yesterdayTime);
     session.save();
 	  
-    List<Node> res = timelineService.getDocumentsOfYesterday(REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root");
+    List<Node> res = timelineService.getDocumentsOfYesterday(REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root", true);
     assertEquals("testGetDocumentsOfYesterday failed! ", 1, res.size());
   }
   
@@ -141,8 +141,8 @@ public class TestTimelineService extends BaseDMSTestCase {
     }
     
     session.save();
-	List<Node> res = timelineService.getDocumentsOfEarlierThisWeek(REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root");
-	assertEquals("testGetDocumentsOfEarlierThisWeek falied! ", count, res.size());
+	List<Node> res = timelineService.getDocumentsOfEarlierThisWeek(REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root", true);
+	assertEquals("testGetDocumentsOfEarlierThisWeek falied! ", Math.min(5, count), res.size());
 	System.out.println("Expected: " + count);
 	System.out.println("actual: " + res.size());
   }
@@ -177,8 +177,8 @@ public class TestTimelineService extends BaseDMSTestCase {
     }
     
     session.save();
-	List<Node> res = timelineService.getDocumentsOfEarlierThisMonth(REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root");
-	assertEquals("testGetDocumentsOfEarlierThisMonth falied! ", count, res.size());
+	List<Node> res = timelineService.getDocumentsOfEarlierThisMonth(REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root", true);
+	assertEquals("testGetDocumentsOfEarlierThisMonth falied! ", Math.min(5, count), res.size());
 	System.out.println("Expected: " + count);
 	System.out.println("actual: " + res.size());
   }
@@ -213,8 +213,8 @@ public class TestTimelineService extends BaseDMSTestCase {
     }
     
     session.save();
-	List<Node> res = timelineService.getDocumentsOfEarlierThisYear(REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root");
-	assertEquals("testGetDocumentsOfEarlierThisYear falied! ", count, res.size());
+	List<Node> res = timelineService.getDocumentsOfEarlierThisYear(REPO_NAME, COLLABORATION_WS, createSessionProvider(), "root", true);
+	assertEquals("testGetDocumentsOfEarlierThisYear falied! ", Math.min(5, count), res.size());
 	System.out.println("Expected: " + count);
 	System.out.println("actual: " + res.size());
   }  

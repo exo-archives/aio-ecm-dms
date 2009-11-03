@@ -40,10 +40,11 @@ public interface TimelineService {
    * @param workspace Workspace name
    * @param sessionProvider SessionProvider
    * @param userName Logged in user
+   * @param byUser show documents by current user or by all users 
    * @return List<Node>
    */
   public List<Node> getDocumentsOfToday(String repository, String workspace, 
-      SessionProvider sessionProvider, String userName) throws Exception;
+      SessionProvider sessionProvider, String userName, boolean byUser) throws Exception;
   
   /**
    * Get all documents of Yesterday
@@ -51,10 +52,11 @@ public interface TimelineService {
    * @param workspace Workspace name
    * @param sessionProvider SessionProvider
    * @param userName Logged in user
+   * @param byUser show documents by current user or by all users 
    * @return List<Node>
    */  
   public List<Node> getDocumentsOfYesterday(String repository, String workspace, 
-      SessionProvider sessionProvider, String userName) throws Exception;
+      SessionProvider sessionProvider, String userName, boolean byUser) throws Exception;
 
   /**
    * Get all documents earlier this week
@@ -62,10 +64,11 @@ public interface TimelineService {
    * @param workspace Workspace name
    * @param sessionProvider SessionProvider
    * @param userName Logged in user
+   * @param byUser show documents by current user or by all users 
    * @return List<Node>
    */
   public List<Node> getDocumentsOfEarlierThisWeek(String repository, String workspace, 
-      SessionProvider sessionProvider, String userName) throws Exception;
+      SessionProvider sessionProvider, String userName, boolean byUser) throws Exception;
   
   /**
    * Get all documents earlier this month
@@ -73,10 +76,11 @@ public interface TimelineService {
    * @param workspace Workspace name
    * @param sessionProvider SessionProvider
    * @param userName Logged in user
+   * @param byUser show documents by current user or by all users 
    * @return List<Node>
    */
   public List<Node> getDocumentsOfEarlierThisMonth(String repository, String workspace, 
-      SessionProvider sessionProvider, String userName) throws Exception;
+      SessionProvider sessionProvider, String userName, boolean byUser) throws Exception;
   
   /**
    * Get all documents earlier this year
@@ -84,8 +88,9 @@ public interface TimelineService {
    * @param workspace Workspace name
    * @param sessionProvider SessionProvider
    * @param userName Logged in user
+   * @param byUser show documents by current user or by all users 
    * @return List<Node>
    */
   public List<Node> getDocumentsOfEarlierThisYear(String repository, String workspace, 
-      SessionProvider sessionProvider, String userName) throws Exception;
+      SessionProvider sessionProvider, String userName, boolean byUser) throws Exception;
 }

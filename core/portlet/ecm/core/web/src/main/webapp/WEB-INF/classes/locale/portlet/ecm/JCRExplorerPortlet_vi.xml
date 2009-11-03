@@ -2918,5 +2918,11 @@
       <PlayMedia>Chơi nhạc</PlayMedia>
      </event>
   </ECMContextMenu> 
+
+  <UIPreferencesForm>
+    <label>
+      <showItemsByUserInTimeline>Chỉ hiển thị các tài liệu của user trong Timline view</showItemsByUserInTimeline>
+    </label>
+  </UIPreferencesForm>
   
 </bundle>

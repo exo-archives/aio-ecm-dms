@@ -2896,4 +2896,11 @@
       <PlayMedia>Play media</PlayMedia>
      </event>
   </ECMContextMenu> 
+  
+  <UIPreferencesForm>
+    <label>
+      <showItemsByUserInTimeline>Show items by user in Timeline View</showItemsByUserInTimeline>
+    </label>
+  </UIPreferencesForm>
+  
 </bundle>
