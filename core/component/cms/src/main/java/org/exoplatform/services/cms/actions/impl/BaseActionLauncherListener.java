@@ -67,7 +67,6 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
     ActionServiceContainer actionServiceContainer = 
       (ActionServiceContainer) exoContainer.getComponentInstanceOfType(ActionServiceContainer.class);
     IdentityRegistry identityRegistry = (IdentityRegistry) exoContainer.getComponentInstanceOfType(IdentityRegistry.class);
-    
     TemplateService templateService = 
       (TemplateService) exoContainer.getComponentInstanceOfType(TemplateService.class);       
     if (events.hasNext()) {
@@ -81,7 +80,7 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
         Node actionNode = actionServiceContainer.getAction(node, actionName_);
         Property rolesProp = actionNode.getProperty("exo:roles");        
         Value[] roles = rolesProp.getValues();        
-        boolean hasPermission = checkExcetuteable(userId, roles, identityRegistry) ;
+         boolean hasPermission = checkExcetuteable(userId, roles, identityRegistry) ;
         if (!hasPermission) {
           jcrSession.logout();
           return;
@@ -125,22 +124,31 @@ public abstract class BaseActionLauncherListener implements ECMEventListener {
 
   }
 
-  private boolean checkExcetuteable(String userId,Value[] roles, IdentityRegistry identityRegistry) throws Exception {        
+  private boolean checkExcetuteable(String userId, Value[] roles, 
+                              IdentityRegistry identityRegistry) throws Exception {
     if(SystemIdentity.SYSTEM.equalsIgnoreCase(userId)) {
-      return true ;
+      return true;
     }
-    Identity identity = identityRegistry.getIdentity(userId);
-    if(identity == null) {
-      return false ; 
-    }        
+    
+    Identity identity;
+    if (SystemIdentity.ANONIM.equalsIgnoreCase(userId)) {
+      return true;
+    } else {
+      identity = identityRegistry.getIdentity(userId);
+      if(identity == null) {
+        return false ; 
+      }
+    }
+    
     for (int i = 0; i < roles.length; i++) {
       String role = roles[i].getString();
-      if("*".equalsIgnoreCase(role)) return true ;
+      if("*".equalsIgnoreCase(role)) 
+        return true ;
       MembershipEntry membershipEntry = MembershipEntry.parse(role) ;
-      if(identity.isMemberOf(membershipEntry)) {
+      if(identity != null && identity.isMemberOf(membershipEntry)) {
         return true ;
       }
     }
     return false ;
-  }
+  }    
 }      
