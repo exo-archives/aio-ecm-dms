@@ -158,63 +158,11 @@ public class TrashServiceImpl implements TrashService {
 		 								   	   SessionProvider sessionProvider, String userName) 
 		 								   	   throws Exception {
 	
-	 StringBuilder query = new StringBuilder("SELECT * FROM nt:base WHERE exo:restorePath IS NOT NULL AND exo:owner='").
+	 StringBuilder query = new StringBuilder("SELECT * FROM nt:base WHERE exo:restorePath IS NOT NULL AND exo:lastModifier='").
 	 								 append(userName).
 	 								 append("'");
 	 return selectNodesByQuery(trashPath, trashWorkspace, repository,
 			 				   sessionProvider, query.toString(), Query.SQL);
 	 }
 	
-	
-	
-//	/**
-//	 * {@inheritDoc}
-//	 */
-//	// use query , jcr:mixinTypes contains 
-//	public List<Node> getAllNodeInTrash(String trashPath,
-//			String trashWorkspace, String repository,
-//			SessionProvider sessionProvider) throws Exception {
-//
-//		ManageableRepository manageableRepository 
-//								= repositoryService.getRepository(repository);
-//		Session trashSession = sessionProvider.
-//								  getSession(trashWorkspace, manageableRepository);
-//
-//		// String trashPathTail = (trashPath.endsWith("/"))? "" : "/";
-//		Node trashHomeNode = (Node) trashSession.getItem(trashPath);
-//		NodeIterator iter = trashHomeNode.getNodes();
-//		
-//		List<Node> ret = new ArrayList<Node>();
-//		while (iter.hasNext())
-//			ret.add(iter.nextNode());
-//
-//		trashSession.logout();
-//		return ret;
-//	}
-//
-//	/**
-//	 * {@inheritDoc}
-//	 */
-//	public List<Node> getAllNodeInTrashByUser(String trashPath,
-//			String trashWorkspace, String repository,
-//			SessionProvider sessionProvider, String userName) throws Exception {
-//
-//		ManageableRepository manageableRepository = repositoryService
-//				.getRepository(repository);
-//		Session trashSession = sessionProvider.getSession(trashWorkspace,
-//				manageableRepository);
-//
-//		// String trashPathTail = (trashPath.endsWith("/"))? "" : "/";
-//		Node trashHomeNode = (Node) trashSession.getItem(trashPath);
-//		NodeIterator iter = trashHomeNode.getNodes();
-//		List<Node> ret = new ArrayList<Node>();
-//		while (iter.hasNext()) {
-//			Node node = iter.nextNode();
-//			if (node.getProperty("exo:owner").getString().equals(userName))
-//				ret.add(node);
-//		}
-//
-//		trashSession.logout();
-//		return ret;
-//	}	
 }
