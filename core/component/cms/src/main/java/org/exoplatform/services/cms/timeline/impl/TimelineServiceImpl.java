@@ -95,6 +95,9 @@ public class TimelineServiceImpl implements TimelineService {
 	  	sb.append(" AND ")
 	  		.append(" (" + EXO_OWNER + " = '" + userName + "')");
 	  }
+	  
+	  sb.append(" ORDER BY ")
+	  	.append(EXO_MODIFIED_DATE);
 
 	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
 	  NodeIterator nodeIter = result.getNodes();
@@ -127,6 +130,9 @@ public class TimelineServiceImpl implements TimelineService {
 	  	sb.append(" AND ")
 	  		.append(" (" + EXO_OWNER + " = '" + userName + "')");
 	  }
+
+	  sb.append(" ORDER BY ")
+  	.append(EXO_MODIFIED_DATE);
 	  
 	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
 	  NodeIterator nodeIter = result.getNodes();
@@ -159,6 +165,9 @@ public class TimelineServiceImpl implements TimelineService {
 	  	sb.append(" AND ")
 	  		.append(" (" + EXO_OWNER + " = '" + userName + "')");
 	  }
+
+	  sb.append(" ORDER BY ")
+  	.append(EXO_MODIFIED_DATE);
 	  
 	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
 	  NodeIterator nodeIter = result.getNodes();
@@ -192,6 +201,9 @@ public class TimelineServiceImpl implements TimelineService {
 	  		.append(" (" + EXO_OWNER + " = '" + userName + "')");
 	  }
 
+	  sb.append(" ORDER BY ")
+  	.append(EXO_MODIFIED_DATE);
+	  
 	  QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
 	  NodeIterator nodeIter = result.getNodes();
 	  while(nodeIter.hasNext()) {
@@ -220,6 +232,10 @@ public class TimelineServiceImpl implements TimelineService {
 	  		.append(" (" + EXO_OWNER + " = '" + userName + "')");
 	  }
 
+	  sb.append(" ORDER BY ")
+  	.append(EXO_MODIFIED_DATE)
+  	.append(" DESC");
+	  
     QueryResult result = executeQuery(session, sb.toString(), Query.SQL);
     NodeIterator nodeIter = result.getNodes();
     while(nodeIter.hasNext()) {
