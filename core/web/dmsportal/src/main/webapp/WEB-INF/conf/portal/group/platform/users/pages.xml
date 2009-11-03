@@ -10,18 +10,6 @@
     <edit-permission>manager:/platform/administrators</edit-permission>
     <show-max-window>true</show-max-window>
     
-    <application location-x="100" location-y="150">
-	    <instance-id>portal#webos:/eXoWidgetWeb/WelcomeWidget/WelcomeWidget</instance-id>
-	    <application-type>eXoWidget</application-type>
-	    <title>Welcome Widget</title>
-	  </application>
-	  
-	  <application location-x="300" location-y="150">
-	    <instance-id>portal#webos:/eXoWidgetWeb/CalendarWidget/CalendarWidget</instance-id>
-	    <application-type>eXoWidget</application-type>
-	    <title>Calendar Widget</title>
-	  </application>
-	  
 	  <application>
       <instance-id>group#platform/users:/web/BrowserPortlet/webosWebExplorer</instance-id>    
       <title>Web Explorer</title>

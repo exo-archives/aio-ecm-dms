@@ -1,13 +1,4 @@
 <%
-	/**
-	 * Created by The eXo Platform SARL
-	 * Author : Tran The Trong
-	 *          trongtt@gmail.com
-	 * August 02, 2006
-	 * version: $Id$
-	 */
-%>
-<%
   import java.util.List;
   import java.util.ArrayList;
 
@@ -38,7 +29,7 @@
 				<%
 			    def isSelected = false;
 			    def selectedTab = uicomponent.getSelectedTab();
-			    if(!tabAvailableList.contains(selectedTab)) {
+			    if(!tabAvailableList.contains(selectedTab) && tabAvailableList.size() > 0) {
 						selectedTab = tabAvailableList.get(0);
 						uicomponent.setSelectedTab(selectedTab);
 					}
