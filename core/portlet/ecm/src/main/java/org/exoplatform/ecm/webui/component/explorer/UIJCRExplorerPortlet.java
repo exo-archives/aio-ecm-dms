@@ -250,6 +250,16 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
         }
       }
       explorerContainer.setRendered(true);
+      UIJCRExplorer uiExplorer = explorerContainer.getChild(UIJCRExplorer.class);
+      if(uiExplorer != null) {
+        try {
+          uiExplorer.getSession().getItem(uiExplorer.getRootPath());
+        } catch(Exception e) {
+          explorerContainer.setRenderedChild(UIDrivesBrowserContainer.class);
+          super.processRender(app, context);
+          return;
+        }
+      }
       getChild(UIJcrExplorerEditContainer.class).setRendered(false);
     } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {
       LOG.info("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
