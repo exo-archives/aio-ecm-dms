@@ -137,3 +137,6 @@
 .EditFormController {
 	padding: 10px;
 }
+.UIShowAllFavouriteResult .UICursorPointer {
+  cursor: pointer;
+}

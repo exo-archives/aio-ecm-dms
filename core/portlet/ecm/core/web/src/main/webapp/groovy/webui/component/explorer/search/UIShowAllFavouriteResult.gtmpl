@@ -119,13 +119,13 @@
                   mapIndexNode.put(count, node);
                   if (node.isNodeType(Utils.EXO_FAVOURITE)) { 
                 %>
-                  <div class="StarLight" onclick="<%=uicomponent.event("StarClick", count+"")%>">
+                  <div class="StarLight UICursorPointer" onclick="<%=uicomponent.event("StarClick", count+"")%>">
                     <span>
                     </span>
                   </div
                 <%} else {
                 %>
-                   <div class="StarOff" onclick="<%=uicomponent.event("StarClick", count+"")%>">
+                   <div class="StarOff UICursorPointer" onclick="<%=uicomponent.event("StarClick", count+"")%>">
                       <span>
                       </span>    
                     </div>
