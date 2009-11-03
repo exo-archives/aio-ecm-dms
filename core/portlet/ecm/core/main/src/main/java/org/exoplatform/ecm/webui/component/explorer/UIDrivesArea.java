@@ -46,6 +46,7 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.core.UIContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
@@ -215,15 +216,17 @@ public class UIDrivesArea extends UIContainer {
       uiJCRExplorer.refreshExplorer();      
       String selectedView = viewList.get(0);
       UIControl uiControl = uiJCRExplorer.getChild(UIControl.class);
-      UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class);
+      UIActionBar uiActionbar = uiControl.getChild(UIActionBar.class).setRendered(true);
       uiActionbar.setTabOptions(selectedView);
       UIAddressBar uiAddressBar = uiControl.getChild(UIAddressBar.class);
       uiAddressBar.setViewList(viewList);
       uiAddressBar.setSelectedViewName(selectedView);
       explorerContainer.setRenderedChild(UIJCRExplorer.class);
       UIWorkingArea uiWorkingArea = uiJCRExplorer.getChild(UIWorkingArea.class);
-      uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
-      uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
+      for(UIComponent uiComp : uiWorkingArea.getChildren()) {
+        if(uiComp instanceof UIDrivesArea) uiComp.setRendered(false);
+        else uiComp.setRendered(true);
+      }
       uiParent.setRenderedChild(UIJcrExplorerContainer.class);
     }
   }

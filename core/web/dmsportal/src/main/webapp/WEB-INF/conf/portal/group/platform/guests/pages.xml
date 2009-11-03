@@ -4,7 +4,7 @@
 	<page>
   	<page-id>group::platform/guests::webos</page-id>
   	<owner-type>group</owner-type>
-	<owner-id>platform/guests</owner-id>
+	  <owner-id>platform/guests</owner-id>
     <name>webos</name>		
     <factory-id>Desktop</factory-id>
 	  <access-permissions>*:/platform/guests</access-permissions>

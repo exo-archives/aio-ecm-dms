@@ -28,6 +28,7 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.NoSuchWorkspaceException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.portlet.PortletMode;
 import javax.portlet.PortletPreferences;
@@ -38,6 +39,8 @@ import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
+import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.application.PortalRequestContext;
@@ -287,6 +290,24 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
         }
       }
       explorerContainer.setRendered(true);
+      UIJCRExplorer uiExplorer = explorerContainer.getChild(UIJCRExplorer.class);
+      if(uiExplorer != null) {
+        try {
+          uiExplorer.getSession();
+          try {
+            uiExplorer.getSession().getItem(uiExplorer.getRootPath());
+          } catch(PathNotFoundException e) {
+            UIControl uiControl = uiExplorer.getChild(UIControl.class);
+            uiControl.setRenderedChild(UIAddressBar.class);
+            UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+            uiWorkingArea.setRenderedChild(UIDrivesArea.class);
+            super.processRender(app, context);
+            return;
+          }
+        } catch(RepositoryException repo) {
+          super.processRender(app, context);
+        }
+      }
       getChild(UIJcrExplorerEditContainer.class).setRendered(false);
     } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {
       if (LOG.isDebugEnabled()) LOG.debug("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
