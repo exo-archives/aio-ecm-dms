@@ -1781,7 +1781,7 @@ public class UIBrowseContainer extends UIContainer {
         List<Node> listRemovedNode = new ArrayList<Node>();
         for (Node itemNode : uiContainer.listHistoryNode) {
           index++;
-          if (!itemNode.getPath().equals(selectNode.getPath())) indexMark = index;
+          if (!itemNode.getPath().equals(selectNode.getPath()) && selectNode.isNodeType(Utils.EXO_SYMLINK)) indexMark = index;
           if ((indexMark > 0) && (index > indexMark)) listRemovedNode.add(itemNode);
         }
         uiContainer.listHistoryNode.removeAll(listRemovedNode);
