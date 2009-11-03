@@ -38,12 +38,20 @@ public interface FavouriteService {
   final static public String EXO_FAVOURITER_PROPERTY = "exo:favouriter";
   
   /**
+   * Check if user is in favourite list of node
+   * @param node Node to check
+   * @param userName The user to check
+   */
+  public boolean isFavouriter(String userName, Node node);
+  
+  /**
    * Add favourite to node
    * @param node Add favourite to this node
    * @param userName The user added favourite
    * @throws Exception The exception will be raised if the node can not add mixin
    */
   public void addFavourite(Node node, String userName) throws Exception;
+  
   
   /**
    * Remove favourite from node

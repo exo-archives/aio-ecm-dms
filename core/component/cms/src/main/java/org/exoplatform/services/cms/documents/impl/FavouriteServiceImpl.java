@@ -54,6 +54,24 @@ public class FavouriteServiceImpl implements FavouriteService {
 	/**
 	 * {@inheritDoc}
 	 */
+  public boolean isFavouriter(String userName, Node node){
+  	if (userName == null)
+  		return false;
+		try {  	
+  		if (node.isNodeType(EXO_FAVOURITE_NODE)) {
+				Value[] favouriters = node.getProperty(EXO_FAVOURITER_PROPERTY).getValues();
+				for (Value favouriter : favouriters) {
+					if (userName.equals(favouriter.getString()))
+						return true;
+				}
+  		}
+  	} catch (Exception ex) {}
+  	return false;
+  }
+	
+	/**
+	 * {@inheritDoc}
+	 */
 	public void addFavourite(Node node, String userName) throws Exception {
 		node.getSession().save();
 		//add FAVOURITE mixin type if it does not exist in node

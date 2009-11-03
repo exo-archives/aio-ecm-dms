@@ -161,7 +161,19 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 	private static String timeLineSortByFavourite = Preference.BLUE_DOWN_ARROW;
   private static String timeLineSortByName = "";
   private static String timeLineSortByDate = "";
-  
+	private static FavouriteService favouriteService_ = null;
+	
+	static {
+		ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+		favouriteService_ = 
+			(FavouriteService) myContainer
+			.getComponentInstanceOfType(FavouriteService.class);
+	}
+
+	public FavouriteService getFavouriteService() {
+		return favouriteService_;
+	}
+	
 	public String getTimeLineSortByFavourite() { return timeLineSortByFavourite; }
 	public void setTimeLineSortByFavourite(String timeLineSortByFavourite) {
 		this.timeLineSortByFavourite = timeLineSortByFavourite;
@@ -871,19 +883,17 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         JCRExceptionManager.process(uiApp, e);
         return;
       }
-	    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-	    FavouriteService favouriteService = (FavouriteService)myContainer.getComponentInstanceOfType(FavouriteService.class);
       try {
 	    	if (node.isNodeType(Utils.EXO_FAVOURITE)) {
 	    		if (PermissionUtil.canRemoveNode(node)) {
-	    			favouriteService.removeFavourite(node, node.getSession().getUserID());
+	    			favouriteService_.removeFavourite(node, node.getSession().getUserID());
 	    		}
 	    		else {
 	    			throw new AccessDeniedException();
 	    		}
 	    	} else {
 	    		if (PermissionUtil.canSetProperty(node)) {		    			
-	    			favouriteService.addFavourite(node, node.getSession().getUserID());
+	    			favouriteService_.addFavourite(node, node.getSession().getUserID());
 	    		}
 	    		else {
 	    			throw new AccessDeniedException();

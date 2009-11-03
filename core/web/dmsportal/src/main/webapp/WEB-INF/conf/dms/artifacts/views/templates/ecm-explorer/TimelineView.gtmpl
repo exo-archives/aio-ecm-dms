@@ -137,7 +137,7 @@ import org.exoplatform.ecm.jcr.model.Preference;
 						<span></span>
 						</div>
 						<div style="width: 26px; padding-top: 5px;" class="LeftColumn">
-							<% if (node.isNodeType(Utils.EXO_FAVOURITE)) { %>
+							<% if (uicomponent.getFavouriteService().isFavouriter(node.getSession().getUserID(), node)) { %>
 								<div class="StarLight" onclick="<%=uicomponent.event("StarClick",node.getSession().getWorkspace().getName() + ":" +  Utils.formatNodeName(node.getPath()))%>"
 										 title="<%=_ctx.appRes("UIDocumentInfo.tooltip.RemoveFromFavourite")%>"/>									   
 									<span></span>

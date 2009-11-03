@@ -117,7 +117,7 @@
                   //uiStarObj.setNode(node);
                   def mapIndexNode = uicomponent.getMapIndexNode();
                   mapIndexNode.put(count, node);
-                  if (node.isNodeType(Utils.EXO_FAVOURITE)) { 
+                  if (uicomponent.getFavouriteService().isFavouriter(node.getSession().getUserID(), node)) { 
                 %>
                   <div class="StarLight UICursorPointer" onclick="<%=uicomponent.event("StarClick", count+"")%>">
                     <span>

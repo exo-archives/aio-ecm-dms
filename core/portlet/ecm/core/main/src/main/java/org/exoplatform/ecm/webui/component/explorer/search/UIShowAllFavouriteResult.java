@@ -30,7 +30,6 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
-import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
@@ -44,14 +43,10 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.cms.documents.FavouriteService;
-import org.exoplatform.services.cms.documents.TrashService;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.templates.TemplateService;
-import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -88,11 +83,22 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 	private UIPageIterator uiPageIterator_ ;
 	private boolean favouriteChange = false;
 	private int showNodeCase;
+	private static FavouriteService favouriteService_ = null;
 	
+	static {
+		ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+		favouriteService_ = 
+			(FavouriteService) myContainer
+			.getComponentInstanceOfType(FavouriteService.class);
+	}
 	
 	public UIShowAllFavouriteResult() throws Exception {
 		uiPageIterator_ = createUIComponent(UIPageIterator.class, null, "UIShowAllFavouriteIterator");
 		setUIComponent(uiPageIterator_);
+	}
+	
+	public FavouriteService getFavouriteService() {
+		return favouriteService_;
 	}
 	
 	public DateFormat getSimpleDateFormat() {
@@ -126,18 +132,14 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 		List<Node> ret = new ArrayList<Node>();
 
 		UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-		ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-		FavouriteService favouriteService = 
-			(FavouriteService) myContainer
-			.getComponentInstanceOfType(FavouriteService.class);
 
 		if (showNodeCase ==  SHOW_ALL_FAVOURITE) {
-			ret = favouriteService.getAllFavouriteNodes(
+			ret = favouriteService_.getAllFavouriteNodes(
 									uiExplorer.getCurrentWorkspace(), 
 									uiExplorer.getRepositoryName(),
 									uiExplorer.getSessionProvider());
 		} else {
-			ret = favouriteService.getAllFavouriteNodesByUser(
+			ret = favouriteService_.getAllFavouriteNodesByUser(
 					uiExplorer.getCurrentWorkspace(), 
 					uiExplorer.getRepositoryName(),
 					uiExplorer.getSessionProvider(),
@@ -300,13 +302,11 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 //	    	UIStar uiStar = uiShow.uiStars.get(id);
 	    	Node node = uiShow.mapIndexNode.get(id);
 	    	
-		    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-		    FavouriteService favouriteService = (FavouriteService)myContainer.getComponentInstanceOfType(FavouriteService.class);
 		    UIApplication uiApp = uiShow.getAncestorOfType(UIApplication.class);
 		    try {
 		    	if (node.isNodeType(Utils.EXO_FAVOURITE)) {
 		    		if (PermissionUtil.canRemoveNode(node)) {
-		    			favouriteService.removeFavourite(node, node.getSession().getUserID());
+		    			favouriteService_.removeFavourite(node, node.getSession().getUserID());
 		    			uiShow.favouriteChange = true;
 		    		}
 		    		else {
@@ -314,7 +314,7 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 		    		}
 		    	} else {
 		    		if (PermissionUtil.canSetProperty(node)) {		    			
-		    			favouriteService.addFavourite(node, node.getSession().getUserID());
+		    			favouriteService_.addFavourite(node, node.getSession().getUserID());
 		    			uiShow.favouriteChange = true;
 		    		}
 		    		else {
