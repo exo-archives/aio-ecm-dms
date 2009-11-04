@@ -403,6 +403,17 @@
 				<set-method>registerUIExtensionPlugin</set-method>
 				<type>org.exoplatform.webui.ext.UIExtensionPlugin</type>
 				<init-params>
+
+          <object-param>
+            <name>RemoveFromFavourite</name>
+            <object type="org.exoplatform.webui.ext.UIExtension">
+              <field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+              <field name="rank"><int>105</int></field>
+              <field name="name"><string>RemoveFromFavourite</string></field>
+              <field name="category"><string>ItemContextMenu</string></field>
+              <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.RemoveFavouriteManageComponent</string></field>
+            </object>
+          </object-param>
 				
 					<object-param>
 						<name>AddToFavourite</name>
@@ -414,16 +425,6 @@
 							<field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.FavouriteManageComponent</string></field>
 						</object>
 					</object-param>
-          <object-param>
-            <name>RemoveFromFavourite</name>
-            <object type="org.exoplatform.webui.ext.UIExtension">
-              <field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
-              <field name="rank"><int>107</int></field>
-              <field name="name"><string>RemoveFromFavourite</string></field>
-              <field name="category"><string>ItemContextMenu</string></field>
-              <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.RemoveFavouriteManageComponent</string></field>
-            </object>
-          </object-param>
           <object-param>
             <name>RestoreFromTrash</name>
             <object type="org.exoplatform.webui.ext.UIExtension">

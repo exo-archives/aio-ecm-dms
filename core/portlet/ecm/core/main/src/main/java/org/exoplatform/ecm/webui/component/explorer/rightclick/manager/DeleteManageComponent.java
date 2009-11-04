@@ -170,7 +170,9 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     }
     
     try {
-    	node.unlock();
+    	if (node.isLocked()) { 
+    		node.unlock();
+    	}
 			if (!node.isCheckedOut())
 				throw new VersionException("node is locked, can't move to trash node :" + node.getPath());
 			if (!PermissionUtil.canRemoveNode(node))
