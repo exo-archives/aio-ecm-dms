@@ -93,10 +93,6 @@
           else rowClass =  "OddRow"; 
           even = !even;
           String nodePath = node.getPath();
-          if (node.getPrimaryNodeType().getName().equals("nt:resource")) {
-            node = node.getParent();
-            nodePath = node.getPath();
-          }
          
           //String excerpt = row.getValue("rep:excerpt(.)")== null ? "" : row.getValue("rep:excerpt(.)").getString();
           String excerpt = "";

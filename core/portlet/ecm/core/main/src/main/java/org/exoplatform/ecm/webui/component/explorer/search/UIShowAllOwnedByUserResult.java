@@ -23,12 +23,16 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
@@ -116,18 +120,24 @@ public class UIShowAllOwnedByUserResult extends UIComponentDecorator {
 												append(",'").
 												append(userName).
 												append("')");
-    	QueryManager queryManager = session.getWorkspace().getQueryManager();
-    	Query query = queryManager.createQuery(queryString.toString(), Query.SQL);
-    	QueryResult queryResult = query.execute();
-    	
-    	NodeIterator iter = queryResult.getNodes();
-    	Node node = null;
-    	while (iter.hasNext()) {
-    		node = iter.nextNode();
-    		if (node.getName().equals(Utils.JCR_CONTENT)) continue;
-  			ret.add(node);
-    	}
-
+  	QueryManager queryManager = session.getWorkspace().getQueryManager();
+  	Query query = queryManager.createQuery(queryString.toString(), Query.SQL);
+  	QueryResult queryResult = query.execute();
+  	
+  	NodeIterator iter = queryResult.getNodes();
+  	Node node = null;
+		Set<Node> set = new TreeSet<Node>(new NodeComparator());
+  	while (iter.hasNext()) {
+  		node = iter.nextNode();
+  		if (node.getName().equals(Utils.JCR_CONTENT)) continue;
+  		if (node.isNodeType(Utils.NT_RESOURCE))
+  			node = node.getParent();
+  		if (!set.contains(node)) {
+				ret.add(node);
+				set.add(node);
+  		}
+  	}
+		    	
 		return ret;
 	}
 	
@@ -253,5 +263,18 @@ public class UIShowAllOwnedByUserResult extends UIComponentDecorator {
 	    }        
 	}	
 	
+	private static class NodeComparator implements Comparator<Node> {
+
+		public int compare(Node o1, Node o2) {
+			try {
+				if (o1.isSame(o2))
+					return 0;
+				return o1.getName().compareTo(o2.getName());
+			} catch (RepositoryException e) {
+				return 0;
+			}
+		}
+		
+	}
 	
 }
