@@ -17,6 +17,7 @@ import org.exoplatform.webui.core.lifecycle.UIContainerLifecycle;
 
 @ComponentConfig(lifecycle = UIContainerLifecycle.class)
 
+@Deprecated
 public class UIDrivesBrowserContainer extends UIContainer{
   
  /**
