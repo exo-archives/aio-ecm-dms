@@ -125,7 +125,9 @@
 	    	isSymLink = true;
 	    	iconClassLink = "IconSymLink ";
 	    }
-	    if(node.getNodes().getSize() == 0) iconType="Empty";
+	    if(!uicomponent.isSymLink(node)) {
+	    	if(node.getNodes().getSize() == 0) iconType="Empty";
+	    }
 	    if(!uicomponent.isSystemWorkspace()) ctMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(node.getPath()), uicomponent.getActionsList(node)) ;
 	    println "<div  class=\"${lastNodeClass}Node\" id=\""+treeNode.getPath()+"\">" ;
 	    println "  <div class=\"${iconType}Icon\" onclick=\"event.cancelBubble=true; if(eXo.ecm.ECMUtils.collapseExpand(this)) return; " + actionLink + "\">" ;
