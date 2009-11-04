@@ -156,11 +156,17 @@
 %>
 <div class="SideBarContent">
   <div class="BarContent">
-    <div class="Title" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent>
-      <a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" title="<%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%>" $contextMenuEvent><%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%></a>
-    </div>
-  	<a href="<%=uicomponent.event("ShowDrivesArea")%>"><div class="DriversButton" title="Drivers"><span></span></div></a>
-  	<div class="ClearLeft"><span></span></div>
+  	<div class="BarContentL">
+  		<div class="BarContentR">
+  			<div class="BarContentM">
+			    <div class="Title" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent>
+			      <a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" title="<%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%>" $contextMenuEvent><%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%></a>
+			    </div>
+			  	<a href="<%=uicomponent.event("ShowDrivesArea")%>"><div class="DriversButton" title="Drivers"><span></span></div></a>
+			  	<div class="ClearLeft"><span></span></div>
+			  </div>
+			</div>
+		</div>
   </div>
   <div class="SideContent">
 	  <div class="UITreeExplorer" id="UITreeExplorer">

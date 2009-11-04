@@ -16,10 +16,16 @@
 %>
 <div class="SideBarContent">
   <div class="BarContent">
-    <div class="Title">Clipboard</div>
-  	<div class="DriversButton" title="Clipboard"><span></span></div>
-  	<div class="ClearLeft"><span></span></div>
-  </div>
+  	<div class="BarContentL">
+  		<div class="BarContentR">
+  			<div class="BarContentM">
+			    <div class="Title">Clipboard</div>
+			  	<div class="DriversButton" title="Clipboard"><span></span></div>
+			  	<div class="ClearLeft"><span></span></div>
+			  </div>
+			</div>
+		</div>
+	</div>
   <div class="SideContent">
 		<div class="UIClipboard" id="$uicomponent.id">
 			<table class="UIGrid">

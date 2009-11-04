@@ -1,10 +1,16 @@
 <div id="$uicomponent.id">
 	<div class="SideBarContent">
 		<div class="BarContent">
-			<div class="Title">By Type</div>
-			<div class="SideGeneratal" onclick="<%=uicomponent.event("DocumentFilter")%>" 
-        title="<%=_ctx.appRes("UIAllItemsByType.label.DocumentFilterConfiguration")%>"><span></span></div>
-			<div class="ClearLeft"><span></span></div>
+	  	<div class="BarContentL">
+	  		<div class="BarContentR">
+	  			<div class="BarContentM">
+						<div class="Title">By Type</div>
+						<div class="SideGeneratal" onclick="<%=uicomponent.event("DocumentFilter")%>" 
+			        title="<%=_ctx.appRes("UIAllItemsByType.label.DocumentFilterConfiguration")%>"><span></span></div>
+						<div class="ClearLeft"><span></span></div>
+					</div>
+			  </div>
+			</div>
 		</div>
 		<div class="SideContent">
 		<% 
