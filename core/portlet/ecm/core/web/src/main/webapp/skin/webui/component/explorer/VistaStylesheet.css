@@ -30,7 +30,7 @@
 .UIJCRExplorerPortlet .LeftCotainer {
 	float: left; /* orientation=lt */
 	float: right; /* orientation=rt */
-	width: 240px;
+	width: 235px;
 }
 
 .UIJCRExplorerPortlet .RightCotainer {

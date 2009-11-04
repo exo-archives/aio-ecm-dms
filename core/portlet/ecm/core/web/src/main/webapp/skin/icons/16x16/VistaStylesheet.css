@@ -11,6 +11,14 @@
 	float: right; /* orientation=rt */
 }
 
+.EmptyIcon {
+	background:transparent url(DefaultSkin/ExpandEmptyIcon.gif) no-repeat scroll left 3px;
+	cursor:pointer;
+	width:16px;
+	padding-left: 16px;
+}
+
+
 .AddIcon16x16 {
   width: 16px;
   height: 16px;

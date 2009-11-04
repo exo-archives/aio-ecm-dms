@@ -165,13 +165,14 @@
   height: 21px; line-height: 21px;
   background: white;
   border: solid 1px #aaaaaa;
+  border-top:1px solid #575d63;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .HardDisk {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
   width: 21px; height: 11px;
-  background: url('VistaSkin/background/HardDisk21x11.png') repeat-x center center;
+  background: url('VistaSkin/background/HardDisk21x11.gif') no-repeat center center;
   margin: 4px 0px 0px 2px; /* orientation=lt */
   margin: 4px 2px 0px 0px; /* orientation=rt */
 }
@@ -229,6 +230,7 @@
   border-right: solid 1px #cdcdcd; /* orientation=lt */
   border-left: solid 1px #cdcdcd; /* orientation=rt */
   border-bottom: solid 1px #cdcdcd;
+  border-top:1px solid #575d63;
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .BlockMiddle1 {
@@ -503,7 +505,7 @@
 }
 
 .UIJCRExplorerPortlet .UIJCRExplorer .UIAddressBar .MoreViewIcon {
-	background: url(DefaultSkin/background/MoreViewIcon.gif) no-repeat; 
+	background: url(VistaSkin/background/MoreViewIcon.gif) no-repeat; 
 	width: 12px;
 	height: 21px;
 }

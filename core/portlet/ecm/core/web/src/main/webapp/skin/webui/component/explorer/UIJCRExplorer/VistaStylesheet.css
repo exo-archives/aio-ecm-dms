@@ -6,6 +6,24 @@
  * version: $Id$
  */
 
+
+
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .ResizeSideBar{
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+	background: url('DefaultSkin/background/ResizeSideBar.gif') repeat-y center center;
+	width: 5px;
+	cursor:col-resize;
+	height: 475px;
+}
+
+.UIJCRExplorerPortlet .UIJCRExplorer .UIWorkingArea .ResizeSideBar .ResizeButton{
+	background: url('DefaultSkin/background/ResizeButton.gif') no-repeat center center;
+	width: 5px;
+	height: 100%;
+}
+
 /*############################## -- Begin UIJCRExplorer -- ##############################*/
 .UIJCRExplorerPortlet .UIJCRExplorer {
   background: white;

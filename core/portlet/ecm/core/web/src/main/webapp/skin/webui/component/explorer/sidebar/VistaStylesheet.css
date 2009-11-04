@@ -13,6 +13,26 @@
   background: url('VistaSkin/background/BgSideBar-rt.gif') repeat-y top left; /* orientation=rt */
 }
 
+
+.UIJCRExplorerPortlet .UISideBar .SideBarContent{
+  margin:4px;
+}
+
+.UIJCRExplorerPortlet .UISideBar .BarContent{
+  border: 1px solid #c2deee;
+  background: url('VistaSkin/background/BarContent.gif') repeat-x;
+  padding: 0px 4px;
+  height: 24px;
+  line-height: 24px;
+  overflow: hidden;
+}
+
+.UIJCRExplorerPortlet .UISideBar .SideContent{
+	 padding: 0px 4px;
+	 background: #f0f5fc;
+	 overflow: auto;
+}
+
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .NormalItem {
   line-height: 26px;
   cursor: pointer;
@@ -23,10 +43,10 @@
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .SelectedItem {
   line-height: 26px;
   cursor: pointer;
-  padding: 8px 0px 8px 5px; /* orientation=lt */
-  padding: 8px 5px 8px 0px; /* orientation=rt */
-  background: url('VistaSkin/background/SelectedItem.gif') no-repeat 7px; /* orientation=lt */
-  background: url('VistaSkin/background/SelectedItem-rt.gif') no-repeat 4px; /* orientation=rt */
+  padding: 8px 0px 8px 0px; /* orientation=lt */
+  padding: 8px 0px 8px 0px; /* orientation=rt */
+  background: url('VistaSkin/background/SelectedItem.gif') no-repeat 2px; /* orientation=lt */
+  background: url('VistaSkin/background/SelectedItem-rt.gif') no-repeat 2px; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemIcon {
@@ -53,7 +73,7 @@
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
 	padding: 5px 0px 0px;
-	width: 36px;
+	width: 30px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemIcon {

@@ -95,8 +95,8 @@
 
 .ViewMetadatasIcon {
 	height:22px;
-	background: url('VistaSkin/ViewMetadatasIcon.png') no-repeat left center; /* orientation=lt */
-	background: url('VistaSkin/ViewMetadatasIcon.png') no-repeat right center; /* orientation=rt */
+	background: url('VistaSkin/ViewMetadatasIcon.gif') no-repeat left center; /* orientation=lt */
+	background: url('VistaSkin/ViewMetadatasIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .VoteIcon {
@@ -192,8 +192,8 @@
 
 .AddDocumentIcon {
 	height:22px;
-  background: url('VistaSkin/AddDocument.png') no-repeat left center; /* orientation=lt */
-  background: url('VistaSkin/AddDocument.png') no-repeat right center; /* orientation=rt */
+  background: url('VistaSkin/AddDocument.gif') no-repeat left center; /* orientation=lt */
+  background: url('VistaSkin/AddDocument.gif') no-repeat right center; /* orientation=rt */
 }
 
 .CreateTicketIcon {
@@ -210,20 +210,20 @@
 
 .AddFolderIcon {
 	height: 22px;
-  background: url('VistaSkin/AddFolder.png') no-repeat left center; /* orientation=lt */
-  background: url('VistaSkin/AddFolder.png') no-repeat right center; /* orientation=rt */
+  background: url('VistaSkin/AddFolder.gif') no-repeat left center; /* orientation=lt */
+  background: url('VistaSkin/AddFolder.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UploadIcon {
 	height: 21px;
-  background: url('VistaSkin/UploadFile.png') no-repeat left center; /* orientation=lt */
-  background: url('VistaSkin/UploadFile.png') no-repeat right center; /* orientation=rt */
+  background: url('VistaSkin/UploadFile.gif') no-repeat left center; /* orientation=lt */
+  background: url('VistaSkin/UploadFile.gif') no-repeat right center; /* orientation=rt */
 }
 
 .AddSymLinkIcon {
   height: 24px;
-  background: url('VistaSkin/AddSymLink.png') no-repeat left center; /* orientation=lt */
-  background: url('VistaSkin/AddSymLink.png') no-repeat right center; /* orientation=rt */
+  background: url('VistaSkin/AddSymLink.gif') no-repeat left center; /* orientation=lt */
+  background: url('VistaSkin/AddSymLink.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewReferencesIcon {
@@ -249,14 +249,14 @@ a:hover .ShowHideBoxContainer {
 
 .ShowJCRStructureIcon {
 	height: 20px;
-  background: url('VistaSkin/ShowJCRStructure.png') no-repeat left center; /* orientation=lt */
-  background: url('VistaSkin/ShowJCRStructure.png') no-repeat right center; /* orientation=rt */
+  background: url('VistaSkin/ShowJCRStructure.gif') no-repeat left center; /* orientation=lt */
+  background: url('VistaSkin/ShowJCRStructure.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewNodeTypeIcon {
 	height: 24px;
-  background: url('VistaSkin/ViewNodeTypeIcon.png') no-repeat left center; /* orientation=lt */
-  background: url('VistaSkin/ViewNodeTypeIcon.png') no-repeat right center; /* orientation=rt */
+  background: url('VistaSkin/ViewNodeTypeIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('VistaSkin/ViewNodeTypeIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .ViewPropertiesIcon {
@@ -273,8 +273,8 @@ a:hover .ShowHideBoxContainer {
 
 .ViewPermissionsIcon {
 	height: 23px;
-  background: url('VistaSkin/ViewPermissionsIcon.png') no-repeat left center; /* orientation=lt */
-  background: url('VistaSkin/ViewPermissionsIcon.png') no-repeat right center; /* orientation=rt */
+  background: url('VistaSkin/ViewPermissionsIcon.gif') no-repeat left center; /* orientation=lt */
+  background: url('VistaSkin/ViewPermissionsIcon.gif') no-repeat right center; /* orientation=rt */
 }
 
 .HardDisk24x24Icon {

@@ -11,6 +11,13 @@
 	float: right; /* orientation=rt */
 }
 
+.EmptyIcon {
+	background:transparent url(DefaultSkin/ExpandEmptyIcon.gif) no-repeat scroll left 3px;
+	cursor:pointer;
+	width:16px;
+	padding-left: 16px;
+}
+
 .UIGrid .ViewIcon {
 	width: 16px; height: 16px;
 	background: url('MacSkin/YellowLight.gif') no-repeat;
@@ -153,15 +160,15 @@
  
 .ExpandIcon {
   width: 16px;
-  background: url('DefaultSkin/SmallGrayExpand.gif') no-repeat left top; /* orientation=lt */
-  background: url('DefaultSkin/SmallGray-rt.gif') no-repeat right top; /* orientation=rt */
+  background: url('MacSkin/SmallGrayExpand.gif') no-repeat left top; /* orientation=lt */
+  background: url('MacSkin/SmallGray-rt.gif') no-repeat right top; /* orientation=rt */
   cursor: pointer;
 }
 
 .CollapseIcon  {
   width: 16px; height: 16px;
-  background: url('DefaultSkin/SmallGrayPlus.gif') no-repeat left center; /* orientation=lt */
-  background: url('DefaultSkin/SmallGrayPlus-rt.gif') no-repeat right center; /* orientation=rt */
+  background: url('MacSkin/SmallGrayPlus.gif') no-repeat left center; /* orientation=lt */
+  background: url('MacSkin/SmallGrayPlus-rt.gif') no-repeat right center; /* orientation=rt */
   cursor: pointer;
 }
 
