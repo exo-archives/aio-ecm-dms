@@ -65,7 +65,7 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UIDrivesBrowser.SelectDriveActionListener.class)
       }
 )
-
+@Deprecated
 public class UIDrivesBrowser extends UIContainer {
   final public static String FIELD_SELECTREPO = "selectRepo" ; 
   private String repoName_;

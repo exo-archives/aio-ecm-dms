@@ -39,8 +39,6 @@ import org.exoplatform.ecm.utils.text.Text;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
-import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar;
-import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.application.PortalRequestContext;
@@ -65,15 +63,15 @@ import org.exoplatform.webui.core.lifecycle.UIApplicationLifecycle;
 import org.exoplatform.webui.core.model.SelectItemOption;
 
 @ComponentConfig(
-  lifecycle = UIApplicationLifecycle.class
+    lifecycle = UIApplicationLifecycle.class
 )
 public class UIJCRExplorerPortlet extends UIPortletApplication {
-  
+
   /**
    * Logger.
    */
   private static final Log LOG  = ExoLogger.getLogger("explorer.UIJCRExplorerPortlet");
-  
+
   final static public String REPOSITORY         = "repository";
 
   final static public String CATEGORY_MANDATORY = "categoryMandatoryWhenFileUpload";
@@ -97,16 +95,15 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
   final static public String PARAMETERIZE       = "parameterize";
 
   final static public String PARAMETERIZE_PATH       = "nodePath";
-  
+
   private boolean flagSelect = false;
-        
+
   public UIJCRExplorerPortlet() throws Exception {
     UIJcrExplorerContainer explorerContainer = addChild(UIJcrExplorerContainer.class, null, null);
-    explorerContainer.setFlag(false);
-    explorerContainer.init();
+    explorerContainer.initExplorer();
     addChild(UIJcrExplorerEditContainer.class, null, null).setRendered(false);
   }
-  
+
   public boolean isFlagSelect() {
     return flagSelect;
   }
@@ -114,7 +111,121 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
   public void setFlagSelect(boolean flagSelect) {
     this.flagSelect = flagSelect;
   }
-  
+
+  public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
+    UIJcrExplorerContainer explorerContainer = getChild(UIJcrExplorerContainer.class);
+    UIJcrExplorerEditContainer editContainer = getChild(UIJcrExplorerEditContainer.class);
+    context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
+    context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIJCRExplorerPortlet') ;");
+    PortletRequestContext portletReqContext = (PortletRequestContext) context ;
+    HashMap<String, String> map = getElementByContext(context);
+    if (portletReqContext.getApplicationMode() == PortletMode.VIEW) {
+      if (map.size() > 0) {
+        showDocument(context, map);
+      } else {
+        initwhenDirect(explorerContainer, editContainer);
+      }
+      explorerContainer.setRendered(true);
+      UIJCRExplorer uiExplorer = explorerContainer.getChild(UIJCRExplorer.class);
+      if(uiExplorer != null) {
+        try {
+          uiExplorer.getSession();
+          try {
+            uiExplorer.getSession().getItem(uiExplorer.getRootPath());
+          } catch(PathNotFoundException e) {
+            reloadWhenBroken(uiExplorer);
+            super.processRender(app, context);
+            return;
+          }
+        } catch(RepositoryException repo) {
+          super.processRender(app, context);
+        }
+      }
+      getChild(UIJcrExplorerEditContainer.class).setRendered(false);
+    } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {
+      if (LOG.isDebugEnabled()) LOG.debug("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
+    } else if(portletReqContext.getApplicationMode() == PortletMode.EDIT) {
+      explorerContainer.setRendered(false);
+      getChild(UIJcrExplorerEditContainer.class).setRendered(true);
+    }
+    super.processRender(app, context);
+  }
+
+  public void initwhenDirect(UIJcrExplorerContainer explorerContainer, 
+      UIJcrExplorerEditContainer editContainer) throws Exception {
+    if (editContainer.getChild(UIJcrExplorerEditForm.class).isFlagSelectRender()) {
+      PortletPreferences portletPref = getPortletPreferences();
+      String driveName = portletPref.getValue("driveName", "").trim();
+      String repository = portletPref.getValue("repository", "").trim();
+      String userId = Util.getPortalRequestContext().getRemoteUser();
+      UIJCRExplorer uiJCRExplorer = explorerContainer.getChild(UIJCRExplorer.class);
+      explorerContainer.initExplorer();
+      editContainer.getChild(UIJcrExplorerEditForm.class).setFlagSelectRender(false);
+      ManageDriveService driveService = getApplicationComponent(ManageDriveService.class);
+      DriveData driveData = driveService.getDriveByName(driveName, repository);
+      String nodePath = portletPref.getValue("nodePath", "").trim();
+      String homePath = (driveData.getHomePath().concat(nodePath)).replaceAll("/+", "/");
+      if(!canUseConfigDrive(repository, driveName)) {
+        homePath = getUserDrive(repository, "private").getHomePath();
+      }
+      if (homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId);
+      uiJCRExplorer.setSelectNode(driveData.getWorkspace(), homePath);
+      uiJCRExplorer.refreshExplorer(); 
+    }
+  }
+
+  public String getPreferenceRepository() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
+    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
+    return repository ;
+  }
+
+  public String getPreferenceTrashHomeNodePath() {
+    return getPortletPreferences().getValue(Utils.TRASH_HOME_NODE_PATH, "");
+  }
+
+  public String getPreferenceTrashRepository() {
+    return getPortletPreferences().getValue(Utils.TRASH_REPOSITORY, "");
+  }
+
+  public String getPreferenceTrashWorkspace() {
+    return getPortletPreferences().getValue(Utils.TRASH_WORKSPACE, "");
+  }
+
+  public PortletPreferences getPortletPreferences() {
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    return pcontext.getRequest().getPreferences();
+  }
+
+  public DriveData getUserDrive(String repoName, String userType) throws Exception {
+    ManageDriveService manageDriveService = getApplicationComponent(ManageDriveService.class);
+    List<String> userRoles = Utils.getMemberships();    
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    for(DriveData userDrive : manageDriveService.getPersonalDrives(repoName, userId, userRoles)) {
+      if(userDrive.getName().equalsIgnoreCase(userType)) {
+        return userDrive;
+      }
+    }
+    return null;
+  }
+
+  public boolean canUseConfigDrive(String repoName, String driveName) throws Exception {
+    ManageDriveService dservice = getApplicationComponent(ManageDriveService.class);
+    String userId = Util.getPortalRequestContext().getRemoteUser();
+    List<String> userRoles = Utils.getMemberships();
+    for(DriveData drive : dservice.getDriveByUserRoles(repoName, userId, userRoles)) {
+      if(drive.getName().equals(driveName)) return true;
+    }
+    return false;
+  }
+
+  public void reloadWhenBroken(UIJCRExplorer uiExplorer) {
+    uiExplorer.getChild(UIControl.class).setRendered(false);
+    UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+    uiWorkingArea.setRenderedChild(UIDrivesArea.class);
+  }
+
   private HashMap<String, String> getElementByContext(WebuiRequestContext context) {
     HashMap<String, String> mapParam = new HashMap<String, String>();
     //In case access by ajax request
@@ -145,7 +256,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     }
     return mapParam;
   }
-  
+
   private void showDocument(WebuiRequestContext context, HashMap<String, String> map) throws Exception {
     String repositoryName = String.valueOf(map.get("repository"));
     String driveName = String.valueOf(map.get("drive"));
@@ -177,7 +288,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class);
     String userId = Util.getPortalRequestContext().getRemoteUser();
     List<String> viewList = new ArrayList<String>();
-    
+
     for (String role : Utils.getMemberships()) {
       for (String viewName : driveData.getViews().split(",")) {
         if (!viewList.contains(viewName.trim())) {
@@ -209,7 +320,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     driveData.setViews(viewListStr);
     String homePath = driveData.getHomePath();
     if (homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId);
-    
+
     setFlagSelect(true);
     Preference pref = new Preference();
     pref.setShowSideBar(driveData.getViewSideBar());
@@ -217,12 +328,12 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     pref.setShowPreferenceDocuments(driveData.getViewPreferences());
     pref.setAllowCreateFoder(driveData.getAllowCreateFolders()); 
     pref.setShowHiddenNode(driveData.getShowHiddenNode());
-    
+
     UIJCRExplorer uiExplorer = findFirstComponentOfType(UIJCRExplorer.class);
     uiExplorer.setPreferences(pref);
     uiExplorer.setDriveData(driveData);
     uiExplorer.setIsReferenceNode(false);
-    
+
     SessionProvider provider = SessionProviderFactory.createSessionProvider();                  
     ManageableRepository repository = rservice.getRepository(repositoryName);
     try {
@@ -268,125 +379,5 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
     uiExplorer.refreshExplorer();
     uiExplorer.setRenderSibbling(UIJCRExplorer.class);
   }
-  
-  public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
-    UIJcrExplorerContainer explorerContainer = getChild(UIJcrExplorerContainer.class);
-    UIJcrExplorerEditContainer editContainer = getChild(UIJcrExplorerEditContainer.class);
-    context.getJavascriptManager().importJavascript("eXo.ecm.ECMUtils","/ecm/javascript/");
-    context.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.init('UIJCRExplorerPortlet') ;");
-    PortletRequestContext portletReqContext = (PortletRequestContext) context ;
-    HashMap<String, String> map = getElementByContext(context);
-    if (portletReqContext.getApplicationMode() == PortletMode.VIEW) {
-      if (map.size() > 0) {
-        showDocument(context, map);
-      } else {
-        PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
-        PortletPreferences portletPref = pcontext.getRequest().getPreferences();
-        String usecase =  portletPref.getValue("usecase", "").trim();
-        if (usecase.equals(SELECTION)) {
-          initwhenSelect(explorerContainer);
-        } else {
-          initwhenDirect(explorerContainer, editContainer, portletPref);
-        }
-      }
-      explorerContainer.setRendered(true);
-      UIJCRExplorer uiExplorer = explorerContainer.getChild(UIJCRExplorer.class);
-      if(uiExplorer != null) {
-        try {
-          uiExplorer.getSession();
-          try {
-            uiExplorer.getSession().getItem(uiExplorer.getRootPath());
-          } catch(PathNotFoundException e) {
-            uiExplorer.getChild(UIControl.class).setRendered(false);
-            UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
-            uiWorkingArea.setRenderedChild(UIDrivesArea.class);
-            super.processRender(app, context);
-            return;
-          }
-        } catch(RepositoryException repo) {
-          super.processRender(app, context);
-        }
-      }
-      getChild(UIJcrExplorerEditContainer.class).setRendered(false);
-    } else if(portletReqContext.getApplicationMode() == PortletMode.HELP) {
-      if (LOG.isDebugEnabled()) LOG.debug("\n\n>>>>>>>>>>>>>>>>>>> IN HELP  MODE \n");      
-    } else if(portletReqContext.getApplicationMode() == PortletMode.EDIT) {
-      explorerContainer.setRendered(false);
-      getChild(UIJcrExplorerEditContainer.class).setRendered(true);
-    }
-    super.processRender(app, context);
-  }
-  
-  public void initwhenSelect(UIJcrExplorerContainer explorerContainer) throws Exception {
-    explorerContainer.setFlag(true);
-    if (!isFlagSelect()) {
-      UIDrivesBrowserContainer browserContainer = explorerContainer.getChild(UIDrivesBrowserContainer.class); 
-      if (browserContainer != null) {
-        browserContainer.setRendered(true);
-      } else explorerContainer.addChild(UIDrivesBrowserContainer.class, null, null).setRendered(true);
-      explorerContainer.getChild(UIJCRExplorer.class).setRendered(false);   
-    } else {
-      UIDrivesBrowserContainer driveBrowserContainer = explorerContainer.getChild(UIDrivesBrowserContainer.class);
-      if (driveBrowserContainer == null) {
-        explorerContainer.setFlag(false);
-        explorerContainer.getChild(UIDrivesBrowserContainer.class).setRendered(false);
-        explorerContainer.getChild(UIJCRExplorer.class).setRendered(true);    
-      }
-    }
-  }
-  
-  public void initwhenDirect(UIJcrExplorerContainer explorerContainer, UIJcrExplorerEditContainer editContainer, PortletPreferences portletPref) throws Exception {
-    explorerContainer.setFlag(false);
-    String driveName = portletPref.getValue("driveName", "").trim();
-    String repository = portletPref.getValue("repository", "").trim();
-    List<String> listDriveName = explorerContainer.getDrives();
-    for (String driveDataName : listDriveName) {
-      if (driveDataName.trim().equals(driveName)) {
-        explorerContainer.setFlag(true);
-        break;
-      }
-    }
-    UIJCRExplorer uiJCRExplorer = explorerContainer.getChild(UIJCRExplorer.class);
-    if (editContainer.getChild(UIJcrExplorerEditForm.class).isFlagSelectRender()) {
-      explorerContainer.initExplorer(driveName, portletPref);
-      editContainer.getChild(UIJcrExplorerEditForm.class).setFlagSelectRender(false);
-      ManageDriveService manageDriveService = getApplicationComponent(ManageDriveService.class);
-      DriveData driveData = manageDriveService.getDriveByName(driveName, repository);
-      String nodePath = portletPref.getValue("nodePath", "").trim();
-      String homePath = (driveData.getHomePath().concat(nodePath)).replaceAll("/+", "/");
-      String userId = Util.getPortalRequestContext().getRemoteUser();
-      if (homePath.contains("${userId}")) homePath = homePath.replace("${userId}", userId);
-      uiJCRExplorer.setSelectNode(driveData.getWorkspace(), homePath);
-      uiJCRExplorer.refreshExplorer(); 
-    }
-    uiJCRExplorer.setRendered(true);
-    explorerContainer.getChild(UIDrivesBrowserContainer.class).setRendered(false);
-    
-   
-  }
-  
-  public String getPreferenceRepository() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
-    String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
-    return repository ;
-  }
-  
-  public String getPreferenceTrashHomeNodePath() {
-	  return getPortletPreferences().getValue(Utils.TRASH_HOME_NODE_PATH, "");
-  }
-  
-  public String getPreferenceTrashRepository() {
-	  return getPortletPreferences().getValue(Utils.TRASH_REPOSITORY, "");
-  }
-  
-  public String getPreferenceTrashWorkspace() {
-	  return getPortletPreferences().getValue(Utils.TRASH_WORKSPACE, "");
-  }
-  
-  public PortletPreferences getPortletPreferences() {
-	  PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
-	  PortletPreferences portletPref = pcontext.getRequest().getPreferences();
-	  return portletPref;
-  }
+
 }

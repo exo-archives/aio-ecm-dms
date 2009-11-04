@@ -32,13 +32,11 @@ import javax.jcr.nodetype.NodeType;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
-import javax.portlet.PortletPreferences;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
-import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
@@ -53,8 +51,6 @@ import org.exoplatform.services.cms.queries.QueryService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.WebuiRequestContext;
-import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -86,7 +82,6 @@ import org.exoplatform.webui.form.UIFormStringInput;
       @EventConfig(listeners = UIActionBar.SavedQueriesActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.ChangeTabActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.PreferencesActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIActionBar.BackActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionBar.SaveSessionActionListener.class, phase = Phase.DECODE)
     }
 )
@@ -176,16 +171,6 @@ public class UIActionBar extends UIForm {
     UIJCRExplorer uiExplorer =  getAncestorOfType(UIJCRExplorer.class) ;
     return uiExplorer.getPreference().isJcrEnable() ;    
   }
-  
-  public boolean isDirectlyDrive() {
-    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
-    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
-    String usecase =  portletPref.getValue("usecase", "").trim();
-    if ("selection".equals(usecase)) {
-      return false;
-    }
-    return true;
-  }  
   
   public List<String> getTabList() { return tabList_; }
   
@@ -346,15 +331,6 @@ public class UIActionBar extends UIForm {
       UIApplication uiApp = uiJCRExplorer.getAncestorOfType(UIApplication.class) ;
       String mess = "UIJCRExplorer.msg.save-session-success" ;
       uiApp.addMessage(new ApplicationMessage(mess, null, ApplicationMessage.INFO)) ;
-    }
-  }
-  
-  static public class BackActionListener extends EventListener<UIActionBar> {
-    public void execute(Event<UIActionBar> event) throws Exception {
-      UIJCRExplorer uiJCRExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class) ;
-      UISearchResult simpleSearchResult = uiJCRExplorer.findComponentById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);
-      if(simpleSearchResult != null) simpleSearchResult.setRendered(false);
-      uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class);
     }
   }
   

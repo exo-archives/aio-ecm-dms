@@ -63,7 +63,6 @@ import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.link.ItemLinkAware;
-import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.link.NodeLinkAware;
@@ -653,7 +652,6 @@ public class UIJCRExplorer extends UIContainer {
   public List<Node> getChildrenList(String path, boolean isReferences) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    LinkManager linkManager = getApplicationComponent(LinkManager.class);
     Node node = (Node) ItemLinkAware.newInstance(getSession(), path, getNodeByPath(path, getSession()));
     NodeIterator childrenIterator = node.getNodes();
     List<Node> childrenList  = new ArrayList<Node>() ;

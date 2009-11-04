@@ -27,8 +27,8 @@ import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.ecm.webui.component.explorer.UIDrivesBrowserContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.link.LinkManager;
@@ -91,9 +91,8 @@ public class UIPermissionInfo extends UIContainer {
   
   public void updateGrid(int currentPage) throws Exception {
     UIJCRExplorer uiJCRExplorer = getAncestorOfType(UIJCRExplorer.class);
-    Node currentNode = uiJCRExplorer.getCurrentNode();
     List<PermissionBean> permBeans = new ArrayList<PermissionBean>(); 
-    ExtendedNode node = (ExtendedNode) currentNode;
+    ExtendedNode node = (ExtendedNode) uiJCRExplorer.getCurrentNode();
 
     List<AccessControlEntry> permsList = node.getACL().getPermissionEntries() ;
     Map<String, List<String>> permsMap = new HashMap<String, List<String>>();
@@ -207,7 +206,7 @@ public class UIPermissionInfo extends UIContainer {
         }
         if(uiJCRExplorer.getRootNode().equals(node)) {
           if(!PermissionUtil.canRead(currentNode)) {
-            uiJCRExplorer.setRenderSibbling(UIDrivesBrowserContainer.class) ;
+            uiJCRExplorer.getAncestorOfType(UIJCRExplorerPortlet.class).reloadWhenBroken(uiJCRExplorer) ;
             return ;
           }
         }

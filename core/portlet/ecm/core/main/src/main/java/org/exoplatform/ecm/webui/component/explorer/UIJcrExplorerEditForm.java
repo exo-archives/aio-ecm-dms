@@ -215,15 +215,6 @@ public class UIJcrExplorerEditForm extends UIForm implements UISelectable {
     return options;
   }
 
-  private String getUserDrive(List<DriveData> personalDrives, String userType) {
-    for(DriveData userDrive : personalDrives) {
-      if(userDrive.getName().equalsIgnoreCase(userType)) {
-        return userDrive.getName();
-      }
-    }
-    return null;
-  }
-  
   public static class EditActionListener extends EventListener<UIJcrExplorerEditForm>{
     public void execute(Event<UIJcrExplorerEditForm> event) throws Exception {
       UIJcrExplorerEditForm uiForm = event.getSource();
@@ -265,7 +256,6 @@ public class UIJcrExplorerEditForm extends UIForm implements UISelectable {
     public void execute(Event<UIJcrExplorerEditForm> event) throws Exception {
       UIJcrExplorerEditForm uiForm = event.getSource();
       UIJCRExplorerPortlet uiJExplorerPortlet = uiForm.getAncestorOfType(UIJCRExplorerPortlet.class);
-      UIJcrExplorerContainer uiContainer = uiJExplorerPortlet.getChild(UIJcrExplorerContainer.class);
       uiForm.setEditable(true);
       UIFormSelectBox typeSelectBox = uiForm.getChildById(UIJCRExplorerPortlet.USECASE);
       UIFormInputSetWithAction driveNameInput = uiForm.getChildById("DriveNameInput");
@@ -285,11 +275,11 @@ public class UIJcrExplorerEditForm extends UIForm implements UISelectable {
           stringInputDrive.setValue(groupId);
         }
       } else if(typeSelectBox.getValue().equals(UIJCRExplorerPortlet.PERSONAL)) {
-        List<DriveData> personalDrives = 
-          uiContainer.personalDrives(uiContainer.getDrives(uiForm.getPreference())); 
-        String personalPublicDrive = uiForm.getUserDrive(personalDrives, "private");
-        UIFormStringInput stringInputDrive = driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
-        stringInputDrive.setValue(personalPublicDrive);
+        DriveData personalPrivateDrive = 
+          uiJExplorerPortlet.getUserDrive(uiJExplorerPortlet.getPreferenceRepository(), "private");
+        UIFormStringInput stringInputDrive = 
+          driveNameInput.getUIStringInput(UIJCRExplorerPortlet.DRIVE_NAME);
+        stringInputDrive.setValue(personalPrivateDrive.getName());
         UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class);
         uiApp.addMessage(new ApplicationMessage("UIJcrExplorerEditForm.msg.personal-usecase", null));
       } else if(typeSelectBox.getValue().equals(UIJCRExplorerPortlet.PARAMETERIZE)) {

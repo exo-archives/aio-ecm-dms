@@ -38,7 +38,7 @@
 				<%
 			    def isSelected = false;
 					def selectedTab = uicomponent.getSelectedTab();
-				  if(!tabAvailableList.contains(selectedTab)) {
+				  if(!tabAvailableList.contains(selectedTab) && tabAvailableList.size() > 0) {
 						selectedTab = tabAvailableList.get(0);
 						uicomponent.setSelectedTab(selectedTab);
 					}
