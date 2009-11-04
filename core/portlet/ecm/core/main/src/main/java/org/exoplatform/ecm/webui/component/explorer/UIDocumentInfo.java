@@ -884,7 +884,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         return;
       }
       try {
-	    	if (node.isNodeType(Utils.EXO_FAVOURITE)) {
+	    	if (favouriteService_.isFavouriter(node.getSession().getUserID(), node)) {
 	    		if (PermissionUtil.canRemoveNode(node)) {
 	    			favouriteService_.removeFavourite(node, node.getSession().getUserID());
 	    		}

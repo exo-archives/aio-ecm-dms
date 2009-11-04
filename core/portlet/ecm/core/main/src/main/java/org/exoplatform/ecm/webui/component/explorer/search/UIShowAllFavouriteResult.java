@@ -304,7 +304,7 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 	    	
 		    UIApplication uiApp = uiShow.getAncestorOfType(UIApplication.class);
 		    try {
-		    	if (node.isNodeType(Utils.EXO_FAVOURITE)) {
+		    	if (favouriteService_.isFavouriter(node.getSession().getUserID(), node)) {
 		    		if (PermissionUtil.canRemoveNode(node)) {
 		    			favouriteService_.removeFavourite(node, node.getSession().getUserID());
 		    			uiShow.favouriteChange = true;

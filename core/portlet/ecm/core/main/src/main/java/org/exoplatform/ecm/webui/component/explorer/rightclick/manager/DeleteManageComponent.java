@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.ReferentialIntegrityException;
@@ -32,8 +33,11 @@ import javax.jcr.lock.LockException;
 import javax.jcr.nodetype.ConstraintViolationException;
 import javax.jcr.nodetype.NodeType;
 import javax.jcr.version.VersionException;
+import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIConfirmMessage;
@@ -43,12 +47,17 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.CanDeleteNode
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.documents.TrashService;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -123,7 +132,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     Iterator<String> iterator = mapNode.keySet().iterator();
     while (iterator.hasNext()) {
       path = iterator.next();
-      processRemove(path, mapNode.get(path), event, true);
+      processRemoveOrMoveToTrash(path, mapNode.get(path), event, true);
     }
   }
   
@@ -134,7 +143,74 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     }
   }
 
-  private void processRemove(String nodePath, Node node, Event<?> event, boolean isMultiSelect)
+  private void processRemoveOrMoveToTrash(String nodePath, Node node, Event<?> event, boolean isMultiSelect)
+  throws Exception {
+		if (node.isNodeType(Utils.EXO_RESTORELOCATION))
+			processRemoveNode(nodePath, node, event, isMultiSelect);
+		else {
+			moveToTrash(nodePath, node, event, isMultiSelect);
+		}
+  }
+  
+	private void moveToTrash(String srcPath, Node node, Event<?> event, boolean isMultiSelect) throws Exception {
+
+		ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+    TrashService trashService = (TrashService)myContainer.getComponentInstanceOfType(TrashService.class);
+    
+    final String virtualNodePath = srcPath;
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    Node currentNode = uiExplorer.getCurrentNode(); 
+    
+    UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+    try {
+    	if (node.isLocked()) 
+    		throw new LockException("node is locked, can't move to trash node :" + node.getPath());
+			if (!node.isCheckedOut())
+				throw new VersionException("node is locked, can't move to trash node :" + node.getPath());
+			if (!PermissionUtil.canRemoveNode(node))
+				throw new AccessDeniedException("access denied, can't move to trash node:" + node.getPath());
+    	PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+        PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+    	String trashHomeNodePath = portletPref.getValue(Utils.TRASH_HOME_NODE_PATH, "");
+    	String trashWorkspace = portletPref.getValue(Utils.TRASH_WORKSPACE, "");
+    	String trashRepository = portletPref.getValue(Utils.TRASH_REPOSITORY, "");
+    	SessionProvider sessionProvider = uiExplorer.getSessionProvider();
+    	trashService.moveToTrash(node, 
+    							 trashHomeNodePath, 
+    							 trashWorkspace, 
+    							 trashRepository, 
+    							 sessionProvider);
+    	uiExplorer.updateAjax(event);
+    } catch (LockException e) {
+    	LOG.error("node is locked, can't move to trash node :" + node.getPath());
+    	JCRExceptionManager.process(uiApp, e);
+    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    	uiExplorer.updateAjax(event);
+    } catch (VersionException e) {
+    	LOG.error("node is checked in, can't move to trash node:" + node.getPath());
+    	JCRExceptionManager.process(uiApp, e);
+    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    	uiExplorer.updateAjax(event);	   
+    } catch (AccessDeniedException e) {
+    	LOG.error("access denied, can't add favourite to node:" + node.getPath());
+    	JCRExceptionManager.process(uiApp, e);
+    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    	uiExplorer.updateAjax(event);
+    } catch (Exception e) {
+    	LOG.error("an unexpected error occurs", e);
+    	JCRExceptionManager.process(uiApp, e);
+    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    	uiExplorer.updateAjax(event);
+    }
+    if (!isMultiSelect) {
+      if (currentNode.getPath().equals(virtualNodePath))
+        uiExplorer.setSelectNode(LinkUtils.getParentPath(virtualNodePath));
+      else
+        uiExplorer.setSelectNode(currentNode.getPath());
+    }
+	}  
+  
+  private void processRemoveNode(String nodePath, Node node, Event<?> event, boolean isMultiSelect)
       throws Exception {
     final String virtualNodePath = nodePath;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
@@ -271,7 +347,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
               }
             }
           }
-          processRemove(nodePath, node, event, false);
+          processRemoveOrMoveToTrash(nodePath, node, event, false);
         } catch (PathNotFoundException path) {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", null,
               ApplicationMessage.WARNING));

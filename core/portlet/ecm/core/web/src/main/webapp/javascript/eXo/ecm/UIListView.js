@@ -603,15 +603,12 @@ var ListView = function() {
       removeFavouriteAction.parentNode.style.display = "none";
     }
     
-    var moveToTrashAction = DOM.findFirstDescendantByClass(contextMenu, "div", "MoveToTrash16x16Icon");
     var restoreFromTrashAction = DOM.findFirstDescendantByClass(contextMenu, "div", "RestoreFromTrash16x16Icon");
     if (!checkInTrash) {
-      moveToTrashAction.parentNode.style.display = "block";    
       restoreFromTrashAction.parentNode.style.display = "none";
     }   
     if (checkInTrash) {
       restoreFromTrashAction.parentNode.style.display = "block";
-      moveToTrashAction.parentNode.style.display = "none";
     }
     		
 			
