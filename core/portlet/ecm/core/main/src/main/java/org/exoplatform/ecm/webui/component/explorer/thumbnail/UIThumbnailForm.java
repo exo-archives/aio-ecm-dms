@@ -109,7 +109,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
       Node selectedNode = uiExplorer.getRealCurrentNode();
       uiExplorer.addLockToken(selectedNode);
       String fileName = input.getUploadResource().getFileName();
-      DMSMimeTypeResolver mimeTypeSolver = uiForm.getApplicationComponent(DMSMimeTypeResolver.class);
+      DMSMimeTypeResolver mimeTypeSolver = DMSMimeTypeResolver.getInstance();
       String mimeType = mimeTypeSolver.getMimeType(fileName) ;
       if(!mimeType.startsWith("image")) {
         uiApp.addMessage(new ApplicationMessage("UIThumbnailForm.msg.mimetype-incorrect", null, 

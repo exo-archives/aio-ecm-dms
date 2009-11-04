@@ -317,7 +317,7 @@ public class UISingleUploadForm extends UIForm implements UIPopupComponent, UISe
           return;
         }
       }  
-      DMSMimeTypeResolver mimeTypeSolver = uiForm.getApplicationComponent(DMSMimeTypeResolver.class);
+      DMSMimeTypeResolver mimeTypeSolver = DMSMimeTypeResolver.getInstance();
       String mimeType = mimeTypeSolver.getMimeType(fileName) ;
       Node selectedNode = uiExplorer.getCurrentNode();      
       boolean isExist = selectedNode.hasNode(name) ;

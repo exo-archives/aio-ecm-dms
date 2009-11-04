@@ -65,7 +65,6 @@ public class FileUploadHandler {
   
   private FCKMessage fckMessage;
   
-  private DMSMimeTypeResolver mimeTypeResolver;
   /**
    * Instantiates a new file upload handler.
    * 
@@ -74,7 +73,6 @@ public class FileUploadHandler {
   public FileUploadHandler(ExoContainer container) {	
     uploadService = (UploadService)container.getComponentInstanceOfType(UploadService.class);
     fckMessage = new FCKMessage();
-    mimeTypeResolver = (DMSMimeTypeResolver)container.getComponentInstanceOfType(DMSMimeTypeResolver.class);
   }
   
   public Response upload(String uploadId, String contentType, double contentLength, InputStream inputStream, Node currentNode, String language) throws Exception {
@@ -128,7 +126,7 @@ public class FileUploadHandler {
     byte[] uploadData = IOUtil.getFileContentAsBytes(location);
     Node file = parent.addNode(fileName,FCKUtils.NT_FILE);
     Node jcrContent = file.addNode("jcr:content","nt:resource");
-    String mimetype = mimeTypeResolver.getMimeType(resource.getFileName());
+    String mimetype = DMSMimeTypeResolver.getInstance().getMimeType(resource.getFileName());
     jcrContent.setProperty("jcr:data",new ByteArrayInputStream(uploadData));
     jcrContent.setProperty("jcr:lastModified",new GregorianCalendar());    
     jcrContent.setProperty("jcr:mimeType",mimetype);

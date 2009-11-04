@@ -17,13 +17,11 @@
  **************************************************************************/
 package org.exoplatform.services.cms.mimetype;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Properties;
 
 import org.exoplatform.commons.utils.MimeTypeResolver;
-import org.exoplatform.container.configuration.ConfigurationManager;
-import org.exoplatform.container.xml.InitParams;
-import org.picocontainer.Startable;
 
 /**
  * Created by The eXo Platform SARL
@@ -31,40 +29,30 @@ import org.picocontainer.Startable;
  *          hunghvit@gmail.com
  * Nov 2, 2009  
  */
-public class DMSMimeTypeResolver implements Startable {
-  
-  private String resource;
+public class DMSMimeTypeResolver {
   
   private Properties dmsmimeTypes       = new Properties();
 
   private static MimeTypeResolver mimeTypes       = new MimeTypeResolver();
-  
-  private ConfigurationManager configuration_;
-  
-  public String getResource() {
-    return resource;
-  }
 
-  public void setResource(String resource) {
-    this.resource = resource;
-  }
-
-  public DMSMimeTypeResolver(ConfigurationManager configuration, InitParams initParams) throws Exception {
-    resource = initParams.getValueParam("resource").getValue();
-    configuration_ = configuration;
+  private static DMSMimeTypeResolver dmsMimeTypeResolver;
+  
+  
+  private DMSMimeTypeResolver() throws IOException {
+    dmsmimeTypes.load(getClass().getResourceAsStream("/conf/mimetype/mimetypes.properties"));
   }
   
-  public void start() {
-    try {
-      dmsmimeTypes.load(configuration_.getInputStream(resource));
-    } catch (Exception e) {
-      throw new InternalError("Unable to load mimetypes: " + e.toString());
+  public static DMSMimeTypeResolver getInstance() throws IOException {
+    if (dmsMimeTypeResolver == null) {
+      synchronized (DMSMimeTypeResolver.class) {
+        if (dmsMimeTypeResolver == null) {
+          dmsMimeTypeResolver = new DMSMimeTypeResolver();    
+        }
+      }
     }
+    return dmsMimeTypeResolver;
   }
-
-  public void stop() {
-  }
-
+  
   public String getMimeType(String filename) {
     String ext = filename.substring(filename.lastIndexOf(".") + 1);
     if (ext.equals("")) {

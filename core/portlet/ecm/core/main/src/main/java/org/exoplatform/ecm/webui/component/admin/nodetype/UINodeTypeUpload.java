@@ -85,7 +85,7 @@ public class UINodeTypeUpload extends UIForm {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
         return ;
       }
-      DMSMimeTypeResolver resolver = uiUploadForm.getApplicationComponent(DMSMimeTypeResolver.class);
+      DMSMimeTypeResolver resolver = DMSMimeTypeResolver.getInstance();
       String mimeType = resolver.getMimeType(fileName);
       InputStream is = null;
       try {

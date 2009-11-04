@@ -382,7 +382,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
     String mimeType = jcrContentNode.getProperty(Utils.JCR_MIMETYPE).getString() ;
     InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, mimeType) ;
-    DMSMimeTypeResolver mimeTypeSolver = getApplicationComponent(DMSMimeTypeResolver.class);
+    DMSMimeTypeResolver mimeTypeSolver = DMSMimeTypeResolver.getInstance();
     String ext = mimeTypeSolver.getExtension(mimeType) ;
     String fileName = node.getName() ;    
     if(fileName.lastIndexOf("."+ext)<0){

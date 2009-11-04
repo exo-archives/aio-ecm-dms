@@ -323,7 +323,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
     PortletPreferences portletPref = pcontext.getRequest().getPreferences();
     String categoryMandatoryWhenFileUpload =  portletPref.getValue(Utils.CATEGORY_MANDATORY, "").trim();    
-    DMSMimeTypeResolver mimeTypeSolver = getApplicationComponent(DMSMimeTypeResolver.class);
+    DMSMimeTypeResolver mimeTypeSolver = DMSMimeTypeResolver.getInstance();
     Node selectedNode = uiExplorer.getCurrentNode();
     if (categoryMandatoryWhenFileUpload.equalsIgnoreCase("true") && 
         (getMapTaxonomies().size() == 0) && !uiExplorer.getCurrentNode().hasNode(JCRCONTENT)) {
