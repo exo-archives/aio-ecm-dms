@@ -124,8 +124,13 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
     }
     
     try {
-    	if (node.isLocked()) 
-    		throw new LockException("node is locked, can't restore node :" + node.getPath());
+      uiExplorer.addLockToken(node);
+    } catch (Exception e) {
+      JCRExceptionManager.process(uiApp, e);
+      return;
+    }
+    
+    try {
     	if (!node.isCheckedOut())
     		throw new VersionException("node is locked, can't restore node :" + node.getPath());
 			if (!PermissionUtil.canRemoveNode(node))

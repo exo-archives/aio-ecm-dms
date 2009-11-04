@@ -30,6 +30,7 @@ import java.util.Map;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
+import javax.jcr.lock.LockException;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
@@ -299,10 +300,18 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 	    	String index = event.getRequestContext().getRequestParameter(OBJECTID);
 	    	int id = Integer.parseInt(index);
 	    	UIShowAllFavouriteResult uiShow = event.getSource();
+	    	UIJCRExplorer uiExplorer = uiShow.getAncestorOfType(UIJCRExplorer.class);
+	    	UIApplication uiApp = uiShow.getAncestorOfType(UIApplication.class);
 //	    	UIStar uiStar = uiShow.uiStars.get(id);
 	    	Node node = uiShow.mapIndexNode.get(id);
+
+		    try {
+		      uiExplorer.addLockToken(node);
+		    } catch (Exception e) {
+		      JCRExceptionManager.process(uiApp, e);
+		      return;
+		    }
 	    	
-		    UIApplication uiApp = uiShow.getAncestorOfType(UIApplication.class);
 		    try {
 		    	if (favouriteService_.isFavouriter(node.getSession().getUserID(), node)) {
 		    		if (PermissionUtil.canRemoveNode(node)) {
@@ -322,7 +331,12 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 		    		}
 		    	}
 			    //uiStar.changeFavourite();
-		        event.getRequestContext().addUIComponentToUpdateByAjax(uiShow);			    
+		        event.getRequestContext().addUIComponentToUpdateByAjax(uiShow);
+  	    } catch (LockException e) {
+  	    	LOG.error("node is locked, can't remove change favourite property of node :" + node.getPath());
+  	    	JCRExceptionManager.process(uiApp, e);
+  	    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+  	    	uiExplorer.updateAjax(event);
 		    } catch (AccessDeniedException e) {
 		    	LOG.error("Access denied! No permission for modifying property " +
 		    			  Utils.EXO_FAVOURITER + " of node: " + node.getPath());

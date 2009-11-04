@@ -120,10 +120,15 @@ public class FavouriteManageComponent extends UIAbstractManagerComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
+
+    try {
+      uiExplorer.addLockToken(node);
+    } catch (Exception e) {
+      JCRExceptionManager.process(uiApp, e);
+      return;
+    }
     
     try {
-    	if (node.isLocked()) 
-    		throw new LockException("node is locked, can't add favourite to node:" + node.getPath());
     	if (!node.isCheckedOut()) 
     		throw new VersionException("node is locked, can't add favourite to node:" + node.getPath());
     	if (!PermissionUtil.canSetProperty(node))

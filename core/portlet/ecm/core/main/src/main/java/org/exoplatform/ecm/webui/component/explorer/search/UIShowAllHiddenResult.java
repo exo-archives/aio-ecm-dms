@@ -32,6 +32,7 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
+import javax.jcr.lock.LockException;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
@@ -229,15 +230,27 @@ public class UIShowAllHiddenResult extends UIComponentDecorator {
 		      return;
 		    }
 
-	        try {
-	          if (PermissionUtil.canRemoveNode(node)) {
-		          uiShowAllHiddenResult.nodeListChange = true;
-		          node.removeMixin(Utils.EXO_HIDDENABLE);
-		          node.save();
-		    	  uiShowAllHiddenResult.updateTable(event);
-	          } else {
-	        	  throw new AccessDeniedException();
-	          }
+		    try {
+		      uiExplorer.addLockToken(node);
+		    } catch (Exception e) {
+		      JCRExceptionManager.process(uiApp, e);
+		      return;
+		    }
+		    
+        try {
+          if (PermissionUtil.canRemoveNode(node)) {
+	          uiShowAllHiddenResult.nodeListChange = true;
+	          node.removeMixin(Utils.EXO_HIDDENABLE);
+	          node.save();
+	    	  uiShowAllHiddenResult.updateTable(event);
+          } else {
+        	  throw new AccessDeniedException();
+          }
+  	    } catch (LockException e) {
+  	    	LOG.error("node is locked, can't remove hidden property of node :" + node.getPath());
+  	    	JCRExceptionManager.process(uiApp, e);
+  	    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+  	    	uiExplorer.updateAjax(event);
 		    } catch (AccessDeniedException e) {
 		    	LOG.error("Access denied! No permission for modifying property " +
 		    			  Utils.EXO_HIDDENABLE + " of node: " + node.getPath());

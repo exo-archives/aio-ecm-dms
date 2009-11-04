@@ -266,26 +266,26 @@ public class UIShowAllTrashResult extends UIComponentDecorator {
 		    }
 
 		    try {
-	          uiExplorer.addLockToken(node);
-	        } catch (Exception e) {
-	          JCRExceptionManager.process(uiApp, e);
-	          return;
-	        }
-	        Node parentNode = node.getParent();
-	        uiExplorer.addLockToken(parentNode);
-	        try {
-	          if (PermissionUtil.canRemoveNode(node)) {	
-		          if (node.isNodeType(Utils.RMA_RECORD))
-		            removeMixins(node);
-		          ThumbnailService thumbnailService = uiShowAllTrashResult.getApplicationComponent(ThumbnailService.class);
-		          thumbnailService.processRemoveThumbnail(node);
-		          node.remove();
-		          parentNode.save();
-		          uiShowAllTrashResult.nodeListChange = true;
-		    	  uiShowAllTrashResult.updateTable(event);
-	          } else {
-	        	  throw new AccessDeniedException();
-	          }
+          uiExplorer.addLockToken(node);
+        } catch (Exception e) {
+          JCRExceptionManager.process(uiApp, e);
+          return;
+        }
+        Node parentNode = node.getParent();
+        uiExplorer.addLockToken(parentNode);
+        try {
+          if (PermissionUtil.canRemoveNode(node)) {	
+	          if (node.isNodeType(Utils.RMA_RECORD))
+	            removeMixins(node);
+	          ThumbnailService thumbnailService = uiShowAllTrashResult.getApplicationComponent(ThumbnailService.class);
+	          thumbnailService.processRemoveThumbnail(node);
+	          node.remove();
+	          parentNode.save();
+	          uiShowAllTrashResult.nodeListChange = true;
+	    	  uiShowAllTrashResult.updateTable(event);
+          } else {
+        	  throw new AccessDeniedException();
+          }
 		    } catch (AccessDeniedException e) {
 		    	LOG.error("Access denied! No permission for deleting node: " + node.getPath());
 		    	uiApp.addMessage(new ApplicationMessage("UIShowAllTrashResult.msg.accessDenied", null, ApplicationMessage.WARNING));
@@ -375,6 +375,13 @@ public class UIShowAllTrashResult extends UIComponentDecorator {
 		    }
 		    
 		    try {
+		      uiExplorer.addLockToken(node);
+		    } catch (Exception e) {
+		      JCRExceptionManager.process(uiApp, e);
+		      return;
+		    }
+		    
+		    try {
 		    	if (PermissionUtil.canRemoveNode(node)) {
 		    		PortletPreferences portletPrefs = uiExplorer.getPortletPreferences();
 			    	String repository = uiExplorer.getRepositoryName();
@@ -394,6 +401,11 @@ public class UIShowAllTrashResult extends UIComponentDecorator {
 		    	} else {
 		    		throw new AccessDeniedException();
 		    	}
+  	    } catch (LockException e) {
+  	    	LOG.error("node is locked, can't restore node :" + node.getPath());
+  	    	JCRExceptionManager.process(uiApp, e);
+  	    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+  	    	uiExplorer.updateAjax(event);
 		    } catch (AccessDeniedException e) {
 		    	LOG.error("Access denied! No permission for restoring node: " + node.getPath());
 		    	uiApp.addMessage(new ApplicationMessage("UIShowAllTrashResult.msg.accessDenied", null, ApplicationMessage.WARNING));
