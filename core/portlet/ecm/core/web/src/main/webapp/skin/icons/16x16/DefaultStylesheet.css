@@ -766,31 +766,26 @@
 
 
 .UIRightClickPopupMenu .AddToFavourite16x16Icon {
-  width: 16px; height: 16px;
   background: url('DefaultSkin/AddToFavourite.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/AddToFavourite.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .RemoveFromFavourite16x16Icon {
-  width: 16px; height: 16px;
   background: url('DefaultSkin/RemoveFromFavourite.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/RemoveFromFavourite.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .RestoreFromTrash16x16Icon {
-  width: 16px; height: 16px;
   background: url('DefaultSkin/RestoreFromTrash.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/RestoreFromTrash.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .MoveToTrash16x16Icon {
-  width: 16px; height: 16px;
   background: url('DefaultSkin/MoveToTrash.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/MoveToTrash.gif') no-repeat right center; /* orientation=rt */
 }
 
 .UIRightClickPopupMenu .RemoveHidden16x16Icon {
-  width: 16px; height: 16px;
   background: url('DefaultSkin/RemoveHidden.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/RemoveHidden.gif') no-repeat right center; /* orientation=rt */
 }
