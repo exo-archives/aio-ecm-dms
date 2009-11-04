@@ -15,16 +15,16 @@
 	      if (listDrive != null && listDrive.size() > 0) {
 	        def rowClass = null;
   	      boolean even = true;
-  		    for (driveName in listDrive) {
+  		    for (drive in listDrive) {
   	 	      if (even) rowClass = "EvenRow";  
 	  	      else rowClass = "OddRow"; 
 	  	      even = !even;
 	     %>
 	          <tr class="$rowClass">
-							<td><%=driveName%></td>	          	
+							<td><%=drive.getName()%></td>	          	
 							<td width="10%">
 								<div class="ActionContainer">
-									<img class="Select16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" onclick="<%=uicomponent.event("AddDrive", Utils.formatNodeName(driveName))%>" title="<%=_ctx.appRes("UIDriveSelector.label.adddrives")%>" />
+									<img class="Select16x16Icon" src="/eXoResources/skin/sharedImages/Blank.gif" alt="" onclick="<%=uicomponent.event("AddDrive", Utils.formatNodeName(drive.getName()))%>" title="<%=_ctx.appRes("UIDriveSelector.label.adddrives")%>" />
 								</div>
 							</td>
 	          </tr>
