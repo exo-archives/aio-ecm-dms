@@ -24,6 +24,7 @@ import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
 import org.apache.ws.commons.util.Base64;
@@ -34,6 +35,7 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
@@ -98,6 +100,16 @@ public class UITreeExplorer extends UIContainer {
     }
     return "" ;
   }
+  
+  public boolean isDirectlyDrive() {
+    PortletPreferences portletPref = 
+      getAncestorOfType(UIJCRExplorerPortlet.class).getPortletPreferences();
+    String usecase =  portletPref.getValue("usecase", "").trim();
+    if ("selection".equals(usecase)) {
+      return false;
+    }
+    return true;
+  }  
   
   public String getDriveName() {
     return getAncestorOfType(UIJCRExplorer.class).getDriveData().getName() ;

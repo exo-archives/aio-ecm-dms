@@ -162,7 +162,9 @@
 			    <div class="Title" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent>
 			      <a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" title="<%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%>" $contextMenuEvent><%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%></a>
 			    </div>
-			  	<a href="<%=uicomponent.event("ShowDrivesArea")%>"><div class="DriversButton" title="Drivers"><span></span></div></a>
+			  	<%if (!uicomponent.isDirectlyDrive()) {%>
+			  		<a href="<%=uicomponent.event("ShowDrivesArea")%>"><div class="DriversButton" title="Drivers"><span></span></div></a>
+			  	<%}%>
 			  	<div class="ClearLeft"><span></span></div>
 			  </div>
 			</div>
