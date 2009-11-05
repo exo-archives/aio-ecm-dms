@@ -603,7 +603,12 @@ public class UIWorkingArea extends UIContainer {
           uiExplorer.setCurrentPath(LinkUtils.getParentPath(uiExplorer.getCurrentPath()));
           desNode = uiExplorer.getCurrentNode();
         }
-        if (!(desNode.getPath().equals(uiExplorer.getCurrentNode().getPath())))
+		
+		if (!session.itemExists(uiExplorer.getCurrentPath())) {
+          uiExplorer.setCurrentPath(LinkUtils.getParentPath(uiExplorer.getCurrentPath()));
+        }
+		
+        if (!(desNode.getPath().equals(uiExplorer.getCurrentPath())))
           actionContainer.initiateObservation(desNode, repository);
         for(int i = 0; i < refList.size(); i ++) {
           Node addRef = refList.get(i);
