@@ -423,11 +423,15 @@ public class UIJCRExplorer extends UIContainer {
     }
     findFirstComponentOfType(UIAddressBar.class).getUIStringInput(UIAddressBar.FIELD_ADDRESS).
         setValue(filterPath(currentPath_)) ;
-    UIDocumentContainer uiDocumentContainer = findFirstComponentOfType(UIDocumentContainer.class) ;
-    UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
-    uiDocumentInfo.updatePageListData();
-    if(isShowViewFile()) uiDocumentInfo.setRendered(false) ;
-    else uiDocumentInfo.setRendered(true);
+    UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class);
+    UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+    if(uiDocumentWorkspace.isRendered()) {
+      UIDocumentContainer uiDocumentContainer = findFirstComponentOfType(UIDocumentContainer.class) ;
+      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
+      uiDocumentInfo.updatePageListData();
+      if(isShowViewFile()) uiDocumentInfo.setRendered(false) ;
+      else uiDocumentInfo.setRendered(true);
+    }
     if(preferences_.isShowSideBar()) {
       UITreeExplorer treeExplorer = findFirstComponentOfType(UITreeExplorer.class);
       treeExplorer.buildTree();
@@ -547,19 +551,21 @@ public class UIJCRExplorer extends UIContainer {
     event.getRequestContext().addUIComponentToUpdateByAjax(uiAddressBar) ;
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class) ;
     UIActionBar uiActionBar = findFirstComponentOfType(UIActionBar.class) ;
-    UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
-    UIDocumentContainer uiDocumentContainer = findFirstComponentOfType(UIDocumentContainer.class) ;
-    UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
-    if(isShowViewFile()) {
-      uiDocumentInfo.updatePageListData();
-      uiDocumentInfo.setRendered(false);
-    } else {
-      uiDocumentInfo.setRendered(true) ;
-    }
     if(preferences_.isShowSideBar()) {
       findFirstComponentOfType(UITreeExplorer.class).buildTree();
     }
-    uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;
+    UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
+    if(uiDocWorkspace.isRendered()) {
+      UIDocumentContainer uiDocumentContainer = uiDocWorkspace.getChild(UIDocumentContainer.class) ;
+      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
+      if(isShowViewFile()) {
+        uiDocumentInfo.updatePageListData();
+        uiDocumentInfo.setRendered(false);
+      } else {
+        uiDocumentInfo.setRendered(true) ;
+      }
+      uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;
+    }
     event.getRequestContext().addUIComponentToUpdateByAjax(uiWorkingArea);
     event.getRequestContext().addUIComponentToUpdateByAjax(uiActionBar);
     if(!isHidePopup_) {

@@ -123,8 +123,13 @@ public class UIAddressBar extends UIForm {
       UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class) ;
       UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class) ;
       try {        
-        uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class).
-        setRenderedChild(UIDocumentContainer.class) ;
+        UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+        UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+        if(!uiDocumentWorkspace.isRendered()) {
+          uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
+          uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
+          uiDocumentWorkspace.setRenderedChild(UIDocumentContainer.class) ;
+        }
         if(uiExplorer.isViewTag() && !uiExplorer.getCurrentNode().equals(uiExplorer.getRootNode())) {
           uiExplorer.setSelectRootNode() ;
           uiExplorer.setIsViewTag(true) ;
@@ -204,8 +209,11 @@ public class UIAddressBar extends UIForm {
       UIAddressBar uiAddressBar = event.getSource() ;
       UIJCRExplorer uiExplorer = uiAddressBar.getAncestorOfType(UIJCRExplorer.class);
       UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
-      uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
-      uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(!uiDocumentWorkspace.isRendered()) {
+        uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
+        uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
+      }
       String viewName = event.getRequestContext().getRequestParameter(OBJECTID);
       uiAddressBar.setSelectedViewName(viewName);
       UIControl uiControl = uiAddressBar.getParent() ;
@@ -228,8 +236,12 @@ public class UIAddressBar extends UIForm {
       }
       queryStatement = StringUtils.replace(queryStatement,"$1", text.replaceAll("'", "''"));            
       uiExplorer.removeChildById("ViewSearch");
-      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
-      getChild(UIDocumentWorkspace.class);
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(!uiDocumentWorkspace.isRendered()) {
+        uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
+        uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
+      }
       UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);           
       QueryManager queryManager = currentNode.getSession().getWorkspace().getQueryManager();
       long startTime = System.currentTimeMillis();

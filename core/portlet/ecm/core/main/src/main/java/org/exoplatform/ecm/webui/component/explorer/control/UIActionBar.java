@@ -36,7 +36,9 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.jcr.SearchValidator;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.search.UIContentNameSearch;
@@ -259,9 +261,15 @@ public class UIActionBar extends UIForm {
       }
       queryStatement = StringUtils.replace(queryStatement,"$1", text.replaceAll("'", "''"));            
       uiExplorer.removeChildById("ViewSearch");
-      UIDocumentWorkspace uiDocumentWorkspace = uiExplorer.getChild(UIWorkingArea.class).
-      getChild(UIDocumentWorkspace.class);
-      UISearchResult uiSearchResult = uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);           
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(!uiDocumentWorkspace.isRendered()) {
+        uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
+        uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
+        uiDocumentWorkspace.setRenderedChild(UIDocumentContainer.class) ;
+      }
+      UISearchResult uiSearchResult = 
+        uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SIMPLE_SEARCH_RESULT);           
       QueryManager queryManager = currentNode.getSession().getWorkspace().getQueryManager();
       long startTime = System.currentTimeMillis();
       Query query = queryManager.createQuery(queryStatement, Query.SQL);        

@@ -284,6 +284,12 @@ public class UITreeExplorer extends UIContainer {
 	      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
 	      return ;    	  
       }
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(!uiDocumentWorkspace.isRendered()) {
+        uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
+        uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
+      }
       uiExplorer.setSelectNode(workspaceName, path) ; 
       uiExplorer.updateAjax(event) ;      
     }
