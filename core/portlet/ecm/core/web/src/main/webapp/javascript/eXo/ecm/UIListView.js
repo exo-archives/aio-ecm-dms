@@ -576,11 +576,13 @@ var ListView = function() {
 		var checkUnlock = false;
 		var checkRemoveFavourite = false;
 		var checkInTrash = false;
+		var checkMediaType = false;
 		for (var i in Self.itemsSelected) {
 			if (Array.prototype[i]) continue;
 			if (Self.itemsSelected[i].getAttribute('locked') == "true") checkUnlock = true;
 			if (Self.itemsSelected[i].getAttribute('removeFavourite') == "true") checkRemoveFavourite = true;
 			if (Self.itemsSelected[i].getAttribute('inTrash') == "true") checkInTrash = true;
+			if (Self.itemsSelected[i].getAttribute('mediaType') == "true") checkMediaType = true;
 		}
 		var lockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Lock16x16Icon");
 		var unlockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Unlock16x16Icon");
@@ -602,18 +604,21 @@ var ListView = function() {
       addFavouriteAction.parentNode.style.display = "block";
       removeFavouriteAction.parentNode.style.display = "none";
     }
-    
     var restoreFromTrashAction = DOM.findFirstDescendantByClass(contextMenu, "div", "RestoreFromTrash16x16Icon");
+    var playMediaAction = DOM.findFirstDescendantByClass(contextMenu, "div", "PlayMedia16x16Icon");
+    
     if (!checkInTrash) {
       restoreFromTrashAction.parentNode.style.display = "none";
-    }   
-    if (checkInTrash) {
+    } else {
       restoreFromTrashAction.parentNode.style.display = "block";
     }
-    		
-			
-		contextMenu.onmouseup = Self.hideContextMenu;
-		document.body.onmousedown = Self.hideContextMenu;
+    if (!checkMediaType) {
+    	playMediaAction.parentNode.style.display = "none";
+    } else {
+    	playMediaAction.parentNode.style.display = "block";
+    }
+	contextMenu.onmouseup = Self.hideContextMenu;
+	document.body.onmousedown = Self.hideContextMenu;
 	};
 	
 	// working with ground context menu

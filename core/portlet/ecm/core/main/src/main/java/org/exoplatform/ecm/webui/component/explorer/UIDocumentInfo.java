@@ -158,20 +158,20 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   private List<Node> earlierThisMonthNodes;
   private List<Node> earlierThisYearNodes;
   
-	private static String timeLineSortByFavourite = Preference.BLUE_DOWN_ARROW;
-  private static String timeLineSortByName = "";
-  private static String timeLineSortByDate = "";
+	private String timeLineSortByFavourite = Preference.BLUE_DOWN_ARROW;
+  private String timeLineSortByName = "";
+  private String timeLineSortByDate = "";
 	private static FavouriteService favouriteService_ = null;
 	
 	static {
-		ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-		favouriteService_ = 
-			(FavouriteService) myContainer
-			.getComponentInstanceOfType(FavouriteService.class);
+	  ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+	  favouriteService_ = 
+	    (FavouriteService) myContainer
+	    .getComponentInstanceOfType(FavouriteService.class);
 	}
 
 	public FavouriteService getFavouriteService() {
-		return favouriteService_;
+	  return favouriteService_;
 	}
 	
 	public String getTimeLineSortByFavourite() { return timeLineSortByFavourite; }
@@ -745,6 +745,18 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 	  return false;
 	}
   
+  public boolean isMediaType(Node data) throws Exception {
+    if (!data.isNodeType(Utils.NT_FILE)) return false;
+    String mimeType = data.getNode(Utils.JCR_CONTENT).getProperty(Utils.JCR_MIMETYPE).getString();
+    UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
+    Map<String, Object> context = new HashMap<String, Object>();
+    context.put(Utils.MIME_TYPE, mimeType);
+    if (manager.accept(Utils.FILE_VIEWER_EXTENSION_TYPE, "VideoAudio", context)) {
+        return true;
+    }
+    return false;
+  }
+  
   static public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {      
       UIDocumentInfo uicomp = event.getSource() ;
@@ -1012,7 +1024,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     }
   } 
   
-  static private class SearchComparator implements Comparator<Node> {
+  private class SearchComparator implements Comparator<Node> {
   	public int compare(Node node1, Node node2) {
   		try {
   			if (timeLineSortByFavourite.length() != 0) {

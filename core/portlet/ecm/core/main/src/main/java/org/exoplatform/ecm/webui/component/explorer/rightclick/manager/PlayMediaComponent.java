@@ -17,6 +17,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.rightclick.manager;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,24 +27,20 @@ import java.util.regex.Matcher;
 
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
-import javax.jcr.Session;
 
-import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.ecm.webui.viewer.VideoAudioViewer;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
-import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllOwnedByUserResult;
+import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.ecm.webui.viewer.VideoAudioViewer;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.ext.UIExtension;
 import org.exoplatform.webui.ext.UIExtensionManager;
 import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
@@ -71,7 +68,6 @@ public class PlayMediaComponent  extends UIAbstractManagerComponent {
     if (!node.isNodeType(Utils.NT_FILE)) return false;
     String mimeType = node.getNode(Utils.JCR_CONTENT).getProperty(Utils.JCR_MIMETYPE).getString();
     UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
-    List<UIExtension> extensions = manager.getUIExtensions(Utils.FILE_VIEWER_EXTENSION_TYPE);
     Map<String, Object> context = new HashMap<String, Object>();
     context.put(Utils.MIME_TYPE, mimeType);
     if (manager.accept(Utils.FILE_VIEWER_EXTENSION_TYPE, "VideoAudio", context)) {
