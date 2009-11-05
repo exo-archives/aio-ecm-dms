@@ -22,7 +22,6 @@ import java.util.List;
 
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
-import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
@@ -128,23 +127,15 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     List<Node> resultList = new ArrayList<Node>();
     QueryResult results = null;
     try {
-      
       // Execute sql query and return a results
       results = executeQuery(session, parseQuery(mimeTypes, null), LANGUAGE);
     } catch(Exception e) {
-      LOG.error(e.getMessage());
+      LOG.error("An unexpected exception appear", e);
     }    
     NodeIterator iterator  = results.getNodes();
-    Node documentNode = null;
     while (iterator.hasNext()) {
-      
-      // Get a node which is nt:resource type
-      documentNode = iterator.nextNode();
-      
-      // Add a node is nt:resource type to list
-      resultList.add(documentNode);
+      resultList.add(iterator.nextNode());
     }
-    
     // Return list of nodes
     return resultList;     
   }
@@ -165,14 +156,14 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
     return mimeTypes.toArray(new String[mimeTypes.size()]);
   }  
 
-  private QueryResult executeQuery(Session session, String statement, String language)
-                                                      throws Exception, RepositoryException {
+  private QueryResult executeQuery(Session session, String statement, String language) {
     try {
       QueryManager queryManager = session.getWorkspace().getQueryManager();
       Query query = queryManager.createQuery(statement, language);
       return query.execute();
     } catch(Exception e) {
-      throw new Exception("SQL query fail",e);
+      LOG.error("SQL query fail",e);
+      return null;
     }          
   }
 
@@ -205,7 +196,6 @@ public class DocumentTypeServiceImpl implements DocumentTypeService {
         } 
       }      
     }
-    
     // Return query statement.
     return query.toString();
   }

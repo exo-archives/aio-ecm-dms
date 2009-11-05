@@ -2863,6 +2863,8 @@
     <label>
     	 <Images>Images</Images>
     	 <Video>Video</Video>
+    	 <Music>Music</Music>
+    	 <Documents>Documents</Documents>    	 
     </label>
   </DocumentType>
   
@@ -2882,6 +2884,12 @@
   	<label>
   		<DocumentFilterConfiguration>Set up filter preferences</DocumentFilterConfiguration>
   	</label>
+  	<title>
+  	  <ShowVideo>Show all video files</ShowVideo>
+  	  <ShowMusic>Show all music files</ShowMusic>
+  	  <ShowImages>Show all image files</ShowImages>
+  	  <ShowDocuments>Show all document files</ShowDocuments>
+  	</title>  	
   </UIAllItemsByType>
   
   <Views>

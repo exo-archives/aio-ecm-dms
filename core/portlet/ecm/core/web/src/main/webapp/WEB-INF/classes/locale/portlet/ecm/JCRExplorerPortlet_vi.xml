@@ -2872,12 +2872,20 @@
   	<label>
   		<DocumentFilterConfiguration>Chọn thiết lập hiển thị</DocumentFilterConfiguration>
   	</label>
+  	<title>
+  	  <ShowVideo>Hiển thị các file hình ảnh</ShowVideo>
+  	  <ShowMusic>Hiển thị các file âm thanh</ShowMusic>
+  	  <ShowImages>Hiển thị các file ảnh</ShowImages>
+  	  <ShowDocuments>Hiển thị các file tài liệu</ShowDocuments>
+  	</title>  	
   </UIAllItemsByType>  
   
   <DocumentType>
     <label>
     	 <Images>Ảnh</Images>
     	 <Video>Phim</Video>
+    	 <Music>Âm thanh</Music>
+    	 <Documents>Tài liệu</Documents>    	 
     </label>
   </DocumentType>
   

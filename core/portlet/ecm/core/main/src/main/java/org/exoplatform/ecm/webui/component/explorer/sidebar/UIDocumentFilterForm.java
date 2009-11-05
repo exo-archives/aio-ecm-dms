@@ -41,28 +41,31 @@ import org.exoplatform.webui.form.UIFormCheckBoxInput;
  * Oct 27, 2009  
  */
 @ComponentConfig(lifecycle = UIFormLifecycle.class, 
-  template = "system:/groovy/webui/form/UIFormWithTitle.gtmpl", 
-  events = {
-    @EventConfig(listeners = UIDocumentFilterForm.SaveActionListener.class),
-    @EventConfig(phase = Phase.DECODE, listeners = UIDocumentFilterForm.CancelActionListener.class) })
-public class UIDocumentFilterForm extends UIForm implements UIPopupComponent {
-        
+    template = "system:/groovy/webui/form/UIFormWithTitle.gtmpl", 
+    events = {
+      @EventConfig(listeners = UIDocumentFilterForm.SaveActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIDocumentFilterForm.CancelActionListener.class)
+    }
+)
+  
+  public class UIDocumentFilterForm extends UIForm implements UIPopupComponent {
+
   public UIDocumentFilterForm(){    
   }
-    
+
   public void activate() throws Exception {
   }
 
   public void deActivate() throws Exception {
   }
-  
+
   public void invoke(List<String> checkedTypes) {
     DocumentTypeService documentTypeService = getApplicationComponent(DocumentTypeService.class);        
     List<String> supportedTypes = documentTypeService.getAllSupportedType();
-    
+
     for (String supportedName : supportedTypes) {                     
       addUIFormInput(new UIFormCheckBoxInput<Boolean>(supportedName, supportedName,null));
-      
+
       for (String checkedTypeName : checkedTypes) {
         if (supportedName.equals(checkedTypeName)) {
           getUIFormCheckBoxInput(supportedName).setChecked(true);
@@ -71,7 +74,7 @@ public class UIDocumentFilterForm extends UIForm implements UIPopupComponent {
       }                                             
     }                
   }
-     
+
   static public class SaveActionListener extends EventListener<UIDocumentFilterForm> {
     public void execute(Event<UIDocumentFilterForm> event) throws Exception {            
       UIDocumentFilterForm uiForm = event.getSource();      
@@ -80,7 +83,7 @@ public class UIDocumentFilterForm extends UIForm implements UIPopupComponent {
       DocumentTypeService documentTypeService = uiForm.getApplicationComponent(DocumentTypeService.class);
       List<String> supportedTypes = documentTypeService.getAllSupportedType();
       List<String> checkedSupportTypes = new ArrayList<String>();
-      
+
       for (String checkedName : supportedTypes) {                        
         if (uiForm.getUIFormCheckBoxInput(checkedName).isChecked()) 
           checkedSupportTypes.add(checkedName);                                        
