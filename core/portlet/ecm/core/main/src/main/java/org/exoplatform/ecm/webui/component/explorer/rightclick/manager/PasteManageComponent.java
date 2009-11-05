@@ -370,7 +370,7 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
         }
       }
     }
-
+    
     if (workspace.getName().equals(srcWorkspace)) {
       try {
         workspace.move(srcPath, destPath);
@@ -389,7 +389,12 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
           uiExplorer.setCurrentPath(LinkUtils.getParentPath(uiExplorer.getCurrentPath()));
           desNode = uiExplorer.getCurrentNode();
         }
-        if (!(desNode.getPath().equals(uiExplorer.getCurrentNode().getPath())))
+        
+        if (!session.itemExists(uiExplorer.getCurrentPath())) {
+          uiExplorer.setCurrentPath(LinkUtils.getParentPath(uiExplorer.getCurrentPath()));
+        }
+                
+        if (!(desNode.getPath().equals(uiExplorer.getCurrentPath())))
           actionContainer.initiateObservation(desNode, repository);
         for (int i = 0; i < refList.size(); i++) {
           Node addRef = refList.get(i);
@@ -398,12 +403,11 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
           addRef.save();
         }
         uiWorkingArea.getVirtualClipboards().clear();
-        String currentPath = uiExplorer.getCurrentPath();
         Node currentNode = uiExplorer.getCurrentNode();
         String realCurrentPath = currentNode.getPath();
         if (srcWorkspace.equals(currentNode.getSession().getWorkspace().getName())
             && (srcPath.equals(realCurrentPath) || realCurrentPath.startsWith(srcPath))) {
-          uiExplorer.setCurrentPath(LinkUtils.getParentPath(currentPath));
+          uiExplorer.setCurrentPath(LinkUtils.getParentPath(uiExplorer.getCurrentPath()));
         }
       }
     } else {
