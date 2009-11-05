@@ -605,7 +605,7 @@ public class UIWorkingArea extends UIContainer {
         }
 		
 		if (!session.itemExists(uiExplorer.getCurrentPath())) {
-          uiExplorer.setCurrentPath(LinkUtils.getParentPath(uiExplorer.getCurrentPath()));
+          uiExplorer.setCurrentPath(LinkUtils.getAncestorPath(uiExplorer.getCurrentPath(), 0));
         }
 		
         if (!(desNode.getPath().equals(uiExplorer.getCurrentPath())))
