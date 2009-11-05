@@ -10,11 +10,11 @@
   
   def presentNodes = uicomponent.getPresentNodes();
   def links = new ArrayList<String>();
-  def title1 = "";
+  def title = "";
   if (presentNodes.size() == 0) {
     def currentNode = uiParent.getNode();
     def originalNode = uiParent.getOriginalNode();
-    title1 = Text.unescapeIllegalJcrChars(originalNode.getName());
+    title = Text.unescapeIllegalJcrChars(originalNode.getName());
     presentNodes.add(currentNode);
   }
   def repository = uicomponent.getRepository();
@@ -28,7 +28,7 @@
   rqcontext.getJavascriptManager().addJavascript("eXo.ecm.flowplayerPlaylist");
 %>
 <div class="NavigationContainer">       
-  <div class="TopTitle">$title1</div>
+  <div class="TopTitle">$title</div>
   <div class="Content">
     <div class="TextContent">
       <div class="ContentDetail">
@@ -52,7 +52,7 @@
               <% for(link in links) {
               %>         
               // setup album cover scaling 
-              {url: '$link', autoPlay: true, title: 'aaa'},
+              {url: '$link', autoPlay: true},
               <%
               }
               %>
@@ -85,14 +85,21 @@
       <div style="float: left;" class="clips petrol">
       <!-- single playlist entry -->
       <% 
-      for(link in links) {
-        %>         
-        <a href="${link}" class="first">
-        Palm trees and the Sun
-      </a>
-        <%
+      def size = links.size();
+      if (size > 1) {
+        def link = "";
+        def name = "";
+        for(int i = 0; i < links.size(); i++) {
+            link = links.get(i);
+            name = presentNodes.get(i).getName();
+     %>         
+          <a href="${link}" class="first">
+            ${name}
+          </a>
+     <%
         }
-        %>
+      } 
+     %>
     </div>
     <div id="player" style="display:block;width:700px;height:450px; float:left">
     </div>    
