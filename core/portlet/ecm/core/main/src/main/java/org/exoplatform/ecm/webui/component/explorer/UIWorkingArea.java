@@ -109,13 +109,12 @@ public class UIWorkingArea extends UIContainer {
     addChild(UIDrivesArea.class, null, null).setRendered(false);
   }
 
-  
   private List<UIExtension> getUIExtensionList() {
     UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
     return manager.getUIExtensions(EXTENSION_TYPE);
   }
   
-  void initialize() throws Exception {
+  public synchronized void initialize() throws Exception {
     List<UIExtension> extensions = getUIExtensionList();
     if (extensions == null) {
       return;
@@ -145,7 +144,6 @@ public class UIWorkingArea extends UIContainer {
     }
     return null;
   }
-  
   
   List<UIAbstractManagerComponent> getManagers() {
     return managers;

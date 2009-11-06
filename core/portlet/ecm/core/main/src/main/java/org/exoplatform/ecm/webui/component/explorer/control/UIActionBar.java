@@ -213,7 +213,7 @@ public class UIActionBar extends UIForm {
     return templates;
   }
 
-  public UIComponent getUIAction(String action)  {
+  public synchronized UIComponent getUIAction(String action)  {
     try {
       UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
       Map<String, Object> context = new HashMap<String, Object>();

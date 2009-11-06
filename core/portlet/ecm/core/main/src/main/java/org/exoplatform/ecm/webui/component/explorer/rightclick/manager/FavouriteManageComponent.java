@@ -81,14 +81,8 @@ public class FavouriteManageComponent extends UIAbstractManagerComponent {
 		return FILTERS;
 	}
 	
-	private static void multiAddToFavourite(String[] paths, Event<UIComponent> event) throws Exception {
-		for (String path : paths) {
-			addToFavourite(path, event);
-		}
-	}
-	
-	private static void addToFavourite(String srcPath, Event<UIComponent> event) throws Exception {
-    UIWorkingArea uiWorkingArea = ((UIComponent)event.getSource()).getParent();
+	private static void addToFavourite(String srcPath, Event<FavouriteManageComponent> event) throws Exception {
+    UIWorkingArea uiWorkingArea = event.getSource().getParent();
     UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
     
     ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
@@ -157,20 +151,29 @@ public class FavouriteManageComponent extends UIAbstractManagerComponent {
     }
 	}
 			
-	public static void favouriteManage(Event<UIComponent> event) throws Exception {
-		String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
-		if (srcPath.indexOf(';') > -1) {
-			multiAddToFavourite(srcPath.split(";"), event);
-		} else {
-			addToFavourite(srcPath, event);
-		}
-	}
 
 	public static class AddToFavouriteActionListener extends UIWorkingAreaActionListener<FavouriteManageComponent> {
-	    public void processEvent(Event<FavouriteManageComponent> event) throws Exception {
-	        Event<UIComponent> event_ = new Event<UIComponent>( event.getSource(), event.getName(),event.getRequestContext());
-	        favouriteManage(event_);
+
+	  private void multiAddToFavourite(String[] paths, Event<FavouriteManageComponent> event) throws Exception {
+	    for (String path : paths) {
+	      if (acceptForMultiNode(event, path)) {
+	        addToFavourite(path, event);
 	      }
+	    }
+	  }
+	  
+	  private void favouriteManage(Event<FavouriteManageComponent> event) throws Exception {
+	    String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
+	    if (srcPath.indexOf(';') > -1) {
+	      multiAddToFavourite(srcPath.split(";"), event);
+	    } else {
+	      addToFavourite(srcPath, event);
+	    }
+	  }
+	  
+    public void processEvent(Event<FavouriteManageComponent> event) throws Exception {
+        favouriteManage(event);
+      }
 	}
 	
 	@Override

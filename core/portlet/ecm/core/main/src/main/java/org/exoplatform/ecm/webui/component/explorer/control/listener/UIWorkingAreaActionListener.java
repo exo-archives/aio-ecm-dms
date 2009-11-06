@@ -24,13 +24,16 @@ import java.util.regex.Matcher;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
+import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.ext.UIExtensionEventListener;
+import org.exoplatform.webui.ext.UIExtensionManager;
 
 /**
  * Created by The eXo Platform SARL
@@ -40,6 +43,41 @@ import org.exoplatform.webui.ext.UIExtensionEventListener;
  */
 public abstract class UIWorkingAreaActionListener <T extends UIComponent> extends UIExtensionEventListener<T> {
 
+  private static final Log LOG  = ExoLogger.getLogger(UIWorkingAreaActionListener.class);
+  
+  private Node getNodeByPath(String nodePath, UIJCRExplorer uiExplorer) throws Exception {
+    Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
+    String wsName = null;
+    if (matcher.find()) {
+      wsName = matcher.group(1);
+      nodePath = matcher.group(2);
+    } else {
+      throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
+    }
+    Session session = uiExplorer.getSessionByWorkspace(wsName);
+    return uiExplorer.getNodeByPath(nodePath, session);
+  }
+  
+  public boolean acceptForMultiNode(Event<T> event, String path) {
+    Map<String, Object> context = new HashMap<String, Object>();
+    UIWorkingArea uiWorkingArea = event.getSource().getAncestorOfType(UIWorkingArea.class);
+    UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+    WebuiRequestContext requestContext = event.getRequestContext();
+    UIApplication uiApp = requestContext.getUIApplication();
+    try {
+      context.put(UIWorkingArea.class.getName(), uiWorkingArea);
+      context.put(UIJCRExplorer.class.getName(), uiExplorer);
+      context.put(UIApplication.class.getName(), uiApp);
+      context.put(Node.class.getName(), getNodeByPath(path, uiExplorer));
+      context.put(WebuiRequestContext.class.getName(), requestContext);
+      UIExtensionManager manager = event.getSource().getApplicationComponent(UIExtensionManager.class);
+      return manager.accept(getExtensionType(), event.getName(), context);
+    } catch (Exception e) {
+      LOG.error("an unexpected error occurs while filter the node", e);
+    }
+    return false;
+  }
+  
   @Override
   protected Map<String, Object> createContext(Event<T> event) throws Exception {
     Map<String, Object> context = new HashMap<String, Object>();
@@ -48,19 +86,8 @@ public abstract class UIWorkingAreaActionListener <T extends UIComponent> extend
     String nodePath = event.getRequestContext().getRequestParameter(UIComponent.OBJECTID);
     Node currentNode;
     if (nodePath != null && nodePath.length() != 0 && !nodePath.contains(";")) {
-      Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
-      String wsName = null;
-      if (matcher.find()) {
-        wsName = matcher.group(1);
-        nodePath = matcher.group(2);
-      } else if (!nodePath.contains(":")) {
-        wsName = uiExplorer.getCurrentWorkspace();
-      } else {
-        throw new IllegalArgumentException("The ObjectId is invalid '" + nodePath + "'");
-      }
-      Session session = uiExplorer.getSessionByWorkspace(wsName);
       // Use the method getNodeByPath because it is link aware
-      currentNode = uiExplorer.getNodeByPath(nodePath, session);
+      currentNode = getNodeByPath(nodePath, uiExplorer); 
     } else {
       currentNode = uiExplorer.getCurrentNode();   
     }
@@ -72,6 +99,16 @@ public abstract class UIWorkingAreaActionListener <T extends UIComponent> extend
     context.put(Node.class.getName(), currentNode);
     context.put(WebuiRequestContext.class.getName(), requestContext);
     return context;
+  }
+  
+  @Override
+  public void execute(Event<T> event) throws Exception {
+    String nodePath = event.getRequestContext().getRequestParameter(UIComponent.OBJECTID);
+    if (!nodePath.contains(";")) {
+      super.execute(event);
+      return;
+    }
+    processEvent(event);
   }
 
   @Override

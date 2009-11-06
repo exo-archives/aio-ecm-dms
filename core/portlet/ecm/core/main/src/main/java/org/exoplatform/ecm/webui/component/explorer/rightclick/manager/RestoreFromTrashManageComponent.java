@@ -41,7 +41,6 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.IsInTrashFilt
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
-import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.documents.TrashService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
@@ -50,7 +49,6 @@ import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
@@ -67,7 +65,7 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 			events = {
 				@EventConfig(listeners = RestoreFromTrashManageComponent.RestoreFromTrashActionListener.class)
 			}
-		)
+)
 public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent {
 
 	private static final List<UIExtensionFilter> FILTERS
@@ -83,14 +81,8 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
 		return FILTERS;
 	}
 	
-	private static void multiRestoreFromTrash(String[] paths, Event<UIComponent> event) throws Exception {
-		for (String path : paths) {
-			restoreFromTrash(path, event);
-		}
-	}
-	
-	private static void restoreFromTrash(String srcPath, Event<UIComponent> event) throws Exception {
-		UIWorkingArea uiWorkingArea = ((UIWorkingArea)event.getSource().getParent());
+	private static void restoreFromTrash(String srcPath, Event<RestoreFromTrashManageComponent> event) throws Exception {
+		UIWorkingArea uiWorkingArea = event.getSource().getParent();
 		UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
 		
     ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
@@ -112,10 +104,6 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
       node = uiExplorer.getNodeByPath(srcPath, session, false);
       // Reset the path to manage the links that potentially create virtual path
       srcPath = node.getPath();
-      // Reset the session to manage the links that potentially change of workspace
-      //session = node.getSession();
-      // Reset the workspace name to manage the links that potentially change of workspace 
-      //wsName = session.getWorkspace().getName();
     } catch(PathNotFoundException path) {
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
           null,ApplicationMessage.WARNING));
@@ -131,19 +119,13 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
     }
     
     try {
-    	if (!node.isCheckedOut())
-    		throw new VersionException("node is locked, can't restore node :" + node.getPath());
-			if (!PermissionUtil.canRemoveNode(node))
-				throw new AccessDeniedException("access denied, can't restore node:" + node.getPath());
     	PortletPreferences portletPrefs = uiExplorer.getPortletPreferences();
     	String repository = uiExplorer.getRepositoryName();
     	String trashWorkspace = portletPrefs.getValue(Utils.TRASH_WORKSPACE, "");
     	String trashHomeNodePath = portletPrefs.getValue(Utils.TRASH_HOME_NODE_PATH, "");
     	Session trashSession = uiExplorer.getSessionByWorkspace(trashWorkspace);
     	Node trashHomeNode = (Node) trashSession.getItem(trashHomeNodePath);
-    	
     	SessionProvider sessionProvider = uiExplorer.getSessionProvider();
-    	
     	trashService.restoreFromTrash(trashHomeNode, 
     								  srcPath, 
     								  repository, 
@@ -172,19 +154,25 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
     }
 	}
 	
-	public static void restoreFromTrashManage(Event<UIComponent> event) throws Exception {
-		String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
-		if (srcPath.indexOf(';') > -1) {
-			multiRestoreFromTrash(srcPath.split(";"), event);
-		} else {
-			restoreFromTrash(srcPath, event);
-		}
-	}
-	
 	public static class RestoreFromTrashActionListener extends UIWorkingAreaActionListener<RestoreFromTrashManageComponent> {
+	  public void restoreFromTrashManage(Event<RestoreFromTrashManageComponent> event) throws Exception {
+	    String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
+	    if (srcPath.indexOf(';') > -1) {
+	      multiRestoreFromTrash(srcPath.split(";"), event);
+	    } else {
+	      restoreFromTrash(srcPath, event);
+	    }
+	  }
+	  
+	  private void multiRestoreFromTrash(String[] paths, Event<RestoreFromTrashManageComponent> event) throws Exception {
+	    for (String path : paths) {
+	      if (acceptForMultiNode(event, path))
+	      restoreFromTrash(path, event);
+	    }
+	  }
+	  
 		public void processEvent(Event<RestoreFromTrashManageComponent> event) throws Exception {
-			Event<UIComponent> event_ = new Event<UIComponent>(event.getSource(), event.getName(), event.getRequestContext());
-			restoreFromTrashManage(event_);
+			restoreFromTrashManage(event);
 		}
 	}
 	

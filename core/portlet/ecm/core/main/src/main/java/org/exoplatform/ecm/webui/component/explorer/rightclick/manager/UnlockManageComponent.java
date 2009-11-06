@@ -18,7 +18,9 @@
 package org.exoplatform.ecm.webui.component.explorer.rightclick.manager;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 import javax.jcr.Node;
@@ -43,10 +45,13 @@ import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.ext.UIExtensionManager;
 import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 
@@ -73,8 +78,7 @@ public class UnlockManageComponent extends UIAbstractManagerComponent {
     return FILTERS;
   }
   
-  private static void processUnlock(String nodePath, Event<?> event, UIJCRExplorer uiExplorer) throws Exception {
-    UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
+  private static Node getNodeByPath(String nodePath, UIJCRExplorer uiExplorer) throws Exception {
     Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(nodePath);
     String wsName = null;
     if (matcher.find()) {
@@ -84,16 +88,18 @@ public class UnlockManageComponent extends UIAbstractManagerComponent {
       throw new IllegalArgumentException("The ObjectId is invalid '"+ nodePath + "'");
     }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
+    return uiExplorer.getNodeByPath(nodePath, session);
+  }
+  
+  private static void processUnlock(String nodePath, Event<UnlockManageComponent> event, UIJCRExplorer uiExplorer) throws Exception {
+    UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
     Node node;
+    Session session;
     try {
       // Use the method getNodeByPath because it is link aware
-      node = uiExplorer.getNodeByPath(nodePath, session);
-      // Reset the path to manage the links that potentially create virtual path
-      nodePath = node.getPath();
+      node = getNodeByPath(nodePath, uiExplorer);
       // Reset the session to manage the links that potentially change of workspace
       session = node.getSession();
-      // Reset the workspace name to manage the links that potentially change of workspace 
-      wsName = session.getWorkspace().getName();
     } catch(PathNotFoundException path) {
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
           null,ApplicationMessage.WARNING));
@@ -138,25 +144,25 @@ public class UnlockManageComponent extends UIAbstractManagerComponent {
     }    
   }
   
-  public static void unlockManage(Event<UnlockManageComponent> event, UIJCRExplorer uiExplorer)
-      throws Exception {
-    String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
-    if(nodePath.indexOf(";") > -1) {
-      processMultiUnlock(nodePath.split(";"), event, uiExplorer);
-    } else {
-      processUnlock(nodePath, event, uiExplorer);
-    }
-  }
-  
-  private static void processMultiUnlock(String[] nodePaths, Event<?> event, UIJCRExplorer uiExplorer) throws Exception {
-    for(int i=0; i< nodePaths.length; i++) {
-      processUnlock(nodePaths[i], event, uiExplorer);
-    }
-    if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
-    uiExplorer.updateAjax(event);
-  }
-  
   public static class UnlockActionListener extends UIWorkingAreaActionListener<UnlockManageComponent> {
+    private void unlockManage(Event<UnlockManageComponent> event, UIJCRExplorer uiExplorer) throws Exception {
+      String nodePath = event.getRequestContext().getRequestParameter(OBJECTID);
+      if(nodePath.indexOf(";") > -1) {
+        processMultiUnlock(nodePath.split(";"), event, uiExplorer);
+      } else {
+        processUnlock(nodePath, event, uiExplorer);
+      }
+    }
+    
+    private void processMultiUnlock(String[] nodePaths, Event<UnlockManageComponent> event, UIJCRExplorer uiExplorer) throws Exception {
+      for(String nodePath : nodePaths) {
+        if (acceptForMultiNode(event, nodePath))
+          processUnlock(nodePath, event, uiExplorer);
+      }
+      if(!uiExplorer.getPreference().isJcrEnable()) uiExplorer.getSession().save();
+      uiExplorer.updateAjax(event);
+    }
+    
     public void processEvent(Event<UnlockManageComponent> event) throws Exception {
       UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
       unlockManage(event, uiExplorer);
