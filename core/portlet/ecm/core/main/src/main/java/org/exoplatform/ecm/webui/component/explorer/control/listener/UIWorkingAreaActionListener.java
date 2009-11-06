@@ -84,13 +84,9 @@ public abstract class UIWorkingAreaActionListener <T extends UIComponent> extend
     UIWorkingArea uiWorkingArea = event.getSource().getAncestorOfType(UIWorkingArea.class);
     UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
     String nodePath = event.getRequestContext().getRequestParameter(UIComponent.OBJECTID);
-    Node currentNode;
-    if (nodePath != null && nodePath.length() != 0 && !nodePath.contains(";")) {
-      // Use the method getNodeByPath because it is link aware
-      currentNode = getNodeByPath(nodePath, uiExplorer); 
-    } else {
-      currentNode = uiExplorer.getCurrentNode();   
-    }
+    if (nodePath == null || nodePath.length() == 0 || nodePath.contains(";")) return null;
+    // Use the method getNodeByPath because it is link aware
+    Node currentNode = getNodeByPath(nodePath, uiExplorer); 
     WebuiRequestContext requestContext = event.getRequestContext();
     UIApplication uiApp = requestContext.getUIApplication();
     context.put(UIWorkingArea.class.getName(), uiWorkingArea);
