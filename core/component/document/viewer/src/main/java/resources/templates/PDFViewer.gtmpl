@@ -12,8 +12,24 @@
     return node.isNodeType("mix:versionable");
   }	
 
+	public Node getFileLangNode(Node currentNode) throws Exception {
+    if(currentNode.isNodeType("nt:unstructured")) {
+      if(currentNode.getNodes().getSize() > 0) {
+        NodeIterator nodeIter = currentNode.getNodes() ;
+        while(nodeIter.hasNext()) {
+          Node ntFile = nodeIter.nextNode() ;
+          if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+            return ntFile ;
+          }
+        }
+        return currentNode ;
+      }
+    }
+    return currentNode ;
+  }
+
   def originalNode = uiParent.getOriginalNode();
-  def currentNode = uiParent.getNode() ;
+  def currentNode = getFileLangNode(uiParent.getNode());
   def contentNode = currentNode.getNode("jcr:content") ;
   def mimeType = contentNode.getProperty("jcr:mimeType").getString() ;
    public String formatNodeName(String text) {

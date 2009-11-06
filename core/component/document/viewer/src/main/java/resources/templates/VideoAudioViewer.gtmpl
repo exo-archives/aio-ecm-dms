@@ -6,13 +6,29 @@
   import org.exoplatform.webui.core.UIComponent;
   import org.exoplatform.services.jcr.util.Text;
 
+  public Node getFileLangNode(Node currentNode) throws Exception {
+    if(currentNode.isNodeType("nt:unstructured")) {
+      if(currentNode.getNodes().getSize() > 0) {
+        NodeIterator nodeIter = currentNode.getNodes() ;
+        while(nodeIter.hasNext()) {
+          Node ntFile = nodeIter.nextNode() ;
+          if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+            return ntFile ;
+          }
+        }
+        return currentNode ;
+      }
+    }
+    return currentNode ;
+  }
+  
   UIComponent uiParent = uicomponent.getParent();
   
   def presentNodes = uicomponent.getPresentNodes();
   def links = new ArrayList<String>();
   def title = "";
   if (presentNodes.size() == 0) {
-    def currentNode = uiParent.getNode();
+    def currentNode = getFileLangNode(uiParent.getNode()) ;
     def originalNode = uiParent.getOriginalNode();
     title = Text.unescapeIllegalJcrChars(originalNode.getName());
     presentNodes.add(currentNode);
