@@ -2,7 +2,7 @@
 <bundle>
   <!--
   #############################################################################
-  #             org.exoplatform.ecm.webui.component.UICommentForm						  #
+  #             org.exoplatform.ecm.webui.component.UICommentForm			  #
   #############################################################################
   -->
   <UICommentForm>
@@ -313,7 +313,7 @@
         Le noeud a déjà été enregistré dans un cycle de publication.
         <not-supported-nodetype>Seuls les contenus de type document peuvent être supprimés d'un cycle de publication.</not-supported-nodetype>
       </unsubcriber-lifecycle>
-      <unsubcriber-lifecycle-finish>Le noeud a été supprimé du cycle de publication avec succès.</unsubcriber-lifecycle-finish>
+      <unsubcriber-lifecycle-finish>L'élément a été supprimé du cycle de publication avec succès.</unsubcriber-lifecycle-finish>
       <access-false>Ce document n'est pas un article ou vous devez d'abord effectuer un checked in !</access-false>
       <unsupported-action>Ce type noeud n'est pas compatible avec la fonctionnalité de relation</unsupported-action>
       <not-relationable>Le support des relations n'a pas encore été activé sur ce noeud</not-relationable>
@@ -388,8 +388,8 @@
       <access-denied>Accès interdit ! Vous n'avez pas les droits suffisants</access-denied>
       <remove-verion-exception>Impossible de supprimer ce noeud car lui même ou un de ses ancètres a le statut "check in"</remove-verion-exception>
       <remove-referentialIntegrityException>Impossible de le supprimer car il est référencé ailleurs</remove-referentialIntegrityException>
-      <constraintviolation-exception>Le jcr:uuid n'a pas été trouvé. Le noeud a peut être été modifié ou supprimé. Veuiller cliquer sur le bouton "Actualiser".</constraintviolation-exception>
-      <path-not-found-exception>Le noeud a été modifié ou supprimé. Veuiller cliquer sur le bouton "Actualiser".</path-not-found-exception>
+      <constraintviolation-exception>Le jcr:uuid n'a pas été trouvé. L'élément a peut être été modifié ou supprimé. Veuiller cliquer sur le bouton "Actualiser".</constraintviolation-exception>
+      <path-not-found-exception>L'élément a été modifié ou supprimé. Veuiller cliquer sur le bouton "Actualiser".</path-not-found-exception>
       <node-locked-other-person>Aucune catégorie</node-locked-other-person>
     </msg>
   </UIPopupMenu>
