@@ -147,6 +147,7 @@ public class UISingleUploadForm extends UIForm implements UIPopupComponent, UISe
     } else {
       uiInput = new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD);
     }
+    uiInput.setAutoUpload(true);
     addUIFormInput(uiInput);
   }
   

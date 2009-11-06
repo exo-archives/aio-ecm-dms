@@ -18,6 +18,7 @@ package org.exoplatform.services.cms.i18n.impl;
 
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
@@ -488,7 +489,8 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     String olfFileName = node.getName() ;
     Value oldValue = oldJcrContent.getProperty(JCRDATA).getValue() ;
     String oldMimeType = oldJcrContent.getProperty(JCR_MIMETYPE).getString() ;
-    Object oldLastModified = oldJcrContent.getProperty(JCR_LASTMODIFIED).getDate().getTime() ;
+    Calendar oldLastModified = new GregorianCalendar();
+    oldLastModified.setTime(oldJcrContent.getProperty(JCR_LASTMODIFIED).getDate().getTime());
     try {
       languagesNode = node.getNode(LANGUAGES) ;
     } catch(PathNotFoundException pe) {
