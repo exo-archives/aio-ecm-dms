@@ -674,15 +674,17 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   private Node getFileLangNode(Node currentNode) throws Exception {
-    if(currentNode.getNodes().getSize() > 0) {
-      NodeIterator nodeIter = currentNode.getNodes() ;
-      while(nodeIter.hasNext()) {
-        Node ntFile = nodeIter.nextNode() ;
-        if(ntFile.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) {
-          return ntFile ;
+    if(currentNode.isNodeType(Utils.NT_UNSTRUCTURED)) {
+      if(currentNode.getNodes().getSize() > 0) {
+        NodeIterator nodeIter = currentNode.getNodes() ;
+        while(nodeIter.hasNext()) {
+          Node ntFile = nodeIter.nextNode() ;
+          if(ntFile.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) {
+            return ntFile ;
+          }
         }
+        return currentNode ;
       }
-      return currentNode ;
     }
     return currentNode ;
   }
