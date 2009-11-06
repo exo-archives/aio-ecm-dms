@@ -388,10 +388,10 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
         } catch (ItemNotFoundException itemNotFoundException) {
           uiExplorer.setCurrentPath(LinkUtils.getParentPath(uiExplorer.getCurrentPath()));
           desNode = uiExplorer.getCurrentNode();
-        }
+        }        
         
         if (!session.itemExists(uiExplorer.getCurrentPath())) {
-          uiExplorer.setCurrentPath(LinkUtils.getParentPath(uiExplorer.getCurrentPath()));
+          uiExplorer.setCurrentPath(LinkUtils.getAncestorPath(uiExplorer.getCurrentPath(), 0));
         }
                 
         if (!(desNode.getPath().equals(uiExplorer.getCurrentPath())))
