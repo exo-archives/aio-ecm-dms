@@ -42,6 +42,12 @@
                   display: block;
                   position: relative;
                   z-index: 0;
+                  width: 436px;
+                  height: 330px;
+                  -moz-border-radius:10px;
+                  -webkit-border-radius:10px;
+                  padding: 10px;
+                  background: #c7c7c7;
                 }
                 .slideshow-images {
                   display: block;
@@ -83,6 +89,7 @@
                 }
                 .slideshow a img {
                   border: 0;
+                  height: 48px;
                 }
 
                 .slideshow-captions {
@@ -214,8 +221,12 @@
                 .slideshow-thumbnails a {
                   display: block;
                   float: left;
-                  padding: 5px;
+                  padding: 3px;
                   position: relative; 
+                  border:1px solid #c7c7c7;
+                   -moz-border-radius:3px;
+                  -webkit-border-radius:3px;
+                  height: 48px;
                 }
                 .slideshow-thumbnails a:hover {
                   background-color: #FF9 !important;
