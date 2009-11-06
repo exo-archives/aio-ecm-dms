@@ -426,11 +426,17 @@ public class UIJCRExplorer extends UIContainer {
     UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class);
     UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
     if(uiDocumentWorkspace.isRendered()) {
-      UIDocumentContainer uiDocumentContainer = findFirstComponentOfType(UIDocumentContainer.class) ;
-      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
-      uiDocumentInfo.updatePageListData();
-      if(isShowViewFile()) uiDocumentInfo.setRendered(false) ;
-      else uiDocumentInfo.setRendered(true);
+      UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class) ;
+      if(isShowViewFile()) {
+        UIDocumentWithTree uiDocumentWithTree = uiDocumentContainer.getChildById("UIDocumentWithTree");
+        uiDocumentWithTree.updatePageListData(null);
+        uiDocumentContainer.setRenderedChild("UIDocumentWithTree");
+      } else {
+        UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+        uiDocumentInfo.updatePageListData(null);
+        uiDocumentContainer.setRenderedChild("UIDocumentInfo") ;
+      }
+      uiDocumentWorkspace.setRenderedChild(UIDocumentContainer.class) ;
     }
     if(preferences_.isShowSideBar()) {
       UITreeExplorer treeExplorer = findFirstComponentOfType(UITreeExplorer.class);
@@ -545,6 +551,10 @@ public class UIJCRExplorer extends UIContainer {
   public void setIsHidePopup(boolean isHidePopup) { isHidePopup_ = isHidePopup ; }
 
   public void updateAjax(Event<?> event) throws Exception { 
+    updateAjax(event, null);
+  }  
+  
+  public void updateAjax(Event<?> event, List<Node> childrenList) throws Exception {
     UIAddressBar uiAddressBar = findFirstComponentOfType(UIAddressBar.class) ;
     uiAddressBar.getUIStringInput(UIAddressBar.FIELD_ADDRESS).setValue(
         Text.unescapeIllegalJcrChars(filterPath(currentPath_))) ;
@@ -557,12 +567,14 @@ public class UIJCRExplorer extends UIContainer {
     UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
     if(uiDocWorkspace.isRendered()) {
       UIDocumentContainer uiDocumentContainer = uiDocWorkspace.getChild(UIDocumentContainer.class) ;
-      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChild(UIDocumentInfo.class) ;
       if(isShowViewFile()) {
-        uiDocumentInfo.updatePageListData();
-        uiDocumentInfo.setRendered(false);
+        UIDocumentWithTree uiDocumentWithTree = uiDocumentContainer.getChildById("UIDocumentWithTree");
+        uiDocumentWithTree.updatePageListData(childrenList);
+        uiDocumentContainer.setRenderedChild("UIDocumentWithTree");
       } else {
-        uiDocumentInfo.setRendered(true) ;
+        UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+        uiDocumentInfo.updatePageListData(childrenList);
+        uiDocumentContainer.setRenderedChild("UIDocumentInfo") ;
       }
       uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;
     }
@@ -576,7 +588,7 @@ public class UIJCRExplorer extends UIContainer {
       }
     }    
     isHidePopup_ = false ;
-  }    
+  }
   
   public boolean isShowViewFile() throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;

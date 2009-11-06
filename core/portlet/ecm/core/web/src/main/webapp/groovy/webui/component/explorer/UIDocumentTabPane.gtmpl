@@ -55,7 +55,6 @@
   <div id="$uicomponent.id">
 <%
 	def uiDocumentInfo = uicomponent.getChildById("UIDocumentInfo") ;
-	uiDocumentInfo.updatePageListData() ;
 	uicomponent.renderChild("UIDocumentInfo") ;
 %>  
   </div>

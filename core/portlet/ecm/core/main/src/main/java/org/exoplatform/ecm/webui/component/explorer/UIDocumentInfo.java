@@ -617,6 +617,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return false;
   }
 
+  @Deprecated
   public void updatePageListData() throws Exception {    
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Preference pref = uiExplorer.getPreference();
@@ -645,6 +646,18 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     PageList pageList = new ObjectPageList(childrenList,nodesPerPage) ;
     pageIterator_.setPageList(pageList);        
   }
+  
+  public void updatePageListData(List<Node> childrenList) throws Exception {    
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    Preference pref = uiExplorer.getPreference();
+    if(childrenList == null) {
+      childrenList = 
+        uiExplorer.getChildrenList(uiExplorer.getCurrentPath(), pref.isShowPreferenceDocuments());
+    }
+    int nodesPerPage = pref.getNodesPerPage();    
+    PageList pageList = new ObjectPageList(childrenList,nodesPerPage) ;
+    pageIterator_.setPageList(pageList);        
+  }  
 
   @SuppressWarnings("unchecked")
   public List<Node> getChildrenList() throws Exception {
