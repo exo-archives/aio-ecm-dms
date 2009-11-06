@@ -699,6 +699,7 @@ public class UIJCRExplorer extends UIContainer {
           NodeType type = child.getPrimaryNodeType() ;
           String typeName = type.getName();
           String primaryTypeName = typeName;
+          
           if(typeName.equals(Utils.EXO_SYMLINK)) { 
             primaryTypeName = child.getProperty(Utils.EXO_PRIMARYTYPE).getString();
           }
@@ -856,17 +857,25 @@ public class UIJCRExplorer extends UIContainer {
    */
   public List<Node> getDocumentBySupportedType()throws Exception {
     List<Node> documentList = new ArrayList<Node>();
+    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    List<String> documentTypes = templateService.getDocumentTemplates(currentDriveRepositoryName_) ;
     
     // Get a DocumentTypeService instance 
     DocumentTypeService documentTypeService = getApplicationComponent(DocumentTypeService.class);
+    Node parentType = null;
+    String typeName = null;
     
-    for(Node node : documentTypeService.getAllDocumentsByKindOfDocumentType(getSupportedType(), getCurrentDriveWorkspace(),
-        getRepositoryName(), getSessionProvider())) {
+    for(Node node : documentTypeService.getAllDocumentsByKindOfDocumentType(getSupportedType(), 
+                          getCurrentDriveWorkspace(), getRepositoryName(), getSessionProvider())) {      
+      parentType = node.getParent();
+      typeName = parentType.getPrimaryNodeType().getName();
       
-      // Add node is nt:file type to array list.
-      documentList.add(node.getParent()) ;      
+      if(documentTypes.contains(typeName)) {
+        
+        // Add node is nt:file type to array list.
+        documentList.add(parentType) ;
+      }
     }
-    
     sort(documentList);
     return documentList;       
   }
