@@ -1791,11 +1791,24 @@ public class UIBrowseContainer extends UIContainer {
         LinkManager linkManager = uiContainer.getApplicationComponent(LinkManager.class);
         try {
           selectNode = linkManager.getTarget(selectNode);
+          if (selectNode.isNodeType(Utils.EXO_RESTORELOCATION)) {
+            uiApp.addMessage(new ApplicationMessage("UIBrowseContainer.msg.symlinkNode-no-targetNode", null,
+                ApplicationMessage.WARNING));
+            event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
+            return;
+          }
+        } catch (PathNotFoundException pathNotFoundException) {
+          uiApp.addMessage(new ApplicationMessage("UIBrowseContainer.msg.symlinkNode-no-targetNode", null,
+              ApplicationMessage.WARNING));
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
+          return;
         } catch (ItemNotFoundException itemNotFoundException) {
           uiApp.addMessage(new ApplicationMessage("UIBrowseContainer.msg.symlinkNode-no-targetNode", null,
               ApplicationMessage.WARNING));
           event.getRequestContext().addUIComponentToUpdateByAjax(uiContainer);
           return;
+        } catch (Exception e) {
+          e.printStackTrace();
         } 
       }
       TemplateService templateService = uiContainer.getApplicationComponent(TemplateService.class);
