@@ -219,6 +219,7 @@ public class UIAddressBar extends UIForm {
       UIControl uiControl = uiAddressBar.getParent() ;
       UIActionBar uiActionBar = uiControl.getChild(UIActionBar.class) ;
       uiActionBar.setTabOptions(viewName) ;
+      uiExplorer.updateAjax(event);
     }
   }
   

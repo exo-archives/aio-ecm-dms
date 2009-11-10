@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
@@ -40,6 +41,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
@@ -211,7 +213,26 @@ public class UITreeExplorer extends UIContainer {
   private Node getRootNode() throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     return uiExplorer.getRootNode();
-  }  
+  }
+  
+  private List<Node> getTreeWithNoDocuments(List<Node> childrenList) throws Exception {
+    TemplateService templateService = getApplicationComponent(TemplateService.class);
+    List<String> nodeTypes = templateService.getAllDocumentNodeTypes(getRepository());
+    List<Node> treeList = new ArrayList<Node>();
+    for(Node node : childrenList) {
+      if(nodeTypes.contains(node.getPrimaryNodeType().getName())) continue;
+      treeList.add(node);
+    }
+    return treeList;
+  }
+  
+  private boolean isTimelineView() {
+    UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class);
+    UIAddressBar uiAddressBar = jcrExplorer.findFirstComponentOfType(UIAddressBar.class);
+    if(uiAddressBar.getSelectedViewName() != null && 
+        uiAddressBar.getSelectedViewName().equals("timeline-view")) return true;
+    return false;
+  }
   
   private void buildTree(String path) throws Exception {
     UIJCRExplorer jcrExplorer = getAncestorOfType(UIJCRExplorer.class);
@@ -227,7 +248,11 @@ public class UITreeExplorer extends UIContainer {
     if (!rootPath.equals("/")) {
       prefix += "/";      
     }
-    temp.setChildren(jcrExplorer.getChildrenList(rootPath, false));
+    if(isTimelineView()) {
+      temp.setChildren(getTreeWithNoDocuments(jcrExplorer.getChildrenList(rootPath, false)));
+    } else {
+      temp.setChildren(jcrExplorer.getChildrenList(rootPath, false));
+    }
     if (temp.getChildrenSize() > nodePerPages) {
       ObjectPageList list = new ObjectPageList(temp.getChildren(), nodePerPages);
       addTreeNodePageIteratorAsChild(temp.getPath(), list, rootPath, path);
@@ -245,7 +270,12 @@ public class UITreeExplorer extends UIContainer {
         subPath = prefix + nodeName;
       else
         subPath = subPath + "/" + nodeName;
-      temp.setChildren(jcrExplorer.getChildrenList(subPath, false));
+      if(isTimelineView()) {
+        temp.setChildren(getTreeWithNoDocuments(jcrExplorer.getChildrenList(subPath, false)));
+      } else {
+        temp.setChildren(jcrExplorer.getChildrenList(subPath, false));
+      }
+      
       if (temp.getChildrenSize() > nodePerPages) {
         ObjectPageList list = new ObjectPageList(temp.getChildren(), nodePerPages);
         addTreeNodePageIteratorAsChild(temp.getPath(), list, subPath, path);
