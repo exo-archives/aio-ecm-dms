@@ -17,14 +17,11 @@
 package org.exoplatform.ecm.webui.component.explorer.sidebar;
 
 import org.exoplatform.ecm.jcr.model.Preference;
-import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
+import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAllItemsPreferenceForm;
-import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllFavouriteResult;
-import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllHiddenResult;
-import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllOwnedByUserResult;
-import org.exoplatform.ecm.webui.component.explorer.search.UIShowAllTrashResult;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -43,8 +40,6 @@ import org.exoplatform.webui.event.EventListener;
     template = "app:/groovy/webui/component/explorer/sidebar/UIAllItems.gtmpl",
     events = {
         @EventConfig(listeners = UIAllItems.ShowAllOwnedByUserActionListener.class),
-        @EventConfig(listeners = UIAllItems.ShowAllFavouriteByUserActionListener.class),
-        @EventConfig(listeners = UIAllItems.ShowAllFromTrashByUserActionListener.class),
         @EventConfig(listeners = UIAllItems.ShowAllHiddenActionListener.class),
         @EventConfig(listeners = UIAllItems.PreferencesActionListener.class),
         @EventConfig(listeners = UIAllItems.ShowAllFavouriteActionListener.class),
@@ -52,7 +47,7 @@ import org.exoplatform.webui.event.EventListener;
     }
 )
 public class UIAllItems extends UIComponent {
-
+	
   public UIAllItems() throws Exception {
   }
 
@@ -64,8 +59,11 @@ public class UIAllItems extends UIComponent {
     public void execute(Event<UIAllItems> event) throws Exception {
       UIAllItems uiAllItems = event.getSource();
       UIJCRExplorer uiExplorer = uiAllItems.getAncestorOfType(UIJCRExplorer.class);
-
+		
       uiExplorer.removeChildById("ViewSearch");
+      // Old code, displaying with dedicate style 
+      /*
+      
       UIDocumentWorkspace uiDocumentWorkspace = 
         uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class);
 
@@ -78,30 +76,13 @@ public class UIAllItems extends UIComponent {
       uiShowAllFavouriteResult.updateList();
       uiShowAllFavouriteResult.setSearchTime(time);
       uiDocumentWorkspace.setRenderedChild(UIShowAllFavouriteResult.class);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
-    }
-  }
-
-  static public class ShowAllFavouriteByUserActionListener extends EventListener<UIAllItems> {
-    public void execute(Event<UIAllItems> event) throws Exception {
-      UIAllItems uiAllItems = event.getSource();
-      UIJCRExplorer uiExplorer = uiAllItems.getAncestorOfType(UIJCRExplorer.class);
-
-      uiExplorer.removeChildById("ViewSearch");
-      UIDocumentWorkspace uiDocumentWorkspace = 
-        uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class);
-
-      UIShowAllFavouriteResult uiShowAllFavouriteResult = 
-        uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SHOW_ALL_FAVOURITE_RESULT);           
-
-      long startTime = System.currentTimeMillis();
-      long time = System.currentTimeMillis() - startTime;
-      uiShowAllFavouriteResult.setShowNodeCase(
-          UIShowAllFavouriteResult.SHOW_ALL_FAVOURITE_BY_USER);
-      uiShowAllFavouriteResult.updateList();
-      uiShowAllFavouriteResult.setSearchTime(time);
-      uiDocumentWorkspace.setRenderedChild(UIShowAllFavouriteResult.class);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);*/
+      
+      //new code
+      UIDocumentContainer uiDocumentContainer = uiExplorer.findFirstComponentOfType(UIDocumentContainer.class) ;
+      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+      uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.FAVOURITE_ITEMS);
+      uiExplorer.updateAjax(event) ;			
     }
   }
 
@@ -111,6 +92,7 @@ public class UIAllItems extends UIComponent {
       UIJCRExplorer uiExplorer = uiAllItems.getAncestorOfType(UIJCRExplorer.class);
 
       uiExplorer.removeChildById("ViewSearch");
+      /*      
       UIDocumentWorkspace uiDocumentWorkspace = 
         uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class);
 
@@ -124,30 +106,13 @@ public class UIAllItems extends UIComponent {
       uiShowAllTrashResult.updateList();
       uiShowAllTrashResult.setSearchTime(time);
       uiDocumentWorkspace.setRenderedChild(UIShowAllTrashResult.class);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
-    }
-  }
-
-  static public class ShowAllFromTrashByUserActionListener extends EventListener<UIAllItems> {
-    public void execute(Event<UIAllItems> event) throws Exception {
-      UIAllItems uiAllItems = event.getSource();
-      UIJCRExplorer uiExplorer = uiAllItems.getAncestorOfType(UIJCRExplorer.class);
-
-      uiExplorer.removeChildById("ViewSearch");
-      UIDocumentWorkspace uiDocumentWorkspace = 
-        uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class);
-
-      UIShowAllTrashResult uiShowAllTrashResult = 
-        uiDocumentWorkspace.getChildById(UIDocumentWorkspace.SHOW_ALL_TRASH_RESULT);           
-
-      long startTime = System.currentTimeMillis();
-      long time = System.currentTimeMillis() - startTime;
-      uiShowAllTrashResult.setShowNodeCase(
-          UIShowAllTrashResult.SHOW_ALL_FROM_TRASH_BY_USER);
-      uiShowAllTrashResult.updateList();
-      uiShowAllTrashResult.setSearchTime(time);
-      uiDocumentWorkspace.setRenderedChild(UIShowAllTrashResult.class);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);*/
+      
+      // new code
+      UIDocumentContainer uiDocumentContainer = uiExplorer.findFirstComponentOfType(UIDocumentContainer.class) ;
+      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+      uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.TRASH_ITEMS);
+      uiExplorer.updateAjax(event);			
     }
   }
 
@@ -157,6 +122,7 @@ public class UIAllItems extends UIComponent {
       UIJCRExplorer uiExplorer = UIAllItems.getAncestorOfType(UIJCRExplorer.class);
 
       uiExplorer.removeChildById("ViewSearch");
+      /*
       UIDocumentWorkspace uiDocumentWorkspace = 
         uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class);
 
@@ -168,7 +134,12 @@ public class UIAllItems extends UIComponent {
       uiShowAllHiddenResult.updateList();
       uiShowAllHiddenResult.setSearchTime(time);
       uiDocumentWorkspace.setRenderedChild(UIShowAllHiddenResult.class);
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);*/
+      // new code
+      UIDocumentContainer uiDocumentContainer = uiExplorer.findFirstComponentOfType(UIDocumentContainer.class) ;
+      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+      uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.HIDDEN_ITEMS);
+      uiExplorer.updateAjax(event);
     }
   }
 
@@ -177,6 +148,7 @@ public class UIAllItems extends UIComponent {
       UIAllItems UIAllItems = event.getSource();
       UIJCRExplorer uiExplorer = UIAllItems.getAncestorOfType(UIJCRExplorer.class);
 
+      /*
       uiExplorer.removeChildById("ViewSearch");
       UIDocumentWorkspace uiDocumentWorkspace = 
         uiExplorer.getChild(UIWorkingArea.class).getChild(UIDocumentWorkspace.class);
@@ -190,6 +162,12 @@ public class UIAllItems extends UIComponent {
       uiShowAllOwnedByUserResult.setSearchTime(time);
       uiDocumentWorkspace.setRenderedChild(UIShowAllOwnedByUserResult.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
+      */
+      // new code
+      UIDocumentContainer uiDocumentContainer = uiExplorer.findFirstComponentOfType(UIDocumentContainer.class) ;
+      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+      uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.OWNED_BY_USER_ITEMS);
+      uiExplorer.updateAjax(event);
     }
   }  
 
@@ -203,5 +181,5 @@ public class UIAllItems extends UIComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;
     }
   } 
-
+  
 }

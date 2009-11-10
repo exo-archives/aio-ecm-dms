@@ -114,12 +114,12 @@ public class UIShowAllOwnedByUserResult extends UIComponentDecorator {
 		Session session = uiExplorer.getSession();
 		String userName = session.getUserID();
 		StringBuilder queryString	= new StringBuilder("SELECT * FROM ").
-												append(Utils.NT_BASE).
-												append(" WHERE CONTAINS(").
-												append(Utils.EXO_OWNER).
-												append(",'").
-												append(userName).
-												append("')");
+												append(Utils.NT_BASE);
+			queryString.append(" WHERE CONTAINS(").
+									append(Utils.EXO_OWNER).
+									append(",'").
+									append(userName).
+									append("')");
   	QueryManager queryManager = session.getWorkspace().getQueryManager();
   	Query query = queryManager.createQuery(queryString.toString(), Query.SQL);
   	QueryResult queryResult = query.execute();

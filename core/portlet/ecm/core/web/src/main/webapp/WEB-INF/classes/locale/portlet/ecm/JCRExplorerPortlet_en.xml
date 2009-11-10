@@ -359,10 +359,10 @@
       <SimpleSearch>Quick Search</SimpleSearch>
       <AdvanceSearch>Advance Search</AdvanceSearch>
       <SavedQueries>Saved queries</SavedQueries>
-      <ShowAllOwnedByUser>Show all your items</ShowAllOwnedByUser>
-      <ShowAllFavouriteByUser>Show all your favourite items</ShowAllFavouriteByUser>
+      <ShowAllOwnedByUser>Show all my items</ShowAllOwnedByUser>
+      <ShowAllFavourite>Show all favourite items</ShowAllFavourite>
       <ShowAllHidden>Show all hidden items</ShowAllHidden>
-      <ShowAllFromTrashByUser>Show all items from Trash</ShowAllFromTrashByUser>
+      <ShowAllFromTrash>Show all items from Trash</ShowAllFromTrash>
     </title>
   </UIActionBar>
   <UIPopupMenu>

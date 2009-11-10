@@ -112,20 +112,27 @@ public class UIShowAllHiddenResult extends UIComponentDecorator {
 	
 	protected List<Node> getNewHiddenNodeList() throws Exception {
 		List<Node> ret = new ArrayList<Node>();
-		
-		StringBuilder queryString	= new StringBuilder("SELECT * FROM ").
-												append(Utils.EXO_HIDDENABLE);
 		UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-   	
+    boolean byUser = uiExplorer.getPreference().isShowItemsByUser();		
+		
+		StringBuilder queryString	= new StringBuilder("SELECT * FROM ")
+																		.append(Utils.EXO_HIDDENABLE);
+		if (byUser) {
+			queryString.append(" WHERE CONTAINS(").
+									append(Utils.EXO_OWNER).
+									append(",'").
+									append(uiExplorer.getSession().getUserID()).
+									append("')");
+		}
 		Session session = uiExplorer.getSession();
-    	QueryManager queryManager = session.getWorkspace().getQueryManager();
-    	Query query = queryManager.createQuery(queryString.toString(), Query.SQL);
-    	QueryResult queryResult = query.execute();
-    	
-    	NodeIterator iter = queryResult.getNodes();
-    	while (iter.hasNext()) {
-    		ret.add(iter.nextNode());
-    	}
+  	QueryManager queryManager = session.getWorkspace().getQueryManager();
+  	Query query = queryManager.createQuery(queryString.toString(), Query.SQL);
+  	QueryResult queryResult = query.execute();
+  	
+  	NodeIterator iter = queryResult.getNodes();
+  	while (iter.hasNext()) {
+  		ret.add(iter.nextNode());
+  	}
 
 		return ret;
 	}

@@ -133,8 +133,9 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 		List<Node> ret = new ArrayList<Node>();
 
 		UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    boolean byUser = uiExplorer.getPreference().isShowItemsByUser();
 
-		if (showNodeCase ==  SHOW_ALL_FAVOURITE) {
+		if (!byUser) {
 			ret = favouriteService_.getAllFavouriteNodes(
 									uiExplorer.getCurrentWorkspace(), 
 									uiExplorer.getRepositoryName(),

@@ -162,12 +162,20 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   private String timeLineSortByName = "";
   private String timeLineSortByDate = "";
 	private static FavouriteService favouriteService_ = null;
+	private static DocumentProviderUtils documentProviderUtils_ = new DocumentProviderUtils();
+	
+	private int documentSourceType_ = documentProviderUtils_.CURRENT_NODE_ITEMS; 
 	
 	static {
 	  ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
 	  favouriteService_ = 
 	    (FavouriteService) myContainer
 	    .getComponentInstanceOfType(FavouriteService.class);
+	}
+	
+	public int getDocumentSourceType() { return documentSourceType_; }
+	public void setDocumentSourceType(int value) {
+		documentSourceType_ = value;
 	}
 
 	public FavouriteService getFavouriteService() {
@@ -229,7 +237,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     String workspace = this.getWorkspaceName();
     String userName = session.getUserID();
     
-    boolean byUser = uiExplorer.getPreference().isShowItemsByUserInTimelineView();
+    boolean byUser = uiExplorer.getPreference().isShowItemsByUser();
   	todayNodes = timelineService.
   				getDocumentsOfToday(repository,	workspace, sessionProvider,	userName, byUser);
   	yesterdayNodes = timelineService.
@@ -617,12 +625,12 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return false;
   }
 
-  @Deprecated
   public void updatePageListData() throws Exception {    
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     Preference pref = uiExplorer.getPreference();
-    String currentPath = uiExplorer.getCurrentPath();
-    List<Node> childrenList = new ArrayList<Node>();
+//    String currentPath = uiExplorer.getCurrentPath();
+    List<Node> childrenList 
+    	= documentProviderUtils_.getItemsBySourceType(documentSourceType_, uiExplorer);
     
     // Following code trunk is original codes.
     /*if(!uiExplorer.isViewTag()) {
@@ -633,13 +641,13 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     
     // This pieces of code to show document types are updated by lampt.
     // In case of file explorer display.
-    if(!uiExplorer.isViewTag() && !uiExplorer.isViewDocument()) {      
+    /*if(!uiExplorer.isViewTag() && !uiExplorer.isViewDocument()) {      
       childrenList = uiExplorer.getChildrenList(currentPath, pref.isShowPreferenceDocuments());
     } else if (uiExplorer.isViewTag()) {               
       childrenList = uiExplorer.getDocumentByTag();       
     } else if (uiExplorer.isViewDocument()) {              
       childrenList = uiExplorer.getDocumentBySupportedType();
-    }
+    }*/
     // End updated codes.
     
     int nodesPerPage = pref.getNodesPerPage();    
@@ -647,18 +655,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     pageIterator_.setPageList(pageList);        
   }
   
-  public void updatePageListData(List<Node> childrenList) throws Exception {    
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Preference pref = uiExplorer.getPreference();
-    if(childrenList == null) {
-      childrenList = 
-        uiExplorer.getChildrenList(uiExplorer.getCurrentPath(), pref.isShowPreferenceDocuments());
-    }
-    int nodesPerPage = pref.getNodesPerPage();    
-    PageList pageList = new ObjectPageList(childrenList,nodesPerPage) ;
-    pageIterator_.setPageList(pageList);        
-  }  
-
   @SuppressWarnings("unchecked")
   public List<Node> getChildrenList() throws Exception {
     return pageIterator_.getCurrentPageData();    
@@ -787,6 +783,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   static public class ChangeNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {     
       UIDocumentInfo uicomp =  event.getSource();
+      uicomp.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);      
       NodeFinder nodeFinder = uicomp.getApplicationComponent(NodeFinder.class);
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class); 
       String uri = event.getRequestContext().getRequestParameter(OBJECTID);
@@ -797,7 +794,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         uri = LinkUtils.evaluatePath(uri);
         // Just in order to check if the node exists
         nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uri);
-        uiExplorer.setSelectNode(workspaceName, uri); 
+        uiExplorer.setSelectNode(workspaceName, uri);
+//        uicomp.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);        
         uiExplorer.updateAjax(event) ;
       } catch(ItemNotFoundException nu) {
         uiApp.addMessage(new ApplicationMessage("UIDocumentInfo.msg.null-exception", null, ApplicationMessage.WARNING)) ;

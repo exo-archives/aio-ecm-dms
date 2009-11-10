@@ -429,11 +429,11 @@ public class UIJCRExplorer extends UIContainer {
       UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class) ;
       if(isShowViewFile()) {
         UIDocumentWithTree uiDocumentWithTree = uiDocumentContainer.getChildById("UIDocumentWithTree");
-        uiDocumentWithTree.updatePageListData(null);
+        uiDocumentWithTree.updatePageListData();
         uiDocumentContainer.setRenderedChild("UIDocumentWithTree");
       } else {
         UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
-        uiDocumentInfo.updatePageListData(null);
+        uiDocumentInfo.updatePageListData();
         uiDocumentContainer.setRenderedChild("UIDocumentInfo") ;
       }
       uiDocumentWorkspace.setRenderedChild(UIDocumentContainer.class) ;
@@ -550,11 +550,7 @@ public class UIJCRExplorer extends UIContainer {
 
   public void setIsHidePopup(boolean isHidePopup) { isHidePopup_ = isHidePopup ; }
 
-  public void updateAjax(Event<?> event) throws Exception { 
-    updateAjax(event, null);
-  }  
-  
-  public void updateAjax(Event<?> event, List<Node> childrenList) throws Exception {
+  public void updateAjax(Event<?> event) throws Exception {
     UIAddressBar uiAddressBar = findFirstComponentOfType(UIAddressBar.class) ;
     uiAddressBar.getUIStringInput(UIAddressBar.FIELD_ADDRESS).setValue(
         Text.unescapeIllegalJcrChars(filterPath(currentPath_))) ;
@@ -569,11 +565,11 @@ public class UIJCRExplorer extends UIContainer {
       UIDocumentContainer uiDocumentContainer = uiDocWorkspace.getChild(UIDocumentContainer.class) ;
       if(isShowViewFile()) {
         UIDocumentWithTree uiDocumentWithTree = uiDocumentContainer.getChildById("UIDocumentWithTree");
-        uiDocumentWithTree.updatePageListData(childrenList);
+        uiDocumentWithTree.updatePageListData();
         uiDocumentContainer.setRenderedChild("UIDocumentWithTree");
       } else {
         UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
-        uiDocumentInfo.updatePageListData(childrenList);
+        uiDocumentInfo.updatePageListData();
         uiDocumentContainer.setRenderedChild("UIDocumentInfo") ;
       }
       uiDocWorkspace.setRenderedChild(UIDocumentContainer.class) ;

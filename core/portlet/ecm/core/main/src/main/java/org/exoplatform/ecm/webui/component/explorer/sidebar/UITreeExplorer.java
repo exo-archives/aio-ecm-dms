@@ -32,6 +32,9 @@ import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
+import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -290,6 +293,11 @@ public class UITreeExplorer extends UIContainer {
         uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
         uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
       }
+      
+      UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class);
+      UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+      uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
+      
       uiExplorer.setSelectNode(workspaceName, path) ; 
       uiExplorer.updateAjax(event) ;      
     }

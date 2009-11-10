@@ -60,7 +60,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
 
   final static public String FIELD_SHOW_HIDDEN_NODE = "showHiddenNode".intern();
   
-  final static public String FIELD_SHOW_ITEMS_BY_USER_IN_TIMELINE = "showItemsByUserInTimeline".intern();
+  final static public String FIELD_SHOW_ITEMS_BY_USER = "showItemsByUser".intern();
 
   final static public String FIELD_SHORTBY          = "sortBy".intern();
 
@@ -122,8 +122,8 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
         null));
     addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOW_HIDDEN_NODE, FIELD_SHOW_HIDDEN_NODE,
         null));
-    addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOW_ITEMS_BY_USER_IN_TIMELINE, 
-    																							  FIELD_SHOW_ITEMS_BY_USER_IN_TIMELINE, null));
+    addUIFormInput(new UIFormCheckBoxInput<Boolean>(FIELD_SHOW_ITEMS_BY_USER, 
+    																							  FIELD_SHOW_ITEMS_BY_USER, null));
     addUIFormInput(new UIFormSelectBox(FIELD_SHORTBY, FIELD_SHORTBY, sortOptions));
     addUIFormInput(new UIFormSelectBox(FIELD_ORDERBY, FIELD_ORDERBY, orderOption));
     addUIFormInput(new UIFormSelectBox(NODES_PER_PAGE, NODES_PER_PAGE, nodesPerPagesOptions));
@@ -141,7 +141,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
     getUIFormCheckBoxInput(FIELD_SHOWNONDOCUMENT).setChecked(pref.isShowNonDocumentType());
     getUIFormCheckBoxInput(FIELD_SHOWREFDOCUMENTS).setChecked(pref.isShowPreferenceDocuments());
     getUIFormCheckBoxInput(FIELD_SHOW_HIDDEN_NODE).setChecked(pref.isShowHiddenNode());
-    getUIFormCheckBoxInput(FIELD_SHOW_ITEMS_BY_USER_IN_TIMELINE).setChecked(pref.isShowItemsByUserInTimelineView());
+    getUIFormCheckBoxInput(FIELD_SHOW_ITEMS_BY_USER).setChecked(pref.isShowItemsByUser());
     getUIFormSelectBox(FIELD_SHORTBY).setValue(pref.getSortType());
     getUIFormSelectBox(FIELD_ORDERBY).setValue(pref.getOrder());
     getUIFormSelectBox(NODES_PER_PAGE).setValue(Integer.toString(pref.getNodesPerPage()));
@@ -159,7 +159,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
       pref.setShowNonDocumentType(uiForm.getUIFormCheckBoxInput(FIELD_SHOWNONDOCUMENT).isChecked());
       pref.setShowPreferenceDocuments(uiForm.getUIFormCheckBoxInput(FIELD_SHOWREFDOCUMENTS).isChecked());
       pref.setShowHiddenNode(uiForm.getUIFormCheckBoxInput(FIELD_SHOW_HIDDEN_NODE).isChecked());
-      pref.setShowItemsByUserInTimelineView(uiForm.getUIFormCheckBoxInput(FIELD_SHOW_ITEMS_BY_USER_IN_TIMELINE).isChecked());
+      pref.setShowItemsByUser(uiForm.getUIFormCheckBoxInput(FIELD_SHOW_ITEMS_BY_USER).isChecked());
       pref.setSortType(uiForm.getUIFormSelectBox(FIELD_SHORTBY).getValue());
       pref.setOrder(uiForm.getUIFormSelectBox(FIELD_ORDERBY).getValue());
       pref.setNodesPerPage(Integer.parseInt(uiForm.getUIFormSelectBox(NODES_PER_PAGE).getValue()));

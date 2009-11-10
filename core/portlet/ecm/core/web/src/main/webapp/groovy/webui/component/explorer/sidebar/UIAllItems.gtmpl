@@ -28,7 +28,7 @@
 				
 			  <% if (pref.isShowFavouriteDoc()) { %>
 						<div class="ArrowSidContent TextSiderContent">
-							<a href="<%=uicomponent.event("ShowAllFavouriteByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFavouriteByUser")%>" class="ShowAllFavouriteByUserBtn">
+							<a href="<%=uicomponent.event("ShowAllFavourite")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFavourite")%>" class="ShowAllFavouriteBtn">
 								<span><%=_ctx.appRes("UIAllItems.label.Favourites")%></span>
 							</a>
 						</div>
@@ -44,7 +44,7 @@
 						
 				<% if (pref.isShowTrashDoc()) { %>
 						<div class="ArrowSidContent TextSiderContent">
-							<a href="<%=uicomponent.event("ShowAllFromTrashByUser")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFromTrashByUser")%>" class="ShowAllFromTrashByUserBtn">
+							<a href="<%=uicomponent.event("ShowAllFromTrash")%>" title="<%=_ctx.appRes("UIActionBar.title.ShowAllFromTrash")%>" class="ShowAllFromTrashBtn">
 								<span><%=_ctx.appRes("UIAllItems.label.Trash")%> </span>
 							</a>
 						</div>
