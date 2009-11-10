@@ -34,8 +34,11 @@
       %>
           <tr class="$rowClass">
             <td>
-            <%if(drive.getIcon() != null && drive.getIcon().length() > 0) {%>
-              <img src="$drive.icon" alt="" width="20px" height="20px" />
+            <%
+              if(drive.getIcon() != null && drive.getIcon().length() > 0) {
+                String[] iconPath = drive.getIcon().split(":/") ;
+            %>
+                <img src="/${uicomponent.getPortalName()}/rest/jcr/${uicomponent.getRepository()}/${iconPath[0]}/${iconPath[1]}" alt="" width="20px" height="20px" />
             <%} else {%>
               <span></span>
             <%}%>

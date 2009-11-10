@@ -16,21 +16,19 @@
  */
 package org.exoplatform.ecm.webui.component.admin.drives;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.download.DownloadService;
-import org.exoplatform.download.InputStreamDownloadResource;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -89,7 +87,6 @@ public class UIDriveList extends UIComponentDecorator {
   @SuppressWarnings("unchecked")
   public List<DriveData> getDrives(String repoName) throws Exception {
     RepositoryService rservice = getApplicationComponent(RepositoryService.class) ;
-    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     ManageDriveService driveService = getApplicationComponent(ManageDriveService.class) ;
     ManageableRepository repository = rservice.getRepository(repoName) ;  
     List<DriveData> driveList = new ArrayList<DriveData>() ;
@@ -101,12 +98,7 @@ public class UIDriveList extends UIComponentDecorator {
           try {
             String[] iconPath = drive.getIcon().split(":/") ;   
             session = repository.getSystemSession(iconPath[0]) ;
-            Node node = (Node) session.getItem("/" + iconPath[1]) ;
-            Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
-            InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
-            InputStreamDownloadResource dresource = new InputStreamDownloadResource(input, "image") ;
-            dresource.setDownloadName(node.getName()) ;
-            drive.setIcon(dservice.getDownloadLink(dservice.addDownloadResource(dresource))) ;
+            session.getItem("/" + iconPath[1]) ;
             session.logout() ;
           } catch(PathNotFoundException pnf) {
             drive.setIcon("") ;
@@ -117,6 +109,17 @@ public class UIDriveList extends UIComponentDecorator {
     }
     Collections.sort(driveList) ;
     return driveList ; 
+  }
+  
+  public String getPortalName() {
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    PortalContainerInfo containerInfo = (PortalContainerInfo) container
+        .getComponentInstanceOfType(PortalContainerInfo.class);
+    return containerInfo.getContainerName(); 
+  }
+  
+  public String getRepository() throws Exception {
+    return getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
   }
 
   private boolean isExistWorspace(ManageableRepository repository, DriveData drive) {
