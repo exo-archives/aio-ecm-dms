@@ -858,36 +858,6 @@ public class UIJCRExplorer extends UIContainer {
     return workspaceName ;
   }
   
-  /**
-   * Method get list of document by mimeType  
-   * @author lampt
-   * @throws Exception
-   */
-  public List<Node> getDocumentBySupportedType()throws Exception {
-    List<Node> documentList = new ArrayList<Node>();
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    List<String> documentTypes = templateService.getDocumentTemplates(currentDriveRepositoryName_) ;
-    
-    // Get a DocumentTypeService instance 
-    DocumentTypeService documentTypeService = getApplicationComponent(DocumentTypeService.class);
-    Node parentType = null;
-    String typeName = null;
-    
-    for(Node node : documentTypeService.getAllDocumentsByKindOfDocumentType(getSupportedType(), 
-                          getCurrentDriveWorkspace(), getRepositoryName(), getSessionProvider())) {      
-      parentType = node.getParent();
-      typeName = parentType.getPrimaryNodeType().getName();
-      
-      if(documentTypes.contains(typeName)) {
-        
-        // Add node is nt:file type to array list.
-        documentList.add(parentType) ;
-      }
-    }
-    sort(documentList);
-    return documentList;       
-  }
-    
   public static class HistoryEntry {
     private final String workspace;
     private final String path;
@@ -904,5 +874,21 @@ public class UIJCRExplorer extends UIContainer {
     public String getPath() {
       return path;
     }    
+  }
+
+  public List<Node> getDocumentBySupportedType() throws Exception {
+    DocumentTypeService documentService = getApplicationComponent(DocumentTypeService.class);
+    List<Node> result = new ArrayList<Node>();
+    String userName = null;
+    if(getPreference().isShowItemsByUser()) userName = getSession().getUserID();
+    if(documentService.isContentsType(supportedType)) {
+      result = 
+        documentService.getAllDocumentByContentsType(supportedType, getCurrentWorkspace(), 
+            getRepositoryName(), getSessionProvider(), userName);
+    } else {
+      result = documentService.getAllDocumentsByUser(getCurrentWorkspace(), getRepositoryName(), 
+          getSessionProvider(), documentService.getMimeTypes(supportedType), userName);
+    }
+    return result;
   }
 }

@@ -140,91 +140,76 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 
   final private static String COMMENT_COMPONENT = "Comment".intern();
 
-	private static final Log LOG  = ExoLogger.getLogger("explorer.search.UIDocumentInfo");
+  private static final Log LOG  = ExoLogger.getLogger("explorer.search.UIDocumentInfo");
   
   private String typeSort_ = Preference.SORT_BY_NODETYPE;
   private String sortOrder_ = Preference.BLUE_DOWN_ARROW;
   private Node currentNode_ ;
   private boolean isDocumentTemplate_ = false;
   private String currentRepository_ = null;
-  private String currentWorkspaceName_ = null;
   private String selectedLang_ = null;
 
   private UIPageIterator pageIterator_ ;
 
-	private List<Node> todayNodes;
+  private List<Node> todayNodes;
   private List<Node> yesterdayNodes;
   private List<Node> earlierThisWeekNodes;
   private List<Node> earlierThisMonthNodes;
   private List<Node> earlierThisYearNodes;
   
-	private String timeLineSortByFavourite = Preference.BLUE_DOWN_ARROW;
+  private String timeLineSortByFavourite = Preference.BLUE_DOWN_ARROW;
   private String timeLineSortByName = "";
   private String timeLineSortByDate = "";
-	private static FavouriteService favouriteService_ = null;
-	private static DocumentProviderUtils documentProviderUtils_ = new DocumentProviderUtils();
-	
-	private int documentSourceType_ = documentProviderUtils_.CURRENT_NODE_ITEMS; 
-	
-	static {
-	  ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-	  favouriteService_ = 
-	    (FavouriteService) myContainer
-	    .getComponentInstanceOfType(FavouriteService.class);
-	}
-	
-	public int getDocumentSourceType() { return documentSourceType_; }
-	public void setDocumentSourceType(int value) {
-		documentSourceType_ = value;
-	}
-
-	public FavouriteService getFavouriteService() {
-	  return favouriteService_;
-	}
-	
-	public String getTimeLineSortByFavourite() { return timeLineSortByFavourite; }
-	public void setTimeLineSortByFavourite(String timeLineSortByFavourite) {
-		this.timeLineSortByFavourite = timeLineSortByFavourite;
-	}
-
-	public String getTimeLineSortByName() {	return timeLineSortByName; }
-	public void setTimeLineSortByName(String timeLineSortByName) {
-		this.timeLineSortByName = timeLineSortByName;
-	}
-
-	public String getTimeLineSortByDate() {	return timeLineSortByDate; }
-	public void setTimeLineSortByDate(String timeLineSortByDate) {
-		this.timeLineSortByDate = timeLineSortByDate;
-	}
   
-	public UIDocumentInfo() throws Exception {
+  private int documentSourceType_; 
+  
+  public UIDocumentInfo() throws Exception {
     pageIterator_ = addChild(UIPageIterator.class, null,CONTENT_PAGE_ITERATOR_ID);    
   }
 
-  public List<Node> getTodayNodes() {	return todayNodes; }
-	public void setTodayNodes(List<Node> todayNodes) {
-		this.todayNodes = todayNodes;
-	}
+  public int getDocumentSourceType() { return documentSourceType_; }
+  public void setDocumentSourceType(int value) { documentSourceType_ = value; }
 
-	public List<Node> getYesterdayNodes() { return yesterdayNodes; }
-	public void setYesterdayNodes(List<Node> yesterdayNodes) {
-		this.yesterdayNodes = yesterdayNodes;
-	}
+  public String getTimeLineSortByFavourite() { return timeLineSortByFavourite; }
+  public void setTimeLineSortByFavourite(String timeLineSortByFavourite) {
+    this.timeLineSortByFavourite = timeLineSortByFavourite;
+  }
 
-	public List<Node> getEarlierThisWeekNodes() {	return earlierThisWeekNodes; }
-	public void setEarlierThisWeekNodes(List<Node> earlierThisWeekNodes) {
-		this.earlierThisWeekNodes = earlierThisWeekNodes;
-	}
+  public String getTimeLineSortByName() { return timeLineSortByName; }
+  public void setTimeLineSortByName(String timeLineSortByName) {
+    this.timeLineSortByName = timeLineSortByName;
+  }
 
-	public List<Node> getEarlierThisMonthNodes() { return earlierThisMonthNodes; }
-	public void setEarlierThisMonthNodes(List<Node> earlierThisMonthNodes) {
-		this.earlierThisMonthNodes = earlierThisMonthNodes;
-	}
+  public String getTimeLineSortByDate() { return timeLineSortByDate; }
+  public void setTimeLineSortByDate(String timeLineSortByDate) {
+    this.timeLineSortByDate = timeLineSortByDate;
+  }
+  
 
-	public List<Node> getEarlierThisYearNodes() {	return earlierThisYearNodes; }
-	public void setEarlierThisYearNodes(List<Node> earlierThisYearNodes) {
-		this.earlierThisYearNodes = earlierThisYearNodes;
-	}
+  public List<Node> getTodayNodes() { return todayNodes; }
+  public void setTodayNodes(List<Node> todayNodes) {
+    this.todayNodes = todayNodes;
+  }
+
+  public List<Node> getYesterdayNodes() { return yesterdayNodes; }
+  public void setYesterdayNodes(List<Node> yesterdayNodes) {
+    this.yesterdayNodes = yesterdayNodes;
+  }
+
+  public List<Node> getEarlierThisWeekNodes() { return earlierThisWeekNodes; }
+  public void setEarlierThisWeekNodes(List<Node> earlierThisWeekNodes) {
+    this.earlierThisWeekNodes = earlierThisWeekNodes;
+  }
+
+  public List<Node> getEarlierThisMonthNodes() { return earlierThisMonthNodes; }
+  public void setEarlierThisMonthNodes(List<Node> earlierThisMonthNodes) {
+    this.earlierThisMonthNodes = earlierThisMonthNodes;
+  }
+
+  public List<Node> getEarlierThisYearNodes() { return earlierThisYearNodes; }
+  public void setEarlierThisYearNodes(List<Node> earlierThisYearNodes) {
+    this.earlierThisYearNodes = earlierThisYearNodes;
+  }
   
   public void updateNodeLists() throws Exception {
     ExoContainer container = ExoContainerContext.getCurrentContainer();
@@ -238,22 +223,22 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     String userName = session.getUserID();
     
     boolean byUser = uiExplorer.getPreference().isShowItemsByUser();
-  	todayNodes = timelineService.
-  				getDocumentsOfToday(repository,	workspace, sessionProvider,	userName, byUser);
-  	yesterdayNodes = timelineService.
-  				getDocumentsOfYesterday(repository, workspace, sessionProvider, userName, byUser);
-  	earlierThisWeekNodes = timelineService.
-  				getDocumentsOfEarlierThisWeek(repository, workspace, sessionProvider, userName, byUser);
-  	earlierThisMonthNodes = timelineService.
-  				getDocumentsOfEarlierThisMonth(repository, workspace, sessionProvider, userName, byUser);
-  	earlierThisYearNodes = timelineService.
-  				getDocumentsOfEarlierThisYear(repository, workspace, sessionProvider, userName, byUser);
-  	
-		Collections.sort(todayNodes, new SearchComparator());
-		Collections.sort(yesterdayNodes, new SearchComparator());
-		Collections.sort(earlierThisWeekNodes, new SearchComparator());
-		Collections.sort(earlierThisMonthNodes, new SearchComparator());
-		Collections.sort(earlierThisYearNodes, new SearchComparator());  	
+    todayNodes = timelineService.
+          getDocumentsOfToday(repository, workspace, sessionProvider, userName, byUser);
+    yesterdayNodes = timelineService.
+          getDocumentsOfYesterday(repository, workspace, sessionProvider, userName, byUser);
+    earlierThisWeekNodes = timelineService.
+          getDocumentsOfEarlierThisWeek(repository, workspace, sessionProvider, userName, byUser);
+    earlierThisMonthNodes = timelineService.
+          getDocumentsOfEarlierThisMonth(repository, workspace, sessionProvider, userName, byUser);
+    earlierThisYearNodes = timelineService.
+          getDocumentsOfEarlierThisYear(repository, workspace, sessionProvider, userName, byUser);
+    
+    Collections.sort(todayNodes, new SearchComparator());
+    Collections.sort(yesterdayNodes, new SearchComparator());
+    Collections.sort(earlierThisWeekNodes, new SearchComparator());
+    Collections.sort(earlierThisMonthNodes, new SearchComparator());
+    Collections.sort(earlierThisYearNodes, new SearchComparator());   
   }
 
   public UIPageIterator getContentPageIterator() {return pageIterator_ ; }
@@ -279,7 +264,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       Node node = uiExplorer.getCurrentNode();
       String nodeTypeName = node.getPrimaryNodeType().getName();
       currentRepository_ = uiExplorer.getRepositoryName();
-      currentWorkspaceName_ = node.getSession().getWorkspace().getName();;
       selectedLang_ = uiExplorer.getLanguage();
       isDocumentTemplate_ = templateService.getDocumentTemplates(currentRepository_).contains(nodeTypeName);
       String template = templateService.getTemplatePath(node,false) ;
@@ -626,33 +610,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   public void updatePageListData() throws Exception {    
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    Preference pref = uiExplorer.getPreference();
-//    String currentPath = uiExplorer.getCurrentPath();
-    List<Node> childrenList 
-    	= documentProviderUtils_.getItemsBySourceType(documentSourceType_, uiExplorer);
+    DocumentProviderUtils documentUtils = new DocumentProviderUtils();
     
-    // Following code trunk is original codes.
-    /*if(!uiExplorer.isViewTag()) {
-      childrenList = uiExplorer.getChildrenList(currentPath, pref.isShowPreferenceDocuments());    
-    } else {
-      childrenList = uiExplorer.getDocumentByTag() ;
-    }*/
-    
-    // This pieces of code to show document types are updated by lampt.
-    // In case of file explorer display.
-    /*if(!uiExplorer.isViewTag() && !uiExplorer.isViewDocument()) {      
-      childrenList = uiExplorer.getChildrenList(currentPath, pref.isShowPreferenceDocuments());
-    } else if (uiExplorer.isViewTag()) {               
-      childrenList = uiExplorer.getDocumentByTag();       
-    } else if (uiExplorer.isViewDocument()) {              
-      childrenList = uiExplorer.getDocumentBySupportedType();
-    }*/
-    // End updated codes.
-    
-    int nodesPerPage = pref.getNodesPerPage();    
-    PageList pageList = new ObjectPageList(childrenList,nodesPerPage) ;
-    pageIterator_.setPageList(pageList);        
+    int nodesPerPage = getAncestorOfType(UIJCRExplorer.class).getPreference().getNodesPerPage();    
+    pageIterator_.setPageList(new ObjectPageList(documentUtils.getItemsBySourceType(
+        documentSourceType_, getAncestorOfType(UIJCRExplorer.class)),nodesPerPage));        
   }
   
   @SuppressWarnings("unchecked")
@@ -743,18 +705,18 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return uicomponent;
   }
   
-	public boolean isFavouriter(Node data) throws Exception {
-		if (!data.isNodeType(Utils.EXO_FAVOURITE))
-			return false;
+  public boolean isFavouriter(Node data) throws Exception {
+    if (!data.isNodeType(Utils.EXO_FAVOURITE))
+      return false;
     Value[] favouriters = data.getProperty("exo:favouriter").getValues();
-	  String userID = data.getSession().getUserID();
-	  for(Value value : favouriters) {
-	  	if (userID.equals(value.getString())) {
-	  		return true;
-	  	}
-	  }		
-	  return false;
-	}
+    String userID = data.getSession().getUserID();
+    for(Value value : favouriters) {
+      if (userID.equals(value.getString())) {
+        return true;
+      }
+    }   
+    return false;
+  }
   
   public boolean isMediaType(Node data) throws Exception {
     if (!data.isNodeType(Utils.NT_FILE)) return false;
@@ -868,69 +830,69 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   static public class StarClickActionListener extends EventListener<UIDocumentInfo> {
-  	public void execute(Event<UIDocumentInfo> event) throws Exception {
-      //final String virtualNodePath = nodePath;
+    public void execute(Event<UIDocumentInfo> event) throws Exception {
       String srcPath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIDocumentInfo uiDocumentInfo = event.getSource();
       UIJCRExplorer uiExplorer = uiDocumentInfo.getAncestorOfType(UIJCRExplorer.class);
-	    UIApplication uiApp = uiDocumentInfo.getAncestorOfType(UIApplication.class);
-	    
-	    Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
-	    String wsName = null;
-	    Node node = null;
-	    if (matcher.find()) {
-	      wsName = matcher.group(1);
-	      srcPath = matcher.group(2);
-	    } else {
-	      throw new IllegalArgumentException("The ObjectId is invalid '"+ srcPath + "'");
-	    }
-	
-	    Session session = uiExplorer.getSessionByWorkspace(wsName);
-	    try {
-	      // Use the method getNodeByPath because it is link aware
-	      node = uiExplorer.getNodeByPath(srcPath, session, false);
-	      // Reset the path to manage the links that potentially create virtual path
-	      srcPath = node.getPath();
-	      // Reset the session to manage the links that potentially change of workspace
-	      session = node.getSession();
-	      // Reset the workspace name to manage the links that potentially change of workspace 
-	      wsName = session.getWorkspace().getName();
-	    } catch(PathNotFoundException path) {
-	      uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
-	          null,ApplicationMessage.WARNING));
-	      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-	      return;
-	    }
-	
-	    try {
-	        uiExplorer.addLockToken(node);
+      UIApplication uiApp = uiDocumentInfo.getAncestorOfType(UIApplication.class);
+      FavouriteService favouriteService = 
+        uiDocumentInfo.getApplicationComponent(FavouriteService.class);
+      Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
+      String wsName = null;
+      Node node = null;
+      if (matcher.find()) {
+        wsName = matcher.group(1);
+        srcPath = matcher.group(2);
+      } else {
+        throw new IllegalArgumentException("The ObjectId is invalid '"+ srcPath + "'");
+      }
+  
+      Session session = uiExplorer.getSessionByWorkspace(wsName);
+      try {
+        // Use the method getNodeByPath because it is link aware
+        node = uiExplorer.getNodeByPath(srcPath, session, false);
+        // Reset the path to manage the links that potentially create virtual path
+        srcPath = node.getPath();
+        // Reset the session to manage the links that potentially change of workspace
+        session = node.getSession();
+        // Reset the workspace name to manage the links that potentially change of workspace 
+        wsName = session.getWorkspace().getName();
+      } catch(PathNotFoundException path) {
+        uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", 
+            null,ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+  
+      try {
+          uiExplorer.addLockToken(node);
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         return;
       }
       try {
-	    	if (favouriteService_.isFavouriter(node.getSession().getUserID(), node)) {
-	    		if (PermissionUtil.canRemoveNode(node)) {
-	    			favouriteService_.removeFavourite(node, node.getSession().getUserID());
-	    		}
-	    		else {
-	    			throw new AccessDeniedException();
-	    		}
-	    	} else {
-	    		if (PermissionUtil.canSetProperty(node)) {		    			
-	    			favouriteService_.addFavourite(node, node.getSession().getUserID());
-	    		}
-	    		else {
-	    			throw new AccessDeniedException();
-	    		}
-	    	}
-		    //uiStar.changeFavourite();
-	        event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);			    
-	    } catch (AccessDeniedException e) {
-	    	LOG.error("Access denied! No permission for modifying property " +
-			  Utils.EXO_FAVOURITER + " of node: " + node.getPath());
-    		uiApp.addMessage(new ApplicationMessage("UIShowAllFavouriteResult.msg.accessDenied", null, ApplicationMessage.WARNING));
-    		event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        if (favouriteService.isFavouriter(node.getSession().getUserID(), node)) {
+          if (PermissionUtil.canRemoveNode(node)) {
+            favouriteService.removeFavourite(node, node.getSession().getUserID());
+          }
+          else {
+            throw new AccessDeniedException();
+          }
+        } else {
+          if (PermissionUtil.canSetProperty(node)) {              
+            favouriteService.addFavourite(node, node.getSession().getUserID());
+          }
+          else {
+            throw new AccessDeniedException();
+          }
+        }
+        //uiStar.changeFavourite();
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);         
+      } catch (AccessDeniedException e) {
+        LOG.error("Access denied! No permission for modifying property " +
+        Utils.EXO_FAVOURITER + " of node: " + node.getPath());
+        uiApp.addMessage(new ApplicationMessage("UIShowAllFavouriteResult.msg.accessDenied", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       } catch (VersionException ve) {
         uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.remove-verion-exception", null,
             ApplicationMessage.WARNING));
@@ -967,59 +929,54 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
-	  }
+    }
   }
 
   static public class SortTimelineASCActionListener extends EventListener<UIDocumentInfo> {
-		public void execute(Event<UIDocumentInfo> event) throws Exception {
-			UIDocumentInfo uiDocumentInfo = event.getSource();
-			String objectID = event.getRequestContext().getRequestParameter(OBJECTID);
-			if (objectID.equals("favourite")) {
-				uiDocumentInfo.timeLineSortByFavourite = Preference.BLUE_DOWN_ARROW;
-				uiDocumentInfo.timeLineSortByName = "";
-				uiDocumentInfo.timeLineSortByDate = "";
-			} else if (objectID.equals("name")) {
-				uiDocumentInfo.timeLineSortByFavourite = "";
-				uiDocumentInfo.timeLineSortByName = Preference.BLUE_DOWN_ARROW;
-				uiDocumentInfo.timeLineSortByDate = "";
-			} else if (objectID.equals("dateTime")) {
-				uiDocumentInfo.timeLineSortByFavourite = "";
-				uiDocumentInfo.timeLineSortByName = "";
-				uiDocumentInfo.timeLineSortByDate = Preference.BLUE_DOWN_ARROW;
-			}
-//			Collections.sort(uiDocumentInfo.todayNodes, new SearchComparator());
-//			Collections.sort(uiDocumentInfo.yesterdayNodes, new SearchComparator());
-//			Collections.sort(uiDocumentInfo.earlierThisWeekNodes, new SearchComparator());
-//			Collections.sort(uiDocumentInfo.earlierThisMonthNodes, new SearchComparator());
-//			Collections.sort(uiDocumentInfo.earlierThisYearNodes, new SearchComparator());
-			event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);
-		}
+    public void execute(Event<UIDocumentInfo> event) throws Exception {
+      UIDocumentInfo uiDocumentInfo = event.getSource();
+      String objectID = event.getRequestContext().getRequestParameter(OBJECTID);
+      if (objectID.equals("favourite")) {
+        uiDocumentInfo.timeLineSortByFavourite = Preference.BLUE_DOWN_ARROW;
+        uiDocumentInfo.timeLineSortByName = "";
+        uiDocumentInfo.timeLineSortByDate = "";
+      } else if (objectID.equals("name")) {
+        uiDocumentInfo.timeLineSortByFavourite = "";
+        uiDocumentInfo.timeLineSortByName = Preference.BLUE_DOWN_ARROW;
+        uiDocumentInfo.timeLineSortByDate = "";
+      } else if (objectID.equals("dateTime")) {
+        uiDocumentInfo.timeLineSortByFavourite = "";
+        uiDocumentInfo.timeLineSortByName = "";
+        uiDocumentInfo.timeLineSortByDate = Preference.BLUE_DOWN_ARROW;
+      }
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);
+    }
   }
   
   static public class SortTimelineDESCActionListener extends EventListener<UIDocumentInfo> {
-		public void execute(Event<UIDocumentInfo> event) throws Exception {
-			UIDocumentInfo uiDocumentInfo = event.getSource();
-			String objectID = event.getRequestContext().getRequestParameter(OBJECTID);
-			if (objectID.equals("favourite")) {
-				uiDocumentInfo.timeLineSortByFavourite = Preference.BLUE_UP_ARROW;
-				uiDocumentInfo.timeLineSortByName = "";
-				uiDocumentInfo.timeLineSortByDate = "";
-			} else if (objectID.equals("name")) {
-				uiDocumentInfo.timeLineSortByFavourite = "";
-				uiDocumentInfo.timeLineSortByName = Preference.BLUE_UP_ARROW;
-				uiDocumentInfo.timeLineSortByDate = "";
-			} else if (objectID.equals("dateTime")) {
-				uiDocumentInfo.timeLineSortByFavourite = "";
-				uiDocumentInfo.timeLineSortByName = "";
-				uiDocumentInfo.timeLineSortByDate = Preference.BLUE_UP_ARROW;
-			}
-//			Collections.sort(uiDocumentInfo.todayNodes, new SearchComparator());
-//			Collections.sort(uiDocumentInfo.yesterdayNodes, new SearchComparator());
-//			Collections.sort(uiDocumentInfo.earlierThisWeekNodes, new SearchComparator());
-//			Collections.sort(uiDocumentInfo.earlierThisMonthNodes, new SearchComparator());
-//			Collections.sort(uiDocumentInfo.earlierThisYearNodes, new SearchComparator());
-			event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);
-		}
+    public void execute(Event<UIDocumentInfo> event) throws Exception {
+      UIDocumentInfo uiDocumentInfo = event.getSource();
+      String objectID = event.getRequestContext().getRequestParameter(OBJECTID);
+      if (objectID.equals("favourite")) {
+        uiDocumentInfo.timeLineSortByFavourite = Preference.BLUE_UP_ARROW;
+        uiDocumentInfo.timeLineSortByName = "";
+        uiDocumentInfo.timeLineSortByDate = "";
+      } else if (objectID.equals("name")) {
+        uiDocumentInfo.timeLineSortByFavourite = "";
+        uiDocumentInfo.timeLineSortByName = Preference.BLUE_UP_ARROW;
+        uiDocumentInfo.timeLineSortByDate = "";
+      } else if (objectID.equals("dateTime")) {
+        uiDocumentInfo.timeLineSortByFavourite = "";
+        uiDocumentInfo.timeLineSortByName = "";
+        uiDocumentInfo.timeLineSortByDate = Preference.BLUE_UP_ARROW;
+      }
+//      Collections.sort(uiDocumentInfo.todayNodes, new SearchComparator());
+//      Collections.sort(uiDocumentInfo.yesterdayNodes, new SearchComparator());
+//      Collections.sort(uiDocumentInfo.earlierThisWeekNodes, new SearchComparator());
+//      Collections.sort(uiDocumentInfo.earlierThisMonthNodes, new SearchComparator());
+//      Collections.sort(uiDocumentInfo.earlierThisYearNodes, new SearchComparator());
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentInfo);
+    }
   }  
 
   static public class ShowPageActionListener extends EventListener<UIPageIterator> {
@@ -1038,30 +995,30 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   } 
   
   private class SearchComparator implements Comparator<Node> {
-  	public int compare(Node node1, Node node2) {
-  		try {
-  			if (timeLineSortByFavourite.length() != 0) {
-  				int factor = (timeLineSortByFavourite.equals(Preference.BLUE_DOWN_ARROW)) ? 1 : -1;
-  				if (node1.isNodeType(Utils.EXO_FAVOURITE)) return -1 * factor;
-  				else if (node2.isNodeType(Utils.EXO_FAVOURITE)) return 1 * factor;
-  				else return 0;
-  				
-  			} else if (timeLineSortByDate.length() != 0) {
-					int factor = timeLineSortByDate.equals(Preference.BLUE_DOWN_ARROW) ? 1 : -1;
-					Calendar c1 = node1.getProperty(Utils.EXO_MODIFIED_DATE).getValue().getDate();
-					Calendar c2 = node2.getProperty(Utils.EXO_MODIFIED_DATE).getValue().getDate();
-					return factor * c1.compareTo(c2);
-					
-  			} else if (timeLineSortByName.length() != 0) {
-  				int factor = timeLineSortByName.equals(Preference.BLUE_DOWN_ARROW) ? 1 : -1;
-  				String s1 = node1.getName();
-  				String s2 = node2.getName();
-  				return factor * s1.compareTo(s2);
-  			}
-  		} catch (Exception e) {
-  			LOG.error("Cannot compare nodes", e);
-  		}
-  		return 0;
-  	}
+    public int compare(Node node1, Node node2) {
+      try {
+        if (timeLineSortByFavourite.length() != 0) {
+          int factor = (timeLineSortByFavourite.equals(Preference.BLUE_DOWN_ARROW)) ? 1 : -1;
+          if (node1.isNodeType(Utils.EXO_FAVOURITE)) return -1 * factor;
+          else if (node2.isNodeType(Utils.EXO_FAVOURITE)) return 1 * factor;
+          else return 0;
+          
+        } else if (timeLineSortByDate.length() != 0) {
+          int factor = timeLineSortByDate.equals(Preference.BLUE_DOWN_ARROW) ? 1 : -1;
+          Calendar c1 = node1.getProperty(Utils.EXO_MODIFIED_DATE).getValue().getDate();
+          Calendar c2 = node2.getProperty(Utils.EXO_MODIFIED_DATE).getValue().getDate();
+          return factor * c1.compareTo(c2);
+          
+        } else if (timeLineSortByName.length() != 0) {
+          int factor = timeLineSortByName.equals(Preference.BLUE_DOWN_ARROW) ? 1 : -1;
+          String s1 = node1.getName();
+          String s2 = node2.getName();
+          return factor * s1.compareTo(s2);
+        }
+      } catch (Exception e) {
+        LOG.error("Cannot compare nodes", e);
+      }
+      return 0;
+    }
   }
 }

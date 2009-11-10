@@ -28,9 +28,14 @@ import java.util.List;
 public class DocumentType {
   
   private List<String> mimeTypes;
+  private String contentsType;
   
   public void setMimeTypes(List<String> mimeTypes) { this.mimeTypes = mimeTypes; }
   
   public List<String> getMimeTypes() { return this.mimeTypes; }
+  
+  public void setContentsType(String contentTypes) { this.contentsType = contentTypes; }
+  
+  public String getContentsType() { return this.contentsType; }
   
 }

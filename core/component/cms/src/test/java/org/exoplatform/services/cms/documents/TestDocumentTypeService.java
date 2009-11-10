@@ -108,7 +108,7 @@ public class TestDocumentTypeService extends BaseDMSTestCase {
     documentNode.getSession().save();    
     String supportedType = "Video";
     List<Node> expectedList = documentTypeService_
-                  .getAllDocumentsByKindOfDocumentType(supportedType, COLLABORATION_WS, 
+                  .getAllDocumentsByDocumentType(supportedType, COLLABORATION_WS, 
         REPO_NAME, createSessionProvider());
     assertNotNull(expectedList);    
     Iterator<Node> iterNodes = expectedList.iterator();

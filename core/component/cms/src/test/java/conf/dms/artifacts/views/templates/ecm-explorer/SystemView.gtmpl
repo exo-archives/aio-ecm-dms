@@ -82,10 +82,10 @@
 			          if (typeSort.equals("Owner")) {
 			        %>
 				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
-				        	<%=_ctx.appRes("ListView.view.label.owner")%>
+				        	<%=_ctx.appRes("ListView.view.label.exo_owner")%>
 				        </div>
 				      <%} else { %>
-				        <%=_ctx.appRes("ListView.view.label.owner")%>
+				        <%=_ctx.appRes("ListView.view.label.exo_owner")%>
 				      <%} %>
 			      </a>
 			    </div>
@@ -96,10 +96,10 @@
 			          if (typeSort.equals("ModifiedDate")) {
 			        %>
 				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
-				        	<%=_ctx.appRes("ListView.view.label.dateModified")%>
+				        	<%=_ctx.appRes("ListView.view.label.exo_dateModified")%>
 				        </div>
 				      <%} else { %>
-				        <%=_ctx.appRes("ListView.view.label.dateModified")%>
+				        <%=_ctx.appRes("ListView.view.label.exo_dateModified")%>
 				      <%} %>
 			      </a>
 			    </div>
@@ -110,10 +110,10 @@
 			          if (typeSort.equals("CreatedDate")) {
 			        %>
 				        <div class="SortButton ${sortOrder}16x16Icon" style="width: auto; padding-left: 20px;">
-				        	<%=_ctx.appRes("ListView.view.label.dateCreated")%>
+				        	<%=_ctx.appRes("ListView.view.label.exo_dateCreated")%>
 				        </div>
 				      <%} else { %>
-				        	<%=_ctx.appRes("ListView.view.label.dateCreated")%>
+				        	<%=_ctx.appRes("ListView.view.label.exo_dateCreated")%>
 				      <%} %>
 			      </a>
 			    </div>

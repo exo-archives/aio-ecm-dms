@@ -2877,6 +2877,7 @@
   	  <ShowMusic>Hiển thị các file âm thanh</ShowMusic>
   	  <ShowImages>Hiển thị các file ảnh</ShowImages>
   	  <ShowDocuments>Hiển thị các file tài liệu</ShowDocuments>
+  	  <ShowContents>Hiển thị tài liệu nội dung</ShowContents>
   	</title>  	
   </UIAllItemsByType>  
   
@@ -2885,7 +2886,8 @@
     	 <Images>Ảnh</Images>
     	 <Video>Phim</Video>
     	 <Music>Âm thanh</Music>
-    	 <Documents>Tài liệu</Documents>    	 
+    	 <Documents>Tài liệu</Documents>
+    	 <Contents>Nội dung</Contents>  	 
     </label>
   </DocumentType>
   

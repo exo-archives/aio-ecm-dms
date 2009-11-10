@@ -60,10 +60,10 @@ public class UIAllItemsByType extends UIComponent {
       UIAllItemsByType uiViewDocumentTypes = event.getSource();
       String supportType = event.getRequestContext().getRequestParameter(OBJECTID);
       UIJCRExplorer uiExplorer = uiViewDocumentTypes.getAncestorOfType(UIJCRExplorer.class);            
-      uiExplorer.setSelectRootNode();      
       uiExplorer.setSupportedType(supportType);
       uiExplorer.setViewDocument(true);      
       uiExplorer.setIsViewTag(false);
+      uiExplorer.setSelectRootNode();      
       uiExplorer.updateAjax(event);
     }
   }

@@ -51,7 +51,7 @@ public interface DocumentTypeService {
    * @return List<Node> all documents by kind of document type
    * @throws Exception
    */
-  public List<Node> getAllDocumentsByKindOfDocumentType(String documentType, String workspace, String repository,
+  public List<Node> getAllDocumentsByDocumentType(String documentType, String workspace, String repository,
       SessionProvider sessionProvider) throws Exception;
   
   /**
@@ -90,4 +90,32 @@ public interface DocumentTypeService {
    */
   public List<Node> getAllDocumentsByUser(String workspace, String repository, 
       SessionProvider sessionProvider, String[] mimeTypes, String userName) throws Exception;
+
+  /**
+   * Check the document is content type or not
+   * @param documentType
+   * @return
+   */
+  public boolean isContentsType(String documentType);
+  
+  /**
+   * Get all contents type document
+   * @param documentType Contents type
+   * @param workspace The name of workspace will be used to get documents
+   * @param repository The name of repository will be used to get documents
+   * @param sessionProvider 
+   * @return List<Node> all contents type document
+   * @param userName
+   * @return
+   * @throws Exception
+   */
+  public List<Node> getAllDocumentByContentsType(String documentType, String workspace, String repository, 
+      SessionProvider sessionProvider, String userName) throws Exception;
+  
+  /**
+   * Get mime types by document type
+   * @param documentType
+   * @return
+   */
+  public String[] getMimeTypes(String documentType);
 }

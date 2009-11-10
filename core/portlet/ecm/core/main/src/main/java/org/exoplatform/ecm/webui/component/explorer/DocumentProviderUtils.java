@@ -128,8 +128,7 @@ public class DocumentProviderUtils {
 		List<Node> ret = new ArrayList<Node>();
     boolean byUser = uiExplorer.getPreference().isShowItemsByUser();		
 		
-		StringBuilder queryString	= new StringBuilder("SELECT * FROM ")
-																		.append(Utils.EXO_HIDDENABLE);
+		StringBuilder queryString	= new StringBuilder("SELECT * FROM " + Utils.EXO_HIDDENABLE);
 		if (byUser) {
 			queryString.append(" WHERE CONTAINS(").
 									append(Utils.EXO_OWNER).
@@ -146,25 +145,17 @@ public class DocumentProviderUtils {
   	while (iter.hasNext()) {
   		ret.add(iter.nextNode());
   	}
-
 		return ret;
 	}
 	
 	private List<Node> getFavouriteNodeList(UIJCRExplorer uiExplorer) throws Exception {
     boolean byUser = uiExplorer.getPreference().isShowItemsByUser();
     
-		if (!byUser) {
-			return favouriteService_.getAllFavouriteNodes(
-									uiExplorer.getCurrentWorkspace(), 
-									uiExplorer.getRepositoryName(),
-									uiExplorer.getSessionProvider());
-		} else {
-			return favouriteService_.getAllFavouriteNodesByUser(
-					uiExplorer.getCurrentWorkspace(), 
-					uiExplorer.getRepositoryName(),
-					uiExplorer.getSessionProvider(),
-					uiExplorer.getSession().getUserID());
-		}
+		if (!byUser) 
+			return favouriteService_.getAllFavouriteNodes(uiExplorer.getCurrentWorkspace(), 
+          uiExplorer.getRepositoryName(), uiExplorer.getSessionProvider());
+			return favouriteService_.getAllFavouriteNodesByUser(uiExplorer.getCurrentWorkspace(), 
+          uiExplorer.getRepositoryName(), uiExplorer.getSessionProvider(), uiExplorer.getSession().getUserID());
 	}
 	
 	private List<Node> getOwnedByUserNodeList(UIJCRExplorer uiExplorer) throws Exception {
