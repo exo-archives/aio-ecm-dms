@@ -49,7 +49,6 @@ import javax.jcr.version.VersionException;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.commons.utils.ObjectPageList;
-import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.component.ComponentPlugin;
@@ -212,8 +211,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   public void updateNodeLists() throws Exception {
-    ExoContainer container = ExoContainerContext.getCurrentContainer();
-    TimelineService timelineService = (TimelineService)container.getComponentInstanceOfType(TimelineService.class);
+    TimelineService timelineService = getApplicationComponent(TimelineService.class);
     
     UIJCRExplorer uiExplorer = this.getAncestorOfType(UIJCRExplorer.class);
     SessionProvider sessionProvider = uiExplorer.getSessionProvider();
@@ -221,18 +219,18 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     String repository = this.getRepository();
     String workspace = this.getWorkspaceName();
     String userName = session.getUserID();
-    
+    String nodePath = uiExplorer.getCurrentPath();
     boolean byUser = uiExplorer.getPreference().isShowItemsByUser();
     todayNodes = timelineService.
-          getDocumentsOfToday(repository, workspace, sessionProvider, userName, byUser);
+          getDocumentsOfToday(nodePath, repository, workspace, sessionProvider, userName, byUser);
     yesterdayNodes = timelineService.
-          getDocumentsOfYesterday(repository, workspace, sessionProvider, userName, byUser);
+          getDocumentsOfYesterday(nodePath, repository, workspace, sessionProvider, userName, byUser);
     earlierThisWeekNodes = timelineService.
-          getDocumentsOfEarlierThisWeek(repository, workspace, sessionProvider, userName, byUser);
+          getDocumentsOfEarlierThisWeek(nodePath, repository, workspace, sessionProvider, userName, byUser);
     earlierThisMonthNodes = timelineService.
-          getDocumentsOfEarlierThisMonth(repository, workspace, sessionProvider, userName, byUser);
+          getDocumentsOfEarlierThisMonth(nodePath, repository, workspace, sessionProvider, userName, byUser);
     earlierThisYearNodes = timelineService.
-          getDocumentsOfEarlierThisYear(repository, workspace, sessionProvider, userName, byUser);
+          getDocumentsOfEarlierThisYear(nodePath, repository, workspace, sessionProvider, userName, byUser);
     
     Collections.sort(todayNodes, new SearchComparator());
     Collections.sort(yesterdayNodes, new SearchComparator());
@@ -716,6 +714,10 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       }
     }   
     return false;
+  }
+  
+  public boolean isFavouriteNode(String userName, Node node) {
+    return getApplicationComponent(FavouriteService.class).isFavouriter(userName, node);
   }
   
   public boolean isMediaType(Node data) throws Exception {
