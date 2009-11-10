@@ -94,6 +94,11 @@
 	width:17px;
 }
 
+.UIJCRExplorerPortlet .UISideBar .SideGeneratal {
+	background: url('MacSkin/icons/Generatal.gif') no-repeat center;
+	width: 17px; height: 17px;
+}
+
 .UIJCRExplorerPortlet .UISideBar .ResizeTreeExplorer .ResizeTreeButton{
   background: url('DefaultSkin/background/ResizeTreeButton.gif') no-repeat center;
 	height: 7px;
@@ -114,7 +119,7 @@
   padding: 8px 0px 8px 5px; /* orientation=lt */
   padding: 8px 5px 8px 0px; /* orientation=rt */
   background: url('MacSkin/background/SelectedItem.gif') no-repeat 9px center; /* orientation=lt */
-  background: url('MacSkin/background/SelectedItem-rt.gif') no-repeat -9px center; /* orientation=rt */
+  background: url('MacSkin/background/SelectedItem-rt.gif') no-repeat 5px center; /* orientation=rt */
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .ItemIcon {
@@ -355,7 +360,6 @@
 }
 	
 .UISideBar .UITagExplorer .TagmapHolder .TagmapContent {
-   background: #ffffff;
    padding: 5px;
    text-align: left; /* orientation=lt */
    text-align: right; /* orientation=rt */

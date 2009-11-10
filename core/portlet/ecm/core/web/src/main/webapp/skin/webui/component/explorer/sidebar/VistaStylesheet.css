@@ -89,6 +89,11 @@
   */
 }
 
+.UIJCRExplorerPortlet .UISideBar .SideGeneratal {
+	background: url('DefaultSkin/icons/Generatal.png') no-repeat center;
+	width: 17px; height: 17px;
+}
+
 .UIJCRExplorerPortlet .UISideBar .UIResizableBlock {
 	width: 204px;
 	height: 100%;
@@ -110,7 +115,7 @@
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .FileExplorerIcon {
 	background: url('VistaSkin/icons/FileExplorer.gif') no-repeat center;
-	width: 18px; height: 15px;
+	width: 18px; height: 16px;
 }
 
 .UIJCRExplorerPortlet .UISideBar .UISelectContent .RelationsIcon {
@@ -317,7 +322,6 @@
 }
 	
 .UISideBar .UITagExplorer .TagmapHolder .TagmapContent {
-   background: #ffffff;
    padding: 5px;
    text-align: left; /* orientation=lt */
    text-align: right; /* orientation=rt */

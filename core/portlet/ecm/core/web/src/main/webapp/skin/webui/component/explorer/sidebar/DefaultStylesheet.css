@@ -125,11 +125,6 @@
 	float: right; /* orientation=rt */
 }
 
-.UIJCRExplorerPortlet .UISideBar .UIResizableBlock .SelectItem{
-	height: 229px;
-	overflow: auto;
-}
-
 .UIJCRExplorerPortlet .UISideBar .UISelectContent {
 	float: right; /* orientation=lt */
 	float: left; /* orientation=rt */
@@ -374,7 +369,6 @@
 }
 	
 .UISideBar .UITagExplorer .TagmapHolder .TagmapContent {
-   background: #ffffff;
    padding: 5px;
    text-align: left; /* orientation=lt */
    text-align: right; /* orientation=rt */
