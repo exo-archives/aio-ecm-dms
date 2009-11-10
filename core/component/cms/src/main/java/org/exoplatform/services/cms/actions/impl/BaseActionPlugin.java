@@ -497,9 +497,9 @@ abstract public class BaseActionPlugin implements ActionPlugin {
       timeInterval = (String) ((JcrInputProperty) mappings.get("/node/exo:timeInterval")).getValue();
       mappings.remove("/node/exo:timeInterval") ;
     } 
-    if(mappings.containsKey("/node/exo:cronExpress")) {
-      cronExpress = (String) ((JcrInputProperty) mappings.get("/node/exo:cronExpress")).getValue();                   
-      mappings.remove("/node/exo:cronExpress") ; 
+    if(mappings.containsKey("/node/exo:cronExpression")) {
+      cronExpress = (String) ((JcrInputProperty) mappings.get("/node/exo:cronExpression")).getValue();                   
+      mappings.remove("/node/exo:cronExpression") ; 
     }    
     actionNode.setProperty(JOB_NAME_PROP,jobName) ;
     actionNode.setProperty(JOB_GROUP_PROP,jobGroup) ;
