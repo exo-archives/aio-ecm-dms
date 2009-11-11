@@ -339,7 +339,9 @@ public class UIPropertyForm extends UIForm {
   private void changeSingleType(int type) {
     removeChildById(FIELD_VALUE);
     if(PropertyType.BINARY == type) {
-      addUIFormInput(new UIFormUploadInput(FIELD_VALUE, FIELD_VALUE));
+      UIFormUploadInput uiUploadInput = new UIFormUploadInput(FIELD_VALUE, FIELD_VALUE);
+      uiUploadInput.setAutoUpload(true);
+      addUIFormInput(uiUploadInput);
     } else if(PropertyType.BOOLEAN == type) {
       addUIFormInput(new UIFormCheckBoxInput(FIELD_VALUE, FIELD_VALUE, null));
     } else if(PropertyType.DATE == type) {

@@ -36,6 +36,7 @@ public class UIFormUploadField extends DialogFormField{
   public <T extends UIFormInputBase> T createUIFormInput() throws Exception {
     UIFormUploadInput uiInputUpload = new UIFormUploadInput(name, name) ;
     if(label != null) uiInputUpload.setLabel(label) ;
+    uiInputUpload.setAutoUpload(true);
     return (T)uiInputUpload;
   }
 

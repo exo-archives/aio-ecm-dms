@@ -62,7 +62,9 @@ public class UINodeTypeUpload extends UIForm {
 
   public UINodeTypeUpload() throws Exception {
     this.setMultiPart(true) ;
-    addUIFormInput(new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD)) ;
+    UIFormUploadInput uiInput = new UIFormUploadInput(FIELD_UPLOAD, FIELD_UPLOAD);
+    uiInput.setAutoUpload(true);
+    addUIFormInput(uiInput) ;
   }
 
   @SuppressWarnings("unchecked")

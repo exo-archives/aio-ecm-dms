@@ -16,7 +16,7 @@
  */
 package org.exoplatform.ecm.webui.component.explorer.popup.actions;
 
-import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 import javax.jcr.Node;
 import javax.jcr.Property;
@@ -79,7 +79,9 @@ public class UIResourceForm extends UIForm {
       addUIFormInput(new UIFormTextAreaInput(FIElD_TEXTTOMODIFY, FIElD_TEXTTOMODIFY, contentText)) ;      
     }else {
       getUIStringInput(FIElD_NAME).setEditable(false);
-      addUIFormInput(new UIFormUploadInput(FIElD_FILETOUPLOAD, FIElD_FILETOUPLOAD)) ;
+      UIFormUploadInput uiInput = new UIFormUploadInput(FIElD_FILETOUPLOAD, FIElD_FILETOUPLOAD);
+      uiInput.setAutoUpload(true);
+      addUIFormInput(uiInput) ;
     }
   }
   
@@ -94,11 +96,10 @@ public class UIResourceForm extends UIForm {
         String text = uiResourceForm.getUIFormTextAreaInput(FIElD_TEXTTOMODIFY).getValue() ;
         uiResourceForm.contentNode_.setProperty("jcr:data", text) ;
       }else {
-        //TODO: upload file here !
         UIFormUploadInput  fileUpload = 
           (UIFormUploadInput)uiResourceForm.getUIInput(FIElD_FILETOUPLOAD) ; 
-        byte[] content =  fileUpload.getUploadData() ;
-        uiResourceForm.contentNode_.setProperty("jcr:data", new ByteArrayInputStream(content)) ;
+        InputStream content =  fileUpload.getUploadDataAsStream() ;
+        uiResourceForm.contentNode_.setProperty("jcr:data", content) ;
       }
       if(uiResourceForm.session_ != null) uiResourceForm.session_.save() ;
       else uiJCRExplorer.getSession().save() ;

@@ -74,6 +74,7 @@ public class UIThumbnailForm extends UIForm implements UIPopupComponent {
   public UIThumbnailForm() throws Exception {
     setMultiPart(true) ;
     UIFormUploadInput uiInput = new UIFormUploadInput(THUMBNAIL_FIELD, THUMBNAIL_FIELD) ;
+    uiInput.setAutoUpload(true);
     addUIFormInput(uiInput) ;
   }
   
