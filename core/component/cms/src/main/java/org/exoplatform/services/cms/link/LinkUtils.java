@@ -16,6 +16,10 @@
  */
 package org.exoplatform.services.cms.link;
 
+import javax.jcr.Node;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 
@@ -168,12 +172,41 @@ public final class LinkUtils {
     return (LinkManager) context.getComponentInstance(LinkManager.class);
   }
   
+  /**
+   * The procedure which return the path existed in tree.<br>
+   * @author Phan Trong Lam. 
+   * @param node is a Node type which represents current node. 
+   * @param path a current path
+   * @return the path existed in tree
+   * @throws RepositoryException when some exceptions occurrence.
+   */
+  public static String getExistPath(Node node, String path) throws RepositoryException {
+    
+    // The following process is added by lampt.
+    int deep = getDepth(path);      
+    
+    // In case of path is root path.
+    if (deep == 0) { 
+      path = LinkUtils.getAncestorPath(path, 0);        
+    } else {
+      Session session = node.getSession();
+      for (int i = deep; i > 0; i-- ) {         
+        if (session.itemExists(path))          
+          break;        
+        else 
+          path = getParentPath(path);
+      }
+    }
+    return path;
+  }
+  
   private static String cleanPath(String path) {
+    
     // Remove unnecessary '/'
     path = path.replaceAll("/+", "/");
     if (path.length() > 1 && path.charAt(path.length() - 1) == '/') {
       path = path.substring(0, path.length() - 1);
     }
     return path;
-  }
+  }     
 }

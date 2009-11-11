@@ -159,7 +159,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     
     final String virtualNodePath = srcPath;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    Node currentNode = uiExplorer.getCurrentNode(); 
+    
     
     UIApplication uiApp = uiExplorer.getAncestorOfType(UIApplication.class);
     try {
@@ -183,12 +183,14 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     	String trashWorkspace = portletPref.getValue(Utils.TRASH_WORKSPACE, "");
     	String trashRepository = portletPref.getValue(Utils.TRASH_REPOSITORY, "");
     	SessionProvider sessionProvider = uiExplorer.getSessionProvider();
+    	Node currentNode = uiExplorer.getCurrentNode();
     	trashService.moveToTrash(node, 
-    							 trashHomeNodePath, 
-    							 trashWorkspace, 
-    							 trashRepository, 
-    							 sessionProvider);
+    							 trashHomeNodePath, trashWorkspace, 
+    							 trashRepository, sessionProvider);    	    	
+    	String currentPath = LinkUtils.getExistPath(currentNode, uiExplorer.getCurrentPath());    	
+    	uiExplorer.setCurrentPath(currentPath);    	
     	uiExplorer.updateAjax(event);
+    	
     } catch (LockException e) {
     	LOG.error("node is locked, can't move to trash node :" + node.getPath());
     	JCRExceptionManager.process(uiApp, e);
@@ -210,11 +212,12 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
     	uiExplorer.updateAjax(event);
     }
+    
     if (!isMultiSelect) {
-      if (currentNode.getPath().equals(virtualNodePath))
+      if (uiExplorer.getCurrentPath().equals(virtualNodePath))       
         uiExplorer.setSelectNode(LinkUtils.getParentPath(virtualNodePath));
       else
-        uiExplorer.setSelectNode(currentNode.getPath());
+        uiExplorer.setSelectNode(uiExplorer.getCurrentPath());
     }
 	}  
   
