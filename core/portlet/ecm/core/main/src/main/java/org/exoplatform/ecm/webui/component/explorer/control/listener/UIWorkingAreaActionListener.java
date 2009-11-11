@@ -100,7 +100,7 @@ public abstract class UIWorkingAreaActionListener <T extends UIComponent> extend
   @Override
   public void execute(Event<T> event) throws Exception {
     String nodePath = event.getRequestContext().getRequestParameter(UIComponent.OBJECTID);
-    if (!nodePath.contains(";")) {
+    if (nodePath == null || !nodePath.contains(";")) {
       super.execute(event);
       return;
     }
