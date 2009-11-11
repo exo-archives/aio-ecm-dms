@@ -459,10 +459,10 @@ public class UISingleUploadForm extends UIForm implements UIPopupComponent, UISe
           if(newNode != null) uiUploadContainer.setUploadedNode(newNode) ;
         }
         UISingleUploadContent uiUploadContent = uiManager.findFirstComponentOfType(UISingleUploadContent.class) ;
-        double size = uploadService.getUploadResource(uiChild.getUploadId()).getEstimatedSize()/1024;
-        String fileSize = Double.toString(size);     
+        double size = uploadService.getUploadResource(input.getUploadId()).getEstimatedSize();
+        String fileSize = Utils.calculateFileSize(size);     
         String[] arrValues = {Text.unescapeIllegalJcrChars(fileName), 
-            Text.unescapeIllegalJcrChars(name), fileSize +" Kb", mimeType} ;
+            Text.unescapeIllegalJcrChars(name), fileSize, mimeType} ;
         uiUploadContent.setUploadValues(arrValues) ;
         inputStream.close();
         uploadService.removeUpload(uiChild.getUploadId()) ;
