@@ -5,6 +5,7 @@
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
   import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
   import org.exoplatform.services.jcr.util.Text;
+  import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
      
   def uiWorkingArea = uicomponent.getAncestorOfType(UIWorkingArea.class);
   def uiCustomActionComponent = uiWorkingArea.getCustomAction();
@@ -53,21 +54,23 @@
 					 </div>
 				</div>
 				<div class="GroundContextMenu" style="background: #F6F6F6; position: absolute;	top: 0px; display: none;">
-					<div class="UIRightClickPopupMenu" style="display: block;">
-						<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">
-								<%
-											for(itemGroundContext in managersGroundContext) {
-											action = itemGroundContext.getUIExtensionName();
-									%>
-									<a class="MenuItem" href="<%=itemGroundContext.event(action)%>" style="display: block;"> 	
-										<div class="MenuIcon ${action}16x16Icon">
-											<%=_ctx.appRes("ECMContextMenu.event." + action)%>
-										</div>
-								 	</a>
-								<%}%>			
-						  
-						 </div>	
-					 </div>
+					<% if (uicomponent.getDocumentSourceType() == DocumentProviderUtils.CURRENT_NODE_ITEMS) {%>				
+						<div class="UIRightClickPopupMenu" style="display: block;">
+							<div class="UIRightPopupMenuContainer" onmousedown="event.cancelBubble = true;" style="border: 2px solid #b7b7b7">
+									<%
+												for(itemGroundContext in managersGroundContext) {
+												action = itemGroundContext.getUIExtensionName();
+										%>
+										<a class="MenuItem" href="<%=itemGroundContext.event(action)%>" style="display: block;"> 	
+											<div class="MenuIcon ${action}16x16Icon">
+												<%=_ctx.appRes("ECMContextMenu.event." + action)%>
+											</div>
+									 	</a>
+									<%}%>			
+							  
+							 </div>	
+						 </div>
+					 <%}%>
 				</div>
 			</div>
 		<%}%>	

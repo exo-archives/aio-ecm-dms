@@ -20,7 +20,10 @@ import org.exoplatform.ecm.jcr.model.Preference;
 import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
+import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAllItemsPreferenceForm;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -79,9 +82,23 @@ public class UIAllItems extends UIComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);*/
       
       //new code
+      uiExplorer.setViewDocument(false);
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(!uiDocumentWorkspace.isRendered()) {
+        uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
+        uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
+      }
+      
       UIDocumentContainer uiDocumentContainer = uiExplorer.findFirstComponentOfType(UIDocumentContainer.class) ;
       UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
-      uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.FAVOURITE_ITEMS);
+      if (uiDocumentInfo.getDocumentSourceType() == DocumentProviderUtils.CURRENT_NODE_ITEMS) {
+      	uiExplorer.record(uiExplorer.getCurrentPath(), uiExplorer.getCurrentWorkspace());
+      } else { 
+      	uiExplorer.getDocumentSourceTypeHistory().add(uiDocumentInfo.getDocumentSourceType());
+      }
+      uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.FAVOURITE_ITEMS);      
+      
       uiExplorer.updateAjax(event) ;			
     }
   }
@@ -109,9 +126,23 @@ public class UIAllItems extends UIComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);*/
       
       // new code
+      uiExplorer.setViewDocument(false);
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(!uiDocumentWorkspace.isRendered()) {
+        uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
+        uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
+      }
+      
       UIDocumentContainer uiDocumentContainer = uiExplorer.findFirstComponentOfType(UIDocumentContainer.class) ;
       UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
-      uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.TRASH_ITEMS);
+      if (uiDocumentInfo.getDocumentSourceType() == DocumentProviderUtils.CURRENT_NODE_ITEMS) {
+      	uiExplorer.record(uiExplorer.getCurrentPath(), uiExplorer.getCurrentWorkspace());
+      } else { 
+      	uiExplorer.getDocumentSourceTypeHistory().add(uiDocumentInfo.getDocumentSourceType());
+      }
+      uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.TRASH_ITEMS);      
+      
       uiExplorer.updateAjax(event);			
     }
   }
@@ -135,10 +166,25 @@ public class UIAllItems extends UIComponent {
       uiShowAllHiddenResult.setSearchTime(time);
       uiDocumentWorkspace.setRenderedChild(UIShowAllHiddenResult.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);*/
+      
       // new code
+      uiExplorer.setViewDocument(false);
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(!uiDocumentWorkspace.isRendered()) {
+        uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
+        uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
+      }
+      
       UIDocumentContainer uiDocumentContainer = uiExplorer.findFirstComponentOfType(UIDocumentContainer.class) ;
       UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+      if (uiDocumentInfo.getDocumentSourceType() == DocumentProviderUtils.CURRENT_NODE_ITEMS) {
+      	uiExplorer.record(uiExplorer.getCurrentPath(), uiExplorer.getCurrentWorkspace());
+      } else { 
+      	uiExplorer.getDocumentSourceTypeHistory().add(uiDocumentInfo.getDocumentSourceType());
+      }
       uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.HIDDEN_ITEMS);
+      
       uiExplorer.updateAjax(event);
     }
   }
@@ -163,10 +209,25 @@ public class UIAllItems extends UIComponent {
       uiDocumentWorkspace.setRenderedChild(UIShowAllOwnedByUserResult.class);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentWorkspace);
       */
+      
       // new code
+      uiExplorer.setViewDocument(false);
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(!uiDocumentWorkspace.isRendered()) {
+        uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
+        uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
+      }
+      
       UIDocumentContainer uiDocumentContainer = uiExplorer.findFirstComponentOfType(UIDocumentContainer.class) ;
       UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+      if (uiDocumentInfo.getDocumentSourceType() == DocumentProviderUtils.CURRENT_NODE_ITEMS) {
+      	uiExplorer.record(uiExplorer.getCurrentPath(), uiExplorer.getCurrentWorkspace());
+      } else { 
+      	uiExplorer.getDocumentSourceTypeHistory().add(uiDocumentInfo.getDocumentSourceType());
+      }
       uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.OWNED_BY_USER_ITEMS);
+      
       uiExplorer.updateAjax(event);
     }
   }  

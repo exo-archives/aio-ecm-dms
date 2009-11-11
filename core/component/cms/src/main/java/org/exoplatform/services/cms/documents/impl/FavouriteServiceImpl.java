@@ -45,6 +45,7 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  */
 public class FavouriteServiceImpl implements FavouriteService {
 
+  final static public String EXO_RESTORELOCATION = "exo:restoreLocation";	
 	private RepositoryService repositoryService;
 
 	public FavouriteServiceImpl(RepositoryService repositoryService) {
@@ -132,7 +133,8 @@ public class FavouriteServiceImpl implements FavouriteService {
 										append(EXO_FAVOURITE_NODE).
 										append(" WHERE ").
 										append(EXO_FAVOURITER_PROPERTY).
-										append(" IS NOT NULL ");
+										append(" IS NOT NULL");
+		
 		return selectNodesByQueryString(workspace, repository, sessionProvider, 
 							query.toString(), Query.SQL);
 	}
@@ -153,6 +155,7 @@ public class FavouriteServiceImpl implements FavouriteService {
 										append(EXO_FAVOURITER_PROPERTY).
 										append(", '").
 										append(userName).append("')");
+
 		return selectNodesByQueryString(workspace, repository, sessionProvider, 
 				query.toString(), Query.SQL);
 	}

@@ -101,6 +101,7 @@ public class UIJCRExplorer extends UIContainer {
   private LinkedList<ClipboardCommand> clipboards_ = new LinkedList<ClipboardCommand>() ;
   private LinkedList<String> nodesHistory_ = new LinkedList<String>() ;
   private LinkedList<String> wsHistory_ = new LinkedList<String>();
+  private LinkedList<Integer> documentSourceTypeHistory_ = new LinkedList<Integer>();
   private PortletPreferences pref_ ;
   private Preference preferences_;
   private Map<String, HistoryEntry> addressPath_ = new HashMap<String, HistoryEntry>() ;
@@ -267,8 +268,8 @@ public class UIJCRExplorer extends UIContainer {
    * Tells to go back to the given location 
    */
   public void setBackNodePath(String previousWorkspaceName, String previousPath) throws Exception {
-    setSelectNode(previousWorkspaceName, previousPath);
-    refreshExplorer() ;
+    setBackSelectNode(previousWorkspaceName, previousPath);
+    refreshExplorer();
   }
   
   public void setDriveData(DriveData driveData) { driveData_ = driveData ; }
@@ -280,6 +281,10 @@ public class UIJCRExplorer extends UIContainer {
   public LinkedList<String> getNodesHistory() { return nodesHistory_ ; }
   @Deprecated
   public void setNodesHistory(LinkedList<String> h) {nodesHistory_ = h;}
+  
+  public LinkedList<Integer> getDocumentSourceTypeHistory() { return documentSourceTypeHistory_ ; }
+  @Deprecated
+  public void setDocumentSourceTypeHistory(LinkedList<Integer> h) {documentSourceTypeHistory_ = h;}
 
   public LinkedList<String> getWorkspacesHistory() { return wsHistory_; }
   @Deprecated
@@ -560,7 +565,7 @@ public class UIJCRExplorer extends UIContainer {
     if(preferences_.isShowSideBar()) {
       findFirstComponentOfType(UITreeExplorer.class).buildTree();
     }
-    UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class) ;
+    UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
     if(uiDocWorkspace.isRendered()) {
       UIDocumentContainer uiDocumentContainer = uiDocWorkspace.getChild(UIDocumentContainer.class) ;
       if(isShowViewFile()) {
@@ -615,11 +620,18 @@ public class UIJCRExplorer extends UIContainer {
     nodesHistory_.add(str);
     wsHistory_.add(ws);
     addressPath_.put(str, new HistoryEntry(ws, str));
+    
+    UIWorkingArea uiWorkingArea = getChild(UIWorkingArea.class);
+    UIDocumentWorkspace uiDocWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+    UIDocumentContainer uiDocumentContainer = uiDocWorkspace.getChild(UIDocumentContainer.class) ;
+    UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo");
+    documentSourceTypeHistory_.add(uiDocumentInfo.getDocumentSourceType());
   }
 
   public void clearNodeHistory(String currentPath) {
     nodesHistory_.clear();
     wsHistory_.clear();
+    documentSourceTypeHistory_.clear();
     addressPath_.clear();
     currentPath_ = currentPath;
   }
@@ -627,6 +639,10 @@ public class UIJCRExplorer extends UIContainer {
   public String rewind() { return nodesHistory_.removeLast() ; }
 
   public String previousWsName() { return wsHistory_.removeLast(); }
+  
+  public int previousDocumentSourceType() {
+  	return documentSourceTypeHistory_.removeLast();
+  }
   
   @Deprecated
   public void setSelectNode(String uri, Session session) throws Exception {
@@ -638,12 +654,22 @@ public class UIJCRExplorer extends UIContainer {
     setSelectNode(uri);
     setLastWorkspace(lastWorkspaceName);
   }
-
+  
+  public void setBackSelectNode(String workspaceName, String uri) throws Exception {
+    String lastWorkspaceName = setTargetWorkspaceProperties(workspaceName);
+    setSelectNode(uri, true);
+    setLastWorkspace(lastWorkspaceName);
+  }
+  
   public void setSelectRootNode() throws Exception {
     setSelectNode(getCurrentDriveWorkspace(), getRootPath());
   }
   
-  public void setSelectNode(String uri) throws Exception {  
+  public void setSelectNode(String uri) throws Exception {
+  	setSelectNode(uri, false);
+  }
+  
+  public void setSelectNode(String uri, boolean back) throws Exception {  
     Node currentNode;
     if(uri == null || uri.length() == 0) uri = "/";
     String previousPath = currentPath_;
@@ -658,11 +684,11 @@ public class UIJCRExplorer extends UIContainer {
     if(currentNode.hasProperty(Utils.EXO_LANGUAGE)) {
       setLanguage(currentNode.getProperty(Utils.EXO_LANGUAGE).getValue().getString());
     }
-    if(previousPath != null && !currentPath_.equals(previousPath)) {
+    if(previousPath != null && !currentPath_.equals(previousPath) && !back) {
       record(previousPath, lastWorkspaceName_);
     }
   }
-
+  
   public List<Node> getChildrenList(String path, boolean isReferences) throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class) ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;

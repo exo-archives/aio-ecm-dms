@@ -129,6 +129,7 @@ public class DocumentProviderUtils {
     boolean byUser = uiExplorer.getPreference().isShowItemsByUser();		
 		
 		StringBuilder queryString	= new StringBuilder("SELECT * FROM " + Utils.EXO_HIDDENABLE);
+
 		if (byUser) {
 			queryString.append(" WHERE CONTAINS(").
 									append(Utils.EXO_OWNER).
@@ -143,19 +144,30 @@ public class DocumentProviderUtils {
   	
   	NodeIterator iter = queryResult.getNodes();
   	while (iter.hasNext()) {
-  		ret.add(iter.nextNode());
+  		Node node = iter.nextNode();
+  		if (node.isNodeType(Utils.EXO_RESTORELOCATION)) continue;
+  		ret.add(node);
   	}
 		return ret;
 	}
 	
 	private List<Node> getFavouriteNodeList(UIJCRExplorer uiExplorer) throws Exception {
     boolean byUser = uiExplorer.getPreference().isShowItemsByUser();
+    List<Node> ret = new ArrayList<Node>();
+    List<Node> favouriteList = null;
     
 		if (!byUser) 
-			return favouriteService_.getAllFavouriteNodes(uiExplorer.getCurrentWorkspace(), 
+			favouriteList = favouriteService_.getAllFavouriteNodes(uiExplorer.getCurrentWorkspace(), 
           uiExplorer.getRepositoryName(), uiExplorer.getSessionProvider());
-			return favouriteService_.getAllFavouriteNodesByUser(uiExplorer.getCurrentWorkspace(), 
+		favouriteList = favouriteService_.getAllFavouriteNodesByUser(uiExplorer.getCurrentWorkspace(), 
           uiExplorer.getRepositoryName(), uiExplorer.getSessionProvider(), uiExplorer.getSession().getUserID());
+			
+		for (Node node : favouriteList) {
+			if (!node.isNodeType(Utils.EXO_RESTORELOCATION))
+				ret.add(node);
+		}
+		
+		return ret;
 	}
 	
 	private List<Node> getOwnedByUserNodeList(UIJCRExplorer uiExplorer) throws Exception {
@@ -164,12 +176,12 @@ public class DocumentProviderUtils {
 		Session session = uiExplorer.getSession();
 		StringBuilder queryString	= new StringBuilder("SELECT * FROM ").append(Utils.NT_BASE);
 		
-		queryString.append(" WHERE CONTAINS(").
-								append(Utils.EXO_OWNER).
-								append(",'").
-								append(uiExplorer.getSession().getUserID()).
-								append("')");
-			
+			queryString.append(" WHERE CONTAINS(").
+									append(Utils.EXO_OWNER).
+									append(",'").
+									append(uiExplorer.getSession().getUserID()).
+									append("')");
+		
   	QueryManager queryManager = session.getWorkspace().getQueryManager();
   	Query query = queryManager.createQuery(queryString.toString(), Query.SQL);
   	QueryResult queryResult = query.execute();
@@ -180,6 +192,7 @@ public class DocumentProviderUtils {
   	while (iter.hasNext()) {
   		node = iter.nextNode();
   		if (node.getName().equals(Utils.JCR_CONTENT)) continue;
+  		if (node.isNodeType(Utils.EXO_RESTORELOCATION)) continue;
   		if (node.isNodeType(Utils.NT_RESOURCE))
   			node = node.getParent();
   		if (!set.contains(node)) {

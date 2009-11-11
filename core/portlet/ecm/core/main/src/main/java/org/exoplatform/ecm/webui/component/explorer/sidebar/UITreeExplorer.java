@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.AccessDeniedException;
+import javax.jcr.Item;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.PathNotFoundException;
@@ -79,7 +80,8 @@ public class UITreeExplorer extends UIContainer {
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getLogger("dms.UIJCRExplorer");	
+  private static final Log LOG  = ExoLogger.getLogger("dms.UIJCRExplorer");
+  private static final String EXO_RESTORE_LOCATION = "exo:restoreLocation";
   private TreeNode treeRoot_ ;
   public UITreeExplorer() throws Exception { 
   }
@@ -296,11 +298,11 @@ public class UITreeExplorer extends UIContainer {
       UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class) ;
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
       Session session = uiExplorer.getSessionByWorkspace(workspaceName);
-      uiExplorer.setViewDocument(false);
+      Item item = null;
       try {
     	// Check if the path exists
         NodeFinder nodeFinder = uiTreeExplorer.getApplicationComponent(NodeFinder.class);
-        nodeFinder.getItem(session, path);
+        item = nodeFinder.getItem(session, path);
       } catch(PathNotFoundException pa) {
         uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found", null, 
             ApplicationMessage.WARNING)) ;
@@ -317,20 +319,29 @@ public class UITreeExplorer extends UIContainer {
 	      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
 	      return ;    	  
       }
+      if (isInTrash(item)) 
+      	return;
+      
+      uiExplorer.setViewDocument(false);      
       UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
       UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
       if(!uiDocumentWorkspace.isRendered()) {
         uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
         uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
       }
+      uiExplorer.setSelectNode(workspaceName, path) ;
       
       UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class);
       UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
       uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
       
-      uiExplorer.setSelectNode(workspaceName, path) ; 
       uiExplorer.updateAjax(event) ;      
     }
+  }
+  
+  private static boolean isInTrash(Item item) throws RepositoryException {
+  	return (item instanceof Node) &&
+    			 ((Node) item).isNodeType(EXO_RESTORE_LOCATION);
   }
   
   static public class ExpandTreeActionListener extends EventListener<UITreeExplorer> {
@@ -341,11 +352,11 @@ public class UITreeExplorer extends UIContainer {
       UIApplication uiApp = uiTreeExplorer.getAncestorOfType(UIApplication.class);
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
       Session session = uiExplorer.getSessionByWorkspace(workspaceName);
-      uiExplorer.setViewDocument(false);
+      Item item = null;
       try {
         // Check if the path exists
         NodeFinder nodeFinder = uiTreeExplorer.getApplicationComponent(NodeFinder.class);
-        nodeFinder.getItem(session, path);
+        item = nodeFinder.getItem(session, path);
       } catch (PathNotFoundException pa) {
         uiApp.addMessage(new ApplicationMessage("UITreeExplorer.msg.path-not-found",
                                                 null,
@@ -365,6 +376,10 @@ public class UITreeExplorer extends UIContainer {
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }
+      if (isInTrash(item))
+      	return;
+      
+      uiExplorer.setViewDocument(false);
       if (uiExplorer.getPreference().isShowSideBar()) {
         uiTreeExplorer.buildTree(path);
       }

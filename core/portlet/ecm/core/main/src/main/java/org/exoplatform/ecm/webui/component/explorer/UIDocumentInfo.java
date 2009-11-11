@@ -35,6 +35,7 @@ import java.util.regex.Matcher;
 
 import javax.imageio.ImageIO;
 import javax.jcr.AccessDeniedException;
+import javax.jcr.Item;
 import javax.jcr.ItemNotFoundException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
@@ -735,10 +736,12 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   static public class ViewNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {      
       UIDocumentInfo uicomp = event.getSource() ;
+      
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);      
       String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
       String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;      
       uiExplorer.setSelectNode(workspaceName, uri) ;
+      uicomp.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
       uiExplorer.updateAjax(event) ;           
       event.broadcast();      
     }
@@ -747,7 +750,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   static public class ChangeNodeActionListener extends EventListener<UIDocumentInfo> {
     public void execute(Event<UIDocumentInfo> event) throws Exception {     
       UIDocumentInfo uicomp =  event.getSource();
-      uicomp.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);      
+            
       NodeFinder nodeFinder = uicomp.getApplicationComponent(NodeFinder.class);
       UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class); 
       String uri = event.getRequestContext().getRequestParameter(OBJECTID);
@@ -757,8 +760,12 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         // Manage ../ and ./
         uri = LinkUtils.evaluatePath(uri);
         // Just in order to check if the node exists
-        nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uri);
+        Item item = nodeFinder.getItem(uiExplorer.getRepositoryName(), workspaceName, uri);
+        if ((item instanceof Node) &&
+        		((Node)item).isNodeType(Utils.EXO_RESTORELOCATION))
+        	return;
         uiExplorer.setSelectNode(workspaceName, uri);
+        uicomp.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
 //        uicomp.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);        
         uiExplorer.updateAjax(event) ;
       } catch(ItemNotFoundException nu) {

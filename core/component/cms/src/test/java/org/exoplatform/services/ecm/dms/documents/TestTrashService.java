@@ -66,6 +66,7 @@ public class TestTrashService extends BaseDMSTestCase {
 		Node node0 = testNode.addNode("node0");
 		Node node1 = testNode.addNode("node1");
 		Node node2 = testNode.addNode("node2");
+		System.out.println(node2.getProperty("jcr:mixinTypes"));
 		session.save();
 		trashService.moveToTrash(node0, trashNode.getPath(), session.getWorkspace().getName(), "repository", sessionProvider);
 		trashService.moveToTrash(node1, trashNode.getPath(), session.getWorkspace().getName(), "repository", sessionProvider);

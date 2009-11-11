@@ -32,7 +32,9 @@ import javax.jcr.query.QueryResult;
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.jcr.SearchValidator;
 import org.exoplatform.ecm.utils.text.Text;
+import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -125,6 +127,7 @@ public class UIAddressBar extends UIForm {
       try {        
         UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
         UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+        
         if(!uiDocumentWorkspace.isRendered()) {
           uiWorkingArea.getChild(UIDrivesArea.class).setRendered(false);
           uiWorkingArea.getChild(UIDocumentWorkspace.class).setRendered(true);
@@ -137,9 +140,15 @@ public class UIAddressBar extends UIForm {
           uiExplorer.setIsViewTag(false) ;
           uiExplorer.setSelectNode(uiExplorer.getCurrentStatePath()) ;
         } else {
-          String previousNodePath = uiExplorer.rewind() ;
-          String previousWs = uiExplorer.previousWsName();
-          uiExplorer.setBackNodePath(previousWs, previousNodePath) ;
+        	int currentDocumentSourceType = uiExplorer.getDocumentSourceTypeHistory().removeLast();
+          UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class);
+          UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+					uiDocumentInfo.setDocumentSourceType(currentDocumentSourceType);
+					if (currentDocumentSourceType == DocumentProviderUtils.CURRENT_NODE_ITEMS) {
+	          String previousNodePath = uiExplorer.rewind() ;
+	          String previousWs = uiExplorer.previousWsName();
+	          uiExplorer.setBackNodePath(previousWs, previousNodePath);
+					}
         }
         uiExplorer.updateAjax(event) ;
       } catch (AccessDeniedException ade) {
