@@ -28,6 +28,7 @@ import org.exoplatform.services.cms.scripts.CmsScript;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.idgenerator.IDGeneratorService;
 
 /**
  * Created by The eXo Platform SAS
@@ -44,12 +45,14 @@ public class AddTaxonomyActionScript implements CmsScript {
   private RepositoryService repositoryService_;
   private SessionProviderService seProviderService_;
   private LinkManager linkManager_;
+  private IDGeneratorService idGenerator_;
   
   public AddTaxonomyActionScript(RepositoryService repositoryService, 
-      SessionProviderService sessionProviderService, LinkManager linkManager) {
-    this.repositoryService_ = repositoryService;
+      SessionProviderService sessionProviderService, LinkManager linkManager, IDGeneratorService idGenerator) {
+    repositoryService_ = repositoryService;
     seProviderService_ = sessionProviderService;
     linkManager_ = linkManager;
+    idGenerator_ = idGenerator;
   }
   
   public void execute(Object context) {
@@ -86,20 +89,20 @@ public class AddTaxonomyActionScript implements CmsScript {
     } catch(Exception e) {
       e.printStackTrace();
     }
-	String[] subPaths = getDateLocation().split("/");
-	Node cNode = targetNode;
-	for (String subPath : subPaths) {
-		if (!cNode.hasNode(subPath)) {
-			cNode.addNode(subPath);
-			cNode.save();
-		}
-		cNode = cNode.getNode(subPath);
-	}
-    if(targetPath.equals("/")) {
-      targetPath += getDateLocation() + nodePath.substring(nodePath.lastIndexOf("/"));
-    } else {
-      targetPath += "/" + getDateLocation() + nodePath.substring(nodePath.lastIndexOf("/"));
-    }
+  	String[] subPaths = getDateLocation().split("/");
+  	Node cNode = targetNode;
+  	for (String subPath : subPaths) {
+  		if (!cNode.hasNode(subPath)) {
+  			cNode.addNode(subPath);
+  			cNode.save();
+  		}
+  		cNode = cNode.getNode(subPath);
+  	}
+  	String nodeName = nodePath.substring(nodePath.lastIndexOf("/") + 1);
+  	// defend node with same name is overwrited
+  	String generatedNodeName = idGenerator_.generateStringID(nodeName);
+  	String targetParentPath = cNode.getPath(); 
+  	targetPath = cNode.getPath().concat("/").concat(generatedNodeName).replaceAll("/+", "/");
     if(!storeWorkspace.equals(targetWorkspace)) {
       Node currentNode = (Node)storeNode.getSession().getItem(nodePath);
       sessionTargetNode.getWorkspace().clone(storeWorkspace, nodePath, targetPath, true);
@@ -110,9 +113,10 @@ public class AddTaxonomyActionScript implements CmsScript {
     }
     sessionTargetNode.save();
     targetNode = (Node)sessionTargetNode.getItem(targetPath);
-    linkManager_.createLink((Node)storeNode.getSession().getItem(nodePath.substring(0, nodePath.lastIndexOf("/"))), "exo:taxonomyLink", targetNode);
-    storeNode.getSession().save();
-    targetNode.getSession().save();
+    Node nodeLink = linkManager_.createLink((Node)storeNode.getSession().getItem(nodePath.substring(0, nodePath.lastIndexOf("/"))), "exo:taxonomyLink", targetNode, nodeName);
+    // rename added node to recover official name
+    sessionTargetNode.move(targetPath, targetParentPath.concat("/").concat(nodeName));
+    sessionTargetNode.save();
   }
   
   private String getDateLocation() {
