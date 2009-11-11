@@ -260,18 +260,17 @@ public class UIWorkingArea extends UIContainer {
     return actionsList.toString();
   }
 
-  public UIComponent getJCRMoveAction() throws Exception {
+  public synchronized UIComponent getJCRMoveAction() throws Exception {
     UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
     return manager.addUIExtension(EXTENSION_TYPE, MOVE_NODE, null, this);
   }
 
-  public UIComponent getCreateLinkAction() throws Exception {
+  public synchronized UIComponent getCreateLinkAction() throws Exception {
     UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
     return manager.addUIExtension(EXTENSION_TYPE, CREATE_LINK, null, this);
   }
 
-  
-  public UIComponent getPermlink(Node node) throws Exception {
+  public synchronized UIComponent getPermlink(Node node) throws Exception {
     UIComponent uicomponent = null;
     List<UIExtension> uiExtensionList = getUIExtensionList();
     for (UIExtension uiextension : uiExtensionList) {
@@ -282,7 +281,7 @@ public class UIWorkingArea extends UIContainer {
     return uicomponent;
   }
   
-  public UIComponent getCustomAction() throws Exception {
+  public synchronized UIComponent getCustomAction() throws Exception {
     UIComponent uicomponent = null;
     List<UIExtension> uiExtensionList = getUIExtensionList();
     for (UIExtension uiextension : uiExtensionList) {
