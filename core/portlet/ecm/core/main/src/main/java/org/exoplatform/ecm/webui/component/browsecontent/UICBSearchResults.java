@@ -136,6 +136,7 @@ public class UICBSearchResults extends UIContainer {
       UICBSearchResults uiResults = event.getSource();
       String itemPath = event.getRequestContext().getRequestParameter(OBJECTID);
       UIBrowseContainer container = uiResults.getAncestorOfType(UIBrowseContainer.class);
+      container.getListHistoryNode();
       UIApplication uiApp = uiResults.getAncestorOfType(UIApplication.class);
       Node parentNode = null;
       try {
@@ -159,6 +160,18 @@ public class UICBSearchResults extends UIContainer {
             container.setCurrentNodePath(parentNode.getPath());
           }
           container.changeNode(parentNode);
+          List<Node> listGoToNode = new ArrayList<Node>();
+          if (!container.getListHistoryNode().contains(parentNode)) {            
+            while (!parentNode.getPath().equals(container.getRootPath())) {
+              listGoToNode.add(parentNode);
+              parentNode = parentNode.getParent();
+            }
+            if (listGoToNode.size() > 0) {
+              for (int i = listGoToNode.size() - 1; i >= 0; i--) {
+                if (!container.getListHistoryNode().contains(listGoToNode.get(i))) container.getListHistoryNode().add(listGoToNode.get(i)); 
+              }
+            }
+          }            
           return;
         }
       } catch (AccessDeniedException e) {
@@ -169,7 +182,7 @@ public class UICBSearchResults extends UIContainer {
       } catch (Exception e) {
         JCRExceptionManager.process(uiApp, e);
         return;
-      }
+      }      
       if (uiResults.isDocumentTemplate(parentNode.getPrimaryNodeType().getName())) {
         UIBrowseContentPortlet cbPortlet = uiResults
             .getAncestorOfType(UIBrowseContentPortlet.class);
