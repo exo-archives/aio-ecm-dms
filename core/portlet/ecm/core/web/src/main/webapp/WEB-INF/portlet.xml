@@ -83,7 +83,7 @@
 
       <preference>
         <name>trashHomeNodePath</name>     
-        <value>/Documents/Trash</value>        
+        <value>/Trash</value>        
         <read-only>false</read-only>
       </preference>   
       <preference>

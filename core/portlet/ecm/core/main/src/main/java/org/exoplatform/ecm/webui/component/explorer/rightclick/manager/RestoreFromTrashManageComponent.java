@@ -128,6 +128,7 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
 			nodeFinder.getItem(session, restorePath);
 		} catch (PathNotFoundException e) {
 			doRestore(srcPath, node, event);
+			return;
 		}
 
     UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
