@@ -1130,6 +1130,7 @@ public class UIWorkingArea extends UIContainer {
     }
     uiExplorer.addLockToken(selectedNode);
     String destPath = destNode.getPath();
+	String messagePath = destPath;
     if(destPath.endsWith("/")) {
       destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/") + 1);
     } else {
@@ -1144,7 +1145,7 @@ public class UIWorkingArea extends UIContainer {
         destWorkspace.clone(srcWorkspace.getName(), srcPath, destPath, false);
       }
     } catch(Exception e) {
-      Object[] args = { srcPath, destPath };
+      Object[] args = { srcPath, messagePath };
       uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.move-problem", args, 
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
