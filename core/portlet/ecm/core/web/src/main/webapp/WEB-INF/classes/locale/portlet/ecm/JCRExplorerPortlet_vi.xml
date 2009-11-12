@@ -423,7 +423,7 @@
       <constraint-violation>Node Hiển thị không được phép thêm kiểu node '{0}'.</constraint-violation>
       <repository-exception>Truy cập bị từ chối. Bạn không có quyền thêm mới node ở đây.</repository-exception>
       <repository-exception-permission>Bạn không có đủ quyền để thêm mới folder cho node này</repository-exception-permission>
-      <numberformat-exception>Không thể lưu lại thư mục này. Tên đưa vào phải không chứa '[' hoặc ']'</numberformat-exception>
+      <numberformat-exception>Không thể lưu lại thư mục này. Phải nhập vào kiểu số</numberformat-exception>
       <!--DMS 2.4.x; ECM-3553-->
       <not-allow-sameNameSibling>Không thể lưu lại thư mục này. Loại node này không hỗ trợ trùng tên</not-allow-sameNameSibling>
     </msg>
@@ -1603,7 +1603,7 @@
       <!--DMS 2.4.x; ECM-3543-->
       <repository-exception-permission>Bạn không có đủ quyền để thêm mới document cho node này</repository-exception-permission>
       <not-allowed-same-name-sibling>Không thể lưu tài liệu này.Node này không được phép trùng tên.</not-allowed-same-name-sibling>
-      <numberformat-exception>Không thể lưu tài liệu này. Tên của tài liệu không được chứa '[' hoặc ']'.</numberformat-exception>
+      <numberformat-exception>Không thể lưu tài liệu này. Tên của tài liệu phải là kiểu số.</numberformat-exception>
       <item-not-found>Khoản mục không được tìm thấy!Có thể node này hoặc node cha đã bị xóa.Vui lòng nhấp vào nút refresh.</item-not-found>
     </msg>
   </UIDocumentForm>
@@ -1691,7 +1691,7 @@
         ECM-3873 Error content of message when type name of action by special character
 	  -->
       <repository-exception>Không thể lưu thao tác này. Tên thao tác vừa nhập chứa một số kí tự đặc biệt.</repository-exception>
-      <numberformat-exception>Không thể lưu thao tác này. Tên thao tác không được chứa  '[' or ']'.</numberformat-exception>
+      <numberformat-exception>Không thể lưu thao tác này. Phải nhập vào kiểu số.</numberformat-exception>
       <existed-action>Thao tác tên '{0}' đã tồn tại. Vui lòng lựa chọn tên khác!</existed-action>
       <unable-add-action>Không thể thêm thao tác này.</unable-add-action>
       <unable-add>Không thể thêm! Kiểm tra một số trường bắtt buộc.</unable-add>
@@ -2221,7 +2221,7 @@
       <fileName-error>Tên liên kết không theo đúng quy định</fileName-error>
       <constraint-violation>Node hiện tại không cho phép thêm mới kiểu node là '{0}' </constraint-violation>
       <repository-exception>Truy cập không được phép! Bạn không có quyền thêm mới trên node hiện tại</repository-exception>
-      <numberformat-exception>Thông tin không được lưu. Tên phải không bao gồm các ký tự '[' hay ']'</numberformat-exception>      
+      <numberformat-exception>Thông tin không được lưu. Tên phải là kiểu số</numberformat-exception>      
 			<path-node-invalid>Vui lòng nhập đường dẫn đến node!</path-node-invalid>
 			<path-node-not-allowed>Tên này không được cho phép sử dụng.</path-node-not-allowed>
 			<non-node>Vui lòng chọn vị trí của liên kết. Bạn đã chọn một node mà bạn không có quyền đọc</non-node>

@@ -416,7 +416,7 @@
       <constraint-violation><![CDATA[Momentaner Knoten erlaubt kein Hinzuf&uuml;gen von '{0}' Knotentypen]]></constraint-violation>
       <repository-exception>Kann diesen Ordner nicht speichern. Der angegebene Name darf nich mit einem Index enden oder dieser Name ist schon vergeben.</repository-exception>
       <repository-exception-permission>Sie haben keine Berechtigung, um einen neuen Ordner auf diesem Knoten</repository-exception-permission>
-      <numberformat-exception>Kann diesen Ordner nicht speichern. Der angegebene Name darf nicht '[' or ']' enthalten</numberformat-exception>
+      <numberformat-exception>Kann diesen Ordner nicht speichern. The input must be a number format.</numberformat-exception>
       <!--DMS 2.4.x; ECM-3553-->
       <not-allow-sameNameSibling>Kann nicht speichern. Dieser Knoten ist es nicht möglich 2 Knoten mit dem gleichen Namen</not-allow-sameNameSibling>
     </msg>
@@ -1596,7 +1596,7 @@
       <!--DMS 2.4.x; ECM-3543-->
       <repository-exception-permission>Sie haben keine Berechtigung, um ein neues Dokument auf diesem Knoten</repository-exception-permission>
       <not-allowed-same-name-sibling><![CDATA[Sie k&ouml;nnen dieses Dokument nicht speichern. Name besteht schon.]]></not-allowed-same-name-sibling>
-      <numberformat-exception><![CDATA[Sie k&ouml;nnen dieses Dokument nicht speichern. Der angegebene Name darf nicht '[' or ']' beinhalten.]]></numberformat-exception>
+      <numberformat-exception><![CDATA[Sie k&ouml;nnen dieses Dokument nicht speichern. The input must be a number format.]]></numberformat-exception>
       <item-not-found><![CDATA[Artikel nicht gefunden! Vielleicht wurden dieser Knoten oder sein Vorfahre gel&ouml;scht. Bitte Aktualisierungsknopf dr&uuml;cken.]]></item-not-found>
     </msg>
   </UIDocumentForm>
@@ -1684,7 +1684,7 @@
         ECM-3873 Error content of message when type name of action by special character
 	  -->
       <repository-exception>Can not save this action. The name provided has some special character.</repository-exception>
-      <numberformat-exception><![CDATA[Sie k&ouml;nnen diese Aktion nicht speichern. Der angegebene Name darf nicht '[' or ']' beinhalten.]]></numberformat-exception>
+      <numberformat-exception><![CDATA[Sie k&ouml;nnen diese Aktion nicht speichern. The input must be number format.]]></numberformat-exception>
       <existed-action>Name besteht schon, bitte neuen eingeben!</existed-action>
       <unable-add-action><![CDATA[Aktion konnte nicht hinzugef&uuml;gt werden]]></unable-add-action>
       <unable-add><![CDATA[Hinzufug unm&ouml;glich! &uuml;berpr&uuml;fen sie ben&ouml;tigte Felder]]></unable-add>
@@ -2214,7 +2214,7 @@
       <fileName-error>Ungültige Dateinamen</fileName-error>
       <constraint-violation>Aktueller Knoten ist es nicht möglich, um '{0}' Knotentyp</constraint-violation>
       <repository-exception>Zugriff verweigern! Sie haben keine Erlaubnis führen in diesem Knoten</repository-exception>
-      <numberformat-exception>Kann nicht in diesem Ordner speichern. Der Name darf nicht '[' oder ']'</numberformat-exception>      
+      <numberformat-exception>Kann nicht in diesem Ordner speichern. The input must be number format.</numberformat-exception>      
 			<path-node-invalid>Bitte geben Sie Pfad Knoten!</path-node-invalid>
 			<path-node-not-allowed>Dieser Name ist nicht erlaubt.</path-node-not-allowed>
 			<non-node>Bitte wählen Sie Vertrauen Ziel Knoten oder Sie haben nicht genug Rechte um diese Knoten</non-node>
