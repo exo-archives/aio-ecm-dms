@@ -186,10 +186,11 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
     }
     uiExplorer.addLockToken(selectedNode);
     String destPath = destNode.getPath();
+    String messagePath = destPath;
     if (destPath.endsWith("/")) {
       destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/") + 1);
     } else {
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/"));
+      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/"));  
     }
     Workspace srcWorkspace = srcSession.getWorkspace();
     Workspace destWorkspace = destNode.getSession().getWorkspace();
@@ -200,7 +201,7 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
         destWorkspace.clone(srcWorkspace.getName(), srcPath, destPath, false);
       }
     } catch (Exception e) {
-      Object[] args = { srcPath, destPath };
+      Object[] args = { srcPath, messagePath };
       uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.move-problem", args,
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
