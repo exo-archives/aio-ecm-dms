@@ -33,7 +33,9 @@ import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
+import org.exoplatform.ecm.webui.component.explorer.UIConfirmMessage;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIRestoreConfirmMessage;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.HasRemovePermissionFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
@@ -43,12 +45,15 @@ import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAr
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.documents.TrashService;
+import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
@@ -85,9 +90,6 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
 		UIWorkingArea uiWorkingArea = event.getSource().getParent();
 		UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
 		
-    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-    TrashService trashService = (TrashService)myContainer.getComponentInstanceOfType(TrashService.class);
-    
     UIApplication uiApp = uiWorkingArea.getAncestorOfType(UIApplication.class);
     Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
     String wsName = null;
@@ -110,8 +112,45 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
-    
-    try {
+		//--------------    
+  	confirmToRestore(node, srcPath, event);  
+	}
+	
+	private static void confirmToRestore(Node node, String srcPath, Event<RestoreFromTrashManageComponent> event) throws Exception {
+		UIWorkingArea uiWorkingArea = event.getSource().getParent();
+		UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
+		
+		String restorePath = node.getProperty(Utils.EXO_RESTOREPATH).getString();
+		String restoreWs = node.getProperty(Utils.EXO_RESTORE_WORKSPACE).getString();
+		Session session = uiExplorer.getSessionByWorkspace(restoreWs);
+    NodeFinder nodeFinder = uiExplorer.getApplicationComponent(NodeFinder.class);		
+		try {
+			nodeFinder.getItem(session, restorePath);
+		} catch (PathNotFoundException e) {
+			doRestore(srcPath, node, event);
+		}
+
+    UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+    UIRestoreConfirmMessage uiConfirmMessage = 
+      uiWorkingArea.createUIComponent(UIRestoreConfirmMessage.class, null, null);
+    uiConfirmMessage.setMessageKey("UIWorkingArea.msg.confirm-restore");
+    uiConfirmMessage.setArguments(new String[] { restorePath });
+    uiConfirmMessage.setNodePath(srcPath);
+    uiConfirmMessage.setNode(node);
+    uiConfirmMessage.setRestoreNodeWs(restoreWs);
+    uiConfirmMessage.setRestoreNodePath(restorePath);
+    UIPopupContainer.activate(uiConfirmMessage, 500, 180);
+    event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+	}
+	
+	public static void doRestore(String srcPath, Node node, Event<? extends UIComponent> event) throws Exception {
+		UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+		
+    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+    TrashService trashService = (TrashService)myContainer.getComponentInstanceOfType(TrashService.class);
+    UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);    
+
+		try {
       uiExplorer.addLockToken(node);
     } catch (Exception e) {
       JCRExceptionManager.process(uiApp, e);

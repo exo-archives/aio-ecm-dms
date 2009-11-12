@@ -2913,4 +2913,26 @@
     </label>
   </UIPreferencesForm>
   
+  <UIPopupWindow>
+    <title>
+      <UIRestoreConfirmMessage>Confirm restore</UIRestoreConfirmMessage>
+    </title>
+  </UIPopupWindow>
+  
+  <UIRestoreConfirmMessage>
+    <label>
+      <Close>#{word.close}</Close>
+      <OK>OK</OK>
+      <ReplaceData>Replace data</ReplaceData>
+      <Back>Back to rename</Back>
+      <Keepfile>Keep both files</Keepfile>
+    </label>
+  </UIRestoreConfirmMessage>
+
+  <UIWorkingArea>
+    <msg>
+        <confirm-restore>A node with the same name also exists in node '{0}' 's old location. Are you sure want to restore this node?</confirm-restore>
+    </msg>
+  </UIWorkingArea>
+  
 </bundle>

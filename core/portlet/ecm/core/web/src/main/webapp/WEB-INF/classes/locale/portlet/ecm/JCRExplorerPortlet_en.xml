@@ -253,6 +253,7 @@
       <UIPreferencesForm>Preference Setting</UIPreferencesForm>
       <UIPublicationManager>Manage publication</UIPublicationManager>
       <UIConfirmMessage>Confirm delete</UIConfirmMessage>
+      <UIRestoreConfirmMessage>Confirm restore</UIRestoreConfirmMessage>
       <UIActivePublication>Enrol to publication lifecycle</UIActivePublication>
       <UITaggingForm>Tagging this document</UITaggingForm>
       <UIMultiLanguageForm>Multi language</UIMultiLanguageForm>
@@ -451,6 +452,7 @@
     </title>
     <msg>
       <confirm-delete>Are you sure want to delete the node '{0}' and move all its contents to Recycle Bin?</confirm-delete>
+      <confirm-restore>A node with the same name also exists in node '{0}' 's old location. Are you sure want to restore this node?</confirm-restore>
       <confirm-delete-multi>Are you sure want to move these {0} items to the Recycle Bin?</confirm-delete-multi>
       <confirm-move>Are you sure want to move?</confirm-move>
       <node-cut>The node '{0}' has been cut.</node-cut>
@@ -2462,6 +2464,17 @@
 	    <Keepfile>Keep both files</Keepfile>
 	  </label>
 	</UIConfirmMessage>
+	
+  <UIRestoreConfirmMessage>
+    <label>
+      <Close>#{word.close}</Close>
+      <OK>OK</OK>
+      <ReplaceData>Replace data</ReplaceData>
+      <Back>Back to rename</Back>
+      <Keepfile>Keep both files</Keepfile>
+    </label>
+  </UIRestoreConfirmMessage>
+	
 	
 	<PopupComponent>
     <title>

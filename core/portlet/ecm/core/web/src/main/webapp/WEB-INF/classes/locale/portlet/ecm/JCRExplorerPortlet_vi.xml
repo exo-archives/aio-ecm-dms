@@ -263,6 +263,7 @@
       <UIPreferencesForm>Thiết lập lựa chọn</UIPreferencesForm>
       <UIPublicationManager>Quản lý xuất bản</UIPublicationManager>
       <UIConfirmMessage>Xác nhận xóa</UIConfirmMessage>
+      <UIRestoreConfirmMessage>Xác nhận phục hồi</UIRestoreConfirmMessage>      
       <UIActivePublication>Bắt đầu chu trình xuất bản</UIActivePublication>
       <UITaggingForm>Gán nhãn cho tài liệu này.</UITaggingForm>
       <UIMultiLanguageForm>Đa ngôn ngữ</UIMultiLanguageForm>
@@ -2934,5 +2935,18 @@
       <showItemsByUserInTimeline>Chỉ hiển thị các tài liệu của user trong Timline view</showItemsByUserInTimeline>
     </label>
   </UIPreferencesForm>
+  
+  <UIRestoreConfirmMessage>
+    <label>
+      <Close>#{word.close}</Close>
+      <OK>Đồng ý</OK>
+    </label>
+  </UIRestoreConfirmMessage>
+
+  <UIWorkingArea>
+    <msg>
+      <confirm-restore>Một file-thư mục cùng tên đã tồn tại ở vị trí cũ của file-thư mục '{0}'. Bạn có chắc chắn muốn phục hồi?</confirm-restore>
+    </msg>
+  </UIWorkingArea>
   
 </bundle>

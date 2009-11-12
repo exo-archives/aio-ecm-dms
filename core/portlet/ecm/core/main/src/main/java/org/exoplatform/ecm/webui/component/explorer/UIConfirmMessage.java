@@ -43,8 +43,8 @@ public class UIConfirmMessage extends UIComponent implements UIPopupComponent {
 
   private String messageKey_;
   private String[] args_ = {};
-  private boolean isOK_ = false;
-  private String nodePath_;
+  protected boolean isOK_ = false;
+  protected String nodePath_;
   
   public UIConfirmMessage() throws Exception {
   }

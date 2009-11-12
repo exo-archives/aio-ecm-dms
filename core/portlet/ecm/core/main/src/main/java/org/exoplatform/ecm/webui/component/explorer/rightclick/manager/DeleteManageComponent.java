@@ -132,7 +132,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     Iterator<String> iterator = mapNode.keySet().iterator();
     while (iterator.hasNext()) {
       path = iterator.next();
-      processRemoveOrMoveToTrash(path, mapNode.get(path), event, true);
+      processRemoveOrMoveToTrash(path, mapNode.get(path), event, true, true);
     }
   }
   
@@ -143,17 +143,16 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     }
   }
 
-  private void processRemoveOrMoveToTrash(String nodePath, Node node, Event<?> event, boolean isMultiSelect)
+  private void processRemoveOrMoveToTrash(String nodePath, Node node, Event<?> event, boolean isMultiSelect, boolean checkToMoveToTrash)
   throws Exception {
-		if (node.isNodeType(Utils.EXO_RESTORELOCATION))
+		if (node.isNodeType(Utils.EXO_RESTORELOCATION) || !checkToMoveToTrash)
 			processRemoveNode(nodePath, node, event, isMultiSelect);
 		else {
 			moveToTrash(nodePath, node, event, isMultiSelect);
 		}
   }
-  
-	private void moveToTrash(String srcPath, Node node, Event<?> event, boolean isMultiSelect) throws Exception {
 
+	private void moveToTrash(String srcPath, Node node, Event<?> event, boolean isMultiSelect) throws Exception {
 		ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
     TrashService trashService = (TrashService)myContainer.getComponentInstanceOfType(TrashService.class);
     
@@ -319,7 +318,15 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
       uiExplorer.getSession().save();
   }
 
+  public void doDeleteWithoutTrash(String nodePath, Event<?> event) throws Exception {
+  	doDelete(nodePath, event, false);
+  }
+  
   public void doDelete(String nodePath, Event<?> event) throws Exception {
+  	doDelete(nodePath, event, true);
+  }
+  
+  public void doDelete(String nodePath, Event<?> event, boolean checkToMoveToTrash) throws Exception {
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     if (nodePath.indexOf(";") > -1) {
       processRemoveMultiple(nodePath.split(";"), event);
@@ -358,7 +365,7 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
               }
             }
           }
-          processRemoveOrMoveToTrash(nodePath, node, event, false);
+          processRemoveOrMoveToTrash(nodePath, node, event, false, checkToMoveToTrash);
         } catch (PathNotFoundException path) {
           uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.path-not-found-exception", null,
               ApplicationMessage.WARNING));
