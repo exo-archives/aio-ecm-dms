@@ -420,7 +420,7 @@
       <constraint-violation>Le noeud courant n'autorise pas l'ajout d'un noeud du type '{0}'</constraint-violation>
       <repository-exception>Ce répertoire ne peut être sauvegardé. Le nom fournit ne doit pas avoir d'indexe ou existe déjà.</repository-exception>
       <repository-exception-permission>Vous n'avez pas le droit d'ajouter un répertoire à ce noeud</repository-exception-permission>
-      <numberformat-exception>Ce répertoire ne peut être sauvegardé. Le nom fournit ne doit pas contenir les caractéres '[' et ']'</numberformat-exception>
+      <numberformat-exception>Ce répertoire ne peut être sauvegardé. Input must be a number format</numberformat-exception>
       <!--DMS 2.4.x; ECM-3553-->
       <not-allow-sameNameSibling>Impossible de sauver car un autre noeud du même nom existe déjà</not-allow-sameNameSibling>
     </msg>
@@ -1602,7 +1602,7 @@
       <!--DMS 2.4.x; ECM-3543-->
       <repository-exception-permission>Vous n'avez pas le droit d'ajouter un document à ce noeud</repository-exception-permission>
       <not-allowed-same-name-sibling>Impossible de sauvegarder ce document. Le nom du noeud existe déjà</not-allowed-same-name-sibling>
-      <numberformat-exception>Sauvegarde du document impossible. Les caractères '[' ou ']' ne sont pas autorisés dans le nom.</numberformat-exception>
+      <numberformat-exception>Sauvegarde du document impossible. Input must be a number format.</numberformat-exception>
       <item-not-found>L'élément n'a pas été trouvé ! Peut être que ce noeud ou un de ses ancètres a été supprimé. Veuiller cliquer sur le bouton "Actualiser".</item-not-found>
     </msg>
   </UIDocumentForm>
@@ -1690,7 +1690,7 @@
         ECM-3873 Error content of message when type name of action by special character
 	    -->
       <repository-exception>Can not save this action. The name provided has some special character.</repository-exception>
-      <numberformat-exception>Sauvegarde de cette action impossible. Les caractères '[' ou ']' ne sont pas autorisés dans le nom.</numberformat-exception>
+      <numberformat-exception>Sauvegarde de cette action impossible. Input must be a number format.</numberformat-exception>
       <existed-action>Ce nom existe déjà, veuillez en choisir un autre!</existed-action>
       <unable-add-action>Impossible d'ajouter cette action</unable-add-action>
       <unable-add>Ajout impossible ! Veuillez vérifier les champs requis</unable-add>
@@ -2209,7 +2209,7 @@
       <fileName-error>Nom de fichier invalide</fileName-error>
       <constraint-violation>Le noeud courant ne permet pas d'ajouter le type de noeud '{0}'</constraint-violation>
       <repository-exception>Accès refusé! Vous n'avez pas les droits d'ajout sur ce noeud</repository-exception>
-      <numberformat-exception>Impossible de sauver ce répertoire. Le nom fourni ne doit pas contenir '[' ni ']'</numberformat-exception>      
+      <numberformat-exception>Impossible de sauver ce répertoire. Input must be a number format.</numberformat-exception>      
 			<path-node-invalid>Veuillez saisir le chemin du noeud!</path-node-invalid>
 			<path-node-not-allowed>Ce nom n'est pas autorisé.</path-node-not-allowed>
 			<non-node>Vous n'avez pas les droits d'accès au noeud cible</non-node>

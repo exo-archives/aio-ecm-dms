@@ -2454,7 +2454,7 @@
 			<repository-exception>Access deny! You don't have add permission in
 				this node</repository-exception>
 			<numberformat-exception>Can not save this folder. The name provided
-				must not have '[' or ']'</numberformat-exception>
+				must be a number format</numberformat-exception>
 			<path-node-invalid>Please enter Path Node!</path-node-invalid>
 			<path-node-not-allowed>This name is not allowed.
 			</path-node-not-allowed>
