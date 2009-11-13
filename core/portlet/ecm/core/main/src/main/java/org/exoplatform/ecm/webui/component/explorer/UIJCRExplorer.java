@@ -723,6 +723,10 @@ public class UIJCRExplorer extends UIContainer {
     try {
       node = (Node) nodeFinder.getItem(session, nodePath, giveTarget);
     } catch (Exception e) {
+      if (nodePath.equals(currentPath_) && !nodePath.equals(currentRootPath_)) {
+        setCurrentPath(LinkUtils.getParentPath(currentPath_));
+        return getNodeByPath(currentPath_, session, giveTarget, false);
+      }
       if (firstTime) {
         UIApplication uiApp = getAncestorOfType(UIApplication.class) ;
         JCRExceptionManager.process(uiApp, e);
@@ -735,11 +739,7 @@ public class UIJCRExplorer extends UIContainer {
           // do nothing
         }
         LOG.warn("The node cannot be found at " + nodePath + (workspace == null ? "" : " into the workspace " + workspace));        
-      }
-      if (nodePath.equals(currentPath_) && !nodePath.equals(currentRootPath_)) {
-        setCurrentPath(LinkUtils.getParentPath(currentPath_));
-        return getNodeByPath(currentPath_, session, giveTarget, false);
-      }
+      }      
       throw e;
     }
     if (!firstTime) {
