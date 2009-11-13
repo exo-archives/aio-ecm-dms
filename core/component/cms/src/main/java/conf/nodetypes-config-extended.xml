@@ -636,6 +636,8 @@
     </propertyDefinitions>
   </nodeType>
   
+  
+  
   <nodeType name="exo:schedulableInfo" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
     <propertyDefinitions>
     	<propertyDefinition name="exo:scheduledInitiator" requiredType="String" autoCreated="false" mandatory="false"
@@ -890,5 +892,38 @@
 			</propertyDefinition>				  			  						  		
 		</propertyDefinitions>			
  	</nodeType>
+ 	
+	<nodeType name="exo:folksonomy" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
+    <supertypes>
+      <supertype>exo:taxonomy</supertype>
+    </supertypes> 
+  </nodeType>
+  
+  <nodeType name="exo:folksonomyLink" isMixin="false" hasOrderableChildNodes="false" primaryItemName="exo:primaryType">
+    <supertypes>
+      <supertype>exo:symlink</supertype>
+    </supertypes>
+  </nodeType>
+  
+  <nodeType name="exo:folksonomyAction" isMixin="false" hasOrderableChildNodes="false" primaryItemName="">
+    <supertypes>
+      <supertype>exo:scriptAction</supertype>
+    </supertypes>
+    <propertyDefinitions>
+      <propertyDefinition name="exo:script" requiredType="String" autoCreated="true" mandatory="true"
+        onParentVersion="COPY" protected="true" multiple="false">
+        <valueConstraints/>
+        <defaultValues>
+          <defaultValue>ecm-explorer/action/AddFolksonomyActionScript.groovy</defaultValue>
+        </defaultValues>
+      </propertyDefinition>
+      <propertyDefinition name="exo:storeHomePath" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY"
+        protected="false" multiple="false"/>
+      <propertyDefinition name="exo:targetWorkspace" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY"
+        protected="false" multiple="false"/>
+      <propertyDefinition name="exo:targetPath" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY"
+        protected="false" multiple="false"/>      
+    </propertyDefinitions>
+  </nodeType>  
  	
 </nodeTypes>
