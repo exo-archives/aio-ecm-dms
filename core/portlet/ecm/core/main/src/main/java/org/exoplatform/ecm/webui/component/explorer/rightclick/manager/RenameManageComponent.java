@@ -33,6 +33,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIControl;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanSetPropertyFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotInTrashFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIRenameForm;
@@ -61,7 +62,11 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 
 public class RenameManageComponent extends UIAbstractManagerComponent {
 
- private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new CanSetPropertyFilter(), new IsNotLockedFilter(), new IsCheckedOutFilter()});
+ private static final List<UIExtensionFilter> FILTERS 
+ 				= Arrays.asList(new UIExtensionFilter[]{new IsNotInTrashFilter(),
+ 																								new CanSetPropertyFilter(), 
+ 																								new IsNotLockedFilter(), 
+ 																								new IsCheckedOutFilter()});
   
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {
