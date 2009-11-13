@@ -66,19 +66,17 @@ public interface TrashService {
   
   /**
    * Get all nodes in trash location
-   * @param trashPath
    * @param trashWorkspace
    * @param repository
    * @param sessionProvider
    * @return List<Node> All nodes in trash
    * @throws Exception
    */
-  public List<Node> getAllNodeInTrash(String trashPath, String trashWorkspace, String repository, 
+  public List<Node> getAllNodeInTrash(String trashWorkspace, String repository, 
       SessionProvider sessionProvider) throws Exception;
   
   /**
    * Get all nodes by user in trash location
-   * @param trashPath
    * @param trashWorkspace
    * @param repository
    * @param sessionProvider
@@ -86,6 +84,6 @@ public interface TrashService {
    * @return List<Node> all node in trash which moved by user
    * @throws Exception
    */
-  public List<Node> getAllNodeInTrashByUser(String trashPath, String trashWorkspace, String repository, 
+  public List<Node> getAllNodeInTrashByUser(String trashWorkspace, String repository, 
       SessionProvider sessionProvider, String userName) throws Exception;
 }

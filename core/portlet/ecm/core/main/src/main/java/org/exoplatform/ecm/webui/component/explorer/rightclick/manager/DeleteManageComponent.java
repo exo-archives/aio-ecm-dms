@@ -40,7 +40,11 @@ import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
+import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIConfirmMessage;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanDeleteNodeFilter;
@@ -388,11 +392,19 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
     UIConfirmMessage uiConfirmMessage = 
       uiWorkingArea.createUIComponent(UIConfirmMessage.class, null, null);
+    
+    UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+    UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class) ;    
+    UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo");
+    int documentSourceType = uiDocumentInfo.getDocumentSourceType();
+    
     if(nodePath.indexOf(";") > -1) {
-      uiConfirmMessage.setMessageKey("UIWorkingArea.msg.confirm-delete-multi");
+      uiConfirmMessage.setMessageKey((documentSourceType == DocumentProviderUtils.TRASH_ITEMS)?
+      		"UIWorkingArea.msg.confirm-delete-permanently-multi" : "UIWorkingArea.msg.confirm-delete-multi");
       uiConfirmMessage.setArguments(new String[] {Integer.toString(nodePath.split(";").length)});
     } else {
-      uiConfirmMessage.setMessageKey("UIWorkingArea.msg.confirm-delete");
+      uiConfirmMessage.setMessageKey((documentSourceType == DocumentProviderUtils.TRASH_ITEMS)?
+      		"UIWorkingArea.msg.confirm-delete-permanently" : "UIWorkingArea.msg.confirm-delete");
       uiConfirmMessage.setArguments(new String[] {nodePath});
     }
     uiConfirmMessage.setNodePath(nodePath);

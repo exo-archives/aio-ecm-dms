@@ -272,7 +272,7 @@ public class TestTrashService extends BaseDMSTestCase {
 		trashService.moveToTrash(node4, trashNode.getPath(), trashRootNode.getSession().getWorkspace().getName(), "repository", sessionProvider);
 
 		int count = 
-			trashService.getAllNodeInTrash(trashNode.getPath(), trashRootNode.getSession().getWorkspace().getName(), "repository", sessionProvider).size();
+			trashService.getAllNodeInTrash(trashRootNode.getSession().getWorkspace().getName(), "repository", sessionProvider).size();
 		
 		session.save();
 		trashSession.save();
@@ -316,8 +316,7 @@ public class TestTrashService extends BaseDMSTestCase {
 		trashService.moveToTrash(node2, trashNode.getPath(), trashRootNode.getSession().getWorkspace().getName(), "repository", sessionProvider);
 
 		int count = 
-			trashService.getAllNodeInTrashByUser(trashNode.getPath(), 
-									trashRootNode.getSession().getWorkspace().getName(), 
+			trashService.getAllNodeInTrashByUser(trashRootNode.getSession().getWorkspace().getName(), 
 									"repository", 
 									sessionProvider, session.getUserID()).size();
 		

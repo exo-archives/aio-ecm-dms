@@ -2946,7 +2946,23 @@
   <UIWorkingArea>
     <msg>
       <confirm-restore>Một file-thư mục cùng tên đã tồn tại ở vị trí cũ của file-thư mục '{0}'. Bạn có chắc chắn muốn phục hồi?</confirm-restore>
+      <confirm-delete-permanently>Bạn có chắc là muốn xóa node '{0}' tất các nội dung của nó vĩnh viễn?</confirm-delete-permanently>
+      <confirm-delete-permanently-multi>Bạn có chắc là muốn xóa những item {0} vĩnh viễn?</confirm-delete-permanently-multi>
     </msg>
   </UIWorkingArea>
+
+  <UIAllItemsPreferenceForm>
+    <label>
+      <showOwnedByUser>Thuộc sở hữu của tôi</showOwnedByUser>
+      <showFavourites>Được ưa thích</showFavourites>
+      <showHiddens>Ẩn</showHiddens>
+      <showTrash>Thùng rác</showTrash>
+    </label>
+    <title>Thiết lập kiểu hiển thị</title>
+    <action>
+      <Save>Lưu</Save>
+      <Cancel>Hủy bỏ</Cancel>      
+    </action>
+  </UIAllItemsPreferenceForm>
   
 </bundle>

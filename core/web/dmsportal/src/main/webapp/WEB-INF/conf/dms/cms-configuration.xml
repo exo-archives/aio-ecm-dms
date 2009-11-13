@@ -566,6 +566,11 @@
 	              	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 	              		<field  name="alias"><string>newDocumentsTrashPath</string></field>
 	                  <field  name="path"><string>/Trash</string></field>
+                    <field name="mixinTypes">
+                      <collection type="java.util.ArrayList">
+                        <value><string>exo:hiddenable</string></value>
+                      </collection>
+                    </field>                      
 	                  <field name="permissions">
 			                <collection type="java.util.ArrayList">               
 			                  <value>                            

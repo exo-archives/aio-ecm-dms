@@ -121,48 +121,45 @@ public class TrashServiceImpl implements TrashService {
 			restoreSession.logout();
 	}
 
-	
-	private List<Node> selectNodesByQuery(String trashPath, String trashWorkspace,
-								   		  String repository, SessionProvider sessionProvider,
-								   		  String queryString, String language) throws Exception {
-		List<Node> ret = new ArrayList<Node>();
-		ManageableRepository manageableRepository 
-								= repositoryService.getRepository(repository);
-		Session session = sessionProvider.getSession(trashWorkspace, manageableRepository);
-		QueryManager queryManager = session.getWorkspace().getQueryManager();
-		Query query = queryManager.createQuery(queryString, language);
-		QueryResult queryResult = query.execute();
-	
-		NodeIterator iter = queryResult.getNodes();
-	 	System.out.println(iter.getSize());
-	 	while (iter.hasNext()) {
-	 		ret.add(iter.nextNode());
-	 	}
-	
-	 	return ret;
-	 }
-	
-	 public List<Node> getAllNodeInTrash(String trashPath,
-										 String trashWorkspace, String repository,
-										 SessionProvider sessionProvider) throws Exception {
+	 public List<Node> getAllNodeInTrash(String trashWorkspace, String repository,
+									 	SessionProvider sessionProvider) throws Exception {
 	
 	 // String trashPathTail = (trashPath.endsWith("/"))? "" : "/";
 	 StringBuilder query = new StringBuilder("SELECT * FROM nt:base WHERE exo:restorePath IS NOT NULL");
 	
 	 // System.out.println(query);
-	 return selectNodesByQuery(trashPath, trashWorkspace, repository,
+	 return selectNodesByQuery(trashWorkspace, repository,
 			 				   sessionProvider, query.toString(), Query.SQL);
 	 }
 	
-	 public List<Node> getAllNodeInTrashByUser(String trashPath, String trashWorkspace, String repository,
+	 public List<Node> getAllNodeInTrashByUser(String trashWorkspace, String repository,
 		 								   	   SessionProvider sessionProvider, String userName) 
 		 								   	   throws Exception {
 	
 	 StringBuilder query = new StringBuilder("SELECT * FROM nt:base WHERE exo:restorePath IS NOT NULL AND exo:lastModifier='").
 	 								 append(userName).
 	 								 append("'");
-	 return selectNodesByQuery(trashPath, trashWorkspace, repository,
+	 return selectNodesByQuery(trashWorkspace, repository,
 			 				   sessionProvider, query.toString(), Query.SQL);
 	 }
-	
+
+		private List<Node> selectNodesByQuery(String trashWorkspace,
+								   		  String repository, SessionProvider sessionProvider,
+								   		  String queryString, String language) throws Exception {
+			List<Node> ret = new ArrayList<Node>();
+			ManageableRepository manageableRepository 
+										= repositoryService.getRepository(repository);
+			Session session = sessionProvider.getSession(trashWorkspace, manageableRepository);
+			QueryManager queryManager = session.getWorkspace().getQueryManager();
+			Query query = queryManager.createQuery(queryString, language);
+			QueryResult queryResult = query.execute();
+			
+			NodeIterator iter = queryResult.getNodes();
+			while (iter.hasNext()) {
+				ret.add(iter.nextNode());
+			}
+			
+			return ret;
+		}
+
 }

@@ -2931,8 +2931,24 @@
 
   <UIWorkingArea>
     <msg>
-        <confirm-restore>A node with the same name also exists in node '{0}' 's old location. Are you sure want to restore this node?</confirm-restore>
+      <confirm-restore>A node with the same name also exists in node '{0}' 's old location. Are you sure want to restore this node?</confirm-restore>
+      <confirm-delete-permanently>Are you sure want to delete the node '{0}' and all its contents permanently?</confirm-delete-permanently>
+      <confirm-delete-permanently-multi>Are you sure want to move these {0} items permanently?</confirm-delete-permanently-multi>
     </msg>
   </UIWorkingArea>
+
+  <UIAllItemsPreferenceForm>
+    <label>
+      <showOwnedByUser>Owned by me</showOwnedByUser>
+      <showFavourites>Favourites</showFavourites>
+      <showHiddens>Hidden</showHiddens>
+      <showTrash>Trash</showTrash>
+    </label>
+    <title>Set up filter preferences</title>
+    <action>
+      <Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>      
+    </action>
+  </UIAllItemsPreferenceForm>
   
 </bundle>
