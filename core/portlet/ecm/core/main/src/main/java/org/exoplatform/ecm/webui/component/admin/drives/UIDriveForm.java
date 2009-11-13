@@ -28,6 +28,7 @@ import javax.jcr.Session;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -169,7 +170,9 @@ public class UIDriveForm extends UIFormTabPane implements UISelectable {
       Session session = null;
       try {        
         session = rservice.getRepository(repository).getSystemSession(workspace);
-        session.getItem(path);
+        String userId = Util.getPortalRequestContext().getRemoteUser();
+        String pathReal = path.replace("${userId}", userId);
+        session.getItem(pathReal);
         session.logout();
       } catch(Exception e) {
         if(session!=null) {
