@@ -366,7 +366,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
   /**
    * {@inheritDoc}
    */
-  public Node getFileLangNode(Node languageNode) throws Exception {
+  private Node getFileLangNode(Node languageNode) throws Exception {
     if(languageNode.getNodes().getSize() > 0) {
       NodeIterator nodeIter = languageNode.getNodes() ;
       while(nodeIter.hasNext()) {
@@ -387,6 +387,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     Node newLanguageNode = null ;
     Node languagesNode = null ;
     String defaultLanguage = getDefault(node) ;
+    String primaryNodeTypeName = node.getPrimaryNodeType().getName();
     if(node.hasNode(LANGUAGES)) languagesNode = node.getNode(LANGUAGES) ;
     else  {
       languagesNode = node.addNode(LANGUAGES, NTUNSTRUCTURED) ;
@@ -398,14 +399,14 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         if(languagesNode.hasNode(defaultLanguage)) {
           newLanguageNode = languagesNode.getNode(defaultLanguage) ;
         } else {
-          newLanguageNode = languagesNode.addNode(defaultLanguage) ;
+          newLanguageNode = languagesNode.addNode(defaultLanguage, primaryNodeTypeName) ;
           setMixin(node, newLanguageNode, false);
         }
       } else {
         if(languagesNode.hasNode(language)) {
           newLanguageNode = languagesNode.getNode(language) ;
         } else {
-          newLanguageNode = languagesNode.addNode(language) ;
+          newLanguageNode = languagesNode.addNode(language, primaryNodeTypeName) ;
           setMixin(node, newLanguageNode, false);
           newLanguageNode.setProperty(EXO_LANGUAGE, language) ;
         }
@@ -422,6 +423,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
   public void addLanguage(Node node, Map inputs, String language, boolean isDefault, String nodeType) throws Exception {
     Node newLanguageNode = null ;
     Node languagesNode = null ;
+    String primaryNodeTypeName = node.getPrimaryNodeType().getName();
     String defaultLanguage = getDefault(node) ;
     Workspace ws = node.getSession().getWorkspace() ;
     if(node.hasNode(LANGUAGES)) languagesNode = node.getNode(LANGUAGES) ;
@@ -435,14 +437,14 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         if(languagesNode.hasNode(defaultLanguage)) {
           newLanguageNode = languagesNode.getNode(defaultLanguage) ;
         } else {
-          newLanguageNode = languagesNode.addNode(defaultLanguage) ;
+          newLanguageNode = languagesNode.addNode(defaultLanguage, primaryNodeTypeName) ;
           setMixin(node, newLanguageNode, false);
         }
       } else {
         if(languagesNode.hasNode(language)) {
           newLanguageNode = languagesNode.getNode(language) ;
         } else {
-          newLanguageNode = languagesNode.addNode(language) ;
+          newLanguageNode = languagesNode.addNode(language, primaryNodeTypeName) ;
           setMixin(node, newLanguageNode, false);
           newLanguageNode.setProperty(EXO_LANGUAGE, language) ;
         }
@@ -557,6 +559,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
   public void addFileLanguage(Node node, String language, Map mappings, boolean isDefault) throws Exception {
     Node newLanguageNode = null ;
     Node languagesNode = null ;
+    String primaryNodeTypeName = node.getPrimaryNodeType().getName(); 
     Workspace ws = node.getSession().getWorkspace() ;
     String defaultLanguage = getDefault(node) ;
     if(node.hasNode(LANGUAGES)) languagesNode = node.getNode(LANGUAGES) ;
@@ -568,16 +571,19 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
     if(!defaultLanguage.equals(language)){
       if(isDefault) {
         if(languagesNode.hasNode(defaultLanguage)) newLanguageNode = languagesNode.getNode(defaultLanguage) ;
-        else newLanguageNode = languagesNode.addNode(defaultLanguage) ;
+        else newLanguageNode = languagesNode.addNode(defaultLanguage, primaryNodeTypeName) ;
       } else {
         if(languagesNode.hasNode(language)) newLanguageNode = languagesNode.getNode(language) ;
-        else newLanguageNode = languagesNode.addNode(language) ;
+        else newLanguageNode = languagesNode.addNode(language, primaryNodeTypeName) ;
       }
       Node jcrContent = node.getNode(JCRCONTENT) ;
-      node.save() ;
       if(!newLanguageNode.hasNode(JCRCONTENT)) {
-        ws.copy(jcrContent.getPath(), newLanguageNode.getPath() + "/" + jcrContent.getName()) ;
+        Node newJcrContent = newLanguageNode.addNode(JCRCONTENT, "nt:resource");
+        newJcrContent.setProperty(JCR_MIMETYPE, jcrContent.getProperty(JCR_MIMETYPE).getValue());
+        newJcrContent.setProperty(JCRDATA, jcrContent.getProperty(JCRDATA).getValue()) ;
+        newJcrContent.setProperty(JCR_LASTMODIFIED, new GregorianCalendar());
       }
+      node.save() ;
       Node newContentNode = newLanguageNode.getNode(JCRCONTENT) ;
       PropertyIterator props = newContentNode.getProperties() ;
       while (props.hasNext()) {
@@ -800,21 +806,28 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           languagesNode.addMixin("exo:hiddenable");
       }
       Node selectedLangNode = languagesNode.getNode(language) ;
-      Node newLang = languagesNode.addNode(defaultLanguage) ;
+      Node newLang = null;
       if(nodeTypeName.equals(NTFILE)) {
         Node jcrContentNode = node.getNode(JCRCONTENT) ;
         if(!jcrContentNode.getProperty(JCR_MIMETYPE).getString().startsWith("text")) {
+          newLang = languagesNode.addNode(defaultLanguage);
           selectedLangNode = getFileLangNode(selectedLangNode) ;
           newLang = addNewFileNode(node.getName(), newLang, jcrContentNode.getProperty(JCRDATA).getValue(), 
               new GregorianCalendar(), jcrContentNode.getProperty(JCR_MIMETYPE).getString(), repositoryName) ;
           Node newJcrContent = newLang.getNode(JCRCONTENT) ;
           newJcrContent.setProperty(JCRDATA, jcrContentNode.getProperty(JCRDATA).getValue()) ;
           newJcrContent.setProperty(JCR_MIMETYPE, jcrContentNode.getProperty(JCR_MIMETYPE).getString()) ;
+        } else {
+          newLang = languagesNode.addNode(defaultLanguage, nodeTypeName) ;
         }
       } else if(node.isNodeType(NTUNSTRUCTURED) || node.isNodeType(NTFOLDER)) {
+        newLang = languagesNode.addNode(defaultLanguage);
         selectedLangNode = selectedLangNode.getNode(node.getName());
         newLang = newLang.addNode(node.getName(), nodeTypeName);
+      } else {
+        newLang = languagesNode.addNode(defaultLanguage, nodeTypeName);
       }
+      
       PropertyDefinition[] properties = node.getPrimaryNodeType().getPropertyDefinitions() ;
       for(PropertyDefinition pro : properties){
         if(!pro.isProtected()){
@@ -837,6 +850,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
           }
         }
       }
+      setMixin(node, newLang);
       if(nodeTypeName.equals(NTFILE)) {
         Node tempNode = node.addNode(TEMP_NODE, NTUNSTRUCTURED) ;
         node.getSession().move(node.getNode(JCRCONTENT).getPath(), tempNode.getPath() + "/" + JCRCONTENT) ;
@@ -850,7 +864,6 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
       } else if(hasNodeTypeNTResource(node)) {
         processWithDataChildNode(node, selectedLangNode, languagesNode, defaultLanguage, getChildNodeType(node)) ;
       }
-      setMixin(node, newLang) ;
       setVoteProperty(newLang, node, selectedLangNode) ;
       node.setProperty(EXO_LANGUAGE, language) ;
       setCommentNode(node, newLang, selectedLangNode) ;
