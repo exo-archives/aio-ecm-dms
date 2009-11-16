@@ -756,7 +756,34 @@
 								</collection>
 							</field>
 						</object>
-					</object-param>					
+					</object-param>
+					
+					<object-param>
+						<name>UIUnLockManager</name>
+						<object type="org.exoplatform.webui.ext.UIExtension">
+							<field name="type"><string>org.exoplatform.ecm.dms.UIECMAdminControlPanel</string></field>
+							<field name="rank"><int>510</int></field>
+							<field name="name"><string>UIUnLockManager</string></field>
+							<field name="category"><string>ManageUnLock</string></field>
+							<field name="component"><string>org.exoplatform.ecm.webui.component.admin.manager.UIUnLockManagerComponent</string></field>
+							<!-- field name="extendedFilters">
+								<collection type="java.util.ArrayList">
+									<value>
+										<object type="org.exoplatform.webui.ext.filter.impl.UserACLFilter">
+											<field name="permissions">
+												<collection type="java.util.ArrayList">
+													<value>
+														<string>manager:/platform/administrators</string>
+													</value>
+												</collection>
+											</field>
+										</object>
+									</value>
+								</collection>
+							</field-->
+						</object>
+					</object-param>
+										
 				</init-params>
 			</component-plugin>
 		</component-plugins>

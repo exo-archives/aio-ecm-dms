@@ -2148,6 +2148,45 @@
 		<msg>
 			<no-right-target-path>You have to choose other home path</no-right-target-path>
 		</msg>
-	</UITaxonomyTreeMainForm>   
+	</UITaxonomyTreeMainForm>
+	
+	<UIECMAdminControlPanel>
+    <tab>
+      <label>        
+        <ManageUnLock>Manage UnLocks</ManageUnLock>
+      </label>
+    </tab>
+    <label>
+      <UIUnLockManager>Manage UnLocks</UIUnLockManager>      
+    </label>    
+	</UIECMAdminControlPanel>
+	<UIUnLockForm>
+    <label>
+      <name>Path Node</name>      
+      <permissions>Permissions</permissions>
+      <PermissionButton>UIUnLockForm</PermissionButton>
+    </label>
+    <action>
+      <Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>
+    </action>
+    <msg>
+      <permission-require>You must select permissions</permission-require>      
+    </msg>
+  </UIUnLockForm>
+  <UILockList>
+  	<header>
+  		<name>Node</name>
+  		<action>Action</action>
+  	</header>
+  	<tooltip>
+				<ManageLock>Manage Lock</ManageLock>			
+  	</tooltip>
+  </UILockList>
+  <EditUnLockForm>
+    <title>
+      <UIUnLockForm>Manage Lock</UIUnLockForm>
+    </title>
+  </EditUnLockForm>   
 </bundle>
 

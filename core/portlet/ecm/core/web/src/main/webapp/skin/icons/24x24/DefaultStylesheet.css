@@ -795,4 +795,16 @@ a:hover .ShowHideBoxContainer {
   background: url('DefaultSkin/nodetype/kfx-document.gif') no-repeat;  
 }
 
+.ManageUnLockIcon {
+		width: 24px;	height: 24px;
+ 	background: url('DefaultSkin/ManageDynamicContent.gif') no-repeat left center; /* orientation=lt */
+		background: url('DefaultSkin/ManageDynamicContent.gif') no-repeat right center; /* orientation=rt */
+}
+
+.UIUnLockManagerIcon {
+		width: 24px; height: 24px;
+  background: url('DefaultSkin/ManageQueries.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageQueries.gif') no-repeat right center; /* orientation=rt */
+}
+
 /*############################## -- End NodeType Icon -- ########################*/

@@ -2148,6 +2148,45 @@
 		<msg>
 			<no-right-target-path>Bạn phải chọn 1 đường dẫn khác</no-right-target-path>
 		</msg>
-	</UITaxonomyTreeMainForm> 
+	</UITaxonomyTreeMainForm>
+	
+	<UIECMAdminControlPanel>
+    <tab>
+      <label>        
+        <ManageUnLock>Quản lý mở khóa</ManageUnLock>
+      </label>
+    </tab>
+    <label>
+      <UIUnLockManager>Quản lý mở khóa</UIUnLockManager>      
+    </label>    
+	</UIECMAdminControlPanel>
+	<UIUnLockForm>
+    <label>
+      <name>Đường dẫn node</name>      
+      <permissions>Phân quyền</permissions>
+      <PermissionButton>UIUnLockForm</PermissionButton>
+    </label>
+    <action>
+      <Save>#{word.save}</Save>
+      <Cancel>#{word.cancel}</Cancel>
+    </action>
+    <msg>
+      <permission-require>Bạn phải chọn quyền</permission-require>      
+    </msg>
+  </UIUnLockForm>
+  <UILockList>
+  	<header>
+  		<name>Node</name>
+  		<action>Hành động</action>
+  	</header>
+  	<tooltip>
+				<ManageLock>Quản lý khóa</ManageLock>			
+  	</tooltip>
+  </UILockList>
+  <EditUnLockForm>
+    <title>
+      <UIUnLockForm>Quản lý khóa</UIUnLockForm>
+    </title>
+  </EditUnLockForm> 
 </bundle>
 

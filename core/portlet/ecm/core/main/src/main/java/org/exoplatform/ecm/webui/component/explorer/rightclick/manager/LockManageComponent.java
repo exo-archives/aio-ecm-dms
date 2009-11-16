@@ -128,6 +128,8 @@ public class LockManageComponent extends UIAbstractManagerComponent {
     try {
       Lock lock = node.lock(false, false);
       LockUtil.keepLock(lock);
+      LockUtil.keepLock(lock, LockUtil.ADMIN_USER);
+      session.save();
     } catch(LockException le) {
       le.printStackTrace();
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null, 

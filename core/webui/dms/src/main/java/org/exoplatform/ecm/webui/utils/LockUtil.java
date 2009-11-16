@@ -16,6 +16,7 @@
  */
 package org.exoplatform.ecm.webui.utils;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.jcr.access.SystemIdentity;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.impl.core.lock.LockManager;
+import org.exoplatform.services.organization.OrganizationService;
 
 /**
  * Created by The eXo Platform SARL
@@ -39,7 +41,9 @@ import org.exoplatform.services.jcr.impl.core.lock.LockManager;
  * Sep 15, 2008 11:17:13 AM
  */
 public class LockUtil {
-
+  
+  final public static String ADMIN_USER = "*:/platform/administrators".intern();
+  
   public static ExoCache getLockCache() throws Exception {
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     CacheService cacheService = (CacheService)container.getComponentInstanceOfType(CacheService.class);
@@ -57,9 +61,31 @@ public class LockUtil {
       lockedNodesInfo = new HashMap<String,String>();
     }
     lockedNodesInfo.put(key,lock.getLockToken());
-    lockcache.put(userId,lockedNodesInfo);
+    lockcache.put(userId,lockedNodesInfo);    
   }
-
+  
+  public static void keepLock(Lock lock, String userId) throws Exception {
+    ExoCache lockcache = getLockCache();    
+    String keyRoot = createLockKey(lock.getNode(), userId);
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userId);
+    if(lockedNodesInfo == null) {
+      lockedNodesInfo = new HashMap<String,String>();
+    }
+    lockedNodesInfo.put(keyRoot, lock.getLockToken());
+    lockcache.put(userId, lockedNodesInfo);
+  }
+  
+  public static void keepLock(Lock lock, String userId, String lockToken) throws Exception {
+    ExoCache lockcache = getLockCache();    
+    String keyRoot = createLockKey(lock.getNode(), userId);
+    Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userId);
+    if(lockedNodesInfo == null) {
+      lockedNodesInfo = new HashMap<String,String>();
+    }
+    lockedNodesInfo.put(keyRoot, lockToken);
+    lockcache.put(userId, lockedNodesInfo);
+  }
+  
   @SuppressWarnings("unchecked")
   public static void removeLock(Node node) throws Exception {
     ExoCache lockcache = getLockCache();
@@ -112,8 +138,26 @@ public class LockUtil {
     String userId = Util.getPortalRequestContext().getRemoteUser();
     if(userId == null) userId = SystemIdentity.ANONIM;
     Map<String,String> lockedNodesInfo = (Map<String,String>)lockcache.get(userId);
-    if(lockedNodesInfo == null) return null;    
-    return lockedNodesInfo.get(key);
+    if ((lockedNodesInfo != null) && (lockedNodesInfo.get(key) != null)) { 
+      return lockedNodesInfo.get(key);
+    }
+    ExoContainer container = ExoContainerContext.getCurrentContainer();
+    OrganizationService service = (OrganizationService) container.getComponentInstanceOfType(OrganizationService.class);    
+    Collection<org.exoplatform.services.organization.Membership>  
+                        collection = service.getMembershipHandler().findMembershipsByUser(userId);
+    String keyPermission;
+    for(org.exoplatform.services.organization.Membership membership : collection) {
+      StringBuffer permissionBuffer = new StringBuffer();
+      permissionBuffer.append(membership.getMembershipType()).append(":").append(membership.getGroupId());
+      if ((permissionBuffer != null) && (permissionBuffer.toString().length() > 0)) {
+        keyPermission = createLockKey(node, permissionBuffer.toString());
+        lockedNodesInfo = (Map<String,String>)lockcache.get(permissionBuffer.toString());
+        if ((lockedNodesInfo != null) && (lockedNodesInfo.get(keyPermission) != null)) {
+          return lockedNodesInfo.get(keyPermission);
+        }
+      }
+    }
+    return null;
   }  
   
   public static String getOldLockKey(String srcPath, Node node) throws Exception {
@@ -131,12 +175,24 @@ public class LockUtil {
     StringBuffer buffer = new StringBuffer();
     Session session = node.getSession();
     String repositoryName = ((ManageableRepository)session.getRepository()).getConfiguration().getName();    
-    String userId = Util.getPortalRequestContext().getRemoteUser();
+    String userId = Util.getPortalRequestContext().getRemoteUser();    
     if(userId == null) userId = SystemIdentity.ANONIM;
     buffer.append(repositoryName).append("/::/")
           .append(session.getWorkspace().getName()).append("/::/")
           .append(userId).append(":/:")
-          .append(node.getPath());      
+          .append(node.getPath());
+    return buffer.toString();
+  }
+  
+  public static String createLockKey(Node node, String userId) throws Exception {
+    StringBuffer buffer = new StringBuffer();
+    Session session = node.getSession();
+    String repositoryName = ((ManageableRepository)session.getRepository()).getConfiguration().getName();    
+    if(userId == null) userId = SystemIdentity.ANONIM;
+    buffer.append(repositoryName).append("/::/")
+          .append(session.getWorkspace().getName()).append("/::/")
+          .append(userId).append(":/:")
+          .append(node.getPath());
     return buffer.toString();
   }
   
