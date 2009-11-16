@@ -52,6 +52,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFi
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.documents.TrashService;
@@ -177,7 +178,8 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     }
     
     try {
-    	if (node.isLocked()) { 
+    	if (node.isLocked()) {
+    		LockUtil.removeLock(node);    		
     		node.unlock();
     	}
 			if (!node.isCheckedOut())
