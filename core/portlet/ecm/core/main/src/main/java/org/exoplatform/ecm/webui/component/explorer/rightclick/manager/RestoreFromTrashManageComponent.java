@@ -33,7 +33,6 @@ import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
-import org.exoplatform.ecm.webui.component.explorer.UIConfirmMessage;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIRestoreConfirmMessage;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
@@ -46,6 +45,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAr
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.documents.TrashService;
+import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
@@ -114,7 +114,13 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
-		//--------------    
+		//--------------
+  	ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+  	LinkManager linkManager = (LinkManager)myContainer.getComponentInstanceOfType(LinkManager.class);
+    if (linkManager.isLink(node)) {
+    	node = linkManager.getTarget(node, true);
+    	srcPath = node.getPath();
+    }
   	confirmToRestore(node, srcPath, event);  
 	}
 	
