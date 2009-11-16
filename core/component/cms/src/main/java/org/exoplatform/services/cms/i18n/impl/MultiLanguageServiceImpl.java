@@ -574,7 +574,7 @@ public class MultiLanguageServiceImpl implements MultiLanguageService{
         else newLanguageNode = languagesNode.addNode(defaultLanguage, primaryNodeTypeName) ;
       } else {
         if(languagesNode.hasNode(language)) newLanguageNode = languagesNode.getNode(language) ;
-        else newLanguageNode = languagesNode.addNode(language) ;
+        else newLanguageNode = languagesNode.addNode(language, primaryNodeTypeName) ;
       }
       Node jcrContent = node.getNode(JCRCONTENT) ;
       if(!newLanguageNode.hasNode(JCRCONTENT)) {
