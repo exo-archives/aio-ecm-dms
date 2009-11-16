@@ -32,6 +32,7 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
 /**
  * This class used to process the actions with favourite nodes
  */
+@Deprecated
 public interface FavouriteService {
 
   final static public String EXO_FAVOURITE_NODE = "exo:favourite";

@@ -19,9 +19,7 @@ package org.exoplatform.services.cms.folksonomy;
 import java.util.List;
 
 import javax.jcr.Node;
-import javax.jcr.RepositoryException;
 
-import org.exoplatform.services.cms.taxonomy.impl.TaxonomyNodeAlreadyExistsException;
 
 /**
  * Created by The eXo Platform SARL
@@ -31,147 +29,181 @@ import org.exoplatform.services.cms.taxonomy.impl.TaxonomyNodeAlreadyExistsExcep
  * 10:52:05 AM
  */
 public interface NewFolksonomyService {
-	public static final int PUBLIC_FOLKSONOMY = 0;
-	public static final int SITE_FOLKSONOMY = 1;
-	public static final int GROUP_FOLKSONOMY = 2;
-	public static final int USER_FOLKSONOMY = 3;
 	
   /**
-   * Adds a new category path to the given node
-   * 
-   * @param node The node for which we add the category 
-   * @param categoryName The name of the category
-   * @param categoryPath The path of the category relative to the given category
-   * @param folksonomyTree The folksonomy tree root node
-   * @throws RepositoryException if the category cannot be added
+   * Add a private tag to a document. A folksonomy link will be created in a tag node
+   * @param tagNames      Array of tag name as the children of tree
+   * @param documentNode  Tagging this node by create a folksonomy link to node in tag
+   * @param repository    Repository name
+   * @param workspace     Workspace name
+   * @param userName      User name
+   * @throws Exception
    */
-	public void addCategory(Node node, String categoryName, String categoryPath, Node folksonomyTree)
-	throws RepositoryException;
-	
-  /**
-   * Removes a category to the given node
-   * 
-   * @param node The node for which we remove the category
-   * @param categoryName The name of the category
-   * @param categoryPath The path of the category relative to the given category
-   * @param folksonomyTree The folksonomy tree root node 
-   * @throws RepositoryException if the category cannot be removed
-   */
-  public void removeCategory(Node node, String categoryName, String categoryPath, Node folksonomyTree)
-      throws RepositoryException;
+  public void addPrivateTag(String[] tagsName, Node documentNode, 
+      String repository, String workspace, String userName) throws Exception ;
   
   /**
-   * Adds a new category node at the given location
-   * 
-   * @param repository The name of the repository
-   * @param workspace The name of the workspace
-   * @param parentPath The place where the category node will be added
-   * @param categoryNodeName The name of the category node
-   * @throws CategoryNodeAlreadyExistsException if a category node with the same
-   *           name has already been added
-   * @throws RepositoryException if the category node could not be added
+   * Add a group tag to a document. A folksonomy link will be created in a tag node
+   * @param tagNames      Array of tag name as the children of tree
+   * @param documentNode  Tagging this node by create a folksonomy link to node in tag
+   * @param repository    Repository name
+   * @param workspace     Workspace name
+   * @param roles         User roles
+   * @throws Exception
    */
-  public void addCategoryNode(String repository, String workspace, String parentPath,
-      String categoryNodeName, Node folksonomyTree) throws RepositoryException;
-//      , CategoryNodeAlreadyExistsException;
-
-  /**
-   * Removes the category node located at the given absolute path
-   * 
-   * @param repository The name of the repository
-   * @param workspace The name of the workspace
-   * @param absPath The absolute path of the category node to remove
-   * @param folksonomyTree The folksonomy tree root node 
-   * @throws RepositoryException if the category node could not be removed
-   */
-  public void removeCategoryNode(String repository, String workspace, String absPath, 
-  		Node folksonomyTree) throws RepositoryException;
+  public void addGroupsTag(String[] tagsName, Node documentNode, 
+      String repository, String workspace, String[] roles) throws Exception ;
   
   /**
-   * Returns all the nodes related to the given category node (was tagged by this category)
-   * @param categoryNode The category node
-   * @throws RepositoryException if the node list can not be retrieved
-   */  
-  public List<Node> getAllRelatedNodes(Node categoryNode) throws RepositoryException;
-
-  /**
-   * Returns all the category nodes in the given folksonomy tree
-   * @param folksonomyTree The folksonomy tree root node 
-   * @throws RepositoryException if the node list can not be retrieved
-   */  
-	public List<Node> getAllCategoriesInTree(Node folksonomyTree) throws RepositoryException;   
-	
-  /**
-   * Copies the category node from source path to destination path
-   * 
-   * @param repository The name of the repository
-   * @param workspace The name of the workspace
-   * @param srcPath The source path of this category
-   * @param destPath The destination path of the category
-   * @param folksonomyTree The folksonomy tree root node   * 
-   * @throws RepositoryException if the category node could not be copy
+   * Add a public tag to a document. A folksonomy link will be created in a tag node
+   * @param treePath      Path of folksonomy tree
+   * @param tagNames      Array of tag name as the children of tree
+   * @param documentNode  Tagging this node by create a folksonomy link to node in tag
+   * @param repository    Repository name
+   * @param workspace     Workspace name
+   * @throws Exception
    */
-  public void copyTaxonomyNode(String repository, String workspace, String srcPath,
-      String destPath, Node folksonomyTree) throws RepositoryException;
-
+  public void addPublicTag(String treePath, String[] tagsName, Node documentNode, 
+      String repository, String workspace) throws Exception ;
+  
   /**
-   * Moves the category node from source path to destination path
-   * 
-   * @param repository The name of the repository
-   * @param workspace The name of the workspace
-   * @param srcPath The source path of this category
-   * @param destPath The destination path of the category
-   * @param folksonomyTree The folksonomy tree root node 
-   * @throws RepositoryException if the category node could not be copy
+   * Add a site tag to a document. A folksonomy link will be created in a tag node
+   * @param siteName      Portal name
+   * @param treePath      Path of folksonomy tree
+   * @param tagNames      Array of tag name as the children of tree
+   * @param documentNode  Tagging this node by create a folksonomy link to node in tag
+   * @param repository    Repository name
+   * @param workspace     Workspace name
+   * @throws Exception
+   */  
+  public void addSiteTag(String siteName, String treePath, String[] tagsName, Node node, 
+      String repository, String workspace) throws Exception ;
+  /**
+   * Get all private tags
+   * @param userName        User name
+   * @param repository      repository name
+   * @param workspace       Workspace name
+   * @return List<Node>
    */
-  public void moveTaxonomyNode(String repository, String workspace, String srcPath,
-      String destPath, Node folksonomyTree) throws RepositoryException;
-	
-	/**
-	 * Checks if the expected folksonomy exists
-	 *   
-	 * @param folksonomyTreeType Type of the folksonomy tree : public, site, group or user
-	 * @param repositoryName The name of the repository
-	 * @param ownerName			 The folksonomy tree owner name (site name, group name or user name)
-	 * @return							 true if the folksonomy tree exists, false in opposite case
-	 * @throws RepositoryException if some error occurs
-	 */
-	public boolean hasFolksonomyTree(int folksonomyTreeType, String repositoryName, 
-			String ownerName) throws RepositoryException;
-
-	/**
-	 * Gets the expected folksonomy tree
-	 *   
-	 * @param folksonomyTreeType Type of the folksonomy tree : public, site, group or user
-	 * @param repositoryName The name of the repository
-	 * @param ownerName			 The folksonomy tree owner name (site name, group name or user name)
-	 * @throws RepositoryException if the tree can't be retrieved
-	 */
-	public Node getFolksonomyTree(int folksonomyTreeType, String repositoryName, 
-			String ownerName) throws RepositoryException;
-	
-	/**
-	 * Adds a folksonomy tree
-	 *
-   * @param folksonomyTree The folksonomy tree root node   
-	 * @param folksonomyTreeType Type of the folksonomy tree : public, site, group or user
-	 * @param repositoryName The name of the repository
-	 * @param ownerName			 The folksonomy tree owner name (site name, group name or user name)
-	 * @throws RepositoryException if some error occurs
-	 */
-	public void addFolksonomyTree(Node folksonomyTree, int folksonomyTreeType, String repositoryName, 
-			String ownerName) throws RepositoryException;
-	
-	/**
-	 * Removes a folksonomy tree
-	 *
-   * @param folksonomyTree The folksonomy tree root node   
-	 * @param folksonomyTreeType Type of the folksonomy tree : public, site, group or user
-	 * @param repositoryName The name of the repository
-	 * @param ownerName			 The folksonomy tree owner name (site name, group name or user name)
-	 * @throws RepositoryException if some error occurs
-	 */
-	public void removeFolksonomyTree(Node folksonomyTree, int folksonomyTreeType, String repositoryName, 
-			String ownerName) throws RepositoryException;
-	
+  public List<Node> getAllPrivateTags(String userName, String repository, 
+      String workspace) throws Exception ; 
+  
+  /**
+   * Get all public tags
+   * @param treePath      Folksonomy tree path
+   * @param repository    Repository name
+   * @param workspace     Workspace name
+   * @return  List<Node>
+   * @throws Exception
+   */
+  public List<Node> getAllPublicTags(String treePath, String repository, 
+      String workspace) throws Exception ;
+  
+  /**
+   * Get all tags by groups
+   * @param roles       Roles of user
+   * @param repository  Repository name
+   * @param workspace   Workspace name
+   * @return  List<Node>
+   * @throws Exception
+   */
+  public List<Node> getAllGroupTags(String[] roles, String repository, 
+      String workspace) throws Exception ;
+  
+  /**
+   * Get all tags of Site
+   * @param siteName    Portal name
+   * @param treePath    Folksonomy tree path
+   * @param repository  Repository name
+   * @param workspace   Workspace name
+   * @return  List<Node>
+   * @throws Exception
+   */
+  public List<Node> getAllSiteTags(String siteName, String treePath, String repository, 
+      String workspace) throws Exception ;
+  /**
+   * Get all document which storing in tag
+   * @param treeName              Name of folksonomy tree
+   * @param tagName               Name of tag
+   * @param repository      Repository name
+   * @return                List of documents in tag
+   * @throws Exception
+   */
+  
+  /**
+   * Get all documents by tag
+   */
+  public List<Node> getAllDocumentsByTag(String tagPath, String repository, 
+      String workspace) throws Exception ;
+  
+  
+  /**
+   * Get HTML_STYLE_PROP property in styleName node in repository
+   * @param tagPath       Tag path
+   * @param workspace     Workspace name  
+   * @param repository    Repository name
+   * @return  value of property of styleName node
+   * @throws Exception
+   */
+  public String getTagStyle(String tagPath, String repository, String workspace) throws Exception ;
+  
+  /**
+   * Update property TAG_RATE_PROP, HTML_STYLE_PROP following value tagRate, htmlStyle
+   * for node in tagPath in repository
+   * @param styleName     Style name
+   * @param tagRate       The range of tag numbers
+   * @param htmlStyle     Tag style
+   * @param repository    Repository name
+   * @param workspace     Workspace name
+   * @throws Exception
+   */
+  public void updateTagStype(String styleName, String tagRate, String htmlStyle, 
+      String repository, String workspace) throws Exception ;
+  
+  /**
+   *  Get all tag style base of folksonomy tree
+   * @param repository Repository name
+   * @param workspace Workspace name
+   * @return List<Node> List tag styles
+   * @throws Exception
+   */
+  public List<Node> getAllTagStyle(String repository, String workspace) throws Exception ;
+  
+  /**
+   * Init all TagStylePlugin with session in repository name
+   * @param repository     repository name
+   */
+  public void init(String repository) throws Exception ;
+  
+  /**
+   * Remove tag of given document
+   * @param treeName    Name of folksonomy tree
+   * @param tagName     Name of tag
+   * @param document    Document which added a link to tagName
+   * @param repository  Repository name
+   * @return
+   * @throws Exception
+   */
+  public void removeTagOfDocument(String tagPath, Node document, 
+      String repository, String workspace) throws Exception;
+  
+  /**
+   * Remove tag
+   * @param tagPath     Path of tag
+   * @param repository  Repository name
+   * @param workspace   Workspace name
+   */
+  public void removeTag(String tagPath, String repository, String workspace) throws Exception;
+  
+  /**
+   * Modify tag name
+   * @param tagPath     Path of tag
+   * @param newTagName  New tag name
+   * @param repository  Repository name
+   * @param workspace   Workspace name
+   * @return
+   * @throws Exception
+   */
+  public Node modifyTagName(String tagPath, String newTagName, String repository, 
+      String workspace) throws Exception;
 }

@@ -27,6 +27,7 @@ import javax.jcr.Node;
  * 					phamvuxuanhoa@gmail.com
  * Dec 5, 2006  
  */
+@Deprecated
 public interface FolksonomyService {
   
   /**

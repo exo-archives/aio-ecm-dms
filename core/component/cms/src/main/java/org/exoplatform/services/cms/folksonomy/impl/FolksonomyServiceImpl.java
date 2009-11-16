@@ -50,6 +50,7 @@ import org.picocontainer.Startable;
  * 					phamvuxuanhoa@gmail.com
  * Dec 5, 2006  
  */
+@Deprecated
 public class FolksonomyServiceImpl implements FolksonomyService, Startable {
   
   /**

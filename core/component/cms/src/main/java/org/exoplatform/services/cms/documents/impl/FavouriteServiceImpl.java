@@ -43,6 +43,7 @@ import org.exoplatform.services.jcr.ext.common.SessionProvider;
  * Oct 6, 2009  
  * 3:39:40 AM
  */
+@Deprecated
 public class FavouriteServiceImpl implements FavouriteService {
 
   final static public String EXO_RESTORELOCATION = "exo:restoreLocation";	
