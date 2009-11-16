@@ -518,6 +518,11 @@
   background: url('MacSkin/Copy.gif') no-repeat;   
 }
 
+.EmptyTrash16x16Icon {
+  width: 16px; height: 16px;
+  background: url('EmptyTrash/Copy.gif') no-repeat;   
+}
+
 .Cut16x16Icon {
   width: 16px; height: 16px;
   background: url('MacSkin/Cut.gif') no-repeat;   
@@ -738,6 +743,13 @@
   background: url('MacSkin/Copy.gif') no-repeat left center; /* orientation=lt */
   background: url('MacSkin/Copy.gif') no-repeat right center; /* orientation=rt */
 }
+
+
+.UIRightClickPopupMenu .EmptyTrash16x16Icon {
+  background: url('MacSkin/EmptyTrash.gif') no-repeat left center; /* orientation=lt */
+  background: url('MacSkin/EmptyTrash.gif') no-repeat right center; /* orientation=rt */
+}
+
 
 .UIRightClickPopupMenu .Cut16x16Icon {
   background: url('MacSkin/Cut.gif') no-repeat left center; /* orientation=lt */

@@ -49,6 +49,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanDeleteNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
@@ -88,7 +89,10 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
 
   private static final Log LOG = ExoLogger.getLogger(DeleteManageComponent.class);
   
-  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new IsNotLockedFilter(), new CanDeleteNodeFilter()});
+  private static final List<UIExtensionFilter> FILTERS 
+  		= Arrays.asList(new UIExtensionFilter[]{new IsNotLockedFilter(), 
+  																						new CanDeleteNodeFilter(), 
+  																						new IsNotTrashHomeNodeFilter() });
   
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {

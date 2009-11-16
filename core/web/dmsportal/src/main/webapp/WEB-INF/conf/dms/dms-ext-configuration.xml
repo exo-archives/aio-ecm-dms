@@ -417,6 +417,17 @@
 				<init-params>
 
           <object-param>
+            <name>EmptyTrash</name>
+            <object type="org.exoplatform.webui.ext.UIExtension">
+              <field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>
+              <field name="rank"><int>104</int></field>
+              <field name="name"><string>EmptyTrash</string></field>
+              <field name="category"><string>ItemContextMenu</string></field>
+              <field name="component"><string>org.exoplatform.ecm.webui.component.explorer.rightclick.manager.EmptyTrashManageComponent</string></field>
+            </object>
+          </object-param>
+
+          <object-param>
             <name>RemoveFromFavourite</name>
             <object type="org.exoplatform.webui.ext.UIExtension">
               <field name="type"><string>org.exoplatform.ecm.dms.UIWorkingArea</string></field>

@@ -2952,5 +2952,18 @@
       <Save>#{word.save}</Save>
       <Cancel>#{word.cancel}</Cancel>      
     </action>
-  </UIAllItemsPreferenceForm>  
+  </UIAllItemsPreferenceForm>
+  
+   <EmptyTrashManageComponent>
+    <msg>
+      <confirm-delete>Empty all items from trash?</confirm-delete>
+    </msg>
+  </EmptyTrashManageComponent>  
+
+  <ECMContextMenu>
+    <event>
+      <EmptyTrash>Empty trash</EmptyTrash>
+    </event>
+  </ECMContextMenu>    
+    
 </bundle>

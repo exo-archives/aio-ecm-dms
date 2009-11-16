@@ -18,9 +18,7 @@
 package org.exoplatform.ecm.webui.component.explorer.rightclick.manager;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 
 import javax.jcr.Node;
@@ -39,19 +37,17 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutF
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsHoldsLockFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotSameNameSiblingFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.event.Event;
-import org.exoplatform.webui.ext.UIExtensionManager;
 import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 
@@ -69,7 +65,13 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 )
 public class UnlockManageComponent extends UIAbstractManagerComponent {
   
-  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[]{new CanSetPropertyFilter(), new IsNotSameNameSiblingFilter(), new IsHoldsLockFilter(), new IsNotLockedFilter(), new IsCheckedOutFilter()});
+  private static final List<UIExtensionFilter> FILTERS 
+  		= Arrays.asList(new UIExtensionFilter[]{new CanSetPropertyFilter(), 
+  																						new IsNotSameNameSiblingFilter(), 
+  																						new IsHoldsLockFilter(), 
+  																						new IsNotLockedFilter(), 
+  																						new IsCheckedOutFilter(),
+  																						new IsNotTrashHomeNodeFilter() });
   
   private static final Log LOG  = ExoLogger.getLogger(UnlockManageComponent.class);
   

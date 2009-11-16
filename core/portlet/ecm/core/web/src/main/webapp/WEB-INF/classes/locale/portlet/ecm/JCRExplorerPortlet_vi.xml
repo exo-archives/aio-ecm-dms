@@ -2965,4 +2965,16 @@
     </action>
   </UIAllItemsPreferenceForm>
   
+  <EmptyTrashManageComponent>
+    <msg>
+      <confirm-delete>Xóa tất cả file-thư mục trong thùng rác?</confirm-delete>
+    </msg>
+  </EmptyTrashManageComponent>  
+  
+  <ECMContextMenu>
+    <event>
+      <EmptyTrash>Xóa sạch thùng rác?</EmptyTrash>
+    </event>
+  </ECMContextMenu>    
+  
 </bundle>

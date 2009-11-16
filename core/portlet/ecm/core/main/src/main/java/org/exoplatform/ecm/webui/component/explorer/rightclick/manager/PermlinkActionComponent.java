@@ -45,7 +45,8 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 )      
 public class PermlinkActionComponent extends UIAbstractManagerComponent {
 
-  private static final List<UIExtensionFilter> FILTERS = Arrays.asList(new UIExtensionFilter[] { new IsDocumentFilter() });
+  private static final List<UIExtensionFilter> FILTERS 
+  		= Arrays.asList(new UIExtensionFilter[] { new IsDocumentFilter() });
   
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {

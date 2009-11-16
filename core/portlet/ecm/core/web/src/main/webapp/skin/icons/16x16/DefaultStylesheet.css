@@ -494,6 +494,13 @@
   background: url('DefaultSkin/Copy.gif') no-repeat right center; /* orientation=rt */
 }
 
+.EmptyTrash16x16Icon {
+  width: 16px; height: 16px;
+  background: url('DefaultSkin/EmptyTrash.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/EmptyTrash.gif') no-repeat right center; /* orientation=rt */
+}
+
+
 .AddToFavourite16x16Icon {
   width: 16px; height: 16px;
   background: url('DefaultSkin/AddToFavourite.gif') no-repeat left center; /* orientation=lt */
@@ -795,6 +802,12 @@
   background: url('DefaultSkin/Copy.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/Copy.gif') no-repeat right center; /* orientation=rt */
 }
+
+.UIRightClickPopupMenu .EmptyTrash16x16Icon {
+  background: url('DefaultSkin/EmptyTrash.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/EmptyTrash.gif') no-repeat right center; /* orientation=rt */
+}
+
 
 .UIRightClickPopupMenu .EditDocument16x16Icon {
   background: url('DefaultSkin/EditDocument.gif') no-repeat left center; /* orientation=lt */

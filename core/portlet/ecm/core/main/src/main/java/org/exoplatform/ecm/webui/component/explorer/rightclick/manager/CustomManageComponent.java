@@ -17,6 +17,9 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.rightclick.manager;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.jcr.Node;
 import javax.jcr.Session;
 
@@ -25,6 +28,8 @@ import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotSameNameSiblingFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
@@ -35,6 +40,8 @@ import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
 import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.ext.filter.UIExtensionFilter;
+import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 
 /**
  * Created by The eXo Platform SARL
@@ -50,7 +57,14 @@ import org.exoplatform.webui.event.Event;
 )
 public class CustomManageComponent extends UIAbstractManagerComponent {
 
+	private static final List<UIExtensionFilter> FILTERS 
+			= Arrays.asList(new UIExtensionFilter[]{ new IsNotTrashHomeNodeFilter() });
   private final static Log       LOG  = ExoLogger.getLogger(CustomManageComponent.class);
+  
+  @UIExtensionFilters
+  public List<UIExtensionFilter> getFilters() {
+    return FILTERS;
+  }
   
   public static void customManage(Event<? extends UIComponent> event, UIJCRExplorer uiExplorer,
       UIApplication uiApp) throws Exception {

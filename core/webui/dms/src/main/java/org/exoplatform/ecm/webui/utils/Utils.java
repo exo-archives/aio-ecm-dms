@@ -158,6 +158,7 @@ public class Utils {
   final static public String EXO_RESTORELOCATION = "exo:restoreLocation";
   final static public String EXO_RESTORE_WORKSPACE = "exo:restoreWorkspace";  
   final static public String EXO_LASTMODIFIER = "exo:lastModifier";
+  final static public String EXO_TRASH_FOLDER = "exo:trashFolder";
 
   final static public String EXO_MUSICFOLDER = "exo:musicFolder";
   final static public String EXO_VIDEOFOLDER = "exo:videoFolder";
@@ -200,6 +201,10 @@ public class Utils {
   public static boolean isVersionable(Node node) throws RepositoryException {
     return node.isNodeType(MIX_VERSIONABLE);
   }  
+  
+  public static boolean isTrashHomeNode(Node node) throws RepositoryException {
+  	return node.isNodeType(EXO_TRASH_FOLDER);
+  }
   
   static public class NodeTypeNameComparator implements Comparator<NodeType> {
     public int compare(NodeType n1, NodeType n2) throws ClassCastException {

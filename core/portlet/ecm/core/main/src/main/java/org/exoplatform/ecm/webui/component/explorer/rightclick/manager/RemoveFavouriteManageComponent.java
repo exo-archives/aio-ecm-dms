@@ -38,6 +38,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.HasRemovePerm
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsFavouriteFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
@@ -72,7 +73,8 @@ public class RemoveFavouriteManageComponent extends UIAbstractManagerComponent {
 			= Arrays.asList(new UIExtensionFilter[] { new IsFavouriteFilter(),
 																						 		new IsNotLockedFilter(),
 																						 		new IsCheckedOutFilter(),
-																						 		new HasRemovePermissionFilter()});
+																						 		new HasRemovePermissionFilter(),
+																						 		new IsNotTrashHomeNodeFilter() });
 	
 	private final static Log       LOG  = ExoLogger.getLogger(RemoveFavouriteManageComponent.class);
 	  

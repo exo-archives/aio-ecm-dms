@@ -924,6 +924,9 @@
       <propertyDefinition name="exo:targetPath" requiredType="String" autoCreated="false" mandatory="true" onParentVersion="COPY"
         protected="false" multiple="false"/>      
     </propertyDefinitions>
-  </nodeType>  
+  </nodeType>
+  
+  <nodeType name="exo:trashFolder" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+  </nodeType>
  	
 </nodeTypes>

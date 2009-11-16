@@ -555,6 +555,7 @@
       <RemoveFromFavourite>Remove from favourite</RemoveFromFavourite>
       <MoveToTrash>Move to Trash</MoveToTrash>
       <RestoreFromTrash>Restore from Trash</RestoreFromTrash>
+      <EmptyTrash>Empty trash</EmptyTrash>
     </event>
   </ECMContextMenu>
   <!--
@@ -2914,5 +2915,11 @@
       <Save>#{word.save}</Save>
       <Cancel>#{word.cancel}</Cancel>      
     </action>
-  </UIAllItemsPreferenceForm>  
+  </UIAllItemsPreferenceForm>
+  
+  <EmptyTrashManageComponent>
+    <msg>
+      <confirm-delete>Empty all items from trash?</confirm-delete>
+    </msg>
+  </EmptyTrashManageComponent>  
 </bundle>
