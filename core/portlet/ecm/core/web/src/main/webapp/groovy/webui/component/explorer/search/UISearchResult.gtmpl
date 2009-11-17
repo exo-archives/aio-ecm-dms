@@ -9,9 +9,9 @@
 <% 
   import org.exoplatform.ecm.webui.utils.Utils;
   import org.exoplatform.services.jcr.impl.core.JCRPath;
-	import org.exoplatform.services.jcr.impl.core.SessionImpl;
-	import javax.jcr.Node;
-	import javax.jcr.Session;
+  import org.exoplatform.services.jcr.impl.core.SessionImpl;
+  import javax.jcr.Node;
+  import javax.jcr.Session;
 %>
 <% 
   def resultList = uicomponent.getCurrentList(); 
@@ -19,6 +19,10 @@
   long searchTime = uicomponent.getSearchTime()/1000;
   int resultSize = uicomponent.getUIPageIterator().getAvailable();  
   def rcontext = _ctx.getRequestContext();
+  
+  def jm = rcontext.getJavascriptManager();
+  jm.importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/') ;
+  
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/');
   java.text.DateFormat dateFormat = uicomponent.getSimpleDateFormat();
@@ -28,102 +32,109 @@
     <thead>
       <tr>
         <th width="45px">
-  	    	<%
-  	    		if (uicomponent.iconType.equals("BlueUpArrow")) {
-  	    	%>
-	        	<div onclick="<%=uicomponent.event("SortASC", Utils.formatNodeName("type"))%>" title="<%=_ctx.appRes("UISearchResult.title.typeASC")%>">
-		  	    	<%=_ctx.appRes("UISearchResult.header.type")%>
-	  		    	<img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueUpArrow16x16Icon">
-	  	    	</div>
-  	    	<%
-  	    		} else if (uicomponent.iconType.equals("BlueDownArrow")) {
-  	    	%>
-  	    	<div onclick="<%=uicomponent.event("SortDESC", Utils.formatNodeName("type"))%>" title="<%=_ctx.appRes("UISearchResult.title.typeDESC")%>">
-	  	    	<%=_ctx.appRes("UISearchResult.header.type")%>
-  		    	<img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueDownArrow16x16Icon">
-  	    	</div>
-  	    	<%
-  	    		} else {
-  	    	%>
-  	    		<div onclick="<%=uicomponent.event("SortASC", Utils.formatNodeName("type"))%>" title="<%=_ctx.appRes("UISearchResult.title.typeASC")%>">
-		  	    	<%=_ctx.appRes("UISearchResult.header.type")%>	  		    		
-	  	    	</div>
-	  	    <% } %>
+          <%
+            if (uicomponent.iconType.equals("BlueUpArrow")) {
+          %>
+            <div onclick="<%=uicomponent.event("SortASC", Utils.formatNodeName("type"))%>" title="<%=_ctx.appRes("UISearchResult.title.typeASC")%>">
+              <%=_ctx.appRes("UISearchResult.header.type")%>
+              <img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueUpArrow16x16Icon">
+            </div>
+          <%
+            } else if (uicomponent.iconType.equals("BlueDownArrow")) {
+          %>
+          <div onclick="<%=uicomponent.event("SortDESC", Utils.formatNodeName("type"))%>" title="<%=_ctx.appRes("UISearchResult.title.typeDESC")%>">
+            <%=_ctx.appRes("UISearchResult.header.type")%>
+            <img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueDownArrow16x16Icon">
+          </div>
+          <%
+            } else {
+          %>
+            <div onclick="<%=uicomponent.event("SortASC", Utils.formatNodeName("type"))%>" title="<%=_ctx.appRes("UISearchResult.title.typeASC")%>">
+              <%=_ctx.appRes("UISearchResult.header.type")%>                
+            </div>
+          <% } %>
         </th>
-  	    <th><%=_ctx.appRes("UISearchResult.header.name")%></th>  	
-  	    <th style="width:80px;">
-  	    	<%
-  	    		if (uicomponent.iconScore.equals("BlueUpArrow")) {
-  	    	%>
-	        	<a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("score"))%>" title="<%=_ctx.appRes("UISearchResult.title.scoreASC")%>">
-		  	    	<%=_ctx.appRes("UISearchResult.header.score")%>
-	  		    	<img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueUpArrow16x16Icon"/>
-	  	    	</a>
-  	    	<%
-  	    		} else if (uicomponent.iconScore.equals("BlueDownArrow")) {
-  	    	%>
-  	    	<a href="<%=uicomponent.event("SortDESC", Utils.formatNodeName("score"))%>" title="<%=_ctx.appRes("UISearchResult.title.scoreDESC")%>">
-	  	    	<%=_ctx.appRes("UISearchResult.header.score")%>
-  		    	<img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueDownArrow16x16Icon"/>
-  	    	</a>
-  	    	<%
-  	    		} else {
-  	    	%>
-  	    		<a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("score"))%>" title="<%=_ctx.appRes("UISearchResult.title.scoreASC")%>">
-		  	    	<%=_ctx.appRes("UISearchResult.header.score")%>	    		
-	  	    	</a>
-	  	    <% } %>
-  	    <th style="width:80px;"><%=_ctx.appRes("UISearchResult.header.action")%></th>
+        <th><%=_ctx.appRes("UISearchResult.header.name")%></th>   
+        <th style="width:80px;">
+          <%
+            if (uicomponent.iconScore.equals("BlueUpArrow")) {
+          %>
+            <a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("score"))%>" title="<%=_ctx.appRes("UISearchResult.title.scoreASC")%>">
+              <%=_ctx.appRes("UISearchResult.header.score")%>
+              <img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueUpArrow16x16Icon"/>
+            </a>
+          <%
+            } else if (uicomponent.iconScore.equals("BlueDownArrow")) {
+          %>
+          <a href="<%=uicomponent.event("SortDESC", Utils.formatNodeName("score"))%>" title="<%=_ctx.appRes("UISearchResult.title.scoreDESC")%>">
+            <%=_ctx.appRes("UISearchResult.header.score")%>
+            <img src="/eXoResources/skin/sharedImages/Blank.gif" alt="" class="BlueDownArrow16x16Icon"/>
+          </a>
+          <%
+            } else {
+          %>
+            <a href="<%=uicomponent.event("SortASC", Utils.formatNodeName("score"))%>" title="<%=_ctx.appRes("UISearchResult.title.scoreASC")%>">
+              <%=_ctx.appRes("UISearchResult.header.score")%>         
+            </a>
+          <% } %>
+        <th style="width:80px;"><%=_ctx.appRes("UISearchResult.header.action")%></th>
       </tr>
     </thead>
     <tbody>
     <%
-      def rowClass = null ;
- 	    boolean even = true ;
- 	    boolean found = false ;
- 	    Node node = null; 
- 	    if (resultList != null && resultList.size() > 0) {
-  	    for (row in resultList) {
-  	      found = true;
-  	      if (even) rowClass = "EvenRow";  
-  	      else rowClass =  "OddRow"; 
-  	      even = !even;
-  	      String nodePath = row.getValue("jcr:path").getString();
-  	      try {
-  	      	node = uicomponent.getNodeByPath(nodePath);
-  	      } catch(Exception e) {
-  	      	continue;
-  	      }
-  	      if (node.getPrimaryNodeType().getName().equals("nt:resource")) {
-  	      	node = node.getParent();
-  	      	nodePath = node.getPath();
-  	      }
-  	     
-  	      String excerpt = row.getValue("rep:excerpt(.)")== null ? "" : row.getValue("rep:excerpt(.)").getString();
-  	      String score = row.getValue("jcr:score")== null ? "" : row.getValue("jcr:score").getString();
-  	      String s = "";
+    def i=1;
+    def rowClass = null ;
+      boolean even = true ;
+      boolean found = false ;
+      Node node = null; 
+      if (resultList != null && resultList.size() > 0) {
+        for (row in resultList) {
+          jm.addJavascript("eXo.ecm.ECMUtils.insertContentToIframe('$i') ;") ;
+          found = true;
+          if (even) rowClass = "EvenRow";  
+          else rowClass =  "OddRow"; 
+          even = !even;
+          String nodePath = row.getValue("jcr:path").getString();
+          try {
+            node = uicomponent.getNodeByPath(nodePath);
+          } catch(Exception e) {
+            continue;
+          }
+          if (node.getPrimaryNodeType().getName().equals("nt:resource")) {
+            node = node.getParent();
+            nodePath = node.getPath();
+          }
+         
+          String excerpt = row.getValue("rep:excerpt(.)")== null ? "" : row.getValue("rep:excerpt(.)").getString();
+          String score = row.getValue("jcr:score")== null ? "" : row.getValue("jcr:score").getString();
+          String s = "";      
       %>
-          <tr class="$rowClass">
-          	<td>
+          <tr class="$rowClass" onload="eXo.ecm.ECMUtils.insertContentToIframe('$i') ;">
+            <td>
               <div class="default16x16Icon ItemIcon <%=Utils.getNodeTypeIcon(node, "16x16Icon")%>" style="margin:auto"><span></span></div>
             </td>
             <td>
-            	<div class="Text" title="<%=dateFormat.format(uicomponent.getDateCreated(node))%>">
-            		<%=node.getName()%>
-            	</div>
-       				<div>$excerpt</div>
-       				<div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
-       				<div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(uicomponent.getDateCreated(node))%></div>
-		        </td>
+              <div title="<%=dateFormat.format(uicomponent.getDateCreated(node))%>">
+                <%=node.getName()%>
+              </div>
+              <div>
+                <iframe id="original${i}" scrolling="auto" style="border: 0px; height:50px; width: 100%;" content="<%=excerpt%>"> 
+                  <div><span></span></div>
+                </iframe>
+              </div>
+              <div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
+              <div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(uicomponent.getDateCreated(node))%></div>
+            </td>
             <td><div class="ActionContainer">$score</div></td>
-	          <td>
-	          	<div class="ActionContainer">
-		            <img onclick="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" alt="" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>" src="/eXoResources/skin/sharedImages/Blank.gif" class="View16x16Icon"/>
-		            <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>" alt="" class="OpenFolder16x16Icon"/>
-		          </div>
-	          </td>	                  
+            <td>
+              <div class="ActionContainer">
+                <img onclick="<%=uicomponent.event("View", Utils.formatNodeName(node.getPath()))%>" alt="" title="<%=_ctx.appRes("UISearchResult.tooltip.View")%>" src="/eXoResources/skin/sharedImages/Blank.gif" class="View16x16Icon"/>
+                <img src="/eXoResources/skin/sharedImages/Blank.gif" onclick="<%=uicomponent.event("OpenFolder", Utils.formatNodeName(node.getPath()))%>" title="<%=_ctx.appRes("UISearchResult.tooltip.OpenFolder")%>" alt="" class="OpenFolder16x16Icon"/>
+              </div>
+            </td>                   
           </tr>
     <%
+          i++;
         }
       } else {
     %>
