@@ -42,6 +42,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAr
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.lock.LockService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -128,7 +129,11 @@ public class LockManageComponent extends UIAbstractManagerComponent {
     try {
       Lock lock = node.lock(false, false);
       LockUtil.keepLock(lock);
-      LockUtil.keepLock(lock, LockUtil.ADMIN_USER);
+      LockService lockService = uiExplorer.getApplicationComponent(LockService.class);
+      List<String> settingLockList = lockService.getAllGroupsOrUsersForLock();
+      for (String settingLock : settingLockList) {
+        LockUtil.keepLock(lock, settingLock);
+      }      
       session.save();
     } catch(LockException le) {
       le.printStackTrace();

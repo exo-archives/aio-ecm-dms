@@ -2177,18 +2177,28 @@
   </UIUnLockForm>
   <UILockList>
   	<header>
-  		<name>Node</name>
+  		<name>Groups Or Users</name>
   		<action>Action</action>
   	</header>
   	<tooltip>
-				<ManageLock>Manage Lock</ManageLock>			
+				<DeleteLock>Delete Group Or User</DeleteLock>			
   	</tooltip>
   </UILockList>
   <EditUnLockForm>
     <title>
       <UIUnLockForm>Manage Lock</UIUnLockForm>
     </title>
-  </EditUnLockForm>
+  </EditUnLockForm>  
+  <UITabPane>
+    <action>
+      <Close>Close</Close>
+    </action>
+    <title>
+    		<UILockList>Locked Groups Or Users</UILockList>
+      <UIPermissionSelector>Select Group</UIPermissionSelector>
+      <UIUserContainer>Select User</UIUserContainer>
+    </title>
+  </UITabPane>
   
   <UIViewFormTabPane>
     <action>

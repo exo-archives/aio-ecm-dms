@@ -16,22 +16,9 @@
  */
 package org.exoplatform.ecm.webui.component.admin.unlock;
 
-import javax.jcr.Node;
-import javax.jcr.PathNotFoundException;
-import javax.jcr.Session;
-import javax.jcr.lock.Lock;
-import javax.jcr.lock.LockException;
-
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
-import org.exoplatform.ecm.webui.form.validator.ECMNameValidator;
 import org.exoplatform.ecm.webui.selector.UISelectable;
-import org.exoplatform.ecm.webui.utils.LockUtil;
-import org.exoplatform.ecm.webui.utils.Utils;
-import org.exoplatform.portal.webui.util.SessionProviderFactory;
-import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.config.RepositoryEntry;
-import org.exoplatform.services.jcr.config.WorkspaceEntry;
-import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.cms.lock.LockService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -63,17 +50,13 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
 )
 public class UIUnLockForm extends UIForm implements UISelectable {
   
-  final static public String PATH_NODE = "name";
-  final static public String PERMISSIONS = "permissions";
+  final static public String GROUPS_OR_USERS = "groupsOrUsers";
   final static public String[] ACTIONS = {"Save", "Cancel"};
-  final static public String[] REG_EXPRESSION = {"[", "]", "&"};
   
   public UIUnLockForm() throws Exception {
-    addUIFormInput(new UIFormStringInput(PATH_NODE, PATH_NODE, null).
-      addValidator(MandatoryValidator.class).addValidator(ECMNameValidator.class));    
     UIFormInputSetWithAction uiInputAct = new UIFormInputSetWithAction("PermissionButton");
-    uiInputAct.addUIFormInput( new UIFormStringInput(PERMISSIONS, PERMISSIONS, null).setEditable(false).addValidator(MandatoryValidator.class));
-    uiInputAct.setActionInfo(PERMISSIONS, new String[] {"AddPermission"});
+    uiInputAct.addUIFormInput( new UIFormStringInput(GROUPS_OR_USERS, GROUPS_OR_USERS, null).setEditable(false).addValidator(MandatoryValidator.class));
+    uiInputAct.setActionInfo(GROUPS_OR_USERS, new String[] {"AddPermission"});
     addUIComponentInput(uiInputAct);
   }
 
@@ -85,19 +68,19 @@ public class UIUnLockForm extends UIForm implements UISelectable {
     UIPopupWindow uiPopup = uiManager.getChildById("PermissionPopup");
     uiPopup.setRendered(false);
     uiPopup.setShow(false);
+    uiManager.getChild(UILockList.class).setRendered(false);
+    uiManager.getChild(UIUnLockForm.class).setRendered(true);
   }
   
-  public void update(String nodePath)throws Exception {
-    getUIStringInput(PATH_NODE).setValue(nodePath);
-    getUIStringInput(PATH_NODE).setEditable(false);    
-    getUIStringInput(PERMISSIONS).setValue("");      
+  public void update()throws Exception {
+    getUIStringInput(GROUPS_OR_USERS).setValue("");      
   }
 
   static public class CancelActionListener extends EventListener<UIUnLockForm> {
     public void execute(Event<UIUnLockForm> event) throws Exception {
       UIUnLockForm uiForm = event.getSource();
       UIUnLockManager uiManager = uiForm.getAncestorOfType(UIUnLockManager.class);
-      uiManager.removeChildById(UILockList.ST_EDIT);
+      uiManager.removeChildById("PermissionPopup");
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
     }
   }
@@ -105,70 +88,31 @@ public class UIUnLockForm extends UIForm implements UISelectable {
   static public class SaveActionListener extends EventListener<UIUnLockForm> {
     public void execute(Event<UIUnLockForm> event) throws Exception {
       UIUnLockForm uiUnLockForm = event.getSource();
-      UIApplication uiApp = uiUnLockForm.getAncestorOfType(UIApplication.class);
-      String nodePath = uiUnLockForm.getUIStringInput(PATH_NODE).getValue();      
-      if(!Utils.isNameValid(nodePath, REG_EXPRESSION)) {
-        uiApp.addMessage(new ApplicationMessage("UIUnLockForm.msg.name-invalid", null, 
-                                                ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
+      UIApplication uiApp = uiUnLockForm.getAncestorOfType(UIApplication.class);      
       UIFormInputSetWithAction permField = uiUnLockForm.getChildById("PermissionButton");
-      String permissions = permField.getUIStringInput(PERMISSIONS).getValue();
-      if((permissions == null)||(permissions.trim().length() == 0)) {
+      String groupsOrUsers = permField.getUIStringInput(GROUPS_OR_USERS).getValue();
+      if((groupsOrUsers == null)||(groupsOrUsers.trim().length() == 0)) {
         uiApp.addMessage(new ApplicationMessage("UIUnLockForm.msg.permission-require", null, 
                                                 ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
         return;
       }      
       UIUnLockManager uiManager = uiUnLockForm.getAncestorOfType(UIUnLockManager.class);      
-      RepositoryService repositoryService = uiUnLockForm.getApplicationComponent(RepositoryService.class);
-      ManageableRepository manageRepository = repositoryService.getCurrentRepository();
-      Session session = null;
-      Node lockedNode = null;
-      for(RepositoryEntry repo : repositoryService.getConfig().getRepositoryConfigurations() ) {
-        for(WorkspaceEntry ws : repo.getWorkspaceEntries()) {
-          session = SessionProviderFactory.createSessionProvider().getSession(ws.getName(), manageRepository);
-          try {
-            lockedNode = (Node) session.getItem(nodePath);
-          } catch (PathNotFoundException e) {
-            continue;
-          }          
-        }
-      }
-      if (lockedNode != null) {
-        if(lockedNode.canAddMixin(Utils.MIX_LOCKABLE)){
-          lockedNode.addMixin(Utils.MIX_LOCKABLE);
-          lockedNode.save();
-        }
-        try {
-          session = lockedNode.getSession();
-          Lock lock = lockedNode.getLock();
-          LockUtil.keepLock(lock, permissions, LockUtil.getLockToken(lockedNode));
-          session.save();
-        } catch(LockException le) {
-          le.printStackTrace();
-          uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null, 
-              ApplicationMessage.WARNING));
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiUnLockForm);
-          return;
-        } catch (Exception e) {
-          e.printStackTrace();
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-          event.getRequestContext().addUIComponentToUpdateByAjax(uiUnLockForm);        
-        }      
-        uiManager.getChild(UILockList.class).updateLockedNodesGrid(1);
-        uiManager.removeChildById(UILockList.ST_EDIT);
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
-      }
+      LockService lockService = uiUnLockForm.getApplicationComponent(LockService.class);
+      lockService.addGroupsOrUsersForLock(groupsOrUsers);
+      UILockList uiLockList = uiManager.getChild(UILockList.class);
+      uiUnLockForm.update();
+      uiLockList.updateLockedNodesGrid(1);
+      uiLockList.setRendered(true);      
+      uiManager.removeChildById("PermissionPopup");
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
     }
   }
   
   static public class AddPermissionActionListener extends EventListener<UIUnLockForm> {
     public void execute(Event<UIUnLockForm> event) throws Exception {
       UIUnLockManager uiManager = event.getSource().getAncestorOfType(UIUnLockManager.class);
-      String membership = event.getSource().getUIStringInput(PERMISSIONS).getValue();
+      String membership = event.getSource().getUIStringInput(GROUPS_OR_USERS).getValue();
       uiManager.initPermissionPopup(membership);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager);
     }

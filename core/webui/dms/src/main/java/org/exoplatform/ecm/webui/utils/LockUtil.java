@@ -42,8 +42,6 @@ import org.exoplatform.services.organization.OrganizationService;
  */
 public class LockUtil {
   
-  final public static String ADMIN_USER = "*:/platform/administrators".intern();
-  
   public static ExoCache getLockCache() throws Exception {
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     CacheService cacheService = (CacheService)container.getComponentInstanceOfType(CacheService.class);
