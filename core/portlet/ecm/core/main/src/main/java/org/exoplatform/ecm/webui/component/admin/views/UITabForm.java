@@ -133,8 +133,4 @@ public class UITabForm extends UIFormInputSetWithAction {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;
     }
   }
-  
-  public void save() throws Exception {
-    
-  }  
 }
