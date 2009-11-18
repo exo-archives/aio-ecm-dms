@@ -87,12 +87,8 @@ public class UIViewFormTabPane extends UIFormTabPane {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
       UIViewFormTabPane uiViewTabPane = event.getSource();
       UIViewContainer uiViewContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class) ;
-      if(uiViewTabPane.getSelectedTabId().equalsIgnoreCase("UIViewForm")) {
-        uiViewTabPane.uiViewForm.save() ;
-        uiViewContainer.removeChild(UIPopupWindow.class) ;
-      } else {
-        uiViewTabPane.uiTabForm.save() ;
-      }
+      uiViewTabPane.uiViewForm.save() ;
+      uiViewContainer.removeChild(UIPopupWindow.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;
     }
   }
