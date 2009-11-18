@@ -85,7 +85,7 @@
                       <field name="tabName"><string>Actions</string></field>
                       <field name="buttons">
                       	<string>
-                      		addFolder; addDocument; editDocument; upload; addSymLink
+                      		addFolder; addCategory; addDocument; editDocument; upload; addSymLink
                       	</string>
                       </field>
                     </object>
@@ -118,7 +118,7 @@
                       <field name="tabName"><string>Actions</string></field>
                       <field name="buttons">
                       	<string>
-                      		addFolder; addDocument; editDocument; upload; addSymLink
+                      		addFolder; addCategory; addDocument; editDocument; upload; addSymLink
                       	</string>
                       </field>
                     </object>
@@ -151,7 +151,7 @@
                       <field name="tabName"><string>Actions</string></field>
                       <field name="buttons">
                       	<string>
-                      		addFolder; addDocument; editDocument; upload; addSymLink
+                      		addFolder; addCategory; addDocument; editDocument; upload; addSymLink
                       	</string>
                       </field>
                     </object>
@@ -184,7 +184,7 @@
                       <field name="tabName"><string>Actions</string></field>
                       <field name="buttons">
                       	<string>
-                      		addFolder; addDocument; editDocument; upload; overloadThumbnail; addSymLink
+                      		addFolder; addCategory; addDocument; editDocument; upload; overloadThumbnail; addSymLink
                       	</string>
                       </field>
                     </object>
@@ -243,7 +243,7 @@
                     <object type="org.exoplatform.services.cms.views.ViewConfig$Tab">
                       <field name="tabName"><string>Actions</string></field>
                       <field name="buttons">
-                      	<string>editDocument</string>                    	
+                      	<string>addCategory; editDocument</string>                    	
                       </field>
                     </object>
                   </value>
@@ -264,7 +264,7 @@
                     <object type="org.exoplatform.services.cms.views.ViewConfig$Tab">
                       <field name="tabName"><string>Actions</string></field>
                       <field name="buttons">
-                      	<string>editDocument</string>                    	
+                      	<string>addCategory; editDocument</string>                    	
                       </field>
                     </object>
                   </value>

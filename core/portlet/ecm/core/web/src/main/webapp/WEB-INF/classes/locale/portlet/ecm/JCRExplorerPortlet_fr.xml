@@ -2531,4 +2531,23 @@
   				<Descending>Descendant</Descending>
   		</label>
   </UIPreferencesForm>
+  <UICategoryForm>
+	  <label>
+	  	<name>Category Name</name>
+	  </label>
+    <action>
+      <Save>Save</Save>
+      <Cancel>Cancel</Cancel>      
+    </action>
+  </UICategoryForm>
+  <UIPopupWindow>
+    <title>
+      <UICategoryForm>Add category</UICategoryForm>
+    </title>
+  </UIPopupWindow>
+  <UIActionBar>
+    <tooltip>
+      <AddCategory>Add category</AddCategory>
+    </tooltip>
+	 </UIActionBar>
 </bundle>

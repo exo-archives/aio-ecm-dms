@@ -2536,4 +2536,23 @@
   				<Descending>Giảm dần</Descending>
   		</label>
  </UIPreferencesForm>
+  <UICategoryForm>
+	  <label>
+	  	<name>Tên danh mục</name>
+	  </label>
+    <action>
+      <Save>Lưu</Save>
+      <Cancel>Hủy</Cancel>      
+    </action>
+  </UICategoryForm>
+  <UIPopupWindow>
+    <title>
+      <UICategoryForm>Thêm danh mục</UICategoryForm>
+    </title>
+  </UIPopupWindow>
+  <UIActionBar>
+    <tooltip>
+      <AddCategory>Thêm danh mục</AddCategory>
+    </tooltip>
+	 </UIActionBar>
 </bundle>
