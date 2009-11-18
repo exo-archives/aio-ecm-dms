@@ -18,11 +18,7 @@
   if(resultList == null) return;
   long searchTime = uicomponent.getSearchTime()/1000;
   int resultSize = uicomponent.getUIPageIterator().getAvailable();  
-  def rcontext = _ctx.getRequestContext();
-  
-  def jm = rcontext.getJavascriptManager();
-  jm.importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/') ;
-  
+  def rcontext = _ctx.getRequestContext();  
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIJCRExplorer','/ecm/javascript/');
   rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/');
   java.text.DateFormat dateFormat = uicomponent.getSimpleDateFormat();
@@ -82,14 +78,13 @@
     </thead>
     <tbody>
     <%
-    def i=1;
+    
     def rowClass = null ;
       boolean even = true ;
       boolean found = false ;
       Node node = null; 
       if (resultList != null && resultList.size() > 0) {
-        for (row in resultList) {
-          jm.addJavascript("eXo.ecm.ECMUtils.insertContentToIframe('$i') ;") ;
+        for (row in resultList) {          
           found = true;
           if (even) rowClass = "EvenRow";  
           else rowClass =  "OddRow"; 
@@ -109,19 +104,15 @@
           String score = row.getValue("jcr:score")== null ? "" : row.getValue("jcr:score").getString();
           String s = "";      
       %>
-          <tr class="$rowClass" onload="eXo.ecm.ECMUtils.insertContentToIframe('$i') ;">
+          <tr class="$rowClass">
             <td>
               <div class="default16x16Icon ItemIcon <%=Utils.getNodeTypeIcon(node, "16x16Icon")%>" style="margin:auto"><span></span></div>
             </td>
             <td>
-              <div title="<%=dateFormat.format(uicomponent.getDateCreated(node))%>">
+              <div class="Text" title="<%=dateFormat.format(uicomponent.getDateCreated(node))%>">
                 <%=node.getName()%>
               </div>
-              <div>
-                <iframe id="original${i}" scrolling="auto" style="border: 0px; height:50px; width: 100%;" content="<%=excerpt%>"> 
-                  <div><span></span></div>
-                </iframe>
-              </div>
+              <div>$excerpt</div>
               <div><%=_ctx.appRes("UISearchResult.header.path")%>: <%=nodePath%></div>
               <div><%=_ctx.appRes("UISearchResult.header.dateCreated")%>: <%=dateFormat.format(uicomponent.getDateCreated(node))%></div>
             </td>
@@ -133,8 +124,7 @@
               </div>
             </td>                   
           </tr>
-    <%
-          i++;
+    <%          
         }
       } else {
     %>
