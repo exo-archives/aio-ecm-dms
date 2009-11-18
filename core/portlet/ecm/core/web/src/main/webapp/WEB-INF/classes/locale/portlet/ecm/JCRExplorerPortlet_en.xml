@@ -2921,5 +2921,24 @@
     <msg>
       <confirm-delete>Empty all items from trash?</confirm-delete>
     </msg>
-  </EmptyTrashManageComponent>  
+  </EmptyTrashManageComponent> 
+  <UICategoryForm>
+	  <label>
+	  	<name>Category Name</name>
+	  </label>
+    <action>
+      <Save>Save</Save>
+      <Cancel>Cancel</Cancel>      
+    </action>
+  </UICategoryForm>
+  <UIPopupWindow>
+    <title>
+      <UICategoryForm>Add category</UICategoryForm>
+    </title>
+  </UIPopupWindow>
+  <UIActionBar>
+    <tooltip>
+      <AddCategory>Add category</AddCategory>
+    </tooltip>
+	 </UIActionBar>
 </bundle>
