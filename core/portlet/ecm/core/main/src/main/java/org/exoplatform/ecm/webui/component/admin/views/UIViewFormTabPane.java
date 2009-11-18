@@ -26,7 +26,9 @@ import org.exoplatform.webui.core.lifecycle.UIFormLifecycle;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.event.Event.Phase;
+import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTabPane;
+import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -42,12 +44,15 @@ import org.exoplatform.webui.form.UIFormTabPane;
       @EventConfig(listeners = UIViewFormTabPane.SaveActionListener.class),
       @EventConfig(listeners = UIViewFormTabPane.ResetActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIViewFormTabPane.EditTabActionListener.class),
-      @EventConfig(listeners = UIViewFormTabPane.DeleteTabActionListener.class),
-      @EventConfig(listeners = UIViewFormTabPane.RestoreActionListener.class),
+      @EventConfig(listeners = UIViewFormTabPane.DeleteTabActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIViewFormTabPane.RestoreActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIViewFormTabPane.CancelActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIViewFormTabPane.CloseActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UIViewFormTabPane.AddTabFormActionListener.class),
+      @EventConfig(listeners = UIViewFormTabPane.BackViewFormActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIViewForm.AddPermissionActionListener.class, phase = Phase.DECODE),
-      @EventConfig(listeners = UIViewForm.ChangeVersionActionListener.class, phase = Phase.DECODE)
+      @EventConfig(listeners = UIViewForm.ChangeVersionActionListener.class, phase = Phase.DECODE),
+      @EventConfig(listeners = UITabForm.AddTabActionListener.class, phase = Phase.DECODE)
     }
 )
 public class UIViewFormTabPane extends UIFormTabPane {  
@@ -65,6 +70,7 @@ public class UIViewFormTabPane extends UIFormTabPane {
     
     uiTabForm = new UITabForm("UITabForm") ;
     addUIComponentInput(uiTabForm) ;
+    uiTabForm.setRendered(false);
     setSelectedTab(uiViewForm.getId()) ;
     setActions(new String[]{}) ;
   }
@@ -81,12 +87,8 @@ public class UIViewFormTabPane extends UIFormTabPane {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
       UIViewFormTabPane uiViewTabPane = event.getSource();
       UIViewContainer uiViewContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class) ;
-      if(uiViewTabPane.getSelectedTabId().equalsIgnoreCase("UIViewForm")) {
-        uiViewTabPane.uiViewForm.save() ;
-        uiViewContainer.removeChild(UIPopupWindow.class) ;
-      } else {
-        uiViewTabPane.uiTabForm.save() ;
-      }
+      uiViewTabPane.uiViewForm.save() ;
+      uiViewContainer.removeChild(UIPopupWindow.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;
     }
   }
@@ -114,6 +116,38 @@ public class UIViewFormTabPane extends UIFormTabPane {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;
     }
   }
+  static public class AddTabFormActionListener extends EventListener<UIViewFormTabPane> {
+    public void execute(Event<UIViewFormTabPane> event) throws Exception {
+      UIViewFormTabPane uiViewTabPane = event.getSource();      
+      uiViewTabPane.uiTabForm.refresh(true);
+      uiViewTabPane.uiTabForm.setRendered(true);
+      uiViewTabPane.uiViewForm.setRendered(false);
+      uiViewTabPane.setSelectedTab(uiViewTabPane.uiTabForm.getId());
+      ((UIFormStringInput)uiViewTabPane.uiTabForm.getChildById(UITabForm.FIELD_NAME)).addValidator(MandatoryValidator.class);
+      uiViewTabPane.uiViewForm.setViewName(((UIFormStringInput)uiViewTabPane.uiViewForm.getChildById(UIViewForm.FIELD_NAME)).getValue());
+      UIViewContainer uiViewContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer);
+    }
+  }
+
+  static public class BackViewFormActionListener extends EventListener<UIViewFormTabPane> {
+    public void execute(Event<UIViewFormTabPane> event) throws Exception {
+      UIViewFormTabPane uiViewTabPane = event.getSource();
+      UIViewForm uiViewForm = uiViewTabPane.getChild(UIViewForm.class) ;
+      UITabForm uiTabForm = uiViewTabPane.getChild(UITabForm.class) ;
+      String tabName = uiViewForm.getTabList();
+      if (tabName != null && tabName.length() != 0) {
+        tabName = tabName.indexOf(",") > 0 ? tabName.substring(0, tabName.indexOf(",")) : tabName;
+      }
+      ((UIFormStringInput)uiTabForm.getChildById(UITabForm.FIELD_NAME)).getValidators().clear();
+      ((UIFormStringInput)uiViewForm.getChildById(UIViewForm.FIELD_NAME)).setValue(uiViewForm.getViewName());
+      uiTabForm.setRendered(false);
+      uiViewForm.setRendered(true);
+      uiViewTabPane.setSelectedTab(uiViewForm.getId());
+      UIViewContainer uiViewContainer = uiViewTabPane.getAncestorOfType(UIViewContainer.class);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer);
+    }
+  }
   
   static  public class ResetActionListener extends EventListener<UIViewFormTabPane> {
     public void execute(Event<UIViewFormTabPane> event) throws Exception {
@@ -135,8 +169,11 @@ public class UIViewFormTabPane extends UIFormTabPane {
       UITabForm uiTabForm = uiViewTabPane.getChild(UITabForm.class) ;
       String tabName = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiTabForm.setRendered(true) ;
+      ((UIFormStringInput)uiTabForm.getChildById(UITabForm.FIELD_NAME)).addValidator(MandatoryValidator.class);
+      uiViewTabPane.uiViewForm.setViewName(((UIFormStringInput)uiViewTabPane.uiViewForm.getChildById(UIViewForm.FIELD_NAME)).getValue());
       uiViewTabPane.setSelectedTab(uiTabForm.getId()) ;
       uiViewTabPane.uiViewForm.editTab(tabName) ;
+      uiViewTabPane.uiViewForm.setRendered(false);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiViewTabPane.getParent()) ;
     }
   }

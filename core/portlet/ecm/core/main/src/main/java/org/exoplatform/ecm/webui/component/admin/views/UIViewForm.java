@@ -73,11 +73,19 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelectable
   private Node views_;
   private HashMap<String, Tab> tabMap_ = new HashMap<String, Tab>() ;  
   private ManageViewService vservice_ = null ;
+  private String viewName = null;
   private List<String> listVersion = new ArrayList<String>() ;
   private Version baseVersion_;
   private VersionNode selectedVersion_;
   private VersionNode rootVersionNode;
   
+  public String getViewName() {
+    return viewName;
+  }
+
+  public void setViewName(String viewName) {
+    this.viewName = viewName;
+  }
   public String getRepository() {
     PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
     PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
@@ -113,7 +121,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelectable
       new UIFormCheckBoxInput<Boolean>(FIELD_ENABLEVERSION, FIELD_ENABLEVERSION, null) ;
     enableVersion.setRendered(false) ;
     addUIFormInput(enableVersion) ;
-    setActions(new String[]{"Save", "Reset", "Cancel"}, null) ;
+    setActions(new String[]{"Save", "Reset", "Cancel", "AddTabForm"}, null) ;
   }
   
   public void processRender(WebuiRequestContext context) throws Exception {
@@ -180,7 +188,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelectable
     tabMap_.put(tabName, tab) ;
   }
 
-  private String getTabList() throws Exception {
+  public String getTabList() throws Exception {
     StringBuilder result = new StringBuilder() ;
     List<Tab> tabList = new ArrayList<Tab>(tabMap_.values());
     if(result != null) {
@@ -201,6 +209,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelectable
     getUIFormSelectBox(FIELD_TEMPLATE).setValue(null) ;
     getUIFormSelectBox(FIELD_TEMPLATE).setDisabled(!isAddNew) ;
     getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setRendered(!isAddNew) ;
+    setViewName("");
     if(isAddNew) {
       setActions(new String[]{"Save", "Reset", "Cancel"}, null) ;
       setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;

@@ -2134,6 +2134,14 @@
 		<msg>
 			<no-right-target-path>Bạn phải chọn 1 đường dẫn khác</no-right-target-path>
 		</msg>
-	</UITaxonomyTreeMainForm>    
+	</UITaxonomyTreeMainForm>
+	
+  <UIViewFormTabPane>
+    <action>
+      <AddTabForm>Thêm Tab</AddTabForm>
+      <AddTab>Thêm Tab</AddTab>
+      <BackViewForm>Quay lại</BackViewForm>
+    </action>
+  </UIViewFormTabPane>    
 </bundle>
 

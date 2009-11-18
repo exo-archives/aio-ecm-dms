@@ -2133,5 +2133,12 @@
 		<msg>
 			<no-right-target-path>You have to choose other home path</no-right-target-path>
 		</msg>
-	</UITaxonomyTreeMainForm>      
+	</UITaxonomyTreeMainForm>
+	<UIViewFormTabPane>
+    <action>
+      <AddTabForm>Add Tab</AddTabForm>
+      <AddTab>Add Tab</AddTab>
+      <BackViewForm>Back</BackViewForm>
+    </action>
+  </UIViewFormTabPane>  
 </bundle>
