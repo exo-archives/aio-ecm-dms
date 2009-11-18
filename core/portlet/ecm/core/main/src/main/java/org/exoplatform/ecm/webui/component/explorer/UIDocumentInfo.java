@@ -73,7 +73,7 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
-import org.exoplatform.services.cms.documents.FavouriteService;
+import org.exoplatform.services.cms.documents.FavoriteService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.link.LinkManager;
@@ -705,20 +705,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
   
   public boolean isFavouriter(Node data) throws Exception {
-    if (!data.isNodeType(Utils.EXO_FAVOURITE))
-      return false;
-    Value[] favouriters = data.getProperty("exo:favouriter").getValues();
-    String userID = data.getSession().getUserID();
-    for(Value value : favouriters) {
-      if (userID.equals(value.getString())) {
-        return true;
-      }
-    }   
-    return false;
+  	return isFavouriteNode(this.getAncestorOfType(UIJCRExplorer.class).getSession().getUserID(), data);
   }
   
-  public boolean isFavouriteNode(String userName, Node node) {
-    return getApplicationComponent(FavouriteService.class).isFavouriter(userName, node);
+  public boolean isFavouriteNode(String userName, Node node) throws Exception {
+    return getApplicationComponent(FavoriteService.class).isFavoriter(userName, node);
   }
   
   public boolean isMediaType(Node data) throws Exception {
@@ -844,8 +835,8 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
       UIDocumentInfo uiDocumentInfo = event.getSource();
       UIJCRExplorer uiExplorer = uiDocumentInfo.getAncestorOfType(UIJCRExplorer.class);
       UIApplication uiApp = uiDocumentInfo.getAncestorOfType(UIApplication.class);
-      FavouriteService favouriteService = 
-        uiDocumentInfo.getApplicationComponent(FavouriteService.class);
+      FavoriteService favoriteService = 
+        uiDocumentInfo.getApplicationComponent(FavoriteService.class);
       Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
       String wsName = null;
       Node node = null;
@@ -880,16 +871,16 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
         return;
       }
       try {
-        if (favouriteService.isFavouriter(node.getSession().getUserID(), node)) {
+        if (favoriteService.isFavoriter(node.getSession().getUserID(), node)) {
           if (PermissionUtil.canRemoveNode(node)) {
-            favouriteService.removeFavourite(node, node.getSession().getUserID());
+            favoriteService.removeFavorite(node, node.getSession().getUserID());
           }
           else {
             throw new AccessDeniedException();
           }
         } else {
           if (PermissionUtil.canSetProperty(node)) {              
-            favouriteService.addFavourite(node, node.getSession().getUserID());
+            favoriteService.addFavorite(node, node.getSession().getUserID());
           }
           else {
             throw new AccessDeniedException();

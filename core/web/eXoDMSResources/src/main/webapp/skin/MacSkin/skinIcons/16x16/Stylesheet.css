@@ -195,6 +195,10 @@
   background: url('icons/NodeTypes/nt-unstructured.gif') no-repeat;
 }
 
+.exo_trashFolder16x16Icon {
+  background: url('icons/NodeTypes/exo-trashFolder.gif') no-repeat;
+}
+
 .Collapsent_unstructured16x16Icon {
   background: url('icons/NodeTypes/open-nt-unstructured.gif') no-repeat; 
 }

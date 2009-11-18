@@ -200,6 +200,12 @@
   background: url('icons/NodeTypes/nt-unstructured.png') no-repeat;  
 }
 
+.exo_trashFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('icons/NodeTypes/exo-trashFolder.gif') no-repeat;  
+}
+
+
 .mix_versionable48x48Icon {
   width: 48px; height: 48px;
   background: url('/eXoDMSResources/skin/DefaultSkin/skinIcons/48x48/icons/NodeTypes/mix-versionable.gif') no-repeat;  

@@ -19,10 +19,11 @@ package org.exoplatform.ecm.webui.component.explorer.control.filter;
 import java.util.Map;
 
 import javax.jcr.Node;
-import javax.jcr.Property;
-import javax.jcr.Value;
 
-import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.services.cms.documents.FavoriteService;
 import org.exoplatform.webui.ext.filter.UIExtensionAbstractFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
 
@@ -34,7 +35,7 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilterType;
  * 10:34:12 AM
  */
 public class IsNotFavouriteFilter extends UIExtensionAbstractFilter {
-
+	
 	public IsNotFavouriteFilter() {
 		this(null);
 	}
@@ -43,25 +44,19 @@ public class IsNotFavouriteFilter extends UIExtensionAbstractFilter {
 		super(messageKey, UIExtensionFilterType.MANDATORY);
 	}
 	
-	public static boolean isNotFavourite(Node node) throws Exception {
-		try {
-			Property favouriter = node.getProperty(Utils.EXO_FAVOURITER);
-			Value[] values = favouriter.getValues();
-			String userName = node.getSession().getUserID();
-			for (Value v : values) {
-				if (userName.equals(v.getString()))
-					return false;
-			}
-			return true;
-		} catch (Exception ex) {
-			return true;
-		}
+	public static boolean isNotFavourite(Node node, UIJCRExplorer uiExplorer) throws Exception {
+		ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+		FavoriteService favoriteService 
+				= (FavoriteService)myContainer.getComponentInstanceOfType(FavoriteService.class);
+		
+		return !favoriteService.isFavoriter(uiExplorer.getSession().getUserID(), node);
 	}
 	
 	public boolean accept(Map<String, Object> context) throws Exception {
 	    if (context == null) return true;
 	    Node currentNode = (Node) context.get(Node.class.getName());
-	    return isNotFavourite(currentNode);
+	    UIJCRExplorer uiExplorer = (UIJCRExplorer)context.get(UIJCRExplorer.class.getName());
+	    return isNotFavourite(currentNode, uiExplorer);
 	}
 	
 	public void onDeny(Map<String, Object> context) throws Exception {  }	

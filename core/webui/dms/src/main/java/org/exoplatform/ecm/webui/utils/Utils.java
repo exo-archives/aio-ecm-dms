@@ -288,6 +288,9 @@ public class Utils {
         return "";
       }
     }
+    if (node.isNodeType(EXO_TRASH_FOLDER)) {
+    	nodeType = EXO_TRASH_FOLDER;
+    }
     if(nodeType.equals(NT_UNSTRUCTURED) || nodeType.equals(NT_FOLDER)) {
       for(String specificFolder:SPECIFIC_FOLDERS) {
         if(node.isNodeType(specificFolder)) {

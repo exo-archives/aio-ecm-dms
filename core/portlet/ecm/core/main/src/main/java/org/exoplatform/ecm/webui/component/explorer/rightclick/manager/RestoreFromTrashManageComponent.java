@@ -118,7 +118,7 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
   	ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
   	LinkManager linkManager = (LinkManager)myContainer.getComponentInstanceOfType(LinkManager.class);
     if (linkManager.isLink(node)) {
-    	node = linkManager.getTarget(node, true);
+    	node = linkManager.getTarget(node);
     	srcPath = node.getPath();
     }
   	confirmToRestore(node, srcPath, event);  

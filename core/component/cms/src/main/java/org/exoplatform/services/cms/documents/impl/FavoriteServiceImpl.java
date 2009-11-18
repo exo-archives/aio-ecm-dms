@@ -16,13 +16,19 @@
  */
 package org.exoplatform.services.cms.documents.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.documents.FavoriteService;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeFinder;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 
@@ -40,42 +46,126 @@ public class FavoriteServiceImpl implements FavoriteService {
   private NodeHierarchyCreator nodeHierarchyCreator;
   private LinkManager linkManager;
   private NodeFinder nodeFinder;
+  private SessionProvider sessionProvider;
+  private RepositoryService repositoryService;
   
-  public FavoriteServiceImpl(NodeHierarchyCreator nodeHierarchyCreator, LinkManager linkManager, 
+  public FavoriteServiceImpl(RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator, LinkManager linkManager, 
       NodeFinder nodeFinder) {
     this.nodeHierarchyCreator = nodeHierarchyCreator;
     this.linkManager = linkManager;
     this.nodeFinder = nodeFinder;
+    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+    SessionProviderService sessionProviderService
+    		=	(SessionProviderService) myContainer.getComponentInstanceOfType(SessionProviderService.class);
+    //this.sessionProvider = sessionProviderService.getSessionProvider(null);
+    this.sessionProvider = sessionProviderService.getSystemSessionProvider(null);
+    this.repositoryService = repositoryService;
   }
 
   /**
    * {@inheritDoc}
    */
-  public void addFavorite(SessionProvider sessionProvider, Node node, String userName) throws Exception {
-    // TODO Auto-generated method stub
-    
+  public void addFavorite(Node node, String userName) throws Exception {
+  	// check if node is symlink
+  	if (linkManager.isLink(node)) return;
+  	// check if node has already been favorite node of current user
+    Node userFavoriteNode = getUserFavoriteFolder(sessionProvider, userName);
+    NodeIterator nodeIter = userFavoriteNode.getNodes();
+    while (nodeIter.hasNext()) {
+    	Node childNode = nodeIter.nextNode();
+    	if (linkManager.isLink(childNode)) {
+    		Node targetNode = null;
+    		try {
+					linkManager.getTarget(childNode);
+    		} catch (Exception e) {}
+				if (node.isSame(targetNode)) return;
+    	}
+    }
+		// add favorite symlink    
+    linkManager.createLink(userFavoriteNode, node);
+    userFavoriteNode.getSession().save();
   }
 
   /**
    * {@inheritDoc}
    */
-  public List<Node> getAllFavoriteNodesByUser(String workspace, String repository, SessionProvider sessionProvider, String userName) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+  public List<Node> getAllFavoriteNodesByUser(String workspace, String repository, String userName) throws Exception {
+		List<Node> ret = new ArrayList<Node>();
+		Node userFavoriteNode = getUserFavoriteFolder(sessionProvider, userName);
+		NodeIterator nodeIter = userFavoriteNode.getNodes();
+		while (nodeIter.hasNext()) {
+			Node childNode = nodeIter.nextNode();
+			if (linkManager.isLink(childNode)) {
+				Node targetNode = null;
+				try {
+					linkManager.getTarget(childNode);
+				} catch (Exception ex) {}
+				if (targetNode != null) ret.add(targetNode);
+			}
+		}
+    return ret;
   }
 
   /**
    * {@inheritDoc}
    */
-  public void removeFavorite(SessionProvider sessionProvider, Node node, String userName) throws Exception {
-    // TODO Auto-generated method stub
-    
+  public void removeFavorite(Node node, String userName) throws Exception {
+  	// check if node is symlink
+    if (linkManager.isLink(node)) return;
+    // remove favorite
+    Node userFavoriteNode = getUserFavoriteFolder(sessionProvider, userName);
+    NodeIterator nodeIter = userFavoriteNode.getNodes();
+    while (nodeIter.hasNext()) {
+    	Node childNode = nodeIter.nextNode();
+    	if (linkManager.isLink(childNode)) {
+    		Node targetNode = null;
+    		try {
+    			targetNode = linkManager.getTarget(childNode);
+    		} catch (Exception e) { }
+    		if (node.isSame(targetNode)) {
+    			childNode.remove();
+    			userFavoriteNode.getSession().save();
+    			return;
+    		}
+    	}
+    }
+  }
+  
+  public boolean isFavoriter(String userName, Node node) throws Exception {
+    Node userFavoriteNode = getUserFavoriteFolder(sessionProvider, userName);
+    NodeIterator nodeIter = userFavoriteNode.getNodes();
+    while (nodeIter.hasNext()) {
+    	Node childNode = nodeIter.nextNode();
+    	if (linkManager.isLink(childNode)) {
+    		Node targetNode = null;
+    		try {
+    			targetNode = linkManager.getTarget(childNode);
+    		} catch (Exception e) { }
+    		if (node.isSame(targetNode)) {
+    			return true;
+    		}
+    	}
+    }
+    return false;
   }
   
   private Node getUserFavoriteFolder(SessionProvider sessionProvider, String userName) throws Exception {
+  	
+  	// code for running
     Node userNode = nodeHierarchyCreator.getUserNode(sessionProvider, userName);
     String favoritePath = nodeHierarchyCreator.getJcrPath(FAVORITE_ALIAS);
     return userNode.getNode(favoritePath);
+
+  	// code for test
+		  	
+/*		ManageableRepository manageableRepository = repositoryService.getRepository("repository");
+  	Session session = sessionProvider.getSession("collaboration", manageableRepository);
+  	Node rootNode = session.getRootNode();
+  	if (rootNode.hasNode(userName))
+  		return rootNode.getNode(userName);
+  	
+  	return rootNode.addNode(userName);*/
+  	
   }
   
 }

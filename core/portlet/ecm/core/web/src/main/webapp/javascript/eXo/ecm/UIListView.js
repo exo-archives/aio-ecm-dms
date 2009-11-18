@@ -577,12 +577,14 @@ var ListView = function() {
 		var checkRemoveFavourite = false;
 		var checkInTrash = false;
 		var checkMediaType = false;
+		var checkEmptyTrash = false;
 		for (var i in Self.itemsSelected) {
 			if (Array.prototype[i]) continue;
 			if (Self.itemsSelected[i].getAttribute('locked') == "true") checkUnlock = true;
 			if (Self.itemsSelected[i].getAttribute('removeFavourite') == "true") checkRemoveFavourite = true;
 			if (Self.itemsSelected[i].getAttribute('inTrash') == "true") checkInTrash = true;
 			if (Self.itemsSelected[i].getAttribute('mediaType') == "true") checkMediaType = true;
+			if (Self.itemsSelected[i].getAttribute('trashHome') == "true") checkEmptyTrash = true;
 		}
 		var lockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Lock16x16Icon");
 		var unlockAction = DOM.findFirstDescendantByClass(contextMenu, "div", "Unlock16x16Icon");
@@ -605,6 +607,7 @@ var ListView = function() {
       removeFavouriteAction.parentNode.style.display = "none";
     }
     var restoreFromTrashAction = DOM.findFirstDescendantByClass(contextMenu, "div", "RestoreFromTrash16x16Icon");
+    var emptyTrashAction = DOM.findFirstDescendantByClass(contextMenu, "div", "EmptyTrash16x16Icon");
     var playMediaAction = DOM.findFirstDescendantByClass(contextMenu, "div", "PlayMedia16x16Icon");
     
     if (!checkInTrash) {
@@ -616,6 +619,11 @@ var ListView = function() {
     	playMediaAction.parentNode.style.display = "none";
     } else {
     	playMediaAction.parentNode.style.display = "block";
+    }
+    if (!checkEmptyTrash) {
+      emptyTrashAction.parentNode.style.display = "none";
+    } else {
+      emptyTrashAction.parentNode.style.display = "block";
     }
 	contextMenu.onmouseup = Self.hideContextMenu;
 	document.body.onmousedown = Self.hideContextMenu;

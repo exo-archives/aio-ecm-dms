@@ -43,7 +43,7 @@ import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
-import org.exoplatform.services.cms.documents.FavouriteService;
+import org.exoplatform.services.cms.documents.FavoriteService;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.log.ExoLogger;
@@ -84,13 +84,13 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 	private UIPageIterator uiPageIterator_ ;
 	private boolean favouriteChange = false;
 	private int showNodeCase;
-	private static FavouriteService favouriteService_ = null;
+	private static FavoriteService favoriteService_ = null;
 	
 	static {
 		ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-		favouriteService_ = 
-			(FavouriteService) myContainer
-			.getComponentInstanceOfType(FavouriteService.class);
+		favoriteService_ = 
+			(FavoriteService) myContainer
+			.getComponentInstanceOfType(FavoriteService.class);
 	}
 	
 	public UIShowAllFavouriteResult() throws Exception {
@@ -98,8 +98,8 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 		setUIComponent(uiPageIterator_);
 	}
 	
-	public FavouriteService getFavouriteService() {
-		return favouriteService_;
+	public FavoriteService getFavouriteService() {
+		return favoriteService_;
 	}
 	
 	public DateFormat getSimpleDateFormat() {
@@ -133,20 +133,10 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 		List<Node> ret = new ArrayList<Node>();
 
 		UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
-    boolean byUser = uiExplorer.getPreference().isShowItemsByUser();
-
-		if (!byUser) {
-			ret = favouriteService_.getAllFavouriteNodes(
-									uiExplorer.getCurrentWorkspace(), 
-									uiExplorer.getRepositoryName(),
-									uiExplorer.getSessionProvider());
-		} else {
-			ret = favouriteService_.getAllFavouriteNodesByUser(
+		ret = favoriteService_.getAllFavoriteNodesByUser(
 					uiExplorer.getCurrentWorkspace(), 
 					uiExplorer.getRepositoryName(),
-					uiExplorer.getSessionProvider(),
 					uiExplorer.getSession().getUserID());
-		}
 		
 		return ret;
 	}
@@ -314,9 +304,9 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 		    }
 	    	
 		    try {
-		    	if (favouriteService_.isFavouriter(node.getSession().getUserID(), node)) {
+		    	if (favoriteService_.isFavoriter(node.getSession().getUserID(), node)) {
 		    		if (PermissionUtil.canRemoveNode(node)) {
-		    			favouriteService_.removeFavourite(node, node.getSession().getUserID());
+		    			favoriteService_.removeFavorite(node, node.getSession().getUserID());
 		    			uiShow.favouriteChange = true;
 		    		}
 		    		else {
@@ -324,7 +314,7 @@ public class UIShowAllFavouriteResult extends UIComponentDecorator {
 		    		}
 		    	} else {
 		    		if (PermissionUtil.canSetProperty(node)) {		    			
-		    			favouriteService_.addFavourite(node, node.getSession().getUserID());
+		    			favoriteService_.addFavorite(node, node.getSession().getUserID());
 		    			uiShow.favouriteChange = true;
 		    		}
 		    		else {

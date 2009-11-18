@@ -198,12 +198,12 @@
         strActs += "</div>";
         def rightClickMenu = "" ;
         String isLocked = "false";        String isFavourite = "false";        String isInTrash = "false";
-        String isMediaType = "false";
+        String isMediaType = "false";        String isTrashHome = "false";
         if (data.isLocked()) isLocked = "true";        if (uicomponent.isFavouriter(data)) isFavourite = "true";        if (data.isNodeType("exo:restoreLocation")) isInTrash = "true";
-        if (uicomponent.isMediaType(data)) isMediaType = "true";
+        if (uicomponent.isMediaType(data)) isMediaType = "true";        if (Utils.isTrashHomeNode(data)) isTrashHome = "true"
         if (!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(nodePath), uiWorkingArea.getActionsExtensionList(data)) ;	          
 	      %>
-	      <div <%=rightClickMenu%> class="RowView Normal" locked="$isLocked" mediaType="$isMediaType" removeFavourite="$isFavourite" inTrash="$isInTrash" workspacename="$preferenceWS" objectId="<%=URLEncoder.encode(Utils.formatNodeName(nodePath), "utf-8")%>" ondblclick="$actionLink">
+	      <div <%=rightClickMenu%> class="RowView Normal" trashHome="$isTrashHome" locked="$isLocked" mediaType="$isMediaType" removeFavourite="$isFavourite" inTrash="$isInTrash" workspacename="$preferenceWS" objectId="<%=URLEncoder.encode(Utils.formatNodeName(nodePath), "utf-8")%>" ondblclick="$actionLink">
 		      $strActs
 	        <div class="LeftColumn" style="padding: 2px 0px; 	border-right: none;">
 					  <div title="$name" class="Icon16x16 default16x16Icon <%=Utils.getNodeTypeIcon(data, "16x16Icon")%>">

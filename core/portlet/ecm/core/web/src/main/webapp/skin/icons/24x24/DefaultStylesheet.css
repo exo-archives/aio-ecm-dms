@@ -760,6 +760,12 @@ a:hover .ShowHideBoxContainer {
   background: url('DefaultSkin/nodetype/nt-unstructured.gif') no-repeat;  
 }
 
+.exo_trashFolder24x24Icon {
+  width: 24px; height: 24px;
+  background: url('DefaultSkin/nodetype/exo-trashFolder.gif') no-repeat;  
+}
+
+
 .nt_version24x24Icon {
   width: 24px; height: 24px;
   background: url('DefaultSkin/nodetype/nt-version.gif') no-repeat;  

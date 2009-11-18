@@ -136,6 +136,7 @@
 		          String isFavourite = "false";
 		          String isInTrash = "false";
 		          String isMediaType = "false";
+		          String isTrashHome = "false";
 		          if (data.isLocked()) isLocked = "true";
 		  				//data.getProperty("exo:favouriter");    
 		          if (uicomponent.isFavouriter(data)) isFavourite = "true";
@@ -144,7 +145,8 @@
 		          if(!uicomponent.isSystemWorkspace()) rightClickMenu = contextMenu.getJSOnclickShowPopup(preferenceWS + ":" + Utils.formatNodeName(nodePath), uicomponent.getActionsList(data)) ;
 		          
 		        %>   
-		      <div class="ActionIconBox" locked="<%=isLocked%>" 
+		      <div class="ActionIconBox" locked="<%=isLocked%>"
+		      													 trashHome="$isTrashHome" 
 		      													 removeFavourite="$isFavourite"
 	      														 inTrash="$isInTrash"
 	      														 mediaType="$isMediaType"  

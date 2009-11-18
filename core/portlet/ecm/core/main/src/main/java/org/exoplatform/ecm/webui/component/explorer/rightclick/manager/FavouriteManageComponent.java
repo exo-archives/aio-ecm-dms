@@ -43,7 +43,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHom
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
-import org.exoplatform.services.cms.documents.FavouriteService;
+import org.exoplatform.services.cms.documents.FavoriteService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -88,7 +88,7 @@ public class FavouriteManageComponent extends UIAbstractManagerComponent {
     UIJCRExplorer uiExplorer = uiWorkingArea.getAncestorOfType(UIJCRExplorer.class);
     
     ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
-    FavouriteService favouriteService = (FavouriteService)myContainer.getComponentInstanceOfType(FavouriteService.class);
+    FavoriteService favoriteService = (FavoriteService)myContainer.getComponentInstanceOfType(FavoriteService.class);
     
     UIApplication uiApp = uiWorkingArea.getAncestorOfType(UIApplication.class);
     Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
@@ -129,7 +129,7 @@ public class FavouriteManageComponent extends UIAbstractManagerComponent {
     		throw new VersionException("node is locked, can't add favourite to node:" + node.getPath());
     	if (!PermissionUtil.canSetProperty(node))
     		throw new AccessDeniedException("access denied, can't add favourite to node:" + node.getPath());
-    	favouriteService.addFavourite(node, session.getUserID());
+    	favoriteService.addFavorite(node, session.getUserID());
     } catch (LockException e) {
     	LOG.error("node is locked, can't add favourite to node:" + node.getPath());
     	JCRExceptionManager.process(uiApp, e);

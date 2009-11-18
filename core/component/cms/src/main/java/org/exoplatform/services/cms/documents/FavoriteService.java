@@ -38,7 +38,7 @@ public interface FavoriteService {
   * @param userName The user added favorite
   * @throws Exception The exception will be raised if the node can not add mixin
   */
- public void addFavorite(SessionProvider sessionProvider, Node node, String userName) throws Exception;
+ public void addFavorite(Node node, String userName) throws Exception;
  
  
  /**
@@ -48,7 +48,7 @@ public interface FavoriteService {
   * @param userName Remove the name of current user out of property exo:favouriter
   * @throws Exception
   */
- public void removeFavorite(SessionProvider sessionProvider, Node node, String userName) throws Exception;
+ public void removeFavorite(Node node, String userName) throws Exception;
  
  /**
   * Get all favourite nodes by user
@@ -60,6 +60,13 @@ public interface FavoriteService {
   * @throws Exception
   */
  public List<Node> getAllFavoriteNodesByUser(String workspace, String repository, 
-     SessionProvider sessionProvider, String userName) throws Exception;
+     String userName) throws Exception;
 
+ /**
+  * Check if user is in favourite list of node
+  * @param node Node to check
+  * @param userName The user to check
+  */
+ public boolean isFavoriter(String userName, Node node) throws Exception ;
+ 
 }

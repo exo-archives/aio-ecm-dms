@@ -51,7 +51,7 @@ public abstract class BaseDMSTestCase extends BasicTestCase {
 
   protected RepositoryImpl      repository;
   
-  private SessionProviderService   sessionProviderService_;
+  protected SessionProviderService   sessionProviderService_;
   
   protected final String         REPO_NAME        = "repository".intern();
 
