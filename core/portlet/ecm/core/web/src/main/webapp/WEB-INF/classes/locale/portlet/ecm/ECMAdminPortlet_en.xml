@@ -2189,5 +2189,14 @@
       <UIUnLockForm>Manage Lock</UIUnLockForm>
     </title>
   </EditUnLockForm>
+  
+  <UIViewFormTabPane>
+    <action>
+      <AddTabForm>Add Tab</AddTabForm>
+      <AddTab>Add Tab</AddTab>
+      <BackViewForm>Back</BackViewForm>
+    </action>
+  </UIViewFormTabPane>
+    
 </bundle>
 

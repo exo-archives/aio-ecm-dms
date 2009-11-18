@@ -25,10 +25,12 @@ import org.exoplatform.services.cms.views.ViewConfig.Tab;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
+import org.exoplatform.webui.core.UIApplication;
+import org.exoplatform.webui.event.Event;
+import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.exception.MessageException;
 import org.exoplatform.webui.form.UIFormCheckBoxInput;
 import org.exoplatform.webui.form.UIFormStringInput;
-import org.exoplatform.webui.form.validator.MandatoryValidator;
 
 /**
  * Created by The eXo Platform SARL
@@ -46,13 +48,13 @@ public class UITabForm extends UIFormInputSetWithAction {
   public UITabForm(String name) throws Exception {
     super(name) ;
     setComponentConfig(getClass(), null) ;
-    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null).addValidator(MandatoryValidator.class)) ;
+    addUIFormInput(new UIFormStringInput(FIELD_NAME, FIELD_NAME, null)) ;
     ManageViewService vservice_ = getApplicationComponent(ManageViewService.class) ;
     buttons_ = vservice_.getButtons();
     for(Object bt : buttons_) {
       addUIFormInput(new UIFormCheckBoxInput<Boolean>(getButtonName(bt), "", null)) ;
     }
-    setActions(new String[]{"Save", "Reset"}, null) ;
+    setActions(new String[]{"AddTab", "Reset", "BackViewForm"}, null) ;
   }
   
   private String getButtonName(Object bt) {
@@ -69,7 +71,7 @@ public class UITabForm extends UIFormInputSetWithAction {
     for(Object bt : buttons_){
       getUIFormCheckBoxInput(getButtonName(bt)).setChecked(false).setEditable(isEditable) ;
     }
-    if(isEditable) setActions(new String[]{"Save", "Reset"}, null) ;
+    if(isEditable) setActions(new String[]{"AddTab", "Reset", "BackViewForm"}, null) ;
   }
 
   public void update(Tab tab, boolean isView) throws Exception{
@@ -84,40 +86,56 @@ public class UITabForm extends UIFormInputSetWithAction {
     }
   }
   
+  static public class AddTabActionListener extends EventListener<UIViewFormTabPane> {
+    public void execute(Event<UIViewFormTabPane> event) throws Exception {
+      UIViewFormTabPane viewFormTabPane = event.getSource();
+      UIViewForm uiViewForm = viewFormTabPane.getChild(UIViewForm.class) ;
+      UITabForm uiTabForm = viewFormTabPane.getChild(UITabForm.class) ;
+      String tabName = uiTabForm.getUIStringInput(FIELD_NAME).getValue() ;
+      UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class) ;
+      if(tabName == null || tabName.trim().length() == 0) {
+        viewFormTabPane.setSelectedTab(uiTabForm.getId()) ;
+        uiApp.addMessage(new ApplicationMessage("UITabForm.msg.tab-name-error", null, ApplicationMessage.WARNING)) ;
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+        return ;
+      }
+      String[] arrFilterChar = {"&", "$", "@", ",", ":","]", "[", "*", "%", "!"} ;
+      for(String filterChar : arrFilterChar) {
+        if(tabName.indexOf(filterChar) > -1) {
+          uiApp.addMessage(new ApplicationMessage("UITabForm.msg.fileName-invalid", null, ApplicationMessage.WARNING)) ;
+          event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
+          return ;
+        }
+      }
+      StringBuilder selectedButton = new StringBuilder() ;
+      boolean isSelected = false ;
+      for(Object bt : uiTabForm.buttons_ ) {
+        String button = uiTabForm.getButtonName(bt) ;
+        if(uiTabForm.getUIFormCheckBoxInput(button).isChecked()) {
+          isSelected = true ;
+          if(selectedButton.length() > 0) selectedButton.append(";").append(button) ;
+          else selectedButton.append(button) ;
+        }
+      }
+      if(!isSelected) {
+        viewFormTabPane.setSelectedTab(uiTabForm.getId());
+        uiApp.addMessage(new ApplicationMessage("UITabForm.msg.button-select-error", null, ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      uiViewForm.setRendered(true);
+      uiTabForm.setRendered(false);
+      ((UIFormStringInput)uiTabForm.getChildById(UITabForm.FIELD_NAME)).getValidators().clear();
+      ((UIFormStringInput)uiViewForm.getChildById(UIViewForm.FIELD_NAME)).setValue(uiViewForm.getViewName());
+      viewFormTabPane.setSelectedTab(uiViewForm.getId()) ;
+      uiViewForm.addTab(tabName, selectedButton.toString()) ;
+      uiViewForm.update(null, false, null) ;
+      UIViewContainer uiViewContainer = uiTabForm.getAncestorOfType(UIViewContainer.class) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewContainer) ;
+    }
+  }
+  
   public void save() throws Exception {
-    String tabName = getUIStringInput(FIELD_NAME).getValue() ;
-    UIViewFormTabPane viewFormTabPane = getParent() ;
-    UIViewForm uiViewForm = viewFormTabPane.getChild(UIViewForm.class) ;
-    UITabForm uiTabForm = viewFormTabPane.getChild(UITabForm.class) ;
-    if(tabName == null || tabName.trim().length() == 0) {
-      viewFormTabPane.setSelectedTab(uiTabForm.getId()) ;
-      throw new MessageException(new ApplicationMessage("UITabForm.msg.tab-name-error", null, 
-                                                        ApplicationMessage.WARNING)) ;
-    }
-    String[] arrFilterChar = {"&", "$", "@", ",", ":","]", "[", "*", "%", "!"} ;
-    for(String filterChar : arrFilterChar) {
-      if(tabName.indexOf(filterChar) > -1) {
-        throw new MessageException(new ApplicationMessage("UITabForm.msg.fileName-invalid", null, 
-                                                          ApplicationMessage.WARNING)) ;
-      }
-    }
-    StringBuilder selectedButton = new StringBuilder() ;
-    boolean isSelected = false ;
-    for(Object bt : buttons_ ) {
-      String button = getButtonName(bt) ;
-      if(getUIFormCheckBoxInput(button).isChecked()) {
-        isSelected = true ;
-        if(selectedButton.length() > 0) selectedButton.append(";").append(button) ;
-        else selectedButton.append(button) ;
-      }
-    }
-    if(!isSelected) {
-      viewFormTabPane.setSelectedTab(uiTabForm.getId()) ;
-      throw new MessageException(new ApplicationMessage("UITabForm.msg.button-select-error", null)) ;
-    }
-    viewFormTabPane.setSelectedTab(uiViewForm.getId()) ;
-    uiViewForm.addTab(tabName, selectedButton.toString()) ;
-    uiViewForm.update(null, false, null) ;
-    refresh(true) ;
+    
   }  
 }

@@ -2187,6 +2187,13 @@
     <title>
       <UIUnLockForm>Quản lý khóa</UIUnLockForm>
     </title>
-  </EditUnLockForm> 
+  </EditUnLockForm>
+  <UIViewFormTabPane>
+    <action>
+      <AddTabForm>Thêm Tab</AddTabForm>
+      <AddTab>Thêm Tab</AddTab>
+      <BackViewForm>Quay lại</BackViewForm>
+    </action>
+  </UIViewFormTabPane> 
 </bundle>
 
