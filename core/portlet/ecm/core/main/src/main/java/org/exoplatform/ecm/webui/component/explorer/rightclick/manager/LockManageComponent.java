@@ -48,6 +48,7 @@ import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.lock.LockService;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.organization.MembershipType;
 import org.exoplatform.services.organization.MembershipTypeHandler;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -141,13 +142,14 @@ public class LockManageComponent extends UIAbstractManagerComponent {
         if (!settingLock.startsWith("*")) 
           LockUtil.keepLock(lock, settingLock);
         else {
+          LockUtil.keepLock(lock, settingLock);
           String lockTokenString = settingLock;
           ExoContainer container = ExoContainerContext.getCurrentContainer();
           OrganizationService service = (OrganizationService) container.getComponentInstanceOfType(OrganizationService.class);    
-          Collection<org.exoplatform.services.organization.Membership> 
-            collection = service.getMembershipTypeHandler().findMembershipTypes();
-          for(org.exoplatform.services.organization.Membership membership : collection) {
-            System.out.println("999 ============> " + membership.getMembershipType());
+          List<MembershipType> memberships = (List<MembershipType>) service.getMembershipTypeHandler().findMembershipTypes();
+          for (MembershipType membership : memberships) {
+            lockTokenString = settingLock.replace("*", membership.getName());
+            LockUtil.keepLock(lock, lockTokenString);
           }
         }
       }      
