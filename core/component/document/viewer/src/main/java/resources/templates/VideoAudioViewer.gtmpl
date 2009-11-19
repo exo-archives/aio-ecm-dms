@@ -71,7 +71,7 @@
          
             playlist: [ ${url} ],
             canvas: { 
-              backgroundImage: 'url(http://flowplayer.org/img/demos/helloworld.jpg)' 
+              backgroundImage: 'url(/eXoDMSResources/skin/images/file/MP3Player.jpg)' 
             }, 
             clip: { 
                 autoPlay: false, 
@@ -92,7 +92,7 @@
       });
       </script>
 
-      <div style="float: left;" class="clips petrol">
+      <div class="clips petrol ListPlayer" style="width: 271px;">
       <!-- single playlist entry -->
       <% 
       def size = links.size();
@@ -110,7 +110,7 @@
       } 
      %>
     </div>  
-    <div id="player" style="display:block;width:700px;height:450px; float:left">
+    <div id="player" class="PlayerContent">
     </div>    
       <!-- let rest of the page float normally -->
       <br clear="all"/>
@@ -133,15 +133,29 @@
   height: 22px; line-height: 22px;
   color: #058ee6; font-weight: bold; 
 }
- 
- .TextContent {  
+
+.FileContent .NavigationContainer .Content .TextContent {
+	 background: url('/eXoDMSResources/skin/images/file/TextContentBG.gif') repeat-x top;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
    overflow: auto;
    height: 100%;
-   !height: 320px;
    margin: auto;
-   width: 89%;
-   padding: 10px;
-   border: 1px solid #b7b7b7;
+   width: 850px;
+   padding: 3px;
+   border: 1px solid #c7c7c7;
+}
+ 
+ .TextContent {  
+ 	 background: url('/eXoDMSResources/skin/images/file/TextContentBG.gif') repeat-x top;
+	-moz-border-radius:5px;
+	-webkit-border-radius:5px;
+   overflow: auto;
+   height: 100%;
+   margin: auto;
+   width: 850px;
+   padding: 3px;
+   border: 1px solid #c7c7c7;
  }
  
  .TextContent pre {  
@@ -151,8 +165,78 @@
  .ContentDetail {  
    text-align: center;
    overflow: visible;
-   padding: 15px 0px;
  }
+
+.ListPlayer{
+	float: right;
+	overflow-y: auto;
+	overflow-x: hidden;
+	height: 420px;
+	
+}
+
+.PlayerContent{
+	display:block;
+	float:left;
+	height:420px;
+	width:560px;
+}
+
+div.clips.petrol .Selected {
+	width: 242px;
+	background: url('/eXoDMSResources/skin/images/file/Selected.gif') no-repeat center;
+	color:black;
+	display:block;
+	font-family:verdana;
+	font-size:11px;
+	font-weight:bold;
+	height:29px;
+	line-height:28px;
+	margin:0 0 0 4px;
+	overflow:hidden;
+	padding:0 0 0 8px;
+	text-align:left;
+}
+
+div.clips.petrol .first {
+	background:#F0F0F0;
+	width:238px;
+	border: none;
+	border-top:1px solid white;
+	color:black;
+	display:block;
+	font-family:verdana;
+	font-size:11px;
+	font-weight:bold;
+	height:29px;
+	line-height:28px;
+	margin:0 0 0 8px;
+	overflow:hidden;
+	padding:0 0 0 8px;
+	text-align:left;
+}
+
+.BackPage{
+	background: url('/eXoDMSResources/skin/images/file/BackPage.gif') no-repeat center;
+	width: 19px;
+	height: 7px;
+	cursor: pointer;
+	margin: 16px auto;
+}
+
+.NextPage{
+	background: url('/eXoDMSResources/skin/images/file/NextPage.gif') no-repeat center;
+	width: 19px;
+	height: 7px;
+	cursor: pointer;
+	margin: 16px auto;
+}
+
+div.clips.petrol a:hover {
+	background: url('/eXoDMSResources/skin/images/file/Selected.gif') no-repeat right center;
+	width: 242px;
+	margin:0 0 0 4px;
+}
  
 </style>
 
