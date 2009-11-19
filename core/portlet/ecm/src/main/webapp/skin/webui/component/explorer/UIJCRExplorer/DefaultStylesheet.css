@@ -133,7 +133,7 @@
 }
 
 .UIJCRExplorerPortlet .UIListView .UIListGrid {	
-	/* lampt's code modification */
+	/** lampt's code modification **/
 	-moz-user-select: none;	
 }
 
