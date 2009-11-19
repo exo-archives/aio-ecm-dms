@@ -132,9 +132,9 @@
 	border: 1px solid #b7b7b7;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIListGrid {
-	overflow: auto;
-	-moz-user-select: none;
+.UIJCRExplorerPortlet .UIListView .UIListGrid {	
+	/* lampt's code modification */
+	-moz-user-select: none;	
 }
 
 .UIJCRExplorerPortlet .UIListView .TitleTable {
