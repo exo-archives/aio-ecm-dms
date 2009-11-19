@@ -2192,6 +2192,9 @@
   	<tooltip>
 				<UnLock>UnLock</UnLock>			
   	</tooltip>
+  	<msg>
+  		<access-denied-exception>You don't have permission to access node with path {0}</access-denied-exception>
+  	</msg>
   </UILockNodeList>
   <EditUnLockForm>
     <title>
@@ -2203,8 +2206,8 @@
       <Close>Close</Close>
     </action>
     <title>
-    		<UILockHolderContainer>Locked Groups</UILockHolderContainer>
-    		<UILockNodeList>Manage Lock</UILockNodeList>
+    		<UILockHolderContainer>Manage Lock</UILockHolderContainer>
+    		<UILockNodeList>Locked Node</UILockNodeList>
     </title>
   </UITabPane>
   <UIViewFormTabPane>

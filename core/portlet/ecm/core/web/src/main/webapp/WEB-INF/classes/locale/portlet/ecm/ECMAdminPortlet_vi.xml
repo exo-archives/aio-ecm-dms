@@ -2192,6 +2192,9 @@
   	<tooltip>
 				<UnLock>Mở khóa</UnLock>			
   	</tooltip>
+  	<msg>
+  		<access-denied-exception>Bạn không có quyền truy cập đến node với đường dẫn {0}</access-denied-exception>
+  	</msg>
   </UILockNodeList>
   <EditUnLockForm>
     <title>

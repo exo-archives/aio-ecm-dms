@@ -2203,8 +2203,8 @@
       <Close>Close</Close>
     </action>
     <title>
-    		<UILockHolderContainer>Locked Groups</UILockHolderContainer>
-    		<UILockNodeList>Manage Lock</UILockNodeList>
+    		<UILockHolderContainer>Manage Lock</UILockHolderContainer>
+    		<UILockNodeList>Locked Node</UILockNodeList>
     </title>
   </UITabPane>
   <UIViewFormTabPane>

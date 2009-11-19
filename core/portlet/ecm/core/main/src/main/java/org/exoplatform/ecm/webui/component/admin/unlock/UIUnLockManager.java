@@ -31,8 +31,8 @@ import org.exoplatform.webui.core.UIPopupWindow;
 public class UIUnLockManager extends UIAbstractManager {
 
   public UIUnLockManager() throws Exception {
-    addChild(UILockNodeList.class, null, null).setRendered(false);
-    addChild(UILockHolderContainer.class, null, null).setRendered(true);
+    addChild(UILockNodeList.class, null, null).setRendered(true);
+    addChild(UILockHolderContainer.class, null, null).setRendered(false);
   }
   
   public void refresh() throws Exception {

@@ -18,7 +18,9 @@
 package org.exoplatform.ecm.webui.component.explorer.rightclick.manager;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 import javax.jcr.Node;
@@ -28,6 +30,8 @@ import javax.jcr.lock.Lock;
 import javax.jcr.lock.LockException;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -44,6 +48,8 @@ import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.lock.LockService;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.services.organization.MembershipTypeHandler;
+import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -132,11 +138,21 @@ public class LockManageComponent extends UIAbstractManagerComponent {
       LockService lockService = uiExplorer.getApplicationComponent(LockService.class);
       List<String> settingLockList = lockService.getAllGroupsOrUsersForLock();
       for (String settingLock : settingLockList) {
-        LockUtil.keepLock(lock, settingLock);
+        if (!settingLock.startsWith("*")) 
+          LockUtil.keepLock(lock, settingLock);
+        else {
+          String lockTokenString = settingLock;
+          ExoContainer container = ExoContainerContext.getCurrentContainer();
+          OrganizationService service = (OrganizationService) container.getComponentInstanceOfType(OrganizationService.class);    
+          Collection<org.exoplatform.services.organization.Membership> 
+            collection = service.getMembershipTypeHandler().findMembershipTypes();
+          for(org.exoplatform.services.organization.Membership membership : collection) {
+            System.out.println("999 ============> " + membership.getMembershipType());
+          }
+        }
       }      
       session.save();
     } catch(LockException le) {
-      le.printStackTrace();
       uiApp.addMessage(new ApplicationMessage("UIPopupMenu.msg.cant-lock", null, 
           ApplicationMessage.WARNING));
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());

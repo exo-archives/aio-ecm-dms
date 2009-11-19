@@ -19,6 +19,7 @@ package org.exoplatform.ecm.webui.component.admin.unlock;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.PathNotFoundException;
@@ -131,9 +132,19 @@ public class UILockNodeList extends UIComponentDecorator {
             if (lockedNode != null) break;
           } catch (PathNotFoundException e) {
             continue;
-          }               
+          } catch (AccessDeniedException accessDeniedException) {
+            continue;
+          }
         }
-      }            
+      }
+      if (lockedNode == null) {
+        Object[] args = {nodePath};
+        uiApp.addMessage(new ApplicationMessage("UILockNodeList.msg.access-denied-exception", args, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiUnLockManager);
+        return;
+      }
       try {
         if(lockedNode.holdsLock()) {
           String lockToken = LockUtil.getLockToken(lockedNode);
