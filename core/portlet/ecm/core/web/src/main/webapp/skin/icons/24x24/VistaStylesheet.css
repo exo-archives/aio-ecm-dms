@@ -52,7 +52,7 @@
 }
 
 .AddCategoryIcon {
-	width: 24px;	height: 24px;
+ 	height: 24px;
   background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/AddCategoryIcon.gif') no-repeat right center; /* orientation=rt */
 }
