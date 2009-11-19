@@ -69,7 +69,7 @@ public class UIViewTab extends UIContainer {
     uiGrid.getUIPageIterator().setId("ViewListIterator") ;
     uiGrid.configure("name", BEAN_FIELD, ACTIONS) ;
     UITemplateContent uiForm = addChild(UITemplateContent.class, null , VIEW_FORM_NAME) ;
-    uiForm.setIsDialog(false) ;
+    uiForm.setTemplateType(TemplateService.VIEWS);
     uiForm.update(null) ;
   }
 
@@ -140,7 +140,7 @@ public class UIViewTab extends UIContainer {
           return ;
         }
       }
-      templateService.removeTemplate(false, nodeTypeName, templateName, viewTab.getRepository()) ;
+      templateService.removeTemplate(TemplateService.VIEWS, nodeTypeName, templateName, viewTab.getRepository()) ;
       UITemplateContent uiForm = viewTab.findFirstComponentOfType(UITemplateContent.class) ;
       uiForm.update(null) ;
       viewTab.updateGrid(nodeTypeName) ;

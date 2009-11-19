@@ -28,9 +28,9 @@ import javax.jcr.nodetype.NodeTypeIterator;
 import javax.jcr.nodetype.NodeTypeManager;
 import javax.portlet.PortletPreferences;
 
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.selector.UISelectable;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -52,7 +52,6 @@ import org.exoplatform.webui.form.UIFormStringInput;
 import org.exoplatform.webui.form.UIFormTabPane;
 import org.exoplatform.webui.form.UIFormTextAreaInput;
 import org.exoplatform.webui.form.validator.MandatoryValidator;
-
 
 /**
  * Created by The eXo Platform SARL
@@ -77,9 +76,11 @@ public class UITemplateForm extends UIFormTabPane implements UISelectable {
   final static public String FIELD_ISTEMPLATE = "isDocumentTemplate" ;
   final static public String FIELD_DIALOG = "dialog" ;
   final static public String FIELD_VIEW = "view" ;
+  final static public String FIELD_SKIN = "skin";
   final static public String FIELD_TAB_TEMPLATE = "template" ;
   final static public String FIELD_TAB_DIALOG = "defaultDialog" ;
   final static public String FIELD_TAB_VIEW = "defaultView" ;
+  final static public String FIELD_TAB_SKIN = "defaultSkin" ;
   final static public String FIELD_PERMISSION = "permission" ;
 
   public UITemplateForm() throws Exception {
@@ -102,6 +103,9 @@ public class UITemplateForm extends UIFormTabPane implements UISelectable {
     defaultViewTab.addUIFormInput(new UIFormTextAreaInput(FIELD_VIEW, FIELD_VIEW, null).
                                   addValidator(MandatoryValidator.class)) ;
     addUIFormInput(defaultViewTab) ;
+    UIFormInputSet defaultSkinTab = new UIFormInputSet(FIELD_TAB_SKIN) ;
+    defaultSkinTab.addUIFormInput(new UIFormTextAreaInput(FIELD_SKIN, FIELD_SKIN, null)) ;
+    addUIFormInput(defaultSkinTab) ;
     setActions(new String[]{"Save", "Refresh", "Cancel"}) ;
   }
 
@@ -171,7 +175,9 @@ public class UITemplateForm extends UIFormTabPane implements UISelectable {
       String name = uiForm.getUIFormSelectBox(FIELD_NAME).getValue() ;
       String label = uiForm.getUIStringInput(FIELD_LABEL).getValue() ; 
       String dialog = uiForm.getUIFormTextAreaInput(FIELD_DIALOG).getValue() ;
-      String view = uiForm.getUIFormTextAreaInput(FIELD_VIEW).getValue() ;
+      String view = uiForm.getUIFormTextAreaInput(FIELD_VIEW).getValue();
+      String skin = uiForm.getUIFormTextAreaInput(FIELD_SKIN).getValue();
+      if(skin == null) skin = "";
       boolean isDocumentTemplate = uiForm.getUIFormCheckBoxInput(FIELD_ISTEMPLATE).isChecked() ;
       UIFormInputSetWithAction permField = uiForm.getChildById(UITemplateForm.FIELD_TAB_TEMPLATE) ;
       String role = permField.getUIStringInput(FIELD_PERMISSION).getValue() ;
@@ -186,10 +192,12 @@ public class UITemplateForm extends UIFormTabPane implements UISelectable {
       if(dialog == null) dialog = "" ;
       if(view == null) view = "" ;
       TemplateService templateService = uiForm.getApplicationComponent(TemplateService.class) ;
-      templateService.addTemplate(true, name, label, isDocumentTemplate, 
+      templateService.addTemplate(TemplateService.DIALOGS, name, label, isDocumentTemplate, 
           TemplateService.DEFAULT_DIALOG, roles, dialog, uiForm.getRepository()) ;
-      templateService.addTemplate(false, name, label, isDocumentTemplate,
+      templateService.addTemplate(TemplateService.VIEWS, name, label, isDocumentTemplate,
           TemplateService.DEFAULT_VIEW, roles, view, uiForm.getRepository()) ;
+      templateService.addTemplate(TemplateService.SKINS, name, label, isDocumentTemplate,
+          TemplateService.DEFAULT_SKIN, roles, skin, uiForm.getRepository()) ;
       UITemplatesManager uiManager = uiForm.getAncestorOfType(UITemplatesManager.class) ;
       uiManager.refresh() ;
       uiForm.refresh() ;

@@ -2130,8 +2130,8 @@
   -->   
   <DriveInputSet>
     <label>
-      <nt_folder>Folder</nt_folder>
-      <nt_unstructured>Unstructured folder</nt_unstructured>
+      <nt_folder>Thư mục</nt_folder>
+      <nt_unstructured>Thư mục không cấu trúc</nt_unstructured>
     </label>
   </DriveInputSet>
   <UIDriveForm>
@@ -2216,6 +2216,54 @@
       <AddTab>Thêm Tab</AddTab>
       <BackViewForm>Quay lại</BackViewForm>
     </action>
-  </UIViewFormTabPane> 
+  </UIViewFormTabPane>
+  
+  <UITabPane>
+    <title>
+      <UISkinTab>CSS</UISkinTab>
+    </title>
+  </UITabPane>
+  
+	<UITemplateForm>
+		<tab>
+			<label>
+				<defaultSkin>CSS</defaultSkin>
+			</label>
+		</tab>
+	</UITemplateForm>
+  
+  <UISkinTab>
+    <header>
+      <name>Tên</name>
+      <roles>Vai trò</roles>
+      <baseVersion>Phiên bản</baseVersion>
+      <action>Hành động</action>
+    </header>
+    <msg>
+      <undeletable>'{0}' không thể xóa, nó là mặc định!</undeletable>
+      <confirm-delete>Bạn có thực sự muốn xóa không?</confirm-delete>
+    </msg>
+    <action>
+      <title>
+        <Edit>Sửa</Edit>
+        <Delete>Xóa</Delete>
+      </title>
+    </action>
+  </UISkinTab>
+  
+  <SkinForm>
+    <label>
+      <UITemplateContent>SkinForm</UITemplateContent>
+      <UIPopupWindow>Quyền truy nhập</UIPopupWindow>
+      <selectVersion>Các phiên bản</selectVersion>
+      <content>Nội dung</content>
+      <name>Tên</name>
+      <isDocumentTemplate>Kiểu tài liệu</isDocumentTemplate>
+      <viewPermission>Quyền truy nhập</viewPermission>
+      <enableVersion>Kích hoạt phiên bản</enableVersion>
+    </label>
+    <title>Thêm/Sửa CSS</title>
+  </SkinForm>  
+  
 </bundle>
 

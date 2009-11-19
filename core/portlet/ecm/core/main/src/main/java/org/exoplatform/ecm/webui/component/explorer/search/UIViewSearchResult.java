@@ -38,10 +38,7 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.presentation.AbstractActionComponent;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.presentation.removeattach.RemoveAttachmentComponent;
@@ -52,12 +49,9 @@ import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
-import org.exoplatform.services.cms.impl.DMSConfiguration;
-import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.cms.views.ManageViewService;
 import org.exoplatform.services.jcr.RepositoryService;
-import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.log.ExoLogger;
@@ -90,8 +84,6 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
   
   private Node node_ ;
   private String language_ ;
-  private String currentRepository_ = null;
-  private String currentWorkspaceName_ = null;
   final private static String COMMENT_COMPONENT = "Comment".intern();
   /**
    * Logger.
@@ -106,13 +98,9 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    currentRepository_ = uiExplorer.getRepositoryName();
-    currentWorkspaceName_ = uiExplorer.getCurrentWorkspace();
     try {
       String nodeType = node_.getPrimaryNodeType().getName() ;
-      String template = templateService.getTemplatePathByUser(false, nodeType, userName, currentRepository_) ; 
-      templateService.removeCacheTemplate(uiExplorer.getJCRTemplateResourceResolver().createResourceId(template));
-      return template;
+      return templateService.getTemplatePathByUser(false, nodeType, userName, uiExplorer.getRepositoryName()) ; 
     } catch(Exception e) {
       LOG.error(e);
     }
@@ -248,27 +236,7 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
   
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    if(language_ == null) {
-      try {
-        language_ = node_.getProperty(Utils.EXO_LANGUAGE).getString();
-      } catch(Exception e) {
-        LOG.error(e);
-      }
-    }
-    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
-    try {
-      ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository);
-      DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
-      DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(repository);
-      return new JCRResourceResolver(currentRepository_, dmsConfiguration.getConfig(repository).getSystemWorkspace(), 
-          Utils.EXO_TEMPLATEFILE, language_) ;
-    } catch (RepositoryConfigurationException e) {
-      LOG.error("", e);
-    } catch (RepositoryException e) {
-      LOG.error("", e);
-    }
-    return new JCRResourceResolver(currentRepository_, currentWorkspaceName_, 
-        Utils.EXO_TEMPLATEFILE, language_) ;
+    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
   }
 
   public List<Node> getComments() throws Exception {
@@ -362,6 +330,25 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
   public String encodeHTML(String text) throws Exception {
     return Utils.encodeHTML(text) ;
   }
+ 
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
+  }
+
+
+  public UIComponent getUIComponent(String mimeType) throws Exception {
+    UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
+    List<UIExtension> extensions = manager.getUIExtensions(Utils.FILE_VIEWER_EXTENSION_TYPE);
+    Map<String, Object> context = new HashMap<String, Object>();
+    context.put(Utils.MIME_TYPE, mimeType);
+    for (UIExtension extension : extensions) {
+      UIComponent uiComponent = manager.addUIExtension(extension, context, this);
+      if(uiComponent != null) return uiComponent;
+    }
+    return null;
+  }
+
   
   private Node getFileLangNode(Node currentNode) throws Exception {
     if(currentNode.getNodes().getSize() > 0) {
@@ -375,19 +362,7 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
       return currentNode ;
     }
     return currentNode ;
-  }  
-
-  public UIComponent getUIComponent(String mimeType) throws Exception {
-    UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
-    List<UIExtension> extensions = manager.getUIExtensions(Utils.FILE_VIEWER_EXTENSION_TYPE);
-    Map<String, Object> context = new HashMap<String, Object>();
-    context.put(Utils.MIME_TYPE, mimeType);
-    for (UIExtension extension : extensions) {
-      UIComponent uiComponent = manager.addUIExtension(extension, context, this);
-      if(uiComponent != null) return uiComponent;
-    }
-    return null;
-  }
+  } 
   
   static  public class DownloadActionListener extends EventListener<UIViewSearchResult> {
     public void execute(Event<UIViewSearchResult> event) throws Exception {

@@ -121,17 +121,23 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
     return getUIBrowseContainer().getChild(UIToolBar.class);
   }
 
+  @SuppressWarnings("cast")
   public UIComponent getRemoveAttach() throws Exception {
     removeChild(RemoveAttachmentComponent.class);
-    UIComponent uicomponent = addChild(RemoveAttachmentComponent.class, null, "DocumentDetailRemoveAttach".concat(UUID.randomUUID().toString()));
-    ((AbstractActionComponent)uicomponent).setLstComponentupdate(Arrays.asList(new Class[] {((UIComponent)this.getParent()).getClass()}));
+    UIComponent uicomponent = addChild(RemoveAttachmentComponent.class, null, 
+        "DocumentDetailRemoveAttach".concat(UUID.randomUUID().toString()));
+    ((AbstractActionComponent)uicomponent).setLstComponentupdate(
+        Arrays.asList(new Class[] {((UIComponent)this.getParent()).getClass()}));
     return uicomponent;
   }
   
+  @SuppressWarnings("cast")
   public UIComponent getRemoveComment() throws Exception {
     removeChild(RemoveCommentComponent.class);
-    UIComponent uicomponent = addChild(RemoveCommentComponent.class, null, "DocumentDetailRemoveComment".concat(UUID.randomUUID().toString()));
-    ((AbstractActionComponent)uicomponent).setLstComponentupdate(Arrays.asList(new Class[] {((UIComponent)this.getParent()).getClass()}));
+    UIComponent uicomponent = addChild(RemoveCommentComponent.class, null, 
+        "DocumentDetailRemoveComment".concat(UUID.randomUUID().toString()));
+    ((AbstractActionComponent)uicomponent).setLstComponentupdate(
+        Arrays.asList(new Class[] {((UIComponent)this.getParent()).getClass()}));
     return uicomponent;
   }
   
@@ -147,7 +153,6 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
         template = templateService.getTemplatePathByUser(false, getNodeType(), userName, repository) ;
       }
       if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver();
-      templateService.removeCacheTemplate(jcrTemplateResourceResolver_.createResourceId(template));
       return template;
     } catch (AccessControlException e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
@@ -176,7 +181,7 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
 
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    newJCRTemplateResourceResolver() ;
+    if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
     return jcrTemplateResourceResolver_ ;
   }
 
@@ -184,10 +189,8 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
     try{
       String repository = getAncestorOfType(UIBrowseContentPortlet.class).getChild(UIBrowseContainer.class).getRepository();
       String systemWorkspace = getAncestorOfType(UIBrowseContentPortlet.class).getChild(UIBrowseContainer.class).getDmsSystemWorkspace();
-      if((language_ == null) && (node_.hasProperty(Utils.EXO_LANGUAGE))) 
-        language_ = node_.getProperty(Utils.EXO_LANGUAGE).getString();
       jcrTemplateResourceResolver_ = new JCRResourceResolver(repository, systemWorkspace, 
-          Utils.EXO_TEMPLATEFILE, language_) ;
+          Utils.EXO_TEMPLATEFILE) ;
     }catch(Exception e) {
       LOG.error("Exception when get template resource", e);
     }     
@@ -394,7 +397,24 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
     }
     return childrenList ;
   }
-  
+
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
+  }
+
+  public UIComponent getUIComponent(String mimeType) throws Exception {
+    UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
+    List<UIExtension> extensions = manager.getUIExtensions(Utils.FILE_VIEWER_EXTENSION_TYPE);
+    Map<String, Object> context = new HashMap<String, Object>();
+    context.put(Utils.MIME_TYPE, mimeType);
+    for (UIExtension extension : extensions) {
+      UIComponent uiComponent = manager.addUIExtension(extension, context, this);
+      if(uiComponent != null) return uiComponent;
+    }
+    return null;
+  }
+
   private Node getFileLangNode(Node currentNode) throws Exception {
     if(currentNode.getNodes().getSize() > 0) {
       NodeIterator nodeIter = currentNode.getNodes() ;
@@ -408,27 +428,13 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
     }
     return currentNode ;
   }
-
-
-  public UIComponent getUIComponent(String mimeType) throws Exception {
-    UIExtensionManager manager = getApplicationComponent(UIExtensionManager.class);
-    List<UIExtension> extensions = manager.getUIExtensions(Utils.FILE_VIEWER_EXTENSION_TYPE);
-    Map<String, Object> context = new HashMap<String, Object>();
-    context.put(Utils.MIME_TYPE, mimeType);
-    for (UIExtension extension : extensions) {
-      UIComponent uiComponent = manager.addUIExtension(extension, context, this);
-      if(uiComponent != null) return uiComponent;
-    }
-    return null;
-  }
   
   static public class ChangeLanguageActionListener extends EventListener<UIDocumentDetail>{
     public void execute(Event<UIDocumentDetail> event) throws Exception {
       UIDocumentDetail uiDocument = event.getSource() ;
       String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiDocument.setLanguage(selectedLanguage) ;
-      //event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument.getAncestorOfType(UIBrowseContentPortlet.class)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument.getParent()) ;
     }
   }
 

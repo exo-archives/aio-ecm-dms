@@ -55,7 +55,8 @@ public class TemplateConfig {
     private String label;
     private boolean documentTemplate ;
     private List referencedDialog;
-    private List referencedView;    
+    private List referencedView;
+    private List referencedSkin;
     
     public NodeType(){
       referencedDialog = new ArrayList();
@@ -74,6 +75,9 @@ public class TemplateConfig {
     
     public List getReferencedView() { return referencedView; }
     public void setReferencedView(List referencedView) { this.referencedView = referencedView; }
+    
+    public List getReferencedSkin() { return referencedSkin; }
+    public void setReferencedSkin(List referencedSkin) { this.referencedSkin = referencedSkin; }
     
     public boolean getDocumentTemplate() { return this.documentTemplate ; }    
     public void setDocumentTemplate( boolean b) { this.documentTemplate = b ; }

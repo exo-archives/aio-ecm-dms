@@ -186,6 +186,15 @@ public interface NodePresentation {
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception;
   
   /**
+   * Get the skin of template if it's existing
+   * @param nodeTypeName The node type name
+   * @param skinName  Skin name
+   * @return The skin template
+   * @throws Exception
+   */
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception;
+  
+  /**
    * Get UIComponent for comment
    * @return
    * @throws Exception

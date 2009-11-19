@@ -8,6 +8,9 @@
     return text.replaceAll("'", "\\\\'");
   }
 %>
+<style>
+  <% _ctx.include(uicomponent.getTemplateSkin("kfx:document", "Stylesheet")); %>    
+</style>
 <div class="WorkKofax">
 	<table class="UIGrid">      	 			
 	  <tr>
@@ -65,17 +68,5 @@
 	</table>
 	<div><% _ctx.include(uicomponent.getViewTemplate("mix:votable", "view1")); %></div>
   <div><% _ctx.include(uicomponent.getViewTemplate("exo:comments", "view1")); %></div>
-  <style>
-  .WorkKofax {
-    margin: 10px;
-  }
-  
-  .WorkKofax .UIGrid {
-    width: 97%;
-  }
-  
-  .WorkKofax .UIGrid td {
-    border: 1px solid #CCCCCC
-  }
-</style>
+
 </div>

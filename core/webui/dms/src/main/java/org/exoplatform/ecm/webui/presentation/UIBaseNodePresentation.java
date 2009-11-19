@@ -364,4 +364,9 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
     return null;
   }
   
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
+  }
+  
 }

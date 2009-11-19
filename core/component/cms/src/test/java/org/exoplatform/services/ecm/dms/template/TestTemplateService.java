@@ -189,8 +189,8 @@ public class TestTemplateService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testGetTemplate() throws Exception {    
-    assertNotNull(templateService.getTemplate(true, EXO_ARTICLE, "dialog1", REPO_NAME));
-    assertNotNull(templateService.getTemplate(false, EXO_ARTICLE, "view1", REPO_NAME));
+    assertNotNull(templateService.getTemplate(TemplateService.DIALOGS, EXO_ARTICLE, "dialog1", REPO_NAME));
+    assertNotNull(templateService.getTemplate(TemplateService.VIEWS, EXO_ARTICLE, "view1", REPO_NAME));
   }
   
   /**
@@ -215,51 +215,14 @@ public class TestTemplateService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testAddTemplate() throws Exception {    
-    boolean isDialog = true;
     String label = "AALabel";
     boolean isDocumentTemplate = true;
     String templateName = "AAName"; 
     String templateFile = "Hello";
     String[] roles = {"*"};
-    assertNotNull(templateService.addTemplate(isDialog, EXO_ARTICLE, label, isDocumentTemplate, 
+    assertNotNull(templateService.addTemplate(TemplateService.DIALOGS, EXO_ARTICLE, label, isDocumentTemplate, 
         templateName, roles, templateFile, REPO_NAME));
-    assertNotNull(templateService.getTemplate(true, EXO_ARTICLE, templateName, REPO_NAME));
-  }
-  
-  /**
-   * Test method: TemplateServiceImpl.addTemplateWithLocale()
-   * Input: isDialog            boolean
-   *                            The boolean value which specify the type of template
-   *        nodeTypeName        String
-   *                            The specify name of NodType
-   *        label               String
-   *                            The label of the specified template
-   *        isDocumentTemplate  boolean
-   *                            The boolean value which yes or no is DocumentTemplate
-   *        templateName        String
-   *                            The name of template
-   *        roles               String[]
-   *                            The roles of template
-   *        templateFile        String
-   *                            The file of template
-   *        repository          String
-   *                            The name of repository
-   *        locale              String
-   *                            The locale name
-   * Expect: Insert a new template
-   * @throws Exception
-   */
-  public void testAddTemplateWithLocale() throws Exception {    
-    boolean isDialog = true;
-    String label = "BBLabel";
-    boolean isDocumentTemplate = true;
-    String templateName = "BBName"; 
-    String templateFile = "BBHello";
-    String[] roles = {"*"};
-    String locale = "en";
-    assertNotNull(templateService.addTemplateWithLocale(isDialog, EXO_ARTICLE, label, isDocumentTemplate, 
-        templateName, roles, templateFile, REPO_NAME, locale));
-    assertNotNull(templateService.getTemplate(true, EXO_ARTICLE, templateName, REPO_NAME));
+    assertNotNull(templateService.getTemplate(TemplateService.DIALOGS, EXO_ARTICLE, templateName, REPO_NAME));
   }
   
   /**
@@ -276,10 +239,10 @@ public class TestTemplateService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testRemoveTemplate() throws Exception {    
-    assertNotNull(templateService.getTemplate(false, EXO_ARTICLE, "view1", REPO_NAME));    
-    templateService.removeTemplate(false, EXO_ARTICLE, "view1", REPO_NAME);    
+    assertNotNull(templateService.getTemplate(TemplateService.VIEWS, EXO_ARTICLE, "view1", REPO_NAME));    
+    templateService.removeTemplate(TemplateService.VIEWS, EXO_ARTICLE, "view1", REPO_NAME);    
     try {
-      templateService.getTemplate(false, EXO_ARTICLE, "view1", REPO_NAME);
+      templateService.getTemplate(TemplateService.VIEWS, EXO_ARTICLE, "view1", REPO_NAME);
       fail();
     } catch (Exception ex) {
     }
@@ -375,7 +338,7 @@ public class TestTemplateService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testGetTemplateRoles() throws Exception {    
-    assertEquals("*", templateService.getTemplateRoles(true, EXO_ARTICLE, "dialog1", REPO_NAME));
+    assertEquals("*", templateService.getTemplateRoles(TemplateService.DIALOGS, EXO_ARTICLE, "dialog1", REPO_NAME));
   }
   
   /**
@@ -394,7 +357,7 @@ public class TestTemplateService extends BaseDMSTestCase {
    * @throws Exception
    */
   public void testGetTemplateNode() throws Exception {
-    assertEquals(expectedArticleDialogPath, templateService.getTemplateNode(true, EXO_ARTICLE, "dialog1", 
+    assertEquals(expectedArticleDialogPath, templateService.getTemplateNode(TemplateService.DIALOGS, EXO_ARTICLE, "dialog1", 
         REPO_NAME, SessionProviderFactory.createSessionProvider()).getPath());
   }
   
@@ -412,28 +375,6 @@ public class TestTemplateService extends BaseDMSTestCase {
     
     List<String> listContentType = templateService.getCreationableContentTypes(ddd);
     assertTrue(listContentType.contains("nt:file"));
-  }
-  
-  /**
-   * Test method: TemplateServiceImpl.getTemplateData()
-   * Input: templateNode    Node
-   * @param locale          String
-   *                        code of locale
-   * @param propertyName    String
-   *                        The name of property
-   * @param repository      String
-   *                        The name of repository
-   * Expect: Return "Hello EEE" is data of the template
-   * @throws Exception
-   */
-  public void testGetTemplateData() throws Exception {
-    Node root = sessionDMS.getRootNode();
-    Node eee1 = root.addNode("EEE");
-    Node eee = eee1.addNode("EEE", "exo:article");
-    eee.setProperty("exo:title", "Hello EEE");
-    sessionDMS.save();
-    
-    assertEquals("Hello EEE", templateService.getTemplateData(eee, "en", "exo:title", REPO_NAME));
   }
   
   /**
