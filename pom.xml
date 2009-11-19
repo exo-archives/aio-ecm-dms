@@ -9,7 +9,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm</groupId>
   <artifactId>dms</artifactId>
-  <name>eXo DMS Config</name>
+  <name>eXo ECM - DMS</name>
+  <description>eXo Enterprise Content Management - Document Management System</description>
   <version>2.6-SNAPSHOT</version>
   <packaging>pom</packaging>
 
