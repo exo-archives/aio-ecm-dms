@@ -175,7 +175,7 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
       }
       LockService lockService = uiPermissionSelector.getApplicationComponent(LockService.class);
       lockService.addGroupsOrUsersForLock(value);
-      UIUnLockManager uiUnLockManager = uiPermissionSelector.getParent();
+      UIUnLockManager uiUnLockManager = uiPermissionSelector.getAncestorOfType(UIUnLockManager.class);
       uiUnLockManager.refresh();
     }
   }
@@ -238,7 +238,7 @@ public class UIPermissionSelector extends UIGroupMembershipSelector implements C
       String value = "*";
       LockService lockService = uiPermissionSelector.getApplicationComponent(LockService.class);
       lockService.addGroupsOrUsersForLock(value);
-      UIUnLockManager uiUnLockManager = uiPermissionSelector.getParent();
+      UIUnLockManager uiUnLockManager = uiPermissionSelector.getAncestorOfType(UIUnLockManager.class);
       uiUnLockManager.refresh();
     }
   }

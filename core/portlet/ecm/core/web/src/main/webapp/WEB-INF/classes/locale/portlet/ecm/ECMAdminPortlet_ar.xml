@@ -2174,20 +2174,39 @@
       <permission-require>You must select permissions</permission-require>      
     </msg>
   </UIUnLockForm>
-  <UILockList>
+  <UILockHolderList>
   	<header>
-  		<name>Node</name>
+  		<name>Groups Or Users</name>
   		<action>Action</action>
   	</header>
   	<tooltip>
-				<ManageLock>Manage Lock</ManageLock>			
+				<DeleteLock>Delete Group Or User</DeleteLock>			
   	</tooltip>
-  </UILockList>
+  </UILockHolderList>
+  <UILockNodeList>
+  	<header>
+  		<name>Node Path</name>
+  		<hoderLock>User Lock</hoderLock>
+  		<action>Action</action>
+  	</header>
+  	<tooltip>
+				<UnLock>UnLock</UnLock>			
+  	</tooltip>
+  </UILockNodeList>
   <EditUnLockForm>
     <title>
       <UIUnLockForm>Manage Lock</UIUnLockForm>
     </title>
-  </EditUnLockForm>
+  </EditUnLockForm>  
+  <UITabPane>
+    <action>
+      <Close>Close</Close>
+    </action>
+    <title>
+    		<UILockHolderContainer>Locked Groups</UILockHolderContainer>
+    		<UILockNodeList>Manage Lock</UILockNodeList>
+    </title>
+  </UITabPane>
   <UIViewFormTabPane>
     <action>
       <AddTabForm>Add Tab</AddTabForm>

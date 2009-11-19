@@ -2153,17 +2153,17 @@
 	<UIECMAdminControlPanel>
     <tab>
       <label>        
-        <ManageUnLock>Quản lý mở khóa</ManageUnLock>
+        <ManageUnLock>Quản lý khóa node</ManageUnLock>
       </label>
     </tab>
     <label>
-      <UIUnLockManager>Quản lý mở khóa</UIUnLockManager>      
+      <UIUnLockManager>Quản lý khóa node</UIUnLockManager>      
     </label>    
 	</UIECMAdminControlPanel>
 	<UIUnLockForm>
     <label>
       <name>Đường dẫn node</name>      
-      <permissions>Phân quyền</permissions>
+      <permissions>Nhóm người dùng</permissions>
       <PermissionButton>UIUnLockForm</PermissionButton>
     </label>
     <action>
@@ -2171,23 +2171,42 @@
       <Cancel>#{word.cancel}</Cancel>
     </action>
     <msg>
-      <permission-require>Bạn phải chọn quyền</permission-require>      
+      <permission-require>Bạn phải chọn nhóm người dùng</permission-require>      
     </msg>
   </UIUnLockForm>
-  <UILockList>
+  <UILockHolderList>
   	<header>
-  		<name>Node</name>
+  		<name>Nhóm người dùng</name>
   		<action>Hành động</action>
   	</header>
   	<tooltip>
-				<ManageLock>Quản lý khóa</ManageLock>			
+				<DeleteLock>Xóa nhóm người dùng</DeleteLock>			
   	</tooltip>
-  </UILockList>
+  </UILockHolderList>
+  <UILockNodeList>
+  	<header>
+  		<name>Đường dẫn node</name>
+  		<hoderLock>Người dùng khóa</hoderLock>
+  		<action>Hành động</action>
+  	</header>
+  	<tooltip>
+				<UnLock>Mở khóa</UnLock>			
+  	</tooltip>
+  </UILockNodeList>
   <EditUnLockForm>
     <title>
       <UIUnLockForm>Quản lý khóa</UIUnLockForm>
     </title>
-  </EditUnLockForm>
+  </EditUnLockForm>  
+  <UITabPane>
+    <action>
+      <Close>Đóng</Close>
+    </action>
+    <title>
+    		<UILockHolderContainer>Nhóm được khóa</UILockHolderContainer>
+    		<UILockNodeList>Node được khóa</UILockNodeList>
+    </title>
+  </UITabPane>
   <UIViewFormTabPane>
     <action>
       <AddTabForm>Thêm Tab</AddTabForm>

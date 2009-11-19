@@ -31,9 +31,8 @@ import org.exoplatform.webui.core.UIPopupWindow;
 public class UIUnLockManager extends UIAbstractManager {
 
   public UIUnLockManager() throws Exception {
-    addChild(UILockList.class, null, null).setRendered(true);
-    addChild(UIPermissionSelector.class, null, null).setRendered(false);
-    addChild(UIUserContainer.class, null, null).setRendered(false);    
+    addChild(UILockNodeList.class, null, null).setRendered(false);
+    addChild(UILockHolderContainer.class, null, null).setRendered(true);
   }
   
   public void refresh() throws Exception {
@@ -41,8 +40,13 @@ public class UIUnLockManager extends UIAbstractManager {
   }
   
   public void update() throws Exception {
-    getChild(UILockList.class).updateLockedNodesGrid(1);
+    getChild(UILockNodeList.class).updateLockedNodesGrid(1);
+    UILockHolderContainer uiHolderContainer = getChild(UILockHolderContainer.class);
+    if (uiHolderContainer != null) {
+      uiHolderContainer.getChild(UILockHolderList.class).updateLockedNodesGrid(1);
+    }
   }
+  
   public void initFormPopup(String id) throws Exception {
     removeChildById(id);
     UIPopupWindow uiPopup = addChild(UIPopupWindow.class, null, id);

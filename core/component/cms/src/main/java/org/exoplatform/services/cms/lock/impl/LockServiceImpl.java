@@ -33,7 +33,10 @@ public class LockServiceImpl implements LockService, Startable {
   
   private List<String> settingLockList = new ArrayList<String>();
   
-  public List<String> getAllGroupsOrUsersForLock() throws Exception {
+  public List<String> getAllGroupsOrUsersForLock() throws Exception {    
+    if (settingLockList.size() == 0) settingLockList.add("*:/platform/administrators");
+    if (!settingLockList.contains("*:/platform/administrators")) settingLockList.add("*:/platform/administrators");
+    
     return settingLockList;
   }
   
