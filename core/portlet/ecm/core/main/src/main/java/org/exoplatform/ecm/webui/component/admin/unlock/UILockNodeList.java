@@ -107,7 +107,7 @@ public class UILockNodeList extends UIComponentDecorator {
         queryResult = query.execute();    
         for(NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {          
           Node itemNode = iter.nextNode();
-          if (!itemNode.isNodeType(Utils.EXO_RESTORELOCATION)) {
+          if (!itemNode.isNodeType(Utils.EXO_RESTORELOCATION) && itemNode.isLocked()) {
             listLockedNodes.add(itemNode);
           }
         }
