@@ -140,7 +140,7 @@
 }
 
 .UIJCRExplorerPortlet .UIListView .UIListGrid {
-	overflow: auto;
+	/* lampt's code modification */
 	-moz-user-select: none;
 }
 
