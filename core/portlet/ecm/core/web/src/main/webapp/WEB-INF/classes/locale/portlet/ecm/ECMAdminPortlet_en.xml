@@ -2183,6 +2183,9 @@
   	<tooltip>
 				<DeleteLock>Delete Group</DeleteLock>			
   	</tooltip>
+  	<msg>
+  		<can-not-delete-lock-holder>Can not delete group {0}</can-not-delete-lock-holder>
+  	</msg>
   </UILockHolderList>
   <UILockNodeList>
   	<header>
@@ -2194,7 +2197,7 @@
 				<UnLock>UnLock</UnLock>			
   	</tooltip>
   	<msg>
-  		<access-denied-exception>You don't have permission to access node with path {0}</access-denied-exception>
+  		<access-denied-exception>You don't have permission to access node with path {0} or this node is deleted</access-denied-exception>
   	</msg>
   </UILockNodeList>
   <EditUnLockForm>

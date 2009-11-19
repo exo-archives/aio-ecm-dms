@@ -21,8 +21,10 @@ import java.util.List;
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
 import org.exoplatform.services.cms.lock.LockService;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponentDecorator;
 import org.exoplatform.webui.core.UIPageIterator;
 import org.exoplatform.webui.event.Event;
@@ -78,9 +80,21 @@ public class UILockHolderList extends UIComponentDecorator {
       UILockHolderContainer uiLockHolderContainer = uiLockHolderList.getAncestorOfType(UILockHolderContainer.class);
       String settingLock = event.getRequestContext().getRequestParameter(OBJECTID);
       LockService lockService = uiLockHolderContainer.getApplicationComponent(LockService.class);
-      lockService.removeGroupsOrUsersForLock(settingLock);
+      if (!settingLock.equals("*:/platform/administrators")) {
+        lockService.removeGroupsOrUsersForLock(settingLock);
+      } else {
+        Object[] args = {settingLock};
+        UIApplication uiApp = uiLockHolderList.getAncestorOfType(UIApplication.class);
+        uiApp.addMessage(new ApplicationMessage("UILockHolderList.msg.can-not-delete-lock-holder", args, 
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiLockHolderContainer.getParent());
+      } 
       UILockHolderList uiHolderList = uiLockHolderContainer.getChild(UILockHolderList.class);
       uiHolderList.updateLockedNodesGrid(uiHolderList.uiPageIterator_.getCurrentPage());
+      UIUnLockManager uiUnLockManager = uiLockHolderContainer.getParent();
+      uiUnLockManager.getChild(UILockNodeList.class).setRendered(false);
+      uiLockHolderContainer.setRendered(true);
       event.getRequestContext().addUIComponentToUpdateByAjax(uiLockHolderContainer.getParent());
     }
   }  

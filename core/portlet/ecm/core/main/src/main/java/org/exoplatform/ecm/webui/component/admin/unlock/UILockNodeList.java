@@ -107,7 +107,9 @@ public class UILockNodeList extends UIComponentDecorator {
         queryResult = query.execute();    
         for(NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {          
           Node itemNode = iter.nextNode();
-          listLockedNodes.add(itemNode);
+          if (!itemNode.isNodeType(Utils.EXO_RESTORELOCATION)) {
+            listLockedNodes.add(itemNode);
+          }
         }
       }
     }
@@ -129,7 +131,7 @@ public class UILockNodeList extends UIComponentDecorator {
           session = SessionProviderFactory.createSessionProvider().getSession(ws.getName(), manageRepository);
           try {
             lockedNode = (Node) session.getItem(nodePath);
-            if (lockedNode != null) break;
+            if ((lockedNode != null) && !lockedNode.isNodeType(Utils.EXO_RESTORELOCATION)) break;
           } catch (PathNotFoundException e) {
             continue;
           } catch (AccessDeniedException accessDeniedException) {
@@ -142,6 +144,7 @@ public class UILockNodeList extends UIComponentDecorator {
         uiApp.addMessage(new ApplicationMessage("UILockNodeList.msg.access-denied-exception", args, 
             ApplicationMessage.WARNING));
         event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        uiUnLockManager.refresh();
         event.getRequestContext().addUIComponentToUpdateByAjax(uiUnLockManager);
         return;
       }
