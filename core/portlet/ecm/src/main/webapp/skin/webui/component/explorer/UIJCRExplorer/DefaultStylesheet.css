@@ -118,9 +118,10 @@
 
 .UIJCRExplorerPortlet .UIDocumentWorkspace {
   overflow: auto;
+  height : 500px;
   /*
-	* minh.js.exo
-	*/
+   * minh.js.exo
+   */
 }
 
 .UIJCRExplorerPortlet .UIListView {
