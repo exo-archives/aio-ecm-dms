@@ -104,6 +104,9 @@
 	padding: 0px;
 }
 
+.FieldComponent .permission .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
+	padding: 4px;
+}
 
 .UIForm .FieldComponent .FieldComponent input{
 	width: 200px;

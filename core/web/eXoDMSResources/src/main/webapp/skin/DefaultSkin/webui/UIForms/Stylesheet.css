@@ -100,6 +100,10 @@
 	padding: 0px;
 }
 
+.FieldComponent .permission .UIFormInputSet .UIFormInputSetWithAction td.FieldComponent {
+	padding: 4px;
+}
+
 .UIViewMetadataManager .tabNormal {
   float: left; /* orientation=lt */
   float: right; /* orientation=rt */
