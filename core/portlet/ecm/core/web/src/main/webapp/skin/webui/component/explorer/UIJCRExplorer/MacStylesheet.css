@@ -84,7 +84,7 @@
 /*======================== -- Begin UIDocumentWorkspace -- #========================*/
 .UIJCRExplorerPortlet .UIDocumentWorkspace {
   overflow: auto;
-  height: 600px;
+  height: 475px;
 }
 
 .UIJCRExplorerPortlet .UIListView {
