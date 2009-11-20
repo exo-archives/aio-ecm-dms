@@ -519,10 +519,16 @@
   background: url('VistaSkin/Copy.png') no-repeat right center ; /* orientation=rt */
 }
 
+.UIRightClickPopupMenu
 .EmptyTrash16x16Icon {
   width: 24px; height: 24px;
   background: url('VistaSkin/EmptyTrash.png') no-repeat left center ; /* orientation=lt */
   background: url('VistaSkin/EmptyTrash.png') no-repeat right center ; /* orientation=rt */
+}
+
+.UIRightClickPopupMenu .PlayMedia16x16Icon {
+  background: url('DefaultSkin/Play.png') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Play.png') no-repeat right center; /* orientation=rt */
 }
 
 .Cut16x16Icon {

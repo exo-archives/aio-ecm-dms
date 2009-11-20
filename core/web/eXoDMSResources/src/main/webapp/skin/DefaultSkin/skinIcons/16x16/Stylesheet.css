@@ -406,13 +406,18 @@
 }
 
 .audio_mp316x16Icon {
-  background: url('icons/NodeTypes/mp3.gif') no-repeat left center; /* orientation=lt */
-  background: url('icons/NodeTypes/mp3.gif') no-repeat right center; /* orientation=rt */
+  background: url('icons/NodeTypes/mp3.png') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/mp3.png') no-repeat right center; /* orientation=rt */
 }
 
-.audio_mp416x16Icon {
-  background: url('icons/NodeTypes/mp4.gif') no-repeat left center; /* orientation=lt */
-  background: url('icons/NodeTypes/mp4.gif') no-repeat right center; /* orientation=rt */
+.video_mp416x16Icon {
+  background: url('icons/NodeTypes/mp4.png') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/mp4.png') no-repeat right center; /* orientation=rt */
+}
+
+.video_x-flv16x16Icon {
+  background: url('icons/NodeTypes/flash.png') no-repeat left center; /* orientation=lt */
+  background: url('icons/NodeTypes/flash.png') no-repeat right center; /* orientation=rt */
 }
 
 .text_xml16x16Icon {

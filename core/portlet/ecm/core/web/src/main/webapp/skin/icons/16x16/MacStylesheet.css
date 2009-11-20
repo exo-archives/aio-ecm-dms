@@ -744,6 +744,10 @@
   background: url('MacSkin/Copy.gif') no-repeat right center; /* orientation=rt */
 }
 
+.UIRightClickPopupMenu .PlayMedia16x16Icon {
+  background: url('DefaultSkin/Play.png') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/Play.png') no-repeat right center; /* orientation=rt */
+}
 
 .UIRightClickPopupMenu .EmptyTrash16x16Icon {
   background: url('MacSkin/EmptyTrash.gif') no-repeat left center; /* orientation=lt */
