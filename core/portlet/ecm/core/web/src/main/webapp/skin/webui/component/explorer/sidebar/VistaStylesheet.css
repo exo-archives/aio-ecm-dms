@@ -81,6 +81,19 @@
 	margin: auto;
 }
 
+.UIJCRExplorerPortlet .UISideBar .BarContent .Title{
+	float: left; /* orientation=lt */
+	float: right; /* orientation=rt */
+  line-height: 24px;
+  color: #666666;
+  padding-left: 4px; /* orientation=lt */
+  padding-right: 4px; /* orientation=rt */
+  font-weight: bold;
+  width: 140px;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
 .UIJCRExplorerPortlet .UISideBar .UISideBarContainer {
   width: 100%;
 	height: 475px;
