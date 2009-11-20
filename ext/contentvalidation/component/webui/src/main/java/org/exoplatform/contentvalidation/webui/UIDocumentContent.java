@@ -291,6 +291,11 @@ public class UIDocumentContent extends UIContainer implements NodePresentation {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, nodeTypeName, templateName,getRepository()) ;
   }
+	
+	public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
+  }
 
   public List<Node> getComments() throws Exception {
     return getApplicationComponent(CommentsService.class).getComments(node_, "default") ;

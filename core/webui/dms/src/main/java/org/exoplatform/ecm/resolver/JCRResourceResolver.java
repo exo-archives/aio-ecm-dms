@@ -28,15 +28,10 @@ import javax.jcr.Session;
 import org.exoplatform.container.ExoContainer;
 import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
-import org.exoplatform.portal.webui.util.Util;
-import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
-import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
-import org.exoplatform.services.resources.LocaleConfigService;
-import org.exoplatform.services.resources.Orientation;
 
 /**
  * Created by The eXo Platform SARL Author : Dang Van Minh
@@ -46,9 +41,7 @@ public class JCRResourceResolver extends ResourceResolver {
   protected String repository ; 
   protected String workspace ;      
   protected String propertyName ;
-  protected String selectedLang;
-  protected boolean isDocumentTemplate = false;
-  
+
   /**
    * Instantiates a new jCR resource resolver 
    * to load template that stored as a property of node in jcr
@@ -62,15 +55,7 @@ public class JCRResourceResolver extends ResourceResolver {
     this.workspace = workspace;    
     this.propertyName = propertyName ;
   }
-  
-  public JCRResourceResolver(String repository,String workspace,String propertyName, String selectedLang) {
-    this.repository = repository ;
-    this.workspace = workspace;    
-    this.propertyName = propertyName ;
-    this.selectedLang = selectedLang;
-    this.isDocumentTemplate = true;
-  }
-  
+
   /* (non-Javadoc)
    * @see org.exoplatform.resolver.ResourceResolver#getResource(java.lang.String)
    */
@@ -88,27 +73,11 @@ public class JCRResourceResolver extends ResourceResolver {
     RepositoryService repositoryService = 
       (RepositoryService)container.getComponentInstanceOfType(RepositoryService.class) ;
     ManageableRepository manageableRepository = repositoryService.getRepository(repository) ;
-    TemplateService templateService = 
-      (TemplateService) container.getComponentInstanceOfType(TemplateService.class);
     //Use system session to access jcr resource
     SessionProvider provider = SessionProviderFactory.createSystemProvider();
     Session session = provider.getSession(workspace,manageableRepository);
     Node node = (Node)session.getItem(removeScheme(url)) ;
-    String locale = 
-    Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale().getLanguage();
-    LocaleConfigService localeConfigService = 
-      (LocaleConfigService) container.getComponentInstanceOfType(LocaleConfigService.class);
-    Orientation orientation = localeConfigService.getLocaleConfig(locale).getOrientation();
-    if(orientation.isRT()) {
-      return new ByteArrayInputStream(templateService.getTemplateData(node, locale, 
-          propertyName, repository).getBytes()) ;
-    }
-    if(isDocumentTemplate && selectedLang != null) {
-      return new ByteArrayInputStream(templateService.getTemplateData(node, selectedLang, 
-          propertyName, repository).getBytes()) ;
-    } 
-    return new ByteArrayInputStream(templateService.getTemplateData(node, locale, 
-        propertyName, repository).getBytes()) ;
+    return new ByteArrayInputStream(node.getProperty(propertyName).getString().getBytes()) ;
   }
 
   /* (non-Javadoc)

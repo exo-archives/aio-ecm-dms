@@ -69,7 +69,7 @@ public class UIDialogTab extends UIContainer {
     uiGrid.getUIPageIterator().setId("DialogListIterator") ;
     uiGrid.configure("name", BEAN_FIELD, ACTIONS) ;
     UITemplateContent uiForm = addChild(UITemplateContent.class, null , DIALOG_FORM_NAME) ;
-    uiForm.setIsDialog(true) ;
+    uiForm.setTemplateType(TemplateService.DIALOGS);
     uiForm.update(null) ;
   }
 
@@ -138,7 +138,7 @@ public class UIDialogTab extends UIContainer {
       PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
       PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
       String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
-      templateService.removeTemplate(true, nodeTypeName, templateName, repository) ;
+      templateService.removeTemplate(TemplateService.DIALOGS, nodeTypeName, templateName, repository) ;
       uiForm.update(null) ;
       
       dialogTab.updateGrid(nodeTypeName, repository) ;

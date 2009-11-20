@@ -128,7 +128,6 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
         template = templateService.getTemplatePathByUser(false, getNodeType(), userName, repository) ;
       }
       if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver();
-      templateService.removeCacheTemplate(jcrTemplateResourceResolver_.createResourceId(template));
       return template;
     } catch (AccessControlException e) {
       UIApplication uiApp = getAncestorOfType(UIApplication.class);
@@ -165,10 +164,8 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
     try{
       String repository = getAncestorOfType(UIBrowseContentPortlet.class).getChild(UIBrowseContainer.class).getRepository();
       String systemWorkspace = getAncestorOfType(UIBrowseContentPortlet.class).getChild(UIBrowseContainer.class).getDmsSystemWorkspace();
-      if((language_ == null) && (node_.hasProperty(Utils.EXO_LANGUAGE))) 
-        language_ = node_.getProperty(Utils.EXO_LANGUAGE).getString();
       jcrTemplateResourceResolver_ = new JCRResourceResolver(repository, systemWorkspace, 
-          Utils.EXO_TEMPLATEFILE, language_) ;
+          Utils.EXO_TEMPLATEFILE) ;
     }catch(Exception e) {
       LOG.error("Exception when get template resource", e);
     }     
@@ -283,6 +280,11 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
     }
     return relations;
   }
+  
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
+  }  
 
   public boolean isNodeTypeSupported() {
     try {      
@@ -409,8 +411,7 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
       UIDocumentDetail uiDocument = event.getSource() ;
       String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiDocument.setLanguage(selectedLanguage) ;
-      //event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument.getAncestorOfType(UIBrowseContentPortlet.class)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument.getParent()) ;
     }
   }
 

@@ -46,7 +46,6 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
-import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
@@ -62,7 +61,6 @@ import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.comments.CommentsService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
-import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.link.NodeFinder;
@@ -117,10 +115,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   private String typeSort_ = Preference.SORT_BY_NODETYPE;
   private String sortOrder_ = Preference.BLUE_DOWN_ARROW;
   private Node currentNode_ ;
-  private boolean isDocumentTemplate_ = false;
-  private String currentRepository_ = null;
-  private String currentWorkspaceName_ = null;
-  private String selectedLang_ = null;
 
   final private static String COMMENT_COMPONENT = "Comment".intern();
 
@@ -139,13 +133,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     try {
       Node node = uiExplorer.getCurrentNode();
-      String nodeTypeName = node.getPrimaryNodeType().getName();
-      currentRepository_ = uiExplorer.getRepositoryName();
-      currentWorkspaceName_ = node.getSession().getWorkspace().getName();;
-      selectedLang_ = uiExplorer.getLanguage();
-      isDocumentTemplate_ = templateService.getDocumentTemplates(currentRepository_).contains(nodeTypeName);
       String template = templateService.getTemplatePath(node,false) ;
-      templateService.removeCacheTemplate(uiExplorer.getJCRTemplateResourceResolver().createResourceId(template));
       if(template != null) return template ;
     } catch(AccessDeniedException ace) {
       try {
@@ -161,12 +149,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   }
 
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    if (isDocumentTemplate_) {
-      DMSConfiguration dmsConfiguration = getApplicationComponent(DMSConfiguration.class);
-      String workspace = dmsConfiguration.getConfig(currentRepository_).getSystemWorkspace();
-      JCRResourceResolver resourceResolver = new JCRResourceResolver(currentRepository_, workspace, Utils.EXO_TEMPLATEFILE, selectedLang_);
-      return resourceResolver;
-    }
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver();
   }
 
@@ -477,6 +459,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, nodeTypeName, templateName, getRepository()) ;
+  }
+  
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
   }
 
   public String getLanguage() {

@@ -2142,5 +2142,63 @@
       <BackViewForm>Back</BackViewForm>
     </action>
   </UIViewFormTabPane>
-</bundle>
 
+ 	<UITemplateForm>
+		<tab>
+			<label>
+				<defaultSkin>CSS</defaultSkin>
+			</label>
+		</tab>
+	</UITemplateForm>
+	 
+  <UITabPane>
+    <title>
+      <UISkinTab>CSS</UISkinTab>
+    </title>
+  </UITabPane>
+  
+  <UISkinTab>
+    <header>
+      <name>Name</name>
+      <roles>Roles</roles>
+      <baseVersion>Version</baseVersion>
+      <action>Actions</action>
+    </header>
+    <msg>
+      <undeletable>'{0}' can not be deleted, it is the default one!</undeletable>
+      <confirm-delete>Do you really want to delete?</confirm-delete>
+    </msg>
+    <action>
+      <title>
+        <Edit>Edit</Edit>
+        <Delete>Delete</Delete>
+      </title>
+    </action>
+  </UISkinTab>
+  
+  <SkinForm>
+    <label>
+      <UITemplateContent>SkinForm</UITemplateContent>
+      <UIPopupWindow>Skin Permission</UIPopupWindow>
+      <selectVersion>Versions</selectVersion>
+      <content>Content</content>
+      <name>Name</name>
+      <isDocumentTemplate>is Document Template</isDocumentTemplate>
+      <viewPermission>Permission</viewPermission>
+      <enableVersion>is Enable Version</enableVersion>
+    </label>
+    <title>add/edit skin</title>
+  </SkinForm>
+  
+  <SkinFormTemplatePermission>
+  	<title>
+  		<UIPermissionSelector>Permission Selector</UIPermissionSelector>
+  	</title>
+  </SkinFormTemplatePermission>
+	<UIAnyPermission>
+		<label>
+			<any>Any</any>
+		</label>
+	</UIAnyPermission>  
+
+</bundle>

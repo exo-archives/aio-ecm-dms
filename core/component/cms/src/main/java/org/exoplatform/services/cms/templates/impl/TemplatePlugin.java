@@ -47,6 +47,7 @@ public class TemplatePlugin extends BaseComponentPlugin {
 
   static final public String DIALOGS = "dialogs".intern();
   static final public String VIEWS = "views".intern();
+  static final public String SKINS = "skins".intern();
 
   static final public String DEFAULT_DIALOG = "dialog1".intern();
   static final public String DEFAULT_VIEW = "view1".intern();
@@ -151,6 +152,11 @@ public class TemplatePlugin extends BaseComponentPlugin {
       Node viewsHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
       addNode(storedLocation, viewsHome, views);
             
+      List skins = nodeType.getReferencedSkin();
+      if(skins != null) {
+        Node skinsHome = Utils.makePath(nodeTypeHome, SKINS, NT_UNSTRUCTURED);
+        addNode(storedLocation, skinsHome, skins);
+      }
     }    
   }
 

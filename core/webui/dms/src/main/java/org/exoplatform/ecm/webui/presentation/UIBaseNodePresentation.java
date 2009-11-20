@@ -227,6 +227,11 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, nodeTypeName, templateName, getRepositoryName()) ;
   }
+  
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
+  }
 
   /* (non-Javadoc)
    * @see org.exoplatform.ecm.webui.presentation.NodePresentation#getWebDAVServerPrefix()

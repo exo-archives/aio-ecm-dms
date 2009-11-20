@@ -203,6 +203,16 @@ public interface NodePresentation {
    * Get comment component
    * @return
    */
+  
+  /**
+   * Get the skin of template if it's existing
+   * @param nodeTypeName The node type name
+   * @param skinName  Skin name
+   * @return The skin template
+   * @throws Exception
+   */
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception;  
+  
   public UIComponent getCommentComponent();
   /**
    * Gets the comments.

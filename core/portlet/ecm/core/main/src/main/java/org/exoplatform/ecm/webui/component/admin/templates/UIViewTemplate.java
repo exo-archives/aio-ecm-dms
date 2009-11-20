@@ -40,6 +40,7 @@ public class UIViewTemplate extends UIContainer {
     addChild(UITemplateEditForm.class, null, null) ;
     addChild(UIDialogTab.class, null, null).setRendered(false) ;
     addChild(UIViewTab.class, null, null).setRendered(false) ;
+    addChild(UISkinTab.class, null, null).setRendered(false);
   }
   
   private String getRepository() {
@@ -51,12 +52,9 @@ public class UIViewTemplate extends UIContainer {
   public void refresh() throws Exception {
     getChild(UIDialogTab.class).updateGrid(nodeTypeName_, getRepository()) ;
     getChild(UIViewTab.class).updateGrid(nodeTypeName_) ;
+    getChild(UISkinTab.class).updateGrid(nodeTypeName_, getRepository()) ;
   }
-  public void setNodeTypeName(String nodeType) {
-   nodeTypeName_ = nodeType ;
-  }
+  public void setNodeTypeName(String nodeType) { nodeTypeName_ = nodeType ; }
   
-  public String getNodeTypeName() {
-    return nodeTypeName_ ;
-  }
+  public String getNodeTypeName() { return nodeTypeName_ ; }
 }
