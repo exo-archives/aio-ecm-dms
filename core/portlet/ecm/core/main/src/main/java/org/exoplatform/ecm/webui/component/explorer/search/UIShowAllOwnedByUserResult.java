@@ -271,7 +271,7 @@ public class UIShowAllOwnedByUserResult extends UIComponentDecorator {
 					return 0;
 				return o1.getName().compareTo(o2.getName());
 			} catch (RepositoryException e) {
-				return 0;
+				return 1;
 			}
 		}
 		

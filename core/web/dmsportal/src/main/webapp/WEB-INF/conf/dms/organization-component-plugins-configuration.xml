@@ -78,7 +78,18 @@
 			                </collection>
 			              </field>   			               
 	              	</object>
-              	</value>             	              	             	
+              	</value>
+                <value>               
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">                 
+                    <field name="alias"><string>folksonomy</string></field>
+                    <field name="path"><string>Folksonomy</string></field>
+                    <field name="mixinTypes">
+                      <collection type="java.util.ArrayList">
+                        <value><string>exo:folksonomyFolder</string></value>
+                      </collection>
+                    </field>        
+                  </object>
+                </value>             	              	             	
              	</collection>
             </field>            
 	        </object>
@@ -200,7 +211,18 @@
 			                </collection>
 			              </field>   			
 	              	</object>
-              	</value>              	              	             	              	              	              	
+              	</value>
+                <value>               
+                  <object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">                 
+                    <field name="alias"><string>userPrivateFolksonomy</string></field>
+                    <field name="path"><string>Private/Folksonomy</string></field>
+                    <field name="mixinTypes">
+                      <collection type="java.util.ArrayList">
+                        <value><string>exo:folksonomyFolder</string></value>
+                      </collection>
+                    </field>        
+                  </object>
+                </value>                                                                                              
                 <value>              	
 		             	<object type="org.exoplatform.services.jcr.ext.hierarchy.impl.HierarchyConfig$JcrPath">              	 	
 		             		<field name="alias"><string>userPublic</string></field>

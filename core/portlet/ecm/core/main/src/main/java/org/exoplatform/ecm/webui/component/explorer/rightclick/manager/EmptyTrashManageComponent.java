@@ -31,6 +31,7 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotInTrashFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -66,7 +67,8 @@ public class EmptyTrashManageComponent extends UIAbstractManagerComponent {
 	private static final Log LOG = ExoLogger.getLogger(EmptyTrashManageComponent.class);
 	
 	private static final List<UIExtensionFilter> FILTERS
-			= Arrays.asList(new UIExtensionFilter[] { new IsTrashHomeNodeFilter() } );
+			= Arrays.asList(new UIExtensionFilter[] { new IsNotInTrashFilter(),
+																								new IsTrashHomeNodeFilter() } );
 	
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {

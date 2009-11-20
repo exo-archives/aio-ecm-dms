@@ -37,6 +37,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.HasRemovePermissionFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsFavouriteFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotInTrashFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
@@ -70,7 +71,8 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 public class RemoveFavouriteManageComponent extends UIAbstractManagerComponent {
 
 	private static final List<UIExtensionFilter> FILTERS 
-			= Arrays.asList(new UIExtensionFilter[] { new IsFavouriteFilter(),
+			= Arrays.asList(new UIExtensionFilter[] { new IsNotInTrashFilter(),
+																								new IsFavouriteFilter(),
 																						 		new IsNotLockedFilter(),
 																						 		new IsCheckedOutFilter(),
 																						 		new HasRemovePermissionFilter(),

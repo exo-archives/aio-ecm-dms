@@ -206,7 +206,7 @@ public class DocumentProviderUtils {
 				int pathComparison = o1.getPath().compareTo(o2.getPath());
 				return (pathComparison == 0) ? 1 : pathComparison;
 			} catch (RepositoryException e) {
-				return 0;
+				return 1;
 			}
 		}
 	}

@@ -31,6 +31,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanSetPropertyFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotInTrashFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsVersionableFilter;
@@ -62,7 +63,8 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 public class CheckInManageComponent extends UIAbstractManagerComponent {
   
   private static final List<UIExtensionFilter> FILTERS 
-  			= Arrays.asList(new UIExtensionFilter[]{new CanSetPropertyFilter(), 
+  			= Arrays.asList(new UIExtensionFilter[]{new IsNotInTrashFilter(),
+  																							new CanSetPropertyFilter(), 
   																							new IsNotLockedFilter(), 
   																							new IsVersionableOrAncestorFilter(), 
   																							new IsCheckedOutFilter(), 

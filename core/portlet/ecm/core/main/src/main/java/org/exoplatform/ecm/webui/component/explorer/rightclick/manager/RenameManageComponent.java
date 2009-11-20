@@ -65,6 +65,7 @@ public class RenameManageComponent extends UIAbstractManagerComponent {
 
  private static final List<UIExtensionFilter> FILTERS 
  				= Arrays.asList(new UIExtensionFilter[]{new IsNotInTrashFilter(),
+ 																								new IsNotInTrashFilter(),
  																								new CanSetPropertyFilter(), 
  																								new IsNotLockedFilter(), 
  																								new IsCheckedOutFilter(), 

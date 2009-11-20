@@ -31,6 +31,17 @@ import javax.jcr.Node;
 public interface NewFolksonomyService {
 	
   /**
+   * Property name TAG_RATE_PROP
+   */
+  final public static String TAG_RATE_PROP = "exo:styleRange".intern() ;
+  
+  /**
+   * Property name HTML_STYLE_PROP
+   */
+  final public static String HTML_STYLE_PROP = "exo:htmlStyle".intern() ;
+	
+	
+  /**
    * Add a private tag to a document. A folksonomy link will be created in a tag node
    * @param tagNames      Array of tag name as the children of tree
    * @param documentNode  Tagging this node by create a folksonomy link to node in tag
@@ -111,6 +122,18 @@ public interface NewFolksonomyService {
       String workspace) throws Exception ;
   
   /**
+   * Get all tags by group
+   * @param role       Role of user
+   * @param repository  Repository name
+   * @param workspace   Workspace name
+   * @return  List<Node>
+   * @throws Exception
+   */
+  public List<Node> getAllGroupTags(String role, String repository, 
+      String workspace) throws Exception ;
+  
+  
+  /**
    * Get all tags of Site
    * @param siteName    Portal name
    * @param treePath    Folksonomy tree path
@@ -157,7 +180,7 @@ public interface NewFolksonomyService {
    * @param workspace     Workspace name
    * @throws Exception
    */
-  public void updateTagStype(String styleName, String tagRate, String htmlStyle, 
+  public void updateTagStyle(String styleName, String tagRange, String htmlStyle, 
       String repository, String workspace) throws Exception ;
   
   /**

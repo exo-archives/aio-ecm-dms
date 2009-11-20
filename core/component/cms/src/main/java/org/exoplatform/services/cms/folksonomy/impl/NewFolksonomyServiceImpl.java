@@ -16,14 +16,32 @@
  */
 package org.exoplatform.services.cms.folksonomy.impl;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
+import javax.jcr.ItemExistsException;
 import javax.jcr.Node;
+import javax.jcr.NodeIterator;
+import javax.jcr.RepositoryException;
+import javax.jcr.Session;
+
+import org.apache.commons.logging.Log;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
+import org.exoplatform.container.component.ComponentPlugin;
 
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.NodeFinder;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.app.SessionProviderService;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
+import org.exoplatform.services.log.ExoLogger;
 
 /**
  * Created by The eXo Platform SARL
@@ -34,96 +52,392 @@ import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
  */
 public class NewFolksonomyServiceImpl implements NewFolksonomyService {
 
+  final static public String EXO_TOTAL = "exo:total";	
+	private static final String USER_FOLKSONOMY_ALIAS = "userPrivateFolksonomy".intern();
+	private static final String GROUP_FOLKSONOMY_ALIAS = "folksonomy".intern();
+	private static final String GROUPS_ALIAS = "groupsPath".intern();
+	private static final String TAG_STYLE_ALIAS = "exoTagStylesPath".intern();
+	
+  private static final Log LOG = ExoLogger.getLogger(NewFolksonomyService.class);
+	
   private NodeHierarchyCreator nodeHierarchyCreator;
   private LinkManager linkManager;
   private NodeFinder nodeFinder;
+  private SessionProvider sessionProvider;
+  private List<TagStylePlugin> plugin_ = new ArrayList<TagStylePlugin>();  
   
   public NewFolksonomyServiceImpl(NodeHierarchyCreator nodeHierarchyCreator, 
       LinkManager linkManager, NodeFinder nodeFinder) {
     this.nodeHierarchyCreator = nodeHierarchyCreator;
     this.linkManager = linkManager;
     this.nodeFinder = nodeFinder;
-    // TODO Auto-generated constructor stub
-  }
-
-  public void addGroupsTag(String[] tagsName, Node documentNode, String repository, String workspace, String[] roles) throws Exception {
-    // TODO Auto-generated method stub
     
+    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+    SessionProviderService sessionProviderService
+    		=	(SessionProviderService) myContainer.getComponentInstanceOfType(SessionProviderService.class);
+    //this.sessionProvider = sessionProviderService.getSessionProvider(null);
+    this.sessionProvider = sessionProviderService.getSystemSessionProvider(null);
   }
-
+  
+  /**
+   * {@inheritDoc}
+   */
   public void addPrivateTag(String[] tagsName, Node documentNode, String repository, String workspace, String userName) throws Exception {
-    // TODO Auto-generated method stub
-    
+		Node userFolksonomyNode = getUserFolksonomyFolder(userName);
+		for (String tag : tagsName) {
+			try {
+				//find tag node				
+				Node tagNode = userFolksonomyNode.hasNode(tag) ?  
+						userFolksonomyNode.getNode(tag) : userFolksonomyNode.addNode(tag);
+				//add symlink and total
+				if (!existSymlink(tagNode, documentNode)) {
+					linkManager.createLink(tagNode, documentNode);
+					long total = tagNode.hasProperty(EXO_TOTAL) ?
+							tagNode.getProperty(EXO_TOTAL).getLong() : 0;
+					tagNode.setProperty(EXO_TOTAL, total + 1);
+					userFolksonomyNode.getSession().save();
+				}
+			} catch (Exception e) {
+				LOG.error("can't add tag '" + tag + "' to node: " + documentNode.getPath() + " for user: " + userName);
+			}
+		}
   }
 
+  /**
+   * {@inheritDoc}
+   */
+  public void addGroupsTag(String[] tagsName, Node documentNode, String repository, String workspace, String[] roles) throws Exception {
+    for (String group : roles) {
+			Node groupFolksonomyNode = getGroupFolksonomyFolder(group, repository, workspace);
+			for (String tag : tagsName) {
+				try {
+					//find tag node
+					Node tagNode = groupFolksonomyNode.hasNode(tag) ?
+							groupFolksonomyNode.getNode(tag) : groupFolksonomyNode.addNode(tag);
+					//add symlink and total
+					if (!existSymlink(tagNode, documentNode)) {
+						linkManager.createLink(tagNode, documentNode);
+						long total = tagNode.hasProperty(EXO_TOTAL) ?
+								tagNode.getProperty(EXO_TOTAL).getLong() : 0;
+						tagNode.setProperty(EXO_TOTAL, total + 1);
+						groupFolksonomyNode.getSession().save();
+					}
+				} catch (Exception e) {
+					LOG.error("can't add tag '" + tag + "' to node: " + documentNode.getPath() + " for group: " + group);					
+				}
+			}
+    }
+  }
+
+  /**
+   * {@inheritDoc}
+   */
   public void addPublicTag(String treePath, String[] tagsName, Node documentNode, String repository, String workspace) throws Exception {
-    // TODO Auto-generated method stub
-    
+  	Node publicFolksonomyTreeNode = getNode(repository, workspace, treePath);
+  	for (String tag : tagsName) {
+  		try {
+  			//find tag node
+  			Node tagNode = publicFolksonomyTreeNode.hasNode(tag) ?
+  					publicFolksonomyTreeNode.getNode(tag) : publicFolksonomyTreeNode.addNode(tag);
+				//add symlink and total
+  			if (!existSymlink(tagNode, documentNode)) {
+  				linkManager.createLink(tagNode, documentNode);
+  				long total = tagNode.hasProperty(EXO_TOTAL) ? 
+  						tagNode.getProperty(EXO_TOTAL).getLong() : 0;
+					tagNode.setProperty(EXO_TOTAL, total + 1);
+					publicFolksonomyTreeNode.getSession().save();
+  			}
+  		} catch (Exception e) {
+				LOG.error("can't add tag '" + tag + "' to node: " + documentNode.getPath() + " in public folksonomy tree!");
+  		}
+  	}
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void addSiteTag(String siteName, String treePath, String[] tagsName, Node node, String repository, String workspace) throws Exception {
     // TODO Auto-generated method stub
     
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getAllDocumentsByTag(String tagPath, String repository, String workspace) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+		List<Node> ret = new ArrayList<Node>();
+  	Node tagNode = getNode(repository, workspace, tagPath);
+   	NodeIterator nodeIter = tagNode.getNodes();
+   	
+   	while (nodeIter.hasNext()) {
+   		Node node = nodeIter.nextNode();
+   		if (linkManager.isLink(node)) {
+   			Node targetNode = null;
+   			try {
+   				targetNode = linkManager.getTarget(node);
+   			} catch (Exception e) {}
+   			if (targetNode != null)
+   				ret.add(targetNode);
+   		}
+   	}
+		return ret;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getAllGroupTags(String[] roles, String repository, String workspace) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+   	Set<Node> tagSet = new TreeSet<Node>(new NodeComparator());
+   	for (String group : roles) {
+			Node groupFolksonomyNode = getGroupFolksonomyFolder(group, repository, workspace);
+			NodeIterator nodeIter = groupFolksonomyNode.getNodes();
+			while (nodeIter.hasNext()) {
+				tagSet.add(nodeIter.nextNode());
+			}
+   	}
+   	return new ArrayList<Node>(tagSet);
   }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public List<Node> getAllGroupTags(String role, String repository, String workspace) throws Exception {
+   	List<Node> tagSet = new ArrayList<Node>();
+		Node groupFolksonomyNode = getGroupFolksonomyFolder(role, repository, workspace);
+		NodeIterator nodeIter = groupFolksonomyNode.getNodes();
+		while (nodeIter.hasNext()) {
+			tagSet.add(nodeIter.nextNode());
+		}
+	 	return tagSet;
+  }
+  
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getAllPrivateTags(String userName, String repository, String workspace) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+		Node userFolksonomyNode = getUserFolksonomyFolder(userName);
+		return getChildNodes(userFolksonomyNode);
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getAllPublicTags(String treePath, String repository, String workspace) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+  	Node publicFolksonomyTreeNode = getNode(repository, workspace, treePath);
+		return getChildNodes(publicFolksonomyTreeNode);  	
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getAllSiteTags(String siteName, String treePath, String repository, String workspace) throws Exception {
     // TODO Auto-generated method stub
     return null;
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public List<Node> getAllTagStyle(String repository, String workspace) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+		String tagStylesPath = nodeHierarchyCreator.getJcrPath(TAG_STYLE_ALIAS);
+    Node tagStylesNode = getNode(repository, workspace, tagStylesPath);
+		return getChildNodes(tagStylesNode);
   }
 
-  public String getTagStyle(String tagPath, String repository, String workspace) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+  /**
+   * {@inheritDoc}
+   */
+  public String getTagStyle(String tagStylePath, String repository, String workspace) throws Exception {
+    Node tagStyleNode = getNode(repository, workspace, tagStylePath);
+		return tagStyleNode.getProperty(HTML_STYLE_PROP).getString();
   }
 
+  /**
+   * Add new TagStylePlugin in plugin_
+   * @param plugin
+   */
+  public void addTagStylePlugin(ComponentPlugin plugin) {      
+    if(plugin instanceof TagStylePlugin) {
+      plugin_.add((TagStylePlugin)plugin) ;
+    }    
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
   public void init(String repository) throws Exception {
-    // TODO Auto-generated method stub
-    
+    for(TagStylePlugin plugin : plugin_) {
+      try{
+        plugin.init(repository) ;
+      }catch(Exception e) {
+        //System.out.println("[WARNING]===>Can not init "+e.getMessage());
+      }
+    }
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public Node modifyTagName(String tagPath, String newTagName, String repository, String workspace) throws Exception {
-    // TODO Auto-generated method stub
-    return null;
+		Node oldTagNode = getNode(repository, workspace, tagPath);
+		if (oldTagNode.getParent().hasNode(newTagName))
+			throw new ItemExistsException("node " + newTagName + " has already existed!");
+		
+		StringBuilder newPath = new StringBuilder(oldTagNode.getParent().getPath())
+														.append('/').append(newTagName);
+		
+    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();  	
+		RepositoryService repositoryService 
+				= (RepositoryService) myContainer.getComponentInstanceOfType(RepositoryService.class);
+		ManageableRepository	manageableRepository = repositoryService.getRepository(repository);
+  	
+		Session session = sessionProvider.getSession(workspace, manageableRepository);
+		session.move(tagPath, newPath.toString());
+  	session.save();
+  	return getNode(repository, workspace, newPath.toString());
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void removeTag(String tagPath, String repository, String workspace) throws Exception {
-    // TODO Auto-generated method stub
-    
+  	Node tagNode = getNode(repository, workspace, tagPath);
+  	Node parentNode = tagNode.getParent();
+  	tagNode.remove();
+  	parentNode.getSession().save();
   }
 
+  /**
+   * {@inheritDoc}
+   */
   public void removeTagOfDocument(String tagPath, Node document, String repository, String workspace) throws Exception {
-    // TODO Auto-generated method stub
-    
+		Node tagNode = getNode(repository, workspace, tagPath);
+		NodeIterator nodeIter = tagNode.getNodes();
+		while (nodeIter.hasNext()) 
+		{
+			Node link = nodeIter.nextNode();
+			if (linkManager.isLink(link)) {
+				Node targetNode = null;
+				try {
+					targetNode = linkManager.getTarget(link);
+				} catch (RepositoryException e) {}
+				if (document.isSame(targetNode)) {
+					link.remove();
+					long total = tagNode.getProperty(EXO_TOTAL).getLong();
+					tagNode.setProperty(EXO_TOTAL, total - 1);
+					tagNode.getSession().save();
+					break;
+				}
+			}
+		}
   }
 
-  public void updateTagStype(String styleName, String tagRate, String htmlStyle, String repository, String workspace) throws Exception {
-    // TODO Auto-generated method stub
-    
+  /**
+   * {@inheritDoc}
+   */
+  public void updateTagStyle(String styleName, String tagRange, String htmlStyle, String repository, String workspace) throws Exception {
+		String tagStylesPath = nodeHierarchyCreator.getJcrPath(TAG_STYLE_ALIAS);
+    Node tagStylesNode = getNode(repository, workspace, tagStylesPath);
+		Node styleNode = tagStylesNode.getNode(styleName);
+		styleNode.setProperty(TAG_RATE_PROP, tagRange);
+		styleNode.setProperty(HTML_STYLE_PROP, htmlStyle);
+		tagStylesNode.getSession().save();
+  }
+  
+  private List<Node> getChildNodes(Node node) throws Exception {
+  	List<Node> ret = new ArrayList<Node>();
+  	NodeIterator nodeIter = node.getNodes();
+		while (nodeIter.hasNext()) {
+			ret.add(nodeIter.nextNode());
+		}
+		return ret;  	
+  }
+  
+  private Node getGroupFolksonomyFolder(String group, String repository, String workspace) throws Exception {
+  	// code for running
+/*  	String groupsPath = nodeHierarchyCreator.getJcrPath(GROUPS_ALIAS);
+  	String folksonomyPath = nodeHierarchyCreator.getJcrPath(GROUP_FOLKSONOMY_ALIAS);
+  	Node groupsNode = getNode(repository, workspace, groupsPath);
+  	return groupsNode.getNode(group).getNode(folksonomyPath);*/
+  	
+  	// code for testing
+    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();  	
+		RepositoryService repositoryService 
+				= (RepositoryService) myContainer.getComponentInstanceOfType(RepositoryService.class);
+		ManageableRepository	manageableRepository = repositoryService.getRepository("repository");
+
+  	Session session = sessionProvider.getSession("collaboration", manageableRepository);
+		Node rootNode = session.getRootNode();
+  	
+		Node groupNode = rootNode.hasNode(group) ? rootNode.getNode(group) :
+																								 rootNode.addNode(group);	
+		String folksonomyPath = "Folksonomy";
+		Node folksonomyNode = groupNode.hasNode(folksonomyPath) ? groupNode.getNode(folksonomyPath) :
+																															groupNode.addNode(folksonomyPath);
+		return folksonomyNode;
+  }
+  
+  private Node getUserFolksonomyFolder(String userName) throws Exception {
+  	// code for running
+/*  	Node userNode = nodeHierarchyCreator.getUserNode(sessionProvider, userName);
+  	String folksonomyPath = nodeHierarchyCreator.getJcrPath(USER_FOLKSONOMY_ALIAS);
+  	return userNode.getNode(folksonomyPath);*/
+  	
+  	// code for testing
+    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();  	
+		RepositoryService repositoryService 
+				= (RepositoryService) myContainer.getComponentInstanceOfType(RepositoryService.class);
+		ManageableRepository	manageableRepository = repositoryService.getRepository("repository");
+
+  	Session session = sessionProvider.getSession("collaboration", manageableRepository);
+		Node rootNode = session.getRootNode();
+  	
+		Node userNode = rootNode.hasNode(userName) ? rootNode.getNode(userName) :
+																								 rootNode.addNode(userName);	
+		Node privateNode = userNode.hasNode("Private") ? userNode.getNode("Private") :
+					 																					 userNode.addNode("Private");
+		String folksonomyPath = "Folksonomy";
+		Node folksonomyNode = privateNode.hasNode(folksonomyPath) ? privateNode.getNode(folksonomyPath) :
+																																privateNode.addNode(folksonomyPath);
+		return folksonomyNode;
+  }
+  
+  private Node getNode(String repository, String workspace, String path) throws Exception {
+    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();  	
+		RepositoryService repositoryService 
+		= (RepositoryService) myContainer.getComponentInstanceOfType(RepositoryService.class);
+		ManageableRepository	manageableRepository = repositoryService.getRepository(repository);
+  	
+  	return (Node) sessionProvider.getSession(workspace, manageableRepository).getItem(path);
+  }
+  
+  private boolean existSymlink(Node parentNode, Node targetNode) throws Exception {
+  	NodeIterator nodeIter = parentNode.getNodes();
+  	while (nodeIter.hasNext()) {
+  		Node link = nodeIter.nextNode();
+  		Node pointTo = null;
+  		try {
+  			if (linkManager.isLink(link))
+  			pointTo = linkManager.getTarget(link);
+  		} catch (Exception e) {}
+  		if (targetNode != null && targetNode.isSame(pointTo))
+  			return true;
+  	}
+  	return false;
+  }
+  
+  private static class NodeComparator implements Comparator<Node> {
+  	public int compare(Node o1, Node o2) {
+  		try {
+  			if (o1.isSame(o2))
+  				return 0;
+  			int pathComparison = o1.getPath().compareTo(o2.getPath());
+  			return (pathComparison == 0) ? 1 : pathComparison;
+  		} catch (RepositoryException e) {
+  			return 1;
+  		}
+  	}
   }
 
 }

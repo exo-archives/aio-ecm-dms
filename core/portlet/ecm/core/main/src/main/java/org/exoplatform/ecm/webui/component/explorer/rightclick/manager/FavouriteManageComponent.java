@@ -38,6 +38,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.CanSetPropertyFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotFavouriteFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotInTrashFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotLockedFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
@@ -70,7 +71,8 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 public class FavouriteManageComponent extends UIAbstractManagerComponent {
 	
 	private static final List<UIExtensionFilter> FILTERS 
-				= Arrays.asList(new UIExtensionFilter[]{new IsNotFavouriteFilter(),
+				= Arrays.asList(new UIExtensionFilter[]{new IsNotInTrashFilter(),
+																								new IsNotFavouriteFilter(),
 																						 		new IsNotLockedFilter(),
 																						 		new IsCheckedOutFilter(),
 																						 		new CanSetPropertyFilter(),

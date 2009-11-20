@@ -69,7 +69,7 @@ public class FavoriteServiceImpl implements FavoriteService {
   	// check if node is symlink
   	if (linkManager.isLink(node)) return;
   	// check if node has already been favorite node of current user
-    Node userFavoriteNode = getUserFavoriteFolder(sessionProvider, userName);
+    Node userFavoriteNode = getUserFavoriteFolder(userName);
     NodeIterator nodeIter = userFavoriteNode.getNodes();
     while (nodeIter.hasNext()) {
     	Node childNode = nodeIter.nextNode();
@@ -91,7 +91,7 @@ public class FavoriteServiceImpl implements FavoriteService {
    */
   public List<Node> getAllFavoriteNodesByUser(String workspace, String repository, String userName) throws Exception {
 		List<Node> ret = new ArrayList<Node>();
-		Node userFavoriteNode = getUserFavoriteFolder(sessionProvider, userName);
+		Node userFavoriteNode = getUserFavoriteFolder(userName);
 		NodeIterator nodeIter = userFavoriteNode.getNodes();
 		while (nodeIter.hasNext()) {
 			Node childNode = nodeIter.nextNode();
@@ -113,7 +113,7 @@ public class FavoriteServiceImpl implements FavoriteService {
   	// check if node is symlink
     if (linkManager.isLink(node)) return;
     // remove favorite
-    Node userFavoriteNode = getUserFavoriteFolder(sessionProvider, userName);
+    Node userFavoriteNode = getUserFavoriteFolder(userName);
     NodeIterator nodeIter = userFavoriteNode.getNodes();
     while (nodeIter.hasNext()) {
     	Node childNode = nodeIter.nextNode();
@@ -132,7 +132,7 @@ public class FavoriteServiceImpl implements FavoriteService {
   }
   
   public boolean isFavoriter(String userName, Node node) throws Exception {
-    Node userFavoriteNode = getUserFavoriteFolder(sessionProvider, userName);
+    Node userFavoriteNode = getUserFavoriteFolder(userName);
     NodeIterator nodeIter = userFavoriteNode.getNodes();
     while (nodeIter.hasNext()) {
     	Node childNode = nodeIter.nextNode();
@@ -149,7 +149,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     return false;
   }
   
-  private Node getUserFavoriteFolder(SessionProvider sessionProvider, String userName) throws Exception {
+  private Node getUserFavoriteFolder(String userName) throws Exception {
   	
   	// code for running
     Node userNode = nodeHierarchyCreator.getUserNode(sessionProvider, userName);

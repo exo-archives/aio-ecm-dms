@@ -159,6 +159,7 @@ public class Utils {
   final static public String EXO_RESTORE_WORKSPACE = "exo:restoreWorkspace";  
   final static public String EXO_LASTMODIFIER = "exo:lastModifier";
   final static public String EXO_TRASH_FOLDER = "exo:trashFolder";
+  final static public String EXO_TOTAL = "exo:total";
 
   final static public String EXO_MUSICFOLDER = "exo:musicFolder";
   final static public String EXO_VIDEOFOLDER = "exo:videoFolder";

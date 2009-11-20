@@ -26,6 +26,7 @@ import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsDocumentFilter;
+import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotInTrashFilter;
 import org.exoplatform.portal.application.PortalRequestContext;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -46,7 +47,8 @@ import org.exoplatform.webui.ext.filter.UIExtensionFilters;
 public class PermlinkActionComponent extends UIAbstractManagerComponent {
 
   private static final List<UIExtensionFilter> FILTERS 
-  		= Arrays.asList(new UIExtensionFilter[] { new IsDocumentFilter() });
+  		= Arrays.asList(new UIExtensionFilter[] { new IsNotInTrashFilter(),
+  																							new IsDocumentFilter() });
   
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {
