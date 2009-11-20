@@ -21,10 +21,12 @@ import javax.portlet.PortletRequest;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl;
+import org.exoplatform.ecm.webui.component.admin.unlock.UIUnLockManager;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.log.ExoLogger;
+import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
@@ -76,6 +78,7 @@ public class UIECMAdminPortlet extends UIPortletApplication {
   }
   
   public void initChilds() throws Exception{
+    System.out.println("55555555555555555555555555555555555");
     UIECMAdminControlPanel controlPanel = getChild(UIECMAdminControlPanel.class) ;
     if(controlPanel == null) {
       controlPanel = addChild(UIECMAdminControlPanel.class, null, null) ;
@@ -139,5 +142,12 @@ public class UIECMAdminPortlet extends UIPortletApplication {
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
+  }
+  
+  public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
+    UIECMAdminWorkingArea uiecmAdminWorkingArea = getChild(UIECMAdminWorkingArea.class); 
+    UIUnLockManager uiUnLockManager = uiecmAdminWorkingArea.getChild(UIUnLockManager.class);
+    if (uiUnLockManager != null) uiUnLockManager.update();
+    super.processRender(app, context);
   }
 }
