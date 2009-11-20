@@ -49,8 +49,6 @@ public interface TemplateService {
   static final public String DOCUMENT_TEMPLATE_PROP = "isDocumentTemplate".intern() ;  
   static final public String TEMPLATE_LABEL = "label".intern() ;
   
-  static final public String RTL = "rtl";
-  static final public String LTR = "ltr";
   /**
    * Return path of default template by giving the following params
    * @param isDialog        boolean
