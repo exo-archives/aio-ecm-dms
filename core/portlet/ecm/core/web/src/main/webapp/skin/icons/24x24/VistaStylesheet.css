@@ -540,3 +540,9 @@ a:hover .ShowHideBoxContainer {
   background: url('DefaultSkin/GreenUpArrowFolder.gif') no-repeat left center; /* orientation=lt */
   background: url('DefaultSkin/GreenUpArrowFolder.gif') no-repeat right center; /* orientation=rt */
 }
+
+.UIUnLockManagerIcon {
+		width: 32px;	height: 28px;
+  background: url('VistaSkin/ManageUnLock.png') no-repeat;
+}
+

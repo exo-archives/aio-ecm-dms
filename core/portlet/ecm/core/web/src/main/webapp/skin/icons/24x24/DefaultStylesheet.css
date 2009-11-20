@@ -809,8 +809,8 @@ a:hover .ShowHideBoxContainer {
 
 .UIUnLockManagerIcon {
 		width: 24px; height: 24px;
-  background: url('DefaultSkin/ManageQueries.gif') no-repeat left center; /* orientation=lt */
-  background: url('DefaultSkin/ManageQueries.gif') no-repeat right center; /* orientation=rt */
+  background: url('DefaultSkin/ManageUnLock.gif') no-repeat left center; /* orientation=lt */
+  background: url('DefaultSkin/ManageUnLock.gif') no-repeat right center; /* orientation=rt */
 }
 
 /*############################## -- End NodeType Icon -- ########################*/

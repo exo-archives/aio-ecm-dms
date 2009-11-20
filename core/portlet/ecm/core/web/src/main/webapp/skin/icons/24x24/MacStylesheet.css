@@ -745,3 +745,8 @@ a:hover .ShowHideBoxContainer {
 	width: 26px; height: 24px;
   background: url('DefaultSkin/Tagging.gif') no-repeat;
 }
+
+.UIUnLockManagerIcon {
+		width: 24px;	height: 24px;
+  background: url('MacSkin/ManageUnLock.gif') no-repeat;
+}
