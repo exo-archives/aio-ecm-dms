@@ -541,17 +541,31 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     Orientation orientation = getOrientation(locale);
     Node skinNode = null;
     if(orientation.isLT()) {
-      skinNode = nodeTypeNode.getNode(SKINS).getNode(skinName + "-lt");
+      try {
+        skinNode = nodeTypeNode.getNode(SKINS).getNode(skinName + "-lt");
+      } catch(PathNotFoundException pne) {
+        StringBuilder templateData = new StringBuilder("/**");
+        templateData.append("LTR stylesheet for "+nodeTypeNode.getName()+" template").append("*/");
+        skinNode = addNewSkinNode(homeNode, nodeTypeNode, skinName, "-lt", templateData.toString());
+      }
     } else if(orientation.isRT()) {
-      skinNode = nodeTypeNode.getNode(SKINS).getNode(skinName + "-rt");
+      try {
+        skinNode = nodeTypeNode.getNode(SKINS).getNode(skinName + "-rt");
+      } catch(PathNotFoundException pne) {
+        StringBuilder templateData = new StringBuilder("/**");
+        templateData.append("RTL stylesheet for "+nodeTypeNode.getName()+" template").append("*/");
+        skinNode = addNewSkinNode(homeNode, nodeTypeNode, skinName, "-rt", templateData.toString());
+      }
     }
+    session.logout();
     return skinNode.getPath();
   }  
   
   /**
    * Get template with the following specified params 
    * @param session         Session         
-   * @param isDialog        boolean
+   * @param templateType    String
+   *                        The value of template type
    * @param nodeTypeName    String
    *                        The name of NodeType
    * @param templateName    String
@@ -723,5 +737,26 @@ public class TemplateServiceImpl implements TemplateService, Startable {
    */
   private Orientation getOrientation(String locale) throws Exception {
     return localeConfigService_.getLocaleConfig(locale).getOrientation();
+  }
+  
+  /**
+   * Add new skin node if the locale specified is not existing
+   * @param templatesHome
+   * @param nodeTypeNode
+   * @param skinName
+   * @param orientation
+   * @param templateData
+   * @return
+   * @throws Exception
+   */
+  private Node addNewSkinNode(Node templatesHome, Node nodeTypeNode, String skinName, String orientation, 
+      String templateData) throws Exception {
+    String label = nodeTypeNode.getProperty(TEMPLATE_LABEL).getString();
+    Node contentNode = getContentNode(SKINS, templatesHome, nodeTypeNode.getName(), label, 
+        true, skinName + orientation);
+    contentNode.setProperty(EXO_ROLES_PROP, new String[] {"*"});
+    contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateData);
+    nodeTypeNode.getSession().save();
+    return nodeTypeNode.getNode(SKINS).getNode(skinName + orientation);
   }
 }

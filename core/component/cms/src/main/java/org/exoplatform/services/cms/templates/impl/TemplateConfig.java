@@ -61,6 +61,7 @@ public class TemplateConfig {
     public NodeType(){
       referencedDialog = new ArrayList();
       referencedView = new ArrayList();
+      referencedSkin = new ArrayList();
       documentTemplate = false ;
     }
     

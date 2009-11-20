@@ -271,6 +271,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     return uiExplorer.getDocumentInfoTemplate(); 
   }
 
+  @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
     return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver();
   }

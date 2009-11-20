@@ -114,6 +114,7 @@ public class UITemplateForm extends UIFormTabPane implements UISelectable {
     getUIFormCheckBoxInput(FIELD_ISTEMPLATE).setChecked(false) ;
     getUIFormTextAreaInput(FIELD_DIALOG).setValue("") ;
     getUIFormTextAreaInput(FIELD_VIEW).setValue("") ;
+    getUIFormTextAreaInput(FIELD_SKIN).setValue("") ;
     getUIStringInput(FIELD_PERMISSION).setValue("") ;
     getUIFormSelectBox(FIELD_NAME).setOptions(getOption()) ; 
   }
