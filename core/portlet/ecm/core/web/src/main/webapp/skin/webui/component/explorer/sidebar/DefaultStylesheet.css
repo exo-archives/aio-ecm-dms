@@ -276,7 +276,6 @@
   
 .UIJCRExplorerPortlet .UITreeExplorer .NodeLabel {
   line-height: 16px;
-  overflow: auto;
 }
 
 .UIJCRExplorerPortlet .UITreeExplorer .ExpandIcon {
