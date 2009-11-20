@@ -43,10 +43,8 @@
     links.add(link);
   }
   url = url.length() == 0 ? url : url.substring(0, url.length() - 1);
-  def rqcontext = _ctx.getRequestContext() ;
-  rqcontext.getJavascriptManager().importJavascript("eXo.ecm.Jquery");
-  rqcontext.getJavascriptManager().importJavascript("eXo.ecm.flowplayer");
-  rqcontext.getJavascriptManager().importJavascript("eXo.ecm.flowplayerPlaylist");
+  def rqcontext = _ctx.getRequestContext();
+  def size = links.size();
 %>
 <div class="NavigationContainer">       
   <div class="TopTitle">$title</div>
@@ -56,7 +54,7 @@
         <script>
         \$(function() { 
           // install flowplayer into container 
-        flowplayer("player", "/ecm/javascript/eXo/ecm/flowplayer-3.1.5.swf", { 
+        flowplayer("player", {wmode: 'transparent', src: "/ecm/javascript/eXo/ecm/flowplayer-3.1.5.swf"}, { 
           // fullscreen button not needed here 
             plugins: { 
               controls: { 
@@ -87,16 +85,21 @@
           root for as playlist entries. loop parameter makes clips play
           from the beginning to the end.
         */
-        flowplayer("player").playlist("div.petrol", {loop:true});
-        
+        <% 
+          if (size > 1) {
+        %>
+            flowplayer("player").playlist("div.petrol", {loop:true});
+        <%
+          }
+        %>
       });
       </script>
-
+      <% 
+        if (size > 1) {
+      %>
       <div class="clips petrol ListPlayer" style="width: 271px;">
       <!-- single playlist entry -->
       <% 
-      def size = links.size();
-      if (size > 1) {
         def name = "";
         for(int i = 0; i < links.size(); i++) {
             link = links.get(i);
@@ -105,12 +108,20 @@
           <a href="${link}" class="first">
             ${name}
           </a>
-     <%
-        }
+    <%
       } 
      %>
-    </div>  
-    <div id="player" class="PlayerContent">
+    </div>
+    <%
+      } 
+     %>
+     <%
+       def style = "float:none; margin:auto";
+       if (size > 1) {
+         style = "";
+       }
+     %>
+    <div id="player" class="PlayerContent" style="$style ; z-index:0;">
     </div>    
       <!-- let rest of the page float normally -->
       <br clear="all"/>
@@ -118,14 +129,14 @@
     </div>
   </div>
 </div>
-<link rel="stylesheet" type="text/css" href="http://static.flowplayer.org/css/playlist.css"/>
 <style>
 .NavigationContainer {
   padding-bottom: 5px;
-  padding: 10px;
   color: #0e396c;
   background: url('/eXoDMSResources/skin/images/file/TitleBG1x21.gif') repeat-x top;
   border: 1px solid #cbcbcb;
+  width: 880px;
+  margin: auto;
 }
 
  .TopTitle {  
@@ -182,38 +193,39 @@
 	width:560px;
 }
 
-div.clips.petrol .Selected {
+div.clips.petrol a.playing {
 	width: 242px;
-	background: url('/eXoDMSResources/skin/images/file/Selected.gif') no-repeat center;
-	color:black;
-	display:block;
-	font-family:verdana;
-	font-size:11px;
-	font-weight:bold;
-	height:29px;
-	line-height:28px;
-	margin:0 0 0 4px;
-	overflow:hidden;
-	padding:0 0 0 8px;
-	text-align:left;
+	background: url('/eXoDMSResources/skin/images/file/Selected.gif') no-repeat right center;
+	color: black;
+	display: block;
+	font-family: verdana;
+	font-size: 11px;
+	font-weight: bold;
+	height: 29px;
+	line-height: 28px;
+	margin: 0 0 0 4px;
+	overflow: hidden;
+	padding: 0 0 0 8px;
+	text-align: left;
 }
 
 div.clips.petrol .first {
-	background:#F0F0F0;
-	width:238px;
+	background: #F0F0F0;
+	width: 238px;
 	border: none;
-	border-top:1px solid white;
-	color:black;
-	display:block;
-	font-family:verdana;
-	font-size:11px;
-	font-weight:bold;
-	height:29px;
-	line-height:28px;
-	margin:0 0 0 8px;
-	overflow:hidden;
-	padding:0 0 0 8px;
-	text-align:left;
+	border-top: 1px solid white;
+	color: black;
+	display: block;
+	font-family: verdana;
+	font-size: 11px;
+	font-weight: bold;
+	height: 29px;
+	line-height: 28px;
+	margin: 0 0 0 8px;
+	overflow: hidden;
+	padding: 0 0 0 8px;
+	text-align: left;
+  outline-style: none;
 }
 
 .BackPage{
@@ -235,7 +247,7 @@ div.clips.petrol .first {
 div.clips.petrol a:hover {
 	background: url('/eXoDMSResources/skin/images/file/Selected.gif') no-repeat right center;
 	width: 242px;
-	margin:0 0 0 4px;
+	margin: 0 0 0 4px;
 }
  
 </style>
