@@ -80,14 +80,14 @@
 /*======================== -- Begin UIDocumentWorkspace -- #========================*/
 .UIJCRExplorerPortlet .UIDocumentWorkspace {
   overflow: auto;
+  height : 600px;
 }
 
 .UIJCRExplorerPortlet .UIListView {
 	posititon: relative;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIListGrid {
-	overflow: auto;
+.UIJCRExplorerPortlet .UIListView .UIListGrid {	
 	-moz-user-select: none;
 }
 
