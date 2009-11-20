@@ -16,27 +16,21 @@
  */
 package org.exoplatform.services.cms.templates.impl;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.StringReader;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
 import javax.jcr.NodeIterator;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.Session;
 import javax.jcr.Value;
 import javax.jcr.nodetype.NodeType;
 
 import org.exoplatform.container.component.ComponentPlugin;
-import org.exoplatform.services.cache.CacheService;
-import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.cms.templates.ContentTypeFilterPlugin;
@@ -64,29 +58,22 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   private IdentityRegistry identityRegistry_;
   private LocaleConfigService localeConfigService_;
   private String               cmsTemplatesBasePath_;
+  private org.exoplatform.groovyscript.text.TemplateService templateService;
   private List<TemplatePlugin> plugins_ = new ArrayList<TemplatePlugin>();
 
   private Map<String,HashMap<String,List<String>>> foldersFilterMap = new HashMap<String,HashMap<String,List<String>>> ();  
   private Map<String,List<String>> managedDocumentTypesMap = new HashMap<String,List<String>>();
   
-  /** Immutable and therefore thread safe. */
-  private static final Pattern LT = Pattern.compile("/\\*\\s*orientation=lt\\s*\\*/");
-
-  /** Immutable and therefore thread safe. */
-  private static final Pattern RT = Pattern.compile("/\\*\\s*orientation=rt\\s*\\*/");
-
-  private ExoCache templatesCache_ ;
-  private ExoCache rtlTemplateCache_;
   
   public TemplateServiceImpl(RepositoryService jcrService,
       NodeHierarchyCreator nodeHierarchyCreator, IdentityRegistry identityRegistry,
-      LocaleConfigService localeConfigService, CacheService caService) throws Exception {
+      LocaleConfigService localeConfigService, 
+      org.exoplatform.groovyscript.text.TemplateService templateService) throws Exception {
     identityRegistry_ = identityRegistry;
     repositoryService_ = jcrService;
     localeConfigService_ = localeConfigService;
     cmsTemplatesBasePath_ = nodeHierarchyCreator.getJcrPath(BasePath.CMS_TEMPLATES_PATH);
-    templatesCache_ = caService.getCacheInstance(org.exoplatform.groovyscript.text.TemplateService.class.getName()) ;
-    rtlTemplateCache_ = caService.getCacheInstance("RTLTemplateCache");
+    this.templateService = templateService;
   }
 
   public void start() {
@@ -236,6 +223,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return cmsTemplatesBasePath_ + "/" + nodeTypeName + DEFAULT_VIEWS_PATH;
   }
 
+  @Deprecated
   public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName,
       String repository, SessionProvider provider) throws Exception {
     String type = DIALOGS;
@@ -273,7 +261,9 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   public String getTemplatePath(boolean isDialog, String nodeTypeName, String templateName,
       String repository) throws Exception {
     Session session = getSession(repository);
-    Node templateNode = getTemplateNode(session, isDialog, nodeTypeName, templateName, repository);
+    String type = DIALOGS;
+    if (!isDialog) type = VIEWS;
+    Node templateNode = getTemplateNode(session, type, nodeTypeName, templateName);
     String path = templateNode.getPath();
     session.logout();
     return path;
@@ -291,19 +281,25 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return label;
   }
 
+  @Deprecated
   public String getTemplate(boolean isDialog, String nodeTypeName, String templateName,
       String repository) throws Exception {
     Session session = getSession(repository);
-    Node templateNode = getTemplateNode(session, isDialog, nodeTypeName, templateName, repository);
+    String type = DIALOGS;
+    if (!isDialog) type = VIEWS;
+    Node templateNode = getTemplateNode(session, type, nodeTypeName, templateName);
     String template = templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
     session.logout();
     return template;
   }
 
+  @Deprecated
   public String getTemplateRoles(boolean isDialog, String nodeTypeName, String templateName,
       String repository) throws Exception {
     Session session = getSession(repository);
-    Node templateNode = getTemplateNode(session, isDialog, nodeTypeName, templateName, repository);
+    String type = DIALOGS;
+    if (!isDialog) type = VIEWS;
+    Node templateNode = getTemplateNode(session, type, nodeTypeName, templateName);
     Value[] values = templateNode.getProperty(EXO_ROLES_PROP).getValues();
     StringBuffer roles = new StringBuffer();
     for (int i = 0; i < values.length; i++) {
@@ -315,7 +311,7 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return roles.toString();
   }
 
-
+  @Deprecated
   public void removeTemplate(boolean isDialog, String nodeTypeName, String templateName,
       String repository) throws Exception {
     Session session = getSession(repository);
@@ -346,12 +342,15 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     managedDocumentTypes.remove(nodeTypeName);
   }
 
+  @Deprecated
   public String addTemplate(boolean isDialog, String nodeTypeName, String label,
       boolean isDocumentTemplate, String templateName, String[] roles, String templateFile,
       String repository) throws Exception {
     Session session = getSession(repository);
     Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
-    Node contentNode = getContentNode(isDialog, templatesHome, nodeTypeName, label, 
+    String templateType = DIALOGS;
+    if(!isDialog) templateType = VIEWS;
+    Node contentNode = getContentNode(templateType, templatesHome, nodeTypeName, label, 
         isDocumentTemplate, templateName);
     contentNode.setProperty(EXO_ROLES_PROP, roles);
     contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
@@ -363,29 +362,27 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return contentNode.getPath();
   }
   
-  public String addTemplateWithLocale(boolean isDialog, String nodeTypeName, String label,
+  /**
+   * {@inheritDoc}
+   */
+  public String addTemplate(String templateType, String nodeTypeName, String label,
       boolean isDocumentTemplate, String templateName, String[] roles, String templateFile,
-      String repository, String locale) throws Exception {
+      String repository) throws Exception {
     Session session = getSession(repository);
     Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
-    Node contentNode = getContentNode(isDialog, templatesHome, nodeTypeName, label, 
+    Node contentNode = getContentNode(templateType, templatesHome, nodeTypeName, label, 
         isDocumentTemplate, templateName);
     contentNode.setProperty(EXO_ROLES_PROP, roles);
     contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateFile);
-    rtlTemplateCache_.clearCache();
-    String type = "";
-    if(isDialog) type = DIALOGS;
-    else type = VIEWS;
-    setTemplateData(locale, contentNode, nodeTypeName + type, RT, LTR);
-    setTemplateData(locale, contentNode, nodeTypeName + type, LT, RTL);
     templatesHome.save();
     session.save();
     session.logout();
     //Update managedDocumentTypesMap
+    removeCacheTemplate(contentNode.getPath());
     updateDocumentsTemplate(isDocumentTemplate, repository, nodeTypeName);
     return contentNode.getPath();
-  }
-
+  }  
+  
   public List<String> getDocumentTemplates(String repository) throws Exception {    
     List<String> templates = managedDocumentTypesMap.get(repository);
     if(templates != null) 
@@ -416,45 +413,134 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     return null;
   }
   
-  public String getTemplateData(Node templateNode, String locale, String propertyName, 
-      String repository) throws Exception {
+  /**
+   * {@inheritDoc}
+   */
+  public void removeCacheTemplate(String name) throws Exception {
+    templateService.getTemplatesCache().remove(name); 
+  }
+  
+  /**
+   * {@inheritDoc}
+   */
+  public String getSkinPath(String nodeTypeName, String skinName, String locale, String repository) throws Exception {
+    Session session = getSession(repository);
+    Node homeNode = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node nodeTypeNode = homeNode.getNode(nodeTypeName);
     Orientation orientation = getOrientation(locale);
-    Node nodeType = templateNode.getParent().getParent();
-    List<String> documentTemplates = managedDocumentTypesMap.get(repository);
-    Node parentNode = templateNode.getParent();
-    if(documentTemplates.contains(nodeType.getName()) && parentNode.getName().equals(VIEWS)) {
-      if(rtlTemplateCache_.get(nodeType.getName() + VIEWS + LTR) == null || 
-          rtlTemplateCache_.get(nodeType.getName() + VIEWS + RTL) == null) {
-        setTemplateData(locale, templateNode, nodeType.getName() + VIEWS, RT, LTR);
-        setTemplateData(locale, templateNode, nodeType.getName() + VIEWS, LT, RTL);
+    Node skinNode = null;
+    if(orientation.isLT()) {
+      try {
+        skinNode = nodeTypeNode.getNode(SKINS).getNode(skinName + "-lt");
+      } catch(PathNotFoundException pne) {
+        StringBuilder templateData = new StringBuilder("/**");
+        templateData.append("LTR stylesheet for "+nodeTypeNode.getName()+" template").append("*/");
+        skinNode = addNewSkinNode(homeNode, nodeTypeNode, skinName, "-lt", templateData.toString());
       }
-      if(orientation.isLT() && 
-          rtlTemplateCache_.get(nodeType.getName() + VIEWS + LTR) != null) {
-        return rtlTemplateCache_.get(nodeType.getName() + VIEWS + LTR).toString();
-      } else if(orientation.isRT() && 
-          rtlTemplateCache_.get(nodeType.getName() + VIEWS + RTL) != null) {
-        return rtlTemplateCache_.get(nodeType.getName() + VIEWS + RTL).toString();
+    } else if(orientation.isRT()) {
+      try {
+        skinNode = nodeTypeNode.getNode(SKINS).getNode(skinName + "-rt");
+      } catch(PathNotFoundException pne) {
+        StringBuilder templateData = new StringBuilder("/**");
+        templateData.append("RTL stylesheet for "+nodeTypeNode.getName()+" template").append("*/");
+        skinNode = addNewSkinNode(homeNode, nodeTypeNode, skinName, "-rt", templateData.toString());
       }
     }
-    return templateNode.getProperty(propertyName).getString();
+    session.logout();
+    return skinNode.getPath();
+  }  
+  
+  /**
+   * {@inheritDoc}
+   */
+  public Node getTemplateNode(String type, String nodeTypeName, String templateName,
+      String repository, SessionProvider provider) throws Exception {
+    Node nodeTypeNode = getTemplatesHome(repository, provider).getNode(nodeTypeName);
+    return nodeTypeNode.getNode(type).getNode(templateName);
+  }
+
+  /**
+   * {@inheritDoc}
+   */
+  public void removeTemplate(String type, String nodeTypeName, String templateName,
+      String repository) throws Exception {
+    Session session = getSession(repository);
+    Node templatesHome = (Node) session.getItem(cmsTemplatesBasePath_);
+    Node nodeTypeHome = templatesHome.getNode(nodeTypeName);
+    Node specifiedTemplatesHome = nodeTypeHome.getNode(type);
+    Node contentNode = specifiedTemplatesHome.getNode(templateName);
+    contentNode.remove();
+    nodeTypeHome.save();
+    session.save();
+    session.logout();
   }
   
-  public void removeCacheTemplate(String resourceId) throws Exception {
-    templatesCache_.remove(resourceId);
+  /**
+   * {@inheritDoc}
+   */
+  public String getTemplate(String type, String nodeTypeName, String templateName,
+      String repository) throws Exception {
+    Session session = getSession(repository);
+    Node templateNode = getTemplateNode(session, type, nodeTypeName, templateName);
+    String template = templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
+    session.logout();
+    return template;
   }
+
+  /**
+   * {@inheritDoc}
+   */
+  public String getTemplateRoles(String type, String nodeTypeName, String templateName,
+      String repository) throws Exception {
+    Session session = getSession(repository);
+    Node templateNode = getTemplateNode(session, type, nodeTypeName, templateName);
+    Value[] values = templateNode.getProperty(EXO_ROLES_PROP).getValues();
+    StringBuffer roles = new StringBuffer();
+    for (int i = 0; i < values.length; i++) {
+      if (roles.length() > 0)
+        roles.append("; ");
+      roles.append(values[i].getString());
+    }
+    session.logout();
+    return roles.toString();
+  }  
   
-  @SuppressWarnings("unused")
-  private Node getTemplateNode(Session session, boolean isDialog, String nodeTypeName,
-      String templateName, String repository) throws Exception {
-    String type = DIALOGS;
-    if (!isDialog)
-      type = VIEWS;
+  /**
+   * Get template with the following specified params 
+   * @param session         Session         
+   * @param isDialog        boolean
+   * @param nodeTypeName    String
+   *                        The name of NodeType
+   * @param templateName    String
+   *                        The name of template
+   * @param repository      String
+   *                        The name of repository    
+   * @return
+   * @throws Exception
+   */
+  private Node getTemplateNode(Session session, String type, String nodeTypeName,
+      String templateName) throws Exception {
     Node homeNode = (Node) session.getItem(cmsTemplatesBasePath_);
     Node nodeTypeNode = homeNode.getNode(nodeTypeName);
     return nodeTypeNode.getNode(type).getNode(templateName);
   }
 
-  private Node getContentNode(boolean isDialog, Node templatesHome, String nodeTypeName, 
+  /**
+   * Get content of the specified node 
+   * @param templateType          String
+   * @param templatesHome         Node
+   * @param nodeTypeName          String
+   *                              The name of NodeType
+   * @param label                 String
+   *                              The label of template
+   * @param isDocumentTemplate    boolean
+   * @param templateName          String
+   *                              The name of template
+   * @see                         Node                              
+   * @return
+   * @throws Exception
+   */
+  private Node getContentNode(String templateType, Node templatesHome, String nodeTypeName, 
       String label, boolean isDocumentTemplate, String templateName) throws Exception {
     Node nodeTypeHome = null;
     if (!templatesHome.hasNode(nodeTypeName)) {
@@ -468,20 +554,11 @@ public class TemplateServiceImpl implements TemplateService, Startable {
       nodeTypeHome = templatesHome.getNode(nodeTypeName);
     }
     Node specifiedTemplatesHome = null;
-    if (isDialog) {
-      if (!nodeTypeHome.hasNode(DIALOGS)) {
-        specifiedTemplatesHome = Utils.makePath(nodeTypeHome, DIALOGS, NT_UNSTRUCTURED);
-      } else {
-        specifiedTemplatesHome = nodeTypeHome.getNode(DIALOGS);
-      }
-    } else {
-      if (!nodeTypeHome.hasNode(VIEWS)) {
-        specifiedTemplatesHome = Utils.makePath(nodeTypeHome, VIEWS, NT_UNSTRUCTURED);
-      } else {
-        specifiedTemplatesHome = nodeTypeHome.getNode(VIEWS);
-      }
+    try {
+      specifiedTemplatesHome = nodeTypeHome.getNode(templateType);
+    } catch(PathNotFoundException e) {
+      specifiedTemplatesHome = Utils.makePath(nodeTypeHome, templateType, NT_UNSTRUCTURED);
     }
-
     Node contentNode = null;
     if (specifiedTemplatesHome.hasNode(templateName)) {
       contentNode = specifiedTemplatesHome.getNode(templateName);
@@ -508,59 +585,6 @@ public class TemplateServiceImpl implements TemplateService, Startable {
     }    
   }
   
-  private void setTemplateData(String locale, Node templateNode, String nodeTypeName, 
-      Pattern pattern, String type) throws Exception {
-    if(locale != null) {
-      String str = "";
-      String templateData = templateNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
-      BufferedReader reader = new BufferedReader(new StringReader(templateData));
-      Node homeNode = (Node) templateNode.getSession().getItem(cmsTemplatesBasePath_);
-      Node includedTemplateNode = null;
-      StringBuilder fullData = new StringBuilder();
-      try {
-        while ((str = reader.readLine()) != null) {
-          if (str.length() > 0) {
-            if(str.indexOf("_ctx.include") > -1) {
-              String[] arrTemplate = str.split("\"");
-              includedTemplateNode = homeNode.getNode(arrTemplate[1]);
-              Node specifiedTemplatesHome = includedTemplateNode.getNode(VIEWS);
-              Node viewNode = specifiedTemplatesHome.getNode(arrTemplate[3]);
-              String templateIncludedData = viewNode.getProperty(EXO_TEMPLATE_FILE_PROP).getString();
-              BufferedReader viewReader = new BufferedReader(new StringReader(templateIncludedData));
-              String includedStr = "";
-              while ((includedStr = viewReader.readLine()) != null) {
-                if (includedStr.length() > 0) {
-                  fullData.append(includedStr).append('\n');
-                }
-              }
-            } else {
-              fullData.append(str).append('\n');
-            }
-          }
-        }
-      } catch(IOException e) {
-        e.printStackTrace();
-      }
-      String realStr = "";
-      StringBuilder ltsb = new StringBuilder();
-      BufferedReader realReader = new BufferedReader(new StringReader(fullData.toString()));
-      try {
-        while ((realStr = realReader.readLine()) != null) {
-          if (realStr.length() > 0) {
-            Matcher matcher = pattern.matcher(realStr);
-            if(matcher.find()) {
-              continue;
-            }
-            ltsb.append(realStr).append('\n');
-          }
-        }
-        rtlTemplateCache_.put(nodeTypeName + type, ltsb.toString());
-      } catch(IOException e) {
-        e.printStackTrace();
-      } 
-    }
-  }
-
   private Session getSession(String repository) throws Exception {
     ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
     String systemWorksapce = manageableRepository.getConfiguration().getDefaultWorkspaceName();
@@ -616,4 +640,26 @@ public class TemplateServiceImpl implements TemplateService, Startable {
   private Orientation getOrientation(String locale) throws Exception {
     return localeConfigService_.getLocaleConfig(locale).getOrientation();
   }
+  
+  /**
+   * Add new skin node if the locale specified is not existing
+   * @param templatesHome
+   * @param nodeTypeNode
+   * @param skinName
+   * @param orientation
+   * @param templateData
+   * @return
+   * @throws Exception
+   */
+  private Node addNewSkinNode(Node templatesHome, Node nodeTypeNode, String skinName, String orientation, 
+      String templateData) throws Exception {
+    String label = nodeTypeNode.getProperty(TEMPLATE_LABEL).getString();
+    Node contentNode = getContentNode(SKINS, templatesHome, nodeTypeNode.getName(), label, 
+        true, skinName + orientation);
+    contentNode.setProperty(EXO_ROLES_PROP, new String[] {"*"});
+    contentNode.setProperty(EXO_TEMPLATE_FILE_PROP, templateData);
+    nodeTypeNode.getSession().save();
+    return nodeTypeNode.getNode(SKINS).getNode(skinName + orientation);
+  }
+
 }

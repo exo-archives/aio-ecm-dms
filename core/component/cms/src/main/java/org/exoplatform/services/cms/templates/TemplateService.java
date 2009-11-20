@@ -31,9 +31,11 @@ public interface TemplateService {
 
   static final public String DIALOGS = "dialogs".intern();
   static final public String VIEWS = "views".intern();
+  static final public String SKINS = "skins".intern();
   
   static final public String DEFAULT_DIALOG = "dialog1".intern();
   static final public String DEFAULT_VIEW = "view1".intern();
+  static final public String DEFAULT_SKIN = "Stylesheet-lt".intern();
   
   static final String[] UNDELETABLE_TEMPLATES = {DEFAULT_DIALOG, DEFAULT_VIEW};  
   
@@ -47,8 +49,6 @@ public interface TemplateService {
   static final public String DOCUMENT_TEMPLATE_PROP = "isDocumentTemplate".intern() ;  
   static final public String TEMPLATE_LABEL = "label".intern() ;
   
-  static final public String RTL = "rtl";
-  static final public String LTR = "ltr";
   /**
    * Return path of default template by giving the following params
    * @param isDialog        boolean
@@ -139,7 +139,24 @@ public interface TemplateService {
    * @see                   Node                        
    * @throws Exception
    */
+  @Deprecated
   public String getTemplate(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
+  
+  /**
+   * Return template file of the specified node
+   * @param templateType    String
+   *                        The string value which specify the type of template
+   * @param nodeTypeName    String
+   *                        The specify name of node type
+   * @param templateName    String
+   *                        The name of template
+   * @param repository      String
+   *                        The name of repository
+   * @see                   Session
+   * @see                   Node                        
+   * @throws Exception
+   */
+  public String getTemplate(String templateType, String nodeTypeName, String templateName, String repository) throws Exception ;  
   
   /**
    * Insert a new template into NodeType by giving the following params
@@ -163,13 +180,14 @@ public interface TemplateService {
    * @see                       Node                            
    * @throws Exception
    */
+  @Deprecated
   public String addTemplate(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, String templateName, 
       String[] roles, String templateFile, String repository) throws Exception;
 
   /**
    * Insert a new template into NodeType by giving the following params
-   * @param isDialog            boolean
-   *                            The boolean value which specify the type of template
+   * @param templateType        String
+   *                            The value which specify the type of template
    * @param nodeTypeName        String
    *                            The specify name of NodType
    * @param label               String
@@ -184,14 +202,12 @@ public interface TemplateService {
    *                            The file of template
    * @param repository          String
    *                            The name of repository
-   * @param locale              String
-   *                            The locale name
    * @see                       Session
    * @see                       Node                            
    * @throws Exception
    */
-  public String addTemplateWithLocale(boolean isDialog, String nodeTypeName, String label, boolean isDocumentTemplate, String templateName, 
-      String[] roles, String templateFile, String repository, String locale) throws Exception;
+  public String addTemplate(String templateType, String nodeTypeName, String label, boolean isDocumentTemplate, String templateName, 
+      String[] roles, String templateFile, String repository) throws Exception;
   
   /**
    * Insert a template of NodeType by giving the following params
@@ -207,7 +223,24 @@ public interface TemplateService {
    * @see                     Node                                 
    * @throws Exception
    */
+  @Deprecated
   public void removeTemplate(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception;
+  
+  /**
+   * Remove a template of NodeType by giving the following params
+   * @param templateType      String
+   *                          The value which specify the type of template
+   * @param nodeTypeName      String
+   *                          The specify name of NodType
+   * @param templateName      String
+   *                          The name of template
+   * @param repository        String
+   *                          The name of repository
+   * @see                     Session
+   * @see                     Node                                 
+   * @throws Exception
+   */
+  public void removeTemplate(String templateType, String nodeTypeName, String templateName, String repository) throws Exception;  
   
   /**
    * Return true is the given repository has nodeTypeName
@@ -286,6 +319,7 @@ public interface TemplateService {
    * @see                   Node                        
    * @throws Exception
    */
+  @Deprecated
   public String getTemplateRoles(boolean isDialog, String nodeTypeName, String templateName, String repository) throws Exception ;
   
   /**
@@ -304,7 +338,42 @@ public interface TemplateService {
    * @see                   Node                              
    * @throws Exception
    */
+  @Deprecated
   public Node getTemplateNode(boolean isDialog, String nodeTypeName, String templateName, String repository, SessionProvider provider) throws Exception ;
+  
+  /**
+   * Return roles of the specified template by giving the following params
+   * @param templateType    String        
+   *                        The value which specify the type of template
+   * @param nodeTypeName    String
+   *                        The name of NodeType
+   * @param templateName    String
+   *                        The name of teamplate
+   * @param repository      String
+   *                        The name of repository
+   * @see                   Session
+   * @see                   Node                        
+   * @throws Exception
+   */
+  public String getTemplateRoles(String templateType, String nodeTypeName, String templateName, String repository) throws Exception ;
+  
+  /**
+   * Return template Node (Name of NodeType, Name of Template) by giving the following params 
+   * @param templateType    String        
+   *                        The value which specify the type of template
+   * @param nodeTypeName    String
+   *                        The name of NodeType
+   * @param templateName    String
+   *                        The name of teamplate
+   * @param repository      String
+   *                        The name of repository
+   * @param provider        SessionProvider
+   *                        The SessionProvider object is used to managed Sessions
+   * @see                   SessionProvider
+   * @see                   Node                              
+   * @throws Exception
+   */
+  public Node getTemplateNode(String templateType, String nodeTypeName, String templateName, String repository, SessionProvider provider) throws Exception ;  
   
   /**
    * Return CreationableContent Types to the given node
@@ -323,17 +392,27 @@ public interface TemplateService {
    */
   public void init(String repository) throws Exception ;
 
-  public String getTemplateData(Node templateNode, String locale, String propertyName, String repository) throws Exception; 
-  
   /**
    * Remove cache of RTL template
    * @param templatePath String 
    *                     jcr path of template
-   * @param resourceId   String
-   *                     Resource Id
-   * @param repository   String
-   *                     Repository name
    * @throws Exception
    */
-  public void removeCacheTemplate(String resourceId) throws Exception;
+  public void removeCacheTemplate(String templatePath) throws Exception;
+  
+  /**
+  * Get path of css file which included in view template
+  * @param nodeTypeName  String
+  *                      The node type name
+  * @param skinName      String
+  *                      The name of css file
+  * @param locale        String
+  *                      The locale which specified by user
+  * @param repository    String
+  *                      The name of current repository
+  * @return              String
+  *                      The path of css file
+  * @throws Exception
+  */
+ public String getSkinPath(String nodeTypeName, String skinName, String locale, String repository) throws Exception;
 }

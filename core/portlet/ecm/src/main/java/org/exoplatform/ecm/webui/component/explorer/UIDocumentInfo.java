@@ -44,7 +44,6 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.jcr.model.Preference;
-import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
 import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeNodePageIterator;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
@@ -107,10 +106,6 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   private String typeSort_ = Preference.SORT_BY_NODETYPE;
   private String sortOrder_ = Preference.BLUE_DOWN_ARROW;
   private Node currentNode_ ;
-  private boolean isDocumentTemplate_ = false;
-  private String currentRepository_ = null;
-  private String currentWorkspaceName_ = null;
-  private String selectedLang_ = null;
 
   private UIPageIterator pageIterator_ ;  
 
@@ -120,6 +115,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
 
   public UIPageIterator getContentPageIterator() {return pageIterator_ ; }
 
+  
   public String getTemplate() {    
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
     if(uiExplorer.getPreference().isJcrEnable()) 
@@ -127,17 +123,7 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     try {
       Node node = uiExplorer.getCurrentNode();
-      String nodeTypeName = node.getPrimaryNodeType().getName();
-      currentRepository_ = uiExplorer.getRepositoryName();
-      currentWorkspaceName_ = uiExplorer.getCurrentWorkspace();
-      selectedLang_ = uiExplorer.getLanguage();
-      if(templateService.getDocumentTemplates(currentRepository_).contains(nodeTypeName)) {
-        isDocumentTemplate_ = true;
-      } else {
-        isDocumentTemplate_ = false;
-      }
       String template = templateService.getTemplatePath(node,false) ;
-      templateService.removeCacheTemplate(uiExplorer.getJCRTemplateResourceResolver().createResourceId(template));
       if(template != null) return template ;
     } catch(AccessDeniedException ace) {
       try {
@@ -151,15 +137,10 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     }
     return uiExplorer.getDocumentInfoTemplate(); 
   }
-
+  
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    if(isDocumentTemplate_) {
-      JCRResourceResolver resourceResolver = new JCRResourceResolver(currentRepository_, 
-          currentWorkspaceName_, Utils.EXO_TEMPLATEFILE, selectedLang_) ;
-      return resourceResolver;
-    }
-    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
+    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver();
   }
 
   public UIRightClickPopupMenu getContextMenu() {
@@ -447,6 +428,11 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, nodeTypeName, templateName, getRepository()) ;
+  }
+  
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
   }
 
   public String getLanguage() {

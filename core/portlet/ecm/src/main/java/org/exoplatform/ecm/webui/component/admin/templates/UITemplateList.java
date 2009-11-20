@@ -128,6 +128,11 @@ public class UITemplateList extends UIGrid {
       UITemplateContent uiViewTabForm = uiViewTemplate.findComponentById(UIViewTab.VIEW_FORM_NAME) ;
       uiViewTabForm.setNodeTypeName(nodeType) ;
       uiViewTabForm.update(null) ;     
+      UISkinTab uiSkinTab = uiViewTemplate.findFirstComponentOfType(UISkinTab.class) ;
+      uiSkinTab.updateGrid(nodeType, repository) ;
+      UITemplateContent uiSkinTabForm = uiViewTemplate.findComponentById(UISkinTab.SKIN_FORM_NAME) ;
+      uiSkinTabForm.setNodeTypeName(nodeType) ;
+      uiSkinTabForm.update(null) ;
       uiTemplatesManager.removeChildById(UITemplatesManager.NEW_TEMPLATE) ;
       uiTemplatesManager.initPopup(uiViewTemplate, UITemplatesManager.EDIT_TEMPLATE) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiTemplatesManager) ;

@@ -35,10 +35,6 @@ import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
 import org.exoplatform.ecm.resolver.JCRResourceResolver;
-import org.exoplatform.web.application.ApplicationMessage;
-import org.exoplatform.webui.core.UIApplication;
-import org.exoplatform.webui.core.UIPopupComponent;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIDocumentFormController;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
@@ -52,11 +48,15 @@ import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.application.WebuiRequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
+import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
+import org.exoplatform.webui.core.UIPopupComponent;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -143,19 +143,18 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
 
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    newJCRTemplateResourceResolver() ;
+    if(jcrTemplateResourceResolver_ == null) newJCRTemplateResourceResolver() ;
     return jcrTemplateResourceResolver_ ;
   }
-
+  
   public void newJCRTemplateResourceResolver() {
     try{
       String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;            
       ManageableRepository mRepository = 
         getApplicationComponent(RepositoryService.class).getRepository(repository) ;
       String systemWorkspace = mRepository.getConfiguration().getSystemWorkspaceName() ;
-      if(language_ == null) language_ = node_.getProperty(Utils.EXO_LANGUAGE).getString();
       jcrTemplateResourceResolver_ = new JCRResourceResolver(repository, systemWorkspace, 
-          Utils.EXO_TEMPLATEFILE, language_) ;
+          Utils.EXO_TEMPLATEFILE) ;
     }catch(Exception e) {
       e.printStackTrace() ;
     }     
@@ -323,6 +322,11 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
     String repository = getAncestorOfType(UIBrowseContentPortlet.class).getPreferenceRepository() ;
     return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
   }
+  
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
+  }
 
   public void activate() throws Exception {}
 
@@ -382,8 +386,7 @@ public class UIDocumentDetail extends UIComponent implements NodePresentation, U
       UIDocumentDetail uiDocument = event.getSource() ;
       String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
       uiDocument.setLanguage(selectedLanguage) ;
-      //event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument.getAncestorOfType(UIBrowseContentPortlet.class)) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument) ;
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiDocument.getParent()) ;
     }
   }
 

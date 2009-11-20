@@ -10,52 +10,9 @@
 	SimpleDateFormat dateFormat = new SimpleDateFormat() ;
   dateFormat.applyPattern(pattern) ;
 %>
-<head>
-	<style>
-		.ContentPodcast {
-			border-bottom: 1px solid #bdbdbd; 
-			height: 25px;
-			line-height: 25px;
-			
-		}
-		
-		.TitleBG span.text { 
-			line-height: 20px;
-			padding-left: 5px; /* orientation=lt */
-			padding-right: 5px; /* orientation=rt */
-		}
-		
-		.ContentPodcast .text  { 
-			vertical-align:bottom; 
-			text-align: left ; /* orientation=lt */
-			text-align: right ; /* orientation=rt */
-			font-weight: bold;
-		}
-		.ContentPodcast .TextDetail{
-			text-align: left ; /* orientation=lt */
-			text-align: right ; /* orientation=rt */
-			vertical-align:bottom;
-		}
-		
-		.ContentPodcast .text span  { 
-			font-weight: normal;
-		}
-		
-		div.summary { 
-			height: 160px ; 
-			padding: 5px 5px 5px 10px; /* orientation=lt */
-			padding: 5px 10px 5px 5px; /* orientation=rt */
-			font-weight: normal;
-			overflow: auto;
-		} 
-		
-		div.content { 
-			font-size: 11px; 
-			padding: 5px; 
-			overflow: auto;
-		}
-	</style>
-</head>
+<style>
+	<% _ctx.include(uicomponent.getTemplateSkin("exo:podcast", "Stylesheet")); %>
+</style>
 <div $resizeBlock id="$uicomponent.id">
 	<div style="padding: 8px">
 		<div class="ContentPodcast">

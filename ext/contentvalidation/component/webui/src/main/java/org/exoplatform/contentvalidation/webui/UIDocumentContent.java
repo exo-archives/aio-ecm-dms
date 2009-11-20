@@ -122,6 +122,11 @@ public class UIDocumentContent extends UIContainer {
     }
   }
   
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
+  }
+  
   public String getImage(Node node, String nodeTypeName) throws Exception {
     DownloadService dservice = getApplicationComponent(DownloadService.class) ;
     InputStreamDownloadResource dresource ;

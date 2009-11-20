@@ -9,17 +9,7 @@
   }
 %>
 <style>
-	.WorkKofax {
-		margin: 10px;
-	}
-	
-	.WorkKofax .UIGrid {
-		width: 97%;
-	}
-	
-	.WorkKofax .UIGrid td {
-		border: 1px solid #CCCCCC
-	}
+	<% _ctx.include(uicomponent.getTemplateSkin("kfx:document", "Stylesheet")); %>    
 </style>
 <div class="WorkKofax">
 	<table class="UIGrid">      	 			

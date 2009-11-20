@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2007 eXo Platform SAS.
+ * Copyright (C) 2003-2008 eXo Platform SAS.
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License
@@ -42,47 +42,53 @@ import org.exoplatform.webui.event.EventListener;
 
 /**
  * Created by The eXo Platform SARL
- * Author : pham tuan
- *          phamtuanchip@yahoo.de
- * Oct 03, 2006
- * 9:43:23 AM 
+ * Author : Dang Van Minh
+ *          minh.dang@exoplatform.com
+ * Nov 18, 2009  
+ * 10:37:42 AM
  */
 @ComponentConfig(
     lifecycle = UIContainerLifecycle.class,
     events = {
-      @EventConfig(listeners = UIDialogTab.EditActionListener.class),
-      @EventConfig(listeners = UIDialogTab.DeleteActionListener.class, confirm = "UIDialogTab.msg.confirm-delete")
+      @EventConfig(listeners = UISkinTab.EditActionListener.class),
+      @EventConfig(listeners = UISkinTab.DeleteActionListener.class, confirm = "UIDialogTab.msg.confirm-delete")
     }
 )
-
-public class UIDialogTab extends UIContainer {
+public class UISkinTab extends UIContainer {
 
   final private static String[] BEAN_FIELD = {"name", "roles", "baseVersion"} ;
   final private static String[] ACTIONS = {"Edit", "Delete"} ;
-  final public static String DIALOG_LIST_NAME = "DialogList" ;
-  final public static String DIALOG_FORM_NAME = "DialogForm" ;
+  final public static String SKIN_LIST_NAME = "SkinList" ;
+  final public static String SKIN_FORM_NAME = "SkinForm" ;
   
-  private List<String> listDialog_ = new ArrayList<String>() ;
-
-  public UIDialogTab() throws Exception {
-    UIGrid uiGrid = addChild(UIGrid.class, null, DIALOG_LIST_NAME) ;
-    uiGrid.getUIPageIterator().setId("DialogListIterator") ;
+  private List<String> listSkin_ = new ArrayList<String>() ;
+  
+  public UISkinTab() throws Exception {
+    UIGrid uiGrid = addChild(UIGrid.class, null, SKIN_LIST_NAME) ;
+    uiGrid.getUIPageIterator().setId("SkinListIterator") ;
     uiGrid.configure("name", BEAN_FIELD, ACTIONS) ;
-    UITemplateContent uiForm = addChild(UITemplateContent.class, null , DIALOG_FORM_NAME) ;
-    uiForm.setTemplateType(TemplateService.DIALOGS);
+    UITemplateContent uiForm = addChild(UITemplateContent.class, null , SKIN_FORM_NAME) ;
+    uiForm.setTemplateType(TemplateService.SKINS);
     uiForm.update(null) ;
   }
-
-  public List<String> getListDialog() { return listDialog_ ; }
+  
+  public void setTabRendered() {
+    UIViewTemplate uiViewTemplate = getAncestorOfType(UIViewTemplate.class) ;
+    uiViewTemplate.setRenderedChild(UISkinTab.class) ;
+  }
+  
+  public List<String> getListSkin() { return listSkin_ ; }
   
   public void updateGrid(String nodeName, String repository) throws Exception {
     TemplateService tempService = getApplicationComponent(TemplateService.class) ;
-    NodeIterator iter = tempService.getAllTemplatesOfNodeType(true, nodeName, repository, 
-        SessionProviderFactory.createSystemProvider()) ;
-    List<DialogData> data = new ArrayList<DialogData>() ;
-    DialogData item  ;
+    Node templateHome = tempService.getTemplatesHome(repository, 
+        SessionProviderFactory.createSystemProvider()).getNode(nodeName);
+    NodeIterator iter = templateHome.getNode(TemplateService.SKINS).getNodes();
+    List<SkinData> data = new ArrayList<SkinData>() ;
+    SkinData item  ;
+    Node node = null;
     while (iter.hasNext()){
-      Node node = (Node) iter.next() ;
+      node = (Node) iter.next() ;
       String version = "" ;
       StringBuilder rule = new StringBuilder() ;
       Value[] rules = node.getProperty("exo:roles").getValues() ;
@@ -92,68 +98,63 @@ public class UIDialogTab extends UIContainer {
       if(node.isNodeType(Utils.MIX_VERSIONABLE) && !node.isNodeType(Utils.NT_FROZEN)){
         version = node.getBaseVersion().getName() ;
       }
-      listDialog_.add(node.getName()) ;
-      item = new DialogData(node.getName(), rule.toString(), version) ;
+      listSkin_.add(node.getName()) ;
+      item = new SkinData(node.getName(), rule.toString(), version) ;
       data.add(item) ;
     }
     UIGrid uiGrid = getChild(UIGrid.class) ;
     ObjectPageList objDPageList = new ObjectPageList(data, 4) ;
     uiGrid.getUIPageIterator().setPageList(objDPageList) ;  
-  }
-
-  public void setTabRendered() {
-    UIViewTemplate uiViewTemplate = getAncestorOfType(UIViewTemplate.class) ;
-    uiViewTemplate.setRenderedChild(UIDialogTab.class) ;
-  }
-
-  static public class EditActionListener extends EventListener<UIDialogTab> {
-    public void execute(Event<UIDialogTab> event) throws Exception {
-      UIDialogTab dialogTab = event.getSource() ;
-      String dialogName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      UITemplateContent uiForm = dialogTab.getChild(UITemplateContent.class) ;
-      uiForm.update(dialogName) ;
-      dialogTab.setTabRendered() ;
-      UITemplatesManager uiManager = dialogTab.getAncestorOfType(UITemplatesManager.class) ;
+  }  
+  
+  static public class EditActionListener extends EventListener<UISkinTab> {
+    public void execute(Event<UISkinTab> event) throws Exception {
+      UISkinTab skinTab = event.getSource() ;
+      String skinName = event.getRequestContext().getRequestParameter(OBJECTID) ;
+      UITemplateContent uiForm = skinTab.getChild(UITemplateContent.class) ;
+      uiForm.update(skinName) ;
+      skinTab.setTabRendered() ;
+      UITemplatesManager uiManager = skinTab.getAncestorOfType(UITemplatesManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
   }
 
-  static public class DeleteActionListener extends EventListener<UIDialogTab> {
-    public void execute(Event<UIDialogTab> event) throws Exception {
-      UIDialogTab dialogTab = event.getSource() ;
+  static public class DeleteActionListener extends EventListener<UISkinTab> {
+    public void execute(Event<UISkinTab> event) throws Exception {
+      UISkinTab skinTab = event.getSource() ;
       UIViewTemplate uiViewTemplate = event.getSource().getAncestorOfType(UIViewTemplate.class) ;
       String nodeTypeName = uiViewTemplate.getNodeTypeName() ;
       String templateName = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      TemplateService templateService = dialogTab.getApplicationComponent(TemplateService.class) ;
-      UITemplateContent uiForm = dialogTab.findFirstComponentOfType(UITemplateContent.class) ;
+      TemplateService templateService = skinTab.getApplicationComponent(TemplateService.class) ;
+      UITemplateContent uiForm = skinTab.findFirstComponentOfType(UITemplateContent.class) ;
       for(String template : TemplateService.UNDELETABLE_TEMPLATES) {        
         if(template.equals(templateName)) {
-          UIApplication app = dialogTab.getAncestorOfType(UIApplication.class) ;
+          UIApplication app = skinTab.getAncestorOfType(UIApplication.class) ;
           Object[] args = {template} ;
           app.addMessage(new ApplicationMessage("UIDialogTab.msg.undeletable", args)) ;
-          dialogTab.setTabRendered() ;
+          skinTab.setTabRendered() ;
           return ;
         }
       }
       PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance() ;
       PortletPreferences portletPref = pcontext.getRequest().getPreferences() ;
       String repository = portletPref.getValue(Utils.REPOSITORY, "") ;
-      templateService.removeTemplate(TemplateService.DIALOGS, nodeTypeName, templateName, repository) ;
+      templateService.removeTemplate(TemplateService.SKINS, nodeTypeName, templateName, repository) ;
       uiForm.update(null) ;
       
-      dialogTab.updateGrid(nodeTypeName, repository) ;
-      dialogTab.setTabRendered() ;
-      UITemplatesManager uiManager = dialogTab.getAncestorOfType(UITemplatesManager.class) ;
+      skinTab.updateGrid(nodeTypeName, repository) ;
+      skinTab.setTabRendered() ;
+      UITemplatesManager uiManager = skinTab.getAncestorOfType(UITemplatesManager.class) ;
       event.getRequestContext().addUIComponentToUpdateByAjax(uiManager) ;
     }
-  }
-
-  public static class DialogData {
+  }  
+  
+  public static class SkinData {
     private String name ;
     private String roles ;
     private String baseVersion ;
 
-    public DialogData(String name, String roles, String version) {
+    public SkinData(String name, String roles, String version) {
       this.name = name ;
       this.roles = roles ;
       baseVersion = version ;
@@ -163,4 +164,5 @@ public class UIDialogTab extends UIContainer {
     public String getRoles(){return roles ;}
     public String getBaseVersion(){return baseVersion ;}
   }
+
 }

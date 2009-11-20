@@ -34,7 +34,6 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.xml.PortalContainerInfo;
 import org.exoplatform.download.DownloadService;
 import org.exoplatform.download.InputStreamDownloadResource;
-import org.exoplatform.ecm.resolver.JCRResourceResolver;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.presentation.NodePresentation;
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -72,8 +71,6 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
   
   private Node node_ ;
   private String language_ ;
-  private String currentRepository_ = null;
-  private String currentWorkspaceName_ = null;
   
   public UIViewSearchResult() throws Exception {
   }
@@ -82,15 +79,11 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     String userName = Util.getPortalRequestContext().getRemoteUser() ;
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
-    currentRepository_ = uiExplorer.getRepositoryName();
-    currentWorkspaceName_ = uiExplorer.getCurrentWorkspace();
     try {
       String nodeType = node_.getPrimaryNodeType().getName() ;
-      String template = templateService.getTemplatePathByUser(false, nodeType, userName, currentRepository_) ; 
-      templateService.removeCacheTemplate(uiExplorer.getJCRTemplateResourceResolver().createResourceId(template));
-      return template;
+      return templateService.getTemplatePathByUser(false, nodeType, userName, uiExplorer.getRepositoryName()) ; 
     } catch(Exception e) {
-      e.printStackTrace() ;
+      e.printStackTrace();
     }
     return null; 
   }
@@ -195,16 +188,7 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
   
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    if(language_ == null) {
-      try {
-        language_ = node_.getProperty(Utils.EXO_LANGUAGE).getString();
-      } catch(Exception e) {
-        e.printStackTrace();
-      }
-    }
-    return new JCRResourceResolver(currentRepository_, currentWorkspaceName_, 
-        Utils.EXO_TEMPLATEFILE, language_) ;
-//    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
+    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
   }
 
   public List<Node> getComments() throws Exception {
@@ -216,6 +200,11 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
     String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
     return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
   }
+  
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
+  }  
 
   public String getLanguage() { return language_; }
 

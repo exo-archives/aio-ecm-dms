@@ -239,6 +239,11 @@ public class UIViewVersion extends UIContainer implements NodePresentation {
     TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
     return tempServ.getTemplatePath(false, nodeTypeName, templateName, getRepository()) ;
   }
+  
+  public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
+    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
+  }
 
   public String getWebDAVServerPrefix() throws Exception {
     PortletRequestContext portletRequestContext = PortletRequestContext.getCurrentInstance() ;
