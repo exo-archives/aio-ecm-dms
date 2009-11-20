@@ -179,6 +179,11 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
     								  repository, 
     								  sessionProvider);
     	uiExplorer.updateAjax(event);
+    } catch (PathNotFoundException e) {
+    	LOG.error("Path not found! Maybe, it was removed or path changed, can't restore node :" + node.getPath());
+    	JCRExceptionManager.process(uiApp, e);
+    	event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+    	uiExplorer.updateAjax(event);
     } catch (LockException e) {
     	LOG.error("node is locked, can't restore node :" + node.getPath());
     	JCRExceptionManager.process(uiApp, e);
