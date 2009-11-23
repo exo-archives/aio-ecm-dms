@@ -366,12 +366,22 @@
 
 .audio_mp348x48Icon {
 	width: 48px; height: 48px;
-  background: url('/eXoDMSResources/skin/DefaultSkin/skinIcons/48x48/icons/NodeTypes/mp3.gif') no-repeat;
+  background: url('/eXoDMSResources/skin/DefaultSkin/skinIcons/48x48/icons/NodeTypes/mp3.png') no-repeat;
 }
 
 .image_gif48x48Icon {
  	width: 48px; height: 48px;
   background: url('/eXoDMSResources/skin/DefaultSkin/skinIcons/48x48/icons/NodeTypes/gif.gif') no-repeat;
+}
+
+.video_mp448x48Icon {
+  width: 48px; height: 48px;
+  background: url('/eXoDMSResources/skin/DefaultSkin/skinIcons/48x48/icons/NodeTypes/videomp4.png') no-repeat;  
+}
+
+.video_x-flv48x48Icon {
+  width: 48px; height: 48px;
+  background: url('/eXoDMSResources/skin/DefaultSkin/skinIcons/48x48/icons/NodeTypes/video_x-flv.png') no-repeat;  
 }
 
 .application_octet-stream48x48Icon {
