@@ -726,6 +726,7 @@ var ListView = function() {
 		var root = document.getElementById("UIDocumentInfo");
 		var view = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIListGrid");
 		var workingArea = document.getElementById('UIWorkingArea');
+		var workingContainer = document.getElementById('UIDocumentContainer');
 		var page = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "PageAvailable");
 		var title = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "TitleTable");
 		var portlet = document.getElementById('UIJCRExplorerPortlet');
@@ -739,7 +740,8 @@ var ListView = function() {
 			if (parseInt(page.getAttribute('pageAvailable')) > 1) {
 				if (view) {
 					if(sizeBarContainer) view.style.height = sizeBarContainer.offsetHeight - 20 + 'px';
-					else view.style.height = workingArea.offsetHeight - page.offsetHeight - 20 + 'px';
+					else // view.style.height = workingArea.offsetHeight - page.offsetHeight - 20 + 'px';
+						view.style.height = workingContainer.offsetHeight - page.offsetHeight + 'px';
 				}
 			}
 		} else {
