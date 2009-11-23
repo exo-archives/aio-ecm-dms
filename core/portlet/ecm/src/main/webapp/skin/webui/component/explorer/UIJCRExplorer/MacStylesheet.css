@@ -78,13 +78,13 @@
 /*======================== -- End UIJCRExplorer -- ==========================================*/
 
 /*======================== -- Begin UIDocumentWorkspace -- #========================*/
-.UIJCRExplorerPortlet .UIDocumentWorkspace {
-  overflow: auto;
+.UIJCRExplorerPortlet .UIDocumentWorkspace {  
   height : 600px;
 }
 
 .UIJCRExplorerPortlet .UIListView {
 	posititon: relative;
+	overflow: auto;
 }
 
 .UIJCRExplorerPortlet .UIListView .UIListGrid {	

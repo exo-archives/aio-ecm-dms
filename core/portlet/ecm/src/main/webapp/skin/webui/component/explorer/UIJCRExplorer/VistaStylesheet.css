@@ -69,12 +69,12 @@
 /*############################## -- End UIJCRExplorer -- ##############################*/
 
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
-.UIJCRExplorerPortlet .UIDocumentWorkspace {
-  overflow: auto;
+.UIJCRExplorerPortlet .UIDocumentWorkspace {  
   height : 600px;
 }
 
 .UIJCRExplorerPortlet .UIListView {
+	overflow: auto;
 	posititon: relative;
 }
 
