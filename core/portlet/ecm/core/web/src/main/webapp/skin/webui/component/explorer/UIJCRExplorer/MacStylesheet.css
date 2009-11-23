@@ -106,8 +106,7 @@
 	posititon: relative;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIListGrid {
-	overflow: auto;
+.UIJCRExplorerPortlet .UIListView .UIListGrid {	
 	-moz-user-select: none;
 }
 

@@ -167,12 +167,12 @@
 	* minh.js.exo
 	*/
 
-.UIJCRExplorerPortlet .UIDocumentWorkspace {
+.UIJCRExplorerPortlet .UIDocumentWorkspace {  
   overflow: auto;
   height: 475px;
 }
 
-.UIJCRExplorerPortlet .UIListView {
+.UIJCRExplorerPortlet .UIListView {	
 	posititon: relative;
 }
 
@@ -181,8 +181,7 @@
 	border: 1px solid #b7b7b7;
 }
 
-.UIJCRExplorerPortlet .UIListView .UIListGrid {
-	overflow: auto;
+.UIJCRExplorerPortlet .UIListView .UIListGrid {	
 	-moz-user-select: none;
 }
 
