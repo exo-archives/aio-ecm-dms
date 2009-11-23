@@ -125,13 +125,13 @@
 	* minh.js.exo
 	*/
 
-.UIJCRExplorerPortlet .UIDocumentWorkspace {
-  overflow: auto;
+.UIJCRExplorerPortlet .UIDocumentWorkspace {  
   height: 475px;
 }
 
 .UIJCRExplorerPortlet .UIListView {
 	posititon: relative;
+	overflow: auto;
 }
 
 .UIJCRExplorerPortlet .UITabPane .UIListView {
@@ -140,7 +140,7 @@
 }
 
 .UIJCRExplorerPortlet .UIListView .UIListGrid {
-	/* lampt's code modification */
+	/* lampt's code modification */	
 	-moz-user-select: none;
 }
 
