@@ -76,11 +76,11 @@
 /*############################## -- Begin UIDocumentWorkspace -- ##############################*/
 .UIJCRExplorerPortlet .UIDocumentWorkspace {  
   height: 475px;
+  overflow: auto;
 }
 
 .UIJCRExplorerPortlet .UIListView {
-	posititon: relative;
-	overflow: auto;
+	posititon: relative;	
 }
 
 .UIJCRExplorerPortlet .UIListView .UIListGrid {	
