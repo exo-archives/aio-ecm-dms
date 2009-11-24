@@ -24,6 +24,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.tree.UINodeTreeBuilder;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.ecm.publication.PublicationService;
@@ -104,6 +105,11 @@ public class UIOneNodePathSelector extends UIBaseNodeTreeSelector {
         rootNode = sessionProvider.getSession(workspaceName, manageableRepository).getRootNode();
       } else {
         NodeFinder nodeFinder = getApplicationComponent(NodeFinder.class);
+        if (rootTreePath.indexOf("${userId}") > -1) {
+          String userId = Util.getPortalRequestContext().getRemoteUser();
+          String rootTreeOfSpecialDriver = rootTreePath.replace("${userId}", userId);
+          rootTreePath = rootTreeOfSpecialDriver; 
+        }
         rootNode = (Node) nodeFinder.getItem(repositoryName, workspaceName, rootTreePath);
       }
       
