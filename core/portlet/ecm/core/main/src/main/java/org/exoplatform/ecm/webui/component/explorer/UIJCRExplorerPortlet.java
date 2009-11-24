@@ -164,6 +164,7 @@ public class UIJCRExplorerPortlet extends UIPortletApplication {
       ManageDriveService driveService = getApplicationComponent(ManageDriveService.class);
       DriveData driveData = driveService.getDriveByName(driveName, repository);
       String nodePath = portletPref.getValue("nodePath", "").trim();
+      if (!nodePath.startsWith("/")) nodePath = "/" + nodePath; 
       String homePath = (driveData.getHomePath().concat(nodePath)).replaceAll("/+", "/");
       if(!canUseConfigDrive(repository, driveName)) {
         homePath = getUserDrive(repository, "private").getHomePath();
