@@ -3,6 +3,9 @@
     if (uicomponent.getCurrentComp().equals(item)) return "SelectedItem";
     return "NormalItem";
   }
+  
+  def rcontext = _ctx.getRequestContext() ;
+  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.loadEffectedItemsInSideBar') ;
 %>
 <div class="UISideBar" id="UISideBar">
   <div class="UISideBarContainer">
@@ -11,10 +14,10 @@
         String[] arrComp = [uicomponent.getCurrentComp()];
         uicomponent.renderSideBarChild(arrComp); 
        %>
-      <div class="ResizeTreeExplorer">
+      <div class="ResizeTreeExplorer" onmousedown="eXo.ecm.ECMUtils.resizeTreeInSideBar(event)" ondblclick="eXo.ecm.ECMUtils.showHideItemsInSideBar(this)">
         <div class="ResizeTreeButton"><span></span></div>
       </div>
-      <div class="SelectItem">
+      <div class="SelectItem" id ="SelectItemArea">
         <% 
           String[] arrAllItems = ["UIAllItems", "UIAllItemsByType"];
           uicomponent.renderSideBarChild(arrAllItems); 

@@ -525,14 +525,90 @@
 		}
 	};
 	
-	ECMUtils.prototype.initSlideShow = function(data) {
-		alert(data);
-		alert(1);
-		window.addEvent('domready', function(){
-		   alert(data);
-		    var myShow = new Slideshow('show', data, {controller: true, height: 300, hu: '', thumbnails: true, width: 400});
-		  });
-	};
+	ECMUtils.prototype.resizeSideBar = function(event) {
+    var event = event || window.event;
+		eXo.ecm.ECMUtils.currentMouseX = event.clientX;
+		var container = document.getElementById("LeftContainer");
+		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
+		eXo.ecm.ECMUtils.resizableBlockWidth = resizableBlock.offsetWidth;
+		eXo.ecm.ECMUtils.currentWidth = container.offsetWidth;
+		document.onmousemove = eXo.ecm.ECMUtils.resizeMouseMoveSideBar;
+		document.onmouseup = eXo.ecm.ECMUtils.resizeMouseUpSideBar;
+	}				
+	
+	ECMUtils.prototype.resizeMouseMoveSideBar = function(event) {
+		var container = document.getElementById("LeftContainer");
+		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
+		var deltaX = event.clientX - eXo.ecm.ECMUtils.currentMouseX ;
+		container.style.width = eXo.ecm.ECMUtils.currentWidth + deltaX + "px";
+		resizableBlock.style.width = eXo.ecm.ECMUtils.resizableBlockWidth + deltaX + "px";
+		eXo.ecm.ECMUtils.savedResizableMouseX = eXo.ecm.ECMUtils.resizableBlockWidth + deltaX + "px";
+		eXo.ecm.ECMUtils.savedLeftContainer = eXo.ecm.ECMUtils.currentWidth + deltaX + "px";
+	}
+	
+	ECMUtils.prototype.resizeMouseUpSideBar = function(event) {
+		document.onmousemove = null;
+		delete eXo.ecm.ECMUtils.currentWidth;
+		delete eXo.ecm.ECMUtils.currentMouseX;
+		delete eXo.ecm.ECMUtils.resizableBlockWidth;
+	}
+	
+	ECMUtils.prototype.showHideSideBar = function(event) {
+	  var container = document.getElementById("LeftContainer");
+	  if(container.style.display == 'none') {
+	    container.style.display = 'block';
+	  } else {
+  	  container.style.display = 'none';
+	  }
+	}
+	
+	ECMUtils.prototype.loadEffectedSideBar = function() {
+	  var container = document.getElementById("LeftContainer");
+		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
+		if(eXo.ecm.ECMUtils.savedLeftContainer && eXo.ecm.ECMUtils.savedResizableMouseX) {
+			container.style.width = eXo.ecm.ECMUtils.savedLeftContainer;
+			resizableBlock.style.width = eXo.ecm.ECMUtils.savedResizableMouseX;
+		}
+	}
+	
+	ECMUtils.prototype.resizeTreeInSideBar = function(event) {
+    var event = event || window.event;
+		eXo.ecm.ECMUtils.currentMouseY = event.clientY;
+		var container = document.getElementById("UITreeExplorer");
+		eXo.ecm.ECMUtils.currentHeight = container.offsetHeight;
+		document.onmousemove = eXo.ecm.ECMUtils.resizeMouseMoveItemsInSideBar;
+		document.onmouseup = eXo.ecm.ECMUtils.resizeMouseUpItemsInSideBar;
+	}
+
+	ECMUtils.prototype.resizeMouseMoveItemsInSideBar = function(event) {
+		var container = document.getElementById("UITreeExplorer");
+		var deltaY = event.clientY - eXo.ecm.ECMUtils.currentMouseY ;
+		container.style.height = eXo.ecm.ECMUtils.currentHeight + deltaY + "px";
+		eXo.ecm.ECMUtils.savedTreeSizeMouseY = eXo.ecm.ECMUtils.currentHeight + deltaY + "px";
+	}
+	
+	ECMUtils.prototype.resizeMouseUpItemsInSideBar = function(event) {
+		document.onmousemove = null;
+		delete eXo.ecm.ECMUtils.currentHeight;
+		delete eXo.ecm.ECMUtils.currentMouseY;
+	}
+	
+	ECMUtils.prototype.showHideItemsInSideBar = function(event) {
+	  var container = document.getElementById("SelectItemArea");
+	  if(container.style.display == 'none') {
+	    container.style.display = 'block';
+	  } else {
+  	  container.style.display = 'none';
+	  }
+	}
+	
+	ECMUtils.prototype.loadEffectedItemsInSideBar = function() {
+	  var container = document.getElementById("UITreeExplorer");
+		if(eXo.ecm.ECMUtils.savedTreeSizeMouseY) {
+			container.style.height = eXo.ecm.ECMUtils.savedTreeSizeMouseY;
+		}
+	}	
+		
 };
 
 eXo.ecm.ECMUtils = new ECMUtils();

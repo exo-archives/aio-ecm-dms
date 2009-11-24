@@ -290,6 +290,11 @@ public class UITreeExplorer extends UIContainer {
     buildTree(null);
   }
   
+  public boolean isDocumentNodeType(Node node) throws Exception {
+    TemplateService templateService = getApplicationComponent(TemplateService.class);
+    return templateService.isManagedNodeType(node.getPrimaryNodeType().getName(), getRepository());
+  }
+  
   static public class ExpandActionListener extends EventListener<UITreeExplorer> {
     public void execute(Event<UITreeExplorer> event) throws Exception {
       UITreeExplorer uiTreeExplorer = event.getSource();
