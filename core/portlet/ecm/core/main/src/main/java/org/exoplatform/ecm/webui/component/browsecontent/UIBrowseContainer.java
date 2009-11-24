@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -414,7 +413,10 @@ public class UIBrowseContainer extends UIContainer {
       int count = 0; 
       while (iter.hasNext() && (count++ != recordNumber)) {
         Node node = iter.nextNode();
-        addNodePublish(queryDocuments, node);
+        if (isAllowPublish()) {
+          if(!isPublishedNode(node)) continue;
+        }
+        queryDocuments.add(node);
       }
     } catch(Exception e) {
       // Display the stack trace
@@ -1467,7 +1469,10 @@ public class UIBrowseContainer extends UIContainer {
     List<Node> listNode = data.getContentList();
     List<Node> listNodeAfterCheck = new ArrayList<Node>();
     for (Node node : listNode) {
-      addNodePublish(listNodeAfterCheck, node);
+      if (isAllowPublish()) {
+        if(!isPublishedNode(node)) continue;
+      }
+      listNodeAfterCheck.add(node);
     }
     return listNodeAfterCheck;
   }
