@@ -145,11 +145,11 @@ public class UIWorkingArea extends UIContainer {
     return null;
   }
   
-  List<UIAbstractManagerComponent> getManagers() {
+  public List<UIAbstractManagerComponent> getManagers() {
     return managers;
   }
 
-  void unregister(UIAbstractManagerComponent component) {
+  public void unregister(UIAbstractManagerComponent component) {
     managers.remove(component);
   }
 

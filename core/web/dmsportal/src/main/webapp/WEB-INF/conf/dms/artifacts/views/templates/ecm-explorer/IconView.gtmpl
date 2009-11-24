@@ -41,7 +41,7 @@
 												for(itemContext in managersMultiItemContext) {
 													action = itemContext.getUIExtensionName();
 											%>
-													<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UIListView.postGroupAction("<%=itemContext.event(action, 'MultiSelection')%>")> 	
+													<a class="MenuItem" style="display: block;" onclick=eXo.ecm.UISimpleView.postGroupAction("<%=itemContext.event(action, 'MultiSelection')%>")> 	
 													<div class="ItemIcon ${action}16x16Icon">
 													<%=_ctx.appRes("ECMContextMenu.event." + action)%>
 													</div>
@@ -179,6 +179,8 @@
 		</div>
 	</div>	
   <% 
+    //re-initialize action
+    uiWorkingArea.initialize();
 	  int availablePage = uicomponent.getContentPageIterator().getAvailablePage();
 	  if (availablePage > 1) { 
 	%>	

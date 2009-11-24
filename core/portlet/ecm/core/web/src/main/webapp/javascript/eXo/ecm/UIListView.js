@@ -561,17 +561,6 @@ var ListView = function() {
 		});
 		document.body.appendChild(contextMenu);
 		
-		//check position popup
-		var X = eXo.core.Browser.findMouseXInPage(event);
-		var Y = eXo.core.Browser.findMouseYInPage(event);
-		var portWidth = eXo.core.Browser.getBrowserWidth();
-		var portHeight = eXo.core.Browser.getBrowserHeight();
-		var contentMenu = DOM.findFirstChildByClass(contextMenu, "div", "UIRightClickPopupMenu");
-		if (event.clientX + contentMenu.offsetWidth > portWidth) X -= contentMenu.offsetWidth;
-		if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
-		contextMenu.style.top = Y + 5 + "px";
-		contextMenu.style.left = X + 5 + "px";
-		
 		//check lock, unlock action
 		var checkUnlock = false;
 		var checkRemoveFavourite = false;
@@ -597,36 +586,48 @@ var ListView = function() {
 			lockAction.parentNode.style.display = "block";
 		}
 
-    var addFavouriteAction = DOM.findFirstDescendantByClass(contextMenu, "div", "AddToFavourite16x16Icon");
-    var removeFavouriteAction = DOM.findFirstDescendantByClass(contextMenu, "div", "RemoveFromFavourite16x16Icon");
-    if (checkRemoveFavourite) {
-      removeFavouriteAction.parentNode.style.display = "block";    
-      addFavouriteAction.parentNode.style.display = "none";
-    } else {
-      addFavouriteAction.parentNode.style.display = "block";
-      removeFavouriteAction.parentNode.style.display = "none";
-    }
-    var restoreFromTrashAction = DOM.findFirstDescendantByClass(contextMenu, "div", "RestoreFromTrash16x16Icon");
-    var emptyTrashAction = DOM.findFirstDescendantByClass(contextMenu, "div", "EmptyTrash16x16Icon");
-    var playMediaAction = DOM.findFirstDescendantByClass(contextMenu, "div", "PlayMedia16x16Icon");
-    
-    if (!checkInTrash) {
-      restoreFromTrashAction.parentNode.style.display = "none";
-    } else {
-      restoreFromTrashAction.parentNode.style.display = "block";
-    }
-    if (!checkMediaType) {
-    	playMediaAction.parentNode.style.display = "none";
-    } else {
-    	playMediaAction.parentNode.style.display = "block";
-    }
-    if (!checkEmptyTrash) {
-      emptyTrashAction.parentNode.style.display = "none";
-    } else {
-      emptyTrashAction.parentNode.style.display = "block";
-    }
-	contextMenu.onmouseup = Self.hideContextMenu;
-	document.body.onmousedown = Self.hideContextMenu;
+	    var addFavouriteAction = DOM.findFirstDescendantByClass(contextMenu, "div", "AddToFavourite16x16Icon");
+	    var removeFavouriteAction = DOM.findFirstDescendantByClass(contextMenu, "div", "RemoveFromFavourite16x16Icon");
+	    if (checkRemoveFavourite) {
+	      removeFavouriteAction.parentNode.style.display = "block";    
+	      addFavouriteAction.parentNode.style.display = "none";
+	    } else {
+	      addFavouriteAction.parentNode.style.display = "block";
+	      removeFavouriteAction.parentNode.style.display = "none";
+	    }
+	    var restoreFromTrashAction = DOM.findFirstDescendantByClass(contextMenu, "div", "RestoreFromTrash16x16Icon");
+	    var emptyTrashAction = DOM.findFirstDescendantByClass(contextMenu, "div", "EmptyTrash16x16Icon");
+	    var playMediaAction = DOM.findFirstDescendantByClass(contextMenu, "div", "PlayMedia16x16Icon");
+	    
+	    if (!checkInTrash) {
+	      restoreFromTrashAction.parentNode.style.display = "none";
+	    } else {
+	      restoreFromTrashAction.parentNode.style.display = "block";
+	    }
+	    if (!checkMediaType) {
+	    	playMediaAction.parentNode.style.display = "none";
+	    } else {
+	    	playMediaAction.parentNode.style.display = "block";
+	    }
+	    if (!checkEmptyTrash) {
+	      emptyTrashAction.parentNode.style.display = "none";
+	    } else {
+	      emptyTrashAction.parentNode.style.display = "block";
+	    }
+	    
+	  //check position popup
+		var X = eXo.core.Browser.findMouseXInPage(event);
+		var Y = eXo.core.Browser.findMouseYInPage(event);
+		var portWidth = eXo.core.Browser.getBrowserWidth();
+		var portHeight = eXo.core.Browser.getBrowserHeight();
+		var contentMenu = DOM.findFirstChildByClass(contextMenu, "div", "UIRightClickPopupMenu");
+		if (event.clientX + contentMenu.offsetWidth > portWidth) X -= contentMenu.offsetWidth;
+		if (event.clientY + contentMenu.offsetHeight > portHeight) Y -= contentMenu.offsetHeight + 5;
+		contextMenu.style.top = Y + 5 + "px";
+		contextMenu.style.left = X + 5 + "px";
+		
+		contextMenu.onmouseup = Self.hideContextMenu;
+		document.body.onmousedown = Self.hideContextMenu;
 	};
 	
 	// working with ground context menu
