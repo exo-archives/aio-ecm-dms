@@ -374,8 +374,6 @@
   background: url('icons/NodeTypes/videomp4.png') no-repeat;  
 }
 
-div {border:1px solid red}
-
 .video_x-flv48x48Icon {
   width: 48px; height: 48px;
   background: url('icons/NodeTypes/video_x-flv.png') no-repeat;  
