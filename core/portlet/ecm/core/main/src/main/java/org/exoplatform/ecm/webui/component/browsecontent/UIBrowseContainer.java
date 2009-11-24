@@ -413,7 +413,10 @@ public class UIBrowseContainer extends UIContainer {
       int count = 0; 
       while (iter.hasNext() && (count++ != recordNumber)) {
         Node node = iter.nextNode();
-        addNodePublish(queryDocuments, node);
+        if (isAllowPublish()) {
+          if(!isPublishedNode(node)) continue;
+        }
+        queryDocuments.add(node);
       }
     } catch(Exception e) {
       // Display the stack trace
@@ -724,7 +727,7 @@ public class UIBrowseContainer extends UIContainer {
     PortletPreferences portletPref = prequest.getPreferences();
     return portletPref;
   }
-
+  
   public String getQueryLanguage() {
     return getPortletPreferences().getValue(Utils.CB_QUERY_LANGUAGE, "");
   }
@@ -1466,7 +1469,10 @@ public class UIBrowseContainer extends UIContainer {
     List<Node> listNode = data.getContentList();
     List<Node> listNodeAfterCheck = new ArrayList<Node>();
     for (Node node : listNode) {
-      addNodePublish(listNodeAfterCheck, node);
+      if (isAllowPublish()) {
+        if(!isPublishedNode(node)) continue;
+      }
+      listNodeAfterCheck.add(node);
     }
     return listNodeAfterCheck;
   }
