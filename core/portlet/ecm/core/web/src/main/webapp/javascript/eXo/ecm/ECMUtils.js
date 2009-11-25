@@ -536,6 +536,7 @@
 	}				
 	
 	ECMUtils.prototype.resizeMouseMoveSideBar = function(event) {
+		var event = event || window.event;
 		var container = document.getElementById("LeftContainer");
 		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
 		var deltaX = event.clientX - eXo.ecm.ECMUtils.currentMouseX ;
@@ -580,6 +581,7 @@
 	}
 
 	ECMUtils.prototype.resizeMouseMoveItemsInSideBar = function(event) {
+		var event = event || window.event;
 		var container = document.getElementById("UITreeExplorer");
 		var deltaY = event.clientY - eXo.ecm.ECMUtils.currentMouseY ;
 		container.style.height = eXo.ecm.ECMUtils.currentHeight + deltaY + "px";
