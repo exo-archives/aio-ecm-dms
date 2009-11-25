@@ -176,8 +176,6 @@
 		    <div class="NodeGroup">
 		      <%
 		      	writeNodes(treeNodeRoot);
-		      	//re-initialize action
-			 					uicomponent.getWorkingArea().initialize();
 		       if(uicomponent.isPaginated(treeNodeRoot)) {%>
 		       			<div class="Node PageIterator">
 		       				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNodeRoot.getPath())); %>

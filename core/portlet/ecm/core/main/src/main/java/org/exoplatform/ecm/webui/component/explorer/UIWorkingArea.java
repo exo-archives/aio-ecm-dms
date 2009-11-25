@@ -146,6 +146,8 @@ public class UIWorkingArea extends UIContainer {
   }
   
   public List<UIAbstractManagerComponent> getManagers() {
+    List<UIAbstractManagerComponent> managers = new ArrayList<UIAbstractManagerComponent>();
+    managers.addAll(this.managers);
     return managers;
   }
 

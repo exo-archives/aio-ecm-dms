@@ -62,9 +62,11 @@ public class PermlinkActionComponent extends UIAbstractManagerComponent {
     PortletRequestContext portletReqContext = (PortletRequestContext) WebuiRequestContext.getCurrentInstance();
     String portletId = portletReqContext.getWindowId();
     String drivename = uiExplorer.getDriveData().getName();
+    String drivePath = uiExplorer.getDriveData().getHomePath();
+    String nodePath = node.getPath().replace(drivePath, "/").replaceAll("/+", "/");
     String repository = uiExplorer.getRepositoryName();
     StringBuffer bf = new StringBuffer(1024);
-    return bf.append(portalUrl).append(portletId).append("/").append(repository).append("/").append(drivename).append(node.getPath()).toString();
+    return bf.append(portalUrl).append(portletId).append("/").append(repository).append("/").append(drivename).append(nodePath).toString();
   }
   
   @Override
