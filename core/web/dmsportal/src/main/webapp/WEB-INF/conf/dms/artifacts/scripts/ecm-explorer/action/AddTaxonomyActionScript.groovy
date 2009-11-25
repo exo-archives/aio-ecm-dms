@@ -29,6 +29,8 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.idgenerator.IDGeneratorService;
+import org.apache.commons.logging.Log;
+import org.exoplatform.services.log.ExoLogger;
 
 /**
  * Created by The eXo Platform SAS
@@ -46,6 +48,7 @@ public class AddTaxonomyActionScript implements CmsScript {
   private SessionProviderService seProviderService_;
   private LinkManager linkManager_;
   private IDGeneratorService idGenerator_;
+  private static final Log LOG  = ExoLogger.getLogger("AddTaxonomyActionScript");
   
   public AddTaxonomyActionScript(RepositoryService repositoryService, 
       SessionProviderService sessionProviderService, LinkManager linkManager, IDGeneratorService idGenerator) {
@@ -55,7 +58,7 @@ public class AddTaxonomyActionScript implements CmsScript {
     idGenerator_ = idGenerator;
   }
   
-  public void execute(Object context) {
+  public void execute(Object context) throws Exception {
     Map variables = (Map) context;       
     String nodePath = (String)variables.get("nodePath") ;
     String storeFullPath = (String)variables.get("exo:storeHomePath") ;
@@ -78,16 +81,18 @@ public class AddTaxonomyActionScript implements CmsScript {
     Node targetNode = null;
     Node storeNode = null;
     try{
-      sessionHomeNode = seProviderService_.getSessionProvider(null).getSession(storeWorkspace, manageableRepository);
+      sessionHomeNode = seProviderService_.getSystemSessionProvider(null).getSession(storeWorkspace, manageableRepository);
       storeNode = (Node)sessionHomeNode.getItem(storeHomePath);
     } catch(Exception e) {
-      e.printStackTrace();
+      LOG.error("Exception when try to get node of root taxonomy tree", e);
+      throw e;
     }
     try{
-      sessionTargetNode = seProviderService_.getSessionProvider(null).getSession(targetWorkspace, manageableRepository);
+      sessionTargetNode = seProviderService_.getSystemSessionProvider(null).getSession(targetWorkspace, manageableRepository);
       targetNode = (Node)sessionTargetNode.getItem(targetPath);
     } catch(Exception e) {
-      e.printStackTrace();
+      LOG.error("Exception when try to get node of target", e);
+      throw e;
     }
 	String[] subPaths = getDateLocation().split("/");
 	Node cNode = targetNode;
