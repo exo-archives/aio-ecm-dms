@@ -5,10 +5,11 @@
   }
   
   def rcontext = _ctx.getRequestContext() ;
-  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.loadEffectedItemsInSideBar') ;
+  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.loadEffectedItemsInSideBar');
+  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UIListView.setHeight");
 %>
 <div class="UISideBar" id="UISideBar">
-  <div class="UISideBarContainer">
+  <div class="UISideBarContainer" style="height: 100%">
     <div class="UIResizableBlock" style="height: 100%">
       <% 
         String[] arrComp = [uicomponent.getCurrentComp()];

@@ -764,16 +764,21 @@ var ListView = function() {
 		var root = document.getElementById("UIDocumentInfo");
 		var view = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIListGrid");
 		var workingArea = document.getElementById('UIWorkingArea');
+		var documentWorkspace = document.getElementById('UIDocumentWorkspace');
 		var workingContainer = document.getElementById('UIDocumentContainer');
 		var page = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "PageAvailable");
-		var title = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "TitleTable");
+		var title = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "TitleTable");				
+		var sizeBarContainer = DOM.findFirstDescendantByClass(workingArea, "div", "UISideBarContainer");
+		var resizeButton = DOM.findFirstDescendantByClass(workingArea, "div", "ResizeButton");
+		sizeBarContainer.style.height = documentWorkspace.offsetHeight + 'px';	
+		resizeButton.style.height = documentWorkspace.offsetHeight + 'px';
+						
   if (page) {
 			if (parseInt(page.getAttribute('pageAvailable')) > 1) {
-				if (view) 
-					view.style.height = workingContainer.offsetHeight - page.offsetHeight + 'px';
+				if (view) view.style.height = workingContainer.offsetHeight - page.offsetHeight + 'px';
 			}
 		} else {
-		  if (view) view.style.height = workingArea.offsetHeight + 'px';
+		  if (view) view.style.height = workingArea.offsetHeight + 'px';												
 		}
 	};
 	

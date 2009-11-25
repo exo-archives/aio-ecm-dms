@@ -837,7 +837,14 @@ var SimpleView = function() {
 		var root = document.getElementById("UIDocumentInfo");
 		var view = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "UIThumbnailsView");
 		var workingArea = document.getElementById('UIWorkingArea');
+		var documentWorkspace = document.getElementById('UIDocumentWorkspace');
+		var workingContainer = document.getElementById('UIDocumentContainer');		
 		var page = eXo.core.DOMUtil.findFirstDescendantByClass(root, "div", "PageAvailable");
+		
+		var sizeBarContainer = DOM.findFirstDescendantByClass(workingArea, "div", "UISideBarContainer");
+		var resizeButton = DOM.findFirstDescendantByClass(workingArea, "div", "ResizeButton");
+		sizeBarContainer.style.height = documentWorkspace.offsetHeight + 'px';	
+		resizeButton.style.height = documentWorkspace.offsetHeight + 'px';
 		if (page) {
 			if (parseInt(page.getAttribute('pageAvailable')) > 1) {
 				if (view) view.style.height = workingArea.offsetHeight - page.offsetHeight + 'px';

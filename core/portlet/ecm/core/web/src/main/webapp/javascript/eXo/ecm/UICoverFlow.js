@@ -13,6 +13,7 @@ var CoverFlow = function() {
 		iframe.setAttribute("border", "0");
 		iframe.style.border = "none";
 		var workingArea = DOM.findAncestorByClass(portlet, "UIWorkingArea");
+						
 		iframe.style.width = "98%";
 		iframe.style.height = workingArea.offsetHeight - 47 + "px";
 		iframe.style.margin = "auto";
@@ -28,6 +29,21 @@ var CoverFlow = function() {
 	  img.style.display = "block";
 	  obj.style.display = "none";
 	};
+	
+	CoverFlow.prototype.setHeight = function() {
+		
+		 // lampt's update
+		 Self.portletId = portletId;
+		 var portlet = document.getElementById(portletId);
+			var workingArea = DOM.findAncestorByClass(portlet, "UIWorkingArea");
+			
+		 
+			var sizeBarContainer = DOM.findFirstDescendantByClass(workingArea, "div", "UISideBarContainer");
+			var resizeButton = DOM.findFirstDescendantByClass(workingArea, "div", "ResizeButton");
+			sizeBarContainer.style.height = workingArea.offsetHeight + 'px';	
+			resizeButton.style.height = workingArea.offsetHeight + 'px';						
+ }
+	
 };
 
 eXo.ecm.UICoverFlow = new CoverFlow();

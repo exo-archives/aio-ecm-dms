@@ -30,9 +30,9 @@ import org.exoplatform.ecm.jcr.model.Preference;
   def viewComponentId  = new Date().getTime();
 	def rcontext = _ctx.getRequestContext() ;
 	
-//  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UISimpleView','/ecm/javascript/'); 
-//  rcontext.getJavascriptManager().addOnLoadJavascript("function(){eXo.ecm.UISimpleView.initAllEvent('${componentId}-$viewComponentId');}");
-// 	rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UISimpleView.setHeight");
+  rcontext.getJavascriptManager().importJavascript('eXo.ecm.UIListView','/ecm/javascript/'); 
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.UIListView.initAllEvent('${componentId}-$viewComponentId');");
+  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UIListView.setHeight");
 
 	uicomponent.updateNodeLists();
 
@@ -56,8 +56,8 @@ import org.exoplatform.ecm.jcr.model.Preference;
  	
 %>
 <!--<div style="" class="UIListView" id="UIDocumentInfo-1256094770906">-->
-<div id="<%=uicomponent.getId()%>" class="UIListView">
-	<div class="UITimelineView" style="height: 475px;">
+<div id="${componentId}-$viewComponentId" class="UIListView" style="">
+	<div class="UITimelineView">
 		<div style="padding:4px 3px 0px 3px;">
 			<div class="TitleTable">
 				<div style="width: 40px;" class="LeftColumn Split">
