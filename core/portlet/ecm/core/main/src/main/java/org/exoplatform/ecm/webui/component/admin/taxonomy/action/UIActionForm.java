@@ -285,7 +285,14 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
           event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
           return;
         }
-      }        
+      }
+      String targetPath = uiActionForm.getUIStringInput("targetPath").getValue();
+      if ((targetPath == null) || (targetPath.length() == 0)) {
+        uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeMainForm.msg.targetPath-emty", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
       boolean isChangeLocation = false;
       try {
         if (!isEditTree) {

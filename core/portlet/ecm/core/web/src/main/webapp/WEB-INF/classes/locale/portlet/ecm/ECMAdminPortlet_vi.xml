@@ -2200,6 +2200,10 @@
 			<any>Tất cả</any>
 		</label>
 	</UIAnyPermission>
-  
+ <UITaxonomyTreeMainForm>			
+			<msg>	  		
+	  		<targetPath-emty>Đường dẫn đích trống</targetPath-emty>	  		
+			</msg>
+	</UITaxonomyTreeMainForm> 
 </bundle>
 

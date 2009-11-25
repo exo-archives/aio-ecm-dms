@@ -2199,5 +2199,9 @@
 			<any>Any</any>
 		</label>
 	</UIAnyPermission>    
-  
+ <UITaxonomyTreeMainForm>			
+			<msg>	  		
+	  		<targetPath-emty>The target path is empty</targetPath-emty>	  		
+			</msg>
+	</UITaxonomyTreeMainForm> 
 </bundle>
