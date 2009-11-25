@@ -78,8 +78,7 @@ public class UIECMAdminPortlet extends UIPortletApplication {
   }
   
   public void initChilds() throws Exception{
-    System.out.println("55555555555555555555555555555555555");
-    UIECMAdminControlPanel controlPanel = getChild(UIECMAdminControlPanel.class) ;
+    UIECMAdminControlPanel controlPanel = getChild(UIECMAdminControlPanel.class);
     if(controlPanel == null) {
       controlPanel = addChild(UIECMAdminControlPanel.class, null, null) ;
       controlPanel.initialize();
@@ -142,12 +141,5 @@ public class UIECMAdminPortlet extends UIPortletApplication {
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
-  }
-  
-  public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
-    UIECMAdminWorkingArea uiecmAdminWorkingArea = getChild(UIECMAdminWorkingArea.class); 
-    UIUnLockManager uiUnLockManager = uiecmAdminWorkingArea.getChild(UIUnLockManager.class);
-    if (uiUnLockManager != null) uiUnLockManager.update();
-    super.processRender(app, context);
-  }
+  }  
 }

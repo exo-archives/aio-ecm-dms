@@ -29,6 +29,7 @@ import javax.jcr.query.Query;
 import javax.jcr.query.QueryManager;
 import javax.jcr.query.QueryResult;
 import javax.jcr.version.VersionException;
+import javax.portlet.PortletPreferences;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.commons.utils.PageList;
@@ -41,6 +42,8 @@ import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.config.WorkspaceEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.webui.application.WebuiRequestContext;
+import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -91,7 +94,11 @@ public class UILockNodeList extends UIComponentDecorator {
   
   public List<Node> getAllLockedNodes() throws Exception {
     RepositoryService repositoryService = getApplicationComponent(RepositoryService.class);
-    ManageableRepository manageRepository = repositoryService.getCurrentRepository();
+    PortletRequestContext pcontext = (PortletRequestContext)WebuiRequestContext.getCurrentInstance();
+    PortletPreferences portletPref = pcontext.getRequest().getPreferences();
+    String repository = portletPref.getValue(Utils.REPOSITORY, "");
+    RepositoryEntry repo = repositoryService.getConfig().getRepositoryConfiguration(repository);
+    ManageableRepository manageRepository = repositoryService.getRepository(repository);
     
     List<Node> listLockedNodes = new ArrayList<Node>();
     QueryManager queryManager = null;
@@ -99,17 +106,16 @@ public class UILockNodeList extends UIComponentDecorator {
     String queryStatement = LOCK_QUERY;
     Query query = null;
     QueryResult queryResult = null;
-    for(RepositoryEntry repo : repositoryService.getConfig().getRepositoryConfigurations() ) {
-      for(WorkspaceEntry ws : repo.getWorkspaceEntries()) {
-        session = SessionProviderFactory.createSystemProvider().getSession(ws.getName(), manageRepository);
-        queryManager = session.getWorkspace().getQueryManager();
-        query = queryManager.createQuery(queryStatement, Query.SQL);
-        queryResult = query.execute();    
-        for(NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {          
-          Node itemNode = iter.nextNode();
-          if (!itemNode.isNodeType(Utils.EXO_RESTORELOCATION) && itemNode.isLocked()) {
-            listLockedNodes.add(itemNode);
-          }
+    
+    for(WorkspaceEntry ws : repo.getWorkspaceEntries()) {
+      session = SessionProviderFactory.createSystemProvider().getSession(ws.getName(), manageRepository);
+      queryManager = session.getWorkspace().getQueryManager();
+      query = queryManager.createQuery(queryStatement, Query.SQL);
+      queryResult = query.execute();    
+      for(NodeIterator iter = queryResult.getNodes(); iter.hasNext();) {          
+        Node itemNode = iter.nextNode();
+        if (!itemNode.isNodeType(Utils.EXO_RESTORELOCATION) && itemNode.isLocked()) {
+          listLockedNodes.add(itemNode);
         }
       }
     }
