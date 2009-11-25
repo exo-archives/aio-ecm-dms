@@ -2267,5 +2267,9 @@
     </label>
     <title>add/edit skin</title>
   </SkinForm>
-  
+  <UITaxonomyTreeMainForm>			
+			<msg>	  		
+	  		<targetPath-emty>The target path is empty</targetPath-emty>	  		
+			</msg>
+		</UITaxonomyTreeMainForm>
 </bundle>
