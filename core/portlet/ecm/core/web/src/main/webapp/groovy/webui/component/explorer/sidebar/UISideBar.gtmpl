@@ -10,7 +10,7 @@
 %>
 <div class="UISideBar" id="UISideBar">
   <div class="UISideBarContainer" style="height: 100%">
-    <div class="UIResizableBlock" style="height: 100%">
+    <div class="UIResizableBlock">
       <% 
         String[] arrComp = [uicomponent.getCurrentComp()];
         uicomponent.renderSideBarChild(arrComp); 

@@ -82,7 +82,7 @@ var SimpleView = function() {
 				}
 			}
 		}
-		var scroller = DOM.findAncestorByClass(element, "UIResizableBlock");
+		var scroller = DOM.findAncestorByClass(element, "SideContent");
     scroller.onmousemove = eXo.ecm.UISimpleView.setScroll ;
 	};
 	
@@ -856,3 +856,4 @@ var SimpleView = function() {
 };
 
 eXo.ecm.UISimpleView = new SimpleView();
+window.onresize = eXo.ecm.UISimpleView.setHeight;

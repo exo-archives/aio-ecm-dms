@@ -78,7 +78,7 @@ var ListView = function() {
 				} 
 			}
 		}
-		var scroller = DOM.findAncestorByClass(element, "UIResizableBlock");
+		var scroller = DOM.findAncestorByClass(element, "SideContent");
     scroller.onmousemove = eXo.ecm.UIListView.setScroll ;
 	};
 	
@@ -773,14 +773,14 @@ var ListView = function() {
 		sizeBarContainer.style.height = documentWorkspace.offsetHeight + 'px';	
 		resizeButton.style.height = documentWorkspace.offsetHeight + 'px';
 						
-  if (page) {
-			if (parseInt(page.getAttribute('pageAvailable')) > 1) {
-				if (view) view.style.height = workingContainer.offsetHeight - page.offsetHeight + 'px';
+	  if (page) {
+				if (parseInt(page.getAttribute('pageAvailable')) > 1) {
+					if (view) view.style.height = workingContainer.offsetHeight - page.offsetHeight + 'px';
+				}
+			} else {
+			  if (view) view.style.height = workingArea.offsetHeight + 'px';												
 			}
-		} else {
-		  if (view) view.style.height = workingArea.offsetHeight + 'px';												
-		}
-	};
+		};
 	
 };
 

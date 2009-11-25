@@ -186,11 +186,10 @@
 	ECMUtils.prototype.focusCurrentNodeInTree = function(id) {
 		var element = document.getElementById(id);
 		if (!element) return; 
-		var sidebar = DOM.findAncestorByClass(element,  "UIResizableBlock");
+		var sidebar = DOM.findAncestorByClass(element,  "SideContent");
 		var top = element.offsetTop;
 		var left = element.offsetLeft;
-		sidebar.scrollTop = (top - sidebar.offsetTop)/2;
-		sidebar.scrollLeft = (left - sidebar.offsetLeft)/2;
+		sidebar.scrollTop = (top - sidebar.offsetTop);
 	};
 	
 	ECMUtils.prototype.collapseExpand = function(element) {
@@ -594,11 +593,23 @@
 	}
 	
 	ECMUtils.prototype.showHideItemsInSideBar = function(event) {
-	  var container = document.getElementById("SelectItemArea");
-	  if(container.style.display == 'none') {
-	    container.style.display = 'block';
+	  var itemArea = document.getElementById("SelectItemArea");
+	  var container = document.getElementById("UITreeExplorer");
+	  eXo.ecm.ECMUtils.savedDisplayStatusOfItemArea
+	  if(typeof(eXo.ecm.ECMUtils.heightOfItemArea) == "undefined") {
+	    eXo.ecm.ECMUtils.heightOfItemArea = itemArea.offsetHeight;
+	  }
+    if(typeof(eXo.ecm.ECMUtils.heightOfTree) == "undefined") {
+      eXo.ecm.ECMUtils.heightOfTree = container.offsetHeight;
+    }
+	  if(itemArea.style.display == 'none') {
+      container.style.height = container.offsetHeight - eXo.ecm.ECMUtils.heightOfItemArea + "px";
+	    itemArea.style.display = 'block';
+	    eXo.ecm.ECMUtils.savedDisplayStatusOfItemArea = 'block';
 	  } else {
-  	  container.style.display = 'none';
+  	  container.style.height = eXo.ecm.ECMUtils.heightOfTree + eXo.ecm.ECMUtils.heightOfItemArea + "px";
+  	  itemArea.style.display = 'none';
+  	  eXo.ecm.ECMUtils.savedDisplayStatusOfItemArea = 'none';
 	  }
 	}
 	
@@ -606,6 +617,16 @@
 	  var container = document.getElementById("UITreeExplorer");
 		if(eXo.ecm.ECMUtils.savedTreeSizeMouseY) {
 			container.style.height = eXo.ecm.ECMUtils.savedTreeSizeMouseY;
+		}
+		var itemArea = document.getElementById("SelectItemArea");
+		if(eXo.ecm.ECMUtils.savedDisplayStatusOfItemArea) {
+		  if(eXo.ecm.ECMUtils.savedDisplayStatusOfItemArea == 'none') {
+	      container.style.height = container.offsetHeight + eXo.ecm.ECMUtils.heightOfItemArea + "px";
+		    itemArea.style.display = 'none';
+		  } else {
+	  	  container.style.height = container.offsetHeight - eXo.ecm.ECMUtils.heightOfItemArea + "px";
+	  	  itemArea.style.display = 'block';
+		  }
 		}
 	}	
 		
