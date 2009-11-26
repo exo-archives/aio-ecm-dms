@@ -856,4 +856,3 @@ var SimpleView = function() {
 };
 
 eXo.ecm.UISimpleView = new SimpleView();
-window.onresize = eXo.ecm.UISimpleView.setHeight;
