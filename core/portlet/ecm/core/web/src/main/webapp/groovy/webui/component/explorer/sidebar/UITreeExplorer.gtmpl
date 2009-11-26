@@ -31,7 +31,8 @@
   		rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('${drive}_treeclip_button','$depth','$childrenSize')");
     }
     for(treeNode in childrenNodes) {	    
-    	Node node = treeNode.getNode() 
+    	Node node = treeNode.getNode();
+    	node.refresh(true);
     	try {
     	  def primaryName = node.getPrimaryNodeType().getName();
     	} catch(Exception e) {
@@ -63,7 +64,7 @@
         //Begin permlink
   	    def permLinkComponent =  uicomponent.getWorkingArea().getPermlink(node);
         if (permLinkComponent != null) {
-            strActs +=  "<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(node) + "\">" ;
+            strActs +=  "<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(node) + "\" target='_new' onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\">";
             strActs +=  " <div class='MenuURLIcon " + permLinkComponent.getUIExtensionName() + "16x16Icon'>" ;
             strActs +=    _ctx.appRes("ECMContextMenu.event." + permLinkComponent.getUIExtensionName());
             strActs +=  " </div>";
@@ -76,12 +77,12 @@
   	        mimeType = node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
   	      }
   		  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+ serverPath+"','"+ portalName +"','"+ repository +"','"+ preferenceWS+ "','" +Utils.formatNodeName(node.getPath())+"','"+mimeType+"')";				  					  					  	
-  	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\">" ;	        
+  	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" href=\"" + link + "\">" ;	        
   		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
   			  strActs += "</a>" ;				  	
   		  } else {
   		  	String link = serverPath + "/" + portalName +"/rest/private/jcr/" + repository + "/" + preferenceWS + Utils.formatNodeName(node.getPath()); 
-  	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" folder=\"" + link +"\">" ;	        
+  	    	strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" target='_new' folder=\"" + link +"\">" ;	        
   		  	strActs += "  <div class=\"ItemIcon WebDAV16x16Icon\">" + _ctx.appRes("UITreeExplorer.label.webDavView") + "</div>";
   			  strActs += "</a>" ;				  	
   		  }
@@ -93,7 +94,7 @@
   			  for(act in customActs) {
   			    String actName = act.getProperty("exo:name").getValue().getString() ;
   			    params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName", Utils.formatNodeName(act.getName()))] ;
-  			    strActs += "<a class=\"MenuItem\" title=\"$actName\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + uiCustomActionComponent.event("Custom", Utils.formatNodeName(path), params) + "\">" ;
+  			    strActs += "<a class=\"MenuItem\" title=\"$actName\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" href=\"" + uiCustomActionComponent.event("Custom", Utils.formatNodeName(path), params) + "\">" ;
   		      strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">";
   		      if (actName.length() > 10) strActs += actName.substring(0, 10) + "...";
   		      else strActs += actName;
@@ -147,7 +148,8 @@
 			counter ++ ;
 		}			
   }  
-  TreeNode treeNodeRoot = uicomponent.getRootTreeNode() ;
+  TreeNode treeNodeRoot = uicomponent.getRootTreeNode();
+  treeNodeRoot.getNode().refresh(true);
   String contextMenuEvent = uicomponent.getRootActionList() ;
 %>
 <div class="SideBarContent">
@@ -171,7 +173,9 @@
 		  <div style="white-space: nowrap; -moz-user-select: none;">
 		    <div class="NodeGroup">
 		      <%
-		      	writeNodes(treeNodeRoot);
+		        //re-initialize action
+		       writeNodes(treeNodeRoot);
+    	     uicomponent.getWorkingArea().initialize();
 		       if(uicomponent.isPaginated(treeNodeRoot)) {%>
 		       			<div class="Node PageIterator">
 		       				<% _ctx.renderUIComponent(uicomponent.getUIPageIterator(treeNodeRoot.getPath())); %>
