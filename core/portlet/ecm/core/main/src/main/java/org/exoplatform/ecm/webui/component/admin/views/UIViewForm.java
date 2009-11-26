@@ -211,7 +211,7 @@ public class UIViewForm extends UIFormInputSetWithAction implements UISelectable
     getUIFormCheckBoxInput(FIELD_ENABLEVERSION).setRendered(!isAddNew) ;
     setViewName("");
     if(isAddNew) {
-      setActions(new String[]{"Save", "Reset", "Cancel"}, null) ;
+      setActions(new String[]{"Save", "Reset", "Cancel", "AddTabForm"}, null) ;
       setActionInfo(FIELD_PERMISSION, new String[] {"AddPermission"}) ;
       tabMap_.clear() ;
       views_ = null ;
