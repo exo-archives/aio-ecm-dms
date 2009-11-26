@@ -102,6 +102,7 @@
   	      String excerpt = row.getValue("rep:excerpt(.)")== null ? "" : row.getValue("rep:excerpt(.)").getString();
   	      String score = row.getValue("jcr:score")== null ? "" : row.getValue("jcr:score").getString();
   	      String s = "";
+  	      if (!node.getPrimaryNodeType().getName().equals("exo:comments")) {
       %>
           <tr class="$rowClass">
           	<td>
@@ -123,7 +124,8 @@
 		          </div>
 	          </td>	                  
           </tr>
-    <%
+    <%				
+    						}
         }
       } else {
     %>
