@@ -2445,8 +2445,8 @@
 			<LiveDocumentsCenter>Centre des Document Vivrés</LiveDocumentsCenter>
 			<PendingDocumentsCenter>Centre des Documents Suppends</PendingDocumentsCenter>
 			<RecordsManagementCenter>Centre de Management Des Records</RecordsManagementCenter>
-			<SharedUsersSpace>L'espace Partagé des Utilisateurs</SharedUsersSpace>
-			<Systemfiles>Système de Fichiers </Systemfiles>
+			<SharedUsersSpace>Espace partagé utilisateurs</SharedUsersSpace>
+			<Systemfiles>Fichiers système</Systemfiles>
 			<ValidationRequestsDocumentsCenter>Centre de Validation Des Documents Requêtes</ValidationRequestsDocumentsCenter>
 		</label>  
 	</Drives>
