@@ -89,7 +89,7 @@
 		          permLinkComponent =  uiWorkingArea.getPermlink(data);
 		          if (permLinkComponent != null) {
 		            permlink = permLinkComponent.getUIExtensionName();
-		            strActs +=  "<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(data) + "\">" ;
+		            strActs +=  "<a class='MenuItem' style='display: block;' href=\"" + permLinkComponent.getPermlink(data) + "\" target='_new' onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\">";
 		            strActs +=  " <div class='MenuURLIcon ${permlink}16x16Icon'>";
                 strActs +=    _ctx.appRes("ECMContextMenu.event." + permlink);
 		            strActs +=  " </div>";
@@ -99,12 +99,12 @@
 			        if(data.getPrimaryNodeType().getName().equals("nt:file")) {
 						  	String mimeType=data.getNode("jcr:content").getProperty("jcr:mimeType").getString();
 						  	String link ="javascript:eXo.ecm.ECMUtils.generateWebDAVLink('"+serverUrl+"','"+portalName+"','"+repository+"','"+ preferenceWS+ "','" +data.getPath()+"','"+mimeType+"')";				  					  					  	
-			        	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + link + "\">" ;	        
+			        	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" href=\"" + link + "\">" ;	        
 						  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">Download And Allow Edition</div>" ;
 						  	strActs += 		"</a>" ;				  	
 						  }else {
 						  	String link = serverUrl + "/" + portalName + "/rest/private/jcr/" + repository + "/" + preferenceWS + data.getPath(); 
-			        	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\"  style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" target='_new' folder=\"" + link +"\">" ;	        
+			        	strActs +=		"<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\"  style=\"{behavior: url(#default#AnchorClick);}\" href=\"" +link + "\" target='_new' folder=\"" + link +"\">" ;	        
 						  	strActs += 		"  <div class=\"ItemIcon WebDAV16x16Icon\">Download And Allow Edition</div>" ;
 						  	strActs += 		"</a>" ;				  	
 						  }
@@ -116,7 +116,7 @@
                 for(act in customActs) {
                   String actName = act.getProperty("exo:name").getValue().getString() ;
                   params = [new Parameter("workspaceName", preferenceWS), new Parameter("actionName",act.getName())] ;
-                  strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(this);\" href=\"" + uiCustomActionComponent.event("Custom",nodePath,params) + "\">" ;
+                  strActs += "<a class=\"MenuItem\" onclick=\"return eXo.webui.UIRightClickPopupMenu.prepareObjectId(event, this);\" href=\"" + uiCustomActionComponent.event("Custom",nodePath,params) + "\">" ;
                   strActs += "  <div class=\"ItemIcon " + Utils.getNodeTypeIcon(act, "16x16Icon") + "\">$actName</div>" ;
                   strActs += "</a>" ;
                   }            
