@@ -3,13 +3,9 @@
     if (uicomponent.getCurrentComp().equals(item)) return "SelectedItem";
     return "NormalItem";
   }
-  
-  def rcontext = _ctx.getRequestContext() ;
-  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.loadEffectedItemsInSideBar');
-  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UIListView.setHeight");
 %>
 <div class="UISideBar" id="UISideBar">
-  <div class="UISideBarContainer" style="height: 100%">
+  <div class="UISideBarContainer">
     <div class="UIResizableBlock">
       <% 
         String[] arrComp = [uicomponent.getCurrentComp()];

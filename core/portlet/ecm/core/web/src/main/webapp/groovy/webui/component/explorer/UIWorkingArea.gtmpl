@@ -9,12 +9,17 @@
 %>
 <%
   import org.exoplatform.ecm.webui.component.explorer.sidebar.UISideBar ;
+  import org.exoplatform.ecm.webui.component.explorer.sidebar.UITreeExplorer;
   import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace ;
   import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
   
   def rcontext = _ctx.getRequestContext() ;
-  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.loadEffectedSideBar') ;
+  UITreeExplorer uiTreeExplorer = uicomponent.findFirstComponentOfType(UITreeExplorer.class);
+  def focusNode = uiTreeExplorer.getEncodeCurrentPath();
+  rcontext.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.loadEffectedSideBar('$focusNode');") ;
+  rcontext.getJavascriptManager().addOnLoadJavascript('eXo.ecm.ECMUtils.loadEffectedItemsInSideBar');
+  rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.UIListView.setHeight");
 %>
 
 <div class="UIWorkingArea" id="UIWorkingArea">

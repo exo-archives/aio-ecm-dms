@@ -9,10 +9,6 @@
   import java.util.List;
   import org.exoplatform.ecm.utils.text.Text;
   
-  def rcontext = _ctx.getRequestContext();
-  def focusNode = uicomponent.getEncodeCurrentPath();
-  rcontext.getJavascriptManager().importJavascript('eXo.ecm.ECMUtils','/ecm/javascript/'); 
-  rcontext.getJavascriptManager().addJavascript("eXo.ecm.ECMUtils.focusCurrentNodeInTree('$focusNode');");
 %>
 
 <%

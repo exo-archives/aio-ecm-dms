@@ -188,7 +188,6 @@
 		if (!element) return; 
 		var sidebar = DOM.findAncestorByClass(element,  "SideContent");
 		var top = element.offsetTop;
-		var left = element.offsetLeft;
 		sidebar.scrollTop = (top - sidebar.offsetTop);
 	};
 	
@@ -562,13 +561,14 @@
 	  }
 	}
 	
-	ECMUtils.prototype.loadEffectedSideBar = function() {
+	ECMUtils.prototype.loadEffectedSideBar = function(id) {
 	  var container = document.getElementById("LeftContainer");
 		var resizableBlock = DOM.findFirstDescendantByClass(container, "div", "UIResizableBlock");
 		if(eXo.ecm.ECMUtils.savedLeftContainer && eXo.ecm.ECMUtils.savedResizableMouseX) {
 			container.style.width = eXo.ecm.ECMUtils.savedLeftContainer;
 			resizableBlock.style.width = eXo.ecm.ECMUtils.savedResizableMouseX;
 		}
+		eXo.ecm.ECMUtils.focusCurrentNodeInTree(id);
 	}
 	
 	ECMUtils.prototype.resizeTreeInSideBar = function(event) {
