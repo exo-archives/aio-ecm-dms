@@ -2995,4 +2995,14 @@
       <AddCategory>Thêm danh mục</AddCategory>
     </tooltip>
 	 </UIActionBar>
+   <UITaggingForm>
+    <label>  
+      <Public>Chung</Public>
+      <Group>Nhóm</Group>
+      <Site>Site</Site>
+      <Private>Riêng</Private>
+      <tagScopes>Phạm vi nhãn</tagScopes>      
+    </label>
+   </UITaggingForm>
+
 </bundle>

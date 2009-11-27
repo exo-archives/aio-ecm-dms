@@ -60,7 +60,7 @@ public class UIPreferencesForm extends UIForm implements UIPopupComponent {
 
   final static public String FIELD_SHOW_HIDDEN_NODE = "showHiddenNode".intern();
   
-  final static public String FIELD_SHOW_ITEMS_BY_USER = "showItemsByUser".intern();
+  final static public String FIELD_SHOW_ITEMS_BY_USER = "showItemsByUserInTimeline".intern();
 
   final static public String FIELD_SHORTBY          = "sortBy".intern();
 

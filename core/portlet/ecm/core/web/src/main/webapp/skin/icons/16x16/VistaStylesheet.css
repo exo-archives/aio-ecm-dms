@@ -250,6 +250,13 @@
   cursor: pointer;
 }
 
+.RemoveStyleIcon {
+  width: 24px;  height: 24px;
+  background: url('VistaSkin/Delete.png') no-repeat;
+  cursor: pointer;
+}
+
+
 .EditIcon {
   width: 24px;  height: 24px;
   background: url('VistaSkin/Edit.png') no-repeat;

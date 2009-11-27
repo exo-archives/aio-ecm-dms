@@ -40,6 +40,8 @@ import javax.jcr.nodetype.NodeType;
 import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.jcr.model.Preference;
@@ -59,7 +61,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.documents.DocumentTypeService;
 import org.exoplatform.services.cms.drives.DriveData;
-import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.link.ItemLinkAware;
@@ -838,11 +840,11 @@ public class UIJCRExplorer extends UIContainer {
   public String getTagPath() { return tagPath_ ; }
   
   public List<Node> getDocumentByTag()throws Exception {
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
+    NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<String> documentsType = templateService.getDocumentTemplates(getRepositoryName()) ;
     List<Node> documentsOnTag = new ArrayList<Node>() ;
-    for(Node node : folksonomyService.getDocumentsOnTag(tagPath_, getRepositoryName())) {
+    for(Node node : newFolksonomyService.getAllDocumentsByTag(tagPath_, getRepositoryName(), getCurrentWorkspace())) {
       if(documentsType.contains(node.getPrimaryNodeType().getName())) {
         documentsOnTag.add(node) ;
       }
@@ -917,4 +919,5 @@ public class UIJCRExplorer extends UIContainer {
     }
     return result;
   }
+  
 }

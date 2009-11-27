@@ -153,6 +153,7 @@ public class Utils {
   final static public String EXO_HIDDENABLE = "exo:hiddenable";
   final static public String EXO_ACCESSPERMISSION = "exo:accessPermissions";
   final static public String EXO_FAVOURITE = "exo:favourite";
+  final static public String EXO_FAVOURITE_FOLDER = "exo:favoriteFolder";
   final static public String EXO_FAVOURITER = "exo:favouriter";
   final static public String EXO_RESTOREPATH = "exo:restorePath";
   final static public String EXO_RESTORELOCATION = "exo:restoreLocation";
@@ -292,6 +293,8 @@ public class Utils {
     if (node.isNodeType(EXO_TRASH_FOLDER)) {
     	nodeType = EXO_TRASH_FOLDER;
     }
+    if (node.isNodeType(EXO_FAVOURITE_FOLDER))
+    	nodeType = EXO_FAVOURITE_FOLDER;
     if(nodeType.equals(NT_UNSTRUCTURED) || nodeType.equals(NT_FOLDER)) {
       for(String specificFolder:SPECIFIC_FOLDERS) {
         if(node.isNodeType(specificFolder)) {

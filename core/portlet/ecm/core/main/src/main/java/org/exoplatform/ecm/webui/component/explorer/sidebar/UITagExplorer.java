@@ -23,7 +23,8 @@ import java.util.Map;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
@@ -46,19 +47,28 @@ public class UITagExplorer extends UIContainer {
   }
   
   public List<Node> getTagLink() throws Exception {
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    return folksonomyService.getAllTags(getRepository()) ;
+    NewFolksonomyService folksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
+    return folksonomyService.getAllPrivateTags(getUserName(), getRepository(), getWorkspace()) ;
   }
   public Map<String ,String> getTagStyle() throws Exception {
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
+    NewFolksonomyService folksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
+    String workspace = getApplicationComponent(DMSConfiguration.class).getConfig(getRepository()).getSystemWorkspace();
     Map<String , String> tagStyle = new HashMap<String ,String>() ;
-    for(Node tag : folksonomyService.getAllTagStyle(getRepository())) {
+    for(Node tag : folksonomyService.getAllTagStyle(getRepository(), workspace)) {
       tagStyle.put(tag.getName(), tag.getProperty("exo:htmlStyle").getValue().getString()) ;
     }
     return tagStyle ;
   }
   
   public String getRepository() { return getAncestorOfType(UIJCRExplorer.class).getRepositoryName();}
+  public String getWorkspace() { return getAncestorOfType(UIJCRExplorer.class).getCurrentWorkspace();}
+  public String getUserName() {
+  	try {
+  		return getAncestorOfType(UIJCRExplorer.class).getSession().getUserID();
+		} catch (Exception ex) {
+			return "";
+		}
+  }
   
   static public class ViewTagActionListener extends EventListener<UITagExplorer> {
     public void execute(Event<UITagExplorer> event) throws Exception {

@@ -215,6 +215,11 @@
   background: url('icons/NodeTypes/exo-trashFolder.gif') no-repeat;  
 }
 
+.exo_favoriteFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('icons/NodeTypes/exo-favoriteFolder.gif') no-repeat;  
+}
+
 
 .mix_versionable48x48Icon {
   width: 48px; height: 48px;

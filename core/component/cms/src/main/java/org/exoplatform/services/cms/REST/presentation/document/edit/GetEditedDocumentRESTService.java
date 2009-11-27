@@ -37,7 +37,7 @@ import org.exoplatform.ecm.utils.comparator.PropertyValueComparator;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.drives.DriveData;
 import org.exoplatform.services.cms.drives.ManageDriveService;
-import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
@@ -68,7 +68,7 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
 
   private TemplateService     templateService;
 
-  private FolksonomyService   folksonomyService;
+  private NewFolksonomyService   newFolksonomyService;
 
   private ManageDriveService   manageDriveService;
 
@@ -92,10 +92,10 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
 
   
   public GetEditedDocumentRESTService(RepositoryService repositoryService,
-      TemplateService templateService, FolksonomyService folksonomyService, ManageDriveService manageDriveService) {
+      TemplateService templateService, NewFolksonomyService newFolksonomyService, ManageDriveService manageDriveService) {
     this.repositoryService = repositoryService;
     this.templateService = templateService;
-    this.folksonomyService = folksonomyService;
+    this.newFolksonomyService = newFolksonomyService;
     this.manageDriveService = manageDriveService;
   }
   
@@ -195,7 +195,7 @@ public class GetEditedDocumentRESTService implements ResourceContainer {
       docNode.setDateEdited(getDateFormat(node.getProperty(DATE_MODIFIED).getDate()));
       tags = new StringBuilder(1024);
 
-      for(Node tag : folksonomyService.getLinkedTagsOfDocument(node, repository)) {
+      for(Node tag : newFolksonomyService.getLinkedTagsOfDocument(node, repository, node.getSession().getWorkspace().getName())) {
         tags.append(tag.getName()).append(", ");
       }
       

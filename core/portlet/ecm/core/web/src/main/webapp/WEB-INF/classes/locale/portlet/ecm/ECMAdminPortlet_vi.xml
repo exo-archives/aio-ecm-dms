@@ -2272,5 +2272,19 @@
 	  		<targetPath-emty>Đường dẫn đích trống</targetPath-emty>	  		
 			</msg>
 		</UITaxonomyTreeMainForm>
+
+   <UIFolksonomyManager>
+     <action>
+       <title>
+         <RemoveStyle>Xóa</RemoveStyle>
+         <AddStyle>Thêm style</AddStyle>
+       </title>
+     </action>
+     <msg>
+       <confirm-delete>Bạn có chắc chắn muốn xóa style này?</confirm-delete>
+     </msg>
+   </UIFolksonomyManager>
+   
+   		
 </bundle>
 

@@ -914,5 +914,8 @@
   
   <nodeType name="exo:folksonomyFolder" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
   </nodeType>
+
+  <nodeType name="exo:tagged" isMixin="true" hasOrderableChildNodes="false" primaryItemName="">
+  </nodeType>
  	
 </nodeTypes>

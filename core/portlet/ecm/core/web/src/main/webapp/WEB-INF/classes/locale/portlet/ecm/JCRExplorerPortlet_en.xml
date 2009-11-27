@@ -2941,4 +2941,15 @@
       <AddCategory>Add category</AddCategory>
     </tooltip>
 	 </UIActionBar>
+
+   <UITaggingForm>
+    <label>
+      <Public>Public</Public>
+      <Group>Group</Group>
+      <Site>Site</Site>
+      <Private>Private</Private>
+      <tagScopes>Tag Scopes</tagScopes>      
+    </label>
+   </UITaggingForm>
+
 </bundle>

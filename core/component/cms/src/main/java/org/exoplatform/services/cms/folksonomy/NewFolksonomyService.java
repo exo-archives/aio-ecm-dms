@@ -39,7 +39,17 @@ public interface NewFolksonomyService {
    * Property name HTML_STYLE_PROP
    */
   final public static String HTML_STYLE_PROP = "exo:htmlStyle".intern() ;
-	
+
+  final static public String EXO_TOTAL = "exo:total".intern();
+  final static public String EXO_TAGGED = "exo:tagged".intern();
+  final static public String EXO_UUID = "exo:uuid".intern();
+  final static public String EXO_TAGSTYLE = "exo:tagStyle".intern();
+  
+  final static public int PUBLIC = 0;
+  final static public int GROUP = 1;
+  final static public int SITE = 2;
+  final static public int PRIVATE = 3;
+  
 	
   /**
    * Add a private tag to a document. A folksonomy link will be created in a tag node
@@ -180,8 +190,22 @@ public interface NewFolksonomyService {
    * @param workspace     Workspace name
    * @throws Exception
    */
+  public void addTagStyle(String styleName, String tagRange, String htmlStyle, 
+      String repository, String workspace) throws Exception ;
+  
+  /**
+   * Update property TAG_RATE_PROP, HTML_STYLE_PROP following value tagRate, htmlStyle
+   * for node in tagPath in repository
+   * @param styleName     Style name
+   * @param tagRate       The range of tag numbers
+   * @param htmlStyle     Tag style
+   * @param repository    Repository name
+   * @param workspace     Workspace name
+   * @throws Exception
+   */
   public void updateTagStyle(String styleName, String tagRange, String htmlStyle, 
       String repository, String workspace) throws Exception ;
+  
   
   /**
    *  Get all tag style base of folksonomy tree
@@ -229,4 +253,27 @@ public interface NewFolksonomyService {
    */
   public Node modifyTagName(String tagPath, String newTagName, String repository, 
       String workspace) throws Exception;
+
+  /**
+   * Get all tags linked to given document
+   * @param documentNode 		Document node
+   * @param repository			Repository name
+   * @param workspace				Workspace name
+   * @return					
+   * @throws Exception
+   */
+  public List<Node> getLinkedTagsOfDocument(Node documentNode, String repository, 
+  		String workspace) throws Exception;
+  
+  /**
+   * Get all tags linked to given document by scope
+   * @param documentNode 		Document node
+   * @param repository			Repository name
+   * @param workspace				Workspace name
+   * @return					
+   * @throws Exception
+   */
+  public List<Node> getLinkedTagsOfDocumentByScope(int scope, String value, Node documentNode, String repository, 
+  		String workspace) throws Exception;
+  
 }

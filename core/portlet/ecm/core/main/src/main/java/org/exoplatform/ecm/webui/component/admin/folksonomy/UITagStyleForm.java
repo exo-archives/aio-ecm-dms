@@ -19,6 +19,8 @@ package org.exoplatform.ecm.webui.component.admin.folksonomy;
 import javax.jcr.Node;
 
 import org.apache.commons.lang.StringUtils;
+import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.web.application.ApplicationMessage;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -66,13 +68,15 @@ public class UITagStyleForm extends UIForm {
   public Node getTagStyle() { return selectedTagStyle_ ; }
   
   public void setTagStyle(Node selectedTagStyle) throws Exception { 
-    selectedTagStyle_ = selectedTagStyle ;      
-    getUIStringInput(STYLE_NAME).setValue(selectedTagStyle_.getName()) ; 
-    getUIStringInput(STYLE_NAME).setEditable(false) ;
-    String range = selectedTagStyle_.getProperty(UITagStyleList.RANGE_PROP).getValue().getString() ;    
-    getUIStringInput(DOCUMENT_RANGE).setValue(range) ;
-    String htmlStyle = selectedTagStyle_.getProperty(UITagStyleList.HTML_STYLE_PROP).getValue().getString() ;
-    getUIFormTextAreaInput(STYLE_HTML).setValue(htmlStyle) ;
+    selectedTagStyle_ = selectedTagStyle ;
+    if (selectedTagStyle != null) {
+	    getUIStringInput(STYLE_NAME).setValue(selectedTagStyle_.getName()) ; 
+	    getUIStringInput(STYLE_NAME).setEditable(false) ;
+	    String range = selectedTagStyle_.getProperty(UITagStyleList.RANGE_PROP).getValue().getString() ;    
+	    getUIStringInput(DOCUMENT_RANGE).setValue(range) ;
+	    String htmlStyle = selectedTagStyle_.getProperty(UITagStyleList.HTML_STYLE_PROP).getValue().getString() ;
+	    getUIFormTextAreaInput(STYLE_HTML).setValue(htmlStyle) ;
+    }
   }
   
   private boolean validateRange(String range) {      
@@ -105,6 +109,10 @@ public class UITagStyleForm extends UIForm {
       UITagStyleForm uiForm = event.getSource() ;
       UIFolksonomyManager uiManager = uiForm.getAncestorOfType(UIFolksonomyManager.class) ;
       UIApplication uiApp = uiForm.getAncestorOfType(UIApplication.class) ;
+      
+      String repository = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+      String workspace = uiForm.getAncestorOfType(UIECMAdminPortlet.class).getDMSSystemWorkspace(repository);
+      
       String documentRange = uiForm.getUIStringInput(DOCUMENT_RANGE).getValue() ;
       String styleHTML = uiForm.getUIFormTextAreaInput(STYLE_HTML).getValue() ;
       if(!uiForm.validateRange(documentRange)) {
@@ -112,6 +120,17 @@ public class UITagStyleForm extends UIForm {
         return ;
       }
       try {
+      	// add new tag
+      	if (uiForm.getTagStyle() == null) {
+      		String tagStyleName = uiForm.getUIStringInput(STYLE_NAME).getValue();
+          NewFolksonomyService newFolksonomyService = uiForm.getApplicationComponent(NewFolksonomyService.class) ;
+      		newFolksonomyService.addTagStyle(tagStyleName, "", "", repository, workspace);
+          for(Node tagStyle: newFolksonomyService.getAllTagStyle(repository, workspace)) 
+            if(tagStyle.getName().equals(tagStyleName)) { 
+            	uiForm.selectedTagStyle_ = tagStyle ;
+            	break;
+            }
+      	}
         uiForm.getTagStyle().setProperty(UITagStyleList.RANGE_PROP, documentRange) ;
         uiForm.getTagStyle().setProperty(UITagStyleList.HTML_STYLE_PROP, styleHTML) ;
         uiForm.getTagStyle().save() ;

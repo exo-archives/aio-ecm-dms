@@ -23,7 +23,7 @@ import javax.jcr.Node;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
-import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.core.UIGrid;
 
@@ -43,7 +43,7 @@ public class UITagStyleList extends UIGrid {
   final static String HTML_STYLE_PROP = "exo:htmlStyle" ;
   
   private static String[] BEAN_FIELD = {"name", "documentRange", "tagHTML"} ;
-  private static String[] ACTIONS = {"EditStyle"} ;
+  private static String[] ACTIONS = {"EditStyle", "RemoveStyle"} ;
   
   public UITagStyleList() throws Exception {
     getUIPageIterator().setId("TagStyleIterator") ;
@@ -52,10 +52,11 @@ public class UITagStyleList extends UIGrid {
   
   public void updateGrid() throws Exception {
     List<TagStyleData> tagStyleList = new ArrayList<TagStyleData>() ;
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
+    NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
     String repository = getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository() ;
+    String workspace = getAncestorOfType(UIECMAdminPortlet.class).getDMSSystemWorkspace(repository);
     TagStyleData tagStyleData = null ;
-    for(Node node : folksonomyService.getAllTagStyle(repository)) {
+    for(Node node : newFolksonomyService.getAllTagStyle(repository, workspace)) {
       tagStyleData = new TagStyleData(node.getName(), getRangeOfStyle(node), getHtmlStyleOfStyle(node)) ;
       tagStyleList.add(tagStyleData) ;
     }

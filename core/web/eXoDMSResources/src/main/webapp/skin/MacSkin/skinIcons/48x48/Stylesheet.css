@@ -258,6 +258,10 @@
   background: url('/eXoDMSResources/skin/DefaultSkin/skinIcons/48x48/icons/NodeTypes/exo-trashFolder.gif') no-repeat;  
 }
 
+.exo_favoriteFolder48x48Icon {
+  width: 48px; height: 48px;
+  background: url('/eXoDMSResources/skin/DefaultSkin/skinIcons/48x48/icons/NodeTypes/exo-favoriteFolder.gif') no-repeat;  
+}
 
 .nt_version48x48Icon {
   width: 48px; height: 48px;

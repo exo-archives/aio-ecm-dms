@@ -309,6 +309,10 @@
   background: url('icons/NodeTypes/exo-trashFolder.gif') no-repeat right top; /* orientation=rt */  
 }
 
+.exo_favoriteFolder16x16Icon {
+  background: url('icons/NodeTypes/exo-favoriteFolder.gif') no-repeat left top; /* orientation=lt */
+  background: url('icons/NodeTypes/exo-favoriteFolder.gif') no-repeat right top; /* orientation=rt */  
+}
 
 .Collapsent_unstructured16x16Icon {
   background: url('icons/NodeTypes/open-nt-unstructured.gif') no-repeat left -16px; /* orientation=lt */

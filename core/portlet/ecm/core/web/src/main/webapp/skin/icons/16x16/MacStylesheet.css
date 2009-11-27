@@ -366,6 +366,13 @@
   cursor: pointer;
 }
 
+.RemoveStyleIcon {
+  width: 16px;  height: 16px;
+  background: url('MacSkin/DustBin.gif') no-repeat;
+  cursor: pointer;
+}
+
+
 .EditIcon {
   width: 16px;  height: 16px;
   background: url('MacSkin/EditIcon.png') no-repeat;
@@ -520,7 +527,7 @@
 
 .EmptyTrash16x16Icon {
   width: 16px; height: 16px;
-  background: url('EmptyTrash/Copy.gif') no-repeat;   
+  background: url('MacSkin/EmptyTrash.gif') no-repeat;   
 }
 
 .Cut16x16Icon {

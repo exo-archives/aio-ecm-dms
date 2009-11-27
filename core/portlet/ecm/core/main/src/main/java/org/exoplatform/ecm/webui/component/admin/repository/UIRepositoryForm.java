@@ -38,7 +38,7 @@ import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.drives.ManageDriveService;
-import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.metadata.MetadataService;
@@ -298,7 +298,7 @@ public class UIRepositoryForm extends UIForm implements UIPopupComponent {
       getApplicationComponent(NodeHierarchyCreator.class).init(repository);
       getApplicationComponent(TaxonomyService.class).init(repository);
       getApplicationComponent(ManageDriveService.class).init(repository);
-      getApplicationComponent(FolksonomyService.class).init(repository);
+      getApplicationComponent(NewFolksonomyService.class).init(repository);
       getApplicationComponent(MetadataService.class).init(repository);
       getApplicationComponent(QueryService.class).init(repository);
       getApplicationComponent(RelationsService.class).init(repository);

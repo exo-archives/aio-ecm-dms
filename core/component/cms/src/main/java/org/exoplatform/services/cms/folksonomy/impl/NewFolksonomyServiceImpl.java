@@ -18,6 +18,7 @@ package org.exoplatform.services.cms.folksonomy.impl;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -27,6 +28,9 @@ import javax.jcr.Node;
 import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
+import javax.jcr.query.Query;
+import javax.jcr.query.QueryManager;
+import javax.jcr.query.QueryResult;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.ExoContainer;
@@ -52,11 +56,12 @@ import org.exoplatform.services.log.ExoLogger;
  */
 public class NewFolksonomyServiceImpl implements NewFolksonomyService {
 
-  final static public String EXO_TOTAL = "exo:total";	
 	private static final String USER_FOLKSONOMY_ALIAS = "userPrivateFolksonomy".intern();
-	private static final String GROUP_FOLKSONOMY_ALIAS = "folksonomy".intern();
+	private static final String GROUP_FOLKSONOMY_ALIAS = "groupFolksonomy".intern();
 	private static final String GROUPS_ALIAS = "groupsPath".intern();
-	private static final String TAG_STYLE_ALIAS = "exoTagStylesPath".intern();
+	private static final String TAG_STYLE_ALIAS = "exoNewTagStylePath".intern();
+	
+  private static final String PUBLIC_TAG_NODE_PATH = "exoPublicTagNode";
 	
   private static final Log LOG = ExoLogger.getLogger(NewFolksonomyService.class);
 	
@@ -95,6 +100,8 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
 					long total = tagNode.hasProperty(EXO_TOTAL) ?
 							tagNode.getProperty(EXO_TOTAL).getLong() : 0;
 					tagNode.setProperty(EXO_TOTAL, total + 1);
+					if (!tagNode.isNodeType(EXO_TAGGED))
+						tagNode.addMixin(EXO_TAGGED);
 					userFolksonomyNode.getSession().save();
 				}
 			} catch (Exception e) {
@@ -120,6 +127,8 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
 						long total = tagNode.hasProperty(EXO_TOTAL) ?
 								tagNode.getProperty(EXO_TOTAL).getLong() : 0;
 						tagNode.setProperty(EXO_TOTAL, total + 1);
+						if (!tagNode.isNodeType(EXO_TAGGED))
+							tagNode.addMixin(EXO_TAGGED);
 						groupFolksonomyNode.getSession().save();
 					}
 				} catch (Exception e) {
@@ -145,6 +154,8 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
   				long total = tagNode.hasProperty(EXO_TOTAL) ? 
   						tagNode.getProperty(EXO_TOTAL).getLong() : 0;
 					tagNode.setProperty(EXO_TOTAL, total + 1);
+					if (!tagNode.isNodeType(EXO_TAGGED))
+						tagNode.addMixin(EXO_TAGGED);
 					publicFolksonomyTreeNode.getSession().save();
   			}
   		} catch (Exception e) {
@@ -344,6 +355,21 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
 		styleNode.setProperty(HTML_STYLE_PROP, htmlStyle);
 		tagStylesNode.getSession().save();
   }
+
+  /**
+   * {@inheritDoc}
+   */
+	public void addTagStyle(String styleName, String tagRange, String htmlStyle,
+			String repository, String workspace) throws Exception {
+		String tagStylesPath = nodeHierarchyCreator.getJcrPath(TAG_STYLE_ALIAS);
+    Node tagStylesNode = getNode(repository, workspace, tagStylesPath);
+		Node styleNode = tagStylesNode.addNode(styleName, EXO_TAGSTYLE);
+		styleNode.addMixin("exo:privilegeable");
+		styleNode.setProperty(TAG_RATE_PROP, tagRange);
+		styleNode.setProperty(HTML_STYLE_PROP, htmlStyle);
+		tagStylesNode.getSession().save();
+	}
+  
   
   private List<Node> getChildNodes(Node node) throws Exception {
   	List<Node> ret = new ArrayList<Node>();
@@ -356,13 +382,14 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
   
   private Node getGroupFolksonomyFolder(String group, String repository, String workspace) throws Exception {
   	// code for running
-/*  	String groupsPath = nodeHierarchyCreator.getJcrPath(GROUPS_ALIAS);
-  	String folksonomyPath = nodeHierarchyCreator.getJcrPath(GROUP_FOLKSONOMY_ALIAS);
+  	String groupsPath = nodeHierarchyCreator.getJcrPath(GROUPS_ALIAS);
+  	//String folksonomyPath = nodeHierarchyCreator.getJcrPath(GROUP_FOLKSONOMY_ALIAS);
+  	String folksonomyPath = "ApplicationData/Tags";
   	Node groupsNode = getNode(repository, workspace, groupsPath);
-  	return groupsNode.getNode(group).getNode(folksonomyPath);*/
+  	return groupsNode.getNode(group.substring(1)).getNode(folksonomyPath);
   	
   	// code for testing
-    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();  	
+/*    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();  	
 		RepositoryService repositoryService 
 				= (RepositoryService) myContainer.getComponentInstanceOfType(RepositoryService.class);
 		ManageableRepository	manageableRepository = repositoryService.getRepository("repository");
@@ -375,17 +402,17 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
 		String folksonomyPath = "Folksonomy";
 		Node folksonomyNode = groupNode.hasNode(folksonomyPath) ? groupNode.getNode(folksonomyPath) :
 																															groupNode.addNode(folksonomyPath);
-		return folksonomyNode;
+		return folksonomyNode;*/
   }
   
   private Node getUserFolksonomyFolder(String userName) throws Exception {
   	// code for running
-/*  	Node userNode = nodeHierarchyCreator.getUserNode(sessionProvider, userName);
+  	Node userNode = nodeHierarchyCreator.getUserNode(sessionProvider, userName);
   	String folksonomyPath = nodeHierarchyCreator.getJcrPath(USER_FOLKSONOMY_ALIAS);
-  	return userNode.getNode(folksonomyPath);*/
+  	return userNode.getNode(folksonomyPath);
   	
   	// code for testing
-    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();  	
+/*    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();  	
 		RepositoryService repositoryService 
 				= (RepositoryService) myContainer.getComponentInstanceOfType(RepositoryService.class);
 		ManageableRepository	manageableRepository = repositoryService.getRepository("repository");
@@ -400,7 +427,7 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
 		String folksonomyPath = "Folksonomy";
 		Node folksonomyNode = privateNode.hasNode(folksonomyPath) ? privateNode.getNode(folksonomyPath) :
 																																privateNode.addNode(folksonomyPath);
-		return folksonomyNode;
+		return folksonomyNode;*/
   }
   
   private Node getNode(String repository, String workspace, String path) throws Exception {
@@ -440,4 +467,71 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
   	}
   }
 
+	public List<Node> getLinkedTagsOfDocument(Node documentNode,
+			String repository, String workspace) throws Exception {
+
+		Set<Node> ret = new HashSet<Node>();
+		// prepare query
+		StringBuilder queryStr = new StringBuilder("SELECT * FROM ")
+																			.append(EXO_TAGGED);
+//.append(" WHERE ").append(EXO_UUID).append("='").append(documentNode.getUUID()).append("'");
+    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();  	
+		RepositoryService repositoryService 
+		= (RepositoryService) myContainer.getComponentInstanceOfType(RepositoryService.class);
+		ManageableRepository	manageableRepository = repositoryService.getRepository(repository);
+  	
+		QueryManager queryManager =
+			sessionProvider.getSession(workspace, manageableRepository).getWorkspace().getQueryManager();
+		Query query = queryManager.createQuery(queryStr.toString(), Query.SQL);
+		QueryResult queryResult = query.execute();
+		NodeIterator nodeIter = queryResult.getNodes();
+		while (nodeIter.hasNext()) {
+			Node tagNode = nodeIter.nextNode();
+			if (existSymlink(tagNode, documentNode))
+				ret.add(tagNode);
+		}
+		return new ArrayList<Node>(ret);		 
+	}
+
+	public List<Node> getLinkedTagsOfDocumentByScope(int scope, String value,
+			Node documentNode, String repository, String workspace) throws Exception {
+		
+		List<Node> ret = new ArrayList<Node>();
+		if (scope == PRIVATE) {
+			Node userFolksonomyNode = getUserFolksonomyFolder(value);
+			NodeIterator iter = userFolksonomyNode.getNodes();
+			while (iter.hasNext()) {
+				Node tagNode = iter.nextNode(); 
+				if (existSymlink(tagNode, documentNode))
+					ret.add(tagNode);
+			}
+		}
+		
+		else if (scope == PUBLIC) {
+			String publicTagNodePath = nodeHierarchyCreator.getJcrPath(PUBLIC_TAG_NODE_PATH);			
+	  	Node publicFolksonomyTreeNode = getNode(repository, workspace, publicTagNodePath);
+			NodeIterator iter = publicFolksonomyTreeNode.getNodes();
+			while (iter.hasNext()) { 
+				Node tagNode = iter.nextNode();
+				if (existSymlink(tagNode, documentNode)) 
+					ret.add(tagNode);
+			}
+		}
+		
+		else if (scope == GROUP) {
+			String[] roles = value.split(";");
+	    for (String group : roles) {
+				if (group.length() < 1) continue;
+	    	Node groupFolksonomyNode = getGroupFolksonomyFolder(group, repository, workspace);
+	    	NodeIterator iter = groupFolksonomyNode.getNodes();
+	    	while (iter.hasNext()) {
+	    		Node tagNode = iter.nextNode();
+					if (existSymlink(tagNode, documentNode)) 
+						ret.add(tagNode);
+				}
+	    }
+		}
+		return ret;
+	}
+	
 }

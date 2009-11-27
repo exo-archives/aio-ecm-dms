@@ -22,7 +22,7 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
-import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -49,19 +49,24 @@ public class UITagList extends UIComponent {
 
   public List<Node> getTagLink() throws Exception {
     String repository = getRepository() ;
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
-    return folksonomyService.getAllTags(repository) ;
+    String workspace = getWorkspace();
+    String userName = getUserName();
+    NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
+    return newFolksonomyService.getAllPrivateTags(userName, repository, workspace);
   }
   public Map<String ,String> getTagStyle() throws Exception {
     String repository = getRepository() ;
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
+    String workspace = getWorkspace();
+    NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
     Map<String , String> tagStyle = new HashMap<String ,String>() ;
-    for(Node tag : folksonomyService.getAllTagStyle(repository)) {
+    for(Node tag : newFolksonomyService.getAllTagStyle(repository, workspace)) {
       tagStyle.put(tag.getName(), tag.getProperty("exo:htmlStyle").getValue().getString()) ;
     }
     return tagStyle ;
   }
   public String getRepository() { return getAncestorOfType(UIBrowseContainer.class).getRepository();}
+  public String getWorkspace() { return getAncestorOfType(UIBrowseContainer.class).getWorkSpace(); }
+  public String getUserName() { return getAncestorOfType(UIBrowseContainer.class).getUserName(); }
   
   public String getTagPath() { return this.tagPath_ ; }  
   public void setTagPath(String tagName) { this.tagPath_ = tagName ; }

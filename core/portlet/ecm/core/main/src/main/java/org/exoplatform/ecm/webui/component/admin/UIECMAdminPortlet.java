@@ -20,11 +20,16 @@ import javax.portlet.PortletPreferences;
 import javax.portlet.PortletRequest;
 
 import org.apache.commons.logging.Log;
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.component.admin.repository.UIRepositoryControl;
 import org.exoplatform.ecm.webui.component.admin.unlock.UIUnLockManager;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.webui.application.WebuiApplication;
 import org.exoplatform.webui.application.WebuiRequestContext;
@@ -141,5 +146,26 @@ public class UIECMAdminPortlet extends UIPortletApplication {
     PortletRequest prequest = pcontext.getRequest() ;
     PortletPreferences portletPref = prequest.getPreferences() ;
     return portletPref ;
-  }  
+  }
+  
+  public void  processRender(WebuiApplication app, WebuiRequestContext context) throws Exception {
+    UIECMAdminWorkingArea uiecmAdminWorkingArea = getChild(UIECMAdminWorkingArea.class); 
+    UIUnLockManager uiUnLockManager = uiecmAdminWorkingArea.getChild(UIUnLockManager.class);
+    if (uiUnLockManager != null) uiUnLockManager.update();
+    super.processRender(app, context);
+  }
+  
+  public String getDMSSystemWorkspace(String repository) throws Exception {
+  	ExoContainer container = ExoContainerContext.getCurrentContainer();
+//  	RepositoryService repoService = (RepositoryService)
+//  			container.getComponentInstanceOfType(RepositoryService.class);
+  	DMSConfiguration dmsConfiguration = (DMSConfiguration)
+  			container.getComponentInstanceOfType(DMSConfiguration.class);
+  	
+    //ManageableRepository manageableRepository = repoService.getRepository(repository) ;
+    DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(repository);
+    return dmsRepoConfig.getSystemWorkspace();
+    //return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
+  }
+  
 }

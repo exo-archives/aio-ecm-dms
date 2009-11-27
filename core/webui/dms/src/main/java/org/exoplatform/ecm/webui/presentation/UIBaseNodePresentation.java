@@ -33,7 +33,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.comments.CommentsService;
-import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.i18n.MultiLanguageService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -292,8 +292,8 @@ public abstract class UIBaseNodePresentation extends UIContainer implements Node
    * @throws Exception the exception
    */
   public List<Node> getTags(Node node) throws Exception {
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class);
-    return folksonomyService.getLinkedTagsOfDocument(node,getRepositoryName());
+    NewFolksonomyService folksonomyService = getApplicationComponent(NewFolksonomyService.class);
+    return folksonomyService.getLinkedTagsOfDocument(node,getRepositoryName(), getWorkspaceName());
   }
 
   /**

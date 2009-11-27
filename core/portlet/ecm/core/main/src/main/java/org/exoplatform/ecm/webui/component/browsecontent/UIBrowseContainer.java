@@ -60,7 +60,7 @@ import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.resolver.ResourceResolver;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.cms.folksonomy.FolksonomyService;
+import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
 import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.link.LinkManager;
@@ -247,11 +247,12 @@ public class UIBrowseContainer extends UIContainer {
   }
   public List<Node> getDocumentByTag()throws Exception {
     String repository = getRepository();
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class);
+    String workspace = getWorkSpace();
+    NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class);
     TemplateService templateService = getApplicationComponent(TemplateService.class);
     List<String> documentsType = templateService.getDocumentTemplates(repository);
     List<Node> documentsOnTag = new ArrayList<Node>();
-    for(Node node : folksonomyService.getDocumentsOnTag(tagPath_, repository)) {
+    for(Node node : newFolksonomyService.getAllDocumentsByTag(tagPath_, repository, workspace)) {
       if(documentsType.contains(node.getPrimaryNodeType().getName())) {
         documentsOnTag.add(node);
       }
@@ -739,6 +740,14 @@ public class UIBrowseContainer extends UIContainer {
     return getPortletPreferences().getValue(Utils.REPOSITORY, "");
   }
   
+  public String getUserName() {
+  	try {
+  		return getSession(getRepository(), getWorkSpace()).getUserID();
+  	} catch (Exception e) {
+  		return "";
+  	}
+  }
+  
   public String getRootPath() { return rootPath_; }
   
   public Node getRootNode() throws Exception { 
@@ -852,16 +861,19 @@ public class UIBrowseContainer extends UIContainer {
   public SessionProvider getSystemProvider() { return SessionProviderFactory.createSystemProvider(); }
   public List<Node> getTagLink() throws Exception {
     String repository = getRepository();
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class);
-    return folksonomyService.getAllTags(repository);
+    String workspace = getWorkSpace();
+    String user = getSession(repository, workspace).getUserID();
+    NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class);
+    return newFolksonomyService.getAllPrivateTags(user, repository, workspace);
   }
   public String getTagPath() { return this.tagPath_; }
 
   public Map<String ,String> getTagStyle() throws Exception {
     String repository = getRepository();
-    FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class);
+    String workspace = getWorkSpace();
+    NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class);
     Map<String , String> tagStyle = new HashMap<String ,String>();
-    for(Node tag : folksonomyService.getAllTagStyle(repository)) {
+    for(Node tag : newFolksonomyService.getAllTagStyle(repository, workspace)) {
       tagStyle.put(tag.getName(), tag.getProperty("exo:htmlStyle").getValue().getString());
     }
     return tagStyle;

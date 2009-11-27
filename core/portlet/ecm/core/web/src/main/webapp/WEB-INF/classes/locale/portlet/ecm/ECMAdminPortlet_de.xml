@@ -2272,6 +2272,19 @@
 	  		<targetPath-emty>The target path is empty</targetPath-emty>	  		
 			</msg>
 		</UITaxonomyTreeMainForm>  
-  
+
+  	 <UIFolksonomyManager>
+	   <action>
+	     <title>
+	       <RemoveStyle>Remove</RemoveStyle>
+         <AddStyle>Add style</AddStyle>
+	     </title>
+	   </action>
+	   <msg>
+	     <confirm-delete>Are you sure want to delete this tag style?</confirm-delete>
+	   </msg>
+	 </UIFolksonomyManager>
+
+
 </bundle>
 
