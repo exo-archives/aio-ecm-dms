@@ -70,8 +70,8 @@
 			<info>
 				<UITaxonomyTreeMainForm>Input taxonomy name, choose workspace and taxonomy home path</UITaxonomyTreeMainForm>
 				<UIPermissionTreeManager>Select permission for taxonomy tree node</UIPermissionTreeManager>
-				<UIActionTaxonomyManager>After register action for tree, the taxonomy tree will be created/edited</UIActionTaxonomyManager>
-				<UITaxonomyTreeCreateChild>Edit taxonomy tree by add, copy, cut and select permission</UITaxonomyTreeCreateChild>
+				<UIActionTaxonomyManager>After you have registered an action for this tree, the taxonomy tree will be created/updated.</UIActionTaxonomyManager>
+				<UITaxonomyTreeCreateChild>Edit the taxonomy tree by adding, copying, cutting and selecting permissions.</UITaxonomyTreeCreateChild>
 			</info>
 		</tab>
 		<msg>
