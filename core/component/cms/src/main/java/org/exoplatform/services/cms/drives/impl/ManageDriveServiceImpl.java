@@ -187,8 +187,8 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
    */
   @SuppressWarnings("unchecked")
   public List<DriveData> getAllDrives(String repository) throws Exception {
-    Object allDrives = drivesCache_.get(ALL_DRIVES_CACHED) ;
-    if(allDrives != null) return (List<DriveData>) allDrives;
+    List<DriveData> allDrives = (List<DriveData>) drivesCache_.get(ALL_DRIVES_CACHED);
+    if ((allDrives != null) && (allDrives.size() > 0)) return allDrives;
     Session session = getSession(repository) ;    
     Node driveHome = (Node)session.getItem(baseDrivePath_);
     NodeIterator itr = driveHome.getNodes() ;
