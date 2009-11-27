@@ -133,6 +133,9 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
       uiJCRExplorer.getSession().save() ;
       updateGrid(1) ;
       setRenderSibbling(UICategoriesAddedList.class) ;
+    } catch(AccessDeniedException accessDeniedException) {
+      throw new MessageException(new ApplicationMessage("AccessControlException.msg",
+          null, ApplicationMessage.WARNING));
     } catch(ItemExistsException item) {
       throw new MessageException(new ApplicationMessage("UICategoriesAddedList.msg.ItemExistsException",
           null, ApplicationMessage.WARNING));
