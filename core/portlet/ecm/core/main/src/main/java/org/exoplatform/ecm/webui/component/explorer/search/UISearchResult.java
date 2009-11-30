@@ -32,6 +32,7 @@ import javax.jcr.Session;
 import javax.jcr.query.QueryResult;
 import javax.jcr.query.Row;
 import javax.jcr.query.RowIterator;
+import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
@@ -39,6 +40,7 @@ import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.portal.webui.workspace.UIPortalApplication;
 import org.exoplatform.services.cms.BasePath;
+import org.exoplatform.services.cms.documents.TrashService;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -349,9 +351,15 @@ public class UISearchResult extends UIContainer {
         return;
       } catch(Exception e) {
         LOG.error("Cannot access the node at " + folderPath, e);        
-      }      
-      uiExplorer.setSelectNode(node.getSession().getWorkspace().getName(), folderPath);
-      uiExplorer.updateAjax(event);
+      }
+
+    	PortletPreferences portletPrefs = uiExplorer.getPortletPreferences();
+    	String trashHomeNodePath = portletPrefs.getValue(Utils.TRASH_HOME_NODE_PATH, "");
+
+      if (!node.getPath().startsWith(trashHomeNodePath)) {
+      	uiExplorer.setSelectNode(node.getSession().getWorkspace().getName(), folderPath);
+	      uiExplorer.updateAjax(event);
+      }
     }
   }
   
