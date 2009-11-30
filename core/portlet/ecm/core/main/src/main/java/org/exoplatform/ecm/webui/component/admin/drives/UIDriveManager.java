@@ -51,7 +51,7 @@ public class UIDriveManager extends UIAbstractManager {
   
   public void update() throws Exception  {
     UIDriveList uiDriveList = getChild(UIDriveList.class); 
-    uiDriveList.updateDriveListGrid(uiDriveList.getUIPageIterator().getCurrentPage());
+    uiDriveList.updateDriveListGrid(1);
   }
   public void initPopup(String id) throws Exception {
     UIDriveForm uiDriveForm ;
