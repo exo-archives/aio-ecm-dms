@@ -464,8 +464,9 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
   
   private String getUploadName() throws Exception {
     UIFormUploadInput uiFormUploadInput = (UIFormUploadInput)getUIInput(FIELD_UPLOAD);
-    String fileName = uiFormUploadInput.getUploadResource().getFileName();
     String name = getUIStringInput(FIELD_NAME).getValue();
+    if (uiFormUploadInput.getUploadResource() == null) return "";
+    String fileName = uiFormUploadInput.getUploadResource().getFileName();
     if(name == null) {
       name = fileName;
     } else {
