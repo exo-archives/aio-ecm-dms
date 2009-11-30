@@ -41,7 +41,7 @@
 				          String nodeName = node.getName();
 								  String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");
 				          def clazz = "Text"
-						  def defaultClazz = "default16x16Icon";
+						  						def defaultClazz= "'default16x16Icon'";
 				          if(Utils.isSymLink(node)) clazz = "TextSymLink";
 				        %>
 				          
