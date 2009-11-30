@@ -305,6 +305,8 @@ public class Utils {
     }
     nodeType = nodeType.replace(':','_') + appended;    
     str.append(nodeType);
+    str.append(" ");
+    str.append("default16x16Icon");
     if(mode != null && mode.equalsIgnoreCase("Collapse")) str.append(' ').append(mode).append(nodeType);
     if (node.isNodeType(NT_FILE)) {
       if (node.hasNode(JCR_CONTENT)) {
