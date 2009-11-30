@@ -52,6 +52,9 @@ public class UIUploadBehaviorWithSameName extends UIConfirmMessage {
       UIUploadManager uiUploadManager = uiPopup.getParent();
       UIUploadForm uiForm = uiUploadManager.getChild(UIUploadForm.class);
       uiForm.doUpload(event, false);
+      if (uiUploadManager.getChildById(UIUploadManager.SAMENAME_POPUP) != null) {
+        uiUploadManager.removeChildById(UIUploadManager.SAMENAME_POPUP);
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiUploadManager);
     }
   }
