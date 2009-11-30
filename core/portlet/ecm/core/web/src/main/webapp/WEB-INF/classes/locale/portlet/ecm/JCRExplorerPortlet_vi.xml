@@ -3005,4 +3005,54 @@
     </label>
    </UITaggingForm>
 
+   <UITagExplorer>
+    <title>
+      <EditPrivateTags>Sửa nhãn riêng</EditPrivateTags>
+      <PublicTags>Nhãn chung</PublicTags>
+      <EditPublicTags>Sửa nhãn chung</EditPublicTags>
+      <PrivateTags>Nhãn riêng</PrivateTags>
+     </title>
+   </UITagExplorer>
+
+  <UIEditingTagsForm>
+    <header>
+      <name>Tên</name>
+      <relatedDocuments>Tài liệu liên quan</relatedDocuments>
+      <action>Hành động</action>
+    </header>
+     
+  <action>
+    <title>
+      <EditTag>Sửa nhãn</EditTag>
+      <RemoveTag>Xóa nhãn</RemoveTag>
+      <AddTag>Thêm nhãn</AddTag>
+    </title>
+  </action>
+    <msg>
+      <confirm-remove>Bạn có chắc chắn muốn xóa nhãn?</confirm-remove>
+    </msg>
+  </UIEditingTagsForm>
+  
+  <UIPopupWindow>
+    <title>
+      <UIEditingTagsForm>Sửa nhãn</UIEditingTagsForm>
+    </title>
+  </UIPopupWindow>
+
+  <UITagForm>
+    <action>
+      <UpdateTag>#{word.save}</UpdateTag>
+      <Cancel>#{word.cancel}</Cancel>
+    </action>
+    <label>
+      <tagName>Thêm nhãn</tagName>
+      <relatedDocuments>Tài liệu liên quan</relatedDocuments>
+    </label>
+  </UITagForm>
+
+  <TagPopup>
+    <title>
+      <UITagForm>Tag form</UITagForm>
+    </title>
+  </TagPopup>  
 </bundle>

@@ -2991,5 +2991,56 @@
       <tagScopes>Tag Scopes</tagScopes>
     </label>
    </UITaggingForm>
-	 
+
+
+   <UITagExplorer>
+    <title>
+      <EditPrivateTags>Edit private tags</EditPrivateTags>
+      <PublicTags>Public tags</PublicTags>
+      <EditPublicTags>Edit public tags</EditPublicTags>
+      <PrivateTags>Private tags</PrivateTags>
+     </title>
+   </UITagExplorer>
+   
+  <UIEditingTagsForm>
+    <header>
+      <name>Name</name>
+      <relatedDocuments>Related documents</relatedDocuments>
+      <action>Action</action>
+    </header>
+  
+  <action>
+    <title>
+      <EditTag>Edit tag</EditTag>
+      <RemoveTag>Remove tag</RemoveTag>
+      <AddTag>Add tag</AddTag>
+    </title>
+  </action>
+    <msg>
+      <confirm-remove>Are you sure want to delete?</confirm-remove>
+    </msg>
+  </UIEditingTagsForm>
+  
+  	   <UIPopupWindow>
+    <title>
+      <UIEditingTagsForm>Edit tag form</UIEditingTagsForm>
+    </title>
+  </UIPopupWindow>
+
+  <UITagForm>
+    <action>
+      <UpdateTag>#{word.save}</UpdateTag>
+      <Cancel>#{word.cancel}</Cancel>
+    </action>
+    <label>
+      <tagName>Tag name</tagName>
+      <relatedDocuments>Related documents</relatedDocuments>
+    </label>
+  </UITagForm>
+
+  <TagPopup>
+    <title>
+      <UITagForm>Tag form</UITagForm>
+    </title>
+  </TagPopup>
 </bundle>

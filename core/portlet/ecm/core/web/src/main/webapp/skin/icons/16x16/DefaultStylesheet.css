@@ -365,6 +365,19 @@
   cursor: pointer;
 }
 
+.EditTagIcon {
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/Edit.gif') no-repeat ;
+  cursor: pointer;
+}
+
+.RemoveTagIcon {
+  width: 16px ;  height: 16px ;
+  background: url('DefaultSkin/DustBin.gif') no-repeat ;
+  cursor: pointer;
+}
+
+
 
 .EditIcon {
   width: 16px ;  height: 16px ;

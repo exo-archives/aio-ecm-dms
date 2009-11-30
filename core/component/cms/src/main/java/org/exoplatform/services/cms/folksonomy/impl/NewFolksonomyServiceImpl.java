@@ -95,15 +95,18 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
 				Node tagNode = userFolksonomyNode.hasNode(tag) ?  
 						userFolksonomyNode.getNode(tag) : userFolksonomyNode.addNode(tag);
 				//add symlink and total
-				if (!existSymlink(tagNode, documentNode)) {
+				if (documentNode != null && !existSymlink(tagNode, documentNode)) {
 					linkManager.createLink(tagNode, documentNode);
 					long total = tagNode.hasProperty(EXO_TOTAL) ?
 							tagNode.getProperty(EXO_TOTAL).getLong() : 0;
 					tagNode.setProperty(EXO_TOTAL, total + 1);
 					if (!tagNode.isNodeType(EXO_TAGGED))
 						tagNode.addMixin(EXO_TAGGED);
-					userFolksonomyNode.getSession().save();
+				} else {
+					if (!tagNode.hasProperty(EXO_TOTAL))
+						tagNode.setProperty(EXO_TOTAL, 0);
 				}
+				userFolksonomyNode.getSession().save();
 			} catch (Exception e) {
 				LOG.error("can't add tag '" + tag + "' to node: " + documentNode.getPath() + " for user: " + userName);
 			}
@@ -122,15 +125,18 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
 					Node tagNode = groupFolksonomyNode.hasNode(tag) ?
 							groupFolksonomyNode.getNode(tag) : groupFolksonomyNode.addNode(tag);
 					//add symlink and total
-					if (!existSymlink(tagNode, documentNode)) {
+					if (documentNode != null && !existSymlink(tagNode, documentNode)) {
 						linkManager.createLink(tagNode, documentNode);
 						long total = tagNode.hasProperty(EXO_TOTAL) ?
 								tagNode.getProperty(EXO_TOTAL).getLong() : 0;
 						tagNode.setProperty(EXO_TOTAL, total + 1);
 						if (!tagNode.isNodeType(EXO_TAGGED))
 							tagNode.addMixin(EXO_TAGGED);
-						groupFolksonomyNode.getSession().save();
+					} else {
+						if (!tagNode.hasProperty(EXO_TOTAL))						
+							tagNode.setProperty(EXO_TOTAL, 0);
 					}
+					groupFolksonomyNode.getSession().save();
 				} catch (Exception e) {
 					LOG.error("can't add tag '" + tag + "' to node: " + documentNode.getPath() + " for group: " + group);					
 				}
@@ -149,15 +155,18 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
   			Node tagNode = publicFolksonomyTreeNode.hasNode(tag) ?
   					publicFolksonomyTreeNode.getNode(tag) : publicFolksonomyTreeNode.addNode(tag);
 				//add symlink and total
-  			if (!existSymlink(tagNode, documentNode)) {
+  			if (documentNode != null && !existSymlink(tagNode, documentNode)) {
   				linkManager.createLink(tagNode, documentNode);
   				long total = tagNode.hasProperty(EXO_TOTAL) ? 
   						tagNode.getProperty(EXO_TOTAL).getLong() : 0;
 					tagNode.setProperty(EXO_TOTAL, total + 1);
 					if (!tagNode.isNodeType(EXO_TAGGED))
 						tagNode.addMixin(EXO_TAGGED);
-					publicFolksonomyTreeNode.getSession().save();
-  			}
+				} else {
+					if (!tagNode.hasProperty(EXO_TOTAL))
+						tagNode.setProperty(EXO_TOTAL, 0);
+				}
+  			publicFolksonomyTreeNode.getSession().save();
   		} catch (Exception e) {
 				LOG.error("can't add tag '" + tag + "' to node: " + documentNode.getPath() + " in public folksonomy tree!");
   		}

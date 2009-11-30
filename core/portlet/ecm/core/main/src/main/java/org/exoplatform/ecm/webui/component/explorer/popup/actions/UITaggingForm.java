@@ -109,7 +109,7 @@ public class UITaggingForm extends UIForm implements UIPopupComponent {
     UIFormSelectBox box = new UIFormSelectBox(TAG_SCOPES, TAG_SCOPES, tagScopes);
     box.setOnChange("Change");
     uiInputSet.addUIFormInput(box);
-    box.setSelectedValues(new String[] {PUBLIC});
+    box.setSelectedValues(new String[] {PRIVATE});
     
     uiInputSet.addUIFormInput(new UIFormInputInfo(LINKED_TAGS, LINKED_TAGS, null));
     uiInputSet.setIntroduction(TAG_NAMES, "UITaggingForm.introduction.tagName");

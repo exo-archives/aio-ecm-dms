@@ -127,12 +127,15 @@ public class UIJCRExplorer extends UIContainer {
   private DriveData driveData_ ;
     
   private boolean isViewDocument_ ;
-  
   private String supportedType;
-  
   private boolean isFilterSave_ ;
+  
+  private int tagScope;
 
   private List<String> checkedSupportType = new ArrayList<String>();
+  
+  public int getTagScope() { return tagScope; }
+  public void setTagScope(int scope) { tagScope = scope; }
       
   public void setSupportedType(String supportedType) {
     this.supportedType = supportedType;

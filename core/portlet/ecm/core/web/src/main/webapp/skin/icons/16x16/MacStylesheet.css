@@ -372,6 +372,17 @@
   cursor: pointer;
 }
 
+.EditTagIcon {
+  width: 16px;  height: 16px;
+  background: url('MacSkin/EditIcon.png') no-repeat;
+  cursor: pointer;
+}
+
+.RemoveTagIcon {
+  width: 16px;  height: 16px;
+  background: url('MacSkin/DustBin.gif') no-repeat;
+  cursor: pointer;
+}
 
 .EditIcon {
   width: 16px;  height: 16px;

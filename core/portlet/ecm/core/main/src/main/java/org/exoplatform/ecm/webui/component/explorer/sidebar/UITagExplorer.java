@@ -23,11 +23,14 @@ import java.util.Map;
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIEditingTagsForm;
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIContainer;
+import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.event.EventListener;
 
@@ -39,17 +42,36 @@ import org.exoplatform.webui.event.EventListener;
  */
 @ComponentConfig(
     template =  "app:/groovy/webui/component/explorer/sidebar/UITagExplorer.gtmpl",
-    events = {@EventConfig(listeners = UITagExplorer.ViewTagActionListener.class)}
+    events = {	@EventConfig(listeners = UITagExplorer.ViewTagActionListener.class),
+    						@EventConfig(listeners = UITagExplorer.EditTagsActionListener.class)}
 )
 public class UITagExplorer extends UIContainer {
+	
+  public static final String PUBLIC_TAG_NODE_PATH = "exoPublicTagNode";
+  public static final int PUBLIC = 0;
+  public static final int PRIVATE = 1;
+  private int tagScope;
   
   public UITagExplorer() throws Exception {
   }
   
-  public List<Node> getTagLink() throws Exception {
+  public int getTagScope() { return tagScope; }
+  public void setTagScope(int scope) { tagScope = scope; }
+  public static int getPublic() { return PUBLIC; }
+  public static int getPrivate() { return PRIVATE; }
+  
+  public List<Node> getPrivateTagLink() throws Exception {
     NewFolksonomyService folksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
     return folksonomyService.getAllPrivateTags(getUserName(), getRepository(), getWorkspace()) ;
   }
+  
+  public List<Node> getPublicTagLink() throws Exception {
+    NewFolksonomyService folksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
+    NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
+    String publicTagNodePath = nodeHierarchyCreator.getJcrPath(PUBLIC_TAG_NODE_PATH);  
+    return folksonomyService.getAllPublicTags(publicTagNodePath, getRepository(), getWorkspace()) ;
+  }
+  
   public Map<String ,String> getTagStyle() throws Exception {
     NewFolksonomyService folksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
     String workspace = getApplicationComponent(DMSConfiguration.class).getConfig(getRepository()).getSystemWorkspace();
@@ -75,13 +97,25 @@ public class UITagExplorer extends UIContainer {
       UITagExplorer uiTagExplorer = event.getSource() ;
       String tagPath = event.getRequestContext().getRequestParameter(OBJECTID) ;
       UIJCRExplorer uiExplorer = uiTagExplorer.getAncestorOfType(UIJCRExplorer.class) ;
-      uiExplorer.setSelectRootNode() ;
-      uiExplorer.setTagPath(tagPath) ;
+      uiExplorer.setSelectRootNode();
+      uiExplorer.setTagPath(tagPath);
       
       // Reset status of document flag updated by lampt 
       uiExplorer.setViewDocument(false);
       uiExplorer.setIsViewTag(true);
-      uiExplorer.updateAjax(event) ;
+      uiExplorer.updateAjax(event);
     }
+  }
+  
+  static public class EditTagsActionListener extends EventListener<UITagExplorer> {
+  	public void execute(Event<UITagExplorer> event) throws Exception {
+  		UITagExplorer uiTagExplorer = event.getSource();
+  		String scope = event.getRequestContext().getRequestParameter(OBJECTID);
+  		uiTagExplorer.getAncestorOfType(UIJCRExplorer.class).setTagScope("Public".equals(scope) ? PUBLIC : PRIVATE);   		
+  		UIJCRExplorer uiExplorer = uiTagExplorer.getAncestorOfType(UIJCRExplorer.class);
+  		UIPopupContainer uiPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
+  		uiPopupContainer.activate(UIEditingTagsForm.class, 600);
+  		event.getRequestContext().addUIComponentToUpdateByAjax(uiPopupContainer);
+  	}
   }
 }
