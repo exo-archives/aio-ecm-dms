@@ -39,6 +39,7 @@
   background-position: right top; /* orientation=rt */
 	padding-left: 24px; /* orientation=lt */
 	padding-right: 24px; /* orientation=rt */
+	width: 100%;
 }
 
 .UITreeList .TextSymLink {

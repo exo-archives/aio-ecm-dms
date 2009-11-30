@@ -48,10 +48,8 @@ public class UINodeTree extends UITree {
    */
   public String renderNode(Object obj) throws Exception {
     Node node = (Node) obj;
-    String nodeTypeCss = Utils.getNodeTypeIcon(node,"16x16Icon");
+    String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");       
     
-    // In case of node type is default
-    String nodeTypeIcon = nodeTypeCss + " " + "default16x16Icon";
     String nodeIcon = this.getExpandIcon();
     String iconGroup = this.getIcon();
     String note = "" ; 
