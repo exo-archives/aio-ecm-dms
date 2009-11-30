@@ -347,6 +347,10 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
               index = categoryPath.indexOf("/");
               try {
                 taxonomyService.addCategory(newNode, categoryPath.substring(0, index), categoryPath.substring(index + 1));
+              } catch(AccessDeniedException accessDeniedException) {
+                uiApp.addMessage(new ApplicationMessage("AccessControlException.msg", null, 
+                    ApplicationMessage.WARNING));
+                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
               } catch (Exception e) {
                 continue;
               }
