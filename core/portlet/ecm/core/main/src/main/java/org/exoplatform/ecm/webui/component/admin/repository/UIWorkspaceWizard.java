@@ -223,7 +223,7 @@ public class UIWorkspaceWizard extends UIFormTabPane implements UISelectable {
 //          selectedNodeType = manageRepository.getSystemSession(workSpace.getName()).getRootNode().getPrimaryNodeType().getName();
         }
       }
-      
+      if (permission == null) permission = uiRepoForm.getWorkspaceMapPermission(name);
       if(workSpace.getLockManager() != null) {
         lockTime  = String.valueOf(workSpace.getLockManager().getTimeout()) + "ms"; 
       }
