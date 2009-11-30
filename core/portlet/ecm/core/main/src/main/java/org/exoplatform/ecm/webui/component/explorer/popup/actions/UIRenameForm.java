@@ -80,6 +80,8 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
   final static public String  FIELD_NEWNAME     = "newName";
 
   final static private String RELATION_PROP     = "exo:relation";
+  
+  final static private String EXO_LASTMODIFIER = "exo:lastModifier";
 
   private Node                renameNode_;
 
@@ -188,6 +190,7 @@ public class UIRenameForm extends UIForm implements UIPopupComponent {
         if (destNode.isLocked())
           LockUtil.changeLockToken(uiRenameForm.renameNode_, destNode);
         uiRenameForm.changeLockForChild(srcPath, destNode);
+        destNode.setProperty(EXO_LASTMODIFIER, nodeSession.getUserID());
         if (!uiJCRExplorer.getPreference().isJcrEnable()) nodeSession.save();
         uiJCRExplorer.updateAjax(event);
       } catch (AccessDeniedException ace) {
