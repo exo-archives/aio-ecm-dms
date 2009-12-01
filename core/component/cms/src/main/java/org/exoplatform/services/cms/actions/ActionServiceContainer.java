@@ -141,6 +141,14 @@ public interface ActionServiceContainer {
   public List<Node> getActions(Node node, String lifecyclePhase) throws Exception;
   
   /**
+   * Remove all action registered in node
+   * @param node
+   * @param repository
+   * @throws Exception
+   */
+  public void removeAction(Node node, String repository) throws Exception;
+  
+  /**
    * Remove all relative node of current node with node type = exo:actionable
    * @param node        current node
    * @param actionName  relative path = exo:actionable / actionName 
@@ -173,7 +181,6 @@ public interface ActionServiceContainer {
    * @throws Exception
    */
   public void addAction(Node node, String repository, String type, boolean isDeep, String[] uuid, String[] nodeTypeNames, Map mappings) throws Exception; 
-  
   
   /**
    * Execute action following userId, node, variables, repository

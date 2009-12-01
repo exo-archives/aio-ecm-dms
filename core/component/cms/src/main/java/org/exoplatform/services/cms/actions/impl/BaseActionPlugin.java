@@ -122,15 +122,16 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     //TODO all actions are stored at srcNode/exo:actions node
       String listenerKey = repository + ":" + srcPath + "/exo:actions/" +actionName;
       if(listeners_.containsKey(listenerKey)){
-        listeners_.remove(listenerKey) ;      
-      }else{
-        if (ActionServiceContainer.ADD_PHASE.equals(type)) {
-          obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, isDeep, uuid, nodeTypeNames, false);      
-        } else if(ActionServiceContainer.REMOVE_PHASE.equals(type)) {
-          obsManager.addEventListener(listener, Event.NODE_REMOVED, srcPath, isDeep, uuid, nodeTypeNames, false);
-        }else {
-          obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, isDeep,  uuid, nodeTypeNames, false);
-        }
+        obsManager.removeEventListener(listeners_.get(listenerKey));
+        listeners_.remove(listenerKey);      
+      }
+      
+      if (ActionServiceContainer.ADD_PHASE.equals(type)) {
+        obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, isDeep, uuid, nodeTypeNames, false);
+      } else if (ActionServiceContainer.REMOVE_PHASE.equals(type)) {
+        obsManager.addEventListener(listener, Event.NODE_REMOVED, srcPath, isDeep, uuid, nodeTypeNames, false);
+      } else {
+        obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, isDeep, uuid, nodeTypeNames, false);
       }
       
       session.logout();
@@ -179,15 +180,15 @@ abstract public class BaseActionPlugin implements ActionPlugin {
     String listenerKey = repository + ":" + srcPath + "/exo:actions/" +actionName;
     ObservationManager obsManager = session.getWorkspace().getObservationManager(); 
     if(listeners_.containsKey(listenerKey)){
+      obsManager.removeEventListener(listeners_.get(listenerKey));
       listeners_.remove(listenerKey) ;      
-    }else{
-      if (ActionServiceContainer.ADD_PHASE.equals(lifecyclePhase)) {
-        obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, isDeep, uuid, nodeTypeName, false);      
-      } else if(ActionServiceContainer.REMOVE_PHASE.equals(lifecyclePhase)){
-        obsManager.addEventListener(listener, Event.NODE_REMOVED, srcPath, isDeep, uuid, nodeTypeName, false);
-      }else {
-        obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, isDeep, uuid, nodeTypeName, false);
-      }
+    }
+    if (ActionServiceContainer.ADD_PHASE.equals(lifecyclePhase)) {
+      obsManager.addEventListener(listener, Event.NODE_ADDED, srcPath, isDeep, uuid, nodeTypeName, false);
+    } else if (ActionServiceContainer.REMOVE_PHASE.equals(lifecyclePhase)) {
+      obsManager.addEventListener(listener, Event.NODE_REMOVED, srcPath, isDeep, uuid, nodeTypeName, false);
+    } else {
+      obsManager.addEventListener(listener, Event.PROPERTY_CHANGED, srcPath, isDeep, uuid, nodeTypeName, false);
     }
     session.logout();
     listeners_.put(listenerKey, listener);

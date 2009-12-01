@@ -372,7 +372,17 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
     return actions;
   }
 
-
+  /**
+   * {@inheritDoc}
+   */
+  public void removeAction(Node node, String repository) throws Exception {
+    if(!node.isNodeType(ACTIONABLE)) return ;
+    List<Node> actions = getActions(node);
+    for (Node action : actions) {
+      removeAction(node, action.getName(), repository);
+    }
+  }
+  
   public void removeAction(Node node, String actionName, String repository) throws Exception {
     if(!node.isNodeType(ACTIONABLE)) return  ;    
     Node action2Remove = getAction(node, actionName);
