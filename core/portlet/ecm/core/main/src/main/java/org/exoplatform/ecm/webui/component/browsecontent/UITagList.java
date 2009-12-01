@@ -22,7 +22,12 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
+import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIComponent;
@@ -43,20 +48,45 @@ import org.exoplatform.webui.event.EventListener;
 )
 public class UITagList extends UIComponent {
 
+  final static public String PUBLIC_TAG_NODE_PATH = "exoPublicTagNode";
+  
   private String tagPath_ ;   
   public UITagList() throws Exception {
   }
 
-  public List<Node> getTagLink() throws Exception {
-    String repository = getRepository() ;
-    String workspace = getWorkspace();
+  public List<Node> getPrivateTagLink() throws Exception {
+    String repository = getRepository();
+  	ExoContainer container = ExoContainerContext.getCurrentContainer();
+		RepositoryService repositoryService 
+		= (RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
+		ManageableRepository	manageableRepo = repositoryService.getRepository(repository);
+		
+		String workspace = manageableRepo.getConfiguration().getDefaultWorkspaceName();
     String userName = getUserName();
     NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
     return newFolksonomyService.getAllPrivateTags(userName, repository, workspace);
   }
+  
+  public List<Node> getPublicTagLink() throws Exception {
+    String repository = getRepository();
+  	ExoContainer container = ExoContainerContext.getCurrentContainer();
+		RepositoryService repositoryService = 
+		(RepositoryService) container.getComponentInstanceOfType(RepositoryService.class);
+		ManageableRepository	manageableRepo = repositoryService.getRepository(repository);
+		NodeHierarchyCreator nodeHierarchyCreator =
+		(NodeHierarchyCreator) container.getComponentInstanceOfType(NodeHierarchyCreator.class);
+		
+		String workspace = manageableRepo.getConfiguration().getDefaultWorkspaceName();
+		
+		String publicTagNodePath = nodeHierarchyCreator.getJcrPath(PUBLIC_TAG_NODE_PATH);
+    NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
+    
+    return newFolksonomyService.getAllPublicTags(publicTagNodePath, repository, workspace);
+  }
+  
   public Map<String ,String> getTagStyle() throws Exception {
     String repository = getRepository() ;
-    String workspace = getWorkspace();
+    String workspace = getAncestorOfType(UIBrowseContainer.class).getDMSSystemWorkspace(repository);
     NewFolksonomyService newFolksonomyService = getApplicationComponent(NewFolksonomyService.class) ;
     Map<String , String> tagStyle = new HashMap<String ,String>() ;
     for(Node tag : newFolksonomyService.getAllTagStyle(repository, workspace)) {

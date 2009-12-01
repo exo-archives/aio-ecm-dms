@@ -44,9 +44,11 @@
 	margin: 9px 0px 0px 10px; /* orientation=rt */
 }
 
+.UIBrowseContentPortlet .UITagList {
+  float: right;
+}
+
 .UIBrowseContentPortlet .TagmapHolder {
-	float: right; /* orientation=lt */
-	float: left; /* orientation=rt */  
   width: 200px;
 	background: #ffffff;
 	padding: 1px;

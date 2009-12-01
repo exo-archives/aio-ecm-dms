@@ -505,4 +505,12 @@
   		<remove-attachment>Delete this attached file</remove-attachment>
   	</tooltip>
   </DocumentDetail>
+  
+  <UITagList>
+   <label>
+     <PublicTags>Public tags</PublicTags>
+     <PrivateTags>Private tags</PrivateTags>
+    </label>
+  </UITagList>
+  
 </bundle>
