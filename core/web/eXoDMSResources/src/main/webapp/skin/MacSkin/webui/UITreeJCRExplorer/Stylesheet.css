@@ -33,6 +33,7 @@
 	line-height: 24px;
 	padding-left: 28px; /* orientation=lt */
 	padding-right: 28px; /* orientation=rt */
+	width: 100%;
 }
 
 .UIRelationManager .UITreeList .Text {
