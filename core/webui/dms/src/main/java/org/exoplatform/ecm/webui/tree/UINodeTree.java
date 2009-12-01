@@ -16,6 +16,8 @@
  */
 package org.exoplatform.ecm.webui.tree;
 
+import java.util.MissingResourceException;
+
 import javax.jcr.Node;
 
 import org.exoplatform.ecm.webui.utils.Utils;
@@ -41,6 +43,26 @@ import org.exoplatform.webui.core.UITree;
    * 
    * */
 public class UINodeTree extends UITree {
+
+  private String rootPath = "";
+  
+  private boolean isTaxonomyLocalize;
+  
+  public boolean isTaxonomyLocalize() {
+    return isTaxonomyLocalize;
+  }
+
+  public void setTaxonomyLocalize(boolean isTaxonomyLocalize) {
+    this.isTaxonomyLocalize = isTaxonomyLocalize;
+  }
+
+  public String getRootPath() {
+    return rootPath;
+  }
+
+  public void setRootPath(String rootPath) {
+    this.rootPath = rootPath;
+  }
 
   /* 
    * render nodetype icon for node in tree
@@ -72,7 +94,7 @@ public class UINodeTree extends UITree {
       builder.append(" <a class=\"").append(nodeIcon).append(" ").append(nodeTypeIcon).append("\" onclick=\"eXo.portal.UIPortalControl.collapseTree(this)").append("\">") ;
     }
     UIRightClickPopupMenu popupMenu = getUiPopupMenu();
-    String beanLabelField = getBeanLabelField();
+    String beanFieldValue = getDisplayFieldValue(obj);
     String className="NodeIcon";
     boolean flgSymlink = false;
     if (Utils.isSymLink(node)) {
@@ -81,26 +103,26 @@ public class UINodeTree extends UITree {
     }
     if(popupMenu == null) {
       builder.append(" <div class=\"").append(className).append(" ").append(iconGroup).append(" ").append(nodeTypeIcon)
-          .append(note).append("\"").append(" title=\"").append(getFieldValue(obj, beanLabelField))
+          .append(note).append("\"").append(" title=\"").append(beanFieldValue)
           .append("\"").append(">");
       if (flgSymlink) {
         builder.append("  <div class=\"LinkSmall\">")
-          .append(getFieldValue(obj, beanLabelField))
+          .append(beanFieldValue)
           .append("</div>");
       } else {
-        builder.append(getFieldValue(obj, beanLabelField));
+        builder.append(beanFieldValue);
       }
       builder.append("</div>");
     } else {
       builder.append(" <div class=\"").append(className).append(" ").append(iconGroup).append(" ").append(nodeTypeIcon)
           .append(note).append("\" ").append(popupMenu.getJSOnclickShowPopup(objId, null)).append(
-              " title=\"").append(getFieldValue(obj, beanLabelField)).append("\"").append(">");
+              " title=\"").append(beanFieldValue).append("\"").append(">");
       if (flgSymlink) {
         builder.append("  <div class=\"LinkSmall\">")
-          .append(getFieldValue(obj, beanLabelField))
+          .append(beanFieldValue)
           .append("</div>");
       } else {
-        builder.append(getFieldValue(obj, beanLabelField));
+        builder.append(beanFieldValue);
       }
       builder.append("</div>");
     }
@@ -108,11 +130,23 @@ public class UINodeTree extends UITree {
     return builder.toString();
   }
 
+  private String getDisplayFieldValue(Object bean) throws Exception{
+    if (isTaxonomyLocalize && Node.class.isInstance(bean)) {
+      String path = ((Node)bean).getPath();
+      String taxonomyTreeName = rootPath.substring(rootPath.lastIndexOf("/") + 1);
+      try {
+        String display = taxonomyTreeName.concat(path.replace(rootPath, "")).replaceAll("/", ".");
+        return Utils.getResourceBundle(("eXoTaxonomies.").concat(display).concat(".label"));
+      } catch (MissingResourceException me) {
+      }
+    }
+    return String.valueOf(getFieldValue(bean, getBeanLabelField()));
+  }
+  
   public boolean isSelected(Object obj) throws Exception {
     Node selectedNode = this.getSelected();
     Node node = (Node) obj;
     if(selectedNode == null) return false;    
     return selectedNode.getPath().equals(node.getPath());
   }
-
 }

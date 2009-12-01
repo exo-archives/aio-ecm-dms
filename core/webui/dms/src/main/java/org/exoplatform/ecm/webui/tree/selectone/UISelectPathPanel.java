@@ -186,6 +186,10 @@ public class UISelectPathPanel extends UIContainer {
     return nodeHierarchyCreator.getJcrPath(BasePath.TAXONOMIES_TREE_STORAGE_PATH);
   }
 
+  public String getDisplayName(Node node) throws RepositoryException {
+    return node.getName();
+  }
+  
   static public class SelectActionListener extends EventListener<UISelectPathPanel> {
     public void execute(Event<UISelectPathPanel> event) throws Exception {
       UISelectPathPanel uiSelectPathPanel = event.getSource();      
@@ -198,7 +202,6 @@ public class UISelectPathPanel extends UIContainer {
       String value = event.getRequestContext().getRequestParameter(OBJECTID);
       
       value = breadcumbsPaths + value.substring(value.lastIndexOf("/"));
-      //value = breadcumbsPaths + value.substring(uiSelectPathPanel.getPathTaxonomy().length() + 1);
       if(uiTreeSelector instanceof UIOneNodePathSelector) {
         if(!((UIOneNodePathSelector)uiTreeSelector).isDisable()) {
           value = ((UIOneNodePathSelector)uiTreeSelector).getWorkspaceName() + ":" + value ;

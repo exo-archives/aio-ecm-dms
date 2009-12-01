@@ -18,6 +18,8 @@ package org.exoplatform.ecm.webui.tree.selectone;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Node;
@@ -28,12 +30,14 @@ import org.exoplatform.ecm.webui.form.UIFormInputSetWithAction;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.UITreeTaxonomyBuilder;
 import org.exoplatform.portal.webui.util.SessionProviderFactory;
+import org.exoplatform.portal.webui.util.Util;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -92,13 +96,23 @@ public class UITreeTaxonomyList extends UIForm {
     uiInputAction.setRendered(isRender); 
   }
   
+  private String getTaxonomyLabel(String taxonomyTree) {
+    String display = taxonomyTree;
+    RequestContext context = Util.getPortalRequestContext();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    try {
+      return res.getString(("eXoTaxonomies.").concat(taxonomyTree).concat(".label"));
+    } catch (MissingResourceException me) {
+    }
+    return display;
+  }
   
   public void setTaxonomyTreeList(String repository) throws Exception {
     TaxonomyService taxonomyService = getApplicationComponent(TaxonomyService.class);
     List<Node> listNode = taxonomyService.getAllTaxonomyTrees(repository);
     List<SelectItemOption<String>> taxonomyTree = new ArrayList<SelectItemOption<String>>();
     for(Node itemNode : listNode) {
-      taxonomyTree.add(new SelectItemOption<String>(itemNode.getName(), itemNode.getName()));
+      taxonomyTree.add(new SelectItemOption<String>(getTaxonomyLabel(itemNode.getName()), itemNode.getName()));
     }
     UIFormSelectBox uiTreeTaxonomyList = getUIFormSelectBox(TAXONOMY_TREE);
     uiTreeTaxonomyList.setOptions(taxonomyTree);

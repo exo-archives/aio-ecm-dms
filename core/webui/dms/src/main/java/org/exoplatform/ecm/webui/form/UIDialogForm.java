@@ -128,6 +128,7 @@ public class UIDialogForm extends UIForm {
   private List<String> postScriptInterceptor = new ArrayList<String>();  
   private List<String> prevScriptInterceptor = new ArrayList<String>();
 
+  private List<String> listTaxonomy = new ArrayList<String>();
   private String storedPath;
 
   protected String workspaceName;
@@ -142,6 +143,15 @@ public class UIDialogForm extends UIForm {
   public boolean isEditing() { return !isAddNew;}
   public boolean isAddNew() { return isAddNew;}
   public void addNew(boolean b) { this.isAddNew = b; }  
+  
+  public List<String> getListTaxonomy() {
+    return listTaxonomy;
+  }
+  
+  public void setListTaxonomy(List<String> listTaxonomy) {
+    this.listTaxonomy = listTaxonomy;
+  }
+
 
   public void setStoredLocation(String repository, String workspace, String storedPath) {
     this.repositoryName = repository;
@@ -149,6 +159,24 @@ public class UIDialogForm extends UIForm {
     setStoredPath(storedPath);
   }
 
+  protected String getCategoryLabel(String resource) {
+    String[] taxonomyPathSplit = resource.split("/");
+    StringBuilder buildlabel;
+    StringBuilder buildPathlabel = new StringBuilder();
+    for (int i = 0; i < taxonomyPathSplit.length; i++) {
+      buildlabel = new StringBuilder("eXoTaxonomies");
+      for (int j = 0; j <= i; j++) {
+        buildlabel.append(".").append(taxonomyPathSplit[j]);
+      }
+      try {
+        buildPathlabel.append(Utils.getResourceBundle(buildlabel.append(".label").toString())).append("/");
+      } catch (MissingResourceException me) {
+        buildPathlabel.append(taxonomyPathSplit[i]).append("/");
+      }
+    }
+    return buildPathlabel.substring(0, buildPathlabel.length() - 1);
+  }
+  
   public void seti18nNodePath(String nodePath) { i18nNodePath = nodePath; }
 
   public String geti18nNodePath() { return i18nNodePath; }
@@ -641,7 +669,8 @@ public class UIDialogForm extends UIForm {
           uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null);
           uiMulti.setId(name);
           uiMulti.setName(name);
-          uiMulti.setType(UIFormStringInput.class);          
+          uiMulti.setType(UIFormStringInput.class);
+          uiMulti.setEditable(formTextField.isEditable());
           if (formTextField.validateType != null) {
             String validateType = formTextField.validateType;
             String[] validatorList = null;
@@ -672,7 +701,8 @@ public class UIDialogForm extends UIForm {
         uiMulti = createUIComponent(UIFormMultiValueInputSet.class, null, null);
         uiMulti.setId(name);
         uiMulti.setName(name);
-        uiMulti.setType(UIFormStringInput.class);        
+        uiMulti.setType(UIFormStringInput.class);
+        uiMulti.setEditable(formTextField.isEditable());
         if (formTextField.validateType != null) {
           String validateType = formTextField.validateType;
           String[] validatorList = null;
@@ -692,11 +722,13 @@ public class UIDialogForm extends UIForm {
             if(propertyName.equals("exo:category")){
               String pathTaxonomy = getPathTaxonomy() + "/";
               String categoryPath = node.getSession().getNodeByUUID(value.getString()).getPath().replaceAll(pathTaxonomy, "");
-              valueList.add(categoryPath);
+              valueList.add(getCategoryLabel(categoryPath));
+              getListTaxonomy().add(categoryPath);
             } else {
               valueList.add(value.getString());
             }            
           }
+          uiMulti.setEditable(formTextField.isEditable());
           uiMulti.setValue(valueList);
         }
       }
@@ -709,7 +741,8 @@ public class UIDialogForm extends UIForm {
               if(propertyPath.equals("exo:category")){
                 String pathTaxonomy = getPathTaxonomy() + "/";
                 String categoryPath = node.getSession().getNodeByUUID(vl.getString()).getPath().replaceAll(pathTaxonomy, "");
-                valueList.add(categoryPath);
+                valueList.add(getCategoryLabel(categoryPath));
+                getListTaxonomy().add(categoryPath);
               } else {
                 valueList.add(vl.getString());
               }
@@ -721,6 +754,7 @@ public class UIDialogForm extends UIForm {
       if(isResetMultiField) {
         uiMulti.setValue(new ArrayList<Value>());
       }
+      uiMulti.setEditable(formTextField.isEditable());
       renderField(name);
       return;
     } 

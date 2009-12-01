@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.MissingResourceException;
 import java.util.StringTokenizer;
 import java.util.ResourceBundle;
 import java.util.zip.ZipInputStream;
@@ -54,6 +55,7 @@ import org.exoplatform.services.organization.Group;
 import org.exoplatform.services.organization.Membership;
 import org.exoplatform.services.organization.OrganizationService;
 import org.exoplatform.services.resources.ResourceBundleService;
+import org.exoplatform.web.application.RequestContext;
 
 /**
  * Created by The eXo Platform SARL
@@ -508,6 +510,25 @@ public class Utils {
     return returnDecimalVal;
   } 
   
+  /**
+   * Get resource bundle from PortalApplication resource bundle
+   * @param key
+   * @return
+   * @throws MissingResourceException
+   */
+  public static String getResourceBundle(String key) throws MissingResourceException{
+      RequestContext context = Util.getPortalRequestContext();
+      ResourceBundle res = context.getApplicationResourceBundle();
+      return res.getString(key);
+  }
+  
+  /**
+   * Get resource bundle from given resource file
+   * @param name  : resource file name
+   * @param key   : key
+   * @param cl    : ClassLoader to load resource file
+   * @return
+   */
   public static String getResourceBundle(String name, String key, ClassLoader cl) {
     ExoContainer container = ExoContainerContext.getCurrentContainer();
     Locale locale = Util.getUIPortal().getAncestorOfType(UIPortalApplication.class).getLocale() ;

@@ -24,6 +24,7 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.MissingResourceException;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemExistsException;
@@ -636,9 +637,39 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     for (UIComponent uiComp : listChildren) {
       if (uiComp.getId().equals(selectField)) {
         UIFormMultiValueInputSet uiFormMultiValueInputSet = getChildById(selectField);
-        if (mapTaxonomies.containsKey(selectField)) uiFormMultiValueInputSet.setValue(mapTaxonomies.get(selectField));
+        if (mapTaxonomies.containsKey(selectField)) uiFormMultiValueInputSet.setValue(getTaxonomyLabel(mapTaxonomies.get(selectField)));
       }
     }
+  }
+  
+  private List<String> getTaxonomyLabel(List<String> taxonomyPaths) {
+    List<String> taxonomyLabels = new ArrayList<String>();
+    String[] taxonomyPathSplit = null;
+    StringBuilder buildlabel;
+    StringBuilder buildPathlabel;
+    for (String taxonomyPath : taxonomyPaths) {
+      if (taxonomyPath.startsWith("/"))
+        taxonomyPath = taxonomyPath.substring(1);
+      taxonomyPathSplit = taxonomyPath.split("/");
+      buildlabel = new StringBuilder();
+      buildPathlabel = new StringBuilder();
+      for (int i = 0; i < taxonomyPathSplit.length; i++) {
+        buildlabel = new StringBuilder("eXoTaxonomies");
+        try {
+          for (int j = 0; j <= i; j++) {
+            buildlabel.append(".").append(taxonomyPathSplit[j]);
+          }
+          buildPathlabel.append(Utils.getResourceBundle(buildlabel.append(".label").toString())).append("/");
+        } catch (MissingResourceException me) {
+          buildPathlabel = new StringBuilder();
+          buildPathlabel.append(taxonomyPathSplit[i]).append("/");
+        }
+       
+      }
+
+      taxonomyLabels.add(buildPathlabel.substring(0, buildPathlabel.length() - 1));
+    }
+    return taxonomyLabels;
   }
   
   static  public class SaveActionListener extends EventListener<UIUploadForm> {

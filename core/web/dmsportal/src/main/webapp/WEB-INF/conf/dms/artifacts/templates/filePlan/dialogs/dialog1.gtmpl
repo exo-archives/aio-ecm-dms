@@ -75,7 +75,7 @@
 							      <td class="FieldLabel"><%=_ctx.appRes("FilePlan.dialog.label.categories")%></td>
 							      <td class="FieldComponent">
 								      <% 
-								        String[] fieldCategories = ["jcrPath=/node/exo:category", "multiValues=true", "reference=true"];
+								        String[] fieldCategories = ["jcrPath=/node/exo:category", "multiValues=true", "reference=true", "editable=false"];
 								        uicomponent.addTextField("categories", fieldCategories);
 								      %>
 								    </td>

@@ -101,7 +101,6 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   final static public String POPUP_TAXONOMY = "PopupComponent";
   final static public String PATH_TAXONOMY = "exoTaxonomiesPath";
   
-  private List<String> listTaxonomy = new ArrayList<String>();
   private List<String> listTaxonomyName = new ArrayList<String>();
   
   private static final Log LOG  = ExoLogger.getLogger(UIDocumentForm.class);
@@ -110,16 +109,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     setActions(new String[]{"Save", "Cancel"});  
   }
   
-  public List<String> getListTaxonomy() {
-    return listTaxonomy;
-  }
-  
   public List<String> getlistTaxonomyName() {
     return listTaxonomyName;
-  }
-  
-  public void setListTaxonomy(List<String> listTaxonomyNew) {
-    listTaxonomy = listTaxonomyNew;
   }
   
   public void setListTaxonomyName(List<String> listTaxonomyNameNew) {
@@ -132,6 +123,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     DMSConfiguration dmsConfig = getApplicationComponent(DMSConfiguration.class);
     return dmsConfig.getConfig(repository).getSystemWorkspace();    
   }
+  
   public String getPathTaxonomy() throws Exception {
     String wsName = getDMSWorkspace(); 
     UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
@@ -159,9 +151,9 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       List<Node> listCategories = taxonomyService.getAllCategories(currentNode);
       for (Node itemNode : listCategories) {
         String categoryPath = itemNode.getPath().replaceAll(getPathTaxonomy() + "/", "");
-        if (!listTaxonomy.contains(categoryPath)) {
-          listTaxonomy.add(categoryPath);
-          listTaxonomyName.add(categoryPath);
+        if (!getListTaxonomy().contains(categoryPath)) {
+          listTaxonomyName.add(getCategoryLabel(categoryPath));
+          getListTaxonomy().add(categoryPath);
         }
       }
     }
@@ -170,6 +162,7 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     uiFormMultiValue.setName(FIELD_TAXONOMY);
     uiFormMultiValue.setType(UIFormStringInput.class);
     uiFormMultiValue.setValue(listTaxonomyName);
+    uiFormMultiValue.setEditable(false);
     addUIFormInput(uiFormMultiValue);
   }
   
@@ -182,14 +175,14 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     }else if(formInput instanceof UIFormMultiValueInputSet) {
       UIFormMultiValueInputSet  inputSet = (UIFormMultiValueInputSet) formInput;            
       String valueTaxonomy = String.valueOf(value).trim();
-      List taxonomylist = inputSet.getValue();
-      if (!taxonomylist.contains(valueTaxonomy)) {
-        listTaxonomy.add(valueTaxonomy);
-        listTaxonomyName.add(valueTaxonomy);
-        taxonomylist.add(valueTaxonomy);
-      }      
-      inputSet.setValue(taxonomylist);
+      if (!getListTaxonomy().contains(valueTaxonomy)) {
+        getListTaxonomy().add(valueTaxonomy);
+      }
+      List<String> values = (List<String>) inputSet.getValue();
+      values.add(getCategoryLabel(valueTaxonomy));
+      inputSet.setValue(values);
     }
+
     UIDocumentFormController uiContainer = getParent();
     uiContainer.removeChildById(POPUP_TAXONOMY);
   }
@@ -252,30 +245,18 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
       }
       
       int index = 0;
+      List<String> listTaxonomy = documentForm.getListTaxonomy();
       if (documentForm.isReference) {
         UIFormMultiValueInputSet uiSet = documentForm.getChild(UIFormMultiValueInputSet.class);
         if((uiSet != null) && (uiSet.getName() != null) && uiSet.getName().equals("categories")) {
           hasCategories = true;
-          List<UIComponent> listChildren = uiSet.getChildren();         
-          for (UIComponent component : listChildren) {
-            UIFormStringInput uiStringInput = (UIFormStringInput)component;          
-            if(uiStringInput.getValue() != null) {
-              String value = uiStringInput.getValue().trim();            
-              categoriesPath += value + ",";
-            }
+          for (String category : listTaxonomy) {
+            categoriesPath.concat(category).concat(",");
           }
           
-          if (categoriesPath != null && categoriesPath.length() > 0) {
+          if (listTaxonomy != null && listTaxonomy.size() > 0) {
             try {
-              if (categoriesPath.endsWith(",")) categoriesPath = categoriesPath.substring(0, categoriesPath.length()-1).trim();
-              categoriesPathList = categoriesPath.split(",");
-              if ((categoriesPathList == null) || (categoriesPathList.length == 0)) {
-                // throw new PathNotFoundException();
-                uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, ApplicationMessage.WARNING));
-                event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-                return;
-              } 
-              for (String categoryPath : categoriesPathList) {
+              for (String categoryPath : listTaxonomy) {
                 index = categoryPath.indexOf("/");
                 if (index < 0) {
                   uiApp.addMessage(new ApplicationMessage("UISelectedCategoriesGrid.msg.non-categories", null, ApplicationMessage.WARNING));
@@ -342,8 +323,8 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
           }
           // End delete listExistedTaxonomy
           
-          if (hasCategories && (newNode != null) && ((categoriesPath != null) && (categoriesPath.length() > 0))){
-            for(String categoryPath : categoriesPathList) {
+          if (hasCategories && (newNode != null) && ((listTaxonomy != null) && (listTaxonomy.size() > 0))){
+            for(String categoryPath : listTaxonomy) {
               index = categoryPath.indexOf("/");
               try {
                 taxonomyService.addCategory(newNode, categoryPath.substring(0, index), categoryPath.substring(index + 1));
@@ -574,6 +555,13 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
   static public class RemoveActionListener extends EventListener<UIDocumentForm> {
     public void execute(Event<UIDocumentForm> event) throws Exception {
       UIDocumentForm uiDocumentForm = event.getSource();
+      String objectid = event.getRequestContext().getRequestParameter(OBJECTID);
+      String idx = objectid.replaceAll(FIELD_TAXONOMY,"");
+      try {
+        int idxInput = Integer.parseInt(idx);
+        uiDocumentForm.getListTaxonomy().remove(idxInput);
+      } catch (NumberFormatException ne) {
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(uiDocumentForm);
     }
   }  

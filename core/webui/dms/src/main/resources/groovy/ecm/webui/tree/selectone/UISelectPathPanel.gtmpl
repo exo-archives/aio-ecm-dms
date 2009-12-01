@@ -38,7 +38,7 @@
 				      <tr class="$rowClass">
 				        <td>
 				        <%
-				          String nodeName = node.getName();
+				          String nodeName = uicomponent.getDisplayName(node);
 								  String nodeTypeIcon = Utils.getNodeTypeIcon(node,"16x16Icon");
 				          def clazz = "Text"
 						  						

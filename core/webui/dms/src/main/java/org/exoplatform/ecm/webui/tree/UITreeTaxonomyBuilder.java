@@ -81,7 +81,7 @@ public class UITreeTaxonomyBuilder extends UIContainer {
    * @throws Exception the exception
    */
   public UITreeTaxonomyBuilder() throws Exception {
-    UITree tree = addChild(UINodeTree.class, null, UINodeTree.class.getSimpleName()+hashCode()) ;
+    UITree tree = addChild(UINodeTree.class, null, "TaxonomyTreeBuilder") ;
     tree.setBeanLabelField("name") ;
     tree.setBeanIdField("path") ;    
   }  
@@ -101,7 +101,10 @@ public class UITreeTaxonomyBuilder extends UIContainer {
    */
   public final void setRootTreeNode(Node node) throws Exception {
     this.rootTreeNode = node;
-    this.currentNode = node;    
+    this.currentNode = node; 
+    UINodeTree uiNodeTree = getChild(UINodeTree.class);
+    uiNodeTree.setRootPath(node.getPath());
+    uiNodeTree.setTaxonomyLocalize(true);
     broadcastOnChange(node,null);
   }
 

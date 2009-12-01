@@ -18,6 +18,7 @@ package org.exoplatform.ecm.webui.component.explorer.popup.admin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.ItemExistsException;
@@ -31,6 +32,7 @@ import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneNodePathSelector;
 import org.exoplatform.ecm.webui.tree.selectone.UIOneTaxonomySelector;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -101,13 +103,31 @@ public class UICategoriesAddedList extends UIContainer implements UISelectable {
     try {
       for (Node taxonomyTree : taxonomyTrees) {
         if (node.getPath().contains(taxonomyTree.getPath())) {
-          return node.getPath().replace(taxonomyTree.getPath(), taxonomyTree.getName());
+          return getCategoryLabel(node.getPath().replace(taxonomyTree.getPath(), taxonomyTree.getName()));
         }
       }
     } catch (RepositoryException e) {
       LOG.error("Unexpected error when ");
     }
     return "";
+  }
+  
+  private String getCategoryLabel(String resource) {
+    String[] taxonomyPathSplit = resource.split("/");
+    StringBuilder buildlabel;
+    StringBuilder buildPathlabel = new StringBuilder();
+    for (int i = 0; i < taxonomyPathSplit.length; i++) {
+      buildlabel = new StringBuilder("eXoTaxonomies");
+      for (int j = 0; j <= i; j++) {
+        buildlabel.append(".").append(taxonomyPathSplit[j]);
+      }
+      try {
+        buildPathlabel.append(Utils.getResourceBundle(buildlabel.append(".label").toString())).append("/");
+      } catch (MissingResourceException me) {
+        buildPathlabel.append(taxonomyPathSplit[i]).append("/");
+      }
+    }
+    return buildPathlabel.substring(0, buildPathlabel.length() - 1);
   }
   
   @SuppressWarnings("unused")

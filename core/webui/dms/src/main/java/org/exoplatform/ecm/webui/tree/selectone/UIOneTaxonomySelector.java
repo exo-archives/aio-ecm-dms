@@ -16,14 +16,17 @@
  */
 package org.exoplatform.ecm.webui.tree.selectone;
 
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
 
 import javax.jcr.Node;
 import javax.jcr.RepositoryException;
 
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
 import org.exoplatform.ecm.webui.tree.UITreeTaxonomyBuilder;
+import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.templates.TemplateService;
@@ -205,8 +208,21 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
 
   public String getRootTreePath() { return rootTreePath; }
   
-  public void setRootTreePath(String rootTreePath) { this.rootTreePath = rootTreePath; 
+  public void setRootTreePath(String rootTreePath) { 
+    this.rootTreePath = rootTreePath;
+    getChild(UISelectTaxonomyPanel.class).setTaxonomyTreePath(rootTreePath);
   }      
+  
+  public String getTaxonomyLabel(Node node) throws RepositoryException {
+    try {
+      String display = node.getName();
+      if (rootTaxonomyName == null) rootTaxonomyName = rootTreePath.substring(rootTreePath.lastIndexOf("/") + 1);
+      display = rootTaxonomyName.concat(node.getPath().replace(rootTreePath, "")).replaceAll("/", ".");
+      return Utils.getResourceBundle(("eXoTaxonomies.").concat(display).concat(".label"));
+    } catch (MissingResourceException me) {
+    }
+    return node.getName();
+  }
   
   public void onChange(final Node currentNode, Object context) throws Exception {
     UISelectTaxonomyPanel selectPathPanel = getChild(UISelectTaxonomyPanel.class);
@@ -220,7 +236,8 @@ public class UIOneTaxonomySelector extends UIBaseNodeTreeSelector {
     if (currentNode.equals(parentRoot)) {
       pathName = "";
     }
-    UIBreadcumbs.LocalPath localPath = new UIBreadcumbs.LocalPath(pathName, pathName);
+    String label = pathName.length() > 0 ? getTaxonomyLabel(currentNode) : pathName;
+    UIBreadcumbs.LocalPath localPath = new UIBreadcumbs.LocalPath(pathName, label);
     List<LocalPath> listLocalPath = uiBreadcumbs.getPath();
     StringBuilder buffer = new StringBuilder(1024);
     for(LocalPath iterLocalPath: listLocalPath) {

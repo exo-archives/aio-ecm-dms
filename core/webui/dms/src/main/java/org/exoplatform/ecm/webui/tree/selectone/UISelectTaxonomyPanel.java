@@ -16,21 +16,13 @@
  */
 package org.exoplatform.ecm.webui.tree.selectone;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.jcr.Node;
-import javax.jcr.NodeIterator;
 import javax.jcr.RepositoryException;
-import javax.jcr.nodetype.NodeType;
 
-import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.selector.UISelectable;
 import org.exoplatform.ecm.webui.tree.UIBaseNodeTreeSelector;
-import org.exoplatform.ecm.webui.utils.Utils;
 import org.exoplatform.portal.webui.container.UIContainer;
 import org.exoplatform.services.cms.BasePath;
-import org.exoplatform.services.ecm.publication.PublicationService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -53,126 +45,21 @@ import org.exoplatform.webui.event.EventListener;
         @EventConfig(listeners = UISelectTaxonomyPanel.SelectActionListener.class)
     }
 )
-public class UISelectTaxonomyPanel extends UIContainer {
+public class UISelectTaxonomyPanel extends UISelectPathPanel {
   private UIPageIterator uiPageIterator_;
-  public String[] acceptedMimeTypes = {};
-  protected Node parentNode;
-  private String[] acceptedNodeTypes = {};
-  private String[] exceptedNodeTypes = {};
-  private boolean allowPublish = false;
-  private PublicationService publicationService_ = null;
-  private List<String> templates_ = null;
-  private String[] defaultExceptedNodeTypes = {};
-  
   private static String TAXONOMY_TREE = "taxonomyTree";
-  
+  private String taxonomyTreePath = "";
+
+  public String getTaxonomyTreePath() {
+    return taxonomyTreePath;
+  }
+
+  public void setTaxonomyTreePath(String taxonomyTreePath) {
+    this.taxonomyTreePath = taxonomyTreePath;
+  }
+
   public UISelectTaxonomyPanel() throws Exception { 
     uiPageIterator_ = addChild(UIPageIterator.class, null, "UISelectPathIterate");
-  }
-  
-  public UIPageIterator getUIPageIterator() { return uiPageIterator_; }
-  
-  public boolean isAllowPublish() {
-    return allowPublish;
-  }
-
-  public void setAllowPublish(boolean allowPublish, PublicationService publicationService, List<String> templates) {
-    this.allowPublish = allowPublish;
-    publicationService_ = publicationService;
-    templates_ = templates;
-  }
-  
-  private void addNodePublish(List<Node> listNode, Node node, PublicationService publicationService) throws Exception {
-    if (isAllowPublish()) {
-      NodeType nt = node.getPrimaryNodeType();
-      if (templates_.contains(nt.getName())) { 
-        Node nodecheck = publicationService.getNodePublish(node, null);
-        if (nodecheck != null) {
-          listNode.add(nodecheck); 
-        }
-      } else {
-        listNode.add(node);
-      }
-    } else {
-      listNode.add(node);
-    }
-  }
-  
-  public void setParentNode(Node node) { this.parentNode = node; }
-  
-  public Node getParentNode() { return parentNode; }
-
-  public String[] getAcceptedNodeTypes() { return acceptedNodeTypes; }
-
-  public void setAcceptedNodeTypes(String[] acceptedNodeTypes) { 
-    this.acceptedNodeTypes = acceptedNodeTypes;
-  }
-  
-  public String[] getExceptedNodeTypes() { return exceptedNodeTypes; }
-
-  public void setExceptedNodeTypes(String[] exceptedNodeTypes) { 
-    this.exceptedNodeTypes = exceptedNodeTypes;
-  }
-
-  public String[] getAcceptedMimeTypes() { return acceptedMimeTypes; }
-  public void setAcceptedMimeTypes(String[] acceptedMimeTypes) { this.acceptedMimeTypes = acceptedMimeTypes; }  
-  
-  public String[] getDefaultExceptedNodeTypes() { return defaultExceptedNodeTypes; }
-  
-  public void setDefaultExceptedNodeTypes(String[] defaultExceptedNodeTypes) {
-    this.defaultExceptedNodeTypes = defaultExceptedNodeTypes;
-  }
-
-  public List getSelectableNodes() throws Exception { return uiPageIterator_.getCurrentPageData(); }
-  
-  public void updateGrid() throws Exception {
-    ObjectPageList objPageList = new ObjectPageList(getListSelectableNodes(), 10);
-    uiPageIterator_.setPageList(objPageList);
-  }
-  
-  public List<Node> getListSelectableNodes() throws Exception {
-    List<Node> list = new ArrayList<Node>();
-    if (parentNode == null) return list;
-    Node realNode = Utils.getNodeSymLink(parentNode);
-    for (NodeIterator iterator = realNode.getNodes();iterator.hasNext();) {
-      Node child = iterator.nextNode();
-      if(child.isNodeType("exo:hiddenable")) continue;
-      if(matchMimeType(Utils.getNodeSymLink(child)) && matchNodeType(Utils.getNodeSymLink(child))) {
-        list.add(child);
-      }
-    }
-    List<Node> listNodeCheck = new ArrayList<Node>();
-    for (Node node : list) {
-      addNodePublish(listNodeCheck, node, publicationService_);
-    }
-    return listNodeCheck;
-  }      
-
-  protected boolean matchNodeType(Node node) throws Exception {
-    if(acceptedNodeTypes == null || acceptedNodeTypes.length == 0) return true;
-    for(String nodeType: acceptedNodeTypes) {
-      if(node.isNodeType(nodeType)) return true;
-    }
-    return false;
-  }
-  
-  protected boolean isExceptedNodeType(Node node) throws RepositoryException {
-    if(exceptedNodeTypes == null || exceptedNodeTypes.length == 0) return false;
-    for(String nodeType: exceptedNodeTypes) {
-      if(node.isNodeType(nodeType)) return true;
-    }
-    return false;
-  }
-
-  protected boolean matchMimeType(Node node) throws Exception {
-    if(acceptedMimeTypes == null || acceptedMimeTypes.length == 0) return true;
-    if(!node.isNodeType("nt:file")) return true;
-    String mimeType = node.getNode("jcr:content").getProperty("jcr:mimeType").getString();
-    for(String type: acceptedMimeTypes) {
-      if(type.equalsIgnoreCase(mimeType))
-        return true;
-    }
-    return false;
   }
   
   public String getPathTaxonomy() throws Exception {
@@ -183,6 +70,10 @@ public class UISelectTaxonomyPanel extends UIContainer {
   public String getPathSystemTaxonomy() throws Exception {
     NodeHierarchyCreator nodeHierarchyCreator = getApplicationComponent(NodeHierarchyCreator.class);
     return nodeHierarchyCreator.getJcrPath(BasePath.EXO_TAXONOMIES_PATH);
+  }
+  
+  public String getDisplayName(Node node) throws RepositoryException {
+    return getAncestorOfType(UIOneTaxonomySelector.class).getTaxonomyLabel(node);
   }
 
   static public class SelectActionListener extends EventListener<UISelectTaxonomyPanel> {
