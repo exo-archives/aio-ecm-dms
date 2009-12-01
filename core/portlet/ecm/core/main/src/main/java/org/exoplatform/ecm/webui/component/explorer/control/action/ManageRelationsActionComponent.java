@@ -96,7 +96,7 @@ public class ManageRelationsActionComponent extends UIComponent {
       uiNodePathSelector.init(uiExplorer.getSessionProvider());
       uiNodePathSelector.setSourceComponent(uiRelateAddedList, null);
       UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
-      UIPopupContainer.activate(uiRelationManager, 630, 500);
+      UIPopupContainer.activate(uiRelationManager, 700, 500);
       event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
     }
   }
