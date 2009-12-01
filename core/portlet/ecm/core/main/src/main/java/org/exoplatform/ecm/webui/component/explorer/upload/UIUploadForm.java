@@ -579,18 +579,7 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
       LOG.error("An unexpected error occurs", e);
       JCRExceptionManager.process(uiApp, e);
       return ;
-    } finally {
-      for (UIComponent uiComp : listFormChildren) {
-        if (uiComp instanceof UIFormUploadInput) {
-          uploadService.removeUpload(((UIFormUploadInput)uiComp).getUploadId());
-        }
-      }
     }
-
-  }
-  
-  private void processUpload() {
-    
   }
   
   private Map<String, JcrInputProperty> getInputProperties(String name, InputStream inputStream, String mimeType) {
