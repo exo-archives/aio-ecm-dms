@@ -39,7 +39,6 @@ import javax.jcr.version.OnParentVersionAction;
 
 import org.apache.commons.logging.Log;
 import org.exoplatform.container.component.ComponentPlugin;
-import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.services.cms.CmsService;
 import org.exoplatform.services.cms.actions.ActionPlugin;
 import org.exoplatform.services.cms.actions.ActionServiceContainer;
@@ -142,8 +141,8 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
    * @param cmsService        CmsService
    * @throws Exception
    */
-  public ActionServiceContainerImpl(InitParams params, RepositoryService repositoryService,
-      CmsService cmsService) throws Exception {
+  public ActionServiceContainerImpl(RepositoryService repositoryService, CmsService cmsService
+      ) throws Exception {
     repositoryService_ = repositoryService;
     cmsService_ = cmsService;    
   }
@@ -326,7 +325,16 @@ public class ActionServiceContainerImpl implements ActionServiceContainer, Start
   }
 
   public Node getAction(Node node, String actionName) throws Exception {
-     return node.getNodes(EXO_ACTIONS).nextNode().getNode(actionName);
+    NodeIterator nodeIter = node.getNodes(EXO_ACTIONS);
+    while(nodeIter.hasNext()) {
+      Node child = nodeIter.nextNode();
+      try {
+        return child.getNode(actionName);
+      } catch(Exception e) {
+        return null;
+      }
+    }
+    return null;
   }
 
   public boolean hasActions(Node node) throws Exception {
