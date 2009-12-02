@@ -17,6 +17,7 @@
  **************************************************************************/
 package org.exoplatform.ecm.webui.component.explorer.rightclick.manager;
 
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -55,6 +56,7 @@ import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
 import org.exoplatform.ecm.webui.utils.LockUtil;
 import org.exoplatform.ecm.webui.utils.PermissionUtil;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.documents.TrashService;
 import org.exoplatform.services.cms.link.LinkUtils;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
@@ -248,6 +250,8 @@ public class DeleteManageComponent extends UIAbstractManagerComponent {
     try {
       if (node.isNodeType(Utils.RMA_RECORD))
         removeMixins(node);
+      ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class);
+      actionService.removeAction(node, uiExplorer.getRepositoryName());
       ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
       thumbnailService.processRemoveThumbnail(node);
       node.remove();
