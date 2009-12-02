@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.jcr.Node;
+import javax.jcr.PathNotFoundException;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.jcr.Value;
@@ -247,6 +248,11 @@ public class UIWorkingArea extends UIContainer {
     StringBuffer actionsList = new StringBuffer(1024);
     List<UIExtension> uiExtensionList = getUIExtensionList();
     UIComponent uiAddedActionManage;
+    try {
+      getAncestorOfType(UIJCRExplorer.class).getSession().getItem(node.getPath());
+    } catch(PathNotFoundException pne) {
+      return "";
+    }
     for (UIExtension uiextension : uiExtensionList) {
       if (uiextension.getCategory().startsWith(ITEM_CONTEXT_MENU)
           || ITEM_GROUND_CONTEXT_MENU.equals(uiextension.getCategory())) {

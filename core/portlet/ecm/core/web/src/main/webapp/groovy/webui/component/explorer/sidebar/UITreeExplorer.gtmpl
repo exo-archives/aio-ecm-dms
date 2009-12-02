@@ -6,13 +6,14 @@
   import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu;
   import org.exoplatform.ecm.webui.component.explorer.sidebar.TreeNode ;
+	import javax.jcr.PathNotFoundException;
   import java.util.List;
+	import java.util.ArrayList;
   import org.exoplatform.ecm.utils.text.Text;
   
 %>
 
 <%
-		
   public void writeNodes(TreeNode rootTree) {
     UIRightClickPopupMenu contextMenu = uicomponent.getContextMenu();
     def uiCustomActionComponent = uicomponent.getWorkingArea().getCustomAction();
@@ -23,15 +24,26 @@
     int counter = 1 ;     
 	  List childrenNodes=uicomponent.getRenderedChildren(rootTree);
     boolean isPaginated=uicomponent.isPaginated(rootTree);
-    int childrenSize = childrenNodes.size();        
+    
+		def realChildrenTrees = new ArrayList<TreeNode>();
+		for(tempNode in childrenNodes) {
+			try {
+				rootTree.getNode().getSession().getItem(tempNode.getNodePath());
+				realChildrenTrees.add(tempNode);
+			} catch(PathNotFoundException pne) {
+				continue;
+			}			
+		}
+		int childrenSize = realChildrenTrees.size();        
     if(!uicomponent.isSystemWorkspace()) {
       def rcontext = _ctx.getRequestContext();
       int depth = rootTree.getNode().getDepth() + 1;
       if (rootTree.getNode().getPath().equals(uicomponent.getRootTreeNode().getPath())) depth++;
   		rcontext.getJavascriptManager().addOnLoadJavascript("eXo.ecm.ECMUtils.initClipboard('${drive}_treeclip_button','$depth','$childrenSize')");
     }
-    for(treeNode in childrenNodes) {	    
-    	Node node = treeNode.getNode();
+
+    for(treeNode in realChildrenTrees) {	    
+			Node node = treeNode.getNode();
     	node.refresh(true);
     	try {
     	  def primaryName = node.getPrimaryNodeType().getName();

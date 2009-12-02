@@ -42,6 +42,7 @@ import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
+import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
@@ -124,7 +125,14 @@ public class UITreeExplorer extends UIContainer {
   
   public String getActionsList(Node node) throws Exception {
     if(node == null) return "" ;
-    return getAncestorOfType(UIWorkingArea.class).getActionsExtensionList(node) ;
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    try {
+      uiExplorer.getSession().getItem(node.getPath());
+      return getAncestorOfType(UIWorkingArea.class).getActionsExtensionList(node) ;
+    } catch(PathNotFoundException pne) {
+      uiExplorer.refreshExplorer();
+      return "";
+    }
   }
   
   public List<Node> getCustomActions(Node node) throws Exception {

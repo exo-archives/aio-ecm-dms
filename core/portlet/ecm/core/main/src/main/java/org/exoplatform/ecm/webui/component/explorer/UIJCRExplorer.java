@@ -40,8 +40,6 @@ import javax.jcr.nodetype.NodeType;
 import javax.portlet.PortletPreferences;
 
 import org.apache.commons.logging.Log;
-import org.exoplatform.container.ExoContainer;
-import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.jcr.TypeNodeComparator;
 import org.exoplatform.ecm.jcr.model.ClipboardCommand;
 import org.exoplatform.ecm.jcr.model.Preference;
