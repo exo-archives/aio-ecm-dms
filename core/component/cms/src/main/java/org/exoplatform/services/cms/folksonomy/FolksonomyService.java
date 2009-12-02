@@ -20,6 +20,8 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
+
 /**
  * Created by The eXo Platform SAS
  * Author : Xuan Hoa Pham
@@ -66,7 +68,7 @@ public interface FolksonomyService {
    * @return ArrayList of node
    * @throws Exception
    */
-  public List<Node> getDocumentsOnTag(String tagPath, String repository) throws Exception ;
+  public List<Node> getDocumentsOnTag(String tagPath, String repository, SessionProvider sessionProvider) throws Exception ;
   
   /**
    * Base on uuid in values in EXO_FOLKSONOMY_PROP property in document node,

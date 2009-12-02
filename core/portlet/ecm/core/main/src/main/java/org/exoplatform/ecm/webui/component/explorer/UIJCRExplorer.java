@@ -755,10 +755,17 @@ public class UIJCRExplorer extends UIContainer {
   public List<Node> getDocumentByTag()throws Exception {
     FolksonomyService folksonomyService = getApplicationComponent(FolksonomyService.class) ;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    WebuiRequestContext ctx = WebuiRequestContext.getCurrentInstance();
+    SessionProvider sessionProvider = (ctx.getRemoteUser() == null) ?
+									SessionProviderFactory.createAnonimProvider() :
+									SessionProviderFactory.createSessionProvider();
+    
     List<String> documentsType = templateService.getDocumentTemplates(getRepositoryName()) ;
     List<Node> documentsOnTag = new ArrayList<Node>() ;
-    for(Node node : folksonomyService.getDocumentsOnTag(tagPath_, getRepositoryName())) {
-      if(documentsType.contains(node.getPrimaryNodeType().getName())) {
+    
+    for(Node node : folksonomyService.getDocumentsOnTag(tagPath_, getRepositoryName(), sessionProvider)) {
+      if(documentsType.contains(node.getPrimaryNodeType().getName()) &&
+      	 PermissionUtil.canRead(node)) {
         documentsOnTag.add(node) ;
       }
     }

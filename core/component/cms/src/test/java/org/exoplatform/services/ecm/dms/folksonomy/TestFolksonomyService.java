@@ -26,6 +26,7 @@ import javax.jcr.Property;
 import javax.jcr.Session;
 import javax.jcr.Value;
 
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
@@ -248,7 +249,8 @@ public class TestFolksonomyService extends BaseDMSTestCase {
     String[] tagNames1 = {"EEEE"};
     folksonomyService.addTag(test1, tagNames, REPO_NAME);
     folksonomyService.addTag(test2, tagNames1, REPO_NAME);
-    List<Node> list = folksonomyService.getDocumentsOnTag(tagPath, REPO_NAME);
+    List<Node> list = folksonomyService.getDocumentsOnTag(tagPath, REPO_NAME,
+    									SessionProviderFactory.createSystemProvider());
     assertTrue(list.contains(test1));
     assertTrue(list.contains(test2));
   }
@@ -261,7 +263,8 @@ public class TestFolksonomyService extends BaseDMSTestCase {
   public void testGetDocumentOnTag() throws Exception{
     String tagPath = baseTagsPath + "/FFFF";        
     try {
-      folksonomyService.getDocumentsOnTag(tagPath, REPO_NAME);
+      folksonomyService.getDocumentsOnTag(tagPath, REPO_NAME,
+    		  			SessionProviderFactory.createSystemProvider());
       fail("FFFF tag is not existed");
     } catch (Exception ex) {
     }
