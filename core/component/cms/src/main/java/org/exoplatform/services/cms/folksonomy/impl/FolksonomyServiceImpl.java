@@ -29,6 +29,7 @@ import javax.jcr.Value;
 
 import org.apache.commons.lang.StringUtils;
 import org.exoplatform.container.component.ComponentPlugin;
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cache.CacheService;
 import org.exoplatform.services.cache.ExoCache;
 import org.exoplatform.services.cms.BasePath;
@@ -36,6 +37,7 @@ import org.exoplatform.services.cms.folksonomy.FolksonomyService;
 import org.exoplatform.services.cms.folksonomy.TagStyle;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.picocontainer.Startable;
 
@@ -270,7 +272,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
 //      cache_.remove(taggingNode.getPath()) ;
 //      cache_.remove(baseTagsPath_) ;
 //      cache_.remove(node.getPath()) ;
-      updateTagStatus(taggingNode.getPath(), repository) ;      
+      updateTagStatus(taggingNode.getPath(), repository, SessionProviderFactory.createSystemProvider());      
     }        
     currentSession.save() ;    
     systemSession.save() ;    
@@ -296,7 +298,8 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * @return ArrayList of node
    * @throws Exception
    */
-  public List<Node> getDocumentsOnTag(String tagPath, String repository) throws Exception {
+  public List<Node> getDocumentsOnTag(String tagPath, String repository,
+		  SessionProvider sessionProvider) throws Exception {
 //    if(cache_.get(tagPath)!=null) {
 //      return (List<Node>)cache_.get(tagPath) ;
 //    }
@@ -307,13 +310,19 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
     String[] workspaces = repoService_.getRepository(repository).getWorkspaceNames() ;
     Session  sessionOnWS = null ;
     for(String workspaceName: workspaces) {
+      ManageableRepository repo = repoService_.getRepository(repository);
       sessionOnWS = repoService_.getRepository(repository).getSystemSession(workspaceName) ;
       Node tagNodeOnWS = sessionOnWS.getNodeByUUID(uuid) ;
       PropertyIterator iter = tagNodeOnWS.getReferences() ;
       for(;iter.hasNext();) {
         Property folksonomy = iter.nextProperty() ;
         Node document = folksonomy.getParent() ;
-        documentList.add(document) ;
+        String docUUID = document.getUUID();
+        Session docSession = sessionProvider.getSession(workspaceName, repo);
+        try {
+        	document = docSession.getNodeByUUID(docUUID);
+        	documentList.add(document);
+        } catch (Exception ex) {}
       }
       sessionOnWS.logout();
     }
@@ -425,8 +434,8 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
    * @param repository      repository name
    * @throws Exception
    */
-  private void updateTagStatus(String tagPath, String repository) throws Exception {    
-    int numberOfDocumentOnTag = getDocumentsOnTag(tagPath, repository).size() ;
+  private void updateTagStatus(String tagPath, String repository, SessionProvider sessionProvider) throws Exception {    
+    int numberOfDocumentOnTag = getDocumentsOnTag(tagPath, repository, sessionProvider).size() ;
     Session systemSession = getSystemSession(repository) ;
     Node selectedTagNode = (Node)systemSession.getItem(tagPath) ; 
     Node tagStyleHomeNode = (Node)systemSession.getItem(exoTagStylePath_) ;
