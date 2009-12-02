@@ -2,6 +2,7 @@
   import java.net.URLEncoder;
   import javax.jcr.Node;
   import javax.jcr.AccessDeniedException ;
+  import javax.jcr.PathNotFoundException;
   import org.exoplatform.ecm.webui.utils.Utils;
   import org.exoplatform.web.application.Parameter ;
   import org.exoplatform.webui.core.UIRightClickPopupMenu ;
@@ -23,8 +24,19 @@
     int counter = 1 ;     
     List childrenNodes=uicomponent.getRenderedChildren(rootTree);
     boolean isPaginated=uicomponent.isPaginated(rootTree);
-    int childrenSize = childrenNodes.size() ;                 
-    for(treeNode in childrenNodes) {	    
+    
+    def realChildrenTrees = new ArrayList<TreeNode>();
+		for(tempNode in childrenNodes) {
+			try {
+				rootTree.getNode().getSession().getItem(tempNode.getNodePath());
+				realChildrenTrees.add(tempNode);
+			} catch(PathNotFoundException pne) {
+				continue;
+			}			
+		}
+		int childrenSize = realChildrenTrees.size();        
+    
+    for(treeNode in realChildrenTrees) {	    
     	Node node = treeNode.getNode() ;
     	try {
     	  def primaryName = node.getPrimaryNodeType().getName();

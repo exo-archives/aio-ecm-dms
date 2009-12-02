@@ -92,7 +92,14 @@ public class UITreeExplorer extends UIContainer {
   
   public String getActionsList(Node node) throws Exception {
     if(node == null) return "" ;
-    return getAncestorOfType(UIWorkingArea.class).getActionsList(node) ;
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
+    try {
+      uiExplorer.getSession().getItem(node.getPath());
+      return getAncestorOfType(UIWorkingArea.class).getActionsList(node) ;
+    } catch(PathNotFoundException pne) {
+      uiExplorer.refreshExplorer();
+      return "";
+    }
   }
   
   public List<Node> getCustomActions(Node node) throws Exception {
