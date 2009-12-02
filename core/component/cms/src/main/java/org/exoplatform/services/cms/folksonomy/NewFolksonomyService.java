@@ -20,6 +20,8 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
+
 
 /**
  * Created by The eXo Platform SARL
@@ -167,7 +169,7 @@ public interface NewFolksonomyService {
    * Get all documents by tag
    */
   public List<Node> getAllDocumentsByTag(String tagPath, String repository, 
-      String workspace) throws Exception ;
+      String workspace, SessionProvider sessionProvider) throws Exception ;
   
   
   /**

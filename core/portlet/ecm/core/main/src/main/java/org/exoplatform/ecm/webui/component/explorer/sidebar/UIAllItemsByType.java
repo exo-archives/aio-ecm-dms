@@ -18,7 +18,12 @@ package org.exoplatform.ecm.webui.component.explorer.sidebar;
 
 import java.util.List;
 
+import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.services.cms.documents.DocumentTypeService;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -63,7 +68,15 @@ public class UIAllItemsByType extends UIComponent {
       uiExplorer.setSupportedType(supportType);
       uiExplorer.setViewDocument(true);      
       uiExplorer.setIsViewTag(false);
-      uiExplorer.setSelectRootNode();      
+      uiExplorer.setSelectRootNode();
+      
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(uiDocumentWorkspace.isRendered()) {
+        UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class) ;
+        UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+        uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
+      }
       uiExplorer.updateAjax(event);
     }
   }
@@ -75,6 +88,14 @@ public class UIAllItemsByType extends UIComponent {
       UIPopupContainer popupAction = uiJCRExplorer.getChild(UIPopupContainer.class);
       UIDocumentFilterForm uiDocumentFilter = popupAction.activate(UIDocumentFilterForm.class,300);      
       uiDocumentFilter.invoke(uiSideBar.getAllSupportedType());
+      
+      UIWorkingArea uiWorkingArea = uiJCRExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(uiDocumentWorkspace.isRendered()) {
+        UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class) ;
+        UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+        uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
+      }
       event.getRequestContext().addUIComponentToUpdateByAjax(popupAction) ;
     }
   }

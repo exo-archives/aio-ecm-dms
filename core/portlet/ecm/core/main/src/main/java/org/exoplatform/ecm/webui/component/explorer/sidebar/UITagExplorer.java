@@ -22,7 +22,13 @@ import java.util.Map;
 
 import javax.jcr.Node;
 
+import org.apache.poi.hdf.model.hdftypes.DocumentProperties;
+import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
+import org.exoplatform.ecm.webui.component.explorer.UIDocumentWorkspace;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
+import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.popup.actions.UIEditingTagsForm;
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.impl.DMSConfiguration;
@@ -103,6 +109,14 @@ public class UITagExplorer extends UIContainer {
       // Reset status of document flag updated by lampt 
       uiExplorer.setViewDocument(false);
       uiExplorer.setIsViewTag(true);
+      
+      UIWorkingArea uiWorkingArea = uiExplorer.getChild(UIWorkingArea.class);
+      UIDocumentWorkspace uiDocumentWorkspace = uiWorkingArea.getChild(UIDocumentWorkspace.class);
+      if(uiDocumentWorkspace.isRendered()) {
+        UIDocumentContainer uiDocumentContainer = uiDocumentWorkspace.getChild(UIDocumentContainer.class) ;
+        UIDocumentInfo uiDocumentInfo = uiDocumentContainer.getChildById("UIDocumentInfo") ;
+        uiDocumentInfo.setDocumentSourceType(DocumentProviderUtils.CURRENT_NODE_ITEMS);
+      }
       uiExplorer.updateAjax(event);
     }
   }

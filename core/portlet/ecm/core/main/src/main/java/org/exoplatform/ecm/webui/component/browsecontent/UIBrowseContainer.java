@@ -252,7 +252,12 @@ public class UIBrowseContainer extends UIContainer {
     TemplateService templateService = getApplicationComponent(TemplateService.class);
     List<String> documentsType = templateService.getDocumentTemplates(repository);
     List<Node> documentsOnTag = new ArrayList<Node>();
-    for(Node node : newFolksonomyService.getAllDocumentsByTag(tagPath_, repository, workspace)) {
+    WebuiRequestContext ctx = WebuiRequestContext.getCurrentInstance();
+    SessionProvider sessionProvider = (ctx.getRemoteUser() == null) ?
+    																	SessionProviderFactory.createAnonimProvider() :
+    																	SessionProviderFactory.createSessionProvider();
+
+    for(Node node : newFolksonomyService.getAllDocumentsByTag(tagPath_, repository, workspace, sessionProvider)) {
       if(documentsType.contains(node.getPrimaryNodeType().getName())) {
         documentsOnTag.add(node);
       }

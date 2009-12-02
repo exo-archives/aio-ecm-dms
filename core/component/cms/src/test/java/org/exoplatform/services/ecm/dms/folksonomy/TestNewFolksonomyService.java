@@ -20,9 +20,11 @@ import java.util.List;
 
 import javax.jcr.Node;
 
+import org.exoplatform.portal.webui.util.SessionProviderFactory;
 import org.exoplatform.services.cms.folksonomy.NewFolksonomyService;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.ecm.dms.BaseDMSTestCase;
+import org.exoplatform.services.jcr.ext.common.SessionProvider;
 
 /**
  * Created by The eXo Platform SARL
@@ -232,7 +234,8 @@ public class TestNewFolksonomyService extends BaseDMSTestCase {
 		Node sportTagNode = folksonomyNode.getNode("sport");
 		
 		int count = 0;
-		List<Node> docs = newFolksonomyService_.getAllDocumentsByTag(sportTagNode.getPath(), REPO_NAME, COLLABORATION_WS);
+		SessionProvider sessionProvider = SessionProviderFactory.createSystemProvider();
+		List<Node> docs = newFolksonomyService_.getAllDocumentsByTag(sportTagNode.getPath(), REPO_NAME, COLLABORATION_WS, sessionProvider);
 		for(Node node : docs) {
 			if (test.isSame(node)) count ++;
 			else if (test2.isSame(node)) count ++;

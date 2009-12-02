@@ -68,6 +68,7 @@ public class CreateLinkManageComponent extends UIAbstractManagerComponent {
 																									new IsNotTrashHomeNodeFilter()});
 
   private static final Log LOG = ExoLogger.getLogger(CreateLinkManageComponent.class);
+  private static final String EXO_TRASH_FOLDER = "exo:trashFolder";  
   
   @UIExtensionFilters
   public List<UIExtensionFilter> getFilters() {
@@ -95,6 +96,7 @@ public class CreateLinkManageComponent extends UIAbstractManagerComponent {
     }
     Session session = uiExplorer.getSessionByWorkspace(wsName);
     Node selectedNode = uiExplorer.getNodeByPath(srcPath, session, false);
+    if (selectedNode.isNodeType(EXO_TRASH_FOLDER)) return;
     UIApplication uiApp = event.getSource().getAncestorOfType(UIApplication.class);
     LinkManager linkManager = event.getSource().getApplicationComponent(LinkManager.class);
     if (linkManager.isLink(destNode)) {

@@ -184,9 +184,9 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
   /**
    * {@inheritDoc}
    */
-  public List<Node> getAllDocumentsByTag(String tagPath, String repository, String workspace) throws Exception {
+  public List<Node> getAllDocumentsByTag(String tagPath, String repository, String workspace, SessionProvider sessionProvider) throws Exception {
 		List<Node> ret = new ArrayList<Node>();
-  	Node tagNode = getNode(repository, workspace, tagPath);
+  	Node tagNode = getNode(repository, workspace, tagPath, sessionProvider);
    	NodeIterator nodeIter = tagNode.getNodes();
    	
    	while (nodeIter.hasNext()) {
@@ -441,6 +441,16 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
   
   private Node getNode(String repository, String workspace, String path) throws Exception {
     ExoContainer myContainer = ExoContainerContext.getCurrentContainer();  	
+		RepositoryService repositoryService 
+		= (RepositoryService) myContainer.getComponentInstanceOfType(RepositoryService.class);
+		ManageableRepository	manageableRepository = repositoryService.getRepository(repository);
+  	
+  	return (Node) sessionProvider.getSession(workspace, manageableRepository).getItem(path);
+  }
+
+  private Node getNode(String repository, String workspace, String path, SessionProvider sessionProvider) throws Exception {
+    ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+    
 		RepositoryService repositoryService 
 		= (RepositoryService) myContainer.getComponentInstanceOfType(RepositoryService.class);
 		ManageableRepository	manageableRepository = repositoryService.getRepository(repository);

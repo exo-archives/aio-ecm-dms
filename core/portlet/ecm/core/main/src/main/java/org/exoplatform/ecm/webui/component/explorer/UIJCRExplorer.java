@@ -847,8 +847,13 @@ public class UIJCRExplorer extends UIContainer {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<String> documentsType = templateService.getDocumentTemplates(getRepositoryName()) ;
     List<Node> documentsOnTag = new ArrayList<Node>() ;
-    for(Node node : newFolksonomyService.getAllDocumentsByTag(tagPath_, getRepositoryName(), getCurrentWorkspace())) {
-      if(documentsType.contains(node.getPrimaryNodeType().getName())) {
+    WebuiRequestContext ctx = WebuiRequestContext.getCurrentInstance();
+    SessionProvider sessionProvider = (ctx.getRemoteUser() == null) ?
+    																	SessionProviderFactory.createAnonimProvider() :
+    																	SessionProviderFactory.createSessionProvider();
+    for(Node node : newFolksonomyService.getAllDocumentsByTag(tagPath_, getRepositoryName(), getCurrentWorkspace(), sessionProvider)) {
+      if(documentsType.contains(node.getPrimaryNodeType().getName()) &&
+      	 PermissionUtil.canRead(node)) {
         documentsOnTag.add(node) ;
       }
     }
