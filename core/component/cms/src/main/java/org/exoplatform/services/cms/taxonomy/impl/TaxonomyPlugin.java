@@ -92,7 +92,8 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     if (autoCreated != null) autoCreateInNewRepository_ = Boolean.parseBoolean(autoCreated.getValue());
     if (workspaceParam != null) {
       workspace = workspaceParam.getValue();
-    } else if (pathParam == null) {
+    } 
+    if (pathParam == null) {
       path = baseTaxonomiesStorage_;
     } else {
       path = pathParam.getValue();
@@ -147,10 +148,13 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
     DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration_.getConfig(repository);
     if (workspace == null) {
       setWorkspace(dmsRepoConfig.getSystemWorkspace());
+    } else {
+      // in case workspace is not initialized, we choose dms system workspace default
+      if (!manageableRepository.isWorkspaceInitialized(workspace))
+        setWorkspace(dmsRepoConfig.getSystemWorkspace());
     }
-    Session session = manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
+    Session session = manageableRepository.getSystemSession(getWorkspace());
     Node taxonomyStorageNode = (Node) session.getItem(path);
-    //Node taxonomyStorageNodeSystem = null;
     if (taxonomyStorageNode.hasProperty("exo:isImportedChildren")) {
       session.logout();
       return;
@@ -184,9 +188,6 @@ public class TaxonomyPlugin extends BaseComponentPlugin {
           taxonomyNode.getSession().save();
         }
       } else if (objectParam.getName().equals("predefined.actions")) {
-//        taxonomyStorageNodeSystem = Utils.makePath(taxonomyStorageNode, treeName, "exo:taxonomy",
-//            null);
-//        session.save();
         ActionConfig config = (ActionConfig) objectParam.getObject();
         List actions = config.getActions();
         for (Iterator iter = actions.iterator(); iter.hasNext();) {
