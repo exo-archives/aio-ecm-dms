@@ -175,11 +175,11 @@ public class UIDocumentForm extends UIDialogForm implements UIPopupComponent, UI
     }else if(formInput instanceof UIFormMultiValueInputSet) {
       UIFormMultiValueInputSet  inputSet = (UIFormMultiValueInputSet) formInput;            
       String valueTaxonomy = String.valueOf(value).trim();
+      List<String> values = (List<String>) inputSet.getValue();
       if (!getListTaxonomy().contains(valueTaxonomy)) {
         getListTaxonomy().add(valueTaxonomy);
+        values.add(getCategoryLabel(valueTaxonomy));
       }
-      List<String> values = (List<String>) inputSet.getValue();
-      values.add(getCategoryLabel(valueTaxonomy));
       inputSet.setValue(values);
     }
 
