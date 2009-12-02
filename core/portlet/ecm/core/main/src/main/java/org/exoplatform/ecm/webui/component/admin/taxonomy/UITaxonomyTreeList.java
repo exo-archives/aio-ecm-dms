@@ -27,6 +27,7 @@ import javax.jcr.ValueFormatException;
 
 import org.exoplatform.commons.utils.ObjectPageList;
 import org.exoplatform.ecm.webui.component.admin.UIECMAdminPortlet;
+import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.taxonomy.TaxonomyTreeData;
 import org.exoplatform.web.application.ApplicationMessage;
@@ -138,9 +139,14 @@ public class UITaxonomyTreeList extends UIComponentDecorator {
       UITaxonomyTreeList uiTaxonomyTreeList = event.getSource();
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeList.getParent();
       String taxoTreeName = event.getRequestContext().getRequestParameter(OBJECTID);
+      String repository = uiTaxonomyTreeList.getAncestorOfType(UIECMAdminPortlet.class).getPreferenceRepository();
       TaxonomyService taxonomyService = uiTaxonomyTreeList.getApplicationComponent(TaxonomyService.class);
+      ActionServiceContainer actionService = uiTaxonomyTreeList.getApplicationComponent(ActionServiceContainer.class);
       UIApplication uiApp = uiTaxonomyTreeList.getAncestorOfType(UIApplication.class);
       try {
+        // Remove all avaiable action
+        Node taxonomyTreeNode = taxonomyService.getTaxonomyTree(repository,taxoTreeName, true);
+        actionService.removeAction(taxonomyTreeNode, repository);
         taxonomyService.removeTaxonomyTree(taxoTreeName);
       } catch(RepositoryException e) {
         uiApp.addMessage(new ApplicationMessage("UITaxonomyTreeList.msg.remove-exception",

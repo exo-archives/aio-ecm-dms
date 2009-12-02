@@ -736,6 +736,8 @@ public class UIWorkingArea extends UIContainer {
     uiExplorer.addLockToken(parentNode);
     try {
       if(node.isNodeType(Utils.RMA_RECORD)) removeMixins(node);      
+      ActionServiceContainer actionService = getApplicationComponent(ActionServiceContainer.class);
+      actionService.removeAction(node, getAncestorOfType(UIJCRExplorer.class).getRepositoryName());
       ThumbnailService thumbnailService = getApplicationComponent(ThumbnailService.class);
       thumbnailService.processRemoveThumbnail(node);
       node.remove();
