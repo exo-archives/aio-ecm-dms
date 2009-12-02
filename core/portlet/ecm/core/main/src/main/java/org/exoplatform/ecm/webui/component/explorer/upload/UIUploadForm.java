@@ -337,24 +337,25 @@ public class UIUploadForm extends UIForm implements UIPopupComponent, UISelectab
     String pers = PermissionType.ADD_NODE + "," + PermissionType.SET_PROPERTY ;
     selectedNode.getSession().checkPermission(selectedNode.getPath(), pers);
     try {
+      int indexValidate = 0;
       for (UIComponent uiCompValidate : listFormChildren) {
         if(uiCompValidate instanceof UIFormUploadInput) {
-          String[] arrayId = uiCompValidate.getId().split(FIELD_UPLOAD);
-          if ((arrayId.length > 0) && (arrayId[0].length() > 0)) index = new Integer(arrayId[0]).intValue();
+          String[] arrayIdValidate = uiCompValidate.getId().split(FIELD_UPLOAD);
+          if ((arrayIdValidate.length > 0) && (arrayIdValidate[0].length() > 0)) indexValidate = new Integer(arrayIdValidate[0]).intValue();
           UIFormUploadInput uiFormUploadInput;  
-          if (index == 0){
+          if (indexValidate == 0){
             uiFormUploadInput = (UIFormUploadInput) getUIInput(FIELD_UPLOAD);
           } else {
-            uiFormUploadInput = (UIFormUploadInput) getUIInput(index + FIELD_UPLOAD);
+            uiFormUploadInput = (UIFormUploadInput) getUIInput(indexValidate + FIELD_UPLOAD);
           }
-          if(uiFormUploadInput.getUploadResource() == null) {            
+          if(uiFormUploadInput.getUploadResource() == null) {
             uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
                                                     ApplicationMessage.WARNING)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
             return ;
           }
           String fileName = uiFormUploadInput.getUploadResource().getFileName();
-          if(fileName == null || fileName.length() == 0) {
+          if(fileName == null || fileName.length() == 0) {            
             uiApp.addMessage(new ApplicationMessage("UIUploadForm.msg.fileName-error", null, 
                                                     ApplicationMessage.WARNING)) ;
             event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages()) ;
