@@ -196,6 +196,13 @@ public class DriveData implements Comparable<DriveData> {
       String[] array = permission.split(":/") ;
       if(array == null || array.length < 2) return false ;
       if(permissionList.contains("*:/"+array[1])) return true ;
+      if(array[0].equals("*")) {
+        String[] arrPer = {};
+        for(String per : permissionList) {
+          arrPer = per.split(":/");
+          if(arrPer[1].equals(array[1])) return true;
+        }
+      }
     }    
     return permissionList.contains(permission) ;
   }
