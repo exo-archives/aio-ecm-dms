@@ -38,7 +38,9 @@ import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.jcr.RepositoryService;
+import org.exoplatform.services.jcr.access.PermissionType;
 import org.exoplatform.services.jcr.config.RepositoryConfigurationException;
+import org.exoplatform.services.jcr.core.ExtendedNode;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
@@ -243,7 +245,14 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
       Node parentNode = (Node) systemSession.getItem(parentPath);
       if (parentNode.hasNode(taxoNodeName))
         throw new TaxonomyNodeAlreadyExistsException();
-      parentNode.addNode(taxoNodeName, "exo:taxonomy");
+      ExtendedNode node = (ExtendedNode) parentNode.addNode(taxoNodeName, "exo:taxonomy");
+      if (node.canAddMixin("exo:privilegeable")) {
+        if(node.hasProperty("exo:owner")) {
+          String owner = node.getProperty("exo:owner").getString();
+          node.addMixin("exo:privilegeable");
+          node.setPermission(owner, PermissionType.ALL);
+        }
+      }
       systemSession.save();
     } catch (RepositoryConfigurationException e1) {
       throw new RepositoryException(e1);
