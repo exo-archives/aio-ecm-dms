@@ -76,7 +76,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     	if (linkManager.isLink(childNode)) {
     		Node targetNode = null;
     		try {
-					linkManager.getTarget(childNode);
+					targetNode = linkManager.getTarget(childNode);
     		} catch (Exception e) {}
 				if (node.isSame(targetNode)) return;
     	}
@@ -98,7 +98,7 @@ public class FavoriteServiceImpl implements FavoriteService {
 			if (linkManager.isLink(childNode)) {
 				Node targetNode = null;
 				try {
-					linkManager.getTarget(childNode);
+					targetNode = linkManager.getTarget(childNode);
 				} catch (Exception ex) {}
 				if (targetNode != null) ret.add(targetNode);
 			}
