@@ -35,6 +35,7 @@ import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotInTrashF
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.Utils;
+import org.exoplatform.services.cms.actions.ActionServiceContainer;
 import org.exoplatform.services.cms.taxonomy.TaxonomyService;
 import org.exoplatform.services.cms.thumbnail.ThumbnailService;
 import org.exoplatform.services.jcr.RepositoryService;
@@ -140,9 +141,9 @@ public class EmptyTrashManageComponent extends UIAbstractManagerComponent {
     uiExplorer.addLockToken(parentNode);
     if (node.isNodeType(Utils.RMA_RECORD))
       removeMixins(node);
-		ExoContainer myContainer = ExoContainerContext.getCurrentContainer();    
-    ThumbnailService thumbnailService 
-    		= (ThumbnailService)myContainer.getComponentInstanceOfType(ThumbnailService.class);
+    ActionServiceContainer actionService = uiExplorer.getApplicationComponent(ActionServiceContainer.class);
+    actionService.removeAction(node, uiExplorer.getRepositoryName());
+    ThumbnailService thumbnailService = uiExplorer.getApplicationComponent(ThumbnailService.class);
     thumbnailService.processRemoveThumbnail(node);
     node.remove();
     session.save();
