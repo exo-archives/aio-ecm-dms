@@ -77,9 +77,6 @@
 		<msg>
   		<not-exist-tree>L'arbre de taxonomies n'existe pas encore</not-exist-tree>
 		</msg>
-		<action>
-			<Close>Fermer</Close>
-		</action>
 	</UITaxonomyTreeContainer>
   
     <!--
@@ -153,8 +150,6 @@
 		<action>
 			<Save>Sauver</Save>
 			<Reset>Initialiser</Reset>
-			<AddAction>Ajouter une Action</AddAction>
-			<Back>Retour</Back>
 		</action>
 		<msg>
 		  <have-not-any-permission>Ajouter une Permission au noeud</have-not-any-permission>
@@ -171,8 +166,6 @@
 		<title>Ajouter une Action pour la taxonomie</title>
 		<action>
 			<Save>Sauver</Save>
-			<ViewPermission>Voir les Permissions</ViewPermission>
-			<ViewTree>Voir les Taxonomies</ViewTree>
 		</action>
 		<msg>
   		<name-not-allowed>Nom non autorisé</name-not-allowed>
@@ -2267,11 +2260,6 @@
     </label>
     <title>add/edit skin</title>
   </SkinForm>
-  <UITaxonomyTreeMainForm>			
-			<msg>	  		
-	  		<targetPath-emty>The target path is empty</targetPath-emty>	  		
-			</msg>
-		</UITaxonomyTreeMainForm>
 		
 	 <UIFolksonomyManager>
 	   <action>
@@ -2284,5 +2272,42 @@
 	     <confirm-delete>Are you sure want to delete this tag style?</confirm-delete>
 	   </msg>
 	 </UIFolksonomyManager>
-	 
+		
+	 <UITaxonomyTreeMainForm>			
+				<msg>	  		
+		  		<targetPath-emty>The target path is empty</targetPath-emty>	  		
+				</msg>
+				<action>
+					<NextViewPermission>Next</NextViewPermission>
+					<Reset>Reset</Reset>
+				</action>
+			</UITaxonomyTreeMainForm>
+			  
+		<UITaxonomyTreeContainer>
+			<action>
+				<Cancel>Cancel</Cancel>
+			</action>
+		</UITaxonomyTreeContainer>
+	
+		<UIPermissionTreeForm>
+			<action>
+				<Save>Save</Save>
+				<Reset>Reset</Reset>
+				<NextAddAction>Next</NextAddAction>
+				<Previous>Previous</Previous>
+			</action>
+		</UIPermissionTreeForm>	
+	
+		<UIActionForm>
+			<action>
+				<PreviousViewPermission>Previous</PreviousViewPermission>
+				<NextViewTree>Next</NextViewTree>
+			</action>
+		</UIActionForm>
+	
+		<UITaxonomyTreeWorkingArea>
+			<action>
+				<Previous>Previous</Previous>
+			</action>
+		</UITaxonomyTreeWorkingArea>	 
 </bundle>

@@ -89,7 +89,6 @@
 	-->
 	<UITaxonomyTreeMainForm>
 		<action>
-			<ViewPermission>Bekijk Toestemming</ViewPermission>
 			<Reset>Reset</Reset>
 		</action>
 		<msg>
@@ -153,8 +152,6 @@
 		<action>
 			<Save>Redden</Save>
 			<Reset>Reset</Reset>
-			<AddAction>Voeg Actie</AddAction>
-			<Back>Terug</Back>
 		</action>
 		<msg>
 		  <have-not-any-permission>Toevoegen machtiging tot knooppunt</have-not-any-permission>
@@ -171,8 +168,6 @@
 		<title>Voeg een actie voor de taxonomie boom</title>
 		<action>
 			<Save>Redden</Save>
-			<ViewPermission>Bekijk Toestemming</ViewPermission>
-			<ViewTree>Bekijk de Boom</ViewTree>
 		</action>
 		<msg>
   		<name-not-allowed>Naam verboden</name-not-allowed>
@@ -2267,11 +2262,42 @@
     </label>
     <title>add/edit skin</title>
   </SkinForm>
-  <UITaxonomyTreeMainForm>			
+		<UITaxonomyTreeMainForm>			
 			<msg>	  		
 	  		<targetPath-emty>The target path is empty</targetPath-emty>	  		
 			</msg>
-		</UITaxonomyTreeMainForm>  
-  
+			<action>
+				<NextViewPermission>Next</NextViewPermission>
+				<Reset>Reset</Reset>
+			</action>
+		</UITaxonomyTreeMainForm>
+		  
+	<UITaxonomyTreeContainer>
+			<action>
+				<Cancel>Cancel</Cancel>
+			</action>
+		</UITaxonomyTreeContainer>
+	
+		<UIPermissionTreeForm>
+			<action>
+				<Save>Save</Save>
+				<Reset>Reset</Reset>
+				<NextAddAction>Next</NextAddAction>
+				<Previous>Previous</Previous>
+			</action>
+		</UIPermissionTreeForm>	
+	
+		<UIActionForm>
+			<action>
+				<PreviousViewPermission>Previous</PreviousViewPermission>
+				<NextViewTree>Next</NextViewTree>
+			</action>
+		</UIActionForm>
+	
+		<UITaxonomyTreeWorkingArea>
+			<action>
+				<Previous>Previous</Previous>
+			</action>
+		</UITaxonomyTreeWorkingArea>  
 </bundle>
 

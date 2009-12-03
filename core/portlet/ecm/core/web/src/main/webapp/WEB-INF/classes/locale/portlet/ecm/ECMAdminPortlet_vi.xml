@@ -77,9 +77,6 @@
 		<msg>
   		<not-exist-tree>Cây danh mục chưa tồn tại</not-exist-tree>
 		</msg>
-		<action>
-			<Close>Đóng lại</Close>
-		</action>
 	</UITaxonomyTreeContainer>
   
   <!--
@@ -89,7 +86,6 @@
 	-->
 	<UITaxonomyTreeMainForm>
 		<action>
-		  <ViewPermission>Xem quyền</ViewPermission>
 			<Reset>Xóa</Reset>
 		</action>
 		<msg>
@@ -153,8 +149,6 @@
 		<action>
 			<Save>Lưu</Save>
 			<Reset>Xóa</Reset>
-			<AddAction>Thêm hành động</AddAction>
-			<Back>Quay lại</Back>
 		</action>
 		<msg>
 		  <have-not-any-permission>Chưa chọn quyền nào</have-not-any-permission>
@@ -1509,11 +1503,6 @@
       <remove>Loại bỏ</remove>
     </label>
     <title>Thêm quyền cho nút</title>
-    <action>
-      <Close>#{word.close}</Close>
-      <Save>#{word.save}</Save>
-      <Reset>Xóa</Reset>
-    </action>
     <msg>
       <checkbox-require>Bạn phải lựa chọn ít nhất 1 quyền</checkbox-require>
       <userOrGroup-required>Bạn phải chọn thành viên hoặc nhóm trước khi lưu</userOrGroup-required>
@@ -2267,11 +2256,6 @@
     </label>
     <title>Thêm/Sửa CSS</title>
   </SkinForm>  
-  <UITaxonomyTreeMainForm>			
-			<msg>	  		
-	  		<targetPath-emty>Đường dẫn đích trống</targetPath-emty>	  		
-			</msg>
-		</UITaxonomyTreeMainForm>
 
    <UIFolksonomyManager>
      <action>
@@ -2285,6 +2269,42 @@
      </msg>
    </UIFolksonomyManager>
    
-   		
+	 <UITaxonomyTreeMainForm>			
+			<msg>	  		
+	  		<targetPath-emty>Đường dẫn đích trống</targetPath-emty>	  		
+			</msg>
+			<action>
+				<NextViewPermission>Tiếp</NextViewPermission>
+			<Reset>Thiết lập lại</Reset>
+		</action>
+		</UITaxonomyTreeMainForm>
+		  
+	<UITaxonomyTreeContainer>
+			<action>
+				<Cancel>Hủy</Cancel>
+			</action>
+		</UITaxonomyTreeContainer>
+	
+		<UIPermissionTreeForm>
+			<action>
+				<Save>Lưu</Save>
+				<Reset>Thiết lập lại</Reset>
+				<NextAddAction>Tiếp</NextAddAction>
+				<Previous>Quay lại</Previous>
+			</action>
+		</UIPermissionTreeForm>	
+	
+		<UIActionForm>
+			<action>
+				<PreviousViewPermission>Quay lại</PreviousViewPermission>
+				<NextViewTree>Tiếp</NextViewTree>
+			</action>
+		</UIActionForm>
+	
+		<UITaxonomyTreeWorkingArea>
+			<action>
+				<Previous>Quay lại</Previous>
+			</action>
+		</UITaxonomyTreeWorkingArea>   		
 </bundle>
 
