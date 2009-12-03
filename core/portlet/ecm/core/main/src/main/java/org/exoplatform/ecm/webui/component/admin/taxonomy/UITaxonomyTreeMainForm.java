@@ -58,7 +58,7 @@ import org.exoplatform.webui.form.validator.MandatoryValidator;
       @EventConfig(listeners = UITaxonomyTreeMainForm.ChangeActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UITaxonomyTreeMainForm.ResetActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UITaxonomyTreeMainForm.AddPathActionListener.class),
-      @EventConfig(listeners = UITaxonomyTreeMainForm.ViewPermissionActionListener.class)
+      @EventConfig(listeners = UITaxonomyTreeMainForm.NextViewPermissionActionListener.class)
     }
 )
 
@@ -81,7 +81,7 @@ public class UITaxonomyTreeMainForm extends UIForm {
         .setEditable(false));
     uiActionHomePath.setActionInfo(FIELD_HOMEPATH, new String[] { "AddPath" });
     addUIComponentInput(uiActionHomePath);
-    setActions(new String[] {"ViewPermission", "Reset"});
+    setActions(new String[] {"Reset", "NextViewPermission"});
   }
   
   public void update(TaxonomyTreeData taxonomyTree) throws Exception {
@@ -105,9 +105,15 @@ public class UITaxonomyTreeMainForm extends UIForm {
     UIFormInputBase<String> inputName = findComponentById(UITaxonomyTreeMainForm.FIELD_NAME);
     UIFormInputBase<String> inputHomePath = findComponentById(UITaxonomyTreeMainForm.FIELD_HOMEPATH);
     String treeName = taxonomyTree.getTaxoTreeName();
-    inputName.setValue(treeName);
+    //Check edit
+    TaxonomyTreeData taxonomyTreeData = ((UITaxonomyTreeContainer)getParent()).getTaxonomyTreeData();
+    if (taxonomyTreeData == null || !taxonomyTreeData.isEdit())
+      inputName.setValue(treeName);
+    else 
+      inputName.setValue(taxonomyTreeData.getTaxoTreeName());
     inputHomePath.setValue(taxonomyTree.getTaxoTreeHomePath());
-    if(treeName != null && treeName.length() > 0) {
+    getUIStringInput(FIELD_NAME).setEditable(true);
+    if((taxonomyTree != null && taxonomyTree.isEdit()) || (taxonomyTreeData != null && taxonomyTreeData.isEdit())) {
       getUIStringInput(FIELD_NAME).setEditable(false);
     }
   }
@@ -173,7 +179,7 @@ public class UITaxonomyTreeMainForm extends UIForm {
     }
   }
   
-  public static class ViewPermissionActionListener extends EventListener<UITaxonomyTreeMainForm> {
+  public static class NextViewPermissionActionListener extends EventListener<UITaxonomyTreeMainForm> {
     public void execute(Event<UITaxonomyTreeMainForm> event) throws Exception {
       UITaxonomyTreeMainForm uiTaxonomyTreeMainForm = event.getSource();
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = uiTaxonomyTreeMainForm.getParent();

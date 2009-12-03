@@ -66,7 +66,7 @@ import org.exoplatform.webui.form.UIFormStringInput;
     template =  "app:/groovy/webui/component/admin/taxonomy/UITaxonomyTreeWizard.gtmpl",
     events = {
       @EventConfig(listeners = UITaxonomyTreeContainer.RefreshActionListener.class),
-      @EventConfig(listeners = UITaxonomyTreeContainer.CloseActionListener.class)
+      @EventConfig(listeners = UITaxonomyTreeContainer.CancelActionListener.class)
     }
 )
 
@@ -82,7 +82,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
 
   public static final String POPUP_TAXONOMYHOMEPATH = "PopupTaxonomyJCRBrowser";
 
-  private String[]           actions_               = { "Close" };
+  private String[]           actions_               = { "Cancel" };
   
   public UITaxonomyTreeContainer() throws Exception {
     addChild(UITaxonomyTreeMainForm.class, null, "TaxonomyTreeMainForm");
@@ -314,7 +314,7 @@ public class UITaxonomyTreeContainer extends UIContainer implements UISelectable
     }
   }
   
-  public static class CloseActionListener extends EventListener<UITaxonomyTreeContainer> {
+  public static class CancelActionListener extends EventListener<UITaxonomyTreeContainer> {
     public void execute(Event<UITaxonomyTreeContainer> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource();
       UIPopupWindow uiPopup = uiTaxonomyTreeContainer.getParent();

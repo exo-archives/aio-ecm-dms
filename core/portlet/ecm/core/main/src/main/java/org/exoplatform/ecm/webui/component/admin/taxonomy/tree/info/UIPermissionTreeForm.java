@@ -68,8 +68,8 @@ import org.exoplatform.webui.form.UIForm;
     template = "system:/groovy/webui/form/UIFormWithTitle.gtmpl", 
     events = {
       @EventConfig(listeners = UIPermissionTreeForm.SaveActionListener.class),
-      @EventConfig(listeners = UIPermissionTreeForm.AddActionActionListener.class),
-      @EventConfig(phase = Phase.DECODE, listeners = UIPermissionTreeForm.BackActionListener.class),
+      @EventConfig(listeners = UIPermissionTreeForm.NextAddActionActionListener.class),
+      @EventConfig(phase = Phase.DECODE, listeners = UIPermissionTreeForm.PreviousActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPermissionTreeForm.ResetActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPermissionTreeForm.SelectUserActionListener.class),
       @EventConfig(phase = Phase.DECODE, listeners = UIPermissionTreeForm.SelectMemberActionListener.class),
@@ -90,7 +90,7 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
   
   public UIPermissionTreeForm() throws Exception {
     addChild(new UIPermissionInputSet(PERMISSION));
-    setActions(new String[] { "Back", "Save", "Reset", "AddAction" });
+    setActions(new String[] { "Previous", "Save", "Reset", "NextAddAction" });
   }
 
   private void refresh() {
@@ -151,10 +151,10 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
   protected void lockForm(boolean isLock) {
     UIPermissionInputSet uiInputSet = getChildById(PERMISSION);
     if (isLock) {
-      setActions(new String[] { "Back", "Reset", "AddAction" });
+      setActions(new String[] { "Previous", "Reset", "NextAddAction" });
       uiInputSet.setActionInfo(UIPermissionInputSet.FIELD_USERORGROUP, null);
     } else {
-      setActions(new String[] { "Back", "Save", "Reset", "AddAction" });
+      setActions(new String[] { "Previous", "Save", "Reset", "NextAddAction" });
       uiInputSet.setActionInfo(UIPermissionInputSet.FIELD_USERORGROUP, new String[] { "SelectUser",
           "SelectMember", "AddAny" });
     }
@@ -299,7 +299,7 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
     }
   }
 
-  public static class AddActionActionListener extends EventListener<UIPermissionTreeForm> {
+  public static class NextAddActionActionListener extends EventListener<UIPermissionTreeForm> {
     public void execute(Event<UIPermissionTreeForm> event) throws Exception {
       UIPermissionTreeForm uiForm = event.getSource();
       UIPermissionTreeInfo uiPermInfo = ((UIContainer)uiForm.getParent()).getChild(UIPermissionTreeInfo.class);
@@ -359,7 +359,7 @@ public class UIPermissionTreeForm extends UIForm implements UISelectable {
     }
   }
   
-  public static class BackActionListener extends EventListener<UIPermissionTreeForm> {
+  public static class PreviousActionListener extends EventListener<UIPermissionTreeForm> {
     public void execute(Event<UIPermissionTreeForm> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource().getAncestorOfType(UITaxonomyTreeContainer.class);
       uiTaxonomyTreeContainer.viewStep(1);

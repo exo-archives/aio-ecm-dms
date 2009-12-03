@@ -77,9 +77,6 @@
 		<msg>
   		<not-exist-tree>Baum noch nicht vorhanden ist</not-exist-tree>
 		</msg>
-		<action>
-			<Close>Schließen</Close>
-		</action>
 	</UITaxonomyTreeContainer>
   
   <!--
@@ -89,7 +86,6 @@
 	-->
 	<UITaxonomyTreeMainForm>
 		<action>
-			<ViewPermission>Anzeigen Permission</ViewPermission>
 			<Reset>Reset</Reset>
 		</action>
 		<msg>
@@ -153,8 +149,6 @@
 		<action>
 			<Save>Sichern</Save>
 			<Reset>Reset</Reset>
-			<AddAction>Aktion Hinzufügen</AddAction>
-			<Back>Zurück</Back>
 		</action>
 		<msg>
 		  <have-not-any-permission>Die Erlaubnis zum Knoten hinzufügen</have-not-any-permission>
@@ -171,8 +165,6 @@
 		<title>Fügen aktion für die Taxonomie-Baum</title>
 		<action>
 			<Save>Sichern</Save>
-			<ViewPermission>Anzeigen Permission</ViewPermission>
-			<ViewTree>Anzeigen Baum</ViewTree>
 		</action>
 		<msg>
   		<name-not-allowed>Name verboten</name-not-allowed>
@@ -2200,10 +2192,42 @@
 			<any>Any</any>
 		</label>
 	</UIAnyPermission>  
-	<UITaxonomyTreeMainForm>			
-			<msg>	  		
-	  		<targetPath-emty>The target path is empty</targetPath-emty>	  		
-			</msg>
-	</UITaxonomyTreeMainForm>
 	
+	<UITaxonomyTreeMainForm>			
+		<msg>	  		
+		<targetPath-emty>The target path is empty</targetPath-emty>	  		
+		</msg>
+		<action>
+			<NextViewPermission>Next</NextViewPermission>
+		<Reset>Reset</Reset>
+	</action>
+	</UITaxonomyTreeMainForm>
+	  
+	<UITaxonomyTreeContainer>
+		<action>
+			<Cancel>Cancel</Cancel>
+		</action>
+	</UITaxonomyTreeContainer>
+
+	<UIPermissionTreeForm>
+		<action>
+			<Save>Save</Save>
+			<Reset>Reset</Reset>
+			<NextAddAction>Next</NextAddAction>
+			<Previous>Previous</Previous>
+		</action>
+	</UIPermissionTreeForm>	
+
+	<UIActionForm>
+		<action>
+			<PreviousViewPermission>Previous</PreviousViewPermission>
+			<NextViewTree>Next</NextViewTree>
+		</action>
+	</UIActionForm>
+
+	<UITaxonomyTreeWorkingArea>
+		<action>
+			<Previous>Previous</Previous>
+		</action>
+	</UITaxonomyTreeWorkingArea>
 </bundle>

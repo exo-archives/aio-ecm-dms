@@ -54,7 +54,7 @@ import org.exoplatform.webui.event.EventListener;
 @ComponentConfig(
     template =  "app:/groovy/webui/component/admin/taxonomy/UITaxonomyTreeWorkingArea.gtmpl",
     events = {
-        @EventConfig(listeners = UITaxonomyTreeWorkingArea.BackActionListener.class),
+        @EventConfig(listeners = UITaxonomyTreeWorkingArea.PreviousActionListener.class),
         @EventConfig(listeners = UITaxonomyTreeWorkingArea.AddActionListener.class),
         @EventConfig(listeners = UITaxonomyTreeWorkingArea.RemoveActionListener.class, confirm = "UITaxonomyManager.msg.confirm-delete"),
         @EventConfig(listeners = UITaxonomyTreeWorkingArea.CopyActionListener.class),
@@ -75,7 +75,7 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
   
   private String[] acceptedNodeTypes = {};
   
-  private String[] actions_ = { "Back" };
+  private String[] actions_ = { "Previous" };
   public UITaxonomyTreeWorkingArea() throws Exception {
     uiPageIterator_ = addChild(UIPageIterator.class, null, "UICategoriesSelect");
   }
@@ -281,7 +281,7 @@ public class UITaxonomyTreeWorkingArea extends UIContainer {
     }
   }
   
-  public static class BackActionListener extends EventListener<UITaxonomyTreeWorkingArea> {
+  public static class PreviousActionListener extends EventListener<UITaxonomyTreeWorkingArea> {
     public void execute(Event<UITaxonomyTreeWorkingArea> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource().getAncestorOfType(UITaxonomyTreeContainer.class);
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);

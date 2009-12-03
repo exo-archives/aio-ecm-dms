@@ -77,9 +77,6 @@
 		<msg>
   		<not-exist-tree>Tree does not exist yet</not-exist-tree>
 		</msg>
-		<action>
-			<Close>Close</Close>
-		</action>
 	</UITaxonomyTreeContainer>
   
   <!--
@@ -89,7 +86,6 @@
 	-->
 	<UITaxonomyTreeMainForm>
 		<action>
-			<ViewPermission>View Permission</ViewPermission>
 			<Reset>Reset</Reset>
 		</action>
 		<msg>
@@ -154,8 +150,6 @@
 		<action>
 			<Save>Save</Save>
 			<Reset>Reset</Reset>
-			<AddAction>Add Action</AddAction>
-			<Back>Back</Back>
 		</action>
 		<msg>
 		  <have-not-any-permission>Add Permission to node</have-not-any-permission>
@@ -172,8 +166,6 @@
 		<title>Add an action to the taxonomy tree</title>
 		<action>
 			<Save>Save</Save>
-			<ViewPermission>View Permission</ViewPermission>
-			<ViewTree>View Tree</ViewTree>
 		</action>
 		<msg>
   		<name-not-allowed>Name forbidden</name-not-allowed>
@@ -2200,6 +2192,38 @@
 			<any>Any</any>
 		</label>
 	</UIAnyPermission>  
-  
+  <UITaxonomyTreeContainer>
+		<action>
+			<Cancel>Cancel</Cancel>
+		</action>
+	</UITaxonomyTreeContainer>
+	<UITaxonomyTreeMainForm>
+		<action>
+			<NextViewPermission>Next</NextViewPermission>
+			<Reset>Reset</Reset>
+		</action>
+	</UITaxonomyTreeMainForm>
+
+	<UIPermissionTreeForm>
+		<action>
+			<Save>Save</Save>
+			<Reset>Reset</Reset>
+			<NextAddAction>Next</NextAddAction>
+			<Previous>Previous</Previous>
+		</action>
+	</UIPermissionTreeForm>	
+
+	<UIActionForm>
+		<action>
+			<PreviousViewPermission>Previous</PreviousViewPermission>
+			<NextViewTree>Next</NextViewTree>
+		</action>
+	</UIActionForm>
+
+	<UITaxonomyTreeWorkingArea>
+		<action>
+			<Previous>Previous</Previous>
+		</action>
+	</UITaxonomyTreeWorkingArea>
 </bundle>
 

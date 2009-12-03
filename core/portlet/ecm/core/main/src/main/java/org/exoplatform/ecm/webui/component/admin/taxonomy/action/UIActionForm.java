@@ -82,8 +82,8 @@ import org.exoplatform.webui.form.UIFormStringInput;
     lifecycle = UIFormLifecycle.class,
     events = {
       @EventConfig(listeners = UIActionForm.SaveActionListener.class),
-      @EventConfig(listeners = UIActionForm.ViewPermissionActionListener.class, phase=Phase.DECODE),
-      @EventConfig(listeners = UIActionForm.ViewTreeActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIActionForm.PreviousViewPermissionActionListener.class, phase=Phase.DECODE),
+      @EventConfig(listeners = UIActionForm.NextViewTreeActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIDialogForm.OnchangeActionListener.class, phase=Phase.DECODE),
       @EventConfig(listeners = UIActionForm.ShowComponentActionListener.class, phase = Phase.DECODE),
       @EventConfig(listeners = UIActionForm.RemoveReferenceActionListener.class, confirm = "DialogFormField.msg.confirm-delete", phase = Phase.DECODE)
@@ -107,7 +107,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
   public static final String EXO_ACTIONS   = "exo:actions".intern();
   
   public UIActionForm() throws Exception {
-    setActions(new String[] {  "ViewPermission", "Save", "ViewTree"});
+    setActions(new String[] {  "PreviousViewPermission", "Save", "NextViewTree"});
   }
   
   public void createNewAction(Node parentNode, String actionType, boolean isAddNew) throws Exception {
@@ -423,7 +423,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     }
   }
   
-  public static class ViewPermissionActionListener extends EventListener<UIActionForm> {
+  public static class PreviousViewPermissionActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource().getAncestorOfType(UITaxonomyTreeContainer.class);
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
@@ -432,7 +432,7 @@ public class UIActionForm extends UIDialogForm implements UISelectable {
     }
   }
   
-  public static class ViewTreeActionListener extends EventListener<UIActionForm> {
+  public static class NextViewTreeActionListener extends EventListener<UIActionForm> {
     public void execute(Event<UIActionForm> event) throws Exception {
       UITaxonomyTreeContainer uiTaxonomyTreeContainer = event.getSource().getAncestorOfType(UITaxonomyTreeContainer.class);
       UITaxonomyManagerTrees uiTaxonomyManagerTrees = uiTaxonomyTreeContainer.getAncestorOfType(UITaxonomyManagerTrees.class);
