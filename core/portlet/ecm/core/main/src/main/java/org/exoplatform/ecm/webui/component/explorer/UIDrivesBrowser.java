@@ -21,6 +21,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 import java.util.Set;
 
 import javax.jcr.AccessDeniedException;
@@ -49,6 +51,7 @@ import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -96,6 +99,26 @@ public class UIDrivesBrowser extends UIContainer {
         .getComponentInstanceOfType(PortalContainerInfo.class);
     return containerInfo.getContainerName(); 
   }
+  
+  public String getLabel(String id)  {
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    try {
+      return res.getString("Drives.label." + id.replace(" ", ""));
+    } catch (MissingResourceException ex) {
+      return id;
+    }    
+  }
+  
+  public String getGroupLabel(String groupId) {
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    try {
+      return res.getString("Drives.label." + groupId.replace(".", ""));
+    } catch (MissingResourceException ex) {
+      return groupId.replace(".", " / ");
+    }
+  }  
 
   public String getRepository() {return repoName_;}
   

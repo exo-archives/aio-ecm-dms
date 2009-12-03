@@ -54,7 +54,7 @@
 			                  <div class="LeftBar">
 			                    <div class="RightBar">
 			                      <div class="MiddleBar">
-			                        <a href="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><%=_ctx.appRes("Drives.label.${personalDrive.name.replace(" ", "")}")%></a>
+			                        <a href="<%=uicomponent.event("SelectDrive","${personalDrive.name}")%>"><%=uicomponent.getLabel(personalDrive.getName())%></a>
 			                      </div>
 			                    </div>
 			                  </div>
@@ -115,7 +115,7 @@
 			                  <div class="LeftBar">
 			                    <div class="RightBar">
 			                      <div class="MiddleBar">
-			                        <a href="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><%=groupDrive.getName().replace(".", " / ")%></a>
+			                        <a href="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><%=uicomponent.getGroupLabel(groupDrive.getName())%></a>
 			                      </div>
 			                    </div>
 			                  </div>
@@ -176,7 +176,7 @@
 				                  <div class="LeftBar">
 				                    <div class="RightBar">
 				                      <div class="MiddleBar">
-				                        <a href="<%=uicomponent.event("SelectDrive", Utils.formatNodeName(drive.getName()))%>"><%=_ctx.appRes("Drives.label.${drive.name.replace(" ", "")}")%></a>
+				                        <a href="<%=uicomponent.event("SelectDrive", Utils.formatNodeName(drive.getName()))%>"><%=uicomponent.getLabel(drive.getName())%></a>
 				                      </div>
 				                    </div>
 				                  </div>
