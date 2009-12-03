@@ -11,53 +11,51 @@
 <div class="UIAddressBar">
 	<table class="TblAddressBar">
 		<tr class="Block">
-						<%
-						  int viewCount = 0;
-						  def extendMap = new HashMap<String, String>();
-						  if(uicomponent.getViewList().size() > 1) {
-							  for(viewStyle in uicomponent.getViewList()) { 
-							    def label = _ctx.appRes("Views.label." + viewStyle);
-							    def viewIcon = viewStyle;
-							    def defaultView = "DefaultView";
-							    if(uicomponent.isSelectedView(viewStyle)) {
-							      viewIcon = viewStyle + "-selected";
-							      defaultView = "DefaultViewSelected";
-							    }
-							    viewCount++;
-							    if(viewCount < 5) {
-							%>
-								<td class="IconFileExplorer">
-			    				  <a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
-			    			</td>
-							<%  } else {
-							      extendMap.put(viewStyle, label + ";" + viewIcon);
-			            }
-			          }
-			        } else {
-			          viewCount++;
-			        }
-						 %>
-					 <%if(!extendMap.isEmpty()) {%>
-					 <td class="DetailMoreViewIcon">
-											<div class="MoreViewIcon" onclick="javascript: eXo.ecm.ECMUtils.showHideExtendedView(event);">
-											<span></span></div>
-											<div class="ListExtendedView" id="ListExtendedView" style="display: none;">
-												  <%
-												    for(key in extendMap.keySet()) {
-												      def viewInfor = extendMap.get(key);
-												      def label = viewInfor.split(";")[0];
-									            def viewIcon = viewInfor.split(";")[1];
-									            def defaultView = "DefaultView";
-									            if(uicomponent.isSelectedView(key)) {
-									              viewIcon = key + "-selected";
-									              defaultView = "DefaultViewSelected";
-									            }
-												  %>
-												  
-						  							    <a href="<%=uicomponent.event("ChangeView", key)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
-						              <%}%>
-					  					</div>
-					 <%}%>
+		<%
+			int viewCount = 0;
+			def extendMap = new HashMap<String, String>();
+			if(uicomponent.getViewList().size() > 1) {
+				for(viewStyle in uicomponent.getViewList()) { 
+					def label = _ctx.appRes("Views.label." + viewStyle);
+					def viewIcon = viewStyle;
+					def defaultView = "DefaultView";
+					if(uicomponent.isSelectedView(viewStyle)) {
+						viewIcon = viewStyle + "-selected";
+						defaultView = "DefaultViewSelected";
+					}
+					viewCount++;
+					if(viewCount < 5) {
+			%>
+				<td class="IconFileExplorer">
+						<a href="<%=uicomponent.event("ChangeView", viewStyle)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
+				</td>
+			<%  } else {
+						extendMap.put(viewStyle, label + ";" + viewIcon);
+					}
+				}
+			} else {
+				viewCount++;
+			}
+		 %>
+		 <%if(!extendMap.isEmpty()) {%>
+			 <td class="DetailMoreViewIcon">
+				<div class="MoreViewIcon" onclick="javascript: eXo.ecm.ECMUtils.showHideExtendedView(event);"><span></span></div>
+				<div class="ListExtendedView" id="ListExtendedView" style="display: none;">
+				<%
+					for(key in extendMap.keySet()) {
+						def viewInfor = extendMap.get(key);
+						def label = viewInfor.split(";")[0];
+						def viewIcon = viewInfor.split(";")[1];
+						def defaultView = "DefaultView";
+						if(uicomponent.isSelectedView(key)) {
+							viewIcon = key + "-selected";
+							defaultView = "DefaultViewSelected";
+						}
+				%>
+						<a href="<%=uicomponent.event("ChangeView", key)%>" class="$defaultView $viewIcon ViewIcon" title="$label"><span></span></a>
+				<%}%>
+				</div>
+		 <%}%>
 			</td>
 			<td class="BackAndRefreshBlock" style="width: 58px;">
 				<a class="BackBtn FloatLeft" href="<%=uicomponent.event("Back")%>" title="<%=_ctx.appRes("UIAddressBar.title.backButton")%>"><span></span></a>	
