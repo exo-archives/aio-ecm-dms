@@ -330,7 +330,8 @@ public class RecordsServiceImpl implements RecordsService {
     List<Node> list = new ArrayList<Node>();
     for(NodeIterator iterator = filePlan.getNodes();iterator.hasNext();) {
       Node node = iterator.nextNode();
-      list.add(node);
+      if (node.isNodeType("rma:record"))
+        	list.add(node);
     }
     return list;
     //return getRecordsByQuery(filePlan,BASE_STATEMENT, "rma:record","rma:dateReceived",ASCENDING);   

@@ -212,13 +212,19 @@ public class UIWorkingArea extends UIContainer {
 
   public boolean isAncestorVersionable(Node node) throws RepositoryException {
     int depth = node.getDepth() - 1;
-    Node parent = (Node) node.getAncestor(depth);
-    while (parent != null && depth != 0) {
-      if (parent.isNodeType(Utils.MIX_VERSIONABLE)) return true;
-      depth--;
-      parent = (Node) node.getAncestor(depth);
+    if (depth < 1) return false;
+    Node parent = null;
+    try {
+    	parent = (Node) node.getAncestor(depth);
+    } catch (ClassCastException ex) {
+    	parent = (Node) node.getAncestor(--depth);
     }
-    return false;
+    while (true) {
+      if (parent.isNodeType(Utils.MIX_VERSIONABLE)) return true;
+      if (--depth == 0) return false;
+      parent = (Node) node.getAncestor(depth);
+			if (parent == null) return false;
+    }
   }
 
   private void removeMixins(Node node) throws Exception {
