@@ -24,7 +24,7 @@
 				    } else {
 				%>
 				      <div class="IconDrives${drive.workspace} DriveIcon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><span></span></div>
- 				      <a class="DriveLabel" href="<%=uicomponent.event("SelectDrive", Utils.formatNodeName(drive.getName()))%>"><%=_ctx.appRes("Drives.label.${drive.name.replace(" ", "")}")%></a>
+ 				      <a class="DriveLabel" href="<%=uicomponent.event("SelectDrive", Utils.formatNodeName(drive.getName()))%>"><%=uicomponent.getLabel(drive.getName())%></a>
 				<%      
 				    }
 				    println("</div>");
@@ -47,7 +47,7 @@
 			        </div>
 	        <%  } else {  %>
 				        <div class="IconDrivesUse DriveIcon" onclick="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><span></span></div>
-	  			      <a class="DriveLabel" href="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><%=groupDrive.getName().replace(".", " / ")%></a>
+	  			      <a class="DriveLabel" href="<%=uicomponent.event("SelectDrive","${groupDrive.name}")%>"><%=uicomponent.getGroupLabel(groupDrive.getName())%></a>
 		      <%
 		          }
 		          println("</div>");
@@ -70,7 +70,7 @@
 			        </div>
 	      <%  } else { %>
 	            <div class="IconDrives${drive.name} DriveIcon" onclick="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><span></span></div>
-  	          <a class="DriveLabel" href="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><%=_ctx.appRes("Drives.label.${drive.name.replace(" ", "")}")%></a>
+  	          <a class="DriveLabel" href="<%=uicomponent.event("SelectDrive","${drive.name}")%>"><%=uicomponent.getLabel(drive.getName())%></a>
         <%
             }
             println("</div>");

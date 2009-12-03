@@ -18,6 +18,8 @@ package org.exoplatform.ecm.webui.component.explorer;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.NoSuchWorkspaceException;
@@ -42,7 +44,9 @@ import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.resources.ResourceBundleService;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
@@ -71,7 +75,26 @@ public class UIDrivesArea extends UIContainer {
   private String repoName_;
   
   public UIDrivesArea() throws Exception {
-    
+  }
+
+  public String getLabel(String id)  {
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    try {
+      return res.getString("Drives.label." + id.replace(" ", ""));
+    } catch (MissingResourceException ex) {
+      return id;
+    }    
+  }
+  
+  public String getGroupLabel(String groupId) {
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    try {
+      return res.getString("Drives.label." + groupId.replace(".", ""));
+    } catch (MissingResourceException ex) {
+      return groupId.replace(".", " / ");
+    }
   }
   
   public List<String> getRepositoryList() {
