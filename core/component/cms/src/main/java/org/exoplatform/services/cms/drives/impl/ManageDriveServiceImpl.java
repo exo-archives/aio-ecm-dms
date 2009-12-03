@@ -363,12 +363,12 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
         boolean flag = false;
         for (String permission : allPermission) {
           if (permission.equalsIgnoreCase("${userId}")) {
-            driveList.add(drive);
+            if(!driveList.contains(drive)) driveList.add(drive);
             flag = true;
             break;
           }
           if (permission.equalsIgnoreCase("*")) {
-            driveList.add(drive);
+            if(!driveList.contains(drive)) driveList.add(drive);
             flag = true;
             break;
           }
@@ -376,7 +376,7 @@ public class ManageDriveServiceImpl implements ManageDriveService, Startable {
             continue;
           for (String rolse : userRoles) {
             if (drive.hasPermission(allPermission, rolse)) {
-              driveList.add(drive);
+              if(!driveList.contains(drive)) driveList.add(drive);
               break;
             }
           }
