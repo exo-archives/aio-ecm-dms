@@ -12,6 +12,7 @@
 	import org.exoplatform.services.jcr.impl.core.SessionImpl;
 	import javax.jcr.Node;
 	import javax.jcr.Session;
+	import org.apache.commons.lang.StringEscapeUtils;
 %>
 <% 
   def resultList = uicomponent.getCurrentList(); 
@@ -100,6 +101,7 @@
   	      }
   	     
   	      String excerpt = row.getValue("rep:excerpt(.)")== null ? "" : row.getValue("rep:excerpt(.)").getString();
+  	      excerpt = StringEscapeUtils.unescapeHtml(excerpt);
   	      String score = row.getValue("jcr:score")== null ? "" : row.getValue("jcr:score").getString();
   	      String s = "";
   	      if (!node.getPrimaryNodeType().getName().equals("exo:comments")) {
