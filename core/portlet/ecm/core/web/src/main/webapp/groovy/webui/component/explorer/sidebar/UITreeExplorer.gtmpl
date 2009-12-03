@@ -170,7 +170,7 @@
   		<div class="BarContentR">
   			<div class="BarContentM">
 			    <div class="Title" onclick="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" $contextMenuEvent>
-			      <a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" title="<%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%>" $contextMenuEvent><%=_ctx.appRes("Drives.label.${uicomponent.getDriveName().replace(".", " / ").replace(" ", "")}")%></a>
+			      <a href="<%=uicomponent.event("Expand",treeNodeRoot.getPath())%>" title="<%=uicomponent.getLabel()%>" $contextMenuEvent><%=uicomponent.getLabel()%></a>
 			    </div>
 			  	<%if (!uicomponent.isDirectlyDrive()) {%>
 			  		<a href="<%=uicomponent.event("ShowDrivesArea")%>"><div class="DriversButton" title="Drivers"><span></span></div></a>

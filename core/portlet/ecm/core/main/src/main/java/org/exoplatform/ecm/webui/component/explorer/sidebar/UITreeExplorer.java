@@ -18,6 +18,8 @@ package org.exoplatform.ecm.webui.component.explorer.sidebar ;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.jcr.AccessDeniedException;
 import javax.jcr.Item;
@@ -42,7 +44,6 @@ import org.exoplatform.ecm.webui.component.explorer.UIDrivesArea;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorerPortlet;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
-import org.exoplatform.ecm.webui.component.explorer.control.UIActionBar;
 import org.exoplatform.ecm.webui.component.explorer.control.UIAddressBar;
 import org.exoplatform.services.cms.link.LinkManager;
 import org.exoplatform.services.cms.link.LinkUtils;
@@ -50,6 +51,7 @@ import org.exoplatform.services.cms.link.NodeFinder;
 import org.exoplatform.services.cms.templates.TemplateService;
 import org.exoplatform.services.log.ExoLogger;
 import org.exoplatform.web.application.ApplicationMessage;
+import org.exoplatform.web.application.RequestContext;
 import org.exoplatform.webui.application.portlet.PortletRequestContext;
 import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
@@ -122,6 +124,17 @@ public class UITreeExplorer extends UIContainer {
   public String getDriveName() {
     return getAncestorOfType(UIJCRExplorer.class).getDriveData().getName() ;
   }  
+  
+  public String getLabel()  {
+    RequestContext context = RequestContext.getCurrentInstance();
+    ResourceBundle res = context.getApplicationResourceBundle();
+    String id = getAncestorOfType(UIJCRExplorer.class).getDriveData().getName();
+    try {
+      return res.getString("Drives.label." + id.replace(".", "").replace(" ", ""));
+    } catch (MissingResourceException ex) {
+      return id.replace(".", " / ");
+    }    
+  }    
   
   public String getActionsList(Node node) throws Exception {
     if(node == null) return "" ;
