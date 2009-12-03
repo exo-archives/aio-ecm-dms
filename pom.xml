@@ -9,7 +9,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.exoplatform.ecm</groupId>
   <artifactId>config</artifactId>
-  <name>eXo ECM Config</name>
+  <name>eXo ECM - DMS</name>
   <version>2.2.x</version>
   <packaging>pom</packaging>
 
