@@ -617,14 +617,14 @@ public class UIBrowseContainer extends UIContainer {
                       PublicationService publicationService = getApplicationComponent(PublicationService.class);
                       Node nodecheck = publicationService.getNodePublish(node, null);
                       if (nodecheck != null) {
-                        subCategoryDoc.add(nodecheck);
-                        if(PermissionUtil.canRead(nodecheck) && nodecheck.isNodeType(Utils.EXO_SYMLINK)) {
+                        subCategoryDoc.add(node);
+                        if(PermissionUtil.canRead(node) && node.isNodeType(Utils.EXO_SYMLINK)) {
                           try {
-                            linkManager.getTarget(nodecheck);
+                            linkManager.getTarget(node);
                           } catch (ItemNotFoundException ie) {
-                            subCategoryDoc.remove(nodecheck);
+                            subCategoryDoc.remove(node);
                           } catch (Exception e) {
-                            subCategoryDoc.remove(nodecheck);
+                            subCategoryDoc.remove(node);
                           }         
                         }
                       }
@@ -1552,7 +1552,17 @@ public class UIBrowseContainer extends UIContainer {
           typeName = item.getProperty(Utils.EXO_PRIMARYTYPE).getString();
         }
         if (documentTemplates.contains(typeName) && isShowDocument){
-          if (childDocOrReferencedDoc.size() < getRowPerBlock()) childDocOrReferencedDoc.add(item);
+          if (childDocOrReferencedDoc.size() < getRowPerBlock()) {
+            if (isAllowPublish()) {
+              PublicationService publicationService = getApplicationComponent(PublicationService.class);
+              Node nodecheck = publicationService.getNodePublish(item, null);
+              if (nodecheck != null) {
+                childDocOrReferencedDoc.add(item);
+              }
+            } else {
+              childDocOrReferencedDoc.add(item);
+            }
+          }
           if(PermissionUtil.canRead(item) && item.isNodeType(Utils.EXO_SYMLINK)) {
             try {
               linkManager.getTarget(item);
@@ -1607,7 +1617,17 @@ public class UIBrowseContainer extends UIContainer {
           PropertyIterator iter = taxonomyNode.getReferences();
           while (iter.hasNext() && (refDocuments.size() < itemCounter)) {
             Node refNode = iter.nextProperty().getParent();
-            if (templates.contains(refNode.getPrimaryNodeType().getName())) refDocuments.add(refNode);
+            if (templates.contains(refNode.getPrimaryNodeType().getName())) {
+              if (isAllowPublish()) {
+                PublicationService publicationService = getApplicationComponent(PublicationService.class);
+                Node nodecheck = publicationService.getNodePublish(refNode, null);
+                if (nodecheck != null) {
+                  refDocuments.add(refNode);
+                }
+              } else {
+                refDocuments.add(refNode);
+              }
+            }
           }
         } catch (Exception e) {}
       }

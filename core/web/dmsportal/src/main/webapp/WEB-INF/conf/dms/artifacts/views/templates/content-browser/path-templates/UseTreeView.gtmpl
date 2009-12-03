@@ -75,37 +75,37 @@
 			          def viewNode = uicomponent.getViewNode(doc); 
 			          if(viewNode != null) {
 			      %>
-				          <div class="EventContentDetail">
-				            <div class="TopEventContentDetail">
-				              <table>  
-				                 <tr>
-				                  <td>
-				                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName">
-		                        <%if(Utils.isSymLink(doc)) {%>
-		                          <div class="LinkSmall"></div>
-		                        <%}%>			                      
-				                    </div>
-				                    <div class="EventDocumentLabel">
-				                      <a onclick="$viewAction" style="cursor:pointer;"><%=docName%></a>
-				                    </div>  
-				                  </td>
-				                  <td class="EventAuthorNameLabel">
-				                    <%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
-				                  </td>			                  
-				                </tr>        
-				              </table>
-				            </div>
-				            <div class="MainEventContent">
-				              <div class="SummaryTitleLabel">
-												<%=_ctx.appRes(componentName + ".label.summary")%>:
-				                <%if(viewNode.hasProperty("exo:summary")){%>
-				                 <%=viewNode.getProperty("exo:summary").getString()%>
-				               <%}%>
-				              </div>
-				            </div>
-				          </div>
+			          <div class="EventContentDetail">
+			            <div class="TopEventContentDetail">
+			              <table>  
+			                 <tr>
+			                  <td>
+			                    <div class="DocNodeIcon CBDefaultDocument16x16Icon $iconName">
+	                        <%if(Utils.isSymLink(doc)) {%>
+	                          <div class="LinkSmall"></div>
+	                        <%}%>			                      
+			                    </div>
+			                    <div class="EventDocumentLabel">
+			                      <a onclick="$viewAction" style="cursor:pointer;"><%=docName%></a>
+			                    </div>  
+			                  </td>
+			                  <td class="EventAuthorNameLabel">
+			                    <%=_ctx.appRes(componentName + ".label.author")%>:<%=uicomponent.getOwner(doc)%>
+			                  </td>			                  
+			                </tr>        
+			              </table>
+			            </div>
+			            <div class="MainEventContent">
+			              <div class="SummaryTitleLabel">
+											<%=_ctx.appRes(componentName + ".label.summary")%>:
+			                <%if(viewNode.hasProperty("exo:summary")){%>
+			                 <%=viewNode.getProperty("exo:summary").getString()%>
+			               <%}%>
+			              </div>
+			            </div>
+			          </div>
 			      <%
-			      		}
+			          }
 			        }
 			      %>
 	   			</div>
@@ -172,9 +172,9 @@
 			                      String cssStyle = "ChildrenContentHolderLeft" ;
 									          if(isRight) cssStyle = "ChildrenContentHolderRight" ;
 									          if(numbDocument == 1) cssStyle = "ChildrenContentHolder" ;
-														def viewNode = uicomponent.getViewNode(subChild);
-														if(viewNode != null) {
-										          def listParam = new ArrayList<Parameter>();
+									          def listParam = new ArrayList<Parameter>();
+											      def viewNode = uicomponent.getViewNode(subChild);
+											      if(viewNode != null) {
 							          			listParam.add(new Parameter("category", Utils.formatNodeName(subCat)));
 		        						  		listParam.add(new Parameter("workspace", subChild.getSession().getWorkspace().getName()));
 		          								String subChildLink = uicomponent.event("ChangeNode", Utils.formatNodeName(subChild.getPath()), listParam.toArray(new Parameter[listParam.size()]));
@@ -194,7 +194,7 @@
 																<div style="clear:left;"><span></span></div>
 															</div>
 												<%
-														}
+												    }
 														if(isRight) println "<div style=\"clear: both\"><span></span></div>" ;
 							              isRight = !isRight ;
 												  }
