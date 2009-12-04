@@ -34,7 +34,6 @@ import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
-import org.exoplatform.ecm.webui.component.explorer.UIRestoreConfirmMessage;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.HasRemovePermissionFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsCheckedOutFilter;
@@ -54,7 +53,6 @@ import org.exoplatform.webui.config.annotation.ComponentConfig;
 import org.exoplatform.webui.config.annotation.EventConfig;
 import org.exoplatform.webui.core.UIApplication;
 import org.exoplatform.webui.core.UIComponent;
-import org.exoplatform.webui.core.UIPopupContainer;
 import org.exoplatform.webui.event.Event;
 import org.exoplatform.webui.ext.filter.UIExtensionFilter;
 import org.exoplatform.webui.ext.filter.UIExtensionFilters;
@@ -138,18 +136,7 @@ public class RestoreFromTrashManageComponent extends UIAbstractManagerComponent 
 			doRestore(srcPath, node, event);
 			return;
 		}
-
-    UIPopupContainer UIPopupContainer = uiExplorer.getChild(UIPopupContainer.class);
-    UIRestoreConfirmMessage uiConfirmMessage = 
-      uiWorkingArea.createUIComponent(UIRestoreConfirmMessage.class, null, null);
-    uiConfirmMessage.setMessageKey("UIWorkingArea.msg.confirm-restore");
-    uiConfirmMessage.setArguments(new String[] { restorePath });
-    uiConfirmMessage.setNodePath(srcPath);
-    uiConfirmMessage.setNode(node);
-    uiConfirmMessage.setRestoreNodeWs(restoreWs);
-    uiConfirmMessage.setRestoreNodePath(restorePath);
-    UIPopupContainer.activate(uiConfirmMessage, 500, 180);
-    event.getRequestContext().addUIComponentToUpdateByAjax(UIPopupContainer);
+		doRestore(srcPath, node, event);
 	}
 	
 	public static void doRestore(String srcPath, Node node, Event<? extends UIComponent> event) throws Exception {

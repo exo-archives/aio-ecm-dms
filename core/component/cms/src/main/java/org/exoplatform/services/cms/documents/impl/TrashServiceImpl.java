@@ -57,7 +57,7 @@ public class TrashServiceImpl implements TrashService {
 
 		if (!node.isNodeType(EXO_RESTORE_LOCATION)) {
 			node.addMixin(EXO_RESTORE_LOCATION);
-			node.setProperty(RESTORE_PATH, node.getPath());
+			node.setProperty(RESTORE_PATH, fixRestorePath(node.getPath()));
 			node.setProperty(RESTORE_WORKSPACE, nodeWorkspaceName);
 			nodeSession.save();
 
@@ -65,7 +65,7 @@ public class TrashServiceImpl implements TrashService {
 									= repositoryService.getRepository(repository);
 			Session trashSession = sessionProvider.getSession(trashWorkspace,
 									manageableRepository);
-			String actualTrashPath = trashPath	+ (trashPath.endsWith("/") ? "" : "/") + nodeName;
+			String actualTrashPath = trashPath	+ (trashPath.endsWith("/") ? "" : "/") + fixRestorePath(nodeName);
 			if (trashSession.getWorkspace().getName().equals(
 					nodeSession.getWorkspace().getName())) {
 				trashSession.getWorkspace().move(node.getPath(),
@@ -95,6 +95,7 @@ public class TrashServiceImpl implements TrashService {
 		String trashWorkspace = trashNodeSession.getWorkspace().getName();
 		String restoreWorkspace = trashNode.getProperty(RESTORE_WORKSPACE).getString();
 		String restorePath = trashNode.getProperty(RESTORE_PATH).getString();
+//		restorePath = fixRestorePath(restorePath);
 
 		ManageableRepository manageableRepository = repositoryService
 				.getRepository(repository);
@@ -110,9 +111,8 @@ public class TrashServiceImpl implements TrashService {
 					trashWorkspace, trashNodePath, restorePath, true);
 			trashNodeSession.getItem(trashNodePath).remove();
 		}
-
-		((Node) restoreSession.getItem(restorePath))
-				.removeMixin(EXO_RESTORE_LOCATION);
+	
+		removeMixinEXO_RESTORE_LOCATION(restoreSession, restorePath);
 		trashNodeSession.save();
 		restoreSession.save();
 		
@@ -143,23 +143,49 @@ public class TrashServiceImpl implements TrashService {
 			 				   sessionProvider, query.toString(), Query.SQL);
 	 }
 
-		private List<Node> selectNodesByQuery(String trashWorkspace,
-								   		  String repository, SessionProvider sessionProvider,
-								   		  String queryString, String language) throws Exception {
-			List<Node> ret = new ArrayList<Node>();
-			ManageableRepository manageableRepository 
-										= repositoryService.getRepository(repository);
-			Session session = sessionProvider.getSession(trashWorkspace, manageableRepository);
-			QueryManager queryManager = session.getWorkspace().getQueryManager();
-			Query query = queryManager.createQuery(queryString, language);
-			QueryResult queryResult = query.execute();
-			
-			NodeIterator iter = queryResult.getNodes();
-			while (iter.hasNext()) {
-				ret.add(iter.nextNode());
-			}
-			
-			return ret;
+	private List<Node> selectNodesByQuery(String trashWorkspace,
+							   		  String repository, SessionProvider sessionProvider,
+							   		  String queryString, String language) throws Exception {
+		List<Node> ret = new ArrayList<Node>();
+		ManageableRepository manageableRepository 
+									= repositoryService.getRepository(repository);
+		Session session = sessionProvider.getSession(trashWorkspace, manageableRepository);
+		QueryManager queryManager = session.getWorkspace().getQueryManager();
+		Query query = queryManager.createQuery(queryString, language);
+		QueryResult queryResult = query.execute();
+		
+		NodeIterator iter = queryResult.getNodes();
+		while (iter.hasNext()) {
+			ret.add(iter.nextNode());
 		}
+		
+		return ret;
+	}
+		
+	private String fixRestorePath(String path) {
+		int leftBracket = path.lastIndexOf('[');
+		int rightBracket = path.lastIndexOf(']');
+		if (leftBracket == -1 || rightBracket == -1 || 
+				(leftBracket >= rightBracket)) return path;
+		
+		try {
+			Integer.parseInt(path.substring(leftBracket+1, rightBracket));
+		} catch (Exception ex) {
+			return path;
+		}
+		return path.substring(0, leftBracket);
+	}
+	
+	private void removeMixinEXO_RESTORE_LOCATION(Session session, String restorePath) throws Exception {
+		Node sameNameNode = ((Node) session.getItem(restorePath));
+		Node parent = sameNameNode.getParent();
+		String name = sameNameNode.getName();
+		NodeIterator nodeIter = parent.getNodes(name);
+		while (nodeIter.hasNext()) {
+			Node node = nodeIter.nextNode();
+			if (node.isNodeType(EXO_RESTORE_LOCATION))
+				node.removeMixin(EXO_RESTORE_LOCATION);
+		}
+	}
 
 }
