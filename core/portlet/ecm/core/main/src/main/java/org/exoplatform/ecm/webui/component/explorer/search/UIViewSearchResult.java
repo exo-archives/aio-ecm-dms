@@ -67,78 +67,95 @@ import org.exoplatform.webui.event.EventListener;
 import org.exoplatform.webui.ext.UIExtensionManager;
 
 /**
- * Created by The eXo Platform SARL
- * Author : Dang Van Minh
- *          minh.dang@exoplatform.com
- * Apr 6, 2007 4:21:18 PM
+ * Created by The eXo Platform SARL Author : Dang Van Minh
+ * minh.dang@exoplatform.com Apr 6, 2007 4:21:18 PM
  */
-@ComponentConfig(
-    events = {
-        @EventConfig(listeners = UIViewSearchResult.ChangeLanguageActionListener.class),
-        @EventConfig(listeners = UIViewSearchResult.DownloadActionListener.class),
-        @EventConfig(listeners = UIViewSearchResult.ChangeNodeActionListener.class)
-    }
-)
+@ComponentConfig(events = {
+    @EventConfig(listeners = UIViewSearchResult.ChangeLanguageActionListener.class),
+    @EventConfig(listeners = UIViewSearchResult.DownloadActionListener.class),
+    @EventConfig(listeners = UIViewSearchResult.ChangeNodeActionListener.class) })
 public class UIViewSearchResult extends UIContainer implements NodePresentation {
-  
-  private Node node_ ;
-  private String language_ ;
+
+  private Node                node_;
+
+  private String              language_;
+
   final private static String COMMENT_COMPONENT = "Comment".intern();
+
   /**
    * Logger.
    */
-  private static final Log LOG  = ExoLogger.getLogger("cms.UIViewSearchResult");
-  
+  private static final Log    LOG               = ExoLogger.getLogger("cms.UIViewSearchResult");
+
   public UIViewSearchResult() throws Exception {
   }
 
   public String getTemplate() {
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    String userName = Util.getPortalRequestContext().getRemoteUser() ;
-    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class) ;
+    TemplateService templateService = getApplicationComponent(TemplateService.class);
+    String userName = Util.getPortalRequestContext().getRemoteUser();
+    UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
     try {
-      String nodeType = node_.getPrimaryNodeType().getName() ;
-      return templateService.getTemplatePathByUser(false, nodeType, userName, uiExplorer.getRepositoryName()) ; 
-    } catch(Exception e) {
+      String nodeType = node_.getPrimaryNodeType().getName();
+      return templateService.getTemplatePathByUser(false, nodeType, userName, uiExplorer
+          .getRepositoryName());
+    } catch (Exception e) {
       LOG.error(e);
     }
-    return null; 
+    return null;
   }
-  
+
   public List<Node> getAttachments() throws Exception {
-    List<Node> attachments = new ArrayList<Node>() ;
-    NodeIterator childrenIterator = node_.getNodes();;
-    TemplateService templateService = getApplicationComponent(TemplateService.class) ;
-    while(childrenIterator.hasNext()) {
+    List<Node> attachments = new ArrayList<Node>();
+    NodeIterator childrenIterator = node_.getNodes();
+    
+    TemplateService templateService = getApplicationComponent(TemplateService.class);
+    int attachData = 0;
+    while (childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
-      List<String> listCanCreateNodeType = 
-        Utils.getListAllowedFileType(node_, getRepository(), templateService) ;      
-      if(listCanCreateNodeType.contains(nodeType)) attachments.add(childNode);
+      List<String> listCanCreateNodeType = Utils.getListAllowedFileType(node_, getRepository(),
+          templateService);
+      if (listCanCreateNodeType.contains(nodeType)) {
+
+        // Case of childNode has jcr:data property
+        if (childNode.hasProperty(Utils.JCR_DATA)) {
+          attachData = childNode.getProperty(Utils.JCR_DATA).getStream().available();
+
+          // Case of jcr:data has content.
+          if (attachData > 0)
+            attachments.add(childNode);
+        } else {
+          attachments.add(childNode);
+        }
+      }
     }
     return attachments;
   }
 
-  public Node getNode() throws ValueFormatException, PathNotFoundException, RepositoryException { 
-    if(node_.hasProperty(Utils.EXO_LANGUAGE)) {
-      String defaultLang = node_.getProperty(Utils.EXO_LANGUAGE).getString() ;
-      if(language_ == null) language_ =  defaultLang ;
-      if(node_.hasNode(Utils.LANGUAGES)) {
-        if(!language_.equals(defaultLang)) {
-          Node curNode = node_.getNode(Utils.LANGUAGES + Utils.SLASH + language_) ;
-          return curNode ;
-        } 
+  public Node getNode() throws ValueFormatException, PathNotFoundException, RepositoryException {
+    if (node_.hasProperty(Utils.EXO_LANGUAGE)) {
+      String defaultLang = node_.getProperty(Utils.EXO_LANGUAGE).getString();
+      if (language_ == null)
+        language_ = defaultLang;
+      if (node_.hasNode(Utils.LANGUAGES)) {
+        if (!language_.equals(defaultLang)) {
+          Node curNode = node_.getNode(Utils.LANGUAGES + Utils.SLASH + language_);
+          return curNode;
+        }
       }
-      return node_ ;
-    }    
-    return node_ ; 
+      return node_;
+    }
+    return node_;
   }
-  public Node getOriginalNode() throws Exception {return node_;}
-  
+
+  public Node getOriginalNode() throws Exception {
+    return node_;
+  }
+
   public String getIcons(Node node, String size) throws Exception {
-    return Utils.getNodeTypeIcon(node, size) ;
+    return Utils.getNodeTypeIcon(node, size);
   }
-  
+
   public UIComponent getCommentComponent() {
     UIComponent uicomponent = null;
     try {
@@ -147,17 +164,20 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
       UIJCRExplorer uiExplorer = getAncestorOfType(UIJCRExplorer.class);
       context.put(UIJCRExplorer.class.getName(), uiExplorer);
       context.put(Node.class.getName(), node_);
-      uicomponent = manager.addUIExtension(ManageViewService.EXTENSION_TYPE, COMMENT_COMPONENT, context, this);
+      uicomponent = manager.addUIExtension(ManageViewService.EXTENSION_TYPE, COMMENT_COMPONENT,
+          context, this);
     } catch (Exception e) {
       LOG.error("An error occurs while checking the action", e);
     }
     return (uicomponent != null ? uicomponent : this);
   }
-  
-  public String getNodeType() throws Exception { return null; }
-  
+
+  public String getNodeType() throws Exception {
+    return null;
+  }
+
   public List<Node> getRelations() throws Exception {
-    List<Node> relations = new ArrayList<Node>() ;
+    List<Node> relations = new ArrayList<Node>();
     if (node_.hasProperty(Utils.EXO_RELATION)) {
       Value[] vals = node_.getProperty(Utils.EXO_RELATION).getValues();
       for (int i = 0; i < vals.length; i++) {
@@ -169,204 +189,229 @@ public class UIViewSearchResult extends UIContainer implements NodePresentation 
     return relations;
   }
 
-  public boolean isRssLink() { return false ; }
-  public String getRssLink() { return null ; }
+  public boolean isRssLink() {
+    return false;
+  }
+
+  public String getRssLink() {
+    return null;
+  }
 
   public List getSupportedLocalise() throws Exception {
-    MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class) ;
-    return multiLanguageService.getSupportedLanguages(node_) ;
+    MultiLanguageService multiLanguageService = getApplicationComponent(MultiLanguageService.class);
+    return multiLanguageService.getSupportedLanguages(node_);
   }
 
   public UIComponent getRemoveAttach() throws Exception {
     removeChild(RemoveAttachmentComponent.class);
-    UIComponent uicomponent = addChild(RemoveAttachmentComponent.class, null, "UIViewSearchResultRemoveAttach");
-    ((AbstractActionComponent) uicomponent).setLstComponentupdate(Arrays.asList(new Class[] {UIPopupWindow.class}));
+    UIComponent uicomponent = addChild(RemoveAttachmentComponent.class, null,
+        "UIViewSearchResultRemoveAttach");
+    ((AbstractActionComponent) uicomponent).setLstComponentupdate(Arrays
+        .asList(new Class[] { UIPopupWindow.class }));
     return uicomponent;
   }
 
   public UIComponent getRemoveComment() throws Exception {
     removeChild(RemoveCommentComponent.class);
-    UIComponent uicomponent = addChild(RemoveCommentComponent.class, null, "UIViewSearchResultRemoveComment");
-    ((AbstractActionComponent) uicomponent).setLstComponentupdate(Arrays.asList(new Class[] {UIPopupWindow.class}));
+    UIComponent uicomponent = addChild(RemoveCommentComponent.class, null,
+        "UIViewSearchResultRemoveComment");
+    ((AbstractActionComponent) uicomponent).setLstComponentupdate(Arrays
+        .asList(new Class[] { UIPopupWindow.class }));
     return uicomponent;
   }
-  
-  public String getTemplatePath() throws Exception { return null; }
 
-  public boolean isNodeTypeSupported() { return false; }
-  
+  public String getTemplatePath() throws Exception {
+    return null;
+  }
+
+  public boolean isNodeTypeSupported() {
+    return false;
+  }
+
   public boolean isNodeTypeSupported(String nodeTypeName) {
-    try {      
+    try {
       TemplateService templateService = getApplicationComponent(TemplateService.class);
-      String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
+      String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
       return templateService.isManagedNodeType(nodeTypeName, repository);
     } catch (Exception e) {
       return false;
     }
   }
-  
+
   public boolean hasPropertyContent(Node node, String property) {
     try {
-      String value = node.getProperty(property).getString() ;
-      if(value.length() > 0) return true ;
+      String value = node.getProperty(property).getString();
+      if (value.length() > 0)
+        return true;
     } catch (Exception e) {
-      LOG.error(e);      
+      LOG.error(e);
     }
-    return false ;
+    return false;
   }
 
-  public void setNode(Node node) { node_ = node ; }
-  
-  public Node getNodeByUUID(String uuid) throws Exception{
-    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class).getRepository(repository) ;
-    String[] workspaces = manageRepo.getWorkspaceNames() ;
-    SessionProvider sessionProvider = SessionProviderFactory.createSessionProvider() ;
-    for(String ws : workspaces) {
-      try{
-        return sessionProvider.getSession(ws,manageRepo).getNodeByUUID(uuid) ;
-      }catch(Exception e) {
-        
-      }      
+  public void setNode(Node node) {
+    node_ = node;
+  }
+
+  public Node getNodeByUUID(String uuid) throws Exception {
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+    ManageableRepository manageRepo = getApplicationComponent(RepositoryService.class)
+        .getRepository(repository);
+    String[] workspaces = manageRepo.getWorkspaceNames();
+    SessionProvider sessionProvider = SessionProviderFactory.createSessionProvider();
+    for (String ws : workspaces) {
+      try {
+        return sessionProvider.getSession(ws, manageRepo).getNodeByUUID(uuid);
+      } catch (Exception e) {
+
+      }
     }
     return null;
   }
-  
+
   @SuppressWarnings("unused")
   public ResourceResolver getTemplateResourceResolver(WebuiRequestContext context, String template) {
-    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver() ;
+    return getAncestorOfType(UIJCRExplorer.class).getJCRTemplateResourceResolver();
   }
 
   public List<Node> getComments() throws Exception {
-    return getApplicationComponent(CommentsService.class).getComments(node_, language_) ;
+    return getApplicationComponent(CommentsService.class).getComments(node_, language_);
   }
-  
+
   public String getViewTemplate(String nodeTypeName, String templateName) throws Exception {
-    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName() ;
-    return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository) ;
+    TemplateService tempServ = getApplicationComponent(TemplateService.class);
+    String repository = getAncestorOfType(UIJCRExplorer.class).getRepositoryName();
+    return tempServ.getTemplatePath(false, nodeTypeName, templateName, repository);
   }
 
   public String getTemplateSkin(String nodeTypeName, String skinName) throws Exception {
-    TemplateService tempServ = getApplicationComponent(TemplateService.class) ;
-    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository()) ;
+    TemplateService tempServ = getApplicationComponent(TemplateService.class);
+    return tempServ.getSkinPath(nodeTypeName, skinName, getLanguage(), getRepository());
   }
-  
-  public String getLanguage() { return language_; }
 
-  public void setLanguage(String language) { language_ = language ; }
+  public String getLanguage() {
+    return language_;
+  }
+
+  public void setLanguage(String language) {
+    language_ = language;
+  }
 
   @SuppressWarnings("unchecked")
   public Object getComponentInstanceOfType(String className) {
     Object service = null;
     try {
-      ClassLoader loader =  Thread.currentThread().getContextClassLoader();
+      ClassLoader loader = Thread.currentThread().getContextClassLoader();
       Class clazz = loader.loadClass(className);
       service = getApplicationComponent(clazz);
     } catch (ClassNotFoundException ex) {
       LOG.error(ex);
-    } 
+    }
     return service;
   }
-  
 
   public String getImage(Node node) throws Exception {
-    DownloadService downloadService = getApplicationComponent(DownloadService.class) ;
-    InputStreamDownloadResource inputResource ;
-    Node imageNode = node.getNode(Utils.EXO_IMAGE) ;
-    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
-    inputResource = new InputStreamDownloadResource(input, "image") ;
-    inputResource.setDownloadName(node.getName()) ;
-    return downloadService.getDownloadLink(downloadService.addDownloadResource(inputResource)) ;
+    DownloadService downloadService = getApplicationComponent(DownloadService.class);
+    InputStreamDownloadResource inputResource;
+    Node imageNode = node.getNode(Utils.EXO_IMAGE);
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream();
+    inputResource = new InputStreamDownloadResource(input, "image");
+    inputResource.setDownloadName(node.getName());
+    return downloadService.getDownloadLink(downloadService.addDownloadResource(inputResource));
   }
-  
+
   public String getImage(Node node, String nodeTypeName) throws Exception {
-    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
-    InputStreamDownloadResource dresource ;
-    Node imageNode = node.getNode(nodeTypeName) ;    
-    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream() ;
-    dresource = new InputStreamDownloadResource(input, "image") ;
-    dresource.setDownloadName(node.getName()) ;
-    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+    DownloadService dservice = getApplicationComponent(DownloadService.class);
+    InputStreamDownloadResource dresource;
+    Node imageNode = node.getNode(nodeTypeName);
+    InputStream input = imageNode.getProperty(Utils.JCR_DATA).getStream();
+    dresource = new InputStreamDownloadResource(input, "image");
+    dresource.setDownloadName(node.getName());
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource));
   }
 
   public String getPortalName() {
     ExoContainer container = ExoContainerContext.getCurrentContainer();
-    PortalContainerInfo containerInfo = (PortalContainerInfo)container.getComponentInstanceOfType(PortalContainerInfo.class);      
+    PortalContainerInfo containerInfo = (PortalContainerInfo) container
+        .getComponentInstanceOfType(PortalContainerInfo.class);
     return containerInfo.getContainerName();
   }
-  
+
   public String getRepository() throws Exception {
-    return ((ManageableRepository)node_.getSession().getRepository()).getConfiguration().getName() ;
+    return ((ManageableRepository) node_.getSession().getRepository()).getConfiguration().getName();
   }
-  
+
   public String getWebDAVServerPrefix() throws Exception {
-    PortletRequestContext pRequestContext = PortletRequestContext.getCurrentInstance() ;
-    PortletRequest pRequest = pRequestContext.getRequest() ;
-    String prefixWebDAV = pRequest.getScheme() + "://" + pRequest.getServerName() + ":" 
-                          + String.format("%s",pRequest.getServerPort()) ;
-    return prefixWebDAV ;
+    PortletRequestContext pRequestContext = PortletRequestContext.getCurrentInstance();
+    PortletRequest pRequest = pRequestContext.getRequest();
+    String prefixWebDAV = pRequest.getScheme() + "://" + pRequest.getServerName() + ":"
+        + String.format("%s", pRequest.getServerPort());
+    return prefixWebDAV;
   }
 
   public String getWorkspaceName() throws Exception {
-    return node_.getSession().getWorkspace().getName() ;
+    return node_.getSession().getWorkspace().getName();
   }
+
   static public class ChangeLanguageActionListener extends EventListener<UIViewSearchResult> {
     public void execute(Event<UIViewSearchResult> event) throws Exception {
-      UIViewSearchResult uiViewSearchResult = event.getSource() ;
-      String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      uiViewSearchResult.setLanguage(selectedLanguage) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewSearchResult.getParent()) ;
-    }   
+      UIViewSearchResult uiViewSearchResult = event.getSource();
+      String selectedLanguage = event.getRequestContext().getRequestParameter(OBJECTID);
+      uiViewSearchResult.setLanguage(selectedLanguage);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiViewSearchResult.getParent());
+    }
   }
+
   public String getDownloadLink(Node node) throws Exception {
-    DownloadService dservice = getApplicationComponent(DownloadService.class) ;
-    InputStreamDownloadResource dresource ;
-    if(!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE)) return null; 
-    Node jcrContentNode = node.getNode(Utils.JCR_CONTENT) ;
-    InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream() ;
-    dresource = new InputStreamDownloadResource(input, "image") ;
-    dresource.setDownloadName(node.getName()) ;
-    return dservice.getDownloadLink(dservice.addDownloadResource(dresource)) ;
+    DownloadService dservice = getApplicationComponent(DownloadService.class);
+    InputStreamDownloadResource dresource;
+    if (!node.getPrimaryNodeType().getName().equals(Utils.NT_FILE))
+      return null;
+    Node jcrContentNode = node.getNode(Utils.JCR_CONTENT);
+    InputStream input = jcrContentNode.getProperty(Utils.JCR_DATA).getStream();
+    dresource = new InputStreamDownloadResource(input, "image");
+    dresource.setDownloadName(node.getName());
+    return dservice.getDownloadLink(dservice.addDownloadResource(dresource));
   }
 
   public String encodeHTML(String text) throws Exception {
-    return Utils.encodeHTML(text) ;
+    return Utils.encodeHTML(text);
   }
-  
+
   private Node getFileLangNode(Node currentNode) throws Exception {
-    if(currentNode.getNodes().getSize() > 0) {
-      NodeIterator nodeIter = currentNode.getNodes() ;
-      while(nodeIter.hasNext()) {
-        Node ntFile = nodeIter.nextNode() ;
-        if(ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
-          return ntFile ;
+    if (currentNode.getNodes().getSize() > 0) {
+      NodeIterator nodeIter = currentNode.getNodes();
+      while (nodeIter.hasNext()) {
+        Node ntFile = nodeIter.nextNode();
+        if (ntFile.getPrimaryNodeType().getName().equals("nt:file")) {
+          return ntFile;
         }
       }
-      return currentNode ;
+      return currentNode;
     }
-    return currentNode ;
-  }  
+    return currentNode;
+  }
 
-  static  public class DownloadActionListener extends EventListener<UIViewSearchResult> {
+  static public class DownloadActionListener extends EventListener<UIViewSearchResult> {
     public void execute(Event<UIViewSearchResult> event) throws Exception {
-      UIViewSearchResult uiComp = event.getSource() ;
+      UIViewSearchResult uiComp = event.getSource();
       String downloadLink = uiComp.getDownloadLink(uiComp.getFileLangNode(uiComp.getNode()));
-      event.getRequestContext().getJavascriptManager().addJavascript("ajaxRedirect('" + downloadLink + "');");
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent()) ;
+      event.getRequestContext().getJavascriptManager().addJavascript(
+          "ajaxRedirect('" + downloadLink + "');");
+      event.getRequestContext().addUIComponentToUpdateByAjax(uiComp.getParent());
     }
   }
-  
-  static  public class ChangeNodeActionListener extends EventListener<UIViewSearchResult> {
+
+  static public class ChangeNodeActionListener extends EventListener<UIViewSearchResult> {
     public void execute(Event<UIViewSearchResult> event) throws Exception {
-      UIViewSearchResult uicomp =  event.getSource() ;
-      UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class) ; 
-      String uri = event.getRequestContext().getRequestParameter(OBJECTID) ;
-      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName") ;
-      Session session = uiExplorer.getSessionByWorkspace(workspaceName) ;
-      Node selectedNode = (Node) session.getItem(uri) ;
-      uicomp.setNode(selectedNode) ;
-      event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent()) ;
+      UIViewSearchResult uicomp = event.getSource();
+      UIJCRExplorer uiExplorer = uicomp.getAncestorOfType(UIJCRExplorer.class);
+      String uri = event.getRequestContext().getRequestParameter(OBJECTID);
+      String workspaceName = event.getRequestContext().getRequestParameter("workspaceName");
+      Session session = uiExplorer.getSessionByWorkspace(workspaceName);
+      Node selectedNode = (Node) session.getItem(uri);
+      uicomp.setNode(selectedNode);
+      event.getRequestContext().addUIComponentToUpdateByAjax(uicomp.getParent());
     }
   }
 }
