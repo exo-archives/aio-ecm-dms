@@ -20,11 +20,11 @@
 				    def tagStyle = uicomponent.getTagStyle() ;  
 		        for(tag in uicomponent.getPrivateTagLink()){
 		          String tagLink = uicomponent.event('ViewTag',tag.getPath()) ;
-		          String tagStatus = "" ;
+		          int tagCount = 0 ;
 		          String style = "" ;
-		          if(tag.hasProperty("exo:tagStatus")) {
-		            tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
-		            style = "Style = '" + tagStyle.get(tagStatus) +"'" ;
+		          if(tag.hasProperty("exo:total")) {
+		            tagCount = (int)tag.getProperty("exo:total").getValue().getLong() ;
+		            style = "Style = '" + uicomponent.getTagHtmlStyle(tagStyle, tagCount)+ "'" ;
 		          }
 		          println "<a href=\"$tagLink\" $style>$tag.name</a>" ;
 		        }
@@ -59,11 +59,11 @@
 //			    def tagStyle = uicomponent.getTagStyle() ;  
 	        for(tag in uicomponent.getPublicTagLink()){
 	          String tagLink = uicomponent.event('ViewTag',tag.getPath()) ;
-	          String tagStatus = "" ;
+	          int tagCount = 0;
 	          String style = "" ;
-	          if(tag.hasProperty("exo:tagStatus")) {
-	            tagStatus = tag.getProperty("exo:tagStatus").getValue().getString() ;
-	            style = "Style = '" + tagStyle.get(tagStatus) +"'" ;
+	          if(tag.hasProperty("exo:total")) {
+	            tagCount = (int)tag.getProperty("exo:total").getValue().getLong() ;
+	            style = "Style = '" + uicomponent.getTagHtmlStyle(tagStyle, tagCount)+ "'" ;
 	          }
 	          println "<a href=\"$tagLink\" $style>$tag.name</a>" ;
 	        }

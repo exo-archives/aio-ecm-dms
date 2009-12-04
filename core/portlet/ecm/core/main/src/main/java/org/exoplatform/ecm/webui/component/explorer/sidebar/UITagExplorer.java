@@ -19,10 +19,11 @@ package org.exoplatform.ecm.webui.component.explorer.sidebar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.jcr.Node;
 
-import org.apache.poi.hdf.model.hdftypes.DocumentProperties;
+import org.apache.commons.lang.StringUtils;
 import org.exoplatform.ecm.webui.component.explorer.DocumentProviderUtils;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentContainer;
 import org.exoplatform.ecm.webui.component.explorer.UIDocumentInfo;
@@ -83,9 +84,31 @@ public class UITagExplorer extends UIContainer {
     String workspace = getApplicationComponent(DMSConfiguration.class).getConfig(getRepository()).getSystemWorkspace();
     Map<String , String> tagStyle = new HashMap<String ,String>() ;
     for(Node tag : folksonomyService.getAllTagStyle(getRepository(), workspace)) {
-      tagStyle.put(tag.getName(), tag.getProperty("exo:htmlStyle").getValue().getString()) ;
+      tagStyle.put(tag.getProperty("exo:styleRange").getValue().getString(),
+      						 tag.getProperty("exo:htmlStyle").getValue().getString());
     }
     return tagStyle ;
+  }
+  
+  public String getTagHtmlStyle(Map<String, String> tagStyles, int tagCount) throws Exception {
+  	for (Entry<String, String> entry : tagStyles.entrySet()) {
+  		if (checkTagRate(tagCount, entry.getKey()))
+	  		return entry.getValue();
+  	}
+  	return "";
+  }
+  
+  private boolean checkTagRate(int numOfDocument, String range) throws Exception {
+    String[] vals = StringUtils.split(range ,"..") ;    
+    int minValue = Integer.parseInt(vals[0]) ;
+    int maxValue ;
+    if(vals[1].equals("*")) {
+      maxValue = Integer.MAX_VALUE ;
+    }else {
+      maxValue = Integer.parseInt(vals[1]) ;
+    }
+    if(minValue <=numOfDocument && numOfDocument <maxValue ) return true ;    
+    return false ;
   }
   
   public String getRepository() { return getAncestorOfType(UIJCRExplorer.class).getRepositoryName();}
