@@ -678,11 +678,14 @@ var SimpleView = function() {
 	    } else {
 	    	playMediaAction.parentNode.style.display = "block";
 	    }
-	    if (!checkEmptyTrash) {
-	      emptyTrashAction.parentNode.style.display = "none";
-	    } else {
-	      emptyTrashAction.parentNode.style.display = "block";
-	    }
+					if (emptyTrashAction) {
+				 	if (!checkEmptyTrash) {
+				 		emptyTrashAction.parentNode.style.display = "none";
+				 	}
+				 	else {
+				 		emptyTrashAction.parentNode.style.display = "block";
+				 	}
+			  }
 	  //check position popup
 		var X = eXo.core.Browser.findMouseXInPage(event);
 		var Y = eXo.core.Browser.findMouseYInPage(event);
