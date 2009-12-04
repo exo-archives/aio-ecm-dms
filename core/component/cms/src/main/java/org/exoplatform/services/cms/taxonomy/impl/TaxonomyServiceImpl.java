@@ -251,6 +251,8 @@ public class TaxonomyServiceImpl implements TaxonomyService, Startable {
           String owner = node.getProperty("exo:owner").getString();
           node.addMixin("exo:privilegeable");
           node.setPermission(owner, PermissionType.ALL);
+          node.setPermission("*:/platform/administrators", PermissionType.ALL);
+          node.setPermission("*:/platform/users", PermissionType.ALL);          
         }
       }
       systemSession.save();
