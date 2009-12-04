@@ -46,6 +46,7 @@ import org.exoplatform.services.jcr.ext.app.SessionProviderService;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
 import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.log.ExoLogger;
+import org.picocontainer.Startable;
 
 /**
  * Created by The eXo Platform SARL
@@ -54,12 +55,12 @@ import org.exoplatform.services.log.ExoLogger;
  * Nov 16, 2009  
  * 10:30:24 AM
  */
-public class NewFolksonomyServiceImpl implements NewFolksonomyService {
+public class NewFolksonomyServiceImpl implements NewFolksonomyService, Startable  {
 
 	private static final String USER_FOLKSONOMY_ALIAS = "userPrivateFolksonomy".intern();
 	private static final String GROUP_FOLKSONOMY_ALIAS = "groupFolksonomy".intern();
 	private static final String GROUPS_ALIAS = "groupsPath".intern();
-	private static final String TAG_STYLE_ALIAS = "exoNewTagStylePath".intern();
+	private static final String TAG_STYLE_ALIAS = "exoTagStylePath".intern();
 	
   private static final String PUBLIC_TAG_NODE_PATH = "exoPublicTagNode";
 	
@@ -83,6 +84,24 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
     //this.sessionProvider = sessionProviderService.getSessionProvider(null);
     this.sessionProvider = sessionProviderService.getSystemSessionProvider(null);
   }
+  
+  /**
+   * Implement method in Startable
+   * Call init() method
+   * @see {@link #init()}
+   */
+  public void start() {
+    try {
+      init() ;
+    }catch (Exception e) {
+      LOG.error("===>>>>Exception when init FolksonomySerice", e);      
+    }
+  }
+
+  /**
+   * Implement method in Startable
+   */
+  public void stop() { }
   
   /**
    * {@inheritDoc}
@@ -291,10 +310,25 @@ public class NewFolksonomyServiceImpl implements NewFolksonomyService {
       try{
         plugin.init(repository) ;
       }catch(Exception e) {
-        //System.out.println("[WARNING]===>Can not init "+e.getMessage());
+      	LOG.error("can not init:", e);      	
       }
     }
   }
+  
+  /**
+   * init all avaiable TagStylePlugin
+   * @throws Exception
+   */
+  private void init() throws Exception {    
+    for(TagStylePlugin plugin : plugin_) {
+      try{
+        plugin.init() ;
+      }catch(Exception e) {
+      	LOG.error("can not init:", e);
+      }
+    }
+  }
+  
 
   /**
    * {@inheritDoc}

@@ -22,11 +22,15 @@ import java.util.List;
 import javax.jcr.Node;
 import javax.jcr.Session;
 
+import org.exoplatform.container.ExoContainer;
+import org.exoplatform.container.ExoContainerContext;
 import org.exoplatform.container.component.BaseComponentPlugin;
 import org.exoplatform.container.xml.InitParams;
 import org.exoplatform.container.xml.ObjectParameter;
 import org.exoplatform.services.cms.BasePath;
 import org.exoplatform.services.cms.folksonomy.impl.TagStyleConfig.HtmlTagStyle;
+import org.exoplatform.services.cms.impl.DMSConfiguration;
+import org.exoplatform.services.cms.impl.DMSRepositoryConfiguration;
 import org.exoplatform.services.cms.impl.Utils;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.config.RepositoryEntry;
@@ -98,7 +102,7 @@ public class TagStylePlugin extends BaseComponentPlugin{
    * for tag style node.
    */
   private void addTag(Session session, TagStyleConfig tagConfig) throws Exception {
-    String exoTagStylePath = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_TAG_STYLE_PATH) ;
+    String exoTagStylePath = nodeHierarchyCreator_.getJcrPath(BasePath.EXO_NEW_TAG_STYLE_PATH) ;
     Node exoTagStyleHomeNode = (Node)session.getItem(exoTagStylePath) ;
     List<HtmlTagStyle> htmlStyle4Tag = tagConfig.getTagStyleList() ;
     for(HtmlTagStyle style: htmlStyle4Tag) {
@@ -118,6 +122,10 @@ public class TagStylePlugin extends BaseComponentPlugin{
   */
  private Session getSession(String repository) throws Exception{ 
    ManageableRepository manageableRepository = repositoryService_.getRepository(repository);
-   return manageableRepository.getSystemSession(manageableRepository.getConfiguration().getSystemWorkspaceName());
+   ExoContainer myContainer = ExoContainerContext.getCurrentContainer();
+   DMSConfiguration dmsConfiguration = (DMSConfiguration)
+   myContainer.getComponentInstanceOfType(DMSConfiguration.class);
+   DMSRepositoryConfiguration dmsRepoConfig = dmsConfiguration.getConfig(repository);   
+   return manageableRepository.getSystemSession(dmsRepoConfig.getSystemWorkspace());
  }
 }

@@ -36,8 +36,8 @@ public interface BasePath {
   public static final String TAXONOMIES_TREE_STORAGE_PATH = "exoTaxoTreesStoragePath";
   public static final String EXO_FOLKSONOMY_PATH = "exoFolksonomiesPath";
   public static final String EXO_TAGS_PATH = "exoTagsPath" ;
-  public static final String EXO_TAG_STYLE_PATH = "exoTagStylePath" ;
-  public static final String EXO_NEW_TAG_STYLE_PATH = "exoNewTagStylePath" ;  
+  public static final String EXO_TAG_STYLE_PATH = "exoOldTagStylePath" ;
+  public static final String EXO_NEW_TAG_STYLE_PATH = "exoTagStylePath" ;  
   public static final String METADATA_PATH = "metadataPath" ;
   public static final String QUERIES_PATH = "queriesPath" ;
   public static final String EXO_DRIVES_PATH = "exoDrivesPath" ;

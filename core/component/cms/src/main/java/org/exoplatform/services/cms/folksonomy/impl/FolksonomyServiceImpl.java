@@ -220,6 +220,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
         plugin.init() ;
       }catch(Exception e) {
         //System.out.println("[WARNING]===>Can not init "+e.getMessage());
+      	LOG.error("can not init:", e);
       }
     }
   }
@@ -232,7 +233,7 @@ public class FolksonomyServiceImpl implements FolksonomyService, Startable {
       try{
         plugin.init(repository) ;
       }catch(Exception e) {
-        //System.out.println("[WARNING]===>Can not init "+e.getMessage());
+      	LOG.error("can not init:", e);
       }
     }
   }
