@@ -191,6 +191,8 @@ public class Utils {
 
   final static public String WORKSPACE_PARAM = "workspaceName";
   
+  final static public String EMPTY = "";
+  
   public Map<String, Object> maps_ = new HashMap<String, Object>();
 
   public static String encodeHTML(String text) {

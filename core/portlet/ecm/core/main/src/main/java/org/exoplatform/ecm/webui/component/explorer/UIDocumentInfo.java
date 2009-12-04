@@ -467,13 +467,17 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
   public List<Node> getAttachments() throws Exception {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<Node> attachments = new ArrayList<Node>() ;
-    NodeIterator childrenIterator = currentNode_.getNodes();;
+    NodeIterator childrenIterator = currentNode_.getNodes();
+    int attachData = 0 ;
     while (childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
       List<String> listCanCreateNodeType = 
-        Utils.getListAllowedFileType(currentNode_, getRepository(), templateService) ; 
-      if(listCanCreateNodeType.contains(nodeType)) attachments.add(childNode);
+          Utils.getListAllowedFileType(currentNode_, getRepository(), templateService) ;
+      if (childNode.hasProperty(Utils.JCR_DATA))
+        attachData = childNode.getProperty(Utils.JCR_DATA).getStream().available();       
+      if(listCanCreateNodeType.contains(nodeType) && (attachData > 0))         
+        attachments.add(childNode);       
     }
     return attachments;
   }

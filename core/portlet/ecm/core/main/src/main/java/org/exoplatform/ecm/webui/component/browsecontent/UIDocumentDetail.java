@@ -269,12 +269,15 @@ public class UIDocumentDetail extends UIContainer implements NodePresentation, U
     List<Node> attachments = new ArrayList<Node>() ;
     NodeIterator childrenIterator = node_.getNodes();;
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
+    int attachData = 0 ;
     while (childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
       List<String> listCanCreateNodeType = 
         Utils.getListAllowedFileType(originalNode_, getRepository(), templateService) ;
-      if (listCanCreateNodeType.contains(nodeType)) attachments.add(childNode);
+      if (childNode.hasProperty(Utils.JCR_DATA))
+        attachData = childNode.getProperty(Utils.JCR_DATA).getStream().available();
+      if (listCanCreateNodeType.contains(nodeType) && (attachData > 0)) attachments.add(childNode);
     }
     return attachments;
   }

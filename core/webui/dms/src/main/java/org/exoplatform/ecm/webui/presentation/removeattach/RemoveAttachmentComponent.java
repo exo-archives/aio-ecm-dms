@@ -74,9 +74,20 @@ public class RemoveAttachmentComponent extends AbstractActionComponent {
     String nodepath = String.valueOf(variables.get(OBJECTID));
     WebuiRequestContext requestcontext = (WebuiRequestContext)variables.get(Utils.REQUESTCONTEXT);
     try {
-        Node node = (Node) nodefinder.getItem(repository, wsname, nodepath);
-        Session session = node.getSession();
-        node.remove();
+        Node node = (Node) nodefinder.getItem(repository, wsname, nodepath);  
+        
+        // begin of lampt's modification.
+        if (nodepath.startsWith("/")) {
+          if (node.hasProperty(Utils.JCR_DATA))
+            node.setProperty(Utils.JCR_DATA, Utils.EMPTY);
+        } else {
+          if (node.hasProperty(nodepath)) 
+            node.setProperty(nodepath, Utils.EMPTY);                      
+        } 
+        node.save();
+        // end of modification.        
+        
+        Session session = node.getSession();   
         session.save();
         session.logout();
         uicomponent.updateAjax(requestcontext);
