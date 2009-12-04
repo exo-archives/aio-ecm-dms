@@ -33,7 +33,6 @@ import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerCompon
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotInTrashFilter;
-import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotSameNameSiblingFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
 import org.exoplatform.ecm.webui.utils.JCRExceptionManager;
@@ -64,7 +63,6 @@ public class CopyManageComponent extends UIAbstractManagerComponent {
 
   private static final List<UIExtensionFilter> FILTERS 
   		= Arrays.asList(new UIExtensionFilter[]{new IsNotInTrashFilter(),
-  																						new IsNotSameNameSiblingFilter(),
   																						new IsNotTrashHomeNodeFilter()});
   
   private final static Log       LOG  = ExoLogger.getLogger(CopyManageComponent.class);

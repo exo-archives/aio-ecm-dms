@@ -19,7 +19,9 @@ package org.exoplatform.ecm.webui.component.explorer.rightclick.manager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 import javax.jcr.AccessDeniedException;
@@ -192,6 +194,52 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
     }
   }
 
+  /**
+   * Update clipboard after CUT node. Detain PathNotFoundException with same name sibling node
+   * @param clipboardCommands
+   * @param mapClipboard
+   * @throws Exception
+   */
+  private static void updateClipboard(List<ClipboardCommand> clipboardCommands, Map<ClipboardCommand, Node> mapClipboard) throws Exception {
+    Node srcNode;
+    for (ClipboardCommand clipboard : clipboardCommands) {
+      if (ClipboardCommand.CUT.equals(clipboard.getType())) {
+        srcNode = mapClipboard.get(clipboard);
+        srcNode.refresh(true);
+        clipboard.setSrcPath(srcNode.getPath());
+      }
+    }
+  }
+  
+  /**
+   * Put data from clipboard to Map<Clipboard, Node>. After cutting node, we keep data to update clipboard by respective node
+   * @param clipboardCommands
+   * @param uiExplorer
+   * @return
+   * @throws Exception
+   */
+  private static Map<ClipboardCommand, Node> parseToMap(List<ClipboardCommand> clipboardCommands, UIJCRExplorer uiExplorer) throws Exception {
+    String srcPath;
+    String type;
+    String srcWorkspace;
+    Node srcNode;
+    Session srcSession;
+    Map<ClipboardCommand, Node> mapClipboard = new HashMap<ClipboardCommand, Node>();
+    for (ClipboardCommand clipboard : clipboardCommands) {
+      srcPath = clipboard.getSrcPath();
+      type = clipboard.getType();
+      srcWorkspace = clipboard.getWorkspace();
+      if (ClipboardCommand.CUT.equals(type)) {
+        srcSession = uiExplorer.getSessionByWorkspace(srcWorkspace);
+        // Use the method getNodeByPath because it is link aware
+        srcNode = uiExplorer.getNodeByPath(srcPath, srcSession, false);
+        clipboard.setSrcPath(srcNode.getPath());
+        mapClipboard.put(clipboard, srcNode);
+      }
+    }
+    return mapClipboard;
+  }
+  
   private static void processPaste(ClipboardCommand currentClipboard, String destPath,
       Event<?> event, boolean isMultiSelect, boolean isLastPaste) throws Exception {
     UIJCRExplorer uiExplorer = ((UIComponent) event.getSource())
@@ -205,8 +253,7 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
     Node srcNode = uiExplorer.getNodeByPath(srcPath, srcSession, false);
     // Reset the path to manage the links that potentially create virtual path
     srcPath = srcNode.getPath();
-    // Reset the session to manage the links that potentially change of
-    // workspace
+    // Reset the session to manage the links that potentially change of workspace
     srcSession = srcNode.getSession();
     // Reset the workspace name to manage the links that potentially change of
     // workspace
@@ -235,11 +282,8 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
       event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
       return;
     }
-    if (destPath.endsWith("/")) {
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/") + 1);
-    } else {
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/"));
-    }
+    // Make destination path without index on final name
+    destPath = destPath.concat("/").concat(srcNode.getName());
     ActionServiceContainer actionContainer = uiExplorer
         .getApplicationComponent(ActionServiceContainer.class);
     try {
@@ -351,6 +395,11 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
       if (srcPath.equals(destPath))
         return;
     }
+    List<ClipboardCommand> allClipboard = uiExplorer.getAllClipBoard();
+    List<ClipboardCommand> virtualClipboard = uiWorkingArea.getVirtualClipboards();
+    Map<ClipboardCommand, Node> mapAllClipboardNode = parseToMap(allClipboard, uiExplorer);
+    Map<ClipboardCommand, Node> mapVirtualClipboardNode = parseToMap(virtualClipboard, uiExplorer);
+    
     RelationsService relationsService = uiExplorer.getApplicationComponent(RelationsService.class);
     List<Node> refList = new ArrayList<Node>();
     boolean isReference = false;
@@ -423,6 +472,8 @@ public class PasteManageComponent extends UIAbstractManagerComponent {
     }
     session.save();
     uiExplorer.getAllClipBoard().remove(currentClipboard);
+    updateClipboard(uiWorkingArea.getVirtualClipboards(), mapVirtualClipboardNode);
+    updateClipboard(uiExplorer.getAllClipBoard(), mapAllClipboardNode);
   }
 
   public static class PasteActionListener extends UIWorkingAreaActionListener<PasteManageComponent> {

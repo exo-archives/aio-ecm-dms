@@ -18,7 +18,10 @@
 package org.exoplatform.ecm.webui.component.explorer.rightclick.manager;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 
 import javax.jcr.AccessDeniedException;
@@ -34,7 +37,6 @@ import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManager;
 import org.exoplatform.ecm.webui.component.admin.manager.UIAbstractManagerComponent;
 import org.exoplatform.ecm.webui.component.explorer.UIJCRExplorer;
 import org.exoplatform.ecm.webui.component.explorer.UIWorkingArea;
-import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotFavouriteFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotInTrashFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.filter.IsNotTrashHomeNodeFilter;
 import org.exoplatform.ecm.webui.component.explorer.control.listener.UIWorkingAreaActionListener;
@@ -136,7 +138,7 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
       if (nodePath.indexOf(";") > -1) {
           moveMultiNode(nodePath.split(";"), destNode, event);
       } else {
-          moveNode(nodePath, destNode, event);
+          moveNode(nodePath, null, destNode, event);
       }
       session.save();
       uiExplorer.updateAjax(event);
@@ -164,21 +166,9 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
     }
   }
   
-  private static void moveNode(String srcPath, Node destNode, Event<?> event) throws Exception {
-    UIComponent uiComponent = (UIComponent)event.getSource();
-    UIJCRExplorer uiExplorer = uiComponent.getAncestorOfType(UIJCRExplorer.class);
+  private static Node getNodeByPath(String srcPath, UIJCRExplorer uiExplorer) throws Exception {
     Matcher matcher = UIWorkingArea.FILE_EXPLORER_URL_SYNTAX.matcher(srcPath);
     String wsName = null;
-    UIApplication uiApp = uiComponent.getAncestorOfType(UIApplication.class);
-    if (srcPath.indexOf(":/") > -1) {
-      String[] arrSrcPath = srcPath.split(":/");
-      if (("/" + arrSrcPath[1]).equals(destNode.getPath())) {
-        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.can-not-move-to-itself", null,
-            ApplicationMessage.WARNING));
-        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-        return;
-      }
-    }
     if (matcher.find()) {
       wsName = matcher.group(1);
       srcPath = matcher.group(2);
@@ -186,31 +176,42 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
       throw new IllegalArgumentException("The ObjectId is invalid '" + srcPath + "'");
     }
     Session srcSession = uiExplorer.getSessionByWorkspace(wsName);
-    // Use the method getNodeByPath because it is link aware
-    Node selectedNode = uiExplorer.getNodeByPath(srcPath, srcSession, false);
-    // Reset the path to manage the links that potentially create virtual path
-    srcPath = selectedNode.getPath();
-    // Reset the session to manage the links that potentially change of
-    // workspace
-    srcSession = selectedNode.getSession();
-
-    if (!selectedNode.isCheckedOut()) {
-      uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null,
-          ApplicationMessage.WARNING));
-      event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
-      return;
+    return uiExplorer.getNodeByPath(srcPath, srcSession, false);
+  }
+  
+  private static void moveNode(String srcPath, Node selectedNode, Node destNode, Event<?> event) throws Exception {
+    UIComponent uiComponent = (UIComponent)event.getSource();
+    UIJCRExplorer uiExplorer = uiComponent.getAncestorOfType(UIJCRExplorer.class);
+    UIApplication uiApp = uiComponent.getAncestorOfType(UIApplication.class);
+    if(srcPath.indexOf(":/") > -1 || (selectedNode != null)) {
+      String[] arrSrcPath = srcPath.split(":/");
+      if((srcPath.contains(":/") && ("/" + arrSrcPath[1]).equals(destNode.getPath())) || (selectedNode != null && selectedNode.equals(destNode))) {
+        uiApp.addMessage(new ApplicationMessage("UIWorkingArea.msg.can-not-move-to-itself", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
     }
-    uiExplorer.addLockToken(selectedNode);
-    String destPath = destNode.getPath();
-    String messagePath = destPath;
-    if (destPath.endsWith("/")) {
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/") + 1);
-    } else {
-      destPath = destPath + srcPath.substring(srcPath.lastIndexOf("/"));  
-    }
-    Workspace srcWorkspace = srcSession.getWorkspace();
-    Workspace destWorkspace = destNode.getSession().getWorkspace();
+    String messagePath = "";
     try {
+      if (selectedNode == null) {
+        selectedNode = getNodeByPath(srcPath, uiExplorer);
+      }
+      Session srcSession = selectedNode.getSession();
+      if (!selectedNode.isCheckedOut()) {
+        uiApp.addMessage(new ApplicationMessage("UIActionBar.msg.node-checkedin", null,
+            ApplicationMessage.WARNING));
+        event.getRequestContext().addUIComponentToUpdateByAjax(uiApp.getUIPopupMessages());
+        return;
+      }
+      uiExplorer.addLockToken(selectedNode);
+      String destPath = destNode.getPath();
+      messagePath = destPath;
+      // Make destination path without index on final name
+      destPath = destPath.concat("/").concat(selectedNode.getName());  
+      Workspace srcWorkspace = srcSession.getWorkspace();
+      Workspace destWorkspace = destNode.getSession().getWorkspace();
+    
       if (srcWorkspace.equals(destWorkspace)) {
         srcWorkspace.move(srcPath, destPath);
       } else {
@@ -226,8 +227,20 @@ public class MoveNodeManageComponent extends UIAbstractManagerComponent {
   }
 
   private static void moveMultiNode(String[] srcPaths, Node destNode, Event<? extends UIComponent> event) throws Exception {
+    Map<String, Node> mapNode = new HashMap <String, Node>();
+    UIJCRExplorer uiExplorer = event.getSource().getAncestorOfType(UIJCRExplorer.class);
+    Node node;
     for (int i = 0; i < srcPaths.length; i++) {
-      moveNode(srcPaths[i], destNode, event);
+      node = getNodeByPath(srcPaths[i], uiExplorer);
+      mapNode.put(node.getPath(), node);
+    }
+    String path = null;
+    Iterator<String> iterator = mapNode.keySet().iterator(); 
+    while (iterator.hasNext()) {
+      path = iterator.next();
+      node = mapNode.get(path);
+      node.refresh(true);
+      moveNode(node.getPath(), node, destNode, event);
     }
   }
 

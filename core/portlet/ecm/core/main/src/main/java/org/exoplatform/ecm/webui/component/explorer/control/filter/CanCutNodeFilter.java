@@ -44,9 +44,8 @@ public class CanCutNodeFilter extends UIExtensionAbstractFilter {
   public boolean accept(Map<String, Object> context) throws Exception {
     if (context == null) return true;
     Node currentNode = (Node) context.get(Node.class.getName());
-    return PermissionUtil.canRemoveNode(currentNode) && (IsNotSameNameSiblingFilter.isNotSameNameSibling(currentNode) &&
-        (!IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode) || 
-            (IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode) && IsCheckedOutFilter.isCheckedOut(currentNode))));
+    return PermissionUtil.canRemoveNode(currentNode) && (!IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode) || 
+            (IsVersionableOrAncestorFilter.isAncestorVersionable(currentNode) && IsCheckedOutFilter.isCheckedOut(currentNode)));
   }
 
   public void onDeny(Map<String, Object> context) throws Exception {
