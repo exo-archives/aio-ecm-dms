@@ -468,16 +468,25 @@ public class UIDocumentInfo extends UIContainer implements NodePresentation {
     TemplateService templateService = getApplicationComponent(TemplateService.class) ;
     List<Node> attachments = new ArrayList<Node>() ;
     NodeIterator childrenIterator = currentNode_.getNodes();
-    int attachData = 0 ;
+    int attachData =0 ;
     while (childrenIterator.hasNext()) {
       Node childNode = childrenIterator.nextNode();
       String nodeType = childNode.getPrimaryNodeType().getName();
       List<String> listCanCreateNodeType = 
-          Utils.getListAllowedFileType(currentNode_, getRepository(), templateService) ;
-      if (childNode.hasProperty(Utils.JCR_DATA))
-        attachData = childNode.getProperty(Utils.JCR_DATA).getStream().available();       
-      if(listCanCreateNodeType.contains(nodeType) && (attachData > 0))         
-        attachments.add(childNode);       
+                Utils.getListAllowedFileType(currentNode_, getRepository(), templateService) ;              
+      if(listCanCreateNodeType.contains(nodeType) ) {
+        
+        // Case of childNode has jcr:data property
+        if (childNode.hasProperty(Utils.JCR_DATA)) {
+          attachData = childNode.getProperty(Utils.JCR_DATA).getStream().available();
+          
+          // Case of jcr:data has content.
+          if (attachData > 0) 
+            attachments.add(childNode);          
+        } else {
+          attachments.add(childNode);
+        }               
+      }
     }
     return attachments;
   }

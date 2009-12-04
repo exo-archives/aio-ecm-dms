@@ -77,15 +77,22 @@ public class RemoveAttachmentComponent extends AbstractActionComponent {
         Node node = (Node) nodefinder.getItem(repository, wsname, nodepath);  
         
         // begin of lampt's modification.
+        Node parentNode = null;
         if (nodepath.startsWith("/")) {
-          if (node.hasProperty(Utils.JCR_DATA))
+          if (node.hasProperty(Utils.JCR_DATA)) {
             node.setProperty(Utils.JCR_DATA, Utils.EMPTY);
+            node.save();
+          } else {
+            parentNode = node.getParent();
+            node.remove();
+            parentNode.save();
+          }
         } else {
-          if (node.hasProperty(nodepath)) 
-            node.setProperty(nodepath, Utils.EMPTY);                      
-        } 
-        node.save();
-        // end of modification.        
+          if (node.hasProperty(nodepath)) { 
+            node.setProperty(nodepath, Utils.EMPTY);
+            node.save();
+          }
+        } // end of modification.        
         
         Session session = node.getSession();   
         session.save();
