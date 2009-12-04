@@ -27,12 +27,13 @@ import org.apache.commons.logging.Log;
 import org.exoplatform.services.jcr.RepositoryService;
 import org.exoplatform.services.jcr.core.ManageableRepository;
 import org.exoplatform.services.jcr.ext.common.SessionProvider;
+import org.exoplatform.services.jcr.ext.hierarchy.NodeHierarchyCreator;
 import org.exoplatform.services.log.ExoLogger;
 import org.picocontainer.Startable;
 
 /**
  * Created by The eXo Platform SAS
- * Author : Hoa Pham	
+ * Author : Hoa Pham  
  *          hoa.pham@exoplatform.com
  * Sep 6, 2008  
  */
@@ -40,10 +41,15 @@ public class ContentInitializerService implements Startable{
   
   private List<DeploymentPlugin> listDeploymentPlugin = new ArrayList<DeploymentPlugin>();
   private RepositoryService repositoryService;
-  private Log log = ExoLogger.getLogger(this.getClass());
+  private NodeHierarchyCreator nodeHierarchyCreator;
+  private Log LOG = ExoLogger.getLogger(this.getClass());
   
-  public ContentInitializerService(RepositoryService repositoryService) {
+  private static String CONTENT_INIT = "ContentInitializerService";
+  private static String EXO_SERVICES = "eXoServices";
+  
+  public ContentInitializerService(RepositoryService repositoryService, NodeHierarchyCreator nodeHierarchyCreator) {
     this.repositoryService = repositoryService;
+    this.nodeHierarchyCreator = nodeHierarchyCreator;
   }
   
   public void addPlugin(DeploymentPlugin deploymentPlugin) {
@@ -53,15 +59,14 @@ public class ContentInitializerService implements Startable{
   public void start() {
     SessionProvider sessionProvider = SessionProvider.createSystemProvider();
     try {
-      // TODO: should get exo:services folder by NodeHierarchyCrerator service
       ManageableRepository repository = repositoryService.getCurrentRepository();
       Session session = sessionProvider.getSession(repository.getConfiguration().getDefaultWorkspaceName(), repository);
-      Node serviceFolder = session.getRootNode().getNode("exo:services");
+      Node serviceFolder = (Node)session.getItem(nodeHierarchyCreator.getJcrPath(EXO_SERVICES));
       Node contentInitializerService = null;
-      if (serviceFolder.hasNode("ContentInitializerService")) {
-        contentInitializerService = serviceFolder.getNode("ContentInitializerService");
+      if (serviceFolder.hasNode(CONTENT_INIT)) {
+        contentInitializerService = serviceFolder.getNode(CONTENT_INIT);
       } else {
-        contentInitializerService = serviceFolder.addNode("ContentInitializerService", "nt:unstructured");
+        contentInitializerService = serviceFolder.addNode(CONTENT_INIT, "nt:unstructured");
       }
       if (!contentInitializerService.hasNode("ContentInitializerServiceLog")) {                                              
         Date date = new Date();
@@ -71,7 +76,7 @@ public class ContentInitializerService implements Startable{
             deploymentPlugin.deploy(sessionProvider);
             logData.append("deploy " + deploymentPlugin.getName() + " deployment plugin succesful at " + date.toString() + "\n");
           } catch (Exception e) {
-            log.error("deploy " + deploymentPlugin.getName() + " deployment plugin failure at " + date.toString() + " by " + e.getMessage() + "\n");
+            LOG.error("deploy " + deploymentPlugin.getName() + " deployment plugin failure at " + date.toString() + " by " + e.getMessage() + "\n");
             logData.append("deploy " + deploymentPlugin.getName() + " deployment plugin failure at " + date.toString() + " by " + e.getMessage() + "\n");
           }                            
         } 
@@ -85,6 +90,7 @@ public class ContentInitializerService implements Startable{
         session.save();
       }
     } catch (Exception e) { 
+      LOG.error("An unexpected problem occurs when deploy contents", e);
     } finally {
       sessionProvider.close();
     }
