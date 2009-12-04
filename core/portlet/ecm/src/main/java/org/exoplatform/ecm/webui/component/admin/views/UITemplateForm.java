@@ -230,7 +230,7 @@ public class UITemplateForm extends UIForm {
       app.addMessage(new ApplicationMessage("UITemplateForm.msg.version-restored", args));
     }
     String content = template_.getProperty(Utils.EXO_TEMPLATEFILE).getString();
-    getUIFormTextAreaInput(FIELD_CONTENT).setValue(content);
+    getUIFormTextAreaInput(FIELD_CONTENT).setValue(Utils.encodeHTML(content));
   } 
 
   static  public class SaveActionListener extends EventListener<UITemplateForm> {
